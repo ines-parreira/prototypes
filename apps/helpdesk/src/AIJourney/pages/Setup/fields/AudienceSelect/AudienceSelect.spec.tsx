@@ -204,11 +204,11 @@ describe('AudienceSelect', () => {
     it('should be disabled when loading data', () => {
         mockUseAudienceLists.mockReturnValue({
             data: null,
-            isLoading: true,
+            isFetching: true,
         })
         mockUseAudienceSegments.mockReturnValue({
             data: null,
-            isLoading: false,
+            isFetching: false,
         })
 
         render(
@@ -221,6 +221,35 @@ describe('AudienceSelect', () => {
 
         const selectButton = screen.getByRole('button')
         expect(selectButton).toBeDisabled()
+    })
+
+    it('should not be disabled on campaigns even when the disabled segments query reports isLoading', () => {
+        mockUseJourneyContext.mockReturnValue({
+            currentIntegration: { id: 123, name: 'Test Store' },
+            journeyType: JOURNEY_TYPES.CAMPAIGN,
+        })
+        mockUseAudienceLists.mockReturnValue({
+            data: { data: [] },
+            isFetching: false,
+        })
+        // react-query v4 reports isLoading=true and isFetching=false
+        // when a query is disabled and has never run
+        mockUseAudienceSegments.mockReturnValue({
+            data: null,
+            isLoading: true,
+            isFetching: false,
+        })
+
+        render(
+            <AudienceSelect
+                name="Segments to include"
+                value={[]}
+                onChange={() => {}}
+            />,
+        )
+
+        const selectButton = screen.getByRole('button')
+        expect(selectButton).not.toBeDisabled()
     })
 
     it('should handle empty data gracefully', () => {

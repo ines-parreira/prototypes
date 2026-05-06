@@ -45,10 +45,10 @@ export const AudienceSelect = ({
 
     const isCampaign = journeyType === JOURNEY_TYPES.CAMPAIGN
 
-    const { data: audienceLists, isLoading: isLoadingAudienceLists } =
+    const { data: audienceLists, isFetching: isFetchingAudienceLists } =
         useAudienceLists(currentIntegration?.id)
 
-    const { data: audienceSegments, isLoading: isLoadingAudienceSegments } =
+    const { data: audienceSegments, isFetching: isFetchingAudienceSegments } =
         useAudienceSegments(currentIntegration?.id, undefined, undefined, {
             enabled: !isCampaign,
         })
@@ -119,8 +119,8 @@ export const AudienceSelect = ({
                 placeholder="Select audience"
                 value={value.map((e) => ({ id: e, name: '', items: [] }))}
                 isDisabled={
-                    isLoadingAudienceLists ||
-                    isLoadingAudienceSegments ||
+                    isFetchingAudienceLists ||
+                    isFetchingAudienceSegments ||
                     isDisabled
                 }
                 error={

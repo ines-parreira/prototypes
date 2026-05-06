@@ -411,7 +411,7 @@ describe('<AudienceSelect />', () => {
         it('is disabled when audience lists are loading', async () => {
             mockUseAudienceLists.mockReturnValue({
                 data: null,
-                isLoading: true,
+                isFetching: true,
             })
 
             await renderComponent('include')
@@ -425,7 +425,7 @@ describe('<AudienceSelect />', () => {
             mockUseAudienceSegments.mockImplementation(
                 (integrationId, source) => ({
                     data: null,
-                    isLoading: source === AudienceListSource.Gorgias,
+                    isFetching: source === AudienceListSource.Gorgias,
                 }),
             )
 
@@ -440,7 +440,7 @@ describe('<AudienceSelect />', () => {
             mockUseAudienceSegments.mockImplementation(
                 (integrationId, source) => ({
                     data: null,
-                    isLoading: source === AudienceListSource.Klaviyo,
+                    isFetching: source === AudienceListSource.Klaviyo,
                 }),
             )
 
@@ -452,6 +452,28 @@ describe('<AudienceSelect />', () => {
         })
 
         it('is not disabled when data has loaded', async () => {
+            await renderComponent('include')
+
+            expect(
+                screen.getByRole('button', { name: /Select audience/i }),
+            ).not.toBeDisabled()
+        })
+
+        it('is not disabled on campaigns even when the disabled Gorgias query reports isLoading', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                currentIntegration: { id: 456 },
+                journeyType: JOURNEY_TYPES.CAMPAIGN,
+            })
+            mockUseAudienceSegments.mockImplementation(
+                (integrationId, source) => ({
+                    data: null,
+                    // react-query v4 reports isLoading=true and isFetching=false
+                    // when a query is disabled and has never run
+                    isLoading: source === AudienceListSource.Gorgias,
+                    isFetching: false,
+                }),
+            )
+
             await renderComponent('include')
 
             expect(

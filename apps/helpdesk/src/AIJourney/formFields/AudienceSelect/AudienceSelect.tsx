@@ -59,12 +59,12 @@ export const AudienceSelect = ({ type }: { type: 'include' | 'exclude' }) => {
     const excludedValuesRef = useRef(excludedValues) // need to memoize excluded values to avoid re-creating it in every render
     excludedValuesRef.current = excludedValues
 
-    const { data: audienceLists, isLoading: isLoadingAudienceLists } =
+    const { data: audienceLists, isFetching: isFetchingAudienceLists } =
         useAudienceLists(currentIntegration?.id)
 
     const {
         data: gorgiasAudienceSegments,
-        isLoading: isLoadingGorgiasAudienceSegments,
+        isFetching: isFetchingGorgiasAudienceSegments,
     } = useAudienceSegments(
         currentIntegration?.id,
         AudienceListSource.Gorgias,
@@ -74,7 +74,7 @@ export const AudienceSelect = ({ type }: { type: 'include' | 'exclude' }) => {
 
     const {
         data: klaviyoAudienceSegments,
-        isLoading: isLoadingKlaviyoAudienceSegments,
+        isFetching: isFetchingKlaviyoAudienceSegments,
     } = useAudienceSegments(currentIntegration?.id, AudienceListSource.Klaviyo)
 
     const { data: schema } = useConditionsMetadata({
@@ -231,9 +231,9 @@ export const AudienceSelect = ({ type }: { type: 'include' | 'exclude' }) => {
                             items: [],
                         }))}
                         isDisabled={
-                            isLoadingAudienceLists ||
-                            isLoadingGorgiasAudienceSegments ||
-                            isLoadingKlaviyoAudienceSegments
+                            isFetchingAudienceLists ||
+                            isFetchingGorgiasAudienceSegments ||
+                            isFetchingKlaviyoAudienceSegments
                         }
                     >
                         {(section: {
