@@ -1,4 +1,4 @@
-import type { ColumnDef, TableV1ToolbarRow } from '@gorgias/axiom'
+import type { ColumnDef, SortingState, TableV1ToolbarRow } from '@gorgias/axiom'
 import {
     Box,
     Button,
@@ -11,6 +11,8 @@ import {
     useTableV1,
 } from '@gorgias/axiom'
 
+import { DateFormatToggle } from 'AIJourney/components/DateFormatToggle/DateFormatToggle'
+import { useDateFormatPreference } from 'AIJourney/hooks'
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 
@@ -24,6 +26,7 @@ type journeysTableProps<TData, TValue> = {
     showAddCustomFlow?: boolean
     isLoading?: boolean
     integrationId?: number
+    initialSorting?: SortingState
 }
 
 export const JourneysTable = <TData, TValue>({
@@ -34,8 +37,10 @@ export const JourneysTable = <TData, TValue>({
     showAddCustomFlow = false,
     isLoading = false,
     integrationId,
+    initialSorting,
 }: journeysTableProps<TData, TValue>) => {
     const { currency } = useCurrency()
+    const { format: dateFormat, toggleFormat } = useDateFormatPreference()
 
     const table = useTableV1({
         data,
@@ -43,6 +48,7 @@ export const JourneysTable = <TData, TValue>({
         sortingConfig: {
             enableSorting: true,
             enableMultiSort: true,
+            initialSorting,
         },
         paginationConfig: {
             enablePagination: true,
@@ -58,6 +64,7 @@ export const JourneysTable = <TData, TValue>({
             meta: {
                 currency: currency,
                 integrationId: integrationId,
+                dateFormat,
             },
         },
     })
@@ -99,6 +106,15 @@ export const JourneysTable = <TData, TValue>({
                                           },
                                       ]
                                     : []),
+                                {
+                                    key: 'date-format',
+                                    content: (
+                                        <DateFormatToggle
+                                            format={dateFormat}
+                                            onToggle={toggleFormat}
+                                        />
+                                    ),
+                                },
                                 {
                                     key: 'edit',
                                     content: (

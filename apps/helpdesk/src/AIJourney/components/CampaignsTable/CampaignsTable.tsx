@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useHistory } from 'react-router-dom'
 
-import type { ColumnDef, TableV1ToolbarRow } from '@gorgias/axiom'
+import type { ColumnDef, SortingState, TableV1ToolbarRow } from '@gorgias/axiom'
 import {
     Box,
     Button,
@@ -18,9 +18,11 @@ import {
 import type { JourneyApiDTO } from '@gorgias/convert-client'
 import { JourneyCampaignStateEnum } from '@gorgias/convert-client'
 
+import { DateFormatToggle } from 'AIJourney/components/DateFormatToggle/DateFormatToggle'
 import type { UpdatableJourneyCampaignState } from 'AIJourney/constants'
 import {
     useAiJourneyStoreConfiguration,
+    useDateFormatPreference,
     useJourneyUpdateHandler,
 } from 'AIJourney/hooks'
 import { useJourneyContext } from 'AIJourney/providers'
@@ -42,6 +44,7 @@ type CampaignsTableProps<TData, TValue> = {
     data: TData[]
     onEditColumns?: () => void
     isLoading?: boolean
+    initialSorting?: SortingState
 }
 
 export default function CampaignsTable<TData, TValue>({
@@ -49,6 +52,7 @@ export default function CampaignsTable<TData, TValue>({
     data,
     onEditColumns,
     isLoading = false,
+    initialSorting,
 }: CampaignsTableProps<TData, TValue>) {
     const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false)
     const [isSendModalOpen, setIsSendModalOpen] = useState(false)
@@ -62,6 +66,7 @@ export default function CampaignsTable<TData, TValue>({
 
     const history = useHistory()
     const { shopName, currency, currentIntegration } = useJourneyContext()
+    const { format: dateFormat, toggleFormat } = useDateFormatPreference()
 
     const storeSettingsEnabled = useFlag(
         FeatureFlagKey.AiJourneyStoreSettingsEnabled,
@@ -219,7 +224,7 @@ export default function CampaignsTable<TData, TValue>({
         sortingConfig: {
             enableSorting: true,
             enableMultiSort: true,
-            initialSorting: [{ id: 'campaign.title', desc: false }],
+            initialSorting,
         },
         paginationConfig: {
             enablePagination: true,
@@ -239,6 +244,7 @@ export default function CampaignsTable<TData, TValue>({
                 onChangeStatus: handleChangeStatus,
                 onDuplicateClick: handleDuplicate,
                 currency: currency,
+                dateFormat,
             } as CampaignsTableMeta,
         },
     })
@@ -262,6 +268,15 @@ export default function CampaignsTable<TData, TValue>({
                         bottomRow={{
                             left: ['totalCount'],
                             right: [
+                                {
+                                    key: 'date-format',
+                                    content: (
+                                        <DateFormatToggle
+                                            format={dateFormat}
+                                            onToggle={toggleFormat}
+                                        />
+                                    ),
+                                },
                                 {
                                     key: 'edit',
                                     content: (

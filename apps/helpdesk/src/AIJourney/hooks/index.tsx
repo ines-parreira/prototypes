@@ -24,3 +24,5 @@ export { useStoredProductResolution } from './useStoredProductResolution/useStor
 export { useAIJourneyProviderTotalOrders } from './useAIJourneyProviderTotalOrders/useAIJourneyProviderTotalOrders'
 export { useAIJourneyProviderTotalSales } from './useAIJourneyProviderTotalSales/useAIJourneyProviderTotalSales'
 export { useAIJourneyProviderMetricData } from './useAIJourneyProviderMetricData/useAIJourneyProviderMetricData'
+export { useDateFormatPreference } from './useDateFormatPreference/useDateFormatPreference'
+export type { DateFormatPreference } from './useDateFormatPreference/useDateFormatPreference'

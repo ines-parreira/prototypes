@@ -7,11 +7,13 @@ import {
     TableV1SortableColumnHeader,
 } from '@gorgias/axiom'
 
-import { MetricCell } from 'AIJourney/components'
+import { DateCell } from 'AIJourney/components/DateCell/DateCell'
 import { JourneyName } from 'AIJourney/components/JourneysTable/JourneyName/JourneyName'
 import { JourneyStateBadge } from 'AIJourney/components/JourneysTable/JourneyStateBadge/JourneyStateBadge'
 import { RowAdditionalOptions } from 'AIJourney/components/JourneysTable/RowAdditionalOptions/RowAdditionalOptions'
+import { MetricCell } from 'AIJourney/components/MetricCell/MetricCell'
 import { JOURNEY_TYPE_MAP_TO_STRING } from 'AIJourney/constants'
+import type { DateFormatPreference } from 'AIJourney/hooks'
 import {
     AIJourneyMetric,
     AIJourneyMetricsConfig,
@@ -19,6 +21,17 @@ import {
 import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
 
 import type { TableRow } from '../../../pages/Flows/Flows'
+
+export type JourneysTableMeta = {
+    currency: string
+    integrationId?: number
+    dateFormat: DateFormatPreference
+}
+
+const getRowDatetime = (
+    row: TableRow,
+    key: 'created_datetime' | 'updated_datetime',
+): string | null | undefined => (key in row ? (row as never)[key] : undefined)
 
 export const journeysColumns: ColumnDef<TableRow>[] = [
     {
@@ -56,6 +69,50 @@ export const journeysColumns: ColumnDef<TableRow>[] = [
             </Box>
         )
     }),
+    {
+        id: 'created_datetime',
+        accessorFn: (row) => getRowDatetime(row, 'created_datetime') ?? '',
+        header: ({ column }) => (
+            <TableV1SortableColumnHeader column={column}>
+                Created
+            </TableV1SortableColumnHeader>
+        ),
+        cell: (info) => {
+            const meta = info.table.options.meta as JourneysTableMeta
+            return (
+                <DateCell
+                    value={getRowDatetime(
+                        info.row.original,
+                        'created_datetime',
+                    )}
+                    format={meta.dateFormat}
+                />
+            )
+        },
+        enableSorting: true,
+    },
+    {
+        id: 'updated_datetime',
+        accessorFn: (row) => getRowDatetime(row, 'updated_datetime') ?? '',
+        header: ({ column }) => (
+            <TableV1SortableColumnHeader column={column}>
+                Updated
+            </TableV1SortableColumnHeader>
+        ),
+        cell: (info) => {
+            const meta = info.table.options.meta as JourneysTableMeta
+            return (
+                <DateCell
+                    value={getRowDatetime(
+                        info.row.original,
+                        'updated_datetime',
+                    )}
+                    format={meta.dateFormat}
+                />
+            )
+        },
+        enableSorting: true,
+    },
 ]
 
 export const metricColumns: ColumnDef<TableRow, unknown>[] = [

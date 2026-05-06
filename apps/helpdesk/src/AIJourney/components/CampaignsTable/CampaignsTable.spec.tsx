@@ -24,6 +24,10 @@ jest.mock('AIJourney/hooks', () => ({
         handleUpdate: mockHandleUpdate,
     }),
     useAiJourneyStoreConfiguration: jest.fn(),
+    useDateFormatPreference: () => ({
+        format: 'absolute',
+        toggleFormat: jest.fn(),
+    }),
 }))
 
 const mockUseAiJourneyStoreConfiguration = require('AIJourney/hooks')

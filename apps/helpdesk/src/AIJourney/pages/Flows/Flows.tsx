@@ -147,8 +147,15 @@ export const Flows = () => {
                 (option): option is ColumnDef<TableRow> => option !== undefined,
             )
 
+        const baseColumns = window.USER_IMPERSONATED
+            ? journeysColumns
+            : journeysColumns.filter(
+                  (column) =>
+                      !('id' in column && column.id === 'created_datetime'),
+              )
+
         return [
-            ...journeysColumns,
+            ...baseColumns,
             ...orderedMetricColumns,
             ...actionColumns,
         ] as ColumnDef<TableRow>[]
@@ -246,6 +253,7 @@ export const Flows = () => {
                     showAddCustomFlow={!!isAiJourneyCustomFlowEnabled}
                     isLoading={isLoadingJourneys}
                     integrationId={integrationId}
+                    initialSorting={[{ id: 'updated_datetime', desc: true }]}
                 />
                 {showCustomFlowEmptyState && (
                     <Text>

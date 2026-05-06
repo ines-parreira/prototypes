@@ -2,10 +2,15 @@ import { formatMetricValue } from '@repo/reporting'
 import classNames from 'classnames'
 
 import type { ColumnDef } from '@gorgias/axiom'
-import { Box, createTableV1SortableColumn } from '@gorgias/axiom'
+import {
+    Box,
+    createTableV1SortableColumn,
+    TableV1SortableColumnHeader,
+} from '@gorgias/axiom'
 import { JourneyCampaignStateEnum } from '@gorgias/convert-client'
 
-import { MetricCell } from 'AIJourney/components'
+import { DateCell } from 'AIJourney/components/DateCell/DateCell'
+import { MetricCell } from 'AIJourney/components/MetricCell/MetricCell'
 
 import type { UpdatableJourneyCampaignState } from '../../constants'
 import type { TableRow } from '../../pages/Campaigns/Campaigns'
@@ -51,6 +56,82 @@ export const columns: ColumnDef<TableRow>[] = [
             </Box>
         )
     }),
+    {
+        id: 'created_datetime',
+        accessorKey: 'created_datetime',
+        header: ({ column }) => (
+            <TableV1SortableColumnHeader column={column}>
+                Created
+            </TableV1SortableColumnHeader>
+        ),
+        cell: (info) => {
+            const meta = info.table.options.meta as CampaignsTableMeta
+            return (
+                <DateCell
+                    value={info.row.original.created_datetime}
+                    format={meta.dateFormat}
+                />
+            )
+        },
+        enableSorting: true,
+    },
+    {
+        id: 'updated_datetime',
+        accessorKey: 'updated_datetime',
+        header: ({ column }) => (
+            <TableV1SortableColumnHeader column={column}>
+                Updated
+            </TableV1SortableColumnHeader>
+        ),
+        cell: (info) => {
+            const meta = info.table.options.meta as CampaignsTableMeta
+            return (
+                <DateCell
+                    value={info.row.original.updated_datetime}
+                    format={meta.dateFormat}
+                />
+            )
+        },
+        enableSorting: true,
+    },
+    {
+        id: 'campaign.scheduled_datetime',
+        accessorFn: (row) => row.campaign?.scheduled_datetime ?? '',
+        header: ({ column }) => (
+            <TableV1SortableColumnHeader column={column}>
+                Scheduled
+            </TableV1SortableColumnHeader>
+        ),
+        cell: (info) => {
+            const meta = info.table.options.meta as CampaignsTableMeta
+            return (
+                <DateCell
+                    value={info.row.original.campaign?.scheduled_datetime}
+                    format={meta.dateFormat}
+                />
+            )
+        },
+        enableSorting: true,
+    },
+    {
+        id: 'campaign.completed_datetime',
+        accessorFn: (row) => row.campaign?.completed_datetime ?? '',
+        header: ({ column }) => (
+            <TableV1SortableColumnHeader column={column}>
+                Sent
+            </TableV1SortableColumnHeader>
+        ),
+        cell: (info) => {
+            const meta = info.table.options.meta as CampaignsTableMeta
+            return (
+                <DateCell
+                    value={info.row.original.campaign?.completed_datetime}
+                    format={meta.dateFormat}
+                />
+            )
+        },
+        enableSorting: true,
+    },
 ]
 
 export const metricColumns: ColumnDef<TableRow, unknown>[] = [

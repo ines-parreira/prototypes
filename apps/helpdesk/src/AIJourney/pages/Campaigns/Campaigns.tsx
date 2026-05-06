@@ -123,7 +123,14 @@ export const Campaigns = () => {
                 (option): option is ColumnDef<TableRow> => option !== undefined,
             )
 
-        return [...columns, ...orderedMetricColumns, ...actionColumns]
+        const baseColumns = window.USER_IMPERSONATED
+            ? columns
+            : columns.filter(
+                  (column) =>
+                      !('id' in column && column.id === 'created_datetime'),
+              )
+
+        return [...baseColumns, ...orderedMetricColumns, ...actionColumns]
     }, [keyKpisConfig])
 
     return (
@@ -168,6 +175,10 @@ export const Campaigns = () => {
                     data={campaignRows || []}
                     onEditColumns={() => setIsEditModalOpen(true)}
                     isLoading={isLoadingCampaigns}
+                    initialSorting={[
+                        { id: 'campaign.scheduled_datetime', desc: true },
+                        { id: 'updated_datetime', desc: true },
+                    ]}
                 />
                 <DrillDownModal />
                 <ConfigureMetricsModal

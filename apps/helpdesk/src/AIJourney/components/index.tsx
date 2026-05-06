@@ -4,6 +4,8 @@ export { PlaygroundPreviewHeader } from './PlaygroundPreviewHeader/PlaygroundPre
 export { PlaygroundPreview } from './PlaygroundPreview/PlaygroundPreview'
 export { JourneysTable } from './JourneysTable/JourneysTable'
 export { MetricCell } from './MetricCell/MetricCell'
+export { DateCell } from './DateCell/DateCell'
+export { DateFormatToggle } from './DateFormatToggle/DateFormatToggle'
 export { DiscountCodesUsageSection } from './DiscountCodesUsageSection/DiscountCodesUsageSection'
 export { GeneralCard } from './GeneralCard/GeneralCard'
 export { KlaviyoSetupCard } from './KlaviyoSetupCard/KlaviyoSetupCard'

@@ -2,6 +2,7 @@ import type { TableV1Meta } from '@gorgias/axiom'
 import type { JourneyApiDTO } from '@gorgias/convert-client'
 
 import type { UpdatableJourneyCampaignState } from 'AIJourney/constants'
+import type { DateFormatPreference } from 'AIJourney/hooks'
 
 export interface CampaignsTableMeta extends TableV1Meta<JourneyApiDTO> {
     onRemoveClick: (id: string) => void
@@ -10,4 +11,5 @@ export interface CampaignsTableMeta extends TableV1Meta<JourneyApiDTO> {
     onDuplicateClick: (journey: JourneyApiDTO) => void
     onChangeStatus: (id: string, status: UpdatableJourneyCampaignState) => void
     currency: string
+    dateFormat: DateFormatPreference
 }
