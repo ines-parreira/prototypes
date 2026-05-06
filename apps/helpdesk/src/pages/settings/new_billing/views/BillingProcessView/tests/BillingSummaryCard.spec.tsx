@@ -1,8 +1,5 @@
 import type { PlansByProduct } from '@repo/billing'
-import {
-    ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
-    BILLING_PAYMENT_CARD_PATH,
-} from '@repo/billing'
+import { ACTIVATE_PAYMENT_WITH_SHOPIFY_URL } from '@repo/billing'
 import { useFlag } from '@repo/feature-flags'
 import { logEvent, reportError, SegmentEvent } from '@repo/logging'
 import { render } from '@repo/testing'
@@ -424,7 +421,7 @@ describe('BillingSummaryCard', () => {
         })
     })
 
-    it('redirects to payment card page when trialing', async () => {
+    it('skips ConfirmChangesModal when subscription is trialing (FF on)', async () => {
         const user = userEvent.setup()
 
         render(
@@ -455,7 +452,7 @@ describe('BillingSummaryCard', () => {
                 isTrialing={true}
                 isCurrentSubscriptionCanceled={false}
                 periodEnd="2026-12-31"
-                ctaText="Update subscription"
+                ctaText="Subscribe now"
                 hasCreditCard={true}
                 isPaymentEnabled={true}
                 setUpdateProcessStarted={mockSetUpdateProcessStarted}
@@ -464,18 +461,17 @@ describe('BillingSummaryCard', () => {
             />,
         )
 
-        await user.click(screen.getByRole('button', { name: /open modal/i }))
+        expect(
+            screen.queryByRole('button', { name: /open modal/i }),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: /legacy submit/i }),
+        ).toBeInTheDocument()
+
+        await user.click(screen.getByRole('button', { name: /legacy submit/i }))
 
         await waitFor(() => {
-            expect(screen.getByText('open')).toBeInTheDocument()
-        })
-
-        await user.click(screen.getByRole('button', { name: /confirm modal/i }))
-
-        await waitFor(() => {
-            expect(mockHistoryPush).toHaveBeenCalledWith(
-                BILLING_PAYMENT_CARD_PATH,
-            )
+            expect(updateSubscription).toHaveBeenCalledTimes(1)
         })
     })
 
@@ -824,19 +820,6 @@ describe('BillingSummaryCard', () => {
             expect(
                 screen.getByText('payment method missing'),
             ).toBeInTheDocument()
-        })
-
-        it('does not flag payment method missing while trialing (post-success redirect handles it)', async () => {
-            const user = userEvent.setup()
-            renderWithProps({ isTrialing: true, hasCreditCard: false })
-
-            await user.click(
-                screen.getByRole('button', { name: /open modal/i }),
-            )
-
-            expect(
-                screen.queryByText('payment method missing'),
-            ).not.toBeInTheDocument()
         })
     })
 

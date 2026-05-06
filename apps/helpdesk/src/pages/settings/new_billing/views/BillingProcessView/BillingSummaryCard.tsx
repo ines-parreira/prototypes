@@ -209,7 +209,9 @@ export function BillingSummaryCard({
                 anyNewProductSelected={anyNewProductSelected}
                 anyDowngradedPlanSelected={!!anyDowngradedPlanSelected}
                 onOpenConfirmationModal={
-                    isMidCycleUpgradeEnabled && !isCurrentSubscriptionCanceled
+                    isMidCycleUpgradeEnabled &&
+                    !isCurrentSubscriptionCanceled &&
+                    !isTrialing
                         ? () => {
                               logEvent(
                                   SegmentEvent.BillingUsageAndPlansUpdateSubscriptionClicked,
