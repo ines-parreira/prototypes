@@ -98,4 +98,74 @@ describe('<FlowName />', () => {
 
         expect(input).toBeInTheDocument()
     })
+
+    describe('onChange wiring', () => {
+        // The TextField's onChange prop is the wrapper FlowName installs
+        // around field.onChange. These tests pull that wrapper directly out of
+        // the rendered element and exercise it with raw string inputs, then
+        // assert what the underlying field.onChange mock received. This is the
+        // unit boundary that AIJOU-1977 broke: trim ran on every keystroke and
+        // stripped spaces before they could be stored.
+        const renderAndGetTextFieldOnChange = () => {
+            render(<FlowName />)
+            const renderProp = capturedControllerProps.render as (args: {
+                field: { value: string; onChange: jest.Mock }
+                fieldState: Record<string, unknown>
+            }) => React.ReactElement<{ onChange: (value: string) => void }>
+            const fieldOnChange = jest.fn()
+            const element = renderProp({
+                field: { value: '', onChange: fieldOnChange },
+                fieldState: {},
+            })
+            return { fieldOnChange, textFieldOnChange: element.props.onChange }
+        }
+
+        it('preserves internal spaces between words', () => {
+            const { fieldOnChange, textFieldOnChange } =
+                renderAndGetTextFieldOnChange()
+
+            textFieldOnChange('My custom flow')
+
+            expect(fieldOnChange).toHaveBeenCalledWith('My custom flow')
+        })
+
+        it('preserves trailing space mid-edit so the next character can land', () => {
+            const { fieldOnChange, textFieldOnChange } =
+                renderAndGetTextFieldOnChange()
+
+            textFieldOnChange('My ')
+
+            expect(fieldOnChange).toHaveBeenCalledWith('My ')
+        })
+
+        it('preserves leading space mid-edit', () => {
+            const { fieldOnChange, textFieldOnChange } =
+                renderAndGetTextFieldOnChange()
+
+            textFieldOnChange(' My')
+
+            expect(fieldOnChange).toHaveBeenCalledWith(' My')
+        })
+
+        it('passes whitespace-only values through to field.onChange (validate rejects them)', () => {
+            const { fieldOnChange, textFieldOnChange } =
+                renderAndGetTextFieldOnChange()
+
+            textFieldOnChange('   ')
+
+            // onChange must not silently swallow this — the validate rule is
+            // the authority on whitespace-only rejection at submit time, and it
+            // needs to see the actual value to fire its error message.
+            expect(fieldOnChange).toHaveBeenCalledWith('   ')
+        })
+
+        it('coerces null/undefined to empty string defensively', () => {
+            const { fieldOnChange, textFieldOnChange } =
+                renderAndGetTextFieldOnChange()
+
+            textFieldOnChange(undefined as unknown as string)
+
+            expect(fieldOnChange).toHaveBeenCalledWith('')
+        })
+    })
 })

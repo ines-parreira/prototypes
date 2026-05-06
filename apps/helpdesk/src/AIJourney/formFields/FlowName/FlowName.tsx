@@ -19,9 +19,7 @@ export const FlowName = () => {
                     label="Flow name"
                     isRequired
                     value={field.value ?? undefined}
-                    onChange={(value: string) =>
-                        field.onChange(value?.trim() ?? '')
-                    }
+                    onChange={(value: string) => field.onChange(value ?? '')}
                     error={fieldState.error?.message}
                     isInvalid={!!fieldState.error}
                 />
