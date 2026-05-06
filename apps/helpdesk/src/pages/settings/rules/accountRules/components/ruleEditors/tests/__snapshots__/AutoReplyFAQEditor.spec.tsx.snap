@@ -345,6 +345,7 @@ exports[`<AutoReplyFAQEditor/> should render correctly 1`] = `
       >
         <div
           class="editor-wrapper"
+          data-name="composer-content-wrapper"
           role="presentation"
         >
           <div
@@ -837,6 +838,7 @@ exports[`<AutoReplyFAQEditor/> should render correctly 1`] = `
       >
         <div
           class="editor-wrapper"
+          data-name="composer-content-wrapper"
           role="presentation"
         >
           <div

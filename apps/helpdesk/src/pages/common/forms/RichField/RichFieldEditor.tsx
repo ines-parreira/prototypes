@@ -1317,6 +1317,7 @@ export class RichFieldEditor extends Component<Props, State> {
             >
                 <div
                     role="presentation"
+                    data-name="composer-content-wrapper"
                     className={classnames('editor-wrapper', {
                         drop: this.state.isDragging,
                     })}

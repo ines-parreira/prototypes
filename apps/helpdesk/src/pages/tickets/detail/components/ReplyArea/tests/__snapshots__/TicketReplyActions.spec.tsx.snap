@@ -71,6 +71,7 @@ exports[`<TicketReplyActions/> should collapse the macro actions 1`] = `
               >
                 <div
                   class="editor-wrapper"
+                  data-name="composer-content-wrapper"
                   role="presentation"
                 >
                   <div
@@ -374,6 +375,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
               >
                 <div
                   class="editor-wrapper"
+                  data-name="composer-content-wrapper"
                   role="presentation"
                 >
                   <div
@@ -732,6 +734,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
               >
                 <div
                   class="editor-wrapper"
+                  data-name="composer-content-wrapper"
                   role="presentation"
                 >
                   <div
@@ -1434,6 +1437,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions unco
               >
                 <div
                   class="editor-wrapper"
+                  data-name="composer-content-wrapper"
                   role="presentation"
                 >
                   <div
