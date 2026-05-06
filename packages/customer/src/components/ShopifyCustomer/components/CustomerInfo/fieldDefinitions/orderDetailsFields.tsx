@@ -1,8 +1,6 @@
 import { CopyableField } from '@repo/ecommerce/shopify/components'
 import { formatOrderDate } from '@repo/ecommerce/shopify/utils'
 
-import { Text } from '@gorgias/axiom'
-
 import { OrderNote } from '../orders/OrderNote'
 import { OrderTags } from '../orders/OrderTags'
 import type { OrderFieldConfig } from '../types'
@@ -12,9 +10,14 @@ import css from '../orders/sidePanel/OrderSidePanelPreview.less'
 function CheckoutUrlField({ url }: { url: string }) {
     return (
         <CopyableField value={url} ariaLabel="Copy checkout URL" inline>
-            <Text size="md" className={css.checkoutUrl}>
+            <a
+                href={url}
+                target="_blank"
+                rel="noreferrer"
+                className={css.checkoutUrl}
+            >
                 {url}
-            </Text>
+            </a>
         </CopyableField>
     )
 }
