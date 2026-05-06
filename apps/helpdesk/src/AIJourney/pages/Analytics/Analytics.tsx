@@ -427,6 +427,14 @@ export const Analytics = () => {
         'liverecover',
         providerHookParams,
     )
+    const twoDayClickData = useAIJourneyProviderMetricData(
+        '2-day-click',
+        providerHookParams,
+    )
+    const threeDayClickData = useAIJourneyProviderMetricData(
+        '3-day-click',
+        providerHookParams,
+    )
 
     useEffectOnce(() => {
         const legacyItemKey = 'ai-journey-analytics-metrics-preferences'
@@ -458,6 +466,8 @@ export const Analytics = () => {
         attentive: attentiveData,
         postscript: postscriptData,
         liverecover: liverecoverData,
+        '2-day-click': twoDayClickData,
+        '3-day-click': threeDayClickData,
     }
 
     const providerMetrics = isAttributionModelComparisonEnabled

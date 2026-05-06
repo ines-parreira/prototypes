@@ -44,10 +44,10 @@ catalogs:
   analytics-ui-kit:
     '@gorgias/analytics-ui-kit': '0.1.25'
   rest-api-sdk:
-    '@gorgias/convert-client': '^0.3.54'
-    '@gorgias/convert-mocks': '^0.2.71'
-    '@gorgias/convert-queries': '^0.2.72'
-    '@gorgias/convert-types': '^0.4.40'
+    '@gorgias/convert-client': '^0.3.55'
+    '@gorgias/convert-mocks': '^0.2.72'
+    '@gorgias/convert-queries': '^0.2.73'
+    '@gorgias/convert-types': '^0.4.41'
     '@gorgias/customer-segmentation-client': '^0.2.9'
     '@gorgias/customer-segmentation-mocks': '^0.2.13'
     '@gorgias/customer-segmentation-queries': '^0.2.9'

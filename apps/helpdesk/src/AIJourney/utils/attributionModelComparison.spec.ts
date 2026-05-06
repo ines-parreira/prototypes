@@ -40,12 +40,14 @@ const mockDrillDown = {
 
 describe('attributionModelComparison', () => {
     describe('ATTRIBUTION_MODELS', () => {
-        it('should contain all four providers in the correct order', () => {
+        it('should contain all six providers in the correct order', () => {
             expect(ATTRIBUTION_MODELS).toEqual([
                 'klaviyo',
                 'attentive',
                 'postscript',
                 'liverecover',
+                '2-day-click',
+                '3-day-click',
             ])
         })
     })
@@ -88,6 +90,8 @@ describe('attributionModelComparison', () => {
                 'Total sales (discount 10d > delivery 20d)',
                 'Orders (discount 10d > delivery 20d)',
             ],
+            ['2-day-click', 'Total sales (click 2d)', 'Orders (click 2d)'],
+            ['3-day-click', 'Total sales (click 3d)', 'Orders (click 3d)'],
         ] as const)(
             'should return correct IDs for %s',
             (model, expectedTotalSales, expectedOrders) => {

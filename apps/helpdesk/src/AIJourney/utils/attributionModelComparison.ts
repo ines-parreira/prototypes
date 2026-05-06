@@ -1,11 +1,15 @@
 import type { MetricTrendFormat } from '@repo/reporting'
 
-import type { AttributionModelComparison } from '@gorgias/convert-client'
-
 import type { ProviderMetricData } from 'AIJourney/hooks/useAIJourneyProviderMetricData/useAIJourneyProviderMetricData'
 import { seriesToTwoDimensionalDataItem } from 'domains/reporting/hooks/useTimeSeries'
 
-export type { AttributionModelComparison } from '@gorgias/convert-client'
+export type AttributionModelComparison =
+    | 'klaviyo'
+    | 'attentive'
+    | 'postscript'
+    | 'liverecover'
+    | '2-day-click'
+    | '3-day-click'
 
 export const ATTRIBUTION_MODEL_LABELS: Record<
     AttributionModelComparison,
@@ -15,6 +19,8 @@ export const ATTRIBUTION_MODEL_LABELS: Record<
     attentive: 'click 5d > delivery 24h',
     postscript: 'click 7d > delivery 24h',
     liverecover: 'discount 10d > delivery 20d',
+    '2-day-click': 'click 2d',
+    '3-day-click': 'click 3d',
 }
 
 export const ATTRIBUTION_MODELS = Object.keys(
@@ -41,6 +47,10 @@ export const ATTRIBUTION_MODEL_HINTS: Record<
         'Orders attributed via 7-day click window with 24-hour delivery window (click priority).',
     liverecover:
         'Orders attributed via 10-day discount code window with 20-day delivery window (discount-code priority).',
+    '2-day-click':
+        'Orders attributed via 2-day click window (Gorgias custom click-only model).',
+    '3-day-click':
+        'Orders attributed via 3-day click window (Gorgias custom click-only model).',
 }
 
 export function buildProviderMetricPair(

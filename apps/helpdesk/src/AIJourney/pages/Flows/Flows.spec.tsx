@@ -92,7 +92,6 @@ const mockJourneyContextDefaults = {
     isLoadingIntegrations: false,
     journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
     storeConfiguration: undefined,
-    attributionModelComparison: null,
 }
 
 const emptyFlowsList: FlowsListResponse = {

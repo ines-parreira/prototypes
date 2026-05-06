@@ -681,7 +681,7 @@ describe('<Analytics />', () => {
         await waitFor(() => {
             const modal = screen.getByRole('dialog')
             const infoIcons = within(modal).getAllByLabelText('info')
-            expect(infoIcons).toHaveLength(16)
+            expect(infoIcons).toHaveLength(20)
         })
     })
 
@@ -1004,7 +1004,7 @@ describe('<Analytics />', () => {
         await waitFor(() => {
             const modal = screen.getByRole('dialog')
             const infoIcons = within(modal).getAllByLabelText('info')
-            expect(infoIcons).toHaveLength(9)
+            expect(infoIcons).toHaveLength(13)
         })
     })
 
@@ -1254,6 +1254,18 @@ describe('<Analytics />', () => {
                 expect(
                     within(modal).getByText('Orders (click 5d > delivery 12h)'),
                 ).toBeInTheDocument()
+                expect(
+                    within(modal).getByText('Total sales (click 2d)'),
+                ).toBeInTheDocument()
+                expect(
+                    within(modal).getByText('Orders (click 2d)'),
+                ).toBeInTheDocument()
+                expect(
+                    within(modal).getByText('Total sales (click 3d)'),
+                ).toBeInTheDocument()
+                expect(
+                    within(modal).getByText('Orders (click 3d)'),
+                ).toBeInTheDocument()
             })
         })
 
@@ -1323,7 +1335,7 @@ describe('<Analytics />', () => {
             expect(screen.getByText('42')).toBeInTheDocument()
         })
 
-        it('should call all four provider hooks unconditionally with their correct provider strings', () => {
+        it('should call all six provider hooks unconditionally with their correct provider strings', () => {
             render(
                 <Provider store={mockStore}>
                     <JourneyProvider>
@@ -1337,6 +1349,8 @@ describe('<Analytics />', () => {
                 'attentive',
                 'postscript',
                 'liverecover',
+                '2-day-click',
+                '3-day-click',
             ]
 
             for (const provider of expectedProviders) {
