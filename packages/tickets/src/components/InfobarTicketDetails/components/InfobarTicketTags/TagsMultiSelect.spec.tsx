@@ -1,5 +1,5 @@
 import { shortcutManager } from '@repo/utils'
-import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { cleanup, fireEvent, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
 
@@ -84,7 +84,7 @@ afterEach(async () => {
         await vi.runOnlyPendingTimersAsync()
         vi.useRealTimers()
     }
-    await waitForTriggerReady()
+    cleanup()
     server.resetHandlers(...localHandlers)
 })
 

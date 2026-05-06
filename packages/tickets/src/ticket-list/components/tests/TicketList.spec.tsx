@@ -525,9 +525,14 @@ describe('TicketList', () => {
             />,
         )
 
-        await waitFor(() => {
-            expect(screen.getAllByText('VA')).toHaveLength(2)
-        })
+        await screen.findByText('First Ticket')
+
+        await waitFor(
+            () => {
+                expect(screen.getAllByText('VA')).toHaveLength(2)
+            },
+            { timeout: 3000 },
+        )
     })
 
     it('fetches the next page when the end of the list is reached', async () => {

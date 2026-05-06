@@ -136,12 +136,17 @@ const openTranslationMenu = async (user: ReturnType<typeof render>['user']) => {
         await clickElement(user, translateButton)
     }
 
-    try {
-        await screen.findByRole('menuitem', { name: /translation settings/i })
-    } catch {
-        await clickElement(user, translateButton)
-        await screen.findByRole('menuitem', { name: /translation settings/i })
-    }
+    await waitFor(
+        () => {
+            expect(translateButton).toHaveAttribute('aria-expanded', 'true')
+        },
+        { timeout: 3000 },
+    )
+    await screen.findByRole(
+        'menuitem',
+        { name: /translation settings/i },
+        { timeout: 3000 },
+    )
 }
 
 const waitForTranslationMenuToClose = async () => {

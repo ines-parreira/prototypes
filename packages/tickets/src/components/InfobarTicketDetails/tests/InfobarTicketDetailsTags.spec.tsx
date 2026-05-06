@@ -130,24 +130,38 @@ describe('TicketInfobarTicketDetailsTags', () => {
         await waitFor(
             () => {
                 expect(getAddButton()).toHaveAttribute('aria-expanded', 'true')
-                expect(screen.getByRole('searchbox')).toBeInTheDocument()
+                expect(getOpenTagsPopupElement('searchbox')).toBeVisible()
             },
             { timeout: 2000 },
         )
     }
 
+    const getOpenTagsPopupElement = (role: 'listbox' | 'searchbox') => {
+        return screen
+            .getAllByRole(role, { hidden: true })
+            .find(
+                (element) =>
+                    element.closest('template') === null &&
+                    element.closest(
+                        '[data-testid="hidden-select-container"]',
+                    ) === null,
+            )!
+    }
+
     const openTagMenu = async (user: ReturnType<typeof render>['user']) => {
         if (getAddButton().getAttribute('aria-expanded') === 'true') {
-            return
+            return {
+                listbox: getOpenTagsPopupElement('listbox'),
+                searchbox: getOpenTagsPopupElement('searchbox'),
+            }
         }
 
         await user.click(getAddButton())
+        await waitUntilTagMenuIsOpen()
 
-        try {
-            await waitUntilTagMenuIsOpen()
-        } catch {
-            await user.click(getAddButton())
-            await waitUntilTagMenuIsOpen()
+        return {
+            listbox: getOpenTagsPopupElement('listbox'),
+            searchbox: getOpenTagsPopupElement('searchbox'),
         }
     }
 
@@ -492,13 +506,7 @@ describe('TicketInfobarTicketDetailsTags', () => {
                 ).toBeGreaterThan(0)
             })
 
-            await openTagMenu(user)
-
-            const searchInput = await screen.findByRole(
-                'searchbox',
-                {},
-                { timeout: 3000 },
-            )
+            const { searchbox: searchInput } = await openTagMenu(user)
             await user.type(searchInput, 'NewTag')
 
             await waitFor(() => {
@@ -751,9 +759,7 @@ describe('TicketInfobarTicketDetailsTags', () => {
                 expect(getAddButton()).toBeInTheDocument()
             })
 
-            await openTagMenu(user)
-
-            const searchInput = await screen.findByRole('searchbox')
+            const { searchbox: searchInput } = await openTagMenu(user)
             await user.type(searchInput, 'Test')
 
             await waitFor(() => {
@@ -772,13 +778,9 @@ describe('TicketInfobarTicketDetailsTags', () => {
                 expect(getAddButton()).toBeInTheDocument()
             })
 
-            await openTagMenu(user)
+            const { searchbox: searchInput } = await openTagMenu(user)
 
-            await waitFor(() => {
-                expect(screen.getByRole('searchbox')).toBeInTheDocument()
-            })
-
-            const searchInput = screen.getByRole('searchbox')
+            expect(searchInput).toBeInTheDocument()
             await user.type(searchInput, 'Doc')
 
             expect(searchInput).toHaveValue('Doc')

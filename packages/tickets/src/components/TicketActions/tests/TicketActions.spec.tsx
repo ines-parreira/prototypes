@@ -147,13 +147,32 @@ describe('TicketActions', () => {
         subject: 'Test Ticket Subject',
     })
 
-    async function openMenu(user: ReturnType<typeof render>['user']) {
+    async function openMenu(
+        user: ReturnType<typeof render>['user'],
+        { readyItemName = /merge ticket/i }: { readyItemName?: RegExp } = {},
+    ) {
         const button = screen.getByRole('button', {
             name: /dots-meatballs-horizontal/i,
         })
-        await act(async () => {
-            await user.click(button)
-        })
+
+        if (button.getAttribute('aria-expanded') !== 'true') {
+            await act(async () => {
+                await user.click(button)
+            })
+        }
+
+        await waitFor(
+            () => {
+                expect(button).toHaveAttribute('aria-expanded', 'true')
+            },
+            { timeout: 3000 },
+        )
+        await screen.findByRole(
+            'menuitem',
+            { name: readyItemName },
+            { timeout: 3000 },
+        )
+
         return button
     }
 

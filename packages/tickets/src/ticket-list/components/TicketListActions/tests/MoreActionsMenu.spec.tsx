@@ -205,21 +205,26 @@ async function openMenu(
         await user.click(trigger)
     }
 
-    const findReadyMenu = async () => {
-        const menu = (await screen.findAllByRole('menu')).at(-1)!
-        await within(menu).findByRole('menuitem', { name: readyItemName })
-        return menu
-    }
+    await waitFor(
+        () => {
+            expect(trigger).toHaveAttribute('aria-expanded', 'true')
+        },
+        { timeout: 3000 },
+    )
 
-    let menu: HTMLElement
-    try {
-        menu = await findReadyMenu()
-    } catch {
-        await user.click(trigger)
-        menu = await findReadyMenu()
-    }
+    return getLatestMenuWithItem(readyItemName)
+}
 
-    return menu
+async function getLatestMenuWithItem(readyItemName: RegExp) {
+    return await waitFor(
+        async () => {
+            const menus = await screen.findAllByRole('menu')
+            const menu = menus.at(-1)!
+            await within(menu).findByRole('menuitem', { name: readyItemName })
+            return menu
+        },
+        { timeout: 3000 },
+    )
 }
 
 async function openAddTagSubMenu(user: ReturnType<typeof render>['user']) {
@@ -228,14 +233,7 @@ async function openAddTagSubMenu(user: ReturnType<typeof render>['user']) {
         await within(menu).findByRole('menuitem', { name: /add tag/i }),
     )
 
-    await waitFor(() => {
-        expect(screen.getAllByRole('menu').length).toBeGreaterThan(1)
-    })
-
-    const subMenu = screen.getAllByRole('menu').at(-1)!
-    await within(subMenu).findAllByRole('menuitem')
-
-    return subMenu
+    return getLatestMenuWithItem(/vip|create tag/i)
 }
 
 async function openAssignTeamSubMenu(
@@ -249,14 +247,7 @@ async function openAssignTeamSubMenu(
         await within(menu).findByRole('menuitem', { name: /assign to team/i }),
     )
 
-    await waitFor(() => {
-        expect(screen.getAllByRole('menu').length).toBeGreaterThan(1)
-    })
-
-    const subMenu = screen.getAllByRole('menu').at(-1)!
-    await within(subMenu).findByRole('menuitem', { name: readyTeamName })
-
-    return subMenu
+    return getLatestMenuWithItem(readyTeamName)
 }
 
 describe('MoreActionsMenu', () => {
