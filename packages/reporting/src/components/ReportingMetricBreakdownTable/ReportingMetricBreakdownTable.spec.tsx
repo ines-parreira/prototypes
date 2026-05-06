@@ -46,6 +46,7 @@ beforeEach(() => {
         onSaveVisibleColumns: mockOnSaveVisibleColumns,
         defaultVisibleColumns: undefined,
         isLoaded: true,
+        tabId: 'overview',
     })
     mockOnSaveVisibleColumns.mockClear()
 })
@@ -239,6 +240,7 @@ describe('ReportingMetricBreakdownTable', () => {
                 onSaveVisibleColumns: mockOnSaveVisibleColumns,
                 defaultVisibleColumns: ['value'],
                 isLoaded: true,
+                tabId: 'overview',
             })
 
             render(
@@ -265,6 +267,7 @@ describe('ReportingMetricBreakdownTable', () => {
                 onSaveVisibleColumns: mockOnSaveVisibleColumns,
                 defaultVisibleColumns: undefined,
                 isLoaded: false,
+                tabId: 'overview',
             })
 
             render(
@@ -299,6 +302,7 @@ describe('ReportingMetricBreakdownTable', () => {
                 onSaveVisibleColumns: mockOnSaveVisibleColumns,
                 defaultVisibleColumns: undefined,
                 isLoaded: false,
+                tabId: 'overview',
             })
 
             const { rerender } = render(
@@ -316,6 +320,7 @@ describe('ReportingMetricBreakdownTable', () => {
                 onSaveVisibleColumns: mockOnSaveVisibleColumns,
                 defaultVisibleColumns: ['value'],
                 isLoaded: true,
+                tabId: 'overview',
             })
 
             rerender(

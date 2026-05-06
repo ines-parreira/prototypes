@@ -13,6 +13,7 @@ vi.mock('../contexts/DashboardContext', () => ({
 const CHART_ID = 'performance_breakdown_table'
 
 const mockContext = {
+    tabId: 'overview',
     layoutConfig: {
         sections: [
             {
@@ -92,6 +93,26 @@ describe('useSaveTableColumnVisibility', () => {
             )
 
             expect(result.current.defaultVisibleColumns).toBeUndefined()
+        })
+    })
+
+    describe('tabId', () => {
+        it('returns the tabId from the dashboard context', () => {
+            const { result } = renderHook(() =>
+                useSaveTableColumnVisibility(CHART_ID),
+            )
+
+            expect(result.current.tabId).toBe('overview')
+        })
+
+        it('returns undefined when context is null', () => {
+            vi.mocked(useDashboardContext).mockReturnValue(null)
+
+            const { result } = renderHook(() =>
+                useSaveTableColumnVisibility(CHART_ID),
+            )
+
+            expect(result.current.tabId).toBeUndefined()
         })
     })
 

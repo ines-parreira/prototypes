@@ -6,6 +6,7 @@ export function useSaveTableColumnVisibility(chartId: string): {
     onSaveVisibleColumns: (visibleColumns: string[]) => void
     defaultVisibleColumns: string[] | undefined
     isLoaded: boolean | undefined
+    tabId: string | undefined
 } {
     const context = useDashboardContext()
 
@@ -24,5 +25,6 @@ export function useSaveTableColumnVisibility(chartId: string): {
         onSaveVisibleColumns,
         defaultVisibleColumns: savedItem?.visibleColumns ?? undefined,
         isLoaded: context?.isLoaded,
+        tabId: context?.tabId,
     }
 }

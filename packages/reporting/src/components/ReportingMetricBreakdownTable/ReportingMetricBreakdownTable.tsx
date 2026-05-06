@@ -52,7 +52,7 @@ export function ReportingMetricBreakdownTable<TData>({
         [nameColumns],
     )
 
-    const { onSaveVisibleColumns, defaultVisibleColumns, isLoaded } =
+    const { onSaveVisibleColumns, defaultVisibleColumns, isLoaded, tabId } =
         useSaveTableColumnVisibility(chartId ?? '')
 
     const [savedColumns, setSavedColumns] = useState<string[]>(() => {
@@ -114,10 +114,16 @@ export function ReportingMetricBreakdownTable<TData>({
                 columns={columns}
                 withBorder
                 isLoading={!isLoaded || (isAnyLoading && data.length === 0)}
-                sorting={{ enable: true }}
+                persistence={{
+                    id: `reporting-${tabId}-${chartId}`,
+                    url: false,
+                    localStorage: true,
+                }}
+                sorting={{ enable: true, persist: true }}
                 columnEditing={{
                     enable: true,
                     defaultVisibleColumns: savedColumns,
+                    persist: false,
                 }}
                 pagination={{
                     enable: data.length > 10,
@@ -125,6 +131,7 @@ export function ReportingMetricBreakdownTable<TData>({
                         pageSize: 10,
                         pageIndex: 0,
                     },
+                    persist: false,
                 }}
                 renderEmptyState={() => (
                     <NoDataPlaceholder height={100} marginBottom={0} />
