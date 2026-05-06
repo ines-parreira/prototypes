@@ -12,6 +12,7 @@ import {
     Separator,
     Text,
 } from '@gorgias/axiom'
+import type { InvoiceCadence } from '@gorgias/helpdesk-types'
 
 import type { BillingState } from 'models/billing/types'
 import type {
@@ -27,6 +28,7 @@ type InternalSummaryProps = {
     resolvedPlans: ResolvedPlan[]
     priceSummary: PriceSummary
     hasChanges: boolean
+    invoiceCadence: InvoiceCadence
     onPreviewChanges: () => void
 }
 
@@ -35,10 +37,10 @@ export function InternalSummary({
     resolvedPlans,
     priceSummary,
     hasChanges,
+    invoiceCadence,
     onPreviewChanges,
 }: InternalSummaryProps) {
     const { credit_card } = billingState.customer
-    const invoiceCadence = billingState.current_plans.helpdesk.invoice_cadence
     const currency = billingState.current_plans.helpdesk.currency ?? 'usd'
 
     const {

@@ -4,11 +4,13 @@ import { BILLING_INTERNAL_PATH } from '@repo/billing'
 import { useHistory } from 'react-router-dom'
 
 import { Box, Button, Text } from '@gorgias/axiom'
+import { InvoiceCadence } from '@gorgias/helpdesk-types'
 
 import {
     useBillingState,
     useInternalProductCatalogPlans,
 } from 'models/billing/queries'
+import { Cadence } from 'models/billing/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import { InternalConfirmModal } from 'pages/settings/new_billing/components/BillingInternalViewUI/InternalManagePlanView/InternalConfirmModal'
 import { InternalSelectPlans } from 'pages/settings/new_billing/components/BillingInternalViewUI/InternalManagePlanView/InternalSelectPlans/InternalSelectPlans'
@@ -34,11 +36,18 @@ export function InternalManagePlanView() {
         resolvedPlans,
         hasChanges,
         priceSummary,
+        contractCadence,
+        invoiceCadence,
+        filteredCatalogPlans,
         handlePlanSelect,
+        handleContractCadenceChange,
+        handleInvoiceCadenceChange,
     } = useInternalPlanEditor(
         billingState?.current_plans,
         catalogData?.plans,
         billingState?.subscription.discounts,
+        billingState?.subscription.cadence ?? Cadence.Month,
+        billingState?.subscription.invoice_cadence ?? InvoiceCadence.Month,
     )
 
     const { apply, isSubmitting } = useApplyInternalPlanChanges(
@@ -69,16 +78,21 @@ export function InternalManagePlanView() {
             <Box gap="lg">
                 <InternalSelectPlans
                     currentPlans={billingState.current_plans}
-                    catalogPlans={catalogData.plans}
+                    catalogPlans={filteredCatalogPlans}
                     targetPlans={targetPlans}
                     resolvedPlans={resolvedPlans}
+                    contractCadence={contractCadence}
+                    invoiceCadence={invoiceCadence}
                     onPlanSelect={handlePlanSelect}
+                    onContractCadenceChange={handleContractCadenceChange}
+                    onInvoiceCadenceChange={handleInvoiceCadenceChange}
                 />
                 <InternalSummary
                     billingState={billingState}
                     resolvedPlans={resolvedPlans}
                     priceSummary={priceSummary}
                     hasChanges={hasChanges}
+                    invoiceCadence={invoiceCadence}
                     onPreviewChanges={() => setIsConfirmOpen(true)}
                 />
             </Box>
@@ -89,6 +103,7 @@ export function InternalManagePlanView() {
                 resolvedPlans={resolvedPlans}
                 priceSummary={priceSummary}
                 billingState={billingState}
+                invoiceCadence={invoiceCadence}
                 onApply={apply}
                 isSubmitting={isSubmitting}
             />

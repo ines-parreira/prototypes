@@ -1,5 +1,6 @@
 import { Cadence } from '../types'
 import type { Plan } from '../types'
+import { getCadenceName } from './getCadenceName'
 
 export type Props<T extends Plan> = {
     availablePlans: T[]
@@ -27,18 +28,4 @@ export const getCorrespondingPlanAtCadence = <T extends Plan>({
     )
 
     return plan
-}
-
-function getCadenceName(cadence: Cadence): string {
-    switch (cadence) {
-        case Cadence.Month:
-            return 'Monthly'
-        case Cadence.Quarter:
-            return 'Quarterly'
-        case Cadence.Year:
-            return 'Yearly'
-        default:
-            const __: never = cadence
-            throw new Error(`Unsupported cadence: ${__}`)
-    }
 }

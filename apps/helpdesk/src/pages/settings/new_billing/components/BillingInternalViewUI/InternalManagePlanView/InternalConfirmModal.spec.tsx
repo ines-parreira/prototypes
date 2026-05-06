@@ -5,6 +5,8 @@ import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
+import { InvoiceCadence } from '@gorgias/helpdesk-types'
+
 import {
     basicMonthlyHelpdeskPlan,
     proMonthlyHelpdeskPlan,
@@ -89,6 +91,7 @@ function renderComponent(
         resolvedPlans,
         priceSummary: derivePriceSummary(resolvedPlans, undefined),
         billingState: payingWithCreditCard,
+        invoiceCadence: InvoiceCadence.Month,
         onApply: jest.fn(),
         isSubmitting: false,
         ...overrides,

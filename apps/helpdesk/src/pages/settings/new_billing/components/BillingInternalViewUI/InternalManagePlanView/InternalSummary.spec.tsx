@@ -6,6 +6,7 @@ import { screen } from '@testing-library/react'
 import {
     DiscountApplicability,
     DiscountObjectType,
+    InvoiceCadence,
 } from '@gorgias/helpdesk-types'
 import type { DiscountType, DiscountVO } from '@gorgias/helpdesk-types'
 
@@ -40,6 +41,7 @@ function renderComponent(
     hasChanges = false,
     billingState: BillingState = payingWithCreditCard,
     discounts?: DiscountVO[],
+    invoiceCadence: InvoiceCadence = InvoiceCadence.Month,
 ) {
     return render(
         <InternalSummary
@@ -47,6 +49,7 @@ function renderComponent(
             resolvedPlans={resolvedPlans}
             priceSummary={derivePriceSummary(resolvedPlans, discounts)}
             hasChanges={hasChanges}
+            invoiceCadence={invoiceCadence}
             onPreviewChanges={jest.fn()}
         />,
     )
@@ -227,6 +230,27 @@ describe('InternalSummary', () => {
         expect(screen.getByText('Change Payment Method')).toBeInTheDocument()
     })
 
+    it('reflects the passed invoiceCadence in the total row', () => {
+        const plans: ResolvedPlan[] = [
+            makeResolved({
+                productType: ProductType.Helpdesk,
+                plan: basicMonthlyHelpdeskPlan,
+                currentPlan: basicMonthlyHelpdeskPlan,
+            }),
+        ]
+        renderComponent(
+            plans,
+            false,
+            payingWithCreditCard,
+            undefined,
+            InvoiceCadence.Quarter,
+        )
+
+        const totalRow = screen.getByText('Total').closest('div')!
+        expect(totalRow).toHaveTextContent('/quarter')
+        expect(totalRow).not.toHaveTextContent('/month')
+    })
+
     describe('with a yearly-invoiced-monthly plan (cadence != invoice_cadence)', () => {
         const yearlyInvoicedBillingState = {
             ...payingWithCreditCard,
@@ -244,7 +268,13 @@ describe('InternalSummary', () => {
                     currentPlan: basicYearlyInvoicedMonthlyHelpdeskPlan,
                 }),
             ]
-            renderComponent(plans, false, yearlyInvoicedBillingState)
+            renderComponent(
+                plans,
+                false,
+                yearlyInvoicedBillingState,
+                undefined,
+                InvoiceCadence.Month,
+            )
 
             const totalRow = screen.getByText('Total').closest('div')!
             expect(totalRow).toHaveTextContent('$50/month')
@@ -259,7 +289,13 @@ describe('InternalSummary', () => {
                     currentPlan: basicYearlyInvoicedMonthlyHelpdeskPlan,
                 }),
             ]
-            renderComponent(plans, false, yearlyInvoicedBillingState)
+            renderComponent(
+                plans,
+                false,
+                yearlyInvoicedBillingState,
+                undefined,
+                InvoiceCadence.Month,
+            )
 
             expect(screen.getAllByText('$50/month')).toHaveLength(2)
         })

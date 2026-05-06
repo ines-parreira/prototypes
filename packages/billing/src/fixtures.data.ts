@@ -175,6 +175,50 @@ export const proMonthlyHelpdeskPlan: HelpdeskPlan = {
     tier: HelpdeskPlanTier.PRO,
 }
 
+export const basicYearlyHelpdeskPlan: HelpdeskPlan = {
+    ...basicMonthlyHelpdeskPlan,
+    cadence: Cadence.Year,
+    invoice_cadence: InvoiceCadence.Year,
+    plan_id: 'basic-yearly-usd-4',
+}
+
+export const basicYearlyInvoicedMonthlyHelpdeskPlanGen4: HelpdeskPlan = {
+    ...basicMonthlyHelpdeskPlan,
+    cadence: Cadence.Year,
+    invoice_cadence: InvoiceCadence.Month,
+    plan_id: 'basic-yearly-invoiced_monthly-usd-4',
+}
+
+export const basicYearlyInvoicedMonthlyHelpdeskPlanGen5: HelpdeskPlan = {
+    ...basicMonthlyHelpdeskPlan,
+    cadence: Cadence.Year,
+    invoice_cadence: InvoiceCadence.Month,
+    plan_id: 'basic-yearly-invoiced_monthly-usd-5',
+}
+
+export const basicYearlyInvoicedMonthlyHelpdeskPlanGen5Variant1: HelpdeskPlan =
+    {
+        ...basicMonthlyHelpdeskPlan,
+        cadence: Cadence.Year,
+        invoice_cadence: InvoiceCadence.Month,
+        plan_id: 'basic-yearly-invoiced_monthly-usd-5-1',
+    }
+
+export const basicYearlyInvoicedMonthlyHelpdeskPlanGen5Variant5: HelpdeskPlan =
+    {
+        ...basicMonthlyHelpdeskPlan,
+        cadence: Cadence.Year,
+        invoice_cadence: InvoiceCadence.Month,
+        plan_id: 'basic-yearly-invoiced_monthly-usd-5-5',
+    }
+
+export const proYearlyInvoicedMonthlyHelpdeskPlanGen5Variant1: HelpdeskPlan = {
+    ...proMonthlyHelpdeskPlan,
+    cadence: Cadence.Year,
+    invoice_cadence: InvoiceCadence.Month,
+    plan_id: 'pro-yearly-invoiced_monthly-usd-5-1',
+}
+
 export const automate02MonthlyMeteredPlan: AutomatePlan = {
     name: 'Automation 02 monthly usd-5',
     amount: 180_00,

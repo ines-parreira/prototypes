@@ -12,6 +12,7 @@ import {
     Tooltip,
     TooltipContent,
 } from '@gorgias/axiom'
+import type { InvoiceCadence } from '@gorgias/helpdesk-types'
 
 import { isGorgiasApiError } from 'models/api/types'
 import type { BillingState } from 'models/billing/types'
@@ -29,6 +30,7 @@ type InternalConfirmModalProps = {
     resolvedPlans: ResolvedPlan[]
     priceSummary: PriceSummary
     billingState: BillingState
+    invoiceCadence: InvoiceCadence
     onApply: (generateInvoice: boolean) => void
     isSubmitting: boolean
 }
@@ -39,6 +41,7 @@ export function InternalConfirmModal({
     resolvedPlans,
     priceSummary,
     billingState,
+    invoiceCadence,
     onApply,
     isSubmitting,
 }: InternalConfirmModalProps) {
@@ -94,6 +97,7 @@ export function InternalConfirmModal({
                     billingState={billingState}
                     resolvedPlans={resolvedPlans}
                     priceSummary={priceSummary}
+                    invoiceCadence={invoiceCadence}
                     balanceDue={estimate?.balance_due}
                     isEstimateLoading={isEstimateLoading || isEstimateFetching}
                     estimateErrorMessage={estimateErrorMessage}

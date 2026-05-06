@@ -2,7 +2,16 @@ import { Fragment } from 'react'
 
 import { PRICING_DETAILS_URL } from '@repo/billing'
 
-import { Box, Card, Heading, Link, Separator } from '@gorgias/axiom'
+import {
+    Box,
+    Button,
+    Card,
+    Heading,
+    Link,
+    Separator,
+    Text,
+} from '@gorgias/axiom'
+import { InvoiceCadence } from '@gorgias/helpdesk-types'
 
 import type {
     CurrentPlans,
@@ -10,16 +19,25 @@ import type {
     PlanId,
     ProductType,
 } from 'models/billing/types'
-import { PRODUCT_TO_PLAN_KEY } from 'models/billing/types'
+import { Cadence, PRODUCT_TO_PLAN_KEY } from 'models/billing/types'
+import { getCadenceName, getInvoiceCadenceName } from 'models/billing/utils'
 import { ProductRow } from 'pages/settings/new_billing/components/BillingInternalViewUI/InternalManagePlanView/InternalSelectPlans/ProductRow'
 import type { ResolvedPlan } from 'pages/settings/new_billing/components/BillingInternalViewUI/InternalManagePlanView/useInternalPlanEditor'
 
-type InternalSelectPlansProps = {
+const CONTRACT_CADENCES = [Cadence.Month, Cadence.Year] as const
+
+const INVOICE_CADENCES = Object.values(InvoiceCadence)
+
+export type InternalSelectPlansProps = {
     currentPlans: CurrentPlans
     catalogPlans: InternalProductCatalogPlans | undefined
     targetPlans: Partial<Record<ProductType, PlanId>>
     resolvedPlans: ResolvedPlan[]
+    contractCadence: Cadence
+    invoiceCadence: InvoiceCadence
     onPlanSelect: (productType: ProductType, planId: PlanId) => void
+    onContractCadenceChange: (cadence: Cadence) => void
+    onInvoiceCadenceChange: (invoiceCadence: InvoiceCadence) => void
 }
 
 export function InternalSelectPlans({
@@ -27,7 +45,11 @@ export function InternalSelectPlans({
     catalogPlans,
     targetPlans,
     resolvedPlans,
+    contractCadence,
+    invoiceCadence,
     onPlanSelect,
+    onContractCadenceChange,
+    onInvoiceCadenceChange,
 }: InternalSelectPlansProps) {
     return (
         <Card
@@ -38,6 +60,66 @@ export function InternalSelectPlans({
             flexBasis={0}
             padding={0}
         >
+            <Box flexDirection="column" gap="sm" padding="md" paddingBottom={0}>
+                <Heading size="xl">Billing Frequency</Heading>
+                <Box flexDirection="column" gap="xs">
+                    <Text variant="bold" size="sm">
+                        Contract cadence
+                    </Text>
+                    <Box
+                        role="radiogroup"
+                        aria-label="Contract cadence"
+                        gap="xs"
+                    >
+                        {CONTRACT_CADENCES.map((cadence) => (
+                            <Button
+                                key={cadence}
+                                role="radio"
+                                aria-checked={contractCadence === cadence}
+                                variant={
+                                    contractCadence === cadence
+                                        ? 'secondary'
+                                        : 'tertiary'
+                                }
+                                size="sm"
+                                onClick={() => onContractCadenceChange(cadence)}
+                            >
+                                {getCadenceName(cadence)}
+                            </Button>
+                        ))}
+                    </Box>
+                </Box>
+                {contractCadence === Cadence.Year && (
+                    <Box flexDirection="column" gap="xs">
+                        <Text variant="bold" size="sm">
+                            Invoice cadence
+                        </Text>
+                        <Box
+                            role="radiogroup"
+                            aria-label="Invoice cadence"
+                            gap="xs"
+                        >
+                            {INVOICE_CADENCES.map((ic) => (
+                                <Button
+                                    key={ic}
+                                    role="radio"
+                                    aria-checked={invoiceCadence === ic}
+                                    variant={
+                                        invoiceCadence === ic
+                                            ? 'secondary'
+                                            : 'tertiary'
+                                    }
+                                    size="sm"
+                                    onClick={() => onInvoiceCadenceChange(ic)}
+                                >
+                                    {getInvoiceCadenceName(ic)}
+                                </Button>
+                            ))}
+                        </Box>
+                    </Box>
+                )}
+            </Box>
+            <Separator />
             <Box
                 padding="md"
                 paddingBottom={0}

@@ -1,9 +1,13 @@
 import { useCallback, useMemo, useState } from 'react'
 
-import { getTotalWithDiscounts } from '@repo/billing'
+import {
+    getCorrespondingPlanAtCadencePair,
+    getTotalWithDiscounts,
+} from '@repo/billing'
 import type { SelectedPlans } from '@repo/billing'
 
 import type { DiscountVO } from '@gorgias/helpdesk-types'
+import { InvoiceCadence } from '@gorgias/helpdesk-types'
 
 import type {
     CurrentPlans,
@@ -11,7 +15,7 @@ import type {
     Plan,
     PlanId,
 } from 'models/billing/types'
-import { PRODUCT_TO_PLAN_KEY, ProductType } from 'models/billing/types'
+import { Cadence, PRODUCT_TO_PLAN_KEY, ProductType } from 'models/billing/types'
 import { getPlanPrice, isTrial } from 'models/billing/utils'
 
 export type ResolvedPlanStatus =
@@ -83,10 +87,88 @@ function resolveDisplayPlan(
     return currentPlan
 }
 
+function filterCatalogByCadence(
+    catalogPlans: InternalProductCatalogPlans | undefined,
+    contractCadence: Cadence,
+    invoiceCadence: InvoiceCadence,
+): InternalProductCatalogPlans {
+    if (!catalogPlans) return {}
+    const effectiveInvoiceCadence =
+        contractCadence === Cadence.Month
+            ? InvoiceCadence.Month
+            : invoiceCadence
+    return Object.values(ProductType).reduce<InternalProductCatalogPlans>(
+        (acc, productType) => {
+            const plans = catalogPlans[productType]
+            if (!plans) return acc
+            acc[productType] = Object.values(plans)
+                .filter(
+                    (plan) =>
+                        plan.cadence === contractCadence &&
+                        plan.invoice_cadence === effectiveInvoiceCadence,
+                )
+                .reduce<Record<PlanId, Plan>>(
+                    (planAcc, plan) => ({ ...planAcc, [plan.plan_id]: plan }),
+                    {},
+                )
+            return acc
+        },
+        {},
+    )
+}
+
+function rematchTargetPlans(
+    currentPlans: CurrentPlans | undefined,
+    currentTargetPlans: Partial<Record<ProductType, PlanId>>,
+    productChanges: Partial<Record<ProductType, ProductDraftState>>,
+    catalogPlans: InternalProductCatalogPlans | undefined,
+    newContractCadence: Cadence,
+    newInvoiceCadence: InvoiceCadence,
+): Partial<Record<ProductType, PlanId>> {
+    const result: Partial<Record<ProductType, PlanId>> = {}
+
+    for (const productType of Object.values(ProductType)) {
+        const planKey = PRODUCT_TO_PLAN_KEY[productType]
+        const currentPlan = currentPlans?.[planKey]
+        const draftState = productChanges[productType]
+
+        if (draftState === 'removed') continue
+        if (currentPlan === null && draftState !== 'added') continue
+
+        const productCatalog = catalogPlans?.[productType]
+        if (!productCatalog || Object.keys(productCatalog).length === 0)
+            continue
+
+        const currentTargetPlanId = currentTargetPlans[productType]
+        const referencePlan =
+            (currentTargetPlanId
+                ? productCatalog[currentTargetPlanId]
+                : undefined) ??
+            currentPlan ??
+            undefined
+
+        const matched = getCorrespondingPlanAtCadencePair({
+            availablePlans: Object.values(productCatalog),
+            currentPlan: referencePlan,
+            subscriptionPlan: currentPlan ?? undefined,
+            contractCadence: newContractCadence,
+            invoiceCadence: newInvoiceCadence,
+        })
+
+        if (matched) {
+            result[productType] = matched.plan_id
+        }
+    }
+
+    return result
+}
+
 export function useInternalPlanEditor(
     currentPlans: CurrentPlans | undefined,
     catalogPlans: InternalProductCatalogPlans | undefined,
     discounts: DiscountVO[] | undefined,
+    initialContractCadence: Cadence,
+    initialInvoiceCadence: InvoiceCadence,
 ) {
     const [targetPlans, setTargetPlans] = useState<
         Partial<Record<ProductType, PlanId>>
@@ -94,11 +176,26 @@ export function useInternalPlanEditor(
     const [productChanges, setProductChanges] = useState<
         Partial<Record<ProductType, ProductDraftState>>
     >({})
+    const [contractCadence, setContractCadence] = useState<Cadence>(
+        initialContractCadence,
+    )
+    const [invoiceCadence, setInvoiceCadence] = useState<InvoiceCadence>(
+        initialInvoiceCadence,
+    )
+
+    const filteredCatalogPlans = useMemo(
+        () =>
+            filterCatalogByCadence(
+                catalogPlans,
+                contractCadence,
+                invoiceCadence,
+            ),
+        [catalogPlans, contractCadence, invoiceCadence],
+    )
 
     const handlePlanSelect = useCallback(
         (productType: ProductType, planId: PlanId) => {
             setTargetPlans((prev) => ({ ...prev, [productType]: planId }))
-            // If the user selects a plan for a product marked for removal, un-mark it
             setProductChanges((prev) => {
                 if (prev[productType] !== 'removed') return prev
                 const { [productType]: __, ...rest } = prev
@@ -135,7 +232,7 @@ export function useInternalPlanEditor(
                 ...prev,
                 [productType]: 'added',
             }))
-            const plans = catalogPlans?.[productType]
+            const plans = filteredCatalogPlans?.[productType]
             if (plans) {
                 const firstPlanId = Object.keys(plans)[0] as PlanId | undefined
                 if (firstPlanId) {
@@ -146,7 +243,48 @@ export function useInternalPlanEditor(
                 }
             }
         },
-        [catalogPlans],
+        [filteredCatalogPlans],
+    )
+
+    const handleContractCadenceChange = useCallback(
+        (newCadence: Cadence) => {
+            const newInvoiceCadence =
+                newCadence === Cadence.Month
+                    ? InvoiceCadence.Month
+                    : invoiceCadence
+            setContractCadence(newCadence)
+            if (newCadence === Cadence.Month) {
+                setInvoiceCadence(InvoiceCadence.Month)
+            }
+            setTargetPlans((prev) =>
+                rematchTargetPlans(
+                    currentPlans,
+                    prev,
+                    productChanges,
+                    catalogPlans,
+                    newCadence,
+                    newInvoiceCadence,
+                ),
+            )
+        },
+        [currentPlans, catalogPlans, productChanges, invoiceCadence],
+    )
+
+    const handleInvoiceCadenceChange = useCallback(
+        (newInvoiceCadence: InvoiceCadence) => {
+            setInvoiceCadence(newInvoiceCadence)
+            setTargetPlans((prev) =>
+                rematchTargetPlans(
+                    currentPlans,
+                    prev,
+                    productChanges,
+                    catalogPlans,
+                    contractCadence,
+                    newInvoiceCadence,
+                ),
+            )
+        },
+        [currentPlans, catalogPlans, productChanges, contractCadence],
     )
 
     const resolvedPlans: ResolvedPlan[] = useMemo(() => {
@@ -156,7 +294,7 @@ export function useInternalPlanEditor(
             const planKey = PRODUCT_TO_PLAN_KEY[productType]
             const currentPlan = currentPlans[planKey]
             const draftState = productChanges[productType]
-            const productCatalog = catalogPlans?.[productType]
+            const productCatalog = filteredCatalogPlans?.[productType]
 
             const plan = resolveDisplayPlan(
                 currentPlan,
@@ -184,7 +322,7 @@ export function useInternalPlanEditor(
         })
     }, [
         currentPlans,
-        catalogPlans,
+        filteredCatalogPlans,
         targetPlans,
         productChanges,
         handleToggleRemoval,
@@ -206,7 +344,12 @@ export function useInternalPlanEditor(
         resolvedPlans,
         hasChanges,
         priceSummary,
+        contractCadence,
+        invoiceCadence,
+        filteredCatalogPlans,
         handlePlanSelect,
+        handleContractCadenceChange,
+        handleInvoiceCadenceChange,
     }
 }
 

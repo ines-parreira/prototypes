@@ -2,6 +2,8 @@ import {
     ENTERPRISE_PLAN_ID,
     formatAmount,
     formatNumTickets,
+    getCadenceName,
+    getInvoiceCadenceName,
     PRODUCT_INFO,
 } from '@repo/billing'
 import _capitalize from 'lodash/capitalize'
@@ -22,6 +24,8 @@ import type {
     SMSOrVoicePlan,
 } from 'models/billing/types'
 import { Cadence, ProductType } from 'models/billing/types'
+
+export { getCadenceName, getInvoiceCadenceName } from '@repo/billing'
 
 export const PLAN_NAME_TO_BADGE_COLOR: Record<string, ColorType> = {
     Basic: 'classic',
@@ -230,43 +234,6 @@ export function getPlanPriceFormatted(plan: Plan | undefined | null): string {
  */
 export function getOverageUnitPriceFormatted(plan: Plan | undefined | null) {
     return formatAmount(plan?.extra_ticket_cost ?? 0)
-}
-
-/**
- * @description
- * Returns the name of a cadence in Title Case, e.g. Cadence.Month = Monthly
- *
- * @param cadence Cadence
- * @returns string
- */
-export function getCadenceName(cadence: Cadence): string {
-    switch (cadence) {
-        case Cadence.Month:
-            return 'Monthly'
-        case Cadence.Quarter:
-            return 'Quarterly'
-        case Cadence.Year:
-            return 'Yearly'
-        default:
-            const __: never = cadence
-            throw new Error('Invalid cadence value')
-    }
-}
-
-export function getInvoiceCadenceName(invoice_cadence: InvoiceCadence): string {
-    switch (invoice_cadence) {
-        case InvoiceCadence.Month:
-            return 'Monthly'
-        case InvoiceCadence.Quarter:
-            return 'Quarterly'
-        case InvoiceCadence.Biannual:
-            return 'Biannually'
-        case InvoiceCadence.Year:
-            return 'Yearly'
-        default:
-            const __: never = invoice_cadence
-            throw new Error('Invalid invoice cadence value')
-    }
 }
 
 /**

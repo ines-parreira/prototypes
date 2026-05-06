@@ -3,6 +3,7 @@ import { Fragment } from 'react'
 import { formatAmount } from '@repo/billing'
 
 import { Box, Separator, Text } from '@gorgias/axiom'
+import type { InvoiceCadence } from '@gorgias/helpdesk-types'
 
 import type { BillingState } from 'models/billing/types'
 import { BalanceDueRow } from 'pages/settings/new_billing/components/BalanceDueRow'
@@ -20,6 +21,7 @@ type ConfirmSummaryTableProps = {
     billingState: BillingState
     resolvedPlans: ResolvedPlan[]
     priceSummary: PriceSummary
+    invoiceCadence: InvoiceCadence
     balanceDue?: number | null
     isEstimateLoading?: boolean
     estimateErrorMessage?: string
@@ -30,12 +32,12 @@ export function ConfirmSummaryTable({
     billingState,
     resolvedPlans,
     priceSummary,
+    invoiceCadence,
     balanceDue,
     isEstimateLoading = false,
     estimateErrorMessage,
     onRetryEstimate,
 }: ConfirmSummaryTableProps) {
-    const invoiceCadence = billingState.current_plans.helpdesk.invoice_cadence
     const currency = billingState.current_plans.helpdesk.currency ?? 'usd'
 
     const {

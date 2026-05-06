@@ -6,6 +6,7 @@ import userEvent from '@testing-library/user-event'
 import {
     DiscountApplicability,
     DiscountObjectType,
+    InvoiceCadence,
 } from '@gorgias/helpdesk-types'
 import type { DiscountType, DiscountVO } from '@gorgias/helpdesk-types'
 
@@ -49,6 +50,7 @@ function renderComponent(
         billingState: payingWithCreditCard,
         resolvedPlans,
         priceSummary: derivePriceSummary(resolvedPlans, discounts),
+        invoiceCadence: InvoiceCadence.Month,
         ...overrides,
     }
 
@@ -95,6 +97,7 @@ describe('ConfirmSummaryTable balance due', () => {
                 billingState={payingWithCreditCard}
                 resolvedPlans={resolvedPlans}
                 priceSummary={derivePriceSummary(resolvedPlans, undefined)}
+                invoiceCadence={InvoiceCadence.Month}
                 balanceDue={25.5}
             />,
         )
@@ -155,6 +158,7 @@ describe('ConfirmSummaryTable with yearly-invoiced-monthly plan (cadence != invo
                     yearlyInvoicedResolvedPlans,
                     undefined,
                 )}
+                invoiceCadence={InvoiceCadence.Month}
             />,
         )
 
@@ -172,6 +176,7 @@ describe('ConfirmSummaryTable with yearly-invoiced-monthly plan (cadence != invo
                     yearlyInvoicedResolvedPlans,
                     undefined,
                 )}
+                invoiceCadence={InvoiceCadence.Month}
             />,
         )
 
