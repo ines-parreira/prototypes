@@ -18,7 +18,7 @@ describe('SkillsHeader', () => {
             screen.getByRole('heading', { name: 'Skills' }),
         ).toBeInTheDocument()
         expect(
-            screen.getByRole('button', { name: /Learning resources/i }),
+            screen.getByRole('link', { name: /How skills work/i }),
         ).toBeInTheDocument()
         expect(
             screen.getByRole('button', { name: /View intents/i }),
@@ -33,8 +33,6 @@ describe('SkillsHeader', () => {
         const onViewIntents = jest.fn()
         const onCreateSkillFromScratch = jest.fn()
         const onCreateSkillFromTemplate = jest.fn()
-        const mockWindowOpen = jest.fn()
-        window.open = mockWindowOpen
 
         render(
             <ThemeProvider>
@@ -44,15 +42,6 @@ describe('SkillsHeader', () => {
                     onCreateSkillFromTemplate={onCreateSkillFromTemplate}
                 />
             </ThemeProvider>,
-        )
-
-        await user.click(
-            screen.getByRole('button', { name: /Learning resources/i }),
-        )
-        expect(mockWindowOpen).toHaveBeenCalledWith(
-            'https://link.gorgias.com/bdb652',
-            '_blank',
-            'noopener,noreferrer',
         )
 
         await user.click(screen.getByRole('button', { name: /View intents/i }))
@@ -69,5 +58,39 @@ describe('SkillsHeader', () => {
             screen.getByRole('menuitem', { name: /From template/i }),
         )
         expect(onCreateSkillFromTemplate).toHaveBeenCalledTimes(1)
+    })
+
+    it('should open the "How skills work" side panel when the link is clicked', async () => {
+        const user = userEvent.setup()
+
+        render(
+            <ThemeProvider>
+                <SkillsHeader />
+            </ThemeProvider>,
+        )
+
+        await user.click(screen.getByRole('link', { name: /How skills work/i }))
+
+        expect(
+            await screen.findByRole('heading', { name: 'How skills work' }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: /What are skills\?/i }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', {
+                name: /How do skills, knowledge and guidance work together\?/i,
+            }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', {
+                name: /Do I need to set up everything manually\?/i,
+            }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', {
+                name: /How many skills do I need\?/i,
+            }),
+        ).toBeInTheDocument()
     })
 })

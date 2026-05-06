@@ -1,4 +1,8 @@
-import { Box, Button, Heading, Menu, MenuItem } from '@gorgias/axiom'
+import { useState } from 'react'
+
+import { Box, Button, Heading, Link, Menu, MenuItem } from '@gorgias/axiom'
+
+import { HowSkillsWorkSidePanel } from './HowSkillsWorkSidePanel'
 
 import css from './SkillsHeader.less'
 
@@ -8,16 +12,12 @@ export type SkillsHeaderProps = {
     onCreateSkillFromTemplate?: () => void
 }
 
-const LEARNING_RESOURCES_URL = 'https://link.gorgias.com/bdb652'
-
 export const SkillsHeader = ({
     onViewIntents,
     onCreateSkillFromScratch,
     onCreateSkillFromTemplate,
 }: SkillsHeaderProps) => {
-    const handleLearningResources = () => {
-        window.open(LEARNING_RESOURCES_URL, '_blank', 'noopener,noreferrer')
-    }
+    const [isHowSkillsWorkOpen, setIsHowSkillsWorkOpen] = useState(false)
 
     return (
         <Box
@@ -26,16 +26,20 @@ export const SkillsHeader = ({
             justifyContent="space-between"
             className={css.header}
         >
-            <Heading size="xl">Skills</Heading>
-            <Box flexDirection="row" alignItems="center" gap="xs">
-                <Button
-                    onClick={handleLearningResources}
-                    variant="tertiary"
-                    trailingSlot="external-link"
-                    aria-label="Learning resources"
+            <Box flexDirection="row" alignItems="center" gap="sm">
+                <Heading size="xl">Skills</Heading>
+                <Link
+                    size="sm"
+                    onClick={(event) => {
+                        event.preventDefault()
+                        setIsHowSkillsWorkOpen(true)
+                    }}
+                    href="#"
                 >
-                    Learning resources
-                </Button>
+                    How skills work
+                </Link>
+            </Box>
+            <Box flexDirection="row" alignItems="center" gap="xs">
                 <Button
                     onClick={onViewIntents}
                     aria-label="View intents"
@@ -65,6 +69,10 @@ export const SkillsHeader = ({
                     />
                 </Menu>
             </Box>
+            <HowSkillsWorkSidePanel
+                isOpen={isHowSkillsWorkOpen}
+                onOpenChange={setIsHowSkillsWorkOpen}
+            />
         </Box>
     )
 }
