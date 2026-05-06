@@ -74,6 +74,7 @@ import { AiAgentErrorBoundary } from 'pages/aiAgent/providers/AiAgentErrorBounda
 import AiAgentStoreConfigurationProvider from 'pages/aiAgent/providers/AiAgentStoreConfigurationProvider'
 import { AiAgentSkills } from 'pages/aiAgent/skills/components/AiAgentSkills/AiAgentSkills'
 import { SkillEditorPage } from 'pages/aiAgent/skills/components/SkillEditor/SkillEditorPage'
+import { SkillWizardPage } from 'pages/aiAgent/skills/components/SkillWizard/SkillWizardPage'
 import App from 'pages/App'
 import ActionsPlatformAppsView from 'pages/automate/actionsPlatform/ActionsPlatformAppsView'
 import ActionsPlatformCreateAppFormView from 'pages/automate/actionsPlatform/ActionsPlatformCreateAppFormView'
@@ -358,6 +359,8 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
 
     const isKnowledgeIntentManagementSystemEnabled = useSkillsAccess()
 
+    const isSkillWizardEnabled = useFlag(FeatureFlagKey.SkillWizard)
+
     const { value: __actionCentralizedLibraryMilestone } =
         useFlagWithLoading<ActionCentralizedLibraryMilestone>(
             FeatureFlagKey.ActionCentralizedLibrary,
@@ -632,6 +635,12 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                             team={SentryTeam.CONVAI_KNOWLEDGE}
                         >
                             <Switch>
+                                {isSkillWizardEnabled && (
+                                    <Route
+                                        path={`${path}/skills/wizard`}
+                                        component={SkillWizardPage}
+                                    />
+                                )}
                                 <Route
                                     path={`${path}/skills/new`}
                                     component={SkillEditorPage}

@@ -1,0 +1,35 @@
+:local {
+    .header {
+        position: relative;
+    }
+
+    .leftSlot {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .rightSlot {
+        flex-shrink: 0;
+    }
+
+    .savingIndicator {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-xxxxs);
+        margin-left: var(--spacing-xxs);
+        white-space: nowrap;
+    }
+
+    .progressIndicator {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 130px;
+        pointer-events: none;
+    }
+
+    .progressBar {
+        width: 100%;
+    }
+}

@@ -135,6 +135,9 @@ export const getAiAgentNavigationRoutes = (shopName: string) => {
         newSkill: `${basePath}/skills/new`,
         newSkillFromTemplate: (templateId: string) =>
             `${basePath}/skills/new?template=${templateId}`,
+        skillsWizard: `${basePath}/skills/wizard`,
+        skillsWizardStep: (step: number) =>
+            `${basePath}/skills/wizard?step=${step}`,
         products: `${basePath}/products`,
         productsDetail: (productId: number) =>
             `${basePath}/products/${productId}`,
