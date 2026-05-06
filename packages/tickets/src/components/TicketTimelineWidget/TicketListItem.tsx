@@ -27,7 +27,11 @@ export function TicketListItem({
     onSelect,
 }: TicketListItemProps) {
     return (
-        <TimelineCard className={className} onClick={onSelect}>
+        <TimelineCard
+            className={className}
+            onClick={onSelect}
+            href={`/app/ticket/${ticket.id}`}
+        >
             <TicketHeader
                 subject={ticket.subject}
                 time={formatTicketTime(ticket.created_datetime)}
