@@ -26,7 +26,6 @@ type Props = {
     }
 }
 
-// TODO [ChatSettingsScreensRevamp]: Delete this component once the feature flag is properly migrated
 const GorgiasChatIntegrationInstall = ({
     integration,
     actions: { deleteIntegration, updateOrCreateIntegration },

@@ -48,12 +48,10 @@ const mockUseShouldShowChatSettingsRevamp =
 
 const defaultRevampFlags = {
     isChatSettingsRevampEnabled: false,
-    isChatSettingsScreensRevampEnabled: false,
     isChatSettingsScreensRevampChatSettingsEnabled: false,
     isChatSettingsScreensRevampFlowsEnabled: false,
     isChatSettingsScreensRevampOrderManagementEnabled: false,
     shouldShowRevampWhenAiAgentEnabled: false,
-    shouldShowScreensRevampWhenAiAgentEnabled: false,
     shouldShowChatSettingsScreensRevamp: false,
     shouldShowFlowsScreensRevamp: false,
     shouldShowOrderManagementScreensRevamp: false,

@@ -361,9 +361,7 @@ describe('<GorgiasChatIntegration />', () => {
         })
 
         it('does not call showPreviewPanel when revamp is disabled', () => {
-            mockUseShouldShowChatSettingsRevamp.mockReturnValue({
-                shouldShowScreensRevampWhenAiAgentEnabled: false,
-            })
+            mockUseShouldShowChatSettingsRevamp.mockReturnValue({})
             mockUseParams.mockReturnValue({
                 integrationId: '1',
                 extra: Tab.Appearance,
