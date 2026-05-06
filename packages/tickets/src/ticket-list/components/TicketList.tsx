@@ -239,12 +239,16 @@ export function TicketList({
         [tickets],
     )
     const translationTicketIds = useMemo(() => {
-        if (visibleTicketIds.length > 0) {
+        if (debouncedVisibleTicketIds.length > 0) {
             return debouncedVisibleTicketIds
         }
 
+        if (visibleTicketIds.length > 0) {
+            return visibleTicketIds
+        }
+
         return loadedTicketIds.slice(0, PAGE_SIZE)
-    }, [debouncedVisibleTicketIds, loadedTicketIds, visibleTicketIds.length])
+    }, [debouncedVisibleTicketIds, loadedTicketIds, visibleTicketIds])
 
     const { translationMap } = useTicketsTranslatedProperties({
         ticket_ids: translationTicketIds,
