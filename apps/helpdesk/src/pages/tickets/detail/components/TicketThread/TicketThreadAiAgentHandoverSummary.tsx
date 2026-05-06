@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import {
     MessageBubble,
@@ -82,6 +82,12 @@ export function TicketThreadAiAgentHandoverSummary({ message }: Props) {
 
     const [isExpanded, setIsExpanded] = useState(true)
 
+    useEffect(() => {
+        if (!initialSummary && !isSummaryUpdatedAfterHandover) {
+            requestSummary()
+        }
+    }, [initialSummary, isSummaryUpdatedAfterHandover, requestSummary])
+
     const hasSummaryContentIgnoringStale = Boolean(
         summary?.content || isLoading || errorMessage,
     )
@@ -162,13 +168,35 @@ export function TicketThreadAiAgentHandoverSummary({ message }: Props) {
                                     below.
                                 </Text>
                             ) : (
-                                <Text
-                                    size="sm"
-                                    color="content-neutral-secondary"
-                                >
-                                    Sorry something went wrong, we were unable
-                                    to summarize the ticket.
-                                </Text>
+                                <Box flexDirection="column" gap="xxs">
+                                    <Box marginBottom="xxxs">
+                                        <Text
+                                            size="sm"
+                                            color="content-neutral-secondary"
+                                        >
+                                            Sorry something went wrong, we were
+                                            unable to summarize the ticket.
+                                        </Text>
+                                    </Box>
+                                    {isRetriable && (
+                                        <div>
+                                            <Button
+                                                variant="secondary"
+                                                size="sm"
+                                                intent="regular"
+                                                leadingSlot={
+                                                    <Icon
+                                                        name="arrows-reload-alt-1"
+                                                        size="sm"
+                                                    />
+                                                }
+                                                onClick={requestSummary}
+                                            >
+                                                Try again
+                                            </Button>
+                                        </div>
+                                    )}
+                                </Box>
                             )}
                         </Box>
                     )}

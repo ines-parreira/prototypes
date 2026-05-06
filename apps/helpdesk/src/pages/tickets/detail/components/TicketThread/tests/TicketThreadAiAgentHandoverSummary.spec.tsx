@@ -4,7 +4,10 @@ import { fromJS } from 'immutable'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
-import { mockGetCurrentUserHandler } from '@gorgias/helpdesk-mocks'
+import {
+    mockGenerateTicketSummaryHandler,
+    mockGetCurrentUserHandler,
+} from '@gorgias/helpdesk-mocks'
 import { setDefaultConfig } from '@gorgias/knowledge-service-client'
 import {
     mockFindAiReasoningAiReasoningHandler,
@@ -33,6 +36,7 @@ const ticketStoreState = {
 }
 
 const mockCurrentUser = mockGetCurrentUserHandler()
+const mockGenerateSummary = mockGenerateTicketSummaryHandler()
 
 const STUB_REASONING_FIELDS = {
     objectType: 'TICKET',
@@ -79,6 +83,7 @@ beforeEach(() => {
         mockCurrentUser.handler,
         emptyReasoningHandler.handler,
         emptyFeedbackHandler.handler,
+        mockGenerateSummary.handler,
     )
 })
 
@@ -93,11 +98,11 @@ function renderComponent(props = { message }) {
 }
 
 describe('TicketThreadAiAgentHandoverSummary', () => {
-    it('renders nothing when all data has loaded and there is no outcome, no summary, and no rating', async () => {
-        const { container } = renderComponent()
+    it('auto-triggers summary generation on mount when there is no existing summary', async () => {
+        renderComponent()
 
         await waitFor(() => {
-            expect(container).toBeEmptyDOMElement()
+            expect(screen.getByText('Handover Summary')).toBeInTheDocument()
         })
     })
 

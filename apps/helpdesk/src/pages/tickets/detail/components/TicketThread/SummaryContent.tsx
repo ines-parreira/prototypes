@@ -28,7 +28,7 @@ export function SummaryContent({
     if (errorMessage) {
         return (
             <Box flexDirection="column" gap="xxs">
-                <Box marginBottom="sm">
+                <Box marginBottom="xxxs">
                     <Text size="sm" color="content-neutral-secondary">
                         {errorMessage}
                     </Text>
