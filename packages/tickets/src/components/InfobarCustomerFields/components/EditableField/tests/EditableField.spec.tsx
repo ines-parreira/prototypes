@@ -415,6 +415,24 @@ describe('EditableField', () => {
     })
 
     describe('Tooltip', () => {
+        const tooltipWaitOptions = { timeout: 2000 }
+        const tooltipContentSelector = '[data-name="tooltip-content"]'
+
+        const getTooltipContents = () =>
+            document.querySelectorAll(tooltipContentSelector)
+
+        const getTooltipContent = () =>
+            document.querySelector(tooltipContentSelector)
+
+        const waitForTooltipContent = async (expectedText: string) => {
+            await waitFor(() => {
+                const tooltipContents = getTooltipContents()
+
+                expect(tooltipContents).toHaveLength(1)
+                expect(tooltipContents[0]).toHaveTextContent(expectedText)
+            }, tooltipWaitOptions)
+        }
+
         describe('TextField', () => {
             it('should not show tooltip when showTooltip is false', async () => {
                 const onValueChange = vi.fn()
@@ -437,7 +455,7 @@ describe('EditableField', () => {
             it('should show tooltip when showTooltip is true', async () => {
                 const onValueChange = vi.fn()
 
-                const { user, getByPlaceholderText, getByText } = render(
+                const { user, getByPlaceholderText } = render(
                     <EditableField
                         value="Test value"
                         onValueChange={onValueChange}
@@ -449,14 +467,7 @@ describe('EditableField', () => {
                 const input = getByPlaceholderText('+ Add')
                 await user.hover(input)
 
-                await waitFor(() => {
-                    expect(getByText('Test value')).toBeInTheDocument()
-                })
-
-                const tooltipTexts = document.querySelectorAll(
-                    '[data-name="tooltip-content"]',
-                )
-                expect(tooltipTexts.length).toBe(1)
+                await waitForTooltipContent('Test value')
             })
 
             it('should hide tooltip when field is focused', async () => {
@@ -474,9 +485,7 @@ describe('EditableField', () => {
                 const input = getByPlaceholderText('+ Add')
                 await user.hover(input)
 
-                await waitFor(() => {
-                    expect(queryByText('Test value')).toBeInTheDocument()
-                })
+                await waitForTooltipContent('Test value')
 
                 await user.click(input)
 
@@ -500,10 +509,7 @@ describe('EditableField', () => {
                 const input = getByPlaceholderText('+ Add')
                 await user.hover(input)
 
-                const tooltipTexts = document.querySelectorAll(
-                    '[data-name="tooltip-content"]',
-                )
-                expect(tooltipTexts.length).toBe(0)
+                expect(getTooltipContents()).toHaveLength(0)
             })
         })
 
@@ -629,7 +635,7 @@ describe('EditableField', () => {
             it('should show tooltip when showTooltip is true', async () => {
                 const onValueChange = vi.fn()
 
-                const { user, getByPlaceholderText, getByText } = render(
+                const { user, getByPlaceholderText } = render(
                     <EditableField
                         type="number"
                         value={42}
@@ -642,14 +648,7 @@ describe('EditableField', () => {
                 const input = getByPlaceholderText('+ Add number')
                 await user.hover(input)
 
-                await waitFor(() => {
-                    expect(getByText('42')).toBeInTheDocument()
-                })
-
-                const tooltipTexts = document.querySelectorAll(
-                    '[data-name="tooltip-content"]',
-                )
-                expect(tooltipTexts.length).toBe(1)
+                await waitForTooltipContent('42')
             })
 
             it('should hide tooltip when field is focused', async () => {
@@ -668,9 +667,7 @@ describe('EditableField', () => {
                 const input = getByPlaceholderText('+ Add number')
                 await user.hover(input)
 
-                await waitFor(() => {
-                    expect(queryByText('42')).toBeInTheDocument()
-                })
+                await waitForTooltipContent('42')
 
                 await user.click(input)
 
@@ -695,10 +692,7 @@ describe('EditableField', () => {
                 const input = getByPlaceholderText('+ Add number')
                 await user.hover(input)
 
-                const tooltipTexts = document.querySelectorAll(
-                    '[data-name="tooltip-content"]',
-                )
-                expect(tooltipTexts.length).toBe(0)
+                expect(getTooltipContents()).toHaveLength(0)
             })
         })
 
@@ -719,10 +713,7 @@ describe('EditableField', () => {
                 const textarea = getByPlaceholderText('+ Add note')
                 await user.hover(textarea)
 
-                const tooltipContent = document.querySelector(
-                    '[data-name="tooltip-content"]',
-                )
-                expect(tooltipContent).not.toBeInTheDocument()
+                expect(getTooltipContent()).not.toBeInTheDocument()
             })
 
             it('should show tooltip when showTooltip is true', async () => {
@@ -741,18 +732,7 @@ describe('EditableField', () => {
                 const textarea = getByPlaceholderText('+ Add note')
                 await user.hover(textarea)
 
-                await waitFor(() => {
-                    const tooltipContent = document.querySelector(
-                        '[data-name="tooltip-content"]',
-                    )
-                    expect(tooltipContent).toBeInTheDocument()
-                    expect(tooltipContent?.textContent).toContain('Test note')
-                })
-
-                const tooltipTexts = document.querySelectorAll(
-                    '[data-name="tooltip-content"]',
-                )
-                expect(tooltipTexts.length).toBe(1)
+                await waitForTooltipContent('Test note')
             })
 
             it('should hide tooltip when field is focused', async () => {
@@ -771,20 +751,12 @@ describe('EditableField', () => {
                 const textarea = getByPlaceholderText('+ Add note')
                 await user.hover(textarea)
 
-                await waitFor(() => {
-                    const tooltipContent = document.querySelector(
-                        '[data-name="tooltip-content"]',
-                    )
-                    expect(tooltipContent).toBeInTheDocument()
-                })
+                await waitForTooltipContent('Test note')
 
                 await user.click(textarea)
 
                 await waitFor(() => {
-                    const tooltipContent = document.querySelector(
-                        '[data-name="tooltip-content"]',
-                    )
-                    expect(tooltipContent).not.toBeInTheDocument()
+                    expect(getTooltipContent()).not.toBeInTheDocument()
                 })
             })
 
@@ -804,10 +776,7 @@ describe('EditableField', () => {
                 const textarea = getByPlaceholderText('+ Add note')
                 await user.hover(textarea)
 
-                const tooltipTexts = document.querySelectorAll(
-                    '[data-name="tooltip-content"]',
-                )
-                expect(tooltipTexts.length).toBe(0)
+                expect(getTooltipContents()).toHaveLength(0)
             })
         })
     })
