@@ -74,6 +74,7 @@ export const ticketFieldsCountPerFieldValue = ticketFieldsScope
         const query = {
             measures: ['ticketCount'] as const,
             dimensions: ['customFieldValue'] as const,
+            limit: 10_000,
         }
 
         if (ctx.sortDirection) {

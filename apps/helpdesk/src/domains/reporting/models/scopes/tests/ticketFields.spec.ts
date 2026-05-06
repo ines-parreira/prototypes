@@ -128,6 +128,7 @@ describe('ticketFieldsScope', () => {
             const expected = {
                 measures: ['ticketCount'],
                 dimensions: ['customFieldValue'],
+                limit: 10_000,
                 filters: [
                     {
                         member: 'periodStart',
@@ -164,6 +165,7 @@ describe('ticketFieldsScope', () => {
             const expected = {
                 measures: ['ticketCount'],
                 dimensions: ['customFieldValue'],
+                limit: 10_000,
                 filters: [
                     {
                         member: 'periodStart',
