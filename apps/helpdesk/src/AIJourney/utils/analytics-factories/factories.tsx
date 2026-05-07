@@ -448,9 +448,14 @@ export const aiJourneyRepliedMessagesQueryFactory = (
                 values: [integrationId],
             },
             {
-                member: AiSalesAgentConversationsDimension.Replied,
-                operator: ReportingFilterOperator.Equals,
+                member: AiSalesAgentConversationsDimension.ReplyCount,
+                operator: ReportingFilterOperator.Gte,
                 values: ['1'],
+            },
+            {
+                member: AiSalesAgentConversationsDimension.JourneyCompleteReason,
+                operator: ReportingFilterOperator.NotIn,
+                values: ['Eligibility::Shopper Opted Out'],
             },
             ...statsFiltersToReportingFilters(
                 aiSalesAgentConversationsDefaultFiltersMembers,

@@ -349,9 +349,14 @@ describe('aiJourneyDrillDownQueries', () => {
                         values: ['12345'],
                     },
                     {
-                        member: 'AiSalesAgentConversations.replied',
-                        operator: 'equals',
+                        member: 'AiSalesAgentConversations.replyCount',
+                        operator: 'gte',
                         values: ['1'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.journeyCompleteReason',
+                        operator: 'notIn',
+                        values: ['Eligibility::Shopper Opted Out'],
                     },
                     {
                         member: 'AiSalesAgentConversations.periodStart',
@@ -395,9 +400,14 @@ describe('aiJourneyDrillDownQueries', () => {
                         values: ['12345'],
                     },
                     {
-                        member: 'AiSalesAgentConversations.replied',
-                        operator: 'equals',
+                        member: 'AiSalesAgentConversations.replyCount',
+                        operator: 'gte',
                         values: ['1'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.journeyCompleteReason',
+                        operator: 'notIn',
+                        values: ['Eligibility::Shopper Opted Out'],
                     },
                     {
                         member: 'AiSalesAgentConversations.periodStart',
@@ -441,9 +451,14 @@ describe('aiJourneyDrillDownQueries', () => {
                         values: ['12345'],
                     },
                     {
-                        member: 'AiSalesAgentConversations.replied',
-                        operator: 'equals',
+                        member: 'AiSalesAgentConversations.replyCount',
+                        operator: 'gte',
                         values: ['1'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.journeyCompleteReason',
+                        operator: 'notIn',
+                        values: ['Eligibility::Shopper Opted Out'],
                     },
                     {
                         member: 'AiSalesAgentConversations.periodStart',
@@ -493,9 +508,14 @@ describe('aiJourneyDrillDownQueries', () => {
                         values: ['12345'],
                     },
                     {
-                        member: 'AiSalesAgentConversations.replied',
-                        operator: 'equals',
+                        member: 'AiSalesAgentConversations.replyCount',
+                        operator: 'gte',
                         values: ['1'],
+                    },
+                    {
+                        member: 'AiSalesAgentConversations.journeyCompleteReason',
+                        operator: 'notIn',
+                        values: ['Eligibility::Shopper Opted Out'],
                     },
                     {
                         member: 'AiSalesAgentConversations.periodStart',
