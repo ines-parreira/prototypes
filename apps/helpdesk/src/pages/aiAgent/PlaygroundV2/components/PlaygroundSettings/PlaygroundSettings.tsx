@@ -1,6 +1,13 @@
 import React, { useCallback, useMemo } from 'react'
 
-import { Button, ListItem, SelectField, ToggleField } from '@gorgias/axiom'
+import {
+    Button,
+    ListItem,
+    SelectField,
+    ToggleField,
+    Tooltip,
+    TooltipContent,
+} from '@gorgias/axiom'
 
 import { AIJourneySettings } from 'pages/aiAgent/PlaygroundV2/components/AIJourneySettings/AIJourneySettings'
 import ChatAvailabilitySelection from 'pages/aiAgent/PlaygroundV2/components/ChatAvailabilitySelection/ChatAvailabilitySelection'
@@ -48,11 +55,13 @@ const SEGMENTS: { value: 'inbound' | 'outbound'; label: string }[] = [
     { value: 'outbound', label: 'Outbound' },
 ]
 
+const LOCKED_SETTINGS_TOOLTIP = 'Reset the chat to change the settings'
+
 const InboundSettings: React.FC = () => {
     const { setSettings, chatAvailability, selectedCustomer } =
         useSettingsContext()
 
-    const { setDraftMessage, setDraftSubject } = useMessagesContext()
+    const { setDraftMessage, setDraftSubject, messages } = useMessagesContext()
 
     const {
         channel,
@@ -60,6 +69,8 @@ const InboundSettings: React.FC = () => {
         setAreActionsEnabled,
         areActionsEnabled,
     } = useCoreContext()
+
+    const isSettingsLocked = messages.length > 0
 
     const selectedOption = useMemo(
         () => CHANNEL_OPTIONS.find((option) => option.id === channel),
@@ -121,6 +132,15 @@ const InboundSettings: React.FC = () => {
         }
     }
 
+    const wrapWithLockTooltip = (node: React.ReactNode) =>
+        isSettingsLocked ? (
+            <Tooltip trigger={<span>{node}</span>}>
+                <TooltipContent title={LOCKED_SETTINGS_TOOLTIP} />
+            </Tooltip>
+        ) : (
+            node
+        )
+
     return (
         <>
             <PlaygroundActionsModal
@@ -128,35 +148,44 @@ const InboundSettings: React.FC = () => {
                 onClose={() => setIsActionsWarningModalOpen(false)}
                 onConfirm={handleActionsModalConfirm}
             />
-            <SelectField
-                value={selectedOption}
-                onChange={handleChannelUpdate}
-                items={CHANNEL_OPTIONS}
-                isDisabled={false}
-                label="Channel"
-            >
-                {(option: (typeof CHANNEL_OPTIONS)[number]) => (
-                    <ListItem label={option.label} />
+            {wrapWithLockTooltip(
+                <SelectField
+                    value={selectedOption}
+                    onChange={handleChannelUpdate}
+                    items={CHANNEL_OPTIONS}
+                    isDisabled={isSettingsLocked}
+                    label="Channel"
+                >
+                    {(option: (typeof CHANNEL_OPTIONS)[number]) => (
+                        <ListItem label={option.label} />
+                    )}
+                </SelectField>,
+            )}
+            {channel === 'chat' &&
+                wrapWithLockTooltip(
+                    <ChatAvailabilitySelection
+                        value={chatAvailability}
+                        onChange={handleChatAvailabilityUpdate}
+                        isDisabled={isSettingsLocked}
+                    />,
                 )}
-            </SelectField>
-            {channel === 'chat' && (
-                <ChatAvailabilitySelection
-                    value={chatAvailability}
-                    onChange={handleChatAvailabilityUpdate}
-                />
+            {selectedCustomer &&
+                wrapWithLockTooltip(
+                    <TargetSelection
+                        customer={selectedCustomer as PlaygroundCustomer}
+                        onChange={handleUpdateCustomer}
+                        isDisabled={isSettingsLocked}
+                    />,
+                )}
+            {wrapWithLockTooltip(
+                <ToggleField
+                    value={areActionsEnabled}
+                    label="Actions &#9432;"
+                    caption="Actions triggered in test mode will affect real customer data and can't be undone."
+                    onChange={handleActionsToggle}
+                    isDisabled={isSettingsLocked}
+                />,
             )}
-            {selectedCustomer && (
-                <TargetSelection
-                    customer={selectedCustomer as PlaygroundCustomer}
-                    onChange={handleUpdateCustomer}
-                />
-            )}
-            <ToggleField
-                value={areActionsEnabled}
-                label="Actions &#9432;"
-                caption="Actions triggered in test mode will affect real customer data and can't be undone."
-                onChange={handleActionsToggle}
-            />
         </>
     )
 }

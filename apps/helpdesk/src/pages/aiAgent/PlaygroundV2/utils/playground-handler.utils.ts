@@ -9,18 +9,28 @@ import {
     MessageType,
     TestSessionLogType,
 } from 'models/aiAgentPlayground/types'
-import { AI_AGENT_SENDER } from 'pages/aiAgent/PlaygroundV2/constants'
+import {
+    AI_AGENT_SENDER,
+    CUSTOMER_SENDER_FALLBACK,
+} from 'pages/aiAgent/PlaygroundV2/constants'
+
+const AI_JOURNEY_TRIGGERED_MESSAGE = 'AI Journey triggered'
+
+export type ResolveShopperSenderName = (
+    customerId?: string | null,
+) => string | undefined
 
 export const handleAiAgentTestSessionLog = (
     log: TestSessionLog,
     previousLog?: TestSessionLog,
+    resolveShopperSenderName?: ResolveShopperSenderName,
 ) => {
     switch (log.type) {
         case TestSessionLogType.AI_AGENT_REPLY:
             let isReasoningEligible = true
             if (
                 previousLog?.type === TestSessionLogType.SHOPPER_MESSAGE &&
-                previousLog?.data.message === 'AI Journey triggered'
+                previousLog?.data.message === AI_JOURNEY_TRIGGERED_MESSAGE
             ) {
                 isReasoningEligible = false
             }
@@ -38,6 +48,21 @@ export const handleAiAgentTestSessionLog = (
                 isReasoningEligible,
                 aiAgentMessageType: log.data.meta
                     ?.ai_agent_message_type as AiAgentMessageType,
+            } satisfies PlaygroundTextMessage
+        case TestSessionLogType.SHOPPER_MESSAGE:
+            // System-generated trigger logs are not real shopper messages
+            if (log.data.message === AI_JOURNEY_TRIGGERED_MESSAGE) {
+                return null
+            }
+
+            return {
+                id: log.id,
+                sender:
+                    resolveShopperSenderName?.(log.data.customerId) ??
+                    CUSTOMER_SENDER_FALLBACK,
+                type: MessageType.MESSAGE as const,
+                content: log.data.message,
+                createdDatetime: log.createdDatetime,
             } satisfies PlaygroundTextMessage
         case TestSessionLogType.AI_AGENT_EXECUTION_FINISHED:
             return {

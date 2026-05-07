@@ -219,4 +219,45 @@ describe('TargetSelection', () => {
             ).not.toBeInTheDocument()
         })
     })
+    describe('derives sender type from the customer prop', () => {
+        it('initializes with EXISTING_CUSTOMER when customer is not the default', () => {
+            renderComponent({
+                customer: {
+                    id: 42,
+                    email: 'jane@example.com',
+                    name: 'Jane Doe',
+                },
+            })
+            expect(
+                screen.getAllByDisplayValue('Existing customer')[0],
+            ).toBeInTheDocument()
+            expect(
+                screen.getByPlaceholderText('Search customer email'),
+            ).toBeInTheDocument()
+        })
+
+        it('switches to EXISTING_CUSTOMER when customer changes from default to a real one', () => {
+            const { rerender } = renderComponent()
+            expect(
+                screen.getAllByDisplayValue('New customer')[0],
+            ).toBeInTheDocument()
+
+            rerender(
+                <CoreProvider>
+                    <TargetSelection
+                        customer={{
+                            id: 42,
+                            email: 'jane@example.com',
+                            name: 'Jane Doe',
+                        }}
+                        onChange={mockOnChange}
+                    />
+                </CoreProvider>,
+            )
+
+            expect(
+                screen.getAllByDisplayValue('Existing customer')[0],
+            ).toBeInTheDocument()
+        })
+    })
 })

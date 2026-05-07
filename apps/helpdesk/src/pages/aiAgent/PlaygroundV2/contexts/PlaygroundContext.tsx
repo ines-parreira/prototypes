@@ -36,11 +36,9 @@ export const PlaygroundProvider = (props: PlaygroundProviderProps) => {
                     arePlaygroundActionsAllowed={arePlaygroundActionsAllowed}
                 >
                     <AIJourneyProvider shopName={shopName}>
-                        <MessagesProvider>
-                            <SettingsProvider supportedModes={supportedModes}>
-                                {children}
-                            </SettingsProvider>
-                        </MessagesProvider>
+                        <SettingsProvider supportedModes={supportedModes}>
+                            <MessagesProvider>{children}</MessagesProvider>
+                        </SettingsProvider>
                     </AIJourneyProvider>
                 </CoreProvider>
             </ConfigurationProvider>

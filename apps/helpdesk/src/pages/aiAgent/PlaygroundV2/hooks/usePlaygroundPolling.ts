@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { useEffectOnce } from '@repo/hooks'
 import { reportError } from '@repo/logging'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
@@ -19,14 +18,7 @@ export const usePlaygroundPolling = ({
     useV3?: boolean
 }) => {
     const [isPolling, setIsPolling] = useState(!!testSessionId)
-
-    useEffectOnce(() => {
-        // guarantees 1 fetch for the logs if the session id is provided
-        // when the playground is first started.
-        if (!!testSessionId) {
-            setIsPolling(false)
-        }
-    })
+    const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
     const { data: testSessionLogs, error } = useGetTestSessionLogs(
         testSessionId ?? '',
@@ -39,7 +31,10 @@ export const usePlaygroundPolling = ({
     )
 
     useEffect(() => {
-        if (testSessionLogs?.status === 'finished') {
+        if (
+            testSessionLogs?.status === 'finished' ||
+            testSessionLogs?.status === 'idle'
+        ) {
             setIsPolling(false)
         }
     }, [testSessionLogs?.status])
@@ -47,16 +42,20 @@ export const usePlaygroundPolling = ({
     const startPolling = useCallback(() => {
         setIsPolling(true)
 
-        const timeoutId = setTimeout(() => {
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current)
+        }
+        timeoutRef.current = setTimeout(() => {
             setIsPolling(false)
         }, POLLING_TIMEOUT)
-
-        // Clean up timeout if polling stops for other reasons
-        return () => clearTimeout(timeoutId)
     }, [])
 
     const stopPolling = useCallback(() => {
         setIsPolling(false)
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current)
+            timeoutRef.current = null
+        }
     }, [])
 
     useEffect(() => {
@@ -64,6 +63,14 @@ export const usePlaygroundPolling = ({
             stopPolling()
         }
     }, [stopPolling])
+
+    useEffect(() => {
+        if (testSessionId && !timeoutRef.current) {
+            timeoutRef.current = setTimeout(() => {
+                setIsPolling(false)
+            }, POLLING_TIMEOUT)
+        }
+    }, [testSessionId])
 
     useEffect(() => {
         if (error) {

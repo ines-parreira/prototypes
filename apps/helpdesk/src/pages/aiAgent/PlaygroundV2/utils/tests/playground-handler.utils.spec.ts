@@ -5,7 +5,10 @@ import {
     TestSessionLogType,
     TicketOutcome,
 } from 'models/aiAgentPlayground/types'
-import { AI_AGENT_SENDER } from 'pages/aiAgent/PlaygroundV2/constants'
+import {
+    AI_AGENT_SENDER,
+    CUSTOMER_SENDER_FALLBACK,
+} from 'pages/aiAgent/PlaygroundV2/constants'
 
 import { handleAiAgentTestSessionLog } from '../playground-handler.utils'
 
@@ -126,6 +129,89 @@ describe('playground-handler.utils', () => {
             const result = handleAiAgentTestSessionLog(log as TestSessionLog)
 
             expect(result).toBeNull()
+        })
+
+        it('should return a customer message for SHOPPER_MESSAGE using the resolver', () => {
+            const log: TestSessionLog = {
+                id: 'shopper-1',
+                accountId: 456,
+                testModeSessionId: 'session-123',
+                aiAgentExecutionId: 'exec-123',
+                type: TestSessionLogType.SHOPPER_MESSAGE,
+                createdDatetime: testDatetime,
+                data: {
+                    message: 'Where is my order?',
+                    isSalesOpportunity: false,
+                    isSalesDiscount: false,
+                    isSalesOpportunityFieldId: null,
+                    isSalesDiscountFieldId: null,
+                    outcome: TicketOutcome.WAIT,
+                    customerId: '42',
+                },
+            }
+
+            const result = handleAiAgentTestSessionLog(log, undefined, (id) =>
+                id === '42' ? 'Jane Doe' : undefined,
+            )
+
+            expect(result).toEqual({
+                id: 'shopper-1',
+                sender: 'Jane Doe',
+                type: MessageType.MESSAGE,
+                content: 'Where is my order?',
+                createdDatetime: testDatetime,
+            })
+        })
+
+        it('should fall back to CUSTOMER_SENDER_FALLBACK when resolver returns undefined', () => {
+            const log: TestSessionLog = {
+                id: 'shopper-2',
+                accountId: 456,
+                testModeSessionId: 'session-123',
+                aiAgentExecutionId: 'exec-123',
+                type: TestSessionLogType.SHOPPER_MESSAGE,
+                createdDatetime: testDatetime,
+                data: {
+                    message: 'Hello',
+                    isSalesOpportunity: false,
+                    isSalesDiscount: false,
+                    isSalesOpportunityFieldId: null,
+                    isSalesDiscountFieldId: null,
+                    outcome: TicketOutcome.WAIT,
+                    customerId: '99',
+                },
+            }
+
+            const result = handleAiAgentTestSessionLog(log)
+
+            expect(result).toEqual({
+                id: 'shopper-2',
+                sender: CUSTOMER_SENDER_FALLBACK,
+                type: MessageType.MESSAGE,
+                content: 'Hello',
+                createdDatetime: testDatetime,
+            })
+        })
+
+        it('should drop SHOPPER_MESSAGE logs that are AI Journey triggers', () => {
+            const log: TestSessionLog = {
+                id: 'journey-trigger',
+                accountId: 456,
+                testModeSessionId: 'session-123',
+                aiAgentExecutionId: 'exec-123',
+                type: TestSessionLogType.SHOPPER_MESSAGE,
+                createdDatetime: testDatetime,
+                data: {
+                    message: 'AI Journey triggered',
+                    isSalesOpportunity: false,
+                    isSalesDiscount: false,
+                    isSalesOpportunityFieldId: null,
+                    isSalesDiscountFieldId: null,
+                    outcome: TicketOutcome.WAIT,
+                },
+            }
+
+            expect(handleAiAgentTestSessionLog(log)).toBeNull()
         })
 
         it('should set isReasoningEligible to false when previous log is AI Journey triggered', () => {

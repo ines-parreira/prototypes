@@ -47,10 +47,20 @@ jest.mock(
     'pages/aiAgent/PlaygroundV2/components/ChatAvailabilitySelection/ChatAvailabilitySelection',
     () => ({
         __esModule: true,
-        default: ({ value, onChange }: any) => (
+        default: ({ value, onChange, isDisabled }: any) => (
             <div data-testid="chat-availability-selection">
-                <button onClick={() => onChange('online')}>Online</button>
-                <button onClick={() => onChange('offline')}>Offline</button>
+                <button
+                    onClick={() => onChange('online')}
+                    disabled={isDisabled}
+                >
+                    Online
+                </button>
+                <button
+                    onClick={() => onChange('offline')}
+                    disabled={isDisabled}
+                >
+                    Offline
+                </button>
                 <span data-testid="current-availability">{value}</span>
             </div>
         ),
@@ -75,7 +85,7 @@ jest.mock(
 jest.mock(
     'pages/aiAgent/PlaygroundV2/components/TargetSelection/TargetSelection',
     () => ({
-        TargetSelection: ({ customer, onChange }: any) => (
+        TargetSelection: ({ customer, onChange, isDisabled }: any) => (
             <div data-testid="target-selection">
                 <span data-testid="current-customer">
                     {customer?.email || 'No customer'}
@@ -86,6 +96,7 @@ jest.mock(
                             customer: { ...customer, email: 'new@test.com' },
                         })
                     }
+                    disabled={isDisabled}
                 >
                     Change Customer
                 </button>
@@ -173,18 +184,20 @@ jest.mock('pages/aiAgent/PlaygroundV2/hooks/useSettingsChanged', () => ({
     useSettingsChanged: () => mockUseSettingsChanged(),
 }))
 
+const mockUseMessagesContextValue = {
+    messages: [] as unknown[],
+    onMessageSend: jest.fn(),
+    isMessageSending: false,
+    onNewConversation: jest.fn(),
+    isWaitingResponse: false,
+    draftMessage: '',
+    draftSubject: '',
+    setDraftMessage: jest.fn(),
+    setDraftSubject: jest.fn(),
+}
+
 jest.mock('pages/aiAgent/PlaygroundV2/contexts/MessagesContext', () => ({
-    useMessagesContext: () => ({
-        messages: [],
-        onMessageSend: jest.fn(),
-        isMessageSending: false,
-        onNewConversation: jest.fn(),
-        isWaitingResponse: false,
-        draftMessage: '',
-        draftSubject: '',
-        setDraftMessage: jest.fn(),
-        setDraftSubject: jest.fn(),
-    }),
+    useMessagesContext: () => mockUseMessagesContextValue,
 }))
 
 jest.mock('@gorgias/axiom', () => ({
@@ -203,7 +216,7 @@ jest.mock('@gorgias/axiom', () => ({
             {children}
         </button>
     ),
-    ToggleField: ({ label, caption, value, onChange }: any) => (
+    ToggleField: ({ label, caption, value, onChange, isDisabled }: any) => (
         <div data-testid="toggle-field">
             <label>{label}</label>
             {caption && <span data-testid="toggle-caption">{caption}</span>}
@@ -212,6 +225,7 @@ jest.mock('@gorgias/axiom', () => ({
                 checked={value}
                 onChange={(e) => onChange(e.target.checked)}
                 aria-label={label}
+                disabled={isDisabled}
             />
         </div>
     ),
@@ -238,6 +252,13 @@ jest.mock('@gorgias/axiom', () => ({
         </div>
     ),
     ListItem: ({ label }: any) => label,
+    Tooltip: ({ trigger, children }: any) => (
+        <div data-testid="tooltip">
+            {trigger}
+            <div role="tooltip">{children}</div>
+        </div>
+    ),
+    TooltipContent: ({ title }: any) => <span>{title}</span>,
 }))
 
 const DEFAULT_AI_JOURNEY_CONTEXT = {
@@ -320,6 +341,7 @@ describe('PlaygroundSettings', () => {
             resetInitialState: jest.fn(),
         })
         mockAIJourneyContext()
+        mockUseMessagesContextValue.messages = []
     })
 
     describe('Header', () => {
@@ -583,6 +605,63 @@ describe('PlaygroundSettings', () => {
                     screen.queryByTestId('actions-warning-modal'),
                 ).not.toBeInTheDocument()
             })
+        })
+    })
+
+    describe('Locked inbound settings when conversation is not pristine', () => {
+        const setMessagesNotPristine = () => {
+            mockUseMessagesContextValue.messages = [
+                { id: '1', sender: 'AI Agent', type: 'MESSAGE' },
+            ]
+        }
+
+        it('should disable channel, target, availability, and actions controls', () => {
+            setMessagesNotPristine()
+            renderComponent(['inbound'])
+
+            expect(
+                screen.getByRole('combobox', { name: /channel/i }),
+            ).toBeDisabled()
+            expect(
+                screen.getByRole('button', { name: /change customer/i }),
+            ).toBeDisabled()
+            expect(
+                screen.getByRole('button', { name: /online/i }),
+            ).toBeDisabled()
+            expect(
+                screen.getByRole('button', { name: /offline/i }),
+            ).toBeDisabled()
+            expect(
+                screen.getByRole('checkbox', { name: /actions/i }),
+            ).toBeDisabled()
+        })
+
+        it('should show the lock explanation in a tooltip', () => {
+            setMessagesNotPristine()
+            renderComponent(['inbound'])
+
+            const tooltips = screen.getAllByRole('tooltip')
+            expect(tooltips.length).toBeGreaterThan(0)
+            tooltips.forEach((tooltip) => {
+                expect(tooltip).toHaveTextContent(
+                    'Reset the chat to change the settings',
+                )
+            })
+        })
+
+        it('should leave controls enabled when conversation is empty', () => {
+            renderComponent(['inbound'])
+
+            expect(
+                screen.getByRole('combobox', { name: /channel/i }),
+            ).not.toBeDisabled()
+            expect(
+                screen.getByRole('button', { name: /change customer/i }),
+            ).not.toBeDisabled()
+            expect(
+                screen.getByRole('checkbox', { name: /actions/i }),
+            ).not.toBeDisabled()
+            expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
         })
     })
 

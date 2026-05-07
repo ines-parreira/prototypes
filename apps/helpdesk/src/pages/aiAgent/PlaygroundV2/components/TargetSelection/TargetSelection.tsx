@@ -1,5 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
+import classNames from 'classnames'
+
+import { DEFAULT_PLAYGROUND_CUSTOMER } from 'pages/aiAgent/constants'
 import {
     PlaygroundCustomerSelection,
     SenderTypeValues,
@@ -17,25 +20,43 @@ type TargetCallbackPayload = {
 type TargetSelectionProps = {
     customer: PlaygroundCustomer
     onChange: (payload: TargetCallbackPayload) => void
+    isDisabled?: boolean
 }
+
+const getSenderTypeForCustomer = (customer: PlaygroundCustomer) =>
+    customer.id !== DEFAULT_PLAYGROUND_CUSTOMER.id
+        ? SenderTypeValues.EXISTING_CUSTOMER
+        : SenderTypeValues.NEW_CUSTOMER
 
 export const TargetSelection = ({
     customer,
     onChange,
+    isDisabled,
 }: TargetSelectionProps) => {
     const [senderSelectedOption, setSenderSelectedOption] = useState<string>(
-        SenderTypeValues.NEW_CUSTOMER,
+        () => getSenderTypeForCustomer(customer),
     )
+
+    useEffect(() => {
+        setSenderSelectedOption(getSenderTypeForCustomer(customer))
+    }, [customer])
 
     return (
         <div className={css.targetSelection}>
-            <span className={css.targetSelectionLabel}>Target</span>
+            <span
+                className={classNames(css.targetSelectionLabel, {
+                    [css.targetSelectionLabelDisabled]: isDisabled,
+                })}
+            >
+                Target
+            </span>
             <PlaygroundCustomerSelection
                 customer={customer}
                 onCustomerChange={(customer) => onChange({ customer })}
                 onTicketChange={(ticketData) => onChange(ticketData)}
                 senderType={senderSelectedOption}
                 onSenderTypeChange={setSenderSelectedOption}
+                isDisabled={isDisabled}
             />
         </div>
     )

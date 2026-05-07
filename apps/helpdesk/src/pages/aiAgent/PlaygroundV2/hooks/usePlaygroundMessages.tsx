@@ -10,21 +10,28 @@ import type {
     PlaygroundPromptMessage,
     PlaygroundTextMessage,
 } from 'models/aiAgentPlayground/types'
-import { MessageType } from 'models/aiAgentPlayground/types'
+import { MessageType, TestSessionLogType } from 'models/aiAgentPlayground/types'
+import { useGetCustomer } from 'models/customer/queries'
+import { DEFAULT_PLAYGROUND_CUSTOMER } from 'pages/aiAgent/constants'
 import { PlaygroundGenericErrorMessage } from 'pages/aiAgent/PlaygroundV2/components/PlaygroundGenericErrorMessage/PlaygroundGenericErrorMessage'
 import {
     AI_AGENT_SENDER,
+    CUSTOMER_SENDER_FALLBACK,
     GREETING_MESSAGE_TEXT,
 } from 'pages/aiAgent/PlaygroundV2/constants'
 import { useAIJourneyContext } from 'pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext'
 import { useConfigurationContext } from 'pages/aiAgent/PlaygroundV2/contexts/ConfigurationContext'
 import { useCoreContext } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
 import { useSubscribeToEvent } from 'pages/aiAgent/PlaygroundV2/contexts/EventsContext'
+import { useSettingsContext } from 'pages/aiAgent/PlaygroundV2/contexts/SettingsContext'
 
 import type { PlaygroundChannels, PlaygroundCustomer } from '../types'
 import { PlaygroundEvent } from '../types'
+import type { ResolveShopperSenderName } from '../utils/playground-handler.utils'
 import { handleAiAgentTestSessionLog } from '../utils/playground-handler.utils'
 import { usePlaygroundApi } from './usePlaygroundApi'
+
+const OPTIMISTIC_MESSAGE_ID = '00000000-0000-0000-0000-000000000000'
 
 const PLACEHOLDER_MESSAGE: PlaygroundMessage = {
     sender: AI_AGENT_SENDER,
@@ -89,6 +96,22 @@ export const usePlaygroundMessages = () => {
     } = useCoreContext()
 
     const { journeyConfiguration } = useAIJourneyContext()
+    const { selectedCustomer, setSettings } = useSettingsContext()
+
+    const resolveShopperSenderName: ResolveShopperSenderName = useCallback(
+        (customerId) => {
+            if (customerId == null || customerId === '0') {
+                return selectedCustomer.name ?? DEFAULT_PLAYGROUND_CUSTOMER.name
+            }
+
+            if (String(selectedCustomer.id) === customerId) {
+                return selectedCustomer.name ?? selectedCustomer.email
+            }
+
+            return undefined
+        },
+        [selectedCustomer.id, selectedCustomer.name, selectedCustomer.email],
+    )
 
     const channelIntegrationId =
         journeyConfiguration?.sms_sender_integration_id ??
@@ -112,6 +135,65 @@ export const usePlaygroundMessages = () => {
     const processedLogIds = useRef(new Set<string>())
 
     const [isWaitingResponse, setIsWaitingResponse] = useState(false)
+
+    const latestShopperCustomerId = (() => {
+        const logs = testSessionLogs?.logs
+        if (!logs?.length) return undefined
+        for (let i = logs.length - 1; i >= 0; i--) {
+            const log = logs[i]
+            if (log.type !== TestSessionLogType.SHOPPER_MESSAGE) continue
+            const id = log.data.customerId
+            if (id && id !== '0') return Number(id)
+        }
+        return undefined
+    })()
+
+    const customerToFetch =
+        latestShopperCustomerId &&
+        latestShopperCustomerId !== selectedCustomer.id
+            ? latestShopperCustomerId
+            : undefined
+
+    const { data: fetchedCustomer } = useGetCustomer(customerToFetch ?? 0, {
+        enabled: !!customerToFetch,
+    })
+
+    useEffect(() => {
+        const data = fetchedCustomer?.data
+        if (!data || data.id === selectedCustomer.id) return
+        setSettings({
+            selectedCustomer: {
+                id: data.id,
+                email: data.email ?? '',
+                name:
+                    data.name ||
+                    [data.firstname, data.lastname].filter(Boolean).join(' ') ||
+                    undefined,
+            },
+        })
+    }, [fetchedCustomer, selectedCustomer.id, setSettings])
+
+    // When the selected customer is resolved after messages with the
+    // generic fallback sender were already rendered, retroactively
+    // replace the fallback with the resolved customer name.
+    useEffect(() => {
+        const resolvedName = selectedCustomer.name ?? selectedCustomer.email
+        if (!resolvedName || resolvedName === CUSTOMER_SENDER_FALLBACK) return
+        setMessages((prevMessages) => {
+            let didChange = false
+            const next = prevMessages.map((message) => {
+                if (
+                    message.type === MessageType.MESSAGE &&
+                    message.sender === CUSTOMER_SENDER_FALLBACK
+                ) {
+                    didChange = true
+                    return { ...message, sender: resolvedName }
+                }
+                return message
+            })
+            return didChange ? next : prevMessages
+        })
+    }, [selectedCustomer.name, selectedCustomer.email])
 
     const onNewConversation = useCallback(() => {
         abortCurrentRequest()
@@ -269,6 +351,7 @@ export const usePlaygroundMessages = () => {
                         handleAiAgentTestSessionLog(
                             log,
                             index > 0 ? newLogs[index - 1] : undefined,
+                            resolveShopperSenderName,
                         ),
                     )
                     .filter(
@@ -276,18 +359,43 @@ export const usePlaygroundMessages = () => {
                             message !== null,
                     )
 
+                // Drop optimistic shopper messages once the matching
+                // SHOPPER_MESSAGE log arrives, to avoid duplicates
+                const isShopperTextMessage = (
+                    message: PlaygroundMessage,
+                ): message is PlaygroundTextMessage =>
+                    message.type === MessageType.MESSAGE &&
+                    message.sender !== AI_AGENT_SENDER
+
+                const newShopperContents = new Set(
+                    newMessages
+                        .filter(isShopperTextMessage)
+                        .map((m) => m.content),
+                )
+                const dedupedExisting = messagesWithoutPlaceholder.filter(
+                    (message) => {
+                        if (
+                            !isShopperTextMessage(message) ||
+                            message.id !== OPTIMISTIC_MESSAGE_ID
+                        ) {
+                            return true
+                        }
+                        return !newShopperContents.has(message.content)
+                    },
+                )
+
                 const shouldShowPlaceholder =
                     testSessionLogs.status !== 'finished'
 
                 // Add the new processed messages with placeholder
                 return [
-                    ...messagesWithoutPlaceholder,
+                    ...dedupedExisting,
                     ...newMessages,
                     ...(shouldShowPlaceholder ? [PLACEHOLDER_MESSAGE] : []),
                 ]
             })
         }
-    }, [testSessionLogs])
+    }, [testSessionLogs, resolveShopperSenderName])
 
     return {
         messages,

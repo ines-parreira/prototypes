@@ -38,26 +38,57 @@ describe('usePlaygroundPolling hook', () => {
         jest.useRealTimers()
     })
 
-    it('should trigger one initial logs fetch when testSessionId is provided', () => {
+    it('should start polling when testSessionId is provided so historical logs are fetched', () => {
         const { result } = renderHook(() =>
             usePlaygroundPolling({ testSessionId: '123' }),
         )
 
-        expect(result.current.isPolling).toBe(false)
+        expect(result.current.isPolling).toBe(true)
         expect(mockedUseGetTestSessionLogs).toHaveBeenCalledWith('123', false, {
             enabled: true,
             refetchInterval: 5000,
             baseUrl: undefined,
         })
-        expect(mockedUseGetTestSessionLogs).toHaveBeenLastCalledWith(
-            '123',
-            false,
-            {
-                enabled: false,
-                refetchInterval: 5000,
-                baseUrl: undefined,
-            },
+    })
+
+    it('should stop polling once the session reports finished', () => {
+        const { result, rerender } = renderHook(() =>
+            usePlaygroundPolling({ testSessionId: '123' }),
         )
+
+        expect(result.current.isPolling).toBe(true)
+
+        mockedUseGetTestSessionLogs.mockReturnValue({
+            data: { id: '123', status: 'finished', logs: [] },
+            error: null,
+            isLoading: false,
+            isError: false,
+            refetch: jest.fn(),
+        } as any)
+
+        rerender()
+
+        expect(result.current.isPolling).toBe(false)
+    })
+
+    it('should stop polling once the session reports idle', () => {
+        const { result, rerender } = renderHook(() =>
+            usePlaygroundPolling({ testSessionId: '123' }),
+        )
+
+        expect(result.current.isPolling).toBe(true)
+
+        mockedUseGetTestSessionLogs.mockReturnValue({
+            data: { id: '123', status: 'idle', logs: [] },
+            error: null,
+            isLoading: false,
+            isError: false,
+            refetch: jest.fn(),
+        } as any)
+
+        rerender()
+
+        expect(result.current.isPolling).toBe(false)
     })
 
     it('should not poll initially when testSessionId is not provided', () => {
@@ -96,7 +127,7 @@ describe('usePlaygroundPolling hook', () => {
         expect(mockedUseGetTestSessionLogs).toHaveBeenCalledWith(
             'abc',
             true,
-            expect.objectContaining({ enabled: false, baseUrl: undefined }),
+            expect.objectContaining({ enabled: true, baseUrl: undefined }),
         )
     })
 

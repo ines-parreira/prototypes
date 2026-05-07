@@ -7,6 +7,7 @@ import {
     TestSessionLogType,
     TicketOutcome,
 } from 'models/aiAgentPlayground/types'
+import { useGetCustomer } from 'models/customer/queries'
 import { DEFAULT_PLAYGROUND_CUSTOMER } from 'pages/aiAgent/constants'
 
 import { playgroundMessageFixture } from '../../../fixtures/playgroundMessages.fixture'
@@ -21,6 +22,11 @@ jest.mock('../usePlaygroundApi', () => ({
 }))
 const mockedUsePlaygroundApi = jest.mocked(usePlaygroundApi)
 
+jest.mock('models/customer/queries', () => ({
+    useGetCustomer: jest.fn(),
+}))
+const mockedUseGetCustomer = jest.mocked(useGetCustomer)
+
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
@@ -34,6 +40,7 @@ jest.mock('@repo/logging', () => ({
 const mockUseConfigurationContextFn = jest.fn()
 const mockUseCoreContextFn = jest.fn()
 const mockUseRegisterEventFn = jest.fn()
+const mockUseSettingsContextFn = jest.fn()
 
 jest.mock('../../contexts/ConfigurationContext', () => ({
     useConfigurationContext: () => mockUseConfigurationContextFn(),
@@ -45,6 +52,10 @@ jest.mock('../../contexts/CoreContext', () => ({
 
 jest.mock('../../contexts/EventsContext', () => ({
     useSubscribeToEvent: (...args: any[]) => mockUseRegisterEventFn(...args),
+}))
+
+jest.mock('../../contexts/SettingsContext', () => ({
+    useSettingsContext: () => mockUseSettingsContextFn(),
 }))
 
 const mockUseAIJourneyContextFn = jest.fn()
@@ -107,6 +118,17 @@ describe('usePlaygroundMessages hook', () => {
         mockUseAIJourneyContextFn.mockReturnValue({
             journeyConfiguration: undefined,
         })
+
+        mockUseSettingsContextFn.mockReturnValue({
+            selectedCustomer: DEFAULT_PLAYGROUND_CUSTOMER,
+            setSettings: jest.fn(),
+        })
+
+        mockedUseGetCustomer.mockReturnValue({
+            data: undefined,
+            error: null,
+            isLoading: false,
+        } as any)
 
         jest.useFakeTimers().setSystemTime(new Date('2020-01-01'))
     })
@@ -653,6 +675,326 @@ describe('usePlaygroundMessages hook', () => {
             ).toBe(fixture.logs[0].data.message)
             expect(result.current.messages[1].type).toBe(
                 MessageType.PLACEHOLDER,
+            )
+        })
+
+        it('should drop the optimistic shopper message when the matching SHOPPER_MESSAGE log arrives', async () => {
+            mockedUseFlag.mockReturnValue(true)
+
+            const submitMessageMock = jest.fn(() => Promise.resolve())
+            mockedUsePlaygroundApi.mockReturnValue({
+                submitMessage: submitMessageMock,
+                isSubmitting: false,
+                abortCurrentRequest: jest.fn(),
+            })
+
+            const { result, rerender } = renderHook(() =>
+                usePlaygroundMessages(),
+            )
+
+            // Send an optimistic shopper message
+            await act(async () => {
+                await result.current.onMessageSend(
+                    {
+                        id: '00000000-0000-0000-0000-000000000000',
+                        type: MessageType.MESSAGE,
+                        sender: DEFAULT_PLAYGROUND_CUSTOMER.name as string,
+                        content: 'Where is my order?',
+                        createdDatetime: '2023-03-15T11:59:00Z',
+                    },
+                    { customer: DEFAULT_PLAYGROUND_CUSTOMER },
+                )
+            })
+
+            // Polling returns the same shopper message with a real log id
+            mockedUseCoreContext.mockReturnValue({
+                ...defaultCoreContext,
+                isPolling: true,
+                startPolling: jest.fn(),
+                stopPolling: jest.fn(),
+                testSessionLogs: {
+                    id: '123',
+                    status: 'in-progress' as const,
+                    logs: [
+                        {
+                            id: 'shopper-log-1',
+                            accountId: 456,
+                            testModeSessionId: 'session-123',
+                            aiAgentExecutionId: 'exec-123',
+                            type: TestSessionLogType.SHOPPER_MESSAGE,
+                            createdDatetime: '2023-03-15T12:00:00Z',
+                            data: {
+                                message: 'Where is my order?',
+                                isSalesOpportunity: false,
+                                isSalesDiscount: false,
+                                isSalesOpportunityFieldId: null,
+                                isSalesDiscountFieldId: null,
+                                outcome: TicketOutcome.WAIT,
+                                customerId: '0',
+                            },
+                        },
+                    ],
+                },
+            })
+
+            rerender()
+
+            const messageEntries = result.current.messages.filter(
+                (m) => m.type === MessageType.MESSAGE,
+            )
+            expect(messageEntries).toHaveLength(1)
+            expect((messageEntries[0] as { id?: string }).id).toBe(
+                'shopper-log-1',
+            )
+            expect((messageEntries[0] as { content: string }).content).toBe(
+                'Where is my order?',
+            )
+        })
+
+        it('should sync the selected customer with the latest non-zero shopper customerId', async () => {
+            mockedUseFlag.mockReturnValue(true)
+
+            const setSettingsMock = jest.fn()
+            mockUseSettingsContextFn.mockReturnValue({
+                selectedCustomer: DEFAULT_PLAYGROUND_CUSTOMER,
+                setSettings: setSettingsMock,
+            })
+
+            mockedUseGetCustomer.mockReturnValue({
+                data: {
+                    data: {
+                        id: 42,
+                        email: 'jane@example.com',
+                        name: 'Jane Doe',
+                        firstname: 'Jane',
+                        lastname: 'Doe',
+                    },
+                },
+                error: null,
+                isLoading: false,
+            } as any)
+
+            mockedUseCoreContext.mockReturnValue({
+                ...defaultCoreContext,
+                isPolling: true,
+                startPolling: jest.fn(),
+                stopPolling: jest.fn(),
+                testSessionLogs: {
+                    id: '123',
+                    status: 'in-progress' as const,
+                    logs: [
+                        {
+                            id: 'shopper-log-1',
+                            accountId: 1,
+                            testModeSessionId: '123',
+                            aiAgentExecutionId: 'exec-1',
+                            type: TestSessionLogType.SHOPPER_MESSAGE,
+                            createdDatetime: '2023-03-15T12:00:00Z',
+                            data: {
+                                message: 'hi',
+                                isSalesOpportunity: false,
+                                isSalesDiscount: false,
+                                isSalesOpportunityFieldId: null,
+                                isSalesDiscountFieldId: null,
+                                outcome: TicketOutcome.WAIT,
+                                customerId: '42',
+                            },
+                        },
+                    ],
+                },
+            })
+
+            renderHook(() => usePlaygroundMessages())
+
+            expect(mockedUseGetCustomer).toHaveBeenCalledWith(42, {
+                enabled: true,
+            })
+            expect(setSettingsMock).toHaveBeenCalledWith({
+                selectedCustomer: {
+                    id: 42,
+                    email: 'jane@example.com',
+                    name: 'Jane Doe',
+                },
+            })
+        })
+
+        it('should not fetch a customer when the latest shopper customerId is "0"', async () => {
+            mockedUseFlag.mockReturnValue(true)
+
+            const setSettingsMock = jest.fn()
+            mockUseSettingsContextFn.mockReturnValue({
+                selectedCustomer: DEFAULT_PLAYGROUND_CUSTOMER,
+                setSettings: setSettingsMock,
+            })
+
+            mockedUseCoreContext.mockReturnValue({
+                ...defaultCoreContext,
+                isPolling: true,
+                startPolling: jest.fn(),
+                stopPolling: jest.fn(),
+                testSessionLogs: {
+                    id: '123',
+                    status: 'in-progress' as const,
+                    logs: [
+                        {
+                            id: 'shopper-log-1',
+                            accountId: 1,
+                            testModeSessionId: '123',
+                            aiAgentExecutionId: 'exec-1',
+                            type: TestSessionLogType.SHOPPER_MESSAGE,
+                            createdDatetime: '2023-03-15T12:00:00Z',
+                            data: {
+                                message: 'hi',
+                                isSalesOpportunity: false,
+                                isSalesDiscount: false,
+                                isSalesOpportunityFieldId: null,
+                                isSalesDiscountFieldId: null,
+                                outcome: TicketOutcome.WAIT,
+                                customerId: '0',
+                            },
+                        },
+                    ],
+                },
+            })
+
+            renderHook(() => usePlaygroundMessages())
+
+            expect(mockedUseGetCustomer).toHaveBeenCalledWith(0, {
+                enabled: false,
+            })
+            expect(setSettingsMock).not.toHaveBeenCalled()
+        })
+
+        it('should pick the latest shopper customerId across multiple logs', async () => {
+            mockedUseFlag.mockReturnValue(true)
+
+            mockUseSettingsContextFn.mockReturnValue({
+                selectedCustomer: DEFAULT_PLAYGROUND_CUSTOMER,
+                setSettings: jest.fn(),
+            })
+
+            mockedUseCoreContext.mockReturnValue({
+                ...defaultCoreContext,
+                isPolling: true,
+                startPolling: jest.fn(),
+                stopPolling: jest.fn(),
+                testSessionLogs: {
+                    id: '123',
+                    status: 'in-progress' as const,
+                    logs: [
+                        {
+                            id: 'shopper-log-1',
+                            accountId: 1,
+                            testModeSessionId: '123',
+                            aiAgentExecutionId: 'exec-1',
+                            type: TestSessionLogType.SHOPPER_MESSAGE,
+                            createdDatetime: '2023-03-15T12:00:00Z',
+                            data: {
+                                message: 'hi',
+                                isSalesOpportunity: false,
+                                isSalesDiscount: false,
+                                isSalesOpportunityFieldId: null,
+                                isSalesDiscountFieldId: null,
+                                outcome: TicketOutcome.WAIT,
+                                customerId: '11',
+                            },
+                        },
+                        {
+                            id: 'shopper-log-2',
+                            accountId: 1,
+                            testModeSessionId: '123',
+                            aiAgentExecutionId: 'exec-1',
+                            type: TestSessionLogType.SHOPPER_MESSAGE,
+                            createdDatetime: '2023-03-15T12:01:00Z',
+                            data: {
+                                message: 'hello again',
+                                isSalesOpportunity: false,
+                                isSalesDiscount: false,
+                                isSalesOpportunityFieldId: null,
+                                isSalesDiscountFieldId: null,
+                                outcome: TicketOutcome.WAIT,
+                                customerId: '99',
+                            },
+                        },
+                    ],
+                },
+            })
+
+            renderHook(() => usePlaygroundMessages())
+
+            expect(mockedUseGetCustomer).toHaveBeenCalledWith(99, {
+                enabled: true,
+            })
+        })
+
+        it('should rewrite the fallback sender on existing messages once the customer resolves', () => {
+            mockedUseFlag.mockReturnValue(true)
+
+            // Start with the default customer; logs with customerId "42"
+            // produce shopper messages whose sender falls back to "Customer".
+            let currentSelectedCustomer: typeof DEFAULT_PLAYGROUND_CUSTOMER = {
+                ...DEFAULT_PLAYGROUND_CUSTOMER,
+            }
+            mockUseSettingsContextFn.mockImplementation(() => ({
+                selectedCustomer: currentSelectedCustomer,
+                setSettings: jest.fn(),
+            }))
+
+            mockedUseCoreContext.mockReturnValue({
+                ...defaultCoreContext,
+                isPolling: true,
+                startPolling: jest.fn(),
+                stopPolling: jest.fn(),
+                testSessionLogs: {
+                    id: '123',
+                    status: 'in-progress' as const,
+                    logs: [
+                        {
+                            id: 'shopper-log-1',
+                            accountId: 1,
+                            testModeSessionId: '123',
+                            aiAgentExecutionId: 'exec-1',
+                            type: TestSessionLogType.SHOPPER_MESSAGE,
+                            createdDatetime: '2023-03-15T12:00:00Z',
+                            data: {
+                                message: 'olá',
+                                isSalesOpportunity: false,
+                                isSalesDiscount: false,
+                                isSalesOpportunityFieldId: null,
+                                isSalesDiscountFieldId: null,
+                                outcome: TicketOutcome.WAIT,
+                                customerId: '42',
+                            },
+                        },
+                    ],
+                },
+            })
+
+            const { result, rerender } = renderHook(() =>
+                usePlaygroundMessages(),
+            )
+
+            const messageEntries = result.current.messages.filter(
+                (m) => m.type === MessageType.MESSAGE,
+            )
+            expect(messageEntries).toHaveLength(1)
+            expect((messageEntries[0] as { sender: string }).sender).toBe(
+                'Customer',
+            )
+
+            // Simulate the sync resolving the customer.
+            currentSelectedCustomer = {
+                id: 42,
+                email: 'joao@example.com',
+                name: 'João',
+            }
+            rerender()
+
+            const updatedEntries = result.current.messages.filter(
+                (m) => m.type === MessageType.MESSAGE,
+            )
+            expect((updatedEntries[0] as { sender: string }).sender).toBe(
+                'João',
             )
         })
 

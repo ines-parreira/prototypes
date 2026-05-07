@@ -300,6 +300,7 @@ export type TestSessionLogData = {
     isSalesOpportunityFieldId: number | null
     isSalesDiscountFieldId: number | null
     outcome: TicketOutcome
+    customerId?: string | null
     meta?: {
         ai_agent_message_type?: string
         type?: string
