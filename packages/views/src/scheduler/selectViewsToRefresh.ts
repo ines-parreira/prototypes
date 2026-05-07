@@ -9,7 +9,7 @@ export type RefreshConfig = {
 }
 
 export const DEFAULT_REFRESH_CONFIG: RefreshConfig = {
-    tickIntervalSeconds: 15,
+    tickIntervalSeconds: 30,
     minRefreshIntervalSeconds: 300,
     maxViewsPerTick: 5,
     maxRealtimePerTick: 2,
