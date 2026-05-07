@@ -1,13 +1,26 @@
-import type { ViewRefreshCandidate } from '../selectViewsToRefresh'
+import type {
+    RefreshConfig,
+    ViewRefreshCandidate,
+} from '../selectViewsToRefresh'
 import {
-    DEFAULT_REFRESH_CONFIG,
     isEligible,
     scoreView,
     selectViewsToRefresh,
 } from '../selectViewsToRefresh'
 
 const NOW = new Date('2026-04-10T12:00:00Z').getTime()
-const CONFIG = DEFAULT_REFRESH_CONFIG
+
+// Tests pin their own config so production tuning of DEFAULT_REFRESH_CONFIG
+// doesn't reshape time/count fixtures here.
+const CONFIG: RefreshConfig = {
+    tickIntervalSeconds: 5,
+    minRefreshIntervalSeconds: 30,
+    maxViewsPerTick: 10,
+    maxRealtimePerTick: 3,
+    largeCountThreshold: 1000,
+    recentlyActiveWindowSeconds: 300,
+    staleSeconds: 120,
+}
 
 function candidate(
     overrides: Partial<ViewRefreshCandidate> & { viewId: number },

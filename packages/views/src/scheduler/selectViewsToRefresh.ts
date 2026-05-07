@@ -9,13 +9,13 @@ export type RefreshConfig = {
 }
 
 export const DEFAULT_REFRESH_CONFIG: RefreshConfig = {
-    tickIntervalSeconds: 5,
-    minRefreshIntervalSeconds: 30,
-    maxViewsPerTick: 10,
-    maxRealtimePerTick: 3,
-    largeCountThreshold: 1000,
+    tickIntervalSeconds: 15,
+    minRefreshIntervalSeconds: 300,
+    maxViewsPerTick: 5,
+    maxRealtimePerTick: 2,
+    largeCountThreshold: 100,
     recentlyActiveWindowSeconds: 300,
-    staleSeconds: 120,
+    staleSeconds: 600,
 }
 
 export type ViewRefreshCandidate = {
