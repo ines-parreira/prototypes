@@ -514,7 +514,17 @@ export const getDrillDownQuery = (
         case AiAgentDrillDownMetricName.SupportInteractionsCard:
             return supportAgentAutomatedInteractionsDrillDownQueryFactory
         case AiAgentDrillDownMetricName.AllAgentsClosedTicketsCard:
-            return allAgentsClosedTicketsDrillDownQueryFactory
+            return (
+                statsFilters: StatsFilters,
+                timezone: string,
+                sorting?: OrderDirection,
+            ) =>
+                allAgentsClosedTicketsDrillDownQueryFactory(
+                    statsFilters,
+                    timezone,
+                    sorting,
+                    (metricData as AiAgentMetrics).outcomeCustomFieldId,
+                )
         case AiAgentDrillDownMetricName.AllAgentsCsatCard:
             return (
                 statsFilters: StatsFilters,

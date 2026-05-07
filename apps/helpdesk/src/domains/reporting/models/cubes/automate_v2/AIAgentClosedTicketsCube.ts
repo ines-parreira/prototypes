@@ -10,6 +10,7 @@ export enum AIAgentClosedTicketsFilterMember {
     AiAgentRole = 'AIAgentClosedTickets.aiAgentRole',
     Channel = 'AIAgentClosedTickets.channel',
     StoreIntegrationId = 'AIAgentClosedTickets.storeIntegrationId',
+    AiAgentOutcomeCustomFieldId = 'AIAgentClosedTickets.aiAgentOutcomeCustomFieldId',
 }
 
 export type AIAgentClosedTicketsCube = Cube<

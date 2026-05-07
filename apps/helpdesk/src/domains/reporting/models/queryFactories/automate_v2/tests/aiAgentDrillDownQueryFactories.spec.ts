@@ -460,6 +460,40 @@ describe('allAgentsClosedTicketsDrillDownQueryFactory', () => {
             }),
         )
     })
+
+    it('includes outcomeCustomFieldId filter when provided', () => {
+        expect(
+            allAgentsClosedTicketsDrillDownQueryFactory(
+                filters,
+                timezone,
+                undefined,
+                123,
+            ),
+        ).toEqual(
+            expect.objectContaining({
+                filters: expect.arrayContaining([
+                    {
+                        member: AIAgentClosedTicketsFilterMember.AiAgentOutcomeCustomFieldId,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['123'],
+                    },
+                ]),
+            }),
+        )
+    })
+
+    it('omits outcomeCustomFieldId filter when not provided', () => {
+        const result = allAgentsClosedTicketsDrillDownQueryFactory(
+            filters,
+            timezone,
+        )
+        const hasOutcomeFilter = result.filters.some(
+            (f) =>
+                f.member ===
+                AIAgentClosedTicketsFilterMember.AiAgentOutcomeCustomFieldId,
+        )
+        expect(hasOutcomeFilter).toBe(false)
+    })
 })
 
 describe('allAgentsCsatDrillDownQueryFactory', () => {

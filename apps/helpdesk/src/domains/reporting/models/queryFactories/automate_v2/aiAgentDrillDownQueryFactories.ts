@@ -308,14 +308,23 @@ export const allAgentsClosedTicketsDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
+    outcomeCustomFieldId?: number,
 ): ReportingQuery<AIAgentClosedTicketsCube> => ({
     metricName: METRIC_NAMES.AI_AGENT_CLOSED_TICKETS_DRILL_DOWN,
     measures: [],
     dimensions: [AIAgentClosedTicketsDimension.TicketId],
-    filters: statsFiltersToReportingFilters(
-        closedTicketsFiltersMembers,
-        filters,
-    ),
+    filters: [
+        ...statsFiltersToReportingFilters(closedTicketsFiltersMembers, filters),
+        ...(outcomeCustomFieldId !== undefined
+            ? [
+                  {
+                      member: AIAgentClosedTicketsFilterMember.AiAgentOutcomeCustomFieldId,
+                      operator: ReportingFilterOperator.Equals,
+                      values: [String(outcomeCustomFieldId)],
+                  },
+              ]
+            : []),
+    ],
     timezone,
     limit: DRILLDOWN_QUERY_LIMIT,
     order: sorting ? [[AIAgentClosedTicketsDimension.TicketId, sorting]] : [],
