@@ -105,5 +105,49 @@ describe('useIsChatReady', () => {
 
             expect(result.current).toBe(false)
         })
+
+        it('should retry when GorgiasChat.on() throws before the API is initialized', () => {
+            let onCallCount = 0
+            window.GorgiasChat = {
+                on: jest.fn().mockImplementation(() => {
+                    onCallCount++
+                    if (onCallCount < 2)
+                        throw new Error(
+                            'You are trying to use the Gorgias Chat API before its initialization',
+                        )
+                }),
+                isOpen: jest.fn().mockReturnValue(false),
+            } as unknown as typeof window.GorgiasChat
+
+            const { result } = renderHook(() => useIsChatReady())
+            expect(result.current).toBe(false)
+
+            act(() => {
+                jest.advanceTimersByTime(500)
+            })
+
+            expect(result.current).toBe(true)
+        })
+
+        it('should give up after MAX_ATTEMPTS when GorgiasChat.on() always throws', () => {
+            window.GorgiasChat = {
+                on: jest.fn().mockImplementation(() => {
+                    throw new Error(
+                        'You are trying to use the Gorgias Chat API before its initialization',
+                    )
+                }),
+                isOpen: jest.fn(),
+            } as unknown as typeof window.GorgiasChat
+
+            const { result } = renderHook(() => useIsChatReady())
+            expect(result.current).toBe(false)
+
+            // total time across all 5 retries: 500+1000+1500+2000+2500 = 7500ms
+            act(() => {
+                jest.advanceTimersByTime(8000)
+            })
+
+            expect(result.current).toBe(false)
+        })
     })
 })

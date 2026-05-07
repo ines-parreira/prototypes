@@ -19,13 +19,20 @@ export function useIsChatReady(): boolean {
             if (cancelled) return
 
             if (window.GorgiasChat) {
-                window.GorgiasChat.on('ready', markReady)
                 try {
+                    window.GorgiasChat.on('ready', markReady)
                     if (typeof window.GorgiasChat.isOpen() === 'boolean') {
                         markReady()
                     }
                 } catch {
-                    // widget not yet fully initialized; wait for the ready event
+                    // GorgiasChat object exists but API not yet initialized; retry
+                    if (attempts < MAX_ATTEMPTS) {
+                        attempts++
+                        timeoutId = setTimeout(
+                            trySubscribeOrRetry,
+                            RETRY_DELAY * attempts,
+                        )
+                    }
                 }
                 return
             }
