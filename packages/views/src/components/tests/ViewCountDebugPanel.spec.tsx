@@ -1,10 +1,10 @@
 import type { ReactNode } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { render } from '@repo/testing/vitest'
 import { screen } from '@testing-library/react'
 
 import { useAllViews } from '../../hooks/useAllViews'
+import { useHasNewViewCountScheduler } from '../../hooks/useHasNewViewCountScheduler'
 import { viewEventLogStore } from '../../store/viewEventLog'
 import {
     clearViewsCount,
@@ -25,11 +25,8 @@ vi.mock('@repo/browser-storage', () => ({
     },
 }))
 
-vi.mock('@repo/feature-flags', () => ({
-    FeatureFlagKey: {
-        UIVisionBetaBaseline: 'ui-vision-beta-baseline',
-    },
-    useFlag: vi.fn(),
+vi.mock('../../hooks/useHasNewViewCountScheduler', () => ({
+    useHasNewViewCountScheduler: vi.fn(),
 }))
 
 vi.mock('../../hooks/useAllViews', () => ({
@@ -97,8 +94,12 @@ vi.mock('@gorgias/axiom', () => {
     }
 })
 
-const useFlagMock = vi.mocked(useFlag)
+const useHasNewViewCountSchedulerMock = vi.mocked(useHasNewViewCountScheduler)
 const useAllViewsMock = vi.mocked(useAllViews)
+
+function mockHasNewScheduler(value: boolean) {
+    useHasNewViewCountSchedulerMock.mockReturnValue({ value, isLoading: false })
+}
 
 const view = {
     id: 1,
@@ -117,35 +118,27 @@ beforeEach(() => {
     viewsCountStore.setState({ isLeader: true, activeViewId: 1 })
     setViewportViewIds([1])
     setScores({ 1: 42 })
-    useFlagMock.mockReturnValue(false)
+    mockHasNewScheduler(false)
     useAllViewsMock.mockReturnValue([view])
 })
 
 describe('ViewCountDebugPanel', () => {
-    it('uses the Helpdesk v2 beta flag to gate scheduler debug rows', () => {
-        render(<ViewCountDebugPanel isOpen />)
-
-        expect(useFlagMock).toHaveBeenCalledWith(
-            FeatureFlagKey.UIVisionBetaBaseline,
-        )
-    })
-
-    it('shows Helpdesk v2 beta flag fallback copy when disabled', () => {
+    it('shows fallback copy when the new view count scheduler is disabled', () => {
         render(<ViewCountDebugPanel isOpen />)
 
         expect(
             screen.getAllByText((_content, element) =>
                 Boolean(
                     element?.textContent?.includes(
-                        'The Helpdesk v2 beta flag is disabled, so view counts are fetched by the legacy scheduler.',
+                        'The Helpdesk v2 beta is disabled (flag or user toggle), so view counts are fetched by the legacy scheduler.',
                     ),
                 ),
             ),
         ).not.toHaveLength(0)
     })
 
-    it('builds debug rows when the Helpdesk v2 beta flag is enabled', () => {
-        useFlagMock.mockReturnValue(true)
+    it('builds debug rows when the new view count scheduler is enabled', () => {
+        mockHasNewScheduler(true)
         setViewsCount({ 1: 12 })
 
         render(<ViewCountDebugPanel isOpen />)

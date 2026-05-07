@@ -1,5 +1,5 @@
-import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
+import { useHasNewViewCountScheduler } from '@repo/views'
 import { fromJS } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -10,8 +10,12 @@ import { getViewFilters } from 'state/views/utils'
 import usePollingManager from '../usePollingManager'
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock('@repo/views', () => ({
+    useHasNewViewCountScheduler: jest.fn(),
+}))
+
 const useAppSelectorMock = useAppSelector as jest.Mock
-const useFlagWithLoadingMock = useFlagWithLoading as jest.Mock
+const useHasNewViewCountSchedulerMock = useHasNewViewCountScheduler as jest.Mock
 
 jest.mock('services/pollingManager', () => ({
     start: jest.fn(),
@@ -22,6 +26,16 @@ jest.mock('services/pollingManager', () => ({
 jest.mock('state/views/utils')
 
 const getViewFiltersMock = getViewFilters as jest.Mock
+
+function mockHasNewScheduler({
+    value = false,
+    isLoading = false,
+}: {
+    value?: boolean
+    isLoading?: boolean
+} = {}) {
+    useHasNewViewCountSchedulerMock.mockReturnValue({ value, isLoading })
+}
 
 const mockAppSelector = ({
     currentUser = {
@@ -44,32 +58,16 @@ const mockAppSelector = ({
 describe('usePollingManager', () => {
     beforeEach(() => {
         jest.resetAllMocks()
-        useFlagWithLoadingMock.mockReturnValue({
-            value: false,
-            isLoading: false,
-        })
+        mockHasNewScheduler()
     })
 
     it('should not start polling while the view count scheduler flag is loading', () => {
-        useFlagWithLoadingMock.mockReturnValue({
-            value: false,
-            isLoading: true,
-        })
+        mockHasNewScheduler({ isLoading: true })
         mockAppSelector({ currentUser: { is_active: true } })
 
         renderHook(() => usePollingManager())
 
         expect(pollingManager.start).not.toHaveBeenCalled()
-    })
-
-    it('should use the Helpdesk v2 beta flag to gate the view count scheduler', () => {
-        mockAppSelector({ currentUser: { is_active: true } })
-
-        renderHook(() => usePollingManager())
-
-        expect(useFlagWithLoadingMock).toHaveBeenCalledWith(
-            FeatureFlagKey.UIVisionBetaBaseline,
-        )
     })
 
     it('should start polling when user becomes active', () => {

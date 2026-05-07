@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 
-import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
+import { useHasNewViewCountScheduler } from '@repo/views'
 import type { Program } from 'estree'
 import type { Map } from 'immutable'
 
@@ -14,9 +14,7 @@ import {
 import { getViewFilters } from 'state/views/utils'
 
 export default function usePollingManager() {
-    const { value: hasNewScheduler, isLoading } = useFlagWithLoading(
-        FeatureFlagKey.UIVisionBetaBaseline,
-    )
+    const { value: hasNewScheduler, isLoading } = useHasNewViewCountScheduler()
     const currentUser = useAppSelector((state) => state.currentUser)
     const activeView = useAppSelector(getActiveView)
     const shouldFetchActiveViewTickets = useAppSelector(

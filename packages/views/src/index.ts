@@ -58,6 +58,7 @@ export { useSectionViews } from './hooks/useSectionViews'
 export { useSystemViews } from './hooks/useSystemViews'
 export { useUpdatePrivateViewsOrdering } from './hooks/useUpdatePrivateViewsOrdering'
 export { useUpdatePublicViewsOrdering } from './hooks/useUpdatePublicViewsOrdering'
+export { useHasNewViewCountScheduler } from './hooks/useHasNewViewCountScheduler'
 export type { SystemView } from './hooks/useSystemViews'
 export type {
     DisplayOrderMap,

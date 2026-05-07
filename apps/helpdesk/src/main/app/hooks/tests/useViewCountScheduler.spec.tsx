@@ -1,5 +1,5 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
+import { useHasNewViewCountScheduler } from '@repo/views'
 
 import useViewCountScheduler from '../useViewCountScheduler'
 
@@ -18,39 +18,36 @@ jest.mock('@repo/views', () => ({
         }
         return mockScheduler
     }),
+    useHasNewViewCountScheduler: jest.fn(),
 }))
 
 jest.mock('services/socketManager/socketManager', () => ({
     send: jest.fn(),
 }))
 
-const useFlagMock = useFlag as jest.Mock
+const useHasNewViewCountSchedulerMock = useHasNewViewCountScheduler as jest.Mock
+
+function mockHasNewScheduler(value: boolean) {
+    useHasNewViewCountSchedulerMock.mockReturnValue({ value, isLoading: false })
+}
 
 describe('useViewCountScheduler', () => {
     beforeEach(() => {
-        useFlagMock.mockReset()
+        useHasNewViewCountSchedulerMock.mockReset()
         mockScheduler.start.mockClear()
         mockScheduler.steal.mockClear()
         mockScheduler.stop.mockClear()
-        useFlagMock.mockReturnValue(false)
+        mockHasNewScheduler(false)
     })
 
-    it('should use the Helpdesk v2 beta flag to gate the scheduler', () => {
-        renderHook(() => useViewCountScheduler())
-
-        expect(useFlagMock).toHaveBeenCalledWith(
-            FeatureFlagKey.UIVisionBetaBaseline,
-        )
-    })
-
-    it('should not start the scheduler when the flag is disabled', () => {
+    it('should not start the scheduler when the new UI is disabled', () => {
         renderHook(() => useViewCountScheduler())
 
         expect(mockScheduler.start).not.toHaveBeenCalled()
     })
 
-    it('should start the scheduler when the flag is enabled', () => {
-        useFlagMock.mockReturnValue(true)
+    it('should start the scheduler when the new UI is enabled', () => {
+        mockHasNewScheduler(true)
 
         renderHook(() => useViewCountScheduler())
 
@@ -58,7 +55,7 @@ describe('useViewCountScheduler', () => {
     })
 
     it('should steal the scheduler on focus', () => {
-        useFlagMock.mockReturnValue(true)
+        mockHasNewScheduler(true)
 
         renderHook(() => useViewCountScheduler())
         window.dispatchEvent(new Event('focus'))
@@ -67,7 +64,7 @@ describe('useViewCountScheduler', () => {
     })
 
     it('should stop the scheduler on unmount', () => {
-        useFlagMock.mockReturnValue(true)
+        mockHasNewScheduler(true)
 
         const { unmount } = renderHook(() => useViewCountScheduler())
         unmount()

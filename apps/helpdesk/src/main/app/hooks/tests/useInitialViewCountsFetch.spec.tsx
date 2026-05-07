@@ -1,5 +1,5 @@
-import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
+import { useHasNewViewCountScheduler } from '@repo/views'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { fetchVisibleViewsCounts } from 'state/views/actions'
@@ -7,6 +7,9 @@ import { fetchVisibleViewsCounts } from 'state/views/actions'
 import useInitialViewCountsFetch from '../useInitialViewCountsFetch'
 
 jest.mock('hooks/useAppDispatch')
+jest.mock('@repo/views', () => ({
+    useHasNewViewCountScheduler: jest.fn(),
+}))
 jest.mock('state/views/actions', () => ({
     fetchVisibleViewsCounts: jest.fn(() => ({
         type: 'fetchVisibleViewsCounts',
@@ -14,8 +17,18 @@ jest.mock('state/views/actions', () => ({
 }))
 
 const useAppDispatchMock = useAppDispatch as jest.Mock
-const useFlagWithLoadingMock = useFlagWithLoading as jest.Mock
+const useHasNewViewCountSchedulerMock = useHasNewViewCountScheduler as jest.Mock
 const fetchVisibleViewsCountsMock = fetchVisibleViewsCounts as jest.Mock
+
+function mockHasNewScheduler({
+    value = false,
+    isLoading = false,
+}: {
+    value?: boolean
+    isLoading?: boolean
+} = {}) {
+    useHasNewViewCountSchedulerMock.mockReturnValue({ value, isLoading })
+}
 
 describe('useInitialViewCountsFetch', () => {
     let dispatch: jest.Mock
@@ -24,18 +37,7 @@ describe('useInitialViewCountsFetch', () => {
         jest.resetAllMocks()
         dispatch = jest.fn()
         useAppDispatchMock.mockReturnValue(dispatch)
-        useFlagWithLoadingMock.mockReturnValue({
-            value: false,
-            isLoading: false,
-        })
-    })
-
-    it('should use the Helpdesk v2 beta flag to gate the new scheduler', () => {
-        renderHook(() => useInitialViewCountsFetch())
-
-        expect(useFlagWithLoadingMock).toHaveBeenCalledWith(
-            FeatureFlagKey.UIVisionBetaBaseline,
-        )
+        mockHasNewScheduler()
     })
 
     it('should fetch visible view counts when the new scheduler is disabled', () => {
@@ -46,10 +48,7 @@ describe('useInitialViewCountsFetch', () => {
     })
 
     it('should not fetch visible view counts while the flag is loading', () => {
-        useFlagWithLoadingMock.mockReturnValue({
-            value: false,
-            isLoading: true,
-        })
+        mockHasNewScheduler({ isLoading: true })
 
         renderHook(() => useInitialViewCountsFetch())
 
@@ -58,10 +57,7 @@ describe('useInitialViewCountsFetch', () => {
     })
 
     it('should not fetch visible view counts when the new scheduler is enabled', () => {
-        useFlagWithLoadingMock.mockReturnValue({
-            value: true,
-            isLoading: false,
-        })
+        mockHasNewScheduler({ value: true })
 
         renderHook(() => useInitialViewCountsFetch())
 

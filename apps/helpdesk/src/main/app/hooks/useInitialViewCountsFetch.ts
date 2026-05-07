@@ -1,15 +1,13 @@
 import { useEffect, useRef } from 'react'
 
-import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
+import { useHasNewViewCountScheduler } from '@repo/views'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { fetchVisibleViewsCounts } from 'state/views/actions'
 
 export default function useInitialViewCountsFetch() {
     const dispatch = useAppDispatch()
-    const { value: hasNewScheduler, isLoading } = useFlagWithLoading(
-        FeatureFlagKey.UIVisionBetaBaseline,
-    )
+    const { value: hasNewScheduler, isLoading } = useHasNewViewCountScheduler()
     const hasFetched = useRef(false)
 
     useEffect(() => {
