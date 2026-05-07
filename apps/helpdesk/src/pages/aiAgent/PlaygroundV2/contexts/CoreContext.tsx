@@ -9,6 +9,7 @@ import {
     useState,
 } from 'react'
 
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { useSearchParams } from '@repo/routing'
 
 import type { AiAgentPlaygroundOptions } from 'models/aiAgent/types'
@@ -84,9 +85,17 @@ export const CoreProvider = ({
         arePlaygroundActionsAllowed || areActionsEnabledInSettings
     const { baseUrl } = useAiAgentHttpIntegration()
     const channelState = usePlaygroundChannel()
+    const { value: isPlaygroundV3BetaRolloutEnabled } = useFlagWithLoading(
+        FeatureFlagKey.PlaygroundV3BetaRollout,
+    )
 
     const [searchParams, setSearchParams] = useSearchParams()
-    const useV3 = useRef(searchParams.get('use-v3') === 'true')
+    const useV3Param = useRef(searchParams.get('use-v3') === 'true')
+    const useV3 = useMemo(
+        () => useV3Param.current || isPlaygroundV3BetaRolloutEnabled,
+        [isPlaygroundV3BetaRolloutEnabled],
+    )
+
     const [shouldFocusCustomerSelection, setShouldFocusCustomerSelection] =
         useState(false)
     const externalSessionId = useRef(
@@ -99,18 +108,18 @@ export const CoreProvider = ({
         {
             areActionsAllowedToExecute: areActionsEnabled ?? false,
         },
-        useV3.current,
+        useV3,
         externalSessionId.current,
     )
 
     const pollingState = usePlaygroundPolling({
         testSessionId: sessionState.testSessionId ?? undefined,
         baseUrl: baseUrl,
-        useV3: useV3.current,
+        useV3: useV3,
     })
 
     useEffect(() => {
-        if (!useV3.current) {
+        if (!useV3) {
             return
         }
 
@@ -126,7 +135,7 @@ export const CoreProvider = ({
         nextSearchParams.set('session-id', sessionState.testSessionId)
         setSearchParams(nextSearchParams)
         syncedSessionId.current = sessionState.testSessionId
-    }, [searchParams, sessionState.testSessionId, setSearchParams])
+    }, [searchParams, sessionState.testSessionId, setSearchParams, useV3])
 
     const { isDraftKnowledgeReady } = useDraftKnowledgeSync(draftKnowledge)
 
@@ -144,7 +153,7 @@ export const CoreProvider = ({
             areActionsEnabled,
             resetToDefaultActionsEnabled,
             setAreActionsEnabled: setAreActionsEnabledInSettings,
-            useV3: useV3.current,
+            useV3: useV3,
             shouldFocusCustomerSelection,
             setShouldFocusCustomerSelection,
         }),
@@ -157,6 +166,7 @@ export const CoreProvider = ({
             areActionsEnabled,
             resetToDefaultActionsEnabled,
             shouldFocusCustomerSelection,
+            useV3,
         ],
     )
 

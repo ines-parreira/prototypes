@@ -175,8 +175,9 @@ jest.mock('pages/aiAgent/PlaygroundV2/hooks/usePlaygroundResources', () => ({
 }))
 
 jest.mock('@repo/feature-flags', () => ({
-    ...jest.requireActual('@repo/feature-flags'),
+    FeatureFlagKey: jest.requireActual('@repo/feature-flags').FeatureFlagKey,
     useFlag: jest.fn(),
+    useFlagWithLoading: jest.fn(() => ({ value: false, isLoading: false })),
 }))
 
 const mockUseSettingsChanged = jest.fn()

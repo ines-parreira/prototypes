@@ -1,8 +1,16 @@
+import { useFlagWithLoading } from '@repo/feature-flags'
 import { useSearchParams } from '@repo/routing'
 import { renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 
 import { CoreProvider, useCoreContext } from '../CoreContext'
+
+jest.mock('@repo/feature-flags', () => ({
+    FeatureFlagKey: {
+        PlaygroundV3BetaRollout: 'playground-v3-beta-rollout',
+    },
+    useFlagWithLoading: jest.fn(() => ({ value: false, isLoading: false })),
+}))
 
 jest.mock('@repo/routing', () => ({
     ...jest.requireActual('@repo/routing'),
@@ -57,6 +65,7 @@ jest.mock('../../hooks/useDraftKnowledge', () => ({
 
 describe('CoreContext (PlaygroundStateContext)', () => {
     const mockedUseSearchParams = jest.mocked(useSearchParams)
+    const mockedUseFlagWithLoading = jest.mocked(useFlagWithLoading)
     const mockSetSearchParams = jest.fn()
 
     beforeEach(() => {
@@ -65,6 +74,10 @@ describe('CoreContext (PlaygroundStateContext)', () => {
             new URLSearchParams(),
             mockSetSearchParams,
         ])
+        mockedUseFlagWithLoading.mockReturnValue({
+            value: false,
+            isLoading: false,
+        })
         mockResetToDefaultChannel.mockClear()
         mockIsDraftKnowledgeReady.mockReturnValue(true)
     })
@@ -306,6 +319,93 @@ describe('CoreContext (PlaygroundStateContext)', () => {
                 testSessionId: undefined,
                 baseUrl: 'https://test-base-url.com',
                 useV3: false,
+            })
+        })
+    })
+
+    describe('useV3 flag', () => {
+        it.each([
+            {
+                description: 'flag disabled and use-v3 param absent',
+                flagValue: false,
+                searchParams: new URLSearchParams(),
+                expected: false,
+            },
+            {
+                description: 'PlaygroundV3BetaRollout flag enabled',
+                flagValue: true,
+                searchParams: new URLSearchParams(),
+                expected: true,
+            },
+            {
+                description: 'use-v3 search param is true regardless of flag',
+                flagValue: false,
+                searchParams: new URLSearchParams('use-v3=true'),
+                expected: true,
+            },
+        ])(
+            'should set useV3 to $expected when $description',
+            ({ flagValue, searchParams, expected }) => {
+                mockedUseFlagWithLoading.mockReturnValue({
+                    value: flagValue,
+                    isLoading: false,
+                })
+                mockedUseSearchParams.mockReturnValue([
+                    searchParams,
+                    mockSetSearchParams,
+                ])
+
+                const { result } = renderHook(() => useCoreContext(), {
+                    wrapper: ({ children }) => (
+                        <CoreProvider>{children}</CoreProvider>
+                    ),
+                })
+
+                expect(result.current.useV3).toBe(expected)
+            },
+        )
+
+        it('should pass useV3 true to useTestSession when flag is enabled', () => {
+            mockedUseFlagWithLoading.mockReturnValue({
+                value: true,
+                isLoading: false,
+            })
+            const useTestSession = require('../../hooks/useTestSession')
+                .useTestSession as jest.Mock
+
+            renderHook(() => useCoreContext(), {
+                wrapper: ({ children }) => (
+                    <CoreProvider>{children}</CoreProvider>
+                ),
+            })
+
+            expect(useTestSession).toHaveBeenCalledWith(
+                'https://test-base-url.com',
+                expect.anything(),
+                true,
+                undefined,
+            )
+        })
+
+        it('should pass useV3 true to usePlaygroundPolling when flag is enabled', () => {
+            mockedUseFlagWithLoading.mockReturnValue({
+                value: true,
+                isLoading: false,
+            })
+            const usePlaygroundPolling =
+                require('../../hooks/usePlaygroundPolling')
+                    .usePlaygroundPolling as jest.Mock
+
+            renderHook(() => useCoreContext(), {
+                wrapper: ({ children }) => (
+                    <CoreProvider>{children}</CoreProvider>
+                ),
+            })
+
+            expect(usePlaygroundPolling).toHaveBeenCalledWith({
+                testSessionId: 'test-session-123',
+                baseUrl: 'https://test-base-url.com',
+                useV3: true,
             })
         })
     })

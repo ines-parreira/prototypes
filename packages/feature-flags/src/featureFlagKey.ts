@@ -173,6 +173,7 @@ export enum FeatureFlagKey {
     OpportunitiesMilestone2 = 'linear.project_proactively-surface-opportunities.enable-milestone-2-features',
     PhoneStatusBatchPollingInterval = 'linear.task_HELP-5435.phone-status-batch-polling-interval',
     PhrasePredictionDebounce = 'phrase-prediction-debounce',
+    PlaygroundV3BetaRollout = 'playground-v3-beta-rollout',
     ProductCardDiscountedPrice = 'product-card-discounted-price',
     RedirectDeprecatedTicketRoutes = 'redirect-deprecated-ticket-routes',
     ReportingAgentsTableAverageAndTotal = 'reporting-agents-table-average-and-total',
