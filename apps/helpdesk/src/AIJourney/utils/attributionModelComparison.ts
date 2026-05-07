@@ -8,6 +8,7 @@ export type AttributionModelComparison =
     | 'attentive'
     | 'postscript'
     | 'liverecover'
+    | '1-day-click'
     | '2-day-click'
     | '3-day-click'
 
@@ -19,6 +20,7 @@ export const ATTRIBUTION_MODEL_LABELS: Record<
     attentive: 'click 5d > delivery 24h',
     postscript: 'click 7d > delivery 24h',
     liverecover: 'discount 10d > delivery 20d',
+    '1-day-click': 'click 1d',
     '2-day-click': 'click 2d',
     '3-day-click': 'click 3d',
 }
@@ -47,6 +49,8 @@ export const ATTRIBUTION_MODEL_HINTS: Record<
         'Orders attributed via 7-day click window with 24-hour delivery window (click priority).',
     liverecover:
         'Orders attributed via 10-day discount code window with 20-day delivery window (discount-code priority).',
+    '1-day-click':
+        'Orders attributed via 1-day click window (Gorgias custom click-only model).',
     '2-day-click':
         'Orders attributed via 2-day click window (Gorgias custom click-only model).',
     '3-day-click':

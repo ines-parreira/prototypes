@@ -427,6 +427,10 @@ export const Analytics = () => {
         'liverecover',
         providerHookParams,
     )
+    const oneDayClickData = useAIJourneyProviderMetricData(
+        '1-day-click',
+        providerHookParams,
+    )
     const twoDayClickData = useAIJourneyProviderMetricData(
         '2-day-click',
         providerHookParams,
@@ -466,6 +470,7 @@ export const Analytics = () => {
         attentive: attentiveData,
         postscript: postscriptData,
         liverecover: liverecoverData,
+        '1-day-click': oneDayClickData,
         '2-day-click': twoDayClickData,
         '3-day-click': threeDayClickData,
     }

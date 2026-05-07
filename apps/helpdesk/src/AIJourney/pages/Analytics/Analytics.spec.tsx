@@ -681,7 +681,7 @@ describe('<Analytics />', () => {
         await waitFor(() => {
             const modal = screen.getByRole('dialog')
             const infoIcons = within(modal).getAllByLabelText('info')
-            expect(infoIcons).toHaveLength(20)
+            expect(infoIcons).toHaveLength(22)
         })
     })
 
@@ -1004,7 +1004,7 @@ describe('<Analytics />', () => {
         await waitFor(() => {
             const modal = screen.getByRole('dialog')
             const infoIcons = within(modal).getAllByLabelText('info')
-            expect(infoIcons).toHaveLength(13)
+            expect(infoIcons).toHaveLength(15)
         })
     })
 
@@ -1255,6 +1255,12 @@ describe('<Analytics />', () => {
                     within(modal).getByText('Orders (click 5d > delivery 12h)'),
                 ).toBeInTheDocument()
                 expect(
+                    within(modal).getByText('Total sales (click 1d)'),
+                ).toBeInTheDocument()
+                expect(
+                    within(modal).getByText('Orders (click 1d)'),
+                ).toBeInTheDocument()
+                expect(
                     within(modal).getByText('Total sales (click 2d)'),
                 ).toBeInTheDocument()
                 expect(
@@ -1335,7 +1341,7 @@ describe('<Analytics />', () => {
             expect(screen.getByText('42')).toBeInTheDocument()
         })
 
-        it('should call all six provider hooks unconditionally with their correct provider strings', () => {
+        it('should call all seven provider hooks unconditionally with their correct provider strings', () => {
             render(
                 <Provider store={mockStore}>
                     <JourneyProvider>
@@ -1349,6 +1355,7 @@ describe('<Analytics />', () => {
                 'attentive',
                 'postscript',
                 'liverecover',
+                '1-day-click',
                 '2-day-click',
                 '3-day-click',
             ]
