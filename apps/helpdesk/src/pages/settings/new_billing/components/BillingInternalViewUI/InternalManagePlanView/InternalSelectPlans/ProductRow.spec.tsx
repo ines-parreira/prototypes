@@ -99,6 +99,54 @@ describe('ProductRow', () => {
         ).not.toBeInTheDocument()
     })
 
+    describe('"Current plan" tag', () => {
+        it('shows when the selected plan matches the current subscription plan', () => {
+            renderComponent()
+
+            expect(screen.getByText('Current plan')).toBeInTheDocument()
+        })
+
+        it('does not show when a different plan is selected', () => {
+            renderComponent({ selectedPlanId: proMonthlyHelpdeskPlan.plan_id })
+
+            expect(screen.queryByText('Current plan')).not.toBeInTheDocument()
+        })
+
+        it('appears in the dropdown list for the current plan option', async () => {
+            const user = userEvent.setup()
+            renderComponent({ selectedPlanId: proMonthlyHelpdeskPlan.plan_id })
+
+            await act(() =>
+                user.click(screen.getByRole('button', { name: /2,000/i })),
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText(basicMonthlyHelpdeskPlan.plan_id),
+                ).toBeInTheDocument()
+            })
+
+            expect(screen.getByText('Current plan')).toBeInTheDocument()
+        })
+
+        it('does not appear in the dropdown for non-current plan options', async () => {
+            const user = userEvent.setup()
+            renderComponent({ selectedPlanId: proMonthlyHelpdeskPlan.plan_id })
+
+            await act(() =>
+                user.click(screen.getByRole('button', { name: /2,000/i })),
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText(proMonthlyHelpdeskPlan.plan_id),
+                ).toBeInTheDocument()
+            })
+
+            expect(screen.getAllByText('Current plan')).toHaveLength(1)
+        })
+    })
+
     it('calls onPlanSelect with correct args when selecting a plan from dropdown', async () => {
         const user = userEvent.setup()
         const onPlanSelect = jest.fn()

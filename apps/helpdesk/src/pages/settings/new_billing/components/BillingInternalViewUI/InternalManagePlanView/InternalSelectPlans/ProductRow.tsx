@@ -127,7 +127,7 @@ export function ProductRow({
                             {(option: PlanOption) => (
                                 <ListItem
                                     label={
-                                        <Box gap="md">
+                                        <Box gap="md" alignItems="center">
                                             <Text>
                                                 {option.formattedTickets}
                                             </Text>
@@ -137,6 +137,11 @@ export function ProductRow({
                                             >
                                                 {option.id}
                                             </Text>
+                                            {option.id === plan?.plan_id && (
+                                                <Tag color={Color.Purple}>
+                                                    Current plan
+                                                </Tag>
+                                            )}
                                         </Box>
                                     }
                                     textValue={`${option.formattedTickets} ${option.id}`}
@@ -150,6 +155,10 @@ export function ProductRow({
                                 {productInfo.counter}/{resolvedPlan.cadence}
                             </Text>
                             <Text>{resolvedPlan.name}</Text>
+                            {selectedPlanId === plan?.plan_id &&
+                                selectedOption && (
+                                    <Tag color={Color.Purple}>Current plan</Tag>
+                                )}
                         </>
                     )}
                 </Box>
