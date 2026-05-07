@@ -36,7 +36,7 @@ on:
         description: Force deploy commit
         type: string
         required: false
-        default: ''
+        default: ""
     secrets:
       GH_READ_PACKAGES_TOKEN:
         description: Read token for GitHub Packages dependencies
@@ -48,13 +48,14 @@ env:
 jobs:
   build:
     name: Build
-    runs-on: gh-actions-default-runner-set
+    runs-on: gh-actions-large-runner-set
     timeout-minutes: 15
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
         with:
-          ref: ${{ inputs.force-deploy-commit != '' && inputs.force-deploy-commit || github.sha }}
+          ref: ${{ inputs.force-deploy-commit != '' && inputs.force-deploy-commit ||
+            github.sha }}
 
       - name: Setup workspace
         uses: ./.github/actions/setup-workspace
