@@ -41,6 +41,5 @@ export const settingsSections: Record<SettingsSection, SettingsSectionConfig> =
             id: SettingsSection.Account,
             label: 'Account',
             icon: 'users',
-            requiredRole: UserRole.Admin,
         },
     }

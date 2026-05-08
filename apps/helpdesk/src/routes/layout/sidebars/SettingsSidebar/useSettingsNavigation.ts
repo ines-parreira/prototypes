@@ -114,7 +114,7 @@ export function useSettingsNavigation() {
             {
                 id: 'password-2fa',
                 to: 'password-2fa',
-                text: currentUser?.has_password ? '2FA' : 'Password & 2FA',
+                text: currentUser?.has_password ? 'Password & 2FA' : '2FA',
             },
             {
                 id: 'notifications',

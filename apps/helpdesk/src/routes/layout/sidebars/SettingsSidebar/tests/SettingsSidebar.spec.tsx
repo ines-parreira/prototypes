@@ -47,7 +47,7 @@ const mockCurrentUser = mockGetCurrentUserHandler(async ({ data }) =>
     HttpResponse.json({
         ...data,
         role: { name: 'admin' },
-        has_password: false,
+        has_password: true,
     }),
 )
 
@@ -144,6 +144,59 @@ describe('SettingsSidebar', () => {
         expect(screen.getByText('Imports')).toBeInTheDocument()
         expect(screen.getByText('Password & 2FA')).toBeInTheDocument()
         expect(screen.getByText('Notifications')).toBeInTheDocument()
+    })
+
+    it('should only show Password & 2FA and Notifications in the Account section for non-admin users', async () => {
+        const { handler } = mockGetCurrentUserHandler(async ({ data }) =>
+            HttpResponse.json({
+                ...data,
+                role: { name: 'agent' },
+                has_password: true,
+            }),
+        )
+        server.use(handler)
+
+        renderSettingsSidebar({
+            ...defaultState,
+            currentUser: fromJS({
+                has_password: true,
+                role: { name: 'agent' },
+            }),
+        })
+
+        expect(await screen.findByText('Password & 2FA')).toBeInTheDocument()
+        expect(screen.getByText('Notifications')).toBeInTheDocument()
+
+        expect(screen.queryByText('Users')).not.toBeInTheDocument()
+        expect(screen.queryByText('Teams')).not.toBeInTheDocument()
+        expect(screen.queryByText('Access management')).not.toBeInTheDocument()
+        expect(screen.queryByText('Billing and usage')).not.toBeInTheDocument()
+        expect(screen.queryByText('HTTP integration')).not.toBeInTheDocument()
+        expect(screen.queryByText('REST API')).not.toBeInTheDocument()
+        expect(screen.queryByText('Audit logs')).not.toBeInTheDocument()
+        expect(screen.queryByText('Imports')).not.toBeInTheDocument()
+    })
+
+    it('should label the Password & 2FA item as "2FA" when the user has no password', async () => {
+        const { handler } = mockGetCurrentUserHandler(async ({ data }) =>
+            HttpResponse.json({
+                ...data,
+                role: { name: 'admin' },
+                has_password: false,
+            }),
+        )
+        server.use(handler)
+
+        renderSettingsSidebar({
+            ...defaultState,
+            currentUser: fromJS({
+                has_password: false,
+                role: { name: 'admin' },
+            }),
+        })
+
+        expect(await screen.findByText('2FA')).toBeInTheDocument()
+        expect(screen.queryByText('Password & 2FA')).not.toBeInTheDocument()
     })
 
     it('should render Agent unavailability when feature flag is enabled', async () => {
