@@ -15,7 +15,8 @@ type AiAgentHandoverSummaryMessageProps = {
 export function AiAgentHandoverSummaryMessage({
     item,
 }: AiAgentHandoverSummaryMessageProps) {
-    const { renderAiAgentHandoverSummary } = useTicketThreadLegacyBridge()
+    const { renderAiAgentHandoverSummary, renderAiAgentReasoning } =
+        useTicketThreadLegacyBridge()
     const summaryContent = renderAiAgentHandoverSummary?.({
         message: item.data,
     })
@@ -40,6 +41,7 @@ export function AiAgentHandoverSummaryMessage({
                     </Box>
                 </MessageHeaderContainer>
                 <MessageBody item={item} />
+                {renderAiAgentReasoning?.({ message: item.data })}
             </MessageBubble>
             {summaryContent}
         </Box>
