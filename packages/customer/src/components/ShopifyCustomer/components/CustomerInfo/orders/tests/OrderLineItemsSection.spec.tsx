@@ -18,6 +18,7 @@ const mockLineItem = {
     quantity: 2,
     price: '199.99',
     sku: 'fixie-bike',
+    variant_title: 'Gold / S',
     product_id: 101,
     variant_id: 201,
 }
@@ -27,6 +28,7 @@ const mockLineItemWithoutSku = {
     title: 'Road Bike',
     quantity: 1,
     price: '349.00',
+    variant_title: null,
     product_id: null,
     variant_id: null,
 }
@@ -70,10 +72,11 @@ describe('OrderLineItemsSection', () => {
         ).toBeInTheDocument()
     })
 
-    it('renders the line item title', () => {
+    it('renders the line item title with variant inline', () => {
         render(<OrderLineItemsSection {...defaultProps} />)
 
-        expect(screen.getByText('Fixie Bike')).toBeInTheDocument()
+        const variant = screen.getByText('Gold / S')
+        expect(variant.parentElement).toHaveTextContent('Fixie Bike - Gold / S')
     })
 
     it('renders SKU when present', () => {
@@ -91,6 +94,47 @@ describe('OrderLineItemsSection', () => {
         )
 
         expect(screen.queryByText(/SKU:/)).not.toBeInTheDocument()
+    })
+
+    it('renders variant title when present', () => {
+        render(<OrderLineItemsSection {...defaultProps} />)
+
+        expect(screen.getByText('Gold / S')).toBeInTheDocument()
+    })
+
+    it('does not render variant title when null', () => {
+        render(
+            <OrderLineItemsSection
+                {...defaultProps}
+                lineItems={[mockLineItemWithoutSku]}
+            />,
+        )
+
+        expect(screen.queryByText('Gold / S')).not.toBeInTheDocument()
+    })
+
+    it('does not render variant title when empty string', () => {
+        render(
+            <OrderLineItemsSection
+                {...defaultProps}
+                lineItems={[{ ...mockLineItem, variant_title: '' }]}
+            />,
+        )
+
+        expect(screen.queryByText('Gold / S')).not.toBeInTheDocument()
+    })
+
+    it('does not render variant title when "Default Title"', () => {
+        render(
+            <OrderLineItemsSection
+                {...defaultProps}
+                lineItems={[
+                    { ...mockLineItem, variant_title: 'Default Title' },
+                ]}
+            />,
+        )
+
+        expect(screen.queryByText('Default Title')).not.toBeInTheDocument()
     })
 
     it('renders the quantity in Nx format', () => {
@@ -113,7 +157,8 @@ describe('OrderLineItemsSection', () => {
             />,
         )
 
-        expect(screen.getByText('Fixie Bike')).toBeInTheDocument()
+        const variant = screen.getByText('Gold / S')
+        expect(variant.parentElement).toHaveTextContent('Fixie Bike - Gold / S')
         expect(screen.getByText('Road Bike')).toBeInTheDocument()
     })
 
@@ -129,6 +174,14 @@ describe('OrderLineItemsSection', () => {
             ).toBeInTheDocument()
         })
 
+        it('does not render a copy button for variant title', () => {
+            render(<OrderLineItemsSection {...defaultProps} />)
+
+            expect(
+                screen.queryByRole('button', { name: /copy variant/i }),
+            ).not.toBeInTheDocument()
+        })
+
         it('does not render a copy button for SKU when SKU is absent', () => {
             render(
                 <OrderLineItemsSection
@@ -142,7 +195,7 @@ describe('OrderLineItemsSection', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('copies the product title on click', async () => {
+        it('copies the product title with variant on click', async () => {
             const writeTextSpy = vi
                 .spyOn(navigator.clipboard, 'writeText')
                 .mockResolvedValue(undefined)
@@ -153,7 +206,26 @@ describe('OrderLineItemsSection', () => {
                 screen.getByRole('button', { name: /copy product title/i }),
             )
 
-            expect(writeTextSpy).toHaveBeenCalledWith('Fixie Bike')
+            expect(writeTextSpy).toHaveBeenCalledWith('Fixie Bike - Gold / S')
+        })
+
+        it('copies just the title when there is no variant', async () => {
+            const writeTextSpy = vi
+                .spyOn(navigator.clipboard, 'writeText')
+                .mockResolvedValue(undefined)
+
+            const { user } = render(
+                <OrderLineItemsSection
+                    {...defaultProps}
+                    lineItems={[mockLineItemWithoutSku]}
+                />,
+            )
+
+            await user.click(
+                screen.getByRole('button', { name: /copy product title/i }),
+            )
+
+            expect(writeTextSpy).toHaveBeenCalledWith('Road Bike')
         })
 
         it('copies the SKU (without the "SKU: " prefix) on click', async () => {

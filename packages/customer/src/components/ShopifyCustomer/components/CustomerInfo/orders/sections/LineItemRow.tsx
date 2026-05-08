@@ -26,6 +26,11 @@ export function LineItemRow({
         lineItem.product_id && productsMap
             ? productsMap.get(lineItem.product_id)
             : undefined
+    const hasVariant =
+        !!lineItem.variant_title && lineItem.variant_title !== 'Default Title'
+    const titleWithVariant = hasVariant
+        ? `${lineItem.title} - ${lineItem.variant_title}`
+        : lineItem.title
 
     return (
         <Box flexDirection="row" alignItems="flex-start" gap="xs" pb="md">
@@ -36,11 +41,21 @@ export function LineItemRow({
             />
             <Box flex={1} flexDirection="column">
                 <CopyableField
-                    value={lineItem.title}
+                    value={titleWithVariant}
                     ariaLabel="Copy product title"
                     inline
                 >
-                    <Text size="md">{lineItem.title}</Text>
+                    <Text size="md">
+                        {lineItem.title}
+                        {hasVariant && (
+                            <>
+                                {' - '}
+                                <span className={css.label}>
+                                    {lineItem.variant_title}
+                                </span>
+                            </>
+                        )}
+                    </Text>
                 </CopyableField>
                 {lineItem.sku && (
                     <CopyableField

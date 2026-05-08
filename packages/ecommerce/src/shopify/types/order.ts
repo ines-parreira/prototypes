@@ -15,6 +15,7 @@ export type OrderLineItem = {
     price_set?: MoneySet
     current_quantity?: number
     sku?: string | null
+    variant_title?: string | null
     product_id?: number | null
     variant_id?: number | null
     product_exists?: boolean
