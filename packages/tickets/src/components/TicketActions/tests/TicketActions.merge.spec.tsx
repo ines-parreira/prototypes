@@ -136,10 +136,9 @@ describe('TicketActions merge tickets', () => {
 
         await user.click(targetTicketRow!)
 
-        const confirmationCheckbox = await screen.findByLabelText(
-            'I understand that this action is irreversible.',
-        )
-        await user.click(confirmationCheckbox)
+        expect(
+            screen.getByText('This action is irreversible.'),
+        ).toBeInTheDocument()
 
         const mergeButton = await screen.findByRole('button', {
             name: 'Merge tickets',

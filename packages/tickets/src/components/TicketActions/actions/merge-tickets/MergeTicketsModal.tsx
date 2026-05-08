@@ -5,7 +5,7 @@ import type { ValueOf } from '@repo/types'
 import {
     Box,
     Button,
-    CheckBoxField,
+    Icon,
     Modal,
     ModalSize,
     OverlayContent,
@@ -15,6 +15,7 @@ import {
     StepperTabItem,
     StepperTabList,
     StepperTabPanel,
+    Text,
 } from '@gorgias/axiom'
 import type {
     MergeTicketsBody,
@@ -46,7 +47,6 @@ export function MergeTicketsModal({
     onOpenChange,
     ticket,
 }: MergeTicketsModalProps) {
-    const [isConfirmationChecked, setIsConfirmationChecked] = useState(false)
     const [selectedTab, setSelectedTab] = useState<
         ValueOf<typeof MergeTicketsModalTabs>
     >(MergeTicketsModalTabs.Search)
@@ -210,16 +210,15 @@ export function MergeTicketsModal({
                     gap="md"
                 >
                     {selectedTab === MergeTicketsModalTabs.FieldsSelection && (
-                        <CheckBoxField
-                            label="I understand that this action is irreversible."
-                            value={isConfirmationChecked}
-                            onChange={setIsConfirmationChecked}
-                        />
+                        <Box flexDirection="row" alignItems="center" gap="xxs">
+                            <Icon name="triangle-warning" />
+                            <Text>This action is irreversible.</Text>
+                        </Box>
                     )}
                     <Button
                         variant="primary"
                         onClick={handleMergeTicketsClick}
-                        isDisabled={!hasFinalTicket || !isConfirmationChecked}
+                        isDisabled={!hasFinalTicket}
                     >
                         Merge tickets
                     </Button>

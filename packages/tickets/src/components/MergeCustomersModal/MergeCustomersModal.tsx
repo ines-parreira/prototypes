@@ -1,10 +1,10 @@
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 
 import {
     Box,
     Button,
-    CheckBoxField,
     Heading,
+    Icon,
     Modal,
     ModalSize,
     OverlayContent,
@@ -52,8 +52,6 @@ export function MergeCustomersModal({
     ticketId,
     onMerge,
 }: MergeCustomersModalProps) {
-    const [isConfirmationChecked, setIsConfirmationChecked] = useState(false)
-
     const { humanizeChannel } = useTicketsLegacyBridge()
 
     const {
@@ -119,7 +117,6 @@ export function MergeCustomersModal({
     const handleOpenChange = useCallback(
         (open: boolean) => {
             if (!open) {
-                setIsConfirmationChecked(false)
                 resetState()
             }
             onOpenChange(open)
@@ -160,7 +157,6 @@ export function MergeCustomersModal({
                 },
             )
 
-            setIsConfirmationChecked(false)
             onOpenChange(false)
             onMerge()
         } catch {}
@@ -456,19 +452,14 @@ export function MergeCustomersModal({
                     gap="md"
                     className={css.footer}
                 >
-                    <CheckBoxField
-                        label="I understand that this action is irreversible."
-                        value={isConfirmationChecked}
-                        onChange={setIsConfirmationChecked}
-                    />
+                    <Box flexDirection="row" alignItems="center" gap="xxs">
+                        <Icon name="triangle-warning" />
+                        <Text>This action is irreversible.</Text>
+                    </Box>
                     <Button
                         variant="primary"
                         onClick={handleMergeClick}
-                        isDisabled={
-                            !isConfirmationChecked ||
-                            isLoading ||
-                            isLoadingSourceCustomer
-                        }
+                        isDisabled={isLoading || isLoadingSourceCustomer}
                         isLoading={isLoading}
                     >
                         Merge

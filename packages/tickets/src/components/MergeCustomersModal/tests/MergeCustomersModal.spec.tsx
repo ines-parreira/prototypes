@@ -95,6 +95,9 @@ describe('MergeCustomersModal', () => {
         expect(screen.getByText('Merge customer')).toBeInTheDocument()
         expect(screen.getByText('John Doe')).toBeInTheDocument()
         expect(screen.getByText('Jane Smith')).toBeInTheDocument()
+        expect(
+            screen.getByText('This action is irreversible.'),
+        ).toBeInTheDocument()
     })
 
     it('should disable merge button while loading source customer', async () => {
@@ -103,37 +106,11 @@ describe('MergeCustomersModal', () => {
             isLoading: true,
         })
 
-        const { user } = renderModal()
-
-        const checkbox = await screen.findByRole('checkbox', {
-            name: /I understand that this action is irreversible/i,
-        })
-        await user.click(checkbox)
-
-        expect(screen.getByRole('button', { name: /merge/i })).toBeDisabled()
-    })
-
-    it('should disable merge button when confirmation is not checked', async () => {
         renderModal()
 
         expect(
             await screen.findByRole('button', { name: /merge/i }),
         ).toBeDisabled()
-    })
-
-    it('should enable merge button when confirmation is checked', async () => {
-        const { user } = renderModal()
-
-        const checkbox = await screen.findByRole('checkbox', {
-            name: /I understand that this action is irreversible/i,
-        })
-        await user.click(checkbox)
-
-        await waitFor(() => {
-            expect(
-                screen.getByRole('button', { name: /merge/i }),
-            ).not.toBeDisabled()
-        })
     })
 
     it('should toggle channel selection when clicked', async () => {
@@ -174,12 +151,9 @@ describe('MergeCustomersModal', () => {
         await user.click(screen.getByText('alternative@example.com'))
         await user.click(screen.getByText('@johndoe'))
 
-        const confirmationCheckbox = await screen.findByRole('checkbox', {
-            name: /I understand that this action is irreversible/i,
+        const mergeButton = await screen.findByRole('button', {
+            name: /merge/i,
         })
-        await user.click(confirmationCheckbox)
-
-        const mergeButton = screen.getByRole('button', { name: /merge/i })
         await waitFor(() => {
             expect(mergeButton).toBeEnabled()
         })
@@ -253,11 +227,6 @@ describe('MergeCustomersModal', () => {
         await waitFor(() => {
             expect(nameRadios[1]).toBeChecked()
         })
-
-        const checkbox = await screen.findByRole('checkbox', {
-            name: /I understand that this action is irreversible/i,
-        })
-        await user.click(checkbox)
 
         const mergeButton = await screen.findByRole('button', {
             name: /merge/i,
