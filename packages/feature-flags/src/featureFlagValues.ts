@@ -1,5 +1,5 @@
 export type ActionCentralizedLibraryMilestone =
-    | 'off'
-    | 'milestone-1'
-    | 'milestone-2'
-    | 'milestone-3'
+    | 'OFF'
+    | 'MILESTONE-1'
+    | 'MILESTONE-2'
+    | 'MILESTONE-3'

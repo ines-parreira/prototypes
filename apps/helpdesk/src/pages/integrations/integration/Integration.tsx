@@ -104,6 +104,7 @@ export const IntegrationDetail = ({
         'about',
         'migration',
         'queues',
+        'actions',
     ].includes(integrationId)
 
     const { redirectToOnboardingIfOnboarding } =

@@ -1,4 +1,5 @@
 import client from '@repo/api-resources'
+import { featureFlagsClientMock } from '@repo/feature-flags/testing'
 import { render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
@@ -309,5 +310,47 @@ describe(`App`, () => {
         await screen.findAllByText(
             'This app doesn’t have any connected accounts yet, reconnect the app to start using it. If you still see this message contact our support to help you.',
         )
+    })
+
+    describe('Actions tab (ActionCentralizedLibrary FF)', () => {
+        afterEach(() => {
+            featureFlagsClientMock.allFlags.mockReturnValue({})
+        })
+
+        it('does not render the Actions link when the FF is off', async () => {
+            mockServer
+                .onGet(`/api/apps/${appId}`)
+                .reply(200, { ...dummyAppData, is_installed: true })
+            mockServer.onGet(`/api/async/errors`).reply(200, { data: [] })
+            featureFlagsClientMock.allFlags.mockReturnValue({
+                'action-centralized-library': 'OFF',
+            })
+            render(<App />, {
+                path: '/integrations/app/:appId/:extra?',
+                initialEntries: [`/integrations/app/${appId}`],
+                storeState: store.getState() as object,
+            })
+            await screen.findAllByText(new RegExp(dummyAppData.name))
+            expect(screen.queryByRole('link', { name: 'Actions' })).toBeNull()
+        })
+
+        it('renders the Actions link in the SecondaryNavbar when the FF is on', async () => {
+            mockServer
+                .onGet(`/api/apps/${appId}`)
+                .reply(200, { ...dummyAppData, is_installed: true })
+            mockServer.onGet(`/api/async/errors`).reply(200, { data: [] })
+            featureFlagsClientMock.allFlags.mockReturnValue({
+                'action-centralized-library': 'MILESTONE-1',
+            })
+            render(<App />, {
+                path: '/integrations/app/:appId/:extra?',
+                initialEntries: [`/integrations/app/${appId}`],
+                storeState: store.getState() as object,
+            })
+            await screen.findAllByText(new RegExp(dummyAppData.name))
+            expect(
+                await screen.findByRole('link', { name: 'Actions' }),
+            ).toBeInTheDocument()
+        })
     })
 })

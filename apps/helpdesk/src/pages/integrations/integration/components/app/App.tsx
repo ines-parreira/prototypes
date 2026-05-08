@@ -14,6 +14,7 @@ import {
 
 import { AlertBannerTypes } from 'AlertBanners'
 import { AlertBanner } from 'AlertBanners/components/AlertBanner'
+import { useActionCentralizedLibraryEnabled } from 'hooks/integrations/useActionCentralizedLibraryEnabled'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useSearch } from 'hooks/useSearch'
@@ -38,12 +39,14 @@ import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { fetchIntegrations } from 'state/integrations/actions'
 import { getIntegrationsByAppId } from 'state/integrations/selectors'
 
+import AppActionsTab from './AppActionsTab'
 import IntegrationsList from './IntegrationsList'
 
 export enum Tab {
     Details = 'details',
     Advanced = 'advanced',
     Connections = 'connections',
+    Actions = 'actions',
 }
 
 function queryStringToBool(flag?: string): boolean {
@@ -64,6 +67,9 @@ export default function AppDetail() {
     const [isLoading, setLoading] = useState(false)
 
     const baseURL = `/app/settings/integrations/app/${appId}`
+
+    const { isEnabled: isActionLibraryEnabled } =
+        useActionCentralizedLibraryEnabled()
 
     const hasConnections = !isEmpty(
         useAppSelector(getIntegrationsByAppId(appId)),
@@ -149,7 +155,7 @@ export default function AppDetail() {
                     </Breadcrumb>
                 }
             >
-                {extra === Tab.Connections && supportsMultipleConnections() && (
+                {extra === Tab.Connections && supportsMultipleConnections() ? (
                     <ConnectLink
                         connectUrl={appItem.connectUrl}
                         isApp
@@ -157,7 +163,15 @@ export default function AppDetail() {
                     >
                         <Button>Add Account</Button>
                     </ConnectLink>
-                )}
+                ) : extra === Tab.Actions && isActionLibraryEnabled ? (
+                    <ConnectLink
+                        connectUrl={appItem.connectUrl}
+                        isApp
+                        integrationTitle={appItem.title}
+                    >
+                        <Button>Add new connection</Button>
+                    </ConnectLink>
+                ) : null}
             </PageHeader>
 
             {appItem.isConnected && (
@@ -173,6 +187,11 @@ export default function AppDetail() {
                             Connections
                         </NavLink>
                     )}
+                    {isActionLibraryEnabled && (
+                        <NavLink to={`${baseURL}/actions`} exact>
+                            Actions
+                        </NavLink>
+                    )}
                 </SecondaryNavbar>
             )}
             {extra === Tab.Advanced && <AppAdvanced {...appItem} />}
@@ -181,6 +200,13 @@ export default function AppDetail() {
                 <IntegrationsList
                     appId={appItem.appId}
                     connectUrl={appItem.connectUrl}
+                />
+            )}
+            {extra === Tab.Actions && isActionLibraryEnabled && (
+                <AppActionsTab
+                    appId={appItem.appId}
+                    appName={appItem.title}
+                    appIcon={appItem.image}
                 />
             )}
         </div>

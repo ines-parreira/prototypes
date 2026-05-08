@@ -364,7 +364,7 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
     const { value: __actionCentralizedLibraryMilestone } =
         useFlagWithLoading<ActionCentralizedLibraryMilestone>(
             FeatureFlagKey.ActionCentralizedLibrary,
-            'off',
+            'OFF',
         )
 
     const { routes } = useAiAgentNavigation({ shopName })
