@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 
 import type { User } from '@gorgias/helpdesk-queries'
+import { ListUsersRolesItem } from '@gorgias/helpdesk-types'
 
 import { useInfiniteListUsers } from './useInfiniteListUsers'
 
@@ -9,12 +10,21 @@ export type NonNullableUser = User & {
     name: NonNullable<User['name']>
 }
 
+const ASSIGNABLE_USER_ROLES = [
+    ListUsersRolesItem.Admin,
+    ListUsersRolesItem.Agent,
+    ListUsersRolesItem.BasicAgent,
+    ListUsersRolesItem.LiteAgent,
+    ListUsersRolesItem.ObserverAgent,
+]
+
 export function useListUsersSearch() {
     const [search, setSearch] = useState('')
 
     const queryResult = useInfiniteListUsers(
         {
             search: search || undefined,
+            roles: ASSIGNABLE_USER_ROLES,
         },
         {
             staleTime: 60000 * 5,

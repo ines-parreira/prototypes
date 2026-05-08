@@ -158,6 +158,29 @@ describe('useListUsersSearch', () => {
         })
     })
 
+    it('should request only assignable roles (excluding bots and internal agents)', async () => {
+        const waitForRequest = mockListUsers.waitForRequest(server)
+        renderHook(() => useListUsersSearch())
+
+        await waitForRequest((request) => {
+            const url = new URL(request.url)
+            const roles = url.searchParams.getAll('roles[]')
+            const rolesAlt = url.searchParams.getAll('roles')
+            const requestedRoles = roles.length ? roles : rolesAlt
+            expect(requestedRoles).not.toContain('bot')
+            expect(requestedRoles).not.toContain('internal-agent')
+            expect(requestedRoles).toEqual(
+                expect.arrayContaining([
+                    'admin',
+                    'agent',
+                    'basic-agent',
+                    'lite-agent',
+                    'observer-agent',
+                ]),
+            )
+        })
+    })
+
     it('should maintain search state', async () => {
         const { result } = renderHook(() => useListUsersSearch())
 
