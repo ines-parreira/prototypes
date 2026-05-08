@@ -11,7 +11,11 @@ import { setMetricData } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
 
 import type { TableRow } from '../../../pages/Flows/Flows'
-import { journeysColumns, metricColumns } from './JourneysColumns'
+import {
+    getRowDatetime,
+    journeysColumns,
+    metricColumns,
+} from './JourneysColumns'
 
 jest.mock('hooks/useAppDispatch')
 const mockUseAppDispatch = useAppDispatch as jest.MockedFunction<
@@ -91,6 +95,80 @@ const renderComponent = (integrationId?: number) => {
         </ThemeProvider>,
     )
 }
+
+describe('journeysColumns - datetime columns', () => {
+    const createdColumn = journeysColumns.find(
+        (column) => 'id' in column && column.id === 'created_datetime',
+    )
+    const updatedColumn = journeysColumns.find(
+        (column) => 'id' in column && column.id === 'updated_datetime',
+    )
+
+    it('declares both datetime columns with the datetime sort fn', () => {
+        expect(createdColumn).toBeDefined()
+        expect(updatedColumn).toBeDefined()
+        expect(
+            createdColumn && 'sortingFn' in createdColumn
+                ? createdColumn.sortingFn
+                : undefined,
+        ).toBe('datetime')
+        expect(
+            updatedColumn && 'sortingFn' in updatedColumn
+                ? updatedColumn.sortingFn
+                : undefined,
+        ).toBe('datetime')
+    })
+
+    it('returns the timestamp string for rows with both id and the requested key', () => {
+        const row = {
+            id: 'journey-1',
+            created_datetime: '2024-01-01T00:00:00Z',
+            updated_datetime: '2024-02-02T00:00:00Z',
+        } as unknown as TableRow
+
+        expect(getRowDatetime(row, 'created_datetime')).toBe(
+            '2024-01-01T00:00:00Z',
+        )
+        expect(getRowDatetime(row, 'updated_datetime')).toBe(
+            '2024-02-02T00:00:00Z',
+        )
+    })
+
+    it('returns undefined when the row has no id (placeholder/empty row)', () => {
+        const row = {
+            id: undefined,
+            created_datetime: '2024-01-01T00:00:00Z',
+        } as unknown as TableRow
+
+        expect(getRowDatetime(row, 'created_datetime')).toBeUndefined()
+    })
+
+    it('exercises the created_datetime accessor through the column definition', () => {
+        const accessorFn =
+            createdColumn && 'accessorFn' in createdColumn
+                ? createdColumn.accessorFn
+                : undefined
+        const row = {
+            id: 'journey-1',
+            created_datetime: '2024-03-03T00:00:00Z',
+        } as unknown as TableRow
+
+        expect(accessorFn?.(row, 0)).toBe('2024-03-03T00:00:00Z')
+    })
+
+    it('falls back to an empty string when the row has no created_datetime', () => {
+        const accessorFn =
+            createdColumn && 'accessorFn' in createdColumn
+                ? createdColumn.accessorFn
+                : undefined
+        const row = {
+            id: undefined,
+            created_datetime: undefined,
+        } as unknown as TableRow
+
+        expect(accessorFn?.(row, 0)).toBe('')
+    })
+})
 
 describe('journeysColumns - title accessor', () => {
     const titleColumn = journeysColumns[0]

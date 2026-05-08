@@ -12,6 +12,7 @@ import {
 } from '@gorgias/axiom'
 
 import { DateFormatToggle } from 'AIJourney/components/DateFormatToggle/DateFormatToggle'
+import type { JourneysTableMeta } from 'AIJourney/components/JourneysTable/JourneysColumns/JourneysColumns'
 import { useDateFormatPreference } from 'AIJourney/hooks'
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
@@ -65,7 +66,7 @@ export const JourneysTable = <TData, TValue>({
                 currency: currency,
                 integrationId: integrationId,
                 dateFormat,
-            },
+            } satisfies JourneysTableMeta,
         },
     })
 

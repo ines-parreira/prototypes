@@ -28,10 +28,12 @@ export type JourneysTableMeta = {
     dateFormat: DateFormatPreference
 }
 
-const getRowDatetime = (
+const DATETIME_SORT_FN = 'datetime' as const
+
+export const getRowDatetime = (
     row: TableRow,
     key: 'created_datetime' | 'updated_datetime',
-): string | null | undefined => (key in row ? (row as never)[key] : undefined)
+): string | null | undefined => (row.id === undefined ? undefined : row[key])
 
 export const journeysColumns: ColumnDef<TableRow>[] = [
     {
@@ -90,6 +92,7 @@ export const journeysColumns: ColumnDef<TableRow>[] = [
             )
         },
         enableSorting: true,
+        sortingFn: DATETIME_SORT_FN,
     },
     {
         id: 'updated_datetime',
@@ -112,6 +115,7 @@ export const journeysColumns: ColumnDef<TableRow>[] = [
             )
         },
         enableSorting: true,
+        sortingFn: DATETIME_SORT_FN,
     },
 ]
 

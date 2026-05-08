@@ -36,6 +36,8 @@ import { FilterKey } from 'domains/reporting/models/stat/types'
 import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
 import { useSearchParam } from 'hooks/useSearchParam'
 
+import { filterImpersonatedColumns } from '../../utils/filterImpersonatedColumns'
+
 import css from './Flows.less'
 
 type FlowMetrics = Metrics<number | string | undefined>
@@ -90,6 +92,8 @@ export const Flows = () => {
             `/app/ai-journey/${shopName}/${JOURNEY_TYPES.CUSTOM}/${STEPS_NAMES.SETUP}`,
         )
     }, [history, shopName])
+
+    const isImpersonated = !!window.USER_IMPERSONATED
 
     const hasFlows = journeys && journeys.length > 0
 
@@ -147,19 +151,17 @@ export const Flows = () => {
                 (option): option is ColumnDef<TableRow> => option !== undefined,
             )
 
-        const baseColumns = window.USER_IMPERSONATED
-            ? journeysColumns
-            : journeysColumns.filter(
-                  (column) =>
-                      !('id' in column && column.id === 'created_datetime'),
-              )
+        const baseColumns = filterImpersonatedColumns(
+            journeysColumns,
+            isImpersonated,
+        )
 
         return [
             ...baseColumns,
             ...orderedMetricColumns,
             ...actionColumns,
         ] as ColumnDef<TableRow>[]
-    }, [flowsTableKpisConfig])
+    }, [flowsTableKpisConfig, isImpersonated])
 
     const configuredFlows: ConfiguredFlowWithMetrics[] | undefined =
         useMemo(() => {

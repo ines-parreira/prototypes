@@ -21,6 +21,8 @@ import type { CampaignsTableMeta } from './types'
 
 import badgeCss from './CampaignStateBadge/CampaignStateBadge.less'
 
+const DATETIME_SORT_FN = 'datetime' as const
+
 export const columns: ColumnDef<TableRow>[] = [
     createTableV1SortableColumn<TableRow>('campaign.title', 'Title', (info) => {
         const storeName = info.row.original.store_name
@@ -74,6 +76,7 @@ export const columns: ColumnDef<TableRow>[] = [
             )
         },
         enableSorting: true,
+        sortingFn: DATETIME_SORT_FN,
     },
     {
         id: 'updated_datetime',
@@ -93,6 +96,7 @@ export const columns: ColumnDef<TableRow>[] = [
             )
         },
         enableSorting: true,
+        sortingFn: DATETIME_SORT_FN,
     },
     {
         id: 'campaign.scheduled_datetime',
@@ -112,6 +116,7 @@ export const columns: ColumnDef<TableRow>[] = [
             )
         },
         enableSorting: true,
+        sortingFn: DATETIME_SORT_FN,
     },
     {
         id: 'campaign.completed_datetime',
@@ -131,6 +136,7 @@ export const columns: ColumnDef<TableRow>[] = [
             )
         },
         enableSorting: true,
+        sortingFn: DATETIME_SORT_FN,
     },
 ]
 

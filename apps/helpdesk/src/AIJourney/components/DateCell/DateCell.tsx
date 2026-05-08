@@ -1,5 +1,5 @@
 import { formatDatetime } from '@repo/utils'
-import moment from 'moment'
+import moment from 'moment-timezone'
 
 import { Text } from '@gorgias/axiom'
 
@@ -18,9 +18,16 @@ export const DateCell = ({ value, format }: DateCellProps) => {
         return <Text>{EMPTY_PLACEHOLDER}</Text>
     }
 
-    if (format === 'relative') {
-        return <Text>{moment.utc(value).fromNow()}</Text>
+    const parsed = moment.utc(value)
+    if (!parsed.isValid()) {
+        return <Text>{EMPTY_PLACEHOLDER}</Text>
     }
 
-    return <Text>{formatDatetime(value, ABSOLUTE_FORMAT)}</Text>
+    if (format === 'relative') {
+        return <Text>{parsed.fromNow()}</Text>
+    }
+
+    return (
+        <Text>{formatDatetime(value, ABSOLUTE_FORMAT, moment.tz.guess())}</Text>
+    )
 }

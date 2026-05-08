@@ -29,6 +29,7 @@ import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillD
 import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
 
 import { getCampaignStateLabelAndColor } from '../../utils'
+import { filterImpersonatedColumns } from '../../utils/filterImpersonatedColumns'
 
 import css from './Campaigns.less'
 
@@ -82,6 +83,8 @@ export const Campaigns = () => {
         // oxlint-disable-next-line eslint-plugin-react-hooks/exhaustive-deps
     }, [statsFilters.period.start_datetime, statsFilters.period.end_datetime])
 
+    const isImpersonated = !!window.USER_IMPERSONATED
+
     const hasCampaigns = campaigns && campaigns.length > 0
 
     const { metrics: tableMetrics, isLoading: isMetricLoading } =
@@ -123,15 +126,10 @@ export const Campaigns = () => {
                 (option): option is ColumnDef<TableRow> => option !== undefined,
             )
 
-        const baseColumns = window.USER_IMPERSONATED
-            ? columns
-            : columns.filter(
-                  (column) =>
-                      !('id' in column && column.id === 'created_datetime'),
-              )
+        const baseColumns = filterImpersonatedColumns(columns, isImpersonated)
 
         return [...baseColumns, ...orderedMetricColumns, ...actionColumns]
-    }, [keyKpisConfig])
+    }, [keyKpisConfig, isImpersonated])
 
     return (
         <Box width="100%" flexDirection="column">
@@ -176,8 +174,8 @@ export const Campaigns = () => {
                     onEditColumns={() => setIsEditModalOpen(true)}
                     isLoading={isLoadingCampaigns}
                     initialSorting={[
-                        { id: 'campaign.scheduled_datetime', desc: true },
                         { id: 'updated_datetime', desc: true },
+                        { id: 'campaign.scheduled_datetime', desc: true },
                     ]}
                 />
                 <DrillDownModal />

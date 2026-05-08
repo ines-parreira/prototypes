@@ -598,6 +598,116 @@ describe('CampaignsTable', () => {
         ).not.toBeInTheDocument()
     })
 
+    describe('default sort', () => {
+        const initialSorting = [
+            { id: 'updated_datetime', desc: true },
+            { id: 'campaign.scheduled_datetime', desc: true },
+        ]
+
+        it('orders rows by updated_datetime desc, then scheduled_datetime desc', () => {
+            const sortRows: TableRow[] = [
+                {
+                    id: 'A',
+                    account_id: 1,
+                    created_datetime: '2026-05-01T10:00:00Z',
+                    updated_datetime: '2026-06-01T10:00:00Z',
+                    state: 'active',
+                    store_integration_id: 2,
+                    store_name: 'store',
+                    store_type: 'shopify',
+                    type: 'campaign',
+                    campaign: {
+                        title: 'Row A',
+                        state: 'scheduled',
+                        scheduled_datetime: '2026-07-01T10:00:00Z',
+                        has_included_audiences: true,
+                    },
+                    metrics: DEFAULT_TABLE_METRICS,
+                },
+                {
+                    id: 'B',
+                    account_id: 1,
+                    created_datetime: '2026-05-01T10:00:00Z',
+                    updated_datetime: '2026-06-15T10:00:00Z',
+                    state: 'draft',
+                    store_integration_id: 2,
+                    store_name: 'store',
+                    store_type: 'shopify',
+                    type: 'campaign',
+                    campaign: {
+                        title: 'Row B',
+                        state: 'draft',
+                        scheduled_datetime: null,
+                        has_included_audiences: true,
+                    },
+                    metrics: DEFAULT_TABLE_METRICS,
+                },
+                {
+                    id: 'C',
+                    account_id: 1,
+                    created_datetime: '2026-05-01T10:00:00Z',
+                    updated_datetime: null,
+                    state: 'active',
+                    store_integration_id: 2,
+                    store_name: 'store',
+                    store_type: 'shopify',
+                    type: 'campaign',
+                    campaign: {
+                        title: 'Row C',
+                        state: 'scheduled',
+                        scheduled_datetime: '2026-08-01T10:00:00Z',
+                        has_included_audiences: true,
+                    },
+                    metrics: DEFAULT_TABLE_METRICS,
+                },
+                {
+                    id: 'D',
+                    account_id: 1,
+                    created_datetime: '2026-05-01T10:00:00Z',
+                    updated_datetime: '2026-06-20T10:00:00Z',
+                    state: 'active',
+                    store_integration_id: 2,
+                    store_name: 'store',
+                    store_type: 'shopify',
+                    type: 'campaign',
+                    campaign: {
+                        title: 'Row D',
+                        state: 'scheduled',
+                        scheduled_datetime: '2026-05-01T10:00:00Z',
+                        has_included_audiences: true,
+                    },
+                    metrics: DEFAULT_TABLE_METRICS,
+                },
+            ]
+
+            const { container } = render(
+                wrapper(
+                    <CampaignsTable
+                        columns={columns}
+                        data={sortRows}
+                        initialSorting={initialSorting}
+                    />,
+                ),
+                {
+                    storeState: {
+                        integrations: fromJS({ integrations: [] }),
+                    },
+                },
+            )
+
+            const bodyRows = Array.from(container.querySelectorAll('tbody tr'))
+            const rowOrder = bodyRows
+                .map((tr) => tr.textContent ?? '')
+                .filter((text) => /Row [A-D]/.test(text))
+                .map((text) => {
+                    const match = text.match(/Row [A-D]/)
+                    return match ? match[0] : ''
+                })
+
+            expect(rowOrder).toEqual(['Row C', 'Row D', 'Row B', 'Row A'])
+        })
+    })
+
     it('should render pagination in bottom toolbar when there are more than 10 total rows', () => {
         const largeDataSet: TableRow[] = Array.from(
             { length: 11 },

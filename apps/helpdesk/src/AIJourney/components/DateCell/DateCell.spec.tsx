@@ -1,14 +1,24 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
-import moment from 'moment'
+import moment from 'moment-timezone'
 
 import { DateCell } from './DateCell'
 
 describe('DateCell', () => {
-    it('renders the absolute timestamp when format is absolute', () => {
-        render(<DateCell value="2026-04-15T14:23:00Z" format="absolute" />)
+    let guessSpy: jest.SpyInstance
 
-        expect(screen.getByText(/Apr 15, 2026/)).toBeInTheDocument()
+    beforeAll(() => {
+        guessSpy = jest.spyOn(moment.tz, 'guess').mockReturnValue('UTC')
+    })
+
+    afterAll(() => {
+        guessSpy.mockRestore()
+    })
+
+    it('renders the absolute timestamp when format is absolute', () => {
+        render(<DateCell value="2026-06-15T14:23:00Z" format="absolute" />)
+
+        expect(screen.getByText('Jun 15, 2026 2:23 PM')).toBeInTheDocument()
     })
 
     it('renders a relative timestamp when format is relative', () => {
@@ -33,6 +43,12 @@ describe('DateCell', () => {
 
     it('renders an em dash when value is an empty string', () => {
         render(<DateCell value="" format="absolute" />)
+
+        expect(screen.getByText('—')).toBeInTheDocument()
+    })
+
+    it('renders an em dash when value is not a parseable date', () => {
+        render(<DateCell value="not-a-real-date" format="absolute" />)
 
         expect(screen.getByText('—')).toBeInTheDocument()
     })
