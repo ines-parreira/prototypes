@@ -739,7 +739,6 @@ export type VisualBuilderGraph<
     internal_id: string
     is_draft: boolean
     name: string
-    template_internal_id?: string | null
     advanced_datetime?: Date | null
     category?: string | null
     available_languages: LanguageCode[]

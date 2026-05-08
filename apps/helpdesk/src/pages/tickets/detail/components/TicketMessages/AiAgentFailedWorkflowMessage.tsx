@@ -9,6 +9,7 @@ import useGetAppImageUrl from 'pages/aiAgent/actions/hooks/useGetAppImageUrl'
 import type {
     ActionStepItem,
     LlmTriggeredExecution,
+    ParentActionConfiguration,
     TemplateConfiguration,
 } from 'pages/aiAgent/actions/types'
 import { defaultNodeNames } from 'pages/automate/workflows/editor/visualBuilder/nodes/constants'
@@ -126,17 +127,6 @@ const PartialSuccessMessage = ({
         return url
     }, [execution])
 
-    // Get the template configuration for this action
-    const templateConfiguration = useMemo(() => {
-        if (!actionConfiguration?.template_internal_id)
-            return actionConfiguration
-        return templateConfigurations?.find(
-            (template) =>
-                template.internal_id ===
-                actionConfiguration?.template_internal_id,
-        )
-    }, [templateConfigurations, actionConfiguration])
-
     const steps = useMemo(
         () =>
             Object.entries(execution?.state.steps_state ?? {})
@@ -168,7 +158,7 @@ const PartialSuccessMessage = ({
                 <Fragment key={step.stepId}>
                     <StepWithIcon
                         step={step}
-                        parentTemplateConfiguration={templateConfiguration}
+                        parentTemplateConfiguration={actionConfiguration}
                         templateConfigurations={templateConfigurations}
                     />
                     {isSecondToLast && successfulSteps.length > 1 && ' and '}
@@ -190,7 +180,7 @@ const PartialSuccessMessage = ({
                 <Fragment key={step.stepId}>
                     <StepWithIcon
                         step={step}
-                        parentTemplateConfiguration={templateConfiguration}
+                        parentTemplateConfiguration={actionConfiguration}
                         templateConfigurations={templateConfigurations}
                     />
                     {isSecondToLast && failedSteps.length > 1 && ' and '}
@@ -226,9 +216,7 @@ const PartialSuccessMessage = ({
 
 interface StepWithIconProps {
     step: ActionStepItem
-    parentTemplateConfiguration?:
-        | Components.Schemas.GetWfConfigurationResponseDto
-        | TemplateConfiguration
+    parentTemplateConfiguration?: ParentActionConfiguration
     templateConfigurations?: TemplateConfiguration[]
 }
 

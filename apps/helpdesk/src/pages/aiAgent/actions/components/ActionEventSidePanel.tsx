@@ -38,18 +38,6 @@ export default function ActionEventSidePanel({
     isLoading,
     onClose,
 }: Props) {
-    const templateConfiguration = useMemo(() => {
-        if (!actionConfiguration?.template_internal_id)
-            return actionConfiguration as TemplateConfiguration
-        return templateConfigurations?.find(
-            (template) =>
-                template.internal_id ===
-                actionConfiguration?.template_internal_id,
-        )
-    }, [templateConfigurations, actionConfiguration])
-
-    const isCustomAction = !actionConfiguration?.template_internal_id
-
     const hasInputVariables =
         Object.keys(execution?.state.objects?.customer || {}).length > 0 ||
         Object.keys(execution?.state.objects?.order || {}).length > 0 ||
@@ -121,7 +109,7 @@ export default function ActionEventSidePanel({
             </Drawer.Header>
             <Drawer.Content className={css.drawerContent}>
                 <ActionEventTitle
-                    isCustomAction={isCustomAction}
+                    isCustomAction
                     title={actionConfiguration?.name}
                     hideFiller
                     status={execution?.status}
@@ -179,7 +167,7 @@ export default function ActionEventSidePanel({
                                         templateConfigurations
                                     }
                                     parentTemplateConfiguration={
-                                        templateConfiguration
+                                        actionConfiguration
                                     }
                                 />
                             )

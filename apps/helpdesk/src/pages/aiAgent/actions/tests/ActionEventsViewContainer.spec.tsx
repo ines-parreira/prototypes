@@ -115,7 +115,6 @@ describe('ActionEventsViewContainer', () => {
                 internal_id: 'internal_configuration_id',
                 id: 'configuration_id',
                 name: 'Action configuration',
-                template_internal_id: 'template_internal_id',
             },
         } as UseQueryResult<Paths.WfConfigurationControllerGet.Responses.$200>)
         useGetConfigurationExecutionsMocked.mockReturnValue({

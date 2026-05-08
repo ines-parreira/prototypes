@@ -542,7 +542,6 @@ export type WorkflowConfiguration = {
     steps: WorkflowStep[]
     transitions: WorkflowTransition[]
     available_languages: LanguageCode[]
-    template_internal_id?: string | null
     category?: string | null
 }
 

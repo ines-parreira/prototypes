@@ -19,6 +19,11 @@ export type LlmPromptTrigger = Extract<Trigger, { kind: 'llm-prompt' }>
 export type TemplateConfiguration =
     Components.Schemas.ListWfConfigurationTemplatesResponseDto[number]
 
+/** A workflow configuration that can serve as a parent context for step lookups (steps + apps). */
+export type ParentActionConfiguration =
+    | TemplateConfiguration
+    | Components.Schemas.GetWfConfigurationResponseDto
+
 export type CustomInput = LlmPromptTrigger['settings']['custom_inputs'][number]
 export type ObjectInput = LlmPromptTrigger['settings']['object_inputs'][number]
 

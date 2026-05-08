@@ -7,7 +7,11 @@ import AccordionItem from 'pages/common/components/accordion/AccordionItem'
 import type { Components } from 'rest_api/workflows_api/client.generated'
 
 import useGetAppImageUrl from '../hooks/useGetAppImageUrl'
-import type { ActionStepItem, TemplateConfiguration } from '../types'
+import type {
+    ActionStepItem,
+    ParentActionConfiguration,
+    TemplateConfiguration,
+} from '../types'
 import ActionEventTitle from './ActionEventTitle'
 import HttpRequestLogsView from './HttpRequestLogsView'
 import NoHttpRequestLogsView from './NoHttpRequestLogsView'
@@ -25,7 +29,7 @@ export type ActionStepAccordionItemProps = {
     step: ActionStepItem
     httpExecutionLogs?: Components.Schemas.HttpRequestEventsResponseDto
     templateConfigurations?: TemplateConfiguration[]
-    parentTemplateConfiguration?: TemplateConfiguration
+    parentTemplateConfiguration?: ParentActionConfiguration
 }
 
 const ActionStepAccordionItem = ({
