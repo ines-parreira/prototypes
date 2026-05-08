@@ -1,3 +1,7 @@
+import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
+
+import { THEME_NAME } from '@gorgias/design-tokens'
+
 import { THEME_CONFIGS } from 'core/theme'
 import type { HelpdeskThemeName } from 'core/theme'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -10,9 +14,14 @@ type Props = {
 }
 
 export default function ThemeList({ savedTheme, onChangeTheme }: Props) {
+    const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
+
     return (
         <div className={css.themeListWrapper}>
-            {THEME_CONFIGS.map((themeConfig) => {
+            {THEME_CONFIGS.filter(
+                ({ name }) =>
+                    !(hasWayfindingMS1Flag && name === THEME_NAME.Classic),
+            ).map((themeConfig) => {
                 return (
                     <PreviewRadioButton
                         label={

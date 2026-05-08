@@ -118,6 +118,7 @@ jest.mock('moment-timezone', () => {
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
+    useHelpdeskV2WayfindingMS1Flag: jest.fn().mockReturnValue(false),
 }))
 const mockUseFlag = useFlag as jest.Mock
 
