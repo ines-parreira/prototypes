@@ -157,7 +157,7 @@ describe('TicketThreadAiAgentHandoverSummary', () => {
         })
     })
 
-    it('hides the ticket summary when it was generated after the handover', async () => {
+    it('shows the ticket summary alongside the handover reason when the summary was generated after the handover', async () => {
         const { handler } = mockFindAiReasoningAiReasoningHandler(async () =>
             HttpResponse.json({
                 reasoning: [
@@ -193,11 +193,10 @@ describe('TicketThreadAiAgentHandoverSummary', () => {
             expect(
                 screen.getByText('Handover due to order delay'),
             ).toBeInTheDocument()
+            expect(
+                screen.getByText('Customer asked about delayed order #981075'),
+            ).toBeInTheDocument()
         })
-
-        expect(
-            screen.queryByText('Customer asked about delayed order #981075'),
-        ).not.toBeInTheDocument()
     })
 
     it('shows the agent rating tag when a TICKET_RATING feedback entry is present', async () => {
@@ -231,7 +230,7 @@ describe('TicketThreadAiAgentHandoverSummary', () => {
         })
     })
 
-    it('shows a stale message when the summary was generated after the handover', async () => {
+    it('shows the ticket summary when it was generated after the handover', async () => {
         render(<TicketThreadAiAgentHandoverSummary message={message} />, {
             storeState: {
                 ticket: fromJS({
@@ -248,18 +247,12 @@ describe('TicketThreadAiAgentHandoverSummary', () => {
 
         await waitFor(() => {
             expect(
-                screen.getByText(
-                    /New messages have been added since this summary was generated/,
-                ),
+                screen.getByText('Customer asked about delayed order #981075'),
             ).toBeInTheDocument()
         })
-
-        expect(
-            screen.queryByText('Customer asked about delayed order #981075'),
-        ).not.toBeInTheDocument()
     })
 
-    it('shows a stale message when updated_datetime is after the handover even if created_datetime predates it', async () => {
+    it('shows the ticket summary when updated_datetime is after the handover even if created_datetime predates it', async () => {
         render(<TicketThreadAiAgentHandoverSummary message={message} />, {
             storeState: {
                 ticket: fromJS({
@@ -275,19 +268,11 @@ describe('TicketThreadAiAgentHandoverSummary', () => {
         })
 
         await waitFor(() => {
-            expect(
-                screen.getByText(
-                    /New messages have been added since this summary was generated/,
-                ),
-            ).toBeInTheDocument()
+            expect(screen.getByText('Old summary content')).toBeInTheDocument()
         })
-
-        expect(
-            screen.queryByText('Old summary content'),
-        ).not.toBeInTheDocument()
     })
 
-    it('shows the stale message alongside the handover reason when outcome is also present', async () => {
+    it('shows the ticket summary alongside the handover reason when outcome is also present', async () => {
         const { handler } = mockFindAiReasoningAiReasoningHandler(async () =>
             HttpResponse.json({
                 reasoning: [
@@ -320,9 +305,7 @@ describe('TicketThreadAiAgentHandoverSummary', () => {
 
         await waitFor(() => {
             expect(
-                screen.getByText(
-                    /New messages have been added since this summary was generated/,
-                ),
+                screen.getByText('Customer asked about delayed order #981075'),
             ).toBeInTheDocument()
             expect(screen.getByText('Handover reason')).toBeInTheDocument()
             expect(
@@ -358,5 +341,62 @@ describe('TicketThreadAiAgentHandoverSummary', () => {
                 screen.getByText('Customer could not be helped automatically'),
             ).toBeInTheDocument()
         })
+    })
+
+    it('shows only the stale warning when there are new messages after the summary was generated', async () => {
+        render(<TicketThreadAiAgentHandoverSummary message={message} />, {
+            storeState: {
+                ticket: fromJS({
+                    id: 12345,
+                    last_message_datetime: '2026-05-06T11:49:11.000Z',
+                    summary: {
+                        content: 'Customer asked about delayed order #981075',
+                        created_datetime: '2026-04-15T14:23:10.000Z',
+                        updated_datetime: '2026-05-06T11:49:11.000Z',
+                        triggered_by: 1,
+                    },
+                }),
+            },
+        })
+
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    /New messages have been added since this summary was generated/,
+                ),
+            ).toBeInTheDocument()
+        })
+
+        expect(
+            screen.queryByText('Customer asked about delayed order #981075'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('does not show the stale warning when the summary covers all messages', async () => {
+        render(<TicketThreadAiAgentHandoverSummary message={message} />, {
+            storeState: {
+                ticket: fromJS({
+                    id: 12345,
+                    summary: {
+                        content: 'Customer asked about delayed order #981075',
+                        created_datetime: '2026-04-15T14:23:10.000Z',
+                        updated_datetime: '2026-04-27T10:19:18.000Z',
+                        triggered_by: 1,
+                    },
+                }),
+            },
+        })
+
+        await waitFor(() => {
+            expect(
+                screen.getByText('Customer asked about delayed order #981075'),
+            ).toBeInTheDocument()
+        })
+
+        expect(
+            screen.queryByText(
+                /New messages have been added since this summary was generated/,
+            ),
+        ).not.toBeInTheDocument()
     })
 })

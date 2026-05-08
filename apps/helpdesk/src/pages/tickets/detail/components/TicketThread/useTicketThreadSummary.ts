@@ -49,6 +49,7 @@ export const useTicketThreadSummary = ({
 
     const showSummaryBubble =
         !isMessagesLoading &&
+        (!hasHandoverMessage || messagesAfterHandover > 0) &&
         (isLoading ||
             (Boolean(summary?.content) && !isSummaryStale) ||
             Boolean(errorMessage))

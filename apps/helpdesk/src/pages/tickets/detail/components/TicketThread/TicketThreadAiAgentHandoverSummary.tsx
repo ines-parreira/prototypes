@@ -42,6 +42,11 @@ export function TicketThreadAiAgentHandoverSummary({ message }: Props) {
             initialSummary,
         })
 
+    const lastMessageDatetime = ticket.get('last_message_datetime')
+    const isSummaryStale = Boolean(
+        lastMessageDatetime && lastMessageDatetime > message.created_datetime,
+    )
+
     const messageId = String(message.id ?? '')
     const { data: reasoningData, isLoading: isOutcomeLoading } =
         useGetMessageAiReasoning(
@@ -73,29 +78,18 @@ export function TicketThreadAiAgentHandoverSummary({ message }: Props) {
         | FeedbackRating
         | undefined
 
-    const summaryDatetime =
-        summary?.updated_datetime || summary?.created_datetime
-    const isSummaryUpdatedAfterHandover = Boolean(
-        summaryDatetime &&
-            new Date(summaryDatetime) > new Date(message.created_datetime),
-    )
-
     const [isExpanded, setIsExpanded] = useState(true)
 
     useEffect(() => {
-        if (!initialSummary && !isSummaryUpdatedAfterHandover) {
+        if (!initialSummary && !isSummaryStale) {
             requestSummary()
         }
-    }, [initialSummary, isSummaryUpdatedAfterHandover, requestSummary])
+    }, [initialSummary, isSummaryStale, requestSummary])
 
     const hasSummaryContentIgnoringStale = Boolean(
         summary?.content || isLoading || errorMessage,
     )
-    const hasSummaryContent =
-        hasSummaryContentIgnoringStale && !isSummaryUpdatedAfterHandover
-
-    const isSummaryStale =
-        isSummaryUpdatedAfterHandover && hasSummaryContentIgnoringStale
+    const hasSummaryContent = hasSummaryContentIgnoringStale && !isSummaryStale
 
     if (
         !hasSummaryContent &&
@@ -146,9 +140,7 @@ export function TicketThreadAiAgentHandoverSummary({ message }: Props) {
             </MessageHeaderContainer>
             {isExpanded && (
                 <Box flexDirection="column" gap="sm">
-                    {(hasSummaryContent ||
-                        isSummaryStale ||
-                        (!hasSummaryContentIgnoringStale && !!outcome)) && (
+                    {(hasSummaryContent || isSummaryStale) && (
                         <Box flexDirection="column" gap="xxs">
                             {hasSummaryContent ? (
                                 <SummaryContent
@@ -158,7 +150,7 @@ export function TicketThreadAiAgentHandoverSummary({ message }: Props) {
                                     summary={summary}
                                     requestSummary={requestSummary}
                                 />
-                            ) : isSummaryStale ? (
+                            ) : (
                                 <Text
                                     size="sm"
                                     color="content-neutral-secondary"
@@ -167,36 +159,6 @@ export function TicketThreadAiAgentHandoverSummary({ message }: Props) {
                                     summary was generated. You can refresh it
                                     below.
                                 </Text>
-                            ) : (
-                                <Box flexDirection="column" gap="xxs">
-                                    <Box marginBottom="xxxs">
-                                        <Text
-                                            size="sm"
-                                            color="content-neutral-secondary"
-                                        >
-                                            Sorry something went wrong, we were
-                                            unable to summarize the ticket.
-                                        </Text>
-                                    </Box>
-                                    {isRetriable && (
-                                        <div>
-                                            <Button
-                                                variant="secondary"
-                                                size="sm"
-                                                intent="regular"
-                                                leadingSlot={
-                                                    <Icon
-                                                        name="arrows-reload-alt-1"
-                                                        size="sm"
-                                                    />
-                                                }
-                                                onClick={requestSummary}
-                                            >
-                                                Try again
-                                            </Button>
-                                        </div>
-                                    )}
-                                </Box>
                             )}
                         </Box>
                     )}
