@@ -2,6 +2,7 @@ import type { ComponentType } from 'react'
 import type React from 'react'
 
 import { renderHook } from '@repo/testing'
+import { act } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -84,9 +85,27 @@ describe('useNewTicketPageSync', () => {
 
         expect(initializeMessageDraft).not.toHaveBeenCalled()
 
-        jest.advanceTimersByTime(1)
+        act(() => {
+            jest.advanceTimersByTime(1)
+        })
 
         expect(initializeMessageDraft).toHaveBeenCalledTimes(1)
+    })
+
+    it('returns when initializeMessageDraft has run', () => {
+        const store = mockStore(defaultState)
+
+        const { result } = renderHook(() => useNewTicketPageSync(), {
+            wrapper: createWrapper(store),
+        })
+
+        expect(result.current).toBe(false)
+
+        act(() => {
+            jest.advanceTimersByTime(1)
+        })
+
+        expect(result.current).toBe(true)
     })
 
     it('dispatches clearTicket on unmount', () => {
@@ -112,7 +131,9 @@ describe('useNewTicketPageSync', () => {
         unmount()
         jest.clearAllMocks()
 
-        jest.advanceTimersByTime(10)
+        act(() => {
+            jest.advanceTimersByTime(10)
+        })
 
         expect(initializeMessageDraft).not.toHaveBeenCalled()
     })

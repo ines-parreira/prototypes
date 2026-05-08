@@ -3,12 +3,15 @@ import type React from 'react'
 
 import { renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
+import type { LocationDescriptor } from 'history'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { getCustomer } from '@gorgias/helpdesk-client'
+import { useGetCustomer } from '@gorgias/helpdesk-queries'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 import type { RootState, StoreDispatch } from 'state/types'
@@ -20,6 +23,10 @@ jest.mock('../hooks/useNewTicketDraft')
 jest.mock('../hooks/useNewTicketSubmit')
 jest.mock('@gorgias/helpdesk-client', () => ({
     getCustomer: jest.fn(),
+}))
+jest.mock('@gorgias/helpdesk-queries', () => ({
+    ...jest.requireActual('@gorgias/helpdesk-queries'),
+    useGetCustomer: jest.fn(),
 }))
 
 const mockSubmit = jest.fn()
@@ -33,6 +40,7 @@ const mockUseNewTicketSubmit = jest.mocked(
         '../hooks/useNewTicketSubmit',
     ).useNewTicketSubmit,
 )
+const mockUseGetCustomer = jest.mocked(useGetCustomer)
 
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
 
@@ -63,14 +71,24 @@ const defaultState = {
     }),
 } as RootState
 
-const createWrapper = (state: RootState = defaultState) =>
+const createWrapper = (
+    state: RootState = defaultState,
+    initialEntry: string | LocationDescriptor = '/app/ticket/new',
+) =>
     (({ children }: { children: React.ReactNode }) => (
-        <Provider store={mockStore(state)}>{children}</Provider>
+        <MemoryRouter initialEntries={[initialEntry]}>
+            <Provider store={mockStore(state)}>{children}</Provider>
+        </MemoryRouter>
     )) as unknown as ComponentType
 
-const createWrapperWithStore = (store: ReturnType<typeof mockStore>) =>
+const createWrapperWithStore = (
+    store: ReturnType<typeof mockStore>,
+    initialEntry: string | LocationDescriptor = '/app/ticket/new',
+) =>
     (({ children }: { children: React.ReactNode }) => (
-        <Provider store={store}>{children}</Provider>
+        <MemoryRouter initialEntries={[initialEntry]}>
+            <Provider store={store}>{children}</Provider>
+        </MemoryRouter>
     )) as unknown as ComponentType
 
 describe('useNewTicketPageForm', () => {
@@ -83,6 +101,10 @@ describe('useNewTicketPageForm', () => {
         mockUseNewTicketSubmit.mockReturnValue({
             submit: mockSubmit,
         })
+
+        mockUseGetCustomer.mockReturnValue({
+            data: undefined,
+        } as any)
     })
 
     afterEach(() => {
@@ -278,6 +300,199 @@ describe('useNewTicketPageForm', () => {
             })
 
             expect(getCustomer).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('URL customer hydration', () => {
+        it('sets the URL customer as the selected customer and "to" recipient', async () => {
+            const store = mockStore(defaultState)
+            const customer = {
+                id: 42,
+                name: 'Jane Doe',
+                email: 'jane@example.com',
+                channels: [],
+            }
+
+            mockUseGetCustomer.mockReturnValue({
+                data: {
+                    data: customer,
+                },
+            } as any)
+
+            const { result } = renderHook(() => useNewTicketPageForm(), {
+                wrapper: createWrapperWithStore(
+                    store,
+                    '/app/ticket/new?customer=42',
+                ),
+            })
+
+            await waitFor(() => {
+                expect(result.current.ticketState.customer).toEqual(customer)
+            })
+
+            expect(mockUseGetCustomer).toHaveBeenCalledWith(42, undefined, {
+                query: {
+                    enabled: true,
+                },
+            })
+            expect(store.getActions()).toEqual(
+                expect.arrayContaining([
+                    expect.objectContaining({
+                        receivers: {
+                            to: [
+                                {
+                                    id: 42,
+                                    name: 'Jane Doe',
+                                    address: 'jane@example.com',
+                                },
+                            ],
+                        },
+                        replaceAll: false,
+                    }),
+                ]),
+            )
+        })
+
+        it('uses the location state receiver when hydrating the URL customer', async () => {
+            const store = mockStore(defaultState)
+            const customer = {
+                id: 42,
+                name: 'Jane Doe',
+                email: 'jane@example.com',
+                channels: [],
+            }
+            const receiver = {
+                name: 'Jane Phone',
+                address: '+15551234567',
+            }
+
+            mockUseGetCustomer.mockReturnValue({
+                data: {
+                    data: customer,
+                },
+            } as any)
+
+            const { result } = renderHook(() => useNewTicketPageForm(), {
+                wrapper: createWrapperWithStore(store, {
+                    pathname: '/app/ticket/new',
+                    search: '?customer=42',
+                    state: { receiver },
+                }),
+            })
+
+            await waitFor(() => {
+                expect(result.current.ticketState.customer).toEqual(customer)
+            })
+
+            expect(store.getActions()).toEqual(
+                expect.arrayContaining([
+                    expect.objectContaining({
+                        receivers: {
+                            to: [receiver],
+                        },
+                        replaceAll: false,
+                    }),
+                ]),
+            )
+        })
+
+        it('accepts customer_id as an alias for the URL customer', async () => {
+            const customer = {
+                id: 43,
+                name: 'Alias Customer',
+                email: 'alias@example.com',
+                channels: [],
+            }
+
+            mockUseGetCustomer.mockReturnValue({
+                data: {
+                    data: customer,
+                },
+            } as any)
+
+            const { result } = renderHook(() => useNewTicketPageForm(), {
+                wrapper: createWrapper(
+                    defaultState,
+                    '/app/ticket/new?customer_id=43',
+                ),
+            })
+
+            await waitFor(() => {
+                expect(result.current.ticketState.customer).toEqual(customer)
+            })
+
+            expect(mockUseGetCustomer).toHaveBeenCalledWith(43, undefined, {
+                query: {
+                    enabled: true,
+                },
+            })
+        })
+
+        it('does not fetch a URL customer when the customer param is invalid', () => {
+            const { result } = renderHook(() => useNewTicketPageForm(), {
+                wrapper: createWrapper(
+                    defaultState,
+                    '/app/ticket/new?customer=not-a-number',
+                ),
+            })
+
+            expect(result.current.ticketState.customer).toBeNull()
+            expect(mockUseGetCustomer).toHaveBeenCalledWith(0, undefined, {
+                query: {
+                    enabled: false,
+                },
+            })
+        })
+
+        it('does not fetch a URL customer when no customer param is present', () => {
+            const { result } = renderHook(() => useNewTicketPageForm(), {
+                wrapper: createWrapper(),
+            })
+
+            expect(result.current.ticketState.customer).toBeNull()
+            expect(mockUseGetCustomer).toHaveBeenCalledWith(0, undefined, {
+                query: {
+                    enabled: false,
+                },
+            })
+        })
+
+        it('waits for message draft initialization before hydrating the URL customer', () => {
+            const store = mockStore(defaultState)
+            const customer = {
+                id: 42,
+                name: 'Jane Doe',
+                email: 'jane@example.com',
+                channels: [],
+            }
+
+            mockUseGetCustomer.mockReturnValue({
+                data: {
+                    data: customer,
+                },
+            } as any)
+
+            const { result } = renderHook(
+                () =>
+                    useNewTicketPageForm({
+                        isMessageDraftInitialized: false,
+                    }),
+                {
+                    wrapper: createWrapperWithStore(
+                        store,
+                        '/app/ticket/new?customer=42',
+                    ),
+                },
+            )
+
+            expect(result.current.ticketState.customer).toBeNull()
+            expect(store.getActions()).not.toEqual(
+                expect.arrayContaining([
+                    expect.objectContaining({
+                        receivers: expect.any(Object),
+                    }),
+                ]),
+            )
         })
     })
 

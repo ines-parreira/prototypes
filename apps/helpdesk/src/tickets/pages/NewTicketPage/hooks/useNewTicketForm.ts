@@ -1,8 +1,12 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { useSearchParams } from '@repo/routing'
 import { fromJS } from 'immutable'
+import { useLocation } from 'react-router-dom'
+import { z } from 'zod'
 
 import { getCustomer } from '@gorgias/helpdesk-client'
+import { useGetCustomer } from '@gorgias/helpdesk-queries'
 import type {
     Team,
     TicketCustomer,
@@ -32,11 +36,44 @@ type NewTicketState = {
     customer: Ticket['customer'] | null
 }
 
+type UseNewTicketPageFormArgs = {
+    isMessageDraftInitialized?: boolean
+}
+
+type NewTicketPageLocationState = {
+    receiver?: Receiver
+}
+
+const parseCustomerId = (value: string | null) => {
+    if (value === null) {
+        return null
+    }
+
+    const result = z.coerce.number().int().positive().safeParse(value)
+
+    if (!result.success) {
+        return null
+    }
+
+    return result.data
+}
+
+const NewTicketSearchParamsKeys = {
+    customer: {
+        key: 'customer',
+        parse: parseCustomerId,
+    },
+    customerId: {
+        key: 'customer_id',
+        parse: parseCustomerId,
+    },
+} as const
+
 function getCustomerReceiverAddress(customer: TicketCustomer) {
     return (
         customer.email ??
-        customer.channels.find((channel) => channel.preferred)?.address ??
-        customer.channels.find((channel) => channel.address)?.address ??
+        customer.channels?.find((channel) => channel.preferred)?.address ??
+        customer.channels?.find((channel) => channel.address)?.address ??
         null
     )
 }
@@ -55,8 +92,45 @@ function getCustomerReceiver(customer: TicketCustomer): Receiver | null {
     }
 }
 
-export function useNewTicketPageForm() {
+function getLocationStateReceiver(receiver: Receiver | undefined) {
+    if (!receiver?.address) {
+        return null
+    }
+
+    return receiver
+}
+
+export function useNewTicketPageForm({
+    isMessageDraftInitialized = true,
+}: UseNewTicketPageFormArgs = {}) {
     const dispatch = useAppDispatch()
+    const { state } = useLocation<NewTicketPageLocationState | undefined>()
+    const locationStateReceiver = useMemo(
+        () => getLocationStateReceiver(state?.receiver),
+        [state?.receiver],
+    )
+    const [searchParams] = useSearchParams()
+    const urlCustomerId = useMemo(
+        () =>
+            NewTicketSearchParamsKeys.customer.parse(
+                searchParams.get(NewTicketSearchParamsKeys.customer.key),
+            ) ??
+            NewTicketSearchParamsKeys.customerId.parse(
+                searchParams.get(NewTicketSearchParamsKeys.customerId.key),
+            ),
+        [searchParams],
+    )
+    const { data: urlCustomerResponse } = useGetCustomer(
+        urlCustomerId ?? 0,
+        undefined,
+        {
+            query: {
+                enabled: urlCustomerId != null,
+            },
+        },
+    )
+    const appliedUrlCustomerIdRef = useRef<number | null>(null)
+    const hasUserSelectedCustomerRef = useRef(false)
     const [ticketState, setTicketState] = useState<NewTicketState>({
         subject: '',
         priority: undefined,
@@ -99,6 +173,47 @@ export function useNewTicketPageForm() {
         temporaryId,
     })
 
+    const applyCustomer = useCallback(
+        (customer: TicketCustomer, preferredReceiver?: Receiver | null) => {
+            const receiver = preferredReceiver ?? getCustomerReceiver(customer)
+
+            dispatch(setCustomer(fromJS(customer)))
+            if (receiver) {
+                dispatch(setReceivers({ to: [receiver] }, false))
+            }
+            setTicketState((prev) => ({
+                ...prev,
+                customer: customer as unknown as Ticket['customer'],
+            }))
+        },
+        [dispatch],
+    )
+
+    useEffect(() => {
+        const urlCustomer = urlCustomerResponse?.data as
+            | TicketCustomer
+            | undefined
+
+        if (
+            !isMessageDraftInitialized ||
+            urlCustomerId == null ||
+            !urlCustomer ||
+            hasUserSelectedCustomerRef.current ||
+            appliedUrlCustomerIdRef.current === urlCustomerId
+        ) {
+            return
+        }
+
+        applyCustomer(urlCustomer, locationStateReceiver)
+        appliedUrlCustomerIdRef.current = urlCustomerId
+    }, [
+        applyCustomer,
+        isMessageDraftInitialized,
+        locationStateReceiver,
+        urlCustomerId,
+        urlCustomerResponse,
+    ])
+
     const handleSubjectChange = (subject: string) => {
         setTicketState((prev) => ({ ...prev, subject }))
     }
@@ -134,6 +249,7 @@ export function useNewTicketPageForm() {
                     const { data } = await getCustomer(
                         recipients[0].id as number,
                     )
+                    hasUserSelectedCustomerRef.current = true
                     dispatch(setCustomer(fromJS(data)))
                     setTicketState((prev) => ({
                         ...prev,
@@ -148,6 +264,7 @@ export function useNewTicketPageForm() {
                     )
                 }
             } else if (prop === 'to' && recipients.length === 0) {
+                hasUserSelectedCustomerRef.current = true
                 dispatch(setCustomer(fromJS(null)))
                 setTicketState((prev) => ({ ...prev, customer: null }))
             }
@@ -156,16 +273,8 @@ export function useNewTicketPageForm() {
     )
 
     const handleCustomerChange = (customer: TicketCustomer) => {
-        const receiver = getCustomerReceiver(customer)
-
-        dispatch(setCustomer(fromJS(customer)))
-        if (receiver) {
-            dispatch(setReceivers({ to: [receiver] }, false))
-        }
-        setTicketState((prev) => ({
-            ...prev,
-            customer: customer as unknown as Ticket['customer'],
-        }))
+        hasUserSelectedCustomerRef.current = true
+        applyCustomer(customer)
     }
 
     return {

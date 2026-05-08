@@ -35,6 +35,7 @@ import { useNewTicketPageSync } from 'tickets/pages/NewTicketPage/hooks/useNewTi
 
 export function NewTicketPage() {
     const { onChangeTab } = useTicketInfobarNavigation()
+    const isMessageDraftInitialized = useNewTicketPageSync()
     const {
         ticketState,
         handleSubjectChange,
@@ -46,10 +47,9 @@ export function NewTicketPage() {
         handleCustomerChange,
         submit,
         temporaryId,
-    } = useNewTicketPageForm()
+    } = useNewTicketPageForm({ isMessageDraftInitialized })
 
     useDraftTicketActivityTracking(temporaryId)
-    useNewTicketPageSync()
     useEffect(() => {
         onChangeTab(TicketInfobarTab.Customer)
     }, [onChangeTab])
