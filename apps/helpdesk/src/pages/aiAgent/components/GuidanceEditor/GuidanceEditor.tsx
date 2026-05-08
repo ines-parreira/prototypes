@@ -29,6 +29,7 @@ type GuidanceEditorProps = {
     showDefaultToolbarActions?: boolean
     editorContextName?: string
     description?: string
+    showShortcutHint?: boolean
 }
 
 const defaultToolbarActions = [
@@ -57,6 +58,7 @@ export function GuidanceEditor({
     showDefaultToolbarActions = true,
     editorContextName = 'Guidance',
     description,
+    showShortcutHint = true,
 }: GuidanceEditorProps) {
     const hasSkillsAccess = useSkillsAccess()
     const defaultDescription = hasSkillsAccess
@@ -131,10 +133,12 @@ export function GuidanceEditor({
                 <Text as="p" className={css.helperText} size="sm">
                     {description ?? defaultDescription}
                 </Text>
-                <Text as="p" className={css.helperText} size="sm">
-                    Type &apos;/&apos; or &apos;@&apos; to insert variables and
-                    actions.
-                </Text>
+                {showShortcutHint && (
+                    <Text as="p" className={css.helperText} size="sm">
+                        Type &apos;/&apos; or &apos;@&apos; to insert variables
+                        and actions.
+                    </Text>
+                )}
             </div>
 
             <div className={isOverLimit ? css.editorError : undefined}>

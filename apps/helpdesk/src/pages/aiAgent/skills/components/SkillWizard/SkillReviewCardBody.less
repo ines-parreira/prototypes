@@ -1,0 +1,29 @@
+:local {
+    .body {
+        flex: 1;
+        min-height: 0;
+    }
+
+    .intentsRow,
+    .actionsRow {
+        flex-wrap: wrap;
+        row-gap: var(--spacing-xxxs);
+    }
+
+    .keepAsDraftLink {
+        background: transparent;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        color: var(--content-neutral-default);
+        text-decoration: underline;
+        font: inherit;
+    }
+
+    .actionAppIcon {
+        height: 16px;
+        width: 16px;
+        object-fit: contain;
+        vertical-align: baseline;
+    }
+}

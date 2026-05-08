@@ -1,14 +1,139 @@
-import { Box } from '@gorgias/axiom'
+import { useEffect, useMemo, useState } from 'react'
+
+import { Banner, Box, Button, Card } from '@gorgias/axiom'
+
+import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
+import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import type { WizardSkill } from 'pages/aiAgent/skills/hooks/useSkillWizard'
+import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
+import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
+
+import { groupActionsByIntegration } from './skillReviewActions.utils'
+import { SkillReviewCardBody } from './SkillReviewCardBody'
+import { SkillReviewCardHeader } from './SkillReviewCardHeader'
+import {
+    hasActionRequiringSetup,
+    isInstructionsEmpty,
+} from './skillReviewValidation.utils'
+import { SkillWizardSkillStatus } from './skillWizard.mock'
+import { useSkillWizardContext } from './SkillWizardContext'
+import { WhyWeCreatedThisSkillCard } from './WhyWeCreatedThisSkillCard'
+
+import css from './SkillReviewStep.less'
 
 type Props = {
-    recommendation: string
-    index: number
+    skill: WizardSkill
 }
 
-export const SkillReviewStep = ({ recommendation, index }: Props) => {
+export const SkillReviewStep = ({ skill }: Props) => {
+    const { storeConfiguration } = useAiAgentStoreConfigurationContext()
+    const shopName = storeConfiguration?.storeName ?? ''
+    const shopType = storeConfiguration?.shopType ?? ''
+
+    const { guidanceActions, rawActions } = useGetGuidancesAvailableActions(
+        shopName,
+        shopType,
+    )
+
+    const { apps } = useApps()
+    const getAppFromTemplateApp = useGetAppFromTemplateApp({ apps })
+
+    const [status, setStatus] = useState<SkillWizardSkillStatus>(
+        SkillWizardSkillStatus.Approved,
+    )
+    const [instructionsContent, setInstructionsContent] = useState<string>(
+        skill.article?.translation.content ?? '',
+    )
+
+    const actionGroups = useMemo(
+        () =>
+            groupActionsByIntegration(
+                skill.action_configuration_ids,
+                rawActions,
+                getAppFromTemplateApp,
+            ),
+        [skill.action_configuration_ids, rawActions, getAppFromTemplateApp],
+    )
+
+    const intents = skill.article?.translation.intents ?? []
+    const title = skill.article?.translation.title ?? ''
+
+    const instructionsEmpty = isInstructionsEmpty(instructionsContent)
+    const actionSetupRequired = hasActionRequiringSetup(
+        instructionsContent,
+        guidanceActions,
+    )
+    const isApprovedDisabled = instructionsEmpty || actionSetupRequired
+
+    let approvedDisabledReason: string | undefined
+    let bannerTitle: string | undefined
+
+    if (instructionsEmpty) {
+        approvedDisabledReason =
+            'This skill requires instructions. You can add them later.'
+        bannerTitle =
+            "We'll save this skill as a draft. You can add instructions later."
+    } else if (actionSetupRequired) {
+        approvedDisabledReason =
+            'This skill has actions that need to be enabled. You can enable them later.'
+        bannerTitle =
+            "We'll save this skill as a draft. You can set up actions later."
+    }
+
+    useEffect(() => {
+        if (isApprovedDisabled && status !== SkillWizardSkillStatus.Draft) {
+            setStatus(SkillWizardSkillStatus.Draft)
+        }
+    }, [isApprovedDisabled, status])
+
+    const { goNext, currentStep, reviewStepsCount } = useSkillWizardContext()
+    const isLastReviewStep = currentStep >= reviewStepsCount
+    const ctaLabel = isLastReviewStep ? 'Go next' : 'Review next skill'
+
     return (
-        <Box padding="lg">
-            Step {index + 1}: {recommendation}
+        <Box flexDirection="column" gap="md" className={css.container}>
+            <WhyWeCreatedThisSkillCard
+                recommendation={skill.recommendation}
+                estimatedImpact={skill.estimated_automation_rate_impact}
+                guidanceCount={skill.guidance_ids.length}
+            />
+            {bannerTitle && (
+                <Banner
+                    intent="info"
+                    size="md"
+                    isClosable={false}
+                    title={bannerTitle}
+                >
+                    <Button
+                        variant="primary"
+                        size="sm"
+                        trailingSlot="arrow-right"
+                        onClick={goNext}
+                    >
+                        {ctaLabel}
+                    </Button>
+                </Banner>
+            )}
+            <Card elevation="mid" flexDirection="column" gap="xxs" width="100%">
+                <SkillReviewCardHeader
+                    title={title}
+                    status={status}
+                    onStatusChange={setStatus}
+                    isApprovedDisabled={isApprovedDisabled}
+                    approvedDisabledReason={approvedDisabledReason}
+                />
+                <SkillReviewCardBody
+                    intents={intents}
+                    actionGroups={actionGroups}
+                    instructionsContent={instructionsContent}
+                    shopName={shopName}
+                    availableActions={guidanceActions}
+                    onInstructionsChange={setInstructionsContent}
+                    onKeepAsDraft={() =>
+                        setStatus(SkillWizardSkillStatus.Draft)
+                    }
+                />
+            </Card>
         </Box>
     )
 }

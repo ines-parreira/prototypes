@@ -27,7 +27,7 @@ export type WizardSkill = {
     guidance_ids: number[]
     recommendation: string
     estimated_automation_rate_impact: string
-    action_configuration_ids: number[]
+    action_configuration_ids: string[]
 }
 
 export type UiWizardState = {

@@ -73,7 +73,6 @@ export const SkillWizardHeader = ({ isSaving, onClose }: Props) => {
                     <ProgressBar
                         value={progressValue}
                         aria-label={`Step ${currentStep} of ${reviewStepsCount}`}
-                        className={css.progressBar}
                     />
                 </Box>
             )}

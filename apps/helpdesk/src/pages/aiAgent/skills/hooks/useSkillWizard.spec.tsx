@@ -67,7 +67,7 @@ const baseWizard: SkillWizard = {
                 estimated_automation_rate_impact: '+4.20%',
                 recommendation: 'rec 1',
                 guidance_ids: [501],
-                action_configuration_ids: [9001],
+                action_configuration_ids: ['9001'],
             },
             {
                 skill_id: 5891087,
@@ -181,7 +181,7 @@ describe('useSkillWizard', () => {
         expect(present?.article?.translation.title).toBe('Order tracking')
         expect(present?.guidance_ids).toEqual([501])
         expect(present?.estimated_automation_rate_impact).toBe('+4.20%')
-        expect(present?.action_configuration_ids).toEqual([9001])
+        expect(present?.action_configuration_ids).toEqual(['9001'])
     })
 
     it('filters skills without an article out of reviewable_skills', () => {

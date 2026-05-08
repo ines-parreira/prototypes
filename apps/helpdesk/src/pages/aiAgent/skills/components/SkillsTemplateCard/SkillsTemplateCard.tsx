@@ -141,7 +141,6 @@ export const SkillsTemplateCard: React.FC<Props> = ({
                         <Skeleton width="240px" height="24px" />
                     ) : coverageLabel ? (
                         <Tag
-                            size="sm"
                             color="purple"
                             leadingSlot={<Icon name="trending-up" />}
                         >

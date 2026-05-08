@@ -13,7 +13,7 @@ import { RecommendedSkillsSection } from 'pages/aiAgent/skills/components/Recomm
 import { ReviewSkillsSection } from 'pages/aiAgent/skills/components/ReviewSkillsSection/ReviewSkillsSection'
 import { SkillsTemplateModal } from 'pages/aiAgent/skills/components/SkillsTemplateModal/SkillsTemplateModal'
 import {
-    mockSkillWizardInProgress,
+    mockSkillWizardNotStarted,
     SkillWizardStatus,
 } from 'pages/aiAgent/skills/components/SkillWizard/skillWizard.mock'
 import { WizardSkillsBanner } from 'pages/aiAgent/skills/components/WizardSkillsBanner/WizardSkillsBanner'
@@ -44,7 +44,7 @@ export const AiAgentSkills = () => {
     const { routes } = useAiAgentNavigation({ shopName })
     const isSkillWizardEnabled = useFlag(FeatureFlagKey.SkillWizard)
     const { wizard: enrichedWizard, isLoading: isWizardLoading } =
-        useSkillWizard(mockSkillWizardInProgress)
+        useSkillWizard(mockSkillWizardNotStarted)
 
     const isWizardActive =
         isSkillWizardEnabled &&

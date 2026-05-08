@@ -36,19 +36,13 @@ export type GaiaRecommendation = {
     estimated_automation_rate_impact: string
     recommendation: string
     guidance_ids: number[]
-    action_configuration_ids: number[]
-}
-
-export type GaiaGuidanceCleanup = {
-    guidance_id: number
-    replaced_by_skill_id: number
+    action_configuration_ids: string[]
 }
 
 export type GaiaPayload = {
     generated_at?: string
     analysis_period?: GaiaAnalysisPeriod
     recommendations?: GaiaRecommendation[]
-    guidance_cleanup?: GaiaGuidanceCleanup[]
 }
 
 export type SkillWizard = {
@@ -80,7 +74,12 @@ export const mockGaiaPayload: GaiaPayload = {
             recommendation:
                 'Create a skill to automate "Where is my order?" requests by pulling tracking info from Shopify and replying with the latest carrier status.',
             guidance_ids: [501, 502],
-            action_configuration_ids: [9001],
+            action_configuration_ids: [
+                '01JKT3YTVYT9D3H32R328WYMN4',
+                '01JN0RJ1M1PG4DATZ7S4CYZ5J2',
+                '01HZSCNPP5KTXEAAKNG03TXAW2',
+                '01KNTG58X93ZB19Q6EH15GFBXA',
+            ],
         },
         {
             skill_id: 5915217,
@@ -88,7 +87,7 @@ export const mockGaiaPayload: GaiaPayload = {
             recommendation:
                 'Add a skill to handle return requests within the eligibility window by generating a return label and sharing return policy details.',
             guidance_ids: [503],
-            action_configuration_ids: [9002, 9003],
+            action_configuration_ids: ['9002', '9003'],
         },
         {
             skill_id: 5891418,
@@ -96,7 +95,7 @@ export const mockGaiaPayload: GaiaPayload = {
             recommendation:
                 'Automate cancellation requests for orders that have not yet shipped by canceling in Shopify and confirming the refund timeline.',
             guidance_ids: [504, 505],
-            action_configuration_ids: [9004],
+            action_configuration_ids: ['9004'],
         },
         {
             skill_id: 5915217,
@@ -106,11 +105,6 @@ export const mockGaiaPayload: GaiaPayload = {
             guidance_ids: [506],
             action_configuration_ids: [],
         },
-    ],
-    guidance_cleanup: [
-        { guidance_id: 312, replaced_by_skill_id: 5851420 },
-        { guidance_id: 318, replaced_by_skill_id: 5915217 },
-        { guidance_id: 327, replaced_by_skill_id: 5891418 },
     ],
 }
 

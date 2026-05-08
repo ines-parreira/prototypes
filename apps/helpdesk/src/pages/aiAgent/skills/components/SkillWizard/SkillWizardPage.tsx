@@ -1,16 +1,23 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useHistory, useLocation, useParams } from 'react-router-dom'
 
 import { Box } from '@gorgias/axiom'
 
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useSkillWizard } from 'pages/aiAgent/skills/hooks/useSkillWizard'
 
 import { SkillRecapStep } from './SkillRecapStep'
 import { SkillReviewStep } from './SkillReviewStep'
 import { SkillWizard } from './SkillWizard'
+import {
+    mockSkillWizardNotStarted,
+    SkillWizardStatus,
+} from './skillWizard.mock'
+import { SkillWizardIntro } from './SkillWizardIntro'
 
 const STEP_QUERY_PARAM = 'step'
+const INTRO_DURATION_MS = 2000
 
 const parseStep = (search: string): number | undefined => {
     const raw = new URLSearchParams(search).get(STEP_QUERY_PARAM)
@@ -24,6 +31,24 @@ export const SkillWizardPage = () => {
     const location = useLocation()
     const { shopName } = useParams<{ shopName: string }>()
     const { routes } = useAiAgentNavigation({ shopName })
+
+    const { wizard } = useSkillWizard(mockSkillWizardNotStarted)
+    const reviewableSkills = wizard.reviewable_skills
+    const reviewableCount = reviewableSkills.length
+    const totalCount = wizard.all_skills.length
+
+    const shouldShowIntro =
+        wizard.status === SkillWizardStatus.NotStarted && reviewableCount > 0
+    const [isIntroVisible, setIsIntroVisible] = useState(shouldShowIntro)
+
+    useEffect(() => {
+        if (!isIntroVisible) return
+        const timeoutId = window.setTimeout(
+            () => setIsIntroVisible(false),
+            INTRO_DURATION_MS,
+        )
+        return () => window.clearTimeout(timeoutId)
+    }, [isIntroVisible])
 
     const initialStep = useMemo(
         () => parseStep(location.search),
@@ -43,28 +68,31 @@ export const SkillWizardPage = () => {
         [history],
     )
 
-    const mockItems = useMemo(
-        () => Array.from({ length: 9 }, (_, i) => `Recommendation ${i + 1}`),
-        [],
-    )
-
     const draftKnowledge = useCallback(
-        (_recommendation: string, index: number) => ({
-            sourceId: index + 1,
+        (skill: (typeof reviewableSkills)[number]) => ({
+            sourceId: skill.article?.id ?? skill.skill_id,
             sourceSetId: 1,
         }),
         [],
     )
 
+    if (isIntroVisible) {
+        return (
+            <Box width="100%" height="100%">
+                <SkillWizardIntro
+                    reviewableCount={reviewableCount}
+                    totalCount={totalCount}
+                />
+            </Box>
+        )
+    }
+
     return (
         <Box width="100%" height="100%">
             <SkillWizard
-                items={mockItems}
-                renderItem={(recommendation, index) => (
-                    <SkillReviewStep
-                        recommendation={recommendation}
-                        index={index}
-                    />
+                items={reviewableSkills}
+                renderItem={(skill, index) => (
+                    <SkillReviewStep key={index} skill={skill} />
                 )}
                 renderRecap={() => <SkillRecapStep />}
                 draftKnowledge={draftKnowledge}
