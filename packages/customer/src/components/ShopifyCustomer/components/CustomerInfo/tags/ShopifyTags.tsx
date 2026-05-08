@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import {
     Box,
@@ -41,6 +41,28 @@ type ShopifyTagsProps = {
     ticketId?: string
 }
 
+// The Shopify GET endpoint can return the pre-mutation `tags` for up to a
+// minute after our action queues. After a user edit we refuse the values
+// they just changed *from* (and show what they submitted) for ~90s. Rapid
+// edits accumulate into the refused set so a slow server returning any
+// intermediate value still gets refused. Anything else — server catching
+// up to the latest value, or a third-party Shopify edit — passes through.
+const STALE_TAGS_REFUSAL_MS = 90 * 1000
+
+type StaleRefusal = {
+    refused: Set<string>
+    show: string
+}
+
+function normalizeTagString(tags: string | undefined): string {
+    return (tags ?? '')
+        .split(',')
+        .map((tag) => tag.trim())
+        .filter(Boolean)
+        .sort()
+        .join(',')
+}
+
 export function ShopifyTags({
     tags,
     integrationId,
@@ -50,8 +72,33 @@ export function ShopifyTags({
 }: ShopifyTagsProps) {
     const [search, setSearch] = useState('')
     const [isOpen, setIsOpen] = useState(false)
+    const [refusal, setRefusal] = useState<StaleRefusal | null>(null)
 
-    const parsedTags = useMemo(() => parseTags(tags), [tags])
+    const displayedTagsString = useMemo(() => {
+        if (refusal && refusal.refused.has(normalizeTagString(tags))) {
+            return refusal.show
+        }
+        return tags
+    }, [tags, refusal])
+
+    useEffect(() => {
+        if (!refusal) return
+        const normalized = normalizeTagString(tags)
+        if (refusal.refused.has(normalized)) return
+        if (normalized === normalizeTagString(refusal.show)) return
+        setRefusal(null)
+    }, [tags, refusal])
+
+    useEffect(() => {
+        if (!refusal) return
+        const timer = setTimeout(() => setRefusal(null), STALE_TAGS_REFUSAL_MS)
+        return () => clearTimeout(timer)
+    }, [refusal])
+
+    const parsedTags = useMemo(
+        () => parseTags(displayedTagsString),
+        [displayedTagsString],
+    )
 
     const selectedTags: TagOption[] = useMemo(
         () =>
@@ -77,19 +124,39 @@ export function ShopifyTags({
 
     const showCreateTag = canCreateTag(search, shopTags, parsedTags)
 
-    const handleSelectChange = useCallback(
-        (selectedOptions: { id: string; label: string }[]) => {
-            const uniqueTags = deduplicateTagIds(selectedOptions)
-
+    const submit = useCallback(
+        (newTagsString: string) => {
+            setRefusal((prev) => ({
+                refused: new Set([
+                    ...(prev?.refused ?? []),
+                    normalizeTagString(displayedTagsString),
+                ]),
+                show: newTagsString,
+            }))
             updateTags({
                 integrationId: integrationId!,
                 userId: String(customerId!),
                 externalId: externalId!,
-                tagsList: tagsToString(uniqueTags),
+                tagsList: newTagsString,
                 ticketId,
             })
         },
-        [integrationId, externalId, customerId, updateTags, ticketId],
+        [
+            displayedTagsString,
+            integrationId,
+            externalId,
+            customerId,
+            updateTags,
+            ticketId,
+        ],
+    )
+
+    const handleSelectChange = useCallback(
+        (selectedOptions: { id: string; label: string }[]) => {
+            const uniqueTags = deduplicateTagIds(selectedOptions)
+            submit(tagsToString(uniqueTags))
+        },
+        [submit],
     )
 
     const handleCreateTag = useCallback(() => {
@@ -97,43 +164,16 @@ export function ShopifyTags({
         if (!newTag) return
 
         const uniqueTags = addTagToList(parsedTags, newTag)
-        updateTags({
-            integrationId: integrationId!,
-            userId: String(customerId!),
-            externalId: externalId!,
-            tagsList: tagsToString(uniqueTags),
-            ticketId,
-        })
+        submit(tagsToString(uniqueTags))
         setSearch('')
-    }, [
-        search,
-        parsedTags,
-        integrationId,
-        customerId,
-        externalId,
-        updateTags,
-        ticketId,
-    ])
+    }, [search, parsedTags, submit])
 
     const handleCloseTag = useCallback(
         (tagToRemove: string) => {
             const updatedTags = removeTagFromList(parsedTags, tagToRemove)
-            updateTags({
-                integrationId: integrationId!,
-                userId: String(customerId!),
-                externalId: externalId!,
-                tagsList: tagsToString(updatedTags),
-                ticketId,
-            })
+            submit(tagsToString(updatedTags))
         },
-        [
-            integrationId,
-            externalId,
-            customerId,
-            parsedTags,
-            updateTags,
-            ticketId,
-        ],
+        [parsedTags, submit],
     )
 
     const handleOpenChange = useCallback((open: boolean) => {

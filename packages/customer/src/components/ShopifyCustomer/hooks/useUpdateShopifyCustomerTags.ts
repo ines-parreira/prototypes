@@ -42,8 +42,6 @@ type MutationContext = {
     queryKey: ReturnType<
         typeof queryKeys.ecommerceData.getEcommerceDataByExternalId
     >
-    externalId: string
-    tagsList: string
 }
 
 export function useUpdateShopifyCustomerTags() {
@@ -87,7 +85,7 @@ export function useUpdateShopifyCustomerTags() {
                     }
                 })
 
-                return { previousData, queryKey, externalId, tagsList }
+                return { previousData, queryKey }
             },
             onError: (_error, _variables, context) => {
                 if (context?.previousData) {

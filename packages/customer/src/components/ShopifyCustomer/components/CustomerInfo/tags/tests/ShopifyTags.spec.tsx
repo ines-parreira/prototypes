@@ -345,4 +345,143 @@ describe('ShopifyTags', () => {
             expect(body.ticket_id).toBe('456')
         })
     })
+
+    describe('stale refetch handling', () => {
+        const baseProps = {
+            integrationId: 1,
+            externalId: '123',
+            customerId: 789,
+            ticketId: '456',
+        } as const
+
+        const firstRemoveButton = () =>
+            screen.getAllByRole('button', { name: /remove tag/i })[0]
+
+        it('keeps the override active when a stale refetch reverts the prop', async () => {
+            const executeActionMock = mockExecuteActionHandler()
+            server.use(executeActionMock.handler)
+
+            const waitForFirstRequest = executeActionMock.waitForRequest(server)
+
+            const { user, rerender } = render(
+                <ShopifyTags tags="VIP, Wholesale" {...baseProps} />,
+            )
+
+            await waitFor(() => {
+                expect(screen.getByText('VIP')).toBeInTheDocument()
+            })
+
+            await user.click(firstRemoveButton())
+
+            await waitForFirstRequest(async (request) => {
+                const body = await request.json()
+                expect(body.payload.tags_list).toBe('Wholesale')
+            })
+
+            // Lazy Shopify GET returns the pre-mutation value. The override
+            // should refuse it, so the visible chip is Wholesale (not VIP).
+            // Removing it should submit "" — if the prop were driving the UI,
+            // we'd be clicking VIP and submitting "Wholesale" again instead.
+            rerender(<ShopifyTags tags="VIP, Wholesale" {...baseProps} />)
+
+            const waitForSecondRequest =
+                executeActionMock.waitForRequest(server)
+            await user.click(firstRemoveButton())
+            await waitForSecondRequest(async (request) => {
+                const body = await request.json()
+                expect(body.payload.tags_list).toBe('')
+            })
+        })
+
+        it('accumulates refused values across rapid edits', async () => {
+            const executeActionMock = mockExecuteActionHandler()
+            server.use(executeActionMock.handler)
+
+            const waitForFirstRequest = executeActionMock.waitForRequest(server)
+
+            const { user, rerender } = render(
+                <ShopifyTags tags="VIP, Wholesale" {...baseProps} />,
+            )
+
+            await waitFor(() => {
+                expect(screen.getByText('VIP')).toBeInTheDocument()
+            })
+
+            // First edit: remove the visible chip (VIP).
+            await user.click(firstRemoveButton())
+            await waitForFirstRequest(async (request) => {
+                const body = await request.json()
+                expect(body.payload.tags_list).toBe('Wholesale')
+            })
+
+            // Optimistic value propagates to the prop.
+            rerender(<ShopifyTags tags="Wholesale" {...baseProps} />)
+
+            // Second edit: remove Wholesale.
+            const waitForSecondRequest =
+                executeActionMock.waitForRequest(server)
+            await user.click(firstRemoveButton())
+            await waitForSecondRequest(async (request) => {
+                const body = await request.json()
+                expect(body.payload.tags_list).toBe('')
+            })
+
+            // Very-stale GET returns the *original* "VIP, Wholesale" value
+            // (mutation 1 hasn't been processed by Shopify yet). With
+            // accumulation, both prior values are refused and the visible
+            // chip list is empty — adding "VIP" should submit just "VIP",
+            // not "VIP, Wholesale".
+            rerender(<ShopifyTags tags="VIP, Wholesale" {...baseProps} />)
+
+            const waitForThirdRequest = executeActionMock.waitForRequest(server)
+            await user.click(screen.getByRole('button', { name: /add tags/i }))
+            const vipOption = await screen.findByRole('option', {
+                name: 'VIP',
+            })
+            await user.click(vipOption)
+            await waitForThirdRequest(async (request) => {
+                const body = await request.json()
+                expect(body.payload.tags_list).toBe('VIP')
+            })
+        })
+
+        it('drops the refusal when a third-party tag change arrives', async () => {
+            const executeActionMock = mockExecuteActionHandler()
+            server.use(executeActionMock.handler)
+
+            const waitForFirstRequest = executeActionMock.waitForRequest(server)
+
+            const { user, rerender } = render(
+                <ShopifyTags tags="VIP, Wholesale" {...baseProps} />,
+            )
+
+            await waitFor(() => {
+                expect(screen.getByText('VIP')).toBeInTheDocument()
+            })
+
+            await user.click(firstRemoveButton())
+            await waitForFirstRequest(async (request) => {
+                const body = await request.json()
+                expect(body.payload.tags_list).toBe('Wholesale')
+            })
+
+            // A third-party edit lands: incoming value is neither in the
+            // refused set nor equal to the submitted value, so the refusal
+            // drops and the prop drives the UI again.
+            rerender(
+                <ShopifyTags
+                    tags="VIP, Wholesale, ThirdParty"
+                    {...baseProps}
+                />,
+            )
+
+            const waitForSecondRequest =
+                executeActionMock.waitForRequest(server)
+            await user.click(firstRemoveButton())
+            await waitForSecondRequest(async (request) => {
+                const body = await request.json()
+                expect(body.payload.tags_list).toContain('ThirdParty')
+            })
+        })
+    })
 })
