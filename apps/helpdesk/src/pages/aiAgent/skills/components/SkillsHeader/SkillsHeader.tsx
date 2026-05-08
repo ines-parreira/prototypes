@@ -10,12 +10,14 @@ export type SkillsHeaderProps = {
     onViewIntents?: () => void
     onCreateSkillFromScratch?: () => void
     onCreateSkillFromTemplate?: () => void
+    showActions?: boolean
 }
 
 export const SkillsHeader = ({
     onViewIntents,
     onCreateSkillFromScratch,
     onCreateSkillFromTemplate,
+    showActions = true,
 }: SkillsHeaderProps) => {
     const [isHowSkillsWorkOpen, setIsHowSkillsWorkOpen] = useState(false)
 
@@ -39,36 +41,38 @@ export const SkillsHeader = ({
                     How skills work
                 </Link>
             </Box>
-            <Box flexDirection="row" alignItems="center" gap="xs">
-                <Button
-                    onClick={onViewIntents}
-                    aria-label="View intents"
-                    variant="secondary"
-                >
-                    View intents
-                </Button>
-                <Menu
-                    trigger={
-                        <Button
-                            variant="primary"
-                            trailingSlot="arrow-chevron-down"
-                        >
-                            Create skill
-                        </Button>
-                    }
-                >
-                    <MenuItem
-                        id="create-skill-from-scratch"
-                        label="From scratch"
-                        onAction={onCreateSkillFromScratch}
-                    />
-                    <MenuItem
-                        id="create-skill-from-template"
-                        label="From template"
-                        onAction={onCreateSkillFromTemplate}
-                    />
-                </Menu>
-            </Box>
+            {showActions && (
+                <Box flexDirection="row" alignItems="center" gap="xs">
+                    <Button
+                        onClick={onViewIntents}
+                        aria-label="View intents"
+                        variant="secondary"
+                    >
+                        View intents
+                    </Button>
+                    <Menu
+                        trigger={
+                            <Button
+                                variant="primary"
+                                trailingSlot="arrow-chevron-down"
+                            >
+                                Create skill
+                            </Button>
+                        }
+                    >
+                        <MenuItem
+                            id="create-skill-from-scratch"
+                            label="From scratch"
+                            onAction={onCreateSkillFromScratch}
+                        />
+                        <MenuItem
+                            id="create-skill-from-template"
+                            label="From template"
+                            onAction={onCreateSkillFromTemplate}
+                        />
+                    </Menu>
+                </Box>
+            )}
             <HowSkillsWorkSidePanel
                 isOpen={isHowSkillsWorkOpen}
                 onOpenChange={setIsHowSkillsWorkOpen}

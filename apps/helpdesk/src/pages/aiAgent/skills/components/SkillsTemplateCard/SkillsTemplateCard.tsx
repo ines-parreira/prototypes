@@ -26,8 +26,8 @@ export type SkillCoverageData =
           ticketVolumePercent: number
       }
     | {
-          type: 'automation-rate'
-          automationRate: number
+          type: 'automation-rate-impact'
+          impact: string
       }
 
 export type SkillCoverage = {
@@ -48,8 +48,8 @@ const getCoverageLabel = (data: SkillCoverageData | null): string | null => {
         if (data.ticketVolume <= 0) return null
         return `Would cover ${data.ticketVolume.toLocaleString('en-US')} (${data.ticketVolumePercent}%) of your tickets`
     }
-    if (data.automationRate <= 0) return null
-    return `Estimated impact: +${data.automationRate}% automation rate`
+    if (!data.impact.trim()) return null
+    return `Estimated impact: ${data.impact} automation rate`
 }
 
 export const SkillsTemplateCard: React.FC<Props> = ({

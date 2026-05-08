@@ -42,8 +42,8 @@ type CoverageData =
           ticketVolumePercent: number
       }
     | {
-          type: 'automation-rate'
-          automationRate: number
+          type: 'automation-rate-impact'
+          impact: string
       }
 type RenderProps = {
     onCTA?: () => void
@@ -150,18 +150,33 @@ describe('SkillsTemplateCard', () => {
                 screen.getByText('Would cover 2,345 (80%) of your tickets'),
             ).toBeInTheDocument()
         })
-        it('shows the automation rate coverage label when automation rate is greater than 0', () => {
+        it('shows the automation rate impact coverage label when impact is provided', () => {
             renderComponent({
                 coverage: {
                     hasAnyCoverage: true,
                     data: {
-                        type: 'automation-rate',
-                        automationRate: 6,
+                        type: 'automation-rate-impact',
+                        impact: '+6%',
                     },
                 },
             })
             expect(
                 screen.getByText('Estimated impact: +6% automation rate'),
+            ).toBeInTheDocument()
+        })
+
+        it('shows the automation rate impact coverage label for an interval impact', () => {
+            renderComponent({
+                coverage: {
+                    hasAnyCoverage: true,
+                    data: {
+                        type: 'automation-rate-impact',
+                        impact: '15%-20%',
+                    },
+                },
+            })
+            expect(
+                screen.getByText('Estimated impact: 15%-20% automation rate'),
             ).toBeInTheDocument()
         })
         it('does not render any coverage label when data is null', () => {
@@ -186,13 +201,13 @@ describe('SkillsTemplateCard', () => {
             })
             expect(screen.queryByText(/Would cover/i)).not.toBeInTheDocument()
         })
-        it('does not render any coverage label when automation rate is 0', () => {
+        it('does not render any coverage label when automation rate impact is empty', () => {
             renderComponent({
                 coverage: {
                     hasAnyCoverage: true,
                     data: {
-                        type: 'automation-rate',
-                        automationRate: 0,
+                        type: 'automation-rate-impact',
+                        impact: '',
                     },
                 },
             })

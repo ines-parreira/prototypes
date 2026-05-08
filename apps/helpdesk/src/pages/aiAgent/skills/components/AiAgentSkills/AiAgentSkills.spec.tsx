@@ -1,3 +1,4 @@
+import { useFlag } from '@repo/feature-flags'
 import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -7,8 +8,11 @@ import thunk from 'redux-thunk'
 import { ThemeProvider } from 'core/theme'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import { SkillWizardStatus } from 'pages/aiAgent/skills/components/SkillWizard/skillWizard.mock'
 import { useHasLinkedSkills } from 'pages/aiAgent/skills/hooks/useHasLinkedSkills'
 import { useSkillsTemplates } from 'pages/aiAgent/skills/hooks/useSkillsTemplates'
+import { useSkillWizard } from 'pages/aiAgent/skills/hooks/useSkillWizard'
+import type { EnrichedSkillWizard } from 'pages/aiAgent/skills/hooks/useSkillWizard'
 import { IntentStatus } from 'pages/aiAgent/skills/types'
 import type { Intent } from 'pages/aiAgent/skills/types'
 
@@ -23,6 +27,11 @@ jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
 jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext')
 jest.mock('pages/aiAgent/skills/hooks/useHasLinkedSkills')
 jest.mock('pages/aiAgent/skills/hooks/useSkillsTemplates')
+jest.mock('pages/aiAgent/skills/hooks/useSkillWizard')
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
+}))
 const mockUseAiAgentNavigation = useAiAgentNavigation as jest.MockedFunction<
     typeof useAiAgentNavigation
 >
@@ -65,6 +74,17 @@ jest.mock(
     }),
 )
 jest.mock(
+    'pages/aiAgent/skills/components/ReviewSkillsSection/ReviewSkillsSection',
+    () => ({
+        ReviewSkillsSection: ({ onCTA }: { onCTA: () => void }) => (
+            <div role="region" aria-label="Review Skills">
+                Review Skills
+                <button onClick={onCTA}>Review CTA</button>
+            </div>
+        ),
+    }),
+)
+jest.mock(
     'pages/aiAgent/skills/components/SkillsTemplateModal/SkillsTemplateModal',
     () => ({
         SkillsTemplateModal: ({
@@ -94,6 +114,16 @@ jest.mock(
         ),
     }),
 )
+jest.mock(
+    'pages/aiAgent/skills/components/WizardSkillsBanner/WizardSkillsBanner',
+    () => ({
+        WizardSkillsBanner: () => (
+            <div role="region" aria-label="Wizard Skills Banner">
+                Wizard Skills Banner
+            </div>
+        ),
+    }),
+)
 
 const mockStore = configureMockStore([thunk])
 const mockUseHasLinkedSkills = useHasLinkedSkills as jest.MockedFunction<
@@ -102,6 +132,29 @@ const mockUseHasLinkedSkills = useHasLinkedSkills as jest.MockedFunction<
 const mockUseSkillsTemplates = useSkillsTemplates as jest.MockedFunction<
     typeof useSkillsTemplates
 >
+const mockUseSkillWizard = useSkillWizard as jest.MockedFunction<
+    typeof useSkillWizard
+>
+const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
+
+const baseEnrichedWizard: EnrichedSkillWizard = {
+    id: 1,
+    account_id: 6069,
+    shop_integration_id: 7,
+    help_center_id: 21,
+    gaia_payload: { recommendations: [] },
+    state: {},
+    status: SkillWizardStatus.NotStarted,
+    started_datetime: null,
+    completed_datetime: null,
+    last_nudge_sent_datetime: null,
+    created_datetime: '2026-04-28T10:15:00.000Z',
+    updated_datetime: '2026-04-28T10:15:00.000Z',
+    all_skills: [],
+    reviewable_skills: [],
+    ui_wizard_state: { total_count: 0, current_step: 1 },
+}
+
 const mockSkillTemplate = {
     id: 'order-status',
     name: 'Order status',
@@ -142,6 +195,9 @@ describe('AiAgentSkills', () => {
                     `/app/ai-agent/shopify/test-shop/skills/new?template=${templateId}`,
                 skillDetail: (skillId: number) =>
                     `/app/ai-agent/shopify/test-shop/skills/${skillId}`,
+                skillsWizard: '/app/ai-agent/shopify/test-shop/skills/wizard',
+                skillsWizardStep: (step: number) =>
+                    `/app/ai-agent/shopify/test-shop/skills/wizard?step=${step}`,
             } as ReturnType<typeof useAiAgentNavigation>['routes'],
         })
         mockUseSkillsTemplates.mockReturnValue({
@@ -150,6 +206,12 @@ describe('AiAgentSkills', () => {
         })
         mockUseHasLinkedSkills.mockReturnValue({
             hasSkills: false,
+            isLoading: false,
+            isError: false,
+        })
+        mockUseFlag.mockReturnValue(false)
+        mockUseSkillWizard.mockReturnValue({
+            wizard: baseEnrichedWizard,
             isLoading: false,
             isError: false,
         })
@@ -272,6 +334,138 @@ describe('AiAgentSkills', () => {
                     screen.queryByRole('region', { name: 'Intents Table' }),
                 ).not.toBeInTheDocument()
             })
+        })
+    })
+
+    describe('Wizard mode', () => {
+        const enableWizardMode = (
+            overrides: Partial<EnrichedSkillWizard> = {},
+        ) => {
+            mockUseFlag.mockReturnValue(true)
+            mockUseSkillWizard.mockReturnValue({
+                wizard: { ...baseEnrichedWizard, ...overrides },
+                isLoading: false,
+                isError: false,
+            })
+        }
+
+        it('renders ReviewSkillsSection when the wizard is not_started', () => {
+            enableWizardMode({ status: SkillWizardStatus.NotStarted })
+            renderComponent()
+
+            expect(
+                screen.getByRole('region', { name: 'Review Skills' }),
+            ).toBeInTheDocument()
+        })
+
+        it('swaps the IntroducingSkillsBanner for the WizardSkillsBanner', () => {
+            enableWizardMode({ status: SkillWizardStatus.InProgress })
+            renderComponent()
+
+            expect(
+                screen.getByRole('region', { name: 'Wizard Skills Banner' }),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText('Introducing Skills Banner'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('renders ReviewSkillsSection when the wizard is in_progress', () => {
+            enableWizardMode({ status: SkillWizardStatus.InProgress })
+            renderComponent()
+
+            expect(
+                screen.getByRole('region', { name: 'Review Skills' }),
+            ).toBeInTheDocument()
+        })
+
+        it('does not render ReviewSkillsSection while the hook is loading', () => {
+            mockUseFlag.mockReturnValue(true)
+            mockUseSkillWizard.mockReturnValue({
+                wizard: {
+                    ...baseEnrichedWizard,
+                    status: SkillWizardStatus.NotStarted,
+                },
+                isLoading: true,
+                isError: false,
+            })
+            renderComponent()
+
+            expect(
+                screen.queryByRole('region', { name: 'Review Skills' }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('does not render ReviewSkillsSection when the wizard is completed', () => {
+            enableWizardMode({ status: SkillWizardStatus.Completed })
+            renderComponent()
+
+            expect(
+                screen.queryByRole('region', { name: 'Review Skills' }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('does not render ReviewSkillsSection when the feature flag is off', () => {
+            mockUseFlag.mockReturnValue(false)
+            mockUseSkillWizard.mockReturnValue({
+                wizard: {
+                    ...baseEnrichedWizard,
+                    status: SkillWizardStatus.InProgress,
+                },
+                isLoading: false,
+                isError: false,
+            })
+            renderComponent()
+
+            expect(
+                screen.queryByRole('region', { name: 'Review Skills' }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('hides RecommendedSkillsSection and the skills table block in wizard mode', () => {
+            enableWizardMode({ status: SkillWizardStatus.NotStarted })
+            mockUseHasLinkedSkills.mockReturnValue({
+                hasSkills: true,
+                isLoading: false,
+                isError: false,
+            })
+            renderComponent()
+
+            expect(
+                screen.queryByText(/Recommended Skills/),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('region', { name: 'Skills Table' }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('hides the header CTAs (View intents, Create skill) in wizard mode', () => {
+            enableWizardMode({ status: SkillWizardStatus.InProgress })
+            renderComponent()
+
+            expect(
+                screen.queryByRole('button', { name: /view intents/i }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', { name: /create skill/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('navigates to the wizard step when the CTA is clicked', async () => {
+            const user = userEvent.setup()
+            enableWizardMode({
+                status: SkillWizardStatus.InProgress,
+                ui_wizard_state: { total_count: 3, current_step: 2 },
+            })
+            renderComponent()
+
+            await user.click(
+                screen.getByRole('button', { name: /Review CTA/i }),
+            )
+
+            expect(mockPush).toHaveBeenCalledWith(
+                '/app/ai-agent/shopify/test-shop/skills/wizard?step=2',
+            )
         })
     })
 })

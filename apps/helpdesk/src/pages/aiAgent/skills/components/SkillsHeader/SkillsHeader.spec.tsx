@@ -60,6 +60,27 @@ describe('SkillsHeader', () => {
         expect(onCreateSkillFromTemplate).toHaveBeenCalledTimes(1)
     })
 
+    it('should hide the action buttons when showActions is false', () => {
+        render(
+            <ThemeProvider>
+                <SkillsHeader showActions={false} />
+            </ThemeProvider>,
+        )
+
+        expect(
+            screen.getByRole('heading', { name: 'Skills' }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('link', { name: /How skills work/i }),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: /View intents/i }),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: /Create skill/i }),
+        ).not.toBeInTheDocument()
+    })
+
     it('should open the "How skills work" side panel when the link is clicked', async () => {
         const user = userEvent.setup()
 
