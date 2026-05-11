@@ -13,7 +13,7 @@ import {
     useUpdateInternalSubscription,
 } from 'models/billing/queries'
 import type { InternalProductCatalogPlans } from 'models/billing/types'
-import { ProductType } from 'models/billing/types'
+import { ProductType, SubscriptionStatus } from 'models/billing/types'
 
 import { InternalManagePlanView } from './InternalManagePlanView'
 
@@ -151,6 +151,106 @@ describe('InternalManagePlanView', () => {
         expect(
             screen.getByRole('button', { name: /preview changes/i }),
         ).toBeEnabled()
+    })
+
+    describe('subscription status badge', () => {
+        function mockBillingStateWith(
+            subscriptionOverrides: Partial<
+                typeof payingWithCreditCard.subscription
+            >,
+        ) {
+            mockMutationHook()
+            mockUseBillingState.mockReturnValue({
+                data: {
+                    ...payingWithCreditCard,
+                    subscription: {
+                        ...payingWithCreditCard.subscription,
+                        ...subscriptionOverrides,
+                    },
+                },
+                isLoading: false,
+                isError: false,
+            } as any)
+            mockUseInternalProductCatalogPlans.mockReturnValue({
+                data: { plans: catalogPlans },
+                isLoading: false,
+                isError: false,
+            } as any)
+        }
+
+        it('shows ACTIVE badge for an active subscription', () => {
+            mockDataReady()
+            renderComponent()
+
+            expect(screen.getByText('ACTIVE')).toBeInTheDocument()
+        })
+
+        it('shows PAUSED badge when subscription is paused', () => {
+            mockBillingStateWith({ is_paused: true })
+            renderComponent()
+
+            expect(screen.getByText('PAUSED')).toBeInTheDocument()
+        })
+
+        it('shows TRIALING badge when is_trialing is true', () => {
+            mockBillingStateWith({ is_trialing: true })
+            renderComponent()
+
+            expect(screen.getByText('TRIALING')).toBeInTheDocument()
+        })
+
+        it('shows NON RENEWING badge when subscription has a scheduled cancellation date', () => {
+            mockBillingStateWith({
+                scheduled_to_cancel_at: '2025-12-01T00:00:00+00:00',
+            })
+            renderComponent()
+
+            expect(screen.getByText('NON RENEWING')).toBeInTheDocument()
+        })
+
+        it('shows CANCELED badge for a canceled subscription', () => {
+            mockBillingStateWith({ status: SubscriptionStatus.CANCELED })
+            renderComponent()
+
+            expect(screen.getByText('CANCELED')).toBeInTheDocument()
+        })
+
+        it('shows PAST DUE badge for a past-due subscription', () => {
+            mockBillingStateWith({ status: SubscriptionStatus.PAST_DUE })
+            renderComponent()
+
+            expect(screen.getByText('PAST DUE')).toBeInTheDocument()
+        })
+
+        it('shows TRIALING badge when status is TRIALING enum (is_trialing false)', () => {
+            mockBillingStateWith({
+                status: SubscriptionStatus.TRIALING,
+                is_trialing: false,
+                scheduled_to_cancel_at: null,
+            })
+            renderComponent()
+
+            expect(screen.getByText('TRIALING')).toBeInTheDocument()
+        })
+
+        it('PAUSED takes priority over is_trialing', () => {
+            mockBillingStateWith({ is_paused: true, is_trialing: true })
+            renderComponent()
+
+            expect(screen.getByText('PAUSED')).toBeInTheDocument()
+            expect(screen.queryByText('TRIALING')).not.toBeInTheDocument()
+        })
+
+        it('TRIALING takes priority over NON RENEWING', () => {
+            mockBillingStateWith({
+                is_trialing: true,
+                scheduled_to_cancel_at: '2025-12-01T00:00:00+00:00',
+            })
+            renderComponent()
+
+            expect(screen.getByText('TRIALING')).toBeInTheDocument()
+            expect(screen.queryByText('NON RENEWING')).not.toBeInTheDocument()
+        })
     })
 
     it('opens confirm modal when Preview changes is clicked after selecting a plan', async () => {

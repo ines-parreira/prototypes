@@ -229,6 +229,7 @@ export type InternalSubscriptionUpdatePayload = {
     invoice?: { generate: boolean }
     new_plans?: Partial<Record<ProductType, PlanId>>
     new_coupons?: string[]
+    reactivate?: boolean
 }
 
 export type InternalSubscriptionUpdateResponse = {

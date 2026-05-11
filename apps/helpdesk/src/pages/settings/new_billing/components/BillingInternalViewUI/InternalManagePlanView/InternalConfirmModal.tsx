@@ -1,5 +1,7 @@
 import { useState } from 'react'
 
+import { SubscriptionStatus } from '@repo/billing'
+
 import {
     Box,
     Button,
@@ -16,12 +18,13 @@ import type { InvoiceCadence } from '@gorgias/helpdesk-types'
 
 import { isGorgiasApiError } from 'models/api/types'
 import type { BillingState } from 'models/billing/types'
+import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
 
 import { ConfirmSummaryTable } from './ConfirmSummaryTable'
 import { useInternalConfirmChangesEstimate } from './useInternalConfirmChangesEstimate'
 import type { PriceSummary, ResolvedPlan } from './useInternalPlanEditor'
 
-const INVOICE_ACTIONS = ['with', 'without'] as const
+const INVOICE_ACTIONS = ['with', 'without', 'reactivate'] as const
 type InvoiceAction = (typeof INVOICE_ACTIONS)[number]
 
 type InternalConfirmModalProps = {
@@ -31,7 +34,7 @@ type InternalConfirmModalProps = {
     priceSummary: PriceSummary
     billingState: BillingState
     invoiceCadence: InvoiceCadence
-    onApply: (generateInvoice: boolean) => void
+    onApply: (generateInvoice: boolean, reactivate?: boolean) => void
     isSubmitting: boolean
 }
 
@@ -47,6 +50,10 @@ export function InternalConfirmModal({
 }: InternalConfirmModalProps) {
     const [activeAction, setActiveAction] = useState<InvoiceAction | null>(null)
 
+    const isTrialing = billingState.subscription.is_trialing
+    const isCurrentSubscriptionCanceled =
+        billingState.subscription.status === SubscriptionStatus.CANCELED
+    const isPaused = billingState.subscription.is_paused
     const {
         data: estimate,
         error: estimateError,
@@ -55,7 +62,7 @@ export function InternalConfirmModal({
         isError: isEstimateError,
         refetch: refetchEstimate,
     } = useInternalConfirmChangesEstimate(
-        isOpen,
+        isOpen && !isCurrentSubscriptionCanceled,
         resolvedPlans,
         billingState.subscription.resource_version,
         billingState.subscription.schedule_resource_version,
@@ -68,7 +75,11 @@ export function InternalConfirmModal({
     const isWriteBlocked =
         !window.USER_IMPERSONATED_AUTHORIZED_FOR_BILLING_WRITE_OPS
     const isApplyDisabled =
-        isWriteBlocked || isSubmitting || isEstimateFetching || isEstimateError
+        isWriteBlocked ||
+        isSubmitting ||
+        isEstimateFetching ||
+        isEstimateError ||
+        isPaused
 
     const estimateErrorMessage = isEstimateError
         ? isGorgiasApiError(estimateError)
@@ -78,7 +89,117 @@ export function InternalConfirmModal({
 
     function handleApply(action: InvoiceAction) {
         setActiveAction(action)
-        onApply(action === 'with')
+        if (action === 'reactivate') {
+            onApply(true, true)
+        } else {
+            onApply(action === 'with')
+        }
+    }
+
+    const writeBlockedTooltip = isWriteBlocked ? (
+        <TooltipContent title="You are not authorized to perform this action. Please reach out to the Billing Ops team to do it" />
+    ) : null
+
+    const pausedTooltip =
+        !isWriteBlocked && isPaused ? (
+            <TooltipContent title="Your subscription is paused please resume/schedule resumption in Chargebee directly" />
+        ) : null
+
+    function renderFooterButtons() {
+        if (isTrialing) {
+            return (
+                <Tooltip
+                    trigger={
+                        <Button
+                            onClick={() => handleApply('without')}
+                            isLoading={isSubmitting}
+                            isDisabled={isApplyDisabled}
+                        >
+                            Apply
+                        </Button>
+                    }
+                >
+                    {writeBlockedTooltip}
+                </Tooltip>
+            )
+        }
+
+        if (isCurrentSubscriptionCanceled) {
+            return (
+                <Tooltip
+                    trigger={
+                        <Button
+                            onClick={() => handleApply('reactivate')}
+                            isLoading={
+                                isSubmitting && activeAction === 'reactivate'
+                            }
+                            isDisabled={isApplyDisabled}
+                        >
+                            Reactivate
+                        </Button>
+                    }
+                >
+                    {writeBlockedTooltip}
+                </Tooltip>
+            )
+        }
+
+        if (hasUpgrade) {
+            return (
+                <>
+                    <Tooltip
+                        trigger={
+                            <Button
+                                variant="secondary"
+                                onClick={() => handleApply('without')}
+                                isLoading={
+                                    isSubmitting && activeAction === 'without'
+                                }
+                                isDisabled={isApplyDisabled}
+                            >
+                                Apply without invoice
+                            </Button>
+                        }
+                    >
+                        {writeBlockedTooltip}
+                        {pausedTooltip}
+                    </Tooltip>
+                    <Tooltip
+                        trigger={
+                            <Button
+                                onClick={() => handleApply('with')}
+                                isLoading={
+                                    isSubmitting && activeAction === 'with'
+                                }
+                                isDisabled={isApplyDisabled}
+                            >
+                                Apply with invoice
+                            </Button>
+                        }
+                    >
+                        {writeBlockedTooltip}
+                        {pausedTooltip}
+                    </Tooltip>
+                </>
+            )
+        }
+
+        return (
+            <Tooltip
+                trigger={
+                    <Button
+                        onClick={() => handleApply('without')}
+                        isLoading={isSubmitting}
+                        isDisabled={isApplyDisabled}
+                    >
+                        Apply
+                    </Button>
+                }
+            >
+                {writeBlockedTooltip}
+                {pausedTooltip}
+            </Tooltip>
+        )
     }
 
     return (
@@ -102,68 +223,14 @@ export function InternalConfirmModal({
                     isEstimateLoading={isEstimateLoading || isEstimateFetching}
                     estimateErrorMessage={estimateErrorMessage}
                     onRetryEstimate={() => void refetchEstimate()}
+                    showBalanceDue={!isCurrentSubscriptionCanceled}
                 />
             </OverlayContent>
+            <OverlayContent>
+                <NewSummaryPaymentSection trackingSource="internal_subscription_update" />
+            </OverlayContent>
             <OverlayFooter>
-                <Box gap="sm">
-                    {hasUpgrade ? (
-                        <>
-                            <Tooltip
-                                trigger={
-                                    <Button
-                                        variant="secondary"
-                                        onClick={() => handleApply('without')}
-                                        isLoading={
-                                            isSubmitting &&
-                                            activeAction === 'without'
-                                        }
-                                        isDisabled={isApplyDisabled}
-                                    >
-                                        Apply without invoice
-                                    </Button>
-                                }
-                            >
-                                {isWriteBlocked && (
-                                    <TooltipContent title="You are not authorized to perform this action. Please reach out to the Billing Ops team to do it" />
-                                )}
-                            </Tooltip>
-                            <Tooltip
-                                trigger={
-                                    <Button
-                                        onClick={() => handleApply('with')}
-                                        isLoading={
-                                            isSubmitting &&
-                                            activeAction === 'with'
-                                        }
-                                        isDisabled={isApplyDisabled}
-                                    >
-                                        Apply with invoice
-                                    </Button>
-                                }
-                            >
-                                {isWriteBlocked && (
-                                    <TooltipContent title="You are not authorized to perform this action. Please reach out to the Billing Ops team to do it" />
-                                )}
-                            </Tooltip>
-                        </>
-                    ) : (
-                        <Tooltip
-                            trigger={
-                                <Button
-                                    onClick={() => handleApply('without')}
-                                    isLoading={isSubmitting}
-                                    isDisabled={isApplyDisabled}
-                                >
-                                    Apply
-                                </Button>
-                            }
-                        >
-                            {isWriteBlocked && (
-                                <TooltipContent title="You are not authorized to perform this action. Please reach out to the Billing Ops team to do it" />
-                            )}
-                        </Tooltip>
-                    )}
-                </Box>
+                <Box gap="sm">{renderFooterButtons()}</Box>
             </OverlayFooter>
         </Modal>
     )

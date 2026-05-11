@@ -12,13 +12,14 @@ import {
     proMonthlyHelpdeskPlan,
     voicePlan0,
 } from 'fixtures/plans'
-import { ProductType } from 'models/billing/types'
+import { ProductType, SubscriptionStatus } from 'models/billing/types'
 
 import { InternalConfirmModal } from './InternalConfirmModal'
 import { derivePriceSummary } from './useInternalPlanEditor'
 import type { ResolvedPlan } from './useInternalPlanEditor'
 
 const ESTIMATE_URL = '*/api/billing/internal/estimates/subscription'
+const BILLING_STATE_URL = '*/billing/state'
 
 const server = setupServer()
 
@@ -39,6 +40,10 @@ function estimateErrorHandler() {
 
 function estimatePendingHandler() {
     return http.get(ESTIMATE_URL, () => new Promise<never>(() => {}))
+}
+
+function billingStateHandler(data = payingWithCreditCard) {
+    return http.get(BILLING_STATE_URL, () => HttpResponse.json(data))
 }
 
 function makeResolved(
@@ -108,7 +113,7 @@ describe('InternalConfirmModal', () => {
     })
 
     beforeEach(() => {
-        server.use(estimateSuccessHandler())
+        server.use(estimateSuccessHandler(), billingStateHandler())
         window.USER_IMPERSONATED_AUTHORIZED_FOR_BILLING_WRITE_OPS = true
     })
 
@@ -347,6 +352,161 @@ describe('InternalConfirmModal', () => {
         expect(
             screen.getByText('Prices exclusive of sales tax'),
         ).toBeInTheDocument()
+    })
+
+    describe('when subscription is paused', () => {
+        const pausedBillingState = {
+            ...payingWithCreditCard,
+            subscription: {
+                ...payingWithCreditCard.subscription,
+                is_paused: true,
+            },
+        }
+
+        it('disables invoice buttons and shows paused tooltip on hover (upgrade path)', async () => {
+            const user = userEvent.setup()
+            renderComponent({ billingState: pausedBillingState })
+
+            expect(
+                screen.getByRole('button', { name: /apply without invoice/i }),
+            ).toBeDisabled()
+            expect(
+                screen.getByRole('button', { name: /apply with invoice/i }),
+            ).toBeDisabled()
+
+            await user.hover(
+                screen.getByRole('button', { name: /apply without invoice/i }),
+            )
+            expect(await screen.findByText(/paused/i)).toBeInTheDocument()
+        })
+
+        it('disables Apply button and shows paused tooltip on hover (no-upgrade path)', async () => {
+            const user = userEvent.setup()
+            renderComponent({
+                billingState: pausedBillingState,
+                resolvedPlans: downgradeOnlyPlans,
+            })
+
+            const applyButton = screen.getByRole('button', { name: /^Apply$/i })
+            expect(applyButton).toBeDisabled()
+
+            await user.hover(applyButton)
+            expect(await screen.findByText(/paused/i)).toBeInTheDocument()
+        })
+
+        it('shows write-blocked tooltip instead of paused tooltip when both conditions apply', async () => {
+            const user = userEvent.setup()
+            window.USER_IMPERSONATED_AUTHORIZED_FOR_BILLING_WRITE_OPS = false
+            renderComponent({ billingState: pausedBillingState })
+
+            await user.hover(
+                screen.getByRole('button', { name: /apply without invoice/i }),
+            )
+
+            expect(
+                await screen.findByText(
+                    /not authorized to perform this action/i,
+                ),
+            ).toBeInTheDocument()
+            expect(screen.queryByText(/paused/i)).not.toBeInTheDocument()
+        })
+    })
+
+    describe('when subscription is trialing', () => {
+        const trialingBillingState = {
+            ...payingWithCreditCard,
+            subscription: {
+                ...payingWithCreditCard.subscription,
+                is_trialing: true,
+            },
+        }
+
+        it('renders only "Apply" button, no "Apply with invoice" or "Apply without invoice"', () => {
+            renderComponent({ billingState: trialingBillingState })
+
+            expect(
+                screen.getByRole('button', { name: /^Apply$/i }),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', { name: /apply with invoice/i }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', {
+                    name: /apply without invoice/i,
+                }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('clicking "Apply" calls onApply(false)', async () => {
+            const user = userEvent.setup()
+            const { props } = renderComponent({
+                billingState: trialingBillingState,
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /^Apply$/i }),
+                ).toBeEnabled()
+            })
+            await act(() =>
+                user.click(screen.getByRole('button', { name: /^Apply$/i })),
+            )
+
+            expect(props.onApply).toHaveBeenCalledWith(false)
+        })
+    })
+
+    describe('when subscription is canceled', () => {
+        const canceledBillingState = {
+            ...payingWithCreditCard,
+            subscription: {
+                ...payingWithCreditCard.subscription,
+                status: SubscriptionStatus.CANCELED,
+            },
+        }
+
+        it('renders "Reactivate" button instead of Apply buttons', () => {
+            renderComponent({ billingState: canceledBillingState })
+
+            expect(
+                screen.getByRole('button', { name: /reactivate/i }),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', { name: /apply with invoice/i }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', {
+                    name: /apply without invoice/i,
+                }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('clicking "Reactivate" calls onApply(true, true)', async () => {
+            const user = userEvent.setup()
+            const { props } = renderComponent({
+                billingState: canceledBillingState,
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /reactivate/i }),
+                ).toBeEnabled()
+            })
+            await act(() =>
+                user.click(screen.getByRole('button', { name: /reactivate/i })),
+            )
+
+            expect(props.onApply).toHaveBeenCalledWith(true, true)
+        })
+
+        it('does not disable the Reactivate button while estimate is pending (estimate is skipped)', () => {
+            server.use(estimatePendingHandler())
+            renderComponent({ billingState: canceledBillingState })
+
+            expect(
+                screen.getByRole('button', { name: /reactivate/i }),
+            ).toBeEnabled()
+        })
     })
 
     describe('estimate integration', () => {

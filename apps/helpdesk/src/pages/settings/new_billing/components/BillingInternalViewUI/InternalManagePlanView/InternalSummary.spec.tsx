@@ -2,6 +2,8 @@ import type { BillingState } from '@repo/billing'
 import { payingWithCreditCard } from '@repo/billing/fixtures'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
+import { http, HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
 import {
     DiscountApplicability,
@@ -18,11 +20,33 @@ import {
     voicePlan3,
     voicePlan4,
 } from 'fixtures/plans'
-import { ProductType } from 'models/billing/types'
+import { ProductType, SubscriptionStatus } from 'models/billing/types'
 
 import { InternalSummary } from './InternalSummary'
 import { derivePriceSummary } from './useInternalPlanEditor'
 import type { ResolvedPlan } from './useInternalPlanEditor'
+
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+beforeEach(() => {
+    server.use(
+        http.get('*/billing/state', () =>
+            HttpResponse.json(payingWithCreditCard),
+        ),
+    )
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 function makeResolved(
     overrides: Partial<ResolvedPlan> & { productType: ProductType },
@@ -215,7 +239,51 @@ describe('InternalSummary', () => {
         expect(totalRow).toHaveTextContent('$180/month')
     })
 
-    it('renders credit card info and Change Payment Method link', () => {
+    it('hides payment section when subscription is trialing', () => {
+        const trialingState = {
+            ...payingWithCreditCard,
+            subscription: {
+                ...payingWithCreditCard.subscription,
+                is_trialing: true,
+            },
+        }
+        const plans: ResolvedPlan[] = [
+            makeResolved({
+                productType: ProductType.Helpdesk,
+                plan: basicMonthlyHelpdeskPlan,
+                currentPlan: basicMonthlyHelpdeskPlan,
+            }),
+        ]
+        renderComponent(plans, false, trialingState)
+
+        expect(
+            screen.queryByText('Change Payment Method'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('hides payment section when subscription is canceled', () => {
+        const canceledState = {
+            ...payingWithCreditCard,
+            subscription: {
+                ...payingWithCreditCard.subscription,
+                status: SubscriptionStatus.CANCELED,
+            },
+        }
+        const plans: ResolvedPlan[] = [
+            makeResolved({
+                productType: ProductType.Helpdesk,
+                plan: basicMonthlyHelpdeskPlan,
+                currentPlan: basicMonthlyHelpdeskPlan,
+            }),
+        ]
+        renderComponent(plans, false, canceledState)
+
+        expect(
+            screen.queryByText('Change Payment Method'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('renders credit card info and Change Payment Method link', async () => {
         const plans: ResolvedPlan[] = [
             makeResolved({
                 productType: ProductType.Helpdesk,
@@ -225,7 +293,7 @@ describe('InternalSummary', () => {
         ]
         renderComponent(plans)
 
-        expect(screen.getByText(/Visa/)).toBeInTheDocument()
+        expect(await screen.findByText(/Visa/)).toBeInTheDocument()
         expect(screen.getByText('4321')).toBeInTheDocument()
         expect(screen.getByText('Change Payment Method')).toBeInTheDocument()
     })

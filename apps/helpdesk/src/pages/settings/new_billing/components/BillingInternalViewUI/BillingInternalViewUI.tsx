@@ -83,7 +83,6 @@ export function BillingInternalViewUI({
                     onClick={() => {
                         history.push(BILLING_INTERNAL_MANAGE_PLAN_PATH)
                     }}
-                    isDisabled={isDeactivated}
                 >
                     Manage plans
                 </Button>

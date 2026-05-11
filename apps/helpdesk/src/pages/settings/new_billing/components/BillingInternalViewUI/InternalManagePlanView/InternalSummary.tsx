@@ -1,17 +1,8 @@
 import { Fragment } from 'react'
 
-import { BILLING_PAYMENT_CARD_PATH, formatAmount } from '@repo/billing'
-import { Link } from 'react-router-dom'
+import { formatAmount } from '@repo/billing'
 
-import {
-    Box,
-    Button,
-    Card,
-    Heading,
-    Icon,
-    Separator,
-    Text,
-} from '@gorgias/axiom'
+import { Box, Button, Card, Heading, Separator, Text } from '@gorgias/axiom'
 import type { InvoiceCadence } from '@gorgias/helpdesk-types'
 
 import type { BillingState } from 'models/billing/types'
@@ -19,6 +10,7 @@ import type {
     PriceSummary,
     ResolvedPlan,
 } from 'pages/settings/new_billing/components/BillingInternalViewUI/InternalManagePlanView/useInternalPlanEditor'
+import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
 
 import { DiscountSummaryRow } from './DiscountSummaryRow'
 import { SummaryProductRow } from './SummaryProductRow'
@@ -40,9 +32,7 @@ export function InternalSummary({
     invoiceCadence,
     onPreviewChanges,
 }: InternalSummaryProps) {
-    const { credit_card } = billingState.customer
     const currency = billingState.current_plans.helpdesk.currency ?? 'usd'
-
     const {
         totalWithDiscountsInCents,
         discountAmountInCents,
@@ -141,27 +131,7 @@ export function InternalSummary({
                         Prices exclusive of sales tax
                     </Text>
                 </Box>
-                {credit_card && (
-                    <>
-                        <Separator />
-                        <Box alignItems="center" justifyContent="space-between">
-                            <Box alignItems="center" gap="sm">
-                                <Icon name="credit-card" />
-                                <Text>
-                                    {credit_card.brand} ending with{' '}
-                                    <Text variant="bold" as="span">
-                                        {credit_card.last4}
-                                    </Text>
-                                </Text>
-                            </Box>
-                            <Link to={BILLING_PAYMENT_CARD_PATH}>
-                                <Text color="content-accent-default" size="sm">
-                                    Change Payment Method
-                                </Text>
-                            </Link>
-                        </Box>
-                    </>
-                )}
+                <NewSummaryPaymentSection trackingSource="internal_subscription_update" />
                 <Box justifyContent="flex-end" paddingTop="sm">
                     <Button isDisabled={!hasChanges} onClick={onPreviewChanges}>
                         Preview changes

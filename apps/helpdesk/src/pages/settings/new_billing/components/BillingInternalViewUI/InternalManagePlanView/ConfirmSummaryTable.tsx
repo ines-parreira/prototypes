@@ -26,6 +26,7 @@ type ConfirmSummaryTableProps = {
     isEstimateLoading?: boolean
     estimateErrorMessage?: string
     onRetryEstimate?: () => void
+    showBalanceDue?: boolean
 }
 
 export function ConfirmSummaryTable({
@@ -37,6 +38,7 @@ export function ConfirmSummaryTable({
     isEstimateLoading = false,
     estimateErrorMessage,
     onRetryEstimate,
+    showBalanceDue = true,
 }: ConfirmSummaryTableProps) {
     const currency = billingState.current_plans.helpdesk.currency ?? 'usd'
 
@@ -109,15 +111,17 @@ export function ConfirmSummaryTable({
                         </Text>
                     </Box>
                 </Box>
-                <BalanceDueRow
-                    isLoading={isEstimateLoading}
-                    errorMessage={estimateErrorMessage}
-                    onRetry={onRetryEstimate}
-                >
-                    <Text className={css.highlighted} variant="bold">
-                        {balanceDueText}
-                    </Text>
-                </BalanceDueRow>
+                {showBalanceDue && (
+                    <BalanceDueRow
+                        isLoading={isEstimateLoading}
+                        errorMessage={estimateErrorMessage}
+                        onRetry={onRetryEstimate}
+                    >
+                        <Text className={css.highlighted} variant="bold">
+                            {balanceDueText}
+                        </Text>
+                    </BalanceDueRow>
+                )}
                 <Box marginTop="sm" marginBottom="sm" flexDirection="column">
                     <Text
                         size="sm"

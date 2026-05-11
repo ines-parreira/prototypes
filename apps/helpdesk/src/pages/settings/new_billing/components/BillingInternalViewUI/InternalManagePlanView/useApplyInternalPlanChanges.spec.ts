@@ -269,4 +269,16 @@ describe('useApplyInternalPlanChanges', () => {
             payload.subscription_renewal_ramp_resource_version,
         ).toBeUndefined()
     })
+
+    it('sends reactivate: true in payload when reactivate flag is passed', async () => {
+        const { result } = renderHook(() =>
+            useApplyInternalPlanChanges(payingWithCreditCard, resolvedPlans),
+        )
+
+        await act(() => result.current.apply(true, true))
+
+        expect(mockMutateAsync).toHaveBeenCalledWith(
+            expect.objectContaining({ reactivate: true }),
+        )
+    })
 })

@@ -3,20 +3,39 @@ import { useState } from 'react'
 import { BILLING_INTERNAL_PATH } from '@repo/billing'
 import { useHistory } from 'react-router-dom'
 
-import { Box, Button, Text } from '@gorgias/axiom'
+import { Box, Button, Color, Tag, Text } from '@gorgias/axiom'
 import { InvoiceCadence } from '@gorgias/helpdesk-types'
 
 import {
     useBillingState,
     useInternalProductCatalogPlans,
 } from 'models/billing/queries'
-import { Cadence } from 'models/billing/types'
+import { Cadence, SubscriptionStatus } from 'models/billing/types'
+import type { SubscriptionSummary } from 'models/billing/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import { InternalConfirmModal } from 'pages/settings/new_billing/components/BillingInternalViewUI/InternalManagePlanView/InternalConfirmModal'
 import { InternalSelectPlans } from 'pages/settings/new_billing/components/BillingInternalViewUI/InternalManagePlanView/InternalSelectPlans/InternalSelectPlans'
 import { InternalSummary } from 'pages/settings/new_billing/components/BillingInternalViewUI/InternalManagePlanView/InternalSummary'
 import { useApplyInternalPlanChanges } from 'pages/settings/new_billing/components/BillingInternalViewUI/InternalManagePlanView/useApplyInternalPlanChanges'
 import { useInternalPlanEditor } from 'pages/settings/new_billing/components/BillingInternalViewUI/InternalManagePlanView/useInternalPlanEditor'
+
+function getSubscriptionStatusTag(subscription: SubscriptionSummary) {
+    if (subscription.is_paused) return { label: 'PAUSED', color: Color.Orange }
+    if (subscription.is_trialing)
+        return { label: 'TRIALING', color: Color.Blue }
+    if (subscription.scheduled_to_cancel_at !== null)
+        return { label: 'NON RENEWING', color: Color.Orange }
+    switch (subscription.status) {
+        case SubscriptionStatus.ACTIVE:
+            return { label: 'ACTIVE', color: Color.Green }
+        case SubscriptionStatus.CANCELED:
+            return { label: 'CANCELED', color: Color.Red }
+        case SubscriptionStatus.PAST_DUE:
+            return { label: 'PAST DUE', color: Color.Red }
+        case SubscriptionStatus.TRIALING:
+            return { label: 'TRIALING', color: Color.Blue }
+    }
+}
 
 export function InternalManagePlanView() {
     const history = useHistory()
@@ -63,9 +82,11 @@ export function InternalManagePlanView() {
     if (!billingState || !catalogData)
         return <Text>No billing data available</Text>
 
+    const statusTag = getSubscriptionStatusTag(billingState.subscription)
+
     return (
         <Box flexDirection="column">
-            <Box marginBottom="lg">
+            <Box marginBottom="lg" alignItems="center" gap="md">
                 <Button
                     leadingSlot="arrow_back"
                     variant="tertiary"
@@ -73,6 +94,12 @@ export function InternalManagePlanView() {
                 >
                     Go Back
                 </Button>
+                <Box alignItems="center" gap="xs">
+                    <Text color="content-neutral-secondary">
+                        Subscription status
+                    </Text>
+                    <Tag color={statusTag.color}>{statusTag.label}</Tag>
+                </Box>
             </Box>
 
             <Box gap="lg">

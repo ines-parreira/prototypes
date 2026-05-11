@@ -329,27 +329,6 @@ describe('BillingInternalViewUI', () => {
             ).toBeEnabled()
         })
 
-        it('is disabled for a deactivated account', () => {
-            render(
-                <BillingInternalViewUI
-                    {...BillingInternalViewUIDefaultProps}
-                    billingState={payingWithCreditCard}
-                />,
-                {
-                    storeState: {
-                        currentAccount: fromJS({
-                            ...account,
-                            deactivated_datetime: '2025-01-01T00:00:00Z',
-                        }),
-                    } as Partial<RootState>,
-                },
-            )
-
-            expect(
-                screen.getByRole('button', { name: /Manage plans/i }),
-            ).toBeDisabled()
-        })
-
         it('navigates to the manage plan path when clicked', async () => {
             const user = userEvent.setup()
             render(

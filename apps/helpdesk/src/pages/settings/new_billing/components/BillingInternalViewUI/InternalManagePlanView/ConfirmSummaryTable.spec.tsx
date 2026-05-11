@@ -87,6 +87,12 @@ describe('ConfirmSummaryTable balance due', () => {
         expect(onRetryEstimate).toHaveBeenCalledTimes(1)
     })
 
+    it('hides the balance due row when showBalanceDue is false', () => {
+        renderComponent({ isEstimateLoading: true, showBalanceDue: false })
+
+        expect(screen.queryByText('Balance due today')).not.toBeInTheDocument()
+    })
+
     it('renders a dash before the balance resolves and the formatted amount after it resolves', () => {
         const { rerender } = renderComponent({ balanceDue: null })
 

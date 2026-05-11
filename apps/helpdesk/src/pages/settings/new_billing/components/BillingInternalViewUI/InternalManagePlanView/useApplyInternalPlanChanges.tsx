@@ -63,7 +63,7 @@ export function useApplyInternalPlanChanges(
     const history = useHistory()
     const { mutateAsync, isLoading } = useUpdateInternalSubscription()
 
-    async function apply(generateInvoice: boolean) {
+    async function apply(generateInvoice: boolean, reactivate?: boolean) {
         if (!billingState) return
         try {
             await mutateAsync({
@@ -73,6 +73,7 @@ export function useApplyInternalPlanChanges(
                     billingState.subscription.schedule_resource_version,
                 new_plans: buildNewPlans(resolvedPlans),
                 invoice: { generate: generateInvoice },
+                reactivate,
             })
 
             toast.success('Subscription updated')
