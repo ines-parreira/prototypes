@@ -125,6 +125,7 @@ export function InfobarTicketCustomerDetails({
                     setIsSearchAndPreviewPanelOpen(false)
                 }}
                 previewedCustomer={similarCustomer}
+                currentCustomerId={ticketCustomer?.id}
                 onSetCustomer={handleOpenSwitchModal}
                 onMergeCustomer={handleOpenMergeModal}
             />

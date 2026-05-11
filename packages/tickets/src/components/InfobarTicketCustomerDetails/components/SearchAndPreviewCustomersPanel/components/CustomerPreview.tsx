@@ -21,6 +21,7 @@ type CustomerPreviewProps = {
     onSetCustomer: (customer: Customer) => void
     onMergeCustomer?: (customer: Customer) => void
     setCustomerLabel?: string
+    isCurrent?: boolean
 }
 
 export function CustomerPreview({
@@ -30,6 +31,7 @@ export function CustomerPreview({
     onSetCustomer,
     onMergeCustomer,
     setCustomerLabel = 'Switch customer',
+    isCurrent,
 }: CustomerPreviewProps) {
     const customerDisplayName = useMemo(() => {
         return customer
@@ -60,7 +62,7 @@ export function CustomerPreview({
                     <Heading size="sm">{customerDisplayName}</Heading>
                 </Box>
                 <Box gap="xxxs">
-                    {onMergeCustomer && (
+                    {!isCurrent && onMergeCustomer && (
                         <Button
                             variant="secondary"
                             onClick={() => onMergeCustomer(customer)}
@@ -68,12 +70,14 @@ export function CustomerPreview({
                             Merge
                         </Button>
                     )}
-                    <Button
-                        variant="secondary"
-                        onClick={() => onSetCustomer(customer)}
-                    >
-                        {setCustomerLabel}
-                    </Button>
+                    {!isCurrent && (
+                        <Button
+                            variant="secondary"
+                            onClick={() => onSetCustomer(customer)}
+                        >
+                            {setCustomerLabel}
+                        </Button>
+                    )}
                     <Box alignSelf="flex-start">
                         <Button
                             variant="tertiary"

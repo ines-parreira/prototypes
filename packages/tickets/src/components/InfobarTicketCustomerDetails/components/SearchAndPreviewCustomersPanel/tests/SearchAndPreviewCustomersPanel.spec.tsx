@@ -183,6 +183,90 @@ describe('SearchAndPreviewCustomersPanel', () => {
         expect(screen.getByText(/Jane/)).toBeInTheDocument()
     })
 
+    it('should tag the current customer in search results and hide merge/switch actions for that row', async () => {
+        server.use(
+            mockSearchCustomersHandler(async () =>
+                HttpResponse.json(
+                    mockSearchCustomersResponse({
+                        data: mockSearchResults,
+                    }),
+                ),
+            ).handler,
+        )
+
+        const { user } = render(
+            <SearchAndPreviewCustomersPanel
+                {...defaultProps}
+                currentCustomerId={1}
+            />,
+        )
+
+        const searchInput = screen.getByPlaceholderText(
+            'Search by name, email or order no.',
+        )
+
+        await user.type(searchInput, 'John')
+
+        await waitFor(() => {
+            expect(screen.getByText('2 results')).toBeInTheDocument()
+        })
+
+        expect(screen.getByText('Current customer')).toBeInTheDocument()
+
+        const johnRow = screen
+            .getByText(/John/)
+            .closest('article, div, section')
+        expect(johnRow).not.toBeNull()
+        expect(screen.getAllByRole('button', { name: 'Merge' })).toHaveLength(1)
+        expect(
+            screen.getAllByRole('button', { name: 'Switch customer' }),
+        ).toHaveLength(1)
+    })
+
+    it('should tag the previewed (duplicate) customer in search results', async () => {
+        server.use(
+            mockSearchCustomersHandler(async () =>
+                HttpResponse.json(
+                    mockSearchCustomersResponse({
+                        data: mockSearchResults,
+                    }),
+                ),
+            ).handler,
+        )
+
+        const previewedCustomer = mockCustomer({
+            id: 2,
+            name: 'Jane Smith',
+            email: 'jane@example.com',
+            channels: [
+                {
+                    id: 2,
+                    type: 'email',
+                    address: 'jane@example.com',
+                } as TicketCustomerChannel,
+            ],
+        })
+
+        const { user } = render(
+            <SearchAndPreviewCustomersPanel
+                {...defaultProps}
+                previewedCustomer={previewedCustomer}
+            />,
+        )
+
+        const searchInput = screen.getByPlaceholderText(
+            'Search by name, email or order no.',
+        )
+
+        await user.type(searchInput, 'Jane')
+
+        await waitFor(() => {
+            expect(screen.getByText('2 results')).toBeInTheDocument()
+        })
+
+        expect(screen.getByText('Potential duplicate')).toBeInTheDocument()
+    })
+
     it('should display singular result count for one result', async () => {
         server.use(
             mockSearchCustomersHandler(async () =>
@@ -243,6 +327,35 @@ describe('SearchAndPreviewCustomersPanel', () => {
         )
     })
 
+    it('should display an error message when search fails', async () => {
+        server.use(
+            mockSearchCustomersHandler(async () =>
+                HttpResponse.json(
+                    mockSearchCustomersResponse({
+                        data: [],
+                    }),
+                    { status: 500 },
+                ),
+            ).handler,
+        )
+
+        const { user } = render(
+            <SearchAndPreviewCustomersPanel {...defaultProps} />,
+        )
+
+        const searchInput = screen.getByPlaceholderText(
+            'Search by name, email or order no.',
+        )
+
+        await user.type(searchInput, 'John')
+
+        expect(
+            await screen.findByText(
+                'Failed to search customers. Please try again.',
+            ),
+        ).toBeInTheDocument()
+    })
+
     it('should display previewed customer when provided', () => {
         const previewedCustomer = mockCustomer({
             id: 999,
@@ -271,6 +384,46 @@ describe('SearchAndPreviewCustomersPanel', () => {
         ).toBeInTheDocument()
 
         expect(screen.getByText('Preview Customer')).toBeInTheDocument()
+    })
+
+    it('should open the preview screen and set the selected customer from preview actions', async () => {
+        server.use(
+            mockSearchCustomersHandler(async () =>
+                HttpResponse.json(
+                    mockSearchCustomersResponse({
+                        data: [mockSearchResults[0]],
+                    }),
+                ),
+            ).handler,
+        )
+
+        const { user } = render(
+            <SearchAndPreviewCustomersPanel {...defaultProps} />,
+        )
+
+        const searchInput = screen.getByPlaceholderText(
+            'Search by name, email or order no.',
+        )
+
+        await user.type(searchInput, 'John')
+
+        expect(await screen.findByText('1 result')).toBeInTheDocument()
+
+        await user.click(screen.getByRole('button', { name: 'View details' }))
+
+        expect(screen.getByText('John Doe')).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: 'Back to previous screen' }),
+        ).toBeInTheDocument()
+
+        await user.click(
+            screen.getByRole('button', { name: 'Switch customer' }),
+        )
+
+        expect(mockOnSetCustomer).toHaveBeenCalledWith(
+            mockSearchResults[0].entity,
+        )
+        expect(mockOnSetCustomer).toHaveBeenCalledTimes(1)
     })
 
     it('should hide previewed customer when user starts typing in search', async () => {

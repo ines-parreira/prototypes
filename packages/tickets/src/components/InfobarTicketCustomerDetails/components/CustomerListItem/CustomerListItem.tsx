@@ -18,6 +18,7 @@ import css from './CustomerListItem.less'
 export type CustomerListItemProps = {
     customer: Customer | CustomerHighlightDataItem
     isDuplicate?: boolean
+    isCurrent?: boolean
     onSetCustomer: (customer: Customer) => void
     onPreviewCustomer: (customer: Customer) => void
     onMergeCustomer?: (customer: Customer) => void
@@ -33,6 +34,7 @@ function isCustomerWithHighlights(
 export function CustomerListItem({
     customer,
     isDuplicate,
+    isCurrent,
     onSetCustomer,
     onPreviewCustomer,
     onMergeCustomer,
@@ -78,7 +80,10 @@ export function CustomerListItem({
                             }}
                         />
                     </Heading>
-                    {isDuplicate && <Tag color="grey">Potential duplicate</Tag>}
+                    {isCurrent && <Tag color="grey">Current customer</Tag>}
+                    {!isCurrent && isDuplicate && (
+                        <Tag color="grey">Potential duplicate</Tag>
+                    )}
                 </Box>
                 <Box flexDirection="column" gap="xxxs">
                     {emailToDisplay && (
@@ -127,7 +132,7 @@ export function CustomerListItem({
                     )}
                 </Box>
                 <Box gap="xxxs" marginTop="xxxs">
-                    {onMergeCustomer && (
+                    {!isCurrent && onMergeCustomer && (
                         <Button
                             size="sm"
                             variant="secondary"
@@ -136,13 +141,15 @@ export function CustomerListItem({
                             Merge
                         </Button>
                     )}
-                    <Button
-                        size="sm"
-                        variant="secondary"
-                        onClick={() => onSetCustomer(originalCustomer)}
-                    >
-                        {setCustomerLabel}
-                    </Button>
+                    {!isCurrent && (
+                        <Button
+                            size="sm"
+                            variant="secondary"
+                            onClick={() => onSetCustomer(originalCustomer)}
+                        >
+                            {setCustomerLabel}
+                        </Button>
+                    )}
                     <Button
                         size="sm"
                         variant="tertiary"

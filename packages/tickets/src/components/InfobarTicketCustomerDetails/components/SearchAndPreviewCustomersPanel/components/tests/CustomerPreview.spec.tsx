@@ -157,4 +157,15 @@ describe('CustomerPreview', () => {
         expect(mockOnSetCustomer).toHaveBeenCalledWith(mockCustomerData)
         expect(mockOnSetCustomer).toHaveBeenCalledTimes(1)
     })
+
+    it('should hide Merge and Switch customer buttons when previewing the current customer', () => {
+        render(<CustomerPreview {...defaultProps} isCurrent />)
+
+        expect(
+            screen.queryByRole('button', { name: 'Merge' }),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: 'Switch customer' }),
+        ).not.toBeInTheDocument()
+    })
 })

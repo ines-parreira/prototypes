@@ -24,6 +24,7 @@ export type SearchCustomersPanelProps = {
     onSetCustomer: (customer: Customer) => void
     onMergeCustomer?: (customer: Customer) => void
     previewedCustomer?: Customer | null
+    currentCustomerId?: number | null
     setCustomerLabel?: string
 }
 
@@ -33,6 +34,7 @@ export function SearchAndPreviewCustomersPanel({
     onSetCustomer,
     onMergeCustomer,
     previewedCustomer,
+    currentCustomerId,
     setCustomerLabel = 'Switch customer',
 }: SearchCustomersPanelProps) {
     const [mode, setMode] = useState<'search' | 'preview'>('search')
@@ -49,14 +51,6 @@ export function SearchAndPreviewCustomersPanel({
         isSearching,
         searchError,
     } = useCustomerSearch()
-
-    const handleSetCustomer = useCallback(
-        (customer: Customer) => {
-            onSetCustomer(customer)
-            onClose()
-        },
-        [onSetCustomer, onClose],
-    )
 
     const handlePreviewCustomer = useCallback((customer: Customer) => {
         setPreviewCustomer(customer)
@@ -131,7 +125,7 @@ export function SearchAndPreviewCustomersPanel({
                                 <CustomerListItem
                                     customer={previewedCustomer}
                                     isDuplicate
-                                    onSetCustomer={handleSetCustomer}
+                                    onSetCustomer={onSetCustomer}
                                     onPreviewCustomer={handlePreviewCustomer}
                                     onMergeCustomer={onMergeCustomer}
                                     setCustomerLabel={setCustomerLabel}
@@ -160,7 +154,17 @@ export function SearchAndPreviewCustomersPanel({
                                         <CustomerListItem
                                             key={data.entity?.id}
                                             customer={data}
-                                            onSetCustomer={handleSetCustomer}
+                                            isCurrent={
+                                                !!currentCustomerId &&
+                                                data.entity?.id ===
+                                                    currentCustomerId
+                                            }
+                                            isDuplicate={
+                                                !!previewedCustomer?.id &&
+                                                data.entity?.id ===
+                                                    previewedCustomer.id
+                                            }
+                                            onSetCustomer={onSetCustomer}
                                             onPreviewCustomer={
                                                 handlePreviewCustomer
                                             }
@@ -180,13 +184,17 @@ export function SearchAndPreviewCustomersPanel({
                 onClose={() => {
                     handleClose(false)
                 }}
-                onSetCustomer={handleSetCustomer}
+                onSetCustomer={onSetCustomer}
                 onMergeCustomer={onMergeCustomer}
                 setCustomerLabel={setCustomerLabel}
+                isCurrent={
+                    !!currentCustomerId &&
+                    previewCustomer?.id === currentCustomerId
+                }
             />
         )
     }, [
-        handleSetCustomer,
+        onSetCustomer,
         handlePreviewCustomer,
         handleClose,
         previewedCustomer,
@@ -200,6 +208,7 @@ export function SearchAndPreviewCustomersPanel({
         searchError,
         onMergeCustomer,
         setCustomerLabel,
+        currentCustomerId,
     ])
 
     return (
