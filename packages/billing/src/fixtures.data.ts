@@ -219,6 +219,21 @@ export const proYearlyInvoicedMonthlyHelpdeskPlanGen5Variant1: HelpdeskPlan = {
     plan_id: 'pro-yearly-invoiced_monthly-usd-5-1',
 }
 
+export const proYearlyHelpdeskPlan: HelpdeskPlan = {
+    ...proMonthlyHelpdeskPlan,
+    cadence: Cadence.Year,
+    invoice_cadence: InvoiceCadence.Year,
+    plan_id: 'pro-yearly-usd-5',
+}
+
+export const proYearlyInvoicedBiannuallyHelpdeskPlanGen5Variant1: HelpdeskPlan =
+    {
+        ...proMonthlyHelpdeskPlan,
+        cadence: Cadence.Year,
+        invoice_cadence: InvoiceCadence.Biannual,
+        plan_id: 'pro-yearly-invoiced_biannually-usd-5-1',
+    }
+
 export const automate02MonthlyMeteredPlan: AutomatePlan = {
     name: 'Automation 02 monthly usd-5',
     amount: 180_00,

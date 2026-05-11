@@ -70,6 +70,12 @@ export function getCorrespondingPlanAtCadencePair<T extends Plan>({
             if (!p.plan_id.startsWith(`${targetPlanIdWithoutGeneration}-usd-`))
                 return false
             if (variant) {
+                if (variant === '1') {
+                    return (
+                        new RegExp(`-usd-\\d+$`).test(p.plan_id) ||
+                        new RegExp(`-usd-\\d+-1$`).test(p.plan_id)
+                    )
+                }
                 return new RegExp(`-usd-\\d+-${variant}$`).test(p.plan_id)
             }
             return true

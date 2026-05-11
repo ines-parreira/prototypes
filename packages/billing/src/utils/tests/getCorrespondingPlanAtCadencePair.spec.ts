@@ -8,6 +8,8 @@ import {
     basicYearlyInvoicedMonthlyHelpdeskPlanGen5Variant1,
     basicYearlyInvoicedMonthlyHelpdeskPlanGen5Variant5,
     proMonthlyHelpdeskPlan,
+    proYearlyHelpdeskPlan,
+    proYearlyInvoicedBiannuallyHelpdeskPlanGen5Variant1,
     proYearlyInvoicedMonthlyHelpdeskPlanGen5Variant1,
 } from '../../fixtures.data'
 import { Cadence } from '../../types'
@@ -123,6 +125,17 @@ describe('getCorrespondingPlanAtCadencePair', () => {
         })
 
         expect(result).toBe(basicYearlyInvoicedMonthlyHelpdeskPlanGen5Variant1)
+    })
+
+    it('matches a plan without a variant suffix when switching from a variant-1 biannual invoice plan to yearly invoice', () => {
+        const result = getCorrespondingPlanAtCadencePair({
+            availablePlans: [proYearlyHelpdeskPlan],
+            currentPlan: proYearlyInvoicedBiannuallyHelpdeskPlanGen5Variant1,
+            contractCadence: Cadence.Year,
+            invoiceCadence: InvoiceCadence.Year,
+        })
+
+        expect(result).toBe(proYearlyHelpdeskPlan)
     })
 
     it('returns subscriptionPlan when target cadences match the subscription cadences, regardless of currentPlan', () => {
