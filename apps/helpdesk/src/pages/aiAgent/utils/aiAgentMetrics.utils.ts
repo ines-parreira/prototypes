@@ -82,7 +82,7 @@ export type ExtraConfigProps = {
 }
 
 export const NO_ENGAGEMENT_FEATURE_LABEL = 'Default (no engagement feature)'
-export const NO_STORE_LABEL = 'No store'
+export const NO_STORE_LABEL = 'No assigned store'
 
 export const MAP_ENGAGEMENT_TYPE_NAME: Record<string, string> = {
     search_bar: 'Search bar',
