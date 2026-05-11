@@ -95,7 +95,12 @@ const testQueryClient = new QueryClient({
 const LocationPath = () => {
     const location = useLocation()
 
-    return <div data-testid="current-path">{location.pathname}</div>
+    return (
+        <>
+            <div data-testid="current-path">{location.pathname}</div>
+            <div data-testid="current-search">{location.search}</div>
+        </>
+    )
 }
 
 const renderComponent = (
@@ -230,6 +235,83 @@ describe('AiAgentOnboarding', () => {
         await waitFor(() => {
             expect(screen.getByTestId('current-path')).toHaveTextContent(
                 `/app/ai-agent/shopify/shopify-store/onboarding/${WizardStepEnum.SHOPIFY_INTEGRATION}`,
+            )
+        })
+    })
+
+    describe('?jtbd= URL parameter', () => {
+        it('preserves ?jtbd= when navigating to next step', async () => {
+            renderComponent(
+                `/app/ai-agent/shopify/shopify-store/onboarding/${WizardStepEnum.SHOPIFY_INTEGRATION}?jtbd=sales`,
+                '/app/ai-agent/:shopType/:shopName/onboarding/:step',
+            )
+            jest.runAllTimers()
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', {
+                        name: /First, let.s connect your Shopify account/i,
+                    }),
+                ).toBeInTheDocument()
+            })
+
+            await act(() =>
+                user.click(screen.getByRole('button', { name: /Next/i })),
+            )
+
+            await waitFor(() => {
+                expect(screen.getByTestId('current-path')).toHaveTextContent(
+                    WizardStepEnum.TONE_OF_VOICE,
+                )
+            })
+            expect(screen.getByTestId('current-search')).toHaveTextContent(
+                '?jtbd=sales',
+            )
+        })
+
+        it('preserves ?jtbd= when navigating back', async () => {
+            renderComponent(
+                `/app/ai-agent/shopify/shopify-store/onboarding/${WizardStepEnum.KNOWLEDGE}?jtbd=sales`,
+                '/app/ai-agent/:shopType/:shopName/onboarding/:step',
+            )
+            jest.runAllTimers()
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', {
+                        name: /AI Agent is syncing your knowledge sources/i,
+                    }),
+                ).toBeInTheDocument()
+            })
+
+            await act(() => user.click(screen.getByText(/Back/i)))
+
+            await waitFor(() => {
+                expect(screen.getByTestId('current-path')).toHaveTextContent(
+                    WizardStepEnum.ENGAGEMENT,
+                )
+            })
+            expect(screen.getByTestId('current-search')).toHaveTextContent(
+                '?jtbd=sales',
+            )
+        })
+
+        it('preserves ?jtbd= when redirecting from an invalid step', async () => {
+            mockUseShopifyIntegrationAndScope.mockReturnValue({
+                integration: null,
+            })
+            renderComponent(
+                '/app/ai-agent/shopify/shopify-store/onboarding/invalid-step?jtbd=support',
+                '/app/ai-agent/:shopType/:shopName/onboarding/:step',
+            )
+
+            await waitFor(() => {
+                expect(screen.getByTestId('current-path')).toHaveTextContent(
+                    `/app/ai-agent/shopify/shopify-store/onboarding/${WizardStepEnum.SHOPIFY_INTEGRATION}`,
+                )
+            })
+            expect(screen.getByTestId('current-search')).toHaveTextContent(
+                '?jtbd=support',
             )
         })
     })

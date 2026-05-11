@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react'
 
 import type { History } from 'history'
+import { useLocation } from 'react-router-dom'
 
 import type { OnboardingData } from 'models/aiAgent/types'
 import type { StoreIntegration } from 'models/integration/types'
@@ -53,6 +54,7 @@ export function useShopifyStepNavigation({
     scopes,
     accountDomain,
 }: UseShopifyStepNavigationParams): UseShopifyStepNavigationReturn {
+    const { search } = useLocation()
     const [shopError, setShopError] = useState<string | null>(null)
 
     const {
@@ -67,9 +69,9 @@ export function useShopifyStepNavigation({
 
     const goToNextStep = useCallback(() => {
         const nextStep = validSteps[currentStep]?.step
-        const newPath = `/app/ai-agent/${selectedShopType}/${selectedShop}/onboarding/${nextStep}`
+        const pathname = `/app/ai-agent/${selectedShopType}/${selectedShop}/onboarding/${nextStep}`
         setIsStoreSelected(true)
-        history.push(newPath)
+        history.push({ pathname, search })
     }, [
         validSteps,
         currentStep,
@@ -77,6 +79,7 @@ export function useShopifyStepNavigation({
         selectedShop,
         setIsStoreSelected,
         history,
+        search,
     ])
 
     const onBackClick = useCallback(() => {

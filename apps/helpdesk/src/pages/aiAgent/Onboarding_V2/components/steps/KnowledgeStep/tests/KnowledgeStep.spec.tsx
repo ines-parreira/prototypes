@@ -44,6 +44,9 @@ jest.mock('react-chartjs-2', () => ({
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
+    useFlagWithLoading: jest
+        .fn()
+        .mockReturnValue({ value: false, isLoading: false }),
 }))
 jest.mock('pages/aiAgent/hooks/useOnboardingNotificationState', () => ({
     useOnboardingNotificationState: jest.fn(),

@@ -6,6 +6,7 @@ import {
     Route,
     Switch,
     useHistory,
+    useLocation,
     useParams,
 } from 'react-router-dom'
 
@@ -35,6 +36,7 @@ export const AiAgentOnboarding = () => {
     })
     const { data: onboardingData } = useGetOnboardingData(shopName)
     const history = useHistory()
+    const { search } = useLocation()
 
     const currentIndex = validSteps.findIndex(
         (validStep) => validStep.step === step,
@@ -42,15 +44,14 @@ export const AiAgentOnboarding = () => {
 
     const goToStep = useCallback(
         (nextStep: WizardStepEnum) => {
-            if (shopType && shopName) {
-                history.push(
-                    `/app/ai-agent/${shopType}/${shopName}/onboarding/${nextStep}`,
-                )
-            } else {
-                history.push(`/app/ai-agent/onboarding/${nextStep}`)
-            }
+            const pathname =
+                shopType && shopName
+                    ? `/app/ai-agent/${shopType}/${shopName}/onboarding/${nextStep}`
+                    : `/app/ai-agent/onboarding/${nextStep}`
+
+            history.push({ pathname, search })
         },
-        [history, shopName, shopType],
+        [history, shopName, shopType, search],
     )
 
     const stepProps: StepProps = useMemo(
@@ -95,7 +96,14 @@ export const AiAgentOnboarding = () => {
                     ? `/app/ai-agent/${shopType}/${shopName}/onboarding`
                     : '/app/ai-agent/onboarding'
 
-            return <Redirect to={`${basePath}/${validSteps[0].step}`} />
+            return (
+                <Redirect
+                    to={{
+                        pathname: `${basePath}/${validSteps[0].step}`,
+                        search,
+                    }}
+                />
+            )
         }
 
         switch (step) {

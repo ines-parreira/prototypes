@@ -1,12 +1,14 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
+import { useLocation } from 'react-router-dom'
 
 import { useAiAgentScopesForAutomationPlan } from 'pages/aiAgent/Onboarding_V2/hooks/useAiAgentScopesForAutomationPlan'
 import {
     AiAgentScopes,
     WizardStepEnum,
 } from 'pages/aiAgent/Onboarding_V2/types'
+import { parseJtbdParam } from 'pages/aiAgent/utils/jtbd'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 
 export const useSteps = ({
@@ -18,9 +20,25 @@ export const useSteps = ({
 }) => {
     const { integration } = useShopifyIntegrationAndScope(shopName)
     const scopes = useAiAgentScopesForAutomationPlan(shopName)
-    const handoverEnabled = useFlag(
+    const { value: handoverEnabled } = useFlagWithLoading(
         FeatureFlagKey.StandaloneHandoverCapabilities,
+        false,
     )
+    const { value: isV3OnboardingEnabled } = useFlagWithLoading(
+        FeatureFlagKey.AiAgentOnboardingV3,
+        false,
+    )
+    const { search } = useLocation()
+
+    const includeSalesSteps = useMemo(() => {
+        const jtbd = isV3OnboardingEnabled ? parseJtbdParam(search) : undefined
+
+        if (jtbd != null) {
+            return jtbd === AiAgentScopes.SALES
+        }
+
+        return scopes.includes(AiAgentScopes.SALES)
+    }, [isV3OnboardingEnabled, search, scopes])
 
     // Step configuration array
     const steps = useMemo(
@@ -35,11 +53,11 @@ export const useSteps = ({
             },
             {
                 step: WizardStepEnum.SALES_PERSONALITY,
-                condition: scopes.includes(AiAgentScopes.SALES),
+                condition: includeSalesSteps,
             },
             {
                 step: WizardStepEnum.ENGAGEMENT,
-                condition: scopes.includes(AiAgentScopes.SALES),
+                condition: includeSalesSteps,
             },
             {
                 step: WizardStepEnum.HANDOVER,
@@ -50,7 +68,7 @@ export const useSteps = ({
                 condition: true,
             },
         ],
-        [integration, isStoreSelected, scopes, handoverEnabled],
+        [integration, isStoreSelected, includeSalesSteps, handoverEnabled],
     )
 
     // Filter steps based on conditions

@@ -1,3 +1,4 @@
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
@@ -13,12 +14,17 @@ import type { RootState } from 'state/types'
 
 import { useSteps } from '../useSteps'
 
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlagWithLoading: jest.fn(),
+}))
 jest.mock('pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData')
 jest.mock('pages/aiAgent/Onboarding_V2/hooks/useShopifyIntegrations')
 jest.mock('pages/common/hooks/useShopifyIntegrationAndScope', () => ({
     useShopifyIntegrationAndScope: jest.fn(),
 }))
 
+const mockUseFlagWithLoading = useFlagWithLoading as jest.Mock
 const mockUseShopifyIntegrationAndScope =
     useShopifyIntegrationAndScope as jest.Mock
 const mockUseShopifyIntegrations = useShopifyIntegrations as jest.Mock
@@ -38,6 +44,10 @@ describe('useSteps', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
+        mockUseFlagWithLoading.mockReturnValue({
+            value: false,
+            isLoading: false,
+        })
         mockUseShopifyIntegrations.mockReturnValue([])
         mockUseShopifyIntegrationAndScope.mockReturnValue({
             integration: true,
@@ -124,6 +134,137 @@ describe('useSteps', () => {
         expect(result.current.validSteps).not.toContainEqual({
             step: WizardStepEnum.SALES_PERSONALITY,
             condition: true,
+        })
+    })
+
+    describe('when ?jtbd= is present in URL', () => {
+        beforeEach(() => {
+            mockUseFlagWithLoading.mockImplementation((key) => ({
+                value: key === FeatureFlagKey.AiAgentOnboardingV3,
+                isLoading: false,
+            }))
+        })
+
+        it('ignores ?jtbd= and falls back to scope-driven steps when V3 flag is off', () => {
+            mockUseFlagWithLoading.mockReturnValue({
+                value: false,
+                isLoading: false,
+            })
+            useAiAgentScopesForAutomationPlanMock.mockReturnValue([
+                AiAgentScopes.SUPPORT,
+            ])
+
+            const { result } = renderHook(
+                () => useSteps({ shopName: 'test-shop' }),
+                {
+                    storeState: initialState,
+                    initialEntries: ['/onboarding/tone of voice?jtbd=sales'],
+                },
+            )
+
+            expect(result.current.validSteps).not.toContainEqual({
+                step: WizardStepEnum.SALES_PERSONALITY,
+                condition: true,
+            })
+            expect(result.current.validSteps).not.toContainEqual({
+                step: WizardStepEnum.ENGAGEMENT,
+                condition: true,
+            })
+        })
+
+        it('should include SALES_PERSONALITY and ENGAGEMENT when jtbd=sales, ignoring scopes', () => {
+            useAiAgentScopesForAutomationPlanMock.mockReturnValue([
+                AiAgentScopes.SUPPORT,
+            ])
+
+            const { result } = renderHook(
+                () => useSteps({ shopName: 'test-shop' }),
+                {
+                    storeState: initialState,
+                    initialEntries: ['/onboarding/tone of voice?jtbd=sales'],
+                },
+            )
+
+            expect(result.current.validSteps).toContainEqual({
+                step: WizardStepEnum.SALES_PERSONALITY,
+                condition: true,
+            })
+            expect(result.current.validSteps).toContainEqual({
+                step: WizardStepEnum.ENGAGEMENT,
+                condition: true,
+            })
+        })
+
+        it('should exclude SALES_PERSONALITY and ENGAGEMENT when jtbd=support, ignoring scopes', () => {
+            useAiAgentScopesForAutomationPlanMock.mockReturnValue([
+                AiAgentScopes.SUPPORT,
+                AiAgentScopes.SALES,
+            ])
+
+            const { result } = renderHook(
+                () => useSteps({ shopName: 'test-shop' }),
+                {
+                    storeState: initialState,
+                    initialEntries: ['/onboarding/tone of voice?jtbd=support'],
+                },
+            )
+
+            expect(result.current.validSteps).not.toContainEqual({
+                step: WizardStepEnum.SALES_PERSONALITY,
+                condition: true,
+            })
+            expect(result.current.validSteps).not.toContainEqual({
+                step: WizardStepEnum.ENGAGEMENT,
+                condition: true,
+            })
+        })
+
+        it('falls back to scope-driven steps when jtbd value is unrecognized', () => {
+            useAiAgentScopesForAutomationPlanMock.mockReturnValue([
+                AiAgentScopes.SUPPORT,
+                AiAgentScopes.SALES,
+            ])
+
+            const { result } = renderHook(
+                () => useSteps({ shopName: 'test-shop' }),
+                {
+                    storeState: initialState,
+                    initialEntries: ['/onboarding/tone of voice?jtbd=other'],
+                },
+            )
+
+            expect(result.current.validSteps).toContainEqual({
+                step: WizardStepEnum.SALES_PERSONALITY,
+                condition: true,
+            })
+            expect(result.current.validSteps).toContainEqual({
+                step: WizardStepEnum.ENGAGEMENT,
+                condition: true,
+            })
+        })
+
+        it('falls back to scope-driven steps when jtbd value is empty', () => {
+            useAiAgentScopesForAutomationPlanMock.mockReturnValue([
+                AiAgentScopes.SUPPORT,
+                AiAgentScopes.SALES,
+            ])
+
+            const { result } = renderHook(
+                () => useSteps({ shopName: 'test-shop' }),
+                {
+                    storeState: initialState,
+                    initialEntries: ['/onboarding/tone of voice?jtbd='],
+                },
+            )
+
+            expect(result.current.validSteps).toContainEqual({
+                step: WizardStepEnum.SALES_PERSONALITY,
+                condition: true,
+            })
+            expect(result.current.validSteps).toContainEqual({
+                step: WizardStepEnum.ENGAGEMENT,
+                condition: true,
+            })
         })
     })
 })
