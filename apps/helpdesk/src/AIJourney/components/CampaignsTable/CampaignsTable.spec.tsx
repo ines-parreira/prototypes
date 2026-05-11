@@ -13,7 +13,7 @@ import {
 } from '../../hooks/useAIJourneyTableKpis/useAIJourneyTableKpis'
 import type { TableRow } from '../../pages/Campaigns/Campaigns'
 import CampaignsTable from './CampaignsTable'
-import { actionColumns, columns, metricColumns } from './Columns'
+import { actionColumns, columns, dateColumns, metricColumns } from './Columns'
 
 const useParamsMock = jest.mocked(useParams)
 const useLocationMock = jest.mocked(useLocation)
@@ -581,7 +581,7 @@ describe('CampaignsTable', () => {
             const { container } = render(
                 wrapper(
                     <CampaignsTable
-                        columns={columns}
+                        columns={[...columns, ...dateColumns]}
                         data={sortRows}
                         initialSorting={initialSorting}
                     />,

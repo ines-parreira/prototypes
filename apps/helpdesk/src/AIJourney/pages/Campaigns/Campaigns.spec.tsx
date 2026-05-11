@@ -260,6 +260,134 @@ describe('<Campaigns />', () => {
             }),
         )
     })
+    describe('configurable date columns', () => {
+        beforeEach(() => {
+            window.localStorage.removeItem('ai-journey-campaign-columns')
+        })
+
+        const renderPage = () =>
+            render(
+                <Provider store={mockStore}>
+                    <JourneyProvider>
+                        <Campaigns />
+                    </JourneyProvider>
+                </Provider>,
+            )
+
+        it('renders the date column headers by default', () => {
+            renderPage()
+
+            expect(
+                screen.getByRole('columnheader', { name: /updated/i }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('columnheader', { name: /scheduled/i }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('columnheader', { name: /sent/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('opens the Edit columns side panel with renamed title and description', async () => {
+            renderPage()
+
+            const user = userEvent.setup()
+            await act(() =>
+                user.click(screen.getByRole('button', { name: /edit table/i })),
+            )
+
+            expect(screen.getByText('Edit columns')).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    'Choose the columns you want to display and rearrange them as needed.',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('hides a date column when toggled off in the side panel', async () => {
+            renderPage()
+
+            const user = userEvent.setup()
+            await act(() =>
+                user.click(screen.getByRole('button', { name: /edit table/i })),
+            )
+
+            const updatedRow = screen
+                .getAllByRole('row')
+                .find((row) => row.textContent?.includes('Updated'))
+            expect(updatedRow).toBeDefined()
+            const toggle = updatedRow!.querySelector('[role="switch"]')
+            expect(toggle).toBeInTheDocument()
+
+            await act(() => user.click(toggle as HTMLElement))
+            await act(() =>
+                user.click(screen.getByRole('button', { name: /save/i })),
+            )
+
+            expect(
+                screen.queryByRole('columnheader', { name: /updated/i }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.getByRole('columnheader', { name: /scheduled/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('migrates a saved localStorage config missing the date entries by inserting them before the first saved sibling', () => {
+            window.localStorage.setItem(
+                'ai-journey-campaign-columns',
+                JSON.stringify([
+                    { id: 'recipients', label: 'Recipients', visibility: true },
+                    { id: 'revenue', label: 'Revenue', visibility: true },
+                    { id: 'ctr', label: 'CTR', visibility: true },
+                    { id: 'replyRate', label: 'Reply rate', visibility: true },
+                ]),
+            )
+
+            renderPage()
+
+            const headerTexts = screen
+                .getAllByRole('columnheader')
+                .map((header) => header.textContent ?? '')
+
+            const positionOf = (label: string) =>
+                headerTexts.findIndex((text) => text.includes(label))
+
+            expect(positionOf('Status')).toBeGreaterThan(-1)
+            expect(positionOf('Updated')).toBeGreaterThan(positionOf('Status'))
+            expect(positionOf('Scheduled')).toBeGreaterThan(
+                positionOf('Updated'),
+            )
+            expect(positionOf('Sent')).toBeGreaterThan(positionOf('Scheduled'))
+            expect(positionOf('Recipients')).toBeGreaterThan(positionOf('Sent'))
+        })
+
+        it('preserves saved KPI ordering when inserting missing date defaults', () => {
+            window.localStorage.setItem(
+                'ai-journey-campaign-columns',
+                JSON.stringify([
+                    { id: 'ctr', label: 'CTR', visibility: true },
+                    { id: 'recipients', label: 'Recipients', visibility: true },
+                    { id: 'revenue', label: 'Revenue', visibility: true },
+                ]),
+            )
+
+            renderPage()
+
+            const headerTexts = screen
+                .getAllByRole('columnheader')
+                .map((header) => header.textContent ?? '')
+
+            const positionOf = (label: string) =>
+                headerTexts.findIndex((text) => text.includes(label))
+
+            expect(positionOf('CTR')).toBeLessThan(positionOf('Updated'))
+            expect(positionOf('Updated')).toBeLessThan(positionOf('Scheduled'))
+            expect(positionOf('Scheduled')).toBeLessThan(positionOf('Sent'))
+            expect(positionOf('Sent')).toBeLessThan(positionOf('Recipients'))
+            expect(positionOf('Recipients')).toBeLessThan(positionOf('Revenue'))
+        })
+    })
+
     it('should navigate to campaign setup page when clicking on Create campaign', async () => {
         mockUseJourneyContext.mockReturnValue({
             shopName: 'test-shop',

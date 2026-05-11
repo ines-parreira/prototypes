@@ -10,7 +10,7 @@ import {
     LOADING_TABLE_METRICS,
 } from '../../hooks/useAIJourneyTableKpis/useAIJourneyTableKpis'
 import type { TableRow } from '../../pages/Campaigns/Campaigns'
-import { columns } from './Columns'
+import { columns, dateColumns } from './Columns'
 
 jest.mock('@gorgias/axiom', () => ({
     ...jest.requireActual('@gorgias/axiom'),
@@ -123,5 +123,31 @@ describe('Columns - Status cell', () => {
 
         expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
         expect(screen.queryByText('No audience')).not.toBeInTheDocument()
+    })
+})
+
+describe('Columns - dateColumns extraction', () => {
+    const DATE_COLUMN_IDS = [
+        'updated_datetime',
+        'campaign.scheduled_datetime',
+        'campaign.completed_datetime',
+    ]
+
+    it('exposes the three date columns in order via dateColumns', () => {
+        expect(dateColumns.map((column) => column.id)).toEqual(DATE_COLUMN_IDS)
+    })
+
+    it('sets sortingFn="datetime" on each date column', () => {
+        for (const column of dateColumns) {
+            expect(column.sortingFn).toBe('datetime')
+            expect(column.enableSorting).toBe(true)
+        }
+    })
+
+    it('removes the date columns from the base columns list', () => {
+        const baseColumnIds = columns.map((column) => column.id)
+        for (const id of DATE_COLUMN_IDS) {
+            expect(baseColumnIds).not.toContain(id)
+        }
     })
 })

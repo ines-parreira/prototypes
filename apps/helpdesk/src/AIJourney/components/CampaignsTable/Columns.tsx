@@ -78,6 +78,9 @@ export const columns: ColumnDef<TableRow>[] = [
         enableSorting: true,
         sortingFn: DATETIME_SORT_FN,
     },
+]
+
+export const dateColumns: ColumnDef<TableRow>[] = [
     {
         id: 'updated_datetime',
         accessorKey: 'updated_datetime',
@@ -254,7 +257,7 @@ export const metricColumns: ColumnDef<TableRow, unknown>[] = [
     ),
     createTableV1SortableColumn<TableRow>(
         'metrics.optOutRate',
-        'Out out rate',
+        'Opt out rate',
         (info) => {
             const value = info.getValue()
             return (

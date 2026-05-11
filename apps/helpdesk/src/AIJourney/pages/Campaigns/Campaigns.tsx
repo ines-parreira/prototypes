@@ -13,6 +13,7 @@ import CampaignsTable from 'AIJourney/components/CampaignsTable/CampaignsTable'
 import {
     actionColumns,
     columns,
+    dateColumns,
     metricColumns,
 } from 'AIJourney/components/CampaignsTable/Columns'
 import { JOURNEY_TYPES, STEPS_NAMES } from 'AIJourney/constants'
@@ -37,6 +38,34 @@ type JourneyMetrics = Metrics<number | string | undefined>
 export type JourneyWithMetrics = JourneyApiDTO & { metrics: JourneyMetrics }
 export type TableRow = JourneyWithMetrics
 
+const CUSTOMIZABLE_METRICS: MetricConfigItem[] = [
+    { id: 'updated_datetime', label: 'Updated', visibility: true },
+    {
+        id: 'campaign.scheduled_datetime',
+        label: 'Scheduled',
+        visibility: true,
+    },
+    {
+        id: 'campaign.completed_datetime',
+        label: 'Sent',
+        visibility: true,
+    },
+    { id: 'recipients', label: 'Recipients', visibility: true },
+    { id: 'revenue', label: 'Revenue', visibility: true },
+    { id: 'totalOrders', label: 'Orders', visibility: false },
+    {
+        id: 'revenuePerRecipient',
+        label: 'Revenue per Recipient',
+        visibility: false,
+    },
+    { id: 'averageOrderValue', label: 'AOV', visibility: false },
+    { id: 'messagesSent', label: 'Messages Sent', visibility: false },
+    { id: 'ctr', label: 'CTR', visibility: true },
+    { id: 'replyRate', label: 'Reply rate', visibility: true },
+    { id: 'optOutRate', label: 'Opt out rate', visibility: false },
+    { id: 'conversionRate', label: 'Conversion rate', visibility: false },
+]
+
 export const Campaigns = () => {
     const {
         campaigns,
@@ -53,26 +82,34 @@ export const Campaigns = () => {
 
     const [isEditModalOpen, setIsEditModalOpen] = useState(false)
 
-    const customizableMetrics: MetricConfigItem[] = [
-        { id: 'recipients', label: 'Recipients', visibility: true },
-        { id: 'revenue', label: 'Revenue', visibility: true },
-        { id: 'totalOrders', label: 'Orders', visibility: false },
-        {
-            id: 'revenuePerRecipient',
-            label: 'Revenue per Recipient',
-            visibility: false,
-        },
-        { id: 'averageOrderValue', label: 'AOV', visibility: false },
-        { id: 'messagesSent', label: 'Messages Sent', visibility: false },
-        { id: 'ctr', label: 'CTR', visibility: true },
-        { id: 'replyRate', label: 'Reply rate', visibility: true },
-        { id: 'optOutRate', label: 'Opt Out rate', visibility: false },
-        { id: 'conversionRate', label: 'Conversion rate', visibility: false },
-    ]
-
     const [keyKpisConfig, setKeyKpisConfig] = useLocalStorage<
         MetricConfigItem[]
-    >('ai-journey-campaign-columns', customizableMetrics)
+    >('ai-journey-campaign-columns', CUSTOMIZABLE_METRICS)
+
+    const mergedKpisConfig = useMemo(() => {
+        const result = [...keyKpisConfig]
+        const presentIds = new Set(result.map((item) => item.id))
+        CUSTOMIZABLE_METRICS.forEach((defaultItem, defaultIndex) => {
+            if (presentIds.has(defaultItem.id)) return
+            let insertAt = result.length
+            for (
+                let j = defaultIndex + 1;
+                j < CUSTOMIZABLE_METRICS.length;
+                j++
+            ) {
+                const anchor = result.findIndex(
+                    (r) => r.id === CUSTOMIZABLE_METRICS[j].id,
+                )
+                if (anchor !== -1) {
+                    insertAt = anchor
+                    break
+                }
+            }
+            result.splice(insertAt, 0, defaultItem)
+            presentIds.add(defaultItem.id)
+        })
+        return result
+    }, [keyKpisConfig])
 
     const { cleanStatsFilters: statsFilters } = useStatsFilters()
 
@@ -113,13 +150,17 @@ export const Campaigns = () => {
     }, [campaigns, tableMetrics, isMetricLoading])
 
     const visibleColumns: ColumnDef<TableRow>[] = useMemo(() => {
-        const orderedMetricColumns = keyKpisConfig
+        const configurableColumns = [...dateColumns, ...metricColumns]
+        const orderedConfigurableColumns = mergedKpisConfig
             .filter((item) => item.visibility)
             .map((item) => {
-                return metricColumns.find((column) => {
+                return configurableColumns.find((column) => {
                     //@ts-ignore
                     const columnId = column.id || column.accessorKey || ''
-                    return item.id === columnId.replace('metrics.', '')
+                    return (
+                        item.id === columnId ||
+                        item.id === columnId.replace('metrics.', '')
+                    )
                 })
             })
             .filter(
@@ -128,8 +169,8 @@ export const Campaigns = () => {
 
         const baseColumns = filterImpersonatedColumns(columns, isImpersonated)
 
-        return [...baseColumns, ...orderedMetricColumns, ...actionColumns]
-    }, [keyKpisConfig, isImpersonated])
+        return [...baseColumns, ...orderedConfigurableColumns, ...actionColumns]
+    }, [mergedKpisConfig, isImpersonated])
 
     return (
         <Box width="100%" flexDirection="column">
@@ -182,9 +223,11 @@ export const Campaigns = () => {
                 <ConfigureMetricsModal
                     isOpen={isEditModalOpen}
                     onClose={() => setIsEditModalOpen(false)}
-                    metrics={keyKpisConfig}
+                    metrics={mergedKpisConfig}
                     onSave={setKeyKpisConfig}
-                    maxVisibleMetric={6}
+                    maxVisibleMetric={9}
+                    title="Edit columns"
+                    description="Choose the columns you want to display and rearrange them as needed."
                 />
             </Box>
         </Box>

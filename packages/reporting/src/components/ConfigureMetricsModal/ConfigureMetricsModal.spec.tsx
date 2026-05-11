@@ -72,7 +72,7 @@ describe('ConfigureMetricsModal', () => {
         return render(<ConfigureMetricsModal {...defaultProps} {...props} />)
     }
 
-    it('should render modal with title and description', () => {
+    it('should render modal with default title and description', () => {
         renderComponent()
 
         expect(screen.getByText('Edit metrics')).toBeInTheDocument()
@@ -81,6 +81,41 @@ describe('ConfigureMetricsModal', () => {
                 'Choose the 4 metrics you want to display and rearrange them as needed.',
             ),
         ).toBeInTheDocument()
+    })
+
+    it('should interpolate maxVisibleMetric into the default description', () => {
+        renderComponent({ maxVisibleMetric: 9 })
+
+        expect(
+            screen.getByText(
+                'Choose the 9 metrics you want to display and rearrange them as needed.',
+            ),
+        ).toBeInTheDocument()
+    })
+
+    it('should render custom title when title prop is provided', () => {
+        renderComponent({ title: 'Edit columns' })
+
+        expect(screen.getByText('Edit columns')).toBeInTheDocument()
+        expect(screen.queryByText('Edit metrics')).not.toBeInTheDocument()
+    })
+
+    it('should render custom description when description prop is provided', () => {
+        renderComponent({
+            description:
+                'Choose the columns you want to display and rearrange them as needed.',
+        })
+
+        expect(
+            screen.getByText(
+                'Choose the columns you want to display and rearrange them as needed.',
+            ),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByText(
+                'Choose the 4 metrics you want to display and rearrange them as needed.',
+            ),
+        ).not.toBeInTheDocument()
     })
 
     it('should render all metrics', () => {
