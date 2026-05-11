@@ -1,7 +1,3 @@
-import { useCallback, useState } from 'react'
-
-import { useHistory } from 'react-router-dom'
-
 import type { ColumnDef, SortingState, TableV1ToolbarRow } from '@gorgias/axiom'
 import {
     Box,
@@ -14,25 +10,17 @@ import {
     TableV1Toolbar,
     useTableV1,
 } from '@gorgias/axiom'
-import type { JourneyApiDTO } from '@gorgias/convert-client'
-import { JourneyCampaignStateEnum } from '@gorgias/convert-client'
 
 import { DateFormatToggle } from 'AIJourney/components/DateFormatToggle/DateFormatToggle'
-import type { UpdatableJourneyCampaignState } from 'AIJourney/constants'
-import {
-    useDateFormatPreference,
-    useJourneyUpdateHandler,
-} from 'AIJourney/hooks'
+import { useDateFormatPreference } from 'AIJourney/hooks'
 import { useJourneyContext } from 'AIJourney/providers'
-import { useCreateNewJourney } from 'AIJourney/queries'
-import { useDeleteJourney } from 'AIJourney/queries/useDeleteJourney/useDeleteJourney'
-import { getJourneyData } from 'AIJourney/queries/useJourneyData/useJourneyData'
 
 import CancelCampaignConfirmation from './CancelCampaignConfirmation/CancelCampaignConfirmation'
 import EmptyCampaignsState from './EmptyCampaignsState/EmptyCampaignsState'
 import RemoveCampaignConfirmation from './RemoveCampaignConfirmation/RemoveCampaignConfirmation'
 import SendCampaignConfirmation from './SendCampaignConfirmation/SendCampaignConfirmation'
 import type { CampaignsTableMeta } from './types'
+import { useCampaignActions } from './useCampaignActions'
 
 import styles from './CampaignsTable.less'
 
@@ -51,153 +39,24 @@ export default function CampaignsTable<TData, TValue>({
     isLoading = false,
     initialSorting,
 }: CampaignsTableProps<TData, TValue>) {
-    const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false)
-    const [isSendModalOpen, setIsSendModalOpen] = useState(false)
-    const [isCancelModalOpen, setIsCancelModalOpen] = useState(false)
-    const [selectedCampaignId, setSelectedCampaignId] = useState<
-        string | undefined
-    >()
-    const [selectedCampaignHasAudiences, setSelectedCampaignHasAudiences] =
-        useState(false)
-
-    const history = useHistory()
     const { shopName, currency, currentIntegration } = useJourneyContext()
     const { format: dateFormat, toggleFormat } = useDateFormatPreference()
 
-    const createNewJourney = useCreateNewJourney()
-
-    // delete campaign
-    const { mutate: deleteCampaign } = useDeleteJourney()
-
-    const handleOpenRemoveModal = useCallback(
-        (id: string) => {
-            setSelectedCampaignId(id)
-            setIsRemoveModalOpen(true)
-        },
-        [setSelectedCampaignId, setIsRemoveModalOpen],
-    )
-
-    const handleCloseRemoveModal = useCallback(() => {
-        setIsRemoveModalOpen(false)
-        setSelectedCampaignId(undefined)
-    }, [setSelectedCampaignId, setIsRemoveModalOpen])
-
-    const handleConfirmRemove = useCallback(() => {
-        if (selectedCampaignId) {
-            deleteCampaign({ id: selectedCampaignId })
-        }
-        handleCloseRemoveModal()
-    }, [selectedCampaignId, handleCloseRemoveModal, deleteCampaign])
-
-    const { handleUpdate } = useJourneyUpdateHandler({
+    const {
+        modalState,
+        closeModal,
+        openRemoveModal,
+        openSendModal,
+        openCancelModal,
+        confirmRemove,
+        confirmSend,
+        confirmCancel,
+        changeStatus,
+        duplicateJourney,
+    } = useCampaignActions({
         integrationId: currentIntegration?.id,
-        entityLabel: 'campaign',
+        shopName,
     })
-
-    // send campaign
-    const handleOpenSendModal = useCallback(
-        (id: string, hasIncludedAudiences: boolean) => {
-            setSelectedCampaignId(id)
-            setSelectedCampaignHasAudiences(hasIncludedAudiences)
-            setIsSendModalOpen(true)
-        },
-        [setSelectedCampaignId, setIsSendModalOpen],
-    )
-
-    const handleCloseSendModal = useCallback(() => {
-        setIsSendModalOpen(false)
-        setSelectedCampaignId(undefined)
-    }, [setSelectedCampaignId, setIsSendModalOpen])
-
-    const handleConfirmSend = useCallback(() => {
-        if (selectedCampaignId) {
-            handleUpdate({
-                id: selectedCampaignId,
-                campaignState: JourneyCampaignStateEnum.Scheduled,
-                scheduledDatetime: null,
-            })
-        }
-        handleCloseSendModal()
-    }, [selectedCampaignId, handleCloseSendModal, handleUpdate])
-
-    // cancel campaign
-    const handleOpenCancelModal = useCallback(
-        (id: string) => {
-            setSelectedCampaignId(id)
-            setIsCancelModalOpen(true)
-        },
-        [setSelectedCampaignId, setIsCancelModalOpen],
-    )
-
-    const handleCloseCancelModal = useCallback(() => {
-        setIsCancelModalOpen(false)
-        setSelectedCampaignId(undefined)
-    }, [setSelectedCampaignId, setIsCancelModalOpen])
-
-    const handleConfirmCancel = useCallback(() => {
-        if (selectedCampaignId) {
-            handleUpdate({
-                id: selectedCampaignId,
-                campaignState: JourneyCampaignStateEnum.Canceled,
-            })
-        }
-        handleCloseCancelModal()
-    }, [selectedCampaignId, handleCloseCancelModal, handleUpdate])
-
-    const handleChangeStatus = useCallback(
-        (id: string, status: UpdatableJourneyCampaignState) => {
-            if (id) {
-                handleUpdate({
-                    id,
-                    campaignState: status,
-                })
-            }
-        },
-        [handleUpdate],
-    )
-
-    const handleDuplicate = useCallback(
-        async (journey: JourneyApiDTO) => {
-            const journeyData = await getJourneyData(journey.id)
-
-            const createdJourney = await createNewJourney.mutateAsync({
-                params: {
-                    store_integration_id: journeyData.store_integration_id,
-                    store_name: journeyData.store_name,
-                    type: journeyData.type,
-                    campaign: {
-                        title:
-                            (journeyData.campaign?.title || 'Untitled') +
-                            ' (Copy)',
-                    },
-                    included_audience_list_ids:
-                        journeyData.included_audience_list_ids,
-                    excluded_audience_list_ids:
-                        journeyData.excluded_audience_list_ids,
-                    message_instructions: journeyData.message_instructions,
-                },
-                journeyConfigs: {
-                    max_follow_up_messages:
-                        journeyData.configuration?.max_follow_up_messages,
-                    offer_discount: journeyData.configuration?.offer_discount,
-                    max_discount_percent:
-                        journeyData.configuration?.max_discount_percent,
-                    sms_sender_integration_id:
-                        journeyData.configuration?.sms_sender_integration_id,
-                    sms_sender_number:
-                        journeyData.configuration?.sms_sender_number,
-                    discount_code_message_threshold:
-                        journeyData.configuration
-                            ?.discount_code_message_threshold,
-                },
-            })
-
-            history.push(
-                `/app/ai-journey/${shopName}/${createdJourney.type}/setup/${createdJourney.id}`,
-            )
-        },
-        [history, createNewJourney, shopName],
-    )
 
     const table = useTableV1({
         data,
@@ -219,11 +78,11 @@ export default function CampaignsTable<TData, TValue>({
         },
         additionalOptions: {
             meta: {
-                onRemoveClick: handleOpenRemoveModal,
-                onSendClick: handleOpenSendModal,
-                onCancelClick: handleOpenCancelModal,
-                onChangeStatus: handleChangeStatus,
-                onDuplicateClick: handleDuplicate,
+                onRemoveClick: openRemoveModal,
+                onSendClick: openSendModal,
+                onCancelClick: openCancelModal,
+                onChangeStatus: changeStatus,
+                onDuplicateClick: duplicateJourney,
                 currency: currency,
                 dateFormat,
             } as CampaignsTableMeta,
@@ -308,20 +167,24 @@ export default function CampaignsTable<TData, TValue>({
                 </Box>
             </div>
             <RemoveCampaignConfirmation
-                isOpen={isRemoveModalOpen}
-                onClose={handleCloseRemoveModal}
-                onConfirm={handleConfirmRemove}
+                isOpen={modalState.kind === 'remove'}
+                onClose={closeModal}
+                onConfirm={confirmRemove}
             />
             <SendCampaignConfirmation
-                isOpen={isSendModalOpen}
-                onClose={handleCloseSendModal}
-                onConfirm={handleConfirmSend}
-                hasIncludedAudiences={selectedCampaignHasAudiences}
+                isOpen={modalState.kind === 'send'}
+                onClose={closeModal}
+                onConfirm={confirmSend}
+                hasIncludedAudiences={
+                    modalState.kind === 'send'
+                        ? modalState.hasIncludedAudiences
+                        : false
+                }
             />
             <CancelCampaignConfirmation
-                isOpen={isCancelModalOpen}
-                onClose={handleCloseCancelModal}
-                onConfirm={handleConfirmCancel}
+                isOpen={modalState.kind === 'cancel'}
+                onClose={closeModal}
+                onConfirm={confirmCancel}
             />
         </>
     )

@@ -1,5 +1,6 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
+// eslint-disable-next-line react-doctor/no-moment
 import moment from 'moment-timezone'
 
 import { DateCell } from './DateCell'

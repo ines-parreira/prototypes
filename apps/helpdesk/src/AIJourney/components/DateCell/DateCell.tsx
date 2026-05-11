@@ -1,4 +1,5 @@
 import { formatDatetime } from '@repo/utils'
+// eslint-disable-next-line react-doctor/no-moment
 import moment from 'moment-timezone'
 
 import { Text } from '@gorgias/axiom'
