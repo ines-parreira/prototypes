@@ -4,7 +4,6 @@ import {
     isViewLowPriority,
     isViewRealtime,
     isViewSystem,
-    isViewVisible,
 } from '../predicates'
 import { logViewEvent } from '../store/viewEventLog'
 import { setScores, viewsCountStore } from '../store/viewsCountStore'
@@ -54,7 +53,6 @@ export function createViewCountScheduler(
                 lastFetchedAt: entry?.lastFetchedAt ?? null,
                 lastViewedAt: entry?.lastViewedAt ?? null,
                 isRealtimeView: isViewRealtime(view),
-                isVisible: isViewVisible(view),
                 isInViewport: isViewInViewport(view.id),
                 isSystemView: isViewSystem(view),
                 isLowPriority: isViewLowPriority(view),
@@ -116,6 +114,7 @@ export function createViewCountScheduler(
     async function becomeLeader(): Promise<void> {
         await waitForHydration()
         viewsCountStore.setState({ isLeader: true })
+        tick()
         activeIntervalId = setInterval(tick, config.tickIntervalSeconds * 1000)
     }
 

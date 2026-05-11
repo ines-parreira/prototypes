@@ -12,7 +12,6 @@ import { isViewExpanded } from '../isViewExpanded'
 import { isViewLarge } from '../isViewLarge'
 import { isViewRecentlyViewed } from '../isViewRecentlyViewed'
 import { isViewStale } from '../isViewStale'
-import { isViewVisible } from '../isViewVisible'
 
 vi.mock('@repo/browser-storage', () => ({
     localForageManager: {
@@ -185,69 +184,5 @@ describe('isViewStale', () => {
         setViewsCount({ 1: 10 })
 
         expect(isViewStale(view)).toBe(false)
-    })
-})
-
-describe('isViewVisible', () => {
-    it('returns false when not on a view URL', () => {
-        window.location.pathname = '/settings'
-        const view = mockView({ id: 1, visibility: 'public' })
-
-        expect(isViewVisible(view)).toBe(false)
-    })
-
-    it('returns true when expandedSectionIds is null (all expanded)', () => {
-        viewsCountStore.setState({ expandedSectionIds: undefined })
-        const view = mockView({ id: 1, visibility: 'public', section_id: 10 })
-
-        expect(isViewVisible(view)).toBe(true)
-    })
-
-    it('returns false when the category is collapsed', () => {
-        viewsCountStore.setState({ expandedSectionIds: [] })
-        const view = mockView({ id: 1, visibility: 'private' })
-
-        expect(isViewVisible(view)).toBe(false)
-    })
-
-    it('returns true for a public view when the public category is expanded', () => {
-        viewsCountStore.setState({ expandedSectionIds: ['public'] })
-        const view = mockView({ id: 1, visibility: 'public', section_id: null })
-
-        expect(isViewVisible(view)).toBe(true)
-    })
-
-    it('returns true for a private view when the private category is expanded', () => {
-        viewsCountStore.setState({ expandedSectionIds: ['private'] })
-        const view = mockView({
-            id: 1,
-            visibility: 'private',
-            section_id: null,
-        })
-
-        expect(isViewVisible(view)).toBe(true)
-    })
-
-    it('returns true when category and section are both expanded', () => {
-        viewsCountStore.setState({
-            expandedSectionIds: ['public', 'section-10'],
-        })
-        const view = mockView({ id: 1, visibility: 'public', section_id: 10 })
-
-        expect(isViewVisible(view)).toBe(true)
-    })
-
-    it('returns false when category is expanded but section is collapsed', () => {
-        viewsCountStore.setState({ expandedSectionIds: ['public'] })
-        const view = mockView({ id: 1, visibility: 'public', section_id: 10 })
-
-        expect(isViewVisible(view)).toBe(false)
-    })
-
-    it('treats shared visibility as public category', () => {
-        viewsCountStore.setState({ expandedSectionIds: ['public'] })
-        const view = mockView({ id: 1, visibility: 'shared', section_id: null })
-
-        expect(isViewVisible(view)).toBe(true)
     })
 })

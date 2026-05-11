@@ -38,7 +38,6 @@ import {
     isViewRecentlyViewed,
     isViewStale,
     isViewSystem,
-    isViewVisible,
 } from '../predicates'
 import { DEFAULT_REFRESH_CONFIG } from '../scheduler/selectViewsToRefresh'
 import type { ViewEvent } from '../store/viewEventLog'
@@ -77,7 +76,6 @@ export function ViewCountDebugPanel({
                   isRecentlyViewed: isViewRecentlyViewed(v),
                   isStale: isViewStale(v),
                   isLarge: isViewLarge(v),
-                  isVisible: isViewVisible(v),
                   isInViewport: isViewInViewport(v.id),
                   isSystemView: isViewSystem(v),
                   isActive: isViewActive(v.id),
@@ -180,7 +178,6 @@ type Row = {
     isRecentlyViewed: boolean
     isStale: boolean
     isLarge: boolean
-    isVisible: boolean
     isInViewport: boolean
     isSystemView: boolean
     isActive: boolean
@@ -190,7 +187,6 @@ type Row = {
 type Stats = {
     total: number
     deactivated: number
-    visible: number
     inViewport: number
     system: number
     realtime: number
@@ -252,7 +248,6 @@ function computeStats(rows: Row[], events: ViewEvent[], now: number): Stats {
     return {
         total: rows.length,
         deactivated: rows.filter((r) => r.isDeactivated).length,
-        visible: rows.filter((r) => r.isVisible).length,
         inViewport: rows.filter((r) => r.isInViewport).length,
         system: rows.filter((r) => r.isSystemView).length,
         realtime: rows.filter((r) => r.isRealtimeView).length,
@@ -357,11 +352,6 @@ function StatsBar({ rows, events }: { rows: Row[]; events: ViewEvent[] }) {
                     label="Stale"
                     value={stats.stale}
                     tooltip={`Age ≥ ${DEFAULT_REFRESH_CONFIG.staleSeconds}s or never fetched`}
-                />
-                <StatCard
-                    label="Visible"
-                    value={stats.visible}
-                    tooltip="Views in expanded sidebar sections"
                 />
                 <StatCard
                     label="In Viewport"
@@ -654,13 +644,6 @@ function buildColumns() {
         }),
         columnHelper.accessor('isRealtimeView', {
             header: () => <ColumnHeader label="RT" tooltip="Realtime (chat)" />,
-            cell: (info) => <LeaderBooleanCell value={info.getValue()} />,
-            hug: true,
-        }),
-        columnHelper.accessor('isVisible', {
-            header: () => (
-                <ColumnHeader label="VI" tooltip="Visible in sidebar" />
-            ),
             cell: (info) => <LeaderBooleanCell value={info.getValue()} />,
             hug: true,
         }),

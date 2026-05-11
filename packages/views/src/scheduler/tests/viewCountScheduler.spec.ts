@@ -166,6 +166,22 @@ describe('start / steal / stop', () => {
         expect(viewsCountStore.getState().isLeader).toBe(true)
     })
 
+    it('ticks immediately after becoming leader', async () => {
+        const onRefresh = vi.fn()
+        const scheduler = createViewCountScheduler({
+            onRefresh,
+            config: { tickIntervalSeconds: 30, minRefreshIntervalSeconds: 0 },
+        })
+
+        setAllViews([makeView(1)])
+        setViewsCount({ 1: 10 })
+
+        scheduler.start()
+        await Promise.resolve()
+
+        expect(onRefresh).toHaveBeenCalledWith(expect.arrayContaining([1]))
+    })
+
     it('stop clears isLeader and stops ticking', async () => {
         const onRefresh = vi.fn()
         const scheduler = createViewCountScheduler({

@@ -35,7 +35,6 @@ export {
     isViewRealtime,
     isViewRecentlyViewed,
     isViewSystem,
-    isViewVisible,
 } from './predicates'
 export { getViewIdFromUrl, isViewUrl } from './utils/url'
 export { getView, getAllViews } from './store/viewStore'

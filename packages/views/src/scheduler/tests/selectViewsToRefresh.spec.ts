@@ -30,7 +30,6 @@ function candidate(
         lastFetchedAt: new Date(NOW - 60_000).toISOString(),
         lastViewedAt: null,
         isRealtimeView: false,
-        isVisible: true,
         isInViewport: false,
         isSystemView: false,
         isLowPriority: false,
@@ -97,21 +96,21 @@ describe('scoreView', () => {
             expect(score(c, [1])).toBeGreaterThan(score(c))
         })
 
-        it('recently viewed scores higher than just visible', () => {
+        it('recently viewed scores higher than rest', () => {
             const recent = candidate({
                 viewId: 1,
                 lastViewedAt: new Date(NOW - 30_000).toISOString(),
             })
-            const visible = candidate({ viewId: 2 })
+            const rest = candidate({ viewId: 2 })
 
-            expect(score(recent)).toBeGreaterThan(score(visible))
+            expect(score(recent)).toBeGreaterThan(score(rest))
         })
 
-        it('visible scores higher than rest', () => {
-            const visible = candidate({ viewId: 1, isVisible: true })
-            const rest = candidate({ viewId: 2, isVisible: false })
+        it('in-viewport scores higher than not in viewport', () => {
+            const inViewport = candidate({ viewId: 1, isInViewport: true })
+            const notInViewport = candidate({ viewId: 2, isInViewport: false })
 
-            expect(score(visible)).toBeGreaterThan(score(rest))
+            expect(score(inViewport)).toBeGreaterThan(score(notInViewport))
         })
     })
 
@@ -141,17 +140,78 @@ describe('scoreView', () => {
 
             expect(score(neverFetched)).toBeGreaterThan(score(fetched))
         })
+
+        it('caps the staleness contribution so very-old views do not accumulate', () => {
+            // Past 2 × staleSeconds, additional age stops mattering — this
+            // keeps really-stale rest views from starving active /
+            // in-viewport / recent views.
+            const veryStale = candidate({
+                viewId: 1,
+                lastFetchedAt: new Date(
+                    NOW - CONFIG.staleSeconds * 100 * 1000,
+                ).toISOString(),
+            })
+            const ancient = candidate({
+                viewId: 2,
+                lastFetchedAt: new Date(
+                    NOW - CONFIG.staleSeconds * 1000 * 1000,
+                ).toISOString(),
+            })
+
+            expect(score(veryStale)).toBe(score(ancient))
+        })
+
+        it('never-fetched views score the same as views past the staleness cap', () => {
+            const neverFetched = candidate({
+                viewId: 1,
+                lastFetchedAt: null,
+            })
+            const atCap = candidate({
+                viewId: 2,
+                lastFetchedAt: new Date(
+                    NOW - CONFIG.staleSeconds * 10 * 1000,
+                ).toISOString(),
+            })
+
+            // Never-fetched still wins because of the never-fetched bonus,
+            // but the staleness *base* is equal: both contribute the cap.
+            expect(score(neverFetched)).toBeGreaterThan(score(atCap))
+            expect(score(neverFetched) - score(atCap)).toBe(3000)
+        })
     })
 
     describe('modifiers', () => {
-        it('realtime views get doubled score', () => {
-            const realtime = candidate({ viewId: 1, isRealtimeView: true })
-            const normal = candidate({ viewId: 2, isRealtimeView: false })
+        it('realtime in-viewport views get doubled score', () => {
+            const realtime = candidate({
+                viewId: 1,
+                isRealtimeView: true,
+                isInViewport: true,
+            })
+            const normal = candidate({
+                viewId: 2,
+                isRealtimeView: false,
+                isInViewport: true,
+            })
 
             expect(score(realtime)).toBeGreaterThan(score(normal))
         })
 
-        it('system views score the same as regular visible views', () => {
+        it('realtime out-of-viewport views do not get the doubled score', () => {
+            const realtime = candidate({
+                viewId: 1,
+                isRealtimeView: true,
+                isInViewport: false,
+            })
+            const normal = candidate({
+                viewId: 2,
+                isRealtimeView: false,
+                isInViewport: false,
+            })
+
+            expect(score(realtime)).toBe(score(normal))
+        })
+
+        it('system views score the same as regular views', () => {
             const system = candidate({ viewId: 1, isSystemView: true })
             const normal = candidate({ viewId: 2, isSystemView: false })
 
@@ -217,23 +277,14 @@ describe('scoreView', () => {
                 viewId: 1,
                 lastFetchedAt: null,
                 isInViewport: true,
-                isVisible: true,
             })
-            const visible = candidate({
+            const notInViewport = candidate({
                 viewId: 2,
                 lastFetchedAt: null,
                 isInViewport: false,
-                isVisible: true,
-            })
-            const hidden = candidate({
-                viewId: 3,
-                lastFetchedAt: null,
-                isInViewport: false,
-                isVisible: false,
             })
 
-            expect(score(inViewport)).toBeGreaterThan(score(visible))
-            expect(score(visible)).toBeGreaterThan(score(hidden))
+            expect(score(inViewport)).toBeGreaterThan(score(notInViewport))
         })
 
         it('in-viewport boost applies to fetched views', () => {
@@ -266,28 +317,26 @@ describe('scoreView', () => {
             expect(score(inViewport)).toBeGreaterThan(withMultiplierOnly)
         })
 
-        it('in-viewport stale rest-tier view outranks a fresh visible non-viewport view', () => {
+        it('in-viewport stale rest-tier view outranks a fresh out-of-viewport view', () => {
             const inViewportStaleRest = candidate({
                 viewId: 1,
                 isInViewport: true,
-                isVisible: false,
                 lastFetchedAt: null,
             })
-            const freshVisible = candidate({
+            const freshOutOfViewport = candidate({
                 viewId: 2,
                 isInViewport: false,
-                isVisible: true,
                 lastFetchedAt: new Date(NOW - 30_000).toISOString(),
             })
 
             expect(score(inViewportStaleRest)).toBeGreaterThan(
-                score(freshVisible),
+                score(freshOutOfViewport),
             )
         })
     })
 
     describe('recently fetched penalty', () => {
-        it('penalizes recently fetched visible views that are not active or recent', () => {
+        it('penalizes recently fetched views that are not active or recent', () => {
             const recentlyFetched = candidate({
                 viewId: 1,
                 lastFetchedAt: new Date(
@@ -320,20 +369,121 @@ describe('scoreView', () => {
     })
 
     describe('really stale override', () => {
-        it('really stale rest-tier view scores higher than fresh visible view with large count', () => {
+        it('really stale view scores higher than fresh view with large count', () => {
             const staleRest = candidate({
                 viewId: 1,
-                isVisible: false,
                 lastFetchedAt: null,
             })
-            const freshLargeVisible = candidate({
+            const freshLarge = candidate({
                 viewId: 2,
-                isVisible: true,
                 count: 1500,
                 lastFetchedAt: new Date(NOW - 60_000).toISOString(),
             })
 
-            expect(score(staleRest)).toBeGreaterThan(score(freshLargeVisible))
+            expect(score(staleRest)).toBeGreaterThan(score(freshLarge))
+        })
+    })
+
+    describe('priority guarantees', () => {
+        // Once isEligible lets a view through, the staleness cap +
+        // tier-bonus structure must keep active and in-viewport views above
+        // really-stale rest-tier views.
+
+        function reallyStaleRest(viewId: number): ViewRefreshCandidate {
+            return candidate({
+                viewId,
+                lastFetchedAt: new Date(
+                    NOW - CONFIG.staleSeconds * 100 * 1000,
+                ).toISOString(),
+            })
+        }
+
+        it('active view outranks a really-stale rest view', () => {
+            const active = candidate({
+                viewId: 1,
+                lastFetchedAt: new Date(
+                    NOW - CONFIG.tickIntervalSeconds * 2 * 1000,
+                ).toISOString(),
+            })
+
+            expect(score(active, [1])).toBeGreaterThan(
+                score(reallyStaleRest(2)),
+            )
+        })
+
+        it('active view outranks a really-stale rest view even when active was just past cooldown', () => {
+            const active = candidate({
+                viewId: 1,
+                lastFetchedAt: new Date(
+                    NOW - (CONFIG.tickIntervalSeconds * 2 + 1) * 1000,
+                ).toISOString(),
+            })
+
+            expect(score(active, [1])).toBeGreaterThan(
+                score(reallyStaleRest(2)),
+            )
+        })
+
+        it('in-viewport view (eligible) outranks a really-stale rest view', () => {
+            // Just past the non-active cooldown — the soonest a non-active
+            // in-viewport view can be picked up after a fetch.
+            const inViewport = candidate({
+                viewId: 1,
+                isInViewport: true,
+                lastFetchedAt: new Date(
+                    NOW - CONFIG.minRefreshIntervalSeconds * 1000,
+                ).toISOString(),
+            })
+
+            expect(score(inViewport)).toBeGreaterThan(score(reallyStaleRest(2)))
+        })
+
+        it('in-viewport view is not penalized by the rest + !stale rule', () => {
+            const inViewportNotStale = candidate({
+                viewId: 1,
+                isInViewport: true,
+                lastFetchedAt: new Date(
+                    NOW - (CONFIG.staleSeconds - 10) * 1000,
+                ).toISOString(),
+            })
+            const outOfViewportNotStale = candidate({
+                viewId: 2,
+                isInViewport: false,
+                lastFetchedAt: new Date(
+                    NOW - (CONFIG.staleSeconds - 10) * 1000,
+                ).toISOString(),
+            })
+
+            // In-viewport keeps its baseline + 1.5x boost; out-of-viewport
+            // collects both the rest+!stale (×0.1) and recentlyFetched
+            // (×0.1) penalties, so the gap is large.
+            expect(score(inViewportNotStale)).toBeGreaterThan(
+                score(outOfViewportNotStale) * 100,
+            )
+        })
+
+        it('in-viewport view is not penalized by the recently-fetched rule', () => {
+            const recentlyFetchedInViewport = candidate({
+                viewId: 1,
+                isInViewport: true,
+                lastFetchedAt: new Date(
+                    NOW - CONFIG.minRefreshIntervalSeconds * 1000,
+                ).toISOString(),
+            })
+
+            // Compare to the same view treated as stale: scores should be
+            // close (within a factor of 2), not crushed by ×0.1.
+            const justStaleInViewport = candidate({
+                viewId: 1,
+                isInViewport: true,
+                lastFetchedAt: new Date(
+                    NOW - CONFIG.staleSeconds * 1000,
+                ).toISOString(),
+            })
+
+            const ratio =
+                score(justStaleInViewport) / score(recentlyFetchedInViewport)
+            expect(ratio).toBeLessThan(2)
         })
     })
 })
@@ -527,7 +677,7 @@ describe('multi-pass simulation', () => {
             candidate({
                 viewId: i + 1,
                 lastFetchedAt: null,
-                isVisible: i < 10,
+                isInViewport: i < 10,
             }),
         )
 
@@ -536,19 +686,19 @@ describe('multi-pass simulation', () => {
         expect(allRefreshed.size).toBe(30)
     })
 
-    it('refreshes visible views more frequently than non-visible', () => {
+    it('refreshes in-viewport views more frequently than out-of-viewport', () => {
         const views = [
             ...Array.from({ length: 5 }, (_, i) =>
                 candidate({
                     viewId: i + 1,
-                    isVisible: true,
+                    isInViewport: true,
                     lastFetchedAt: null,
                 }),
             ),
             ...Array.from({ length: 15 }, (_, i) =>
                 candidate({
                     viewId: i + 100,
-                    isVisible: false,
+                    isInViewport: false,
                     lastFetchedAt: null,
                 }),
             ),
@@ -557,23 +707,23 @@ describe('multi-pass simulation', () => {
         const config = { ...CONFIG, maxViewsPerTick: 3 }
         const { refreshedPerView } = simulateTicks(views, 500, config)
 
-        const avgVisible =
+        const avgInViewport =
             [1, 2, 3, 4, 5].reduce(
                 (sum, id) => sum + (refreshedPerView.get(id) ?? 0),
                 0,
             ) / 5
-        const avgNonVisible =
+        const avgOutOfViewport =
             Array.from({ length: 15 }, (_, i) => i + 100).reduce(
                 (sum, id) => sum + (refreshedPerView.get(id) ?? 0),
                 0,
             ) / 15
 
-        expect(avgVisible).toBeGreaterThan(avgNonVisible)
+        expect(avgInViewport).toBeGreaterThan(avgOutOfViewport)
     })
 
     it('always picks the active view first when eligible', () => {
         const views = Array.from({ length: 10 }, (_, i) =>
-            candidate({ viewId: i + 1, isVisible: true, lastFetchedAt: null }),
+            candidate({ viewId: i + 1, lastFetchedAt: null }),
         )
 
         const config = { ...CONFIG, maxViewsPerTick: 3 }
@@ -606,19 +756,19 @@ describe('multi-pass simulation', () => {
         }
     })
 
-    it('does not starve non-visible views indefinitely', () => {
+    it('does not starve out-of-viewport views indefinitely', () => {
         const views = [
             ...Array.from({ length: 10 }, (_, i) =>
                 candidate({
                     viewId: i + 1,
-                    isVisible: true,
+                    isInViewport: true,
                     lastFetchedAt: null,
                 }),
             ),
             ...Array.from({ length: 10 }, (_, i) =>
                 candidate({
                     viewId: i + 100,
-                    isVisible: false,
+                    isInViewport: false,
                     lastFetchedAt: null,
                 }),
             ),
@@ -626,8 +776,10 @@ describe('multi-pass simulation', () => {
 
         const { allRefreshed } = simulateTicks(views, 200)
 
-        const nonVisibleRefreshed = [...allRefreshed].filter((id) => id >= 100)
-        expect(nonVisibleRefreshed.length).toBe(10)
+        const outOfViewportRefreshed = [...allRefreshed].filter(
+            (id) => id >= 100,
+        )
+        expect(outOfViewportRefreshed.length).toBe(10)
     })
 
     it('low priority views still get refreshed eventually', () => {
@@ -635,13 +787,11 @@ describe('multi-pass simulation', () => {
             ...Array.from({ length: 5 }, (_, i) =>
                 candidate({
                     viewId: i + 1,
-                    isVisible: true,
                     lastFetchedAt: null,
                 }),
             ),
             candidate({
                 viewId: 99,
-                isVisible: true,
                 isLowPriority: true,
                 lastFetchedAt: null,
             }),
@@ -657,7 +807,6 @@ describe('multi-pass simulation', () => {
             ...Array.from({ length: 5 }, (_, i) =>
                 candidate({
                     viewId: i + 1,
-                    isVisible: true,
                     count: 50,
                     lastFetchedAt: null,
                 }),
@@ -665,7 +814,6 @@ describe('multi-pass simulation', () => {
             ...Array.from({ length: 5 }, (_, i) =>
                 candidate({
                     viewId: i + 100,
-                    isVisible: true,
                     count: 5000,
                     lastFetchedAt: null,
                 }),
@@ -697,42 +845,42 @@ describe('multi-pass simulation', () => {
                 candidate({
                     viewId: i + 1,
                     isSystemView: true,
-                    isVisible: true,
+                    isInViewport: true,
                     isLowPriority: i >= 5, // Trash, Spam
                     lastFetchedAt: null,
                 }),
             ),
-            // 10 realtime (chat) visible views
+            // 10 realtime (chat) views, in viewport
             ...Array.from({ length: 10 }, (_, i) =>
                 candidate({
                     viewId: i + 100,
                     isRealtimeView: true,
-                    isVisible: true,
+                    isInViewport: true,
                     lastFetchedAt: null,
                 }),
             ),
-            // 40 visible views in expanded sections
+            // 40 views in viewport
             ...Array.from({ length: 40 }, (_, i) =>
                 candidate({
                     viewId: i + 200,
-                    isVisible: true,
+                    isInViewport: true,
                     lastFetchedAt: null,
                 }),
             ),
-            // 20 visible views with large counts
+            // 20 views with large counts, in viewport
             ...Array.from({ length: 20 }, (_, i) =>
                 candidate({
                     viewId: i + 300,
-                    isVisible: true,
+                    isInViewport: true,
                     count: 5000,
                     lastFetchedAt: null,
                 }),
             ),
-            // 223 non-visible views (collapsed sections)
+            // 223 out-of-viewport views (scrolled away or collapsed sections)
             ...Array.from({ length: 223 }, (_, i) =>
                 candidate({
                     viewId: i + 400,
-                    isVisible: false,
+                    isInViewport: false,
                     lastFetchedAt: null,
                 }),
             ),
@@ -786,7 +934,7 @@ describe('multi-pass simulation', () => {
             ...Array.from({ length: 8 }, (_, i) =>
                 candidate({
                     viewId: i + 1,
-                    isVisible: true,
+                    isInViewport: true,
                     isRealtimeView: true,
                     lastFetchedAt: null,
                 }),
@@ -794,7 +942,7 @@ describe('multi-pass simulation', () => {
             ...Array.from({ length: 4 }, (_, i) =>
                 candidate({
                     viewId: i + 100,
-                    isVisible: true,
+                    isInViewport: true,
                     isRealtimeView: false,
                     lastFetchedAt: null,
                 }),
