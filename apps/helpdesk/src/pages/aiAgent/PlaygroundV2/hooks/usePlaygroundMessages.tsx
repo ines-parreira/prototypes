@@ -96,7 +96,7 @@ export const usePlaygroundMessages = () => {
     } = useCoreContext()
 
     const { journeyConfiguration } = useAIJourneyContext()
-    const { selectedCustomer, setSettings } = useSettingsContext()
+    const { selectedCustomer, setSettings, mode } = useSettingsContext()
 
     const resolveShopperSenderName: ResolveShopperSenderName = useCallback(
         (customerId) => {
@@ -128,6 +128,7 @@ export const usePlaygroundMessages = () => {
             httpIntegrationId,
             channelIntegrationId,
             baseUrl,
+            playgroundUseCase: mode === 'outbound' ? 'ai_journey' : 'ai_agent',
         })
 
     const [messages, setMessages] = useState<PlaygroundMessage[]>([])

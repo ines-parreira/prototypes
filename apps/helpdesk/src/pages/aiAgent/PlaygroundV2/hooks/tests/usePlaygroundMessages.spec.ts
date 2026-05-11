@@ -352,6 +352,40 @@ describe('usePlaygroundMessages hook', () => {
         })
     })
 
+    describe('playgroundUseCase resolution', () => {
+        it("passes 'ai_journey' when settings mode is outbound", () => {
+            mockUseSettingsContextFn.mockReturnValue({
+                selectedCustomer: DEFAULT_PLAYGROUND_CUSTOMER,
+                setSettings: jest.fn(),
+                mode: 'outbound',
+            })
+
+            renderHook(() => usePlaygroundMessages())
+
+            expect(mockedUsePlaygroundApi).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    playgroundUseCase: 'ai_journey',
+                }),
+            )
+        })
+
+        it("passes 'ai_agent' when settings mode is inbound", () => {
+            mockUseSettingsContextFn.mockReturnValue({
+                selectedCustomer: DEFAULT_PLAYGROUND_CUSTOMER,
+                setSettings: jest.fn(),
+                mode: 'inbound',
+            })
+
+            renderHook(() => usePlaygroundMessages())
+
+            expect(mockedUsePlaygroundApi).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    playgroundUseCase: 'ai_agent',
+                }),
+            )
+        })
+    })
+
     describe('test session logs', () => {
         it('should process test session logs and add them to messages', async () => {
             // Mock the new architecture flag

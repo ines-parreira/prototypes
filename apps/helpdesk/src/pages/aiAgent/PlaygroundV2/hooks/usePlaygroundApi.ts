@@ -41,12 +41,14 @@ export const usePlaygroundApi = ({
     httpIntegrationId,
     channelIntegrationId,
     baseUrl,
+    playgroundUseCase = 'ai_agent',
 }: {
     gorgiasDomain: string
     accountId: number
     httpIntegrationId: number
     channelIntegrationId?: number
     baseUrl?: string
+    playgroundUseCase?: 'ai_agent' | 'ai_journey'
 }) => {
     const {
         mutateAsync: submitPlaygroundTicket,
@@ -207,6 +209,7 @@ export const usePlaygroundApi = ({
                     account_id: accountId,
                     _playground_options: {
                         shopName: storeData.storeName,
+                        useCase: playgroundUseCase,
                     },
                     _knowledge_override_rules:
                         buildKnowledgeOverrideRules(draftKnowledge),
@@ -228,6 +231,7 @@ export const usePlaygroundApi = ({
             callSubmitMessage,
             useV3,
             areActionsEnabled,
+            playgroundUseCase,
         ],
     )
 

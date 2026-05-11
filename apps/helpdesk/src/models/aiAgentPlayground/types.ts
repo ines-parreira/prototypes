@@ -24,6 +24,7 @@ export type CreatePlaygroundOptions = {
     shopName: string
     customToneOfVoice?: string
     arePlaygroundActionsAllowed?: boolean
+    useCase?: 'ai_agent' | 'ai_journey'
 }
 
 export type CreatePlaygroundBody = {

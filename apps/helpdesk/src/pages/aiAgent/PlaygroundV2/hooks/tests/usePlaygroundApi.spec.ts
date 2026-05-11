@@ -249,6 +249,88 @@ describe('usePlaygroundApi', () => {
         ])
     })
 
+    describe('_playground_options.useCase tag', () => {
+        it("defaults to 'ai_agent' when playgroundUseCase is not provided", async () => {
+            const { result } = renderHook(() => usePlaygroundApi(defaultProps))
+
+            await result.current.submitMessage({
+                messages: [playgroundCustomerMessage],
+                customer: DEFAULT_PLAYGROUND_CUSTOMER,
+                channel: 'email',
+                storeData: { storeName: 'Test Store' } as StoreConfiguration,
+                testSessionId: 'session-id',
+                createTestSession: jest.fn(),
+            })
+
+            expect(mockSubmitPlaygroundTicket).toHaveBeenCalledWith([
+                expect.objectContaining({
+                    _playground_options: expect.objectContaining({
+                        useCase: 'ai_agent',
+                    }),
+                }),
+                'session-id',
+                expect.any(Object),
+            ])
+        })
+
+        it("emits 'ai_journey' when playgroundUseCase='ai_journey' is passed", async () => {
+            const { result } = renderHook(() =>
+                usePlaygroundApi({
+                    ...defaultProps,
+                    playgroundUseCase: 'ai_journey',
+                }),
+            )
+
+            await result.current.submitMessage({
+                messages: [playgroundCustomerMessage],
+                customer: DEFAULT_PLAYGROUND_CUSTOMER,
+                channel: 'sms',
+                storeData: { storeName: 'Test Store' } as StoreConfiguration,
+                testSessionId: 'session-id',
+                createTestSession: jest.fn(),
+            })
+
+            expect(mockSubmitPlaygroundTicket).toHaveBeenCalledWith([
+                expect.objectContaining({
+                    _playground_options: expect.objectContaining({
+                        shopName: 'Test Store',
+                        useCase: 'ai_journey',
+                    }),
+                }),
+                'session-id',
+                expect.any(Object),
+            ])
+        })
+
+        it("emits 'ai_agent' when playgroundUseCase='ai_agent' is passed", async () => {
+            const { result } = renderHook(() =>
+                usePlaygroundApi({
+                    ...defaultProps,
+                    playgroundUseCase: 'ai_agent',
+                }),
+            )
+
+            await result.current.submitMessage({
+                messages: [playgroundCustomerMessage],
+                customer: DEFAULT_PLAYGROUND_CUSTOMER,
+                channel: 'sms',
+                storeData: { storeName: 'Test Store' } as StoreConfiguration,
+                testSessionId: 'session-id',
+                createTestSession: jest.fn(),
+            })
+
+            expect(mockSubmitPlaygroundTicket).toHaveBeenCalledWith([
+                expect.objectContaining({
+                    _playground_options: expect.objectContaining({
+                        useCase: 'ai_agent',
+                    }),
+                }),
+                'session-id',
+                expect.any(Object),
+            ])
+        })
+    })
+
     it('should include empty _knowledge_override_rules when draftKnowledge is undefined', async () => {
         mockedUseCoreContext.mockReturnValue({
             draftKnowledge: undefined,
