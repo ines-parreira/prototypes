@@ -406,4 +406,174 @@ describe('<HelpCenterCategoryEdit />', () => {
             )
         })
     })
+
+    describe('Edit parent category', () => {
+        const buildCategory = (
+            id: number,
+            title: string,
+            slug: string,
+            parent_category_id: number,
+            children: number[] = [],
+        ): Category => ({
+            ...getSingleCategoryEnglish,
+            id,
+            children,
+            available_locales: ['en-US'],
+            translation: {
+                ...getSingleCategoryEnglish.translation,
+                category_id: id,
+                title,
+                slug,
+                parent_category_id,
+            } as LocalCategoryTranslation,
+        })
+
+        const categoryA = buildCategory(
+            5,
+            'Category A',
+            'category-a',
+            0,
+            [123, 456],
+        )
+
+        const categoryB = buildCategory(6, 'Category B', 'category-b', 0, [789])
+
+        const subCategoryA = buildCategory(
+            123,
+            'Sub Category A',
+            'sub-category-a',
+            5,
+        )
+
+        const subCategoryB = buildCategory(
+            456,
+            'Sub Category B',
+            'sub-category-b',
+            5,
+        )
+
+        const subCategoryC = buildCategory(
+            789,
+            'Sub Category C',
+            'sub-category-c',
+            6,
+        )
+
+        const rootCategoryEntity = {
+            ...getSingleCategoryEnglish,
+            id: 0,
+            children: [5, 6],
+            available_locales: [],
+            translation: null,
+        } as unknown as Category
+
+        const populatedStore = mockStore({
+            ...defaultState,
+            entities: {
+                helpCenter: {
+                    articles: articlesState,
+                    categories: {
+                        categoriesById: {
+                            '0': rootCategoryEntity,
+                            '5': categoryA,
+                            '6': categoryB,
+                            '123': subCategoryA,
+                            '456': subCategoryB,
+                            '789': subCategoryC,
+                        },
+                    },
+                },
+            } as any,
+        })
+
+        const renderWithCategories = (
+            category: Category | undefined,
+            onSave: jest.Mock,
+        ) =>
+            render(
+                <Provider store={populatedStore}>
+                    <CurrentHelpCenterContext.Provider
+                        value={getSingleHelpCenterResponseFixture}
+                    >
+                        <HelpCenterCategoryEdit
+                            isOpen
+                            isCreate={false}
+                            isLoading={false}
+                            canSave
+                            helpCenter={getSingleHelpCenterResponseFixture}
+                            category={category}
+                            translation={
+                                category?.translation as LocalCategoryTranslation
+                            }
+                            onSave={onSave}
+                            onClose={jest.fn()}
+                            onLocaleChange={jest.fn()}
+                            onDeleteTranslation={jest.fn()}
+                        />
+                    </CurrentHelpCenterContext.Provider>
+                </Provider>,
+            )
+
+        const pickParentOption = async (
+            user: ReturnType<typeof userEvent.setup>,
+            optionName: string,
+        ) => {
+            const trigger = screen.getByLabelText('Parent category')
+            await act(async () => {
+                await user.click(trigger)
+            })
+            const option = await screen.findByRole('option', {
+                name: optionName,
+            })
+            await user.click(option)
+        }
+
+        it('correctly moves sub-category to another parent', async () => {
+            const user = userEvent.setup()
+            const fakeOnSave = jest.fn()
+            renderWithCategories(subCategoryA, fakeOnSave)
+
+            await pickParentOption(user, 'Category B')
+            await user.click(screen.getByTestId('button-save'))
+
+            await waitFor(() =>
+                expect(fakeOnSave).toHaveBeenCalledWith(
+                    expect.objectContaining({ parent_category_id: 6 }),
+                    'en-US',
+                ),
+            )
+        })
+
+        it('correctly moves sub-category to root', async () => {
+            const user = userEvent.setup()
+            const fakeOnSave = jest.fn()
+            renderWithCategories(subCategoryA, fakeOnSave)
+
+            await pickParentOption(user, '- no parent -')
+            await user.click(screen.getByTestId('button-save'))
+
+            await waitFor(() =>
+                expect(fakeOnSave).toHaveBeenCalledWith(
+                    expect.objectContaining({ parent_category_id: null }),
+                    'en-US',
+                ),
+            )
+        })
+
+        it('correctly moves a category from root to be a sub-category', async () => {
+            const user = userEvent.setup()
+            const fakeOnSave = jest.fn()
+            renderWithCategories(categoryA, fakeOnSave)
+
+            await pickParentOption(user, 'Sub Category C')
+            await user.click(screen.getByTestId('button-save'))
+
+            await waitFor(() =>
+                expect(fakeOnSave).toHaveBeenCalledWith(
+                    expect.objectContaining({ parent_category_id: 789 }),
+                    'en-US',
+                ),
+            )
+        })
+    })
 })

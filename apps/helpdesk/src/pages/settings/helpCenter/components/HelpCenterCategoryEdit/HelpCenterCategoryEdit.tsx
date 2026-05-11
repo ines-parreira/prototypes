@@ -123,7 +123,9 @@ export const HelpCenterCategoryEdit = ({
         useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
     const locales = useSupportedLocales()
     const [title, setTitle] = useState('')
-    const [parentCategory, setParentCategory] = useState<number | undefined>()
+    const [parentCategory, setParentCategory] = useState<
+        number | null | undefined
+    >()
     const [customerVisibility, setCustomerVisibility] =
         useState<CustomerVisibility>(CustomerVisibilityEnum.PUBLIC)
     const [slug, setSlug] = useState('')
@@ -464,7 +466,7 @@ export const HelpCenterCategoryEdit = ({
 
     const handleChangeParent = (option: CategoryOption) => {
         const categoryId = option.value
-        setParentCategory(categoryId ?? undefined)
+        setParentCategory(categoryId)
         setHasPendingChanges(true)
         if (categoryId && isOneOfParentsUnlisted(categories, categoryId)) {
             setShowNotification(true)
