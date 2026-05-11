@@ -1325,6 +1325,57 @@ describe('<DrillDownTable />', () => {
         )
     })
 
+    describe('with AiSalesAgentChart.AiSalesAgentTotalProductRecommendations Outcome Tag', () => {
+        const metricData: AiSalesAgentMetrics = {
+            metricName:
+                AiSalesAgentChart.AiSalesAgentTotalProductRecommendations,
+        }
+
+        it.each([
+            {
+                outcome: `${AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated}::Close`,
+                expectedLabel: AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated,
+            },
+            {
+                outcome: `${AI_AGENT_OUTCOME_DISPLAY_LABELS.Handover}::AI Agent`,
+                expectedLabel: AI_AGENT_OUTCOME_DISPLAY_LABELS.Handover,
+            },
+        ])(
+            'should render Outcome Tag with first segment "$expectedLabel"',
+            ({ outcome, expectedLabel }) => {
+                useEnrichedDrillDownDataUnpaginatedMock.mockReturnValue({
+                    data: [
+                        {
+                            ticket: {
+                                id: '300001',
+                                subject: 'Product recommendation ticket',
+                                description: 'desc',
+                                channel: 'chat',
+                                isRead: true,
+                                created: '2025-09-01T10:00:00.000Z',
+                                contactReason: null,
+                                status: 'closed',
+                            },
+                            assignee: { id: 1, name: 'Agent' },
+                            rowData: {},
+                            slas: {},
+                            outcome,
+                            intent: null,
+                            order: {},
+                            product: { titles: [], variants: [] },
+                            metricValue: 1,
+                        },
+                    ],
+                    isFetching: false,
+                } as any)
+
+                renderTable(metricData, TicketDrillDownTableContent)
+
+                expect(screen.getByText(expectedLabel)).toBeInTheDocument()
+            },
+        )
+    })
+
     describe('with AiAgentDrillDownMetricName.AllAgentsCsatCard', () => {
         const metricData: DrillDownMetric = {
             metricName: AiAgentDrillDownMetricName.AllAgentsCsatCard,

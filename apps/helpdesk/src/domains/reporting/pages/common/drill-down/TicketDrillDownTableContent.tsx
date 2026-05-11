@@ -774,6 +774,7 @@ export const TicketDrillDownTableContent = ({
                                 <BodyCell width={columnWidths.outcome}>
                                     {item.outcome ? (
                                         isAiAgentClosedTicketsMetric ||
+                                        isAiSalesAgentTotalProductRecommendationsMetric ||
                                         metricData.metricName ===
                                             AiAgentDrillDownMetricName.AllAgentsCsatCard ||
                                         metricData.metricName ===

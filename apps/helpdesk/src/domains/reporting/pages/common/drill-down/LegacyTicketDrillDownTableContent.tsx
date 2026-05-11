@@ -602,7 +602,8 @@ export const LegacyTicketDrillDownTableContent = ({
                                 isKnowledgeMetric) && (
                                 <BodyCell width={columnWidths.outcome}>
                                     {item.outcome ? (
-                                        isAiAgentClosedTicketsMetric ? (
+                                        isAiAgentClosedTicketsMetric ||
+                                        isAiSalesAgentTotalProductRecommendationsMetric ? (
                                             <OutcomeTag
                                                 outcome={item.outcome}
                                             />
