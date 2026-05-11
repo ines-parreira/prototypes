@@ -94,7 +94,7 @@ export const SkillWizardPage = () => {
                 renderItem={(skill, index) => (
                     <SkillReviewStep key={index} skill={skill} />
                 )}
-                renderRecap={() => <SkillRecapStep />}
+                renderRecap={() => <SkillRecapStep wizard={wizard} />}
                 draftKnowledge={draftKnowledge}
                 initialStep={initialStep}
                 onClose={onClose}

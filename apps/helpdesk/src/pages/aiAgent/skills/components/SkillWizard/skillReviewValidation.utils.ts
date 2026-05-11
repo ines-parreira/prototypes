@@ -10,13 +10,15 @@ export const isInstructionsEmpty = (html: string): boolean => {
     return stripped.length === 0
 }
 
-export const hasActionRequiringSetup = (
+const collectReferencedActionIds = (
     html: string,
     availableActions: GuidanceAction[],
-): boolean => {
-    if (!html) return false
+    predicate: (action: GuidanceAction) => boolean,
+): string[] => {
+    if (!html) return []
 
     const seen = new Set<string>()
+    const result: string[] = []
     const regex = new RegExp(
         guidanceActionRegex.source,
         guidanceActionRegex.flags,
@@ -29,7 +31,39 @@ export const hasActionRequiringSetup = (
 
         const action = availableActions.find((a) => a.value === id)
         if (!action) continue
-        if (action.requiresAuth || action.hasMissingValues) return true
+        if (predicate(action)) result.push(id)
     }
-    return false
+
+    return result
 }
+
+/**
+ * Review step gate: an action that requires authorization or has missing
+ * values cannot be auto-fixed, so a skill referencing one must be saved as
+ * a draft.
+ */
+export const hasActionRequiringSetup = (
+    html: string,
+    availableActions: GuidanceAction[],
+): boolean =>
+    collectReferencedActionIds(
+        html,
+        availableActions,
+        (action) =>
+            action.requiresAuth === true || action.hasMissingValues === true,
+    ).length > 0
+
+/**
+ * Recap step: every skill here is already valid (drafts never reach the
+ * recap), so the only thing left to surface is actions that are currently
+ * disabled.
+ */
+export const getDisabledActionIds = (
+    html: string,
+    availableActions: GuidanceAction[],
+): string[] =>
+    collectReferencedActionIds(
+        html,
+        availableActions,
+        (action) => action.enabled === false,
+    )

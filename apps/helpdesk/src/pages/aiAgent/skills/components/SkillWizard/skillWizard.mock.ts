@@ -73,7 +73,7 @@ export const mockGaiaPayload: GaiaPayload = {
             estimated_automation_rate_impact: '+4.20%',
             recommendation:
                 'Create a skill to automate "Where is my order?" requests by pulling tracking info from Shopify and replying with the latest carrier status.',
-            guidance_ids: [501, 502],
+            guidance_ids: [4928559, 1916596],
             action_configuration_ids: [
                 '01JKT3YTVYT9D3H32R328WYMN4',
                 '01JN0RJ1M1PG4DATZ7S4CYZ5J2',
@@ -97,18 +97,15 @@ export const mockGaiaPayload: GaiaPayload = {
             guidance_ids: [504, 505],
             action_configuration_ids: ['9004'],
         },
-        {
-            skill_id: 5915217,
-            estimated_automation_rate_impact: '+1.60%',
-            recommendation:
-                'Create a skill to answer sizing questions using the product size guide and previously purchased items.',
-            guidance_ids: [506],
-            action_configuration_ids: [],
-        },
     ],
 }
 
-export const mockSkillWizardStateNotStarted: SkillWizardState = {}
+export const mockSkillWizardStateNotStarted: SkillWizardState = {
+    skills_configuration: [
+        { id: 5851420, status: SkillWizardSkillStatus.Approved },
+        { id: 5915217, status: SkillWizardSkillStatus.Approved },
+    ],
+}
 
 export const mockSkillWizardStateInProgress: SkillWizardState = {
     current_step: SkillWizardStep.Review,

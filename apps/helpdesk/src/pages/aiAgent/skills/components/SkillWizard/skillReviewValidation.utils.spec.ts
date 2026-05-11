@@ -1,6 +1,7 @@
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 
 import {
+    getDisabledActionIds,
     hasActionRequiringSetup,
     isInstructionsEmpty,
 } from './skillReviewValidation.utils'
@@ -48,6 +49,8 @@ describe('hasActionRequiringSetup', () => {
     })
 
     it('returns false when the only issue is the action being disabled', () => {
+        // Disabled actions can be auto-enabled on Apply, so they don't force
+        // a skill to draft during review.
         const html = '<p>Use $$$1$$$ here.</p>'
         const actions = [action({ value: '1', enabled: false })]
         expect(hasActionRequiringSetup(html, actions)).toBe(false)
@@ -56,5 +59,38 @@ describe('hasActionRequiringSetup', () => {
     it('returns false when the referenced action is not in the available list', () => {
         const html = '<p>Use $$$missing$$$ here.</p>'
         expect(hasActionRequiringSetup(html, [])).toBe(false)
+    })
+})
+
+describe('getDisabledActionIds', () => {
+    it('returns the IDs of actions that are disabled', () => {
+        const html = '<p>$$$1$$$ $$$2$$$ $$$3$$$ $$$4$$$</p>'
+        const actions = [
+            action({ value: '1', enabled: false }),
+            action({ value: '2', requiresAuth: true }),
+            action({ value: '3' }),
+            action({ value: '4', enabled: false }),
+        ]
+        // Only enabled === false actions are surfaced; requiresAuth +
+        // hasMissingValues are handled upstream by the review step.
+        expect(getDisabledActionIds(html, actions)).toEqual(['1', '4'])
+    })
+
+    it('deduplicates repeated references in document order', () => {
+        const html = '<p>$$$1$$$ $$$2$$$ $$$1$$$</p>'
+        const actions = [
+            action({ value: '1', enabled: false }),
+            action({ value: '2', enabled: false }),
+        ]
+        expect(getDisabledActionIds(html, actions)).toEqual(['1', '2'])
+    })
+
+    it('returns an empty array when no referenced action is disabled', () => {
+        const html = '<p>$$$1$$$</p>'
+        expect(getDisabledActionIds(html, [action({ value: '1' })])).toEqual([])
+    })
+
+    it('returns an empty array for empty html', () => {
+        expect(getDisabledActionIds('', [])).toEqual([])
     })
 })
