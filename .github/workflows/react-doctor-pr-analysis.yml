@@ -91,6 +91,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
         with:
+          # Nx affected needs full history to resolve the merge base with the PR base branch.
           fetch-depth: 0
           ref: ${{ needs.pr-context.outputs.head-sha }}
 
@@ -103,7 +104,7 @@ jobs:
       - name: Get affected packages
         run: |
           NX_BASE_REF="origin/${{ needs.pr-context.outputs.base-ref }}"
-          git fetch origin "${{ needs.pr-context.outputs.base-ref }}" --depth=1
+          git fetch origin "${{ needs.pr-context.outputs.base-ref }}"
           echo "NX_BASE_REF=$NX_BASE_REF" >> "$GITHUB_ENV"
 
           REACT_DOCTOR_AFFECTED_PACKAGES_JSON=$(npx nx show projects --affected --with-target=lint --exclude=@repo/root --json --base="$NX_BASE_REF" --head=HEAD)

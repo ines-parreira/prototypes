@@ -47,11 +47,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
         with:
-          fetch-depth: 2
-
-      - name: Fetch Nx base ref
-        if: inputs.nx-base-commit == 'origin/main'
-        run: git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
+          # Nx affected needs full history to resolve the merge base with the provided base ref.
+          fetch-depth: 0
 
       - name: Setup workspace
         uses: ./.github/actions/setup-workspace
@@ -83,11 +80,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
         with:
-          fetch-depth: 2
-
-      - name: Fetch Nx base ref
-        if: inputs.nx-base-commit == 'origin/main'
-        run: git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
+          # Nx affected needs full history to resolve the merge base with the provided base ref.
+          fetch-depth: 0
 
       - name: Setup workspace
         uses: ./.github/actions/setup-workspace
@@ -121,11 +115,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
         with:
-          fetch-depth: 2
-
-      - name: Fetch Nx base ref
-        if: inputs.nx-base-commit == 'origin/main'
-        run: git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
+          # Nx affected needs full history to resolve the merge base with the provided base ref.
+          fetch-depth: 0
 
       - name: Setup workspace
         uses: ./.github/actions/setup-workspace
