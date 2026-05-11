@@ -5,6 +5,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import type {
     CampaignJourneyConfigurationApiDTO,
     JourneyConfigurationApiDTO,
+    JourneyParticipationExecutionMode,
     JourneyStatusEnum,
     PostPurchaseJourneyConfigurationApiDTO,
     WelcomeFlowConfigurationApiDTO,
@@ -50,6 +51,7 @@ type HandleUpdateParams = {
     postPurchaseWaitMinutes?: number
     uploadedImageAttachment?: UploadedImageAttachment[]
     rcsEnabled?: boolean
+    executionModeOverride?: JourneyParticipationExecutionMode | null
     scheduledDatetime?: string | null
 }
 
@@ -153,6 +155,11 @@ export const useJourneyUpdateHandler = ({
                                 : undefined,
                         ...(updateParams.flowName !== undefined && {
                             name: updateParams.flowName,
+                        }),
+                        ...(updateParams.executionModeOverride !==
+                            undefined && {
+                            execution_mode_override:
+                                updateParams.executionModeOverride,
                         }),
                     },
                     ...(shouldUpdateConfigs && { journeyConfigs }),

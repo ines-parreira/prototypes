@@ -18,9 +18,14 @@ import {
     TabPanel,
     Tabs,
 } from '@gorgias/axiom'
+import type {
+    JourneyParticipationExecutionMode,
+    StoreConfigurationRequestSchema,
+} from '@gorgias/convert-client'
 
 import {
     ComplianceTab,
+    ExecutionModeCard,
     IntegrationsTab,
     SenderIdentityTab,
 } from 'AIJourney/components'
@@ -37,6 +42,7 @@ enum SettingsTab {
     SenderIdentity = 'sender-identity',
     Compliance = 'compliance',
     Integrations = 'integrations',
+    Internal = 'internal',
 }
 
 type SmsSender = {
@@ -51,6 +57,7 @@ type SettingsFormValues = {
     klaviyo_api_key: string | null
     quiet_hours_start: string | null
     quiet_hours_end: string | null
+    execution_mode_override: JourneyParticipationExecutionMode | null
 }
 
 export const Settings = () => {
@@ -60,10 +67,15 @@ export const Settings = () => {
     const { pathname } = useLocation()
     const history = useHistory()
 
+    const isImpersonated = !!window.USER_IMPERSONATED
+
     const tabRoutes = {
         [SettingsTab.SenderIdentity]: `${url}/${SettingsTab.SenderIdentity}`,
         [SettingsTab.Compliance]: `${url}/${SettingsTab.Compliance}`,
         [SettingsTab.Integrations]: `${url}/${SettingsTab.Integrations}`,
+        ...(isImpersonated && {
+            [SettingsTab.Internal]: `${url}/${SettingsTab.Internal}`,
+        }),
     }
 
     const storeIntegrationId = useMemo(() => {
@@ -89,6 +101,7 @@ export const Settings = () => {
             klaviyo_api_key: null,
             quiet_hours_start: null,
             quiet_hours_end: null,
+            execution_mode_override: null,
         },
     })
 
@@ -109,6 +122,8 @@ export const Settings = () => {
                 klaviyo_api_key: storeConfiguration.klaviyo_api_key ?? null,
                 quiet_hours_start: storeConfiguration.quiet_hours_start ?? null,
                 quiet_hours_end: storeConfiguration.quiet_hours_end ?? null,
+                execution_mode_override:
+                    storeConfiguration.execution_mode_override ?? null,
             })
         }
     }, [storeConfiguration, reset])
@@ -116,7 +131,7 @@ export const Settings = () => {
     const onSubmit = useCallback(
         async (values: SettingsFormValues) => {
             try {
-                await saveConfiguration({
+                const payload: StoreConfigurationRequestSchema = {
                     sms_sender_integration_id:
                         values.sms_sender.sms_sender_integration_id,
                     sms_sender_number: values.sms_sender.sms_sender_number,
@@ -125,7 +140,11 @@ export const Settings = () => {
                     klaviyo_api_key: values.klaviyo_api_key,
                     quiet_hours_start: values.quiet_hours_start,
                     quiet_hours_end: values.quiet_hours_end,
-                })
+                    ...(isImpersonated && {
+                        execution_mode_override: values.execution_mode_override,
+                    }),
+                }
+                await saveConfiguration(payload)
                 reset(values)
                 void dispatch(
                     notify({
@@ -174,7 +193,7 @@ export const Settings = () => {
                 throw error
             }
         },
-        [saveConfiguration, reset, dispatch, setError],
+        [saveConfiguration, reset, dispatch, setError, isImpersonated],
     )
 
     const handleSaveClick = useCallback(
@@ -238,6 +257,12 @@ export const Settings = () => {
                                 id={tabRoutes[SettingsTab.Integrations]}
                                 label="Integrations"
                             />
+                            {isImpersonated && (
+                                <TabItem
+                                    id={tabRoutes[SettingsTab.Internal]!}
+                                    label="Internal"
+                                />
+                            )}
                         </TabList>
                         <TabPanel id={tabRoutes[SettingsTab.SenderIdentity]}>
                             <SenderIdentityTab isFormReady={!isLoading} />
@@ -248,6 +273,18 @@ export const Settings = () => {
                         <TabPanel id={tabRoutes[SettingsTab.Integrations]}>
                             <IntegrationsTab isFormReady={!isLoading} />
                         </TabPanel>
+                        {isImpersonated && (
+                            <TabPanel id={tabRoutes[SettingsTab.Internal]!}>
+                                <ExecutionModeCard
+                                    isFormReady={!isLoading}
+                                    title="Store-level execution mode"
+                                    description="Default execution mode for all flows in this store. If unset, flows fall back to Dry run. Per-flow overrides on the Setup screen take precedence over this value."
+                                    showDefaultOption={true}
+                                    defaultOptionLabel="No override"
+                                    defaultOptionDescription="Clears the store-level value. Flows fall back to Dry run (system default)."
+                                />
+                            </TabPanel>
+                        )}
                     </Tabs>
                 </div>
             </Box>

@@ -37,6 +37,7 @@ export { SmsSenderRequiredBanner } from './SmsSenderRequiredBanner/SmsSenderRequ
 export { KlaviyoPermissionBanner } from './KlaviyoPermissionBanner/KlaviyoPermissionBanner'
 export { SmsSenderRequiredModal } from './SmsSenderRequiredModal/SmsSenderRequiredModal'
 export { RcsEnabledCard } from './RcsEnabledCard/RcsEnabledCard'
+export { ExecutionModeCard } from './ExecutionModeCard/ExecutionModeCard'
 export { SegmentCountPreview } from './SegmentCountPreview/SegmentCountPreview'
 export { IntegrationsTab } from './IntegrationsTab/IntegrationsTab'
 export { KlaviyoCard } from './KlaviyoCard/KlaviyoCard'

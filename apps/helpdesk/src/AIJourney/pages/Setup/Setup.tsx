@@ -10,6 +10,7 @@ import { useFormContext } from 'react-hook-form'
 
 import { Box } from '@gorgias/axiom'
 import type {
+    JourneyParticipationExecutionMode,
     PostPurchaseJourneyConfigurationApiDTO,
     WelcomeFlowConfigurationApiDTO,
     WinbackJourneyConfigurationApiDTO,
@@ -19,6 +20,7 @@ import { OrderStatusEnum } from '@gorgias/convert-client'
 import {
     AudienceCard,
     DiscountCodeCard,
+    ExecutionModeCard,
     GeneralCard,
     KlaviyoSetupCard,
     RcsEnabledCard,
@@ -51,6 +53,7 @@ export type SetupFormValues = {
     excluded_audience_list_ids?: string[]
     campaignTitle?: string
     rcs_enabled?: boolean
+    execution_mode_override?: JourneyParticipationExecutionMode | null
     scheduleType?: 'immediate' | 'later'
     scheduledDate?: ZonedDateTime | null
     scheduledTime?: Time | CalendarDateTime | ZonedDateTime | null
@@ -74,6 +77,14 @@ export const Setup = () => {
     )
     const { storeConfiguration, isLoading: isLoadingStoreConfig } =
         useAiJourneyStoreConfiguration(currentIntegration?.id)
+
+    const storeFallbackMode:
+        | JourneyParticipationExecutionMode
+        | null
+        | undefined = isLoadingStoreConfig
+        ? undefined
+        : (storeConfiguration?.execution_mode_override ?? null)
+
     const isAiJourneySegmentsEnabled = useFlag(
         FeatureFlagKey.AiJourneySegmentsUiEnabled,
     )
@@ -157,6 +168,8 @@ export const Setup = () => {
                     campaignTitle: journeyData?.campaign?.title ?? undefined,
                     rcs_enabled:
                         journeyData?.configuration?.rcs_enabled ?? undefined,
+                    execution_mode_override:
+                        journeyData?.execution_mode_override ?? null,
                     flowName: journeyData?.name ?? undefined,
                 })
             } else if (storeSettingsEnabled && storeConfiguration) {
@@ -197,6 +210,13 @@ export const Setup = () => {
             {hasWebhookUrl && <KlaviyoSetupCard webhookUrl={webhookUrl} />}
             {isAiJourneyRcsEnabled && window.USER_IMPERSONATED && (
                 <RcsEnabledCard isFormReady={isFormReady} />
+            )}
+            {window.USER_IMPERSONATED && (
+                <ExecutionModeCard
+                    isFormReady={isFormReady}
+                    storeFallbackMode={storeFallbackMode}
+                    collapsible
+                />
             )}
             <DiscountCodeCard isFormReady={isFormReady} />
             <GeneralCard isFormReady={isFormReady} />

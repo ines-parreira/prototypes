@@ -41,6 +41,7 @@ jest.mock('AIJourney/components', () => ({
     KlaviyoSetupCard: jest.fn(() => <div>KlaviyoSetupCard</div>),
     TimingCard: jest.fn(() => <div>TimingCard</div>),
     RcsEnabledCard: jest.fn(() => <div>RcsEnabledCard</div>),
+    ExecutionModeCard: jest.fn(() => <div>ExecutionModeCard</div>),
 }))
 
 const mockUseJourneyContext =
