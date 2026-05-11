@@ -6,7 +6,7 @@ import { history } from '@repo/routing'
 import classnames from 'classnames'
 import { Col, Form, FormGroup, Row } from 'reactstrap'
 
-import { LegacyBanner as Banner, Button } from '@gorgias/axiom'
+import { LegacyBanner as Banner, Button, toast } from '@gorgias/axiom'
 
 import { PhoneUseCase } from 'business/twilio'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -22,8 +22,6 @@ import type {
 import { AddressType, PhoneType } from 'models/phoneNumber/types'
 import InputField from 'pages/common/forms/input/InputField'
 import { newPhoneNumberFetched } from 'state/entities/phoneNumbers/actions'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import useCreatePhoneNumberNotifications from './hooks/useCreatePhoneNumberNotifications'
 import { useShowPhoneUseCase } from './hooks/useShowPhoneUseCase'
@@ -81,12 +79,7 @@ export default function PhoneNumberCreateForm(): JSX.Element {
                     oldPhoneNumber.phone_number_id,
                 )
                 dispatch(newPhoneNumberFetched(phoneNumber))
-                void dispatch(
-                    notify({
-                        message: 'Phone number created successfully.',
-                        status: NotificationStatus.Success,
-                    }),
-                )
+                toast.success('Phone number created successfully.')
                 history.push(`/app/settings/phone-numbers/${phoneNumber.id}`)
             } catch (error) {
                 showCreatePhoneNumberErrorNotification({ error })

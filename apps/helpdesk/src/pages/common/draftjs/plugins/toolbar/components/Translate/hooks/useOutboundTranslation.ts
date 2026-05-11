@@ -4,6 +4,7 @@ import { EditorState } from 'draft-js'
 import { useParams } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 
+import { toast } from '@gorgias/axiom'
 import type { Language } from '@gorgias/helpdesk-queries'
 import { useTranslateTicketDraft } from '@gorgias/helpdesk-queries'
 
@@ -15,8 +16,6 @@ import {
     getOriginalContentState,
     hasTranslation as hasTranslationSelector,
 } from 'state/newMessage/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { convertToHTML } from 'utils/editor'
 
 export function useOutboundTranslation(
@@ -83,14 +82,10 @@ export function useOutboundTranslation(
     useEffect(() => {
         if (isErrorTranslationRequest) {
             unregisterTranslationDraft(ticketId)
-            dispatch(
-                notify({
-                    message:
-                        ticketId !== 'new'
-                            ? `Translation on ticket ${ticketId} failed. Please retry.`
-                            : 'Translation failed. Please retry.',
-                    status: NotificationStatus.Error,
-                }),
+            toast.error(
+                ticketId !== 'new'
+                    ? `Translation on ticket ${ticketId} failed. Please retry.`
+                    : 'Translation failed. Please retry.',
             )
         }
     }, [

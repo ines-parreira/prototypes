@@ -2,7 +2,7 @@ import React from 'react'
 
 import client from '@repo/api-resources'
 import { render } from '@repo/testing'
-import { waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -78,5 +78,20 @@ describe('<DiscountCodeResults />', () => {
             expect(getByText(/No results found/i)).toBeDefined()
             expect(container).toMatchSnapshot()
         })
+    })
+
+    it('shows an error toast when fetching discount codes fails', async () => {
+        mockServer.onGet('/api/discount-codes/5/').reply(500)
+
+        render(
+            <Provider store={store}>
+                <DiscountCodeResults {...minProps} />
+            </Provider>,
+        )
+
+        const toastEl = await screen.findByRole('status', {
+            name: "Couldn't fetch discount codes",
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
 })

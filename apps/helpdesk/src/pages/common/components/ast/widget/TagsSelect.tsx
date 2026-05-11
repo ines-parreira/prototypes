@@ -5,6 +5,8 @@ import { useDebouncedEffect } from '@repo/hooks'
 import type { CancelToken } from 'axios'
 import _isString from 'lodash/isString'
 
+import { toast } from '@gorgias/axiom'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useCancellableRequest from 'hooks/useCancellableRequest'
@@ -13,8 +15,6 @@ import type { TagDraft } from 'models/tag/types'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import type { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 import { tagCreated, tagsFetched } from 'state/entities/tags/actions'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import SelectField from '../../../forms/SelectField/SelectField'
 import TagDropdownMenu from '../../TagDropdownMenu/TagDropdownMenu'
@@ -66,12 +66,7 @@ export const TagsSelectContainer = ({
             const newTag = await createTag(tag)
             void dispatch(tagCreated(newTag))
         } catch {
-            void dispatch(
-                notify({
-                    message: 'Could not create tag',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error('Could not create tag')
         }
     }
 
@@ -85,12 +80,7 @@ export const TagsSelectContainer = ({
                 )
                 dispatch(tagsFetched(searchResults.data.data))
             } catch {
-                void dispatch(
-                    notify({
-                        message: 'Could not create tag',
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error('Could not create tag')
             } finally {
                 setIsLoading(false)
             }

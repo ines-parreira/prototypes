@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import { isValidPhoneNumber } from 'libphonenumber-js'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 import type { UpdateCustomerBodyChannelsItem } from '@gorgias/helpdesk-queries'
 import { useGetCustomer, useUpdateCustomer } from '@gorgias/helpdesk-queries'
 import { LegacyChannelSlug } from '@gorgias/helpdesk-types'
@@ -15,8 +15,6 @@ import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import SourceIcon from 'pages/common/components/SourceIcon'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 import { SUBMIT_CUSTOMER_SUCCESS } from 'state/customers/constants'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import css from './CustomerChannels.less'
 
@@ -63,21 +61,10 @@ export default function NewPhoneNumber({ customerId }: Props) {
                         customerChannelsLength
                     ]?._schema?.[0]
 
-                void dispatch(
-                    notify({
-                        message:
-                            phoneNumberError ?? `Failed to update customer`,
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error(phoneNumberError ?? `Failed to update customer`)
             },
             onSuccess: (response) => {
-                void dispatch(
-                    notify({
-                        message: `Phone number added to customer`,
-                        status: NotificationStatus.Success,
-                    }),
-                )
+                toast.success(`Phone number added to customer`)
                 dispatch({
                     type: SUBMIT_CUSTOMER_SUCCESS,
                     isUpdate: true,

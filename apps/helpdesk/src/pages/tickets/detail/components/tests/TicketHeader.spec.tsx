@@ -17,6 +17,7 @@ import { useLocation, useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { toast } from '@gorgias/axiom'
 import {
     mockGetCurrentUserHandler,
     mockListTicketTranslationsHandler,
@@ -31,8 +32,6 @@ import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
-import * as notificationsActions from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import * as ticketActions from 'state/ticket/actions'
 import * as ticketSelectors from 'state/ticket/selectors'
 import type { RootState } from 'state/types'
@@ -79,10 +78,6 @@ jest.mock('../TicketDetails/TicketTags', () => () => 'TicketTagsMock')
 jest.mock('../TicketSummaryPopover', () => ({
     __esModule: true,
     default: () => <button>Summarize ticket</button>,
-}))
-
-jest.mock('state/notifications/actions', () => ({
-    notify: jest.fn(() => () => Promise.resolve()),
 }))
 
 jest.mock('state/ticket/selectors', () => ({
@@ -273,6 +268,7 @@ beforeEach(() => {
 })
 
 afterEach(() => {
+    toast.dismiss()
     server.resetHandlers()
 })
 
@@ -463,13 +459,11 @@ describe('<TicketHeader />', () => {
                 },
             )
             expect(mockOnToggleUnread).toHaveBeenCalledWith(ticket.id, true)
-            return expect(notificationsActions.notify).toHaveBeenNthCalledWith(
-                1,
-                {
-                    message: 'Ticket has been marked as unread',
-                    status: NotificationStatus.Success,
-                },
-            )
+            expect(
+                screen.getByRole('status', {
+                    name: 'Ticket has been marked as unread',
+                }),
+            ).toHaveAttribute('data-intent', 'success')
         })
     })
 

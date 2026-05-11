@@ -4,7 +4,11 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useAsyncFn } from '@repo/hooks'
 import { Col, Form, FormGroup, Row } from 'reactstrap'
 
-import { LegacyBanner as Banner, LegacyButton as Button } from '@gorgias/axiom'
+import {
+    LegacyBanner as Banner,
+    LegacyButton as Button,
+    toast,
+} from '@gorgias/axiom'
 
 import { PhoneUseCase } from 'business/twilio'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -24,8 +28,6 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import InputField from 'pages/common/forms/input/InputField'
 import { newPhoneNumberFetched } from 'state/entities/phoneNumbers/actions'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import useCreatePhoneNumberNotifications from './hooks/useCreatePhoneNumberNotifications'
 import { useShowPhoneUseCase } from './hooks/useShowPhoneUseCase'
@@ -95,12 +97,7 @@ export default function PhoneNumberCreateModalForm({
                 )
                 dispatch(newPhoneNumberFetched(phoneNumber))
 
-                void dispatch(
-                    notify({
-                        message: 'Phone number created successfully.',
-                        status: NotificationStatus.Success,
-                    }),
-                )
+                toast.success('Phone number created successfully.')
                 onClose()
                 onCreate(phoneNumber)
             } catch (error) {

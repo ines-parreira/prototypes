@@ -16,9 +16,12 @@ import {
     Form as ReactStrapForm,
 } from 'reactstrap'
 
-import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyLabel as Label,
+    toast,
+} from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     DISCOUNT_CHOICES,
@@ -36,8 +39,6 @@ import {
     CollectionFormGroup,
 } from 'pages/convert/discountOffer/components/CollectionFormGroup/CollectionFormGroup'
 import CustomerSegmentSelector from 'pages/convert/discountOffer/components/CustomerSegmentSelector'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { getTicketState } from 'state/ticket/selectors'
 
 import css from './DiscountCodeCreateModal.less'
@@ -77,8 +78,6 @@ function DiscountCodeCreateModal({ onSubmit, onClose, integration }: Props) {
     })
     const shouldRenderProductAndCollectionFormGroup =
         discountType !== DISCOUNT_TYPE.FREE_SHIPPING
-
-    const dispatch = useAppDispatch()
 
     const handleSegmentValueChange = (value: string | null): void => {
         const selectedSegmentsSet = new Set(selectedSegments)
@@ -170,12 +169,7 @@ function DiscountCodeCreateModal({ onSubmit, onClose, integration }: Props) {
                         setFormErrors(error.response?.data?.error?.data)
                     }
 
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Error,
-                            message: "Couldn't add discount code",
-                        }),
-                    )
+                    toast.error("Couldn't add discount code")
                 })
         },
         [
@@ -191,7 +185,6 @@ function DiscountCodeCreateModal({ onSubmit, onClose, integration }: Props) {
             shouldRenderProductAndCollectionFormGroup,
             integration,
             onSubmit,
-            dispatch,
         ],
     )
 

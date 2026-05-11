@@ -113,7 +113,6 @@ const minProps = {
         newMessage: { body_text: 'Hello world' },
     }),
     newMessageType: TicketMessageSourceType.Email,
-    notify: jest.fn(),
     currentMacro: {},
     page: 1,
     totalPages: 1,

@@ -1,12 +1,11 @@
 import type { List } from 'immutable'
 import { fromJS } from 'immutable'
 
+import { toast } from '@gorgias/axiom'
+
 import { SELECTABLE_REASONS_DROPDOWN_OPTIONS } from 'models/selfServiceConfiguration/constants'
 import { useGetSelfServiceConfigurations } from 'models/selfServiceConfiguration/queries'
 
-import useAppDispatch from '../../../../../hooks/useAppDispatch'
-import { notify } from '../../../../../state/notifications/actions'
-import { NotificationStatus } from '../../../../../state/notifications/types'
 import Select from './ReactSelect'
 
 type OwnProps = {
@@ -26,17 +25,11 @@ export function SelfServiceFlowSelect({
     onChange,
     flowType,
 }: OwnProps) {
-    const dispatch = useAppDispatch()
-
     const { data: selfServiceConfigurations = [] } =
         useGetSelfServiceConfigurations({
             onError: () => {
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message:
-                            'Could not fetch Self-service configurations, please try again later.',
-                    }),
+                toast.error(
+                    'Could not fetch Self-service configurations, please try again later.',
                 )
             },
         })

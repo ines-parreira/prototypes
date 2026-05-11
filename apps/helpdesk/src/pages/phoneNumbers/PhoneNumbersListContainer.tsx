@@ -5,7 +5,7 @@ import { history } from '@repo/routing'
 import { isEmpty } from 'lodash'
 import { Container, Row } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { Button, toast } from '@gorgias/axiom'
 
 import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -16,8 +16,6 @@ import PageHeader from 'pages/common/components/PageHeader'
 import css from 'pages/settings/settings.less'
 import { newPhoneNumbersFetched } from 'state/entities/phoneNumbers/actions'
 import { getNewPhoneNumbers } from 'state/entities/phoneNumbers/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import PhoneNumbersList from './PhoneNumbersList'
 
@@ -32,12 +30,7 @@ export function PhoneNumbersListContainer() {
                     dispatch(newPhoneNumbersFetched(numbers.data))
                 }
             } catch {
-                void dispatch(
-                    notify({
-                        message: 'Failed to fetch phone numbers',
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error('Failed to fetch phone numbers')
             }
         },
     )

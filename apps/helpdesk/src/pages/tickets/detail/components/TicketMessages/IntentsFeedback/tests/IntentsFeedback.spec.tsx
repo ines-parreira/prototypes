@@ -4,7 +4,7 @@ import React from 'react'
 import client from '@repo/api-resources'
 import { logEvent } from '@repo/logging'
 import { render } from '@repo/testing'
-import { fireEvent, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -109,6 +109,40 @@ describe('<IntentsFeedback />', () => {
             fireEvent.click(getAllByText('close')[0]) // remove bar/intent
             fireEvent.mouseLeave(getByRole('menu', { hidden: true }))
             expect(postMock).not.toHaveBeenCalled()
+        })
+        it('shows the API error toast when the request fails with a response', async () => {
+            postMock.mockRejectedValueOnce({
+                response: {
+                    data: { error: { msg: 'Backend rejected feedback' } },
+                },
+            })
+            const { getAllByText, getByRole } = render(
+                <Provider store={store}>
+                    <IntentsFeedback {...minProps} />
+                </Provider>,
+            )
+            fireEvent.click(getAllByText('add')[0])
+            fireEvent.mouseLeave(getByRole('menu', { hidden: true }))
+
+            const toastEl = await screen.findByRole('status', {
+                name: 'Backend rejected feedback',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
+        })
+        it('shows a generic toast when the request fails without a response', async () => {
+            postMock.mockRejectedValueOnce(new Error('Network error'))
+            const { getAllByText, getByRole } = render(
+                <Provider store={store}>
+                    <IntentsFeedback {...minProps} />
+                </Provider>,
+            )
+            fireEvent.click(getAllByText('add')[0])
+            fireEvent.mouseLeave(getByRole('menu', { hidden: true }))
+
+            const toastEl = await screen.findByRole('status', {
+                name: 'An unknown error has occured.',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
     })
 

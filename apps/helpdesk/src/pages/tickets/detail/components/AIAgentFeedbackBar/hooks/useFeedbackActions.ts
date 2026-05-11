@@ -3,15 +3,13 @@ import { useCallback } from 'react'
 
 import { v4 as uuidv4 } from 'uuid'
 
+import { toast } from '@gorgias/axiom'
 import type { FeedbackMutation } from '@gorgias/knowledge-service-types'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import type { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import type { useGetFeedback } from 'models/knowledgeService/queries'
 import type { ChoiceOption } from 'pages/tickets/detail/components/AIAgentFeedbackBar/MissingKnowledgeSelect'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import type { SuggestedResourceValue } from '../types'
 import { AiAgentKnowledgeResourceTypeEnum } from '../types'
@@ -63,8 +61,6 @@ export const useFeedbackActions = ({
     upsertFeedback,
     setLoadingMutations,
 }: UseFeedbackActionsParams) => {
-    const dispatch = useAppDispatch()
-
     const getSuggestedResourceFeedbackValue = useCallback(
         (choice: ChoiceOption) => {
             if (choice.isDeleted) return null
@@ -295,19 +291,14 @@ export const useFeedbackActions = ({
             const feedbackToUpsert = getFeedbackToUpsert()
 
             if (feedbackToUpsert.length < choices.length) {
-                dispatch(
-                    notify({
-                        message:
-                            'Some feedback could not be saved. Please try again or refresh the page.',
-                        status: NotificationStatus.Error,
-                    }),
+                toast.error(
+                    'Some feedback could not be saved. Please try again or refresh the page.',
                 )
             }
 
             await upsertMissingKnowledge(() => feedbackToUpsert)
         },
         [
-            dispatch,
             feedback,
             ticketId,
             storeConfiguration,

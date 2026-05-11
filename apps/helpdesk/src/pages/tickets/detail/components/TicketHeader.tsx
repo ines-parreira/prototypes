@@ -19,7 +19,11 @@ import type { Map } from 'immutable'
 import type { Moment } from 'moment-timezone'
 import moment from 'moment-timezone'
 
-import { LegacyIconButton, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import {
+    LegacyIconButton,
+    toast,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 import type { Language, TicketPriority } from '@gorgias/helpdesk-types'
 
 import { useAppNode } from 'appNode'
@@ -33,8 +37,6 @@ import MergeTicketsContainer from 'pages/common/components/MergeTickets/MergeTic
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import { getTimezone } from 'state/currentUser/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import {
     addTag,
     clearTicket,
@@ -281,12 +283,7 @@ const TicketHeader = ({
         )
 
         onToggleUnread?.(ticket.get('id'), true)
-        void dispatch(
-            notify({
-                status: NotificationStatus.Success,
-                message: 'Ticket has been marked as unread',
-            }),
-        )
+        toast.success('Ticket has been marked as unread')
     }
 
     const toggleFollowUps = () => {

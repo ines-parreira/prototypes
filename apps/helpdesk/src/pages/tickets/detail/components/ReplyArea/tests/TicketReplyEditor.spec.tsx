@@ -3,7 +3,7 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 import { sanitizeHtmlForFacebookMessenger } from '@repo/utils'
-import { createEvent, fireEvent } from '@testing-library/react'
+import { createEvent, fireEvent, screen, waitFor } from '@testing-library/react'
 import { ContentState } from 'draft-js'
 //@ts-ignore
 import generateRandomKey from 'draft-js/lib/generateRandomKey'
@@ -69,7 +69,6 @@ describe('TicketReplyEditor component', () => {
         newMessageType: fromJS({}),
         predictionContext: fromJS({}),
         addAttachments: jest.fn(),
-        notify: jest.fn(),
         setResponseText: jest.fn(),
         handleTypingActivity: jest.fn(),
         hasTranslation: false,
@@ -163,9 +162,7 @@ describe('TicketReplyEditor component', () => {
         [fromJS([{ content_type: 'image/jpg' }]), [{ type: 'image/gif' }]],
     ])(
         'should not allow GIF + other attachments for Twitter tweets',
-        (existingAttachments, newAttachments) => {
-            const notifyMock = jest.fn()
-
+        async (existingAttachments, newAttachments) => {
             const { getByLabelText } = render(
                 <Provider store={store}>
                     <TicketReplyEditorContainer
@@ -187,7 +184,6 @@ describe('TicketReplyEditor component', () => {
                         })}
                         attachments={existingAttachments}
                         newMessageType={TicketMessageSourceType.TwitterTweet}
-                        notify={notifyMock}
                     />
                 </Provider>,
             )
@@ -196,14 +192,130 @@ describe('TicketReplyEditor component', () => {
                 target: { files: newAttachments },
             })
 
-            expect(notifyMock).toBeCalledWith({
-                type: 'error',
-                status: 'warning',
-                message:
-                    'When answering to Twitter tweet messages, you can only attach a single GIF or a maximum of 4 pictures.',
+            await waitFor(() => {
+                const toast = screen.getByRole('status', {
+                    name: 'When answering to Twitter tweet messages, you can only attach a single GIF or a maximum of 4 pictures.',
+                })
+                expect(toast).toHaveAttribute('data-intent', 'warning')
             })
         },
     )
+
+    it('shows a destructive toast when attached files exceed the size limit', async () => {
+        const { getByLabelText } = render(
+            <Provider store={store}>
+                <TicketReplyEditorContainer
+                    {...minProps}
+                    addAttachments={_noop}
+                    newMessage={fromJS({
+                        state: {
+                            contentState: ContentState.createFromText(''),
+                        },
+                        _internal: {
+                            loading: {
+                                submitMessage: false,
+                            },
+                        },
+                        newMessage: {
+                            body_text: '',
+                            body_html: '',
+                        },
+                    })}
+                    attachments={fromJS([])}
+                    newMessageType={TicketMessageSourceType.Email}
+                />
+            </Provider>,
+        )
+
+        // Email max size is 25MB; pass 30MB to trigger the size guard
+        const oversizedFile = { size: 30 * 1000 * 1000, type: 'image/jpeg' }
+        fireEvent.change(getByLabelText('attach_file'), {
+            target: { files: [oversizedFile] },
+        })
+
+        await waitFor(() => {
+            const toast = screen.getByRole('status', {
+                name: /Attached files must be smaller than/,
+            })
+            expect(toast).toHaveAttribute('data-intent', 'destructive')
+        })
+    })
+
+    it('shows a warning toast when attaching non-image files to a Twitter tweet', async () => {
+        const { getByLabelText } = render(
+            <Provider store={store}>
+                <TicketReplyEditorContainer
+                    {...minProps}
+                    addAttachments={_noop}
+                    newMessage={fromJS({
+                        state: {
+                            contentState: ContentState.createFromText(''),
+                        },
+                        _internal: {
+                            loading: {
+                                submitMessage: false,
+                            },
+                        },
+                        newMessage: {
+                            body_text: '',
+                            body_html: '',
+                        },
+                    })}
+                    attachments={fromJS([])}
+                    newMessageType={TicketMessageSourceType.TwitterTweet}
+                />
+            </Provider>,
+        )
+
+        fireEvent.change(getByLabelText('attach_file'), {
+            target: { files: [{ type: 'application/pdf' }] },
+        })
+
+        await waitFor(() => {
+            const toast = screen.getByRole('status', {
+                name: /the only attachments allowed are/,
+            })
+            expect(toast).toHaveAttribute('data-intent', 'warning')
+        })
+    })
+
+    it('shows a warning toast when attaching SVG files', async () => {
+        const { getByLabelText } = render(
+            <Provider store={store}>
+                <TicketReplyEditorContainer
+                    {...minProps}
+                    addAttachments={_noop}
+                    newMessage={fromJS({
+                        state: {
+                            contentState: ContentState.createFromText(''),
+                        },
+                        _internal: {
+                            loading: {
+                                submitMessage: false,
+                            },
+                        },
+                        newMessage: {
+                            body_text: '',
+                            body_html: '',
+                        },
+                    })}
+                    attachments={fromJS([])}
+                    newMessageType={TicketMessageSourceType.Email}
+                />
+            </Provider>,
+        )
+
+        fireEvent.change(getByLabelText('attach_file'), {
+            target: { files: [{ type: 'image/svg+xml' }] },
+        })
+
+        await waitFor(() => {
+            const toast = screen.getByRole('status', {
+                name: 'Uploading SVGs is not allowed.',
+            })
+            expect(toast).toHaveAttribute('data-intent', 'warning')
+        })
+    })
 
     // test for debouncer bug
     // https://github.com/gorgias/gorgias/issues/2510

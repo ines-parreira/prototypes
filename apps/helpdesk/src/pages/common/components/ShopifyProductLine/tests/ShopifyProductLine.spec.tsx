@@ -118,6 +118,21 @@ describe('<ShopifyProductLine/>', () => {
         expect(container).toMatchSnapshot()
     })
 
+    it('shows an error toast when fetching products fails', async () => {
+        mockServer.onGet('/api/integrations/1/product/').reply(500)
+
+        render(
+            <Provider store={store}>
+                <ShopifyProductLine {...minProps} />
+            </Provider>,
+        )
+
+        const toastEl = await screen.findByRole('status', {
+            name: "Couldn't fetch Shopify products",
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
+    })
+
     it('should render the product picker with products', async () => {
         mockServer
             .onGet('/api/integrations/1/product/')

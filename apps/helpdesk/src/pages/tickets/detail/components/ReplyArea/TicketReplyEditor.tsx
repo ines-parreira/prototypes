@@ -11,7 +11,7 @@ import _noop from 'lodash/noop'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 
-import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import { toast, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import type { Macro } from '@gorgias/helpdesk-queries'
 
 import { humanize } from 'business/format'
@@ -32,7 +32,6 @@ import {
     hasTranslation,
     isNewMessagePublic,
 } from 'state/newMessage/selectors'
-import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { getContext } from 'state/prediction/selectors'
 import type { RootState } from 'state/types'
@@ -161,10 +160,11 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
             attachments.size + files.length,
         )
         if (notification) {
-            void this.props.notify({
-                status: notification.status,
-                message: notification.message,
-            })
+            if (notification.status === NotificationStatus.Warning) {
+                toast.warning(notification.message)
+            } else {
+                toast.error(notification.message)
+            }
             return false
         }
 
@@ -185,13 +185,11 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
                 gifAttachments.size + gifFiles.length > 0 &&
                 attachments.size + files.length > 1
             ) {
-                void this.props.notify({
-                    type: NotificationStatus.Error,
-                    status: NotificationStatus.Warning,
-                    message: `When answering to ${humanize(
+                toast.warning(
+                    `When answering to ${humanize(
                         newMessageType,
                     )} messages, you can only attach a single GIF or a maximum of 4 pictures.`,
-                })
+                )
                 return false
             }
         }
@@ -203,10 +201,7 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
             attachments.toJS(),
         )
         if (currentSize >= maxSize) {
-            void this.props.notify({
-                status: NotificationStatus.Error,
-                message: getFileTooLargeError(maxSize),
-            })
+            toast.error(getFileTooLargeError(maxSize))
             return false
         }
 
@@ -227,23 +222,17 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
 
         Array.from(files).forEach((file) => {
             if (regex && !regex.exec(file.type) && !cancel) {
-                void this.props.notify({
-                    type: NotificationStatus.Error,
-                    status: NotificationStatus.Warning,
-                    message: `When answering to ${humanize(
+                toast.warning(
+                    `When answering to ${humanize(
                         newMessageType,
                     )} messages, the only attachments allowed are ${' '}
                     images (except svg).`,
-                })
+                )
                 cancel = true
             }
 
             if (file.type.endsWith('svg+xml')) {
-                void this.props.notify({
-                    type: NotificationStatus.Error,
-                    status: NotificationStatus.Warning,
-                    message: 'Uploading SVGs is not allowed.',
-                })
+                toast.warning('Uploading SVGs is not allowed.')
                 cancel = true
             }
         })
@@ -374,7 +363,6 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
             newMessageType,
             agents,
             richAreaRef,
-            notify,
             attachments,
             macros,
             applyMacro,
@@ -501,7 +489,6 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
                     }
                     {...mentionProps}
                     placeholder="Click here to reply, or press r."
-                    notify={notify}
                     canInsertInlineImages={canInsertInlineImages}
                     attachments={attachments}
                     buttons={this.getButtons()}
@@ -570,7 +557,6 @@ const connector = connect(
     }),
     {
         addAttachments,
-        notify,
         setResponseText,
     },
 )

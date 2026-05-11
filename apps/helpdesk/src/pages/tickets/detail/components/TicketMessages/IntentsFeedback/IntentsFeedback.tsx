@@ -6,14 +6,14 @@ import type { AxiosError } from 'axios'
 import _difference from 'lodash/difference'
 import _isEqual from 'lodash/isEqual'
 
+import { toast } from '@gorgias/axiom'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import type { TicketMessage, TicketMessageIntent } from 'models/ticket/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { sendIntentFeedbackSuccess } from 'state/ticket/actions'
 import { humanizeString } from 'utils'
 
@@ -131,28 +131,13 @@ export const IntentsFeedback = ({
                     intents,
                 }),
             )
-            void dispatch(
-                notify({
-                    message: Messages.NOTIFICATION_SUCCESS,
-                    status: NotificationStatus.Success,
-                }),
-            )
+            toast.success(Messages.NOTIFICATION_SUCCESS)
         } catch (error) {
             const { response } = error as AxiosError<{ error: { msg: string } }>
             if (response) {
-                void dispatch(
-                    notify({
-                        message: response.data.error.msg,
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error(response.data.error.msg)
             } else {
-                void dispatch(
-                    notify({
-                        message: Messages.NOTIFICATION_UNKNOWN_ERROR,
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error(Messages.NOTIFICATION_UNKNOWN_ERROR)
             }
         }
     }, [intents, activeIntentsNames])

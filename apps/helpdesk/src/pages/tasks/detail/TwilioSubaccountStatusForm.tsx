@@ -5,13 +5,10 @@ import client from '@repo/api-resources'
 import { useAsyncFn } from '@repo/hooks'
 import { Container, Form, FormGroup, Input, Label } from 'reactstrap'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import PageHeader from 'pages/common/components/PageHeader'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { errorToChildren } from 'utils'
 
 export enum TwilioSubaccountStatus {
@@ -24,11 +21,13 @@ type StatusData = {
     sub_account_sid: string
 }
 
+const stripHtmlTags = (message: string) =>
+    message.replace(/<[^>]*>/g, '').trim()
+
 const TwilioSubaccountStatusForm = (): JSX.Element => {
     const [formData, setFormData] = useState<Maybe<StatusData>>()
     const [isLoading, setIsLoading] = useState(false)
     const [formChanged, setFormChanged] = useState(false)
-    const dispatch = useAppDispatch()
 
     const [, handleFetchSubaccountData] = useAsyncFn(async () => {
         try {
@@ -40,12 +39,7 @@ const TwilioSubaccountStatusForm = (): JSX.Element => {
             }
             setFormData({ ...formData, ...res.data.data })
         } catch {
-            void dispatch(
-                notify({
-                    message: 'Failed to fetch Twilio Subaccount data',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error('Failed to fetch Twilio Subaccount data')
         }
     })
 
@@ -62,12 +56,7 @@ const TwilioSubaccountStatusForm = (): JSX.Element => {
         }
 
         if (formData.status === TwilioSubaccountStatus.Closed) {
-            void dispatch(
-                notify({
-                    message: 'Cannot use this feature to Close a Subaccount',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error('Cannot use this feature to Close a Subaccount')
             setIsLoading(false)
             return
         }
@@ -80,21 +69,11 @@ const TwilioSubaccountStatusForm = (): JSX.Element => {
         try {
             await client.post(`/api/integrations/phone/tasks`, data)
 
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Success,
-                    message: 'Twilio Subaccount updated successfully.',
-                }),
-            )
+            toast.success('Twilio Subaccount updated successfully.')
         } catch (error) {
-            void dispatch(
-                notify({
-                    title: 'Failed to update subaccount status',
-                    message: errorToChildren(error)!,
-                    allowHTML: true,
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error('Failed to update subaccount status', {
+                caption: stripHtmlTags(String(errorToChildren(error) ?? '')),
+            })
         } finally {
             setFormChanged(false)
             setIsLoading(false)

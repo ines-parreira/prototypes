@@ -19,7 +19,6 @@ import type { AccountViewsOrderingSettingData } from 'state/currentAccount/types
 import type { SectionsState } from 'state/entities/sections/types'
 import { viewUpdated } from 'state/entities/views/actions'
 import type { ViewsState } from 'state/entities/views/types'
-import { notify } from 'state/notifications/actions'
 import type { RootState } from 'state/types'
 import {
     optimisticAccountSettingsSet,
@@ -63,7 +62,6 @@ export function TicketNavbarContentContainer({
     elements,
     isMovingItem,
     isPrivate = false,
-    notify,
     onSectionDeleteClick,
     onSectionRenameClick,
     onSubmitMoveItem,
@@ -144,7 +142,7 @@ export function TicketNavbarContentContainer({
             )
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [views, sections, isPrivate, viewUpdated, notify, elements],
+        [views, sections, isPrivate, viewUpdated, elements],
     )
 
     return (
@@ -196,7 +194,6 @@ const connector = connect(
         }
     },
     {
-        notify,
         optimisticAccountSettingsSet,
         optimisticUserSettingsSet,
         viewUpdated,

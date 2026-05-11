@@ -1,4 +1,5 @@
 import { renderHook } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 
 import type { ChoiceOption } from '../../MissingKnowledgeSelect'
 import { AiAgentKnowledgeResourceTypeEnum } from '../../types'
@@ -409,7 +410,13 @@ describe('useFeedbackActions', () => {
 
             expect(mocks.setLoadingMutations).toHaveBeenCalledTimes(2)
             expect(mocks.upsertFeedback).not.toHaveBeenCalled()
-            expect(mockDispatch).toHaveBeenCalled()
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Some feedback could not be saved. Please try again or refresh the page.',
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive')
+            })
         })
 
         it('should handle deleted choices with existing feedback id', async () => {
@@ -491,7 +498,13 @@ describe('useFeedbackActions', () => {
                     },
                 }),
             )
-            expect(mockDispatch).toHaveBeenCalled()
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Some feedback could not be saved. Please try again or refresh the page.',
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive')
+            })
         })
 
         // Test resource not found scenarios

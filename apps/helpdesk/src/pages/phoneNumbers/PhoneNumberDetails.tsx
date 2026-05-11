@@ -18,7 +18,7 @@ import {
     Row,
 } from 'reactstrap'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
 import { countryOptions, PhoneUseCase } from 'business/twilio'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -44,8 +44,6 @@ import {
     newPhoneNumberDeleted,
     newPhoneNumberUpdated,
 } from 'state/entities/phoneNumbers/actions'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { errorToChildren } from 'utils'
 
 import css from './PhoneNumberDetails.less'
@@ -55,6 +53,8 @@ type Props = {
 }
 
 const countries: SelectableOption[] = countryOptions
+const stripHtmlTags = (message: string) =>
+    message.replace(/<[^>]*>/g, '').trim()
 
 export function PhoneNumberDetails({ phoneNumber }: Props) {
     const dispatch = useAppDispatch()
@@ -83,22 +83,16 @@ export function PhoneNumberDetails({ phoneNumber }: Props) {
             try {
                 await deleteNewPhoneNumber(phoneNumber.id)
                 dispatch(newPhoneNumberDeleted(phoneNumber.id))
-                void dispatch(
-                    notify({
-                        message: 'Successfully deleted phone number',
-                        status: NotificationStatus.Success,
-                    }),
-                )
+                toast.success('Successfully deleted phone number')
                 history.push('/app/settings/phone-numbers')
             } catch (error) {
-                void dispatch(
-                    notify({
-                        title: (error as GorgiasApiError).response.data.error
-                            .msg,
-                        message: errorToChildren(error)!,
-                        allowHTML: true,
-                        status: NotificationStatus.Error,
-                    }),
+                toast.error(
+                    (error as GorgiasApiError).response.data.error.msg,
+                    {
+                        caption: stripHtmlTags(
+                            String(errorToChildren(error) ?? ''),
+                        ),
+                    },
                 )
             }
         }, [phoneNumber])
@@ -142,19 +136,9 @@ export function PhoneNumberDetails({ phoneNumber }: Props) {
                     return
                 }
                 dispatch(newPhoneNumberUpdated(res))
-                void dispatch(
-                    notify({
-                        message: 'Successfully updated phone number',
-                        status: NotificationStatus.Success,
-                    }),
-                )
+                toast.success('Successfully updated phone number')
             } catch {
-                void dispatch(
-                    notify({
-                        message: 'Failed to update phone number',
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error('Failed to update phone number')
             }
         },
         [phoneNumber, name, dispatch],

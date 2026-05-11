@@ -3,17 +3,13 @@ import { useCallback, useState } from 'react'
 import client, { appQueryClient } from '@repo/api-resources'
 import type { AxiosError } from 'axios'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
 import { UserRole } from 'config/types/user'
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { voiceCallsKeys } from 'models/voiceCall/queries'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import { getCurrentUser } from 'state/currentUser/selectors'
-import { notify as notifyAction } from 'state/notifications/actions'
-import type { Notification } from 'state/notifications/types'
-import { NotificationStatus } from 'state/notifications/types'
 import { hasRole, replaceAttachmentURL } from 'utils'
 import { saveFileAsDownloaded } from 'utils/file'
 
@@ -32,7 +28,6 @@ type ButtonProps = {
 
 function useDeleteRecording(url: string, callId?: number) {
     const [isRequestPending, setIsRequestPending] = useState(false)
-    const dispatch = useAppDispatch()
 
     const deleteRecording = useCallback(async () => {
         setIsRequestPending(true)
@@ -40,28 +35,18 @@ function useDeleteRecording(url: string, callId?: number) {
         try {
             await client.delete(url)
 
-            const notification: Notification = {
-                status: NotificationStatus.Success,
-                message: 'Call recording successfully deleted.',
-            }
-
             if (callId) {
                 await appQueryClient.refetchQueries(
                     voiceCallsKeys.listRecordings({ call_id: callId }),
                 )
             }
 
-            void (await dispatch(notifyAction(notification)))
+            toast.success('Call recording successfully deleted.')
         } catch (error) {
             const { response } = error as AxiosError<{ error: { msg: string } }>
 
             if (response) {
-                const notification: Notification = {
-                    status: NotificationStatus.Error,
-                    message: response.data.error.msg,
-                }
-
-                void (await dispatch(notifyAction(notification)))
+                toast.error(response.data.error.msg)
             }
         } finally {
             setIsRequestPending(false)
@@ -78,7 +63,6 @@ function useDeleteRecording(url: string, callId?: number) {
 
 export function useDownloadRecording(url: string) {
     const [isRequestPending, setIsRequestPending] = useState(false)
-    const dispatch = useAppDispatch()
 
     const downloadRecording = useCallback(async () => {
         setIsRequestPending(true)
@@ -121,12 +105,7 @@ export function useDownloadRecording(url: string) {
             const { response } = error as AxiosError<{ error: { msg: string } }>
 
             if (response) {
-                const notification: Notification = {
-                    status: NotificationStatus.Error,
-                    message: response.data.error.msg,
-                }
-
-                void (await dispatch(notifyAction(notification)))
+                toast.error(response.data.error.msg)
             }
         } finally {
             setIsRequestPending(false)

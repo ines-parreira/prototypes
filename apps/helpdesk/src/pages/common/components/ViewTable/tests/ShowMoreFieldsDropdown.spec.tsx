@@ -3,10 +3,10 @@ import { render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { List, Map } from 'immutable'
 
+import { toast } from '@gorgias/axiom'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import ShowMoreFieldsDropdown from 'pages/common/components/ViewTable/ShowMoreFieldsDropdown'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { setFieldVisibility } from 'state/views/actions'
 
 jest.mock('@repo/logging', () => ({
@@ -21,9 +21,6 @@ const mockUseAppDispatch = useAppDispatch as jest.Mock
 
 jest.mock('state/views/actions')
 const mockSetFieldVisibility = setFieldVisibility as jest.Mock
-
-jest.mock('state/notifications/actions')
-const mockNotify = notify as jest.Mock
 
 describe('ShowMoreFieldsDropdown', () => {
     let defaultProps: any
@@ -51,7 +48,10 @@ describe('ShowMoreFieldsDropdown', () => {
         }
         mockUseAppDispatch.mockReturnValue(jest.fn())
         mockSetFieldVisibility.mockReturnValue(jest.fn())
-        mockNotify.mockReturnValue(jest.fn())
+    })
+
+    afterEach(() => {
+        toast.dismiss()
     })
 
     const renderComponent = (props = {}) =>
@@ -103,7 +103,7 @@ describe('ShowMoreFieldsDropdown', () => {
         )
     })
 
-    it('shows error notification when trying to remove all columns', () => {
+    it('shows error notification when trying to remove all columns', async () => {
         const props = {
             visibleFields: List([Map({ name: 'field1', title: 'Field 1' })]),
         }
@@ -112,9 +112,12 @@ describe('ShowMoreFieldsDropdown', () => {
         const checkbox = screen.getByLabelText('Field 1')
         fireEvent.click(checkbox)
 
-        expect(mockNotify).toHaveBeenCalledWith({
-            message: 'You can not remove all columns of a view',
-            status: NotificationStatus.Error,
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'You can not remove all columns of a view',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 

@@ -10,10 +10,10 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
+import { toast } from '@gorgias/axiom'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import CheckBox from 'pages/common/forms/CheckBox'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { setFieldVisibility } from 'state/views/actions'
 
 type Props = {
@@ -53,12 +53,8 @@ const ShowMoreFieldsDropdown = ({
     const handleFieldVisibility = useCallback(
         (name: string, state: boolean) => {
             if (!state && visibleFields.size <= 1) {
-                return dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message: 'You can not remove all columns of a view',
-                    }),
-                )
+                toast.error('You can not remove all columns of a view')
+                return
             }
 
             return dispatch(

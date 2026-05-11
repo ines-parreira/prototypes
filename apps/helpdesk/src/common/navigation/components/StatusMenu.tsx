@@ -8,12 +8,11 @@ import {
 import { logEvent, SegmentEvent } from '@repo/logging'
 import cn from 'classnames'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { toast } from '@gorgias/axiom'
+
 import useAppSelector from 'hooks/useAppSelector'
 import { isGorgiasApiError } from 'models/api/types'
 import { getCurrentUserId } from 'state/currentUser/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import css from './UserMenu.less'
 
@@ -22,7 +21,6 @@ export default function StatusMenu({
 }: {
     onUpdateStatusStart: () => void
 }) {
-    const dispatch = useAppDispatch()
     const currentUserId = useAppSelector(getCurrentUserId)
     const { activeStatusId, isLoading: isLoadingAvailability } =
         useUserAvailability({ userId: currentUserId })
@@ -41,17 +39,14 @@ export default function StatusMenu({
                     status_id: statusId,
                 })
             } catch (error) {
-                void dispatch(
-                    notify({
-                        title: isGorgiasApiError(error)
-                            ? error.response?.data.error.msg
-                            : 'Failed to update status. Please try again.',
-                        status: NotificationStatus.Error,
-                    }),
+                toast.error(
+                    isGorgiasApiError(error)
+                        ? error.response?.data.error.msg
+                        : 'Failed to update status. Please try again.',
                 )
             }
         },
-        [updateStatusAsync, currentUserId, dispatch, onUpdateStatusStart],
+        [updateStatusAsync, currentUserId, onUpdateStatusStart],
     )
 
     if (isLoadingStatuses || isLoadingAvailability) {

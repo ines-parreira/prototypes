@@ -8,13 +8,12 @@ import type { Call } from '@twilio/voice-sdk'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
+import { toast } from '@gorgias/axiom'
 import { mockTransferCallHandler } from '@gorgias/helpdesk-mocks'
 import { VoiceCallTransferReceiverType } from '@gorgias/helpdesk-queries'
 
 import CallTransferDropdown from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/CallTransferDropdown'
 import { TransferType } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/types'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { mockIncomingCall } from 'tests/twilioMocks'
 
 jest.mock(
@@ -145,10 +144,6 @@ jest.mock(
     }),
 )
 
-jest.mock('state/notifications/actions')
-
-const mockNotify = jest.mocked(notify)
-
 const server = setupServer()
 describe('CallTransferDropdown', () => {
     const setIsOpen = jest.fn()
@@ -173,11 +168,11 @@ describe('CallTransferDropdown', () => {
 
     beforeEach(() => {
         server.use(mockTransferCall.handler)
-        mockNotify.mockReturnValue(jest.fn())
         jest.clearAllMocks()
     })
 
     afterEach(() => {
+        toast.dismiss()
         server.resetHandlers()
         cleanup()
     })
@@ -232,13 +227,44 @@ describe('CallTransferDropdown', () => {
         await act(() => user.click(transferButton))
 
         await waitFor(() => {
-            expect(mockNotify).toHaveBeenCalledWith({
-                status: NotificationStatus.Warning,
-                message: 'Transfer failed',
-            })
+            expect(
+                screen.getByRole('status', { name: 'Transfer failed' }),
+            ).toHaveAttribute('data-intent', 'warning')
             expect(
                 screen.getByText('Transfer unsuccessful. Please try again.'),
             ).toBeInTheDocument()
+        })
+    })
+
+    it('shows a destructive toast when the transfer fails with a non-400 status', async () => {
+        const user = userEvent.setup()
+        const failedTransferHandler = mockTransferCallHandler(async () =>
+            HttpResponse.json(
+                { error: { msg: 'Server error during transfer' } } as any,
+                {
+                    status: 500,
+                    headers: { 'Content-Type': 'application/json' },
+                },
+            ),
+        )
+        server.use(failedTransferHandler.handler)
+
+        renderComponent()
+
+        const selectAgent = screen.getByLabelText(/select agent 1/i)
+        await user.click(selectAgent)
+
+        const transferButton = screen.getByRole('button', {
+            name: /transfer call/i,
+        })
+        await user.click(transferButton)
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Server error during transfer',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 

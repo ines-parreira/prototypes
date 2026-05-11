@@ -2,7 +2,7 @@ import type { ComponentProps } from 'react'
 import React from 'react'
 
 import { render } from '@repo/testing'
-import { fireEvent } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -226,5 +226,26 @@ describe('<TagsSelect />', () => {
         })
 
         expect(createTagMock.mock.calls).toMatchSnapshot()
+    })
+
+    it('should show an error toast when tag creation fails', async () => {
+        const createTagMock = createTag as jest.MockedFunction<typeof createTag>
+        createTagMock.mockRejectedValueOnce(new Error('boom'))
+        const { getByTestId } = render(
+            <Provider store={mockStore(defaultStore)}>
+                <TagsSelect {...commonProps} value="billing" />
+            </Provider>,
+        )
+
+        fireEvent.change(getByTestId('on-change-input'), {
+            target: { value: JSON.stringify('new') },
+        })
+
+        await waitFor(() => {
+            const toastEl = screen.getByRole('status', {
+                name: 'Could not create tag',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
+        })
     })
 })

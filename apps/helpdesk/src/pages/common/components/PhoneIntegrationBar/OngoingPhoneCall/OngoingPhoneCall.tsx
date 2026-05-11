@@ -8,7 +8,15 @@ import classNames from 'classnames'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 
-import { Box, Dot, Icon, Text, Tooltip, TooltipContent } from '@gorgias/axiom'
+import {
+    Box,
+    Dot,
+    Icon,
+    Text,
+    toast,
+    Tooltip,
+    TooltipContent,
+} from '@gorgias/axiom'
 import { usePutCallParticipantOnHold } from '@gorgias/helpdesk-queries'
 
 import whisperingNotification from 'assets/audio/phone/whispering-notification.mp3'
@@ -44,9 +52,6 @@ import type {
 } from 'services/socketManager/types'
 import { SocketEventType } from 'services/socketManager/types'
 import * as integrationsSelectors from 'state/integrations/selectors'
-import { notify as notifyAction } from 'state/notifications/actions'
-import type { Notification } from 'state/notifications/types'
-import { NotificationStatus } from 'state/notifications/types'
 import type { RootState } from 'state/types'
 
 import PhoneBarContainer from '../PhoneBarContainer/PhoneBarContainer'
@@ -68,7 +73,6 @@ export function OngoingPhoneCall({
     call,
     integration,
     routingViaIntegration,
-    notify,
 }: Props): JSX.Element {
     const applyCallBarRestyling = useFlag(FeatureFlagKey.CallBarRestyling)
 
@@ -94,11 +98,9 @@ export function OngoingPhoneCall({
                 setIsOnHold(hold_state)
             },
             onError: () => {
-                void notify({
-                    status: NotificationStatus.Error,
-                    message:
-                        'Call hold could not be completed. Please try again. ',
-                })
+                toast.error(
+                    'Call hold could not be completed. Please try again. ',
+                )
             },
         },
     })
@@ -107,7 +109,6 @@ export function OngoingPhoneCall({
         call,
         isRecording,
         setIsRecording,
-        notify,
     )
 
     const transferButtonRef = useRef<HTMLButtonElement>(null)
@@ -119,13 +120,11 @@ export function OngoingPhoneCall({
             setTransferringTo(null)
             setIsOnHold(false)
 
-            void notify({
-                dismissAfter: 5000,
-                status: NotificationStatus.Info,
-                message: eventData.event.data.error.message,
+            toast.info(eventData.event.data.error.message, {
+                duration: 5000,
             })
         },
-        [notify, setIsTransferring],
+        [setIsTransferring],
     )
 
     useEffect(() => {
@@ -389,7 +388,6 @@ function useRecording(
     call: Call,
     isRecording: boolean,
     setIsRecording: (isRecording: boolean) => void,
-    notify: (message: Notification) => Promise<unknown>,
 ) {
     const [isRequestPending, setIsRequestPending] = useState(false)
 
@@ -427,12 +425,7 @@ function useRecording(
             const { response } = error as AxiosError<{ error: { msg: string } }>
 
             if (response) {
-                const notification: Notification = {
-                    status: NotificationStatus.Error,
-                    message: response.data.error.msg,
-                }
-
-                void (await notify(notification))
+                toast.error(response.data.error.msg)
             }
         } finally {
             setIsRequestPending(false)
@@ -471,9 +464,5 @@ const mapStateToProps = (state: RootState, ownProps: OwnProps) => {
         routingViaIntegration,
     }
 }
-const mapDispatchToProps = {
-    notify: notifyAction,
-}
-
-const connector = connect(mapStateToProps, mapDispatchToProps)
+const connector = connect(mapStateToProps)
 export default connector(OngoingPhoneCall)

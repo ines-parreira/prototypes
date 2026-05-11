@@ -1,40 +1,32 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { resetFeatureFlagsMocks } from '@repo/feature-flags/testing'
 import { assumeMock, render } from '@repo/testing'
-import { act, cleanup, screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+
+import { toast } from '@gorgias/axiom'
 
 import { capabilities, phoneNumbers } from 'fixtures/phoneNumber'
 import { fetchPhoneCapabilities } from 'models/phoneNumber/resources'
 import * as apiCalls from 'models/phoneNumber/resources'
-import * as notificationActions from 'state/notifications/actions'
-import type { AlertNotification } from 'state/notifications/types'
-import type { RootState, StoreDispatch } from 'state/types'
-import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
+import type { RootState } from 'state/types'
 
 import PhoneNumberCreateForm from '../PhoneNumberCreateForm'
 import * as phoneNumberUtils from '../utils'
 
 const mockUseFlag = assumeMock(useFlag)
 
-const QueryClientProvider = mockQueryClientProvider().QueryClientProvider
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
-const store = mockStore({
+const storeState = {
     entities: {
         phoneNumbers: phoneNumbers.reduce(
             (acc, number) => ({ ...acc, [number.id]: number }),
             {},
         ),
     },
-} as RootState)
+} as RootState
 
 jest.mock('models/phoneNumber/resources')
 const createPhoneNumberSpy = jest.spyOn(apiCalls, 'createPhoneNumber')
-
-const notify = jest.spyOn(notificationActions, 'notify')
 
 const getAddressValidationAlertMessageSpy = jest.spyOn(
     phoneNumberUtils,
@@ -43,13 +35,7 @@ const getAddressValidationAlertMessageSpy = jest.spyOn(
 
 describe('<PhoneNumberCreateForm/>', () => {
     const renderComponent = () =>
-        render(
-            <Provider store={store}>
-                <QueryClientProvider>
-                    <PhoneNumberCreateForm />
-                </QueryClientProvider>
-            </Provider>,
-        )
+        render(<PhoneNumberCreateForm />, { storeState })
 
     beforeEach(() => {
         jest.resetAllMocks()
@@ -57,7 +43,9 @@ describe('<PhoneNumberCreateForm/>', () => {
         resetFeatureFlagsMocks()
     })
 
-    afterEach(cleanup)
+    afterEach(() => {
+        toast.dismiss()
+    })
 
     it('should render Alert message when there is one', () => {
         getAddressValidationAlertMessageSpy.mockReturnValue(
@@ -333,13 +321,11 @@ describe('<PhoneNumberCreateForm/>', () => {
 
             await waitFor(() => {
                 expect(createPhoneNumberSpy).toHaveBeenCalled()
-
-                const notificationSent = notify.mock
-                    .lastCall?.[0] as AlertNotification
-                expect(notificationSent?.title).toEqual(
-                    'Cannot add phone number.',
-                )
-                expect(notificationSent?.allowHTML).toBe(true)
+                expect(
+                    screen.getByRole('status', {
+                        name: /Cannot add phone number./,
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive')
             })
         })
     })

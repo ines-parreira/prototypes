@@ -28,6 +28,7 @@ import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import { useLocation, useParams } from 'react-router-dom'
 
+import { toast } from '@gorgias/axiom'
 import type { DomainEvent } from '@gorgias/events'
 import type { Macro } from '@gorgias/helpdesk-types'
 import { useAgentActivity } from '@gorgias/realtime'
@@ -38,7 +39,6 @@ import {
     TicketStatus,
 } from 'business/types/ticket'
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { RecentItems } from 'hooks/useRecentItems/constants'
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
@@ -74,8 +74,6 @@ import {
     TicketMessageInvalidSendDataError,
 } from 'state/newMessage/errors'
 import { canSend, getNewMessageSource } from 'state/newMessage/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import {
     clearTicket,
     fetchTicket,
@@ -138,7 +136,6 @@ export const TicketDetailContainer = ({
     onGoToNextTicket,
     onToggleUnread,
 }: Props) => {
-    const dispatch = useAppDispatch()
     const appliedMacro = useAppSelector(getAppliedMacro)
     const hasUIVisionMS1 = useHelpdeskV2MS1Flag()
     const hasUIVisionMS3 = useHelpdeskV2MS3Flag()
@@ -490,12 +487,8 @@ export const TicketDetailContainer = ({
                         hasErrors &&
                         ticketIdParam !== 'new'
                     ) {
-                        dispatch(
-                            notify({
-                                status: NotificationStatus.Error,
-                                message:
-                                    'This ticket cannot be closed. Please fill the required fields.',
-                            }),
+                        toast.error(
+                            'This ticket cannot be closed. Please fill the required fields.',
                         )
                         return
                     }
@@ -687,12 +680,7 @@ export const TicketDetailContainer = ({
         }
 
         return setStatus(status, () => {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Success,
-                    message: 'Ticket has been closed',
-                }),
-            )
+            toast.success('Ticket has been closed')
 
             const callback = onGoToNextTicket || maybeGoToNextTicket
             callback()

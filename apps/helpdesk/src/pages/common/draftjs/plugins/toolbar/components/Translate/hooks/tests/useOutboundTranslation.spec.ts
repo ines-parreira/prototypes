@@ -1,8 +1,9 @@
 import { renderHook } from '@repo/testing'
-import { act } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { ContentState, EditorState } from 'draft-js'
 import { useParams } from 'react-router-dom'
 
+import { toast } from '@gorgias/axiom'
 import type { Language } from '@gorgias/helpdesk-queries'
 import { useTranslateTicketDraft } from '@gorgias/helpdesk-queries'
 
@@ -14,8 +15,6 @@ import {
     getOriginalContentState,
     hasTranslation,
 } from 'state/newMessage/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { useOutboundTranslation } from '../useOutboundTranslation'
 
@@ -45,9 +44,6 @@ jest.mock('state/newMessage/selectors')
 
 jest.mock('state/newMessage/actions')
 const mockClearTranslationState = clearTranslationState as unknown as jest.Mock
-
-jest.mock('state/notifications/actions')
-const mockNotify = notify as jest.Mock
 
 describe('useOutboundTranslation', () => {
     const mockGetEditorState = jest.fn()
@@ -85,6 +81,10 @@ describe('useOutboundTranslation', () => {
             isLoading: false,
         })
         mockUseOutboundTranslationContext.mockReturnValue(mockContext)
+    })
+
+    afterEach(() => {
+        toast.dismiss()
     })
 
     describe('initialization', () => {
@@ -239,44 +239,60 @@ describe('useOutboundTranslation', () => {
     })
 
     describe('error handling', () => {
-        it('unregisters draft and shows error notification on translation error', () => {
+        it('unregisters draft and shows error notification on translation error', async () => {
+            mockUseTranslateTicketDraft.mockReturnValue({
+                mutate: mockTranslateTicketDraft,
+                isLoading: false,
+                isError: false,
+            })
+
+            const { rerender } = renderHook(() =>
+                useOutboundTranslation(mockGetEditorState, mockSetEditorState),
+            )
+
             mockUseTranslateTicketDraft.mockReturnValue({
                 mutate: mockTranslateTicketDraft,
                 isLoading: false,
                 isError: true,
             })
-
-            renderHook(() =>
-                useOutboundTranslation(mockGetEditorState, mockSetEditorState),
-            )
+            rerender()
 
             expect(mockUnregisterTranslationDraft).toHaveBeenCalledWith('123')
-            expect(mockDispatch).toHaveBeenCalledWith(
-                mockNotify({
-                    message: 'Translation on ticket 123 failed. Please retry.',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Translation on ticket 123 failed. Please retry.',
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive')
+            })
         })
 
-        it('shows error message for new tickets', () => {
+        it('shows error message for new tickets', async () => {
             mockUseParams.mockReturnValue({ ticketId: 'new' })
             mockUseTranslateTicketDraft.mockReturnValue({
                 mutate: mockTranslateTicketDraft,
                 isLoading: false,
-                isError: true,
+                isError: false,
             })
 
-            renderHook(() =>
+            const { rerender } = renderHook(() =>
                 useOutboundTranslation(mockGetEditorState, mockSetEditorState),
             )
 
-            expect(mockDispatch).toHaveBeenCalledWith(
-                mockNotify({
-                    message: 'Translation failed. Please retry.',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            mockUseTranslateTicketDraft.mockReturnValue({
+                mutate: mockTranslateTicketDraft,
+                isLoading: false,
+                isError: true,
+            })
+            rerender()
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Translation failed. Please retry.',
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive')
+            })
         })
     })
 })

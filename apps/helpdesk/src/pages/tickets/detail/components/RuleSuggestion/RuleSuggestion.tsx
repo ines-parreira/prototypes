@@ -9,6 +9,7 @@ import { Tooltip } from 'reactstrap'
 import {
     LegacyButton as Button,
     LegacyLoadingSpinner as LoadingSpinner,
+    toast,
 } from '@gorgias/axiom'
 
 import {
@@ -35,8 +36,6 @@ import { getEmailChannels } from 'state/integrations/selectors'
 import { sendTicketMessage } from 'state/newMessage/actions'
 import type { NewMessage } from 'state/newMessage/types'
 import { transformToInternalNote } from 'state/newMessage/utils'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import type { ManagedRule } from 'state/rules/types'
 import {
     getPreferredChannel,
@@ -200,12 +199,8 @@ export default function RuleSuggestion({ ticket, isCollapsed }: Props) {
             logEvent(SegmentEvent.InTicketSuggestionForDemoRequested, {
                 adminId: accountOwnerId,
             })
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Success,
-                    message:
-                        'We notified your account admin of your interest in an AI Agent demo.',
-                }),
+            toast.success(
+                'We notified your account admin of your interest in an AI Agent demo.',
             )
         }
         handleDismiss(false)

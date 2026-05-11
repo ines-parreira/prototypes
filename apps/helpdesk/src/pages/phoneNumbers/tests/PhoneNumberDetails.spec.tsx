@@ -1,16 +1,31 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { render } from '@repo/testing'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import { toast } from '@gorgias/axiom'
+
 import { PhoneUseCase } from 'business/twilio'
 import { phoneNumbers } from 'fixtures/newPhoneNumber'
 import { IntegrationType } from 'models/integration/types'
+import {
+    deleteNewPhoneNumber,
+    updateNewPhoneNumber,
+} from 'models/phoneNumber/resources'
 import type { PhoneNumber } from 'models/phoneNumber/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
 import { PhoneNumberDetails } from '../PhoneNumberDetails'
+
+jest.mock('models/phoneNumber/resources')
+const mockDelete = deleteNewPhoneNumber as jest.MockedFunction<
+    typeof deleteNewPhoneNumber
+>
+const mockUpdate = updateNewPhoneNumber as jest.MockedFunction<
+    typeof updateNewPhoneNumber
+>
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
@@ -32,6 +47,10 @@ const store = mockStore({
 describe('<PhoneNumberDetails/>', () => {
     beforeEach(() => {
         mockUseFlag.mockReturnValue(false)
+    })
+
+    afterEach(() => {
+        toast.dismiss()
     })
 
     describe('render()', () => {
@@ -220,6 +239,84 @@ describe('<PhoneNumberDetails/>', () => {
             )
 
             expect(getByLabelText('Use case')).toHaveValue('Marketing')
+        })
+    })
+
+    describe('Save changes', () => {
+        it('shows a success toast when the update succeeds', async () => {
+            mockUpdate.mockResolvedValueOnce(phoneNumbers[0] as never)
+            const { getByText } = render(
+                <Provider store={store}>
+                    <PhoneNumberDetails phoneNumber={phoneNumbers[0]} />
+                </Provider>,
+            )
+
+            fireEvent.click(getByText('Save changes'))
+
+            const toastEl = await screen.findByRole('status', {
+                name: 'Successfully updated phone number',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
+        })
+
+        it('shows an error toast when the update fails', async () => {
+            mockUpdate.mockRejectedValueOnce(new Error('boom'))
+            const { getByText } = render(
+                <Provider store={store}>
+                    <PhoneNumberDetails phoneNumber={phoneNumbers[0]} />
+                </Provider>,
+            )
+
+            fireEvent.click(getByText('Save changes'))
+
+            const toastEl = await screen.findByRole('status', {
+                name: 'Failed to update phone number',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
+        })
+    })
+
+    describe('Delete number', () => {
+        it('shows a success toast when the deletion succeeds', async () => {
+            mockDelete.mockResolvedValueOnce({} as never)
+            const { getByText } = render(
+                <Provider store={store}>
+                    <PhoneNumberDetails phoneNumber={phoneNumbers[0]} />
+                </Provider>,
+            )
+
+            fireEvent.click(getByText('Delete number'))
+            await waitFor(() => {
+                expect(getByText('Confirm')).toBeInTheDocument()
+            })
+            fireEvent.click(getByText('Confirm'))
+
+            const toastEl = await screen.findByRole('status', {
+                name: 'Successfully deleted phone number',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
+        })
+
+        it('shows an error toast when the deletion fails', async () => {
+            mockDelete.mockRejectedValueOnce({
+                response: { data: { error: { msg: 'API delete error' } } },
+            })
+            const { getByText } = render(
+                <Provider store={store}>
+                    <PhoneNumberDetails phoneNumber={phoneNumbers[0]} />
+                </Provider>,
+            )
+
+            fireEvent.click(getByText('Delete number'))
+            await waitFor(() => {
+                expect(getByText('Confirm')).toBeInTheDocument()
+            })
+            fireEvent.click(getByText('Confirm'))
+
+            const toastEl = await screen.findByRole('status', {
+                name: 'API delete error',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
     })
 })

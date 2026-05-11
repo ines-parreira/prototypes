@@ -8,9 +8,12 @@ import copy from 'copy-to-clipboard'
 import type { Map } from 'immutable'
 
 import type { LegacyColorType as ColorType } from '@gorgias/axiom'
-import { LegacyBadge as Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import {
+    LegacyBadge as Badge,
+    toast,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { getBigCommerceDraftOrderUrl } from 'models/integration/resources/bigcommerce'
 import { BigCommerceActionType } from 'models/integration/types/index'
@@ -22,9 +25,6 @@ import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCustomersState } from 'state/customers/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
-import type { StoreDispatch } from 'state/types'
 import { humanizeString } from 'utils'
 import type { CardCustomization } from 'Widgets/modules/Template/modules/Card/types'
 import StaticField from 'Widgets/modules/Template/modules/Field/components/StaticField'
@@ -48,7 +48,6 @@ type GenerateDraftOrderUrlProps = {
     setDraftOrderUrl: (draftOrderUrl: string) => void
     setIsRefreshCooldown: (state: boolean) => void
     setIsLoadingGenerate: (state: boolean) => void
-    dispatch: StoreDispatch
 }
 
 async function generateDraftOrderUrl({
@@ -58,7 +57,6 @@ async function generateDraftOrderUrl({
     setDraftOrderUrl,
     setIsRefreshCooldown,
     setIsLoadingGenerate,
-    dispatch,
 }: GenerateDraftOrderUrlProps) {
     setIsLoadingGenerate(true)
     const draftOrderUrl = await getBigCommerceDraftOrderUrl({
@@ -67,12 +65,7 @@ async function generateDraftOrderUrl({
         customerId,
     })
     setIsLoadingGenerate(false)
-    void dispatch(
-        notify({
-            status: NotificationStatus.Success,
-            title: 'New URL has been successfully generated.',
-        }),
-    )
+    toast.success('New URL has been successfully generated.')
     setDraftOrderUrl(draftOrderUrl)
     copy(draftOrderUrl)
     setIsRefreshCooldown(true)
@@ -118,7 +111,6 @@ type AfterTitleProps = {
 }
 
 export function AfterTitle({ isEditing, source }: AfterTitleProps) {
-    const dispatch = useAppDispatch()
     const { integrationId } = useContext(IntegrationContext)
     const bigcommerceRefundOrderAccessFlags = useFlag(
         FeatureFlagKey.BigCommerceRefundOrder,
@@ -233,11 +225,8 @@ export function AfterTitle({ isEditing, source }: AfterTitleProps) {
                                 tooltipMessage="Copy URL to clipboard"
                                 onClick={() => {
                                     copy(draftOrderUrl)
-                                    void dispatch(
-                                        notify({
-                                            status: NotificationStatus.Success,
-                                            title: 'Order URL copied to clipboard.',
-                                        }),
+                                    toast.success(
+                                        'Order URL copied to clipboard.',
                                     )
                                 }}
                             />
@@ -274,7 +263,6 @@ export function AfterTitle({ isEditing, source }: AfterTitleProps) {
                                             setDraftOrderUrl,
                                             setIsRefreshCooldown,
                                             setIsLoadingGenerate,
-                                            dispatch,
                                         })
                                     }
                                 />

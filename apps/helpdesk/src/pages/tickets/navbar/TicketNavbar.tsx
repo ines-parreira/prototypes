@@ -13,7 +13,7 @@ import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 
-import { Box, Separator } from '@gorgias/axiom'
+import { Box, Separator, toast } from '@gorgias/axiom'
 
 import { ActiveContent, Navbar } from 'common/navigation'
 import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
@@ -61,8 +61,6 @@ import {
     sectionUpdated,
 } from 'state/entities/sections/actions'
 import { viewsFetched, viewUpdated } from 'state/entities/views/actions'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import type { RootState } from 'state/types'
 import {
     optimisticAccountSettingsReset,
@@ -115,7 +113,6 @@ export function TicketNavbarContainer({
     activeViewIdSet,
     currentUser,
     fetchViewsSuccess,
-    notify,
     optimisticAccountSettingsReset,
     optimisticUserSettingsReset,
     sectionCreated,
@@ -176,10 +173,7 @@ export function TicketNavbarContainer({
                 )
                 viewsFetched(result)
             } catch {
-                void notify({
-                    message: 'Failed to fetch views',
-                    status: NotificationStatus.Error,
-                })
+                toast.error('Failed to fetch views')
             }
         })()
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -191,10 +185,7 @@ export function TicketNavbarContainer({
                 const res = await fetchSections()
                 sectionsFetched(res.data)
             } catch {
-                void notify({
-                    message: 'Failed to fetch sections',
-                    status: NotificationStatus.Error,
-                })
+                toast.error('Failed to fetch sections')
             }
         })()
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -325,12 +316,9 @@ export function TicketNavbarContainer({
                 }
                 handleSectionModalClose()
             } catch {
-                void notify({
-                    message: `Failed to ${
-                        isNewSection ? 'create' : 'update'
-                    } section`,
-                    status: NotificationStatus.Error,
-                })
+                toast.error(
+                    `Failed to ${isNewSection ? 'create' : 'update'} section`,
+                )
             }
         }, [sectionForm, isNewSection])
     const [{ loading: isDeleting }, handleSectionDelete] =
@@ -344,10 +332,7 @@ export function TicketNavbarContainer({
                 sectionDeleted(sectionForm.id)
                 handleDeleteSectionModalClose()
             } catch {
-                void notify({
-                    message: 'Failed to delete the section',
-                    status: NotificationStatus.Error,
-                })
+                toast.error('Failed to delete the section')
             }
         }, [sectionForm])
     const { syncViewQueriesForSectionMove, syncViewsOrderingQueryCache } =
@@ -375,10 +360,7 @@ export function TicketNavbarContainer({
                     viewUpdated(res)
                     syncViewQueriesForSectionMove(currentElement, nextElement)
                 } catch {
-                    void notify({
-                        message: 'Failed to add the view to the section',
-                        status: NotificationStatus.Error,
-                    })
+                    toast.error('Failed to add the view to the section')
                     viewUpdated(currentElement.data)
                     setMovingItem(false)
                     return
@@ -419,10 +401,7 @@ export function TicketNavbarContainer({
                     )
                 }
             } catch {
-                void notify({
-                    message: 'Failed to change order',
-                    status: NotificationStatus.Error,
-                })
+                toast.error('Failed to change order')
             } finally {
                 isPrivateSetting
                     ? optimisticUserSettingsReset()
@@ -742,7 +721,6 @@ const connector = connect(
     {
         activeViewIdSet,
         fetchViewsSuccess,
-        notify,
         optimisticAccountSettingsReset,
         optimisticUserSettingsReset,
         sectionCreated,

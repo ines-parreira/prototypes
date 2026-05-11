@@ -2,11 +2,13 @@ import React from 'react'
 
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
+import { toast } from '@gorgias/axiom'
 
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import {
@@ -19,8 +21,6 @@ import type {
 } from 'models/aiAgentFeedback/types'
 import type { TicketMessage } from 'models/ticket/types'
 import { setAgentFeedbackMessageStatus } from 'state/agents/actions'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import type { ResourceSection } from '../../components/AIAgentFeedbackBar/types'
@@ -33,10 +33,6 @@ jest.mock('models/aiAgentFeedback/queries')
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
-jest.mock('state/notifications/actions')
-jest.mock('state/notifications/actions')
-jest.mock('state/agents/actions')
-jest.mock('hooks/useAppDispatch')
 jest.mock('state/agents/actions', () => ({
     setAgentFeedbackMessageStatus: jest.fn(),
 }))
@@ -115,6 +111,10 @@ describe('useAIAgentSendFeedback', () => {
         mockedSetAgentFeedbackMessageStatus.mockImplementation(
             mockSetAgentFeedbackMessageStatus,
         )
+    })
+
+    afterEach(() => {
+        toast.dismiss()
     })
 
     it('should optimistically update only the targeted message feedback on mutate', async () => {
@@ -254,10 +254,12 @@ describe('useAIAgentSendFeedback', () => {
 
         expect(setQueryDataMock).toHaveBeenCalled()
 
-        expect(notify).toHaveBeenCalledWith({
-            message:
-                'There was an error sending the feedback. Please try again.',
-            status: NotificationStatus.Error,
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'There was an error sending the feedback. Please try again.',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 
@@ -365,10 +367,12 @@ describe('useAIAgentSendFeedback', () => {
             [2, deletePayload],
         )
 
-        expect(notify).toHaveBeenCalledWith({
-            message:
-                'There was an error deleting the feedback. Please try again.',
-            status: NotificationStatus.Error,
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'There was an error deleting the feedback. Please try again.',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 

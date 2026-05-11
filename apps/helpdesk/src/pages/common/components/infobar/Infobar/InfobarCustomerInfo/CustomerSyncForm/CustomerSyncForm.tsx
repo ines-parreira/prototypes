@@ -6,6 +6,7 @@ import type { Map } from 'immutable'
 import {
     LegacyButton as Button,
     LegacyTextField as TextField,
+    toast,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 import {
@@ -14,7 +15,6 @@ import {
     useScheduleShopifyUpdateCustomerAction,
 } from '@gorgias/helpdesk-queries'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import { IntegrationType } from 'models/integration/constants'
 import CustomerDeliveryInformation from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerDeliveryInformation/CustomerDeliveryInformation'
 import Modal from 'pages/common/components/modal/Modal'
@@ -24,13 +24,13 @@ import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ShopifyStoreSelect from 'pages/common/components/ShopifyStoreSelect/ShopifyStoreSelect'
 import CheckBox from 'pages/common/forms/CheckBox'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { selectNormalizedIntegrations } from '../../../../ShopifyStoreSelect/helpers'
 import { useCustomerSyncForm } from './useCustomerSyncForm'
 
 import css from './CustomerSyncForm.less'
+
+const CUSTOMER_SYNC_TOAST_ID = 'customer-sync-to-shopify'
 
 interface Props {
     activeCustomer: Map<string, any>
@@ -43,7 +43,6 @@ export default function CustomerSyncForm({
     isCustomerSyncFormOpen,
     setIsCustomerSyncFormOpen,
 }: Props) {
-    const dispatch = useAppDispatch()
     const {
         mutate: createCustomer,
         isLoading: isCreateCustomerLoading,
@@ -172,16 +171,12 @@ export default function CustomerSyncForm({
 
     useEffect(() => {
         if (isUpdateCustomerLoading || isCreateCustomerLoading) {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Loading,
-                    dismissAfter: 0,
-                    closeOnNext: true,
-                    message: 'Syncing profile to Shopify...',
-                }),
-            )
+            toast.info('Syncing profile to Shopify...', {
+                id: CUSTOMER_SYNC_TOAST_ID,
+                duration: Infinity,
+            })
         }
-    }, [isUpdateCustomerLoading, isCreateCustomerLoading, dispatch])
+    }, [isUpdateCustomerLoading, isCreateCustomerLoading])
 
     useEffect(() => {
         if (isUpdateCustomerError) {
@@ -190,16 +185,12 @@ export default function CustomerSyncForm({
                 updateCustomerError?.message !== undefined
                     ? updateCustomerError.message
                     : 'There was an error syncing the customer'
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    dismissAfter: 0,
-                    closeOnNext: true,
-                    message: message,
-                }),
-            )
+            toast.error(message, {
+                id: CUSTOMER_SYNC_TOAST_ID,
+                duration: Infinity,
+            })
         }
-    }, [isUpdateCustomerError, updateCustomerError, dispatch])
+    }, [isUpdateCustomerError, updateCustomerError])
 
     useEffect(() => {
         if (isCreateCustomerError) {
@@ -208,16 +199,12 @@ export default function CustomerSyncForm({
                 createCustomerError?.message !== undefined
                     ? createCustomerError.message
                     : 'There was an error syncing the customer'
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    dismissAfter: 0,
-                    closeOnNext: true,
-                    message: message,
-                }),
-            )
+            toast.error(message, {
+                id: CUSTOMER_SYNC_TOAST_ID,
+                duration: Infinity,
+            })
         }
-    }, [isCreateCustomerError, createCustomerError, dispatch])
+    }, [isCreateCustomerError, createCustomerError])
 
     return (
         <Modal

@@ -6,9 +6,9 @@ import type { AxiosError } from 'axios'
 import classnames from 'classnames'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
-import type { ConnectedProps } from 'react-redux'
-import { connect } from 'react-redux'
 import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap'
+
+import { toast } from '@gorgias/axiom'
 
 import PageHeader from 'pages/common/components/PageHeader'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
@@ -17,20 +17,16 @@ import type { Option } from 'pages/common/forms/SelectField/types'
 import rawTypeOptions from 'pages/integrations/integration/components/phone/options/types.json'
 import { getCountryFromPhoneNumber } from 'pages/phoneNumbers/utils'
 import settingsCss from 'pages/settings/settings.less'
-import { notify as notifyAction } from 'state/notifications/actions'
-import type { Notification } from 'state/notifications/types'
-import { NotificationStatus } from 'state/notifications/types'
 
 const typeOptions: Option[] = rawTypeOptions
 
-type Props = ConnectedProps<typeof connector>
 type Errors = {
     phone_number?: string
     area_code?: string
     type?: string
 }
 
-const ImportPhoneNumber = ({ notify }: Props) => {
+const ImportPhoneNumber = () => {
     const [formData, setFormData] = useState<Map<any, any>>(fromJS({}))
     const [isLoading, setIsLoading] = useState(false)
 
@@ -51,24 +47,14 @@ const ImportPhoneNumber = ({ notify }: Props) => {
         try {
             await client.post(`/api/integrations/phone/tasks`, data)
 
-            const notification: Notification = {
-                status: NotificationStatus.Success,
-                message: 'Number ported successfully.',
-            }
-
-            void (await notify(notification))
+            toast.success('Number ported successfully.')
         } catch (error) {
             const { response } = error as AxiosError<{
                 error: { data?: Errors }
             }>
 
             if (response) {
-                const notification: Notification = {
-                    status: NotificationStatus.Error,
-                    message: JSON.stringify(response.data.error.data),
-                }
-
-                void (await notify(notification))
+                toast.error(JSON.stringify(response.data.error.data))
             } else {
                 throw error
             }
@@ -162,10 +148,4 @@ const ImportPhoneNumber = ({ notify }: Props) => {
     )
 }
 
-const mapDispatchToProps = {
-    notify: notifyAction,
-}
-
-const connector = connect(null, mapDispatchToProps)
-
-export default connector(ImportPhoneNumber)
+export default ImportPhoneNumber

@@ -1,18 +1,21 @@
 import { assumeMock, render, userEvent } from '@repo/testing'
-import { cleanup, fireEvent, screen, waitFor } from '@testing-library/react'
+import {
+    act,
+    cleanup,
+    fireEvent,
+    screen,
+    waitFor,
+} from '@testing-library/react'
 import { isValidPhoneNumber } from 'libphonenumber-js'
 
+import { toast } from '@gorgias/axiom'
 import { useGetCustomer, useUpdateCustomer } from '@gorgias/helpdesk-queries'
 import { LegacyChannelSlug } from '@gorgias/helpdesk-types'
-
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import NewPhoneNumber from '../NewPhoneNumber'
 
 jest.mock('@gorgias/helpdesk-queries')
 jest.mock('libphonenumber-js')
-jest.mock('state/notifications/actions')
 
 jest.mock(
     'pages/common/forms/PhoneNumberInput/PhoneNumberInput',
@@ -37,12 +40,6 @@ jest.mock(
 const useGetCustomerMock = assumeMock(useGetCustomer)
 const updateCustomerMock = assumeMock(useUpdateCustomer)
 const isValidPhoneNumberMock = assumeMock(isValidPhoneNumber)
-const notifyMock = assumeMock(notify)
-
-notifyMock.mockReturnValue({
-    type: 'NOTIFY',
-    payload: {},
-} as any)
 
 describe('NewPhoneNumber', () => {
     const customerId = 1
@@ -66,7 +63,10 @@ describe('NewPhoneNumber', () => {
         } as any)
     })
 
-    afterEach(cleanup)
+    afterEach(() => {
+        toast.dismiss()
+        cleanup()
+    })
 
     it('should open the modal when "Add phone number" link is clicked', () => {
         renderComponent()
@@ -155,10 +155,11 @@ describe('NewPhoneNumber', () => {
         )
 
         await waitFor(() => {
-            expect(notifyMock).toHaveBeenCalledWith({
-                message: 'Phone number added to customer',
-                status: NotificationStatus.Success,
-            })
+            expect(
+                screen.getByRole('status', {
+                    name: 'Phone number added to customer',
+                }),
+            ).toHaveAttribute('data-intent', 'success')
         })
     })
 
@@ -187,10 +188,13 @@ describe('NewPhoneNumber', () => {
         )
 
         await waitFor(() => {
-            expect(notifyMock).toHaveBeenCalledWith({
-                message: 'error',
-                status: NotificationStatus.Error,
-            })
+            expect(
+                screen.getByRole('status', { name: 'error' }),
+            ).toHaveAttribute('data-intent', 'destructive')
+        })
+
+        act(() => {
+            toast.dismiss()
         })
 
         updateCustomerMock.mock.calls[0][0]?.mutation?.onError!(
@@ -204,9 +208,12 @@ describe('NewPhoneNumber', () => {
             {} as any,
             undefined,
         )
-        expect(notifyMock).toHaveBeenCalledWith({
-            message: 'Failed to update customer',
-            status: NotificationStatus.Error,
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Failed to update customer',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 

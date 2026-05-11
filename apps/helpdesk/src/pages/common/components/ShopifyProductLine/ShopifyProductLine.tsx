@@ -6,14 +6,13 @@ import classnames from 'classnames'
 import type { Map } from 'immutable'
 import { Input, ListGroup, ListGroupItem } from 'reactstrap'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
 import {
     INTEGRATION_DATA_ITEM_TYPE_PRODUCT,
     PRODUCTS_PER_PAGE,
 } from 'constants/integration'
 import type { Product, Variant } from 'constants/integrations/types/shopify'
-import useAppDispatch from 'hooks/useAppDispatch'
 import { IntegrationType } from 'models/integration/constants'
 import type {
     IntegrationDataItem,
@@ -29,8 +28,6 @@ import type { ProductRecommendationAttachment } from 'pages/convert/campaigns/ty
 import { ConvertShopifyProductLineHeader } from 'pages/convert/common/components/ConvertShopifyProductLineHeader/ConvertShopifyProductLineHeader'
 import GorgiasApi from 'services/gorgiasApi'
 import { getIconFromType } from 'state/integrations/helpers'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { getIconFromUrl } from 'utils'
 
 import css from './ShopifyProductLine.less'
@@ -132,7 +129,6 @@ export default function ShopifyProductLine({
 }: OwnProps) {
     const gorgiasApi = new GorgiasApi()
     const shopifyPlaceholderImage = 'integrations/shopify-placeholder.png'
-    const dispatch = useAppDispatch()
     const [filter, setFilter] = useState('')
     const [onOpen, setOnOpen] = useState(true)
     const [isLoading, setIsLoading] = useState(false)
@@ -164,12 +160,7 @@ export default function ShopifyProductLine({
             )
             setSubResults([])
         } catch {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: "Couldn't fetch Shopify products",
-                }),
-            )
+            toast.error("Couldn't fetch Shopify products")
         } finally {
             setIsLoading(false)
         }

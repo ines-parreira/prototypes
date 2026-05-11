@@ -2,6 +2,7 @@ import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 
+import { toast } from '@gorgias/axiom'
 import {
     useListCustomerIntegrationsWithChannelDefault,
     useScheduleShopifyCreateNewCustomerAction,
@@ -10,16 +11,11 @@ import {
 
 import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import CustomerSyncForm from '../CustomerSyncForm/CustomerSyncForm'
 
 jest.mock('hooks/useAppDispatch')
 const mockUseAppDispatch = assumeMock(useAppDispatch)
-
-jest.mock('state/notifications/actions')
-const mockNotify = assumeMock(notify)
 
 jest.mock('@gorgias/helpdesk-queries', () => ({
     useListCustomerIntegrationsWithChannelDefault: jest.fn(),
@@ -184,6 +180,10 @@ describe('CustomerSyncForm', () => {
         })
     })
 
+    afterEach(() => {
+        toast.dismiss()
+    })
+
     it('renders the form correctly', () => {
         renderCustomerSyncForm()
 
@@ -332,6 +332,8 @@ describe('CustomerSyncForm', () => {
             message: 'Custom error message',
         }
 
+        const { rerender } = renderCustomerSyncForm()
+
         ;(
             useScheduleShopifyCreateNewCustomerAction as jest.Mock
         ).mockReturnValue(
@@ -340,16 +342,18 @@ describe('CustomerSyncForm', () => {
                 error: mockCreateCustomerError,
             }),
         )
-
-        renderCustomerSyncForm()
+        rerender(
+            <CustomerSyncForm
+                activeCustomer={activeCustomer}
+                isCustomerSyncFormOpen
+                setIsCustomerSyncFormOpen={jest.fn()}
+            />,
+        )
 
         await waitFor(() => {
-            expect(mockNotify).toHaveBeenCalledWith({
-                status: NotificationStatus.Error,
-                dismissAfter: 0,
-                closeOnNext: true,
-                message: 'Custom error message',
-            })
+            expect(
+                screen.getByRole('status', { name: 'Custom error message' }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 
@@ -359,62 +363,78 @@ describe('CustomerSyncForm', () => {
             message: 'Custom error message',
         }
 
+        const { rerender } = renderCustomerSyncForm()
+
         ;(useScheduleShopifyUpdateCustomerAction as jest.Mock).mockReturnValue(
             createMockMutation({
                 isError: true,
                 error: mockUpdateCustomerError,
             }),
         )
-
-        renderCustomerSyncForm()
+        rerender(
+            <CustomerSyncForm
+                activeCustomer={activeCustomer}
+                isCustomerSyncFormOpen
+                setIsCustomerSyncFormOpen={jest.fn()}
+            />,
+        )
 
         await waitFor(() => {
-            expect(mockNotify).toHaveBeenCalledWith({
-                status: NotificationStatus.Error,
-                dismissAfter: 0,
-                closeOnNext: true,
-                message: 'Custom error message',
-            })
+            expect(
+                screen.getByRole('status', { name: 'Custom error message' }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 
     it('dispatches loading notification when create customer sync is in progress', async () => {
+        const { rerender } = renderCustomerSyncForm()
+
         ;(
             useScheduleShopifyCreateNewCustomerAction as jest.Mock
         ).mockReturnValue(createMockMutation({ isLoading: true }))
         ;(useScheduleShopifyUpdateCustomerAction as jest.Mock).mockReturnValue(
             createMockMutation(),
         )
-
-        renderCustomerSyncForm()
+        rerender(
+            <CustomerSyncForm
+                activeCustomer={activeCustomer}
+                isCustomerSyncFormOpen
+                setIsCustomerSyncFormOpen={jest.fn()}
+            />,
+        )
 
         await waitFor(() => {
-            expect(mockNotify).toHaveBeenCalledWith({
-                status: NotificationStatus.Loading,
-                dismissAfter: 0,
-                closeOnNext: true,
-                message: 'Syncing profile to Shopify...',
-            })
+            expect(
+                screen.getByRole('status', {
+                    name: 'Syncing profile to Shopify...',
+                }),
+            ).toHaveAttribute('data-intent', 'info')
         })
     })
 
     it('dispatches loading notification when update customer sync is in progress', async () => {
+        const { rerender } = renderCustomerSyncForm()
+
         ;(
             useScheduleShopifyCreateNewCustomerAction as jest.Mock
         ).mockReturnValue(createMockMutation())
         ;(useScheduleShopifyUpdateCustomerAction as jest.Mock).mockReturnValue(
             createMockMutation({ isLoading: true }),
         )
-
-        renderCustomerSyncForm()
+        rerender(
+            <CustomerSyncForm
+                activeCustomer={activeCustomer}
+                isCustomerSyncFormOpen
+                setIsCustomerSyncFormOpen={jest.fn()}
+            />,
+        )
 
         await waitFor(() => {
-            expect(mockNotify).toHaveBeenCalledWith({
-                status: NotificationStatus.Loading,
-                dismissAfter: 0,
-                closeOnNext: true,
-                message: 'Syncing profile to Shopify...',
-            })
+            expect(
+                screen.getByRole('status', {
+                    name: 'Syncing profile to Shopify...',
+                }),
+            ).toHaveAttribute('data-intent', 'info')
         })
     })
 

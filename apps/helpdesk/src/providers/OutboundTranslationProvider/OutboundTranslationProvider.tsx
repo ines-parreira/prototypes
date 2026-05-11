@@ -11,6 +11,7 @@ import {
 import type { ContentState } from 'draft-js'
 import { convertToRaw, EditorState } from 'draft-js'
 
+import { toast } from '@gorgias/axiom'
 import { isDomainEvent } from '@gorgias/events'
 import type { DomainEvent, DomainEventWithType } from '@gorgias/events'
 import { useChannel } from '@gorgias/realtime'
@@ -21,8 +22,6 @@ import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 import { setTranslationState } from 'state/newMessage/actions'
 import ticketReplyCache from 'state/newMessage/ticketReplyCache'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { contentStateFromTextOrHTML } from 'utils/editor'
 
 export type OutboundTranslationData = {
@@ -120,20 +119,16 @@ export const OutboundTranslationProvider = ({
                 })
                 timeoutRefs.current.delete(ticketId)
 
-                dispatch(
-                    notify({
-                        message:
-                            ticketId !== 'new'
-                                ? `Translation on ticket ${ticketId} timed out. Please retry.`
-                                : 'Translation timed out. Please retry.',
-                        status: NotificationStatus.Info,
-                    }),
+                toast.info(
+                    ticketId !== 'new'
+                        ? `Translation on ticket ${ticketId} timed out. Please retry.`
+                        : 'Translation timed out. Please retry.',
                 )
             }, PENDING_TRANSLATION_TIMEOUT)
 
             timeoutRefs.current.set(ticketId, timeout)
         },
-        [dispatch],
+        [],
     )
 
     const clearDraftTimeout = useCallback((ticketId: string) => {
@@ -243,14 +238,10 @@ export const OutboundTranslationProvider = ({
 
                     if (failedTicketId) {
                         clearDraftTimeout(failedTicketId as string)
-                        dispatch(
-                            notify({
-                                message:
-                                    failedTicketId !== 'new'
-                                        ? `Translation on ticket ${failedTicketId} failed. Please retry.`
-                                        : 'Translation failed. Please retry.',
-                                status: NotificationStatus.Error,
-                            }),
+                        toast.error(
+                            failedTicketId !== 'new'
+                                ? `Translation on ticket ${failedTicketId} failed. Please retry.`
+                                : 'Translation failed. Please retry.',
                         )
                     }
 
@@ -258,7 +249,7 @@ export const OutboundTranslationProvider = ({
                 })
             }
         },
-        [dispatch, clearDraftTimeout],
+        [clearDraftTimeout],
     )
 
     const handleChannelEvent = useCallback(

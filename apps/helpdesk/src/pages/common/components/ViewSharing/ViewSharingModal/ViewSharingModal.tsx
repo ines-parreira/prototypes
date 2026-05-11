@@ -11,7 +11,7 @@ import {
     UncontrolledTooltip,
 } from 'reactstrap'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -20,8 +20,6 @@ import type { View } from 'models/view/types'
 import { ViewVisibility } from 'models/view/types'
 import GorgiasApi from 'services/gorgiasApi'
 import { viewUpdated } from 'state/entities/views/actions'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { syncActiveViewSharing } from 'state/views/actions'
 
 import ViewSharingModalBody from './ViewSharingModalBody'
@@ -61,12 +59,7 @@ function ViewSharingModal({ view, isOpen, toggle }: Props) {
     const disabled = isLoading || isSaving || shouldSelectSomething
 
     const onSaveSuccess = (data: View) => {
-        void dispatch(
-            notify({
-                status: NotificationStatus.Success,
-                message: "View's sharing options saved",
-            }),
-        )
+        toast.success("View's sharing options saved")
         dispatch(viewUpdated(data))
         dispatch(syncActiveViewSharing(data))
 

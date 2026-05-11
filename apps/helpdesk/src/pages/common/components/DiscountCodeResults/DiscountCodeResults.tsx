@@ -9,11 +9,10 @@ import type { List, Map } from 'immutable'
 import { Link } from 'react-router-dom'
 import { Input, ListGroup, ListGroupItem, Modal } from 'reactstrap'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
 import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useModalManager } from 'hooks/useModalManager'
 import {
@@ -25,8 +24,6 @@ import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import DiscountCodeCreateModal from 'pages/common/components/DiscountCodeCreateModal/DiscountCodeCreateModal'
 import Loader from 'pages/common/components/Loader/Loader'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { getAllCustomerIdsFromTicket } from 'state/ticket/helpers'
 import { getTicketState } from 'state/ticket/selectors'
 import { toJS } from 'utils'
@@ -44,7 +41,6 @@ export default function DiscountCodeResults({
     onResetStoreChoice,
     onDiscountSelected,
 }: OwnProps) {
-    const dispatch = useAppDispatch()
     const [filter, setFilter] = useState('')
     const [discountCodes, setDiscountResults] = useState<DiscountCode[]>([])
     const currentAccount = useAppSelector(getCurrentAccountState)
@@ -78,12 +74,7 @@ export default function DiscountCodeResults({
                     )
                 setDiscountResults(response.data.data)
             } catch {
-                void dispatch(
-                    notify({
-                        message: "Couldn't fetch discount codes",
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error("Couldn't fetch discount codes")
             }
         }, [hasShopifyDiscountScope, filter])
 

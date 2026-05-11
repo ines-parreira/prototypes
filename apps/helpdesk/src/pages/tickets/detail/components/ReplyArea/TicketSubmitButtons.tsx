@@ -15,6 +15,7 @@ import _sample from 'lodash/sample'
 
 import {
     LegacyButton as Button,
+    toast,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 import type { Macro } from '@gorgias/helpdesk-types'
@@ -36,8 +37,6 @@ import {
     canSend as getCanSend,
     hasContent as getHasContent,
 } from 'state/newMessage/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import {
     getAppliedMacro,
     hasContentlessAction as getHasContentlessAction,
@@ -124,12 +123,8 @@ export function TicketSubmitButtons({ submit }: Props) {
             )
 
             if (!ticket.get('id') || hasErrors) {
-                dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message:
-                            'This ticket cannot be closed. Please fill the required fields.',
-                    }),
+                toast.error(
+                    'This ticket cannot be closed. Please fill the required fields.',
                 )
                 return
             }
@@ -143,7 +138,6 @@ export function TicketSubmitButtons({ submit }: Props) {
         ticket,
         submit,
         validateTicketFields,
-        dispatch,
         appliedMacro,
     ])
 

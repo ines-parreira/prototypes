@@ -2,7 +2,7 @@ import type { ComponentProps, ReactNode } from 'react'
 
 import client from '@repo/api-resources'
 import { render } from '@repo/testing'
-import { act, fireEvent, waitFor } from '@testing-library/react'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
@@ -16,7 +16,6 @@ import type { View } from 'models/view/types'
 import { ViewType, ViewVisibility } from 'models/view/types'
 import { useSplitTicketViewSwitcher } from 'split-ticket-view-toggle'
 import { submitSettingSuccess } from 'state/currentUser/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import {
     optimisticAccountSettingsReset,
     optimisticUserSettingsReset,
@@ -217,7 +216,6 @@ describe('<TicketNavbar/>', () => {
             },
         }),
         fetchViewsSuccess: jest.fn(),
-        notify: jest.fn(),
         isLoading: false,
         sections: { [section.id]: section },
         sectionsFetched: jest.fn(),
@@ -343,16 +341,15 @@ describe('<TicketNavbar/>', () => {
         })
     })
 
-    it('should dispatch a notification when failing to fetch views', (done) => {
+    it('should dispatch a notification when failing to fetch views', async () => {
         mockedServer.onGet(/\/api\/views\/.*/).reply(503, { message: 'error' })
         renderNavbar()
 
-        setImmediate(() => {
-            expect(minProps.notify).toHaveBeenNthCalledWith(1, {
-                message: 'Failed to fetch views',
-                status: NotificationStatus.Error,
+        await waitFor(() => {
+            const toast = screen.getByRole('status', {
+                name: 'Failed to fetch views',
             })
-            done()
+            expect(toast).toHaveAttribute('data-intent', 'destructive')
         })
     })
 
@@ -505,6 +502,69 @@ describe('<TicketNavbar/>', () => {
         setImmediate(() => {
             expect(minProps.sectionDeleted).toHaveBeenNthCalledWith(1, 1)
             done()
+        })
+    })
+
+    it('shows an error toast when fetching sections fails', async () => {
+        mockedServer.onGet('/api/view-sections/').reply(503, {
+            message: 'error',
+        })
+
+        renderNavbar()
+
+        await waitFor(() => {
+            const toast = screen.getByRole('status', {
+                name: 'Failed to fetch sections',
+            })
+            expect(toast).toHaveAttribute('data-intent', 'destructive')
+        })
+    })
+
+    it('shows an error toast when creating a section fails', async () => {
+        mockedServer.onPost('/api/view-sections/').reply(500)
+
+        const { getByTestId } = renderNavbar()
+
+        fireEvent.click(getByTestId('NavbarBlock-Create section'))
+        fireEvent.click(getByTestId('SectionModal-submit'))
+
+        await waitFor(() => {
+            const toast = screen.getByRole('status', {
+                name: 'Failed to create section',
+            })
+            expect(toast).toHaveAttribute('data-intent', 'destructive')
+        })
+    })
+
+    it('shows an error toast when updating a section fails', async () => {
+        mockedServer.onPut(/\/api\/view-sections\/\d+\//).reply(500)
+
+        const { getByTestId } = renderNavbar()
+
+        fireEvent.click(getByTestId('TicketNavbarContent-rename'))
+        fireEvent.click(getByTestId('SectionModal-submit'))
+
+        await waitFor(() => {
+            const toast = screen.getByRole('status', {
+                name: 'Failed to update section',
+            })
+            expect(toast).toHaveAttribute('data-intent', 'destructive')
+        })
+    })
+
+    it('shows an error toast when deleting a section fails', async () => {
+        mockedServer.onDelete(/\/api\/view-sections\/\d+\//).reply(500)
+
+        const { getByTestId } = renderNavbar()
+
+        fireEvent.click(getByTestId('TicketNavbarContent-delete'))
+        fireEvent.click(getByTestId('DeleteModal-submit'))
+
+        await waitFor(() => {
+            const toast = screen.getByRole('status', {
+                name: 'Failed to delete the section',
+            })
+            expect(toast).toHaveAttribute('data-intent', 'destructive')
         })
     })
 

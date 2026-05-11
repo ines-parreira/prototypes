@@ -1,11 +1,11 @@
 import { useAsyncFn } from '@repo/hooks'
 import type { AxiosError } from 'axios'
 
+import { toast } from '@gorgias/axiom'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import { fetchEmailMigrationBannerStatus } from 'models/integration/resources/email'
 import { SET_EMAIL_PROVIDER_MIGRATION_BANNER_STATUS } from 'state/integrations/constants'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 export default function useMigrationBannerStatus() {
     const dispatch = useAppDispatch()
@@ -19,13 +19,8 @@ export default function useMigrationBannerStatus() {
             })
         } catch (error) {
             const { response } = error as AxiosError<{ error: { msg: string } }>
-            if (response?.status !== 403) {
-                void dispatch(
-                    notify({
-                        message: response?.data?.error?.msg,
-                        status: NotificationStatus.Error,
-                    }),
-                )
+            if (response?.status !== 403 && response?.data?.error?.msg) {
+                toast.error(response.data.error.msg)
             }
         }
     })

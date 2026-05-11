@@ -1,9 +1,10 @@
 import type React from 'react'
 
 import { renderHook } from '@repo/testing'
-import { act, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { ContentState, EditorState } from 'draft-js'
 
+import { toast } from '@gorgias/axiom'
 import type { DomainEvent } from '@gorgias/events'
 import { useChannel } from '@gorgias/realtime'
 
@@ -12,8 +13,6 @@ import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 import { setTranslationState } from 'state/newMessage/actions'
 import ticketReplyCache from 'state/newMessage/ticketReplyCache'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import {
     OutboundTranslationProvider,
@@ -34,9 +33,6 @@ const mockSetTranslationState = setTranslationState as unknown as jest.Mock
 
 jest.mock('state/newMessage/ticketReplyCache')
 const mockTicketReplyCache = ticketReplyCache
-
-jest.mock('state/notifications/actions')
-const mockNotify = notify as jest.Mock
 
 const cloudEventBase = {
     id: 'test-event-id',
@@ -96,6 +92,7 @@ describe('OutboundTranslationProvider', () => {
     })
 
     afterEach(() => {
+        toast.dismiss()
         jest.useRealTimers()
     })
 
@@ -220,10 +217,11 @@ describe('OutboundTranslationProvider', () => {
 
         await waitFor(() => {
             expect(result.current.ticketIdToDraftIdMap.has('123')).toBe(false)
-            expect(mockNotify).toHaveBeenCalledWith({
-                message: 'Translation on ticket 123 failed. Please retry.',
-                status: NotificationStatus.Error,
-            })
+            expect(
+                screen.getByRole('status', {
+                    name: 'Translation on ticket 123 failed. Please retry.',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 
@@ -299,8 +297,9 @@ describe('OutboundTranslationProvider', () => {
         })
     })
 
-    it('shows timeout notification and clears draft mapping after 60 seconds', async () => {
+    it('shows timeout notification and clears draft mapping after 60 seconds', () => {
         jest.useFakeTimers()
+        const toastInfoSpy = jest.spyOn(toast, 'info')
 
         const { result } = renderHook(() => useOutboundTranslationContext(), {
             wrapper,
@@ -316,14 +315,35 @@ describe('OutboundTranslationProvider', () => {
             jest.advanceTimersByTime(60_000)
         })
 
-        await waitFor(() => {
-            expect(result.current.ticketIdToDraftIdMap.has('456')).toBe(false)
+        expect(result.current.ticketIdToDraftIdMap.has('456')).toBe(false)
+        expect(toastInfoSpy).toHaveBeenCalledWith(
+            'Translation on ticket 456 timed out. Please retry.',
+        )
+
+        toastInfoSpy.mockRestore()
+    })
+
+    it('uses a generic timeout message when the ticketId is "new"', () => {
+        jest.useFakeTimers()
+        const toastInfoSpy = jest.spyOn(toast, 'info')
+
+        const { result } = renderHook(() => useOutboundTranslationContext(), {
+            wrapper,
         })
 
-        expect(mockNotify).toHaveBeenCalledWith({
-            message: 'Translation on ticket 456 timed out. Please retry.',
-            status: 'info',
+        act(() => {
+            result.current.registerTranslationDraft('new', 'draft-new')
         })
+
+        act(() => {
+            jest.advanceTimersByTime(60_000)
+        })
+
+        expect(toastInfoSpy).toHaveBeenCalledWith(
+            'Translation timed out. Please retry.',
+        )
+
+        toastInfoSpy.mockRestore()
     })
 
     it('clears timeout when translation completes successfully', () => {
@@ -356,7 +376,11 @@ describe('OutboundTranslationProvider', () => {
             jest.advanceTimersByTime(60_000)
         })
 
-        expect(mockNotify).not.toHaveBeenCalled()
+        expect(
+            screen.queryByRole('status', {
+                name: 'Translation on ticket 123 timed out. Please retry.',
+            }),
+        ).not.toBeInTheDocument()
     })
 
     it('useOutboundTranslationContext throws error when useOutboundTranslationContext is used outside provider', () => {

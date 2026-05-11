@@ -10,6 +10,7 @@ import { fromJS } from 'immutable'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 
+import { toast } from '@gorgias/axiom'
 import type { Macro } from '@gorgias/helpdesk-queries'
 
 import { clearMacroBeforeApply } from 'business/macro'
@@ -25,7 +26,6 @@ import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/stand
 import { getPreferences } from 'state/currentUser/selectors'
 import { getNewMessageType, isCacheAdded } from 'state/newMessage/selectors'
 import type { TopRankMacroState } from 'state/newMessage/ticketReplyCache'
-import { notify } from 'state/notifications/actions'
 import { applyMacro, clearAppliedMacro } from 'state/ticket/actions'
 import {
     DEPRECATED_getTicket,
@@ -463,14 +463,11 @@ export class TicketReplyArea extends Component<Props, State> {
     }
 
     handleApplyMacro = (macro: Macro) => {
-        const { applyMacro, currentTicket, newMessageType, notify } = this.props
+        const { applyMacro, currentTicket, newMessageType } = this.props
 
         const clearingResult = clearMacroBeforeApply(newMessageType, macro)
         if (clearingResult.notification) {
-            void notify({
-                message: clearingResult.notification.message,
-                status: clearingResult.notification.status,
-            })
+            toast.warning(clearingResult.notification.message)
         }
 
         void applyMacro(fromJS(clearingResult.macro), currentTicket.get('id'))
@@ -608,7 +605,6 @@ const connector = connect(
     {
         applyMacro,
         clearAppliedMacro,
-        notify,
     },
 )
 

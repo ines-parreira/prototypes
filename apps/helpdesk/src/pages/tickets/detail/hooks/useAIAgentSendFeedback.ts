@@ -3,6 +3,8 @@ import { useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import type { AxiosResponse } from 'axios'
 
+import { toast } from '@gorgias/axiom'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -17,8 +19,6 @@ import type {
 } from 'models/aiAgentFeedback/types'
 import type { TicketMessage } from 'models/ticket/types'
 import { setAgentFeedbackMessageStatus } from 'state/agents/actions'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { getAIAgentMessages } from 'state/ticket/selectors'
 
 import type { ResourceSection } from '../components/AIAgentFeedbackBar/types'
@@ -85,12 +85,8 @@ export const useAIAgentSendFeedback = () => {
                     )
                 }
 
-                void dispatch(
-                    notify({
-                        message:
-                            'There was an error sending the feedback. Please try again.',
-                        status: NotificationStatus.Error,
-                    }),
+                toast.error(
+                    'There was an error sending the feedback. Please try again.',
                 )
 
                 const [, , resourceSection] = variables
@@ -128,12 +124,8 @@ export const useAIAgentSendFeedback = () => {
                 })
             },
             onError: () => {
-                void dispatch(
-                    notify({
-                        message:
-                            'There was an error deleting the feedback. Please try again.',
-                        status: NotificationStatus.Error,
-                    }),
+                toast.error(
+                    'There was an error deleting the feedback. Please try again.',
                 )
             },
         })

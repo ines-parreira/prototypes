@@ -7,18 +7,14 @@ import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import _isArray from 'lodash/isArray'
 import _omit from 'lodash/omit'
-import type { ConnectedProps } from 'react-redux'
-import { connect } from 'react-redux'
 import { Input } from 'reactstrap'
 import type { InputType } from 'reactstrap/lib/Input'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
 import type { UploadType } from 'common/types'
 import { uploadFiles } from 'common/utils'
 import IconButton from 'pages/common/components/button/IconButton'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { getFileTooLargeError } from 'utils/file'
 
 import type { InputFieldProps } from './DEPRECATED_InputField'
@@ -39,8 +35,9 @@ export type Props = {
     accept?: string
     onClick?: () => void
     onUploadStatusChange?: (isUploading: boolean) => void
-} & ConnectedProps<typeof connector> &
-    InputFieldProps<string | string[]>
+} & Omit<InputFieldProps<string | string[]>, 'onChange'> & {
+        onChange?: (value: any) => void
+    }
 
 type State = {
     isUploading: boolean
@@ -98,10 +95,8 @@ export class FileFieldContainer extends DEPRECATED_InputField<Props> {
             this.props.maxSize &&
             this._getFilesSize(filesArray) > this.props.maxSize
         ) {
-            return this.props.notify({
-                status: NotificationStatus.Error,
-                message: getFileTooLargeError(this.props.maxSize),
-            })
+            toast.error(getFileTooLargeError(this.props.maxSize))
+            return
         }
 
         this._onUploadStatusChange(true)
@@ -115,11 +110,7 @@ export class FileFieldContainer extends DEPRECATED_InputField<Props> {
         })
 
         if (isSvg) {
-            void this.props.notify({
-                type: NotificationStatus.Error,
-                status: NotificationStatus.Warning,
-                message: 'Uploading SVGs is not allowed.',
-            })
+            toast.warning('Uploading SVGs is not allowed.')
             this._onUploadStatusChange(false)
             return
         }
@@ -161,17 +152,11 @@ export class FileFieldContainer extends DEPRECATED_InputField<Props> {
                 ).getIn(['data', 'error', 'msg'], DEFAULT_ERROR)
 
                 if ((error as AxiosError).response?.status === 413) {
-                    return this.props.notify({
-                        status: NotificationStatus.Error,
-                        message: getFileTooLargeError(this.props.maxSize!),
-                    })
+                    toast.error(getFileTooLargeError(this.props.maxSize!))
+                    return
                 }
 
-                void this.props.notify({
-                    type: NotificationStatus.Error,
-                    status: NotificationStatus.Error,
-                    message: errorMessage,
-                })
+                toast.error(errorMessage)
             },
         )
     }
@@ -252,7 +237,6 @@ export class FileFieldContainer extends DEPRECATED_InputField<Props> {
                         'placeholder',
                         'className',
                         'returnFiles',
-                        'notify',
                         'uploadType',
                         'isRemovable',
                         'maxSize',
@@ -264,6 +248,4 @@ export class FileFieldContainer extends DEPRECATED_InputField<Props> {
     }
 }
 
-const connector = connect(null, { notify }, null, { forwardRef: true })
-
-export default connector(FileFieldContainer)
+export default FileFieldContainer

@@ -43,9 +43,8 @@ import SpotlightModal, {
 } from 'pages/common/components/Spotlight/SpotlightModal'
 import type SpotlightTicketRow from 'pages/common/components/Spotlight/SpotlightTicketRow'
 import { history } from '@repo/routing'
+import { toast } from '@gorgias/axiom'
 import * as billingSelectors from 'state/billing/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import * as platform from '@repo/utils'
 
 const TICKET_SPOTLIGHT_ROW_TEST_ID = 'spotlight-ticket-row'
@@ -73,8 +72,6 @@ jest.mock('@repo/routing', () => ({
         listen: jest.fn(),
     },
 }))
-jest.mock('state/notifications/actions')
-
 jest.mock('pages/common/components/SkeletonLoader', () => () => (
     <div>SkeletonLoader</div>
 ))
@@ -267,6 +264,7 @@ describe('<SpotlightModal/>', () => {
     })
 
     afterEach(() => {
+        toast.dismiss()
         jest.useRealTimers()
         jest.clearAllTimers()
         jest.clearAllMocks()
@@ -1018,10 +1016,11 @@ describe('<SpotlightModal/>', () => {
 
         await act(flushPromises)
 
-        expect(notify).toHaveBeenCalledWith({
-            message: 'Failed to fetch search results',
-            status: NotificationStatus.Error,
-        })
+        expect(
+            screen.getByRole('status', {
+                name: 'Failed to fetch search results',
+            }),
+        ).toHaveAttribute('data-intent', 'destructive')
         await act(flushPromises)
 
         expect(mockSearchRank.registerResultsResponse).toHaveBeenCalledWith(
@@ -1077,7 +1076,11 @@ describe('<SpotlightModal/>', () => {
                     search: searchQuery,
                 }),
             )
-            expect(notify).not.toHaveBeenCalled()
+            expect(
+                screen.queryByRole('status', {
+                    name: 'Failed to fetch search results',
+                }),
+            ).not.toBeInTheDocument()
         })
     })
 

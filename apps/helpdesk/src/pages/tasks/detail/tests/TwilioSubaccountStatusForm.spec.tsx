@@ -2,20 +2,15 @@ import React from 'react'
 
 import client from '@repo/api-resources'
 import { render } from '@repo/testing'
-import { fireEvent, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
-import type { RootState, StoreDispatch } from 'state/types'
+import { toast } from '@gorgias/axiom'
 
 import TwilioSubaccountStatusForm, {
     TwilioSubaccountStatus,
 } from '../TwilioSubaccountStatusForm'
 
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
-const store = mockStore({})
 const mockedServer = new MockAdapter(client)
 
 const statusData = {
@@ -23,17 +18,22 @@ const statusData = {
     sub_account_sid: 'SID_123',
 }
 
-mockedServer.onGet('/api/integrations/phone/tasks').reply(200, {
-    data: statusData,
-})
-
 describe('<TwilioSubaccountStatusForm />', () => {
+    beforeEach(() => {
+        mockedServer.reset()
+        mockedServer.onGet('/api/integrations/phone/tasks').reply(200, {
+            data: statusData,
+        })
+    })
+
+    afterEach(() => {
+        toast.dismiss()
+    })
+
     describe('render()', () => {
         it('should render with the Twillio subaccount details', async () => {
             const { container, queryByText } = render(
-                <Provider store={store}>
-                    <TwilioSubaccountStatusForm />
-                </Provider>,
+                <TwilioSubaccountStatusForm />,
             )
 
             await waitFor(() => {
@@ -44,17 +44,20 @@ describe('<TwilioSubaccountStatusForm />', () => {
         })
 
         it('should allow updating the status', async () => {
+            mockedServer.onPost('/api/integrations/phone/tasks').reply(200, {})
             const { queryByText, getByText } = render(
-                <Provider store={store}>
-                    <TwilioSubaccountStatusForm />
-                </Provider>,
+                <TwilioSubaccountStatusForm />,
             )
 
             await waitFor(() => {
                 expect(queryByText('Twilio Subaccount SID')).not.toBe(null)
                 expect(queryByText('Status')).not.toBe(null)
-                fireEvent.click(getByText('Active'))
-                fireEvent.click(getByText('Save changes'))
+            })
+
+            fireEvent.click(getByText('Active'))
+            fireEvent.click(getByText('Save changes'))
+
+            await waitFor(() => {
                 expect(mockedServer.history.post.length).toBe(1)
                 expect(mockedServer.history.post[0].data).toBe(
                     JSON.stringify({
@@ -66,6 +69,65 @@ describe('<TwilioSubaccountStatusForm />', () => {
                     }),
                 )
             })
+
+            const toastEl = await screen.findByRole('status', {
+                name: 'Twilio Subaccount updated successfully.',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
+        })
+
+        it('shows an error toast when fetching subaccount data fails', async () => {
+            mockedServer.reset()
+            mockedServer.onGet('/api/integrations/phone/tasks').reply(500)
+
+            render(<TwilioSubaccountStatusForm />)
+
+            const toastEl = await screen.findByRole('status', {
+                name: 'Failed to fetch Twilio Subaccount data',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
+        })
+
+        it('shows an error toast when trying to set status to Closed', async () => {
+            mockedServer.reset()
+            mockedServer.onGet('/api/integrations/phone/tasks').reply(200, {
+                data: {
+                    status: TwilioSubaccountStatus.Active,
+                    sub_account_sid: 'SID_123',
+                },
+            })
+            const { getByText } = render(<TwilioSubaccountStatusForm />)
+
+            await waitFor(() => {
+                expect(getByText('Active')).toBeInTheDocument()
+            })
+
+            fireEvent.click(getByText('Closed'))
+            fireEvent.click(getByText('Save changes'))
+
+            const toastEl = await screen.findByRole('status', {
+                name: 'Cannot use this feature to Close a Subaccount',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
+        })
+
+        it('shows an error toast when the update request fails', async () => {
+            mockedServer.onPost('/api/integrations/phone/tasks').reply(500, {
+                error: { msg: 'server error' },
+            })
+            const { getByText } = render(<TwilioSubaccountStatusForm />)
+
+            await waitFor(() => {
+                expect(getByText('Suspended')).toBeInTheDocument()
+            })
+
+            fireEvent.click(getByText('Active'))
+            fireEvent.click(getByText('Save changes'))
+
+            const toastEl = await screen.findByRole('status', {
+                name: 'Failed to update subaccount status',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
     })
 })

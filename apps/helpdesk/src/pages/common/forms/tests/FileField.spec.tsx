@@ -2,7 +2,7 @@ import type { ComponentProps } from 'react'
 import React from 'react'
 
 import { render } from '@repo/testing'
-import { fireEvent } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import _noop from 'lodash/noop'
 import type { Input } from 'reactstrap'
 
@@ -47,11 +47,9 @@ jest.mock('reactstrap', () => {
 jest.mock('lodash/uniqueId', () => () => 'input-1')
 
 describe('<FileField/>', () => {
-    const mockNotify = jest.fn()
     const minProps = {
         value: 'value',
         onChange: _noop,
-        notify: mockNotify,
     }
 
     describe('handleRemove()', () => {
@@ -72,7 +70,7 @@ describe('<FileField/>', () => {
     })
 
     describe('handleOnChange()', () => {
-        it('should notify a warning when trying to upload a SVG', () => {
+        it('should notify a warning when trying to upload a SVG', async () => {
             const { getByLabelText, queryByText } = render(
                 <FileFieldContainer {...minProps} />,
             )
@@ -89,10 +87,15 @@ describe('<FileField/>', () => {
 
             expect(queryByText('Uploading...')).toBeNull()
             expect(uploadFiles).not.toBeCalled()
-            expect(mockNotify).toHaveBeenCalled()
+            await waitFor(() => {
+                const toast = screen.getByRole('status', {
+                    name: 'Uploading SVGs is not allowed.',
+                })
+                expect(toast).toHaveAttribute('data-intent', 'warning')
+            })
         })
 
-        it('should not allow uploading files larger than 10MB', () => {
+        it('should not allow uploading files larger than 10MB', async () => {
             const { getByLabelText } = render(
                 <FileFieldContainer {...minProps} maxSize={10 * 1000 * 1000} />,
             )
@@ -106,14 +109,15 @@ describe('<FileField/>', () => {
                 },
             })
 
-            expect(mockNotify).toBeCalledWith({
-                message:
-                    'Failed to upload files. Attached files must be smaller than 10MB.',
-                status: 'error',
+            await waitFor(() => {
+                const toast = screen.getByRole('status', {
+                    name: 'Failed to upload files. Attached files must be smaller than 10MB.',
+                })
+                expect(toast).toHaveAttribute('data-intent', 'destructive')
             })
         })
 
-        it('should not allow uploading files larger than 1kB', () => {
+        it('should not allow uploading files larger than 1kB', async () => {
             const { getByLabelText } = render(
                 <FileFieldContainer {...minProps} maxSize={1000} />,
             )
@@ -124,10 +128,65 @@ describe('<FileField/>', () => {
                 },
             })
 
-            expect(mockNotify).toBeCalledWith({
-                message:
-                    'Failed to upload files. Attached files must be smaller than 1kB.',
-                status: 'error',
+            await waitFor(() => {
+                const toast = screen.getByRole('status', {
+                    name: 'Failed to upload files. Attached files must be smaller than 1kB.',
+                })
+                expect(toast).toHaveAttribute('data-intent', 'destructive')
+            })
+        })
+
+        it('shows a destructive toast when uploadFiles rejects with HTTP 413', async () => {
+            const uploadFilesMock = uploadFiles as jest.Mock
+            uploadFilesMock.mockRejectedValueOnce({
+                response: {
+                    status: 413,
+                    data: { error: { msg: 'oversize' } },
+                },
+            })
+
+            const { getByLabelText } = render(
+                <FileFieldContainer {...minProps} maxSize={10 * 1000 * 1000} />,
+            )
+
+            fireEvent.change(getByLabelText('file input mock'), {
+                target: {
+                    files: [{ size: 10, type: 'image/png' }] as any,
+                },
+            })
+
+            await waitFor(() => {
+                const toast = screen.getByRole('status', {
+                    name: 'Failed to upload files. Attached files must be smaller than 10MB.',
+                })
+                expect(toast).toHaveAttribute('data-intent', 'destructive')
+            })
+        })
+
+        it('shows a destructive toast with the server error message when uploadFiles rejects with a non-413 status', async () => {
+            const uploadFilesMock = uploadFiles as jest.Mock
+            uploadFilesMock.mockRejectedValueOnce({
+                response: {
+                    status: 500,
+                    data: { error: { msg: 'Server upload error' } },
+                },
+            })
+
+            const { getByLabelText } = render(
+                <FileFieldContainer {...minProps} />,
+            )
+
+            fireEvent.change(getByLabelText('file input mock'), {
+                target: {
+                    files: [{ size: 10, type: 'image/png' }] as any,
+                },
+            })
+
+            await waitFor(() => {
+                const toast = screen.getByRole('status', {
+                    name: 'Server upload error',
+                })
+                expect(toast).toHaveAttribute('data-intent', 'destructive')
             })
         })
     })

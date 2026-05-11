@@ -4,14 +4,13 @@ import { useState } from 'react'
 import type { Call } from '@twilio/voice-sdk'
 import { get } from 'lodash'
 
-import { Button } from '@gorgias/axiom'
+import { Button, toast } from '@gorgias/axiom'
 import {
     useTransferCall,
     VoiceCallTransferType,
 } from '@gorgias/helpdesk-queries'
 
 import { getCallSid } from 'hooks/integrations/phone/twilioCall.utils'
-import useAppDispatch from 'hooks/useAppDispatch'
 import type { UserSearchResult } from 'models/search/types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import type { AlertBannerData } from 'pages/common/components/dropdown/DropdownAlertBanner'
@@ -23,8 +22,6 @@ import type { TransferTarget } from 'pages/common/components/PhoneIntegrationBar
 import { TransferType } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/types'
 import { getTransferReceiverData } from 'pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/utils'
 import * as ToggleButton from 'pages/common/components/ToggleButton'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import css from './CallTransferDropdown.less'
 
@@ -143,7 +140,6 @@ const CallTransferDropdown = ({
         }
     }
 
-    const dispatch = useAppDispatch()
     const { mutate: transferCall, isLoading: isRequestingTransfer } =
         useTransferCall({
             mutation: {
@@ -157,14 +153,11 @@ const CallTransferDropdown = ({
                         'Call transfer failed because an error occurred. Please try again.'
                     const isWarning = error.response?.status === 400
 
-                    void dispatch(
-                        notify({
-                            status: isWarning
-                                ? NotificationStatus.Warning
-                                : NotificationStatus.Error,
-                            message,
-                        }),
-                    )
+                    if (isWarning) {
+                        toast.warning(message)
+                    } else {
+                        toast.error(message)
+                    }
                     setAlertBannerData({
                         message: isWarning
                             ? 'Transfer unsuccessful. Please try again.'

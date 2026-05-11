@@ -7,12 +7,11 @@ import {
 } from '@repo/agent-status'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, render } from '@repo/testing'
-import { act, within } from '@testing-library/react'
+import { act, screen, waitFor, within } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'
-import { NotificationStatus } from 'state/notifications/types'
 
 import StatusMenu from '../StatusMenu'
 
@@ -353,12 +352,11 @@ describe('StatusMenu', () => {
 
                 await act(() => userEvent.click(getByText(displayName)))
 
-                expect(dispatch).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        title: expectedTitle,
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                await waitFor(() => {
+                    expect(
+                        screen.getByRole('status', { name: expectedTitle }),
+                    ).toHaveAttribute('data-intent', 'destructive')
+                })
                 expect(logEvent).not.toHaveBeenCalled()
             },
         )

@@ -20,9 +20,9 @@ import type { CancelToken } from 'axios'
 import { isCancel } from 'axios'
 import _isEmpty from 'lodash/isEmpty'
 
+import { toast } from '@gorgias/axiom'
 import type { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import { RecentItems } from 'hooks/useRecentItems/constants'
@@ -54,8 +54,6 @@ import {
     SEARCH_QUERY_EXPIRY_TIME,
 } from 'pages/common/components/Spotlight/constants'
 import { currentAccountHasProduct } from 'state/billing/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 type OldSearchPaginationMeta = {
     prev_items: string
@@ -113,7 +111,6 @@ const getSelectedItemUrl = (
 }
 
 export const useSearch = () => {
-    const dispatch = useAppDispatch()
     const defaultSearchItemsType = ViewType.All
     const [searchItemsType, setSearchItemsType] = useState<ViewType>(
         defaultSearchItemsType,
@@ -434,12 +431,7 @@ export const useSearch = () => {
                     }
                 } catch (e) {
                     if (!isCancel(e)) {
-                        void dispatch(
-                            notify({
-                                message: 'Failed to fetch search results',
-                                status: NotificationStatus.Error,
-                            }),
-                        )
+                        toast.error('Failed to fetch search results')
                         searchRank.registerResultsResponse({
                             responseTime: Date.now(),
                             numberOfResults: 0,
@@ -454,7 +446,6 @@ export const useSearch = () => {
             handleCustomerSearchResult,
             handleTicketSearchResult,
             handleCallSearchResult,
-            dispatch,
             showCallsTab,
         ],
     )

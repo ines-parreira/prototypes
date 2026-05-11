@@ -1,15 +1,15 @@
 import type { AxiosError } from 'axios'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
+import { toast } from '@gorgias/axiom'
+
 import { errorToChildren } from 'utils'
 
 import { CustomNotifications } from '../constants'
 
-export default function useCreatePhoneNumberNotifications() {
-    const dispatch = useAppDispatch()
+const stripHtmlTags = (message: string) =>
+    message.replace(/<[^>]*>/g, '').trim()
 
+export default function useCreatePhoneNumberNotifications() {
     const showCreatePhoneNumberErrorNotification = ({
         error,
     }: {
@@ -22,32 +22,18 @@ export default function useCreatePhoneNumberNotifications() {
         }>
         const customNotificationName = response?.data?.error?.data?.use_custom
         if (customNotificationName === CustomNotifications.UPGRADE_MESSAGE) {
-            void dispatch(
-                notify({
-                    message: `
-                        <div>
-                            Upgrade your account or subscribe to the Add-on to use the integration <a href='${upgradePlanPath}'>here</a>.
-                        </div>
-                    `,
-                    allowHTML: true,
-                    title: 'Cannot add phone number.',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error('Cannot add phone number.', {
+                caption: `Upgrade your account or subscribe to the Add-on to use the integration here: ${upgradePlanPath}.`,
+            })
             return
         }
 
         const errors = errorToChildren(error)
         const title =
             response?.data?.error?.msg ?? 'Failed to create phone number'
-        void dispatch(
-            notify({
-                title,
-                message: errors ?? '',
-                status: NotificationStatus.Error,
-                allowHTML: true,
-            }),
-        )
+        toast.error(title, {
+            caption: stripHtmlTags(String(errors ?? '')),
+        })
     }
 
     return { showCreatePhoneNumberErrorNotification }
