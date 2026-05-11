@@ -51,10 +51,8 @@ export type SupportAgentsChannelName =
 export const SUPPORT_AGENTS_CHANNEL_ENTITIES: SupportAgentsChannelName[] = [
     'email',
     'chat',
-    'sms',
     'contact-form',
     'help-center',
-    'voice',
 ]
 
 export type SupportAgentsPerformanceByChannelEntityMetrics = {

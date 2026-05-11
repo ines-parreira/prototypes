@@ -55,10 +55,8 @@ export type AllAgentsChannelName =
 export const ALL_AGENTS_CHANNEL_ENTITIES: AllAgentsChannelName[] = [
     'email',
     'chat',
-    'sms',
     'contact-form',
     'help-center',
-    'voice',
 ]
 
 export type AllAgentsPerformanceByChannelEntityMetrics = {

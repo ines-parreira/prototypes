@@ -54,10 +54,8 @@ export type AiAgentSalesChannelName =
 export const AI_AGENT_SALES_CHANNEL_ENTITIES: AiAgentSalesChannelName[] = [
     'email',
     'chat',
-    'sms',
     'contact-form',
     'help-center',
-    'voice',
 ]
 
 export type AiAgentSalesPerformanceByChannelEntityMetrics = {
