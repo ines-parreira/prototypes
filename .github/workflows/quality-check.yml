@@ -38,6 +38,12 @@ jobs:
     runs-on: gh-actions-4cpu12gb-runner-set
     if: inputs.helpdesk-affected == 'true' || inputs.has-other-affected-packages == 'true'
     steps:
+      - name: Start Resource Monitoring
+        uses: gorgias/reusable-actions/.github/actions/resource-monitor@main
+        with:
+          action: start
+          metric-frequency: 5
+
       - name: Checkout code
         uses: actions/checkout@v6
         with:
@@ -57,11 +63,23 @@ jobs:
       - name: Lint
         run: "npx nx affected --target=lint --base=${{ inputs.nx-base-commit }} --head=HEAD && pnpm lint:deprecated"
 
+      - name: Stop Resource Monitoring
+        if: always()
+        uses: gorgias/reusable-actions/.github/actions/resource-monitor@main
+        with:
+          action: stop
+
   format:
     name: Format
     runs-on: gh-actions-4cpu12gb-runner-set
     if: inputs.helpdesk-affected == 'true' || inputs.has-other-affected-packages == 'true'
     steps:
+      - name: Start Resource Monitoring
+        uses: gorgias/reusable-actions/.github/actions/resource-monitor@main
+        with:
+          action: start
+          metric-frequency: 5
+
       - name: Checkout code
         uses: actions/checkout@v6
         with:
@@ -83,11 +101,23 @@ jobs:
           NODE_OPTIONS: "--max-old-space-size=10240"
         run: "npx nx affected --target=format:check --base=${{ inputs.nx-base-commit }} --head=HEAD"
 
+      - name: Stop Resource Monitoring
+        if: always()
+        uses: gorgias/reusable-actions/.github/actions/resource-monitor@main
+        with:
+          action: stop
+
   typecheck:
     name: Typecheck
     runs-on: gh-actions-4cpu8gb-runner-set
     if: inputs.helpdesk-affected == 'true' || inputs.has-other-affected-packages == 'true'
     steps:
+      - name: Start Resource Monitoring
+        uses: gorgias/reusable-actions/.github/actions/resource-monitor@main
+        with:
+          action: start
+          metric-frequency: 5
+
       - name: Checkout code
         uses: actions/checkout@v6
         with:
@@ -107,6 +137,12 @@ jobs:
       - name: Typecheck
         run: npx nx affected --target=typecheck --base=${{ inputs.nx-base-commit }} --head=HEAD
 
+      - name: Stop Resource Monitoring
+        if: always()
+        uses: gorgias/reusable-actions/.github/actions/resource-monitor@main
+        with:
+          action: stop
+
   tests:
     name: Tests
     runs-on: gh-actions-4cpu12gb-runner-set
@@ -119,6 +155,12 @@ jobs:
     env:
       CODECOV_CLI_VERSION: "v10.2.1"
     steps:
+      - name: Start Resource Monitoring
+        uses: gorgias/reusable-actions/.github/actions/resource-monitor@main
+        with:
+          action: start
+          metric-frequency: 5
+
       - name: Checkout code
         uses: actions/checkout@v6
         with:
@@ -154,6 +196,12 @@ jobs:
           name: codecov-test-results-jest-${{ matrix.job-index }}
           version: ${{ env.CODECOV_CLI_VERSION }}
           report_type: test_results
+
+      - name: Stop Resource Monitoring
+        if: always()
+        uses: gorgias/reusable-actions/.github/actions/resource-monitor@main
+        with:
+          action: stop
 
   unused-helpdesk-test-statuses:
     name: "Unused helpdesk test statuses"
@@ -213,6 +261,12 @@ jobs:
     env:
       CODECOV_CLI_VERSION: "v10.2.1"
     steps:
+      - name: Start Resource Monitoring
+        uses: gorgias/reusable-actions/.github/actions/resource-monitor@main
+        with:
+          action: start
+          metric-frequency: 5
+
       - name: Checkout code
         uses: actions/checkout@v6
         with:
@@ -322,6 +376,12 @@ jobs:
               --file "$JUNIT_FILE" \
               --report-type test_results
           done
+
+      - name: Stop Resource Monitoring
+        if: always()
+        uses: gorgias/reusable-actions/.github/actions/resource-monitor@main
+        with:
+          action: stop
 
   unused-package-test-statuses:
     name: "Unused package test statuses"

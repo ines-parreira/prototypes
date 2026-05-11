@@ -51,6 +51,12 @@ jobs:
     runs-on: gh-actions-4cpu12gb-runner-set
     timeout-minutes: 15
     steps:
+      - name: Start Resource Monitoring
+        uses: gorgias/reusable-actions/.github/actions/resource-monitor@main
+        with:
+          action: start
+          metric-frequency: 5
+
       - name: Checkout code
         uses: actions/checkout@v6
         with:
@@ -77,3 +83,9 @@ jobs:
         with:
           path: ${{ inputs.build-dir }}
           name: ${{ inputs.artifact }}
+
+      - name: Stop Resource Monitoring
+        if: always()
+        uses: gorgias/reusable-actions/.github/actions/resource-monitor@main
+        with:
+          action: stop
