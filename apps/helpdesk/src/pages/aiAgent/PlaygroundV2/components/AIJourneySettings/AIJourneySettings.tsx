@@ -19,6 +19,7 @@ import {
 } from '@gorgias/axiom'
 import { JourneyTypeEnum } from '@gorgias/convert-client'
 
+import { KlaviyoPermissionBanner } from 'AIJourney/components/KlaviyoPermissionBanner/KlaviyoPermissionBanner'
 import { MAX_WAIT_TIME } from 'AIJourney/constants'
 import { useAIJourneyProductList } from 'AIJourney/hooks'
 import { AudienceSelect } from 'AIJourney/pages/Setup/fields/AudienceSelect/AudienceSelect'
@@ -609,6 +610,7 @@ export const AIJourneySettings: React.FC = () => {
             )}
 
             <div className={css.audiencesContainer}>
+                <KlaviyoPermissionBanner integrationId={integrationId} />
                 <AudienceSelect
                     label="Audience to include"
                     value={includedAudienceListIds ?? []}

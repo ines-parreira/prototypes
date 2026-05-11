@@ -44,10 +44,10 @@ catalogs:
   analytics-ui-kit:
     '@gorgias/analytics-ui-kit': '0.1.25'
   rest-api-sdk:
-    '@gorgias/convert-client': '^0.3.55'
-    '@gorgias/convert-mocks': '^0.2.72'
-    '@gorgias/convert-queries': '^0.2.73'
-    '@gorgias/convert-types': '^0.4.41'
+    '@gorgias/convert-client': '^0.3.56'
+    '@gorgias/convert-mocks': '^0.2.73'
+    '@gorgias/convert-queries': '^0.2.74'
+    '@gorgias/convert-types': '^0.4.42'
     '@gorgias/customer-segmentation-client': '^0.2.9'
     '@gorgias/customer-segmentation-mocks': '^0.2.13'
     '@gorgias/customer-segmentation-queries': '^0.2.9'
@@ -75,7 +75,7 @@ catalogs:
     '@gorgias/knowledge-service-validators': '^0.2.58'
     '@tanstack/react-query': '4.36.1'
     '@tanstack/react-query-devtools': '4.22.4'
-    axios: '^1.15.0'
+    axios: '^1.15.2'
   realtime:
     '@gorgias/realtime': '^1.2.6'
   events:
