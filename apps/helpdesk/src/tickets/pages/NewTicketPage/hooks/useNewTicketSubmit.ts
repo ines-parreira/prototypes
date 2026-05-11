@@ -1,7 +1,12 @@
 import { useCallback } from 'react'
 
 import { localForageManager } from '@repo/browser-storage'
-import { MacroActionName, useTicketFieldsStore } from '@repo/tickets'
+import type { TicketFieldsState } from '@repo/tickets'
+import {
+    getMacroTicketFieldValues,
+    MacroActionName,
+    useTicketFieldsStore,
+} from '@repo/tickets'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 
@@ -32,6 +37,29 @@ type UseNewTicketSubmitArgs = {
     temporaryId: string | null
 }
 
+function mergeCustomFieldsWithMacroValues(
+    customFields: TicketFieldsState,
+    appliedMacro: Map<any, any> | null | undefined,
+): TicketFieldsState {
+    const macroTicketFieldValues = getMacroTicketFieldValues(
+        appliedMacro?.toJS(),
+    )
+
+    return Object.entries(macroTicketFieldValues).reduce<TicketFieldsState>(
+        (fields, [fieldId, value]) => ({
+            ...fields,
+            [fieldId]: {
+                // Macros can set conditionally visible fields that are not in the ticket fields store yet.
+                // The create-ticket API still requires each submitted custom field value to carry its id.
+                ...fields[fieldId],
+                id: Number(fieldId),
+                value,
+            },
+        }),
+        customFields,
+    )
+}
+
 export function useNewTicketSubmit({
     subject,
     priority,
@@ -43,6 +71,7 @@ export function useNewTicketSubmit({
 }: UseNewTicketSubmitArgs) {
     const dispatch = useAppDispatch()
     const canSendMessage = useAppSelector(getCanSend)
+    const fields = useTicketFieldsStore((state) => state.fields)
 
     const submit = useCallback(
         async ({ status, resetMessage = true }: SubmitArgs) => {
@@ -59,7 +88,14 @@ export function useNewTicketSubmit({
 
             updateMessageText.flush()
 
-            const customFields = useTicketFieldsStore.getState().fields
+            const appliedMacro = state.ticket.getIn([
+                'state',
+                'appliedMacro',
+            ]) as Map<any, any> | null | undefined
+            const customFields = mergeCustomFieldsWithMacroValues(
+                fields,
+                appliedMacro,
+            )
 
             dispatch(
                 restoreTicketDraft({
@@ -129,6 +165,7 @@ export function useNewTicketSubmit({
             tags,
             priority,
             temporaryId,
+            fields,
         ],
     )
 

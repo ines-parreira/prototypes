@@ -63,7 +63,10 @@ const buildState = ({
     receiver = { id: 2, name: 'Receiver customer' },
     sourceType = TicketMessageSourceType.Email,
 }: {
-    appliedMacroActions?: Array<{ name: string }>
+    appliedMacroActions?: Array<{
+        name: string
+        arguments?: Record<string, unknown>
+    }>
     bodyText?: string
     customer?: Record<string, unknown> | null
     isLoading?: boolean
@@ -108,18 +111,23 @@ const buildState = ({
         }),
     }) as RootState
 
-const createWrapper = (state: RootState) =>
+const createWrapper = (store: ReturnType<typeof mockStore>) =>
     (({ children }: { children: React.ReactNode }) => (
-        <Provider store={mockStore(state)}>{children}</Provider>
+        <Provider store={store}>{children}</Provider>
     )) as unknown as ComponentType
 
 const renderUseNewTicketSubmit = (
     args: Parameters<typeof useNewTicketSubmit>[0] = defaultArgs,
     state: RootState = buildState(),
-) =>
-    renderHook(() => useNewTicketSubmit(args), {
-        wrapper: createWrapper(state),
-    })
+) => {
+    const store = mockStore(state)
+    return {
+        ...renderHook(() => useNewTicketSubmit(args), {
+            wrapper: createWrapper(store),
+        }),
+        store,
+    }
+}
 
 async function submitNewTicket(
     result: ReturnType<typeof renderUseNewTicketSubmit>['result'],
@@ -184,6 +192,116 @@ describe('useNewTicketSubmit', () => {
         )
         expect(localForageManager.clearTable).toHaveBeenCalledWith(
             'ticket-drafts',
+        )
+    })
+
+    it('adds macro ticket field values to the submitted ticket payload', async () => {
+        const { result, store } = renderUseNewTicketSubmit(
+            defaultArgs,
+            buildState({
+                appliedMacroActions: [
+                    {
+                        name: MacroActionName.SetCustomFieldValue,
+                        arguments: {
+                            custom_field_id: 2,
+                            value: 'Macro value',
+                        },
+                    },
+                ],
+            }),
+        )
+
+        await submitNewTicket(result)
+
+        expect(store.getActions()).toContainEqual(
+            expect.objectContaining({
+                type: 'RESTORE_TICKET_DRAFT',
+                payload: expect.objectContaining({
+                    custom_fields: expect.objectContaining({
+                        2: {
+                            id: 2,
+                            value: 'Macro value',
+                        },
+                    }),
+                }),
+            }),
+        )
+    })
+
+    it('adds macro ticket field values when the field is missing from the visible fields store', async () => {
+        expect(useTicketFieldsStore.getState().fields[2]).toBeUndefined()
+
+        const { result, store } = renderUseNewTicketSubmit(
+            defaultArgs,
+            buildState({
+                appliedMacroActions: [
+                    {
+                        name: MacroActionName.SetCustomFieldValue,
+                        arguments: {
+                            custom_field_id: 2,
+                            value: 'Conditionally visible macro value',
+                        },
+                    },
+                ],
+            }),
+        )
+
+        await submitNewTicket(result)
+
+        expect(store.getActions()).toContainEqual(
+            expect.objectContaining({
+                type: 'RESTORE_TICKET_DRAFT',
+                payload: expect.objectContaining({
+                    custom_fields: expect.objectContaining({
+                        2: {
+                            id: 2,
+                            value: 'Conditionally visible macro value',
+                        },
+                    }),
+                }),
+            }),
+        )
+    })
+
+    it('preserves existing ticket field state when merging macro ticket field values', async () => {
+        useTicketFieldsStore.getState().updateFieldState({
+            id: 1,
+            value: 'Existing value',
+        })
+
+        const { result, store } = renderUseNewTicketSubmit(
+            defaultArgs,
+            buildState({
+                appliedMacroActions: [
+                    {
+                        name: MacroActionName.SetCustomFieldValue,
+                        arguments: {
+                            custom_field_id: 2,
+                            value: 'Macro value',
+                        },
+                    },
+                ],
+            }),
+        )
+
+        await submitNewTicket(result)
+
+        expect(store.getActions()).toContainEqual(
+            expect.objectContaining({
+                type: 'RESTORE_TICKET_DRAFT',
+                payload: expect.objectContaining({
+                    custom_fields: {
+                        1: {
+                            id: 1,
+                            value: 'Existing value',
+                        },
+                        2: {
+                            id: 2,
+                            value: 'Macro value',
+                        },
+                    },
+                }),
+            }),
         )
     })
 
