@@ -1,5 +1,6 @@
 import { renderHook } from '@repo/testing'
-import { useHasNewViewCountScheduler } from '@repo/views'
+import type { RefreshConfig } from '@repo/views'
+import { useHasNewViewCountScheduler, useSchedulerConfig } from '@repo/views'
 
 import useViewCountScheduler from '../useViewCountScheduler'
 
@@ -10,15 +11,9 @@ var mockScheduler: {
 }
 
 jest.mock('@repo/views', () => ({
-    createViewCountScheduler: jest.fn(() => {
-        mockScheduler = {
-            start: jest.fn(),
-            steal: jest.fn(),
-            stop: jest.fn(),
-        }
-        return mockScheduler
-    }),
+    createViewCountScheduler: jest.fn(() => mockScheduler),
     useHasNewViewCountScheduler: jest.fn(),
+    useSchedulerConfig: jest.fn(),
 }))
 
 jest.mock('services/socketManager/socketManager', () => ({
@@ -26,6 +21,17 @@ jest.mock('services/socketManager/socketManager', () => ({
 }))
 
 const useHasNewViewCountSchedulerMock = useHasNewViewCountScheduler as jest.Mock
+const useSchedulerConfigMock = useSchedulerConfig as jest.Mock
+
+const fakeConfig: RefreshConfig = {
+    tickIntervalSeconds: 30,
+    minRefreshIntervalSeconds: 300,
+    maxViewsPerTick: 5,
+    maxRealtimePerTick: 2,
+    largeCountThreshold: 100,
+    recentlyActiveWindowSeconds: 300,
+    staleSeconds: 600,
+}
 
 function mockHasNewScheduler(value: boolean) {
     useHasNewViewCountSchedulerMock.mockReturnValue({ value, isLoading: false })
@@ -33,10 +39,14 @@ function mockHasNewScheduler(value: boolean) {
 
 describe('useViewCountScheduler', () => {
     beforeEach(() => {
+        mockScheduler = {
+            start: jest.fn(),
+            steal: jest.fn(),
+            stop: jest.fn(),
+        }
         useHasNewViewCountSchedulerMock.mockReset()
-        mockScheduler.start.mockClear()
-        mockScheduler.steal.mockClear()
-        mockScheduler.stop.mockClear()
+        useSchedulerConfigMock.mockReset()
+        useSchedulerConfigMock.mockReturnValue(fakeConfig)
         mockHasNewScheduler(false)
     })
 

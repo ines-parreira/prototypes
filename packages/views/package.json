@@ -27,6 +27,7 @@
         "react": "catalog:react",
         "react-router": "catalog:react-router",
         "react-router-dom": "catalog:react-router",
+        "zod": "catalog:zod",
         "zustand": "catalog:zustand"
     },
     "devDependencies": {
@@ -58,6 +59,7 @@
         "react-router-dom": "catalog:react-router",
         "typescript": "catalog:typescript",
         "vitest": "catalog:test",
+        "zod": "catalog:zod",
         "zustand": "catalog:zustand"
     }
 }

@@ -14,10 +14,13 @@ export {
     createViewCountScheduler,
     selectViewsToRefresh,
     DEFAULT_REFRESH_CONFIG,
+    parseRefreshConfig,
+    refreshConfigSchema,
 } from './scheduler'
 export type {
     RefreshConfig,
     RefreshCallback,
+    RefreshConfigOverrides,
     ViewCountScheduler,
     ViewCountSchedulerOptions,
 } from './scheduler'
@@ -59,6 +62,7 @@ export { useSystemViews } from './hooks/useSystemViews'
 export { useUpdatePrivateViewsOrdering } from './hooks/useUpdatePrivateViewsOrdering'
 export { useUpdatePublicViewsOrdering } from './hooks/useUpdatePublicViewsOrdering'
 export { useHasNewViewCountScheduler } from './hooks/useHasNewViewCountScheduler'
+export { useSchedulerConfig } from './hooks/useSchedulerConfig'
 export type { SystemView } from './hooks/useSystemViews'
 export type {
     DisplayOrderMap,

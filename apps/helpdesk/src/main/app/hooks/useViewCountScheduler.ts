@@ -3,23 +3,27 @@ import { useEffect } from 'react'
 import {
     createViewCountScheduler,
     useHasNewViewCountScheduler,
+    useSchedulerConfig,
 } from '@repo/views'
 
 import socketManager from 'services/socketManager/socketManager'
 import { SocketEventType } from 'services/socketManager/types'
 
-const scheduler = createViewCountScheduler({
-    onRefresh: (viewIds) => {
-        socketManager.send(SocketEventType.ViewsCountExpired, { viewIds })
-    },
-})
-
 export default function useViewCountScheduler(): void {
     const { value: isEnabled } = useHasNewViewCountScheduler()
+    const config = useSchedulerConfig()
 
     useEffect(() => {
         if (!isEnabled) return
 
+        const scheduler = createViewCountScheduler({
+            onRefresh: (viewIds) => {
+                socketManager.send(SocketEventType.ViewsCountExpired, {
+                    viewIds,
+                })
+            },
+            config,
+        })
         scheduler.start()
 
         function handleFocus() {
@@ -32,5 +36,5 @@ export default function useViewCountScheduler(): void {
             window.removeEventListener('focus', handleFocus)
             scheduler.stop()
         }
-    }, [isEnabled])
+    }, [isEnabled, config])
 }
