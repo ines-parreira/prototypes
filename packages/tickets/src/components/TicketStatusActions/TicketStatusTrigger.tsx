@@ -1,4 +1,4 @@
-import { Button, IconName, Tooltip, TooltipContent } from '@gorgias/axiom'
+import { Button, Tooltip, TooltipContent } from '@gorgias/axiom'
 import type { Ticket } from '@gorgias/helpdesk-types'
 
 import { getTicketStatus, TicketStatus } from './utils'
@@ -24,7 +24,7 @@ export function TicketStatusTrigger({
                     <Button
                         size="sm"
                         variant="primary"
-                        leadingSlot={IconName.CircleCheck}
+                        leadingSlot="check-circle"
                         onClick={onOpenTicket}
                         aria-label="Reopen ticket"
                     >
@@ -45,8 +45,8 @@ export function TicketStatusTrigger({
                     size="sm"
                     variant="secondary"
                     {...(status === TicketStatus.Open
-                        ? { leadingSlot: IconName.CircleCheck }
-                        : { icon: IconName.CircleCheck })}
+                        ? { leadingSlot: 'check-circle' }
+                        : { icon: 'check-circle' })}
                     onClick={onCloseTicket}
                     aria-label="Close ticket"
                 >

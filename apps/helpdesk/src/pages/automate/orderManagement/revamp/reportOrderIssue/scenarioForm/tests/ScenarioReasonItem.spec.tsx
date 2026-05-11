@@ -92,7 +92,7 @@ describe('ScenarioReasonItem', () => {
         renderComponent(makeReason())
 
         expect(
-            screen.getByRole('img', { name: 'triangle-warning' }),
+            screen.getByRole('img', { name: 'warning-triangle' }),
         ).toBeInTheDocument()
     })
 
@@ -102,7 +102,7 @@ describe('ScenarioReasonItem', () => {
         renderComponent(makeReason())
 
         const warningIcon = screen.getByRole('img', {
-            name: 'triangle-warning',
+            name: 'warning-triangle',
         })
         const trigger = warningIcon.closest('[data-name="tooltip-trigger"]')
 
@@ -136,7 +136,7 @@ describe('ScenarioReasonItem', () => {
         )
 
         expect(
-            screen.queryByRole('img', { name: 'triangle-warning' }),
+            screen.queryByRole('img', { name: 'warning-triangle' }),
         ).not.toBeInTheDocument()
     })
 
@@ -193,7 +193,7 @@ describe('ScenarioReasonItem', () => {
         )
 
         expect(
-            screen.queryByRole('img', { name: 'triangle-warning' }),
+            screen.queryByRole('img', { name: 'warning-triangle' }),
         ).not.toBeInTheDocument()
     })
 
@@ -209,7 +209,7 @@ describe('ScenarioReasonItem', () => {
         )
 
         expect(
-            screen.queryByRole('img', { name: 'triangle-warning' }),
+            screen.queryByRole('img', { name: 'warning-triangle' }),
         ).not.toBeInTheDocument()
     })
 
@@ -223,7 +223,7 @@ describe('ScenarioReasonItem', () => {
 
         expect(screen.getByText('ScenarioReasonAction')).toBeInTheDocument()
         expect(
-            screen.getByRole('img', { name: 'triangle-warning' }),
+            screen.getByRole('img', { name: 'warning-triangle' }),
         ).toBeInTheDocument()
     })
 })

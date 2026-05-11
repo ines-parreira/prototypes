@@ -58,7 +58,7 @@ describe('VoiceStepNode', () => {
         expect(screen.getByText('Test Description')).toBeInTheDocument()
         expect(screen.getByText('Test Icon')).toBeInTheDocument()
 
-        expect(screen.queryByRole('img', { name: 'octagon-error' })).toBeNull()
+        expect(screen.queryByRole('img', { name: 'error-octagon' })).toBeNull()
     })
 
     it('renders with errors', () => {
@@ -66,7 +66,7 @@ describe('VoiceStepNode', () => {
         renderComponent({ ...defaultProps, errors })
 
         expect(
-            screen.getByRole('img', { name: 'octagon-error' }),
+            screen.getByRole('img', { name: 'error-octagon' }),
         ).toBeInTheDocument()
     })
 

@@ -46,10 +46,7 @@ export type SearchCallRow = {
     customerPhone: DisplayTextValue
     statusLabel: string
     statusColor: 'green' | 'red' | 'orange' | 'grey'
-    callIcon:
-        | 'comm-phone-incoming'
-        | 'comm-phone-outgoing'
-        | 'comm-phone-missed'
+    callIcon: 'phone-incoming' | 'phone-outgoing' | 'phone-missed'
     activityLabel: string
 }
 

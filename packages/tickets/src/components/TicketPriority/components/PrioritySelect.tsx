@@ -3,7 +3,6 @@ import { useCallback } from 'react'
 import {
     Color,
     Icon,
-    IconName,
     ListItem,
     LegacyLoadingSpinner as LoadingSpinner,
     Select,
@@ -11,6 +10,7 @@ import {
     Tooltip,
     TooltipContent,
 } from '@gorgias/axiom'
+import type { IconName } from '@gorgias/axiom'
 import type { TicketPriority as TicketPriorityType } from '@gorgias/helpdesk-queries'
 
 import type { PriorityOption } from '../hooks/usePriorityOptions'
@@ -27,10 +27,10 @@ export const PRIORITY_ICON_MAP: Record<
     TicketPriorityType,
     { icon: IconName; color?: Color }
 > = {
-    low: { icon: IconName.ArrowChevronDown, color: Color.Grey },
-    normal: { icon: IconName.Equals, color: Color.Grey },
-    high: { icon: IconName.ArrowChevronUp, color: Color.Orange },
-    critical: { icon: IconName.ArrowChevronUpDuo, color: Color.Red },
+    low: { icon: 'arrow-chevron-down', color: Color.Grey },
+    normal: { icon: 'equals', color: Color.Grey },
+    high: { icon: 'arrow-chevron-up', color: Color.Orange },
+    critical: { icon: 'arrow-chevron-up-duo', color: Color.Red },
 }
 
 export function PrioritySelect({

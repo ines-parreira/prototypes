@@ -41,7 +41,7 @@ export const CategoryList = ({
                     <Icon
                         name={
                             isCategoryCompleted(category)
-                                ? 'circle-check'
+                                ? 'check-circle'
                                 : 'shape-circle'
                         }
                         size="md"

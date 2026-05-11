@@ -88,7 +88,7 @@ describe('useSystemViews', () => {
                 'Trash',
             ])
             expect(result.current[0].icon).toBe('user-arrow')
-            expect(result.current[2].icon).toBe('circle-check')
+            expect(result.current[2].icon).toBe('check-circle')
         })
     })
 

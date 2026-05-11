@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { reportError } from '@repo/logging'
 import cn from 'classnames'
 
-import { Box, Button, ButtonSize, Icon, IconName } from '@gorgias/axiom'
+import { Box, Button, ButtonSize, Icon } from '@gorgias/axiom'
 
 import { useExportDashboardToPDF } from 'pages/aiAgent/analyticsOverview/hooks/useExportDashboardToPDF'
 import {
@@ -107,7 +107,7 @@ export const DashboardExportButton = ({
                     size={ButtonSize.Md}
                     onClick={() => setIsOpen(!isOpen)}
                     isDisabled={isExportInProgress}
-                    leadingSlot={IconName.Download}
+                    leadingSlot="download"
                 >
                     <Box display="flex" alignItems="center">
                         {getButtonContent()}
@@ -116,7 +116,7 @@ export const DashboardExportButton = ({
                                 [css.chevronRotated]: isOpen,
                             })}
                         >
-                            <Icon name={IconName.ArrowChevronDown} size="sm" />
+                            <Icon name="arrow-chevron-down" size="sm" />
                         </span>
                     </Box>
                 </Button>

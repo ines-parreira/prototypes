@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import { Banner, IconName } from '@gorgias/axiom'
+import { Banner } from '@gorgias/axiom'
 import type { TicketMessageTranslation } from '@gorgias/helpdesk-types'
 
 import { useExpandedMessages } from '../../../contexts/ExpandedMessages'
@@ -52,7 +52,7 @@ export function MessageBody({ className, item }: MessageBodyProps) {
             {isTruncated && (
                 <Banner
                     isClosable={false}
-                    icon={IconName.Info}
+                    icon="info"
                     description="This message is too large to display. To see the entire message, open it in the original provider."
                 />
             )}

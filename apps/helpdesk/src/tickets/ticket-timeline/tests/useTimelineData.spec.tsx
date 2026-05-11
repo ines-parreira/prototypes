@@ -117,7 +117,7 @@ const createWrapper = () => {
 }
 
 describe('useTimelineData', () => {
-    const mockChannelToIcon = jest.fn(() => 'comm-mail' as any)
+    const mockChannelToIcon = jest.fn(() => 'mail' as any)
 
     const defaultParams = {
         tickets: [],
@@ -677,7 +677,7 @@ describe('useTimelineData', () => {
                 { wrapper: createWrapper() },
             )
 
-            expect(result.current.enrichedTickets[0].iconName).toBe('comm-mail')
+            expect(result.current.enrichedTickets[0].iconName).toBe('mail')
             expect(mockChannelToIcon).toHaveBeenCalledWith('email')
         })
 

@@ -7,8 +7,6 @@ import {
     ButtonIntent,
     ButtonSize,
     ButtonVariant,
-    Icon,
-    IconName,
     ListItem,
     SelectField,
     Skeleton,
@@ -100,7 +98,7 @@ export const GorgiasChatIntegrationTranslateTextRevamp = ({
             size={ButtonSize.Md}
             variant={ButtonVariant.Tertiary}
             intent={ButtonIntent.Regular}
-            leadingSlot={<Icon name={IconName.ArrowLeft} />}
+            leadingSlot="arrow-left"
             onClick={handleBackClick}
         >
             Back
@@ -112,7 +110,7 @@ export const GorgiasChatIntegrationTranslateTextRevamp = ({
             variant="inline"
             intent="info"
             size="md"
-            icon={IconName.Info}
+            icon="info"
             isClosable={false}
             description={
                 <span>

@@ -572,8 +572,8 @@ export function OrderModal({
                                         index,
                                         quantity,
                                         optionSelections,
-                                        discounts: discounts,
-                                        setDiscounts: setDiscounts,
+                                        discounts,
+                                        setDiscounts,
                                     }) =>
                                         await updateLineItemModifiers({
                                             integrationId: integration.id,
@@ -605,7 +605,7 @@ export function OrderModal({
                             )}
                             {isLoading && (
                                 <div className={css.loader}>
-                                    <Loader minHeight={'50px'} />
+                                    <Loader minHeight="50px" />
                                 </div>
                             )}
                         </div>

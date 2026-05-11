@@ -80,10 +80,10 @@ export function AgentAvailabilityCell({ userId }: Props) {
                 <Tooltip
                     trigger={
                         <Icon
-                            name="triangle-warning"
+                            name="warning-triangle"
                             color="orange"
                             size="sm"
-                            aria-label="triangle-warning"
+                            aria-label="warning-triangle"
                         />
                     }
                 >

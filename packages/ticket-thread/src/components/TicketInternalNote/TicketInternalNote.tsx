@@ -1,4 +1,4 @@
-import { Box, IconName } from '@gorgias/axiom'
+import { Box } from '@gorgias/axiom'
 
 import {
     isActivePendingMessageItem,
@@ -49,7 +49,7 @@ export function TicketInternalNote({ item }: TicketInternalNoteProps) {
                         <MessageChannel
                             channel={item.data.channel}
                             createdDatetime={item.data.created_datetime}
-                            channelIcon={IconName.Note}
+                            channelIcon="note"
                             variant="internal-note"
                         />
                         <MessageTimestamp

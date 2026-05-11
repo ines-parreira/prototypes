@@ -140,7 +140,7 @@ describe('FlowItem', () => {
             renderComponent()
 
             expect(
-                screen.queryByRole('img', { name: /triangle-warning/i }),
+                screen.queryByRole('img', { name: /warning-triangle/i }),
             ).not.toBeInTheDocument()
         })
 
@@ -150,7 +150,7 @@ describe('FlowItem', () => {
             })
 
             expect(
-                screen.getByRole('img', { name: /triangle-warning/i }),
+                screen.getByRole('img', { name: /warning-triangle/i }),
             ).toBeInTheDocument()
         })
 
@@ -163,7 +163,7 @@ describe('FlowItem', () => {
             })
 
             const warningIcon = screen.getByRole('img', {
-                name: /triangle-warning/i,
+                name: /warning-triangle/i,
             })
             await user.hover(warningIcon)
 

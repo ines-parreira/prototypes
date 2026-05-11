@@ -5,10 +5,10 @@ import { StepCardIcon } from '../StepCardIcon'
 describe('StepCardIcon', () => {
     it('should render with correct icon', () => {
         const { container } = render(
-            <StepCardIcon backgroundColor="blue" name="comm-phone" />,
+            <StepCardIcon backgroundColor="blue" name="phone" />,
         )
 
-        const iconElement = container.querySelector('[aria-label="comm-phone"]')
+        const iconElement = container.querySelector('[aria-label="phone"]')
         expect(iconElement).toBeInTheDocument()
     })
 

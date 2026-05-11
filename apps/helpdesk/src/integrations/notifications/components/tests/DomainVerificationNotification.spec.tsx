@@ -29,7 +29,7 @@ jest.mock('@knocklabs/react', () => ({
 }))
 
 jest.mock('@repo/tickets', () => ({
-    ticketMessageSourceToIconName: jest.fn().mockReturnValue('comm-mail'),
+    ticketMessageSourceToIconName: jest.fn().mockReturnValue('mail'),
 }))
 
 const useHelpdeskV2WayfindingMS1FlagMock = assumeMock(

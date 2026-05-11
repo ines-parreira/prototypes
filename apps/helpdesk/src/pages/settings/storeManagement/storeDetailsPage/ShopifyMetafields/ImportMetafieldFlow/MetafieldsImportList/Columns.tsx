@@ -40,8 +40,8 @@ const nameColumn = createTableV1SortableColumn<Field>(
                             trigger={
                                 <span tabIndex={0}>
                                     <Icon
-                                        color={'var(--content-warning-primary)'}
-                                        name="triangle-warning"
+                                        color="var(--content-warning-primary)"
+                                        name="warning-triangle"
                                     />
                                 </span>
                             }

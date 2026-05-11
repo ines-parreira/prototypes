@@ -1,6 +1,6 @@
 import moment from 'moment-timezone'
 
-import { IconName } from '@gorgias/axiom'
+import type { IconName } from '@gorgias/axiom'
 
 import {
     DEFAULT_BADGE_TEXT,
@@ -183,9 +183,9 @@ function getTrendColorFromValue(
 function getTrendIconFromSign(sign: number): IconName | null {
     switch (sign) {
         case 1:
-            return IconName.TrendingUp
+            return 'trending-up'
         case -1:
-            return IconName.TrendingDown
+            return 'trending-down'
         default:
             return null
     }

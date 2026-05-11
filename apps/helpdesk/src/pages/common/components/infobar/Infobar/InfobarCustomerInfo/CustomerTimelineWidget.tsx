@@ -211,7 +211,7 @@ export function CustomerTimelineWidget({ isEditing, shopperId }: Props) {
                 ) : (
                     <div className={css.fieldContainer}>
                         <div className={css.fieldButton}>
-                            <Icon name="comm-chat-conversation" />
+                            <Icon name="chat-conversation" />
                         </div>
                         <div className={css.fieldContent}>
                             <span>{textContent}</span>

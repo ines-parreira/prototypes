@@ -40,7 +40,7 @@ export function SummaryContent({
                             size="sm"
                             intent="regular"
                             leadingSlot={
-                                <Icon name="arrows-reload-alt-1" size="sm" />
+                                <Icon name="arrow-reload-alt-1" size="sm" />
                             }
                             onClick={requestSummary}
                         >

@@ -51,7 +51,7 @@ export const ScenarioReasonItem = ({ value, onChange, onDelete }: Props) => {
                             trigger={
                                 <div>
                                     <Icon
-                                        name="triangle-warning"
+                                        name="warning-triangle"
                                         size="sm"
                                         color="content-warning-default"
                                     />

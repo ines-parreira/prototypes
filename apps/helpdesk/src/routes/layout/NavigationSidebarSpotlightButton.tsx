@@ -25,7 +25,7 @@ export function NavigationSidebarSpotlightButton() {
                 <Button
                     variant="tertiary"
                     onClick={handleClick}
-                    icon="search-magnifying-glass"
+                    icon="magnifying-glass"
                     size={buttonSize}
                 />
             }

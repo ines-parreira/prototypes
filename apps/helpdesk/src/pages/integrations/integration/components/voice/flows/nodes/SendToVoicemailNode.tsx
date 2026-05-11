@@ -47,9 +47,7 @@ export function SendToVoicemailNode(props: NodeProps<SendToVoicemailNode>) {
         <VoiceStepNode
             title="Voicemail"
             description={description}
-            icon={
-                <StepCardIcon backgroundColor="yellow" name="comm-voicemail" />
-            }
+            icon={<StepCardIcon backgroundColor="yellow" name="voicemail" />}
             errors={errors}
             {...props}
         >
@@ -64,13 +62,13 @@ export function SendToVoicemailNode(props: NodeProps<SendToVoicemailNode>) {
                     customRecordingType={
                         CustomRecordingType.VoicemailNotification
                     }
-                    label={'Message type'}
+                    label="Message type"
                 />
             </div>
             <FormField
                 name={`steps.${id}.allow_to_leave_voicemail`}
                 field={CheckBoxField}
-                label={'Allow caller to leave a voicemail'}
+                label="Allow caller to leave a voicemail"
                 caption={
                     'When selected, callers will hear the voicemail greeting and can leave a message.'
                 }

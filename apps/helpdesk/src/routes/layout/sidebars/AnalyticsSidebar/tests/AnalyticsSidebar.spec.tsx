@@ -84,7 +84,7 @@ describe('AnalyticsSidebar', () => {
             render(<AnalyticsSidebar />, { wrapper })
 
             expect(
-                screen.getAllByRole('img', { name: 'arrow-circle-up' }),
+                screen.getAllByRole('img', { name: 'arrow-up-circle' }),
             ).toHaveLength(1)
         })
 

@@ -46,12 +46,12 @@ export const EmptyStates = ({
         <Box flexDirection="column" gap={sectionsGap} width="100%">
             {/* Top row*/}
             <Box
-                flexDirection={'column'}
+                flexDirection="column"
                 gap="md"
                 alignItems={titleAlignment}
                 width="100%"
             >
-                <Heading size={'md'}>Create something new</Heading>
+                <Heading size="md">Create something new</Heading>
                 <Box gap="sm" className={css.responsiveContainer}>
                     <Card
                         elevation="default"
@@ -64,8 +64,8 @@ export const EmptyStates = ({
                         gap="xxxs"
                     >
                         <div className={css.cardTitle}>
-                            <Text size={'md'} variant={'bold'}>
-                                <Box flexDirection={'row'} gap="xxxs">
+                            <Text size="md" variant="bold">
+                                <Box flexDirection="row" gap="xxxs">
                                     <Icon
                                         name={
                                             typeConfig[KnowledgeType.Guidance]
@@ -76,11 +76,7 @@ export const EmptyStates = ({
                                 </Box>
                             </Text>
                         </div>
-                        <Text
-                            size={'sm'}
-                            as="p"
-                            className={css.cardDescription}
-                        >
+                        <Text size="sm" as="p" className={css.cardDescription}>
                             {guidanceDescription}
                         </Text>
                     </Card>
@@ -98,8 +94,8 @@ export const EmptyStates = ({
                         gap="xxxs"
                     >
                         <div className={css.cardTitle}>
-                            <Text size={'md'} variant={'bold'}>
-                                <Box flexDirection={'row'} gap="xxxs">
+                            <Text size="md" variant="bold">
+                                <Box flexDirection="row" gap="xxxs">
                                     <Icon
                                         name={
                                             typeConfig[KnowledgeType.FAQ].icon
@@ -109,11 +105,7 @@ export const EmptyStates = ({
                                 </Box>
                             </Text>
                         </div>
-                        <Text
-                            size={'sm'}
-                            as="p"
-                            className={css.cardDescription}
-                        >
+                        <Text size="sm" as="p" className={css.cardDescription}>
                             Let AI Agent use published Help Center articles as
                             knowledge.
                         </Text>
@@ -122,12 +114,12 @@ export const EmptyStates = ({
             </Box>
             {/* Bottom row*/}
             <Box
-                flexDirection={'column'}
+                flexDirection="column"
                 gap="md"
                 alignItems={titleAlignment}
                 width="100%"
             >
-                <Heading size={'md'}>Bring in existing content</Heading>
+                <Heading size="md">Bring in existing content</Heading>
                 <Box className={css.responsiveContainer} gap="md" width="100%">
                     {!hasWebsiteSync && (
                         <Card
@@ -142,8 +134,8 @@ export const EmptyStates = ({
                             })}
                         >
                             <div className={css.cardTitle}>
-                                <Text size={'md'} variant={'bold'}>
-                                    <Box flexDirection={'row'} gap="xxxs">
+                                <Text size="md" variant="bold">
+                                    <Box flexDirection="row" gap="xxxs">
                                         <Icon
                                             name={
                                                 typeConfig[KnowledgeType.Domain]
@@ -155,7 +147,7 @@ export const EmptyStates = ({
                                 </Text>
                             </div>
                             <Text
-                                size={'sm'}
+                                size="sm"
                                 as="p"
                                 className={css.cardDescription}
                             >
@@ -176,8 +168,8 @@ export const EmptyStates = ({
                         })}
                     >
                         <div className={css.cardTitle}>
-                            <Text size={'md'} variant={'bold'}>
-                                <Box flexDirection={'row'} gap="xxxs">
+                            <Text size="md" variant="bold">
+                                <Box flexDirection="row" gap="xxxs">
                                     <Icon
                                         name={
                                             typeConfig[KnowledgeType.URL].icon
@@ -187,11 +179,7 @@ export const EmptyStates = ({
                                 </Box>
                             </Text>
                         </div>
-                        <Text
-                            size={'sm'}
-                            as="p"
-                            className={css.cardDescription}
-                        >
+                        <Text size="sm" as="p" className={css.cardDescription}>
                             Sync single-page URLs
                         </Text>
                     </Card>
@@ -203,8 +191,8 @@ export const EmptyStates = ({
                         className={css.cardContainer}
                     >
                         <div className={css.cardTitle}>
-                            <Text size={'md'} variant={'bold'}>
-                                <Box flexDirection={'row'} gap="xxxs">
+                            <Text size="md" variant="bold">
+                                <Box flexDirection="row" gap="xxxs">
                                     <Icon
                                         name={
                                             typeConfig[KnowledgeType.Document]
@@ -215,11 +203,7 @@ export const EmptyStates = ({
                                 </Box>
                             </Text>
                         </div>
-                        <Text
-                            size={'sm'}
-                            as="p"
-                            className={css.cardDescription}
-                        >
+                        <Text size="sm" as="p" className={css.cardDescription}>
                             Upload external files
                         </Text>
                     </Card>
@@ -252,9 +236,9 @@ export const EmptyStateGuidance = () => {
             padding="xxxl"
             w={600}
         >
-            <Heading size={'md'}>{heading}</Heading>
+            <Heading size="md">{heading}</Heading>
             <Box flexDirection="column" gap="md" alignItems="center">
-                <Text size={'md'} align={'center'}>
+                <Text size="md" align="center">
                     {description}
                 </Text>
                 <Button variant="primary" onClick={toggleModal}>
@@ -323,9 +307,9 @@ export const EmptyStateFAQ = ({
             padding="xxxl"
             w={600}
         >
-            <Heading size={'md'}>{content.title}</Heading>
+            <Heading size="md">{content.title}</Heading>
             <Box flexDirection="column" gap="md" alignItems="center">
-                <Text size={'md'} align={'center'}>
+                <Text size="md" align="center">
                     {content.description}
                 </Text>
                 <Button variant="primary" onClick={content.action}>
@@ -346,15 +330,15 @@ export const EmptyStateDomain = () => {
             padding="xxxl"
             w={600}
         >
-            <Heading size={'md'}>Sync your store website</Heading>
+            <Heading size="md">Sync your store website</Heading>
             <Box flexDirection="column" gap="md" alignItems="center">
-                <Text size={'md'} align={'center'}>
+                <Text size="md" align="center">
                     Use your website’s content and product pages as knowledge
                     for AI Agent.
                 </Text>
                 <Button
                     variant="primary"
-                    leadingSlot="arrows-reload-alt-1"
+                    leadingSlot="arrow-reload-alt-1"
                     onClick={() => {
                         dispatchDocumentEvent(OPEN_SYNC_WEBSITE_MODAL)
                     }}
@@ -376,9 +360,9 @@ export const EmptyStateURL = () => {
             padding="xxxl"
             w={600}
         >
-            <Heading size={'md'}>Add URLs</Heading>
+            <Heading size="md">Add URLs</Heading>
             <Box flexDirection="column" gap="md" alignItems="center">
-                <Text size={'md'} align={'center'}>
+                <Text size="md" align="center">
                     Add links to public pages AI Agent can learn from like blog
                     posts or external documentation.
                 </Text>
@@ -405,9 +389,9 @@ export const EmptyStateDocument = () => {
             padding="xxxl"
             w={600}
         >
-            <Heading size={'md'}>Add documents</Heading>
+            <Heading size="md">Add documents</Heading>
             <Box flexDirection="column" gap="md" alignItems="center">
-                <Text size={'md'} align={'center'}>
+                <Text size="md" align="center">
                     Upload external documents such as policies or product
                     manuals to help your AI Agent provide more accurate answers.
                 </Text>
@@ -478,9 +462,9 @@ export const EmptyStateNoSearchResults = ({
             padding="xxxl"
             data-empty-state="no-results"
         >
-            <Heading size={'md'}>No results found</Heading>
+            <Heading size="md">No results found</Heading>
             <Box flexDirection="column" gap="md" alignItems="center">
-                <Text size={'md'} align={'center'}>
+                <Text size="md" align="center">
                     Try adjusting your search or filters to find the right
                     knowledge.
                 </Text>

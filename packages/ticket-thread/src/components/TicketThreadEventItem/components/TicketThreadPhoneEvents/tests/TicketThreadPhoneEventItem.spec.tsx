@@ -79,7 +79,7 @@ function buildItem({
             ...eventOverrides,
             data: {
                 ...baseEventData.data,
-                ...(eventOverrides?.data ?? {}),
+                ...eventOverrides?.data,
             },
         },
     }

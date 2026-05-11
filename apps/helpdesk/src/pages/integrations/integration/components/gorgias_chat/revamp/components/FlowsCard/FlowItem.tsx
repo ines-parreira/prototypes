@@ -8,7 +8,6 @@ import {
     Button,
     Color,
     Icon,
-    IconName,
     Text,
     Tooltip,
     TooltipContent,
@@ -72,7 +71,7 @@ export const FlowItem = ({
                                 <Icon
                                     size="md"
                                     color={Color.Orange}
-                                    name={IconName.TriangleWarning}
+                                    name="warning-triangle"
                                     aria-label="Languages mismatch warning"
                                 />
                             }

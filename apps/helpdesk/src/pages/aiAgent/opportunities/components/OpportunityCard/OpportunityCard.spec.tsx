@@ -122,7 +122,7 @@ describe('OpportunityCard', () => {
         )
 
         expect(screen.getByText('Resolve conflict')).toBeInTheDocument()
-        expect(screen.getByLabelText('octagon-error')).toBeInTheDocument()
+        expect(screen.getByLabelText('error-octagon')).toBeInTheDocument()
     })
 
     it('should render title with tooltip when text overflows', () => {

@@ -10,7 +10,6 @@ import {
     ButtonVariant,
     Color,
     Icon,
-    IconName,
     Text,
     Tooltip,
     TooltipContent,
@@ -80,7 +79,7 @@ export const StoreIntegrationCell = ({
                             <span role="img">
                                 <Icon
                                     color={Color.Orange}
-                                    name={IconName.TriangleWarning}
+                                    name="warning-triangle"
                                 ></Icon>
                             </span>
                         }

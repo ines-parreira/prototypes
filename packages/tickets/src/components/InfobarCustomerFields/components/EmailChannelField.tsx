@@ -1,6 +1,6 @@
 import { useHistory } from 'react-router-dom'
 
-import { IconName, MenuItem, OverflowListItem, SubMenu } from '@gorgias/axiom'
+import { MenuItem, OverflowListItem, SubMenu } from '@gorgias/axiom'
 import type {
     TicketCustomer,
     TicketCustomerChannel,
@@ -69,10 +69,7 @@ export function EmailChannelField({
                     onDelete={onChannelDelete}
                 >
                     {hasDraft ? (
-                        <SubMenu
-                            label="Send email"
-                            leadingSlot={IconName.CommMail}
-                        >
+                        <SubMenu label="Send email" leadingSlot="mail">
                             <MenuItem
                                 label="A draft ticket already exists"
                                 isDisabled
@@ -91,7 +88,7 @@ export function EmailChannelField({
                     ) : (
                         <MenuItem
                             label="Send email"
-                            leadingSlot={IconName.CommMail}
+                            leadingSlot="mail"
                             onAction={() => history.push(createTicketLocation)}
                         />
                     )}

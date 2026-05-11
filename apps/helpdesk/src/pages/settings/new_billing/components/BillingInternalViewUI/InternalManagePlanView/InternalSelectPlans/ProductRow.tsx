@@ -21,8 +21,8 @@ import { isTrial } from 'models/billing/utils'
 const PRODUCT_TYPE_TO_ICON: Record<ProductType, IconName> = {
     [ProductType.Helpdesk]: 'system-desktop',
     [ProductType.Automation]: 'zap',
-    [ProductType.Voice]: 'comm-phone',
-    [ProductType.SMS]: 'comm-chat',
+    [ProductType.Voice]: 'phone',
+    [ProductType.SMS]: 'chat',
     [ProductType.Convert]: 'attach-money',
 }
 

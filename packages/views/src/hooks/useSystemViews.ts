@@ -92,7 +92,7 @@ const ICON_BY_NAME = new Map<string, IconName>([
     ['Unassigned', 'folder-remove'],
     ['All', 'inbox'],
     ['Snoozed', 'timer-snooze'],
-    ['Closed', 'circle-check'],
+    ['Closed', 'check-circle'],
     ['Trash', 'trash-empty'],
-    ['Spam', 'octagon-error'],
+    ['Spam', 'error-octagon'],
 ])

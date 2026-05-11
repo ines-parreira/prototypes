@@ -131,7 +131,7 @@ export const ScheduleOrSend = () => {
             {missingSteps.length > 0 && (
                 <Banner
                     intent="warning"
-                    icon="triangle-warning"
+                    icon="warning-triangle"
                     isClosable={false}
                     title="Campaign is not ready to send"
                     description={

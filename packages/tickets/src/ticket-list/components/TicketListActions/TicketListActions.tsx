@@ -99,7 +99,7 @@ export function TicketListActions({
                         <Button
                             variant="tertiary"
                             size="sm"
-                            icon="circle-check"
+                            icon="check-circle"
                             aria-label="Close tickets"
                             isDisabled={isDisabled || isLoading}
                             onClick={handleCloseTickets}

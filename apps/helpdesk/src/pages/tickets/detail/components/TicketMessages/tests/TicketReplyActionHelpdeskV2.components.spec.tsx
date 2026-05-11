@@ -203,7 +203,7 @@ describe('TicketReplyActionHelpdeskV2 preview components', () => {
         )
         expect(
             screen.getByRole('button', { name: /closed/i }),
-        ).toHaveTextContent('circle-check')
+        ).toHaveTextContent('check-circle')
 
         rerender(<StatusPreview status="snoozed" />)
 

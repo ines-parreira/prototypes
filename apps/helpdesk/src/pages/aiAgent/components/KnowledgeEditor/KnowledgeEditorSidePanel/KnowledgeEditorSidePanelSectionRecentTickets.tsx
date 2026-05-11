@@ -164,7 +164,7 @@ const TicketCard = ({ ticket }: { ticket: Ticket }) => (
         <div className={css.ticketCardHeader}>
             <div className={css.ticketCardTitle}>
                 <span className={css.ticketCardIcon}>
-                    <Icon name="comm-mail" size={IconSize.Sm} />
+                    <Icon name="mail" size={IconSize.Sm} />
                 </span>
                 <span className={css.ticketCardTitleSubject}>
                     {ticket.title}

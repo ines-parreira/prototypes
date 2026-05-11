@@ -324,7 +324,7 @@ describe('InfobarTicketCustomerInstagramSection', () => {
             renderComponent()
 
             const verifiedIcon = await screen.findByRole('img', {
-                name: 'wavy-check',
+                name: 'check-wavy',
             })
             expect(verifiedIcon).toBeInTheDocument()
         })
@@ -340,7 +340,7 @@ describe('InfobarTicketCustomerInstagramSection', () => {
             await screen.findByRole('link', { name: /@test_user/ })
 
             expect(
-                screen.queryByRole('img', { name: 'wavy-check' }),
+                screen.queryByRole('img', { name: 'check-wavy' }),
             ).not.toBeInTheDocument()
         })
 

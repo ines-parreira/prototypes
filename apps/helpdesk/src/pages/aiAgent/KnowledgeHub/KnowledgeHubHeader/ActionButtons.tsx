@@ -80,7 +80,7 @@ export const HeaderActions = ({
                                     onClick={onSync}
                                     isDisabled={isSyncButtonDisabled}
                                     variant="secondary"
-                                    leadingSlot="arrows-reload-alt-1"
+                                    leadingSlot="arrow-reload-alt-1"
                                 >
                                     Sync store website
                                 </Button>
@@ -93,7 +93,7 @@ export const HeaderActions = ({
                             onClick={onSync}
                             isDisabled={isSyncButtonDisabled}
                             variant="secondary"
-                            leadingSlot="arrows-reload-alt-1"
+                            leadingSlot="arrow-reload-alt-1"
                         >
                             Sync store website
                         </Button>
@@ -121,7 +121,7 @@ export const HeaderActions = ({
                                     onClick={onSync}
                                     isDisabled={isSyncButtonDisabled}
                                     variant="secondary"
-                                    leadingSlot="arrows-reload-alt-1"
+                                    leadingSlot="arrow-reload-alt-1"
                                 >
                                     Sync URL
                                 </Button>
@@ -134,7 +134,7 @@ export const HeaderActions = ({
                             onClick={onSync}
                             isDisabled={isSyncButtonDisabled}
                             variant="secondary"
-                            leadingSlot="arrows-reload-alt-1"
+                            leadingSlot="arrow-reload-alt-1"
                         >
                             Sync URL
                         </Button>

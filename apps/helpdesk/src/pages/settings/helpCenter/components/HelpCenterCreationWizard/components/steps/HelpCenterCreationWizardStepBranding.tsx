@@ -44,7 +44,7 @@ const HelpCenterCreationWizardStepBranding: React.FC<Props> = ({
         handleFormUpdate,
         handleAction,
         handleSave,
-        isLoading: isLoading,
+        isLoading,
     } = useHelpCenterCreationWizard(
         helpCenter,
         HelpCenterCreationWizardStep.Branding,

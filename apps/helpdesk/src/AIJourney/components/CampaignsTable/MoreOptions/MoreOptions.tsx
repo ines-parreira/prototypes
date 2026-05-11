@@ -132,7 +132,7 @@ export const MoreOptions = ({
                             hasIncludedAudiences
                         ) {
                             return {
-                                icon: 'comm-send',
+                                icon: 'send',
                                 id: option,
                                 name: 'Send now',
                             }

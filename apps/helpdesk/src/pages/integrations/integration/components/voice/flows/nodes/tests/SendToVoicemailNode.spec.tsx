@@ -58,7 +58,7 @@ describe('SendToVoicemailNode', () => {
 
         // The icon should be rendered as part of the step card
         // Check for the comm-voicemail icon
-        const icon = screen.getByLabelText('comm-voicemail')
+        const icon = screen.getByLabelText('voicemail')
         expect(icon).toBeInTheDocument()
     })
 
@@ -130,7 +130,7 @@ describe('SendToVoicemailNode', () => {
 
         // Check for warning icon which indicates errors
         expect(
-            screen.getByRole('img', { name: 'octagon-error' }),
+            screen.getByRole('img', { name: 'error-octagon' }),
         ).toBeInTheDocument()
         // Check that the description shows 'Message' (default text for empty content)
         expect(screen.getByText('Add voicemail')).toBeInTheDocument()
@@ -151,7 +151,7 @@ describe('SendToVoicemailNode', () => {
 
         // Check for warning icon which indicates errors
         expect(
-            screen.getByRole('img', { name: 'octagon-error' }),
+            screen.getByRole('img', { name: 'error-octagon' }),
         ).toBeInTheDocument()
         // Check that the description shows 'Custom recording'
         expect(screen.getAllByText('Custom recording')).toHaveLength(2)

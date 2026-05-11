@@ -306,7 +306,7 @@ describe('FlowsSettings', () => {
                 ],
             })
             expect(
-                screen.getByRole('img', { name: /triangle-warning/i }),
+                screen.getByRole('img', { name: /warning-triangle/i }),
             ).toBeInTheDocument()
         })
         it('should not show warning icon for enabled flows with type error', () => {
@@ -326,7 +326,7 @@ describe('FlowsSettings', () => {
                 ],
             })
             expect(
-                screen.queryByRole('img', { name: /triangle-warning/i }),
+                screen.queryByRole('img', { name: /warning-triangle/i }),
             ).not.toBeInTheDocument()
         })
         it('should not show warning icon when there is no language mismatch', () => {
@@ -339,7 +339,7 @@ describe('FlowsSettings', () => {
                 ],
             })
             expect(
-                screen.queryByRole('img', { name: /triangle-warning/i }),
+                screen.queryByRole('img', { name: /warning-triangle/i }),
             ).not.toBeInTheDocument()
         })
         it('should filter out flows with language mismatch errors from dropdown', async () => {

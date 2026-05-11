@@ -35,7 +35,7 @@ export const settingsSections: Record<SettingsSection, SettingsSectionConfig> =
         [SettingsSection.Channels]: {
             id: SettingsSection.Channels,
             label: 'Channels',
-            icon: 'comm-chat-conversation',
+            icon: 'chat-conversation',
         },
         [SettingsSection.Account]: {
             id: SettingsSection.Account,

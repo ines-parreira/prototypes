@@ -15,7 +15,7 @@ const getIconName = (type: KnowledgeSourceType) => {
         case KnowledgeSourceType.SHOPIFY:
             return 'app-shopify'
         case KnowledgeSourceType.HELP_CENTER:
-            return 'comm-chat-circle'
+            return 'chat-circle'
         default:
             return 'nav-globe'
     }
@@ -46,7 +46,7 @@ export const KnowledgeResourceLine: React.FC<Props> = ({
             ) : (
                 <Tag
                     color="grey"
-                    leadingSlot={<Icon name="arrows-reload-alt-1" size="sm" />}
+                    leadingSlot={<Icon name="arrow-reload-alt-1" size="sm" />}
                 >
                     Syncing
                 </Tag>

@@ -180,7 +180,7 @@ export function ConfirmChangesModal({
                             description="Proration cannot be performed until all pending invoices are resolved."
                             isClosable={false}
                             intent="destructive"
-                            icon="triangle-warning"
+                            icon="warning-triangle"
                         />
                     )}
                     {showVersionConflictBanner && !showPendingInvoiceBanner && (
@@ -196,7 +196,7 @@ export function ConfirmChangesModal({
                             }
                             isClosable={false}
                             intent="warning"
-                            icon="triangle-warning"
+                            icon="warning-triangle"
                         />
                     )}
                     {isPaymentMethodMissing &&
@@ -213,7 +213,7 @@ export function ConfirmChangesModal({
                                 }
                                 isClosable={false}
                                 intent="warning"
-                                icon="triangle-warning"
+                                icon="warning-triangle"
                             />
                         )}
                     <Text>{description}</Text>

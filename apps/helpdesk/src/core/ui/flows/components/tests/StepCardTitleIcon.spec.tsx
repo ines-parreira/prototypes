@@ -8,21 +8,21 @@ describe('StepCardTitleIcon', () => {
     it('should render error icon by default', () => {
         render(<StepCardTitleIcon messages={['Error 1']} />)
         expect(
-            screen.getByRole('img', { name: 'octagon-error' }),
+            screen.getByRole('img', { name: 'error-octagon' }),
         ).toBeInTheDocument()
     })
 
     it('should render error icon when variant is error', () => {
         render(<StepCardTitleIcon messages={['Error 1']} variant="error" />)
         expect(
-            screen.getByRole('img', { name: 'octagon-error' }),
+            screen.getByRole('img', { name: 'error-octagon' }),
         ).toBeInTheDocument()
     })
 
     it('should render warning icon when variant is warning', () => {
         render(<StepCardTitleIcon messages={['Warning 1']} variant="warning" />)
         expect(
-            screen.getByRole('img', { name: 'triangle-warning' }),
+            screen.getByRole('img', { name: 'warning-triangle' }),
         ).toBeInTheDocument()
     })
 
@@ -35,7 +35,7 @@ describe('StepCardTitleIcon', () => {
             />,
         )
 
-        const errorIcon = screen.getByRole('img', { name: 'octagon-error' })
+        const errorIcon = screen.getByRole('img', { name: 'error-octagon' })
         await act(async () => {
             await user.hover(errorIcon)
         })
@@ -50,7 +50,7 @@ describe('StepCardTitleIcon', () => {
         const user = userEvent.setup()
         render(<StepCardTitleIcon messages={['Error 1']} />)
 
-        const errorIcon = screen.getByRole('img', { name: 'octagon-error' })
+        const errorIcon = screen.getByRole('img', { name: 'error-octagon' })
         await act(async () => {
             await user.hover(errorIcon)
         })
@@ -65,7 +65,7 @@ describe('StepCardTitleIcon', () => {
         const errors = ['Error 1', 'Error 2', 'Error 3']
         render(<StepCardTitleIcon messages={errors} />)
 
-        const errorIcon = screen.getByRole('img', { name: 'octagon-error' })
+        const errorIcon = screen.getByRole('img', { name: 'error-octagon' })
         await act(async () => {
             await user.hover(errorIcon)
         })
@@ -100,7 +100,7 @@ describe('StepCardTitleIcon', () => {
         ]
         render(<StepCardTitleIcon messages={errors} />)
 
-        const errorIcon = screen.getByRole('img', { name: 'octagon-error' })
+        const errorIcon = screen.getByRole('img', { name: 'error-octagon' })
         await act(async () => {
             await user.hover(errorIcon)
         })
@@ -118,7 +118,7 @@ describe('StepCardTitleIcon', () => {
             'This is a very long error message that provides detailed information about what went wrong'
         render(<StepCardTitleIcon messages={[longError]} />)
 
-        const errorIcon = screen.getByRole('img', { name: 'octagon-error' })
+        const errorIcon = screen.getByRole('img', { name: 'error-octagon' })
         await act(async () => {
             await user.hover(errorIcon)
         })
@@ -141,7 +141,7 @@ describe('StepCardTitleIcon', () => {
         const user = userEvent.setup()
         render(<StepCardTitleIcon messages={['Error 1']} />)
 
-        const errorIcon = screen.getByRole('img', { name: 'octagon-error' })
+        const errorIcon = screen.getByRole('img', { name: 'error-octagon' })
         await act(async () => {
             await user.hover(errorIcon)
         })
@@ -164,7 +164,7 @@ describe('StepCardTitleIcon', () => {
         const errors = ['', 'Valid error', '']
         render(<StepCardTitleIcon messages={errors} />)
 
-        const errorIcon = screen.getByRole('img', { name: 'octagon-error' })
+        const errorIcon = screen.getByRole('img', { name: 'error-octagon' })
         await act(async () => {
             await user.hover(errorIcon)
         })

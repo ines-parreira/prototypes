@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { useCallback, useMemo, useState } from 'react'
 
-import { Banner, Box, IconName, Link, Text } from '@gorgias/axiom'
+import { Banner, Box, Link, Text } from '@gorgias/axiom'
 import type { TicketMessage } from '@gorgias/helpdesk-queries'
 
 import { useDeleteTicketThreadMessage } from '../../../hooks/shared/useDeleteTicketThreadMessage'
@@ -144,7 +144,7 @@ export function TicketMessageError({
                         />
                     ) : undefined
                 }
-                icon={IconName.TriangleWarning}
+                icon="warning-triangle"
                 isClosable={false}
                 intent="destructive"
                 title={

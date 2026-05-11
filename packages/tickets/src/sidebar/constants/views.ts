@@ -25,7 +25,7 @@ export const SYSTEM_VIEW_DEFINITIONS: Record<string, SystemViewDefinition> = {
     Closed: {
         name: 'Closed',
         label: 'Closed',
-        icon: 'circle-check',
+        icon: 'check-circle',
     },
     Trash: {
         name: 'Trash',
@@ -35,6 +35,6 @@ export const SYSTEM_VIEW_DEFINITIONS: Record<string, SystemViewDefinition> = {
     Spam: {
         name: 'Spam',
         label: 'Spam',
-        icon: 'octagon-error',
+        icon: 'error-octagon',
     },
 }

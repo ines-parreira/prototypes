@@ -7,7 +7,6 @@ import {
     ButtonIntent,
     ButtonSize,
     ButtonVariant,
-    IconName,
     Menu,
     MenuItem,
     MenuSection,
@@ -77,7 +76,7 @@ export const LanguageRow = ({
                                 size={ButtonSize.Sm}
                                 variant={ButtonVariant.Tertiary}
                                 intent={ButtonIntent.Regular}
-                                icon={IconName.DotsMeatballsHorizontal}
+                                icon="dots-meatballs-horizontal"
                                 aria-label="More actions"
                                 isDisabled={language.primary || isUpdatePending}
                             />

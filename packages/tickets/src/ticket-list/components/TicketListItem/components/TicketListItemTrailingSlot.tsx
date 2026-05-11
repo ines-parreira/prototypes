@@ -1,16 +1,8 @@
 import { shortenRelativeDurationLabel } from '@repo/utils'
 import moment from 'moment'
 
-import {
-    Box,
-    Icon,
-    IconName,
-    Tag,
-    Text,
-    Tooltip,
-    TooltipContent,
-} from '@gorgias/axiom'
-import type { ColorValue } from '@gorgias/axiom'
+import { Box, Icon, Tag, Text, Tooltip, TooltipContent } from '@gorgias/axiom'
+import type { ColorValue, IconName } from '@gorgias/axiom'
 import type { TicketPriority as TicketPriorityType } from '@gorgias/helpdesk-queries'
 
 import type { TicketStatus } from '../../../../components/TicketStatusActions/utils'
@@ -22,9 +14,9 @@ type Props = {
 }
 
 const STATUS_ICON_MAP: Record<TicketStatus, IconName> = {
-    open: IconName.Inbox,
-    closed: IconName.CircleCheck,
-    snoozed: IconName.TimerSnooze,
+    open: 'inbox',
+    closed: 'check-circle',
+    snoozed: 'timer-snooze',
 }
 
 const STATUS_COLOR_MAP: Record<TicketStatus, ColorValue> = {
@@ -34,8 +26,8 @@ const STATUS_COLOR_MAP: Record<TicketStatus, ColorValue> = {
 }
 
 const PRIORITY_ICON_MAP: Partial<Record<TicketPriorityType, IconName>> = {
-    high: IconName.ArrowChevronUp,
-    critical: IconName.ArrowChevronUpDuo,
+    high: 'arrow-chevron-up',
+    critical: 'arrow-chevron-up-duo',
 }
 
 const PRIORITY_COLOR_MAP: Partial<Record<TicketPriorityType, ColorValue>> = {

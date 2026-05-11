@@ -98,7 +98,7 @@ export const SkillIntentRow = ({
                 )}
                 <span className={css.intentTicketCount}>
                     <Icon
-                        name="comm-chat"
+                        name="chat"
                         size="sm"
                         color={
                             isHandoverOnly

@@ -32,7 +32,7 @@ const MessageFailedNotification = ({
         return (
             <NotificationFeedItem
                 notification={notification}
-                icon={<Icon name="octagon-error" color="red" />}
+                icon={<Icon name="error-octagon" color="red" />}
                 title="Message not delivered"
                 href={`/app/ticket/${ticket.id}`}
                 onClick={handleOnClick}

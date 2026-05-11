@@ -169,7 +169,7 @@ export const RecentChats = () => {
                             icon={
                                 <IconWithDot
                                     size="md"
-                                    name={'comm-chat-circle'}
+                                    name="chat-circle"
                                     isDotVisible={tickets
                                         .toArray()
                                         .some(

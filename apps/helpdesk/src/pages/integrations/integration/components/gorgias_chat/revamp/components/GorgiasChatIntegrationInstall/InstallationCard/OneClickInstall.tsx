@@ -10,7 +10,6 @@ import {
     ButtonIntent,
     ButtonVariant,
     Icon,
-    IconName,
     IconSize,
     Modal,
     ModalSize,
@@ -354,7 +353,7 @@ const OneClickInstall = ({
                     {isInstalled ? (
                         <div className={css.installedIcon}>
                             <Icon
-                                name={IconName.CircleCheck}
+                                name="check-circle"
                                 color="green"
                                 size={IconSize.Lg}
                             />
@@ -386,8 +385,8 @@ const OneClickInstall = ({
                         <Button
                             icon={
                                 isOpen
-                                    ? IconName.ArrowChevronUp
-                                    : IconName.ArrowChevronDown
+                                    ? 'arrow-chevron-up'
+                                    : 'arrow-chevron-down'
                             }
                             variant={ButtonVariant.Secondary}
                             intent={ButtonIntent.Regular}

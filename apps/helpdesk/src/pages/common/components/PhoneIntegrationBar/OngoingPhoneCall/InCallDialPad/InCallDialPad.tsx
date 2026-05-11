@@ -32,7 +32,7 @@ export default function InCallDialPad({ call }: Props): JSX.Element {
             <IconButtonTooltip
                 id="dial-pad-button"
                 aria-label="Phone dial pad"
-                icon="comm-ivr"
+                icon="ivr"
                 legacyIcon="dialpad"
             >
                 Dialpad

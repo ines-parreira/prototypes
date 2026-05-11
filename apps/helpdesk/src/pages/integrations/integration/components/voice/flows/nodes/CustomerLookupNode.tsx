@@ -75,7 +75,7 @@ export function CustomerLookupNode(props: NodeProps<CustomerLookupNodeType>) {
             icon={
                 <StepCardIcon
                     backgroundColor="fuchsia"
-                    name="search-magnifying-glass"
+                    name="magnifying-glass"
                 />
             }
             errors={errors}

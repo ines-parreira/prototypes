@@ -41,7 +41,7 @@ export function TicketThreadAuditLogTicketMessageSummaryCreatedEvent({
 
     return (
         <TicketThreadEventContainer>
-            <Icon name="comm-mail" />
+            <Icon name="mail" />
             <Text size="sm">
                 Chat summarized - Unseen chat messages were sent by email
             </Text>

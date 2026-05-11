@@ -6,7 +6,7 @@ import { NotificationTile } from './NotificationTile'
 
 const baseProps = {
     id: 'notif-1',
-    icon: 'comm-bell' as const,
+    icon: 'bell' as const,
     title: 'New message',
     createdDatetime: '2024-01-01T11:59:00Z',
     readDatetime: null as string | null,

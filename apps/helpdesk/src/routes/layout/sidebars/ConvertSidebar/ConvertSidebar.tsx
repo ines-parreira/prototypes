@@ -95,7 +95,7 @@ export function ConvertSidebar() {
                                         label="Performance"
                                         trailingSlot={
                                             !isConvertSubscriber ? (
-                                                <Icon name="arrow-circle-up" />
+                                                <Icon name="arrow-up-circle" />
                                             ) : undefined
                                         }
                                     />
@@ -113,7 +113,7 @@ export function ConvertSidebar() {
                                     label="Click tracking"
                                     trailingSlot={
                                         !isConvertSubscriber ? (
-                                            <Icon name="arrow-circle-up" />
+                                            <Icon name="arrow-up-circle" />
                                         ) : undefined
                                     }
                                 />

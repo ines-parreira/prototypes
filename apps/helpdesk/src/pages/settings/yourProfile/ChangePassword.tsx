@@ -80,7 +80,7 @@ export const ChangePasswordContainer = ({
         const isError = !!result?.reason && result.reason.length > 0
 
         setErrors({
-            ...(result?.error?.response?.data?.error?.data || {}),
+            ...result?.error?.response?.data?.error?.data,
         })
 
         if (!isError) {

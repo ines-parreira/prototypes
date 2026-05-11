@@ -37,7 +37,7 @@ function getActionTitle(action: Action): string {
 function getSourceIconName(name: string): IconName {
     if (name.startsWith('shopify')) return 'app-shopify'
     if (name === 'http') return 'webhook'
-    return 'circle-check'
+    return 'check-circle'
 }
 
 function getTagNames(action: Action): string[] {
@@ -132,7 +132,7 @@ export function AppliedAction({
                 <Tooltip
                     trigger={
                         <Icon
-                            name="triangle-warning"
+                            name="warning-triangle"
                             color="var(--content-error-default)"
                         />
                     }

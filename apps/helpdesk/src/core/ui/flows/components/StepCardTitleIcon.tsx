@@ -28,8 +28,8 @@ export function StepCardTitleIcon({
                     ref={targetRef}
                     name={
                         variant === 'error'
-                            ? 'octagon-error'
-                            : 'triangle-warning'
+                            ? 'error-octagon'
+                            : 'warning-triangle'
                     }
                 />
             </span>

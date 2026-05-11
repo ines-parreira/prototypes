@@ -101,7 +101,7 @@ export function VoiceCallInboundStatus({
                             VoiceCallDisplayStatus.CallbackRequested ? (
                                 <>
                                     <Icon
-                                        name="comm-phone"
+                                        name="phone"
                                         size="sm"
                                         color="content-error-default"
                                     />
@@ -112,7 +112,7 @@ export function VoiceCallInboundStatus({
                             ) : (
                                 <>
                                     <Icon
-                                        name="comm-phone-missed"
+                                        name="phone-missed"
                                         size="sm"
                                         color={
                                             displayStatus ===

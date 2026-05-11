@@ -62,7 +62,7 @@ const createEnrichedTicket = (
     evaluationResults: Record<number, ExpressionFieldType | undefined> = {},
     conditionsLoading = false,
     customFields: Array<{ id: number; label: string; value: any }> = [],
-    iconName: any = 'comm-mail',
+    iconName: any = 'mail',
 ): EnrichedTicket => ({
     ticket,
     evaluationResults,
@@ -317,14 +317,14 @@ describe('TicketTimelineWidget', () => {
                     {},
                     false,
                     [],
-                    'comm-mail',
+                    'mail',
                 ),
                 createEnrichedTicket(
                     createTicketCompact({ id: 2, channel: 'chat' }),
                     {},
                     false,
                     [],
-                    'comm-chat-dots',
+                    'chat-dots',
                 ),
             ]
 
@@ -333,8 +333,8 @@ describe('TicketTimelineWidget', () => {
                 totalNumber: 2,
             })
 
-            expect(screen.getByLabelText('comm-mail')).toBeInTheDocument()
-            expect(screen.getByLabelText('comm-chat-dots')).toBeInTheDocument()
+            expect(screen.getByLabelText('mail')).toBeInTheDocument()
+            expect(screen.getByLabelText('chat-dots')).toBeInTheDocument()
         })
 
         it('should render ticket with status badge', () => {
@@ -476,7 +476,7 @@ describe('TicketTimelineWidget', () => {
                                 value: 'Conditional Value',
                             },
                         ],
-                        'comm-mail',
+                        'mail',
                     ),
                 },
             ]

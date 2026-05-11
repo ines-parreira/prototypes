@@ -496,7 +496,7 @@ export const getColumns = (
                                             className={styles.syncStatusTrigger}
                                         >
                                             <Icon
-                                                name="triangle-warning"
+                                                name="warning-triangle"
                                                 size="sm"
                                                 color="content-error-primary"
                                             />

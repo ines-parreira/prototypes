@@ -1,4 +1,4 @@
-import { IconName } from '@gorgias/axiom'
+import type { IconName } from '@gorgias/axiom'
 import {
     LegacyChannelSlug,
     TicketMessageSourceType,
@@ -11,31 +11,31 @@ export const ticketMessageSourceToIconName = (
 ): IconName => {
     switch (ticketMessageSource) {
         case TicketMessageSourceType.InternalNote:
-            return IconName.Note
+            return 'note'
         case TicketMessageSourceType.Email:
         case TicketMessageSourceType.HelpCenterContactForm:
         case TicketMessageSourceType.ContactForm:
         case LegacyChannelSlug.ContactForm:
-            return IconName.CommMail
+            return 'mail'
         // case TicketMessageSourceType.EmailForward:
-        //     return IconName.Forward
+        //     return 'forward'
         case TicketMessageSourceType.Chat:
         case TicketMessageSourceType.ChatContactForm:
         case TicketMessageSourceType.ChatOfflineCapture:
-            return IconName.CommChatCircleDots
+            return 'chat-dots-circle'
         case TicketMessageSourceType.Api:
-            return IconName.SystemCode
+            return 'system-code'
         case TicketMessageSourceType.Aircall:
         case TicketMessageSourceType.OttspottCall:
         case TicketMessageSourceType.Phone:
         case TicketMessageSourceType.Twilio:
-            return IconName.CommPhone
+            return 'phone'
         case TicketMessageSourceType.Sms:
-            return IconName.CommChatDots
+            return 'chat-dots'
         case LegacyChannelSlug.HelpCenter:
-            return IconName.FileDocument
+            return 'file-document'
         case TicketMessageSourceType.SystemMessage:
-            return IconName.Settings
+            return 'settings'
         case LegacyChannelSlug.FacebookMention:
         case LegacyChannelSlug.FacebookRecommendations:
         case TicketMessageSourceType.FacebookComment:
@@ -49,22 +49,22 @@ export const ticketMessageSourceToIconName = (
              * TODO: Add Facebook Feed icon
              */
             // icon.name = 'facebook-feed'
-            return IconName.ChannelFacebook
+            return 'channel-facebook'
         case TicketMessageSourceType.FacebookMessage:
         case TicketMessageSourceType.FacebookMessenger:
-            return IconName.ChannelFbMessenger
+            return 'channel-fb-messenger'
 
         case LegacyChannelSlug.Twitter:
         case TicketMessageSourceType.TwitterTweet:
         case TicketMessageSourceType.TwitterQuotedTweet:
         case TicketMessageSourceType.TwitterMentionTweet:
-            return IconName.ChannelX
+            return 'channel-x'
         case TicketMessageSourceType.TwitterDirectMessage:
             /**
              * TODO: Add Twitter Direct Message icon
              */
             // icon.name = 'twitter-dm'
-            return IconName.ChannelX
+            return 'channel-x'
         case TicketMessageSourceType.Instagram:
         case TicketMessageSourceType.InstagramAdComment:
         case TicketMessageSourceType.InstagramAdMedia:
@@ -73,37 +73,37 @@ export const ticketMessageSourceToIconName = (
         case LegacyChannelSlug.InstagramMention:
         case TicketMessageSourceType.InstagramMentionMedia:
         case TicketMessageSourceType.InstagramMentionComment:
-            return IconName.ChannelInstagram
+            return 'channel-instagram'
         case TicketMessageSourceType.InstagramDirectMessage:
-            return IconName.ChannelInstagramDm
+            return 'channel-instagram-dm'
         case TicketMessageSourceType.YotpoReview:
             /**
              * TODO: Add Yotpo Review icon
              */
             // icon.name = 'yotpo-review'
-            return IconName.ChannelYotpo
+            return 'channel-yotpo'
 
         case TicketMessageSourceType.YotpoReviewPublicComment:
             /**
              * TODO: Add Yotpo Review public comment icon
              */
             // icon.name = 'yotpo-review-public-comment'
-            return IconName.ChannelYotpo
+            return 'channel-yotpo'
         case TicketMessageSourceType.YotpoReviewPrivateComment:
             /**
              * TODO: Add Yotpo Review private comment icon
              */
             // icon.name = 'yotpo-review-private-comment'
-            return IconName.ChannelYotpo
+            return 'channel-yotpo'
         case LegacyChannelSlug.Whatsapp:
         case TicketMessageSourceType.WhatsappMessage:
-            return IconName.ChannelWhatsapp
+            return 'channel-whatsapp'
         case TicketMessageSourceType.TiktokShop:
-            return IconName.ChannelTiktok
+            return 'channel-tiktok'
         case TicketMessageSourceType.GoogleBusinessMessages:
-            return IconName.ChannelGoogleBusiness
+            return 'channel-google-business'
         default:
-            return IconName.CircleHelp
+            return 'help-circle'
     }
 }
 

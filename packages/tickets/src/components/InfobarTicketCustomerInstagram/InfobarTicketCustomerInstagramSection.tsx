@@ -143,7 +143,7 @@ export const InfobarTicketCustomerInstagramSection = ({
                         >
                             <Text size="md">@{customerInstagramHandle}</Text>
                             {customerInstagramProfile?.is_verified && (
-                                <Icon name="wavy-check" color="blue" />
+                                <Icon name="check-wavy" color="blue" />
                             )}
                         </a>
                     </FieldRow>

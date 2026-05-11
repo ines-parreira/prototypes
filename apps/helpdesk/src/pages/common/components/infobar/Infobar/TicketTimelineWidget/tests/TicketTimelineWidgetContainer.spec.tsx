@@ -232,14 +232,14 @@ describe('TicketTimelineWidgetContainer', () => {
             displayedTickets: [
                 {
                     ticket: mockTickets[0],
-                    iconName: 'comm-mail',
+                    iconName: 'mail',
                     customFields: [],
                     conditionsLoading: false,
                     evaluationResults: {},
                 },
                 {
                     ticket: mockTickets[1],
-                    iconName: 'comm-mail',
+                    iconName: 'mail',
                     customFields: [],
                     conditionsLoading: false,
                     evaluationResults: {},
@@ -248,14 +248,14 @@ describe('TicketTimelineWidgetContainer', () => {
             allEnrichedTickets: [
                 {
                     ticket: mockTickets[0],
-                    iconName: 'comm-mail',
+                    iconName: 'mail',
                     customFields: [],
                     conditionsLoading: false,
                     evaluationResults: {},
                 },
                 {
                     ticket: mockTickets[1],
-                    iconName: 'comm-mail',
+                    iconName: 'mail',
                     customFields: [],
                     conditionsLoading: false,
                     evaluationResults: {},
@@ -419,14 +419,14 @@ describe('TicketTimelineWidgetContainer', () => {
                 displayedTickets: [
                     {
                         ticket: mockTickets[0],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
                     },
                     {
                         ticket: mockTickets[1],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
@@ -435,14 +435,14 @@ describe('TicketTimelineWidgetContainer', () => {
                 allEnrichedTickets: [
                     {
                         ticket: mockTickets[0],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
                     },
                     {
                         ticket: mockTickets[1],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
@@ -487,14 +487,14 @@ describe('TicketTimelineWidgetContainer', () => {
                 displayedTickets: [
                     {
                         ticket: mockTickets[0],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
                     },
                     {
                         ticket: mockTickets[1],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
@@ -503,14 +503,14 @@ describe('TicketTimelineWidgetContainer', () => {
                 allEnrichedTickets: [
                     {
                         ticket: mockTickets[0],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
                     },
                     {
                         ticket: mockTickets[1],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
@@ -546,14 +546,14 @@ describe('TicketTimelineWidgetContainer', () => {
                 displayedTickets: [
                     {
                         ticket: mockTickets[0],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
                     },
                     {
                         ticket: mockTickets[1],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
@@ -562,14 +562,14 @@ describe('TicketTimelineWidgetContainer', () => {
                 allEnrichedTickets: [
                     {
                         ticket: mockTickets[0],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
                     },
                     {
                         ticket: mockTickets[1],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
@@ -608,14 +608,14 @@ describe('TicketTimelineWidgetContainer', () => {
                 displayedTickets: [
                     {
                         ticket: mockTickets[0],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
                     },
                     {
                         ticket: mockTickets[1],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
@@ -624,14 +624,14 @@ describe('TicketTimelineWidgetContainer', () => {
                 allEnrichedTickets: [
                     {
                         ticket: mockTickets[0],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
                     },
                     {
                         ticket: mockTickets[1],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
@@ -681,14 +681,14 @@ describe('TicketTimelineWidgetContainer', () => {
                 displayedTickets: [
                     {
                         ticket: mockTickets[0],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
                     },
                     {
                         ticket: mockTickets[1],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
@@ -697,14 +697,14 @@ describe('TicketTimelineWidgetContainer', () => {
                 allEnrichedTickets: [
                     {
                         ticket: mockTickets[0],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
                     },
                     {
                         ticket: mockTickets[1],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
@@ -749,21 +749,21 @@ describe('TicketTimelineWidgetContainer', () => {
                 displayedTickets: [
                     {
                         ticket: mockTickets[0],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
                     },
                     {
                         ticket: mockTickets[1],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
                     },
                     {
                         ticket: mockTickets[2],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
@@ -772,21 +772,21 @@ describe('TicketTimelineWidgetContainer', () => {
                 allEnrichedTickets: [
                     {
                         ticket: mockTickets[0],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
                     },
                     {
                         ticket: mockTickets[1],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
                     },
                     {
                         ticket: mockTickets[2],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
@@ -843,21 +843,21 @@ describe('TicketTimelineWidgetContainer', () => {
                 displayedTickets: [
                     {
                         ticket: mockTickets[0],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
                     },
                     {
                         ticket: mockTickets[1],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
                     },
                     {
                         ticket: mockTickets[2],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
@@ -866,21 +866,21 @@ describe('TicketTimelineWidgetContainer', () => {
                 allEnrichedTickets: [
                     {
                         ticket: mockTickets[0],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
                     },
                     {
                         ticket: mockTickets[1],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
                     },
                     {
                         ticket: mockTickets[2],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
@@ -936,14 +936,14 @@ describe('TicketTimelineWidgetContainer', () => {
                 displayedTickets: [
                     {
                         ticket: mockTickets[0],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
                     },
                     {
                         ticket: mockTickets[1],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
@@ -952,14 +952,14 @@ describe('TicketTimelineWidgetContainer', () => {
                 allEnrichedTickets: [
                     {
                         ticket: mockTickets[0],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
                     },
                     {
                         ticket: mockTickets[1],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
@@ -1004,14 +1004,14 @@ describe('TicketTimelineWidgetContainer', () => {
                 displayedTickets: [
                     {
                         ticket: mockTickets[0],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
                     },
                     {
                         ticket: mockTickets[1],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
@@ -1020,14 +1020,14 @@ describe('TicketTimelineWidgetContainer', () => {
                 allEnrichedTickets: [
                     {
                         ticket: mockTickets[0],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},
                     },
                     {
                         ticket: mockTickets[1],
-                        iconName: 'comm-mail',
+                        iconName: 'mail',
                         customFields: [],
                         conditionsLoading: false,
                         evaluationResults: {},

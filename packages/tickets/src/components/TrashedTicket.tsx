@@ -1,11 +1,4 @@
-import {
-    Color,
-    Icon,
-    IconName,
-    Tag,
-    Tooltip,
-    TooltipContent,
-} from '@gorgias/axiom'
+import { Color, Icon, Tag, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import css from './TrashedTicket.less'
 
@@ -23,7 +16,7 @@ export function TrashedTicket({
                     // eslint-disable-next-line jsx-a11y/prefer-tag-over-role
                     role="button"
                     color={Color.Red}
-                    leadingSlot={<Icon name={IconName.TrashEmpty} size="sm" />}
+                    leadingSlot={<Icon name="trash-empty" size="sm" />}
                     className={css.trashedTicket}
                 >
                     Trash

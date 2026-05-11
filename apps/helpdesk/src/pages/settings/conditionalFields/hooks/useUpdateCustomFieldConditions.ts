@@ -37,7 +37,7 @@ export default function useUpdateCustomFieldConditions() {
                         const newData = oldData.data.data
                             .map((oldCondition) => ({
                                 ...oldCondition,
-                                ...(newPartialData[oldCondition.id] || {}),
+                                ...newPartialData[oldCondition.id],
                             }))
                             .sort((a, b) => a.sort_order - b.sort_order)
 

@@ -112,13 +112,13 @@ describe('NavigationSection', () => {
 
         it('renders trailingSlot as icon when given an icon name', () => {
             renderInRouter(
-                <NavigationSection label="Tools" trailingSlot="arrow-circle-up">
+                <NavigationSection label="Tools" trailingSlot="arrow-up-circle">
                     <div>Child</div>
                 </NavigationSection>,
             )
 
             expect(
-                screen.getByRole('img', { name: 'arrow-circle-up' }),
+                screen.getByRole('img', { name: 'arrow-up-circle' }),
             ).toBeInTheDocument()
         })
 

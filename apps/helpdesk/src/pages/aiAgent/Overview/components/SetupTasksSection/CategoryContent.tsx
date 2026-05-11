@@ -101,7 +101,7 @@ export const CategoryContent = ({
                             >
                                 <span onClick={() => toggleIsCompleted(task)}>
                                     {task.isCompleted ? (
-                                        <Icon size="md" name="circle-check" />
+                                        <Icon size="md" name="check-circle" />
                                     ) : (
                                         <Icon name="shape-circle" size="md" />
                                     )}

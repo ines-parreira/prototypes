@@ -96,9 +96,7 @@ export function SendToSMSNode(props: NodeProps<SendToSMSNode>) {
                 getIntegrationName(chosenSmsIntegration, phoneNumbers) ||
                 'Select SMS integration'
             }
-            icon={
-                <StepCardIcon backgroundColor="green" name="comm-chat-dots" />
-            }
+            icon={<StepCardIcon backgroundColor="green" name="chat-dots" />}
             errors={errors}
         >
             <Banner type="info">
@@ -166,7 +164,7 @@ export function SendToSMSNode(props: NodeProps<SendToSMSNode>) {
                     <FormField
                         name={`steps.${id}.sms_content`}
                         field={TextArea}
-                        label={'SMS message'}
+                        label="SMS message"
                         placeholder="Hello! Thank you for choosing our messaging service. How can I help you?"
                     />
                 </div>

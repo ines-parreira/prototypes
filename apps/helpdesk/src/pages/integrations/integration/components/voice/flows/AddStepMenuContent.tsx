@@ -17,17 +17,17 @@ function AddStepMenuContent({
         <>
             <AddStepMenuItem
                 icon={<StepCardIcon backgroundColor="purple" name="clock" />}
-                label={'Time rule'}
+                label="Time rule"
                 onClick={() => addNode(VoiceFlowNodeType.TimeSplitConditional)}
             />
             <AddStepMenuItem
                 icon={
                     <StepCardIcon
                         backgroundColor="fuchsia"
-                        name="search-magnifying-glass"
+                        name="magnifying-glass"
                     />
                 }
-                label={'Customer lookup'}
+                label="Customer lookup"
                 onClick={() => addNode(VoiceFlowNodeType.CustomerLookup)}
             />
             <AddStepMenuItem
@@ -37,12 +37,12 @@ function AddStepMenuContent({
                         name="media-play-circle"
                     />
                 }
-                label={'Play message'}
+                label="Play message"
                 onClick={() => addNode(VoiceFlowNodeType.PlayMessage)}
             />
             <AddStepMenuItem
-                icon={<StepCardIcon backgroundColor="teal" name="comm-ivr" />}
-                label={'IVR Menu'}
+                icon={<StepCardIcon backgroundColor="teal" name="ivr" />}
+                label="IVR Menu"
                 onClick={() => addNode(VoiceFlowNodeType.IvrMenu)}
             />
             <AddStepMenuItem
@@ -52,7 +52,7 @@ function AddStepMenuContent({
                         name="arrow-routing"
                     />
                 }
-                label={'Route to'}
+                label="Route to"
                 onClick={() => addNode(VoiceFlowNodeType.Enqueue)}
             />
             <AddStepMenuItem
@@ -62,7 +62,7 @@ function AddStepMenuContent({
                         name="arrow-chevron-right-duo"
                     />
                 }
-                label={'Forward to'}
+                label="Forward to"
                 onClick={() =>
                     addNode(VoiceFlowNodeType.ForwardToExternalNumber)
                 }
@@ -73,20 +73,20 @@ function AddStepMenuContent({
                         icon={
                             <StepCardIcon
                                 backgroundColor="green"
-                                name="comm-chat-dots"
+                                name="chat-dots"
                             />
                         }
-                        label={'Send to SMS'}
+                        label="Send to SMS"
                         onClick={() => addNode(VoiceFlowNodeType.SendToSMS)}
                     />
                     <AddStepMenuItem
                         icon={
                             <StepCardIcon
                                 backgroundColor="yellow"
-                                name="comm-voicemail"
+                                name="voicemail"
                             />
                         }
-                        label={'Send to voicemail'}
+                        label="Send to voicemail"
                         onClick={() =>
                             addNode(VoiceFlowNodeType.SendToVoicemail)
                         }

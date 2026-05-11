@@ -124,7 +124,7 @@ describe('TicketNavbarViewLinkItem', () => {
         renderComponent({ view: deactivatedView })
 
         expect(
-            screen.getByRole('img', { name: 'octagon-error' }),
+            screen.getByRole('img', { name: 'error-octagon' }),
         ).toBeInTheDocument()
     })
 

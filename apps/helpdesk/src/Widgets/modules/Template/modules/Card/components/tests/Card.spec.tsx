@@ -296,7 +296,7 @@ describe('Card', () => {
                             template={{
                                 ...defaultProps.template,
                                 meta: {
-                                    ...(defaultProps.template.meta || {}),
+                                    ...defaultProps.template.meta,
                                     displayCard: undefined,
                                 },
                             }}

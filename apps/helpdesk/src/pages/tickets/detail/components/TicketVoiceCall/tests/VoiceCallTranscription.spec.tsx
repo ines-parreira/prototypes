@@ -45,7 +45,7 @@ describe('VoiceCallTranscription', () => {
             id: 1,
             created_datetime: '2021-01-01T00:00:00Z',
             transcription_status: transcriptionStatus,
-            ...(extraAudioData || {}),
+            ...extraAudioData,
         } as VoiceCallRecording
         return render(
             <VoiceCallTranscription audio={audio} type={recordingType} />,

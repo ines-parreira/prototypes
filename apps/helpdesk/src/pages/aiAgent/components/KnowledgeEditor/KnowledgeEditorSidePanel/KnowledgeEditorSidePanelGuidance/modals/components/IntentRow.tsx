@@ -90,7 +90,7 @@ export const IntentRow = ({
                     }
                 >
                     <Icon
-                        name="comm-chat-conversation"
+                        name="chat-conversation"
                         size="sm"
                         color={
                             intent.is_available

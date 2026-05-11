@@ -88,7 +88,7 @@ export function IvrMenuNode(props: IvrMenuNodeProps) {
         <VoiceStepNode
             title="IVR Menu"
             description={description}
-            icon={<StepCardIcon backgroundColor="teal" name="comm-ivr" />}
+            icon={<StepCardIcon backgroundColor="teal" name="ivr" />}
             errors={errors}
             drawerRef={ref}
             {...props}
@@ -105,7 +105,7 @@ export function IvrMenuNode(props: IvrMenuNodeProps) {
                     field={VoiceMessageField}
                     allowNone={false}
                     customRecordingType={CustomRecordingType.GreetingMessage}
-                    label={'Greeting message'}
+                    label="Greeting message"
                 />
                 <Label>Menu options</Label>
                 <IvrMenuActionsFieldArray

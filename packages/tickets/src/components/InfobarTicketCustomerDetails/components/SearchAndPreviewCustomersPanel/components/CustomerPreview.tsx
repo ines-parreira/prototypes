@@ -7,7 +7,6 @@ import {
     ButtonVariant,
     Card,
     Heading,
-    IconName,
     OverlayContent,
 } from '@gorgias/axiom'
 import type { Customer, TicketCustomer } from '@gorgias/helpdesk-types'
@@ -55,7 +54,7 @@ export function CustomerPreview({
                     <Button
                         variant={ButtonVariant.Tertiary}
                         size={ButtonSize.Sm}
-                        icon={IconName.ArrowLeft}
+                        icon="arrow-left"
                         aria-label="Back to previous screen"
                         onClick={onGoBack}
                     />

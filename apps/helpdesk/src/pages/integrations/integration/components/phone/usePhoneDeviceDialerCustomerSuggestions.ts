@@ -24,7 +24,7 @@ export default function usePhoneDeviceDialerCustomerSuggestions({
 }: UseCustomerSuggestionsArgs) {
     const [query, setQuery] = useState('')
 
-    const { isFetching: isSearchingCustomers, data: data } = useSearch(
+    const { isFetching: isSearchingCustomers, data } = useSearch(
         {
             type: SearchType.CustomerChannelPhone,
             query,

@@ -8,10 +8,7 @@ import type { IncomingCallNode } from '../types'
 export function IncomingCallNode(props: NodeProps<IncomingCallNode>) {
     return (
         <NodeWrapper {...props}>
-            <ActionLabel
-                label="Incoming Call"
-                icon={<Icon name="comm-phone" />}
-            />
+            <ActionLabel label="Incoming Call" icon={<Icon name="phone" />} />
         </NodeWrapper>
     )
 }

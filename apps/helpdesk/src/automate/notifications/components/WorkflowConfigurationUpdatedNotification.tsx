@@ -35,7 +35,7 @@ export default function WorkflowConfigurationUpdatedNotification({
         return (
             <NotificationFeedItem
                 notification={notification}
-                icon={<Icon name="triangle-warning" color="orange" />}
+                icon={<Icon name="warning-triangle" color="orange" />}
                 title={`Reconnect ${payload.integration_name}`}
                 href={routes.actions}
                 onClick={handleOnClick}

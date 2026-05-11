@@ -124,11 +124,7 @@ const TopKnowledgeCard = ({
                 </TruncatedTextWithTooltip>
             </Box>
             <Box gap="xxxxs" alignItems="center">
-                <Icon
-                    name="comm-chat"
-                    size="sm"
-                    color="content-neutral-secondary"
-                />
+                <Icon name="chat" size="sm" color="content-neutral-secondary" />
                 <DrillDownModalTrigger
                     openDrillDownModal={openDrillDownModal}
                     tooltipText={

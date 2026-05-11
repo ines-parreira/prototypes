@@ -55,7 +55,7 @@ export function TicketThreadAuditLogRuleExecutedEvent({
                 <Tooltip
                     trigger={
                         <Icon
-                            name="triangle-warning"
+                            name="warning-triangle"
                             color={
                                 failedActions[0].failureSeverity === 'warning'
                                     ? 'yellow'

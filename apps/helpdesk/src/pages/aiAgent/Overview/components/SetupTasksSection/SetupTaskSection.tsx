@@ -157,7 +157,7 @@ export const SetupTaskSection = ({
                                 className={css.listItem}
                                 onClick={handleMarkAllAsCompleted}
                             >
-                                <Icon name="circle-check" size="sm" />
+                                <Icon name="check-circle" size="sm" />
                                 <span>Mark all as completed</span>
                             </div>
                         )}

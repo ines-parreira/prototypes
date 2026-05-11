@@ -59,7 +59,7 @@ export function TicketCell({ currentUserId, ...cellContext }: TicketCellProps) {
                         <Tag
                             color="red"
                             leadingSlot={
-                                <Icon name="triangle-warning" size="sm" />
+                                <Icon name="warning-triangle" size="sm" />
                             }
                         >
                             Last message not delivered

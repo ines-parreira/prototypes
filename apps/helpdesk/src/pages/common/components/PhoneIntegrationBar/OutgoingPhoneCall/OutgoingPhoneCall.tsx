@@ -45,7 +45,7 @@ export default function OutgoingPhoneCall({ call }: Props): JSX.Element {
                         intent="destructive"
                         aria-label="End phone call"
                         onClick={() => call.disconnect()}
-                        leadingSlot="comm-phone-end"
+                        leadingSlot="phone-end"
                     >
                         End Call
                     </Button>

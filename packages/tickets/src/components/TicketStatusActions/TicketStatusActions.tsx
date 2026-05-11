@@ -11,7 +11,6 @@ import {
     DatePicker,
     DatePickerChangeEventSource,
     Icon,
-    IconName,
     Menu,
     MenuItem,
     MenuPlacement,
@@ -158,8 +157,8 @@ export function TicketStatusActions({ ticket }: TicketStatusActionsProps) {
                     <Icon
                         name={
                             isSnoozeMenuOpen
-                                ? IconName.ArrowChevronUp
-                                : IconName.ArrowChevronDown
+                                ? 'arrow-chevron-up'
+                                : 'arrow-chevron-down'
                         }
                         size="xs"
                     />
@@ -171,7 +170,7 @@ export function TicketStatusActions({ ticket }: TicketStatusActionsProps) {
             <Button
                 size="sm"
                 variant="secondary"
-                icon={IconName.TimerSnooze}
+                icon="timer-snooze"
                 aria-label="Snooze ticket"
             />
         )
@@ -217,9 +216,7 @@ export function TicketStatusActions({ ticket }: TicketStatusActionsProps) {
                                 <MenuItem
                                     id="unsnooze-ticket"
                                     label="Unsnooze"
-                                    leadingSlot={
-                                        <Icon name={IconName.CloseCircle} />
-                                    }
+                                    leadingSlot="close-circle"
                                     onAction={handleOpenTicket}
                                 />
                                 <SubMenu
@@ -231,9 +228,7 @@ export function TicketStatusActions({ ticket }: TicketStatusActionsProps) {
                                             <ShortcutKey>B</ShortcutKey>
                                         </Box>
                                     }
-                                    leadingSlot={
-                                        <Icon name={IconName.TimerSnooze} />
-                                    }
+                                    leadingSlot="timer-snooze"
                                 >
                                     {snoozePicker}
                                 </SubMenu>

@@ -43,7 +43,7 @@ const ImportEmailFailedNotification = ({
         return (
             <NotificationFeedItem
                 notification={notification}
-                icon={<Icon name="octagon-error" color="red" />}
+                icon={<Icon name="error-octagon" color="red" />}
                 title="Email import failed"
                 href="#"
                 onClick={handleOnClick}

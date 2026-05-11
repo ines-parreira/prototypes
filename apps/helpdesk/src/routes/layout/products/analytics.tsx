@@ -90,7 +90,7 @@ export const analyticsSections: Record<
     [StatsNavbarViewSections.QualityManagement]: {
         id: 'quality-management',
         label: 'Quality',
-        icon: 'wavy-check',
+        icon: 'check-wavy',
     },
     [StatsNavbarViewSections.Voice]: {
         id: 'voice',

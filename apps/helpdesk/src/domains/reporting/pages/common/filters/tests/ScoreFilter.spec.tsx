@@ -45,7 +45,7 @@ const defaultState = {
 } as RootState
 
 const scoreLabels = getScoreLabelsAndValues(MAX_SCORE_VALUE, true).map(
-    ({ label: label }) => label,
+    ({ label }) => label,
 )
 
 describe('ScoreFilter', () => {

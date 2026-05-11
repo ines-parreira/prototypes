@@ -1,7 +1,6 @@
 import {
     Box,
     Icon,
-    IconName,
     IconSize,
     Text,
     TextSize,
@@ -21,7 +20,7 @@ export const LanguageCardHeader = () => {
             <Text size={TextSize.Sm} variant={TextVariant.Medium}>
                 Language
             </Text>
-            <Icon name={IconName.ArrowDown} size={IconSize.Xs} />
+            <Icon name="arrow-down" size={IconSize.Xs} />
         </Box>
     )
 }

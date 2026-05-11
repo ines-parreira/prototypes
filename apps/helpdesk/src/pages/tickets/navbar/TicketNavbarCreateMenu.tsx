@@ -162,7 +162,7 @@ export function TicketNavbarCreateMenu() {
                                 <Tooltip
                                     trigger={
                                         <Icon
-                                            name="octagon-error"
+                                            name="error-octagon"
                                             size="sm"
                                             color="red"
                                         />

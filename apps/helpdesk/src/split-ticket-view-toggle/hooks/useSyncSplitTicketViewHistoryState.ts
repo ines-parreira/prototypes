@@ -39,7 +39,7 @@ export default function useSyncSplitTicketViewHistoryState({
 
     const syncSplitTicketViewHistoryState = useCallback(() => {
         history.replace(pathname, {
-            ...(state ?? {}),
+            ...state,
             previousSplitTicketViewEnabled: isSplitTicketViewEnabled,
         })
     }, [history, isSplitTicketViewEnabled, pathname, state])

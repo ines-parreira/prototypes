@@ -175,7 +175,7 @@ describe('AgentAvailabilityCell', () => {
 
             renderComponent()
 
-            const warningIcon = screen.getByLabelText('triangle-warning')
+            const warningIcon = screen.getByLabelText('warning-triangle')
             expect(warningIcon).toBeInTheDocument()
 
             expect(screen.getByText(errorMsg)).toBeInTheDocument()

@@ -56,7 +56,7 @@ export function VoiceCallContainer({
                         className={css.meta}
                     >
                         <MessageChannel
-                            channelIcon="comm-phone"
+                            channelIcon="phone"
                             channel="phone"
                             createdDatetime={voiceCall.created_datetime}
                             from={formatPhoneNumberInternational(

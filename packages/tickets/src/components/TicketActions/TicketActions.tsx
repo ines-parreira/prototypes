@@ -1,15 +1,7 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useShortcuts } from '@repo/utils'
 
-import {
-    Button,
-    Icon,
-    IconName,
-    Menu,
-    MenuItem,
-    MenuPlacement,
-    MenuSize,
-} from '@gorgias/axiom'
+import { Button, Menu, MenuItem, MenuPlacement, MenuSize } from '@gorgias/axiom'
 import type { Ticket } from '@gorgias/helpdesk-types'
 
 import { useCurrentUserLanguagePreferences } from '../../translations/hooks/useCurrentUserLanguagePreferences'
@@ -94,7 +86,7 @@ export function TicketActions(ticket: TicketActionsProps) {
                     <Button
                         size="sm"
                         variant="tertiary"
-                        icon={IconName.DotsMeatballsHorizontal}
+                        icon="dots-meatballs-horizontal"
                     />
                 }
             >
@@ -131,7 +123,7 @@ export function TicketActions(ticket: TicketActionsProps) {
                     <MenuItem
                         id="translate-ticket"
                         label="Translate"
-                        leadingSlot={<Icon name="translate" />}
+                        leadingSlot="translate"
                         onAction={openTranslateTicketModal}
                     />
                 )}

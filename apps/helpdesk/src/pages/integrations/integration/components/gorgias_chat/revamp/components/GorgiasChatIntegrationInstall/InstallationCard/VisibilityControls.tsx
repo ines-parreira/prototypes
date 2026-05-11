@@ -12,7 +12,6 @@ import {
     ButtonIntent,
     ButtonVariant,
     Icon,
-    IconName,
     ListItem,
     SelectField,
 } from '@gorgias/axiom'
@@ -232,7 +231,7 @@ const VisibilityControls = (
                     className={css.visibilityMethodDropdownPlaceholderIcon}
                     onClick={open}
                 >
-                    <Icon name={IconName.EditPencil} />
+                    <Icon name="edit-pencil" />
                 </span>
             </div>
             <Collapse isOpen={isOpen}>
@@ -322,8 +321,8 @@ const VisibilityControls = (
                         {hasIncompatibleConditions && (
                             <Banner
                                 variant="inline"
-                                intent={'warning'}
-                                icon={IconName.TriangleWarning}
+                                intent="warning"
+                                icon="warning-triangle"
                                 isClosable={false}
                                 title={
                                     'The selected conditions are incompatible. '
@@ -343,7 +342,7 @@ const VisibilityControls = (
                             variant={ButtonVariant.Tertiary}
                             intent={ButtonIntent.Regular}
                             onClick={() => append(makeCondition())}
-                            leadingSlot={IconName.AddPlus}
+                            leadingSlot="add-plus"
                         >
                             Add URL
                         </Button>

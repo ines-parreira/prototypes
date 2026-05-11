@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 
 import copy from 'copy-to-clipboard'
 
-import { Button, ButtonIntent, ButtonVariant, IconName } from '@gorgias/axiom'
+import { Button, ButtonIntent, ButtonVariant } from '@gorgias/axiom'
 
 type Props = {
     value: string
@@ -46,7 +46,7 @@ const CopyButton = ({
         <Button
             variant={variant}
             intent={intent}
-            leadingSlot={isCopied ? IconName.Check : IconName.Copy}
+            leadingSlot={isCopied ? 'check' : 'copy'}
             onClick={copyValue}
         >
             {isCopied ? 'Copied' : displayText}

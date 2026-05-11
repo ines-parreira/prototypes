@@ -38,7 +38,7 @@ type Story = StoryObj<typeof StepCardIcon>
 export const Default: Story = {
     args: {
         backgroundColor: 'blue',
-        name: 'comm-phone' as IconName,
+        name: 'phone' as IconName,
     },
 }
 
@@ -46,19 +46,16 @@ export const VoiceFlowIcons: Story = {
     render: () => (
         <div style={{ display: 'flex', gap: '16px' }}>
             <StepCardIcon backgroundColor="purple" name="clock" />
-            <StepCardIcon
-                backgroundColor="fuchsia"
-                name="search-magnifying-glass"
-            />
+            <StepCardIcon backgroundColor="fuchsia" name="magnifying-glass" />
             <StepCardIcon backgroundColor="blue" name="media-play-circle" />
-            <StepCardIcon backgroundColor="teal" name="comm-ivr" />
+            <StepCardIcon backgroundColor="teal" name="ivr" />
             <StepCardIcon backgroundColor="orange" name="arrow-routing" />
             <StepCardIcon
                 backgroundColor="coral"
                 name="arrow-chevron-right-duo"
             />
-            <StepCardIcon backgroundColor="green" name="comm-chat-dots" />
-            <StepCardIcon backgroundColor="yellow" name="comm-voicemail" />
+            <StepCardIcon backgroundColor="green" name="chat-dots" />
+            <StepCardIcon backgroundColor="yellow" name="voicemail" />
         </div>
     ),
 }

@@ -12,7 +12,7 @@ import {
 } from '@repo/navigation'
 import { matchPath, NavLink, useHistory, useLocation } from 'react-router-dom'
 
-import { IconName } from '@gorgias/axiom'
+import type { IconName } from '@gorgias/axiom'
 
 import { useLastSelectedStore } from 'AIJourney/hooks'
 import { ActiveContent, Navbar } from 'common/navigation'
@@ -130,7 +130,7 @@ export const AiJourneyNavbar = () => {
         })
         if (isAiJourneySegmentsEnabled) {
             items.push({
-                icon: IconName.Target,
+                icon: 'target',
                 to: `/app/ai-journey/${shopName}/segments`,
                 label: 'Segments',
                 exact: true,
@@ -139,7 +139,7 @@ export const AiJourneyNavbar = () => {
 
         if (isAiJourneyStoreSettingsEnabled) {
             items.push({
-                icon: IconName.SliderFilter,
+                icon: 'slider-filter',
                 to: `/app/ai-journey/${shopName}/settings`,
                 label: 'Settings',
                 exact: false,

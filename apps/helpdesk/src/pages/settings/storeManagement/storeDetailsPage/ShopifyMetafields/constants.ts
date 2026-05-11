@@ -53,7 +53,7 @@ export const TYPE_CONFIG: Partial<
     product_reference: { icon: 'shopping-bag', label: 'Product' },
     collection_reference: { icon: 'shopping-cart', label: 'Collection' },
     variant_reference: { icon: 'tag', label: 'Product variant' },
-    boolean: { icon: 'swicht-left', label: 'True or false' },
+    boolean: { icon: 'switch-left', label: 'True or false' },
     color: { icon: 'palette', label: 'Color' },
     id: { icon: 'user-card-id', label: 'ID' },
     rating: { icon: 'star', label: 'Rating' },

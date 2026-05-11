@@ -35,7 +35,7 @@ export function useNotificationItems(
             return {
                 notification,
                 id: notification.id,
-                icon: 'comm-bell',
+                icon: 'bell',
                 title: notification.type,
                 description: '',
                 createdDatetime: notification.inserted_datetime,

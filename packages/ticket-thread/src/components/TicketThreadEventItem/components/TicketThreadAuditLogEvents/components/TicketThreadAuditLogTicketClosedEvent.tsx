@@ -16,7 +16,7 @@ export function TicketThreadAuditLogTicketClosedEvent({
 
     return (
         <TicketThreadEventContainer>
-            <Icon name="circle-check" />
+            <Icon name="check-circle" />
             <Text size="sm">Status was changed to Closed</Text>
             <TicketThreadAuditLogEventAttribution
                 attribution={item.meta.attribution}

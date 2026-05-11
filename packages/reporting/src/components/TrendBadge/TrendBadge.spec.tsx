@@ -2,8 +2,6 @@ import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { vi } from 'vitest'
 
-import { IconName } from '@gorgias/axiom'
-
 import {
     DEFAULT_BADGE_TEXT,
     TREND_BADGE_FORMAT,
@@ -140,7 +138,7 @@ describe('<TrendBadge />', () => {
         expect(svg).toBeInTheDocument()
         expect(svg.querySelector('use')).toHaveAttribute(
             'href',
-            expect.stringContaining(`#${IconName.TrendingUp}`),
+            expect.stringContaining(`#${'trending-up'}`),
         )
     })
 
@@ -162,7 +160,7 @@ describe('<TrendBadge />', () => {
         expect(svg).toBeInTheDocument()
         expect(svg.querySelector('use')).toHaveAttribute(
             'href',
-            expect.stringContaining(`#${IconName.TrendingDown}`),
+            expect.stringContaining(`#${'trending-down'}`),
         )
     })
 })

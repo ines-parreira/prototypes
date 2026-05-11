@@ -1,7 +1,7 @@
 import type { EmojiData } from 'emoji-mart'
 import { Picker } from 'emoji-mart'
 
-import { Icon, IconName } from '@gorgias/axiom'
+import { Icon } from '@gorgias/axiom'
 
 import 'emoji-mart/css/emoji-mart.css'
 
@@ -132,7 +132,7 @@ export const EmojiPicker = ({
                     aria-label="Open emoji picker"
                     {...getReferenceProps()}
                 >
-                    <Icon name={IconName.EmojiSmile} size="sm" />
+                    <Icon name="emoji-smile" size="sm" />
                 </button>
                 <input
                     type="text"

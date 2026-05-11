@@ -211,7 +211,7 @@ export function MergeTicketsModal({
                 >
                     {selectedTab === MergeTicketsModalTabs.FieldsSelection && (
                         <Box flexDirection="row" alignItems="center" gap="xxs">
-                            <Icon name="triangle-warning" />
+                            <Icon name="warning-triangle" />
                             <Text>This action is irreversible.</Text>
                         </Box>
                     )}

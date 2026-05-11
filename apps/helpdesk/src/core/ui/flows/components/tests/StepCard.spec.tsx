@@ -70,7 +70,7 @@ describe('StepCard', () => {
         )
 
         expect(
-            screen.getByRole('img', { name: 'octagon-error' }),
+            screen.getByRole('img', { name: 'error-octagon' }),
         ).toBeInTheDocument()
     })
 
@@ -97,7 +97,7 @@ describe('StepCard', () => {
         )
 
         expect(
-            screen.queryByRole('img', { name: 'octagon-error' }),
+            screen.queryByRole('img', { name: 'error-octagon' }),
         ).not.toBeInTheDocument()
     })
 
@@ -113,7 +113,7 @@ describe('StepCard', () => {
         const stepCard = container.firstChild as HTMLElement
         expect(stepCard).not.toHaveClass('withErrors')
         expect(
-            screen.queryByRole('img', { name: 'octagon-error' }),
+            screen.queryByRole('img', { name: 'error-octagon' }),
         ).not.toBeInTheDocument()
     })
 
@@ -127,7 +127,7 @@ describe('StepCard', () => {
         )
 
         expect(
-            screen.getByRole('img', { name: 'triangle-warning' }),
+            screen.getByRole('img', { name: 'warning-triangle' }),
         ).toBeInTheDocument()
     })
 
@@ -155,7 +155,7 @@ describe('StepCard', () => {
         )
 
         expect(
-            screen.queryByRole('img', { name: 'triangle-warning' }),
+            screen.queryByRole('img', { name: 'warning-triangle' }),
         ).not.toBeInTheDocument()
     })
 
@@ -173,10 +173,10 @@ describe('StepCard', () => {
         expect(stepCard).toHaveClass('withErrors')
         expect(stepCard).not.toHaveClass('withWarnings')
         expect(
-            screen.getByRole('img', { name: 'octagon-error' }),
+            screen.getByRole('img', { name: 'error-octagon' }),
         ).toBeInTheDocument()
         expect(
-            screen.queryByRole('img', { name: 'triangle-warning' }),
+            screen.queryByRole('img', { name: 'warning-triangle' }),
         ).not.toBeInTheDocument()
     })
 
@@ -194,7 +194,7 @@ describe('StepCard', () => {
         expect(stepCard).toHaveClass('selected')
         expect(stepCard).toHaveClass('withWarnings')
         expect(
-            screen.getByRole('img', { name: 'triangle-warning' }),
+            screen.getByRole('img', { name: 'warning-triangle' }),
         ).toBeInTheDocument()
     })
 
@@ -355,7 +355,7 @@ describe('StepCard', () => {
 
         expect(screen.getByText('test-icon')).toBeInTheDocument()
         expect(
-            screen.getByRole('img', { name: 'octagon-error' }),
+            screen.getByRole('img', { name: 'error-octagon' }),
         ).toBeInTheDocument()
         expect(screen.getByTitle('Action menu')).toBeInTheDocument()
 

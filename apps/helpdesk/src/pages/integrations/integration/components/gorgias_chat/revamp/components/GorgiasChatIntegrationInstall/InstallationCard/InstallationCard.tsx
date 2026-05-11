@@ -13,7 +13,6 @@ import {
     Heading,
     HeadingSize,
     Icon,
-    IconName,
     Text,
     TextSize,
     TextVariant,
@@ -95,7 +94,7 @@ const InstallationCard = ({
                     rel="noopener noreferrer"
                     className={css.iconLink}
                 >
-                    Learn more <Icon name={IconName.ExternalLink} />
+                    Learn more <Icon name="external-link" />
                 </a>
             </>
         )
@@ -163,7 +162,7 @@ const InstallationCard = ({
                                         intent={ButtonIntent.Regular}
                                         variant={ButtonVariant.Secondary}
                                         as={ButtonAs.Anchor}
-                                        trailingSlot={IconName.ExternalLink}
+                                        trailingSlot="external-link"
                                     >
                                         <Text
                                             variant={TextVariant.Bold}

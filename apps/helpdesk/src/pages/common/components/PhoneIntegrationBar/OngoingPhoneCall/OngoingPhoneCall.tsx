@@ -239,7 +239,7 @@ export function OngoingPhoneCall({
                         onClick={() =>
                             setIsTransferDropdownOpen((isOpen) => !isOpen)
                         }
-                        icon="comm-phone-outgoing"
+                        icon="phone-outgoing"
                         legacyIcon="phone_forwarded"
                         ref={transferButtonRef}
                         isDisabled={isTransferring}
@@ -340,7 +340,7 @@ export function OngoingPhoneCall({
                             variant="primary"
                             intent="destructive"
                             onClick={handleDisconnect}
-                            icon="comm-phone-end"
+                            icon="phone-end"
                             legacyIcon="call_end"
                         >
                             End call

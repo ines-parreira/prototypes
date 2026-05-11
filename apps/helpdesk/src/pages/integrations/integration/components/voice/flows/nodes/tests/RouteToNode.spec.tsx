@@ -125,7 +125,7 @@ describe('RouteToNode', () => {
             })
             renderComponent(mockStep)
             expect(
-                screen.getByRole('img', { name: 'octagon-error' }),
+                screen.getByRole('img', { name: 'error-octagon' }),
             ).toBeInTheDocument()
         })
 
@@ -137,7 +137,7 @@ describe('RouteToNode', () => {
                 })
                 renderComponent(mockStep)
                 expect(
-                    screen.queryByRole('img', { name: 'triangle-warning' }),
+                    screen.queryByRole('img', { name: 'warning-triangle' }),
                 ).toBeNull()
             },
         )
@@ -177,7 +177,7 @@ describe('RouteToNode', () => {
             })
             renderComponent(mockStep)
             expect(
-                screen.getByRole('img', { name: 'octagon-error' }),
+                screen.getByRole('img', { name: 'error-octagon' }),
             ).toBeInTheDocument()
         })
 
@@ -187,7 +187,7 @@ describe('RouteToNode', () => {
             })
             renderComponent(mockStep)
             expect(
-                screen.getByRole('img', { name: 'triangle-warning' }),
+                screen.getByRole('img', { name: 'warning-triangle' }),
             ).toBeInTheDocument()
         })
 
@@ -197,7 +197,7 @@ describe('RouteToNode', () => {
             })
             renderComponent(mockStep)
             expect(
-                screen.queryByRole('img', { name: 'triangle-warning' }),
+                screen.queryByRole('img', { name: 'warning-triangle' }),
             ).toBeNull()
         })
     })

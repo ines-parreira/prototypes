@@ -16,7 +16,7 @@ describe('EndCallNode', () => {
 
         expect(getByText('End Call')).toBeInTheDocument()
         expect(
-            container.querySelector('[aria-label="comm-phone-end"]'),
+            container.querySelector('[aria-label="phone-end"]'),
         ).toBeInTheDocument()
         expect(container.querySelector('.nodeWrapper')).toBeInTheDocument()
     })

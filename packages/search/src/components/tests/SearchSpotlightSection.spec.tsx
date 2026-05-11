@@ -45,7 +45,7 @@ const callRow: SearchCallRow = {
     customerPhone: { text: '+33 1 23 45 67 89' },
     statusLabel: 'Answered',
     statusColor: 'green',
-    callIcon: 'comm-phone-incoming',
+    callIcon: 'phone-incoming',
     activityLabel: '2 h ago',
 }
 

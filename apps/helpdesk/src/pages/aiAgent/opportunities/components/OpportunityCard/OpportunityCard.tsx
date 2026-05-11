@@ -39,7 +39,7 @@ export const OpportunityCard = ({
         switch (type) {
             case OpportunityType.RESOLVE_CONFLICT:
                 return {
-                    icon: 'octagon-error',
+                    icon: 'error-octagon',
                     text: 'Resolve conflict',
                 }
             case OpportunityType.FILL_KNOWLEDGE_GAP:
@@ -135,7 +135,7 @@ export const OpportunityCard = ({
                             )}
                         >
                             <Icon
-                                name="comm-chat-conversation"
+                                name="chat-conversation"
                                 size="sm"
                                 color="var(--content-neutral-secondary)"
                             />
@@ -149,7 +149,7 @@ export const OpportunityCard = ({
                             trigger={
                                 <span className={css.ticketCount}>
                                     <Icon
-                                        name="comm-chat-conversation"
+                                        name="chat-conversation"
                                         size="sm"
                                         color="var(--content-neutral-secondary)"
                                     />

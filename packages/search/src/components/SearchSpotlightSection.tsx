@@ -426,7 +426,7 @@ function SearchSpotlightRowCells({
                                 <Box alignItems="center" gap="xs" minWidth={0}>
                                     <Icon
                                         alt=""
-                                        name="comm-mail"
+                                        name="mail"
                                         size="sm"
                                         color="content-neutral-tertiary"
                                     />
@@ -456,7 +456,7 @@ function SearchSpotlightRowCells({
                                 <Box alignItems="center" gap="xs" minWidth={0}>
                                     <Icon
                                         alt=""
-                                        name="comm-phone-end"
+                                        name="phone-end"
                                         size="sm"
                                         color="content-neutral-tertiary"
                                     />
@@ -489,11 +489,7 @@ function SearchSpotlightRowCells({
                             <Box alignItems="center" gap="xs" minWidth={0}>
                                 <Icon
                                     alt=""
-                                    name={
-                                        row.isUnread
-                                            ? 'comm-mail'
-                                            : 'comm-mail-open'
-                                    }
+                                    name={row.isUnread ? 'mail' : 'mail-open'}
                                     size="sm"
                                     color="content-neutral-default"
                                 />
@@ -692,7 +688,7 @@ function SearchSpotlightRowCells({
                                 <Box alignItems="center" gap="xs" minWidth={0}>
                                     <Icon
                                         alt=""
-                                        name="comm-phone-end"
+                                        name="phone-end"
                                         size="sm"
                                         color="content-neutral-tertiary"
                                     />

@@ -1,6 +1,6 @@
 import cn from 'classnames'
 
-import { Box, Icon, IconName, Text, TextVariant } from '@gorgias/axiom'
+import { Box, Icon, Text, TextVariant } from '@gorgias/axiom'
 import type { TicketMessageAttachment } from '@gorgias/helpdesk-types'
 
 import { getDiscountOfferAttachmentData } from './utils/discountOffer'
@@ -26,11 +26,7 @@ export function DiscountOfferAttachment({
                 alignItems="flex-start"
                 gap="xxxs"
             >
-                <Icon
-                    name={IconName.Tag}
-                    size="sm"
-                    color="content-neutral-secondary"
-                />
+                <Icon name="tag" size="sm" color="content-neutral-secondary" />
                 <Text
                     size="sm"
                     variant={TextVariant.Bold}

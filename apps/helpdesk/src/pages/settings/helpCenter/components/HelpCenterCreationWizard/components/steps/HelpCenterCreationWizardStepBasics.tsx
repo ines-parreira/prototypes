@@ -69,7 +69,7 @@ const HelpCenterCreationWizardStepBasics: React.FC<Props> = ({
         allStoreIntegrations,
         handleFormUpdate,
         handleSave,
-        isLoading: isLoading,
+        isLoading,
     } = useHelpCenterCreationWizard(
         helpCenter,
         HelpCenterCreationWizardStep.Basics,

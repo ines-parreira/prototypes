@@ -112,7 +112,7 @@ export function NavigationSidebar() {
                             }
                         >
                             <TooltipContent
-                                shortcut={'['}
+                                shortcut="["
                                 title={isCollapsed ? 'Expand' : 'Collapse'}
                             />
                         </NavigationSidebarTooltip>
@@ -168,7 +168,7 @@ export function NavigationSidebar() {
                             placement="right"
                             trigger={
                                 <Button
-                                    icon="circle-help"
+                                    icon="help-circle"
                                     onClick={toggleChat}
                                     variant="tertiary"
                                     size={buttonSize}

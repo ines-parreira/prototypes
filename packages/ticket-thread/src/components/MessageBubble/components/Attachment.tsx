@@ -4,7 +4,6 @@ import cn from 'classnames'
 import {
     Box,
     Icon,
-    IconName,
     Image,
     Text,
     TextVariant,
@@ -44,7 +43,7 @@ export function Attachment({ attachment, onImageClick }: AttachmentProps) {
                         onClick={() => onImageClick(attachment)}
                         fallback={
                             <Icon
-                                name={IconName.MediaImage}
+                                name="media-image"
                                 size="md"
                                 color="content-neutral-secondary"
                             />
@@ -64,7 +63,7 @@ export function Attachment({ attachment, onImageClick }: AttachmentProps) {
                             gap="xxxs"
                         >
                             <Icon
-                                name={IconName.FileDocument}
+                                name="file-document"
                                 size="md"
                                 color="content-neutral-default"
                             />

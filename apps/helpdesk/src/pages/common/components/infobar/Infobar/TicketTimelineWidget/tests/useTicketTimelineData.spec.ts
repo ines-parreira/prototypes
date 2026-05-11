@@ -58,11 +58,11 @@ const createMockTicket = (
 
 const mockChannelToIcon = (channel?: string) => {
     const channelMap: Record<string, any> = {
-        email: 'comm-mail',
-        chat: 'comm-chat-dots',
-        phone: 'comm-phone',
+        email: 'mail',
+        chat: 'chat-dots',
+        phone: 'phone',
     }
-    return channelMap[channel || ''] || 'comm-mail'
+    return channelMap[channel || ''] || 'mail'
 }
 
 describe('useTicketTimelineData', () => {
@@ -277,11 +277,9 @@ describe('useTicketTimelineData', () => {
                 }),
             )
 
-            expect(result.current.displayedTickets[0].iconName).toBe(
-                'comm-mail',
-            )
+            expect(result.current.displayedTickets[0].iconName).toBe('mail')
             expect(result.current.displayedTickets[1].iconName).toBe(
-                'comm-chat-dots',
+                'chat-dots',
             )
         })
 
@@ -380,13 +378,13 @@ describe('useTicketTimelineData', () => {
         describe('Communication channels', () => {
             it('should return phone icon for phone channel', () => {
                 expect(channelToCommunicationIcon(TicketChannel.Phone)).toBe(
-                    'comm-phone',
+                    'phone',
                 )
             })
 
             it('should return chat icon for sms channel', () => {
                 expect(channelToCommunicationIcon(TicketChannel.Sms)).toBe(
-                    'comm-chat-dots',
+                    'chat-dots',
                 )
             })
 
@@ -398,25 +396,25 @@ describe('useTicketTimelineData', () => {
 
             it('should return chat circle icon for chat channel', () => {
                 expect(channelToCommunicationIcon(TicketChannel.Chat)).toBe(
-                    'comm-chat-circle-dots',
+                    'chat-dots-circle',
                 )
             })
 
             it('should return mail icon for email channel', () => {
                 expect(channelToCommunicationIcon(TicketChannel.Email)).toBe(
-                    'comm-mail',
+                    'mail',
                 )
             })
         })
 
         describe('Default behavior', () => {
             it('should return mail icon for undefined channel', () => {
-                expect(channelToCommunicationIcon(undefined)).toBe('comm-mail')
+                expect(channelToCommunicationIcon(undefined)).toBe('mail')
             })
 
             it('should return mail icon for unknown channel', () => {
                 expect(channelToCommunicationIcon('unknown' as any)).toBe(
-                    'comm-mail',
+                    'mail',
                 )
             })
         })
@@ -446,14 +444,12 @@ describe('useTicketTimelineData', () => {
                     }),
                 )
 
-                expect(result.current.displayedTickets[0].iconName).toBe(
-                    'comm-mail',
-                )
+                expect(result.current.displayedTickets[0].iconName).toBe('mail')
                 expect(result.current.displayedTickets[1].iconName).toBe(
-                    'comm-chat-circle-dots',
+                    'chat-dots-circle',
                 )
                 expect(result.current.displayedTickets[2].iconName).toBe(
-                    'comm-phone',
+                    'phone',
                 )
             })
 

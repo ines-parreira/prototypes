@@ -591,7 +591,7 @@ describe('getColumns - Metrics Columns', () => {
             })
 
             expect(
-                screen.getByRole('img', { name: 'triangle-warning' }),
+                screen.getByRole('img', { name: 'warning-triangle' }),
             ).toBeInTheDocument()
         })
 
@@ -609,7 +609,7 @@ describe('getColumns - Metrics Columns', () => {
             })
 
             expect(
-                screen.getByRole('img', { name: 'triangle-warning' }),
+                screen.getByRole('img', { name: 'warning-triangle' }),
             ).toBeInTheDocument()
         })
 

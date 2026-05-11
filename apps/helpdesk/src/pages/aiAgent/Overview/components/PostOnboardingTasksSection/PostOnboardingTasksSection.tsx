@@ -89,7 +89,7 @@ export const PostOnboardingTasksSection = () => {
                             <AccordionHeader className={css.stepHeader}>
                                 <div className={css.stepTitleContainer}>
                                     {isStepCompleted(stepMetadata.stepName) ? (
-                                        <Icon name="circle-check" />
+                                        <Icon name="check-circle" />
                                     ) : (
                                         <Icon name="shape-circle" />
                                     )}

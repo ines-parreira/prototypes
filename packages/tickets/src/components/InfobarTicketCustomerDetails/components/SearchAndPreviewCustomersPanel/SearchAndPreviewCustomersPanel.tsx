@@ -84,7 +84,7 @@ export function SearchAndPreviewCustomersPanel({
                         <Box marginBottom="xs">
                             <TextField
                                 placeholder="Search by name, email or order no."
-                                leadingSlot="search-magnifying-glass"
+                                leadingSlot="magnifying-glass"
                                 value={searchTerm}
                                 onChange={setSearchTerm}
                             />
@@ -92,7 +92,7 @@ export function SearchAndPreviewCustomersPanel({
                         {searchError && (
                             <Text size="sm" color="content-error-default">
                                 <InfoSection
-                                    icon="triangle-warning"
+                                    icon="warning-triangle"
                                     description="Failed to search customers. Please try again."
                                 />
                             </Text>

@@ -121,7 +121,7 @@ export const SyncStoreWebsiteModal = ({
                         variant="primary"
                         intent={hasWebsiteSync ? 'destructive' : 'regular'}
                         onClick={handleSync}
-                        leadingSlot="arrows-reload-alt-1"
+                        leadingSlot="arrow-reload-alt-1"
                         isDisabled={isSyncLessThan24h || isIntegrationMissing}
                     >
                         Sync

@@ -167,7 +167,7 @@ describe('ConvertSidebar', () => {
         renderConvertSidebar()
 
         expect(
-            screen.getAllByRole('img', { name: 'arrow-circle-up' }).length,
+            screen.getAllByRole('img', { name: 'arrow-up-circle' }).length,
         ).toBeGreaterThan(0)
     })
 
@@ -177,7 +177,7 @@ describe('ConvertSidebar', () => {
         renderConvertSidebar()
 
         expect(
-            screen.queryByRole('img', { name: 'arrow-circle-up' }),
+            screen.queryByRole('img', { name: 'arrow-up-circle' }),
         ).not.toBeInTheDocument()
     })
 

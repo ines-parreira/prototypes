@@ -79,7 +79,7 @@ describe('CategoryContent', () => {
     })
     it('should show check icon for completed tasks', () => {
         renderComponent()
-        const checkIcon = screen.getByLabelText('circle-check')
+        const checkIcon = screen.getByLabelText('check-circle')
         expect(checkIcon).toBeInTheDocument()
     })
     it('should show circle icon for incomplete tasks', () => {
@@ -105,7 +105,7 @@ describe('CategoryContent', () => {
     })
     it('should call updateStepConfiguration when clicking checkbox to mark as incomplete', async () => {
         renderComponent()
-        const checkIcon = screen.getByLabelText('circle-check')
+        const checkIcon = screen.getByLabelText('check-circle')
         act(() => {
             fireEvent.click(checkIcon)
         })

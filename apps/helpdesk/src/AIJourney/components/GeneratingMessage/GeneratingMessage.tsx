@@ -1,4 +1,4 @@
-import { Box, Icon, IconName, IconSize, Size } from '@gorgias/axiom'
+import { Box, Icon, IconSize, Size } from '@gorgias/axiom'
 
 import TypingMessage from 'pages/aiAgent/Onboarding_V2/components/TypingMessage/TypingMessage'
 
@@ -19,7 +19,7 @@ export const GeneratingMessage = () => {
                 gap={Size.Xxs}
                 className={css.bottomMessage}
             >
-                <Icon name={IconName.AiAgentFeedback} size={IconSize.Xs} />
+                <Icon name="ai-agent-feedback" size={IconSize.Xs} />
                 Generating messages
             </Box>
         </Box>

@@ -4,7 +4,6 @@ import type { RefObject } from 'react'
 import {
     Button,
     Icon,
-    IconName,
     ListFooter,
     ListHeader,
     ListItem,
@@ -188,7 +187,7 @@ export function MultiLevelSelect(props: Props) {
                                     size="sm"
                                     variant="tertiary"
                                     onClick={handleGoBack}
-                                    leadingSlot={IconName.ArrowChevronLeft}
+                                    leadingSlot="arrow-chevron-left"
                                 >
                                     {navigationState.parentLevelName}
                                 </Button>
@@ -224,7 +223,7 @@ export function MultiLevelSelect(props: Props) {
                             trailingSlot={
                                 option.hasChildren && !searchValue ? (
                                     <Icon
-                                        name={IconName.ArrowChevronRight}
+                                        name="arrow-chevron-right"
                                         size="sm"
                                     />
                                 ) : undefined

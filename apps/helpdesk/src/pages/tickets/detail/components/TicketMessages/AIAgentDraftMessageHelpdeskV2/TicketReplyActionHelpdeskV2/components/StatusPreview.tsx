@@ -12,7 +12,7 @@ export function StatusPreview({ status }: StatusPreviewProps) {
     switch (normalizedStatus) {
         case 'closed':
             return (
-                <StatusButton color="grey" leadingSlot="circle-check">
+                <StatusButton color="grey" leadingSlot="check-circle">
                     Closed
                 </StatusButton>
             )

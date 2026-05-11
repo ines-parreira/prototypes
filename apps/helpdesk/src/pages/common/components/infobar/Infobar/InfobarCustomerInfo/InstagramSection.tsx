@@ -140,7 +140,7 @@ export const InstagramSection = ({
                             @{userInstaData.username}
                         </a>
                         {userInstaData?.is_verified && (
-                            <Icon name="wavy-check" color="blue" />
+                            <Icon name="check-wavy" color="blue" />
                         )}
 
                         <div

@@ -16,11 +16,11 @@ export const channelToCommunicationIcon = (
     | 'channel-fb-messenger'
     | 'channel-instagram'
     | 'channel-instagram-dm'
-    | 'comm-phone'
-    | 'comm-chat-dots'
+    | 'phone'
+    | 'chat-dots'
     | 'channel-whatsapp'
-    | 'comm-chat-circle-dots'
-    | 'comm-mail'
+    | 'chat-dots-circle'
+    | 'mail'
 > => {
     switch (channel) {
         case IntegrationType.Shopify:
@@ -69,10 +69,10 @@ export const channelToCommunicationIcon = (
         case TicketMessageSourceType.Twilio:
         case TicketChannel.Phone:
         case TicketChannel.Aircall:
-            return 'comm-phone'
+            return 'phone'
         case TicketMessageSourceType.Sms:
         case TicketChannel.Sms:
-            return 'comm-chat-dots'
+            return 'chat-dots'
         case TicketChannel.WhatsApp:
         case TicketMessageSourceType.WhatsAppMessage:
         case IntegrationType.WhatsApp:
@@ -82,7 +82,7 @@ export const channelToCommunicationIcon = (
         case TicketMessageSourceType.ChatContactForm:
         case TicketMessageSourceType.ChatOfflineCapture:
         case TicketChannel.Chat:
-            return 'comm-chat-circle-dots'
+            return 'chat-dots-circle'
         case TicketMessageSourceType.Email:
         case IntegrationType.Gmail:
         case IntegrationType.Outlook:
@@ -92,8 +92,8 @@ export const channelToCommunicationIcon = (
         case TicketChannel.Email:
         case TicketChannel.ContactForm:
         case TicketMessageSourceType.EmailForward:
-            return 'comm-mail'
+            return 'mail'
         default:
-            return 'comm-mail'
+            return 'mail'
     }
 }

@@ -1,5 +1,3 @@
-import type { ReactNode } from 'react'
-
 import { render } from '@repo/testing/vitest'
 import { screen } from '@testing-library/react'
 
@@ -32,67 +30,6 @@ vi.mock('../../hooks/useHasNewViewCountScheduler', () => ({
 vi.mock('../../hooks/useAllViews', () => ({
     useAllViews: vi.fn(),
 }))
-
-vi.mock('@gorgias/axiom', () => {
-    const Passthrough = ({
-        children,
-        title,
-        description,
-        trigger,
-    }: {
-        children?: ReactNode
-        title?: string
-        description?: string
-        trigger?: ReactNode
-    }) => (
-        <div>
-            {trigger}
-            {title}
-            {description}
-            {children}
-        </div>
-    )
-
-    return {
-        Banner: Passthrough,
-        Box: Passthrough,
-        Card: Passthrough,
-        createColumnHelper: () => ({
-            accessor: (id: string, options: unknown) => ({ id, options }),
-        }),
-        DataTable: ({
-            data,
-        }: {
-            data: Array<{ name?: string; count?: number }>
-        }) => (
-            <div>
-                {data.map((row) => (
-                    <div key={row.name ?? String(row.count)}>
-                        {row.name}
-                        {row.count}
-                    </div>
-                ))}
-            </div>
-        ),
-        DataTableBaseCell: Passthrough,
-        DataTableTextCell: Passthrough,
-        Disclosure: Passthrough,
-        DisclosureHeader: Passthrough,
-        DisclosurePanel: Passthrough,
-        Dot: Passthrough,
-        Heading: Passthrough,
-        Icon: Passthrough,
-        OverlayContent: Passthrough,
-        OverlayHeader: Passthrough,
-        Quantity: ({ value }: { value: number }) => <span>{value}</span>,
-        SidePanel: Passthrough,
-        Tag: Passthrough,
-        Text: Passthrough,
-        Toaster: Passthrough,
-        Tooltip: Passthrough,
-        TooltipContent: Passthrough,
-    }
-})
 
 const useHasNewViewCountSchedulerMock = vi.mocked(useHasNewViewCountScheduler)
 const useAllViewsMock = vi.mocked(useAllViews)
@@ -127,14 +64,10 @@ describe('ViewCountDebugPanel', () => {
         render(<ViewCountDebugPanel isOpen />)
 
         expect(
-            screen.getAllByText((_content, element) =>
-                Boolean(
-                    element?.textContent?.includes(
-                        'The Helpdesk v2 beta is disabled (flag or user toggle), so view counts are fetched by the legacy scheduler.',
-                    ),
-                ),
+            screen.getByText(
+                /The Helpdesk v2 beta is disabled \(flag or user toggle\), so view counts are fetched by the legacy scheduler\./,
             ),
-        ).not.toHaveLength(0)
+        ).toBeInTheDocument()
     })
 
     it('builds debug rows when the new view count scheduler is enabled', () => {
@@ -143,13 +76,7 @@ describe('ViewCountDebugPanel', () => {
 
         render(<ViewCountDebugPanel isOpen />)
 
-        expect(
-            screen.getAllByText((_content, element) =>
-                Boolean(
-                    element?.textContent?.includes('Open tickets') &&
-                        element.textContent.includes('12'),
-                ),
-            ),
-        ).not.toHaveLength(0)
+        expect(screen.getByText('Open tickets')).toBeInTheDocument()
+        expect(screen.getByText('12')).toBeInTheDocument()
     })
 })

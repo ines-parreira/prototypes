@@ -85,7 +85,7 @@ export function MergeTicketModalFieldsSelectionTab({
                 flexDirection="column"
                 gap="lg"
             >
-                <Icon name="circle-check" color="purple" size="lg" />
+                <Icon name="check-circle" color="purple" size="lg" />
                 <Box
                     alignItems="center"
                     justifyContent="center"

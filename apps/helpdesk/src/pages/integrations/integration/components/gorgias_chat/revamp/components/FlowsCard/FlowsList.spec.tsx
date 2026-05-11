@@ -193,7 +193,7 @@ describe('FlowsList', () => {
             renderComponent()
 
             expect(
-                screen.queryByRole('img', { name: /triangle-warning/i }),
+                screen.queryByRole('img', { name: /warning-triangle/i }),
             ).not.toBeInTheDocument()
         })
 
@@ -205,7 +205,7 @@ describe('FlowsList', () => {
             })
 
             expect(
-                screen.queryByRole('img', { name: /triangle-warning/i }),
+                screen.queryByRole('img', { name: /warning-triangle/i }),
             ).not.toBeInTheDocument()
         })
 
@@ -219,7 +219,7 @@ describe('FlowsList', () => {
             })
 
             expect(
-                screen.getByRole('img', { name: /triangle-warning/i }),
+                screen.getByRole('img', { name: /warning-triangle/i }),
             ).toBeInTheDocument()
         })
 
@@ -232,7 +232,7 @@ describe('FlowsList', () => {
             })
 
             expect(
-                screen.getAllByRole('img', { name: /triangle-warning/i }),
+                screen.getAllByRole('img', { name: /warning-triangle/i }),
             ).toHaveLength(1)
         })
     })

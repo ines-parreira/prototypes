@@ -2,7 +2,7 @@ import { parsePhoneNumber } from 'libphonenumber-js'
 import { isNumber } from 'lodash'
 import { useHistory, useParams } from 'react-router-dom'
 
-import { IconName, MenuItem, SubMenu } from '@gorgias/axiom'
+import { MenuItem, SubMenu } from '@gorgias/axiom'
 import type { PhoneIntegration, SmsIntegration } from '@gorgias/helpdesk-types'
 
 import { useCurrentUserId } from '../../../hooks/useCurrentUserId'
@@ -57,7 +57,7 @@ export function VoiceFieldMenuItems({
         return (
             <MenuItem
                 label={`Call ${formattedNumber}`}
-                leadingSlot={IconName.CommPhone}
+                leadingSlot="phone"
                 onAction={() => {
                     window.location.href = `tel:${href}`
                 }}
@@ -70,7 +70,7 @@ export function VoiceFieldMenuItems({
             {phoneIntegrations.length > 0 && isNumber(currentUserId) && (
                 <SubMenu
                     label="Make outbound call"
-                    leadingSlot={IconName.CommPhone}
+                    leadingSlot="phone"
                     maxHeight={212}
                     maxWidth={144}
                 >
@@ -117,7 +117,7 @@ export function VoiceFieldMenuItems({
             {smsIntegrations.length > 0 && (
                 <SubMenu
                     label="Send SMS"
-                    leadingSlot={IconName.CommChatDots}
+                    leadingSlot="chat-dots"
                     maxHeight={212}
                     maxWidth={144}
                 >

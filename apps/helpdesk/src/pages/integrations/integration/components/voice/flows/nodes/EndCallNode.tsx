@@ -8,10 +8,7 @@ import type { EndCallNode } from '../types'
 export function EndCallNode(props: NodeProps<EndCallNode>) {
     return (
         <NodeWrapper {...props}>
-            <ActionLabel
-                label="End Call"
-                icon={<Icon name="comm-phone-end" />}
-            />
+            <ActionLabel label="End Call" icon={<Icon name="phone-end" />} />
         </NodeWrapper>
     )
 }

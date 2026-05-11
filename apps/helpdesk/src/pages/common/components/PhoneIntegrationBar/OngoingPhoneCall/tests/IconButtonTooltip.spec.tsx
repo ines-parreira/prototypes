@@ -41,7 +41,7 @@ describe('<IconButtonTooltip />', () => {
 
     it('should render the button', () => {
         render(
-            <IconButtonTooltip icon="comm-phone-end" legacyIcon="call_end">
+            <IconButtonTooltip icon="phone-end" legacyIcon="call_end">
                 Test Action
             </IconButtonTooltip>,
         )
@@ -55,7 +55,7 @@ describe('<IconButtonTooltip />', () => {
         render(
             <IconButtonTooltip
                 ref={ref as any}
-                icon="comm-phone-end"
+                icon="phone-end"
                 legacyIcon="call_end"
             >
                 Test Action

@@ -50,7 +50,7 @@ const createMockTicket = (id: number): TicketCompact =>
 
 const createEnrichedTicket = (ticket: TicketCompact): EnrichedTicket => ({
     ticket,
-    iconName: 'comm-mail',
+    iconName: 'mail',
     customFields: [],
     conditionsLoading: false,
     evaluationResults: {},

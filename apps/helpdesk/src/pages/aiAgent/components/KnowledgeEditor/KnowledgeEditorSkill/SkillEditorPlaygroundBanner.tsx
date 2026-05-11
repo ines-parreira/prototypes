@@ -28,7 +28,7 @@ export const SkillEditorPlaygroundBanner = () => {
         <Banner
             size="md"
             intent="warning"
-            icon="triangle-warning"
+            icon="warning-triangle"
             isClosable={false}
             title="Testing may not work as expected"
         >

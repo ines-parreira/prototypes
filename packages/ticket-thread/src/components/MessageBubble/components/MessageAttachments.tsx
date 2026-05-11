@@ -7,7 +7,8 @@ import Thumbnails from 'yet-another-react-lightbox/plugins/thumbnails'
 import 'yet-another-react-lightbox/styles.css'
 import 'yet-another-react-lightbox/plugins/thumbnails.css'
 
-import { Banner, Box, Icon, IconName, Text } from '@gorgias/axiom'
+import { Banner, Box, Icon, Text } from '@gorgias/axiom'
+import type { IconName } from '@gorgias/axiom'
 import type { TicketMessageAttachment } from '@gorgias/helpdesk-types'
 
 import type {
@@ -118,14 +119,14 @@ export function MessageAttachments({
             {failedAttachments.length > 0 && (
                 <Banner
                     isClosable={false}
-                    icon={IconName.TriangleWarning}
+                    icon="warning-triangle"
                     description={`There are ${failedAttachments.length} attachment(s) that couldn't be downloaded.`}
                 />
             )}
             {linkedAttachments.length > 0 && (
                 <Box flexDirection="column" gap="xs">
                     <SectionHeader
-                        icon={IconName.LinkHorizontal}
+                        icon="link-horizontal"
                         label="Linked products"
                     />
                     <Box flexWrap="wrap" gap="xs">
@@ -148,7 +149,7 @@ export function MessageAttachments({
             {regularAttachments.length > 0 && (
                 <Box flexDirection="column" gap="xs">
                     <SectionHeader
-                        icon={IconName.PaperclipAttachment}
+                        icon="paperclip-attachment"
                         label={attachmentsLabel}
                     />
                     <Box flexWrap="wrap" gap="xs">

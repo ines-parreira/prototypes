@@ -1,6 +1,6 @@
 import { isNumber } from 'lodash'
 
-import { Box, Icon, IconName, Tag, TagColor } from '@gorgias/axiom'
+import { Box, Icon, Tag, TagColor } from '@gorgias/axiom'
 
 import { useExpandedMessages } from '../../../contexts/ExpandedMessages'
 import type {
@@ -57,10 +57,7 @@ export function MessageFooter({
                         size="sm"
                         className={css.tag}
                     >
-                        <Icon
-                            name={IconName.DotsMeatballsHorizontal}
-                            size="sm"
-                        />
+                        <Icon name="dots-meatballs-horizontal" size="sm" />
                     </Tag>
                 </Box>
             )}

@@ -19,7 +19,7 @@ const ACTION_ICONS: Record<
     NonNullable<TicketThreadAiAgentPseudoEvent['action']>,
     IconName
 > = {
-    [TicketThreadAiAgentPseudoEventAction.Close]: 'circle-check',
+    [TicketThreadAiAgentPseudoEventAction.Close]: 'check-circle',
     [TicketThreadAiAgentPseudoEventAction.Handover]: 'user-arrow',
     [TicketThreadAiAgentPseudoEventAction.Snooze]: 'timer-snooze',
 }

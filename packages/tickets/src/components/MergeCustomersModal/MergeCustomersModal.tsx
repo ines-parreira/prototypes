@@ -453,7 +453,7 @@ export function MergeCustomersModal({
                     className={css.footer}
                 >
                     <Box flexDirection="row" alignItems="center" gap="xxs">
-                        <Icon name="triangle-warning" />
+                        <Icon name="warning-triangle" />
                         <Text>This action is irreversible.</Text>
                     </Box>
                     <Button

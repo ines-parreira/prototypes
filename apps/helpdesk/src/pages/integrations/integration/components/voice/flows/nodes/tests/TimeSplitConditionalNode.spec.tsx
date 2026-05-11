@@ -249,7 +249,7 @@ describe('TimeSplitConditionalNode', () => {
         renderComponent(step, mockFlow)
         await waitFor(() => {
             expect(
-                screen.getByRole('img', { name: 'triangle-warning' }),
+                screen.getByRole('img', { name: 'warning-triangle' }),
             ).toBeInTheDocument()
         })
     })
@@ -275,7 +275,7 @@ describe('TimeSplitConditionalNode', () => {
         renderComponent(mockDefaultStep, mockDefaultFlowData)
         await waitFor(() => {
             expect(
-                screen.getByRole('img', { name: 'triangle-warning' }),
+                screen.getByRole('img', { name: 'warning-triangle' }),
             ).toBeInTheDocument()
         })
     })
@@ -294,7 +294,7 @@ describe('TimeSplitConditionalNode', () => {
         renderComponent(step, flow)
         await waitFor(() => {
             expect(
-                screen.getByRole('img', { name: 'triangle-warning' }),
+                screen.getByRole('img', { name: 'warning-triangle' }),
             ).toBeInTheDocument()
         })
     })
@@ -313,7 +313,7 @@ describe('TimeSplitConditionalNode', () => {
         renderComponent(step, flow)
         await waitFor(() => {
             expect(
-                screen.getByRole('img', { name: 'triangle-warning' }),
+                screen.getByRole('img', { name: 'warning-triangle' }),
             ).toBeInTheDocument()
         })
     })

@@ -59,7 +59,7 @@ export const ChatLauncherCard = ({
                                     GorgiasChatLauncherType.ICON && (
                                     <span className={launcherCss.checkIcon}>
                                         <Icon
-                                            name="circle-check"
+                                            name="check-circle"
                                             color="var(--content-accent-default)"
                                         />
                                     </span>
@@ -84,7 +84,7 @@ export const ChatLauncherCard = ({
                                 {isIconAndLabel && (
                                     <span className={launcherCss.checkIcon}>
                                         <Icon
-                                            name="circle-check"
+                                            name="check-circle"
                                             color="var(--content-accent-default)"
                                         />
                                     </span>

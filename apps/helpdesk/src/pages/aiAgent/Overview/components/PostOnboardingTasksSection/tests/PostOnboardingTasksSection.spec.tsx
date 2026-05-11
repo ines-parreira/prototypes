@@ -110,7 +110,7 @@ describe('PostOnboardingTasksSection', () => {
         render(<PostOnboardingTasksSection />)
         // Check for completed step icon
         expect(
-            screen.getByRole('img', { name: 'circle-check' }),
+            screen.getByRole('img', { name: 'check-circle' }),
         ).toBeInTheDocument()
         // Check for incomplete step icons
         const circleIcons = screen.getAllByRole('img', { name: 'shape-circle' })

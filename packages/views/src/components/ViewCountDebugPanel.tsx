@@ -6,6 +6,7 @@ import { useStore } from 'zustand'
 import {
     Banner,
     Box,
+    Button,
     Card,
     createColumnHelper,
     DataTable,
@@ -17,8 +18,8 @@ import {
     Dot,
     Heading,
     Icon,
-    OverlayContent,
-    OverlayHeader,
+    Panel,
+    PanelHeader,
     Quantity,
     SidePanel,
     Tag,
@@ -88,55 +89,81 @@ export function ViewCountDebugPanel({
             isOpen={isOpen}
             onOpenChange={onOpenChange}
             withoutOverlay
+            withoutPadding
             width="75vw"
         >
-            <OverlayHeader title="View Count Refresh Debug" />
-            <OverlayContent>
-                <Box
-                    flexDirection="column"
-                    gap="md"
-                    w="100%"
-                    maxHeight="calc(100vh - 120px)"
-                >
+            <Panel
+                withoutBorder
+                elevation="high"
+                h="100%"
+                overflow="auto"
+                pb="lg"
+            >
+                <PanelHeader
+                    title="View Count Refresh Debug"
+                    trailingSlot={
+                        <Button
+                            icon={<Icon name="close" />}
+                            variant="tertiary"
+                            size="sm"
+                            aria-label="Close"
+                            onClick={() => onOpenChange?.(false)}
+                        />
+                    }
+                    {...({
+                        style: { background: 'var(--elevation-neutral-high)' },
+                    } as object)}
+                />
+                <Box flexDirection="column" gap="md" w="100%">
                     {isEnabled ? (
                         <>
-                            <StatsBar rows={rows} events={events} />
-                            <Box flexGrow={1}>
-                                <DataTable
-                                    data={rows}
-                                    columns={getColumns()}
-                                    sorting={{
-                                        enable: true,
-                                        defaultValue: [
-                                            { id: 'lastFetchedAt', desc: true },
-                                        ],
-                                    }}
-                                    search={{ enable: true }}
-                                    pagination={{
-                                        enable: true,
-                                        defaultValue: {
-                                            pageIndex: 0,
-                                            pageSize: 50,
-                                        },
-                                    }}
-                                    elevation="high"
-                                    withBorder
-                                />
+                            <Box px="lg">
+                                <StatsBar rows={rows} events={events} />
                             </Box>
+                            <DataTable
+                                data={rows}
+                                columns={getColumns()}
+                                sorting={{
+                                    enable: true,
+                                    defaultValue: [
+                                        { id: 'lastFetchedAt', desc: true },
+                                    ],
+                                }}
+                                search={{ enable: true }}
+                                pagination={{
+                                    enable: true,
+                                    defaultValue: {
+                                        pageIndex: 0,
+                                        pageSize: 50,
+                                    },
+                                }}
+                                elevation="high"
+                            />
                         </>
                     ) : (
-                        <Banner
-                            intent="warning"
-                            isClosable={false}
-                            title="Legacy view count scheduling in use"
-                            description="The Helpdesk v2 beta is disabled (flag or user toggle), so view counts are fetched by the legacy scheduler."
-                        />
+                        <Box px="lg">
+                            <Banner
+                                intent="warning"
+                                isClosable={false}
+                                title="Legacy view count scheduling in use"
+                                description="The Helpdesk v2 beta is disabled (flag or user toggle), so view counts are fetched by the legacy scheduler."
+                            />
+                        </Box>
                     )}
 
-                    <Disclosure defaultExpanded={!isEnabled} w="100%">
+                    <Disclosure
+                        defaultExpanded={!isEnabled}
+                        w="100%"
+                        mt="xl"
+                        px="lg"
+                    >
                         <DisclosureHeader title="Event Log" />
                         <DisclosurePanel>
-                            <Box flexDirection="column" flexGrow={1} w="100%">
+                            <Box
+                                flexDirection="column"
+                                flexGrow={1}
+                                mx="calc(-1 * var(--spacing-lg))"
+                            >
                                 <DataTable
                                     data={events}
                                     columns={getEventColumns()}
@@ -154,13 +181,12 @@ export function ViewCountDebugPanel({
                                         },
                                     }}
                                     elevation="high"
-                                    withBorder
                                 />
                             </Box>
                         </DisclosurePanel>
                     </Disclosure>
                 </Box>
-            </OverlayContent>
+            </Panel>
         </SidePanel>
     )
 }
@@ -273,62 +299,55 @@ function StatCard({
     tooltip: string
 }) {
     return (
-        <Box style={{ flex: '1 1 0', minWidth: 0 }}>
-            <Tooltip
-                trigger={
-                    <Card
-                        elevation="mid"
-                        p="sm"
-                        flexDirection="column"
-                        alignItems="flex-start"
-                        gap="xxs"
-                        w="100%"
-                    >
-                        <Text size="sm" color="content-neutral-secondary">
-                            {label}
-                        </Text>
-                        <Heading size="lg">{String(value)}</Heading>
-                    </Card>
-                }
-            >
-                <TooltipContent title={tooltip} />
-            </Tooltip>
-        </Box>
+        <Tooltip
+            trigger={
+                <Card
+                    elevation="mid"
+                    p="sm"
+                    flexDirection="column"
+                    alignItems="flex-start"
+                    gap="xxs"
+                    w="100%"
+                    h="100%"
+                >
+                    <Text size="sm" color="content-neutral-secondary">
+                        {label}
+                    </Text>
+                    <Heading size="lg">{String(value)}</Heading>
+                </Card>
+            }
+        >
+            <TooltipContent title={tooltip} />
+        </Tooltip>
     )
 }
 
 function LeaderCard() {
     const isLeader = useStore(viewsCountStore, (s) => s.isLeader)
     return (
-        <Box style={{ flex: '1 1 0', minWidth: 0 }}>
-            <Tooltip
-                trigger={
-                    <Card
-                        elevation="mid"
-                        p="sm"
-                        flexDirection="column"
-                        alignItems="flex-start"
-                        gap="xxs"
-                        w="100%"
-                    >
-                        <Text size="sm" color="content-neutral-secondary">
-                            Leader
-                        </Text>
-                        <Box flexDirection="row" alignItems="center" gap="xs">
-                            <Dot
-                                color={isLeader ? 'green' : 'grey'}
-                                size="md"
-                            />
-                            <Heading size="lg">
-                                {isLeader ? 'Yes' : 'No'}
-                            </Heading>
-                        </Box>
-                    </Card>
-                }
-            >
-                <TooltipContent title="Whether this tab holds the scheduler lock (only one tab refreshes at a time)" />
-            </Tooltip>
-        </Box>
+        <Tooltip
+            trigger={
+                <Card
+                    elevation="mid"
+                    p="sm"
+                    flexDirection="column"
+                    alignItems="flex-start"
+                    gap="xxs"
+                    w="100%"
+                    h="100%"
+                >
+                    <Text size="sm" color="content-neutral-secondary">
+                        Leader
+                    </Text>
+                    <Box flexDirection="row" alignItems="center" gap="xs">
+                        <Dot color={isLeader ? 'green' : 'grey'} size="md" />
+                        <Heading size="lg">{isLeader ? 'Yes' : 'No'}</Heading>
+                    </Box>
+                </Card>
+            }
+        >
+            <TooltipContent title="Whether this tab holds the scheduler lock (only one tab refreshes at a time)" />
+        </Tooltip>
     )
 }
 
@@ -341,7 +360,7 @@ function StatsBar({ rows, events }: { rows: Row[]; events: ViewEvent[] }) {
 
     return (
         <Box flexDirection="column" gap="sm" mb="md">
-            <Box flexDirection="row" gap="sm">
+            <Box style={statsRowStyle}>
                 <LeaderCard />
                 <StatCard
                     label="Total"
@@ -374,7 +393,7 @@ function StatsBar({ rows, events }: { rows: Row[]; events: ViewEvent[] }) {
                     tooltip={`Viewed within the last ${DEFAULT_REFRESH_CONFIG.recentlyActiveWindowSeconds / 60}min`}
                 />
             </Box>
-            <Box flexDirection="row" gap="sm">
+            <Box style={statsRowStyle}>
                 <StatCard
                     label="Not fetched"
                     value={stats.notFetched}
@@ -420,6 +439,12 @@ function StatsBar({ rows, events }: { rows: Row[]; events: ViewEvent[] }) {
     )
 }
 
+const statsRowStyle = {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(8, minmax(0, 1fr))',
+    gap: 'var(--spacing-sm)',
+} as const
+
 function ColumnHeader({ label, tooltip }: { label: string; tooltip: string }) {
     return (
         <Tooltip
@@ -439,7 +464,7 @@ function BooleanCell({ value }: { value: boolean }) {
     return (
         <DataTableBaseCell>
             <Icon
-                name={value ? 'circle-check' : 'close-circle'}
+                name={value ? 'check-circle' : 'close-circle'}
                 color={
                     value ? 'content-success-default' : 'border-neutral-default'
                 }
@@ -473,7 +498,7 @@ function RecentCell({
         <Tooltip
             trigger={
                 <Icon
-                    name={value ? 'circle-check' : 'close-circle'}
+                    name={value ? 'check-circle' : 'close-circle'}
                     color={
                         value
                             ? 'content-success-default'
@@ -593,7 +618,7 @@ function buildColumns() {
                             <Tooltip
                                 trigger={
                                     <Icon
-                                        name="octagon-error"
+                                        name="error-octagon"
                                         size="sm"
                                         color="red"
                                     />

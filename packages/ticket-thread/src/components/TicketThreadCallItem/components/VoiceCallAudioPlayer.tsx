@@ -71,7 +71,7 @@ export function VoiceCallAudioPlayer({
     if (audio.error_code === VoiceCallRecordingErrorCode.RECORDING_IS_PRIVATE) {
         return (
             <Box flexDirection="row" alignItems="center" gap="xxs">
-                <Icon name="triangle-warning" size="sm" />
+                <Icon name="warning-triangle" size="sm" />
                 <Text>The call recording is not available.</Text>
             </Box>
         )

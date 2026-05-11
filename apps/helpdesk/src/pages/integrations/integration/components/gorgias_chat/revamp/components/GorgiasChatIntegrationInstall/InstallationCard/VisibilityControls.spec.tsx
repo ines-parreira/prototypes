@@ -73,7 +73,7 @@ jest.mock('@gorgias/axiom', () => ({
     Icon: (props: IconProps) => mockIcon(props),
     IconName: {
         EditPencil: 'edit-pencil',
-        TriangleWarning: 'triangle-warning',
+        TriangleWarning: 'warning-triangle',
         AddPlus: 'add-plus',
     },
     Banner: (props: BannerProps) => mockBanner(props),
@@ -829,7 +829,7 @@ describe('VisibilityControls', () => {
                 expect.objectContaining({
                     variant: 'inline',
                     intent: 'warning',
-                    icon: 'triangle-warning',
+                    icon: 'warning-triangle',
                     title: 'The selected conditions are incompatible. ',
                 }),
             )

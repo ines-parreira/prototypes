@@ -84,6 +84,6 @@ export const createMockIntegration = (
         ...overrides,
         meta: {
             ...mockZendeskIntegrations[0].meta,
-            ...(overrides.meta || {}),
+            ...overrides.meta,
         },
     }) as Integration

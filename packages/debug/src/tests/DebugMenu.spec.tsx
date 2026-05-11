@@ -22,7 +22,7 @@ describe('DebugMenu', () => {
     it('does not render when the flag is off and the session is not impersonated', () => {
         render(
             <DebugMenu>
-                <DebugMenuItem id="test" icon="circle-help" label="Test">
+                <DebugMenuItem id="test" icon="help-circle" label="Test">
                     <div>panel</div>
                 </DebugMenuItem>
             </DebugMenu>,
@@ -38,7 +38,7 @@ describe('DebugMenu', () => {
 
         render(
             <DebugMenu>
-                <DebugMenuItem id="test" icon="circle-help" label="Test">
+                <DebugMenuItem id="test" icon="help-circle" label="Test">
                     <div>panel</div>
                 </DebugMenuItem>
             </DebugMenu>,

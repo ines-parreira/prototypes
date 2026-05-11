@@ -2,7 +2,7 @@ import React from 'react'
 
 import classNames from 'classnames'
 
-import { Icon, Tag } from '@gorgias/axiom'
+import { Tag } from '@gorgias/axiom'
 import type { VoiceCallStatus } from '@gorgias/helpdesk-types'
 
 import { isLiveCallRinging } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
@@ -45,10 +45,7 @@ const InboundVoiceCallActivity = ({ voiceCall }: Props) => {
             )}
             {voiceCall.isPossibleSpam && (
                 <span className={css.maybeSpamTag}>
-                    <Tag
-                        leadingSlot={<Icon name={'triangle-warning'} />}
-                        color={'orange'}
-                    >
+                    <Tag leadingSlot="warning-triangle" color="orange">
                         Maybe spam
                     </Tag>
                 </span>

@@ -21,7 +21,7 @@ export function NavigationSidebarNotificationsButton() {
             trigger={
                 <div className={css.container}>
                     <Button
-                        icon="comm-bell"
+                        icon="bell"
                         variant="tertiary"
                         aria-label="Notifications"
                         size={buttonSize}

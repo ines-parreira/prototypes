@@ -11,8 +11,6 @@ import {
     Box,
     Button,
     DropdownIcon,
-    Icon,
-    IconName,
     Loader,
     Menu,
     MenuItem,
@@ -115,7 +113,7 @@ export function TranslationsDropdown({
                         <MenuItem
                             id="show-original"
                             label="Show original"
-                            leadingSlot={IconName.ArrowUndoUpLeft}
+                            leadingSlot="arrow-undo-up-left"
                             onAction={() =>
                                 setTicketMessageTranslationDisplay([
                                     {
@@ -130,7 +128,7 @@ export function TranslationsDropdown({
                         <MenuItem
                             id="regenerate-translation"
                             label="Regenerate translation"
-                            leadingSlot={IconName.ArrowsReloadAlt1}
+                            leadingSlot="arrow-reload-alt-1"
                             isDisabled={hasRegeneratedOnce}
                             onAction={() =>
                                 regenerateTicketMessageTranslations(messageId)
@@ -139,7 +137,7 @@ export function TranslationsDropdown({
                         <MenuItem
                             id="change-source-language"
                             label="Change source language"
-                            leadingSlot={<Icon name="translate" />}
+                            leadingSlot="translate"
                             onAction={openTranslateTicketModal}
                         />
                     </MenuSection>

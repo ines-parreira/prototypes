@@ -9,7 +9,6 @@ import {
     ButtonVariant,
     Elevation,
     HeadingSize,
-    IconName,
     TextSize,
     TextVariant,
 } from '@gorgias/axiom'
@@ -392,7 +391,7 @@ describe('InstallationCard', () => {
                     intent: ButtonIntent.Regular,
                     variant: ButtonVariant.Secondary,
                     as: ButtonAs.Anchor,
-                    trailingSlot: IconName.ExternalLink,
+                    trailingSlot: 'external-link',
                 }),
             )
         })
@@ -473,7 +472,7 @@ describe('InstallationCard', () => {
 
             expect(mockIcon).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    name: IconName.ExternalLink,
+                    name: 'external-link',
                 }),
             )
         })
@@ -488,7 +487,7 @@ describe('InstallationCard', () => {
 
             expect(mockIcon).not.toHaveBeenCalledWith(
                 expect.objectContaining({
-                    name: IconName.ExternalLink,
+                    name: 'external-link',
                 }),
             )
         })

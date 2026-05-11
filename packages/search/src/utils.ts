@@ -238,12 +238,10 @@ function getCallIcon(raw: RawSearchItem): SearchCallRow['callIcon'] {
     ).toLowerCase()
 
     if (status.includes('missed') || status.includes('abandoned')) {
-        return 'comm-phone-missed'
+        return 'phone-missed'
     }
 
-    return raw.direction === 'outbound'
-        ? 'comm-phone-outgoing'
-        : 'comm-phone-incoming'
+    return raw.direction === 'outbound' ? 'phone-outgoing' : 'phone-incoming'
 }
 
 function getCallCustomerPhone(raw: RawSearchItem) {

@@ -151,7 +151,7 @@ export const SkillsTable = () => {
                         placeholder="Search ..."
                         value={searchTerm}
                         onChange={setSearchTerm}
-                        leadingSlot="search-magnifying-glass"
+                        leadingSlot="magnifying-glass"
                     />
                 </Box>
 

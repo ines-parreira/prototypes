@@ -107,7 +107,7 @@ describe('PlayMessageNode', () => {
 
         // Check for warning icon which indicates errors
         expect(
-            screen.getByRole('img', { name: 'octagon-error' }),
+            screen.getByRole('img', { name: 'error-octagon' }),
         ).toBeInTheDocument()
         // Check that the description shows 'Message' (default text for empty content)
         expect(screen.getByText('Add message')).toBeInTheDocument()
@@ -128,7 +128,7 @@ describe('PlayMessageNode', () => {
 
         // Check for warning icon which indicates errors
         expect(
-            screen.getByRole('img', { name: 'octagon-error' }),
+            screen.getByRole('img', { name: 'error-octagon' }),
         ).toBeInTheDocument()
         // Check that the description shows 'Custom recording'
         expect(screen.getAllByText('Custom recording')).toHaveLength(2)

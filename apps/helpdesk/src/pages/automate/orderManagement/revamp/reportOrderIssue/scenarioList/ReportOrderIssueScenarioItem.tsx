@@ -93,7 +93,7 @@ export const ReportOrderIssueScenarioItem = ({
                     trigger={
                         <div className={css.warningIcon}>
                             <Icon
-                                name="triangle-warning"
+                                name="warning-triangle"
                                 alt="Responses not fully configured"
                             />
                         </div>

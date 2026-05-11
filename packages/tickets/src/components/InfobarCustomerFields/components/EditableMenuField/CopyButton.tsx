@@ -4,7 +4,7 @@ import { useCallback, useRef, useState } from 'react'
 import { useCopyToClipboard } from '@repo/hooks'
 import classnames from 'classnames'
 
-import { Icon, IconName, Tooltip, TooltipContent } from '@gorgias/axiom'
+import { Icon, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import css from './CopyButton.less'
 
@@ -57,7 +57,7 @@ export function CopyButton({ value, isVisible }: CopyButtonProps) {
                         [css.hidden]: !isVisible,
                     })}
                 >
-                    <Icon name={IconName.Copy} size="sm" />
+                    <Icon name="copy" size="sm" />
                 </span>
             }
         >

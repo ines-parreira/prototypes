@@ -272,7 +272,7 @@ export const SyncUrlModal = ({
                         !!error ||
                         isIntegrationMissing
                     }
-                    leadingSlot="arrows-reload-alt-1"
+                    leadingSlot="arrow-reload-alt-1"
                 >
                     Sync
                 </Button>

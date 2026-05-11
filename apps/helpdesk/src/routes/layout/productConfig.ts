@@ -62,7 +62,7 @@ export const productConfig: Record<Product, ProductConfig> = {
         productType: 'primary',
         sidebar: InboxSidebar,
         urlPatterns: ['tickets', 'ticket', 'views'],
-        icon: 'comm-chat-conversation-circle',
+        icon: 'chat-conversation-circle',
         defaultPath: '/app/',
     },
     [Product.AiAgent]: {
@@ -80,7 +80,7 @@ export const productConfig: Record<Product, ProductConfig> = {
         productType: 'primary',
         sidebar: MarketingSidebar,
         urlPatterns: ['ai-journey'],
-        icon: 'comm-send',
+        icon: 'send',
         defaultPath: '/app/ai-journey',
     },
     [Product.Analytics]: {

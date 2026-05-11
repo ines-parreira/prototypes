@@ -20,7 +20,7 @@ export const AuthenticationWarningBanner = ({
         <Banner
             variant="inline"
             intent="warning"
-            icon="triangle-warning"
+            icon="warning-triangle"
             isClosable={false}
             title="Authentication doesn't work in test mode."
             description={

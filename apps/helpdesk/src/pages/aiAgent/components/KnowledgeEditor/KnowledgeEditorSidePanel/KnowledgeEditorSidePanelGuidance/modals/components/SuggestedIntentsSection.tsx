@@ -50,7 +50,7 @@ export const SuggestedIntentsSection = ({
                         {intentTicketCountById[intent.intent] !== undefined && (
                             <span className={css.intentTicketCount}>
                                 <Icon
-                                    name="comm-chat-conversation"
+                                    name="chat-conversation"
                                     size="sm"
                                     color="var(--content-neutral-secondary)"
                                 />

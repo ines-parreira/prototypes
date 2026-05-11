@@ -860,7 +860,7 @@ describe('useEnrichFeedbackData', () => {
         })
 
         it('should return enriched data from feedback executions', () => {
-            const { result: result } = renderHook(
+            const { result } = renderHook(
                 () =>
                     useEnrichFeedbackData({
                         data: feedbackData,

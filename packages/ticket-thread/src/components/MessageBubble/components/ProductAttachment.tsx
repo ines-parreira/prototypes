@@ -1,7 +1,7 @@
 import { formatCurrency, proxifyURL } from '@repo/utils'
 import cn from 'classnames'
 
-import { Box, Icon, IconName, Image, Text, TextVariant } from '@gorgias/axiom'
+import { Box, Icon, Image, Text, TextVariant } from '@gorgias/axiom'
 import type { TicketMessageAttachment } from '@gorgias/helpdesk-types'
 
 import { getProductAttachmentData, isProductAttachment } from './utils/product'
@@ -51,7 +51,7 @@ export function ProductAttachment({ attachment }: ProductAttachmentProps) {
                                 className={css.image}
                             >
                                 <Icon
-                                    name={IconName.MediaImage}
+                                    name="media-image"
                                     size="md"
                                     color="content-neutral-secondary"
                                 />

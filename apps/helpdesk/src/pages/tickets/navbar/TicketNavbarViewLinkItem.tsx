@@ -88,15 +88,13 @@ export const TicketNavbarViewLinkItem = forwardRef<HTMLAnchorElement, Props>(
                         <Tooltip
                             trigger={
                                 <Icon
-                                    name="octagon-error"
+                                    name="error-octagon"
                                     size="sm"
                                     color="red"
                                 />
                             }
                         >
-                            <TooltipContent
-                                title={'This view is deactivated'}
-                            />
+                            <TooltipContent title="This view is deactivated" />
                         </Tooltip>
                     ) : (
                         !!viewCount && (

@@ -227,7 +227,7 @@ export const TicketListItem = memo(function TicketListItem({
                             <Tag
                                 color="red"
                                 leadingSlot={
-                                    <Icon name="triangle-warning" size="sm" />
+                                    <Icon name="warning-triangle" size="sm" />
                                 }
                                 className={styles.failedMessageTag}
                             >

@@ -100,9 +100,9 @@ export default function IncomingPhoneCall({ call }: Props): JSX.Element {
                             {isPossibleSpam && (
                                 <Tag
                                     leadingSlot={
-                                        <Icon name={'triangle-warning'} />
+                                        <Icon name="warning-triangle" />
                                     }
-                                    color={'orange'}
+                                    color="orange"
                                 >
                                     Maybe spam
                                 </Tag>
@@ -122,14 +122,14 @@ export default function IncomingPhoneCall({ call }: Props): JSX.Element {
                                     call.accept()
                                     openTicket()
                                 }}
-                                leadingSlot="comm-phone-incoming"
+                                leadingSlot="phone-incoming"
                             >
                                 Accept
                             </Button>
                             <Button
                                 intent="destructive"
                                 aria-label="Decline phone call"
-                                leadingSlot="comm-phone-end"
+                                leadingSlot="phone-end"
                                 onClick={(event) => {
                                     event.stopPropagation()
 

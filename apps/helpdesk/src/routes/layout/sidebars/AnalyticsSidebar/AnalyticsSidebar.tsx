@@ -45,7 +45,7 @@ export function AnalyticsSidebar() {
                                     label={item.label}
                                     trailingSlot={
                                         item.requiresUpgrade ? (
-                                            <Icon name="arrow-circle-up" />
+                                            <Icon name="arrow-up-circle" />
                                         ) : (
                                             item.trailingSlot
                                         )

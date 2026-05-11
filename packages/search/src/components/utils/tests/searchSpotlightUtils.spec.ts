@@ -81,7 +81,7 @@ describe('searchSpotlightUtils', () => {
                 },
                 statusLabel: 'Answered',
                 statusColor: 'green',
-                callIcon: 'comm-phone-incoming',
+                callIcon: 'phone-incoming',
                 activityLabel: '',
             },
         ]

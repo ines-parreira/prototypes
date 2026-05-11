@@ -6,7 +6,6 @@ import {
     ButtonIntent,
     ButtonVariant,
     Icon,
-    IconName,
     ListItem,
     SelectField,
     TextField,
@@ -45,7 +44,7 @@ const errorByUrlValidationResult: Record<
     unsupported: (
         <span className={css.unsupportedError}>
             That URL is not supported.
-            <Tooltip delay={100} trigger={<Icon name={IconName.CircleHelp} />}>
+            <Tooltip delay={100} trigger={<Icon name="help-circle" />}>
                 <TooltipContent>
                     Hash mark separators (e.g. &quot;#example&quot;) in URLs are
                     notsupported.
@@ -122,7 +121,7 @@ const VisibilityCondition: React.FC<Props> = ({
                 trigger={
                     <Button
                         isDisabled={!isDeletable}
-                        icon={IconName.Close}
+                        icon="close"
                         intent={
                             isDeletable
                                 ? ButtonIntent.Destructive

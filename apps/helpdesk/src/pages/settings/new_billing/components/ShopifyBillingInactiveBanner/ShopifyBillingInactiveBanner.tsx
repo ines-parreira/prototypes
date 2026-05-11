@@ -32,7 +32,7 @@ export const ShopifyBillingInactiveBanner = () => {
                     description="Your payment is overdue because your Shopify billing integration is inactive. Please activate it in Store Management to resume payment collection and avoid service interruption."
                     isClosable={false}
                     intent="warning"
-                    icon="triangle-warning"
+                    icon="warning-triangle"
                 >
                     <Link
                         to={STORE_MANAGEMENT_PATH}
@@ -54,7 +54,7 @@ export const ShopifyBillingInactiveBanner = () => {
                 description="This may cause payment collection issues, please follow the link to activate the integration."
                 isClosable={false}
                 intent="warning"
-                icon="triangle-warning"
+                icon="warning-triangle"
             >
                 <Link
                     to={ACTIVATE_PAYMENT_WITH_SHOPIFY_URL}

@@ -42,7 +42,7 @@ const ImportEmailSuccessNotification = ({
         return (
             <NotificationFeedItem
                 notification={notification}
-                icon="comm-mail"
+                icon="mail"
                 title="Email history imported"
                 href="#"
                 onClick={handleOnClick}

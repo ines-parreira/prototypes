@@ -9,7 +9,6 @@ import {
     ButtonSize,
     ButtonVariant,
     Icon,
-    IconName,
     Tag,
     TagColor,
 } from '@gorgias/axiom'
@@ -79,7 +78,7 @@ export const AiAgentStatusCell = ({ chat }: AiAgentStatusProps) => {
                     href={`/app/ai-agent/${storeIntegration.type}/${shopName}`}
                     as={ButtonAs.Anchor}
                     size={ButtonSize.Sm}
-                    leadingSlot={IconName.AiAgentFeedback}
+                    leadingSlot="ai-agent-feedback"
                     variant={ButtonVariant.Secondary}
                     intent={ButtonIntent.Regular}
                 >
@@ -92,11 +91,7 @@ export const AiAgentStatusCell = ({ chat }: AiAgentStatusProps) => {
     return (
         <Tag
             color={isAiAgentEnabled ? TagColor.Green : TagColor.Red}
-            leadingSlot={
-                <Icon
-                    name={isAiAgentEnabled ? IconName.Check : IconName.Close}
-                />
-            }
+            leadingSlot={<Icon name={isAiAgentEnabled ? 'check' : 'close'} />}
         >
             {isAiAgentEnabled ? 'Enabled' : 'Disabled'}
         </Tag>

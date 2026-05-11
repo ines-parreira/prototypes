@@ -336,7 +336,7 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
                 <Box p="md">
                     <Banner
                         intent="warning"
-                        icon="triangle-warning"
+                        icon="warning-triangle"
                         isClosable={false}
                         title="Connect a Chat or Help Center to your store to use this feature."
                     />
@@ -386,7 +386,7 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
                                     <ButtonGroupItem
                                         id="conversation"
                                         icon={
-                                            <Icon name="comm-chat-conversation-circle" />
+                                            <Icon name="chat-conversation-circle" />
                                         }
                                     />
                                 </ButtonGroup>

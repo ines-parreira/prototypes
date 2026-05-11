@@ -12,7 +12,6 @@ import {
     ButtonVariant,
     Heading,
     HeadingSize,
-    IconName,
     Text,
     TextSize,
     TextVariant,
@@ -93,7 +92,7 @@ const ChatSettingsPageHeader = ({
                         >
                             <Button
                                 as={ButtonAs.Anchor}
-                                icon={IconName.ArrowLeft}
+                                icon="arrow-left"
                                 intent={ButtonIntent.Regular}
                                 size={ButtonSize.Md}
                                 variant={ButtonVariant.Secondary}

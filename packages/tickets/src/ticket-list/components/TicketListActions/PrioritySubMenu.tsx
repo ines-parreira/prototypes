@@ -1,4 +1,5 @@
-import { Color, Icon, IconName, MenuItem, SubMenu } from '@gorgias/axiom'
+import { Color, Icon, MenuItem, SubMenu } from '@gorgias/axiom'
+import type { IconName } from '@gorgias/axiom'
 import type { TicketPriority } from '@gorgias/helpdesk-queries'
 
 const PRIORITY_OPTIONS: Array<{
@@ -10,25 +11,25 @@ const PRIORITY_OPTIONS: Array<{
     {
         id: 'critical',
         label: 'Critical',
-        icon: IconName.ArrowChevronUpDuo,
+        icon: 'arrow-chevron-up-duo',
         color: Color.Red,
     },
     {
         id: 'high',
         label: 'High',
-        icon: IconName.ArrowChevronUp,
+        icon: 'arrow-chevron-up',
         color: Color.Orange,
     },
     {
         id: 'normal',
         label: 'Normal',
-        icon: IconName.Equals,
+        icon: 'equals',
         color: Color.Grey,
     },
     {
         id: 'low',
         label: 'Low',
-        icon: IconName.ArrowChevronDown,
+        icon: 'arrow-chevron-down',
         color: Color.Grey,
     },
 ]

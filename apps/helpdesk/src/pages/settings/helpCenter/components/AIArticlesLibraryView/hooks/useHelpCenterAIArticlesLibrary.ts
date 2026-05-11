@@ -50,13 +50,12 @@ export const useHelpCenterAIArticlesLibrary = (
         ],
     )
 
-    const { fetchedArticles: fetchedArticles, isLoading: isLoading } =
-        useGetAIArticles({
-            helpCenterId,
-            storeIntegrationId,
-            locale,
-            enabled,
-        })
+    const { fetchedArticles, isLoading } = useGetAIArticles({
+        helpCenterId,
+        storeIntegrationId,
+        locale,
+        enabled,
+    })
 
     const [selectedArticle, setSelectedArticle] =
         useState<AILibraryArticleItem>()

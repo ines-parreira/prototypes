@@ -193,7 +193,7 @@ describe('MessageAppliedActions', () => {
         )
 
         expect(
-            screen.getByRole('img', { name: 'circle-check' }),
+            screen.getByRole('img', { name: 'check-circle' }),
         ).toBeInTheDocument()
     })
 
@@ -283,7 +283,7 @@ describe('MessageAppliedActions', () => {
         ).toBeInTheDocument()
         expect(screen.getByRole('img', { name: 'webhook' })).toBeInTheDocument()
         expect(
-            screen.getAllByRole('img', { name: 'triangle-warning' }),
+            screen.getAllByRole('img', { name: 'warning-triangle' }),
         ).toHaveLength(2)
         expect(
             screen.queryByRole('img', { name: 'info' }),

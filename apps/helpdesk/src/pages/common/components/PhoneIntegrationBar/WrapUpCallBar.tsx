@@ -48,7 +48,7 @@ export default function WrapUpCallBar() {
                             })
                         }}
                         isLoading={endWrapUpTimeMutation.isLoading}
-                        leadingSlot="comm-phone-end"
+                        leadingSlot="phone-end"
                     >
                         End wrap-up time
                     </Button>

@@ -155,7 +155,7 @@ const TicketCard = ({ ticket }: { ticket: Ticket }) => (
         <Box alignItems="center" justifyContent="space-between">
             <Box alignItems="center" gap="xxxs" className={css.ticketTitle}>
                 <Box color="content-neutral-secondary">
-                    <Icon name="comm-mail" size={IconSize.Sm} />
+                    <Icon name="mail" size={IconSize.Sm} />
                 </Box>
                 <TruncatedTextWithTooltip tooltipContent={ticket.title}>
                     <Text variant="bold" size="sm">

@@ -47,12 +47,12 @@ describe('NavigationSectionItem', () => {
             <NavigationSectionItem
                 to="/overview"
                 label="Overview"
-                trailingSlot="arrow-circle-up"
+                trailingSlot="arrow-up-circle"
             />,
         )
 
         expect(
-            screen.getByRole('img', { name: 'arrow-circle-up' }),
+            screen.getByRole('img', { name: 'arrow-up-circle' }),
         ).toBeInTheDocument()
     })
 

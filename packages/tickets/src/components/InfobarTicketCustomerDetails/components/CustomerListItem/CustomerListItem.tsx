@@ -88,7 +88,7 @@ export function CustomerListItem({
                 <Box flexDirection="column" gap="xxxs">
                     {emailToDisplay && (
                         <Box gap="xxxs" alignItems="center">
-                            <Icon name="comm-mail" />
+                            <Icon name="mail" />
                             <Text size="sm">
                                 <span
                                     dangerouslySetInnerHTML={{
@@ -102,7 +102,7 @@ export function CustomerListItem({
                     )}
                     {phoneChannels[0]?.address && (
                         <Box gap="xxxs" alignItems="center">
-                            <Icon name="comm-phone" />
+                            <Icon name="phone" />
                             <Text size="sm">
                                 <span
                                     dangerouslySetInnerHTML={{

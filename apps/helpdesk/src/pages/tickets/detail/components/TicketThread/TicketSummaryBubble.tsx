@@ -101,7 +101,7 @@ export function TicketSummaryBubble({
                                             intent="regular"
                                             leadingSlot={
                                                 <Icon
-                                                    name="arrows-reload-alt-1"
+                                                    name="arrow-reload-alt-1"
                                                     size="sm"
                                                 />
                                             }

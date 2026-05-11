@@ -6,7 +6,6 @@ import { NavLink } from 'react-router-dom'
 import {
     Color,
     Icon,
-    IconName,
     IconSize,
     Skeleton,
     Tag,
@@ -102,11 +101,11 @@ export const StatusCell = ({ chat, loading }: StatusCellProps) => {
                 case GorgiasChatStatusEnum.NOT_INSTALLED:
                     if (chatIsPublishedButNotInstalled) {
                         tagColor = TagColor.Orange
-                        leadingSlotIcon = <Icon name={IconName.OctagonError} />
+                        leadingSlotIcon = <Icon name="error-octagon" />
                         break
                     }
                     tagColor = TagColor.Red
-                    leadingSlotIcon = <Icon name={IconName.Close} />
+                    leadingSlotIcon = <Icon name="close" />
                     break
                 case GorgiasChatStatusEnum.ONLINE:
                 case GorgiasChatStatusEnum.INSTALLED:
@@ -116,7 +115,7 @@ export const StatusCell = ({ chat, loading }: StatusCellProps) => {
                             <Icon
                                 size={IconSize.Xs}
                                 color={Color.Green}
-                                name={IconName.ShapeCircle}
+                                name="shape-circle"
                             />
                         </span>
                     )
@@ -130,7 +129,7 @@ export const StatusCell = ({ chat, loading }: StatusCellProps) => {
                             <Icon
                                 size={IconSize.Xs}
                                 color={Color.Grey}
-                                name={IconName.ShapeCircle}
+                                name="shape-circle"
                             />
                         </span>
                     )

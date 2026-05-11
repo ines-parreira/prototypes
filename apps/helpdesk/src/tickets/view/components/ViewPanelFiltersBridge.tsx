@@ -670,7 +670,7 @@ export function ViewPanelFiltersBridge({
                                     <Button
                                         variant="secondary"
                                         leadingSlot={
-                                            <Icon name="comm-share-i-os-export" />
+                                            <Icon name="share-i-os-export" />
                                         }
                                         onClick={() => {
                                             void handleExportTickets()

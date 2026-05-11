@@ -1,10 +1,10 @@
-import { Color, Icon, IconName, Tag } from '@gorgias/axiom'
+import { Color, Icon, Tag } from '@gorgias/axiom'
 
 export function SpamTicket() {
     return (
         <Tag
             color={Color.Orange}
-            leadingSlot={<Icon name={IconName.NavFlag} size="sm" />}
+            leadingSlot={<Icon name="nav-flag" size="sm" />}
         >
             Spam
         </Tag>

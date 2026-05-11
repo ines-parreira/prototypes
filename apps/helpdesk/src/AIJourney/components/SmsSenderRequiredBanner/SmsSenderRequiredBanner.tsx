@@ -14,7 +14,7 @@ export const SmsSenderRequiredBanner = ({ settingsUrl, isCampaign }: Props) => {
     return (
         <Banner
             intent="warning"
-            icon="triangle-warning"
+            icon="warning-triangle"
             isClosable={false}
             title="Add sender phone number to activate"
             description={`Select a phone number in Settings before this ${entity} can go live.`}

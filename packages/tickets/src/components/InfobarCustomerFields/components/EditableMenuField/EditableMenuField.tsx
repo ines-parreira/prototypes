@@ -5,7 +5,6 @@ import {
     Button,
     ButtonSize,
     ButtonVariant,
-    IconName,
     Intent,
     Menu,
     MenuItem,
@@ -116,14 +115,14 @@ export function EditableMenuField(props: EditableMenuFieldProps) {
                 {children}
                 <MenuItem
                     label={`Edit ${name}`}
-                    leadingSlot={IconName.EditPencil}
+                    leadingSlot="edit-pencil"
                     onAction={handleEditClick}
                 />
                 {onDelete && (
                     <MenuItem
                         label={`Delete ${name}`}
                         intent={Intent.Destructive}
-                        leadingSlot={IconName.TrashEmpty}
+                        leadingSlot="trash-empty"
                         onAction={onDelete}
                     />
                 )}

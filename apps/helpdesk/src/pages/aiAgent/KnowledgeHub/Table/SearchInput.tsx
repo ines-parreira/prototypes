@@ -20,7 +20,7 @@ export const SearchInput = ({
                 value={value}
                 onChange={onChange}
                 placeholder={placeholder}
-                leadingSlot="search-magnifying-glass"
+                leadingSlot="magnifying-glass"
                 aria-label="Search knowledge items"
             />
         </div>

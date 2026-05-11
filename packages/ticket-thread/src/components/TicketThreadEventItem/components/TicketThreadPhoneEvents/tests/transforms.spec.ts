@@ -23,7 +23,7 @@ function createPhoneEvent(
         ...overrides,
         data: {
             ...baseEvent.data,
-            ...(overrides.data ?? {}),
+            ...overrides.data,
         },
     }
 }
@@ -114,11 +114,11 @@ describe('phone event transforms', () => {
 
     describe('getPhoneEventIconName', () => {
         it.each<[PhoneEventType, string]>([
-            ['phone-call-conversation-started', 'comm-phone-incoming'],
+            ['phone-call-conversation-started', 'phone-incoming'],
             ['phone-call-forwarded-to-external-number', 'arrow-routing'],
             ['phone-call-forwarded-to-gorgias-number', 'arrow-routing'],
             ['phone-call-forwarded', 'arrow-routing'],
-            ['message-played', 'comm-ivr'],
+            ['message-played', 'ivr'],
         ])('maps %s to %s', (type, expectedIconName) => {
             expect(getPhoneEventIconName(type)).toBe(expectedIconName)
         })

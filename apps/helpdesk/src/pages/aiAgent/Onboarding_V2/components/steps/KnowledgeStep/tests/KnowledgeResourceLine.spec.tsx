@@ -30,7 +30,7 @@ describe('KnowledgeResourceLine', () => {
         expect(screen.getByText('Help Center Articles')).toBeInTheDocument()
         expect(screen.getByText('Syncing')).toBeInTheDocument()
         expect(
-            screen.getByRole('img', { name: 'comm-chat-circle' }),
+            screen.getByRole('img', { name: 'chat-circle' }),
         ).toBeInTheDocument()
     })
     it('renders URL resource with ready status', () => {
@@ -57,7 +57,7 @@ describe('KnowledgeResourceLine', () => {
         )
         expect(screen.getByText('Syncing')).toBeInTheDocument()
         expect(
-            screen.getByRole('img', { name: 'arrows-reload-alt-1' }),
+            screen.getByRole('img', { name: 'arrow-reload-alt-1' }),
         ).toBeInTheDocument()
     })
 })

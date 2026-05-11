@@ -1,6 +1,5 @@
 import {
     Box,
-    IconName,
     TableHeader,
     TableV1BodyContent,
     TableV1HeaderRowGroup,
@@ -44,7 +43,7 @@ export function MergeTicketsModalSearchTab({
                 <Text variant="bold">{subject}</Text> with in the table below:
             </Text>
             <TextField
-                leadingSlot={IconName.SearchMagnifyingGlass}
+                leadingSlot="magnifying-glass"
                 placeholder="Search for a ticket"
                 value={searchQuery}
                 onChange={setSearchQuery}

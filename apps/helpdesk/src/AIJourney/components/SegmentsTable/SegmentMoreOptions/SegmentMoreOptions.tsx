@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-import { Icon, IconName, ListItem, Select, SelectTrigger } from '@gorgias/axiom'
+import { Icon, ListItem, Select, SelectTrigger } from '@gorgias/axiom'
 
 import type { Segment } from 'AIJourney/pages/Segments/Segments'
 
@@ -53,7 +53,7 @@ export const SegmentMoreOptions = ({
             placement="bottom right"
             trigger={({ ref }) => (
                 <SelectTrigger ref={ref}>
-                    <Icon name={IconName.DotsMeatballsHorizontal} />
+                    <Icon name="dots-meatballs-horizontal" />
                 </SelectTrigger>
             )}
             items={options}

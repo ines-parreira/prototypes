@@ -49,7 +49,7 @@ export const DisabledActionsBar = ({
             <Banner
                 variant="inline"
                 intent="warning"
-                icon="triangle-warning"
+                icon="warning-triangle"
                 isClosable={false}
                 size="md"
                 title={title}

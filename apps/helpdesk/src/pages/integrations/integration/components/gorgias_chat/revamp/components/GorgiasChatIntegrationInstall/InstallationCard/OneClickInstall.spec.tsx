@@ -5,7 +5,6 @@ import { fromJS } from 'immutable'
 import {
     ButtonIntent,
     ButtonVariant,
-    IconName,
     IconSize,
     ModalSize,
     TextSize,
@@ -328,7 +327,7 @@ describe('OneClickInstall', () => {
 
             expect(mockIcon).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    name: IconName.CircleCheck,
+                    name: 'check-circle',
                     color: 'green',
                     size: IconSize.Lg,
                 }),
@@ -342,7 +341,7 @@ describe('OneClickInstall', () => {
 
             expect(mockIcon).not.toHaveBeenCalledWith(
                 expect.objectContaining({
-                    name: IconName.CircleCheck,
+                    name: 'check-circle',
                 }),
             )
         })
@@ -493,7 +492,7 @@ describe('OneClickInstall', () => {
 
             const buttonCalls = mockButton.mock.calls as any[]
             const expandButton = buttonCalls.find(
-                (call) => call[0].icon === IconName.ArrowChevronDown,
+                (call) => call[0].icon === 'arrow-chevron-down',
             )
 
             expect(expandButton).toBeDefined()
@@ -510,7 +509,7 @@ describe('OneClickInstall', () => {
             renderComponent()
 
             const expandButton = mockButton.mock.calls.find(
-                (call: any) => call[0].icon === IconName.ArrowChevronDown,
+                (call: any) => call[0].icon === 'arrow-chevron-down',
             )
 
             act(() => {
@@ -519,7 +518,7 @@ describe('OneClickInstall', () => {
 
             const buttonCalls = mockButton.mock.calls as any[]
             const collapseButton = buttonCalls.find(
-                (call) => call[0].icon === IconName.ArrowChevronUp,
+                (call) => call[0].icon === 'arrow-chevron-up',
             )
 
             expect(collapseButton).toBeDefined()
@@ -533,8 +532,8 @@ describe('OneClickInstall', () => {
             const buttonCalls = mockButton.mock.calls as any[]
             const expandButton = buttonCalls.find(
                 (call) =>
-                    call[0].icon === IconName.ArrowChevronDown ||
-                    call[0].icon === IconName.ArrowChevronUp,
+                    call[0].icon === 'arrow-chevron-down' ||
+                    call[0].icon === 'arrow-chevron-up',
             )
 
             expect(expandButton).toBeUndefined()
