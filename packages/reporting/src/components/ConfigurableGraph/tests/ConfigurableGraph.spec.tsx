@@ -343,6 +343,56 @@ describe('ConfigurableChart', () => {
                 screen.getByRole('button', { name: /Channel/i }),
             ).toBeInTheDocument()
         })
+
+        it('falls back to the first metric when initialMeasure does not match any metric', () => {
+            const metrics: ConfigurableGraphMetricConfig[] = [
+                {
+                    measure: 'automation_rate',
+                    name: 'Automation Rate',
+                    metricFormat: 'decimal-to-percent',
+                    dimensions: [featureGrouping],
+                },
+                {
+                    measure: 'resolution_time',
+                    name: 'Resolution Time',
+                    metricFormat: 'duration',
+                    dimensions: [channelGrouping],
+                },
+            ]
+
+            render(
+                <ConfigurableGraph
+                    metrics={metrics}
+                    initialMeasure="stale_measure_that_no_longer_exists"
+                />,
+            )
+
+            expect(
+                screen.getByRole('button', { name: /Automation Rate/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('falls back to the first dimension when initialDimension does not match any grouping', () => {
+            const metrics: ConfigurableGraphMetricConfig[] = [
+                {
+                    measure: 'automation_rate',
+                    name: 'Automation Rate',
+                    metricFormat: 'decimal-to-percent',
+                    dimensions: [featureGrouping, channelGrouping],
+                },
+            ]
+
+            render(
+                <ConfigurableGraph
+                    metrics={metrics}
+                    initialDimension="stale_dimension_that_no_longer_exists"
+                />,
+            )
+
+            expect(
+                screen.getByRole('button', { name: /Feature/i }),
+            ).toBeInTheDocument()
+        })
     })
 
     describe('grouping selection', () => {

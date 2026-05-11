@@ -25,13 +25,19 @@ export const DrillDownTicketDetailsCell = ({
                     !ticketDetails.isRead && ticketDetails.status !== null,
             })}
         >
-            <div className={css.wrapper}>
+            <div
+                className={classnames(css.wrapper, {
+                    [css.deleted]: ticketDetails.isDeleted,
+                })}
+            >
                 <h4 className={css.subject}>
                     {ticketDetails.subject ??
                         `${TICKET_LABEL} ${ticketDetails.id}`}
                 </h4>
                 <p className={css.description}>
-                    {ticketDetails.description ?? ''}
+                    {ticketDetails.isDeleted
+                        ? 'Deleted ticket'
+                        : (ticketDetails.description ?? '')}
                 </p>
             </div>
         </BodyCell>

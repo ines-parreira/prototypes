@@ -171,6 +171,7 @@ describe('<DrillDownTable />', () => {
                     id: 2,
                     channel: null,
                     description: null,
+                    isDeleted: false,
                     isRead: false,
                     subject: null,
                     created: null,
@@ -251,10 +252,58 @@ describe('<DrillDownTable />', () => {
             )
         })
 
+        it('should not open ticket page when clicking a deleted row', async () => {
+            const deletedRow = {
+                ...exampleRow,
+                ticket: {
+                    ...exampleRow.ticket,
+                    id: 99,
+                    subject: null,
+                    description: null,
+                    isDeleted: true,
+                },
+            }
+            useEnrichedDrillDownDataUnpaginatedMock.mockReturnValue({
+                data: [deletedRow],
+                isFetching: false,
+            } as any)
+
+            renderTableForTicket(metricData)
+            await act(() => userEvent.click(screen.getAllByRole('row')[1]))
+
+            expect(window.open).not.toHaveBeenCalled()
+        })
+
+        it('should render "Deleted ticket" text for a deleted row', () => {
+            const deletedRow = {
+                ...exampleRow,
+                ticket: {
+                    ...exampleRow.ticket,
+                    id: 99,
+                    subject: null,
+                    description: null,
+                    isDeleted: true,
+                },
+            }
+            useEnrichedDrillDownDataUnpaginatedMock.mockReturnValue({
+                data: [deletedRow],
+                isFetching: false,
+            } as any)
+
+            renderTableForTicket(metricData)
+
+            expect(screen.getByText('Ticket 99')).toBeInTheDocument()
+            expect(screen.getByText('Deleted ticket')).toBeInTheDocument()
+        })
+
         it('should should log segment event on ticket row click', async () => {
             const autoQAMetricData = {
                 metricName: AutoQAMetric.ReviewedClosedTickets,
             }
+            useEnrichedDrillDownDataUnpaginatedMock.mockReturnValue({
+                data: [{ ...exampleRow, assignee: null }],
+                isFetching: false,
+            } as any)
 
             renderTableForTicket(autoQAMetricData)
             await act(() => userEvent.click(screen.getAllByRole('row')[1]))
@@ -533,6 +582,7 @@ describe('<DrillDownTable />', () => {
                         id: 1,
                         channel: TicketChannel.Chat,
                         description: 'description',
+                        isDeleted: false,
                         isRead: true,
                         subject: 'Test ticket',
                         created: '2025-09-01T10:11:12',
@@ -579,6 +629,7 @@ describe('<DrillDownTable />', () => {
                         id: 1,
                         channel: TicketChannel.Chat,
                         description: 'description',
+                        isDeleted: false,
                         isRead: true,
                         subject: 'Test ticket',
                         created: '2025-09-01T10:11:12',
@@ -799,6 +850,7 @@ describe('<DrillDownTable />', () => {
                     description:
                         "Hey Kahlil, this is Stacy from Atomic Defense. Have you considered how this headset adapts to different mission needs or setups?\nJust reply, I'm here.\nI just applied a 5% discount to your cart. It's v",
                     channel: 'sms',
+                    isDeleted: false,
                     isRead: false,
                     created: '2025-08-30T21:30:01.011352',
                     contactReason: null,
@@ -863,6 +915,7 @@ describe('<DrillDownTable />', () => {
                     description:
                         "Hey Kahlil, this is Stacy from Atomic Defense. Have you considered how this headset adapts to different mission needs or setups?\nJust reply, I'm here.\nI just applied a 5% discount to your cart. It's v",
                     channel: 'sms',
+                    isDeleted: false,
                     isRead: false,
                     created: '2025-08-30T21:30:01.011352',
                     contactReason: null,
@@ -900,6 +953,7 @@ describe('<DrillDownTable />', () => {
                     description:
                         "Hey Kahlil, this is Stacy from Atomic Defense. Have you considered how this headset adapts to different mission needs or setups?\nJust reply, I'm here.\nI just applied a 5% discount to your cart. It's v",
                     channel: 'sms',
+                    isDeleted: false,
                     isRead: false,
                     created: '2025-08-30T21:30:01.011352',
                     contactReason: null,

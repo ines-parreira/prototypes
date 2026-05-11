@@ -29,6 +29,7 @@ export interface TicketDetails {
     created: string | null
     contactReason: string | null
     status: TicketStatus | null
+    isDeleted?: boolean
 }
 
 export interface BaseDrillDownRowData {
@@ -204,6 +205,7 @@ const formatTicketDrillDownRowDataInternal = (
             created: row[EnrichmentFields.CreatedDatetime] || null,
             contactReason: row[EnrichmentFields.ContactReason] || null,
             status: row[EnrichmentFields.Status] || null,
+            isDeleted: !row[EnrichmentFields.CreatedDatetime],
         },
         metricValue: row[metricField],
         assignee: row[EnrichmentFields.AssigneeId]

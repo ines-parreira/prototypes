@@ -673,11 +673,16 @@ export const TicketDrillDownTableContent = ({
                             key={`${item.ticket.id}-${item.order?.id ?? ''}`}
                             className={classNames(css.tableRow, {
                                 [css.isHighlighted]: !item.ticket.isRead,
+                                [css.deletedRow]: item.ticket.isDeleted,
                             })}
-                            onClick={getOnClickHandler(
-                                item.ticket.id,
-                                metricData.metricName,
-                            )}
+                            onClick={
+                                item.ticket.isDeleted
+                                    ? undefined
+                                    : getOnClickHandler(
+                                          item.ticket.id,
+                                          metricData.metricName,
+                                      )
+                            }
                         >
                             <DrillDownTicketDetailsCell
                                 ticketDetails={item.ticket}

@@ -301,6 +301,7 @@ describe('DrillDownFormatters', () => {
                         created: '2024-12-19T17:13:00.291264',
                         description: null,
                         id: null,
+                        isDeleted: false,
                         isRead: false,
                         status: null,
                         subject: null,
@@ -341,6 +342,7 @@ describe('DrillDownFormatters', () => {
                         created: '2024-12-19T17:13:00.291264',
                         description: null,
                         id: null,
+                        isDeleted: false,
                         isRead: false,
                         status: null,
                         subject: null,
@@ -381,6 +383,7 @@ describe('DrillDownFormatters', () => {
                         created: '2024-12-19T17:13:00.291264',
                         description: null,
                         id: null,
+                        isDeleted: false,
                         isRead: false,
                         status: null,
                         subject: null,
@@ -418,6 +421,7 @@ describe('DrillDownFormatters', () => {
                         created: '2024-12-19T17:13:00.291264',
                         description: null,
                         id: null,
+                        isDeleted: false,
                         isRead: false,
                         status: null,
                         subject: null,
@@ -551,6 +555,7 @@ describe('DrillDownFormatters', () => {
                         created: '2024-12-19T17:13:00.291264',
                         description: null,
                         id: null,
+                        isDeleted: false,
                         isRead: false,
                         status: null,
                         subject: null,
@@ -588,6 +593,7 @@ describe('DrillDownFormatters', () => {
                         created: '2024-12-19T17:13:00.291264',
                         description: null,
                         id: null,
+                        isDeleted: false,
                         isRead: false,
                         status: null,
                         subject: null,
@@ -683,6 +689,57 @@ describe('DrillDownFormatters', () => {
                         titles: [],
                         variants: [],
                     },
+                }),
+            )
+        })
+    })
+
+    describe('deleted ticket detection', () => {
+        it('sets isDeleted to false and uses description from enrichment when Ticket.subject is present', () => {
+            const row = {
+                'Ticket.subject': 'Order issue',
+                'Ticket.excerpt': 'Customer cannot track order',
+                'Ticket.status': 'open',
+                'Ticket.channel': 'email',
+                'Ticket.created_datetime': '2024-09-18T19:12:22',
+                'TicketEnriched.ticketId': '123',
+                metricField: 5,
+            }
+
+            const result = formatTicketDrillDownRowData({
+                row,
+                metricField: 'metricField',
+                ticketIdField: 'TicketEnriched.ticketId',
+            })
+
+            expect(result.ticket).toEqual(
+                expect.objectContaining({
+                    subject: 'Order issue',
+                    description: 'Customer cannot track order',
+                    isDeleted: false,
+                }),
+            )
+        })
+
+        it('sets isDeleted to true and description to null when Ticket.subject is absent', () => {
+            const row = {
+                'Ticket.status': null,
+                'Ticket.channel': null,
+                'TicketEnriched.ticketId': '456',
+                metricField: 1,
+            }
+
+            const result = formatTicketDrillDownRowData({
+                row,
+                metricField: 'metricField',
+                ticketIdField: 'TicketEnriched.ticketId',
+            })
+
+            expect(result.ticket).toEqual(
+                expect.objectContaining({
+                    subject: null,
+                    description: null,
+                    isDeleted: true,
                 }),
             )
         })
@@ -863,6 +920,7 @@ describe('DrillDownFormatters', () => {
                         created: '2024-12-19T17:13:00.291264',
                         description: null,
                         id: null,
+                        isDeleted: false,
                         isRead: false,
                         status: null,
                         subject: null,

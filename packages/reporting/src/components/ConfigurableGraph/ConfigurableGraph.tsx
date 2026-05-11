@@ -43,16 +43,18 @@ export function ConfigurableGraph({
         initialDimension ?? metrics[0].dimensions[0].id,
     )
 
-    const selectedMetric = metrics.find((m) => m.measure === selectedMeasure)!
-    const selectedGrouping = selectedMetric.dimensions.find(
-        (g) => g.id === selectedDimension,
-    )!
+    const selectedMetric =
+        metrics.find((m) => m.measure === selectedMeasure) ?? metrics[0]
+    const selectedGrouping =
+        selectedMetric.dimensions.find((g) => g.id === selectedDimension) ??
+        selectedMetric.dimensions[0]
 
     const hasTrend = Boolean(selectedMetric.useTrendData)
     const trendData = (selectedMetric.useTrendData ?? useNoTrendData)()
 
     const handleMetricChange = (measure: string) => {
-        const newMetric = metrics.find((m) => m.measure === measure)!
+        const newMetric =
+            metrics.find((m) => m.measure === measure) ?? metrics[0]
         const dimension = newMetric.dimensions[0].id
         setSelectedMeasure(measure)
         setSelectedDimension(dimension)
