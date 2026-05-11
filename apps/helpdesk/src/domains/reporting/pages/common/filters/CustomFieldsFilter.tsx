@@ -3,6 +3,7 @@ import { useCallback } from 'react'
 import noop from 'lodash/noop'
 import { connect } from 'react-redux'
 
+import { isDropdownInput } from 'custom-fields/helpers/typeGuards'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import type { CustomField } from 'custom-fields/types'
 import { useClientSideFilterSearch } from 'domains/reporting/hooks/filters/useClientSideFilterSearch'
@@ -62,17 +63,13 @@ const getOptions = (activeFields: CustomField[], customFieldId: number) => {
         .find((field) => field.id === customFieldId)
 
     const fieldOptions: DropdownOption[] = []
-    if (
-        dropdownFieldDefinition &&
-        dropdownFieldDefinition.definition.data_type === 'text' &&
-        dropdownFieldDefinition.definition.input_settings.input_type ===
-            'dropdown'
-    ) {
+    if (dropdownFieldDefinition && isDropdownInput(dropdownFieldDefinition)) {
         fieldOptions.push(
             ...dropdownFieldDefinition.definition.input_settings.choices.map(
                 (opt) => ({
                     value: getCustomFieldValueSerializer(customFieldId)(opt),
-                    label: `${opt}`,
+                    label:
+                        opt === true ? 'Yes' : opt === false ? 'No' : `${opt}`,
                 }),
             ),
         )

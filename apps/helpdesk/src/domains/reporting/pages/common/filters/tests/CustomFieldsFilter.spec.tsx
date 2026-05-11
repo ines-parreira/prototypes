@@ -22,7 +22,10 @@ import { emptyCustomFieldFilter } from 'domains/reporting/pages/common/filters/h
 import * as statsSlice from 'domains/reporting/state/stats/statsSlice'
 import * as filtersSlice from 'domains/reporting/state/ui/stats/filtersSlice'
 import { apiListCursorPaginationResponse } from 'fixtures/axiosResponse'
-import { ticketDropdownFieldDefinition } from 'fixtures/customField'
+import {
+    ticketBooleanFieldDefinition,
+    ticketDropdownFieldDefinition,
+} from 'fixtures/customField'
 import { FILTER_VALUE_PLACEHOLDER } from 'pages/common/forms/FilterInput/constants'
 import type { RootState } from 'state/types'
 
@@ -284,6 +287,30 @@ describe('CustomFieldsFilter', () => {
             values: [],
             operator: LogicalOperatorEnum.ONE_OF,
         })
+    })
+    it('should render boolean Custom Field options (true/false)', () => {
+        const booleanCustomFieldId = ticketBooleanFieldDefinition.id
+        const booleanDropdownField = {
+            ...ticketBooleanFieldDefinition,
+            id: booleanCustomFieldId,
+        }
+        useCustomFieldDefinitionsMock.mockReturnValue({
+            data: apiListCursorPaginationResponse([booleanDropdownField]),
+        } as any)
+        render(
+            <CustomFieldsFilter
+                customFieldId={booleanCustomFieldId}
+                filterName={filterName}
+                dispatchUpdate={dispatchUpdate}
+                dispatchRemove={dispatchRemove}
+                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                dispatchStatFiltersClean={dispatchStatFiltersClean}
+            />,
+            { storeState: defaultState },
+        )
+        userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+        expect(screen.getByText('Yes')).toBeInTheDocument()
+        expect(screen.getByText('No')).toBeInTheDocument()
     })
     it('should not break if customfFieldId is not found', () => {
         const allAvailableCustomFields = customFieldOptions.map(
