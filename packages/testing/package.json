@@ -14,7 +14,7 @@
         "lint:unused": "knip --directory ../.. --workspace @repo/testing --no-progress",
         "typecheck": "tsc -p ./tsconfig.json --noEmit true",
         "test": "vitest run --configLoader=runner",
-        "test:ci:cover": "TZ=UTC LC_ALL=\"en_US.UTF-8\" vitest run --configLoader=runner --coverage --silent=true"
+        "test:ci:cover": "TZ=UTC LC_ALL=\"en_US.UTF-8\" NODE_OPTIONS=\"--max-old-space-size=4096\" vitest run --configLoader=runner --coverage --silent=true"
     },
     "peerDependencies": {
         "@gorgias/axiom": "catalog:axiom",
