@@ -108,21 +108,25 @@ export function useMergeTicketsTable({ tickets }: UseMergeTicketsTableParams) {
                 excerpt,
             }),
             header: 'Subject',
+            enableSorting: false,
             cell: SubjectCell,
         },
         {
             accessorKey: 'customer',
             header: 'Customer',
+            enableSorting: false,
             cell: CustomerNameCell,
         },
         {
             accessorKey: 'channel',
             header: 'Channel',
+            enableSorting: false,
             cell: ChannelCell,
         },
         {
             accessorKey: 'created_datetime',
             header: 'Created',
+            enableSorting: false,
             cell: (info) => (
                 <Text>
                     {formatDatetime(
