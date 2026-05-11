@@ -7,6 +7,7 @@ import { MessageHeaderContainer } from '../../MessageBubble/components/MessageHe
 import { MessageSender } from '../../MessageBubble/components/MessageHeader/MessageSender'
 import { MessageTimestamp } from '../../MessageBubble/components/MessageHeader/MessageTimestamp'
 import { MessageBubble } from '../../MessageBubble/MessageBubble'
+import { getAiAgentDisplayName } from './getAiAgentDisplayName'
 
 type AiAgentHandoverSummaryMessageProps = {
     item: TicketThreadAiAgentHandoverMessageItem
@@ -20,6 +21,7 @@ export function AiAgentHandoverSummaryMessage({
     const summaryContent = renderAiAgentHandoverSummary?.({
         message: item.data,
     })
+    const aiAgentName = getAiAgentDisplayName(item.data.sender.name)
 
     return (
         <Box
@@ -32,7 +34,7 @@ export function AiAgentHandoverSummaryMessage({
                 <MessageHeaderContainer>
                     <Box alignItems="center" gap="xs">
                         <AIThinking variant="static" />
-                        <MessageSender sender={{ name: 'AI Agent' }} />
+                        <MessageSender sender={{ name: aiAgentName }} />
                     </Box>
                     <Box alignItems="center" gap="xs">
                         <MessageTimestamp
