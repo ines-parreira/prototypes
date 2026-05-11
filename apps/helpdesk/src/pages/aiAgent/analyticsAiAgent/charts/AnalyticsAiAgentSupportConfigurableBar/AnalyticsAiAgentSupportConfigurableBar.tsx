@@ -35,7 +35,7 @@ export const SUPPORT_BAR_CHART_METRICS: BarChartMetricConfig[] = [
         dimensions: ['channel', 'storeIntegrationId', 'aiIntentCustomField'],
     },
     {
-        measure: 'averageDecreaseInFirstResponseTime',
+        measure: 'medianDecreaseInFirstResponseTime',
         name: 'Decrease in first response time',
         metricFormat: 'duration' as const,
         interpretAs: 'more-is-better' as const,
@@ -43,7 +43,7 @@ export const SUPPORT_BAR_CHART_METRICS: BarChartMetricConfig[] = [
         dimensions: ['channel', 'storeIntegrationId', 'aiIntentCustomField'],
     },
     {
-        measure: 'averageTimeSavedByAgent',
+        measure: 'medianTimeSavedByAgent',
         name: 'Time saved by agents',
         metricFormat: 'duration' as const,
         interpretAs: 'more-is-better' as const,

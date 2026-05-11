@@ -63,14 +63,14 @@ export const METRIC_TOOLTIPS = {
     decreaseInResolutionTimeInOverview: {
         title: 'Decrease in resolution time',
         caption:
-            'How much faster automation features resolve tickets on average, compared to human agents.',
+            'How much faster automation features resolve tickets on median, compared to human agents.',
         link: GLOSSARY_LINK,
         linkText: HOW_IS_IT_CALCULATED,
     },
     decreaseInResolutionTimeInAiAgent: {
         title: 'Decrease in resolution time',
         caption:
-            'How much faster AI Agent resolves tickets on average, compared to human agents.',
+            'How much faster AI Agent resolves tickets on median, compared to human agents.',
         link: GLOSSARY_LINK,
         linkText: HOW_IS_IT_CALCULATED,
     },

@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { dynamicOverallAutomatedInteractionsQueryFactoryV2 } from 'domains/reporting/models/scopes/overallAutomatedInteractions'
 import { dynamicOverallAutomationRateQueryFactoryV2 } from 'domains/reporting/models/scopes/overallAutomationRate'
-import { dynamicAverageTimeSavedByAgentQueryFactoryV2 } from 'domains/reporting/models/scopes/overallTimeSavedByAgent'
+import { dynamicMedianTimeSavedByAgentQueryFactoryV2 } from 'domains/reporting/models/scopes/overallTimeSavedByAgent'
 import type {
     ChartConfig,
     DashboardSchema,
@@ -43,11 +43,11 @@ export const OVERVIEW_BAR_CHART_METRICS: BarChartMetricConfig[] = [
         dimensions: ['channel', 'storeIntegrationId', 'automationFeatureType'],
     },
     {
-        measure: 'averageTimeSavedByAgent',
+        measure: 'medianTimeSavedByAgent',
         name: 'Time saved by agent',
         metricFormat: 'duration' as const,
         interpretAs: 'more-is-better' as const,
-        queryFactory: dynamicAverageTimeSavedByAgentQueryFactoryV2,
+        queryFactory: dynamicMedianTimeSavedByAgentQueryFactoryV2,
         dimensions: ['channel', 'storeIntegrationId', 'automationFeatureType'],
     },
     {

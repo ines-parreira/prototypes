@@ -8,7 +8,7 @@ import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import useStatsMetricTrend, {
     fetchStatsMetricTrend,
 } from 'domains/reporting/hooks/useStatsMetricTrend'
-import { dynamicAverageTimeSavedByAgentQueryFactoryV2 } from 'domains/reporting/models/scopes/overallTimeSavedByAgent'
+import { dynamicMedianTimeSavedByAgentQueryFactoryV2 } from 'domains/reporting/models/scopes/overallTimeSavedByAgent'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
@@ -110,11 +110,11 @@ describe('useOverallTimeSavedByAgentsTrend', () => {
             renderTimeSavedTrendHook()
 
             expect(mockUseStatsMetricTrend).toHaveBeenCalledWith(
-                dynamicAverageTimeSavedByAgentQueryFactoryV2({
+                dynamicMedianTimeSavedByAgentQueryFactoryV2({
                     filters: mockFilters,
                     timezone,
                 }),
-                dynamicAverageTimeSavedByAgentQueryFactoryV2({
+                dynamicMedianTimeSavedByAgentQueryFactoryV2({
                     filters: {
                         ...mockFilters,
                         period: getPreviousPeriod(mockFilters.period),
@@ -257,11 +257,11 @@ describe('fetchOverallTimeSavedByAgentsTrend', () => {
             await fetchOverallTimeSavedByAgentsTrend(mockFilters, timezone)
 
             expect(mockFetchStatsMetricTrend).toHaveBeenCalledWith(
-                dynamicAverageTimeSavedByAgentQueryFactoryV2({
+                dynamicMedianTimeSavedByAgentQueryFactoryV2({
                     filters: mockFilters,
                     timezone,
                 }),
-                dynamicAverageTimeSavedByAgentQueryFactoryV2({
+                dynamicMedianTimeSavedByAgentQueryFactoryV2({
                     filters: {
                         ...mockFilters,
                         period: getPreviousPeriod(mockFilters.period),

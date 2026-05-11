@@ -44,7 +44,7 @@ export const overallTimeSavedByAgentPerChannel = aiAgentTimeSavedScope
         METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_TIME_SAVED_PER_CHANNEL,
     )
     .defineQuery(({ ctx, config }) => ({
-        measures: ['averageTimeSavedByAgent'] as const,
+        measures: ['medianTimeSavedByAgent'] as const,
         dimensions: ['channel'],
         filters: [
             ...createScopeFilters(ctx.filters, config),
@@ -63,7 +63,7 @@ export const overallTimeSavedByAgentPerChannelQueryFactoryV2 = (
 export const aiAgentSupportAgentTimeSavedPerIntent = aiAgentTimeSavedScope
     .defineMetricName(METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_TIME_SAVED_PER_INTENT)
     .defineQuery(({ ctx, config }) => ({
-        measures: ['averageTimeSavedByAgent'] as const,
+        measures: ['medianTimeSavedByAgent'] as const,
         dimensions: ['aiIntentCustomField'],
         filters: [
             ...createScopeFilters(ctx.filters, config),
@@ -84,7 +84,7 @@ export const dynamicAllAgentsTimeSaved = aiAgentTimeSavedScope
         METRIC_NAMES.AI_AGENT_DYNAMIC_ALL_AGENTS_TIME_SAVED_BY_AGENT,
     )
     .defineQuery(({ ctx }) => ({
-        measures: ['averageTimeSavedByAgent'],
+        measures: ['medianTimeSavedByAgent'],
         dimensions: ctx.dimensions,
     }))
 
@@ -96,7 +96,7 @@ export const dynamicAllAgentsTimeSavedTimeseries = aiAgentTimeSavedScope
         METRIC_NAMES.AI_AGENT_DYNAMIC_ALL_AGENTS_TIME_SAVED_BY_AGENT_TIMESERIES,
     )
     .defineQuery(({ ctx }) => ({
-        measures: ['averageTimeSavedByAgent'],
+        measures: ['medianTimeSavedByAgent'],
         time_dimensions: [
             {
                 dimension: 'eventDatetime',
@@ -113,7 +113,7 @@ export const dynamicAllAgentsTimeSavedTimeSeriesQueryFactoryV2 = (
 export const dynamicSupportAgentTimeSaved = aiAgentTimeSavedScope
     .defineMetricName(METRIC_NAMES.AI_AGENT_DYNAMIC_SUPPORT_AGENT_TIME_SAVED)
     .defineQuery(({ ctx, config }) => ({
-        measures: ['averageTimeSavedByAgent'],
+        measures: ['medianTimeSavedByAgent'],
         filters: createScopeFilters(
             {
                 ...ctx.filters,
@@ -129,10 +129,10 @@ export const dynamicSupportAgentTimeSaved = aiAgentTimeSavedScope
 export const dynamicSupportAgentTimeSavedQueryFactoryV2 = (ctx: Context) =>
     dynamicSupportAgentTimeSaved.build(ctx)
 
-export const averageTimeSavedSupportAgentTimeseries = aiAgentTimeSavedScope
+export const medianTimeSavedSupportAgentTimeseries = aiAgentTimeSavedScope
     .defineMetricName(METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_TIME_SAVED_TIMESERIES)
     .defineQuery(({ ctx, config }) => ({
-        measures: ['averageTimeSavedByAgent'] as const,
+        measures: ['medianTimeSavedByAgent'] as const,
         time_dimensions: [
             { dimension: 'eventDatetime', granularity: ctx.granularity },
         ] as const,
@@ -147,6 +147,6 @@ export const averageTimeSavedSupportAgentTimeseries = aiAgentTimeSavedScope
         ),
     }))
 
-export const averageTimeSavedSupportAgentTimeseriesQueryV2Factory = (
+export const medianTimeSavedSupportAgentTimeseriesQueryV2Factory = (
     ctx: Context,
-) => averageTimeSavedSupportAgentTimeseries.build(ctx)
+) => medianTimeSavedSupportAgentTimeseries.build(ctx)

@@ -35,14 +35,14 @@ describe('useAiAgentAllAgentsDecreaseInResolutionTimeTrend', () => {
         useStatsMetricMock.mockReturnValue(defaultMetric)
     })
 
-    it('builds a query with averageDecreaseInResolutionTime measure for the current period', () => {
+    it('builds a query with medianDecreaseInResolutionTime measure for the current period', () => {
         renderHook(() =>
             useAiAgentAllAgentsDecreaseInResolutionTimeTrend(filters, timezone),
         )
 
         const currentPeriodQuery = useStatsMetricMock.mock.calls[0][0]
         expect(currentPeriodQuery.measures).toEqual([
-            'averageDecreaseInResolutionTime',
+            'medianDecreaseInResolutionTime',
         ])
     })
 
@@ -79,7 +79,7 @@ describe('fetchAiAgentAllAgentsDecreaseInResolutionTimeTrend', () => {
         fetchStatsMetricMock.mockResolvedValue(defaultMetric)
     })
 
-    it('builds a query with averageDecreaseInResolutionTime measure for the current period', async () => {
+    it('builds a query with medianDecreaseInResolutionTime measure for the current period', async () => {
         await fetchAiAgentAllAgentsDecreaseInResolutionTimeTrend(
             filters,
             timezone,
@@ -87,7 +87,7 @@ describe('fetchAiAgentAllAgentsDecreaseInResolutionTimeTrend', () => {
 
         const currentPeriodQuery = fetchStatsMetricMock.mock.calls[0][0]
         expect(currentPeriodQuery.measures).toEqual([
-            'averageDecreaseInResolutionTime',
+            'medianDecreaseInResolutionTime',
         ])
     })
 

@@ -235,7 +235,7 @@ describe('aiAgentSupportAgentDecreaseInFRTPerChannel', () => {
             metricName:
                 'ai-agent-support-agent-decrease-in-first-response-time-per-channel',
             scope: 'ai-agent-decrease-in-first-response-time',
-            measures: ['averageDecreaseInFirstResponseTime'],
+            measures: ['medianDecreaseInFirstResponseTime'],
             dimensions: ['channel'],
             timezone: 'utc',
             filters: [
@@ -287,7 +287,7 @@ describe('aiAgentSupportAgentDecreaseInFRT', () => {
         expect(aiAgentSupportAgentDecreaseInFRT.build(context)).toEqual({
             metricName: 'ai-agent-support-agent-decrease-in-frt',
             scope: 'ai-agent-decrease-in-first-response-time',
-            measures: ['averageDecreaseInFirstResponseTime'],
+            measures: ['medianDecreaseInFirstResponseTime'],
             timezone: 'utc',
             filters: [
                 ...periodFilters,
@@ -339,7 +339,7 @@ describe('aiAgentSupportAgentDecreaseInFRTPerIntent', () => {
             metricName:
                 'ai-agent-support-agent-decrease-in-first-response-time-per-intent',
             scope: 'ai-agent-decrease-in-first-response-time',
-            measures: ['averageDecreaseInFirstResponseTime'],
+            measures: ['medianDecreaseInFirstResponseTime'],
             dimensions: ['aiIntentCustomField'],
             timezone: 'utc',
             filters: [
@@ -406,7 +406,7 @@ describe('dynamicSupportAgentDecreaseInFRT', () => {
             ).toEqual({
                 metricName: 'ai-agent-dynamic-support-agent-decrease-in-frt',
                 scope: 'ai-agent-decrease-in-first-response-time',
-                measures: ['averageDecreaseInFirstResponseTime'],
+                measures: ['medianDecreaseInFirstResponseTime'],
                 dimensions: [],
                 timezone: 'utc',
                 filters: [...periodFilters, supportSkillFilter],
@@ -422,7 +422,7 @@ describe('dynamicSupportAgentDecreaseInFRT', () => {
             ).toEqual({
                 metricName: 'ai-agent-dynamic-support-agent-decrease-in-frt',
                 scope: 'ai-agent-decrease-in-first-response-time',
-                measures: ['averageDecreaseInFirstResponseTime'],
+                measures: ['medianDecreaseInFirstResponseTime'],
                 dimensions: ['channel'],
                 timezone: 'utc',
                 filters: [...periodFilters, supportSkillFilter],
@@ -440,7 +440,7 @@ describe('dynamicSupportAgentDecreaseInFRT', () => {
             expect(result).toEqual({
                 metricName: 'ai-agent-dynamic-support-agent-decrease-in-frt',
                 scope: 'ai-agent-decrease-in-first-response-time',
-                measures: ['averageDecreaseInFirstResponseTime'],
+                measures: ['medianDecreaseInFirstResponseTime'],
                 dimensions: [],
                 timezone: 'utc',
                 filters: [...periodFilters, supportSkillFilter],
@@ -456,7 +456,7 @@ describe('dynamicSupportAgentDecreaseInFRT', () => {
             expect(result).toEqual({
                 metricName: 'ai-agent-dynamic-support-agent-decrease-in-frt',
                 scope: 'ai-agent-decrease-in-first-response-time',
-                measures: ['averageDecreaseInFirstResponseTime'],
+                measures: ['medianDecreaseInFirstResponseTime'],
                 dimensions: ['storeIntegrationId'],
                 timezone: 'utc',
                 filters: [...periodFilters, supportSkillFilter],
@@ -484,7 +484,7 @@ describe('dynamicSupportAgentDecreaseInFRT', () => {
                 metricName:
                     'ai-agent-dynamic-support-agent-decrease-in-frt-timeseries',
                 scope: 'ai-agent-decrease-in-first-response-time',
-                measures: ['averageDecreaseInFirstResponseTime'],
+                measures: ['medianDecreaseInFirstResponseTime'],
                 dimensions: [],
                 timezone: 'utc',
                 filters: [...periodFilters, supportSkillFilter],
@@ -506,7 +506,7 @@ describe('dynamicSupportAgentDecreaseInFRT', () => {
                 metricName:
                     'ai-agent-dynamic-support-agent-decrease-in-frt-timeseries',
                 scope: 'ai-agent-decrease-in-first-response-time',
-                measures: ['averageDecreaseInFirstResponseTime'],
+                measures: ['medianDecreaseInFirstResponseTime'],
                 dimensions: ['channel'],
                 timezone: 'utc',
                 filters: [...periodFilters, supportSkillFilter],

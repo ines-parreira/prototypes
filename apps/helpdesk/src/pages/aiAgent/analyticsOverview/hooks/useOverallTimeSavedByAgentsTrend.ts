@@ -6,7 +6,7 @@ import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import useStatsMetricTrend, {
     fetchStatsMetricTrend,
 } from 'domains/reporting/hooks/useStatsMetricTrend'
-import { dynamicAverageTimeSavedByAgentQueryFactoryV2 } from 'domains/reporting/models/scopes/overallTimeSavedByAgent'
+import { dynamicMedianTimeSavedByAgentQueryFactoryV2 } from 'domains/reporting/models/scopes/overallTimeSavedByAgent'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
@@ -27,11 +27,11 @@ export const useOverallTimeSavedByAgentsTrend = (
         !isLoading && !isV2,
     )
     const v2Trend = useStatsMetricTrend(
-        dynamicAverageTimeSavedByAgentQueryFactoryV2({
+        dynamicMedianTimeSavedByAgentQueryFactoryV2({
             filters: statsFilters,
             timezone: userTimezone,
         }),
-        dynamicAverageTimeSavedByAgentQueryFactoryV2({
+        dynamicMedianTimeSavedByAgentQueryFactoryV2({
             filters: {
                 ...statsFilters,
                 period: getPreviousPeriod(statsFilters.period),
@@ -55,11 +55,11 @@ export const fetchOverallTimeSavedByAgentsTrend = async (
 
     return isV2
         ? await fetchStatsMetricTrend(
-              dynamicAverageTimeSavedByAgentQueryFactoryV2({
+              dynamicMedianTimeSavedByAgentQueryFactoryV2({
                   filters: statsFilters,
                   timezone: userTimezone,
               }),
-              dynamicAverageTimeSavedByAgentQueryFactoryV2({
+              dynamicMedianTimeSavedByAgentQueryFactoryV2({
                   filters: {
                       ...statsFilters,
                       period: getPreviousPeriod(statsFilters.period),

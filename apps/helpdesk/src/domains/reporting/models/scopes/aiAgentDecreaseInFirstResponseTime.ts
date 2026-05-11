@@ -52,7 +52,7 @@ export const aiAgentSupportAgentDecreaseInFRTPerChannel =
             METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_DECREASE_IN_FRT_PER_CHANNEL,
         )
         .defineQuery(({ ctx, config }) => ({
-            measures: ['averageDecreaseInFirstResponseTime'] as const,
+            measures: ['medianDecreaseInFirstResponseTime'] as const,
             dimensions: ['channel'],
             filters: [
                 ...createScopeFilters(ctx.filters, config),
@@ -72,7 +72,7 @@ export const aiAgentSupportAgentDecreaseInFRT =
     aiAgentDecreaseInFirstResponseTimeScope
         .defineMetricName(METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_DECREASE_IN_FRT)
         .defineQuery(({ ctx, config }) => ({
-            measures: ['averageDecreaseInFirstResponseTime'] as const,
+            measures: ['medianDecreaseInFirstResponseTime'] as const,
             filters: [
                 ...createScopeFilters(ctx.filters, config),
                 {
@@ -93,7 +93,7 @@ export const aiAgentSupportAgentDecreaseInFRTPerIntent =
             METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_DECREASE_IN_FRT_PER_INTENT,
         )
         .defineQuery(({ ctx, config }) => ({
-            measures: ['averageDecreaseInFirstResponseTime'] as const,
+            measures: ['medianDecreaseInFirstResponseTime'] as const,
             dimensions: ['aiIntentCustomField'],
             filters: [
                 ...createScopeFilters(ctx.filters, config),
@@ -115,7 +115,7 @@ export const dynamicSupportAgentDecreaseInFRT =
             METRIC_NAMES.AI_AGENT_DYNAMIC_SUPPORT_AGENT_DECREASE_IN_FRT,
         )
         .defineQuery(({ ctx, config }) => ({
-            measures: ['averageDecreaseInFirstResponseTime'],
+            measures: ['medianDecreaseInFirstResponseTime'],
             filters: createScopeFilters(
                 {
                     ...ctx.filters,
@@ -137,7 +137,7 @@ export const dynamicSupportAgentDecreaseInFRTTimeseries =
             METRIC_NAMES.AI_AGENT_DYNAMIC_SUPPORT_AGENT_DECREASE_IN_FRT_TIMESERIES,
         )
         .defineQuery(({ ctx, config }) => ({
-            measures: ['averageDecreaseInFirstResponseTime'],
+            measures: ['medianDecreaseInFirstResponseTime'],
             filters: createScopeFilters(
                 {
                     ...ctx.filters,
@@ -165,7 +165,7 @@ export const aiAgentAllAgentsDecreaseInFRT =
     aiAgentDecreaseInFirstResponseTimeScope
         .defineMetricName(METRIC_NAMES.AI_AGENT_ALL_AGENTS_DECREASE_IN_FRT)
         .defineQuery(() => ({
-            measures: ['averageDecreaseInFirstResponseTime'] as const,
+            measures: ['medianDecreaseInFirstResponseTime'] as const,
         }))
 
 export const aiAgentAllAgentsDecreaseInFRTQueryV2Factory = (

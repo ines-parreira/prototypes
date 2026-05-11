@@ -47,7 +47,7 @@ export const aiAgentSupportAgentDecreaseInResolutionTime =
             METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_DECREASE_IN_RESOLUTION_TIME,
         )
         .defineQuery(({ ctx, config }) => ({
-            measures: ['averageDecreaseInResolutionTime'] as const,
+            measures: ['medianDecreaseInResolutionTime'] as const,
             filters: [
                 ...createScopeFilters(ctx.filters, config),
                 {
@@ -68,7 +68,7 @@ export const aiAgentAllAgentsDecreaseInResolutionTime =
             METRIC_NAMES.AI_AGENT_ALL_AGENTS_DECREASE_IN_RESOLUTION_TIME,
         )
         .defineQuery(() => ({
-            measures: ['averageDecreaseInResolutionTime'] as const,
+            measures: ['medianDecreaseInResolutionTime'] as const,
         }))
 
 export const aiAgentAllAgentsDecreaseInResolutionTimeQueryV2Factory = (

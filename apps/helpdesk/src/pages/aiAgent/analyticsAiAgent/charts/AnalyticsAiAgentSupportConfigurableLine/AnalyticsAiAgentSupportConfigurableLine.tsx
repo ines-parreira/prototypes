@@ -38,7 +38,7 @@ export const SUPPORT_LINE_CHART_METRICS: LineChartMetricConfig[] = [
         ],
     },
     {
-        measure: 'averageDecreaseInFirstResponseTime',
+        measure: 'medianDecreaseInFirstResponseTime',
         name: 'Decrease in first response time',
         metricFormat: 'duration' as const,
         interpretAs: 'more-is-better' as const,

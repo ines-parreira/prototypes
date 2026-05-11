@@ -69,7 +69,7 @@ export const ALL_AGENTS_BAR_CHART_METRICS: BarChartMetricConfig[] = [
         dimensions: ['channel', 'storeIntegrationId'],
     },
     {
-        measure: 'averageTimeSavedByAgent',
+        measure: 'medianTimeSavedByAgent',
         name: 'Time saved by agents',
         metricFormat: 'duration' as const,
         interpretAs: 'more-is-better' as const,

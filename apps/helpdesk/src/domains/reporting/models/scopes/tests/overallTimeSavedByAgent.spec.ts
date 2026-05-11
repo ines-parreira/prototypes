@@ -1,8 +1,8 @@
 import {
-    dynamicAverageTimeSavedByAgent,
-    dynamicAverageTimeSavedByAgentQueryFactoryV2,
-    dynamicAverageTimeSavedByAgentTimeseries,
-    dynamicAverageTimeSavedByAgentTimeseriesQueryFactoryV2,
+    dynamicMedianTimeSavedByAgent,
+    dynamicMedianTimeSavedByAgentQueryFactoryV2,
+    dynamicMedianTimeSavedByAgentTimeseries,
+    dynamicMedianTimeSavedByAgentTimeseriesQueryFactoryV2,
     overallTimeSavedByAgentForOrderManagement,
     overallTimeSavedByAgentForOrderManagementQueryFactoryV2,
     overallTimeSavedByAgentPerFeature,
@@ -52,7 +52,7 @@ describe('overallTimeSavedByAgentScope', () => {
                 metricName:
                     'overall-time-saved-by-agent-per-order-management-type',
                 scope: 'overall-time-saved-by-agent',
-                measures: ['averageTimeSavedByAgent'],
+                measures: ['medianTimeSavedByAgent'],
                 dimensions: ['orderManagementType'],
                 timezone: 'utc',
                 filters: [
@@ -74,7 +74,7 @@ describe('overallTimeSavedByAgentScope', () => {
             expect(actual).toEqual({
                 metricName: 'overall-time-saved-by-agent-per-flows',
                 scope: 'overall-time-saved-by-agent',
-                measures: ['averageTimeSavedByAgent'],
+                measures: ['medianTimeSavedByAgent'],
                 dimensions: ['flowId'],
                 timezone: 'utc',
                 filters: [
@@ -107,7 +107,7 @@ describe('overallTimeSavedByAgentScope', () => {
                 metricName:
                     'ai-agent-overview-overall-time-saved-by-agent-per-feature',
                 scope: 'overall-time-saved-by-agent',
-                measures: ['averageTimeSavedByAgent'],
+                measures: ['medianTimeSavedByAgent'],
                 dimensions: ['automationFeatureType'],
                 timezone: 'utc',
                 filters: periodFilters,
@@ -125,17 +125,17 @@ describe('overallTimeSavedByAgentScope', () => {
         })
     })
 
-    describe('dynamicAverageTimeSavedByAgent', () => {
+    describe('dynamicMedianTimeSavedByAgent', () => {
         it('creates query without dimensions when no dimension provided', () => {
             expect(
-                dynamicAverageTimeSavedByAgent.build({
+                dynamicMedianTimeSavedByAgent.build({
                     ...context,
                     dimensions: [],
                 }),
             ).toEqual({
                 metricName: 'ai-agent-dynamic-average-time-saved-by-agent',
                 scope: 'overall-time-saved-by-agent',
-                measures: ['averageTimeSavedByAgent'],
+                measures: ['medianTimeSavedByAgent'],
                 dimensions: [],
                 timezone: 'utc',
                 filters: periodFilters,
@@ -144,14 +144,14 @@ describe('overallTimeSavedByAgentScope', () => {
 
         it('creates query with the provided dimension', () => {
             expect(
-                dynamicAverageTimeSavedByAgent.build({
+                dynamicMedianTimeSavedByAgent.build({
                     ...context,
                     dimensions: ['channel'],
                 }),
             ).toEqual({
                 metricName: 'ai-agent-dynamic-average-time-saved-by-agent',
                 scope: 'overall-time-saved-by-agent',
-                measures: ['averageTimeSavedByAgent'],
+                measures: ['medianTimeSavedByAgent'],
                 dimensions: ['channel'],
                 timezone: 'utc',
                 filters: periodFilters,
@@ -159,9 +159,9 @@ describe('overallTimeSavedByAgentScope', () => {
         })
     })
 
-    describe('dynamicAverageTimeSavedByAgentQueryFactoryV2', () => {
+    describe('dynamicMedianTimeSavedByAgentQueryFactoryV2', () => {
         it('returns query with empty dimensions when no dimension provided', () => {
-            const result = dynamicAverageTimeSavedByAgentQueryFactoryV2({
+            const result = dynamicMedianTimeSavedByAgentQueryFactoryV2({
                 ...context,
                 dimensions: [],
             })
@@ -169,7 +169,7 @@ describe('overallTimeSavedByAgentScope', () => {
             expect(result).toEqual({
                 metricName: 'ai-agent-dynamic-average-time-saved-by-agent',
                 scope: 'overall-time-saved-by-agent',
-                measures: ['averageTimeSavedByAgent'],
+                measures: ['medianTimeSavedByAgent'],
                 dimensions: [],
                 timezone: 'utc',
                 filters: periodFilters,
@@ -177,7 +177,7 @@ describe('overallTimeSavedByAgentScope', () => {
         })
 
         it('returns query with the provided dimension', () => {
-            const result = dynamicAverageTimeSavedByAgentQueryFactoryV2({
+            const result = dynamicMedianTimeSavedByAgentQueryFactoryV2({
                 ...context,
                 dimensions: ['channel'],
             })
@@ -185,7 +185,7 @@ describe('overallTimeSavedByAgentScope', () => {
             expect(result).toEqual({
                 metricName: 'ai-agent-dynamic-average-time-saved-by-agent',
                 scope: 'overall-time-saved-by-agent',
-                measures: ['averageTimeSavedByAgent'],
+                measures: ['medianTimeSavedByAgent'],
                 dimensions: ['channel'],
                 timezone: 'utc',
                 filters: periodFilters,
@@ -198,16 +198,16 @@ describe('overallTimeSavedByAgentScope', () => {
                 dimensions: ['automationFeatureType'] as const,
             }
 
-            expect(dynamicAverageTimeSavedByAgentQueryFactoryV2(ctx)).toEqual(
-                dynamicAverageTimeSavedByAgent.build(ctx),
+            expect(dynamicMedianTimeSavedByAgentQueryFactoryV2(ctx)).toEqual(
+                dynamicMedianTimeSavedByAgent.build(ctx),
             )
         })
     })
 
-    describe('dynamicAverageTimeSavedByAgentTimeseries', () => {
+    describe('dynamicMedianTimeSavedByAgentTimeseries', () => {
         it('creates query with time_dimensions using granularity from context', () => {
             expect(
-                dynamicAverageTimeSavedByAgentTimeseries.build({
+                dynamicMedianTimeSavedByAgentTimeseries.build({
                     ...context,
                     granularity: 'day' as AggregationWindow,
                     dimensions: [],
@@ -216,7 +216,7 @@ describe('overallTimeSavedByAgentScope', () => {
                 metricName:
                     'ai-agent-dynamic-average-time-saved-by-agent-timeseries',
                 scope: 'overall-time-saved-by-agent',
-                measures: ['averageTimeSavedByAgent'],
+                measures: ['medianTimeSavedByAgent'],
                 time_dimensions: [
                     { dimension: 'eventDatetime', granularity: 'day' },
                 ],
@@ -228,7 +228,7 @@ describe('overallTimeSavedByAgentScope', () => {
 
         it('creates query with the provided dimensions', () => {
             expect(
-                dynamicAverageTimeSavedByAgentTimeseries.build({
+                dynamicMedianTimeSavedByAgentTimeseries.build({
                     ...context,
                     granularity: 'week' as AggregationWindow,
                     dimensions: ['channel'],
@@ -237,7 +237,7 @@ describe('overallTimeSavedByAgentScope', () => {
                 metricName:
                     'ai-agent-dynamic-average-time-saved-by-agent-timeseries',
                 scope: 'overall-time-saved-by-agent',
-                measures: ['averageTimeSavedByAgent'],
+                measures: ['medianTimeSavedByAgent'],
                 time_dimensions: [
                     { dimension: 'eventDatetime', granularity: 'week' },
                 ],
@@ -248,7 +248,7 @@ describe('overallTimeSavedByAgentScope', () => {
         })
     })
 
-    describe('dynamicAverageTimeSavedByAgentTimeseriesQueryFactoryV2', () => {
+    describe('dynamicMedianTimeSavedByAgentTimeseriesQueryFactoryV2', () => {
         it('returns the same result as calling build directly', () => {
             const ctx = {
                 ...context,
@@ -256,13 +256,13 @@ describe('overallTimeSavedByAgentScope', () => {
             }
 
             expect(
-                dynamicAverageTimeSavedByAgentTimeseriesQueryFactoryV2(ctx),
-            ).toEqual(dynamicAverageTimeSavedByAgentTimeseries.build(ctx))
+                dynamicMedianTimeSavedByAgentTimeseriesQueryFactoryV2(ctx),
+            ).toEqual(dynamicMedianTimeSavedByAgentTimeseries.build(ctx))
         })
 
         it('returns query with time_dimensions when granularity is provided', () => {
             const result =
-                dynamicAverageTimeSavedByAgentTimeseriesQueryFactoryV2({
+                dynamicMedianTimeSavedByAgentTimeseriesQueryFactoryV2({
                     ...context,
                     granularity: 'month' as AggregationWindow,
                     dimensions: [],
@@ -272,7 +272,7 @@ describe('overallTimeSavedByAgentScope', () => {
                 metricName:
                     'ai-agent-dynamic-average-time-saved-by-agent-timeseries',
                 scope: 'overall-time-saved-by-agent',
-                measures: ['averageTimeSavedByAgent'],
+                measures: ['medianTimeSavedByAgent'],
                 time_dimensions: [
                     { dimension: 'eventDatetime', granularity: 'month' },
                 ],
@@ -284,7 +284,7 @@ describe('overallTimeSavedByAgentScope', () => {
 
         it('returns query with the provided dimensions', () => {
             const result =
-                dynamicAverageTimeSavedByAgentTimeseriesQueryFactoryV2({
+                dynamicMedianTimeSavedByAgentTimeseriesQueryFactoryV2({
                     ...context,
                     granularity: 'day' as AggregationWindow,
                     dimensions: ['automationFeatureType'],
@@ -294,7 +294,7 @@ describe('overallTimeSavedByAgentScope', () => {
                 metricName:
                     'ai-agent-dynamic-average-time-saved-by-agent-timeseries',
                 scope: 'overall-time-saved-by-agent',
-                measures: ['averageTimeSavedByAgent'],
+                measures: ['medianTimeSavedByAgent'],
                 time_dimensions: [
                     { dimension: 'eventDatetime', granularity: 'day' },
                 ],

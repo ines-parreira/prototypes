@@ -2,12 +2,12 @@ import {
     fetchStatsMetricTrend,
     getStatsTrendHook,
 } from 'domains/reporting/hooks/useStatsMetricTrend'
-import { averageDecreaseInFirstResponseTimeQueryV2Factory } from 'domains/reporting/models/scopes/overallDecreaseInFirstResponseTime'
+import { medianDecreaseInFirstResponseTimeQueryV2Factory } from 'domains/reporting/models/scopes/overallDecreaseInFirstResponseTime'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
 export const useAiAgentOverviewDecreaseInFRTTrend = getStatsTrendHook(
-    averageDecreaseInFirstResponseTimeQueryV2Factory,
+    medianDecreaseInFirstResponseTimeQueryV2Factory,
 )
 
 export const fetchAiAgentOverviewDecreaseInFRTTrend = (
@@ -15,11 +15,11 @@ export const fetchAiAgentOverviewDecreaseInFRTTrend = (
     timezone: string,
 ) =>
     fetchStatsMetricTrend(
-        averageDecreaseInFirstResponseTimeQueryV2Factory({
+        medianDecreaseInFirstResponseTimeQueryV2Factory({
             filters,
             timezone,
         }),
-        averageDecreaseInFirstResponseTimeQueryV2Factory({
+        medianDecreaseInFirstResponseTimeQueryV2Factory({
             filters: { ...filters, period: getPreviousPeriod(filters.period) },
             timezone,
         }),

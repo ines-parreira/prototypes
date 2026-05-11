@@ -43,7 +43,7 @@ export const overallDecreaseInResolutionTime =
             METRIC_NAMES.AI_AGENT_OVERVIEW_DECREASE_IN_RESOLUTION_TIME,
         )
         .defineQuery(() => ({
-            measures: ['averageDecreaseInResolutionTime'] as const,
+            measures: ['medianDecreaseInResolutionTime'] as const,
         }))
 
 export const overallDecreaseInResolutionTimeQueryV2Factory = (

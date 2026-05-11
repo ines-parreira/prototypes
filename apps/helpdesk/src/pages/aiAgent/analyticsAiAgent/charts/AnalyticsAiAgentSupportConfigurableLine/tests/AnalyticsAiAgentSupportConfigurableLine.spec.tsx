@@ -168,7 +168,7 @@ describe('AnalyticsAiAgentSupportConfigurableLine', () => {
     it('should render metric selector when multiple metrics are present', () => {
         const secondMetricConfig: ConfigurableGraphMetricConfig = {
             ...defaultMetricConfig,
-            measure: 'averageDecreaseInFirstResponseTime',
+            measure: 'medianDecreaseInFirstResponseTime',
             name: 'Decrease in FRT',
         }
         getLineChartGraphConfigMock.mockReturnValue([

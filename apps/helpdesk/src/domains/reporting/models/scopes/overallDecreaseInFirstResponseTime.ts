@@ -38,13 +38,13 @@ export type OverallDecreaseInFirstResponseTimeContext = Context<
     typeof overallDecreaseInFirstResponseTimeScope.config
 >
 
-export const averageDecreaseInFirstResponseTime =
+export const medianDecreaseInFirstResponseTime =
     overallDecreaseInFirstResponseTimeScope
         .defineMetricName(METRIC_NAMES.AI_AGENT_OVERVIEW_DECREASE_IN_FRT)
         .defineQuery(() => ({
-            measures: ['averageDecreaseInFirstResponseTime'] as const,
+            measures: ['medianDecreaseInFirstResponseTime'] as const,
         }))
 
-export const averageDecreaseInFirstResponseTimeQueryV2Factory = (
+export const medianDecreaseInFirstResponseTimeQueryV2Factory = (
     ctx: OverallDecreaseInFirstResponseTimeContext,
-) => averageDecreaseInFirstResponseTime.build(ctx)
+) => medianDecreaseInFirstResponseTime.build(ctx)
