@@ -43,7 +43,7 @@ export const JtbdPicker = ({ onSelect }: JtbdPickerProps) => (
 
         <Box flexDirection="column" gap="sm">
             <OptionCard
-                iconName="comm-chat-conversation-circle"
+                iconName="chat-conversation-circle"
                 title="Resolve support questions automatically"
                 onSelect={() => onSelect(AiAgentScopes.SUPPORT)}
             />
