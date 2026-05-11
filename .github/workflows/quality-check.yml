@@ -55,7 +55,7 @@ jobs:
           npm-token: ${{ secrets.GH_READ_PACKAGES_TOKEN }}
 
       - name: Lint
-        run: 'npx nx affected --target=lint --base=${{ inputs.nx-base-commit }} --head=HEAD && pnpm lint:deprecated'
+        run: "npx nx affected --target=lint --base=${{ inputs.nx-base-commit }} --head=HEAD && pnpm lint:deprecated"
 
   format:
     name: Format
@@ -79,11 +79,11 @@ jobs:
           npm-token: ${{ secrets.GH_READ_PACKAGES_TOKEN }}
 
       - name: Format
-        run: 'npx nx affected --target=format:check --base=${{ inputs.nx-base-commit }} --head=HEAD'
+        run: "npx nx affected --target=format:check --base=${{ inputs.nx-base-commit }} --head=HEAD"
 
   typecheck:
     name: Typecheck
-    runs-on: gh-actions-1cpu4gb-runner-set
+    runs-on: gh-actions-4cpu8gb-runner-set
     if: inputs.helpdesk-affected == 'true' || inputs.has-other-affected-packages == 'true'
     steps:
       - name: Checkout code
@@ -154,7 +154,7 @@ jobs:
           report_type: test_results
 
   unused-helpdesk-test-statuses:
-    name: 'Unused helpdesk test statuses'
+    name: "Unused helpdesk test statuses"
     runs-on: gh-actions-0.5cpu1gb-runner-set
     if: ${{ !cancelled() && inputs.helpdesk-affected == 'false' }}
     steps:
@@ -174,7 +174,7 @@ jobs:
             }
 
   tests-rollup:
-    name: 'Apps tests'
+    name: "Apps tests"
     runs-on: gh-actions-0.5cpu1gb-runner-set
     needs:
       - tests
@@ -322,7 +322,7 @@ jobs:
           done
 
   unused-package-test-statuses:
-    name: 'Unused package test statuses'
+    name: "Unused package test statuses"
     runs-on: gh-actions-0.5cpu1gb-runner-set
     if: ${{ !cancelled() && fromJSON(inputs.packages-test-bucket-count) < 6 }}
     steps:
@@ -344,7 +344,7 @@ jobs:
             }
 
   packages-tests-rollup:
-    name: 'Packages tests'
+    name: "Packages tests"
     runs-on: gh-actions-0.5cpu1gb-runner-set
     needs:
       - package-tests
@@ -370,7 +370,7 @@ jobs:
           fi
 
   no-application-code-changes:
-    name: 'No application code changes'
+    name: "No application code changes"
     runs-on: gh-actions-0.5cpu1gb-runner-set
     if: inputs.helpdesk-affected == 'false' && inputs.has-other-affected-packages == 'false'
     steps:
@@ -387,7 +387,7 @@ jobs:
               context: 'codecov/patch',
               description: 'No application code changes, skipping code coverage check.'
             });
-            
+
             // Set codecov/project status check to success
             await github.rest.repos.createCommitStatus({
               owner: context.repo.owner,
