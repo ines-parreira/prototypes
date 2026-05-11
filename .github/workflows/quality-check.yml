@@ -83,7 +83,7 @@ jobs:
 
   typecheck:
     name: Typecheck
-    runs-on: gh-actions-1cpu2gb-runner-set
+    runs-on: gh-actions-1cpu4gb-runner-set
     if: inputs.helpdesk-affected == 'true' || inputs.has-other-affected-packages == 'true'
     steps:
       - name: Checkout code
