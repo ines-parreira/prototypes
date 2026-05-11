@@ -56,7 +56,7 @@ on:
 jobs:
   deploy:
     name: Deploy
-    runs-on: gh-actions-default-runner-set
+    runs-on: gh-actions-2cpu2gb-dind-runner-set
     container:
       image: us-central1-docker.pkg.dev/gorgias-ops-production/container-images/toolbox:latest
       credentials:
@@ -108,7 +108,7 @@ jobs:
   create-release:
     name: Create release
     needs: deploy
-    runs-on: gh-actions-small-runner-set
+    runs-on: gh-actions-1cpu2gb-runner-set
     steps:
       - name: Checkout code
         uses: actions/checkout@v6

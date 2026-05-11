@@ -12,7 +12,7 @@ permissions:
 jobs:
   deprecation-analysis:
     name: Deprecation analysis
-    runs-on: gh-actions-small-runner-set
+    runs-on: gh-actions-1cpu2gb-runner-set
     outputs:
       changed: ${{ steps.check-changes.outputs.changed }}
 

@@ -48,7 +48,7 @@ env:
 jobs:
   build:
     name: Build
-    runs-on: gh-actions-large-runner-set
+    runs-on: gh-actions-4cpu12gb-runner-set
     timeout-minutes: 15
     steps:
       - name: Checkout code

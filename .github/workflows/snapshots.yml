@@ -20,7 +20,7 @@ concurrency:
 jobs:
   pr-context:
     name: PR context
-    runs-on: gh-actions-small-runner-set
+    runs-on: gh-actions-0.5cpu1gb-runner-set
     outputs:
       should-run: ${{ steps.pr.outputs.should-run }}
       base-sha: ${{ steps.pr.outputs.base-sha }}
@@ -72,7 +72,7 @@ jobs:
   Check-Snapshot-Tests:
     needs: pr-context
     if: needs.pr-context.outputs.should-run == 'true'
-    runs-on: gh-actions-small-runner-set
+    runs-on: gh-actions-1cpu2gb-runner-set
     steps:
       - uses: actions/checkout@v6
         with:

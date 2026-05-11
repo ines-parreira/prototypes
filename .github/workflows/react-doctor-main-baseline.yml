@@ -24,7 +24,7 @@ jobs:
   workspace-setup:
     name: Workspace setup
     if: github.event.workflow_run.conclusion == 'success'
-    runs-on: gh-actions-large-runner-set
+    runs-on: gh-actions-4cpu12gb-runner-set
     outputs:
       cache-key: ${{ env.CACHE_KEY }}
       has-react-doctor-affected-packages: ${{ env.HAS_REACT_DOCTOR_AFFECTED_PACKAGES }}
@@ -61,7 +61,7 @@ jobs:
     name: React Doctor scan
     needs: workspace-setup
     if: needs.workspace-setup.outputs.has-react-doctor-affected-packages == 'true'
-    runs-on: gh-actions-default-runner-set
+    runs-on: gh-actions-4cpu12gb-runner-set
     strategy:
       fail-fast: false
       matrix:
@@ -101,7 +101,7 @@ jobs:
       - workspace-setup
       - react-doctor-scan
     if: ${{ needs.workspace-setup.outputs.has-react-doctor-affected-packages == 'true' && !cancelled() }}
-    runs-on: gh-actions-small-runner-set
+    runs-on: gh-actions-1cpu2gb-dind-runner-set
     continue-on-error: true
     container: google/cloud-sdk:502.0.0-alpine
     env:

@@ -29,7 +29,7 @@ jobs:
   pr-context:
     name: PR context
     if: github.event_name == 'workflow_run'
-    runs-on: gh-actions-small-runner-set
+    runs-on: gh-actions-0.5cpu1gb-runner-set
     outputs:
       should-run: ${{ steps.pr.outputs.should-run }}
       head-ref: ${{ steps.pr.outputs.head-ref }}
@@ -84,7 +84,7 @@ jobs:
     name: Workspace setup
     needs: pr-context
     if: needs.pr-context.outputs.should-run == 'true'
-    runs-on: gh-actions-large-runner-set
+    runs-on: gh-actions-4cpu12gb-runner-set
     outputs:
       cache-key: ${{ env.CACHE_KEY }}
       preview-path: ${{ steps.sanitize.outputs.preview-path }}
@@ -132,7 +132,7 @@ jobs:
     needs:
       - workspace-setup
       - build-preview
-    runs-on: gh-actions-default-runner-set
+    runs-on: gh-actions-2cpu2gb-dind-runner-set
     container:
       image: us-central1-docker.pkg.dev/gorgias-ops-production/container-images/toolbox:latest
       credentials:
@@ -182,7 +182,7 @@ jobs:
       - pr-context
       - workspace-setup
       - upload-preview
-    runs-on: gh-actions-small-runner-set
+    runs-on: gh-actions-0.5cpu1gb-runner-set
     steps:
       - name: Generate Requestly rule JSON
         uses: actions/github-script@v8
@@ -335,7 +335,7 @@ jobs:
   cleanup-preview:
     name: Cleanup preview
     if: github.event.action == 'closed'
-    runs-on: gh-actions-default-runner-set
+    runs-on: gh-actions-2cpu2gb-dind-runner-set
     container:
       image: us-central1-docker.pkg.dev/gorgias-ops-production/container-images/toolbox:latest
       credentials:

@@ -6,7 +6,7 @@ on:
 
 jobs:
   bypass-codecov-on-revert:
-    runs-on: gh-actions-small-runner-set
+    runs-on: gh-actions-0.5cpu1gb-runner-set
     permissions:
       statuses: write
 

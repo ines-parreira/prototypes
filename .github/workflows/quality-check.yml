@@ -35,7 +35,7 @@ on:
 jobs:
   lint:
     name: Lint
-    runs-on: gh-actions-default-runner-set
+    runs-on: gh-actions-4cpu12gb-runner-set
     if: inputs.helpdesk-affected == 'true' || inputs.has-other-affected-packages == 'true'
     steps:
       - name: Checkout code
@@ -59,7 +59,7 @@ jobs:
 
   format:
     name: Format
-    runs-on: gh-actions-large-runner-set
+    runs-on: gh-actions-4cpu12gb-runner-set
     if: inputs.helpdesk-affected == 'true' || inputs.has-other-affected-packages == 'true'
     steps:
       - name: Checkout code
@@ -83,7 +83,7 @@ jobs:
 
   typecheck:
     name: Typecheck
-    runs-on: gh-actions-small-runner-set
+    runs-on: gh-actions-1cpu2gb-runner-set
     if: inputs.helpdesk-affected == 'true' || inputs.has-other-affected-packages == 'true'
     steps:
       - name: Checkout code
@@ -107,7 +107,7 @@ jobs:
 
   tests:
     name: Tests
-    runs-on: gh-actions-large-runner-set
+    runs-on: gh-actions-4cpu12gb-runner-set
     timeout-minutes: 15
     if: inputs.helpdesk-affected == 'true'
     strategy:
@@ -155,7 +155,7 @@ jobs:
 
   unused-helpdesk-test-statuses:
     name: 'Unused helpdesk test statuses'
-    runs-on: gh-actions-small-runner-set
+    runs-on: gh-actions-0.5cpu1gb-runner-set
     if: ${{ !cancelled() && inputs.helpdesk-affected == 'false' }}
     steps:
       - name: Set unused helpdesk test shard status checks to success
@@ -175,7 +175,7 @@ jobs:
 
   tests-rollup:
     name: 'Apps tests'
-    runs-on: gh-actions-small-runner-set
+    runs-on: gh-actions-0.5cpu1gb-runner-set
     needs:
       - tests
       - unused-helpdesk-test-statuses
@@ -201,7 +201,7 @@ jobs:
 
   package-tests:
     name: Packages test (${{ matrix.bucket }})
-    runs-on: gh-actions-large-runner-set
+    runs-on: gh-actions-4cpu12gb-runner-set
     timeout-minutes: 15
     if: inputs.packages-test-bucket-count != '0'
     strategy:
@@ -323,7 +323,7 @@ jobs:
 
   unused-package-test-statuses:
     name: 'Unused package test statuses'
-    runs-on: gh-actions-small-runner-set
+    runs-on: gh-actions-0.5cpu1gb-runner-set
     if: ${{ !cancelled() && fromJSON(inputs.packages-test-bucket-count) < 6 }}
     steps:
       - name: Set unused package test status checks to success
@@ -345,7 +345,7 @@ jobs:
 
   packages-tests-rollup:
     name: 'Packages tests'
-    runs-on: gh-actions-small-runner-set
+    runs-on: gh-actions-0.5cpu1gb-runner-set
     needs:
       - package-tests
       - unused-package-test-statuses
@@ -371,7 +371,7 @@ jobs:
 
   no-application-code-changes:
     name: 'No application code changes'
-    runs-on: gh-actions-small-runner-set
+    runs-on: gh-actions-0.5cpu1gb-runner-set
     if: inputs.helpdesk-affected == 'false' && inputs.has-other-affected-packages == 'false'
     steps:
       - name: Set overall status check to success when neither helpdesk nor other packages affected

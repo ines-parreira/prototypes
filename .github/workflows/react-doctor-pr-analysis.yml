@@ -26,7 +26,7 @@ concurrency:
 jobs:
   pr-context:
     name: PR context
-    runs-on: gh-actions-small-runner-set
+    runs-on: gh-actions-0.5cpu1gb-runner-set
     outputs:
       base-ref: ${{ steps.pr.outputs.base-ref }}
       head-repo-fork: ${{ steps.pr.outputs.head-repo-fork }}
@@ -81,7 +81,7 @@ jobs:
     name: Workspace setup
     needs: pr-context
     if: needs.pr-context.outputs.should-run == 'true' && needs.pr-context.outputs.head-repo-fork == 'false'
-    runs-on: gh-actions-large-runner-set
+    runs-on: gh-actions-4cpu12gb-runner-set
     outputs:
       cache-key: ${{ env.CACHE_KEY }}
       has-react-doctor-affected-packages: ${{ env.HAS_REACT_DOCTOR_AFFECTED_PACKAGES }}
@@ -125,7 +125,7 @@ jobs:
       - pr-context
       - workspace-setup
     if: needs.workspace-setup.outputs.has-react-doctor-affected-packages == 'true'
-    runs-on: gh-actions-default-runner-set
+    runs-on: gh-actions-4cpu12gb-runner-set
     strategy:
       fail-fast: false
       matrix:
@@ -166,7 +166,7 @@ jobs:
       - workspace-setup
       - react-doctor-scan
     if: ${{ needs.workspace-setup.outputs.has-react-doctor-affected-packages == 'true' && !cancelled() }}
-    runs-on: gh-actions-small-runner-set
+    runs-on: gh-actions-1cpu2gb-dind-runner-set
     container: google/cloud-sdk:502.0.0-alpine
     env:
       GOOGLE_APPLICATION_CREDENTIALS: /tmp/gcloud-key.json
@@ -228,7 +228,7 @@ jobs:
       - workspace-setup
       - react-doctor-compare
     if: ${{ needs.workspace-setup.outputs.has-react-doctor-affected-packages == 'true' && !cancelled() }}
-    runs-on: gh-actions-small-runner-set
+    runs-on: gh-actions-0.5cpu1gb-runner-set
     steps:
       - name: Download React Doctor markdown artifacts
         uses: actions/download-artifact@v8
