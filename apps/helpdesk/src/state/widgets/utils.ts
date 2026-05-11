@@ -99,33 +99,40 @@ export function getWidgetSourcePath(
 ): string[] | null {
     const widgetType = widget.get('type') as string
     const context = widget.get('context') as WidgetEnvironment
-
-    if (widgetType === CUSTOM_WIDGET_TYPE) {
-        return getSourcePathFromContext(context, 'custom') as string[]
-    }
-
-    if (widgetType === CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE) {
-        const sourcePath = getSourcePathFromContext(
-            context,
-            'customer_external_data',
-        ) as string[]
-        const appId = widget.get('app_id') as string
-        if (!appId || !sources.getIn([...sourcePath, appId])) return null
-        return [...sourcePath, appId]
-    }
+    const integrationId = widget.get('integration_id')
 
     if (widgetType === STANDALONE_WIDGET_TYPE) {
         return []
     }
 
-    const integrationId = widget.get('integration_id')
+    if (widgetType === CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE) {
+        const appId = widget.get('app_id') as string
+        if (appId) {
+            const sourcePath = getSourcePathFromContext(
+                context,
+                'customer_external_data',
+            ) as string[]
+            if (!sources.getIn([...sourcePath, appId])) return null
+            return [...sourcePath, appId]
+        }
+    }
+
+    // Widgets bound to an integration resolve their data via integrations.<id>
+    // when the customer has data there. Mirrors legacy InfobarWidgets, which
+    // iterates customer.integrations and matches by integration_id (HTTP-style)
+    // before falling back to the type-specific path.
     if (integrationId) {
-        const sourcePath = getSourcePathFromContext(
+        const integrationsPath = getSourcePathFromContext(
             context,
             'integrations',
         ) as string[]
-        if (!sources.getIn([...sourcePath, String(integrationId)])) return null
-        return [...sourcePath, String(integrationId)]
+        const finalPath = [...integrationsPath, String(integrationId)]
+        if (sources.getIn(finalPath)) return finalPath
+        if (widgetType !== CUSTOM_WIDGET_TYPE) return null
+    }
+
+    if (widgetType === CUSTOM_WIDGET_TYPE) {
+        return getSourcePathFromContext(context, 'custom') as string[]
     }
 
     return null

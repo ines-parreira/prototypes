@@ -211,4 +211,56 @@ describe('useHasCustomIntegrations', () => {
 
         expect(result.current).toBe(true)
     })
+
+    it('should return true for a SavedBy-style custom widget bound to an integration with source data', () => {
+        mockState({
+            widgets: [
+                {
+                    type: 'custom',
+                    context: 'ticket',
+                    integration_id: 70743,
+                    app_id: '6618319566be1309e32d99c2',
+                },
+            ],
+            sources: {
+                ticket: {
+                    customer: {
+                        integrations: {
+                            '70743': { order0: { name: '#1' } },
+                        },
+                    },
+                },
+            },
+        })
+
+        const { result } = renderHook(() => useHasCustomIntegrations())
+
+        expect(result.current).toBe(true)
+    })
+
+    it('should return true for a Stay.Ai-style customer_external_data widget without app_id when integrations source data exists', () => {
+        mockState({
+            widgets: [
+                {
+                    type: 'customer_external_data',
+                    context: 'ticket',
+                    integration_id: 72644,
+                    app_id: null,
+                },
+            ],
+            sources: {
+                ticket: {
+                    customer: {
+                        integrations: {
+                            '72644': { customerName: 'Jane' },
+                        },
+                    },
+                },
+            },
+        })
+
+        const { result } = renderHook(() => useHasCustomIntegrations())
+
+        expect(result.current).toBe(true)
+    })
 })
