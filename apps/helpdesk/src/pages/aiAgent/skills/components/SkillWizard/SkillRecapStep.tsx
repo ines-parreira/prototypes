@@ -145,7 +145,7 @@ export const SkillRecapStep = ({ wizard }: Props) => {
                     >
                         <Box gap="xs" alignItems="flex-start">
                             <Icon
-                                name="circle-check"
+                                name="check-circle"
                                 size="md"
                                 color="content-success-default"
                             />
@@ -190,7 +190,7 @@ export const SkillRecapStep = ({ wizard }: Props) => {
                     >
                         <Box gap="xs" alignItems="flex-start">
                             <Icon
-                                name="circle-check"
+                                name="check-circle"
                                 size="md"
                                 color="content-success-default"
                             />

@@ -58,7 +58,7 @@ export const SkillsSidePanel = ({
                     {hasAnyDisabledActions && (
                         <Box alignItems="center" gap="xxxs">
                             <Icon
-                                name="triangle-warning"
+                                name="warning-triangle"
                                 size="sm"
                                 color="content-warning-default"
                             />
@@ -94,7 +94,7 @@ export const SkillsSidePanel = ({
                                                 >
                                                     {hasDisabledActions && (
                                                         <Icon
-                                                            name="triangle-warning"
+                                                            name="warning-triangle"
                                                             size="sm"
                                                             color="content-warning-default"
                                                             alt={`${title} has actions that need to be enabled`}
