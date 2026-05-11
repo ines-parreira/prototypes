@@ -1,0 +1,36 @@
+:local {
+    .wrapper {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        width: 36px;
+        height: 36px;
+        border-radius: var(--spacing-xxxs, 4px);
+        background-color: var(--surface-neutral-primary, #fafafa);
+    }
+
+    .sm {
+        width: 24px;
+        height: 24px;
+    }
+
+    .plain {
+        width: auto;
+        height: auto;
+        background-color: transparent;
+        border-radius: 0;
+    }
+
+    .icon {
+        display: block;
+        width: 20px;
+        height: 20px;
+        object-fit: contain;
+    }
+
+    .sm .icon {
+        width: 16px;
+        height: 16px;
+    }
+}
