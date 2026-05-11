@@ -1,5 +1,6 @@
 import { ReportingMetricBreakdownTable } from '@repo/reporting'
 
+import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
 import {
     SUPPORT_AGENTS_PERFORMANCE_BY_CHANNEL_COLUMNS,
     SUPPORT_AGENTS_PERFORMANCE_BY_CHANNEL_NAME_COLUMNS,
@@ -22,6 +23,11 @@ export const SupportAgentsPerformanceByChannelTable = ({ chartId }: Props) => {
             loadingStates={loadingStates}
             DownloadButton={<DownloadSupportAgentsPerformanceByChannelButton />}
             nameColumns={SUPPORT_AGENTS_PERFORMANCE_BY_CHANNEL_NAME_COLUMNS}
+            actionMenu={
+                chartId ? (
+                    <ChartsActionMenu chartId={chartId} chartName="Channel" />
+                ) : undefined
+            }
             chartId={chartId}
         />
     )

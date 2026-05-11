@@ -79,4 +79,46 @@ describe('SelectableReports', () => {
 
         expect(container).toBeEmptyDOMElement()
     })
+
+    it('marks only the report with a matching id as selected', () => {
+        const sharedReportPath = '/shared-path'
+        const reportA = {
+            id: ReportsIDs.AiAgentAnalyticsAllAgents,
+            reportName: 'All Agents',
+            reportPath: sharedReportPath,
+            charts: {},
+            reportFilters: { optional: [], persistent: [] },
+        }
+        const reportB = {
+            id: ReportsIDs.AiAgentAnalyticsShoppingAssistant,
+            reportName: 'Shopping Assistant',
+            reportPath: sharedReportPath,
+            charts: {},
+            reportFilters: { optional: [], persistent: [] },
+        }
+        const sharedPathConfig = [
+            {
+                category: 'AI & automation',
+                children: [
+                    { type: OverviewChart, config: reportA },
+                    { type: OverviewChart, config: reportB },
+                ],
+            },
+        ]
+
+        render(
+            <SelectableReports
+                {...defaultProps}
+                config={sharedPathConfig}
+                selectedReport={reportA}
+            />,
+        )
+
+        expect(
+            screen.getByText('All Agents').closest('.isSelected'),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText('Shopping Assistant').closest('.isSelected'),
+        ).toBeNull()
+    })
 })

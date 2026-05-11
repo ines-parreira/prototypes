@@ -29,6 +29,10 @@ jest.mock(
     'pages/aiAgent/analyticsAiAgent/hooks/useAllAgentsPerformanceByChannelMetrics',
 )
 
+jest.mock(
+    'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu',
+)
+
 const mockUseAllAgentsPerformanceByChannelMetrics = jest.requireMock(
     'pages/aiAgent/analyticsAiAgent/hooks/useAllAgentsPerformanceByChannelMetrics',
 ).useAllAgentsPerformanceByChannelMetrics as jest.Mock
@@ -83,6 +87,7 @@ const getLastCallProps = () =>
         loadingStates: MetricLoadingStates
         getRowKey: (row: AllAgentsPerformanceByChannelEntityMetrics) => string
         DownloadButton: React.ReactNode
+        actionMenu?: React.ReactNode
         nameColumns: {
             accessor: string
             label: string
@@ -134,5 +139,23 @@ describe('AllAgentsPerformanceByChannelTable', () => {
         expect(
             screen.getByText('Download All Agents Performance By Channel'),
         ).toBeInTheDocument()
+    })
+
+    it('passes actionMenu to ReportingMetricBreakdownTable when chartId is provided', () => {
+        mockUseAllAgentsPerformanceByChannelMetrics.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+        })
+        render(
+            <AllAgentsPerformanceByChannelTable chartId="all_agents_performance_by_channel_table" />,
+        )
+
+        expect(getLastCallProps().actionMenu).toBeDefined()
+    })
+
+    it('does not pass actionMenu to ReportingMetricBreakdownTable when chartId is not provided', () => {
+        renderComponent()
+
+        expect(getLastCallProps().actionMenu).toBeUndefined()
     })
 })

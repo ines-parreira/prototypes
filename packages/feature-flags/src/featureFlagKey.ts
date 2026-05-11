@@ -55,6 +55,7 @@ export enum FeatureFlagKey {
     AiAgentAnalyticsDashboardsChartsAndDropdowns = 'linear.project_revamp-ai-agent-analytics-dashboards.charts-and-dropdowns',
     AiAgentAnalyticsDashboardsTables = 'linear.project_revamp-ai-agent-analytics-dashboards.tables',
     AiAgentAnalyticsDashboardsTrendCardsWithTimeseries = 'linear.project_revamp-ai-agent-analytics-dashboards.trend-cards-with-timeseries',
+    AiAgentAnalyticsCustomDashboards = 'linear-project_revamp-ai-agent-analytics-dashboards_custom-dashboards',
     AiAgentAnalyticsDisableLegacyReports = 'linear-project_revamp-ai-agent-analytics_disable-legacy-reports',
     AiAgentAnalyticsFilters = 'linear_project_revamp-ai-agent-analytics_filters',
     AiJourneyEnabled = 'ai-journey-ui-enabled',

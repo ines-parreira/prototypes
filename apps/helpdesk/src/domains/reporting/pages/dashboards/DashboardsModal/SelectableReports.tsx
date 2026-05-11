@@ -30,8 +30,7 @@ export const SelectableReports = ({
                     <div className={css.category}>{report.category}</div>
                     {Object.values(report.children).map((chart) => {
                         const isReportSelected =
-                            selectedReport?.reportPath ===
-                            chart.config.reportPath
+                            selectedReport?.id === chart.config.id
                         const numberOfSelections = getNumberOfSelections(
                             chart.config.charts,
                             checkedCharts,
@@ -43,7 +42,7 @@ export const SelectableReports = ({
 
                         return (
                             <div
-                                key={chart.config.reportPath}
+                                key={chart.config.id}
                                 className={classnames(css.subcategory, {
                                     [css.isSelected]: isReportSelected,
                                 })}

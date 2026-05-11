@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import { ReportingMetricBreakdownTable } from '@repo/reporting'
 
 import { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
+import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
 import { useShoppingAssistantTopProductsMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantTopProductsMetrics'
 
 import { SHOPPING_ASSISTANT_TOP_PRODUCTS_COLUMNS } from './columns'
@@ -47,6 +48,14 @@ export const ShoppingAssistantTopProductsTable = ({ chartId }: Props) => {
                 [ProductTableKeys.BTR]: isFetching,
             }}
             DownloadButton={<DownloadShoppingAssistantTopProductsButton />}
+            actionMenu={
+                chartId ? (
+                    <ChartsActionMenu
+                        chartId={chartId}
+                        chartName="Top products recommended"
+                    />
+                ) : undefined
+            }
             chartId={chartId}
             nameColumns={nameColumns}
         />

@@ -104,15 +104,38 @@ describe('useSaveTableColumnVisibility', () => {
 
             expect(result.current.tabId).toBe('overview')
         })
+    })
 
-        it('returns undefined when context is null', () => {
+    describe('isLoaded', () => {
+        it('returns true when context is null', () => {
             vi.mocked(useDashboardContext).mockReturnValue(null)
 
             const { result } = renderHook(() =>
                 useSaveTableColumnVisibility(CHART_ID),
             )
 
-            expect(result.current.tabId).toBeUndefined()
+            expect(result.current.isLoaded).toBe(true)
+        })
+
+        it('returns true when context is loaded', () => {
+            const { result } = renderHook(() =>
+                useSaveTableColumnVisibility(CHART_ID),
+            )
+
+            expect(result.current.isLoaded).toBe(true)
+        })
+
+        it('returns false when context is not yet loaded', () => {
+            vi.mocked(useDashboardContext).mockReturnValue({
+                ...mockContext,
+                isLoaded: false,
+            })
+
+            const { result } = renderHook(() =>
+                useSaveTableColumnVisibility(CHART_ID),
+            )
+
+            expect(result.current.isLoaded).toBe(false)
         })
     })
 

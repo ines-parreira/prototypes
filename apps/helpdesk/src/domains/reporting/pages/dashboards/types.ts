@@ -53,6 +53,9 @@ import type {
 } from 'domains/reporting/state/ui/stats/types'
 import type { Channel } from 'models/channel/types'
 import type { Integration } from 'models/integration/types'
+import type { AnalyticsAiAgentAllAgentsChart } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentAllAgentsReportConfig'
+import type { AnalyticsAiAgentShoppingAssistantChart } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentShoppingAssistantReportConfig'
+import type { AnalyticsAiAgentSupportAgentChart } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentSupportAgentReportConfig'
 import type { AnalyticsOverviewChart } from 'pages/aiAgent/analyticsOverview/AnalyticsOverviewReportConfig'
 
 type FilterSettings = {
@@ -247,6 +250,9 @@ export type AvailableChartIds =
     | typeof AiSalesAgentChart
     | typeof AutomateAiAgentsChart
     | typeof AnalyticsOverviewChart
+    | typeof AnalyticsAiAgentAllAgentsChart
+    | typeof AnalyticsAiAgentShoppingAssistantChart
+    | typeof AnalyticsAiAgentSupportAgentChart
 
 export type ReportChildrenConfig = {
     type: AvailableChartIds

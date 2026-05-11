@@ -1,5 +1,6 @@
 import { ReportingMetricBreakdownTable } from '@repo/reporting'
 
+import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
 import {
     ALL_AGENTS_PERFORMANCE_BY_INTENT_COLUMNS,
     ALL_AGENTS_PERFORMANCE_BY_INTENT_NAME_COLUMNS,
@@ -22,6 +23,11 @@ export const AllAgentsPerformanceByIntentTable = ({ chartId }: Props) => {
             loadingStates={loadingStates}
             DownloadButton={<DownloadAllAgentsPerformanceByIntentButton />}
             nameColumns={ALL_AGENTS_PERFORMANCE_BY_INTENT_NAME_COLUMNS}
+            actionMenu={
+                chartId ? (
+                    <ChartsActionMenu chartId={chartId} chartName="Intent" />
+                ) : undefined
+            }
             chartId={chartId}
         />
     )

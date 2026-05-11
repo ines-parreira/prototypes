@@ -33,6 +33,9 @@ export const CardsSection = ({
 }: CardsSectionProps) => {
     const { value: isAnalyticsDashboardsTrendCardsEnabled } =
         useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards)
+    const { value: isCustomDashboardsEnabled } = useFlagWithLoading(
+        FeatureFlagKey.AiAgentAnalyticsCustomDashboards,
+    )
 
     const visibleItems = section.items.filter(
         (item) =>
@@ -65,6 +68,7 @@ export const CardsSection = ({
                         <DashboardComponent
                             chart={item.chartId}
                             config={reportConfig}
+                            withChartMenu={isCustomDashboardsEnabled}
                         />
                     </div>
                 ))}
@@ -77,6 +81,7 @@ export const CardsSection = ({
                     <DashboardComponent
                         chart={item.chartId}
                         config={reportConfig}
+                        withChartMenu={isCustomDashboardsEnabled}
                     />
                 </div>
             ))}

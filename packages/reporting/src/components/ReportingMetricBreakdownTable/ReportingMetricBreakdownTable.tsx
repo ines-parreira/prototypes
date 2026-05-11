@@ -23,6 +23,7 @@ export type { MetricColumnConfig, MetricLoadingStates, NameColumnConfig }
 export { buildMetricColumnDefs }
 
 type Props<TData> = {
+    actionMenu?: ReactNode
     data: TData[]
     metricColumns: MetricColumnConfig[]
     loadingStates: MetricLoadingStates
@@ -32,6 +33,7 @@ type Props<TData> = {
 }
 
 export function ReportingMetricBreakdownTable<TData>({
+    actionMenu,
     data,
     metricColumns,
     loadingStates,
@@ -137,7 +139,10 @@ export function ReportingMetricBreakdownTable<TData>({
                     <NoDataPlaceholder height={100} marginBottom={0} />
                 )}
             >
-                <DataTableActions>{DownloadButton}</DataTableActions>
+                <DataTableActions>
+                    {DownloadButton}
+                    {actionMenu}
+                </DataTableActions>
                 <DataTableColumnEditing
                     label="Edit metrics"
                     footer={renderFooter}

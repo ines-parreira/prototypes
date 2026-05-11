@@ -16,7 +16,11 @@ import type {
 import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset'
 
 jest.mock('@repo/feature-flags', () => ({
-    FeatureFlagKey: { AiAgentAnalyticsDashboardsTables: 'tables-flag' },
+    FeatureFlagKey: {
+        AiAgentAnalyticsDashboardsTables: 'tables-flag',
+        AiAgentAnalyticsCustomDashboards:
+            'ai-agent-analytics-custom-dashboards',
+    },
     useFlagWithLoading: jest.fn(),
 }))
 
@@ -37,8 +41,19 @@ jest.mock(
 )
 
 jest.mock('domains/reporting/pages/dashboards/DashboardComponent', () => ({
-    DashboardComponent: ({ chart }: { chart: string }) => (
-        <div>DashboardComponent: {chart}</div>
+    DashboardComponent: ({
+        chart,
+        withChartMenu,
+    }: {
+        chart: string
+        withChartMenu?: boolean
+    }) => (
+        <div>
+            DashboardComponent: {chart}
+            {withChartMenu !== undefined && (
+                <span>withChartMenu:{String(withChartMenu)}</span>
+            )}
+        </div>
     ),
 }))
 
@@ -721,6 +736,40 @@ describe('TablesSection', () => {
             expect(
                 screen.getByText('DashboardComponent: table1'),
             ).toBeInTheDocument()
+        })
+    })
+
+    describe('AiAgentAnalyticsCustomDashboards FF', () => {
+        it('passes withChartMenu=true to DashboardComponent when FF is enabled', () => {
+            mockUseFlagWithLoading.mockReturnValue({
+                value: true,
+                isLoading: false,
+            })
+
+            render(
+                <TablesSection
+                    section={makeSection([{ chartId: 'table1' }])}
+                    reportConfig={reportConfigMock}
+                />,
+            )
+
+            expect(screen.getByText('withChartMenu:true')).toBeInTheDocument()
+        })
+
+        it('passes withChartMenu=false to DashboardComponent when FF is disabled', () => {
+            mockUseFlagWithLoading.mockReturnValue({
+                value: false,
+                isLoading: false,
+            })
+
+            render(
+                <TablesSection
+                    section={makeSection([{ chartId: 'table1' }])}
+                    reportConfig={reportConfigMock}
+                />,
+            )
+
+            expect(screen.getByText('withChartMenu:false')).toBeInTheDocument()
         })
     })
 })

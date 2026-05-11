@@ -31,6 +31,10 @@ jest.mock(
     'pages/aiAgent/analyticsOverview/hooks/usePerformanceMetricsPerFeature',
 )
 
+jest.mock(
+    'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu',
+)
+
 const mockUsePerformanceMetricsPerFeature = jest.requireMock(
     'pages/aiAgent/analyticsOverview/hooks/usePerformanceMetricsPerFeature',
 ).usePerformanceMetricsPerFeature as jest.Mock
@@ -79,6 +83,7 @@ const getLastCallProps = () =>
         loadingStates: MetricLoadingStates
         getRowKey: (row: FeatureMetrics) => string
         DownloadButton: React.ReactNode
+        actionMenu?: React.ReactNode
         nameColumns: { accessor: string; label: string }[]
     }
 
@@ -122,5 +127,23 @@ describe('PerformanceBreakdownTable', () => {
         expect(
             screen.getByText('Download Performance Breakdown'),
         ).toBeInTheDocument()
+    })
+
+    it('passes actionMenu to ReportingMetricBreakdownTable when chartId is provided', () => {
+        mockUsePerformanceMetricsPerFeature.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+        })
+        render(
+            <PerformanceBreakdownTable chartId="performance_breakdown_table" />,
+        )
+
+        expect(getLastCallProps().actionMenu).toBeDefined()
+    })
+
+    it('does not pass actionMenu to ReportingMetricBreakdownTable when chartId is not provided', () => {
+        renderComponent()
+
+        expect(getLastCallProps().actionMenu).toBeUndefined()
     })
 })

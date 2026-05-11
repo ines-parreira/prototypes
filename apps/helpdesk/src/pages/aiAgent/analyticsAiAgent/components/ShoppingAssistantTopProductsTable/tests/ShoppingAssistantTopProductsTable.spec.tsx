@@ -11,6 +11,9 @@ import { ShoppingAssistantTopProductsTable } from '../ShoppingAssistantTopProduc
 
 jest.mock('@repo/reporting')
 jest.mock(
+    'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu',
+)
+jest.mock(
     'pages/aiAgent/analyticsAiAgent/components/ShoppingAssistantTopProductsTable/DownloadShoppingAssistantTopProductsButton',
     () => ({
         DownloadShoppingAssistantTopProductsButton: () => (
@@ -76,6 +79,7 @@ const getLastCallProps = () =>
         loadingStates: Record<string, boolean>
         getRowKey: (row: ShoppingAssistantTopProductRow) => string
         DownloadButton: React.ReactNode
+        actionMenu?: React.ReactNode
         nameColumns: {
             accessor: string
             label: string
@@ -179,5 +183,22 @@ describe('ShoppingAssistantTopProductsTable', () => {
         renderComponent({ flatData: [] })
 
         expect(getLastCallProps().data).toEqual([])
+    })
+
+    it('passes actionMenu to ReportingMetricBreakdownTable when chartId is provided', () => {
+        mockUseShoppingAssistantTopProductsMetrics.mockReturnValue(
+            defaultMockReturn,
+        )
+        render(
+            <ShoppingAssistantTopProductsTable chartId="shopping_assistant_top_products_table" />,
+        )
+
+        expect(getLastCallProps().actionMenu).toBeDefined()
+    })
+
+    it('does not pass actionMenu to ReportingMetricBreakdownTable when chartId is not provided', () => {
+        renderComponent()
+
+        expect(getLastCallProps().actionMenu).toBeUndefined()
     })
 })

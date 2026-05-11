@@ -1,5 +1,6 @@
 import { ReportingMetricBreakdownTable } from '@repo/reporting'
 
+import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
 import {
     SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_COLUMNS,
     SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_NAME_COLUMNS,
@@ -29,6 +30,14 @@ export const ShoppingAssistantPerformanceByEngagementFeatureTable = ({
             }
             nameColumns={
                 SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_NAME_COLUMNS
+            }
+            actionMenu={
+                chartId ? (
+                    <ChartsActionMenu
+                        chartId={chartId}
+                        chartName="Engagement feature"
+                    />
+                ) : undefined
             }
             chartId={chartId}
         />

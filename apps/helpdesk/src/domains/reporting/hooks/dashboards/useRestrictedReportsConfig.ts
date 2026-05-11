@@ -1,6 +1,9 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 
-import { REPORTS_CONFIG } from 'domains/reporting/pages/dashboards/config'
+import {
+    REPORTS_CONFIG,
+    REVAMPED_REPORTS_CONFIG,
+} from 'domains/reporting/pages/dashboards/config'
 import type { ChartConfig } from 'domains/reporting/pages/dashboards/types'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 import { VoiceServiceLevelAgreementsChart } from 'domains/reporting/pages/sla/voice/VoiceServiceLevelAgreementsReportConfig'
@@ -8,9 +11,17 @@ import { VoiceServiceLevelAgreementsChart } from 'domains/reporting/pages/sla/vo
 export const useRestrictedReportsConfig = () => {
     const { isChartRestrictedToCurrentUser, isReportRestrictedToCurrentUser } =
         useReportChartRestrictions()
-    const isVoiceSLAEnabled = useFlag(FeatureFlagKey.VoiceSLA)
+    const { value: isVoiceSLAEnabled } = useFlagWithLoading(
+        FeatureFlagKey.VoiceSLA,
+    )
+    const { value: isCustomDashboardsEnabled } = useFlagWithLoading(
+        FeatureFlagKey.AiAgentAnalyticsCustomDashboards,
+    )
+    const baseConfig = isCustomDashboardsEnabled
+        ? REVAMPED_REPORTS_CONFIG
+        : REPORTS_CONFIG
 
-    return REPORTS_CONFIG.map((section) => ({
+    return baseConfig.map((section) => ({
         ...section,
         children: section.children
             .filter((report) => {

@@ -71,7 +71,7 @@ export const SelectableCharts = ({
                     <div>
                         <div className={css.title}>{chart.label}</div>
                         <div className={css.description}>
-                            {chart.description}
+                            {chart.description ?? chart.tooltipConfig?.caption}
                         </div>
                     </div>
                 </CheckBox>

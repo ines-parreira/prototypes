@@ -1,6 +1,6 @@
 import type { ComponentType, ReactNode } from 'react'
 
-import { useFlagWithLoading } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import type { ConfigurableGraphMetricConfig } from '@repo/reporting'
 import { ConfigurableGraphType, useDashboardContext } from '@repo/reporting'
 import { assumeMock, render } from '@repo/testing'
@@ -155,6 +155,29 @@ describe('ConfigurableGraphWrapper', () => {
                 <ConfigurableGraphWrapper
                     {...defaultProps}
                     chartId="automation-line-chart"
+                />,
+            )
+
+            expect(
+                screen.queryByLabelText('charts-action-menu'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('does not render ChartsActionMenu when AiAgentAnalyticsCustomDashboards FF is disabled', () => {
+            useFlagWithLoadingMocked.mockImplementation((flag) => {
+                if (
+                    flag ===
+                    FeatureFlagKey.AiAgentAnalyticsDashboardsChartsAndDropdowns
+                )
+                    return { value: true, isLoading: false }
+                return { value: false, isLoading: false }
+            })
+
+            render(
+                <ConfigurableGraphWrapper
+                    {...defaultProps}
+                    chartId="automation-line-chart"
+                    chartConfig={mockChartConfig}
                 />,
             )
 

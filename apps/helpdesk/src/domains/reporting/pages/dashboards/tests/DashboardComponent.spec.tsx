@@ -92,12 +92,15 @@ describe('<DashboardComponent />', () => {
             />,
         )
 
-        expect(chartComponentMock).toHaveBeenCalledWith({}, {})
+        expect(chartComponentMock).toHaveBeenCalledWith(
+            { chartConfig: { chartComponent: chartComponentMock } },
+            {},
+        )
         expect(chartComponentMock).not.toHaveBeenCalledWith(
             expect.objectContaining({
                 chartId: chart,
-                dashboard: dashboard,
             }),
+            {},
         )
     })
 

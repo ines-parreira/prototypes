@@ -16,6 +16,10 @@ jest.mock('@repo/reporting', () => ({
 }))
 
 jest.mock(
+    'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu',
+)
+
+jest.mock(
     'pages/aiAgent/analyticsOverview/components/ArticleRecommendationTable/DownloadArticleRecommendationButton',
     () => ({
         DownloadArticleRecommendationButton: () => (
@@ -82,6 +86,7 @@ const getLastCallProps = () =>
         loadingStates: MetricLoadingStates
         getRowKey: (row: ArticleRecommendationRow) => string
         DownloadButton: React.ReactNode
+        actionMenu?: React.ReactNode
         nameColumns: {
             accessor: string
             label: string
@@ -141,6 +146,27 @@ describe('ArticleRecommendationTable', () => {
         expect(getLastCallProps().nameColumns[0].displayNames).toBe(
             displayNames,
         )
+    })
+
+    it('passes actionMenu to ReportingMetricBreakdownTable when chartId is provided', () => {
+        mockUseArticleRecommendationMetrics.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+            displayNames: defaultDisplayNames,
+            isLoading: false,
+            isError: false,
+        })
+        render(
+            <ArticleRecommendationTable chartId="article_recommendation_table" />,
+        )
+
+        expect(getLastCallProps().actionMenu).toBeDefined()
+    })
+
+    it('does not pass actionMenu to ReportingMetricBreakdownTable when chartId is not provided', () => {
+        renderComponent()
+
+        expect(getLastCallProps().actionMenu).toBeUndefined()
     })
 
     it('renders DownloadArticleRecommendationButton as the DownloadButton', () => {

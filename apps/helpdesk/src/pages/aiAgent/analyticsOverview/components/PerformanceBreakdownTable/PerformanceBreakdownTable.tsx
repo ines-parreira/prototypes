@@ -1,5 +1,6 @@
 import { ReportingMetricBreakdownTable } from '@repo/reporting'
 
+import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
 import {
     PERFORMANCE_BREAKDOWN_COLUMNS,
     PERFORMANCE_BREAKDOWN_NAME_COLUMNS,
@@ -21,6 +22,14 @@ export const PerformanceBreakdownTable = ({ chartId }: Props) => {
             loadingStates={loadingStates}
             DownloadButton={<DownloadPerformanceBreakdownButton />}
             nameColumns={PERFORMANCE_BREAKDOWN_NAME_COLUMNS}
+            actionMenu={
+                chartId ? (
+                    <ChartsActionMenu
+                        chartId={chartId}
+                        chartName="All features"
+                    />
+                ) : undefined
+            }
             chartId={chartId}
         />
     )

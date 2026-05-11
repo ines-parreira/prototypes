@@ -26,13 +26,10 @@ export const DashboardComponent = memo(
             return null
         }
 
-        const props = withChartMenu
-            ? {
-                  chartId: chart,
-                  dashboard,
-                  chartConfig: config.charts[chart],
-              }
-            : {}
+        const props = {
+            chartConfig: config.charts[chart],
+            ...(withChartMenu ? { chartId: chart, dashboard } : {}),
+        }
         return createElement(config.charts[chart].chartComponent, props)
     },
 )

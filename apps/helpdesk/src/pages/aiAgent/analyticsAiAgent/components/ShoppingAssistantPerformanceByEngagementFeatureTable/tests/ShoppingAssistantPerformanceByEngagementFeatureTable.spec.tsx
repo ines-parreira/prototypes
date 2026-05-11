@@ -31,6 +31,10 @@ jest.mock(
     'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantPerformanceByEngagementFeatureMetrics',
 )
 
+jest.mock(
+    'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu',
+)
+
 const mockUseShoppingAssistantPerformanceByEngagementFeatureMetrics =
     jest.requireMock(
         'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantPerformanceByEngagementFeatureMetrics',
@@ -92,6 +96,7 @@ const getLastCallProps = () =>
             row: ShoppingAssistantPerformanceByEngagementFeatureEntityMetrics,
         ) => string
         DownloadButton: React.ReactNode
+        actionMenu?: React.ReactNode
         nameColumns: {
             accessor: string
             label: string
@@ -157,5 +162,25 @@ describe('ShoppingAssistantPerformanceByEngagementFeatureTable', () => {
         render(<ShoppingAssistantPerformanceByEngagementFeatureTable />)
 
         expect(getLastCallProps().data).toEqual([])
+    })
+
+    it('passes actionMenu to ReportingMetricBreakdownTable when chartId is provided', () => {
+        mockUseShoppingAssistantPerformanceByEngagementFeatureMetrics.mockReturnValue(
+            {
+                data: defaultData,
+                loadingStates: defaultLoadingStates,
+            },
+        )
+        render(
+            <ShoppingAssistantPerformanceByEngagementFeatureTable chartId="shopping_assistant_performance_by_engagement_feature_table" />,
+        )
+
+        expect(getLastCallProps().actionMenu).toBeDefined()
+    })
+
+    it('does not pass actionMenu to ReportingMetricBreakdownTable when chartId is not provided', () => {
+        renderComponent()
+
+        expect(getLastCallProps().actionMenu).toBeUndefined()
     })
 })

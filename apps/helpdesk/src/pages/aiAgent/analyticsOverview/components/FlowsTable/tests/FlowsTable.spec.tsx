@@ -16,6 +16,10 @@ jest.mock('@repo/reporting', () => ({
 }))
 
 jest.mock(
+    'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu',
+)
+
+jest.mock(
     'pages/aiAgent/analyticsOverview/components/FlowsTable/DownloadFlowsButton',
     () => ({
         DownloadFlowsButton: () => <div>Download Flows</div>,
@@ -78,6 +82,7 @@ const getLastCallProps = () =>
         loadingStates: MetricLoadingStates
         getRowKey: (row: FlowsEntityMetrics) => string
         DownloadButton: React.ReactNode
+        actionMenu?: React.ReactNode
         nameColumns: {
             accessor: string
             label: string
@@ -116,6 +121,23 @@ describe('FlowsTable', () => {
             label: 'Flows',
             displayNames: defaultDisplayNames,
         })
+    })
+
+    it('passes actionMenu to ReportingMetricBreakdownTable when chartId is provided', () => {
+        mockUseFlowsMetrics.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+            displayNames: defaultDisplayNames,
+        })
+        render(<FlowsTable chartId="flows_table" />)
+
+        expect(getLastCallProps().actionMenu).toBeDefined()
+    })
+
+    it('does not pass actionMenu to ReportingMetricBreakdownTable when chartId is not provided', () => {
+        renderComponent()
+
+        expect(getLastCallProps().actionMenu).toBeUndefined()
     })
 
     it('renders DownloadFlowsButton as the DownloadButton', () => {

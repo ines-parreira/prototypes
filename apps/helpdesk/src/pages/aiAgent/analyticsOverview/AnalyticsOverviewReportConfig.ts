@@ -47,19 +47,19 @@ import {
 import { STATS_ROUTES } from 'routes/constants'
 
 export enum AnalyticsOverviewChart {
-    AutomationRateCard = 'automation_rate_card',
-    AutomatedInteractionsCard = 'automated_interactions_card',
-    TimeSavedCard = 'time_saved_card',
-    CostSavedCard = 'cost_saved_card',
-    DecreaseInResolutionTimeCard = 'decrease_in_resolution_time_card',
-    ConfigurableBarGraph = 'configurable_bar_graph',
-    ConfigurableLineGraph = 'configurable_line_graph',
-    PerformanceTable = 'performance_table',
-    OrderManagementTable = 'order_management_table',
-    FlowsTable = 'flows_table',
-    ArticleRecommendationTable = 'article_recommendation_table',
-    HandoverInteractionsCard = 'handover_interactions_card',
-    DecreaseInFRTCard = 'decrease_in_frt_card',
+    AutomationRateCard = 'revamp-ai_agent_overview-automation_rate_card',
+    AutomatedInteractionsCard = 'revamp-ai_agent_overview-automated_interactions_card',
+    TimeSavedCard = 'revamp-ai_agent_overview-time_saved_card',
+    CostSavedCard = 'revamp-ai_agent_overview-cost_saved_card',
+    DecreaseInResolutionTimeCard = 'revamp-ai_agent_overview-decrease_in_resolution_time_card',
+    ConfigurableBarGraph = 'revamp-ai_agent_overview-configurable_bar_graph',
+    ConfigurableLineGraph = 'revamp-ai_agent_overview-configurable_line_graph',
+    PerformanceTable = 'revamp-ai_agent_overview-performance_table',
+    OrderManagementTable = 'revamp-ai_agent_overview-order_management_table',
+    FlowsTable = 'revamp-ai_agent_overview-flows_table',
+    ArticleRecommendationTable = 'revamp-ai_agent_overview-article_recommendation_table',
+    HandoverInteractionsCard = 'revamp-ai_agent_overview-handover_interactions_card',
+    DecreaseInFRTCard = 'revamp-ai_agent_overview-decrease_in_frt_card',
 }
 
 export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart> =

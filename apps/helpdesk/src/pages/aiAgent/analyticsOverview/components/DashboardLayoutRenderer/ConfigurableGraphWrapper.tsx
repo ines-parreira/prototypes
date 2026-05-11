@@ -32,6 +32,9 @@ export const ConfigurableGraphWrapper = ({
     const { value: isAnalyticsDashboardsNewChartsEnabled } = useFlagWithLoading(
         FeatureFlagKey.AiAgentAnalyticsDashboardsChartsAndDropdowns,
     )
+    const { value: isCustomDashboardsEnabled } = useFlagWithLoading(
+        FeatureFlagKey.AiAgentAnalyticsCustomDashboards,
+    )
     const dashboardContext = useManagedDashboardContext()
     const { onSelect } = useSaveConfigurableGraphSelection({
         chartId: analyticsChartId,
@@ -55,7 +58,7 @@ export const ConfigurableGraphWrapper = ({
             initialMeasure={savedItem?.measures?.[0]}
             initialDimension={savedItem?.dimensions?.[0]}
             actionMenu={
-                chartId && chartConfig ? (
+                isCustomDashboardsEnabled && chartId && chartConfig ? (
                     <ChartsActionMenu
                         chartId={chartId}
                         dashboard={dashboard}

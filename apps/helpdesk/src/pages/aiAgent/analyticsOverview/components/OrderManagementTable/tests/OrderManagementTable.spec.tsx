@@ -21,6 +21,10 @@ jest.mock('@repo/reporting', () => ({
 }))
 
 jest.mock(
+    'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu',
+)
+
+jest.mock(
     'pages/aiAgent/analyticsOverview/components/OrderManagementTable/DownloadOrderManagementButton',
     () => ({
         DownloadOrderManagementButton: () => (
@@ -95,6 +99,7 @@ const getLastCallProps = () =>
         loadingStates: MetricLoadingStates
         getRowKey: (row: OrderManagementEntityMetrics) => string
         DownloadButton: ReactNode
+        actionMenu?: ReactNode
         nameColumns: {
             accessor: string
             label: string
@@ -177,5 +182,21 @@ describe('OrderManagementTable', () => {
         expect(
             screen.getByText('Download Order Management'),
         ).toBeInTheDocument()
+    })
+
+    it('passes actionMenu to ReportingMetricBreakdownTable when chartId is provided', () => {
+        mockUseOrderManagementMetrics.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+        })
+        render(<OrderManagementTable chartId="order_management_table" />)
+
+        expect(getLastCallProps().actionMenu).toBeDefined()
+    })
+
+    it('does not pass actionMenu to ReportingMetricBreakdownTable when chartId is not provided', () => {
+        renderComponent()
+
+        expect(getLastCallProps().actionMenu).toBeUndefined()
     })
 })

@@ -28,6 +28,10 @@ jest.mock(
     'pages/aiAgent/analyticsAiAgent/hooks/useSupportAgentsPerformanceByIntentMetrics',
 )
 
+jest.mock(
+    'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu',
+)
+
 const mockUseSupportAgentsPerformanceByIntentMetrics = jest.requireMock(
     'pages/aiAgent/analyticsAiAgent/hooks/useSupportAgentsPerformanceByIntentMetrics',
 ).useSupportAgentsPerformanceByIntentMetrics as jest.Mock
@@ -85,6 +89,7 @@ const getLastCallProps = () =>
             row: SupportAgentsPerformanceByIntentEntityMetrics,
         ) => string
         DownloadButton: React.ReactNode
+        actionMenu?: React.ReactNode
         nameColumns: { accessor: string; label: string }[]
     }
 
@@ -140,5 +145,23 @@ describe('SupportAgentsPerformanceByIntentTable', () => {
         render(<SupportAgentsPerformanceByIntentTable />)
 
         expect(getLastCallProps().data).toEqual([])
+    })
+
+    it('passes actionMenu to ReportingMetricBreakdownTable when chartId is provided', () => {
+        mockUseSupportAgentsPerformanceByIntentMetrics.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+        })
+        render(
+            <SupportAgentsPerformanceByIntentTable chartId="support_agents_performance_by_intent_table" />,
+        )
+
+        expect(getLastCallProps().actionMenu).toBeDefined()
+    })
+
+    it('does not pass actionMenu to ReportingMetricBreakdownTable when chartId is not provided', () => {
+        renderComponent()
+
+        expect(getLastCallProps().actionMenu).toBeUndefined()
     })
 })

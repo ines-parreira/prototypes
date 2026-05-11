@@ -41,18 +41,18 @@ import {
 import { STATS_ROUTES } from 'routes/constants'
 
 export enum AnalyticsAiAgentSupportAgentChart {
-    TimeSavedCard = 'time_saved_card',
-    CostSavedCard = 'cost_saved_card',
-    SupportInteractionsCard = 'support_interactions_card',
-    DecreaseInFRTCard = 'decrease_in_first_resolution_time_card',
-    DecreaseInResolutionTimeCard = 'decrease_in_resolution_time_card',
-    AverageCsatCard = 'average_csat_card',
-    HandoverInteractionsCard = 'handover_interactions_card',
-    SuccessRateCard = 'support_agent_success_rate_card',
-    ConfigurableBarGraph = 'support_configurable_bar_graph',
-    ConfigurableLineGraph = 'support_configurable_line_graph',
-    ChannelPerformanceTable = 'channel_performance_table',
-    IntentPerformanceTable = 'intent_performance_table',
+    TimeSavedCard = 'revamp-ai_agent_support_agent-time_saved_card',
+    CostSavedCard = 'revamp-ai_agent_support_agent-cost_saved_card',
+    SupportInteractionsCard = 'revamp-ai_agent_support_agent-support_interactions_card',
+    DecreaseInFRTCard = 'revamp-ai_agent_support_agent-decrease_in_frt_card',
+    DecreaseInResolutionTimeCard = 'revamp-ai_agent_support_agent-decrease_in_resolution_time_card',
+    AverageCsatCard = 'revamp-ai_agent_support_agent-csat_card',
+    HandoverInteractionsCard = 'revamp-ai_agent_support_agent-handover_interactions_card',
+    SuccessRateCard = 'revamp-ai_agent_support_agent-success_rate_card',
+    ConfigurableBarGraph = 'revamp-ai_agent_support_agent-configurable_bar_graph',
+    ConfigurableLineGraph = 'revamp-ai_agent_support_agent-configurable_line_graph',
+    ChannelPerformanceTable = 'revamp-ai_agent_support_agent-channel_performance_table',
+    IntentPerformanceTable = 'revamp-ai_agent_support_agent-intent_performance_table',
 }
 
 export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiAgentSupportAgentChart> =

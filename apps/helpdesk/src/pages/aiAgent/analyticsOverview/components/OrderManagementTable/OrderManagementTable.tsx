@@ -1,5 +1,6 @@
 import { ReportingMetricBreakdownTable } from '@repo/reporting'
 
+import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
 import {
     ORDER_MANAGEMENT_COLUMNS,
     ORDER_MANAGEMENT_NAME_COLUMNS,
@@ -21,6 +22,14 @@ export const OrderManagementTable = ({ chartId }: Props) => {
             loadingStates={loadingStates}
             DownloadButton={<DownloadOrderManagementButton />}
             nameColumns={ORDER_MANAGEMENT_NAME_COLUMNS}
+            actionMenu={
+                chartId ? (
+                    <ChartsActionMenu
+                        chartId={chartId}
+                        chartName="Order Management"
+                    />
+                ) : undefined
+            }
             chartId={chartId}
         />
     )

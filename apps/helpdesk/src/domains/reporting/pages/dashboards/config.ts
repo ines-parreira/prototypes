@@ -76,6 +76,18 @@ import {
     VoiceOverviewReportConfig,
 } from 'domains/reporting/pages/voice/pages/VoiceOverviewReportConfig'
 import {
+    AnalyticsAiAgentAllAgentsChart,
+    AnalyticsAiAgentAllAgentsReportConfig,
+} from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentAllAgentsReportConfig'
+import {
+    AnalyticsAiAgentShoppingAssistantChart,
+    AnalyticsAiAgentShoppingAssistantReportConfig,
+} from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentShoppingAssistantReportConfig'
+import {
+    AnalyticsAiAgentSupportAgentChart,
+    AnalyticsAiAgentSupportAgentReportConfig,
+} from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentSupportAgentReportConfig'
+import {
     AnalyticsOverviewChart,
     AnalyticsOverviewReportConfig,
 } from 'pages/aiAgent/analyticsOverview/AnalyticsOverviewReportConfig'
@@ -184,6 +196,35 @@ export const REPORTS_CONFIG: ReportsModalConfig = [
     },
 ]
 
+export const REVAMPED_REPORTS_CONFIG: ReportsModalConfig = REPORTS_CONFIG.map(
+    (section) => {
+        if (section.category !== 'AI Agent') {
+            return section
+        }
+        return {
+            category: 'AI & automation',
+            children: [
+                {
+                    type: AnalyticsOverviewChart,
+                    config: AnalyticsOverviewReportConfig,
+                },
+                {
+                    type: AnalyticsAiAgentAllAgentsChart,
+                    config: AnalyticsAiAgentAllAgentsReportConfig,
+                },
+                {
+                    type: AnalyticsAiAgentShoppingAssistantChart,
+                    config: AnalyticsAiAgentShoppingAssistantReportConfig,
+                },
+                {
+                    type: AnalyticsAiAgentSupportAgentChart,
+                    config: AnalyticsAiAgentSupportAgentReportConfig,
+                },
+            ],
+        }
+    },
+)
+
 export const LEGACY_REPORTS_CONFIG: ReportsModalConfig = [
     {
         category: 'Support Performance',
@@ -222,8 +263,12 @@ export const getComponentConfig = (
 } => {
     const availableReports = _flatten(
         (withLegacyReports
-            ? [...REPORTS_CONFIG, ...LEGACY_REPORTS_CONFIG]
-            : REPORTS_CONFIG
+            ? [
+                  ...REPORTS_CONFIG,
+                  ...REVAMPED_REPORTS_CONFIG,
+                  ...LEGACY_REPORTS_CONFIG,
+              ]
+            : [...REPORTS_CONFIG, ...REVAMPED_REPORTS_CONFIG]
         ).map((report) => report.children),
     )
     for (const report of availableReports) {
@@ -244,8 +289,12 @@ export const getReportConfig = (
 ): ReportConfig<string> | null => {
     const availableReports = _flatten(
         (withLegacyReports
-            ? [...REPORTS_CONFIG, ...LEGACY_REPORTS_CONFIG]
-            : REPORTS_CONFIG
+            ? [
+                  ...REPORTS_CONFIG,
+                  ...REVAMPED_REPORTS_CONFIG,
+                  ...LEGACY_REPORTS_CONFIG,
+              ]
+            : [...REPORTS_CONFIG, ...REVAMPED_REPORTS_CONFIG]
         ).map((report) => report.children),
     )
 
@@ -260,9 +309,11 @@ export const getReportConfigFromPath = (
     reportPath: string,
 ): ReportConfig<string> | null => {
     const availableReports = _flatten(
-        [...REPORTS_CONFIG, ...LEGACY_REPORTS_CONFIG].map(
-            (report) => report.children,
-        ),
+        [
+            ...REPORTS_CONFIG,
+            ...REVAMPED_REPORTS_CONFIG,
+            ...LEGACY_REPORTS_CONFIG,
+        ].map((report) => report.children),
     )
 
     const report = availableReports.find(

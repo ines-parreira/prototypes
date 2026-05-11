@@ -151,6 +151,41 @@ describe('ReportingMetricBreakdownTable', () => {
         expect(screen.queryByText('No data found')).not.toBeInTheDocument()
     })
 
+    describe('actionMenu', () => {
+        it('renders the actionMenu when provided', () => {
+            render(
+                <ReportingMetricBreakdownTable
+                    data={sampleData}
+                    metricColumns={metricColumns}
+                    loadingStates={defaultLoadingStates}
+                    DownloadButton={null}
+                    nameColumns={nameColumns}
+                    actionMenu={<button>Add to dashboard</button>}
+                />,
+            )
+
+            expect(
+                screen.getByRole('button', { name: /add to dashboard/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('does not render an actionMenu when not provided', () => {
+            render(
+                <ReportingMetricBreakdownTable
+                    data={sampleData}
+                    metricColumns={metricColumns}
+                    loadingStates={defaultLoadingStates}
+                    DownloadButton={null}
+                    nameColumns={nameColumns}
+                />,
+            )
+
+            expect(
+                screen.queryByRole('button', { name: /add to dashboard/i }),
+            ).not.toBeInTheDocument()
+        })
+    })
+
     describe('column editing', () => {
         it('renders the Edit metrics button', () => {
             render(

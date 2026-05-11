@@ -72,6 +72,9 @@ export const TablesSection = ({
     const { value: isAnalyticsDashboardsTablesEnabled } = useFlagWithLoading(
         FeatureFlagKey.AiAgentAnalyticsDashboardsTables,
     )
+    const { value: isCustomDashboardsEnabled } = useFlagWithLoading(
+        FeatureFlagKey.AiAgentAnalyticsCustomDashboards,
+    )
     // Article recommendations sunset:
     // We still want to show the stats if the feature is enabled
     const { enabledInStatistics: isArticleRecommendationsEnabledWhileSunset } =
@@ -160,6 +163,7 @@ export const TablesSection = ({
                         <DashboardComponent
                             chart={item.chartId}
                             config={reportConfig}
+                            withChartMenu={isCustomDashboardsEnabled}
                         />
                     </Box>
                 ))}

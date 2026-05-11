@@ -1,8 +1,9 @@
 import { useFlagWithLoading } from '@repo/feature-flags'
-import { render } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import { DashboardComponent } from 'domains/reporting/pages/dashboards/DashboardComponent'
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { CardsSection } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/CardsSection'
 import type {
@@ -16,8 +17,10 @@ import {
 } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 
 jest.mock('domains/reporting/pages/dashboards/DashboardComponent', () => ({
-    DashboardComponent: ({ chart }: any) => <div>Chart: {chart}</div>,
+    __esModule: true,
+    DashboardComponent: jest.fn(),
 }))
+const DashboardComponentMock = assumeMock(DashboardComponent)
 
 jest.mock(
     'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/MetricsConfigurator',
@@ -34,6 +37,8 @@ jest.mock('@repo/feature-flags', () => ({
     FeatureFlagKey: {
         AiAgentAnalyticsDashboardsTrendCards:
             'ai-agent-analytics-dashboards-trend-cards',
+        AiAgentAnalyticsCustomDashboards:
+            'ai-agent-analytics-custom-dashboards',
     },
     useFlagWithLoading: jest.fn(),
 }))
@@ -101,6 +106,7 @@ const makeSection = (
 describe('CardsSection', () => {
     beforeEach(() => {
         mockedUseFlagWithLoading.mockReset()
+        DashboardComponentMock.mockReturnValue(null)
     })
 
     describe('when feature flag is enabled', () => {
@@ -186,9 +192,18 @@ describe('CardsSection', () => {
                 />,
             )
 
-            expect(screen.getByText('Chart: kpi1')).toBeInTheDocument()
-            expect(screen.queryByText('Chart: kpi2')).not.toBeInTheDocument()
-            expect(screen.getByText('Chart: kpi3')).toBeInTheDocument()
+            expect(DashboardComponentMock).toHaveBeenCalledWith(
+                expect.objectContaining({ chart: 'kpi1' }),
+                {},
+            )
+            expect(DashboardComponentMock).not.toHaveBeenCalledWith(
+                expect.objectContaining({ chart: 'kpi2' }),
+                {},
+            )
+            expect(DashboardComponentMock).toHaveBeenCalledWith(
+                expect.objectContaining({ chart: 'kpi3' }),
+                {},
+            )
         })
 
         it('should show item when requiresFeatureFlag=true and feature flag is on', () => {
@@ -209,7 +224,10 @@ describe('CardsSection', () => {
                 />,
             )
 
-            expect(screen.getByText('Chart: kpi1')).toBeInTheDocument()
+            expect(DashboardComponentMock).toHaveBeenCalledWith(
+                expect.objectContaining({ chart: 'kpi1' }),
+                {},
+            )
         })
 
         it('should show item when requiresFeatureFlag=false and feature flag is on', () => {
@@ -230,7 +248,10 @@ describe('CardsSection', () => {
                 />,
             )
 
-            expect(screen.getByText('Chart: kpi1')).toBeInTheDocument()
+            expect(DashboardComponentMock).toHaveBeenCalledWith(
+                expect.objectContaining({ chart: 'kpi1' }),
+                {},
+            )
         })
 
         it('should reset ShowMoreList expanded state when switching tabs', async () => {
@@ -297,7 +318,10 @@ describe('CardsSection', () => {
             expect(
                 screen.queryByRole('region', { name: 'show more list' }),
             ).not.toBeInTheDocument()
-            expect(screen.getByText('Chart: kpi1')).toBeInTheDocument()
+            expect(DashboardComponentMock).toHaveBeenCalledWith(
+                expect.objectContaining({ chart: 'kpi1' }),
+                {},
+            )
         })
 
         it('should not render MetricsConfigurator even when dashboardId is provided', () => {
@@ -334,8 +358,14 @@ describe('CardsSection', () => {
                 />,
             )
 
-            expect(screen.getByText('Chart: kpi1')).toBeInTheDocument()
-            expect(screen.queryByText('Chart: kpi2')).not.toBeInTheDocument()
+            expect(DashboardComponentMock).toHaveBeenCalledWith(
+                expect.objectContaining({ chart: 'kpi1' }),
+                {},
+            )
+            expect(DashboardComponentMock).not.toHaveBeenCalledWith(
+                expect.objectContaining({ chart: 'kpi2' }),
+                {},
+            )
         })
 
         it('should hide item when requiresFeatureFlag=true and feature flag is off', () => {
@@ -356,7 +386,10 @@ describe('CardsSection', () => {
                 />,
             )
 
-            expect(screen.queryByText('Chart: kpi1')).not.toBeInTheDocument()
+            expect(DashboardComponentMock).not.toHaveBeenCalledWith(
+                expect.objectContaining({ chart: 'kpi1' }),
+                {},
+            )
         })
 
         it('should show item when requiresFeatureFlag=false and feature flag is off', () => {
@@ -377,7 +410,10 @@ describe('CardsSection', () => {
                 />,
             )
 
-            expect(screen.getByText('Chart: kpi1')).toBeInTheDocument()
+            expect(DashboardComponentMock).toHaveBeenCalledWith(
+                expect.objectContaining({ chart: 'kpi1' }),
+                {},
+            )
         })
 
         it('should render items when tabKey is provided and feature flag is off', () => {
@@ -394,7 +430,10 @@ describe('CardsSection', () => {
                 />,
             )
 
-            expect(screen.getByText('Chart: kpi1')).toBeInTheDocument()
+            expect(DashboardComponentMock).toHaveBeenCalledWith(
+                expect.objectContaining({ chart: 'kpi1' }),
+                {},
+            )
         })
     })
 
@@ -421,8 +460,74 @@ describe('CardsSection', () => {
                 />,
             )
 
-            expect(screen.getByText('Chart: kpi1')).toBeInTheDocument()
-            expect(screen.getByText('Chart: kpi2')).toBeInTheDocument()
+            expect(DashboardComponentMock).toHaveBeenCalledWith(
+                expect.objectContaining({ chart: 'kpi1' }),
+                {},
+            )
+            expect(DashboardComponentMock).toHaveBeenCalledWith(
+                expect.objectContaining({ chart: 'kpi2' }),
+                {},
+            )
+        })
+    })
+
+    describe('AiAgentAnalyticsCustomDashboards FF', () => {
+        it('passes withChartMenu=true to DashboardComponent when FF is enabled', () => {
+            mockedUseFlagWithLoading.mockReturnValue({
+                value: true,
+                isLoading: false,
+            })
+
+            render(
+                <CardsSection
+                    section={makeSection([
+                        { chartId: 'kpi1', visibility: true },
+                    ])}
+                    reportConfig={reportConfigMock}
+                    layoutConfig={defaultLayoutConfig}
+                    dashboardId={ManagedDashboardId.AiAgentAnalytics}
+                    tabId={ManagedDashboardsTabId.AllAgents}
+                    tabName="Main"
+                />,
+            )
+
+            expect(DashboardComponentMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    chart: 'kpi1',
+                    config: reportConfigMock,
+                    withChartMenu: true,
+                }),
+                {},
+            )
+        })
+
+        it('passes withChartMenu=false to DashboardComponent when FF is disabled', () => {
+            mockedUseFlagWithLoading.mockReturnValue({
+                value: false,
+                isLoading: false,
+            })
+
+            render(
+                <CardsSection
+                    section={makeSection([
+                        { chartId: 'kpi1', visibility: true },
+                    ])}
+                    reportConfig={reportConfigMock}
+                    layoutConfig={defaultLayoutConfig}
+                    dashboardId={ManagedDashboardId.AiAgentAnalytics}
+                    tabId={ManagedDashboardsTabId.AllAgents}
+                    tabName="Main"
+                />,
+            )
+
+            expect(DashboardComponentMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    chart: 'kpi1',
+                    config: reportConfigMock,
+                    withChartMenu: false,
+                }),
+                {},
+            )
         })
     })
 })

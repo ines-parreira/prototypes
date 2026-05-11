@@ -1,4 +1,4 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 
 import { useRestrictedReportsConfig } from 'domains/reporting/hooks/dashboards/useRestrictedReportsConfig'
@@ -10,31 +10,40 @@ import {
     OverviewChart,
     SupportPerformanceOverviewReportConfig,
 } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewReportConfig'
+import { AnalyticsAiAgentAllAgentsReportConfig } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentAllAgentsReportConfig'
 
 jest.mock('@repo/feature-flags')
-const mockUseFlag = jest.mocked(useFlag)
+const mockUseFlagWithLoading = jest.mocked(useFlagWithLoading)
 
 jest.mock(
     'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions',
 )
 const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 
+const noRestrictions = {
+    isReportRestrictedToCurrentUser: () => false,
+    isRouteRestrictedToCurrentUser: () => false,
+    isChartRestrictedToCurrentUser: () => false,
+    isModuleRestrictedToCurrentUser: () => false,
+}
+
 describe('useRestrictedReportsConfig', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseFlag.mockImplementation((flag: string) => {
-            if (flag === FeatureFlagKey.VoiceSLA) return true
+        mockUseFlagWithLoading.mockImplementation((flag: string) => {
+            if (flag === FeatureFlagKey.VoiceSLA)
+                return { value: true, isLoading: false }
+            return { value: false, isLoading: false }
         })
+        useReportChartRestrictionsMock.mockReturnValue(noRestrictions)
     })
 
     it('should restrict reports', () => {
         const restrictedReport = SupportPerformanceOverviewReportConfig
         useReportChartRestrictionsMock.mockReturnValue({
+            ...noRestrictions,
             isReportRestrictedToCurrentUser: (reportId) =>
                 reportId === restrictedReport.id,
-            isRouteRestrictedToCurrentUser: () => false,
-            isChartRestrictedToCurrentUser: () => false,
-            isModuleRestrictedToCurrentUser: () => false,
         })
 
         const { result } = renderHook(() => useRestrictedReportsConfig())
@@ -64,11 +73,9 @@ describe('useRestrictedReportsConfig', () => {
             ReportsIDs.AutomatePerformanceByFeatureReportConfig,
         ]
         useReportChartRestrictionsMock.mockReturnValue({
+            ...noRestrictions,
             isReportRestrictedToCurrentUser: (reportId) =>
                 restrictedReports.includes(reportId),
-            isRouteRestrictedToCurrentUser: () => false,
-            isChartRestrictedToCurrentUser: () => false,
-            isModuleRestrictedToCurrentUser: () => false,
         })
 
         const { result } = renderHook(() => useRestrictedReportsConfig())
@@ -83,11 +90,9 @@ describe('useRestrictedReportsConfig', () => {
     it('should restrict charts', () => {
         const restrictedChart = OverviewChart.CustomerSatisfactionTrendCard
         useReportChartRestrictionsMock.mockReturnValue({
-            isReportRestrictedToCurrentUser: () => false,
-            isRouteRestrictedToCurrentUser: () => false,
+            ...noRestrictions,
             isChartRestrictedToCurrentUser: (chartId) =>
                 chartId === restrictedChart,
-            isModuleRestrictedToCurrentUser: () => false,
         })
 
         const { result } = renderHook(() => useRestrictedReportsConfig())
@@ -110,16 +115,10 @@ describe('useRestrictedReportsConfig', () => {
     })
 
     it('should filter out voice SLA report when VoiceSLA feature flag is disabled', () => {
-        mockUseFlag.mockImplementation((flag: string) => {
-            if (flag === FeatureFlagKey.VoiceSLA) return false
-            return false
-        })
-
-        useReportChartRestrictionsMock.mockReturnValue({
-            isReportRestrictedToCurrentUser: () => false,
-            isRouteRestrictedToCurrentUser: () => false,
-            isChartRestrictedToCurrentUser: () => false,
-            isModuleRestrictedToCurrentUser: () => false,
+        mockUseFlagWithLoading.mockImplementation((flag: string) => {
+            if (flag === FeatureFlagKey.VoiceSLA)
+                return { value: false, isLoading: false }
+            return { value: false, isLoading: false }
         })
 
         const { result } = renderHook(() => useRestrictedReportsConfig())
@@ -137,16 +136,10 @@ describe('useRestrictedReportsConfig', () => {
     })
 
     it('should include voice SLA report when VoiceSLA feature flag is enabled', () => {
-        mockUseFlag.mockImplementation((flag: string) => {
-            if (flag === FeatureFlagKey.VoiceSLA) return true
-            return false
-        })
-
-        useReportChartRestrictionsMock.mockReturnValue({
-            isReportRestrictedToCurrentUser: () => false,
-            isRouteRestrictedToCurrentUser: () => false,
-            isChartRestrictedToCurrentUser: () => false,
-            isModuleRestrictedToCurrentUser: () => false,
+        mockUseFlagWithLoading.mockImplementation((flag: string) => {
+            if (flag === FeatureFlagKey.VoiceSLA)
+                return { value: true, isLoading: false }
+            return { value: false, isLoading: false }
         })
 
         const { result } = renderHook(() => useRestrictedReportsConfig())
@@ -161,5 +154,40 @@ describe('useRestrictedReportsConfig', () => {
                 type: VoiceServiceLevelAgreementsChart,
             }),
         )
+    })
+
+    it('should return AI Agent category when AiAgentAnalyticsCustomDashboards flag is disabled', () => {
+        const { result } = renderHook(() => useRestrictedReportsConfig())
+
+        const aiAgentSection = result.current.find(
+            (section) => section.category === 'AI Agent',
+        )
+        expect(aiAgentSection).toBeTruthy()
+        expect(
+            result.current.find((s) => s.category === 'AI & automation'),
+        ).toBeUndefined()
+    })
+
+    it('should return AI & automation category when AiAgentAnalyticsCustomDashboards flag is enabled', () => {
+        mockUseFlagWithLoading.mockImplementation((flag: string) => {
+            if (flag === FeatureFlagKey.AiAgentAnalyticsCustomDashboards)
+                return { value: true, isLoading: false }
+            return { value: false, isLoading: false }
+        })
+
+        const { result } = renderHook(() => useRestrictedReportsConfig())
+
+        const aiAutomationSection = result.current.find(
+            (section) => section.category === 'AI & automation',
+        )
+        expect(aiAutomationSection).toBeTruthy()
+        expect(aiAutomationSection?.children).toContainEqual(
+            expect.objectContaining({
+                config: AnalyticsAiAgentAllAgentsReportConfig,
+            }),
+        )
+        expect(
+            result.current.find((s) => s.category === 'AI Agent'),
+        ).toBeUndefined()
     })
 })

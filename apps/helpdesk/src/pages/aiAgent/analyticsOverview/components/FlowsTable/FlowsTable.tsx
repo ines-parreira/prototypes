@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 
 import { ReportingMetricBreakdownTable } from '@repo/reporting'
 
+import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
 import { FLOWS_COLUMNS } from 'pages/aiAgent/analyticsOverview/components/FlowsTable/columns'
 import { DownloadFlowsButton } from 'pages/aiAgent/analyticsOverview/components/FlowsTable/DownloadFlowsButton'
 import { useFlowsMetrics } from 'pages/aiAgent/analyticsOverview/hooks/useFlowsMetrics'
@@ -25,6 +26,11 @@ export const FlowsTable = ({ chartId }: Props) => {
             loadingStates={loadingStates}
             DownloadButton={<DownloadFlowsButton />}
             nameColumns={nameColumns}
+            actionMenu={
+                chartId ? (
+                    <ChartsActionMenu chartId={chartId} chartName="Flows" />
+                ) : undefined
+            }
             chartId={chartId}
         />
     )
