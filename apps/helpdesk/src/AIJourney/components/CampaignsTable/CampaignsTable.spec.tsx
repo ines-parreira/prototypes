@@ -23,15 +23,11 @@ jest.mock('AIJourney/hooks', () => ({
     useJourneyUpdateHandler: () => ({
         handleUpdate: mockHandleUpdate,
     }),
-    useAiJourneyStoreConfiguration: jest.fn(),
     useDateFormatPreference: () => ({
         format: 'absolute',
         toggleFormat: jest.fn(),
     }),
 }))
-
-const mockUseAiJourneyStoreConfiguration = require('AIJourney/hooks')
-    .useAiJourneyStoreConfiguration as jest.Mock
 
 const mockHistoryPush = jest.fn()
 jest.mock('react-router-dom', () => ({
@@ -120,16 +116,8 @@ describe('CampaignsTable', () => {
             pathname: '/app/ai-journey/test-shop/flows',
         } as Location)
         mockUseFlag.mockImplementation(() => false)
-        mockUseAiJourneyStoreConfiguration.mockReturnValue({
-            storeConfiguration: { sms_sender_integration_id: 123 },
-            isLoading: false,
-        })
 
         jest.clearAllMocks()
-    })
-
-    afterEach(() => {
-        window.USER_IMPERSONATED = null
     })
 
     it('should render table with data', () => {
@@ -457,12 +445,8 @@ describe('CampaignsTable', () => {
         })
     })
 
-    it('should open SMS sender required modal instead of send modal when sender is missing', async () => {
+    it('should open send confirmation modal directly when send is clicked', async () => {
         mockUseFlag.mockImplementation(() => true)
-        mockUseAiJourneyStoreConfiguration.mockReturnValue({
-            storeConfiguration: { sms_sender_integration_id: null },
-            isLoading: false,
-        })
 
         render(
             wrapper(<CampaignsTable columns={allColumns} data={mockFields} />),
@@ -489,98 +473,12 @@ describe('CampaignsTable', () => {
         }
 
         await waitFor(() => {
-            expect(
-                screen.getByText('Add sender phone number'),
-            ).toBeInTheDocument()
+            expect(screen.getByText('Send campaign now?')).toBeInTheDocument()
         })
 
-        expect(screen.queryByText('Send campaign now?')).not.toBeInTheDocument()
-    })
-
-    it('should open send modal normally when sender is missing but USER_IMPERSONATED is true', async () => {
-        mockUseFlag.mockImplementation(() => true)
-        mockUseAiJourneyStoreConfiguration.mockReturnValue({
-            storeConfiguration: { sms_sender_integration_id: null },
-            isLoading: false,
-        })
-        window.USER_IMPERSONATED = true
-
-        render(
-            wrapper(<CampaignsTable columns={allColumns} data={mockFields} />),
-            {
-                storeState: {
-                    integrations: fromJS({ integrations: [] }),
-                },
-            },
-        )
-
-        const user = userEvent.setup()
-
-        const moreOptionsButton = screen.getAllByLabelText(
-            'Actions for test-store',
-        )[0]
-        await act(() => user.click(moreOptionsButton))
-
-        const sendOption = screen
-            .getAllByText('Send now')
-            .find((el) => el.closest('[role="option"]'))
-
-        if (sendOption) {
-            await act(() => user.click(sendOption))
-        }
-
-        await waitFor(() => {
-            expect(
-                screen.queryByText('Add sender phone number'),
-            ).not.toBeInTheDocument()
-        })
-    })
-
-    it('should close SMS sender required modal when Cancel is clicked', async () => {
-        mockUseFlag.mockImplementation(() => true)
-        mockUseAiJourneyStoreConfiguration.mockReturnValue({
-            storeConfiguration: { sms_sender_integration_id: null },
-            isLoading: false,
-        })
-
-        render(
-            wrapper(<CampaignsTable columns={allColumns} data={mockFields} />),
-            {
-                storeState: {
-                    integrations: fromJS({ integrations: [] }),
-                },
-            },
-        )
-
-        const user = userEvent.setup()
-
-        const moreOptionsButton = screen.getAllByLabelText(
-            'Actions for test-store',
-        )[0]
-        await act(() => user.click(moreOptionsButton))
-
-        const sendOption = screen
-            .getAllByText('Send now')
-            .find((el) => el.closest('[role="option"]'))
-
-        if (sendOption) {
-            await act(() => user.click(sendOption))
-        }
-
-        await waitFor(() => {
-            expect(
-                screen.getByText('Add sender phone number'),
-            ).toBeInTheDocument()
-        })
-
-        const cancelButton = screen.getByRole('button', { name: 'Cancel' })
-        await act(() => user.click(cancelButton))
-
-        await waitFor(() => {
-            expect(
-                screen.queryByText('Add sender phone number'),
-            ).not.toBeInTheDocument()
-        })
+        expect(
+            screen.queryByText('Add sender phone number'),
+        ).not.toBeInTheDocument()
     })
 
     it('should not render pagination in bottom toolbar when there are 10 or fewer total rows', () => {

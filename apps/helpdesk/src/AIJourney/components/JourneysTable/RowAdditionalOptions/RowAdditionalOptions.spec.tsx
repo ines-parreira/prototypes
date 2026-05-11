@@ -6,10 +6,7 @@ import { JourneyStatusEnum, JourneyTypeEnum } from '@gorgias/convert-client'
 import type { JourneyApiDTO } from '@gorgias/convert-client'
 
 import { CUSTOM_JOURNEY_TYPE, STEPS_NAMES } from 'AIJourney/constants'
-import {
-    useAiJourneyStoreConfiguration,
-    useJourneyUpdateHandler,
-} from 'AIJourney/hooks'
+import { useJourneyUpdateHandler } from 'AIJourney/hooks'
 import { useJourneyContext } from 'AIJourney/providers'
 import { useDeleteJourney } from 'AIJourney/queries/useDeleteJourney/useDeleteJourney'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -35,10 +32,6 @@ jest.mock('AIJourney/queries/useDeleteJourney/useDeleteJourney')
 const mockUseJourneyUpdateHandler =
     useJourneyUpdateHandler as jest.MockedFunction<
         typeof useJourneyUpdateHandler
-    >
-const mockUseAiJourneyStoreConfiguration =
-    useAiJourneyStoreConfiguration as jest.MockedFunction<
-        typeof useAiJourneyStoreConfiguration
     >
 const mockUseJourneyContext = useJourneyContext as jest.MockedFunction<
     typeof useJourneyContext
@@ -105,10 +98,6 @@ describe('<RowAdditionalOptions />', () => {
             isSuccess: false,
         })
         mockHandleUpdate.mockResolvedValue(undefined)
-        mockUseAiJourneyStoreConfiguration.mockReturnValue({
-            storeConfiguration: { sms_sender_integration_id: 123 },
-            isLoading: false,
-        } as any)
         mockMutateAsync.mockResolvedValue(undefined)
         mockUseDeleteJourney.mockReturnValue({
             mutateAsync: mockMutateAsync,
@@ -574,254 +563,6 @@ describe('<RowAdditionalOptions />', () => {
             expect(mockHandleUpdate).toHaveBeenCalledWith({
                 journeyState: JourneyStatusEnum.Active,
                 journeyMessageInstructions: null,
-            })
-        })
-    })
-
-    describe('SMS sender required modal', () => {
-        beforeEach(() => {
-            mockUseFlag.mockReturnValue(true)
-            mockUseAiJourneyStoreConfiguration.mockReturnValue({
-                storeConfiguration: { sms_sender_integration_id: null },
-                isLoading: false,
-            } as any)
-        })
-
-        afterEach(() => {
-            window.USER_IMPERSONATED = null
-        })
-
-        it('should open modal instead of navigating when Activation clicked and sender is missing', async () => {
-            const user = userEvent.setup()
-            render(
-                <RowAdditionalOptions
-                    journeyRowData={{
-                        ...mockJourneyRowData,
-                        state: JourneyStatusEnum.Active,
-                    }}
-                />,
-            )
-
-            const trigger = screen.getByLabelText('Open options')
-            await act(() => user.click(trigger))
-
-            const activationOptions = screen.getAllByText('Activation')
-            const activationListItem = activationOptions.find(
-                (el) =>
-                    el.closest('[role="option"]') ||
-                    el.closest('.ui-text-text-d239'),
-            )
-            if (activationListItem) {
-                await act(() => user.click(activationListItem))
-            }
-
-            expect(mockHistoryPush).not.toHaveBeenCalled()
-            await waitFor(() => {
-                expect(
-                    screen.getByText('Add sender phone number'),
-                ).toBeInTheDocument()
-            })
-        })
-
-        it('should open modal instead of activating when Play clicked and sender is missing', async () => {
-            const user = userEvent.setup()
-            render(
-                <RowAdditionalOptions
-                    journeyRowData={{
-                        ...mockJourneyRowData,
-                        state: JourneyStatusEnum.Paused,
-                    }}
-                />,
-            )
-
-            const trigger = screen.getByLabelText('Open options')
-            await act(() => user.click(trigger))
-
-            const playOptions = screen.getAllByText('Play')
-            const playListItem = playOptions.find(
-                (el) =>
-                    el.closest('[role="option"]') ||
-                    el.closest('.ui-text-text-d239'),
-            )
-            if (playListItem) {
-                await act(() => user.click(playListItem))
-            }
-
-            expect(mockHandleUpdate).not.toHaveBeenCalled()
-            await waitFor(() => {
-                expect(
-                    screen.getByText('Add sender phone number'),
-                ).toBeInTheDocument()
-            })
-        })
-
-        it('should navigate normally when Activation clicked, sender missing, but USER_IMPERSONATED is true', async () => {
-            window.USER_IMPERSONATED = true
-            const user = userEvent.setup()
-            render(
-                <RowAdditionalOptions
-                    journeyRowData={{
-                        ...mockJourneyRowData,
-                        state: JourneyStatusEnum.Active,
-                    }}
-                />,
-            )
-
-            const trigger = screen.getByLabelText('Open options')
-            await act(() => user.click(trigger))
-
-            const activationOptions = screen.getAllByText('Activation')
-            const activationListItem = activationOptions.find(
-                (el) =>
-                    el.closest('[role="option"]') ||
-                    el.closest('.ui-text-text-d239'),
-            )
-            if (activationListItem) {
-                await act(() => user.click(activationListItem))
-            }
-
-            expect(mockHistoryPush).toHaveBeenCalled()
-            expect(
-                screen.queryByText('Add sender phone number'),
-            ).not.toBeInTheDocument()
-        })
-
-        it('should call handleUpdate normally when Play clicked, sender missing, but USER_IMPERSONATED is true', async () => {
-            window.USER_IMPERSONATED = true
-            const user = userEvent.setup()
-            render(
-                <RowAdditionalOptions
-                    journeyRowData={{
-                        ...mockJourneyRowData,
-                        state: JourneyStatusEnum.Paused,
-                    }}
-                />,
-            )
-
-            const trigger = screen.getByLabelText('Open options')
-            await act(() => user.click(trigger))
-
-            const playOptions = screen.getAllByText('Play')
-            const playListItem = playOptions.find(
-                (el) =>
-                    el.closest('[role="option"]') ||
-                    el.closest('.ui-text-text-d239'),
-            )
-            if (playListItem) {
-                await act(() => user.click(playListItem))
-            }
-
-            expect(mockHandleUpdate).toHaveBeenCalled()
-            expect(
-                screen.queryByText('Add sender phone number'),
-            ).not.toBeInTheDocument()
-        })
-
-        it('should show flow text in modal for non-campaign journey type', async () => {
-            const user = userEvent.setup()
-            render(
-                <RowAdditionalOptions
-                    journeyRowData={{
-                        ...mockJourneyRowData,
-                        type: JourneyTypeEnum.CartAbandoned,
-                        state: JourneyStatusEnum.Active,
-                    }}
-                />,
-            )
-
-            const trigger = screen.getByLabelText('Open options')
-            await act(() => user.click(trigger))
-
-            const activationOptions = screen.getAllByText('Activation')
-            const activationListItem = activationOptions.find(
-                (el) =>
-                    el.closest('[role="option"]') ||
-                    el.closest('.ui-text-text-d239'),
-            )
-            if (activationListItem) {
-                await act(() => user.click(activationListItem))
-            }
-
-            await waitFor(() => {
-                expect(
-                    screen.getByText(
-                        'Select a phone number in Settings to activate this flow.',
-                    ),
-                ).toBeInTheDocument()
-            })
-        })
-
-        it('should close the modal when Cancel is clicked', async () => {
-            const user = userEvent.setup()
-            render(
-                <RowAdditionalOptions
-                    journeyRowData={{
-                        ...mockJourneyRowData,
-                        state: JourneyStatusEnum.Active,
-                    }}
-                />,
-            )
-
-            const trigger = screen.getByLabelText('Open options')
-            await act(() => user.click(trigger))
-
-            const activationOptions = screen.getAllByText('Activation')
-            const activationListItem = activationOptions.find(
-                (el) =>
-                    el.closest('[role="option"]') ||
-                    el.closest('.ui-text-text-d239'),
-            )
-            if (activationListItem) {
-                await act(() => user.click(activationListItem))
-            }
-
-            await waitFor(() => {
-                expect(
-                    screen.getByText('Add sender phone number'),
-                ).toBeInTheDocument()
-            })
-
-            const cancelButton = screen.getByRole('button', { name: 'Cancel' })
-            await act(() => user.click(cancelButton))
-
-            await waitFor(() => {
-                expect(
-                    screen.queryByText('Add sender phone number'),
-                ).not.toBeInTheDocument()
-            })
-        })
-
-        it('should show campaign text in modal for campaign journey type', async () => {
-            const user = userEvent.setup()
-            render(
-                <RowAdditionalOptions
-                    journeyRowData={{
-                        ...mockJourneyRowData,
-                        type: JourneyTypeEnum.Campaign,
-                        state: JourneyStatusEnum.Active,
-                    }}
-                />,
-            )
-
-            const trigger = screen.getByLabelText('Open options')
-            await act(() => user.click(trigger))
-
-            const activationOptions = screen.getAllByText('Activation')
-            const activationListItem = activationOptions.find(
-                (el) =>
-                    el.closest('[role="option"]') ||
-                    el.closest('.ui-text-text-d239'),
-            )
-            if (activationListItem) {
-                await act(() => user.click(activationListItem))
-            }
-
-            await waitFor(() => {
-                expect(
-                    screen.getByText(
-                        'Select a phone number in Settings to send this campaign.',
-                    ),
-                ).toBeInTheDocument()
             })
         })
     })

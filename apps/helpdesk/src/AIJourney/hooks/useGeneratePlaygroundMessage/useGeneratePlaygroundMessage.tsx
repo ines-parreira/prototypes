@@ -147,19 +147,13 @@ export const useGeneratePlaygroundMessage = ({
             setTestSessionId(newTestSessionId)
 
             const resolvedSmsSenderNumber = storeSettingsEnabled
-                ? !window.USER_IMPERSONATED
-                    ? (smsSenderNumber ?? null)
-                    : (journeyParams.sms_sender_number ??
-                      smsSenderNumber ??
-                      null)
+                ? (journeyParams.sms_sender_number ?? smsSenderNumber ?? null)
                 : (journeyParams.sms_sender_number ?? null)
 
             const resolvedSmsSenderIntegrationId = storeSettingsEnabled
-                ? !window.USER_IMPERSONATED
-                    ? (smsSenderIntegrationId ?? null)
-                    : (journeyParams.sms_sender_integration_id ??
-                      smsSenderIntegrationId ??
-                      null)
+                ? (journeyParams.sms_sender_integration_id ??
+                  smsSenderIntegrationId ??
+                  null)
                 : (journeyParams.sms_sender_integration_id ?? null)
 
             const options = {

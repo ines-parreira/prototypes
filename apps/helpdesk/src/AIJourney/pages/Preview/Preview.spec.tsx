@@ -76,8 +76,6 @@ const mockUseGeneratePlaygroundMessage = require('AIJourney/hooks')
 const mockUseAiJourneyStoreConfiguration = require('AIJourney/hooks')
     .useAiJourneyStoreConfiguration as jest.Mock
 
-const mockUseFlag = require('@repo/feature-flags').useFlag as jest.Mock
-
 const mockSetValue = jest.fn()
 const mockSetIsCollapsibleColumnOpen = jest.fn()
 const mockWarpToCollapsibleColumn = jest.fn(
@@ -122,8 +120,6 @@ describe('<Preview />', () => {
             playgroundMessages: undefined,
             isGeneratingMessages: false,
         })
-
-        mockUseFlag.mockReturnValue(false)
 
         mockUseAiJourneyStoreConfiguration.mockReturnValue({
             storeConfiguration: { sms_sender_integration_id: 123 },
@@ -369,65 +365,28 @@ describe('<Preview />', () => {
             )
         })
 
-        it('should pass isGenerateDisabled=true to PlaygroundPreview when store settings enabled and sms sender is missing', () => {
-            const MockPlaygroundPreview = require('AIJourney/components')
-                .PlaygroundPreview as jest.Mock
-
-            mockUseFlag.mockReturnValue(true)
+        it('should pass sms sender params from store config to useGeneratePlaygroundMessage', () => {
             mockUseAiJourneyStoreConfiguration.mockReturnValue({
-                storeConfiguration: { sms_sender_integration_id: null },
+                storeConfiguration: {
+                    sms_sender_integration_id: 456,
+                    sms_sender_number: '+15559876543',
+                    brand_name: 'Test Brand',
+                },
                 isLoading: false,
             })
 
             render(<Preview />)
 
-            expect(MockPlaygroundPreview).toHaveBeenCalledWith(
-                expect.objectContaining({ isGenerateDisabled: true }),
-                expect.anything(),
+            expect(mockUseGeneratePlaygroundMessage).toHaveBeenLastCalledWith(
+                expect.objectContaining({
+                    smsSenderIntegrationId: 456,
+                    smsSenderNumber: '+15559876543',
+                    brandName: 'Test Brand',
+                }),
             )
         })
 
-        it('should pass isGenerateDisabled=false to PlaygroundPreview when store settings enabled and sms sender is present', () => {
-            const MockPlaygroundPreview = require('AIJourney/components')
-                .PlaygroundPreview as jest.Mock
-
-            mockUseFlag.mockReturnValue(true)
-            mockUseAiJourneyStoreConfiguration.mockReturnValue({
-                storeConfiguration: { sms_sender_integration_id: 123 },
-                isLoading: false,
-            })
-
-            render(<Preview />)
-
-            expect(MockPlaygroundPreview).toHaveBeenCalledWith(
-                expect.objectContaining({ isGenerateDisabled: false }),
-                expect.anything(),
-            )
-        })
-
-        it('should pass isGenerateDisabled=false to PlaygroundPreview when store settings flag is disabled', () => {
-            const MockPlaygroundPreview = require('AIJourney/components')
-                .PlaygroundPreview as jest.Mock
-
-            mockUseFlag.mockReturnValue(false)
-            mockUseAiJourneyStoreConfiguration.mockReturnValue({
-                storeConfiguration: { sms_sender_integration_id: null },
-                isLoading: false,
-            })
-
-            render(<Preview />)
-
-            expect(MockPlaygroundPreview).toHaveBeenCalledWith(
-                expect.objectContaining({ isGenerateDisabled: false }),
-                expect.anything(),
-            )
-        })
-
-        it('should pass undefined sms params and isGenerateDisabled=true when storeConfiguration is null', () => {
-            const MockPlaygroundPreview = require('AIJourney/components')
-                .PlaygroundPreview as jest.Mock
-
-            mockUseFlag.mockReturnValue(true)
+        it('should pass undefined sms params to useGeneratePlaygroundMessage when storeConfiguration is null', () => {
             mockUseAiJourneyStoreConfiguration.mockReturnValue({
                 storeConfiguration: null,
                 isLoading: false,
@@ -435,10 +394,6 @@ describe('<Preview />', () => {
 
             render(<Preview />)
 
-            expect(MockPlaygroundPreview).toHaveBeenCalledWith(
-                expect.objectContaining({ isGenerateDisabled: true }),
-                expect.anything(),
-            )
             expect(mockUseGeneratePlaygroundMessage).toHaveBeenLastCalledWith(
                 expect.objectContaining({
                     smsSenderIntegrationId: undefined,

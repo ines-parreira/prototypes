@@ -661,10 +661,6 @@ describe('useGeneratePlaygroundMessage', () => {
     })
 
     describe('settings - smsSender and brandName sourcing', () => {
-        afterEach(() => {
-            window.USER_IMPERSONATED = null
-        })
-
         const setupAndTrigger = async (props: {
             storeSettingsEnabled: boolean
             smsSenderNumber?: string | null
@@ -776,7 +772,7 @@ describe('useGeneratePlaygroundMessage', () => {
             ])
         })
 
-        it('uses store config sender values when flag is ON', async () => {
+        it('uses journey sender first when flag is ON (journey-first for all users)', async () => {
             await setupAndTrigger({
                 storeSettingsEnabled: true,
                 smsSenderNumber: '+10000000000',
@@ -787,8 +783,11 @@ describe('useGeneratePlaygroundMessage', () => {
             expect(mockTriggerAIJourney).toHaveBeenCalledWith([
                 expect.objectContaining({
                     settings: expect.objectContaining({
-                        smsSenderNumber: '+10000000000',
-                        smsSenderIntegrationId: 999,
+                        smsSenderNumber:
+                            hookParameters.journeyParams.sms_sender_number,
+                        smsSenderIntegrationId:
+                            hookParameters.journeyParams
+                                .sms_sender_integration_id,
                         brandName: 'My Brand',
                     }),
                 }),
@@ -812,11 +811,15 @@ describe('useGeneratePlaygroundMessage', () => {
             ])
         })
 
-        it('sends null sender values when FF is ON but store config has none', async () => {
+        it('sends null sender values when FF is ON but both journey and store config have none', async () => {
             await setupAndTrigger({
                 storeSettingsEnabled: true,
                 smsSenderNumber: null,
                 smsSenderIntegrationId: null,
+                journeyParamsOverride: {
+                    sms_sender_number: null as unknown as string,
+                    sms_sender_integration_id: null as unknown as number,
+                },
             })
 
             expect(mockTriggerAIJourney).toHaveBeenCalledWith([
@@ -824,28 +827,6 @@ describe('useGeneratePlaygroundMessage', () => {
                     settings: expect.objectContaining({
                         smsSenderNumber: null,
                         smsSenderIntegrationId: null,
-                    }),
-                }),
-            ])
-        })
-
-        it('uses journeyParams sender values when flag is ON and USER_IMPERSONATED is true', async () => {
-            window.USER_IMPERSONATED = true
-
-            await setupAndTrigger({
-                storeSettingsEnabled: true,
-                smsSenderNumber: '+10000000000',
-                smsSenderIntegrationId: 999,
-            })
-
-            expect(mockTriggerAIJourney).toHaveBeenCalledWith([
-                expect.objectContaining({
-                    settings: expect.objectContaining({
-                        smsSenderNumber:
-                            hookParameters.journeyParams.sms_sender_number,
-                        smsSenderIntegrationId:
-                            hookParameters.journeyParams
-                                .sms_sender_integration_id,
                     }),
                 }),
             ])
@@ -870,30 +851,7 @@ describe('useGeneratePlaygroundMessage', () => {
             ])
         })
 
-        it('uses null when flag is ON, impersonated, and both journey and store config have no sms sender', async () => {
-            window.USER_IMPERSONATED = true
-            await setupAndTrigger({
-                storeSettingsEnabled: true,
-                smsSenderNumber: null,
-                smsSenderIntegrationId: null,
-                journeyParamsOverride: {
-                    sms_sender_number: null as unknown as string,
-                    sms_sender_integration_id: null as unknown as number,
-                },
-            })
-
-            expect(mockTriggerAIJourney).toHaveBeenCalledWith([
-                expect.objectContaining({
-                    settings: expect.objectContaining({
-                        smsSenderNumber: null,
-                        smsSenderIntegrationId: null,
-                    }),
-                }),
-            ])
-        })
-
-        it('falls back to store sender values when flag is ON, USER_IMPERSONATED is true, and journeyParams has no sender', async () => {
-            window.USER_IMPERSONATED = true
+        it('falls back to store sender values when flag is ON and journeyParams has no sender', async () => {
             jest.useFakeTimers()
             mockUseFlag.mockReturnValue(true)
 

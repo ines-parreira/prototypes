@@ -79,10 +79,6 @@ describe('<Setup />', () => {
         })
     })
 
-    afterEach(() => {
-        window.USER_IMPERSONATED = null
-    })
-
     describe('form reset', () => {
         it('should reset form with journey configuration values when loaded', async () => {
             mockUseJourneyContext.mockReturnValue({
@@ -1199,14 +1195,13 @@ describe('<Setup />', () => {
         )
     })
 
-    describe('store config pre-fill (storeSettingsEnabled && USER_IMPERSONATED)', () => {
+    describe('store config pre-fill (storeSettingsEnabled)', () => {
         beforeEach(() => {
             mockUseFlag.mockImplementation((key: FeatureFlagKey) =>
                 key === FeatureFlagKey.AiJourneyStoreSettingsEnabled
                     ? true
                     : false,
             )
-            window.USER_IMPERSONATED = true
             mockUseAiJourneyStoreConfiguration.mockReturnValue({
                 storeConfiguration: {
                     sms_sender_integration_id: 999,
@@ -1324,8 +1319,7 @@ describe('<Setup />', () => {
             })
         })
 
-        it('should not use store config when not USER_IMPERSONATED', async () => {
-            window.USER_IMPERSONATED = null
+        it('should use store config when flag is ON and journeys have no sender', async () => {
             mockUseJourneyContext.mockReturnValue({
                 isLoading: false,
                 journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
@@ -1345,12 +1339,51 @@ describe('<Setup />', () => {
                 expect(mockReset).toHaveBeenCalledWith(
                     expect.objectContaining({
                         sms_sender_integration_id: {
-                            id: undefined,
-                            label: undefined,
+                            id: 999,
+                            label: '+10000000000',
                         },
                     }),
                 )
             })
+        })
+
+        it('should pre-fill sms sender from store config for a new journey with no journeyParams', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                isLoading: false,
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+                journeyData: undefined,
+                currentIntegration: { id: 1 },
+            })
+
+            render(<Setup />)
+
+            await waitFor(() => {
+                expect(mockReset).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        sms_sender_integration_id: {
+                            id: 999,
+                            label: '+10000000000',
+                        },
+                    }),
+                )
+            })
+        })
+
+        it('should not pre-fill sms sender for a new journey when store config is null', () => {
+            mockUseAiJourneyStoreConfiguration.mockReturnValue({
+                storeConfiguration: null,
+                isLoading: false,
+            })
+            mockUseJourneyContext.mockReturnValue({
+                isLoading: false,
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+                journeyData: undefined,
+                currentIntegration: { id: 1 },
+            })
+
+            render(<Setup />)
+
+            expect(mockReset).not.toHaveBeenCalled()
         })
 
         it('should use undefined sms sender when store config has loaded but returned no data', async () => {

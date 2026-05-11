@@ -1,6 +1,5 @@
 import { useCallback, useState } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useHistory } from 'react-router-dom'
 
 import type { ColumnDef, SortingState, TableV1ToolbarRow } from '@gorgias/axiom'
@@ -21,7 +20,6 @@ import { JourneyCampaignStateEnum } from '@gorgias/convert-client'
 import { DateFormatToggle } from 'AIJourney/components/DateFormatToggle/DateFormatToggle'
 import type { UpdatableJourneyCampaignState } from 'AIJourney/constants'
 import {
-    useAiJourneyStoreConfiguration,
     useDateFormatPreference,
     useJourneyUpdateHandler,
 } from 'AIJourney/hooks'
@@ -30,7 +28,6 @@ import { useCreateNewJourney } from 'AIJourney/queries'
 import { useDeleteJourney } from 'AIJourney/queries/useDeleteJourney/useDeleteJourney'
 import { getJourneyData } from 'AIJourney/queries/useJourneyData/useJourneyData'
 
-import { SmsSenderRequiredModal } from '../SmsSenderRequiredModal/SmsSenderRequiredModal'
 import CancelCampaignConfirmation from './CancelCampaignConfirmation/CancelCampaignConfirmation'
 import EmptyCampaignsState from './EmptyCampaignsState/EmptyCampaignsState'
 import RemoveCampaignConfirmation from './RemoveCampaignConfirmation/RemoveCampaignConfirmation'
@@ -57,7 +54,6 @@ export default function CampaignsTable<TData, TValue>({
     const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false)
     const [isSendModalOpen, setIsSendModalOpen] = useState(false)
     const [isCancelModalOpen, setIsCancelModalOpen] = useState(false)
-    const [isSmsSenderModalOpen, setIsSmsSenderModalOpen] = useState(false)
     const [selectedCampaignId, setSelectedCampaignId] = useState<
         string | undefined
     >()
@@ -67,17 +63,6 @@ export default function CampaignsTable<TData, TValue>({
     const history = useHistory()
     const { shopName, currency, currentIntegration } = useJourneyContext()
     const { format: dateFormat, toggleFormat } = useDateFormatPreference()
-
-    const storeSettingsEnabled = useFlag(
-        FeatureFlagKey.AiJourneyStoreSettingsEnabled,
-    )
-    const { storeConfiguration } = useAiJourneyStoreConfiguration(
-        currentIntegration?.id,
-    )
-    const isMissingSmsSender =
-        storeSettingsEnabled &&
-        !window.USER_IMPERSONATED &&
-        !storeConfiguration?.sms_sender_integration_id
 
     const createNewJourney = useCreateNewJourney()
 
@@ -112,15 +97,11 @@ export default function CampaignsTable<TData, TValue>({
     // send campaign
     const handleOpenSendModal = useCallback(
         (id: string, hasIncludedAudiences: boolean) => {
-            if (isMissingSmsSender) {
-                setIsSmsSenderModalOpen(true)
-                return
-            }
             setSelectedCampaignId(id)
             setSelectedCampaignHasAudiences(hasIncludedAudiences)
             setIsSendModalOpen(true)
         },
-        [isMissingSmsSender, setSelectedCampaignId, setIsSendModalOpen],
+        [setSelectedCampaignId, setIsSendModalOpen],
     )
 
     const handleCloseSendModal = useCallback(() => {
@@ -326,12 +307,6 @@ export default function CampaignsTable<TData, TValue>({
                     />
                 </Box>
             </div>
-            <SmsSenderRequiredModal
-                isOpen={isSmsSenderModalOpen}
-                onClose={() => setIsSmsSenderModalOpen(false)}
-                settingsUrl={`/app/ai-journey/${shopName}/settings`}
-                isCampaign
-            />
             <RemoveCampaignConfirmation
                 isOpen={isRemoveModalOpen}
                 onClose={handleCloseRemoveModal}

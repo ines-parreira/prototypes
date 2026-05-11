@@ -154,19 +154,15 @@ export const useAiJourneyMessages = () => {
         useAiJourneyStoreConfiguration(shopifyIntegration?.id)
 
     const smsSenderNumber = storeSettingsEnabled
-        ? !window.USER_IMPERSONATED
-            ? (aiJourneyStoreConfig?.sms_sender_number ?? null)
-            : (journeyConfiguration?.sms_sender_number ??
-              aiJourneyStoreConfig?.sms_sender_number ??
-              null)
+        ? (journeyConfiguration?.sms_sender_number ??
+          aiJourneyStoreConfig?.sms_sender_number ??
+          null)
         : (journeyConfiguration?.sms_sender_number ?? null)
 
     const smsSenderIntegrationId = storeSettingsEnabled
-        ? !window.USER_IMPERSONATED
-            ? (aiJourneyStoreConfig?.sms_sender_integration_id ?? null)
-            : (journeyConfiguration?.sms_sender_integration_id ??
-              aiJourneyStoreConfig?.sms_sender_integration_id ??
-              null)
+        ? (journeyConfiguration?.sms_sender_integration_id ??
+          aiJourneyStoreConfig?.sms_sender_integration_id ??
+          null)
         : (journeyConfiguration?.sms_sender_integration_id ?? null)
 
     const brandName = storeSettingsEnabled

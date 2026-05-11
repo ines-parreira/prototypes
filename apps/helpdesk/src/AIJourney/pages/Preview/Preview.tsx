@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { useHistory } from 'react-router-dom'
 
@@ -68,15 +67,7 @@ export const Preview = () => {
 
     const integrationId = currentIntegration?.id
 
-    const storeSettingsEnabled = useFlag(
-        FeatureFlagKey.AiJourneyStoreSettingsEnabled,
-    )
     const { storeConfiguration } = useAiJourneyStoreConfiguration(integrationId)
-    const isMissingSmsSender =
-        storeSettingsEnabled &&
-        !window.USER_IMPERSONATED &&
-        !storeConfiguration?.sms_sender_integration_id
-
     const journeyParams = (journeyData?.configuration ?? undefined) as
         | JourneyConfigurationApiDTO
         | undefined
@@ -178,7 +169,6 @@ export const Preview = () => {
                     content={playgroundMessages}
                     includeImage={journeyParams?.include_image}
                     isGeneratingMessages={isGeneratingMessages}
-                    isGenerateDisabled={isMissingSmsSender}
                     selectedProductImage={currentProductImage}
                     isCampaign={isCampaign}
                     campaignImage={campaignImage}

@@ -74,8 +74,6 @@ export const Setup = () => {
     )
     const { storeConfiguration, isLoading: isLoadingStoreConfig } =
         useAiJourneyStoreConfiguration(currentIntegration?.id)
-    const needsStoreConfig = storeSettingsEnabled && window.USER_IMPERSONATED
-
     const isAiJourneySegmentsEnabled = useFlag(
         FeatureFlagKey.AiJourneySegmentsUiEnabled,
     )
@@ -92,7 +90,7 @@ export const Setup = () => {
     useEffect(() => {
         const isReadyToInit =
             !isLoadingJourneyData &&
-            (!needsStoreConfig || !isLoadingStoreConfig)
+            (!storeSettingsEnabled || !isLoadingStoreConfig)
 
         if (isReadyToInit && !isFormReady) {
             if (journeyParams) {
@@ -105,12 +103,12 @@ export const Setup = () => {
                     sms_sender_integration_id: {
                         id:
                             journeyParams.sms_sender_integration_id ??
-                            (needsStoreConfig
+                            (storeSettingsEnabled
                                 ? storeConfiguration?.sms_sender_integration_id
                                 : undefined),
                         label:
                             journeyParams.sms_sender_number ??
-                            (needsStoreConfig
+                            (storeSettingsEnabled
                                 ? storeConfiguration?.sms_sender_number
                                 : undefined),
                     },
@@ -161,6 +159,13 @@ export const Setup = () => {
                         journeyData?.configuration?.rcs_enabled ?? undefined,
                     flowName: journeyData?.name ?? undefined,
                 })
+            } else if (storeSettingsEnabled && storeConfiguration) {
+                reset({
+                    sms_sender_integration_id: {
+                        id: storeConfiguration.sms_sender_integration_id,
+                        label: storeConfiguration.sms_sender_number,
+                    },
+                })
             }
             setIsFormReady(true)
         }
@@ -168,7 +173,7 @@ export const Setup = () => {
         isLoadingJourneyData,
         isLoadingStoreConfig,
         isFormReady,
-        needsStoreConfig,
+        storeSettingsEnabled,
         storeConfiguration,
         journeyData,
         journeyParams,

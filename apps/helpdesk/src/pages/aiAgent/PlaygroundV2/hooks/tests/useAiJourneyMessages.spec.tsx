@@ -554,34 +554,8 @@ describe('useAiJourneyMessages', () => {
             'AIJourney/hooks',
         ).useAiJourneyStoreConfiguration as jest.Mock
 
-        afterEach(() => {
-            window.USER_IMPERSONATED = null
-        })
-
-        it('uses store config sender when flag is ON and not impersonated', async () => {
+        it('uses journey sender when flag is ON (journey-first for all users)', async () => {
             mockUseFlag.mockReturnValue(true)
-
-            const { result } = renderHook(() => useAiJourneyMessages(), {
-                wrapper: createWrapper(),
-            })
-
-            await act(async () => {
-                await result.current.triggerMessage()
-            })
-
-            expect(mockMutateAsync).toHaveBeenCalledWith([
-                expect.objectContaining({
-                    settings: expect.objectContaining({
-                        smsSenderNumber: '+19999999999',
-                        smsSenderIntegrationId: 789,
-                    }),
-                }),
-            ])
-        })
-
-        it('uses journey sender when flag is ON and impersonated', async () => {
-            mockUseFlag.mockReturnValue(true)
-            window.USER_IMPERSONATED = true
 
             const { result } = renderHook(() => useAiJourneyMessages(), {
                 wrapper: createWrapper(),
@@ -601,9 +575,8 @@ describe('useAiJourneyMessages', () => {
             ])
         })
 
-        it('falls back to store config when flag is ON, impersonated, and journey has no sender', async () => {
+        it('falls back to store config when flag is ON and journey has no sender', async () => {
             mockUseFlag.mockReturnValue(true)
-            window.USER_IMPERSONATED = true
             mockUseJourneyData.mockReturnValue({
                 data: {
                     ...mockJourneyData,
@@ -665,7 +638,7 @@ describe('useAiJourneyMessages', () => {
             expect(mockUseAiJourneyStoreConfiguration).toHaveBeenCalledWith(123)
         })
 
-        it('uses null when flag is ON, not impersonated, and store config has no sms sender', async () => {
+        it('uses journey sender when flag is ON even when store config has no sms sender', async () => {
             mockUseFlag.mockReturnValue(true)
             mockUseAiJourneyStoreConfiguration.mockReturnValue({
                 storeConfiguration: null,
@@ -683,16 +656,15 @@ describe('useAiJourneyMessages', () => {
             expect(mockMutateAsync).toHaveBeenCalledWith([
                 expect.objectContaining({
                     settings: expect.objectContaining({
-                        smsSenderNumber: null,
-                        smsSenderIntegrationId: null,
+                        smsSenderNumber: '+1234567890',
+                        smsSenderIntegrationId: 456,
                     }),
                 }),
             ])
         })
 
-        it('uses null when flag is ON, impersonated, and both journey and store config have no sms sender', async () => {
+        it('uses null when flag is ON and both journey and store config have no sms sender', async () => {
             mockUseFlag.mockReturnValue(true)
-            window.USER_IMPERSONATED = true
             mockUseJourneyData.mockReturnValue({
                 data: {
                     ...mockJourneyData,
