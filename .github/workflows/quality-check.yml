@@ -93,7 +93,7 @@ jobs:
       - name: Format
         env:
           NODE_OPTIONS: "--max-old-space-size=10240"
-        run: "npx nx affected --target=format:check --base=${{ inputs.nx-base-commit }} --head=HEAD"
+        run: "npx nx affected --target=format:check --base=${{ inputs.nx-base-commit }} --head=HEAD --parallel=1"
 
       - name: Stop Resource Monitoring
         if: always()
@@ -126,7 +126,7 @@ jobs:
           npm-token: ${{ secrets.GH_READ_PACKAGES_TOKEN }}
 
       - name: Typecheck
-        run: npx nx affected --target=typecheck --base=${{ inputs.nx-base-commit }} --head=HEAD
+        run: npx nx affected --target=typecheck --base=${{ inputs.nx-base-commit }} --head=HEAD --parallel=1
 
       - name: Stop Resource Monitoring
         if: always()
