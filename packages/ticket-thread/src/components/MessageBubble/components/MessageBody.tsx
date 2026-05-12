@@ -5,6 +5,7 @@ import type { TicketMessageTranslation } from '@gorgias/helpdesk-types'
 
 import { useExpandedMessages } from '../../../contexts/ExpandedMessages'
 import { getMessageContent } from './utils/getMessageContent'
+import { useDarkModeReadableEmailHtml } from './utils/useDarkModeReadableEmailHtml'
 
 import css from './MessageBody.less'
 
@@ -31,6 +32,10 @@ export function MessageBody({ className, item }: MessageBodyProps) {
     const { sanitizedHtml, isHtml, isStripped, isTruncated } =
         getMessageContent(item, isExpanded)
     const displayedContent = sanitizedHtml !== 'null' ? sanitizedHtml : ''
+    const readableContent = useDarkModeReadableEmailHtml(
+        isHtml ? displayedContent : '',
+    )
+    const content = isHtml ? readableContent : displayedContent
 
     if (!displayedContent && !isStripped) {
         return null
@@ -47,7 +52,7 @@ export function MessageBody({ className, item }: MessageBodyProps) {
                         [css.whitespace]: !isHtml,
                     },
                 )}
-                dangerouslySetInnerHTML={{ __html: displayedContent }}
+                dangerouslySetInnerHTML={{ __html: content }}
             />
             {isTruncated && (
                 <Banner

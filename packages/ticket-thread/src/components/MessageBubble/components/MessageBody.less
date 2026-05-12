@@ -16,3 +16,38 @@
         white-space: pre-line;
     }
 }
+
+:global(.dark) {
+    :local {
+        .content {
+            color: var(--content-neutral-default);
+        }
+
+        .content {
+            // Force readable text in dark mode, except inside email elements that paint their own background.
+            :global(
+                *:not(.message-body-element-with-authored-background):not(
+                        .message-body-element-with-authored-background *
+                    )
+            ) {
+                color: var(--content-neutral-default) !important;
+            }
+
+            // The repeated link selector first colors the eligible <a>, then colors descendants inside that same eligible <a>.
+            // Email HTML often wraps link text in styled spans, so both need the authored-background exception.
+            :global(
+                a:not(.message-body-element-with-authored-background):not(
+                        .message-body-element-with-authored-background *
+                    )
+            ),
+            :global(
+                a:not(.message-body-element-with-authored-background):not(
+                        .message-body-element-with-authored-background *
+                    )
+                    *
+            ) {
+                color: var(--content-accent-default) !important;
+            }
+        }
+    }
+}
