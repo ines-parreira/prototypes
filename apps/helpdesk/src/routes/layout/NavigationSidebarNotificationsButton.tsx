@@ -2,15 +2,14 @@ import {
     NavigationSidebarTooltip,
     useSidebarButtonSize,
 } from '@repo/navigation'
+import { useUnreadCount } from '@repo/notifications'
 
 import { Button, Quantity, TooltipContent } from '@gorgias/axiom'
-
-import useCount from 'common/notifications/hooks/useCount'
 
 import css from './NavigationSidebarNotificationsButton.less'
 
 export function NavigationSidebarNotificationsButton() {
-    const count = useCount()
+    const count = useUnreadCount()
     const buttonSize = useSidebarButtonSize()
 
     const rightOffset = count > 99 ? 'l' : count > 9 ? 'm' : 's'

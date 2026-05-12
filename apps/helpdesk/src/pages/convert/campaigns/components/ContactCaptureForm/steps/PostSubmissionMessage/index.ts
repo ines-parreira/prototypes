@@ -1,1 +1,1 @@
-export * from './PostSubmissionMessage'
+export { PostSubmissionMessage } from './PostSubmissionMessage'

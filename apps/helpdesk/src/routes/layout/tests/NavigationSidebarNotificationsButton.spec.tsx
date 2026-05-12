@@ -1,21 +1,19 @@
 import { MockSidebarProvider } from '@repo/navigation/fixtures'
+import { useUnreadCount } from '@repo/notifications'
 import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import useCount from 'common/notifications/hooks/useCount'
-
 import { NavigationSidebarNotificationsButton } from '../NavigationSidebarNotificationsButton'
 
-jest.mock('common/notifications/hooks/useCount', () => ({
-    __esModule: true,
-    default: jest.fn(),
+jest.mock('@repo/notifications', () => ({
+    useUnreadCount: jest.fn(),
 }))
 
-const useCountMock = assumeMock(useCount)
+const useUnreadCountMock = assumeMock(useUnreadCount)
 
 describe('NavigationSidebarNotificationsButton', () => {
     beforeEach(() => {
-        useCountMock.mockReturnValue(0)
+        useUnreadCountMock.mockReturnValue(0)
     })
 
     it('should render the notifications button', () => {
@@ -30,7 +28,7 @@ describe('NavigationSidebarNotificationsButton', () => {
     })
 
     it('should not render badge when count is 0', () => {
-        useCountMock.mockReturnValue(0)
+        useUnreadCountMock.mockReturnValue(0)
         render(
             <MockSidebarProvider>
                 <NavigationSidebarNotificationsButton />
@@ -41,7 +39,7 @@ describe('NavigationSidebarNotificationsButton', () => {
     })
 
     it('should render badge when count is greater than 0', () => {
-        useCountMock.mockReturnValue(5)
+        useUnreadCountMock.mockReturnValue(5)
         render(
             <MockSidebarProvider>
                 <NavigationSidebarNotificationsButton />
@@ -52,7 +50,7 @@ describe('NavigationSidebarNotificationsButton', () => {
     })
 
     it('should render 99+ badge when count is greater than 99', () => {
-        useCountMock.mockReturnValue(150)
+        useUnreadCountMock.mockReturnValue(150)
         render(
             <MockSidebarProvider>
                 <NavigationSidebarNotificationsButton />
