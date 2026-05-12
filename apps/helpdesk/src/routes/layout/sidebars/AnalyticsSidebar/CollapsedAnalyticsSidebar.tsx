@@ -1,7 +1,7 @@
 import { SidebarCollapsedGroup, SidebarCollapsedItem } from '@repo/navigation'
 import { history } from '@repo/routing'
 
-import { Menu, MenuItem } from '@gorgias/axiom'
+import { Icon, Menu, MenuItem } from '@gorgias/axiom'
 
 import { STATS_ROUTE_PREFIX } from 'domains/reporting/pages/common/components/constants'
 import type { StatsNavbarSection } from 'routes/layout/products/analytics'
@@ -67,6 +67,13 @@ export const CollapsedAnalyticsSidebar = ({ sections }: Props) => {
                                 id={item.id}
                                 label={item.label}
                                 onAction={() => navigateTo(item.route)}
+                                trailingSlot={
+                                    item.requiresUpgrade ? (
+                                        <Icon name="arrow-up-circle" />
+                                    ) : (
+                                        item.trailingSlot
+                                    )
+                                }
                             />
                         ))}
                     </Menu>

@@ -160,6 +160,75 @@ describe('CollapsedAnalyticsSidebar', () => {
         expect(history.push).toHaveBeenCalledWith('/app/stats/live-agents')
     })
 
+    it('renders trailingSlot content for items in the dropdown menu', async () => {
+        const user = userEvent.setup()
+        const sectionsWithTrailingSlot: StatsNavbarSection[] = [
+            {
+                id: 'automate',
+                label: 'AI & automation',
+                icon: 'zap' as const,
+                items: [
+                    {
+                        id: 'analytics-overview',
+                        route: 'analytics/overview',
+                        label: 'Overview',
+                        trailingSlot: <span>Beta</span>,
+                    },
+                    {
+                        id: 'analytics-ai-agent',
+                        route: 'analytics/ai-agent',
+                        label: 'AI Agent',
+                        trailingSlot: <span>New</span>,
+                    },
+                ],
+            },
+        ]
+
+        render(
+            <CollapsedAnalyticsSidebar sections={sectionsWithTrailingSlot} />,
+            { wrapper: SidebarProvider },
+        )
+
+        await act(() => user.click(screen.getByRole('radio')))
+
+        expect(screen.getByText('Beta')).toBeInTheDocument()
+        expect(screen.getByText('New')).toBeInTheDocument()
+    })
+
+    it('renders upgrade icon for items with requiresUpgrade in the dropdown menu', async () => {
+        const user = userEvent.setup()
+        const sectionsWithUpgrade: StatsNavbarSection[] = [
+            {
+                id: 'voice',
+                label: 'Voice',
+                icon: 'soundwave' as const,
+                items: [
+                    {
+                        id: 'voice-overview',
+                        route: 'voice/overview',
+                        label: 'Overview',
+                        requiresUpgrade: true,
+                    },
+                    {
+                        id: 'voice-agents',
+                        route: 'voice/agents',
+                        label: 'Agents',
+                    },
+                ],
+            },
+        ]
+
+        render(<CollapsedAnalyticsSidebar sections={sectionsWithUpgrade} />, {
+            wrapper: SidebarProvider,
+        })
+
+        await act(() => user.click(screen.getByRole('radio')))
+
+        const menuItems = screen.getAllByRole('menuitemradio')
+        expect(menuItems[0].querySelector('svg')).toBeInTheDocument()
+        expect(menuItems[1].querySelector('svg')).not.toBeInTheDocument()
+    })
+
     it('navigates directly when clicking a single-item section without opening a menu', async () => {
         const user = userEvent.setup()
         render(<CollapsedAnalyticsSidebar sections={mockSections} />, {
