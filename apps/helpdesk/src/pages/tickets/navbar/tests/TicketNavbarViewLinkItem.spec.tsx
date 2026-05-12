@@ -226,4 +226,22 @@ describe('TicketNavbarViewLinkItem', () => {
             container.querySelector('[data-candu-id="test-candu-id"]'),
         ).toBeInTheDocument()
     })
+
+    it('should render view count when view is not the active view', () => {
+        setViewsCount({ [defaultView.id]: 5 })
+
+        render(
+            <TicketNavbarViewLinkItem
+                icon="user-arrow"
+                view={defaultView}
+                label="Assigned to me"
+            />,
+            {
+                initialEntries: ['/app/tickets/456/other'],
+                path: '/app/tickets/:viewId?/:slug?',
+            },
+        )
+
+        expect(screen.getByText('5')).toBeInTheDocument()
+    })
 })

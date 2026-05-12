@@ -98,4 +98,36 @@ describe('NavigationSectionItem', () => {
             container.querySelector('[data-candu-id="item-candu-id"]'),
         ).toBeInTheDocument()
     })
+
+    it('renders trailing slot function with isActive=true when route matches', () => {
+        render(
+            <MemoryRouter initialEntries={['/overview']}>
+                <NavigationSectionItem
+                    to="/overview"
+                    label="Overview"
+                    trailingSlot={({ isActive }) => (
+                        <span>
+                            {isActive ? 'active-slot' : 'inactive-slot'}
+                        </span>
+                    )}
+                />
+            </MemoryRouter>,
+        )
+
+        expect(screen.getByText('active-slot')).toBeInTheDocument()
+    })
+
+    it('renders trailing slot function with isActive=false when route does not match', () => {
+        renderInRouter(
+            <NavigationSectionItem
+                to="/overview"
+                label="Overview"
+                trailingSlot={({ isActive }) => (
+                    <span>{isActive ? 'active-slot' : 'inactive-slot'}</span>
+                )}
+            />,
+        )
+
+        expect(screen.getByText('inactive-slot')).toBeInTheDocument()
+    })
 })

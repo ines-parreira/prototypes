@@ -2,7 +2,7 @@ import { forwardRef } from 'react'
 import type { ReactNode } from 'react'
 
 import type { Location } from 'history'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation, useRouteMatch } from 'react-router-dom'
 import type { match as Match } from 'react-router-dom'
 
 import { Box, Icon, isIconName, OverflowTooltip, Text } from '@gorgias/axiom'
@@ -14,7 +14,10 @@ export type NavigationSectionItemProps = {
     canduId?: string | null
     label: string | ReactNode
     leadingSlot?: IconName | ReactNode
-    trailingSlot?: IconName | ReactNode
+    trailingSlot?:
+        | IconName
+        | ReactNode
+        | ((props: { isActive: boolean }) => ReactNode)
     id?: string
     to: string
     children?: never
@@ -35,9 +38,13 @@ export const NavigationSectionItem = forwardRef<
         trailingSlot,
         to,
         exact,
-        isActive,
+        isActive: isActiveProp,
         onClick,
     } = props
+
+    const location = useLocation()
+    const match = useRouteMatch({ path: to, exact })
+    const isActive = isActiveProp ? isActiveProp(match, location) : !!match
 
     return (
         <NavLink
@@ -45,7 +52,7 @@ export const NavigationSectionItem = forwardRef<
             id={id}
             to={to}
             exact={exact}
-            isActive={isActive}
+            isActive={isActiveProp}
             className={css.link}
             {...(canduId ? { 'data-candu-id': canduId } : {})}
             onClick={onClick}
@@ -71,10 +78,17 @@ export const NavigationSectionItem = forwardRef<
                     className={css.label}
                 >
                     <OverflowTooltip placement="right">
-                        <Text overflow="ellipsis">{label}</Text>
+                        <Text
+                            overflow="ellipsis"
+                            variant={isActive ? 'bold' : undefined}
+                        >
+                            {label}
+                        </Text>
                     </OverflowTooltip>
                 </Box>
-                {trailingSlot && isIconName(trailingSlot) ? (
+                {typeof trailingSlot === 'function' ? (
+                    trailingSlot({ isActive })
+                ) : trailingSlot && isIconName(trailingSlot) ? (
                     <Icon name={trailingSlot} size="sm" />
                 ) : (
                     trailingSlot

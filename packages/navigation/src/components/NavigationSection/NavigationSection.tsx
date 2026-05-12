@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 
 import type { Location } from 'history'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation, useRouteMatch } from 'react-router-dom'
 import type { match as Match } from 'react-router-dom'
 
 import {
@@ -50,13 +50,27 @@ function isLink(props: NavigationSectionProps): props is LinkSectionProps {
 }
 
 export function NavigationSection(props: NavigationSectionProps) {
+    const location = useLocation()
+    const match = useRouteMatch({
+        path: isLink(props) ? props.to : undefined,
+        exact: isLink(props) ? props.exact : undefined,
+    })
+
     if (isLink(props)) {
-        const { label, leadingSlot, to, exact, isActive, canduId } = props
+        const {
+            label,
+            leadingSlot,
+            to,
+            exact,
+            isActive: isActiveProp,
+            canduId,
+        } = props
+        const isActive = isActiveProp ? isActiveProp(match, location) : !!match
         return (
             <NavLink
                 to={to}
                 exact={exact}
-                isActive={isActive}
+                isActive={isActiveProp}
                 className={css.link}
                 {...(canduId ? { 'data-candu-id': canduId } : {})}
             >
@@ -75,7 +89,10 @@ export function NavigationSection(props: NavigationSectionProps) {
                         leadingSlot
                     )}
                     <OverflowTooltip placement="right">
-                        <Text variant="medium" overflow="ellipsis">
+                        <Text
+                            variant={isActive ? 'bold' : 'medium'}
+                            overflow="ellipsis"
+                        >
                             {label}
                         </Text>
                     </OverflowTooltip>

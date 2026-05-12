@@ -83,7 +83,7 @@ export const TicketNavbarViewLinkItem = forwardRef<HTMLAnchorElement, Props>(
                 }
                 isActive={() => isActiveView || isMatchingAdditionalPath}
                 leadingSlot={icon}
-                trailingSlot={
+                trailingSlot={({ isActive }) =>
                     !!view.deactivated_datetime ? (
                         <Tooltip
                             trigger={
@@ -100,7 +100,7 @@ export const TicketNavbarViewLinkItem = forwardRef<HTMLAnchorElement, Props>(
                         !!viewCount && (
                             <Quantity
                                 quantity={viewCount}
-                                color={isActiveView ? 'purple' : undefined}
+                                color={isActive ? 'purple' : undefined}
                                 compact
                                 maxQuantity={5000}
                             />

@@ -56,6 +56,28 @@ describe('NavigationSection', () => {
                 container.querySelector('[data-candu-id="link-candu-id"]'),
             ).toBeInTheDocument()
         })
+
+        it('marks link as active when current path matches', () => {
+            render(
+                <MemoryRouter initialEntries={['/settings']}>
+                    <NavigationSection to="/settings" label="Settings" />
+                </MemoryRouter>,
+            )
+
+            expect(
+                screen.getByRole('link', { name: /settings/i }),
+            ).toHaveAttribute('aria-current', 'page')
+        })
+
+        it('does not mark link as active when current path does not match', () => {
+            renderInRouter(
+                <NavigationSection to="/settings" label="Settings" />,
+            )
+
+            expect(
+                screen.getByRole('link', { name: /settings/i }),
+            ).not.toHaveAttribute('aria-current')
+        })
     })
 
     describe('collapsible variant', () => {
