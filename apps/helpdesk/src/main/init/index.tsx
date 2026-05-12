@@ -41,7 +41,7 @@ if (process.env.NODE_ENV === 'development') {
         log: false,
         showFPS: true,
         showNotificationCount: true,
-        showToolbar: true
+        showToolbar: true,
     })
 }
 

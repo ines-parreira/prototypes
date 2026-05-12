@@ -10,9 +10,9 @@ import {
 } from 'domains/reporting/pages/common/components/ActionMenu'
 import {
     getDefaultSetOfRanges,
-    PAST_7_DAYS,
     PAST_30_DAYS,
     PAST_60_DAYS,
+    PAST_7_DAYS,
 } from 'domains/reporting/pages/constants'
 import { mergeStatsFilters } from 'domains/reporting/state/stats/statsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'

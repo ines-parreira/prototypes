@@ -9660,9 +9660,7 @@ declare namespace Components {
                                                           | null
                                                       integrations?: {
                                                           [name: string]: {
-                                                              [
-                                                                  name: string
-                                                              ]: any
+                                                              [name: string]: any
                                                           }
                                                       } | null
                                                   }
@@ -10573,9 +10571,7 @@ declare namespace Components {
                                                           | null
                                                       integrations?: {
                                                           [name: string]: {
-                                                              [
-                                                                  name: string
-                                                              ]: any
+                                                              [name: string]: any
                                                           }
                                                       } | null
                                                   }
@@ -12536,9 +12532,7 @@ declare namespace Components {
                                                           | null
                                                       integrations?: {
                                                           [name: string]: {
-                                                              [
-                                                                  name: string
-                                                              ]: any
+                                                              [name: string]: any
                                                           }
                                                       } | null
                                                   }
@@ -13449,9 +13443,7 @@ declare namespace Components {
                                                           | null
                                                       integrations?: {
                                                           [name: string]: {
-                                                              [
-                                                                  name: string
-                                                              ]: any
+                                                              [name: string]: any
                                                           }
                                                       } | null
                                                   }

@@ -111,7 +111,8 @@ describe('<TicketDistributionTable>', () => {
             screen.getAllByText(
                 new RegExp(
                     data[0][
-                        TicketCustomFieldsDimension.TicketCustomFieldsValueString
+                        TicketCustomFieldsDimension
+                            .TicketCustomFieldsValueString
                     ],
                 ),
             ),

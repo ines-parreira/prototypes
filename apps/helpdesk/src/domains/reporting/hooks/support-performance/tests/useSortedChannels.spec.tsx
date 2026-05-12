@@ -1,6 +1,6 @@
 // sort-imports-ignore
-import { channelsQueryKeys as mockChannelsQueryKeys } from 'models/channel/queries'
 import React from 'react'
+import { channelsQueryKeys as mockChannelsQueryKeys } from 'models/channel/queries'
 
 import { appQueryClient } from '@repo/api-resources'
 import { renderHook } from '@repo/testing'
@@ -8,15 +8,15 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { channels as mockChannels } from 'fixtures/channels'
 import { useSortedChannels } from 'domains/reporting/hooks/support-performance/useSortedChannels'
-import { OrderDirection } from 'models/api/types'
-import type { RootState } from 'state/types'
 import {
     channelsSlice,
     initialState,
 } from 'domains/reporting/state/ui/stats/channelsSlice'
 import { ChannelsTableColumns } from 'domains/reporting/state/ui/stats/types'
+import { channels as mockChannels } from 'fixtures/channels'
+import { OrderDirection } from 'models/api/types'
+import type { RootState } from 'state/types'
 
 const mockStore = configureMockStore([thunk])
 

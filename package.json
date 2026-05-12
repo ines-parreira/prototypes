@@ -44,10 +44,9 @@
         "postinstall": "pnpm ai:rulesync"
     },
     "devDependencies": {
-        "@gorgias/config": "^0.6.0",
+        "@gorgias/config": "0.7.0",
         "@gorgias/static-analysis": "0.5.0",
         "@sentry/cli": "catalog:sentry",
-        "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
         "@types/node": "24.12.2",
         "@types/semver": "^7.7.0",
         "chokidar": "^4.0.3",
@@ -57,8 +56,8 @@
         "knip": "5.84.1",
         "npm-run-all": "4.1.5",
         "nx": "21.3.2",
+        "oxfmt": "catalog:formatter",
         "oxlint": "catalog:oxlint",
-        "prettier": "catalog:prettier",
         "react-doctor": "^0.0.29",
         "rulesync": "^7.18.0",
         "semver": "^7.7.1",

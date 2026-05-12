@@ -1,10 +1,10 @@
 import './mockAudioContext'
 
+import { setImmediate } from 'timers'
+import { TextDecoder, TextEncoder } from 'util'
 import MutationObserver from '@sheerun/mutationobserver-shim'
 import mockMoment from 'moment'
 import type { MomentTimezone } from 'moment-timezone'
-import { setImmediate } from 'timers'
-import { TextDecoder, TextEncoder } from 'util'
 
 import '@formatjs/intl-displaynames/polyfill'
 import '@formatjs/intl-displaynames/locale-data/en'

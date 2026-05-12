@@ -1,7 +1,7 @@
 import React, { useMemo, useRef, useState } from 'react'
 
-import { useIsHeadlessShopifyStore } from '../../hooks/useIsHeadlessShopifyStore'
 import _reduce from 'lodash/reduce'
+import { useIsHeadlessShopifyStore } from '../../hooks/useIsHeadlessShopifyStore'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 

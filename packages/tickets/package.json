@@ -15,12 +15,12 @@
         "./utils/routing": "./src/utils/routing/index.ts"
     },
     "scripts": {
-        "format:check": "prettier --check .",
-        "format:fix": "prettier --write .",
+        "format:check": "oxfmt --check .",
+        "format:fix": "oxfmt --write .",
         "lint": "oxlint --quiet",
         "lint:unused": "knip --directory ../.. --workspace @repo/tickets --no-progress",
         "test": "vitest --configLoader=runner",
-        "test:ci:cover": "NODE_OPTIONS=\"--max-old-space-size=4096\" vitest --configLoader=runner --coverage --silent=true",
+        "test:ci:cover": "NODE_OPTIONS=\"--max-old-space-size=4096\" vitest --maxWorkers=2 --configLoader=runner --coverage --silent=true",
         "test:watch": "vitest watch --configLoader=runner",
         "typecheck": "tsc -p ./tsconfig.json --noEmit true"
     },
@@ -92,7 +92,6 @@
         "@testing-library/jest-dom": "catalog:test",
         "@testing-library/react": "catalog:test",
         "@testing-library/user-event": "catalog:test",
-        "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
         "@types/classnames": "catalog:styles",
         "@types/emoji-mart": "catalog:emoji-mart",
         "@types/lodash": "catalog:lodash",
@@ -107,7 +106,6 @@
         "lz-string": "1.4.4",
         "msw": "catalog:test",
         "oxlint": "catalog:oxlint",
-        "prettier": "catalog:prettier",
         "react": "catalog:react",
         "react-dom": "catalog:react",
         "react-router": "catalog:react-router",
@@ -118,6 +116,7 @@
         "typescript": "catalog:typescript",
         "vitest": "catalog:test",
         "zod": "catalog:zod",
-        "zustand": "catalog:zustand"
+        "zustand": "catalog:zustand",
+        "oxfmt": "catalog:formatter"
     }
 }

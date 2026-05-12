@@ -84,7 +84,7 @@ jobs:
     name: Workspace setup
     needs: pr-context
     if: needs.pr-context.outputs.should-run == 'true'
-    runs-on: gh-actions-4cpu12gb-runner-set
+    runs-on: gh-actions-4cpu4gb-runner-set
     outputs:
       cache-key: ${{ env.CACHE_KEY }}
       preview-path: ${{ steps.sanitize.outputs.preview-path }}

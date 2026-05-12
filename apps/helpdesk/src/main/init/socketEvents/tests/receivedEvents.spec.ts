@@ -11,7 +11,10 @@ import _find from 'lodash/find'
 import _isArray from 'lodash/isArray'
 import _isObject from 'lodash/isObject'
 
+import * as activityTracker from '@repo/activity-tracker'
+import { ActivityEvents } from '@repo/activity-tracker'
 import { appQueryClient } from '@repo/api-resources'
+import { history } from '@repo/routing'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 import { shouldTicketBeDisplayedInRecentChats } from 'business/recentChats'
 import { TicketStatuses } from 'business/ticket'
@@ -28,9 +31,6 @@ import {
 } from 'models/customerEcommerceData/fixtures'
 import { voiceCallsKeys } from 'models/voiceCall/queries'
 import * as voiceCallTypes from 'models/voiceCall/types'
-import { history } from '@repo/routing'
-import * as activityTracker from '@repo/activity-tracker'
-import { ActivityEvents } from '@repo/activity-tracker'
 import browserNotification from 'services/browserNotification'
 import type {
     CustomerExternalDataUpdatedEvent,
@@ -72,9 +72,9 @@ import { isCurrentlyOnTicket } from 'utils'
 import { throttledUpdateCustomerCache } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/helpers'
 import { throttledUpdateCustomFieldsCache } from '../helpers'
 
-import receivedEvents from '../receivedEvents'
-import { ticket } from 'fixtures/ticket'
 import type { TicketMessage } from '@gorgias/helpdesk-types'
+import { ticket } from 'fixtures/ticket'
+import receivedEvents from '../receivedEvents'
 
 //$TsFixMe remove once init.js is migrated
 const typeSafeReduxStore = reduxStore as EnhancedStore

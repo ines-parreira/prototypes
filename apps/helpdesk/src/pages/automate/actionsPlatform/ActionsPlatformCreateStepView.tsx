@@ -153,9 +153,8 @@ const ActionsPlatformCreateStepView = () => {
                 )
             } catch (error) {
                 // Check if this is a server validation error we can parse
-                const { mapServerErrorsToGraph } = await import(
-                    'pages/automate/workflows/utils/serverValidationErrors'
-                )
+                const { mapServerErrorsToGraph } =
+                    await import('pages/automate/workflows/utils/serverValidationErrors')
                 const graphWithServerErrors = mapServerErrorsToGraph(
                     error,
                     visualBuilderGraphDirty,

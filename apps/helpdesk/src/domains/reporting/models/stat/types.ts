@@ -151,8 +151,7 @@ export interface CustomFieldFilter extends WithLogicalOperator<string> {
     customFieldId: number
 }
 
-export interface SavedFilterCustomFieldFilter
-    extends WithLogicalOperator<string> {
+export interface SavedFilterCustomFieldFilter extends WithLogicalOperator<string> {
     custom_field_id: string
 }
 

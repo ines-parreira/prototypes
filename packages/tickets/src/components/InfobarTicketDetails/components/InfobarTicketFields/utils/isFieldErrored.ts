@@ -15,6 +15,6 @@ export function isFieldErrored({
 }) {
     return Boolean(
         isFieldRequired(fieldDefinition, conditionalRequirementType) &&
-            isCustomFieldValueEmpty(fieldState?.value),
+        isCustomFieldValueEmpty(fieldState?.value),
     )
 }

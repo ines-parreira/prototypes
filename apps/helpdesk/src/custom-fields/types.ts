@@ -65,9 +65,9 @@ export function isCustomFieldAIManagedType(
 ): managedType is CustomFieldAIManagedType {
     return Boolean(
         managedType &&
-            Object.values(AI_MANAGED_TYPES).includes(
-                managedType as CustomFieldAIManagedType,
-            ),
+        Object.values(AI_MANAGED_TYPES).includes(
+            managedType as CustomFieldAIManagedType,
+        ),
     )
 }
 
@@ -76,9 +76,9 @@ export function isCustomFieldSystemReadOnly(
 ): boolean {
     return Boolean(
         managedType &&
-            Object.values(SYSTEM_READ_ONLY_MANAGED_TYPES).includes(
-                managedType as CustomFieldSystemReadOnlyManagedType,
-            ),
+        Object.values(SYSTEM_READ_ONLY_MANAGED_TYPES).includes(
+            managedType as CustomFieldSystemReadOnlyManagedType,
+        ),
     )
 }
 

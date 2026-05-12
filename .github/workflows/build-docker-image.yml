@@ -23,7 +23,7 @@ jobs:
   workspace-setup:
     name: Workspace setup
     if: github.event.workflow_run.conclusion == 'success'
-    runs-on: gh-actions-4cpu12gb-runner-set
+    runs-on: gh-actions-4cpu4gb-runner-set
     outputs:
       cache-key: ${{ env.CACHE_KEY }}
     steps:

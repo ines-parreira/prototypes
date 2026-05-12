@@ -43,7 +43,7 @@ const WizardInstallStep = ({
         () =>
             Boolean(
                 storeIntegration &&
-                    storeIntegration.get('type') === SHOPIFY_INTEGRATION_TYPE,
+                storeIntegration.get('type') === SHOPIFY_INTEGRATION_TYPE,
             ),
         [storeIntegration],
     )

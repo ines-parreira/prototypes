@@ -26,7 +26,7 @@ const useIsManualInstallationMethodRequired = (
         () =>
             Boolean(
                 storeIntegration &&
-                    storeIntegration.type === SHOPIFY_INTEGRATION_TYPE,
+                storeIntegration.type === SHOPIFY_INTEGRATION_TYPE,
             ),
         [storeIntegration],
     )

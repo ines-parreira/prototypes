@@ -12,18 +12,17 @@
         "./vitest/setup.ts": "./src/vitest/setup.ts"
     },
     "scripts": {
-        "format:check": "prettier --check .",
-        "format:fix": "prettier --write .",
+        "format:check": "oxfmt --check .",
+        "format:fix": "oxfmt --write .",
         "lint": "oxlint --quiet",
         "lint:unused": "knip --directory .. --workspace @repo/config --no-progress"
     },
     "devDependencies": {
         "@testing-library/jest-dom": "catalog:test",
-        "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
         "jest": "catalog:test",
         "jest-extended": "catalog:test",
+        "oxfmt": "catalog:formatter",
         "oxlint": "catalog:oxlint",
-        "prettier": "catalog:prettier",
         "typescript": "catalog:typescript",
         "unplugin-oxc": "catalog:test",
         "vitest": "catalog:test"

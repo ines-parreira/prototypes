@@ -4,8 +4,7 @@ import Badge from 'gorgias-design-system/Badge/Badge'
 import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import { chatIsShopifyStore } from 'pages/convert/campaigns/utils/chatIsShopifyStore'
 
-export interface LightCampaignBadgeProps
-    extends React.HTMLAttributes<HTMLElement> {
+export interface LightCampaignBadgeProps extends React.HTMLAttributes<HTMLElement> {
     campaign: Campaign
     integration: Map<any, any>
 }

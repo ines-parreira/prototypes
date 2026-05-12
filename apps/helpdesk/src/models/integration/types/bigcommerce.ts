@@ -268,19 +268,19 @@ export interface BigCommerceProductModifiersBase<
 
 export const bigCommerceProductCheckboxModifierTypes = ['checkbox'] as const
 
-export interface BigCommerceProductCheckboxModifier
-    extends BigCommerceProductModifiersBase<{ checked_value: boolean }> {
+export interface BigCommerceProductCheckboxModifier extends BigCommerceProductModifiersBase<{
+    checked_value: boolean
+}> {
     type: (typeof bigCommerceProductCheckboxModifierTypes)[number]
     config: { checked_by_default: boolean; checkbox_label: string }
 }
 
 export const bigCommerceProductSwatchModifierTypes = ['swatch'] as const
 
-export interface BigCommerceProductSwatchModifier
-    extends BigCommerceProductModifiersBase<
-        | { colors: [string] | [string, string] | [string, string, string] }
-        | { image_url: string }
-    > {
+export interface BigCommerceProductSwatchModifier extends BigCommerceProductModifiersBase<
+    | { colors: [string] | [string, string] | [string, string, string] }
+    | { image_url: string }
+> {
     type: (typeof bigCommerceProductSwatchModifierTypes)[number]
     config: []
 }
@@ -293,8 +293,7 @@ export const bigCommerceProductSelectModifierTypes = [
     'product_list_with_images',
 ] as const
 
-export interface BigCommerceProductSelectModifier
-    extends BigCommerceProductModifiersBase<null> {
+export interface BigCommerceProductSelectModifier extends BigCommerceProductModifiersBase<null> {
     type: (typeof bigCommerceProductSelectModifierTypes)[number]
     config: []
 }

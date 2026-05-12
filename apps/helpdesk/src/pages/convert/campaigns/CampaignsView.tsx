@@ -70,8 +70,8 @@ export const CampaignsView = () => {
         () =>
             Boolean(
                 integration.getIn(['meta', 'shop_integration_id']) &&
-                    integration.getIn(['meta', 'shop_type']) ===
-                        IntegrationType.Shopify,
+                integration.getIn(['meta', 'shop_type']) ===
+                    IntegrationType.Shopify,
             ),
         [integration],
     )

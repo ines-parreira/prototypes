@@ -3,9 +3,9 @@ import { screen } from '@testing-library/react'
 
 import {
     getDefaultSetOfRanges,
-    PAST_7_DAYS,
     PAST_30_DAYS,
     PAST_60_DAYS,
+    PAST_7_DAYS,
 } from 'domains/reporting/pages/constants'
 import { PeriodShortcutSelector } from 'domains/reporting/pages/voice-of-customer/side-panel/TrendOverviewReport/PeriodShortcutSelector'
 import { mergeStatsFilters } from 'domains/reporting/state/stats/statsSlice'

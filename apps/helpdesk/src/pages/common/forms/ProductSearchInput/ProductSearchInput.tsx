@@ -16,9 +16,9 @@ interface Props<
     ItemType extends IntegrationDataItem<unknown>,
     Variant extends SearchResultType,
 > extends Pick<
-        SearchInputProps<ItemType, Variant>,
-        'renderResultsAppendix' | 'renderResultItemProps'
-    > {
+    SearchInputProps<ItemType, Variant>,
+    'renderResultsAppendix' | 'renderResultItemProps'
+> {
     className?: string
     autoFocus?: boolean
     searchOnFocus?: boolean

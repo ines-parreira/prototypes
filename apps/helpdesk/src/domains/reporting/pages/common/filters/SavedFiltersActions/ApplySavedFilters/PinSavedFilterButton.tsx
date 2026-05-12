@@ -9,11 +9,10 @@ import {
 
 import type { SavedFilter } from 'domains/reporting/models/stat/types'
 
-export interface PinSavedFilterButtonProps
-    extends Omit<
-        ComponentProps<typeof IconButton>,
-        'icon' | 'iconClassName' | 'onClick'
-    > {
+export interface PinSavedFilterButtonProps extends Omit<
+    ComponentProps<typeof IconButton>,
+    'icon' | 'iconClassName' | 'onClick'
+> {
     filter: Pick<SavedFilter, 'id' | 'name'>
     onClick: () => any
     isPinned?: boolean

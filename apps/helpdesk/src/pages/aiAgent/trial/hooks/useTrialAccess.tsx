@@ -256,29 +256,29 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
     // Trial Banner/CTA: For overview pages and sales paywall
     const canSeeTrialCTA = Boolean(
         !isLoading &&
-            isAdminUser &&
-            !hasCurrentStoreTrialStarted &&
-            !hasCurrentStoreTrialExpired &&
-            (isAiShoppingAssistantTrialMerchantsEnabled ||
-                gmvBandsAllowedToSelfServe.includes(gmvBandTier)),
+        isAdminUser &&
+        !hasCurrentStoreTrialStarted &&
+        !hasCurrentStoreTrialExpired &&
+        (isAiShoppingAssistantTrialMerchantsEnabled ||
+            gmvBandsAllowedToSelfServe.includes(gmvBandTier)),
     )
 
     // Subscribe Now Banner/CTA
     const canSeeSubscribeNowCTA = Boolean(
         !isLoading &&
-            isAdminUser &&
-            (hasCurrentStoreTrialStarted || hasCurrentStoreTrialExpired) &&
-            (isAiShoppingAssistantTrialMerchantsEnabled ||
-                gmvBandsAllowedToSelfServe.includes(gmvBandTier)),
+        isAdminUser &&
+        (hasCurrentStoreTrialStarted || hasCurrentStoreTrialExpired) &&
+        (isAiShoppingAssistantTrialMerchantsEnabled ||
+            gmvBandsAllowedToSelfServe.includes(gmvBandTier)),
     )
 
     // Team leads can notify admin if trial CTA conditions are met (except admin check)
     const canNotifyAdmin = Boolean(
         isTeamLeadUser &&
-            !isAdminUser &&
-            (isOnStarterOrBasicPlan ||
-                isOnProPlusPlan ||
-                isAiShoppingAssistantTrialMerchantsEnabled),
+        !isAdminUser &&
+        (isOnStarterOrBasicPlan ||
+            isOnProPlusPlan ||
+            isAiShoppingAssistantTrialMerchantsEnabled),
     )
 
     /*
@@ -290,9 +290,9 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
      */
     const canBookDemo = Boolean(
         (isAdminUser || isTeamLeadUser) &&
-            gmvBandsAllowedToBookDemo.includes(gmvBandTier) &&
-            // Explicit check to false because the FF is undefined while loading
-            isAiShoppingAssistantTrialMerchantsEnabled === false,
+        gmvBandsAllowedToBookDemo.includes(gmvBandTier) &&
+        // Explicit check to false because the FF is undefined while loading
+        isAiShoppingAssistantTrialMerchantsEnabled === false,
     )
 
     const isInAiAgentTrial =

@@ -61,8 +61,8 @@ const ConfirmRequirementTypeChangeModal = ({
         >
             <ModalHeader title="Update field visibility?" />
             <ModalBody className={css.body}>
-                This field is currently set to <b>{requirementTypeLabel}</b>
-                . Changing to conditional visibility will override any current
+                This field is currently set to <b>{requirementTypeLabel}</b>.
+                Changing to conditional visibility will override any current
                 behaviors. <br />
                 <br />
                 To modify <b>conditional visibility</b> options, visit{' '}

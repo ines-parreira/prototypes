@@ -17,6 +17,8 @@ const require = createRequire(import.meta.url)
 
 const {
     NODE_ENV,
+    CI,
+    GITHUB_ACTIONS,
     GORGIAS_ASSETS_URL,
     WEB_APP_RELEASE,
     DEV_ENV = 'local',
@@ -26,6 +28,7 @@ const {
 
 const isProd = NODE_ENV === 'production'
 const isDev = !isProd
+const isCi = CI === 'true' || GITHUB_ACTIONS === 'true'
 const noContentHash = NO_CONTENT_HASH || isDev
 
 const BUNDLE_PUBLIC_PATH =
@@ -187,9 +190,10 @@ const config = {
         new rspack.BannerPlugin(
             'WEB_APP_RELEASE: ' + WEB_APP_RELEASE || 'undefined',
         ),
-        new TsCheckerRspackPlugin({
-            formatter: { type: 'codeframe', pathType: 'absolute' },
-        }),
+        !isCi &&
+            new TsCheckerRspackPlugin({
+                formatter: { type: 'codeframe', pathType: 'absolute' },
+            }),
     ].filter(Boolean),
     module: {
         rules: [

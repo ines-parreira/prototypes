@@ -18,14 +18,14 @@ export const isExceedingPlanLimit = (
 
     return Boolean(
         status.usage_status === UsageStatus.OK &&
-            status.bundle_status === BundleOnboardingStatus.INSTALLED &&
-            lastWarning &&
-            estimatedReachDate &&
-            cycleStart &&
-            cycleEnd &&
-            cycleStart <= lastWarning &&
-            lastWarning <= cycleEnd &&
-            cycleStart <= estimatedReachDate &&
-            estimatedReachDate <= cycleEnd,
+        status.bundle_status === BundleOnboardingStatus.INSTALLED &&
+        lastWarning &&
+        estimatedReachDate &&
+        cycleStart &&
+        cycleEnd &&
+        cycleStart <= lastWarning &&
+        lastWarning <= cycleEnd &&
+        cycleStart <= estimatedReachDate &&
+        estimatedReachDate <= cycleEnd,
     )
 }

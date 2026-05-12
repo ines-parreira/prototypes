@@ -17,8 +17,8 @@ export function failedMessageTransformer(
                 const typedAction = action as Action
                 return Boolean(
                     typedAction.status === 'error' &&
-                        typedAction.response &&
-                        typedAction.response.msg,
+                    typedAction.response &&
+                    typedAction.response.msg,
                 )
             }) || []
 

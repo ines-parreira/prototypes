@@ -13,7 +13,7 @@ export const useHelpCenterPublishedArticlesCount = (
 
     const hasArticlesCountByHelpCenter = Boolean(
         helpCenterId &&
-            articlesCountByHelpCenter[helpCenterId.toString()] !== undefined,
+        articlesCountByHelpCenter[helpCenterId.toString()] !== undefined,
     )
 
     useEffect(() => {

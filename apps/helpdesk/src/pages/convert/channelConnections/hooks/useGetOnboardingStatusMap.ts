@@ -47,7 +47,7 @@ export const useGetOnboardingStatusMap = () => {
                 if (!!channelConnection.external_id) {
                     map[channelConnection.external_id] = Boolean(
                         (isSubscriber && channelConnection.is_onboarded) ||
-                            (!isSubscriber && channelConnection.is_setup),
+                        (!isSubscriber && channelConnection.is_setup),
                     )
                 }
             })

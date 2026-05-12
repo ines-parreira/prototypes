@@ -31,7 +31,7 @@ jobs:
   workspace-setup:
     name: Workspace setup
     needs: workspace-vars
-    runs-on: gh-actions-4cpu12gb-runner-set
+    runs-on: gh-actions-4cpu4gb-runner-set
     outputs:
       cache-key: ${{ env.CACHE_KEY }}
       helpdesk-affected: ${{ env.HELPDESK_AFFECTED }}
@@ -222,7 +222,7 @@ jobs:
     needs:
       - workspace-vars
       - workspace-setup
-    runs-on: gh-actions-4cpu12gb-runner-set
+    runs-on: gh-actions-4cpu8gb-runner-set
 
     steps:
       - name: Checkout code

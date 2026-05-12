@@ -12,16 +12,16 @@ import type { Store } from 'redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { TicketMessageSourceType } from 'business/types/ticket'
 import { PhoneUseCase } from 'business/twilio'
+import { TicketMessageSourceType } from 'business/types/ticket'
 import { applications as mockApplications } from 'fixtures/applications'
 import { channels as mockChannels } from 'fixtures/channels'
 import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
 import { applicationsQueryKeys as mockApplicationsQueryKeys } from 'models/application/queries'
 import { channelsQueryKeys as mockChannelsQueryKeys } from 'models/channel/queries'
-import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import type { Integration } from 'models/integration/types'
 import type { SourceAddress } from 'models/ticket/types'
+import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import type { Application } from 'services/applications'
 import {
     getApplications,

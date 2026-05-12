@@ -82,9 +82,9 @@ export function TicketThreadActionExecutedEvent({
 
     const hasDetails = Boolean(
         errorMessage ||
-            (httpSections != null
-                ? httpSections.length > 0
-                : payloadEntries.length > 0),
+        (httpSections != null
+            ? httpSections.length > 0
+            : payloadEntries.length > 0),
     )
 
     const modalTitle = isCustomHttp ? 'Request' : 'Action details'

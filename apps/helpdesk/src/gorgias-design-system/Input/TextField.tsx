@@ -9,8 +9,7 @@ import { gorgiasColors } from 'gorgias-design-system/styles'
 import Caption from './Caption'
 import Label from './Label'
 
-export interface TextFieldProps
-    extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
     /**
      * The id of the field.
      */

@@ -283,9 +283,10 @@ export const getAvailablePlans = createSelector(
     getAvailablePlansByProduct,
     (products) =>
         products
-            .reduce<
-                Array<Plan>
-            >((acc, product) => acc.concat(product.prices), [])
+            .reduce<Array<Plan>>(
+                (acc, product) => acc.concat(product.prices),
+                [],
+            )
             .sort((a, b) => a.amount - b.amount),
 )
 

@@ -35,7 +35,7 @@ on:
 jobs:
   lint:
     name: Lint
-    runs-on: gh-actions-4cpu12gb-runner-set
+    runs-on: gh-actions-4cpu4gb-runner-set
     if: inputs.helpdesk-affected == 'true' || inputs.has-other-affected-packages == 'true'
     steps:
       - name: Start Resource Monitoring
@@ -68,7 +68,7 @@ jobs:
 
   format:
     name: Format
-    runs-on: gh-actions-4cpu12gb-runner-set
+    runs-on: gh-actions-4cpu4gb-runner-set
     if: inputs.helpdesk-affected == 'true' || inputs.has-other-affected-packages == 'true'
     steps:
       - name: Start Resource Monitoring
@@ -91,9 +91,7 @@ jobs:
           npm-token: ${{ secrets.GH_READ_PACKAGES_TOKEN }}
 
       - name: Format
-        env:
-          NODE_OPTIONS: "--max-old-space-size=10240"
-        run: "npx nx affected --target=format:check --base=${{ inputs.nx-base-commit }} --head=HEAD --parallel=1"
+        run: "npx nx affected --target=format:check --base=${{ inputs.nx-base-commit }} --head=HEAD --parallel=1 -- --threads=4"
 
       - name: Stop Resource Monitoring
         if: always()
@@ -103,7 +101,7 @@ jobs:
 
   typecheck:
     name: Typecheck
-    runs-on: gh-actions-4cpu8gb-runner-set
+    runs-on: gh-actions-4cpu12gb-runner-set
     if: inputs.helpdesk-affected == 'true' || inputs.has-other-affected-packages == 'true'
     steps:
       - name: Start Resource Monitoring
@@ -242,7 +240,7 @@ jobs:
 
   package-tests:
     name: Packages test (${{ matrix.bucket }})
-    runs-on: gh-actions-4cpu12gb-runner-set
+    runs-on: gh-actions-4cpu8gb-runner-set
     timeout-minutes: 15
     if: inputs.packages-test-bucket-count != '0'
     strategy:

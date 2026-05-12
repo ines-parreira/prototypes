@@ -9,12 +9,12 @@
     },
     "scripts": {
         "postinstall": "tsx scripts/generate-sdk-version-hash.ts",
-        "format:check": "prettier --check .",
-        "format:fix": "prettier --write .",
+        "format:check": "oxfmt --check .",
+        "format:fix": "oxfmt --write .",
         "lint": "oxlint --quiet",
         "lint:unused": "knip --directory ../.. --workspace @repo/api-resources --no-progress",
         "test": "vitest run --configLoader=runner",
-        "test:ci:cover": "NODE_OPTIONS=\"--max-old-space-size=4096\" vitest run --configLoader=runner --coverage --silent=true",
+        "test:ci:cover": "NODE_OPTIONS=\"--max-old-space-size=4096\" vitest run --maxWorkers=2 --configLoader=runner --coverage --silent=true",
         "test:watch": "vitest watch --configLoader=runner",
         "typecheck": "tsc -p ./tsconfig.json --noEmit true"
     },
@@ -41,7 +41,6 @@
         "@tanstack/react-query-persist-client": "4.36.1",
         "@testing-library/jest-dom": "catalog:test",
         "@testing-library/react": "catalog:test",
-        "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
         "@types/react": "catalog:react",
         "@types/react-dom": "catalog:react",
         "@vitest/coverage-v8": "catalog:test",
@@ -49,11 +48,11 @@
         "axios-mock-adapter": "^1.22.0",
         "axios-rate-limit": "^1.4.0",
         "oxlint": "catalog:oxlint",
-        "prettier": "catalog:prettier",
         "react": "catalog:react",
         "react-dom": "catalog:react",
         "tsx": "catalog:typescript",
         "typescript": "catalog:typescript",
-        "vitest": "catalog:test"
+        "vitest": "catalog:test",
+        "oxfmt": "catalog:formatter"
     }
 }

@@ -48,7 +48,7 @@ env:
 jobs:
   build:
     name: Build
-    runs-on: gh-actions-4cpu12gb-runner-set
+    runs-on: gh-actions-4cpu8gb-runner-set
     timeout-minutes: 15
     steps:
       - name: Start Resource Monitoring
@@ -73,7 +73,7 @@ jobs:
       - name: Build
         env:
           GORGIAS_ASSETS_URL: ${{ inputs.assets-url }}
-          NODE_OPTIONS: "--max-old-space-size=10240"
+          NODE_OPTIONS: "--max-old-space-size=6144"
           WEB_APP_RELEASE: ${{ inputs.release }}
           NO_CONTENT_HASH: ${{ inputs.no-content-hash && '1' || '' }}
         run: pnpm build

@@ -98,10 +98,10 @@ function isServerValidationError(
     const axiosError = error as AxiosError
     return Boolean(
         axiosError.response?.status === 400 &&
-            axiosError.response?.data &&
-            typeof axiosError.response.data === 'object' &&
-            'message' in axiosError.response.data &&
-            Array.isArray(axiosError.response.data.message),
+        axiosError.response?.data &&
+        typeof axiosError.response.data === 'object' &&
+        'message' in axiosError.response.data &&
+        Array.isArray(axiosError.response.data.message),
     )
 }
 

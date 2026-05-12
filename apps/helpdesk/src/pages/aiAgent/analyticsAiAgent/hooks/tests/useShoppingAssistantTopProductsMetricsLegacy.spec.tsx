@@ -319,12 +319,14 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
         )
 
         await waitFor(() => {
-            expect(fetchIntegrationProductsMock).toHaveBeenCalledWith(456, [
-                123,
-            ])
-            expect(fetchIntegrationProductsMock).toHaveBeenCalledWith(789, [
-                124,
-            ])
+            expect(fetchIntegrationProductsMock).toHaveBeenCalledWith(
+                456,
+                [123],
+            )
+            expect(fetchIntegrationProductsMock).toHaveBeenCalledWith(
+                789,
+                [124],
+            )
         })
 
         await waitFor(() => {
@@ -395,9 +397,10 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
         )
 
         await waitFor(() => {
-            expect(fetchIntegrationProductsMock).toHaveBeenCalledWith(456, [
-                123,
-            ])
+            expect(fetchIntegrationProductsMock).toHaveBeenCalledWith(
+                456,
+                [123],
+            )
             expect(fetchIntegrationProductsMock).toHaveBeenCalledTimes(1)
         })
 
@@ -469,9 +472,10 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
         )
 
         await waitFor(() => {
-            expect(fetchIntegrationProductsMock).toHaveBeenCalledWith(456, [
-                123,
-            ])
+            expect(fetchIntegrationProductsMock).toHaveBeenCalledWith(
+                456,
+                [123],
+            )
             expect(fetchIntegrationProductsMock).toHaveBeenCalledTimes(1)
         })
 

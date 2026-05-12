@@ -57,10 +57,10 @@ declare namespace Components {
              * manage
              */
             action: /**
-             * example:
-             * manage
-             */
-            string | string[]
+                 * example:
+                 * manage
+                 */
+                string | string[]
             /**
              * example:
              * all
@@ -3972,13 +3972,13 @@ declare namespace Components {
              * }
              */
             report: /**
-             * example:
-             * {
-             *   "status": "SUCCESS",
-             *   "num_imported_rows": 100
-             * }
-             */
-            | ProcessCsvResponseSuccessDto
+                 * example:
+                 * {
+                 *   "status": "SUCCESS",
+                 *   "num_imported_rows": 100
+                 * }
+                 */
+                | ProcessCsvResponseSuccessDto
                 | ProcessCsvResponsePartialDto
                 | ProcessCsvResponseFailedDto
         }

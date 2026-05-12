@@ -266,9 +266,8 @@ describe('ArticleVersionBanner', () => {
             })
 
             it('fetches and dispatches SET_COMPARISON_VERSION when toggling to diff mode on draft', async () => {
-                const { getHelpCenterArticle } = await import(
-                    'models/helpCenter/resources'
-                )
+                const { getHelpCenterArticle } =
+                    await import('models/helpCenter/resources')
                 const mockGetArticle = jest.mocked(getHelpCenterArticle)
                 const mockDispatch = jest.fn()
 
@@ -317,9 +316,8 @@ describe('ArticleVersionBanner', () => {
             })
 
             it('reuses cached published version when toggling to diff repeatedly without state changes', async () => {
-                const { getHelpCenterArticle } = await import(
-                    'models/helpCenter/resources'
-                )
+                const { getHelpCenterArticle } =
+                    await import('models/helpCenter/resources')
                 const mockGetArticle = jest.mocked(getHelpCenterArticle)
 
                 mockGetArticle.mockResolvedValue({
@@ -669,9 +667,8 @@ describe('ArticleVersionBanner', () => {
             })
 
             it('fetches and dispatches SET_COMPARISON_VERSION when toggling to diff mode', async () => {
-                const { getHelpCenterArticle } = await import(
-                    'models/helpCenter/resources'
-                )
+                const { getHelpCenterArticle } =
+                    await import('models/helpCenter/resources')
                 const mockGetArticle = jest.mocked(getHelpCenterArticle)
 
                 mockGetArticle.mockResolvedValue({
@@ -706,9 +703,8 @@ describe('ArticleVersionBanner', () => {
             })
 
             it('handles error when fetching published version fails', async () => {
-                const { getHelpCenterArticle } = await import(
-                    'models/helpCenter/resources'
-                )
+                const { getHelpCenterArticle } =
+                    await import('models/helpCenter/resources')
                 const mockGetArticle = jest.mocked(getHelpCenterArticle)
                 const consoleErrorSpy = jest
                     .spyOn(console, 'error')
@@ -732,9 +728,8 @@ describe('ArticleVersionBanner', () => {
             })
 
             it('does not dispatch SET_COMPARISON_VERSION when published version is null', async () => {
-                const { getHelpCenterArticle } = await import(
-                    'models/helpCenter/resources'
-                )
+                const { getHelpCenterArticle } =
+                    await import('models/helpCenter/resources')
                 const mockGetArticle = jest.mocked(getHelpCenterArticle)
 
                 mockGetArticle.mockResolvedValue(null)

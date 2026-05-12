@@ -109,8 +109,8 @@ export function OrderShipmentSection({
                                           String(value))
                                 const canCopy = Boolean(
                                     field.copyable &&
-                                        rawCopy &&
-                                        rawCopy.length > 0,
+                                    rawCopy &&
+                                    rawCopy.length > 0,
                                 )
 
                                 const valueNode =

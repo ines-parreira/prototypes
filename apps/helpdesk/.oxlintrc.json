@@ -99,6 +99,10 @@
         "import/no-named-as-default": "warn",
         "oxc/no-barrel-file": "error",
         "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
+        "sort-imports": [
+            "error",
+            { "ignoreCase": true, "ignoreDeclarationSort": true }
+        ],
         "jsx-a11y/alt-text": ["error"],
         "jsx-a11y/anchor-is-valid": "off",
         "jsx-a11y/click-events-have-key-events": "off",

@@ -857,9 +857,10 @@ describe('<Right />', () => {
             expect(screen.getByText('Store 2')).toBeInTheDocument()
 
             fireEvent.click(screen.getByText('Store 1'))
-            expect(updateFieldFilterMock).toHaveBeenCalledWith(minProps.index, [
-                1,
-            ])
+            expect(updateFieldFilterMock).toHaveBeenCalledWith(
+                minProps.index,
+                [1],
+            )
         })
 
         it('should render store value for single store value', () => {

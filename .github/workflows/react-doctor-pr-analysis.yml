@@ -81,7 +81,7 @@ jobs:
     name: Workspace setup
     needs: pr-context
     if: needs.pr-context.outputs.should-run == 'true' && needs.pr-context.outputs.head-repo-fork == 'false'
-    runs-on: gh-actions-4cpu12gb-runner-set
+    runs-on: gh-actions-4cpu4gb-runner-set
     outputs:
       cache-key: ${{ env.CACHE_KEY }}
       has-react-doctor-affected-packages: ${{ env.HAS_REACT_DOCTOR_AFFECTED_PACKAGES }}
@@ -126,7 +126,7 @@ jobs:
       - pr-context
       - workspace-setup
     if: needs.workspace-setup.outputs.has-react-doctor-affected-packages == 'true'
-    runs-on: gh-actions-4cpu12gb-runner-set
+    runs-on: gh-actions-4cpu4gb-runner-set
     strategy:
       fail-fast: false
       matrix:

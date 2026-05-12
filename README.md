@@ -406,7 +406,7 @@ You can also customize the behavior further with additional flags. See the [offi
 
 ## Formatting
 
-Formatting is done on save, via Prettier. Make sure to have the [Prettier extension](https://prettier.io/docs/editors) installed in your IDE.
+Formatting is done on save, via Oxfmt. Make sure to have an Oxfmt-compatible formatter configured in your IDE.
 
 ## Platform
 

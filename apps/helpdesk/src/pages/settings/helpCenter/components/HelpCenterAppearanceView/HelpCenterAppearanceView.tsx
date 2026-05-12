@@ -252,11 +252,10 @@ export const HelpCenterAppearanceView: React.FC = () => {
                             },
                         )
 
-                    translations = helpCenter.translations?.map(
-                        (translation) =>
-                            translation.locale === updatedTranslation.locale
-                                ? updatedTranslation
-                                : translation,
+                    translations = helpCenter.translations?.map((translation) =>
+                        translation.locale === updatedTranslation.locale
+                            ? updatedTranslation
+                            : translation,
                     ) as Components.Schemas.GetHelpCenterDto['translations']
                 }
 

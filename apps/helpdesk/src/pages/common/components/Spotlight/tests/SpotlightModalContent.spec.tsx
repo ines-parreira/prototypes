@@ -1,8 +1,8 @@
 // sort-imports-ignore
 import mockedVirtuoso from 'tests/mockedVirtuoso'
 
-import { screen, waitFor } from '@testing-library/react'
 import { assumeMock, render, userEvent } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 
 import { customer } from 'fixtures/customer'
 import { ticket } from 'fixtures/ticket'

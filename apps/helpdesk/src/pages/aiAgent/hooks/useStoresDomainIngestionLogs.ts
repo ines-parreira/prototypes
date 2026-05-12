@@ -64,38 +64,40 @@ export const useStoresDomainIngestionLogs = ({
 
         return ingestionLogsList
             .flat(1)
-            .reduce<
-                Record<string, IngestionLog[]>
-            >((acc, { helpCenterId, ingestionLogs }) => {
-                if (!ingestionLogs?.length) {
+            .reduce<Record<string, IngestionLog[]>>(
+                (acc, { helpCenterId, ingestionLogs }) => {
+                    if (!ingestionLogs?.length) {
+                        return acc
+                    }
+
+                    const storeName =
+                        snippetHelpCenters?.find(
+                            (it) => it?.data.data[0].id === helpCenterId,
+                        )?.data.data[0].shop_name ?? ''
+
+                    const storeIntegration = storeIntegrations.find(
+                        (integration) =>
+                            integration.meta.shop_name === storeName,
+                    )
+
+                    if (!storeIntegration) {
+                        return acc
+                    }
+
+                    const storeUrl =
+                        getShopUrlFromStoreIntegration(storeIntegration)
+
+                    const filteredLogs = ingestionLogs.filter(
+                        ({ source, url }) =>
+                            source === 'domain' && url === storeUrl,
+                    )
+
+                    acc[storeName] = filteredLogs
+
                     return acc
-                }
-
-                const storeName =
-                    snippetHelpCenters?.find(
-                        (it) => it?.data.data[0].id === helpCenterId,
-                    )?.data.data[0].shop_name ?? ''
-
-                const storeIntegration = storeIntegrations.find(
-                    (integration) => integration.meta.shop_name === storeName,
-                )
-
-                if (!storeIntegration) {
-                    return acc
-                }
-
-                const storeUrl =
-                    getShopUrlFromStoreIntegration(storeIntegration)
-
-                const filteredLogs = ingestionLogs.filter(
-                    ({ source, url }) =>
-                        source === 'domain' && url === storeUrl,
-                )
-
-                acc[storeName] = filteredLogs
-
-                return acc
-            }, {})
+                },
+                {},
+            )
     }, [
         ingestionLogsList,
         storeIntegrations,

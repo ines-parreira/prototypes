@@ -23,8 +23,7 @@ declare global {
     interface GorgiasStateCurrentAccount extends Account {}
 
     interface GorgiasStateShared
-        extends GorgiasInitialState,
-            InitialReactQueryState {}
+        extends GorgiasInitialState, InitialReactQueryState {}
 
     interface Window {
         GORGIAS_CONSTANTS: { [key: string]: any }

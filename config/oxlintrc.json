@@ -3,13 +3,17 @@
     "extends": ["../node_modules/@gorgias/config/oxlint-react.json"],
     "overrides": [
         {
-            "files": ["vitest.config.ts", "jest.config.ts", ".prettierrc.mjs"],
+            "files": ["vitest.config.ts", "jest.config.ts", "oxfmt.config.ts"],
             "rules": {
                 "import/no-default-export": "off"
             }
         }
     ],
     "rules": {
-        "import/consistent-type-specifier-style": ["error", "prefer-top-level"]
+        "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
+        "sort-imports": [
+            "error",
+            { "ignoreCase": true, "ignoreDeclarationSort": true }
+        ]
     }
 }

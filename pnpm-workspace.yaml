@@ -140,9 +140,8 @@ catalogs:
   typescript:
     'tsx': '^4.20.3'
     'typescript': '5.9.3'
-  prettier:
-    'prettier': '3.6.2'
-    '@trivago/prettier-plugin-sort-imports': '^5.2.2'
+  formatter:
+    'oxfmt': '^0.48.0'
   oxlint:
     'oxlint': '^1.50.0'
   lodash:

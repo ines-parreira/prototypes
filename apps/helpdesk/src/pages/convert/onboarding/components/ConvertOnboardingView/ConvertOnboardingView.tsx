@@ -62,8 +62,7 @@ const ConvertOnboardingView = () => {
         () =>
             Boolean(
                 chatIntegration &&
-                    chatIntegration.get('type') ===
-                        GORGIAS_CHAT_INTEGRATION_TYPE,
+                chatIntegration.get('type') === GORGIAS_CHAT_INTEGRATION_TYPE,
             ),
         [chatIntegration],
     )
@@ -91,7 +90,7 @@ const ConvertOnboardingView = () => {
         () =>
             Boolean(
                 storeIntegration &&
-                    storeIntegration.get('type') === SHOPIFY_INTEGRATION_TYPE,
+                storeIntegration.get('type') === SHOPIFY_INTEGRATION_TYPE,
             ),
         [storeIntegration],
     )

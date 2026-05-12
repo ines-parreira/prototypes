@@ -9,8 +9,7 @@ import { gorgiasColors } from 'gorgias-design-system/styles'
 import Caption from './Caption'
 import Label from './Label'
 
-export interface TextAreaProps
-    extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+export interface TextAreaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
     /**
      * The id of the field.
      */

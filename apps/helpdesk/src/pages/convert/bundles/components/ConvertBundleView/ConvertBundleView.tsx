@@ -66,7 +66,7 @@ const ConvertBundleView = ({ renderHeader = true }: Props) => {
         () =>
             Boolean(
                 storeIntegration &&
-                    storeIntegration.get('type') === SHOPIFY_INTEGRATION_TYPE,
+                storeIntegration.get('type') === SHOPIFY_INTEGRATION_TYPE,
             ),
         [storeIntegration],
     )

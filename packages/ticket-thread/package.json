@@ -8,11 +8,11 @@
         "./legacy-bridge": "./src/utils/LegacyBridge/index.ts"
     },
     "scripts": {
-        "format:check": "prettier --check .",
-        "format:fix": "prettier --write .",
+        "format:check": "oxfmt --check .",
+        "format:fix": "oxfmt --write .",
         "lint": "oxlint --quiet",
         "test": "vitest --configLoader=runner",
-        "test:ci:cover": "NODE_OPTIONS=\"--max-old-space-size=4096\" vitest --configLoader=runner --coverage --silent=true",
+        "test:ci:cover": "NODE_OPTIONS=\"--max-old-space-size=4096\" vitest --maxWorkers=2 --configLoader=runner --coverage --silent=true",
         "test:watch": "vitest watch --configLoader=runner",
         "typecheck": "tsc -p ./tsconfig.json --noEmit true"
     },
@@ -68,7 +68,6 @@
         "@testing-library/jest-dom": "catalog:test",
         "@testing-library/react": "catalog:test",
         "@testing-library/user-event": "catalog:test",
-        "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
         "@types/classnames": "catalog:styles",
         "@types/lodash": "catalog:lodash",
         "@types/react": "catalog:react",
@@ -81,7 +80,6 @@
         "lodash": "catalog:lodash",
         "msw": "catalog:test",
         "oxlint": "catalog:oxlint",
-        "prettier": "catalog:prettier",
         "react": "catalog:react",
         "react-dom": "catalog:react",
         "react-player": "catalog:video",
@@ -92,6 +90,7 @@
         "typescript": "catalog:typescript",
         "vitest": "catalog:test",
         "yet-another-react-lightbox": "catalog:images",
-        "zod": "catalog:zod"
+        "zod": "catalog:zod",
+        "oxfmt": "catalog:formatter"
     }
 }

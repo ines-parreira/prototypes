@@ -36,7 +36,7 @@ type Output = {
     buckets: BucketOutput[]
 }
 
-const PACKAGE_TEST_LOCAL_PARALLEL = 2
+const PACKAGE_TEST_LOCAL_PARALLEL = 1
 
 const IGNORED_DIRECTORIES = new Set([
     '.git',

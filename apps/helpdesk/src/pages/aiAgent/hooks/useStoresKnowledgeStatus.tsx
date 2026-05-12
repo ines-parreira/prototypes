@@ -29,20 +29,21 @@ export const useStoresKnowledgeStatus = ({
 
             return knowledgeStatus
                 .flat(1)
-                .reduce<
-                    Record<string, KnowledgeStatus>
-                >((acc, knowledgeStatus) => {
-                    // This should not happen, but there has been some cases where
-                    // multiple snippet help centers were created for the same store.
-                    // So we only use the first one just in case.
-                    if (!!acc[knowledgeStatus.shop_name]) {
+                .reduce<Record<string, KnowledgeStatus>>(
+                    (acc, knowledgeStatus) => {
+                        // This should not happen, but there has been some cases where
+                        // multiple snippet help centers were created for the same store.
+                        // So we only use the first one just in case.
+                        if (!!acc[knowledgeStatus.shop_name]) {
+                            return acc
+                        }
+
+                        acc[knowledgeStatus.shop_name] = knowledgeStatus
+
                         return acc
-                    }
-
-                    acc[knowledgeStatus.shop_name] = knowledgeStatus
-
-                    return acc
-                }, {})
+                    },
+                    {},
+                )
         }, [knowledgeStatus, isKnowledgeStatusLoading])
 
     useEffect(() => {

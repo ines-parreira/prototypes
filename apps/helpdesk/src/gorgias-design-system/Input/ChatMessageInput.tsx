@@ -5,8 +5,7 @@ import IconButton from 'gorgias-design-system/Buttons/IconButton'
 
 import TextArea from './TextArea'
 
-export interface ChatMessageInputProps
-    extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+export interface ChatMessageInputProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
     /**
      * Placeholder text to display when the field is empty.
      */

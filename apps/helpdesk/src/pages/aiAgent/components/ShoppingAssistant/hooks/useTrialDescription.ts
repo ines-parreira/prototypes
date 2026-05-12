@@ -47,8 +47,8 @@ export const useTrialDescription = (
 
             const shouldShow = Boolean(
                 isTrialProgress &&
-                    automationRateAboveThreshold &&
-                    !automationRate?.isLoading,
+                automationRateAboveThreshold &&
+                !automationRate?.isLoading,
             )
 
             return {

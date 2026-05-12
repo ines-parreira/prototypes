@@ -21,12 +21,12 @@ declare namespace Components {
              * Started Datetime
              */
             started_datetime?: /* Started Datetime */
-            string /* date-time */ | null
+                string /* date-time */ | null
             /**
              * Stopped Datetime
              */
             stopped_datetime?: /* Stopped Datetime */
-            string /* date-time */ | null
+                string /* date-time */ | null
             /**
              * Campaign Id
              */
@@ -150,7 +150,7 @@ declare namespace Components {
              * Value
              */
             value: /* Value */
-            | number
+                | number
                 | boolean
                 | string
                 | any[]
@@ -342,7 +342,7 @@ declare namespace Components {
              * Triggers
              */
             triggers?: /* Triggers */ /* BaseCampaignTriggerSchema */
-            BaseCampaignTriggerSchema[] | null
+                BaseCampaignTriggerSchema[] | null
         }
         /**
          * CampaignCopySuggestionResponseSchema
@@ -386,7 +386,7 @@ declare namespace Components {
              * Attachments
              */
             attachments?: /* Attachments */
-            | /* CampaignAttachmentProductSchema */ (
+                | /* CampaignAttachmentProductSchema */ (
                       | CampaignAttachmentProductSchema
                       | /* CampaignAttachmentDiscountOfferSchema */ CampaignAttachmentDiscountOfferSchema
                       | /* CampaignAttachmentVisitorFormSchema */ CampaignAttachmentVisitorFormSchema
@@ -489,7 +489,7 @@ declare namespace Components {
              * Attachments
              */
             attachments?: /* Attachments */
-            | /* CampaignAttachmentProductSchema */ (
+                | /* CampaignAttachmentProductSchema */ (
                       | CampaignAttachmentProductSchema
                       | /* CampaignAttachmentDiscountOfferSchema */ CampaignAttachmentDiscountOfferSchema
                       | /* CampaignAttachmentVisitorFormSchema */ CampaignAttachmentVisitorFormSchema
@@ -502,13 +502,13 @@ declare namespace Components {
              * Triggers
              */
             triggers?: /* Triggers */ /* CampaignTriggerSchema */
-            CampaignTriggerSchema[] | null
+                CampaignTriggerSchema[] | null
             schedule?: /* ScheduleRequestSchema */ ScheduleRequestSchema | null
             /**
              * Variants
              */
             variants?: /* Variants */
-            | [
+                | [
                       /* CampaignVariantRequestSchema */ CampaignVariantRequestSchema?,
                       /* CampaignVariantRequestSchema */ CampaignVariantRequestSchema?,
                   ]
@@ -562,7 +562,7 @@ declare namespace Components {
              * Attachments
              */
             attachments?: /* Attachments */
-            | /* CampaignAttachmentProductSchema */ (
+                | /* CampaignAttachmentProductSchema */ (
                       | CampaignAttachmentProductSchema
                       | /* CampaignAttachmentDiscountOfferSchema */ CampaignAttachmentDiscountOfferSchema
                       | /* CampaignAttachmentVisitorFormSchema */ CampaignAttachmentVisitorFormSchema
@@ -605,7 +605,7 @@ declare namespace Components {
              * Deleted Datetime
              */
             deleted_datetime?: /* Deleted Datetime */
-            string /* date-time */ | null
+                string /* date-time */ | null
             /**
              * Template Id
              */
@@ -656,7 +656,7 @@ declare namespace Components {
              * Value
              */
             value: /* Value */
-            | number
+                | number
                 | boolean
                 | string
                 | any[]
@@ -706,7 +706,7 @@ declare namespace Components {
              * Attachments
              */
             attachments?: /* Attachments */
-            | /* CampaignAttachmentProductSchema */ (
+                | /* CampaignAttachmentProductSchema */ (
                       | CampaignAttachmentProductSchema
                       | /* CampaignAttachmentDiscountOfferSchema */ CampaignAttachmentDiscountOfferSchema
                       | /* CampaignAttachmentVisitorFormSchema */ CampaignAttachmentVisitorFormSchema
@@ -734,7 +734,7 @@ declare namespace Components {
              * Attachments
              */
             attachments?: /* Attachments */
-            | /* CampaignAttachmentProductSchema */ (
+                | /* CampaignAttachmentProductSchema */ (
                       | CampaignAttachmentProductSchema
                       | /* CampaignAttachmentDiscountOfferSchema */ CampaignAttachmentDiscountOfferSchema
                       | /* CampaignAttachmentVisitorFormSchema */ CampaignAttachmentVisitorFormSchema
@@ -749,12 +749,12 @@ declare namespace Components {
              * Started Datetime
              */
             started_datetime?: /* Started Datetime */
-            string /* date-time */ | null
+                string /* date-time */ | null
             /**
              * Stopped Datetime
              */
             stopped_datetime?: /* Stopped Datetime */
-            string /* date-time */ | null
+                string /* date-time */ | null
         }
         /**
          * CartAbandonedCartTestApiDTO
@@ -785,7 +785,7 @@ declare namespace Components {
              * Sms Sender Integration Id
              */
             sms_sender_integration_id?: /* Sms Sender Integration Id */
-            number | null
+                number | null
             /**
              * Offer Discount
              */
@@ -798,7 +798,7 @@ declare namespace Components {
              * Discount Code Message Threshold
              */
             discount_code_message_threshold?: /* Discount Code Message Threshold */
-            number | null
+                number | null
             /**
              * Include Image
              */
@@ -812,7 +812,7 @@ declare namespace Components {
              * Cart Abandoned Wait Minutes
              */
             cart_abandoned_wait_minutes?: /* Cart Abandoned Wait Minutes */
-            number | null
+                number | null
         }
         /**
          * CartAbandonedProductApiDTO
@@ -886,7 +886,7 @@ declare namespace Components {
              * External Installation Status
              */
             external_installation_status?: /* External Installation Status */
-            string | null
+                string | null
             /**
              * Is Setup
              */
@@ -921,7 +921,7 @@ declare namespace Components {
              * External Installation Status
              */
             external_installation_status?: /* External Installation Status */
-            string | null
+                string | null
             /**
              * Is Setup
              */
@@ -967,7 +967,7 @@ declare namespace Components {
              * External Installation Status
              */
             external_installation_status?: /* External Installation Status */
-            string | null
+                string | null
             /**
              * Is Setup
              */
@@ -1113,17 +1113,17 @@ declare namespace Components {
              * Minimum Purchase Amount
              */
             minimum_purchase_amount?: /* Minimum Purchase Amount */
-            number | string | null
+                number | string | null
             /**
              * External Customer Segment Ids
              */
             external_customer_segment_ids?: /* External Customer Segment Ids */
-            string[] | null
+                string[] | null
             /**
              * External Collection Ids
              */
             external_collection_ids?: /* External Collection Ids */
-            string[] | null
+                string[] | null
             /**
              * External Product Ids
              */
@@ -1162,17 +1162,17 @@ declare namespace Components {
              * Minimum Purchase Amount
              */
             minimum_purchase_amount?: /* Minimum Purchase Amount */
-            number | string | null
+                number | string | null
             /**
              * External Customer Segment Ids
              */
             external_customer_segment_ids?: /* External Customer Segment Ids */
-            string[] | null
+                string[] | null
             /**
              * External Collection Ids
              */
             external_collection_ids?: /* External Collection Ids */
-            string[] | null
+                string[] | null
             /**
              * External Product Ids
              */
@@ -1199,17 +1199,17 @@ declare namespace Components {
              * Minimum Purchase Amount
              */
             minimum_purchase_amount?: /* Minimum Purchase Amount */
-            number | string | null
+                number | string | null
             /**
              * External Customer Segment Ids
              */
             external_customer_segment_ids?: /* External Customer Segment Ids */
-            string[] | null
+                string[] | null
             /**
              * External Collection Ids
              */
             external_collection_ids?: /* External Collection Ids */
-            string[] | null
+                string[] | null
             /**
              * External Product Ids
              */
@@ -1329,7 +1329,7 @@ declare namespace Components {
              * Last Loaded Datetime
              */
             last_loaded_datetime?: /* Last Loaded Datetime */
-            string /* date-time */ | null
+                string /* date-time */ | null
             /**
              * Created Datetime
              */
@@ -1338,7 +1338,7 @@ declare namespace Components {
              * Deactivated Datetime
              */
             deactivated_datetime?: /* Deactivated Datetime */
-            string /* date-time */ | null
+                string /* date-time */ | null
             /**
              * Bundle Url
              */
@@ -1555,7 +1555,7 @@ declare namespace Components {
              * Last Cart Abandonment Datetime
              */
             last_cart_abandonment_datetime?: /* Last Cart Abandonment Datetime */
-            string /* date-time */ | null
+                string /* date-time */ | null
         }
         /**
          * ProductInfoSchema
@@ -1734,7 +1734,7 @@ declare namespace Components {
              * Attachments
              */
             attachments?: /* Attachments */
-            | /* CampaignAttachmentProductSchema */ (
+                | /* CampaignAttachmentProductSchema */ (
                       | CampaignAttachmentProductSchema
                       | /* CampaignAttachmentDiscountOfferSchema */ CampaignAttachmentDiscountOfferSchema
                       | /* CampaignAttachmentVisitorFormSchema */ CampaignAttachmentVisitorFormSchema
@@ -1771,7 +1771,7 @@ declare namespace Components {
              * Deleted Datetime
              */
             deleted_datetime?: /* Deleted Datetime */
-            string /* date-time */ | null
+                string /* date-time */ | null
             /**
              * Variants
              */
@@ -1795,7 +1795,7 @@ declare namespace Components {
              * Attachments
              */
             attachments?: /* Attachments */
-            | /* CampaignAttachmentProductSchema */ (
+                | /* CampaignAttachmentProductSchema */ (
                       | CampaignAttachmentProductSchema
                       | /* CampaignAttachmentDiscountOfferSchema */ CampaignAttachmentDiscountOfferSchema
                       | /* CampaignAttachmentVisitorFormSchema */ CampaignAttachmentVisitorFormSchema
@@ -1952,7 +1952,7 @@ declare namespace Components {
              * Custom Schedule
              */
             custom_schedule: /* Custom Schedule */ /* CustomScheduleSchema */
-            CustomScheduleSchema[] | null
+                CustomScheduleSchema[] | null
         }
         /**
          * ScheduleResponseSchema
@@ -1971,7 +1971,7 @@ declare namespace Components {
              * Custom Schedule
              */
             custom_schedule: /* Custom Schedule */ /* CustomScheduleSchema */
-            CustomScheduleSchema[] | null
+                CustomScheduleSchema[] | null
         }
         /**
          * ScheduleRule
@@ -2066,37 +2066,37 @@ declare namespace Components {
              * Marketing ID of the shopper (revenue_id)
              */
             marketing_id?: /**
-             * Marketing Id
-             * Marketing ID of the shopper (revenue_id)
-             */
-            string | null
+                 * Marketing Id
+                 * Marketing ID of the shopper (revenue_id)
+                 */
+                string | null
             /**
              * Customer Id
              * Helpdesk Customer ID
              */
             customer_id?: /**
-             * Customer Id
-             * Helpdesk Customer ID
-             */
-            number | null
+                 * Customer Id
+                 * Helpdesk Customer ID
+                 */
+                number | null
             /**
              * Email
              * Email of the shopper
              */
             email?: /**
-             * Email
-             * Email of the shopper
-             */
-            string | null
+                 * Email
+                 * Email of the shopper
+                 */
+                string | null
             /**
              * Phone
              * Phone of the shopper
              */
             phone?: /**
-             * Phone
-             * Phone of the shopper
-             */
-            string | null
+                 * Phone
+                 * Phone of the shopper
+                 */
+                string | null
         }
         /**
          * ShopperInterestLookupResponse
@@ -2181,17 +2181,17 @@ declare namespace Components {
              * Last Auto Upgrade At
              */
             last_auto_upgrade_at?: /* Last Auto Upgrade At */
-            string /* date-time */ | null
+                string /* date-time */ | null
             /**
              * Last Warning 90 At
              */
             last_warning_90_at?: /* Last Warning 90 At */
-            string /* date-time */ | null
+                string /* date-time */ | null
             /**
              * Last Warning 100 At
              */
             last_warning_100_at?: /* Last Warning 100 At */
-            string /* date-time */ | null
+                string /* date-time */ | null
             /**
              * Last Block At
              */
@@ -2200,12 +2200,12 @@ declare namespace Components {
              * Estimated Usage Percentage
              */
             estimated_usage_percentage?: /* Estimated Usage Percentage */
-            number | null
+                number | null
             /**
              * Estimated Reach Date
              */
             estimated_reach_date?: /* Estimated Reach Date */
-            string /* date-time */ | null
+                string /* date-time */ | null
             /**
              * Cycle Start
              */

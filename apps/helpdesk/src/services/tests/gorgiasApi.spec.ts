@@ -1,10 +1,10 @@
+import querystring from 'querystring'
+import url from 'url'
 import client from '@repo/api-resources'
 import { isCancel } from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import type { List } from 'immutable'
 import { fromJS } from 'immutable'
-import querystring from 'querystring'
-import url from 'url'
 
 import { basicMonthlyHelpdeskPlan, HELPDESK_PRODUCT_ID } from 'fixtures/plans'
 import {

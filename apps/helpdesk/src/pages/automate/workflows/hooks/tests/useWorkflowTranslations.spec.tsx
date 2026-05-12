@@ -1,9 +1,9 @@
 import type React from 'react'
 
+import { strict as assert } from 'assert'
 import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, waitFor } from '@testing-library/react'
-import { strict as assert } from 'assert'
 import { ulid } from 'ulidx'
 
 import {

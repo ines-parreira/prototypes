@@ -46,11 +46,11 @@ export const useAiAgentTrialBanner = () => {
         () =>
             Boolean(
                 trialType === TrialType.AiAgent &&
-                    hasShopify &&
-                    noAiAgentSubscription &&
-                    !isTicketsPage &&
-                    !isAiAgentPage &&
-                    canSeeSystemBanner,
+                hasShopify &&
+                noAiAgentSubscription &&
+                !isTicketsPage &&
+                !isAiAgentPage &&
+                canSeeSystemBanner,
             ),
         [
             trialType,

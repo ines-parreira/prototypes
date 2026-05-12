@@ -8,13 +8,13 @@
         "./vitest": "./src/vitest/index.ts"
     },
     "scripts": {
-        "format:check": "prettier --check .",
-        "format:fix": "prettier --write .",
+        "format:check": "oxfmt --check .",
+        "format:fix": "oxfmt --write .",
         "lint": "oxlint --quiet",
         "lint:unused": "knip --directory ../.. --workspace @repo/testing --no-progress",
         "typecheck": "tsc -p ./tsconfig.json --noEmit true",
         "test": "vitest run --configLoader=runner",
-        "test:ci:cover": "TZ=UTC LC_ALL=\"en_US.UTF-8\" NODE_OPTIONS=\"--max-old-space-size=4096\" vitest run --configLoader=runner --coverage --silent=true"
+        "test:ci:cover": "TZ=UTC LC_ALL=\"en_US.UTF-8\" NODE_OPTIONS=\"--max-old-space-size=4096\" vitest run --maxWorkers=2 --configLoader=runner --coverage --silent=true"
     },
     "peerDependencies": {
         "@gorgias/axiom": "catalog:axiom",
@@ -43,7 +43,6 @@
         "@testing-library/dom": "catalog:test",
         "@testing-library/react": "catalog:test",
         "@testing-library/user-event": "catalog:test",
-        "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
         "@types/jest": "catalog:test",
         "@types/react": "catalog:react",
         "@types/react-dom": "catalog:react",
@@ -54,7 +53,6 @@
         "@vitest/coverage-v8": "catalog:test",
         "dnd-core": "catalog:react-dnd",
         "oxlint": "catalog:oxlint",
-        "prettier": "catalog:prettier",
         "react": "catalog:react",
         "react-dnd": "catalog:react-dnd",
         "react-dnd-html5-backend": "catalog:react-dnd",
@@ -65,6 +63,7 @@
         "redux-mock-store": "catalog:redux",
         "redux-thunk": "catalog:redux",
         "typescript": "catalog:typescript",
-        "vitest": "catalog:test"
+        "vitest": "catalog:test",
+        "oxfmt": "catalog:formatter"
     }
 }

@@ -86,9 +86,9 @@ export const TicketThreadLegacyBridge = ({
 
                     return Boolean(
                         pendingMessageId &&
-                            pendingMessageManager.timeoutId &&
-                            pendingMessageManager.pendingSendMessagesArgs
-                                ?.messageId === pendingMessageId,
+                        pendingMessageManager.timeoutId &&
+                        pendingMessageManager.pendingSendMessagesArgs
+                            ?.messageId === pendingMessageId,
                     )
                 },
             },
