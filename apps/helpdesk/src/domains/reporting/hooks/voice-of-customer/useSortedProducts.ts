@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react'
 
-import type { MetricPerDimensionWithEnrichment } from 'domains/reporting/hooks/types'
+import type { RawProductData } from 'domains/reporting/hooks/voice-of-customer/metricsPerProduct'
 import {
     getProducts,
     getProductsLoading,
@@ -20,7 +20,6 @@ import {
 import { ProductInsightsTableColumns } from 'domains/reporting/state/ui/stats/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import type { DrillDownReportingQuery } from 'models/job/types'
 
 export const useSortedProducts = () => {
     const { sorting } = useAppSelector(getSliceState)
@@ -31,11 +30,7 @@ export const useSortedProducts = () => {
 
 export const useProductsSorting = (
     column: ProductInsightsTableColumns,
-    data: MetricPerDimensionWithEnrichment<
-        | DrillDownReportingQuery['measures'][0]
-        | DrillDownReportingQuery['dimensions'][0],
-        DrillDownReportingQuery['dimensions'][0]
-    >['data'],
+    data: { value: number | null; allData: RawProductData[] } | null,
     isFetching: boolean,
 ) => {
     const dispatch = useAppDispatch()
@@ -48,7 +43,7 @@ export const useProductsSorting = (
             data?.allData.map((item) => ({
                 id: item[PRODUCT_ID_FIELD],
                 name: item[PRODUCT_NAME_FIELD],
-                thumbnail_url: item[PRODUCT_THUMBNAIL_FIELD],
+                thumbnail_url: item[PRODUCT_THUMBNAIL_FIELD] ?? undefined,
             })) ?? [],
         [data],
     )

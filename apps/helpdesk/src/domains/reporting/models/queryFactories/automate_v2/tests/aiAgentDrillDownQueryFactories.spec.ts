@@ -29,17 +29,12 @@ import {
 } from 'domains/reporting/models/cubes/automate_v2/AIAgentDecreaseInResolutionTimeCube'
 import { AIAgentSkills } from 'domains/reporting/models/cubes/automate_v2/AIAgentIntercationsBySkillDatasetCube'
 import {
-    SuccessRateDimension,
-    SuccessRateFilterMember,
-} from 'domains/reporting/models/cubes/automate_v2/SuccessRateCube'
-import {
     allAgentsAutomatedInteractionsDrillDownQueryFactory,
     allAgentsClosedTicketsDrillDownQueryFactory,
     allAgentsCsatDrillDownQueryFactory,
     allAgentsFRTDrillDownQueryFactory,
     allAgentsHandoverInteractionsDrillDownQueryFactory,
     allAgentsResolutionTimeDrillDownQueryFactory,
-    allAgentsSuccessRateDrillDownQueryFactory,
     shoppingAssistantAutomatedInteractionsDrillDownQueryFactory,
     shoppingAssistantHandoverInteractionsDrillDownQueryFactory,
     shoppingAssistantProductRecommendationsDrillDownQueryFactory,
@@ -48,7 +43,6 @@ import {
     supportAgentFRTDrillDownQueryFactory,
     supportAgentHandoverInteractionsDrillDownQueryFactory,
     supportAgentResolutionTimeDrillDownQueryFactory,
-    supportAgentSuccessRateDrillDownQueryFactory,
 } from 'domains/reporting/models/queryFactories/automate_v2/aiAgentDrillDownQueryFactories'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { AutomationFeatureType } from 'domains/reporting/models/scopes/constants'
@@ -904,115 +898,6 @@ describe('supportAgentResolutionTimeDrillDownQueryFactory', () => {
                         OrderDirection.Desc,
                     ],
                 ],
-            }),
-        )
-    })
-})
-
-describe('allAgentsSuccessRateDrillDownQueryFactory', () => {
-    it('returns correct query', () => {
-        expect(
-            allAgentsSuccessRateDrillDownQueryFactory(filters, timezone),
-        ).toEqual({
-            metricName:
-                METRIC_NAMES.AI_AGENT_ALL_AGENTS_SUCCESS_RATE_DRILL_DOWN,
-            measures: [],
-            dimensions: [SuccessRateDimension.TicketId],
-            filters: [
-                {
-                    member: SuccessRateFilterMember.PeriodStart,
-                    operator: ReportingFilterOperator.AfterDate,
-                    values: [filters.period.start_datetime],
-                },
-                {
-                    member: SuccessRateFilterMember.PeriodEnd,
-                    operator: ReportingFilterOperator.BeforeDate,
-                    values: [filters.period.end_datetime],
-                },
-                {
-                    member: SuccessRateFilterMember.StoreIntegrationId,
-                    operator: ReportingFilterOperator.Equals,
-                    values: ['122'],
-                },
-                {
-                    member: SuccessRateFilterMember.Channel,
-                    operator: ReportingFilterOperator.Equals,
-                    values: ['chat'],
-                },
-            ],
-            timezone,
-            limit: DRILLDOWN_QUERY_LIMIT,
-            order: [],
-        })
-    })
-
-    it('includes sorting when provided', () => {
-        expect(
-            allAgentsSuccessRateDrillDownQueryFactory(
-                filters,
-                timezone,
-                OrderDirection.Desc,
-            ),
-        ).toEqual(
-            expect.objectContaining({
-                order: [[SuccessRateDimension.TicketId, OrderDirection.Desc]],
-            }),
-        )
-    })
-})
-
-describe('supportAgentSuccessRateDrillDownQueryFactory', () => {
-    it('returns correct query', () => {
-        expect(
-            supportAgentSuccessRateDrillDownQueryFactory(filters, timezone),
-        ).toEqual({
-            metricName:
-                METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_SUCCESS_RATE_DRILL_DOWN,
-            measures: [],
-            dimensions: [SuccessRateDimension.TicketId],
-            filters: [
-                {
-                    member: SuccessRateFilterMember.AiAgentRole,
-                    operator: ReportingFilterOperator.Equals,
-                    values: [AIAgentSkills.AIAgentSupport],
-                },
-                {
-                    member: SuccessRateFilterMember.PeriodStart,
-                    operator: ReportingFilterOperator.AfterDate,
-                    values: [filters.period.start_datetime],
-                },
-                {
-                    member: SuccessRateFilterMember.PeriodEnd,
-                    operator: ReportingFilterOperator.BeforeDate,
-                    values: [filters.period.end_datetime],
-                },
-                {
-                    member: SuccessRateFilterMember.StoreIntegrationId,
-                    operator: ReportingFilterOperator.Equals,
-                    values: ['122'],
-                },
-                {
-                    member: SuccessRateFilterMember.Channel,
-                    operator: ReportingFilterOperator.Equals,
-                    values: ['chat'],
-                },
-            ],
-            timezone,
-            limit: DRILLDOWN_QUERY_LIMIT,
-            order: [],
-        })
-    })
-
-    it('includes sorting when provided', () => {
-        expect(
-            supportAgentSuccessRateDrillDownQueryFactory(
-                filters,
-                timezone,
-                OrderDirection.Asc,
-            ),
-        ).toEqual(
-            expect.objectContaining({
-                order: [[SuccessRateDimension.TicketId, OrderDirection.Asc]],
             }),
         )
     })

@@ -138,7 +138,6 @@ export const METRIC_NAMES = {
     AI_AGENT_SUPPORT_AGENT_AVERAGE_CSAT: 'ai-agent-support-agent-average-csat',
     AI_AGENT_SUPPORT_AGENT_TIME_SAVED_TIMESERIES:
         'ai-agent-support-agent-time-saved-timeseries',
-    AI_AGENT_ZERO_TOUCH_TICKETS: 'ai-agent-zero-touch-tickets',
     AI_AGENT_ALL_AGENTS_CLOSED_TICKETS: 'ai-agent-all-agents-closed-tickets',
     AI_AGENT_ALL_AGENTS_ZERO_TOUCH_TICKETS:
         'ai-agent-all-agents-zero-touch-tickets',

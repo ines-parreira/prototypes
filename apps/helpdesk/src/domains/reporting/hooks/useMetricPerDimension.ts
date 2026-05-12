@@ -263,6 +263,17 @@ export const fetchMetricPerDimensionV2 = async <
         }))
 }
 
+export function useMetricPerDimensionWithEnrichment<
+    Q extends DrillDownReportingQuery,
+>(
+    query: Q,
+    enrichmentFields: EnrichmentFields[],
+    enrichmentIdField: EnrichmentFields,
+    dimensionId?: string,
+): MetricPerDimensionWithEnrichment<
+    Q['measures'][number],
+    Q['dimensions'][number]
+>
 export function useMetricPerDimensionWithEnrichment(
     query: DrillDownReportingQuery,
     enrichmentFields: EnrichmentFields[],
@@ -302,7 +313,7 @@ export function useMetricPerDimensionWithEnrichment(
             queryFn: () => {
                 return postEnrichedReporting<{
                     data: MergedRecordWithEnrichment[]
-                    enrichment: MergedRecordWithEnrichment[]
+                    enrichment: Record<EnrichmentFields, any>[]
                 }>(query, enrichmentFields).then((data) =>
                     withEnrichment(
                         data,
@@ -346,7 +357,7 @@ export function useMetricPerDimensionWithEnrichmentOnTwoDimensions(
             queryFn: () => {
                 return postEnrichedReporting<{
                     data: MergedRecordWithEnrichment[]
-                    enrichment: MergedRecordWithEnrichment[]
+                    enrichment: Record<EnrichmentFields, any>[]
                 }>(query, enrichmentFields).then((data) => {
                     const idFields = Object.keys(
                         enrichmentMapping,
@@ -395,21 +406,21 @@ export function useMetricPerDimensionWithEnrichmentOnTwoDimensions(
     }
 }
 
-export const fetchMetricPerDimensionWithEnrichment = (
+export function fetchMetricPerDimensionWithEnrichment(
     query: DrillDownReportingQuery,
     enrichmentFields: EnrichmentFields[],
     enrichmentIdField: EnrichmentFields,
 ): Promise<
     MetricWithEnrichment<
-        (typeof query)['measures'][0],
-        (typeof query)['dimensions'][0]
+        DrillDownReportingQuery['measures'][0],
+        DrillDownReportingQuery['dimensions'][0]
     >
-> => {
+> {
     const idField = query.dimensions[0]
 
     return postEnrichedReporting<{
         data: MergedRecordWithEnrichment[]
-        enrichment: MergedRecordWithEnrichment[]
+        enrichment: Record<EnrichmentFields, any>[]
     }>(query, enrichmentFields)
         .then((res) => {
             const enrichedData = withEnrichment(

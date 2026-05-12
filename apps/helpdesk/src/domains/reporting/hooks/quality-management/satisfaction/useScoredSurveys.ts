@@ -4,7 +4,6 @@ import {
     fetchMetricPerDimensionWithEnrichment,
     useMetricPerDimensionWithEnrichment,
 } from 'domains/reporting/hooks/useMetricPerDimension'
-import type { MergedRecord } from 'domains/reporting/hooks/withEnrichment'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketSatisfactionSurveyDimension } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
 import { scoredSurveysQueryFactory } from 'domains/reporting/models/queryFactories/satisfaction/scoredSurveysQueryFactory'
@@ -74,10 +73,7 @@ export type RawScoredSurveyData = {
 }
 
 const mapScoredSurveysQueryResponse = (
-    allData?: MergedRecord<
-        TicketSatisfactionSurveyDimension | EnrichmentFields,
-        TicketDimension
-    >[],
+    allData?: RawScoredSurveyData[],
 ): ScoredSurveysData[] | undefined => {
     if (!allData) {
         return

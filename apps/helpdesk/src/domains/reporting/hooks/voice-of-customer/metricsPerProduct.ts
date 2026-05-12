@@ -7,6 +7,10 @@ import {
     useMetricPerDimension,
     useMetricPerDimensionWithEnrichment,
 } from 'domains/reporting/hooks/useMetricPerDimension'
+import type {
+    TicketProductsEnrichedDimension,
+    TicketProductsEnrichedMeasure,
+} from 'domains/reporting/models/cubes/core/TicketProductsEnrichedCube'
 import { returnMentionsPerProductQueryFactory } from 'domains/reporting/models/queryFactories/voice-of-customer/returnMentionsPerProduct'
 import { ticketCountPerProductQueryFactory } from 'domains/reporting/models/queryFactories/voice-of-customer/ticketsWithProducts'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
@@ -21,6 +25,15 @@ export type ProductEnrichmentFields =
     | EnrichmentFields.ProductExternalProductId
     | EnrichmentFields.ProductTitle
     | EnrichmentFields.ProductThumbnailUrl
+
+export type RawProductData = {
+    [TicketProductsEnrichedMeasure.TicketCount]: string | null
+    [TicketProductsEnrichedDimension.ProductId]: string
+    [TicketProductsEnrichedDimension.StoreId]: string | null
+    [EnrichmentFields.ProductExternalProductId]: string | number | null
+    [EnrichmentFields.ProductTitle]: string
+    [EnrichmentFields.ProductThumbnailUrl]: string | null
+}
 
 export const PRODUCT_ENRICHMENT_ENTITY_ID =
     EnrichmentFields.ProductExternalProductId

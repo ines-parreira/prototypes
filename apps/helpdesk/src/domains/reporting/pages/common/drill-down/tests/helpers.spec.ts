@@ -18,9 +18,13 @@ import {
 } from 'AIJourney/types/AIJourneyTypes'
 import { VoiceCallSegment } from 'domains/reporting/models/cubes/VoiceCallCube'
 import {
+    allAgentsSuccessRateDrillDownQueryFactory,
+    shoppingAssistantSuccessRateDrillDownQueryFactory,
+    supportAgentSuccessRateDrillDownQueryFactory,
+} from 'domains/reporting/models/queryFactories/ai-agent/successRateDrillDownQueryFactories'
+import {
     discountCodesOfferedDrillDownQueryFactory,
     shoppingAssistantTimesRecommendedColumnDrillDownQueryFactory,
-    successRateV2DrillDownQueryFactory,
     totalNumberOfAutomatedSalesDrillDownQueryFactory,
     totalNumberOfOrderDrillDownQueryFactory,
     totalNumberOfSalesOpportunityConvFromAIAgentDrillDownQueryFactory,
@@ -33,7 +37,6 @@ import {
     allAgentsFRTDrillDownQueryFactory,
     allAgentsHandoverInteractionsDrillDownQueryFactory,
     allAgentsResolutionTimeDrillDownQueryFactory,
-    allAgentsSuccessRateDrillDownQueryFactory,
     shoppingAssistantAutomatedInteractionsDrillDownQueryFactory,
     shoppingAssistantHandoverInteractionsDrillDownQueryFactory,
     supportAgentAutomatedInteractionsDrillDownQueryFactory,
@@ -41,7 +44,6 @@ import {
     supportAgentFRTDrillDownQueryFactory,
     supportAgentHandoverInteractionsDrillDownQueryFactory,
     supportAgentResolutionTimeDrillDownQueryFactory,
-    supportAgentSuccessRateDrillDownQueryFactory,
 } from 'domains/reporting/models/queryFactories/automate_v2/aiAgentDrillDownQueryFactories'
 import {
     intentHandoverDrillDownQueryFactory,
@@ -187,6 +189,9 @@ jest.mock(
 jest.mock(
     'domains/reporting/models/queryFactories/ticket-insights/tagsTicketCount',
 )
+jest.mock(
+    'domains/reporting/models/queryFactories/ai-agent/successRateDrillDownQueryFactories',
+)
 jest.mock('domains/reporting/models/queryFactories/ai-sales-agent/metrics')
 jest.mock(
     'domains/reporting/models/queryFactories/automate_v2/aiAgentDrillDownQueryFactories',
@@ -250,8 +255,8 @@ const aiSalesAgentTotalSalesConvDrillDownQueryFactoryMock = assumeMock(
 const totalNumberOfAutomatedSalesDrillDownQueryFactoryMock = assumeMock(
     totalNumberOfAutomatedSalesDrillDownQueryFactory,
 )
-const successRateV2DrillDownQueryFactoryMock = assumeMock(
-    successRateV2DrillDownQueryFactory,
+const shoppingAssistantSuccessRateDrillDownQueryFactoryMock = assumeMock(
+    shoppingAssistantSuccessRateDrillDownQueryFactory,
 )
 const allAgentsHandoverInteractionsDrillDownQueryFactoryMock = assumeMock(
     allAgentsHandoverInteractionsDrillDownQueryFactory,
@@ -1487,10 +1492,9 @@ describe('getDrillDownQuery', () => {
 
         getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
 
-        expect(successRateV2DrillDownQueryFactoryMock).toHaveBeenCalledWith(
-            statsFilters,
-            timezone,
-        )
+        expect(
+            shoppingAssistantSuccessRateDrillDownQueryFactoryMock,
+        ).toHaveBeenCalledWith(statsFilters, timezone)
     })
 
     it('should be populated with AllAgentsHandoverInteractionsCard', () => {

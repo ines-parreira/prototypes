@@ -35,11 +35,6 @@ import {
     AIAgentDecreaseInResolutionTimeFilterMember,
 } from 'domains/reporting/models/cubes/automate_v2/AIAgentDecreaseInResolutionTimeCube'
 import { AIAgentSkills } from 'domains/reporting/models/cubes/automate_v2/AIAgentIntercationsBySkillDatasetCube'
-import type { SuccessRateCube } from 'domains/reporting/models/cubes/automate_v2/SuccessRateCube'
-import {
-    SuccessRateDimension,
-    SuccessRateFilterMember,
-} from 'domains/reporting/models/cubes/automate_v2/SuccessRateCube'
 import { mapTicketChannelsToAutomateChannels } from 'domains/reporting/models/queryFactories/automate_v2/filters'
 import { AutomationFeatureType } from 'domains/reporting/models/scopes/constants'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
@@ -116,13 +111,6 @@ const resolutionTimeFiltersMembers: StatsFiltersMembers = {
     periodEnd: AIAgentDecreaseInResolutionTimeFilterMember.PeriodEnd,
     channels: AIAgentDecreaseInResolutionTimeFilterMember.Channel,
     stores: AIAgentDecreaseInResolutionTimeFilterMember.StoreIntegrationId,
-}
-
-const successRateFiltersMembers: StatsFiltersMembers = {
-    periodStart: SuccessRateFilterMember.PeriodStart,
-    periodEnd: SuccessRateFilterMember.PeriodEnd,
-    channels: SuccessRateFilterMember.Channel,
-    stores: SuccessRateFilterMember.StoreIntegrationId,
 }
 
 export const allAgentsAutomatedInteractionsDrillDownQueryFactory = (
@@ -479,39 +467,4 @@ export const supportAgentResolutionTimeDrillDownQueryFactory = (
             filters,
         ),
     ],
-})
-
-export const allAgentsSuccessRateDrillDownQueryFactory = (
-    filters: StatsFilters,
-    timezone: string,
-    sorting?: OrderDirection,
-): ReportingQuery<SuccessRateCube> => ({
-    metricName: METRIC_NAMES.AI_AGENT_ALL_AGENTS_SUCCESS_RATE_DRILL_DOWN,
-    measures: [],
-    dimensions: [SuccessRateDimension.TicketId],
-    filters: statsFiltersToReportingFilters(successRateFiltersMembers, filters),
-    timezone,
-    limit: DRILLDOWN_QUERY_LIMIT,
-    order: sorting ? [[SuccessRateDimension.TicketId, sorting]] : [],
-})
-
-export const supportAgentSuccessRateDrillDownQueryFactory = (
-    filters: StatsFilters,
-    timezone: string,
-    sorting?: OrderDirection,
-): ReportingQuery<SuccessRateCube> => ({
-    metricName: METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_SUCCESS_RATE_DRILL_DOWN,
-    measures: [],
-    dimensions: [SuccessRateDimension.TicketId],
-    filters: [
-        {
-            member: SuccessRateFilterMember.AiAgentRole,
-            operator: ReportingFilterOperator.Equals,
-            values: [AIAgentSkills.AIAgentSupport],
-        },
-        ...statsFiltersToReportingFilters(successRateFiltersMembers, filters),
-    ],
-    timezone,
-    limit: DRILLDOWN_QUERY_LIMIT,
-    order: sorting ? [[SuccessRateDimension.TicketId, sorting]] : [],
 })

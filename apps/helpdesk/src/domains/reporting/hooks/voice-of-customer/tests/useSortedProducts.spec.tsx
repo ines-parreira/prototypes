@@ -1,6 +1,5 @@
 import { assumeMock, renderHook } from '@repo/testing'
 
-import type { MergedRecordWithEnrichment } from 'domains/reporting/hooks/types'
 import {
     PRODUCT_ENRICHMENT_ENTITY_ID,
     useTicketCountPerProductWithEnrichment,
@@ -84,7 +83,7 @@ describe('useSortedProducts', () => {
                 '/img/stats/voc-preview/product_02.png',
             ),
         },
-    ] as MergedRecordWithEnrichment[]
+    ]
 
     beforeEach(() => {
         useTicketCountPerProductWithEnrichmentMock.mockReturnValue({
@@ -94,7 +93,7 @@ describe('useSortedProducts', () => {
             },
             isFetching: false,
             isError: false,
-        })
+        } as ReturnType<typeof useTicketCountPerProductWithEnrichment>)
     })
 
     describe('useSortedProducts', () => {

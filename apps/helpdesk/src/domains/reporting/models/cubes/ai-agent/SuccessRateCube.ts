@@ -10,6 +10,7 @@ export enum SuccessRateFilterMember {
     PeriodStart = 'SuccessRate.periodStart',
     PeriodEnd = 'SuccessRate.periodEnd',
     Channel = 'SuccessRate.channel',
+    IsSuccessful = 'SuccessRate.isSuccessful',
 }
 
 export type SuccessRateCube = Cube<

@@ -18,8 +18,12 @@ import {
     AIJourneyMetricsConfig,
 } from 'AIJourney/types/AIJourneyTypes'
 import {
+    allAgentsSuccessRateDrillDownQueryFactory,
+    shoppingAssistantSuccessRateDrillDownQueryFactory,
+    supportAgentSuccessRateDrillDownQueryFactory,
+} from 'domains/reporting/models/queryFactories/ai-agent/successRateDrillDownQueryFactories'
+import {
     shoppingAssistantTimesRecommendedColumnDrillDownQueryFactory,
-    successRateV2DrillDownQueryFactory,
     totalNumberProductRecommendationsDrillDownQueryFactory,
 } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
 import {
@@ -29,7 +33,6 @@ import {
     allAgentsFRTDrillDownQueryFactory,
     allAgentsHandoverInteractionsDrillDownQueryFactory,
     allAgentsResolutionTimeDrillDownQueryFactory,
-    allAgentsSuccessRateDrillDownQueryFactory,
     shoppingAssistantAutomatedInteractionsDrillDownQueryFactory,
     shoppingAssistantHandoverInteractionsDrillDownQueryFactory,
     shoppingAssistantProductRecommendationsDrillDownQueryFactory,
@@ -38,7 +41,6 @@ import {
     supportAgentFRTDrillDownQueryFactory,
     supportAgentHandoverInteractionsDrillDownQueryFactory,
     supportAgentResolutionTimeDrillDownQueryFactory,
-    supportAgentSuccessRateDrillDownQueryFactory,
 } from 'domains/reporting/models/queryFactories/automate_v2/aiAgentDrillDownQueryFactories'
 import {
     intentHandoverDrillDownQueryFactory,
@@ -454,7 +456,7 @@ export const getDrillDownQuery = (
             ].drillDownQuery
         case AiAgentDrillDownMetricName.ShoppingAssistantSuccessRateCard:
             // Exhaustiveness stub, AiAgentDrillDownConfig.drillDownHook handles actual routing.
-            return successRateV2DrillDownQueryFactory
+            return shoppingAssistantSuccessRateDrillDownQueryFactory
         case AiAgentDrillDownMetricName.AllAgentsHandoverInteractionsCard:
             return allAgentsHandoverInteractionsDrillDownQueryFactory
         case AiAgentDrillDownMetricName.ShoppingAssistantHandoverInteractionsCard:
