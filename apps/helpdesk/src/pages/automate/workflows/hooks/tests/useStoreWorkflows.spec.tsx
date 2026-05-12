@@ -1,4 +1,3 @@
-// sort-imports-ignore
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import type { ComponentType } from 'react'

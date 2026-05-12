@@ -1,4 +1,3 @@
-// sort-imports-ignore
 import React from 'react'
 import { channelsQueryKeys as mockChannelsQueryKeys } from 'models/channel/queries'
 

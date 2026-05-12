@@ -24,11 +24,7 @@ export function createConfig(overrides?: Config): Config {
                         ? ['lcov']
                         : ['clover', 'lcov', 'text'],
                     reportOnFailure: true,
-                    exclude: [
-                        'vitest.config.ts',
-                        '.prettierrc.mjs',
-                        '**/fixtures/**',
-                    ],
+                    exclude: ['vitest.config.ts', '**/fixtures/**'],
                 },
             },
         },

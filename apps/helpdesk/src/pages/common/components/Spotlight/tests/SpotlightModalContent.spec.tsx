@@ -1,4 +1,3 @@
-// sort-imports-ignore
 import mockedVirtuoso from 'tests/mockedVirtuoso'
 
 import { assumeMock, render, userEvent } from '@repo/testing'

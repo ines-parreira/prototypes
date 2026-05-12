@@ -1,7 +1,8 @@
 declare module '@gorgias/config/oxfmt' {
     import type { OxfmtConfig } from 'oxfmt'
 
-    type GorgiasOxfmtConfigOptions = OxfmtConfig & {
+    // TODO(SPLTFE-2647): Remove this shim once @gorgias/config ships ./oxfmt types.
+    type GorgiasOxfmtConfigOptions = Partial<OxfmtConfig> & {
         srcDir?: string
     }
 

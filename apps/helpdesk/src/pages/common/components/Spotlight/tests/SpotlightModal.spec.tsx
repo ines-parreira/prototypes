@@ -1,4 +1,3 @@
-// sort-imports-ignore
 import mockedVirtuoso from 'tests/mockedVirtuoso'
 
 import type { ComponentProps, ReactPortal } from 'react'

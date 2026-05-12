@@ -13,7 +13,7 @@
       "formatter": {
         "external": {
           "command": "pnpm",
-          "arguments": ["prettier", "--stdin-filepath", "{buffer_path}"]
+          "arguments": ["exec", "oxfmt", "--stdin-filepath", "{buffer_path}"]
         }
       }
     },
@@ -25,7 +25,7 @@
       "formatter": {
         "external": {
           "command": "pnpm",
-          "arguments": ["prettier", "--stdin-filepath", "{buffer_path}"]
+          "arguments": ["exec", "oxfmt", "--stdin-filepath", "{buffer_path}"]
         }
       }
     }

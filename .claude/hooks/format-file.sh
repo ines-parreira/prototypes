@@ -9,7 +9,7 @@ if [ -z "$file_path" ]; then
 fi
 
 if [[ "$file_path" =~ \.(ts|tsx|js|jsx|mjs|cjs|json|css|scss|md|mdx|yaml|yml|html)$ ]]; then
-  pnpm exec prettier --write "$file_path"
+  pnpm exec oxfmt --write "$file_path"
 fi
 
 exit 0

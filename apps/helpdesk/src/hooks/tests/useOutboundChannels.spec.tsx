@@ -1,4 +1,3 @@
-// sort-imports-ignore
 import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 
 import React from 'react'

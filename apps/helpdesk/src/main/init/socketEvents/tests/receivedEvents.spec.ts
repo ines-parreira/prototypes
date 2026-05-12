@@ -1,4 +1,3 @@
-// sort-imports-ignore
 import {
     advancedMonthlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
