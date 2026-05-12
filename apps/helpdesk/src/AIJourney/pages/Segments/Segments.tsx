@@ -1,5 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 
+import { UserRole } from '@repo/permissions'
+import { useCurrentUserRole } from '@repo/users'
+
 import { Box, Button, Heading, Size } from '@gorgias/axiom'
 import {
     AudienceListSource,
@@ -56,6 +59,8 @@ export const Segments = () => {
         },
     )
     const dispatch = useAppDispatch()
+    const { hasRole } = useCurrentUserRole()
+    const canWrite = hasRole(UserRole.Admin) || hasRole(UserRole.Agent)
     const {
         data: schema,
         isLoading: isSchemaLoading,
@@ -135,15 +140,17 @@ export const Segments = () => {
             <Box m={Size.Lg} flexDirection="column">
                 <Box alignItems="center" justifyContent="space-between">
                     <Heading size="xl">Segments</Heading>
-                    <Button
-                        isDisabled={isSchemaLoading || isSchemaError}
-                        onClick={() => {
-                            selectedSegmentRef.current = undefined
-                            setIsSidePanelOpen(true)
-                        }}
-                    >
-                        Create segment
-                    </Button>
+                    {canWrite && (
+                        <Button
+                            isDisabled={isSchemaLoading || isSchemaError}
+                            onClick={() => {
+                                selectedSegmentRef.current = undefined
+                                setIsSidePanelOpen(true)
+                            }}
+                        >
+                            Create segment
+                        </Button>
+                    )}
                 </Box>
             </Box>
             <SegmentsTable
@@ -153,6 +160,7 @@ export const Segments = () => {
                 hasPrevPage={hasPrevPage}
                 pageSize={pageSize}
                 integrationId={currentIntegration?.id}
+                canWrite={canWrite}
                 onNextPage={() =>
                     setCursor(segmentsData?.metadata.next_cursor ?? undefined)
                 }

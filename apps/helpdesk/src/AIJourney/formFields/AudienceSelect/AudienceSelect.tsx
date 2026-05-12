@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { UserRole } from '@repo/permissions'
+import { useCurrentUserRole } from '@repo/users'
 import { Controller, useFormContext, useWatch } from 'react-hook-form'
 
 import { ListItem, ListSection, MultiSelectField } from '@gorgias/axiom'
@@ -44,6 +46,9 @@ export const AudienceSelect = ({ type }: { type: 'include' | 'exclude' }) => {
     const isAiJourneySegmentsEnabled = useFlag(
         FeatureFlagKey.AiJourneySegmentsUiEnabled,
     )
+
+    const { hasRole } = useCurrentUserRole()
+    const canWrite = hasRole(UserRole.Admin) || hasRole(UserRole.Agent)
 
     const [isSidePanelOpen, setIsSidePanelOpen] = useState(false)
     const [isMultiSelectOpen, setIsMultiSelectOpen] = useState(false)
@@ -210,7 +215,7 @@ export const AudienceSelect = ({ type }: { type: 'include' | 'exclude' }) => {
                         isOpen={isMultiSelectOpen}
                         onOpenChange={setIsMultiSelectOpen}
                         footer={
-                            isAiJourneySegmentsEnabled ? (
+                            isAiJourneySegmentsEnabled && canWrite ? (
                                 <CreateNewSegmentButton
                                     onClick={() => {
                                         setIsMultiSelectOpen(false)

@@ -8,6 +8,10 @@ import { useAudienceCount } from 'AIJourney/queries/useAudienceCount/useAudience
 
 import { SegmentsTable } from './SegmentsTable'
 
+jest.mock('./SegmentMoreOptions/SegmentMoreOptions', () => ({
+    SegmentMoreOptions: jest.fn(() => <div>SegmentMoreOptions</div>),
+}))
+
 jest.mock('AIJourney/queries/useAudienceCount/useAudienceCount', () => ({
     useAudienceCount: jest.fn(),
 }))
@@ -46,6 +50,7 @@ const defaultProps = {
     onEditClick: jest.fn(),
     onDuplicateClick: jest.fn(),
     onDeleteClick: jest.fn(),
+    canWrite: true,
 }
 
 const renderComponent = (props = {}) =>
@@ -205,6 +210,24 @@ describe('<SegmentsTable />', () => {
             })
 
             expect(defaultProps.onPrevPage).toHaveBeenCalledTimes(1)
+        })
+    })
+
+    describe('action column visibility', () => {
+        it('should render the actions menu for each row when canWrite is true', () => {
+            renderComponent({ canWrite: true })
+
+            expect(screen.getAllByText('SegmentMoreOptions')).toHaveLength(
+                mockSegments.length,
+            )
+        })
+
+        it('should not render the actions menu for any row when canWrite is false', () => {
+            renderComponent({ canWrite: false })
+
+            expect(
+                screen.queryByText('SegmentMoreOptions'),
+            ).not.toBeInTheDocument()
         })
     })
 })

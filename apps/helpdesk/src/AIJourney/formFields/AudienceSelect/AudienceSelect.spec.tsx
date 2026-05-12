@@ -1,5 +1,6 @@
 import { useFlag } from '@repo/feature-flags'
 import { render } from '@repo/testing'
+import { useCurrentUserRole } from '@repo/users'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -15,6 +16,10 @@ import {
 import type { ConditionsSchema } from 'AIJourney/types/conditionField'
 
 import { AudienceSelect } from './AudienceSelect'
+
+jest.mock('@repo/users', () => ({
+    useCurrentUserRole: jest.fn(),
+}))
 
 jest.mock('@repo/feature-flags', () => ({
     useFlag: jest.fn(),
@@ -84,6 +89,7 @@ const mockSchema: ConditionsSchema = {
     objects: {},
 }
 
+const mockUseCurrentUserRole = useCurrentUserRole as jest.Mock
 const mockUseFlag = useFlag as jest.Mock
 const mockUseJourneyContext = useJourneyContext as jest.Mock
 const mockUseAudienceLists = useAudienceLists as jest.Mock
@@ -119,6 +125,10 @@ const renderComponent = async (
 describe('<AudienceSelect />', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        mockUseCurrentUserRole.mockReturnValue({
+            hasRole: jest.fn(() => true),
+            isAdmin: true,
+        })
         mockUseFlag.mockReturnValue(false)
         mockUseJourneyContext.mockReturnValue({
             currentIntegration: { id: 123 },
@@ -652,6 +662,25 @@ describe('<AudienceSelect />', () => {
         beforeEach(() => {
             mockUseFlag.mockReturnValue(true)
             mockUseConditionsMetadata.mockReturnValue({ data: mockSchema })
+        })
+
+        it('does not show CreateNewSegmentButton when user does not have write permission', async () => {
+            mockUseCurrentUserRole.mockReturnValue({
+                hasRole: jest.fn(() => false),
+                isAdmin: false,
+            })
+            const user = userEvent.setup()
+            await renderComponent('include')
+
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /Select audience/i }),
+                )
+            })
+
+            expect(
+                screen.queryByText('Create new segment'),
+            ).not.toBeInTheDocument()
         })
 
         it('shows CreateNewSegmentButton in footer when feature flag is enabled', async () => {

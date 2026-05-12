@@ -17,6 +17,7 @@ import css from './SegmentsColumns.less'
 
 export type SegmentsTableMeta = {
     integrationId: number | null | undefined
+    canWrite: boolean
     onSegmentClick: (segment: Segment) => void
     onEditClick: (segment: Segment) => void
     onDuplicateClick: (segment: Segment) => void
@@ -101,8 +102,9 @@ export const actionColumns: ColumnDef<Segment, unknown>[] = [
     {
         id: 'actions',
         cell: (info) => {
-            const { onEditClick, onDuplicateClick, onDeleteClick } = info.table
-                .options.meta as SegmentsTableMeta
+            const { canWrite, onEditClick, onDuplicateClick, onDeleteClick } =
+                info.table.options.meta as SegmentsTableMeta
+            if (!canWrite) return null
             return (
                 <SegmentMoreOptions
                     segment={info.row.original}

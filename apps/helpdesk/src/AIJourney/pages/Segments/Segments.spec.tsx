@@ -1,9 +1,12 @@
 import { forwardRef } from 'react'
 import type { ReactNode, Ref } from 'react'
 
+import { UserRole } from '@repo/permissions'
 import { render } from '@repo/testing'
+import { useCurrentUserRole } from '@repo/users'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { fromJS } from 'immutable'
 
 import {
     AudienceListSource,
@@ -19,9 +22,11 @@ import {
 } from 'AIJourney/queries'
 import { useConditionsMetadata } from 'AIJourney/queries/useConditionsMetadata/useConditionsMetadata'
 import type { ConditionsSchema } from 'AIJourney/types/conditionField'
+import { user } from 'fixtures/users'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
+import type { RootState } from 'state/types'
 
 import { Segments } from './Segments'
 
@@ -99,10 +104,15 @@ jest.mock('AIJourney/providers', () => ({
     useJourneyContext: jest.fn(),
 }))
 
+jest.mock('@repo/users', () => ({
+    useCurrentUserRole: jest.fn(),
+}))
+
 jest.mock('hooks/useAppDispatch')
 
 jest.mock('state/notifications/actions')
 
+const mockUseCurrentUserRole = useCurrentUserRole as jest.Mock
 const mockUseSegments = useSegments as jest.Mock
 const mockUseJourneyContext = useJourneyContext as jest.Mock
 const mockUseDeleteSegment = useDeleteSegment as jest.Mock
@@ -172,11 +182,22 @@ const mockSegments = [
     },
 ]
 
+const initialState: Partial<RootState> = {
+    currentUser: fromJS({ ...user, role: { name: UserRole.Admin } }),
+}
+
+const renderSegments = () => render(<Segments />, { storeState: initialState })
+
 describe('<Segments />', () => {
     const mockDispatch = jest.fn()
 
     beforeEach(() => {
         jest.clearAllMocks()
+        mockUseCurrentUserRole.mockReturnValue({
+            hasRole: (role: UserRole) =>
+                role === UserRole.Admin || role === UserRole.Agent,
+            isAdmin: true,
+        })
         mockUseAppDispatch.mockReturnValue(mockDispatch)
         mockUseJourneyContext.mockReturnValue({
             currentIntegration: { id: 123 },
@@ -198,7 +219,7 @@ describe('<Segments />', () => {
 
     describe('page layout', () => {
         it('should render the Segments heading', () => {
-            render(<Segments />)
+            renderSegments()
 
             expect(
                 screen.getByRole('heading', { name: 'Segments' }),
@@ -206,7 +227,7 @@ describe('<Segments />', () => {
         })
 
         it('should render the Create segment button', () => {
-            render(<Segments />)
+            renderSegments()
 
             expect(
                 screen.getByRole('button', { name: /create segment/i }),
@@ -216,7 +237,7 @@ describe('<Segments />', () => {
 
     describe('table rendering', () => {
         it('should render the table column headers', () => {
-            render(<Segments />)
+            renderSegments()
 
             expect(screen.getByText('Title')).toBeInTheDocument()
             expect(screen.getByText('Estimated size')).toBeInTheDocument()
@@ -224,7 +245,7 @@ describe('<Segments />', () => {
         })
 
         it('should render segment names from fetched data', () => {
-            render(<Segments />)
+            renderSegments()
 
             expect(
                 screen.getByText('Support small business'),
@@ -235,7 +256,7 @@ describe('<Segments />', () => {
         })
 
         it('should render estimated sizes for segments', () => {
-            render(<Segments />)
+            renderSegments()
 
             expect(screen.getByText('0')).toBeInTheDocument()
             expect(screen.getByText('±98,762')).toBeInTheDocument()
@@ -249,7 +270,7 @@ describe('<Segments />', () => {
                 },
                 isLoading: false,
             })
-            render(<Segments />)
+            renderSegments()
 
             expect(screen.getByText('No segments found')).toBeInTheDocument()
         })
@@ -259,7 +280,7 @@ describe('<Segments />', () => {
                 data: undefined,
                 isLoading: false,
             })
-            render(<Segments />)
+            renderSegments()
 
             expect(screen.getByText('No segments found')).toBeInTheDocument()
             expect(
@@ -273,7 +294,7 @@ describe('<Segments />', () => {
 
     describe('useSegments call', () => {
         it('should call useSegments with the integration id and default page size', () => {
-            render(<Segments />)
+            renderSegments()
 
             expect(mockUseSegments).toHaveBeenCalledWith(
                 123,
@@ -289,7 +310,7 @@ describe('<Segments />', () => {
                 data: undefined,
                 isLoading: false,
             })
-            render(<Segments />)
+            renderSegments()
 
             expect(mockUseSegments).toHaveBeenCalledWith(
                 undefined,
@@ -300,7 +321,7 @@ describe('<Segments />', () => {
 
     describe('pagination', () => {
         it('should disable both pagination buttons when there is no next or previous page', () => {
-            render(<Segments />)
+            renderSegments()
 
             expect(
                 screen.getByRole('button', { name: /next page/i }),
@@ -321,7 +342,7 @@ describe('<Segments />', () => {
                 },
                 isLoading: false,
             })
-            render(<Segments />)
+            renderSegments()
 
             expect(
                 screen.getByRole('button', { name: /next page/i }),
@@ -343,7 +364,7 @@ describe('<Segments />', () => {
                 },
                 isLoading: false,
             })
-            render(<Segments />)
+            renderSegments()
 
             await act(async () => {
                 await user.click(
@@ -369,7 +390,7 @@ describe('<Segments />', () => {
                 },
                 isLoading: false,
             })
-            render(<Segments />)
+            renderSegments()
 
             await act(async () => {
                 await user.click(
@@ -391,7 +412,7 @@ describe('<Segments />', () => {
                 isLoading: true,
                 isError: false,
             })
-            render(<Segments />)
+            renderSegments()
 
             expect(
                 screen.getByRole('button', { name: /create segment/i }),
@@ -399,7 +420,7 @@ describe('<Segments />', () => {
         })
 
         it('should be enabled once the schema has loaded', () => {
-            render(<Segments />)
+            renderSegments()
 
             expect(
                 screen.getByRole('button', { name: /create segment/i }),
@@ -412,7 +433,7 @@ describe('<Segments />', () => {
                 isLoading: false,
                 isError: true,
             })
-            render(<Segments />)
+            renderSegments()
 
             expect(
                 screen.getByRole('button', { name: /create segment/i }),
@@ -428,7 +449,7 @@ describe('<Segments />', () => {
                 isLoading: false,
                 isError: true,
             })
-            render(<Segments />)
+            renderSegments()
 
             await waitFor(() => {
                 expect(mockNotify).toHaveBeenCalledWith({
@@ -448,7 +469,7 @@ describe('<Segments />', () => {
                 isLoading: true,
                 isError: false,
             })
-            render(<Segments />)
+            renderSegments()
 
             expect(
                 screen.queryByRole('heading', { name: 'Create new segment' }),
@@ -457,7 +478,7 @@ describe('<Segments />', () => {
 
         it('should open the side panel in create mode when "Create segment" is clicked', async () => {
             const user = userEvent.setup()
-            render(<Segments />)
+            renderSegments()
 
             await act(async () => {
                 await user.click(
@@ -473,7 +494,7 @@ describe('<Segments />', () => {
 
         it('should open the side panel in edit mode when a segment name is clicked', async () => {
             const user = userEvent.setup()
-            render(<Segments />)
+            renderSegments()
 
             await act(async () => {
                 await user.click(screen.getByText('Support small business'))
@@ -488,7 +509,7 @@ describe('<Segments />', () => {
 
         it('should close the side panel when it is closed externally', async () => {
             const user = userEvent.setup()
-            render(<Segments />)
+            renderSegments()
 
             await act(async () => {
                 await user.click(
@@ -512,7 +533,7 @@ describe('<Segments />', () => {
 
         it('should open the side panel with "(copy)" appended to the name when duplicate is clicked', async () => {
             const user = userEvent.setup()
-            render(<Segments />)
+            renderSegments()
 
             await act(async () => {
                 await user.click(
@@ -532,7 +553,7 @@ describe('<Segments />', () => {
     describe('delete segment', () => {
         it('should open the delete confirmation modal when delete is clicked', async () => {
             const user = userEvent.setup()
-            render(<Segments />)
+            renderSegments()
 
             await act(async () => {
                 await user.click(
@@ -547,7 +568,7 @@ describe('<Segments />', () => {
             const user = userEvent.setup()
             const mockMutate = jest.fn()
             mockUseDeleteSegment.mockReturnValue({ mutate: mockMutate })
-            render(<Segments />)
+            renderSegments()
 
             await act(async () => {
                 await user.click(
@@ -568,7 +589,7 @@ describe('<Segments />', () => {
             const user = userEvent.setup()
             const mockMutate = jest.fn()
             mockUseDeleteSegment.mockReturnValue({ mutate: mockMutate })
-            render(<Segments />)
+            renderSegments()
 
             await act(async () => {
                 await user.click(
@@ -596,7 +617,7 @@ describe('<Segments />', () => {
                 data: mockAudienceUsageForSegment1,
                 isLoading: false,
             })
-            render(<Segments />)
+            renderSegments()
 
             await act(async () => {
                 await user.click(
@@ -627,7 +648,7 @@ describe('<Segments />', () => {
                 data: mockAudienceUsageForSegment1,
                 isLoading: false,
             })
-            render(<Segments />)
+            renderSegments()
 
             await act(async () => {
                 await user.click(
@@ -662,7 +683,7 @@ describe('<Segments />', () => {
                 data: mockAudienceUsageForSegment1,
                 isLoading: false,
             })
-            render(<Segments />)
+            renderSegments()
 
             await act(async () => {
                 await user.click(
@@ -673,6 +694,54 @@ describe('<Segments />', () => {
             expect(screen.getByText('Delete segment?')).toBeInTheDocument()
             expect(
                 screen.queryByText("This segment can't be deleted"),
+            ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('write permission visibility', () => {
+        it('should render the Create segment button for admin users', () => {
+            renderSegments()
+
+            expect(
+                screen.getByRole('button', { name: /create segment/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('should not render the Create segment button for basic-agent users', () => {
+            mockUseCurrentUserRole.mockReturnValue({
+                hasRole: () => false,
+                isAdmin: false,
+            })
+            render(<Segments />)
+
+            expect(
+                screen.queryByRole('button', { name: /create segment/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should render the Edit/Duplicate/Delete action menu for admin users', () => {
+            renderSegments()
+
+            expect(
+                screen.getAllByRole('button', { name: /duplicate/i })[0],
+            ).toBeInTheDocument()
+            expect(
+                screen.getAllByRole('button', { name: 'Delete' })[0],
+            ).toBeInTheDocument()
+        })
+
+        it('should not render the Edit/Duplicate/Delete action menu for basic-agent users', () => {
+            mockUseCurrentUserRole.mockReturnValue({
+                hasRole: () => false,
+                isAdmin: false,
+            })
+            render(<Segments />)
+
+            expect(
+                screen.queryByRole('button', { name: /duplicate/i }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', { name: 'Delete' }),
             ).not.toBeInTheDocument()
         })
     })

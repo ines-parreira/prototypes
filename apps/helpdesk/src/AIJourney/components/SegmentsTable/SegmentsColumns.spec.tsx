@@ -36,11 +36,13 @@ const mockMeta: SegmentsTableMeta = {
     onEditClick: jest.fn(),
     onDuplicateClick: jest.fn(),
     onDeleteClick: jest.fn(),
+    canWrite: true,
 }
 
 function makeCellContext(
     value: unknown,
     segmentOverride?: Partial<Segment>,
+    metaOverride?: Partial<SegmentsTableMeta>,
 ): TableV1CellContext<Segment, unknown> {
     return {
         getValue: () => value,
@@ -48,7 +50,7 @@ function makeCellContext(
             original: { ...mockSegment, ...segmentOverride },
         } as TableV1CellContext<Segment, unknown>['row'],
         table: {
-            options: { meta: mockMeta },
+            options: { meta: { ...mockMeta, ...metaOverride } },
         } as unknown as TableV1CellContext<Segment, unknown>['table'],
     } as TableV1CellContext<Segment, unknown>
 }
@@ -57,11 +59,14 @@ const renderCell = (
     column: (typeof segmentColumns | typeof actionColumns)[number],
     value: unknown,
     segmentOverride?: Partial<Segment>,
+    metaOverride?: Partial<SegmentsTableMeta>,
 ) => {
     const cellFn = column.cell as (
         info: TableV1CellContext<Segment, unknown>,
     ) => React.ReactNode
-    return render(<>{cellFn(makeCellContext(value, segmentOverride))}</>)
+    return render(
+        <>{cellFn(makeCellContext(value, segmentOverride, metaOverride))}</>,
+    )
 }
 
 describe('segmentColumns', () => {
@@ -196,6 +201,15 @@ describe('actionColumns', () => {
                 },
                 {},
             )
+        })
+
+        it('should render nothing when canWrite is false', () => {
+            renderCell(actionsColumn, null, undefined, { canWrite: false })
+
+            expect(SegmentMoreOptions).not.toHaveBeenCalled()
+            expect(
+                screen.queryByText('SegmentMoreOptions'),
+            ).not.toBeInTheDocument()
         })
     })
 })
