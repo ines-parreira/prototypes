@@ -169,6 +169,28 @@ describe('InternalSummary', () => {
         ).toBeEnabled()
     })
 
+    it('enables Preview changes button when subscription is canceled even without changes', () => {
+        const canceledState = {
+            ...payingWithCreditCard,
+            subscription: {
+                ...payingWithCreditCard.subscription,
+                status: SubscriptionStatus.CANCELED,
+            },
+        }
+        const plans: ResolvedPlan[] = [
+            makeResolved({
+                productType: ProductType.Helpdesk,
+                plan: basicMonthlyHelpdeskPlan,
+                currentPlan: basicMonthlyHelpdeskPlan,
+            }),
+        ]
+        renderComponent(plans, false, canceledState)
+
+        expect(
+            screen.getByRole('button', { name: /preview changes/i }),
+        ).toBeEnabled()
+    })
+
     it('renders removed product with Removed tag and strikethrough price', () => {
         const plans: ResolvedPlan[] = [
             makeResolved({

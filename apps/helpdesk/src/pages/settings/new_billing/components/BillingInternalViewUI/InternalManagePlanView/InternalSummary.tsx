@@ -6,6 +6,7 @@ import { Box, Button, Card, Heading, Separator, Text } from '@gorgias/axiom'
 import type { InvoiceCadence } from '@gorgias/helpdesk-types'
 
 import type { BillingState } from 'models/billing/types'
+import { SubscriptionStatus } from 'models/billing/types'
 import type {
     PriceSummary,
     ResolvedPlan,
@@ -32,6 +33,8 @@ export function InternalSummary({
     invoiceCadence,
     onPreviewChanges,
 }: InternalSummaryProps) {
+    const isCanceled =
+        billingState.subscription.status === SubscriptionStatus.CANCELED
     const currency = billingState.current_plans.helpdesk.currency ?? 'usd'
     const {
         totalWithDiscountsInCents,
@@ -133,7 +136,10 @@ export function InternalSummary({
                 </Box>
                 <NewSummaryPaymentSection trackingSource="internal_subscription_update" />
                 <Box justifyContent="flex-end" paddingTop="sm">
-                    <Button isDisabled={!hasChanges} onClick={onPreviewChanges}>
+                    <Button
+                        isDisabled={!isCanceled && !hasChanges}
+                        onClick={onPreviewChanges}
+                    >
                         Preview changes
                     </Button>
                 </Box>
