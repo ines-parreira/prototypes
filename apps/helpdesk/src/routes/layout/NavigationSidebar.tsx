@@ -9,7 +9,6 @@ import {
     useSidebarButtonSize,
     useSidebarShortcuts,
 } from '@repo/navigation'
-import { history } from '@repo/routing'
 import { ViewCountDebugPanel } from '@repo/views'
 
 import { Box, Button, Separator, TooltipContent } from '@gorgias/axiom'
@@ -60,17 +59,15 @@ export function NavigationSidebar() {
                     >
                         {!isCollapsed && (
                             <Button
+                                as="a"
+                                href={
+                                    prevNonStickyPathname ??
+                                    productConfig[Product.Inbox].defaultPath
+                                }
                                 icon="arrow-left"
                                 size="sm"
                                 variant="secondary"
                                 aria-label="Go back"
-                                onClick={() =>
-                                    history.push(
-                                        prevNonStickyPathname ??
-                                            productConfig[Product.Inbox]
-                                                .defaultPath,
-                                    )
-                                }
                             />
                         )}
                         <SidebarProductHeader
@@ -142,15 +139,13 @@ export function NavigationSidebar() {
                         </DebugMenuItem>
                     </DebugMenu>
                     <NavigationSidebarTooltip
-                        placement="right"
+                        placement="top"
                         trigger={
                             <Button
-                                onClick={() => {
-                                    history.push(
-                                        productConfig[Product.Settings]
-                                            .defaultPath,
-                                    )
-                                }}
+                                as="a"
+                                href={
+                                    productConfig[Product.Settings].defaultPath
+                                }
                                 icon={productConfig[Product.Settings].icon}
                                 variant={
                                     currentProduct.id === Product.Settings
@@ -165,7 +160,7 @@ export function NavigationSidebar() {
                     </NavigationSidebarTooltip>
                     {isChatReady && (
                         <NavigationSidebarTooltip
-                            placement="right"
+                            placement="top"
                             trigger={
                                 <Button
                                     icon="help-circle"

@@ -1,6 +1,5 @@
 import { useIsMobileResolution } from '@repo/hooks'
 import { MockSidebarProvider } from '@repo/navigation/fixtures'
-import { history } from '@repo/routing'
 import { assumeMock, render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -11,12 +10,6 @@ import { Product, productConfig } from 'routes/layout/productConfig'
 import { useCurrentRouteProduct } from '../../hooks/useCurrentRouteProduct'
 import { usePreviousProductNavigation } from '../../hooks/usePreviousProductNavigation'
 import { NavigationSidebar } from '../NavigationSidebar'
-
-jest.mock('@repo/routing', () => ({
-    history: {
-        push: jest.fn(),
-    },
-}))
 
 jest.mock('routes/hooks/useCurrentRouteProduct')
 const useCurrentRouteProductMock = assumeMock(useCurrentRouteProduct)
@@ -256,7 +249,7 @@ describe('NavigationSidebar', () => {
                 </MockSidebarProvider>,
             )
             expect(
-                screen.getByRole('button', { name: /go back/i }),
+                screen.getByRole('link', { name: /go back/i }),
             ).toBeInTheDocument()
         })
 
@@ -270,12 +263,11 @@ describe('NavigationSidebar', () => {
                 </MockSidebarProvider>,
             )
             expect(
-                screen.queryByRole('button', { name: /go back/i }),
+                screen.queryByRole('link', { name: /go back/i }),
             ).not.toBeInTheDocument()
         })
 
-        it('should navigate to previous non-sticky path when back button is clicked', async () => {
-            const user = userEvent.setup()
+        it('should have href pointing to previous non-sticky path', () => {
             usePreviousProductNavigationMock.mockReturnValue('/app/tickets')
 
             render(
@@ -284,13 +276,12 @@ describe('NavigationSidebar', () => {
                 </MockSidebarProvider>,
             )
 
-            await user.click(screen.getByRole('button', { name: /go back/i }))
-
-            expect(history.push).toHaveBeenCalledWith('/app/tickets')
+            expect(
+                screen.getByRole('link', { name: /go back/i }),
+            ).toHaveAttribute('href', '/app/tickets')
         })
 
-        it('should navigate to Inbox default path when no previous non-sticky path exists', async () => {
-            const user = userEvent.setup()
+        it('should fall back to Inbox default path when no previous non-sticky path exists', () => {
             usePreviousProductNavigationMock.mockReturnValue(null)
 
             render(
@@ -299,10 +290,31 @@ describe('NavigationSidebar', () => {
                 </MockSidebarProvider>,
             )
 
-            await user.click(screen.getByRole('button', { name: /go back/i }))
+            expect(
+                screen.getByRole('link', { name: /go back/i }),
+            ).toHaveAttribute('href', productConfig[Product.Inbox].defaultPath)
+        })
 
-            expect(history.push).toHaveBeenCalledWith(
-                productConfig[Product.Inbox].defaultPath,
+        it('should render settings link with correct href', () => {
+            render(
+                <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
+                    <NavigationSidebar />
+                </MockSidebarProvider>,
+            )
+
+            const settingsLinks = screen
+                .getAllByRole('link')
+                .filter((link) =>
+                    link
+                        .getAttribute('href')
+                        ?.startsWith(
+                            productConfig[Product.Settings].defaultPath,
+                        ),
+                )
+            expect(settingsLinks.length).toBeGreaterThanOrEqual(1)
+            expect(settingsLinks[0]).toHaveAttribute(
+                'href',
+                productConfig[Product.Settings].defaultPath,
             )
         })
     })

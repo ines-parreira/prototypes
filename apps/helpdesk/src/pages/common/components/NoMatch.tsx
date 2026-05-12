@@ -29,7 +29,11 @@ export default function NoMatch() {
                     Double check the URL, go back, or try refreshing the page.
                 </Text>
             </Box>
-            <Button href="/app/views" leadingSlot={<Icon name="inbox" />}>
+            <Button
+                as="a"
+                href="/app/views"
+                leadingSlot={<Icon name="inbox" />}
+            >
                 Go to inbox
             </Button>
             <Text as="p" align="center" size="sm">

@@ -87,7 +87,7 @@ export default function AppActionsTab({ appId, appName, appIcon }: Props) {
                         </Text>
                     </Box>
                     <Box gap="xs">
-                        <Button href={goToActionsHref} size="md">
+                        <Button as="a" href={goToActionsHref} size="md">
                             Go to actions
                         </Button>
                         <Button
