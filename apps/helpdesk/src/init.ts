@@ -44,6 +44,7 @@ import {
 import { notify } from 'state/notifications/actions'
 import type { RootState } from 'state/types'
 import { transformSystemMessagesToNotifications } from 'utils'
+import { initGaia } from 'utils/gaia'
 import { initSDKs } from 'utils/sdk'
 
 const initMoment = (currentUser: EditableUserProfile) => {
@@ -137,6 +138,8 @@ export function initApp() {
         currentHelpdeskPlan?.plan_id,
         currentAutomatePlan?.plan_id,
     )
+
+    void initGaia()
 
     void initClarity()
 

@@ -258,6 +258,7 @@ export enum SegmentEvent {
     FailedMessageNotification = 'failed-message-notification',
     FailedEmailImportNotification = 'failed-email-import-notification',
     SuccessfulEmailImportNotification = 'successful-email-import-notification',
+    GaiaEmbedLoaded = 'gaia-embed-loaded',
     GlobalSearchAdvancedButtonClick = 'search-advanced-button-click',
     GlobalSearchAdvancedShortcut = 'search-advanced-shortcut',
     GlobalSearchAllTabClick = 'all-tab-click',
