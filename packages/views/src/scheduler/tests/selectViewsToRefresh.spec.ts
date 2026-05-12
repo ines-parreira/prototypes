@@ -17,6 +17,7 @@ const CONFIG: RefreshConfig = {
     minRefreshIntervalSeconds: 30,
     maxViewsPerTick: 10,
     maxRealtimePerTick: 3,
+    initialMaxViews: 20,
     largeCountThreshold: 1000,
     recentlyActiveWindowSeconds: 300,
     staleSeconds: 120,
@@ -32,6 +33,7 @@ function candidate(
         isRealtimeView: false,
         isInViewport: false,
         isSystemView: false,
+        isHighPriority: false,
         isLowPriority: false,
         isDeactivated: false,
         ...overrides,
@@ -260,6 +262,51 @@ describe('scoreView', () => {
             })
 
             expect(score(lowPriStale)).toBe(score(normalStale))
+        })
+
+        it('high priority stale non-large views score above peers', () => {
+            const hiPriStale = candidate({
+                viewId: 1,
+                isHighPriority: true,
+                lastFetchedAt: null,
+            })
+            const normalStale = candidate({
+                viewId: 2,
+                isHighPriority: false,
+                lastFetchedAt: null,
+            })
+
+            expect(score(hiPriStale)).toBeGreaterThan(score(normalStale))
+        })
+
+        it('high priority bonus is skipped when not stale', () => {
+            const hiPriFresh = candidate({
+                viewId: 1,
+                isHighPriority: true,
+            })
+            const normalFresh = candidate({
+                viewId: 2,
+                isHighPriority: false,
+            })
+
+            expect(score(hiPriFresh)).toBe(score(normalFresh))
+        })
+
+        it('high priority bonus is skipped when large', () => {
+            const hiPriLargeStale = candidate({
+                viewId: 1,
+                isHighPriority: true,
+                count: CONFIG.largeCountThreshold,
+                lastFetchedAt: null,
+            })
+            const largeStale = candidate({
+                viewId: 2,
+                isHighPriority: false,
+                count: CONFIG.largeCountThreshold,
+                lastFetchedAt: null,
+            })
+
+            expect(score(hiPriLargeStale)).toBe(score(largeStale))
         })
     })
 

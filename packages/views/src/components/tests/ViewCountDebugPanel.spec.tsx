@@ -3,6 +3,8 @@ import { screen } from '@testing-library/react'
 
 import { useAllViews } from '../../hooks/useAllViews'
 import { useHasNewViewCountScheduler } from '../../hooks/useHasNewViewCountScheduler'
+import { useSchedulerConfig } from '../../hooks/useSchedulerConfig'
+import { DEFAULT_REFRESH_CONFIG } from '../../scheduler/selectViewsToRefresh'
 import { viewEventLogStore } from '../../store/viewEventLog'
 import {
     clearViewsCount,
@@ -31,8 +33,13 @@ vi.mock('../../hooks/useAllViews', () => ({
     useAllViews: vi.fn(),
 }))
 
+vi.mock('../../hooks/useSchedulerConfig', () => ({
+    useSchedulerConfig: vi.fn(),
+}))
+
 const useHasNewViewCountSchedulerMock = vi.mocked(useHasNewViewCountScheduler)
 const useAllViewsMock = vi.mocked(useAllViews)
+const useSchedulerConfigMock = vi.mocked(useSchedulerConfig)
 
 function mockHasNewScheduler(value: boolean) {
     useHasNewViewCountSchedulerMock.mockReturnValue({ value, isLoading: false })
@@ -57,6 +64,7 @@ beforeEach(() => {
     setScores({ 1: 42 })
     mockHasNewScheduler(false)
     useAllViewsMock.mockReturnValue([view])
+    useSchedulerConfigMock.mockReturnValue(DEFAULT_REFRESH_CONFIG)
 })
 
 describe('ViewCountDebugPanel', () => {

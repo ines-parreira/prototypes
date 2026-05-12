@@ -5,6 +5,7 @@ import type { View } from '@gorgias/helpdesk-types'
 
 import {
     clearViewsCount,
+    setViewportViewIds,
     setViewsCount,
     viewsCountStore,
 } from '../../store/viewsCountStore'
@@ -166,7 +167,84 @@ describe('start / steal / stop', () => {
         expect(viewsCountStore.getState().isLeader).toBe(true)
     })
 
-    it('ticks immediately after becoming leader', async () => {
+    it('prioritises in-viewport views on the initial tick', async () => {
+        const onRefresh = vi.fn()
+        const scheduler = createViewCountScheduler({
+            onRefresh,
+            config: {
+                tickIntervalSeconds: 30,
+                minRefreshIntervalSeconds: 0,
+                initialMaxViews: 2,
+                maxViewsPerTick: 2,
+            },
+        })
+
+        setAllViews([makeView(1), makeView(2), makeView(3)])
+        setViewsCount({ 1: 10, 2: 20, 3: 30 })
+        setViewportViewIds([2, 3])
+
+        scheduler.start()
+        await Promise.resolve()
+
+        expect(onRefresh).toHaveBeenCalledTimes(1)
+        const [selected] = onRefresh.mock.calls[0] as [number[]]
+        expect(selected.sort()).toEqual([2, 3])
+    })
+
+    it('uses initialMaxViews as the budget on the first tick after becoming leader', async () => {
+        const onRefresh = vi.fn()
+        const viewIds = Array.from({ length: 30 }, (_, i) => i + 1)
+        const scheduler = createViewCountScheduler({
+            onRefresh,
+            config: {
+                tickIntervalSeconds: 30,
+                minRefreshIntervalSeconds: 0,
+                maxViewsPerTick: 5,
+                initialMaxViews: 20,
+            },
+        })
+
+        setAllViews(viewIds.map(makeView))
+        setViewportViewIds(viewIds)
+
+        scheduler.start()
+        await Promise.resolve()
+
+        expect(onRefresh).toHaveBeenCalledTimes(1)
+        const [selected] = onRefresh.mock.calls[0] as [number[]]
+        expect(selected).toHaveLength(20)
+    })
+
+    it('only treats the very first tick as initial — subsequent steals use maxViewsPerTick', async () => {
+        const onRefresh = vi.fn()
+        const viewIds = Array.from({ length: 30 }, (_, i) => i + 1)
+        const scheduler = createViewCountScheduler({
+            onRefresh,
+            config: {
+                tickIntervalSeconds: 30,
+                minRefreshIntervalSeconds: 0,
+                maxViewsPerTick: 5,
+                initialMaxViews: 20,
+            },
+        })
+
+        setAllViews(viewIds.map(makeView))
+        setViewportViewIds(viewIds)
+
+        scheduler.start()
+        await Promise.resolve()
+
+        expect((onRefresh.mock.calls[0] as [number[]])[0]).toHaveLength(20)
+
+        onRefresh.mockClear()
+        scheduler.steal()
+        await Promise.resolve()
+
+        expect(onRefresh).toHaveBeenCalledTimes(1)
+        expect((onRefresh.mock.calls[0] as [number[]])[0]).toHaveLength(5)
+    })
+
+    it('falls back to non-viewport views when nothing is in the viewport', async () => {
         const onRefresh = vi.fn()
         const scheduler = createViewCountScheduler({
             onRefresh,

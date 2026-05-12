@@ -4,7 +4,13 @@ import type { IconName } from '@gorgias/axiom'
 import { useListAllViews } from '@gorgias/helpdesk-queries'
 import type { View } from '@gorgias/helpdesk-types'
 
-import { VIEWS_STALE_TIME } from '../constants'
+import {
+    BOTTOM_SYSTEM_VIEW_NAMES,
+    DEFAULT_BOTTOM_SYSTEM_VIEW_ORDER,
+    DEFAULT_TOP_SYSTEM_VIEW_ORDER,
+    TOP_SYSTEM_VIEW_NAMES,
+    VIEWS_STALE_TIME,
+} from '../constants'
 import { usePublicViewsOrdering } from './usePublicViewsOrdering'
 
 export type SystemView = View & {
@@ -38,35 +44,19 @@ export function useSystemViews(): SystemView[] {
             }))
 
         const top = sortWithFallback(
-            withIcons.filter((v) => TOP_VIEW_NAMES.has(v.name)),
+            withIcons.filter((v) => TOP_SYSTEM_VIEW_NAMES.includes(v.name)),
             ordering.views_top,
-            DEFAULT_TOP_ORDER,
+            DEFAULT_TOP_SYSTEM_VIEW_ORDER,
         )
 
         const bottom = sortWithFallback(
-            withIcons.filter((v) => BOTTOM_VIEW_NAMES.has(v.name)),
+            withIcons.filter((v) => BOTTOM_SYSTEM_VIEW_NAMES.includes(v.name)),
             ordering.views_bottom,
-            DEFAULT_BOTTOM_ORDER,
+            DEFAULT_BOTTOM_SYSTEM_VIEW_ORDER,
         )
 
         return [...top, ...bottom]
     }, [views, ordering.views_top, ordering.views_bottom])
-}
-
-const TOP_VIEW_NAMES = new Set(['Inbox', 'Unassigned', 'All', 'Snoozed'])
-const BOTTOM_VIEW_NAMES = new Set(['Closed', 'Trash', 'Spam'])
-
-const DEFAULT_TOP_ORDER: Record<string, number> = {
-    Inbox: 0,
-    Unassigned: 1,
-    All: 2,
-    Snoozed: 3,
-}
-
-const DEFAULT_BOTTOM_ORDER: Record<string, number> = {
-    Closed: 0,
-    Trash: 1,
-    Spam: 2,
 }
 
 function sortWithFallback(

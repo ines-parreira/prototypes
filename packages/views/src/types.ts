@@ -19,3 +19,19 @@ export function isViewsOrderingData(
 ): value is PrivateViewsOrderingData {
     return typeof value === 'object' && value !== null && 'views' in value
 }
+
+export type ViewsVisibilityData = {
+    hidden_views: number[]
+}
+
+export function isViewsVisibilityData(
+    value: unknown,
+): value is ViewsVisibilityData {
+    return (
+        typeof value === 'object' &&
+        value !== null &&
+        'hidden_views' in value &&
+        Array.isArray(value.hidden_views) &&
+        value.hidden_views.every((id) => typeof id === 'number')
+    )
+}

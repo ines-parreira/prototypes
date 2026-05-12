@@ -55,6 +55,7 @@ describe('parseRefreshConfig', () => {
             minRefreshIntervalSeconds: 600,
             maxViewsPerTick: 10,
             maxRealtimePerTick: 4,
+            initialMaxViews: 30,
             largeCountThreshold: 500,
             recentlyActiveWindowSeconds: 600,
             staleSeconds: 1200,

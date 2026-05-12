@@ -13,6 +13,7 @@ export const refreshConfigSchema = z
         minRefreshIntervalSeconds: positive,
         maxViewsPerTick: positiveInt,
         maxRealtimePerTick: nonNegativeInt,
+        initialMaxViews: positiveInt,
         largeCountThreshold: positive,
         recentlyActiveWindowSeconds: positive,
         staleSeconds: positive,

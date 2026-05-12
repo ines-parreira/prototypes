@@ -2,6 +2,8 @@ import { useEffect } from 'react'
 
 import {
     createViewCountScheduler,
+    setActiveViewFallback,
+    useDefaultView,
     useHasNewViewCountScheduler,
     useSchedulerConfig,
 } from '@repo/views'
@@ -12,6 +14,11 @@ import { SocketEventType } from 'services/socketManager/types'
 export default function useViewCountScheduler(): void {
     const { value: isEnabled } = useHasNewViewCountScheduler()
     const config = useSchedulerConfig()
+    const defaultView = useDefaultView()
+
+    useEffect(() => {
+        setActiveViewFallback(defaultView?.id ?? null)
+    }, [defaultView])
 
     useEffect(() => {
         if (!isEnabled) return

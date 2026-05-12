@@ -12,6 +12,8 @@ var mockScheduler: {
 
 jest.mock('@repo/views', () => ({
     createViewCountScheduler: jest.fn(() => mockScheduler),
+    setActiveViewFallback: jest.fn(),
+    useDefaultView: jest.fn(),
     useHasNewViewCountScheduler: jest.fn(),
     useSchedulerConfig: jest.fn(),
 }))
@@ -28,7 +30,8 @@ const fakeConfig: RefreshConfig = {
     minRefreshIntervalSeconds: 300,
     maxViewsPerTick: 5,
     maxRealtimePerTick: 2,
-    largeCountThreshold: 100,
+    initialMaxViews: 20,
+    largeCountThreshold: 1000,
     recentlyActiveWindowSeconds: 300,
     staleSeconds: 600,
 }

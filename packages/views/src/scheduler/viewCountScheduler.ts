@@ -1,5 +1,6 @@
 import {
     isViewDeactivated,
+    isViewHighPriority,
     isViewInViewport,
     isViewLowPriority,
     isViewRealtime,
@@ -40,6 +41,7 @@ export function createViewCountScheduler(
         ...options.config,
     }
     let activeIntervalId: ReturnType<typeof setInterval> | null = null
+    let hasFiredInitialTick = false
 
     function getCandidates(): ViewRefreshCandidate[] {
         const views = getAllViews()
@@ -55,6 +57,7 @@ export function createViewCountScheduler(
                 isRealtimeView: isViewRealtime(view),
                 isInViewport: isViewInViewport(view.id),
                 isSystemView: isViewSystem(view),
+                isHighPriority: isViewHighPriority(view),
                 isLowPriority: isViewLowPriority(view),
                 isDeactivated: isViewDeactivated(view),
             }
@@ -69,11 +72,21 @@ export function createViewCountScheduler(
         const { activeViewId } = viewsCountStore.getState()
         const activeViewIds = activeViewId !== null ? [activeViewId] : []
 
+        // The first tick after a tab takes leadership reuses the regular
+        // scoring (which already strongly favors in-viewport views via the
+        // +1500 bonus and ×1.5 multiplier) but with a larger budget so the
+        // user's visible views — plus active/recent fallbacks when nothing is
+        // in the viewport yet — populate in a single round trip.
+        const initial = !hasFiredInitialTick
+        const tickConfig: RefreshConfig = initial
+            ? { ...config, maxViewsPerTick: config.initialMaxViews }
+            : config
+
         const scores: Record<number, number> = {}
         for (const candidate of candidates) {
             scores[candidate.viewId] = scoreView({
                 candidate,
-                config,
+                config: tickConfig,
                 now,
                 activeViewIds,
             })
@@ -82,14 +95,19 @@ export function createViewCountScheduler(
 
         const viewIds = selectViewsToRefresh({
             candidates,
-            config,
+            config: tickConfig,
             now,
             activeViewIds,
         })
         if (viewIds.length === 0) return
 
+        hasFiredInitialTick = true
         options.onRefresh(viewIds)
-        logViewEvent('outbound', 'views-count-expired', viewIds)
+        logViewEvent(
+            'outbound',
+            initial ? 'views-count-initial' : 'views-count-expired',
+            viewIds,
+        )
     }
 
     function waitForHydration(): Promise<void> {

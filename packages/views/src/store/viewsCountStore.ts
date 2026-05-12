@@ -16,6 +16,7 @@ export type ViewsCountState = {
     scores: Record<number, number>
     isLeader: boolean
     activeViewId: number | null
+    fallbackActiveViewId: number | null
     expandedSectionIds: string[] | undefined
     viewportViewIds: number[]
     setCounts: (counts: Record<number, number>) => void
@@ -60,6 +61,14 @@ export function getActiveViewId(): number | null {
     return viewsCountStore.getState().activeViewId
 }
 
+export function setActiveViewFallback(viewId: number | null): void {
+    const urlViewId = getViewIdFromUrl()
+    viewsCountStore.setState({
+        fallbackActiveViewId: viewId,
+        activeViewId: urlViewId ?? viewId,
+    })
+}
+
 export function getExpandedSectionIds(): string[] | undefined {
     return viewsCountStore.getState().expandedSectionIds
 }
@@ -99,16 +108,20 @@ export function clearViewsCount(): void {
         counts: {},
         scores: {},
         activeViewId: null,
+        fallbackActiveViewId: null,
         expandedSectionIds: undefined,
         viewportViewIds: [],
     })
 }
 
 function syncViewedFromUrl(): void {
-    const viewId = getViewIdFromUrl()
-    viewsCountStore.setState({ activeViewId: viewId })
-    if (viewId !== null) {
-        markViewAsViewed(viewId)
+    const urlViewId = getViewIdFromUrl()
+    const { fallbackActiveViewId } = viewsCountStore.getState()
+    viewsCountStore.setState({
+        activeViewId: urlViewId ?? fallbackActiveViewId,
+    })
+    if (urlViewId !== null) {
+        markViewAsViewed(urlViewId)
     }
 }
 
@@ -142,6 +155,7 @@ export const viewsCountStore = createStore<ViewsCountState>()(
             scores: {},
             isLeader: false,
             activeViewId: null,
+            fallbackActiveViewId: null,
             expandedSectionIds: undefined,
             viewportViewIds: [],
             setCounts: (incoming) =>

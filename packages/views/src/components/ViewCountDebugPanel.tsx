@@ -30,6 +30,7 @@ import {
 
 import { useAllViews } from '../hooks/useAllViews'
 import { useHasNewViewCountScheduler } from '../hooks/useHasNewViewCountScheduler'
+import { useSchedulerConfig } from '../hooks/useSchedulerConfig'
 import {
     isViewActive,
     isViewDeactivated,
@@ -40,6 +41,7 @@ import {
     isViewStale,
     isViewSystem,
 } from '../predicates'
+import type { RefreshConfig } from '../scheduler/selectViewsToRefresh'
 import { DEFAULT_REFRESH_CONFIG } from '../scheduler/selectViewsToRefresh'
 import type { ViewEvent } from '../store/viewEventLog'
 import { viewEventLogStore } from '../store/viewEventLog'
@@ -322,6 +324,62 @@ function StatCard({
     )
 }
 
+function ConfigCard() {
+    const config = useSchedulerConfig()
+    const keys = Object.keys(DEFAULT_REFRESH_CONFIG) as Array<
+        keyof RefreshConfig
+    >
+    const overriddenKeys = keys.filter(
+        (key) => config[key] !== DEFAULT_REFRESH_CONFIG[key],
+    )
+    const isCustom = overriddenKeys.length > 0
+
+    return (
+        <Tooltip
+            trigger={
+                <Card
+                    elevation="mid"
+                    p="sm"
+                    flexDirection="column"
+                    alignItems="flex-start"
+                    gap="xxs"
+                    w="100%"
+                    h="100%"
+                >
+                    <Text size="sm" color="content-neutral-secondary">
+                        Custom config
+                    </Text>
+                    <Box flexDirection="row" alignItems="center" gap="xs">
+                        <Dot color={isCustom ? 'orange' : 'grey'} size="md" />
+                        <Heading size="lg">{isCustom ? 'Yes' : 'No'}</Heading>
+                    </Box>
+                </Card>
+            }
+        >
+            <TooltipContent>
+                <Box flexDirection="column" gap="xxxs">
+                    <Text variant="bold" size="sm">
+                        {isCustom
+                            ? `Resolved from ViewCountSchedulerConfig flag (${overriddenKeys.length} override${overriddenKeys.length === 1 ? '' : 's'})`
+                            : 'Using DEFAULT_REFRESH_CONFIG (no flag override)'}
+                    </Text>
+                    {keys.map((key) => {
+                        const isOverridden =
+                            config[key] !== DEFAULT_REFRESH_CONFIG[key]
+                        return (
+                            <Text key={key} size="sm">
+                                {key}: {String(config[key])}
+                                {isOverridden &&
+                                    ` (default ${String(DEFAULT_REFRESH_CONFIG[key])})`}
+                            </Text>
+                        )
+                    })}
+                </Box>
+            </TooltipContent>
+        </Tooltip>
+    )
+}
+
 function LeaderCard() {
     const isLeader = useStore(viewsCountStore, (s) => s.isLeader)
     return (
@@ -362,6 +420,7 @@ function StatsBar({ rows, events }: { rows: Row[]; events: ViewEvent[] }) {
         <Box flexDirection="column" gap="sm" mb="md">
             <Box style={statsRowStyle}>
                 <LeaderCard />
+                <ConfigCard />
                 <StatCard
                     label="Total"
                     value={stats.total}

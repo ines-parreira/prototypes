@@ -7,6 +7,7 @@ export {
     getViewCountEntry,
     markViewAsViewed,
     getActiveViewId,
+    setActiveViewFallback,
     clearViewsCount,
 } from './store/viewsCountStore'
 export type { ViewCountEntry } from './store/viewsCountStore'
@@ -29,6 +30,7 @@ export {
     isViewDeactivated,
     isViewExpanded,
     isViewInViewport,
+    isViewHighPriority,
     isViewLarge,
     isViewLowPriority,
     isViewStale,
@@ -49,6 +51,7 @@ export { useTrackViewInViewport } from './hooks/useTrackViewInViewport'
 export { useExpandedSections } from './hooks/useExpandedSections'
 export { useActiveView } from './hooks/useActiveView'
 export { useAllViews } from './hooks/useAllViews'
+export { useDefaultView } from './hooks/useDefaultView'
 export { useAllViewSections } from './hooks/useAllViewSections'
 export { usePrivateViews } from './hooks/usePrivateViews'
 export { usePrivateViewSections } from './hooks/usePrivateViewSections'
