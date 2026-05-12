@@ -7,7 +7,6 @@ import { Box, Button } from '@gorgias/axiom'
 export type ShowMoreListProps = {
     children: React.ReactNode
     threshold?: number
-    containerClassName?: string
 }
 
 const DEFAULT_THRESHOLD = 4
@@ -15,7 +14,6 @@ const DEFAULT_THRESHOLD = 4
 export const ShowMoreList = ({
     children,
     threshold = DEFAULT_THRESHOLD,
-    containerClassName,
 }: ShowMoreListProps) => {
     const [isExpanded, setIsExpanded] = useState(false)
     const containerId = useId()
@@ -28,17 +26,19 @@ export const ShowMoreList = ({
     const shouldShowButton = childArray.length > threshold
 
     return (
-        <>
-            <div id={containerId} className={containerClassName}>
+        <Box display="flex" flexDirection="column" gap="xs">
+            <Box
+                id={containerId}
+                display="flex"
+                flexWrap="wrap"
+                gap="md"
+                width="100%"
+                as="div"
+            >
                 {visibleChildren}
-            </div>
+            </Box>
             {shouldShowButton && (
-                <Box
-                    display="flex"
-                    justifyContent="center"
-                    width="100%"
-                    mt="md"
-                >
+                <Box display="flex" justifyContent="center" width="100%">
                     <Button
                         variant="tertiary"
                         size="md"
@@ -53,6 +53,6 @@ export const ShowMoreList = ({
                     </Button>
                 </Box>
             )}
-        </>
+        </Box>
     )
 }

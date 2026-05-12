@@ -132,18 +132,6 @@ describe('ShowMoreList', () => {
         ).toBeInTheDocument()
     })
 
-    it('should apply custom container className', () => {
-        const { container } = render(
-            <ShowMoreList containerClassName="custom-class">
-                {items.map((item) => (
-                    <div key={item}>{item}</div>
-                ))}
-            </ShowMoreList>,
-        )
-
-        expect(container.querySelector('.custom-class')).toBeInTheDocument()
-    })
-
     it('should have correct aria attributes for accessibility', async () => {
         const user = userEventLib.setup()
         render(

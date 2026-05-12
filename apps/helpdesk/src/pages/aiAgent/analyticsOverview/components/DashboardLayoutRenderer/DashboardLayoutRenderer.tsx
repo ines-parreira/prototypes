@@ -8,7 +8,6 @@ import { DashboardComponent } from 'domains/reporting/pages/dashboards/Dashboard
 import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { CardsSection } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/CardsSection'
-import css from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/DashboardLayoutRenderer.less'
 import { TablesSection } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/TablesSection'
 import type {
     DashboardLayoutConfig,
@@ -133,7 +132,9 @@ export const DashboardLayoutRenderer = ({
                 p="lg"
                 gap="lg"
                 minWidth="0px"
-                className={css.container}
+                width="100%"
+                maxWidth="100%"
+                style={{ overflowX: 'hidden' }}
             >
                 {layoutConfig.sections.map(
                     renderSection(

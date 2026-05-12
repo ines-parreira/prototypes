@@ -2,9 +2,10 @@ import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { ShowMoreList } from '@repo/reporting'
 import type { MetricConfigItem } from '@repo/reporting'
 
+import { Box } from '@gorgias/axiom'
+
 import { DashboardComponent } from 'domains/reporting/pages/dashboards/DashboardComponent'
 import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
-import css from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/DashboardLayoutRenderer.less'
 import { MetricsConfigurator } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/MetricsConfigurator'
 import type {
     AnalyticsChartType,
@@ -51,7 +52,7 @@ export const CardsSection = ({
     }))
 
     return isAnalyticsDashboardsTrendCardsEnabled ? (
-        <>
+        <Box display="flex" flexDirection="column" gap="xs">
             <MetricsConfigurator
                 metrics={keyKpisConfig}
                 dashboardId={dashboardId}
@@ -59,32 +60,38 @@ export const CardsSection = ({
                 tabId={tabId}
                 tabName={tabName}
             />
-            <ShowMoreList key={tabId} containerClassName={css.kpisSection}>
+            <ShowMoreList key={tabId}>
                 {visibleItems.map((item) => (
-                    <div
+                    <Box
                         key={`${tabId}-${item.chartId}`}
-                        className={css.kpiItem}
+                        flex="1 1 calc(25% - 16px)"
+                        minWidth="240px"
+                        display="block"
                     >
                         <DashboardComponent
                             chart={item.chartId}
                             config={reportConfig}
                             withChartMenu={isCustomDashboardsEnabled}
                         />
-                    </div>
+                    </Box>
                 ))}
             </ShowMoreList>
-        </>
+        </Box>
     ) : (
-        <div className={css.kpisSection}>
+        <Box display="flex" flexWrap="wrap" gap="md" width="100%">
             {visibleItems.map((item) => (
-                <div key={`${tabId}-${item.chartId}`} className={css.kpiItem}>
+                <Box
+                    key={`${tabId}-${item.chartId}`}
+                    flex="1 1 calc(25% - 16px)"
+                    minWidth="240px"
+                >
                     <DashboardComponent
                         chart={item.chartId}
                         config={reportConfig}
                         withChartMenu={isCustomDashboardsEnabled}
                     />
-                </div>
+                </Box>
             ))}
-        </div>
+        </Box>
     )
 }
