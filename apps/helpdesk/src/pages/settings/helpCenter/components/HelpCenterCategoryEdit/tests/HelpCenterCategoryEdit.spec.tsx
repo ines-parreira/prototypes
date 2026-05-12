@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { render } from '@repo/testing'
-import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -518,14 +518,18 @@ describe('<HelpCenterCategoryEdit />', () => {
             user: ReturnType<typeof userEvent.setup>,
             optionName: string,
         ) => {
+            const titleInput = screen.getByTestId('title-input')
+            await waitFor(() => expect(document.activeElement).toBe(titleInput))
             const trigger = screen.getByLabelText('Parent category')
-            await act(async () => {
-                await user.click(trigger)
-            })
-            const option = await screen.findByRole('option', {
+            await user.click(trigger)
+            const listbox = await screen.findByRole('listbox')
+            const option = await within(listbox).findByRole('option', {
                 name: optionName,
             })
             await user.click(option)
+            await waitFor(() =>
+                expect(screen.queryByRole('listbox')).not.toBeInTheDocument(),
+            )
         }
 
         it('correctly moves sub-category to another parent', async () => {
