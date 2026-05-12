@@ -3,7 +3,7 @@ import {
     DiscountObjectType,
     InvoiceCadence,
 } from '@gorgias/helpdesk-types'
-import type { DiscountType, DiscountVO } from '@gorgias/helpdesk-types'
+import type { DiscountReductionType, DiscountVO } from '@gorgias/helpdesk-types'
 
 import { Cadence, HelpdeskPlanTier, ProductType } from '../../types'
 import type {
@@ -15,10 +15,8 @@ import type {
 } from '../../types'
 import { getTotalWithDiscounts } from '../getTotalWithDiscounts'
 
-// SDK types discount_type as a string enum but the API returns 1 (flat) or 2 (percentage).
-// TODO: remove these casts once the SDK is updated.
-const DiscountTypeFlat = 1 as unknown as DiscountType
-const DiscountTypePercentage = 2 as unknown as DiscountType
+const DiscountTypeFlat = 1 as DiscountReductionType
+const DiscountTypePercentage = 2 as DiscountReductionType
 
 const proMonthlyHelpdeskPlan: HelpdeskPlan = {
     product: ProductType.Helpdesk,

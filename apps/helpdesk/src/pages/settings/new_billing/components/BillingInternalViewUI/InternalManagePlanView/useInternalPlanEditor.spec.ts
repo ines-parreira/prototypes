@@ -2,7 +2,7 @@ import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import { InvoiceCadence } from '@gorgias/helpdesk-types'
-import type { DiscountVO } from '@gorgias/helpdesk-types'
+import type { DiscountReductionType, DiscountVO } from '@gorgias/helpdesk-types'
 
 import {
     basicMonthlyHelpdeskPlan,
@@ -590,7 +590,7 @@ describe('derivePriceSummary', () => {
         const discount: DiscountVO = {
             discount_applicability: 1,
             discount_object_type: 1,
-            discount_type: 'percentage' as DiscountVO['discount_type'],
+            discount_type: 1 as DiscountReductionType,
             percent_off: 10,
             products: [],
         }
@@ -646,7 +646,7 @@ describe('derivePriceSummary', () => {
         const discount: DiscountVO = {
             discount_applicability: 1,
             discount_object_type: 1,
-            discount_type: 'percentage' as DiscountVO['discount_type'],
+            discount_type: 1 as DiscountReductionType,
             percent_off: 20,
             products: [],
         }

@@ -8,7 +8,7 @@ import {
     DiscountObjectType,
     InvoiceCadence,
 } from '@gorgias/helpdesk-types'
-import type { DiscountType, DiscountVO } from '@gorgias/helpdesk-types'
+import type { DiscountReductionType, DiscountVO } from '@gorgias/helpdesk-types'
 
 import {
     basicMonthlyHelpdeskPlan,
@@ -119,7 +119,7 @@ describe('ConfirmSummaryTable discounts', () => {
                 coupon_name: 'Test 50% off',
                 discount_applicability: DiscountApplicability[1],
                 discount_object_type: DiscountObjectType[1],
-                discount_type: 2 as unknown as DiscountType,
+                discount_type: 2 as DiscountReductionType,
                 percent_off: 50,
                 products: [],
             } as DiscountVO,

@@ -135,6 +135,8 @@ export type TicketMessage = {
     isMessage: boolean
     intents?: TicketMessageIntent[]
     auth_customer_identity: TicketMessageAuthCustomerIdentity | null
+    imported?: boolean | null
+    processed_datetime?: string | null
 }
 
 export type TicketMessageIntent = {
