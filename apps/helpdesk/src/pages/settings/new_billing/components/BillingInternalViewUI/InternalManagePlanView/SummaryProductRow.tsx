@@ -7,7 +7,8 @@ import type { Plan, ProductType } from 'models/billing/types'
 import {
     getOverageUnitPriceFormatted,
     getPlanPriceFormatted,
-    isTrial,
+    isFreePlan,
+    isPayAsYouGoTrial,
 } from 'models/billing/utils'
 
 import type { ResolvedPlanStatus } from './useInternalPlanEditor'
@@ -25,13 +26,18 @@ const STATUS_TAG: Record<
 }
 
 function getProductDescription(plan: Plan, productType: ProductType): string {
-    if (isTrial(plan)) return 'Trial'
     const info = PRODUCT_INFO[productType]
+    if (isFreePlan(plan)) {
+        return `${plan.name} - Unlimited ${info.counter}/${plan.cadence}`
+    }
+    if (isPayAsYouGoTrial(plan)) {
+        return 'Trial'
+    }
     return `${plan.name} - ${formatNumTickets(plan.num_quota_tickets ?? 0)} ${info.counter}/${plan.cadence}`
 }
 
 function getProductPrice(plan: Plan, productType: ProductType): string {
-    if (isTrial(plan)) {
+    if (isPayAsYouGoTrial(plan)) {
         const info = PRODUCT_INFO[productType]
         return `${getOverageUnitPriceFormatted(plan)} ${info.perTicket}`
     }

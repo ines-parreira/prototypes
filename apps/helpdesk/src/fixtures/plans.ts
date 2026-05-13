@@ -787,6 +787,20 @@ export const voicePlan0: SMSOrVoicePlan = {
     extra_ticket_cost: 2.4,
 }
 
+export const voicePlan0Free: SMSOrVoicePlan = {
+    custom: false,
+    public: true,
+    amount: 0,
+    cadence: Cadence.Month,
+    invoice_cadence: InvoiceCadence.Month,
+    currency: 'usd',
+    num_quota_tickets: 0,
+    plan_id: 'voc-addon-free-monthly-usd-4',
+    name: 'Voice Addon Free Monthly',
+    product: ProductType.Voice,
+    extra_ticket_cost: 0,
+}
+
 export const voicePlan0Quarterly: SMSOrVoicePlan = {
     custom: false,
     public: true,

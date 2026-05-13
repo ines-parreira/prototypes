@@ -88,6 +88,16 @@ export function isTrial(plan: Plan | undefined) {
     )
 }
 
+export function isFreePlan(plan: Plan | undefined): boolean {
+    if (!plan) return false
+    return plan.num_quota_tickets === 0 && plan.extra_ticket_cost === 0
+}
+
+export function isPayAsYouGoTrial(plan: Plan | undefined): boolean {
+    if (!plan) return false
+    return plan.num_quota_tickets === 0 && plan.extra_ticket_cost !== 0
+}
+
 export function isLegacyAutomate(plan: Plan | undefined) {
     if (!plan) return false
 

@@ -6,6 +6,7 @@ import {
     basicMonthlyHelpdeskPlan,
     proMonthlyHelpdeskPlan,
     voicePlan0,
+    voicePlan0Free,
 } from 'fixtures/plans'
 import type { Plan, PlanId } from 'models/billing/types'
 import { ProductType } from 'models/billing/types'
@@ -41,7 +42,7 @@ describe('ProductRow', () => {
         expect(screen.getByText(/tickets\/month/)).toBeInTheDocument()
     })
 
-    it('renders Trial badge for a trial plan', () => {
+    it('renders Trial badge for a pay-as-you-go trial plan', () => {
         renderComponent({
             productType: ProductType.Voice,
             plan: voicePlan0,
@@ -50,6 +51,20 @@ describe('ProductRow', () => {
         })
 
         expect(screen.getByText('Trial')).toBeInTheDocument()
+        expect(screen.queryByText('Active')).not.toBeInTheDocument()
+        expect(screen.queryByText('Free')).not.toBeInTheDocument()
+    })
+
+    it('renders Free badge for a free plan', () => {
+        renderComponent({
+            productType: ProductType.Voice,
+            plan: voicePlan0Free,
+            catalogPlans: { [voicePlan0Free.plan_id]: voicePlan0Free },
+            selectedPlanId: voicePlan0Free.plan_id,
+        })
+
+        expect(screen.getByText('Free')).toBeInTheDocument()
+        expect(screen.queryByText('Trial')).not.toBeInTheDocument()
         expect(screen.queryByText('Active')).not.toBeInTheDocument()
     })
 
@@ -144,6 +159,52 @@ describe('ProductRow', () => {
             })
 
             expect(screen.getAllByText('Current plan')).toHaveLength(1)
+        })
+    })
+
+    describe('plan type badge in dropdown', () => {
+        it('shows Trial badge in the dropdown list for a pay-as-you-go trial plan', async () => {
+            const user = userEvent.setup()
+            renderComponent({
+                productType: ProductType.Voice,
+                plan: voicePlan0,
+                catalogPlans: { [voicePlan0.plan_id]: voicePlan0 },
+                selectedPlanId: voicePlan0.plan_id,
+            })
+
+            await act(() =>
+                user.click(screen.getByRole('button', { name: /^0 / })),
+            )
+
+            await waitFor(() => {
+                expect(screen.getByText(voicePlan0.plan_id)).toBeInTheDocument()
+            })
+
+            expect(screen.getAllByText('Trial')).toHaveLength(2)
+            expect(screen.queryByText('Free')).not.toBeInTheDocument()
+        })
+
+        it('shows Free badge in the dropdown list for a free plan', async () => {
+            const user = userEvent.setup()
+            renderComponent({
+                productType: ProductType.Voice,
+                plan: voicePlan0Free,
+                catalogPlans: { [voicePlan0Free.plan_id]: voicePlan0Free },
+                selectedPlanId: voicePlan0Free.plan_id,
+            })
+
+            await act(() =>
+                user.click(screen.getByRole('button', { name: /^Unlimited/ })),
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText(voicePlan0Free.plan_id),
+                ).toBeInTheDocument()
+            })
+
+            expect(screen.getAllByText('Free')).toHaveLength(2)
+            expect(screen.queryByText('Trial')).not.toBeInTheDocument()
         })
     })
 

@@ -16,7 +16,7 @@ import {
 
 import type { Plan, PlanId } from 'models/billing/types'
 import { ProductType } from 'models/billing/types'
-import { isTrial } from 'models/billing/utils'
+import { isFreePlan, isPayAsYouGoTrial } from 'models/billing/utils'
 
 const PRODUCT_TYPE_TO_ICON: Record<ProductType, IconName> = {
     [ProductType.Helpdesk]: 'system-desktop',
@@ -30,11 +30,13 @@ type PlanOption = {
     id: PlanId
     formattedTickets: string
     name: string
+    planBadge: 'free' | 'trial' | null
 }
 
 function getStatusBadge(plan: Plan | null) {
     if (!plan) return <Tag color={Color.Grey}>Inactive</Tag>
-    if (isTrial(plan)) return <Tag color={Color.Blue}>Trial</Tag>
+    if (isFreePlan(plan)) return <Tag color={Color.Orange}>Free</Tag>
+    if (isPayAsYouGoTrial(plan)) return <Tag color={Color.Blue}>Trial</Tag>
     return <Tag color={Color.Green}>Active</Tag>
 }
 
@@ -66,10 +68,15 @@ export function ProductRow({
             catalogPlans
                 ? Object.values(catalogPlans).map((plan) => ({
                       id: plan.plan_id,
-                      formattedTickets: formatNumTickets(
-                          plan.num_quota_tickets ?? 0,
-                      ),
+                      formattedTickets: isFreePlan(plan)
+                          ? 'Unlimited'
+                          : formatNumTickets(plan.num_quota_tickets ?? 0),
                       name: plan.name,
+                      planBadge: isFreePlan(plan)
+                          ? ('free' as const)
+                          : isPayAsYouGoTrial(plan)
+                            ? ('trial' as const)
+                            : null,
                   }))
                 : [],
         [catalogPlans],
@@ -137,6 +144,16 @@ export function ProductRow({
                                             >
                                                 {option.id}
                                             </Text>
+                                            {option.planBadge === 'free' && (
+                                                <Tag color={Color.Orange}>
+                                                    Free
+                                                </Tag>
+                                            )}
+                                            {option.planBadge === 'trial' && (
+                                                <Tag color={Color.Blue}>
+                                                    Trial
+                                                </Tag>
+                                            )}
                                             {option.id === plan?.plan_id && (
                                                 <Tag color={Color.Purple}>
                                                     Current plan

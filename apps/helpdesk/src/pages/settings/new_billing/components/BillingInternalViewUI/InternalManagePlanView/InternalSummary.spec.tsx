@@ -17,6 +17,7 @@ import {
     basicYearlyInvoicedMonthlyHelpdeskPlan,
     proMonthlyHelpdeskPlan,
     voicePlan0,
+    voicePlan0Free,
     voicePlan3,
     voicePlan4,
 } from 'fixtures/plans'
@@ -127,7 +128,7 @@ describe('InternalSummary', () => {
         expect(screen.getByText('$30/year')).toBeInTheDocument()
     })
 
-    it('excludes trial plans from total calculation', () => {
+    it('shows Trial description and overage price for a pay-as-you-go trial plan', () => {
         const plans: ResolvedPlan[] = [
             makeResolved({
                 productType: ProductType.Helpdesk,
@@ -144,6 +145,31 @@ describe('InternalSummary', () => {
 
         expect(screen.getAllByText('$60/month')).toHaveLength(2)
         expect(screen.getByText('Trial')).toBeInTheDocument()
+        expect(screen.queryByText('Free')).not.toBeInTheDocument()
+    })
+
+    it('shows unlimited description and $0 price for a free plan', () => {
+        const plans: ResolvedPlan[] = [
+            makeResolved({
+                productType: ProductType.Helpdesk,
+                plan: basicMonthlyHelpdeskPlan,
+                currentPlan: basicMonthlyHelpdeskPlan,
+            }),
+            makeResolved({
+                productType: ProductType.Voice,
+                plan: voicePlan0Free,
+                currentPlan: voicePlan0Free,
+            }),
+        ]
+        renderComponent(plans)
+
+        expect(screen.getAllByText('$60/month')).toHaveLength(2)
+        expect(
+            screen.getByText(
+                'Voice Addon Free Monthly - Unlimited voice tickets/month',
+            ),
+        ).toBeInTheDocument()
+        expect(screen.queryByText('Trial')).not.toBeInTheDocument()
     })
 
     it('disables Preview changes button when hasChanges is false and enables when true', () => {
