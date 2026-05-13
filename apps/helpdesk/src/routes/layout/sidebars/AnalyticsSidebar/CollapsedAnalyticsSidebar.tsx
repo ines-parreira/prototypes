@@ -4,6 +4,7 @@ import { history } from '@repo/routing'
 import { Icon, Menu, MenuItem } from '@gorgias/axiom'
 
 import { STATS_ROUTE_PREFIX } from 'domains/reporting/pages/common/components/constants'
+import { VideoPreviewTooltip } from 'domains/reporting/pages/self-service/VideoPreviewTooltip'
 import type { StatsNavbarSection } from 'routes/layout/products/analytics'
 import { useCollapsedSidebarActiveMatch } from 'routes/layout/sidebars/hooks/useCollapsedSidebarActiveMatch'
 
@@ -36,15 +37,23 @@ export const CollapsedAnalyticsSidebar = ({ sections }: Props) => {
             onSelectionChange={handleSelectionChange}
             selectedKey={activeMatch?.sectionId}
         >
-            {sections.map((section) =>
-                section.items?.length === 1 ? (
-                    <SidebarCollapsedItem
-                        key={section.id}
-                        id={section.id}
-                        icon={section.icon}
-                        label={section.label}
-                    />
-                ) : (
+            {sections.map((section) => {
+                if (section.items?.length === 1) {
+                    return (
+                        <SidebarCollapsedItem
+                            key={section.id}
+                            id={section.id}
+                            icon={section.icon}
+                            label={section.label}
+                        />
+                    )
+                }
+
+                const tooltipProps = section.items?.find(
+                    (item) => item.tooltipProps,
+                )?.tooltipProps
+
+                const menu = (
                     <Menu
                         key={section.id}
                         selectedKeys={
@@ -58,6 +67,7 @@ export const CollapsedAnalyticsSidebar = ({ sections }: Props) => {
                                 id={section.id}
                                 icon={section.icon}
                                 label={section.label}
+                                hideTooltip={!!tooltipProps}
                             />
                         }
                     >
@@ -77,8 +87,16 @@ export const CollapsedAnalyticsSidebar = ({ sections }: Props) => {
                             />
                         ))}
                     </Menu>
-                ),
-            )}
+                )
+
+                return tooltipProps ? (
+                    <VideoPreviewTooltip key={section.id} {...tooltipProps}>
+                        {menu}
+                    </VideoPreviewTooltip>
+                ) : (
+                    menu
+                )
+            })}
         </SidebarCollapsedGroup>
     )
 }

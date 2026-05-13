@@ -3,6 +3,7 @@ import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import { VideoPreviewTooltip } from 'domains/reporting/pages/self-service/VideoPreviewTooltip'
 import { useStatsNavbarConfig } from 'routes/layout/products/analytics'
 import { AnalyticsSidebar } from 'routes/layout/sidebars/AnalyticsSidebar/AnalyticsSidebar'
 
@@ -12,6 +13,9 @@ jest.mock(
         CollapsedAnalyticsSidebar: () => <div>CollapsedAnalyticsSidebar</div>,
     }),
 )
+
+jest.mock('domains/reporting/pages/self-service/VideoPreviewTooltip')
+const VideoPreviewTooltipMock = assumeMock(VideoPreviewTooltip)
 
 jest.mock(
     'domains/reporting/pages/report-chart-restrictions/ProtectedRoute',
@@ -66,6 +70,9 @@ describe('AnalyticsSidebar', () => {
         useStatsNavbarConfigMock.mockReturnValue({
             sections: mockSections as any,
         })
+        VideoPreviewTooltipMock.mockImplementation(({ children }) => (
+            <>{children}</>
+        ))
     })
 
     afterEach(() => {
@@ -134,6 +141,51 @@ describe('AnalyticsSidebar', () => {
             expect(
                 screen.getByRole('button', { name: 'Add Dashboard' }),
             ).toBeInTheDocument()
+        })
+
+        it('wraps item in VideoPreviewTooltip when tooltipProps is provided', async () => {
+            const user = userEvent.setup()
+            const tooltipProps = {
+                videoSrc: 'https://example.com/video.mp4',
+                videoPoster: 'https://example.com/poster.png',
+                title: 'AI & Automation analytics',
+                body: 'Track your AI Agent performance.',
+                learnMoreUrl: 'https://docs.example.com',
+            }
+            useStatsNavbarConfigMock.mockReturnValue({
+                sections: [
+                    {
+                        id: 'automate',
+                        label: 'AI & automation',
+                        icon: 'zap',
+                        items: [
+                            {
+                                key: 'analytics-overview',
+                                id: 'analytics-overview',
+                                route: 'analytics-overview',
+                                label: 'Overview',
+                                tooltipProps,
+                            },
+                        ],
+                    },
+                ] as any,
+            })
+
+            render(<AnalyticsSidebar />, { wrapper })
+
+            await user.click(screen.getByText('AI & automation'))
+
+            expect(VideoPreviewTooltipMock).toHaveBeenCalledWith(
+                expect.objectContaining(tooltipProps),
+                expect.anything(),
+            )
+            expect(screen.getByText('Overview')).toBeInTheDocument()
+        })
+
+        it('does not wrap item in VideoPreviewTooltip when tooltipProps is not provided', () => {
+            render(<AnalyticsSidebar />, { wrapper })
+
+            expect(VideoPreviewTooltipMock).not.toHaveBeenCalled()
         })
 
         it('renders trailingSlot for items that have one', async () => {

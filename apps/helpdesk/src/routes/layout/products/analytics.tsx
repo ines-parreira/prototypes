@@ -12,6 +12,8 @@ import { LINK_AI_SALES_AGENT_TEXT } from 'domains/reporting/pages/automate/aiSal
 import { StatsNavbarViewSections } from 'domains/reporting/pages/common/components/StatsNavbarView/constants'
 import { CreateDashboardMenu } from 'domains/reporting/pages/dashboards/CreateDashboardMenu/CreateDashboardMenu'
 import {
+    AI_AGENT_AI_AGENT_NAV_TOOLTIP,
+    OVERVIEW_AI_AGENT_NAV_TOOLTIP,
     PAGE_TITLE_AI_AGENT,
     PAGE_TITLE_OVERVIEW,
     PAGE_TITLE_PERFORMANCE_BY_FEATURES,
@@ -50,6 +52,14 @@ export type StatsNavbarSection = {
         itemId?: string
         requiresUpgrade?: boolean
         trailingSlot?: ReactNode
+        tooltipProps?: {
+            videoSrc: string
+            videoPoster?: string
+            videoDuration?: string
+            title: string
+            body: string
+            learnMoreUrl: string
+        }
     }[]
 }
 
@@ -122,6 +132,9 @@ export function useStatsNavbarConfig() {
     )
     const { value: isHelpCenterAnalyticsEnabled } = useFlagWithLoading(
         FeatureFlagKey.HelpCenterAnalytics,
+    )
+    const { value: isNavTooltipEnabled } = useFlagWithLoading(
+        FeatureFlagKey.AiAgentAnalyticsNavTooltip,
     )
 
     const isAutoQANavLinkAvailable = useMemo(
@@ -197,6 +210,9 @@ export function useStatsNavbarConfig() {
                                                     : 'Beta'}
                                             </Tag>
                                         ),
+                                        tooltipProps: isNavTooltipEnabled
+                                            ? OVERVIEW_AI_AGENT_NAV_TOOLTIP
+                                            : undefined,
                                     },
                                     {
                                         id: 'analytics-ai-agent',
@@ -209,6 +225,9 @@ export function useStatsNavbarConfig() {
                                                     : 'Beta'}
                                             </Tag>
                                         ),
+                                        tooltipProps: isNavTooltipEnabled
+                                            ? AI_AGENT_AI_AGENT_NAV_TOOLTIP
+                                            : undefined,
                                     },
                                 ]
                               : []),
@@ -440,6 +459,7 @@ export function useStatsNavbarConfig() {
         isAiAgentStatsPageEnabled,
         isAnalyticsDashboardsNewScreensEnabled,
         isLegacyReportsDisabled,
+        isNavTooltipEnabled,
         canUseAiSalesAgent,
         getDashboardsHandler,
         isConvertSubscriber,

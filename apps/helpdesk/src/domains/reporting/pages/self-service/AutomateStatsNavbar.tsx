@@ -1,4 +1,4 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { NavLink } from 'react-router-dom'
 
 import { Tag } from '@gorgias/axiom'
@@ -9,11 +9,14 @@ import { StatsNavbarViewSections } from 'domains/reporting/pages/common/componen
 import { ProtectedRoute } from 'domains/reporting/pages/report-chart-restrictions/ProtectedRoute'
 import css from 'domains/reporting/pages/self-service/AutomateStatsNavbar.less'
 import {
+    AI_AGENT_AI_AGENT_NAV_TOOLTIP,
+    OVERVIEW_AI_AGENT_NAV_TOOLTIP,
     PAGE_TITLE_AI_AGENT,
     PAGE_TITLE_OVERVIEW,
     PAGE_TITLE_PERFORMANCE_BY_FEATURES,
     ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES,
 } from 'domains/reporting/pages/self-service/constants'
+import { VideoPreviewTooltip } from 'domains/reporting/pages/self-service/VideoPreviewTooltip'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import UpgradeIcon from 'pages/common/components/UpgradeIcon'
@@ -31,20 +34,57 @@ export function AutomateStatsNavbar() {
     const { hasAccess } = useAiAgentAccess()
     const { isStandaloneAiAgent } = useStandaloneAiContext()
 
-    const isAiAgentStatsPageEnabled = useFlag(FeatureFlagKey.AIAgentStatsPage)
+    const { value: isAiAgentStatsPageEnabled } = useFlagWithLoading(
+        FeatureFlagKey.AIAgentStatsPage,
+    )
 
     const canUseAiSalesAgent = useCanUseAiSalesAgent()
 
-    const isAnalyticsDashboardsNewScreensEnabled = useFlag(
-        FeatureFlagKey.AiAgentAnalyticsDashboardsNewScreens,
+    const { value: isAnalyticsDashboardsNewScreensEnabled } =
+        useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsNewScreens)
+
+    const { value: isNavTooltipEnabled } = useFlagWithLoading(
+        FeatureFlagKey.AiAgentAnalyticsNavTooltip,
     )
 
-    const isDisableLegacyReportsEnabled = useFlag(
+    const { value: isDisableLegacyReportsEnabled } = useFlagWithLoading(
         FeatureFlagKey.AiAgentAnalyticsDisableLegacyReports,
     )
 
     const isLegacyReportsDisabled =
         isAnalyticsDashboardsNewScreensEnabled && isDisableLegacyReportsEnabled
+
+    const overviewNavItem = (
+        <Navigation.SectionItem
+            as={NavLink}
+            to={ANALYTICS_OVERVIEW_PATH}
+            exact
+            displayType="indent"
+        >
+            <div className={css.navItemWithBadge}>
+                {PAGE_TITLE_OVERVIEW}
+                <Tag size="sm" color="purple" className={css.newBadge}>
+                    {isLegacyReportsDisabled ? 'New' : 'Beta'}
+                </Tag>
+            </div>
+        </Navigation.SectionItem>
+    )
+
+    const aiAgentNavItem = (
+        <Navigation.SectionItem
+            as={NavLink}
+            to={ANALYTICS_AI_AGENT_PATH}
+            exact
+            displayType="indent"
+        >
+            <div className={css.navItemWithBadge}>
+                {PAGE_TITLE_AI_AGENT}
+                <Tag size="sm" color="purple" className={css.newBadge}>
+                    {isLegacyReportsDisabled ? 'New' : 'Beta'}
+                </Tag>
+            </div>
+        </Navigation.SectionItem>
+    )
 
     return (
         <Navigation.Section value={StatsNavbarViewSections.Automate}>
@@ -73,49 +113,29 @@ export function AutomateStatsNavbar() {
                     <>
                         {isAnalyticsDashboardsNewScreensEnabled && (
                             <ProtectedRoute path={ANALYTICS_OVERVIEW_PATH}>
-                                <Navigation.SectionItem
-                                    as={NavLink}
-                                    to={ANALYTICS_OVERVIEW_PATH}
-                                    exact
-                                    displayType="indent"
-                                >
-                                    <div className={css.navItemWithBadge}>
-                                        {PAGE_TITLE_OVERVIEW}
-                                        <Tag
-                                            size="sm"
-                                            color="purple"
-                                            className={css.newBadge}
-                                        >
-                                            {isLegacyReportsDisabled
-                                                ? 'New'
-                                                : 'Beta'}
-                                        </Tag>
-                                    </div>
-                                </Navigation.SectionItem>
+                                {isNavTooltipEnabled ? (
+                                    <VideoPreviewTooltip
+                                        {...OVERVIEW_AI_AGENT_NAV_TOOLTIP}
+                                    >
+                                        {overviewNavItem}
+                                    </VideoPreviewTooltip>
+                                ) : (
+                                    overviewNavItem
+                                )}
                             </ProtectedRoute>
                         )}
 
                         {isAnalyticsDashboardsNewScreensEnabled && (
                             <ProtectedRoute path={ANALYTICS_AI_AGENT_PATH}>
-                                <Navigation.SectionItem
-                                    as={NavLink}
-                                    to={ANALYTICS_AI_AGENT_PATH}
-                                    exact
-                                    displayType="indent"
-                                >
-                                    <div className={css.navItemWithBadge}>
-                                        {PAGE_TITLE_AI_AGENT}
-                                        <Tag
-                                            size="sm"
-                                            color="purple"
-                                            className={css.newBadge}
-                                        >
-                                            {isLegacyReportsDisabled
-                                                ? 'New'
-                                                : 'Beta'}
-                                        </Tag>
-                                    </div>
-                                </Navigation.SectionItem>
+                                {isNavTooltipEnabled ? (
+                                    <VideoPreviewTooltip
+                                        {...AI_AGENT_AI_AGENT_NAV_TOOLTIP}
+                                    >
+                                        {aiAgentNavItem}
+                                    </VideoPreviewTooltip>
+                                ) : (
+                                    aiAgentNavItem
+                                )}
                             </ProtectedRoute>
                         )}
 

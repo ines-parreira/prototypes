@@ -1,0 +1,182 @@
+:global([data-name='tooltip-content']:has([data-video-preview-tooltip])) {
+    display: flex;
+    width: 320px;
+    height: 278px;
+    max-width: none;
+    padding: var(--spacing-sm) var(--spacing-md);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-xs);
+    border-radius: var(--spacing-sm);
+    overflow: hidden;
+    border: 1px solid var(--border-neutral-default);
+    background: var(--surface-neutral-primary);
+    box-shadow: var(--effects-shadow-container);
+}
+
+:local {
+    .wrapper {
+        width: 100%;
+    }
+
+    .trigger {
+        display: block;
+        width: 100%;
+    }
+
+    .videoWrapper {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        border-radius: var(--spacing-sm);
+        overflow: hidden;
+        background: var(--surface-neutral-secondary);
+    }
+
+    .modalVideoWrapper {
+        position: relative;
+        width: 100%;
+        height: 0;
+        padding-top: 56.25%;
+        border-radius: var(--spacing-sm);
+        overflow: hidden;
+        background-size: cover;
+        background-position: center;
+
+        > :global(*) {
+            position: absolute;
+            inset: -3px;
+            width: calc(100% + 6px);
+            height: calc(100% + 6px);
+            border: none;
+        }
+    }
+
+    .thumbnailButton {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        border: none;
+        background: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            background: rgba(0, 0, 0, 0.3);
+        }
+    }
+
+    .thumbnailImage {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 0;
+    }
+
+    .thumbnailOverlay {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        color: var(--content-inverted-default);
+
+        :global(.dark) & {
+            color: var(--surface-inverted-default);
+        }
+    }
+
+    .textBlock {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .titleRow {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--spacing-xs);
+    }
+
+    .duration {
+        color: var(--content-neutral-secondary);
+        font-size: var(--font-size-sm);
+        white-space: nowrap;
+        flex-shrink: 0;
+        border-radius: var(--spacing-xxs);
+        border: 0.5px solid var(--border-neutral-tertiary);
+        padding: 0 var(--spacing-xs);
+    }
+
+    .title {
+        color: var(--content-neutral-default);
+        font-kerning: none;
+        font-size: var(--font-size-sm);
+        font-style: normal;
+        font-weight: 600;
+        line-height: 20px;
+    }
+
+    .body {
+        color: var(--content-neutral-secondary);
+        padding-bottom: var(--spacing-xs);
+
+        :global(.dark) & {
+            color: var(--content-neutral-default);
+        }
+    }
+
+    .learnMoreLink {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xxxxs);
+        color: var(--content-neutral-default);
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-semibold);
+        text-decoration: none;
+        padding-top: var(--spacing-xs);
+
+        &:hover {
+            text-decoration: underline;
+        }
+
+        :global(.dark) & {
+            color: var(--content-accent-default);
+        }
+    }
+
+    .modalContent {
+        font-kerning: none;
+        font-variant-numeric: lining-nums tabular-nums;
+        font-size: var(--font-size-xs);
+        font-style: normal;
+        font-weight: 400;
+        line-height: 16px;
+        letter-spacing: 0.12px;
+    }
+
+    .modalTitle {
+        color: var(--content-neutral-default);
+        font-style: normal;
+        font-weight: 600;
+        line-height: 28px;
+        padding-bottom: 18px;
+    }
+
+    .modalBody {
+        color: var(--content-neutral-secondary);
+    }
+}

@@ -9,6 +9,7 @@ import { Icon } from '@gorgias/axiom'
 
 import { STATS_ROUTE_PREFIX } from 'domains/reporting/pages/common/components/constants'
 import { StatsNavbarViewSections } from 'domains/reporting/pages/common/components/StatsNavbarView/constants'
+import { VideoPreviewTooltip } from 'domains/reporting/pages/self-service/VideoPreviewTooltip'
 import { useStatsNavbarConfig } from 'routes/layout/products/analytics'
 import { CollapsedAnalyticsSidebar } from 'routes/layout/sidebars/AnalyticsSidebar/CollapsedAnalyticsSidebar'
 
@@ -37,21 +38,36 @@ export function AnalyticsSidebar() {
                             leadingSlot={section.icon}
                             actionsSlot={section.actionsSlot}
                         >
-                            {section.items.map((item) => (
-                                <NavigationSectionItem
-                                    key={item.id}
-                                    to={`${STATS_ROUTE_PREFIX}${item.route}`}
-                                    id={item.id}
-                                    label={item.label}
-                                    trailingSlot={
-                                        item.requiresUpgrade ? (
-                                            <Icon name="arrow-up-circle" />
-                                        ) : (
-                                            item.trailingSlot
-                                        )
-                                    }
-                                />
-                            ))}
+                            {section.items.map((item) => {
+                                const navItem = (
+                                    <NavigationSectionItem
+                                        key={item.id}
+                                        to={`${STATS_ROUTE_PREFIX}${item.route}`}
+                                        id={item.id}
+                                        label={item.label}
+                                        trailingSlot={
+                                            item.requiresUpgrade ? (
+                                                <Icon name="arrow-up-circle" />
+                                            ) : (
+                                                item.trailingSlot
+                                            )
+                                        }
+                                    />
+                                )
+
+                                if (item.tooltipProps) {
+                                    return (
+                                        <VideoPreviewTooltip
+                                            key={item.id}
+                                            {...item.tooltipProps}
+                                        >
+                                            {navItem}
+                                        </VideoPreviewTooltip>
+                                    )
+                                }
+
+                                return navItem
+                            })}
                         </NavigationSection>
                     )
                 }

@@ -22,3 +22,23 @@ export const AUTOMATION_RATE_LABEL = 'Automation rate'
 export const AUTOMATED_INTERACTIONS_LABEL = 'Automated interactions'
 export const AUTOMATED_INTERACTIONS_BY_FEATURE_LABEL =
     AUTOMATED_INTERACTIONS_LABEL + ' by feature'
+
+const SHARED_AI_AGENT_NAV_TOOLTIP = {
+    videoSrc: 'https://fast.wistia.net/embed/iframe/5agokmbbhz',
+    videoPoster:
+        'https://embed-ssl.wistia.com/deliveries/9ef6818ab34540e0468b60c7b31d8f52f657ee64.bin',
+    videoDuration: '2:00',
+    learnMoreUrl: 'https://docs.gorgias.com/en-US/articles/ai-agent-analytics',
+}
+
+export const AI_AGENT_AI_AGENT_NAV_TOOLTIP = {
+    ...SHARED_AI_AGENT_NAV_TOOLTIP,
+    title: 'AI Agent',
+    body: 'A deeper look at AI Agent performance, with sub-reports for Support Agent and Shopping Assistant.',
+}
+
+export const OVERVIEW_AI_AGENT_NAV_TOOLTIP = {
+    ...SHARED_AI_AGENT_NAV_TOOLTIP,
+    title: 'Overview',
+    body: 'A holistic view of automation performance across your AI Agent and all automation feature usage.',
+}

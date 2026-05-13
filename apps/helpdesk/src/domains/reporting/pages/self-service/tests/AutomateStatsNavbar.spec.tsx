@@ -1,11 +1,15 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { assumeMock, render, userEvent } from '@repo/testing'
+import { act } from '@testing-library/react'
 
 import { Navigation } from 'components/Navigation/Navigation'
 import { LINK_AI_SALES_AGENT_TEXT } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 import { AutomateStatsNavbar } from 'domains/reporting/pages/self-service/AutomateStatsNavbar'
-import { PAGE_TITLE_PERFORMANCE_BY_FEATURES } from 'domains/reporting/pages/self-service/constants'
+import {
+    AI_AGENT_AI_AGENT_NAV_TOOLTIP,
+    PAGE_TITLE_PERFORMANCE_BY_FEATURES,
+} from 'domains/reporting/pages/self-service/constants'
 import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
@@ -20,7 +24,7 @@ const mockUseAppSelector = assumeMock(useAppSelector)
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useHelpdeskV2WayfindingMS1Flag: jest.fn().mockReturnValue(false),
-    useFlag: jest.fn(),
+    useFlagWithLoading: jest.fn(),
 }))
 
 jest.mock('hooks/aiAgent/useCanUseAiSalesAgent', () => ({
@@ -35,7 +39,7 @@ jest.mock('providers/standalone-ai/StandaloneAiContext', () => ({
     useStandaloneAiContext: jest.fn(),
 }))
 
-const mockUseFlag = assumeMock(useFlag)
+const mockUseFlagWithLoading = assumeMock(useFlagWithLoading)
 const mockUseCanUseAiSalesAgent = assumeMock(useCanUseAiSalesAgent)
 const mockUseAiAgentAccess = assumeMock(useAiAgentAccess)
 const mockUseStandaloneAiContext = assumeMock(useStandaloneAiContext)
@@ -56,7 +60,10 @@ describe('<AutomateStatsNavbar />', () => {
             isChartRestrictedToCurrentUser: () => false,
             isModuleRestrictedToCurrentUser: () => false,
         })
-        mockUseFlag.mockImplementation(() => false)
+        mockUseFlagWithLoading.mockReturnValue({
+            value: false,
+            isLoading: false,
+        })
         mockUseCanUseAiSalesAgent.mockReturnValue(true)
         mockUseAiAgentAccess.mockReturnValue({
             hasAccess: false,
@@ -86,9 +93,10 @@ describe('<AutomateStatsNavbar />', () => {
     })
 
     it('should render the automate stats navbar with the correct items', () => {
-        mockUseFlag.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.AIAgentStatsPage) return true
-            return false
+        mockUseFlagWithLoading.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.AIAgentStatsPage)
+                return { value: true, isLoading: false }
+            return { value: false, isLoading: false }
         })
 
         mockUseAppSelector.mockImplementation(() => true)
@@ -217,9 +225,10 @@ describe('<AutomateStatsNavbar />', () => {
     })
 
     it('should display the AI Sales Agent link as a normal link when AiSalesAgentBypassPlanCheck flag is enabled', () => {
-        mockUseFlag.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.AiSalesAgentBypassPlanCheck) return true
-            return false
+        mockUseFlagWithLoading.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.AiSalesAgentBypassPlanCheck)
+                return { value: true, isLoading: false }
+            return { value: false, isLoading: false }
         })
 
         mockUseAppSelector.mockImplementation((selector) => {
@@ -253,9 +262,10 @@ describe('<AutomateStatsNavbar />', () => {
     })
 
     it('should hide Performance by feature link when standalone AI agent', () => {
-        mockUseFlag.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.AIAgentStatsPage) return true
-            return false
+        mockUseFlagWithLoading.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.AIAgentStatsPage)
+                return { value: true, isLoading: false }
+            return { value: false, isLoading: false }
         })
         mockUseAppSelector.mockImplementation(() => true)
         mockUseAiAgentAccess.mockReturnValue({
@@ -284,12 +294,12 @@ describe('<AutomateStatsNavbar />', () => {
     })
 
     it('should hide legacy items and show New tag when both flags are enabled', () => {
-        mockUseFlag.mockImplementation((flag) => {
+        mockUseFlagWithLoading.mockImplementation((flag) => {
             if (flag === FeatureFlagKey.AiAgentAnalyticsDashboardsNewScreens)
-                return true
+                return { value: true, isLoading: false }
             if (flag === FeatureFlagKey.AiAgentAnalyticsDisableLegacyReports)
-                return true
-            return false
+                return { value: true, isLoading: false }
+            return { value: false, isLoading: false }
         })
         mockUseAiAgentAccess.mockReturnValue({
             hasAccess: true,
@@ -316,10 +326,10 @@ describe('<AutomateStatsNavbar />', () => {
     })
 
     it('should show Beta tag and keep legacy items when only AiAgentAnalyticsDashboardsNewScreens is enabled', () => {
-        mockUseFlag.mockImplementation((flag) => {
+        mockUseFlagWithLoading.mockImplementation((flag) => {
             if (flag === FeatureFlagKey.AiAgentAnalyticsDashboardsNewScreens)
-                return true
-            return false
+                return { value: true, isLoading: false }
+            return { value: false, isLoading: false }
         })
         mockUseAiAgentAccess.mockReturnValue({
             hasAccess: true,
@@ -372,5 +382,94 @@ describe('<AutomateStatsNavbar />', () => {
         expect(link?.querySelector('i.material-icons')).toHaveTextContent(
             'arrow_circle_up',
         )
+    })
+
+    describe('nav tooltip', () => {
+        beforeEach(() => {
+            jest.useFakeTimers()
+            mockUseAiAgentAccess.mockReturnValue({
+                hasAccess: true,
+                isLoading: false,
+            })
+        })
+
+        afterEach(() => {
+            jest.runOnlyPendingTimers()
+            jest.useRealTimers()
+        })
+
+        it('shows tooltip content on hover when AiAgentAnalyticsNavTooltip is enabled', async () => {
+            const user = userEvent.setup({
+                advanceTimers: jest.advanceTimersByTime,
+            })
+
+            mockUseFlagWithLoading.mockImplementation((flag) => {
+                if (
+                    flag === FeatureFlagKey.AiAgentAnalyticsDashboardsNewScreens
+                )
+                    return { value: true, isLoading: false }
+                if (flag === FeatureFlagKey.AiAgentAnalyticsNavTooltip)
+                    return { value: true, isLoading: false }
+                return { value: false, isLoading: false }
+            })
+
+            const { getAllByRole, getByRole, findByText } = render(
+                <Navigation.Root>
+                    <AutomateStatsNavbar />
+                </Navigation.Root>,
+            )
+
+            await user.click(getByRole('button', { name: /AI & Automation/i }))
+
+            const aiAgentLink = getAllByRole('link').find(
+                (l) =>
+                    l.getAttribute('href') === '/app/stats/analytics-ai-agent',
+            )!
+            await user.hover(aiAgentLink)
+
+            await act(() => {
+                jest.advanceTimersByTime(700)
+            })
+
+            expect(
+                await findByText(AI_AGENT_AI_AGENT_NAV_TOOLTIP.body),
+            ).toBeInTheDocument()
+        })
+
+        it('does not show tooltip content on hover when AiAgentAnalyticsNavTooltip is disabled', async () => {
+            const user = userEvent.setup({
+                advanceTimers: jest.advanceTimersByTime,
+            })
+
+            mockUseFlagWithLoading.mockImplementation((flag) => {
+                if (
+                    flag === FeatureFlagKey.AiAgentAnalyticsDashboardsNewScreens
+                )
+                    return { value: true, isLoading: false }
+                return { value: false, isLoading: false }
+            })
+
+            const { getAllByRole, getByRole, queryByText } = render(
+                <Navigation.Root>
+                    <AutomateStatsNavbar />
+                </Navigation.Root>,
+            )
+
+            await user.click(getByRole('button', { name: /AI & Automation/i }))
+
+            const aiAgentLink = getAllByRole('link').find(
+                (l) =>
+                    l.getAttribute('href') === '/app/stats/analytics-ai-agent',
+            )!
+            await user.hover(aiAgentLink)
+
+            await act(() => {
+                jest.advanceTimersByTime(700)
+            })
+
+            expect(
+                queryByText(AI_AGENT_AI_AGENT_NAV_TOOLTIP.body),
+            ).not.toBeInTheDocument()
+        })
     })
 })

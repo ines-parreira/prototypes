@@ -44,4 +44,30 @@ describe('SidebarCollapsedItem', () => {
 
         expect(screen.getByText('Inbox')).toBeInTheDocument()
     })
+
+    it('does not show the label tooltip when hideTooltip is true', async () => {
+        const user = userEvent.setup()
+
+        render(
+            <ButtonGroup>
+                <SidebarCollapsedItem
+                    id="inbox"
+                    icon="inbox"
+                    label="Inbox"
+                    hideTooltip
+                />
+            </ButtonGroup>,
+            {
+                wrapper: ({ children }) => (
+                    <MockSidebarProvider isCollapsed>
+                        {children}
+                    </MockSidebarProvider>
+                ),
+            },
+        )
+
+        await user.tab()
+
+        expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
+    })
 })

@@ -1,12 +1,16 @@
 import { SidebarProvider } from '@repo/navigation'
 import { history } from '@repo/routing'
-import { render } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import { VideoPreviewTooltip } from 'domains/reporting/pages/self-service/VideoPreviewTooltip'
 import type { StatsNavbarSection } from 'routes/layout/products/analytics'
 
 import { CollapsedAnalyticsSidebar } from '../CollapsedAnalyticsSidebar'
+
+jest.mock('domains/reporting/pages/self-service/VideoPreviewTooltip')
+const VideoPreviewTooltipMock = assumeMock(VideoPreviewTooltip)
 
 jest.mock('@repo/routing', () => ({
     history: {
@@ -227,6 +231,45 @@ describe('CollapsedAnalyticsSidebar', () => {
         const menuItems = screen.getAllByRole('menuitemradio')
         expect(menuItems[0].querySelector('svg')).toBeInTheDocument()
         expect(menuItems[1].querySelector('svg')).not.toBeInTheDocument()
+    })
+
+    it('wraps the section trigger with VideoPreviewTooltip when an item has tooltipProps', () => {
+        const tooltipProps = {
+            videoSrc: 'https://example.com/video.mp4',
+            videoPoster: 'https://example.com/poster.png',
+            title: 'AI & Automation analytics',
+            body: 'Track your AI Agent performance.',
+            learnMoreUrl: 'https://docs.example.com',
+        }
+        const sectionsWithTooltip: StatsNavbarSection[] = [
+            {
+                id: 'automate',
+                label: 'AI & automation',
+                icon: 'zap',
+                items: [
+                    {
+                        id: 'analytics-overview',
+                        route: 'analytics/overview',
+                        label: 'Overview',
+                        tooltipProps,
+                    },
+                    {
+                        id: 'analytics-ai-agent',
+                        route: 'analytics/ai-agent',
+                        label: 'AI Agent',
+                    },
+                ],
+            },
+        ]
+
+        render(<CollapsedAnalyticsSidebar sections={sectionsWithTooltip} />, {
+            wrapper: SidebarProvider,
+        })
+
+        expect(VideoPreviewTooltipMock).toHaveBeenCalledWith(
+            expect.objectContaining(tooltipProps),
+            expect.anything(),
+        )
     })
 
     it('navigates directly when clicking a single-item section without opening a menu', async () => {

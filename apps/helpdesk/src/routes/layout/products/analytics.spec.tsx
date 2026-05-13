@@ -563,6 +563,82 @@ describe('useStatsNavbarConfig', () => {
             expect(aiSalesItem?.requiresUpgrade).toBe(false)
         })
 
+        it('should set tooltipProps on analytics-overview when AiAgentAnalyticsDashboardsNewScreens and AiAgentAnalyticsNavTooltip flags are enabled', () => {
+            useFlagMock.mockImplementation((flag) => ({
+                value:
+                    flag ===
+                        FeatureFlagKey.AiAgentAnalyticsDashboardsNewScreens ||
+                    flag === FeatureFlagKey.AiAgentAnalyticsNavTooltip,
+                isLoading: false,
+            }))
+
+            const stateWithAutomation: Partial<RootState> = {
+                billing: fromJS(billingState),
+                currentAccount: fromJS({
+                    current_subscription: {
+                        products: {
+                            [AUTOMATION_PRODUCT_ID]:
+                                basicMonthlyAutomationPlan.plan_id,
+                        },
+                    },
+                }),
+            }
+
+            const { result } = renderHook(() => useStatsNavbarConfig(), {
+                storeState: stateWithAutomation,
+            })
+            const automateSection = result.current.sections.find(
+                (s) => s.id === StatsNavbarViewSections.Automate,
+            )
+            const analyticsOverviewItem = automateSection?.items?.find(
+                (item) => item.id === 'analytics-overview',
+            )
+
+            expect(analyticsOverviewItem?.tooltipProps).toBeDefined()
+            expect(analyticsOverviewItem?.tooltipProps?.videoSrc).toBeDefined()
+            expect(
+                analyticsOverviewItem?.tooltipProps?.videoPoster,
+            ).toBeDefined()
+            expect(analyticsOverviewItem?.tooltipProps?.title).toBeDefined()
+            expect(analyticsOverviewItem?.tooltipProps?.body).toBeDefined()
+            expect(
+                analyticsOverviewItem?.tooltipProps?.learnMoreUrl,
+            ).toBeDefined()
+        })
+
+        it('should not set tooltipProps on analytics-overview when AiAgentAnalyticsNavTooltip flag is disabled', () => {
+            useFlagMock.mockImplementation((flag) => ({
+                value:
+                    flag ===
+                    FeatureFlagKey.AiAgentAnalyticsDashboardsNewScreens,
+                isLoading: false,
+            }))
+
+            const stateWithAutomation: Partial<RootState> = {
+                billing: fromJS(billingState),
+                currentAccount: fromJS({
+                    current_subscription: {
+                        products: {
+                            [AUTOMATION_PRODUCT_ID]:
+                                basicMonthlyAutomationPlan.plan_id,
+                        },
+                    },
+                }),
+            }
+
+            const { result } = renderHook(() => useStatsNavbarConfig(), {
+                storeState: stateWithAutomation,
+            })
+            const automateSection = result.current.sections.find(
+                (s) => s.id === StatsNavbarViewSections.Automate,
+            )
+            const analyticsOverviewItem = automateSection?.items?.find(
+                (item) => item.id === 'analytics-overview',
+            )
+
+            expect(analyticsOverviewItem?.tooltipProps).toBeUndefined()
+        })
+
         it('should include trailingSlot on analytics items when AiAgentAnalyticsDashboardsNewScreens flag is enabled', () => {
             useFlagMock.mockImplementation((flag) => ({
                 value:
