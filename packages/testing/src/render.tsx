@@ -73,6 +73,7 @@ export const render = <TStoreState extends object = object>(
         ...renderOptions,
         wrapper: ({ children }) => (
             <>
+                {createPortal(<Toaster />, document.body)}
                 <Provider store={store}>
                     <QueryClientProvider client={queryClient}>
                         <DndProvider backend={dndBackend}>
@@ -96,7 +97,6 @@ export const render = <TStoreState extends object = object>(
                         </DndProvider>
                     </QueryClientProvider>
                 </Provider>
-                {createPortal(<Toaster />, document.body)}
             </>
         ),
     })

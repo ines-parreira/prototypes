@@ -7,10 +7,10 @@ import { ulid } from 'ulidx'
 
 import {
     LegacyButton as Button,
+    toast,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import {
     useGetStoreWorkflowsConfigurations,
     useGetWorkflowConfigurationTemplates,
@@ -41,8 +41,6 @@ import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import useUnsavedChangesPrompt from 'pages/common/components/useUnsavedChangesPrompt'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { useAiAgentOnboardingNotification } from '../hooks/useAiAgentOnboardingNotification'
 import ActionFormView from './components/ActionFormView'
@@ -117,7 +115,6 @@ const CreateActionView = () => {
         isSuccess: isCreateActionSuccess,
     } = useUpsertAction('create', shopName, shopType)
 
-    const appDispatch = useAppDispatch()
     const history = useHistory()
     const configuration = useMemo(
         () => configurationFromTemplate.current ?? getInitialConfiguration(),
@@ -193,13 +190,7 @@ const CreateActionView = () => {
                 graph,
             })
 
-            void appDispatch(
-                notify({
-                    showDismissButton: true,
-                    status: NotificationStatus.Error,
-                    message: 'Fix errors in order to create Action',
-                }),
-            )
+            toast.error('Fix errors in order to create Action')
 
             return Promise.reject()
         }
@@ -232,13 +223,8 @@ const CreateActionView = () => {
                     graph: graphWithServerErrors,
                 })
 
-                void appDispatch(
-                    notify({
-                        showDismissButton: true,
-                        status: NotificationStatus.Error,
-                        message:
-                            'Please fix the validation errors below and try again',
-                    }),
+                toast.error(
+                    'Please fix the validation errors below and try again',
                 )
 
                 return Promise.reject()
@@ -262,7 +248,6 @@ const CreateActionView = () => {
         dispatch,
         shopName,
         shopType,
-        appDispatch,
         availableIntegrations,
         onActionCreated,
     ])

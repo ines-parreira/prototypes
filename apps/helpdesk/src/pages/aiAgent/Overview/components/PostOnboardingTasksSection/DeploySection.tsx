@@ -5,7 +5,6 @@ import { useParams } from 'react-router-dom'
 
 import { Text } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import type { StepConfiguration } from 'models/aiAgentPostStoreInstallationSteps/types'
 import { PostStoreInstallationStepStatus } from 'models/aiAgentPostStoreInstallationSteps/types'
@@ -40,8 +39,6 @@ export const DeploySection = ({
     }>()
     const { storeConfiguration, updateStoreConfiguration } =
         useAiAgentStoreConfigurationContext()
-
-    const dispatch = useAppDispatch()
 
     const [isEmailChannelEnabled, setIsEmailChannelEnabled] = useState(false)
     const [isChatChannelEnabled, setIsChatChannelEnabled] = useState(false)
@@ -86,7 +83,7 @@ export const DeploySection = ({
 
             logEventsForDeploymentStep()
         } catch (error) {
-            handleAiAgentConfigurationError(error, dispatch)
+            handleAiAgentConfigurationError(error)
             setIsAiAgentDuringDeployment(false)
         }
     }

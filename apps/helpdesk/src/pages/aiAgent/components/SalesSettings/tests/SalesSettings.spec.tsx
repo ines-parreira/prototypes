@@ -10,7 +10,6 @@ import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfig
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/DiscountStrategy'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/PersuasionLevel'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { SalesSettings } from '../SalesSettings'
 
@@ -317,9 +316,9 @@ describe('<SalesSettings />', () => {
                 )
             })
         })
-        it('should dispatch a success message', async () => {
+        it('should show a success toast', async () => {
             const user = userEvent.setup()
-            const { store } = renderComponent()
+            renderComponent()
             const input = maxDiscountInput()
             await user.click(input)
             await user.keyboard('{Control>}a{/Control}')
@@ -328,16 +327,10 @@ describe('<SalesSettings />', () => {
             await user.click(
                 screen.getByRole('button', { name: 'Save Changes' }),
             )
-            await waitFor(() => {
-                expect(store.getActions()).toMatchObject([
-                    {
-                        payload: {
-                            message: CHANGES_SAVED_SUCCESS,
-                            status: NotificationStatus.Success,
-                        },
-                    },
-                ])
+            const toastEl = await screen.findByRole('status', {
+                name: CHANGES_SAVED_SUCCESS,
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
         })
         it('should not call updateStoreConfiguration when there is not storeConfiguration', async () => {
             const user = userEvent.setup()
@@ -365,10 +358,10 @@ describe('<SalesSettings />', () => {
         })
     })
     describe('when user clicks on the save button with new settings and it fails', () => {
-        it('should dispatch an error message', async () => {
+        it('should show an error toast', async () => {
             const user = userEvent.setup()
             mockUpdateStoreConfiguration.mockRejectedValue('ERROR')
-            const { store } = renderComponent()
+            renderComponent()
             const input = maxDiscountInput()
             await user.click(input)
             await user.keyboard('{Control>}a{/Control}')
@@ -377,16 +370,10 @@ describe('<SalesSettings />', () => {
             await user.click(
                 screen.getByRole('button', { name: 'Save Changes' }),
             )
-            await waitFor(() => {
-                expect(store.getActions()).toMatchObject([
-                    {
-                        payload: {
-                            status: NotificationStatus.Error,
-                            message: 'Failed to save sales configuration state',
-                        },
-                    },
-                ])
+            const toastEl = await screen.findByRole('status', {
+                name: 'Failed to save sales configuration state',
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
     })
     it('should show a warning when navigating away without submitting the form', async () => {

@@ -1,17 +1,20 @@
-import { renderHook } from '@repo/testing'
-import { waitFor } from '@testing-library/react'
+import { act, renderHook } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import { TicketChannel } from 'business/types/ticket'
-import { notify } from 'state/notifications/actions'
 
 import { useVerifyChannelsActivation } from '../useVerifyChannelsActivation'
 
-jest.mock('state/notifications/actions')
-
-const mockDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
-
 const systemTime = '2024-03-20T00:00:00.000Z'
+
+const expectToast = async (name: string) => {
+    await act(async () => undefined)
+    act(() => {
+        jest.advanceTimersByTime(0)
+    })
+
+    expect(screen.getByRole('status', { name })).toBeInTheDocument()
+}
 
 describe('useVerifyChannelsActivation', () => {
     beforeEach(() => {
@@ -136,7 +139,7 @@ describe('useVerifyChannelsActivation', () => {
                 )
             })
 
-            it('should dispatch notification', async () => {
+            it('shows a notification', async () => {
                 renderHook(() =>
                     useVerifyChannelsActivation({
                         chatChannels: [],
@@ -155,19 +158,16 @@ describe('useVerifyChannelsActivation', () => {
                                 },
                             ],
                         } as any,
-                        updateStoreConfiguration: jest.fn(),
+                        updateStoreConfiguration: jest
+                            .fn()
+                            .mockResolvedValue(undefined),
                         updateValue: jest.fn(),
                     }),
                 )
 
-                await waitFor(() => {
-                    expect(mockDispatch).toHaveBeenCalled()
-                    expect(notify).toHaveBeenCalledWith({
-                        message:
-                            'AI Agent for chat has been disabled, because no integration was available.',
-                        status: 'warning',
-                    })
-                })
+                await expectToast(
+                    'AI Agent for chat has been disabled, because no integration was available.',
+                )
             })
         })
 
@@ -220,7 +220,7 @@ describe('useVerifyChannelsActivation', () => {
                 )
             })
 
-            it('should dispatch notification', async () => {
+            it('shows a notification', async () => {
                 renderHook(() =>
                     useVerifyChannelsActivation({
                         chatChannels: [
@@ -241,19 +241,16 @@ describe('useVerifyChannelsActivation', () => {
                                 },
                             ],
                         } as any,
-                        updateStoreConfiguration: jest.fn(),
+                        updateStoreConfiguration: jest
+                            .fn()
+                            .mockResolvedValue(undefined),
                         updateValue: jest.fn(),
                     }),
                 )
 
-                await waitFor(() => {
-                    expect(mockDispatch).toHaveBeenCalled()
-                    expect(notify).toHaveBeenCalledWith({
-                        message:
-                            'AI Agent for email has been disabled, because no integration was available.',
-                        status: 'warning',
-                    })
-                })
+                await expectToast(
+                    'AI Agent for email has been disabled, because no integration was available.',
+                )
             })
         })
 
@@ -311,7 +308,7 @@ describe('useVerifyChannelsActivation', () => {
                 )
             })
 
-            it('should dispatch notification', async () => {
+            it('shows a notification', async () => {
                 renderHook(() =>
                     useVerifyChannelsActivation({
                         chatChannels: [],
@@ -327,19 +324,16 @@ describe('useVerifyChannelsActivation', () => {
                                 },
                             ],
                         } as any,
-                        updateStoreConfiguration: jest.fn(),
+                        updateStoreConfiguration: jest
+                            .fn()
+                            .mockResolvedValue(undefined),
                         updateValue: jest.fn(),
                     }),
                 )
 
-                await waitFor(() => {
-                    expect(mockDispatch).toHaveBeenCalled()
-                    expect(notify).toHaveBeenCalledWith({
-                        message:
-                            'AI Agent for email and chat has been disabled, because no integration was available.',
-                        status: 'warning',
-                    })
-                })
+                await expectToast(
+                    'AI Agent for email and chat has been disabled, because no integration was available.',
+                )
             })
         })
     })

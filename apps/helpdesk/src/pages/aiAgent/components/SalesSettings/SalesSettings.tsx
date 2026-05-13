@@ -7,11 +7,11 @@ import {
     LegacyButton as Button,
     LegacyLabel as Label,
     Skeleton,
+    toast,
 } from '@gorgias/axiom'
 
 import { shopifyAdminBaseUrl } from 'config/integrations/shopify'
 import { getRGB } from 'gorgias-design-system/utils'
-import useAppDispatch from 'hooks/useAppDispatch'
 import type { SalesSettingsData } from 'models/aiAgent/types'
 import { CHANGES_SAVED_SUCCESS } from 'pages/aiAgent/constants'
 import { useShoppingAssistantTracking } from 'pages/aiAgent/hooks/useShoppingAssistantTracking'
@@ -34,8 +34,6 @@ import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import IconInput from 'pages/common/forms/input/IconInput'
 import InputField from 'pages/common/forms/input/InputField'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import AiShoppingAssistantExpireBanner from '../AiShoppingAssistantExpireBanner'
 
@@ -69,7 +67,6 @@ const salesSchema = z
     )
 
 export const SalesSettings = () => {
-    const dispatch = useAppDispatch()
     const { storeConfiguration, isLoading, updateStoreConfiguration } =
         useAiAgentStoreConfigurationContext()
 
@@ -158,12 +155,7 @@ export const SalesSettings = () => {
                         : null,
                 })
 
-                void dispatch(
-                    notify({
-                        message: CHANGES_SAVED_SUCCESS,
-                        status: NotificationStatus.Success,
-                    }),
-                )
+                toast.success(CHANGES_SAVED_SUCCESS)
 
                 onShoppingAssistantStrategyUpdated({
                     strategy: {
@@ -173,12 +165,7 @@ export const SalesSettings = () => {
                 })
             }
         } catch {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: 'Failed to save sales configuration state',
-                }),
-            )
+            toast.error('Failed to save sales configuration state')
         }
     }
 

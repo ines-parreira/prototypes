@@ -10,7 +10,6 @@ import {
     Text,
 } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import { usePostStoreInstallationStepsMutation } from 'pages/aiAgent/hooks/usePostStoreInstallationStepsMutation'
@@ -178,7 +177,6 @@ export const PrepareTriggerOnSearchBody = (props: SetupTaskBodyProps) => {
         useAiAgentStoreConfigurationContext()
 
     const [isLoading, setIsLoading] = useState(false)
-    const dispatch = useAppDispatch()
 
     const isSalesHelpOnSearchEnabled =
         storeConfiguration?.isSalesHelpOnSearchEnabled ?? false
@@ -193,7 +191,7 @@ export const PrepareTriggerOnSearchBody = (props: SetupTaskBodyProps) => {
                 isSalesHelpOnSearchEnabled: !isSalesHelpOnSearchEnabled,
             })
         } catch (error) {
-            handleAiAgentConfigurationError(error, dispatch)
+            handleAiAgentConfigurationError(error)
         } finally {
             setIsLoading(false)
         }
@@ -222,7 +220,6 @@ export const PrepareSuggestedProductsBody = (props: SetupTaskBodyProps) => {
     const { storeConfiguration, updateStoreConfiguration } =
         useAiAgentStoreConfigurationContext()
     const [isLoading, setIsLoading] = useState(false)
-    const dispatch = useAppDispatch()
 
     const isConversationStartersEnabled =
         storeConfiguration?.isConversationStartersEnabled ?? false
@@ -237,7 +234,7 @@ export const PrepareSuggestedProductsBody = (props: SetupTaskBodyProps) => {
                 isConversationStartersEnabled: !isConversationStartersEnabled,
             })
         } catch (error) {
-            handleAiAgentConfigurationError(error, dispatch)
+            handleAiAgentConfigurationError(error)
         } finally {
             setIsLoading(false)
         }
@@ -267,7 +264,6 @@ export const EnableAskAnythingBody = (props: SetupTaskBodyProps) => {
         useAiAgentStoreConfigurationContext()
 
     const [isLoading, setIsLoading] = useState(false)
-    const dispatch = useAppDispatch()
 
     const isAskAnythingInputEnabled =
         storeConfiguration?.floatingChatInputConfiguration?.isEnabled ?? false
@@ -291,7 +287,7 @@ export const EnableAskAnythingBody = (props: SetupTaskBodyProps) => {
                 },
             })
         } catch (error) {
-            handleAiAgentConfigurationError(error, dispatch)
+            handleAiAgentConfigurationError(error)
         } finally {
             setIsLoading(false)
         }
@@ -318,7 +314,6 @@ export const EnableAskAnythingBody = (props: SetupTaskBodyProps) => {
 
 export const EnableAIAgentOnChatBody = (props: SetupTaskBodyProps) => {
     const { isCompleted, shopName = '', shopType = '' } = props
-    const dispatch = useAppDispatch()
     const { storeConfiguration, updateStoreConfiguration } =
         useAiAgentStoreConfigurationContext()
     const [isChatChannelEnabled, setIsChatChannelEnabled] = useState(
@@ -339,7 +334,7 @@ export const EnableAIAgentOnChatBody = (props: SetupTaskBodyProps) => {
                 action: !isChatChannelEnabled ? 'on' : 'off',
             })
         } catch (error) {
-            handleAiAgentConfigurationError(error, dispatch)
+            handleAiAgentConfigurationError(error)
         } finally {
             setIsLoading(false)
         }
@@ -377,7 +372,6 @@ export const EnableAIAgentOnChatBody = (props: SetupTaskBodyProps) => {
 
 export const EnableAIAgentOnEmailBody = (props: SetupTaskBodyProps) => {
     const { isCompleted, shopName = '' } = props
-    const dispatch = useAppDispatch()
     const { storeConfiguration, updateStoreConfiguration } =
         useAiAgentStoreConfigurationContext()
     const [isEmailChannelEnabled, setIsEmailChannelEnabled] = useState(
@@ -398,7 +392,7 @@ export const EnableAIAgentOnEmailBody = (props: SetupTaskBodyProps) => {
                 action: !isEmailChannelEnabled ? 'on' : 'off',
             })
         } catch (error) {
-            handleAiAgentConfigurationError(error, dispatch)
+            handleAiAgentConfigurationError(error)
         } finally {
             setIsLoading(false)
         }

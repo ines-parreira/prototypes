@@ -5,10 +5,10 @@ import { useHistory, useParams } from 'react-router-dom'
 
 import {
     LegacyButton as Button,
+    toast,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import {
     useGetStoreWorkflowsConfigurations,
     useGetWorkflowConfigurationTemplates,
@@ -37,8 +37,6 @@ import { mapServerErrorsToGraph } from 'pages/automate/workflows/utils/serverVal
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import { ConfirmModalAction } from 'pages/common/components/ConfirmModalAction'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import ActionFormView from './components/ActionFormView'
 import useDeleteAction from './hooks/useDeleteAction'
@@ -77,7 +75,6 @@ const EditActionView = ({ configuration }: Props) => {
 
     const { canBeDeleted } = useGuidanceReferenceContext()
 
-    const appDispatch = useAppDispatch()
     const history = useHistory()
 
     const { data: steps = [] } = useGetWorkflowConfigurationTemplates({
@@ -160,13 +157,7 @@ const EditActionView = ({ configuration }: Props) => {
                 graph,
             })
 
-            void appDispatch(
-                notify({
-                    showDismissButton: true,
-                    status: NotificationStatus.Error,
-                    message: 'Fix errors in order to save Action',
-                }),
-            )
+            toast.error('Fix errors in order to save Action')
 
             return Promise.reject()
         }
@@ -202,13 +193,8 @@ const EditActionView = ({ configuration }: Props) => {
                     graph: graphWithServerErrors,
                 })
 
-                void appDispatch(
-                    notify({
-                        showDismissButton: true,
-                        status: NotificationStatus.Error,
-                        message:
-                            'Please fix the validation errors below and try again',
-                    }),
+                toast.error(
+                    'Please fix the validation errors below and try again',
                 )
 
                 return Promise.reject()
@@ -228,7 +214,6 @@ const EditActionView = ({ configuration }: Props) => {
         dispatch,
         shopName,
         shopType,
-        appDispatch,
         availableIntegrations,
         onActionEdited,
     ])

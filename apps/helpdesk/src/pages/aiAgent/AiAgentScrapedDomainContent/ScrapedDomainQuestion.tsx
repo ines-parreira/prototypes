@@ -6,14 +6,12 @@ import { useHistory, useParams } from 'react-router'
 import {
     LegacyBanner as Banner,
     LegacyButton as Button,
+    toast,
     LegacyToggleField as ToggleField,
 } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import ControlledCollapsibleDetails from 'pages/tickets/detail/components/TicketVoiceCall/ControlledCollapsibleDetails'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { IngestedResourceStatus } from './constant'
 
@@ -39,7 +37,6 @@ const ScrapedDomainQuestion = ({
     questionAnswer,
     questionWebPages,
 }: Props) => {
-    const dispatch = useAppDispatch()
     const history = useHistory()
     const { shopName } = useParams<{
         shopName: string
@@ -62,13 +59,7 @@ const ScrapedDomainQuestion = ({
                     ? IngestedResourceStatus.Disabled
                     : IngestedResourceStatus.Enabled,
             }).then(() => {
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Success,
-                        message: 'Successfully updated question',
-                        showDismissButton: true,
-                    }),
-                )
+                toast.success('Successfully updated question')
             })
         }
     }

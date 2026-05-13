@@ -300,7 +300,7 @@ describe('TrialOptOutModal', () => {
             expect(mockOnClose).toHaveBeenCalled()
         })
 
-        it('should dispatch Shopping Assistant notification when mutation succeeds', async () => {
+        it('should show Shopping Assistant toast when mutation succeeds', async () => {
             const userEventSetup = user.setup()
             render(<TrialOptOutModal {...defaultProps} />)
 
@@ -312,10 +312,13 @@ describe('TrialOptOutModal', () => {
             const onSuccessCallback = mockMutate.mock.calls[0][1].onSuccess
             onSuccessCallback()
 
-            expect(mockDispatch).toHaveBeenCalledWith(expect.any(Function))
+            const toastEl = await screen.findByRole('status', {
+                name: "Your plan won't be upgraded when the trial ends, and you'll lose access to Shopping Assistant.",
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
         })
 
-        it('should dispatch AI Agent notification when mutation succeeds', async () => {
+        it('should show AI Agent toast when mutation succeeds', async () => {
             const aiAgentProps = {
                 ...defaultProps,
                 trialType: TrialType.AiAgent,
@@ -331,7 +334,10 @@ describe('TrialOptOutModal', () => {
             const onSuccessCallback = mockMutate.mock.calls[0][1].onSuccess
             onSuccessCallback()
 
-            expect(mockDispatch).toHaveBeenCalledWith(expect.any(Function))
+            const toastEl = await screen.findByRole('status', {
+                name: "Your plan won't be upgraded when the trial ends, and you'll lose access to AI Agent.",
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
         })
     })
 
@@ -536,7 +542,7 @@ describe('TrialOptOutModal', () => {
     })
 
     describe('notification messages', () => {
-        it('should dispatch notification for Shopping Assistant opt out', async () => {
+        it('should show toast for Shopping Assistant opt out', async () => {
             const userEventSetup = user.setup()
             render(<TrialOptOutModal {...defaultProps} />)
 
@@ -548,10 +554,13 @@ describe('TrialOptOutModal', () => {
             const onSuccessCallback = mockMutate.mock.calls[0][1].onSuccess
             onSuccessCallback()
 
-            expect(mockDispatch).toHaveBeenCalledWith(expect.any(Function))
+            const toastEl = await screen.findByRole('status', {
+                name: "Your plan won't be upgraded when the trial ends, and you'll lose access to Shopping Assistant.",
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
         })
 
-        it('should dispatch notification for AI Agent opt out', async () => {
+        it('should show toast for AI Agent opt out', async () => {
             const aiAgentProps = {
                 ...defaultProps,
                 trialType: TrialType.AiAgent,
@@ -567,7 +576,10 @@ describe('TrialOptOutModal', () => {
             const onSuccessCallback = mockMutate.mock.calls[0][1].onSuccess
             onSuccessCallback()
 
-            expect(mockDispatch).toHaveBeenCalledWith(expect.any(Function))
+            const toastEl = await screen.findByRole('status', {
+                name: "Your plan won't be upgraded when the trial ends, and you'll lose access to AI Agent.",
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
         })
     })
 

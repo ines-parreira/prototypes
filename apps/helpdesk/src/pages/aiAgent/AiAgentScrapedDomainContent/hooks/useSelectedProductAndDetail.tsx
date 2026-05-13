@@ -2,13 +2,12 @@ import { useEffect, useMemo } from 'react'
 
 import { history } from '@repo/routing'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { toast } from '@gorgias/axiom'
+
 import { useGetEcommerceItemByExternalId } from 'models/ecommerce/queries'
 import type { ProductAdditionalInfoPayload } from 'models/ecommerce/types'
 import { useGetProductsByIdsFromIntegration } from 'models/integration/queries'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { ECOMMERCE_SOURCE, ECOMMERCE_TYPE } from '../constant'
 import { isProductExcludedFromAiAgent } from './usePaginatedProductIntegration'
@@ -22,7 +21,6 @@ export const useSelectedProductAndDetail = ({
     integrationId: number | null
     productId: string | null
 }) => {
-    const dispatch = useAppDispatch()
     const { routes } = useAiAgentNavigation({ shopName })
 
     const selectedProductData = useGetProductsByIdsFromIntegration(
@@ -77,23 +75,13 @@ export const useSelectedProductAndDetail = ({
             selectedProductData.isError ||
             (!!productId && !selectedProductData.isLoading && !selectedProduct)
         ) {
-            void dispatch(
-                notify({
-                    message:
-                        'Content no longer exists. It may have been deleted or moved.',
-                    status: NotificationStatus.Error,
-                }),
+            toast.error(
+                'Content no longer exists. It may have been deleted or moved.',
             )
 
             history.push(routes.products)
         }
-    }, [
-        selectedProductData,
-        productId,
-        selectedProduct,
-        dispatch,
-        routes.products,
-    ])
+    }, [selectedProductData, productId, selectedProduct, routes.products])
 
     return useMemo(() => {
         return {

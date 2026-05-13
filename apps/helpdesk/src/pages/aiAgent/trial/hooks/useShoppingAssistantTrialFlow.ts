@@ -5,7 +5,8 @@ import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { useHistory, useLocation } from 'react-router-dom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { toast } from '@gorgias/axiom'
+
 import useAppSelector from 'hooks/useAppSelector'
 import { useModalManager } from 'hooks/useModalManager'
 import { useStartAiAgentTrialMutation } from 'models/aiAgent/queries'
@@ -15,8 +16,6 @@ import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { extractShopNameFromUrl } from 'pages/aiAgent/utils/extractShopNameFromUrl'
 import { getShopNameFromStoreActivations } from 'pages/aiAgent/utils/getShopNameFromStoreActivations'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { useAiAgentTrialOnboarding } from './useAiAgentTrialOnboarding'
 import { useNotifyTrialExtensionSlackChannel } from './useNotifyTrialExtensionSlackChannel'
@@ -163,7 +162,6 @@ export const useShoppingAssistantTrialFlow = ({
         autoDestroy: false,
     })
 
-    const dispatch = useAppDispatch()
     const history = useHistory()
     const location = useLocation()
     const notifySlackChannel = useNotifyTrialExtensionSlackChannel()
@@ -402,21 +400,11 @@ export const useShoppingAssistantTrialFlow = ({
         })
         return notifySlackChannel(trialType, trialEndDate).then((isSent) => {
             if (isSent) {
-                dispatch(
-                    notify({
-                        status: NotificationStatus.Success,
-                        message: NOTIFY_SUCCESS_MESSAGE,
-                    }),
-                )
+                toast.success(NOTIFY_SUCCESS_MESSAGE)
                 return true
             }
 
-            dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: NOTIFY_ERROR_MESSAGE,
-                }),
-            )
+            toast.error(NOTIFY_ERROR_MESSAGE)
             return false
         })
     }

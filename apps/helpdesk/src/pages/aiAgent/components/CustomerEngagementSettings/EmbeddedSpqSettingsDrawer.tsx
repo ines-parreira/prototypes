@@ -13,6 +13,7 @@ import {
     ModalSize,
     OverlayHeader,
     SidePanel,
+    toast,
 } from '@gorgias/axiom'
 
 import aiFaqsDemoPoster from 'assets/img/ai-agent/ai-faqs-demo-poster.png'
@@ -20,10 +21,7 @@ import spqManualInstallStep1 from 'assets/img/spq/spq-manual-install-step-1.png'
 import spqManualInstallStep2 from 'assets/img/spq/spq-manual-install-step-2.png'
 import spqManualInstallStep3 from 'assets/img/spq/spq-manual-install-step-3.png'
 import aiFaqsDemoVideo from 'assets/video/ai-faqs-demo.mp4'
-import useAppDispatch from 'hooks/useAppDispatch'
 import { getGorgiasMainThemeAppExtensionId } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useThemeAppExtensionInstallation'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import css from './EmbeddedSpqSettingsDrawer.less'
 
@@ -115,7 +113,6 @@ const QuickInstallationContent = ({
 }
 
 const ManualInstallationContent = ({ shopName }: { shopName: string }) => {
-    const dispatch = useAppDispatch()
     const [__clipboardState, copyToClipboard] = useCopyToClipboard()
 
     const spqScript = useRef(
@@ -125,14 +122,8 @@ const ManualInstallationContent = ({ shopName }: { shopName: string }) => {
     const handleCopyCode = useCallback(() => {
         copyToClipboard(spqScript.current)
 
-        dispatch(
-            notify({
-                message: 'Code copied!',
-                dismissAfter: 3000,
-                status: NotificationStatus.Success,
-            }),
-        )
-    }, [dispatch, copyToClipboard])
+        toast.success('Code copied!', { duration: 3000 })
+    }, [copyToClipboard])
 
     return (
         <>

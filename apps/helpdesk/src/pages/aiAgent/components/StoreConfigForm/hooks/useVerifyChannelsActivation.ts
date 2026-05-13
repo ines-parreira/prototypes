@@ -2,13 +2,12 @@ import { useCallback, useEffect } from 'react'
 
 import { reportError } from '@repo/logging'
 
+import { toast } from '@gorgias/axiom'
+
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import useAppDispatch from 'hooks/useAppDispatch'
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import type { FormValues, UpdateValue } from 'pages/aiAgent/types'
 import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 export const useVerifyChannelsActivation = ({
     chatChannels,
@@ -26,8 +25,6 @@ export const useVerifyChannelsActivation = ({
     updateValue: UpdateValue<FormValues>
 }) => {
     const isCreate = storeConfiguration === undefined
-
-    const dispatch = useAppDispatch()
 
     const deactivateAiAgentChannels = useCallback(
         async (channels: ('chat' | 'email')[]) => {
@@ -69,11 +66,8 @@ export const useVerifyChannelsActivation = ({
             try {
                 await updateStoreConfiguration(updatedStoreConfiguration)
 
-                void dispatch(
-                    notify({
-                        message: `AI Agent for ${formattedChannels} has been disabled, because no integration was available.`,
-                        status: NotificationStatus.Warning,
-                    }),
+                toast.warning(
+                    `AI Agent for ${formattedChannels} has been disabled, because no integration was available.`,
                 )
             } catch (error) {
                 // nothing to notify here for the user as we do silent disable AI Agent
@@ -85,13 +79,7 @@ export const useVerifyChannelsActivation = ({
                 })
             }
         },
-        [
-            isCreate,
-            updateValue,
-            updateStoreConfiguration,
-            storeConfiguration,
-            dispatch,
-        ],
+        [isCreate, updateValue, updateStoreConfiguration, storeConfiguration],
     )
 
     useEffect(() => {

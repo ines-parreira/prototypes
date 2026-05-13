@@ -1,17 +1,16 @@
-import { render as renderWithProviders } from '@repo/testing'
+import { act, render as renderWithProviders } from '@repo/testing'
 
 // must be kept as first import in the file
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
 import { useFlag } from '@repo/feature-flags'
-import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { produce } from 'immer'
 import { fromJS } from 'immutable'
 import { useLocation } from 'react-router-dom'
 import { ulid } from 'ulidx'
 
 import { integrationsState } from 'fixtures/integrations'
-import useAppDispatch from 'hooks/useAppDispatch'
 import { useFindAllGuidancesKnowledgeResources } from 'models/knowledgeService/queries'
 import {
     useGetStoreApps,
@@ -35,8 +34,6 @@ import {
     WorkflowConfigurationBuilder,
 } from 'pages/automate/workflows/models/workflowConfiguration.model'
 import * as serverValidationErrors from 'pages/automate/workflows/utils/serverValidationErrors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import EditActionView from '../EditActionView'
 
@@ -46,8 +43,6 @@ jest.mock('pages/aiAgent/actions/hooks/useUpsertAction')
 jest.mock('pages/aiAgent/actions/hooks/useDeleteAction')
 jest.mock('pages/automate/actionsPlatform/hooks/useApps')
 jest.mock('pages/aiAgent/hooks/useAiAgentEnabled')
-jest.mock('state/notifications/actions')
-jest.mock('hooks/useAppDispatch')
 jest.mock('pages/aiAgent/actions/hooks/useAddStoreApp')
 jest.mock('pages/aiAgent/actions/hooks/useThreeplIntegrations')
 jest.mock('@repo/feature-flags')
@@ -62,7 +57,6 @@ const mockUseUpsertAction = jest.mocked(useUpsertAction)
 const mockUseDeleteAction = jest.mocked(useDeleteAction)
 const mockUseApps = jest.mocked(useApps)
 const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
-const mockUseAppDispatch = jest.mocked(useAppDispatch)
 const mockUseGetStoreApps = jest.mocked(useGetStoreApps)
 const mockuse3plIntegrations = jest.mocked(useThreeplIntegrations)
 const mockUseAddStoreApp = jest.mocked(useAddStoreApp)
@@ -176,7 +170,6 @@ describe('<EditActionView />', () => {
             updateSettingsAfterAiAgentEnabled: jest.fn(),
         })
         mockUseFlag.mockReturnValue(true)
-        mockUseAppDispatch.mockReturnValue(jest.fn())
         mockUseGetStoreApps.mockReturnValue({
             data: [],
             isInitialLoading: false,
@@ -493,7 +486,7 @@ describe('<EditActionView />', () => {
             screen.getByRole('button', { name: /Save and test/ }),
         ).toBeAriaDisabled()
     })
-    it('should display errors', () => {
+    it('should display errors', async () => {
         const mockUpsertAction = jest.fn()
         mockUseUpsertAction.mockReturnValue({
             isLoading: false,
@@ -516,11 +509,11 @@ describe('<EditActionView />', () => {
         act(() => {
             fireEvent.click(screen.getByText('Save changes'))
         })
-        expect(notify).toHaveBeenCalledWith({
-            showDismissButton: true,
-            status: NotificationStatus.Error,
-            message: 'Fix errors in order to save Action',
-        })
+        expect(
+            await screen.findByRole('status', {
+                name: 'Fix errors in order to save Action',
+            }),
+        ).toBeInTheDocument()
         expect(screen.getByText('Action name is required')).toBeInTheDocument()
         expect(mockUpsertAction).not.toHaveBeenCalled()
     })
@@ -612,14 +605,12 @@ describe('<EditActionView />', () => {
         const mockEditAction = jest
             .fn()
             .mockRejectedValue(serverValidationError)
-        const mockAppDispatch = jest.fn()
         const mockVisualBuilderDispatch = jest.fn()
         mockUseUpsertAction.mockReturnValue({
             isLoading: false,
             mutateAsync: mockEditAction,
             isSuccess: false,
         } as unknown as ReturnType<typeof useUpsertAction>)
-        mockUseAppDispatch.mockReturnValue(mockAppDispatch)
         // Create a proper visual builder graph for this test
         const visualBuilderGraph = computeNodesPositions(
             transformWorkflowConfigurationIntoVisualBuilderGraph<LLMPromptTriggerNodeType>(
@@ -681,14 +672,11 @@ describe('<EditActionView />', () => {
             type: 'RESET_GRAPH',
             graph: graphWithMappedErrors,
         })
-        // Verify notification was dispatched (line 201)
-        expect(mockAppDispatch).toHaveBeenCalledWith(
-            notify({
-                showDismissButton: true,
-                status: NotificationStatus.Error,
-                message: 'Please fix the validation errors below and try again',
+        expect(
+            await screen.findByRole('status', {
+                name: 'Please fix the validation errors below and try again',
             }),
-        )
+        ).toBeInTheDocument()
         // Verify editAction was called but failed
         expect(mockEditAction).toHaveBeenCalled()
         // The handleSave function should return Promise.reject() (line 210)

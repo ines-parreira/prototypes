@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from 'react'
 
+import { toast } from '@gorgias/axiom'
 import { useCreateAiShoppingAssistantTrialRequest } from '@gorgias/helpdesk-queries'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
@@ -7,15 +8,12 @@ import {
     isLessThan24HoursAgo,
     isTrialNotificationOfType,
 } from 'automate/notifications/utils'
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import { getAccountAdminsJS } from 'state/agents/selectors'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 const getSuccessMessage = (trialType: TrialType) => {
     const trialProduct =
@@ -29,7 +27,6 @@ export const useNotifyAdmins = (
     trialType: TrialType,
     onSuccess?: () => void,
 ) => {
-    const dispatch = useAppDispatch()
     const accountAdmins = useAppSelector(getAccountAdminsJS)
     const currentUser = useAppSelector(getCurrentUser)
     const currentAccountId = useAppSelector(getCurrentAccountId)
@@ -85,18 +82,12 @@ export const useNotifyAdmins = (
 
                 onSuccess?.()
 
-                void dispatch(
-                    notify({
-                        message: getSuccessMessage(trialType),
-                        status: NotificationStatus.Success,
-                    }),
-                )
+                toast.success(getSuccessMessage(trialType))
             } catch (error) {
                 console.error(error)
             }
         },
         [
-            dispatch,
             handleOnTriggerTrialRequestNotification,
             currentAccountId,
             currentUser,

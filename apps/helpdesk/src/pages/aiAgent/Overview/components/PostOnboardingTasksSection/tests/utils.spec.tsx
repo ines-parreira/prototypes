@@ -1,6 +1,7 @@
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
+
 import { StepName } from 'models/aiAgentPostStoreInstallationSteps/types'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import {
     decideChatWarning,
@@ -9,10 +10,6 @@ import {
     mapTabToStepName,
     POST_ONBOARDING_STEPS_METADATA,
 } from '../utils'
-
-jest.mock('state/notifications/actions', () => ({
-    notify: jest.fn(),
-}))
 
 jest.mock('utils', () => ({
     assetsUrl: (path: string) => `mocked-assets-url${path}`,
@@ -211,54 +208,59 @@ describe('PostOnboardingTasksSection utils', () => {
     })
 
     describe('handleAiAgentConfigurationError', () => {
-        const mockDispatch = jest.fn()
-        const notifyMock = notify as jest.MockedFunction<typeof notify>
+        const renderErrorHandler = async (error: unknown) => {
+            const { user } = render(
+                <button
+                    type="button"
+                    onClick={() => handleAiAgentConfigurationError(error)}
+                >
+                    Show error
+                </button>,
+            )
 
-        beforeEach(() => {
-            jest.clearAllMocks()
-        })
+            await user.click(screen.getByRole('button', { name: 'Show error' }))
+        }
 
-        it('should dispatch specific error notification for 409 conflict errors', () => {
+        it('shows specific error toast for 409 conflict errors', async () => {
             const conflictError = {
                 isAxiosError: true,
                 response: { status: 409 },
             }
 
-            handleAiAgentConfigurationError(conflictError, mockDispatch)
+            await renderErrorHandler(conflictError)
 
-            expect(mockDispatch).toHaveBeenCalledTimes(1)
-            expect(notifyMock).toHaveBeenCalledWith({
-                message:
-                    'Email address or chat channel already used by AI Agent on a different store.',
-                status: NotificationStatus.Error,
-            })
+            expect(
+                await screen.findByRole('status', {
+                    name: 'Email address or chat channel already used by AI Agent on a different store.',
+                }),
+            ).toBeInTheDocument()
         })
 
-        it('should dispatch generic error notification for other errors', () => {
+        it('shows generic error toast for other errors', async () => {
             const genericError = new Error('Generic error')
 
-            handleAiAgentConfigurationError(genericError, mockDispatch)
+            await renderErrorHandler(genericError)
 
-            expect(mockDispatch).toHaveBeenCalledTimes(1)
-            expect(notifyMock).toHaveBeenCalledWith({
-                message: 'Failed to save AI Agent configuration',
-                status: NotificationStatus.Error,
-            })
+            expect(
+                await screen.findByRole('status', {
+                    name: 'Failed to save AI Agent configuration',
+                }),
+            ).toBeInTheDocument()
         })
 
-        it('should dispatch generic error notification for non-409 Axios errors', () => {
+        it('shows generic error toast for non-409 Axios errors', async () => {
             const nonConflictAxiosError = {
                 isAxiosError: true,
                 response: { status: 500 },
             }
 
-            handleAiAgentConfigurationError(nonConflictAxiosError, mockDispatch)
+            await renderErrorHandler(nonConflictAxiosError)
 
-            expect(mockDispatch).toHaveBeenCalledTimes(1)
-            expect(notifyMock).toHaveBeenCalledWith({
-                message: 'Failed to save AI Agent configuration',
-                status: NotificationStatus.Error,
-            })
+            expect(
+                await screen.findByRole('status', {
+                    name: 'Failed to save AI Agent configuration',
+                }),
+            ).toBeInTheDocument()
         })
     })
 })

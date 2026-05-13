@@ -1,11 +1,7 @@
 import { render } from '@repo/testing'
-import { QueryClient } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
-import { ThemeProvider } from 'core/theme'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 
 import type { TransformedIntent } from '../../hooks/useIntentsTable'
@@ -82,7 +78,6 @@ const mockUseIntentsTable = useIntentsTable as jest.Mock
 const mockUseAiAgentStoreConfigurationContext =
     useAiAgentStoreConfigurationContext as jest.Mock
 const mockUseSkillsArticles = useSkillsArticles as jest.Mock
-const mockStore = configureMockStore([thunk])
 Element.prototype.getAnimations = jest.fn(() => [])
 const createFindIntent =
     (intents: TransformedIntent[]) => (intentId: string) => {
@@ -94,7 +89,6 @@ const createFindIntent =
         return undefined
     }
 describe('IntentsTable', () => {
-    let __store: ReturnType<typeof mockStore>
     const mockIntents: TransformedIntent[] = [
         {
             id: 'order',
@@ -198,7 +192,6 @@ describe('IntentsTable', () => {
             isMetricsLoading: false,
             metricsDateRange: undefined,
         })
-        __store = mockStore({})
         mockUseAiAgentStoreConfigurationContext.mockReturnValue({
             storeConfiguration: {
                 guidanceHelpCenterId: 123,
@@ -211,24 +204,10 @@ describe('IntentsTable', () => {
             isError: false,
         })
     })
-    const renderComponent = (props = {}) => {
-        const __queryClient = new QueryClient({
-            defaultOptions: { queries: { retry: false } },
-        })
-        const result = render(
-            <ThemeProvider>
-                <IntentsTable
-                    isOpen={true}
-                    onOpenChange={jest.fn()}
-                    {...props}
-                />
-            </ThemeProvider>,
-            {},
+    const renderComponent = (props = {}) =>
+        render(
+            <IntentsTable isOpen={true} onOpenChange={jest.fn()} {...props} />,
         )
-        __store = result.store as ReturnType<typeof mockStore>
-
-        return result
-    }
     describe('Rendering', () => {
         it('should render table with L1 intents', () => {
             renderComponent()
@@ -794,11 +773,10 @@ describe('IntentsTable', () => {
             renderComponent()
             const onConfirm = getOnConfirm()
             onConfirm('order::status', articleWithLocale)
-            await waitFor(() => {
-                expect(JSON.stringify(__store.getActions())).toContain(
-                    'An error occurred while linking the intent',
-                )
+            const toastEl = await screen.findByRole('status', {
+                name: 'An error occurred while linking the intent',
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
     })
     describe('Error handling', () => {
@@ -1227,11 +1205,10 @@ describe('IntentsTable', () => {
             renderComponent()
             const onConfirm = getOnConfirm()
             onConfirm('order::status', articleWithLocale)
-            await waitFor(() => {
-                expect(JSON.stringify(__store.getActions())).toContain(
-                    'An error occurred while linking the intent',
-                )
+            const toastEl = await screen.findByRole('status', {
+                name: 'An error occurred while linking the intent',
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
             expect(mockPush).not.toHaveBeenCalled()
         })
     })

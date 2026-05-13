@@ -7,14 +7,13 @@ import { reportError } from '@repo/logging'
 import { List } from 'immutable'
 import { useHistory, useParams } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { Button, toast } from '@gorgias/axiom'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import type { CustomField } from 'custom-fields/types'
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useSearchParam } from 'hooks/useSearchParam'
 import type { Tag } from 'models/aiAgent/types'
@@ -62,8 +61,6 @@ import UnsavedChangesModal from 'pages/common/components/UnsavedChangesModal'
 import ListField from 'pages/common/forms/ListField'
 import { HandoverConfigurationDrawer } from 'pages/standalone/components/HandoverConfigurationDrawer'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { TicketTagsFormComponent } from './FormComponents/TicketTagsFormComponent'
 import { useVerifyChannelsActivation } from './hooks/useVerifyChannelsActivation'
@@ -100,8 +97,6 @@ export const StoreConfigForm = ({
     const { tab = 'general' } = useParams<{ tab?: 'channels' }>()
     const shouldDisplayChannelsSection = section ? true : tab === 'channels'
     const shouldDisplayGeneralSections = section ? false : tab === 'general'
-
-    const dispatch = useAppDispatch()
 
     const [sectionQueryParam, setSectionQueryParam] = useSearchParam('section')
 
@@ -278,12 +273,8 @@ export const StoreConfigForm = ({
                 })
 
                 if (!silentUpdate) {
-                    void dispatch(
-                        notify({
-                            message:
-                                'AI Agent has been disabled, because no Knowledge source is connected.',
-                            status: NotificationStatus.Warning,
-                        }),
+                    toast.warning(
+                        'AI Agent has been disabled, because no Knowledge source is connected.',
                     )
                 }
             } catch (error) {
@@ -296,13 +287,7 @@ export const StoreConfigForm = ({
                 })
             }
         },
-        [
-            isCreate,
-            updateValue,
-            updateStoreConfiguration,
-            storeConfiguration,
-            dispatch,
-        ],
+        [isCreate, updateValue, updateStoreConfiguration, storeConfiguration],
     )
 
     useVerifyChannelsActivation({

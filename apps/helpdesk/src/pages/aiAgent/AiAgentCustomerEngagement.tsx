@@ -7,16 +7,13 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 import { z } from 'zod'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
 import { getPrimaryLanguageFromChatConfig } from 'config/integrations/gorgias_chat'
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import * as IntegrationsActions from 'state/integrations/actions'
 import { getGorgiasChatIntegrationsByStoreName } from 'state/integrations/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { AiAgentLayout } from './components/AiAgentLayout/AiAgentLayout'
 import { CustomerEngagementSettings } from './components/CustomerEngagementSettings/CustomerEngagementSettings'
@@ -43,7 +40,6 @@ export const AiAgentCustomerEngagement = () => {
     const { shopName } = useParams<{
         shopName: string
     }>()
-    const dispatch = useAppDispatch()
 
     const {
         onShoppingAssistantCustomerEngagementViewed,
@@ -150,12 +146,7 @@ export const AiAgentCustomerEngagement = () => {
 
                     reset(data, { keepDirty: false })
 
-                    void dispatch(
-                        notify({
-                            message: CHANGES_SAVED_SUCCESS,
-                            status: NotificationStatus.Success,
-                        }),
-                    )
+                    toast.success(CHANGES_SAVED_SUCCESS)
 
                     onShoppingAssistantCustomerEngagementUpdated({
                         customerEngagementSetting: {
@@ -172,12 +163,8 @@ export const AiAgentCustomerEngagement = () => {
                         },
                     })
                 } catch {
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Error,
-                            message:
-                                'Failed to save customer engagement configuration state',
-                        }),
+                    toast.error(
+                        'Failed to save customer engagement configuration state',
                     )
                 }
             }
@@ -186,7 +173,6 @@ export const AiAgentCustomerEngagement = () => {
             canUpdateTexts,
             updateStoreConfiguration,
             storeConfiguration,
-            dispatch,
             texts,
             primaryLanguage,
             appId,

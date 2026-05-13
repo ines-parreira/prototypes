@@ -3,7 +3,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { SCREEN_SIZE, useScreenSize } from '@repo/hooks'
 import { useQueryClient } from '@tanstack/react-query'
 import { useHistory } from 'react-router-dom'
-import { POSITIONS } from 'reapop'
 
 import type { Row } from '@gorgias/axiom'
 import {
@@ -23,11 +22,11 @@ import {
     TableV1HeaderRowGroup,
     TableV1Root,
     Text,
+    toast,
     useTableV1,
 } from '@gorgias/axiom'
 
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
-import useAppDispatch from 'hooks/useAppDispatch'
 import { helpCenterKeys } from 'models/helpCenter/queries'
 import type { LocaleCode } from 'models/helpCenter/types'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
@@ -37,8 +36,6 @@ import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiA
 import { useUpdateIntentStatus } from 'pages/aiAgent/skills/hooks/useUpdateIntentStatus'
 import type { UpdateGuidanceArticle } from 'pages/aiAgent/types'
 import { useStoreIntegrationByShopName } from 'pages/settings/helpCenter/hooks/useStoreIntegrationByShopName'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import type { TransformedIntent } from '../../hooks/useIntentsTable'
 import { useIntentsTable } from '../../hooks/useIntentsTable'
@@ -109,7 +106,6 @@ export const IntentsTable = ({ isOpen, onOpenChange }: IntentsTableProps) => {
     const history = useHistory()
     const { routes } = useAiAgentNavigation({ shopName })
 
-    const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
     const { updateIntentStatus, isLoading: isUpdating } =
         useUpdateIntentStatus(helpCenterId)
@@ -211,29 +207,13 @@ export const IntentsTable = ({ isOpen, onOpenChange }: IntentsTableProps) => {
         })
     }, [])
 
-    const notifySuccess = useCallback(
-        (message: string) =>
-            dispatch(
-                notify({
-                    message,
-                    status: NotificationStatus.Success,
-                    position: POSITIONS.bottomRight,
-                }),
-            ),
-        [dispatch],
-    )
+    const notifySuccess = useCallback((message: string) => {
+        toast.success(message)
+    }, [])
 
-    const notifyError = useCallback(
-        (message: string) =>
-            dispatch(
-                notify({
-                    message,
-                    status: NotificationStatus.Error,
-                    position: POSITIONS.bottomRight,
-                }),
-            ),
-        [dispatch],
-    )
+    const notifyError = useCallback((message: string) => {
+        toast.error(message)
+    }, [])
 
     const handleToggleEnabled = useCallback(
         (intentId: string, enabled: boolean) => {

@@ -1,14 +1,8 @@
-import type * as React from 'react'
-
 import { useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock, renderHook } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { act } from '@testing-library/react'
-import { createMemoryHistory } from 'history'
-import { Router } from 'react-router-dom'
+import { act, assumeMock, renderHook } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import type { useModalManagerApi } from 'hooks/useModalManager'
 import { useModalManager } from 'hooks/useModalManager'
@@ -18,8 +12,6 @@ import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/Shop
 import { OPPORTUNITIES } from 'pages/aiAgent/constants'
 import { extractShopNameFromUrl } from 'pages/aiAgent/utils/extractShopNameFromUrl'
 import { getShopNameFromStoreActivations } from 'pages/aiAgent/utils/getShopNameFromStoreActivations'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { useAiAgentTrialOnboarding } from '../hooks/useAiAgentTrialOnboarding'
 import { useNotifyTrialExtensionSlackChannel } from '../hooks/useNotifyTrialExtensionSlackChannel'
@@ -33,9 +25,7 @@ jest.mock('../hooks/useAiAgentTrialOnboarding')
 jest.mock('models/aiAgent/queries')
 jest.mock('hooks/useModalManager')
 jest.mock('@repo/logging')
-jest.mock('hooks/useAppDispatch')
 jest.mock('hooks/useAppSelector')
-jest.mock('state/notifications/actions')
 jest.mock('@repo/feature-flags')
 jest.mock('pages/aiAgent/utils/extractShopNameFromUrl')
 jest.mock('pages/aiAgent/utils/getShopNameFromStoreActivations')
@@ -52,8 +42,6 @@ const mockUseNotifyTrialExtensionSlackChannel = assumeMock(
     useNotifyTrialExtensionSlackChannel,
 )
 const mockLogEvent = assumeMock(logEvent)
-const mockNotify = assumeMock(notify)
-const mockUseAppDispatch = assumeMock(useAppDispatch)
 const mockUseAppSelector = assumeMock(useAppSelector)
 const mockUseFlag = assumeMock(useFlag)
 const mockExtractShopNameFromUrl = assumeMock(extractShopNameFromUrl)
@@ -61,16 +49,9 @@ const mockGetShopNameFromStoreActivations = assumeMock(
     getShopNameFromStoreActivations,
 )
 
-const mockDispatch = jest.fn()
-const mockNotifySlackChannel = jest.fn()
+const notifySlackChannel = jest.fn()
 const mockHistoryPush = jest.fn()
 const mockStartOnboardingAfterTrial = jest.fn()
-
-jest.mock('hooks/useAppDispatch', () => jest.fn())
-
-jest.mock('state/notifications/actions', () => ({
-    notify: jest.fn(),
-}))
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -97,10 +78,8 @@ describe('useShoppingAssistantTrialFlow', () => {
     const mockOnUpgradeModalClose = jest.fn()
     const mockOnSuccessModalOpen = jest.fn()
 
-    let queryClient: QueryClient
     let mockMutateAsync: jest.Mock
     let mockAiAgentMutateAsync: jest.Mock
-    let wrapper: React.FC<{ children?: React.ReactNode }>
     let mockModalManager: useModalManagerApi
 
     beforeEach(() => {
@@ -118,34 +97,14 @@ describe('useShoppingAssistantTrialFlow', () => {
         mockUseModalManager.mockReturnValue(mockModalManager)
 
         mockUseNotifyTrialExtensionSlackChannel.mockReturnValue(
-            mockNotifySlackChannel,
+            notifySlackChannel,
         )
-
-        mockUseAppDispatch.mockReturnValue(mockDispatch)
 
         mockUseFlag.mockReturnValue(false)
 
         mockUseAiAgentTrialOnboarding.mockReturnValue({
             startOnboardingWizard: mockStartOnboardingAfterTrial,
         })
-
-        // Create a new QueryClient for each test
-        queryClient = new QueryClient({
-            defaultOptions: {
-                queries: { retry: false },
-                mutations: { retry: false },
-            },
-        })
-        const history = createMemoryHistory({ initialEntries: ['/'] })
-
-        // Create wrapper with QueryClientProvider
-        wrapper = ({ children }: { children?: React.ReactNode }) => (
-            <Router history={history}>
-                <QueryClientProvider client={queryClient}>
-                    {children}
-                </QueryClientProvider>
-            </Router>
-        )
 
         // Mock the mutations
         mockMutateAsync = jest.fn()
@@ -192,26 +151,19 @@ describe('useShoppingAssistantTrialFlow', () => {
         mockGetShopNameFromStoreActivations.mockReturnValue('Test Store 1')
     })
 
-    afterEach(() => {
-        queryClient.clear()
-    })
-
     const renderHookWithDefaults = (
         overrides: Partial<
             Parameters<typeof useShoppingAssistantTrialFlow>[0]
         > = {},
-    ) => {
-        return renderHook(
-            () =>
-                useShoppingAssistantTrialFlow({
-                    accountDomain: mockAccountDomain,
-                    storeActivations: mockStoreActivations,
-                    trialType: TrialType.ShoppingAssistant,
-                    ...overrides,
-                }),
-            { wrapper },
+    ) =>
+        renderHook(() =>
+            useShoppingAssistantTrialFlow({
+                accountDomain: mockAccountDomain,
+                storeActivations: mockStoreActivations,
+                trialType: TrialType.ShoppingAssistant,
+                ...overrides,
+            }),
         )
-    }
 
     describe('initial state', () => {
         it('should have correct initial state', () => {
@@ -704,7 +656,7 @@ describe('useShoppingAssistantTrialFlow', () => {
 
     describe('onRequestTrialExtension', () => {
         it('should handle successful trial extension request', async () => {
-            mockNotifySlackChannel.mockResolvedValue(true)
+            notifySlackChannel.mockResolvedValue(true)
 
             const { result } = renderHookWithDefaults()
 
@@ -719,19 +671,17 @@ describe('useShoppingAssistantTrialFlow', () => {
                     trialType: TrialType.ShoppingAssistant,
                 },
             )
-            expect(mockNotifySlackChannel).toHaveBeenCalledTimes(1)
-            expect(mockDispatch).toHaveBeenCalledWith(
-                mockNotify({
-                    status: NotificationStatus.Success,
-                    message:
-                        "We've received your trial extension request! Our team will review it and get back to you within 2 days via email.",
+            expect(notifySlackChannel).toHaveBeenCalledTimes(1)
+            expect(
+                await screen.findByRole('status', {
+                    name: "We've received your trial extension request! Our team will review it and get back to you within 2 days via email.",
                 }),
-            )
+            ).toBeInTheDocument()
             expect(success).toBe(true)
         })
 
         it('should handle failed trial extension request', async () => {
-            mockNotifySlackChannel.mockResolvedValue(false)
+            notifySlackChannel.mockResolvedValue(false)
 
             const { result } = renderHookWithDefaults()
 
@@ -746,14 +696,12 @@ describe('useShoppingAssistantTrialFlow', () => {
                     trialType: TrialType.ShoppingAssistant,
                 },
             )
-            expect(mockNotifySlackChannel).toHaveBeenCalledTimes(1)
-            expect(mockDispatch).toHaveBeenCalledWith(
-                mockNotify({
-                    status: NotificationStatus.Error,
-                    message:
-                        "We couldn't send your trial extension request. Please try again later or contact our billing team via chat or email.",
+            expect(notifySlackChannel).toHaveBeenCalledTimes(1)
+            expect(
+                await screen.findByRole('status', {
+                    name: "We couldn't send your trial extension request. Please try again later or contact our billing team via chat or email.",
                 }),
-            )
+            ).toBeInTheDocument()
             expect(success).toBe(false)
         })
     })
@@ -887,16 +835,13 @@ describe('useShoppingAssistantTrialFlow', () => {
                 props: Partial<
                     Parameters<typeof useShoppingAssistantTrialFlow>[0]
                 >,
-            ) => {
-                return renderHook(
-                    () =>
-                        useShoppingAssistantTrialFlow({
-                            ...defaultProps,
-                            ...props,
-                        }),
-                    { wrapper },
+            ) =>
+                renderHook(() =>
+                    useShoppingAssistantTrialFlow({
+                        ...defaultProps,
+                        ...props,
+                    }),
                 )
-            }
 
             it('should call AI Agent mutation with correct parameters when optedInForUpgrade is true', () => {
                 const { result } = renderHookWithProps({})
@@ -1210,24 +1155,6 @@ describe('useShoppingAssistantTrialFlow', () => {
 
         describe('URL parameter handling', () => {
             it('should open trial modal when modal_name=opt-in and modal_version=ai-agent-trial are in URL', () => {
-                const history = createMemoryHistory({
-                    initialEntries: [
-                        '/?modal_name=opt-in&modal_version=ai-agent-trial',
-                    ],
-                })
-
-                const customWrapper = ({
-                    children,
-                }: {
-                    children?: React.ReactNode
-                }) => (
-                    <Router history={history}>
-                        <QueryClientProvider client={queryClient}>
-                            {children}
-                        </QueryClientProvider>
-                    </Router>
-                )
-
                 renderHook(
                     () =>
                         useShoppingAssistantTrialFlow({
@@ -1235,7 +1162,11 @@ describe('useShoppingAssistantTrialFlow', () => {
                             storeActivations: mockStoreActivations,
                             trialType: TrialType.AiAgent,
                         }),
-                    { wrapper: customWrapper },
+                    {
+                        initialEntries: [
+                            '/?modal_name=opt-in&modal_version=ai-agent-trial',
+                        ],
+                    },
                 )
 
                 expect(mockModalManager.openModal).toHaveBeenCalledWith(
@@ -1252,24 +1183,6 @@ describe('useShoppingAssistantTrialFlow', () => {
             })
 
             it('should not open trial modal when modal_name is incorrect', () => {
-                const history = createMemoryHistory({
-                    initialEntries: [
-                        '/?modal_name=wrong&modal_version=ai-agent-trial',
-                    ],
-                })
-
-                const customWrapper = ({
-                    children,
-                }: {
-                    children?: React.ReactNode
-                }) => (
-                    <Router history={history}>
-                        <QueryClientProvider client={queryClient}>
-                            {children}
-                        </QueryClientProvider>
-                    </Router>
-                )
-
                 renderHook(
                     () =>
                         useShoppingAssistantTrialFlow({
@@ -1277,29 +1190,17 @@ describe('useShoppingAssistantTrialFlow', () => {
                             storeActivations: mockStoreActivations,
                             trialType: TrialType.AiAgent,
                         }),
-                    { wrapper: customWrapper },
+                    {
+                        initialEntries: [
+                            '/?modal_name=wrong&modal_version=ai-agent-trial',
+                        ],
+                    },
                 )
 
                 expect(mockModalManager.openModal).not.toHaveBeenCalled()
             })
 
             it('should not open trial modal when modal_version is incorrect', () => {
-                const history = createMemoryHistory({
-                    initialEntries: ['/?modal_name=opt-in&modal_version=wrong'],
-                })
-
-                const customWrapper = ({
-                    children,
-                }: {
-                    children?: React.ReactNode
-                }) => (
-                    <Router history={history}>
-                        <QueryClientProvider client={queryClient}>
-                            {children}
-                        </QueryClientProvider>
-                    </Router>
-                )
-
                 renderHook(
                     () =>
                         useShoppingAssistantTrialFlow({
@@ -1307,37 +1208,23 @@ describe('useShoppingAssistantTrialFlow', () => {
                             storeActivations: mockStoreActivations,
                             trialType: TrialType.AiAgent,
                         }),
-                    { wrapper: customWrapper },
+                    {
+                        initialEntries: [
+                            '/?modal_name=opt-in&modal_version=wrong',
+                        ],
+                    },
                 )
 
                 expect(mockModalManager.openModal).not.toHaveBeenCalled()
             })
 
             it('should not open trial modal when URL params are missing', () => {
-                const history = createMemoryHistory({
-                    initialEntries: ['/'],
-                })
-
-                const customWrapper = ({
-                    children,
-                }: {
-                    children?: React.ReactNode
-                }) => (
-                    <Router history={history}>
-                        <QueryClientProvider client={queryClient}>
-                            {children}
-                        </QueryClientProvider>
-                    </Router>
-                )
-
-                renderHook(
-                    () =>
-                        useShoppingAssistantTrialFlow({
-                            accountDomain: mockAccountDomain,
-                            storeActivations: mockStoreActivations,
-                            trialType: TrialType.AiAgent,
-                        }),
-                    { wrapper: customWrapper },
+                renderHook(() =>
+                    useShoppingAssistantTrialFlow({
+                        accountDomain: mockAccountDomain,
+                        storeActivations: mockStoreActivations,
+                        trialType: TrialType.AiAgent,
+                    }),
                 )
 
                 expect(mockModalManager.openModal).not.toHaveBeenCalled()
@@ -1453,24 +1340,6 @@ describe('useShoppingAssistantTrialFlow', () => {
         })
 
         it('should use provided source instead of url_params in PricingModalViewed when URL params trigger modal with source', () => {
-            const history = createMemoryHistory({
-                initialEntries: [
-                    '/?modal_name=opt-in&modal_version=ai-agent-trial',
-                ],
-            })
-
-            const customWrapper = ({
-                children,
-            }: {
-                children?: React.ReactNode
-            }) => (
-                <Router history={history}>
-                    <QueryClientProvider client={queryClient}>
-                        {children}
-                    </QueryClientProvider>
-                </Router>
-            )
-
             renderHook(
                 () =>
                     useShoppingAssistantTrialFlow({
@@ -1479,7 +1348,11 @@ describe('useShoppingAssistantTrialFlow', () => {
                         trialType: TrialType.AiAgent,
                         source: OPPORTUNITIES,
                     }),
-                { wrapper: customWrapper },
+                {
+                    initialEntries: [
+                        '/?modal_name=opt-in&modal_version=ai-agent-trial',
+                    ],
+                },
             )
 
             expect(mockLogEvent).toHaveBeenCalledWith(

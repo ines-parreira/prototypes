@@ -1,22 +1,15 @@
 import { history } from '@repo/routing'
 import { assumeMock, renderHook } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import {
     useGetHelpCenterArticle,
     useGetIngestedResource,
 } from 'models/helpCenter/queries'
 import { getIngestedResourceFixture } from 'pages/aiAgent/fixtures/ingestedResource.fixture'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { useSelectedQuestionAndDetail } from '../hooks/useSelectedQuestionAndDetail'
-
-jest.mock('state/notifications/actions')
-jest.mock('hooks/useAppDispatch')
-const mockUseAppDispatch = assumeMock(useAppDispatch)
-const mockDispatch = jest.fn()
 
 jest.mock('models/helpCenter/queries', () => ({
     ...jest.requireActual('models/helpCenter/queries'),
@@ -53,7 +46,6 @@ describe('useSelectedQuestionAndDetail', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
-        mockUseAppDispatch.mockReturnValue(mockDispatch)
         mockUseGetIngestedResource.mockReturnValue({
             isLoading: false,
             isError: false,
@@ -101,22 +93,31 @@ describe('useSelectedQuestionAndDetail', () => {
         expect(result.current.isError).toBe(false)
     })
 
-    it('redirects and show error notification when article is not found', () => {
-        const { result } = renderHook(() =>
-            useSelectedQuestionAndDetail({
-                shopName: mockedShopName,
-                helpCenterId: mockedHelpCenterId,
-                defaultLocale: mockedDefaultLocale,
-                articleId: mockedArticleId,
-                storeDomainIngestionLogId: mockedStoreDomainIngestionLogId,
-            }),
+    it('redirects and shows an error toast when article is not found', async () => {
+        const initialProps: { articleId: number | null } = { articleId: null }
+        const { result, rerender } = renderHook(
+            ({ articleId }: { articleId: number | null }) =>
+                useSelectedQuestionAndDetail({
+                    shopName: mockedShopName,
+                    helpCenterId: mockedHelpCenterId,
+                    defaultLocale: mockedDefaultLocale,
+                    articleId,
+                    storeDomainIngestionLogId: mockedStoreDomainIngestionLogId,
+                }),
+            {
+                initialProps,
+            },
         )
 
-        expect(notify).toHaveBeenCalledWith({
-            message:
-                'Content no longer exists. It may have been deleted or moved.',
-            status: NotificationStatus.Error,
+        rerender({
+            articleId: mockedArticleId,
         })
+
+        expect(
+            await screen.findByRole('status', {
+                name: 'Content no longer exists. It may have been deleted or moved.',
+            }),
+        ).toBeInTheDocument()
         expect(history.push).toHaveBeenCalledWith(
             '/knowledge/sources/questions-content',
         )

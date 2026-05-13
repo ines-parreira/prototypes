@@ -1,19 +1,12 @@
-import React from 'react'
-
 import { assumeMock, renderHook } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
-import { waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 
 import { useGetOrCreateAccountConfiguration } from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
-import useAppDispatch from 'hooks/useAppDispatch'
 import {
     createAccountConfiguration,
     getAccountConfiguration,
 } from 'models/aiAgent/resources/configuration'
 import { getAccountConfigurationFixture } from 'pages/aiAgent/fixtures/accountConfiguration.fixture'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 const ACCOUNT_ID = 123
 const ACCOUNT_DOMAIN = 'test-account'
@@ -27,18 +20,7 @@ jest.mock('models/aiAgent/resources/configuration', () => ({
 const mockGetAccountConfiguration = assumeMock(getAccountConfiguration)
 const mockCreateAccountConfiguration = assumeMock(createAccountConfiguration)
 
-jest.mock('state/notifications/actions')
-
-jest.mock('hooks/useAppDispatch')
-const useAppDispatchMock = assumeMock(useAppDispatch)
-
-const queryClient = mockQueryClient()
-const wrapper = ({ children }: any) => (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-)
-
 describe('useGetOrCreateAccountConfiguration', () => {
-    const dispatchMock = jest.fn()
     const mockData = getAccountConfigurationFixture({
         accountId: ACCOUNT_ID,
         gorgiasDomain: ACCOUNT_DOMAIN,
@@ -46,8 +28,6 @@ describe('useGetOrCreateAccountConfiguration', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
-        queryClient.clear()
-        useAppDispatchMock.mockReturnValue(dispatchMock)
     })
 
     it('should return account configuration if it exists', async () => {
@@ -56,14 +36,12 @@ describe('useGetOrCreateAccountConfiguration', () => {
             status: 200,
         } as unknown as ReturnType<typeof getAccountConfiguration>)
 
-        const { result } = renderHook(
-            () =>
-                useGetOrCreateAccountConfiguration({
-                    accountId: ACCOUNT_ID,
-                    accountDomain: ACCOUNT_DOMAIN,
-                    storeNames: STORE_NAMES,
-                }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useGetOrCreateAccountConfiguration({
+                accountId: ACCOUNT_ID,
+                accountDomain: ACCOUNT_DOMAIN,
+                storeNames: STORE_NAMES,
+            }),
         )
 
         await waitFor(() => {
@@ -85,23 +63,21 @@ describe('useGetOrCreateAccountConfiguration', () => {
             status: 201,
         } as unknown as ReturnType<typeof createAccountConfiguration>)
 
-        const { result } = renderHook(
-            () =>
-                useGetOrCreateAccountConfiguration({
-                    accountId: ACCOUNT_ID,
-                    accountDomain: ACCOUNT_DOMAIN,
-                    storeNames: STORE_NAMES,
-                }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useGetOrCreateAccountConfiguration({
+                accountId: ACCOUNT_ID,
+                accountDomain: ACCOUNT_DOMAIN,
+                storeNames: STORE_NAMES,
+            }),
         )
+
+        const toastEl = await screen.findByRole('status', {
+            name: 'Initializing AI Agent',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'info')
 
         await waitFor(() => {
             expect(getAccountConfiguration).toHaveBeenCalledWith(ACCOUNT_DOMAIN)
-            expect(notify).toHaveBeenCalledWith({
-                message: 'Initializing AI Agent',
-                status: NotificationStatus.Loading,
-                closeOnNext: true,
-            })
             expect(createAccountConfiguration).toHaveBeenCalledWith({
                 accountId: ACCOUNT_ID,
                 gorgiasDomain: ACCOUNT_DOMAIN,
@@ -121,37 +97,34 @@ describe('useGetOrCreateAccountConfiguration', () => {
             new Error('API error'),
         )
 
-        const { result } = renderHook(
-            () =>
-                useGetOrCreateAccountConfiguration({
-                    accountId: ACCOUNT_ID,
-                    accountDomain: ACCOUNT_DOMAIN,
-                    storeNames: STORE_NAMES,
-                }),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useGetOrCreateAccountConfiguration({
+                accountId: ACCOUNT_ID,
+                accountDomain: ACCOUNT_DOMAIN,
+                storeNames: STORE_NAMES,
+            }),
         )
 
+        const toastEl = await screen.findByRole('status', {
+            name: 'An error occurred while loading the AI Agent',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
+
         await waitFor(() => {
-            expect(notify).toHaveBeenCalledWith({
-                message: 'An error occurred while loading the AI Agent',
-                status: NotificationStatus.Error,
-            })
             expect(result.current.error).toBeDefined()
         })
     })
 
     it('should not fetch data when overrides.enabled is false', async () => {
-        const { result } = renderHook(
-            () =>
-                useGetOrCreateAccountConfiguration(
-                    {
-                        accountId: ACCOUNT_ID,
-                        accountDomain: ACCOUNT_DOMAIN,
-                        storeNames: STORE_NAMES,
-                    },
-                    { enabled: false },
-                ),
-            { wrapper },
+        const { result } = renderHook(() =>
+            useGetOrCreateAccountConfiguration(
+                {
+                    accountId: ACCOUNT_ID,
+                    accountDomain: ACCOUNT_DOMAIN,
+                    storeNames: STORE_NAMES,
+                },
+                { enabled: false },
+            ),
         )
 
         await waitFor(() => {

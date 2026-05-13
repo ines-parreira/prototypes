@@ -1,13 +1,12 @@
 import { useQueryClient } from '@tanstack/react-query'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { toast } from '@gorgias/axiom'
+
 import {
     storeWorkflowsConfigurationDefinitionKeys,
     useUpsertStoreWorkflowsConfiguration,
     workflowsConfigurationDefinitionKeys,
 } from 'models/workflows/queries'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import type {
     StoresWorkflowConfiguration,
@@ -20,7 +19,6 @@ export default function useUpsertAction(
     storeName: string,
     storeType: string,
 ) {
-    const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
 
     const storeWorkflowsConfigurationQueryKey =
@@ -77,14 +75,10 @@ export default function useUpsertAction(
                 ])
             }
 
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Success,
-                    message:
-                        actionType === 'create'
-                            ? 'Successfully created Action'
-                            : 'Successfully updated Action',
-                }),
+            toast.success(
+                actionType === 'create'
+                    ? 'Successfully created Action'
+                    : 'Successfully updated Action',
             )
         },
         onError: (error, _, context) => {
@@ -92,7 +86,7 @@ export default function useUpsertAction(
                 actionType === 'create'
                     ? `Fail to create Action. Please try again later.`
                     : `Fail to update Action. Please try again later.`
-            handleError(error, errorMessage, dispatch)
+            handleError(error, errorMessage)
             queryClient.setQueryData(
                 storeWorkflowsConfigurationQueryKey,
                 context?.previousStoreWorkflowConfiguration,

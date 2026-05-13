@@ -9,13 +9,11 @@ import {
     LegacyCheckBoxField as CheckBoxField,
     LegacyIconButton as IconButton,
     LegacyLoadingSpinner as LoadingSpinner,
+    toast,
 } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import { Drawer } from 'pages/common/components/Drawer'
 import { SearchBar } from 'pages/common/components/SearchBar/SearchBar'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { BadgeWithTooltip } from './BadgeWithTooltip'
 
@@ -63,7 +61,6 @@ export const ItemDrawer = ({
     onSearch?: (searchTerm: string) => void
     onShowProducts?: (id: string) => void
 }) => {
-    const dispatch = useAppDispatch()
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [localSearchTerm, setLocalSearchTerm] = useState('')
     const [localSelectedItemIds, setLocalSelectedItemIds] =
@@ -303,20 +300,12 @@ export const ItemDrawer = ({
                                     await onSubmit(localSelectedItemIds)
                                     onClose()
 
-                                    void dispatch(
-                                        notify({
-                                            message:
-                                                'Product recommendations saved.',
-                                            status: NotificationStatus.Success,
-                                        }),
+                                    toast.success(
+                                        'Product recommendations saved.',
                                     )
                                 } catch {
-                                    void dispatch(
-                                        notify({
-                                            message:
-                                                'Failed to save product recommendations.',
-                                            status: NotificationStatus.Error,
-                                        }),
+                                    toast.error(
+                                        'Failed to save product recommendations.',
                                     )
                                 }
 

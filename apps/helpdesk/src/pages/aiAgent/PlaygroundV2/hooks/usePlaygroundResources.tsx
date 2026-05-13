@@ -3,8 +3,9 @@ import { useEffect, useState } from 'react'
 import { reportError } from '@repo/logging'
 import { isAxiosError } from 'axios'
 
+import { toast } from '@gorgias/axiom'
+
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import useAppDispatch from 'hooks/useAppDispatch'
 import {
     useGetAccountConfiguration,
     useGetStoreConfigurationPure,
@@ -13,8 +14,6 @@ import type {
     AccountConfiguration,
     StoreConfiguration,
 } from 'models/aiAgent/types'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { useGetOrCreateSnippetHelpCenter } from '../../hooks/useGetOrCreateSnippetHelpCenter'
 
@@ -39,7 +38,6 @@ export const usePlaygroundResources = ({
     shopName,
     accountDomain,
 }: UsePlaygroundResourcesProps): UsePlaygroundResourcesReturn => {
-    const dispatch = useAppDispatch()
     const [
         storeConfigurationNotInitialized,
         setStoreConfigurationNotInitialized,
@@ -86,12 +84,8 @@ export const usePlaygroundResources = ({
             ) {
                 setStoreConfigurationNotInitialized(true)
             } else {
-                void dispatch(
-                    notify({
-                        message:
-                            'There was an error initializing the AI Agent Test mode',
-                        status: NotificationStatus.Error,
-                    }),
+                toast.error(
+                    'There was an error initializing the AI Agent Test mode',
                 )
                 reportError(storeFetchError, {
                     tags: { team: SentryTeam.AI_AGENT },
@@ -102,7 +96,7 @@ export const usePlaygroundResources = ({
                 })
             }
         }
-    }, [storeFetchError, dispatch])
+    }, [storeFetchError])
 
     const isLoading =
         storeDataLoading || accountDataLoading || snippetHelpCenterLoading

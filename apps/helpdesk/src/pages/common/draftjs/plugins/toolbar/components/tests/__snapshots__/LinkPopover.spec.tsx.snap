@@ -31,6 +31,18 @@ exports[`<LinkPopover /> should render the popover on a specified modal 1`] = `
 <body>
   <div />
   <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
+  <div
     aria-describedby="modal-1-desc"
     aria-labelledby="modal-1-title"
     aria-modal="true"
@@ -81,18 +93,6 @@ exports[`<LinkPopover /> should render the popover on a specified modal 1`] = `
         </div>
       </div>
     </div>
-  </div>
-  <div
-    data-name="toaster"
-    data-react-aria-top-layer="true"
-  >
-    <section
-      aria-atomic="false"
-      aria-label="Notifications alt+T"
-      aria-live="polite"
-      aria-relevant="additions text"
-      tabindex="-1"
-    />
   </div>
 </body>
 `;

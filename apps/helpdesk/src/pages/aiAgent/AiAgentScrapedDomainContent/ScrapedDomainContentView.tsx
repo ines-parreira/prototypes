@@ -5,11 +5,11 @@ import classnames from 'classnames'
 import Skeleton from 'react-loading-skeleton'
 
 import {
+    toast,
     LegacyToggleField as ToggleField,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import type {
     ContentType,
     ProductIngestedResourceWithArticleId,
@@ -22,8 +22,6 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import IconInput from 'pages/common/forms/input/IconInput'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
 import {
@@ -183,7 +181,6 @@ function ScrapedDomainContentView<T extends ContentType>({
     isAllEnabled,
     setIsAllEnabled,
 }: Props<T>) {
-    const dispatch = useAppDispatch()
     const { routes } = useAiAgentNavigation({ shopName })
     const isAdditionalInfoEnabled = useFlag(
         FeatureFlagKey.AiAgentProductAdditionalInfo,
@@ -268,13 +265,7 @@ function ScrapedDomainContentView<T extends ContentType>({
                 status: newStatus,
             })
                 .then(() => {
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Success,
-                            message: 'Successfully updated question',
-                            showDismissButton: true,
-                        }),
-                    )
+                    toast.success('Successfully updated question')
                 })
                 .catch(() => {
                     setQuestionStatusMap((prev) => ({
@@ -297,13 +288,7 @@ function ScrapedDomainContentView<T extends ContentType>({
                     : IngestedResourceStatus.Enabled,
             })
             setIsAllEnabled(!isAllEnabled)
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Success,
-                    message: 'Successfully updated all questions',
-                    showDismissButton: true,
-                }),
-            )
+            toast.success('Successfully updated all questions')
         }
     }
 

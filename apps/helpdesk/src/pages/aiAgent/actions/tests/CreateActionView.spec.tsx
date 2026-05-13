@@ -1,10 +1,10 @@
-import { render } from '@repo/testing'
+import { act, render } from '@repo/testing'
 
 // must be kept as first import in the file
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
 import { useFlag } from '@repo/feature-flags'
-import { act, createEvent, fireEvent, screen } from '@testing-library/react'
+import { createEvent, fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Route } from 'react-router'
 import { Redirect, useLocation } from 'react-router-dom'
@@ -12,7 +12,6 @@ import { ulid } from 'ulidx'
 
 import { billingState } from 'fixtures/billing'
 import { defaultUseAiAgentOnboardingNotification } from 'fixtures/onboardingStateNotification'
-import useAppDispatch from 'hooks/useAppDispatch'
 import { useFindAllGuidancesKnowledgeResources } from 'models/knowledgeService/queries'
 import {
     useDownloadWorkflowConfigurationStepLogs,
@@ -35,8 +34,6 @@ import {
     WorkflowConfigurationBuilder,
 } from 'pages/automate/workflows/models/workflowConfiguration.model'
 import * as serverValidationErrors from 'pages/automate/workflows/utils/serverValidationErrors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import type { RootState } from 'state/types'
 
 import CreateActionView from '../CreateActionView'
@@ -47,8 +44,6 @@ jest.mock('models/knowledgeService/queries')
 jest.mock('pages/aiAgent/actions/hooks/useUpsertAction')
 jest.mock('pages/automate/actionsPlatform/hooks/useApps')
 jest.mock('pages/aiAgent/hooks/useAiAgentEnabled')
-jest.mock('state/notifications/actions')
-jest.mock('hooks/useAppDispatch')
 jest.mock('pages/aiAgent/actions/hooks/useAddStoreApp')
 jest.mock('pages/aiAgent/actions/hooks/useThreeplIntegrations')
 jest.mock('@repo/feature-flags')
@@ -62,7 +57,6 @@ const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
 const mockUseUpsertAction = jest.mocked(useUpsertAction)
 const mockUseApps = jest.mocked(useApps)
 const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
-const mockUseAppDispatch = jest.mocked(useAppDispatch)
 const mockUseGetStoreApps = jest.mocked(useGetStoreApps)
 const mockuse3plIntegrations = jest.mocked(useThreeplIntegrations)
 const mockUseAddStoreApp = jest.mocked(useAddStoreApp)
@@ -189,7 +183,6 @@ describe('<CreateActionView />', () => {
         mockUseEnableAiAgent.mockReturnValue({
             updateSettingsAfterAiAgentEnabled: jest.fn(),
         })
-        mockUseAppDispatch.mockReturnValue(jest.fn())
         mockUseGetStoreApps.mockReturnValue({
             data: [],
             isInitialLoading: false,
@@ -336,7 +329,7 @@ describe('<CreateActionView />', () => {
             screen.getByRole('button', { name: /Create and test/ }),
         ).toBeAriaDisabled()
     })
-    it('should display errors', () => {
+    it('should display errors', async () => {
         const mockUpsertAction = jest.fn()
         mockUseUpsertAction.mockReturnValue({
             isLoading: false,
@@ -360,11 +353,11 @@ describe('<CreateActionView />', () => {
         act(() => {
             fireEvent.click(screen.getByText('Create Action'))
         })
-        expect(notify).toHaveBeenCalledWith({
-            showDismissButton: true,
-            status: NotificationStatus.Error,
-            message: 'Fix errors in order to create Action',
-        })
+        expect(
+            await screen.findByRole('status', {
+                name: 'Fix errors in order to create Action',
+            }),
+        ).toBeInTheDocument()
         expect(screen.getByText('Action name is required')).toBeInTheDocument()
         expect(mockUpsertAction).not.toHaveBeenCalled()
     })
@@ -525,9 +518,7 @@ describe('<CreateActionView />', () => {
             })
         })
         act(() => {
-            const editor = screen
-                .getByTestId('visual-builder-node-edition')
-                .querySelector('.public-DraftEditor-content')!
+            const editor = screen.getAllByRole('textbox')[2]
             const event = createEvent.paste(editor, {
                 clipboardData: {
                     types: ['text/plain'],
@@ -822,14 +813,12 @@ describe('<CreateActionView />', () => {
         const mockCreateAction = jest
             .fn()
             .mockRejectedValue(serverValidationError)
-        const mockAppDispatch = jest.fn()
         const mockVisualBuilderDispatch = jest.fn()
         mockUseUpsertAction.mockReturnValue({
             isLoading: false,
             mutateAsync: mockCreateAction,
             isSuccess: false,
         } as unknown as ReturnType<typeof useUpsertAction>)
-        mockUseAppDispatch.mockReturnValue(mockAppDispatch)
         // Create a proper visual builder graph for this test
         const b = new WorkflowConfigurationBuilder({
             id: 'test-id',
@@ -955,14 +944,11 @@ describe('<CreateActionView />', () => {
             type: 'RESET_GRAPH',
             graph: graphWithMappedErrors,
         })
-        // Verify notification was dispatched (line 232)
-        expect(mockAppDispatch).toHaveBeenCalledWith(
-            notify({
-                showDismissButton: true,
-                status: NotificationStatus.Error,
-                message: 'Please fix the validation errors below and try again',
+        expect(
+            await screen.findByRole('status', {
+                name: 'Please fix the validation errors below and try again',
             }),
-        )
+        ).toBeInTheDocument()
         // Verify createAction was called but failed
         expect(mockCreateAction).toHaveBeenCalled()
         // The handleSave function should return Promise.reject() (line 241)

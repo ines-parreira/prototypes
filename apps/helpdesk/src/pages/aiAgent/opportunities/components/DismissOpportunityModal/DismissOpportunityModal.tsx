@@ -8,18 +8,16 @@ import {
     OverlayFooter,
     OverlayHeader,
     Text,
+    toast,
 } from '@gorgias/axiom'
 import type { FeedbackMutation } from '@gorgias/knowledge-service-types'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { OpportunityType } from 'pages/aiAgent/opportunities/enums'
 import type { Opportunity } from 'pages/aiAgent/opportunities/types'
 import type { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 import TextArea from 'pages/common/forms/TextArea'
 import { getCurrentUserId } from 'state/currentUser/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import {
     FeedbackObjectType,
@@ -77,7 +75,6 @@ export const DismissOpportunityModal = ({
     onClose,
     onConfirm,
 }: DismissOpportunityModalProps) => {
-    const dispatch = useAppDispatch()
     const userId = useAppSelector(getCurrentUserId)
     const [selectedReasons, setSelectedReasons] = useState<Option[]>([])
     const [freeformText, setFreeformText] = useState('')
@@ -181,23 +178,15 @@ export const DismissOpportunityModal = ({
             !feedbackData.feedbackToUpsert ||
             feedbackData.feedbackToUpsert.length === 0
         ) {
-            dispatch(
-                notify({
-                    message:
-                        'Please select at least one reason for dismissing this opportunity.',
-                    status: NotificationStatus.Error,
-                }),
+            toast.error(
+                'Please select at least one reason for dismissing this opportunity.',
             )
             return
         }
 
         if (isOtherSelected && !freeformText.trim()) {
-            dispatch(
-                notify({
-                    message:
-                        'Please provide additional feedback when selecting "Other" as a reason.',
-                    status: NotificationStatus.Error,
-                }),
+            toast.error(
+                'Please provide additional feedback when selecting "Other" as a reason.',
             )
             return
         }
@@ -214,7 +203,6 @@ export const DismissOpportunityModal = ({
         feedbackData,
         onConfirm,
         onClose,
-        dispatch,
         resetForm,
         isOtherSelected,
         freeformText,

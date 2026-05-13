@@ -5,10 +5,10 @@ import { useQueryClient } from '@tanstack/react-query'
 import {
     LegacyButton as Button,
     Label,
+    toast,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import { useSearchParam } from 'hooks/useSearchParam'
 import { helpCenterKeys } from 'models/helpCenter/queries'
 import type { getArticleIngestionLogs } from 'models/helpCenter/resources'
@@ -20,8 +20,6 @@ import {
 } from 'pages/aiAgent/constants'
 import { useKnowledgeTracking } from 'pages/aiAgent/hooks/useKnowledgeTracking'
 import useHelpCenterCustomDomainHostnames from 'pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { usePublicResourceMutation } from '../../hooks/usePublicResourcesMutation'
 import { usePublicResourcesPooling } from '../../hooks/usePublicResourcesPooling'
@@ -61,7 +59,6 @@ export const PublicSourcesSection = ({
     syncUrlOnCommand,
     setSyncUrlOnCommand,
 }: Props) => {
-    const dispatch = useAppDispatch()
     const [wizardQueryParam] = useSearchParam(WIZARD_POST_COMPLETION_QUERY_KEY)
 
     const { articleIngestionLogsStatus } = usePublicResourcesPooling({
@@ -143,20 +140,11 @@ export const PublicSourcesSection = ({
         try {
             await deletePublicResource(source.id)
 
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Success,
-                    message: 'Public URL successfully deleted',
-                }),
-            )
+            toast.success('Public URL successfully deleted')
         } catch {
             setSources((prev) => [...prev, source])
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message:
-                        'Error during Public URL deletion. Try one more time or contact support',
-                }),
+            toast.error(
+                'Error during Public URL deletion. Try one more time or contact support',
             )
         }
     }
@@ -212,12 +200,8 @@ export const PublicSourcesSection = ({
                 ),
             )
 
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message:
-                        'We couldn’t sync your URL. Please try again or contact support if the issue persists.',
-                }),
+            toast.error(
+                'We couldn’t sync your URL. Please try again or contact support if the issue persists.',
             )
         }
     }

@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo } from 'react'
 import { reportError } from '@repo/logging'
 import { Link } from 'react-router-dom'
 
-import { LegacyLabel as Label } from '@gorgias/axiom'
+import { LegacyLabel as Label, toast } from '@gorgias/axiom'
 import { RequirementType } from '@gorgias/helpdesk-types'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
@@ -13,12 +13,9 @@ import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustom
 import type { CustomField } from 'custom-fields/types'
 import { isCustomFieldSystemReadOnly } from 'custom-fields/types'
 import SelectFilter from 'domains/reporting/pages/common/SelectFilter'
-import useAppDispatch from 'hooks/useAppDispatch'
 import { populateConditionalFieldIds } from 'pages/aiAgent/hooks/utils/add-conditional-custom-field-ids-based-on-conditions.util'
 import type { FormValues, UpdateValue } from 'pages/aiAgent/types'
 import type { Value } from 'pages/common/forms/SelectField/types'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { StoreCustomFieldsList } from './StoreCustomFieldList'
 import { useCustomFieldsState } from './useCustomFieldsState'
@@ -57,8 +54,6 @@ export const CustomFieldsFormComponent = ({
         autoFillRequiredFields,
         removeField,
     } = useCustomFieldsState()
-
-    const dispatch = useAppDispatch()
 
     // Compute available options based on the fetched fields and existing selection
     const availableSelectCustomFieldOptions = useMemo<CustomField[]>(
@@ -209,15 +204,11 @@ export const CustomFieldsFormComponent = ({
                 extra: { context: 'Error fetching account custom fields' },
             })
 
-            void dispatch(
-                notify({
-                    message:
-                        'An unexpected error happened fetching account custom fields. You can come back later to customize them',
-                    status: NotificationStatus.Warning,
-                }),
+            toast.warning(
+                'An unexpected error happened fetching account custom fields. You can come back later to customize them',
             )
         }
-    }, [customFieldFetchError, dispatch])
+    }, [customFieldFetchError])
 
     if (customFieldFetchError) {
         return null

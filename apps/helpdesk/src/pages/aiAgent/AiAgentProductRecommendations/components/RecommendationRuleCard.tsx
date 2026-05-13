@@ -6,11 +6,8 @@ import {
     LegacyIconButton as IconButton,
     LegacyLoadingSpinner as LoadingSpinner,
     Skeleton,
+    toast,
 } from '@gorgias/axiom'
-
-import useAppDispatch from 'hooks/useAppDispatch'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { BadgeWithTooltip } from './BadgeWithTooltip'
 
@@ -59,7 +56,6 @@ export const RecommendationRuleCard = ({
     onDelete: (id: string) => Promise<void>
     onSeeAllClick: () => void
 }) => {
-    const dispatch = useAppDispatch()
     const [deletingItemId, setDeletingItemId] = useState<string | null>(null)
 
     useEffect(() => {
@@ -76,17 +72,12 @@ export const RecommendationRuleCard = ({
                 setDeletingItemId(itemId)
                 await onDelete(itemId)
             } catch {
-                void dispatch(
-                    notify({
-                        message: 'Failed to save product recommendations.',
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error('Failed to save product recommendations.')
             } finally {
                 setDeletingItemId(null)
             }
         },
-        [onDelete, dispatch],
+        [onDelete],
     )
 
     return (

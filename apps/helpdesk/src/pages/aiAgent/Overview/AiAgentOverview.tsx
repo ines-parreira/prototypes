@@ -5,9 +5,9 @@ import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { useParams } from 'react-router-dom'
 
-import { AlertBannerTypes } from 'AlertBanners'
+import { Button, toast } from '@gorgias/axiom'
+
 import modalImage from 'assets/img/ai-agent/ai_agent_onboarding_thankyou.png'
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import { useActivation } from 'pages/aiAgent//Activation/hooks/useActivation'
@@ -36,8 +36,6 @@ import {
     getShopifyIntegrationByShopName,
     makeGetRedirectUri,
 } from 'state/integrations/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStyle } from 'state/notifications/types'
 
 import { useTrialAccess } from '../trial/hooks/useTrialAccess'
 
@@ -49,7 +47,6 @@ export const AiAgentOverview = () => {
 
     const [isAiAgentPostLive, setIsAiAgentPostLive] = useState(false)
 
-    const dispatch = useAppDispatch()
     const currentAccount = useAppSelector(getCurrentAccountState)
     const getRedirectUri = useAppSelector(makeGetRedirectUri)
     const shopifyIntegration = useAppSelector(
@@ -203,22 +200,20 @@ export const AiAgentOverview = () => {
 
     useEffect(() => {
         if (needScopeUpdate && shopName) {
-            dispatch(
-                notify({
+            toast.warning(
+                'Unlock smarter recommendations by giving AI Agent access to your Shopify inventory, ensuring it suggests in-stock items based on shopper location.',
+                {
                     id: `ai-agent-inventory-scope-${shopName}`,
-                    style: NotificationStyle.Banner,
-                    type: AlertBannerTypes.Warning,
-                    message:
-                        'Unlock smarter recommendations by giving AI Agent access to your Shopify inventory, ensuring it suggests in-stock items based on shopper location.',
-                    CTA: {
-                        type: 'action',
-                        text: 'Allow Inventory Access',
-                        onClick: retriggerOAuthFlow,
-                    },
-                }),
+                    duration: Infinity,
+                    actions: (
+                        <Button size="sm" onClick={retriggerOAuthFlow}>
+                            Allow Inventory Access
+                        </Button>
+                    ),
+                },
             )
         }
-    }, [dispatch, needScopeUpdate, shopName, retriggerOAuthFlow])
+    }, [needScopeUpdate, shopName, retriggerOAuthFlow])
 
     return (
         <AiAgentOverviewLayout shopName={shopName}>

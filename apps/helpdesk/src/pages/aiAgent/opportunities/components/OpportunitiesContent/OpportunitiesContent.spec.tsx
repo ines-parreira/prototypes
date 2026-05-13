@@ -8,7 +8,6 @@ import userEvent from '@testing-library/user-event'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import type { Opportunity } from 'pages/aiAgent/opportunities/types'
 import { ResourceType } from 'pages/aiAgent/opportunities/types'
-import { notify } from 'state/notifications/actions'
 
 import OpportunitiesSidebarContext from '../../context/OpportunitiesSidebarContext'
 import { OpportunityType } from '../../enums'
@@ -16,13 +15,6 @@ import { State } from '../../hooks/useOpportunityPageState'
 import type { OpportunityPageState } from '../../hooks/useOpportunityPageState'
 import { useProcessOpportunity } from '../../hooks/useProcessOpportunity'
 import { OpportunitiesContent } from './OpportunitiesContent'
-
-jest.mock('state/notifications/actions', () => ({
-    notify: jest.fn((payload) => ({
-        type: 'NOTIFY',
-        payload,
-    })),
-}))
 
 jest.mock('pages/aiAgent/utils/guidance.utils', () => ({
     mapGuidanceFormFieldsToGuidanceArticle: jest.fn((formData, locale, id) => ({
@@ -55,7 +47,7 @@ jest.mock(
 jest.mock('pages/aiAgent/components/GuidanceEditor/GuidanceEditor', () => ({
     GuidanceEditor: ({ content, handleUpdateContent }: any) => (
         <textarea
-            data-testid="guidance-editor"
+            aria-label="Guidance content"
             value={content}
             onChange={(e) => handleUpdateContent(e.target.value)}
         />
@@ -73,7 +65,7 @@ jest.mock(
             opportunitiesPageState: { title: string; description: string }
             shopName: string
         }) => (
-            <div data-testid="restricted-opportunity-message">
+            <div role="region" aria-label="Restricted opportunity">
                 <h1>{opportunitiesPageState.title}</h1>
                 <p>{opportunitiesPageState.description}</p>
                 <button>Book a demo</button>
@@ -378,12 +370,11 @@ describe('OpportunitiesContent', () => {
             expect(mockProcessOpportunity).toHaveBeenCalled()
         })
 
-        await waitFor(() => {
-            expect(notify).toHaveBeenCalledWith({
-                status: 'error',
-                message: 'Failed to resolve knowledge gap. Please try again.',
-            })
-        })
+        expect(
+            await screen.findByRole('status', {
+                name: 'Failed to resolve knowledge gap. Please try again.',
+            }),
+        ).toBeInTheDocument()
     })
 
     it('should show loading state on approve button when processing opportunity', () => {
@@ -836,11 +827,12 @@ describe('OpportunitiesContent', () => {
 
             await waitFor(() => {
                 expect(mockProcessOpportunity).toHaveBeenCalled()
-                expect(notify).toHaveBeenCalledWith({
-                    message: 'Successfully dismissed opportunity',
-                    status: 'success',
-                })
             })
+            expect(
+                await screen.findByRole('status', {
+                    name: 'Successfully dismissed opportunity',
+                }),
+            ).toBeInTheDocument()
         })
     })
 
@@ -1006,7 +998,9 @@ describe('OpportunitiesContent', () => {
 
             const titleInput =
                 await screen.findByDisplayValue('Test opportunity')
-            const contentEditor = await screen.findByTestId('guidance-editor')
+            const contentEditor = await screen.findByRole('textbox', {
+                name: 'Guidance content',
+            })
 
             await user.clear(titleInput)
             let approveButton = screen.getByRole('button', {

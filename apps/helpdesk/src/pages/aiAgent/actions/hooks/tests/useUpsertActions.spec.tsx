@@ -1,19 +1,12 @@
-import React from 'react'
-
 import { assumeMock, renderHook } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { screen } from '@testing-library/react'
 
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { useUpsertStoreWorkflowsConfiguration } from 'models/workflows/queries'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { handleError } from '../errorHandler'
 import useUpsertAction from '../useUpsertAction'
 import { actionConfigurationFixture } from './actions.fixtures'
-
-const queryClient = mockQueryClient()
 
 jest.mock('models/workflows/queries')
 const useUpsertWorkflowConfigurationMock = assumeMock(
@@ -21,10 +14,6 @@ const useUpsertWorkflowConfigurationMock = assumeMock(
 )
 
 jest.mock('../errorHandler')
-
-const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
-jest.mock('state/notifications/actions')
 
 describe('useUpsertAction', () => {
     const internalId = 1
@@ -35,14 +24,8 @@ describe('useUpsertAction', () => {
         useUpsertWorkflowConfigurationMock.mockClear()
     })
 
-    it('create store action configuration', () => {
-        renderHook(() => useUpsertAction('create', shopName, shopType), {
-            wrapper: ({ children }) => (
-                <QueryClientProvider client={queryClient}>
-                    {children}
-                </QueryClientProvider>
-            ),
-        })
+    it('creates store action configuration', async () => {
+        renderHook(() => useUpsertAction('create', shopName, shopType))
 
         useUpsertWorkflowConfigurationMock.mock.calls[0][0]?.onSuccess!(
             axiosSuccessResponse(actionConfigurationFixture),
@@ -50,44 +33,32 @@ describe('useUpsertAction', () => {
             undefined,
         )
 
-        expect(notify).toHaveBeenNthCalledWith(1, {
-            message: 'Successfully created Action',
-            status: NotificationStatus.Success,
-        })
-
-        expect(mockedDispatch).toHaveBeenCalledTimes(1)
+        expect(
+            await screen.findByRole('status', {
+                name: 'Successfully created Action',
+            }),
+        ).toBeInTheDocument()
     })
 
-    it('update store action configuration', () => {
-        renderHook(() => useUpsertAction('update', shopName, shopType), {
-            wrapper: ({ children }) => (
-                <QueryClientProvider client={queryClient}>
-                    {children}
-                </QueryClientProvider>
-            ),
-        })
+    it('updates store action configuration', async () => {
+        renderHook(() => useUpsertAction('update', shopName, shopType))
+
         useUpsertWorkflowConfigurationMock.mock.calls[0][0]?.onSuccess!(
             axiosSuccessResponse(actionConfigurationFixture),
             [internalId, actionConfigurationFixture],
             undefined,
         )
 
-        expect(notify).toHaveBeenNthCalledWith(1, {
-            message: 'Successfully updated Action',
-            status: NotificationStatus.Success,
-        })
-
-        expect(mockedDispatch).toHaveBeenCalledTimes(1)
+        expect(
+            await screen.findByRole('status', {
+                name: 'Successfully updated Action',
+            }),
+        ).toBeInTheDocument()
     })
 
     it('should call handleError on error', () => {
-        renderHook(() => useUpsertAction('update', shopName, shopType), {
-            wrapper: ({ children }) => (
-                <QueryClientProvider client={queryClient}>
-                    {children}
-                </QueryClientProvider>
-            ),
-        })
+        renderHook(() => useUpsertAction('update', shopName, shopType))
+
         const errorResponseBody = {
             message: 'error message',
         }
@@ -101,7 +72,6 @@ describe('useUpsertAction', () => {
             1,
             errorResponseBody,
             'Fail to update Action. Please try again later.',
-            mockedDispatch,
         )
     })
 })

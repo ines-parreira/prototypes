@@ -2,17 +2,12 @@ import 'tests/mockGorgiasAppsAuth'
 
 import { reportError } from '@repo/logging'
 import { renderHook } from '@repo/testing'
-import { waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { isAxiosError } from 'axios'
-
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { usePlaygroundResources } from '../usePlaygroundResources'
 
-jest.mock('hooks/useAppDispatch')
 jest.mock('axios')
-jest.mock('state/notifications/actions')
 jest.mock('@repo/logging')
 jest.mock('../../../hooks/useGetOrCreateSnippetHelpCenter')
 
@@ -22,7 +17,6 @@ jest.mock('models/aiAgent/queries', () => ({
     useGetAccountConfiguration: jest.fn(),
 }))
 
-const mockUseAppDispatch = require('hooks/useAppDispatch').default as jest.Mock
 const mockUseGetStoreConfigurationPure = require('models/aiAgent/queries')
     .useGetStoreConfigurationPure as jest.Mock
 const mockUseGetAccountConfiguration = require('models/aiAgent/queries')
@@ -33,12 +27,9 @@ const mockUseGetOrCreateSnippetHelpCenter =
 const mockIsAxiosError = isAxiosError as jest.MockedFunction<
     typeof isAxiosError
 >
-const mockNotify = notify as jest.MockedFunction<typeof notify>
 const mockReportError = reportError as jest.MockedFunction<typeof reportError>
 
 describe('usePlaygroundResources', () => {
-    const mockDispatch = jest.fn()
-
     const mockStoreConfiguration = {
         helpCenterId: 123,
         snippetHelpCenterId: 456,
@@ -60,7 +51,6 @@ describe('usePlaygroundResources', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseAppDispatch.mockReturnValue(mockDispatch)
         mockIsAxiosError.mockReturnValue(false)
     })
 
@@ -171,7 +161,7 @@ describe('usePlaygroundResources', () => {
             mockUseGetStoreConfigurationPure.mockReturnValue({
                 data: undefined,
                 isLoading: false,
-                error: mockError,
+                error: undefined,
             })
 
             mockUseGetAccountConfiguration.mockReturnValue({
@@ -185,27 +175,12 @@ describe('usePlaygroundResources', () => {
                 isLoading: false,
             })
 
-            const { result } = renderHook(() =>
+            const { result, rerender } = renderHook(() =>
                 usePlaygroundResources({
                     shopName: 'test-shop',
                     accountDomain: 'test-domain.gorgias.com',
                 }),
             )
-
-            await waitFor(() => {
-                expect(result.current.storeConfigurationNotInitialized).toBe(
-                    true,
-                )
-            })
-
-            expect(mockDispatch).not.toHaveBeenCalled()
-            expect(mockReportError).not.toHaveBeenCalled()
-        })
-
-        it('should dispatch notification and report error on non-404 error', async () => {
-            const mockError = new Error('Network error')
-
-            mockIsAxiosError.mockReturnValue(false)
 
             mockUseGetStoreConfigurationPure.mockReturnValue({
                 data: undefined,
@@ -213,6 +188,28 @@ describe('usePlaygroundResources', () => {
                 error: mockError,
             })
 
+            rerender()
+
+            await waitFor(() => {
+                expect(result.current.storeConfigurationNotInitialized).toBe(
+                    true,
+                )
+            })
+
+            expect(mockReportError).not.toHaveBeenCalled()
+        })
+
+        it('shows an error toast and reports non-404 error', async () => {
+            const mockError = new Error('Network error')
+
+            mockIsAxiosError.mockReturnValue(false)
+
+            mockUseGetStoreConfigurationPure.mockReturnValue({
+                data: undefined,
+                isLoading: false,
+                error: undefined,
+            })
+
             mockUseGetAccountConfiguration.mockReturnValue({
                 data: undefined,
                 isLoading: false,
@@ -224,22 +221,26 @@ describe('usePlaygroundResources', () => {
                 isLoading: false,
             })
 
-            const { result } = renderHook(() =>
+            const { result, rerender } = renderHook(() =>
                 usePlaygroundResources({
                     shopName: 'test-shop',
                     accountDomain: 'test-domain.gorgias.com',
                 }),
             )
 
-            await waitFor(() => {
-                expect(mockDispatch).toHaveBeenCalled()
+            mockUseGetStoreConfigurationPure.mockReturnValue({
+                data: undefined,
+                isLoading: false,
+                error: mockError,
             })
 
-            expect(mockNotify).toHaveBeenCalledWith({
-                message:
-                    'There was an error initializing the AI Agent Test mode',
-                status: NotificationStatus.Error,
-            })
+            rerender()
+
+            expect(
+                await screen.findByRole('status', {
+                    name: 'There was an error initializing the AI Agent Test mode',
+                }),
+            ).toBeInTheDocument()
 
             expect(mockReportError).toHaveBeenCalledWith(mockError, {
                 tags: { team: 'automate-ai-agent' },
@@ -252,7 +253,7 @@ describe('usePlaygroundResources', () => {
             expect(result.current.storeConfigurationNotInitialized).toBe(false)
         })
 
-        it('should handle axios error with non-404 status', async () => {
+        it('shows an error toast for axios error with non-404 status', async () => {
             const mockError = {
                 response: { status: 500 },
             }
@@ -262,7 +263,7 @@ describe('usePlaygroundResources', () => {
             mockUseGetStoreConfigurationPure.mockReturnValue({
                 data: undefined,
                 isLoading: false,
-                error: mockError,
+                error: undefined,
             })
 
             mockUseGetAccountConfiguration.mockReturnValue({
@@ -276,22 +277,26 @@ describe('usePlaygroundResources', () => {
                 isLoading: false,
             })
 
-            renderHook(() =>
+            const { rerender } = renderHook(() =>
                 usePlaygroundResources({
                     shopName: 'test-shop',
                     accountDomain: 'test-domain.gorgias.com',
                 }),
             )
 
-            await waitFor(() => {
-                expect(mockDispatch).toHaveBeenCalled()
+            mockUseGetStoreConfigurationPure.mockReturnValue({
+                data: undefined,
+                isLoading: false,
+                error: mockError,
             })
 
-            expect(mockNotify).toHaveBeenCalledWith({
-                message:
-                    'There was an error initializing the AI Agent Test mode',
-                status: NotificationStatus.Error,
-            })
+            rerender()
+
+            expect(
+                await screen.findByRole('status', {
+                    name: 'There was an error initializing the AI Agent Test mode',
+                }),
+            ).toBeInTheDocument()
         })
 
         it('should expose store fetch error', () => {

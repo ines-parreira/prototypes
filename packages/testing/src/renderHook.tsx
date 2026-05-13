@@ -76,6 +76,7 @@ const renderHook = <TProps, TResult, TStoreState extends object = object>(
         ...renderHookOptions,
         wrapper: ({ children }) => (
             <>
+                {createPortal(<Toaster />, document.body)}
                 <Provider store={store}>
                     <QueryClientProvider client={queryClient}>
                         <DndProvider backend={dndBackend}>
@@ -99,7 +100,6 @@ const renderHook = <TProps, TResult, TStoreState extends object = object>(
                         </DndProvider>
                     </QueryClientProvider>
                 </Provider>
-                {createPortal(<Toaster />, document.body)}
             </>
         ),
     })

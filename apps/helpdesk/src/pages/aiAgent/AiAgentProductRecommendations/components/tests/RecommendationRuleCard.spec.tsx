@@ -1,4 +1,3 @@
-import { configureStore } from '@reduxjs/toolkit'
 import { render } from '@repo/testing'
 import { act, fireEvent, waitFor } from '@testing-library/react'
 
@@ -10,24 +9,6 @@ const mockOnAddButtonClick = jest.fn()
 const mockOnDelete = jest.fn()
 const mockOnSeeAllClick = jest.fn()
 const mockOnShowProducts = jest.fn()
-const mockDispatch: jest.Mock = jest.fn((action: any) => {
-    if (typeof action === 'function') {
-        const mockGetState = () => ({ notifications: [] })
-        return action(mockDispatch, mockGetState)
-    }
-    return action
-})
-jest.mock('hooks/useAppDispatch', () => ({
-    __esModule: true,
-    default: () => mockDispatch,
-}))
-const createMockStore = () => {
-    return configureStore({
-        reducer: {
-            notifications: (state = {}) => state,
-        },
-    })
-}
 const renderComponent = (
     options: {
         title?: string
@@ -104,7 +85,6 @@ const renderComponent = (
         ],
         hasOnShowProducts = false,
     } = options
-    const __store = createMockStore()
     return render(
         <RecommendationRuleCard
             title={title}
@@ -331,12 +311,11 @@ describe('RecommendationRuleCard', () => {
         })
         await waitFor(() => {
             expect(mockOnDelete).toHaveBeenCalledWith('1')
-            expect(mockDispatch).toHaveBeenCalled()
         })
-        const thunkCalls = mockDispatch.mock.calls.filter(
-            (call: any[]) => typeof call[0] === 'function',
-        )
-        expect(thunkCalls.length).toBeGreaterThan(0)
+        const toastEl = await screen.findByRole('status', {
+            name: 'Failed to save product recommendations.',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
     it('should reset deletingItemId after successful deletion', async () => {
         const screen = renderComponent({

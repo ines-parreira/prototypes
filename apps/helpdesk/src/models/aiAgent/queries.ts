@@ -3,7 +3,8 @@ import type { UseQueryOptions } from '@tanstack/react-query'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { toast } from '@gorgias/axiom'
+
 import useAppSelector from 'hooks/useAppSelector'
 import {
     createOnboardingNotificationState,
@@ -39,8 +40,6 @@ import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/Shop
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import type { Paths } from 'rest_api/help_center_api/client.generated'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import type { MutationOverrides } from 'types/query'
 
 import { createContextAndTriggerAIJourney } from './resources/ai-journey'
@@ -725,8 +724,6 @@ export const useOptOutSalesTrialUpgradeMutation = (
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
 
-    const dispatch = useAppDispatch()
-
     return useMutation({
         mutationFn: () => optOutSalesTrialUpgrade(accountDomain),
         onSuccess: (...args) => {
@@ -740,12 +737,7 @@ export const useOptOutSalesTrialUpgradeMutation = (
             overrides?.onSuccess?.(...args)
         },
         onError: (...args) => {
-            void dispatch(
-                notify({
-                    message: 'Failed to upgrade plan. Please try again later.',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error('Failed to upgrade plan. Please try again later.')
             overrides?.onError?.(...args)
         },
         ...overrides,

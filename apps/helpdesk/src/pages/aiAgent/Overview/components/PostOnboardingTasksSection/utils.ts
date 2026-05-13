@@ -1,15 +1,14 @@
 import { isAxiosError } from 'axios'
 import _get from 'lodash/get'
 
+import { toast } from '@gorgias/axiom'
+
 import {
     PostStoreInstallationStepStatus,
     PostStoreInstallationStepType,
     StepName,
 } from 'models/aiAgentPostStoreInstallationSteps/types'
 import type { InstallationStatusInjectedChatItem } from 'pages/aiAgent/components/ChatIntegrationListSelection/ChatIntegrationListSelection'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
-import type { StoreDispatch } from 'state/types'
 import { assetsUrl } from 'utils'
 
 import type { ChatWarningDecision, PostOnboardingStepMetadata } from './types'
@@ -122,24 +121,12 @@ export const decideChatWarning = (
     return { visible: false }
 }
 
-export const handleAiAgentConfigurationError = (
-    error: unknown,
-    dispatch: StoreDispatch,
-): void => {
+export const handleAiAgentConfigurationError = (error: unknown): void => {
     if (isAxiosError(error) && _get(error, 'response.status') === 409) {
-        void dispatch(
-            notify({
-                message:
-                    'Email address or chat channel already used by AI Agent on a different store.',
-                status: NotificationStatus.Error,
-            }),
+        toast.error(
+            'Email address or chat channel already used by AI Agent on a different store.',
         )
     } else {
-        void dispatch(
-            notify({
-                message: 'Failed to save AI Agent configuration',
-                status: NotificationStatus.Error,
-            }),
-        )
+        toast.error('Failed to save AI Agent configuration')
     }
 }

@@ -1,13 +1,10 @@
-import { createElement } from 'react'
-
 import { renderHook } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { waitFor } from '@testing-library/react'
+import { QueryClient } from '@tanstack/react-query'
+import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { useHistory } from 'react-router'
 
 import * as accountFixtures from 'fixtures/account'
-import useAppDispatch from 'hooks/useAppDispatch'
 import { AiAgentScope } from 'models/aiAgent/types'
 import type { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { ToneOfVoice } from 'pages/aiAgent/constants'
@@ -15,8 +12,6 @@ import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNaviga
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/DiscountStrategy'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/PersuasionLevel'
 import { initialState } from 'state/currentAccount/reducers'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { useSalesTrialRevampMilestone } from '../hooks/useSalesTrialRevampMilestone'
 import { useStartShoppingAssistantTrial } from '../hooks/useStartShoppingAssistantTrial'
@@ -26,14 +21,8 @@ jest.mock('react-router', () => ({
     useHistory: jest.fn(),
 }))
 
-jest.mock('hooks/useAppDispatch', () => jest.fn())
-
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
     getAiAgentNavigationRoutes: jest.fn(),
-}))
-
-jest.mock('state/notifications/actions', () => ({
-    notify: jest.fn(),
 }))
 
 jest.mock('../hooks/useSalesTrialRevampMilestone', () => ({
@@ -54,12 +43,10 @@ jest.mock('models/aiAgent/queries', () => ({
 }))
 
 const useHistoryMock = jest.mocked(useHistory)
-const useAppDispatchMock = jest.mocked(useAppDispatch)
 const useSalesTrialRevampMilestoneMock = jest.mocked(
     useSalesTrialRevampMilestone,
 )
 const getAiAgentNavigationRoutesMock = jest.mocked(getAiAgentNavigationRoutes)
-const notifyMock = jest.mocked(notify)
 
 const { upsertStoreConfiguration } = jest.requireMock(
     'models/aiAgent/resources/configuration',
@@ -67,35 +54,6 @@ const { upsertStoreConfiguration } = jest.requireMock(
 const { useStartSalesTrialMutation } = jest.requireMock(
     'models/aiAgent/queries',
 )
-
-type RenderHookOptions = NonNullable<Parameters<typeof renderHook>[1]>
-
-const renderHookWithQueryClient = <TResult,>(
-    hook: () => TResult,
-    options?: RenderHookOptions,
-) => {
-    const queryClient = new QueryClient({
-        defaultOptions: {
-            queries: { retry: false },
-            mutations: { retry: false },
-        },
-    })
-    const { wrapper: ExtraWrapper, ...renderHookOptions } = options ?? {}
-
-    const result = renderHook(hook, {
-        ...renderHookOptions,
-        wrapper: ({ children }) =>
-            createElement(
-                QueryClientProvider,
-                { client: queryClient },
-                ExtraWrapper
-                    ? createElement(ExtraWrapper, undefined, children)
-                    : children,
-            ),
-    })
-
-    return { ...result, queryClient }
-}
 
 const defaultState = {
     currentAccount: initialState.mergeDeep(
@@ -107,7 +65,6 @@ const defaultState = {
 }
 
 describe('useStartShoppingAssistantTrial', () => {
-    const mockDispatch = jest.fn()
     const mockPush = jest.fn()
     const mockStartSalesTrialMutateAsync = jest.fn()
 
@@ -193,7 +150,6 @@ describe('useStartShoppingAssistantTrial', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
-        useAppDispatchMock.mockReturnValue(mockDispatch)
         useHistoryMock.mockReturnValue({ push: mockPush } as any)
         useSalesTrialRevampMilestoneMock.mockReturnValue('milestone-0')
         getAiAgentNavigationRoutesMock.mockReturnValue({
@@ -347,13 +303,11 @@ describe('useStartShoppingAssistantTrial', () => {
                 result.current.mutateAsync(paramsWithMissingChat),
             ).rejects.toThrow()
 
-            expect(mockDispatch).toHaveBeenCalledWith(
-                notifyMock({
-                    message:
-                        'You need at least 1 valid chat integration to be able to start the Shopping Assistant Trial.',
-                    status: NotificationStatus.Warning,
+            expect(
+                await screen.findByRole('status', {
+                    name: 'You need at least 1 valid chat integration to be able to start the Shopping Assistant Trial.',
                 }),
-            )
+            ).toBeInTheDocument()
             expect(mockPush).toHaveBeenCalledWith(
                 '/app/ai-agent/shopify/store1/deploy/chat',
             )
@@ -415,13 +369,11 @@ describe('useStartShoppingAssistantTrial', () => {
                 result.current.mutateAsync(paramsWithMissingKnowledge),
             ).rejects.toThrow()
 
-            expect(mockDispatch).toHaveBeenCalledWith(
-                notifyMock({
-                    message:
-                        'You need at least 1 valid knowledge source to be able to start the Shopping Assistant Trial.',
-                    status: NotificationStatus.Warning,
+            expect(
+                await screen.findByRole('status', {
+                    name: 'You need at least 1 valid knowledge source to be able to start the Shopping Assistant Trial.',
                 }),
-            )
+            ).toBeInTheDocument()
             expect(mockPush).toHaveBeenCalledWith(
                 '/app/ai-agent/shopify/store1/knowledge',
             )
@@ -446,14 +398,14 @@ describe('useStartShoppingAssistantTrial', () => {
     describe('onSuccess callback', () => {
         it('should invalidate queries for non-milestone-1', async () => {
             useSalesTrialRevampMilestoneMock.mockReturnValue('milestone-0')
+            const invalidateQueriesSpy = jest.spyOn(
+                QueryClient.prototype,
+                'invalidateQueries',
+            )
 
-            const { result, queryClient } = renderHookWithQueryClient(
+            const { result } = renderHook(
                 () => useStartShoppingAssistantTrial({ onError: jest.fn() }),
                 { storeState: defaultState },
-            )
-            const invalidateQueriesSpy = jest.spyOn(
-                queryClient,
-                'invalidateQueries',
             )
 
             await result.current.mutateAsync(mockParams)
@@ -463,25 +415,29 @@ describe('useStartShoppingAssistantTrial', () => {
                     queryKey: ['store-configurations'],
                 })
             })
+
+            invalidateQueriesSpy.mockRestore()
         })
 
         it('should not invalidate queries for milestone-1', async () => {
             useSalesTrialRevampMilestoneMock.mockReturnValue('milestone-1')
             mockStartSalesTrialMutateAsync.mockResolvedValue({ success: true })
+            const invalidateQueriesSpy = jest.spyOn(
+                QueryClient.prototype,
+                'invalidateQueries',
+            )
 
-            const { result, queryClient } = renderHookWithQueryClient(
+            const { result } = renderHook(
                 () => useStartShoppingAssistantTrial({ onError: jest.fn() }),
                 { storeState: defaultState },
-            )
-            const invalidateQueriesSpy = jest.spyOn(
-                queryClient,
-                'invalidateQueries',
             )
 
             await result.current.mutateAsync(mockParams)
 
             // Should not invalidate queries for milestone-1 since it's handled by useStartSalesTrialMutation
             expect(invalidateQueriesSpy).not.toHaveBeenCalled()
+
+            invalidateQueriesSpy.mockRestore()
         })
     })
 
@@ -501,15 +457,11 @@ describe('useStartShoppingAssistantTrial', () => {
                 // Expected to throw
             }
 
-            await waitFor(() => {
-                expect(mockDispatch).toHaveBeenCalledWith(
-                    notifyMock({
-                        message:
-                            'Failed to start the shopping assistant trial. Please try again.',
-                        status: NotificationStatus.Error,
-                    }),
-                )
-            })
+            expect(
+                await screen.findByRole('status', {
+                    name: 'Failed to start the shopping assistant trial. Please try again.',
+                }),
+            ).toBeInTheDocument()
         })
     })
 })

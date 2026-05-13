@@ -12,16 +12,14 @@ import {
     TabList,
     Tabs,
     TextAreaField,
+    toast,
     ToggleField,
 } from '@gorgias/axiom'
 
 import { EmojiPicker } from 'components/EmojiPicker/EmojiPicker'
 import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
-import useAppDispatch from 'hooks/useAppDispatch'
 import type { StoreConfiguration, Verbosity } from 'models/aiAgent/types'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { useDisplayPlaygroundButtonInLayoutHeader } from './components/AiAgentLayout/usePlaygroundButtonInLayoutHeader'
 import CollapsibleSection from './components/CollapsibleSection/CollapsibleSection'
@@ -157,7 +155,6 @@ const getSavedValues = (storeConfiguration: StoreConfiguration | undefined) => {
 }
 
 export function AiAgentToneOfVoice() {
-    const dispatch = useAppDispatch()
     const { storeConfiguration, updateStoreConfiguration } =
         useAiAgentStoreConfigurationContext()
 
@@ -320,19 +317,9 @@ export function AiAgentToneOfVoice() {
                 },
             })
 
-            void dispatch(
-                notify({
-                    message: CHANGES_SAVED_SUCCESS,
-                    status: NotificationStatus.Success,
-                }),
-            )
+            toast.success(CHANGES_SAVED_SUCCESS)
         } catch {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: 'Failed to save tone of voice configuration',
-                }),
-            )
+            toast.error('Failed to save tone of voice configuration')
         } finally {
             setIsSubmitting(false)
         }
@@ -354,7 +341,6 @@ export function AiAgentToneOfVoice() {
         allowEmojis,
         allowedEmojis,
         forbiddenEmojis,
-        dispatch,
     ])
 
     const handleDiscard = useCallback(() => {

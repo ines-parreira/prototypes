@@ -4,10 +4,10 @@ import { reportError } from '@repo/logging'
 import { isAxiosError } from 'axios'
 import _get from 'lodash/get'
 
+import { toast } from '@gorgias/axiom'
 import type { FeedbackMutation } from '@gorgias/knowledge-service-types'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import useAppDispatch from 'hooks/useAppDispatch'
 import { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import type {
     Opportunity,
@@ -19,8 +19,6 @@ import {
     FeedbackTargetType,
     OpportunityFeedbackType,
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import {
     buildApprovePayload,
@@ -40,7 +38,6 @@ export const useOpportunityCTAs = ({
     editorFormResources,
     opportunityConfig,
 }: UseOpportunityCTAsProps) => {
-    const dispatch = useAppDispatch()
     const [isProcessing, setIsProcessing] = useState(false)
 
     const {
@@ -68,20 +65,11 @@ export const useOpportunityCTAs = ({
             if (isConflictError) {
                 onArchive(selectedOpportunity.key)
 
-                dispatch(
-                    notify({
-                        status: NotificationStatus.Info,
-                        message:
-                            'This opportunity is no longer relevant and was addressed by recent knowledge updates.',
-                    }),
+                toast.info(
+                    'This opportunity is no longer relevant and was addressed by recent knowledge updates.',
                 )
             } else {
-                dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message: errorMessage,
-                    }),
-                )
+                toast.error(errorMessage)
             }
 
             reportError(error, {
@@ -92,7 +80,7 @@ export const useOpportunityCTAs = ({
                 },
             })
         },
-        [dispatch, selectedOpportunity, onArchive],
+        [selectedOpportunity, onArchive],
     )
 
     const handleFeedback = useCallback(
@@ -151,12 +139,7 @@ export const useOpportunityCTAs = ({
             const feedback = buildAcknowledgeFeedback(selectedOpportunity.id)
             handleFeedback({ feedbackToUpsert: feedback })
 
-            dispatch(
-                notify({
-                    status: NotificationStatus.Success,
-                    message: 'Knowledge gap resolved',
-                }),
-            )
+            toast.success('Knowledge gap resolved')
 
             onOpportunityAccepted?.({
                 opportunityId: selectedOpportunity.id,
@@ -174,7 +157,6 @@ export const useOpportunityCTAs = ({
     }, [
         selectedOpportunity,
         editorFormResources,
-        dispatch,
         onOpportunityAccepted,
         useKnowledgeService,
         processOpportunity,
@@ -209,12 +191,7 @@ export const useOpportunityCTAs = ({
             })
             onArchive(selectedOpportunity.key)
 
-            dispatch(
-                notify({
-                    status: NotificationStatus.Success,
-                    message: 'Conflict resolved successfully',
-                }),
-            )
+            toast.success('Conflict resolved successfully')
 
             if ('resolutions' in payload && payload.resolutions) {
                 const operations = payload.resolutions.map((resolution) => {
@@ -242,7 +219,6 @@ export const useOpportunityCTAs = ({
         }
     }, [
         selectedOpportunity,
-        dispatch,
         editorFormResources,
         processOpportunity,
         shopIntegrationId,
@@ -273,12 +249,7 @@ export const useOpportunityCTAs = ({
                     handleFeedback(feedbackData)
                 }
 
-                dispatch(
-                    notify({
-                        message: 'Successfully dismissed opportunity',
-                        status: NotificationStatus.Success,
-                    }),
-                )
+                toast.success('Successfully dismissed opportunity')
 
                 onOpportunityDismissed?.({
                     opportunityId: selectedOpportunity.id,
@@ -299,7 +270,6 @@ export const useOpportunityCTAs = ({
             useKnowledgeService,
             processOpportunity,
             onArchive,
-            dispatch,
             onOpportunityDismissed,
             shopIntegrationId,
             handleFeedback,

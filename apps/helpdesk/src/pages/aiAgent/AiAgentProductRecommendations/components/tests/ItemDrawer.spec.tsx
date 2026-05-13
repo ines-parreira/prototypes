@@ -3,9 +3,6 @@ import { fireEvent, waitFor } from '@testing-library/react'
 
 import type { LegacyColorType as ColorType } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import { NotificationStatus } from 'state/notifications/types'
-
 import { ItemDrawer } from '../ItemDrawer'
 
 const mockChatContainer = document.createElement('div')
@@ -16,14 +13,6 @@ jest.spyOn(document, 'getElementById').mockImplementation((id) => {
     }
     return null
 })
-
-jest.mock('hooks/useAppDispatch', () => jest.fn())
-const dispatchMock = jest.fn()
-;(useAppDispatch as jest.Mock).mockReturnValue(dispatchMock)
-
-jest.mock('state/notifications/actions', () => ({
-    notify: (value: any) => value,
-}))
 
 const mockOnSubmit = jest.fn().mockResolvedValue(undefined)
 const mockOnClose = jest.fn()
@@ -207,12 +196,10 @@ describe('ItemDrawer', () => {
 
         await waitFor(() => expect(mockOnClose).toHaveBeenCalledTimes(1))
 
-        await waitFor(() =>
-            expect(dispatchMock).toHaveBeenCalledWith({
-                message: 'Product recommendations saved.',
-                status: NotificationStatus.Success,
-            }),
-        )
+        const toastEl = await screen.findByRole('status', {
+            name: 'Product recommendations saved.',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'success')
     })
 
     it('should correctly update the selected items', () => {
@@ -329,11 +316,9 @@ describe('ItemDrawer', () => {
 
         await waitFor(() => expect(mockOnClose).toHaveBeenCalledTimes(0))
 
-        await waitFor(() =>
-            expect(dispatchMock).toHaveBeenCalledWith({
-                message: 'Failed to save product recommendations.',
-                status: NotificationStatus.Error,
-            }),
-        )
+        const toastEl = await screen.findByRole('status', {
+            name: 'Failed to save product recommendations.',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
 })

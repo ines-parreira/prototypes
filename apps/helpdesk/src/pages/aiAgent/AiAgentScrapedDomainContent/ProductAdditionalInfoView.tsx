@@ -4,9 +4,8 @@ import classnames from 'classnames'
 import { EditorState } from 'draft-js'
 import { Prompt } from 'react-router-dom'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import { useUpdateProductAdditionalInfoWithTracking } from 'models/ecommerce/hooks/useUpdateProductAdditionalInfoWithTracking'
 import type { ProductAdditionalInfo } from 'models/ecommerce/types'
 import {
@@ -22,8 +21,6 @@ import useUnsavedChangesPrompt from 'pages/common/components/useUnsavedChangesPr
 import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
 import RichField from 'pages/common/forms/RichField/RichField'
 import { ErrorMessage } from 'pages/convert/settings/components/styled'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { contentStateFromTextOrHTML, convertToHTML } from 'utils/editor'
 
 import css from './ProductAdditionalInfoView.less'
@@ -49,7 +46,6 @@ const ProductAdditionalInfoView = ({
     productId,
     initialValue,
 }: Props) => {
-    const dispatch = useAppDispatch()
     const [editorState, setEditorState] = useState(() => {
         if (initialValue?.rich_text) {
             const contentState = contentStateFromTextOrHTML(
@@ -138,26 +134,15 @@ const ProductAdditionalInfoView = ({
             lastSavedContentRef.current = html
             setIsDirty(false)
 
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Success,
-                    message: 'Product information saved successfully.',
-                    showDismissButton: true,
-                }),
-            )
+            toast.success('Product information saved successfully.')
         } catch {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message:
-                        "Product information couldn't be saved. Please try again.",
-                    showDismissButton: true,
-                }),
+            toast.error(
+                "Product information couldn't be saved. Please try again.",
             )
         } finally {
             setIsSaving(false)
         }
-    }, [editorState, updateAdditionalInfo, integrationId, productId, dispatch])
+    }, [editorState, updateAdditionalInfo, integrationId, productId])
 
     const handleSave = useCallback(async () => {
         await saveContent()

@@ -5,7 +5,6 @@ import { useEffectOnce } from '@repo/hooks'
 import { Link, useParams } from 'react-router-dom'
 
 import emptyStateTemplate from 'assets/img/actions/empty-state-template.png'
-import useAppDispatch from 'hooks/useAppDispatch'
 import {
     useGetStoreWorkflowsConfigurations,
     useGetWorkflowConfigurationTemplates,
@@ -32,8 +31,6 @@ import css from './ActionsView.less'
 const MAX_TEMPLATES = 7
 
 const ActionsView = () => {
-    const dispatch = useAppDispatch()
-
     const showFakeActions = useFlag(FeatureFlagKey.FakeActionPlaceholder)
 
     const { shopName, shopType } = useParams<{
@@ -69,10 +66,9 @@ const ActionsView = () => {
             handleError(
                 error,
                 'Failed to load actions. Please try again later.',
-                dispatch,
             )
         }
-    }, [dispatch, error, isError])
+    }, [error, isError])
 
     return (
         <AiAgentLayout

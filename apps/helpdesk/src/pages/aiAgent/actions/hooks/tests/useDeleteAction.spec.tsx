@@ -1,19 +1,15 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { QueryClient } from '@tanstack/react-query'
+import { screen } from '@testing-library/react'
 
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import {
     storeWorkflowsConfigurationDefinitionKeys,
     useDeleteWorkflowsConfiguration,
 } from 'models/workflows/queries'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { handleError } from '../errorHandler'
 import useDeleteAction from '../useDeleteAction'
-
-const queryClient = mockQueryClient()
 
 jest.mock('models/workflows/queries')
 const useDeleteWorkflowConfigurationMock = assumeMock(
@@ -21,10 +17,6 @@ const useDeleteWorkflowConfigurationMock = assumeMock(
 )
 
 jest.mock('../errorHandler')
-
-const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
-jest.mock('state/notifications/actions')
 
 describe('useDeleteAction', () => {
     const internalId = 1
@@ -36,15 +28,12 @@ describe('useDeleteAction', () => {
         useDeleteWorkflowConfigurationMock.mockClear()
     })
 
-    it('should accept a name param and dispatch success notification on success and invalidate lists queries', () => {
-        const invalidateQueryMock = jest.spyOn(queryClient, 'invalidateQueries')
-        renderHook(() => useDeleteAction(name, shopName, shopType), {
-            wrapper: ({ children }) => (
-                <QueryClientProvider client={queryClient}>
-                    {children}
-                </QueryClientProvider>
-            ),
-        })
+    it('accepts a name param, shows success toast, and invalidates list queries', async () => {
+        const invalidateQueryMock = jest.spyOn(
+            QueryClient.prototype,
+            'invalidateQueries',
+        )
+        renderHook(() => useDeleteAction(name, shopName, shopType))
 
         useDeleteWorkflowConfigurationMock.mock.calls[0][0]?.onSettled!(
             undefined,
@@ -54,7 +43,10 @@ describe('useDeleteAction', () => {
         )
 
         expect(invalidateQueryMock).toHaveBeenLastCalledWith({
-            queryKey: storeWorkflowsConfigurationDefinitionKeys.all(),
+            queryKey: storeWorkflowsConfigurationDefinitionKeys.list({
+                storeName: shopName,
+                storeType: shopType,
+            }),
         })
 
         useDeleteWorkflowConfigurationMock.mock.calls[0][0]?.onSuccess!(
@@ -63,22 +55,18 @@ describe('useDeleteAction', () => {
             undefined,
         )
 
-        expect(notify).toHaveBeenNthCalledWith(1, {
-            message: `Successfully deleted Action ${name}`,
-            status: NotificationStatus.Success,
-        })
+        expect(
+            await screen.findByRole('status', {
+                name: `Successfully deleted Action ${name}`,
+            }),
+        ).toBeInTheDocument()
 
-        expect(mockedDispatch).toHaveBeenCalledTimes(1)
+        invalidateQueryMock.mockRestore()
     })
 
     it('should call handleError on error', () => {
-        renderHook(() => useDeleteAction(name, shopName, shopType), {
-            wrapper: ({ children }) => (
-                <QueryClientProvider client={queryClient}>
-                    {children}
-                </QueryClientProvider>
-            ),
-        })
+        renderHook(() => useDeleteAction(name, shopName, shopType))
+
         const errorResponseBody = {}
         useDeleteWorkflowConfigurationMock.mock.calls[0][0]?.onError!(
             errorResponseBody,
@@ -90,7 +78,6 @@ describe('useDeleteAction', () => {
             1,
             errorResponseBody,
             `Failed to delete Action ${name}`,
-            mockedDispatch,
         )
     })
 })

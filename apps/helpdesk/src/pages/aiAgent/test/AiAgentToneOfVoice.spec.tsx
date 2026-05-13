@@ -6,8 +6,6 @@ import * as playgroundButtonHook from 'pages/aiAgent/components/AiAgentLayout/us
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import * as playgroundPanelHook from 'pages/aiAgent/hooks/usePlaygroundPanel'
 import * as contextHook from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
-import * as notificationActions from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { AiAgentToneOfVoice } from '../AiAgentToneOfVoice'
 import { CHANGES_SAVED_SUCCESS, ToneOfVoice } from '../constants'
@@ -32,9 +30,6 @@ jest.mock('pages/aiAgent/PlaygroundV2/hooks/useShopNameResolution', () => ({
         resolvedShopName: 'test-shop',
         isLoading: false,
     })),
-}))
-jest.mock('state/notifications/actions', () => ({
-    notify: jest.fn(() => ({ type: 'NOTIFY', payload: {} })),
 }))
 jest.mock('pages/aiAgent/hooks/usePlaygroundPanel', () => ({
     usePlaygroundPanel: jest.fn(() => ({
@@ -108,7 +103,6 @@ jest.mock(
 const mockUseAiAgentStoreConfigurationContext = jest.mocked(
     contextHook.useAiAgentStoreConfigurationContext,
 )
-const mockNotify = jest.mocked(notificationActions.notify)
 const mockUsePlaygroundPanel = jest.mocked(
     playgroundPanelHook.usePlaygroundPanel,
 )
@@ -521,11 +515,12 @@ describe('AiAgentToneOfVoice', () => {
                         }),
                     }),
                 )
-                expect(mockNotify).toHaveBeenCalledWith({
-                    message: CHANGES_SAVED_SUCCESS,
-                    status: NotificationStatus.Success,
-                })
             })
+            expect(
+                await screen.findByRole('status', {
+                    name: CHANGES_SAVED_SUCCESS,
+                }),
+            ).toBeInTheDocument()
         })
         it('should show error notification on failed save', async () => {
             mockUpdateStoreConfiguration.mockRejectedValueOnce(
@@ -535,12 +530,11 @@ describe('AiAgentToneOfVoice', () => {
             const user = userEvent.setup()
             await user.type(screen.getByLabelText(/greeting/i), 'Test')
             await user.click(screen.getByRole('button', { name: /save/i }))
-            await waitFor(() => {
-                expect(mockNotify).toHaveBeenCalledWith({
-                    status: NotificationStatus.Error,
-                    message: 'Failed to save tone of voice configuration',
-                })
-            })
+            expect(
+                await screen.findByRole('status', {
+                    name: 'Failed to save tone of voice configuration',
+                }),
+            ).toBeInTheDocument()
         })
         it('should save custom personality when Custom tone is selected', async () => {
             setupComponent({ toneOfVoice: ToneOfVoice.Custom })

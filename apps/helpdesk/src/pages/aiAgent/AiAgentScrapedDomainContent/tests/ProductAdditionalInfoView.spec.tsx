@@ -2,16 +2,11 @@ import { render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { ContentState, EditorState } from 'draft-js'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import { useUpdateProductAdditionalInfoWithTracking } from 'models/ecommerce/hooks/useUpdateProductAdditionalInfoWithTracking'
 import useUnsavedChangesPrompt from 'pages/common/components/useUnsavedChangesPrompt'
 
 import ProductAdditionalInfoView from '../ProductAdditionalInfoView'
 
-jest.mock('hooks/useAppDispatch')
-const useAppDispatchMock = useAppDispatch as jest.Mock
-const mockDispatch = jest.fn()
-useAppDispatchMock.mockReturnValue(mockDispatch)
 jest.mock(
     'models/ecommerce/hooks/useUpdateProductAdditionalInfoWithTracking',
     () => ({
@@ -210,7 +205,7 @@ describe('ProductAdditionalInfoView', () => {
             )
         })
     })
-    it('shows error notification when save fails', async () => {
+    it('shows error toast when save fails', async () => {
         mockMutateAsync.mockRejectedValueOnce(new Error('Save failed'))
         renderComponent(
             <ProductAdditionalInfoView
@@ -230,7 +225,10 @@ describe('ProductAdditionalInfoView', () => {
             fireEvent.click(saveButton)
         })
         await waitFor(() => {
-            expect(mockDispatch).toHaveBeenCalled()
+            const toastEl = screen.getByRole('status', {
+                name: "Product information couldn't be saved. Please try again.",
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
     })
     it('keeps buttons disabled when content has not changed', async () => {
@@ -249,7 +247,7 @@ describe('ProductAdditionalInfoView', () => {
         expect(saveButton).toHaveAttribute('aria-disabled', 'true')
         expect(cancelButton).toHaveAttribute('aria-disabled', 'true')
     })
-    it('shows success notification when save succeeds', async () => {
+    it('shows success toast when save succeeds', async () => {
         renderComponent(
             <ProductAdditionalInfoView
                 integrationId={123}
@@ -269,7 +267,10 @@ describe('ProductAdditionalInfoView', () => {
         })
         await waitFor(() => {
             expect(mockMutateAsync).toHaveBeenCalled()
-            expect(mockDispatch).toHaveBeenCalled()
+            const toastEl = screen.getByRole('status', {
+                name: 'Product information saved successfully.',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
         })
     })
     it('opens cancel modal when Cancel button is clicked', async () => {

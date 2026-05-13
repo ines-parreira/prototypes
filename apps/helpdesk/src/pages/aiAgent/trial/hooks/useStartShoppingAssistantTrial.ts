@@ -1,7 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useHistory } from 'react-router'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { toast } from '@gorgias/axiom'
+
 import {
     storeConfigurationKeys,
     useStartSalesTrialMutation,
@@ -12,8 +13,6 @@ import type { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActiva
 import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/DiscountStrategy'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/PersuasionLevel'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { useSalesTrialRevampMilestone } from './useSalesTrialRevampMilestone'
 
@@ -36,7 +35,6 @@ export const useStartShoppingAssistantTrial = ({
 }: {
     onError?: () => void
 }) => {
-    const dispatch = useAppDispatch()
     const history = useHistory()
     const queryClient = useQueryClient()
 
@@ -95,30 +93,18 @@ export const useStartShoppingAssistantTrial = ({
                 const store = getSingleStoreOrThrow(storeActivations)
                 const routes = getAiAgentNavigationRoutes(store.name)
                 if (error instanceof InvalidChatError) {
-                    dispatch(
-                        notify({
-                            message:
-                                'You need at least 1 valid chat integration to be able to start the Shopping Assistant Trial.',
-                            status: NotificationStatus.Warning,
-                        }),
+                    toast.warning(
+                        'You need at least 1 valid chat integration to be able to start the Shopping Assistant Trial.',
                     )
                     history.push(routes.deployChat)
                 } else if (error instanceof InvalidKnowledgeError) {
-                    dispatch(
-                        notify({
-                            message:
-                                'You need at least 1 valid knowledge source to be able to start the Shopping Assistant Trial.',
-                            status: NotificationStatus.Warning,
-                        }),
+                    toast.warning(
+                        'You need at least 1 valid knowledge source to be able to start the Shopping Assistant Trial.',
                     )
                     history.push(routes.knowledge)
                 } else {
-                    void dispatch(
-                        notify({
-                            message:
-                                'Failed to start the shopping assistant trial. Please try again.',
-                            status: NotificationStatus.Error,
-                        }),
+                    toast.error(
+                        'Failed to start the shopping assistant trial. Please try again.',
                     )
                 }
 

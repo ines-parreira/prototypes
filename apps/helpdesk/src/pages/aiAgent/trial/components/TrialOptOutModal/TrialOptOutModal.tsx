@@ -2,9 +2,8 @@ import { memo, useCallback } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 
-import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import { toast, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     useOptOutAiAgentTrialUpgradeMutation,
@@ -18,8 +17,6 @@ import {
 } from 'pages/aiAgent/trial/utils/trialExtensionUtils'
 import { OptOutModal } from 'pages/common/components/OptOutModal/OptOutModal'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import css from './TrialOptOutModal.less'
 
@@ -115,7 +112,6 @@ const TrialOptOutModal = ({
     isTrialExtended,
 }: TrialOptOutModalProps) => {
     const isAiAgent = trialType === TrialType.AiAgent
-    const dispatch = useAppDispatch()
     const shoppingAsistantOptOutMutation = useOptOutSalesTrialUpgradeMutation()
     const aiAgentOptOutMutation = useOptOutAiAgentTrialUpgradeMutation()
 
@@ -148,15 +144,12 @@ const TrialOptOutModal = ({
         optOutMutation.mutate([], {
             onSuccess: () => {
                 onClose()
-                dispatch(
-                    notify({
-                        message: `Your plan won't be upgraded when the trial ends, and you'll lose access to ${optOutTrialType}.`,
-                        status: NotificationStatus.Success,
-                    }),
+                toast.success(
+                    `Your plan won't be upgraded when the trial ends, and you'll lose access to ${optOutTrialType}.`,
                 )
             },
         })
-    }, [optOutMutation, optOutTrialType, onClose, dispatch, trialType])
+    }, [optOutMutation, optOutTrialType, onClose, trialType])
 
     const onRequestTrialExtensionClick = useCallback(() => {
         if (!canRequestTrialExtension(trialType)) {

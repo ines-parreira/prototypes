@@ -1,61 +1,62 @@
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
+import { createElement } from 'react'
+
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import { handleError } from '../errorHandler'
 
-const mockedDispatch = jest.fn()
-
-jest.mock('state/notifications/actions')
+const renderErrorHandler = async (error: unknown, message: string) => {
+    const { user } = render(
+        createElement(
+            'button',
+            { onClick: () => handleError(error, message) },
+            'Show',
+        ),
+    )
+    await user.click(screen.getByRole('button', { name: 'Show' }))
+}
 
 describe('handleError', () => {
-    it('should dispatch the provided error message', () => {
+    it('shows the provided error message', async () => {
         const message = 'test error'
-        handleError(
+        await renderErrorHandler(
             {
                 response: { data: { message } },
                 isAxiosError: true,
             },
             '',
-            mockedDispatch,
         )
-        expect(notify).toHaveBeenNthCalledWith(1, {
-            message,
-            status: NotificationStatus.Error,
-        })
-        expect(mockedDispatch).toHaveBeenCalledTimes(1)
+        expect(
+            await screen.findByRole('status', { name: message }),
+        ).toBeInTheDocument()
     })
 
-    it('should dispatch default error message', () => {
+    it('shows default error message', async () => {
         const message = 'default message'
-        handleError(
+        await renderErrorHandler(
             {
                 response: undefined,
             },
             message,
-            mockedDispatch,
         )
-        expect(notify).toHaveBeenNthCalledWith(1, {
-            message,
-            status: NotificationStatus.Error,
-        })
-        expect(mockedDispatch).toHaveBeenCalledTimes(1)
+        expect(
+            await screen.findByRole('status', { name: message }),
+        ).toBeInTheDocument()
     })
 
-    it('should dispatch duplicate name error', () => {
+    it('shows duplicate name error', async () => {
         const message = 'default message'
         const error = {
             response: { status: 409 },
             isAxiosError: true,
         }
 
-        handleError(error, message, mockedDispatch)
+        await renderErrorHandler(error, message)
 
-        expect(notify).toHaveBeenNthCalledWith(1, {
-            message:
-                'An Action with this name already exists. Choose a unique name in order to save.',
-            showDismissButton: true,
-            status: NotificationStatus.Error,
-        })
-        expect(mockedDispatch).toHaveBeenCalledTimes(1)
+        expect(
+            await screen.findByRole('status', {
+                name: 'An Action with this name already exists. Choose a unique name in order to save.',
+            }),
+        ).toBeInTheDocument()
     })
 })

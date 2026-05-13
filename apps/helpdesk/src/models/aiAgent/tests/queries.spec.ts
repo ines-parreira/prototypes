@@ -2,7 +2,7 @@ import { createElement } from 'react'
 
 import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { AxiosError } from 'axios'
 import { fromJS } from 'immutable'
 
@@ -18,10 +18,8 @@ import {
 } from 'models/aiAgent/queries'
 import * as configurationResources from 'models/aiAgent/resources/configuration'
 import { initialState } from 'state/currentAccount/reducers'
-import * as notificationActions from 'state/notifications/actions'
 
 jest.mock('models/aiAgent/resources/configuration')
-jest.mock('state/notifications/actions')
 
 type RenderHookOptions = NonNullable<Parameters<typeof renderHook>[1]>
 
@@ -202,11 +200,8 @@ describe('aiAgent queries', () => {
             expect(onSuccessMock).toHaveBeenCalled()
         })
 
-        it('should dispatch error notification on failure', async () => {
+        it('should show error notification on failure', async () => {
             const mockError = new Error('Network error')
-            const mockNotify = jest.mocked(notificationActions.notify)
-            mockNotify.mockReturnValue(jest.fn())
-
             mockOptOutSalesTrialUpgrade.mockRejectedValue(mockError)
 
             const { result } = renderHook(
@@ -218,10 +213,11 @@ describe('aiAgent queries', () => {
                 'Network error',
             )
 
-            expect(mockNotify).toHaveBeenCalledWith({
-                message: 'Failed to upgrade plan. Please try again later.',
-                status: 'error',
-            })
+            expect(
+                await screen.findByRole('status', {
+                    name: 'Failed to upgrade plan. Please try again later.',
+                }),
+            ).toBeInTheDocument()
         })
 
         it('should call onError override when provided and error occurs', async () => {

@@ -2,15 +2,14 @@ import { useEffect, useMemo } from 'react'
 
 import { history } from '@repo/routing'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { toast } from '@gorgias/axiom'
+
 import {
     useGetHelpCenterArticle,
     useGetIngestedResource,
 } from 'models/helpCenter/queries'
 import type { LocaleCode } from 'models/helpCenter/types'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 export const useSelectedQuestionAndDetail = ({
     shopName,
@@ -25,7 +24,6 @@ export const useSelectedQuestionAndDetail = ({
     defaultLocale: LocaleCode
     storeDomainIngestionLogId: number | null
 }) => {
-    const dispatch = useAppDispatch()
     const { routes } = useAiAgentNavigation({ shopName })
 
     const {
@@ -82,12 +80,8 @@ export const useSelectedQuestionAndDetail = ({
                 !isFetchingArticleLoading &&
                 !articleData?.ingested_resource_id)
         ) {
-            void dispatch(
-                notify({
-                    message:
-                        'Content no longer exists. It may have been deleted or moved.',
-                    status: NotificationStatus.Error,
-                }),
+            toast.error(
+                'Content no longer exists. It may have been deleted or moved.',
             )
 
             history.push(routes.questionsContent)
@@ -97,7 +91,6 @@ export const useSelectedQuestionAndDetail = ({
         articleId,
         isFetchingArticleLoading,
         articleData,
-        dispatch,
         routes.questionsContent,
     ])
 

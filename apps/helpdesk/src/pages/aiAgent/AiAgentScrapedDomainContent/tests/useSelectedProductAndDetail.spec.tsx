@@ -1,22 +1,15 @@
 import { history } from '@repo/routing'
 import { assumeMock, renderHook } from '@repo/testing'
 import type { UseQueryResult } from '@tanstack/react-query'
+import { screen } from '@testing-library/react'
 
 import type { ProductWithAiAgentStatus } from 'constants/integrations/types/shopify'
-import useAppDispatch from 'hooks/useAppDispatch'
 import { useGetEcommerceItemByExternalId } from 'models/ecommerce/queries'
 import { useGetProductsByIdsFromIntegration } from 'models/integration/queries'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { isProductExcludedFromAiAgent } from '../hooks/usePaginatedProductIntegration'
 import { useSelectedProductAndDetail } from '../hooks/useSelectedProductAndDetail'
-
-jest.mock('state/notifications/actions')
-jest.mock('hooks/useAppDispatch')
-const mockUseAppDispatch = assumeMock(useAppDispatch)
-const mockDispatch = jest.fn()
 
 jest.mock('models/ecommerce/queries')
 const mockUseGetEcommerceItemByExternalId = assumeMock(
@@ -47,7 +40,6 @@ describe('useSelectedProductAndDetail', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
-        mockUseAppDispatch.mockReturnValue(mockDispatch)
         mockUseGetProductsByIdsFromIntegration.mockReturnValue({
             data: [],
         } as unknown as UseQueryResult<ProductWithAiAgentStatus[]>)
@@ -104,26 +96,35 @@ describe('useSelectedProductAndDetail', () => {
         expect(result.current.isError).toBe(false)
     })
 
-    it('redirects and show error notification when product is not found', () => {
+    it('redirects and shows an error toast when product is not found', async () => {
+        const initialProps: { productId: string | null } = { productId: null }
+        const { result, rerender } = renderHook(
+            ({ productId }: { productId: string | null }) =>
+                useSelectedProductAndDetail({
+                    shopName: mockedShopName,
+                    integrationId: mockedIntegrationId,
+                    productId,
+                }),
+            {
+                initialProps,
+            },
+        )
+
         mockUseGetProductsByIdsFromIntegration.mockReturnValue({
             data: [],
             isLoading: false,
             isError: true,
         } as unknown as UseQueryResult<ProductWithAiAgentStatus[]>)
 
-        const { result } = renderHook(() =>
-            useSelectedProductAndDetail({
-                shopName: mockedShopName,
-                integrationId: mockedIntegrationId,
-                productId: mockedProductId,
-            }),
-        )
-
-        expect(notify).toHaveBeenCalledWith({
-            message:
-                'Content no longer exists. It may have been deleted or moved.',
-            status: NotificationStatus.Error,
+        rerender({
+            productId: mockedProductId,
         })
+
+        expect(
+            await screen.findByRole('status', {
+                name: 'Content no longer exists. It may have been deleted or moved.',
+            }),
+        ).toBeInTheDocument()
         expect(history.push).toHaveBeenCalledWith(
             '/app/ai-agent/shopify/Test Shop/products',
         )

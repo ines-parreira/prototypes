@@ -4,6 +4,18 @@ exports[`<ImportArticlesModal /> snapshots file selected 1`] = `
 <body>
   <div />
   <div
+    data-name="toaster"
+    data-react-aria-top-layer="true"
+  >
+    <section
+      aria-atomic="false"
+      aria-label="Notifications alt+T"
+      aria-live="polite"
+      aria-relevant="additions text"
+      tabindex="-1"
+    />
+  </div>
+  <div
     aria-describedby="modal-3-desc"
     aria-labelledby="modal-3-title"
     aria-modal="true"
@@ -127,6 +139,12 @@ exports[`<ImportArticlesModal /> snapshots file selected 1`] = `
       </div>
     </div>
   </div>
+</body>
+`;
+
+exports[`<ImportArticlesModal /> snapshots import in progress 1`] = `
+<body>
+  <div />
   <div
     data-name="toaster"
     data-react-aria-top-layer="true"
@@ -139,12 +157,6 @@ exports[`<ImportArticlesModal /> snapshots file selected 1`] = `
       tabindex="-1"
     />
   </div>
-</body>
-`;
-
-exports[`<ImportArticlesModal /> snapshots import in progress 1`] = `
-<body>
-  <div />
   <div
     aria-describedby="modal-4-desc"
     aria-labelledby="modal-4-title"
@@ -210,6 +222,12 @@ exports[`<ImportArticlesModal /> snapshots import in progress 1`] = `
       </div>
     </div>
   </div>
+</body>
+`;
+
+exports[`<ImportArticlesModal /> snapshots loading providers 1`] = `
+<body>
+  <div />
   <div
     data-name="toaster"
     data-react-aria-top-layer="true"
@@ -222,12 +240,6 @@ exports[`<ImportArticlesModal /> snapshots import in progress 1`] = `
       tabindex="-1"
     />
   </div>
-</body>
-`;
-
-exports[`<ImportArticlesModal /> snapshots loading providers 1`] = `
-<body>
-  <div />
   <div
     aria-describedby="modal-5-desc"
     aria-labelledby="modal-5-title"
@@ -373,6 +385,12 @@ exports[`<ImportArticlesModal /> snapshots loading providers 1`] = `
       </div>
     </div>
   </div>
+</body>
+`;
+
+exports[`<ImportArticlesModal /> snapshots migration feature disabled 1`] = `
+<body>
+  <div />
   <div
     data-name="toaster"
     data-react-aria-top-layer="true"
@@ -385,12 +403,6 @@ exports[`<ImportArticlesModal /> snapshots loading providers 1`] = `
       tabindex="-1"
     />
   </div>
-</body>
-`;
-
-exports[`<ImportArticlesModal /> snapshots migration feature disabled 1`] = `
-<body>
-  <div />
   <div
     aria-describedby="modal-1-desc"
     aria-labelledby="modal-1-title"
@@ -489,6 +501,12 @@ exports[`<ImportArticlesModal /> snapshots migration feature disabled 1`] = `
       </div>
     </div>
   </div>
+</body>
+`;
+
+exports[`<ImportArticlesModal /> snapshots no file selected 1`] = `
+<body>
+  <div />
   <div
     data-name="toaster"
     data-react-aria-top-layer="true"
@@ -501,12 +519,6 @@ exports[`<ImportArticlesModal /> snapshots migration feature disabled 1`] = `
       tabindex="-1"
     />
   </div>
-</body>
-`;
-
-exports[`<ImportArticlesModal /> snapshots no file selected 1`] = `
-<body>
-  <div />
   <div
     aria-describedby="modal-2-desc"
     aria-labelledby="modal-2-title"
@@ -643,6 +655,12 @@ exports[`<ImportArticlesModal /> snapshots no file selected 1`] = `
       </div>
     </div>
   </div>
+</body>
+`;
+
+exports[`<ImportArticlesModal /> snapshots providers fetching error 1`] = `
+<body>
+  <div />
   <div
     data-name="toaster"
     data-react-aria-top-layer="true"
@@ -655,12 +673,6 @@ exports[`<ImportArticlesModal /> snapshots no file selected 1`] = `
       tabindex="-1"
     />
   </div>
-</body>
-`;
-
-exports[`<ImportArticlesModal /> snapshots providers fetching error 1`] = `
-<body>
-  <div />
   <div
     aria-describedby="modal-6-desc"
     aria-labelledby="modal-6-title"
@@ -758,18 +770,6 @@ exports[`<ImportArticlesModal /> snapshots providers fetching error 1`] = `
         </div>
       </div>
     </div>
-  </div>
-  <div
-    data-name="toaster"
-    data-react-aria-top-layer="true"
-  >
-    <section
-      aria-atomic="false"
-      aria-label="Notifications alt+T"
-      aria-live="polite"
-      aria-relevant="additions text"
-      tabindex="-1"
-    />
   </div>
 </body>
 `;

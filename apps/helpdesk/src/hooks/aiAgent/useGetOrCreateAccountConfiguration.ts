@@ -2,7 +2,8 @@ import type { UseQueryOptions } from '@tanstack/react-query'
 import { useQuery } from '@tanstack/react-query'
 import { isAxiosError } from 'axios'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { toast } from '@gorgias/axiom'
+
 import {
     accountConfigurationKeys,
     CACHE_TIME_MS,
@@ -12,8 +13,6 @@ import {
     createAccountConfiguration,
     getAccountConfiguration,
 } from 'models/aiAgent/resources/configuration'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 export function useGetOrCreateAccountConfiguration(
     params: {
@@ -25,8 +24,6 @@ export function useGetOrCreateAccountConfiguration(
         ReturnType<typeof getAccountConfiguration>
     > | null>,
 ) {
-    const dispatch = useAppDispatch()
-
     const { accountId, accountDomain, storeNames } = params
     return useQuery({
         queryKey: accountConfigurationKeys.detail(accountDomain),
@@ -41,12 +38,8 @@ export function useGetOrCreateAccountConfiguration(
                 }
 
                 if (error.response?.status === 403) {
-                    void dispatch(
-                        notify({
-                            message:
-                                'An error occurred while loading the AI Agent, please contact support.',
-                            status: NotificationStatus.Error,
-                        }),
+                    toast.error(
+                        'An error occurred while loading the AI Agent, please contact support.',
                     )
                     return null
                 }
@@ -55,13 +48,7 @@ export function useGetOrCreateAccountConfiguration(
                     throw error
                 }
 
-                void dispatch(
-                    notify({
-                        message: 'Initializing AI Agent',
-                        status: NotificationStatus.Loading,
-                        closeOnNext: true,
-                    }),
-                )
+                toast.info('Initializing AI Agent')
                 return await createAccountConfiguration({
                     accountId,
                     gorgiasDomain: accountDomain,
@@ -72,12 +59,7 @@ export function useGetOrCreateAccountConfiguration(
             }
         },
         onError: () => {
-            void dispatch(
-                notify({
-                    message: 'An error occurred while loading the AI Agent',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error('An error occurred while loading the AI Agent')
         },
         staleTime: STALE_TIME_MS,
         cacheTime: CACHE_TIME_MS,

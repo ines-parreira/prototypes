@@ -4,13 +4,11 @@ import 'pages/aiAgent/test/mock-activation-hooks.utils'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import * as segment from '@repo/logging'
 import { assumeMock, render } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
-import { act, fireEvent } from '@testing-library/react'
+import { act, fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import { MemoryRouter, useLocation, useParams } from 'react-router-dom'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import { useLocation, useParams } from 'react-router-dom'
+
+import { toast } from '@gorgias/axiom'
 
 import { initialState as initialStatsFiltersState } from 'domains/reporting/state/stats/statsSlice'
 import { initialState } from 'domains/reporting/state/ui/stats/filtersSlice'
@@ -30,8 +28,7 @@ import { useThankYouModal } from 'pages/aiAgent/Overview/hooks/useThankYouModal'
 import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
-import type { RootState, StoreDispatch, StoreState } from 'state/types'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import type { StoreState } from 'state/types'
 
 import { AiAgentOverview } from '../AiAgentOverview'
 import { AiAgentOverviewRootStateFixture } from './AiAgentOverviewRootState.fixture'
@@ -129,8 +126,6 @@ useParamsMock.mockReturnValue({ shopName: undefined, shopType: undefined })
 const rootState = AiAgentOverviewRootStateFixture.start()
     .with2ShopifyIntegrations()
     .build()
-const queryClient = mockQueryClient()
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 const defaultStore = {
     ...rootState,
@@ -150,17 +145,8 @@ const defaultStore = {
     integrations: fromJS(integrationsState),
 } as StoreState
 
-const renderComponent = () => {
-    return render(
-        <MemoryRouter>
-            <Provider store={mockStore(defaultStore)}>
-                <QueryClientProvider client={queryClient}>
-                    <AiAgentOverview />
-                </QueryClientProvider>
-            </Provider>
-        </MemoryRouter>,
-    )
-}
+const renderComponent = (storeState: StoreState = defaultStore) =>
+    render(<AiAgentOverview />, { storeState })
 
 describe('AiAgentOverview', () => {
     beforeEach(() => {
@@ -614,15 +600,7 @@ describe('AiAgentOverview', () => {
                 }),
             )
 
-            rerender(
-                <MemoryRouter>
-                    <Provider store={mockStore(defaultStore)}>
-                        <QueryClientProvider client={queryClient}>
-                            <AiAgentOverview />
-                        </QueryClientProvider>
-                    </Provider>
-                </MemoryRouter>,
-            )
+            rerender(<AiAgentOverview />)
 
             // Should not be visible
             expect(
@@ -743,9 +721,18 @@ describe('AiAgentOverview', () => {
                 shopName: 'test-shop',
                 shopType: 'shopify',
             })
+            act(() => {
+                toast.dismiss()
+            })
         })
 
-        it('should dispatch inventory scope warning notification when missing required scopes', () => {
+        afterEach(() => {
+            act(() => {
+                toast.dismiss()
+            })
+        })
+
+        it('should show inventory scope warning toast when missing required scopes', async () => {
             const storeWithMissingScopes = {
                 ...defaultStore,
                 integrations: fromJS({
@@ -770,36 +757,18 @@ describe('AiAgentOverview', () => {
                 }),
             }
 
-            const store = mockStore(storeWithMissingScopes)
+            renderComponent(storeWithMissingScopes)
 
-            render(
-                <MemoryRouter>
-                    <Provider store={store}>
-                        <QueryClientProvider client={queryClient}>
-                            <AiAgentOverview />
-                        </QueryClientProvider>
-                    </Provider>
-                </MemoryRouter>,
-            )
+            await act(async () => undefined)
 
-            // Check that the notification action was dispatched
-            const actions = store.getActions()
-
-            const notifyAction = actions.find(
-                (action) =>
-                    action.type === 'reapop/upsertNotification' &&
-                    action.payload?.message?.includes(
-                        'Unlock smarter recommendations',
-                    ),
-            )
-
-            expect(notifyAction).toBeDefined()
-            expect(notifyAction?.payload?.message).toContain(
+            const toastEl = await screen.findByRole('status', { hidden: true })
+            expect(toastEl).toHaveTextContent(
                 'Unlock smarter recommendations by giving AI Agent access to your Shopify inventory',
             )
+            expect(toastEl).toHaveAttribute('data-intent', 'warning')
         })
 
-        it('should not dispatch inventory scope warning when has all required scopes', () => {
+        it('should not show inventory scope warning toast when has all required scopes', () => {
             const storeWithAllScopes = {
                 ...defaultStore,
                 integrations: fromJS({
@@ -824,32 +793,14 @@ describe('AiAgentOverview', () => {
                 }),
             }
 
-            const store = mockStore(storeWithAllScopes)
+            renderComponent(storeWithAllScopes)
 
-            render(
-                <MemoryRouter>
-                    <Provider store={store}>
-                        <QueryClientProvider client={queryClient}>
-                            <AiAgentOverview />
-                        </QueryClientProvider>
-                    </Provider>
-                </MemoryRouter>,
-            )
-
-            // Check that the notification action was NOT dispatched
-            const actions = store.getActions()
-            const notifyAction = actions.find(
-                (action) =>
-                    action.type === 'reapop/upsertNotification' &&
-                    action.payload?.message?.includes(
-                        'Unlock smarter recommendations',
-                    ),
-            )
-
-            expect(notifyAction).toBeUndefined()
+            expect(
+                screen.queryByRole('status', { hidden: true }),
+            ).not.toBeInTheDocument()
         })
 
-        it('should not dispatch inventory scope warning when need_scope_update is false', () => {
+        it('should not show inventory scope warning toast when need_scope_update is false', () => {
             const storeWithoutScopeUpdate = {
                 ...defaultStore,
                 integrations: fromJS({
@@ -874,29 +825,11 @@ describe('AiAgentOverview', () => {
                 }),
             }
 
-            const store = mockStore(storeWithoutScopeUpdate)
+            renderComponent(storeWithoutScopeUpdate)
 
-            render(
-                <MemoryRouter>
-                    <Provider store={store}>
-                        <QueryClientProvider client={queryClient}>
-                            <AiAgentOverview />
-                        </QueryClientProvider>
-                    </Provider>
-                </MemoryRouter>,
-            )
-
-            // Check that the notification action was NOT dispatched
-            const actions = store.getActions()
-            const notifyAction = actions.find(
-                (action) =>
-                    action.type === 'reapop/upsertNotification' &&
-                    action.payload?.message?.includes(
-                        'Unlock smarter recommendations',
-                    ),
-            )
-
-            expect(notifyAction).toBeUndefined()
+            expect(
+                screen.queryByRole('status', { hidden: true }),
+            ).not.toBeInTheDocument()
         })
     })
 

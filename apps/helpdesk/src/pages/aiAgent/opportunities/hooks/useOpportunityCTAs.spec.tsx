@@ -1,13 +1,7 @@
-import type React from 'react'
-
 import { reportError } from '@repo/logging'
 import { renderHook } from '@repo/testing'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { waitFor } from '@testing-library/react'
-import { Provider } from 'react-redux'
-import configureStore from 'redux-mock-store'
+import { screen, waitFor } from '@testing-library/react'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import { useUpsertArticleTemplateReview } from 'pages/settings/helpCenter/queries'
 import {
@@ -15,8 +9,6 @@ import {
     FeedbackTargetType,
     OpportunityFeedbackType,
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { OpportunityType } from '../enums'
 import type {
@@ -34,11 +26,7 @@ jest.mock('./useProcessOpportunity', () => ({
 }))
 jest.mock('models/knowledgeService/mutations')
 jest.mock('pages/settings/helpCenter/queries')
-jest.mock('hooks/useAppDispatch')
 jest.mock('@repo/logging')
-jest.mock('state/notifications/actions')
-
-const mockStore = configureStore([])
 
 const mockOpportunity: Opportunity = {
     id: '123',
@@ -76,22 +64,8 @@ const mockFormData: ResourceFormFields = {
 }
 
 describe('useOpportunityCTAs', () => {
-    let queryClient: QueryClient
-    let store: ReturnType<typeof mockStore>
-
     beforeEach(() => {
         jest.clearAllMocks()
-        queryClient = new QueryClient({
-            defaultOptions: {
-                queries: {
-                    retry: false,
-                },
-            },
-        })
-        store = mockStore({})
-
-        // Mock Redux hooks
-        ;(useAppDispatch as jest.Mock).mockReturnValue(jest.fn())
 
         // Setup default mocks
         ;(useProcessOpportunity as jest.Mock).mockReturnValue({
@@ -106,14 +80,6 @@ describe('useOpportunityCTAs', () => {
         })
     })
 
-    const wrapper = ({ children }: { children?: React.ReactNode }) => (
-        <Provider store={store}>
-            <QueryClientProvider client={queryClient}>
-                {children}
-            </QueryClientProvider>
-        </Provider>
-    )
-
     describe('handleApprove', () => {
         it('should call processOpportunity for knowledge service', async () => {
             const mutateAsync = jest.fn().mockResolvedValue({})
@@ -121,14 +87,12 @@ describe('useOpportunityCTAs', () => {
                 mutateAsync,
             })
 
-            const { result } = renderHook(
-                () =>
-                    useOpportunityCTAs({
-                        selectedOpportunity: mockOpportunity,
-                        editorFormResources: [mockFormData],
-                        opportunityConfig: mockOpportunityConfig,
-                    }),
-                { wrapper },
+            const { result } = renderHook(() =>
+                useOpportunityCTAs({
+                    selectedOpportunity: mockOpportunity,
+                    editorFormResources: [mockFormData],
+                    opportunityConfig: mockOpportunityConfig,
+                }),
             )
 
             await result.current.handleApprove()
@@ -156,14 +120,12 @@ describe('useOpportunityCTAs', () => {
                 mutateAsync,
             })
 
-            const { result } = renderHook(
-                () =>
-                    useOpportunityCTAs({
-                        selectedOpportunity: null,
-                        editorFormResources: [mockFormData],
-                        opportunityConfig: mockOpportunityConfig,
-                    }),
-                { wrapper },
+            const { result } = renderHook(() =>
+                useOpportunityCTAs({
+                    selectedOpportunity: null,
+                    editorFormResources: [mockFormData],
+                    opportunityConfig: mockOpportunityConfig,
+                }),
             )
 
             await result.current.handleApprove()
@@ -181,14 +143,12 @@ describe('useOpportunityCTAs', () => {
                 mutateAsync,
             })
 
-            const { result } = renderHook(
-                () =>
-                    useOpportunityCTAs({
-                        selectedOpportunity: mockOpportunity,
-                        editorFormResources: [mockFormData],
-                        opportunityConfig: mockOpportunityConfig,
-                    }),
-                { wrapper },
+            const { result } = renderHook(() =>
+                useOpportunityCTAs({
+                    selectedOpportunity: mockOpportunity,
+                    editorFormResources: [mockFormData],
+                    opportunityConfig: mockOpportunityConfig,
+                }),
             )
 
             expect(result.current.isProcessing).toBe(false)
@@ -207,14 +167,12 @@ describe('useOpportunityCTAs', () => {
         })
 
         it('should call onOpportunityAccepted callback on success', async () => {
-            const { result } = renderHook(
-                () =>
-                    useOpportunityCTAs({
-                        selectedOpportunity: mockOpportunity,
-                        editorFormResources: [mockFormData],
-                        opportunityConfig: mockOpportunityConfig,
-                    }),
-                { wrapper },
+            const { result } = renderHook(() =>
+                useOpportunityCTAs({
+                    selectedOpportunity: mockOpportunity,
+                    editorFormResources: [mockFormData],
+                    opportunityConfig: mockOpportunityConfig,
+                }),
             )
 
             await result.current.handleApprove()
@@ -235,14 +193,12 @@ describe('useOpportunityCTAs', () => {
                 mutateAsync: upsertFeedbackMock,
             })
 
-            const { result } = renderHook(
-                () =>
-                    useOpportunityCTAs({
-                        selectedOpportunity: mockOpportunity,
-                        editorFormResources: [mockFormData],
-                        opportunityConfig: mockOpportunityConfig,
-                    }),
-                { wrapper },
+            const { result } = renderHook(() =>
+                useOpportunityCTAs({
+                    selectedOpportunity: mockOpportunity,
+                    editorFormResources: [mockFormData],
+                    opportunityConfig: mockOpportunityConfig,
+                }),
             )
 
             await result.current.handleApprove()
@@ -296,14 +252,12 @@ describe('useOpportunityCTAs', () => {
                 ],
             }
 
-            const { result } = renderHook(
-                () =>
-                    useOpportunityCTAs({
-                        selectedOpportunity: conflictOpportunity,
-                        editorFormResources: [mockFormData],
-                        opportunityConfig: mockOpportunityConfig,
-                    }),
-                { wrapper },
+            const { result } = renderHook(() =>
+                useOpportunityCTAs({
+                    selectedOpportunity: conflictOpportunity,
+                    editorFormResources: [mockFormData],
+                    opportunityConfig: mockOpportunityConfig,
+                }),
             )
 
             await result.current.handleResolve()
@@ -346,14 +300,12 @@ describe('useOpportunityCTAs', () => {
                 ],
             }
 
-            const { result } = renderHook(
-                () =>
-                    useOpportunityCTAs({
-                        selectedOpportunity: mockOpportunity,
-                        editorFormResources: [mockFormData],
-                        opportunityConfig: mockOpportunityConfig,
-                    }),
-                { wrapper },
+            const { result } = renderHook(() =>
+                useOpportunityCTAs({
+                    selectedOpportunity: mockOpportunity,
+                    editorFormResources: [mockFormData],
+                    opportunityConfig: mockOpportunityConfig,
+                }),
             )
 
             await result.current.handleDismiss(feedbackData)
@@ -377,14 +329,12 @@ describe('useOpportunityCTAs', () => {
                 feedbackToUpsert: [],
             }
 
-            const { result } = renderHook(
-                () =>
-                    useOpportunityCTAs({
-                        selectedOpportunity: mockOpportunity,
-                        editorFormResources: [mockFormData],
-                        opportunityConfig: mockOpportunityConfig,
-                    }),
-                { wrapper },
+            const { result } = renderHook(() =>
+                useOpportunityCTAs({
+                    selectedOpportunity: mockOpportunity,
+                    editorFormResources: [mockFormData],
+                    opportunityConfig: mockOpportunityConfig,
+                }),
             )
 
             await result.current.handleDismiss(feedbackData)
@@ -405,14 +355,12 @@ describe('useOpportunityCTAs', () => {
                 mutateAsync,
             })
 
-            const { result } = renderHook(
-                () =>
-                    useOpportunityCTAs({
-                        selectedOpportunity: null,
-                        editorFormResources: [mockFormData],
-                        opportunityConfig: mockOpportunityConfig,
-                    }),
-                { wrapper },
+            const { result } = renderHook(() =>
+                useOpportunityCTAs({
+                    selectedOpportunity: null,
+                    editorFormResources: [mockFormData],
+                    opportunityConfig: mockOpportunityConfig,
+                }),
             )
 
             await result.current.handleDismiss({ feedbackToUpsert: [] })
@@ -423,14 +371,12 @@ describe('useOpportunityCTAs', () => {
 
     describe('isProcessing state', () => {
         it('should return false when not processing', () => {
-            const { result } = renderHook(
-                () =>
-                    useOpportunityCTAs({
-                        selectedOpportunity: mockOpportunity,
-                        editorFormResources: [mockFormData],
-                        opportunityConfig: mockOpportunityConfig,
-                    }),
-                { wrapper },
+            const { result } = renderHook(() =>
+                useOpportunityCTAs({
+                    selectedOpportunity: mockOpportunity,
+                    editorFormResources: [mockFormData],
+                    opportunityConfig: mockOpportunityConfig,
+                }),
             )
 
             expect(result.current.isProcessing).toBe(false)
@@ -438,13 +384,6 @@ describe('useOpportunityCTAs', () => {
     })
 
     describe('Error handling', () => {
-        let mockDispatch: jest.Mock
-
-        beforeEach(() => {
-            mockDispatch = jest.fn()
-            ;(useAppDispatch as jest.Mock).mockReturnValue(mockDispatch)
-        })
-
         it('should handle approval errors gracefully', async () => {
             const mutateAsync = jest
                 .fn()
@@ -453,14 +392,12 @@ describe('useOpportunityCTAs', () => {
                 mutateAsync,
             })
 
-            const { result } = renderHook(
-                () =>
-                    useOpportunityCTAs({
-                        selectedOpportunity: mockOpportunity,
-                        editorFormResources: [mockFormData],
-                        opportunityConfig: mockOpportunityConfig,
-                    }),
-                { wrapper },
+            const { result } = renderHook(() =>
+                useOpportunityCTAs({
+                    selectedOpportunity: mockOpportunity,
+                    editorFormResources: [mockFormData],
+                    opportunityConfig: mockOpportunityConfig,
+                }),
             )
 
             await result.current.handleApprove()
@@ -478,14 +415,12 @@ describe('useOpportunityCTAs', () => {
                 mutateAsync,
             })
 
-            const { result } = renderHook(
-                () =>
-                    useOpportunityCTAs({
-                        selectedOpportunity: mockOpportunity,
-                        editorFormResources: [mockFormData],
-                        opportunityConfig: mockOpportunityConfig,
-                    }),
-                { wrapper },
+            const { result } = renderHook(() =>
+                useOpportunityCTAs({
+                    selectedOpportunity: mockOpportunity,
+                    editorFormResources: [mockFormData],
+                    opportunityConfig: mockOpportunityConfig,
+                }),
             )
 
             await result.current.handleDismiss({ feedbackToUpsert: [] })
@@ -512,27 +447,21 @@ describe('useOpportunityCTAs', () => {
                 mutateAsync,
             })
 
-            const { result } = renderHook(
-                () =>
-                    useOpportunityCTAs({
-                        selectedOpportunity: mockOpportunity,
-                        editorFormResources: [mockFormData],
-                        opportunityConfig: mockOpportunityConfig,
-                    }),
-                { wrapper },
+            const { result } = renderHook(() =>
+                useOpportunityCTAs({
+                    selectedOpportunity: mockOpportunity,
+                    editorFormResources: [mockFormData],
+                    opportunityConfig: mockOpportunityConfig,
+                }),
             )
 
             await result.current.handleApprove()
 
-            await waitFor(() => {
-                expect(mockDispatch).toHaveBeenCalledWith(
-                    notify({
-                        status: NotificationStatus.Info,
-                        message:
-                            'This opportunity is no longer relevant and was addressed by recent knowledge updates.',
-                    }),
-                )
-            })
+            expect(
+                await screen.findByRole('status', {
+                    name: 'This opportunity is no longer relevant and was addressed by recent knowledge updates.',
+                }),
+            ).toBeInTheDocument()
         })
 
         it('should show error notification for non-409 errors on approve', async () => {
@@ -552,27 +481,21 @@ describe('useOpportunityCTAs', () => {
                 mutateAsync,
             })
 
-            const { result } = renderHook(
-                () =>
-                    useOpportunityCTAs({
-                        selectedOpportunity: mockOpportunity,
-                        editorFormResources: [mockFormData],
-                        opportunityConfig: mockOpportunityConfig,
-                    }),
-                { wrapper },
+            const { result } = renderHook(() =>
+                useOpportunityCTAs({
+                    selectedOpportunity: mockOpportunity,
+                    editorFormResources: [mockFormData],
+                    opportunityConfig: mockOpportunityConfig,
+                }),
             )
 
             await result.current.handleApprove()
 
-            await waitFor(() => {
-                expect(mockDispatch).toHaveBeenCalledWith(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message:
-                            'Failed to resolve knowledge gap. Please try again.',
-                    }),
-                )
-            })
+            expect(
+                await screen.findByRole('status', {
+                    name: 'Failed to resolve knowledge gap. Please try again.',
+                }),
+            ).toBeInTheDocument()
         })
 
         it('should report all errors to Sentry on approve', async () => {
@@ -582,14 +505,12 @@ describe('useOpportunityCTAs', () => {
                 mutateAsync,
             })
 
-            const { result } = renderHook(
-                () =>
-                    useOpportunityCTAs({
-                        selectedOpportunity: mockOpportunity,
-                        editorFormResources: [mockFormData],
-                        opportunityConfig: mockOpportunityConfig,
-                    }),
-                { wrapper },
+            const { result } = renderHook(() =>
+                useOpportunityCTAs({
+                    selectedOpportunity: mockOpportunity,
+                    editorFormResources: [mockFormData],
+                    opportunityConfig: mockOpportunityConfig,
+                }),
             )
 
             await result.current.handleApprove()
@@ -641,27 +562,21 @@ describe('useOpportunityCTAs', () => {
                 ],
             }
 
-            const { result } = renderHook(
-                () =>
-                    useOpportunityCTAs({
-                        selectedOpportunity: conflictOpportunity,
-                        editorFormResources: [mockFormData],
-                        opportunityConfig: mockOpportunityConfig,
-                    }),
-                { wrapper },
+            const { result } = renderHook(() =>
+                useOpportunityCTAs({
+                    selectedOpportunity: conflictOpportunity,
+                    editorFormResources: [mockFormData],
+                    opportunityConfig: mockOpportunityConfig,
+                }),
             )
 
             await result.current.handleResolve()
 
-            await waitFor(() => {
-                expect(mockDispatch).toHaveBeenCalledWith(
-                    notify({
-                        status: NotificationStatus.Info,
-                        message:
-                            'This opportunity is no longer relevant and was addressed by recent knowledge updates.',
-                    }),
-                )
-            })
+            expect(
+                await screen.findByRole('status', {
+                    name: 'This opportunity is no longer relevant and was addressed by recent knowledge updates.',
+                }),
+            ).toBeInTheDocument()
         })
 
         it('should show info notification for 409 conflict errors on dismiss', async () => {
@@ -681,27 +596,21 @@ describe('useOpportunityCTAs', () => {
                 mutateAsync,
             })
 
-            const { result } = renderHook(
-                () =>
-                    useOpportunityCTAs({
-                        selectedOpportunity: mockOpportunity,
-                        editorFormResources: [mockFormData],
-                        opportunityConfig: mockOpportunityConfig,
-                    }),
-                { wrapper },
+            const { result } = renderHook(() =>
+                useOpportunityCTAs({
+                    selectedOpportunity: mockOpportunity,
+                    editorFormResources: [mockFormData],
+                    opportunityConfig: mockOpportunityConfig,
+                }),
             )
 
             await result.current.handleDismiss({ feedbackToUpsert: [] })
 
-            await waitFor(() => {
-                expect(mockDispatch).toHaveBeenCalledWith(
-                    notify({
-                        status: NotificationStatus.Info,
-                        message:
-                            'This opportunity is no longer relevant and was addressed by recent knowledge updates.',
-                    }),
-                )
-            })
+            expect(
+                await screen.findByRole('status', {
+                    name: 'This opportunity is no longer relevant and was addressed by recent knowledge updates.',
+                }),
+            ).toBeInTheDocument()
         })
 
         it('should report errors to Sentry for all handlers', async () => {
@@ -730,14 +639,12 @@ describe('useOpportunityCTAs', () => {
                 ],
             }
 
-            const { result } = renderHook(
-                () =>
-                    useOpportunityCTAs({
-                        selectedOpportunity: conflictOpportunity,
-                        editorFormResources: [mockFormData],
-                        opportunityConfig: mockOpportunityConfig,
-                    }),
-                { wrapper },
+            const { result } = renderHook(() =>
+                useOpportunityCTAs({
+                    selectedOpportunity: conflictOpportunity,
+                    editorFormResources: [mockFormData],
+                    opportunityConfig: mockOpportunityConfig,
+                }),
             )
 
             // Test handleResolve

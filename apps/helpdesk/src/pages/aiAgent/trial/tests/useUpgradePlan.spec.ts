@@ -1,30 +1,19 @@
 import { assumeMock, renderHook } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import { useUpgradeAiAgentSubscriptionGeneration6Plan } from 'models/billing/queries'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { useUpgradePlan } from '../hooks/useUpgradePlan'
-
-jest.mock('hooks/useAppDispatch', () => jest.fn())
 
 jest.mock('models/billing/queries', () => ({
     useUpgradeAiAgentSubscriptionGeneration6Plan: jest.fn(),
 }))
 
-jest.mock('state/notifications/actions', () => ({
-    notify: jest.fn(),
-}))
-
-const useAppDispatchMock = assumeMock(useAppDispatch)
 const useUpgradeAiAgentSubscriptionGeneration6PlanMock = assumeMock(
     useUpgradeAiAgentSubscriptionGeneration6Plan,
 )
-const notifyMock = assumeMock(notify)
 
 describe('useUpgradePlan', () => {
-    const mockDispatch = jest.fn()
     const mockMutate = jest.fn()
     const mockMutateAsync = jest.fn()
     const mockReload = jest.fn()
@@ -40,7 +29,6 @@ describe('useUpgradePlan', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        jest.useFakeTimers()
 
         Object.defineProperty(window, 'location', {
             writable: true,
@@ -49,14 +37,9 @@ describe('useUpgradePlan', () => {
             },
         })
 
-        useAppDispatchMock.mockReturnValue(mockDispatch)
         useUpgradeAiAgentSubscriptionGeneration6PlanMock.mockReturnValue(
             mockMutationResult as any,
         )
-    })
-
-    afterEach(() => {
-        jest.useRealTimers()
     })
 
     it('should call useUpgradeAiAgentSubscriptionGeneration6Plan with correct configuration', () => {
@@ -102,7 +85,7 @@ describe('useUpgradePlan', () => {
     })
 
     describe('onSuccess callback', () => {
-        it('should dispatch success notification', () => {
+        it('shows success toast', async () => {
             renderHook(() => useUpgradePlan())
 
             const mutationOptions =
@@ -111,12 +94,11 @@ describe('useUpgradePlan', () => {
             const onSuccess = mutationOptions.onSuccess
             onSuccess()
 
-            expect(mockDispatch).toHaveBeenCalledWith(
-                notifyMock({
-                    message: 'Your plan has been upgraded!',
-                    status: NotificationStatus.Success,
+            expect(
+                await screen.findByRole('status', {
+                    name: 'Your plan has been upgraded!',
                 }),
-            )
+            ).toBeInTheDocument()
         })
 
         it('should reload the window', () => {
@@ -133,7 +115,7 @@ describe('useUpgradePlan', () => {
     })
 
     describe('onError callback', () => {
-        it('should dispatch error notification', () => {
+        it('shows error toast', async () => {
             renderHook(() => useUpgradePlan())
 
             const mutationOptions =
@@ -142,12 +124,11 @@ describe('useUpgradePlan', () => {
             const onError = mutationOptions.onError
             onError()
 
-            expect(mockDispatch).toHaveBeenCalledWith(
-                notifyMock({
-                    message: 'Failed to upgrade plan. Please try again later.',
-                    status: NotificationStatus.Error,
+            expect(
+                await screen.findByRole('status', {
+                    name: 'Failed to upgrade plan. Please try again later.',
                 }),
-            )
+            ).toBeInTheDocument()
         })
     })
 

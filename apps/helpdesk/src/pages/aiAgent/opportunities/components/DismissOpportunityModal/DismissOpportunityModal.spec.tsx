@@ -1,8 +1,6 @@
 import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import configureStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import type { Opportunity } from 'pages/aiAgent/opportunities/types'
 import { ResourceType } from 'pages/aiAgent/opportunities/types'
@@ -11,18 +9,10 @@ import { OpportunityDismissReason } from '../../../../tickets/detail/components/
 import { OpportunityType } from '../../enums'
 import { DismissOpportunityModal } from './DismissOpportunityModal'
 
-jest.mock('state/notifications/actions', () => ({
-    notify: jest.fn((payload) => ({
-        type: 'NOTIFY',
-        payload,
-    })),
-}))
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
     default: jest.fn(() => 'test-user-id'),
 }))
-const middlewares = [thunk]
-const mockStore = configureStore(middlewares)
 describe('DismissOpportunityModal', () => {
     const mockOnClose = jest.fn()
     const mockOnConfirm = jest.fn()
@@ -46,15 +36,10 @@ describe('DismissOpportunityModal', () => {
         onClose: mockOnClose,
         onConfirm: mockOnConfirm,
     }
-    const renderComponent = (props = {}) => {
-        const __store = mockStore({
-            currentUser: { id: 'test-user-id' },
+    const renderComponent = (props = {}) =>
+        render(<DismissOpportunityModal {...defaultProps} {...props} />, {
+            storeState: { currentUser: { id: 'test-user-id' } },
         })
-        return render(
-            <DismissOpportunityModal {...defaultProps} {...props} />,
-            {},
-        )
-    }
     beforeEach(() => {
         jest.clearAllMocks()
     })
