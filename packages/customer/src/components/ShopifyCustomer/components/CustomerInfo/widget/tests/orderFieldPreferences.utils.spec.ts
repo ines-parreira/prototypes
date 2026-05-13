@@ -334,14 +334,33 @@ describe('sectionsEqual', () => {
 })
 
 describe('buildPreferencesFromStored', () => {
-    it('returns stored section when present', () => {
+    it('preserves stored fields and appends new field definitions as visible', () => {
         const stored = {
             orderDetails: {
                 fields: [{ id: 'tags', visible: false }],
             },
         }
         const result = buildPreferencesFromStored(stored)
-        expect(result.sections.orderDetails).toEqual(stored.orderDetails)
+        const fields = result.sections.orderDetails!.fields
+        expect(fields[0]).toEqual({ id: 'tags', visible: false })
+        const newFields = fields.slice(1)
+        expect(newFields.every((f) => f.visible)).toBe(true)
+        expect(newFields.map((f) => f.id)).not.toContain('tags')
+    })
+
+    it('drops stored fields whose id no longer exists in field definitions', () => {
+        const stored = {
+            orderDetails: {
+                fields: [
+                    { id: 'tags', visible: true },
+                    { id: 'obsolete_field', visible: true },
+                ],
+            },
+        }
+        const result = buildPreferencesFromStored(stored)
+        const ids = result.sections.orderDetails!.fields.map((f) => f.id)
+        expect(ids).not.toContain('obsolete_field')
+        expect(ids).toContain('tags')
     })
 
     it('falls back to { fields: [] } for missing non-configurable sections', () => {

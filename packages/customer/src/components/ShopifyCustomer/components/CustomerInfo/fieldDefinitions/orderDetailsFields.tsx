@@ -22,6 +22,21 @@ function CheckoutUrlField({ url }: { url: string }) {
     )
 }
 
+function OrderStatusUrlField({ url }: { url: string }) {
+    return (
+        <CopyableField value={url} ariaLabel="Copy order status URL" inline>
+            <a
+                href={url}
+                target="_blank"
+                rel="noreferrer"
+                className={css.checkoutUrl}
+            >
+                {url}
+            </a>
+        </CopyableField>
+    )
+}
+
 export const FIELD_DEFINITIONS: Record<string, OrderFieldConfig> = {
     tags: {
         id: 'tags',
@@ -111,5 +126,16 @@ export const FIELD_DEFINITIONS: Record<string, OrderFieldConfig> = {
             if (!codes || codes.length === 0) return undefined
             return codes.map((c) => c.code).join(', ')
         },
+    },
+    order_status_url: {
+        id: 'order_status_url',
+        type: 'component',
+        label: 'Order status URL',
+        getValue: (ctx) =>
+            !ctx.isDraftOrder ? ctx.order.order_status_url : undefined,
+        render: (ctx) =>
+            !ctx.isDraftOrder && ctx.order.order_status_url ? (
+                <OrderStatusUrlField url={ctx.order.order_status_url} />
+            ) : null,
     },
 }

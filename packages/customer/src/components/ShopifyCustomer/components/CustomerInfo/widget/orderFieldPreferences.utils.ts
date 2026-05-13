@@ -39,7 +39,22 @@ export function buildPreferencesFromStored(
     const sections: OrderFieldPreferences['sections'] = {}
     for (const config of ORDER_SECTION_CONFIGS) {
         if (stored[config.key]) {
-            sections[config.key] = stored[config.key]
+            if (config.isNonConfigurable) {
+                sections[config.key] = stored[config.key]
+            } else {
+                const storedSection = stored[config.key]!
+                const validStoredFields = storedSection.fields.filter(
+                    (f) => config.fieldDefinitions[f.id],
+                )
+                const storedIds = new Set(validStoredFields.map((f) => f.id))
+                const newFields = Object.keys(config.fieldDefinitions)
+                    .filter((id) => !storedIds.has(id))
+                    .map((id) => ({ id, visible: true }))
+                sections[config.key] = {
+                    ...storedSection,
+                    fields: [...validStoredFields, ...newFields],
+                }
+            }
         } else if (config.isNonConfigurable) {
             sections[config.key] = { fields: [] }
         } else {

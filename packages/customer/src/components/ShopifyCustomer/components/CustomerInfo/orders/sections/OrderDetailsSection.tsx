@@ -59,7 +59,7 @@ export function OrderDetailsSection({
                     Order details
                 </Text>
             </Box>
-            <Box mb="sm" flexDirection="column" gap="xs">
+            <Box mb="sm" flexDirection="column" gap="xxxs">
                 {fields.map((field) => {
                     if (field.type === 'component') {
                         const rendered = field.render(context)
@@ -71,7 +71,7 @@ export function OrderDetailsSection({
                                 key={field.id}
                                 display="grid"
                                 w="100%"
-                                alignItems="flex-start"
+                                alignItems="center"
                                 gap="xs"
                                 className={css.row}
                             >
@@ -101,7 +101,7 @@ export function OrderDetailsSection({
                             key={field.id}
                             display="grid"
                             w="100%"
-                            alignItems="flex-start"
+                            alignItems="center"
                             gap="xs"
                             className={css.row}
                         >

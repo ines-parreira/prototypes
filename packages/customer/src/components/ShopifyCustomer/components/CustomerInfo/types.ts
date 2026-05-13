@@ -59,6 +59,7 @@ export type OrderDetailsData = {
     note?: string
     created_at?: string
     invoice_url?: string
+    order_status_url?: string
     discount_codes?: Array<{ code: string; amount: string; type: string }>
     metafields?: unknown[]
     fulfillments?: Array<{
