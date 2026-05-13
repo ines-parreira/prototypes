@@ -2,6 +2,13 @@
 @import '~css/new/mixins';
 @import (reference) '~css/typography';
 
+// The Axiom SidePanel (withoutOverlay) uses z-index 9999; the react-images lightbox
+// defaults to 2001, so it renders behind the panel. Override via ID selector which
+// has higher specificity than the aphrodite-generated class.
+#lightboxBackdrop {
+    z-index: 10000;
+}
+
 :local {
     .productCard {
         width: 210px;
