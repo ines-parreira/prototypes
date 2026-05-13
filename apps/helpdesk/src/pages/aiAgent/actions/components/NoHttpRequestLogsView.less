@@ -16,12 +16,22 @@
         border: 1px solid var(--Neutral-Grey_3, #ddd); // legacy
         background: var(--Neutral-Grey_1, #f9f9f9); // legacy
         padding: calc(var(--layout-spacing-xs) - 2px) var(--layout-spacing-xs);
+        margin: 0;
+        white-space: pre-wrap;
+        word-break: break-word;
+        overflow-wrap: anywhere;
     }
-}
 
-.axiom :local {
-    .codeBlock {
-        border: 1px solid var(--border-neutral-default);
-        background: var(--elevation-neutral-default);
+    .outputContainer {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-s);
+
+        p {
+            display: inline;
+            margin: 0;
+            font-weight: 700;
+            .body-semibold();
+        }
     }
 }

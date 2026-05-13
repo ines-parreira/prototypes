@@ -39,6 +39,7 @@ const ActionStepAccordionItem = ({
     parentTemplateConfiguration,
 }: ActionStepAccordionItemProps) => {
     const isCustomAction = step.kind === 'http-request'
+    const isLiquidTemplate = step.kind === 'liquid-template'
     const isReusableLLMPromptCall = step.kind === 'reusable-llm-prompt-call'
 
     const shouldRenderChildAccordions = useMemo(
@@ -136,6 +137,7 @@ const ActionStepAccordionItem = ({
             <div className={css.actionEventTitleWrapper}>
                 <ActionEventTitle
                     isCustomAction={isCustomAction}
+                    isLiquidTemplate={isLiquidTemplate}
                     appImageUrl={appImageUrl}
                     appImageAlt={templateConfiguration?.apps?.[0]?.type}
                     title={actionName}
@@ -174,10 +176,15 @@ const ActionStepAccordionItem = ({
                 <AccordionHeader>
                     <ActionEventTitle
                         isCustomAction={isCustomAction}
+                        isLiquidTemplate={isLiquidTemplate}
                         appImageUrl={appImageUrl}
                         appImageAlt={templateConfiguration?.apps?.[0]?.type}
                         title={actionName}
-                        status={step?.success ? 'success' : 'error'}
+                        status={
+                            step?.success === false || step?.error
+                                ? 'error'
+                                : 'success'
+                        }
                     />
                 </AccordionHeader>
                 <AccordionBody>

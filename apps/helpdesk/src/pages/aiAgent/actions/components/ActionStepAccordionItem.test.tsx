@@ -14,8 +14,22 @@ jest.mock('./TransitionConditionsAccordion', () => ({
 }))
 jest.mock('./ActionEventTitle', () => ({
     __esModule: true,
-    default: ({ title, status }: { title: string; status: string }) => (
-        <div data-testid="action-event-title">
+    default: ({
+        title,
+        status,
+        isLiquidTemplate,
+        isCustomAction,
+    }: {
+        title: string
+        status: string
+        isLiquidTemplate?: boolean
+        isCustomAction?: boolean
+    }) => (
+        <div
+            data-testid="action-event-title"
+            data-is-liquid-template={isLiquidTemplate ? 'true' : 'false'}
+            data-is-custom-action={isCustomAction ? 'true' : 'false'}
+        >
             {title} - {status}
         </div>
     ),
@@ -136,6 +150,28 @@ describe('ActionStepAccordionItem', () => {
         const actionTitle = screen.getByTestId('action-event-title')
         expect(actionTitle).toBeInTheDocument()
         expect(actionTitle).toHaveTextContent('error')
+    })
+    it('should render action title with error status when step has an error field but success is not false', () => {
+        const erroredStep = {
+            ...mockStep,
+            success: undefined,
+            error: { code: 'boom' },
+        } as unknown as ActionStepItem
+        renderComponent({ step: erroredStep })
+        const actionTitle = screen.getByTestId('action-event-title')
+        expect(actionTitle).toHaveTextContent('error')
+    })
+    it('should render action title with success status for a liquid-template step without success/error', () => {
+        const liquidStep = {
+            ...mockStep,
+            kind: 'liquid-template',
+            success: undefined,
+        } as unknown as ActionStepItem
+        renderComponent({ step: liquidStep })
+        const actionTitle = screen.getByTestId('action-event-title')
+        expect(actionTitle).toHaveTextContent('success')
+        expect(actionTitle).toHaveAttribute('data-is-liquid-template', 'true')
+        expect(actionTitle).toHaveAttribute('data-is-custom-action', 'false')
     })
     it('should render http request logs when logs are present', () => {
         const logs = [

@@ -7,6 +7,7 @@ import css from './ActionEventTitle.less'
 
 export type ActionEventTitleProps = {
     isCustomAction?: boolean
+    isLiquidTemplate?: boolean
     appImageUrl?: string
     appImageAlt?: string
     title?: string
@@ -16,6 +17,7 @@ export type ActionEventTitleProps = {
 
 const ActionEventTitle = ({
     isCustomAction,
+    isLiquidTemplate,
     appImageUrl,
     appImageAlt,
     title,
@@ -27,6 +29,13 @@ const ActionEventTitle = ({
             <div className={css.title}>
                 {isCustomAction ? (
                     <img src={webhooksIcon} alt={'webhooks'} />
+                ) : isLiquidTemplate ? (
+                    <i
+                        className={`material-icons ${css.appImageFiller}`}
+                        aria-label="liquid template"
+                    >
+                        data_object
+                    </i>
                 ) : (
                     <>
                         {appImageUrl ? (
