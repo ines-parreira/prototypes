@@ -5,8 +5,9 @@ import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/Guidan
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import type {
     GaiaRecommendation,
-    SkillWizard,
-} from 'pages/aiAgent/skills/components/SkillWizard/skillWizard.mock'
+    SkillWizardData,
+} from 'pages/aiAgent/skills/types'
+import { SkillWizardStep } from 'pages/aiAgent/skills/types'
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 import { guidanceActionRegex } from 'pages/common/draftjs/plugins/guidanceActions/utils'
 import type { Components } from 'rest_api/help_center_api/client.generated'
@@ -35,7 +36,7 @@ export type UiWizardState = {
     current_step: number
 }
 
-export type EnrichedSkillWizard = SkillWizard & {
+export type EnrichedSkillWizard = SkillWizardData & {
     /**
      * Every skill referenced by the wizard's gaia_payload, enriched with the
      * matching article from the list-skills endpoint (or null if the skill is
@@ -91,7 +92,9 @@ const hasBlockingActionSetup = (
     return false
 }
 
-export const useSkillWizard = (wizard: SkillWizard) => {
+export const useEnrichedSkillWizard = (
+    wizard: SkillWizardData | null | undefined,
+) => {
     const { storeConfiguration, isLoading: isLoadingStore } =
         useAiAgentStoreConfigurationContext()
     const helpCenterId = storeConfiguration?.guidanceHelpCenterId ?? 0
@@ -125,13 +128,14 @@ export const useSkillWizard = (wizard: SkillWizard) => {
 
     const configuredSkillIds = useMemo(() => {
         const ids = new Set<number>()
-        for (const config of wizard.state.skills_configuration ?? []) {
+        for (const config of wizard?.state.skills_configuration ?? []) {
             ids.add(config.id)
         }
         return ids
-    }, [wizard.state.skills_configuration])
+    }, [wizard])
 
     const all_skills = useMemo<WizardSkill[]>(() => {
+        if (!wizard) return []
         const recommendations = wizard.gaia_payload.recommendations ?? []
         return recommendations.map((recommendation) =>
             enrichRecommendation(
@@ -139,7 +143,7 @@ export const useSkillWizard = (wizard: SkillWizard) => {
                 articleById.get(recommendation.skill_id) ?? null,
             ),
         )
-    }, [wizard.gaia_payload.recommendations, articleById])
+    }, [wizard, articleById])
 
     const reviewable_skills = useMemo<WizardSkill[]>(
         () =>
@@ -155,7 +159,15 @@ export const useSkillWizard = (wizard: SkillWizard) => {
 
     const ui_wizard_state = useMemo<UiWizardState>(() => {
         const total_count = reviewable_skills.length
-        const currentSkillId = wizard.state.current_skill_id
+
+        if (wizard?.state.current_step === SkillWizardStep.Recap) {
+            return {
+                total_count,
+                current_step: total_count + 1,
+            }
+        }
+
+        const currentSkillId = wizard?.state.current_skill_id
         const index =
             currentSkillId !== undefined
                 ? reviewable_skills.findIndex(
@@ -166,20 +178,24 @@ export const useSkillWizard = (wizard: SkillWizard) => {
             total_count,
             current_step: index >= 0 ? index + 1 : 1,
         }
-    }, [reviewable_skills, wizard.state.current_skill_id])
+    }, [reviewable_skills, wizard])
 
-    const enrichedWizard = useMemo<EnrichedSkillWizard>(
-        () => ({
-            ...wizard,
-            all_skills,
-            reviewable_skills,
-            ui_wizard_state,
-        }),
+    const enrichedWizard = useMemo<EnrichedSkillWizard | null>(
+        () =>
+            wizard
+                ? {
+                      ...wizard,
+                      all_skills,
+                      reviewable_skills,
+                      ui_wizard_state,
+                  }
+                : null,
         [wizard, all_skills, reviewable_skills, ui_wizard_state],
     )
 
     return {
         wizard: enrichedWizard,
+        guidanceActions,
         isLoading: isLoadingStore || isLoadingArticles || isLoadingActions,
         isError: isErrorArticles,
     }

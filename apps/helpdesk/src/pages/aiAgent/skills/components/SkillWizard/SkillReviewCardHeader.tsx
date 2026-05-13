@@ -7,7 +7,7 @@ import {
     TooltipContent,
 } from '@gorgias/axiom'
 
-import { SkillWizardSkillStatus } from './skillWizard.mock'
+import { SkillWizardSkillStatus } from 'pages/aiAgent/skills/types'
 
 type Props = {
     title: string

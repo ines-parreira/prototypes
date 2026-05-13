@@ -4,18 +4,60 @@ import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Route, Switch, useLocation } from 'react-router-dom'
 
 import { ThemeProvider } from 'core/theme'
-import { useSkillWizard } from 'pages/aiAgent/skills/hooks/useSkillWizard'
+import { useGetWizard } from 'models/helpCenter/queries'
+import { useEnrichedSkillWizard } from 'pages/aiAgent/skills/hooks/useEnrichedSkillWizard'
+import type { SkillWizardData } from 'pages/aiAgent/skills/types'
+import { SkillWizardStatus } from 'pages/aiAgent/skills/types'
 
-import {
-    mockSkillWizardNotStarted,
-    SkillWizardStatus,
-} from './skillWizard.mock'
 import { SkillWizardPage } from './SkillWizardPage'
 
-jest.mock('pages/aiAgent/skills/hooks/useSkillWizard')
+const mockNotStartedWizard: SkillWizardData = {
+    id: 1,
+    account_id: 6069,
+    shop_integration_id: 7,
+    help_center_id: 21,
+    gaia_payload: {
+        analysis_period: {
+            start: '2026-03-01T00:00:00.000Z',
+            end: '2026-04-27T23:59:59.000Z',
+            total_tickets: 0,
+        },
+        recommendations: [],
+    },
+    state: { skills_configuration: [] },
+    status: SkillWizardStatus.NotStarted,
+    started_datetime: null,
+    completed_datetime: null,
+    last_nudge_sent_datetime: null,
+    created_datetime: '2026-04-28T10:15:00.000Z',
+    updated_datetime: '2026-04-28T10:15:00.000Z',
+}
 
-const mockUseSkillWizard = useSkillWizard as jest.MockedFunction<
-    typeof useSkillWizard
+const mockStart = jest.fn()
+const mockSetStepLocation = jest.fn()
+const mockSetSkillStatus = jest.fn()
+const mockSaveInstructions = jest.fn()
+
+jest.mock('pages/aiAgent/skills/hooks/useEnrichedSkillWizard')
+jest.mock('models/helpCenter/queries', () => ({
+    useGetWizard: jest.fn(),
+}))
+jest.mock('pages/aiAgent/skills/hooks/useSkillWizardMutations', () => ({
+    SKILL_WIZARD_SAVING_MUTATION_KEY: ['skill-wizard-saving'],
+    useSkillWizardMutations: () => ({
+        start: mockStart,
+        setStepLocation: mockSetStepLocation,
+        setSkillStatus: mockSetSkillStatus,
+        saveInstructions: mockSaveInstructions,
+        isSaving: false,
+    }),
+}))
+
+const mockUseSkillWizard = useEnrichedSkillWizard as jest.MockedFunction<
+    typeof useEnrichedSkillWizard
+>
+const mockUseGetWizard = useGetWizard as jest.MockedFunction<
+    typeof useGetWizard
 >
 
 const wizardProps: { current: any } = { current: undefined }
@@ -28,8 +70,11 @@ jest.mock('./SkillWizard', () => ({
                 <p>initialStep: {String(props.initialStep)}</p>
                 <p>itemsCount: {props.items.length}</p>
                 <button onClick={props.onClose}>Close from wizard</button>
-                <button onClick={() => props.onStepChange(7)}>
+                <button onClick={() => props.onStepChange(7, 6)}>
                     Move to step 7
+                </button>
+                <button onClick={() => props.onStepChange(2, 1)}>
+                    Leave step 1
                 </button>
             </div>
         )
@@ -70,15 +115,18 @@ const renderAt = (initialEntry: string) =>
     )
 
 const buildWizardReturn = (
-    overrides: Partial<ReturnType<typeof useSkillWizard>['wizard']> = {},
-): ReturnType<typeof useSkillWizard> => ({
+    overrides: Partial<
+        ReturnType<typeof useEnrichedSkillWizard>['wizard']
+    > = {},
+): ReturnType<typeof useEnrichedSkillWizard> => ({
     wizard: {
-        ...mockSkillWizardNotStarted,
+        ...mockNotStartedWizard,
         all_skills: [],
         reviewable_skills: [],
         ui_wizard_state: { total_count: 0, current_step: 1 },
         ...overrides,
     },
+    guidanceActions: [],
     isLoading: false,
     isError: false,
 })
@@ -101,7 +149,14 @@ const skipIntro = () => {
 describe('SkillWizardPage', () => {
     beforeEach(() => {
         wizardProps.current = undefined
+        mockStart.mockClear()
+        mockSetStepLocation.mockClear()
+        mockSetSkillStatus.mockClear()
+        mockSaveInstructions.mockClear()
         jest.useFakeTimers()
+        mockUseGetWizard.mockReturnValue({
+            data: mockNotStartedWizard,
+        } as unknown as ReturnType<typeof useGetWizard>)
         mockUseSkillWizard.mockReturnValue(
             buildWizardReturn({
                 status: SkillWizardStatus.InProgress,
@@ -205,34 +260,39 @@ describe('SkillWizardPage', () => {
         })
     })
 
-    it('renders the wizard for the /skills/wizard route with no initial step', () => {
+    it('uses ui_wizard_state.current_step from the backend as initialStep', () => {
+        mockUseSkillWizard.mockReturnValue(
+            buildWizardReturn({
+                status: SkillWizardStatus.InProgress,
+                all_skills: [reviewableSkill(1), reviewableSkill(2)],
+                reviewable_skills: [reviewableSkill(1), reviewableSkill(2)],
+                ui_wizard_state: { total_count: 2, current_step: 2 },
+            }),
+        )
         renderAt(WIZARD_PATH)
 
-        expect(screen.getByText('initialStep: undefined')).toBeInTheDocument()
+        expect(screen.getByText('initialStep: 2')).toBeInTheDocument()
     })
 
-    it('parses ?step=N from the URL and forwards it as initialStep', () => {
-        renderAt(`${WIZARD_PATH}?step=5`)
+    it('ignores ?step= in the URL — backend state wins', () => {
+        mockUseSkillWizard.mockReturnValue(
+            buildWizardReturn({
+                status: SkillWizardStatus.InProgress,
+                all_skills: [reviewableSkill(1), reviewableSkill(2)],
+                reviewable_skills: [reviewableSkill(1), reviewableSkill(2)],
+                ui_wizard_state: { total_count: 2, current_step: 1 },
+            }),
+        )
+        renderAt(`${WIZARD_PATH}?step=99`)
 
-        expect(screen.getByText('initialStep: 5')).toBeInTheDocument()
-    })
-
-    it('ignores invalid step values', () => {
-        renderAt(`${WIZARD_PATH}?step=not-a-number`)
-
-        expect(screen.getByText('initialStep: undefined')).toBeInTheDocument()
-    })
-
-    it('ignores zero or negative steps', () => {
-        renderAt(`${WIZARD_PATH}?step=0`)
-        expect(screen.getByText('initialStep: undefined')).toBeInTheDocument()
+        expect(screen.getByText('initialStep: 1')).toBeInTheDocument()
     })
 
     it('replaces the step query param when the wizard reports a step change', async () => {
         const user = userEvent.setup({
             advanceTimers: jest.advanceTimersByTime,
         })
-        renderAt(`${WIZARD_PATH}?step=3`)
+        renderAt(WIZARD_PATH)
 
         await user.click(screen.getByRole('button', { name: 'Move to step 7' }))
 
@@ -280,6 +340,76 @@ describe('SkillWizardPage', () => {
         expect(draftKnowledge(skillWithoutArticle, 1)).toEqual({
             sourceId: 7,
             sourceSetId: 1,
+        })
+    })
+
+    describe('mutations wiring', () => {
+        it('calls mutations.start when the wizard is not_started on mount', () => {
+            mockUseSkillWizard.mockReturnValue(
+                buildWizardReturn({
+                    status: SkillWizardStatus.NotStarted,
+                    all_skills: [reviewableSkill(1)],
+                    reviewable_skills: [reviewableSkill(1)],
+                }),
+            )
+
+            renderAt(WIZARD_PATH)
+
+            expect(mockStart).toHaveBeenCalledTimes(1)
+        })
+
+        it('does not call mutations.start when the wizard is already in_progress', () => {
+            renderAt(WIZARD_PATH)
+
+            expect(mockStart).not.toHaveBeenCalled()
+        })
+
+        it('PATCHes the new step location on step change', async () => {
+            const user = userEvent.setup({
+                advanceTimers: jest.advanceTimersByTime,
+            })
+            renderAt(WIZARD_PATH)
+
+            await user.click(
+                screen.getByRole('button', { name: 'Move to step 7' }),
+            )
+
+            expect(mockSetStepLocation).toHaveBeenCalledWith(
+                expect.objectContaining({ current_step: 'recap' }),
+            )
+        })
+
+        it('does not commit a status when the user leaves a skill — recap derives defaults instead', async () => {
+            const user = userEvent.setup({
+                advanceTimers: jest.advanceTimersByTime,
+            })
+            const skillA = reviewableSkill(5641448)
+            skillA.article = {
+                id: 11,
+                translation: {
+                    title: 'Returns',
+                    content: '<p>Non-empty instructions</p>',
+                    locale: 'en',
+                    intents: [],
+                },
+            } as never
+            const skillB = reviewableSkill(5641449)
+            mockUseSkillWizard.mockReturnValue(
+                buildWizardReturn({
+                    status: SkillWizardStatus.InProgress,
+                    state: { skills_configuration: [] },
+                    all_skills: [skillA, skillB],
+                    reviewable_skills: [skillA, skillB],
+                }),
+            )
+
+            renderAt(WIZARD_PATH)
+
+            await user.click(
+                screen.getByRole('button', { name: 'Leave step 1' }),
+            )
+
+            expect(mockSetSkillStatus).not.toHaveBeenCalled()
         })
     })
 })

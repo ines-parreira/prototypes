@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import { Banner, Box, Button, Card } from '@gorgias/axiom'
 
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
-import type { WizardSkill } from 'pages/aiAgent/skills/hooks/useSkillWizard'
+import type { WizardSkill } from 'pages/aiAgent/skills/hooks/useEnrichedSkillWizard'
+import { SkillWizardSkillStatus } from 'pages/aiAgent/skills/types'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
 
@@ -15,7 +16,6 @@ import {
     hasActionRequiringSetup,
     isInstructionsEmpty,
 } from './skillReviewValidation.utils'
-import { SkillWizardSkillStatus } from './skillWizard.mock'
 import { useSkillWizardContext } from './SkillWizardContext'
 import { WhyWeCreatedThisSkillCard } from './WhyWeCreatedThisSkillCard'
 
@@ -23,9 +23,17 @@ import css from './SkillReviewStep.less'
 
 type Props = {
     skill: WizardSkill
+    status: SkillWizardSkillStatus
+    onStatusChange: (status: SkillWizardSkillStatus) => void
+    onInstructionsChange?: (content: string) => void
 }
 
-export const SkillReviewStep = ({ skill }: Props) => {
+export const SkillReviewStep = ({
+    skill,
+    status,
+    onStatusChange,
+    onInstructionsChange,
+}: Props) => {
     const { storeConfiguration } = useAiAgentStoreConfigurationContext()
     const shopName = storeConfiguration?.storeName ?? ''
     const shopType = storeConfiguration?.shopType ?? ''
@@ -38,11 +46,15 @@ export const SkillReviewStep = ({ skill }: Props) => {
     const { apps } = useApps()
     const getAppFromTemplateApp = useGetAppFromTemplateApp({ apps })
 
-    const [status, setStatus] = useState<SkillWizardSkillStatus>(
-        SkillWizardSkillStatus.Approved,
-    )
     const [instructionsContent, setInstructionsContent] = useState<string>(
         skill.article?.translation.content ?? '',
+    )
+    const handleInstructionsChange = useCallback(
+        (next: string) => {
+            setInstructionsContent(next)
+            onInstructionsChange?.(next)
+        },
+        [onInstructionsChange],
     )
 
     const actionGroups = useMemo(
@@ -80,12 +92,6 @@ export const SkillReviewStep = ({ skill }: Props) => {
             "We'll save this skill as a draft. You can set up actions later."
     }
 
-    useEffect(() => {
-        if (isApprovedDisabled && status !== SkillWizardSkillStatus.Draft) {
-            setStatus(SkillWizardSkillStatus.Draft)
-        }
-    }, [isApprovedDisabled, status])
-
     const { goNext, currentStep, reviewStepsCount } = useSkillWizardContext()
     const isLastReviewStep = currentStep >= reviewStepsCount
     const ctaLabel = isLastReviewStep ? 'Go next' : 'Review next skill'
@@ -118,7 +124,7 @@ export const SkillReviewStep = ({ skill }: Props) => {
                 <SkillReviewCardHeader
                     title={title}
                     status={status}
-                    onStatusChange={setStatus}
+                    onStatusChange={onStatusChange}
                     isApprovedDisabled={isApprovedDisabled}
                     approvedDisabledReason={approvedDisabledReason}
                 />
@@ -128,9 +134,9 @@ export const SkillReviewStep = ({ skill }: Props) => {
                     instructionsContent={instructionsContent}
                     shopName={shopName}
                     availableActions={guidanceActions}
-                    onInstructionsChange={setInstructionsContent}
+                    onInstructionsChange={handleInstructionsChange}
                     onKeepAsDraft={() =>
-                        setStatus(SkillWizardSkillStatus.Draft)
+                        onStatusChange(SkillWizardSkillStatus.Draft)
                     }
                 />
             </Card>

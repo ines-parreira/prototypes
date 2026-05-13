@@ -4962,6 +4962,40 @@
                 "tags": ["knowledge-resources"]
             }
         },
+        "/api/help-center/knowledge-resources/guidances": {
+            "get": {
+                "operationId": "findAllGuidances",
+                "summary": "Get all guidances",
+                "parameters": [
+                    {
+                        "name": "actionsIds",
+                        "required": true,
+                        "in": "query",
+                        "description": "Actions IDs to filter by. Supports comma-separated or repeated params.",
+                        "schema": {
+                            "type": "array",
+                            "items": { "type": "string" }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of guidances",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/KnowledgeResourceDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["knowledge-resources"]
+            }
+        },
         "/api/help-center/knowledge-resources/query": {
             "post": {
                 "operationId": "queryKnowledgeResources",
@@ -5179,6 +5213,36 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/IntentAvailabilityResponseDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["knowledge-resources"]
+            }
+        },
+        "/api/help-center/knowledge-resources/guidances/hydrate": {
+            "post": {
+                "operationId": "hydrateGuidances",
+                "summary": "Hydrate guidances",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/GuidancesHydrateRequestDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Hydrated guidances",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GuidancesHydrateResponseDto"
                                 }
                             }
                         }
@@ -5616,6 +5680,108 @@
                 },
                 "responses": { "204": { "description": "" } },
                 "tags": ["workflows"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/wizard": {
+            "post": {
+                "operationId": "createWizard",
+                "summary": "Create the skill-transition wizard for a help center (Gaia only)",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateSkillWizardDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": { "description": "Wizard created" },
+                    "400": { "description": "Validation failure" },
+                    "404": { "description": "Help center not found" },
+                    "409": {
+                        "description": "Wizard already exists for this help center"
+                    }
+                },
+                "tags": ["skill-wizard"]
+            },
+            "get": {
+                "operationId": "getWizard",
+                "summary": "Get the skill-transition wizard for a help center",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Wizard found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SkillWizardResponseDto"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No wizard for this help center, or the wizard belongs to a different account"
+                    }
+                },
+                "tags": ["skill-wizard"]
+            },
+            "patch": {
+                "operationId": "patchWizard",
+                "summary": "Update the skill-transition wizard for a help center",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchSkillWizardDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Wizard updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SkillWizardResponseDto"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No wizard for this help center, or the wizard belongs to a different account"
+                    },
+                    "409": {
+                        "description": "Wizard is already completed and cannot be modified"
+                    }
+                },
+                "tags": ["skill-wizard"]
             }
         }
     },
@@ -9826,7 +9992,7 @@
                         "type": "string"
                     },
                     "status": {
-                        "description": "The status of the intent\n- 'linked': Intent is linked to one published articles\n- 'not_linked': Intent has no linked articles but is enabled for AI agent use (default)\n- 'handover': Intent has no linked articles and should hand over to human agent",
+                        "description": "The status of the intent\n- 'linked': Intent is linked to one published and public article\n- 'not_linked': Intent has no linked articles but is enabled for AI agent use (default)\n- 'handover': Intent has no linked articles and should hand over to human agent",
                         "example": "linked",
                         "enum": ["handover", "linked", "not_linked"],
                         "type": "string"
@@ -11467,6 +11633,255 @@
                 },
                 "required": ["available"]
             },
+            "KnowledgeResourceReferenceInputDto": {
+                "type": "object",
+                "properties": {
+                    "order_id": { "type": "number", "nullable": true },
+                    "return_id": { "type": "number", "nullable": true },
+                    "refund_id": { "type": "number", "nullable": true }
+                },
+                "required": ["order_id"]
+            },
+            "OrderShippingAddressDto": {
+                "type": "object",
+                "properties": {
+                    "address1": { "type": "string", "nullable": true },
+                    "address2": { "type": "string", "nullable": true },
+                    "city": { "type": "string", "nullable": true },
+                    "country": { "type": "string", "nullable": true },
+                    "province": { "type": "string", "nullable": true },
+                    "province_code": { "type": "string", "nullable": true },
+                    "zip": { "type": "string", "nullable": true }
+                },
+                "required": [
+                    "address1",
+                    "address2",
+                    "city",
+                    "country",
+                    "province",
+                    "province_code",
+                    "zip"
+                ]
+            },
+            "IntegrationOrderLineItemDto": {
+                "type": "object",
+                "properties": {
+                    "id": { "type": "number" },
+                    "name": { "type": "string" },
+                    "title": { "type": "string", "default": "" },
+                    "quantity": { "type": "number" },
+                    "vendor": { "type": "string", "default": "" },
+                    "product_id": {
+                        "oneOf": [{ "type": "string" }, { "type": "number" }],
+                        "default": ""
+                    },
+                    "variant_id": {
+                        "oneOf": [{ "type": "string" }, { "type": "number" }],
+                        "default": ""
+                    }
+                },
+                "required": ["id", "name", "quantity"]
+            },
+            "OrderFulfillmentDto": {
+                "type": "object",
+                "properties": {
+                    "id": { "type": "number" },
+                    "order_id": { "type": "number" },
+                    "tracking_url": { "type": "string", "nullable": true },
+                    "tracking_number": { "type": "string", "nullable": true },
+                    "created_at": { "type": "string" },
+                    "name": { "type": "string", "nullable": true },
+                    "shipment_status": { "type": "string", "nullable": true },
+                    "fulfillment_status": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "line_items": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/IntegrationOrderLineItemDto"
+                        }
+                    },
+                    "status": { "type": "string", "nullable": true },
+                    "gorgias_status": { "type": "string", "nullable": true },
+                    "service": { "type": "string", "nullable": true }
+                },
+                "required": [
+                    "id",
+                    "order_id",
+                    "tracking_url",
+                    "tracking_number",
+                    "created_at",
+                    "line_items"
+                ]
+            },
+            "OrderRefundDto": {
+                "type": "object",
+                "properties": {
+                    "id": { "type": "number" },
+                    "processed_at": { "type": "string", "nullable": true }
+                },
+                "required": ["id"]
+            },
+            "OrderReturnDto": {
+                "type": "object",
+                "properties": {
+                    "id": { "type": "number" },
+                    "closed_at": { "type": "string", "nullable": true },
+                    "status": { "type": "string", "nullable": true }
+                },
+                "required": ["id"]
+            },
+            "OrderShippingLineDto": {
+                "type": "object",
+                "properties": { "title": { "type": "string" } },
+                "required": ["title"]
+            },
+            "ShopifyIntegrationOrderDto": {
+                "type": "object",
+                "properties": {
+                    "id": { "type": "number" },
+                    "shop_name": { "type": "string" },
+                    "created_at": { "type": "string" },
+                    "order_number": { "type": "number" },
+                    "order_status_url": { "type": "string" },
+                    "name": { "type": "string" },
+                    "note": { "type": "string", "nullable": true },
+                    "tags": { "type": "string", "nullable": true },
+                    "cancelled_at": { "type": "string", "nullable": true },
+                    "shipping_address": {
+                        "nullable": true,
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/OrderShippingAddressDto"
+                            }
+                        ]
+                    },
+                    "fulfillment_status": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "financial_status": { "type": "string", "nullable": true },
+                    "line_items": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/IntegrationOrderLineItemDto"
+                        }
+                    },
+                    "fulfillments": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/OrderFulfillmentDto"
+                        }
+                    },
+                    "refunds": {
+                        "nullable": true,
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/OrderRefundDto"
+                        }
+                    },
+                    "returns": {
+                        "nullable": true,
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/OrderReturnDto"
+                        }
+                    },
+                    "shipping_lines": {
+                        "default": [],
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/OrderShippingLineDto"
+                        }
+                    }
+                },
+                "required": [
+                    "id",
+                    "shop_name",
+                    "created_at",
+                    "order_number",
+                    "order_status_url",
+                    "name",
+                    "shipping_address",
+                    "line_items",
+                    "shipping_lines"
+                ]
+            },
+            "CustomerDto": {
+                "type": "object",
+                "properties": {
+                    "id": { "type": "number" },
+                    "name": { "type": "string", "nullable": true },
+                    "email": { "type": "string" },
+                    "lastname": { "type": "string" },
+                    "firstname": { "type": "string" },
+                    "tags": {
+                        "nullable": true,
+                        "type": "array",
+                        "items": { "type": "string" }
+                    },
+                    "note": { "type": "string", "nullable": true },
+                    "orders_count": { "type": "number", "nullable": true },
+                    "total_spent": { "type": "string", "nullable": true },
+                    "orders": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ShopifyIntegrationOrderDto"
+                        }
+                    }
+                },
+                "required": ["id", "email", "lastname", "firstname", "orders"]
+            },
+            "TicketDto": {
+                "type": "object",
+                "properties": { "created_at": { "type": "string" } },
+                "required": ["created_at"]
+            },
+            "GuidancesHydrateRequestDto": {
+                "type": "object",
+                "properties": {
+                    "knowledge_resources_references": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "#/components/schemas/KnowledgeResourceReferenceInputDto"
+                        }
+                    },
+                    "customer": {
+                        "nullable": true,
+                        "allOf": [
+                            { "$ref": "#/components/schemas/CustomerDto" }
+                        ]
+                    },
+                    "ticket": {
+                        "nullable": true,
+                        "allOf": [{ "$ref": "#/components/schemas/TicketDto" }]
+                    }
+                },
+                "required": ["knowledge_resources_references", "customer"]
+            },
+            "ActionDto": {
+                "type": "object",
+                "properties": {
+                    "name": { "type": "string" },
+                    "id": { "type": "string" }
+                },
+                "required": ["name", "id"]
+            },
+            "GuidancesHydrateResponseDto": {
+                "type": "object",
+                "properties": {
+                    "hydrated_guidances": {
+                        "type": "object",
+                        "additionalProperties": { "type": "string" }
+                    },
+                    "actions": {
+                        "type": "array",
+                        "items": { "$ref": "#/components/schemas/ActionDto" }
+                    }
+                },
+                "required": ["hydrated_guidances", "actions"]
+            },
             "MailtoReplacementConfigGetDto": {
                 "type": "object",
                 "properties": {
@@ -11757,6 +12172,197 @@
                     "sender_email",
                     "url"
                 ]
+            },
+            "GaiaAnalysisPeriodVo": {
+                "type": "object",
+                "properties": {
+                    "start": { "type": "string" },
+                    "end": { "type": "string" },
+                    "total_tickets": { "type": "number" }
+                },
+                "required": ["start", "end", "total_tickets"]
+            },
+            "GaiaRecommendationVo": {
+                "type": "object",
+                "properties": {
+                    "skill_id": { "type": "number" },
+                    "estimated_automation_rate_impact": { "type": "string" },
+                    "recommendation": { "type": "string" },
+                    "guidance_ids": {
+                        "type": "array",
+                        "items": { "type": "number" }
+                    },
+                    "action_configuration_ids": {
+                        "type": "array",
+                        "items": { "type": "string" }
+                    }
+                },
+                "required": [
+                    "skill_id",
+                    "estimated_automation_rate_impact",
+                    "recommendation",
+                    "guidance_ids",
+                    "action_configuration_ids"
+                ]
+            },
+            "CreateSkillWizardDto": {
+                "type": "object",
+                "properties": {
+                    "account_id": { "type": "number", "example": 123 },
+                    "shop_integration_id": { "type": "number", "example": 456 },
+                    "help_center_id": { "type": "number", "example": 789 },
+                    "generated_at": {
+                        "type": "string",
+                        "example": "2026-04-29T10:00:00Z"
+                    },
+                    "analysis_period": {
+                        "$ref": "#/components/schemas/GaiaAnalysisPeriodVo"
+                    },
+                    "recommendations": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/GaiaRecommendationVo"
+                        }
+                    }
+                },
+                "required": [
+                    "account_id",
+                    "shop_integration_id",
+                    "help_center_id",
+                    "analysis_period",
+                    "recommendations"
+                ]
+            },
+            "GaiaPayloadVo": {
+                "type": "object",
+                "properties": {
+                    "generated_at": { "type": "string" },
+                    "analysis_period": {
+                        "$ref": "#/components/schemas/GaiaAnalysisPeriodVo"
+                    },
+                    "recommendations": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/GaiaRecommendationVo"
+                        }
+                    }
+                },
+                "required": ["analysis_period", "recommendations"]
+            },
+            "SkillWizardSkillConfigurationVo": {
+                "type": "object",
+                "properties": {
+                    "id": { "type": "number" },
+                    "status": {
+                        "enum": ["approved", "draft"],
+                        "type": "string"
+                    }
+                },
+                "required": ["id", "status"]
+            },
+            "SkillWizardStateVo": {
+                "type": "object",
+                "properties": {
+                    "current_step": {
+                        "enum": ["recap", "review"],
+                        "type": "string"
+                    },
+                    "current_skill_id": { "type": "number" },
+                    "skills_configuration": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SkillWizardSkillConfigurationVo"
+                        }
+                    }
+                }
+            },
+            "SkillWizardResponseDto": {
+                "type": "object",
+                "properties": {
+                    "id": { "type": "number" },
+                    "account_id": { "type": "number" },
+                    "shop_integration_id": { "type": "number" },
+                    "help_center_id": { "type": "number" },
+                    "gaia_payload": {
+                        "$ref": "#/components/schemas/GaiaPayloadVo"
+                    },
+                    "state": {
+                        "$ref": "#/components/schemas/SkillWizardStateVo"
+                    },
+                    "status": {
+                        "enum": ["completed", "in_progress", "not_started"],
+                        "type": "string"
+                    },
+                    "started_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "completed_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "last_nudge_sent_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "created_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "updated_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "account_id",
+                    "shop_integration_id",
+                    "help_center_id",
+                    "gaia_payload",
+                    "state",
+                    "status",
+                    "started_datetime",
+                    "completed_datetime",
+                    "last_nudge_sent_datetime",
+                    "created_datetime",
+                    "updated_datetime"
+                ]
+            },
+            "PatchSkillsConfigurationItemDto": {
+                "type": "object",
+                "properties": {
+                    "id": { "type": "number" },
+                    "status": {
+                        "enum": ["approved", "draft"],
+                        "type": "string"
+                    }
+                },
+                "required": ["id", "status"]
+            },
+            "PatchSkillWizardDto": {
+                "type": "object",
+                "properties": {
+                    "current_step": {
+                        "enum": ["recap", "review"],
+                        "type": "string"
+                    },
+                    "current_skill_id": { "type": "number" },
+                    "skills_configuration": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/PatchSkillsConfigurationItemDto"
+                        }
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": ["in_progress", "completed"],
+                        "description": "Setting to \"in_progress\" starts the wizard and sets started_datetime to now on the first transition. Setting to \"completed\" finalizes the wizard and sets completed_datetime to now. NOT_STARTED cannot be requested via this endpoint."
+                    }
+                }
             }
         }
     },

@@ -72,6 +72,10 @@ declare namespace Components {
             shop_name: string | null
             shop_integration_id: number | null
         }
+        export interface ActionDto {
+            name: string
+            id: string
+        }
         export interface AgentAbilityRulesDto {
             rules: AbilityRuleDto[]
         }
@@ -2809,6 +2813,30 @@ declare namespace Components {
              */
             title?: string
         }
+        export interface CreateSkillWizardDto {
+            /**
+             * example:
+             * 123
+             */
+            account_id: number
+            /**
+             * example:
+             * 456
+             */
+            shop_integration_id: number
+            /**
+             * example:
+             * 789
+             */
+            help_center_id: number
+            /**
+             * example:
+             * 2026-04-29T10:00:00Z
+             */
+            generated_at?: string
+            analysis_period: GaiaAnalysisPeriodVo
+            recommendations: GaiaRecommendationVo[]
+        }
         export interface CreateSubjectLinesDto {
             /**
              * List of options that will be displayed to the user in the subject line's select dropdown
@@ -2851,6 +2879,18 @@ declare namespace Components {
             meta: PageMetaDto
             object: 'list'
             data: CustomDomain[]
+        }
+        export interface CustomerDto {
+            id: number
+            name?: string | null
+            email: string
+            lastname: string
+            firstname: string
+            tags?: string[] | null
+            note?: string | null
+            orders_count?: number | null
+            total_spent?: string | null
+            orders: ShopifyIntegrationOrderDto[]
         }
         export interface DeleteAccountDto {
             /**
@@ -2975,6 +3015,23 @@ declare namespace Components {
                  */
                 file_size_bytes?: number
             } | null
+        }
+        export interface GaiaAnalysisPeriodVo {
+            start: string
+            end: string
+            total_tickets: number
+        }
+        export interface GaiaPayloadVo {
+            generated_at?: string
+            analysis_period: GaiaAnalysisPeriodVo
+            recommendations: GaiaRecommendationVo[]
+        }
+        export interface GaiaRecommendationVo {
+            skill_id: number
+            estimated_automation_rate_impact: string
+            recommendation: string
+            guidance_ids: number[]
+            action_configuration_ids: string[]
         }
         export interface GetHelpCenterDto {
             /**
@@ -3111,6 +3168,32 @@ declare namespace Components {
         export interface GuidanceVariableDto {
             variable: string
             variableType: 'customer' | 'order' | 'refund' | 'return'
+        }
+        export interface GuidancesHydrateRequestDto {
+            knowledge_resources_references: {
+                [name: string]: KnowledgeResourceReferenceInputDto
+            }
+            customer: {
+                id: number
+                name?: string | null
+                email: string
+                lastname: string
+                firstname: string
+                tags?: string[] | null
+                note?: string | null
+                orders_count?: number | null
+                total_spent?: string | null
+                orders: ShopifyIntegrationOrderDto[]
+            } | null
+            ticket?: {
+                created_at: string
+            } | null
+        }
+        export interface GuidancesHydrateResponseDto {
+            hydrated_guidances: {
+                [name: string]: string
+            }
+            actions: ActionDto[]
         }
         export interface HelpCenterDto {
             /**
@@ -3393,6 +3476,15 @@ declare namespace Components {
             accountId?: number
             type: 'url' | 'domain'
         }
+        export interface IntegrationOrderLineItemDto {
+            id: number
+            name: string
+            title?: string
+            quantity: number
+            vendor?: string
+            product_id?: string | number
+            variant_id?: string | number
+        }
         export interface IntentAvailabilityResponseDto {
             /**
              * Whether the intent is available for AI Agent
@@ -3514,7 +3606,7 @@ declare namespace Components {
                 | 'wholesale::other'
             /**
              * The status of the intent
-             * - 'linked': Intent is linked to one published articles
+             * - 'linked': Intent is linked to one published and public article
              * - 'not_linked': Intent has no linked articles but is enabled for AI agent use (default)
              * - 'handover': Intent has no linked articles and should hand over to human agent
              * example:
@@ -3591,6 +3683,11 @@ declare namespace Components {
              * Visibility status to filter by (e.g. PUBLIC)
              */
             visibilityStatus?: 'GORGIAS_INTERNAL' | 'PUBLIC' | 'UNLISTED'
+        }
+        export interface KnowledgeResourceReferenceInputDto {
+            order_id: number | null
+            return_id?: number | null
+            refund_id?: number | null
         }
         export interface KnowledgeResourcesQueryRequestDto {
             /**
@@ -3874,11 +3971,46 @@ declare namespace Components {
             object: 'list'
             data: NavigationLinkDto[]
         }
+        export interface OrderFulfillmentDto {
+            id: number
+            order_id: number
+            tracking_url: string | null
+            tracking_number: string | null
+            created_at: string
+            name?: string | null
+            shipment_status?: string | null
+            fulfillment_status?: string | null
+            line_items: IntegrationOrderLineItemDto[]
+            status?: string | null
+            gorgias_status?: string | null
+            service?: string | null
+        }
         export interface OrderManagementVo {
             /**
              * Is order management enabled
              */
             enabled: boolean
+        }
+        export interface OrderRefundDto {
+            id: number
+            processed_at?: string | null
+        }
+        export interface OrderReturnDto {
+            id: number
+            closed_at?: string | null
+            status?: string | null
+        }
+        export interface OrderShippingAddressDto {
+            address1: string | null
+            address2: string | null
+            city: string | null
+            country: string | null
+            province: string | null
+            province_code: string | null
+            zip: string | null
+        }
+        export interface OrderShippingLineDto {
+            title: string
         }
         export interface PageEmbedmentDto {
             /**
@@ -3944,6 +4076,19 @@ declare namespace Components {
              * /my-items?page=2&per_page=20
              */
             next_page?: string
+        }
+        export interface PatchSkillWizardDto {
+            current_step?: 'recap' | 'review'
+            current_skill_id?: number
+            skills_configuration?: PatchSkillsConfigurationItemDto[]
+            /**
+             * Setting to "in_progress" starts the wizard and sets started_datetime to now on the first transition. Setting to "completed" finalizes the wizard and sets completed_datetime to now. NOT_STARTED cannot be requested via this endpoint.
+             */
+            status?: 'in_progress' | 'completed'
+        }
+        export interface PatchSkillsConfigurationItemDto {
+            id: number
+            status: 'approved' | 'draft'
         }
         export interface PhoneContactInfo {
             deactivated_datetime: string | null
@@ -4193,11 +4338,61 @@ declare namespace Components {
              */
             channel_id: number
         }
+        export interface ShopifyIntegrationOrderDto {
+            id: number
+            shop_name: string
+            created_at: string
+            order_number: number
+            order_status_url: string
+            name: string
+            note?: string | null
+            tags?: string | null
+            cancelled_at?: string | null
+            shipping_address: {
+                address1: string | null
+                address2: string | null
+                city: string | null
+                country: string | null
+                province: string | null
+                province_code: string | null
+                zip: string | null
+            } | null
+            fulfillment_status?: string | null
+            financial_status?: string | null
+            line_items: IntegrationOrderLineItemDto[]
+            fulfillments?: OrderFulfillmentDto[]
+            refunds?: OrderRefundDto[] | null
+            returns?: OrderReturnDto[] | null
+            shipping_lines: OrderShippingLineDto[]
+        }
         export interface SignedPostPolicyDto {
             url: string
             fields: {
                 [key: string]: any
             }
+        }
+        export interface SkillWizardResponseDto {
+            id: number
+            account_id: number
+            shop_integration_id: number
+            help_center_id: number
+            gaia_payload: GaiaPayloadVo
+            state: SkillWizardStateVo
+            status: 'completed' | 'in_progress' | 'not_started'
+            started_datetime: string | null // date-time
+            completed_datetime: string | null // date-time
+            last_nudge_sent_datetime: string | null // date-time
+            created_datetime: string // date-time
+            updated_datetime: string // date-time
+        }
+        export interface SkillWizardSkillConfigurationVo {
+            id: number
+            status: 'approved' | 'draft'
+        }
+        export interface SkillWizardStateVo {
+            current_step?: 'recap' | 'review'
+            current_skill_id?: number
+            skills_configuration?: SkillWizardSkillConfigurationVo[]
         }
         export interface StartIngestionResponseDto {
             scraping_id: string
@@ -4213,6 +4408,9 @@ declare namespace Components {
              * If true, the "Other" subject line option will be made available
              */
             allow_other: boolean
+        }
+        export interface TicketDto {
+            created_at: string
         }
         export interface UpdateArticleDto {
             category_id?: number | null
@@ -5243,6 +5441,21 @@ declare namespace Paths {
             export type $201 = Components.Schemas.RedirectDto
         }
     }
+    namespace CreateWizard {
+        namespace Parameters {
+            export type HelpCenterId = number
+        }
+        export interface PathParameters {
+            help_center_id: Parameters.HelpCenterId
+        }
+        export type RequestBody = Components.Schemas.CreateSkillWizardDto
+        namespace Responses {
+            export interface $201 {}
+            export interface $400 {}
+            export interface $404 {}
+            export interface $409 {}
+        }
+    }
     namespace DeleteAccountHelpCenters {
         export type RequestBody = Components.Schemas.DeleteAccountDto
         namespace Responses {
@@ -5498,6 +5711,17 @@ declare namespace Paths {
             locale?: Parameters.Locale
             articleIds?: Parameters.ArticleIds
             helpCenterIds: Parameters.HelpCenterIds
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.KnowledgeResourceDto[]
+        }
+    }
+    namespace FindAllGuidances {
+        namespace Parameters {
+            export type ActionsIds = string[]
+        }
+        export interface QueryParameters {
+            actionsIds: Parameters.ActionsIds
         }
         namespace Responses {
             export type $200 = Components.Schemas.KnowledgeResourceDto[]
@@ -6153,6 +6377,18 @@ declare namespace Paths {
             export type $200 = number[]
         }
     }
+    namespace GetWizard {
+        namespace Parameters {
+            export type HelpCenterId = number
+        }
+        export interface PathParameters {
+            help_center_id: Parameters.HelpCenterId
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.SkillWizardResponseDto
+            export interface $404 {}
+        }
+    }
     namespace HandleArticleIngestionDone {
         export type RequestBody = Components.Schemas.ApifyWebhookDto
         namespace Responses {
@@ -6169,6 +6405,12 @@ declare namespace Paths {
         export type RequestBody = Components.Schemas.WorkflowHandoverDto
         namespace Responses {
             export interface $204 {}
+        }
+    }
+    namespace HydrateGuidances {
+        export type RequestBody = Components.Schemas.GuidancesHydrateRequestDto
+        namespace Responses {
+            export type $200 = Components.Schemas.GuidancesHydrateResponseDto
         }
     }
     namespace ImportCsv {
@@ -6693,6 +6935,20 @@ declare namespace Paths {
         }
         namespace Responses {
             export type $200 = Components.Schemas.RedirectDto[]
+        }
+    }
+    namespace PatchWizard {
+        namespace Parameters {
+            export type HelpCenterId = number
+        }
+        export interface PathParameters {
+            help_center_id: Parameters.HelpCenterId
+        }
+        export type RequestBody = Components.Schemas.PatchSkillWizardDto
+        namespace Responses {
+            export type $200 = Components.Schemas.SkillWizardResponseDto
+            export interface $404 {}
+            export interface $409 {}
         }
     }
     namespace PublishAndRebaseArticleTranslation {
@@ -8372,6 +8628,14 @@ export interface OperationMethods {
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.FindAll.Responses.$200>
     /**
+     * findAllGuidances - Get all guidances
+     */
+    'findAllGuidances'(
+        parameters?: Parameters<Paths.FindAllGuidances.QueryParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.FindAllGuidances.Responses.$200>
+    /**
      * queryKnowledgeResources - Query knowledge resources by references
      */
     'queryKnowledgeResources'(
@@ -8395,6 +8659,14 @@ export interface OperationMethods {
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.CheckIntentAvailability.Responses.$200>
+    /**
+     * hydrateGuidances - Hydrate guidances
+     */
+    'hydrateGuidances'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: Paths.HydrateGuidances.RequestBody,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.HydrateGuidances.Responses.$200>
     /**
      * getContactFormMailtoReplacementConfig - Get a Contact Form Mailto Replacement Config
      */
@@ -8482,6 +8754,30 @@ export interface OperationMethods {
         data?: Paths.HandoverWorkflowExecution.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.HandoverWorkflowExecution.Responses.$204>
+    /**
+     * getWizard - Get the skill-transition wizard for a help center
+     */
+    'getWizard'(
+        parameters: Parameters<Paths.GetWizard.PathParameters>,
+        data?: any,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.GetWizard.Responses.$200>
+    /**
+     * createWizard - Create the skill-transition wizard for a help center (Gaia only)
+     */
+    'createWizard'(
+        parameters: Parameters<Paths.CreateWizard.PathParameters>,
+        data?: Paths.CreateWizard.RequestBody,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.CreateWizard.Responses.$201>
+    /**
+     * patchWizard - Update the skill-transition wizard for a help center
+     */
+    'patchWizard'(
+        parameters: Parameters<Paths.PatchWizard.PathParameters>,
+        data?: Paths.PatchWizard.RequestBody,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.PatchWizard.Responses.$200>
 }
 
 export interface PathsDictionary {
@@ -9878,6 +10174,16 @@ export interface PathsDictionary {
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.FindAll.Responses.$200>
     }
+    ['/api/help-center/knowledge-resources/guidances']: {
+        /**
+         * findAllGuidances - Get all guidances
+         */
+        'get'(
+            parameters?: Parameters<Paths.FindAllGuidances.QueryParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.FindAllGuidances.Responses.$200>
+    }
     ['/api/help-center/knowledge-resources/query']: {
         /**
          * queryKnowledgeResources - Query knowledge resources by references
@@ -9907,6 +10213,16 @@ export interface PathsDictionary {
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.CheckIntentAvailability.Responses.$200>
+    }
+    ['/api/help-center/knowledge-resources/guidances/hydrate']: {
+        /**
+         * hydrateGuidances - Hydrate guidances
+         */
+        'post'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: Paths.HydrateGuidances.RequestBody,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.HydrateGuidances.Responses.$200>
     }
     ['/api/help-center/contact-forms/{contact_form_id}/mailto-replacement-config']: {
         /**
@@ -10006,6 +10322,32 @@ export interface PathsDictionary {
             data?: Paths.HandoverWorkflowExecution.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.HandoverWorkflowExecution.Responses.$204>
+    }
+    ['/api/help-center/help-centers/{help_center_id}/wizard']: {
+        /**
+         * createWizard - Create the skill-transition wizard for a help center (Gaia only)
+         */
+        'post'(
+            parameters: Parameters<Paths.CreateWizard.PathParameters>,
+            data?: Paths.CreateWizard.RequestBody,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.CreateWizard.Responses.$201>
+        /**
+         * getWizard - Get the skill-transition wizard for a help center
+         */
+        'get'(
+            parameters: Parameters<Paths.GetWizard.PathParameters>,
+            data?: any,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.GetWizard.Responses.$200>
+        /**
+         * patchWizard - Update the skill-transition wizard for a help center
+         */
+        'patch'(
+            parameters: Parameters<Paths.PatchWizard.PathParameters>,
+            data?: Paths.PatchWizard.RequestBody,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.PatchWizard.Responses.$200>
     }
 }
 

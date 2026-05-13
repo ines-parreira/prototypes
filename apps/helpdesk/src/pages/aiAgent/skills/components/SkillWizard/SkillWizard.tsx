@@ -20,7 +20,7 @@ type Props<T> = {
     initialStep?: number
     isSaving?: boolean
     onClose: () => void
-    onStepChange?: (step: number) => void
+    onStepChange?: (step: number, prevStep: number) => void
 }
 
 const clampStep = (step: number, totalSteps: number) => {
@@ -49,7 +49,7 @@ export function SkillWizard<T>({
             setCurrentStep((prev) => {
                 const next = clampStep(computeNext(prev), totalSteps)
                 if (prev === next) return prev
-                onStepChange?.(next)
+                onStepChange?.(next, prev)
                 return next
             })
         },

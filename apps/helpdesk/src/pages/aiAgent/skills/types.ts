@@ -20,6 +20,39 @@ export type SkillTemplate = {
 export type IntentResponseDto = Components.Schemas.IntentResponseDto
 export type ArticleInIntentDto = Components.Schemas.ArticleInIntentDto
 
+export type SkillWizardData = Components.Schemas.SkillWizardResponseDto
+export type SkillWizardState = Components.Schemas.SkillWizardStateVo
+export type SkillWizardSkillConfiguration =
+    Components.Schemas.SkillWizardSkillConfigurationVo
+export type GaiaPayload = Components.Schemas.GaiaPayloadVo
+export type GaiaRecommendation = Components.Schemas.GaiaRecommendationVo
+export type GaiaAnalysisPeriod = Components.Schemas.GaiaAnalysisPeriodVo
+
+export const SkillWizardStatus = {
+    NotStarted: 'not_started',
+    InProgress: 'in_progress',
+    Completed: 'completed',
+} as const satisfies Record<string, SkillWizardData['status']>
+export type SkillWizardStatus =
+    (typeof SkillWizardStatus)[keyof typeof SkillWizardStatus]
+
+export const SkillWizardStep = {
+    Review: 'review',
+    Recap: 'recap',
+} as const satisfies Record<
+    string,
+    NonNullable<SkillWizardState['current_step']>
+>
+export type SkillWizardStep =
+    (typeof SkillWizardStep)[keyof typeof SkillWizardStep]
+
+export const SkillWizardSkillStatus = {
+    Draft: 'draft',
+    Approved: 'approved',
+} as const satisfies Record<string, SkillWizardSkillConfiguration['status']>
+export type SkillWizardSkillStatus =
+    (typeof SkillWizardSkillStatus)[keyof typeof SkillWizardSkillStatus]
+
 /**
  * Metrics for a skill article
  */

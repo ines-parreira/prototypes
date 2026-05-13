@@ -4,7 +4,7 @@ import { Box, Button, Card, Heading, Icon, Text } from '@gorgias/axiom'
 
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
-import type { EnrichedSkillWizard } from 'pages/aiAgent/skills/hooks/useSkillWizard'
+import type { EnrichedSkillWizard } from 'pages/aiAgent/skills/hooks/useEnrichedSkillWizard'
 
 import { GuidanceSidePanel } from './GuidanceSidePanel'
 import {

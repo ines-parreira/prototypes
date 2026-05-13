@@ -92,6 +92,33 @@ export const getHelpCenter = async (
     return response.data
 }
 
+export const getWizard = async (
+    client: HelpCenterClient | undefined,
+    pathParams: Paths.GetWizard.PathParameters,
+) => {
+    if (!client) return null
+
+    try {
+        const response = await client.getWizard({ ...pathParams })
+        return response.data
+    } catch (error) {
+        if (isAxiosError(error) && error.response?.status === 404) {
+            return null
+        }
+        throw error
+    }
+}
+
+export const patchWizard = async (
+    client: HelpCenterClient | undefined,
+    pathParams: Paths.PatchWizard.PathParameters,
+    data: Paths.PatchWizard.RequestBody,
+) => {
+    if (!client) return null
+    const response = await client.patchWizard(pathParams, data)
+    return response.data
+}
+
 export const createHelpCenter = async (
     client: HelpCenterClient | undefined,
     data: Paths.CreateHelpCenter.RequestBody,

@@ -6,14 +6,14 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { ThemeProvider } from 'core/theme'
+import { useGetWizard } from 'models/helpCenter/queries'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
-import { SkillWizardStatus } from 'pages/aiAgent/skills/components/SkillWizard/skillWizard.mock'
+import { useEnrichedSkillWizard } from 'pages/aiAgent/skills/hooks/useEnrichedSkillWizard'
+import type { EnrichedSkillWizard } from 'pages/aiAgent/skills/hooks/useEnrichedSkillWizard'
 import { useHasLinkedSkills } from 'pages/aiAgent/skills/hooks/useHasLinkedSkills'
 import { useSkillsTemplates } from 'pages/aiAgent/skills/hooks/useSkillsTemplates'
-import { useSkillWizard } from 'pages/aiAgent/skills/hooks/useSkillWizard'
-import type { EnrichedSkillWizard } from 'pages/aiAgent/skills/hooks/useSkillWizard'
-import { IntentStatus } from 'pages/aiAgent/skills/types'
+import { IntentStatus, SkillWizardStatus } from 'pages/aiAgent/skills/types'
 import type { Intent } from 'pages/aiAgent/skills/types'
 
 import { AiAgentSkills } from './AiAgentSkills'
@@ -27,7 +27,10 @@ jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
 jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext')
 jest.mock('pages/aiAgent/skills/hooks/useHasLinkedSkills')
 jest.mock('pages/aiAgent/skills/hooks/useSkillsTemplates')
-jest.mock('pages/aiAgent/skills/hooks/useSkillWizard')
+jest.mock('pages/aiAgent/skills/hooks/useEnrichedSkillWizard')
+jest.mock('models/helpCenter/queries', () => ({
+    useGetWizard: jest.fn(),
+}))
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
@@ -132,8 +135,11 @@ const mockUseHasLinkedSkills = useHasLinkedSkills as jest.MockedFunction<
 const mockUseSkillsTemplates = useSkillsTemplates as jest.MockedFunction<
     typeof useSkillsTemplates
 >
-const mockUseSkillWizard = useSkillWizard as jest.MockedFunction<
-    typeof useSkillWizard
+const mockUseSkillWizard = useEnrichedSkillWizard as jest.MockedFunction<
+    typeof useEnrichedSkillWizard
+>
+const mockUseGetWizard = useGetWizard as jest.MockedFunction<
+    typeof useGetWizard
 >
 const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 
@@ -142,7 +148,14 @@ const baseEnrichedWizard: EnrichedSkillWizard = {
     account_id: 6069,
     shop_integration_id: 7,
     help_center_id: 21,
-    gaia_payload: { recommendations: [] },
+    gaia_payload: {
+        analysis_period: {
+            start: '2026-03-01T00:00:00.000Z',
+            end: '2026-04-27T23:59:59.000Z',
+            total_tickets: 0,
+        },
+        recommendations: [],
+    },
     state: {},
     status: SkillWizardStatus.NotStarted,
     started_datetime: null,
@@ -212,9 +225,13 @@ describe('AiAgentSkills', () => {
         mockUseFlag.mockReturnValue(false)
         mockUseSkillWizard.mockReturnValue({
             wizard: baseEnrichedWizard,
+            guidanceActions: [],
             isLoading: false,
             isError: false,
         })
+        mockUseGetWizard.mockReturnValue({
+            data: undefined,
+        } as unknown as ReturnType<typeof useGetWizard>)
     })
     const renderComponent = () => {
         return render(
@@ -342,11 +359,16 @@ describe('AiAgentSkills', () => {
             overrides: Partial<EnrichedSkillWizard> = {},
         ) => {
             mockUseFlag.mockReturnValue(true)
+            const wizard = { ...baseEnrichedWizard, ...overrides }
             mockUseSkillWizard.mockReturnValue({
-                wizard: { ...baseEnrichedWizard, ...overrides },
+                wizard,
+                guidanceActions: [],
                 isLoading: false,
                 isError: false,
             })
+            mockUseGetWizard.mockReturnValue({
+                data: wizard,
+            } as unknown as ReturnType<typeof useGetWizard>)
         }
 
         it('renders ReviewSkillsSection when the wizard is not_started', () => {
@@ -381,14 +403,19 @@ describe('AiAgentSkills', () => {
 
         it('does not render ReviewSkillsSection while the hook is loading', () => {
             mockUseFlag.mockReturnValue(true)
+            const wizard = {
+                ...baseEnrichedWizard,
+                status: SkillWizardStatus.NotStarted,
+            }
             mockUseSkillWizard.mockReturnValue({
-                wizard: {
-                    ...baseEnrichedWizard,
-                    status: SkillWizardStatus.NotStarted,
-                },
+                wizard,
+                guidanceActions: [],
                 isLoading: true,
                 isError: false,
             })
+            mockUseGetWizard.mockReturnValue({
+                data: wizard,
+            } as unknown as ReturnType<typeof useGetWizard>)
             renderComponent()
 
             expect(
@@ -412,6 +439,7 @@ describe('AiAgentSkills', () => {
                     ...baseEnrichedWizard,
                     status: SkillWizardStatus.InProgress,
                 },
+                guidanceActions: [],
                 isLoading: false,
                 isError: false,
             })

@@ -52,9 +52,11 @@ import {
     getIngestionLogs,
     getKnowledgeHubArticles,
     getKnowledgeStatus,
+    getWizard,
     listArticleTranslationVersions,
     listIngestedResources,
     listIntents,
+    patchWizard,
     startIngestion,
     updateAllIngestedResourcesStatus,
     updateArticleTranslation,
@@ -211,6 +213,8 @@ export const helpCenterKeys = {
         ] as const,
     intents: (helpCenterId: number) =>
         [...helpCenterKeys.detail(helpCenterId), 'intents'] as const,
+    wizard: (helpCenterId: number) =>
+        [...helpCenterKeys.detail(helpCenterId), 'wizard'] as const,
     articleTranslationVersion: (
         helpCenterId: number,
         articleId: number,
@@ -1487,6 +1491,37 @@ export const useUpdateIntentStatus = (
     return useMutation({
         mutationFn: ([client = helpCenterClient, pathParams, data]) =>
             updateIntentStatus(client, pathParams, data),
+        ...overrides,
+    })
+}
+
+export const useGetWizard = (
+    helpCenterId: Paths.GetWizard.Parameters.HelpCenterId,
+    overrides?: UseQueryOptions<Awaited<ReturnType<typeof getWizard>>>,
+) => {
+    const { client } = useHelpCenterApi()
+
+    return useQuery({
+        queryKey: helpCenterKeys.wizard(helpCenterId),
+        queryFn: async () =>
+            getWizard(client, { help_center_id: helpCenterId }),
+        staleTime: STALE_TIME,
+        ...overrides,
+        enabled:
+            !!client &&
+            helpCenterId !== undefined &&
+            (overrides === undefined || overrides.enabled),
+    })
+}
+
+export const usePatchWizard = (
+    overrides?: MutationOverrides<typeof patchWizard>,
+) => {
+    const { client: helpCenterClient } = useHelpCenterApi()
+
+    return useMutation({
+        mutationFn: ([client = helpCenterClient, pathParams, data]) =>
+            patchWizard(client, pathParams, data),
         ...overrides,
     })
 }

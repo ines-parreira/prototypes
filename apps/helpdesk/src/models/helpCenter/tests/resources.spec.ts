@@ -16,7 +16,9 @@ import {
     getIngestedResource,
     getIngestionLogs,
     getKnowledgeStatus,
+    getWizard,
     listIngestedResources,
+    patchWizard,
     rebasePublishArticleTranslation,
     startIngestion,
     updateAllIngestedResourcesStatus,
@@ -715,6 +717,95 @@ describe('resources', () => {
             expect(client.updateIntentStatus).toHaveBeenCalledWith(
                 { help_center_id, intent: 'order::status' },
                 { status: 'not_linked' },
+            )
+        })
+    })
+
+    describe('getWizard', () => {
+        it('should return null when client is not set', async () => {
+            const result = await getWizard(undefined, { help_center_id })
+            expect(result).toBeNull()
+        })
+
+        it('returns the wizard payload from the API', async () => {
+            const wizard = { id: 9, status: 'in_progress' }
+            const client = {
+                getWizard: jest
+                    .fn()
+                    .mockReturnValue(Promise.resolve({ data: wizard })),
+            }
+
+            const result = await getWizard(
+                client as unknown as HelpCenterClient,
+                { help_center_id },
+            )
+
+            expect(result).toEqual(wizard)
+            expect(client.getWizard).toHaveBeenCalledWith({ help_center_id })
+        })
+
+        it('returns null when the API answers 404 (no wizard for this help center)', async () => {
+            const error = Object.assign(new Error('not found'), {
+                isAxiosError: true,
+                response: { status: 404 },
+            })
+            const client = {
+                getWizard: jest.fn().mockRejectedValue(error),
+            }
+
+            const result = await getWizard(
+                client as unknown as HelpCenterClient,
+                { help_center_id },
+            )
+
+            expect(result).toBeNull()
+        })
+
+        it('re-throws non-404 errors', async () => {
+            const error = Object.assign(new Error('server error'), {
+                isAxiosError: true,
+                response: { status: 500 },
+            })
+            const client = {
+                getWizard: jest.fn().mockRejectedValue(error),
+            }
+
+            await expect(
+                getWizard(client as unknown as HelpCenterClient, {
+                    help_center_id,
+                }),
+            ).rejects.toBe(error)
+        })
+    })
+
+    describe('patchWizard', () => {
+        it('should return null when client is not set', async () => {
+            const result = await patchWizard(
+                undefined,
+                { help_center_id },
+                { status: 'in_progress' },
+            )
+            expect(result).toBeNull()
+        })
+
+        it('forwards path params and body to the SDK and returns the response data', async () => {
+            const wizard = { id: 9, status: 'in_progress' }
+            const client = {
+                patchWizard: jest
+                    .fn()
+                    .mockReturnValue(Promise.resolve({ data: wizard })),
+            }
+
+            const result = await patchWizard(
+                client as unknown as HelpCenterClient,
+                { help_center_id },
+                { status: 'in_progress' },
+            )
+
+            expect(result).toEqual(wizard)
+            expect(client.patchWizard).toHaveBeenCalledWith(
+                { help_center_id },
+                { status: 'in_progress' },
             )
         })
     })

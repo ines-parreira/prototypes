@@ -679,6 +679,32 @@ describe('useActionDrivenNavbarSections', () => {
                 '/app/ai-agent/shopify/teststore2/intents',
             )
         })
+
+        it('should drop the wizard segment when switching stores from a skill wizard page', () => {
+            Object.defineProperty(window, 'location', {
+                value: {
+                    pathname: '/app/ai-agent/shopify/teststore1/skills/wizard',
+                },
+                writable: true,
+            })
+            mockUseLocation.mockReturnValue({
+                pathname: '/app/ai-agent/shopify/teststore1/skills/wizard',
+                search: '',
+                hash: '',
+                state: null,
+                key: 'test',
+            })
+
+            const { result } = renderHook(() => useActionDrivenNavbarSections())
+
+            act(() => {
+                result.current.handleStoreSelect('teststore2')
+            })
+
+            expect(mockPush).toHaveBeenCalledWith(
+                '/app/ai-agent/shopify/teststore2/skills',
+            )
+        })
     })
 
     describe('redirect behavior based on setup completion', () => {

@@ -6,10 +6,13 @@ import { ThemeProvider } from 'core/theme'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { useGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
-import type { EnrichedSkillWizard } from 'pages/aiAgent/skills/hooks/useSkillWizard'
+import type { EnrichedSkillWizard } from 'pages/aiAgent/skills/hooks/useEnrichedSkillWizard'
+import {
+    SkillWizardSkillStatus,
+    SkillWizardStatus,
+} from 'pages/aiAgent/skills/types'
 
 import { SkillRecapStep } from './SkillRecapStep'
-import { SkillWizardSkillStatus, SkillWizardStatus } from './skillWizard.mock'
 import { SkillWizardContext } from './SkillWizardContext'
 import type { SkillWizardContextValue } from './SkillWizardContext'
 
@@ -83,7 +86,14 @@ const buildWizard = (
         account_id: 1,
         shop_integration_id: 1,
         help_center_id: 1,
-        gaia_payload: { recommendations: [] },
+        gaia_payload: {
+            analysis_period: {
+                start: '2026-03-01T00:00:00.000Z',
+                end: '2026-04-27T23:59:59.000Z',
+                total_tickets: 0,
+            },
+            recommendations: [],
+        },
         state: { skills_configuration: skillsConfiguration },
         status: SkillWizardStatus.InProgress,
         started_datetime: null,
@@ -175,7 +185,10 @@ describe('SkillRecapStep', () => {
     it('opens the skills sidepanel when the skills card is clicked', async () => {
         const user = userEvent.setup()
         renderRecap(
-            buildWizard([{ id: 1, status: SkillWizardSkillStatus.Approved }]),
+            buildWizard([
+                { id: 1, status: SkillWizardSkillStatus.Approved },
+                { id: 2, status: SkillWizardSkillStatus.Draft },
+            ]),
         )
 
         await user.click(screen.getByText('1 skill ready to enable'))
@@ -231,7 +244,10 @@ describe('SkillRecapStep', () => {
 
     it('renders the guidance card as non-interactive when no skills are enabled', () => {
         renderRecap(
-            buildWizard([{ id: 1, status: SkillWizardSkillStatus.Draft }]),
+            buildWizard([
+                { id: 1, status: SkillWizardSkillStatus.Draft },
+                { id: 2, status: SkillWizardSkillStatus.Draft },
+            ]),
         )
 
         // The guidance card with the "remain active" copy is non-interactive
@@ -245,7 +261,10 @@ describe('SkillRecapStep', () => {
     it('does not open the skills sidepanel when no skills were approved on the server', async () => {
         const user = userEvent.setup()
         renderRecap(
-            buildWizard([{ id: 1, status: SkillWizardSkillStatus.Draft }]),
+            buildWizard([
+                { id: 1, status: SkillWizardSkillStatus.Draft },
+                { id: 2, status: SkillWizardSkillStatus.Draft },
+            ]),
         )
 
         await user.click(screen.getByText('0 skills ready to enable'))
@@ -318,7 +337,14 @@ describe('SkillRecapStep', () => {
                 account_id: 1,
                 shop_integration_id: 1,
                 help_center_id: 1,
-                gaia_payload: { recommendations: [] },
+                gaia_payload: {
+                    analysis_period: {
+                        start: '2026-03-01T00:00:00.000Z',
+                        end: '2026-04-27T23:59:59.000Z',
+                        total_tickets: 0,
+                    },
+                    recommendations: [],
+                },
                 state: { skills_configuration: skillsConfiguration },
                 status: SkillWizardStatus.InProgress,
                 started_datetime: null,
@@ -423,6 +449,7 @@ describe('SkillRecapStep', () => {
             renderRecap(
                 buildWizardWithActionContent([
                     { id: 1, status: SkillWizardSkillStatus.Approved },
+                    { id: 2, status: SkillWizardSkillStatus.Draft },
                 ]),
             )
 

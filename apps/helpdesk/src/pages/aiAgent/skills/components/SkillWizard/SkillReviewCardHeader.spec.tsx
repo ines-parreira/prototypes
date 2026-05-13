@@ -3,9 +3,9 @@ import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { ThemeProvider } from 'core/theme'
+import { SkillWizardSkillStatus } from 'pages/aiAgent/skills/types'
 
 import { SkillReviewCardHeader } from './SkillReviewCardHeader'
-import { SkillWizardSkillStatus } from './skillWizard.mock'
 
 beforeAll(() => {
     HTMLElement.prototype.getAnimations = jest.fn().mockReturnValue([])

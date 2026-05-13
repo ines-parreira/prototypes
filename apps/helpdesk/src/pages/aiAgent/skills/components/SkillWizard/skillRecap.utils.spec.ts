@@ -1,4 +1,8 @@
-import type { EnrichedSkillWizard } from 'pages/aiAgent/skills/hooks/useSkillWizard'
+import type { EnrichedSkillWizard } from 'pages/aiAgent/skills/hooks/useEnrichedSkillWizard'
+import {
+    SkillWizardSkillStatus,
+    SkillWizardStatus,
+} from 'pages/aiAgent/skills/types'
 
 import {
     getApprovedSkillIds,
@@ -7,7 +11,6 @@ import {
     getGuidanceIdsToDisable,
     getSkillToggleStates,
 } from './skillRecap.utils'
-import { SkillWizardSkillStatus, SkillWizardStatus } from './skillWizard.mock'
 
 const buildWizard = (
     overrides: Partial<EnrichedSkillWizard> = {},
@@ -35,7 +38,14 @@ const buildWizard = (
         account_id: 1,
         shop_integration_id: 1,
         help_center_id: 1,
-        gaia_payload: { recommendations: [] },
+        gaia_payload: {
+            analysis_period: {
+                start: '2026-03-01T00:00:00.000Z',
+                end: '2026-04-27T23:59:59.000Z',
+                total_tickets: 0,
+            },
+            recommendations: [],
+        },
         state: {
             skills_configuration: [
                 { id: 1, status: SkillWizardSkillStatus.Approved },
@@ -56,19 +66,54 @@ const buildWizard = (
     }
 }
 
+const skillWithContent = (
+    id: number,
+    title: string,
+    content: string,
+): EnrichedSkillWizard['reviewable_skills'][number] =>
+    ({
+        skill_id: id,
+        article: {
+            id,
+            translation: { title, content, intents: [] },
+        },
+        guidance_ids: [],
+        recommendation: '',
+        estimated_automation_rate_impact: '+1%',
+        action_configuration_ids: [],
+    }) as unknown as EnrichedSkillWizard['reviewable_skills'][number]
+
 describe('skillRecap.utils', () => {
     describe('getApprovedSkillIds', () => {
-        it('returns only approved reviewable skills', () => {
+        it('returns every reviewable skill not explicitly saved as Draft', () => {
             const wizard = buildWizard()
-            expect(Array.from(getApprovedSkillIds(wizard))).toEqual([1, 2])
+            expect(
+                Array.from(getApprovedSkillIds(wizard)).sort((a, b) => a - b),
+            ).toEqual([1, 2])
         })
 
-        it('ignores approved skills that are not reviewable', () => {
+        it('treats untouched reviewable skills as Approved regardless of content', () => {
             const wizard = buildWizard({
+                reviewable_skills: [
+                    skillWithContent(1, 'Returns', '<p>Issue a refund</p>'),
+                    skillWithContent(2, 'Order status', ''),
+                ] as EnrichedSkillWizard['reviewable_skills'],
+                state: { skills_configuration: [] },
+            })
+            expect(
+                Array.from(getApprovedSkillIds(wizard)).sort((a, b) => a - b),
+            ).toEqual([1, 2])
+        })
+
+        it('excludes skills the merchant explicitly saved as Draft', () => {
+            const wizard = buildWizard({
+                reviewable_skills: [
+                    skillWithContent(1, 'Returns', '<p>Issue a refund</p>'),
+                    skillWithContent(2, 'Order status', '<p>Look it up</p>'),
+                ] as EnrichedSkillWizard['reviewable_skills'],
                 state: {
                     skills_configuration: [
-                        { id: 1, status: SkillWizardSkillStatus.Approved },
-                        { id: 999, status: SkillWizardSkillStatus.Approved },
+                        { id: 2, status: SkillWizardSkillStatus.Draft },
                     ],
                 },
             })

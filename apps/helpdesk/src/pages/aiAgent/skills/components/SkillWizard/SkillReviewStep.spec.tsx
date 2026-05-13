@@ -1,10 +1,12 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { ThemeProvider } from 'core/theme'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
-import type { WizardSkill } from 'pages/aiAgent/skills/hooks/useSkillWizard'
+import type { WizardSkill } from 'pages/aiAgent/skills/hooks/useEnrichedSkillWizard'
+import { SkillWizardSkillStatus } from 'pages/aiAgent/skills/types'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 
 import { SkillReviewStep } from './SkillReviewStep'
@@ -73,11 +75,28 @@ const wizardContextValue: SkillWizardContextValue = {
     onTest: jest.fn(),
 }
 
-const renderStep = (skill: WizardSkill = buildSkill()) =>
+type RenderOptions = {
+    skill?: WizardSkill
+    status?: SkillWizardSkillStatus
+    onStatusChange?: (status: SkillWizardSkillStatus) => void
+    onInstructionsChange?: (content: string) => void
+}
+
+const renderStep = ({
+    skill = buildSkill(),
+    status = SkillWizardSkillStatus.Approved,
+    onStatusChange = jest.fn(),
+    onInstructionsChange,
+}: RenderOptions = {}) =>
     render(
         <ThemeProvider>
             <SkillWizardContext.Provider value={wizardContextValue}>
-                <SkillReviewStep skill={skill} />
+                <SkillReviewStep
+                    skill={skill}
+                    status={status}
+                    onStatusChange={onStatusChange}
+                    onInstructionsChange={onInstructionsChange}
+                />
             </SkillWizardContext.Provider>
         </ThemeProvider>,
     )
@@ -153,5 +172,59 @@ describe('SkillReviewStep', () => {
                 'Editor with content: <p>Initial instructions</p>',
             ),
         ).toBeInTheDocument()
+    })
+
+    it('falls back to Approved visually when status is undefined', () => {
+        renderStep({ status: undefined })
+
+        expect(screen.getByRole('radio', { name: /Looks good/i })).toBeChecked()
+    })
+
+    it('reflects a Draft status from props in the toggle', () => {
+        renderStep({ status: SkillWizardSkillStatus.Draft })
+
+        expect(
+            screen.getByRole('radio', { name: /Keep as draft/i }),
+        ).toBeChecked()
+    })
+
+    it('disables the Approved option and shows the blocked banner when instructions are empty', () => {
+        renderStep({
+            skill: buildSkill({
+                article: {
+                    id: 11,
+                    translation: {
+                        title: 'Returns and exchanges',
+                        content: '',
+                        intents: [],
+                    },
+                } as unknown as WizardSkill['article'],
+            }),
+        })
+
+        expect(
+            screen.getByText(
+                "We'll save this skill as a draft. You can add instructions later.",
+            ),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('radio', { name: /Looks good/i }),
+        ).toBeDisabled()
+    })
+
+    it('emits onStatusChange when the user keeps the skill as draft from the body link', async () => {
+        const user = userEvent.setup()
+        const onStatusChange = jest.fn()
+        renderStep({ onStatusChange })
+
+        await user.click(
+            screen.getByRole('button', {
+                name: 'keep this skill as a draft for now',
+            }),
+        )
+
+        expect(onStatusChange).toHaveBeenCalledWith(
+            SkillWizardSkillStatus.Draft,
+        )
     })
 })

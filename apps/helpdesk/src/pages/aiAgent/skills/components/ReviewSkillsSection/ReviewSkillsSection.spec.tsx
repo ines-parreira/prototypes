@@ -5,11 +5,11 @@ import userEvent from '@testing-library/user-event'
 import { AxiomProvider } from '@gorgias/axiom'
 
 import { ThemeProvider } from 'core/theme'
-import { SkillWizardStatus } from 'pages/aiAgent/skills/components/SkillWizard/skillWizard.mock'
 import type {
     EnrichedSkillWizard,
     WizardSkill,
-} from 'pages/aiAgent/skills/hooks/useSkillWizard'
+} from 'pages/aiAgent/skills/hooks/useEnrichedSkillWizard'
+import { SkillWizardStatus } from 'pages/aiAgent/skills/types'
 
 import { ReviewSkillsSection } from './ReviewSkillsSection'
 
@@ -53,7 +53,14 @@ const makeEnrichedWizard = (
         account_id: 6069,
         shop_integration_id: 7,
         help_center_id: 21,
-        gaia_payload: { recommendations: [] },
+        gaia_payload: {
+            analysis_period: {
+                start: '2026-03-01T00:00:00.000Z',
+                end: '2026-04-27T23:59:59.000Z',
+                total_tickets: 0,
+            },
+            recommendations: [],
+        },
         state: {},
         status: SkillWizardStatus.NotStarted,
         started_datetime: null,

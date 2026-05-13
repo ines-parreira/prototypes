@@ -3,12 +3,11 @@ import { useMemo } from 'react'
 import { Box, Button, Heading, Icon, Size, Text } from '@gorgias/axiom'
 
 import { SkillsTemplateCard } from 'pages/aiAgent/skills/components/SkillsTemplateCard/SkillsTemplateCard'
-import { SkillWizardStatus } from 'pages/aiAgent/skills/components/SkillWizard/skillWizard.mock'
 import type {
     EnrichedSkillWizard,
     WizardSkill,
-} from 'pages/aiAgent/skills/hooks/useSkillWizard'
-import { IntentStatus } from 'pages/aiAgent/skills/types'
+} from 'pages/aiAgent/skills/hooks/useEnrichedSkillWizard'
+import { IntentStatus, SkillWizardStatus } from 'pages/aiAgent/skills/types'
 import type { SkillTemplate } from 'pages/aiAgent/skills/types'
 
 import css from './ReviewSkillsSection.less'

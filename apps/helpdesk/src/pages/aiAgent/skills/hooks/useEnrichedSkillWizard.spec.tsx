@@ -6,14 +6,14 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useGetHelpCenterArticleList } from 'models/helpCenter/queries'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
-import type { SkillWizard } from 'pages/aiAgent/skills/components/SkillWizard/skillWizard.mock'
+import type { SkillWizardData } from 'pages/aiAgent/skills/types'
 import {
     SkillWizardSkillStatus,
     SkillWizardStatus,
     SkillWizardStep,
-} from 'pages/aiAgent/skills/components/SkillWizard/skillWizard.mock'
+} from 'pages/aiAgent/skills/types'
 
-import { useSkillWizard } from './useSkillWizard'
+import { useEnrichedSkillWizard } from './useEnrichedSkillWizard'
 
 jest.mock('models/helpCenter/queries', () => ({
     useGetHelpCenterArticleList: jest.fn(),
@@ -55,12 +55,17 @@ const makeArticle = (
     },
 })
 
-const baseWizard: SkillWizard = {
+const baseWizard: SkillWizardData = {
     id: 1,
     account_id: 6069,
     shop_integration_id: 7,
     help_center_id: 21,
     gaia_payload: {
+        analysis_period: {
+            start: '2026-03-01T00:00:00.000Z',
+            end: '2026-04-27T23:59:59.000Z',
+            total_tickets: 0,
+        },
         recommendations: [
             {
                 skill_id: 5641448,
@@ -101,7 +106,7 @@ const baseWizard: SkillWizard = {
     updated_datetime: '2026-04-28T10:15:00.000Z',
 }
 
-describe('useSkillWizard', () => {
+describe('useEnrichedSkillWizard', () => {
     const queryClient = new QueryClient({
         defaultOptions: { queries: { retry: false } },
     })
@@ -144,38 +149,44 @@ describe('useSkillWizard', () => {
     })
 
     it('passes the original wizard fields through', () => {
-        const { result } = renderHook(() => useSkillWizard(baseWizard), {
-            wrapper,
-        })
+        const { result } = renderHook(
+            () => useEnrichedSkillWizard(baseWizard),
+            {
+                wrapper,
+            },
+        )
 
-        expect(result.current.wizard.id).toBe(baseWizard.id)
-        expect(result.current.wizard.account_id).toBe(baseWizard.account_id)
-        expect(result.current.wizard.shop_integration_id).toBe(
+        expect(result.current.wizard!.id).toBe(baseWizard.id)
+        expect(result.current.wizard!.account_id).toBe(baseWizard.account_id)
+        expect(result.current.wizard!.shop_integration_id).toBe(
             baseWizard.shop_integration_id,
         )
-        expect(result.current.wizard.help_center_id).toBe(
+        expect(result.current.wizard!.help_center_id).toBe(
             baseWizard.help_center_id,
         )
-        expect(result.current.wizard.status).toBe(baseWizard.status)
-        expect(result.current.wizard.created_datetime).toBe(
+        expect(result.current.wizard!.status).toBe(baseWizard.status)
+        expect(result.current.wizard!.created_datetime).toBe(
             baseWizard.created_datetime,
         )
     })
 
     it('builds all_skills for every recommendation, with null article when missing', () => {
-        const { result } = renderHook(() => useSkillWizard(baseWizard), {
-            wrapper,
-        })
+        const { result } = renderHook(
+            () => useEnrichedSkillWizard(baseWizard),
+            {
+                wrapper,
+            },
+        )
 
-        const ids = result.current.wizard.all_skills.map((s) => s.skill_id)
+        const ids = result.current.wizard!.all_skills.map((s) => s.skill_id)
         expect(ids).toEqual([5641448, 5891087, 5891418, 5915217])
 
-        const missing = result.current.wizard.all_skills.find(
+        const missing = result.current.wizard!.all_skills.find(
             (s) => s.skill_id === 5915217,
         )
         expect(missing?.article).toBeNull()
 
-        const present = result.current.wizard.all_skills.find(
+        const present = result.current.wizard!.all_skills.find(
             (s) => s.skill_id === 5641448,
         )
         expect(present?.article?.translation.title).toBe('Order tracking')
@@ -185,11 +196,14 @@ describe('useSkillWizard', () => {
     })
 
     it('filters skills without an article out of reviewable_skills', () => {
-        const { result } = renderHook(() => useSkillWizard(baseWizard), {
-            wrapper,
-        })
+        const { result } = renderHook(
+            () => useEnrichedSkillWizard(baseWizard),
+            {
+                wrapper,
+            },
+        )
 
-        const ids = result.current.wizard.reviewable_skills.map(
+        const ids = result.current.wizard!.reviewable_skills.map(
             (s) => s.skill_id,
         )
         expect(ids).not.toContain(5915217)
@@ -197,7 +211,7 @@ describe('useSkillWizard', () => {
     })
 
     it('keeps skills marked as draft in skills_configuration', () => {
-        const wizard: SkillWizard = {
+        const wizard: SkillWizardData = {
             ...baseWizard,
             state: {
                 current_step: SkillWizardStep.Review,
@@ -210,16 +224,18 @@ describe('useSkillWizard', () => {
             },
         }
 
-        const { result } = renderHook(() => useSkillWizard(wizard), { wrapper })
+        const { result } = renderHook(() => useEnrichedSkillWizard(wizard), {
+            wrapper,
+        })
 
-        const ids = result.current.wizard.reviewable_skills.map(
+        const ids = result.current.wizard!.reviewable_skills.map(
             (s) => s.skill_id,
         )
         expect(ids).toContain(5891087)
     })
 
     it('keeps skills marked as approved in skills_configuration', () => {
-        const wizard: SkillWizard = {
+        const wizard: SkillWizardData = {
             ...baseWizard,
             state: {
                 skills_configuration: [
@@ -231,9 +247,11 @@ describe('useSkillWizard', () => {
             },
         }
 
-        const { result } = renderHook(() => useSkillWizard(wizard), { wrapper })
+        const { result } = renderHook(() => useEnrichedSkillWizard(wizard), {
+            wrapper,
+        })
 
-        const ids = result.current.wizard.reviewable_skills.map(
+        const ids = result.current.wizard!.reviewable_skills.map(
             (s) => s.skill_id,
         )
         expect(ids).toContain(5641448)
@@ -265,11 +283,14 @@ describe('useSkillWizard', () => {
             rawActions: [],
         })
 
-        const { result } = renderHook(() => useSkillWizard(baseWizard), {
-            wrapper,
-        })
+        const { result } = renderHook(
+            () => useEnrichedSkillWizard(baseWizard),
+            {
+                wrapper,
+            },
+        )
 
-        const ids = result.current.wizard.reviewable_skills.map(
+        const ids = result.current.wizard!.reviewable_skills.map(
             (s) => s.skill_id,
         )
         expect(ids).not.toContain(5641448)
@@ -303,11 +324,14 @@ describe('useSkillWizard', () => {
             rawActions: [],
         })
 
-        const { result } = renderHook(() => useSkillWizard(baseWizard), {
-            wrapper,
-        })
+        const { result } = renderHook(
+            () => useEnrichedSkillWizard(baseWizard),
+            {
+                wrapper,
+            },
+        )
 
-        const ids = result.current.wizard.reviewable_skills.map(
+        const ids = result.current.wizard!.reviewable_skills.map(
             (s) => s.skill_id,
         )
         expect(ids).not.toContain(5641448)
@@ -338,7 +362,7 @@ describe('useSkillWizard', () => {
             ],
             rawActions: [],
         })
-        const wizard: SkillWizard = {
+        const wizard: SkillWizardData = {
             ...baseWizard,
             state: {
                 skills_configuration: [
@@ -350,9 +374,11 @@ describe('useSkillWizard', () => {
             },
         }
 
-        const { result } = renderHook(() => useSkillWizard(wizard), { wrapper })
+        const { result } = renderHook(() => useEnrichedSkillWizard(wizard), {
+            wrapper,
+        })
 
-        const ids = result.current.wizard.reviewable_skills.map(
+        const ids = result.current.wizard!.reviewable_skills.map(
             (s) => s.skill_id,
         )
         expect(ids).toContain(5641448)
@@ -383,7 +409,7 @@ describe('useSkillWizard', () => {
             ],
             rawActions: [],
         })
-        const wizard: SkillWizard = {
+        const wizard: SkillWizardData = {
             ...baseWizard,
             state: {
                 skills_configuration: [
@@ -392,9 +418,11 @@ describe('useSkillWizard', () => {
             },
         }
 
-        const { result } = renderHook(() => useSkillWizard(wizard), { wrapper })
+        const { result } = renderHook(() => useEnrichedSkillWizard(wizard), {
+            wrapper,
+        })
 
-        const ids = result.current.wizard.reviewable_skills.map(
+        const ids = result.current.wizard!.reviewable_skills.map(
             (s) => s.skill_id,
         )
         expect(ids).toContain(5641448)
@@ -428,11 +456,14 @@ describe('useSkillWizard', () => {
             rawActions: [],
         })
 
-        const { result } = renderHook(() => useSkillWizard(baseWizard), {
-            wrapper,
-        })
+        const { result } = renderHook(
+            () => useEnrichedSkillWizard(baseWizard),
+            {
+                wrapper,
+            },
+        )
 
-        const ids = result.current.wizard.reviewable_skills.map(
+        const ids = result.current.wizard!.reviewable_skills.map(
             (s) => s.skill_id,
         )
         expect(ids).toContain(5641448)
@@ -440,32 +471,58 @@ describe('useSkillWizard', () => {
 
     describe('ui_wizard_state', () => {
         it('reports total_count as the count of reviewable_skills', () => {
-            const { result } = renderHook(() => useSkillWizard(baseWizard), {
-                wrapper,
-            })
+            const { result } = renderHook(
+                () => useEnrichedSkillWizard(baseWizard),
+                {
+                    wrapper,
+                },
+            )
 
-            expect(result.current.wizard.ui_wizard_state.total_count).toBe(3)
+            expect(result.current.wizard!.ui_wizard_state.total_count).toBe(3)
         })
 
         it('returns current_step as the 1-based position of current_skill_id', () => {
-            const wizard: SkillWizard = {
+            const wizard: SkillWizardData = {
                 ...baseWizard,
                 state: { current_skill_id: 5891418 },
             }
 
-            const { result } = renderHook(() => useSkillWizard(wizard), {
-                wrapper,
-            })
+            const { result } = renderHook(
+                () => useEnrichedSkillWizard(wizard),
+                {
+                    wrapper,
+                },
+            )
 
-            expect(result.current.wizard.ui_wizard_state.current_step).toBe(3)
+            expect(result.current.wizard!.ui_wizard_state.current_step).toBe(3)
         })
 
         it('defaults current_step to 1 when there is no current_skill_id', () => {
-            const { result } = renderHook(() => useSkillWizard(baseWizard), {
-                wrapper,
-            })
+            const { result } = renderHook(
+                () => useEnrichedSkillWizard(baseWizard),
+                {
+                    wrapper,
+                },
+            )
 
-            expect(result.current.wizard.ui_wizard_state.current_step).toBe(1)
+            expect(result.current.wizard!.ui_wizard_state.current_step).toBe(1)
+        })
+
+        it('returns total_count + 1 when the wizard is on the recap step', () => {
+            const wizard: SkillWizardData = {
+                ...baseWizard,
+                state: { current_step: SkillWizardStep.Recap },
+            }
+
+            const { result } = renderHook(
+                () => useEnrichedSkillWizard(wizard),
+                {
+                    wrapper,
+                },
+            )
+
+            expect(result.current.wizard!.ui_wizard_state.total_count).toBe(3)
+            expect(result.current.wizard!.ui_wizard_state.current_step).toBe(4)
         })
 
         it('defaults current_step to 1 when the current_skill_id has been filtered out', () => {
@@ -495,17 +552,46 @@ describe('useSkillWizard', () => {
                 ],
                 rawActions: [],
             })
-            const wizard: SkillWizard = {
+            const wizard: SkillWizardData = {
                 ...baseWizard,
                 state: { current_skill_id: 5891087 },
             }
 
-            const { result } = renderHook(() => useSkillWizard(wizard), {
-                wrapper,
-            })
+            const { result } = renderHook(
+                () => useEnrichedSkillWizard(wizard),
+                {
+                    wrapper,
+                },
+            )
 
-            expect(result.current.wizard.ui_wizard_state.current_step).toBe(1)
+            expect(result.current.wizard!.ui_wizard_state.current_step).toBe(1)
         })
+    })
+
+    it('exposes guidanceActions from useGetGuidancesAvailableActions', () => {
+        const actions = [
+            {
+                name: 'auth-action',
+                value: 'action-auth',
+                enabled: true,
+                requiresAuth: true,
+                hasMissingValues: false,
+            },
+        ]
+        mockUseGetGuidancesAvailableActions.mockReturnValue({
+            isLoading: false,
+            guidanceActions: actions,
+            rawActions: [],
+        })
+
+        const { result } = renderHook(
+            () => useEnrichedSkillWizard(baseWizard),
+            {
+                wrapper,
+            },
+        )
+
+        expect(result.current.guidanceActions).toBe(actions)
     })
 
     it('reports loading while any underlying query is loading', () => {
@@ -515,9 +601,12 @@ describe('useSkillWizard', () => {
             isError: false,
         })
 
-        const { result } = renderHook(() => useSkillWizard(baseWizard), {
-            wrapper,
-        })
+        const { result } = renderHook(
+            () => useEnrichedSkillWizard(baseWizard),
+            {
+                wrapper,
+            },
+        )
 
         expect(result.current.isLoading).toBe(true)
     })

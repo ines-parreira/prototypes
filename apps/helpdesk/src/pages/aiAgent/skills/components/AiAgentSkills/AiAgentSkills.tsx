@@ -6,20 +6,18 @@ import { useHistory } from 'react-router-dom'
 import { Box, Skeleton } from '@gorgias/axiom'
 
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
+import { useGetWizard } from 'models/helpCenter/queries'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { IntroducingSkillsBanner } from 'pages/aiAgent/skills/components/IntroducingSkillsBanner/IntroducingSkillsBanner'
 import { RecommendedSkillsSection } from 'pages/aiAgent/skills/components/RecommendedSkillsSection/RecommendedSkillsSection'
 import { ReviewSkillsSection } from 'pages/aiAgent/skills/components/ReviewSkillsSection/ReviewSkillsSection'
 import { SkillsTemplateModal } from 'pages/aiAgent/skills/components/SkillsTemplateModal/SkillsTemplateModal'
-import {
-    mockSkillWizardNotStarted,
-    SkillWizardStatus,
-} from 'pages/aiAgent/skills/components/SkillWizard/skillWizard.mock'
 import { WizardSkillsBanner } from 'pages/aiAgent/skills/components/WizardSkillsBanner/WizardSkillsBanner'
+import { useEnrichedSkillWizard } from 'pages/aiAgent/skills/hooks/useEnrichedSkillWizard'
 import { useHasLinkedSkills } from 'pages/aiAgent/skills/hooks/useHasLinkedSkills'
 import { useSkillsTemplates } from 'pages/aiAgent/skills/hooks/useSkillsTemplates'
-import { useSkillWizard } from 'pages/aiAgent/skills/hooks/useSkillWizard'
+import { SkillWizardStatus } from 'pages/aiAgent/skills/types'
 
 import { IntentsTable } from '../IntentsTable/IntentsTable'
 import { SkillsEmptyState } from '../SkillsEmptyState/SkillsEmptyState'
@@ -41,17 +39,24 @@ export const AiAgentSkills = () => {
     const history = useHistory()
     const { storeConfiguration } = useAiAgentStoreConfigurationContext()
     const shopName = storeConfiguration?.storeName || ''
+    const helpCenterId = storeConfiguration?.guidanceHelpCenterId ?? 0
     const { routes } = useAiAgentNavigation({ shopName })
     const isSkillWizardEnabled = useFlag(FeatureFlagKey.SkillWizard)
+
+    const { data: wizard } = useGetWizard(helpCenterId, {
+        enabled: isSkillWizardEnabled && !!helpCenterId,
+    })
+
     const { wizard: enrichedWizard, isLoading: isWizardLoading } =
-        useSkillWizard(mockSkillWizardNotStarted)
+        useEnrichedSkillWizard(wizard)
 
     const isWizardActive =
         isSkillWizardEnabled &&
-        (enrichedWizard.status === SkillWizardStatus.NotStarted ||
-            enrichedWizard.status === SkillWizardStatus.InProgress)
+        !!wizard &&
+        wizard.status !== SkillWizardStatus.Completed
 
     const handleOpenSkillWizard = () => {
+        if (!enrichedWizard) return
         history.push(
             routes.skillsWizardStep(
                 enrichedWizard.ui_wizard_state.current_step,
@@ -91,7 +96,7 @@ export const AiAgentSkills = () => {
             {isWizardActive ? (
                 <Box flexDirection="column" className={css.wizardContent}>
                     <WizardSkillsBanner />
-                    {!isWizardLoading && (
+                    {!isWizardLoading && enrichedWizard && (
                         <ReviewSkillsSection
                             wizard={enrichedWizard}
                             onCTA={handleOpenSkillWizard}

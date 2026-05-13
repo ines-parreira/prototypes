@@ -1,11 +1,11 @@
 import type {
     EnrichedSkillWizard,
     WizardSkill,
-} from 'pages/aiAgent/skills/hooks/useSkillWizard'
+} from 'pages/aiAgent/skills/hooks/useEnrichedSkillWizard'
+import { SkillWizardSkillStatus } from 'pages/aiAgent/skills/types'
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 
 import { getDisabledActionIds } from './skillReviewValidation.utils'
-import { SkillWizardSkillStatus } from './skillWizard.mock'
 
 export type SkillToggleState = {
     skill: WizardSkill
@@ -22,23 +22,18 @@ export type GuidanceDisableEntry = {
 const getSkillTitle = (skill: WizardSkill): string =>
     skill.article?.translation.title ?? `Skill ${skill.skill_id}`
 
-/**
- * Skills the merchant has approved on the backend (status === Approved in
- * skills_configuration), filtered to skills that are still reviewable.
- */
 export const getApprovedSkillIds = (
     wizard: EnrichedSkillWizard,
 ): Set<number> => {
-    const reviewableIds = new Set(
-        wizard.reviewable_skills.map((s) => s.skill_id),
+    const draftIds = new Set(
+        (wizard.state.skills_configuration ?? [])
+            .filter((config) => config.status === SkillWizardSkillStatus.Draft)
+            .map((config) => config.id),
     )
     const approved = new Set<number>()
-    for (const config of wizard.state.skills_configuration ?? []) {
-        if (
-            config.status === SkillWizardSkillStatus.Approved &&
-            reviewableIds.has(config.id)
-        ) {
-            approved.add(config.id)
+    for (const skill of wizard.reviewable_skills) {
+        if (!draftIds.has(skill.skill_id)) {
+            approved.add(skill.skill_id)
         }
     }
     return approved
@@ -46,12 +41,8 @@ export const getApprovedSkillIds = (
 
 /**
  * Resolve enabled state per skill given the merchant's recap-local toggle
- * overrides. Falls back to the persisted approved status.
- *
- * Only skills the merchant approved during review (skills_configuration
- * status === Approved) are returned — skills they kept as drafts are not
- * surfaced in the sidepanel because the merchant cannot enable them from
- * here.
+ * overrides. Skills the merchant kept as drafts are not surfaced in the
+ * sidepanel because they cannot be enabled from here.
  */
 export const getSkillToggleStates = (
     wizard: EnrichedSkillWizard,

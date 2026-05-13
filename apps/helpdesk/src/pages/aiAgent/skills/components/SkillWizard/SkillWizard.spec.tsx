@@ -51,7 +51,7 @@ const items = ['Returns', 'Cancellations', 'Damaged']
 
 const renderWizard = (props?: {
     initialStep?: number
-    onStepChange?: (step: number) => void
+    onStepChange?: (step: number, prevStep: number) => void
     onClose?: () => void
     draftKnowledge?: (item: string, index: number) => CapturedDraftKnowledge
 }) =>
@@ -125,10 +125,10 @@ describe('SkillWizard', () => {
         renderWizard({ initialStep: 1, onStepChange })
 
         await user.click(screen.getByRole('button', { name: /^Next/ }))
-        expect(onStepChange).toHaveBeenLastCalledWith(2)
+        expect(onStepChange).toHaveBeenLastCalledWith(2, 1)
 
         await user.click(screen.getByRole('button', { name: /Back$/ }))
-        expect(onStepChange).toHaveBeenLastCalledWith(1)
+        expect(onStepChange).toHaveBeenLastCalledWith(1, 2)
     })
 
     it('passes draftKnowledge for the active review item to EditorWithPlayground', async () => {

@@ -168,6 +168,10 @@ export const useActionDrivenNavbarSections = () => {
             // e.g., "opportunities/123" -> "opportunities", "products/456" -> "products"
             restOfPath = restOfPath.replace(/\/(\d+|[a-f0-9-]{8,})$/, '')
 
+            // Drop wizard sub-routes so switching stores lands on the parent page,
+            // not the new store's wizard (e.g. "skills/wizard" -> "skills").
+            restOfPath = restOfPath.replace(/\/wizard$/, '')
+
             // Check if the destination store has completed setup
             const isSetupCompleted = getSetupCompletionStatus(shopName)
 

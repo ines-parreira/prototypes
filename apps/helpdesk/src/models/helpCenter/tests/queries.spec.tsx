@@ -15,6 +15,7 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { HELP_CENTER_ROOT_CATEGORY_ID } from '../../../pages/settings/helpCenter/constants'
 import {
     fetchAllPagesForHelpCenter,
+    helpCenterKeys,
     useCreateFileIngestion,
     useDeleteFileIngestion,
     useGetArticleIngestionArticlesTitleAndStatus,
@@ -36,8 +37,10 @@ import {
     useGetMultipleFileIngestionSnippets,
     useGetMultipleHelpCenter,
     useGetMultipleHelpCenterArticleLists,
+    useGetWizard,
     useListIngestedResources,
     useListIntents,
+    usePatchWizard,
     useStartIngestion,
     useUpdateAllIngestedResourcesStatus,
     useUpdateIngestedResource,
@@ -78,6 +81,8 @@ const getFileIngestionArticleTitlesAndStatus = jest.spyOn(
 const getKnowledgeStatus = jest.spyOn(resources, 'getKnowledgeStatus')
 const listIntents = jest.spyOn(resources, 'listIntents')
 const updateIntentStatus = jest.spyOn(resources, 'updateIntentStatus')
+const getWizard = jest.spyOn(resources, 'getWizard')
+const patchWizard = jest.spyOn(resources, 'patchWizard')
 
 const queryClient = mockQueryClient()
 const wrapper = ({ children }: any) => (
@@ -2677,6 +2682,77 @@ describe('queries', () => {
                 expect.any(Object),
                 { help_center_id: helpCenterId, intent: 'order::cancel' },
                 { status: 'not_linked' },
+            )
+        })
+    })
+
+    describe('helpCenterKeys.wizard', () => {
+        it('namespaces the wizard cache under the help center detail key', () => {
+            expect(helpCenterKeys.wizard(7)).toEqual([
+                'help-center',
+                7,
+                'wizard',
+            ])
+        })
+    })
+
+    describe('useGetWizard', () => {
+        const wizard = { id: 9, status: 'in_progress' }
+
+        it('returns the wizard data on success', async () => {
+            getWizard.mockReturnValue(Promise.resolve(wizard as any))
+            mockUseHelpCenterApi.mockReturnValue({
+                client: {} as HelpCenterClient,
+                isReady: true,
+            })
+
+            const { result } = renderHook(() => useGetWizard(helpCenterId), {
+                wrapper,
+            })
+
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+            expect(result.current.data).toStrictEqual(wizard)
+            expect(getWizard).toHaveBeenCalledWith(expect.any(Object), {
+                help_center_id: helpCenterId,
+            })
+        })
+
+        it('does not call the resource when the client is not ready', () => {
+            getWizard.mockReturnValue(Promise.resolve(wizard as any))
+            mockUseHelpCenterApi.mockReturnValue({
+                client: undefined,
+                isReady: false,
+            })
+
+            renderHook(() => useGetWizard(helpCenterId), { wrapper })
+
+            expect(getWizard).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('usePatchWizard', () => {
+        it('forwards the [client, pathParams, data] tuple to the patchWizard resource', async () => {
+            const wizard = { id: 9, status: 'in_progress' }
+            patchWizard.mockReturnValue(Promise.resolve(wizard as any))
+            mockUseHelpCenterApi.mockReturnValue({
+                client: {} as HelpCenterClient,
+                isReady: true,
+            })
+
+            const { result } = renderHook(() => usePatchWizard(), { wrapper })
+
+            await result.current.mutateAsync([
+                undefined,
+                { help_center_id: helpCenterId },
+                { status: 'in_progress' },
+            ])
+
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+            expect(patchWizard).toHaveBeenCalledWith(
+                expect.any(Object),
+                { help_center_id: helpCenterId },
+                { status: 'in_progress' },
             )
         })
     })
