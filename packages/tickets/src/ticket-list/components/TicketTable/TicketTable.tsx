@@ -17,6 +17,7 @@ import {
     toast,
 } from '@gorgias/axiom'
 import type {
+    PaginationState,
     RowSelectionState,
     SelectAllEvent,
     SortingState,
@@ -57,6 +58,11 @@ import { createTicketTableColumns } from './TicketTableColumns'
 import type { TicketTableRow } from './TicketTableColumns'
 
 import css from './TicketTable.module.less'
+
+const DEFAULT_PAGINATION: PaginationState = {
+    pageIndex: 0,
+    pageSize: 20,
+}
 
 type Props = {
     viewId: number
@@ -119,6 +125,16 @@ function TicketTableComponent({
     const [searchCursor, setSearchCursor] = useState<string | undefined>()
     const viewCount = useViewCount(viewId)
 
+    // Mirror of the DataTable's effective pagination state. Axiom emits this
+    // once on mount after persistence rehydration.
+    const [pagination, setPagination] = useState<PaginationState | undefined>()
+    const handlePaginationReset = useCallback(() => {
+        setPagination((prev) => ({
+            ...(prev ?? DEFAULT_PAGINATION),
+            pageIndex: 0,
+        }))
+    }, [])
+
     const { data: viewResponse } = useGetView(viewId, {
         query: {
             enabled: !isDraftView,
@@ -139,16 +155,17 @@ function TicketTableComponent({
         hasNextPage,
         hasPreviousPage,
         totalResources,
-        currentPageIndex,
         onPageChange,
-        onPageSizeChange,
         onSortChange,
         onRefresh,
-        pageSize,
         sortOrder,
         error,
     } = useTicketTableData({
         viewId,
+        pageIndex: pagination?.pageIndex ?? DEFAULT_PAGINATION.pageIndex,
+        pageSize: pagination?.pageSize ?? DEFAULT_PAGINATION.pageSize,
+        enabled: pagination !== undefined,
+        onPaginationReset: handlePaginationReset,
         dirtyView,
         searchView: isSearchMode
             ? {
@@ -506,12 +523,13 @@ function TicketTableComponent({
                 pagination={{
                     enable: true,
                     manual: true,
-                    value: { pageIndex: currentPageIndex, pageSize },
+                    defaultValue: DEFAULT_PAGINATION,
+                    value: pagination,
+                    onChange: setPagination,
                     rowCount: viewCount,
                     hasNextPage,
                     hasPreviousPage,
                     onPageChange,
-                    onPageSizeChange,
                 }}
                 columnEditing={{
                     enable: true,

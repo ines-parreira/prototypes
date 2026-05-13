@@ -31,6 +31,42 @@ const fetchNextPageMock = vi.fn()
 const searchRefetchMock = vi.fn()
 const setSortOrderMock = vi.fn()
 
+type CallProps = Omit<
+    Parameters<typeof useTicketTableData>[0],
+    'pageIndex' | 'pageSize' | 'onPaginationReset'
+>
+
+type RenderHookProps = CallProps & {
+    pageIndex: number
+    pageSize: number
+}
+
+function renderTicketTableDataHook(
+    props: CallProps,
+    initial: { pageIndex?: number; pageSize?: number } = {},
+) {
+    const onPaginationReset = vi.fn()
+    let currentProps: RenderHookProps = {
+        ...props,
+        pageIndex: initial.pageIndex ?? 0,
+        pageSize: initial.pageSize ?? 20,
+    }
+    const { result, rerender: baseRerender } = renderHook(() => {
+        const { pageIndex, pageSize, ...rest } = currentProps
+        return useTicketTableData({
+            ...rest,
+            pageIndex,
+            pageSize,
+            onPaginationReset,
+        })
+    })
+    const rerender = (next?: Partial<RenderHookProps>) => {
+        if (next) currentProps = { ...currentProps, ...next }
+        baseRerender()
+    }
+    return { result, rerender, onPaginationReset }
+}
+
 function expectDirtySearchQueryCalledWith(expected: Record<string, unknown>) {
     expect(useSearchTicketsMock).toHaveBeenCalledWith(
         {
@@ -121,13 +157,11 @@ describe('useTicketTableData', () => {
             }),
         )
 
-        const { result } = renderHook(() =>
-            useTicketTableData({
-                viewId: 123,
-                enablePersistedUpdates: true,
-                pauseUpdates: false,
-            }),
-        )
+        const { result } = renderTicketTableDataHook({
+            viewId: 123,
+            enablePersistedUpdates: true,
+            pauseUpdates: false,
+        })
 
         expect(result.current.items).toEqual(persistedTickets.slice(0, 20))
         expect(useTicketsListMock).toHaveBeenCalledWith(
@@ -149,20 +183,18 @@ describe('useTicketTableData', () => {
             }),
         )
 
-        const { result } = renderHook(() =>
-            useTicketTableData({
-                viewId: 0,
-                enablePersistedUpdates: true,
-                pauseUpdates: false,
-                isDraftView: true,
-                dirtyView: {
-                    enabled: false,
-                    search: '',
-                    filters: '',
-                    areFiltersValid: true,
-                },
-            }),
-        )
+        const { result } = renderTicketTableDataHook({
+            viewId: 0,
+            enablePersistedUpdates: true,
+            pauseUpdates: false,
+            isDraftView: true,
+            dirtyView: {
+                enabled: false,
+                search: '',
+                filters: '',
+                areFiltersValid: true,
+            },
+        })
 
         expect(useTicketsListMock).toHaveBeenCalledWith(
             0,
@@ -200,19 +232,17 @@ describe('useTicketTableData', () => {
             }),
         )
 
-        const { result } = renderHook(() =>
-            useTicketTableData({
-                viewId: 123,
-                enablePersistedUpdates: true,
-                pauseUpdates: false,
-                dirtyView: {
-                    enabled: true,
-                    search: 'vip',
-                    filters: 'status:open',
-                    areFiltersValid: true,
-                },
-            }),
-        )
+        const { result } = renderTicketTableDataHook({
+            viewId: 123,
+            enablePersistedUpdates: true,
+            pauseUpdates: false,
+            dirtyView: {
+                enabled: true,
+                search: 'vip',
+                filters: 'status:open',
+                areFiltersValid: true,
+            },
+        })
 
         expect(result.current.items).toEqual(dirtyItems)
         expect(result.current.hasNextPage).toBe(true)
@@ -225,19 +255,17 @@ describe('useTicketTableData', () => {
     })
 
     it('selects the dirty search response into ticket data and meta', () => {
-        renderHook(() =>
-            useTicketTableData({
-                viewId: 123,
-                enablePersistedUpdates: true,
-                pauseUpdates: false,
-                dirtyView: {
-                    enabled: true,
-                    search: 'vip',
-                    filters: 'status:open',
-                    areFiltersValid: true,
-                },
-            }),
-        )
+        renderTicketTableDataHook({
+            viewId: 123,
+            enablePersistedUpdates: true,
+            pauseUpdates: false,
+            dirtyView: {
+                enabled: true,
+                search: 'vip',
+                filters: 'status:open',
+                areFiltersValid: true,
+            },
+        })
 
         const dirtyQueryOptions = useSearchTicketsMock.mock.calls[0]?.[2]
         const select = dirtyQueryOptions?.query?.select
@@ -281,20 +309,18 @@ describe('useTicketTableData', () => {
             )
 
         const setCursor = vi.fn()
-        const { result } = renderHook(() =>
-            useTicketTableData({
-                viewId: 123,
-                enablePersistedUpdates: true,
-                pauseUpdates: false,
-                searchView: {
-                    enabled: true,
-                    query: 'hello',
-                    filters: '',
-                    cursor: undefined,
-                    setCursor,
-                },
-            }),
-        )
+        const { result } = renderTicketTableDataHook({
+            viewId: 123,
+            enablePersistedUpdates: true,
+            pauseUpdates: false,
+            searchView: {
+                enabled: true,
+                query: 'hello',
+                filters: '',
+                cursor: undefined,
+                setCursor,
+            },
+        })
 
         expect(result.current.items).toEqual([{ id: 42 }])
         expect(result.current.hasNextPage).toBe(true)
@@ -361,6 +387,9 @@ describe('useTicketTableData', () => {
             ({ searchTracking }) =>
                 useTicketTableData({
                     viewId: 123,
+                    pageIndex: 0,
+                    pageSize: 20,
+                    onPaginationReset: () => {},
                     enablePersistedUpdates: true,
                     pauseUpdates: false,
                     searchTracking,
@@ -415,20 +444,18 @@ describe('useTicketTableData', () => {
             .mockReturnValueOnce(makeDirtyQueryResult())
             .mockReturnValueOnce(makeDirtyQueryResult())
 
-        renderHook(() =>
-            useTicketTableData({
-                viewId: 123,
-                enablePersistedUpdates: true,
-                pauseUpdates: false,
-                searchView: {
-                    enabled: true,
-                    query: 'hello',
-                    filters: 'status:open',
-                    cursor: undefined,
-                    setCursor: vi.fn(),
-                },
-            }),
-        )
+        renderTicketTableDataHook({
+            viewId: 123,
+            enablePersistedUpdates: true,
+            pauseUpdates: false,
+            searchView: {
+                enabled: true,
+                query: 'hello',
+                filters: 'status:open',
+                cursor: undefined,
+                setCursor: vi.fn(),
+            },
+        })
 
         expect(useTicketsListMock).toHaveBeenCalledWith(
             123,
@@ -478,20 +505,18 @@ describe('useTicketTableData', () => {
                 }),
             )
 
-        const { result } = renderHook(() =>
-            useTicketTableData({
-                viewId: 123,
-                enablePersistedUpdates: true,
-                pauseUpdates: false,
-                searchView: {
-                    enabled: true,
-                    query: 'wrapped',
-                    filters: '',
-                    cursor: undefined,
-                    setCursor: vi.fn(),
-                },
-            }),
-        )
+        const { result } = renderTicketTableDataHook({
+            viewId: 123,
+            enablePersistedUpdates: true,
+            pauseUpdates: false,
+            searchView: {
+                enabled: true,
+                query: 'wrapped',
+                filters: '',
+                cursor: undefined,
+                setCursor: vi.fn(),
+            },
+        })
 
         expect(result.current.items).toEqual([
             {
@@ -528,20 +553,18 @@ describe('useTicketTableData', () => {
                 }),
             )
 
-        const { result } = renderHook(() =>
-            useTicketTableData({
-                viewId: 123,
-                enablePersistedUpdates: true,
-                pauseUpdates: false,
-                searchView: {
-                    enabled: true,
-                    query: 'hello',
-                    filters: '',
-                    cursor: undefined,
-                    setCursor: vi.fn(),
-                },
-            }),
-        )
+        const { result } = renderTicketTableDataHook({
+            viewId: 123,
+            enablePersistedUpdates: true,
+            pauseUpdates: false,
+            searchView: {
+                enabled: true,
+                query: 'hello',
+                filters: '',
+                cursor: undefined,
+                setCursor: vi.fn(),
+            },
+        })
 
         expect(result.current.totalResources).toBeUndefined()
     })
@@ -557,19 +580,17 @@ describe('useTicketTableData', () => {
             }),
         )
 
-        const { result } = renderHook(() =>
-            useTicketTableData({
-                viewId: 123,
-                enablePersistedUpdates: true,
-                pauseUpdates: false,
-                dirtyView: {
-                    enabled: true,
-                    search: 'vip',
-                    filters: 'status:open',
-                    areFiltersValid: false,
-                },
-            }),
-        )
+        const { result } = renderTicketTableDataHook({
+            viewId: 123,
+            enablePersistedUpdates: true,
+            pauseUpdates: false,
+            dirtyView: {
+                enabled: true,
+                search: 'vip',
+                filters: 'status:open',
+                areFiltersValid: false,
+            },
+        })
 
         expect(result.current.items).toEqual(persistedTickets)
         expect(useSearchTicketsMock).toHaveBeenCalledWith(
@@ -596,19 +617,17 @@ describe('useTicketTableData', () => {
             }),
         )
 
-        const { result } = renderHook(() =>
-            useTicketTableData({
-                viewId: 123,
-                enablePersistedUpdates: true,
-                pauseUpdates: false,
-                dirtyView: {
-                    enabled: true,
-                    search: 'vip',
-                    filters: 'status:open',
-                    areFiltersValid: true,
-                },
-            }),
-        )
+        const { result } = renderTicketTableDataHook({
+            viewId: 123,
+            enablePersistedUpdates: true,
+            pauseUpdates: false,
+            dirtyView: {
+                enabled: true,
+                search: 'vip',
+                filters: 'status:open',
+                areFiltersValid: true,
+            },
+        })
 
         result.current.onRefresh()
 
@@ -617,19 +636,17 @@ describe('useTicketTableData', () => {
     })
 
     it('falls back to refreshing the persisted query when dirty filters are invalid', () => {
-        const { result } = renderHook(() =>
-            useTicketTableData({
-                viewId: 123,
-                enablePersistedUpdates: true,
-                pauseUpdates: false,
-                dirtyView: {
-                    enabled: true,
-                    search: 'vip',
-                    filters: 'status:open',
-                    areFiltersValid: false,
-                },
-            }),
-        )
+        const { result } = renderTicketTableDataHook({
+            viewId: 123,
+            enablePersistedUpdates: true,
+            pauseUpdates: false,
+            dirtyView: {
+                enabled: true,
+                search: 'vip',
+                filters: 'status:open',
+                areFiltersValid: false,
+            },
+        })
 
         result.current.onRefresh()
 
@@ -638,13 +655,11 @@ describe('useTicketTableData', () => {
     })
 
     it('refreshes the persisted query when dirty mode is disabled', () => {
-        const { result } = renderHook(() =>
-            useTicketTableData({
-                viewId: 123,
-                enablePersistedUpdates: true,
-                pauseUpdates: false,
-            }),
-        )
+        const { result } = renderTicketTableDataHook({
+            viewId: 123,
+            enablePersistedUpdates: true,
+            pauseUpdates: false,
+        })
 
         result.current.onRefresh()
 
@@ -664,20 +679,18 @@ describe('useTicketTableData', () => {
                 }),
             )
 
-        const { result } = renderHook(() =>
-            useTicketTableData({
-                viewId: 123,
-                enablePersistedUpdates: true,
-                pauseUpdates: false,
-                searchView: {
-                    enabled: true,
-                    query: 'hello',
-                    filters: '',
-                    cursor: undefined,
-                    setCursor: vi.fn(),
-                },
-            }),
-        )
+        const { result } = renderTicketTableDataHook({
+            viewId: 123,
+            enablePersistedUpdates: true,
+            pauseUpdates: false,
+            searchView: {
+                enabled: true,
+                query: 'hello',
+                filters: '',
+                cursor: undefined,
+                setCursor: vi.fn(),
+            },
+        })
 
         result.current.onRefresh()
 
@@ -702,6 +715,9 @@ describe('useTicketTableData', () => {
             }) =>
                 useTicketTableData({
                     viewId: 123,
+                    pageIndex: 0,
+                    pageSize: 20,
+                    onPaginationReset: () => {},
                     enablePersistedUpdates: true,
                     pauseUpdates: false,
                     dirtyView,
@@ -767,6 +783,7 @@ describe('useTicketTableData', () => {
             }),
         )
 
+        const onPaginationReset = vi.fn()
         const { result, rerender } = renderHook<
             ReturnType<typeof useTicketTableData>,
             HookProps
@@ -774,6 +791,9 @@ describe('useTicketTableData', () => {
             ({ dirtyView }) =>
                 useTicketTableData({
                     viewId: 123,
+                    pageIndex: 0,
+                    pageSize: 20,
+                    onPaginationReset,
                     enablePersistedUpdates: true,
                     pauseUpdates: false,
                     dirtyView,
@@ -785,12 +805,11 @@ describe('useTicketTableData', () => {
             },
         )
 
+        // pageIndex is owned by the DataTable now — the hook only signals
+        // "reset to first page" via onPaginationReset.
         act(() => {
             result.current.onPageChange('next')
         })
-
-        expect(result.current.currentPageIndex).toBe(1)
-        expect(result.current.items).toEqual(persistedTickets.slice(20, 25))
 
         useSearchTicketsMock.mockReturnValue(
             makeDirtyQueryResult({
@@ -813,9 +832,9 @@ describe('useTicketTableData', () => {
         rerender(nextProps)
 
         await waitFor(() => {
-            expect(result.current.currentPageIndex).toBe(0)
             expect(result.current.items).toEqual([{ id: 9001 }, { id: 9002 }])
         })
+        expect(onPaginationReset).toHaveBeenCalled()
     })
 
     it('uses dirty cursors for pagination in dirty mode', () => {
@@ -833,19 +852,17 @@ describe('useTicketTableData', () => {
             }),
         )
 
-        const { result, rerender } = renderHook(() =>
-            useTicketTableData({
-                viewId: 123,
-                enablePersistedUpdates: true,
-                pauseUpdates: false,
-                dirtyView: {
-                    enabled: true,
-                    search: 'vip',
-                    filters: 'status:open',
-                    areFiltersValid: true,
-                },
-            }),
-        )
+        const { result, rerender } = renderTicketTableDataHook({
+            viewId: 123,
+            enablePersistedUpdates: true,
+            pauseUpdates: false,
+            dirtyView: {
+                enabled: true,
+                search: 'vip',
+                filters: 'status:open',
+                areFiltersValid: true,
+            },
+        })
 
         act(() => {
             result.current.onPageChange('next')
@@ -887,20 +904,18 @@ describe('useTicketTableData', () => {
         )
 
         const setCursor = vi.fn()
-        const { result } = renderHook(() =>
-            useTicketTableData({
-                viewId: 123,
-                enablePersistedUpdates: true,
-                pauseUpdates: false,
-                searchView: {
-                    enabled: true,
-                    query: 'vip',
-                    filters: '',
-                    cursor: undefined,
-                    setCursor,
-                },
-            }),
-        )
+        const { result } = renderTicketTableDataHook({
+            viewId: 123,
+            enablePersistedUpdates: true,
+            pauseUpdates: false,
+            searchView: {
+                enabled: true,
+                query: 'vip',
+                filters: '',
+                cursor: undefined,
+                setCursor,
+            },
+        })
 
         act(() => {
             result.current.onPageChange('next')
@@ -934,27 +949,24 @@ describe('useTicketTableData', () => {
         )
 
         const setCursor = vi.fn()
-        const { result } = renderHook(() =>
-            useTicketTableData({
-                viewId: 123,
-                enablePersistedUpdates: true,
-                pauseUpdates: false,
-                searchView: {
-                    enabled: true,
-                    query: 'vip',
-                    filters: '',
-                    cursor: undefined,
-                    setCursor,
-                },
-            }),
-        )
+        const { result } = renderTicketTableDataHook({
+            viewId: 123,
+            enablePersistedUpdates: true,
+            pauseUpdates: false,
+            searchView: {
+                enabled: true,
+                query: 'vip',
+                filters: '',
+                cursor: undefined,
+                setCursor,
+            },
+        })
 
         act(() => {
             result.current.onPageChange('next')
         })
 
         expect(setCursor).not.toHaveBeenCalled()
-        expect(result.current.currentPageIndex).toBe(0)
     })
 
     it('updates search rows when the cursor changes', async () => {
@@ -1000,6 +1012,9 @@ describe('useTicketTableData', () => {
             ({ cursor }) =>
                 useTicketTableData({
                     viewId: 123,
+                    pageIndex: 0,
+                    pageSize: 20,
+                    onPaginationReset: () => {},
                     enablePersistedUpdates: true,
                     pauseUpdates: false,
                     searchView: {
@@ -1028,7 +1043,6 @@ describe('useTicketTableData', () => {
         await waitFor(() => {
             expect(result.current.items).toEqual([{ id: 51 }])
         })
-        expect(result.current.currentPageIndex).toBe(1)
     })
 
     it('resets the search cursor when the search query changes', () => {
@@ -1049,6 +1063,7 @@ describe('useTicketTableData', () => {
         )
 
         const setCursor = vi.fn()
+        const onPaginationReset = vi.fn()
         const { result, rerender } = renderHook<
             ReturnType<typeof useTicketTableData>,
             { query: string; cursor?: string }
@@ -1056,6 +1071,9 @@ describe('useTicketTableData', () => {
             ({ cursor, query }) =>
                 useTicketTableData({
                     viewId: 123,
+                    pageIndex: 0,
+                    pageSize: 20,
+                    onPaginationReset,
                     enablePersistedUpdates: true,
                     pauseUpdates: false,
                     searchView: {
@@ -1085,7 +1103,7 @@ describe('useTicketTableData', () => {
         })
 
         expect(setCursor).toHaveBeenLastCalledWith(undefined)
-        expect(result.current.currentPageIndex).toBe(0)
+        expect(onPaginationReset).toHaveBeenCalled()
     })
 
     it('fetches the next persisted page when local persisted items are exhausted', () => {
@@ -1102,13 +1120,11 @@ describe('useTicketTableData', () => {
             }),
         )
 
-        const { result } = renderHook(() =>
-            useTicketTableData({
-                viewId: 123,
-                enablePersistedUpdates: true,
-                pauseUpdates: false,
-            }),
-        )
+        const { result } = renderTicketTableDataHook({
+            viewId: 123,
+            enablePersistedUpdates: true,
+            pauseUpdates: false,
+        })
 
         act(() => {
             result.current.onPageChange('next')
@@ -1117,7 +1133,73 @@ describe('useTicketTableData', () => {
         expect(fetchNextPageMock).toHaveBeenCalled()
     })
 
-    it('advances to the requested persisted page when the next page arrives', async () => {
+    it('fetches the next persisted page when a hydrated pageIndex is outside the local cache', async () => {
+        const firstPageTickets = Array.from({ length: 100 }, (_, index) => ({
+            id: index + 1,
+        }))
+
+        useTicketsListMock.mockReturnValue(
+            makePersistedResult({
+                tickets: firstPageTickets as ReturnType<
+                    typeof useTicketsList
+                >['tickets'],
+                hasNextPage: true,
+            }),
+        )
+
+        const { result } = renderTicketTableDataHook(
+            {
+                viewId: 123,
+                enablePersistedUpdates: true,
+                pauseUpdates: false,
+            },
+            {
+                pageIndex: 5,
+                pageSize: 100,
+            },
+        )
+
+        expect(result.current.items).toEqual([])
+        expect(result.current.isLoading).toBe(true)
+        await waitFor(() => {
+            expect(fetchNextPageMock).toHaveBeenCalled()
+        })
+    })
+
+    it('fetches the next persisted page when a hydrated pageIndex has a partial slice', async () => {
+        const partialPageTickets = Array.from({ length: 550 }, (_, index) => ({
+            id: index + 1,
+        }))
+
+        useTicketsListMock.mockReturnValue(
+            makePersistedResult({
+                tickets: partialPageTickets as ReturnType<
+                    typeof useTicketsList
+                >['tickets'],
+                hasNextPage: true,
+            }),
+        )
+
+        const { result } = renderTicketTableDataHook(
+            {
+                viewId: 123,
+                enablePersistedUpdates: true,
+                pauseUpdates: false,
+            },
+            {
+                pageIndex: 5,
+                pageSize: 100,
+            },
+        )
+
+        expect(result.current.items).toEqual(partialPageTickets.slice(500, 600))
+        expect(result.current.isLoading).toBe(true)
+        await waitFor(() => {
+            expect(fetchNextPageMock).toHaveBeenCalled()
+        })
+    })
+
+    it('returns the next persisted slice once the DataTable advances and the new page arrives', async () => {
         const firstPageTickets = Array.from({ length: 20 }, (_, index) => ({
             id: index + 1,
         }))
@@ -1137,13 +1219,11 @@ describe('useTicketTableData', () => {
             }),
         )
 
-        const { result, rerender } = renderHook(() =>
-            useTicketTableData({
-                viewId: 123,
-                enablePersistedUpdates: true,
-                pauseUpdates: false,
-            }),
-        )
+        const { result, rerender } = renderTicketTableDataHook({
+            viewId: 123,
+            enablePersistedUpdates: true,
+            pauseUpdates: false,
+        })
 
         act(() => {
             result.current.onPageChange('next')
@@ -1152,17 +1232,24 @@ describe('useTicketTableData', () => {
         expect(fetchNextPageMock).toHaveBeenCalled()
         hasFetchedNextPage = true
 
-        rerender()
+        // Simulate the DataTable bumping its internal pageIndex via
+        // table.nextPage() — the parent's mirror updates and re-runs the hook.
+        rerender({
+            viewId: 123,
+            pageIndex: 1,
+            pageSize: 20,
+            enablePersistedUpdates: true,
+            pauseUpdates: false,
+        })
 
         await waitFor(() => {
-            expect(result.current.currentPageIndex).toBe(1)
             expect(result.current.items).toEqual(
                 secondPageTickets.slice(20, 40),
             )
         })
     })
 
-    it('moves to the previous persisted page without fetching', () => {
+    it('returns the previous persisted slice when the DataTable goes back', () => {
         const persistedTickets = Array.from({ length: 40 }, (_, index) => ({
             id: index + 1,
         }))
@@ -1175,19 +1262,24 @@ describe('useTicketTableData', () => {
             }),
         )
 
-        const { result } = renderHook(() =>
-            useTicketTableData({
-                viewId: 123,
-                enablePersistedUpdates: true,
-                pauseUpdates: false,
-            }),
-        )
-
-        act(() => {
-            result.current.onPageChange('next')
+        const { result, rerender } = renderTicketTableDataHook({
+            viewId: 123,
+            enablePersistedUpdates: true,
+            pauseUpdates: false,
         })
 
-        expect(result.current.currentPageIndex).toBe(1)
+        // pageIndex 0 → first slice
+        expect(result.current.items).toEqual(persistedTickets.slice(0, 20))
+
+        // DataTable advances to pageIndex 1
+        rerender({
+            viewId: 123,
+            pageIndex: 1,
+            pageSize: 20,
+            enablePersistedUpdates: true,
+            pauseUpdates: false,
+        })
+
         expect(result.current.items).toEqual(persistedTickets.slice(20, 40))
 
         fetchNextPageMock.mockClear()
@@ -1196,12 +1288,12 @@ describe('useTicketTableData', () => {
             result.current.onPageChange('previous')
         })
 
-        expect(result.current.currentPageIndex).toBe(0)
-        expect(result.current.items).toEqual(persistedTickets.slice(0, 20))
+        // Hook is a no-op for "previous" — DataTable owns pageIndex, no
+        // extra fetch is needed for already-loaded pages.
         expect(fetchNextPageMock).not.toHaveBeenCalled()
     })
 
-    it('resets persisted pagination when the page size changes', () => {
+    it('returns the persisted slice for the given pageIndex/pageSize', () => {
         const persistedTickets = Array.from({ length: 40 }, (_, index) => ({
             id: index + 1,
         }))
@@ -1214,25 +1306,31 @@ describe('useTicketTableData', () => {
             }),
         )
 
-        const { result } = renderHook(() =>
-            useTicketTableData({
-                viewId: 123,
-                enablePersistedUpdates: true,
-                pauseUpdates: false,
-            }),
-        )
-
-        act(() => {
-            result.current.onPageChange('next')
+        const { result, rerender } = renderTicketTableDataHook({
+            viewId: 123,
+            enablePersistedUpdates: true,
+            pauseUpdates: false,
         })
 
+        // pageIndex 1, pageSize 20 → slice (20, 40)
+        rerender({
+            viewId: 123,
+            pageIndex: 1,
+            pageSize: 20,
+            enablePersistedUpdates: true,
+            pauseUpdates: false,
+        })
         expect(result.current.items).toEqual(persistedTickets.slice(20, 40))
 
-        act(() => {
-            result.current.onPageSizeChange(10)
+        // pageSize change shrinks the page; DataTable also auto-resets
+        // pageIndex to 0, which the parent mirrors.
+        rerender({
+            viewId: 123,
+            pageIndex: 0,
+            pageSize: 10,
+            enablePersistedUpdates: true,
+            pauseUpdates: false,
         })
-
-        expect(result.current.pageSize).toBe(10)
         expect(result.current.items).toEqual(persistedTickets.slice(0, 10))
     })
 
@@ -1248,19 +1346,17 @@ describe('useTicketTableData', () => {
             }),
         )
 
-        const { result, rerender } = renderHook(() =>
-            useTicketTableData({
-                viewId: 123,
-                enablePersistedUpdates: true,
-                pauseUpdates: false,
-                dirtyView: {
-                    enabled: true,
-                    search: 'vip',
-                    filters: 'status:open',
-                    areFiltersValid: true,
-                },
-            }),
-        )
+        const { result, rerender } = renderTicketTableDataHook({
+            viewId: 123,
+            enablePersistedUpdates: true,
+            pauseUpdates: false,
+            dirtyView: {
+                enabled: true,
+                search: 'vip',
+                filters: 'status:open',
+                areFiltersValid: true,
+            },
+        })
 
         act(() => {
             result.current.onPageChange('next')
@@ -1294,19 +1390,17 @@ describe('useTicketTableData', () => {
             }),
         )
 
-        const { result, rerender } = renderHook(() =>
-            useTicketTableData({
-                viewId: 123,
-                enablePersistedUpdates: true,
-                pauseUpdates: false,
-                dirtyView: {
-                    enabled: true,
-                    search: 'vip',
-                    filters: 'status:open',
-                    areFiltersValid: true,
-                },
-            }),
-        )
+        const { result, rerender } = renderTicketTableDataHook({
+            viewId: 123,
+            enablePersistedUpdates: true,
+            pauseUpdates: false,
+            dirtyView: {
+                enabled: true,
+                search: 'vip',
+                filters: 'status:open',
+                areFiltersValid: true,
+            },
+        })
 
         act(() => {
             result.current.onPageChange('next')
@@ -1318,12 +1412,23 @@ describe('useTicketTableData', () => {
             limit: 20,
         })
 
-        act(() => {
-            result.current.onPageSizeChange(50)
+        // Simulate the DataTable applying a new page size — it auto-resets
+        // pageIndex to 0 and the parent mirror fires the same shape into the
+        // hook. The hook drops the dirty cursor in its reset effect.
+        rerender({
+            viewId: 123,
+            pageIndex: 0,
+            pageSize: 50,
+            enablePersistedUpdates: true,
+            pauseUpdates: false,
+            dirtyView: {
+                enabled: true,
+                search: 'vip',
+                filters: 'status:open',
+                areFiltersValid: true,
+            },
         })
-        rerender()
 
-        expect(result.current.pageSize).toBe(50)
         expectDirtySearchQueryCalledWith({
             cursor: undefined,
             limit: 50,

@@ -238,6 +238,7 @@ beforeAll(() => {
 
 afterEach(() => {
     clearViewsCount()
+    window.history.pushState({}, '', '/')
     server.resetHandlers()
 })
 
@@ -382,6 +383,35 @@ describe('TicketTable', () => {
                     },
                     pauseUpdates: false,
                     enableStaleUpdates: true,
+                }),
+            )
+        })
+    })
+
+    it('hydrates page size and page index from DataTable URL persistence', async () => {
+        setViewsCount({ 123: 700 })
+        mockState.tickets = Array.from({ length: 700 }, (_, index) => ({
+            id: index + 1,
+            subject: `Ticket ${index + 1}`,
+        }))
+        window.history.pushState({}, '', '/?pageIndex=5&pageSize=100')
+
+        renderTicketTable()
+        await waitForTicketTableToBeReady()
+
+        expect(screen.getByText('Ticket 501')).toBeInTheDocument()
+        expect(screen.getByText('Ticket 600')).toBeInTheDocument()
+        expect(screen.getByText(/501.*600/)).toBeInTheDocument()
+        await waitFor(() => {
+            expect(
+                useTicketsListModule.useTicketsList,
+            ).toHaveBeenLastCalledWith(
+                123,
+                expect.objectContaining({
+                    params: {
+                        order_by: 'last_message_datetime:desc',
+                        limit: 100,
+                    },
                 }),
             )
         })

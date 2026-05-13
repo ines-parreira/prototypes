@@ -46,6 +46,17 @@ type SearchViewInput = {
 
 type Props = {
     viewId: number
+    /** Current pageIndex from the DataTable, mirrored by the caller. */
+    pageIndex: number
+    /** Current pageSize from the DataTable, mirrored by the caller. */
+    pageSize: number
+    /** Prevents data requests until the DataTable has resolved persisted state. */
+    enabled?: boolean
+    /**
+     * Called when filter / search / sort changes invalidate the current pageIndex.
+     * The caller is expected to nudge the DataTable mirror back to pageIndex 0.
+     */
+    onPaginationReset: () => void
     dirtyView?: DirtyViewInput
     searchView?: SearchViewInput
     enablePersistedUpdates: boolean
@@ -92,6 +103,10 @@ function normalizeSearchTicketItems(
 
 export function useTicketTableData({
     viewId,
+    pageIndex,
+    pageSize,
+    enabled = true,
+    onPaginationReset,
     dirtyView,
     searchView,
     enablePersistedUpdates,
@@ -100,12 +115,9 @@ export function useTicketTableData({
     searchTracking,
 }: Props) {
     const [sortOrder, setSortOrder] = useSortOrder(viewId, { isDraftView })
-    const [pageSize, setPageSize] = useState(20)
-    const [currentPageIndex, setCurrentPageIndex] = useState(0)
     const [dirtyCursor, setDirtyCursor] = useState<string | undefined>()
     const [lastValidDirtyResponse, setLastValidDirtyResponse] =
         useState<DirtyTicketsResponse | null>(null)
-    const requestedPersistedPageIndexRef = useRef<number | null>(null)
     const searchResetKeyRef = useRef<string | null>(null)
     const pendingSearchTrackingRequestRef = useRef<{
         query: string
@@ -130,8 +142,17 @@ export function useTicketTableData({
         params: persistedParams,
         pauseUpdates,
         enableStaleUpdates: enablePersistedUpdates,
-        enabled: !usesSearchQuery,
+        enabled: enabled && !usesSearchQuery,
     })
+    const {
+        tickets: persistedTickets,
+        isLoading: persistedIsLoading,
+        isFetchingNextPage: persistedIsFetchingNextPage,
+        hasNextPage: persistedHasNextPage,
+        fetchNextPage: fetchPersistedNextPage,
+        refetch: refetchPersisted,
+        error: persistedError,
+    } = persisted
 
     const dirtyQuery = useSearchTickets<DirtyTicketsResponse>(
         {
@@ -147,6 +168,7 @@ export function useTicketTableData({
         {
             query: {
                 enabled:
+                    enabled &&
                     (isDraftView || isDirtyMode) &&
                     (dirtyView?.areFiltersValid ?? false),
                 refetchOnWindowFocus: false,
@@ -175,7 +197,7 @@ export function useTicketTableData({
         },
         {
             query: {
-                enabled: isSearchMode,
+                enabled: enabled && isSearchMode,
                 refetchOnWindowFocus: false,
                 staleTime: DurationInMs.FiveSeconds,
             },
@@ -183,6 +205,10 @@ export function useTicketTableData({
     )
 
     useEffect(() => {
+        if (!enabled) {
+            return
+        }
+
         const shouldTrackInitialSearchRequest =
             isSearchMode && searchCursor === undefined
 
@@ -220,6 +246,7 @@ export function useTicketTableData({
 
         isSearchFetchInFlightRef.current = searchQuery.isFetching
     }, [
+        enabled,
         isSearchMode,
         searchCursor,
         searchQuery.data,
@@ -229,25 +256,34 @@ export function useTicketTableData({
     ])
 
     useEffect(() => {
+        if (!enabled) {
+            return
+        }
+
         if (!isDraftView && !isDirtyMode) {
             setDirtyCursor(undefined)
             setLastValidDirtyResponse(null)
             return
         }
 
-        requestedPersistedPageIndexRef.current = null
-        setCurrentPageIndex(0)
         setDirtyCursor(undefined)
+        onPaginationReset()
     }, [
         dirtyView?.filters,
         dirtyView?.search,
+        enabled,
         isDirtyMode,
         isDraftView,
+        onPaginationReset,
         pageSize,
         sortOrder,
     ])
 
     useEffect(() => {
+        if (!enabled) {
+            return
+        }
+
         if (!isSearchMode) {
             searchResetKeyRef.current = null
             return
@@ -265,14 +301,15 @@ export function useTicketTableData({
         }
 
         searchResetKeyRef.current = searchResetKey
-        requestedPersistedPageIndexRef.current = null
-        setCurrentPageIndex(0)
+        onPaginationReset()
 
         if (searchCursor !== undefined) {
             setSearchCursor?.(undefined)
         }
     }, [
+        enabled,
         isSearchMode,
+        onPaginationReset,
         pageSize,
         searchFilters,
         searchTerm,
@@ -287,13 +324,36 @@ export function useTicketTableData({
         }
     }, [dirtyQuery.data, dirtyView?.areFiltersValid])
 
+    // The persisted (non-search/non-dirty) flow keeps an in-memory infinite
+    // list and slices the current page out of it.
+    const persistedPageStart = pageIndex * pageSize
+    const persistedPageEnd = (pageIndex + 1) * pageSize
+    const needsPersistedPageFetch =
+        enabled &&
+        !usesSearchQuery &&
+        persistedPageEnd > persistedTickets.length &&
+        !!persistedHasNextPage
+
+    useEffect(() => {
+        if (
+            !needsPersistedPageFetch ||
+            persistedIsFetchingNextPage ||
+            persistedIsLoading
+        ) {
+            return
+        }
+
+        void fetchPersistedNextPage()
+    }, [
+        fetchPersistedNextPage,
+        needsPersistedPageFetch,
+        persistedIsFetchingNextPage,
+        persistedIsLoading,
+    ])
+
     const persistedItems = useMemo(
-        () =>
-            persisted.tickets.slice(
-                currentPageIndex * pageSize,
-                (currentPageIndex + 1) * pageSize,
-            ),
-        [currentPageIndex, pageSize, persisted.tickets],
+        () => persistedTickets.slice(persistedPageStart, persistedPageEnd),
+        [persistedTickets, persistedPageEnd, persistedPageStart],
     )
 
     const activeDirtyResponse = dirtyView?.areFiltersValid
@@ -305,51 +365,30 @@ export function useTicketTableData({
         (dirtyView?.areFiltersValid ?? false) &&
         activeDirtyResponse != null
 
-    useEffect(() => {
-        const requestedPersistedPageIndex =
-            requestedPersistedPageIndexRef.current
-
-        if (
-            shouldRenderDirtyData ||
-            requestedPersistedPageIndex == null ||
-            persisted.isFetchingNextPage
-        ) {
-            return
-        }
-
-        const nextPageStart = requestedPersistedPageIndex * pageSize
-
-        if (nextPageStart < persisted.tickets.length) {
-            setCurrentPageIndex(requestedPersistedPageIndex)
-            requestedPersistedPageIndexRef.current = null
-        }
-    }, [
-        pageSize,
-        persisted.isFetchingNextPage,
-        persisted.tickets.length,
-        shouldRenderDirtyData,
-    ])
-
     const persistedState = useMemo<TicketTableDataState>(
         () => ({
             items: persistedItems,
-            isLoading: persisted.isLoading || persisted.isFetchingNextPage,
+            isLoading:
+                persistedIsLoading ||
+                persistedIsFetchingNextPage ||
+                needsPersistedPageFetch,
             hasNextPage:
-                (currentPageIndex + 1) * pageSize < persisted.tickets.length ||
-                !!persisted.hasNextPage,
-            hasPreviousPage: currentPageIndex > 0,
+                persistedPageEnd < persistedTickets.length ||
+                !!persistedHasNextPage,
+            hasPreviousPage: pageIndex > 0,
             totalResources: undefined,
-            error: persisted.error,
+            error: persistedError,
         }),
         [
-            currentPageIndex,
-            pageSize,
-            persisted.error,
-            persisted.hasNextPage,
-            persisted.isFetchingNextPage,
-            persisted.isLoading,
-            persisted.tickets.length,
+            pageIndex,
+            persistedError,
+            persistedHasNextPage,
+            persistedIsFetchingNextPage,
+            persistedIsLoading,
+            persistedTickets.length,
+            persistedPageEnd,
             persistedItems,
+            needsPersistedPageFetch,
         ],
     )
 
@@ -385,12 +424,28 @@ export function useTicketTableData({
         [searchQuery.data, searchQuery.error, searchQuery.isLoading],
     )
 
-    const activeState = isSearchMode
-        ? searchState
-        : shouldRenderDirtyData
-          ? dirtyState
-          : persistedState
+    const unresolvedState = useMemo<TicketTableDataState>(
+        () => ({
+            items: [],
+            isLoading: true,
+            hasNextPage: false,
+            hasPreviousPage: false,
+            totalResources: undefined,
+            error: null,
+        }),
+        [],
+    )
 
+    const activeState = !enabled
+        ? unresolvedState
+        : isSearchMode
+          ? searchState
+          : shouldRenderDirtyData
+            ? dirtyState
+            : persistedState
+
+    // Cursor-based mode handlers only update their cursor — the DataTable
+    // owns pageIndex and bumps it internally via table.nextPage() / .previousPage().
     const handleSearchPageChange = useCallback<PageChangeHandler>(
         (direction: 'next' | 'previous') => {
             const nextCursor =
@@ -398,14 +453,8 @@ export function useTicketTableData({
                     ? searchQuery.data?.data.meta?.next_cursor
                     : searchQuery.data?.data.meta?.prev_cursor
 
-            if (!nextCursor) {
-                return
-            }
-
-            setCurrentPageIndex((index) =>
-                direction === 'next' ? index + 1 : Math.max(0, index - 1),
-            )
-            setSearchCursor?.(nextCursor ?? undefined)
+            if (!nextCursor) return
+            setSearchCursor?.(nextCursor)
         },
         [
             searchQuery.data?.data.meta?.next_cursor,
@@ -421,14 +470,8 @@ export function useTicketTableData({
                     ? activeDirtyResponse?.meta?.next_cursor
                     : activeDirtyResponse?.meta?.prev_cursor
 
-            if (!nextCursor) {
-                return
-            }
-
-            setCurrentPageIndex((index) =>
-                direction === 'next' ? index + 1 : Math.max(0, index - 1),
-            )
-            setDirtyCursor(nextCursor ?? undefined)
+            if (!nextCursor) return
+            setDirtyCursor(nextCursor)
         },
         [
             activeDirtyResponse?.meta?.next_cursor,
@@ -436,24 +479,30 @@ export function useTicketTableData({
         ],
     )
 
+    // Persisted mode: when the user clicks "next" past the in-memory cache,
+    // kick off the next batch fetch. The DataTable bumps pageIndex
+    // immediately; the slice is briefly empty and `isFetchingNextPage` keeps
+    // the table in its loading state until the new page arrives.
     const handlePersistedPageChange = useCallback<PageChangeHandler>(
         (direction: 'next' | 'previous') => {
-            if (direction === 'previous') {
-                requestedPersistedPageIndexRef.current = null
-                setCurrentPageIndex((index) => Math.max(0, index - 1))
-                return
-            }
-
-            const nextPageStart = (currentPageIndex + 1) * pageSize
-            if (nextPageStart < persisted.tickets.length) {
-                requestedPersistedPageIndexRef.current = null
-                setCurrentPageIndex((index) => index + 1)
-            } else if (persisted.hasNextPage && !persisted.isFetchingNextPage) {
-                requestedPersistedPageIndexRef.current = currentPageIndex + 1
-                void persisted.fetchNextPage()
+            if (direction !== 'next') return
+            const nextPageStart = (pageIndex + 1) * pageSize
+            if (
+                nextPageStart >= persistedTickets.length &&
+                persistedHasNextPage &&
+                !persistedIsFetchingNextPage
+            ) {
+                void fetchPersistedNextPage()
             }
         },
-        [currentPageIndex, pageSize, persisted],
+        [
+            fetchPersistedNextPage,
+            pageIndex,
+            pageSize,
+            persistedHasNextPage,
+            persistedIsFetchingNextPage,
+            persistedTickets.length,
+        ],
     )
 
     const handlePageChange: PageChangeHandler = isSearchMode
@@ -461,17 +510,6 @@ export function useTicketTableData({
         : shouldRenderDirtyData
           ? handleDirtyPageChange
           : handlePersistedPageChange
-
-    const handlePageSizeChange = useCallback(
-        (size: number) => {
-            requestedPersistedPageIndexRef.current = null
-            setPageSize(size)
-            setCurrentPageIndex(0)
-            setDirtyCursor(undefined)
-            setSearchCursor?.(undefined)
-        },
-        [setSearchCursor],
-    )
 
     const handleSortChange = useCallback(
         (
@@ -504,13 +542,17 @@ export function useTicketTableData({
                 return
             }
 
-            setSortOrder(firstSort.desc ? field.desc : field.asc)
-            requestedPersistedPageIndexRef.current = null
-            setCurrentPageIndex(0)
+            const nextSortOrder = firstSort.desc ? field.desc : field.asc
+            if (nextSortOrder === sortOrder) {
+                return
+            }
+
+            setSortOrder(nextSortOrder)
             setDirtyCursor(undefined)
             setSearchCursor?.(undefined)
+            onPaginationReset()
         },
-        [setSearchCursor, setSortOrder, sortOrder],
+        [onPaginationReset, setSearchCursor, setSortOrder, sortOrder],
     )
 
     const refreshSearch = useCallback<RefreshHandler>(() => {
@@ -526,8 +568,8 @@ export function useTicketTableData({
     }, [dirtyQuery, dirtyView?.areFiltersValid])
 
     const refreshPersisted = useCallback<RefreshHandler>(() => {
-        void persisted.refetch()
-    }, [persisted])
+        void refetchPersisted()
+    }, [refetchPersisted])
 
     const refresh: RefreshHandler = isSearchMode
         ? refreshSearch
@@ -538,12 +580,9 @@ export function useTicketTableData({
 
     return {
         ...activeState,
-        currentPageIndex,
         onPageChange: handlePageChange,
-        onPageSizeChange: handlePageSizeChange,
         onSortChange: handleSortChange,
         onRefresh: refresh,
-        pageSize,
         sortOrder,
     }
 }
