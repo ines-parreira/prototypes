@@ -5,11 +5,13 @@ import { fromJS } from 'immutable'
 import type { List, Map } from 'immutable'
 
 import type { Source, Template } from 'models/widget/types'
+import { useWidgetData } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/helpers'
 import { canDisplayWidget } from 'pages/common/components/infobar/utils'
+import { CustomerContext } from 'providers/infobar/CustomerContext'
 import { EditionContext } from 'providers/infobar/EditionContext'
 import type { WidgetsState } from 'state/widgets/types'
 import { WidgetEnvironment } from 'state/widgets/types'
-import { itemsWithContext } from 'state/widgets/utils'
+import { getSourcePathFromContext, itemsWithContext } from 'state/widgets/utils'
 import { WidgetContextProvider } from 'Widgets/contexts/WidgetContext'
 import type { WidgetProps } from 'Widgets/modules/Widget'
 
@@ -23,6 +25,7 @@ type Props = {
     widgetType: string
     sourcePaths: string[][]
     WidgetComponent: ComponentType<WidgetProps>
+    customerId?: number | null
 }
 
 export default function IntegrationTabContent({
@@ -31,11 +34,27 @@ export default function IntegrationTabContent({
     widgetType,
     sourcePaths,
     WidgetComponent,
+    customerId,
 }: Props) {
     const isEditing = useMemo(
         () => widgets.getIn(['_internal', 'isEditing']) as boolean,
         [widgets],
     )
+
+    const integrationsPath = useMemo(
+        () =>
+            getSourcePathFromContext(
+                WidgetEnvironment.Ticket,
+                'integrations',
+            ) as string[],
+        [],
+    )
+
+    const { effectiveSource } = useWidgetData({
+        source: sources,
+        path: integrationsPath,
+        customerId,
+    })
 
     const contextFilteredItems = useMemo(() => {
         return isEditing
@@ -69,7 +88,7 @@ export default function IntegrationTabContent({
 
         if (isEditing) {
             for (const path of sourcePaths) {
-                const source = sources.getIn(path) as
+                const source = effectiveSource.getIn(path) as
                     | Map<string, unknown>
                     | undefined
                 if (
@@ -85,7 +104,9 @@ export default function IntegrationTabContent({
         return sourcePaths
             .map((path) => ({
                 sourcePath: path,
-                source: sources.getIn(path) as Map<string, unknown> | undefined,
+                source: effectiveSource.getIn(path) as
+                    | Map<string, unknown>
+                    | undefined,
             }))
             .filter((instance) => {
                 if (!instance.source) return false
@@ -95,7 +116,7 @@ export default function IntegrationTabContent({
                     instance.source.toJS() as Source,
                 )
             })
-    }, [sources, sourcePaths, integrationWidget, isEditing])
+    }, [effectiveSource, sourcePaths, integrationWidget, isEditing])
 
     if (!integrationWidget || widgetInstances.length === 0) {
         return null
@@ -106,36 +127,40 @@ export default function IntegrationTabContent({
     return (
         <div className={css.integrationContainer}>
             <EditionContext.Provider value={{ isEditing }}>
-                <div className={css.integrationContent}>
-                    {widgetInstances.map(({ sourcePath, source }) => {
-                        const passedTemplate = {
-                            ...(template.toJS() as Template),
-                            templatePath: `${integrationWidgetIndex}.template`,
-                            absolutePath: sourcePath,
-                        }
-                        return (
-                            <WidgetContextProvider
-                                key={sourcePath.join('.')}
-                                value={integrationWidget}
-                            >
-                                <WidgetComponent
-                                    source={
-                                        (
-                                            source as Map<string, unknown>
-                                        ).toJS() as Source
-                                    }
-                                    template={passedTemplate}
-                                />
-                            </WidgetContextProvider>
-                        )
-                    })}
-                </div>
-                {isEditing && (
-                    <WidgetEditionTools
-                        widgets={widgets}
-                        context={WidgetEnvironment.Ticket}
-                    />
-                )}
+                <CustomerContext.Provider
+                    value={{ customerId: customerId ?? null }}
+                >
+                    <div className={css.integrationContent}>
+                        {widgetInstances.map(({ sourcePath, source }) => {
+                            const passedTemplate = {
+                                ...(template.toJS() as Template),
+                                templatePath: `${integrationWidgetIndex}.template`,
+                                absolutePath: sourcePath,
+                            }
+                            return (
+                                <WidgetContextProvider
+                                    key={sourcePath.join('.')}
+                                    value={integrationWidget}
+                                >
+                                    <WidgetComponent
+                                        source={
+                                            (
+                                                source as Map<string, unknown>
+                                            ).toJS() as Source
+                                        }
+                                        template={passedTemplate}
+                                    />
+                                </WidgetContextProvider>
+                            )
+                        })}
+                    </div>
+                    {isEditing && (
+                        <WidgetEditionTools
+                            widgets={widgets}
+                            context={WidgetEnvironment.Ticket}
+                        />
+                    )}
+                </CustomerContext.Provider>
             </EditionContext.Provider>
         </div>
     )

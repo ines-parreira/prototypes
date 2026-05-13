@@ -209,6 +209,7 @@ export function NewTicketPageInfobar({
                                             ],
                                         )}
                                         WidgetComponent={config.WidgetComponent}
+                                        customerId={customer?.id ?? null}
                                     />
                                 </section>
                             )
@@ -237,6 +238,7 @@ export function NewTicketPageInfobar({
                                 <CustomIntegrationsTabContent
                                     sources={sources}
                                     widgets={widgets}
+                                    customerId={customer?.id ?? null}
                                 />
                             </section>
                         )}

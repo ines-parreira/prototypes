@@ -190,6 +190,7 @@ export function TicketCustomerSections({
                             String(integration.id),
                         ])}
                         WidgetComponent={config.WidgetComponent}
+                        customerId={customerId}
                     />
                 </section>,
             )
@@ -225,6 +226,7 @@ export function TicketCustomerSections({
                 <CustomIntegrationsTabContent
                     sources={sources}
                     widgets={widgets}
+                    customerId={customerId}
                 />
             </section>,
         )

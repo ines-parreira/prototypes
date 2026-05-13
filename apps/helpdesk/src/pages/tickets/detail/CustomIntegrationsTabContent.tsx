@@ -4,11 +4,12 @@ import { fromJS } from 'immutable'
 import type { List, Map } from 'immutable'
 
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
+import { useWidgetData } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/helpers'
 import { EditionContext } from 'providers/infobar/EditionContext'
 import { NAMED_INTEGRATION_WIDGET_TYPES } from 'state/widgets/constants'
 import type { WidgetsState } from 'state/widgets/types'
 import { WidgetEnvironment } from 'state/widgets/types'
-import { itemsWithContext } from 'state/widgets/utils'
+import { getSourcePathFromContext, itemsWithContext } from 'state/widgets/utils'
 
 import {
     getWidgetId,
@@ -23,6 +24,7 @@ import css from './TicketInfobarContainer.less'
 type Props = {
     sources: Map<string, unknown>
     widgets: WidgetsState
+    customerId: number | null
 }
 
 const NAMED_WIDGET_PLACEHOLDER_FILTER = '.named-widget-placeholder'
@@ -30,11 +32,27 @@ const NAMED_WIDGET_PLACEHOLDER_FILTER = '.named-widget-placeholder'
 export default function CustomIntegrationsTabContent({
     sources,
     widgets,
+    customerId,
 }: Props) {
     const isEditing = useMemo(
         () => widgets.getIn(['_internal', 'isEditing']) as boolean,
         [widgets],
     )
+
+    const integrationsPath = useMemo(
+        () =>
+            getSourcePathFromContext(
+                WidgetEnvironment.Ticket,
+                'integrations',
+            ) as string[],
+        [],
+    )
+
+    const { effectiveSource } = useWidgetData({
+        source: sources,
+        path: integrationsPath,
+        customerId,
+    })
 
     const contextFilteredItems = useMemo(() => {
         return isEditing
@@ -104,7 +122,7 @@ export default function CustomIntegrationsTabContent({
                                 <CustomWidgetItem
                                     key={getWidgetId(widget) ?? `new-${index}`}
                                     widget={widget}
-                                    sources={sources}
+                                    sources={effectiveSource}
                                     widgetIndex={index}
                                     fallbackIndex={index}
                                 />

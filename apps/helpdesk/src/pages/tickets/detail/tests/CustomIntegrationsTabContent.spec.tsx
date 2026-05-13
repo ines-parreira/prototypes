@@ -80,6 +80,7 @@ describe('CustomIntegrationsTabContent', () => {
             <CustomIntegrationsTabContent
                 sources={sources}
                 widgets={widgets}
+                customerId={null}
             />,
         )
 
@@ -102,6 +103,7 @@ describe('CustomIntegrationsTabContent', () => {
             <CustomIntegrationsTabContent
                 sources={sources}
                 widgets={widgets}
+                customerId={null}
             />,
         )
 
@@ -131,6 +133,7 @@ describe('CustomIntegrationsTabContent', () => {
             <CustomIntegrationsTabContent
                 sources={sources}
                 widgets={widgets}
+                customerId={null}
             />,
         )
 
@@ -157,6 +160,7 @@ describe('CustomIntegrationsTabContent', () => {
             <CustomIntegrationsTabContent
                 sources={sources}
                 widgets={widgets}
+                customerId={null}
             />,
         )
 
@@ -173,6 +177,7 @@ describe('CustomIntegrationsTabContent', () => {
             <CustomIntegrationsTabContent
                 sources={sources}
                 widgets={widgets}
+                customerId={null}
             />,
         )
 
@@ -198,6 +203,7 @@ describe('CustomIntegrationsTabContent', () => {
             <CustomIntegrationsTabContent
                 sources={sources}
                 widgets={widgets}
+                customerId={null}
             />,
         )
 
@@ -217,6 +223,7 @@ describe('CustomIntegrationsTabContent', () => {
             <CustomIntegrationsTabContent
                 sources={sources}
                 widgets={widgets}
+                customerId={null}
             />,
         )
 
@@ -234,6 +241,7 @@ describe('CustomIntegrationsTabContent', () => {
             <CustomIntegrationsTabContent
                 sources={sources}
                 widgets={widgets}
+                customerId={null}
             />,
         )
 
@@ -260,6 +268,7 @@ describe('CustomIntegrationsTabContent', () => {
             <CustomIntegrationsTabContent
                 sources={sources}
                 widgets={widgets}
+                customerId={null}
             />,
         )
 
@@ -284,6 +293,7 @@ describe('CustomIntegrationsTabContent', () => {
             <CustomIntegrationsTabContent
                 sources={sources}
                 widgets={widgets}
+                customerId={null}
             />,
         )
 
@@ -306,6 +316,7 @@ describe('CustomIntegrationsTabContent', () => {
             <CustomIntegrationsTabContent
                 sources={sources}
                 widgets={widgets}
+                customerId={null}
             />,
         )
 
@@ -326,6 +337,7 @@ describe('CustomIntegrationsTabContent', () => {
             <CustomIntegrationsTabContent
                 sources={sources}
                 widgets={widgets}
+                customerId={null}
             />,
         )
 
@@ -353,6 +365,7 @@ describe('CustomIntegrationsTabContent', () => {
             <CustomIntegrationsTabContent
                 sources={sources}
                 widgets={widgets}
+                customerId={null}
             />,
         )
 
@@ -377,6 +390,7 @@ describe('CustomIntegrationsTabContent', () => {
             <CustomIntegrationsTabContent
                 sources={sources}
                 widgets={widgets}
+                customerId={null}
             />,
         )
 
@@ -404,6 +418,7 @@ describe('CustomIntegrationsTabContent', () => {
             <CustomIntegrationsTabContent
                 sources={sources}
                 widgets={widgets}
+                customerId={null}
             />,
         )
 
