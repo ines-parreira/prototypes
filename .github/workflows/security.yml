@@ -1,0 +1,51 @@
+name: Security
+
+on: [push]
+
+env:
+  GH_TOKEN: ${{ github.token }}
+
+permissions:
+  actions: read
+  contents: read
+  statuses: write
+
+concurrency:
+  # Only one side branch run at a time. Every commit runs in parallel on main and staging branch
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ contains(fromJSON('["refs/heads/main", "refs/heads/staging"]'), github.ref) && github.sha || '' }}
+  cancel-in-progress: true
+
+jobs:
+  security-sast:
+    name: "Security: Static Code Analysis"
+    uses: gorgias/reusable-actions/.github/workflows/sast-scans.yml@main
+    # Skip any PR created by dependabot to avoid permission issues:
+    if: (github.actor != 'dependabot[bot]' )
+    secrets: inherit
+    with:
+      semgrep-fail-on-severity: CRITICAL
+      semgrep-fail-on-confidence: HIGH
+      exit-zero: false
+      pr-mode: ${{ github.ref_name != 'main' }}
+      files-to-ignore: "apps/helpdesk/src/assets/ /tests/ __snapshots__"
+      split-main-scan: true
+      split-pr-scan: true
+
+  security-dependencies:
+    uses: gorgias/reusable-actions/.github/workflows/security-dependency-scans.yml@main
+    name: "Security: Dependencies"
+    # Skip running on dependabot PRs, and on main & staging
+    if: (github.actor != 'dependabot[bot]') && (github.ref != 'refs/heads/main') && (github.ref != 'refs/heads/staging')
+    secrets: inherit
+    with:
+      exit-zero: false
+      pr-mode: ${{ github.ref_name != 'main' }}
+
+  security-secrets:
+    uses: gorgias/reusable-actions/.github/workflows/security-secret-scans.yml@main
+    name: "Security: Secrets Scan"
+    if: (github.actor != 'dependabot[bot]')
+    secrets: inherit
+    with:
+      exit-zero: false
+      pr-mode: ${{ github.ref_name != 'main' }}
