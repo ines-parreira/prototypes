@@ -16,6 +16,7 @@ export type ArticleRecommendationApiItem = [
         article_url: string
         total_count: number
         automation_rate: number
+        success_rate: number
         successful_count: number
         helpful_count: number
         drop_off_count: number

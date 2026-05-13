@@ -143,6 +143,13 @@ export const METRIC_TOOLTIPS = {
         link: GLOSSARY_LINK,
         linkText: HOW_IS_IT_CALCULATED,
     },
+    successRateArticleRecommendation: {
+        title: 'Success rate',
+        caption:
+            'Percentage of interactions where the article was marked as helpful.',
+        link: GLOSSARY_LINK,
+        linkText: HOW_IS_IT_CALCULATED,
+    },
     ordersInfluenced: {
         title: 'Orders influenced',
         caption:

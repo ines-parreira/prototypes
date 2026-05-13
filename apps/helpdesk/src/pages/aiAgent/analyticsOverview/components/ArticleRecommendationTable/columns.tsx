@@ -10,11 +10,11 @@ export const ARTICLE_RECOMMENDATION_TABLE = {
 
 export const ARTICLE_RECOMMENDATION_COLUMNS: MetricColumnConfig[] = [
     {
-        accessorKey: 'automationRate',
-        label: 'Automation rate',
-        tooltipConfig: METRIC_TOOLTIPS.overallAutomationRate,
+        accessorKey: 'successRate',
+        label: 'Success rate',
+        tooltipConfig: METRIC_TOOLTIPS.successRateArticleRecommendation,
         metricFormat: 'percent-precision-1',
-        loadingStateKeys: ['automationRate'],
+        loadingStateKeys: ['successRate'],
     },
     {
         accessorKey: 'automatedInteractions',

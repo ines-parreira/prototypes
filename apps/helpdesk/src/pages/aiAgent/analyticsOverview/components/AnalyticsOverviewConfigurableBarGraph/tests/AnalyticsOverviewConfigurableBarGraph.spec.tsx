@@ -164,7 +164,7 @@ describe('AnalyticsOverviewConfigurableBarGraph', () => {
         const secondMetricConfig: ConfigurableGraphMetricConfig = {
             ...defaultMetricConfig,
             measure: 'averageTimeSavedByAgent',
-            name: 'Average time saved by agent',
+            name: 'Average time saved by agents',
             metricFormat: 'duration',
             useTrendData: jest.fn().mockReturnValue({
                 isFetching: false,

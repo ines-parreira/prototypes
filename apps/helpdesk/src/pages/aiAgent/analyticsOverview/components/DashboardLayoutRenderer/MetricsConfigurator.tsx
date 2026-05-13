@@ -79,6 +79,9 @@ export const MetricsConfigurator = ({
                 metrics={metrics}
                 onSave={handleSave}
                 isLoading={isLoading}
+                description={
+                    'Choose which metrics to display and rearrange them as needed.'
+                }
             />
         </Box>
     )

@@ -9,7 +9,7 @@ describe('ARTICLE_RECOMMENDATION_COLUMNS', () => {
         expect(
             ARTICLE_RECOMMENDATION_COLUMNS.map((col) => col.accessorKey),
         ).toEqual([
-            'automationRate',
+            'successRate',
             'automatedInteractions',
             'handoverInteractions',
         ])

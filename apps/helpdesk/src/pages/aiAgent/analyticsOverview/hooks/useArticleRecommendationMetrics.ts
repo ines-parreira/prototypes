@@ -26,7 +26,7 @@ import { createCsv } from 'utils/file'
 
 export type ArticleRecommendationRow = {
     entity: string
-    automationRate: number | null
+    successRate: number | null
     automatedInteractions: number | null
     handoverInteractions: number | null
 }
@@ -36,7 +36,7 @@ export type ArticleRecommendationMetricsData = {
     isLoading: boolean
     isError: boolean
     loadingStates: {
-        automationRate: boolean
+        successRate: boolean
         automatedInteractions: boolean
         handoverInteractions: boolean
     }
@@ -88,7 +88,7 @@ function transformResponse(data?: ArticleRecommendationApiItem): {
 
     const rows = items.map((item) => ({
         entity: item.article_url,
-        automationRate: item.automation_rate,
+        successRate: item.success_rate,
         automatedInteractions: item.successful_count,
         handoverInteractions: item.handover_count,
     }))
@@ -114,7 +114,7 @@ export const useArticleRecommendationMetrics =
 
         const loadingStates = useMemo(
             () => ({
-                automationRate: isLoading,
+                successRate: isLoading,
                 automatedInteractions: isLoading,
                 handoverInteractions: isLoading,
             }),

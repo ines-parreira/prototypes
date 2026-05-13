@@ -37,7 +37,7 @@ const mockUseArticleRecommendationMetrics = jest.requireMock(
 ).useArticleRecommendationMetrics as jest.Mock
 
 const defaultLoadingStates = {
-    automationRate: false,
+    successRate: false,
     automatedInteractions: false,
     handoverInteractions: false,
 }
@@ -45,13 +45,13 @@ const defaultLoadingStates = {
 const defaultData: ArticleRecommendationRow[] = [
     {
         entity: 'https://example.com/article-1',
-        automationRate: 75,
+        successRate: 75,
         automatedInteractions: 150,
         handoverInteractions: 50,
     },
     {
         entity: 'https://example.com/article-2',
-        automationRate: 60,
+        successRate: 60,
         automatedInteractions: 90,
         handoverInteractions: 60,
     },

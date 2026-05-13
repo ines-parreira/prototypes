@@ -67,7 +67,7 @@ const mockApiItems = [
         article_title: 'How to return an item',
         article_url: 'https://example.com/return',
         total_count: 200,
-        automation_rate: 75,
+        success_rate: 75,
         successful_count: 150,
         helpful_count: 120,
         drop_off_count: 30,
@@ -78,7 +78,7 @@ const mockApiItems = [
         article_title: 'Track your order',
         article_url: 'https://example.com/track',
         total_count: 150,
-        automation_rate: 60,
+        success_rate: 60,
         successful_count: 90,
         helpful_count: 80,
         drop_off_count: 10,
@@ -89,13 +89,13 @@ const mockApiItems = [
 const expectedRows = [
     {
         entity: 'https://example.com/return',
-        automationRate: 75,
+        successRate: 75,
         automatedInteractions: 150,
         handoverInteractions: 50,
     },
     {
         entity: 'https://example.com/track',
-        automationRate: 60,
+        successRate: 60,
         automatedInteractions: 90,
         handoverInteractions: 60,
     },
@@ -132,7 +132,7 @@ describe('useArticleRecommendationMetrics', () => {
     it('maps API fields to row fields correctly', () => {
         const { result } = renderHook(() => useArticleRecommendationMetrics())
 
-        expect(result.current.data[0].automationRate).toBe(75)
+        expect(result.current.data[0].successRate).toBe(75)
         expect(result.current.data[0].automatedInteractions).toBe(150)
         expect(result.current.data[0].handoverInteractions).toBe(50)
     })
@@ -170,7 +170,7 @@ describe('useArticleRecommendationMetrics', () => {
 
         const { result } = renderHook(() => useArticleRecommendationMetrics())
 
-        expect(result.current.loadingStates.automationRate).toBe(true)
+        expect(result.current.loadingStates.successRate).toBe(true)
         expect(result.current.loadingStates.automatedInteractions).toBe(true)
         expect(result.current.loadingStates.handoverInteractions).toBe(true)
     })
