@@ -124,6 +124,7 @@ export function useTicketTableColumnVisibility(
         useUpdateView()
 
     const fields = isDraftView ? draftFields : viewResponse?.data?.fields
+    const isSystemView = viewResponse?.data?.category === 'system'
 
     const defaultVisibleColumns = useMemo(() => {
         const mappedColumns = mapViewFieldsToColumns(fields)
@@ -158,10 +159,11 @@ export function useTicketTableColumnVisibility(
     const canSaveForEveryone = useMemo(
         () =>
             !isDraftView &&
+            !isSystemView &&
             !!currentUser &&
             (hasRole(currentUser.data, UserRole.Agent) ||
                 hasRole(currentUser.data, UserRole.Admin)),
-        [currentUser, isDraftView],
+        [currentUser, isDraftView, isSystemView],
     )
 
     const onLocalChange = useCallback(

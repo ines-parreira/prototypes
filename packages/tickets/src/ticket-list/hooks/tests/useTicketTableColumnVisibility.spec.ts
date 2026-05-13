@@ -392,6 +392,41 @@ describe('useTicketTableColumnVisibility', () => {
         expect(invalidateQueriesSpy).not.toHaveBeenCalled()
     })
 
+    it('does not save for everyone for system views', async () => {
+        useGetViewMock.mockReturnValue({
+            data: {
+                data: {
+                    category: 'system',
+                    fields: [ViewField.Subject, ViewField.Customer],
+                },
+            },
+        })
+
+        const invalidateQueriesSpy = vi.spyOn(
+            QueryClient.prototype,
+            'invalidateQueries',
+        )
+        const { result } = renderHook(() =>
+            useTicketTableColumnVisibility(viewId),
+        )
+
+        expect(result.current.canSaveForEveryone).toBe(false)
+
+        await expect(
+            result.current.saveForEveryone([
+                'select',
+                'ticket',
+                'subject',
+                'customer',
+            ]),
+        ).rejects.toThrow(
+            'User does not have permission to save columns for everyone',
+        )
+
+        expect(mutateAsyncUpdateViewMock).not.toHaveBeenCalled()
+        expect(invalidateQueriesSpy).not.toHaveBeenCalled()
+    })
+
     it('does not throw when draft column changes have no draft callback', () => {
         const { result } = renderHook(() =>
             useTicketTableColumnVisibility(viewId, {
