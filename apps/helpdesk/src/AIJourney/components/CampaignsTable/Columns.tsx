@@ -5,7 +5,9 @@ import type { ColumnDef } from '@gorgias/axiom'
 import {
     Box,
     createTableV1SortableColumn,
+    ProgressBar,
     TableV1SortableColumnHeader,
+    Text,
 } from '@gorgias/axiom'
 import { JourneyCampaignStateEnum } from '@gorgias/convert-client'
 
@@ -43,17 +45,39 @@ export const columns: ColumnDef<TableRow>[] = [
         const campaign = info.row.original.campaign
         const state = campaign?.state
         const isDraft = state === JourneyCampaignStateEnum.Draft
+        const isSending = state === JourneyCampaignStateEnum.Active
         const hasAudiences = campaign?.has_included_audiences ?? false
+        const currentSentCount = campaign?.current_sent_count ?? 0
+        const totalToSendCount = campaign?.total_to_send_count ?? 0
+        const percentage =
+            totalToSendCount === 0
+                ? 0
+                : Math.min((currentSentCount / totalToSendCount) * 100, 100)
         return (
-            <Box gap="xs">
-                <CampaignStateBadge
-                    state={state as JourneyCampaignStateEnum}
-                    scheduledDatetime={campaign?.scheduled_datetime}
-                />
-                {isDraft && !hasAudiences && (
-                    <span className={classNames(badgeCss.badge, badgeCss.grey)}>
-                        No audience
-                    </span>
+            <Box flexDirection="column">
+                <Box gap="xs">
+                    {!isSending && (
+                        <CampaignStateBadge
+                            state={state as JourneyCampaignStateEnum}
+                            scheduledDatetime={campaign?.scheduled_datetime}
+                        />
+                    )}
+                    {isDraft && !hasAudiences && (
+                        <span
+                            className={classNames(
+                                badgeCss.badge,
+                                badgeCss.grey,
+                            )}
+                        >
+                            No audience
+                        </span>
+                    )}
+                </Box>
+                {isSending && (
+                    <Box flexDirection="column" gap="xxxs">
+                        <Text size="sm">Sending</Text>
+                        <ProgressBar size="xs" value={percentage} />
+                    </Box>
                 )}
             </Box>
         )

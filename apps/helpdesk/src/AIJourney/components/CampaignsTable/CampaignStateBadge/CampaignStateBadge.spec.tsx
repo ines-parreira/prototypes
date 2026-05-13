@@ -38,7 +38,6 @@ describe('CampaignStateBadge', () => {
                 state: JourneyCampaignStateEnum.Paused,
                 expectedColor: 'yellow',
             },
-            { state: JourneyCampaignStateEnum.Active, expectedColor: 'blue' },
             { state: JourneyCampaignStateEnum.Canceled, expectedColor: 'red' },
             { state: JourneyCampaignStateEnum.Sent, expectedColor: 'green' },
         ]
@@ -61,10 +60,6 @@ describe('CampaignStateBadge', () => {
             {
                 state: JourneyCampaignStateEnum.Scheduled,
                 expectedLabel: 'Scheduled',
-            },
-            {
-                state: JourneyCampaignStateEnum.Active,
-                expectedLabel: 'Sending',
             },
             {
                 state: JourneyCampaignStateEnum.Canceled,

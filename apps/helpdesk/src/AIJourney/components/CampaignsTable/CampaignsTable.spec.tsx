@@ -640,4 +640,71 @@ describe('CampaignsTable', () => {
             document.querySelector('[data-name="pagination"]'),
         ).toBeInTheDocument()
     })
+
+    describe('Status column progress bar', () => {
+        const renderWithCampaign = (
+            campaign: TableRow['campaign'] | undefined,
+        ) => {
+            render(
+                wrapper(
+                    <CampaignsTable
+                        columns={columns}
+                        data={[{ ...mockFields[0], campaign }]}
+                    />,
+                ),
+                {
+                    storeState: {
+                        integrations: fromJS({ integrations: [] }),
+                    },
+                },
+            )
+        }
+
+        it('should show "Sending" text and progress bar when state is active', () => {
+            renderWithCampaign({
+                title: 'Test',
+                state: 'active',
+                current_sent_count: 50,
+                total_to_send_count: 100,
+            })
+
+            expect(screen.getByText('Sending')).toBeInTheDocument()
+            expect(screen.getByRole('progressbar')).toBeInTheDocument()
+        })
+
+        it('should not render the status badge when state is sending', () => {
+            renderWithCampaign({
+                title: 'Test',
+                state: 'active',
+            })
+
+            expect(screen.queryByRole('status')).not.toBeInTheDocument()
+        })
+
+        it('should render the status badge and no progress bar when state is sent', () => {
+            renderWithCampaign({
+                title: 'Test',
+                state: 'sent',
+            })
+
+            expect(screen.getByText('Delivered')).toBeInTheDocument()
+            expect(screen.queryByRole('progressbar')).not.toBeInTheDocument()
+        })
+
+        it('should render the status badge and no progress bar when state is draft', () => {
+            renderWithCampaign({
+                title: 'Test',
+                state: 'draft',
+            })
+
+            expect(screen.getByText('Draft')).toBeInTheDocument()
+            expect(screen.queryByRole('progressbar')).not.toBeInTheDocument()
+        })
+
+        it('should not render progress bar when campaign is undefined', () => {
+            renderWithCampaign(undefined)
+
+            expect(screen.queryByRole('progressbar')).not.toBeInTheDocument()
+        })
+    })
 })

@@ -76,10 +76,6 @@ export const getCampaignStateLabelAndColor = (
             color = 'yellow'
             label = 'Paused'
             break
-        case JourneyCampaignStateEnum.Active:
-            color = 'blue'
-            label = 'Sending'
-            break
         case JourneyCampaignStateEnum.Canceled:
             color = 'red'
             label = 'Canceled'
