@@ -5,8 +5,11 @@ import { useIsMobileResolution, useWindowSize } from '@repo/hooks'
 import { Panels } from '@repo/layout'
 import { NavigationProvider } from '@repo/navigation'
 import { assumeMock, render } from '@repo/testing'
-import { screen } from '@testing-library/react'
+import { useHelpdeskV2MS4Dot5Flag } from '@repo/tickets/feature-flags'
+import { act, screen } from '@testing-library/react'
+import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
+import { Router } from 'react-router-dom'
 
 import { NavBarDisplayMode } from 'common/navigation/hooks/useNavBar/context'
 import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
@@ -34,7 +37,9 @@ jest.mock('@repo/tickets/feature-flags', () => ({
     ...jest.requireActual('@repo/tickets/feature-flags'),
     useHelpdeskV2MS1Flag: jest.fn().mockReturnValue(false),
     useHelpdeskV2MS1Dot5Flag: jest.fn().mockReturnValue(false),
+    useHelpdeskV2MS4Dot5Flag: jest.fn().mockReturnValue(false),
 }))
+const useHelpdeskV2MS4Dot5FlagMock = assumeMock(useHelpdeskV2MS4Dot5Flag)
 
 jest.mock('core/navigation', () => ({
     GlobalNavigationPanel: () => <div>GlobalNavigationPanel</div>,
@@ -68,8 +73,22 @@ jest.mock('tickets/ticket-infobar', () => ({
 jest.mock('tickets/tickets-list', () => ({
     TicketsListPanel: () => <div>TicketsListPanel</div>,
 }))
+let mockViewPanelMountCounter = 0
 jest.mock('tickets/view', () => ({
-    ViewPanelEntrypoint: () => <div>ViewPanel</div>,
+    ViewPanelEntrypoint: () => {
+        const { useState } = require('react')
+        const [mountId] = useState(() => {
+            mockViewPanelMountCounter += 1
+            return mockViewPanelMountCounter
+        })
+
+        return (
+            <div>
+                <span>ViewPanel</span>
+                <span>ViewPanel mount: {mountId}</span>
+            </div>
+        )
+    },
 }))
 
 jest.mock('../MobileRoutes', () => ({
@@ -97,8 +116,24 @@ const renderPanelRoutes = (
         ),
     })
 
+const renderPanelRoutesWithHistory = (initialEntry: string) => {
+    const history = createMemoryHistory({ initialEntries: [initialEntry] })
+
+    return {
+        history,
+        ...render(
+            <Router history={history}>
+                <NavigationProvider>
+                    <PanelRoutes />
+                </NavigationProvider>
+            </Router>,
+        ),
+    }
+}
+
 describe('PanelRoutes', () => {
     beforeEach(() => {
+        mockViewPanelMountCounter = 0
         useVoiceDeviceMock.mockReturnValue({
             call: null,
             device: null,
@@ -115,7 +150,14 @@ describe('PanelRoutes', () => {
             setIsEnabled: jest.fn(),
         } as any)
         useHelpdeskV2WayfindingMS1FlagMock.mockReturnValue(false)
+        useHelpdeskV2MS4Dot5FlagMock.mockReturnValue(false)
     })
+
+    const expectViewPanelMount = (mountId: number) => {
+        expect(
+            screen.getByText(`ViewPanel mount: ${mountId}`),
+        ).toBeInTheDocument()
+    }
 
     it('should render the mobile routes for mobile resolutions', () => {
         useIsMobileResolutionMock.mockReturnValue(true)
@@ -162,6 +204,38 @@ describe('PanelRoutes', () => {
             initialEntry: '/app/tickets/123456/boop',
         })
         expect(screen.getByText('ViewPanel')).toBeInTheDocument()
+    })
+
+    it('should remount the view panel across MS4.5 ticket view contexts', () => {
+        useHelpdeskV2MS4Dot5FlagMock.mockReturnValue(true)
+
+        const { history } = renderPanelRoutesWithHistory('/app/tickets/search')
+        expectViewPanelMount(1)
+
+        act(() => {
+            history.push('/app/tickets/new/private')
+        })
+        expectViewPanelMount(2)
+
+        act(() => {
+            history.push('/app/tickets/123')
+        })
+        expectViewPanelMount(3)
+
+        act(() => {
+            history.push('/app/tickets/456')
+        })
+        expectViewPanelMount(4)
+    })
+
+    it('should keep the stable saved view panel key when MS4.5 is disabled', () => {
+        const { history } = renderPanelRoutesWithHistory('/app/tickets/123')
+        expectViewPanelMount(1)
+
+        act(() => {
+            history.push('/app/tickets/456')
+        })
+        expectViewPanelMount(1)
     })
 
     it('should render the correct panels for /app/ticket/:ticketId', () => {

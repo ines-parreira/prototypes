@@ -10,6 +10,7 @@ import { TicketsLegacyBridgeProvider } from '@repo/tickets'
 import {
     useHelpdeskV2MS1Dot5Flag,
     useHelpdeskV2MS1Flag,
+    useHelpdeskV2MS4Dot5Flag,
 } from '@repo/tickets/feature-flags'
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
 
@@ -43,6 +44,7 @@ export default function PanelRoutes() {
     const areFlagsLoading = useAreFlagsLoading()
     const hasUIVisionMS1 = useHelpdeskV2MS1Flag()
     const hasUIVisionMS1Dot5 = useHelpdeskV2MS1Dot5Flag()
+    const hasUIVisionMS4Dot5 = useHelpdeskV2MS4Dot5Flag()
     const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
 
     const { width } = useWindowSize()
@@ -52,6 +54,17 @@ export default function PanelRoutes() {
 
     const match = useRouteMatch<{ viewId?: string }>('/app/views/:viewId?')
     const viewId = match?.params.viewId || 'default'
+    const ticketsMatch = useRouteMatch<{ viewId?: string }>(
+        '/app/tickets/:viewId?',
+    )
+    const ticketsViewId = ticketsMatch?.params.viewId || 'default'
+    const newViewMatch = useRouteMatch<{ visibility?: string }>(
+        '/app/tickets/new/:visibility?',
+    )
+    const newViewVisibility = newViewMatch?.params.visibility ?? 'default'
+
+    const getViewPanelKey = (context: string) =>
+        hasUIVisionMS4Dot5 ? `view-panel-${context}` : 'view-panel'
 
     if (areFlagsLoading) {
         return null
@@ -128,19 +141,25 @@ export default function PanelRoutes() {
             <ContentPanels key="content" subtractSize={10}>
                 <Switch>
                     <Route exact path="/app">
-                        <ViewPanelEntrypoint key="view-panel" />
+                        <ViewPanelEntrypoint key={getViewPanelKey('default')} />
                     </Route>
                     <Route exact path="/app/tickets">
-                        <ViewPanelEntrypoint key="view-panel" />
+                        <ViewPanelEntrypoint
+                            key={getViewPanelKey('view-default')}
+                        />
                     </Route>
                     <Route exact path="/app/tickets/new/:visibility?">
-                        <ViewPanelEntrypoint key="view-panel" />
+                        <ViewPanelEntrypoint
+                            key={getViewPanelKey(`new-${newViewVisibility}`)}
+                        />
                     </Route>
                     <Route exact path="/app/tickets/search">
-                        <ViewPanelEntrypoint key="view-panel" />
+                        <ViewPanelEntrypoint key={getViewPanelKey('search')} />
                     </Route>
                     <Route exact path="/app/tickets/:viewId/:viewSlug?">
-                        <ViewPanelEntrypoint key="view-panel" />
+                        <ViewPanelEntrypoint
+                            key={getViewPanelKey(`view-${ticketsViewId}`)}
+                        />
                     </Route>
                     {hasUIVisionMS1Dot5 && (
                         <Route exact path="/app/ticket/new">
