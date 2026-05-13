@@ -76,6 +76,7 @@ export const AnalyticsPage = forwardRef<HTMLDivElement, AnalyticsPageProps>(
                     flexDirection="column"
                     justifyContent="space-between"
                     className={css.stickyHeader}
+                    paddingBottom={!!filtersSlot ? '12px' : 0}
                 >
                     <Box
                         flexDirection="row"

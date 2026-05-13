@@ -15,6 +15,7 @@ import {
     STORES_FILTER_AVAILABILITY_DATE,
 } from 'domains/reporting/pages/common/filters/utils'
 import { AnalyticsPage } from 'domains/reporting/pages/common/layout/AnalyticsPage'
+import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import { useSearchParam } from 'hooks/useSearchParam'
 import { DashboardExportButton } from 'pages/aiAgent/analyticsOverview/components/DashboardExportButton/DashboardExportButton'
 import { DashboardLayoutRenderer } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/DashboardLayoutRenderer'
@@ -24,8 +25,8 @@ import {
 } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 import { useAiAgentAnalyticsDashboardTracking } from 'pages/aiAgent/hooks/useAiAgentAnalyticsDashboardTracking'
 import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
+import { SalesPaywallMiddlewareRouter } from 'pages/aiAgent/Overview/middlewares/SalesPaywallMiddlewareRouter'
 import { STATS_ROUTES } from 'routes/constants'
-
 import { AnalyticsAiAgentAllAgentsReportConfig } from '../AnalyticsAiAgentAllAgentsReportConfig'
 import { AnalyticsAiAgentShoppingAssistantReportConfig } from '../AnalyticsAiAgentShoppingAssistantReportConfig'
 import { AnalyticsAiAgentSupportAgentReportConfig } from '../AnalyticsAiAgentSupportAgentReportConfig'
@@ -69,6 +70,7 @@ export const AnalyticsAiAgentLayout = () => {
         onAnalyticsAiAgentTabSelected,
         onTableTabInteraction,
     } = useAiAgentAnalyticsDashboardTracking()
+    const canUseAiSalesAgent = useCanUseAiSalesAgent()
 
     useEffectOnce(() => {
         const previousUrl = getPreviousUrl()
@@ -110,6 +112,23 @@ export const AnalyticsAiAgentLayout = () => {
                 tableTab: key,
             }),
         [onTableTabInteraction, activeTab],
+    )
+
+    const ShoppingAssistantDashboardWithPaywall = useMemo(
+        () =>
+            SalesPaywallMiddlewareRouter(() => (
+                <DashboardLayoutRenderer
+                    defaultLayoutConfig={
+                        ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT
+                    }
+                    reportConfig={AnalyticsAiAgentShoppingAssistantReportConfig}
+                    dashboardId={ManagedDashboardId.AiAgentAnalytics}
+                    tabId={ManagedDashboardsTabId.ShoppingAssistant}
+                    tabName={AiAgentAnalyticsContent.ShoppingAssistant}
+                    onTableTabChange={handleTableTabChange}
+                />
+            )),
+        [handleTableTabChange],
     )
 
     const { value: isFiltersEnabled, isLoading: isFiltersFFLoading } =
@@ -158,24 +177,11 @@ export const AnalyticsAiAgentLayout = () => {
                     />
                 )
             case AiAgentAnalyticsQueryParams.ShoppingAssistant:
-                return (
-                    <DashboardLayoutRenderer
-                        defaultLayoutConfig={
-                            ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT
-                        }
-                        reportConfig={
-                            AnalyticsAiAgentShoppingAssistantReportConfig
-                        }
-                        dashboardId={ManagedDashboardId.AiAgentAnalytics}
-                        tabId={ManagedDashboardsTabId.ShoppingAssistant}
-                        tabName={AiAgentAnalyticsContent.ShoppingAssistant}
-                        onTableTabChange={handleTableTabChange}
-                    />
-                )
+                return <ShoppingAssistantDashboardWithPaywall />
             default:
                 return null
         }
-    }, [activeTab, handleTableTabChange])
+    }, [activeTab, handleTableTabChange, ShoppingAssistantDashboardWithPaywall])
 
     const handleTabChangeCallback = ({
         tabParam,
@@ -190,17 +196,25 @@ export const AnalyticsAiAgentLayout = () => {
         })
     }
 
+    const paywallHidden =
+        canUseAiSalesAgent ||
+        activeTab !== AiAgentAnalyticsQueryParams.ShoppingAssistant
+
     return (
         <AnalyticsPage
             ref={contentRef}
             title="AI Agent"
             titleExtra={
-                <DashboardExportButton
-                    key={activeTab}
-                    contentRef={contentRef}
-                    useCsvExport={useCsvExport}
-                    pdfFileName={`ai-agent-${activeTab}`}
-                />
+                paywallHidden ? (
+                    <DashboardExportButton
+                        key={activeTab}
+                        contentRef={contentRef}
+                        useCsvExport={useCsvExport}
+                        pdfFileName={`ai-agent-${activeTab}`}
+                    />
+                ) : (
+                    <Box height="32px" />
+                )
             }
             tabs={HEADER_NAVBAR_ITEMS}
             tabParamName={AI_AGENT_TAB_PARAM}
@@ -208,34 +222,36 @@ export const AnalyticsAiAgentLayout = () => {
             defaultTab={AiAgentAnalyticsQueryParams.AllAgents}
             onTabChangeCallback={handleTabChangeCallback}
             filtersSlot={
-                <Box padding="lg" paddingBottom="0px">
-                    <FiltersPanelWrapper
-                        persistentFilters={
-                            activeTabConfig.reportConfig.reportFilters
-                                .persistent
-                        }
-                        withSavedFilters={false}
-                        optionalFilters={optionalFilters}
-                        filterSettingsOverrides={{
-                            [FilterKey.Period]: {
-                                initialSettings: {
-                                    maxSpan: 365,
-                                    minDate: moment(
-                                        MIN_DATE_FOR_AI_AGENT,
-                                        'YYYY-MM-DD',
-                                    ).toDate(),
+                paywallHidden ? (
+                    <Box padding="lg" paddingBottom="0px">
+                        <FiltersPanelWrapper
+                            persistentFilters={
+                                activeTabConfig.reportConfig.reportFilters
+                                    .persistent
+                            }
+                            withSavedFilters={false}
+                            optionalFilters={optionalFilters}
+                            filterSettingsOverrides={{
+                                [FilterKey.Period]: {
+                                    initialSettings: {
+                                        maxSpan: 365,
+                                        minDate: moment(
+                                            MIN_DATE_FOR_AI_AGENT,
+                                            'YYYY-MM-DD',
+                                        ).toDate(),
+                                    },
                                 },
-                            },
-                            ...(isStoresComingSoon && {
-                                [FilterKey.Stores]: {
-                                    isDisabled: true,
-                                    warningMessage: `The store filter will be available in AI Agent ${activeTabConfig.title} starting August 1, 2025.`,
-                                },
-                            }),
-                        }}
-                        compact
-                    />
-                </Box>
+                                ...(isStoresComingSoon && {
+                                    [FilterKey.Stores]: {
+                                        isDisabled: true,
+                                        warningMessage: `The store filter will be available in AI Agent ${activeTabConfig.title} starting August 1, 2025.`,
+                                    },
+                                }),
+                            }}
+                            compact
+                        />
+                    </Box>
+                ) : null
             }
         >
             {renderDashboard}

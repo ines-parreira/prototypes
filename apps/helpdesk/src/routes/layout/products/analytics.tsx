@@ -243,12 +243,25 @@ export function useStatsNavbarConfig() {
                               : []),
                       ]
                     : [
-                          {
-                              id: 'automate-overview',
-                              route: STATS_ROUTES.AI_AGENT_OVERVIEW,
-                              label: PAGE_TITLE_OVERVIEW,
-                              requiresUpgrade: true,
-                          },
+                          isAnalyticsDashboardsNewScreensEnabled
+                              ? {
+                                    id: 'analytics-overview',
+                                    route: STATS_ROUTES.ANALYTICS_OVERVIEW,
+                                    label: PAGE_TITLE_OVERVIEW,
+                                    trailingSlot: (
+                                        <Tag color="grey">
+                                            {isLegacyReportsDisabled
+                                                ? 'New'
+                                                : 'Beta'}
+                                        </Tag>
+                                    ),
+                                }
+                              : {
+                                    id: 'automate-overview',
+                                    route: STATS_ROUTES.AI_AGENT_OVERVIEW,
+                                    label: PAGE_TITLE_OVERVIEW,
+                                    requiresUpgrade: true,
+                                },
                       ],
             },
             ...(isNewSatisfactionReportEnabled

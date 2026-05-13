@@ -8,6 +8,7 @@ import userEvent from '@testing-library/user-event'
 import { ThemeProvider } from 'core/theme'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { STORES_FILTER_AVAILABILITY_DATE } from 'domains/reporting/pages/common/filters/utils'
+import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
 import { AiAgentAnalyticsContent } from '../../constants'
@@ -58,6 +59,19 @@ jest.mock(
         ),
     }),
 )
+const mockSalesPaywallMiddlewareRouter = jest.fn(
+    (ChildComponent: any) =>
+        function SalesPaywallRouter() {
+            return <ChildComponent />
+        },
+)
+jest.mock(
+    'pages/aiAgent/Overview/middlewares/SalesPaywallMiddlewareRouter',
+    () => ({
+        SalesPaywallMiddlewareRouter: (Child: any) =>
+            mockSalesPaywallMiddlewareRouter(Child),
+    }),
+)
 jest.mock('domains/reporting/pages/common/filters/FiltersPanelWrapper', () => {
     const MockFiltersPanelWrapper = jest.fn(() => (
         <div data-testid="filters-panel">Filters</div>
@@ -76,6 +90,7 @@ jest.mock('hooks/candu/useInjectStyleToCandu', () => ({
     default: jest.fn(),
 }))
 jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
+jest.mock('hooks/aiAgent/useCanUseAiSalesAgent')
 
 const mockedUseFlagWithLoading = jest.mocked(useFlagWithLoading)
 const mockFiltersPanelWrapper = jest.requireMock(
@@ -84,6 +99,7 @@ const mockFiltersPanelWrapper = jest.requireMock(
 
 const mockedGetPreviousUrl = jest.mocked(getPreviousUrl)
 const mockedUseAiAgentStatsFilters = jest.mocked(useAiAgentStatsFilters)
+const mockedUseCanUseAiSalesAgent = jest.mocked(useCanUseAiSalesAgent)
 const mockedUseExportAiAgentAllAgentsToCSV = jest.mocked(
     useExportAiAgentAllAgentsToCSV,
 )
@@ -132,6 +148,7 @@ describe('AnalyticsAiAgentLayout', () => {
             triggerDownload: jest.fn(),
             isLoading: false,
         })
+        mockedUseCanUseAiSalesAgent.mockReturnValue(true)
         mockedUseAiAgentStatsFilters.mockReturnValue({
             statsFilters: {
                 period: {
@@ -167,6 +184,31 @@ describe('AnalyticsAiAgentLayout', () => {
         renderComponent()
         expect(screen.getByTestId('download-button')).toBeInTheDocument()
     })
+
+    it('hides the download button on shopping-assistant tab when user cannot use AI Sales Agent', () => {
+        mockedUseCanUseAiSalesAgent.mockReturnValue(false)
+
+        renderComponent('/app/stats/ai-agent?ai-agent-tab=shopping-assistant')
+
+        expect(screen.queryByTestId('download-button')).not.toBeInTheDocument()
+    })
+
+    it('renders the download button on shopping-assistant tab when user can use AI Sales Agent', () => {
+        mockedUseCanUseAiSalesAgent.mockReturnValue(true)
+
+        renderComponent('/app/stats/ai-agent?ai-agent-tab=shopping-assistant')
+
+        expect(screen.getByTestId('download-button')).toBeInTheDocument()
+    })
+
+    it('renders the download button on non shopping-assistant tabs even when user cannot use AI Sales Agent', () => {
+        mockedUseCanUseAiSalesAgent.mockReturnValue(false)
+
+        renderComponent('/app/stats/ai-agent?ai-agent-tab=support-agent')
+
+        expect(screen.getByTestId('download-button')).toBeInTheDocument()
+    })
+
     it('should render filters panel', () => {
         renderComponent()
         expect(screen.getByTestId('filters-panel')).toBeInTheDocument()
@@ -198,9 +240,51 @@ describe('AnalyticsAiAgentLayout', () => {
         renderComponent('/app/stats/ai-agent?ai-agent-tab=support-agent')
         expect(screen.getByTestId('dashboard-renderer')).toBeInTheDocument()
     })
-    it('should render dashboard renderer for shopping-assistant tab', () => {
+    it('should render dashboard renderer for shopping-assistant tab when middleware grants access', () => {
         renderComponent('/app/stats/ai-agent?ai-agent-tab=shopping-assistant')
         expect(screen.getByTestId('dashboard-renderer')).toBeInTheDocument()
+        expect(
+            screen.getByText('AI Agent Analytics Shopping Assistant'),
+        ).toBeInTheDocument()
+    })
+
+    it('wraps the shopping-assistant dashboard with SalesPaywallMiddlewareRouter', () => {
+        renderComponent('/app/stats/ai-agent?ai-agent-tab=shopping-assistant')
+        expect(mockSalesPaywallMiddlewareRouter).toHaveBeenCalledWith(
+            expect.any(Function),
+        )
+    })
+
+    it('renders the paywall and hides the dashboard when SalesPaywallMiddlewareRouter blocks access', () => {
+        mockSalesPaywallMiddlewareRouter.mockImplementationOnce(
+            () =>
+                function SalesPaywallRouter() {
+                    return <div>Shopping Assistant Paywall</div>
+                },
+        )
+
+        renderComponent('/app/stats/ai-agent?ai-agent-tab=shopping-assistant')
+
+        expect(
+            screen.getByText('Shopping Assistant Paywall'),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByTestId('dashboard-renderer'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('does not invoke SalesPaywallMiddlewareRouter rendering for non shopping-assistant tabs', () => {
+        mockSalesPaywallMiddlewareRouter.mockImplementationOnce(
+            () =>
+                function SalesPaywallRouter() {
+                    return <div>Shopping Assistant Paywall</div>
+                },
+        )
+        renderComponent('/app/stats/ai-agent?ai-agent-tab=support-agent')
+        expect(screen.getByTestId('dashboard-renderer')).toBeInTheDocument()
+        expect(
+            screen.queryByText('Shopping Assistant Paywall'),
+        ).not.toBeInTheDocument()
     })
     it('should render nothing for an unknown tab value', () => {
         renderComponent('/app/stats/ai-agent?ai-agent-tab=unknown-tab')
