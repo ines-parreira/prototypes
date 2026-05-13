@@ -1,0 +1,17 @@
+:local {
+    .interactive {
+        display: block;
+        width: 100%;
+        padding: 0;
+        background: none;
+        border: none;
+        text-align: left;
+        cursor: pointer;
+    }
+
+    .interactive:focus-visible {
+        outline: 2px solid var(--border-action-default, #6457f9);
+        outline-offset: 2px;
+        border-radius: var(--spacing-xs, 8px);
+    }
+}

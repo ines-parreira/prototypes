@@ -1,0 +1,15 @@
+:local {
+    .trend {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-xxxs, 4px);
+    }
+
+    .trend[data-direction='up'] {
+        color: var(--content-success-default, #168038);
+    }
+
+    .trend[data-direction='down'] {
+        color: var(--content-critical-default, #c92e2c);
+    }
+}
