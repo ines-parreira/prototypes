@@ -1,6 +1,10 @@
 import { renderHook } from '@repo/testing'
 import type { RefreshConfig } from '@repo/views'
-import { useHasNewViewCountScheduler, useSchedulerConfig } from '@repo/views'
+import {
+    useSchedulerConfig,
+    useViewCountSchedulerVersion,
+    ViewCountSchedulerVersion,
+} from '@repo/views'
 
 import useViewCountScheduler from '../useViewCountScheduler'
 
@@ -14,7 +18,8 @@ jest.mock('@repo/views', () => ({
     createViewCountScheduler: jest.fn(() => mockScheduler),
     setActiveViewFallback: jest.fn(),
     useDefaultView: jest.fn(),
-    useHasNewViewCountScheduler: jest.fn(),
+    useViewCountSchedulerVersion: jest.fn(),
+    ViewCountSchedulerVersion: { Legacy: 1, V2: 2, V3: 3 },
     useSchedulerConfig: jest.fn(),
 }))
 
@@ -22,7 +27,8 @@ jest.mock('services/socketManager/socketManager', () => ({
     send: jest.fn(),
 }))
 
-const useHasNewViewCountSchedulerMock = useHasNewViewCountScheduler as jest.Mock
+const useViewCountSchedulerVersionMock =
+    useViewCountSchedulerVersion as jest.Mock
 const useSchedulerConfigMock = useSchedulerConfig as jest.Mock
 
 const fakeConfig: RefreshConfig = {
@@ -36,8 +42,11 @@ const fakeConfig: RefreshConfig = {
     staleSeconds: 600,
 }
 
-function mockHasNewScheduler(value: boolean) {
-    useHasNewViewCountSchedulerMock.mockReturnValue({ value, isLoading: false })
+function mockVersion(version: ViewCountSchedulerVersion) {
+    useViewCountSchedulerVersionMock.mockReturnValue({
+        version,
+        isLoading: false,
+    })
 }
 
 describe('useViewCountScheduler', () => {
@@ -47,20 +56,28 @@ describe('useViewCountScheduler', () => {
             steal: jest.fn(),
             stop: jest.fn(),
         }
-        useHasNewViewCountSchedulerMock.mockReset()
+        useViewCountSchedulerVersionMock.mockReset()
         useSchedulerConfigMock.mockReset()
         useSchedulerConfigMock.mockReturnValue(fakeConfig)
-        mockHasNewScheduler(false)
+        mockVersion(ViewCountSchedulerVersion.Legacy)
     })
 
-    it('should not start the scheduler when the new UI is disabled', () => {
+    it('should not start the scheduler when version is Legacy', () => {
         renderHook(() => useViewCountScheduler())
 
         expect(mockScheduler.start).not.toHaveBeenCalled()
     })
 
-    it('should start the scheduler when the new UI is enabled', () => {
-        mockHasNewScheduler(true)
+    it('should not start the scheduler when version is V3', () => {
+        mockVersion(ViewCountSchedulerVersion.V3)
+
+        renderHook(() => useViewCountScheduler())
+
+        expect(mockScheduler.start).not.toHaveBeenCalled()
+    })
+
+    it('should start the scheduler when version is V2', () => {
+        mockVersion(ViewCountSchedulerVersion.V2)
 
         renderHook(() => useViewCountScheduler())
 
@@ -68,7 +85,7 @@ describe('useViewCountScheduler', () => {
     })
 
     it('should steal the scheduler on focus', () => {
-        mockHasNewScheduler(true)
+        mockVersion(ViewCountSchedulerVersion.V2)
 
         renderHook(() => useViewCountScheduler())
         window.dispatchEvent(new Event('focus'))
@@ -77,7 +94,7 @@ describe('useViewCountScheduler', () => {
     })
 
     it('should stop the scheduler on unmount', () => {
-        mockHasNewScheduler(true)
+        mockVersion(ViewCountSchedulerVersion.V2)
 
         const { unmount } = renderHook(() => useViewCountScheduler())
         unmount()

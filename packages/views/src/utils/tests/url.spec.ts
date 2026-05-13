@@ -1,4 +1,4 @@
-import { getViewIdFromUrl, isViewUrl } from '../url'
+import { getViewIdFromUrl, isInboxRootUrl, isViewUrl } from '../url'
 
 beforeEach(() => {
     Object.defineProperty(window, 'location', {
@@ -56,5 +56,33 @@ describe('isViewUrl', () => {
         window.location.pathname = '/settings'
 
         expect(isViewUrl()).toBe(false)
+    })
+})
+
+describe('isInboxRootUrl', () => {
+    it.each([
+        '/app',
+        '/app/',
+        '/app/views',
+        '/app/views/',
+        '/app/tickets',
+        '/app/tickets/',
+    ])('returns true for %s', (path) => {
+        window.location.pathname = path
+
+        expect(isInboxRootUrl()).toBe(true)
+    })
+
+    it.each([
+        '/app/tickets/123',
+        '/app/views/456',
+        '/app/settings',
+        '/app/ai-agent',
+        '/settings',
+        '/',
+    ])('returns false for %s', (path) => {
+        window.location.pathname = path
+
+        expect(isInboxRootUrl()).toBe(false)
     })
 })

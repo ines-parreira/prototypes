@@ -1,3 +1,4 @@
+import { appQueryClient } from '@repo/api-resources'
 import { useQuery } from '@tanstack/react-query'
 
 import { VIEWS_STALE_TIME } from '../constants'
@@ -27,6 +28,18 @@ export function usePrivateViewsOrderingSetting(): PrivateViewsOrderingSetting {
 
 export function usePrivateViewsOrdering(): PrivateViewsOrderingData {
     return usePrivateViewsOrderingSetting().data
+}
+
+/**
+ * Non-hook variant: reads the private views ordering from the React Query
+ * cache used by `usePrivateViewsOrdering`. Falls back to the same
+ * window-settings lookup `loadFromWindow` does when the cache is empty.
+ */
+export function getPrivateViewsOrdering(): PrivateViewsOrderingData {
+    const cached = appQueryClient.getQueryData<PrivateViewsOrderingSetting>(
+        PRIVATE_VIEWS_ORDERING_QUERY_KEY,
+    )
+    return (cached ?? loadFromWindow()).data
 }
 
 const EMPTY_ORDERING: PrivateViewsOrderingData = {

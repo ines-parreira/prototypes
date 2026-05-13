@@ -1,9 +1,15 @@
 import { render } from '@repo/testing/vitest'
 import { screen } from '@testing-library/react'
 
+import type * as UseViewCountSchedulerVersionModule from '../../hooks/useViewCountSchedulerVersion'
+
 import { useAllViews } from '../../hooks/useAllViews'
 import { useHasNewViewCountScheduler } from '../../hooks/useHasNewViewCountScheduler'
 import { useSchedulerConfig } from '../../hooks/useSchedulerConfig'
+import {
+    useViewCountSchedulerVersion,
+    ViewCountSchedulerVersion,
+} from '../../hooks/useViewCountSchedulerVersion'
 import { DEFAULT_REFRESH_CONFIG } from '../../scheduler/selectViewsToRefresh'
 import { viewEventLogStore } from '../../store/viewEventLog'
 import {
@@ -29,6 +35,16 @@ vi.mock('../../hooks/useHasNewViewCountScheduler', () => ({
     useHasNewViewCountScheduler: vi.fn(),
 }))
 
+vi.mock('../../hooks/useViewCountSchedulerVersion', async () => {
+    const actual = await vi.importActual<
+        typeof UseViewCountSchedulerVersionModule
+    >('../../hooks/useViewCountSchedulerVersion')
+    return {
+        ...actual,
+        useViewCountSchedulerVersion: vi.fn(),
+    }
+})
+
 vi.mock('../../hooks/useAllViews', () => ({
     useAllViews: vi.fn(),
 }))
@@ -38,11 +54,18 @@ vi.mock('../../hooks/useSchedulerConfig', () => ({
 }))
 
 const useHasNewViewCountSchedulerMock = vi.mocked(useHasNewViewCountScheduler)
+const useViewCountSchedulerVersionMock = vi.mocked(useViewCountSchedulerVersion)
 const useAllViewsMock = vi.mocked(useAllViews)
 const useSchedulerConfigMock = vi.mocked(useSchedulerConfig)
 
 function mockHasNewScheduler(value: boolean) {
     useHasNewViewCountSchedulerMock.mockReturnValue({ value, isLoading: false })
+    useViewCountSchedulerVersionMock.mockReturnValue({
+        version: value
+            ? ViewCountSchedulerVersion.V2
+            : ViewCountSchedulerVersion.Legacy,
+        isLoading: false,
+    })
 }
 
 const view = {

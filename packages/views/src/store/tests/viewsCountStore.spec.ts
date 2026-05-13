@@ -10,12 +10,14 @@ import {
     getViewCountEntry,
     getViewportViewIds,
     markViewAsViewed,
+    setActiveViewFallback,
     setScores,
     setViewportViewIds,
     setViewsCount,
     useViewCount,
     viewsCountStore,
 } from '../viewsCountStore'
+import { clearViewsCountV3, viewsCountStoreV3 } from '../viewsCountStoreV3'
 
 vi.mock('@repo/browser-storage', () => ({
     localForageManager: {
@@ -29,6 +31,11 @@ vi.mock('@repo/browser-storage', () => ({
 
 beforeEach(() => {
     clearViewsCount()
+    clearViewsCountV3()
+    Object.defineProperty(window, 'location', {
+        value: { pathname: '/' },
+        writable: true,
+    })
 })
 
 describe('setViewsCount', () => {
@@ -332,5 +339,48 @@ describe('setViewportViewIds', () => {
 describe('getViewportViewIds', () => {
     it('returns empty array by default', () => {
         expect(getViewportViewIds()).toEqual([])
+    })
+})
+
+describe('setActiveViewFallback on inbox-root URLs', () => {
+    it.each(['/app', '/app/', '/app/views', '/app/views/', '/app/tickets'])(
+        'marks the fallback as viewed when the URL is %s',
+        (pathname) => {
+            window.location.pathname = pathname
+            setViewsCount({ 42: 5 })
+
+            setActiveViewFallback(42)
+
+            expect(viewsCountStore.getState().counts[42]?.lastViewedAt).toEqual(
+                expect.any(String),
+            )
+            expect(viewsCountStoreV3.getState().recent[42]).toEqual({
+                viewedAt: expect.any(String),
+            })
+        },
+    )
+
+    it('does not mark the fallback when the URL is /app/settings', () => {
+        window.location.pathname = '/app/settings'
+
+        setActiveViewFallback(42)
+
+        expect(viewsCountStoreV3.getState().recent[42]).toBeUndefined()
+    })
+
+    it('does not mark anything when the URL has an explicit view ID', () => {
+        window.location.pathname = '/app/tickets/999'
+
+        setActiveViewFallback(42)
+
+        expect(viewsCountStoreV3.getState().recent[42]).toBeUndefined()
+    })
+
+    it('does not mark when the fallback is cleared', () => {
+        window.location.pathname = '/app'
+
+        setActiveViewFallback(null)
+
+        expect(viewsCountStoreV3.getState().recent).toEqual({})
     })
 })

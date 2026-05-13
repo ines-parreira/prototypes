@@ -4,15 +4,17 @@ import {
     createViewCountScheduler,
     setActiveViewFallback,
     useDefaultView,
-    useHasNewViewCountScheduler,
     useSchedulerConfig,
+    useViewCountSchedulerVersion,
+    ViewCountSchedulerVersion,
 } from '@repo/views'
 
 import socketManager from 'services/socketManager/socketManager'
 import { SocketEventType } from 'services/socketManager/types'
 
 export default function useViewCountScheduler(): void {
-    const { value: isEnabled } = useHasNewViewCountScheduler()
+    const { version } = useViewCountSchedulerVersion()
+    const isEnabled = version === ViewCountSchedulerVersion.V2
     const config = useSchedulerConfig()
     const defaultView = useDefaultView()
 

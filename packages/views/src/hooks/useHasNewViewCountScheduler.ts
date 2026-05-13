@@ -1,23 +1,26 @@
 import {
-    FeatureFlagKey,
-    useFlagWithLoading,
-    useHelpdeskV2BaselineFlag,
-} from '@repo/feature-flags'
+    useViewCountSchedulerVersion,
+    ViewCountSchedulerVersion,
+} from './useViewCountSchedulerVersion'
 
 /**
- * Gates the new view count scheduler on both the Helpdesk v2 baseline flag
- * and the user's local Helpdesk v2 toggle. The legacy scheduler keeps
- * running whenever either is off so users opting out of the new UI don't
- * end up on the new scheduler in isolation.
+ * Returns true whenever a non-legacy scheduler is in charge (smart or
+ * simple). Kept as a thin alias over `useViewCountSchedulerVersion` so the
+ * legacy polling gates (`usePollingManager`, `useInitialViewCountsFetch`)
+ * keep their existing semantics — they should stay off whenever any newer
+ * scheduler is on, regardless of which one.
+ *
+ * For starting the smart-vs-simple scheduler itself, gate on
+ * `useViewCountSchedulerVersion` explicitly — the boolean returned here
+ * does not distinguish between them.
  */
 export function useHasNewViewCountScheduler(): {
     value: boolean
     isLoading: boolean
 } {
-    const { hasUIVisionBeta } = useHelpdeskV2BaselineFlag()
-    const { isLoading } = useFlagWithLoading(
-        FeatureFlagKey.UIVisionBetaBaseline,
-    )
-
-    return { value: hasUIVisionBeta, isLoading }
+    const { version, isLoading } = useViewCountSchedulerVersion()
+    return {
+        value: version !== ViewCountSchedulerVersion.Legacy,
+        isLoading,
+    }
 }

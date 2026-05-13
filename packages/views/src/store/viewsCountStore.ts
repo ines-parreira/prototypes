@@ -3,7 +3,8 @@ import { createStore, useStore } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import { useShallow } from 'zustand/shallow'
 
-import { getViewIdFromUrl } from '../utils/url'
+import { getViewIdFromUrl, isInboxRootUrl } from '../utils/url'
+import { markViewAsViewedV3 } from './viewsCountStoreV3'
 
 export type ViewCountEntry = {
     count: number
@@ -55,6 +56,9 @@ export function markViewAsViewed(viewId: number): void {
             },
         }
     })
+    // Mirror the activation into the V3 scheduler's own recent map so
+    // whichever scheduler version is active picks up navigation.
+    markViewAsViewedV3(viewId)
 }
 
 export function getActiveViewId(): number | null {
@@ -67,6 +71,13 @@ export function setActiveViewFallback(viewId: number | null): void {
         fallbackActiveViewId: viewId,
         activeViewId: urlViewId ?? viewId,
     })
+    // If the URL has no explicit view ID but resolves to the inbox surface
+    // (/app, /app/views, /app/tickets), stamp the just-set fallback as
+    // viewed so the LRU recent set picks it up even before the user
+    // navigates.
+    if (urlViewId === null && viewId !== null && isInboxRootUrl()) {
+        markViewAsViewed(viewId)
+    }
 }
 
 export function getExpandedSectionIds(): string[] | undefined {
@@ -122,6 +133,11 @@ function syncViewedFromUrl(): void {
     })
     if (urlViewId !== null) {
         markViewAsViewed(urlViewId)
+    } else if (isInboxRootUrl() && fallbackActiveViewId !== null) {
+        // /app, /app/views, /app/tickets all show the default inbox view —
+        // stamp the fallback so the LRU recent set treats it as a visited
+        // view.
+        markViewAsViewed(fallbackActiveViewId)
     }
 }
 

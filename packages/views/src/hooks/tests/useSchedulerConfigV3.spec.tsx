@@ -1,0 +1,51 @@
+import { useFlag } from '@repo/feature-flags'
+import { renderHook } from '@repo/testing/vitest'
+
+import { DEFAULT_REFRESH_CONFIG_V3 } from '../../scheduler/refreshConfigV3'
+import { useSchedulerConfigV3 } from '../useSchedulerConfigV3'
+
+vi.mock('@repo/feature-flags', () => ({
+    FeatureFlagKey: {
+        ViewCountSchedulerV3Config: 'view-count-scheduler-v3-config',
+    },
+    useFlag: vi.fn(),
+}))
+
+const useFlagMock = vi.mocked(useFlag)
+
+beforeEach(() => {
+    vi.clearAllMocks()
+})
+
+describe('useSchedulerConfigV3', () => {
+    it('returns the defaults when the flag is unset', () => {
+        useFlagMock.mockReturnValue(null)
+
+        const { result } = renderHook(() => useSchedulerConfigV3())
+
+        expect(result.current).toEqual(DEFAULT_REFRESH_CONFIG_V3)
+    })
+
+    it('returns the defaults when the flag payload fails validation', () => {
+        useFlagMock.mockReturnValue({ tickIntervalSeconds: -1 })
+
+        const { result } = renderHook(() => useSchedulerConfigV3())
+
+        expect(result.current).toEqual(DEFAULT_REFRESH_CONFIG_V3)
+    })
+
+    it('merges valid overrides onto the defaults', () => {
+        useFlagMock.mockReturnValue({
+            tickIntervalSeconds: 10,
+            fetchAllMinCooldownSeconds: 7200,
+        })
+
+        const { result } = renderHook(() => useSchedulerConfigV3())
+
+        expect(result.current).toEqual({
+            ...DEFAULT_REFRESH_CONFIG_V3,
+            tickIntervalSeconds: 10,
+            fetchAllMinCooldownSeconds: 7200,
+        })
+    })
+})

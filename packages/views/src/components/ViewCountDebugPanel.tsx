@@ -32,6 +32,10 @@ import { useAllViews } from '../hooks/useAllViews'
 import { useHasNewViewCountScheduler } from '../hooks/useHasNewViewCountScheduler'
 import { useSchedulerConfig } from '../hooks/useSchedulerConfig'
 import {
+    useViewCountSchedulerVersion,
+    ViewCountSchedulerVersion,
+} from '../hooks/useViewCountSchedulerVersion'
+import {
     isViewActive,
     isViewDeactivated,
     isViewInViewport,
@@ -46,6 +50,7 @@ import { DEFAULT_REFRESH_CONFIG } from '../scheduler/selectViewsToRefresh'
 import type { ViewEvent } from '../store/viewEventLog'
 import { viewEventLogStore } from '../store/viewEventLog'
 import { viewsCountStore } from '../store/viewsCountStore'
+import { ViewCountDebugPanelV3 } from './ViewCountDebugPanelV3'
 
 type ViewCountDebugPanelProps = {
     isOpen?: boolean
@@ -53,6 +58,24 @@ type ViewCountDebugPanelProps = {
 }
 
 export function ViewCountDebugPanel({
+    isOpen = false,
+    onOpenChange,
+}: ViewCountDebugPanelProps) {
+    const { version } = useViewCountSchedulerVersion()
+
+    if (version === ViewCountSchedulerVersion.V3) {
+        return (
+            <ViewCountDebugPanelV3
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+            />
+        )
+    }
+
+    return <ViewCountDebugPanelV2 isOpen={isOpen} onOpenChange={onOpenChange} />
+}
+
+function ViewCountDebugPanelV2({
     isOpen = false,
     onOpenChange,
 }: ViewCountDebugPanelProps) {

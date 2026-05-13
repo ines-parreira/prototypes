@@ -223,6 +223,8 @@ export enum FeatureFlagKey {
     UIVisionMilestone4Dash6 = 'linear-project_ui-vision-milestone-4-6',
     UIVisionWayfindingMS1 = 'linear.project_ui-vision-wayfinding-milestone-1',
     ViewCountSchedulerConfig = 'view-count-scheduler-config',
+    ViewCountSchedulerV3 = 'view-count-scheduler-v3',
+    ViewCountSchedulerV3Config = 'view-count-scheduler-v3-config',
     VoiceCallDuringBusinessHours = 'voice-call-during-business-hours',
     VoiceSLA = 'voice-sla',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
