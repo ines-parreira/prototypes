@@ -1,79 +1,101 @@
-import { useCallback } from 'react'
+import type { CSSProperties } from 'react'
+import { useCallback, useRef, useState } from 'react'
 
-import { Icon, ListItem, Select, StatusButton, Text } from '@gorgias/axiom'
+import {
+    Button,
+    DropdownIcon,
+    Menu,
+    MenuItem,
+    MultiButton,
+} from '@gorgias/axiom'
 
 import { TicketStatus } from '../../../../../../types/ticket'
-
-import css from '../../../../../../components/TicketAssignee/components/SelectStyles.less'
-
-type StatusOption = {
-    id: TicketStatus
-    label: string
-}
-
-const STATUS_OPTIONS: StatusOption[] = [
-    {
-        id: TicketStatus.Open,
-        label: 'Open',
-    },
-    {
-        id: TicketStatus.Closed,
-        label: 'Close',
-    },
-]
 
 type BulkStatusSelectProps = {
     onChange: (status: TicketStatus) => void | Promise<void>
     isDisabled?: boolean
 }
 
+const MENU_CONTAINER_STYLE: CSSProperties = {
+    height: 0,
+    overflow: 'hidden',
+    position: 'absolute',
+    width: 0,
+}
+
+const HIDDEN_MENU_TRIGGER_STYLE: CSSProperties = {
+    height: 0,
+    opacity: 0,
+    overflow: 'hidden',
+    pointerEvents: 'none',
+    position: 'absolute',
+    width: 0,
+}
+
+const ROOT_CONTAINER_STYLE: CSSProperties = {
+    display: 'inline-flex',
+    position: 'relative',
+}
+
 export function BulkStatusSelect({
     onChange,
     isDisabled = false,
 }: BulkStatusSelectProps) {
-    const handleChange = useCallback(
-        (option: StatusOption) => {
-            onChange(option.id)
-        },
-        [onChange],
-    )
+    const [isStatusMenuOpen, setIsStatusMenuOpen] = useState(false)
+    const statusMenuTriggerRef = useRef<HTMLButtonElement>(null)
+
+    const handleStatusMenuOpenChange = useCallback((open: boolean) => {
+        setIsStatusMenuOpen(open)
+    }, [])
+
+    const handleStatusMenuButtonClick = useCallback(() => {
+        setIsStatusMenuOpen((isOpen) => !isOpen)
+    }, [])
 
     return (
-        <Select
-            placeholder="Set status"
-            items={STATUS_OPTIONS}
-            onSelect={handleChange}
-            isDisabled={isDisabled}
-            aria-label="Status selection"
-            size="sm"
-            trigger={({ selectedText, isPlaceholder, isOpen, ref }) => (
-                <StatusButton
-                    ref={ref}
-                    trailingSlot={
-                        <Icon
-                            name={
-                                isOpen
-                                    ? 'arrow-chevron-up'
-                                    : 'arrow-chevron-down'
-                            }
-                            size="xs"
-                        />
-                    }
-                    className={css.trigger}
+        <div style={ROOT_CONTAINER_STYLE}>
+            <MultiButton variant="secondary" size="sm">
+                <Button
+                    isDisabled={isDisabled}
+                    onClick={() => onChange(TicketStatus.Closed)}
                 >
-                    <Text as="span" size="sm" variant="bold">
-                        {isPlaceholder ? 'Set status' : selectedText}
-                    </Text>
-                </StatusButton>
-            )}
-        >
-            {(option) => (
-                <ListItem
-                    key={option.id}
-                    textValue={option.label}
-                    label={option.label}
+                    Close
+                </Button>
+                <Button
+                    ref={statusMenuTriggerRef}
+                    aria-label="More status actions"
+                    icon={<DropdownIcon isOpen={isStatusMenuOpen} />}
+                    isDisabled={isDisabled}
+                    onClick={handleStatusMenuButtonClick}
                 />
+            </MultiButton>
+            {!isDisabled && (
+                <span style={MENU_CONTAINER_STYLE}>
+                    <Menu
+                        aria-label="Status actions"
+                        isOpen={isStatusMenuOpen}
+                        onOpenChange={handleStatusMenuOpenChange}
+                        placement="bottom left"
+                        size="sm"
+                        trigger={
+                            <Button
+                                aria-label="Open status actions menu"
+                                aria-hidden
+                                excludeFromTabOrder
+                                icon={<DropdownIcon isOpen={false} />}
+                                style={HIDDEN_MENU_TRIGGER_STYLE}
+                            />
+                        }
+                        triggerRef={statusMenuTriggerRef}
+                    >
+                        <MenuItem
+                            id="open"
+                            label="Open"
+                            onAction={() => onChange(TicketStatus.Open)}
+                        />
+                    </Menu>
+                </span>
             )}
-        </Select>
+        </div>
     )
 }
