@@ -70,7 +70,7 @@ jest.mock('pages/settings/new_billing/components/ProductCard', () =>
 )
 
 jest.mock(
-    'pages/settings/new_billing/components/BillingScheduledDowngrades/BillingScheduledDowngrades',
+    '../../../components/BillingScheduledUpdates/BillingScheduledUpdates',
     () => ({
         __esModule: true,
         default: () => <div data-testid="billing-scheduled-downgrades" />,

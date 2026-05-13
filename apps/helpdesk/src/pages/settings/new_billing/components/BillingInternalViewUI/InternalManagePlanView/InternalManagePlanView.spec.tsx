@@ -29,6 +29,15 @@ jest.mock('pages/common/components/Loader/Loader', () => ({
     __esModule: true,
     default: () => <div role="progressbar" aria-label="Loading" />,
 }))
+jest.mock(
+    'pages/settings/new_billing/components/BillingScheduledUpdates/BillingScheduledUpdates',
+    () => ({
+        __esModule: true,
+        default: () => (
+            <div data-testid="billing-scheduled-updates">Scheduled Updates</div>
+        ),
+    }),
+)
 
 const mockUseBillingState = assumeMock(useBillingState)
 const mockUseInternalProductCatalogPlans = assumeMock(
@@ -250,6 +259,81 @@ describe('InternalManagePlanView', () => {
 
             expect(screen.getByText('TRIALING')).toBeInTheDocument()
             expect(screen.queryByText('NON RENEWING')).not.toBeInTheDocument()
+        })
+    })
+
+    describe('BillingScheduledUpdates visibility', () => {
+        function mockBillingStateWith(
+            subscriptionOverrides: Partial<
+                typeof payingWithCreditCard.subscription
+            >,
+        ) {
+            mockMutationHook()
+            mockUseBillingState.mockReturnValue({
+                data: {
+                    ...payingWithCreditCard,
+                    subscription: {
+                        ...payingWithCreditCard.subscription,
+                        ...subscriptionOverrides,
+                    },
+                },
+                isLoading: false,
+                isError: false,
+            } as any)
+            mockUseInternalProductCatalogPlans.mockReturnValue({
+                data: { plans: catalogPlans },
+                isLoading: false,
+                isError: false,
+            } as any)
+        }
+
+        it('shows BillingScheduledUpdates for an active subscription', () => {
+            mockDataReady()
+            renderComponent()
+
+            expect(
+                screen.getByTestId('billing-scheduled-updates'),
+            ).toBeInTheDocument()
+        })
+
+        it('shows BillingScheduledUpdates for a past-due subscription', () => {
+            mockBillingStateWith({ status: SubscriptionStatus.PAST_DUE })
+            renderComponent()
+
+            expect(
+                screen.getByTestId('billing-scheduled-updates'),
+            ).toBeInTheDocument()
+        })
+
+        it('does not show BillingScheduledUpdates for a canceled subscription', () => {
+            mockBillingStateWith({ status: SubscriptionStatus.CANCELED })
+            renderComponent()
+
+            expect(
+                screen.queryByTestId('billing-scheduled-updates'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('does not show BillingScheduledUpdates for a trialing subscription', () => {
+            mockBillingStateWith({
+                status: SubscriptionStatus.TRIALING,
+                is_trialing: false,
+                scheduled_to_cancel_at: null,
+            })
+            renderComponent()
+
+            expect(
+                screen.queryByTestId('billing-scheduled-updates'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('shows BillingScheduledUpdates for a paused subscription (status remains ACTIVE)', () => {
+            mockBillingStateWith({ is_paused: true })
+            renderComponent()
+
+            expect(
+                screen.getByTestId('billing-scheduled-updates'),
+            ).toBeInTheDocument()
         })
     })
 

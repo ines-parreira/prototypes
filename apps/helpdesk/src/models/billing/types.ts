@@ -117,6 +117,14 @@ export type ConvertPlan = BasePlan & {
     tier?: number
 }
 
+export type ScheduledChangeType = 'UPGRADE' | 'DOWNGRADE'
+
+export type ScheduledChange = {
+    current_plan_id: PlanId
+    scheduled_plan: Plan | null
+    scheduled_change_types: ScheduledChangeType[]
+}
+
 export type SubscriptionCycle = {
     current_billing_cycle_end_datetime: string
     current_billing_cycle_start_datetime: string
@@ -125,6 +133,8 @@ export type SubscriptionCycle = {
         current_plan_id: PlanId
         scheduled_plan: Plan | null
     }[]
+    has_schedule?: boolean
+    scheduled_changes?: ScheduledChange[]
 }
 
 export type ChurnMitigationOfferDecisionEvent = {

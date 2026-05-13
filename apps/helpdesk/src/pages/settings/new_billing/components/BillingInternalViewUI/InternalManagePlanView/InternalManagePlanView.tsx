@@ -18,6 +18,7 @@ import { InternalSelectPlans } from 'pages/settings/new_billing/components/Billi
 import { InternalSummary } from 'pages/settings/new_billing/components/BillingInternalViewUI/InternalManagePlanView/InternalSummary'
 import { useApplyInternalPlanChanges } from 'pages/settings/new_billing/components/BillingInternalViewUI/InternalManagePlanView/useApplyInternalPlanChanges'
 import { useInternalPlanEditor } from 'pages/settings/new_billing/components/BillingInternalViewUI/InternalManagePlanView/useInternalPlanEditor'
+import BillingScheduledUpdates from 'pages/settings/new_billing/components/BillingScheduledUpdates/BillingScheduledUpdates'
 
 function getSubscriptionStatusTag(subscription: SubscriptionSummary) {
     if (subscription.is_paused) return { label: 'PAUSED', color: Color.Orange }
@@ -101,6 +102,10 @@ export function InternalManagePlanView() {
                     <Tag color={statusTag.color}>{statusTag.label}</Tag>
                 </Box>
             </Box>
+
+            {[SubscriptionStatus.ACTIVE, SubscriptionStatus.PAST_DUE].includes(
+                billingState.subscription.status,
+            ) && <BillingScheduledUpdates />}
 
             <Box gap="lg">
                 <InternalSelectPlans

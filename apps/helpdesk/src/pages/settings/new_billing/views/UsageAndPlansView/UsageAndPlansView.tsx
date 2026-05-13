@@ -27,7 +27,6 @@ import {
 } from 'models/billing/utils'
 import useMeetAiAgentNotifications from 'pages/aiAgent/hooks/useMeetAiAgentNotification'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
-import BillingScheduledDowngrades from 'pages/settings/new_billing/components/BillingScheduledDowngrades/BillingScheduledDowngrades'
 import { ShopifyBillingInactiveBanner } from 'pages/settings/new_billing/components/ShopifyBillingInactiveBanner'
 import {
     getCurrentAutomatePlan,
@@ -47,6 +46,7 @@ import {
 import { notify } from 'state/notifications/actions'
 import { NotificationStyle } from 'state/notifications/types'
 
+import BillingScheduledUpdates from '../../components/BillingScheduledUpdates/BillingScheduledUpdates'
 import NavigateToChangeBillingFrequency from '../../components/NavigateToChangeBillingFrequency/NavigateToChangeBillingFrequency'
 import ProductCard from '../../components/ProductCard'
 import useProductCancellations from '../../hooks/useProductCancellations'
@@ -282,9 +282,7 @@ const UsageAndPlansView = ({
                     </div>
                 ) : null}
             </div>
-            {isCurrentSubscriptionCanceled ? null : (
-                <BillingScheduledDowngrades />
-            )}
+            {isCurrentSubscriptionCanceled ? null : <BillingScheduledUpdates />}
             {hasSubscription && isYearlyPlan && (
                 <CustomPlanBanner
                     contactUsCallback={() =>
