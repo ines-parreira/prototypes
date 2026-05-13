@@ -21,7 +21,9 @@ import {
     AnalyticsAiAgentAllAgentsConfigurableLine,
 } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsConfigurableLine/AnalyticsAiAgentAllAgentsConfigurableLine'
 import { AnalyticsAiAgentAllAgentsDecreaseInFRTCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsDecreaseInFRTCard'
+import { AnalyticsAiAgentAllAgentsFRTCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsFRTCard'
 import { AnalyticsAiAgentAllAgentsHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsHandoverInteractionsCard'
+import { AnalyticsAiAgentAllAgentsResolutionTimeCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsResolutionTimeCard'
 import { AnalyticsAiAgentAllAgentsSuccessRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsSuccessRateCard'
 import { AnalyticsAiAgentAllAgentsTimeSavedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsTimeSavedCard'
 import { AnalyticsAiAgentAutomationRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAutomationRateCard'
@@ -37,6 +39,8 @@ import { fetchAiAgentAllAgentsAutomationRateTrend } from 'pages/aiAgent/analytic
 import { fetchAiAgentAllAgentsAverageCsatTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAllAgentsAverageCsatTrend'
 import { fetchAiAgentAllAgentsCostSavedTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAllAgentsCostSavedTrend'
 import { fetchAiAgentAllAgentsDecreaseInFRTTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAllAgentsDecreaseInFRTTrend'
+import { fetchAiAgentAllAgentsFRTTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAllAgentsFRTTrend'
+import { fetchAiAgentAllAgentsResolutionTimeTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAllAgentsResolutionTimeTrend'
 import { fetchAiAgentAllAgentsSuccessRateTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAllAgentsSuccessRateTrend'
 import { fetchAiAgentClosedTicketsTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentClosedTicketsTrend'
 import { fetchAiAgentAllAgentsTimeSavedTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentTimeSavedMetric'
@@ -68,6 +72,8 @@ export enum AnalyticsAiAgentAllAgentsChart {
     DecreaseInResolutionTimeCard = 'revamp-ai_agent_all_agents-decrease_in_resolution_time_card',
     DecreaseInFRTCard = 'revamp-ai_agent_all_agents-decrease_in_frt_card',
     SuccessRateCard = 'revamp-ai_agent_all_agents-success_rate_card',
+    FRTCard = 'revamp-ai_agent_all_agents-frt_card',
+    ResolutionTimeCard = 'revamp-ai_agent_all_agents-resolution_time_card',
     ConfigurableBarGraph = 'revamp-ai_agent_all_agents-configurable_bar_graph',
     ConfigurableLineGraph = 'revamp-ai_agent_all_agents-configurable_line_graph',
     ChannelPerformanceTable = 'revamp-ai_agent_all_agents-channel_performance_table',
@@ -292,6 +298,36 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                 chartType: ChartType.Card,
                 metricFormat: 'decimal-to-percent',
                 interpretAs: 'more-is-better',
+            },
+            [AnalyticsAiAgentAllAgentsChart.FRTCard]: {
+                chartComponent: AnalyticsAiAgentAllAgentsFRTCard,
+                label: 'First response time',
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: fetchAiAgentAllAgentsFRTTrend,
+                        metricFormat: 'duration',
+                    },
+                ],
+                tooltipConfig: METRIC_TOOLTIPS.firstResponseTimeInAiAgent,
+                chartType: ChartType.Card,
+                metricFormat: 'duration',
+                interpretAs: 'less-is-better',
+            },
+            [AnalyticsAiAgentAllAgentsChart.ResolutionTimeCard]: {
+                chartComponent: AnalyticsAiAgentAllAgentsResolutionTimeCard,
+                label: 'Resolution time',
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: fetchAiAgentAllAgentsResolutionTimeTrend,
+                        metricFormat: 'duration',
+                    },
+                ],
+                tooltipConfig: METRIC_TOOLTIPS.resolutionTimeInAiAgent,
+                chartType: ChartType.Card,
+                metricFormat: 'duration',
+                interpretAs: 'less-is-better',
             },
             [AnalyticsAiAgentAllAgentsChart.ConfigurableBarGraph]: {
                 chartComponent: AnalyticsAiAgentAllAgentsConfigurableBar,

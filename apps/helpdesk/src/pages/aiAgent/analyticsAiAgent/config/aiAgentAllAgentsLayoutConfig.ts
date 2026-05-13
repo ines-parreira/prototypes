@@ -97,6 +97,19 @@ export const ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT: DashboardLayoutConfig<Analyti
                         gridSize: 3,
                         visibility: true,
                     },
+                    {
+                        chartId: AnalyticsAiAgentAllAgentsChart.FRTCard,
+                        gridSize: 3,
+                        visibility: true,
+                        requiresFeatureFlag: true,
+                    },
+                    {
+                        chartId:
+                            AnalyticsAiAgentAllAgentsChart.ResolutionTimeCard,
+                        gridSize: 3,
+                        visibility: true,
+                        requiresFeatureFlag: true,
+                    },
                 ],
             },
             {

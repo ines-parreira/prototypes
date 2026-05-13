@@ -88,6 +88,19 @@ export const METRIC_TOOLTIPS = {
         link: GLOSSARY_LINK,
         linkText: HOW_IS_IT_CALCULATED,
     },
+    firstResponseTimeInAiAgent: {
+        title: 'First response time',
+        caption:
+            'Median time for AI Agent to send the first reply to a shopper.',
+        link: GLOSSARY_LINK,
+        linkText: HOW_IS_IT_CALCULATED,
+    },
+    resolutionTimeInAiAgent: {
+        title: 'Resolution time',
+        caption: 'Median time for AI Agent to fully resolve a ticket.',
+        link: GLOSSARY_LINK,
+        linkText: HOW_IS_IT_CALCULATED,
+    },
     aiAgentAutomationRate: {
         title: 'AI Agent automation rate',
         caption:

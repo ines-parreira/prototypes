@@ -77,3 +77,12 @@ export const medianResolutionTimePerChannel = resolutionTimeScope
 
 export const medianResolutionTimePerChannelQueryV2Factory = (ctx: Context) =>
     medianResolutionTimePerChannel.build(ctx)
+
+export const aiAgentAllAgentsResolutionTime = resolutionTimeScope
+    .defineMetricName(METRIC_NAMES.AI_AGENT_ALL_AGENTS_RESOLUTION_TIME)
+    .defineQuery(() => ({
+        measures: ['medianResolutionTime'] as const,
+    }))
+
+export const aiAgentAllAgentsResolutionTimeQueryV2Factory = (ctx: Context) =>
+    aiAgentAllAgentsResolutionTime.build(ctx)

@@ -12,7 +12,9 @@ import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { AnalyticsAiAgentAllAgentsAutomatedInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsAutomatedInteractionsCard'
 import { AnalyticsAiAgentAllAgentsAverageCsatCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsAverageCsatCard'
 import { AnalyticsAiAgentAllAgentsDecreaseInFRTCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsDecreaseInFRTCard'
+import { AnalyticsAiAgentAllAgentsFRTCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsFRTCard'
 import { AnalyticsAiAgentAllAgentsHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsHandoverInteractionsCard'
+import { AnalyticsAiAgentAllAgentsResolutionTimeCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsResolutionTimeCard'
 import { AnalyticsAiAgentAllAgentsSuccessRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsSuccessRateCard'
 import { AnalyticsAiAgentAllAgentsTimeSavedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsTimeSavedCard'
 import { AnalyticsAiAgentAutomationRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAutomationRateCard'
@@ -492,6 +494,30 @@ describe('Analytics Dynamic Trend Cards', () => {
                 metricFormat: 'duration' as const,
                 value: 3600,
                 prevValue: 4200,
+            },
+        },
+        {
+            name: 'AnalyticsAiAgentAllAgentsFRTCard',
+            Component: AnalyticsAiAgentAllAgentsFRTCard,
+            config: {
+                label: 'First response time',
+                description:
+                    'Median time for AI Agent to send the first reply to a shopper.',
+                metricFormat: 'duration' as const,
+                value: 3600,
+                prevValue: 4200,
+            },
+        },
+        {
+            name: 'AnalyticsAiAgentAllAgentsResolutionTimeCard',
+            Component: AnalyticsAiAgentAllAgentsResolutionTimeCard,
+            config: {
+                label: 'Resolution time',
+                description:
+                    'Median time for AI Agent to fully resolve a ticket.',
+                metricFormat: 'duration' as const,
+                value: 7200,
+                prevValue: 8400,
             },
         },
         {

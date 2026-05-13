@@ -1,6 +1,8 @@
 import { OrderDirection } from '@gorgias/helpdesk-types'
 
 import {
+    aiAgentAllAgentsFRT,
+    aiAgentAllAgentsFRTQueryV2Factory,
     medianFirstResponseTime,
     medianFirstResponseTimePerAgent,
     medianFirstResponseTimePerAgentQueryV2Factory,
@@ -334,6 +336,34 @@ describe('firstResponseTimeScope', () => {
                     {
                         dimension: 'createdDatetime',
                         granularity: 'week',
+                    },
+                ])
+            })
+        })
+
+        describe('aiAgentAllAgentsFRTQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult = aiAgentAllAgentsFRTQueryV2Factory(context)
+                const buildResult = aiAgentAllAgentsFRT.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+
+            it('creates query with correct metric name and measures', () => {
+                const result = aiAgentAllAgentsFRTQueryV2Factory(context)
+
+                expect(result.metricName).toBe('ai-agent-all-agents-frt')
+                expect(result.measures).toEqual(['medianFirstResponseTime'])
+                expect(result.scope).toBe('first-response-time')
+            })
+
+            it('includes time dimension when granularity is provided', () => {
+                const result = aiAgentAllAgentsFRTQueryV2Factory(context)
+
+                expect(result.time_dimensions).toEqual([
+                    {
+                        dimension: 'createdDatetime',
+                        granularity: 'day',
                     },
                 ])
             })

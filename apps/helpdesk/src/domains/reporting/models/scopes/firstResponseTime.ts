@@ -119,3 +119,13 @@ export const medianFirstResponseTimePerChannel = firstResponseTimeScope
 export const medianFirstResponseTimePerChannelQueryV2Factory = (
     ctx: FirstResponseTimeContext,
 ) => medianFirstResponseTimePerChannel.build(ctx)
+
+export const aiAgentAllAgentsFRT = firstResponseTimeScope
+    .defineMetricName(METRIC_NAMES.AI_AGENT_ALL_AGENTS_FRT)
+    .defineQuery(() => ({
+        measures: ['medianFirstResponseTime'] as const,
+    }))
+
+export const aiAgentAllAgentsFRTQueryV2Factory = (
+    ctx: FirstResponseTimeContext,
+) => aiAgentAllAgentsFRT.build(ctx)

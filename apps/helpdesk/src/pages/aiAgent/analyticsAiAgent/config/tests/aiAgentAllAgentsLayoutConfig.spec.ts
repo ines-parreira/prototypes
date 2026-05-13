@@ -11,11 +11,11 @@ describe('aiAgentAllAgentsLayoutConfig', () => {
             )
         })
 
-        it('should have kpis section with 14 cards', () => {
+        it('should have kpis section with 16 cards', () => {
             const kpisSection = ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT.sections[0]
             expect(kpisSection.id).toBe('kpis')
             expect(kpisSection.type).toBe(ChartType.Card)
-            expect(kpisSection.items).toHaveLength(14)
+            expect(kpisSection.items).toHaveLength(16)
         })
 
         it('should have correct KPI cards in kpis section', () => {
@@ -61,6 +61,12 @@ describe('aiAgentAllAgentsLayoutConfig', () => {
             )
             expect(kpisSection.items[13].chartId).toBe(
                 AnalyticsAiAgentAllAgentsChart.TotalSalesCard,
+            )
+            expect(kpisSection.items[14].chartId).toBe(
+                AnalyticsAiAgentAllAgentsChart.FRTCard,
+            )
+            expect(kpisSection.items[15].chartId).toBe(
+                AnalyticsAiAgentAllAgentsChart.ResolutionTimeCard,
             )
         })
 
@@ -140,6 +146,25 @@ describe('aiAgentAllAgentsLayoutConfig', () => {
             expect(successRateCard?.requiresFeatureFlag).toBe(true)
         })
 
+        it('should have FRTCard with requiresFeatureFlag', () => {
+            const kpisSection = ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT.sections[0]
+            const frtCard = kpisSection.items.find(
+                (item) =>
+                    item.chartId === AnalyticsAiAgentAllAgentsChart.FRTCard,
+            )
+            expect(frtCard?.requiresFeatureFlag).toBe(true)
+        })
+
+        it('should have ResolutionTimeCard with requiresFeatureFlag', () => {
+            const kpisSection = ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT.sections[0]
+            const resolutionTimeCard = kpisSection.items.find(
+                (item) =>
+                    item.chartId ===
+                    AnalyticsAiAgentAllAgentsChart.ResolutionTimeCard,
+            )
+            expect(resolutionTimeCard?.requiresFeatureFlag).toBe(true)
+        })
+
         it('should have all non-feature-flag KPI cards without requiresFeatureFlag', () => {
             const kpisSection = ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT.sections[0]
             kpisSection.items.slice(0, 4).forEach((item) => {
@@ -199,13 +224,13 @@ describe('aiAgentAllAgentsLayoutConfig', () => {
             expect(breakdownSection.items[1].visibility).toBe(false)
         })
 
-        it('should have total of 18 charts across all sections', () => {
+        it('should have total of 20 charts across all sections', () => {
             const totalCharts =
                 ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT.sections.reduce(
                     (sum, section) => sum + section.items.length,
                     0,
                 )
-            expect(totalCharts).toBe(18)
+            expect(totalCharts).toBe(20)
         })
 
         it('should have all required chart types defined', () => {
