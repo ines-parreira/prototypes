@@ -85,9 +85,9 @@ export const NO_ENGAGEMENT_FEATURE_LABEL = 'Default (no engagement feature)'
 export const NO_STORE_LABEL = 'No assigned store'
 
 export const MAP_ENGAGEMENT_TYPE_NAME: Record<string, string> = {
-    search_bar: 'Search bar',
-    ask_anything: 'Ask anything',
-    suggested_product_question: 'Suggested product question',
+    search_bar: 'Search assist',
+    ask_anything: 'Ask anything input',
+    suggested_product_question: 'AI FAQs',
     null: NO_ENGAGEMENT_FEATURE_LABEL,
 }
 
@@ -137,7 +137,7 @@ const formatDimensionName = (dimension: string) => {
         case 'automationFeatureType':
             return 'Feature'
         case 'engagementType':
-            return 'Engagement type'
+            return 'Engagement feature'
         case 'aiAgentRole':
             return 'Role'
         case 'aiIntentCustomField':

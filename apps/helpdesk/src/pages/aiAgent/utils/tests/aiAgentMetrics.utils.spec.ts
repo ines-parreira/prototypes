@@ -632,9 +632,9 @@ describe('useAutomationMetricPerEngagementType', () => {
         )
 
         expect(result.current.data).toEqual([
-            { name: 'Search bar', value: 10 },
-            { name: 'Ask anything', value: 20 },
-            { name: 'Suggested product question', value: 30 },
+            { name: 'Search assist', value: 10 },
+            { name: 'Ask anything input', value: 20 },
+            { name: 'AI FAQs', value: 30 },
         ])
     })
 
@@ -1063,7 +1063,7 @@ describe('getBarChartDataHooks', () => {
         expect(dimensions).toHaveLength(1)
         expect(dimensions[0]).toMatchObject({
             id: 'engagementType',
-            name: 'Engagement type',
+            name: 'Engagement feature',
             configurableGraphType: ConfigurableGraphType.Bar,
             period,
         })
@@ -1091,8 +1091,8 @@ describe('getBarChartDataHooks', () => {
         const { result } = renderHook(() => dimensions[0].useChartData())
 
         expect(result.current.data).toEqual([
-            { name: 'Search bar', value: 10 },
-            { name: 'Ask anything', value: 5 },
+            { name: 'Search assist', value: 10 },
+            { name: 'Ask anything input', value: 5 },
         ])
         expect(result.current.isLoading).toBe(false)
     })
@@ -2005,10 +2005,13 @@ describe('useAutomationTimeSeriesPerEngagementType', () => {
         )
 
         expect(result.current.data).toEqual([
-            { label: 'Search bar', values: [{ date: 'Jan 1', value: 10 }] },
-            { label: 'Ask anything', values: [{ date: 'Jan 1', value: 20 }] },
+            { label: 'Search assist', values: [{ date: 'Jan 1', value: 10 }] },
             {
-                label: 'Suggested product question',
+                label: 'Ask anything input',
+                values: [{ date: 'Jan 1', value: 20 }],
+            },
+            {
+                label: 'AI FAQs',
                 values: [{ date: 'Jan 1', value: 30 }],
             },
         ])
@@ -2426,7 +2429,7 @@ describe('getLineChartDataHooks', () => {
         expect(dimensions).toHaveLength(1)
         expect(dimensions[0]).toMatchObject({
             id: 'engagementType',
-            name: 'Engagement type',
+            name: 'Engagement feature',
             configurableGraphType: ConfigurableGraphType.MultipleTimeSeries,
         })
     })
@@ -2733,11 +2736,11 @@ describe('getLineChartDataHooks', () => {
             })
             expect(result.current.data).toEqual([
                 {
-                    label: 'Search bar',
+                    label: 'Search assist',
                     values: [{ date: 'Jan 1', value: 10 }],
                 },
                 {
-                    label: 'Ask anything',
+                    label: 'Ask anything input',
                     values: [{ date: 'Jan 1', value: 20 }],
                 },
             ])
@@ -3179,9 +3182,9 @@ describe('fetchConfigurableBarChartDownloadData', () => {
 
         expect(result).toHaveProperty('files')
         const csvContent = Object.values(result.files)[0]
-        expect(csvContent).toContain('Engagement type')
-        expect(csvContent).toContain('Search bar')
-        expect(csvContent).toContain('Ask anything')
+        expect(csvContent).toContain('Engagement feature')
+        expect(csvContent).toContain('Search assist')
+        expect(csvContent).toContain('Ask anything input')
     })
 
     it('returns files with "Feature" as dimension label for automationFeatureType dimension', async () => {
@@ -3462,7 +3465,7 @@ describe('fetchConfigurableLineChartDownloadData', () => {
         expect(fetchStatsTimeSeriesMock).not.toHaveBeenCalled()
         expect(result).toHaveProperty('files')
         const csvContent = Object.values(result.files)[0]
-        expect(csvContent).toContain('Search bar')
+        expect(csvContent).toContain('Search assist')
         expect(csvContent).toContain('Ask anything')
     })
 

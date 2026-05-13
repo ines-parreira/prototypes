@@ -385,9 +385,9 @@ describe('fetchShoppingAssistantPerformanceByEngagementFeatureMetrics', () => {
             'Orders influenced',
             'Revenue per interaction',
         ])
-        expect(csvRows[1][0]).toBe('Suggested product question')
-        expect(csvRows[2][0]).toBe('Search bar')
-        expect(csvRows[3][0]).toBe('Ask anything')
+        expect(csvRows[1][0]).toBe('AI FAQs')
+        expect(csvRows[2][0]).toBe('Search assist')
+        expect(csvRows[3][0]).toBe('Ask anything input')
         expect(csvRows[4][0]).toBe(NO_ENGAGEMENT_FEATURE_LABEL)
     })
 
