@@ -101,50 +101,73 @@ export function buildMetricColumnDefs<TData>(
                 id: config.accessorKey,
                 label: config.label,
                 enableHiding: true,
-                header: () => (
-                    <Box display="flex" alignItems="center" gap="xxxs">
-                        <Text variant="bold" size="sm">
-                            {config.label}
-                        </Text>
-                        {(config.tooltipConfig || config.tooltipTitle) && (
-                            <Tooltip
-                                delay={0}
-                                trigger={<Icon name="info" size="xs" />}
-                            >
-                                <TooltipContent
-                                    title={
-                                        config.tooltipConfig?.title ??
-                                        config.tooltipTitle ??
-                                        config.label
-                                    }
-                                    caption={
-                                        config.tooltipConfig?.caption ??
-                                        config.tooltipCaption
-                                    }
-                                    link={
-                                        (config.tooltipConfig?.link ??
-                                        config.tooltipLink) ? (
-                                            <a
-                                                href={
-                                                    config.tooltipConfig
-                                                        ?.link ??
-                                                    config.tooltipLink!
-                                                }
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className={css.tooltipLink}
-                                            >
-                                                {config.tooltipConfig
-                                                    ?.linkText ??
-                                                    'How is it calculated?'}
-                                            </a>
-                                        ) : undefined
-                                    }
-                                />
-                            </Tooltip>
-                        )}
-                    </Box>
-                ),
+                header: () => {
+                    const tooltipTitle =
+                        config.tooltipConfig?.title ??
+                        config.tooltipTitle ??
+                        config.label
+                    const tooltipCaption =
+                        config.tooltipConfig?.caption ?? config.tooltipCaption
+                    const tooltipHref =
+                        config.tooltipConfig?.link ?? config.tooltipLink
+                    const tooltipLink = tooltipHref ? (
+                        <a
+                            href={tooltipHref}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={css.tooltipLink}
+                        >
+                            {config.tooltipConfig?.linkText ??
+                                'How is it calculated?'}
+                        </a>
+                    ) : undefined
+
+                    // TooltipContent renders in its own portal so CSS
+                    // inheritance from an outer wrapper doesn't reach it.
+                    // Use custom children when caption has newlines so we can
+                    // apply white-space: pre-wrap directly inside the portal.
+                    const tooltipContent = tooltipCaption?.includes('\n') ? (
+                        <TooltipContent>
+                            {tooltipTitle && (
+                                <div className={css.tooltipTitle}>
+                                    <Text size="sm" variant="bold">
+                                        {tooltipTitle}
+                                    </Text>
+                                </div>
+                            )}
+                            {(tooltipCaption || tooltipLink) && (
+                                <div className={css.innerTooltip}>
+                                    {tooltipCaption && (
+                                        <Text size="sm">{tooltipCaption}</Text>
+                                    )}
+                                    {tooltipLink}
+                                </div>
+                            )}
+                        </TooltipContent>
+                    ) : (
+                        <TooltipContent
+                            title={tooltipTitle}
+                            caption={tooltipCaption}
+                            link={tooltipLink}
+                        />
+                    )
+
+                    return (
+                        <Box display="flex" alignItems="center" gap="xxxs">
+                            <Text variant="bold" size="sm">
+                                {config.label}
+                            </Text>
+                            {(config.tooltipConfig || config.tooltipTitle) && (
+                                <Tooltip
+                                    delay={0}
+                                    trigger={<Icon name="info" size="xs" />}
+                                >
+                                    {tooltipContent}
+                                </Tooltip>
+                            )}
+                        </Box>
+                    )
+                },
                 cell: (info) => {
                     const value = info.getValue()
                     const isLoading = config.loadingStateKeys.some(

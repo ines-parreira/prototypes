@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { useEffect, useRef, useState } from 'react'
 
-import { Icon, Tooltip, TooltipContent } from '@gorgias/axiom'
+import { Icon, Text, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import type { TooltipData } from '../../types'
 
@@ -34,6 +34,45 @@ export function MetricCardHeader({
         </div>
     )
 
+    const link =
+        hint?.link != null ? (
+            <a
+                href={hint.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={css.tooltipLink}
+            >
+                {hint.linkText}
+            </a>
+        ) : undefined
+
+    // TooltipContent renders in its own portal, so CSS inheritance from a wrapper
+    // div does not reach it. When the caption has newlines we pass custom children
+    // so we can apply white-space: pre-wrap directly inside the portal.
+    const hintTooltipContent = hint?.caption?.includes('\n') ? (
+        <TooltipContent>
+            {hint.title && (
+                <div className={css.tooltipTitle}>
+                    <Text size="sm" variant="bold">
+                        {hint.title}
+                    </Text>
+                </div>
+            )}
+            {(hint.caption || link) && (
+                <div className={css.innerTooltip}>
+                    {hint.caption && <Text size="sm">{hint.caption}</Text>}
+                    {link}
+                </div>
+            )}
+        </TooltipContent>
+    ) : (
+        <TooltipContent
+            title={hint?.title}
+            caption={hint?.caption}
+            link={link}
+        />
+    )
+
     return (
         <div className={css.wrapper}>
             <div className={css.title}>
@@ -47,22 +86,7 @@ export function MetricCardHeader({
                 {hint && (
                     <span className={css.infoIcon}>
                         <Tooltip delay={0} trigger={<Icon name="info" />}>
-                            <TooltipContent
-                                title={hint.title}
-                                caption={hint.caption}
-                                link={
-                                    hint.link ? (
-                                        <a
-                                            href={hint.link}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className={css.tooltipLink}
-                                        >
-                                            {hint.linkText}
-                                        </a>
-                                    ) : undefined
-                                }
-                            />
+                            {hintTooltipContent}
                         </Tooltip>
                     </span>
                 )}

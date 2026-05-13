@@ -122,6 +122,13 @@ export const METRIC_TOOLTIPS = {
         link: GLOSSARY_LINK,
         linkText: HOW_IS_IT_CALCULATED,
     },
+    averageCsatInAiAgent: {
+        title: 'Average CSAT',
+        caption:
+            'Average satisfaction (CSAT) score across all tickets where AI Agent sent a response, including AI Assisted interactions (i.e. interactions where AI Agent replied and a human agent took over afterwards).\n\nThis may differ from the average CSAT in your Support Performance > Agents and Quality Management > Satisfaction reports when filtered on AI Agent, because those reports only count tickets where AI Agent is the last assigned agent.',
+        link: GLOSSARY_LINK,
+        linkText: HOW_IS_IT_CALCULATED,
+    },
     coverageRate: {
         title: 'Coverage rate',
         caption:

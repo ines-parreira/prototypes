@@ -149,7 +149,7 @@ export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiA
                         metricFormat: 'decimal',
                     },
                 ],
-                tooltipConfig: METRIC_TOOLTIPS.averageCsat,
+                tooltipConfig: METRIC_TOOLTIPS.averageCsatInAiAgent,
                 chartType: ChartType.Card,
                 metricFormat: 'decimal',
                 interpretAs: 'more-is-better',
