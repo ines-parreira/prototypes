@@ -2,6 +2,8 @@ import { useCallback } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
+import type { JourneyParticipationExecutionMode } from '@gorgias/convert-client'
+
 import type { UploadedImageAttachment } from 'AIJourney/components/ImageDropzone/ImageDropzone'
 import type { JOURNEY_TYPES } from 'AIJourney/constants'
 import { JOURNEY_TYPE_MAP_FROM_URL } from 'AIJourney/constants'
@@ -37,6 +39,7 @@ type HandleCreateParams = {
     postPurchaseWaitMinutes?: number
     uploadedImageAttachment?: UploadedImageAttachment[]
     rcsEnabled?: boolean
+    executionModeOverride?: JourneyParticipationExecutionMode | null
     scheduledDatetime?: string | null
 }
 
@@ -70,6 +73,7 @@ export const useJourneyCreateHandler = ({
             postPurchaseWaitMinutes,
             uploadedImageAttachment,
             rcsEnabled,
+            executionModeOverride,
             scheduledDatetime,
         }: HandleCreateParams) => {
             try {
@@ -133,6 +137,9 @@ export const useJourneyCreateHandler = ({
                             : undefined,
                         included_audience_list_ids: includedAudienceListIds,
                         excluded_audience_list_ids: excludedAudienceListIds,
+                        ...(executionModeOverride !== undefined && {
+                            execution_mode_override: executionModeOverride,
+                        }),
                         ...(flowName !== undefined && { name: flowName }),
                     },
                     journeyConfigs: {

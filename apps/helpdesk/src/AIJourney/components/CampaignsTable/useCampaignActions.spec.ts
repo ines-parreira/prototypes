@@ -257,5 +257,67 @@ describe('useCampaignActions', () => {
                 }),
             )
         })
+
+        it('copies execution_mode_override from the source journey', async () => {
+            mockGetJourneyData.mockResolvedValue({
+                store_integration_id: 9,
+                store_name: 'test-store',
+                type: 'campaign',
+                campaign: { title: 'Welcome' },
+                included_audience_list_ids: [],
+                excluded_audience_list_ids: [],
+                message_instructions: '',
+                execution_mode_override: 'convert-only',
+                configuration: undefined,
+            })
+            mockCreateNewJourneyMutateAsync.mockResolvedValue({
+                id: 'new-journey-3',
+                type: 'campaign',
+            })
+
+            const { result } = renderHook(() => useCampaignActions(baseParams))
+
+            await act(async () => {
+                await result.current.duplicateJourney({
+                    id: 'campaign-3',
+                } as Parameters<typeof result.current.duplicateJourney>[0])
+            })
+
+            expect(mockCreateNewJourneyMutateAsync).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    params: expect.objectContaining({
+                        execution_mode_override: 'convert-only',
+                    }),
+                }),
+            )
+        })
+
+        it('omits execution_mode_override when the source does not have one', async () => {
+            mockGetJourneyData.mockResolvedValue({
+                store_integration_id: 9,
+                store_name: 'test-store',
+                type: 'campaign',
+                campaign: { title: 'Welcome' },
+                included_audience_list_ids: [],
+                excluded_audience_list_ids: [],
+                message_instructions: '',
+                configuration: undefined,
+            })
+            mockCreateNewJourneyMutateAsync.mockResolvedValue({
+                id: 'new-journey-4',
+                type: 'campaign',
+            })
+
+            const { result } = renderHook(() => useCampaignActions(baseParams))
+
+            await act(async () => {
+                await result.current.duplicateJourney({
+                    id: 'campaign-4',
+                } as Parameters<typeof result.current.duplicateJourney>[0])
+            })
+
+            const call = mockCreateNewJourneyMutateAsync.mock.calls[0][0]
+            expect(call.params).not.toHaveProperty('execution_mode_override')
+        })
     })
 })

@@ -669,6 +669,65 @@ describe('useJourneyCreateHandler', () => {
             expect(call.journeyConfigs).not.toHaveProperty('rcs_enabled')
         })
 
+        it('includes execution_mode_override when executionModeOverride is provided', async () => {
+            mockMutateAsync.mockResolvedValue({ id: 'journey-123' })
+            const { result } = renderHook(
+                () => useJourneyCreateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleCreate({
+                    executionModeOverride: 'convert-only',
+                })
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    params: expect.objectContaining({
+                        execution_mode_override: 'convert-only',
+                    }),
+                }),
+            )
+        })
+
+        it('includes execution_mode_override: null when explicitly cleared', async () => {
+            mockMutateAsync.mockResolvedValue({ id: 'journey-123' })
+            const { result } = renderHook(
+                () => useJourneyCreateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleCreate({
+                    executionModeOverride: null,
+                })
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    params: expect.objectContaining({
+                        execution_mode_override: null,
+                    }),
+                }),
+            )
+        })
+
+        it('omits execution_mode_override when executionModeOverride is undefined', async () => {
+            mockMutateAsync.mockResolvedValue({ id: 'journey-123' })
+            const { result } = renderHook(
+                () => useJourneyCreateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleCreate({})
+            })
+
+            const call = mockMutateAsync.mock.calls[0][0]
+            expect(call.params).not.toHaveProperty('execution_mode_override')
+        })
+
         it('passes uploadedImageAttachment as media_urls', async () => {
             mockMutateAsync.mockResolvedValue({ id: 'journey-123' })
             const { result } = renderHook(

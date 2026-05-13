@@ -149,7 +149,7 @@ describe('<ExecutionModeCard />', () => {
                 await user.click(trigger)
 
                 expect(trigger).toHaveAttribute('aria-expanded', 'true')
-                expect(screen.queryAllByRole('radio')).toHaveLength(4)
+                expect(screen.queryAllByRole('radio')).toHaveLength(5)
                 expect(screen.getByLabelText(/Dry run/i)).toBeInTheDocument()
             })
         })

@@ -1457,6 +1457,138 @@ describe('<AiJourneyOnboarding />', () => {
             })
         })
     })
+
+    describe('execution mode override propagation', () => {
+        const MockStepComponentWithExecutionMode = ({
+            journeyType,
+        }: StepComponentProps) => {
+            const { control } = useFormContext<SetupFormValues>()
+            return (
+                <>
+                    <Controller
+                        name="sms_sender_integration_id"
+                        control={control}
+                        defaultValue={{ id: 123, label: '+1234567890' }}
+                        render={() => <div>Step content for {journeyType}</div>}
+                    />
+                    <Controller
+                        name="execution_mode_override"
+                        control={control}
+                        defaultValue={'convert-only'}
+                        render={() => <></>}
+                    />
+                </>
+            )
+        }
+
+        afterEach(() => {
+            delete (window as any).USER_IMPERSONATED
+        })
+
+        it('forwards executionModeOverride to handleCreate when the user is impersonated', async () => {
+            ;(window as any).USER_IMPERSONATED = true
+            mockHandleCreate.mockResolvedValue({ id: 'new-journey-id' })
+
+            const { user } = renderComponent({
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+                stepComponent: MockStepComponentWithExecutionMode,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: /continue/i }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(mockHandleCreate).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        executionModeOverride: 'convert-only',
+                    }),
+                )
+            })
+        })
+
+        it('forwards executionModeOverride to handleUpdate when the user is impersonated', async () => {
+            ;(window as any).USER_IMPERSONATED = true
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyData: { id: 'existing-journey-id', campaign: null },
+            } as any)
+            mockHandleUpdate.mockResolvedValue(undefined)
+
+            const { user } = renderComponent({
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+                stepComponent: MockStepComponentWithExecutionMode,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: /continue/i }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(mockHandleUpdate).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        executionModeOverride: 'convert-only',
+                    }),
+                )
+            })
+        })
+
+        it('omits executionModeOverride from handleCreate when the user is not impersonated', async () => {
+            mockHandleCreate.mockResolvedValue({ id: 'new-journey-id' })
+
+            const { user } = renderComponent({
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+                stepComponent: MockStepComponentWithExecutionMode,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: /continue/i }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(mockHandleCreate).toHaveBeenCalled()
+            })
+
+            const [payload] = mockHandleCreate.mock.calls[0]
+            expect(payload).not.toHaveProperty('executionModeOverride')
+        })
+
+        it('omits executionModeOverride from handleUpdate when the user is not impersonated', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyData: { id: 'existing-journey-id', campaign: null },
+            } as any)
+            mockHandleUpdate.mockResolvedValue(undefined)
+
+            const { user } = renderComponent({
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+                stepComponent: MockStepComponentWithExecutionMode,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: /continue/i }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(mockHandleUpdate).toHaveBeenCalled()
+            })
+
+            const [payload] = mockHandleUpdate.mock.calls[0]
+            expect(payload).not.toHaveProperty('executionModeOverride')
+        })
+    })
 })
 
 describe('buildScheduledDatetime', () => {

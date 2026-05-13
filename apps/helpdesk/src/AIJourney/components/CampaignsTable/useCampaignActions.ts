@@ -132,6 +132,10 @@ export function useCampaignActions({
                     excluded_audience_list_ids:
                         journeyData.excluded_audience_list_ids,
                     message_instructions: journeyData.message_instructions,
+                    ...(journeyData.execution_mode_override !== undefined && {
+                        execution_mode_override:
+                            journeyData.execution_mode_override,
+                    }),
                 },
                 journeyConfigs: {
                     max_follow_up_messages:

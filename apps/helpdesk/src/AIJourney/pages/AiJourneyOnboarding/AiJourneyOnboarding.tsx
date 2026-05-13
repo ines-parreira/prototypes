@@ -311,6 +311,9 @@ export const AiJourneyOnboarding = ({
                 excludedAudienceListIds: data.excluded_audience_list_ids,
                 campaignTitle: data.campaignTitle,
                 rcsEnabled: data.rcs_enabled,
+                ...(window.USER_IMPERSONATED && {
+                    executionModeOverride: data.execution_mode_override,
+                }),
                 flowName: data.flowName,
             }).then((res) =>
                 history.push(

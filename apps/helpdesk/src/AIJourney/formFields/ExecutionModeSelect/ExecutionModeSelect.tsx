@@ -21,6 +21,11 @@ const EXECUTION_MODE_OPTIONS: Array<{
         description: 'Tickets and messages created, SMS skipped.',
     },
     {
+        label: 'Convert only',
+        value: 'convert-only',
+        description: 'Tickets created, SMS skipped.',
+    },
+    {
         label: 'Regular',
         value: 'regular',
         description: 'Full flow: tickets created, SMS sent.',
