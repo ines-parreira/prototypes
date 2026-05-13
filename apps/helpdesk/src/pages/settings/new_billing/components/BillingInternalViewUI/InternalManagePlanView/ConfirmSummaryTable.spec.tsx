@@ -110,6 +110,45 @@ describe('ConfirmSummaryTable balance due', () => {
 
         expect(screen.getByText('$25.50 due today')).toBeInTheDocument()
     })
+
+    describe('when balance due is negative', () => {
+        it('renders the actual negative amount without clamping to $0', () => {
+            renderComponent({ balanceDue: -25.5 })
+
+            expect(screen.getByText('-$25.50 due today')).toBeInTheDocument()
+            expect(screen.queryByText('$0 due today')).not.toBeInTheDocument()
+        })
+
+        it('shows a disclaimer explaining that invoice is unavailable', () => {
+            renderComponent({ balanceDue: -25.5 })
+
+            expect(
+                screen.getByText(
+                    /A negative balance cannot be charged via invoice/i,
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('does not show the disclaimer when balance due is positive', () => {
+            renderComponent({ balanceDue: 25.5 })
+
+            expect(
+                screen.queryByText(
+                    /A negative balance cannot be charged via invoice/i,
+                ),
+            ).not.toBeInTheDocument()
+        })
+
+        it('does not show the disclaimer when balance due is null', () => {
+            renderComponent({ balanceDue: null })
+
+            expect(
+                screen.queryByText(
+                    /A negative balance cannot be charged via invoice/i,
+                ),
+            ).not.toBeInTheDocument()
+        })
+    })
 })
 
 describe('ConfirmSummaryTable discounts', () => {

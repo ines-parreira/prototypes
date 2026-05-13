@@ -72,6 +72,8 @@ export function InternalConfirmModal({
         ({ status }) => status === 'upgraded' || status === 'added',
     )
 
+    const isBalanceDueNegative = (estimate?.balance_due ?? 0) < 0
+
     const isWriteBlocked =
         !window.USER_IMPERSONATED_AUTHORIZED_FOR_BILLING_WRITE_OPS
     const isApplyDisabled =
@@ -80,6 +82,7 @@ export function InternalConfirmModal({
         isEstimateFetching ||
         isEstimateError ||
         isPaused
+    const isApplyWithInvoiceDisabled = isApplyDisabled || isBalanceDueNegative
 
     const estimateErrorMessage = isEstimateError
         ? isGorgiasApiError(estimateError)
@@ -103,6 +106,11 @@ export function InternalConfirmModal({
     const pausedTooltip =
         !isWriteBlocked && isPaused ? (
             <TooltipContent title="Your subscription is paused please resume/schedule resumption in Chargebee directly" />
+        ) : null
+
+    const negativeBalanceTooltip =
+        !isWriteBlocked && !isPaused && isBalanceDueNegative ? (
+            <TooltipContent title="A negative balance cannot be charged via invoice. Use 'Apply without invoice' instead." />
         ) : null
 
     function renderFooterButtons() {
@@ -171,7 +179,7 @@ export function InternalConfirmModal({
                                 isLoading={
                                     isSubmitting && activeAction === 'with'
                                 }
-                                isDisabled={isApplyDisabled}
+                                isDisabled={isApplyWithInvoiceDisabled}
                             >
                                 Apply with invoice
                             </Button>
@@ -179,6 +187,7 @@ export function InternalConfirmModal({
                     >
                         {writeBlockedTooltip}
                         {pausedTooltip}
+                        {negativeBalanceTooltip}
                     </Tooltip>
                 </>
             )

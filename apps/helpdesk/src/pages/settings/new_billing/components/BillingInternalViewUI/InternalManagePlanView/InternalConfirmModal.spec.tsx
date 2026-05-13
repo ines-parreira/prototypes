@@ -354,6 +354,73 @@ describe('InternalConfirmModal', () => {
         ).toBeInTheDocument()
     })
 
+    describe('when balance due is negative', () => {
+        beforeEach(() => {
+            server.use(estimateSuccessHandler({ balance_due: -2550 }))
+        })
+
+        it('disables "Apply with invoice" but keeps "Apply without invoice" enabled', async () => {
+            renderComponent()
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /apply with invoice/i }),
+                ).toBeDisabled()
+                expect(
+                    screen.getByRole('button', {
+                        name: /apply without invoice/i,
+                    }),
+                ).toBeEnabled()
+            })
+        })
+
+        it('shows a tooltip on "Apply with invoice" explaining the negative balance', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /apply with invoice/i }),
+                ).toBeDisabled()
+            })
+
+            await user.hover(
+                screen.getByRole('button', { name: /apply with invoice/i }),
+            )
+
+            expect(
+                await screen.findByText(/Use 'Apply without invoice' instead/i),
+            ).toBeInTheDocument()
+        })
+
+        it('shows the negative balance disclaimer in the summary table', async () => {
+            renderComponent()
+
+            expect(
+                await screen.findByText(
+                    /A negative balance cannot be charged via invoice/i,
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('does not call onApply when "Apply with invoice" is clicked while disabled', async () => {
+            const user = userEvent.setup()
+            const { props } = renderComponent()
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /apply with invoice/i }),
+                ).toBeDisabled()
+            })
+
+            await user.click(
+                screen.getByRole('button', { name: /apply with invoice/i }),
+            )
+
+            expect(props.onApply).not.toHaveBeenCalled()
+        })
+    })
+
     describe('when subscription is paused', () => {
         const pausedBillingState = {
             ...payingWithCreditCard,

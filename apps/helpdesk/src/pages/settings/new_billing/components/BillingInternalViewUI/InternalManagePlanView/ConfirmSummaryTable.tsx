@@ -54,10 +54,11 @@ export function ConfirmSummaryTable({
         ({ plan, currentPlan }) => plan !== null || currentPlan !== null,
     )
 
+    const isBalanceNegative = balanceDue != null && balanceDue < 0
     const balanceDueText =
         balanceDue == null
             ? '—'
-            : `${formatAmount(Math.max(balanceDue, 0), currency)} due today`
+            : `${formatAmount(balanceDue, currency)} due today`
 
     return (
         <Box flexDirection="column" gap="sm" w="100%">
@@ -112,15 +113,24 @@ export function ConfirmSummaryTable({
                     </Box>
                 </Box>
                 {showBalanceDue && (
-                    <BalanceDueRow
-                        isLoading={isEstimateLoading}
-                        errorMessage={estimateErrorMessage}
-                        onRetry={onRetryEstimate}
-                    >
-                        <Text className={css.highlighted} variant="bold">
-                            {balanceDueText}
-                        </Text>
-                    </BalanceDueRow>
+                    <>
+                        <BalanceDueRow
+                            isLoading={isEstimateLoading}
+                            errorMessage={estimateErrorMessage}
+                            onRetry={onRetryEstimate}
+                        >
+                            <Text className={css.highlighted} variant="bold">
+                                {balanceDueText}
+                            </Text>
+                        </BalanceDueRow>
+                        {isBalanceNegative && (
+                            <Text size="sm" color="content-neutral-secondary">
+                                A negative balance cannot be charged via
+                                invoice. Use &ldquo;Apply without invoice&rdquo;
+                                instead.
+                            </Text>
+                        )}
+                    </>
                 )}
                 <Box marginTop="sm" marginBottom="sm" flexDirection="column">
                     <Text
