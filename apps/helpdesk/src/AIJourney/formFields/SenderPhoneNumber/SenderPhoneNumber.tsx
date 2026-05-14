@@ -19,10 +19,15 @@ export const SenderPhoneNumber = () => {
     )
 
     const phoneNumberOptions: optionType[] =
-        marketingCapabilityPhoneNumbers.map((phone) => ({
-            id: phone.integrations[0].id,
-            label: phone.phone_number_friendly,
-        }))
+        marketingCapabilityPhoneNumbers.map((phone) => {
+            const smsIntegration = phone.integrations.find(
+                (integration) => integration.type === 'sms',
+            )
+            return {
+                id: smsIntegration!.id,
+                label: phone.phone_number_friendly,
+            }
+        })
 
     return (
         <Box flexDirection="column" gap="xxs">
@@ -38,8 +43,13 @@ export const SenderPhoneNumber = () => {
                                 )?.id === field.value,
                         )
 
+                    const currentSmsIntegration =
+                        currentPhoneNumber?.integrations.find(
+                            (integration) => integration.type === 'sms',
+                        )
+
                     const currentPhoneNumberOtion = {
-                        id: currentPhoneNumber?.integrations[0].id,
+                        id: currentSmsIntegration?.id,
                         label: currentPhoneNumber?.phone_number_friendly,
                     }
 

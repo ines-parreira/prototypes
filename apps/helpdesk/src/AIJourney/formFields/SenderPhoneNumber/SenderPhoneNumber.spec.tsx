@@ -2,6 +2,7 @@ import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { FormProvider, useForm } from 'react-hook-form'
+import type { UseFormReturn } from 'react-hook-form'
 
 import { useAiJourneyPhoneList } from 'AIJourney/hooks'
 import { useJourneyContext } from 'AIJourney/providers'
@@ -202,6 +203,89 @@ describe('<SenderPhoneNumber />', () => {
                     screen.getByText('+1 (555) 000-0001'),
                 ).toBeInTheDocument()
             })
+        })
+    })
+
+    describe('multi-integration phone numbers (AIJ-2091)', () => {
+        const multiIntegrationPhone = {
+            id: 824,
+            name: '[MKT] AI Journey',
+            phone_number: '+61489273833',
+            phone_number_friendly: '+61 489 273 833',
+            capabilities: {
+                sms: true,
+                mms: true,
+                voice: true,
+                whatsapp: true,
+            },
+            integrations: [
+                { id: 61722, name: 'Outbound Support', type: 'phone' },
+                { id: 72476, name: '[MKT] AI Journey - SMS', type: 'sms' },
+            ],
+            connections: [],
+            created_datetime: '2024-01-01T00:00:00Z',
+            updated_datetime: '2024-01-01T00:00:00Z',
+            deleted_datetime: null,
+        } as unknown as NewPhoneNumber
+
+        beforeEach(() => {
+            mockUseJourneyContext.mockReturnValue({
+                storeConfiguration: { monitoredSmsIntegrations: [72476] },
+            })
+            mockUseAiJourneyPhoneList.mockReturnValue({
+                marketingCapabilityPhoneNumbers: [multiIntegrationPhone],
+            })
+        })
+
+        it('writes the SMS integration id (not the phone integration id) when the user picks a multi-integration phone number', async () => {
+            let methodsRef: UseFormReturn | undefined
+            const Wrapper = () => {
+                const methods = useForm()
+                methodsRef = methods
+                return (
+                    <FormProvider {...methods}>
+                        <SenderPhoneNumber />
+                    </FormProvider>
+                )
+            }
+            render(<Wrapper />)
+
+            const user = userEvent.setup()
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /send from/i }),
+                )
+            })
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('option', {
+                        name: /\+61 489 273 833/i,
+                    }),
+                ).toBeInTheDocument()
+            })
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('option', {
+                        name: /\+61 489 273 833/i,
+                    }),
+                )
+            })
+
+            await waitFor(() => {
+                const value = methodsRef!.getValues('sms_sender_integration_id')
+                const id =
+                    typeof value === 'object' && value !== null && 'id' in value
+                        ? (value as { id: number }).id
+                        : value
+                expect(id).toBe(72476)
+                expect(id).not.toBe(61722)
+            })
+        })
+
+        it('displays the friendly phone number when the form is preloaded with the SMS integration id of a multi-integration phone', () => {
+            renderComponent({ sms_sender_integration_id: 72476 })
+
+            expect(screen.getByText('+61 489 273 833')).toBeInTheDocument()
         })
     })
 
