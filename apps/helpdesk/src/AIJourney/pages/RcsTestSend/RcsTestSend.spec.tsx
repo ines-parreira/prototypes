@@ -84,6 +84,12 @@ jest.mock('AIJourney/components/RcsMessageCard/RcsMessageCard', () => ({
     }: {
         form: {
             contextText: string
+            buttons: {
+                id: string
+                text: string
+                type: string
+                value?: string
+            }[]
             productEntries: { id: string; shopifyProduct: unknown }[]
         }
         dispatch: (action: unknown) => void
@@ -96,6 +102,23 @@ jest.mock('AIJourney/components/RcsMessageCard/RcsMessageCard', () => ({
                     dispatch({ type: 'SET_TEXT', payload: e.target.value })
                 }
             />
+            <button onClick={() => dispatch({ type: 'ADD_BUTTON' })}>
+                Add button
+            </button>
+            {form.buttons.map((button) => (
+                <input
+                    key={button.id}
+                    aria-label="button text"
+                    value={button.text}
+                    onChange={(e) =>
+                        dispatch({
+                            type: 'UPDATE_BUTTON',
+                            id: button.id,
+                            patch: { text: e.target.value },
+                        })
+                    }
+                />
+            ))}
             <button onClick={() => dispatch({ type: 'ADD_PRODUCT' })}>
                 Add product
             </button>
@@ -610,6 +633,64 @@ describe('<RcsTestSend />', () => {
 
             const [call] = mockMutate.mock.calls
             expect(call[0].rcs_context).not.toHaveProperty('products')
+        })
+    })
+
+    describe('buttons mapping', () => {
+        const withPhoneOptions = () => {
+            jest.mocked(useAiJourneyPhoneList).mockReturnValue({
+                marketingCapabilityPhoneNumbers: [
+                    {
+                        name: '[MKT] Test Phone',
+                        phone_number: '+15551234567',
+                        capabilities: { sms: true },
+                        integrations: [{ id: 42, type: 'sms' }],
+                    },
+                ] as ReturnType<
+                    typeof useAiJourneyPhoneList
+                >['marketingCapabilityPhoneNumbers'],
+            })
+        }
+
+        const fillRequiredFields = async (
+            user: ReturnType<typeof userEvent.setup>,
+        ) => {
+            await user.click(
+                screen.getByRole('button', { name: 'Select phone' }),
+            )
+            await user.type(
+                screen.getByRole('textbox', { name: 'phone number' }),
+                '5551234567',
+            )
+            await user.type(
+                screen.getByRole('textbox', { name: 'context text' }),
+                'Hello',
+            )
+        }
+
+        it('omits id from buttons in the payload', async () => {
+            withPhoneOptions()
+            const user = userEvent.setup()
+            renderComponent()
+
+            await fillRequiredFields(user)
+            await user.click(screen.getByRole('button', { name: 'Add button' }))
+            await user.type(
+                screen.getByRole('textbox', { name: 'button text' }),
+                'Click me',
+            )
+            await user.click(
+                screen.getByRole('button', { name: 'Send RCS test' }),
+            )
+
+            const [call] = mockMutate.mock.calls
+            const buttons = call[0].rcs_context.buttons
+            expect(buttons).toHaveLength(1)
+            expect(buttons[0]).not.toHaveProperty('id')
+            expect(buttons[0]).toMatchObject({
+                type: 'QUICK_REPLY',
+                text: 'Click me',
+            })
         })
     })
 })

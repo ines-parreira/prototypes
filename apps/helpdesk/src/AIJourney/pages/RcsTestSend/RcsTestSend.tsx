@@ -95,7 +95,9 @@ export const RcsTestSend = () => {
         )
             return
 
-        const filteredButtons = form.buttons.filter((b) => b.text.trim())
+        const filteredButtons = form.buttons
+            .filter((b) => b.text.trim())
+            .map(({ id: __id, ...rest }) => rest)
         const rcsProducts = form.productEntries
             .filter((e) => e.shopifyProduct != null)
             .map((e) => ({
@@ -132,7 +134,7 @@ export const RcsTestSend = () => {
             <Box width="100%" flexDirection="column" className={css.container}>
                 <Banner
                     intent="warning"
-                    icon="triangle-warning"
+                    icon="warning-triangle"
                     isClosable={false}
                     title="Internal tool"
                     description="Available for impersonated sessions only"
