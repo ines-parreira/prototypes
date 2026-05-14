@@ -1,0 +1,47 @@
+:local {
+    .appCell {
+        display: flex;
+        width: 191px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-xxs, 6px);
+    }
+
+    .actionCell {
+        display: flex;
+        flex: 1 0 0;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-xxs, 6px);
+    }
+
+    .field {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        min-height: 32px;
+        border: 1px solid var(--border-neutral-default, rgba(0, 0, 0, 0.12));
+        border-radius: var(--spacing-xxxs, 4px);
+        background-color: var(--elevation-neutral-default, #ffffff);
+        overflow: hidden;
+    }
+
+    .fieldLeading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        align-self: stretch;
+        padding: 0 var(--spacing-xs, 8px);
+        border-right: 1px solid
+            var(--border-neutral-default, rgba(0, 0, 0, 0.12));
+    }
+
+    .fieldText {
+        flex: 1;
+        min-width: 0;
+        padding: 0 var(--spacing-sm, 12px);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}

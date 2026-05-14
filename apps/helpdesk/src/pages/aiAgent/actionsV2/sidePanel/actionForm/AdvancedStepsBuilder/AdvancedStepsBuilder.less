@@ -1,0 +1,163 @@
+:local {
+    .canvas {
+        position: relative;
+        width: 100%;
+        height: 360px;
+        border: 1px solid var(--border-neutral-default, rgba(0, 0, 0, 0.12));
+        border-radius: var(--spacing-xs, 8px);
+        overflow: hidden;
+        background-color: var(--elevation-neutral-default, #ffffff);
+    }
+
+    .editButton {
+        position: absolute;
+        top: var(--spacing-sm, 12px);
+        right: var(--spacing-sm, 12px);
+        z-index: 10;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        background-color: var(--elevation-neutral-default, #ffffff);
+        border: 1px solid var(--border-neutral-default, rgba(0, 0, 0, 0.12));
+        border-radius: var(--spacing-xxxs, 4px);
+        cursor: pointer;
+        color: var(--content-neutral-default);
+        box-shadow: var(
+            --effects-shadow-component,
+            0 1px 2px rgba(0, 0, 0, 0.06)
+        );
+    }
+
+    .editButton:hover,
+    .editButton:focus-visible {
+        background-color: var(--surface-neutral-primary, #fafafa);
+        outline: none;
+    }
+
+    .fullScreen {
+        position: fixed;
+        inset: 0;
+        /*
+         * Picked to sit ABOVE the parent action-form SidePanel modal (axiom
+         * modal portal stacks ~1000) but BELOW typical popover content
+         * z-indexes (axiom popovers portal to <body> at much higher z-index),
+         * so popovers triggered from inside the fullscreen still render on
+         * top while the fullscreen itself overlays the action form.
+         */
+        z-index: 1500;
+        background-color: var(--elevation-neutral-mid, #ffffff);
+        display: flex;
+        flex-direction: column;
+        padding: var(--spacing-md, 16px) var(--spacing-lg, 24px);
+        gap: var(--spacing-md, 16px);
+    }
+
+    .fsHeader {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm, 12px);
+        flex: 0 0 auto;
+        padding-bottom: var(--spacing-md, 16px);
+    }
+
+    .fsBody {
+        position: relative;
+        flex: 1 1 auto;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .fsBody > * {
+        flex: 1 1 auto;
+        min-height: 0;
+    }
+
+    .fsStage {
+        position: relative;
+        display: flex;
+        flex: 1 1 auto;
+        min-height: 0;
+        gap: var(--spacing-md, 16px);
+    }
+
+    /*
+     * The visual builder's outer container is just a layout wrapper; we strip
+     * its border so each child (canvas + drawer) renders as its own bordered
+     * card with a clean gap between them.
+     */
+    .fsStage :global([class*='WorkflowVisualBuilder--container']) {
+        position: relative;
+        flex: 1 1 auto;
+        min-width: 0;
+        height: 100%;
+        background-color: transparent;
+        border: none;
+        overflow: visible;
+    }
+
+    /*
+     * Canvas card — the bordered, rounded white surface on the left. Keeps
+     * its absolute positioning inside .container; we transition `right` so
+     * shrinking when the drawer opens animates smoothly.
+     */
+    .fsStage :global([class*='WorkflowVisualBuilder--reactFlowContainer']) {
+        border: 1px solid var(--border-neutral-default, rgba(0, 0, 0, 0.08));
+        border-radius: var(--spacing-md, 16px);
+        background-color: var(--elevation-neutral-default, #ffffff);
+        overflow: hidden;
+        transition: right 200ms ease-in-out;
+    }
+
+    /*
+     * When the node-editor drawer is open, shrink the canvas so it sits
+     * beside the drawer with a visible 16px gap (drawer 360px + 16px gap =
+     * 376px reserved on the right).
+     */
+    .fsStage
+        :global(
+            [class*='WorkflowVisualBuilder--container'][data-drawer-open='true']
+        )
+        :global([class*='WorkflowVisualBuilder--reactFlowContainer']) {
+        right: 376px;
+        width: auto;
+    }
+
+    /*
+     * Drawer card — the bordered, rounded white surface on the right. The
+     * shared Drawer component renders an absolutely-positioned panel anchored
+     * to its container's right edge; we lock the width to 360px and add the
+     * matching card chrome so canvas + drawer look like sibling cards with a
+     * gap between them.
+     */
+    .fsStage :global([class*='NodeEditorDrawer--drawer']) {
+        top: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        left: auto !important;
+        width: 360px !important;
+        max-width: 360px !important;
+        margin: 0 !important;
+        border: 1px solid var(--border-neutral-default, rgba(0, 0, 0, 0.08));
+        border-radius: var(--spacing-md, 16px);
+        background-color: var(--elevation-neutral-default, #ffffff) !important;
+        box-shadow: none !important;
+        overflow: hidden;
+    }
+
+    .fsFooter {
+        position: relative;
+        z-index: 1;
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-top: var(--spacing-md, 16px);
+        background-color: var(--elevation-neutral-mid, #ffffff);
+    }
+}

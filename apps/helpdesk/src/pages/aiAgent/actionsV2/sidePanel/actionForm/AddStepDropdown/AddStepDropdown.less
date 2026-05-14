@@ -1,0 +1,65 @@
+:local {
+    .menu {
+        display: flex;
+        flex-direction: column;
+        padding: var(--spacing-xxs, 6px);
+        min-width: 260px;
+    }
+
+    .section {
+        display: flex;
+        flex-direction: column;
+        padding: var(--spacing-xxs, 6px) 0;
+    }
+
+    .section + .section {
+        border-top: 1px solid var(--border-neutral-default, rgba(0, 0, 0, 0.08));
+    }
+
+    .sectionLabel {
+        padding: var(--spacing-xxs, 6px) var(--spacing-xs, 8px);
+    }
+
+    .appRow,
+    .advancedRow,
+    .backRow {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs, 8px);
+        padding: 0 var(--spacing-xs, 8px);
+        min-height: 36px;
+        background: transparent;
+        border: none;
+        border-radius: var(--spacing-xxxs, 4px);
+        text-align: left;
+        cursor: pointer;
+        width: 100%;
+        color: var(--content-neutral-default, #1a1a1a);
+        transition: background-color 0.2s linear;
+    }
+
+    .divider {
+        height: 1px;
+        background-color: var(--border-neutral-default, rgba(0, 0, 0, 0.08));
+        margin: var(--spacing-xxs, 6px) 0;
+    }
+
+    .advancedRow:hover,
+    .advancedRow:focus-visible,
+    .backRow:hover,
+    .backRow:focus-visible {
+        background-color: var(--hover-default, #f3f4f6);
+        outline: none;
+    }
+
+    .appRow:hover,
+    .appRow:focus-visible {
+        background-color: var(--surface-accent-default, #ede9fe);
+        color: var(--content-accent-default, #5b21b6);
+        outline: none;
+    }
+
+    .spacer {
+        flex: 1;
+    }
+}
