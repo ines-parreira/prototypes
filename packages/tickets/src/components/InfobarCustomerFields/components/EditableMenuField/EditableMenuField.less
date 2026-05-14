@@ -1,13 +1,18 @@
 :local {
     .triggerContainer {
+        max-width: 100%;
+        min-width: 0;
+
         button {
             max-width: 100%;
 
             [class*='ui-button-content'] {
                 overflow: hidden;
+                min-width: 0;
 
-                [class^='typography-'] {
+                [data-name='text'] {
                     overflow: hidden;
+                    min-width: 0;
                 }
             }
         }

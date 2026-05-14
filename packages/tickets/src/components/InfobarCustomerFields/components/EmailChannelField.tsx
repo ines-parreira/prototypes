@@ -60,6 +60,7 @@ export function EmailChannelField({
                         <TriggerLabel
                             label={value}
                             tooltipText="Send email as new ticket"
+                            tooltipCaption={value}
                         />
                     )}
                     validator={(value) => validateChannelField('email', value)}
