@@ -12,6 +12,7 @@ import {
     SelectField,
 } from '@gorgias/axiom'
 
+import { NotificationRenderContext } from '../context/NotificationRenderContext'
 import { useNotificationItems } from '../hooks/useNotificationItems'
 import type { Notification } from '../types'
 import { NotificationsPanel } from './NotificationsPanel'
@@ -38,7 +39,11 @@ export function NotificationsFeedPanel({
     renderItem,
 }: NotificationsFeedPanelProps) {
     const [filter, setFilter] = useState<FilterItem>(FILTER_ITEMS[0])
-    const { items: allItems, markAllAsRead } = useNotificationItems(onClose)
+    const {
+        items: allItems,
+        markAllAsRead,
+        fetchNextPage,
+    } = useNotificationItems(onClose)
 
     const items =
         filter.id === 'all'
@@ -50,36 +55,39 @@ export function NotificationsFeedPanel({
               )
 
     return (
-        <NotificationsPanel
-            title={
-                <Box gap="xxxs" alignItems="center">
-                    <Heading size="xl">Notifications</Heading>
-                    <Button
-                        as={Link}
-                        to="/app/settings/notifications"
-                        icon={<Icon name="settings" />}
-                        variant="tertiary"
-                        size="sm"
-                        aria-label="Settings"
-                        onClick={onClose}
-                    />
-                </Box>
-            }
-            toolbar={
-                <SelectField
-                    items={FILTER_ITEMS}
-                    value={filter}
-                    onChange={setFilter}
-                    aria-label="Filter notifications"
-                >
-                    {(item) => <ListItem label={item.name} />}
-                </SelectField>
-            }
-            items={items}
-            onMarkAllAsRead={markAllAsRead}
-            onClose={onClose}
-        >
-            {() => items.map((item) => renderItem(item.notification, item))}
-        </NotificationsPanel>
+        <NotificationRenderContext.Provider value={{ isListItem: true }}>
+            <NotificationsPanel
+                onLoadMore={fetchNextPage}
+                title={
+                    <Box gap="xxxs" alignItems="center">
+                        <Heading size="xl">Notifications</Heading>
+                        <Button
+                            as={Link}
+                            to="/app/settings/notifications"
+                            icon={<Icon name="settings" />}
+                            variant="tertiary"
+                            size="sm"
+                            aria-label="Settings"
+                            onClick={onClose}
+                        />
+                    </Box>
+                }
+                toolbar={
+                    <SelectField
+                        items={FILTER_ITEMS}
+                        value={filter}
+                        onChange={setFilter}
+                        aria-label="Filter notifications"
+                    >
+                        {(item) => <ListItem label={item.name} />}
+                    </SelectField>
+                }
+                items={items}
+                onMarkAllAsRead={markAllAsRead}
+                onClose={onClose}
+            >
+                {(item) => renderItem(item.notification, item)}
+            </NotificationsPanel>
+        </NotificationRenderContext.Provider>
     )
 }

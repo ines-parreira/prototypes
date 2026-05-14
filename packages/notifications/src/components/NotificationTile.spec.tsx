@@ -2,6 +2,8 @@ import { render } from '@repo/testing/vitest'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import { TileList, TileListLayout } from '@gorgias/axiom'
+
 import { NotificationTile } from './NotificationTile'
 
 const baseProps = {
@@ -12,14 +14,28 @@ const baseProps = {
     readDatetime: null as string | null,
 }
 
-const renderTile = (
-    props: Partial<typeof baseProps> & {
-        href?: string
-        onClick?: () => void
-        onMarkAsUnread?: () => void
-        children?: React.ReactNode
-    } = {},
-) => render(<NotificationTile {...baseProps} {...props} />)
+type TileExtraProps = {
+    href?: string
+    onClick?: () => void
+    onMarkAsUnread?: () => void
+    children?: React.ReactNode
+}
+
+const renderTile = (props: Partial<typeof baseProps> & TileExtraProps = {}) =>
+    render(<NotificationTile {...baseProps} {...props} />)
+
+const renderTileAsListItem = (
+    props: Partial<typeof baseProps> & TileExtraProps = {},
+) =>
+    render(
+        <TileList
+            items={[{ id: baseProps.id }]}
+            layout={TileListLayout.Stack}
+            aria-label="Notifications"
+        >
+            {() => <NotificationTile {...baseProps} {...props} isListItem />}
+        </TileList>,
+    )
 
 describe('NotificationTile', () => {
     beforeEach(() => {
@@ -85,5 +101,42 @@ describe('NotificationTile', () => {
         renderTile({ onClick })
         await user.click(screen.getByRole('link'))
         expect(onClick).toHaveBeenCalledTimes(1)
+    })
+
+    describe('when rendered as a list item', () => {
+        it('renders the title', () => {
+            renderTileAsListItem()
+            expect(screen.getByText('New message')).toBeInTheDocument()
+        })
+
+        it('renders children content', () => {
+            renderTileAsListItem({ children: 'Ticket excerpt here' })
+            expect(screen.getByText('Ticket excerpt here')).toBeInTheDocument()
+        })
+
+        it('shows relative time when unread', () => {
+            renderTileAsListItem({ readDatetime: null })
+            expect(screen.getByText('1m ago')).toBeInTheDocument()
+        })
+
+        it('shows the Read status button when read', () => {
+            renderTileAsListItem({ readDatetime: '2024-01-01T12:00:00Z' })
+            expect(screen.getByText('Read')).toBeInTheDocument()
+        })
+
+        it('renders as a link', () => {
+            renderTileAsListItem({ href: '/app/ticket/1' })
+            expect(screen.getByRole('link')).toBeInTheDocument()
+        })
+
+        it('calls onClick when clicked', async () => {
+            const user = userEvent.setup({
+                advanceTimers: vi.advanceTimersByTime.bind(vi),
+            })
+            const onClick = vi.fn()
+            renderTileAsListItem({ onClick })
+            await user.click(screen.getByRole('link'))
+            expect(onClick).toHaveBeenCalledTimes(1)
+        })
     })
 })

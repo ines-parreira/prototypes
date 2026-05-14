@@ -15,6 +15,7 @@ import {
     Tile,
     TileContent,
     TileHeader,
+    TileListItem,
 } from '@gorgias/axiom'
 
 import { formatRelativeTime } from '../utils/formatRelativeTime'
@@ -29,9 +30,11 @@ export interface NotificationTileProps {
     href?: string
     onClick?: () => void
     onMarkAsUnread?: () => void
+    isListItem?: boolean
 }
 
 export function NotificationTile({
+    id,
     icon,
     title,
     children,
@@ -40,10 +43,11 @@ export function NotificationTile({
     href,
     onClick,
     onMarkAsUnread,
+    isListItem,
 }: NotificationTileProps) {
     const isRead = readDatetime !== null
-    return (
-        <Tile type="bottom-border" as={Link} onClick={onClick} to={href}>
+    const content = (
+        <>
             <TileHeader title={title} leadingSlot={icon} />
             <TileContent>
                 <Box gap="xxs" flexDirection="column">
@@ -76,6 +80,27 @@ export function NotificationTile({
                     </Box>
                 </Box>
             </TileContent>
+        </>
+    )
+
+    if (isListItem) {
+        return (
+            <TileListItem
+                id={id}
+                textValue={title}
+                type="bottom-border"
+                as={Link}
+                to={href}
+                onClick={onClick}
+            >
+                {content}
+            </TileListItem>
+        )
+    }
+
+    return (
+        <Tile type="bottom-border" as={Link} onClick={onClick} to={href}>
+            {content}
         </Tile>
     )
 }

@@ -1,5 +1,6 @@
 import { useKnockFeed } from '@knocklabs/react'
 
+import { useNotificationRenderContext } from '../context/NotificationRenderContext'
 import type { Notification } from '../types'
 import { NotificationTile } from './NotificationTile'
 import type { NotificationTileProps } from './NotificationTile'
@@ -17,6 +18,7 @@ export function NotificationFeedItem({
 }: NotificationFeedItemProps) {
     const { feedClient, useFeedStore } = useKnockFeed()
     const rawItems = useFeedStore((state) => state.items)
+    const { isListItem } = useNotificationRenderContext()
 
     const onMarkAsUnread = () => {
         void feedClient.markAsUnread(
@@ -30,6 +32,7 @@ export function NotificationFeedItem({
             createdDatetime={notification.inserted_datetime}
             readDatetime={notification.read_datetime}
             onMarkAsUnread={onMarkAsUnread}
+            isListItem={isListItem}
             {...props}
         />
     )
