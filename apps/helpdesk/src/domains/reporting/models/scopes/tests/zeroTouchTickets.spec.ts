@@ -1,5 +1,6 @@
 import { OrderDirection } from '@gorgias/helpdesk-types'
 
+import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import {
     messagesReceivedCount,
     messagesReceivedCountQueryV2Factory,
@@ -10,9 +11,14 @@ import {
     messagesReceivedTimeSeries,
     messagesReceivedTimeSeriesQueryV2Factory,
 } from 'domains/reporting/models/scopes/messagesReceived'
+import {
+    aiAgentAllAgentsZeroTouchTickets,
+    aiAgentAllAgentsZeroTouchTicketsQueryV2Factory,
+} from 'domains/reporting/models/scopes/zeroTouchTickets'
 import type {
     AggregationWindow,
     StatsFilters,
+    StatsFiltersWithLogicalOperator,
 } from 'domains/reporting/models/stat/types'
 
 describe('messagesReceivedScope', () => {
@@ -290,6 +296,74 @@ describe('messagesReceivedScope', () => {
                 expect(factoryResult).toEqual(buildResult)
                 expect(factoryResult.order).toEqual([['messagesCount', 'desc']])
             })
+        })
+    })
+})
+
+describe('zeroTouchTicketsScope', () => {
+    const filters: StatsFiltersWithLogicalOperator = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+        agents: withDefaultLogicalOperator([123]),
+    }
+
+    const timezone = 'utc'
+
+    const granularity = 'day' as AggregationWindow
+
+    const context = {
+        filters,
+        timezone,
+        granularity,
+    }
+
+    describe('aiAgentAllAgentsZeroTouchTickets', () => {
+        it('creates query', () => {
+            const actual = aiAgentAllAgentsZeroTouchTickets.build(context)
+
+            const expected = {
+                measures: ['ticketCount'],
+                timezone: 'utc',
+                filters: [
+                    {
+                        member: 'periodStart',
+                        operator: 'afterDate',
+                        values: ['2025-09-03T00:00:00.000'],
+                    },
+                    {
+                        member: 'periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2025-09-03T23:59:59.000'],
+                    },
+                    {
+                        member: 'agentId',
+                        operator: 'one-of',
+                        values: [123],
+                    },
+                ],
+                metricName: 'ai-agent-all-agents-zero-touch-tickets',
+                scope: 'zero-touch-tickets',
+                time_dimensions: [
+                    {
+                        dimension: 'createdDatetime',
+                        granularity: 'day',
+                    },
+                ],
+            }
+
+            expect(actual).toEqual(expected)
+        })
+    })
+
+    describe('aiAgentAllAgentsZeroTouchTicketsQueryV2Factory', () => {
+        it('returns the same result as calling build directly', () => {
+            const factoryResult =
+                aiAgentAllAgentsZeroTouchTicketsQueryV2Factory(context)
+            const buildResult = aiAgentAllAgentsZeroTouchTickets.build(context)
+
+            expect(factoryResult).toEqual(buildResult)
         })
     })
 })

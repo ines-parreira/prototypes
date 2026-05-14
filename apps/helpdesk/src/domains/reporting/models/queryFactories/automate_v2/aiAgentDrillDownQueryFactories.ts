@@ -14,11 +14,6 @@ import {
     AIAgentAutomatedInteractionsV2Dimension,
     AIAgentAutomatedInteractionsV2FilterMember,
 } from 'domains/reporting/models/cubes/automate_v2/AIAgentAutomatedInteractionsV2Cube'
-import type { AIAgentClosedTicketsCube } from 'domains/reporting/models/cubes/automate_v2/AIAgentClosedTicketsCube'
-import {
-    AIAgentClosedTicketsDimension,
-    AIAgentClosedTicketsFilterMember,
-} from 'domains/reporting/models/cubes/automate_v2/AIAgentClosedTicketsCube'
 import type { AIAgentCSATCube } from 'domains/reporting/models/cubes/automate_v2/AIAgentCSATCube'
 import {
     AIAgentCSATDimension,
@@ -35,6 +30,12 @@ import {
     AIAgentDecreaseInResolutionTimeFilterMember,
 } from 'domains/reporting/models/cubes/automate_v2/AIAgentDecreaseInResolutionTimeCube'
 import { AIAgentSkills } from 'domains/reporting/models/cubes/automate_v2/AIAgentIntercationsBySkillDatasetCube'
+import type { TicketCube } from 'domains/reporting/models/cubes/TicketCube'
+import {
+    TicketDimension,
+    TicketMember,
+    TicketSegment,
+} from 'domains/reporting/models/cubes/TicketCube'
 import { mapTicketChannelsToAutomateChannels } from 'domains/reporting/models/queryFactories/automate_v2/filters'
 import { AutomationFeatureType } from 'domains/reporting/models/scopes/constants'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
@@ -43,9 +44,10 @@ import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import type { StatsFiltersMembers } from 'domains/reporting/utils/reporting'
 import {
     DRILLDOWN_QUERY_LIMIT,
+    NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
 } from 'domains/reporting/utils/reporting'
-import type { OrderDirection } from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 
 // Channels and stores are conditionally included when the AiAgentAnalyticsFilters feature flag is enabled —
 // useDrillDownQuery (domains/reporting/hooks/useDrillDownData.ts) passes them via useAiAgentStatsFilters
@@ -85,11 +87,10 @@ const handoverInteractionsFiltersMembers: StatsFiltersMembers = {
     stores: HandoverInteractionsFilterMember.StoreIntegrationId,
 }
 
-const closedTicketsFiltersMembers: StatsFiltersMembers = {
-    periodStart: AIAgentClosedTicketsFilterMember.PeriodStart,
-    periodEnd: AIAgentClosedTicketsFilterMember.PeriodEnd,
-    channels: AIAgentClosedTicketsFilterMember.Channel,
-    stores: AIAgentClosedTicketsFilterMember.StoreIntegrationId,
+const ticketClosedDrillDownFiltersMembers: StatsFiltersMembers = {
+    periodStart: TicketMember.PeriodStart,
+    periodEnd: TicketMember.PeriodEnd,
+    channels: TicketMember.Channel,
 }
 
 const csatFiltersMembers: StatsFiltersMembers = {
@@ -296,26 +297,35 @@ export const allAgentsClosedTicketsDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
-    outcomeCustomFieldId?: number,
-): ReportingQuery<AIAgentClosedTicketsCube> => ({
+    assigneeUserId?: number,
+): ReportingQuery<TicketCube> => ({
     metricName: METRIC_NAMES.AI_AGENT_CLOSED_TICKETS_DRILL_DOWN,
     measures: [],
-    dimensions: [AIAgentClosedTicketsDimension.TicketId],
+    dimensions: [
+        TicketDimension.TicketId,
+        TicketDimension.CreatedDatetime,
+        TicketDimension.AssigneeUserId,
+    ],
+    segments: [TicketSegment.ClosedTickets],
     filters: [
-        ...statsFiltersToReportingFilters(closedTicketsFiltersMembers, filters),
-        ...(outcomeCustomFieldId !== undefined
+        ...NotSpamNorTrashedTicketsFilter,
+        ...statsFiltersToReportingFilters(
+            ticketClosedDrillDownFiltersMembers,
+            filters,
+        ),
+        ...(assigneeUserId !== undefined
             ? [
                   {
-                      member: AIAgentClosedTicketsFilterMember.AiAgentOutcomeCustomFieldId,
+                      member: TicketMember.AssigneeUserId,
                       operator: ReportingFilterOperator.Equals,
-                      values: [String(outcomeCustomFieldId)],
+                      values: [String(assigneeUserId)],
                   },
               ]
             : []),
     ],
     timezone,
     limit: DRILLDOWN_QUERY_LIMIT,
-    order: sorting ? [[AIAgentClosedTicketsDimension.TicketId, sorting]] : [],
+    order: [[TicketDimension.CreatedDatetime, sorting ?? OrderDirection.Desc]],
 })
 
 export const allAgentsCsatDrillDownQueryFactory = (

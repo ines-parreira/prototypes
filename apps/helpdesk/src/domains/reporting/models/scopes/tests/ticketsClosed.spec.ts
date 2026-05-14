@@ -2,6 +2,8 @@ import { OrderDirection } from '@gorgias/helpdesk-types'
 
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import {
+    aiAgentAllAgentsClosedTickets,
+    aiAgentAllAgentsClosedTicketsQueryV2Factory,
     closedTicketsCount,
     closedTicketsCountQueryV2Factory,
     closedTicketsPerAgent,
@@ -278,6 +280,44 @@ describe('ticketsClosedScope', () => {
         })
     })
 
+    describe('aiAgentAllAgentsClosedTickets', () => {
+        it('creates query', () => {
+            const actual = aiAgentAllAgentsClosedTickets.build(context)
+
+            const expected = {
+                measures: ['ticketCount'],
+                timezone: 'utc',
+                filters: [
+                    {
+                        member: 'periodStart',
+                        operator: 'afterDate',
+                        values: ['2025-09-03T00:00:00.000'],
+                    },
+                    {
+                        member: 'periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2025-09-03T23:59:59.000'],
+                    },
+                    {
+                        member: 'agentId',
+                        operator: 'one-of',
+                        values: [123],
+                    },
+                ],
+                metricName: 'ai-agent-all-agents-closed-tickets',
+                scope: 'tickets-closed',
+                time_dimensions: [
+                    {
+                        dimension: 'closedDatetime',
+                        granularity: 'day',
+                    },
+                ],
+            }
+
+            expect(actual).toEqual(expected)
+        })
+    })
+
     describe('QueryV2Factory methods', () => {
         describe('closedTicketsCountQueryV2Factory', () => {
             it('returns the same result as calling build directly', () => {
@@ -362,6 +402,16 @@ describe('ticketsClosedScope', () => {
 
                 expect(factoryResult).toEqual(buildResult)
                 expect(factoryResult.order).toEqual([['ticketCount', 'desc']])
+            })
+        })
+
+        describe('aiAgentAllAgentsClosedTicketsQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult =
+                    aiAgentAllAgentsClosedTicketsQueryV2Factory(context)
+                const buildResult = aiAgentAllAgentsClosedTickets.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
             })
         })
     })

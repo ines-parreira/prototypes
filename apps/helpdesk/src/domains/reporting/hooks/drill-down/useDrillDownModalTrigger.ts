@@ -20,6 +20,7 @@ export type DrillDownModalTigerParams = {
     segmentEventName?: SegmentEvent
     provider?: AttributionModelComparison
     outcomeCustomFieldId?: number
+    assigneeUserId?: number
 }
 
 const useCreateDrillDownModalHandler = ({
@@ -82,6 +83,7 @@ export const useDrillDownModalTrigger = ({
     provider,
     productId,
     outcomeCustomFieldId,
+    assigneeUserId,
 }: DrillDownModalTigerParams) => {
     const tooltipText = title || (metricName ? getTooltipText(metricName) : '')
 
@@ -93,6 +95,7 @@ export const useDrillDownModalTrigger = ({
         provider,
         productId,
         outcomeCustomFieldId,
+        assigneeUserId,
     } as DrillDownMetric
 
     const openDrillDownModal = useCreateDrillDownModalHandler({

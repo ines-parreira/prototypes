@@ -171,4 +171,25 @@ describe('useDrillDownModalTrigger', () => {
 
         expect(result.current.tooltipText).toBe('')
     })
+
+    it('should include assigneeUserId in metricData when provided', () => {
+        const assigneeUserId = 42
+        const { result, store } = renderHook(() =>
+            useDrillDownModalTrigger({
+                metricName,
+                title: customTitle,
+                assigneeUserId,
+            }),
+        )
+
+        result.current.openDrillDownModal()
+
+        expect(store.getActions()).toContainEqual(
+            setMetricData(
+                expect.objectContaining({
+                    assigneeUserId,
+                }) as any,
+            ),
+        )
+    })
 })

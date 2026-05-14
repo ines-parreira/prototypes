@@ -1,5 +1,6 @@
 import { TrendCard } from '@repo/reporting'
 
+import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
 import { useReportingTrendCardProps } from 'domains/reporting/hooks/useReportingTrendCardProps'
 import { AiAgentDrillDownMetricName } from 'domains/reporting/pages/automate/aiAgent/aiAgentDrillDownMetrics'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
@@ -12,6 +13,7 @@ export const AnalyticsAiAgentClosedTicketsCard = ({
     chartConfig,
 }: DashboardChartProps) => {
     const { outcomeCustomFieldId } = useGetCustomTicketsFieldsDefinitionData()
+    const aiAgentUserId = useAIAgentUserId()
 
     const trendCardProps = useReportingTrendCardProps({
         chartConfig: chartConfig!,
@@ -22,6 +24,7 @@ export const AnalyticsAiAgentClosedTicketsCard = ({
         drillDownMetricName:
             AiAgentDrillDownMetricName.AllAgentsClosedTicketsCard,
         outcomeCustomFieldId,
+        assigneeUserId: aiAgentUserId,
     })
 
     return <TrendCard {...trendCardProps} />

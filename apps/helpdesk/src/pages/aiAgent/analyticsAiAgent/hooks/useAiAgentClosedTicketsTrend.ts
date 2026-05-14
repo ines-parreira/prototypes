@@ -1,42 +1,50 @@
+import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
 import useStatsMetricTrend, {
     fetchStatsMetricTrend,
 } from 'domains/reporting/hooks/useStatsMetricTrend'
-import { closedTicketsCountQueryV2Factory } from 'domains/reporting/models/scopes/aiAgentTicketsClosed'
+import { aiAgentAllAgentsClosedTicketsQueryV2Factory } from 'domains/reporting/models/scopes/ticketsClosed'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
+import { applyAiAgentFilter } from 'pages/aiAgent/analyticsAiAgent/utils/applyAiAgentFilter'
 
 export const useAiAgentClosedTicketsTrend = (
     filters: StatsFilters,
     timezone: string,
 ) => {
+    const aiAgentUserId = useAIAgentUserId()
+    const agentFilters = applyAiAgentFilter(filters, aiAgentUserId)
+
     return useStatsMetricTrend(
-        closedTicketsCountQueryV2Factory({
-            filters,
+        aiAgentAllAgentsClosedTicketsQueryV2Factory({
+            filters: agentFilters,
             timezone,
         }),
-        closedTicketsCountQueryV2Factory({
+        aiAgentAllAgentsClosedTicketsQueryV2Factory({
             filters: {
-                ...filters,
-                period: getPreviousPeriod(filters.period),
+                ...agentFilters,
+                period: getPreviousPeriod(agentFilters.period),
             },
             timezone,
         }),
     )
 }
 
-export const fetchAiAgentClosedTicketsTrend = async (
+export const fetchAiAgentClosedTicketsTrend = (
     filters: StatsFilters,
     timezone: string,
+    aiAgentUserId: number | undefined,
 ) => {
+    const agentFilters = applyAiAgentFilter(filters, aiAgentUserId)
+
     return fetchStatsMetricTrend(
-        closedTicketsCountQueryV2Factory({
-            filters,
+        aiAgentAllAgentsClosedTicketsQueryV2Factory({
+            filters: agentFilters,
             timezone,
         }),
-        closedTicketsCountQueryV2Factory({
+        aiAgentAllAgentsClosedTicketsQueryV2Factory({
             filters: {
-                ...filters,
-                period: getPreviousPeriod(filters.period),
+                ...agentFilters,
+                period: getPreviousPeriod(agentFilters.period),
             },
             timezone,
         }),

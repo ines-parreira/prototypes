@@ -12,10 +12,6 @@ import {
     AIAgentAutomatedInteractionsV2FilterMember,
 } from 'domains/reporting/models/cubes/automate_v2/AIAgentAutomatedInteractionsV2Cube'
 import {
-    AIAgentClosedTicketsDimension,
-    AIAgentClosedTicketsFilterMember,
-} from 'domains/reporting/models/cubes/automate_v2/AIAgentClosedTicketsCube'
-import {
     AIAgentCSATDimension,
     AIAgentCSATFilterMember,
 } from 'domains/reporting/models/cubes/automate_v2/AIAgentCSATCube'
@@ -28,6 +24,11 @@ import {
     AIAgentDecreaseInResolutionTimeFilterMember,
 } from 'domains/reporting/models/cubes/automate_v2/AIAgentDecreaseInResolutionTimeCube'
 import { AIAgentSkills } from 'domains/reporting/models/cubes/automate_v2/AIAgentIntercationsBySkillDatasetCube'
+import {
+    TicketDimension,
+    TicketMember,
+    TicketSegment,
+} from 'domains/reporting/models/cubes/TicketCube'
 import {
     allAgentsAutomatedInteractionsDrillDownQueryFactory,
     allAgentsClosedTicketsDrillDownQueryFactory,
@@ -407,86 +408,109 @@ describe('allAgentsClosedTicketsDrillDownQueryFactory', () => {
         ).toEqual({
             metricName: METRIC_NAMES.AI_AGENT_CLOSED_TICKETS_DRILL_DOWN,
             measures: [],
-            dimensions: [AIAgentClosedTicketsDimension.TicketId],
+            dimensions: [
+                TicketDimension.TicketId,
+                TicketDimension.CreatedDatetime,
+                TicketDimension.AssigneeUserId,
+            ],
+            segments: [TicketSegment.ClosedTickets],
             filters: [
                 {
-                    member: AIAgentClosedTicketsFilterMember.PeriodStart,
+                    member: TicketMember.IsTrashed,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['0'],
+                },
+                {
+                    member: TicketMember.IsSpam,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['0'],
+                },
+                {
+                    member: TicketMember.PeriodStart,
                     operator: ReportingFilterOperator.AfterDate,
                     values: [filters.period.start_datetime],
                 },
                 {
-                    member: AIAgentClosedTicketsFilterMember.PeriodEnd,
+                    member: TicketMember.PeriodEnd,
                     operator: ReportingFilterOperator.BeforeDate,
                     values: [filters.period.end_datetime],
                 },
                 {
-                    member: AIAgentClosedTicketsFilterMember.StoreIntegrationId,
-                    operator: ReportingFilterOperator.Equals,
-                    values: ['122'],
-                },
-                {
-                    member: AIAgentClosedTicketsFilterMember.Channel,
+                    member: TicketMember.Channel,
                     operator: ReportingFilterOperator.Equals,
                     values: ['chat'],
                 },
             ],
             timezone,
             limit: DRILLDOWN_QUERY_LIMIT,
-            order: [],
+            order: [[TicketDimension.CreatedDatetime, OrderDirection.Desc]],
         })
     })
 
-    it('includes sorting when provided', () => {
+    it('defaults to desc order by createdDatetime when sorting not provided', () => {
+        const result = allAgentsClosedTicketsDrillDownQueryFactory(
+            filters,
+            timezone,
+        )
+        expect(result.order).toEqual([
+            [TicketDimension.CreatedDatetime, OrderDirection.Desc],
+        ])
+    })
+
+    it('uses provided sorting direction', () => {
         expect(
             allAgentsClosedTicketsDrillDownQueryFactory(
                 filters,
                 timezone,
-                OrderDirection.Desc,
+                OrderDirection.Asc,
             ),
         ).toEqual(
             expect.objectContaining({
-                order: [
-                    [
-                        AIAgentClosedTicketsDimension.TicketId,
-                        OrderDirection.Desc,
-                    ],
-                ],
+                order: [[TicketDimension.CreatedDatetime, OrderDirection.Asc]],
             }),
         )
     })
 
-    it('includes outcomeCustomFieldId filter when provided', () => {
+    it('includes assigneeUserId filter when provided', () => {
         expect(
             allAgentsClosedTicketsDrillDownQueryFactory(
                 filters,
                 timezone,
                 undefined,
-                123,
+                789,
             ),
         ).toEqual(
             expect.objectContaining({
                 filters: expect.arrayContaining([
                     {
-                        member: AIAgentClosedTicketsFilterMember.AiAgentOutcomeCustomFieldId,
+                        member: TicketMember.AssigneeUserId,
                         operator: ReportingFilterOperator.Equals,
-                        values: ['123'],
+                        values: ['789'],
                     },
                 ]),
             }),
         )
     })
 
-    it('omits outcomeCustomFieldId filter when not provided', () => {
+    it('omits assigneeUserId filter when not provided', () => {
         const result = allAgentsClosedTicketsDrillDownQueryFactory(
             filters,
             timezone,
         )
-        const hasOutcomeFilter = result.filters.some(
-            (f) =>
-                f.member ===
-                AIAgentClosedTicketsFilterMember.AiAgentOutcomeCustomFieldId,
+        const hasAssigneeFilter = result.filters.some(
+            (f) => f.member === TicketMember.AssigneeUserId,
         )
-        expect(hasOutcomeFilter).toBe(false)
+        expect(hasAssigneeFilter).toBe(false)
+    })
+
+    it('does not include stores filter', () => {
+        const result = allAgentsClosedTicketsDrillDownQueryFactory(
+            filters,
+            timezone,
+        )
+        expect(result.filters).not.toContainEqual(
+            expect.objectContaining({ values: ['122'] }),
+        )
     })
 })
 

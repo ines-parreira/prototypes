@@ -108,3 +108,13 @@ export const closedTicketsPerChannel = ticketsClosedScope
 export const closedTicketsPerChannelQueryV2Factory = (
     ctx: TicketsClosedContext,
 ) => closedTicketsPerChannel.build(ctx)
+
+export const aiAgentAllAgentsClosedTickets = ticketsClosedScope
+    .defineMetricName(METRIC_NAMES.AI_AGENT_ALL_AGENTS_CLOSED_TICKETS)
+    .defineQuery(() => ({
+        measures: ['ticketCount'] as const,
+    }))
+
+export const aiAgentAllAgentsClosedTicketsQueryV2Factory = (
+    ctx: TicketsClosedContext,
+) => aiAgentAllAgentsClosedTickets.build(ctx)

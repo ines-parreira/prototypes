@@ -112,3 +112,13 @@ export const zeroTouchTicketsTimeSeries = zeroTouchTicketsScope
 export const zeroTouchTicketsTimeSeriesQueryV2Factory = (
     ctx: ZeroTouchTicketsContext,
 ) => zeroTouchTicketsTimeSeries.build(ctx)
+
+export const aiAgentAllAgentsZeroTouchTickets = zeroTouchTicketsScope
+    .defineMetricName(METRIC_NAMES.AI_AGENT_ALL_AGENTS_ZERO_TOUCH_TICKETS)
+    .defineQuery(() => ({
+        measures: ['ticketCount'] as const,
+    }))
+
+export const aiAgentAllAgentsZeroTouchTicketsQueryV2Factory = (
+    ctx: ZeroTouchTicketsContext,
+) => aiAgentAllAgentsZeroTouchTickets.build(ctx)

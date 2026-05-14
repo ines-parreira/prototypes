@@ -183,6 +183,7 @@ export type AiAgentMetrics = {
     metricName: AiAgentDrillDownMetrics
     productId?: string
     outcomeCustomFieldId?: number
+    assigneeUserId?: number
 } & CommonMetrics
 
 export type AutoQAMetrics = {

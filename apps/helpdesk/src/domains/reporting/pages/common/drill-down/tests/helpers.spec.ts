@@ -1584,11 +1584,11 @@ describe('getDrillDownQuery', () => {
         ).toHaveBeenCalledWith(statsFilters, timezone, undefined, undefined)
     })
 
-    it('should pass outcomeCustomFieldId to allAgentsClosedTicketsDrillDownQueryFactory', () => {
+    it('should pass assigneeUserId to allAgentsClosedTicketsDrillDownQueryFactory', () => {
         const timezone = 'someTimeZone'
         const drillDownMetric: AiAgentMetrics = {
             metricName: AiAgentDrillDownMetricName.AllAgentsClosedTicketsCard,
-            outcomeCustomFieldId: 5254,
+            assigneeUserId: 5254,
         }
 
         getDrillDownQuery(drillDownMetric)(statsFilters, timezone)

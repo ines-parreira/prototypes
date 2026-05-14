@@ -525,7 +525,7 @@ export const getDrillDownQuery = (
                     statsFilters,
                     timezone,
                     sorting,
-                    (metricData as AiAgentMetrics).outcomeCustomFieldId,
+                    (metricData as AiAgentMetrics).assigneeUserId,
                 )
         case AiAgentDrillDownMetricName.AllAgentsCsatCard:
             return (

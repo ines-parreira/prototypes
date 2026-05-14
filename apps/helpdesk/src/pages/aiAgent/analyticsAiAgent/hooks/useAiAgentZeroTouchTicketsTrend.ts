@@ -1,42 +1,50 @@
+import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
 import useStatsMetricTrend, {
     fetchStatsMetricTrend,
 } from 'domains/reporting/hooks/useStatsMetricTrend'
-import { zeroTouchTicketsCountQueryV2Factory } from 'domains/reporting/models/scopes/aiAgentTicketsClosed'
+import { aiAgentAllAgentsZeroTouchTicketsQueryV2Factory } from 'domains/reporting/models/scopes/zeroTouchTickets'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
+import { applyAiAgentFilter } from 'pages/aiAgent/analyticsAiAgent/utils/applyAiAgentFilter'
 
 export const useAiAgentZeroTouchTicketsTrend = (
     filters: StatsFilters,
     timezone: string,
 ) => {
+    const aiAgentUserId = useAIAgentUserId()
+    const agentFilters = applyAiAgentFilter(filters, aiAgentUserId)
+
     return useStatsMetricTrend(
-        zeroTouchTicketsCountQueryV2Factory({
-            filters,
+        aiAgentAllAgentsZeroTouchTicketsQueryV2Factory({
+            filters: agentFilters,
             timezone,
         }),
-        zeroTouchTicketsCountQueryV2Factory({
+        aiAgentAllAgentsZeroTouchTicketsQueryV2Factory({
             filters: {
-                ...filters,
-                period: getPreviousPeriod(filters.period),
+                ...agentFilters,
+                period: getPreviousPeriod(agentFilters.period),
             },
             timezone,
         }),
     )
 }
 
-export const fetchAiAgentZeroTouchTicketsTrend = async (
+export const fetchAiAgentZeroTouchTicketsTrend = (
     filters: StatsFilters,
     timezone: string,
+    aiAgentUserId: number | undefined,
 ) => {
+    const agentFilters = applyAiAgentFilter(filters, aiAgentUserId)
+
     return fetchStatsMetricTrend(
-        zeroTouchTicketsCountQueryV2Factory({
-            filters,
+        aiAgentAllAgentsZeroTouchTicketsQueryV2Factory({
+            filters: agentFilters,
             timezone,
         }),
-        zeroTouchTicketsCountQueryV2Factory({
+        aiAgentAllAgentsZeroTouchTicketsQueryV2Factory({
             filters: {
-                ...filters,
-                period: getPreviousPeriod(filters.period),
+                ...agentFilters,
+                period: getPreviousPeriod(agentFilters.period),
             },
             timezone,
         }),

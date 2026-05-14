@@ -27,6 +27,7 @@ export const useReportingTrendCardProps = ({
     drillDownMetricName,
     timeSeriesView,
     outcomeCustomFieldId,
+    assigneeUserId,
 }: {
     chartId?: string
     dashboard?: DashboardSchema
@@ -35,6 +36,7 @@ export const useReportingTrendCardProps = ({
     isAiAgentTrendCard: boolean
     drillDownMetricName?: DrillDownMetric['metricName']
     outcomeCustomFieldId?: number
+    assigneeUserId?: number
     timeSeriesView?: {
         comingSoon?: boolean
         queryFactory?: MetricQueryFactory
@@ -53,6 +55,7 @@ export const useReportingTrendCardProps = ({
         metricName: drillDownMetricName,
         title: chartConfig.label,
         outcomeCustomFieldId,
+        assigneeUserId,
     })
 
     const { value: isTimeSeriesFFEnabled, isLoading: isFFLoading } =
