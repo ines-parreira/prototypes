@@ -610,7 +610,10 @@ export const AIJourneySettings: React.FC = () => {
             )}
 
             <div className={css.audiencesContainer}>
-                <KlaviyoPermissionBanner integrationId={integrationId} />
+                <KlaviyoPermissionBanner
+                    integrationId={integrationId}
+                    settingsUrl={`/app/ai-journey/${shopName}/settings/integrations`}
+                />
                 <AudienceSelect
                     label="Audience to include"
                     value={includedAudienceListIds ?? []}

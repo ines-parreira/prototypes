@@ -60,7 +60,12 @@ describe('<KlaviyoPermissionBanner />', () => {
         mockGetAudiencesLists.mockResolvedValue(okResponse())
         mockGetAudiencesSegments.mockResolvedValue(okResponse())
 
-        render(<KlaviyoPermissionBanner integrationId={123} />)
+        render(
+            <KlaviyoPermissionBanner
+                integrationId={123}
+                settingsUrl="/app/ai-journey/test-shop/settings/integrations"
+            />,
+        )
 
         await waitFor(() =>
             expect(mockGetAudiencesLists).toHaveBeenCalledTimes(1),
@@ -76,7 +81,12 @@ describe('<KlaviyoPermissionBanner />', () => {
     })
 
     it('does not render when integrationId is undefined (queries are idle)', async () => {
-        render(<KlaviyoPermissionBanner integrationId={undefined} />)
+        render(
+            <KlaviyoPermissionBanner
+                integrationId={undefined}
+                settingsUrl="/app/ai-journey/test-shop/settings/integrations"
+            />,
+        )
 
         expect(mockGetAudiencesLists).not.toHaveBeenCalled()
         expect(mockGetAudiencesSegments).not.toHaveBeenCalled()
@@ -89,7 +99,12 @@ describe('<KlaviyoPermissionBanner />', () => {
         )
         mockGetAudiencesSegments.mockResolvedValue(okResponse())
 
-        render(<KlaviyoPermissionBanner integrationId={123} />)
+        render(
+            <KlaviyoPermissionBanner
+                integrationId={123}
+                settingsUrl="/app/ai-journey/test-shop/settings/integrations"
+            />,
+        )
 
         expect(
             await screen.findByText('Klaviyo lists are unavailable'),
@@ -107,7 +122,12 @@ describe('<KlaviyoPermissionBanner />', () => {
             permissionErrorResponse('segments:read'),
         )
 
-        render(<KlaviyoPermissionBanner integrationId={123} />)
+        render(
+            <KlaviyoPermissionBanner
+                integrationId={123}
+                settingsUrl="/app/ai-journey/test-shop/settings/integrations"
+            />,
+        )
 
         expect(
             await screen.findByText('Klaviyo segments are unavailable'),
@@ -127,7 +147,12 @@ describe('<KlaviyoPermissionBanner />', () => {
             permissionErrorResponse('segments:read'),
         )
 
-        render(<KlaviyoPermissionBanner integrationId={123} />)
+        render(
+            <KlaviyoPermissionBanner
+                integrationId={123}
+                settingsUrl="/app/ai-journey/test-shop/settings/integrations"
+            />,
+        )
 
         expect(
             await screen.findByText('Klaviyo audiences are unavailable'),
@@ -143,7 +168,12 @@ describe('<KlaviyoPermissionBanner />', () => {
         mockGetAudiencesLists.mockResolvedValue(permissionErrorResponse(null))
         mockGetAudiencesSegments.mockResolvedValue(okResponse())
 
-        render(<KlaviyoPermissionBanner integrationId={123} />)
+        render(
+            <KlaviyoPermissionBanner
+                integrationId={123}
+                settingsUrl="/app/ai-journey/test-shop/settings/integrations"
+            />,
+        )
 
         expect(
             await screen.findByText('Klaviyo lists are unavailable'),
@@ -161,7 +191,12 @@ describe('<KlaviyoPermissionBanner />', () => {
         )
         mockGetAudiencesSegments.mockResolvedValue(okResponse())
 
-        const { user } = render(<KlaviyoPermissionBanner integrationId={123} />)
+        const { user } = render(
+            <KlaviyoPermissionBanner
+                integrationId={123}
+                settingsUrl="/app/ai-journey/test-shop/settings/integrations"
+            />,
+        )
 
         const cta = await screen.findByRole('link', {
             name: /open klaviyo settings/i,
@@ -169,7 +204,7 @@ describe('<KlaviyoPermissionBanner />', () => {
         await user.click(cta)
 
         expect(mockHistoryPush).toHaveBeenCalledWith(
-            '/app/settings/integrations/klaviyo',
+            '/app/ai-journey/test-shop/settings/integrations',
         )
     })
 })

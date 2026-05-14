@@ -1,6 +1,6 @@
 import { useHistory } from 'react-router-dom'
 
-import { Banner, Link } from '@gorgias/axiom'
+import { Banner, Link, Text } from '@gorgias/axiom'
 
 import { useAudienceLists } from 'AIJourney/queries/useAudienceLists/useAudienceLists'
 import {
@@ -8,10 +8,9 @@ import {
     useAudienceSegments,
 } from 'AIJourney/queries/useAudienceSegments/useAudienceSegments'
 
-const KLAVIYO_SETTINGS_URL = '/app/settings/integrations/klaviyo'
-
 type Props = {
     integrationId: number | undefined
+    settingsUrl: string
 }
 
 type Feature = 'lists' | 'segments'
@@ -58,7 +57,10 @@ const buildCopy = (
     }
 }
 
-export const KlaviyoPermissionBanner = ({ integrationId }: Props) => {
+export const KlaviyoPermissionBanner = ({
+    integrationId,
+    settingsUrl,
+}: Props) => {
     const history = useHistory()
 
     const { data: audienceLists } = useAudienceLists(integrationId)
@@ -87,16 +89,20 @@ export const KlaviyoPermissionBanner = ({ integrationId }: Props) => {
     return (
         <Banner
             intent="warning"
-            icon="triangle-warning"
+            icon="warning-triangle"
             isClosable={false}
             title={copy.title}
-            description={copy.description}
+            description={
+                <Text size="sm" wrap="wrap">
+                    {copy.description}
+                </Text>
+            }
             size="md"
         >
             <Link
                 size="sm"
                 trailingSlot="external-link"
-                onClick={() => history.push(KLAVIYO_SETTINGS_URL)}
+                onClick={() => history.push(settingsUrl)}
             >
                 Open Klaviyo settings
             </Link>

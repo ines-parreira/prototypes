@@ -5,7 +5,7 @@ import { AudienceSelect } from 'AIJourney/formFields'
 import { useJourneyContext } from 'AIJourney/providers'
 
 export const AudienceCard = ({ isFormReady }: { isFormReady: boolean }) => {
-    const { currentIntegration } = useJourneyContext()
+    const { currentIntegration, shopName } = useJourneyContext()
 
     if (!isFormReady) {
         return (
@@ -21,6 +21,7 @@ export const AudienceCard = ({ isFormReady }: { isFormReady: boolean }) => {
                 <CardHeader title="Audience" />
                 <KlaviyoPermissionBanner
                     integrationId={currentIntegration?.id}
+                    settingsUrl={`/app/ai-journey/${shopName}/settings/integrations`}
                 />
                 <AudienceSelect type="include" />
                 <AudienceSelect type="exclude" />
