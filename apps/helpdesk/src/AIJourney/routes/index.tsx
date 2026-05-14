@@ -13,6 +13,7 @@ import {
     CustomFlowWebhookSetup,
     Flows,
     Playground,
+    RcsTestSend,
     Segments,
     Settings,
 } from 'AIJourney/pages'
@@ -32,6 +33,7 @@ function AiJourneyBaseRoutes() {
     const isAiJourneyCustomFlowEnabled = useFlag(
         FeatureFlagKey.AiJourneyCustomFlowEnabled,
     )
+    const isAiJourneyRcsEnabled = useFlag(FeatureFlagKey.AiJourneyRcsEnable)
     const onboardingSteps = AI_JOURNEY_ONBOARDING_STEPS.filter(
         ({ journeyType }) =>
             isAiJourneyCustomFlowEnabled ||
@@ -129,6 +131,14 @@ function AiJourneyBaseRoutes() {
                                     render={() => <CustomFlowWebhookSetup />}
                                 />
                             )}
+                            {window.USER_IMPERSONATED &&
+                                isAiJourneyRcsEnabled && (
+                                    <Route
+                                        path={`${path}/:shopName/rcs-test-send`}
+                                        exact
+                                        render={() => <RcsTestSend />}
+                                    />
+                                )}
                             <Route
                                 render={() => (
                                     <DefaultStatsFilters>
