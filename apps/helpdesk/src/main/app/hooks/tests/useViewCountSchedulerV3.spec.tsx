@@ -1,8 +1,14 @@
 import { renderHook } from '@repo/testing'
 import {
+    createSchedulerV3,
+    logViewEvent,
+    useAllViewsLoaded,
     useViewCountSchedulerVersion,
     ViewCountSchedulerVersion,
 } from '@repo/views'
+
+import socketManager from 'services/socketManager/socketManager'
+import { SocketEventType } from 'services/socketManager/types'
 
 import useViewCountSchedulerV3 from '../useViewCountSchedulerV3'
 
@@ -14,6 +20,7 @@ var mockScheduler: {
 
 jest.mock('@repo/views', () => ({
     createSchedulerV3: jest.fn(() => mockScheduler),
+    logViewEvent: jest.fn(),
     useSchedulerConfigV3: jest.fn(() => ({
         tickIntervalSeconds: 5,
         maxRecentViews: 8,
@@ -21,6 +28,7 @@ jest.mock('@repo/views', () => ({
         fetchAllMinCooldownSeconds: 3600,
     })),
     useViewCountSchedulerVersion: jest.fn(),
+    useAllViewsLoaded: jest.fn(() => true),
     ViewCountSchedulerVersion: { Legacy: 1, V2: 2, V3: 3 },
 }))
 
@@ -30,6 +38,10 @@ jest.mock('services/socketManager/socketManager', () => ({
 
 const useViewCountSchedulerVersionMock =
     useViewCountSchedulerVersion as jest.Mock
+const useAllViewsLoadedMock = useAllViewsLoaded as jest.Mock
+const createSchedulerV3Mock = createSchedulerV3 as jest.Mock
+const logViewEventMock = logViewEvent as jest.Mock
+const socketSendMock = socketManager.send as jest.Mock
 
 function mockVersion(version: ViewCountSchedulerVersion) {
     useViewCountSchedulerVersionMock.mockReturnValue({
@@ -46,6 +58,11 @@ describe('useViewCountSchedulerV3', () => {
             stop: jest.fn(),
         }
         useViewCountSchedulerVersionMock.mockReset()
+        useAllViewsLoadedMock.mockReset()
+        useAllViewsLoadedMock.mockReturnValue(true)
+        createSchedulerV3Mock.mockClear()
+        logViewEventMock.mockClear()
+        socketSendMock.mockClear()
         mockVersion(ViewCountSchedulerVersion.Legacy)
     })
 
@@ -87,5 +104,72 @@ describe('useViewCountSchedulerV3', () => {
         unmount()
 
         expect(mockScheduler.stop).toHaveBeenCalled()
+    })
+
+    it('should not start the scheduler while the views list is still loading', () => {
+        mockVersion(ViewCountSchedulerVersion.V3)
+        useAllViewsLoadedMock.mockReturnValue(false)
+
+        renderHook(() => useViewCountSchedulerV3())
+
+        expect(mockScheduler.start).not.toHaveBeenCalled()
+    })
+
+    it('should start the scheduler once the views list finishes loading', () => {
+        mockVersion(ViewCountSchedulerVersion.V3)
+        useAllViewsLoadedMock.mockReturnValue(false)
+
+        const { rerender } = renderHook(() => useViewCountSchedulerV3())
+        expect(mockScheduler.start).not.toHaveBeenCalled()
+
+        useAllViewsLoadedMock.mockReturnValue(true)
+        rerender()
+
+        expect(mockScheduler.start).toHaveBeenCalled()
+    })
+
+    it('chunks the fetch-all dispatch into groups of 10 staggered by 500ms with per-chunk log entries', () => {
+        jest.useFakeTimers()
+        mockVersion(ViewCountSchedulerVersion.V3)
+        renderHook(() => useViewCountSchedulerV3())
+
+        const { onFetchAll } = createSchedulerV3Mock.mock.calls[0][0]
+        const ids = Array.from({ length: 25 }, (_, i) => i + 1)
+        onFetchAll(ids)
+
+        // First chunk fires synchronously, subsequent chunks are scheduled.
+        expect(socketSendMock).toHaveBeenCalledTimes(1)
+        expect(socketSendMock).toHaveBeenLastCalledWith(
+            SocketEventType.ViewsCountExpired,
+            { viewIds: ids.slice(0, 10), all: true },
+        )
+        expect(logViewEventMock).toHaveBeenCalledWith(
+            'outbound',
+            'views-count-fetch-all-chunk',
+            ids.slice(0, 10),
+        )
+
+        jest.advanceTimersByTime(500)
+        expect(socketSendMock).toHaveBeenCalledTimes(2)
+        expect(logViewEventMock).toHaveBeenLastCalledWith(
+            'outbound',
+            'views-count-fetch-all-chunk',
+            ids.slice(10, 20),
+        )
+
+        jest.advanceTimersByTime(500)
+        expect(socketSendMock).toHaveBeenCalledTimes(3)
+        expect(logViewEventMock).toHaveBeenLastCalledWith(
+            'outbound',
+            'views-count-fetch-all-chunk',
+            ids.slice(20, 25),
+        )
+
+        // No further chunks pending.
+        jest.advanceTimersByTime(500)
+        expect(socketSendMock).toHaveBeenCalledTimes(3)
+        expect(logViewEventMock).toHaveBeenCalledTimes(3)
+
+        jest.useRealTimers()
     })
 })

@@ -2,6 +2,8 @@ import { useEffect } from 'react'
 
 import {
     createSchedulerV3,
+    logViewEvent,
+    useAllViewsLoaded,
     useSchedulerConfigV3,
     useViewCountSchedulerVersion,
     ViewCountSchedulerVersion,
@@ -17,9 +19,15 @@ export default function useViewCountSchedulerV3(): void {
     const { version } = useViewCountSchedulerVersion()
     const isEnabled = version === ViewCountSchedulerVersion.V3
     const config = useSchedulerConfigV3()
+    // Defer scheduler startup until `useListAllViews` has exhausted pagination.
+    // `maybeFireFetchAll` reads the view list synchronously from the React
+    // Query cache; firing before pagination is complete would send a partial
+    // list and stamp `lastFetchAllAt`, locking out the correct bulk fetch for
+    // the cooldown window.
+    const viewsLoaded = useAllViewsLoaded()
 
     useEffect(() => {
-        if (!isEnabled) return
+        if (!isEnabled || !viewsLoaded) return
 
         const scheduler = createSchedulerV3({
             onRefresh: (viewIds) => {
@@ -42,7 +50,7 @@ export default function useViewCountSchedulerV3(): void {
             window.removeEventListener('focus', handleFocus)
             scheduler.stop()
         }
-    }, [isEnabled, config])
+    }, [isEnabled, viewsLoaded, config])
 }
 
 /**
@@ -62,6 +70,7 @@ function sendFetchAllChunks(viewIds: number[]): void {
             viewIds: next,
             all: true,
         })
+        logViewEvent('outbound', 'views-count-fetch-all-chunk', next)
         if (chunks.length > 0) {
             setTimeout(sendNext, FETCH_ALL_CHUNK_INTERVAL_MS)
         }

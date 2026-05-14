@@ -3,7 +3,11 @@ import { appQueryClient } from '@repo/api-resources'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 import type { View } from '@gorgias/helpdesk-types'
 
-import { clearViewsCount, setViewsCount } from '../../store/viewsCountStore'
+import {
+    clearViewsCount,
+    setViewsCount,
+    viewsCountStore,
+} from '../../store/viewsCountStore'
 import {
     clearViewsCountV3,
     markViewAsViewedV3,
@@ -267,11 +271,56 @@ describe('fetch all', () => {
 
         setAllViews([makeView(1)])
         setLastFetchAllAtV3(new Date().toISOString())
+        // Non-empty counts prove the prior fetch landed, so the cooldown
+        // gate is honored. See the empty-counts bypass test below.
+        setViewsCount({ 1: 5 })
 
         scheduler.start()
         await Promise.resolve()
 
         expect(onFetchAll).not.toHaveBeenCalled()
+    })
+
+    it('bypasses the cooldown when counts are empty (prior dispatch never landed)', async () => {
+        const onFetchAll = vi.fn()
+        const scheduler = createSchedulerV3({
+            onRefresh: vi.fn(),
+            onFetchAll,
+        })
+
+        setAllViews([makeView(1)])
+        setLastFetchAllAtV3(new Date().toISOString())
+        // counts stays empty — simulates the dispatch-then-tab-close gap
+        // where the stamp was persisted but the socket reply never arrived.
+
+        scheduler.start()
+        await Promise.resolve()
+
+        expect(onFetchAll).toHaveBeenCalledTimes(1)
+        expect(onFetchAll).toHaveBeenCalledWith([1])
+    })
+
+    it('does not re-bypass the cooldown on focus while replies are still in flight', async () => {
+        const onFetchAll = vi.fn()
+        const scheduler = createSchedulerV3({
+            onRefresh: vi.fn(),
+            onFetchAll,
+        })
+
+        setAllViews([makeView(1)])
+        setLastFetchAllAtV3(new Date().toISOString())
+
+        scheduler.start()
+        await Promise.resolve()
+        expect(onFetchAll).toHaveBeenCalledTimes(1)
+
+        // Focus the tab again before any socket reply has landed. With the
+        // recovery bypass naively keyed on empty counts, this would fire a
+        // second full fetch-all and defeat the cooldown. The one-shot flag
+        // suppresses it.
+        scheduler.steal()
+        await Promise.resolve()
+        expect(onFetchAll).toHaveBeenCalledTimes(1)
     })
 
     it('re-fires on leader takeover when the stamp is older than fetchAllMinCooldownSeconds', async () => {
@@ -285,6 +334,7 @@ describe('fetch all', () => {
         setAllViews([makeView(1)])
         const oldStamp = new Date(Date.now() - 5 * 60_000).toISOString()
         setLastFetchAllAtV3(oldStamp)
+        setViewsCount({ 1: 5 })
 
         scheduler.start()
         await Promise.resolve()
@@ -325,6 +375,11 @@ describe('fetch all', () => {
         await Promise.resolve()
         expect(onFetchAll).toHaveBeenCalledTimes(1)
 
+        // Simulate the socket reply landing between start and steal; with
+        // counts populated, the cooldown gate is honored on the next leader
+        // takeover instead of being bypassed.
+        setViewsCount({ 1: 5 })
+
         scheduler.steal()
         await Promise.resolve()
         expect(onFetchAll).toHaveBeenCalledTimes(1)
@@ -342,5 +397,43 @@ describe('fetch all', () => {
 
         expect(onFetchAll).not.toHaveBeenCalled()
         expect(viewsCountStoreV3.getState().lastFetchAllAt).toBeNull()
+    })
+
+    it('waits for the V1 counts store to hydrate before firing', async () => {
+        const onFetchAll = vi.fn()
+        let finishV1Hydration: (() => void) | undefined
+        const hasHydratedSpy = vi
+            .spyOn(viewsCountStore.persist, 'hasHydrated')
+            .mockReturnValue(false)
+        const onFinishHydrationSpy = vi
+            .spyOn(viewsCountStore.persist, 'onFinishHydration')
+            .mockImplementation((cb) => {
+                finishV1Hydration = cb as () => void
+                return () => {}
+            })
+
+        setAllViews([makeView(1)])
+        const scheduler = createSchedulerV3({
+            onRefresh: vi.fn(),
+            onFetchAll,
+        })
+        scheduler.start()
+        await Promise.resolve()
+
+        // V1 still hydrating → maybeFireFetchAll has not run yet.
+        expect(onFetchAll).not.toHaveBeenCalled()
+        expect(finishV1Hydration).toBeDefined()
+
+        // Simulate V1 finishing hydration; subsequent reads see counts ready.
+        // Multiple microtask hops are required to drain Promise.all + .then +
+        // becomeLeader's awaited continuation.
+        hasHydratedSpy.mockReturnValue(true)
+        finishV1Hydration?.()
+        for (let i = 0; i < 5; i++) await Promise.resolve()
+
+        expect(onFetchAll).toHaveBeenCalledTimes(1)
+
+        hasHydratedSpy.mockRestore()
+        onFinishHydrationSpy.mockRestore()
     })
 })

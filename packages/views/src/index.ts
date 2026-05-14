@@ -62,6 +62,7 @@ export { useTrackViewInViewport } from './hooks/useTrackViewInViewport'
 export { useExpandedSections } from './hooks/useExpandedSections'
 export { useActiveView } from './hooks/useActiveView'
 export { useAllViews } from './hooks/useAllViews'
+export { useAllViewsLoaded } from './hooks/useAllViewsLoaded'
 export {
     useAllViewsOrdered,
     getAllViewsOrdered,
