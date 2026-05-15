@@ -12,6 +12,7 @@ import {
     Analytics,
     CustomFlowWebhookSetup,
     Flows,
+    JourneyEditorLayout,
     Playground,
     RcsTestSend,
     Segments,
@@ -34,6 +35,10 @@ function AiJourneyBaseRoutes() {
         FeatureFlagKey.AiJourneyCustomFlowEnabled,
     )
     const isAiJourneyRcsEnabled = useFlag(FeatureFlagKey.AiJourneyRcsEnable)
+    const isAiJourneyV3ArchitectureEnabled = useFlag(
+        FeatureFlagKey.AiJourneyV3ArchitectureEnabled,
+    )
+
     const onboardingSteps = AI_JOURNEY_ONBOARDING_STEPS.filter(
         ({ journeyType }) =>
             isAiJourneyCustomFlowEnabled ||
@@ -69,13 +74,23 @@ function AiJourneyBaseRoutes() {
                                     }) => (
                                         <Route
                                             path={`${path}/:shopName/${journeyType}/${stepName}`}
-                                            render={() => (
-                                                <AiJourneyOnboarding
-                                                    journeyType={journeyType}
-                                                    step={stepName}
-                                                    stepComponent={component}
-                                                />
-                                            )}
+                                            render={() =>
+                                                isAiJourneyV3ArchitectureEnabled ? (
+                                                    <JourneyEditorLayout
+                                                        step={stepName}
+                                                    />
+                                                ) : (
+                                                    <AiJourneyOnboarding
+                                                        journeyType={
+                                                            journeyType
+                                                        }
+                                                        step={stepName}
+                                                        stepComponent={
+                                                            component
+                                                        }
+                                                    />
+                                                )
+                                            }
                                             key={`${journeyType}-journey-${stepName}`}
                                         />
                                     ),

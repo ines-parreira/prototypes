@@ -1,6 +1,7 @@
 export { AiJourneyOnboarding } from './AiJourneyOnboarding/AiJourneyOnboarding'
 export { CustomFlowWebhookSetup } from './CustomFlowWebhookSetup/CustomFlowWebhookSetup'
 export { Flows } from './Flows/Flows'
+export { JourneyEditorLayout } from './JourneyEditorLayout/JourneyEditorLayout'
 export { Setup } from './Setup/Setup'
 export { Preview } from './Preview/Preview'
 export { Activation } from './Activation/Activation'

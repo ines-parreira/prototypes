@@ -1,6 +1,14 @@
 import { useEffect, useRef } from 'react'
 
-import { Box, Button, Card, Heading, Separator, Size } from '@gorgias/axiom'
+import {
+    Box,
+    Button,
+    Card,
+    Heading,
+    Icon,
+    Separator,
+    Size,
+} from '@gorgias/axiom'
 import type { AttachmentDTO } from '@gorgias/convert-client'
 
 import { PlaygroundPreviewAttachedImage } from 'AIJourney/components/PlaygroundPreviewAttachedImage/PlaygroundPreviewAttachedImage'
@@ -22,6 +30,7 @@ type PlaygroundPreviewProps = {
     isCampaign?: boolean
     campaignImage?: AttachmentDTO
     onGenerateMessages?: () => void
+    onClose?: () => void
 }
 
 export const PlaygroundPreview = ({
@@ -33,6 +42,7 @@ export const PlaygroundPreview = ({
     isCampaign,
     campaignImage,
     onGenerateMessages,
+    onClose,
 }: PlaygroundPreviewProps) => {
     const previewBodyRef = useRef<HTMLDivElement>(null)
 
@@ -54,8 +64,21 @@ export const PlaygroundPreview = ({
     return (
         <Box flexDirection="column" flex={1}>
             <Box flexDirection="column" width="100%">
-                <Box padding={Size.Md}>
+                <Box
+                    padding={Size.Md}
+                    alignItems="center"
+                    justifyContent="space-between"
+                >
                     <Heading>Message preview</Heading>
+                    {onClose && (
+                        <Button
+                            variant="tertiary"
+                            aria-label="Close preview"
+                            onClick={onClose}
+                        >
+                            <Icon name="close" />
+                        </Button>
+                    )}
                 </Box>
                 <Separator />
             </Box>

@@ -26,3 +26,4 @@ export { useAIJourneyProviderTotalSales } from './useAIJourneyProviderTotalSales
 export { useAIJourneyProviderMetricData } from './useAIJourneyProviderMetricData/useAIJourneyProviderMetricData'
 export { useDateFormatPreference } from './useDateFormatPreference/useDateFormatPreference'
 export type { DateFormatPreference } from './useDateFormatPreference/useDateFormatPreference'
+export { useSetupFormInit } from './useSetupFormInit/useSetupFormInit'

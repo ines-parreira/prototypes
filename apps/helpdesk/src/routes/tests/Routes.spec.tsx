@@ -1397,7 +1397,10 @@ describe('<Routes/>', () => {
         })
 
         it('should render conversation setup page when feature flag is enabled', () => {
-            mockUseFlag.mockReturnValue(true)
+            mockUseFlag.mockImplementation(
+                (flag: FeatureFlagKey) =>
+                    flag !== FeatureFlagKey.AiJourneyV3ArchitectureEnabled,
+            )
 
             const history = createMemoryHistory({
                 initialEntries: [
@@ -1419,7 +1422,10 @@ describe('<Routes/>', () => {
         })
 
         it('should render activation page when feature flag is enabled', () => {
-            mockUseFlag.mockReturnValue(true)
+            mockUseFlag.mockImplementation(
+                (flag: FeatureFlagKey) =>
+                    flag !== FeatureFlagKey.AiJourneyV3ArchitectureEnabled,
+            )
 
             const history = createMemoryHistory({
                 initialEntries: [

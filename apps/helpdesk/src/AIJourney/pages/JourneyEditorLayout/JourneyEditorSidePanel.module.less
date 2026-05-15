@@ -1,0 +1,67 @@
+:local {
+    .sidePanel {
+        min-width: 0;
+        height: 100%;
+    }
+
+    .contentArea {
+        width: 320px;
+        flex-shrink: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+        border-left: 1px solid var(--border-neutral-default);
+    }
+
+    .iconBar {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--spacing-md);
+        padding: var(--spacing-xs);
+        padding-top: var(--spacing-md);
+        width: 48px;
+        flex-shrink: 0;
+        border-left: 1px solid var(--border-neutral-default);
+    }
+
+    .fields {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+
+    .section {
+        display: flex;
+        width: 100%;
+        padding: var(--spacing-md);
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-xs);
+        border-bottom: 1px solid var(--border-neutral-default);
+        flex-shrink: 0;
+    }
+
+    .sectionDetails {
+        padding-top: var(--spacing-lg);
+    }
+
+    .sectionRow {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        align-self: stretch;
+        width: 100%;
+        min-height: 32px;
+    }
+
+    .subFields {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-sm);
+        padding-left: var(--spacing-md);
+        border-left: 2px solid var(--border-neutral-default);
+    }
+}
