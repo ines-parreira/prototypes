@@ -34,6 +34,7 @@ describe('<WaitingDays />', () => {
         expect(screen.getByText('30 days')).toBeInTheDocument()
         expect(screen.getByText('60 days')).toBeInTheDocument()
         expect(screen.getByText('90 days')).toBeInTheDocument()
+        expect(screen.queryByText('120 days')).not.toBeInTheDocument()
     })
 
     it('should render the correct label and all day options for inactive days type', () => {
@@ -45,6 +46,7 @@ describe('<WaitingDays />', () => {
         expect(screen.getByText('30 days')).toBeInTheDocument()
         expect(screen.getByText('60 days')).toBeInTheDocument()
         expect(screen.getByText('90 days')).toBeInTheDocument()
+        expect(screen.getByText('120 days')).toBeInTheDocument()
     })
 
     it('should render without crashing when field value is undefined', () => {
