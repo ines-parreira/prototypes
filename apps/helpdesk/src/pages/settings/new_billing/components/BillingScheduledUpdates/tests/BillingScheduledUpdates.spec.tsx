@@ -1,5 +1,7 @@
 import { render } from '@repo/testing'
 
+import { InvoiceCadence } from '@gorgias/helpdesk-types'
+
 import {
     advancedMonthlyAutomatePlan,
     advancedMonthlyHelpdeskPlan,
@@ -7,6 +9,7 @@ import {
     basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
     basicYearlyAutomationPlan,
+    basicYearlyHelpdeskPlan,
     convertPlan1,
     proMonthlyAutomationPlan,
     smsPlan1,
@@ -78,7 +81,52 @@ describe('BillingScheduledUpdates', () => {
         const { getByText } = render(<BillingScheduledUpdates />)
         expect(getByText('Your plan change for')).toBeInTheDocument()
         expect(getByText('to 300 tickets/month')).toBeInTheDocument()
+        expect(getByText('$60/month')).toBeInTheDocument()
         expect(getByText('March 31st 2023.')).toBeInTheDocument()
+    })
+
+    it('should render the amount per invoice cadence for a yearly contract billed quarterly', () => {
+        const yearlyContractQuarterlyInvoiced = {
+            ...basicYearlyHelpdeskPlan,
+            invoice_cadence: InvoiceCadence.Quarter,
+            amount: 15000,
+        }
+        mockUseScheduledChangesNotifications.mockReturnValue({
+            loading: false,
+            scheduledUpdates: [
+                {
+                    datetime: '2023-03-31T00:00:00Z',
+                    currentPlan: advancedMonthlyHelpdeskPlan,
+                    targetPlan: yearlyContractQuarterlyInvoiced,
+                },
+            ],
+            error: null,
+        })
+
+        const { getByText } = render(<BillingScheduledUpdates />)
+        expect(getByText('$150/quarter')).toBeInTheDocument()
+    })
+
+    it('should render the amount per invoice cadence for a yearly contract billed monthly', () => {
+        const yearlyContractMonthlyInvoiced = {
+            ...basicYearlyHelpdeskPlan,
+            invoice_cadence: InvoiceCadence.Month,
+            amount: 5000,
+        }
+        mockUseScheduledChangesNotifications.mockReturnValue({
+            loading: false,
+            scheduledUpdates: [
+                {
+                    datetime: '2023-03-31T00:00:00Z',
+                    currentPlan: advancedMonthlyHelpdeskPlan,
+                    targetPlan: yearlyContractMonthlyInvoiced,
+                },
+            ],
+            error: null,
+        })
+
+        const { getByText } = render(<BillingScheduledUpdates />)
+        expect(getByText('$50/month')).toBeInTheDocument()
     })
 
     it.each([

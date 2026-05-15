@@ -2,7 +2,11 @@ import moment from 'moment'
 
 import { Banner, Box, Text } from '@gorgias/axiom'
 
-import { getPlanUnitsPerCadence, getProductName } from 'models/billing/utils'
+import {
+    getPlanAmountPerInvoiceCadence,
+    getPlanUnitsPerCadence,
+    getProductName,
+} from 'models/billing/utils'
 import useScheduledChangesNotifications from 'pages/settings/new_billing/hooks/useScheduledChangesNotifications'
 
 export default function BillingScheduledUpdates() {
@@ -46,6 +50,12 @@ export default function BillingScheduledUpdates() {
                                     <Text>
                                         to{' '}
                                         {getPlanUnitsPerCadence(
+                                            billingUpdate.targetPlan,
+                                        )}
+                                    </Text>
+                                    <Text>at</Text>
+                                    <Text>
+                                        {getPlanAmountPerInvoiceCadence(
                                             billingUpdate.targetPlan,
                                         )}
                                     </Text>

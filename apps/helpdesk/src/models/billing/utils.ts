@@ -155,17 +155,14 @@ export function getProductName(product: ProductType): string {
 
 /**
  * @description
- *    Returns a string such as "$360/month"
+ *    Returns the plan amount per invoice cadence, e.g. "$300/quarter".
+ *    Useful when cadence and invoice_cadence differ (e.g. yearly contract billed quarterly).
  *
  * @param plan Plan
  * @returns string
  */
-function getPlanPricePerCadence(plan: Plan): string {
-    const planPrice = plan.amount / 100
-    const planPricePerCadence: string = `${formatAmount(planPrice)}/${
-        plan.cadence
-    }`
-    return planPricePerCadence
+export function getPlanAmountPerInvoiceCadence(plan: Plan): string {
+    return `${formatAmount(plan.amount / 100, plan.currency)}/${plan.invoice_cadence}`
 }
 
 /**
@@ -210,7 +207,7 @@ export function getPlanDescription(plan: Plan): string {
     const planName =
         plan.product === ProductType.Helpdesk ? `${plan.name}, ` : ''
 
-    const amountPerCadence = getPlanPricePerCadence(plan)
+    const amountPerCadence = getPlanAmountPerInvoiceCadence(plan)
     const unitsPerCadence = getPlanUnitsPerCadence(plan)
 
     return `${_capitalize(planName)}${amountPerCadence}, ${unitsPerCadence}`
