@@ -222,6 +222,26 @@ describe('getOperatorOptions', () => {
         }
         expect(getOperatorOptions(aggregateDef)).toEqual([])
     })
+
+    it('should override the gte label to "in the last" for sms_consent_status_date', () => {
+        const fieldDef: FieldDef = {
+            type: 'datetime',
+            operators: ['gte', 'lte'],
+        }
+        expect(getOperatorOptions(fieldDef, 'sms_consent_status_date')).toEqual(
+            [
+                { id: 'gte', label: 'in the last' },
+                { id: 'lte', label: 'is at most' },
+            ],
+        )
+    })
+
+    it('should not override labels for other fields', () => {
+        const fieldDef: FieldDef = { type: 'datetime', operators: ['gte'] }
+        expect(getOperatorOptions(fieldDef, 'some_other_field')).toEqual([
+            { id: 'gte', label: 'is at least' },
+        ])
+    })
 })
 
 describe('defaultValueForType', () => {

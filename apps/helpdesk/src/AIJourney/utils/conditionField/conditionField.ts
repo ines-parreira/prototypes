@@ -138,12 +138,20 @@ export function buildSections(schema: ConditionsSchema) {
     })
 }
 
+const FIELD_OPERATOR_LABEL_OVERRIDES: Record<string, Record<string, string>> = {
+    sms_consent_status_date: {
+        gte: 'in the last',
+    },
+}
+
 export function getOperatorOptions(
     fieldDef: FieldDef | AggregateDef,
+    field?: string,
 ): SelectOption[] {
+    const overrides = field ? FIELD_OPERATOR_LABEL_OVERRIDES[field] : undefined
     return fieldDef.operators.map((op) => ({
         id: op,
-        label: OPERATOR_LABELS[op] ?? op,
+        label: overrides?.[op] ?? OPERATOR_LABELS[op] ?? op,
     }))
 }
 

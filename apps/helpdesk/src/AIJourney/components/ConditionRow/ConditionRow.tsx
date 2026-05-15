@@ -94,7 +94,9 @@ export const ConditionRow = ({
     const fieldDef =
         object && field ? getFieldDef(schema, object, field, isAggregate) : null
 
-    const operatorOptions = fieldDef ? getOperatorOptions(fieldDef) : []
+    const operatorOptions = fieldDef
+        ? getOperatorOptions(fieldDef, field ?? undefined)
+        : []
 
     const isUnary = schema.operators.unary.includes(operator)
     const sections = buildSections(schema)
