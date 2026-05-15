@@ -32,12 +32,9 @@ const mockedUseFlag = jest.mocked(useFlag)
 const mockedUseFlagWithLoading = jest.mocked(useFlagWithLoading)
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset',
+    'pages/aiAgent/analyticsOverview/hooks/useIsArticleRecommendationTableVisible',
     () => ({
-        useIsArticleRecommendationsEnabledWhileSunset: jest.fn(() => ({
-            enabledInStatistics: true,
-            enabledInSettings: true,
-        })),
+        useIsArticleRecommendationTableVisible: jest.fn(() => true),
     }),
 )
 

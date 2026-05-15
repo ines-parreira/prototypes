@@ -8,12 +8,12 @@ import userEvent from '@testing-library/user-event'
 import { useSaveSelectedTable } from 'domains/reporting/hooks/managed-dashboards/useSaveSelectedTable'
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { TablesSection } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/TablesSection'
+import { useIsArticleRecommendationTableVisible } from 'pages/aiAgent/analyticsOverview/hooks/useIsArticleRecommendationTableVisible'
 import type {
     AnalyticsChartType,
     LayoutSection,
     ManagedDashboardsTabId,
 } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
-import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset'
 
 jest.mock('@repo/feature-flags', () => ({
     FeatureFlagKey: {
@@ -25,9 +25,9 @@ jest.mock('@repo/feature-flags', () => ({
 }))
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset',
+    'pages/aiAgent/analyticsOverview/hooks/useIsArticleRecommendationTableVisible',
     () => ({
-        useIsArticleRecommendationsEnabledWhileSunset: jest.fn(),
+        useIsArticleRecommendationTableVisible: jest.fn(),
     }),
 )
 
@@ -59,8 +59,8 @@ jest.mock('domains/reporting/pages/dashboards/DashboardComponent', () => ({
 
 const mockUseFlagWithLoading = assumeMock(useFlagWithLoading)
 const mockUseSaveSelectedTable = assumeMock(useSaveSelectedTable)
-const mockUseIsArticleRecommendationsEnabledWhileSunset = assumeMock(
-    useIsArticleRecommendationsEnabledWhileSunset,
+const mockUseIsArticleRecommendationTableVisible = assumeMock(
+    useIsArticleRecommendationTableVisible,
 )
 const mockSaveSelectedTable = jest.fn()
 let saveSelectedTableImpl = (chartId: string) => {
@@ -196,10 +196,7 @@ describe('TablesSection', () => {
         mockUseSaveSelectedTable.mockReturnValue({
             onSelect: (chartId: string) => saveSelectedTableImpl(chartId),
         })
-        mockUseIsArticleRecommendationsEnabledWhileSunset.mockReturnValue({
-            enabledInStatistics: true,
-            enabledInSettings: true,
-        })
+        mockUseIsArticleRecommendationTableVisible.mockReturnValue(true)
     })
     describe('title', () => {
         it('should render tableTitle when provided', () => {
@@ -660,16 +657,13 @@ describe('TablesSection', () => {
         })
     })
 
-    describe('article recommendations sunset', () => {
-        it('should show ArticleRecommendationTable when article recommendations are enabled in statistics', () => {
+    describe('article recommendation table visibility', () => {
+        it('should show ArticleRecommendationTable when visible', () => {
             mockUseFlagWithLoading.mockReturnValue({
                 value: true,
                 isLoading: false,
             })
-            mockUseIsArticleRecommendationsEnabledWhileSunset.mockReturnValue({
-                enabledInStatistics: true,
-                enabledInSettings: true,
-            })
+            mockUseIsArticleRecommendationTableVisible.mockReturnValue(true)
 
             render(
                 <TablesSection
@@ -690,11 +684,8 @@ describe('TablesSection', () => {
             ).toBeInTheDocument()
         })
 
-        it('should hide ArticleRecommendationTable when article recommendations are disabled in statistics', () => {
-            mockUseIsArticleRecommendationsEnabledWhileSunset.mockReturnValue({
-                enabledInStatistics: false,
-                enabledInSettings: false,
-            })
+        it('should hide ArticleRecommendationTable when not visible', () => {
+            mockUseIsArticleRecommendationTableVisible.mockReturnValue(false)
 
             const { container } = render(
                 <TablesSection
@@ -711,11 +702,8 @@ describe('TablesSection', () => {
             expect(container).toBeEmptyDOMElement()
         })
 
-        it('should hide ArticleRecommendationTable tab when shown alongside other tables and article recommendations are disabled', () => {
-            mockUseIsArticleRecommendationsEnabledWhileSunset.mockReturnValue({
-                enabledInStatistics: false,
-                enabledInSettings: false,
-            })
+        it('should hide ArticleRecommendationTable tab when shown alongside other tables and not visible', () => {
+            mockUseIsArticleRecommendationTableVisible.mockReturnValue(false)
 
             render(
                 <TablesSection
