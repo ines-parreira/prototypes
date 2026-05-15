@@ -400,6 +400,7 @@ export const getBarChartDataHooks = (
         value: number | null,
         extra?: ExtraConfigProps,
     ) => number | null,
+    metricName?: string,
 ) => {
     const dimensionConfigs: ConfigurableGraphGroupingConfig[] = dimensions.map(
         (dimensionId) => {
@@ -423,7 +424,8 @@ export const getBarChartDataHooks = (
                     return {
                         id: dimensionId,
                         name: formatDimensionName(dimensionId),
-                        configurableGraphType: ConfigurableGraphType.Bar,
+                        configurableGraphType: ConfigurableGraphType.Donut,
+                        showLegendValue: metricName?.includes('rate'),
                         useChartData: () =>
                             useAutomationMetricPerAutomationFeatureType(
                                 query,
@@ -531,6 +533,7 @@ export const getBarChartGraphConfig = (
             period,
             extra,
             metric.valueTransform,
+            metric.name,
         ),
     }))
 }

@@ -34,6 +34,7 @@ type DonutChartProps = {
         start_datetime: string
         end_datetime: string
     }
+    showLegendValue?: boolean
 }
 
 const INNER_RADIUS = 60
@@ -120,6 +121,7 @@ const DonutChartInner = ({
     data,
     period,
     valueFormatter,
+    showLegendValue = true,
 }: Omit<DonutChartProps, 'isLoading'>) => {
     const [hiddenSegments, setHiddenSegments] = useState<Set<string>>(new Set())
     const [activeIndex, setActiveIndex] = useState<number | null>(null)
@@ -154,15 +156,24 @@ const DonutChartInner = ({
         0,
     )
 
-    const dataWithPercentages = dataWithColors.map((item) => ({
-        ...item,
-        legendValue: visibleData.find((i) => i.name === item.name)
-            ? `${(((item.value ?? 0) / totalValue) * 100).toFixed(2)}%`
-            : '0%',
-        percentage: valueFormatter
-            ? valueFormatter(item.value ?? 0)
-            : (item.value ?? 0),
-    }))
+    const dataWithPercentages = dataWithColors.map((item) => {
+        const formattedValue = String(
+            valueFormatter
+                ? valueFormatter(item.value ?? 0)
+                : (item.value ?? 0),
+        )
+        return {
+            ...item,
+            legendValue: showLegendValue
+                ? formattedValue
+                : visibleData.find((i) => i.name === item.name)
+                  ? `${(((item.value ?? 0) / totalValue) * 100).toFixed(2)}%`
+                  : '0%',
+            percentage: valueFormatter
+                ? valueFormatter(item.value ?? 0)
+                : (item.value ?? 0),
+        }
+    })
 
     const legendHoveredIndex = hoveredLegendItem
         ? visibleData.findIndex((item) => item.name === hoveredLegendItem)
@@ -246,6 +257,7 @@ export const DonutChart = ({
     period,
     isLoading = false,
     valueFormatter,
+    showLegendValue = false,
 }: DonutChartProps) => {
     if (isLoading) {
         return (
@@ -306,6 +318,7 @@ export const DonutChart = ({
                 data={data}
                 period={period}
                 valueFormatter={valueFormatter}
+                showLegendValue={showLegendValue}
             />
         </DonutChartHoverProvider>
     )

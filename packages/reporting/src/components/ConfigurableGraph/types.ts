@@ -24,6 +24,7 @@ type DonutOrBarGroupingConfig = {
     useChartData: () => { data: ChartDataItem[]; isLoading: boolean }
     valueFormatter?: (value: number) => string
     period?: { start_datetime: string; end_datetime: string }
+    showLegendValue?: boolean
 }
 
 type TimeSeriesGroupingConfig = {

@@ -45,10 +45,11 @@ function DonutOrBarWithToggleRenderer({
         return (
             <DonutChart
                 data={filteredData}
-                containerHeight={280}
+                containerHeight={300}
                 isLoading={isLoading}
                 valueFormatter={groupingConfig.valueFormatter}
                 period={groupingConfig.period}
+                showLegendValue={groupingConfig.showLegendValue ?? false}
             />
         )
     }

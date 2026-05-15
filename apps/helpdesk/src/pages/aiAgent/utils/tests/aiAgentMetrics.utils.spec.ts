@@ -1209,6 +1209,65 @@ describe('getBarChartDataHooks', () => {
         expect(dimensions[2].id).toBe('engagementType')
     })
 
+    it('should set showLegendValue=true on the automationFeatureType donut when metric name includes "rate"', () => {
+        const { dimensions } = getBarChartDataHooks(
+            mockQuery,
+            ['automationFeatureType'],
+            defaultFilters,
+            defaultTimezone,
+            period,
+            undefined,
+            undefined,
+            'Automation rate',
+        )
+
+        expect(dimensions[0]).toMatchObject({
+            id: 'automationFeatureType',
+            configurableGraphType: ConfigurableGraphType.Donut,
+            showLegendValue: true,
+        })
+    })
+
+    it('should set showLegendValue=false on the automationFeatureType donut when metric name does not include "rate"', () => {
+        const { dimensions } = getBarChartDataHooks(
+            mockQuery,
+            ['automationFeatureType'],
+            defaultFilters,
+            defaultTimezone,
+            period,
+            undefined,
+            undefined,
+            'Resolved Interactions',
+        )
+
+        expect(dimensions[0]).toMatchObject({
+            id: 'automationFeatureType',
+            configurableGraphType: ConfigurableGraphType.Donut,
+            showLegendValue: false,
+        })
+    })
+
+    it('should leave showLegendValue undefined on the automationFeatureType donut when metric name is not provided', () => {
+        const { dimensions } = getBarChartDataHooks(
+            mockQuery,
+            ['automationFeatureType'],
+            defaultFilters,
+            defaultTimezone,
+            period,
+        )
+
+        const dimension = dimensions[0]
+        expect(dimension.configurableGraphType).toBe(
+            ConfigurableGraphType.Donut,
+        )
+        if (
+            dimension.configurableGraphType === 'donut' ||
+            dimension.configurableGraphType === 'bar'
+        ) {
+            expect(dimension.showLegendValue).toBeUndefined()
+        }
+    })
+
     it('should pass through the period to dimension configs when provided', () => {
         const customPeriod = {
             start_datetime: 'Feb 1, 2025',

@@ -93,6 +93,23 @@ describe('DonutChart', () => {
             expect(screen.getByText('9.38%')).toBeInTheDocument()
         })
 
+        it('should display formatted values in the legend when showLegendValue is true', () => {
+            const valueFormatter = (value: number) => `${value} tickets`
+
+            render(
+                <DonutChart
+                    data={mockData}
+                    valueFormatter={valueFormatter}
+                    showLegendValue
+                />,
+            )
+
+            expect(screen.getByText('18 tickets')).toBeInTheDocument()
+            expect(screen.getByText('7 tickets')).toBeInTheDocument()
+            expect(screen.getByText('4 tickets')).toBeInTheDocument()
+            expect(screen.getByText('3 tickets')).toBeInTheDocument()
+        })
+
         it('should assign colors to data automatically', () => {
             render(<DonutChart data={mockData} />)
 
