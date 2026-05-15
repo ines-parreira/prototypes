@@ -1,14 +1,85 @@
 :local {
     .content {
         color: var(--content-neutral-default);
+        max-width: 100%;
+        min-width: 0;
+        overflow-x: auto;
+        overflow-wrap: anywhere;
+        word-break: break-word;
 
         > * {
             position: inherit;
         }
 
+        * {
+            max-width: 100% !important;
+            min-width: 0 !important;
+            overflow-wrap: anywhere;
+            white-space: normal !important;
+            word-break: break-word;
+        }
+
         img {
             max-width: 100% !important;
             height: auto !important;
+        }
+
+        // Email templates often use framework-like class names such as `row` and `container`.
+        // Keep authored table markup using browser table layout so app/global layout styles do not leak in.
+        table {
+            box-sizing: border-box;
+            display: table !important;
+            max-width: 100% !important;
+            min-width: 0 !important;
+            table-layout: auto;
+        }
+
+        // Some global row styles add flex behavior, negative margins, or padding.
+        // Neutralize only horizontal spacing so email tables stay inside the bubble padding.
+        table[class~='row'] {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+
+        // Provider-authored container tables should not inherit app container gutters.
+        table[class~='container'] {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+
+        thead {
+            display: table-header-group !important;
+        }
+
+        tbody {
+            display: table-row-group !important;
+        }
+
+        tfoot {
+            display: table-footer-group !important;
+        }
+
+        tr {
+            display: table-row !important;
+        }
+
+        td,
+        th {
+            display: table-cell !important;
+        }
+
+        colgroup {
+            display: table-column-group !important;
+        }
+
+        col {
+            display: table-column !important;
+        }
+
+        pre {
+            white-space: pre-wrap !important;
         }
     }
 
