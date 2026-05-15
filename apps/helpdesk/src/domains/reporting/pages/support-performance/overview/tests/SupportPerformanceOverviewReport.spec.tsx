@@ -38,6 +38,13 @@ import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 const TIP_PLACEHOLDER = 'Tip:'
 
 jest.mock(
+    'pages/aiAgent/analyticsOverview/components/NewAutomateStatsOptInBanner/NewAutomateStatsOptInBanner',
+    () => ({
+        NewAutomateStatsOptInBanner: () => null,
+    }),
+)
+
+jest.mock(
     'domains/reporting/pages/common/drill-down/DrillDownModal.tsx',
     () => ({
         DrillDownModal: () => null,

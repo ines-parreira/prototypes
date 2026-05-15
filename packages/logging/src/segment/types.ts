@@ -108,6 +108,7 @@ export enum SegmentEvent {
     AnalyticsAiAgentTabSelected = 'analytics_ai_agent_tab_selected',
     AnalyticsReportViewed = 'analytics_report_viewed',
     AnalyticsStatsDatepickerOpen = 'analytics/stats/datepicker-open',
+    AnalyticsNewAutomateStatsOptInRequested = 'analytics_new_automate_stats_opt_in_requested',
     AutomateActionsAppAuthenticationModalOpened = 'automate/actions/app-authentication-modal-opened',
     AutomateActionsCreateCustomActionVisited = 'automate/actions/create-custom-action-visited',
     AutomateActionsCreateTemplateActionVisited = 'automate/actions/create-template-action-visited',

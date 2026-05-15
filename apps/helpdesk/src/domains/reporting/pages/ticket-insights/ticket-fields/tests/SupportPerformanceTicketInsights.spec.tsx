@@ -31,6 +31,13 @@ import useAppSelector from 'hooks/useAppSelector'
 import type { RootState, StoreDispatch } from 'state/types'
 
 jest.mock(
+    'pages/aiAgent/analyticsOverview/components/NewAutomateStatsOptInBanner/NewAutomateStatsOptInBanner',
+    () => ({
+        NewAutomateStatsOptInBanner: () => null,
+    }),
+)
+
+jest.mock(
     'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions',
 )
 const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)

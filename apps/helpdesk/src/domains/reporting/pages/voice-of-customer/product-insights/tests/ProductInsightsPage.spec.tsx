@@ -23,6 +23,13 @@ import {
 } from 'domains/reporting/pages/voice-of-customer/product-insights/ProductInsightsPage'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 
+jest.mock(
+    'pages/aiAgent/analyticsOverview/components/NewAutomateStatsOptInBanner/NewAutomateStatsOptInBanner',
+    () => ({
+        NewAutomateStatsOptInBanner: () => null,
+    }),
+)
+
 jest.mock('domains/reporting/hooks/useCleanStatsFilters')
 jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal')
 const DrillDownModalMock = assumeMock(DrillDownModal)

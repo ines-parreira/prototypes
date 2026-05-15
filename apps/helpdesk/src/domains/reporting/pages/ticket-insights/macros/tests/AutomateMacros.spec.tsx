@@ -12,6 +12,13 @@ import { integrationsState } from 'fixtures/integrations'
 import { messagesSentPerMacro } from 'fixtures/stats'
 import type { RootState } from 'state/types'
 
+jest.mock(
+    'pages/aiAgent/analyticsOverview/components/NewAutomateStatsOptInBanner/NewAutomateStatsOptInBanner',
+    () => ({
+        NewAutomateStatsOptInBanner: () => null,
+    }),
+)
+
 jest.mock('domains/reporting/hooks/useStatResource')
 jest.spyOn(Date, 'now').mockImplementation(() => 1487076708000)
 jest.mock(

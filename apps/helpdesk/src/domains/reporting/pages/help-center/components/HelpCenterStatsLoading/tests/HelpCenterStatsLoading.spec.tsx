@@ -7,6 +7,13 @@ import { screen } from '@testing-library/react'
 import HelpCenterStatsLoading from 'domains/reporting/pages/help-center/components/HelpCenterStatsLoading/HelpCenterStatsLoading'
 
 jest.mock(
+    'pages/aiAgent/analyticsOverview/components/NewAutomateStatsOptInBanner/NewAutomateStatsOptInBanner',
+    () => ({
+        NewAutomateStatsOptInBanner: () => null,
+    }),
+)
+
+jest.mock(
     'domains/reporting/pages/common/drill-down/DrillDownModal.tsx',
     () => ({
         DrillDownModal: () => null,

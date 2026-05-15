@@ -7,6 +7,7 @@ import classNames from 'classnames'
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 import css from 'domains/reporting/pages/common/layout/StatsPage.less'
 import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
+import { NewAutomateStatsOptInBanner } from 'pages/aiAgent/analyticsOverview/components/NewAutomateStatsOptInBanner/NewAutomateStatsOptInBanner'
 import HeaderTitle from 'pages/common/components/HeaderTitle'
 import PageHeader from 'pages/common/components/PageHeader'
 
@@ -102,6 +103,7 @@ export default function StatsPage({
                 right={titleExtra}
                 canduId={headerCanduId}
             />
+            <NewAutomateStatsOptInBanner />
             <StatsPageContent backgroundColor={backgroundColor}>
                 {children}
             </StatsPageContent>

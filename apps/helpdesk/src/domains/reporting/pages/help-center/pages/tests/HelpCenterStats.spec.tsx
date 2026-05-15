@@ -35,6 +35,12 @@ jest.mock(
 const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 
 jest.mock(
+    'pages/aiAgent/analyticsOverview/components/NewAutomateStatsOptInBanner/NewAutomateStatsOptInBanner',
+    () => ({
+        NewAutomateStatsOptInBanner: () => null,
+    }),
+)
+jest.mock(
     'domains/reporting/pages/common/components/charts/LineChart/LineChart',
     () => () => <div>line-chart</div>,
 )

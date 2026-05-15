@@ -13,6 +13,12 @@ jest.mock(
         DrillDownModal: () => null,
     }),
 )
+jest.mock(
+    'pages/aiAgent/analyticsOverview/components/NewAutomateStatsOptInBanner/NewAutomateStatsOptInBanner',
+    () => ({
+        NewAutomateStatsOptInBanner: () => null,
+    }),
+)
 describe('StatsPage', () => {
     const pageContent = 'Children'
 

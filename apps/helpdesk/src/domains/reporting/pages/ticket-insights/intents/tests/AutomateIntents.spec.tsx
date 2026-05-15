@@ -19,6 +19,13 @@ import {
 } from 'fixtures/stats'
 import type { RootState } from 'state/types'
 
+jest.mock(
+    'pages/aiAgent/analyticsOverview/components/NewAutomateStatsOptInBanner/NewAutomateStatsOptInBanner',
+    () => ({
+        NewAutomateStatsOptInBanner: () => null,
+    }),
+)
+
 jest.mock('domains/reporting/hooks/useStatResource')
 jest.mock('react-chartjs-2', () => ({ Bar: () => <canvas /> }))
 jest.spyOn(Date, 'now').mockImplementation(() => 1487076708000)
