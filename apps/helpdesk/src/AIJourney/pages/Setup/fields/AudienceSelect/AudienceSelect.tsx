@@ -3,8 +3,6 @@ import { useCallback, useMemo, useState } from 'react'
 import { ListSection, MultiSelectField, MultiSelectItem } from '@gorgias/axiom'
 
 import { FieldPresentation } from 'AIJourney/components'
-import { JOURNEY_TYPES } from 'AIJourney/constants'
-import { useJourneyContext } from 'AIJourney/providers'
 import { useAudienceLists } from 'AIJourney/queries/useAudienceLists/useAudienceLists'
 import { useAudienceSegments } from 'AIJourney/queries/useAudienceSegments/useAudienceSegments'
 
@@ -27,6 +25,8 @@ type AudienceSelectFieldProps = {
     required?: boolean
     onValidationChange?: (isValid: boolean) => void
     showError?: boolean
+    integrationId: number | undefined
+    isCampaign: boolean
 }
 
 export const AudienceSelect = ({
@@ -39,17 +39,16 @@ export const AudienceSelect = ({
     required = false,
     onValidationChange = () => {},
     showError = false,
+    integrationId,
+    isCampaign,
 }: AudienceSelectFieldProps) => {
     const [hasInteracted, setHasInteracted] = useState(false)
-    const { currentIntegration, journeyType } = useJourneyContext()
-
-    const isCampaign = journeyType === JOURNEY_TYPES.CAMPAIGN
 
     const { data: audienceLists, isFetching: isFetchingAudienceLists } =
-        useAudienceLists(currentIntegration?.id)
+        useAudienceLists(integrationId)
 
     const { data: audienceSegments, isFetching: isFetchingAudienceSegments } =
-        useAudienceSegments(currentIntegration?.id, undefined, undefined, {
+        useAudienceSegments(integrationId, undefined, undefined, {
             enabled: !isCampaign,
         })
 

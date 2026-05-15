@@ -624,6 +624,8 @@ export const AIJourneySettings: React.FC = () => {
                         })
                     }}
                     required
+                    integrationId={integrationId}
+                    isCampaign={isCampaign}
                 />
                 <AudienceSelect
                     label="Audience to exclude"
@@ -634,6 +636,8 @@ export const AIJourneySettings: React.FC = () => {
                             excludedAudienceListIds: value,
                         })
                     }}
+                    integrationId={integrationId}
+                    isCampaign={isCampaign}
                 />
             </div>
 

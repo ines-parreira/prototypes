@@ -4,16 +4,10 @@ import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
-import { JOURNEY_TYPES } from 'AIJourney/constants'
-import { useJourneyContext } from 'AIJourney/providers'
 import { useAudienceLists } from 'AIJourney/queries/useAudienceLists/useAudienceLists'
 import { useAudienceSegments } from 'AIJourney/queries/useAudienceSegments/useAudienceSegments'
 
 import { AudienceSelect } from './AudienceSelect'
-
-jest.mock('AIJourney/providers', () => ({
-    useJourneyContext: jest.fn(),
-}))
 
 jest.mock('AIJourney/queries/useAudienceLists/useAudienceLists', () => ({
     useAudienceLists: jest.fn(),
@@ -23,17 +17,17 @@ jest.mock('AIJourney/queries/useAudienceSegments/useAudienceSegments', () => ({
     useAudienceSegments: jest.fn(),
 }))
 
-const mockUseJourneyContext = useJourneyContext as jest.Mock
 const mockUseAudienceLists = useAudienceLists as jest.Mock
 const mockUseAudienceSegments = useAudienceSegments as jest.Mock
+
+const defaultProps = {
+    integrationId: 123,
+    isCampaign: false,
+}
 
 describe('AudienceSelect', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseJourneyContext.mockReturnValue({
-            currentIntegration: { id: 123, name: 'Test Store' },
-            journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
-        })
     })
 
     it('should render with audience select field', () => {
@@ -48,6 +42,7 @@ describe('AudienceSelect', () => {
 
         render(
             <AudienceSelect
+                {...defaultProps}
                 name="Segments to include"
                 value={[]}
                 onChange={() => {}}
@@ -83,6 +78,7 @@ describe('AudienceSelect', () => {
         const user = userEvent.setup()
         render(
             <AudienceSelect
+                {...defaultProps}
                 name="Segments to include"
                 value={[]}
                 exclude={['list3', 'seg3']}
@@ -151,6 +147,7 @@ describe('AudienceSelect', () => {
         const user = userEvent.setup()
         render(
             <AudienceSelect
+                {...defaultProps}
                 name="Segments to include"
                 value={[]}
                 onChange={handleChange}
@@ -190,6 +187,7 @@ describe('AudienceSelect', () => {
 
         render(
             <AudienceSelect
+                {...defaultProps}
                 name="Segments to include"
                 value={[]}
                 onChange={() => {}}
@@ -213,6 +211,7 @@ describe('AudienceSelect', () => {
 
         render(
             <AudienceSelect
+                {...defaultProps}
                 name="Segments to include"
                 value={[]}
                 onChange={() => {}}
@@ -224,10 +223,6 @@ describe('AudienceSelect', () => {
     })
 
     it('should not be disabled on campaigns even when the disabled segments query reports isLoading', () => {
-        mockUseJourneyContext.mockReturnValue({
-            currentIntegration: { id: 123, name: 'Test Store' },
-            journeyType: JOURNEY_TYPES.CAMPAIGN,
-        })
         mockUseAudienceLists.mockReturnValue({
             data: { data: [] },
             isFetching: false,
@@ -242,6 +237,8 @@ describe('AudienceSelect', () => {
 
         render(
             <AudienceSelect
+                {...defaultProps}
+                isCampaign={true}
                 name="Segments to include"
                 value={[]}
                 onChange={() => {}}
@@ -264,6 +261,7 @@ describe('AudienceSelect', () => {
 
         render(
             <AudienceSelect
+                {...defaultProps}
                 name="Segments to include"
                 value={[]}
                 onChange={() => {}}
@@ -275,11 +273,7 @@ describe('AudienceSelect', () => {
         expect(selectButton).not.toBeDisabled()
     })
 
-    it('should work without currentIntegration', () => {
-        mockUseJourneyContext.mockReturnValue({
-            currentIntegration: null,
-            journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
-        })
+    it('should work without integrationId', () => {
         mockUseAudienceLists.mockReturnValue({
             data: null,
             isLoading: false,
@@ -291,6 +285,8 @@ describe('AudienceSelect', () => {
 
         render(
             <AudienceSelect
+                {...defaultProps}
+                integrationId={undefined}
                 name="Segments to include"
                 value={[]}
                 onChange={() => {}}
@@ -317,7 +313,9 @@ describe('AudienceSelect', () => {
             isLoading: false,
         })
 
-        render(<AudienceSelect value={[]} onChange={() => {}} />)
+        render(
+            <AudienceSelect {...defaultProps} value={[]} onChange={() => {}} />,
+        )
 
         expect(
             screen.queryByText('Segments to include'),
@@ -337,6 +335,7 @@ describe('AudienceSelect', () => {
 
         render(
             <AudienceSelect
+                {...defaultProps}
                 label="Choose your audience"
                 value={[]}
                 onChange={() => {}}
@@ -358,6 +357,7 @@ describe('AudienceSelect', () => {
 
         render(
             <AudienceSelect
+                {...defaultProps}
                 name="Segments to include"
                 label="Choose your audience"
                 value={[]}
@@ -386,6 +386,7 @@ describe('AudienceSelect', () => {
         const user = userEvent.setup()
         render(
             <AudienceSelect
+                {...defaultProps}
                 value={[]}
                 onChange={handleChange}
                 onValidationChange={handleValidationChange}
@@ -431,6 +432,7 @@ describe('AudienceSelect', () => {
         const user = userEvent.setup()
         const { rerender } = render(
             <AudienceSelect
+                {...defaultProps}
                 value={[]}
                 onChange={handleChange}
                 required={true}
@@ -462,6 +464,7 @@ describe('AudienceSelect', () => {
 
         rerender(
             <AudienceSelect
+                {...defaultProps}
                 value={[]}
                 onChange={handleChange}
                 required={true}
@@ -487,6 +490,7 @@ describe('AudienceSelect', () => {
 
         render(
             <AudienceSelect
+                {...defaultProps}
                 value={[]}
                 onChange={() => {}}
                 required={true}
@@ -499,11 +503,7 @@ describe('AudienceSelect', () => {
         ).toBeInTheDocument()
     })
 
-    it('should hide the segments section when journey type is campaign', async () => {
-        mockUseJourneyContext.mockReturnValue({
-            currentIntegration: { id: 123, name: 'Test Store' },
-            journeyType: JOURNEY_TYPES.CAMPAIGN,
-        })
+    it('should hide the segments section when isCampaign is true', async () => {
         mockUseAudienceLists.mockReturnValue({
             data: {
                 data: [{ id: 'list1', name: 'VIP Customers' }],
@@ -518,7 +518,14 @@ describe('AudienceSelect', () => {
         })
 
         const user = userEvent.setup()
-        render(<AudienceSelect value={[]} onChange={() => {}} />)
+        render(
+            <AudienceSelect
+                {...defaultProps}
+                isCampaign={true}
+                value={[]}
+                onChange={() => {}}
+            />,
+        )
 
         await user.click(
             screen.getByRole('button', { name: /Select audience/i }),
@@ -533,24 +540,52 @@ describe('AudienceSelect', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('should disable the segments query when journey type is campaign', () => {
-        mockUseJourneyContext.mockReturnValue({
-            currentIntegration: { id: 123, name: 'Test Store' },
-            journeyType: JOURNEY_TYPES.CAMPAIGN,
-        })
+    it('should disable the segments query when isCampaign is true', () => {
         mockUseAudienceLists.mockReturnValue({ data: null, isLoading: false })
         mockUseAudienceSegments.mockReturnValue({
             data: null,
             isLoading: false,
         })
 
-        render(<AudienceSelect value={[]} onChange={() => {}} />)
+        render(
+            <AudienceSelect
+                {...defaultProps}
+                isCampaign={true}
+                value={[]}
+                onChange={() => {}}
+            />,
+        )
 
         expect(mockUseAudienceSegments).toHaveBeenCalledWith(
             123,
             undefined,
             undefined,
             { enabled: false },
+        )
+    })
+
+    it('should pass integrationId through to the queries', () => {
+        mockUseAudienceLists.mockReturnValue({ data: null, isLoading: false })
+        mockUseAudienceSegments.mockReturnValue({
+            data: null,
+            isLoading: false,
+        })
+
+        render(
+            <AudienceSelect
+                {...defaultProps}
+                integrationId={456}
+                value={[]}
+                onChange={() => {}}
+            />,
+        )
+
+        expect(mockUseAudienceLists).toHaveBeenCalledWith(456)
+        expect(mockUseAudienceSegments).toHaveBeenCalledWith(
+            456,
+            undefined,
+            undefined,
+            { enabled: true },
         )
     })
 })

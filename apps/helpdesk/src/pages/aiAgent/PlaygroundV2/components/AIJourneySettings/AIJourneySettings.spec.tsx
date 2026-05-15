@@ -41,20 +41,25 @@ jest.mock('AIJourney/hooks', () => ({
     })),
 }))
 
+const mockAudienceSelect = jest.fn()
 jest.mock('AIJourney/pages/Setup/fields/AudienceSelect/AudienceSelect', () => ({
-    AudienceSelect: ({ label, value, onChange }: any) => (
-        <div>
-            <label>{label}</label>
-            <select
-                aria-label={label}
-                value={value[0] || ''}
-                onChange={(e) => onChange([e.target.value])}
-            >
-                <option value="">Select audience</option>
-                <option value="audience-1">Audience 1</option>
-            </select>
-        </div>
-    ),
+    AudienceSelect: (props: any) => {
+        mockAudienceSelect(props)
+        const { label, value, onChange } = props
+        return (
+            <div>
+                <label>{label}</label>
+                <select
+                    aria-label={label}
+                    value={value[0] || ''}
+                    onChange={(e) => onChange([e.target.value])}
+                >
+                    <option value="">Select audience</option>
+                    <option value="audience-1">Audience 1</option>
+                </select>
+            </div>
+        )
+    },
 }))
 
 const mockUseAIJourneyContext = assumeMock(useAIJourneyContext)
@@ -1151,6 +1156,63 @@ describe('AIJourneySettings', () => {
             expect(
                 screen.getByLabelText('Audience to exclude'),
             ).toBeInTheDocument()
+        })
+
+        it('should pass integrationId and isCampaign=true to AudienceSelect for a campaign journey', () => {
+            mockUseAIJourneyContext.mockReturnValue(
+                createMockAIJourneyContextValue({
+                    currentJourney: mockCampaigns[0],
+                    flows: mockFlows,
+                    campaigns: mockCampaigns,
+                }),
+            )
+
+            renderComponent()
+
+            expect(mockAudienceSelect).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    label: 'Audience to include',
+                    integrationId: 123,
+                    isCampaign: true,
+                }),
+            )
+            expect(mockAudienceSelect).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    label: 'Audience to exclude',
+                    integrationId: 123,
+                    isCampaign: true,
+                }),
+            )
+        })
+
+        it('should pass integrationId and isCampaign=false to AudienceSelect for a non-campaign journey', () => {
+            const cartAbandonedFlow = mockFlows.find(
+                (f) => f.type === JourneyTypeEnum.CartAbandoned,
+            )
+            mockUseAIJourneyContext.mockReturnValue(
+                createMockAIJourneyContextValue({
+                    currentJourney: cartAbandonedFlow,
+                    flows: mockFlows,
+                    campaigns: mockCampaigns,
+                }),
+            )
+
+            renderComponent()
+
+            expect(mockAudienceSelect).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    label: 'Audience to include',
+                    integrationId: 123,
+                    isCampaign: false,
+                }),
+            )
+            expect(mockAudienceSelect).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    label: 'Audience to exclude',
+                    integrationId: 123,
+                    isCampaign: false,
+                }),
+            )
         })
 
         it('should fall back to empty array when audience list IDs are undefined', () => {
