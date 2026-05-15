@@ -1,5 +1,6 @@
+import { useFlagWithLoading } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { render } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
@@ -50,6 +51,17 @@ const DEFAULT_TRIAL_ACCESS_MOCK = {
     trialType: TrialType.AiAgent,
     isOnboarded: false,
 }
+const mockUseFlagWithLoading = assumeMock(useFlagWithLoading)
+
+jest.mock(
+    '../../components/AIAgentWelcomePageViewV3/AIAgentWelcomePageViewV3',
+    () => ({
+        AIAgentWelcomePageViewV3: jest.fn(({ shopName }) => (
+            <div>V3 welcome page for {shopName}</div>
+        )),
+    }),
+)
+
 jest.mock('../../hooks/useAiAgentOnboardingNotification', () => ({
     useAiAgentOnboardingNotification: jest.fn(() => ({
         isAdmin: true,
@@ -186,6 +198,10 @@ describe('<AIAgentWelcomePageView />', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         jest.resetModules()
+        mockUseFlagWithLoading.mockReturnValue({
+            value: false,
+            isLoading: false,
+        })
         mockUseTrialAccess.mockReturnValue(DEFAULT_TRIAL_ACCESS_MOCK)
         mockUseAiAgentOnboardingState.mockReturnValue('onboarded')
         mockUseStoreActivations.mockReturnValue({
@@ -674,5 +690,130 @@ describe('<AIAgentWelcomePageView />', () => {
         const passedProps = mockUpgradePlanModal.mock.calls[0][0]
         expect(passedProps.isOpen).toBe(true)
         expect(passedProps.someModalProp).toBe('value')
+    })
+
+    it('renders the V3 welcome page when the AiAgentOnboardingV3 flag is on and the user can start onboarding', () => {
+        mockUseFlagWithLoading.mockReturnValue({
+            value: true,
+            isLoading: false,
+        })
+        mockUseTrialAccess.mockReturnValue({
+            ...DEFAULT_TRIAL_ACCESS_MOCK,
+            isAdminUser: true,
+        })
+        renderWithProvider()
+
+        expect(
+            screen.getByText(`V3 welcome page for ${SHOP_NAME}`),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: /Set Up AI Agent/i }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('renders the V3 welcome page for non-admin users that can start onboarding (matches V2 behavior)', () => {
+        mockUseFlagWithLoading.mockReturnValue({
+            value: true,
+            isLoading: false,
+        })
+        mockUseTrialAccess.mockReturnValue({
+            ...DEFAULT_TRIAL_ACCESS_MOCK,
+            isAdminUser: false,
+        })
+        renderWithProvider()
+
+        expect(
+            screen.getByText(`V3 welcome page for ${SHOP_NAME}`),
+        ).toBeInTheDocument()
+    })
+
+    it('falls back to V2 when the AiAgentOnboardingV3 flag is on but the user cannot start onboarding', () => {
+        mockUseFlagWithLoading.mockReturnValue({
+            value: true,
+            isLoading: false,
+        })
+        mockUseTrialAccess.mockReturnValue({
+            ...DEFAULT_TRIAL_ACCESS_MOCK,
+            isAdminUser: true,
+            hasCurrentStoreTrialExpired: false,
+            isTrialingSubscription: false,
+            currentAutomatePlan: { generation: 5 },
+            isOnboarded: false,
+        })
+        renderWithProvider()
+
+        expect(
+            screen.queryByText(`V3 welcome page for ${SHOP_NAME}`),
+        ).not.toBeInTheDocument()
+    })
+
+    it('renders a loader while the AiAgentOnboardingV3 flag is loading', () => {
+        mockUseFlagWithLoading.mockReturnValue({
+            value: false,
+            isLoading: true,
+        })
+        renderWithProvider()
+
+        expect(screen.getByLabelText('Loading')).toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: /Set Up AI Agent/i }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('renders a loader while trial access is loading and the AiAgentOnboardingV3 flag is on', () => {
+        mockUseFlagWithLoading.mockReturnValue({
+            value: true,
+            isLoading: false,
+        })
+        mockUseTrialAccess.mockReturnValue({
+            ...DEFAULT_TRIAL_ACCESS_MOCK,
+            isAdminUser: true,
+            isLoading: true,
+        })
+        renderWithProvider()
+
+        expect(screen.getByLabelText('Loading')).toBeInTheDocument()
+        expect(
+            screen.queryByText(`V3 welcome page for ${SHOP_NAME}`),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: /Set Up AI Agent/i }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('renders a loader while onboarding state is unresolved and the AiAgentOnboardingV3 flag is on', () => {
+        mockUseFlagWithLoading.mockReturnValue({
+            value: true,
+            isLoading: false,
+        })
+        mockUseTrialAccess.mockReturnValue({
+            ...DEFAULT_TRIAL_ACCESS_MOCK,
+            isAdminUser: true,
+            isOnboarded: undefined,
+        })
+        renderWithProvider()
+
+        expect(screen.getByLabelText('Loading')).toBeInTheDocument()
+        expect(
+            screen.queryByText(`V3 welcome page for ${SHOP_NAME}`),
+        ).not.toBeInTheDocument()
+    })
+
+    it('renders V2 immediately when the AiAgentOnboardingV3 flag is off, even while trial access is loading', () => {
+        mockUseFlagWithLoading.mockReturnValue({
+            value: false,
+            isLoading: false,
+        })
+        mockUseTrialAccess.mockReturnValue({
+            ...DEFAULT_TRIAL_ACCESS_MOCK,
+            isLoading: true,
+            isOnboarded: undefined,
+        })
+        renderWithProvider()
+
+        expect(screen.queryByLabelText('Loading')).not.toBeInTheDocument()
+        expect(
+            screen.queryByText(`V3 welcome page for ${SHOP_NAME}`),
+        ).not.toBeInTheDocument()
     })
 })

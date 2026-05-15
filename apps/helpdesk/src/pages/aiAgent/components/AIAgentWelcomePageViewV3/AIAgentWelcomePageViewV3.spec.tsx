@@ -2,11 +2,10 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
-import { useLocation } from 'react-router-dom'
 
 import { THEME_NAME, useTheme } from 'core/theme'
-import { V3AdminPaywall } from 'pages/aiAgent/components/V3AdminPaywall/V3AdminPaywall'
-import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { AIAgentWelcomePageViewV3 } from 'pages/aiAgent/components/AIAgentWelcomePageViewV3/AIAgentWelcomePageViewV3'
+import { useAiAgentWelcomePageV3SideEffects } from 'pages/aiAgent/components/AIAgentWelcomePageViewV3/useAiAgentWelcomePageV3SideEffects'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
 
 jest.mock('@repo/logging', () => ({
@@ -17,24 +16,29 @@ jest.mock('core/theme', () => ({
     ...jest.requireActual('core/theme'),
     useTheme: jest.fn(),
 }))
-jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
+jest.mock(
+    'pages/aiAgent/components/AIAgentWelcomePageViewV3/useAiAgentWelcomePageV3SideEffects',
+    () => ({
+        useAiAgentWelcomePageV3SideEffects: jest.fn(),
+    }),
+)
 
 const mockLogEvent = logEvent as jest.MockedFunction<typeof logEvent>
 const mockUseTheme = useTheme as jest.MockedFunction<typeof useTheme>
-const mockUseAiAgentNavigation = useAiAgentNavigation as jest.Mock
+const mockUseSideEffects =
+    useAiAgentWelcomePageV3SideEffects as jest.MockedFunction<
+        typeof useAiAgentWelcomePageV3SideEffects
+    >
 
 const SHOP_NAME = 'my-shop'
-
-const LocationPath = () => {
-    const location = useLocation()
-    return <div>{`${location.pathname}${location.search}`}</div>
-}
 
 beforeAll(() => {
     HTMLElement.prototype.getAnimations = jest.fn().mockReturnValue([])
 })
 
-describe('<V3AdminPaywall />', () => {
+describe('<AIAgentWelcomePageViewV3 />', () => {
+    const mockOnCtaTransition = jest.fn()
+
     beforeEach(() => {
         jest.clearAllMocks()
         mockUseTheme.mockReturnValue({
@@ -42,16 +46,35 @@ describe('<V3AdminPaywall />', () => {
             resolvedName: THEME_NAME.Light,
             tokens: {} as never,
         })
-        mockUseAiAgentNavigation.mockImplementation(({ shopName }) => ({
-            routes: {
-                onboardingWizardStep: (step: string) =>
-                    `/app/ai-agent/shopify/${shopName}/onboarding/${step}`,
-            },
-        }))
+        mockUseSideEffects.mockReturnValue({
+            onCtaTransition: mockOnCtaTransition,
+            isOnUpdateOnboardingWizard: false,
+        })
     })
 
+    const renderComponent = (
+        storeConfiguration?: object,
+        sideEffectsOverrides?: Partial<
+            ReturnType<typeof useAiAgentWelcomePageV3SideEffects>
+        >,
+    ) => {
+        if (sideEffectsOverrides) {
+            mockUseSideEffects.mockReturnValue({
+                onCtaTransition: mockOnCtaTransition,
+                isOnUpdateOnboardingWizard: false,
+                ...sideEffectsOverrides,
+            })
+        }
+        return render(
+            <AIAgentWelcomePageViewV3
+                shopName={SHOP_NAME}
+                storeConfiguration={storeConfiguration as never}
+            />,
+        )
+    }
+
     it('renders the trial-setup content with the Start setup CTA', () => {
-        render(<V3AdminPaywall shopName={SHOP_NAME} />)
+        renderComponent()
 
         expect(
             screen.getByRole('heading', {
@@ -70,7 +93,7 @@ describe('<V3AdminPaywall />', () => {
     })
 
     it('logs the AutomatePaywallVisited event on mount', () => {
-        render(<V3AdminPaywall shopName={SHOP_NAME} />)
+        renderComponent()
 
         expect(mockLogEvent).toHaveBeenCalledWith(
             SegmentEvent.AutomatePaywallVisited,
@@ -88,59 +111,45 @@ describe('<V3AdminPaywall />', () => {
             optionName: /Turn shopper conversations into sales/i,
         },
     ])(
-        'navigates to onboarding with ?jtbd=$label after picking $label',
+        'invokes the CTA transition with jtbd=$label after picking $label',
         async ({ label, optionName }) => {
             const user = userEvent.setup()
-            render(
-                <>
-                    <V3AdminPaywall shopName={SHOP_NAME} />
-                    <LocationPath />
-                </>,
-            )
+            renderComponent()
 
             await user.click(
                 screen.getByRole('button', { name: /Start setup/i }),
             )
             await user.click(screen.getByText(optionName))
 
-            expect(
-                screen.getByText(
-                    `/app/ai-agent/shopify/${SHOP_NAME}/onboarding/tone of voice?jtbd=${label}`,
-                ),
-            ).toBeInTheDocument()
+            expect(mockOnCtaTransition).toHaveBeenCalledWith({ jtbd: label })
         },
     )
 
-    it('falls back to the unscoped onboarding route when there is no shop', async () => {
-        mockUseAiAgentNavigation.mockReturnValue({
-            routes: {
-                onboardingWizardStep: jest.fn(),
-            },
-        })
+    it('exposes the Candu anchor on the Start setup button', () => {
+        renderComponent()
 
-        const user = userEvent.setup()
-        render(
-            <>
-                <V3AdminPaywall shopName={undefined} />
-                <LocationPath />
-            </>,
-        )
+        expect(
+            screen.getByRole('button', { name: /Start setup/i }),
+        ).toHaveAttribute('data-candu-id', 'ai-agent-welcome-page')
+    })
 
-        await user.click(screen.getByRole('button', { name: /Start setup/i }))
-        await user.click(
-            screen.getByText(/Resolve support questions automatically/i),
+    it('swaps the CTA label to Continue setup when the wizard has not yet been completed', () => {
+        renderComponent(
+            { wizard: { completedDatetime: null } },
+            { isOnUpdateOnboardingWizard: true },
         )
 
         expect(
-            screen.getByText(
-                '/app/ai-agent/onboarding/tone of voice?jtbd=support',
-            ),
+            screen.getByRole('button', { name: /Continue setup/i }),
         ).toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: /^Start setup$/i }),
+        ).not.toBeInTheDocument()
     })
 
     it('toggles the preview between Support and Sales', async () => {
         const user = userEvent.setup()
-        const { container } = render(<V3AdminPaywall shopName={SHOP_NAME} />)
+        const { container } = renderComponent()
 
         const supportRadio = screen.getByRole('radio', { name: /Support/i })
         const salesRadio = screen.getByRole('radio', { name: /Sales/i })

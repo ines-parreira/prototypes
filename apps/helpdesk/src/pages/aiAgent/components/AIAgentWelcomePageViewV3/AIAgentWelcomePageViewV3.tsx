@@ -2,7 +2,6 @@ import { useCallback, useState } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { useHistory } from 'react-router-dom'
 
 import {
     Box,
@@ -19,13 +18,14 @@ import AiAgentLogoWhite from 'assets/img/ai-agent/ai-agent-logo-white.svg'
 import AiAgentLogo from 'assets/img/ai-agent/ai-agent-logo.svg'
 import SalesStrategyImage from 'assets/img/ai-agent/ai-agent_paywall_sales-strategy.png'
 import { useTheme } from 'core/theme'
+import type { StoreConfiguration } from 'models/aiAgent/types'
 import { JtbdPicker } from 'pages/aiAgent/components/JtbdPicker/JtbdPicker'
-import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import { WizardStepEnum } from 'pages/aiAgent/Onboarding_V2/types'
 import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
 import type { JtbdValue } from 'pages/aiAgent/utils/jtbd'
 import { JTBD_QUERY_KEY } from 'pages/aiAgent/utils/jtbd'
 import { assetsUrl } from 'utils'
+
+import { useAiAgentWelcomePageV3SideEffects } from './useAiAgentWelcomePageV3SideEffects'
 
 const DESCRIPTIONS = [
     'Define how it responds to specific topics',
@@ -42,28 +42,57 @@ const PREVIEW_OPTION = {
 type PreviewOption = (typeof PREVIEW_OPTION)[keyof typeof PREVIEW_OPTION]
 
 type Props = {
-    shopName: string | undefined
+    shopName: string
+    storeConfiguration?: StoreConfiguration
 }
 
-export const V3AdminPaywall = ({ shopName }: Props) => {
+export const AIAgentWelcomePageViewV3 = ({
+    shopName,
+    storeConfiguration,
+}: Props) => {
+    const { onCtaTransition, isOnUpdateOnboardingWizard } =
+        useAiAgentWelcomePageV3SideEffects({
+            shopName,
+            storeConfiguration,
+        })
+
+    // Mirrors V2's AiAgentPaywallView, which logs this from the view container.
+    // The other V3 analytics live in useAiAgentWelcomePageV3SideEffects because
+    // they depend on trialAccess; this one does not.
     useEffectOnce(() => {
         logEvent(SegmentEvent.AutomatePaywallVisited, {
             location: AIAgentPaywallFeatures.TrialSetup,
         })
     })
 
+    const handleJtbdSelect = useCallback(
+        (jtbd: JtbdValue) => {
+            onCtaTransition({ [JTBD_QUERY_KEY]: jtbd })
+        },
+        [onCtaTransition],
+    )
+
     return (
-        <>
-            <PaywallInfo shopName={shopName} />
+        <Box flexDirection="row" width="100%" height="100%">
+            <PaywallInfo
+                onJtbdSelect={handleJtbdSelect}
+                ctaLabel={
+                    isOnUpdateOnboardingWizard
+                        ? 'Continue setup'
+                        : 'Start setup'
+                }
+            />
             <PaywallPreview />
-        </>
+        </Box>
     )
 }
 
-const PaywallInfo = ({ shopName }: Props) => {
-    const history = useHistory()
-    const aiAgentNavigation = useAiAgentNavigation({ shopName: shopName ?? '' })
+type PaywallInfoProps = {
+    onJtbdSelect: (jtbd: JtbdValue) => void
+    ctaLabel: string
+}
 
+const PaywallInfo = ({ onJtbdSelect, ctaLabel }: PaywallInfoProps) => {
     const theme = useTheme()
     const isDarkTheme = theme.resolvedName === 'dark'
     const logoSrc = isDarkTheme ? AiAgentLogoWhite : AiAgentLogo
@@ -73,22 +102,6 @@ const PaywallInfo = ({ shopName }: Props) => {
     const onStartSetup = useCallback(() => {
         setShowPicker(true)
     }, [])
-
-    const onJtbdSelect = useCallback(
-        (jtbd: JtbdValue) => {
-            const path = shopName
-                ? aiAgentNavigation.routes.onboardingWizardStep(
-                      WizardStepEnum.TONE_OF_VOICE,
-                  )
-                : `/app/ai-agent/onboarding/${WizardStepEnum.TONE_OF_VOICE}`
-
-            history.push({
-                pathname: path,
-                search: `?${JTBD_QUERY_KEY}=${jtbd}`,
-            })
-        },
-        [history, aiAgentNavigation.routes, shopName],
-    )
 
     return (
         <Box
@@ -141,10 +154,11 @@ const PaywallInfo = ({ shopName }: Props) => {
                         <Box flexDirection="column" gap="md">
                             <Box>
                                 <Button
+                                    data-candu-id="ai-agent-welcome-page"
                                     trailingSlot={<Icon name="arrow-right" />}
                                     onClick={onStartSetup}
                                 >
-                                    Start setup
+                                    {ctaLabel}
                                 </Button>
                             </Box>
                             <Text

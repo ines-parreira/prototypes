@@ -1,8 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { useHistory } from 'react-router-dom'
+
+import { Box, Loader } from '@gorgias/axiom'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
 import type {
@@ -12,6 +15,7 @@ import type {
 import { AiAgentOnboardingState } from 'models/aiAgent/types'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { AiAgentPaywallView } from 'pages/aiAgent/AiAgentPaywallView'
+import { AIAgentWelcomePageViewV3 } from 'pages/aiAgent/components/AIAgentWelcomePageViewV3/AIAgentWelcomePageViewV3'
 import { useAiAgentCtas } from 'pages/aiAgent/components/ShoppingAssistant/hooks/useAiAgentPaywallCTA'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { WIZARD_UPDATE_QUERY_KEY } from 'pages/aiAgent/constants'
@@ -48,6 +52,47 @@ export type AiAgentWelcomePageProps = {
 }
 
 export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
+    const { value: isV3FlagOn, isLoading: isFlagLoading } = useFlagWithLoading(
+        FeatureFlagKey.AiAgentOnboardingV3,
+        false,
+    )
+
+    const trialAccess = useTrialAccess(props.shopName)
+    const isTrialAccessLoading =
+        trialAccess.isLoading === true || trialAccess.isOnboarded === undefined
+
+    const canStartOnboarding =
+        (trialAccess.hasCurrentStoreTrialExpired ||
+            trialAccess.isTrialingSubscription ||
+            hasAutomatePlanAboveGen6(trialAccess.currentAutomatePlan)) &&
+        trialAccess.isOnboarded === false
+
+    if (isFlagLoading) {
+        return <CenteredLoader />
+    }
+
+    // Block on trial/onboarding loading only when V3 could win — otherwise V2
+    // owns its own internal loading and we should not delay it.
+    if (isV3FlagOn && isTrialAccessLoading) {
+        return <CenteredLoader />
+    }
+
+    // Matches V2's `useAiAgentCtas` rule: "If onboarding is possible, anyone
+    // can start it" — so V3 only gates on `canStartOnboarding`. The route-level
+    // role guard already blocks Basic/Observer/Lite agents from reaching here.
+    if (isV3FlagOn && canStartOnboarding) {
+        return (
+            <AIAgentWelcomePageViewV3
+                shopName={props.shopName}
+                storeConfiguration={props.storeConfiguration}
+            />
+        )
+    }
+
+    return <AIAgentWelcomePageViewV2 {...props} />
+}
+
+const AIAgentWelcomePageViewV2 = (props: AiAgentWelcomePageProps) => {
     const {
         isAdmin,
         isLoading: isLoadingOnboardingNotificationState,
@@ -363,3 +408,9 @@ export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
         </AiAgentPaywallView>
     )
 }
+
+const CenteredLoader = () => (
+    <Box alignItems="center" justifyContent="center" width="100%" height="100%">
+        <Loader size="sm" aria-label="Loading" />
+    </Box>
+)
