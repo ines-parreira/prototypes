@@ -712,6 +712,7 @@ describe('<AiJourneyOnboarding />', () => {
             await waitFor(() => {
                 expect(mockHandleUpdate).toHaveBeenCalledWith({
                     journeyMessageInstructions: '',
+                    journeyVariants: [],
                 })
             })
         })

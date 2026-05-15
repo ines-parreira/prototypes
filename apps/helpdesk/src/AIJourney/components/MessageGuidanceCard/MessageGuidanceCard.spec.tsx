@@ -24,9 +24,39 @@ jest.mock('react-hook-form', () => ({
 
 const mockUseController = require('react-hook-form').useController as jest.Mock
 
+jest.mock('@repo/forms', () => ({
+    ...jest.requireActual('@repo/forms'),
+    useFieldArray: jest.fn(),
+    useFormContext: jest.fn(),
+    useWatch: jest.fn(),
+}))
+
+const mockUseFieldArray = require('@repo/forms').useFieldArray as jest.Mock
+const mockUseFormContext = require('@repo/forms').useFormContext as jest.Mock
+const mockUseWatch = require('@repo/forms').useWatch as jest.Mock
+
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlagWithLoading: jest.fn(),
+}))
+
+const mockUseFlagWithLoading = require('@repo/feature-flags')
+    .useFlagWithLoading as jest.Mock
+
+jest.mock('@repo/activity-tracker/utils', () => ({
+    ...jest.requireActual('@repo/activity-tracker/utils'),
+    isSessionImpersonated: jest.fn(),
+}))
+
+const mockIsSessionImpersonated = require('@repo/activity-tracker/utils')
+    .isSessionImpersonated as jest.Mock
+
 describe('<MessageGuidanceCard />', () => {
     const mockOnChange = jest.fn()
     const mockOnReturningCustomerChange = jest.fn()
+    const mockAppend = jest.fn()
+    const mockRemove = jest.fn()
+    const mockReplace = jest.fn()
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -39,6 +69,20 @@ describe('<MessageGuidanceCard />', () => {
             field: { value: '', onChange: mockOnChange },
             fieldState: { error: undefined },
         })
+
+        mockUseFieldArray.mockReturnValue({
+            fields: [],
+            append: mockAppend,
+            remove: mockRemove,
+            replace: mockReplace,
+        })
+        mockUseFormContext.mockReturnValue({ control: {} })
+        mockUseWatch.mockReturnValue([])
+        mockUseFlagWithLoading.mockReturnValue({
+            value: false,
+            isLoading: false,
+        })
+        mockIsSessionImpersonated.mockReturnValue(false)
     })
 
     it('should render the card title and description', () => {
@@ -187,5 +231,122 @@ describe('<MessageGuidanceCard />', () => {
         })
 
         expect(toggle).toHaveAttribute('data-react-aria-pressable', 'true')
+    })
+
+    describe('A/B test toggle', () => {
+        it('should hide the A/B toggle when the flag is off and the user is not impersonating', () => {
+            render(<MessageGuidanceCard />)
+
+            expect(
+                screen.queryByText('A/B test message guidance'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should hide the A/B toggle while the flag is still loading', () => {
+            mockUseFlagWithLoading.mockReturnValue({
+                value: true,
+                isLoading: true,
+            })
+            mockIsSessionImpersonated.mockReturnValue(false)
+
+            render(<MessageGuidanceCard />)
+
+            expect(
+                screen.queryByText('A/B test message guidance'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should show the A/B toggle when the user is impersonating', () => {
+            mockIsSessionImpersonated.mockReturnValue(true)
+
+            render(<MessageGuidanceCard />)
+
+            expect(
+                screen.getByText('A/B test message guidance'),
+            ).toBeInTheDocument()
+        })
+
+        it('should show the A/B toggle when the flag is enabled', () => {
+            mockUseFlagWithLoading.mockReturnValue({
+                value: true,
+                isLoading: false,
+            })
+
+            render(<MessageGuidanceCard />)
+
+            expect(
+                screen.getByText('A/B test message guidance'),
+            ).toBeInTheDocument()
+        })
+
+        it('should default the A/B toggle to off when no variants are present', () => {
+            mockIsSessionImpersonated.mockReturnValue(true)
+
+            render(<MessageGuidanceCard />)
+
+            const toggle = screen.getByRole('switch', {
+                name: /a\/b test/i,
+            })
+            expect(toggle).not.toBeChecked()
+        })
+
+        it('should default the A/B toggle to on when variants are present', () => {
+            mockIsSessionImpersonated.mockReturnValue(true)
+            mockUseWatch.mockReturnValue([
+                { id: 'v1', message_instructions: 'copy', weight: 30 },
+            ])
+
+            render(<MessageGuidanceCard />)
+
+            const toggle = screen.getByRole('switch', {
+                name: /a\/b test/i,
+            })
+            expect(toggle).toBeChecked()
+        })
+
+        it('should append a 50% variant when the A/B toggle is enabled', async () => {
+            mockIsSessionImpersonated.mockReturnValue(true)
+            const user = userEvent.setup()
+
+            render(<MessageGuidanceCard />)
+
+            const toggle = screen.getByRole('switch', {
+                name: /a\/b test/i,
+            })
+
+            await act(async () => {
+                await user.click(toggle)
+            })
+
+            expect(mockAppend).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    id: expect.any(String),
+                    message_instructions: '',
+                    weight: 50,
+                }),
+            )
+            expect(mockReplace).not.toHaveBeenCalled()
+        })
+
+        it('should replace variants with an empty array when the A/B toggle is disabled', async () => {
+            mockIsSessionImpersonated.mockReturnValue(true)
+            mockUseWatch.mockReturnValue([
+                { id: 'v1', message_instructions: 'copy', weight: 20 },
+            ])
+            const user = userEvent.setup()
+
+            render(<MessageGuidanceCard />)
+
+            const toggle = screen.getByRole('switch', {
+                name: /a\/b test/i,
+            })
+
+            await act(async () => {
+                await user.click(toggle)
+            })
+
+            expect(mockReplace).toHaveBeenCalledWith([])
+            expect(mockAppend).not.toHaveBeenCalled()
+        })
     })
 })

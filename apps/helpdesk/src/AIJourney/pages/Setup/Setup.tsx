@@ -27,6 +27,7 @@ import {
     TimingCard,
 } from 'AIJourney/components'
 import type { UploadedImageAttachment } from 'AIJourney/components/ImageDropzone/ImageDropzone'
+import type { MessageInstructionsVariant } from 'AIJourney/components/MessageGuidanceCard/types'
 import { JOURNEY_TYPES } from 'AIJourney/constants'
 import { useAiJourneyStoreConfiguration } from 'AIJourney/hooks'
 import { useJourneyContext } from 'AIJourney/providers'
@@ -49,6 +50,7 @@ export type SetupFormValues = {
     cooldown_days?: number
     inactive_days?: number
     message_instructions?: string
+    variants?: MessageInstructionsVariant[]
     included_audience_list_ids?: string[]
     excluded_audience_list_ids?: string[]
     campaignTitle?: string

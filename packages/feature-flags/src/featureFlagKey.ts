@@ -64,6 +64,7 @@ export enum FeatureFlagKey {
     AiJourneyAttributionModelComparison = 'linear.AIJOU-1796-show-custom-attribution-model',
     AiJourneyCustomFlowEnabled = 'ai-journey-custom-flow-enabled',
     AiJourneyCampaignSendingEnabled = 'campaign-sending-enabled',
+    AiJourneyMessageInstructionsAbTesting = 'ai-journey-message-instructions-ab-testing',
     AiJourneySegmentsUiEnabled = 'ai-journey-segments-ui-enabled',
     AiJourneyStoreSettingsEnabled = 'ai-journey-store-settings-enabled',
     AiSalesAgentActivationEmailSettings = 'linear.project_ai-sales-agent-email-settings',

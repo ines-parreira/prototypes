@@ -177,6 +177,24 @@ describe('<Preview />', () => {
                 ),
             ).toBeInTheDocument()
         })
+
+        it('should render a "Go to flows" button that is clickable from the not-found state', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyData: undefined,
+                isErrorJourneyData: false,
+                shopName: 'acme',
+            })
+            const user = userEvent.setup()
+
+            render(<Preview />)
+
+            const goToFlowsButton = screen.getByRole('button', {
+                name: /go to flows/i,
+            })
+
+            await expect(user.click(goToFlowsButton)).resolves.not.toThrow()
+        })
     })
 
     describe('conditional rendering by journey type', () => {
@@ -295,6 +313,37 @@ describe('<Preview />', () => {
             render(<Preview />)
 
             expect(mockSetValue).not.toHaveBeenCalled()
+        })
+
+        it('should call setValue with variants when journey data has them', () => {
+            const variants = [
+                { id: 'v1', message_instructions: 'copy', weight: 30 },
+            ]
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyData: {
+                    ...defaultJourneyData,
+                    variants,
+                },
+            })
+
+            render(<Preview />)
+
+            expect(mockSetValue).toHaveBeenCalledWith('variants', variants)
+        })
+    })
+
+    describe('product selection', () => {
+        it('should not throw when TestingProductCard emits onProductChange', async () => {
+            const user = userEvent.setup()
+
+            render(<Preview />)
+
+            await user.click(
+                screen.getByRole('button', { name: /change product/i }),
+            )
+
+            expect(screen.getByText('TestingProductCard')).toBeInTheDocument()
         })
     })
 

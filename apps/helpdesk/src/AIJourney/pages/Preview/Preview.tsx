@@ -108,6 +108,9 @@ export const Preview = () => {
         if (journeyData?.message_instructions) {
             setValue('message_instructions', journeyData.message_instructions)
         }
+        if (journeyData?.variants) {
+            setValue('variants', journeyData.variants)
+        }
     }, [journeyData, setValue])
 
     const handleProductChange = useCallback(

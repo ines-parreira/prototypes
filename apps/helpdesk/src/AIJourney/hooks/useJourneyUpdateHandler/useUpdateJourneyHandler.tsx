@@ -13,6 +13,7 @@ import type {
 } from '@gorgias/convert-client'
 
 import type { UploadedImageAttachment } from 'AIJourney/components/ImageDropzone/ImageDropzone'
+import type { MessageInstructionsVariant } from 'AIJourney/components/MessageGuidanceCard/types'
 import type { UpdatableJourneyCampaignState } from 'AIJourney/constants'
 import { useUpdateJourney } from 'AIJourney/queries'
 import { aiJourneyKeys } from 'AIJourney/queries/utils'
@@ -40,6 +41,7 @@ type HandleUpdateParams = {
     includedAudienceListIds?: string[]
     isDiscountEnabled?: boolean
     journeyMessageInstructions?: string | null
+    journeyVariants?: MessageInstructionsVariant[] | null
     journeyState?: JourneyStatusEnum
     phoneNumberIntegrationId?: number | null | undefined
     phoneNumber?: string | null | undefined
@@ -160,6 +162,9 @@ export const useJourneyUpdateHandler = ({
                             undefined && {
                             execution_mode_override:
                                 updateParams.executionModeOverride,
+                        }),
+                        ...(updateParams.journeyVariants !== undefined && {
+                            variants: updateParams.journeyVariants,
                         }),
                     },
                     ...(shouldUpdateConfigs && { journeyConfigs }),

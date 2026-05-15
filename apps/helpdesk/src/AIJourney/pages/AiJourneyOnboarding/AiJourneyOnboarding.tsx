@@ -91,6 +91,7 @@ export const AiJourneyOnboarding = ({
             include_image: false,
             offer_discount: false,
             message_instructions: '',
+            variants: [],
             ...(journeyType === JOURNEY_TYPES.WIN_BACK && {
                 cooldown_days: 30,
                 inactive_days: 30,
@@ -252,6 +253,7 @@ export const AiJourneyOnboarding = ({
             setIsCollapsibleColumnOpen(false)
             await handleUpdate({
                 journeyMessageInstructions: data.message_instructions,
+                journeyVariants: data.variants ?? [],
             }).then(() =>
                 history.push(
                     `/app/ai-journey/${shopName}/${journeyType}/${nextStep}/${journeyData?.id}`,
