@@ -106,36 +106,38 @@ export const useSkillWizardMutations = (helpCenterId: number) => {
     const wizardQueryKey = helpCenterKeys.wizard(helpCenterId)
     const articleListKeyPrefix = helpCenterKeys.detail(helpCenterId)
 
-    const { mutate: patchWizardMutate } = usePatchWizard({
-        mutationKey: SKILL_WIZARD_SAVING_MUTATION_KEY,
-        onMutate: async ([, , data]) => {
-            await queryClient.cancelQueries({ queryKey: wizardQueryKey })
-            const previous = queryClient.getQueryData<SkillWizardData | null>(
-                wizardQueryKey,
-            )
-            if (previous) {
-                queryClient.setQueryData<SkillWizardData | null>(
-                    wizardQueryKey,
-                    applyWizardPatch(previous, data),
-                )
-            }
-            return { previous } as WizardMutationContext
-        },
-        onError: (_error, _variables, context) => {
-            const ctx = context as WizardMutationContext | undefined
-            if (ctx?.previous !== undefined) {
-                queryClient.setQueryData(wizardQueryKey, ctx.previous)
-            }
-        },
-        onSuccess: (data) => {
-            if (data) {
-                queryClient.setQueryData<SkillWizardData | null>(
-                    wizardQueryKey,
-                    data,
-                )
-            }
-        },
-    })
+    const { mutate: patchWizardMutate, mutateAsync: patchWizardMutateAsync } =
+        usePatchWizard({
+            mutationKey: SKILL_WIZARD_SAVING_MUTATION_KEY,
+            onMutate: async ([, , data]) => {
+                await queryClient.cancelQueries({ queryKey: wizardQueryKey })
+                const previous =
+                    queryClient.getQueryData<SkillWizardData | null>(
+                        wizardQueryKey,
+                    )
+                if (previous) {
+                    queryClient.setQueryData<SkillWizardData | null>(
+                        wizardQueryKey,
+                        applyWizardPatch(previous, data),
+                    )
+                }
+                return { previous } as WizardMutationContext
+            },
+            onError: (_error, _variables, context) => {
+                const ctx = context as WizardMutationContext | undefined
+                if (ctx?.previous !== undefined) {
+                    queryClient.setQueryData(wizardQueryKey, ctx.previous)
+                }
+            },
+            onSuccess: (data) => {
+                if (data) {
+                    queryClient.setQueryData<SkillWizardData | null>(
+                        wizardQueryKey,
+                        data,
+                    )
+                }
+            },
+        })
 
     const patch = useCallback(
         (data: PatchSkillWizardDto) => {
@@ -181,6 +183,16 @@ export const useSkillWizardMutations = (helpCenterId: number) => {
             })
         },
         [patch, mergeWithCurrent],
+    )
+
+    const complete = useCallback(
+        () =>
+            patchWizardMutateAsync([
+                helpCenterClient,
+                { help_center_id: helpCenterId },
+                { status: 'completed' },
+            ]),
+        [patchWizardMutateAsync, helpCenterClient, helpCenterId],
     )
 
     const { mutateAsync: saveInstructionsMutateAsync } = useMutation({
@@ -243,6 +255,7 @@ export const useSkillWizardMutations = (helpCenterId: number) => {
         setStepLocation,
         setSkillStatus,
         saveInstructions,
+        complete,
         isSaving,
     }
 }

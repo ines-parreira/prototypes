@@ -431,5 +431,111 @@ describe('useSkillWizardMutations', () => {
 
             expect(result.current.mutations.isSaving).toBe(true)
         })
+
+        it('is true while a wizard PATCH is in flight and false once it settles', async () => {
+            let resolvePatch!: (data: SkillWizardData) => void
+            mockPatchWizard.mockImplementationOnce(
+                () =>
+                    new Promise<SkillWizardData>((resolve) => {
+                        resolvePatch = resolve
+                    }),
+            )
+
+            const { result } = renderMutations()
+
+            expect(result.current.mutations.isSaving).toBe(false)
+
+            act(() => {
+                result.current.mutations.start()
+            })
+
+            await waitFor(() => {
+                expect(result.current.mutations.isSaving).toBe(true)
+            })
+
+            await act(async () => {
+                resolvePatch(
+                    seedWizard({ status: SkillWizardStatus.InProgress }),
+                )
+            })
+
+            await waitFor(() => {
+                expect(result.current.mutations.isSaving).toBe(false)
+            })
+        })
+    })
+
+    describe('complete', () => {
+        it('PATCHes status=completed', async () => {
+            const { result } = renderMutations()
+
+            await act(async () => {
+                await result.current.mutations.complete()
+            })
+
+            expect(mockPatchWizard).toHaveBeenCalledWith(
+                STUB_CLIENT,
+                { help_center_id: HELP_CENTER_ID },
+                { status: 'completed' },
+            )
+        })
+
+        it('resolves once the PATCH succeeds so the caller can await it', async () => {
+            mockPatchWizard.mockResolvedValueOnce(
+                seedWizard({ status: SkillWizardStatus.Completed }),
+            )
+            const { result } = renderMutations()
+
+            await expect(
+                result.current.mutations.complete(),
+            ).resolves.toBeDefined()
+        })
+
+        it('rejects when the PATCH fails so the caller can react to the error', async () => {
+            mockPatchWizard.mockRejectedValueOnce(new Error('network down'))
+            const { result } = renderMutations()
+
+            await expect(result.current.mutations.complete()).rejects.toThrow(
+                'network down',
+            )
+        })
+    })
+
+    describe('article cache invalidation', () => {
+        beforeEach(() => {
+            jest.useFakeTimers()
+        })
+
+        afterEach(() => {
+            jest.runOnlyPendingTimers()
+            jest.useRealTimers()
+        })
+
+        it('invalidates the article list cache once the debounced saveInstructions PATCH settles', async () => {
+            const { result } = renderMutations()
+            const invalidateSpy = jest.spyOn(
+                result.current.queryClient,
+                'invalidateQueries',
+            )
+
+            act(() => {
+                result.current.mutations.saveInstructions({
+                    articleId: 99,
+                    locale: 'en',
+                    content: 'hello',
+                })
+            })
+
+            await act(async () => {
+                await jest.advanceTimersByTimeAsync(500)
+            })
+
+            expect(invalidateSpy).toHaveBeenCalledWith({
+                queryKey: [
+                    ...helpCenterKeys.detail(HELP_CENTER_ID),
+                    'articles',
+                ],
+            })
+        })
     })
 })

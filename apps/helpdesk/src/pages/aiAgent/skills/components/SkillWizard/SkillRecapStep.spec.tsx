@@ -1,12 +1,15 @@
 import { render } from '@repo/testing'
-import { screen, within } from '@testing-library/react'
+import { act, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { ThemeProvider } from 'core/theme'
+import { useGetHelpCenter } from 'models/helpCenter/queries'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { useGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import { useApplyWizardChanges } from 'pages/aiAgent/skills/hooks/useApplyWizardChanges'
 import type { EnrichedSkillWizard } from 'pages/aiAgent/skills/hooks/useEnrichedSkillWizard'
+import { useSkillWizardMutations } from 'pages/aiAgent/skills/hooks/useSkillWizardMutations'
 import {
     SkillWizardSkillStatus,
     SkillWizardStatus,
@@ -21,6 +24,35 @@ jest.mock('pages/aiAgent/hooks/useGuidanceArticles')
 jest.mock(
     'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions',
 )
+jest.mock('pages/aiAgent/skills/hooks/useApplyWizardChanges')
+jest.mock('pages/aiAgent/skills/hooks/useSkillWizardMutations', () => ({
+    SKILL_WIZARD_SAVING_MUTATION_KEY: ['skill-wizard-saving'],
+    useSkillWizardMutations: jest.fn(),
+}))
+jest.mock('models/helpCenter/queries', () => ({
+    ...jest.requireActual('models/helpCenter/queries'),
+    useGetHelpCenter: jest.fn(),
+}))
+
+const mockUseApplyWizardChanges = useApplyWizardChanges as jest.MockedFunction<
+    typeof useApplyWizardChanges
+>
+const mockUseSkillWizardMutations =
+    useSkillWizardMutations as jest.MockedFunction<
+        typeof useSkillWizardMutations
+    >
+const mockUseGetHelpCenter = useGetHelpCenter as jest.MockedFunction<
+    typeof useGetHelpCenter
+>
+
+const buildApplyResult = (
+    overrides: Partial<ReturnType<typeof useApplyWizardChanges>> = {},
+): ReturnType<typeof useApplyWizardChanges> => ({
+    apply: jest.fn(),
+    phase: 'idle',
+    liveSkillsCount: 0,
+    ...overrides,
+})
 
 const mockUseAiAgentStoreConfigurationContext =
     useAiAgentStoreConfigurationContext as jest.MockedFunction<
@@ -140,6 +172,13 @@ describe('SkillRecapStep', () => {
             isGuidanceArticleListLoading: false,
             isFetched: true,
         })
+        mockUseApplyWizardChanges.mockReturnValue(buildApplyResult())
+        mockUseSkillWizardMutations.mockReturnValue({
+            complete: jest.fn().mockResolvedValue(undefined),
+        } as unknown as ReturnType<typeof useSkillWizardMutations>)
+        mockUseGetHelpCenter.mockReturnValue({
+            data: { default_locale: 'en-US' },
+        } as ReturnType<typeof useGetHelpCenter>)
     })
 
     it('shows the count of skills approved in skills_configuration', () => {
@@ -256,6 +295,35 @@ describe('SkillRecapStep', () => {
         expect(
             screen.queryByText('Some of your guidance can now be disabled'),
         ).not.toBeInTheDocument()
+    })
+
+    it('renders the guidance card as non-interactive when enabled skills cover no guidances', async () => {
+        const user = userEvent.setup()
+        // Override buildWizard's defaults: both approved skills have empty
+        // guidance_ids → there's nothing to disable in the sidepanel.
+        const wizard = buildWizard([
+            { id: 1, status: SkillWizardSkillStatus.Approved },
+            { id: 2, status: SkillWizardSkillStatus.Approved },
+        ])
+        wizard.reviewable_skills.forEach((skill) => {
+            ;(skill as { guidance_ids: number[] }).guidance_ids = []
+        })
+
+        renderRecap(wizard)
+
+        // Success copy is shown, not the "can be disabled" CTA copy
+        expect(
+            screen.getByText('All of your enabled guidance will remain active'),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByText('Some of your guidance can now be disabled'),
+        ).not.toBeInTheDocument()
+
+        // Clicking the card does not open the guidance sidepanel
+        await user.click(
+            screen.getByText('All of your enabled guidance will remain active'),
+        )
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     })
 
     it('does not open the skills sidepanel when no skills were approved on the server', async () => {
@@ -472,5 +540,221 @@ describe('SkillRecapStep', () => {
         await user.click(screen.getByRole('button', { name: /back/i }))
 
         expect(goBack).toHaveBeenCalled()
+    })
+
+    describe('apply flow', () => {
+        it('calls apply when the merchant clicks Apply with enabled skills', async () => {
+            const apply = jest.fn()
+            mockUseApplyWizardChanges.mockReturnValue(
+                buildApplyResult({ apply }),
+            )
+
+            const user = userEvent.setup()
+            renderRecap(
+                buildWizard([
+                    { id: 1, status: SkillWizardSkillStatus.Approved },
+                ]),
+            )
+
+            await user.click(
+                screen.getByRole('button', { name: /apply all changes/i }),
+            )
+
+            expect(apply).toHaveBeenCalledTimes(1)
+        })
+
+        it('marks the wizard completed when the merchant clicks Apply with enabled skills', async () => {
+            const complete = jest.fn().mockResolvedValue(undefined)
+            mockUseSkillWizardMutations.mockReturnValue({
+                complete,
+            } as unknown as ReturnType<typeof useSkillWizardMutations>)
+
+            const user = userEvent.setup()
+            renderRecap(
+                buildWizard([
+                    { id: 1, status: SkillWizardSkillStatus.Approved },
+                ]),
+            )
+
+            await user.click(
+                screen.getByRole('button', { name: /apply all changes/i }),
+            )
+
+            expect(complete).toHaveBeenCalledTimes(1)
+        })
+
+        it('marks the wizard completed when the merchant clicks Continue to skills with no approved skills', async () => {
+            const complete = jest.fn().mockResolvedValue(undefined)
+            mockUseSkillWizardMutations.mockReturnValue({
+                complete,
+            } as unknown as ReturnType<typeof useSkillWizardMutations>)
+
+            const user = userEvent.setup()
+            renderRecap(
+                buildWizard([
+                    { id: 1, status: SkillWizardSkillStatus.Draft },
+                    { id: 2, status: SkillWizardSkillStatus.Draft },
+                ]),
+            )
+
+            await user.click(
+                screen.getByRole('button', { name: /continue to skills/i }),
+            )
+
+            expect(complete).toHaveBeenCalledTimes(1)
+        })
+
+        it('does not call apply when the merchant clicks Continue to skills', async () => {
+            const apply = jest.fn()
+            mockUseApplyWizardChanges.mockReturnValue(
+                buildApplyResult({ apply }),
+            )
+
+            const user = userEvent.setup()
+            renderRecap(
+                buildWizard([
+                    { id: 1, status: SkillWizardSkillStatus.Draft },
+                    { id: 2, status: SkillWizardSkillStatus.Draft },
+                ]),
+            )
+
+            await user.click(
+                screen.getByRole('button', { name: /continue to skills/i }),
+            )
+
+            expect(apply).not.toHaveBeenCalled()
+        })
+
+        it('disables the Continue to skills button while complete is in flight', async () => {
+            let resolveComplete!: () => void
+            const complete = jest.fn(
+                () =>
+                    new Promise<void>((resolve) => {
+                        resolveComplete = resolve
+                    }),
+            )
+            mockUseSkillWizardMutations.mockReturnValue({
+                complete,
+            } as unknown as ReturnType<typeof useSkillWizardMutations>)
+
+            const user = userEvent.setup()
+            renderRecap(
+                buildWizard([
+                    { id: 1, status: SkillWizardSkillStatus.Draft },
+                    { id: 2, status: SkillWizardSkillStatus.Draft },
+                ]),
+            )
+
+            const continueButton = screen.getByRole('button', {
+                name: /continue to skills/i,
+            })
+            await user.click(continueButton)
+
+            await waitFor(() => {
+                expect(continueButton).toHaveAttribute('aria-disabled', 'true')
+            })
+
+            await act(async () => {
+                resolveComplete()
+            })
+
+            await waitFor(() => {
+                expect(continueButton).toHaveAttribute('aria-disabled', 'false')
+            })
+        })
+
+        it('surfaces a toast error and stays on the recap when complete fails on Continue to skills', async () => {
+            const complete = jest
+                .fn()
+                .mockRejectedValue(new Error('network down'))
+            mockUseSkillWizardMutations.mockReturnValue({
+                complete,
+            } as unknown as ReturnType<typeof useSkillWizardMutations>)
+
+            const user = userEvent.setup()
+            renderRecap(
+                buildWizard([
+                    { id: 1, status: SkillWizardSkillStatus.Draft },
+                    { id: 2, status: SkillWizardSkillStatus.Draft },
+                ]),
+            )
+
+            await user.click(
+                screen.getByRole('button', { name: /continue to skills/i }),
+            )
+
+            expect(
+                await screen.findByRole('status', {
+                    name: /couldn't complete the wizard/i,
+                }),
+            ).toBeInTheDocument()
+        })
+
+        it('renders the enabling-skills loading screen during phase 1+2', () => {
+            mockUseApplyWizardChanges.mockReturnValue(
+                buildApplyResult({ phase: 'enabling-skills' }),
+            )
+
+            renderRecap(
+                buildWizard([
+                    { id: 1, status: SkillWizardSkillStatus.Approved },
+                ]),
+            )
+
+            expect(
+                screen.getByText('Enabling your skills...'),
+            ).toBeInTheDocument()
+        })
+
+        it('renders the disabling-guidances loading screen during phase 3', () => {
+            mockUseApplyWizardChanges.mockReturnValue(
+                buildApplyResult({ phase: 'disabling-guidances' }),
+            )
+
+            renderRecap(
+                buildWizard([
+                    { id: 1, status: SkillWizardSkillStatus.Approved },
+                ]),
+            )
+
+            expect(
+                screen.getByText('Disabling guidance...'),
+            ).toBeInTheDocument()
+        })
+
+        it('renders the success screen with the live skill count', () => {
+            mockUseApplyWizardChanges.mockReturnValue(
+                buildApplyResult({ phase: 'success', liveSkillsCount: 9 }),
+            )
+
+            renderRecap(
+                buildWizard([
+                    { id: 1, status: SkillWizardSkillStatus.Approved },
+                ]),
+            )
+
+            expect(
+                screen.getByRole('heading', { name: /9 skills are live/i }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(/taking you to skills/i),
+            ).toBeInTheDocument()
+        })
+
+        it('uses singular copy when exactly one skill is live', () => {
+            mockUseApplyWizardChanges.mockReturnValue(
+                buildApplyResult({ phase: 'success', liveSkillsCount: 1 }),
+            )
+
+            renderRecap(
+                buildWizard([
+                    { id: 1, status: SkillWizardSkillStatus.Approved },
+                ]),
+            )
+
+            expect(
+                screen.getByRole('heading', { name: /1 skill is live/i }),
+            ).toBeInTheDocument()
+        })
     })
 })

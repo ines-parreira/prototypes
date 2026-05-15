@@ -1,10 +1,17 @@
 import { useCallback, useMemo, useState } from 'react'
 
-import { Box, Button, Card, Heading, Icon, Text } from '@gorgias/axiom'
+import { useHistory, useParams } from 'react-router-dom'
 
+import { Box, Button, Card, Heading, Icon, Text, toast } from '@gorgias/axiom'
+
+import { useGetHelpCenter } from 'models/helpCenter/queries'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import { useApplyWizardChanges } from 'pages/aiAgent/skills/hooks/useApplyWizardChanges'
 import type { EnrichedSkillWizard } from 'pages/aiAgent/skills/hooks/useEnrichedSkillWizard'
+import { useSkillWizardMutations } from 'pages/aiAgent/skills/hooks/useSkillWizardMutations'
+import type { Paths as WorkflowsPaths } from 'rest_api/workflows_api/client.generated'
 
 import { GuidanceSidePanel } from './GuidanceSidePanel'
 import {
@@ -13,11 +20,16 @@ import {
     getGuidanceDisableEntries,
     getSkillToggleStates,
 } from './skillRecap.utils'
+import { SkillRecapApplyLoading } from './SkillRecapApplyLoading'
+import { SkillRecapApplySuccess } from './SkillRecapApplySuccess'
 import { SkillsSidePanel } from './SkillsSidePanel'
 import { useSkillWizardContext } from './SkillWizardContext'
 import { useRecapGuidances } from './useRecapGuidances'
 
 import css from './SkillRecapStep.less'
+
+type StoreType =
+    WorkflowsPaths.StoreWfConfigurationControllerUpsert.Parameters.StoreType
 
 type Props = {
     wizard: EnrichedSkillWizard
@@ -35,12 +47,29 @@ export const SkillRecapStep = ({ wizard }: Props) => {
 
     const [isSkillsPanelOpen, setIsSkillsPanelOpen] = useState(false)
     const [isGuidancePanelOpen, setIsGuidancePanelOpen] = useState(false)
+    const [isCompletingWizard, setIsCompletingWizard] = useState(false)
 
     const { storeConfiguration } = useAiAgentStoreConfigurationContext()
-    const { guidanceActions } = useGetGuidancesAvailableActions(
-        storeConfiguration?.storeName ?? '',
-        storeConfiguration?.shopType ?? '',
+    const storeName = storeConfiguration?.storeName ?? ''
+    const shopType = storeConfiguration?.shopType ?? ''
+    const helpCenterId = storeConfiguration?.guidanceHelpCenterId ?? 0
+
+    const { guidanceActions, rawActions } = useGetGuidancesAvailableActions(
+        storeName,
+        shopType,
     )
+
+    const { data: helpCenter } = useGetHelpCenter(
+        helpCenterId,
+        {},
+        { enabled: !!helpCenterId },
+    )
+
+    const history = useHistory()
+    const { shopName } = useParams<{ shopName: string }>()
+    const { routes } = useAiAgentNavigation({ shopName })
+
+    const { complete } = useSkillWizardMutations(helpCenterId)
 
     const skillStates = useMemo(
         () => getSkillToggleStates(wizard, skillOverrides, guidanceActions),
@@ -91,27 +120,62 @@ export const SkillRecapStep = ({ wizard }: Props) => {
         [],
     )
 
-    const handleApply = useCallback(() => {
-        // TODO(rd-816): wire backend mutation with the following payload —
-        //   skillsToEnable       = getSkillToggleStates(wizard, skillOverrides, guidanceActions)
-        //                            .filter((e) => e.isEnabled).map((e) => e.skill.skill_id)
-        //   guidanceIdsToDisable = getGuidanceIdsToDisable(wizard, skillOverrides, guidanceOverrides)
-        //   actionIdsToEnable    = the same filtered states, flatMap on disabledActionIds, deduped
-    }, [])
-
     const hasEnabledSkills = enabledSkillsCount > 0
+
+    const { apply, phase, liveSkillsCount } = useApplyWizardChanges({
+        wizard,
+        skillOverrides,
+        guidanceOverrides,
+        guidanceActions,
+        rawActions,
+        helpCenterId,
+        storeName,
+        storeType: shopType as StoreType,
+        localeCode: helpCenter?.default_locale,
+    })
+
+    const handleApplyChanges = useCallback(() => {
+        void complete()
+        apply()
+    }, [complete, apply])
+
+    const handleContinueToSkills = useCallback(async () => {
+        setIsCompletingWizard(true)
+        try {
+            await complete()
+            history.push(routes.skills)
+        } catch {
+            toast.error("Couldn't complete the wizard. Please try again.")
+        } finally {
+            setIsCompletingWizard(false)
+        }
+    }, [complete, history, routes.skills])
 
     const hasApprovedSkills = useMemo(
         () => getApprovedSkillIds(wizard).size > 0,
         [wizard],
     )
 
-    const guidanceCardTitle = hasEnabledSkills
+    const hasGuidancesToDisable = hasEnabledSkills && guidanceEntries.length > 0
+
+    const guidanceCardTitle = hasGuidancesToDisable
         ? 'Some of your guidance can now be disabled'
         : 'All of your enabled guidance will remain active'
-    const guidanceCardDescription = hasEnabledSkills
+    const guidanceCardDescription = hasGuidancesToDisable
         ? 'Fully covered by these skills'
         : 'Nothing in your current setup will change'
+
+    if (phase === 'enabling-skills') {
+        return <SkillRecapApplyLoading message="Enabling your skills..." />
+    }
+
+    if (phase === 'disabling-guidances') {
+        return <SkillRecapApplyLoading message="Disabling guidance..." />
+    }
+
+    if (phase === 'success') {
+        return <SkillRecapApplySuccess liveSkillsCount={liveSkillsCount} />
+    }
 
     return (
         <Box
@@ -178,7 +242,7 @@ export const SkillRecapStep = ({ wizard }: Props) => {
                     <Card
                         elevation="mid"
                         onClick={
-                            hasEnabledSkills
+                            hasGuidancesToDisable
                                 ? () => setIsGuidancePanelOpen(true)
                                 : undefined
                         }
@@ -206,7 +270,7 @@ export const SkillRecapStep = ({ wizard }: Props) => {
                                 </Text>
                             </Box>
                         </Box>
-                        {hasEnabledSkills && (
+                        {hasGuidancesToDisable && (
                             <Icon name="arrow-chevron-right" size="md" />
                         )}
                     </Card>
@@ -222,7 +286,15 @@ export const SkillRecapStep = ({ wizard }: Props) => {
                         trailingSlot={
                             hasEnabledSkills ? undefined : 'arrow-right'
                         }
-                        onClick={handleApply}
+                        isLoading={isCompletingWizard}
+                        isDisabled={
+                            hasEnabledSkills && !helpCenter?.default_locale
+                        }
+                        onClick={
+                            hasEnabledSkills
+                                ? handleApplyChanges
+                                : handleContinueToSkills
+                        }
                     >
                         {hasEnabledSkills
                             ? 'Apply all changes'
