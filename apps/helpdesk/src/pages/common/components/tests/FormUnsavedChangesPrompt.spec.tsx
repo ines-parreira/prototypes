@@ -1,4 +1,5 @@
 import { assumeMock, getLastMockCall, render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import { useFormContext } from 'react-hook-form'
 
 import FormUnsavedChangesPrompt from 'pages/common/components/FormUnsavedChangesPrompt'
@@ -19,13 +20,6 @@ jest.mock('pages/common/components/UnsavedChangesPrompt', () => {
         ),
     }
 })
-
-const mockNotify = {
-    error: jest.fn(),
-}
-jest.mock('hooks/useNotify', () => ({
-    useNotify: () => mockNotify,
-}))
 
 const useFormContextMock = assumeMock(useFormContext)
 
@@ -123,9 +117,10 @@ describe('FormUnsavedChangesPrompt', () => {
 
         await handleOnSave()
 
-        expect(mockNotify.error).toHaveBeenCalledWith(
-            'Please make sure all fields are filled out correctly before saving',
-        )
+        const toastEl = await screen.findByRole('status', {
+            name: 'Please make sure all fields are filled out correctly before saving',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         expect(onSave).not.toHaveBeenCalled()
     })
 })

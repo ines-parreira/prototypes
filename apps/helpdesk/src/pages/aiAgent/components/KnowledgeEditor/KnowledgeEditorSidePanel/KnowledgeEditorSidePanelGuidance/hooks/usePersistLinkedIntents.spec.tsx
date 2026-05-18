@@ -1,10 +1,9 @@
 import { renderHook } from '@repo/testing'
-import { act, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 
 import { usePersistLinkedIntents } from './usePersistLinkedIntents'
 
 const mockUpdateGuidanceArticle = jest.fn()
-const mockNotifyError = jest.fn()
 
 type MockGuidanceStoreState = {
     config: {
@@ -28,12 +27,6 @@ type MockGuidanceStoreState = {
         isAutoSaving: boolean
     }
 }
-
-jest.mock('hooks/useNotify', () => ({
-    useNotify: () => ({
-        error: mockNotifyError,
-    }),
-}))
 
 jest.mock('pages/aiAgent/hooks/useGuidanceArticleMutation', () => ({
     useGuidanceArticleMutation: () => ({
@@ -233,11 +226,10 @@ describe('usePersistLinkedIntents', () => {
             result.current.persistLinkedIntents(['order-status'], onSuccess)
         })
 
-        await waitFor(() => {
-            expect(mockNotifyError).toHaveBeenCalledWith(
-                'An error occurred while saving linked intents.',
-            )
+        const toastEl = await screen.findByRole('status', {
+            name: 'An error occurred while saving linked intents.',
         })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         expect(mockGuidanceStoreState.dispatch).toHaveBeenCalledWith({
             type: 'SET_UPDATING',
             payload: false,

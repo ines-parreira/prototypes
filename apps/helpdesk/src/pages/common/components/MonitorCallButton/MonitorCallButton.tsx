@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { Button, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import { Button, toast, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import type { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 import {
@@ -8,7 +8,6 @@ import {
     getMonitoringRestrictionReason,
 } from 'hooks/integrations/phone/monitoring.utils'
 import { useMonitoringCall } from 'hooks/integrations/phone/useMonitoringCall'
-import { useNotify } from 'hooks/useNotify'
 import type { VoiceCall } from 'models/voiceCall/types'
 import { MonitoringErrorCode } from 'models/voiceCall/types'
 import { getInCallAgentId, isCallBeingMonitored } from 'models/voiceCall/utils'
@@ -30,13 +29,12 @@ export default function MonitorCallButton({
     const buttonRef = useRef<HTMLButtonElement>(null)
     const [isSwitchModalOpen, setIsSwitchModalOpen] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
-    const notify = useNotify()
 
     const { prepareMonitoringCall, makeMonitoringCall } = useMonitoringCall()
 
     const showMonitoringError = useCallback(
         (errorCode: MonitoringErrorCode) => {
-            notify.error(
+            toast.error(
                 getMonitoringRestrictionReason(
                     errorCode,
                     voiceCallToMonitor.direction,
@@ -44,7 +42,7 @@ export default function MonitorCallButton({
             )
             setIsLoading(false)
         },
-        [notify, voiceCallToMonitor.direction],
+        [voiceCallToMonitor.direction],
     )
 
     const isCurrentlyMonitoring = isCallBeingMonitored(
@@ -93,7 +91,7 @@ export default function MonitorCallButton({
         if (result.errorType === 'error_code') {
             showMonitoringError(result.errorCode)
         } else if (result.errorType === 'error_message') {
-            notify.error(result.errorMessage)
+            toast.error(result.errorMessage)
         }
         setIsLoading(false)
     }

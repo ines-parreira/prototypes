@@ -6,12 +6,6 @@ import { useCreateTestSessionMutation } from 'models/aiAgent/queries'
 import { getOfflineEvalPayloadFixture } from '../../fixtures/offlineEval.fixture'
 import { useTestSession } from '../useTestSession'
 
-jest.mock('hooks/useNotify', () => ({
-    __esModule: true,
-    useNotify: jest.fn(() => ({
-        notify: jest.fn(),
-    })),
-}))
 jest.mock('models/aiAgent/queries', () => ({
     useCreateTestSessionMutation: jest.fn(),
 }))
@@ -264,14 +258,6 @@ describe('useTestSession hook', () => {
 
     it('should handle errors properly when createTestSession fails', async () => {
         const testError = new Error('Test error')
-        const mockNotify = jest.fn()
-
-        jest.mock('hooks/useNotify', () => ({
-            __esModule: true,
-            useNotify: jest.fn(() => ({
-                notify: mockNotify,
-            })),
-        }))
 
         jest.mock('@repo/logging', () => ({
             reportError: jest.fn(),

@@ -2,18 +2,16 @@ import { appQueryClient } from '@repo/api-resources'
 import cloneDeep from 'lodash/cloneDeep'
 import omit from 'lodash/omit'
 
+import { toast } from '@gorgias/axiom'
 import type { PhoneIntegration } from '@gorgias/helpdesk-queries'
 import { queryKeys, useUpdateAllPhoneSettings } from '@gorgias/helpdesk-queries'
 
-import { useNotify } from 'hooks/useNotify'
 import { DEFAULT_CALLBACK_REQUESTS } from 'models/integration/constants'
 
 import { VoiceFlowNodeType } from '../constants'
 import type { VoiceFlowFormValues } from '../types'
 
 export function useVoiceFlowForm(integration: PhoneIntegration) {
-    const notify = useNotify()
-
     const getDefaultValues = (
         values?: VoiceFlowFormValues,
     ): VoiceFlowFormValues => {
@@ -55,7 +53,7 @@ export function useVoiceFlowForm(integration: PhoneIntegration) {
     const { mutate: updateAllPhoneSettings } = useUpdateAllPhoneSettings({
         mutation: {
             onSuccess: () => {
-                void notify.success(
+                toast.success(
                     'Changes to your Call Flow were successfully saved.',
                 )
                 void appQueryClient.refetchQueries(
@@ -63,7 +61,7 @@ export function useVoiceFlowForm(integration: PhoneIntegration) {
                 )
             },
             onError: () => {
-                void notify.error('Failed to save changes to your Call Flow.')
+                toast.error('Failed to save changes to your Call Flow.')
             },
         },
     })

@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react'
 
 import { useHistory } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { Button, toast } from '@gorgias/axiom'
 
 import { useDashboardActions } from 'domains/reporting/hooks/dashboards/useDashboardActions'
 import { useDashboardNameValidation } from 'domains/reporting/hooks/dashboards/useDashboardNameValidation'
@@ -16,8 +16,6 @@ import type { DashboardNameValue } from 'domains/reporting/pages/dashboards/Dash
 import { DashboardName } from 'domains/reporting/pages/dashboards/DashboardName'
 import { DashboardsModal } from 'domains/reporting/pages/dashboards/DashboardsModal/DashboardsModal'
 import { getDashboardPath } from 'domains/reporting/pages/dashboards/utils'
-import { useNotify } from 'hooks/useNotify'
-
 export const DASHBOARD_CTA = 'Add Charts'
 
 export const createDashboardName = (): string => {
@@ -31,7 +29,6 @@ export const createDashboardName = (): string => {
 
 export const Dashboards = () => {
     const history = useHistory()
-    const notify = useNotify()
 
     const [isOpen, setIsOpen] = useState(false)
     const closeModal = useCallback(() => setIsOpen(false), [])
@@ -72,7 +69,7 @@ export const Dashboards = () => {
                         value={details}
                         onChange={setDetails}
                         onBlur={() => {
-                            if (error) void notify.error(error)
+                            if (error) toast.error(error)
                         }}
                         error={error}
                         autoFocus

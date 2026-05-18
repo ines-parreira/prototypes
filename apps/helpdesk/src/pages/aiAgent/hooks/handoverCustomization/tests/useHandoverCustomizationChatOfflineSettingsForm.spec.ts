@@ -1,8 +1,7 @@
 import { renderHook } from '@repo/testing'
-import { act } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { useNotify } from 'hooks/useNotify'
 import type { GorgiasChatIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 import { CHANGES_SAVED_SUCCESS } from 'pages/aiAgent/constants'
@@ -15,7 +14,6 @@ import { useHandoverCustomizationChatOfflineSettingsForm } from '../useHandoverC
 
 // Mock dependencies
 jest.mock('hooks/useAppSelector')
-jest.mock('hooks/useNotify')
 
 jest.mock('../useFetchAiAgentHandoverConfiguration', () => ({
     useFetchAiAgentStoreHandoverConfiguration: jest.fn(),
@@ -69,8 +67,6 @@ describe('useHandoverCustomizationChatOfflineSettingsForm', () => {
     }
 
     // Mock functions
-    const mockNotifySuccess = jest.fn()
-    const mockNotifyError = jest.fn()
     const mockRefetch = jest.fn().mockResolvedValue({})
     const mockUpsertHandoverConfiguration = jest.fn()
     const mockUseAppSelector = useAppSelector as jest.Mock
@@ -85,10 +81,6 @@ describe('useHandoverCustomizationChatOfflineSettingsForm', () => {
                 if (key === 'id') return 123
                 return null
             },
-        })
-        ;(useNotify as jest.Mock).mockReturnValue({
-            success: mockNotifySuccess,
-            error: mockNotifyError,
         })
         ;(
             useFetchAiAgentStoreHandoverConfiguration as jest.Mock
@@ -246,7 +238,10 @@ describe('useHandoverCustomizationChatOfflineSettingsForm', () => {
                 shareBusinessHours: true,
             }),
         )
-        expect(mockNotifySuccess).toHaveBeenCalledWith(CHANGES_SAVED_SUCCESS)
+        const successToast = await screen.findByRole('status', {
+            name: CHANGES_SAVED_SUCCESS,
+        })
+        expect(successToast).toHaveAttribute('data-intent', 'success')
         expect(result.current.isSaving).toBe(false)
     })
 
@@ -274,7 +269,10 @@ describe('useHandoverCustomizationChatOfflineSettingsForm', () => {
         })
 
         expect(mockUpsertHandoverConfiguration).toHaveBeenCalled()
-        expect(mockNotifyError).toHaveBeenCalledWith('Save failed')
+        const errorToast = await screen.findByRole('status', {
+            name: 'Save failed',
+        })
+        expect(errorToast).toHaveAttribute('data-intent', 'destructive')
         expect(result.current.isSaving).toBe(false)
     })
 
@@ -302,9 +300,10 @@ describe('useHandoverCustomizationChatOfflineSettingsForm', () => {
         })
 
         expect(mockUpsertHandoverConfiguration).toHaveBeenCalled()
-        expect(mockNotifyError).toHaveBeenCalledWith(
-            'An unknown error occurred. Please try again',
-        )
+        const errorToast = await screen.findByRole('status', {
+            name: 'An unknown error occurred. Please try again',
+        })
+        expect(errorToast).toHaveAttribute('data-intent', 'destructive')
         expect(result.current.isSaving).toBe(false)
     })
 
@@ -328,9 +327,10 @@ describe('useHandoverCustomizationChatOfflineSettingsForm', () => {
         })
 
         expect(mockUpsertHandoverConfiguration).not.toHaveBeenCalled()
-        expect(mockNotifyError).toHaveBeenCalledWith(
-            'Please check the form for errors',
-        )
+        const errorToast = await screen.findByRole('status', {
+            name: 'Please check the form for errors',
+        })
+        expect(errorToast).toHaveAttribute('data-intent', 'destructive')
         expect(result.current.hasError).toBe(true)
         expect(result.current.isSaving).toBe(false)
     })

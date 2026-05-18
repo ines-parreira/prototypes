@@ -1,7 +1,6 @@
 import { renderHook } from '@repo/testing'
-import { act, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 
-import { useNotify } from 'hooks/useNotify'
 import { useDeleteArticleTranslation } from 'models/helpCenter/mutations'
 import { useGetHelpCenterArticle } from 'models/helpCenter/queries'
 import type { ArticleWithLocalTranslation } from 'models/helpCenter/types'
@@ -11,13 +10,11 @@ import type { ArticleContextValue, SettingsChanges } from '../context/types'
 import { createEmptyTranslation } from '../context/utils'
 import { useLocaleManagement } from './useLocaleManagement'
 
-jest.mock('hooks/useNotify')
 jest.mock('models/helpCenter/mutations')
 jest.mock('models/helpCenter/queries')
 jest.mock('../context/ArticleContext')
 jest.mock('../context/utils')
 
-const mockUseNotify = useNotify as jest.Mock
 const mockUseDeleteArticleTranslation = useDeleteArticleTranslation as jest.Mock
 const mockUseGetHelpCenterArticle = useGetHelpCenterArticle as jest.Mock
 const mockUseArticleContext = useArticleContext as jest.Mock
@@ -158,7 +155,6 @@ const createMockLocaleOption = (locale: 'en-US' | 'fr-FR') => ({
 
 describe('useLocaleManagement', () => {
     let mockDispatch: jest.Mock
-    let mockNotifyError: jest.Mock
     let mockDeleteMutateAsync: jest.Mock
     let mockRefetch: jest.Mock
     let mockOnClose: jest.Mock
@@ -168,13 +164,11 @@ describe('useLocaleManagement', () => {
         jest.clearAllMocks()
 
         mockDispatch = jest.fn()
-        mockNotifyError = jest.fn()
         mockDeleteMutateAsync = jest.fn()
         mockRefetch = jest.fn()
         mockOnClose = jest.fn()
         mockOnDeletedFn = jest.fn()
 
-        mockUseNotify.mockReturnValue({ error: mockNotifyError })
         mockUseDeleteArticleTranslation.mockReturnValue({
             mutateAsync: mockDeleteMutateAsync,
         })
@@ -406,11 +400,10 @@ describe('useLocaleManagement', () => {
                 result.current.onLocaleAction('view', localeOption)
             })
 
-            await waitFor(() => {
-                expect(mockNotifyError).toHaveBeenCalledWith(
-                    'An error occurred while switching locale.',
-                )
+            const toastEl = await screen.findByRole('status', {
+                name: 'An error occurred while switching locale.',
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
 
             expect(mockDispatch).toHaveBeenCalledWith({
                 type: 'SET_UPDATING',
@@ -554,11 +547,10 @@ describe('useLocaleManagement', () => {
                 result.current.confirmDeleteTranslation()
             })
 
-            await waitFor(() => {
-                expect(mockNotifyError).toHaveBeenCalledWith(
-                    'An error occurred while deleting the article translation.',
-                )
+            const toastEl = await screen.findByRole('status', {
+                name: 'An error occurred while deleting the article translation.',
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
 
             expect(mockDispatch).toHaveBeenCalledWith({
                 type: 'SET_UPDATING',

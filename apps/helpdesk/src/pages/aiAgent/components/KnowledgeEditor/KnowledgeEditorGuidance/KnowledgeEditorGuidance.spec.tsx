@@ -50,15 +50,6 @@ jest.mock('@gorgias/axiom', () => ({
         ) : null,
 }))
 
-const mockNotifyError = jest.fn()
-const mockNotifySuccess = jest.fn()
-jest.mock('hooks/useNotify', () => ({
-    useNotify: jest.fn(() => ({
-        error: mockNotifyError,
-        success: mockNotifySuccess,
-    })),
-}))
-
 const mockGuidanceTemplate: GuidanceTemplate = {
     id: 'test-template',
     name: 'Test Article',
@@ -1858,10 +1849,11 @@ describe('KnowledgeEditorGuidance', () => {
                 { storeState: defaultState },
             )
 
+            const toastEl = await screen.findByRole('status', {
+                name: 'This article is no longer available. It may have been deleted.',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
             await waitFor(() => {
-                expect(mockNotifyError).toHaveBeenCalledWith(
-                    'This article is no longer available. It may have been deleted.',
-                )
                 expect(onClose).toHaveBeenCalled()
             })
         })
@@ -1905,10 +1897,11 @@ describe('KnowledgeEditorGuidance', () => {
                 { storeState: defaultState },
             )
 
+            const toastEl = await screen.findByRole('status', {
+                name: 'Unable to load this article. Please try again or contact support.',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
             await waitFor(() => {
-                expect(mockNotifyError).toHaveBeenCalledWith(
-                    'Unable to load this article. Please try again or contact support.',
-                )
                 expect(onClose).toHaveBeenCalled()
             })
         })
@@ -1941,7 +1934,7 @@ describe('KnowledgeEditorGuidance', () => {
                 { storeState: defaultState },
             )
 
-            expect(mockNotifyError).not.toHaveBeenCalled()
+            expect(screen.queryByRole('status')).not.toBeInTheDocument()
         })
 
         it('does not show error notification in create mode', () => {
@@ -1972,7 +1965,7 @@ describe('KnowledgeEditorGuidance', () => {
                 { storeState: defaultState },
             )
 
-            expect(mockNotifyError).not.toHaveBeenCalled()
+            expect(screen.queryByRole('status')).not.toBeInTheDocument()
         })
 
         it('shows generic error when error is not a Gorgias API error', async () => {
@@ -2005,10 +1998,11 @@ describe('KnowledgeEditorGuidance', () => {
                 { storeState: defaultState },
             )
 
+            const toastEl = await screen.findByRole('status', {
+                name: 'Unable to load this article. Please try again or contact support.',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
             await waitFor(() => {
-                expect(mockNotifyError).toHaveBeenCalledWith(
-                    'Unable to load this article. Please try again or contact support.',
-                )
                 expect(onClose).toHaveBeenCalled()
             })
         })

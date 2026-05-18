@@ -1,11 +1,10 @@
 import { appQueryClient } from '@repo/api-resources'
 import { FormSubmitButton } from '@repo/forms'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 import type { BusinessHoursCreate } from '@gorgias/helpdesk-queries'
 import { queryKeys, useCreateBusinessHours } from '@gorgias/helpdesk-queries'
 
-import { useNotify } from 'hooks/useNotify'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
@@ -31,8 +30,6 @@ export default function AddCustomBusinessHoursModal({
     onClose,
     onCreateSuccess,
 }: Props) {
-    const notify = useNotify()
-
     const { mutate: createBusinessHours, isLoading } = useCreateBusinessHours({
         mutation: {
             onSettled: () => {
@@ -41,7 +38,7 @@ export default function AddCustomBusinessHoursModal({
                 })
             },
             onSuccess: (response) => {
-                notify.success(
+                toast.success(
                     `'${response.data.name}' business hours were successfully created.`,
                 )
 
@@ -49,7 +46,7 @@ export default function AddCustomBusinessHoursModal({
                 onCreateSuccess?.(response.data.id)
             },
             onError: () => {
-                notify.error(
+                toast.error(
                     "We couldn't save your preferences. Please try again.",
                 )
             },

@@ -1,17 +1,12 @@
 import { renderHook } from '@repo/testing'
-import { act, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 
-import { useNotify } from 'hooks/useNotify'
 import { useDeleteArticleTranslationDraft } from 'models/helpCenter/mutations'
 import type { LocaleCode } from 'models/helpCenter/types'
 
 import { useArticleContext } from '../context/ArticleContext'
 import type { ArticleContextValue } from '../context/types'
 import { useDiscardDraftModal } from './useDiscardDraftModal'
-
-jest.mock('hooks/useNotify', () => ({
-    useNotify: jest.fn(),
-}))
 
 jest.mock('models/helpCenter/mutations', () => ({
     useDeleteArticleTranslationDraft: jest.fn(),
@@ -21,15 +16,12 @@ jest.mock('../context/ArticleContext', () => ({
     useArticleContext: jest.fn(),
 }))
 
-const mockUseNotify = useNotify as jest.Mock
 const mockUseDeleteArticleTranslationDraft =
     useDeleteArticleTranslationDraft as jest.Mock
 const mockUseArticleContext = useArticleContext as jest.Mock
 
 describe('useDiscardDraftModal', () => {
     let mockDispatch: jest.Mock
-    let mockNotifyError: jest.Mock
-    let mockNotifySuccess: jest.Mock
     let mockDiscardDraftMutateAsync: jest.Mock
     let mockOnClose: jest.Mock
     let mockOnUpdatedFn: jest.Mock
@@ -125,17 +117,11 @@ describe('useDiscardDraftModal', () => {
         jest.clearAllMocks()
 
         mockDispatch = jest.fn()
-        mockNotifyError = jest.fn()
-        mockNotifySuccess = jest.fn()
         mockDiscardDraftMutateAsync = jest.fn()
         mockOnClose = jest.fn()
         mockOnUpdatedFn = jest.fn()
         mockOnDeletedFn = jest.fn()
 
-        mockUseNotify.mockReturnValue({
-            error: mockNotifyError,
-            success: mockNotifySuccess,
-        })
         mockUseDeleteArticleTranslationDraft.mockReturnValue({
             mutateAsync: mockDiscardDraftMutateAsync,
         })
@@ -285,7 +271,10 @@ describe('useDiscardDraftModal', () => {
                 await result.current.onDiscard()
             })
 
-            expect(mockNotifySuccess).toHaveBeenCalledWith('Draft discarded')
+            const toastEl = await screen.findByRole('status', {
+                name: 'Draft discarded',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
         })
 
         describe('when response contains translation data (has title)', () => {
@@ -395,7 +384,7 @@ describe('useDiscardDraftModal', () => {
                     await result.current.onDiscard()
                 })
 
-                expect(mockNotifySuccess).not.toHaveBeenCalled()
+                expect(screen.queryByRole('status')).not.toBeInTheDocument()
             })
         })
 
@@ -404,6 +393,9 @@ describe('useDiscardDraftModal', () => {
                 mockDiscardDraftMutateAsync.mockRejectedValue(
                     new Error('Network error'),
                 )
+                const consoleErrorSpy = jest
+                    .spyOn(console, 'error')
+                    .mockImplementation(() => {})
 
                 const { result } = renderHook(() => useDiscardDraftModal())
 
@@ -411,9 +403,12 @@ describe('useDiscardDraftModal', () => {
                     await result.current.onDiscard()
                 })
 
-                expect(mockNotifyError).toHaveBeenCalledWith(
-                    'An error occurred while discarding draft.',
-                )
+                const toastEl = await screen.findByRole('status', {
+                    name: 'An error occurred while discarding draft.',
+                })
+                expect(toastEl).toHaveAttribute('data-intent', 'destructive')
+
+                consoleErrorSpy.mockRestore()
             })
 
             it('should not call onClose or onDeletedFn when discard fails', async () => {

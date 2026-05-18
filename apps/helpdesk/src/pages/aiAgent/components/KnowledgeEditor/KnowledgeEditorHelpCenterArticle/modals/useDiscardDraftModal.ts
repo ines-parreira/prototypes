@@ -1,13 +1,13 @@
 import { useCallback } from 'react'
 
-import { useNotify } from 'hooks/useNotify'
+import { toast } from '@gorgias/axiom'
+
 import { useDeleteArticleTranslationDraft } from 'models/helpCenter/mutations'
 
 import { useArticleContext } from '../context'
 
 export const useDiscardDraftModal = () => {
     const { state, dispatch, config } = useArticleContext()
-    const { error: notifyError, success: notifySuccess } = useNotify()
 
     const { mutateAsync: discardDraftMutation } =
         useDeleteArticleTranslationDraft(config.helpCenter.id)
@@ -27,7 +27,7 @@ export const useDiscardDraftModal = () => {
             ])
 
             if (response && response.data && 'title' in response.data) {
-                notifySuccess('Draft discarded')
+                toast.success('Draft discarded')
                 dispatch({
                     type: 'SWITCH_VERSION',
                     payload: {
@@ -47,7 +47,7 @@ export const useDiscardDraftModal = () => {
             }
         } catch (err) {
             console.error(err)
-            notifyError('An error occurred while discarding draft.')
+            toast.error('An error occurred while discarding draft.')
         } finally {
             dispatch({ type: 'SET_UPDATING', payload: false })
             dispatch({ type: 'CLOSE_MODAL' })
@@ -58,8 +58,6 @@ export const useDiscardDraftModal = () => {
         state.currentLocale,
         config,
         dispatch,
-        notifySuccess,
-        notifyError,
     ])
 
     return {

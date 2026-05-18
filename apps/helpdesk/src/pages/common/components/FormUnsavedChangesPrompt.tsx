@@ -4,7 +4,8 @@ import type { Form } from '@repo/forms'
 import type { FieldValues } from 'react-hook-form'
 import { useFormContext } from 'react-hook-form'
 
-import { useNotify } from 'hooks/useNotify'
+import { toast } from '@gorgias/axiom'
+
 import type { UnsavedChangesModalProps } from 'pages/common/components/UnsavedChangesModal'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 
@@ -24,11 +25,10 @@ function FormUnsavedChangesPrompt<T extends FieldValues>({
     ...modalProps
 }: Props<T>) {
     const { formState, handleSubmit } = useFormContext<T>()
-    const notify = useNotify()
 
     const handleOnSave = async () => {
         await handleSubmit(onSave, () =>
-            notify.error(
+            toast.error(
                 'Please make sure all fields are filled out correctly before saving',
             ),
         )()

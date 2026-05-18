@@ -1,7 +1,7 @@
 import { useFlag } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { Router } from 'react-router-dom'
 
@@ -26,16 +26,7 @@ import {
 jest.mock('@gorgias/helpdesk-client')
 const createIntegrationMock = assumeMock(createIntegration)
 
-jest.mock('hooks/useNotify')
-
 const queryClient = mockQueryClient()
-const mockNotify = {
-    success: jest.fn(),
-    error: jest.fn(),
-}
-jest.mock('hooks/useNotify', () => ({
-    useNotify: () => mockNotify,
-}))
 
 jest.mock('hooks/useAppDispatch')
 const mockDispatch = jest.fn()
@@ -144,7 +135,7 @@ describe('useOnboardingForm', () => {
             result.current.onSubmit(data)
         })
 
-        expect(mockNotify.success).not.toHaveBeenCalled()
+        expect(screen.queryByRole('status')).not.toBeInTheDocument()
         expect(mockDispatch).toHaveBeenCalledWith('mockFetchIntegrations')
         expect(history.location.pathname).toBe(PHONE_INTEGRATION_BASE_URL)
         expect(history.location.search).toBe(
@@ -181,9 +172,10 @@ describe('useOnboardingForm', () => {
             result.current.onSubmit(data)
         })
 
-        expect(mockNotify.error).toHaveBeenCalledWith(
-            'Your subscription does not include the Voice product. Please contact support.',
-        )
+        const toastEl = await screen.findByRole('status', {
+            name: 'Your subscription does not include the Voice product. Please contact support.',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
 
     it('should show generic error on non-API error', async () => {
@@ -202,8 +194,9 @@ describe('useOnboardingForm', () => {
             result.current.onSubmit(data)
         })
 
-        expect(mockNotify.error).toHaveBeenCalledWith(
-            "We couldn't save your preferences. Please try again.",
-        )
+        const toastEl = await screen.findByRole('status', {
+            name: "We couldn't save your preferences. Please try again.",
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
 })

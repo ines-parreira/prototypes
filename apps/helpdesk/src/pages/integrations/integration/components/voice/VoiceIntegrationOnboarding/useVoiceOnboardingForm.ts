@@ -1,6 +1,7 @@
 import { toFormErrors } from '@repo/forms'
 import { useHistory } from 'react-router-dom'
 
+import { toast } from '@gorgias/axiom'
 import type {
     CreateIntegrationBody,
     HttpResponse,
@@ -10,7 +11,6 @@ import { useCreateIntegration } from '@gorgias/helpdesk-queries'
 import { validatePhoneIntegrationMeta } from '@gorgias/helpdesk-validators'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import { useNotify } from 'hooks/useNotify'
 import { isGorgiasApiError } from 'models/api/types'
 import { fetchIntegrations } from 'state/integrations/actions'
 
@@ -34,7 +34,6 @@ export const validateOnboardingForm = (values: PhoneIntegration) => {
 }
 
 export const useOnboardingForm = () => {
-    const notify = useNotify()
     const history = useHistory()
     const dispatch = useAppDispatch()
 
@@ -56,7 +55,7 @@ export const useOnboardingForm = () => {
                     ? error.response.data.error.msg
                     : "We couldn't save your preferences. Please try again."
 
-                notify.error(message)
+                toast.error(message)
             },
         },
     })

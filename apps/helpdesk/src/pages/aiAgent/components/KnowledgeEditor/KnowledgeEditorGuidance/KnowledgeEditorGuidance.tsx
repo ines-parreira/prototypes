@@ -2,11 +2,10 @@ import { useCallback, useEffect, useMemo, useRef } from 'react'
 
 import { useShallow } from 'zustand/react/shallow'
 
-import { Card } from '@gorgias/axiom'
+import { Card, toast } from '@gorgias/axiom'
 
 import { EditorWithPlayground } from 'common/knowledge-editor/components'
 import { getLast28DaysDateRange } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
-import { useNotify } from 'hooks/useNotify'
 import { isGorgiasApiError } from 'models/api/types'
 import type { GuidanceTemplate } from 'pages/aiAgent/types'
 
@@ -173,7 +172,6 @@ export const KnowledgeEditorGuidance = ({
             impactDateRange: getLast28DaysDateRange(),
         }
     }, [rawInitialVersionData])
-    const { error: notifyError } = useNotify()
 
     useEffect(() => {
         // Only show error if editor is actually open and attempting to display content
@@ -186,10 +184,10 @@ export const KnowledgeEditorGuidance = ({
                 ? 'This article is no longer available. It may have been deleted.'
                 : 'Unable to load this article. Please try again or contact support.'
 
-            notifyError(message)
+            toast.error(message)
             onClose()
         }
-    }, [isError, guidanceArticleId, error, isOpen, notifyError, onClose])
+    }, [isError, guidanceArticleId, error, isOpen, onClose])
     const memoizedConfig = useMemo<GuidanceContextConfig | null>(() => {
         if (!guidanceHelpCenter) {
             return null

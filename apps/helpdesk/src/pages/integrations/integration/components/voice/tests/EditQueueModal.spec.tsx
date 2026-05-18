@@ -12,14 +12,6 @@ import EditQueueModal from '../EditQueueModal'
 jest.mock('@gorgias/helpdesk-client')
 const updateVoiceQueueMock = assumeMock(updateVoiceQueue)
 
-const mockNotify = {
-    success: jest.fn(),
-    error: jest.fn(),
-}
-jest.mock('hooks/useNotify', () => ({
-    useNotify: () => mockNotify,
-}))
-
 jest.mock('../CreateEditQueueModalFormContent', () => () => (
     <div data-testid="modal-form-content">CreateEditQueueModalFormContent</div>
 ))
@@ -113,9 +105,12 @@ describe('EditQueueModal', () => {
                 },
                 undefined,
             )
-            expect(mockNotify.success).toHaveBeenCalledWith(
-                "'Updated Queue' queue was successfully updated.",
-            )
+        })
+        const toastEl = await screen.findByRole('status', {
+            name: "'Updated Queue' queue was successfully updated.",
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'success')
+        await waitFor(() => {
             expect(mockOnUpdateSuccess).toHaveBeenCalled()
             expect(mockOnClose).toHaveBeenCalled()
         })
@@ -130,11 +125,10 @@ describe('EditQueueModal', () => {
             fireEvent.click(screen.getByText('Save changes'))
         })
 
-        await waitFor(() => {
-            expect(mockNotify.error).toHaveBeenCalledWith(
-                "We couldn't save your preferences. Please try again.",
-            )
+        const toastEl = await screen.findByRole('status', {
+            name: "We couldn't save your preferences. Please try again.",
         })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
 
     it('calls onClose when cancel button is clicked', async () => {

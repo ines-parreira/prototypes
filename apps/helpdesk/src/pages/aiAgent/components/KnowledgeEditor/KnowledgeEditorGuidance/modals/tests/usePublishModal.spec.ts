@@ -1,7 +1,6 @@
 import { renderHook } from '@repo/testing'
-import { act } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 
-import { useNotify } from 'hooks/useNotify'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 import type { GuidanceArticle } from 'pages/aiAgent/types'
 
@@ -11,10 +10,6 @@ import {
 } from '../../context'
 import type { GuidanceState } from '../../context/types'
 import { usePublishModal } from '../usePublishModal'
-
-jest.mock('hooks/useNotify', () => ({
-    useNotify: jest.fn(),
-}))
 
 jest.mock('pages/aiAgent/hooks/useGuidanceArticleMutation', () => ({
     useGuidanceArticleMutation: jest.fn(),
@@ -27,8 +22,6 @@ jest.mock('../../context', () => ({
 
 describe('usePublishModal', () => {
     const mockDispatch = jest.fn()
-    const mockNotifyError = jest.fn()
-    const mockNotifySuccess = jest.fn()
     const mockUpdateGuidanceArticle = jest.fn()
     const mockOnUpdateFn = jest.fn()
 
@@ -78,10 +71,6 @@ describe('usePublishModal', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        ;(useNotify as jest.Mock).mockReturnValue({
-            error: mockNotifyError,
-            success: mockNotifySuccess,
-        })
         ;(useGuidanceArticleMutation as jest.Mock).mockReturnValue({
             updateGuidanceArticle: mockUpdateGuidanceArticle,
         })
@@ -441,9 +430,10 @@ describe('usePublishModal', () => {
                 await result.current.onPublish('Test commit message')
             })
 
-            expect(mockNotifySuccess).toHaveBeenCalledWith(
-                'Guidance published successfully.',
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'Guidance published successfully.',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
         })
 
         it('should call onUpdateFn callback on success', async () => {
@@ -490,9 +480,10 @@ describe('usePublishModal', () => {
                 await result.current.onPublish('Test commit message')
             })
 
-            expect(mockNotifyError).toHaveBeenCalledWith(
-                'An error occurred while publishing guidance.',
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'An error occurred while publishing guidance.',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
 
         it('should show formatted API message on 409 conflict error with a single intent', async () => {
@@ -515,9 +506,10 @@ describe('usePublishModal', () => {
                 await result.current.onPublish('Test commit message')
             })
 
-            expect(mockNotifyError).toHaveBeenCalledWith(
-                'The following intents are already used by other published articles in this help center: Marketing/unsubscribe',
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'The following intents are already used by other published articles in this help center: Marketing/unsubscribe',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
 
         it('should format multiple intents in 409 conflict error', async () => {
@@ -540,9 +532,10 @@ describe('usePublishModal', () => {
                 await result.current.onPublish('Test commit message')
             })
 
-            expect(mockNotifyError).toHaveBeenCalledWith(
-                'The following intents are already used by other published articles in this help center: Marketing/unsubscribe, Order/status',
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'The following intents are already used by other published articles in this help center: Marketing/unsubscribe, Order/status',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
 
         it('should show generic error for non-409 API errors', async () => {
@@ -565,9 +558,10 @@ describe('usePublishModal', () => {
                 await result.current.onPublish('Test commit message')
             })
 
-            expect(mockNotifyError).toHaveBeenCalledWith(
-                'An error occurred while publishing guidance.',
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'An error occurred while publishing guidance.',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
 
         it('should not call onUpdateFn on failure', async () => {
@@ -685,7 +679,7 @@ describe('usePublishModal', () => {
             expect(mockDispatch).not.toHaveBeenCalledWith(
                 expect.objectContaining({ type: 'SET_MODE' }),
             )
-            expect(mockNotifySuccess).not.toHaveBeenCalled()
+            expect(screen.queryByRole('status')).not.toBeInTheDocument()
             expect(mockOnUpdateFn).not.toHaveBeenCalled()
         })
 

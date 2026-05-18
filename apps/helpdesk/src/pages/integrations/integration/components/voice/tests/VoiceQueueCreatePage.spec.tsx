@@ -1,5 +1,5 @@
 import { assumeMock, render } from '@repo/testing'
-import { act, screen, waitFor } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import fireEvent from '@testing-library/user-event'
 import { useLocation } from 'react-router-dom'
 
@@ -10,14 +10,6 @@ import VoiceQueueCreatePage from '../VoiceQueueCreatePage'
 
 jest.mock('@gorgias/helpdesk-client')
 const createVoiceQueuesMock = assumeMock(createVoiceQueues)
-
-const mockNotify = {
-    success: jest.fn(),
-    error: jest.fn(),
-}
-jest.mock('hooks/useNotify', () => ({
-    useNotify: () => mockNotify,
-}))
 
 jest.mock('../VoiceQueueEditOrCreateForm', () => () => (
     <div data-testid="queue-form">VoiceQueueEditOrCreateForm</div>
@@ -74,11 +66,10 @@ describe('VoiceQueueCreatePage', () => {
             fireEvent.click(screen.getByText('Save changes'))
         })
 
-        await waitFor(() => {
-            expect(mockNotify.success).toHaveBeenCalledWith(
-                "'Test Queue' queue was successfully created.",
-            )
+        const toastEl = await screen.findByRole('status', {
+            name: "'Test Queue' queue was successfully created.",
         })
+        expect(toastEl).toHaveAttribute('data-intent', 'success')
 
         expect(screen.getByLabelText('Current path')).toHaveTextContent(
             `${PHONE_INTEGRATION_BASE_URL}/queues`,
@@ -94,11 +85,10 @@ describe('VoiceQueueCreatePage', () => {
             fireEvent.click(screen.getByText('Save changes'))
         })
 
-        await waitFor(() => {
-            expect(mockNotify.error).toHaveBeenCalledWith(
-                "We couldn't save your preferences. Please try again.",
-            )
+        const toastEl = await screen.findByRole('status', {
+            name: "We couldn't save your preferences. Please try again.",
         })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
 
     it('navigates to queue list on cancel', async () => {

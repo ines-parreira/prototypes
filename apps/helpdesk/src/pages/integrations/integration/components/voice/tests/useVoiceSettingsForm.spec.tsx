@@ -1,6 +1,6 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { Router } from 'react-router-dom'
 
@@ -48,14 +48,6 @@ const deleteIntegrationMock = assumeMock(deleteIntegration)
 jest.mock('hooks/useAppDispatch')
 const dispatchMock = jest.fn()
 assumeMock(useAppDispatch).mockReturnValue(dispatchMock)
-
-const mockNotify = {
-    success: jest.fn(),
-    error: jest.fn(),
-}
-jest.mock('hooks/useNotify', () => ({
-    useNotify: () => mockNotify,
-}))
 
 jest.mock('state/integrations/actions')
 const fetchIntegrationsMock = assumeMock(fetchIntegrations)
@@ -106,9 +98,10 @@ describe('hooks', () => {
                 )
             })
 
-            expect(mockNotify.success).toHaveBeenCalledWith(
-                'Integration settings successfully updated.',
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'Integration settings successfully updated.',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
             expect(fetchIntegrationsMock).toHaveBeenCalled()
         })
 
@@ -150,9 +143,10 @@ describe('hooks', () => {
                 )
             })
 
-            expect(mockNotify.success).toHaveBeenCalledWith(
-                'Integration settings successfully updated.',
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'Integration settings successfully updated.',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
             expect(fetchIntegrationsMock).toHaveBeenCalled()
         })
 
@@ -209,7 +203,10 @@ describe('hooks', () => {
                 expect(deleteIntegrationMock).toHaveBeenCalled()
             })
 
-            expect(mockNotify.success).toHaveBeenCalled()
+            const toastEl = await screen.findByRole('status', {
+                name: 'Integration successfully deleted',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
         })
 
         it('should dispatch error notification on error', async () => {
@@ -219,11 +216,10 @@ describe('hooks', () => {
 
             result.current.performDelete({ id: phoneIntegration.id })
 
-            await waitFor(() => {
-                expect(mockNotify.error).toHaveBeenCalledWith(
-                    'Failed to delete integration',
-                )
+            const toastEl = await screen.findByRole('status', {
+                name: 'Failed to delete integration',
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
     })
 })

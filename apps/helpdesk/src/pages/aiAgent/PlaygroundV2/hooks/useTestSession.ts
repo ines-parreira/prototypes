@@ -2,11 +2,11 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { reportError } from '@repo/logging'
 
+import { toast } from '@gorgias/axiom'
+
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import { useNotify } from 'hooks/useNotify'
 import { useCreateTestSessionMutation } from 'models/aiAgent/queries'
 import type { AiAgentPlaygroundOptions } from 'models/aiAgent/types'
-import { NotificationStatus } from 'state/notifications/types'
 
 export const useTestSession = (
     baseUrl?: string,
@@ -14,7 +14,6 @@ export const useTestSession = (
     useV3?: boolean,
     externalSessionId?: string,
 ) => {
-    const { notify } = useNotify()
     const [testSessionId, setTestSessionId] = useState<string | null>(
         externalSessionId ?? null,
     )
@@ -57,13 +56,11 @@ export const useTestSession = (
                 },
             })
 
-            notify({
-                status: NotificationStatus.Error,
-                message:
-                    'Error creating test session. Please reload the page or contact support.',
-            })
+            toast.error(
+                'Error creating test session. Please reload the page or contact support.',
+            )
         }
-    }, [error, notify])
+    }, [error])
 
     const clearTestSession = useCallback(() => {
         setTestSessionId(null)

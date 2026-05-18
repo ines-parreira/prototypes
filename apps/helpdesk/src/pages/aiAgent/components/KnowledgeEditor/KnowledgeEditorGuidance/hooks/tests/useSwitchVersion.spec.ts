@@ -3,9 +3,8 @@ import { createElement } from 'react'
 import { appQueryClient } from '@repo/api-resources'
 import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { act } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 
-import { useNotify } from 'hooks/useNotify'
 import { getHelpCenterArticle } from 'models/helpCenter/resources'
 import type { GuidanceArticle } from 'pages/aiAgent/types'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
@@ -17,10 +16,6 @@ import {
 } from '../../context'
 import type { GuidanceState } from '../../context/types'
 import { useSwitchVersion } from '../useSwitchVersion'
-
-jest.mock('hooks/useNotify', () => ({
-    useNotify: jest.fn(),
-}))
 
 jest.mock('models/helpCenter/resources', () => ({
     getHelpCenterArticle: jest.fn(),
@@ -38,7 +33,6 @@ jest.mock('../../context', () => ({
 
 describe('useSwitchVersion (Guidance)', () => {
     const mockDispatch = jest.fn()
-    const mockNotifyError = jest.fn()
     const mockClient = { getArticle: jest.fn() }
     const mockUseGuidanceStore = useGuidanceStore as jest.Mock
 
@@ -154,9 +148,6 @@ describe('useSwitchVersion (Guidance)', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         appQueryClient.clear()
-        ;(useNotify as jest.Mock).mockReturnValue({
-            error: mockNotifyError,
-        })
         ;(useHelpCenterApi as jest.Mock).mockReturnValue({
             client: mockClient,
             isReady: true,
@@ -318,9 +309,10 @@ describe('useSwitchVersion (Guidance)', () => {
             await result.current.switchToVersion('current')
         })
 
-        expect(mockNotifyError).toHaveBeenCalledWith(
-            'An error occurred while switching version.',
-        )
+        const toastEl = await screen.findByRole('status', {
+            name: 'An error occurred while switching version.',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
 
     it('should dispatch SET_UPDATING false even on error', async () => {

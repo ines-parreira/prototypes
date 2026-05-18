@@ -1,8 +1,6 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import { screen, waitFor } from '@testing-library/react'
 
 import {
     queryKeys,
@@ -16,11 +14,9 @@ import {
     useCustomFieldConditions,
 } from 'custom-fields/hooks/queries/useCustomFieldConditions'
 import { customFieldCondition } from 'fixtures/customFieldCondition'
-import { NotificationStatus } from 'state/notifications/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 const queryClient = mockQueryClient()
-const mockStore = configureMockStore([thunk])()
 
 jest.mock('@gorgias/helpdesk-queries')
 const useListCustomFieldConditionsMock = assumeMock(
@@ -29,7 +25,6 @@ const useListCustomFieldConditionsMock = assumeMock(
 
 describe('useCustomFieldConditions', () => {
     beforeEach(() => {
-        mockStore.clearActions()
         jest.resetAllMocks()
     })
 
@@ -43,7 +38,7 @@ describe('useCustomFieldConditions', () => {
             {
                 wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
-                        <Provider store={mockStore}>{children}</Provider>
+                        {children}
                     </QueryClientProvider>
                 ),
             },
@@ -84,7 +79,7 @@ describe('useCustomFieldConditions', () => {
             {
                 wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
-                        <Provider store={mockStore}>{children}</Provider>
+                        {children}
                     </QueryClientProvider>
                 ),
             },
@@ -117,7 +112,7 @@ describe('useCustomFieldConditions', () => {
         ])
     })
 
-    it('should dispatch error notification on error', () => {
+    it('should show error toast on error', async () => {
         useListCustomFieldConditionsMock.mockReturnValue({
             isError: true,
         } as any)
@@ -133,7 +128,7 @@ describe('useCustomFieldConditions', () => {
             {
                 wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
-                        <Provider store={mockStore}>{children}</Provider>
+                        {children}
                     </QueryClientProvider>
                 ),
             },
@@ -161,14 +156,12 @@ describe('useCustomFieldConditions', () => {
             },
         )
 
-        expect(mockStore.getActions()).toMatchObject([
-            {
-                payload: {
-                    status: NotificationStatus.Error,
-                    message: 'Failed to fetch ticket custom fields conditions',
-                },
-            },
-        ])
+        const toastEl = await waitFor(() =>
+            screen.getByRole('status', {
+                name: 'Failed to fetch ticket custom fields conditions',
+            }),
+        )
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
 
         expect(result.current.isError).toBe(true)
     })

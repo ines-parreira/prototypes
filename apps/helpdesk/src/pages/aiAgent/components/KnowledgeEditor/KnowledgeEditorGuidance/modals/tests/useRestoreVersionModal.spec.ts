@@ -1,8 +1,7 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { renderHook } from '@repo/testing'
-import { act } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 
-import { useNotify } from 'hooks/useNotify'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 import type { GuidanceArticle } from 'pages/aiAgent/types'
 
@@ -14,10 +13,6 @@ import type { GuidanceState, HistoricalVersionState } from '../../context/types'
 import { useRestoreVersionModal } from '../useRestoreVersionModal'
 
 jest.mock('@repo/logging')
-
-jest.mock('hooks/useNotify', () => ({
-    useNotify: jest.fn(),
-}))
 
 jest.mock('pages/aiAgent/hooks/useGuidanceArticleMutation', () => ({
     useGuidanceArticleMutation: jest.fn(),
@@ -32,8 +27,6 @@ const mockLogEvent = logEvent as jest.MockedFunction<typeof logEvent>
 
 describe('useRestoreVersionModal', () => {
     const mockDispatch = jest.fn()
-    const mockNotifyError = jest.fn()
-    const mockNotifySuccess = jest.fn()
     const mockUpdateGuidanceArticle = jest.fn()
     const mockOnUpdateFn = jest.fn()
 
@@ -97,10 +90,6 @@ describe('useRestoreVersionModal', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        ;(useNotify as jest.Mock).mockReturnValue({
-            error: mockNotifyError,
-            success: mockNotifySuccess,
-        })
         ;(useGuidanceArticleMutation as jest.Mock).mockReturnValue({
             updateGuidanceArticle: mockUpdateGuidanceArticle,
         })
@@ -311,9 +300,10 @@ describe('useRestoreVersionModal', () => {
                 await result.current.onRestore()
             })
 
-            expect(mockNotifySuccess).toHaveBeenCalledWith(
-                'Version restored as draft.',
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'Version restored as draft.',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
         })
 
         it('should dispatch MARK_AS_SAVED when response is successful', async () => {
@@ -432,9 +422,10 @@ describe('useRestoreVersionModal', () => {
             })
 
             // Should not throw error and should complete successfully
-            expect(mockNotifySuccess).toHaveBeenCalledWith(
-                'Version restored as draft.',
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'Version restored as draft.',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
         })
 
         it('should not dispatch success actions when response is falsy', async () => {
@@ -452,7 +443,7 @@ describe('useRestoreVersionModal', () => {
             expect(mockDispatch).not.toHaveBeenCalledWith({
                 type: 'CLEAR_HISTORICAL_VERSION',
             })
-            expect(mockNotifySuccess).not.toHaveBeenCalled()
+            expect(screen.queryByRole('status')).not.toBeInTheDocument()
         })
 
         it('should show error notification on failure', async () => {
@@ -464,9 +455,10 @@ describe('useRestoreVersionModal', () => {
                 await result.current.onRestore()
             })
 
-            expect(mockNotifyError).toHaveBeenCalledWith(
-                'An error occurred while restoring version.',
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'An error occurred while restoring version.',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
 
         it('should dispatch SET_UPDATING false in finally block on success', async () => {

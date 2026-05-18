@@ -17,14 +17,6 @@ jest.mock('@gorgias/helpdesk-client', () => ({
 const getVoiceQueueMock = assumeMock(getVoiceQueue)
 const updateVoiceQueueMock = assumeMock(updateVoiceQueue)
 
-const mockNotify = {
-    success: jest.fn(),
-    error: jest.fn(),
-}
-jest.mock('hooks/useNotify', () => ({
-    useNotify: () => mockNotify,
-}))
-
 jest.mock('../VoiceQueueEditOrCreateForm', () => () => (
     <div data-testid="queue-form">VoiceQueueEditOrCreateForm</div>
 ))
@@ -94,11 +86,10 @@ describe('VoiceQueueEditPage', () => {
 
         fireEvent.click(screen.getByText('Save changes'))
 
-        await waitFor(() => {
-            expect(mockNotify.success).toHaveBeenCalledWith(
-                `'${mockQueue.name}' queue was successfully updated.`,
-            )
+        const toastEl = await screen.findByRole('status', {
+            name: `'${mockQueue.name}' queue was successfully updated.`,
         })
+        expect(toastEl).toHaveAttribute('data-intent', 'success')
 
         expect(screen.getByLabelText('Current path')).toHaveTextContent(
             `${PHONE_INTEGRATION_BASE_URL}/queues`,
@@ -118,11 +109,10 @@ describe('VoiceQueueEditPage', () => {
             fireEvent.click(screen.getByText('Save changes'))
         })
 
-        await waitFor(() => {
-            expect(mockNotify.error).toHaveBeenCalledWith(
-                "We couldn't save your preferences. Please try again.",
-            )
+        const toastEl = await screen.findByRole('status', {
+            name: "We couldn't save your preferences. Please try again.",
         })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
 
     it('redirects to the queue list when GET queue fails', async () => {
@@ -130,10 +120,11 @@ describe('VoiceQueueEditPage', () => {
 
         renderComponent()
 
+        const toastEl = await screen.findByRole('status', {
+            name: 'Something went wrong while fetching the queue. Please try again.',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         await waitFor(() => {
-            expect(mockNotify.error).toHaveBeenCalledWith(
-                'Something went wrong while fetching the queue. Please try again.',
-            )
             expect(screen.getByLabelText('Current path')).toHaveTextContent(
                 `${PHONE_INTEGRATION_BASE_URL}/queues`,
             )

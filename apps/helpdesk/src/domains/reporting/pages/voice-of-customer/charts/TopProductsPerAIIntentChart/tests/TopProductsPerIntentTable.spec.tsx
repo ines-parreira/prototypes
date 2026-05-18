@@ -15,14 +15,10 @@ import {
 } from 'domains/reporting/pages/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerAIIntentConfig'
 import { TopProductsPerIntentTable } from 'domains/reporting/pages/voice-of-customer/charts/TopProductsPerAIIntentChart/TopProductsPerIntentTable'
 import { VoCSidePanelTrigger } from 'domains/reporting/pages/voice-of-customer/components/VoCSidePanelTrigger/VoCSidePanelTrigger'
-import { useNotify } from 'hooks/useNotify'
 import { OrderDirection } from 'models/api/types'
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 const useStatsFiltersMock = assumeMock(useStatsFilters)
-
-jest.mock('hooks/useNotify')
-const useNotifyMock = assumeMock(useNotify)
 
 jest.mock(
     'domains/reporting/hooks/voice-of-customer/useIntentTicketCountsAndDelta',
@@ -54,7 +50,6 @@ describe('TopProductsPerIntentTable', () => {
             end_datetime: '2024-09-20T23:59:59+00:00',
         },
     }
-    const notifyMock = jest.fn()
     const mockData = [
         {
             category: 'intent1',
@@ -85,7 +80,6 @@ describe('TopProductsPerIntentTable', () => {
             userTimezone: 'UTC',
             granularity: ReportingGranularity.Day,
         })
-        useNotifyMock.mockReturnValue({ info: notifyMock } as any)
         useIntentTicketCountsAndDeltaMock.mockReturnValue({
             data: mockData,
             isFetching: false,

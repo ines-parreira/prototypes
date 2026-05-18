@@ -20,14 +20,6 @@ jest.mock('@gorgias/helpdesk-client', () => ({
 }))
 const deleteVoiceQueueMock = assumeMock(deleteVoiceQueue)
 
-const mockNotify = {
-    success: jest.fn(),
-    error: jest.fn(),
-}
-jest.mock('hooks/useNotify', () => ({
-    useNotify: () => mockNotify,
-}))
-
 const CurrentPath = () => {
     const location = useLocation()
 
@@ -78,7 +70,11 @@ describe('VoiceQueueDelete', () => {
             fireEvent.click(screen.getByText('Delete'))
         })
 
-        expect(mockNotify.error).not.toHaveBeenCalled()
+        expect(
+            screen
+                .queryAllByRole('status')
+                .filter((el) => el.hasAttribute('data-intent')),
+        ).toEqual([])
 
         await waitFor(() => {
             expect(
@@ -105,11 +101,10 @@ describe('VoiceQueueDelete', () => {
             fireEvent.click(screen.getByText('Delete'))
         })
 
-        await waitFor(() => {
-            expect(mockNotify.error).toHaveBeenCalledWith(
-                "We couldn't delete the queue. Please try again.",
-            )
+        const toastEl = await screen.findByRole('status', {
+            name: "We couldn't delete the queue. Please try again.",
         })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
 
         expect(screen.queryByText('Queue cannot be deleted')).toBeNull()
 
@@ -136,11 +131,10 @@ describe('VoiceQueueDelete', () => {
             fireEvent.click(screen.getByText('Delete'))
         })
 
-        await waitFor(() => {
-            expect(mockNotify.success).toHaveBeenCalledWith(
-                `${voiceQueue.name} queue was successfully deleted`,
-            )
+        const toastEl = await screen.findByRole('status', {
+            name: `${voiceQueue.name} queue was successfully deleted`,
         })
+        expect(toastEl).toHaveAttribute('data-intent', 'success')
 
         expect(screen.getByLabelText('Current path')).toHaveTextContent(
             `${PHONE_INTEGRATION_BASE_URL}/queues`,

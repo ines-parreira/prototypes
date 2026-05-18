@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { toast } from '@gorgias/axiom'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { useNotify } from 'hooks/useNotify'
 import type { GorgiasChatIntegration } from 'models/integration/types'
 import {
     formFieldsConfiguration,
@@ -28,8 +29,6 @@ type Props = {
 export const useHandoverCustomizationChatOnlineSettingsForm = ({
     integration,
 }: Props) => {
-    const notify = useNotify()
-
     const dispatch = useAppDispatch()
 
     const currentAccount = useAppSelector(getCurrentAccountState)
@@ -193,7 +192,7 @@ export const useHandoverCustomizationChatOnlineSettingsForm = ({
         if (hasFormErrors()) {
             setHasError(true)
 
-            notify.error('Please check the form for errors')
+            toast.error('Please check the form for errors')
 
             return
         }
@@ -225,12 +224,12 @@ export const useHandoverCustomizationChatOnlineSettingsForm = ({
                 await saveIntegrationPreferences(integrationPreferences)
             }
 
-            notify.success(CHANGES_SAVED_SUCCESS)
+            toast.success(CHANGES_SAVED_SUCCESS)
         } catch (error) {
             if (error instanceof Error) {
-                notify.error(error.message)
+                toast.error(error.message)
             } else {
-                notify.error('An unknown error occurred. Please try again')
+                toast.error('An unknown error occurred. Please try again')
             }
 
             return
@@ -244,7 +243,6 @@ export const useHandoverCustomizationChatOnlineSettingsForm = ({
         hasHandoverConfigurationChanges,
         hasChanges,
         integration,
-        notify,
         integrationId,
         currentHandoverConfiguration,
         accountId,

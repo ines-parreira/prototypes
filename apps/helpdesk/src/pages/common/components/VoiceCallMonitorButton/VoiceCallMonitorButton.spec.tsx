@@ -17,7 +17,6 @@ import {
     getMonitoringRestrictionReason,
 } from 'hooks/integrations/phone/monitoring.utils'
 import { useMonitoringCall } from 'hooks/integrations/phone/useMonitoringCall'
-import { useNotify } from 'hooks/useNotify'
 import { getInCallAgentId, isCallBeingMonitored } from 'models/voiceCall/utils'
 
 import { VoiceCallMonitorButton } from './VoiceCallMonitorButton'
@@ -33,7 +32,6 @@ jest.mock('models/voiceCall/utils', () => ({
     getInCallAgentId: jest.fn(),
     isCallBeingMonitored: jest.fn(),
 }))
-jest.mock('hooks/useNotify')
 
 const mockGetCurrentUser = mockGetCurrentUserHandler()
 const mockGetUser = mockGetUserHandler()
@@ -81,7 +79,6 @@ beforeEach(() => {
         monitoringExtraParams: {} as any,
     })
     assumeMock(getMonitoringRestrictionReason).mockReturnValue('')
-    assumeMock(useNotify).mockReturnValue({ error: jest.fn() } as any)
 })
 
 describe('VoiceCallMonitorButton', () => {

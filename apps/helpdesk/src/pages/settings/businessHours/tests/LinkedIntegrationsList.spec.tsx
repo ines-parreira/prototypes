@@ -9,14 +9,6 @@ import LinkedIntegrationsList from '../LinkedIntegrationsList'
 
 const server = setupServer()
 
-const notifyMock = {
-    error: jest.fn(),
-}
-
-jest.mock('hooks/useNotify', () => ({
-    useNotify: () => notifyMock,
-}))
-
 const mockHandler = mockListBusinessHoursIntegrationsHandler(async ({ data }) =>
     HttpResponse.json({
         ...data,

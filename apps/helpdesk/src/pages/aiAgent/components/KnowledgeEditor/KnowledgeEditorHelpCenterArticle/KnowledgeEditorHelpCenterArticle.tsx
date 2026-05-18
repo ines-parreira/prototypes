@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 
-import { Card } from '@gorgias/axiom'
+import { Card, toast } from '@gorgias/axiom'
 import type { GetArticleVersionStatus } from '@gorgias/help-center-types'
 
 import { EditorWithPlayground } from 'common/knowledge-editor/components'
 import { getLast28DaysDateRange } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
-import { useNotify } from 'hooks/useNotify'
 import { isGorgiasApiError } from 'models/api/types'
 import type { ArticleWithLocalTranslation } from 'models/helpCenter/types'
 import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
@@ -149,8 +148,6 @@ export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
         }
     }, [rawInitialVersionData])
 
-    const { error: notifyError } = useNotify()
-
     useEffect(() => {
         if (isOpen && isArticleError && isExisting && articleError) {
             const is404 =
@@ -161,10 +158,10 @@ export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
                 ? 'This FAQ article is no longer available. It may have been deleted.'
                 : 'Unable to load this FAQ article. Please try again or contact support.'
 
-            notifyError(message)
+            toast.error(message)
             onClose()
         }
-    }, [isOpen, isArticleError, isExisting, articleError, notifyError, onClose])
+    }, [isOpen, isArticleError, isExisting, articleError, onClose])
 
     if (isHelpCenterDataLoading) {
         return <KnowledgeEditorLoadingShell />

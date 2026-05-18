@@ -4,6 +4,7 @@ import classNames from 'classnames'
 
 import {
     LegacyButton as Button,
+    toast,
     LegacyToggleField as ToggleField,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
@@ -11,7 +12,6 @@ import { useUpdateVoiceQueue } from '@gorgias/helpdesk-queries'
 import type { VoiceQueue } from '@gorgias/helpdesk-types'
 import { VoiceQueueStatus } from '@gorgias/helpdesk-types'
 
-import { useNotify } from 'hooks/useNotify'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
@@ -25,7 +25,6 @@ type Props = {
 }
 
 export default function VoiceQueueStatusToggle({ queueId, isEnabled }: Props) {
-    const notify = useNotify()
     const [localEnabled, setLocalEnabled] = useState(isEnabled)
     const [isConfirmationModalOpen, setIsConfirmationModalOpen] =
         useState(false)
@@ -36,10 +35,10 @@ export default function VoiceQueueStatusToggle({ queueId, isEnabled }: Props) {
                 const newStatus = response.data.status
                 setLocalEnabled(newStatus === VoiceQueueStatus.Enabled)
                 setIsConfirmationModalOpen(false)
-                notify.success(`Queue was successfully ${newStatus}`)
+                toast.success(`Queue was successfully ${newStatus}`)
             },
             onError: () => {
-                notify.error('Failed to update queue status')
+                toast.error('Failed to update queue status')
             },
         },
     })

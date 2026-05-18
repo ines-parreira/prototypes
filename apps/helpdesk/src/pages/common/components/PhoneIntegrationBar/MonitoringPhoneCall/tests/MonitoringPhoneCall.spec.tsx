@@ -1,5 +1,5 @@
-import { assumeMock, render } from '@repo/testing'
-import { act, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, screen } from '@testing-library/react'
 import user, { userEvent } from '@testing-library/user-event'
 import type { Call } from '@twilio/voice-sdk'
 import { fromJS } from 'immutable'
@@ -8,14 +8,12 @@ import { setupServer } from 'msw/node'
 
 import { mockHandleCallWhisperingHandler } from '@gorgias/helpdesk-mocks'
 
-import { useNotify } from 'hooks/useNotify'
 import { TwilioMessageType } from 'models/voiceCall/twilioMessageTypes'
 import { mockMonitoringCall } from 'tests/twilioMocks'
 
 import MonitoringPhoneCall from '../MonitoringPhoneCall'
 
 jest.mock('@twilio/voice-sdk')
-jest.mock('hooks/useNotify')
 
 jest.mock(
     'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel',
@@ -45,8 +43,6 @@ jest.mock(
     }),
 )
 
-const useNotifyMock = assumeMock(useNotify)
-
 const server = setupServer()
 
 const mockHandleCallWhispering = mockHandleCallWhisperingHandler()
@@ -66,8 +62,6 @@ describe('MonitoringPhoneCall', () => {
         },
     }
 
-    const mockNotifyError = jest.fn()
-
     const store = {
         integrations: fromJS({
             integrations: [integration],
@@ -84,9 +78,6 @@ describe('MonitoringPhoneCall', () => {
     })
 
     beforeEach(() => {
-        useNotifyMock.mockReturnValue({
-            error: mockNotifyError,
-        } as any)
         server.use(...localHandlers)
     })
 
@@ -348,11 +339,10 @@ describe('MonitoringPhoneCall', () => {
             })
             await act(() => user.click(startWhisperingButton))
 
-            await waitFor(() => {
-                expect(mockNotifyError).toHaveBeenCalledWith(
-                    'Failed to start whispering. Please try again.',
-                )
+            const toastEl = await screen.findByRole('status', {
+                name: 'Failed to start whispering. Please try again.',
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
 
             // button should remain as "start whispering" since request failed
             const stillStartWhisperingButton = await screen.findByRole('img', {
@@ -391,11 +381,10 @@ describe('MonitoringPhoneCall', () => {
 
             await act(() => user.click(stopWhisperingButton))
 
-            await waitFor(() => {
-                expect(mockNotifyError).toHaveBeenCalledWith(
-                    'Failed to stop whispering. Please try again.',
-                )
+            const toastEl = await screen.findByRole('status', {
+                name: 'Failed to stop whispering. Please try again.',
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
 
             // button should remain as "stop whispering" since request failed
             const stillStopWhisperingButton = await screen.findByRole('img', {

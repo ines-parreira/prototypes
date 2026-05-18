@@ -2,7 +2,8 @@ import { useCallback } from 'react'
 
 import { useShallow } from 'zustand/react/shallow'
 
-import { useNotify } from 'hooks/useNotify'
+import { toast } from '@gorgias/axiom'
+
 import {
     getPlainTextLength,
     textLimit,
@@ -43,8 +44,6 @@ export const useGuidanceAutoSave = () => {
             shouldAddToMissingKnowledge: storeState.shouldAddToMissingKnowledge,
         })),
     )
-
-    const { error: notifyError } = useNotify()
 
     const { createGuidanceArticle, updateGuidanceArticle } =
         useGuidanceArticleMutation({
@@ -160,7 +159,7 @@ export const useGuidanceAutoSave = () => {
             onCreateFn?.(guidance, shouldAddToMissingKnowledge),
         onUpdated: () => onUpdateFn?.(),
         onError: (mode) =>
-            notifyError(
+            toast.error(
                 mode === 'create'
                     ? 'An error occurred while creating guidance.'
                     : 'An error occurred while saving guidance.',

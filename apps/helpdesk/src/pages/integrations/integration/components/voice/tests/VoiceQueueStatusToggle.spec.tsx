@@ -8,14 +8,6 @@ import VoiceQueueStatusToggle from '../VoiceQueueStatusToggle'
 
 jest.mock('@gorgias/helpdesk-client')
 
-const mockNotify = {
-    success: jest.fn(),
-    error: jest.fn(),
-}
-jest.mock('hooks/useNotify', () => ({
-    useNotify: () => mockNotify,
-}))
-
 const updateVoiceQueueMock = assumeMock(updateVoiceQueue)
 
 const mockQueueId = 123
@@ -63,9 +55,10 @@ describe('VoiceQueueStatusToggle', () => {
             )
         })
 
-        expect(mockNotify.success).toHaveBeenCalledWith(
-            'Queue was successfully enabled',
-        )
+        const toastEl = await screen.findByRole('status', {
+            name: 'Queue was successfully enabled',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'success')
         await waitFor(() => {
             expect(screen.getByRole('switch')).toBeChecked()
         })
@@ -101,9 +94,10 @@ describe('VoiceQueueStatusToggle', () => {
             )
         })
 
-        expect(mockNotify.success).toHaveBeenCalledWith(
-            'Queue was successfully disabled',
-        )
+        const toastEl = await screen.findByRole('status', {
+            name: 'Queue was successfully disabled',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'success')
         await waitFor(() => {
             expect(screen.getByRole('switch')).not.toBeChecked()
         })
@@ -117,11 +111,10 @@ describe('VoiceQueueStatusToggle', () => {
             fireEvent.click(screen.getByRole('switch'))
         })
 
-        await waitFor(() => {
-            expect(mockNotify.error).toHaveBeenCalledWith(
-                'Failed to update queue status',
-            )
+        const toastEl = await screen.findByRole('status', {
+            name: 'Failed to update queue status',
         })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
 
     it('should update queue status when isEnabled prop changes', async () => {

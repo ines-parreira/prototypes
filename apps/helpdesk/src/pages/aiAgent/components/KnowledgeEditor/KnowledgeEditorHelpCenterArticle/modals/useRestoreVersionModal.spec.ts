@@ -1,8 +1,7 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { renderHook } from '@repo/testing'
-import { act } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 
-import { useNotify } from 'hooks/useNotify'
 import { useUpdateArticleTranslation } from 'models/helpCenter/mutations'
 import type { LocaleCode } from 'models/helpCenter/types'
 
@@ -11,10 +10,6 @@ import type { ArticleContextValue } from '../context/types'
 import { useRestoreVersionModal } from './useRestoreVersionModal'
 
 jest.mock('@repo/logging')
-
-jest.mock('hooks/useNotify', () => ({
-    useNotify: jest.fn(),
-}))
 
 jest.mock('models/helpCenter/mutations', () => ({
     useUpdateArticleTranslation: jest.fn(),
@@ -25,14 +20,11 @@ jest.mock('../context/ArticleContext', () => ({
 }))
 
 const mockLogEvent = logEvent as jest.MockedFunction<typeof logEvent>
-const mockUseNotify = useNotify as jest.Mock
 const mockUseUpdateArticleTranslation = useUpdateArticleTranslation as jest.Mock
 const mockUseArticleContext = useArticleContext as jest.Mock
 
 describe('useRestoreVersionModal', () => {
     let mockDispatch: jest.Mock
-    let mockNotifyError: jest.Mock
-    let mockNotifySuccess: jest.Mock
     let mockMutateAsync: jest.Mock
     let mockOnUpdatedFn: jest.Mock
 
@@ -142,15 +134,9 @@ describe('useRestoreVersionModal', () => {
         jest.clearAllMocks()
 
         mockDispatch = jest.fn()
-        mockNotifyError = jest.fn()
-        mockNotifySuccess = jest.fn()
         mockMutateAsync = jest.fn()
         mockOnUpdatedFn = jest.fn()
 
-        mockUseNotify.mockReturnValue({
-            error: mockNotifyError,
-            success: mockNotifySuccess,
-        })
         mockUseUpdateArticleTranslation.mockReturnValue({
             mutateAsync: mockMutateAsync,
         })
@@ -279,9 +265,10 @@ describe('useRestoreVersionModal', () => {
                 await result.current.onRestore()
             })
 
-            expect(mockNotifySuccess).toHaveBeenCalledWith(
-                'Version restored as draft.',
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'Version restored as draft.',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
         })
 
         it('should show error notification on failure', async () => {
@@ -293,9 +280,10 @@ describe('useRestoreVersionModal', () => {
                 await result.current.onRestore()
             })
 
-            expect(mockNotifyError).toHaveBeenCalledWith(
-                'An error occurred while restoring version.',
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'An error occurred while restoring version.',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
 
         it('should dispatch SET_UPDATING false and CLOSE_MODAL in finally block', async () => {

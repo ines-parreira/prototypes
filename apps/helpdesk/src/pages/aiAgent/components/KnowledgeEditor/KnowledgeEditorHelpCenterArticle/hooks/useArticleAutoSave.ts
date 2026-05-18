@@ -2,8 +2,9 @@ import { useCallback, useRef } from 'react'
 
 import { useDebouncedCallback } from '@repo/hooks'
 
+import { toast } from '@gorgias/axiom'
+
 import { areTrimmedStringsEqual } from 'common/knowledge-editor/utils'
-import { useNotify } from 'hooks/useNotify'
 import {
     useCreateArticle,
     useCreateArticleTranslation,
@@ -38,8 +39,6 @@ export const useArticleAutoSave = () => {
     } = useArticleContext()
 
     const { helpCenter, template, onCreatedFn, onUpdatedFn } = config
-
-    const { error: notifyError } = useNotify()
 
     const { mutateAsync: createArticleMutation } = useCreateArticle(
         helpCenter.id,
@@ -209,7 +208,7 @@ export const useArticleAutoSave = () => {
                     }
                 }
             } catch {
-                notifyError(
+                toast.error(
                     mode === 'create'
                         ? 'An error occurred while creating the article.'
                         : 'An error occurred while saving the article.',
@@ -231,7 +230,6 @@ export const useArticleAutoSave = () => {
             dispatch,
             onCreatedFn,
             onUpdatedFn,
-            notifyError,
             shouldAddToMissingKnowledge,
         ],
     )

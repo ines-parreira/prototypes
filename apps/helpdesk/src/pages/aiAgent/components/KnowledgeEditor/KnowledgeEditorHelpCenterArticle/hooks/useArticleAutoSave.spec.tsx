@@ -1,8 +1,7 @@
 import { useDebouncedCallback } from '@repo/hooks'
 import { renderHook } from '@repo/testing'
-import { act } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 
-import { useNotify } from 'hooks/useNotify'
 import {
     useCreateArticle,
     useCreateArticleTranslation,
@@ -19,13 +18,11 @@ jest.mock('@repo/hooks', () => ({
     useDebouncedCallback: jest.fn(),
 }))
 
-jest.mock('hooks/useNotify')
 jest.mock('models/helpCenter/mutations')
 jest.mock('../context/ArticleContext')
 jest.mock('pages/settings/helpCenter/utils/helpCenter.utils')
 
 const mockUseDebouncedCallback = useDebouncedCallback as jest.Mock
-const mockUseNotify = useNotify as jest.Mock
 const mockUseCreateArticle = useCreateArticle as jest.Mock
 const mockUseCreateArticleTranslation = useCreateArticleTranslation as jest.Mock
 const mockUseUpdateArticleTranslation = useUpdateArticleTranslation as jest.Mock
@@ -158,7 +155,6 @@ const createMockContextValue = (
 
 describe('useArticleAutoSave', () => {
     let mockDispatch: jest.Mock
-    let mockNotifyError: jest.Mock
     let mockCreateArticleMutateAsync: jest.Mock
     let mockCreateTranslationMutateAsync: jest.Mock
     let mockUpdateTranslationMutateAsync: jest.Mock
@@ -169,12 +165,10 @@ describe('useArticleAutoSave', () => {
         debouncedCallback = null
 
         mockDispatch = jest.fn()
-        mockNotifyError = jest.fn()
         mockCreateArticleMutateAsync = jest.fn()
         mockCreateTranslationMutateAsync = jest.fn()
         mockUpdateTranslationMutateAsync = jest.fn()
 
-        mockUseNotify.mockReturnValue({ error: mockNotifyError })
         mockUseCreateArticle.mockReturnValue({
             mutateAsync: mockCreateArticleMutateAsync,
         })
@@ -1147,9 +1141,10 @@ describe('useArticleAutoSave', () => {
                 })
             })
 
-            expect(mockNotifyError).toHaveBeenCalledWith(
-                'An error occurred while creating the article.',
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'An error occurred while creating the article.',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
             expect(mockDispatch).toHaveBeenCalledWith({
                 type: 'SET_AUTO_SAVING',
                 payload: false,
@@ -1185,9 +1180,10 @@ describe('useArticleAutoSave', () => {
                 })
             })
 
-            expect(mockNotifyError).toHaveBeenCalledWith(
-                'An error occurred while saving the article.',
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'An error occurred while saving the article.',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
             expect(mockDispatch).toHaveBeenCalledWith({
                 type: 'SET_AUTO_SAVING',
                 payload: false,
@@ -1223,9 +1219,10 @@ describe('useArticleAutoSave', () => {
                 })
             })
 
-            expect(mockNotifyError).toHaveBeenCalledWith(
-                'An error occurred while saving the article.',
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'An error occurred while saving the article.',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
     })
 

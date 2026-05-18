@@ -12,7 +12,6 @@ import {
     getMonitoringRestrictionReason,
 } from 'hooks/integrations/phone/monitoring.utils'
 import { useMonitoringCall } from 'hooks/integrations/phone/useMonitoringCall'
-import { useNotify } from 'hooks/useNotify'
 import { MONITORING_RESTRICTION_REASONS } from 'models/voiceCall/constants'
 import type { VoiceCall } from 'models/voiceCall/types'
 import { MonitoringErrorCode } from 'models/voiceCall/types'
@@ -23,7 +22,6 @@ import MonitorCallButton from './MonitorCallButton'
 jest.mock('hooks/integrations/phone/useMonitoringCall')
 jest.mock('hooks/integrations/phone/monitoring.utils')
 jest.mock('models/voiceCall/utils')
-jest.mock('hooks/useNotify')
 
 const useMonitoringCallMock = assumeMock(useMonitoringCall)
 const getMonitoringParametersMock = assumeMock(getMonitoringParameters)
@@ -32,7 +30,6 @@ const getMonitoringRestrictionReasonMock = assumeMock(
 )
 const isCallBeingMonitoredMock = assumeMock(isCallBeingMonitored)
 const getInCallAgentIdMock = assumeMock(getInCallAgentId)
-const useNotifyMock = assumeMock(useNotify)
 
 const voiceCall = {
     external_id: 'CA123',
@@ -57,7 +54,6 @@ const mockParams = {
 describe('MonitorCallButton', () => {
     const mockMakeMonitoringCall = jest.fn()
     const mockPrepareMonitoringCall = jest.fn()
-    const mockNotifyError = jest.fn()
     const queryClient = new QueryClient({
         defaultOptions: { queries: { retry: false } },
     })
@@ -89,9 +85,6 @@ describe('MonitorCallButton', () => {
             makeMonitoringCall: mockMakeMonitoringCall,
             prepareMonitoringCall: mockPrepareMonitoringCall,
         })
-        useNotifyMock.mockReturnValue({
-            error: mockNotifyError,
-        } as any)
         getMonitoringParametersMock.mockReturnValue(mockParams)
         isCallBeingMonitoredMock.mockReturnValue(false)
         getInCallAgentIdMock.mockReturnValue(10)
@@ -223,9 +216,10 @@ describe('MonitorCallButton', () => {
 
         await act(() => user.click(listenButton))
 
-        await waitFor(() => {
-            expect(mockNotifyError).toHaveBeenCalledWith('Something went wrong')
+        const toastEl = await screen.findByRole('status', {
+            name: 'Something went wrong',
         })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         await waitFor(() => {
             expect(listenButton).toBeEnabled()
             expect(listenButton).not.toHaveAttribute('data-pending', 'true')
@@ -262,9 +256,10 @@ describe('MonitorCallButton', () => {
             onMonitoringValidationFailed(MonitoringErrorCode.HANDLING_CALL)
         })
 
-        expect(mockNotifyError).toHaveBeenCalledWith(
-            MONITORING_RESTRICTION_REASONS.HANDLING_CALL,
-        )
+        const toastEl = await screen.findByRole('status', {
+            name: MONITORING_RESTRICTION_REASONS.HANDLING_CALL,
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
 
     it('should notify monitoring error based on error codes', async () => {
@@ -286,9 +281,10 @@ describe('MonitorCallButton', () => {
             user.click(screen.getByRole('button', { name: /Listen/i })),
         )
 
-        expect(mockNotifyError).toHaveBeenCalledWith(
-            MONITORING_RESTRICTION_REASONS.AGENT_BUSY,
-        )
+        const toastEl = await screen.findByRole('status', {
+            name: MONITORING_RESTRICTION_REASONS.AGENT_BUSY,
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         expect(mockMakeMonitoringCall).not.toHaveBeenCalled()
     })
 
@@ -320,7 +316,11 @@ describe('MonitorCallButton', () => {
                 screen.getByRole('button', { name: 'Yes, switch call' }),
             ).toBeInTheDocument()
 
-            expect(mockNotifyError).not.toHaveBeenCalled()
+            expect(
+                screen
+                    .queryAllByRole('status')
+                    .filter((el) => el.hasAttribute('data-intent')),
+            ).toEqual([])
             expect(mockMakeMonitoringCall).not.toHaveBeenCalled()
         })
 
@@ -446,9 +446,10 @@ describe('MonitorCallButton', () => {
             await act(() => {
                 onMonitoringValidationFailed(MonitoringErrorCode.HANDLING_CALL)
             })
-            expect(mockNotifyError).toHaveBeenCalledWith(
-                MONITORING_RESTRICTION_REASONS.HANDLING_CALL,
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: MONITORING_RESTRICTION_REASONS.HANDLING_CALL,
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
 
         it('should notify monitoring error when call switch fails with error code', async () => {
@@ -486,9 +487,10 @@ describe('MonitorCallButton', () => {
                 ),
             )
 
-            expect(mockNotifyError).toHaveBeenCalledWith(
-                MONITORING_RESTRICTION_REASONS.CALL_COMPLETED,
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: MONITORING_RESTRICTION_REASONS.CALL_COMPLETED,
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
             expect(mockMakeMonitoringCall).not.toHaveBeenCalled()
         })
 
@@ -524,7 +526,10 @@ describe('MonitorCallButton', () => {
                 ),
             )
 
-            expect(mockNotifyError).toHaveBeenCalledWith('Something went wrong')
+            const toastEl = await screen.findByRole('status', {
+                name: 'Something went wrong',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
             expect(mockMakeMonitoringCall).not.toHaveBeenCalled()
         })
     })

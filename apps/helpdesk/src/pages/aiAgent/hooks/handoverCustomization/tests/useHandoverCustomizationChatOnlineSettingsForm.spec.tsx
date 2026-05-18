@@ -1,9 +1,8 @@
 import { renderHook } from '@repo/testing'
-import { act, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { useNotify } from 'hooks/useNotify'
 import type { HandoverConfigurationData } from 'models/aiAgent/types'
 import type { GorgiasChatIntegration } from 'models/integration/types'
 import {
@@ -27,7 +26,6 @@ import { useHandoverCustomizationChatOnlineSettingsForm } from '../useHandoverCu
 
 // Mock dependencies
 jest.mock('hooks/useAppSelector')
-jest.mock('hooks/useNotify')
 jest.mock('hooks/useAppDispatch')
 
 jest.mock('state/integrations/actions')
@@ -73,8 +71,6 @@ jest.mock(
 const defaultState = {}
 
 // Mock functions
-const mockNotifySuccess = jest.fn()
-const mockNotifyError = jest.fn()
 const mockRefetch = jest.fn().mockResolvedValue({})
 const mockUpsertHandoverConfiguration = jest.fn()
 const mockUseAppSelector = useAppSelector as jest.Mock
@@ -126,10 +122,6 @@ describe('useHandoverCustomizationChatOnlineSettingsForm', () => {
                 if (key === 'id') return 123
                 return null
             },
-        })
-        ;(useNotify as jest.Mock).mockReturnValue({
-            success: mockNotifySuccess,
-            error: mockNotifyError,
         })
         ;(
             useFetchAiAgentStoreHandoverConfiguration as jest.Mock
@@ -252,9 +244,7 @@ describe('useHandoverCustomizationChatOnlineSettingsForm', () => {
 
         expect(mockUpsertHandoverConfiguration).not.toHaveBeenCalled()
 
-        expect(mockNotifySuccess).not.toHaveBeenCalled()
-
-        expect(mockNotifyError).not.toHaveBeenCalled()
+        expect(screen.queryByRole('status')).not.toBeInTheDocument()
     })
 
     describe('save changes', () => {
@@ -306,12 +296,11 @@ describe('useHandoverCustomizationChatOnlineSettingsForm', () => {
 
                 expect(dispatch).not.toHaveBeenCalled()
 
-                expect(mockNotifySuccess).toHaveBeenCalled()
-
-                expect(mockNotifyError).not.toHaveBeenCalled()
-
                 expect(result.current.isSaving).toBeFalsy()
             })
+
+            const toastEl = await screen.findByRole('status')
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
         })
 
         it('should trigger upsertHandoverConfiguration and notifyError when saving the form values fails with only handover configuration changes', async () => {
@@ -375,11 +364,10 @@ describe('useHandoverCustomizationChatOnlineSettingsForm', () => {
                 ).not.toHaveBeenCalled()
 
                 expect(dispatch).not.toHaveBeenCalled()
-
-                expect(mockNotifySuccess).not.toHaveBeenCalled()
-
-                expect(mockNotifyError).toHaveBeenCalled()
             })
+
+            const toastEl = await screen.findByRole('status')
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
     })
 
@@ -442,12 +430,11 @@ describe('useHandoverCustomizationChatOnlineSettingsForm', () => {
 
             expect(updateOrCreateIntegrationRequest).toHaveBeenCalled()
 
-            expect(mockNotifySuccess).toHaveBeenCalled()
-
-            expect(mockNotifyError).not.toHaveBeenCalled()
-
             expect(result.current.isSaving).toBeFalsy()
         })
+
+        const toastEl = await screen.findByRole('status')
+        expect(toastEl).toHaveAttribute('data-intent', 'success')
     })
 
     it('should trigger all saves when there are changes in both handover configuration and preferences', async () => {
@@ -532,12 +519,11 @@ describe('useHandoverCustomizationChatOnlineSettingsForm', () => {
 
             expect(updateOrCreateIntegrationRequest).toHaveBeenCalled()
 
-            expect(mockNotifySuccess).toHaveBeenCalled()
-
-            expect(mockNotifyError).not.toHaveBeenCalled()
-
             expect(result.current.isSaving).toBeFalsy()
         })
+
+        const toastEl = await screen.findByRole('status')
+        expect(toastEl).toHaveAttribute('data-intent', 'success')
     })
 
     it('should handle form errors when the online instructions field is bigger than the max length', async () => {
@@ -568,8 +554,11 @@ describe('useHandoverCustomizationChatOnlineSettingsForm', () => {
             expect(mockUpsertHandoverConfiguration).not.toHaveBeenCalled()
 
             expect(dispatch).not.toHaveBeenCalled()
-
-            expect(mockNotifySuccess).not.toHaveBeenCalled()
         })
+
+        const toastEl = await screen.findByRole('status', {
+            name: 'Please check the form for errors',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
 })

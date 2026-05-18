@@ -2,7 +2,8 @@ import { useCallback } from 'react'
 
 import { useShallow } from 'zustand/react/shallow'
 
-import { useNotify } from 'hooks/useNotify'
+import { toast } from '@gorgias/axiom'
+
 import type { UpdateArticleTranslationDto } from 'models/helpCenter/types'
 import { useGuidanceStore } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/context'
 import { fromArticleTranslationResponse } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/context/utils'
@@ -31,7 +32,6 @@ export const usePersistLinkedIntents = () => {
         })),
     )
 
-    const { error: notifyError } = useNotify()
     const { updateGuidanceArticle } = useGuidanceArticleMutation({
         guidanceHelpCenterId,
     })
@@ -73,7 +73,7 @@ export const usePersistLinkedIntents = () => {
                 onUpdateFn?.()
                 onSuccess()
             } catch {
-                notifyError('An error occurred while saving linked intents.')
+                toast.error('An error occurred while saving linked intents.')
             } finally {
                 dispatch({ type: 'SET_UPDATING', payload: false })
             }
@@ -87,7 +87,6 @@ export const usePersistLinkedIntents = () => {
             dispatch,
             updateGuidanceArticle,
             onUpdateFn,
-            notifyError,
         ],
     )
 

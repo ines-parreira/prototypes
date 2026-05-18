@@ -3,7 +3,8 @@ import { useCallback } from 'react'
 import { appQueryClient } from '@repo/api-resources'
 import { useShallow } from 'zustand/react/shallow'
 
-import { useNotify } from 'hooks/useNotify'
+import { toast } from '@gorgias/axiom'
+
 import { getHelpCenterArticleQuery } from 'models/helpCenter/queries'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 
@@ -24,7 +25,6 @@ export function useSwitchVersion() {
                     'en-US',
             })),
         )
-    const { error: notifyError } = useNotify()
     const { client } = useHelpCenterApi()
 
     const switchToVersion = useCallback(
@@ -47,7 +47,7 @@ export function useSwitchVersion() {
                     })
                 }
             } catch {
-                notifyError('An error occurred while switching version.')
+                toast.error('An error occurred while switching version.')
             } finally {
                 dispatch({ type: 'SET_UPDATING', payload: false })
             }
@@ -58,7 +58,6 @@ export function useSwitchVersion() {
             guidanceHelpCenterId,
             guidanceHelpCenterLocale,
             guidanceId,
-            notifyError,
         ],
     )
 

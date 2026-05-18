@@ -1,8 +1,7 @@
 import { useDebouncedCallback } from '@repo/hooks'
 import { renderHook } from '@repo/testing'
-import { act } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 
-import { useNotify } from 'hooks/useNotify'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 import type { GuidanceArticle } from 'pages/aiAgent/types'
 
@@ -20,10 +19,6 @@ import {
 
 jest.mock('@repo/hooks', () => ({
     useDebouncedCallback: jest.fn((fn) => fn),
-}))
-
-jest.mock('hooks/useNotify', () => ({
-    useNotify: jest.fn(),
 }))
 
 jest.mock('pages/aiAgent/hooks/useGuidanceArticleMutation', () => ({
@@ -44,7 +39,6 @@ jest.mock('../utils', () => ({
 
 describe('useGuidanceAutoSave', () => {
     const mockDispatch = jest.fn()
-    const mockNotifyError = jest.fn()
     const mockCreateGuidanceArticle = jest.fn()
     const mockUpdateGuidanceArticle = jest.fn()
     const mockOnCreateFn = jest.fn()
@@ -112,9 +106,6 @@ describe('useGuidanceAutoSave', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        ;(useNotify as jest.Mock).mockReturnValue({
-            error: mockNotifyError,
-        })
         ;(useGuidanceArticleMutation as jest.Mock).mockReturnValue({
             createGuidanceArticle: mockCreateGuidanceArticle,
             updateGuidanceArticle: mockUpdateGuidanceArticle,
@@ -646,9 +637,10 @@ describe('useGuidanceAutoSave', () => {
                 result.current.onChangeField('title', 'New Title')
             })
 
-            expect(mockNotifyError).toHaveBeenCalledWith(
-                'An error occurred while creating guidance.',
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'An error occurred while creating guidance.',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
             expect(mockDispatch).toHaveBeenCalledWith({
                 type: 'SET_AUTO_SAVING',
                 payload: false,
@@ -675,9 +667,10 @@ describe('useGuidanceAutoSave', () => {
                 result.current.onChangeField('title', 'New Title')
             })
 
-            expect(mockNotifyError).toHaveBeenCalledWith(
-                'An error occurred while saving guidance.',
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'An error occurred while saving guidance.',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
 
         it('should dispatch SET_AUTO_SAVE_ERROR on create failure', async () => {

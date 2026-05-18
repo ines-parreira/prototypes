@@ -1,5 +1,5 @@
 import { renderHook } from '@repo/testing'
-import { act } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -9,14 +9,6 @@ import {
 } from '@gorgias/helpdesk-mocks'
 
 import useDeleteCustomBusinessHours from '../useDeleteCustomBusinessHours'
-
-const mockNotify = {
-    success: jest.fn(),
-    error: jest.fn(),
-}
-jest.mock('hooks/useNotify', () => ({
-    useNotify: () => mockNotify,
-}))
 
 const server = setupServer()
 
@@ -50,9 +42,10 @@ describe('useDeleteCustomBusinessHours', () => {
             result.current.mutate({ id: businessHours.id })
         })
 
-        expect(mockNotify.success).toHaveBeenCalledWith(
-            `'${businessHours.name}' business hours were successfully deleted.`,
-        )
+        const toastEl = await screen.findByRole('status', {
+            name: `'${businessHours.name}' business hours were successfully deleted.`,
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'success')
         expect(onSuccess).toHaveBeenCalled()
     })
 
@@ -73,8 +66,9 @@ describe('useDeleteCustomBusinessHours', () => {
             result.current.mutate({ id: businessHours.id })
         })
 
-        expect(mockNotify.error).toHaveBeenCalledWith(
-            "We couldn't delete your business hours. Please try again.",
-        )
+        const toastEl = await screen.findByRole('status', {
+            name: "We couldn't delete your business hours. Please try again.",
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
 })

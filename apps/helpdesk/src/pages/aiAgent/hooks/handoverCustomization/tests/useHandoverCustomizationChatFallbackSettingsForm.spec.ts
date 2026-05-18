@@ -1,8 +1,7 @@
-import { assumeMock, renderHook } from '@repo/testing'
-import { act, waitFor } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
+import { act, screen, waitFor } from '@testing-library/react'
 
 import { LANGUAGE } from 'constants/languages'
-import { useNotify } from 'hooks/useNotify'
 import type { GorgiasChatIntegration } from 'models/integration/types'
 import { CHANGES_SAVED_SUCCESS } from 'pages/aiAgent/constants'
 import {
@@ -13,10 +12,6 @@ import {
 
 import { useHandoverCustomizationChatFallbackSettingsForm } from '../useHandoverCustomizationChatFallbackSettingsForm'
 import { useHandoverCustomizationChatLanguageTextsConfiguration } from '../useHandoverCustomizationChatLanguageTextsConfiguration'
-
-jest.mock('hooks/useNotify')
-
-const useNotifyMock = assumeMock(useNotify)
 
 jest.mock('../useHandoverCustomizationChatLanguageTextsConfiguration', () => ({
     useHandoverCustomizationChatLanguageTextsConfiguration: jest.fn(),
@@ -39,11 +34,6 @@ jest.mock(
 )
 
 describe('useHandoverCustomizationChatFallbackSettingsForm', () => {
-    const mockNotify = {
-        success: jest.fn(),
-        error: jest.fn(),
-    }
-
     const mockInitialFormValues = {
         en: { fallbackMessage: undefined },
         fr: { fallbackMessage: undefined },
@@ -97,7 +87,6 @@ describe('useHandoverCustomizationChatFallbackSettingsForm', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        useNotifyMock.mockReturnValue(mockNotify as any)
         ;(getInitialFormValues as jest.Mock).mockReturnValue(
             mockInitialFormValues,
         )
@@ -269,11 +258,12 @@ describe('useHandoverCustomizationChatFallbackSettingsForm', () => {
             expect(mockUpdateMultiLanguageTexts).toHaveBeenCalledWith(
                 expectedMergedMultiLanguageTexts,
             )
-
-            expect(mockNotify.success).toHaveBeenCalledWith(
-                CHANGES_SAVED_SUCCESS,
-            )
         })
+
+        const toastEl = await screen.findByRole('status', {
+            name: CHANGES_SAVED_SUCCESS,
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'success')
     })
     it('should handle error save operation', async () => {
         const expectedMergedMultiLanguageTexts = {
@@ -313,12 +303,13 @@ describe('useHandoverCustomizationChatFallbackSettingsForm', () => {
             expect(mockUpdateMultiLanguageTexts).toHaveBeenCalledWith(
                 expectedMergedMultiLanguageTexts,
             )
-            expect(mockNotify.success).not.toHaveBeenCalled()
-            expect(mockNotify.error).toHaveBeenCalledWith(
-                'Failed to update multi-language texts',
-            )
             expect(result.current.isSaving).toBe(false)
         })
+
+        const toastEl = await screen.findByRole('status', {
+            name: 'Failed to update multi-language texts',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
     it('should reset form values on cancel', () => {
         const { result } = renderHook(() =>

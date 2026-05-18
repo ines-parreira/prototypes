@@ -1,11 +1,11 @@
 import { Form, toFormErrors } from '@repo/forms'
 import { history } from '@repo/routing'
 
+import { toast } from '@gorgias/axiom'
 import { useUpdateBusinessHours } from '@gorgias/helpdesk-queries'
 import type { BusinessHoursDetails } from '@gorgias/helpdesk-types'
 import { validateBusinessHoursUpdate } from '@gorgias/helpdesk-validators'
 
-import { useNotify } from 'hooks/useNotify'
 import FormUnsavedChangesPrompt from 'pages/common/components/FormUnsavedChangesPrompt'
 import {
     SettingsCard,
@@ -33,20 +33,19 @@ type Props = {
 }
 
 export default function EditCustomBusinessHoursForm({ businessHours }: Props) {
-    const notify = useNotify()
     const { clientSideValidation } = useCustomBusinessHoursForm()
 
     const { mutate: updateBusinessHours, isLoading } = useUpdateBusinessHours({
         mutation: {
             onSuccess: (response) => {
-                notify.success(
+                toast.success(
                     `'${response.data.name}' business hours were successfully updated.`,
                 )
 
                 history.push(BUSINESS_HOURS_BASE_URL)
             },
             onError: () => {
-                notify.error(
+                toast.error(
                     "We couldn't save your preferences. Please try again.",
                 )
             },

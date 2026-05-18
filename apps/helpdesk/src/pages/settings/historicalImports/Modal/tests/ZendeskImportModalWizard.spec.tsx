@@ -5,17 +5,12 @@ import userEvent from '@testing-library/user-event'
 
 import { useCreateIntegration } from '@gorgias/helpdesk-queries'
 
-import { useNotify } from 'hooks/useNotify'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { ZendeskImportModalWizard } from '../ZendeskImportModalWizard'
 
 jest.mock('@gorgias/helpdesk-queries', () => ({
     useCreateIntegration: jest.fn(),
-}))
-
-jest.mock('hooks/useNotify', () => ({
-    useNotify: jest.fn(),
 }))
 
 jest.mock('utils', () => ({
@@ -32,8 +27,6 @@ jest.mock('utils', () => ({
 describe('ZendeskImportModalWizard', () => {
     const mockOnClose = jest.fn()
     const mockCreateIntegration = jest.fn()
-    const mockNotifySuccess = jest.fn()
-    const mockNotifyError = jest.fn()
 
     const renderComponent = () => {
         const queryClient = mockQueryClient()
@@ -49,10 +42,6 @@ describe('ZendeskImportModalWizard', () => {
         ;(useCreateIntegration as jest.Mock).mockReturnValue({
             mutate: mockCreateIntegration,
             isLoading: false,
-        })
-        ;(useNotify as jest.Mock).mockReturnValue({
-            success: mockNotifySuccess,
-            error: mockNotifyError,
         })
     })
 

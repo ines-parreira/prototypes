@@ -1,8 +1,11 @@
-import { LegacyBanner as Banner, LegacyButton as Button } from '@gorgias/axiom'
+import {
+    LegacyBanner as Banner,
+    LegacyButton as Button,
+    toast,
+} from '@gorgias/axiom'
 import type { UpdateVoiceQueue, VoiceQueue } from '@gorgias/helpdesk-queries'
 import { useUpdateVoiceQueue } from '@gorgias/helpdesk-queries'
 
-import { useNotify } from 'hooks/useNotify'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
@@ -28,12 +31,10 @@ export default function EditQueueModal({
     onUpdateSuccess,
     queue,
 }: Props) {
-    const notify = useNotify()
-
     const { mutate: updateQueue } = useUpdateVoiceQueue({
         mutation: {
             onSuccess: (response) => {
-                notify.success(
+                toast.success(
                     `'${response.data.name}' queue was successfully updated.`,
                 )
                 if (onUpdateSuccess) {
@@ -42,7 +43,7 @@ export default function EditQueueModal({
                 onClose()
             },
             onError: () => {
-                notify.error(
+                toast.error(
                     "We couldn't save your preferences. Please try again.",
                 )
             },

@@ -21,12 +21,6 @@ const phoneIntegration = integrationsState.integrations.find(
 jest.mock('../VoiceIntegrationSettingsForm', () => () => (
     <div>VoiceIntegrationSettingsForm</div>
 ))
-const mockNotify = {
-    error: jest.fn(),
-}
-jest.mock('hooks/useNotify', () => ({
-    useNotify: () => mockNotify,
-}))
 jest.mock('@gorgias/helpdesk-queries')
 const useGetIntegrationMock = assumeMock(useGetIntegration)
 useGetIntegrationMock.mockReturnValue({
@@ -66,7 +60,7 @@ describe('VoiceIntegrationSettings', () => {
         const { queryByText } = renderComponent({} as RootState)
         expect(queryByText('VoiceIntegrationSettingsForm')).toBeNull()
     })
-    it('should redirect to phone integrations page if get integration fails', () => {
+    it('should redirect to phone integrations page if get integration fails', async () => {
         useGetIntegrationMock.mockReturnValue({
             data: { data: {} },
             isFetching: false,
@@ -74,9 +68,10 @@ describe('VoiceIntegrationSettings', () => {
         } as any)
         const { queryByText } = renderComponent({} as RootState)
         expect(queryByText('VoiceIntegrationSettingsForm')).toBeNull()
-        expect(mockNotify.error).toHaveBeenCalledWith(
-            'Failed to fetch integration',
-        )
+        const toastEl = await screen.findByRole('status', {
+            name: 'Failed to fetch integration',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         expect(screen.getByLabelText('Current path')).toHaveTextContent(
             PHONE_INTEGRATION_BASE_URL,
         )

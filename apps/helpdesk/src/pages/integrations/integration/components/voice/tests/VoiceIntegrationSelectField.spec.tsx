@@ -30,13 +30,6 @@ const useInfiniteListVoiceIntegrationsMock = assumeMock(
 jest.mock('pages/integrations/integration/components/phone/usePhoneNumbers')
 const usePhoneNumbersMock = assumeMock(usePhoneNumbers)
 
-const mockNotify = {
-    error: jest.fn(),
-}
-jest.mock('hooks/useNotify', () => ({
-    useNotify: () => mockNotify,
-}))
-
 const useGetIntegrationMock = assumeMock(useGetIntegration)
 
 const handleChange = jest.fn()

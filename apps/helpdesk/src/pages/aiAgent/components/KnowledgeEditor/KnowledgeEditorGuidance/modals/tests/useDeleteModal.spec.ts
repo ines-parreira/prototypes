@@ -1,17 +1,12 @@
 import { renderHook } from '@repo/testing'
-import { act } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 
-import { useNotify } from 'hooks/useNotify'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 import type { GuidanceArticle } from 'pages/aiAgent/types'
 
 import { useGuidanceContext } from '../../context'
 import type { GuidanceState } from '../../context/types'
 import { useDeleteModal } from '../useDeleteModal'
-
-jest.mock('hooks/useNotify', () => ({
-    useNotify: jest.fn(),
-}))
 
 jest.mock('pages/aiAgent/hooks/useGuidanceArticleMutation', () => ({
     useGuidanceArticleMutation: jest.fn(),
@@ -23,7 +18,6 @@ jest.mock('../../context', () => ({
 
 describe('useDeleteModal', () => {
     const mockDispatch = jest.fn()
-    const mockNotifyError = jest.fn()
     const mockDeleteGuidanceArticle = jest.fn()
     const mockOnClose = jest.fn()
     const mockOnDeleteFn = jest.fn()
@@ -75,9 +69,6 @@ describe('useDeleteModal', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        ;(useNotify as jest.Mock).mockReturnValue({
-            error: mockNotifyError,
-        })
         ;(useGuidanceArticleMutation as jest.Mock).mockReturnValue({
             deleteGuidanceArticle: mockDeleteGuidanceArticle,
         })
@@ -267,9 +258,10 @@ describe('useDeleteModal', () => {
                 await result.current.onDelete()
             })
 
-            expect(mockNotifyError).toHaveBeenCalledWith(
-                'An error occurred while deleting guidance.',
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'An error occurred while deleting guidance.',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
 
         it('should not call onDeleteFn on failure', async () => {

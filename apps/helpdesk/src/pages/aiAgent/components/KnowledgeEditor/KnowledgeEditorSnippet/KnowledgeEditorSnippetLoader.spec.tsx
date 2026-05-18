@@ -11,11 +11,6 @@ import { SnippetType } from 'pages/aiAgent/KnowledgeHub/types'
 
 import { KnowledgeEditorSnippetLoader } from './KnowledgeEditorSnippetLoader'
 
-const mockNotifyError = jest.fn()
-jest.mock('hooks/useNotify', () => ({
-    useNotify: () => ({ error: mockNotifyError }),
-}))
-
 jest.mock('models/api/types', () => ({
     ...jest.requireActual('models/api/types'),
     isGorgiasApiError: jest.fn(),
@@ -124,7 +119,6 @@ describe('KnowledgeEditorSnippetLoader', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        mockNotifyError.mockClear()
 
         mockedFetchResourceMetrics.mockReturnValue({
             isLoading: false,
@@ -891,10 +885,11 @@ describe('KnowledgeEditorSnippetLoader', () => {
                 },
             )
 
+            const toastEl = await screen.findByRole('status', {
+                name: 'This snippet is no longer available. It may have been deleted.',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
             await waitFor(() => {
-                expect(mockNotifyError).toHaveBeenCalledWith(
-                    'This snippet is no longer available. It may have been deleted.',
-                )
                 expect(onClose).toHaveBeenCalled()
             })
         })
@@ -942,10 +937,11 @@ describe('KnowledgeEditorSnippetLoader', () => {
                 },
             )
 
+            const toastEl = await screen.findByRole('status', {
+                name: 'Unable to load this snippet. Please try again or contact support.',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
             await waitFor(() => {
-                expect(mockNotifyError).toHaveBeenCalledWith(
-                    'Unable to load this snippet. Please try again or contact support.',
-                )
                 expect(onClose).toHaveBeenCalled()
             })
         })
@@ -984,10 +980,11 @@ describe('KnowledgeEditorSnippetLoader', () => {
                 },
             )
 
+            const toastEl = await screen.findByRole('status', {
+                name: 'Unable to load this snippet. Please try again or contact support.',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
             await waitFor(() => {
-                expect(mockNotifyError).toHaveBeenCalledWith(
-                    'Unable to load this snippet. Please try again or contact support.',
-                )
                 expect(onClose).toHaveBeenCalled()
             })
         })
@@ -1047,7 +1044,7 @@ describe('KnowledgeEditorSnippetLoader', () => {
                 },
             )
 
-            expect(mockNotifyError).not.toHaveBeenCalled()
+            expect(screen.queryByRole('status')).not.toBeInTheDocument()
         })
 
         it('does not show error notification when error is null', () => {
@@ -1105,7 +1102,7 @@ describe('KnowledgeEditorSnippetLoader', () => {
                 },
             )
 
-            expect(mockNotifyError).not.toHaveBeenCalled()
+            expect(screen.queryByRole('status')).not.toBeInTheDocument()
         })
     })
 })

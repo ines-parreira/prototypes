@@ -1,5 +1,5 @@
 import { assumeMock, render } from '@repo/testing'
-import { fireEvent, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { uploadCustomVoiceRecording } from '@gorgias/helpdesk-client'
 import {
@@ -31,14 +31,6 @@ assumeMock(useVoiceMessageValidation).mockReturnValue({
     areVoiceMessagesTheSame: jest.fn(),
     areWaitMusicPreferencesTheSame: jest.fn(),
 })
-
-const mockNotify = {
-    success: jest.fn(),
-    error: jest.fn(),
-}
-jest.mock('hooks/useNotify', () => ({
-    useNotify: () => mockNotify,
-}))
 
 describe('<WaitMusicField />', () => {
     const onChange: jest.MockedFunction<
@@ -200,11 +192,10 @@ describe('<WaitMusicField />', () => {
             fireEvent.change(input, { target: { files: [file] } })
         }
 
-        await waitFor(() => {
-            expect(mockNotify.error).toHaveBeenCalledWith(
-                'Failed to upload custom recording',
-            )
+        const toastEl = await screen.findByRole('status', {
+            name: 'Failed to upload custom recording',
         })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
 
     it('should allow uploading a custom recording - DEPRECATED', async () => {

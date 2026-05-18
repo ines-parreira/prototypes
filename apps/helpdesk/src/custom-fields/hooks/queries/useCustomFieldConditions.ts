@@ -1,3 +1,6 @@
+import { useEffect } from 'react'
+
+import { toast } from '@gorgias/axiom'
 import type { CustomFieldCondition } from '@gorgias/helpdesk-queries'
 import {
     queryKeys,
@@ -5,7 +8,6 @@ import {
 } from '@gorgias/helpdesk-queries'
 
 import type { CustomFieldObjectTypes } from 'custom-fields/types'
-import { useNotify } from 'hooks/useNotify'
 
 export const STALE_TIME_MS = 60 * 60 * 1000 // 1 hour
 export const MAX_CONDITIONS = 100 // The limit of conditions is 70, so we get the maximum of what API returns by default
@@ -27,8 +29,6 @@ export const useCustomFieldConditions = ({
     isLoading: boolean
     isError: boolean
 } => {
-    const { error } = useNotify()
-
     const {
         data: { data: { data: customFieldConditions = [] } = {} } = {},
         isLoading,
@@ -53,9 +53,11 @@ export const useCustomFieldConditions = ({
         },
     )
 
-    if (isError) {
-        void error('Failed to fetch ticket custom fields conditions')
-    }
+    useEffect(() => {
+        if (isError) {
+            toast.error('Failed to fetch ticket custom fields conditions')
+        }
+    }, [isError])
 
     return { customFieldConditions, isLoading, isError }
 }

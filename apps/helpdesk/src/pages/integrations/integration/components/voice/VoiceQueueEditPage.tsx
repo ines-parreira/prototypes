@@ -2,14 +2,13 @@ import { useEffect } from 'react'
 
 import { Link, useHistory, useParams } from 'react-router-dom'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 import type { UpdateVoiceQueue } from '@gorgias/helpdesk-queries'
 import {
     useGetVoiceQueue,
     useUpdateVoiceQueue,
 } from '@gorgias/helpdesk-queries'
 
-import { useNotify } from 'hooks/useNotify'
 import Loader from 'pages/common/components/Loader/Loader'
 import SettingsContent from 'pages/settings/SettingsContent'
 import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
@@ -27,7 +26,6 @@ export default function VoiceQueueEditPage() {
     const history = useHistory()
     const { id: idParam } = useParams<{ id: string }>()
     const id = Number(idParam)
-    const notify = useNotify()
 
     const {
         data: queue,
@@ -46,13 +44,13 @@ export default function VoiceQueueEditPage() {
     const { mutate: updateQueue } = useUpdateVoiceQueue({
         mutation: {
             onSuccess: (response) => {
-                notify.success(
+                toast.success(
                     `'${response.data.name}' queue was successfully updated.`,
                 )
                 history.push(`${PHONE_INTEGRATION_BASE_URL}/queues`)
             },
             onError: () => {
-                notify.error(
+                toast.error(
                     "We couldn't save your preferences. Please try again.",
                 )
             },
@@ -61,12 +59,12 @@ export default function VoiceQueueEditPage() {
 
     useEffect(() => {
         if (isError) {
-            notify.error(
+            toast.error(
                 'Something went wrong while fetching the queue. Please try again.',
             )
             history.push(`${PHONE_INTEGRATION_BASE_URL}/queues`)
         }
-    }, [history, isError, notify])
+    }, [history, isError])
 
     const handleSubmit = async (values: UpdateVoiceQueue) => {
         updateQueue({ pk: id, data: values })

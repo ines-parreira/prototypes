@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
 
-import { useNotify } from 'hooks/useNotify'
+import { toast } from '@gorgias/axiom'
+
 import { useUpdateArticleTranslation } from 'models/helpCenter/mutations'
 
 import { useVersionHistoryTracking } from '../../shared/useVersionHistoryTracking/useVersionHistoryTracking'
@@ -8,7 +9,6 @@ import { useArticleContext } from '../context'
 
 export const useRestoreVersionModal = () => {
     const { state, dispatch, config } = useArticleContext()
-    const { error: notifyError, success: notifySuccess } = useNotify()
 
     const { helpCenter, onUpdatedFn } = config
 
@@ -60,7 +60,7 @@ export const useRestoreVersionModal = () => {
                 })
                 dispatch({ type: 'CLEAR_HISTORICAL_VERSION' })
                 dispatch({ type: 'SET_MODE', payload: 'read' })
-                notifySuccess('Version restored as draft.')
+                toast.success('Version restored as draft.')
                 onVersionRestored({
                     versionId: state.historicalVersion.versionId,
                     versionNumber: state.historicalVersion.version,
@@ -70,7 +70,7 @@ export const useRestoreVersionModal = () => {
                 onUpdatedFn?.()
             }
         } catch {
-            notifyError('An error occurred while restoring version.')
+            toast.error('An error occurred while restoring version.')
         } finally {
             dispatch({ type: 'SET_UPDATING', payload: false })
             dispatch({ type: 'CLOSE_MODAL' })
@@ -82,8 +82,6 @@ export const useRestoreVersionModal = () => {
         state.currentLocale,
         helpCenter.id,
         dispatch,
-        notifySuccess,
-        notifyError,
         onUpdatedFn,
         onVersionRestored,
     ])

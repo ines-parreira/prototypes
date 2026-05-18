@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useRef } from 'react'
 
-import { useNotify } from 'hooks/useNotify'
+import { toast } from '@gorgias/axiom'
+
 import { useUpdateArticleTranslation } from 'models/helpCenter/mutations'
 
 import { useArticleContext } from '../context'
 
 export const usePublishModal = () => {
     const { state, dispatch, config } = useArticleContext()
-    const { error: notifyError, success: notifySuccess } = useNotify()
 
     const { helpCenter, onUpdatedFn } = config
 
@@ -48,11 +48,11 @@ export const usePublishModal = () => {
                         },
                     })
                     dispatch({ type: 'SET_MODE', payload: 'read' })
-                    notifySuccess('Article published successfully.')
+                    toast.success('Article published successfully.')
                     onUpdatedFn?.()
                 }
             } catch {
-                notifyError('An error occurred while publishing the article.')
+                toast.error('An error occurred while publishing the article.')
             } finally {
                 dispatch({ type: 'SET_UPDATING', payload: false })
                 dispatch({ type: 'CLOSE_MODAL' })
@@ -64,8 +64,6 @@ export const usePublishModal = () => {
             state.currentLocale,
             updateTranslationMutation,
             dispatch,
-            notifySuccess,
-            notifyError,
             onUpdatedFn,
         ],
     )

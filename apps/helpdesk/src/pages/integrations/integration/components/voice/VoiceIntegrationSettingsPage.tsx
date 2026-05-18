@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import { Form, toFormErrors } from '@repo/forms'
 import { useHistory, useParams } from 'react-router-dom'
 
+import { toast } from '@gorgias/axiom'
 import type {
     PhoneIntegration,
     UpdateAllPhoneIntegrationSettings,
@@ -10,7 +11,6 @@ import type {
 import { useGetIntegration } from '@gorgias/helpdesk-queries'
 import { validateUpdateAllPhoneIntegrationSettings } from '@gorgias/helpdesk-validators'
 
-import { useNotify } from 'hooks/useNotify'
 import { isPhoneIntegration } from 'models/integration/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import SettingsContent from 'pages/settings/SettingsContent'
@@ -27,14 +27,13 @@ function VoiceIntegrationSettingsPage() {
     const { isFetching, data, isError } = useGetIntegration(id, {
         query: { refetchOnWindowFocus: false },
     })
-    const notify = useNotify()
 
     useEffect(() => {
         if (isError) {
-            notify.error('Failed to fetch integration')
+            toast.error('Failed to fetch integration')
             history.push(PHONE_INTEGRATION_BASE_URL)
         }
-    }, [history, isError, notify])
+    }, [history, isError])
 
     if (isFetching) {
         return <Loader />

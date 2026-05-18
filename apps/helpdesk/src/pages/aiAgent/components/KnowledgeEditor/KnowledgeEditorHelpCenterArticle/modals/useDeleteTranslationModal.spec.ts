@@ -1,7 +1,6 @@
 import { renderHook } from '@repo/testing'
-import { act, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 
-import { useNotify } from 'hooks/useNotify'
 import { useDeleteArticleTranslation } from 'models/helpCenter/mutations'
 import type { LocaleCode } from 'models/helpCenter/types'
 import type { OptionItem as LocaleOption } from 'pages/settings/helpCenter/components/articles/ArticleLanguageSelect'
@@ -9,10 +8,6 @@ import type { OptionItem as LocaleOption } from 'pages/settings/helpCenter/compo
 import { useArticleContext } from '../context/ArticleContext'
 import type { ArticleContextValue, ModalType } from '../context/types'
 import { useDeleteTranslationModal } from './useDeleteTranslationModal'
-
-jest.mock('hooks/useNotify', () => ({
-    useNotify: jest.fn(),
-}))
 
 jest.mock('models/helpCenter/mutations', () => ({
     useDeleteArticleTranslation: jest.fn(),
@@ -22,13 +17,11 @@ jest.mock('../context/ArticleContext', () => ({
     useArticleContext: jest.fn(),
 }))
 
-const mockUseNotify = useNotify as jest.Mock
 const mockUseDeleteArticleTranslation = useDeleteArticleTranslation as jest.Mock
 const mockUseArticleContext = useArticleContext as jest.Mock
 
 describe('useDeleteTranslationModal', () => {
     let mockDispatch: jest.Mock
-    let mockNotifyError: jest.Mock
     let mockDeleteTranslationMutateAsync: jest.Mock
     let mockOnClose: jest.Mock
     let mockOnDeletedFn: jest.Mock
@@ -128,15 +121,10 @@ describe('useDeleteTranslationModal', () => {
         jest.clearAllMocks()
 
         mockDispatch = jest.fn()
-        mockNotifyError = jest.fn()
         mockDeleteTranslationMutateAsync = jest.fn()
         mockOnClose = jest.fn()
         mockOnDeletedFn = jest.fn()
 
-        mockUseNotify.mockReturnValue({
-            error: mockNotifyError,
-            success: jest.fn(),
-        })
         mockUseDeleteArticleTranslation.mockReturnValue({
             mutateAsync: mockDeleteTranslationMutateAsync,
         })
@@ -470,9 +458,10 @@ describe('useDeleteTranslationModal', () => {
                     await result.current.onDelete()
                 })
 
-                expect(mockNotifyError).toHaveBeenCalledWith(
-                    'An error occurred while deleting the translation.',
-                )
+                const toastEl = await screen.findByRole('status', {
+                    name: 'An error occurred while deleting the translation.',
+                })
+                expect(toastEl).toHaveAttribute('data-intent', 'destructive')
             })
 
             it('should not call onDeletedFn or onClose when delete fails', async () => {

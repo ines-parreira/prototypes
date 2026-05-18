@@ -18,15 +18,6 @@ jest.mock('../../hooks/useAiAgentNavigation', () => ({
     })),
 }))
 
-jest.mock('hooks/useNotify', () => ({
-    useNotify: jest.fn(() => ({
-        error: jest.fn(),
-        success: jest.fn(),
-        info: jest.fn(),
-        warning: jest.fn(),
-    })),
-}))
-
 describe('useKnowledgeHubUrlParams', () => {
     const TEST_SHOP_NAME = 'test-shop'
     const mockTableData: GroupedKnowledgeItem[] = [

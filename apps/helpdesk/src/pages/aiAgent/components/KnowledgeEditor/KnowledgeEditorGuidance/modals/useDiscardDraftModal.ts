@@ -1,13 +1,13 @@
 import { useCallback } from 'react'
 
-import { useNotify } from 'hooks/useNotify'
+import { toast } from '@gorgias/axiom'
+
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 
 import { fromArticleTranslationResponse, useGuidanceContext } from '../context'
 
 export const useDiscardDraftModal = () => {
     const { state, dispatch, config } = useGuidanceContext()
-    const { error: notifyError, success: notifySuccess } = useNotify()
 
     const { discardGuidanceDraft } = useGuidanceArticleMutation({
         guidanceHelpCenterId: config.guidanceHelpCenter?.id ?? 0,
@@ -24,7 +24,7 @@ export const useDiscardDraftModal = () => {
                 config.guidanceHelpCenter.default_locale,
             )
             config.onUpdateFn?.()
-            notifySuccess('Draft discarded')
+            toast.success('Draft discarded')
 
             // The API returns the current version if one exists, otherwise the article is deleted entirely.
             if (response && 'title' in response) {
@@ -38,19 +38,12 @@ export const useDiscardDraftModal = () => {
                 config.onClose()
             }
         } catch {
-            notifyError('An error occurred while discarding draft.')
+            toast.error('An error occurred while discarding draft.')
         } finally {
             dispatch({ type: 'SET_UPDATING', payload: false })
             dispatch({ type: 'CLOSE_MODAL' })
         }
-    }, [
-        discardGuidanceDraft,
-        state.guidance?.id,
-        config,
-        dispatch,
-        notifySuccess,
-        notifyError,
-    ])
+    }, [discardGuidanceDraft, state.guidance?.id, config, dispatch])
 
     return {
         isOpen: state.activeModal === 'discard',

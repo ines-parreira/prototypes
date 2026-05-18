@@ -95,13 +95,6 @@ assumeMock(useVoiceFlowForm).mockReturnValue({
     onSubmit: mockOnSubmit,
 })
 
-const mockNotify = {
-    warning: jest.fn(),
-}
-jest.mock('hooks/useNotify', () => ({
-    useNotify: () => mockNotify,
-}))
-
 const wrapper = ({
     children,
     integration = mockIntegration,
@@ -220,7 +213,7 @@ describe('VoiceFlowForm', () => {
         })
     })
 
-    it('should call notifyWarning when record_inbound_calls is enabled and no PlayMessage step exists', () => {
+    it('should call notifyWarning when record_inbound_calls is enabled and no PlayMessage step exists', async () => {
         const enqueueStep = mockEnqueueStep()
         const flowWithoutPlayMessage: CallRoutingFlow = {
             first_step_id: enqueueStep.id,
@@ -238,9 +231,10 @@ describe('VoiceFlowForm', () => {
             </VoiceFlowForm>,
         )
 
-        expect(mockNotify.warning).toHaveBeenCalledWith(
-            'Call recording is enabled for inbound calls. To ensure transparency, consider adding a recording notification to your welcome message.',
-        )
+        const toastEl = await screen.findByRole('status', {
+            name: 'Call recording is enabled for inbound calls. To ensure transparency, consider adding a recording notification to your welcome message.',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'warning')
     })
 
     it('should not call notifyWarning when record_inbound_calls is disabled', () => {
@@ -263,7 +257,7 @@ describe('VoiceFlowForm', () => {
             </VoiceFlowForm>,
         )
 
-        expect(mockNotify.warning).not.toHaveBeenCalled()
+        expect(screen.queryByRole('status')).not.toBeInTheDocument()
     })
 
     it('should not call notifyWarning when PlayMessage step exists even with recording enabled', () => {
@@ -276,17 +270,20 @@ describe('VoiceFlowForm', () => {
             </VoiceFlowForm>,
         )
 
-        expect(mockNotify.warning).not.toHaveBeenCalled()
+        expect(screen.queryByRole('status')).not.toBeInTheDocument()
     })
 
-    it('should call notifyWarning when no steps exist even with recording enabled', () => {
+    it('should call notifyWarning when no steps exist even with recording enabled', async () => {
         render(
             <VoiceFlowForm integration={integrationWithRecording}>
                 <div>Flow Form Content</div>
             </VoiceFlowForm>,
         )
 
-        expect(mockNotify.warning).toHaveBeenCalled()
+        const toastEl = await screen.findByRole('status', {
+            name: 'Call recording is enabled for inbound calls. To ensure transparency, consider adding a recording notification to your welcome message.',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'warning')
     })
 
     it('should handle unexpected errors during validation', async () => {

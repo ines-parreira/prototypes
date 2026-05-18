@@ -1,13 +1,13 @@
 import { useCallback } from 'react'
 
-import { useNotify } from 'hooks/useNotify'
+import { toast } from '@gorgias/axiom'
+
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 
 import { useGuidanceContext } from '../context'
 
 export const useDeleteModal = () => {
     const { state, dispatch, config } = useGuidanceContext()
-    const { error: notifyError } = useNotify()
 
     const { deleteGuidanceArticle } = useGuidanceArticleMutation({
         guidanceHelpCenterId: config.guidanceHelpCenter?.id ?? 0,
@@ -21,19 +21,13 @@ export const useDeleteModal = () => {
             await deleteGuidanceArticle(state.guidance.id)
             config.onDeleteFn?.()
         } catch {
-            notifyError('An error occurred while deleting guidance.')
+            toast.error('An error occurred while deleting guidance.')
         } finally {
             dispatch({ type: 'SET_UPDATING', payload: false })
             dispatch({ type: 'CLOSE_MODAL' })
             config.onClose?.()
         }
-    }, [
-        deleteGuidanceArticle,
-        state.guidance?.id,
-        config,
-        dispatch,
-        notifyError,
-    ])
+    }, [deleteGuidanceArticle, state.guidance?.id, config, dispatch])
 
     const hasBothVersions =
         !!state.guidance?.publishedVersionId &&

@@ -2,10 +2,9 @@ import { useCallback, useEffect, useMemo } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 
-import { Box } from '@gorgias/axiom'
+import { Box, toast } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { useNotify } from 'hooks/useNotify'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
@@ -45,7 +44,6 @@ export default function ImportMetafieldContent({
     } = useFieldSelection()
 
     const { mutateAsync: importMetafields } = useImportMetafields()
-    const { success, error } = useNotify()
 
     const categoriesWithCount = useMemo(
         () =>
@@ -75,19 +73,19 @@ export default function ImportMetafieldContent({
                     allSelectedFields.length,
                 )
                 if (notification.type === 'success') {
-                    await success(notification.message)
+                    toast.success(notification.message)
                 } else {
-                    await error(notification.message)
+                    toast.error(notification.message)
                 }
 
                 onClose()
             } catch {
-                error(
+                toast.error(
                     'There was an issue adding your Shopify metafields to Gorgias. Please try again.',
                 )
             }
         }
-    }, [allSelectedFields, importMetafields, success, error, onClose])
+    }, [allSelectedFields, importMetafields, onClose])
 
     const accountId = useAppSelector(getCurrentAccountId)
     const userId = useAppSelector(getCurrentUserId)

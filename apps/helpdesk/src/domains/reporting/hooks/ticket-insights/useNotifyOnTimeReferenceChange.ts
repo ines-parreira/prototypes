@@ -1,7 +1,8 @@
 import { useUpdateEffect } from '@repo/hooks'
 
+import { toast } from '@gorgias/axiom'
+
 import { TicketTimeReference } from 'domains/reporting/models/stat/types'
-import { useNotify } from 'hooks/useNotify'
 
 export enum ReportName {
     Tags = 'tags',
@@ -35,14 +36,12 @@ export const useNotifyOnTimeReferenceChange = (
     reportName: ReportName,
     ticketTimeReference: TicketTimeReference,
 ) => {
-    const notify = useNotify()
-
     useUpdateEffect(() => {
         const message = createNotificationMessage(
             reportName,
             ticketTimeReference,
         )
 
-        notify.success(message)
-    }, [notify, reportName, ticketTimeReference])
+        toast.success(message)
+    }, [reportName, ticketTimeReference])
 }

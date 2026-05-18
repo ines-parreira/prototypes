@@ -1,8 +1,7 @@
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 import type { CreateVoiceQueue } from '@gorgias/helpdesk-queries'
 import { useCreateVoiceQueues } from '@gorgias/helpdesk-queries'
 
-import { useNotify } from 'hooks/useNotify'
 import LearnMoreLink from 'pages/common/components/LearnMore/LearnMoreLink'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
@@ -27,11 +26,10 @@ export default function CreateNewQueueModal({
     onClose,
     onCreateSuccess,
 }: Props) {
-    const notify = useNotify()
     const { mutate: createQueue } = useCreateVoiceQueues({
         mutation: {
             onSuccess: (response) => {
-                notify.success(
+                toast.success(
                     `'${response.data.name}' queue was successfully created.`,
                 )
 
@@ -39,7 +37,7 @@ export default function CreateNewQueueModal({
                 onClose()
             },
             onError: () => {
-                notify.error(
+                toast.error(
                     "We couldn't save your preferences. Please try again.",
                 )
             },

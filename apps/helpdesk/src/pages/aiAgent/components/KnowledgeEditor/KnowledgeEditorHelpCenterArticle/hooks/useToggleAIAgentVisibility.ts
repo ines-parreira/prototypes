@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
 
-import { useNotify } from 'hooks/useNotify'
+import { toast } from '@gorgias/axiom'
+
 import { useUpdateArticleTranslation } from 'models/helpCenter/mutations'
 import { VisibilityStatusEnum } from 'models/helpCenter/types'
 
@@ -9,7 +10,6 @@ import { useArticleContext } from '../context/ArticleContext'
 export const useToggleAIAgentVisibility = () => {
     const { state, dispatch, config } = useArticleContext()
     const { helpCenter, onUpdatedFn } = config
-    const { error: notifyError, success: notifySuccess } = useNotify()
 
     const { mutateAsync: updateTranslationMutation } =
         useUpdateArticleTranslation(helpCenter.id)
@@ -51,14 +51,14 @@ export const useToggleAIAgentVisibility = () => {
                     },
                 })
                 onUpdatedFn?.()
-                notifySuccess(
+                toast.success(
                     newStatus === VisibilityStatusEnum.PUBLIC
                         ? 'Content enabled for AI Agent.'
                         : 'Content disabled for AI Agent.',
                 )
             }
         } catch {
-            notifyError('An error occurred while updating AI Agent visibility.')
+            toast.error('An error occurred while updating AI Agent visibility.')
         } finally {
             dispatch({ type: 'SET_UPDATING', payload: false })
         }
@@ -72,8 +72,6 @@ export const useToggleAIAgentVisibility = () => {
         updateTranslationMutation,
         dispatch,
         onUpdatedFn,
-        notifyError,
-        notifySuccess,
     ])
 
     return { toggleAIAgentVisibility }

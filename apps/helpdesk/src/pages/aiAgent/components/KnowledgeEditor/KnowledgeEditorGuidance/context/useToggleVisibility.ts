@@ -2,7 +2,8 @@ import { useCallback, useState } from 'react'
 
 import { useShallow } from 'zustand/react/shallow'
 
-import { useNotify } from 'hooks/useNotify'
+import { toast } from '@gorgias/axiom'
+
 import { isGorgiasApiError } from 'models/api/types'
 import { VisibilityStatusEnum } from 'models/helpCenter/types'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
@@ -144,7 +145,6 @@ const extractVisibilityConflictPayload = (error: unknown) => {
 }
 
 export const useToggleVisibility = () => {
-    const { error: notifyError } = useNotify()
     const [visibilityConflict, setVisibilityConflict] =
         useState<VisibilityConflictState>(EMPTY_VISIBILITY_CONFLICT_STATE)
 
@@ -225,7 +225,7 @@ export const useToggleVisibility = () => {
 
         // Prevent enabling if at limit
         if (newVisibility === VisibilityStatusEnum.PUBLIC && isAtLimit) {
-            notifyError(limitMessage)
+            toast.error(limitMessage)
             return
         }
 
@@ -245,7 +245,7 @@ export const useToggleVisibility = () => {
                     Array.isArray(conflicts) && conflicts.length > 0
 
                 if (!hasStructuredConflicts) {
-                    notifyError('An error occurred while updating visibility.')
+                    toast.error('An error occurred while updating visibility.')
                     return
                 }
 
@@ -262,7 +262,7 @@ export const useToggleVisibility = () => {
                 ]
 
                 if (conflictingGuidances.length === 0) {
-                    notifyError('An error occurred while updating visibility.')
+                    toast.error('An error occurred while updating visibility.')
                     return
                 }
 
@@ -275,7 +275,7 @@ export const useToggleVisibility = () => {
                 return
             }
 
-            notifyError('An error occurred while updating visibility.')
+            toast.error('An error occurred while updating visibility.')
         } finally {
             dispatch({ type: 'SET_UPDATING', payload: false })
         }
@@ -286,7 +286,6 @@ export const useToggleVisibility = () => {
         applyVisibilityUpdate,
         isAtLimit,
         limitMessage,
-        notifyError,
         visibility,
     ])
 
@@ -350,7 +349,7 @@ export const useToggleVisibility = () => {
                 setVisibilityConflict(EMPTY_VISIBILITY_CONFLICT_STATE)
             }
         } catch {
-            notifyError('An error occurred while rebasing guidance visibility.')
+            toast.error('An error occurred while rebasing guidance visibility.')
         } finally {
             dispatch({ type: 'SET_UPDATING', payload: false })
         }
@@ -363,7 +362,6 @@ export const useToggleVisibility = () => {
         getGuidanceArticleTranslation,
         updateGuidanceArticle,
         applyVisibilityUpdate,
-        notifyError,
     ])
 
     return {

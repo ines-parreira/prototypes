@@ -1,10 +1,9 @@
 import { Link, useHistory } from 'react-router-dom'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 import type { CreateVoiceQueue } from '@gorgias/helpdesk-queries'
 import { useCreateVoiceQueues } from '@gorgias/helpdesk-queries'
 
-import { useNotify } from 'hooks/useNotify'
 import SettingsContent from 'pages/settings/SettingsContent'
 import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
 
@@ -17,18 +16,17 @@ import css from './VoiceQueueCreatePage.less'
 
 export default function VoiceQueueCreatePage() {
     const history = useHistory()
-    const notify = useNotify()
     const { mutate: createQueue } = useCreateVoiceQueues({
         mutation: {
             onSuccess: (response) => {
-                notify.success(
+                toast.success(
                     `'${response.data.name}' queue was successfully created.`,
                 )
 
                 history.push(`${PHONE_INTEGRATION_BASE_URL}/queues`)
             },
             onError: () => {
-                notify.error(
+                toast.error(
                     "We couldn't save your preferences. Please try again.",
                 )
             },

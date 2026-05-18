@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { reportError } from '@repo/logging'
 import { useHistory, useLocation } from 'react-router-dom'
 
-import { useNotify } from 'hooks/useNotify'
+import { toast } from '@gorgias/axiom'
 
 import { useAiAgentNavigation } from '../../hooks/useAiAgentNavigation'
 import type { GroupedKnowledgeItem, KnowledgeType } from '../types'
@@ -134,7 +134,6 @@ export function useKnowledgeHubUrlParams(
         },
     )
 
-    const { error: notifyError } = useNotify()
     const hasShownFolderNotFoundError = useRef(false)
     const prevFolderParamRef = useRef<string | null>(null)
     const lastPushedUrlRef = useRef<string>('')
@@ -231,7 +230,7 @@ export function useKnowledgeHubUrlParams(
                 // Only show error notification when NOT viewing an article/snippet
                 // When viewing an article, silently clear folder param to avoid double error messages
                 if (!isViewingArticle && !hasShownFolderNotFoundError.current) {
-                    notifyError(
+                    toast.error(
                         'This folder is no longer available. It may have been deleted.',
                     )
                     hasShownFolderNotFoundError.current = true
@@ -269,7 +268,6 @@ export function useKnowledgeHubUrlParams(
         location.search,
         tableData,
         location.pathname,
-        notifyError,
         removeFolderParamFromUrl,
     ])
 

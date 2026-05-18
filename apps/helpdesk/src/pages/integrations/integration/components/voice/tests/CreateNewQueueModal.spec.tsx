@@ -10,14 +10,6 @@ import CreateNewQueueModal from '../CreateNewQueueModal'
 jest.mock('@gorgias/helpdesk-client')
 const createVoiceQueuesMock = assumeMock(createVoiceQueues)
 
-const mockNotify = {
-    success: jest.fn(),
-    error: jest.fn(),
-}
-jest.mock('hooks/useNotify', () => ({
-    useNotify: () => mockNotify,
-}))
-
 jest.mock('../CreateEditQueueModalFormContent', () => () => (
     <div data-testid="modal-form-content">CreateEditQueueModalFormContent</div>
 ))
@@ -77,10 +69,11 @@ describe('CreateNewQueueModal', () => {
             fireEvent.click(screen.getByText('Create queue'))
         })
 
+        const toastEl = await screen.findByRole('status', {
+            name: "'Test Queue' queue was successfully created.",
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'success')
         await waitFor(() => {
-            expect(mockNotify.success).toHaveBeenCalledWith(
-                "'Test Queue' queue was successfully created.",
-            )
             expect(mockOnCreateSuccess).toHaveBeenCalledWith(123)
             expect(mockOnClose).toHaveBeenCalled()
         })
@@ -95,11 +88,10 @@ describe('CreateNewQueueModal', () => {
             fireEvent.click(screen.getByText('Create queue'))
         })
 
-        await waitFor(() => {
-            expect(mockNotify.error).toHaveBeenCalledWith(
-                "We couldn't save your preferences. Please try again.",
-            )
+        const toastEl = await screen.findByRole('status', {
+            name: "We couldn't save your preferences. Please try again.",
         })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
 
     it('calls onClose when cancel button is clicked', async () => {

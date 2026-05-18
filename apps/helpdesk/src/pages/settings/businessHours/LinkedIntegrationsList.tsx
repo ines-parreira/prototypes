@@ -2,10 +2,9 @@ import { useEffect, useMemo } from 'react'
 
 import _flatten from 'lodash/flatten'
 
-import { Box, LegacyLabel as Label } from '@gorgias/axiom'
+import { Box, LegacyLabel as Label, toast } from '@gorgias/axiom'
 
 import useInfiniteListBusinessHoursIntegrations from 'hooks/businessHours/useInfiniteListBusinessHoursIntegrations'
-import { useNotify } from 'hooks/useNotify'
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 import SourceIcon from 'pages/common/components/SourceIcon'
 
@@ -20,7 +19,6 @@ export default function LinkedIntegrationsList({ businessHoursId }: Props) {
         useInfiniteListBusinessHoursIntegrations(businessHoursId, undefined, {
             staleTime: 15_000,
         })
-    const notify = useNotify()
 
     const integrations = useMemo(
         () => _flatten(data?.pages.map((page) => page.data.data)),
@@ -29,9 +27,9 @@ export default function LinkedIntegrationsList({ businessHoursId }: Props) {
 
     useEffect(() => {
         if (isError) {
-            notify.error('There was an error while fetching integrations')
+            toast.error('There was an error while fetching integrations')
         }
-    }, [isError, notify])
+    }, [isError])
 
     return (
         <Box gap="xs" flexDirection="column" className={css.container}>

@@ -1,6 +1,6 @@
 import { renderHook } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
-import { useNotify } from 'hooks/useNotify'
 import { IntegrationType } from 'models/integration/constants'
 import type {
     EmailIntegration,
@@ -9,12 +9,6 @@ import type {
 
 import type { ChannelChange, ChannelWithMetadata } from '../../../../types'
 import { useNotifications } from '../useNotifications'
-
-jest.mock('hooks/useNotify')
-
-const mockSuccess = jest.fn()
-const mockError = jest.fn()
-const mockWarning = jest.fn()
 
 const mockEmailIntegration: EmailIntegration = {
     id: 1,
@@ -56,39 +50,34 @@ const mockChannels: ChannelWithMetadata[] = [
 describe('useNotifications', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        ;(useNotify as jest.Mock).mockReturnValue({
-            success: mockSuccess,
-            error: mockError,
-            warning: mockWarning,
-        })
     })
 
-    it('should show success message when there are no errors', () => {
+    it('should show success message when there are no errors', async () => {
         const { result } = renderHook(() => useNotifications(mockChannels))
 
         const changes: ChannelChange[] = [{ channelId: 1, action: 'add' }]
         result.current.handleMappingResults([], changes)
 
-        expect(mockSuccess).toHaveBeenCalledWith(
-            'Changes are saved to this store.',
-        )
-        expect(mockError).not.toHaveBeenCalled()
+        const toastEl = await screen.findByRole('status', {
+            name: 'Changes are saved to this store.',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'success')
     })
 
-    it('should show error message when all changes fail', () => {
+    it('should show error message when all changes fail', async () => {
         const { result } = renderHook(() => useNotifications(mockChannels))
         const changes: ChannelChange[] = [{ channelId: 1, action: 'add' }]
         const errors = [{ channelId: 1 }]
 
         result.current.handleMappingResults(errors, changes)
 
-        expect(mockError).toHaveBeenCalledWith(
-            'We couldn’t save your changes. Please try again.',
-        )
-        expect(mockSuccess).not.toHaveBeenCalled()
+        const toastEl = await screen.findByRole('status', {
+            name: 'We couldn’t save your changes. Please try again.',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
 
-    it('should show specific error message for partial failures', () => {
+    it('should show specific error message for partial failures', async () => {
         const { result } = renderHook(() => useNotifications(mockChannels))
         const changes: ChannelChange[] = [
             { channelId: 1, action: 'add' },
@@ -98,9 +87,9 @@ describe('useNotifications', () => {
 
         result.current.handleMappingResults(errors, changes)
 
-        expect(mockWarning).toHaveBeenCalledWith(
-            'Most integrations were updated, except for: Integration 1. Check your settings and try again.',
-        )
-        expect(mockSuccess).not.toHaveBeenCalled()
+        const toastEl = await screen.findByRole('status', {
+            name: 'Most integrations were updated, except for: Integration 1. Check your settings and try again.',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'warning')
     })
 })

@@ -1,6 +1,6 @@
 import { useInterval } from '@repo/hooks'
 import { assumeMock, renderHook } from '@repo/testing'
-import { waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 
 import {
@@ -9,7 +9,6 @@ import {
 } from '@gorgias/helpdesk-client'
 
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
-import { useNotify } from 'hooks/useNotify'
 import type { VoiceCall } from 'models/voiceCall/types'
 import socketManager from 'services/socketManager'
 import { SocketEventType } from 'services/socketManager/types'
@@ -17,7 +16,6 @@ import { SocketEventType } from 'services/socketManager/types'
 import useWrapUpTime from '../useWrapUpTime'
 
 jest.mock('@gorgias/helpdesk-client')
-jest.mock('hooks/useNotify')
 jest.mock('hooks/integrations/phone/useVoiceDevice')
 jest.mock('services/socketManager', () => ({
     registerReceivedEvents: jest.fn(),
@@ -48,7 +46,6 @@ jest.mock('moment-timezone', () => {
 
 const endWrapUpTimeMock = assumeMock(endWrapUpTime)
 const getAgentWrapUpCallStatusMock = assumeMock(getAgentWrapUpCallStatus)
-const useNotifyMock = assumeMock(useNotify)
 const useIntervalMock = assumeMock(useInterval)
 const useVoiceDeviceMock = assumeMock(useVoiceDevice)
 
@@ -58,14 +55,8 @@ describe('useWrapUpTime', () => {
         external_id: 'test-call-sid',
     }
 
-    const mockErrorNotify = jest.fn()
-
     beforeEach(() => {
         jest.clearAllMocks()
-
-        useNotifyMock.mockReturnValue({
-            error: mockErrorNotify,
-        } as any)
 
         useVoiceDeviceMock.mockReturnValue({
             call: null,
@@ -261,11 +252,10 @@ describe('useWrapUpTime', () => {
             })
         })
 
-        await waitFor(() => {
-            expect(mockErrorNotify).toHaveBeenCalledWith(
-                'Failed to end wrap-up time',
-            )
+        const toastEl = await screen.findByRole('status', {
+            name: 'Failed to end wrap-up time',
         })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
 
     it('should initialize the wrap up state on mount', async () => {

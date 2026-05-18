@@ -12,15 +12,6 @@ import {
 import CustomBusinessHoursProvider from '../CustomBusinessHoursProvider'
 import EditCustomBusinessHoursForm from '../EditCustomBusinessHoursForm'
 
-const mockNotify = {
-    success: jest.fn(),
-    error: jest.fn(),
-}
-
-jest.mock('hooks/useNotify', () => ({
-    useNotify: () => mockNotify,
-}))
-
 const server = setupServer()
 
 beforeAll(() => {
@@ -118,9 +109,10 @@ describe('EditCustomBusinessHoursForm', () => {
             user.click(screen.getByRole('button', { name: 'Save changes' })),
         )
 
-        expect(mockNotify.success).toHaveBeenCalledWith(
-            `'${mockUpdateBusinessHours.data.name}' business hours were successfully updated.`,
-        )
+        const toastEl = await screen.findByRole('status', {
+            name: `'${mockUpdateBusinessHours.data.name}' business hours were successfully updated.`,
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'success')
     })
 
     it('should call errorNotify when the form is submitted with invalid data', async () => {
@@ -145,8 +137,9 @@ describe('EditCustomBusinessHoursForm', () => {
             user.click(screen.getByRole('button', { name: 'Save changes' })),
         )
 
-        expect(mockNotify.error).toHaveBeenCalledWith(
-            "We couldn't save your preferences. Please try again.",
-        )
+        const toastEl = await screen.findByRole('status', {
+            name: "We couldn't save your preferences. Please try again.",
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
 })

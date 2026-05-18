@@ -1,7 +1,6 @@
 import { renderHook } from '@repo/testing'
-import { act } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 
-import { useNotify } from 'hooks/useNotify'
 import { useUpdateArticleTranslation } from 'models/helpCenter/mutations'
 import type { ArticleWithLocalTranslation } from 'models/helpCenter/types'
 
@@ -9,11 +8,9 @@ import { useArticleContext } from '../context/ArticleContext'
 import type { ArticleContextValue, SettingsChanges } from '../context/types'
 import { useToggleAIAgentVisibility } from './useToggleAIAgentVisibility'
 
-jest.mock('hooks/useNotify')
 jest.mock('models/helpCenter/mutations')
 jest.mock('../context/ArticleContext')
 
-const mockUseNotify = useNotify as jest.Mock
 const mockUseUpdateArticleTranslation = useUpdateArticleTranslation as jest.Mock
 const mockUseArticleContext = useArticleContext as jest.Mock
 
@@ -143,8 +140,6 @@ const createMockContextValue = (
 
 describe('useToggleAIAgentVisibility', () => {
     let mockDispatch: jest.Mock
-    let mockNotifyError: jest.Mock
-    let mockNotifySuccess: jest.Mock
     let mockMutateAsync: jest.Mock
     let mockOnUpdatedFn: jest.Mock
 
@@ -152,15 +147,9 @@ describe('useToggleAIAgentVisibility', () => {
         jest.clearAllMocks()
 
         mockDispatch = jest.fn()
-        mockNotifyError = jest.fn()
-        mockNotifySuccess = jest.fn()
         mockMutateAsync = jest.fn()
         mockOnUpdatedFn = jest.fn()
 
-        mockUseNotify.mockReturnValue({
-            error: mockNotifyError,
-            success: mockNotifySuccess,
-        })
         mockUseUpdateArticleTranslation.mockReturnValue({
             mutateAsync: mockMutateAsync,
         })
@@ -214,9 +203,10 @@ describe('useToggleAIAgentVisibility', () => {
                 is_current: false,
             },
         ])
-        expect(mockNotifySuccess).toHaveBeenCalledWith(
-            'Content disabled for AI Agent.',
-        )
+        const toastEl = await screen.findByRole('status', {
+            name: 'Content disabled for AI Agent.',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'success')
     })
 
     it('toggles from UNLISTED to PUBLIC and shows enabled toast', async () => {
@@ -249,9 +239,10 @@ describe('useToggleAIAgentVisibility', () => {
                 customer_visibility: 'UNLISTED',
             }),
         ])
-        expect(mockNotifySuccess).toHaveBeenCalledWith(
-            'Content enabled for AI Agent.',
-        )
+        const toastEl = await screen.findByRole('status', {
+            name: 'Content enabled for AI Agent.',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'success')
     })
 
     it('dispatches SET_UPDATING true before mutation and false after success', async () => {
@@ -322,7 +313,7 @@ describe('useToggleAIAgentVisibility', () => {
             expect.objectContaining({ type: 'UPDATE_TRANSLATION' }),
         )
         expect(mockOnUpdatedFn).not.toHaveBeenCalled()
-        expect(mockNotifySuccess).not.toHaveBeenCalled()
+        expect(screen.queryByRole('status')).not.toBeInTheDocument()
     })
 
     it('calls notifyError and dispatches SET_UPDATING false on mutation failure', async () => {
@@ -335,10 +326,10 @@ describe('useToggleAIAgentVisibility', () => {
             await result.current.toggleAIAgentVisibility()
         })
 
-        expect(mockNotifyError).toHaveBeenCalledWith(
-            'An error occurred while updating AI Agent visibility.',
-        )
-        expect(mockNotifySuccess).not.toHaveBeenCalled()
+        const toastEl = await screen.findByRole('status', {
+            name: 'An error occurred while updating AI Agent visibility.',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         expect(mockDispatch).toHaveBeenCalledWith({
             type: 'SET_UPDATING',
             payload: false,

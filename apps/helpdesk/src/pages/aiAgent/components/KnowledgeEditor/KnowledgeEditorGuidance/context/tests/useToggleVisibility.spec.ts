@@ -1,5 +1,5 @@
 import { renderHook } from '@repo/testing'
-import { act } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 
 import { NEW_GUIDANCE_ARTICLE_LIMIT } from 'pages/aiAgent/constants'
 import type { FilteredKnowledgeHubArticle } from 'pages/aiAgent/KnowledgeHub/types'
@@ -9,19 +9,10 @@ import * as GuidanceContext from '../KnowledgeEditorGuidanceContext'
 import type { GuidanceContextConfig, GuidanceState } from '../types'
 import { useToggleVisibility } from '../useToggleVisibility'
 
-const mockNotifyError = jest.fn()
 const mockUpdateGuidanceArticle = jest.fn()
 const mockRebasePublishGuidanceArticle = jest.fn()
 const mockGetGuidanceArticleTranslation = jest.fn()
 const mockIsGorgiasApiError = jest.fn()
-
-// Mock dependencies
-jest.mock('hooks/useNotify', () => ({
-    useNotify: jest.fn(() => ({
-        error: mockNotifyError,
-        success: jest.fn(),
-    })),
-}))
 
 jest.mock('pages/aiAgent/hooks/useGuidanceArticleMutation', () => ({
     useGuidanceArticleMutation: jest.fn(() => ({
@@ -121,7 +112,6 @@ describe('useToggleVisibility', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        mockNotifyError.mockClear()
         mockIsGorgiasApiError.mockReturnValue(false)
         mockUpdateGuidanceArticle.mockResolvedValue({
             id: 1,
@@ -221,9 +211,10 @@ describe('useToggleVisibility', () => {
             await result.current.toggleVisibility()
         })
 
-        expect(mockNotifyError).toHaveBeenCalledWith(
-            expect.stringContaining('reached the limit'),
-        )
+        const toastEl = await screen.findByRole('status', {
+            name: /reached the limit/,
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
 
         expect(dispatch).not.toHaveBeenCalled()
     })
@@ -397,9 +388,11 @@ describe('useToggleVisibility', () => {
         expect(result.current.visibilityConflict.message).toContain(
             'Marketing/unsubscribe',
         )
-        expect(mockNotifyError).not.toHaveBeenCalledWith(
-            'An error occurred while updating visibility.',
-        )
+        expect(
+            screen.queryByRole('status', {
+                name: 'An error occurred while updating visibility.',
+            }),
+        ).not.toBeInTheDocument()
     })
 
     it('opens intent conflict modal when conflicts are at response root', async () => {
@@ -450,9 +443,11 @@ describe('useToggleVisibility', () => {
                 conflictingIntents: ['account::other'],
             },
         ])
-        expect(mockNotifyError).not.toHaveBeenCalledWith(
-            'An error occurred while updating visibility.',
-        )
+        expect(
+            screen.queryByRole('status', {
+                name: 'An error occurred while updating visibility.',
+            }),
+        ).not.toBeInTheDocument()
     })
 
     it('rebases conflicting intents and retries visibility update', async () => {
@@ -797,9 +792,10 @@ describe('useToggleVisibility', () => {
         })
 
         expect(result.current.visibilityConflict.isOpen).toBe(false)
-        expect(mockNotifyError).toHaveBeenCalledWith(
-            'An error occurred while updating visibility.',
-        )
+        const toastEl = await screen.findByRole('status', {
+            name: 'An error occurred while updating visibility.',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
 
     it('closes visibility conflict modal when requested', async () => {
@@ -892,9 +888,10 @@ describe('useToggleVisibility', () => {
             await result.current.rebaseAndEnableVisibility()
         })
 
-        expect(mockNotifyError).toHaveBeenCalledWith(
-            'An error occurred while rebasing guidance visibility.',
-        )
+        const toastEl = await screen.findByRole('status', {
+            name: 'An error occurred while rebasing guidance visibility.',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         expect(mockUpdateGuidanceArticle).toHaveBeenCalledTimes(1)
     })
 
@@ -928,9 +925,10 @@ describe('useToggleVisibility', () => {
         })
 
         expect(result.current.visibilityConflict.isOpen).toBe(false)
-        expect(mockNotifyError).toHaveBeenCalledWith(
-            'An error occurred while updating visibility.',
-        )
+        const toastEl = await screen.findByRole('status', {
+            name: 'An error occurred while updating visibility.',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
 
     it('shows generic update visibility error for non-conflict failures', async () => {
@@ -951,8 +949,9 @@ describe('useToggleVisibility', () => {
             await result.current.toggleVisibility()
         })
 
-        expect(mockNotifyError).toHaveBeenCalledWith(
-            'An error occurred while updating visibility.',
-        )
+        const toastEl = await screen.findByRole('status', {
+            name: 'An error occurred while updating visibility.',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
 })

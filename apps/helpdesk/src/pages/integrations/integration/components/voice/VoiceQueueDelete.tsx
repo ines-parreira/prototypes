@@ -2,11 +2,10 @@ import { useState } from 'react'
 
 import { useHistory } from 'react-router-dom'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 import type { VoiceQueue } from '@gorgias/helpdesk-queries'
 import { useDeleteVoiceQueue } from '@gorgias/helpdesk-queries'
 
-import { useNotify } from 'hooks/useNotify'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
@@ -20,7 +19,6 @@ type VoiceQueueDeleteProps = {
 
 export default function VoiceQueueDelete({ queue }: VoiceQueueDeleteProps) {
     const history = useHistory()
-    const notify = useNotify()
     const [isConfirmationModalOpen, setIsConfirmationModalOpen] =
         useState<boolean>(false)
     const [hasLinkedIntegrationsError, setHasLinkedIntegrationsError] =
@@ -29,14 +27,14 @@ export default function VoiceQueueDelete({ queue }: VoiceQueueDeleteProps) {
     const { mutate: deleteQueue } = useDeleteVoiceQueue({
         mutation: {
             onSuccess: () => {
-                notify.success(`${queue.name} queue was successfully deleted`)
+                toast.success(`${queue.name} queue was successfully deleted`)
                 history.push(`${PHONE_INTEGRATION_BASE_URL}/queues`)
             },
             onError: (error) => {
                 if (error.status === 400) {
                     setHasLinkedIntegrationsError(true)
                 } else {
-                    notify.error(
+                    toast.error(
                         "We couldn't delete the queue. Please try again.",
                     )
                 }

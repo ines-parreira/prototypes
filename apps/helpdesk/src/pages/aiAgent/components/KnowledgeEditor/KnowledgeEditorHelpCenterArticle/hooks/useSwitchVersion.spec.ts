@@ -3,9 +3,8 @@ import { createElement } from 'react'
 import { appQueryClient } from '@repo/api-resources'
 import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { act } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 
-import { useNotify } from 'hooks/useNotify'
 import { getHelpCenterArticle } from 'models/helpCenter/resources'
 import type { LocaleCode } from 'models/helpCenter/types'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
@@ -13,10 +12,6 @@ import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterA
 import { useArticleContext } from '../context/ArticleContext'
 import type { ArticleContextValue } from '../context/types'
 import { useSwitchVersion } from './useSwitchVersion'
-
-jest.mock('hooks/useNotify', () => ({
-    useNotify: jest.fn(),
-}))
 
 jest.mock('models/helpCenter/resources', () => ({
     getHelpCenterArticle: jest.fn(),
@@ -30,14 +25,12 @@ jest.mock('../context/ArticleContext', () => ({
     useArticleContext: jest.fn(),
 }))
 
-const mockUseNotify = useNotify as jest.Mock
 const mockGetHelpCenterArticle = getHelpCenterArticle as jest.Mock
 const mockUseHelpCenterApi = useHelpCenterApi as jest.Mock
 const mockUseArticleContext = useArticleContext as jest.Mock
 
 describe('useSwitchVersion (Article)', () => {
     let mockDispatch: jest.Mock
-    let mockNotifyError: jest.Mock
     let mockClient: { getArticle: jest.Mock }
 
     const mockTranslation = {
@@ -165,12 +158,8 @@ describe('useSwitchVersion (Article)', () => {
         appQueryClient.clear()
 
         mockDispatch = jest.fn()
-        mockNotifyError = jest.fn()
         mockClient = { getArticle: jest.fn() }
 
-        mockUseNotify.mockReturnValue({
-            error: mockNotifyError,
-        })
         mockUseHelpCenterApi.mockReturnValue({
             client: mockClient,
             isReady: true,
@@ -330,9 +319,10 @@ describe('useSwitchVersion (Article)', () => {
             await result.current.switchToVersion('current')
         })
 
-        expect(mockNotifyError).toHaveBeenCalledWith(
-            'An error occurred while switching version.',
-        )
+        const toastEl = await screen.findByRole('status', {
+            name: 'An error occurred while switching version.',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
 
     it('should dispatch SET_UPDATING false even on error', async () => {

@@ -2,8 +2,9 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import isEqual from 'lodash/isEqual'
 
+import { toast } from '@gorgias/axiom'
+
 import useAppSelector from 'hooks/useAppSelector'
-import { useNotify } from 'hooks/useNotify'
 import type { GorgiasChatIntegration } from 'models/integration/types'
 import {
     formFieldsConfiguration,
@@ -24,8 +25,6 @@ type Props = {
 export const useHandoverCustomizationChatOfflineSettingsForm = ({
     integration,
 }: Props) => {
-    const notify = useNotify()
-
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
     const accountId = currentAccount.get('id')
@@ -134,7 +133,7 @@ export const useHandoverCustomizationChatOfflineSettingsForm = ({
         if (hasFormErrors()) {
             setHasError(true)
 
-            notify.error('Please check the form for errors')
+            toast.error('Please check the form for errors')
 
             return
         }
@@ -152,12 +151,12 @@ export const useHandoverCustomizationChatOfflineSettingsForm = ({
         try {
             setIsSaving(true)
             await upsertHandoverConfiguration(mergedData)
-            notify.success(CHANGES_SAVED_SUCCESS)
+            toast.success(CHANGES_SAVED_SUCCESS)
         } catch (error) {
             if (error instanceof Error) {
-                notify.error(error.message)
+                toast.error(error.message)
             } else {
-                notify.error('An unknown error occurred. Please try again')
+                toast.error('An unknown error occurred. Please try again')
             }
 
             return
@@ -172,7 +171,6 @@ export const useHandoverCustomizationChatOfflineSettingsForm = ({
         storeName,
         shopType,
         integrationId,
-        notify,
         hasChanges,
         hasFormErrors,
         upsertHandoverConfiguration,

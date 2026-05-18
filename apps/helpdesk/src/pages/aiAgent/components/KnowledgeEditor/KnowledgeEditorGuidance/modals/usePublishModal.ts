@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from 'react'
 
-import { useNotify } from 'hooks/useNotify'
+import { toast } from '@gorgias/axiom'
+
 import { isGorgiasApiError } from 'models/api/types'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 
@@ -8,7 +9,6 @@ import { fromArticleTranslationResponse, useGuidanceContext } from '../context'
 
 export const usePublishModal = () => {
     const { state, dispatch, config } = useGuidanceContext()
-    const { error: notifyError, success: notifySuccess } = useNotify()
 
     const { guidanceHelpCenter, onUpdateFn } = config
 
@@ -48,7 +48,7 @@ export const usePublishModal = () => {
                         },
                     })
                     dispatch({ type: 'SET_MODE', payload: 'read' })
-                    notifySuccess('Guidance published successfully.')
+                    toast.success('Guidance published successfully.')
                     onUpdateFn?.()
                 }
             } catch (error) {
@@ -59,9 +59,9 @@ export const usePublishModal = () => {
                         (_, group: string, name: string) =>
                             `${group.charAt(0).toUpperCase() + group.slice(1)}/${name}`,
                     )
-                    notifyError(message)
+                    toast.error(message)
                 } else {
-                    notifyError('An error occurred while publishing guidance.')
+                    toast.error('An error occurred while publishing guidance.')
                 }
             } finally {
                 dispatch({ type: 'SET_UPDATING', payload: false })
@@ -72,8 +72,6 @@ export const usePublishModal = () => {
             guidanceHelpCenter?.default_locale,
             dispatch,
             updateGuidanceArticle,
-            notifySuccess,
-            notifyError,
             onUpdateFn,
             state.guidance,
         ],

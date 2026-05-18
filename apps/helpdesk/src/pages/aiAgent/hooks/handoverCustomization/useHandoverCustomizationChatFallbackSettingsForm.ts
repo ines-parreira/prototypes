@@ -3,7 +3,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useUpdateEffect } from '@repo/hooks'
 import isEqual from 'lodash/isEqual'
 
-import { useNotify } from 'hooks/useNotify'
+import { toast } from '@gorgias/axiom'
+
 import type { GorgiasChatIntegration } from 'models/integration/types'
 import {
     formFieldsConfiguration,
@@ -23,8 +24,6 @@ type Props = {
 export const useHandoverCustomizationChatFallbackSettingsForm = ({
     integration,
 }: Props) => {
-    const notify = useNotify()
-
     const { multiLanguageTexts, updateMultiLanguageTexts, isLoading } =
         useHandoverCustomizationChatLanguageTextsConfiguration(integration)
 
@@ -125,12 +124,12 @@ export const useHandoverCustomizationChatFallbackSettingsForm = ({
 
             await updateMultiLanguageTexts(mergedTexts)
 
-            notify.success(CHANGES_SAVED_SUCCESS)
+            toast.success(CHANGES_SAVED_SUCCESS)
         } catch (error) {
             if (error instanceof Error) {
-                notify.error(error.message)
+                toast.error(error.message)
             } else {
-                notify.error('An unknown error occurred. Please try again')
+                toast.error('An unknown error occurred. Please try again')
             }
         } finally {
             setIsSaving(false)
@@ -138,7 +137,6 @@ export const useHandoverCustomizationChatFallbackSettingsForm = ({
     }, [
         formValues,
         multiLanguageTexts,
-        notify,
         updateMultiLanguageTexts,
         hasChanges,
         hasFormErrors,

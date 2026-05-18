@@ -1,17 +1,12 @@
 import { renderHook } from '@repo/testing'
-import { act, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 
-import { useNotify } from 'hooks/useNotify'
 import { useUpdateArticleTranslation } from 'models/helpCenter/mutations'
 import type { LocaleCode } from 'models/helpCenter/types'
 
 import { useArticleContext } from '../context/ArticleContext'
 import type { ArticleContextValue } from '../context/types'
 import { usePublishModal } from './usePublishModal'
-
-jest.mock('hooks/useNotify', () => ({
-    useNotify: jest.fn(),
-}))
 
 jest.mock('models/helpCenter/mutations', () => ({
     useUpdateArticleTranslation: jest.fn(),
@@ -21,14 +16,11 @@ jest.mock('../context/ArticleContext', () => ({
     useArticleContext: jest.fn(),
 }))
 
-const mockUseNotify = useNotify as jest.Mock
 const mockUseUpdateArticleTranslation = useUpdateArticleTranslation as jest.Mock
 const mockUseArticleContext = useArticleContext as jest.Mock
 
 describe('usePublishModal', () => {
     let mockDispatch: jest.Mock
-    let mockNotifyError: jest.Mock
-    let mockNotifySuccess: jest.Mock
     let mockMutateAsync: jest.Mock
     let mockOnUpdatedFn: jest.Mock
 
@@ -125,15 +117,9 @@ describe('usePublishModal', () => {
         jest.clearAllMocks()
 
         mockDispatch = jest.fn()
-        mockNotifyError = jest.fn()
-        mockNotifySuccess = jest.fn()
         mockMutateAsync = jest.fn()
         mockOnUpdatedFn = jest.fn()
 
-        mockUseNotify.mockReturnValue({
-            error: mockNotifyError,
-            success: mockNotifySuccess,
-        })
         mockUseUpdateArticleTranslation.mockReturnValue({
             mutateAsync: mockMutateAsync,
         })
@@ -516,9 +502,10 @@ describe('usePublishModal', () => {
                 await result.current.onPublish('Test commit message')
             })
 
-            expect(mockNotifySuccess).toHaveBeenCalledWith(
-                'Article published successfully.',
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'Article published successfully.',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
         })
 
         it('should call onUpdatedFn callback on success', async () => {
@@ -569,9 +556,10 @@ describe('usePublishModal', () => {
                 await result.current.onPublish('Test commit message')
             })
 
-            expect(mockNotifyError).toHaveBeenCalledWith(
-                'An error occurred while publishing the article.',
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'An error occurred while publishing the article.',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
 
         it('should not call onUpdatedFn on failure', async () => {
@@ -629,7 +617,7 @@ describe('usePublishModal', () => {
             expect(mockDispatch).not.toHaveBeenCalledWith(
                 expect.objectContaining({ type: 'SET_MODE' }),
             )
-            expect(mockNotifySuccess).not.toHaveBeenCalled()
+            expect(screen.queryByRole('status')).not.toBeInTheDocument()
             expect(mockOnUpdatedFn).not.toHaveBeenCalled()
         })
 
@@ -648,7 +636,7 @@ describe('usePublishModal', () => {
             expect(mockDispatch).not.toHaveBeenCalledWith(
                 expect.objectContaining({ type: 'SET_MODE' }),
             )
-            expect(mockNotifySuccess).not.toHaveBeenCalled()
+            expect(screen.queryByRole('status')).not.toBeInTheDocument()
             expect(mockOnUpdatedFn).not.toHaveBeenCalled()
         })
 

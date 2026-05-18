@@ -13,7 +13,6 @@ import {
     ticketInputFieldDefinition,
     ticketNumberFieldDefinition,
 } from 'fixtures/customField'
-import { useNotify } from 'hooks/useNotify'
 
 import TicketFields from '../TicketFields'
 
@@ -22,7 +21,6 @@ jest.mock('@gorgias/helpdesk-queries', () => ({
     useListCustomFields: jest.fn(),
 }))
 jest.mock('common/utils/getWrappedElementCount')
-jest.mock('hooks/useNotify')
 jest.mock('custom-fields/hooks/useCustomFieldsConditionsEvaluationResults')
 
 jest.mock('@repo/hooks', () => ({
@@ -66,7 +64,6 @@ const getWrappedElementCountMock = assumeMock(getWrappedElementCount)
 const useCallbackRefMock = assumeMock(useCallbackRef)
 const useElementSizeMock = assumeMock(useElementSize)
 const useIdMock = assumeMock(useId)
-const useNotifyMock = assumeMock(useNotify)
 const useCustomFieldsConditionsEvaluationResultsMock = assumeMock(
     useCustomFieldsConditionsEvaluationResults,
 )
@@ -78,13 +75,6 @@ describe('TicketFields', () => {
         useCallbackRefMock.mockReturnValue([null, jest.fn()])
         useElementSizeMock.mockReturnValue([100, 100])
         useIdMock.mockReturnValue('test-id')
-        useNotifyMock.mockReturnValue({
-            error: jest.fn(),
-            success: jest.fn(),
-            info: jest.fn(),
-            warning: jest.fn(),
-            notify: jest.fn(),
-        })
         useCustomFieldsConditionsEvaluationResultsMock.mockReturnValue({
             evaluationResults: {},
             conditionsLoading: false,

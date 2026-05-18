@@ -16,7 +16,6 @@ import { MODAL_TITLE } from 'domains/reporting/pages/dashboards/DashboardsModal/
 import type { DashboardInput } from 'domains/reporting/pages/dashboards/types'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 import { OverviewChart } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewReportConfig'
-import { useNotify } from 'hooks/useNotify'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -25,9 +24,6 @@ jest.mock('react-router-dom', () => ({
 const useHistoryMock = assumeMock(useHistory)
 
 jest.mock('hooks/useAppDispatch')
-
-jest.mock('hooks/useNotify')
-const useNotifyMock = assumeMock(useNotify)
 
 jest.mock(
     'domains/reporting/pages/common/drill-down/DrillDownModal.tsx',
@@ -53,7 +49,6 @@ const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 describe('Dashboards', () => {
     const createDashboardHandlerMock = jest.fn()
     const historyPushMock = jest.fn()
-    const notifyMock = jest.fn()
 
     beforeEach(() => {
         const mockedDate = new Date(2025, 0, 15, 12, 10)
@@ -78,7 +73,6 @@ describe('Dashboards', () => {
             push: historyPushMock,
         } as any)
 
-        useNotifyMock.mockReturnValue({ error: notifyMock } as any)
         useReportChartRestrictionsMock.mockReturnValue({
             isReportRestrictedToCurrentUser: () => false,
             isRouteRestrictedToCurrentUser: () => false,
@@ -252,6 +246,6 @@ describe('Dashboards', () => {
         fireEvent.change(nameInput, { target: { value: 'valid name' } })
         fireEvent.blur(nameInput)
 
-        expect(notifyMock).not.toHaveBeenCalled()
+        expect(screen.queryByRole('status')).not.toBeInTheDocument()
     })
 })

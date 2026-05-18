@@ -3,10 +3,9 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useId } from '@repo/hooks'
 import flatten from 'lodash/flatten'
 
-import { LegacyButton as Button, Skeleton } from '@gorgias/axiom'
+import { LegacyButton as Button, Skeleton, toast } from '@gorgias/axiom'
 import { useGetIntegration } from '@gorgias/helpdesk-queries'
 
-import { useNotify } from 'hooks/useNotify'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -52,15 +51,14 @@ export default function VoiceIntegrationSelectField({
     } = useInfiniteListVoiceIntegrations()
 
     const { getPhoneNumberById } = usePhoneNumbers()
-    const notify = useNotify()
 
     useEffect(() => {
         if (isError) {
-            notify.error(
+            toast.error(
                 'Something went wrong while trying to fetch integrations',
             )
         }
-    }, [isError, notify])
+    }, [isError])
 
     const options = useMemo(
         () =>

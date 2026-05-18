@@ -1,13 +1,13 @@
 import { useCallback } from 'react'
 
-import { useNotify } from 'hooks/useNotify'
+import { toast } from '@gorgias/axiom'
+
 import { useDeleteArticle } from 'models/helpCenter/mutations'
 
 import { useArticleContext } from '../context'
 
 export const useDeleteArticleModal = () => {
     const { state, dispatch, config } = useArticleContext()
-    const { error: notifyError } = useNotify()
 
     const { mutateAsync: deleteArticleMutation } = useDeleteArticle(
         config.helpCenter.id,
@@ -27,19 +27,13 @@ export const useDeleteArticleModal = () => {
             ])
             config.onDeletedFn?.()
         } catch {
-            notifyError('An error occurred while deleting the article.')
+            toast.error('An error occurred while deleting the article.')
         } finally {
             dispatch({ type: 'SET_UPDATING', payload: false })
             dispatch({ type: 'CLOSE_MODAL' })
             config.onClose()
         }
-    }, [
-        deleteArticleMutation,
-        state.article?.id,
-        config,
-        dispatch,
-        notifyError,
-    ])
+    }, [deleteArticleMutation, state.article?.id, config, dispatch])
 
     const { published_version_id, draft_version_id } =
         state.article?.translation ?? {}

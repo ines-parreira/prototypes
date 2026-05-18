@@ -2,9 +2,9 @@ import { useCallback, useMemo, useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 
+import { toast } from '@gorgias/axiom'
 import type { GetArticleVersionStatus } from '@gorgias/help-center-types'
 
-import { useNotify } from 'hooks/useNotify'
 import { VisibilityStatusEnum } from 'models/helpCenter/types'
 import { InitialArticleMode } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context'
 import type { InitialArticleModeValue } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context'
@@ -131,7 +131,6 @@ export const useKnowledgeHubEditor = <T extends KnowledgeEditorConfig>(
     config: T,
 ): KnowledgeEditorReturn<T> => {
     const { type, shopName, filteredArticles } = config
-    const { success: notifySuccess } = useNotify()
     const [versionStatus, setVersionStatus] = useState<
         GetArticleVersionStatus | undefined
     >(undefined)
@@ -221,10 +220,10 @@ export const useKnowledgeHubEditor = <T extends KnowledgeEditorConfig>(
         })
 
         if (type !== 'guidance' && type !== 'faq') {
-            notifySuccess(editorConfig.notifications.created)
+            toast.success(editorConfig.notifications.created)
         }
         dispatchDocumentEvent(REFETCH_KNOWLEDGE_HUB_TABLE)
-    }, [editorConfig, shopName, type, notifySuccess])
+    }, [editorConfig, shopName, type])
 
     const handleUpdate = useCallback(() => {
         logEvent(editorConfig.events.updated, {
@@ -243,10 +242,10 @@ export const useKnowledgeHubEditor = <T extends KnowledgeEditorConfig>(
             type,
         })
 
-        notifySuccess(editorConfig.notifications.deleted)
+        toast.success(editorConfig.notifications.deleted)
         dispatchDocumentEvent(REFETCH_KNOWLEDGE_HUB_TABLE)
         closeEditor()
-    }, [editorConfig, shopName, type, notifySuccess, closeEditor])
+    }, [editorConfig, shopName, type, closeEditor])
 
     const handleVisibilityUpdate = useCallback(
         (visibility: string) => {
@@ -261,10 +260,10 @@ export const useKnowledgeHubEditor = <T extends KnowledgeEditorConfig>(
                     ? 'visibilityOn'
                     : 'visibilityOff'
 
-            notifySuccess(editorConfig.notifications[notificationType])
+            toast.success(editorConfig.notifications[notificationType])
             dispatchDocumentEvent(REFETCH_KNOWLEDGE_HUB_TABLE)
         },
-        [editorConfig, shopName, type, notifySuccess],
+        [editorConfig, shopName, type],
     )
 
     const handleClickPrevious = useCallback(() => {

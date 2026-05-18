@@ -1,8 +1,7 @@
 import { renderHook } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import { useUpdateIntegration } from '@gorgias/helpdesk-queries'
-
-import { useNotify } from 'hooks/useNotify'
 
 import useStoreUpdater from '../useStoreUpdater'
 
@@ -10,22 +9,12 @@ jest.mock('@gorgias/helpdesk-queries', () => ({
     useUpdateIntegration: jest.fn(),
 }))
 
-jest.mock('hooks/useNotify', () => ({
-    useNotify: jest.fn(),
-}))
-
 describe('useStoreUpdater', () => {
     const mockRefetchStore = jest.fn()
-    const mockSuccess = jest.fn()
-    const mockError = jest.fn()
     const mockMutate = jest.fn()
 
     beforeEach(() => {
         jest.clearAllMocks()
-        ;(useNotify as jest.Mock).mockReturnValue({
-            success: mockSuccess,
-            error: mockError,
-        })
         ;(useUpdateIntegration as jest.Mock).mockReturnValue({
             mutate: mockMutate,
             isLoading: false,
@@ -43,7 +32,7 @@ describe('useStoreUpdater', () => {
         })
     })
 
-    it('calls success notification and refetches store on successful update', () => {
+    it('calls success notification and refetches store on successful update', async () => {
         renderHook(() => useStoreUpdater(mockRefetchStore))
 
         const onSuccess = (useUpdateIntegration as jest.Mock).mock.calls[0][0]
@@ -51,13 +40,14 @@ describe('useStoreUpdater', () => {
 
         onSuccess()
 
-        expect(mockSuccess).toHaveBeenCalledWith(
-            'Integration successfully updated',
-        )
+        const toastEl = await screen.findByRole('status', {
+            name: 'Integration successfully updated',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'success')
         expect(mockRefetchStore).toHaveBeenCalled()
     })
 
-    it('calls error notification on failed update', () => {
+    it('calls error notification on failed update', async () => {
         renderHook(() => useStoreUpdater(mockRefetchStore))
 
         const onError = (useUpdateIntegration as jest.Mock).mock.calls[0][0]
@@ -65,6 +55,9 @@ describe('useStoreUpdater', () => {
 
         onError()
 
-        expect(mockError).toHaveBeenCalledWith('Failed to update connection')
+        const toastEl = await screen.findByRole('status', {
+            name: 'Failed to update connection',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
 })

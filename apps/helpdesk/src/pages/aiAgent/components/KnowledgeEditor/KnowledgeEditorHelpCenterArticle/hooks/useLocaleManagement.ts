@@ -1,6 +1,7 @@
 import { useCallback, useRef } from 'react'
 
-import { useNotify } from 'hooks/useNotify'
+import { toast } from '@gorgias/axiom'
+
 import { useDeleteArticleTranslation } from 'models/helpCenter/mutations'
 import { useGetHelpCenterArticle } from 'models/helpCenter/queries'
 import type { LocaleCode } from 'models/helpCenter/types'
@@ -17,7 +18,6 @@ export const useLocaleManagement = () => {
         useArticleContext()
 
     const { helpCenter, onDeletedFn } = config
-    const { error: notifyError } = useNotify()
 
     const deleteTranslationMutation = useDeleteArticleTranslation(helpCenter.id)
 
@@ -70,12 +70,12 @@ export const useLocaleManagement = () => {
                     })
                 }
             } catch {
-                notifyError('An error occurred while switching locale.')
+                toast.error('An error occurred while switching locale.')
             } finally {
                 dispatch({ type: 'SET_UPDATING', payload: false })
             }
         },
-        [state.article, getArticleQuery, dispatch, notifyError],
+        [state.article, getArticleQuery, dispatch],
     )
 
     const performDeleteTranslation = useCallback(
@@ -96,7 +96,7 @@ export const useLocaleManagement = () => {
                 onDeletedFn?.()
                 config.onClose()
             } catch {
-                notifyError(
+                toast.error(
                     'An error occurred while deleting the article translation.',
                 )
             } finally {
@@ -111,7 +111,6 @@ export const useLocaleManagement = () => {
             dispatch,
             onDeletedFn,
             config,
-            notifyError,
         ],
     )
 

@@ -27,7 +27,6 @@ jest.mock('@gorgias/axiom', () => ({
 }))
 
 const mockUpdateGuidanceArticle = jest.fn()
-const mockNotifyError = jest.fn()
 
 type MockGuidanceStoreState = {
     guidanceArticle: {
@@ -139,12 +138,6 @@ const mockUseResourceMetrics = useResourceMetrics as jest.Mock
 jest.mock('models/helpCenter/queries', () => ({
     useGetArticleTranslationIntents: (...args: unknown[]) =>
         mockUseGetArticleTranslationIntents(...(args as [])),
-}))
-
-jest.mock('hooks/useNotify', () => ({
-    useNotify: () => ({
-        error: mockNotifyError,
-    }),
 }))
 
 jest.mock('hooks/useAppSelector', () => ({

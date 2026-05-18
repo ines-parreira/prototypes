@@ -2,10 +2,9 @@ import { useEffect, useState } from 'react'
 
 import { useWatch } from 'react-hook-form'
 
-import { Box } from '@gorgias/axiom'
+import { Box, toast } from '@gorgias/axiom'
 import { useSynthesizeSpeechPreview } from '@gorgias/helpdesk-queries'
 
-import { useNotify } from 'hooks/useNotify'
 import type { VoiceMessageTextToSpeech } from 'models/integration/types'
 
 import { DEFAULT_TTS_GENDER, DEFAULT_TTS_LANGUAGE } from './constants'
@@ -21,14 +20,13 @@ const VoiceMessageTTSPreviewButton = ({ fieldName }: Props): JSX.Element => {
     const value: VoiceMessageTextToSpeech = useWatch({ name: fieldName })
     const src = value.text_to_speech_recording_file_path || ''
 
-    const notify = useNotify()
     const { integrationId } = useTextToSpeechContext()
 
     const { mutate: generatePreview } = useSynthesizeSpeechPreview({
         mutation: {
             onError: () => {
                 setAudioState(AudioState.NEW)
-                void notify.error('Failed to generate voice preview.')
+                toast.error('Failed to generate voice preview.')
             },
         },
     })

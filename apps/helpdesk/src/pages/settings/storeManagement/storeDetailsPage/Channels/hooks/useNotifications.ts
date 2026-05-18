@@ -1,4 +1,4 @@
-import { useNotify } from 'hooks/useNotify'
+import { toast } from '@gorgias/axiom'
 
 import type { ChannelChange, ChannelWithMetadata } from '../../../types'
 import { getIntegrationLabels } from '../helpers/getIntegrationLabels'
@@ -8,19 +8,17 @@ interface NotificationError {
 }
 
 export const useNotifications = (channels: ChannelWithMetadata[]) => {
-    const { success, error, warning } = useNotify()
-
     const handleMappingResults = (
         errors: NotificationError[],
         changes: ChannelChange[],
     ) => {
         if (errors.length === 0) {
-            success('Changes are saved to this store.')
+            toast.success('Changes are saved to this store.')
             return
         }
 
         if (errors.length === changes.length) {
-            error('We couldn’t save your changes. Please try again.')
+            toast.error('We couldn’t save your changes. Please try again.')
             return
         }
 
@@ -29,7 +27,7 @@ export const useNotifications = (channels: ChannelWithMetadata[]) => {
             channels,
             failedChannelIds,
         )
-        warning(
+        toast.warning(
             `Most integrations were updated, except for: ${integrationNames}. Check your settings and try again.`,
         )
     }

@@ -1,9 +1,8 @@
 import { useDebouncedEffect } from '@repo/hooks'
 import { renderHook } from '@repo/testing'
-import { act, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { useNotify } from 'hooks/useNotify'
 import { useUpdateArticleTranslation } from 'models/helpCenter/mutations'
 import type {
     ArticleWithLocalTranslation,
@@ -19,7 +18,6 @@ jest.mock('@repo/hooks', () => ({
     useDebouncedEffect: jest.fn(),
 }))
 
-jest.mock('hooks/useNotify')
 jest.mock('hooks/useAppSelector')
 jest.mock('models/helpCenter/mutations')
 jest.mock('../context/ArticleContext')
@@ -59,7 +57,6 @@ jest.mock('pages/settings/helpCenter/utils/localeSelectOptions', () => ({
 }))
 
 const mockUseDebouncedEffect = useDebouncedEffect as jest.Mock
-const mockUseNotify = useNotify as jest.Mock
 const mockUseAppSelector = useAppSelector as jest.Mock
 const mockUseUpdateArticleTranslation = useUpdateArticleTranslation as jest.Mock
 const mockUseArticleContext = useArticleContext as jest.Mock
@@ -220,7 +217,6 @@ const createMockContextValue = (
 
 describe('useSettingsAutoSave', () => {
     let mockDispatch: jest.Mock
-    let mockNotifyError: jest.Mock
     let mockMutateAsync: jest.Mock
     let debouncedCallback: (() => void) | null = null
 
@@ -229,10 +225,8 @@ describe('useSettingsAutoSave', () => {
         debouncedCallback = null
 
         mockDispatch = jest.fn()
-        mockNotifyError = jest.fn()
         mockMutateAsync = jest.fn()
 
-        mockUseNotify.mockReturnValue({ error: mockNotifyError })
         mockUseAppSelector.mockReturnValue({})
         mockUseUpdateArticleTranslation.mockReturnValue({
             mutateAsync: mockMutateAsync,
@@ -850,11 +844,10 @@ describe('useSettingsAutoSave', () => {
                 await debouncedCallback?.()
             })
 
-            await waitFor(() => {
-                expect(mockNotifyError).toHaveBeenCalledWith(
-                    'An error occurred while saving the settings.',
-                )
+            const toastEl = await screen.findByRole('status', {
+                name: 'An error occurred while saving the settings.',
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
 
             expect(mockDispatch).toHaveBeenCalledWith({
                 type: 'CLEAR_PENDING_SETTINGS',

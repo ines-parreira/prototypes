@@ -12,20 +12,19 @@ import {
     Icon,
     LegacyBadge,
     Skeleton,
+    toast,
     Tooltip,
     TooltipContent,
 } from '@gorgias/axiom'
 
 import { useAvailabilityCellData } from 'domains/reporting/pages/common/components/charts/TableStat/cells/hooks/useAvailabilityCellData'
 import useAppSelector from 'hooks/useAppSelector'
-import { useNotify } from 'hooks/useNotify'
 
 type Props = {
     userId: number
 }
 
 export function AgentAvailabilityCell({ userId }: Props) {
-    const notify = useNotify()
     const { updateStatusAsync } = useUpdateUserAvailabilityStatus()
     const currentUser = useAppSelector((state) => state.currentUser)
 
@@ -46,10 +45,10 @@ export function AgentAvailabilityCell({ userId }: Props) {
             try {
                 await updateStatusAsync(userId, status.id)
             } catch {
-                notify.error('Failed to update status. Please try again.')
+                toast.error('Failed to update status. Please try again.')
             }
         },
-        [userId, updateStatusAsync, notify],
+        [userId, updateStatusAsync],
     )
 
     if (isLoading && hasNoData) {

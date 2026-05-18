@@ -3,10 +3,10 @@ import { useEffect } from 'react'
 import { Form, toFormErrors } from '@repo/forms'
 import omit from 'lodash/omit'
 
+import { toast } from '@gorgias/axiom'
 import type { PhoneIntegration } from '@gorgias/helpdesk-types'
 import { validateCallRoutingFlow } from '@gorgias/helpdesk-validators'
 
-import { useNotify } from 'hooks/useNotify'
 import FormUnsavedChangesPrompt from 'pages/common/components/FormUnsavedChangesPrompt'
 
 import GenericVoiceFormSubmitButton from '../VoiceFormSubmitButton'
@@ -29,7 +29,6 @@ function VoiceFlowForm({
     defaultValues,
 }: VoiceFlowFormProps) {
     const { getDefaultValues, onSubmit } = useVoiceFlowForm(integration)
-    const notify = useNotify()
 
     useEffect(() => {
         if (
@@ -38,7 +37,7 @@ function VoiceFlowForm({
                 (step) => step.step_type === VoiceFlowNodeType.PlayMessage,
             )
         ) {
-            notify.warning(
+            toast.warning(
                 'Call recording is enabled for inbound calls. To ensure transparency, consider adding a recording notification to your welcome message.',
             )
         }

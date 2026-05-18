@@ -21,14 +21,6 @@ jest.mock('@repo/forms', () => ({
     ),
 }))
 
-const mockNotify = {
-    success: jest.fn(),
-    error: jest.fn(),
-}
-jest.mock('hooks/useNotify', () => ({
-    useNotify: () => mockNotify,
-}))
-
 const server = setupServer()
 
 beforeAll(() => {
@@ -124,10 +116,12 @@ describe('AddCustomBusinessHoursModal', () => {
             expect(defaultProps.onCreateSuccess).toHaveBeenCalledWith(
                 mockCreateBusinessHours.data.id,
             )
-            expect(mockNotify.success).toHaveBeenCalledWith(
-                `'${mockCreateBusinessHours.data.name}' business hours were successfully created.`,
-            )
         })
+
+        const toastEl = await screen.findByRole('status', {
+            name: `'${mockCreateBusinessHours.data.name}' business hours were successfully created.`,
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'success')
     })
 
     it('calls errorNotify when createBusinessHours fails', async () => {
@@ -157,8 +151,9 @@ describe('AddCustomBusinessHoursModal', () => {
 
         await act(() => user.click(addBusinessHoursButton))
 
-        await waitFor(() => {
-            expect(mockNotify.error).toHaveBeenCalledTimes(1)
+        const toastEl = await screen.findByRole('status', {
+            name: "We couldn't save your preferences. Please try again.",
         })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
 })

@@ -9,7 +9,6 @@ import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixture
 import type { InitialArticleModeValue } from './context'
 import { KnowledgeEditorHelpCenterArticle } from './KnowledgeEditorHelpCenterArticle'
 
-const mockNotifyError = jest.fn()
 let articleEditorCloseHandler: (() => void) | null = null
 
 const mockHelpCenter = getHelpCentersResponseFixture.data[0]
@@ -101,12 +100,6 @@ jest.mock('@gorgias/axiom', () => ({
             className={containerClassName}
         />
     ),
-}))
-
-jest.mock('hooks/useNotify', () => ({
-    useNotify: () => ({
-        error: mockNotifyError,
-    }),
 }))
 
 jest.mock('models/api/types', () => ({
@@ -232,7 +225,6 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
         jest.clearAllMocks()
         lastConfig = null
         articleEditorCloseHandler = null
-        mockNotifyError.mockClear()
         mockUseKnowledgeEditorArticleData.mockReturnValue(defaultArticleData)
     })
 
@@ -574,11 +566,10 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
                 articleId: 1,
             })
 
-            await waitFor(() => {
-                expect(mockNotifyError).toHaveBeenCalledWith(
-                    'This FAQ article is no longer available. It may have been deleted.',
-                )
+            const toastEl = await screen.findByRole('status', {
+                name: 'This FAQ article is no longer available. It may have been deleted.',
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
 
         it('shows generic error notification on non-404 error', async () => {
@@ -611,11 +602,10 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
                 articleId: 1,
             })
 
-            await waitFor(() => {
-                expect(mockNotifyError).toHaveBeenCalledWith(
-                    'Unable to load this FAQ article. Please try again or contact support.',
-                )
+            const toastEl = await screen.findByRole('status', {
+                name: 'Unable to load this FAQ article. Please try again or contact support.',
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
 
         it('does not show error notification for new articles', () => {
@@ -636,7 +626,7 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
                 onCreated: () => {},
             })
 
-            expect(mockNotifyError).not.toHaveBeenCalled()
+            expect(screen.queryByRole('status')).not.toBeInTheDocument()
         })
     })
 

@@ -2,7 +2,7 @@ import type React from 'react'
 
 import { Form } from '@repo/forms'
 import { renderHook } from '@repo/testing'
-import { act, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { useFormContext } from 'react-hook-form'
 
 import type { DomainEvent } from '@gorgias/events'
@@ -21,14 +21,6 @@ const mockUseChannel = useChannel as jest.Mock
 
 jest.mock('hooks/useAppSelector')
 const mockUseAppSelector = useAppSelector as jest.Mock
-
-const mockNotify = {
-    success: jest.fn(),
-    error: jest.fn(),
-}
-jest.mock('hooks/useNotify', () => ({
-    useNotify: () => mockNotify,
-}))
 
 jest.mock('state/currentAccount/selectors', () => ({
     getCurrentAccountId: jest.fn(),
@@ -209,7 +201,7 @@ describe('TextToSpeechProvider', () => {
             })
         })
 
-        it('should show error notification when error_message is present', () => {
+        it('should show error notification when error_message is present', async () => {
             renderHook(() => useTextToSpeechContext(), {
                 wrapper: createWrapper(),
             })
@@ -229,9 +221,10 @@ describe('TextToSpeechProvider', () => {
                 onEventCallback(event)
             })
 
-            expect(mockNotify.error).toHaveBeenCalledWith(
-                'Failed to generate voice preview: Failed to synthesize speech',
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'Failed to generate voice preview: Failed to synthesize speech',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
 
         it('should not update form if error_message is present', () => {

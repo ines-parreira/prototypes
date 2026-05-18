@@ -23,7 +23,6 @@ import { mockImportableFields } from './MetafieldsImportList/data'
 jest.mock('./hooks/useImportWizard')
 jest.mock('./hooks/useFieldSelection')
 jest.mock('./hooks/useImportMetafields')
-jest.mock('hooks/useNotify')
 jest.mock('hooks/useAppSelector')
 
 const mockUseAppSelector = useAppSelector as jest.MockedFunction<
@@ -33,7 +32,6 @@ const mockUseAppSelector = useAppSelector as jest.MockedFunction<
 const { useImportWizard } = jest.requireMock('./hooks/useImportWizard')
 const { useFieldSelection } = jest.requireMock('./hooks/useFieldSelection')
 const { useImportMetafields } = jest.requireMock('./hooks/useImportMetafields')
-const { useNotify } = jest.requireMock('hooks/useNotify')
 
 const INTEGRATION_ID = 123
 
@@ -61,8 +59,6 @@ describe('ImportMetafieldFlow', () => {
     const mockClearSelectionForCategory = jest.fn()
     const mockClearAllSelections = jest.fn()
     const mockOnClose = jest.fn()
-    const mockSuccess = jest.fn()
-    const mockError = jest.fn()
     const mockImportMetafields = jest.fn()
 
     const defaultWizardState = {
@@ -109,10 +105,6 @@ describe('ImportMetafieldFlow', () => {
         useFieldSelection.mockReturnValue(defaultFieldSelectionState)
         useImportMetafields.mockReturnValue({
             mutateAsync: mockImportMetafields,
-        })
-        useNotify.mockReturnValue({
-            success: mockSuccess,
-            error: mockError,
         })
 
         mockGetSelectionCount.mockReturnValue(0)
@@ -499,12 +491,10 @@ describe('ImportMetafieldFlow', () => {
 
             await user.click(screen.getByRole('button', { name: /^import$/i }))
 
-            await waitFor(() => {
-                expect(mockSuccess).toHaveBeenCalledWith(
-                    'Success! 3 metafields added',
-                )
+            const toastEl = await screen.findByRole('status', {
+                name: 'Success! 3 metafields added',
             })
-            expect(mockError).not.toHaveBeenCalled()
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
         })
 
         it('should dispatch error notification when import fails', async () => {
@@ -530,12 +520,10 @@ describe('ImportMetafieldFlow', () => {
 
             await user.click(screen.getByRole('button', { name: /^import$/i }))
 
-            await waitFor(() => {
-                expect(mockError).toHaveBeenCalledWith(
-                    'Failed to import metafields. Please try again.',
-                )
+            const toastEl = await screen.findByRole('status', {
+                name: 'Failed to import metafields. Please try again.',
             })
-            expect(mockSuccess).not.toHaveBeenCalled()
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
 
         it('should dispatch error notification when import mutation throws', async () => {
@@ -558,12 +546,10 @@ describe('ImportMetafieldFlow', () => {
 
             await user.click(screen.getByRole('button', { name: /^import$/i }))
 
-            await waitFor(() => {
-                expect(mockError).toHaveBeenCalledWith(
-                    'There was an issue adding your Shopify metafields to Gorgias. Please try again.',
-                )
+            const toastEl = await screen.findByRole('status', {
+                name: 'There was an issue adding your Shopify metafields to Gorgias. Please try again.',
             })
-            expect(mockSuccess).not.toHaveBeenCalled()
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
             expect(mockOnClose).not.toHaveBeenCalled()
         })
     })

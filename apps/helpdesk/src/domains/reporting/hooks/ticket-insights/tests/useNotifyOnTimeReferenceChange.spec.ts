@@ -1,4 +1,5 @@
-import { assumeMock, renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import {
     createNotificationMessage,
@@ -6,18 +7,9 @@ import {
     useNotifyOnTimeReferenceChange,
 } from 'domains/reporting/hooks/ticket-insights/useNotifyOnTimeReferenceChange'
 import { TicketTimeReference } from 'domains/reporting/models/stat/types'
-import { useNotify } from 'hooks/useNotify'
-
-jest.mock('hooks/useNotify')
-const useNotifyMock = assumeMock(useNotify)
 
 describe('useNotifyOnTimeReferenceChange', () => {
-    const mockSuccess = jest.fn()
-    useNotifyMock.mockReturnValue({
-        success: mockSuccess,
-    } as any)
-
-    it('should notify when time reference changes to TaggedAt', () => {
+    it('should notify when time reference changes to TaggedAt', async () => {
         const { rerender } = renderHook(
             ({ timeRef }) =>
                 useNotifyOnTimeReferenceChange(ReportName.Tags, timeRef),
@@ -28,15 +20,16 @@ describe('useNotifyOnTimeReferenceChange', () => {
 
         rerender({ timeRef: TicketTimeReference.TaggedAt })
 
-        expect(mockSuccess).toHaveBeenCalledWith(
-            createNotificationMessage(
+        const toastEl = await screen.findByRole('status', {
+            name: createNotificationMessage(
                 ReportName.Tags,
                 TicketTimeReference.TaggedAt,
             ),
-        )
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'success')
     })
 
-    it('should notify when time reference changes to CreatedAt', () => {
+    it('should notify when time reference changes to CreatedAt', async () => {
         const { rerender } = renderHook(
             ({ timeRef }) =>
                 useNotifyOnTimeReferenceChange(
@@ -50,12 +43,13 @@ describe('useNotifyOnTimeReferenceChange', () => {
 
         rerender({ timeRef: TicketTimeReference.CreatedAt })
 
-        expect(mockSuccess).toHaveBeenCalledWith(
-            createNotificationMessage(
+        const toastEl = await screen.findByRole('status', {
+            name: createNotificationMessage(
                 ReportName.TicketFields,
                 TicketTimeReference.CreatedAt,
             ),
-        )
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'success')
     })
 
     it('should not notify on initial mount', () => {
@@ -66,6 +60,6 @@ describe('useNotifyOnTimeReferenceChange', () => {
             ),
         )
 
-        expect(mockSuccess).not.toHaveBeenCalled()
+        expect(screen.queryByRole('status')).not.toBeInTheDocument()
     })
 })

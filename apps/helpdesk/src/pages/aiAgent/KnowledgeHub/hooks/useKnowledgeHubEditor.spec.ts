@@ -1,10 +1,9 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { renderHook } from '@repo/testing'
-import { act } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 
 import { GetArticleVersionStatus } from '@gorgias/help-center-types'
 
-import { useNotify } from 'hooks/useNotify'
 import { InitialArticleMode } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context'
 import type { GuidanceTemplate } from 'pages/aiAgent/types'
 
@@ -17,34 +16,19 @@ import type {
 import { useKnowledgeHubEditor } from './useKnowledgeHubEditor'
 
 jest.mock('@repo/logging')
-jest.mock('hooks/useNotify')
 jest.mock('../EmptyState/utils')
 
 const mockLogEvent = logEvent as jest.MockedFunction<typeof logEvent>
-const mockUseNotify = useNotify as jest.MockedFunction<typeof useNotify>
 const mockDispatchDocumentEvent = dispatchDocumentEvent as jest.MockedFunction<
     typeof dispatchDocumentEvent
 >
 
 describe('useKnowledgeHubEditor', () => {
-    let mockNotifySuccess: jest.Mock
-
     const mockFilteredArticles = [
         { id: 1, title: 'Article 1', visibility: 'PUBLIC' },
         { id: 2, title: 'Article 2', visibility: 'PUBLIC' },
         { id: 3, title: 'Article 3', visibility: 'PUBLIC' },
     ] as unknown as FilteredKnowledgeHubArticle[]
-
-    beforeEach(() => {
-        mockNotifySuccess = jest.fn()
-        mockUseNotify.mockReturnValue({
-            success: mockNotifySuccess,
-            error: jest.fn(),
-            info: jest.fn(),
-            warning: jest.fn(),
-            notify: jest.fn(),
-        })
-    })
 
     afterEach(() => {
         jest.clearAllMocks()
@@ -186,7 +170,7 @@ describe('useKnowledgeHubEditor', () => {
                     result.current.handleCreate()
                 })
 
-                expect(mockNotifySuccess).not.toHaveBeenCalled()
+                expect(screen.queryByRole('status')).not.toBeInTheDocument()
             })
 
             it('should trigger table refresh', () => {
@@ -233,7 +217,7 @@ describe('useKnowledgeHubEditor', () => {
                     result.current.handleUpdate()
                 })
 
-                expect(mockNotifySuccess).not.toHaveBeenCalled()
+                expect(screen.queryByRole('status')).not.toBeInTheDocument()
             })
 
             it('should trigger table refresh', () => {
@@ -270,7 +254,7 @@ describe('useKnowledgeHubEditor', () => {
                 expect(result.current.isEditorOpen).toBe(false)
             })
 
-            it('should track analytics event and show success notification', () => {
+            it('should track analytics event and show success notification', async () => {
                 const { result } = renderHook(() =>
                     useKnowledgeHubEditor(guidanceConfig),
                 )
@@ -287,9 +271,10 @@ describe('useKnowledgeHubEditor', () => {
                         type: 'guidance',
                     },
                 )
-                expect(mockNotifySuccess).toHaveBeenCalledWith(
-                    'Guidance deleted successfully',
-                )
+                const toastEl = await screen.findByRole('status', {
+                    name: 'Guidance deleted successfully',
+                })
+                expect(toastEl).toHaveAttribute('data-intent', 'success')
             })
         })
 
@@ -458,7 +443,7 @@ describe('useKnowledgeHubEditor', () => {
                         type: 'faq',
                     },
                 )
-                expect(mockNotifySuccess).not.toHaveBeenCalled()
+                expect(screen.queryByRole('status')).not.toBeInTheDocument()
             })
         })
 
@@ -472,12 +457,12 @@ describe('useKnowledgeHubEditor', () => {
                     result.current.handleUpdate()
                 })
 
-                expect(mockNotifySuccess).not.toHaveBeenCalled()
+                expect(screen.queryByRole('status')).not.toBeInTheDocument()
             })
         })
 
         describe('When FAQ article is deleted', () => {
-            it('should show appropriate success notification', () => {
+            it('should show appropriate success notification', async () => {
                 const { result } = renderHook(() =>
                     useKnowledgeHubEditor(faqConfig),
                 )
@@ -486,9 +471,10 @@ describe('useKnowledgeHubEditor', () => {
                     result.current.handleDelete()
                 })
 
-                expect(mockNotifySuccess).toHaveBeenCalledWith(
-                    'Help Center article deleted successfully',
-                )
+                const toastEl = await screen.findByRole('status', {
+                    name: 'Help Center article deleted successfully',
+                })
+                expect(toastEl).toHaveAttribute('data-intent', 'success')
             })
         })
 
@@ -608,7 +594,7 @@ describe('useKnowledgeHubEditor', () => {
         })
 
         describe('When snippet is created', () => {
-            it('should show snippet-specific success notification', () => {
+            it('should show snippet-specific success notification', async () => {
                 const { result } = renderHook(() =>
                     useKnowledgeHubEditor(snippetConfig),
                 )
@@ -625,14 +611,15 @@ describe('useKnowledgeHubEditor', () => {
                         type: 'snippet',
                     },
                 )
-                expect(mockNotifySuccess).toHaveBeenCalledWith(
-                    'Snippet created successfully',
-                )
+                const toastEl = await screen.findByRole('status', {
+                    name: 'Snippet created successfully',
+                })
+                expect(toastEl).toHaveAttribute('data-intent', 'success')
             })
         })
 
         describe('When snippet is updated', () => {
-            it('should show snippet-specific success notification when visibility is set to PUBLIC', () => {
+            it('should show snippet-specific success notification when visibility is set to PUBLIC', async () => {
                 const { result } = renderHook(() =>
                     useKnowledgeHubEditor(snippetConfig),
                 )
@@ -643,12 +630,13 @@ describe('useKnowledgeHubEditor', () => {
                     }
                 })
 
-                expect(mockNotifySuccess).toHaveBeenCalledWith(
-                    'Content enabled for AI Agent.',
-                )
+                const toastEl = await screen.findByRole('status', {
+                    name: 'Content enabled for AI Agent.',
+                })
+                expect(toastEl).toHaveAttribute('data-intent', 'success')
             })
 
-            it('should show snippet-specific success notification when visibility is set to UNLISTED', () => {
+            it('should show snippet-specific success notification when visibility is set to UNLISTED', async () => {
                 const { result } = renderHook(() =>
                     useKnowledgeHubEditor(snippetConfig),
                 )
@@ -659,14 +647,15 @@ describe('useKnowledgeHubEditor', () => {
                     }
                 })
 
-                expect(mockNotifySuccess).toHaveBeenCalledWith(
-                    'Content disabled for AI Agent.',
-                )
+                const toastEl = await screen.findByRole('status', {
+                    name: 'Content disabled for AI Agent.',
+                })
+                expect(toastEl).toHaveAttribute('data-intent', 'success')
             })
         })
 
         describe('When snippet is deleted', () => {
-            it('should show snippet-specific success notification', () => {
+            it('should show snippet-specific success notification', async () => {
                 const { result } = renderHook(() =>
                     useKnowledgeHubEditor(snippetConfig),
                 )
@@ -675,9 +664,10 @@ describe('useKnowledgeHubEditor', () => {
                     result.current.handleDelete()
                 })
 
-                expect(mockNotifySuccess).toHaveBeenCalledWith(
-                    'Snippet deleted successfully',
-                )
+                const toastEl = await screen.findByRole('status', {
+                    name: 'Snippet deleted successfully',
+                })
+                expect(toastEl).toHaveAttribute('data-intent', 'success')
             })
         })
     })

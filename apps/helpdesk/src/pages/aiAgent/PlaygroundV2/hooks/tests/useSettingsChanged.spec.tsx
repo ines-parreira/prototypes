@@ -26,13 +26,6 @@ jest.mock('@repo/routing', () => ({
     useSearchParams: jest.fn(() => [new URLSearchParams(), jest.fn()]),
 }))
 
-jest.mock('hooks/useNotify', () => ({
-    __esModule: true,
-    useNotify: jest.fn(() => ({
-        notify: jest.fn(),
-    })),
-}))
-
 jest.mock('hooks/useAppSelector')
 
 jest.mock('AIJourney/queries', () => ({

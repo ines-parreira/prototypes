@@ -3,13 +3,13 @@ import { useCallback, useEffect, useState } from 'react'
 import { useInterval } from '@repo/hooks'
 import moment from 'moment'
 
+import { toast } from '@gorgias/axiom'
 import {
     useEndWrapUpTime,
     useGetAgentWrapUpCallStatus,
 } from '@gorgias/helpdesk-queries'
 
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
-import { useNotify } from 'hooks/useNotify'
 import type { VoiceCall } from 'models/voiceCall/types'
 import socketManager from 'services/socketManager'
 import type {
@@ -31,7 +31,6 @@ export default function useWrapUpTime() {
         voiceCall: null,
     })
     const [timeLeft, setTimeLeft] = useState<string | null>(null)
-    const notify = useNotify()
 
     const { data: agentCallStatus } = useGetAgentWrapUpCallStatus({
         query: {
@@ -53,7 +52,7 @@ export default function useWrapUpTime() {
                 clearWrapUpTime()
             },
             onError: () => {
-                notify.error('Failed to end wrap-up time')
+                toast.error('Failed to end wrap-up time')
             },
         },
     })

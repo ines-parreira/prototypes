@@ -3,12 +3,18 @@ import { useState } from 'react'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { Call } from '@twilio/voice-sdk'
 
-import { Box, Button, Text, Tooltip, TooltipContent } from '@gorgias/axiom'
+import {
+    Box,
+    Button,
+    Text,
+    toast,
+    Tooltip,
+    TooltipContent,
+} from '@gorgias/axiom'
 import { useHandleCallWhispering } from '@gorgias/helpdesk-queries'
 
 import { extractMonitoringCallParams } from 'hooks/integrations/phone/monitoring.utils'
 import { useCallMessageListener } from 'hooks/integrations/phone/useCallMessageListener'
-import { useNotify } from 'hooks/useNotify'
 import { TwilioMessageType } from 'models/voiceCall/twilioMessageTypes'
 import { DynamicSoundWaveIcon } from 'pages/common/components/PhoneIntegrationBar/DynamicSoundWaveIcon/DynamicSoundWaveIcon'
 import { useAudioLevel } from 'pages/common/components/PhoneIntegrationBar/hooks'
@@ -42,8 +48,6 @@ export default function MonitoringPhoneCall({ call }: Props): JSX.Element {
     const [inCallAgentId, setInCallAgentId] = useState(startingInCallAgentId)
     const [isWhispering, setIsWhispering] = useState(false)
 
-    const notify = useNotify()
-
     const { mutate: handleCallWhispering, isLoading } = useHandleCallWhispering(
         {
             mutation: {
@@ -52,7 +56,7 @@ export default function MonitoringPhoneCall({ call }: Props): JSX.Element {
                 },
                 onError: () => {
                     const verb = isWhispering ? 'stop' : 'start'
-                    notify.error(
+                    toast.error(
                         `Failed to ${verb} whispering. Please try again.`,
                     )
                 },

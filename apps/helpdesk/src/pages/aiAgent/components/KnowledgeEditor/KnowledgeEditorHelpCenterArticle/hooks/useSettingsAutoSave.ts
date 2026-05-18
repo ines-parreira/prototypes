@@ -2,8 +2,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { useDebouncedEffect } from '@repo/hooks'
 
+import { toast } from '@gorgias/axiom'
+
 import useAppSelector from 'hooks/useAppSelector'
-import { useNotify } from 'hooks/useNotify'
 import { useUpdateArticleTranslation } from 'models/helpCenter/mutations'
 import { CustomerVisibilityEnum } from 'models/helpCenter/types'
 import type {
@@ -58,7 +59,6 @@ export const useSettingsAutoSave = () => {
         useArticleContext()
     const { helpCenter, supportedLocales, categories, onUpdatedFn } = config
     const categoriesById = useAppSelector(getCategoriesById)
-    const { error: notifyError } = useNotify()
     const [isSettingsAutoSaving, setIsSettingsAutoSaving] = useState(false)
     const [showSavedState, setShowSavedState] = useState(false)
     const savedTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -261,7 +261,7 @@ export const useSettingsAutoSave = () => {
                     }, SAVED_STATE_DURATION_MS)
                 }
             } catch {
-                notifyError('An error occurred while saving the settings.')
+                toast.error('An error occurred while saving the settings.')
             } finally {
                 dispatch({ type: 'CLEAR_PENDING_SETTINGS' })
                 dispatch({ type: 'SET_UPDATING', payload: false })
@@ -276,7 +276,6 @@ export const useSettingsAutoSave = () => {
             updateTranslationMutation,
             dispatch,
             onUpdatedFn,
-            notifyError,
         ],
     )
 

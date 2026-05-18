@@ -1,7 +1,6 @@
 import { renderHook } from '@repo/testing'
-import { act } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 
-import { useNotify } from 'hooks/useNotify'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 import type { GuidanceArticle } from 'pages/aiAgent/types'
 
@@ -11,10 +10,6 @@ import {
 } from '../../context'
 import type { GuidanceState } from '../../context/types'
 import { useDiscardDraftModal } from '../useDiscardDraftModal'
-
-jest.mock('hooks/useNotify', () => ({
-    useNotify: jest.fn(),
-}))
 
 jest.mock('pages/aiAgent/hooks/useGuidanceArticleMutation', () => ({
     useGuidanceArticleMutation: jest.fn(),
@@ -27,8 +22,6 @@ jest.mock('../../context', () => ({
 
 describe('useDiscardDraftModal', () => {
     const mockDispatch = jest.fn()
-    const mockNotifyError = jest.fn()
-    const mockNotifySuccess = jest.fn()
     const mockDiscardGuidanceDraft = jest.fn()
     const mockOnClose = jest.fn()
 
@@ -78,10 +71,6 @@ describe('useDiscardDraftModal', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        ;(useNotify as jest.Mock).mockReturnValue({
-            error: mockNotifyError,
-            success: mockNotifySuccess,
-        })
         ;(useGuidanceArticleMutation as jest.Mock).mockReturnValue({
             discardGuidanceDraft: mockDiscardGuidanceDraft,
         })
@@ -256,7 +245,10 @@ describe('useDiscardDraftModal', () => {
                 await result.current.onDiscard()
             })
 
-            expect(mockNotifySuccess).toHaveBeenCalledWith('Draft discarded')
+            const toastEl = await screen.findByRole('status', {
+                name: 'Draft discarded',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
         })
 
         it('should dispatch SWITCH_VERSION when response has title', async () => {
@@ -400,7 +392,10 @@ describe('useDiscardDraftModal', () => {
             })
 
             // Should not throw error and should complete successfully
-            expect(mockNotifySuccess).toHaveBeenCalledWith('Draft discarded')
+            const toastEl = await screen.findByRole('status', {
+                name: 'Draft discarded',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
         })
 
         it('should show error notification on failure', async () => {
@@ -412,9 +407,10 @@ describe('useDiscardDraftModal', () => {
                 await result.current.onDiscard()
             })
 
-            expect(mockNotifyError).toHaveBeenCalledWith(
-                'An error occurred while discarding draft.',
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'An error occurred while discarding draft.',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
 
         it('should dispatch SET_UPDATING false in finally block on success', async () => {

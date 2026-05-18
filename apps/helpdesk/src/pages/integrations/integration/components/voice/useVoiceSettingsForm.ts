@@ -2,6 +2,7 @@ import { history } from '@repo/routing'
 import { merge } from 'lodash'
 import cloneDeep from 'lodash/cloneDeep'
 
+import { toast } from '@gorgias/axiom'
 import type {
     HttpResponse,
     PhoneIntegration,
@@ -13,7 +14,6 @@ import {
 } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import { useNotify } from 'hooks/useNotify'
 import { isGorgiasApiError } from 'models/api/types'
 import {
     DEFAULT_CALLBACK_REQUESTS,
@@ -34,14 +34,11 @@ import {
 
 export function useFormSubmit(integration: PhoneIntegration) {
     const dispatch = useAppDispatch()
-    const notify = useNotify()
 
     const { mutate: updateAllPhoneSettings } = useUpdateAllPhoneSettings({
         mutation: {
             onSuccess: () => {
-                void notify.success(
-                    'Integration settings successfully updated.',
-                )
+                toast.success('Integration settings successfully updated.')
 
                 void dispatch(fetchIntegrations())
                 history.push(`${PHONE_INTEGRATION_BASE_URL}/integrations`)
@@ -79,7 +76,6 @@ export function useFormSubmit(integration: PhoneIntegration) {
 
 export const useDeletePhoneIntegration = (integration: PhoneIntegration) => {
     const dispatch = useAppDispatch()
-    const notify = useNotify()
 
     const { mutate: performDelete, isLoading: isDeleting } =
         useDeleteIntegration({
@@ -91,7 +87,7 @@ export const useDeletePhoneIntegration = (integration: PhoneIntegration) => {
                             id: integration.id,
                         })
                         history.push('/app/settings/channels/phone')
-                        void notify.success('Integration successfully deleted')
+                        toast.success('Integration successfully deleted')
                     }
                 },
                 onError: (error: HttpResponse<unknown>) => {
@@ -99,7 +95,7 @@ export const useDeletePhoneIntegration = (integration: PhoneIntegration) => {
                         ? error.response.data.error.msg
                         : 'Failed to delete integration'
 
-                    void notify.error(message)
+                    toast.error(message)
                 },
             },
         })

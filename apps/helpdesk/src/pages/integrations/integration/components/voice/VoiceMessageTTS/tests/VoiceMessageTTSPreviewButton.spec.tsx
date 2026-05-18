@@ -19,13 +19,6 @@ jest.mock('utils', () => ({
     replaceAttachmentURL: (url: string) => url,
 }))
 
-const mockNotify = {
-    success: jest.fn(),
-    error: jest.fn(),
-}
-jest.mock('hooks/useNotify', () => ({
-    useNotify: () => mockNotify,
-}))
 jest.mock('@gorgias/realtime')
 
 jest.mock('state/currentAccount/selectors', () => ({
@@ -159,11 +152,12 @@ describe('VoiceMessageTTSPreviewButton', () => {
                 await userEvent.click(button)
             })
 
-            // Button should no longer be generating after error
+            const toastEl = await screen.findByRole('status', {
+                name: 'Failed to generate voice preview.',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
+
             await waitFor(() => {
-                expect(mockNotify.error).toHaveBeenCalledWith(
-                    'Failed to generate voice preview.',
-                )
                 expect(button).not.toBeDisabled()
             })
         })

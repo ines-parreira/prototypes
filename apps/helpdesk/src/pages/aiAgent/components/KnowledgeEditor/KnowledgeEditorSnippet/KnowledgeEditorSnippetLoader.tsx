@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useMemo } from 'react'
 
+import { toast } from '@gorgias/axiom'
+
 import {
     getLast28DaysDateRange,
     useResourceMetrics,
 } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
 import useAppSelector from 'hooks/useAppSelector'
-import { useNotify } from 'hooks/useNotify'
 import { isGorgiasApiError } from 'models/api/types'
 import { useUpdateArticleTranslation } from 'models/helpCenter/mutations'
 import {
@@ -62,7 +63,6 @@ export const KnowledgeEditorSnippetLoader = ({
     handleVisibilityUpdate,
     shouldHideFullscreenButton,
 }: Props) => {
-    const { error: notifyError } = useNotify()
     const timezone = useAppSelector(getTimezone)
     const { mutateAsync: updateTranslationMutation } =
         useUpdateArticleTranslation(helpCenterId)
@@ -86,10 +86,10 @@ export const KnowledgeEditorSnippetLoader = ({
                 ? 'This snippet is no longer available. It may have been deleted.'
                 : 'Unable to load this snippet. Please try again or contact support.'
 
-            notifyError(message)
+            toast.error(message)
             onClose()
         }
-    }, [isError, error, notifyError, onClose])
+    }, [isError, error, onClose])
 
     const dateRange = useMemo(() => getLast28DaysDateRange(), [])
 
@@ -278,7 +278,7 @@ export const KnowledgeEditorSnippetLoader = ({
 
             handleVisibilityUpdate?.(newVisibility)
         } catch {
-            notifyError('An error occurred while updating snippet.')
+            toast.error('An error occurred while updating snippet.')
         }
     }, [
         articleData,
@@ -286,7 +286,6 @@ export const KnowledgeEditorSnippetLoader = ({
         helpCenterId,
         snippetId,
         locale,
-        notifyError,
         handleVisibilityUpdate,
     ])
 

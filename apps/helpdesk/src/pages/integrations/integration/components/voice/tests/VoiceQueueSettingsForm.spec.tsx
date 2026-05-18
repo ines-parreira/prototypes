@@ -18,8 +18,6 @@ import * as validators from '@gorgias/helpdesk-validators'
 import { voiceQueue } from 'fixtures/voiceQueue'
 import useAppDispatch from 'hooks/useAppDispatch'
 import InputField from 'pages/common/forms/input/InputField'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import {
     QUEUE_CAPACITY_VALIDATION_ERROR,
@@ -51,9 +49,6 @@ jest.mock('pages/common/components/UnsavedChangesPrompt', () => {
     }
 })
 
-jest.mock('state/notifications/actions', () => ({
-    notify: jest.fn(),
-}))
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = assumeMock(useAppDispatch)
 
@@ -277,10 +272,9 @@ describe('VoiceQueueSettingsForm', () => {
         })
 
         await getLastMockCall(mockUnsavedChangesPrompt)[0].onSave()
-        expect(notify).toHaveBeenCalledWith({
-            message:
-                'Please make sure all fields are filled out correctly before saving',
-            status: NotificationStatus.Error,
+        const toastEl = await screen.findByRole('status', {
+            name: 'Please make sure all fields are filled out correctly before saving',
         })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
 })

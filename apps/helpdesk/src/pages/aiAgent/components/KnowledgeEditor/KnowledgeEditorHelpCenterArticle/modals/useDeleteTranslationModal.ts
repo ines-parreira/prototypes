@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
 
-import { useNotify } from 'hooks/useNotify'
+import { toast } from '@gorgias/axiom'
+
 import { useDeleteArticleTranslation } from 'models/helpCenter/mutations'
 import type { OptionItem as LocaleOption } from 'pages/settings/helpCenter/components/articles/ArticleLanguageSelect'
 
@@ -8,7 +9,6 @@ import { useArticleContext } from '../context'
 
 export const useDeleteTranslationModal = () => {
     const { state, dispatch, config } = useArticleContext()
-    const { error: notifyError } = useNotify()
 
     const { mutateAsync: deleteTranslationMutation } =
         useDeleteArticleTranslation(config.helpCenter.id)
@@ -39,19 +39,12 @@ export const useDeleteTranslationModal = () => {
             config.onDeletedFn?.()
             config.onClose()
         } catch {
-            notifyError('An error occurred while deleting the translation.')
+            toast.error('An error occurred while deleting the translation.')
         } finally {
             dispatch({ type: 'SET_UPDATING', payload: false })
             dispatch({ type: 'CLOSE_MODAL' })
         }
-    }, [
-        deleteTranslationMutation,
-        state.article?.id,
-        locale,
-        config,
-        dispatch,
-        notifyError,
-    ])
+    }, [deleteTranslationMutation, state.article?.id, locale, config, dispatch])
 
     return {
         isOpen,

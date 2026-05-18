@@ -2,13 +2,13 @@ import { useCallback, useState } from 'react'
 
 import { useFormContext } from 'react-hook-form'
 
+import { toast } from '@gorgias/axiom'
 import type { DomainEvent } from '@gorgias/events'
 import { isDomainEvent } from '@gorgias/events'
 import type { VoiceGender, VoiceLanguage } from '@gorgias/helpdesk-types'
 import { useChannel } from '@gorgias/realtime'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { useNotify } from 'hooks/useNotify'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 
@@ -24,7 +24,6 @@ export default function TextToSpeechProvider({
 }) {
     const accountId = useAppSelector(getCurrentAccountId)
     const userId = useAppSelector(getCurrentUserId)
-    const notify = useNotify()
     const [lastSelectedLanguage, setLastSelectedLanguage] =
         useState<VoiceLanguage>(DEFAULT_TTS_LANGUAGE)
     const [lastSelectedGender, setLastSelectedGender] =
@@ -54,7 +53,7 @@ export default function TextToSpeechProvider({
                 } = event.data
 
                 if (error_message) {
-                    void notify.error(
+                    toast.error(
                         `Failed to generate voice preview: ${error_message}`,
                     )
                     return
@@ -78,7 +77,7 @@ export default function TextToSpeechProvider({
                 )
             }
         },
-        [setValue, notify, watch],
+        [setValue, watch],
     )
 
     useChannel({

@@ -18,8 +18,6 @@ import { mockUpdateUserAvailabilityHandler } from '@gorgias/helpdesk-mocks'
 import { AgentAvailabilityCell } from 'domains/reporting/pages/common/components/charts/TableStat/cells/AgentAvailabilityCell'
 import * as useAvailabilityCellDataModule from 'domains/reporting/pages/common/components/charts/TableStat/cells/hooks/useAvailabilityCellData'
 import { user } from 'fixtures/users'
-import * as useNotifyModule from 'hooks/useNotify'
-import type { useNotify } from 'hooks/useNotify'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 jest.mock('@gorgias/axiom', () => ({
@@ -47,16 +45,6 @@ jest.mock('@gorgias/axiom', () => ({
 const mockStore = configureMockStore([thunk])
 
 const server = setupServer()
-
-const mockNotify: jest.Mocked<ReturnType<typeof useNotify>> = {
-    error: jest.fn().mockResolvedValue(undefined),
-    success: jest.fn().mockResolvedValue(undefined),
-    info: jest.fn().mockResolvedValue(undefined),
-    warning: jest.fn().mockResolvedValue(undefined),
-    notify: jest.fn().mockResolvedValue(undefined),
-}
-
-jest.spyOn(useNotifyModule, 'useNotify').mockReturnValue(mockNotify)
 
 jest.mock(
     'domains/reporting/pages/common/components/charts/TableStat/cells/hooks/useAvailabilityCellData',
@@ -117,10 +105,6 @@ describe('AgentAvailabilityCell', () => {
     afterEach(() => {
         server.resetHandlers()
         queryClient.clear()
-        mockNotify.error.mockClear()
-        mockNotify.success.mockClear()
-        mockNotify.info.mockClear()
-        mockNotify.warning.mockClear()
         jest.clearAllMocks()
     })
 
@@ -271,11 +255,10 @@ describe('AgentAvailabilityCell', () => {
                 screen.getByRole('option', { name: /Unavailable/i }),
             )
 
-            await waitFor(() => {
-                expect(mockNotify.error).toHaveBeenCalledWith(
-                    'Failed to update status. Please try again.',
-                )
+            const toastEl = await screen.findByRole('status', {
+                name: 'Failed to update status. Please try again.',
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
     })
 

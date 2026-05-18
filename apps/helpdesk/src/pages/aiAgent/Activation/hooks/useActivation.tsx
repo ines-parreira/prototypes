@@ -4,8 +4,9 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { useLocation } from 'react-router-dom'
 
+import { toast } from '@gorgias/axiom'
+
 import { atLeastOneStoreHasActiveTrialOnSpecificStores } from 'hooks/aiAgent/useCanUseAiSalesAgent'
-import { useNotify } from 'hooks/useNotify'
 import { AiAgentActivationModal } from 'pages/aiAgent/Activation/components/AiAgentActivationModal/AiAgentActivationModal'
 import { EarlyAccessModal } from 'pages/aiAgent/Activation/components/EarlyAccessModal/EarlyAccessModal'
 
@@ -77,8 +78,6 @@ export const useActivation = (
             reason,
         })
     }
-
-    const notify = useNotify()
 
     useEffect(() => {
         if (isPreviewModalVisible) {
@@ -166,11 +165,11 @@ export const useActivation = (
                 onSaveClick={async () => {
                     try {
                         await saveStoreConfigurations()
-                        await notify.success(
+                        toast.success(
                             'Successfully updated activation status for AI Agent',
                         )
                     } catch {
-                        await notify.error(
+                        toast.error(
                             'Changes to AI Agent activation status could not be successfully saved. Please try again.',
                         )
                     }

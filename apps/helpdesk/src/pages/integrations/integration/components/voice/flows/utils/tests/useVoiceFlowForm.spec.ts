@@ -1,6 +1,6 @@
 import { appQueryClient } from '@repo/api-resources'
 import { renderHook } from '@repo/testing'
-import { act, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -12,17 +12,11 @@ import type { PhoneIntegration } from '@gorgias/helpdesk-queries'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 import type { CallRoutingFlow } from '@gorgias/helpdesk-types'
 
-import { useNotify } from 'hooks/useNotify'
 import { DEFAULT_CALLBACK_REQUESTS } from 'models/integration/constants'
 
 import { VoiceFlowNodeType } from '../../constants'
 import type { VoiceFlowFormValues } from '../../types'
 import { useVoiceFlowForm } from '../useVoiceFlowForm'
-
-jest.mock('hooks/useNotify', () => ({
-    useNotify: jest.fn(),
-}))
-const mockUseNotify = useNotify as jest.Mock
 
 const server = setupServer()
 beforeAll(() => {
@@ -37,14 +31,8 @@ const mockUseUpdateAllPhoneSettings = mockUpdateAllPhoneSettingsHandler()
 
 describe('useVoiceFlowForm', () => {
     const mockIntegration = mockPhoneIntegration()
-    const mockNotifySuccess = jest.fn()
-    const mockNotifyError = jest.fn()
 
     beforeEach(() => {
-        mockUseNotify.mockReturnValue({
-            success: mockNotifySuccess,
-            error: mockNotifyError,
-        })
         server.use(mockUseUpdateAllPhoneSettings.handler)
     })
 
@@ -164,10 +152,12 @@ describe('useVoiceFlowForm', () => {
                 result.current.onSubmit(flowData)
             })
 
+            const toastEl = await screen.findByRole('status', {
+                name: 'Changes to your Call Flow were successfully saved.',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
+
             await waitFor(() => {
-                expect(mockNotifySuccess).toHaveBeenCalledWith(
-                    'Changes to your Call Flow were successfully saved.',
-                )
                 expect(refetchQueriesSpy).toHaveBeenCalledWith(
                     queryKeys.integrations.getIntegration(mockIntegration.id),
                 )
@@ -193,11 +183,10 @@ describe('useVoiceFlowForm', () => {
                 result.current.onSubmit(flowData)
             })
 
-            await waitFor(() => {
-                expect(mockNotifyError).toHaveBeenCalledWith(
-                    'Failed to save changes to your Call Flow.',
-                )
+            const toastEl = await screen.findByRole('status', {
+                name: 'Failed to save changes to your Call Flow.',
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
     })
 })
