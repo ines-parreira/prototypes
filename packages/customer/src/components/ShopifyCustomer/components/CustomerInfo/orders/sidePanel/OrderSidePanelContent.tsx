@@ -19,6 +19,7 @@ import { getMoneySymbol } from '@repo/utils'
 import { Box, OverlayContent } from '@gorgias/axiom'
 
 import type { OrderRefund, OrderReturn } from '../../../../types'
+import { CustomActions, TemplateResolverProvider } from '../../CustomActions'
 import type { OrderShippingLine } from '../../types'
 import { useOrderFieldPreferences } from '../../widget/useOrderFieldPreferences'
 import { OrderActions } from '../OrderActions'
@@ -100,6 +101,7 @@ type Props<T extends OrderData = OrderData> = {
     integrationId?: number
     ticketId?: string
     customerId?: string
+    ticketCustomerId?: number | null
     renderEditShippingAddressModal?: (
         props: EditShippingAddressModalRenderProps,
     ) => ReactNode
@@ -118,6 +120,7 @@ export function OrderSidePanelContent<T extends OrderData = OrderData>({
     integrationId,
     ticketId,
     customerId,
+    ticketCustomerId,
     renderEditShippingAddressModal,
 }: Props<T>) {
     const handleEdit = useCallback(() => {
@@ -164,95 +167,109 @@ export function OrderSidePanelContent<T extends OrderData = OrderData>({
 
     return (
         <OverlayContent>
-            <Box
-                flexDirection="column"
-                paddingTop={'md'}
-                paddingLeft={'lg'}
-                paddingRight={'lg'}
-                flex={1}
-            >
-                <OrderSidePanelHeader
-                    orderName={order.name}
-                    isCancelled={isCancelled}
-                    financialLabel={financialLabel}
-                    financialColor={financialColor}
-                    fulfillmentLabel={fulfillmentLabel}
-                    fulfillmentColor={fulfillmentColor}
-                    onClose={onClose}
-                    isDraftOrder={isDraftOrder}
-                    draftLabel={draftLabel}
-                    draftColor={draftColor}
-                />
-
-                {!isDraftOrder && (
-                    <OrderActions
-                        onEdit={canEdit && onEdit ? handleEdit : undefined}
-                        onDuplicate={onDuplicate ? handleDuplicate : undefined}
-                        onRefund={
-                            isRefunded || !onRefund ? undefined : handleRefund
-                        }
-                        onCancel={
-                            isCancelled || isFulfilled || !onCancel
-                                ? undefined
-                                : handleCancel
-                        }
+            <TemplateResolverProvider order={order as Record<string, unknown>}>
+                <Box
+                    flexDirection="column"
+                    paddingTop={'md'}
+                    paddingLeft={'lg'}
+                    paddingRight={'lg'}
+                    flex={1}
+                >
+                    <OrderSidePanelHeader
+                        orderName={order.name}
+                        isCancelled={isCancelled}
+                        financialLabel={financialLabel}
+                        financialColor={financialColor}
+                        fulfillmentLabel={fulfillmentLabel}
+                        fulfillmentColor={fulfillmentColor}
+                        onClose={onClose}
+                        isDraftOrder={isDraftOrder}
+                        draftLabel={draftLabel}
+                        draftColor={draftColor}
                     />
-                )}
 
-                <OrderDetailsSection
-                    order={order}
-                    isDraftOrder={isDraftOrder}
-                    integrationId={integrationId}
-                    ticketId={ticketId}
-                    storeName={storeName}
-                />
+                    {!isDraftOrder && (
+                        <OrderActions
+                            onEdit={canEdit && onEdit ? handleEdit : undefined}
+                            onDuplicate={
+                                onDuplicate ? handleDuplicate : undefined
+                            }
+                            onRefund={
+                                isRefunded || !onRefund
+                                    ? undefined
+                                    : handleRefund
+                            }
+                            onCancel={
+                                isCancelled || isFulfilled || !onCancel
+                                    ? undefined
+                                    : handleCancel
+                            }
+                        />
+                    )}
 
-                {lineItemsVisible && (
-                    <OrderLineItemsSection
-                        lineItems={order.line_items ?? []}
-                        productsMap={productsMap}
-                        moneySymbol={moneySymbol}
-                        subtotalPrice={
-                            order.total_line_items_price ?? order.subtotal_price
-                        }
-                        totalShippingPrice={
-                            order.total_shipping_price_set?.shop_money
-                                ?.amount ?? order.total_shipping_price
-                        }
-                        totalDiscounts={order.total_discounts}
-                        totalTax={order.total_tax}
-                        totalPrice={order.total_price}
-                        currentTotalPrice={order.current_total_price}
-                        refunds={order.refunds}
-                        returns={order.returns}
-                    />
-                )}
-
-                <OrderShipmentSection
-                    order={order}
-                    storeName={storeName}
-                    integrationId={integrationId}
-                    ticketId={ticketId}
-                    isDraftOrder={isDraftOrder}
-                />
-                <Box mt="sm">
-                    <ShippingAddressSection
-                        key={String(order.id)}
-                        shippingAddress={order.shipping_address}
-                        orderId={String(order.id)}
-                        customerId={customerId}
+                    <CustomActions
+                        widgetPath="order"
                         integrationId={integrationId}
-                        renderEditShippingAddressModal={
-                            renderEditShippingAddressModal
-                        }
+                        customerId={ticketCustomerId ?? undefined}
+                        ticketId={ticketId}
                     />
-                </Box>
-                <Box mt="sm">
-                    <BillingAddressSection
-                        billingAddress={order.billing_address}
+
+                    <OrderDetailsSection
+                        order={order}
+                        isDraftOrder={isDraftOrder}
+                        integrationId={integrationId}
+                        ticketId={ticketId}
+                        storeName={storeName}
                     />
+
+                    {lineItemsVisible && (
+                        <OrderLineItemsSection
+                            lineItems={order.line_items ?? []}
+                            productsMap={productsMap}
+                            moneySymbol={moneySymbol}
+                            subtotalPrice={
+                                order.total_line_items_price ??
+                                order.subtotal_price
+                            }
+                            totalShippingPrice={
+                                order.total_shipping_price_set?.shop_money
+                                    ?.amount ?? order.total_shipping_price
+                            }
+                            totalDiscounts={order.total_discounts}
+                            totalTax={order.total_tax}
+                            totalPrice={order.total_price}
+                            currentTotalPrice={order.current_total_price}
+                            refunds={order.refunds}
+                            returns={order.returns}
+                        />
+                    )}
+
+                    <OrderShipmentSection
+                        order={order}
+                        storeName={storeName}
+                        integrationId={integrationId}
+                        ticketId={ticketId}
+                        isDraftOrder={isDraftOrder}
+                    />
+                    <Box mt="sm">
+                        <ShippingAddressSection
+                            key={String(order.id)}
+                            shippingAddress={order.shipping_address}
+                            orderId={String(order.id)}
+                            customerId={customerId}
+                            integrationId={integrationId}
+                            renderEditShippingAddressModal={
+                                renderEditShippingAddressModal
+                            }
+                        />
+                    </Box>
+                    <Box mt="sm">
+                        <BillingAddressSection
+                            billingAddress={order.billing_address}
+                        />
+                    </Box>
                 </Box>
-            </Box>
+            </TemplateResolverProvider>
         </OverlayContent>
     )
 }

@@ -143,6 +143,7 @@ export function OrderSidePanelWithActions<T extends OrderData = OrderData>({
                 integrationId={integrationId}
                 ticketId={ticketId}
                 customerId={customerId}
+                ticketCustomerId={ticketCustomerId}
                 renderEditShippingAddressModal={renderEditShippingAddressModal}
                 hasPrevious={hasPrevious}
                 hasNext={hasNext}

@@ -10,13 +10,25 @@ type TemplateResolver = (
     options?: TemplateResolverOptions,
 ) => string
 
-const TemplateResolverContext = createContext<TemplateResolver>(
-    (template) => template,
-)
+type TemplateResolverInputs = {
+    objects: Record<string, unknown>
+    variables: Record<string, string | undefined>
+}
+
+const EMPTY_OBJECTS: Record<string, unknown> = {
+    ticket: {},
+    customer: {},
+    order: {},
+    current_user: {},
+}
+
+const TemplateResolverInputsContext =
+    createContext<TemplateResolverInputs | null>(null)
 
 type TemplateResolverProviderProps = {
     ticket?: Record<string, unknown>
     customer?: Record<string, unknown>
+    order?: Record<string, unknown>
     currentUser?: {
         name?: string
         firstname?: string
@@ -43,40 +55,48 @@ function applyVariables(
 export function TemplateResolverProvider({
     ticket,
     customer,
+    order,
     currentUser,
     variables,
     children,
 }: TemplateResolverProviderProps) {
-    const context = useMemo(
-        () => ({
-            ticket: ticket ?? {},
-            customer: customer ?? {},
-            current_user: currentUser ?? {},
-        }),
-        [ticket, customer, currentUser],
-    )
+    const parent = useContext(TemplateResolverInputsContext)
 
-    const resolve = useCallback(
-        (template: string, options?: TemplateResolverOptions) => {
-            const substituted = variables
-                ? applyVariables(template, variables)
-                : template
-            return renderTemplate(
-                substituted,
-                context,
-                options?.keepTemplateWhenEmpty,
-            )
-        },
-        [context, variables],
-    )
+    const merged = useMemo<TemplateResolverInputs>(() => {
+        const baseObjects = parent?.objects ?? EMPTY_OBJECTS
+        const baseVariables = parent?.variables ?? {}
+        return {
+            objects: {
+                ...baseObjects,
+                ...(ticket !== undefined && { ticket }),
+                ...(customer !== undefined && { customer }),
+                ...(order !== undefined && { order }),
+                ...(currentUser !== undefined && { current_user: currentUser }),
+            },
+            variables: { ...baseVariables, ...variables },
+        }
+    }, [parent, ticket, customer, order, currentUser, variables])
 
     return (
-        <TemplateResolverContext.Provider value={resolve}>
+        <TemplateResolverInputsContext.Provider value={merged}>
             {children}
-        </TemplateResolverContext.Provider>
+        </TemplateResolverInputsContext.Provider>
     )
 }
 
-export function useTemplateResolver() {
-    return useContext(TemplateResolverContext)
+export function useTemplateResolver(): TemplateResolver {
+    const inputs = useContext(TemplateResolverInputsContext)
+
+    return useCallback(
+        (template, options) => {
+            if (!inputs) return template
+            const substituted = applyVariables(template, inputs.variables)
+            return renderTemplate(
+                substituted,
+                inputs.objects,
+                options?.keepTemplateWhenEmpty,
+            )
+        },
+        [inputs],
+    )
 }

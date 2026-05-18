@@ -546,6 +546,75 @@ describe('CustomActions', () => {
         })
     })
 
+    it('renders order-scoped actions when widgetPath="order"', async () => {
+        const orderWidget: Widget = {
+            id: 1,
+            type: 'shopify',
+            context: 'ticket',
+            template: {
+                type: 'wrapper',
+                widgets: [
+                    {
+                        path: 'customer',
+                        type: 'customer',
+                        meta: {
+                            custom: {
+                                links: [
+                                    {
+                                        label: 'Customer-Only Link',
+                                        url: 'https://customer.example.com',
+                                    },
+                                ],
+                                buttons: [],
+                            },
+                        },
+                    },
+                    {
+                        path: 'order',
+                        type: 'order',
+                        widgets: [],
+                        meta: {
+                            custom: {
+                                links: [
+                                    {
+                                        label: 'Track {{order.name}}',
+                                        url: 'https://example.com/track/{{order.id}}',
+                                    },
+                                ],
+                                buttons: [],
+                            },
+                        },
+                    },
+                ],
+            },
+        }
+
+        setupHandlers([orderWidget])
+
+        render(
+            <TemplateResolverProvider order={{ id: '5001', name: '#5001' }}>
+                <CustomActions
+                    widgetPath="order"
+                    integrationId={1}
+                    customerId={42}
+                    ticketId="100"
+                />
+            </TemplateResolverProvider>,
+        )
+
+        await vi.waitFor(() => {
+            expect(
+                screen.getByRole('link', { name: /track #5001/i }),
+            ).toBeInTheDocument()
+        })
+
+        const link = screen.getByRole('link', { name: /track #5001/i })
+        expect(link).toHaveAttribute('href', 'https://example.com/track/5001')
+        expect(
+            screen.queryByRole('link', { name: /customer-only link/i }),
+        ).not.toBeInTheDocument()
+    })
+
     it('disables action button while mutation is loading', async () => {
         let resolveRequest: (() => void) | undefined
         const executeActionMock = mockExecuteActionHandler(

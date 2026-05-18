@@ -32,14 +32,17 @@ export type ButtonAction = {
 export type ButtonConfig = { label: string; action: ButtonAction }
 export type LinkConfig = { label: string; url: string }
 
+export type NestedWidgetCustomMeta = {
+    links?: LinkConfig[]
+    buttons?: ButtonConfig[]
+} & Record<string, unknown>
+
 export type NestedWidget = {
     path?: string
     type?: string
+    widgets?: unknown[]
     meta?: {
-        custom?: {
-            links?: LinkConfig[]
-            buttons?: ButtonConfig[]
-        }
+        custom?: NestedWidgetCustomMeta
         [key: string]: unknown
     }
     [key: string]: unknown

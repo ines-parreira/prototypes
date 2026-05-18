@@ -868,3 +868,141 @@ describe('OrderSidePanelPreview — metafields inside Order Details section', ()
         })
     })
 })
+
+describe('OrderSidePanelPreview — order custom actions', () => {
+    const widgetWithOrderActions = {
+        id: 1,
+        type: 'shopify' as const,
+        context: 'ticket' as const,
+        template: {
+            type: 'wrapper',
+            widgets: [
+                {
+                    path: 'order',
+                    type: 'order',
+                    widgets: [],
+                    meta: {
+                        custom: {
+                            links: [
+                                {
+                                    label: 'Track {{order.name}}',
+                                    url: 'https://example.com/track/{{order.id}}',
+                                },
+                            ],
+                            buttons: [],
+                        },
+                    },
+                },
+            ],
+        },
+    }
+
+    const widgetListWithOrderActions = {
+        data: [widgetWithOrderActions],
+        meta: { next_cursor: null, prev_cursor: null },
+        object: 'list' as unknown,
+        uri: '/api/widgets',
+    }
+
+    it('renders configured order custom actions with resolved {{order.*}} placeholders', async () => {
+        server.use(
+            mockListWidgetsHandler(async () =>
+                HttpResponse.json(widgetListWithOrderActions),
+            ).handler,
+        )
+
+        render(
+            <OrderSidePanelPreview
+                order={mockOrder}
+                isOpen={true}
+                onOpenChange={vi.fn()}
+            />,
+        )
+
+        const link = await screen.findByRole('link', {
+            name: /track #3519/i,
+        })
+        expect(link).toHaveAttribute('href', 'https://example.com/track/3519')
+    })
+
+    it('renders order custom actions even for draft orders (built-in actions are hidden)', async () => {
+        server.use(
+            mockListWidgetsHandler(async () =>
+                HttpResponse.json(widgetListWithOrderActions),
+            ).handler,
+        )
+
+        render(
+            <OrderSidePanelPreview
+                order={mockOrder}
+                isOpen={true}
+                onOpenChange={vi.fn()}
+                isDraftOrder
+            />,
+        )
+
+        await screen.findByRole('link', { name: /track #3519/i })
+        expect(
+            screen.queryByRole('button', { name: /duplicate/i }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('falls back to legacy order custom actions when no path: "order" widget exists', async () => {
+        const widgetWithLegacyOnly = {
+            id: 1,
+            type: 'shopify' as const,
+            context: 'ticket' as const,
+            template: {
+                type: 'wrapper',
+                widgets: [
+                    {
+                        path: 'orders',
+                        type: 'list',
+                        meta: { limit: 3, orderBy: '-created_at' },
+                        widgets: [
+                            {
+                                type: 'card',
+                                title: 'Order {{name}}',
+                                meta: {
+                                    custom: {
+                                        links: [
+                                            {
+                                                label: 'legacy order widget link',
+                                                url: 'https://www.google.com',
+                                            },
+                                        ],
+                                        buttons: [],
+                                    },
+                                },
+                            },
+                        ],
+                    },
+                ],
+            },
+        }
+
+        server.use(
+            mockListWidgetsHandler(async () =>
+                HttpResponse.json({
+                    data: [widgetWithLegacyOnly],
+                    meta: { next_cursor: null, prev_cursor: null },
+                    object: 'list' as unknown,
+                    uri: '/api/widgets',
+                }),
+            ).handler,
+        )
+
+        render(
+            <OrderSidePanelPreview
+                order={mockOrder}
+                isOpen={true}
+                onOpenChange={vi.fn()}
+            />,
+        )
+
+        const link = await screen.findByRole('link', {
+            name: /legacy order widget link/i,
+        })
+        expect(link).toHaveAttribute('href', 'https://www.google.com')
+    })
+})

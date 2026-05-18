@@ -9,7 +9,7 @@ type EditableActionRowProps = {
     editAriaLabel: string
     deleteAriaLabel: string
     onEdit: () => void
-    onDelete: () => Promise<void>
+    onDelete: () => void | Promise<void>
 }
 
 export function EditableActionRow({

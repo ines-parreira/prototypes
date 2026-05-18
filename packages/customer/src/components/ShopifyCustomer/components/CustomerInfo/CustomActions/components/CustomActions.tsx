@@ -8,6 +8,7 @@ import {
 } from '@gorgias/axiom'
 
 import { useCustomActions } from '../hooks/useCustomActions'
+import type { WidgetPath } from '../utils/customActionWidgetUtils'
 import { ActionButton } from './ActionButton'
 import { useTemplateResolver } from './TemplateResolverContext'
 
@@ -17,14 +18,16 @@ type CustomActionsProps = {
     integrationId?: number
     customerId?: number
     ticketId?: string
+    widgetPath?: WidgetPath
 }
 
 export function CustomActions({
     integrationId,
     customerId,
     ticketId,
+    widgetPath = 'customer',
 }: CustomActionsProps) {
-    const { links, buttons } = useCustomActions()
+    const { links, buttons } = useCustomActions({ widgetPath })
     const resolve = useTemplateResolver()
 
     if (links.length === 0 && buttons.length === 0) {

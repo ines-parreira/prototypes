@@ -6,4 +6,10 @@ export {
     useTemplateResolver,
 } from './components/TemplateResolverContext'
 export { useCustomActions } from './hooks/useCustomActions'
+export { useSaveCustomActions } from './hooks/useSaveCustomActions'
+export type {
+    CustomActionsBatchUpdate,
+    CustomActionsUpdate,
+} from './hooks/useSaveCustomActions'
 export type { ButtonConfig, LinkConfig } from './utils/customActionTypes'
+export type { WidgetPath } from './utils/customActionWidgetUtils'

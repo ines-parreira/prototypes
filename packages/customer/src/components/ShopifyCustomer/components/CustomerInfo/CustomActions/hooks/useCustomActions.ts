@@ -1,133 +1,41 @@
-import { useCallback, useMemo } from 'react'
+import { useMemo } from 'react'
 
 import { useShopifyWidget } from '../../widget/useShopifyWidget'
-import {
-    createWidgetFromTemplate,
-    saveWidgetWithOptimisticUpdate,
-} from '../../widget/widgetUtils'
-import type {
-    ButtonConfig,
-    LinkConfig,
-    WidgetTemplate,
-} from '../utils/customActionTypes'
-import {
-    buildInitialTemplate,
-    findCustomerWidget,
-    updateCustomerWidget,
-} from '../utils/customActionWidgetUtils'
+import type { WidgetTemplate } from '../utils/customActionTypes'
+import type { WidgetPath } from '../utils/customActionWidgetUtils'
+import { widgetPathHandlers } from '../utils/customActionWidgetUtils'
 
-export function useCustomActions() {
-    const {
-        shopifyWidget: widget,
-        template: rawTemplate,
-        queryClient,
-        listWidgetsQueryKey,
-        updateWidget,
-        createWidget,
-        invalidateWidgets,
-        isLoading,
-    } = useShopifyWidget()
+type UseCustomActionsOptions = {
+    widgetPath?: WidgetPath
+}
+
+export function useCustomActions(options: UseCustomActionsOptions = {}) {
+    const { widgetPath = 'customer' } = options
+    const handler = widgetPathHandlers[widgetPath]
+
+    const { template: rawTemplate, isLoading } = useShopifyWidget()
 
     const template = rawTemplate as WidgetTemplate | undefined
-    const customerWidget = useMemo(
-        () => findCustomerWidget(template),
-        [template],
+    const targetWidget = useMemo(
+        () => handler.find(template),
+        [handler, template],
     )
+    const fallback = useMemo(() => {
+        if (targetWidget || !handler.readFallback) return undefined
+        return handler.readFallback(template)
+    }, [handler, template, targetWidget])
     const links = useMemo(
-        () => customerWidget?.meta?.custom?.links ?? [],
-        [customerWidget],
+        () => targetWidget?.meta?.custom?.links ?? fallback?.links ?? [],
+        [targetWidget, fallback],
     )
     const buttons = useMemo(
-        () => customerWidget?.meta?.custom?.buttons ?? [],
-        [customerWidget],
+        () => targetWidget?.meta?.custom?.buttons ?? fallback?.buttons ?? [],
+        [targetWidget, fallback],
     )
-
-    const saveCustomActions = useCallback(
-        async (newLinks: LinkConfig[], newButtons: ButtonConfig[]) => {
-            const custom = { links: newLinks, buttons: newButtons }
-
-            if (widget?.id && template) {
-                const updatedTemplate = updateCustomerWidget(template, custom)
-
-                await saveWidgetWithOptimisticUpdate({
-                    widgetId: widget.id,
-                    updatedTemplate,
-                    queryClient,
-                    listWidgetsQueryKey,
-                    updateWidget,
-                    invalidateWidgets,
-                })
-            } else {
-                await createWidgetFromTemplate({
-                    createPayload: {
-                        integration_id: null,
-                        context: 'ticket' as const,
-                        type: 'shopify' as const,
-                        template: buildInitialTemplate(custom) as {
-                            [key: string]: unknown
-                        },
-                    },
-                    createWidget,
-                    invalidateWidgets,
-                })
-            }
-        },
-        [
-            widget,
-            template,
-            updateWidget,
-            createWidget,
-            invalidateWidgets,
-            queryClient,
-            listWidgetsQueryKey,
-        ],
-    )
-
-    async function addLink(link: LinkConfig) {
-        await saveCustomActions([...links, link], buttons)
-    }
-
-    async function addButton(button: ButtonConfig) {
-        await saveCustomActions(links, [...buttons, button])
-    }
-
-    async function editLink(index: number, link: LinkConfig) {
-        await saveCustomActions(
-            links.map((existing, i) => (i === index ? link : existing)),
-            buttons,
-        )
-    }
-
-    async function editButton(index: number, button: ButtonConfig) {
-        await saveCustomActions(
-            links,
-            buttons.map((existing, i) => (i === index ? button : existing)),
-        )
-    }
-
-    async function removeLink(index: number) {
-        await saveCustomActions(
-            links.filter((_, i) => i !== index),
-            buttons,
-        )
-    }
-
-    async function removeButton(index: number) {
-        await saveCustomActions(
-            links,
-            buttons.filter((_, i) => i !== index),
-        )
-    }
 
     return {
         links,
         buttons,
-        addLink,
-        addButton,
-        editLink,
-        editButton,
-        removeLink,
-        removeButton,
         isLoading,
     }
 }

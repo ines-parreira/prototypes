@@ -3,7 +3,11 @@ import { DateFormatType, TimeFormatType } from '@repo/utils'
 import { screen, waitFor, within } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 
-import { mockListWidgetsHandler } from '@gorgias/helpdesk-mocks'
+import {
+    mockCreateWidgetHandler,
+    mockListWidgetsHandler,
+    mockUpdateWidgetHandler,
+} from '@gorgias/helpdesk-mocks'
 import type { Widget } from '@gorgias/helpdesk-types'
 
 import { server } from '../../../../../../tests/server'
@@ -268,10 +272,10 @@ describe('IntermediateEditPanel', () => {
         expect(screen.getByText('My Shopify Store')).toBeInTheDocument()
     })
 
-    it('renders Add menu button', () => {
+    it('renders Add menu buttons for customer and order sections', () => {
         render(<IntermediateEditPanel {...defaultProps} />)
 
-        expect(screen.getByRole('button', { name: /add/i })).toBeInTheDocument()
+        expect(screen.getAllByRole('button', { name: /add/i })).toHaveLength(2)
     })
 
     it('shows Add button and Add link menu items when Add is clicked', async () => {
@@ -287,7 +291,10 @@ describe('IntermediateEditPanel', () => {
 
         const { user } = render(<IntermediateEditPanel {...defaultProps} />)
 
-        await user.click(screen.getByRole('button', { name: /add/i }))
+        const [customerAddButton] = screen.getAllByRole('button', {
+            name: /add/i,
+        })
+        await user.click(customerAddButton)
 
         await waitFor(() => {
             expect(screen.getByText('Add button')).toBeInTheDocument()
@@ -391,7 +398,7 @@ describe('IntermediateEditPanel', () => {
         await waitFor(() => {
             expect(
                 screen.getByRole('status', {
-                    name: 'Failed to save field preferences',
+                    name: 'Failed to save changes',
                 }),
             ).toHaveAttribute('data-intent', 'destructive')
         })
@@ -458,5 +465,266 @@ describe('IntermediateEditPanel', () => {
             expect(screen.getByText('Support Portal')).toBeInTheDocument()
             expect(screen.getByText('Refresh Data')).toBeInTheDocument()
         })
+    })
+
+    describe('Pending custom actions', () => {
+        async function addCustomerLink(
+            user: ReturnType<typeof render>['user'],
+            { label, url }: { label: string; url: string },
+        ) {
+            const [customerAddButton] = screen.getAllByRole('button', {
+                name: /add/i,
+            })
+            await user.click(customerAddButton)
+            await user.click(
+                await screen.findByRole('menuitem', { name: /add link/i }),
+            )
+
+            const dialog = await screen.findByRole('dialog', {
+                name: /add link/i,
+            })
+            await user.type(within(dialog).getByLabelText(/title/i), label)
+            await user.type(within(dialog).getByLabelText(/url/i), url)
+
+            const saveButton = within(dialog).getByRole('button', {
+                name: /save/i,
+            })
+            await waitFor(() => {
+                expect(saveButton).toBeEnabled()
+            })
+            await user.click(saveButton)
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByRole('dialog', { name: /add link/i }),
+                ).not.toBeInTheDocument()
+            })
+        }
+
+        async function addOrderLink(
+            user: ReturnType<typeof render>['user'],
+            { label, url }: { label: string; url: string },
+        ) {
+            const addButtons = screen.getAllByRole('button', { name: /add/i })
+            const orderAddButton = addButtons[addButtons.length - 1]
+            await user.click(orderAddButton)
+            await user.click(
+                await screen.findByRole('menuitem', { name: /add link/i }),
+            )
+
+            const dialog = await screen.findByRole('dialog', {
+                name: /add link/i,
+            })
+            await user.type(within(dialog).getByLabelText(/title/i), label)
+            await user.type(within(dialog).getByLabelText(/url/i), url)
+
+            const saveButton = within(dialog).getByRole('button', {
+                name: /save/i,
+            })
+            await waitFor(() => {
+                expect(saveButton).toBeEnabled()
+            })
+            await user.click(saveButton)
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByRole('dialog', { name: /add link/i }),
+                ).not.toBeInTheDocument()
+            })
+        }
+
+        it('shows added link in the section without firing a network request', async () => {
+            const listWidgetsMock = mockListWidgetsHandler(async () =>
+                HttpResponse.json({
+                    data: [],
+                    meta: { next_cursor: null, prev_cursor: null },
+                    object: 'list',
+                    uri: '/api/widgets',
+                }),
+            )
+            let updateCallCount = 0
+            let createCallCount = 0
+            const updateWidgetMock = mockUpdateWidgetHandler(
+                async ({ data }) => {
+                    updateCallCount += 1
+                    return HttpResponse.json(data)
+                },
+            )
+            const createWidgetMock = mockCreateWidgetHandler(
+                async ({ data }) => {
+                    createCallCount += 1
+                    return HttpResponse.json(data as unknown as Widget)
+                },
+            )
+            server.use(
+                listWidgetsMock.handler,
+                updateWidgetMock.handler,
+                createWidgetMock.handler,
+            )
+
+            const { user } = render(<IntermediateEditPanel {...defaultProps} />)
+
+            await addCustomerLink(user, {
+                label: 'Pending Link',
+                url: 'https://pending.example.com',
+            })
+
+            expect(screen.getByText('Pending Link')).toBeInTheDocument()
+            expect(updateCallCount).toBe(0)
+            expect(createCallCount).toBe(0)
+            expect(screen.getByRole('button', { name: /save/i })).toBeEnabled()
+        }, 10000)
+
+        it('reverts pending custom actions when Cancel is clicked', async () => {
+            const listWidgetsMock = mockListWidgetsHandler(async () =>
+                HttpResponse.json({
+                    data: [],
+                    meta: { next_cursor: null, prev_cursor: null },
+                    object: 'list',
+                    uri: '/api/widgets',
+                }),
+            )
+            server.use(listWidgetsMock.handler)
+
+            const { user } = render(<IntermediateEditPanel {...defaultProps} />)
+
+            await addCustomerLink(user, {
+                label: 'Throwaway',
+                url: 'https://throwaway.example.com',
+            })
+
+            expect(screen.getByText('Throwaway')).toBeInTheDocument()
+
+            await user.click(screen.getByRole('button', { name: /cancel/i }))
+
+            expect(defaultProps.onClose).toHaveBeenCalledTimes(1)
+        }, 10000)
+
+        it('saves customer and order pending custom actions in a single updateWidget call', async () => {
+            const existingWidget: Widget = {
+                id: 42,
+                type: 'shopify',
+                context: 'ticket',
+                template: {
+                    type: 'wrapper',
+                    widgets: [
+                        {
+                            path: 'customer',
+                            type: 'customer',
+                            meta: { custom: { links: [], buttons: [] } },
+                        },
+                    ],
+                },
+            }
+            const listWidgetsMock = mockListWidgetsHandler(async () =>
+                HttpResponse.json({
+                    data: [existingWidget],
+                    meta: { next_cursor: null, prev_cursor: null },
+                    object: 'list',
+                    uri: '/api/widgets',
+                }),
+            )
+            let updateCallCount = 0
+            const updateWidgetMock = mockUpdateWidgetHandler(
+                async ({ data }) => {
+                    updateCallCount += 1
+                    return HttpResponse.json(data)
+                },
+            )
+            server.use(listWidgetsMock.handler, updateWidgetMock.handler)
+
+            const waitForUpdateRequest = updateWidgetMock.waitForRequest(server)
+
+            const { user } = render(<IntermediateEditPanel {...defaultProps} />)
+
+            await addCustomerLink(user, {
+                label: 'Customer Pending',
+                url: 'https://customer.example.com',
+            })
+            await addOrderLink(user, {
+                label: 'Order Pending',
+                url: 'https://order.example.com',
+            })
+
+            await user.click(screen.getByRole('button', { name: /save/i }))
+
+            await waitForUpdateRequest(async (request) => {
+                const body = await request.json()
+                const customerWidget = body.template.widgets.find(
+                    (w: { path: string }) => w.path === 'customer',
+                )
+                const orderWidget = body.template.widgets.find(
+                    (w: { path: string }) => w.path === 'order',
+                )
+                expect(customerWidget.meta.custom.links[0].label).toBe(
+                    'Customer Pending',
+                )
+                expect(orderWidget.meta.custom.links[0].label).toBe(
+                    'Order Pending',
+                )
+            })
+
+            await waitFor(() => {
+                expect(defaultProps.onClose).toHaveBeenCalledTimes(1)
+            })
+
+            expect(updateCallCount).toBe(1)
+        }, 15000)
+
+        it('creates a single widget with customer and order entries when no widget exists yet', async () => {
+            const listWidgetsMock = mockListWidgetsHandler(async () =>
+                HttpResponse.json({
+                    data: [],
+                    meta: { next_cursor: null, prev_cursor: null },
+                    object: 'list',
+                    uri: '/api/widgets',
+                }),
+            )
+            let createCallCount = 0
+            const createWidgetMock = mockCreateWidgetHandler(
+                async ({ data }) => {
+                    createCallCount += 1
+                    return HttpResponse.json(data as unknown as Widget)
+                },
+            )
+            server.use(listWidgetsMock.handler, createWidgetMock.handler)
+
+            const waitForCreateRequest = createWidgetMock.waitForRequest(server)
+
+            const { user } = render(<IntermediateEditPanel {...defaultProps} />)
+
+            await addCustomerLink(user, {
+                label: 'New Customer',
+                url: 'https://customer.example.com',
+            })
+            await addOrderLink(user, {
+                label: 'New Order',
+                url: 'https://order.example.com',
+            })
+
+            await user.click(screen.getByRole('button', { name: /save/i }))
+
+            await waitForCreateRequest(async (request) => {
+                const body = await request.json()
+                expect(body.type).toBe('shopify')
+                expect(body.context).toBe('ticket')
+                const customerWidget = body.template.widgets.find(
+                    (w: { path: string }) => w.path === 'customer',
+                )
+                const orderWidget = body.template.widgets.find(
+                    (w: { path: string }) => w.path === 'order',
+                )
+                expect(customerWidget.meta.custom.links[0].label).toBe(
+                    'New Customer',
+                )
+                expect(orderWidget.meta.custom.links[0].label).toBe('New Order')
+            })
+
+            await waitFor(() => {
+                expect(defaultProps.onClose).toHaveBeenCalledTimes(1)
+            })
+
+            expect(createCallCount).toBe(1)
+        }, 15000)
     })
 })

@@ -1,12 +1,8 @@
 import { renderHook } from '@repo/testing/vitest'
-import { act, waitFor } from '@testing-library/react'
+import { waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 
-import {
-    mockCreateWidgetHandler,
-    mockListWidgetsHandler,
-    mockUpdateWidgetHandler,
-} from '@gorgias/helpdesk-mocks'
+import { mockListWidgetsHandler } from '@gorgias/helpdesk-mocks'
 import type { Widget } from '@gorgias/helpdesk-types'
 
 import { server } from '../../../../../../../tests/server'
@@ -100,288 +96,210 @@ describe('useCustomActions', () => {
         expect(result.current.links).toEqual([])
         expect(result.current.buttons).toEqual([])
     })
+})
 
-    it('addLink adds a new link', async () => {
-        const listWidgetsMock = mockListWidgetsHandler(async () =>
-            HttpResponse.json(widgetListResponse),
-        )
-        const updateWidgetMock = mockUpdateWidgetHandler()
-        server.use(listWidgetsMock.handler, updateWidgetMock.handler)
-
-        const waitForUpdateRequest = updateWidgetMock.waitForRequest(server)
-
-        const { result } = renderHook(() => useCustomActions())
-
-        await waitFor(() => {
-            expect(result.current.links).toHaveLength(1)
-        })
-
-        act(() => {
-            result.current.addLink({
-                label: 'New Link',
-                url: 'https://new.com',
-            })
-        })
-
-        await waitForUpdateRequest(async (request) => {
-            const body = await request.json()
-            const customerWidget = body.template.widgets.find(
-                (w: { path: string }) => w.path === 'customer',
-            )
-            expect(customerWidget.meta.custom.links).toHaveLength(2)
-            expect(customerWidget.meta.custom.links[1].label).toBe('New Link')
-        })
-    })
-
-    it('removeLink removes a link by index', async () => {
-        const listWidgetsMock = mockListWidgetsHandler(async () =>
-            HttpResponse.json(widgetListResponse),
-        )
-        const updateWidgetMock = mockUpdateWidgetHandler()
-        server.use(listWidgetsMock.handler, updateWidgetMock.handler)
-
-        const waitForUpdateRequest = updateWidgetMock.waitForRequest(server)
-
-        const { result } = renderHook(() => useCustomActions())
-
-        await waitFor(() => {
-            expect(result.current.links).toHaveLength(1)
-        })
-
-        act(() => {
-            result.current.removeLink(0)
-        })
-
-        await waitForUpdateRequest(async (request) => {
-            const body = await request.json()
-            const customerWidget = body.template.widgets.find(
-                (w: { path: string }) => w.path === 'customer',
-            )
-            expect(customerWidget.meta.custom.links).toHaveLength(0)
-        })
-    })
-
-    it('addButton adds a new button', async () => {
-        const listWidgetsMock = mockListWidgetsHandler(async () =>
-            HttpResponse.json(widgetListResponse),
-        )
-        const updateWidgetMock = mockUpdateWidgetHandler()
-        server.use(listWidgetsMock.handler, updateWidgetMock.handler)
-
-        const waitForUpdateRequest = updateWidgetMock.waitForRequest(server)
-
-        const { result } = renderHook(() => useCustomActions())
-
-        await waitFor(() => {
-            expect(result.current.buttons).toHaveLength(1)
-        })
-
-        const newButton = {
-            label: 'New Button',
-            action: {
-                method: 'POST' as const,
-                url: 'https://api.new.com',
-                headers: [],
-                params: [],
-                body: {
-                    contentType: 'application/json' as const,
-                    'application/json': {},
-                    'application/x-www-form-urlencoded': [],
+describe('useCustomActions with widgetPath: "order"', () => {
+    const orderWidget = {
+        id: 1,
+        type: 'shopify' as const,
+        context: 'ticket' as const,
+        template: {
+            type: 'wrapper',
+            widgets: [
+                {
+                    path: 'customer',
+                    type: 'customer',
+                    meta: {
+                        custom: {
+                            links: [
+                                {
+                                    label: 'Customer Link',
+                                    url: 'https://customer.example.com',
+                                },
+                            ],
+                            buttons: [],
+                        },
+                    },
                 },
-            },
-        }
-
-        act(() => {
-            result.current.addButton(newButton)
-        })
-
-        await waitForUpdateRequest(async (request) => {
-            const body = await request.json()
-            const customerWidget = body.template.widgets.find(
-                (w: { path: string }) => w.path === 'customer',
-            )
-            expect(customerWidget.meta.custom.buttons).toHaveLength(2)
-            expect(customerWidget.meta.custom.buttons[1].label).toBe(
-                'New Button',
-            )
-        })
-    })
-
-    it('editLink replaces a link at index', async () => {
-        const listWidgetsMock = mockListWidgetsHandler(async () =>
-            HttpResponse.json(widgetListResponse),
-        )
-        const updateWidgetMock = mockUpdateWidgetHandler()
-        server.use(listWidgetsMock.handler, updateWidgetMock.handler)
-
-        const waitForUpdateRequest = updateWidgetMock.waitForRequest(server)
-
-        const { result } = renderHook(() => useCustomActions())
-
-        await waitFor(() => {
-            expect(result.current.links).toHaveLength(1)
-        })
-
-        act(() => {
-            result.current.editLink(0, {
-                label: 'Updated Link',
-                url: 'https://updated.com',
-            })
-        })
-
-        await waitForUpdateRequest(async (request) => {
-            const body = await request.json()
-            const customerWidget = body.template.widgets.find(
-                (w: { path: string }) => w.path === 'customer',
-            )
-            expect(customerWidget.meta.custom.links).toHaveLength(1)
-            expect(customerWidget.meta.custom.links[0].label).toBe(
-                'Updated Link',
-            )
-            expect(customerWidget.meta.custom.links[0].url).toBe(
-                'https://updated.com',
-            )
-        })
-    })
-
-    it('editButton replaces a button at index', async () => {
-        const listWidgetsMock = mockListWidgetsHandler(async () =>
-            HttpResponse.json(widgetListResponse),
-        )
-        const updateWidgetMock = mockUpdateWidgetHandler()
-        server.use(listWidgetsMock.handler, updateWidgetMock.handler)
-
-        const waitForUpdateRequest = updateWidgetMock.waitForRequest(server)
-
-        const { result } = renderHook(() => useCustomActions())
-
-        await waitFor(() => {
-            expect(result.current.buttons).toHaveLength(1)
-        })
-
-        const updatedButton = {
-            label: 'Updated Button',
-            action: {
-                method: 'PUT' as const,
-                url: 'https://api.updated.com',
-                headers: [],
-                params: [],
-                body: {
-                    contentType: 'application/json' as const,
-                    'application/json': {},
-                    'application/x-www-form-urlencoded': [],
+                {
+                    path: 'order',
+                    type: 'order',
+                    widgets: [],
+                    meta: {
+                        custom: {
+                            links: [
+                                {
+                                    label: 'Order Link',
+                                    url: 'https://order.example.com',
+                                },
+                            ],
+                            buttons: [],
+                        },
+                    },
                 },
-            },
-        }
+            ],
+        },
+    }
 
-        act(() => {
-            result.current.editButton(0, updatedButton)
-        })
-
-        await waitForUpdateRequest(async (request) => {
-            const body = await request.json()
-            const customerWidget = body.template.widgets.find(
-                (w: { path: string }) => w.path === 'customer',
-            )
-            expect(customerWidget.meta.custom.buttons).toHaveLength(1)
-            expect(customerWidget.meta.custom.buttons[0].label).toBe(
-                'Updated Button',
-            )
-        })
-    })
-
-    it('removeButton removes a button by index', async () => {
+    it('returns links and buttons from the order widget', async () => {
         const listWidgetsMock = mockListWidgetsHandler(async () =>
-            HttpResponse.json(widgetListResponse),
-        )
-        const updateWidgetMock = mockUpdateWidgetHandler()
-        server.use(listWidgetsMock.handler, updateWidgetMock.handler)
-
-        const waitForUpdateRequest = updateWidgetMock.waitForRequest(server)
-
-        const { result } = renderHook(() => useCustomActions())
-
-        await waitFor(() => {
-            expect(result.current.buttons).toHaveLength(1)
-        })
-
-        act(() => {
-            result.current.removeButton(0)
-        })
-
-        await waitForUpdateRequest(async (request) => {
-            const body = await request.json()
-            const customerWidget = body.template.widgets.find(
-                (w: { path: string }) => w.path === 'customer',
-            )
-            expect(customerWidget.meta.custom.buttons).toHaveLength(0)
-        })
-    })
-
-    it('rolls back optimistic update on error', async () => {
-        const listWidgetsMock = mockListWidgetsHandler(async () =>
-            HttpResponse.json(widgetListResponse),
-        )
-        const updateWidgetMock = mockUpdateWidgetHandler(async () =>
-            HttpResponse.json({ error: 'Server error' } as unknown as Widget, {
-                status: 500,
+            HttpResponse.json({
+                data: [orderWidget],
+                meta: { next_cursor: null, prev_cursor: null },
+                object: 'list' as unknown,
+                uri: '/api/widgets',
             }),
         )
-        server.use(listWidgetsMock.handler, updateWidgetMock.handler)
+        server.use(listWidgetsMock.handler)
 
-        const { result } = renderHook(() => useCustomActions())
+        const { result } = renderHook(() =>
+            useCustomActions({ widgetPath: 'order' }),
+        )
+
+        await waitFor(() => {
+            expect(result.current.links).toHaveLength(1)
+        })
+
+        expect(result.current.links[0].label).toBe('Order Link')
+    })
+})
+
+describe('useCustomActions widgetPath: "order" — legacy fallback', () => {
+    const legacyOrderLink = {
+        label: 'legacy order widget link',
+        url: 'https://www.google.com',
+    }
+
+    const legacyOnlyWidget = {
+        id: 1,
+        type: 'shopify' as const,
+        context: 'ticket' as const,
+        template: {
+            type: 'wrapper',
+            widgets: [
+                {
+                    path: 'orders',
+                    type: 'list',
+                    meta: { limit: 3, orderBy: '-created_at' },
+                    widgets: [
+                        {
+                            type: 'card',
+                            title: 'Order {{name}}',
+                            meta: {
+                                custom: {
+                                    links: [legacyOrderLink],
+                                    buttons: [],
+                                },
+                            },
+                        },
+                    ],
+                },
+            ],
+        },
+    }
+
+    const legacyOnlyResponse = {
+        data: [legacyOnlyWidget],
+        meta: { next_cursor: null, prev_cursor: null },
+        object: 'list' as unknown,
+        uri: '/api/widgets',
+    }
+
+    it('reads legacy order data when no path: "order" widget exists', async () => {
+        const listWidgetsMock = mockListWidgetsHandler(async () =>
+            HttpResponse.json(legacyOnlyResponse),
+        )
+        server.use(listWidgetsMock.handler)
+
+        const { result } = renderHook(() =>
+            useCustomActions({ widgetPath: 'order' }),
+        )
 
         await waitFor(() => {
             expect(result.current.links).toHaveLength(1)
         })
 
-        await act(async () => {
-            try {
-                await result.current.addLink({
-                    label: 'Will Fail',
-                    url: 'https://fail.com',
-                })
-            } catch {
-                // expected
-            }
-        })
-
-        await waitFor(() => {
-            expect(result.current.links).toHaveLength(1)
-            expect(result.current.links[0].label).toBe('Test Link')
-        })
+        expect(result.current.links[0]).toEqual(legacyOrderLink)
     })
 
-    it('creates widget when none exists', async () => {
+    it('an empty path: "order" widget shadows legacy data', async () => {
+        const widgetWithEmptyNew = {
+            ...legacyOnlyWidget,
+            template: {
+                ...legacyOnlyWidget.template,
+                widgets: [
+                    ...legacyOnlyWidget.template.widgets,
+                    {
+                        path: 'order',
+                        type: 'order',
+                        widgets: [],
+                        meta: { custom: { links: [], buttons: [] } },
+                    },
+                ],
+            },
+        }
         const listWidgetsMock = mockListWidgetsHandler(async () =>
-            HttpResponse.json(emptyListResponse),
+            HttpResponse.json({
+                data: [widgetWithEmptyNew],
+                meta: { next_cursor: null, prev_cursor: null },
+                object: 'list' as unknown,
+                uri: '/api/widgets',
+            }),
         )
-        const createWidgetMock = mockCreateWidgetHandler()
-        server.use(listWidgetsMock.handler, createWidgetMock.handler)
+        server.use(listWidgetsMock.handler)
 
-        const waitForCreateRequest = createWidgetMock.waitForRequest(server)
-
-        const { result } = renderHook(() => useCustomActions())
+        const { result } = renderHook(() =>
+            useCustomActions({ widgetPath: 'order' }),
+        )
 
         await waitFor(() => {
             expect(result.current.isLoading).toBe(false)
         })
 
-        act(() => {
-            result.current.addLink({
-                label: 'First Link',
-                url: 'https://first.com',
-            })
+        expect(result.current.links).toEqual([])
+        expect(result.current.buttons).toEqual([])
+    })
+
+    it('a populated path: "order" widget shadows legacy data', async () => {
+        const newOrderLink = {
+            label: 'new order link',
+            url: 'https://new.com',
+        }
+        const widgetWithNew = {
+            ...legacyOnlyWidget,
+            template: {
+                ...legacyOnlyWidget.template,
+                widgets: [
+                    ...legacyOnlyWidget.template.widgets,
+                    {
+                        path: 'order',
+                        type: 'order',
+                        widgets: [],
+                        meta: {
+                            custom: { links: [newOrderLink], buttons: [] },
+                        },
+                    },
+                ],
+            },
+        }
+        const listWidgetsMock = mockListWidgetsHandler(async () =>
+            HttpResponse.json({
+                data: [widgetWithNew],
+                meta: { next_cursor: null, prev_cursor: null },
+                object: 'list' as unknown,
+                uri: '/api/widgets',
+            }),
+        )
+        server.use(listWidgetsMock.handler)
+
+        const { result } = renderHook(() =>
+            useCustomActions({ widgetPath: 'order' }),
+        )
+
+        await waitFor(() => {
+            expect(result.current.links).toHaveLength(1)
         })
 
-        await waitForCreateRequest(async (request) => {
-            const body = await request.json()
-            expect(body.type).toBe('shopify')
-            expect(body.context).toBe('ticket')
-            const customerWidget = body.template.widgets.find(
-                (w: { path: string }) => w.path === 'customer',
-            )
-            expect(customerWidget.meta.custom.links[0].label).toBe('First Link')
-        })
+        expect(result.current.links[0]).toEqual(newOrderLink)
     })
 })

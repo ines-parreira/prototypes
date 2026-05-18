@@ -8,7 +8,7 @@ import type { Integration } from '@gorgias/helpdesk-types'
 import type { ShopperEcommerceData } from '../../types'
 import { CustomerLink } from '../CustomerLink'
 import { StorePicker } from '../StorePicker'
-import { CustomActions, TemplateResolverProvider } from './CustomActions'
+import { CustomActions } from './CustomActions'
 import { CustomerInfoFieldList } from './CustomerInfoFieldList'
 import { CollapsibleFieldSection } from './editPanels/CollapsibleFieldSection'
 import { resolveSectionFields } from './fieldDefinitions/resolveSectionFields'
@@ -26,21 +26,12 @@ type Props = {
     isLoadingTicket?: boolean
     onStoreChange: (integration: Integration) => void
     onSyncProfile?: () => void
-    ticketData: { data?: Record<string, unknown> } | undefined
-    enrichedCustomer: Record<string, unknown>
-    currentUser?: {
-        name?: string
-        firstname?: string
-        lastname?: string
-        email?: string
-    }
     hasData: boolean
     isLoadingShopper: boolean
     isLoadingPurchaseSummary: boolean
     customerFields: FieldConfig[]
     context: FieldRenderContext
     sections: SectionFieldData[]
-    ordersListIndex: string | undefined
     customerId?: number
     ticketId?: string
     shopper: ShopperEcommerceData | undefined
@@ -54,16 +45,12 @@ export function CustomerDetailsPanel({
     isLoadingTicket,
     onStoreChange,
     onSyncProfile,
-    ticketData,
-    enrichedCustomer,
-    currentUser,
     hasData,
     isLoadingShopper,
     isLoadingPurchaseSummary,
     customerFields,
     context,
     sections,
-    ordersListIndex,
     customerId,
     ticketId,
     shopper,
@@ -112,25 +99,11 @@ export function CustomerDetailsPanel({
                     shopper={shopper}
                     isLoading={isLoadingIntegrations}
                 />
-                <TemplateResolverProvider
-                    ticket={
-                        ticketData?.data as Record<string, unknown> | undefined
-                    }
-                    customer={
-                        enrichedCustomer as Record<string, unknown> | undefined
-                    }
-                    currentUser={currentUser}
-                    variables={{
-                        integrationId: selectedIntegration?.id?.toString(),
-                        listIndex: ordersListIndex,
-                    }}
-                >
-                    <CustomActions
-                        integrationId={selectedIntegration?.id}
-                        customerId={customerId}
-                        ticketId={ticketId}
-                    />
-                </TemplateResolverProvider>
+                <CustomActions
+                    integrationId={selectedIntegration?.id}
+                    customerId={customerId}
+                    ticketId={ticketId}
+                />
                 {isLoadingDetails ? (
                     <CustomerDetailsBodySkeleton />
                 ) : hasData ? (

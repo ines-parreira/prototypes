@@ -6,6 +6,7 @@ import { EditFieldsType, useTicketInfobarNavigation } from '@repo/navigation'
 import { Box } from '@gorgias/axiom'
 
 import type { OrderEcommerceData } from '../../types'
+import { TemplateResolverProvider } from './CustomActions'
 import { CustomerDetailsPanel } from './CustomerDetailsPanel'
 import { IntermediateEditPanel } from './editPanels/IntermediateEditPanel'
 import { NoShopifyProfile } from './NoShopifyProfile'
@@ -165,7 +166,15 @@ export function CustomerInfo({
     }
 
     return (
-        <>
+        <TemplateResolverProvider
+            ticket={ticketData?.data as Record<string, unknown> | undefined}
+            customer={enrichedCustomer as Record<string, unknown> | undefined}
+            currentUser={currentUser}
+            variables={{
+                integrationId: selectedIntegration?.id?.toString(),
+                listIndex: ordersListIndex,
+            }}
+        >
             <CustomerDetailsPanel
                 filteredIntegrations={filteredIntegrations}
                 selectedIntegration={selectedIntegration}
@@ -173,16 +182,12 @@ export function CustomerInfo({
                 isLoadingTicket={isLoadingTicket}
                 onStoreChange={handleStoreChange}
                 onSyncProfile={onSyncProfile}
-                ticketData={ticketData}
-                enrichedCustomer={enrichedCustomer}
-                currentUser={currentUser}
                 hasData={hasData}
                 isLoadingShopper={isLoadingShopper}
                 isLoadingPurchaseSummary={isLoadingPurchaseSummary}
                 customerFields={customerFields}
                 context={context}
                 sections={sections}
-                ordersListIndex={ordersListIndex}
                 customerId={customerId}
                 ticketId={ticketId}
                 shopper={shopper}
@@ -219,6 +224,6 @@ export function CustomerInfo({
                 onNavigateNext:
                     allOrders.length > 1 ? handleNavigateNext : undefined,
             })}
-        </>
+        </TemplateResolverProvider>
     )
 }

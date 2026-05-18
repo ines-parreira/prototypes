@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react'
+
 import { OrderCard } from '@repo/ecommerce/shopify/components'
 import type { OrderCardOrder } from '@repo/ecommerce/shopify/types'
 import {
@@ -22,10 +24,14 @@ const placeholderOrder: OrderCardOrder = {
 
 type OrdersPreviewSectionProps = {
     onEditOrderClick: () => void
+    addMenu?: ReactNode
+    actionsList?: ReactNode
 }
 
 export function OrdersPreviewSection({
     onEditOrderClick,
+    addMenu,
+    actionsList,
 }: OrdersPreviewSectionProps) {
     return (
         <div className={css.section}>
@@ -38,14 +44,19 @@ export function OrdersPreviewSection({
                     <Text size="md" variant="bold">
                         Orders
                     </Text>
-                    <Button
-                        variant="secondary"
-                        leadingSlot="edit"
-                        onClick={onEditOrderClick}
-                    >
-                        Edit order details
-                    </Button>
+                    <Box flexDirection="row" alignItems="center" gap="xs">
+                        <Button
+                            variant="secondary"
+                            leadingSlot="edit"
+                            onClick={onEditOrderClick}
+                        >
+                            Edit order details
+                        </Button>
+                        {addMenu}
+                    </Box>
                 </Box>
+
+                {actionsList}
 
                 <OrderCard order={placeholderOrder} displayedDate="Friday" />
             </Box>

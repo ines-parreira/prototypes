@@ -27,6 +27,7 @@ type Props<T extends OrderData = OrderData> = {
     integrationId?: number
     ticketId?: string
     customerId?: string
+    ticketCustomerId?: number | null
     renderEditShippingAddressModal?: (
         props: EditShippingAddressModalRenderProps,
     ) => ReactNode
@@ -50,6 +51,7 @@ export function OrderSidePanelPreview<T extends OrderData = OrderData>({
     integrationId,
     ticketId,
     customerId,
+    ticketCustomerId,
     renderEditShippingAddressModal,
     hasPrevious,
     hasNext,
@@ -83,6 +85,7 @@ export function OrderSidePanelPreview<T extends OrderData = OrderData>({
                 integrationId={integrationId}
                 ticketId={ticketId}
                 customerId={customerId}
+                ticketCustomerId={ticketCustomerId}
                 renderEditShippingAddressModal={renderEditShippingAddressModal}
             />
 
