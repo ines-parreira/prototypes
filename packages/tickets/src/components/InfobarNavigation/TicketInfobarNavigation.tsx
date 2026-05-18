@@ -243,72 +243,67 @@ export function TicketInfobarNavigation({
                         />
                     </>
                 )}
+                {hasUIVisionMilestone2 &&
+                    !isEditing &&
+                    currentUser &&
+                    isAdmin(currentUser) && <InfobarNavigationDivider />}
             </ButtonGroup>
             {hasUIVisionMilestone2 &&
                 !isEditing &&
                 currentUser &&
                 isAdmin(currentUser) && (
-                    <>
-                        <InfobarNavigationDivider />
-                        <Menu
-                            aria-label="Edit widget data"
-                            placement="bottom left"
-                            trigger={
-                                <Tooltip
-                                    placement="left"
-                                    trigger={
-                                        <Button
-                                            variant="tertiary"
-                                            icon="settings"
-                                            aria-label="Edit Widget data"
-                                        />
-                                    }
-                                >
-                                    <TooltipContent title="Edit Widget data" />
-                                </Tooltip>
-                            }
-                        >
-                            <MenuSection
-                                id="edit-widget-data"
-                                name="Edit widget data"
-                            >
-                                {!hideWidgetEditing &&
-                                    visibleIntegrations.map((config) => (
-                                        <MenuItem
-                                            key={config.tab}
-                                            label={
-                                                config.menuLabel ?? config.label
-                                            }
-                                            leadingSlot={config.icon}
-                                            onAction={() => {
-                                                onChangeTab(config.tab)
-                                                onSetEditingWidgetType(
-                                                    config.editFieldsType,
-                                                )
-                                            }}
-                                        />
-                                    ))}
-                                {!hideWidgetEditing && (
-                                    <MenuItem
-                                        label="Add new widget"
-                                        leadingSlot="add-plus"
-                                        onAction={
-                                            handleCustomIntegrationsAction
-                                        }
+                    <Menu
+                        aria-label="Edit widget data"
+                        placement="bottom left"
+                        trigger={
+                            <Tooltip
+                                placement="left"
+                                trigger={
+                                    <Button
+                                        variant="tertiary"
+                                        icon="settings"
+                                        aria-label="Edit Widget data"
                                     />
-                                )}
+                                }
+                            >
+                                <TooltipContent title="Edit Widget data" />
+                            </Tooltip>
+                        }
+                    >
+                        <MenuSection
+                            id="edit-widget-data"
+                            name="Edit widget data"
+                        >
+                            {!hideWidgetEditing &&
+                                visibleIntegrations.map((config) => (
+                                    <MenuItem
+                                        key={config.tab}
+                                        label={config.menuLabel ?? config.label}
+                                        leadingSlot={config.icon}
+                                        onAction={() => {
+                                            onChangeTab(config.tab)
+                                            onSetEditingWidgetType(
+                                                config.editFieldsType,
+                                            )
+                                        }}
+                                    />
+                                ))}
+                            {!hideWidgetEditing && (
                                 <MenuItem
-                                    label="Add new app"
+                                    label="Add new widget"
                                     leadingSlot="add-plus"
-                                    onAction={() => {
-                                        history.push(
-                                            '/app/settings/integrations',
-                                        )
-                                    }}
+                                    onAction={handleCustomIntegrationsAction}
                                 />
-                            </MenuSection>
-                        </Menu>
-                    </>
+                            )}
+                            <MenuItem
+                                label="Add new app"
+                                leadingSlot="add-plus"
+                                onAction={() => {
+                                    history.push('/app/settings/integrations')
+                                }}
+                            />
+                        </MenuSection>
+                    </Menu>
                 )}
         </InfobarNavigationContainer>
     )
