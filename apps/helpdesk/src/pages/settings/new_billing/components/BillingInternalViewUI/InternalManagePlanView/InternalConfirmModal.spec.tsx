@@ -12,7 +12,7 @@ import {
     proMonthlyHelpdeskPlan,
     voicePlan0,
 } from 'fixtures/plans'
-import { ProductType, SubscriptionStatus } from 'models/billing/types'
+import { Cadence, ProductType, SubscriptionStatus } from 'models/billing/types'
 
 import { InternalConfirmModal } from './InternalConfirmModal'
 import { derivePriceSummary } from './useInternalPlanEditor'
@@ -24,10 +24,17 @@ const BILLING_STATE_URL = '*/billing/state'
 const server = setupServer()
 
 function estimateSuccessHandler(
-    body: { balance_due: number | null } = { balance_due: 0 },
+    body: {
+        balance_due?: number | null
+        immediate_changes_summary?: object | null
+    } = { balance_due: 0 },
 ) {
     return http.get(ESTIMATE_URL, () =>
-        HttpResponse.json({ ...body, immediate_changes_summary: null }),
+        HttpResponse.json({
+            balance_due: 0,
+            immediate_changes_summary: null,
+            ...body,
+        }),
     )
 }
 
@@ -96,6 +103,7 @@ function renderComponent(
         resolvedPlans,
         priceSummary: derivePriceSummary(resolvedPlans, undefined),
         billingState: payingWithCreditCard,
+        contractCadence: Cadence.Month,
         invoiceCadence: InvoiceCadence.Month,
         onApply: jest.fn(),
         isSubmitting: false,
@@ -749,6 +757,163 @@ describe('InternalConfirmModal', () => {
                               .schedule_resource_version,
                       ),
             )
+        })
+    })
+
+    describe('when contract cadence changes', () => {
+        const yearlyContractCadence = Cadence.Year
+
+        it('renders "Apply with prorated credits" and "Apply without prorated credits" buttons when there is an upgrade', () => {
+            renderComponent({ contractCadence: yearlyContractCadence })
+
+            expect(
+                screen.getByRole('button', {
+                    name: /apply without prorated credits/i,
+                }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', {
+                    name: /apply with prorated credits/i,
+                }),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', { name: /apply with invoice/i }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', {
+                    name: /apply without invoice/i,
+                }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('renders prorated credits buttons even for downgrade-only plans', () => {
+            renderComponent({
+                contractCadence: yearlyContractCadence,
+                resolvedPlans: downgradeOnlyPlans,
+            })
+
+            expect(
+                screen.getByRole('button', {
+                    name: /apply without prorated credits/i,
+                }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', {
+                    name: /apply with prorated credits/i,
+                }),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', { name: /^Apply$/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('calls onApply(false) when "Apply without prorated credits" is clicked', async () => {
+            const user = userEvent.setup()
+            const { props } = renderComponent({
+                contractCadence: yearlyContractCadence,
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', {
+                        name: /apply without prorated credits/i,
+                    }),
+                ).toBeEnabled()
+            })
+            await act(() =>
+                user.click(
+                    screen.getByRole('button', {
+                        name: /apply without prorated credits/i,
+                    }),
+                ),
+            )
+
+            expect(props.onApply).toHaveBeenCalledWith(false)
+        })
+
+        it('calls onApply(true) when "Apply with prorated credits" is clicked', async () => {
+            const user = userEvent.setup()
+            const { props } = renderComponent({
+                contractCadence: yearlyContractCadence,
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', {
+                        name: /apply with prorated credits/i,
+                    }),
+                ).toBeEnabled()
+            })
+            await act(() =>
+                user.click(
+                    screen.getByRole('button', {
+                        name: /apply with prorated credits/i,
+                    }),
+                ),
+            )
+
+            expect(props.onApply).toHaveBeenCalledWith(true)
+        })
+
+        it('shows term change disclaimer when estimate has immediate_changes_summary', async () => {
+            server.use(
+                estimateSuccessHandler({
+                    immediate_changes_summary: {
+                        new_term_start: 1704067200,
+                        new_term_end: 1735689600,
+                        contract_cadence_change: null,
+                        invoice_cadence_change: null,
+                        is_ramp: false,
+                        product_changes: {},
+                    },
+                }),
+            )
+            renderComponent({ contractCadence: yearlyContractCadence })
+
+            expect(
+                await screen.findByText(
+                    /A new term for the subscription will start:/i,
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('does not show term change disclaimer when immediate_changes_summary is null', async () => {
+            server.use(
+                estimateSuccessHandler({ immediate_changes_summary: null }),
+            )
+            renderComponent({ contractCadence: yearlyContractCadence })
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByText(
+                        /A new term for the subscription will start:/i,
+                    ),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('does not show term change disclaimer when cadence has not changed', async () => {
+            server.use(
+                estimateSuccessHandler({
+                    immediate_changes_summary: {
+                        new_term_start: 1704067200,
+                        new_term_end: 1735689600,
+                        contract_cadence_change: null,
+                        invoice_cadence_change: null,
+                        is_ramp: false,
+                        product_changes: {},
+                    },
+                }),
+            )
+            renderComponent({ contractCadence: Cadence.Month })
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByText(
+                        /A new term for the subscription will start:/i,
+                    ),
+                ).not.toBeInTheDocument()
+            })
         })
     })
 })

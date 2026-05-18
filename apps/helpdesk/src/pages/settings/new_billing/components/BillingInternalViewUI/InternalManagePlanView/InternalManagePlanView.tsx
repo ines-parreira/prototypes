@@ -135,6 +135,7 @@ export function InternalManagePlanView() {
                 resolvedPlans={resolvedPlans}
                 priceSummary={priceSummary}
                 billingState={billingState}
+                contractCadence={contractCadence}
                 invoiceCadence={invoiceCadence}
                 onApply={apply}
                 isSubmitting={isSubmitting}

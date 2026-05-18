@@ -1,8 +1,10 @@
 import { useState } from 'react'
 
 import { SubscriptionStatus } from '@repo/billing'
+import moment from 'moment'
 
 import {
+    Banner,
     Box,
     Button,
     Modal,
@@ -17,7 +19,7 @@ import {
 import type { InvoiceCadence } from '@gorgias/helpdesk-types'
 
 import { isGorgiasApiError } from 'models/api/types'
-import type { BillingState } from 'models/billing/types'
+import type { BillingState, Cadence } from 'models/billing/types'
 import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
 
 import { ConfirmSummaryTable } from './ConfirmSummaryTable'
@@ -33,6 +35,7 @@ type InternalConfirmModalProps = {
     resolvedPlans: ResolvedPlan[]
     priceSummary: PriceSummary
     billingState: BillingState
+    contractCadence: Cadence
     invoiceCadence: InvoiceCadence
     onApply: (generateInvoice: boolean, reactivate?: boolean) => void
     isSubmitting: boolean
@@ -44,6 +47,7 @@ export function InternalConfirmModal({
     resolvedPlans,
     priceSummary,
     billingState,
+    contractCadence,
     invoiceCadence,
     onApply,
     isSubmitting,
@@ -71,6 +75,9 @@ export function InternalConfirmModal({
     const hasUpgrade = resolvedPlans.some(
         ({ status }) => status === 'upgraded' || status === 'added',
     )
+
+    const isCadenceChange =
+        contractCadence !== billingState.subscription.cadence
 
     const isBalanceDueNegative = (estimate?.balance_due ?? 0) < 0
 
@@ -152,7 +159,14 @@ export function InternalConfirmModal({
             )
         }
 
-        if (hasUpgrade) {
+        if (isCadenceChange || hasUpgrade) {
+            const withoutLabel = isCadenceChange
+                ? 'Apply without prorated credits'
+                : 'Apply without invoice'
+            const withLabel = isCadenceChange
+                ? 'Apply with prorated credits'
+                : 'Apply with invoice'
+
             return (
                 <>
                     <Tooltip
@@ -165,7 +179,7 @@ export function InternalConfirmModal({
                                 }
                                 isDisabled={isApplyDisabled}
                             >
-                                Apply without invoice
+                                {withoutLabel}
                             </Button>
                         }
                     >
@@ -181,7 +195,7 @@ export function InternalConfirmModal({
                                 }
                                 isDisabled={isApplyWithInvoiceDisabled}
                             >
-                                Apply with invoice
+                                {withLabel}
                             </Button>
                         }
                     >
@@ -211,6 +225,11 @@ export function InternalConfirmModal({
         )
     }
 
+    const termChangeDisclaimer =
+        isCadenceChange && estimate?.immediate_changes_summary
+            ? `A new term for the subscription will start: ${moment.unix(estimate.immediate_changes_summary.new_term_start).format('LL')} to ${moment.unix(estimate.immediate_changes_summary.new_term_end).format('LL')}.`
+            : null
+
     return (
         <Modal isOpen={isOpen} onOpenChange={onClose} size={ModalSize.Md}>
             <OverlayHeader
@@ -235,6 +254,17 @@ export function InternalConfirmModal({
                     showBalanceDue={!isCurrentSubscriptionCanceled}
                 />
             </OverlayContent>
+            {termChangeDisclaimer && (
+                <OverlayContent>
+                    <Banner
+                        variant="inline"
+                        intent="warning"
+                        icon="warning-triangle"
+                        isClosable={false}
+                        description={termChangeDisclaimer}
+                    />
+                </OverlayContent>
+            )}
             <OverlayContent>
                 <NewSummaryPaymentSection trackingSource="internal_subscription_update" />
             </OverlayContent>
