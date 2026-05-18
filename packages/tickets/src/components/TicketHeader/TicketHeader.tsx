@@ -44,7 +44,7 @@ export function TicketHeader({ ticketId }: Props) {
     return (
         <TicketHeaderContainer>
             <TicketHeaderLeft>
-                <Box alignItems="center" gap="xxxs">
+                <Box alignItems="center" gap="xxxs" maxWidth="100%">
                     <Box flexShrink={0}>
                         <DTPTicketHeaderToggle />
                     </Box>

@@ -57,6 +57,10 @@
         color: var(--content-neutral-default);
         outline: none !important;
 
+        &:not(:focus) {
+            text-overflow: ellipsis;
+        }
+
         &:empty::before {
             content: attr(data-placeholder);
             color: var(--content-neutral-tertiary);
