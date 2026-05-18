@@ -757,6 +757,20 @@ describe('global utils', () => {
                 ),
             ).toMatchSnapshot()
         })
+
+        it('should not proxify SVG images', () => {
+            const src = 'http://gorgias.io/image.svg'
+            expect(utils.parseMedia(`<img src="${src}" />`)).toBe(
+                `<img src="${src}"/>`,
+            )
+        })
+
+        it('should not proxify SVG images with query params', () => {
+            const src = 'http://gorgias.io/image.svg?w=100'
+            expect(utils.parseMedia(`<img src="${src}" />`)).toBe(
+                `<img src="${src}"/>`,
+            )
+        })
     })
 
     describe('validateWebhookURL', () => {

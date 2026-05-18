@@ -203,4 +203,14 @@ describe('parseMedia', () => {
             'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=='
         expect(parseMedia(`<img src="${src}" />`)).toContain(`src="${src}"`)
     })
+
+    it('should not proxify SVG images', () => {
+        const src = 'http://gorgias.io/image.svg'
+        expect(parseMedia(`<img src="${src}" />`)).toBe(`<img src="${src}"/>`)
+    })
+
+    it('should not proxify SVG images with query params', () => {
+        const src = 'http://gorgias.io/image.svg?w=100'
+        expect(parseMedia(`<img src="${src}" />`)).toBe(`<img src="${src}"/>`)
+    })
 })
