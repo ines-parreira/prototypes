@@ -19,6 +19,7 @@ import { useHasLinkedSkills } from 'pages/aiAgent/skills/hooks/useHasLinkedSkill
 import { useSkillsTemplates } from 'pages/aiAgent/skills/hooks/useSkillsTemplates'
 import { SkillWizardStatus } from 'pages/aiAgent/skills/types'
 
+import { AiAgentSkillsSkeleton } from '../AiAgentSkillsSkeleton/AiAgentSkillsSkeleton'
 import { IntentsTable } from '../IntentsTable/IntentsTable'
 import { SkillsEmptyState } from '../SkillsEmptyState/SkillsEmptyState'
 import { SkillsHeader } from '../SkillsHeader/SkillsHeader'
@@ -43,9 +44,10 @@ export const AiAgentSkills = () => {
     const { routes } = useAiAgentNavigation({ shopName })
     const isSkillWizardEnabled = useFlag(FeatureFlagKey.SkillWizard)
 
-    const { data: wizard } = useGetWizard(helpCenterId, {
-        enabled: isSkillWizardEnabled && !!helpCenterId,
-    })
+    const { data: wizard, isInitialLoading: isWizardQueryLoading } =
+        useGetWizard(helpCenterId, {
+            enabled: isSkillWizardEnabled && !!helpCenterId,
+        })
 
     const { wizard: enrichedWizard, isLoading: isWizardLoading } =
         useEnrichedSkillWizard(wizard)
@@ -54,6 +56,8 @@ export const AiAgentSkills = () => {
         isSkillWizardEnabled &&
         !!wizard &&
         wizard.status !== SkillWizardStatus.Completed
+
+    const isWizardDecisionLoading = isSkillWizardEnabled && isWizardQueryLoading
 
     const handleOpenSkillWizard = () => {
         if (!enrichedWizard) return
@@ -87,13 +91,15 @@ export const AiAgentSkills = () => {
     return (
         <Box flexDirection="column" width="100%">
             <SkillsHeader
-                showActions={!isWizardActive}
+                showActions={!isWizardActive && !isWizardDecisionLoading}
                 onViewIntents={handleViewIntents}
                 onCreateSkillFromScratch={handleCreateSkillFromScratch}
                 onCreateSkillFromTemplate={handleOpenTemplateModal}
             />
 
-            {isWizardActive ? (
+            {isWizardDecisionLoading ? (
+                <AiAgentSkillsSkeleton />
+            ) : isWizardActive ? (
                 <Box flexDirection="column" className={css.wizardContent}>
                     <WizardSkillsBanner />
                     {!isWizardLoading && enrichedWizard && (

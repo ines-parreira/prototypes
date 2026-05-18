@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { Redirect, useHistory, useParams } from 'react-router-dom'
 
-import { Box } from '@gorgias/axiom'
+import { Box, Loader } from '@gorgias/axiom'
 
 import { useGetWizard } from 'models/helpCenter/queries'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
@@ -203,7 +203,16 @@ export const SkillWizardPage = () => {
     } = useEnrichedSkillWizard(wizardData)
 
     if (isWizardLoading || isEnrichmentLoading) {
-        return <Box width="100%" height="100%" />
+        return (
+            <Box
+                width="100%"
+                height="100%"
+                justifyContent="center"
+                alignItems="center"
+            >
+                <Loader size="lg" />
+            </Box>
+        )
     }
 
     if (!enrichedWizard) {

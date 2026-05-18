@@ -231,6 +231,7 @@ describe('AiAgentSkills', () => {
         })
         mockUseGetWizard.mockReturnValue({
             data: undefined,
+            isInitialLoading: false,
         } as unknown as ReturnType<typeof useGetWizard>)
     })
     const renderComponent = () => {
@@ -368,6 +369,7 @@ describe('AiAgentSkills', () => {
             })
             mockUseGetWizard.mockReturnValue({
                 data: wizard,
+                isInitialLoading: false,
             } as unknown as ReturnType<typeof useGetWizard>)
         }
 
@@ -415,6 +417,7 @@ describe('AiAgentSkills', () => {
             })
             mockUseGetWizard.mockReturnValue({
                 data: wizard,
+                isInitialLoading: false,
             } as unknown as ReturnType<typeof useGetWizard>)
             renderComponent()
 
@@ -494,6 +497,37 @@ describe('AiAgentSkills', () => {
             expect(mockPush).toHaveBeenCalledWith(
                 '/app/ai-agent/shopify/test-shop/skills/wizard?step=2',
             )
+        })
+
+        it('shows banner + recommended section skeletons while the wizard query loads', () => {
+            mockUseFlag.mockReturnValue(true)
+            mockUseGetWizard.mockReturnValue({
+                data: undefined,
+                isInitialLoading: true,
+            } as unknown as ReturnType<typeof useGetWizard>)
+            renderComponent()
+
+            expect(
+                screen.getByLabelText('Loading recommended skills'),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText('Introducing Skills Banner'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('region', { name: 'Wizard Skills Banner' }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText(/Recommended Skills/),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('region', { name: 'Review Skills' }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', { name: /view intents/i }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', { name: /create skill/i }),
+            ).not.toBeInTheDocument()
         })
     })
 })
