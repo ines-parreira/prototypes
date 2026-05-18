@@ -369,14 +369,29 @@ export const getTopRankMacroState = createImmutableSelector(
     },
 )
 
+const getAppliedMacroActions = (ticket: TicketState) =>
+    ticket.getIn(['state', 'appliedMacro', 'actions'], fromJS([])) as List<
+        Map<any, any>
+    >
+
+export const hasAppliedMacroSetSubjectAction = createImmutableSelector(
+    getTicketState,
+    (ticket) =>
+        getAppliedMacroActions(ticket).some((action) => {
+            if (action?.get('name') !== MacroActionName.SetSubject) {
+                return false
+            }
+
+            const subject = action.getIn(['arguments', 'subject'])
+
+            return typeof subject === 'string' && subject.trim().length > 0
+        }),
+)
+
 export const hasContentlessAction = createImmutableSelector(
     getTicketState,
     (ticket) => {
-        const actions = ticket.getIn(
-            ['state', 'appliedMacro', 'actions'],
-            fromJS([]),
-        ) as List<Map<any, any>>
-        return actions.some(
+        return getAppliedMacroActions(ticket).some(
             (action) =>
                 ![
                     MacroActionName.SetResponseText,

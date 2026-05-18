@@ -22,6 +22,7 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import {
     getAppliedMacro,
+    hasAppliedMacroSetSubjectAction as getHasAppliedMacroSetSubjectAction,
     hasContentlessAction as getHasContentlessAction,
 } from 'state/ticket/selectors'
 
@@ -39,6 +40,9 @@ export function NewTicketSubmitButtons({ subject, submit }: Props) {
     const newMessage = useAppSelector((state) => state.newMessage)
     const canSend = useAppSelector(getCanSend)
     const hasContentlessAction = useAppSelector(getHasContentlessAction)
+    const hasAppliedMacroSetSubjectAction = useAppSelector(
+        getHasAppliedMacroSetSubjectAction,
+    )
     const { validateTicketFields } = useTicketFieldsValidation()
 
     const isLoading = newMessage.getIn([
@@ -47,7 +51,7 @@ export function NewTicketSubmitButtons({ subject, submit }: Props) {
         'submitMessage',
     ])
 
-    const showConfirm = !subject
+    const showConfirm = !subject && !hasAppliedMacroSetSubjectAction
     const isButtonDisabled = !canSend || isTranslationPending
     const text = hasContent || !hasContentlessAction ? 'Send' : 'Apply Macro'
     const titleConfirmation =

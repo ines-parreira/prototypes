@@ -594,6 +594,79 @@ describe('ticket selectors', () => {
         })
     })
 
+    describe('hasAppliedMacroSetSubjectAction', () => {
+        it('should return false when no actions applied', () => {
+            expect(selectors.hasAppliedMacroSetSubjectAction(state)).toBe(false)
+        })
+
+        it('should return false when the set subject action has no subject value', () => {
+            const ticket = state.ticket.setIn(
+                ['state', 'appliedMacro'],
+                fromJS({
+                    actions: [
+                        {
+                            name: MacroActionName.SetSubject,
+                            arguments: {
+                                subject: '',
+                            },
+                        },
+                    ],
+                }),
+            )
+
+            expect(
+                selectors.hasAppliedMacroSetSubjectAction({
+                    ...state,
+                    ticket,
+                }),
+            ).toBe(false)
+        })
+
+        it('should return false when the set subject action has template metadata instead of a subject value', () => {
+            const ticket = state.ticket.setIn(
+                ['state', 'appliedMacro'],
+                fromJS({
+                    actions: [
+                        ACTION_TEMPLATES.find(
+                            (action) =>
+                                action.name === MacroActionName.SetSubject,
+                        ),
+                    ],
+                }),
+            )
+
+            expect(
+                selectors.hasAppliedMacroSetSubjectAction({
+                    ...state,
+                    ticket,
+                }),
+            ).toBe(false)
+        })
+
+        it('should return true when the set subject action has a subject value', () => {
+            const ticket = state.ticket.setIn(
+                ['state', 'appliedMacro'],
+                fromJS({
+                    actions: [
+                        {
+                            name: MacroActionName.SetSubject,
+                            arguments: {
+                                subject: 'Macro subject',
+                            },
+                        },
+                    ],
+                }),
+            )
+
+            expect(
+                selectors.hasAppliedMacroSetSubjectAction({
+                    ...state,
+                    ticket,
+                }),
+            ).toBe(true)
+        })
+    })
+
     describe('getTicketBodyElements', () => {
         beforeEach(() => {
             mockShouldMessagesBeGrouped.mockReturnValue(false)

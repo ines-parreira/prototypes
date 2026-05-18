@@ -237,6 +237,34 @@ describe('NewTicketSubmitButtons', () => {
                 {},
             )
         })
+
+        it('does not render a confirm button when the applied macro sets a subject', () => {
+            const ConfirmButton = jest.requireMock(
+                'pages/common/components/button/ConfirmButton',
+            ).default
+
+            renderComponent('', {
+                bodyText: 'Hello',
+                appliedMacro: {
+                    actions: [
+                        {
+                            name: 'setSubject',
+                            arguments: {
+                                subject: 'Macro subject',
+                            },
+                        },
+                    ],
+                },
+            })
+
+            expect(ConfirmButton).not.toHaveBeenCalled()
+            expect(
+                screen.getByRole('button', { name: 'Send' }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: 'Send & Close' }),
+            ).toBeInTheDocument()
+        })
     })
 
     describe('send and close', () => {
