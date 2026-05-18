@@ -72,6 +72,10 @@ const ActionFormInput = ({
                 label: 'Date',
                 value: 'date',
             },
+            {
+                label: 'JSON',
+                value: 'json',
+            },
             ...(isActionsInputsProductEnabled
                 ? [
                       {
@@ -113,7 +117,8 @@ const ActionFormInput = ({
                                     | 'string'
                                     | 'number'
                                     | 'boolean'
-                                    | 'date',
+                                    | 'date'
+                                    | 'json',
                             })
                         }
                     }}

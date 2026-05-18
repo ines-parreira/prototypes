@@ -302,12 +302,9 @@ describe('liquidTemplateReducer', () => {
         })
 
         it('should handle all valid data types', () => {
-            const dataTypes: Array<'string' | 'number' | 'boolean' | 'date'> = [
-                'string',
-                'number',
-                'boolean',
-                'date',
-            ]
+            const dataTypes: Array<
+                'string' | 'number' | 'boolean' | 'date' | 'json'
+            > = ['string', 'number', 'boolean', 'date', 'json']
 
             dataTypes.forEach((dataType) => {
                 const graph = _cloneDeep(liquidTemplateGraphFixture)
@@ -667,8 +664,16 @@ describe('liquidTemplateReducer', () => {
             it('should handle rapid data type changes', () => {
                 const graph = _cloneDeep(liquidTemplateGraphFixture)
                 const dataTypes: Array<
-                    'string' | 'number' | 'boolean' | 'date'
-                > = ['string', 'number', 'boolean', 'date', 'string', 'number']
+                    'string' | 'number' | 'boolean' | 'date' | 'json'
+                > = [
+                    'string',
+                    'number',
+                    'boolean',
+                    'date',
+                    'json',
+                    'string',
+                    'number',
+                ]
 
                 let currentGraph = graph
                 dataTypes.forEach((dataType) => {

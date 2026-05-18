@@ -20,7 +20,7 @@ export type VisualBuilderLiquidTemplateAction =
     | {
           type: 'SET_LIQUID_TEMPLATE_OUTPUT_DATA_TYPE'
           liquidTemplateNodeId: string
-          data_type: 'string' | 'number' | 'boolean' | 'date'
+          data_type: 'string' | 'number' | 'boolean' | 'date' | 'json'
       }
     | {
           type: 'SET_LIQUID_TEMPLATE_NAME'

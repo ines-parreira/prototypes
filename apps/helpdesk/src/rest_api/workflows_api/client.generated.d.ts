@@ -688,6 +688,7 @@ declare namespace Components {
                                         | 'number'
                                         | 'date'
                                         | 'boolean'
+                                        | 'json'
                                     optional?: boolean
                                 }[]
                                 object_inputs: (
@@ -833,6 +834,7 @@ declare namespace Components {
                                         | 'number'
                                         | 'date'
                                         | 'boolean'
+                                        | 'json'
                                     optional?: boolean
                                 }[]
                                 object_inputs: (
@@ -2058,6 +2060,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'date'
                                   | 'boolean'
+                                  | 'json'
                               optional?: boolean
                           }[]
                           object_inputs: (
@@ -2203,6 +2206,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'date'
                                   | 'boolean'
+                                  | 'json'
                               optional?: boolean
                           }[]
                           object_inputs: (
@@ -2775,6 +2779,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'date'
                                   | 'boolean'
+                                  | 'json'
                               optional?: boolean
                           }[]
                           object_inputs: (
@@ -2920,6 +2925,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'date'
                                   | 'boolean'
+                                  | 'json'
                               optional?: boolean
                           }[]
                           object_inputs: (
@@ -3434,7 +3440,12 @@ declare namespace Components {
                         [name: string]: {
                             name: string
                             instructions: string
-                            data_type: 'string' | 'number' | 'date' | 'boolean'
+                            data_type:
+                                | 'string'
+                                | 'number'
+                                | 'date'
+                                | 'boolean'
+                                | 'json'
                         }
                     }
                     object_inputs: {
@@ -5446,7 +5457,12 @@ declare namespace Components {
                     name: string
                     template: string
                     output: {
-                        data_type: 'string' | 'number' | 'boolean' | 'date'
+                        data_type:
+                            | 'string'
+                            | 'number'
+                            | 'boolean'
+                            | 'date'
+                            | 'json'
                     }
                 }
             }
@@ -5460,7 +5476,12 @@ declare namespace Components {
                   execution_result: {
                       success: boolean
                       output?: {
-                          data_type: 'string' | 'number' | 'boolean' | 'date'
+                          data_type:
+                              | 'string'
+                              | 'number'
+                              | 'boolean'
+                              | 'date'
+                              | 'json'
                           value?: any
                       }
                       error?: string
@@ -5520,7 +5541,12 @@ declare namespace Components {
                     [name: string]: {
                         name: string
                         instructions: string
-                        data_type: 'string' | 'number' | 'date' | 'boolean'
+                        data_type:
+                            | 'string'
+                            | 'number'
+                            | 'date'
+                            | 'boolean'
+                            | 'json'
                     }
                 }
                 object_inputs: {
@@ -6217,6 +6243,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'date'
                                   | 'boolean'
+                                  | 'json'
                               optional?: boolean
                           }[]
                           object_inputs: (
@@ -6362,6 +6389,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'date'
                                   | 'boolean'
+                                  | 'json'
                               optional?: boolean
                           }[]
                           object_inputs: (
@@ -6534,7 +6562,12 @@ declare namespace Components {
                     [name: string]: {
                         name: string
                         instructions: string
-                        data_type: 'string' | 'number' | 'date' | 'boolean'
+                        data_type:
+                            | 'string'
+                            | 'number'
+                            | 'date'
+                            | 'boolean'
+                            | 'json'
                     }
                 }
                 object_inputs: {
@@ -7008,6 +7041,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'date'
                                   | 'boolean'
+                                  | 'json'
                               optional?: boolean
                           }[]
                           object_inputs: (
@@ -7153,6 +7187,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'date'
                                   | 'boolean'
+                                  | 'json'
                               optional?: boolean
                           }[]
                           object_inputs: (
@@ -13810,7 +13845,12 @@ declare namespace Components {
                         [name: string]: {
                             name: string
                             instructions: string
-                            data_type: 'string' | 'number' | 'date' | 'boolean'
+                            data_type:
+                                | 'string'
+                                | 'number'
+                                | 'date'
+                                | 'boolean'
+                                | 'json'
                         }
                     }
                     object_inputs: {
@@ -16519,6 +16559,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'date'
                                   | 'boolean'
+                                  | 'json'
                               optional?: boolean
                           }[]
                           object_inputs: (
@@ -16664,6 +16705,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'date'
                                   | 'boolean'
+                                  | 'json'
                               optional?: boolean
                           }[]
                           object_inputs: (
@@ -17467,6 +17509,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'date'
                                   | 'boolean'
+                                  | 'json'
                               optional?: boolean
                           }[]
                           object_inputs: (
@@ -17612,6 +17655,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'date'
                                   | 'boolean'
+                                  | 'json'
                               optional?: boolean
                           }[]
                           object_inputs: (
@@ -18411,6 +18455,7 @@ declare namespace Components {
                                         | 'number'
                                         | 'date'
                                         | 'boolean'
+                                        | 'json'
                                     optional?: boolean
                                 }[]
                                 object_inputs: (
@@ -18556,6 +18601,7 @@ declare namespace Components {
                                         | 'number'
                                         | 'date'
                                         | 'boolean'
+                                        | 'json'
                                     optional?: boolean
                                 }[]
                                 object_inputs: (
@@ -19363,6 +19409,7 @@ declare namespace Components {
                                         | 'number'
                                         | 'date'
                                         | 'boolean'
+                                        | 'json'
                                     optional?: boolean
                                 }[]
                                 object_inputs: (
@@ -19508,6 +19555,7 @@ declare namespace Components {
                                         | 'number'
                                         | 'date'
                                         | 'boolean'
+                                        | 'json'
                                     optional?: boolean
                                 }[]
                                 object_inputs: (
@@ -20079,6 +20127,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'date'
                                   | 'boolean'
+                                  | 'json'
                               optional?: boolean
                           }[]
                           object_inputs: (
@@ -20224,6 +20273,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'date'
                                   | 'boolean'
+                                  | 'json'
                               optional?: boolean
                           }[]
                           object_inputs: (
@@ -20794,6 +20844,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'date'
                                   | 'boolean'
+                                  | 'json'
                               optional?: boolean
                           }[]
                           object_inputs: (
@@ -20939,6 +20990,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'date'
                                   | 'boolean'
+                                  | 'json'
                               optional?: boolean
                           }[]
                           object_inputs: (

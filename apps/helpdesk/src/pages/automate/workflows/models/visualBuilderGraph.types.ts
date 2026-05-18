@@ -39,7 +39,7 @@ export type LLMPromptTriggerNodeType = Node<
                   id: string
                   name: string
                   instructions: string
-                  data_type: 'string' | 'number' | 'date' | 'boolean'
+                  data_type: 'string' | 'number' | 'date' | 'boolean' | 'json'
               }
             | {
                   id: string
@@ -86,7 +86,7 @@ export type ReusableLLMPromptTriggerNodeType = Node<
                   id: string
                   name: string
                   instructions: string
-                  data_type: 'string' | 'number' | 'date' | 'boolean'
+                  data_type: 'string' | 'number' | 'date' | 'boolean' | 'json'
               }
             | {
                   id: string
@@ -345,7 +345,7 @@ export type LiquidTemplateNodeType = Node<
         name: string
         template: string
         output: {
-            data_type: 'string' | 'number' | 'boolean' | 'date'
+            data_type: 'string' | 'number' | 'boolean' | 'date' | 'json'
         }
         isGreyedOut?: boolean | null
         errors?: {

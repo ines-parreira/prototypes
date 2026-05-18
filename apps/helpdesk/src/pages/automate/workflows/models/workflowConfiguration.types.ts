@@ -117,7 +117,7 @@ export type WorkflowStepHttpRequest = {
             id: string
             name: string
             jsonpath: string
-            data_type?: 'string' | 'number' | 'boolean' | 'date' | null
+            data_type?: 'string' | 'number' | 'boolean' | 'date' | 'json' | null
         }[]
     }
 }
@@ -129,7 +129,7 @@ export type WorkflowStepLiquidTemplate = {
         name: string
         template: string
         output: {
-            data_type: 'string' | 'number' | 'boolean' | 'date'
+            data_type: 'string' | 'number' | 'boolean' | 'date' | 'json'
         }
     }
 }
@@ -384,7 +384,7 @@ export type LlmPromptTrigger = {
             id: string
             name: string
             instructions: string
-            data_type: 'string' | 'number' | 'date' | 'boolean'
+            data_type: 'string' | 'number' | 'date' | 'boolean' | 'json'
         }[]
         object_inputs: (
             | {
@@ -425,7 +425,7 @@ export type ReusableLLMPromptTrigger = {
             id: string
             name: string
             instructions: string
-            data_type: 'string' | 'number' | 'date' | 'boolean'
+            data_type: 'string' | 'number' | 'date' | 'boolean' | 'json'
         }[]
         object_inputs: (
             | {
@@ -454,7 +454,7 @@ export type ReusableLLMPromptTrigger = {
             name: string
             description: string
             path: string
-            data_type?: 'string' | 'number' | 'date' | 'boolean' | null
+            data_type?: 'string' | 'number' | 'date' | 'boolean' | 'json' | null
         }[]
     }
 }

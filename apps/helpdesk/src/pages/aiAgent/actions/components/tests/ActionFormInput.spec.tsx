@@ -277,6 +277,55 @@ describe('<ActionFormInput />', () => {
         expect(mockOnInstructionsBlur).toHaveBeenCalled()
     })
 
+    it('should offer JSON as a data type option', () => {
+        render(
+            <ActionFormInput
+                input={{
+                    id: 'someid',
+                    name: 'some name',
+                    instructions: 'some instructions',
+                    data_type: 'string',
+                }}
+                onDelete={jest.fn()}
+                onChange={jest.fn()}
+            />,
+        )
+
+        act(() => {
+            fireEvent.click(screen.getAllByText('String')[0])
+        })
+
+        expect(screen.getByText('JSON')).toBeInTheDocument()
+    })
+
+    it('should switch data_type to json when JSON is selected', () => {
+        const mockOnChange = jest.fn()
+        render(
+            <ActionFormInput
+                input={{
+                    id: 'someid',
+                    name: 'some name',
+                    instructions: 'some instructions',
+                    data_type: 'string',
+                }}
+                onDelete={jest.fn()}
+                onChange={mockOnChange}
+            />,
+        )
+
+        act(() => {
+            fireEvent.click(screen.getAllByText('String')[0])
+            fireEvent.click(screen.getByText('JSON'))
+        })
+
+        expect(mockOnChange).toHaveBeenCalledWith({
+            id: 'someid',
+            name: 'some name',
+            instructions: 'some instructions',
+            data_type: 'json',
+        })
+    })
+
     it('should display errors', () => {
         render(
             <ActionFormInput

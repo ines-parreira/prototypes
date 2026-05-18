@@ -157,7 +157,8 @@ export default function LiquidTemplateEditor({
                                         | 'string'
                                         | 'number'
                                         | 'boolean'
-                                        | 'date',
+                                        | 'date'
+                                        | 'json',
                                 })
                             }}
                             options={[
@@ -165,6 +166,7 @@ export default function LiquidTemplateEditor({
                                 { label: 'Number', value: 'number' },
                                 { label: 'Boolean', value: 'boolean' },
                                 { label: 'Date', value: 'date' },
+                                { label: 'JSON', value: 'json' },
                             ]}
                         />
                     </div>

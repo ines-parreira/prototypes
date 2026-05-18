@@ -1773,7 +1773,13 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
     })
 
     test('configuration containing liquid-template step with different data types', () => {
-        const dataTypes = ['string', 'number', 'boolean', 'date'] as const
+        const dataTypes = [
+            'string',
+            'number',
+            'boolean',
+            'date',
+            'json',
+        ] as const
 
         for (const dataType of dataTypes) {
             const c: WorkflowConfiguration = {
