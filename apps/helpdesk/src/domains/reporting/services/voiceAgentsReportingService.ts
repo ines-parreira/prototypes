@@ -8,16 +8,6 @@ import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import type { Metric } from 'domains/reporting/hooks/metrics'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import type { MetricWithDecile } from 'domains/reporting/hooks/types'
-import type { VoiceCallCube } from 'domains/reporting/models/cubes/VoiceCallCube'
-import {
-    VoiceCallDimension,
-    VoiceCallMeasure,
-} from 'domains/reporting/models/cubes/VoiceCallCube'
-import type { VoiceEventsByAgentCube } from 'domains/reporting/models/cubes/VoiceEventsByAgent'
-import {
-    VoiceEventsByAgentDimension,
-    VoiceEventsByAgentMeasure,
-} from 'domains/reporting/models/cubes/VoiceEventsByAgent'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { ReportingGranularity } from 'domains/reporting/models/types'
 import {
@@ -64,113 +54,21 @@ const formatMetric = {
         formatMetricValue(value, 'decimal', NOT_AVAILABLE_PLACEHOLDER),
 }
 
-const getAgentMetric = (
-    agentId: number,
-    data: MetricWithDecile,
-    filteringDimension:
-        | VoiceCallCube['dimensions']
-        | VoiceEventsByAgentCube['dimensions'],
-    outputMeasure:
-        | VoiceCallCube['measures']
-        | VoiceEventsByAgentCube['measures'],
-) => {
-    const metricValue = (data.data?.allData ?? []).find(
-        (item) => Number(item[filteringDimension]) === agentId,
-    )?.[outputMeasure]
+const getAgentMetric = (agentId: number, data: MetricWithDecile) => {
+    const dimensionKey = data.data?.dimensions?.[0]
+    const measureKey = data.data?.measures?.[0]
+    if (!dimensionKey || !measureKey) return undefined
+
+    const row = (data.data?.allData ?? []).find(
+        (item) => Number(item[dimensionKey]) === agentId,
+    )
+    const metricValue = row?.[measureKey]
 
     return typeof metricValue === 'string' ? Number(metricValue) : metricValue
 }
 
-const getTotalCallsMetric = (
-    agentId: number,
-    totalCallsMetric: MetricWithDecile,
-) =>
-    formatMetric.decimal(
-        getAgentMetric(
-            agentId,
-            totalCallsMetric,
-            VoiceCallDimension.FilteringAgentId,
-            VoiceCallMeasure.VoiceCallCount,
-        ),
-    )
-
-const getAnsweredCallsMetric = (
-    agentId: number,
-    answeredCallsMetric: MetricWithDecile,
-) =>
-    formatMetric.decimal(
-        getAgentMetric(
-            agentId,
-            answeredCallsMetric,
-            VoiceCallDimension.FilteringAgentId,
-            VoiceCallMeasure.VoiceCallCount,
-        ),
-    )
-
-const getMissedCallsMetric = (
-    agentId: number,
-    missedCallsMetric: MetricWithDecile,
-) =>
-    formatMetric.decimal(
-        getAgentMetric(
-            agentId,
-            missedCallsMetric,
-            VoiceCallDimension.FilteringAgentId,
-            VoiceCallMeasure.VoiceCallCount,
-        ),
-    )
-
-const getDeclinedCallsMetric = (
-    agentId: number,
-    declinedCallsMetric: MetricWithDecile,
-) =>
-    formatMetric.decimal(
-        getAgentMetric(
-            agentId,
-            declinedCallsMetric,
-            VoiceEventsByAgentDimension.AgentId,
-            VoiceEventsByAgentMeasure.VoiceEventsCount,
-        ),
-    )
-
-const getOutboundCallsMetric = (
-    agentId: number,
-    outboundCallsMetric: MetricWithDecile,
-) =>
-    formatMetric.decimal(
-        getAgentMetric(
-            agentId,
-            outboundCallsMetric,
-            VoiceCallDimension.FilteringAgentId,
-            VoiceCallMeasure.VoiceCallCount,
-        ),
-    )
-
-const getAverageTalkTimeMetric = (
-    agentId: number,
-    averageTalkTimeMetric: MetricWithDecile,
-) =>
-    formatMetric.decimal(
-        getAgentMetric(
-            agentId,
-            averageTalkTimeMetric,
-            VoiceCallDimension.AgentId,
-            VoiceCallMeasure.VoiceCallAverageTalkTime,
-        ),
-    )
-
-const getTransferredInboundCallsMetric = (
-    agentId: number,
-    transferredInboundCallsMetric: MetricWithDecile,
-) =>
-    formatMetric.decimal(
-        getAgentMetric(
-            agentId,
-            transferredInboundCallsMetric,
-            VoiceEventsByAgentDimension.AgentId,
-            VoiceEventsByAgentMeasure.VoiceEventsCount,
-        ),
-    )
+const getAgentMetricFormatted = (agentId: number, data: MetricWithDecile) =>
+    formatMetric.decimal(getAgentMetric(agentId, data))
 
 const getMetricAverage = (metric: Metric, length: number) =>
     metric.data?.value ? metric.data?.value / length : metric.data?.value
@@ -239,16 +137,16 @@ export const createReport = (
         ...agents.map((agent) => {
             return [
                 agent.name,
-                getTotalCallsMetric(agent.id, totalCallsMetric),
-                getAnsweredCallsMetric(agent.id, answeredCallsMetric),
-                getTransferredInboundCallsMetric(
+                getAgentMetricFormatted(agent.id, totalCallsMetric),
+                getAgentMetricFormatted(agent.id, answeredCallsMetric),
+                getAgentMetricFormatted(
                     agent.id,
                     transferredInboundCallsMetric,
                 ),
-                getMissedCallsMetric(agent.id, missedCallsMetric),
-                getDeclinedCallsMetric(agent.id, declinedCallsMetric),
-                getOutboundCallsMetric(agent.id, outboundCallsMetric),
-                getAverageTalkTimeMetric(agent.id, averageTalkTimeMetric),
+                getAgentMetricFormatted(agent.id, missedCallsMetric),
+                getAgentMetricFormatted(agent.id, declinedCallsMetric),
+                getAgentMetricFormatted(agent.id, outboundCallsMetric),
+                getAgentMetricFormatted(agent.id, averageTalkTimeMetric),
             ]
         }),
     ]
