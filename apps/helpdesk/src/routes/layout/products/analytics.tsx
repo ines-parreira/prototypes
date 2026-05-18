@@ -18,6 +18,7 @@ import {
     PAGE_TITLE_OVERVIEW,
     PAGE_TITLE_PERFORMANCE_BY_FEATURES,
     ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES,
+    SECTION_AUTOMATE_AI_AGENT_NAV_TOOLTIP,
 } from 'domains/reporting/pages/self-service/constants'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
@@ -38,12 +39,22 @@ export type StatsNavbarViewSectionsConfig = {
     requiredRole?: UserRole.Admin | UserRole.Agent
 }
 
+type TooltipProps = {
+    videoSrc: string
+    videoPoster?: string
+    videoDuration?: string
+    title: string
+    body: string
+    learnMoreUrl?: string | null
+}
+
 export type StatsNavbarSection = {
     id: string
     label: string
     icon: IconName
     sectionCanduId?: string
     actionsSlot?: ReactNode
+    tooltipProps?: TooltipProps
     items?: {
         id: string
         route: string
@@ -52,14 +63,7 @@ export type StatsNavbarSection = {
         itemId?: string
         requiresUpgrade?: boolean
         trailingSlot?: ReactNode
-        tooltipProps?: {
-            videoSrc: string
-            videoPoster?: string
-            videoDuration?: string
-            title: string
-            body: string
-            learnMoreUrl: string
-        }
+        tooltipProps?: TooltipProps
     }[]
 }
 
@@ -195,6 +199,9 @@ export function useStatsNavbarConfig() {
                 label: analyticsSections[StatsNavbarViewSections.Automate]
                     .label,
                 icon: analyticsSections[StatsNavbarViewSections.Automate].icon,
+                tooltipProps: isNavTooltipEnabled
+                    ? SECTION_AUTOMATE_AI_AGENT_NAV_TOOLTIP
+                    : undefined,
                 items: hasAccess
                     ? [
                           ...(isAnalyticsDashboardsNewScreensEnabled

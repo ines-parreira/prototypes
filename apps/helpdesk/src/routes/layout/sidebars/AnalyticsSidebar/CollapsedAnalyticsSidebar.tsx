@@ -49,9 +49,7 @@ export const CollapsedAnalyticsSidebar = ({ sections }: Props) => {
                     )
                 }
 
-                const tooltipProps = section.items?.find(
-                    (item) => item.tooltipProps,
-                )?.tooltipProps
+                const tooltipProps = section.tooltipProps
 
                 const menu = (
                     <Menu

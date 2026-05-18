@@ -233,7 +233,7 @@ describe('CollapsedAnalyticsSidebar', () => {
         expect(menuItems[1].querySelector('svg')).not.toBeInTheDocument()
     })
 
-    it('wraps the section trigger with VideoPreviewTooltip when an item has tooltipProps', () => {
+    it('wraps the section trigger with VideoPreviewTooltip when the section has tooltipProps', () => {
         const tooltipProps = {
             videoSrc: 'https://example.com/video.mp4',
             videoPoster: 'https://example.com/poster.png',
@@ -246,12 +246,12 @@ describe('CollapsedAnalyticsSidebar', () => {
                 id: 'automate',
                 label: 'AI & automation',
                 icon: 'zap',
+                tooltipProps,
                 items: [
                     {
                         id: 'analytics-overview',
                         route: 'analytics/overview',
                         label: 'Overview',
-                        tooltipProps,
                     },
                     {
                         id: 'analytics-ai-agent',
@@ -270,6 +270,43 @@ describe('CollapsedAnalyticsSidebar', () => {
             expect.objectContaining(tooltipProps),
             expect.anything(),
         )
+    })
+
+    it('does not wrap the section trigger with VideoPreviewTooltip when only items have tooltipProps', () => {
+        const itemTooltipProps = {
+            videoSrc: 'https://example.com/video.mp4',
+            videoPoster: 'https://example.com/poster.png',
+            title: 'Overview tooltip',
+            body: 'Item-level tooltip should not leak onto the section.',
+            learnMoreUrl: 'https://docs.example.com',
+        }
+        const sectionsWithItemTooltip: StatsNavbarSection[] = [
+            {
+                id: 'automate',
+                label: 'AI & automation',
+                icon: 'zap',
+                items: [
+                    {
+                        id: 'analytics-overview',
+                        route: 'analytics/overview',
+                        label: 'Overview',
+                        tooltipProps: itemTooltipProps,
+                    },
+                    {
+                        id: 'analytics-ai-agent',
+                        route: 'analytics/ai-agent',
+                        label: 'AI Agent',
+                    },
+                ],
+            },
+        ]
+
+        render(
+            <CollapsedAnalyticsSidebar sections={sectionsWithItemTooltip} />,
+            { wrapper: SidebarProvider },
+        )
+
+        expect(VideoPreviewTooltipMock).not.toHaveBeenCalled()
     })
 
     it('navigates directly when clicking a single-item section without opening a menu', async () => {

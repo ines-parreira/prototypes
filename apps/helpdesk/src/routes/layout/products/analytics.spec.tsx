@@ -606,6 +606,64 @@ describe('useStatsNavbarConfig', () => {
             ).toBeDefined()
         })
 
+        it('should set tooltipProps on the Automate section when AiAgentAnalyticsNavTooltip flag is enabled', () => {
+            useFlagMock.mockImplementation((flag) => ({
+                value: flag === FeatureFlagKey.AiAgentAnalyticsNavTooltip,
+                isLoading: false,
+            }))
+
+            const stateWithAutomation: Partial<RootState> = {
+                billing: fromJS(billingState),
+                currentAccount: fromJS({
+                    current_subscription: {
+                        products: {
+                            [AUTOMATION_PRODUCT_ID]:
+                                basicMonthlyAutomationPlan.plan_id,
+                        },
+                    },
+                }),
+            }
+
+            const { result } = renderHook(() => useStatsNavbarConfig(), {
+                storeState: stateWithAutomation,
+            })
+            const automateSection = result.current.sections.find(
+                (s) => s.id === StatsNavbarViewSections.Automate,
+            )
+
+            expect(automateSection?.tooltipProps).toBeDefined()
+            expect(automateSection?.tooltipProps?.title).toBe('AI & Automation')
+            expect(automateSection?.tooltipProps?.videoSrc).toBeDefined()
+            expect(automateSection?.tooltipProps?.videoPoster).toBeDefined()
+            expect(automateSection?.tooltipProps?.body).toBeDefined()
+            expect(automateSection?.tooltipProps?.learnMoreUrl).toBeDefined()
+        })
+
+        it('should not set tooltipProps on the Automate section when AiAgentAnalyticsNavTooltip flag is disabled', () => {
+            useFlagMock.mockReturnValue({ value: false, isLoading: false })
+
+            const stateWithAutomation: Partial<RootState> = {
+                billing: fromJS(billingState),
+                currentAccount: fromJS({
+                    current_subscription: {
+                        products: {
+                            [AUTOMATION_PRODUCT_ID]:
+                                basicMonthlyAutomationPlan.plan_id,
+                        },
+                    },
+                }),
+            }
+
+            const { result } = renderHook(() => useStatsNavbarConfig(), {
+                storeState: stateWithAutomation,
+            })
+            const automateSection = result.current.sections.find(
+                (s) => s.id === StatsNavbarViewSections.Automate,
+            )
+
+            expect(automateSection?.tooltipProps).toBeUndefined()
+        })
+
         it('should not set tooltipProps on analytics-overview when AiAgentAnalyticsNavTooltip flag is disabled', () => {
             useFlagMock.mockImplementation((flag) => ({
                 value:

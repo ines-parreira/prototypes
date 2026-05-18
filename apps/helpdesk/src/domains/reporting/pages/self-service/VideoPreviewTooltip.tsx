@@ -22,7 +22,7 @@ interface VideoPreviewTooltipProps {
     videoDuration?: string
     title: string
     body: string
-    learnMoreUrl: string
+    learnMoreUrl?: string | null
 }
 
 export function VideoPreviewTooltip({
@@ -45,7 +45,6 @@ export function VideoPreviewTooltip({
             const url = new URL(videoSrc)
             if (videoSrc.includes('wistia.net')) {
                 url.searchParams.set('autoPlay', 'true')
-                url.searchParams.set('muted', 'true')
             }
             return url.toString()
         } catch {
@@ -107,15 +106,17 @@ export function VideoPreviewTooltip({
                                     </div>
                                 </button>
                             </div>
-                            <a
-                                href={learnMoreUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className={css.learnMoreLink}
-                            >
-                                Learn more
-                                <Icon name="external-link" size="sm" />
-                            </a>
+                            {learnMoreUrl && (
+                                <a
+                                    href={learnMoreUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className={css.learnMoreLink}
+                                >
+                                    Learn more
+                                    <Icon name="external-link" size="sm" />
+                                </a>
+                            )}
                         </div>
                     </TooltipContent>
                 </Tooltip>
@@ -180,19 +181,21 @@ export function VideoPreviewTooltip({
                         <Button variant="secondary" onClick={closeModal}>
                             Cancel
                         </Button>
-                        <Button
-                            variant="primary"
-                            trailingSlot={<Icon name="external-link" />}
-                            onClick={() =>
-                                window.open(
-                                    learnMoreUrl,
-                                    '_blank',
-                                    'noopener,noreferrer',
-                                )
-                            }
-                        >
-                            Learn more
-                        </Button>
+                        {learnMoreUrl && (
+                            <Button
+                                variant="primary"
+                                trailingSlot={<Icon name="external-link" />}
+                                onClick={() =>
+                                    window.open(
+                                        learnMoreUrl,
+                                        '_blank',
+                                        'noopener,noreferrer',
+                                    )
+                                }
+                            >
+                                Learn more
+                            </Button>
+                        )}
                     </Box>
                 </div>
             </Modal>

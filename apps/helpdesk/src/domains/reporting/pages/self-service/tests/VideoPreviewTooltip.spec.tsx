@@ -131,6 +131,21 @@ describe('<VideoPreviewTooltip />', () => {
                 await findByRole('link', { name: /learn more/i }),
             ).toHaveAttribute('href', defaultProps.learnMoreUrl)
         })
+
+        it('does not show a Learn more link when learnMoreUrl is null', async () => {
+            const user = userEvent.setup({
+                advanceTimers: jest.advanceTimersByTime,
+            })
+            const { getByRole, findByText, queryByRole } = renderComponent({
+                learnMoreUrl: null,
+            })
+
+            await openTooltip(user, getByRole, findByText)
+
+            expect(
+                queryByRole('link', { name: /learn more/i }),
+            ).not.toBeInTheDocument()
+        })
     })
 
     describe('modal', () => {
@@ -168,14 +183,21 @@ describe('<VideoPreviewTooltip />', () => {
             ).toBeInTheDocument()
         })
 
-        it('renders the video iframe with autoplay and muted params for Wistia URLs', async () => {
+        it('renders the video iframe with autoplay param for Wistia URLs', async () => {
             const { findByTitle } = await openModal()
 
             const iframe = await findByTitle(defaultProps.title)
             expect(iframe.tagName).toBe('IFRAME')
             const src = new URL(iframe.getAttribute('src')!)
             expect(src.searchParams.get('autoPlay')).toBe('true')
-            expect(src.searchParams.get('muted')).toBe('true')
+        })
+
+        it('does not set the muted param on Wistia URLs so audio plays by default', async () => {
+            const { findByTitle } = await openModal()
+
+            const iframe = await findByTitle(defaultProps.title)
+            const src = new URL(iframe.getAttribute('src')!)
+            expect(src.searchParams.has('muted')).toBe(false)
         })
 
         it('uses the original src for non-Wistia URLs', async () => {
@@ -233,6 +255,25 @@ describe('<VideoPreviewTooltip />', () => {
                 '_blank',
                 'noopener,noreferrer',
             )
+        })
+
+        it('does not show a Learn more button when learnMoreUrl is null', async () => {
+            const user = userEvent.setup({
+                advanceTimers: jest.advanceTimersByTime,
+            })
+            const utils = renderComponent({ learnMoreUrl: null })
+
+            await openTooltip(user, utils.getByRole, utils.findByText)
+
+            await user.click(
+                await utils.findByRole('button', { name: /watch video/i }),
+            )
+
+            const dialog = await utils.findByRole('dialog')
+
+            expect(
+                within(dialog).queryByRole('button', { name: /learn more/i }),
+            ).not.toBeInTheDocument()
         })
     })
 })

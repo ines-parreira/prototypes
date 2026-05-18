@@ -28,7 +28,8 @@ const SHARED_AI_AGENT_NAV_TOOLTIP = {
     videoPoster:
         'https://embed-ssl.wistia.com/deliveries/9ef6818ab34540e0468b60c7b31d8f52f657ee64.bin',
     videoDuration: '2:00',
-    learnMoreUrl: 'https://docs.gorgias.com/en-US/articles/ai-agent-analytics',
+    // learnMoreUrl: 'https://docs.gorgias.com/en-US/articles/ai-agent-analytics',
+    learnMoreUrl: null,
 }
 
 export const AI_AGENT_AI_AGENT_NAV_TOOLTIP = {
@@ -41,4 +42,10 @@ export const OVERVIEW_AI_AGENT_NAV_TOOLTIP = {
     ...SHARED_AI_AGENT_NAV_TOOLTIP,
     title: 'Overview',
     body: 'A holistic view of automation performance across your AI Agent and all automation feature usage.',
+}
+
+export const SECTION_AUTOMATE_AI_AGENT_NAV_TOOLTIP = {
+    ...SHARED_AI_AGENT_NAV_TOOLTIP,
+    title: 'AI & Automation',
+    body: 'Track performance of your AI Agent and automation features, with dedicated sub-reports for deeper analysis.',
 }
