@@ -21,6 +21,11 @@ const baseConstraints: Record<ChartType, ChartLayoutConstraints> = {
         min: { width: 3, height: 4 },
         max: { width: 6, height: 16 },
     },
+    [ChartType.CardWithTimeseries]: {
+        default: { width: 3, height: 5 },
+        min: { width: 3, height: 5 },
+        max: { width: 6, height: 16 },
+    },
     [ChartType.Graph]: {
         default: { width: 6, height: 14 },
         min: { width: 3, height: 8 },

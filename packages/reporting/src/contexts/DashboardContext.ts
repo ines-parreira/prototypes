@@ -9,7 +9,7 @@ type DashboardLayoutItem = {
 
 type DashboardLayoutSection = {
     id: string
-    type: 'card' | 'graph' | 'table'
+    type: 'card' | 'card-with-timeseries' | 'graph' | 'table'
     items: DashboardLayoutItem[]
 }
 

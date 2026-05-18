@@ -168,6 +168,27 @@ describe('useRestrictedReportsConfig', () => {
         ).toBeUndefined()
     })
 
+    it('should hide AI Agent category when both migration flags are on and custom dashboards flag is off', () => {
+        mockUseFlagWithLoading.mockImplementation((flag: string) => {
+            if (flag === FeatureFlagKey.AiAgentAnalyticsDashboardsNewScreens)
+                return { value: true, isLoading: false }
+            if (flag === FeatureFlagKey.AiAgentAnalyticsDisableLegacyReports)
+                return { value: true, isLoading: false }
+            if (flag === FeatureFlagKey.VoiceSLA)
+                return { value: true, isLoading: false }
+            return { value: false, isLoading: false }
+        })
+
+        const { result } = renderHook(() => useRestrictedReportsConfig())
+
+        expect(
+            result.current.find((s) => s.category === 'AI Agent'),
+        ).toBeUndefined()
+        expect(
+            result.current.find((s) => s.category === 'Support Performance'),
+        ).toBeTruthy()
+    })
+
     it('should return AI & automation category when AiAgentAnalyticsCustomDashboards flag is enabled', () => {
         mockUseFlagWithLoading.mockImplementation((flag: string) => {
             if (flag === FeatureFlagKey.AiAgentAnalyticsCustomDashboards)

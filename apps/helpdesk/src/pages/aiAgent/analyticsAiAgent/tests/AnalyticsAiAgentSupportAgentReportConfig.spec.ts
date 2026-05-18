@@ -37,7 +37,7 @@ describe('AnalyticsAiAgentSupportAgentReportConfig', () => {
 
         expect(config).toBeDefined()
         expect(config.label).toBe('Time saved by agents')
-        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.chartType).toBe(ChartType.CardWithTimeseries)
         expect(config.csvProducer).not.toBeNull()
         expect(config.csvProducer).toHaveLength(1)
         expect(config.csvProducer?.[0].type).toBe(DataExportFormat.Trend)
@@ -51,7 +51,7 @@ describe('AnalyticsAiAgentSupportAgentReportConfig', () => {
 
         expect(config).toBeDefined()
         expect(config.label).toBe('Cost saved')
-        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.chartType).toBe(ChartType.CardWithTimeseries)
         expect(config.csvProducer).not.toBeNull()
     })
 
@@ -63,7 +63,7 @@ describe('AnalyticsAiAgentSupportAgentReportConfig', () => {
 
         expect(config).toBeDefined()
         expect(config.label).toBe('Automated interactions')
-        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.chartType).toBe(ChartType.CardWithTimeseries)
     })
 
     it('should have decrease in FRT card config', () => {
@@ -74,7 +74,7 @@ describe('AnalyticsAiAgentSupportAgentReportConfig', () => {
 
         expect(config).toBeDefined()
         expect(config.label).toBe('Decrease in first response time')
-        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.chartType).toBe(ChartType.CardWithTimeseries)
     })
 
     it('should have average CSAT card config', () => {
@@ -85,7 +85,7 @@ describe('AnalyticsAiAgentSupportAgentReportConfig', () => {
 
         expect(config).toBeDefined()
         expect(config.label).toBe('Average CSAT')
-        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.chartType).toBe(ChartType.CardWithTimeseries)
         expect(config.metricFormat).toBe('decimal')
         expect(config.csvProducer).not.toBeNull()
     })
@@ -169,7 +169,7 @@ describe('AnalyticsAiAgentSupportAgentReportConfig', () => {
 
         expect(config).toBeDefined()
         expect(config.label).toBe('Decrease in resolution time')
-        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.chartType).toBe(ChartType.CardWithTimeseries)
         expect(config.metricFormat).toBe('duration')
         expect(config.csvProducer).not.toBeNull()
         expect(config.csvProducer).toHaveLength(1)
@@ -206,7 +206,7 @@ describe('AnalyticsAiAgentSupportAgentReportConfig', () => {
 
         expect(config).toBeDefined()
         expect(config.label).toBe('Handover interactions')
-        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.chartType).toBe(ChartType.CardWithTimeseries)
         expect(config.csvProducer).not.toBeNull()
         expect(config.csvProducer).toHaveLength(1)
         expect(config.csvProducer?.[0].type).toBe(DataExportFormat.Trend)

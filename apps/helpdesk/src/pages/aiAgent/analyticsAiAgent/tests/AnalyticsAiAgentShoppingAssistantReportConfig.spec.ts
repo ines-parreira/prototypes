@@ -39,7 +39,7 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
 
         expect(config).toBeDefined()
         expect(config.label).toBe('Revenue influenced')
-        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.chartType).toBe(ChartType.CardWithTimeseries)
         expect(config.csvProducer).not.toBeNull()
         expect(config.csvProducer).toHaveLength(1)
         expect(config.csvProducer?.[0].type).toBe(DataExportFormat.Trend)
@@ -53,7 +53,7 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
 
         expect(config).toBeDefined()
         expect(config.label).toBe('Orders influenced')
-        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.chartType).toBe(ChartType.CardWithTimeseries)
         expect(config.csvProducer).not.toBeNull()
     })
 
@@ -65,7 +65,7 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
 
         expect(config).toBeDefined()
         expect(config.label).toBe('Automated interactions')
-        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.chartType).toBe(ChartType.CardWithTimeseries)
     })
 
     it('should have revenue influenced per interaction card config', () => {
@@ -76,7 +76,7 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
 
         expect(config).toBeDefined()
         expect(config.label).toBe('Revenue influenced per interaction')
-        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.chartType).toBe(ChartType.CardWithTimeseries)
     })
 
     it('should have average discount amount card config', () => {
@@ -87,7 +87,7 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
 
         expect(config).toBeDefined()
         expect(config.label).toBe('Average discount amount')
-        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.chartType).toBe(ChartType.CardWithTimeseries)
         expect(config.metricFormat).toBe('currency')
         expect(config.csvProducer).not.toBeNull()
     })
@@ -100,7 +100,7 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
 
         expect(config).toBeDefined()
         expect(config.label).toBe('Discount usage')
-        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.chartType).toBe(ChartType.CardWithTimeseries)
         expect(config.metricFormat).toBe('decimal-to-percent')
         expect(config.csvProducer).not.toBeNull()
     })
@@ -113,7 +113,7 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
 
         expect(config).toBeDefined()
         expect(config.label).toBe('Discount codes applied')
-        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.chartType).toBe(ChartType.CardWithTimeseries)
         expect(config.metricFormat).toBe('decimal')
         expect(config.csvProducer).not.toBeNull()
         expect(config.csvProducer).toHaveLength(1)
@@ -128,7 +128,7 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
 
         expect(config).toBeDefined()
         expect(config.label).toBe('Discount offered')
-        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.chartType).toBe(ChartType.CardWithTimeseries)
         expect(config.metricFormat).toBe('decimal')
         expect(config.csvProducer).not.toBeNull()
     })
@@ -156,7 +156,7 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
 
         expect(config).toBeDefined()
         expect(config.label).toBe('Handover interactions')
-        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.chartType).toBe(ChartType.CardWithTimeseries)
         expect(config.metricFormat).toBe('decimal')
         expect(config.csvProducer).not.toBeNull()
         expect(config.csvProducer).toHaveLength(1)
@@ -408,7 +408,7 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
 
         expect(config).toBeDefined()
         expect(config.label).toBe('Conversion rate')
-        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.chartType).toBe(ChartType.CardWithTimeseries)
         expect(config.metricFormat).toBe('decimal-to-percent')
         expect(config.csvProducer).not.toBeNull()
         expect(config.csvProducer).toHaveLength(1)

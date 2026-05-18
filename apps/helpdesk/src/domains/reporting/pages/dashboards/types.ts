@@ -71,6 +71,7 @@ export enum DashboardChildType {
 
 export enum ChartType {
     Card = 'card',
+    CardWithTimeseries = 'card-with-timeseries',
     Graph = 'graph',
     Table = 'table',
 }

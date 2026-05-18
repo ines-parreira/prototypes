@@ -1227,6 +1227,30 @@ describe('DragAndResizeDashboardGrid', () => {
         })
     })
 
+    describe('Chart type resolution', () => {
+        it('uses chartType from registered chart config for layout constraints', () => {
+            // 'automation_rate_kpichart' is registered in AutomateOverviewReportConfig
+            // with ChartType.Card — covers the chartConfig?.chartType non-null branch
+            const chart = createMockChart('automation_rate_kpichart')
+            const dashboard = createMockDashboard([chart])
+
+            render(<DragAndResizeDashboardGrid dashboard={dashboard} />)
+
+            const gridElement = screen.getByRole('grid')
+            const chartElement = gridElement.querySelector(
+                '[data-grid]',
+            ) as HTMLElement
+
+            expect(chartElement).toBeInTheDocument()
+            const dataGrid = JSON.parse(chartElement.getAttribute('data-grid')!)
+            // ChartType.Card constraints: min w=3, h=4; max w=6, h=16
+            expect(dataGrid.minW).toBe(3)
+            expect(dataGrid.minH).toBe(4)
+            expect(dataGrid.maxW).toBe(6)
+            expect(dataGrid.maxH).toBe(16)
+        })
+    })
+
     describe('Custom Resize Handle', () => {
         beforeEach(() => {
             capturedResizeConfig = null

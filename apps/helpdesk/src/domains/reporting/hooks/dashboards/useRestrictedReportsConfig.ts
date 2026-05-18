@@ -17,11 +17,22 @@ export const useRestrictedReportsConfig = () => {
     const { value: isCustomDashboardsEnabled } = useFlagWithLoading(
         FeatureFlagKey.AiAgentAnalyticsCustomDashboards,
     )
+    const { value: isNewScreensEnabled } = useFlagWithLoading(
+        FeatureFlagKey.AiAgentAnalyticsDashboardsNewScreens,
+    )
+    const { value: isLegacyDisabled } = useFlagWithLoading(
+        FeatureFlagKey.AiAgentAnalyticsDisableLegacyReports,
+    )
     const baseConfig = isCustomDashboardsEnabled
         ? REVAMPED_REPORTS_CONFIG
         : REPORTS_CONFIG
 
-    return baseConfig.map((section) => ({
+    const visibleConfig =
+        !isCustomDashboardsEnabled && isNewScreensEnabled && isLegacyDisabled
+            ? baseConfig.filter((section) => section.category !== 'AI Agent')
+            : baseConfig
+
+    return visibleConfig.map((section) => ({
         ...section,
         children: section.children
             .filter((report) => {

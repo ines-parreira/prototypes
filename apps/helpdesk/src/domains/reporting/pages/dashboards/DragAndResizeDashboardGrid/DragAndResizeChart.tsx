@@ -1,3 +1,4 @@
+import { useMigratedChartId } from 'domains/reporting/hooks/dashboards/useMigratedChartId'
 import { useIsChartRestricted } from 'domains/reporting/hooks/dashboards/useReportRestrictions'
 import { getComponentConfig } from 'domains/reporting/pages/dashboards/config'
 import { DashboardComponent } from 'domains/reporting/pages/dashboards/DashboardComponent'
@@ -15,15 +16,23 @@ export const DragAndResizeChart = ({
     schema,
     dashboard,
 }: DashboardChartProps) => {
-    const { reportConfig, chartConfig } = getComponentConfig(schema.config_id)
-    const restricted = useIsChartRestricted(schema.config_id)
-    if (reportConfig === null || chartConfig === null || restricted) {
+    const effectiveChartId = useMigratedChartId(schema.config_id)
+    const { reportConfig, chartConfig } = getComponentConfig(
+        effectiveChartId ?? '',
+    )
+    const restricted = useIsChartRestricted(effectiveChartId ?? '')
+    if (
+        effectiveChartId === null ||
+        reportConfig === null ||
+        chartConfig === null ||
+        restricted
+    ) {
         return null
     }
 
     return (
         <DashboardComponent
-            chart={schema.config_id}
+            chart={effectiveChartId}
             config={reportConfig}
             dashboard={dashboard}
         />

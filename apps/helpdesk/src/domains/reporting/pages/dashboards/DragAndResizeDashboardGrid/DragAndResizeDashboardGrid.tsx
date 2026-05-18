@@ -10,6 +10,8 @@ import type { Breakpoint, Layout } from 'react-grid-layout'
 
 import 'react-grid-layout/css/styles.css'
 
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
+
 import { useDashboardActions } from 'domains/reporting/hooks/dashboards/useDashboardActions'
 import { getComponentConfig } from 'domains/reporting/pages/dashboards/config'
 import { getChartConstraints } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/chartLayoutConstraints'
@@ -22,6 +24,7 @@ import {
     GRID_COLS,
 } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/gridBreakpoints'
 import { clampLayoutToConstraints } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/layoutUtils'
+import { applyChartMigration } from 'domains/reporting/pages/dashboards/legacyAiAgentChartMigration'
 import type {
     ChartLayoutMetadata,
     DashboardChartSchema,
@@ -36,16 +39,16 @@ import { flattenCharts } from 'domains/reporting/pages/dashboards/utils'
 
 const COLS = 12
 
-const renderDashboard = (dashboard: DashboardSchema): React.ReactNode[] => {
-    const charts = flattenCharts(dashboard.children)
-
-    return charts.map((chart) => (
+const renderCharts = (
+    charts: DashboardChartSchema[],
+    dashboard: DashboardSchema,
+): React.ReactNode[] =>
+    charts.map((chart) => (
         <div key={chart.config_id}>
             <div className="drag-handle" aria-hidden="true" />
             <DragAndResizeChart schema={chart} dashboard={dashboard} />
         </div>
     ))
-}
 
 export const DragAndResizeDashboardGrid = ({
     dashboard,
@@ -57,8 +60,28 @@ export const DragAndResizeDashboardGrid = ({
     const isInitialMount = useRef(true)
     const [currentBreakpoint, setCurrentBreakpoint] = useState<Breakpoint>('lg')
 
+    const { value: isNewScreensEnabled } = useFlagWithLoading(
+        FeatureFlagKey.AiAgentAnalyticsDashboardsNewScreens,
+    )
+    const { value: isLegacyDisabled } = useFlagWithLoading(
+        FeatureFlagKey.AiAgentAnalyticsDisableLegacyReports,
+    )
+
+    const visibleCharts = useMemo(
+        () =>
+            flattenCharts(dashboard.children).filter(
+                (chart) =>
+                    applyChartMigration(
+                        chart.config_id,
+                        isNewScreensEnabled,
+                        isLegacyDisabled,
+                    ) !== null,
+            ),
+        [dashboard, isNewScreensEnabled, isLegacyDisabled],
+    )
+
     const initialLayout = useMemo(() => {
-        const charts = flattenCharts(dashboard.children)
+        const charts = visibleCharts
 
         const chartsWithLayouts: DashboardChartSchema[] = []
         const chartsWithoutLayouts: DashboardChartSchema[] = []
@@ -71,7 +94,12 @@ export const DragAndResizeDashboardGrid = ({
                 chartsWithLayouts.push(chart)
             } else {
                 chartsWithoutLayouts.push(chart)
-                const { chartConfig } = getComponentConfig(chart.config_id)
+                const effectiveId = applyChartMigration(
+                    chart.config_id,
+                    isNewScreensEnabled,
+                    isLegacyDisabled,
+                )!
+                const { chartConfig } = getComponentConfig(effectiveId)
                 const chartType = chartConfig?.chartType ?? ChartType.Card
                 chartsWithoutLayoutsConstraints.push(
                     getChartConstraints(chartType),
@@ -105,8 +133,13 @@ export const DragAndResizeDashboardGrid = ({
             layoutMap.set(chart.config_id, newChartPositions[index])
         })
 
-        return charts.map((chart) => {
-            const { chartConfig } = getComponentConfig(chart.config_id)
+        return visibleCharts.map((chart) => {
+            const effectiveId = applyChartMigration(
+                chart.config_id,
+                isNewScreensEnabled,
+                isLegacyDisabled,
+            )!
+            const { chartConfig } = getComponentConfig(effectiveId)
             const chartType = chartConfig?.chartType ?? ChartType.Card
             const constraints = getChartConstraints(chartType)
 
@@ -129,7 +162,7 @@ export const DragAndResizeDashboardGrid = ({
                 maxH: constraints.max.height,
             }
         })
-    }, [dashboard])
+    }, [visibleCharts, isNewScreensEnabled, isLegacyDisabled])
 
     const saveDashboardLayout = useCallback(
         (layout: Layout) => {
@@ -222,8 +255,8 @@ export const DragAndResizeDashboardGrid = ({
     )
 
     const renderedChildren = useMemo(
-        () => renderDashboard(dashboard),
-        [dashboard],
+        () => renderCharts(visibleCharts, dashboard),
+        [visibleCharts, dashboard],
     )
 
     if (!mounted) {

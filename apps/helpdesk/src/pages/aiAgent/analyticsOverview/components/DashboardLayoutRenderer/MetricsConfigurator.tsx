@@ -33,8 +33,11 @@ export const MetricsConfigurator = ({
 
     const handleSave = (updatedMetrics: MetricConfigItem[]) => {
         const kpisSectionId =
-            currentLayoutConfig.sections.find((s) => s.type === ChartType.Card)
-                ?.id ?? 'section_kpis'
+            currentLayoutConfig.sections.find(
+                (s) =>
+                    s.type === ChartType.Card ||
+                    s.type === ChartType.CardWithTimeseries,
+            )?.id ?? 'section_kpis'
 
         updateSection(
             dashboardId,

@@ -20,6 +20,7 @@ export const buildCustomDashboard = (
         .filter(
             (section) =>
                 section.type === ChartType.Card ||
+                section.type === ChartType.CardWithTimeseries ||
                 (section.type === ChartType.Table && isTablesFFEnabled) ||
                 (section.type === ChartType.Graph && isChartsEnabled),
         )

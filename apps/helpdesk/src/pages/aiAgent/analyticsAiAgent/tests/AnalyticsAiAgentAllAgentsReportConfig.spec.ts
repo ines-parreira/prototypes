@@ -37,7 +37,7 @@ describe('AnalyticsAiAgentAllAgentsReportConfig', () => {
 
         expect(config).toBeDefined()
         expect(config.label).toBe('AI Agent automation rate')
-        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.chartType).toBe(ChartType.CardWithTimeseries)
         expect(config.csvProducer).not.toBeNull()
         expect(config.csvProducer).toHaveLength(1)
         expect(config.csvProducer?.[0].type).toBe(DataExportFormat.Trend)
@@ -51,7 +51,7 @@ describe('AnalyticsAiAgentAllAgentsReportConfig', () => {
 
         expect(config).toBeDefined()
         expect(config.label).toBe('Automated interactions')
-        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.chartType).toBe(ChartType.CardWithTimeseries)
         expect(config.csvProducer).not.toBeNull()
     })
 
@@ -63,7 +63,7 @@ describe('AnalyticsAiAgentAllAgentsReportConfig', () => {
 
         expect(config).toBeDefined()
         expect(config.label).toBe('Revenue influenced')
-        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.chartType).toBe(ChartType.CardWithTimeseries)
     })
 
     it('should have time saved card config', () => {
@@ -74,7 +74,7 @@ describe('AnalyticsAiAgentAllAgentsReportConfig', () => {
 
         expect(config).toBeDefined()
         expect(config.label).toBe('Time saved by agents')
-        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.chartType).toBe(ChartType.CardWithTimeseries)
     })
 
     it('should have all agents trend combo chart config', () => {
@@ -146,7 +146,7 @@ describe('AnalyticsAiAgentAllAgentsReportConfig', () => {
 
         expect(config).toBeDefined()
         expect(config.label).toBe('Cost saved')
-        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.chartType).toBe(ChartType.CardWithTimeseries)
         expect(config.metricFormat).toBe('currency-precision-1')
         expect(config.csvProducer).not.toBeNull()
         expect(config.csvProducer).toHaveLength(1)
@@ -162,7 +162,7 @@ describe('AnalyticsAiAgentAllAgentsReportConfig', () => {
 
         expect(config).toBeDefined()
         expect(config.label).toBe('Average CSAT')
-        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.chartType).toBe(ChartType.CardWithTimeseries)
         expect(config.metricFormat).toBe('decimal')
         expect(config.csvProducer).not.toBeNull()
     })
@@ -175,7 +175,7 @@ describe('AnalyticsAiAgentAllAgentsReportConfig', () => {
 
         expect(config).toBeDefined()
         expect(config.label).toBe('Handover interactions')
-        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.chartType).toBe(ChartType.CardWithTimeseries)
         expect(config.metricFormat).toBe('decimal')
         expect(config.csvProducer).not.toBeNull()
         expect(config.csvProducer).toHaveLength(1)
@@ -190,7 +190,7 @@ describe('AnalyticsAiAgentAllAgentsReportConfig', () => {
 
         expect(config).toBeDefined()
         expect(config.label).toBe('Decrease in resolution time')
-        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.chartType).toBe(ChartType.CardWithTimeseries)
         expect(config.metricFormat).toBe('duration')
         expect(config.csvProducer).not.toBeNull()
         expect(config.csvProducer).toHaveLength(1)

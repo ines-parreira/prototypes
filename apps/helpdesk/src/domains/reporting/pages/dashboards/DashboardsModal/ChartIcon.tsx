@@ -13,6 +13,10 @@ export const CHARTS_MODAL_ICONS: Record<
         name: 'KPI',
         tooltip: 'Key Performance Indicator',
     },
+    [ChartType.CardWithTimeseries]: {
+        name: 'KPI',
+        tooltip: 'Key Performance Indicator',
+    },
     [ChartType.Graph]: {
         name: 'bar_chart',
         tooltip: 'Graph',

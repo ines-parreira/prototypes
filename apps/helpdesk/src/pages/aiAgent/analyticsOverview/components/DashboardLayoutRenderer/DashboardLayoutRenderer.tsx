@@ -37,7 +37,9 @@ const renderSection =
     ) =>
     (section: LayoutSection) => {
         const isChartsSection = section.type === ChartType.Graph
-        const isCardsSection = section.type === ChartType.Card
+        const isCardsSection =
+            section.type === ChartType.Card ||
+            section.type === ChartType.CardWithTimeseries
         const isTableSection = section.type === ChartType.Table
 
         if (isTableSection) {
