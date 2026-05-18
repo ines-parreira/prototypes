@@ -7,7 +7,10 @@ import { MessageHeaderContainer } from '../../MessageBubble/components/MessageHe
 import { MessageSender } from '../../MessageBubble/components/MessageHeader/MessageSender'
 import { MessageTimestamp } from '../../MessageBubble/components/MessageHeader/MessageTimestamp'
 import { MessageBubble } from '../../MessageBubble/MessageBubble'
+import { TicketMessageActions } from '../../TicketMessageActions/TicketMessageActions'
 import { getAiAgentDisplayName } from './getAiAgentDisplayName'
+
+import css from '../../MessageBubble/MessageBubble.less'
 
 type AiAgentHandoverSummaryMessageProps = {
     item: TicketThreadAiAgentHandoverMessageItem
@@ -30,22 +33,27 @@ export function AiAgentHandoverSummaryMessage({
             alignItems="flex-end"
             gap="xxs"
         >
-            <MessageBubble variant="ai-agent">
-                <MessageHeaderContainer>
-                    <Box alignItems="center" gap="xs">
-                        <AIThinking variant="static" />
-                        <MessageSender sender={{ name: aiAgentName }} />
-                    </Box>
-                    <Box alignItems="center" gap="xs">
-                        <MessageTimestamp
-                            createdDatetime={item.data.created_datetime}
-                        />
-                    </Box>
-                </MessageHeaderContainer>
-                <MessageBody item={item} />
-                {renderAiAgentReasoning?.({ message: item.data })}
-            </MessageBubble>
-            {summaryContent}
+            <div className={css.bubbleRow}>
+                <MessageBubble variant="ai-agent">
+                    <MessageHeaderContainer>
+                        <Box alignItems="center" gap="xs">
+                            <AIThinking variant="static" />
+                            <MessageSender sender={{ name: aiAgentName }} />
+                        </Box>
+                        <Box alignItems="center" gap="xs">
+                            <MessageTimestamp
+                                createdDatetime={item.data.created_datetime}
+                            />
+                        </Box>
+                    </MessageHeaderContainer>
+                    <MessageBody item={item} />
+                    <TicketMessageActions message={item.data} />
+                    {renderAiAgentReasoning?.({ message: item.data })}
+                </MessageBubble>
+            </div>
+            {summaryContent && (
+                <div className={css.bubbleRow}>{summaryContent}</div>
+            )}
         </Box>
     )
 }

@@ -1,10 +1,14 @@
 import { useState } from 'react'
 
+import { useCopyToClipboard } from '@repo/hooks'
 import {
+    BubbleActions,
+    CopyButton,
     MessageBubble,
     MessageHeaderContainer,
     MessageTimestamp,
 } from '@repo/ticket-thread'
+import type { BubbleActionItem } from '@repo/ticket-thread'
 
 import { Box, Button, Icon, Skeleton, Text } from '@gorgias/axiom'
 import type { TicketSummary } from '@gorgias/helpdesk-types'
@@ -25,8 +29,22 @@ export function TicketSummaryBubble({
     requestSummary,
 }: TicketSummaryBubbleProps) {
     const [isExpanded, setIsExpanded] = useState(true)
+    const [, copyToClipboard] = useCopyToClipboard()
 
     if (!isLoading && !summary?.content && !errorMessage) return null
+
+    const copyText = summary?.content ?? ''
+    const copyItems: BubbleActionItem[] = [
+        {
+            id: 'copy',
+            icon: <CopyButton text={copyText} />,
+            tooltip: 'Copy message',
+            compactLabel: 'Copy message',
+            compactLeadingSlot: 'copy',
+            isDisabled: isLoading || !copyText,
+            onAction: () => copyToClipboard(copyText),
+        },
+    ]
 
     const summaryDatetime =
         summary?.updated_datetime || summary?.created_datetime
@@ -121,6 +139,7 @@ export function TicketSummaryBubble({
                         )}
                     </>
                 )}
+                <BubbleActions placement="left" items={copyItems} />
             </MessageBubble>
         </Box>
     )

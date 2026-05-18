@@ -1,4 +1,5 @@
 import {
+    MessageBubbleRow,
     TicketThreadEventAuthor,
     TicketThreadEventContainer,
     TicketThreadEventDateTime,
@@ -43,13 +44,15 @@ export function TicketThreadSummarySection({
                     />
                 </TicketThreadEventContainer>
             )}
-            <TicketSummaryBubble
-                summary={summary}
-                isLoading={isLoading}
-                errorMessage={errorMessage}
-                isRetriable={isRetriable}
-                requestSummary={requestSummary}
-            />
+            <MessageBubbleRow>
+                <TicketSummaryBubble
+                    summary={summary}
+                    isLoading={isLoading}
+                    errorMessage={errorMessage}
+                    isRetriable={isRetriable}
+                    requestSummary={requestSummary}
+                />
+            </MessageBubbleRow>
         </Box>
     )
 }

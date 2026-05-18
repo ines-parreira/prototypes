@@ -1,15 +1,16 @@
 import { useEffect, useMemo, useState } from 'react'
 
+import { useCopyToClipboard } from '@repo/hooks'
 import {
+    BubbleActions,
+    CopyButton,
     MessageBubble,
     MessageHeaderContainer,
     MessageTimestamp,
     useTicketSummary,
 } from '@repo/ticket-thread'
+import type { BubbleActionItem } from '@repo/ticket-thread'
 import type { TicketThreadAiAgentHandoverSummaryParams } from '@repo/ticket-thread/legacy-bridge'
-
-import { AIThinking, Box, Button, Icon, Text } from '@gorgias/axiom'
-
 import useAppSelector from 'hooks/useAppSelector'
 import {
     ReasoningResponseType,
@@ -20,6 +21,8 @@ import { AiAgentFeedbackTypeEnum } from 'pages/tickets/detail/components/AIAgent
 import type { FeedbackRating } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { AiAgentHandoverOutcome } from 'pages/tickets/detail/components/TicketMessages/AiAgentHandoverOutcome'
 import { getTicketState } from 'state/ticket/selectors'
+
+import { AIThinking, Box, Button, Icon, Text } from '@gorgias/axiom'
 
 import { AiAgentRatingTag } from './AiAgentRatingTag'
 import { SummaryContent } from './SummaryContent'
@@ -91,6 +94,8 @@ export function TicketThreadAiAgentHandoverSummary({ message }: Props) {
     )
     const hasSummaryContent = hasSummaryContentIgnoringStale && !isSummaryStale
 
+    const [, copyToClipboard] = useCopyToClipboard()
+
     if (
         !hasSummaryContent &&
         !isSummaryStale &&
@@ -101,6 +106,22 @@ export function TicketThreadAiAgentHandoverSummary({ message }: Props) {
     ) {
         return null
     }
+
+    const staleSummaryText =
+        'New messages have been added since this summary was generated. You can refresh it below.'
+    const summaryText = isSummaryStale ? staleSummaryText : summary?.content
+    const copyText = [summaryText, outcome].filter(Boolean).join('\n\n')
+    const copyItems: BubbleActionItem[] = [
+        {
+            id: 'copy',
+            icon: <CopyButton text={copyText} />,
+            tooltip: 'Copy message',
+            compactLabel: 'Copy message',
+            compactLeadingSlot: 'copy',
+            isDisabled: isLoading || isOutcomeLoading || !copyText,
+            onAction: () => copyToClipboard(copyText),
+        },
+    ]
 
     return (
         <MessageBubble variant="ai-agent-handover" isGroupedMessage={true}>
@@ -155,9 +176,7 @@ export function TicketThreadAiAgentHandoverSummary({ message }: Props) {
                                     size="sm"
                                     color="content-neutral-secondary"
                                 >
-                                    New messages have been added since this
-                                    summary was generated. You can refresh it
-                                    below.
+                                    {staleSummaryText}
                                 </Text>
                             )}
                         </Box>
@@ -168,6 +187,7 @@ export function TicketThreadAiAgentHandoverSummary({ message }: Props) {
                     />
                 </Box>
             )}
+            <BubbleActions placement="left" items={copyItems} />
         </MessageBubble>
     )
 }

@@ -29,6 +29,7 @@ type LegacyBridgeOptions = {
     renderAiAgentDraftMessage?: LegacyBridgeContextType['renderAiAgentDraftMessage']
     renderAiAgentTrialMessage?: LegacyBridgeContextType['renderAiAgentTrialMessage']
     renderAiAgentReasoning?: LegacyBridgeContextType['renderAiAgentReasoning']
+    renderAiAgentHandoverSummary?: LegacyBridgeContextType['renderAiAgentHandoverSummary']
     voiceCallCallbacks?: VoiceCallBridgeCallbacks
 }
 
@@ -88,6 +89,7 @@ export const render = (element: ReactElement, options?: RenderOptions) => {
         renderAiAgentDraftMessage,
         renderAiAgentTrialMessage,
         renderAiAgentReasoning,
+        renderAiAgentHandoverSummary,
         voiceCallCallbacks,
         wrapper: ExtraWrapper,
         ...renderOptions
@@ -104,6 +106,7 @@ export const render = (element: ReactElement, options?: RenderOptions) => {
         renderAiAgentDraftMessage,
         renderAiAgentTrialMessage,
         renderAiAgentReasoning,
+        renderAiAgentHandoverSummary,
         voiceCallCallbacks,
         onInstagramCommentPrivateReply: () => undefined,
         onInstagramCommentHideComment: () => undefined,
@@ -160,6 +163,7 @@ export const renderHook = <TProps, TResult>(
         renderAiAgentDraftMessage,
         renderAiAgentTrialMessage,
         renderAiAgentReasoning,
+        renderAiAgentHandoverSummary,
         voiceCallCallbacks,
         wrapper: ExtraWrapper,
         ...renderHookOptions
@@ -176,6 +180,7 @@ export const renderHook = <TProps, TResult>(
         renderAiAgentDraftMessage,
         renderAiAgentTrialMessage,
         renderAiAgentReasoning,
+        renderAiAgentHandoverSummary,
         voiceCallCallbacks,
         onInstagramCommentPrivateReply: () => undefined,
         onInstagramCommentHideComment: () => undefined,

@@ -133,4 +133,27 @@
         .bubbleActions {
         visibility: visible;
     }
+
+    // Per-bubble row wrapper: full-width container so the button appears when
+    // hovering anywhere in the row area, not just over the bubble element itself.
+    .bubbleRow {
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+    }
+
+    // Suppress row-level show for bubbles inside a bubbleRow.
+    .messageRow:hover .bubbleRow .bubbleActions,
+    .messageRow:focus-within .bubbleRow .bubbleActions {
+        visibility: hidden;
+    }
+
+    // Show per bubbleRow hover (same specificity as suppression rule above, placed after).
+    // :has(:focus-visible) instead of :focus-within so only keyboard focus shows the button —
+    // mouse-click focus does not set focus-visible, preventing the button from getting stuck.
+    .messageRow .bubbleRow:hover .bubbleActions,
+    .messageRow .bubbleRow:has(:focus-visible) .bubbleActions,
+    .messageRow .bubbleRow .bubbleActions:hover {
+        visibility: visible;
+    }
 }
