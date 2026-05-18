@@ -1,0 +1,97 @@
+{
+    "$schema": "https://raw.githubusercontent.com/fallow-rs/fallow/main/schema.json",
+    "workspaces": {
+        "packages": ["config", "apps/**", "packages/**"]
+    },
+    "ignorePatterns": [
+        "apps/helpdesk/src/rest_api/**/*.openapi.json",
+        "apps/helpdesk/src/rest_api/**/*.postman_collection.json",
+        "apps/helpdesk/src/rest_api/**/client.generated.d.ts"
+    ],
+    "duplicates": {
+        "minOccurrences": 3
+    },
+    "rules": {
+        "boundary-violation": "error"
+    },
+    "boundaries": {
+        "zones": [
+            {
+                "name": "app",
+                "patterns": ["apps/helpdesk/src/**"]
+            },
+            {
+                "name": "domain-packages",
+                "patterns": [
+                    "packages/agent-status/src/**",
+                    "packages/ai-agent/src/**",
+                    "packages/billing/src/**",
+                    "packages/customer/src/**",
+                    "packages/ecommerce/src/**",
+                    "packages/notifications/src/**",
+                    "packages/preferences/src/**",
+                    "packages/reporting/src/**",
+                    "packages/search/src/**",
+                    "packages/teams/src/**",
+                    "packages/ticket-thread/src/**",
+                    "packages/tickets/src/**",
+                    "packages/users/src/**",
+                    "packages/views/src/**",
+                    "packages/voice/src/**"
+                ]
+            },
+            {
+                "name": "ui-foundation",
+                "patterns": [
+                    "packages/debug/src/**",
+                    "packages/forms/src/**",
+                    "packages/layout/src/**",
+                    "packages/navigation/src/**"
+                ]
+            },
+            {
+                "name": "platform-foundation",
+                "patterns": [
+                    "config/src/**",
+                    "packages/activity-tracker/src/**",
+                    "packages/api-resources/src/**",
+                    "packages/browser-storage/src/**",
+                    "packages/feature-flags/src/**",
+                    "packages/hooks/src/**",
+                    "packages/logging/src/**",
+                    "packages/permissions/src/**",
+                    "packages/routing/src/**",
+                    "packages/testing/src/**",
+                    "packages/types/src/**",
+                    "packages/utils/src/**"
+                ]
+            }
+        ],
+        "rules": [
+            {
+                "from": "app",
+                "allow": [
+                    "domain-packages",
+                    "ui-foundation",
+                    "platform-foundation"
+                ]
+            },
+            {
+                "from": "domain-packages",
+                "allow": [
+                    "domain-packages",
+                    "ui-foundation",
+                    "platform-foundation"
+                ]
+            },
+            {
+                "from": "ui-foundation",
+                "allow": ["platform-foundation"]
+            },
+            {
+                "from": "platform-foundation",
+                "allow": ["platform-foundation"]
+            }
+        ]
+    }
+}

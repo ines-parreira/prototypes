@@ -484,6 +484,8 @@ overrides:
   sha.js: 2.4.12
   underscore: 1.13.8
   node-forge: 1.4.0
+  '@babel/plugin-transform-modules-systemjs': 7.29.4
+  fast-uri: 3.1.2
 
 importers:
 
@@ -510,6 +512,9 @@ importers:
       deepmerge:
         specifier: ^4.3.1
         version: 4.3.1
+      fallow:
+        specifier: 2.73.0
+        version: 2.73.0
       fast-glob:
         specifier: ^3.3
         version: 3.3.2
@@ -4654,8 +4659,8 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0-0
 
-  '@babel/plugin-transform-modules-systemjs@7.29.0':
-    resolution: {integrity: sha512-PrujnVFbOdUpw4UHiVwKvKRLMMic8+eC0CuNlxjsyZUiBjhFdPsewdXCkveh2KqBA9/waD0W1b4hXSOBQJezpQ==}
+  '@babel/plugin-transform-modules-systemjs@7.29.4':
+    resolution: {integrity: sha512-N7QmZ0xRZfjHOfZeQLJjwgX2zS9pdGHSVl/cjSGlo4dXMqvurfxXDMKY4RqEKzPozV78VMcd0lxyG13mlbKc4w==}
     engines: {node: '>=6.9.0'}
     peerDependencies:
       '@babel/core': ^7.0.0-0
@@ -5393,6 +5398,46 @@ packages:
   '@faker-js/faker@9.8.0':
     resolution: {integrity: sha512-U9wpuSrJC93jZBxx/Qq2wPjCuYISBueyVUGK7qqdmj7r/nxaxwW8AQDCLeRO7wZnjj94sh3p246cAYjUKuqgfg==}
     engines: {node: '>=18.0.0', npm: '>=9.0.0'}
+
+  '@fallow-cli/darwin-arm64@2.73.0':
+    resolution: {integrity: sha512-4mo+35ufU3H5HpyYi/UT12EvRJA7ibglIaWTDqjc6TkZoz7fXYKh9PT+KcBBZyMbFC1kvAxJsfJP1J4zKXr5xQ==}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@fallow-cli/darwin-x64@2.73.0':
+    resolution: {integrity: sha512-bgob14wLLRXTXI+/XMT7OhVIZV1aBw0lvlXJwl/+t8MOUftlG68VoZVRkpzDypWc/dPxsa5J72kUv/5b1F/jXg==}
+    cpu: [x64]
+    os: [darwin]
+
+  '@fallow-cli/linux-arm64-gnu@2.73.0':
+    resolution: {integrity: sha512-7q058FGiv92VCMikoaNkcJOlhuUeYbu/dvzAyjwBYCt2FBadPdkafz29IRZN2McfLXmCdizV6531TPh2H8Z/XA==}
+    cpu: [arm64]
+    os: [linux]
+
+  '@fallow-cli/linux-arm64-musl@2.73.0':
+    resolution: {integrity: sha512-rykM9ClOZ7cSUvox0Qesq3Vh4XTdHdgVDqgEo+njs1vJsj9IMINZhENsR7/9PKIEbH5rH/3BsOQ6wwkXwi7Z/w==}
+    cpu: [arm64]
+    os: [linux]
+
+  '@fallow-cli/linux-x64-gnu@2.73.0':
+    resolution: {integrity: sha512-BOk8LUgb97giUB5gUbH2PDV68EV/KlIKmNe+UyYeb8qsQkuIbwnYIxYQ1SmvagcCJdjkzGnJI4JXswvDB96MJg==}
+    cpu: [x64]
+    os: [linux]
+
+  '@fallow-cli/linux-x64-musl@2.73.0':
+    resolution: {integrity: sha512-zaHIF7rdNGj7gRJ49EG64nmuco1N074Na1DiOBn/bWg1YZxGlQlJL5d0cq1Kb+EoQ0sTwa+Ya4g4/mQ0Wdb+nA==}
+    cpu: [x64]
+    os: [linux]
+
+  '@fallow-cli/win32-arm64-msvc@2.73.0':
+    resolution: {integrity: sha512-IlWjJiSPY8j0n7jUEMNaEEdygwI4F2gzulAQmIcTlemZgdzAQCDuI3i8ylePcCc2+1YfD5IwdoQIS+WRkUulBw==}
+    cpu: [arm64]
+    os: [win32]
+
+  '@fallow-cli/win32-x64-msvc@2.73.0':
+    resolution: {integrity: sha512-pceEJAFpqmlp4gL+ANyhnNLFGtaHCydEaJCUFZ3TL885RWP2nvOIe4TbbdIGRJwAnw0aa6jtM8QKK0DNCSQlxQ==}
+    cpu: [x64]
+    os: [win32]
 
   '@floating-ui/core@1.5.0':
     resolution: {integrity: sha512-kK1h4m36DQ0UHGj5Ah4db7R0rHemTqqO0QLvUqi1/mUUp3LuAWbWxdxSIf/XsnH9VS6rRVPLJCncjRzUvyCLXg==}
@@ -10992,6 +11037,10 @@ packages:
     resolution: {integrity: sha512-2sJGJTaXIIaR1w4iJSNoN0hnMY7Gpc/n8D4qSCJw8QqFWXf7cuAgnEHxBpweaVcPevC2l3KpjYCx3NypQQgaJg==}
     engines: {node: '>= 0.8', npm: 1.2.8000 || >= 1.4.16}
 
+  detect-libc@2.1.2:
+    resolution: {integrity: sha512-Btj2BOOO83o3WyH59e8MgXsxEQVcarkUOpEYrubB0urwnN10yQ364rsiByU11nZlqWYZm05i/of7io4mzihBtQ==}
+    engines: {node: '>=8'}
+
   detect-newline@3.1.0:
     resolution: {integrity: sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA==}
     engines: {node: '>=8'}
@@ -11550,6 +11599,11 @@ packages:
     resolution: {integrity: sha512-hMQ4CX1p1izmuLYyZqLMO/qGNw10wSv9QDCPfzXfyFrOaCSSoRfqE1Kf1s5an66J5JZC62NewG+mK49jOCtQew==}
     engines: {node: '>=4'}
 
+  fallow@2.73.0:
+    resolution: {integrity: sha512-4qyUIGWhPvmeOnS6tNwB+WyVB92ImVWYEF6wiJT6Khn53SxIBi0+IxTsUT2NVjFR6mL4xRwL2vvpUe/OzvMYcw==}
+    engines: {node: '>=16'}
+    hasBin: true
+
   fast-check@3.23.2:
     resolution: {integrity: sha512-h5+1OzzfCC3Ef7VbtKdcv7zsstUQwUDlYpUTvjeUsJAssPgLn7QzbboPtL5ro04Mq0rPOsMzl7q5hIbRs2wD1A==}
     engines: {node: '>=8.0.0'}
@@ -11583,8 +11637,8 @@ packages:
   fast-png@6.4.0:
     resolution: {integrity: sha512-kAqZq1TlgBjZcLr5mcN6NP5Rv4V2f22z00c3g8vRrwkcqjerx7BEhPbOnWCPqaHUl2XWQBJQvOT/FQhdMT7X/Q==}
 
-  fast-uri@3.0.2:
-    resolution: {integrity: sha512-GR6f0hD7XXyNJa25Tb9BuIdN0tdr+0BMi6/CJPH3wJO1JjNG3n/VsSw38AwRdKZABm8lGbPfakLRkYzx2V9row==}
+  fast-uri@3.1.2:
+    resolution: {integrity: sha512-rVjf7ArG3LTk+FS6Yw81V1DLuZl1bRbNrev6Tmd/9RaroeeRRJhAt7jg/6YFxbvAQXUCavSoZhPPj6oOx+5KjQ==}
 
   fastest-levenshtein@1.0.16:
     resolution: {integrity: sha512-eRnCtTTtGZFpQCwhJiUOuxPQWRXVKYDn0b2PeHfXL6/Zi53SLAzAHfVhVWK2AryC/WH05kGfxhFIPvTF0SXQzg==}
@@ -17727,7 +17781,7 @@ snapshots:
       - supports-color
     optional: true
 
-  '@babel/plugin-transform-modules-systemjs@7.29.0(@babel/core@7.29.0)':
+  '@babel/plugin-transform-modules-systemjs@7.29.4(@babel/core@7.29.0)':
     dependencies:
       '@babel/core': 7.29.0
       '@babel/helper-module-transforms': 7.28.6(@babel/core@7.29.0)
@@ -17996,7 +18050,7 @@ snapshots:
       '@babel/plugin-transform-member-expression-literals': 7.27.1(@babel/core@7.29.0)
       '@babel/plugin-transform-modules-amd': 7.27.1(@babel/core@7.29.0)
       '@babel/plugin-transform-modules-commonjs': 7.28.6(@babel/core@7.29.0)
-      '@babel/plugin-transform-modules-systemjs': 7.29.0(@babel/core@7.29.0)
+      '@babel/plugin-transform-modules-systemjs': 7.29.4(@babel/core@7.29.0)
       '@babel/plugin-transform-modules-umd': 7.27.1(@babel/core@7.29.0)
       '@babel/plugin-transform-named-capturing-groups-regex': 7.29.0(@babel/core@7.29.0)
       '@babel/plugin-transform-new-target': 7.27.1(@babel/core@7.29.0)
@@ -18520,6 +18574,30 @@ snapshots:
       - supports-color
 
   '@faker-js/faker@9.8.0': {}
+
+  '@fallow-cli/darwin-arm64@2.73.0':
+    optional: true
+
+  '@fallow-cli/darwin-x64@2.73.0':
+    optional: true
+
+  '@fallow-cli/linux-arm64-gnu@2.73.0':
+    optional: true
+
+  '@fallow-cli/linux-arm64-musl@2.73.0':
+    optional: true
+
+  '@fallow-cli/linux-x64-gnu@2.73.0':
+    optional: true
+
+  '@fallow-cli/linux-x64-musl@2.73.0':
+    optional: true
+
+  '@fallow-cli/win32-arm64-msvc@2.73.0':
+    optional: true
+
+  '@fallow-cli/win32-x64-msvc@2.73.0':
+    optional: true
 
   '@floating-ui/core@1.5.0':
     dependencies:
@@ -23684,7 +23762,7 @@ snapshots:
   ajv@8.17.1:
     dependencies:
       fast-deep-equal: 3.1.3
-      fast-uri: 3.0.2
+      fast-uri: 3.1.2
       json-schema-traverse: 1.0.0
       require-from-string: 2.0.2
 
@@ -25061,6 +25139,8 @@ snapshots:
 
   destroy@1.2.0: {}
 
+  detect-libc@2.1.2: {}
+
   detect-newline@3.1.0: {}
 
   detect-node-es@1.1.0: {}
@@ -25931,6 +26011,19 @@ snapshots:
       iconv-lite: 0.4.24
       tmp: 0.0.33
 
+  fallow@2.73.0:
+    dependencies:
+      detect-libc: 2.1.2
+    optionalDependencies:
+      '@fallow-cli/darwin-arm64': 2.73.0
+      '@fallow-cli/darwin-x64': 2.73.0
+      '@fallow-cli/linux-arm64-gnu': 2.73.0
+      '@fallow-cli/linux-arm64-musl': 2.73.0
+      '@fallow-cli/linux-x64-gnu': 2.73.0
+      '@fallow-cli/linux-x64-musl': 2.73.0
+      '@fallow-cli/win32-arm64-msvc': 2.73.0
+      '@fallow-cli/win32-x64-msvc': 2.73.0
+
   fast-check@3.23.2:
     dependencies:
       pure-rand: 6.1.0
@@ -25969,7 +26062,7 @@ snapshots:
       iobuffer: 5.4.0
       pako: 2.1.0
 
-  fast-uri@3.0.2: {}
+  fast-uri@3.1.2: {}
 
   fastest-levenshtein@1.0.16: {}
 

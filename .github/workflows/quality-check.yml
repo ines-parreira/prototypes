@@ -99,6 +99,72 @@ jobs:
         with:
           action: stop
 
+  architecture-boundaries:
+    name: Architecture boundaries
+    runs-on: gh-actions-4cpu4gb-runner-set
+    if: inputs.helpdesk-affected == 'true' || inputs.has-other-affected-packages == 'true'
+    steps:
+      - name: Start Resource Monitoring
+        uses: gorgias/reusable-actions/.github/actions/resource-monitor@main
+        with:
+          action: start
+          metric-frequency: 5
+
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+
+      - name: Setup workspace
+        uses: ./.github/actions/setup-workspace
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache-key: ${{ inputs.cache-key }}
+          npm-token: ${{ secrets.GH_READ_PACKAGES_TOKEN }}
+
+      - name: Architecture boundaries check
+        run: pnpm platform:architecture:boundaries
+
+      - name: Stop Resource Monitoring
+        if: always()
+        uses: gorgias/reusable-actions/.github/actions/resource-monitor@main
+        with:
+          action: stop
+
+  diagnostics-tests-rollup:
+    name: "Diagnostics tests"
+    runs-on: gh-actions-0.5cpu1gb-runner-set
+    needs:
+      - architecture-boundaries
+      - typecheck
+      - lint
+      - format
+    if: ${{ always() && !cancelled() }}
+    steps:
+      - name: Validate diagnostics
+        run: |
+          if [ "${{ needs.architecture-boundaries.result }}" != "success" ] && [ "${{ needs.architecture-boundaries.result }}" != "skipped" ]; then
+            echo "Architecture boundaries did not complete successfully"
+            exit 1
+          fi
+
+          if [ "${{ needs.typecheck.result }}" != "success" ] && [ "${{ needs.typecheck.result }}" != "skipped" ]; then
+            echo "Typecheck did not complete successfully"
+            exit 1
+          fi
+
+          if [ "${{ needs.lint.result }}" != "success" ] && [ "${{ needs.lint.result }}" != "skipped" ]; then
+            echo "Lint did not complete successfully"
+            exit 1
+          fi
+
+          if [ "${{ needs.format.result }}" != "success" ] && [ "${{ needs.format.result }}" != "skipped" ]; then
+            echo "Format did not complete successfully"
+            exit 1
+          fi
+
+          echo "All required diagnostics checks completed successfully"
+
   typecheck:
     name: Typecheck
     runs-on: gh-actions-4cpu12gb-runner-set

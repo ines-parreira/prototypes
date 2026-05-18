@@ -1,7 +1,7 @@
 {
     "name": "@repo/tickets",
     "version": "1.0.0",
-    "description": "Tickets domain",
+    "description": "Tickets domain package",
     "private": true,
     "exports": {
         ".": "./src/index.ts",
