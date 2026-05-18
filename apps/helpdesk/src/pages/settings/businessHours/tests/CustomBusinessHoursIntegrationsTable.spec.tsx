@@ -26,9 +26,21 @@ import CustomBusinessHoursIntegrationsTable from '../CustomBusinessHoursIntegrat
 const queryClient = mockQueryClient()
 const server = setupServer()
 const integrations = [
-    mockIntegrationWithBusinessHoursAndStore(),
-    mockIntegrationWithBusinessHoursAndStore(),
-    mockIntegrationWithBusinessHoursAndStore(),
+    mockIntegrationWithBusinessHoursAndStore({
+        integration_id: 1,
+        integration_name: 'Primary email integration',
+        integration_address: 'support@example.com',
+    }),
+    mockIntegrationWithBusinessHoursAndStore({
+        integration_id: 2,
+        integration_name: 'Secondary chat integration',
+        integration_address: 'chat.example.com',
+    }),
+    mockIntegrationWithBusinessHoursAndStore({
+        integration_id: 3,
+        integration_name: 'Phone support integration',
+        integration_address: '+15555550123',
+    }),
 ]
 const mockListResponse = mockListIntegrationsForBusinessHoursResponse({
     data: integrations,
@@ -129,14 +141,12 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
         async (name: any, expectedName) => {
             const user = userEvent.setup()
             renderComponent(name)
-            await waitFor(() =>
-                expect(
-                    screen.getByText(integrations[0].integration_name),
-                ).toBeInTheDocument(),
+            const firstIntegrationCheckbox = await screen.findByRole(
+                'checkbox',
+                {
+                    name: `${expectedName}.${integrations[0].integration_id}`,
+                },
             )
-            const firstIntegrationCheckbox = screen.getByRole('checkbox', {
-                name: `${expectedName}.${integrations[0].integration_id}`,
-            })
             expect(firstIntegrationCheckbox).toBeChecked()
             const secondIntegrationCheckbox = screen.getByRole('checkbox', {
                 name: `${expectedName}.${integrations[1].integration_id}`,
@@ -306,10 +316,8 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
     it('handles sorting header click and cycles through sorting states', async () => {
         const user = userEvent.setup()
         renderComponent()
-        await waitFor(() => {
-            expect(
-                screen.getByText(integrations[0].integration_name),
-            ).toBeInTheDocument()
+        await screen.findByRole('checkbox', {
+            name: `assigned_integrations.assign_integrations.${integrations[0].integration_id}`,
         })
         const integrationHeader = screen.getByText('Integration')
         expect(integrationHeader).toBeInTheDocument()
@@ -428,10 +436,8 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
         renderComponent(undefined, {
             toggleIntegrationsToOverride: jest.fn(),
         })
-        await waitFor(() => {
-            expect(
-                screen.getByText(integrations[0].integration_name),
-            ).toBeInTheDocument()
+        await screen.findByRole('checkbox', {
+            name: `assigned_integrations.assign_integrations.${integrations[0].integration_id}`,
         })
         const selectAllCheckbox = screen.getByRole('checkbox', {
             name: 'Select all integrations',
