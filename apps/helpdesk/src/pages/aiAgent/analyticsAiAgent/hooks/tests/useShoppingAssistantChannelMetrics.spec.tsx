@@ -478,7 +478,7 @@ describe('useShoppingAssistantChannelMetrics', () => {
         expect(result.current.data[0].revenuePerInteraction).toBeNull()
     })
 
-    it('should calculate revenue per interaction correctly', async () => {
+    it('should calculate revenue influenced per interaction correctly', async () => {
         const mockTotalConversations = {
             allData: [
                 {

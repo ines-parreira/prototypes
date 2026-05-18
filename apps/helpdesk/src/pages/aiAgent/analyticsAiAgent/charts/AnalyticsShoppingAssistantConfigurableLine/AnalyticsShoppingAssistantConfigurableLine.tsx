@@ -56,7 +56,7 @@ export const SHOPPING_ASSISTANT_LINE_CHART_METRICS: LineChartMetricConfig[] = [
     },
     {
         measure: 'totalSalesAmount',
-        name: 'Total sales',
+        name: 'Revenue influenced',
         metricFormat: 'currency-precision-1' as const,
         interpretAs: 'more-is-better' as const,
         timeSeriesQueryFactory: dynamicTotalSalesAmountTimeseriesQueryFactoryV2,
@@ -69,7 +69,7 @@ export const SHOPPING_ASSISTANT_LINE_CHART_METRICS: LineChartMetricConfig[] = [
     },
     {
         measure: 'revenuePerInteraction',
-        name: 'Revenue per interaction',
+        name: 'Revenue influenced per interaction',
         metricFormat: 'currency-precision-1' as const,
         interpretAs: 'more-is-better' as const,
         timeSeriesQueryFactory:

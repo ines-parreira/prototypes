@@ -48,7 +48,7 @@ export const useDownloadShoppingAssistantChannelData = () => {
                 'Success rate',
                 'Total sales',
                 'Orders influenced',
-                'Revenue per interaction',
+                'Revenue influenced per interaction',
             ],
             ...data.map((row) => [
                 formatChannelName(row.channel),

@@ -381,9 +381,9 @@ describe('fetchShoppingAssistantPerformanceByEngagementFeatureMetrics', () => {
             'Automated interactions',
             'Handover interactions',
             'Conversion rate',
-            'Total sales',
+            'Revenue influenced',
             'Orders influenced',
-            'Revenue per interaction',
+            'Revenue influenced per interaction',
         ])
         expect(csvRows[1][0]).toBe('AI FAQs')
         expect(csvRows[2][0]).toBe('Search assist')

@@ -15,7 +15,7 @@ export const SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_NAME_COLUMNS: 
 export const SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_TABLE = {
     title: 'Shopping Assistant Performance By Engagement Feature',
     description:
-        'Performance breakdown by engagement feature, including automated interactions, handover interactions, conversion rate, total sales, orders influenced, and revenue per interaction.',
+        'Performance breakdown by engagement feature, including automated interactions, handover interactions, conversion rate, revenue influenced, orders influenced, and revenue influenced per interaction.',
 }
 
 export const SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_COLUMNS: MetricColumnConfig[] =
@@ -43,7 +43,7 @@ export const SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_COLUMNS: Metri
         },
         {
             accessorKey: 'totalSales',
-            label: 'Total sales',
+            label: 'Revenue influenced',
             tooltipConfig: METRIC_TOOLTIPS.totalSales,
             metricFormat: 'currency-precision-1',
             loadingStateKeys: ['totalSales'],
@@ -57,7 +57,7 @@ export const SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_COLUMNS: Metri
         },
         {
             accessorKey: 'revenuePerInteraction',
-            label: 'Revenue per interaction',
+            label: 'Revenue influenced per interaction',
             tooltipConfig: METRIC_TOOLTIPS.revenuePerInteraction,
             metricFormat: 'currency-precision-1',
             loadingStateKeys: ['revenuePerInteraction'],

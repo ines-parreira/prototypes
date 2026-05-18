@@ -65,7 +65,7 @@ export const ALL_AGENTS_LINE_CHART_METRICS: LineChartMetricConfig[] = [
     },
     {
         measure: 'totalSalesAmount',
-        name: 'Total sales',
+        name: 'Revenue influenced',
         metricFormat: 'currency-precision-1' as const,
         interpretAs: 'more-is-better' as const,
         timeSeriesQueryFactory: dynamicTotalSalesAmountTimeseriesQueryFactoryV2,

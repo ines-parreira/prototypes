@@ -72,7 +72,7 @@ export const useRevenuePerInteractionMetric = (): MetricTrend => {
         isFetching,
         isError,
         data: {
-            label: 'Revenue per interaction',
+            label: 'Revenue influenced per interaction',
             value: data?.value ?? null,
             prevValue: data?.prevValue ?? null,
         },

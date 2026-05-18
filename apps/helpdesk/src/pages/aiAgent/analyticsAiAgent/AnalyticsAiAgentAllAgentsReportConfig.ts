@@ -134,7 +134,7 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
             },
             [AnalyticsAiAgentAllAgentsChart.TotalSalesCard]: {
                 chartComponent: AnalyticsAiAgentTotalSalesCard,
-                label: 'Total sales',
+                label: 'Revenue influenced',
                 csvProducer: [
                     {
                         type: DataExportFormat.Trend,

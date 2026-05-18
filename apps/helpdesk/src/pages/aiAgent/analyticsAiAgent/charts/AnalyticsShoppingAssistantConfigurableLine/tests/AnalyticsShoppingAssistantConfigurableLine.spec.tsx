@@ -127,7 +127,7 @@ describe('AnalyticsShoppingAssistantConfigurableLine', () => {
         const secondMetricConfig: ConfigurableGraphMetricConfig = {
             ...defaultMetricConfig,
             measure: 'totalSalesAmount',
-            name: 'Total sales',
+            name: 'Revenue influenced',
         }
         getLineChartGraphConfigMock.mockReturnValue([
             defaultMetricConfig,

@@ -59,7 +59,7 @@ describe('AnalyticsShoppingAssistantConfigurableBar', () => {
 
     const defaultMetricConfig: ConfigurableGraphMetricConfig = {
         measure: 'totalSalesAmount',
-        name: 'Total sales',
+        name: 'Revenue influenced',
         metricFormat: 'decimal',
         interpretAs: 'more-is-better',
         useTrendData: jest.fn().mockReturnValue({
@@ -107,7 +107,7 @@ describe('AnalyticsShoppingAssistantConfigurableBar', () => {
     it('should render the metric title', () => {
         render(<AnalyticsShoppingAssistantConfigurableBar />)
 
-        expect(screen.getByText('Total sales')).toBeInTheDocument()
+        expect(screen.getByText('Revenue influenced')).toBeInTheDocument()
     })
 
     it('should render the metric value from trend data', () => {
@@ -213,7 +213,7 @@ describe('AnalyticsShoppingAssistantConfigurableBar', () => {
         render(<AnalyticsShoppingAssistantConfigurableBar />)
 
         expect(
-            screen.getByRole('button', { name: /total sales/i }),
+            screen.getByRole('button', { name: /Revenue influenced/i }),
         ).toBeInTheDocument()
     })
 

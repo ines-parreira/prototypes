@@ -55,14 +55,14 @@ describe('AnalyticsAiAgentAllAgentsReportConfig', () => {
         expect(config.csvProducer).not.toBeNull()
     })
 
-    it('should have total sales card config', () => {
+    it('should have revenue influenced/total sales card config', () => {
         const config =
             AnalyticsAiAgentAllAgentsReportConfig.charts[
                 AnalyticsAiAgentAllAgentsChart.TotalSalesCard
             ]
 
         expect(config).toBeDefined()
-        expect(config.label).toBe('Total sales')
+        expect(config.label).toBe('Revenue influenced')
         expect(config.chartType).toBe(ChartType.Card)
     })
 

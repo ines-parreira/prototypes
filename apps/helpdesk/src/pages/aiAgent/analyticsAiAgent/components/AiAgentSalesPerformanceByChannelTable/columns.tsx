@@ -9,7 +9,7 @@ export const AI_AGENT_SALES_PERFORMANCE_BY_CHANNEL_NAME_COLUMNS: NameColumnConfi
 export const AI_AGENT_SALES_PERFORMANCE_BY_CHANNEL_TABLE = {
     title: 'AI Agent Sales Performance By Channel',
     description:
-        'Performance metrics per channel for the AI Agent Sales skill, including automated interactions, handovers, conversion rate, total sales, orders influenced, and revenue per interaction.',
+        'Performance metrics per channel for the AI Agent Sales skill, including automated interactions, handovers, conversion rate, revenue influenced, orders influenced, and revenue influenced per interaction.',
 }
 
 export const AI_AGENT_SALES_PERFORMANCE_BY_CHANNEL_COLUMNS: MetricColumnConfig[] =
@@ -37,7 +37,7 @@ export const AI_AGENT_SALES_PERFORMANCE_BY_CHANNEL_COLUMNS: MetricColumnConfig[]
         },
         {
             accessorKey: 'totalSales',
-            label: 'Total sales',
+            label: 'Revenue influenced',
             tooltipConfig: METRIC_TOOLTIPS.totalSales,
             metricFormat: 'currency-precision-1',
             loadingStateKeys: ['totalSales'],
@@ -51,7 +51,7 @@ export const AI_AGENT_SALES_PERFORMANCE_BY_CHANNEL_COLUMNS: MetricColumnConfig[]
         },
         {
             accessorKey: 'revenuePerInteraction',
-            label: 'Revenue per interaction',
+            label: 'Revenue influenced per interaction',
             tooltipConfig: METRIC_TOOLTIPS.revenuePerInteraction,
             metricFormat: 'currency-precision-1',
             loadingStateKeys: ['revenuePerInteraction'],

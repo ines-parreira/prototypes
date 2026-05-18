@@ -91,7 +91,7 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
         charts: {
             [AnalyticsAiAgentShoppingAssistantChart.TotalSalesCard]: {
                 chartComponent: AnalyticsAiAgentTotalSalesCard,
-                label: 'Total sales',
+                label: 'Revenue influenced',
                 csvProducer: [
                     {
                         type: DataExportFormat.Trend,
@@ -140,7 +140,7 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
             [AnalyticsAiAgentShoppingAssistantChart.RevenuePerInteractionCard]:
                 {
                     chartComponent: AnalyticsAiAgentRevenuePerInteractionCard,
-                    label: 'Revenue per interaction',
+                    label: 'Revenue influenced per interaction',
                     csvProducer: [
                         {
                             type: DataExportFormat.Trend,

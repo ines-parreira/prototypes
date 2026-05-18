@@ -62,7 +62,7 @@ export const ALL_AGENTS_BAR_CHART_METRICS: BarChartMetricConfig[] = [
     },
     {
         measure: 'totalSalesAmount',
-        name: 'Total sales',
+        name: 'Revenue influenced',
         metricFormat: 'currency-precision-1' as const,
         interpretAs: 'more-is-better' as const,
         queryFactory: dynamicTotalSalesAmountQueryFactoryV2,

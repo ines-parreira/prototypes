@@ -196,7 +196,7 @@ describe('useDownloadShoppingAssistantChannelData', () => {
         expect(csvContent).toContain('Success rate')
         expect(csvContent).toContain('Total sales')
         expect(csvContent).toContain('Orders influenced')
-        expect(csvContent).toContain('Revenue per interaction')
+        expect(csvContent).toContain('Revenue influenced per interaction')
     })
 
     it('should format channel names correctly', () => {

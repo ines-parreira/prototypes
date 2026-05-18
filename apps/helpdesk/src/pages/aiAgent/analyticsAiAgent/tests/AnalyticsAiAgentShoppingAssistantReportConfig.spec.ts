@@ -38,7 +38,7 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
             ]
 
         expect(config).toBeDefined()
-        expect(config.label).toBe('Total sales')
+        expect(config.label).toBe('Revenue influenced')
         expect(config.chartType).toBe(ChartType.Card)
         expect(config.csvProducer).not.toBeNull()
         expect(config.csvProducer).toHaveLength(1)
@@ -68,14 +68,14 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
         expect(config.chartType).toBe(ChartType.Card)
     })
 
-    it('should have revenue per interaction card config', () => {
+    it('should have revenue influenced per interaction card config', () => {
         const config =
             AnalyticsAiAgentShoppingAssistantReportConfig.charts[
                 AnalyticsAiAgentShoppingAssistantChart.RevenuePerInteractionCard
             ]
 
         expect(config).toBeDefined()
-        expect(config.label).toBe('Revenue per interaction')
+        expect(config.label).toBe('Revenue influenced per interaction')
         expect(config.chartType).toBe(ChartType.Card)
     })
 
@@ -295,7 +295,7 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
         expect(typeof csvProducer?.fetch).toBe('function')
     })
 
-    it('should have fetch function for revenue per interaction trend', async () => {
+    it('should have fetch function for revenue influenced per interaction trend', async () => {
         const config =
             AnalyticsAiAgentShoppingAssistantReportConfig.charts[
                 AnalyticsAiAgentShoppingAssistantChart.RevenuePerInteractionCard

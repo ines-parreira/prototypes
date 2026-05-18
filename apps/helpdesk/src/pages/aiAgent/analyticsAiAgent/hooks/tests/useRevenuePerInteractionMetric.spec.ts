@@ -113,7 +113,7 @@ describe('useRevenuePerInteractionMetric', () => {
                 isFetching: false,
                 isError: false,
                 data: {
-                    label: 'Revenue per interaction',
+                    label: 'Revenue influenced per interaction',
                     value: 12.5,
                     prevValue: 10.0,
                 },
@@ -190,7 +190,7 @@ describe('useRevenuePerInteractionMetric', () => {
                 isFetching: false,
                 isError: false,
                 data: {
-                    label: 'Revenue per interaction',
+                    label: 'Revenue influenced per interaction',
                     value: 15.0,
                     prevValue: 12.0,
                 },
@@ -292,7 +292,7 @@ describe('useRevenuePerInteractionMetric', () => {
                 isFetching: false,
                 isError: false,
                 data: {
-                    label: 'Revenue per interaction',
+                    label: 'Revenue influenced per interaction',
                     value: 15.0,
                     prevValue: 12.0,
                 },
