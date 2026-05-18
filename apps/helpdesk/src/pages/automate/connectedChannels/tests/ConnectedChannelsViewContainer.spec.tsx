@@ -3,7 +3,6 @@ import { screen } from '@testing-library/react'
 import { MemoryRouter, Route } from 'react-router-dom'
 
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
-import { ChatPreviewChannelsContext } from 'pages/automate/connectedChannels/revamp/hooks/useChatPreviewChannels'
 import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp'
 
 import { ConnectedChannelsViewContainer } from '../ConnectedChannelsViewContainer'
@@ -43,33 +42,14 @@ const defaultMockFlags = {
     isLoading: false,
 }
 
-const renderWithContext = ({
-    withProvider = true,
-}: { withProvider?: boolean } = {}) => {
-    const content = (
+const renderComponent = () =>
+    render(
         <MemoryRouter initialEntries={['/shopify/my-store']}>
             <Route path="/:shopType/:shopName">
                 <ConnectedChannelsViewContainer />
             </Route>
-        </MemoryRouter>
+        </MemoryRouter>,
     )
-
-    if (!withProvider) {
-        return render(content)
-    }
-
-    return render(
-        <ChatPreviewChannelsContext.Provider
-            value={{
-                shopName: 'my-store',
-                selectedChannelId: undefined,
-                setSelectedChannelId: jest.fn(),
-            }}
-        >
-            {content}
-        </ChatPreviewChannelsContext.Provider>,
-    )
-}
 
 describe('ConnectedChannelsViewContainer', () => {
     beforeEach(() => {
@@ -84,7 +64,7 @@ describe('ConnectedChannelsViewContainer', () => {
             shouldShowFlowsScreensRevamp: true,
         })
 
-        renderWithContext()
+        renderComponent()
 
         expect(
             screen.getByText('RevampConnectedChannelsViewContainer'),
@@ -95,7 +75,7 @@ describe('ConnectedChannelsViewContainer', () => {
     })
 
     it('should render the legacy container when shouldShowFlowsScreensRevamp is false', () => {
-        renderWithContext()
+        renderComponent()
 
         expect(
             screen.getByText('LegacyConnectedChannelsViewContainer'),
@@ -105,8 +85,15 @@ describe('ConnectedChannelsViewContainer', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('should render without crashing when ChatPreviewChannelsContext provider is absent', () => {
-        renderWithContext({ withProvider: false })
+    it('should derive shopName from route params', () => {
+        mockUseShouldShowChatSettingsRevamp.mockImplementation(
+            (storeIntegration) => {
+                expect(storeIntegration).toBeUndefined()
+                return defaultMockFlags
+            },
+        )
+
+        renderComponent()
 
         expect(
             screen.getByText('LegacyConnectedChannelsViewContainer'),

@@ -38,10 +38,13 @@ export const useFlows = ({
         [channels],
     )
 
-    const chatChannel =
-        chatChannels.find((c) => c.value.id === selectedChannelId) ??
-        chatChannels.at(0)
-    const appId = chatChannel?.value.meta.app_id
+    const chatChannel = useMemo(
+        () =>
+            chatChannels.find((c) => c.value.id === selectedChannelId) ??
+            chatChannels.at(0),
+        [chatChannels, selectedChannelId],
+    )
+    const appId = useMemo(() => chatChannel?.value.meta.app_id, [chatChannel])
 
     const {
         applicationsAutomationSettings,

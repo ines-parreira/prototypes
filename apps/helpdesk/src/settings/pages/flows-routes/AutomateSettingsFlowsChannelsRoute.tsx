@@ -1,4 +1,4 @@
-import { createElement } from 'react'
+import { useMemo } from 'react'
 
 import { AGENT_ROLE } from 'config/user'
 import SelfServiceContactFormsProvider from 'pages/automate/common/providers/SelfServiceContactFormsProvider'
@@ -7,15 +7,19 @@ import { ConnectedChannelsViewContainer } from 'pages/automate/connectedChannels
 import { rootWithUserRoleRequired } from 'pages/common/utils/withUserRoleRequired'
 
 export function AutomateSettingsChannelsRoute() {
+    const ChannelsView = useMemo(
+        () =>
+            rootWithUserRoleRequired(
+                ConnectedChannelsViewContainer,
+                AGENT_ROLE,
+            ),
+        [],
+    )
+
     return (
         <SelfServiceHelpCentersProvider>
             <SelfServiceContactFormsProvider>
-                {createElement(
-                    rootWithUserRoleRequired(
-                        ConnectedChannelsViewContainer,
-                        AGENT_ROLE,
-                    ),
-                )}
+                <ChannelsView />
             </SelfServiceContactFormsProvider>
         </SelfServiceHelpCentersProvider>
     )

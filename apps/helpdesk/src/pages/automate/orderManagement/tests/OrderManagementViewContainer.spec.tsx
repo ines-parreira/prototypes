@@ -2,15 +2,11 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
-import { useChatPreviewChannelsContext } from 'pages/automate/connectedChannels/revamp/hooks/useChatPreviewChannels'
 import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp'
 
 import { OrderManagementViewContainer } from '../OrderManagementViewContainer'
 
 jest.mock('pages/automate/common/hooks/useStoreIntegrations')
-jest.mock(
-    'pages/automate/connectedChannels/revamp/hooks/useChatPreviewChannels',
-)
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp',
 )
@@ -28,10 +24,6 @@ jest.mock('../revamp/OrderManagementView', () => ({
 const mockUseStoreIntegrations = useStoreIntegrations as jest.MockedFunction<
     typeof useStoreIntegrations
 >
-const mockUseChatPreviewChannelsContext =
-    useChatPreviewChannelsContext as jest.MockedFunction<
-        typeof useChatPreviewChannelsContext
-    >
 const mockUseShouldShowChatSettingsRevamp =
     useShouldShowChatSettingsRevamp as jest.MockedFunction<
         typeof useShouldShowChatSettingsRevamp
@@ -41,11 +33,6 @@ describe('OrderManagementViewContainer', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         mockUseStoreIntegrations.mockReturnValue([])
-        mockUseChatPreviewChannelsContext.mockReturnValue({
-            shopName: 'my-store',
-            selectedChannelId: undefined,
-            setSelectedChannelId: jest.fn(),
-        })
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             isChatSettingsRevampEnabled: false,
             isChatSettingsScreensRevampFlowsEnabled: false,

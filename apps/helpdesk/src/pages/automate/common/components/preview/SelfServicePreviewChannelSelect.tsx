@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import classNames from 'classnames'
 
@@ -45,16 +45,32 @@ const SelfServicePreviewChannelSelect = <T extends SelfServiceChannel>({
     )
 
     useEffect(() => {
-        if (!channel || !channels.includes(channel)) {
-            onChange(channels[0])
+        const first = channels.at(0)
+        if (!first) return
+        if (
+            !channel ||
+            !channels.find((c) => c.value.id === channel.value.id)
+        ) {
+            onChange(first)
         }
     }, [channel, channels, onChange])
 
-    const handleChange = (nextValue: string) => {
-        onChange(options.find((option) => option.value === nextValue)?.channel)
-    }
+    const handleChange = useCallback(
+        (nextValue: string) => {
+            onChange(
+                options.find((option) => option.value === nextValue)?.channel,
+            )
+        },
+        [onChange, options],
+    )
 
-    const value = channel ? `${channel.type}:${channel.value.id}` : undefined
+    const value = useMemo(() => {
+        return channel ? `${channel.type}:${channel.value.id}` : undefined
+    }, [channel])
+
+    const prefix = useMemo(() => {
+        return channel && <ChannelIcon type={channel.type} />
+    }, [channel])
 
     return (
         <SelectInputBox
@@ -65,7 +81,7 @@ const SelfServicePreviewChannelSelect = <T extends SelfServiceChannel>({
             onToggle={setIsSelectOpen}
             ref={targetRef}
             isDisabled={!channels.length || isDisabled}
-            prefix={channel && <ChannelIcon type={channel.type} />}
+            prefix={prefix}
         >
             <SelectInputBoxContext.Consumer>
                 {(context) => (

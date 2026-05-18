@@ -34,7 +34,7 @@ import type { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServ
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import type { RootState } from 'state/types'
 
-import OrderManagementPreviewContext from '../OrderManagementPreviewContext'
+import ConnectedChannelsContext from '../../../connectedChannels/ConnectedChannelsContext'
 import OrderManagementView from '../OrderManagementView'
 
 jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration')
@@ -132,7 +132,7 @@ const renderComponent = (
     return render(
         <>
             <LocationPath />
-            <OrderManagementPreviewContext.Provider
+            <ConnectedChannelsContext.Provider
                 value={{
                     channels,
                     channel: undefined,
@@ -140,7 +140,7 @@ const renderComponent = (
                 }}
             >
                 <OrderManagementView />
-            </OrderManagementPreviewContext.Provider>
+            </ConnectedChannelsContext.Provider>
         </>,
         {
             initialEntries: [route],
@@ -258,7 +258,7 @@ describe('<OrderManagementView />', () => {
             rerender(
                 <>
                     <LocationPath />
-                    <OrderManagementPreviewContext.Provider
+                    <ConnectedChannelsContext.Provider
                         value={{
                             channels,
                             channel: undefined,
@@ -266,7 +266,7 @@ describe('<OrderManagementView />', () => {
                         }}
                     >
                         <OrderManagementView />
-                    </OrderManagementPreviewContext.Provider>
+                    </ConnectedChannelsContext.Provider>
                 </>,
             )
 

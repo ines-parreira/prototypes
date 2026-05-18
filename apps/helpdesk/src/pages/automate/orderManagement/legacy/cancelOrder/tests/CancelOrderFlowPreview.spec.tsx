@@ -1,0 +1,89 @@
+import React from 'react'
+
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
+
+import { TicketChannel } from 'business/types/ticket'
+import { IntegrationType } from 'models/integration/types'
+import type { GorgiasChatIntegration } from 'models/integration/types/gorgiasChat'
+import type { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
+
+import CancelOrderFlowPreview from '../CancelOrderFlowPreview'
+
+const mockOnChannelChange = jest.fn()
+
+const mockChannel: SelfServiceChannel = {
+    type: TicketChannel.Chat,
+    value: {
+        id: 1,
+        name: 'Test Chat',
+        type: IntegrationType.GorgiasChat,
+        meta: { app_id: 'app-1' },
+    } as GorgiasChatIntegration,
+}
+
+const mockChannels: SelfServiceChannel[] = [mockChannel]
+
+const captured: {
+    onChange?: (...args: any[]) => void
+    channels?: SelfServiceChannel[]
+    channel?: SelfServiceChannel
+} = {}
+
+jest.mock('pages/automate/connectedChannels/ConnectedChannelsContext', () => ({
+    useConnectedChannelsContext: () => ({
+        channels: mockChannels,
+        channel: mockChannel,
+        onChannelChange: mockOnChannelChange,
+    }),
+}))
+
+jest.mock(
+    'pages/automate/common/components/preview/SelfServicePreviewContainer',
+    () => ({
+        __esModule: true,
+        default: ({ channels, channel, onChange, children }: any) => {
+            captured.onChange = onChange
+            captured.channels = channels
+            captured.channel = channel
+            return <div>{children(channel)}</div>
+        },
+    }),
+)
+
+jest.mock(
+    'pages/automate/common/components/preview/SelfServicePreview',
+    () => ({
+        __esModule: true,
+        default: () => <div>SelfServicePreview</div>,
+    }),
+)
+
+describe('CancelOrderFlowPreview', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+        captured.onChange = undefined
+        captured.channels = undefined
+        captured.channel = undefined
+    })
+
+    it('should render without crashing', () => {
+        render(<CancelOrderFlowPreview />)
+        expect(screen.getByText('SelfServicePreview')).toBeInTheDocument()
+    })
+
+    it('should pass channels from context to SelfServicePreviewContainer', () => {
+        render(<CancelOrderFlowPreview />)
+        expect(captured.channels).toBe(mockChannels)
+    })
+
+    it('should pass channel from context to SelfServicePreviewContainer', () => {
+        render(<CancelOrderFlowPreview />)
+        expect(captured.channel).toBe(mockChannel)
+    })
+
+    it('should pass onChannelChange directly as onChange', () => {
+        render(<CancelOrderFlowPreview />)
+        expect(captured.onChange).toBe(mockOnChannelChange)
+    })
+})

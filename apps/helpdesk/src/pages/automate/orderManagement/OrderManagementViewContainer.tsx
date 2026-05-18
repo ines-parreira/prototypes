@@ -1,13 +1,18 @@
+import { useParams } from 'react-router-dom'
+
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
-import { useChatPreviewChannelsContext } from 'pages/automate/connectedChannels/revamp/hooks/useChatPreviewChannels'
+import { useConnectedChannelsContext } from 'pages/automate/connectedChannels/ConnectedChannelsContext'
 import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp'
 
 import LegacyOrderManagementView from './legacy/OrderManagementView'
 import { OrderManagementViewRevamp } from './revamp/OrderManagementView'
 
 export const OrderManagementViewContainer = () => {
-    const { shopName, selectedChannelId } = useChatPreviewChannelsContext()
+    const { shopName } = useParams<{
+        shopName: string
+    }>()
+    const { channel } = useConnectedChannelsContext()
 
     const storeIntegrations = useStoreIntegrations()
     const storeIntegration = storeIntegrations.find(
@@ -16,7 +21,7 @@ export const OrderManagementViewContainer = () => {
     )
 
     const { shouldShowOrderManagementScreensRevamp } =
-        useShouldShowChatSettingsRevamp(storeIntegration, selectedChannelId)
+        useShouldShowChatSettingsRevamp(storeIntegration, channel?.value.id)
 
     if (shouldShowOrderManagementScreensRevamp) {
         return <OrderManagementViewRevamp />

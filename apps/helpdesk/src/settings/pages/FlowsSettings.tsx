@@ -1,15 +1,16 @@
-import { useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { Route, useParams, useRouteMatch } from 'react-router-dom'
 
 import type { LANGUAGE } from 'constants/languages'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
+import { isSelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
+import type { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
+import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import { ChatChannelSelector } from 'pages/automate/connectedChannels/revamp/components/ChatChannelSelector/ChatChannelSelector'
-import {
-    ChatPreviewChannelsContext,
-    useChatPreviewChannels,
-} from 'pages/automate/connectedChannels/revamp/hooks/useChatPreviewChannels'
+import type { ConnectedChannelsContextType } from 'pages/automate/connectedChannels/ConnectedChannelsContext'
+import ConnectedChannelsContext from 'pages/automate/connectedChannels/ConnectedChannelsContext'
+import { ChannelSelector } from 'pages/automate/connectedChannels/revamp/components/ChannelSelector/ChannelSelector'
 import {
     ChatPreviewPanelContext,
     useChatPreviewPanel,
@@ -48,39 +49,46 @@ export function FlowsSettings() {
 
     const chatChannels = useSelfServiceChatChannels(shopType, shopName)
 
-    const { selectedChannelId, setSelectedChannelId } = useChatPreviewChannels(
-        chatChannels[0]?.value.id,
+    const [channel, setChannel] = useState<SelfServiceChatChannel | undefined>(
+        chatChannels.at(0),
     )
 
-    const selectedChannel =
-        chatChannels.find((c) => c.value.id === selectedChannelId) ??
-        chatChannels[0]
-
-    const appId = selectedChannel?.value.meta.app_id ?? null
+    const appId = useMemo(() => channel?.value.meta.app_id ?? null, [channel])
 
     const { shouldShowFlowsScreensRevamp } = useShouldShowChatSettingsRevamp(
         selected,
-        selectedChannelId,
+        channel?.value.id,
+    )
+
+    const handleChannelChange = useCallback(
+        (c: SelfServiceChannel | undefined) => {
+            if (c === undefined || isSelfServiceChatChannel(c)) {
+                setChannel(c)
+            }
+        },
+        [],
     )
 
     const selectedChannelLanguage = useMemo(() => {
         const primaryLanguage: LANGUAGE | undefined =
-            selectedChannel?.value?.meta?.languages?.find((lang) => {
+            channel?.value?.meta?.languages?.find((lang) => {
                 return lang.primary === true
             })?.language
 
         return primaryLanguage
-    }, [selectedChannel])
+    }, [channel])
 
     const previewPanelHeaderActions = useMemo(() => {
-        return chatChannels.length > 0 ? (
-            <ChatChannelSelector
-                chatChannels={chatChannels}
-                selectedChannelId={selectedChannelId}
-                onSelect={setSelectedChannelId}
+        const firstChannel = chatChannels.at(0)
+        if (!firstChannel) return undefined
+        return (
+            <ChannelSelector
+                channels={chatChannels}
+                selectedChannel={channel ?? firstChannel}
+                onSelect={handleChannelChange}
             />
-        ) : undefined
-    }, [selectedChannelId, setSelectedChannelId, chatChannels])
+        )
+    }, [channel, chatChannels, handleChannelChange])
 
     const {
         chatPreviewPortal,
@@ -91,6 +99,13 @@ export function FlowsSettings() {
         headerActions: previewPanelHeaderActions,
         locale: selectedChannelLanguage,
     })
+
+    useEffect(() => {
+        const firstChannel = chatChannels.at(0)
+        if (!channel && firstChannel) {
+            setChannel(firstChannel)
+        }
+    }, [chatChannels, channel])
 
     useEffect(() => {
         if (shouldShowFlowsScreensRevamp && !!isChannelsRoute) {
@@ -108,9 +123,18 @@ export function FlowsSettings() {
         appId,
     ])
 
+    const connectedChannelsContextValue = useMemo<ConnectedChannelsContextType>(
+        () => ({
+            channels: chatChannels,
+            channel: channel,
+            onChannelChange: handleChannelChange,
+        }),
+        [chatChannels, channel, handleChannelChange],
+    )
+
     return (
-        <ChatPreviewChannelsContext.Provider
-            value={{ selectedChannelId, setSelectedChannelId, shopName }}
+        <ConnectedChannelsContext.Provider
+            value={connectedChannelsContextValue}
         >
             <ChatPreviewPanelContext.Provider
                 value={{ ...charPreviewPanelControls }}
@@ -152,6 +176,6 @@ export function FlowsSettings() {
                 </div>
                 {chatPreviewPortal}
             </ChatPreviewPanelContext.Provider>
-        </ChatPreviewChannelsContext.Provider>
+        </ConnectedChannelsContext.Provider>
     )
 }

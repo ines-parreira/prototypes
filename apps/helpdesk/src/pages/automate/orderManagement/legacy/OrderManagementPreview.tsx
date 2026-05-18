@@ -11,11 +11,10 @@ import SelfServicePreview from 'pages/automate/common/components/preview/SelfSer
 import SelfServicePreviewContainer from 'pages/automate/common/components/preview/SelfServicePreviewContainer'
 import type { SelfServicePreviewContextType } from 'pages/automate/common/components/preview/SelfServicePreviewContext'
 import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
-import { useChatPreviewChannelsContext } from 'pages/automate/connectedChannels/revamp/hooks/useChatPreviewChannels'
 import { getChatsApplicationAutomationSettings } from 'state/entities/chatsApplicationAutomationSettings/selectors'
 import { getContactFormsAutomationSettings } from 'state/entities/contactForm/contactFormsAutomationSettings'
 
-import { useOrderManagementPreviewContext } from './OrderManagementPreviewContext'
+import { useConnectedChannelsContext } from '../../connectedChannels/ConnectedChannelsContext'
 
 type Props = {
     history: History
@@ -28,10 +27,7 @@ const OrderManagementPreview = ({
     hoveredOrderManagementFlow,
     history,
 }: Props) => {
-    const { channels, channel, onChannelChange } =
-        useOrderManagementPreviewContext()
-
-    const { setSelectedChannelId } = useChatPreviewChannelsContext()
+    const { channels, channel, onChannelChange } = useConnectedChannelsContext()
 
     const applicationsAutomationSettings = useAppSelector(
         getChatsApplicationAutomationSettings,
@@ -43,12 +39,7 @@ const OrderManagementPreview = ({
     return (
         <SelfServicePreviewContainer
             channel={channel}
-            onChange={(channel) => {
-                onChannelChange(channel)
-                if (channel?.type === TicketChannel.Chat) {
-                    setSelectedChannelId(channel?.value.id)
-                }
-            }}
+            onChange={onChannelChange}
             channels={channels}
             alert={{
                 message:

@@ -1,24 +1,23 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
+import { SegmentEvent } from '@repo/logging'
 import { Route, Switch, useParams, useRouteMatch } from 'react-router-dom'
 
+import { TicketChannel } from 'business/types/ticket'
 import {
     GORGIAS_CHAT_SSP_TEXTS,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
 } from 'config/integrations/gorgias_chat'
-import type { LANGUAGE } from 'constants/languages'
 import { IntegrationType } from 'models/integration/constants'
-import { isSelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
+import { useHistoryTracking } from 'pages/automate/common/hooks/useHistoryTracking'
+import useSelfServiceChannels, {
+    isSelfServiceChatChannel,
+} from 'pages/automate/common/hooks/useSelfServiceChannels'
+import type { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
 import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import { ChatChannelSelector } from 'pages/automate/connectedChannels/revamp/components/ChatChannelSelector/ChatChannelSelector'
-import {
-    ChatPreviewChannelsContext,
-    useChatPreviewChannels,
-    useChatPreviewChannelsContext,
-} from 'pages/automate/connectedChannels/revamp/hooks/useChatPreviewChannels'
-import { useOrderManagementPreviewContext } from 'pages/automate/orderManagement/legacy/OrderManagementPreviewContext'
-import OrderManagementPreviewProvider from 'pages/automate/orderManagement/legacy/OrderManagementPreviewProvider'
+import type { ConnectedChannelsContextType } from 'pages/automate/connectedChannels/ConnectedChannelsContext'
+import ConnectedChannelsContext from 'pages/automate/connectedChannels/ConnectedChannelsContext'
+import { ChannelSelector } from 'pages/automate/connectedChannels/revamp/components/ChannelSelector/ChannelSelector'
 import { OrderManagementViewContainer } from 'pages/automate/orderManagement/OrderManagementViewContainer'
 import {
     ChatPreviewPanelContext,
@@ -39,47 +38,17 @@ import { OrderManagementSettingsLegacyHeader } from './OrderManagementSettingsLe
 
 import css from './OrderManagementSettings.less'
 
-const ChatChannelSelectorWithSync = ({
-    chatChannels,
-    selectedChannelId,
-}: {
-    chatChannels: SelfServiceChatChannel[]
-    selectedChannelId: number | undefined
-}) => {
-    const { setSelectedChannelId } = useChatPreviewChannelsContext()
-    const { channels, onChannelChange } = useOrderManagementPreviewContext()
-
-    return (
-        <ChatChannelSelector
-            chatChannels={chatChannels}
-            selectedChannelId={selectedChannelId}
-            onSelect={(channelId) => {
-                setSelectedChannelId(channelId)
-                const channel = channels.find(
-                    (
-                        selectedChannel,
-                    ): selectedChannel is SelfServiceChatChannel =>
-                        isSelfServiceChatChannel(selectedChannel) &&
-                        selectedChannel.value.id === channelId,
-                )
-                if (channel) {
-                    onChannelChange(channel)
-                }
-            }}
-        />
-    )
-}
-
 export const BASE_PATH = '/app/settings/order-management'
 
 export function OrderManagementSettings() {
-    const { shopName, shopType } = useParams<{
+    const { shopName } = useParams<{
         shopName: string
         shopType: string
     }>()
+    useHistoryTracking(SegmentEvent.AutomateOrderManagementVisited)
 
     const { path } = useRouteMatch()
-    const isChannelsRoute = useRouteMatch(`${path}/channels`)
+    const isChannelsRoute = !!useRouteMatch(`${path}/channels`)
     const isOnRevampFlowPage = useRouteMatch([
         `${path}/cancel`,
         `${path}/return`,
@@ -92,40 +61,81 @@ export function OrderManagementSettings() {
         ? `${BASE_PATH}/${selected.type}/${selected.name}`
         : undefined
 
-    const chatChannels = useSelfServiceChatChannels(shopType, shopName)
+    const channels = useSelfServiceChannels(IntegrationType.Shopify, shopName)
 
-    const { selectedChannelId, setSelectedChannelId } = useChatPreviewChannels(
-        chatChannels[0]?.value.id,
+    const [channel, setChannel] = useState<SelfServiceChannel | undefined>(
+        channels.at(0),
     )
 
-    const selectedChannel =
-        chatChannels.find((c) => c.value.id === selectedChannelId) ??
-        chatChannels[0]
+    const selectedChannelLanguage = useMemo(() => {
+        if (channel?.type === TicketChannel.Chat) {
+            return channel?.value?.meta?.languages?.find((lang) => {
+                return lang.primary === true
+            })?.language
+        }
+    }, [channel])
 
-    const appId = selectedChannel?.value.meta.app_id ?? null
+    const appId = useMemo(() => {
+        if (channel?.type === TicketChannel.Chat) {
+            return channel?.value.meta.app_id ?? null
+        }
+
+        return null
+    }, [channel])
 
     const {
         shouldShowOrderManagementScreensRevamp,
         shouldShowFlowsScreensRevamp,
-    } = useShouldShowChatSettingsRevamp(selected, selectedChannelId)
+    } = useShouldShowChatSettingsRevamp(selected, channel?.value.id)
 
-    const selectedChannelLanguage = useMemo(() => {
-        const primaryLanguage: LANGUAGE | undefined =
-            selectedChannel?.value?.meta?.languages?.find((lang) => {
-                return lang.primary === true
-            })?.language
+    const orderManagementPreviewContextValue =
+        useMemo<ConnectedChannelsContextType>(
+            () => ({
+                channels,
+                channel,
+                onChannelChange: setChannel,
+            }),
+            [channels, channel, setChannel],
+        )
 
-        return primaryLanguage
-    }, [selectedChannel])
+    const selectableChannels = useMemo(() => {
+        if (isChannelsRoute) {
+            return channels.filter((c): c is SelfServiceChatChannel =>
+                isSelfServiceChatChannel(c),
+            )
+        }
+        return channels
+    }, [channels, isChannelsRoute])
 
-    const previewPanelHeaderActions = useMemo(() => {
-        return chatChannels.length > 0 ? (
-            <ChatChannelSelectorWithSync
-                chatChannels={chatChannels}
-                selectedChannelId={selectedChannelId}
+    const selectedChannel = useMemo(() => {
+        return channel ?? channels.at(0)
+    }, [channel, channels])
+
+    useEffect(() => {
+        if (isChannelsRoute) {
+            if (selectedChannel?.type !== TicketChannel.Chat) {
+                setChannel(channels.find((c) => c.type === TicketChannel.Chat))
+            }
+        }
+    }, [selectedChannel, channels, isChannelsRoute])
+
+    useEffect(() => {
+        const firstChannel = channels.at(0)
+        if (!channel && firstChannel) {
+            setChannel(firstChannel)
+        }
+    }, [channel, channels])
+
+    const headerActionsComponent = useMemo(() => {
+        if (!selectedChannel) return undefined
+        return (
+            <ChannelSelector
+                channels={selectableChannels}
+                selectedChannel={selectedChannel}
+                onSelect={setChannel}
             />
-        ) : undefined
-    }, [selectedChannelId, chatChannels])
+        )
+    }, [selectableChannels, setChannel, selectedChannel])
 
     const {
         chatPreviewPortal,
@@ -133,7 +143,7 @@ export function OrderManagementSettings() {
         hidePreviewPanel,
         ...chatPreviewPanelControls
     } = useChatPreviewPanel({
-        headerActions: previewPanelHeaderActions,
+        headerActions: headerActionsComponent,
         locale: selectedChannelLanguage,
     })
 
@@ -171,63 +181,59 @@ export function OrderManagementSettings() {
     }, [selectedChannelLanguage, onChatPreviewLoaded, updateSSPTexts])
 
     return (
-        <ChatPreviewChannelsContext.Provider
-            value={{ selectedChannelId, setSelectedChannelId, shopName }}
-        >
-            <ChatPreviewPanelContext.Provider
-                value={{ ...chatPreviewPanelControls }}
-            >
-                <div className={css.container}>
-                    {shouldShowOrderManagementScreensRevamp ? (
-                        !isOnRevampFlowPage && <OrderManagementSettingsHeader />
-                    ) : (
-                        <OrderManagementSettingsLegacyHeader />
-                    )}
+        <ChatPreviewPanelContext.Provider value={chatPreviewPanelControls}>
+            <div className={css.container}>
+                {shouldShowOrderManagementScreensRevamp ? (
+                    !isOnRevampFlowPage && <OrderManagementSettingsHeader />
+                ) : (
+                    <OrderManagementSettingsLegacyHeader />
+                )}
 
-                    {!!selected && !!selectedPath && (
-                        <OrderManagementPreviewProvider>
-                            <Switch>
-                                <Route exact path={path}>
-                                    <OrderManagementViewContainer />
-                                </Route>
-                                <Route
-                                    path={`${path}/track`}
-                                    component={OrderManagementTrackRoute}
-                                />
-                                <Route
-                                    path={`${path}/return`}
-                                    component={OrderManagementReturnRoute}
-                                />
-                                <Route
-                                    path={`${path}/cancel`}
-                                    component={OrderManagementCancelRoute}
-                                />
-                                <Route
-                                    path={`${path}/report-issue`}
-                                    exact
-                                    component={OrderManagementReportRoute}
-                                />
-                                <Route
-                                    path={`${path}/report-issue/new`}
-                                    exact
-                                    component={
-                                        OrderManagementReportNewScenarioRoute
-                                    }
-                                />
-                                <Route
-                                    path={`${path}/report-issue/:scenarioIndex`}
-                                    exact
-                                    component={OrderManagementReportEditRoute}
-                                />
-                                <Route path={`${path}/channels`}>
-                                    <AutomateSettingsChannelsRoute />
-                                </Route>
-                            </Switch>
-                            {chatPreviewPortal}
-                        </OrderManagementPreviewProvider>
-                    )}
-                </div>
-            </ChatPreviewPanelContext.Provider>
-        </ChatPreviewChannelsContext.Provider>
+                {!!selected && !!selectedPath && (
+                    <ConnectedChannelsContext.Provider
+                        value={orderManagementPreviewContextValue}
+                    >
+                        <Switch>
+                            <Route exact path={path}>
+                                <OrderManagementViewContainer />
+                            </Route>
+                            <Route
+                                path={`${path}/track`}
+                                component={OrderManagementTrackRoute}
+                            />
+                            <Route
+                                path={`${path}/return`}
+                                component={OrderManagementReturnRoute}
+                            />
+                            <Route
+                                path={`${path}/cancel`}
+                                component={OrderManagementCancelRoute}
+                            />
+                            <Route
+                                path={`${path}/report-issue`}
+                                exact
+                                component={OrderManagementReportRoute}
+                            />
+                            <Route
+                                path={`${path}/report-issue/new`}
+                                exact
+                                component={
+                                    OrderManagementReportNewScenarioRoute
+                                }
+                            />
+                            <Route
+                                path={`${path}/report-issue/:scenarioIndex`}
+                                exact
+                                component={OrderManagementReportEditRoute}
+                            />
+                            <Route path={`${path}/channels`}>
+                                <AutomateSettingsChannelsRoute />
+                            </Route>
+                        </Switch>
+                        {chatPreviewPortal}
+                    </ConnectedChannelsContext.Provider>
+                )}
+            </div>
+        </ChatPreviewPanelContext.Provider>
     )
 }

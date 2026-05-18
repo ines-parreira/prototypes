@@ -25,9 +25,9 @@ import {
     isSelfServiceChatChannel,
     isSelfServiceStandaloneContactFormChannel,
 } from '../../common/hooks/useSelfServiceChannels'
+import { useConnectedChannelsContext } from '../../connectedChannels/ConnectedChannelsContext'
 import OrderManagementFlowItem from './components/OrderManagementFlowItem'
 import OrderManagementPreview from './OrderManagementPreview'
-import { useOrderManagementPreviewContext } from './OrderManagementPreviewContext'
 
 const AutomationSubscriptionAction = () => {
     const [
@@ -65,7 +65,7 @@ const OrderManagementView = () => {
         handleSelfServiceConfigurationUpdate,
     } = useSelfServiceConfiguration(IntegrationType.Shopify, shopName)
     const { hasAccess } = useAiAgentAccess(shopName)
-    const { channels } = useOrderManagementPreviewContext()
+    const { channels } = useConnectedChannelsContext()
     const previewHistory = useMemo(
         () => createMemoryHistory(),
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -114,6 +114,7 @@ const OrderManagementView = () => {
             draft[flow].enabled = isEnabled
         })
     }
+
     const handleFlowItemMouseLeave = () => {
         setHoveredOrderManagementFlow(undefined)
     }

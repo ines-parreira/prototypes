@@ -1,10 +1,4 @@
-import React, {
-    useCallback,
-    useContext,
-    useEffect,
-    useMemo,
-    useState,
-} from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
@@ -19,13 +13,12 @@ import type { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServ
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import { AutomateFeatures } from 'pages/automate/common/types'
+import { useConnectedChannelsContext } from 'pages/automate/connectedChannels/ConnectedChannelsContext'
 import { useArticleRecommendation } from 'pages/automate/connectedChannels/revamp/hooks/useArticleRecommendation'
-import { ChatPreviewChannelsContext } from 'pages/automate/connectedChannels/revamp/hooks/useChatPreviewChannels'
 import { useFlows } from 'pages/automate/connectedChannels/revamp/hooks/useFlows'
 import { useOrderManagement } from 'pages/automate/connectedChannels/revamp/hooks/useOrderManagement'
 import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset'
 import useShouldShowChatSettingsRevamp from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useShouldShowChatSettingsRevamp'
-import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
 import ConnectedChannelsPreview from '../ConnectedChannelsPreview'
 import { ConnectedChannelsEmptyView } from './ConnectedChannelsEmptyView'
@@ -44,7 +37,7 @@ interface Props {
 }
 
 export const ConnectedChannelsChatView = ({
-    channelId,
+    channelId: channelIdProp,
     shopName: extShopName,
     shopType: extShopType,
     hideDropdown,
@@ -53,7 +46,6 @@ export const ConnectedChannelsChatView = ({
         shopType: string
         shopName: string
     }>()
-    const isAutomateSettings = useIsAutomateSettings()
     const shopName = extShopName ?? shopNameParam
     const shopType = extShopType ?? shopTypeParam
     const {
@@ -80,26 +72,41 @@ export const ConnectedChannelsChatView = ({
 
     const chatChannels = useSelfServiceChatChannels(shopType, shopName)
 
-    const chatPreviewContext = useContext(ChatPreviewChannelsContext)
+    const { channel, channels, onChannelChange } = useConnectedChannelsContext()
     const [localChannelId, setLocalChannelId] = useState<number | undefined>(
-        channelId,
+        channelIdProp,
     )
-    const selectedChannelId =
-        chatPreviewContext?.selectedChannelId ?? localChannelId
-    const setSelectedChannel =
-        chatPreviewContext?.setSelectedChannelId ?? setLocalChannelId
+    const selectedChannelId = useMemo(
+        () => channel?.value.id ?? localChannelId,
+        [channel, localChannelId],
+    )
+
+    const setSelectedChannel = useCallback(
+        (channelId: number) => {
+            if (channel) {
+                onChannelChange(channels.find((c) => c.value.id === channelId))
+            } else {
+                setLocalChannelId(channelId)
+            }
+        },
+        [channel, channels, onChannelChange],
+    )
 
     const selectedChannel = useMemo(() => {
-        return selectedChannelId || channelId || chatChannels[0]?.value.id
-    }, [channelId, selectedChannelId, chatChannels])
+        return selectedChannelId || channelIdProp || chatChannels[0]?.value.id
+    }, [channelIdProp, selectedChannelId, chatChannels])
 
     useEffect(() => {
         setSelectedChannel(selectedChannel)
     }, [selectedChannel, setSelectedChannel])
 
-    const currentChannel =
-        chatChannels.find((channel) => channel.value.id === selectedChannel) ??
-        chatChannels[0]
+    const currentChannel = useMemo(() => {
+        return (
+            chatChannels.find(
+                (channel) => channel.value.id === selectedChannel,
+            ) ?? chatChannels[0]
+        )
+    }, [chatChannels, selectedChannel])
 
     const {
         isLoading: isLoadingFlows,
@@ -127,16 +134,12 @@ export const ConnectedChannelsChatView = ({
     )
 
     const orderManagementExternalLink = useMemo(() => {
-        if (!isAutomateSettings)
-            return `/app/automation/${shopType}/${shopName}/order-management`
         return `/app/settings/order-management/${shopType}/${shopName}`
-    }, [isAutomateSettings, shopType, shopName])
+    }, [shopType, shopName])
 
     const articleRecommendationExternalLink = useMemo(() => {
-        if (!isAutomateSettings)
-            return `/app/automation/${shopType}/${shopName}/article-recommendation`
         return `/app/settings/article-recommendations/${shopType}/${shopName}`
-    }, [isAutomateSettings, shopType, shopName])
+    }, [shopType, shopName])
 
     const { enabledInSettings } =
         useIsArticleRecommendationsEnabledWhileSunset()

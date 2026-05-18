@@ -1,10 +1,10 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 
 import { useParams } from 'react-router-dom'
 
 import { useListWorkflowEntryPoints } from 'models/workflows/queries'
 import { AutomateFeatures } from 'pages/automate/common/types'
-import { useChatPreviewChannelsContext } from 'pages/automate/connectedChannels/revamp/hooks/useChatPreviewChannels'
+import { useConnectedChannelsContext } from 'pages/automate/connectedChannels/ConnectedChannelsContext'
 import { ArticleRecommendationCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ArticleRecommendationCard/ArticleRecommendationCard'
 import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 import { FlowsCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/FlowsCard/FlowsCard'
@@ -23,7 +23,7 @@ export const ConnectedChannelsChatView = () => {
         shopType: string
     }>()
 
-    const { selectedChannelId } = useChatPreviewChannelsContext()
+    const { channel: contextChannel } = useConnectedChannelsContext()
 
     const {
         hasChatChannels,
@@ -47,24 +47,31 @@ export const ConnectedChannelsChatView = () => {
 
     const {
         isLoading: isFlowsLoading,
-        channel,
         primaryLanguage,
         workflowEntrypoints,
+        channel,
         workflowConfigurations,
         automationSettingsWorkflows,
         handleFlowAdd,
         handleFlowRemove,
         handleFlowReorder,
-    } = useFlows({ shopName, shopType, selectedChannelId })
+    } = useFlows({
+        shopName,
+        shopType,
+        selectedChannelId: contextChannel?.value.id,
+    })
 
     const { updateWorkflowEntryPoints, displayPage, reloadPreview } =
         useChatPreviewPanelContext()
 
+    const workflowIds = useMemo(
+        () => automationSettingsWorkflows.map((flow) => flow.workflow_id),
+        [automationSettingsWorkflows],
+    )
+
     const { data: entrypointsLabels, isLoading: isEntrypointsLabelsLoading } =
         useListWorkflowEntryPoints({
-            ids: (automationSettingsWorkflows || []).map(
-                (flow) => flow.workflow_id,
-            ),
+            ids: workflowIds,
             language: primaryLanguage,
         })
 
