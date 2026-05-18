@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import {
     Box,
@@ -37,6 +37,8 @@ export function SearchAndPreviewCustomersPanel({
     currentCustomerId,
     setCustomerLabel = 'Switch customer',
 }: SearchCustomersPanelProps) {
+    const wasOpenRef = useRef(isOpen)
+    const hasPendingResetRef = useRef(false)
     const [mode, setMode] = useState<'search' | 'preview'>('search')
     const [previewCustomer, setPreviewCustomer] = useState<Customer | null>(
         null,
@@ -52,6 +54,45 @@ export function SearchAndPreviewCustomersPanel({
         isSearching,
         searchError,
     } = useCustomerSearch()
+
+    const resetPanelState = useCallback(() => {
+        hasPendingResetRef.current = false
+        setPreviewCustomer(null)
+        clearSearch()
+        setMode('search')
+    }, [clearSearch])
+
+    useEffect(() => {
+        const wasOpen = wasOpenRef.current
+        wasOpenRef.current = isOpen
+
+        if (isOpen) {
+            if (hasPendingResetRef.current) {
+                resetPanelState()
+            }
+
+            return
+        }
+
+        if (!wasOpen) {
+            return
+        }
+
+        hasPendingResetRef.current = true
+
+        // Switching immediately after closing the panel causes a bug
+        // where the whole screen is not clickable.
+        // This is most likely due to the panel width changing depending on the mode
+        // which triggers a layout glitch within the SidePanel or underlying components,
+        // so we wait for the transition to finish (200ms + 50ms buffer)
+        const resetTimeoutId = window.setTimeout(() => {
+            resetPanelState()
+        }, 250)
+
+        return () => {
+            window.clearTimeout(resetTimeoutId)
+        }
+    }, [isOpen, resetPanelState])
 
     const handlePreviewCustomer = useCallback((customer: Customer) => {
         setPreviewCustomer(customer)
@@ -71,18 +112,9 @@ export function SearchAndPreviewCustomersPanel({
         (isOpen: boolean) => {
             if (!isOpen) {
                 onClose()
-                // Switching immediately after closing the panel causes a bug
-                // where the whole screen is not clickable.
-                // This is most likely due to the panel width changing depending on the mode
-                // which triggers a layout glitch within the SidePanel or underlying components,
-                // so we wait for the transition to finish (200ms + 50ms buffer)
-                setTimeout(() => {
-                    setMode('search')
-                }, 250)
-                clearSearch()
             }
         },
-        [onClose, clearSearch],
+        [onClose],
     )
 
     const content = useMemo(() => {

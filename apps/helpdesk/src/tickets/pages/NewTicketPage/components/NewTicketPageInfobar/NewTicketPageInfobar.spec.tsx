@@ -448,4 +448,33 @@ describe('NewTicketPageInfobar', () => {
             }),
         )
     })
+
+    it('closes the customer search panel after a customer is selected', async () => {
+        const { user } = render(
+            <NewTicketPageInfobar
+                tags={[]}
+                onTagsChange={jest.fn()}
+                onCustomerChange={jest.fn()}
+                customer={null}
+            />,
+        )
+
+        await user.click(
+            screen.getByRole('button', { name: 'Search customers' }),
+        )
+
+        expect(mockSearchAndPreviewCustomersPanel).toHaveBeenLastCalledWith(
+            expect.objectContaining({ isOpen: true }),
+            {},
+        )
+
+        await user.click(
+            screen.getByRole('button', { name: 'Select searched customer' }),
+        )
+
+        expect(mockSearchAndPreviewCustomersPanel).toHaveBeenLastCalledWith(
+            expect.objectContaining({ isOpen: false }),
+            {},
+        )
+    })
 })

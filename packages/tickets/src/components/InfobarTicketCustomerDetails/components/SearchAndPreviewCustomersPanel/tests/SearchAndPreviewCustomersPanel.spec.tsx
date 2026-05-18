@@ -485,6 +485,54 @@ describe('SearchAndPreviewCustomersPanel', () => {
         })
     })
 
+    it('should reset search term and preview mode after the panel closes and reopens', async () => {
+        server.use(
+            mockSearchCustomersHandler(async () =>
+                HttpResponse.json(
+                    mockSearchCustomersResponse({
+                        data: [mockSearchResults[0]],
+                    }),
+                ),
+            ).handler,
+        )
+
+        const { user, rerender } = render(
+            <SearchAndPreviewCustomersPanel {...defaultProps} />,
+        )
+
+        const searchInput = screen.getByPlaceholderText(
+            'Search by name, email or order no.',
+        )
+        await user.type(searchInput, 'John')
+
+        expect(await screen.findByText('1 result')).toBeInTheDocument()
+
+        await user.click(screen.getByRole('button', { name: 'View details' }))
+        expect(
+            screen.getByRole('button', { name: 'Back to previous screen' }),
+        ).toBeInTheDocument()
+
+        rerender(
+            <SearchAndPreviewCustomersPanel {...defaultProps} isOpen={false} />,
+        )
+
+        rerender(
+            <SearchAndPreviewCustomersPanel {...defaultProps} isOpen={true} />,
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.queryByRole('button', {
+                    name: 'Back to previous screen',
+                }),
+            ).not.toBeInTheDocument()
+        })
+
+        expect(
+            screen.getByPlaceholderText('Search by name, email or order no.'),
+        ).toHaveValue('')
+    })
+
     it('should hide previewed customer when user starts typing in search', async () => {
         const previewedCustomer = mockCustomer({
             id: 999,

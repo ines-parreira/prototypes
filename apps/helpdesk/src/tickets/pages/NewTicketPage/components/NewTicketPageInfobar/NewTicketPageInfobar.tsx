@@ -133,6 +133,7 @@ export function NewTicketPageInfobar({
     const handleSetCustomer = useCallback(
         (selectedCustomer: Customer) => {
             onCustomerChange(selectedCustomer as TicketCustomer)
+            setIsSearchAndPreviewPanelOpen(false)
         },
         [onCustomerChange],
     )
