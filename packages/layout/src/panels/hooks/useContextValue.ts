@@ -53,6 +53,7 @@ export function useContextValue(
         availableSize - subtractedSize,
         sanitisedConfigs,
         savedSizes,
+        persistSizes,
         panelOrder,
     )
 
