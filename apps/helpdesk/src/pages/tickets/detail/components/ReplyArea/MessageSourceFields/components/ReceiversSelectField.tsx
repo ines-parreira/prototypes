@@ -1,6 +1,7 @@
 import type { ForwardedRef } from 'react'
 import React, { forwardRef } from 'react'
 
+import { SearchRankSource, useSearchRankScenario } from '@repo/logging'
 import type { CancelToken } from 'axios'
 import { isValidPhoneNumber } from 'libphonenumber-js'
 import _debounce from 'lodash/debounce'
@@ -8,9 +9,6 @@ import _debounce from 'lodash/debounce'
 import { TicketMessageSourceType } from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useCancellableRequest from 'hooks/useCancellableRequest'
-import useSearchRankScenario, {
-    SearchRankSource,
-} from 'hooks/useSearchRankScenario'
 import type { SearchResponse } from 'models/search/types'
 import { SearchType } from 'models/search/types'
 import { updatePotentialCustomers } from 'state/newMessage/actions'

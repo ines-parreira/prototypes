@@ -1,11 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { useUnmount } from '@repo/hooks'
-import { logEvent, SegmentEvent } from '@repo/logging'
 
-import useAppSelector from 'hooks/useAppSelector'
-import { SearchEngine } from 'models/search/types'
-import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { logEvent } from '../segment'
+import { SegmentEvent } from '../segment/types'
 
 export enum SearchRankSource {
     CustomerProfile = 'customer_profile',
@@ -22,6 +20,12 @@ export enum SearchRankSource {
 export type SearchRankRequest = {
     query: string
     requestTime: number
+}
+
+export enum SearchEngine {
+    PG = 'PG',
+    ES = 'ES',
+    GCP_ES = 'GCP_ES',
 }
 
 export type SearchRankResponse = {
@@ -68,7 +72,7 @@ const detailedSource = (
     return source
 }
 
-export default function useSearchRankScenario(
+export function useSearchRankScenario(
     source: SearchRankSource,
     scenarioTimeout = 60000,
 ): SearchRank {
@@ -77,7 +81,6 @@ export default function useSearchRankScenario(
     const selectedItem = useRef<SearchRankSelectedItem | undefined>()
     const timeout = useRef<NodeJS.Timeout | undefined>()
     const [isRunning, setIsRunning] = useState(false)
-    const currentAccount = useAppSelector(getCurrentAccountState)
 
     const endScenario = useCallback(() => {
         if (request.current && response.current) {
@@ -92,7 +95,7 @@ export default function useSearchRankScenario(
                     selectedItem?.current?.type,
                 ),
                 response_time: responseTime - requestTime,
-                account_domain: currentAccount.get('domain'),
+                account_domain: window.GORGIAS_STATE?.currentAccount?.domain,
                 number_of_results: numberOfResults,
                 rank: selectedItem.current
                     ? selectedItem.current.index + 1
@@ -108,7 +111,7 @@ export default function useSearchRankScenario(
         }
         setIsRunning(false)
         selectedItem.current = undefined
-    }, [source, currentAccount])
+    }, [source])
 
     const registerResultsRequest = useCallback(
         (req: SearchRankRequest) => {

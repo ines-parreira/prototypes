@@ -77,6 +77,14 @@ beforeAll(() => {
 
 beforeEach(() => {
     vi.clearAllMocks()
+    window.GORGIAS_STATE = {
+        currentAccount: {
+            domain: 'acme',
+        },
+        currentUser: {
+            id: 123,
+        },
+    } as Window['GORGIAS_STATE']
     server.use(
         mockGetTicket.handler,
         mockGetCurrentUser.handler,

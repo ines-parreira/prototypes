@@ -1,14 +1,16 @@
 import { useState } from 'react'
 
-import { logEvent, SegmentEvent } from '@repo/logging'
+import {
+    logEvent,
+    SearchRankSource,
+    SegmentEvent,
+    useSearchRankScenario,
+} from '@repo/logging'
 import type { AxiosError, AxiosResponse, CancelToken } from 'axios'
 import { fromJS } from 'immutable'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useCancellableRequest from 'hooks/useCancellableRequest'
-import useSearchRankScenario, {
-    SearchRankSource,
-} from 'hooks/useSearchRankScenario'
 import type { ApiListResponseCursorPagination } from 'models/api/types'
 import type {
     CustomerWithHighlightsResponse,

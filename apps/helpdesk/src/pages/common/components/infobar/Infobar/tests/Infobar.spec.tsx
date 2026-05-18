@@ -2,7 +2,7 @@ import type { ComponentProps } from 'react'
 import { useState as mockUseState } from 'react'
 
 import { useHelpdeskV2MS2Flag } from '@repo/feature-flags'
-import { SegmentEvent } from '@repo/logging'
+import { SegmentEvent, useSearchRankScenario } from '@repo/logging'
 import { assumeMock, render } from '@repo/testing'
 import {
     useHelpdeskV2MS1Flag,
@@ -15,7 +15,6 @@ import configureMockStore from 'redux-mock-store'
 
 import { agents } from 'fixtures/agents'
 import { mockSearchRank } from 'fixtures/searchRank'
-import useSearchRankScenario from 'hooks/useSearchRankScenario'
 import { Infobar } from 'pages/common/components/infobar/Infobar/Infobar'
 import type InfobarCustomerInfo from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
 import { InfobarSearchResultsList } from 'pages/common/components/infobar/Infobar/InfobarSearchResultsList'
@@ -51,6 +50,7 @@ jest.mock(
         ({
             ...jest.requireActual('@repo/logging'),
             logEvent: jest.fn(),
+            useSearchRankScenario: jest.fn(),
         }) as Record<string, unknown>,
 )
 
@@ -205,7 +205,6 @@ const makeHasIntegrationOfTypesMock = jest.mocked(
     require('state/integrations/selectors').makeHasIntegrationOfTypes,
 )
 
-jest.mock('hooks/useSearchRankScenario')
 const useSearchRankScenarioMock = assumeMock(useSearchRankScenario)
 
 jest.mock('@repo/tickets/feature-flags', () => ({

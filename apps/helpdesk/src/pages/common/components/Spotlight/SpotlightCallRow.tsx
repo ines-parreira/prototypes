@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { EntityType } from '@repo/logging'
 import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
 import moment from 'moment'
 
@@ -7,7 +8,6 @@ import { VoiceCallDirection } from '@gorgias/helpdesk-types'
 
 import { TicketStatus } from 'business/types/ticket'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import { EntityType } from 'hooks/useSearchRankScenario'
 import type { PicketVoiceCallWithHighlights } from 'models/search/types'
 import {
     getInboundDisplayStatus,

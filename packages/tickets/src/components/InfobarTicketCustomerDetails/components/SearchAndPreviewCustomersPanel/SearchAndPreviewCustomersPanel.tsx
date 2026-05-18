@@ -46,6 +46,7 @@ export function SearchAndPreviewCustomersPanel({
         searchTerm,
         setSearchTerm,
         clearSearch,
+        registerResultSelection,
         isSearchMode,
         searchResults,
         isSearching,
@@ -56,6 +57,15 @@ export function SearchAndPreviewCustomersPanel({
         setPreviewCustomer(customer)
         setMode('preview')
     }, [])
+
+    const handleResultSelection = useCallback(
+        (customer: Customer, index: number) => {
+            if (customer.id) {
+                registerResultSelection(customer.id, index)
+            }
+        },
+        [registerResultSelection],
+    )
 
     const handleClose = useCallback(
         (isOpen: boolean) => {
@@ -150,7 +160,7 @@ export function SearchAndPreviewCustomersPanel({
                                             ? '1 result'
                                             : `${searchResults.length} results`}
                                     </Text>
-                                    {searchResults.map((data) => (
+                                    {searchResults.map((data, index) => (
                                         <CustomerListItem
                                             key={data.entity?.id}
                                             customer={data}
@@ -164,11 +174,33 @@ export function SearchAndPreviewCustomersPanel({
                                                 data.entity?.id ===
                                                     previewedCustomer.id
                                             }
-                                            onSetCustomer={onSetCustomer}
-                                            onPreviewCustomer={
-                                                handlePreviewCustomer
+                                            onPreviewCustomer={(customer) => {
+                                                handleResultSelection(
+                                                    customer,
+                                                    index,
+                                                )
+                                                handlePreviewCustomer(customer)
+                                            }}
+                                            onMergeCustomer={
+                                                onMergeCustomer
+                                                    ? (customer) => {
+                                                          handleResultSelection(
+                                                              customer,
+                                                              index,
+                                                          )
+                                                          onMergeCustomer(
+                                                              customer,
+                                                          )
+                                                      }
+                                                    : undefined
                                             }
-                                            onMergeCustomer={onMergeCustomer}
+                                            onSetCustomer={(customer) => {
+                                                handleResultSelection(
+                                                    customer,
+                                                    index,
+                                                )
+                                                onSetCustomer(customer)
+                                            }}
                                             setCustomerLabel={setCustomerLabel}
                                         />
                                     ))}
@@ -209,6 +241,7 @@ export function SearchAndPreviewCustomersPanel({
         onMergeCustomer,
         setCustomerLabel,
         currentCustomerId,
+        handleResultSelection,
     ])
 
     return (

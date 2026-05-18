@@ -1,3 +1,4 @@
+import { useSearchRankScenario } from '@repo/logging'
 import { screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 
@@ -24,6 +25,17 @@ import { SearchAndPreviewCustomersPanel } from '../SearchAndPreviewCustomersPane
 const mockOnClose = vi.fn()
 const mockOnSetCustomer = vi.fn()
 const mockOnMergeCustomer = vi.fn()
+const mockRegisterResultsRequest = vi.fn()
+const mockRegisterResultsResponse = vi.fn()
+const mockRegisterResultSelection = vi.fn()
+const mockEndScenario = vi.fn()
+
+vi.mock('@repo/logging', async () => ({
+    ...(await vi.importActual('@repo/logging')),
+    useSearchRankScenario: vi.fn(),
+}))
+
+const mockUseSearchRankScenario = vi.mocked(useSearchRankScenario)
 
 const mockSearchResults: CustomerHighlightDataItem[] = [
     {
@@ -83,6 +95,21 @@ beforeAll(() => {
 
 beforeEach(() => {
     vi.clearAllMocks()
+    window.GORGIAS_STATE = {
+        currentAccount: {
+            domain: 'acme',
+        },
+        currentUser: {
+            id: 123,
+        },
+    } as Window['GORGIAS_STATE']
+    mockUseSearchRankScenario.mockReturnValue({
+        isRunning: false,
+        registerResultsRequest: mockRegisterResultsRequest,
+        registerResultsResponse: mockRegisterResultsResponse,
+        registerResultSelection: mockRegisterResultSelection,
+        endScenario: mockEndScenario,
+    })
     server.use(
         mockSearchCustomers.handler,
         mockGetCurrentUser.handler,
@@ -424,6 +451,38 @@ describe('SearchAndPreviewCustomersPanel', () => {
             mockSearchResults[0].entity,
         )
         expect(mockOnSetCustomer).toHaveBeenCalledTimes(1)
+    })
+
+    it('should register result selection when previewing a searched customer', async () => {
+        server.use(
+            mockSearchCustomersHandler(async () =>
+                HttpResponse.json(
+                    mockSearchCustomersResponse({
+                        data: [mockSearchResults[1]],
+                    }),
+                ),
+            ).handler,
+        )
+
+        const { user } = render(
+            <SearchAndPreviewCustomersPanel {...defaultProps} />,
+        )
+
+        const searchInput = screen.getByPlaceholderText(
+            'Search by name, email or order no.',
+        )
+
+        await user.type(searchInput, 'Jane')
+
+        expect(await screen.findByText('1 result')).toBeInTheDocument()
+
+        await user.click(screen.getByRole('button', { name: 'View details' }))
+
+        expect(mockRegisterResultSelection).toHaveBeenCalledWith({
+            id: 2,
+            index: 0,
+            type: 'customer',
+        })
     })
 
     it('should hide previewed customer when user starts typing in search', async () => {

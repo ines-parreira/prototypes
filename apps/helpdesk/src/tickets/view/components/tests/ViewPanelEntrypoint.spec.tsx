@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { Panels } from '@repo/layout'
+import { useSearchRankScenario } from '@repo/logging'
 import { assumeMock, render } from '@repo/testing'
 import { useHelpdeskV2MS4Dot5Flag } from '@repo/tickets/feature-flags'
 import { act, screen, waitFor } from '@testing-library/react'
@@ -14,7 +15,6 @@ import { useGetView } from '@gorgias/helpdesk-queries'
 import { BASE_VIEW_ID } from 'constants/view'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useSearchRankScenario from 'hooks/useSearchRankScenario'
 import { ViewField, ViewVisibility } from 'models/view/types'
 import type { StoreState } from 'state/types'
 import { resetView, setViewActive, setViewEditMode } from 'state/views/actions'
@@ -93,9 +93,10 @@ jest.mock('hooks/useAppDispatch', () => ({
     __esModule: true,
     default: jest.fn(),
 }))
-jest.mock('hooks/useSearchRankScenario', () => ({
+jest.mock('@repo/logging', () => ({
     __esModule: true,
     default: jest.fn(),
+    useSearchRankScenario: jest.fn(),
     SearchRankSource: {
         TicketsView: 'tickets_view',
     },

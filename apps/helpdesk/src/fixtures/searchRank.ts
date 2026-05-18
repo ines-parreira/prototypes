@@ -1,4 +1,4 @@
-import type { SearchRank } from 'hooks/useSearchRankScenario'
+import type { SearchRank } from '@repo/logging'
 
 export const mockSearchRank: SearchRank = {
     isRunning: false,

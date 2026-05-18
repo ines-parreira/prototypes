@@ -15,7 +15,7 @@ import { useHistory } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { logEvent, SegmentEvent } from '@repo/logging'
+import { logEvent, SegmentEvent, useSearchRankScenario } from '@repo/logging'
 import { history } from '@repo/routing'
 import * as platform from '@repo/utils'
 import { toast } from '@gorgias/axiom'
@@ -26,7 +26,6 @@ import { user } from 'fixtures/users'
 import { voiceCall } from 'fixtures/voiceCalls'
 import type { RecentItems } from 'hooks/useRecentItems/constants'
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
-import useSearchRankScenario from 'hooks/useSearchRankScenario'
 import { searchCustomersWithHighlights } from 'models/customer/resources'
 import { SearchEngine } from 'models/search/types'
 import { searchTicketsWithHighlights } from 'models/ticket/resources'
@@ -122,7 +121,7 @@ const searchTicketsWithHighlightsMock = assumeMock(searchTicketsWithHighlights)
 jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
 
-jest.mock('hooks/useSearchRankScenario')
+jest.mock('@repo/logging')
 const mockUseSearchRankScenario = assumeMock(useSearchRankScenario)
 
 const mockedDispatch = jest.fn()

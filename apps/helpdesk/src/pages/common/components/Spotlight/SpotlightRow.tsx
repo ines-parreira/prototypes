@@ -1,11 +1,11 @@
 import type { MouseEvent, ReactNode } from 'react'
 import { useContext, useEffect } from 'react'
 
+import type { EntityType } from '@repo/logging'
 import { isMacOs, sanitizeHtmlDefault } from '@repo/utils'
 import classnames from 'classnames'
 import { Link, useHistory } from 'react-router-dom'
 
-import type { EntityType } from 'hooks/useSearchRankScenario'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
 import css from 'pages/common/components/Spotlight/SpotlightRow.less'

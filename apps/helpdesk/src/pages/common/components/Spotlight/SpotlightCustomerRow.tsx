@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
 
+import { EntityType } from '@repo/logging'
 import { sanitizeHtmlDefault } from '@repo/utils'
 
-import { EntityType } from 'hooks/useSearchRankScenario'
 import type { PickedCustomerWithHighlights } from 'models/search/types'
 import { customerHighlightsTransform } from 'pages/common/components/Spotlight/helpers'
 import css from 'pages/common/components/Spotlight/SpotlightCustomerRow.less'

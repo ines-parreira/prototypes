@@ -1,6 +1,7 @@
 import type { KeyboardEvent } from 'react'
 
 import { useLocalStorageWithExpiry } from '@repo/hooks'
+import { useSearchRankScenario } from '@repo/logging'
 import { assumeMock, renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 
@@ -23,18 +24,12 @@ const searchTicketsWithHighlightsMock = assumeMock(searchTicketsWithHighlights)
 jest.mock('models/voiceCall/resources')
 const searchCallsWithHighlightsMock = assumeMock(searchVoiceCallsWithHighlights)
 jest.mock('hooks/useAppDispatch', () => jest.fn())
-jest.mock('hooks/useSearchRankScenario', () => ({
+jest.mock('@repo/logging', () => ({
     __esModule: true,
-    ...jest.requireActual<Record<string, unknown>>(
-        'hooks/useSearchRankScenario',
-    ),
+    ...jest.requireActual<Record<string, unknown>>('@repo/logging'),
     useSearchRankScenario: jest.fn(),
-    default: jest.fn().mockReturnValue({
-        endScenario: jest.fn(),
-        registerResultsRequest: jest.fn(),
-        registerResultsResponse: jest.fn(),
-    }),
 }))
+const mockUseSearchRankScenario = assumeMock(useSearchRankScenario)
 
 jest.mock('@repo/hooks', () => ({
     ...jest.requireActual('@repo/hooks'),
@@ -60,6 +55,13 @@ describe('useSearch', () => {
     }
 
     beforeEach(() => {
+        mockUseSearchRankScenario.mockReturnValue({
+            isRunning: false,
+            endScenario: jest.fn(),
+            registerResultsRequest: jest.fn(),
+            registerResultsResponse: jest.fn(),
+            registerResultSelection: jest.fn(),
+        })
         useLocalStorageWithExpiryMock.mockImplementation(() => {
             const {
                 useState,

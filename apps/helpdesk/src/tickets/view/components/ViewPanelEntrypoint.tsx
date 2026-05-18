@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { SearchRankSource, useSearchRankScenario } from '@repo/logging'
 import { useHelpdeskV2MS4Dot5Flag } from '@repo/tickets/feature-flags'
 import { ViewPanel } from '@repo/tickets/views'
 import { fromJS } from 'immutable'
@@ -16,9 +17,6 @@ import { getConfigByName } from 'config/views'
 import { BASE_VIEW_ID } from 'constants/view'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useSearchRankScenario, {
-    SearchRankSource,
-} from 'hooks/useSearchRankScenario'
 import type { SearchEngine } from 'models/search/types'
 import type { ViewVisibility as ViewVisibilityType } from 'models/view/types'
 import { EntityType } from 'models/view/types'

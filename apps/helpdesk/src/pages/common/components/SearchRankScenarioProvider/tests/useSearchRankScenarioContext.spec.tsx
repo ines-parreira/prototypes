@@ -1,14 +1,14 @@
 import type { ComponentType } from 'react'
 import type React from 'react'
 
+import type { SearchRank } from '@repo/logging'
 import { renderHook } from '@repo/testing'
 
-import type { SearchRank } from 'hooks/useSearchRankScenario'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 
 import useSearchRankScenarioContext from '../useSearchRankScenarioContext'
 
-describe('useSearchRankScenario', () => {
+describe('useSearchRankScenarioContext', () => {
     it('should throw when used outside the provider', () => {
         expect(() => renderHook(() => useSearchRankScenarioContext())).toThrow(
             'useSearchRankContext should be used inside SearchRankScenarioProvider',

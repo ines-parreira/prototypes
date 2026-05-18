@@ -1,13 +1,13 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
+import { useSearchRankScenario } from '@repo/logging'
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import { getConfigByName, getTicketViewField } from 'config/views'
 import { mockSearchRank } from 'fixtures/searchRank'
-import useSearchRankScenario from 'hooks/useSearchRankScenario'
 import { EntityType, ViewField } from 'models/view/types'
 import type FilterDropdownItems from 'pages/common/components/ViewTable/FilterDropdownItems'
 import type FilterDropdownSearch from 'pages/common/components/ViewTable/FilterDropdownSearch'
@@ -66,7 +66,7 @@ jest.mock('pages/common/components/ViewTable/FilterDropdownItems', () => {
     }
 })
 
-jest.mock('hooks/useSearchRankScenario')
+jest.mock('@repo/logging')
 const useSearchRankScenarioMock = useSearchRankScenario as jest.MockedFunction<
     typeof useSearchRankScenario
 >

@@ -14,6 +14,7 @@ import {
     usePrevious,
     useSelectedIndex,
 } from '@repo/hooks'
+import { SearchRankSource, useSearchRankScenario } from '@repo/logging'
 import { history } from '@repo/routing'
 import { isMacOs } from '@repo/utils'
 import type { CancelToken } from 'axios'
@@ -27,9 +28,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import { RecentItems } from 'hooks/useRecentItems/constants'
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
-import useSearchRankScenario, {
-    SearchRankSource,
-} from 'hooks/useSearchRankScenario'
 import { ProductType } from 'models/billing/types'
 import { searchCustomersWithHighlights } from 'models/customer/resources'
 import type {

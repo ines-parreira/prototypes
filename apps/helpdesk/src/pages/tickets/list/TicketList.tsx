@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useTitle } from '@repo/hooks'
-import { logEvent, SegmentEvent } from '@repo/logging'
+import { logEvent, SearchRankSource, SegmentEvent } from '@repo/logging'
 import {
     useCurrentUserLanguagePreferences,
     useTicketsTranslatedProperties,
@@ -16,7 +16,6 @@ import type { Ticket } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { SearchRankSource } from 'hooks/useSearchRankScenario'
 import { EntityType } from 'models/view/types'
 import CreateTicketButton from 'pages/common/components/CreateTicket/CreateTicketButton'
 import SearchRankScenarioProvider from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioProvider'

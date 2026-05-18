@@ -1,5 +1,6 @@
 import type { ComponentProps } from 'react'
 
+import { EntityType } from '@repo/logging'
 import { render, userEvent } from '@repo/testing'
 import * as platform from '@repo/utils'
 import { screen } from '@testing-library/react'
@@ -8,7 +9,6 @@ import { createBrowserHistory } from 'history'
 import { Router } from 'react-router-dom'
 
 import { mockSearchRank } from 'fixtures/searchRank'
-import { EntityType } from 'hooks/useSearchRankScenario'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 import SpotlightRow from 'pages/common/components/Spotlight/SpotlightRow'
 

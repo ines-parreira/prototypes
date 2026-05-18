@@ -1,4 +1,5 @@
 import client from '@repo/api-resources'
+import type { SearchRank } from '@repo/logging'
 import { history } from '@repo/routing'
 import { buildJobMessage } from '@repo/utils'
 import type { AxiosError, CancelToken } from 'axios'
@@ -14,7 +15,6 @@ import type { JobType } from '@gorgias/helpdesk-queries'
 import type { OrderDirection } from '@gorgias/helpdesk-types'
 
 import * as viewsConfig from 'config/views'
-import type { SearchRank } from 'hooks/useSearchRankScenario'
 import type { ApiListResponseLegacyPagination } from 'models/api/types'
 import { deepMapKeysToSnakeCase } from 'models/api/utils'
 import { searchCustomersWithHighlights } from 'models/customer/resources'

@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { useSearchRankScenario } from '@repo/logging'
 import { render } from '@repo/testing'
 import { fireEvent, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
@@ -7,7 +8,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
-import useSearchRankScenario from 'hooks/useSearchRankScenario'
 import { SearchEngine } from 'models/search/types'
 import type { RootState } from 'state/types'
 
@@ -15,7 +15,7 @@ import MultiSelectAsyncField from '../ReceiversSelectField'
 
 const mockStore = configureMockStore([thunk])
 
-jest.mock('hooks/useSearchRankScenario')
+jest.mock('@repo/logging')
 const mockSearchRank = {
     registerResultsRequest: jest.fn(),
     registerResultsResponse: jest.fn(),

@@ -1,10 +1,10 @@
 import type { RefObject } from 'react'
 import { useEffect, useRef } from 'react'
 
+import type { SearchRank } from '@repo/logging'
 import _isEmpty from 'lodash/isEmpty'
 import type { GroupedVirtuosoHandle, VirtuosoHandle } from 'react-virtuoso'
 
-import type { SearchRank } from 'hooks/useSearchRankScenario'
 import type {
     PickedCustomer,
     PickedCustomerWithHighlights,

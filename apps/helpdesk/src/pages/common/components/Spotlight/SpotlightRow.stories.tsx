@@ -1,10 +1,10 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
+import { EntityType } from '@repo/logging'
 import { MemoryRouter } from 'react-router-dom'
 import type { Meta, StoryFn } from 'storybook-react-rsbuild'
 
-import { EntityType } from 'hooks/useSearchRankScenario'
 import SpotlightRow from 'pages/common/components/Spotlight/SpotlightRow'
 
 const storyConfig: Meta = {

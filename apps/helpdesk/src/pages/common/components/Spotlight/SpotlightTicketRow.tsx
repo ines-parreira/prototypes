@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react'
 
+import { EntityType } from '@repo/logging'
 import {
     DateAndTimeFormatting,
     formatDatetime,
@@ -9,7 +10,6 @@ import { fromJS } from 'immutable'
 import moment from 'moment'
 
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import { EntityType } from 'hooks/useSearchRankScenario'
 import type { PickedTicketWithHighlights } from 'models/search/types'
 import type { TicketAssignee } from 'models/ticket/types'
 import { ticketHighlightsTransform } from 'pages/common/components/Spotlight/helpers'
