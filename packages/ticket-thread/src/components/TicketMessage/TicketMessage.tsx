@@ -16,6 +16,7 @@ import { MessageHeaderContainer } from '../MessageBubble/components/MessageHeade
 import { MessageAvatar } from '../MessageBubble/components/MessageHeader/MessageAvatar'
 import { MessageChannel } from '../MessageBubble/components/MessageHeader/MessageChannel'
 import { MessageDeliveryIcon } from '../MessageBubble/components/MessageHeader/MessageDeliveryIcon'
+import { MessageMeta } from '../MessageBubble/components/MessageHeader/MessageMeta'
 import { MessageSender } from '../MessageBubble/components/MessageHeader/MessageSender'
 import { MessageTimestamp } from '../MessageBubble/components/MessageHeader/MessageTimestamp'
 import { PendingMessageBanner } from '../MessageBubble/components/PendingMessageBanner'
@@ -40,7 +41,6 @@ export function TicketMessage({ item }: TicketMessageProps) {
         item.data.source?.type === 'email'
             ? item.data.source.from?.address
             : undefined
-
     return (
         <Box
             flexDirection="column"
@@ -84,6 +84,10 @@ export function TicketMessage({ item }: TicketMessageProps) {
                         />
                     </Box>
                 </MessageHeaderContainer>
+                <MessageMeta
+                    meta={item.data.meta}
+                    integrationId={item.data.integration_id}
+                />
                 <MessageBody item={displayedItem} />
                 <MessageFooter item={displayedItem} />
                 <TicketMessageActions message={item.data} />

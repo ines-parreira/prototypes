@@ -9,6 +9,7 @@ import { getMessageChannelParticipants } from '../../../MessageBubble/components
 import { MessageHeaderContainer } from '../../../MessageBubble/components/MessageHeader/Layout'
 import { MessageChannel } from '../../../MessageBubble/components/MessageHeader/MessageChannel'
 import { MessageDeliveryIcon } from '../../../MessageBubble/components/MessageHeader/MessageDeliveryIcon'
+import { MessageMeta } from '../../../MessageBubble/components/MessageHeader/MessageMeta'
 import { MessageSender } from '../../../MessageBubble/components/MessageHeader/MessageSender'
 import { MessageTimestamp } from '../../../MessageBubble/components/MessageHeader/MessageTimestamp'
 import { MessageBubble } from '../../../MessageBubble/MessageBubble'
@@ -68,6 +69,10 @@ export function AiAgentTicketThreadMessage({
                         />
                     </Box>
                 </MessageHeaderContainer>
+                <MessageMeta
+                    meta={item.data.meta}
+                    integrationId={item.data.integration_id}
+                />
                 {shouldRenderMessageContent && <MessageBody item={item} />}
                 {shouldRenderSmartFollowUps && (
                     <SmartFollowUps

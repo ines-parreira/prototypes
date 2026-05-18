@@ -26,6 +26,7 @@ import { MessageHeaderContainer } from '../MessageBubble/components/MessageHeade
 import { MessageAvatar } from '../MessageBubble/components/MessageHeader/MessageAvatar'
 import { MessageChannel } from '../MessageBubble/components/MessageHeader/MessageChannel'
 import { MessageDeliveryIcon } from '../MessageBubble/components/MessageHeader/MessageDeliveryIcon'
+import { MessageMeta } from '../MessageBubble/components/MessageHeader/MessageMeta'
 import { MessageSender } from '../MessageBubble/components/MessageHeader/MessageSender'
 import { MessageTimestamp } from '../MessageBubble/components/MessageHeader/MessageTimestamp'
 import { PendingMessageBanner } from '../MessageBubble/components/PendingMessageBanner'
@@ -220,7 +221,6 @@ export function TicketThreadGroupedMessages({
         firstMessage.data.source?.type === 'email'
             ? firstMessage.data.source.from?.address
             : undefined
-
     return (
         <Box
             flexDirection="column"
@@ -265,6 +265,10 @@ export function TicketThreadGroupedMessages({
                         </MessageHeaderContainer>
                         <TicketMessageActions message={firstMessage.data} />
                     </Box>
+                    <MessageMeta
+                        meta={firstMessage.data.meta}
+                        integrationId={firstMessage.data.integration_id}
+                    />
                     <Box flexDirection="column" className={css.groupedMessages}>
                         {item.data.map((groupedMessage, index) => (
                             <GroupedMessage
