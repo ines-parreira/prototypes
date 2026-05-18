@@ -1,10 +1,11 @@
 import { Box } from '@gorgias/axiom'
 
 import type { TicketThreadSocialMediaFacebookMessageItem } from '../../hooks/messages/types'
-import { MessageAttachments } from '../MessageBubble/components/MessageAttachments'
 import { MessageBody } from '../MessageBubble/components/MessageBody'
+import { MessageFooter } from '../MessageBubble/components/MessageFooter'
 import { OriginalCommentContext } from '../SocialMessageBubble/OriginalCommentContext'
 import { SocialMessageBubble } from '../SocialMessageBubble/SocialMessageBubble'
+import { useDisplayedTicketMessage } from '../TicketMessage/hooks/useDisplayedTicketMessage'
 import { TicketMessageActions } from '../TicketMessageActions/TicketMessageActions'
 
 type FacebookMessengerMessageProps = {
@@ -14,9 +15,11 @@ type FacebookMessengerMessageProps = {
 export function FacebookMessengerMessage({
     item,
 }: FacebookMessengerMessageProps) {
-    const channelFrom = item.data.source.from?.name ?? null
-    const channelTo = item.data.source.to?.[0]?.name ?? null
-    const meta = item.data.meta as any
+    const displayedItem = useDisplayedTicketMessage({ item })
+    const message = displayedItem.data
+    const channelFrom = message.source.from?.name ?? null
+    const channelTo = message.source.to?.[0]?.name ?? null
+    const meta = message.meta as any
     const repliedTo = meta?.replied_to as
         | { ticket_id: number; ticket_message_id: number }
         | undefined
@@ -38,21 +41,19 @@ export function FacebookMessengerMessage({
             )}
             <Box
                 display="flex"
-                justifyContent={
-                    item.data.from_agent ? 'flex-end' : 'flex-start'
-                }
+                justifyContent={message.from_agent ? 'flex-end' : 'flex-start'}
                 width="100%"
             >
                 <SocialMessageBubble
-                    item={item}
+                    item={displayedItem}
                     channelName="Facebook Messenger"
                     channelFrom={channelFrom}
                     channelTo={channelTo}
                     failedMessageError="We couldn't deliver your direct message"
                 >
-                    <MessageBody item={item} />
-                    <MessageAttachments item={item} />
-                    <TicketMessageActions message={item.data} />
+                    <MessageBody item={displayedItem} />
+                    <MessageFooter item={displayedItem} />
+                    <TicketMessageActions message={message} />
                 </SocialMessageBubble>
             </Box>
         </Box>

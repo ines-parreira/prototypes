@@ -1,7 +1,11 @@
 import { Box } from '@gorgias/axiom'
 
-import type { TicketThreadSingleMessageItem } from '../../hooks/messages/types'
+import type {
+    TicketThreadSocialMediaTwitterDirectMessageItem,
+    TicketThreadSocialMediaTwitterTweetItem,
+} from '../../hooks/messages/types'
 import { MessageBody } from '../MessageBubble/components/MessageBody'
+import { MessageFooter } from '../MessageBubble/components/MessageFooter'
 import { getMessageChannelParticipants } from '../MessageBubble/components/MessageHeader/getMessageChannelParticipants'
 import { MessageHeaderContainer } from '../MessageBubble/components/MessageHeader/Layout'
 import { MessageAvatar } from '../MessageBubble/components/MessageHeader/MessageAvatar'
@@ -9,42 +13,46 @@ import { MessageChannel } from '../MessageBubble/components/MessageHeader/Messag
 import { MessageSender } from '../MessageBubble/components/MessageHeader/MessageSender'
 import { MessageTimestamp } from '../MessageBubble/components/MessageHeader/MessageTimestamp'
 import { MessageBubble } from '../MessageBubble/MessageBubble'
+import { useDisplayedTicketMessage } from '../TicketMessage/hooks/useDisplayedTicketMessage'
 
 type UnimplementedMessageProps = {
-    item: TicketThreadSingleMessageItem
+    item:
+        | TicketThreadSocialMediaTwitterDirectMessageItem
+        | TicketThreadSocialMediaTwitterTweetItem
 }
 
 export function UnimplementedMessage({ item }: UnimplementedMessageProps) {
-    const variant = item.data.from_agent ? 'from-agent' : 'regular'
-    const { from, to, cc, bcc } = getMessageChannelParticipants(
-        item.data.source,
-    )
+    const displayedItem = useDisplayedTicketMessage({ item })
+    const message = displayedItem.data
+    const variant = message.from_agent ? 'from-agent' : 'regular'
+    const { from, to, cc, bcc } = getMessageChannelParticipants(message.source)
 
     return (
         <MessageBubble variant={variant}>
             <MessageHeaderContainer>
                 <Box alignItems="center" gap="xs">
                     <MessageAvatar
-                        sender={item.data.sender}
-                        fromAgent={item.data.from_agent}
+                        sender={message.sender}
+                        fromAgent={message.from_agent}
                     />
-                    <MessageSender sender={item.data.sender} />
+                    <MessageSender sender={message.sender} />
                 </Box>
                 <Box alignItems="center" gap="xs">
                     <MessageChannel
-                        channel={item.data.channel}
-                        createdDatetime={item.data.created_datetime}
+                        channel={message.channel}
+                        createdDatetime={message.created_datetime}
                         from={from}
                         to={to}
                         cc={cc}
                         bcc={bcc}
                     />
                     <MessageTimestamp
-                        createdDatetime={item.data.created_datetime}
+                        createdDatetime={message.created_datetime}
                     />
                 </Box>
             </MessageHeaderContainer>
-            <MessageBody item={item} />
+            <MessageBody item={displayedItem} />
+            <MessageFooter item={displayedItem} />
         </MessageBubble>
     )
 }

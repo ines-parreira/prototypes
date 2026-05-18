@@ -19,20 +19,27 @@ import type {
     TicketThreadSocialMediaInstagramDirectMessageItem,
     TicketThreadSocialMediaWhatsAppMessageItem,
 } from '../../../hooks/messages/types'
+import type { DisplayedTicketThreadMessageItem } from '../../TicketMessage/hooks/useDisplayedTicketMessage'
 import { Attachment } from './Attachment'
 import { DiscountOfferAttachment } from './DiscountOfferAttachment'
 import { isProductAttachment, ProductAttachment } from './ProductAttachment'
 import { isDiscountOfferAttachment } from './utils/discountOffer'
 import { isImage } from './utils/image'
 
+type MessageAttachmentsBaseItem =
+    | TicketThreadRegularMessageItem
+    | TicketThreadInternalNoteItem
+    | TicketThreadAiAgentMessageItem
+    | TicketThreadSocialMediaFacebookMessageItem
+    | TicketThreadSocialMediaInstagramDirectMessageItem
+    | TicketThreadSocialMediaWhatsAppMessageItem
+
+export type MessageAttachmentsItem =
+    | MessageAttachmentsBaseItem
+    | DisplayedTicketThreadMessageItem<MessageAttachmentsBaseItem>
+
 type MessageAttachmentsProps = {
-    item:
-        | TicketThreadRegularMessageItem
-        | TicketThreadInternalNoteItem
-        | TicketThreadAiAgentMessageItem
-        | TicketThreadSocialMediaFacebookMessageItem
-        | TicketThreadSocialMediaInstagramDirectMessageItem
-        | TicketThreadSocialMediaWhatsAppMessageItem
+    item: MessageAttachmentsItem
     attachmentsLabel?: string
 }
 

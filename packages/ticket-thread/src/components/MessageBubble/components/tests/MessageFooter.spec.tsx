@@ -20,11 +20,12 @@ import type { TicketThreadRegularMessageItem } from '../../../../hooks/messages/
 import { TicketThreadItemTag } from '../../../../hooks/types'
 import { render } from '../../../../tests/render.utils'
 import { server } from '../../../../tests/server'
-import type { DisplayedTicketThreadRegularMessageItem } from '../../../TicketMessage/hooks/useDisplayedTicketMessage'
+import type { DisplayedTicketThreadMessageItem } from '../../../TicketMessage/hooks/useDisplayedTicketMessage'
 import type * as MessageAttachmentsModule from '../MessageAttachments'
 import { MessageFooter } from '../MessageFooter'
 
-type MessageFooterData = DisplayedTicketThreadRegularMessageItem['data']
+type MessageFooterData =
+    DisplayedTicketThreadMessageItem<TicketThreadRegularMessageItem>['data']
 
 vi.mock('@repo/tickets', async () => {
     const actual = await vi.importActual<typeof TicketsModule>('@repo/tickets')

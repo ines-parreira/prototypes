@@ -2,7 +2,9 @@ import { replaceAttachmentURL } from '@repo/utils'
 
 import type { TicketThreadSocialMediaInstagramMediaItem } from '../../hooks/messages/types'
 import { MessageBody } from '../MessageBubble/components/MessageBody'
+import { MessageFooter } from '../MessageBubble/components/MessageFooter'
 import { SocialMessageBubble } from '../SocialMessageBubble/SocialMessageBubble'
+import { useDisplayedTicketMessage } from '../TicketMessage/hooks/useDisplayedTicketMessage'
 import { TicketMessageActions } from '../TicketMessageActions/TicketMessageActions'
 import type { InstagramMentionType } from './ViewOnInstagramLink'
 import { ViewOnInstagramLink } from './ViewOnInstagramLink'
@@ -25,24 +27,25 @@ function getInstagramMentionType(
 }
 
 export function InstagramMediaMessage({ item }: InstagramMediaMessageProps) {
-    const source = item.data.source
+    const displayedItem = useDisplayedTicketMessage({ item })
+    const source = displayedItem.data.source
     const channelFrom = source?.from?.name ?? null
     const channelTo = source?.to?.[0]?.name ?? null
     const permalink = source?.extra?.permalink ?? null
-    const fromAgent = item.data.from_agent ?? false
+    const fromAgent = displayedItem.data.from_agent ?? false
     const mentionType = fromAgent
         ? null
         : getInstagramMentionType(source?.type ?? '', source?.extra?.media_type)
-    const imageAttachments = item.data.attachments?.filter(
+    const imageAttachments = displayedItem.data.attachments?.filter(
         (a) => a.content_type?.startsWith('image/') && a.url,
     )
-    const videoAttachments = item.data.attachments?.filter(
+    const videoAttachments = displayedItem.data.attachments?.filter(
         (a) => a.content_type?.startsWith('video/') && a.url,
     )
 
     return (
         <SocialMessageBubble
-            item={item}
+            item={displayedItem}
             goToLink={null}
             channelName="Instagram media"
             channelFrom={channelFrom}
@@ -71,8 +74,9 @@ export function InstagramMediaMessage({ item }: InstagramMediaMessageProps) {
                     className={css.video}
                 />
             ))}
-            <MessageBody item={item} />
-            <TicketMessageActions message={item.data} />
+            <MessageBody item={displayedItem} />
+            <MessageFooter item={displayedItem} />
+            <TicketMessageActions message={displayedItem.data} />
         </SocialMessageBubble>
     )
 }

@@ -3,7 +3,9 @@ import { Box, Text } from '@gorgias/axiom'
 import type { TicketThreadSocialMediaInstagramStoryReplyItem } from '../../hooks/messages/types'
 import { getSocialChannelIcon } from '../../utils/getSocialChannelIcon'
 import { MessageBody } from '../MessageBubble/components/MessageBody'
+import { MessageFooter } from '../MessageBubble/components/MessageFooter'
 import { SocialMessageBubble } from '../SocialMessageBubble/SocialMessageBubble'
+import { useDisplayedTicketMessage } from '../TicketMessage/hooks/useDisplayedTicketMessage'
 
 type InstagramStoryReplyMessageProps = {
     item: TicketThreadSocialMediaInstagramStoryReplyItem
@@ -12,17 +14,20 @@ type InstagramStoryReplyMessageProps = {
 export function InstagramStoryReplyMessage({
     item,
 }: InstagramStoryReplyMessageProps) {
+    const displayedItem = useDisplayedTicketMessage({ item })
     const isExpired =
-        new Date(item.data.created_datetime).getTime() <
+        new Date(displayedItem.data.created_datetime).getTime() <
         Date.now() - 24 * 60 * 60 * 1000
     const storyLink =
-        !isExpired && item.data.message_id && item.data.integration_id
-            ? `/integrations/facebook/redirect/instagramstory?message_id=${item.data.message_id}&integration_id=${item.data.integration_id}`
+        !isExpired &&
+        displayedItem.data.message_id &&
+        displayedItem.data.integration_id
+            ? `/integrations/facebook/redirect/instagramstory?message_id=${displayedItem.data.message_id}&integration_id=${displayedItem.data.integration_id}`
             : null
 
     return (
         <SocialMessageBubble
-            item={item}
+            item={displayedItem}
             channelIcon={getSocialChannelIcon(item._tag) ?? 'comm-instagram'}
             goToLink={
                 storyLink
@@ -33,7 +38,8 @@ export function InstagramStoryReplyMessage({
             <Box>
                 <Text>Story reply</Text>
             </Box>
-            <MessageBody item={item} />
+            <MessageBody item={displayedItem} />
+            <MessageFooter item={displayedItem} />
         </SocialMessageBubble>
     )
 }

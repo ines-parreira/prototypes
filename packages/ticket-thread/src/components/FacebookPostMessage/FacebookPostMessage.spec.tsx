@@ -1,9 +1,19 @@
+import type * as TicketsModule from '@repo/tickets'
+import {
+    DisplayedContent,
+    useCurrentUserLanguagePreferences,
+    useTicketMessageDisplayState,
+    useTicketMessageTranslations,
+} from '@repo/tickets'
 import { screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 
 import {
     mockGetCustomerHandler,
+    mockGetTicketHandler,
+    mockTicket,
     mockTicketMessage,
+    mockTicketMessageTranslation,
 } from '@gorgias/helpdesk-mocks'
 
 import type { TicketThreadSocialMediaFacebookPostItem } from '../../hooks/messages/types'
@@ -18,9 +28,31 @@ vi.mock('../../utils/LegacyBridge/useTicketThreadLegacyBridge', () => ({
     useTicketThreadLegacyBridge: vi.fn(),
 }))
 
+vi.mock('@repo/tickets', async () => {
+    const actual = await vi.importActual<typeof TicketsModule>('@repo/tickets')
+    return {
+        ...actual,
+        useCurrentUserLanguagePreferences: vi.fn(() => ({
+            shouldShowTranslatedContent: () => false,
+        })),
+        useTicketMessageTranslations: vi.fn(() => ({
+            getMessageTranslation: () => null,
+        })),
+        useTicketMessageDisplayState: vi.fn(() => ({
+            display: actual.DisplayedContent.Original,
+        })),
+    }
+})
+
 const mockUseTicketThreadLegacyBridge = vi.mocked(useTicketThreadLegacyBridge)
+const mockUseCurrentUserLanguagePreferences = vi.mocked(
+    useCurrentUserLanguagePreferences,
+)
+const mockUseTicketMessageTranslations = vi.mocked(useTicketMessageTranslations)
+const mockUseTicketMessageDisplayState = vi.mocked(useTicketMessageDisplayState)
 
 beforeEach(() => {
+    vi.clearAllMocks()
     window.GORGIAS_STATE = {
         currentAccount: {
             domain: 'acme',
@@ -29,8 +61,20 @@ beforeEach(() => {
     server.use(
         getCurrentUserHandler().handler,
         http.get('/api/users/:id', () => HttpResponse.json({})),
+        mockGetTicketHandler(async ({ params }) =>
+            HttpResponse.json(mockTicket({ id: Number(params?.id ?? 1) })),
+        ).handler,
         mockGetCustomerHandler().handler,
     )
+    mockUseCurrentUserLanguagePreferences.mockReturnValue({
+        shouldShowTranslatedContent: () => false,
+    } as ReturnType<typeof useCurrentUserLanguagePreferences>)
+    mockUseTicketMessageTranslations.mockReturnValue({
+        getMessageTranslation: () => null,
+    } as unknown as ReturnType<typeof useTicketMessageTranslations>)
+    mockUseTicketMessageDisplayState.mockReturnValue({
+        display: DisplayedContent.Original,
+    } as ReturnType<typeof useTicketMessageDisplayState>)
     mockUseTicketThreadLegacyBridge.mockReturnValue({
         currentTicketShoppingAssistantData: {
             influencedOrders: [],
@@ -88,6 +132,30 @@ function makeItem(
 }
 
 describe('FacebookPostMessage', () => {
+    it('renders the translated post body when translation display is enabled', () => {
+        mockUseCurrentUserLanguagePreferences.mockReturnValue({
+            shouldShowTranslatedContent: () => true,
+        } as ReturnType<typeof useCurrentUserLanguagePreferences>)
+        mockUseTicketMessageDisplayState.mockReturnValue({
+            display: DisplayedContent.Translated,
+        } as ReturnType<typeof useTicketMessageDisplayState>)
+        mockUseTicketMessageTranslations.mockReturnValue({
+            getMessageTranslation: () =>
+                mockTicketMessageTranslation({
+                    ticket_message_id: 1,
+                    stripped_text: 'Translated Facebook post body',
+                    stripped_html: null,
+                }),
+        } as unknown as ReturnType<typeof useTicketMessageTranslations>)
+
+        render(<FacebookPostMessage item={makeItem()} />)
+
+        expect(
+            screen.getByText('Translated Facebook post body'),
+        ).toBeInTheDocument()
+        expect(screen.queryByText('hello')).not.toBeInTheDocument()
+    })
+
     describe('view on Facebook link', () => {
         it('shows "view post on Facebook" link with permalink', () => {
             render(<FacebookPostMessage item={makeItem()} />)

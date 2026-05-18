@@ -3,8 +3,10 @@ import { replaceAttachmentURL } from '@repo/utils'
 import type { TicketThreadSocialMediaFacebookPostItem } from '../../hooks/messages/types'
 import { buildGoToLink } from '../../utils/buildGoToLink'
 import { MessageBody } from '../MessageBubble/components/MessageBody'
+import { MessageFooter } from '../MessageBubble/components/MessageFooter'
 import { SocialMessageBubble } from '../SocialMessageBubble/SocialMessageBubble'
 import { ViewOnSocialLink } from '../SocialMessageBubble/ViewOnSocialLink'
+import { useDisplayedTicketMessage } from '../TicketMessage/hooks/useDisplayedTicketMessage'
 import { TicketMessageActions } from '../TicketMessageActions/TicketMessageActions'
 
 import css from '../SocialMessageBubble/SocialMessageBubble.less'
@@ -14,27 +16,29 @@ type FacebookPostMessageProps = {
 }
 
 export function FacebookPostMessage({ item }: FacebookPostMessageProps) {
+    const displayedItem = useDisplayedTicketMessage({ item })
+    const message = displayedItem.data
     const goToLink = buildGoToLink({
-        source: item.data.source,
-        meta: item.data.meta,
-        messageId: item.data.message_id ?? undefined,
-        integrationId: item.data.integration_id,
-        externalId: item.data.external_id,
-        messageCreatedDatetime: item.data.created_datetime,
+        source: message.source,
+        meta: message.meta,
+        messageId: message.message_id ?? undefined,
+        integrationId: message.integration_id,
+        externalId: message.external_id,
+        messageCreatedDatetime: message.created_datetime,
     })
-    const source = item.data.source
+    const source = message.source
     const channelFrom = source.from?.name ?? null
     const channelTo = source.to?.[0]?.name ?? null
-    const imageAttachments = item.data.attachments?.filter(
+    const imageAttachments = message.attachments?.filter(
         (a) => a.content_type?.startsWith('image/') && a.url,
     )
-    const videoAttachments = item.data.attachments?.filter(
+    const videoAttachments = message.attachments?.filter(
         (a) => a.content_type?.startsWith('video/') && a.url,
     )
 
     return (
         <SocialMessageBubble
-            item={item}
+            item={displayedItem}
             goToLink={null}
             channelName="Facebook post"
             channelFrom={channelFrom}
@@ -48,7 +52,8 @@ export function FacebookPostMessage({ item }: FacebookPostMessageProps) {
                     platform="Facebook"
                 />
             )}
-            <MessageBody item={item} />
+            <MessageBody item={displayedItem} />
+            <MessageFooter item={displayedItem} />
             {imageAttachments?.map((attachment) => (
                 <img
                     key={attachment.url}
@@ -66,7 +71,7 @@ export function FacebookPostMessage({ item }: FacebookPostMessageProps) {
                     className={css.video}
                 />
             ))}
-            <TicketMessageActions message={item.data} />
+            <TicketMessageActions message={message} />
         </SocialMessageBubble>
     )
 }

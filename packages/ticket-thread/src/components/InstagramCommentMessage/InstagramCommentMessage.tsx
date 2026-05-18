@@ -6,8 +6,10 @@ import { isSocialMediaHiddenComment } from '../../hooks/messages/predicates'
 import type { TicketThreadSocialMediaInstagramCommentItem } from '../../hooks/messages/types'
 import { buildGoToLink } from '../../utils/buildGoToLink'
 import { MessageBody } from '../MessageBubble/components/MessageBody'
+import { MessageFooter } from '../MessageBubble/components/MessageFooter'
 import { HiddenCommentBanner } from '../SocialMessageBubble/HiddenCommentBanner'
 import { SocialMessageBubble } from '../SocialMessageBubble/SocialMessageBubble'
+import { useDisplayedTicketMessage } from '../TicketMessage/hooks/useDisplayedTicketMessage'
 
 import css from './InstagramCommentMessage.less'
 
@@ -22,23 +24,25 @@ export function InstagramCommentMessage({
     onUnhide,
     actions,
 }: InstagramCommentMessageProps) {
-    const isHidden = isSocialMediaHiddenComment(item.data)
-    const isAdComment = item.data.source.type === 'instagram-ad-comment'
+    const displayedItem = useDisplayedTicketMessage({ item })
+    const isHidden = isSocialMediaHiddenComment(displayedItem.data)
+    const isAdComment =
+        displayedItem.data.source.type === 'instagram-ad-comment'
     const goToLink = buildGoToLink({
-        source: item.data.source as any,
-        meta: item.data.meta as any,
-        messageId: item.data.message_id ?? undefined,
-        integrationId: item.data.integration_id,
-        externalId: item.data.external_id,
-        messageCreatedDatetime: item.data.created_datetime,
+        source: displayedItem.data.source as any,
+        meta: displayedItem.data.meta as any,
+        messageId: displayedItem.data.message_id ?? undefined,
+        integrationId: displayedItem.data.integration_id,
+        externalId: displayedItem.data.external_id,
+        messageCreatedDatetime: displayedItem.data.created_datetime,
     })
-    const source = item.data.source as any
+    const source = displayedItem.data.source as any
     const channelFrom = source?.from?.name ?? null
     const channelTo = source?.to?.[0]?.name ?? null
     if (isHidden) {
         return (
             <SocialMessageBubble
-                item={item}
+                item={displayedItem}
                 channelName="Instagram comment"
                 channelFrom={channelFrom}
                 channelTo={channelTo}
@@ -46,7 +50,8 @@ export function InstagramCommentMessage({
                 className={css.hidden}
             >
                 <HiddenCommentBanner onUnhide={onUnhide} />
-                <MessageBody item={item} />
+                <MessageBody item={displayedItem} />
+                <MessageFooter item={displayedItem} />
                 {actions}
             </SocialMessageBubble>
         )
@@ -54,7 +59,7 @@ export function InstagramCommentMessage({
 
     return (
         <SocialMessageBubble
-            item={item}
+            item={displayedItem}
             goToLink={goToLink}
             channelName="Instagram comment"
             channelFrom={channelFrom}
@@ -62,7 +67,8 @@ export function InstagramCommentMessage({
             failedMessageError="We couldn't deliver your comment"
         >
             {isAdComment && <Text size="sm">Ad</Text>}
-            <MessageBody item={item} />
+            <MessageBody item={displayedItem} />
+            <MessageFooter item={displayedItem} />
             {actions}
         </SocialMessageBubble>
     )

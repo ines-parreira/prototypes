@@ -1,10 +1,20 @@
+import type * as TicketsModule from '@repo/tickets'
+import {
+    DisplayedContent,
+    useCurrentUserLanguagePreferences,
+    useTicketMessageDisplayState,
+    useTicketMessageTranslations,
+} from '@repo/tickets'
 import { act, screen, within } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 
 import {
     mockGetCustomerHandler,
+    mockGetTicketHandler,
     mockGetUserAvailabilityHandler,
+    mockTicket,
     mockTicketMessage,
+    mockTicketMessageTranslation,
 } from '@gorgias/helpdesk-mocks'
 import type * as HelpdeskQueriesModule from '@gorgias/helpdesk-queries'
 import { useGetTicketMessage } from '@gorgias/helpdesk-queries'
@@ -28,7 +38,28 @@ vi.mock('@gorgias/helpdesk-queries', async (importOriginal) => {
     return { ...actual, useGetTicketMessage: vi.fn() }
 })
 
+vi.mock('@repo/tickets', async () => {
+    const actual = await vi.importActual<typeof TicketsModule>('@repo/tickets')
+    return {
+        ...actual,
+        useCurrentUserLanguagePreferences: vi.fn(() => ({
+            shouldShowTranslatedContent: () => false,
+        })),
+        useTicketMessageTranslations: vi.fn(() => ({
+            getMessageTranslation: () => null,
+        })),
+        useTicketMessageDisplayState: vi.fn(() => ({
+            display: actual.DisplayedContent.Original,
+        })),
+    }
+})
+
 const mockUseGetTicketMessage = vi.mocked(useGetTicketMessage)
+const mockUseCurrentUserLanguagePreferences = vi.mocked(
+    useCurrentUserLanguagePreferences,
+)
+const mockUseTicketMessageTranslations = vi.mocked(useTicketMessageTranslations)
+const mockUseTicketMessageDisplayState = vi.mocked(useTicketMessageDisplayState)
 
 const mockUseTicketThreadLegacyBridge = vi.mocked(useTicketThreadLegacyBridge)
 
@@ -40,12 +71,24 @@ beforeEach(() => {
     server.use(
         getCurrentUserHandler().handler,
         http.get('/api/users/:id', () => HttpResponse.json({})),
+        mockGetTicketHandler(async ({ params }) =>
+            HttpResponse.json(mockTicket({ id: Number(params?.id ?? 1) })),
+        ).handler,
         mockGetCustomerHandler().handler,
         mockGetUserAvailabilityHandler().handler,
     )
     mockUseGetTicketMessage.mockReturnValue({ data: undefined } as ReturnType<
         typeof useGetTicketMessage
     >)
+    mockUseCurrentUserLanguagePreferences.mockReturnValue({
+        shouldShowTranslatedContent: () => false,
+    } as ReturnType<typeof useCurrentUserLanguagePreferences>)
+    mockUseTicketMessageTranslations.mockReturnValue({
+        getMessageTranslation: () => null,
+    } as unknown as ReturnType<typeof useTicketMessageTranslations>)
+    mockUseTicketMessageDisplayState.mockReturnValue({
+        display: DisplayedContent.Original,
+    } as ReturnType<typeof useTicketMessageDisplayState>)
     const legacyBridgeValue: LegacyBridgeContextType = {
         currentTicketShoppingAssistantData: {
             influencedOrders: [],
@@ -109,6 +152,36 @@ function makeItem(
 
 describe('InstagramCommentMessageWrapper', () => {
     describe('inbound comment (from_agent: false)', () => {
+        it('renders the translated comment body when translation display is enabled', () => {
+            mockUseCurrentUserLanguagePreferences.mockReturnValue({
+                shouldShowTranslatedContent: () => true,
+            } as ReturnType<typeof useCurrentUserLanguagePreferences>)
+            mockUseTicketMessageDisplayState.mockReturnValue({
+                display: DisplayedContent.Translated,
+            } as ReturnType<typeof useTicketMessageDisplayState>)
+            mockUseTicketMessageTranslations.mockReturnValue({
+                getMessageTranslation: () =>
+                    mockTicketMessageTranslation({
+                        ticket_message_id: 42,
+                        stripped_text: 'Translated comment body',
+                        stripped_html: null,
+                    }),
+            } as unknown as ReturnType<typeof useTicketMessageTranslations>)
+
+            render(
+                <InstagramCommentMessageWrapper
+                    item={makeItem({ from_agent: false })}
+                />,
+            )
+
+            expect(
+                screen.getByText('Translated comment body'),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText('Original body text'),
+            ).not.toBeInTheDocument()
+        })
+
         it('calls onInstagramCommentPrivateReply with body_text as commentMessage', async () => {
             const { user } = render(
                 <InstagramCommentMessageWrapper

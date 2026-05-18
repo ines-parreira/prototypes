@@ -4,13 +4,28 @@ import { useExpandedMessages } from '../../../contexts/ExpandedMessages'
 import type {
     TicketThreadInternalNoteItem,
     TicketThreadRegularMessageItem,
+    TicketThreadSocialMediaFacebookMessageItem,
+    TicketThreadSocialMediaInstagramDirectMessageItem,
+    TicketThreadSocialMediaWhatsAppMessageItem,
 } from '../../../hooks/messages/types'
+import type { DisplayedTicketThreadMessageItem } from '../../TicketMessage/hooks/useDisplayedTicketMessage'
 import { getMessageVideoUrls } from './utils/getMessageVideoUrls'
 
 import css from './MessageVideos.less'
 
+type MessageVideosBaseItem =
+    | TicketThreadRegularMessageItem
+    | TicketThreadInternalNoteItem
+    | TicketThreadSocialMediaFacebookMessageItem
+    | TicketThreadSocialMediaInstagramDirectMessageItem
+    | TicketThreadSocialMediaWhatsAppMessageItem
+
+export type MessageVideosItem =
+    | MessageVideosBaseItem
+    | DisplayedTicketThreadMessageItem<MessageVideosBaseItem>
+
 type MessageVideosProps = {
-    item: TicketThreadRegularMessageItem | TicketThreadInternalNoteItem
+    item: MessageVideosItem
 }
 
 export function MessageVideos({ item }: MessageVideosProps) {

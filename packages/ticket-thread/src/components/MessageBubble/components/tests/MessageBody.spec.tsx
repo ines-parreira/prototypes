@@ -8,10 +8,11 @@ import {
 import type { TicketThreadRegularMessageItem } from '../../../../hooks/messages/types'
 import { TicketThreadItemTag } from '../../../../hooks/types'
 import { render } from '../../../../tests/render.utils'
-import type { DisplayedTicketThreadRegularMessageItem } from '../../../TicketMessage/hooks/useDisplayedTicketMessage'
+import type { DisplayedTicketThreadMessageItem } from '../../../TicketMessage/hooks/useDisplayedTicketMessage'
 import { MessageBody } from '../MessageBody'
 
-type MessageBodyData = DisplayedTicketThreadRegularMessageItem['data']
+type MessageBodyData =
+    DisplayedTicketThreadMessageItem<TicketThreadRegularMessageItem>['data']
 
 function makeItem(data: MessageBodyData): TicketThreadRegularMessageItem {
     return {

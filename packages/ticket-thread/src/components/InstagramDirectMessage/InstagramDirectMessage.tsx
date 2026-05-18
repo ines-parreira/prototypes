@@ -2,10 +2,11 @@ import { Box } from '@gorgias/axiom'
 
 import type { TicketThreadSocialMediaInstagramDirectMessageItem } from '../../hooks/messages/types'
 import { getSocialChannelIcon } from '../../utils/getSocialChannelIcon'
-import { MessageAttachments } from '../MessageBubble/components/MessageAttachments'
 import { MessageBody } from '../MessageBubble/components/MessageBody'
+import { MessageFooter } from '../MessageBubble/components/MessageFooter'
 import { OriginalCommentContext } from '../SocialMessageBubble/OriginalCommentContext'
 import { SocialMessageBubble } from '../SocialMessageBubble/SocialMessageBubble'
+import { useDisplayedTicketMessage } from '../TicketMessage/hooks/useDisplayedTicketMessage'
 import { TicketMessageActions } from '../TicketMessageActions/TicketMessageActions'
 
 type InstagramDirectMessageProps = {
@@ -13,6 +14,7 @@ type InstagramDirectMessageProps = {
 }
 
 export function InstagramDirectMessage({ item }: InstagramDirectMessageProps) {
+    const displayedItem = useDisplayedTicketMessage({ item })
     const channelFrom = item.data.source?.from?.name ?? null
     const channelTo = item.data.source?.to?.[0]?.name ?? null
     const meta = item.data.meta as any
@@ -43,7 +45,7 @@ export function InstagramDirectMessage({ item }: InstagramDirectMessageProps) {
                 width="100%"
             >
                 <SocialMessageBubble
-                    item={item}
+                    item={displayedItem}
                     channelIcon={
                         getSocialChannelIcon(item._tag) ?? 'comm-instagram'
                     }
@@ -52,9 +54,9 @@ export function InstagramDirectMessage({ item }: InstagramDirectMessageProps) {
                     channelTo={channelTo}
                     failedMessageError="We couldn't deliver your direct message"
                 >
-                    <MessageBody item={item} />
-                    <MessageAttachments item={item} />
-                    <TicketMessageActions message={item.data} />
+                    <MessageBody item={displayedItem} />
+                    <MessageFooter item={displayedItem} />
+                    <TicketMessageActions message={displayedItem.data} />
                 </SocialMessageBubble>
             </Box>
         </Box>

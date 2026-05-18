@@ -1,9 +1,18 @@
+import type * as TicketsModule from '@repo/tickets'
+import {
+    DisplayedContent,
+    useCurrentUserLanguagePreferences,
+    useTicketMessageDisplayState,
+    useTicketMessageTranslations,
+} from '@repo/tickets'
 import { screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 
 import {
     mockGetCustomerHandler,
+    mockGetTicketHandler,
     mockGetUserAvailabilityHandler,
+    mockTicket,
     mockTicketMessage,
 } from '@gorgias/helpdesk-mocks'
 
@@ -19,7 +28,28 @@ vi.mock('../../utils/LegacyBridge/useTicketThreadLegacyBridge', () => ({
     useTicketThreadLegacyBridge: vi.fn(),
 }))
 
+vi.mock('@repo/tickets', async () => {
+    const actual = await vi.importActual<typeof TicketsModule>('@repo/tickets')
+    return {
+        ...actual,
+        useCurrentUserLanguagePreferences: vi.fn(() => ({
+            shouldShowTranslatedContent: () => false,
+        })),
+        useTicketMessageTranslations: vi.fn(() => ({
+            getMessageTranslation: () => null,
+        })),
+        useTicketMessageDisplayState: vi.fn(() => ({
+            display: actual.DisplayedContent.Original,
+        })),
+    }
+})
+
 const mockUseTicketThreadLegacyBridge = vi.mocked(useTicketThreadLegacyBridge)
+const mockUseCurrentUserLanguagePreferences = vi.mocked(
+    useCurrentUserLanguagePreferences,
+)
+const mockUseTicketMessageTranslations = vi.mocked(useTicketMessageTranslations)
+const mockUseTicketMessageDisplayState = vi.mocked(useTicketMessageDisplayState)
 
 beforeEach(() => {
     window.GORGIAS_STATE = {
@@ -30,9 +60,21 @@ beforeEach(() => {
     server.use(
         getCurrentUserHandler().handler,
         http.get('/api/users/:id', () => HttpResponse.json({})),
+        mockGetTicketHandler(async ({ params }) =>
+            HttpResponse.json(mockTicket({ id: Number(params?.id ?? 1) })),
+        ).handler,
         mockGetCustomerHandler().handler,
         mockGetUserAvailabilityHandler().handler,
     )
+    mockUseCurrentUserLanguagePreferences.mockReturnValue({
+        shouldShowTranslatedContent: () => false,
+    } as ReturnType<typeof useCurrentUserLanguagePreferences>)
+    mockUseTicketMessageTranslations.mockReturnValue({
+        getMessageTranslation: () => null,
+    } as unknown as ReturnType<typeof useTicketMessageTranslations>)
+    mockUseTicketMessageDisplayState.mockReturnValue({
+        display: DisplayedContent.Original,
+    } as ReturnType<typeof useTicketMessageDisplayState>)
     mockUseTicketThreadLegacyBridge.mockReturnValue({
         currentTicketShoppingAssistantData: {
             influencedOrders: [],

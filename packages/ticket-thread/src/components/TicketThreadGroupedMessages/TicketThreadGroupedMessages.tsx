@@ -16,7 +16,6 @@ import type {
 } from '../../hooks/messages/types'
 import { TicketThreadItemTag } from '../../hooks/types'
 import { MessageAppliedActions } from '../MessageBubble/components/MessageAppliedActions'
-import { MessageAttachments } from '../MessageBubble/components/MessageAttachments'
 import { MessageBody } from '../MessageBubble/components/MessageBody'
 import { MessageErrors } from '../MessageBubble/components/MessageErrors'
 import { MessageFooter } from '../MessageBubble/components/MessageFooter'
@@ -130,6 +129,7 @@ function SocialGroupedMessage({
     className?: string
     children?: ReactNode
 }) {
+    const displayedItem = useDisplayedTicketMessage({ item })
     const isPendingMessage = isActivePendingMessageItem(item)
     const { ref: timestampRef, style } = useTimestampWidth()
 
@@ -147,18 +147,18 @@ function SocialGroupedMessage({
                 data-placement="top-right"
             >
                 <MessageTimestamp
-                    createdDatetime={item.data.created_datetime}
+                    createdDatetime={displayedItem.data.created_datetime}
                 />
             </div>
-            <MessageBody item={item} />
-            <MessageAttachments item={item} />
+            <MessageBody item={displayedItem} />
+            <MessageFooter item={displayedItem} />
             {children}
             {isPendingMessage ? (
-                <PendingMessageBanner message={item.data} />
+                <PendingMessageBanner message={displayedItem.data} />
             ) : null}
             {item.data.ticket_id && (
                 <MessageErrors
-                    message={item.data}
+                    message={displayedItem.data}
                     ticketId={item.data.ticket_id}
                     isPending={isPendingMessage}
                 />

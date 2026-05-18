@@ -10,24 +10,31 @@ import {
 import { useGetTicket } from '@gorgias/helpdesk-queries'
 import type { TicketMessageTranslation } from '@gorgias/helpdesk-types'
 
-import type { TicketThreadRegularMessageItem } from '../../../hooks/messages/types'
+import type { TicketThreadMessageData } from '../../../hooks/messages/types'
 
-type UseDisplayedTicketMessageParams = {
-    item: TicketThreadRegularMessageItem
+type TranslatableTicketThreadMessageItem = {
+    data: TicketThreadMessageData
 }
 
-export type DisplayedTicketThreadRegularMessageItem = Omit<
-    TicketThreadRegularMessageItem,
-    'data'
-> & {
-    data: TicketThreadRegularMessageItem['data'] & {
+type UseDisplayedTicketMessageParams<
+    TItem extends TranslatableTicketThreadMessageItem,
+> = {
+    item: TItem
+}
+
+export type DisplayedTicketThreadMessageItem<
+    TItem extends TranslatableTicketThreadMessageItem,
+> = Omit<TItem, 'data'> & {
+    data: TItem['data'] & {
         translations?: TicketMessageTranslation | null
     }
 }
 
-export function useDisplayedTicketMessage({
+export function useDisplayedTicketMessage<
+    TItem extends TranslatableTicketThreadMessageItem,
+>({
     item,
-}: UseDisplayedTicketMessageParams): DisplayedTicketThreadRegularMessageItem {
+}: UseDisplayedTicketMessageParams<TItem>): DisplayedTicketThreadMessageItem<TItem> {
     const ticketId = item.data.ticket_id
     const { display } = useTicketMessageDisplayState(item.data.id ?? 0)
     const { getMessageTranslation } = useTicketMessageTranslations({
@@ -41,7 +48,7 @@ export function useDisplayedTicketMessage({
             !item.data.id ||
             !shouldShowTranslatedContent(ticketData?.data?.language)
         ) {
-            return item
+            return item as DisplayedTicketThreadMessageItem<TItem>
         }
 
         const translation = getMessageTranslation(item.data.id)
@@ -56,7 +63,7 @@ export function useDisplayedTicketMessage({
             }
         }
 
-        return item
+        return item as DisplayedTicketThreadMessageItem<TItem>
     }, [
         item,
         display,
