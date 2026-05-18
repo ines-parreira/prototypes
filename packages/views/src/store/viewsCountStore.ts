@@ -3,23 +3,31 @@ import { createStore, useStore } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import { useShallow } from 'zustand/shallow'
 
-import { getViewIdFromUrl, isInboxRootUrl } from '../utils/url'
-import { markViewAsViewedV3 } from './viewsCountStoreV3'
+import { getViewIdFromUrl } from '../utils/url'
 
 export type ViewCountEntry = {
     count: number
     lastFetchedAt: string
-    lastViewedAt: string | null
+}
+
+/**
+ * Per-view recent-set entry. The map of these is the LRU pool the
+ * scheduler polls each tick — only views the user has actually
+ * activated this session are eligible.
+ */
+export type RecentEntry = {
+    viewedAt: string
 }
 
 export type ViewsCountState = {
+    /** Persisted per-view counts. Source of truth for staleness checks. */
     counts: Record<number, ViewCountEntry>
-    scores: Record<number, number>
+    /** LRU-ordered map of recently activated views. Session-local. */
+    recent: Record<number, RecentEntry>
+    /** Whether this tab currently holds the scheduler lock. */
     isLeader: boolean
-    activeViewId: number | null
-    fallbackActiveViewId: number | null
-    expandedSectionIds: string[] | undefined
-    viewportViewIds: number[]
+    /** Wall-clock ms timestamp of the leader's next tick. Debug only. */
+    nextTickAt: number | null
     setCounts: (counts: Record<number, number>) => void
 }
 
@@ -42,150 +50,75 @@ export function getViewCountEntry(viewId: number): ViewCountEntry | undefined {
     return viewsCountStore.getState().counts[viewId] ?? undefined
 }
 
-export function markViewAsViewed(viewId: number): void {
-    viewsCountStore.setState((state) => {
-        const entry = state.counts[viewId]
-        if (!entry) return state
-        return {
-            counts: {
-                ...state.counts,
-                [viewId]: {
-                    ...entry,
-                    lastViewedAt: new Date().toISOString(),
-                },
-            },
-        }
-    })
-    // Mirror the activation into the V3 scheduler's own recent map so
-    // whichever scheduler version is active picks up navigation.
-    markViewAsViewedV3(viewId)
-}
-
-export function getActiveViewId(): number | null {
-    return viewsCountStore.getState().activeViewId
-}
-
-export function setActiveViewFallback(viewId: number | null): void {
-    const urlViewId = getViewIdFromUrl()
-    viewsCountStore.setState({
-        fallbackActiveViewId: viewId,
-        activeViewId: urlViewId ?? viewId,
-    })
-    // If the URL has no explicit view ID but resolves to the inbox surface
-    // (/app, /app/views, /app/tickets), stamp the just-set fallback as
-    // viewed so the LRU recent set picks it up even before the user
-    // navigates.
-    if (urlViewId === null && viewId !== null && isInboxRootUrl()) {
-        markViewAsViewed(viewId)
-    }
-}
-
-export function getExpandedSectionIds(): string[] | undefined {
-    return viewsCountStore.getState().expandedSectionIds
-}
-
-export function expandSection(sectionId: string): void {
-    viewsCountStore.setState((state) => {
-        const ids = state.expandedSectionIds ?? []
-        if (ids.includes(sectionId)) return state
-        return { expandedSectionIds: [...ids, sectionId] }
-    })
-}
-
-export function collapseSection(sectionId: string): void {
-    viewsCountStore.setState((state) => {
-        const ids = state.expandedSectionIds ?? []
-        if (!ids.includes(sectionId)) return state
-        return {
-            expandedSectionIds: ids.filter((id) => id !== sectionId),
-        }
-    })
-}
-
-export function setScores(scores: Record<number, number>): void {
-    viewsCountStore.setState({ scores })
-}
-
-export function setViewportViewIds(viewIds: number[]): void {
-    viewsCountStore.setState({ viewportViewIds: viewIds })
-}
-
-export function getViewportViewIds(): number[] {
-    return viewsCountStore.getState().viewportViewIds
-}
-
 export function clearViewsCount(): void {
     viewsCountStore.setState({
         counts: {},
-        scores: {},
-        activeViewId: null,
-        fallbackActiveViewId: null,
-        expandedSectionIds: undefined,
-        viewportViewIds: [],
+        recent: {},
+        isLeader: false,
+        nextTickAt: null,
     })
 }
 
+export function markViewAsViewed(viewId: number): void {
+    viewsCountStore.setState((state) => ({
+        recent: {
+            ...state.recent,
+            [viewId]: { viewedAt: new Date().toISOString() },
+        },
+    }))
+}
+
+export function setNextTickAt(value: number | null): void {
+    viewsCountStore.setState({ nextTickAt: value })
+}
+
+/**
+ * Mirrors the URL's active view ID into the LRU recent set so the
+ * scheduler's tick refresh picks up navigation. Runs after hydration
+ * (via `onRehydrateStorage`) and on every URL change (`startUrlWatcher`).
+ */
 function syncViewedFromUrl(): void {
     const urlViewId = getViewIdFromUrl()
-    const { fallbackActiveViewId } = viewsCountStore.getState()
-    viewsCountStore.setState({
-        activeViewId: urlViewId ?? fallbackActiveViewId,
-    })
-    if (urlViewId !== null) {
-        markViewAsViewed(urlViewId)
-    } else if (isInboxRootUrl() && fallbackActiveViewId !== null) {
-        // /app, /app/views, /app/tickets all show the default inbox view —
-        // stamp the fallback so the LRU recent set treats it as a visited
-        // view.
-        markViewAsViewed(fallbackActiveViewId)
-    }
+    if (urlViewId !== null) markViewAsViewed(urlViewId)
 }
 
 function startUrlWatcher(): void {
     if (window.navigation) {
         window.navigation.addEventListener('navigatesuccess', syncViewedFromUrl)
-    } else {
-        window.addEventListener('popstate', syncViewedFromUrl)
+        return
+    }
+    window.addEventListener('popstate', syncViewedFromUrl)
 
-        const originalPushState = history.pushState.bind(history)
-        const originalReplaceState = history.replaceState.bind(history)
+    const originalPushState = history.pushState.bind(history)
+    const originalReplaceState = history.replaceState.bind(history)
 
-        history.pushState = (...args) => {
-            originalPushState(...args)
-            syncViewedFromUrl()
-        }
+    history.pushState = (...args) => {
+        originalPushState(...args)
+        syncViewedFromUrl()
+    }
 
-        history.replaceState = (...args) => {
-            originalReplaceState(...args)
-            syncViewedFromUrl()
-        }
+    history.replaceState = (...args) => {
+        originalReplaceState(...args)
+        syncViewedFromUrl()
     }
 }
 
-const viewsCountTable = localForageManager.getTable('views-count')
+const viewsCountTable = localForageManager.getTable('view-counts')
 
 export const viewsCountStore = createStore<ViewsCountState>()(
     persist(
         (set) => ({
             counts: {},
-            scores: {},
+            recent: {},
             isLeader: false,
-            activeViewId: null,
-            fallbackActiveViewId: null,
-            expandedSectionIds: undefined,
-            viewportViewIds: [],
+            nextTickAt: null,
             setCounts: (incoming) =>
                 set((state) => {
                     const now = new Date().toISOString()
                     const updated = { ...state.counts }
                     for (const [viewId, count] of Object.entries(incoming)) {
                         const id = Number(viewId)
-                        updated[id] = {
-                            count,
-                            lastFetchedAt: now,
-                            lastViewedAt:
-                                state.counts[id]?.lastViewedAt ?? null,
-                        }
+                        updated[id] = { count, lastFetchedAt: now }
                     }
                     return { counts: updated }
                 }),
@@ -202,11 +135,11 @@ export const viewsCountStore = createStore<ViewsCountState>()(
                     void viewsCountTable.removeItem(name)
                 },
             })),
-            partialize: (state) => ({
-                counts: state.counts,
-                activeViewId: state.activeViewId,
-                expandedSectionIds: state.expandedSectionIds,
-            }),
+            // Only `counts` is persisted. The recent set is intentionally
+            // session-local: a fresh tab starts with an empty LRU and only
+            // views the user activates this session count toward refresh
+            // selection. `isLeader` and `nextTickAt` are runtime-only.
+            partialize: (state) => ({ counts: state.counts }),
             onRehydrateStorage: () => () => {
                 syncViewedFromUrl()
                 startUrlWatcher()

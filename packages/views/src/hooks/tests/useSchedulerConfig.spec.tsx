@@ -1,12 +1,12 @@
 import { useFlag } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing/vitest'
 
-import { DEFAULT_REFRESH_CONFIG } from '../../scheduler/selectViewsToRefresh'
+import { DEFAULT_REFRESH_CONFIG } from '../../scheduler/refreshConfig'
 import { useSchedulerConfig } from '../useSchedulerConfig'
 
 vi.mock('@repo/feature-flags', () => ({
     FeatureFlagKey: {
-        ViewCountSchedulerConfig: 'view-count-scheduler-config',
+        ViewCountSchedulerV3Config: 'view-count-scheduler-v3-config',
     },
     useFlag: vi.fn(),
 }))
@@ -36,16 +36,16 @@ describe('useSchedulerConfig', () => {
 
     it('merges valid overrides onto the defaults', () => {
         useFlagMock.mockReturnValue({
-            tickIntervalSeconds: 60,
-            staleSeconds: 1200,
+            tickIntervalSeconds: 10,
+            maxRecentViews: 12,
         })
 
         const { result } = renderHook(() => useSchedulerConfig())
 
         expect(result.current).toEqual({
             ...DEFAULT_REFRESH_CONFIG,
-            tickIntervalSeconds: 60,
-            staleSeconds: 1200,
+            tickIntervalSeconds: 10,
+            maxRecentViews: 12,
         })
     })
 })

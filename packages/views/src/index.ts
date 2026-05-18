@@ -6,68 +6,43 @@ export {
     getViewCount,
     getViewCountEntry,
     markViewAsViewed,
-    getActiveViewId,
-    setActiveViewFallback,
+    setNextTickAt,
     clearViewsCount,
+    viewsCountStore,
 } from './store/viewsCountStore'
-export type { ViewCountEntry } from './store/viewsCountStore'
+export type { ViewCountEntry, RecentEntry } from './store/viewsCountStore'
 export {
-    createViewCountScheduler,
-    selectViewsToRefresh,
+    createScheduler,
     DEFAULT_REFRESH_CONFIG,
+    getTtlSecondsForCount,
     parseRefreshConfig,
     refreshConfigSchema,
-    createSchedulerV3,
-    DEFAULT_REFRESH_CONFIG_V3,
-    getTtlSecondsForCount,
-    parseRefreshConfigV3,
-    refreshConfigSchemaV3,
 } from './scheduler'
 export type {
     RefreshConfig,
     RefreshCallback,
+    FetchAllCallback,
+    Scheduler,
+    SchedulerOptions,
     RefreshConfigOverrides,
-    ViewCountScheduler,
-    ViewCountSchedulerOptions,
-    RefreshConfigV3,
-    RefreshCallbackV3,
-    FetchAllCallbackV3,
-    SchedulerV3,
-    SchedulerOptionsV3,
-    RefreshConfigOverridesV3,
 } from './scheduler'
 export {
-    isViewActive,
     isViewDeactivated,
-    isViewExpanded,
-    isViewInViewport,
     isViewHighPriority,
-    isViewLarge,
     isViewLowPriority,
-    isViewStale,
     isViewRealtime,
-    isViewRecentlyViewed,
     isViewSystem,
 } from './predicates'
 export { getViewIdFromUrl, isViewUrl } from './utils/url'
 export { getView, getAllViews } from './store/viewStore'
 export { logViewEvent, viewEventLogStore } from './store/viewEventLog'
 export type { ViewEvent } from './store/viewEventLog'
-export {
-    expandSection,
-    collapseSection,
-    getExpandedSectionIds,
-} from './store/viewsCountStore'
-export { useTrackViewInViewport } from './hooks/useTrackViewInViewport'
-export { useExpandedSections } from './hooks/useExpandedSections'
-export { useActiveView } from './hooks/useActiveView'
 export { useAllViews } from './hooks/useAllViews'
 export { useAllViewsLoaded } from './hooks/useAllViewsLoaded'
 export {
     useAllViewsOrdered,
     getAllViewsOrdered,
 } from './hooks/useAllViewsOrdered'
-export { useDefaultView } from './hooks/useDefaultView'
 export { useAllViewSections } from './hooks/useAllViewSections'
 export { usePrivateViews, getPrivateViews } from './hooks/usePrivateViews'
 export { usePrivateViewSections } from './hooks/usePrivateViewSections'
@@ -91,18 +66,6 @@ export {
     ViewCountSchedulerVersion,
 } from './hooks/useViewCountSchedulerVersion'
 export { useSchedulerConfig } from './hooks/useSchedulerConfig'
-export { useSchedulerConfigV3 } from './hooks/useSchedulerConfigV3'
-export {
-    viewsCountStoreV3,
-    clearViewsCountV3,
-    getLastFetchAllAtV3,
-    setLastFetchAllAtV3,
-    markViewAsViewedV3,
-} from './store/viewsCountStoreV3'
-export type {
-    ViewsCountStateV3,
-    RecentEntryV3,
-} from './store/viewsCountStoreV3'
 export type { SystemView } from './hooks/useSystemViews'
 export type {
     DisplayOrderMap,

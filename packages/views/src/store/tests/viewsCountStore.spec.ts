@@ -1,23 +1,15 @@
-import { renderHook, waitFor } from '@testing-library/react'
+import { renderHook } from '@testing-library/react'
 
 import {
     clearViewsCount,
-    collapseSection,
-    expandSection,
-    getActiveViewId,
-    getExpandedSectionIds,
     getViewCount,
     getViewCountEntry,
-    getViewportViewIds,
     markViewAsViewed,
-    setActiveViewFallback,
-    setScores,
-    setViewportViewIds,
+    setNextTickAt,
     setViewsCount,
     useViewCount,
     viewsCountStore,
 } from '../viewsCountStore'
-import { clearViewsCountV3, viewsCountStoreV3 } from '../viewsCountStoreV3'
 
 vi.mock('@repo/browser-storage', () => ({
     localForageManager: {
@@ -31,33 +23,21 @@ vi.mock('@repo/browser-storage', () => ({
 
 beforeEach(() => {
     clearViewsCount()
-    clearViewsCountV3()
-    Object.defineProperty(window, 'location', {
-        value: { pathname: '/' },
-        writable: true,
-    })
 })
 
 describe('setViewsCount', () => {
-    it('sets counts on the store', () => {
+    it('sets counts with a lastFetchedAt timestamp', () => {
         setViewsCount({ 1: 10, 2: 20 })
 
         const { counts } = viewsCountStore.getState()
         expect(counts[1]).toEqual({
             count: 10,
             lastFetchedAt: expect.any(String),
-
-            lastViewedAt: null,
         })
-        expect(counts[2]).toEqual({
-            count: 20,
-            lastFetchedAt: expect.any(String),
-
-            lastViewedAt: null,
-        })
+        expect(counts[2]?.count).toBe(20)
     })
 
-    it('merges with existing counts', () => {
+    it('merges incoming counts onto existing entries', () => {
         setViewsCount({ 1: 10 })
         setViewsCount({ 2: 20 })
 
@@ -66,321 +46,122 @@ describe('setViewsCount', () => {
         expect(counts[2]?.count).toBe(20)
     })
 
-    it('overwrites existing counts for the same view', () => {
+    it('overwrites the count for an existing view', () => {
         setViewsCount({ 1: 10 })
         setViewsCount({ 1: 42 })
 
         expect(viewsCountStore.getState().counts[1]?.count).toBe(42)
     })
+})
 
-    it('sets lastFetchedAt timestamp on each entry', () => {
-        const before = new Date().toISOString()
+describe('getViewCount / getViewCountEntry', () => {
+    it('returns the count for a known view', () => {
         setViewsCount({ 1: 10 })
-        const after = new Date().toISOString()
 
-        const entry = viewsCountStore.getState().counts[1]
-        expect(entry?.lastFetchedAt).toBeDefined()
-        expect(entry!.lastFetchedAt >= before).toBe(true)
-        expect(entry!.lastFetchedAt <= after).toBe(true)
+        expect(getViewCount(1)).toBe(10)
+        expect(getViewCountEntry(1)?.count).toBe(10)
+    })
+
+    it('returns undefined for an unknown view', () => {
+        expect(getViewCount(999)).toBeUndefined()
+        expect(getViewCountEntry(999)).toBeUndefined()
     })
 })
 
 describe('useViewCount', () => {
-    it('returns undefined when no count exists for the view', () => {
+    it('subscribes to the count for a single view', () => {
+        setViewsCount({ 1: 42 })
+
+        const { result } = renderHook(() => useViewCount(1))
+
+        expect(result.current).toBe(42)
+    })
+
+    it('returns undefined when the view has no count yet', () => {
         const { result } = renderHook(() => useViewCount(999))
 
         expect(result.current).toBeUndefined()
     })
+})
 
-    it('returns the count for a given view', () => {
-        setViewsCount({ 5: 50 })
+describe('markViewAsViewed', () => {
+    it('adds the view to the LRU recent set with a timestamp', () => {
+        markViewAsViewed(42)
 
-        const { result } = renderHook(() => useViewCount(5))
-
-        expect(result.current).toBe(50)
+        const entry = viewsCountStore.getState().recent[42]
+        expect(entry?.viewedAt).toEqual(expect.any(String))
     })
 
-    it('reacts to count updates', async () => {
-        const { result } = renderHook(() => useViewCount(3))
+    it('overwrites the timestamp on a subsequent activation', () => {
+        vi.useFakeTimers()
+        try {
+            vi.setSystemTime(new Date('2025-01-01T00:00:00.000Z'))
+            markViewAsViewed(1)
+            const first = viewsCountStore.getState().recent[1]?.viewedAt
 
-        expect(result.current).toBeUndefined()
+            vi.setSystemTime(new Date('2025-01-01T00:00:01.000Z'))
+            markViewAsViewed(1)
+            const second = viewsCountStore.getState().recent[1]?.viewedAt
 
-        setViewsCount({ 3: 30 })
-
-        await waitFor(() => {
-            expect(result.current).toBe(30)
-        })
-    })
-
-    it('returns zero for a zero count', () => {
-        setViewsCount({ 7: 0 })
-
-        const { result } = renderHook(() => useViewCount(7))
-
-        expect(result.current).toBe(0)
+            expect(second).not.toBe(first)
+        } finally {
+            vi.useRealTimers()
+        }
     })
 })
 
-describe('getViewCount', () => {
-    it('returns undefined when no count exists', () => {
-        expect(getViewCount(999)).toBeUndefined()
-    })
+describe('setNextTickAt', () => {
+    it('round-trips through the store', () => {
+        setNextTickAt(1234)
 
-    it('returns the count for a given view', () => {
-        setViewsCount({ 5: 50 })
-
-        expect(getViewCount(5)).toBe(50)
-    })
-
-    it('returns zero for a zero count', () => {
-        setViewsCount({ 7: 0 })
-
-        expect(getViewCount(7)).toBe(0)
+        expect(viewsCountStore.getState().nextTickAt).toBe(1234)
     })
 })
 
-describe('getViewCountEntry', () => {
-    it('returns undefined when no entry exists', () => {
-        expect(getViewCountEntry(999)).toBeUndefined()
+describe('URL watcher', () => {
+    // `startUrlWatcher` monkey-patches `history.pushState`/`replaceState` and
+    // listens for `popstate` during hydration. Once hydrated, every URL
+    // change should run `syncViewedFromUrl`, which marks the URL's view
+    // (e.g. `/app/views/42`) as viewed in the LRU.
+    beforeEach(() => {
+        // Some other test in this file may have left a view in the recent
+        // set; reset both sides so we observe the URL effect cleanly.
+        viewsCountStore.setState({ recent: {} })
     })
 
-    it('returns the full entry for a given view', () => {
-        setViewsCount({ 5: 50 })
+    it('marks the URL view as viewed when pushState navigates to /app/views/:id', () => {
+        history.pushState({}, '', '/app/views/42')
 
-        const entry = getViewCountEntry(5)
-        expect(entry).toEqual({
-            count: 50,
-            lastFetchedAt: expect.any(String),
+        expect(viewsCountStore.getState().recent[42]).toBeDefined()
+    })
 
-            lastViewedAt: null,
-        })
+    it('marks the URL view as viewed when replaceState navigates', () => {
+        history.replaceState({}, '', '/app/views/77')
+
+        expect(viewsCountStore.getState().recent[77]).toBeDefined()
+    })
+
+    it('does not mark anything when navigating to a non-view URL', () => {
+        history.pushState({}, '', '/app/customers')
+
+        expect(viewsCountStore.getState().recent).toEqual({})
     })
 })
 
 describe('clearViewsCount', () => {
-    it('clears all counts', () => {
-        setViewsCount({ 1: 10, 2: 20 })
+    it('resets counts, recent, leader state, and nextTickAt', () => {
+        setViewsCount({ 1: 10 })
+        markViewAsViewed(1)
+        viewsCountStore.setState({ isLeader: true })
+        setNextTickAt(1234)
 
         clearViewsCount()
 
-        expect(viewsCountStore.getState().counts).toEqual({})
-    })
-})
-
-describe('markViewAsViewed', () => {
-    it('stamps lastViewedAt on an existing entry', () => {
-        setViewsCount({ 1: 10 })
-
-        markViewAsViewed(1)
-
-        expect(viewsCountStore.getState().counts[1]?.lastViewedAt).toEqual(
-            expect.any(String),
-        )
-    })
-
-    it('does nothing when the entry does not exist', () => {
-        markViewAsViewed(999)
-
-        expect(viewsCountStore.getState().counts[999]).toBeUndefined()
-    })
-})
-
-describe('collapseSection', () => {
-    it('removes the section from expandedSectionIds', () => {
-        expandSection('section-1')
-        expandSection('section-2')
-
-        collapseSection('section-1')
-
-        expect(viewsCountStore.getState().expandedSectionIds).toEqual([
-            'section-2',
-        ])
-    })
-
-    it('does nothing when the section is not expanded', () => {
-        viewsCountStore.setState({ expandedSectionIds: ['section-1'] })
-
-        collapseSection('section-99')
-
-        expect(viewsCountStore.getState().expandedSectionIds).toEqual([
-            'section-1',
-        ])
-    })
-})
-
-describe('expandSection', () => {
-    it('is a no-op when the section is already expanded', () => {
-        expandSection('section-1')
-
-        expandSection('section-1')
-
-        expect(viewsCountStore.getState().expandedSectionIds).toEqual([
-            'section-1',
-        ])
-    })
-})
-
-describe('url watcher', () => {
-    it('syncs activeViewId on history.pushState', () => {
-        Object.defineProperty(window, 'location', {
-            value: { pathname: '/views/42' },
-            writable: true,
+        expect(viewsCountStore.getState()).toMatchObject({
+            counts: {},
+            recent: {},
+            isLeader: false,
+            nextTickAt: null,
         })
-
-        history.pushState({}, '', '/views/42')
-
-        expect(viewsCountStore.getState().activeViewId).toBe(42)
-    })
-
-    it('syncs activeViewId on history.replaceState', () => {
-        Object.defineProperty(window, 'location', {
-            value: { pathname: '/views/99' },
-            writable: true,
-        })
-
-        history.replaceState({}, '', '/views/99')
-
-        expect(viewsCountStore.getState().activeViewId).toBe(99)
-    })
-
-    it('marks view as viewed when navigating to a view URL', () => {
-        setViewsCount({ 42: 10 })
-        Object.defineProperty(window, 'location', {
-            value: { pathname: '/views/42' },
-            writable: true,
-        })
-
-        history.pushState({}, '', '/views/42')
-
-        expect(viewsCountStore.getState().counts[42]?.lastViewedAt).toEqual(
-            expect.any(String),
-        )
-    })
-
-    it('sets activeViewId to null for non-view URLs', () => {
-        viewsCountStore.setState({ activeViewId: 1 })
-        Object.defineProperty(window, 'location', {
-            value: { pathname: '/settings' },
-            writable: true,
-        })
-
-        history.pushState({}, '', '/settings')
-
-        expect(viewsCountStore.getState().activeViewId).toBeNull()
-    })
-})
-
-describe('viewsCountStore persistence', () => {
-    it('can clear persisted storage', async () => {
-        setViewsCount({ 1: 10 })
-
-        await viewsCountStore.persist.clearStorage()
-
-        expect(viewsCountStore.getState().counts[1]?.count).toBe(10)
-    })
-})
-
-describe('getActiveViewId', () => {
-    it('returns null when no view is active', () => {
-        expect(getActiveViewId()).toBeNull()
-    })
-
-    it('returns the active view ID', () => {
-        viewsCountStore.setState({ activeViewId: 42 })
-
-        expect(getActiveViewId()).toBe(42)
-    })
-})
-
-describe('getExpandedSectionIds', () => {
-    it('returns undefined when no sections have been set', () => {
-        expect(getExpandedSectionIds()).toBeUndefined()
-    })
-
-    it('returns the expanded section IDs', () => {
-        viewsCountStore.setState({
-            expandedSectionIds: ['public', 'section-1'],
-        })
-
-        expect(getExpandedSectionIds()).toEqual(['public', 'section-1'])
-    })
-})
-
-describe('setScores', () => {
-    it('sets scores on the store', () => {
-        setScores({ 1: 100, 2: 200 })
-
-        expect(viewsCountStore.getState().scores).toEqual({ 1: 100, 2: 200 })
-    })
-
-    it('replaces previous scores', () => {
-        setScores({ 1: 100 })
-        setScores({ 2: 200 })
-
-        expect(viewsCountStore.getState().scores).toEqual({ 2: 200 })
-    })
-})
-
-describe('setViewportViewIds', () => {
-    it('replaces the viewport list', () => {
-        setViewportViewIds([1, 2, 3])
-
-        expect(getViewportViewIds()).toEqual([1, 2, 3])
-    })
-
-    it('overwrites prior values', () => {
-        setViewportViewIds([1, 2])
-        setViewportViewIds([3])
-
-        expect(getViewportViewIds()).toEqual([3])
-    })
-})
-
-describe('getViewportViewIds', () => {
-    it('returns empty array by default', () => {
-        expect(getViewportViewIds()).toEqual([])
-    })
-})
-
-describe('setActiveViewFallback on inbox-root URLs', () => {
-    it.each(['/app', '/app/', '/app/views', '/app/views/', '/app/tickets'])(
-        'marks the fallback as viewed when the URL is %s',
-        (pathname) => {
-            window.location.pathname = pathname
-            setViewsCount({ 42: 5 })
-
-            setActiveViewFallback(42)
-
-            expect(viewsCountStore.getState().counts[42]?.lastViewedAt).toEqual(
-                expect.any(String),
-            )
-            expect(viewsCountStoreV3.getState().recent[42]).toEqual({
-                viewedAt: expect.any(String),
-            })
-        },
-    )
-
-    it('does not mark the fallback when the URL is /app/settings', () => {
-        window.location.pathname = '/app/settings'
-
-        setActiveViewFallback(42)
-
-        expect(viewsCountStoreV3.getState().recent[42]).toBeUndefined()
-    })
-
-    it('does not mark anything when the URL has an explicit view ID', () => {
-        window.location.pathname = '/app/tickets/999'
-
-        setActiveViewFallback(42)
-
-        expect(viewsCountStoreV3.getState().recent[42]).toBeUndefined()
-    })
-
-    it('does not mark when the fallback is cleared', () => {
-        window.location.pathname = '/app'
-
-        setActiveViewFallback(null)
-
-        expect(viewsCountStoreV3.getState().recent).toEqual({})
     })
 })

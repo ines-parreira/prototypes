@@ -5,16 +5,11 @@ import type { View } from '@gorgias/helpdesk-types'
 
 import {
     clearViewsCount,
+    markViewAsViewed,
     setViewsCount,
     viewsCountStore,
 } from '../../store/viewsCountStore'
-import {
-    clearViewsCountV3,
-    markViewAsViewedV3,
-    setLastFetchAllAtV3,
-    viewsCountStoreV3,
-} from '../../store/viewsCountStoreV3'
-import { createSchedulerV3 } from '../schedulerV3'
+import { createScheduler } from '../scheduler'
 
 vi.mock('@repo/browser-storage', () => ({
     localForageManager: {
@@ -61,18 +56,28 @@ function setSystemViews(views: View[]): void {
 
 /**
  * Bumps the fake clock by 1 ms before each call so successive
- * `markViewAsViewedV3` invocations produce distinct timestamps and a
- * deterministic V3 order.
+ * `markViewAsViewed` invocations produce distinct timestamps and a
+ * deterministic LRU order.
  */
 function markViewed(viewId: number): void {
     vi.advanceTimersByTime(1)
-    markViewAsViewedV3(viewId)
+    markViewAsViewed(viewId)
+}
+
+/**
+ * Drains queued microtasks. `becomeLeader` awaits hydration before
+ * scanning views — a single Promise.resolve hop is not enough to settle
+ * the async continuation in all cases.
+ */
+async function flushMicrotasks(): Promise<void> {
+    for (let i = 0; i < 5; i++) {
+        await new Promise<void>((resolve) => queueMicrotask(resolve))
+    }
 }
 
 beforeEach(() => {
     appQueryClient.clear()
     clearViewsCount()
-    clearViewsCountV3()
     vi.useFakeTimers()
 })
 
@@ -83,7 +88,7 @@ afterEach(() => {
 describe('tick', () => {
     it('emits expired recent view IDs', () => {
         const onRefresh = vi.fn()
-        const scheduler = createSchedulerV3({ onRefresh })
+        const scheduler = createScheduler({ onRefresh })
 
         setAllViews([makeView(1), makeView(2)])
         setViewsCount({ 1: 50, 2: 60 })
@@ -98,7 +103,7 @@ describe('tick', () => {
 
     it('skips views still inside the TTL window', () => {
         const onRefresh = vi.fn()
-        const scheduler = createSchedulerV3({ onRefresh })
+        const scheduler = createScheduler({ onRefresh })
 
         setAllViews([makeView(1)])
         setViewsCount({ 1: 50 })
@@ -112,7 +117,7 @@ describe('tick', () => {
 
     it('always emits views with no lastFetchedAt', () => {
         const onRefresh = vi.fn()
-        const scheduler = createSchedulerV3({ onRefresh })
+        const scheduler = createScheduler({ onRefresh })
 
         setAllViews([makeView(1)])
         markViewed(1) // no setViewsCount → no entry in viewsCountStore.counts
@@ -124,7 +129,7 @@ describe('tick', () => {
 
     it('uses per-count TTL: large views age out slower than small ones', () => {
         const onRefresh = vi.fn()
-        const scheduler = createSchedulerV3({ onRefresh })
+        const scheduler = createScheduler({ onRefresh })
 
         setAllViews([makeView(1), makeView(2)])
         // View 1: 50 tickets → 30 s TTL. View 2: 1000 tickets → 600 s TTL.
@@ -142,7 +147,7 @@ describe('tick', () => {
 
     it('refreshes a 100-count view after 60 s (1 min per 100 tickets)', () => {
         const onRefresh = vi.fn()
-        const scheduler = createSchedulerV3({ onRefresh })
+        const scheduler = createScheduler({ onRefresh })
 
         setAllViews([makeView(1)])
         setViewsCount({ 1: 100 })
@@ -161,7 +166,7 @@ describe('tick', () => {
 
     it('caps the recent pool at maxRecentViews (V3 order)', () => {
         const onRefresh = vi.fn()
-        const scheduler = createSchedulerV3({
+        const scheduler = createScheduler({
             onRefresh,
             config: { maxRecentViews: 2 },
         })
@@ -178,7 +183,7 @@ describe('tick', () => {
 
     it('skips refresh when shouldRefresh returns false', () => {
         const onRefresh = vi.fn()
-        const scheduler = createSchedulerV3({
+        const scheduler = createScheduler({
             onRefresh,
             shouldRefresh: () => false,
         })
@@ -193,7 +198,7 @@ describe('tick', () => {
 
     it('does nothing when the recent pool is empty', () => {
         const onRefresh = vi.fn()
-        const scheduler = createSchedulerV3({ onRefresh })
+        const scheduler = createScheduler({ onRefresh })
 
         setAllViews([makeView(1)])
 
@@ -203,7 +208,7 @@ describe('tick', () => {
     })
 
     it('stamps nextTickAt on each tick', () => {
-        const scheduler = createSchedulerV3({
+        const scheduler = createScheduler({
             onRefresh: vi.fn(),
             config: { tickIntervalSeconds: 7 },
         })
@@ -211,16 +216,16 @@ describe('tick', () => {
         const before = Date.now()
         scheduler.tick()
 
-        const stamped = viewsCountStoreV3.getState().nextTickAt
+        const stamped = viewsCountStore.getState().nextTickAt
         expect(stamped).not.toBeNull()
         expect((stamped ?? 0) - before).toBeGreaterThanOrEqual(7_000)
     })
 })
 
-describe('fetch all', () => {
-    it('fires once on first leader takeover and stamps lastFetchAllAt', async () => {
+describe('takeover stale-view scan', () => {
+    it('dispatches every view on first takeover when counts are empty', async () => {
         const onFetchAll = vi.fn()
-        const scheduler = createSchedulerV3({
+        const scheduler = createScheduler({
             onRefresh: vi.fn(),
             onFetchAll,
         })
@@ -228,22 +233,58 @@ describe('fetch all', () => {
         setAllViews([makeView(1), makeView(2), makeView(3)])
 
         scheduler.start()
-        await Promise.resolve()
+        await flushMicrotasks()
 
         expect(onFetchAll).toHaveBeenCalledTimes(1)
         expect(onFetchAll).toHaveBeenCalledWith([1, 2, 3])
-        expect(viewsCountStoreV3.getState().lastFetchAllAt).not.toBeNull()
     })
 
-    it('emits the union of system + public views via getAllViewsOrdered (system first, dedupe by id)', async () => {
+    it('excludes deactivated views from the takeover dispatch', async () => {
         const onFetchAll = vi.fn()
-        const scheduler = createSchedulerV3({
+        const scheduler = createScheduler({
             onRefresh: vi.fn(),
             onFetchAll,
         })
 
-        // Public views from the no-category cache (visibility undefined →
-        // treated as public by usePublicViews filter).
+        setAllViews([
+            makeView(1),
+            { ...makeView(2), deactivated_datetime: '2024-01-01T00:00:00Z' },
+            makeView(3),
+        ])
+
+        scheduler.start()
+        await flushMicrotasks()
+
+        expect(onFetchAll).toHaveBeenCalledTimes(1)
+        expect(onFetchAll).toHaveBeenCalledWith([1, 3])
+    })
+
+    it('does not dispatch at all when every view is deactivated', async () => {
+        const onFetchAll = vi.fn()
+        const scheduler = createScheduler({
+            onRefresh: vi.fn(),
+            onFetchAll,
+        })
+
+        setAllViews([
+            { ...makeView(1), deactivated_datetime: '2024-01-01T00:00:00Z' },
+            { ...makeView(2), deactivated_datetime: '2024-01-01T00:00:00Z' },
+        ])
+
+        scheduler.start()
+        await flushMicrotasks()
+
+        expect(onFetchAll).not.toHaveBeenCalled()
+    })
+
+    it('emits the union of system + public views via getAllViewsOrdered (system first, dedupe by id)', async () => {
+        const onFetchAll = vi.fn()
+        const scheduler = createScheduler({
+            onRefresh: vi.fn(),
+            onFetchAll,
+        })
+
+        // Public views from the no-category cache.
         setAllViews([makeView(1), makeView(2)])
         // System views must use real names; selectSystemViews filters by
         // TOP/BOTTOM_SYSTEM_VIEW_NAMES.
@@ -254,117 +295,96 @@ describe('fetch all', () => {
         ])
 
         scheduler.start()
-        await Promise.resolve()
+        await flushMicrotasks()
 
         expect(onFetchAll).toHaveBeenCalledTimes(1)
         const [emitted] = onFetchAll.mock.calls[0] as [number[]]
-        // System first (10, 11, 12 in top order), then public (1, 2).
         expect(emitted).toEqual([10, 11, 12, 1, 2])
     })
 
-    it('does not fire when the stamp is younger than fetchAllMinCooldownSeconds', async () => {
+    it('skips views whose persisted lastFetchedAt is still inside initialFetchTtlSeconds', async () => {
         const onFetchAll = vi.fn()
-        const scheduler = createSchedulerV3({
+        const scheduler = createScheduler({
             onRefresh: vi.fn(),
             onFetchAll,
+            config: { initialFetchTtlSeconds: 3600 },
         })
 
         setAllViews([makeView(1)])
-        setLastFetchAllAtV3(new Date().toISOString())
-        // Non-empty counts prove the prior fetch landed, so the cooldown
-        // gate is honored. See the empty-counts bypass test below.
+        // setViewsCount stamps lastFetchedAt = now → well within the 1 h
+        // initial-fetch TTL, so the scan finds nothing stale.
         setViewsCount({ 1: 5 })
 
         scheduler.start()
-        await Promise.resolve()
+        await flushMicrotasks()
 
         expect(onFetchAll).not.toHaveBeenCalled()
     })
 
-    it('bypasses the cooldown when counts are empty (prior dispatch never landed)', async () => {
+    it('skips views whose tick-TTL has expired but are still inside initialFetchTtlSeconds', async () => {
         const onFetchAll = vi.fn()
-        const scheduler = createSchedulerV3({
+        const scheduler = createScheduler({
             onRefresh: vi.fn(),
             onFetchAll,
+            config: { initialFetchTtlSeconds: 3600 },
         })
 
         setAllViews([makeView(1)])
-        setLastFetchAllAtV3(new Date().toISOString())
-        // counts stays empty — simulates the dispatch-then-tab-close gap
-        // where the stamp was persisted but the socket reply never arrived.
+        // 10 minutes old: well past the per-count tick TTL (30 s for 5
+        // tickets) but inside the 1 h initial-fetch TTL. The takeover scan
+        // must not dispatch this view; redispatching every focus-driven
+        // steal would defeat the bulk-refresh budget.
+        viewsCountStore.setState({
+            counts: {
+                1: {
+                    count: 5,
+                    lastFetchedAt: new Date(
+                        Date.now() - 10 * 60_000,
+                    ).toISOString(),
+                },
+            },
+        })
 
         scheduler.start()
-        await Promise.resolve()
+        await flushMicrotasks()
+
+        expect(onFetchAll).not.toHaveBeenCalled()
+    })
+
+    it('dispatches only the stale subset, leaving fresh views alone', async () => {
+        const onFetchAll = vi.fn()
+        const scheduler = createScheduler({
+            onRefresh: vi.fn(),
+            onFetchAll,
+            config: { initialFetchTtlSeconds: 3600 },
+        })
+
+        setAllViews([makeView(1), makeView(2)])
+        setViewsCount({ 1: 5, 2: 5 })
+        // View 1's persisted entry predates the initial-fetch TTL; view 2
+        // stays fresh.
+        viewsCountStore.setState((state) => ({
+            counts: {
+                ...state.counts,
+                1: {
+                    count: 5,
+                    lastFetchedAt: new Date(
+                        Date.now() - 2 * 60 * 60_000,
+                    ).toISOString(),
+                },
+            },
+        }))
+
+        scheduler.start()
+        await flushMicrotasks()
 
         expect(onFetchAll).toHaveBeenCalledTimes(1)
         expect(onFetchAll).toHaveBeenCalledWith([1])
     })
 
-    it('does not re-bypass the cooldown on focus while replies are still in flight', async () => {
+    it('does not re-dispatch on a subsequent steal once counts are fresh', async () => {
         const onFetchAll = vi.fn()
-        const scheduler = createSchedulerV3({
-            onRefresh: vi.fn(),
-            onFetchAll,
-        })
-
-        setAllViews([makeView(1)])
-        setLastFetchAllAtV3(new Date().toISOString())
-
-        scheduler.start()
-        await Promise.resolve()
-        expect(onFetchAll).toHaveBeenCalledTimes(1)
-
-        // Focus the tab again before any socket reply has landed. With the
-        // recovery bypass naively keyed on empty counts, this would fire a
-        // second full fetch-all and defeat the cooldown. The one-shot flag
-        // suppresses it.
-        scheduler.steal()
-        await Promise.resolve()
-        expect(onFetchAll).toHaveBeenCalledTimes(1)
-    })
-
-    it('re-fires on leader takeover when the stamp is older than fetchAllMinCooldownSeconds', async () => {
-        const onFetchAll = vi.fn()
-        const scheduler = createSchedulerV3({
-            onRefresh: vi.fn(),
-            onFetchAll,
-            config: { fetchAllMinCooldownSeconds: 60 },
-        })
-
-        setAllViews([makeView(1)])
-        const oldStamp = new Date(Date.now() - 5 * 60_000).toISOString()
-        setLastFetchAllAtV3(oldStamp)
-        setViewsCount({ 1: 5 })
-
-        scheduler.start()
-        await Promise.resolve()
-
-        expect(onFetchAll).toHaveBeenCalledTimes(1)
-        expect(viewsCountStoreV3.getState().lastFetchAllAt).not.toBe(oldStamp)
-    })
-
-    it('fires every leader takeover when the cooldown is 0', async () => {
-        const onFetchAll = vi.fn()
-        const scheduler = createSchedulerV3({
-            onRefresh: vi.fn(),
-            onFetchAll,
-            config: { fetchAllMinCooldownSeconds: 0 },
-        })
-
-        setAllViews([makeView(1)])
-
-        scheduler.start()
-        await Promise.resolve()
-        expect(onFetchAll).toHaveBeenCalledTimes(1)
-
-        scheduler.steal()
-        await Promise.resolve()
-        expect(onFetchAll).toHaveBeenCalledTimes(2)
-    })
-
-    it('does not fire a second time on subsequent steal()', async () => {
-        const onFetchAll = vi.fn()
-        const scheduler = createSchedulerV3({
+        const scheduler = createScheduler({
             onRefresh: vi.fn(),
             onFetchAll,
         })
@@ -372,68 +392,137 @@ describe('fetch all', () => {
         setAllViews([makeView(1)])
 
         scheduler.start()
-        await Promise.resolve()
+        await flushMicrotasks()
         expect(onFetchAll).toHaveBeenCalledTimes(1)
 
-        // Simulate the socket reply landing between start and steal; with
-        // counts populated, the cooldown gate is honored on the next leader
-        // takeover instead of being bypassed.
+        // Simulate the reply landing — lastFetchedAt is stamped to now.
         setViewsCount({ 1: 5 })
 
         scheduler.steal()
-        await Promise.resolve()
+        await flushMicrotasks()
         expect(onFetchAll).toHaveBeenCalledTimes(1)
+    })
+
+    it('redispatches on a takeover for views older than initialFetchTtlSeconds', async () => {
+        const onFetchAll = vi.fn()
+        const scheduler = createScheduler({
+            onRefresh: vi.fn(),
+            onFetchAll,
+            config: { initialFetchTtlSeconds: 3600 },
+        })
+
+        setAllViews([makeView(1)])
+        viewsCountStore.setState({
+            counts: {
+                1: {
+                    count: 5,
+                    lastFetchedAt: new Date(
+                        Date.now() - 2 * 60 * 60_000,
+                    ).toISOString(),
+                },
+            },
+        })
+
+        scheduler.start()
+        await flushMicrotasks()
+
+        expect(onFetchAll).toHaveBeenCalledTimes(1)
+        expect(onFetchAll).toHaveBeenCalledWith([1])
     })
 
     it('is a no-op when no views are loaded yet', async () => {
         const onFetchAll = vi.fn()
-        const scheduler = createSchedulerV3({
+        const scheduler = createScheduler({
             onRefresh: vi.fn(),
             onFetchAll,
         })
 
         scheduler.start()
-        await Promise.resolve()
+        await flushMicrotasks()
 
         expect(onFetchAll).not.toHaveBeenCalled()
-        expect(viewsCountStoreV3.getState().lastFetchAllAt).toBeNull()
     })
 
-    it('waits for the V1 counts store to hydrate before firing', async () => {
+    it('waits for the counts store to hydrate before scanning', async () => {
         const onFetchAll = vi.fn()
-        let finishV1Hydration: (() => void) | undefined
+        let finishHydration: (() => void) | undefined
         const hasHydratedSpy = vi
             .spyOn(viewsCountStore.persist, 'hasHydrated')
             .mockReturnValue(false)
         const onFinishHydrationSpy = vi
             .spyOn(viewsCountStore.persist, 'onFinishHydration')
             .mockImplementation((cb) => {
-                finishV1Hydration = cb as () => void
+                finishHydration = cb as () => void
                 return () => {}
             })
 
         setAllViews([makeView(1)])
-        const scheduler = createSchedulerV3({
+        const scheduler = createScheduler({
             onRefresh: vi.fn(),
             onFetchAll,
         })
         scheduler.start()
-        await Promise.resolve()
+        await flushMicrotasks()
 
-        // V1 still hydrating → maybeFireFetchAll has not run yet.
         expect(onFetchAll).not.toHaveBeenCalled()
-        expect(finishV1Hydration).toBeDefined()
+        expect(finishHydration).toBeDefined()
 
-        // Simulate V1 finishing hydration; subsequent reads see counts ready.
-        // Multiple microtask hops are required to drain Promise.all + .then +
-        // becomeLeader's awaited continuation.
         hasHydratedSpy.mockReturnValue(true)
-        finishV1Hydration?.()
-        for (let i = 0; i < 5; i++) await Promise.resolve()
+        finishHydration?.()
+        await flushMicrotasks()
+        await flushMicrotasks()
 
         expect(onFetchAll).toHaveBeenCalledTimes(1)
 
         hasHydratedSpy.mockRestore()
         onFinishHydrationSpy.mockRestore()
+    })
+})
+
+describe('lifecycle', () => {
+    it('clears isLeader + nextTickAt on stop()', async () => {
+        const scheduler = createScheduler({
+            onRefresh: vi.fn(),
+            onFetchAll: vi.fn(),
+        })
+        setAllViews([makeView(1)])
+
+        scheduler.start()
+        await flushMicrotasks()
+        expect(viewsCountStore.getState().isLeader).toBe(true)
+
+        scheduler.stop()
+
+        expect(viewsCountStore.getState().isLeader).toBe(false)
+        expect(viewsCountStore.getState().nextTickAt).toBeNull()
+    })
+
+    it('re-runs the takeover scan on steal()', async () => {
+        const onFetchAll = vi.fn()
+        const scheduler = createScheduler({
+            onRefresh: vi.fn(),
+            onFetchAll,
+        })
+
+        setAllViews([makeView(1)])
+
+        scheduler.start()
+        await flushMicrotasks()
+        expect(onFetchAll).toHaveBeenCalledTimes(1)
+
+        // counts stays empty → view still stale on second takeover.
+        scheduler.steal()
+        await flushMicrotasks()
+        expect(onFetchAll).toHaveBeenCalledTimes(2)
+    })
+
+    it('does not crash when stop() is called without start()', () => {
+        const scheduler = createScheduler({
+            onRefresh: vi.fn(),
+            onFetchAll: vi.fn(),
+        })
+
+        expect(() => scheduler.stop()).not.toThrow()
+        expect(viewsCountStore.getState().isLeader).toBe(false)
     })
 })

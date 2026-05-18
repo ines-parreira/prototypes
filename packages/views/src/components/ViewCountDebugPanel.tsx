@@ -1,10 +1,8 @@
-import type { ReactNode } from 'react'
 import { useEffect, useMemo, useState } from 'react'
 
 import { useStore } from 'zustand'
 
 import {
-    Banner,
     Box,
     Button,
     Card,
@@ -12,9 +10,6 @@ import {
     DataTable,
     DataTableBaseCell,
     DataTableTextCell,
-    Disclosure,
-    DisclosureHeader,
-    DisclosurePanel,
     Dot,
     Heading,
     Icon,
@@ -29,85 +24,62 @@ import {
 } from '@gorgias/axiom'
 
 import { useAllViews } from '../hooks/useAllViews'
-import { useHasNewViewCountScheduler } from '../hooks/useHasNewViewCountScheduler'
 import { useSchedulerConfig } from '../hooks/useSchedulerConfig'
-import {
-    useViewCountSchedulerVersion,
-    ViewCountSchedulerVersion,
-} from '../hooks/useViewCountSchedulerVersion'
-import {
-    isViewActive,
-    isViewDeactivated,
-    isViewInViewport,
-    isViewLarge,
-    isViewRealtime,
-    isViewRecentlyViewed,
-    isViewStale,
-    isViewSystem,
-} from '../predicates'
-import type { RefreshConfig } from '../scheduler/selectViewsToRefresh'
-import { DEFAULT_REFRESH_CONFIG } from '../scheduler/selectViewsToRefresh'
+import { isViewDeactivated } from '../predicates/isViewDeactivated'
+import type { RefreshConfig } from '../scheduler/refreshConfig'
+import { getTtlSecondsForCount } from '../scheduler/refreshConfig'
 import type { ViewEvent } from '../store/viewEventLog'
 import { viewEventLogStore } from '../store/viewEventLog'
 import { viewsCountStore } from '../store/viewsCountStore'
-import { ViewCountDebugPanelV3 } from './ViewCountDebugPanelV3'
 
 type ViewCountDebugPanelProps = {
     isOpen?: boolean
     onOpenChange?: (isOpen: boolean) => void
 }
 
+type RecentRow = {
+    viewId: number
+    name: string
+    count: number
+    lastFetchedAt: string | null
+    viewedAt: string
+}
+
 export function ViewCountDebugPanel({
     isOpen = false,
     onOpenChange,
 }: ViewCountDebugPanelProps) {
-    const { version } = useViewCountSchedulerVersion()
-
-    if (version === ViewCountSchedulerVersion.V3) {
-        return (
-            <ViewCountDebugPanelV3
-                isOpen={isOpen}
-                onOpenChange={onOpenChange}
-            />
-        )
-    }
-
-    return <ViewCountDebugPanelV2 isOpen={isOpen} onOpenChange={onOpenChange} />
-}
-
-function ViewCountDebugPanelV2({
-    isOpen = false,
-    onOpenChange,
-}: ViewCountDebugPanelProps) {
-    const { value: isEnabled } = useHasNewViewCountScheduler()
+    const config = useSchedulerConfig()
+    const recent = useStore(viewsCountStore, (s) => s.recent)
     const counts = useStore(viewsCountStore, (s) => s.counts)
-    const scores = useStore(viewsCountStore, (s) => s.scores)
     const allViews = useAllViews()
     const events = useStore(viewEventLogStore, (s) => s.events)
 
     useNow()
 
-    const rows: Row[] = !isEnabled
-        ? []
-        : allViews.map((v) => {
-              const entry = counts[v.id]
-              return {
-                  viewId: v.id,
-                  name: v.name ?? '',
-                  count: entry?.count,
-                  score: scores[v.id],
-                  lastFetchedAt: entry?.lastFetchedAt ?? null,
-                  lastViewedAt: entry?.lastViewedAt ?? null,
-                  isRealtimeView: isViewRealtime(v),
-                  isRecentlyViewed: isViewRecentlyViewed(v),
-                  isStale: isViewStale(v),
-                  isLarge: isViewLarge(v),
-                  isInViewport: isViewInViewport(v.id),
-                  isSystemView: isViewSystem(v),
-                  isActive: isViewActive(v.id),
-                  isDeactivated: isViewDeactivated(v),
-              }
-          })
+    const viewName = useMemo(() => {
+        const m = new Map<number, string>()
+        for (const v of allViews) m.set(v.id, v.name ?? '')
+        return m
+    }, [allViews])
+
+    const recentRows: RecentRow[] = useMemo(() => {
+        return Object.entries(recent)
+            .sort(
+                (a, b) => Date.parse(b[1].viewedAt) - Date.parse(a[1].viewedAt),
+            )
+            .slice(0, config.maxRecentViews)
+            .map(([id, entry]) => {
+                const viewId = Number(id)
+                return {
+                    viewId,
+                    name: viewName.get(viewId) ?? '',
+                    count: counts[viewId]?.count ?? 0,
+                    lastFetchedAt: counts[viewId]?.lastFetchedAt ?? null,
+                    viewedAt: entry.viewedAt,
+                }
+            })
+    }, [recent, counts, viewName, config.maxRecentViews])
 
     return (
         <SidePanel
@@ -125,7 +97,7 @@ function ViewCountDebugPanelV2({
                 pb="lg"
             >
                 <PanelHeader
-                    title="View Count Refresh Debug"
+                    title="View Count Refresh Debug (v3)"
                     trailingSlot={
                         <Button
                             icon={<Icon name="close" />}
@@ -139,77 +111,41 @@ function ViewCountDebugPanelV2({
                         style: { background: 'var(--elevation-neutral-high)' },
                     } as object)}
                 />
-                <Box flexDirection="column" gap="md" w="100%">
-                    {isEnabled ? (
-                        <>
-                            <Box px="lg">
-                                <StatsBar rows={rows} events={events} />
-                            </Box>
-                            <DataTable
-                                data={rows}
-                                columns={getColumns()}
-                                sorting={{
-                                    enable: true,
-                                    defaultValue: [
-                                        { id: 'lastFetchedAt', desc: true },
-                                    ],
-                                }}
-                                search={{ enable: true }}
-                                pagination={{
-                                    enable: true,
-                                    defaultValue: {
-                                        pageIndex: 0,
-                                        pageSize: 50,
-                                    },
-                                }}
-                                elevation="high"
-                            />
-                        </>
-                    ) : (
-                        <Box px="lg">
-                            <Banner
-                                intent="warning"
-                                isClosable={false}
-                                title="Legacy view count scheduling in use"
-                                description="The Helpdesk v2 beta is disabled (flag or user toggle), so view counts are fetched by the legacy scheduler."
-                            />
-                        </Box>
-                    )}
+                <Box flexDirection="column" gap="md" w="100%" px="lg">
+                    <StatsBar events={events} config={config} />
+                    <Heading size="sm">
+                        Recent set ({recentRows.length} /{' '}
+                        {config.maxRecentViews})
+                    </Heading>
+                    <Box mx="calc(-1 * var(--spacing-lg))">
+                        <DataTable
+                            data={recentRows}
+                            columns={getRecentColumns(config)}
+                            elevation="high"
+                        />
+                    </Box>
 
-                    <Disclosure
-                        defaultExpanded={!isEnabled}
-                        w="100%"
-                        mt="xl"
-                        px="lg"
-                    >
-                        <DisclosureHeader title="Event Log" />
-                        <DisclosurePanel>
-                            <Box
-                                flexDirection="column"
-                                flexGrow={1}
-                                mx="calc(-1 * var(--spacing-lg))"
-                            >
-                                <DataTable
-                                    data={events}
-                                    columns={getEventColumns()}
-                                    sorting={{
-                                        enable: true,
-                                        defaultValue: [
-                                            { id: 'timestamp', desc: true },
-                                        ],
-                                    }}
-                                    pagination={{
-                                        enable: true,
-                                        defaultValue: {
-                                            pageIndex: 0,
-                                            pageSize: 20,
-                                        },
-                                    }}
-                                    elevation="high"
-                                />
-                            </Box>
-                        </DisclosurePanel>
-                    </Disclosure>
+                    <Box mt="xl">
+                        <Heading size="sm">Event Log</Heading>
+                    </Box>
+                    <Box mx="calc(-1 * var(--spacing-lg))">
+                        <DataTable
+                            data={events}
+                            columns={getEventColumns()}
+                            sorting={{
+                                enable: true,
+                                defaultValue: [{ id: 'timestamp', desc: true }],
+                            }}
+                            pagination={{
+                                enable: true,
+                                defaultValue: {
+                                    pageIndex: 0,
+                                    pageSize: 10,
+                                },
+                            }}
+                            elevation="high"
+                        />
+                    </Box>
                 </Box>
             </Panel>
         </SidePanel>
@@ -217,54 +153,6 @@ function ViewCountDebugPanelV2({
 }
 
 // --- Internal helpers ---
-
-type Row = {
-    viewId: number
-    name: string
-    count: number | undefined
-    score: number | undefined
-    lastFetchedAt: string | null
-    lastViewedAt: string | null
-    isRealtimeView: boolean
-    isRecentlyViewed: boolean
-    isStale: boolean
-    isLarge: boolean
-    isInViewport: boolean
-    isSystemView: boolean
-    isActive: boolean
-    isDeactivated: boolean
-}
-
-type Stats = {
-    total: number
-    deactivated: number
-    inViewport: number
-    system: number
-    realtime: number
-    recent: number
-    messages5m: number
-    notFetched: number
-    stale: number
-    largeCount: number
-    p10Age: string
-    p50Age: string
-    p90Age: string
-    p99Age: string
-}
-
-const NOT_FETCHED_AGE_SECONDS = 86400
-
-function percentile(sorted: number[], p: number): number {
-    if (sorted.length === 0) return 0
-    const idx = Math.ceil((p / 100) * sorted.length) - 1
-    return sorted[Math.max(0, idx)]
-}
-
-function formatSeconds(s: number): string {
-    if (s < 60) return `${Math.round(s)}s`
-    if (s < 3600) return `${Math.round(s / 60)}m`
-    return `${Math.round(s / 3600)}h`
-}
 
 function formatAge(iso: string, now: number): string {
     const seconds = Math.round((now - new Date(iso).getTime()) / 1000)
@@ -283,124 +171,17 @@ function useNow(): number {
     return now
 }
 
-function computeStats(rows: Row[], events: ViewEvent[], now: number): Stats {
-    const activeRows = rows.filter((r) => !r.isDeactivated)
-    const staleTimes = activeRows
-        .map((r) =>
-            r.lastFetchedAt
-                ? (now - new Date(r.lastFetchedAt).getTime()) / 1000
-                : NOT_FETCHED_AGE_SECONDS,
+function useHasHydratedCounts(): boolean {
+    const [hasHydrated, setHasHydrated] = useState(() =>
+        viewsCountStore.persist.hasHydrated(),
+    )
+    useEffect(() => {
+        if (hasHydrated) return
+        return viewsCountStore.persist.onFinishHydration(() =>
+            setHasHydrated(true),
         )
-        .sort((a, b) => a - b)
-
-    const fiveMinAgo = now - 5 * 60 * 1000
-    const messages5m = events.filter((e) => e.timestamp >= fiveMinAgo).length
-
-    return {
-        total: rows.length,
-        deactivated: rows.filter((r) => r.isDeactivated).length,
-        inViewport: rows.filter((r) => r.isInViewport).length,
-        system: rows.filter((r) => r.isSystemView).length,
-        realtime: rows.filter((r) => r.isRealtimeView).length,
-        recent: rows.filter((r) => r.isRecentlyViewed).length,
-        messages5m,
-        notFetched: rows.filter((r) => r.lastFetchedAt === null).length,
-        stale: rows.filter((r) => r.isStale).length,
-        largeCount: rows.filter((r) => r.isLarge).length,
-        p10Age: formatSeconds(percentile(staleTimes, 10)),
-        p50Age: formatSeconds(percentile(staleTimes, 50)),
-        p90Age: formatSeconds(percentile(staleTimes, 90)),
-        p99Age: formatSeconds(percentile(staleTimes, 99)),
-    }
-}
-
-function StatCard({
-    label,
-    value,
-    tooltip,
-}: {
-    label: string
-    value: string | number
-    tooltip: string
-}) {
-    return (
-        <Tooltip
-            trigger={
-                <Card
-                    elevation="mid"
-                    p="sm"
-                    flexDirection="column"
-                    alignItems="flex-start"
-                    gap="xxs"
-                    w="100%"
-                    h="100%"
-                >
-                    <Text size="sm" color="content-neutral-secondary">
-                        {label}
-                    </Text>
-                    <Heading size="lg">{String(value)}</Heading>
-                </Card>
-            }
-        >
-            <TooltipContent title={tooltip} />
-        </Tooltip>
-    )
-}
-
-function ConfigCard() {
-    const config = useSchedulerConfig()
-    const keys = Object.keys(DEFAULT_REFRESH_CONFIG) as Array<
-        keyof RefreshConfig
-    >
-    const overriddenKeys = keys.filter(
-        (key) => config[key] !== DEFAULT_REFRESH_CONFIG[key],
-    )
-    const isCustom = overriddenKeys.length > 0
-
-    return (
-        <Tooltip
-            trigger={
-                <Card
-                    elevation="mid"
-                    p="sm"
-                    flexDirection="column"
-                    alignItems="flex-start"
-                    gap="xxs"
-                    w="100%"
-                    h="100%"
-                >
-                    <Text size="sm" color="content-neutral-secondary">
-                        Custom config
-                    </Text>
-                    <Box flexDirection="row" alignItems="center" gap="xs">
-                        <Dot color={isCustom ? 'orange' : 'grey'} size="md" />
-                        <Heading size="lg">{isCustom ? 'Yes' : 'No'}</Heading>
-                    </Box>
-                </Card>
-            }
-        >
-            <TooltipContent>
-                <Box flexDirection="column" gap="xxxs">
-                    <Text variant="bold" size="sm">
-                        {isCustom
-                            ? `Resolved from ViewCountSchedulerConfig flag (${overriddenKeys.length} override${overriddenKeys.length === 1 ? '' : 's'})`
-                            : 'Using DEFAULT_REFRESH_CONFIG (no flag override)'}
-                    </Text>
-                    {keys.map((key) => {
-                        const isOverridden =
-                            config[key] !== DEFAULT_REFRESH_CONFIG[key]
-                        return (
-                            <Text key={key} size="sm">
-                                {key}: {String(config[key])}
-                                {isOverridden &&
-                                    ` (default ${String(DEFAULT_REFRESH_CONFIG[key])})`}
-                            </Text>
-                        )
-                    })}
-                </Box>
-            </TooltipContent>
-        </Tooltip>
-    )
+    }, [hasHydrated])
+    return hasHydrated
 }
 
 function LeaderCard() {
@@ -408,275 +189,328 @@ function LeaderCard() {
     return (
         <Tooltip
             trigger={
-                <Card
-                    elevation="mid"
-                    p="sm"
-                    flexDirection="column"
-                    alignItems="flex-start"
-                    gap="xxs"
-                    w="100%"
-                    h="100%"
-                >
-                    <Text size="sm" color="content-neutral-secondary">
-                        Leader
-                    </Text>
+                <StatCardShell label="Leader">
                     <Box flexDirection="row" alignItems="center" gap="xs">
                         <Dot color={isLeader ? 'green' : 'grey'} size="md" />
                         <Heading size="lg">{isLeader ? 'Yes' : 'No'}</Heading>
                     </Box>
-                </Card>
+                </StatCardShell>
             }
         >
-            <TooltipContent title="Whether this tab holds the scheduler lock (only one tab refreshes at a time)" />
+            <TooltipContent title="Whether this tab holds the v3 scheduler lock (only one tab refreshes at a time)" />
         </Tooltip>
     )
 }
 
-function StatsBar({ rows, events }: { rows: Row[]; events: ViewEvent[] }) {
+function NextTickCard() {
+    const nextTickAt = useStore(viewsCountStore, (s) => s.nextTickAt)
+    const isLeader = useStore(viewsCountStore, (s) => s.isLeader)
     const now = useNow()
-    const stats = useMemo(
-        () => computeStats(rows, events, now),
-        [rows, events, now],
-    )
+
+    const display = (() => {
+        if (!isLeader) return '—'
+        if (nextTickAt === null) return '—'
+        const remaining = Math.max(0, nextTickAt - now)
+        if (remaining < 1000) return 'now'
+        return `${Math.ceil(remaining / 1000)}s`
+    })()
 
     return (
-        <Box flexDirection="column" gap="sm" mb="md">
-            <Box style={statsRowStyle}>
-                <LeaderCard />
-                <ConfigCard />
-                <StatCard
-                    label="Total"
-                    value={stats.total}
-                    tooltip="Total views"
-                />
-                <StatCard
-                    label="Stale"
-                    value={stats.stale}
-                    tooltip={`Age ≥ ${DEFAULT_REFRESH_CONFIG.staleSeconds}s or never fetched`}
-                />
-                <StatCard
-                    label="In Viewport"
-                    value={stats.inViewport}
-                    tooltip="Views currently visible in the sidebar scroll area"
-                />
-                <StatCard
-                    label="System"
-                    value={stats.system}
-                    tooltip="System views (Inbox, Unassigned, etc.)"
-                />
-                <StatCard
-                    label="Realtime"
-                    value={stats.realtime}
-                    tooltip="Realtime views (chat channel)"
-                />
-                <StatCard
-                    label="Recent"
-                    value={stats.recent}
-                    tooltip={`Viewed within the last ${DEFAULT_REFRESH_CONFIG.recentlyActiveWindowSeconds / 60}min`}
-                />
-            </Box>
-            <Box style={statsRowStyle}>
-                <StatCard
-                    label="Not fetched"
-                    value={stats.notFetched}
-                    tooltip="Views never fetched from server"
-                />
-                <StatCard
-                    label="Deactivated"
-                    value={stats.deactivated}
-                    tooltip="Deactivated views (scored as 0)"
-                />
-                <StatCard
-                    label="Large"
-                    value={stats.largeCount}
-                    tooltip={`Views with count ≥ ${DEFAULT_REFRESH_CONFIG.largeCountThreshold} (deprioritized)`}
-                />
-                <StatCard
-                    label="Messages (5m)"
-                    value={stats.messages5m}
-                    tooltip="WS messages sent/received in the last 5 minutes"
-                />
-                <StatCard
-                    label="p10 age"
-                    value={stats.p10Age}
-                    tooltip="10th percentile age"
-                />
-                <StatCard
-                    label="p50 age"
-                    value={stats.p50Age}
-                    tooltip="Median age of tracked views"
-                />
-                <StatCard
-                    label="p90 age"
-                    value={stats.p90Age}
-                    tooltip="90th percentile age"
-                />
-                <StatCard
-                    label="p99 age"
-                    value={stats.p99Age}
-                    tooltip="99th percentile age"
-                />
-            </Box>
+        <Tooltip
+            trigger={
+                <StatCardShell label="Next tick">
+                    <Heading size="lg">{display}</Heading>
+                </StatCardShell>
+            }
+        >
+            <TooltipContent
+                title={
+                    isLeader
+                        ? nextTickAt
+                            ? `Fires at ${new Date(nextTickAt).toLocaleTimeString()}`
+                            : 'Waiting for the first tick'
+                        : 'Only the leader tab schedules ticks'
+                }
+            />
+        </Tooltip>
+    )
+}
+
+function MessagesCard({ events }: { events: ViewEvent[] }) {
+    const now = useNow()
+    const fiveMinAgo = now - 5 * 60 * 1000
+    const count = events.filter((e) => e.timestamp >= fiveMinAgo).length
+    return (
+        <Tooltip
+            trigger={
+                <StatCardShell label="Messages (5m)">
+                    <Heading size="lg">{count}</Heading>
+                </StatCardShell>
+            }
+        >
+            <TooltipContent title="WS messages sent/received in the last 5 minutes" />
+        </Tooltip>
+    )
+}
+
+function TotalViewsCard() {
+    const allViews = useAllViews()
+    return (
+        <Tooltip
+            trigger={
+                <StatCardShell label="Total views">
+                    <Heading size="lg">{allViews.length}</Heading>
+                </StatCardShell>
+            }
+        >
+            <TooltipContent title="Total views known to the client" />
+        </Tooltip>
+    )
+}
+
+function DeactivatedViewsCard() {
+    const allViews = useAllViews()
+    const deactivatedCount = useMemo(
+        () => allViews.filter(isViewDeactivated).length,
+        [allViews],
+    )
+    return (
+        <Tooltip
+            trigger={
+                <StatCardShell label="Deactivated">
+                    <Heading size="lg">{deactivatedCount}</Heading>
+                </StatCardShell>
+            }
+        >
+            <TooltipContent title="Views with a `deactivated_datetime` set. The takeover scan skips these — the server returns 0 for them and they don't render a count badge." />
+        </Tooltip>
+    )
+}
+
+function StaleViewsCard({ config }: { config: RefreshConfig }) {
+    const allViews = useAllViews()
+    const counts = useStore(viewsCountStore, (s) => s.counts)
+    const hasHydrated = useHasHydratedCounts()
+    const now = useNow()
+
+    const activeViews = useMemo(
+        () => allViews.filter((v) => !isViewDeactivated(v)),
+        [allViews],
+    )
+
+    const staleCount = useMemo(() => {
+        const thresholdMs = config.initialFetchTtlSeconds * 1000
+        let stale = 0
+        for (const view of activeViews) {
+            const entry = counts[view.id]
+            if (!entry?.lastFetchedAt) {
+                stale += 1
+                continue
+            }
+            if (now - Date.parse(entry.lastFetchedAt) >= thresholdMs) stale += 1
+        }
+        return stale
+    }, [activeViews, counts, config.initialFetchTtlSeconds, now])
+
+    return (
+        <Tooltip
+            trigger={
+                <StatCardShell label="Stale views">
+                    <Heading size="lg">
+                        {hasHydrated
+                            ? `${staleCount} / ${activeViews.length}`
+                            : '—'}
+                    </Heading>
+                </StatCardShell>
+            }
+        >
+            <TooltipContent
+                title={
+                    hasHydrated
+                        ? `Views whose persisted count is missing or older than initialFetchTtlSeconds (${config.initialFetchTtlSeconds}s). The next leader takeover will dispatch these.`
+                        : 'Waiting for persisted counts to hydrate from local storage.'
+                }
+            />
+        </Tooltip>
+    )
+}
+
+function RecentViewsCard({ config }: { config: RefreshConfig }) {
+    const recent = useStore(viewsCountStore, (s) => s.recent)
+    const count = Object.keys(recent).length
+    return (
+        <Tooltip
+            trigger={
+                <StatCardShell label="Recent views">
+                    <Heading size="lg">
+                        {count} / {config.maxRecentViews}
+                    </Heading>
+                </StatCardShell>
+            }
+        >
+            <TooltipContent title="Views in the LRU polled this tick" />
+        </Tooltip>
+    )
+}
+
+function ViewsLast5MinCard({ events }: { events: ViewEvent[] }) {
+    const now = useNow()
+    const fiveMinAgo = now - 5 * 60 * 1000
+    const distinct = new Set<number>()
+    for (const e of events) {
+        if (e.timestamp < fiveMinAgo) continue
+        for (const id of e.viewIds) distinct.add(id)
+    }
+    return (
+        <Tooltip
+            trigger={
+                <StatCardShell label="Views (5m)">
+                    <Heading size="lg">{distinct.size}</Heading>
+                </StatCardShell>
+            }
+        >
+            <TooltipContent title="Distinct view IDs touched by events in the last 5 minutes" />
+        </Tooltip>
+    )
+}
+
+function StatCardShell({
+    label,
+    children,
+}: {
+    label: string
+    children: React.ReactNode
+}) {
+    return (
+        <Card
+            elevation="mid"
+            p="sm"
+            flexDirection="column"
+            alignItems="flex-start"
+            gap="xxs"
+            w="100%"
+            h="100%"
+        >
+            <Text size="sm" color="content-neutral-secondary">
+                {label}
+            </Text>
+            {children}
+        </Card>
+    )
+}
+
+function StatsBar({
+    events,
+    config,
+}: {
+    events: ViewEvent[]
+    config: RefreshConfig
+}) {
+    return (
+        <Box style={statsRowStyle} mb="md">
+            <LeaderCard />
+            <NextTickCard />
+            <TotalViewsCard />
+            <DeactivatedViewsCard />
+            <StaleViewsCard config={config} />
+            <RecentViewsCard config={config} />
+            <MessagesCard events={events} />
+            <ViewsLast5MinCard events={events} />
         </Box>
     )
 }
 
 const statsRowStyle = {
     display: 'grid',
-    gridTemplateColumns: 'repeat(8, minmax(0, 1fr))',
+    gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
     gap: 'var(--spacing-sm)',
 } as const
 
-function ColumnHeader({ label, tooltip }: { label: string; tooltip: string }) {
-    return (
-        <Tooltip
-            delay={0}
-            trigger={
-                <Text variant="bold" size="sm">
-                    {label}
-                </Text>
-            }
-        >
-            <TooltipContent title={tooltip} />
-        </Tooltip>
-    )
-}
-
-function BooleanCell({ value }: { value: boolean }) {
-    return (
-        <DataTableBaseCell>
-            <Icon
-                name={value ? 'check-circle' : 'close-circle'}
-                color={
-                    value ? 'content-success-default' : 'border-neutral-default'
-                }
-                size="sm"
-            />
-        </DataTableBaseCell>
-    )
-}
-
-function getAgeColor(
-    seconds: number,
-): 'green' | 'teal' | 'blue' | 'orange' | 'red' | 'purple' {
-    const { minRefreshIntervalSeconds, staleSeconds } = DEFAULT_REFRESH_CONFIG
-    if (seconds < minRefreshIntervalSeconds) return 'green'
-    if (seconds < minRefreshIntervalSeconds * 2) return 'teal'
-    if (seconds < staleSeconds) return 'blue'
-    if (seconds < staleSeconds * 2) return 'orange'
-    if (seconds < staleSeconds * 4) return 'red'
-    return 'purple'
-}
-
-function RecentCell({
-    value,
-    lastViewedAt,
+function FetchAgeCell({
+    lastFetchedAt,
+    count,
+    config,
 }: {
-    value: boolean
-    lastViewedAt: string
+    lastFetchedAt: string | null
+    count: number
+    config: RefreshConfig
 }) {
     const now = useNow()
-    return (
-        <Tooltip
-            trigger={
-                <Icon
-                    name={value ? 'check-circle' : 'close-circle'}
-                    color={
-                        value
-                            ? 'content-success-default'
-                            : 'border-neutral-default'
-                    }
-                    size="sm"
-                />
-            }
-        >
-            <TooltipContent title={formatAge(lastViewedAt, now)} />
-        </Tooltip>
-    )
-}
-
-function AgeCell({ value }: { value: string | null }) {
-    const now = useNow()
-    if (!value) {
+    if (!lastFetchedAt) {
         return (
             <DataTableBaseCell>
                 <Tag color="red" size="sm">
-                    24h+
+                    never
                 </Tag>
             </DataTableBaseCell>
         )
     }
-    const seconds = Math.round((now - new Date(value).getTime()) / 1000)
+    const seconds = Math.round((now - new Date(lastFetchedAt).getTime()) / 1000)
+    const ttl = getTtlSecondsForCount(count, config)
+    const expired = seconds >= ttl
     return (
         <DataTableBaseCell>
             <Tooltip
                 trigger={
-                    <Tag color={getAgeColor(seconds)} size="sm">
-                        {formatAge(value, now)}
+                    <Tag color={expired ? 'orange' : 'green'} size="sm">
+                        {formatAge(lastFetchedAt, now)}
                     </Tag>
                 }
             >
+                <TooltipContent title={new Date(lastFetchedAt).toISOString()} />
+            </Tooltip>
+        </DataTableBaseCell>
+    )
+}
+
+function getTtlBandColor(
+    ttlSeconds: number,
+): 'green' | 'teal' | 'blue' | 'orange' | 'red' {
+    if (ttlSeconds <= 60) return 'green'
+    if (ttlSeconds <= 180) return 'teal'
+    if (ttlSeconds <= 300) return 'blue'
+    if (ttlSeconds <= 600) return 'orange'
+    return 'red'
+}
+
+function formatTtl(seconds: number): string {
+    if (seconds < 60) return `${seconds}s`
+    const minutes = seconds / 60
+    return Number.isInteger(minutes) ? `${minutes}m` : `${minutes.toFixed(1)}m`
+}
+
+function TtlCell({ count, config }: { count: number; config: RefreshConfig }) {
+    const ttl = getTtlSecondsForCount(count, config)
+    return (
+        <DataTableBaseCell>
+            <Tooltip
+                trigger={
+                    <Tag color={getTtlBandColor(ttl)} size="sm">
+                        {formatTtl(ttl)}
+                    </Tag>
+                }
+            >
+                <TooltipContent
+                    title={`Refresh TTL for ${count} ticket${count === 1 ? '' : 's'}: ${ttl}s`}
+                />
+            </Tooltip>
+        </DataTableBaseCell>
+    )
+}
+
+function ViewedAgeCell({ value }: { value: string }) {
+    const now = useNow()
+    return (
+        <DataTableBaseCell>
+            <Tooltip trigger={<Tag size="sm">{formatAge(value, now)}</Tag>}>
                 <TooltipContent title={new Date(value).toISOString()} />
             </Tooltip>
         </DataTableBaseCell>
     )
 }
 
-function LeaderOnlyCell({ children }: { children: ReactNode }) {
-    const isLeader = useStore(viewsCountStore, (s) => s.isLeader)
-    if (!isLeader)
-        return (
-            <DataTableBaseCell>
-                <Icon
-                    name="remove-minus-circle"
-                    color="border-neutral-default"
-                    size="sm"
-                />
-            </DataTableBaseCell>
-        )
-    return <>{children}</>
-}
-
-function ScoreCell({ value }: { value: number | undefined }) {
-    return (
-        <LeaderOnlyCell>
-            <DataTableBaseCell>
-                <Tag size="sm">{String(Math.round(value ?? 0))}</Tag>
-            </DataTableBaseCell>
-        </LeaderOnlyCell>
-    )
-}
-
-function LeaderBooleanCell({ value }: { value: boolean }) {
-    return (
-        <LeaderOnlyCell>
-            <BooleanCell value={value} />
-        </LeaderOnlyCell>
-    )
-}
-
-function LeaderRecentCell({
-    value,
-    lastViewedAt,
-}: {
-    value: boolean
-    lastViewedAt: string | null
-}) {
-    return (
-        <LeaderOnlyCell>
-            {!lastViewedAt ? (
-                <BooleanCell value={false} />
-            ) : (
-                <DataTableBaseCell>
-                    <RecentCell value={value} lastViewedAt={lastViewedAt} />
-                </DataTableBaseCell>
-            )}
-        </LeaderOnlyCell>
-    )
-}
-
-function buildColumns() {
-    const columnHelper = createColumnHelper<Row>()
+function buildRecentColumns(config: RefreshConfig) {
+    const columnHelper = createColumnHelper<RecentRow>()
 
     return [
         columnHelper.accessor('viewId', {
@@ -687,29 +521,10 @@ function buildColumns() {
         columnHelper.accessor('name', {
             header: 'Name',
             cell: (info) => (
-                <DataTableBaseCell
-                    gap="xs"
-                    alignItems="center"
-                    justifyContent="space-between"
-                >
+                <DataTableBaseCell>
                     <Text size="sm" overflow="ellipsis">
                         {info.getValue()}
                     </Text>
-                    {info.row.original.isDeactivated && (
-                        <Box flexShrink={0}>
-                            <Tooltip
-                                trigger={
-                                    <Icon
-                                        name="error-octagon"
-                                        size="sm"
-                                        color="red"
-                                    />
-                                }
-                            >
-                                <TooltipContent title="Deactivated" />
-                            </Tooltip>
-                        </Box>
-                    )}
                 </DataTableBaseCell>
             ),
             minSize: 200,
@@ -719,70 +534,45 @@ function buildColumns() {
             header: 'Count',
             cell: (info) => (
                 <DataTableBaseCell>
-                    <Tag size="sm">{String(info.getValue() ?? 0)}</Tag>
+                    <Tag size="sm">{String(info.getValue())}</Tag>
                 </DataTableBaseCell>
             ),
             hug: true,
         }),
-        columnHelper.accessor((row) => row.lastFetchedAt ?? '', {
-            id: 'lastFetchedAt',
-            header: 'Age',
-            cell: (info) => <AgeCell value={info.row.original.lastFetchedAt} />,
+        columnHelper.accessor('viewedAt', {
+            header: 'Viewed',
+            cell: (info) => <ViewedAgeCell value={info.getValue()} />,
             hug: true,
         }),
-        columnHelper.accessor('score', {
-            header: 'Score',
-            cell: (info) => <ScoreCell value={info.getValue()} />,
-            hug: true,
-        }),
-        columnHelper.accessor('isActive', {
-            header: () => (
-                <ColumnHeader label="AC" tooltip="Active (current URL)" />
-            ),
-            cell: (info) => <LeaderBooleanCell value={info.getValue()} />,
-            hug: true,
-        }),
-        columnHelper.accessor('isStale', {
-            header: () => (
-                <ColumnHeader label="ST" tooltip="Stale (age ≥ threshold)" />
-            ),
-            cell: (info) => <LeaderBooleanCell value={info.getValue()} />,
-            hug: true,
-        }),
-        columnHelper.accessor('isRealtimeView', {
-            header: () => <ColumnHeader label="RT" tooltip="Realtime (chat)" />,
-            cell: (info) => <LeaderBooleanCell value={info.getValue()} />,
-            hug: true,
-        }),
-        columnHelper.accessor('isInViewport', {
-            header: () => (
-                <ColumnHeader label="VP" tooltip="In browser viewport" />
-            ),
-            cell: (info) => <LeaderBooleanCell value={info.getValue()} />,
-            hug: true,
-        }),
-        columnHelper.accessor('isSystemView', {
-            header: () => <ColumnHeader label="SY" tooltip="System view" />,
-            cell: (info) => <LeaderBooleanCell value={info.getValue()} />,
-            hug: true,
-        }),
-        columnHelper.accessor('isRecentlyViewed', {
-            header: () => <ColumnHeader label="RC" tooltip="Recently viewed" />,
+        columnHelper.accessor('lastFetchedAt', {
+            header: 'Fetched',
             cell: (info) => (
-                <LeaderRecentCell
-                    value={info.getValue()}
-                    lastViewedAt={info.row.original.lastViewedAt}
+                <FetchAgeCell
+                    lastFetchedAt={info.getValue()}
+                    count={info.row.original.count}
+                    config={config}
                 />
             ),
             hug: true,
         }),
+        columnHelper.accessor(
+            (row) => getTtlSecondsForCount(row.count, config),
+            {
+                id: 'ttl',
+                header: 'TTL',
+                cell: (info) => (
+                    <TtlCell count={info.row.original.count} config={config} />
+                ),
+                hug: true,
+            },
+        ),
     ]
 }
 
-let cachedColumns: ReturnType<typeof buildColumns> | null = null
-function getColumns() {
-    if (!cachedColumns) cachedColumns = buildColumns()
-    return cachedColumns
+function getRecentColumns(config: RefreshConfig) {
+    // Columns close over config (for per-count TTL coloring) so they have to
+    // be rebuilt whenever the flag-driven config changes.
+    return buildRecentColumns(config)
 }
 
 function buildEventColumns() {

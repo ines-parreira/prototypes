@@ -51,7 +51,6 @@ import usePollingManager from '../hooks/usePollingManager'
 import { useSetBanners } from '../hooks/useSetBanners'
 import useSharedLogic from '../hooks/useSharedLogic'
 import useViewCountScheduler from '../hooks/useViewCountScheduler'
-import useViewCountSchedulerV3 from '../hooks/useViewCountSchedulerV3'
 
 import css from './App.less'
 
@@ -83,7 +82,6 @@ export default function App({ children }: Props) {
     useInitialViewCountsFetch()
     usePollingManager()
     useViewCountScheduler()
-    useViewCountSchedulerV3()
     useSetBanners()
     useDesktopNotifications()
 

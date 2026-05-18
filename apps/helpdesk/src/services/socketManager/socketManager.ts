@@ -45,6 +45,7 @@ export class SocketManager {
     private joinEvents: SendEvent[] = []
     private receivedEvents: ReceivedEvent[] = []
     private sendEvents: SendEvent[] = []
+    private connectionSubscribers = new Set<() => void>()
 
     scopedBroadcastChannel = currentBrowserSupportsSharedWorker
         ? new window.BroadcastChannel(SCOPED_BROADCAST_CHANNEL_NAME)
@@ -154,8 +155,20 @@ export class SocketManager {
         config.onReceive.call(this, json)
     }
 
+    subscribeToConnection = (callback: () => void): (() => void) => {
+        this.connectionSubscribers.add(callback)
+        return () => {
+            this.connectionSubscribers.delete(callback)
+        }
+    }
+
+    private notifyConnectionSubscribers = () => {
+        this.connectionSubscribers.forEach((cb) => cb())
+    }
+
     onDisconnect = () => {
         this.isConnected = false
+        this.notifyConnectionSubscribers()
         this.dispatchReduxAction(
             notify({
                 id: this.disconnectedNotificationId,
@@ -174,6 +187,7 @@ export class SocketManager {
     onConnect = () => {
         devLog('socket (re)connected')
         this.isConnected = true
+        this.notifyConnectionSubscribers()
 
         this.dispatchReduxAction(
             dismissNotification(this.disconnectedNotificationId),

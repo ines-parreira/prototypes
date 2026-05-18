@@ -9,9 +9,9 @@ import { ALL_VIEWS_QUERY_PARAMS } from './allViewsQuery'
 /**
  * Returns `true` once the paginated views list has fully loaded in the React
  * Query cache — no fetch is in flight and the last page's cursor is `null`.
- * Callers that need the complete view set (e.g. the v3 scheduler's bulk
- * fetch-all) should gate on this so they don't act on a partial list and
- * stamp `lastFetchAllAt` early.
+ * Callers that need the complete view set (e.g. the v3 scheduler's takeover
+ * scan over all views) should gate on this so they don't act on a partial
+ * list.
  *
  * Subscribes only to fetching state via `useIsFetching` — does not trigger
  * the query itself or duplicate `useListAllViews`'s options.

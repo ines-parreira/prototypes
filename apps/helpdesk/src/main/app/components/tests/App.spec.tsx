@@ -96,7 +96,6 @@ jest.mock('../../hooks/useInitialViewCountsFetch', () =>
 )
 jest.mock('../../hooks/usePollingManager', () => jest.fn(() => undefined))
 jest.mock('../../hooks/useViewCountScheduler', () => jest.fn(() => undefined))
-jest.mock('../../hooks/useViewCountSchedulerV3', () => jest.fn(() => undefined))
 jest.mock('../../hooks/useSharedLogic', () => jest.fn(() => undefined))
 jest.mock('../../hooks/useActivityTracker', () => jest.fn(() => undefined))
 jest.mock('../../hooks/useApplyWayfindingMs1', () => jest.fn(() => undefined))
