@@ -24,7 +24,6 @@ import {
 } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import { TrendCardConfig } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAMetricsConfig'
 import { BusiestTimeOfDaysMetrics } from 'domains/reporting/pages/support-performance/busiest-times-of-days/types'
-import type { AutoQAReportMetrics } from 'domains/reporting/services/autoQAReportingService'
 import {
     AGENT_ID_DIMENSION,
     AUTO_QA_DOWNLOAD_AGENTS_FILE_NAME,
@@ -95,8 +94,9 @@ describe('autoQAReportingService', () => {
     const agentA = agents[0]
     const exampleData = (
         agentId: number,
-        metricField: AutoQAReportMetrics,
+        metricField: string,
         value: number,
+        idField: string = AGENT_ID_DIMENSION,
     ): MetricWithDecile<string, Cubes> => ({
         isFetching: false,
         isError: false,
@@ -105,10 +105,12 @@ describe('autoQAReportingService', () => {
             decile: 4,
             allData: [
                 {
-                    [AGENT_ID_DIMENSION]: String(agentId),
+                    [idField]: String(agentId),
                     [metricField]: String(value),
                 },
             ],
+            dimensions: [idField] as any,
+            measures: [metricField] as any,
         },
     })
     const exampleTrendData = {
@@ -408,6 +410,169 @@ describe('autoQAReportingService', () => {
 
             expect(report.files[agentsFileName]).toEqual(
                 createCsv(expectedAgentsReport),
+            )
+        })
+
+        it('returns N/A for all metric columns when metric data is null', () => {
+            const report = createReport(
+                [agentA],
+                {
+                    ...defaultData,
+                    communicationSkillsTrend: exampleTrendData,
+                    languageProficiencyTrend: exampleTrendData,
+                    accuracyTrend: exampleTrendData,
+                    efficiencyTrend: exampleTrendData,
+                    internalComplianceTrend: exampleTrendData,
+                    brandVoiceTrend: exampleTrendData,
+                    resolutionCompletenessTrend: exampleTrendData,
+                    reviewedClosedTicketsTrend: exampleTrendData,
+                },
+                AUTO_QA_AGENTS_TABLE_DIMENSIONS_COLUMNS_ORDER,
+                period,
+            )
+
+            expect(report.files[agentsFileName]).toEqual(
+                createCsv([
+                    expectedAgentsReport[0],
+                    [
+                        agentA.name,
+                        NOT_AVAILABLE_PLACEHOLDER,
+                        NOT_AVAILABLE_PLACEHOLDER,
+                        NOT_AVAILABLE_PLACEHOLDER,
+                        NOT_AVAILABLE_PLACEHOLDER,
+                        NOT_AVAILABLE_PLACEHOLDER,
+                        NOT_AVAILABLE_PLACEHOLDER,
+                        NOT_AVAILABLE_PLACEHOLDER,
+                        NOT_AVAILABLE_PLACEHOLDER,
+                    ],
+                ]),
+            )
+        })
+
+        it('falls back to N/A when metric data has no dimensions or measures', () => {
+            const metricWithNoDimensions: MetricWithDecile<string, Cubes> = {
+                isFetching: false,
+                isError: false,
+                data: {
+                    value: null,
+                    decile: null,
+                    allData: [
+                        {
+                            [AGENT_ID_DIMENSION]: String(agentA.id),
+                            [TicketQAScoreMeasure.AverageAccuracyScore]:
+                                String(agentAAccuracy),
+                        },
+                    ],
+                    dimensions: undefined as any,
+                    measures: undefined as any,
+                },
+            }
+
+            const report = createReport(
+                [agentA],
+                {
+                    ...defaultData,
+                    accuracyPerAgent: metricWithNoDimensions,
+                    communicationSkillsTrend: exampleTrendData,
+                    languageProficiencyTrend: exampleTrendData,
+                    accuracyTrend: exampleTrendData,
+                    efficiencyTrend: exampleTrendData,
+                    internalComplianceTrend: exampleTrendData,
+                    brandVoiceTrend: exampleTrendData,
+                    resolutionCompletenessTrend: exampleTrendData,
+                    reviewedClosedTicketsTrend: exampleTrendData,
+                },
+                AUTO_QA_AGENTS_TABLE_DIMENSIONS_COLUMNS_ORDER,
+                period,
+            )
+
+            const agentRow = createCsv([
+                expectedAgentsReport[0],
+                [
+                    agentA.name,
+                    NOT_AVAILABLE_PLACEHOLDER,
+                    NOT_AVAILABLE_PLACEHOLDER,
+                    NOT_AVAILABLE_PLACEHOLDER,
+                    NOT_AVAILABLE_PLACEHOLDER,
+                    NOT_AVAILABLE_PLACEHOLDER,
+                    NOT_AVAILABLE_PLACEHOLDER,
+                    NOT_AVAILABLE_PLACEHOLDER,
+                    NOT_AVAILABLE_PLACEHOLDER,
+                ],
+            ])
+            expect(report.files[agentsFileName]).toEqual(agentRow)
+        })
+
+        it('populates per-agent rows using scope-local (V2) field names', () => {
+            const v2IdField = 'agentId'
+            const v2Data = {
+                communicationSkillsPerAgent: exampleData(
+                    agentA.id,
+                    'averageCommunicationSkillsScore',
+                    agentACommunicationSkills,
+                    v2IdField,
+                ),
+                languageProficiencyPerAgent: exampleData(
+                    agentA.id,
+                    'averageLanguageProficiencyScore',
+                    agentALanguageProficiency,
+                    v2IdField,
+                ),
+                accuracyPerAgent: exampleData(
+                    agentA.id,
+                    'averageAccuracyScore',
+                    agentAAccuracy,
+                    v2IdField,
+                ),
+                efficiencyPerAgent: exampleData(
+                    agentA.id,
+                    'averageEfficiencyScore',
+                    agentAEfficiency,
+                    v2IdField,
+                ),
+                internalCompliancePerAgent: exampleData(
+                    agentA.id,
+                    'averageInternalComplianceScore',
+                    agentAInternalCompliance,
+                    v2IdField,
+                ),
+                brandVoicePerAgent: exampleData(
+                    agentA.id,
+                    'averageBrandVoiceScore',
+                    agentABrandVoice,
+                    v2IdField,
+                ),
+                resolutionCompletenessPerAgent: exampleData(
+                    agentA.id,
+                    'averageResolutionCompletenessScore',
+                    agentAResolutionCompleteness,
+                    v2IdField,
+                ),
+                reviewedClosedTicketsPerAgent: exampleData(
+                    agentA.id,
+                    'ticketCount',
+                    agentAReviewedTickets,
+                    v2IdField,
+                ),
+                communicationSkillsTrend: exampleTrendData,
+                languageProficiencyTrend: exampleTrendData,
+                accuracyTrend: exampleTrendData,
+                efficiencyTrend: exampleTrendData,
+                internalComplianceTrend: exampleTrendData,
+                brandVoiceTrend: exampleTrendData,
+                resolutionCompletenessTrend: exampleTrendData,
+                reviewedClosedTicketsTrend: exampleTrendData,
+            }
+
+            const report = createReport(
+                [agentA],
+                v2Data,
+                AUTO_QA_AGENTS_TABLE_DIMENSIONS_COLUMNS_ORDER,
+                period,
+            )
+
+            expect(report.files[agentsFileName]).toEqual(
+                createCsv(expectedAgentsReport.slice(0, 2)),
             )
         })
     })

@@ -16,7 +16,6 @@ import { fetchReviewedClosedTicketsPerAgent } from 'domains/reporting/hooks/supp
 import type { MetricWithDecile } from 'domains/reporting/hooks/types'
 import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import type { TicketQAScoreCubeWithJoins } from 'domains/reporting/models/cubes/auto-qa/TicketQAScoreCube'
-import { TicketQAScoreMeasure } from 'domains/reporting/models/cubes/auto-qa/TicketQAScoreCube'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import type { Period, StatsFilters } from 'domains/reporting/models/stat/types'
 import type { ReportingGranularity } from 'domains/reporting/models/types'
@@ -48,8 +47,6 @@ type ReportDataMap = Record<
     {
         column: AutoQAAgentsTableColumn
         metricData: Pick<MetricWithDecile, 'data'>
-        idField: string
-        metricField: AutoQAReportMetrics
     }
 >
 
@@ -102,12 +99,14 @@ const formatTrendMetric = (column: AutoQAMetric, value?: number | null) =>
 const getAutoQAMetric = (
     agentId: string,
     data: Pick<MetricWithDecile, 'data'>,
-    agentIdField: string,
-    metricField: AutoQAReportMetrics,
 ) => {
-    const metricValue = data.data?.allData.find(
-        (item) => item[agentIdField] === agentId,
-    )?.[metricField]
+    if (!data.data) return undefined
+    const metricData = data.data
+    const dimensionKey = metricData.dimensions?.[0] || ''
+    const measureKey = metricData.measures?.[0] || ''
+    const metricValue = metricData.allData.find(
+        (item) => item[dimensionKey]?.toString() === agentId,
+    )?.[measureKey]
     return typeof metricValue === 'string' ? Number(metricValue) : metricValue
 }
 
@@ -123,8 +122,6 @@ const getMetric = (
               getAutoQAMetric(
                   String(agent.id),
                   summaryDataMap[column].metricData,
-                  summaryDataMap[column].idField,
-                  summaryDataMap[column].metricField,
               ),
           )
 
@@ -138,57 +135,38 @@ const createTableReport = (
         [AutoQAAgentsTableColumn.AgentName]: {
             column: AutoQAAgentsTableColumn.AgentName,
             metricData: { data: null },
-            idField: AGENT_ID_DIMENSION,
-            metricField: TicketQAScoreMeasure.TicketCount,
         },
         [AutoQAAgentsTableColumn.ReviewedClosedTickets]: {
             column: AutoQAAgentsTableColumn.ReviewedClosedTickets,
             metricData: data.reviewedClosedTicketsPerAgent,
-            idField: AGENT_ID_DIMENSION,
-            metricField: TicketQAScoreMeasure.TicketCount,
         },
         [AutoQAAgentsTableColumn.ResolutionCompleteness]: {
             column: AutoQAAgentsTableColumn.ResolutionCompleteness,
             metricData: data.resolutionCompletenessPerAgent,
-            idField: AGENT_ID_DIMENSION,
-            metricField:
-                TicketQAScoreMeasure.AverageResolutionCompletenessScore,
         },
         [AutoQAAgentsTableColumn.Accuracy]: {
             column: AutoQAAgentsTableColumn.Accuracy,
             metricData: data.accuracyPerAgent,
-            idField: AGENT_ID_DIMENSION,
-            metricField: TicketQAScoreMeasure.AverageAccuracyScore,
         },
         [AutoQAAgentsTableColumn.InternalCompliance]: {
             column: AutoQAAgentsTableColumn.InternalCompliance,
             metricData: data.internalCompliancePerAgent,
-            idField: AGENT_ID_DIMENSION,
-            metricField: TicketQAScoreMeasure.AverageInternalComplianceScore,
         },
         [AutoQAAgentsTableColumn.Efficiency]: {
             column: AutoQAAgentsTableColumn.Efficiency,
             metricData: data.efficiencyPerAgent,
-            idField: AGENT_ID_DIMENSION,
-            metricField: TicketQAScoreMeasure.AverageEfficiencyScore,
         },
         [AutoQAAgentsTableColumn.CommunicationSkills]: {
             column: AutoQAAgentsTableColumn.CommunicationSkills,
             metricData: data.communicationSkillsPerAgent,
-            idField: AGENT_ID_DIMENSION,
-            metricField: TicketQAScoreMeasure.AverageCommunicationSkillsScore,
         },
         [AutoQAAgentsTableColumn.LanguageProficiency]: {
             column: AutoQAAgentsTableColumn.LanguageProficiency,
             metricData: data.languageProficiencyPerAgent,
-            idField: AGENT_ID_DIMENSION,
-            metricField: TicketQAScoreMeasure.AverageLanguageProficiencyScore,
         },
         [AutoQAAgentsTableColumn.BrandVoice]: {
             column: AutoQAAgentsTableColumn.BrandVoice,
             metricData: data.brandVoicePerAgent,
-            idField: AGENT_ID_DIMENSION,
-            metricField: TicketQAScoreMeasure.AverageBrandVoiceScore,
         },
     }
 
