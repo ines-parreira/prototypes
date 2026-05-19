@@ -14,6 +14,7 @@ import { useGetStoresConfigurationForAccount } from 'models/aiAgent/queries'
 import { OPPORTUNITIES, SKILLS } from 'pages/aiAgent/constants'
 import type { NavigationItem } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useOpportunitiesCount } from 'pages/aiAgent/hooks/useOpportunitiesCount'
+import { useSkillsTagLabel } from 'pages/aiAgent/hooks/useSkillsTagLabel'
 import { HELP_CENTER_DEFAULT_LOCALE } from 'pages/settings/helpCenter/constants'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getViewLanguage } from 'state/ui/helpCenter'
@@ -78,6 +79,11 @@ export const ActionDrivenNavigationItems = ({
             selectedStore,
         )
 
+    const skillsTagLabel = useSkillsTagLabel({
+        selectedStore,
+        guidanceHelpCenterId: storeConfig?.guidanceHelpCenterId,
+    })
+
     if (!selectedStore || !navigationItems) {
         return null
     }
@@ -126,7 +132,7 @@ export const ActionDrivenNavigationItems = ({
                                             <Tag color="grey">Beta</Tag>
                                         ) : subItem.title === SKILLS ? (
                                             <Tag size="sm" color="purple">
-                                                New
+                                                {skillsTagLabel}
                                             </Tag>
                                         ) : null
                                     }
@@ -233,7 +239,7 @@ export const ActionDrivenNavigationItems = ({
                                             >
                                                 <span>{subItem.title}</span>
                                                 <Tag size="sm" color="purple">
-                                                    New
+                                                    {skillsTagLabel}
                                                 </Tag>
                                             </div>
                                         ) : (

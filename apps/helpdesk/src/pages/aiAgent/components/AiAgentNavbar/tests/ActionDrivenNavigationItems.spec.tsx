@@ -15,12 +15,18 @@ import { ActionDrivenNavigationItems } from '../ActionDrivenNavigationItems'
 const mockStore = configureStore([])
 
 jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
     useHelpdeskV2WayfindingMS1Flag: jest.fn(() => false),
+    useFlag: jest.fn(() => false),
 }))
 
 const mockUseHelpdeskV2WayfindingMS1Flag = jest.requireMock(
     '@repo/feature-flags',
 ).useHelpdeskV2WayfindingMS1Flag as jest.Mock
+
+jest.mock('models/helpCenter/queries', () => ({
+    useGetWizard: jest.fn(() => ({ data: undefined })),
+}))
 
 jest.mock('pages/aiAgent/hooks/useAiAgentHelpCenter', () => ({
     useAiAgentHelpCenter: jest.fn(() => ({
