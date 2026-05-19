@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import type { RefObject } from 'react'
 
 import classNames from 'classnames'
 import _debounce from 'lodash/debounce'
@@ -325,10 +324,9 @@ export const AIJourneySettings: React.FC = () => {
                 <Select
                     data-name="select-field"
                     aria-label="Product"
-                    trigger={({ selectedText, isOpen, ref }) => (
+                    trigger={({ selectedText, isOpen }) => (
                         <SelectTrigger>
                             <TextField
-                                inputRef={ref as RefObject<HTMLInputElement>}
                                 value={selectedText ?? ''}
                                 label="Product"
                                 isFocused={isOpen}

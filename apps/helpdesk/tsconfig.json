@@ -2,10 +2,10 @@
     "extends": "@repo/config/tsconfig.react.json",
     "compilerOptions": {
         "emitDecoratorMetadata": true,
-        "baseUrl": "./src",
         "typeRoots": ["./src/types", "./node_modules/@types"],
         "paths": {
-            "react-chartjs-2": ["./types/react-chartjs-2.d.ts"]
+            "*": ["./src/*"],
+            "react-chartjs-2": ["./src/types/react-chartjs-2.d.ts"]
         },
         "types": [
             "facebook-js-sdk",

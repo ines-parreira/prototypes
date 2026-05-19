@@ -1,5 +1,4 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
-import type { RefObject } from 'react'
 
 import {
     Button,
@@ -113,13 +112,7 @@ export function MultiLevelSelect(props: Props) {
     }, [])
 
     const trigger = useCallback(
-        ({
-            isOpen,
-            ref,
-        }: {
-            isOpen: boolean
-            ref?: RefObject<HTMLButtonElement>
-        }) => {
+        ({ isOpen }: { isOpen: boolean }) => {
             const label = getDisplayLabel(selectedValue)
 
             // inspired by Axiom SelectField
@@ -133,7 +126,6 @@ export function MultiLevelSelect(props: Props) {
                                 ? `${ariaLabel} selected value`
                                 : placeholder
                         }
-                        inputRef={ref as RefObject<HTMLInputElement>}
                         isFocused={isOpen}
                         trailingSlot={
                             isOpen ? 'arrow-chevron-up' : 'arrow-chevron-down'

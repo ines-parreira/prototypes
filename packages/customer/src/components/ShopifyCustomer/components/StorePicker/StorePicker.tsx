@@ -1,4 +1,3 @@
-import type { RefObject } from 'react'
 import { useCallback, useMemo, useState } from 'react'
 
 import {
@@ -58,17 +57,14 @@ export function StorePicker({
     const trigger = useCallback(
         ({
             isOpen,
-            ref,
             selectedText,
         }: {
             isOpen: boolean
-            ref?: RefObject<HTMLButtonElement>
             selectedText: string
         }) => (
             <SelectTrigger>
                 <TextField
                     aria-label="Select a store"
-                    inputRef={ref as RefObject<HTMLInputElement>}
                     isFocused={isOpen}
                     trailingSlot={
                         isOpen ? 'arrow-chevron-up' : 'arrow-chevron-down'

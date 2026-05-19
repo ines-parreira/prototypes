@@ -84,7 +84,7 @@ export default class AddCustomItemPopover extends PureComponent<Props, State> {
                     : SegmentEvent.ShopifyDuplicateOrderCustomItemPopoverOpen,
             )
         } else if (onClose) {
-            focusElement(() => this._buttonElement as HTMLInputElement)
+            focusElement(() => this._buttonElement as HTMLElement)
         }
     }
 

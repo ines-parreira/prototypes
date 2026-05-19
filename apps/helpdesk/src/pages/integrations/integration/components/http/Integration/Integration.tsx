@@ -1,6 +1,5 @@
 import type { ComponentProps, SyntheticEvent } from 'react'
 import { Component } from 'react'
-import type React from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { fromJS } from 'immutable'
@@ -833,15 +832,11 @@ export class Integration extends Component<Props, State> {
                                                             })
                                                         }
                                                         trigger={({
-                                                            ref,
                                                             selectedText,
                                                             isOpen,
                                                         }) => (
                                                             <SelectTrigger>
                                                                 <TextField
-                                                                    inputRef={
-                                                                        ref as React.RefObject<HTMLInputElement>
-                                                                    }
                                                                     value={
                                                                         selectedText
                                                                     }

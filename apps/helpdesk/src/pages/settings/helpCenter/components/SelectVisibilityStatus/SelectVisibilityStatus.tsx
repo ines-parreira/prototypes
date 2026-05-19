@@ -1,4 +1,3 @@
-import type { RefObject } from 'react'
 import React, { useMemo } from 'react'
 
 import classnames from 'classnames'
@@ -93,10 +92,9 @@ const SelectCustomerVisibility = ({
         <div className={classnames(className, css.wrapper)}>
             <Label>Customer visibility</Label>
             <Select<VisibilityOption>
-                trigger={({ ref, isOpen }) => (
+                trigger={({ isOpen }) => (
                     <SelectTrigger>
                         <TextField
-                            inputRef={ref as RefObject<HTMLInputElement>}
                             value={selectedText}
                             isDisabled={isDisabled}
                             isFocused={isOpen}

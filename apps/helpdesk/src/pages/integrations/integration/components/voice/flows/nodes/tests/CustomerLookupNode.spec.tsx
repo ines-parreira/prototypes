@@ -92,10 +92,10 @@ jest.mock(
 )
 
 const matchesOriginal = HTMLElement.prototype.matches
-HTMLElement.prototype.matches = function (query: string) {
+HTMLElement.prototype.matches = function (this: HTMLElement, query: string) {
     if (query === ':focus-visible') return false
     return matchesOriginal.call(this, query)
-}
+} as typeof HTMLElement.prototype.matches
 HTMLCanvasElement.prototype.getContext = jest.fn()
 
 const customerLookupStep = mockCustomerFieldsConditionalStep({

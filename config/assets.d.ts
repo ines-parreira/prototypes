@@ -3,6 +3,8 @@ declare module '*.less' {
     export = resource
 }
 
+declare module '*.css'
+
 declare module '*.svg' {
     const resource: string
     export = resource

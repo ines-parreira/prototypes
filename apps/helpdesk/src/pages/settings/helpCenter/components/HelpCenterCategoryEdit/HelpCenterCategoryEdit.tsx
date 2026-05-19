@@ -1,4 +1,4 @@
-import type { ChangeEvent, RefObject } from 'react'
+import type { ChangeEvent } from 'react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { SCREEN_SIZE, useAsyncFn, useScreenSize } from '@repo/hooks'
@@ -602,12 +602,9 @@ export const HelpCenterCategoryEdit = ({
                         <div>
                             <AxiomLabel>Category parent</AxiomLabel>
                             <Select<CategoryOption>
-                                trigger={({ ref, selectedText, isOpen }) => (
+                                trigger={({ selectedText, isOpen }) => (
                                     <SelectTrigger>
                                         <TextField
-                                            inputRef={
-                                                ref as RefObject<HTMLInputElement>
-                                            }
                                             value={selectedText}
                                             isFocused={isOpen}
                                             trailingSlot={

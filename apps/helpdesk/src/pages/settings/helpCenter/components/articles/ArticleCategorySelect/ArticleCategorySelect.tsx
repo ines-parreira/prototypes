@@ -1,4 +1,3 @@
-import type { RefObject } from 'react'
 import { useMemo } from 'react'
 
 import {
@@ -45,10 +44,9 @@ const ArticleCategorySelect = ({
         <div className={css.wrapper}>
             <Label>Category</Label>
             <Select<CategoryOption>
-                trigger={({ ref, selectedText, isOpen }) => (
+                trigger={({ selectedText, isOpen }) => (
                     <SelectTrigger>
                         <TextField
-                            inputRef={ref as RefObject<HTMLInputElement>}
                             value={selectedText}
                             isDisabled={isDisabled}
                             isFocused={isOpen}

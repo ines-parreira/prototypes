@@ -1,5 +1,3 @@
-import type { RefObject } from 'react'
-
 import {
     Box,
     Label,
@@ -33,12 +31,11 @@ export function StatusDurationSelect({
                 selectedItem={value}
                 onSelect={onChange}
                 aria-labelledby="status-duration-label"
-                trigger={({ ref, isOpen, selectedText }) => {
+                trigger={({ isOpen, selectedText }) => {
                     return (
                         <SelectTrigger>
                             <TextField
                                 id="status-duration"
-                                inputRef={ref as RefObject<HTMLInputElement>}
                                 isFocused={isOpen}
                                 trailingSlot={
                                     isOpen

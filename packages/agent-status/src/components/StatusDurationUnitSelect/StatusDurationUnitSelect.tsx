@@ -1,4 +1,3 @@
-import type { RefObject } from 'react'
 import { useCallback, useMemo } from 'react'
 
 import {
@@ -53,12 +52,11 @@ export function StatusDurationUnitSelect({
                 selectedItem={selectedItem}
                 onSelect={handleSelect}
                 aria-labelledby="custom-duration-unit-label"
-                trigger={({ ref, selectedText, isOpen }) => {
+                trigger={({ selectedText, isOpen }) => {
                     return (
                         <SelectTrigger>
                             <TextField
                                 id="custom-duration-unit"
-                                inputRef={ref as RefObject<HTMLInputElement>}
                                 isFocused={isOpen}
                                 trailingSlot={
                                     isOpen

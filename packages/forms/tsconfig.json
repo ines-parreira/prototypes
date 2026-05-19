@@ -1,7 +1,6 @@
 {
     "extends": "@repo/config/tsconfig.common.json",
     "compilerOptions": {
-        "baseUrl": ".",
         "jsx": "react",
         "types": ["vitest/globals", "@testing-library/jest-dom"]
     },
