@@ -1,5 +1,5 @@
 import { render } from '@repo/testing'
-import { act, screen, waitFor } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { useSearchParam } from 'hooks/useSearchParam'
@@ -35,11 +35,18 @@ jest.mock('pages/integrations/components/ConnectLink', () => ({
 
 const mockedUseSearchParam = jest.mocked(useSearchParam)
 
+const MODAL_EXIT_TRANSITION_DURATION_MS = 200
+
 describe('VoiceAddedSuccessModal', () => {
     const mockSetSearchParam = jest.fn()
 
     beforeEach(() => {
         jest.clearAllMocks()
+    })
+
+    afterEach(() => {
+        jest.clearAllTimers()
+        jest.useRealTimers()
     })
 
     const renderComponent = () => {
@@ -116,19 +123,26 @@ describe('VoiceAddedSuccessModal', () => {
     })
 
     it('should close modal and clear search param when modal is closed', async () => {
+        jest.useFakeTimers()
+
+        const user = userEvent.setup({
+            advanceTimers: jest.advanceTimersByTime,
+        })
+
         mockedUseSearchParam.mockReturnValue(['123', mockSetSearchParam])
 
         renderComponent()
 
         const closeButton = screen.getByText('close')
         await act(async () => {
-            await userEvent.click(closeButton)
+            await user.click(closeButton)
         })
 
-        await waitFor(() => {
-            expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+        act(() => {
+            jest.advanceTimersByTime(MODAL_EXIT_TRANSITION_DURATION_MS)
         })
 
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
         expect(mockSetSearchParam).toHaveBeenCalledWith(null)
     })
 

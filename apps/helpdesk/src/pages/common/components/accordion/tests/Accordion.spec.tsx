@@ -8,7 +8,14 @@ import AccordionBody from '../AccordionBody'
 import AccordionHeader from '../AccordionHeader'
 import AccordionItem from '../AccordionItem'
 
+const COLLAPSE_TRANSITION_DURATION_MS = 350
+
 describe('<Accordion />', () => {
+    afterEach(() => {
+        jest.clearAllTimers()
+        jest.useRealTimers()
+    })
+
     it('should render accordion component', () => {
         const { container } = render(
             <Accordion>
@@ -78,7 +85,9 @@ describe('<Accordion />', () => {
         })
     })
 
-    it('should collapse accordion item if other item was expanded', async () => {
+    it('should collapse accordion item if other item was expanded', () => {
+        jest.useFakeTimers()
+
         render(
             <Accordion defaultExpandedItem="2">
                 <AccordionItem id="1">
@@ -96,14 +105,18 @@ describe('<Accordion />', () => {
             fireEvent.click(screen.getByText('Header 1'))
         })
 
-        await waitFor(() => {
-            expect(screen.getByText('Body 2').parentElement).toHaveClass(
-                'isCollapsed',
-            )
+        act(() => {
+            jest.advanceTimersByTime(COLLAPSE_TRANSITION_DURATION_MS)
         })
+
+        expect(screen.getByText('Body 2').parentElement).toHaveClass(
+            'isCollapsed',
+        )
     })
 
-    it('should collapse accordion item on arrow_up icon click', async () => {
+    it('should collapse accordion item on arrow_up icon click', () => {
+        jest.useFakeTimers()
+
         render(
             <Accordion defaultExpandedItem="2">
                 <AccordionItem id="1">
@@ -121,11 +134,13 @@ describe('<Accordion />', () => {
             fireEvent.click(screen.getByText('keyboard_arrow_up'))
         })
 
-        await waitFor(() => {
-            expect(screen.getByText('Body 2').parentElement).toHaveClass(
-                'isCollapsed',
-            )
+        act(() => {
+            jest.advanceTimersByTime(COLLAPSE_TRANSITION_DURATION_MS)
         })
+
+        expect(screen.getByText('Body 2').parentElement).toHaveClass(
+            'isCollapsed',
+        )
     })
 
     it('should not expand accordion item if it is disabled', async () => {
