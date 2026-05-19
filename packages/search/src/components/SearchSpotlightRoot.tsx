@@ -7,7 +7,7 @@ import {
     useState,
 } from 'react'
 
-import { useLocalStorageWithExpiry } from '@repo/hooks'
+import { useLocalStorageWithExpiry, usePrevious } from '@repo/hooks'
 import { history } from '@repo/routing'
 import { shortcutManager } from '@repo/utils'
 import { useLocation } from 'react-router-dom'
@@ -71,6 +71,7 @@ export function SearchSpotlightRoot({
 }: SearchSpotlightRootProps) {
     const { pathname } = useLocation()
     const previousPathnameRef = useRef(pathname)
+    const wasOpen = usePrevious(isOpen)
     const searchInputRef = useRef<HTMLInputElement>(null)
     const rowRefs = useRef(new Map<number, HTMLTableRowElement>())
     const resultsViewportRef = useRef<HTMLDivElement>(null)
@@ -415,14 +416,21 @@ export function SearchSpotlightRoot({
     }, [isOpen, selectedIndex])
 
     useEffect(() => {
+        const didOpen = isOpen && !wasOpen
+
         if (isOpen) {
             setSearchQuery(recentSearchQuery)
+
+            if (didOpen && recentSearchQuery) {
+                searchInputRef.current?.select()
+            }
+
             return
         }
 
         setSelectedSection('all')
         setSelectedIndex(null)
-    }, [isOpen, recentSearchQuery])
+    }, [isOpen, recentSearchQuery, wasOpen])
 
     useEffect(() => {
         setSelectedIndex(null)

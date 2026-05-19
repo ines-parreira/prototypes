@@ -85,7 +85,7 @@ export function useSearchSpotlightData({
     isOpen,
     showCalls,
 }: UseSearchSpotlightDataOptions) {
-    const debouncedQuery = useDebouncedValue(query.trim(), 500)
+    const debouncedQuery = useDebouncedValue(query.trim(), 1000)
     const isSearchMode = isOpen && debouncedQuery.length > 0
     const queryLimit = isSearchMode ? SEARCH_RESULT_LIMIT : 1
 

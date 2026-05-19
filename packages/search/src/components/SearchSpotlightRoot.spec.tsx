@@ -694,6 +694,12 @@ describe('SearchSpotlightRoot', () => {
         expect(
             screen.getByRole('searchbox', { name: /search for anything/i }),
         ).toHaveValue('refund')
+        const reopenedInput = screen.getByRole('searchbox', {
+            name: /search for anything/i,
+        }) as HTMLInputElement
+
+        expect(reopenedInput.selectionStart).toBe(0)
+        expect(reopenedInput.selectionEnd).toBe('refund'.length)
     })
 
     it('clamps the selected row when visible results shrink', async () => {

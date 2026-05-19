@@ -65,6 +65,7 @@ describe('useSearchSpotlightData', () => {
 
         expect(result.current.isSearchMode).toBe(false)
         expect(result.current.isLoading).toBe(false)
+        expect(vi.mocked(useDebouncedValue)).toHaveBeenCalledWith('', 1000)
         expect(vi.mocked(useSearchAllTickets)).toHaveBeenCalledWith(
             { search: '', filters: '' },
             { limit: 1, with_highlights: true, track_total_hits: true },
