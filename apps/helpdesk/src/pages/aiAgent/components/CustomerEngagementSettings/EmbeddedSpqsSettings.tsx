@@ -29,7 +29,7 @@ type Props = {
 }
 
 const DEFAULT_DESCRIPTION =
-    'Show up to 3 dynamic, AI-generated questions embedded directly in product pages to resolve pre-sales questions and drive conversion.'
+    'Show up to 3 dynamic, AI-generated questions embedded directly in product pages to resolve pre-sales questions and drive conversion. On pages where this is installed, the Floating AI FAQs are automatically hidden to avoid duplicates.'
 
 export const EmbeddedSpqsSettings = ({
     shopName,

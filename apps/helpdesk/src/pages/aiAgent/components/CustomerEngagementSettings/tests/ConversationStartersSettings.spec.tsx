@@ -75,7 +75,7 @@ describe('ConversationStartersSettings', () => {
 
         screen
             .getAllByText(
-                'Show up to 3 AI-generated questions above chat to answer common shopper questions and start conversations.',
+                'Show up to 3 AI-generated questions above chat to answer common shopper questions and start conversations. Automatically hidden on product pages where Embedded AI FAQs are installed.',
             )
             .find(notOnDialog)
         screen

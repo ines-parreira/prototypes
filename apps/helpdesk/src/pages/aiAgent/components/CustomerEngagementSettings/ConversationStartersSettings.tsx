@@ -136,6 +136,8 @@ export const ConversationStartersAdvancedSettings = ({
                     <span className={css.switchDescription}>
                         Show up to 3 AI-generated questions above chat to answer
                         common shopper questions and start conversations.
+                        Automatically hidden on product pages where Embedded AI
+                        FAQs are installed.
                     </span>
                     <CheckBoxField
                         label="Hide on mobile"
@@ -178,7 +180,7 @@ type Props = {
 }
 
 export const ConversationStartersSettings = ({
-    description = 'Show up to 3 AI-generated questions above chat to answer common shopper questions and start conversations.',
+    description = 'Show up to 3 AI-generated questions above chat to answer common shopper questions and start conversations. Automatically hidden on product pages where Embedded AI FAQs are installed.',
     isEnabled,
     gmv,
     isGmvLoading,
