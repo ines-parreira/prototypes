@@ -1,6 +1,6 @@
 import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { act, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -8,9 +8,6 @@ import thunk from 'redux-thunk'
 import { updateSegment } from '@gorgias/customer-segmentation-client'
 
 import { aiJourneyKeys } from 'AIJourney/queries/utils'
-import useAppDispatch from 'hooks/useAppDispatch'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { useUpdateSegment } from './useUpdateSegment'
 
@@ -18,14 +15,7 @@ jest.mock('@gorgias/customer-segmentation-client', () => ({
     updateSegment: jest.fn(),
 }))
 
-jest.mock('state/notifications/actions', () => ({
-    notify: jest.fn(),
-}))
-
-jest.mock('hooks/useAppDispatch', () => jest.fn())
-
 const mockUpdateSegment = updateSegment as jest.Mock
-const mockUseAppDispatch = jest.mocked(useAppDispatch)
 
 const updateSegmentRequest = {
     name: 'Updated Segment',
@@ -35,7 +25,6 @@ const updateSegmentRequest = {
 
 describe('useUpdateSegment', () => {
     let queryClient: QueryClient
-    const mockDispatch = jest.fn()
     const mockStore = configureMockStore([thunk])()
 
     const createWrapper = () => {
@@ -58,7 +47,6 @@ describe('useUpdateSegment', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseAppDispatch.mockReturnValue(mockDispatch)
     })
 
     it('should call updateSegment with the correct segmentId and request body', async () => {
@@ -130,7 +118,7 @@ describe('useUpdateSegment', () => {
         })
     })
 
-    it('should dispatch success notification on success', async () => {
+    it('should show a success toast on success', async () => {
         mockUpdateSegment.mockResolvedValue({ data: undefined })
 
         const { result } = renderHook(() => useUpdateSegment(), {
@@ -146,15 +134,13 @@ describe('useUpdateSegment', () => {
 
         await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-        expect(mockDispatch).toHaveBeenCalledWith(
-            notify({
-                message: 'Segment updated successfully',
-                status: NotificationStatus.Success,
-            }),
-        )
+        const toastEl = await screen.findByRole('status', {
+            name: 'Segment updated successfully',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'success')
     })
 
-    it('should set error state and dispatch error notification when updateSegment fails', async () => {
+    it('should set error state and show error toast when updateSegment fails', async () => {
         const consoleErrorSpy = jest
             .spyOn(console, 'error')
             .mockImplementation()
@@ -175,12 +161,10 @@ describe('useUpdateSegment', () => {
         await waitFor(() => expect(result.current.isError).toBe(true))
 
         expect(result.current.error).toEqual(mockError)
-        expect(mockDispatch).toHaveBeenCalledWith(
-            notify({
-                message: 'Error updating segment',
-                status: NotificationStatus.Error,
-            }),
-        )
+        const toastEl = await screen.findByRole('status', {
+            name: 'Error updating segment',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         consoleErrorSpy.mockRestore()
     })
 })

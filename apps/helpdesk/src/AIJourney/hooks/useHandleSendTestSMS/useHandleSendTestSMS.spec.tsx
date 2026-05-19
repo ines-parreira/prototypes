@@ -1,5 +1,5 @@
 import { renderHook } from '@repo/testing'
-import { act } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -10,18 +10,8 @@ import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import { useTestSms } from 'AIJourney/queries'
 import type { Product } from 'constants/integrations/types/shopify'
-import useAppDispatch from 'hooks/useAppDispatch'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { useHandleSendTestSMS } from './useHandleSendTestSMS'
-
-jest.mock('state/notifications/actions', () => ({
-    notify: jest.fn(),
-}))
-
-jest.mock('hooks/useAppDispatch', () => jest.fn())
-const mockUseAppDispatch = jest.mocked(useAppDispatch)
 
 jest.mock('AIJourney/queries', () => ({
     useTestSms: jest.fn(),
@@ -73,7 +63,6 @@ const hookParameters = {
 }
 
 describe('useHandleSendTestSMS', () => {
-    const mockDispatch = jest.fn()
     const mockTestSms = jest.fn()
     const mockStore = configureMockStore([thunk])({
         currentAccount: fromJS({
@@ -83,8 +72,6 @@ describe('useHandleSendTestSMS', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-
-        mockUseAppDispatch.mockReturnValue(mockDispatch)
 
         mockedUseTestSms.mockReturnValue({
             mutateAsync: mockTestSms,
@@ -113,12 +100,10 @@ describe('useHandleSendTestSMS', () => {
                 await result.current.handleTestSms()
             })
 
-            expect(mockDispatch).toHaveBeenCalledWith(
-                notify({
-                    message: `Missing information: test number: ${hookParameters.testSmsNumber}, journeyID: undefined, integrationId: ${mockIntegration.id}`,
-                    status: NotificationStatus.Error,
-                }),
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: `Missing information: test number: ${hookParameters.testSmsNumber}, journeyID: undefined, integrationId: ${mockIntegration.id}`,
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
             expect(mockTestSms).not.toHaveBeenCalled()
         })
 
@@ -143,12 +128,10 @@ describe('useHandleSendTestSMS', () => {
                 await result.current.handleTestSms()
             })
 
-            expect(mockDispatch).toHaveBeenCalledWith(
-                notify({
-                    message: `Missing information: test number: ${hookParameters.testSmsNumber}, journeyID: undefined, integrationId: ${mockIntegration.id}`,
-                    status: NotificationStatus.Error,
-                }),
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: `Missing information: test number: ${hookParameters.testSmsNumber}, journeyID: undefined, integrationId: ${mockIntegration.id}`,
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
             expect(mockTestSms).not.toHaveBeenCalled()
         })
 
@@ -170,12 +153,10 @@ describe('useHandleSendTestSMS', () => {
                 await result.current.handleTestSms()
             })
 
-            expect(mockDispatch).toHaveBeenCalledWith(
-                notify({
-                    message: `Missing information: test number: undefined, journeyID: ${mockJourney.id}, integrationId: ${mockIntegration.id}`,
-                    status: NotificationStatus.Error,
-                }),
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: `Missing information: test number: undefined, journeyID: ${mockJourney.id}, integrationId: ${mockIntegration.id}`,
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
             expect(mockTestSms).not.toHaveBeenCalled()
         })
 
@@ -197,12 +178,10 @@ describe('useHandleSendTestSMS', () => {
                 await result.current.handleTestSms()
             })
 
-            expect(mockDispatch).toHaveBeenCalledWith(
-                notify({
-                    message: `Missing information: test number: ${hookParameters.testSmsNumber}, journeyID: ${mockJourney.id}, integrationId: undefined`,
-                    status: NotificationStatus.Error,
-                }),
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: `Missing information: test number: ${hookParameters.testSmsNumber}, journeyID: ${mockJourney.id}, integrationId: undefined`,
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
             expect(mockTestSms).not.toHaveBeenCalled()
         })
 
@@ -224,12 +203,10 @@ describe('useHandleSendTestSMS', () => {
                 await result.current.handleTestSms()
             })
 
-            expect(mockDispatch).toHaveBeenCalledWith(
-                notify({
-                    message: 'Invalid phone number format',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'Invalid phone number format',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
             expect(mockTestSms).not.toHaveBeenCalled()
         })
 
@@ -257,12 +234,10 @@ describe('useHandleSendTestSMS', () => {
             expect(consoleErrorSpy).toHaveBeenCalledWith(
                 `Error sending test SMS: ${testError}`,
             )
-            expect(mockDispatch).toHaveBeenCalledWith(
-                notify({
-                    message: 'Could not send test SMS',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'Could not send test SMS',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
 
             consoleErrorSpy.mockRestore()
         })
@@ -300,12 +275,10 @@ describe('useHandleSendTestSMS', () => {
                 returningCustomer: undefined,
             })
 
-            expect(mockDispatch).toHaveBeenCalledWith(
-                notify({
-                    message: 'SMS sent successfully',
-                    status: NotificationStatus.Success,
-                }),
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'SMS sent successfully',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
         })
 
         it('should parse formatted international phone numbers', async () => {
@@ -357,12 +330,10 @@ describe('useHandleSendTestSMS', () => {
             })
 
             expect(mockTestSms).toHaveBeenCalled()
-            expect(mockDispatch).toHaveBeenCalledWith(
-                notify({
-                    message: 'SMS sent successfully',
-                    status: NotificationStatus.Success,
-                }),
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'SMS sent successfully',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
         })
 
         it('should use default delay of 10000ms when not specified', async () => {
@@ -392,12 +363,10 @@ describe('useHandleSendTestSMS', () => {
 
             await handleTestSmsPromise
 
-            expect(mockDispatch).toHaveBeenCalledWith(
-                notify({
-                    message: 'SMS sent successfully',
-                    status: NotificationStatus.Success,
-                }),
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'SMS sent successfully',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
 
             jest.useRealTimers()
         })
@@ -429,12 +398,10 @@ describe('useHandleSendTestSMS', () => {
                 returningCustomer: undefined,
             })
 
-            expect(mockDispatch).toHaveBeenCalledWith(
-                notify({
-                    message: 'SMS sent successfully',
-                    status: NotificationStatus.Success,
-                }),
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'SMS sent successfully',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
         })
 
         it('should pass returningCustomer parameter to the mutation', async () => {

@@ -1,5 +1,7 @@
 import React, { useCallback } from 'react'
 
+import { toast } from '@gorgias/axiom'
+
 import { MAX_CHECKED_CHARTS } from 'domains/reporting/pages/dashboards/config'
 import {
     ChartIcon,
@@ -7,10 +9,7 @@ import {
 } from 'domains/reporting/pages/dashboards/DashboardsModal/ChartIcon'
 import css from 'domains/reporting/pages/dashboards/DashboardsModal/SelectableCharts.less'
 import type { ChartConfig } from 'domains/reporting/pages/dashboards/types'
-import useAppDispatch from 'hooks/useAppDispatch'
 import CheckBox from 'pages/common/forms/CheckBox'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 export const SelectableCharts = ({
     charts,
@@ -21,8 +20,6 @@ export const SelectableCharts = ({
     checkedCharts: string[]
     setCheckedCharts: (value: string[]) => void
 }) => {
-    const dispatch = useAppDispatch()
-
     const isChartChecked = useCallback(
         (chartId: string) =>
             !!checkedCharts.find(
@@ -43,16 +40,13 @@ export const SelectableCharts = ({
                 if (checkedCharts.length < MAX_CHECKED_CHARTS) {
                     setCheckedCharts([chartId, ...checkedCharts])
                 } else {
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Error,
-                            message: `You cannot select more than ${MAX_CHECKED_CHARTS} charts`,
-                        }),
+                    toast.error(
+                        `You cannot select more than ${MAX_CHECKED_CHARTS} charts`,
                     )
                 }
             }
         },
-        [checkedCharts, dispatch, isChartChecked, setCheckedCharts],
+        [checkedCharts, isChartChecked, setCheckedCharts],
     )
 
     return (

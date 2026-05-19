@@ -3,18 +3,15 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { debounce } from 'lodash'
 import _flatten from 'lodash/flatten'
 
+import { toast } from '@gorgias/axiom'
+
 import { useInfiniteListVoiceQueues } from 'domains/reporting/hooks/common/useInfiniteListVoiceQueues'
-import useAppDispatch from 'hooks/useAppDispatch'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 export const VOICE_QUEUES_LIMIT = 20
 export const VOICE_QUEUE_SEARCH_DEBOUNCE_TIME = 300
 export const VOICE_QUEUE_FETCH_ERROR_MESSAGE = 'Failed to fetch queues'
 
 export const useVoiceQueueSearch = () => {
-    const dispatch = useAppDispatch()
-
     const [query, setQuery] = useState('')
 
     const queryResult = useInfiniteListVoiceQueues(
@@ -44,14 +41,9 @@ export const useVoiceQueueSearch = () => {
 
     useEffect(() => {
         if (isError) {
-            void dispatch(
-                notify({
-                    message: VOICE_QUEUE_FETCH_ERROR_MESSAGE,
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error(VOICE_QUEUE_FETCH_ERROR_MESSAGE)
         }
-    }, [isError, dispatch])
+    }, [isError])
 
     return {
         ...queryResult,

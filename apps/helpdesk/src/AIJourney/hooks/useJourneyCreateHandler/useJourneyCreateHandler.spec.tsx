@@ -2,13 +2,10 @@ import type React from 'react'
 
 import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { act } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 
 import { JOURNEY_TYPES } from 'AIJourney/constants'
 import { useCreateNewJourney } from 'AIJourney/queries'
-import useAppDispatch from 'hooks/useAppDispatch'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { useJourneyCreateHandler } from './useJourneyCreateHandler'
 
@@ -16,19 +13,10 @@ jest.mock('AIJourney/queries', () => ({
     useCreateNewJourney: jest.fn(),
 }))
 
-jest.mock('hooks/useAppDispatch', () => jest.fn())
-
-jest.mock('state/notifications/actions', () => ({
-    notify: jest.fn(),
-}))
-
 const mockUseCreateNewJourney = jest.mocked(useCreateNewJourney)
-const mockUseAppDispatch = jest.mocked(useAppDispatch)
-const mockNotify = jest.mocked(notify)
 
 describe('useJourneyCreateHandler', () => {
     let queryClient: QueryClient
-    let mockDispatch: jest.Mock
     let mockMutateAsync: jest.Mock
 
     const defaultHookParams = {
@@ -47,16 +35,13 @@ describe('useJourneyCreateHandler', () => {
         queryClient = new QueryClient({
             defaultOptions: { queries: { retry: false } },
         })
-        mockDispatch = jest.fn()
         mockMutateAsync = jest.fn()
 
-        mockUseAppDispatch.mockReturnValue(mockDispatch)
         mockUseCreateNewJourney.mockReturnValue({
             mutateAsync: mockMutateAsync,
             isLoading: false,
             isSuccess: false,
         } as any)
-        mockNotify.mockReturnValue(() => Promise.resolve() as any)
 
         jest.spyOn(queryClient, 'invalidateQueries').mockResolvedValue(
             undefined,
@@ -85,14 +70,10 @@ describe('useJourneyCreateHandler', () => {
                 )
             })
 
-            expect(mockDispatch).toHaveBeenCalledWith(
-                notify({
-                    message: expect.stringContaining(
-                        'Error creating new journey:',
-                    ),
-                    status: NotificationStatus.Error,
-                }),
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: /^Error creating new journey:/,
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
             expect(mockMutateAsync).not.toHaveBeenCalled()
         })
 
@@ -183,7 +164,7 @@ describe('useJourneyCreateHandler', () => {
                 await result.current.handleCreate({})
             })
 
-            expect(mockDispatch).not.toHaveBeenCalled()
+            expect(screen.queryByRole('status')).not.toBeInTheDocument()
         })
     })
 
@@ -812,13 +793,10 @@ describe('useJourneyCreateHandler', () => {
                 )
             })
 
-            expect(mockDispatch).toHaveBeenCalledWith(
-                notify({
-                    message:
-                        'Error creating new journey: Error: API request failed',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'Error creating new journey: Error: API request failed',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
 
         it('does not call invalidateQueries when mutateAsync fails', async () => {

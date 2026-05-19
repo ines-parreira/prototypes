@@ -1,18 +1,15 @@
 import { useCallback, useState } from 'react'
 
-import { Label, Skeleton } from '@gorgias/axiom'
+import { Label, Skeleton, toast } from '@gorgias/axiom'
 
 import type { GenericAttachment } from 'common/types'
 import uploadFiles from 'common/utils/uploadFiles'
-import useAppDispatch from 'hooks/useAppDispatch'
 import {
     DropText,
     DropZone,
     HelpText,
 } from 'pages/common/components/ImageUpload'
 import { MAX_IMAGE_SIZE } from 'pages/settings/helpCenter/constants'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { getFileTooLargeError } from 'utils/file'
 
 import css from './ImageDropzone.less'
@@ -31,18 +28,12 @@ export const ImageDropzone = ({
     imageUrl,
     onChange,
 }: UploadImageFieldProps) => {
-    const dispatch = useAppDispatch()
     const [isUploading, setIsUploading] = useState(false)
 
     const uploadFile = useCallback(
         async (file: File) => {
             if (file.size > MAX_IMAGE_SIZE) {
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message: getFileTooLargeError(MAX_IMAGE_SIZE),
-                    }),
-                )
+                toast.error(getFileTooLargeError(MAX_IMAGE_SIZE))
                 return
             }
 
@@ -54,17 +45,12 @@ export const ImageDropzone = ({
                     onChange?.([{ url, name, content_type }])
                 }
             } catch (error) {
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message: `Error uploading image: ${error}`,
-                    }),
-                )
+                toast.error(`Error uploading image: ${error}`)
             } finally {
                 setIsUploading(false)
             }
         },
-        [dispatch, onChange],
+        [onChange],
     )
 
     const handleOnChangeFile = useCallback(

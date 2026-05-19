@@ -6,6 +6,8 @@ import classnames from 'classnames'
 import { parse } from 'csv-parse/sync'
 import { stringify } from 'csv-stringify/sync'
 
+import { toast } from '@gorgias/axiom'
+
 import type { PaywallConfig } from 'config/paywalls'
 import { paywallConfigs as defaultPaywallConfigs } from 'config/paywalls'
 import {
@@ -37,7 +39,6 @@ import { SelfServiceFeaturePreview } from 'domains/reporting/pages/self-service/
 import css from 'domains/reporting/pages/self-service/SelfServiceStatsPage.less'
 import SelfServiceStatsPagePaywallCustomCta from 'domains/reporting/pages/self-service/SelfServiceStatsPagePaywallCustomCta'
 import { getCleanStatsFiltersWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetSelfServiceConfigurations } from 'models/selfServiceConfiguration/queries'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
@@ -56,15 +57,12 @@ import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integration
 import { useGetAIArticles } from 'pages/settings/helpCenter/queries'
 import { AccountFeature } from 'state/currentAccount/types'
 import { getIntegrations } from 'state/integrations/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { assetsUrl } from 'utils'
 
 const SelfServiceStatsPageCore = (): JSX.Element => {
     const [noActivityAlertDismissed, setNoActivityAlertDismissed] =
         useState(false)
 
-    const dispatch = useAppDispatch()
     const integrations = useAppSelector(getIntegrations)
     const { cleanStatsFilters: statsFilters } = useAppSelector(
         getCleanStatsFiltersWithTimezone,
@@ -98,14 +96,9 @@ const SelfServiceStatsPageCore = (): JSX.Element => {
 
     useEffect(() => {
         if (isWorkflowConfigurationsFetchError) {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: 'Could not fetch Flows, please try again later.',
-                }),
-            )
+            toast.error('Could not fetch Flows, please try again later.')
         }
-    }, [dispatch, isWorkflowConfigurationsFetchError])
+    }, [isWorkflowConfigurationsFetchError])
 
     const refineDownloadedWorkflows = useCallback(
         (csvData: string): string => {
@@ -141,12 +134,8 @@ const SelfServiceStatsPageCore = (): JSX.Element => {
         isLoading: isSelfServiceFetchPending,
     } = useGetSelfServiceConfigurations({
         onError: () => {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message:
-                        'Could not fetch Self-service configurations, please try again later.',
-                }),
+            toast.error(
+                'Could not fetch Self-service configurations, please try again later.',
             )
         },
     })

@@ -3,7 +3,7 @@ import React from 'react'
 
 import { logEvent } from '@repo/logging'
 import { render } from '@repo/testing'
-import { fireEvent, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
 import { Provider } from 'react-redux'
@@ -18,12 +18,10 @@ import StatWrapper from 'domains/reporting/pages/common/layout/StatWrapper'
 import { account } from 'fixtures/account'
 import { firstResponseTime } from 'fixtures/stats'
 import { user } from 'fixtures/users'
-import { notify } from 'state/notifications/actions'
 import type { RootState } from 'state/types'
 import { saveFileAsDownloaded } from 'utils/file'
 
 jest.mock('utils/file')
-jest.mock('state/notifications/actions')
 jest.mock('domains/reporting/models/stat/resources')
 jest.mock('@repo/logging')
 jest.mock('@gorgias/axiom', () => {
@@ -52,7 +50,6 @@ const saveFileAsDownloadedMock = saveFileAsDownloaded as jest.MockedFunction<
 const downloadStatMock = downloadStat as jest.MockedFunction<
     typeof downloadStat
 >
-const notifyMock = notify as jest.MockedFunction<typeof notify>
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
 describe('StatWrapper', () => {
@@ -74,15 +71,6 @@ describe('StatWrapper', () => {
     } as RootState
 
     beforeEach(() => {
-        notifyMock.mockImplementation(
-            (message) => () =>
-                message
-                    ? Promise.resolve({
-                          type: 'notify mock',
-                          message,
-                      })
-                    : Promise.resolve(),
-        )
         downloadStatMock.mockResolvedValue({
             name: 'foo.txt',
             contentType: 'text/plain',
@@ -170,7 +158,8 @@ describe('StatWrapper', () => {
             expect(downloadStatMock).toBeCalled()
         })
 
-        expect(notifyMock.mock.calls).toMatchSnapshot()
+        const toastEl = await screen.findByRole('status', { name: 'foo error' })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
 
     it('should display spinner while downloading the stat', () => {

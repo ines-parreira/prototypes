@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { UserRole } from '@repo/permissions'
 import { useCurrentUserRole } from '@repo/users'
 
-import { Box, Button, Heading, Size } from '@gorgias/axiom'
+import { Box, Button, Heading, Size, toast } from '@gorgias/axiom'
 import {
     AudienceListSource,
     JourneyCampaignStateEnum,
@@ -23,9 +23,6 @@ import {
     useSegments,
 } from 'AIJourney/queries'
 import { useConditionsMetadata } from 'AIJourney/queries/useConditionsMetadata/useConditionsMetadata'
-import useAppDispatch from 'hooks/useAppDispatch'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import css from './Segments.less'
 
@@ -58,7 +55,6 @@ export const Segments = () => {
             cursor,
         },
     )
-    const dispatch = useAppDispatch()
     const { hasRole } = useCurrentUserRole()
     const canWrite = hasRole(UserRole.Admin) || hasRole(UserRole.Agent)
     const {
@@ -69,15 +65,11 @@ export const Segments = () => {
 
     useEffect(() => {
         if (isSchemaError) {
-            dispatch(
-                notify({
-                    message:
-                        'Failed to load segment conditions. Please refresh the page.',
-                    status: NotificationStatus.Error,
-                }),
+            toast.error(
+                'Failed to load segment conditions. Please refresh the page.',
             )
         }
-    }, [isSchemaError, dispatch])
+    }, [isSchemaError])
 
     const hasNextPage = !!segmentsData?.metadata.next_cursor
     const hasPrevPage = !!segmentsData?.metadata.prev_cursor

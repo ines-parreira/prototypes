@@ -1,21 +1,12 @@
 import { renderHook } from '@repo/testing'
-import { act } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { useUpdateJourney } from 'AIJourney/queries'
-import useAppDispatch from 'hooks/useAppDispatch'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { useJourneyUpdateHandler } from './useUpdateJourneyHandler'
-
-jest.mock('state/notifications/actions', () => ({
-    notify: jest.fn(),
-}))
-
-jest.mock('hooks/useAppDispatch', () => jest.fn())
 
 jest.mock('AIJourney/queries', () => ({
     useUpdateJourney: jest.fn(),
@@ -26,13 +17,11 @@ jest.mock('@tanstack/react-query', () => ({
     useQueryClient: jest.fn(),
 }))
 
-const mockUseAppDispatch = jest.mocked(useAppDispatch)
 const mockUseUpdateJourney = jest.mocked(useUpdateJourney)
 const mockUseQueryClient = require('@tanstack/react-query')
     .useQueryClient as jest.Mock
 
 describe('useJourneyUpdateHandler', () => {
-    const mockDispatch = jest.fn()
     const mockMutateAsync = jest.fn()
     const mockInvalidateQueries = jest.fn()
     const mockStore = configureMockStore([thunk])()
@@ -48,8 +37,6 @@ describe('useJourneyUpdateHandler', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-
-        mockUseAppDispatch.mockReturnValue(mockDispatch)
 
         mockUseUpdateJourney.mockReturnValue({
             mutateAsync: mockMutateAsync,
@@ -78,13 +65,10 @@ describe('useJourneyUpdateHandler', () => {
                 )
             })
 
-            expect(mockDispatch).toHaveBeenCalledWith(
-                notify({
-                    message:
-                        'Error updating journey: Error: Missing integration',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'Error updating journey: Error: Missing integration',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
 
         it('should throw and dispatch error when both journeyId and id are missing', async () => {
@@ -99,12 +83,10 @@ describe('useJourneyUpdateHandler', () => {
                 )
             })
 
-            expect(mockDispatch).toHaveBeenCalledWith(
-                notify({
-                    message: 'Error updating journey: Error: Missing journey',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'Error updating journey: Error: Missing journey',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
     })
 
@@ -188,7 +170,7 @@ describe('useJourneyUpdateHandler', () => {
                 await result.current.handleUpdate({ followUpValue: 1 })
             })
 
-            expect(mockDispatch).not.toHaveBeenCalled()
+            expect(screen.queryByRole('status')).not.toBeInTheDocument()
         })
     })
 
@@ -208,12 +190,10 @@ describe('useJourneyUpdateHandler', () => {
                 ).rejects.toThrow('Mutation failed')
             })
 
-            expect(mockDispatch).toHaveBeenCalledWith(
-                notify({
-                    message: `Error updating journey: ${mutationError}`,
-                    status: NotificationStatus.Error,
-                }),
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: `Error updating journey: ${mutationError}`,
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
 
         it('should surface the human-readable API error message when present', async () => {
@@ -247,13 +227,10 @@ describe('useJourneyUpdateHandler', () => {
                 ).rejects.toBe(apiError)
             })
 
-            expect(mockDispatch).toHaveBeenCalledWith(
-                notify({
-                    message:
-                        'Error updating journey: Please pick a date and time in the future.',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'Error updating journey: Please pick a date and time in the future.',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
 
         it('should use the supplied entityLabel in the error message', async () => {
@@ -274,12 +251,10 @@ describe('useJourneyUpdateHandler', () => {
                 ).rejects.toThrow('Mutation failed')
             })
 
-            expect(mockDispatch).toHaveBeenCalledWith(
-                notify({
-                    message: expect.stringMatching(/^Error updating campaign:/),
-                    status: NotificationStatus.Error,
-                }),
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: /^Error updating campaign:/,
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
     })
 

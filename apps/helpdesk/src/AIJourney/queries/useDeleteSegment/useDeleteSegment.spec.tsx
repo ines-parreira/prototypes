@@ -1,6 +1,6 @@
 import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { act, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -8,9 +8,6 @@ import thunk from 'redux-thunk'
 import { deleteSegment } from '@gorgias/customer-segmentation-client'
 
 import { aiJourneyKeys } from 'AIJourney/queries/utils'
-import useAppDispatch from 'hooks/useAppDispatch'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { useDeleteSegment } from './useDeleteSegment'
 
@@ -18,18 +15,10 @@ jest.mock('@gorgias/customer-segmentation-client', () => ({
     deleteSegment: jest.fn(),
 }))
 
-jest.mock('state/notifications/actions', () => ({
-    notify: jest.fn(),
-}))
-
-jest.mock('hooks/useAppDispatch', () => jest.fn())
-
 const mockDeleteSegment = deleteSegment as jest.Mock
-const mockUseAppDispatch = jest.mocked(useAppDispatch)
 
 describe('useDeleteSegment', () => {
     let queryClient: QueryClient
-    const mockDispatch = jest.fn()
     const mockStore = configureMockStore([thunk])()
 
     const createWrapper = () => {
@@ -52,7 +41,6 @@ describe('useDeleteSegment', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseAppDispatch.mockReturnValue(mockDispatch)
     })
 
     it('should call deleteSegment with the correct segmentId', async () => {
@@ -108,11 +96,11 @@ describe('useDeleteSegment', () => {
         await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
         expect(invalidateQueriesSpy).toHaveBeenCalledWith({
-            queryKey: aiJourneyKeys.segments(),
+            queryKey: aiJourneyKeys.segmentsAll(),
         })
     })
 
-    it('should dispatch success notification on success', async () => {
+    it('should show a success toast on success', async () => {
         mockDeleteSegment.mockResolvedValue({ data: undefined })
 
         const { result } = renderHook(() => useDeleteSegment(), {
@@ -125,15 +113,13 @@ describe('useDeleteSegment', () => {
 
         await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-        expect(mockDispatch).toHaveBeenCalledWith(
-            notify({
-                message: 'Segment deleted successfully',
-                status: NotificationStatus.Success,
-            }),
-        )
+        const toastEl = await screen.findByRole('status', {
+            name: 'Segment deleted successfully',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'success')
     })
 
-    it('should set error state and dispatch error notification when deleteSegment fails', async () => {
+    it('should set error state and show error toast when deleteSegment fails', async () => {
         const consoleErrorSpy = jest
             .spyOn(console, 'error')
             .mockImplementation()
@@ -151,12 +137,10 @@ describe('useDeleteSegment', () => {
         await waitFor(() => expect(result.current.isError).toBe(true))
 
         expect(result.current.error).toEqual(mockError)
-        expect(mockDispatch).toHaveBeenCalledWith(
-            notify({
-                message: 'Error deleting segment',
-                status: NotificationStatus.Error,
-            }),
-        )
+        const toastEl = await screen.findByRole('status', {
+            name: 'Error deleting segment',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         consoleErrorSpy.mockRestore()
     })
 })

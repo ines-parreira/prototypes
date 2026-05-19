@@ -1,5 +1,5 @@
-import { assumeMock, renderHook } from '@repo/testing'
-import { act } from '@testing-library/react'
+import { renderHook } from '@repo/testing'
+import { act, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -10,7 +10,6 @@ import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import { JOURNEY_TYPES } from 'AIJourney/constants'
 import type { Product } from 'constants/integrations/types/shopify'
-import useAppDispatch from 'hooks/useAppDispatch'
 import {
     useCreateTestSessionMutation,
     useTriggerAIJourney,
@@ -18,8 +17,6 @@ import {
 import type { GetTestSessionLogsResponse } from 'models/aiAgentPlayground/types'
 import { TestSessionLogType } from 'models/aiAgentPlayground/types'
 import { usePlaygroundPolling } from 'pages/aiAgent/PlaygroundV2/hooks/usePlaygroundPolling'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { useGeneratePlaygroundMessage } from './useGeneratePlaygroundMessage'
 
@@ -29,13 +26,6 @@ jest.mock('@repo/feature-flags', () => ({
     },
     useFlag: jest.fn(),
 }))
-
-jest.mock('state/notifications/actions', () => ({
-    notify: jest.fn(),
-}))
-
-jest.mock('hooks/useAppDispatch', () => jest.fn())
-const mockUseAppDispatch = assumeMock(useAppDispatch)
 
 const mockUseFlag = jest.requireMock('@repo/feature-flags').useFlag as jest.Mock
 
@@ -103,7 +93,6 @@ const hookParameters = {
 }
 
 describe('useGeneratePlaygroundMessage', () => {
-    const mockDispatch = jest.fn()
     const mockCreateTestSession = jest.fn()
     const mockTriggerAIJourney = jest.fn()
     const mockStartPolling = jest.fn()
@@ -183,8 +172,6 @@ describe('useGeneratePlaygroundMessage', () => {
             stopPolling: mockStopPolling,
             isPolling: false,
         })
-
-        mockUseAppDispatch.mockReturnValue(mockDispatch)
     })
 
     describe('error handling', () => {
@@ -206,12 +193,10 @@ describe('useGeneratePlaygroundMessage', () => {
                 await result.current.handleGenerateMessages()
             })
 
-            expect(mockDispatch).toHaveBeenCalledWith(
-                notify({
-                    message: 'Please select a product',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'Please select a product',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
 
         it('should not notify about missing product for win-back journey type', async () => {
@@ -235,10 +220,11 @@ describe('useGeneratePlaygroundMessage', () => {
                 await result.current.handleGenerateMessages()
             })
 
-            expect(notify).not.toHaveBeenCalledWith({
-                message: 'Please select a product',
-                status: NotificationStatus.Error,
-            })
+            expect(
+                screen.queryByRole('status', {
+                    name: 'Please select a product',
+                }),
+            ).not.toBeInTheDocument()
             expect(mockCreateTestSession).toHaveBeenCalled()
         })
 
@@ -263,10 +249,11 @@ describe('useGeneratePlaygroundMessage', () => {
                 await result.current.handleGenerateMessages()
             })
 
-            expect(notify).not.toHaveBeenCalledWith({
-                message: 'Please select a product',
-                status: NotificationStatus.Error,
-            })
+            expect(
+                screen.queryByRole('status', {
+                    name: 'Please select a product',
+                }),
+            ).not.toBeInTheDocument()
             expect(mockCreateTestSession).toHaveBeenCalled()
         })
 
@@ -291,10 +278,11 @@ describe('useGeneratePlaygroundMessage', () => {
                 await result.current.handleGenerateMessages()
             })
 
-            expect(notify).not.toHaveBeenCalledWith({
-                message: 'Please select a product',
-                status: NotificationStatus.Error,
-            })
+            expect(
+                screen.queryByRole('status', {
+                    name: 'Please select a product',
+                }),
+            ).not.toBeInTheDocument()
             expect(mockCreateTestSession).toHaveBeenCalled()
         })
 
@@ -316,12 +304,10 @@ describe('useGeneratePlaygroundMessage', () => {
                 await result.current.handleGenerateMessages()
             })
 
-            expect(mockDispatch).toHaveBeenCalledWith(
-                notify({
-                    message: 'Missing journey configuration',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'Missing journey configuration',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
 
         it('should notify if journey params is missing', async () => {
@@ -342,12 +328,10 @@ describe('useGeneratePlaygroundMessage', () => {
                 await result.current.handleGenerateMessages()
             })
 
-            expect(mockDispatch).toHaveBeenCalledWith(
-                notify({
-                    message: 'Missing journey configuration',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'Missing journey configuration',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
 
         it('should notify if abandoned Cart Journey ID is missing', async () => {
@@ -371,12 +355,10 @@ describe('useGeneratePlaygroundMessage', () => {
                 await result.current.handleGenerateMessages()
             })
 
-            expect(mockDispatch).toHaveBeenCalledWith(
-                notify({
-                    message: 'Missing journey configuration',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'Missing journey configuration',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
 
         it('should notify if abandoned Cart Journey is missing', async () => {
@@ -397,12 +379,10 @@ describe('useGeneratePlaygroundMessage', () => {
                 await result.current.handleGenerateMessages()
             })
 
-            expect(mockDispatch).toHaveBeenCalledWith(
-                notify({
-                    message: 'Missing journey configuration',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'Missing journey configuration',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
 
         it('should handle errors gracefully', async () => {
@@ -421,13 +401,10 @@ describe('useGeneratePlaygroundMessage', () => {
                 await result.current.handleGenerateMessages()
             })
 
-            expect(mockDispatch).toHaveBeenCalledWith(
-                notify({
-                    message:
-                        'Error triggering AI Journey test: Error: Test error',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'Error triggering AI Journey test: Error: Test error',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
     })
 

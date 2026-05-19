@@ -1,6 +1,6 @@
 import { renderHook } from '@repo/testing'
 import type { InfiniteQueryObserverSuccessResult } from '@tanstack/react-query'
-import { act } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import { mocked } from 'jest-mock'
 
 import type {
@@ -16,17 +16,10 @@ import {
     VOICE_QUEUE_SEARCH_DEBOUNCE_TIME,
     VOICE_QUEUES_LIMIT,
 } from 'domains/reporting/hooks/common/useVoiceQueueSearch'
-import useAppDispatch from 'hooks/useAppDispatch'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 jest.mock('domains/reporting/hooks/common/useInfiniteListVoiceQueues')
-jest.mock('hooks/useAppDispatch')
-jest.mock('state/notifications/actions')
 
 const useInfiniteListVoiceQueuesMock = mocked(useInfiniteListVoiceQueues)
-const useAppDispatchMock = mocked(useAppDispatch)
-const notifyMock = mocked(notify)
 
 const fakeVoiceQueues = [
     { id: 1, name: 'Queue 1' },
@@ -158,9 +151,7 @@ describe('useVoiceQueueSearch', () => {
         },
     )
 
-    it('dispatches an error notification when error is returned', () => {
-        const dispatchMock = jest.fn()
-        useAppDispatchMock.mockReturnValue(dispatchMock)
+    it('shows an error toast when error is returned', async () => {
         useInfiniteListVoiceQueuesMock.mockReturnValue({
             ...useInfiniteListVoiceQueuesParams,
             data: {
@@ -174,11 +165,10 @@ describe('useVoiceQueueSearch', () => {
 
         renderHook(() => useVoiceQueueSearch())
 
-        expect(notifyMock).toHaveBeenCalledWith({
-            message: VOICE_QUEUE_FETCH_ERROR_MESSAGE,
-            status: NotificationStatus.Error,
+        const toastEl = await screen.findByRole('status', {
+            name: VOICE_QUEUE_FETCH_ERROR_MESSAGE,
         })
-        expect(dispatchMock).toHaveBeenCalled()
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
 
     it('fetches next page when onLoad is called', () => {

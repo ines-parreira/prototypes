@@ -3,7 +3,7 @@ import { useCallback, useMemo, useState } from 'react'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useHistory } from 'react-router-dom'
 
-import { ListItem, Select, SelectTrigger } from '@gorgias/axiom'
+import { ListItem, Select, SelectTrigger, toast } from '@gorgias/axiom'
 import { JourneyStatusEnum } from '@gorgias/convert-client'
 import type { JourneyTypeEnum } from '@gorgias/convert-client'
 
@@ -12,10 +12,7 @@ import { useJourneyUpdateHandler } from 'AIJourney/hooks'
 import { useJourneyContext } from 'AIJourney/providers'
 import { useDeleteJourney } from 'AIJourney/queries/useDeleteJourney/useDeleteJourney'
 import { getSetupStepPath } from 'AIJourney/utils'
-import useAppDispatch from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { DeleteFlowConfirmation } from '../DeleteFlowConfirmation/DeleteFlowConfirmation'
 
@@ -65,7 +62,6 @@ export const RowAdditionalOptions = ({
     }
 }) => {
     const history = useHistory()
-    const dispatch = useAppDispatch()
     const { currentIntegration } = useJourneyContext()
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
 
@@ -106,14 +102,9 @@ export const RowAdditionalOptions = ({
                 journeyMessageInstructions: messageInstructions,
             })
         } catch (error) {
-            void dispatch(
-                notify({
-                    message: `Error updating journey: ${error}`,
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error(`Error updating journey: ${error}`)
         }
-    }, [dispatch, handleUpdate, journeyState, messageInstructions])
+    }, [handleUpdate, journeyState, messageInstructions])
 
     const handleDeleteConfirm = useCallback(async () => {
         if (!journeyId) return
@@ -125,14 +116,9 @@ export const RowAdditionalOptions = ({
             const message = isGorgiasApiError(error)
                 ? error.response.data.error.msg
                 : 'Failed to delete flow.'
-            void dispatch(
-                notify({
-                    message,
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error(message)
         }
-    }, [deleteJourney, dispatch, journeyId])
+    }, [deleteJourney, journeyId])
 
     const handleAction = useCallback(
         (option: OptionEntry) => {

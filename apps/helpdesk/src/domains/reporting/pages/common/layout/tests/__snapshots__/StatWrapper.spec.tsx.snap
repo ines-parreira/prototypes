@@ -1,16 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`StatWrapper should display download error 1`] = `
-[
-  [
-    {
-      "status": "error",
-      "title": "foo error",
-    },
-  ],
-]
-`;
-
 exports[`StatWrapper should display spinner while downloading the stat 1`] = `
 <div
   class="wrapper"

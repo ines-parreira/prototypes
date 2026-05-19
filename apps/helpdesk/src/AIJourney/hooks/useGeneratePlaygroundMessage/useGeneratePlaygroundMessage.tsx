@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
+import { toast } from '@gorgias/axiom'
 import type {
     JourneyApiDTO,
     JourneyConfigurationApiDTO,
@@ -11,7 +12,6 @@ import type { Integration } from '@gorgias/helpdesk-types'
 
 import { JOURNEY_TYPES } from 'AIJourney/constants'
 import type { Product } from 'constants/integrations/types/shopify'
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     useCreateTestSessionMutation,
@@ -19,8 +19,6 @@ import {
 } from 'models/aiAgent/queries'
 import { usePlaygroundPolling } from 'pages/aiAgent/PlaygroundV2/hooks/usePlaygroundPolling'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 const POLLING_INTERVAL = 5 * 1000
 
@@ -59,8 +57,6 @@ export const useGeneratePlaygroundMessage = ({
         string[] | undefined
     >(undefined)
     const [isGeneratingMessages, setIsGeneratingMessages] = useState(false)
-
-    const dispatch = useAppDispatch()
 
     const createTestSession = useCreateTestSessionMutation()
     const triggerAIJourney = useTriggerAIJourney()
@@ -118,22 +114,12 @@ export const useGeneratePlaygroundMessage = ({
                 journeyType !== JOURNEY_TYPES.CAMPAIGN
 
             if (requiresProduct && !selectedProduct) {
-                void dispatch(
-                    notify({
-                        message: 'Please select a product',
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error('Please select a product')
                 return
             }
 
             if (!journey?.id || !currentIntegration || !journeyParams) {
-                void dispatch(
-                    notify({
-                        message: 'Missing journey configuration',
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error('Missing journey configuration')
                 return
             }
 
@@ -254,19 +240,13 @@ export const useGeneratePlaygroundMessage = ({
             }
         } catch (error) {
             console.error('Error in AI Journey test:', error)
-            void dispatch(
-                notify({
-                    message: `Error triggering AI Journey test: ${error}`,
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error(`Error triggering AI Journey test: ${error}`)
         }
     }, [
         journey,
         accountId,
         createTestSession,
         currentIntegration,
-        dispatch,
         journeyMessageInstructions,
         journeyParams,
         journeyType,

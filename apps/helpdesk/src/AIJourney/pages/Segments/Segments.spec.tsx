@@ -4,7 +4,7 @@ import type { ReactNode, Ref } from 'react'
 import { UserRole } from '@repo/permissions'
 import { render } from '@repo/testing'
 import { useCurrentUserRole } from '@repo/users'
-import { act, screen, waitFor } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 
@@ -23,9 +23,6 @@ import {
 import { useConditionsMetadata } from 'AIJourney/queries/useConditionsMetadata/useConditionsMetadata'
 import type { ConditionsSchema } from 'AIJourney/types/conditionField'
 import { user } from 'fixtures/users'
-import useAppDispatch from 'hooks/useAppDispatch'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import type { RootState } from 'state/types'
 
 import { Segments } from './Segments'
@@ -108,20 +105,12 @@ jest.mock('@repo/users', () => ({
     useCurrentUserRole: jest.fn(),
 }))
 
-jest.mock('hooks/useAppDispatch')
-
-jest.mock('state/notifications/actions')
-
 const mockUseCurrentUserRole = useCurrentUserRole as jest.Mock
 const mockUseSegments = useSegments as jest.Mock
 const mockUseJourneyContext = useJourneyContext as jest.Mock
 const mockUseDeleteSegment = useDeleteSegment as jest.Mock
 const mockUseConditionsMetadata = useConditionsMetadata as jest.Mock
 const mockUseAudiencesUsage = useAudiencesUsage as jest.Mock
-const mockUseAppDispatch = useAppDispatch as jest.MockedFunction<
-    typeof useAppDispatch
->
-const mockNotify = notify as jest.MockedFunction<typeof notify>
 
 const mockActiveCampaign = {
     id: 'campaign-1',
@@ -189,8 +178,6 @@ const initialState: Partial<RootState> = {
 const renderSegments = () => render(<Segments />, { storeState: initialState })
 
 describe('<Segments />', () => {
-    const mockDispatch = jest.fn()
-
     beforeEach(() => {
         jest.clearAllMocks()
         mockUseCurrentUserRole.mockReturnValue({
@@ -198,7 +185,6 @@ describe('<Segments />', () => {
                 role === UserRole.Admin || role === UserRole.Agent,
             isAdmin: true,
         })
-        mockUseAppDispatch.mockReturnValue(mockDispatch)
         mockUseJourneyContext.mockReturnValue({
             currentIntegration: { id: 123 },
         })
@@ -440,10 +426,7 @@ describe('<Segments />', () => {
             ).toBeDisabled()
         })
 
-        it('should dispatch an error notification when the schema request fails', async () => {
-            mockNotify.mockReturnValue(
-                jest.fn() as unknown as ReturnType<typeof notify>,
-            )
+        it('should show an error toast when the schema request fails', async () => {
             mockUseConditionsMetadata.mockReturnValue({
                 data: undefined,
                 isLoading: false,
@@ -451,14 +434,10 @@ describe('<Segments />', () => {
             })
             renderSegments()
 
-            await waitFor(() => {
-                expect(mockNotify).toHaveBeenCalledWith({
-                    message:
-                        'Failed to load segment conditions. Please refresh the page.',
-                    status: NotificationStatus.Error,
-                })
+            const toastEl = await screen.findByRole('status', {
+                name: 'Failed to load segment conditions. Please refresh the page.',
             })
-            expect(mockDispatch).toHaveBeenCalled()
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
     })
 

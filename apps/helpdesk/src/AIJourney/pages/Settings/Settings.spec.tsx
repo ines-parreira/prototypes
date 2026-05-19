@@ -4,9 +4,6 @@ import userEvent from '@testing-library/user-event'
 
 import { useAiJourneyStoreConfiguration } from 'AIJourney/hooks/useAiJourneyStoreConfiguration/useAiJourneyStoreConfiguration'
 import { useJourneyContext } from 'AIJourney/providers'
-import useAppDispatch from 'hooks/useAppDispatch'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { Settings } from './Settings'
 
@@ -30,21 +27,10 @@ jest.mock(
     }),
 )
 
-jest.mock('hooks/useAppDispatch', () => ({
-    __esModule: true,
-    default: jest.fn(),
-}))
-
-jest.mock('state/notifications/actions', () => ({
-    notify: jest.fn(),
-}))
-
 jest.mock('pages/common/components/FormUnsavedChangesPrompt', () => ({
     __esModule: true,
     default: () => null,
 }))
-
-const mockNotify = notify as jest.Mock
 
 if (typeof Element.prototype.getAnimations === 'undefined') {
     Element.prototype.getAnimations = function () {
@@ -55,10 +41,8 @@ if (typeof Element.prototype.getAnimations === 'undefined') {
 const mockUseJourneyContext = useJourneyContext as jest.Mock
 const mockUseAiJourneyStoreConfiguration =
     useAiJourneyStoreConfiguration as jest.Mock
-const mockUseAppDispatch = useAppDispatch as jest.Mock
 
 const mockSaveConfiguration = jest.fn()
-const mockDispatch = jest.fn()
 
 const renderComponent = (initialTab = 'sender-identity') =>
     render(<Settings />, {
@@ -84,8 +68,6 @@ describe('<Settings />', () => {
             isFetched: false,
             saveConfiguration: mockSaveConfiguration,
         })
-
-        mockUseAppDispatch.mockReturnValue(mockDispatch)
     })
 
     it('should render the Settings heading', () => {
@@ -416,7 +398,7 @@ describe('<Settings />', () => {
             })
         })
 
-        it('should dispatch a success notification when save succeeds', async () => {
+        it('should show a success toast when save succeeds', async () => {
             mockSaveConfiguration.mockResolvedValue(undefined)
             const user = userEvent.setup()
             renderComponent()
@@ -427,15 +409,13 @@ describe('<Settings />', () => {
                 await user.click(screen.getByRole('button', { name: 'Save' }))
             })
 
-            await waitFor(() => {
-                expect(mockNotify).toHaveBeenCalledWith({
-                    message: 'Settings saved successfully.',
-                    status: NotificationStatus.Success,
-                })
+            const toastEl = await screen.findByRole('status', {
+                name: 'Settings saved successfully.',
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
         })
 
-        it('should dispatch an error notification when save fails', async () => {
+        it('should show an error toast when save fails', async () => {
             mockSaveConfiguration.mockRejectedValue(new Error('Network error'))
             const user = userEvent.setup()
             renderComponent()
@@ -446,12 +426,10 @@ describe('<Settings />', () => {
                 await user.click(screen.getByRole('button', { name: 'Save' }))
             })
 
-            await waitFor(() => {
-                expect(mockNotify).toHaveBeenCalledWith({
-                    message: 'Error saving settings. Please try again.',
-                    status: NotificationStatus.Error,
-                })
+            const toastEl = await screen.findByRole('status', {
+                name: 'Error saving settings. Please try again.',
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
 
         it('should set a klaviyo_api_key field error when save returns a 400 with detail', async () => {

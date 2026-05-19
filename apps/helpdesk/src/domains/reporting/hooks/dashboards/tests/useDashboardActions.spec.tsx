@@ -1,6 +1,6 @@
 import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { sortBy } from 'lodash'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -31,18 +31,12 @@ import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
 import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 import { dashboardFromApi } from 'domains/reporting/pages/dashboards/utils'
 import { OverviewChart } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewReportConfig'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 const server = setupServer()
 const queryClient = mockQueryClient()
 
-const mockedDispatch = jest.fn()
 const onCloseMock = jest.fn()
-
-jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
-jest.mock('state/notifications/actions')
 
 const dashboard: AnalyticsCustomReport = {
     id: 1,
@@ -101,7 +95,7 @@ describe('useDashboardActions', () => {
             name: dashboard.name,
         }
 
-        it('should delete report and show success notification', async () => {
+        it('should delete report and show success toast', async () => {
             const { result } = renderDashboardHook()
             result.current.deleteReportHandler(deleteHandlerData)
 
@@ -110,15 +104,15 @@ describe('useDashboardActions', () => {
                     queryKey:
                         queryKeys.analyticsCustomReports.listAnalyticsCustomReports(),
                 })
-
-                expect(notify).toHaveBeenCalledWith({
-                    status: NotificationStatus.Success,
-                    message: `${dashboard.name} ${DASHBOARD_DELETED_SUCCESS_MESSAGE}`,
-                })
             })
+
+            const toastEl = await screen.findByRole('status', {
+                name: `${dashboard.name} ${DASHBOARD_DELETED_SUCCESS_MESSAGE}`,
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
         })
 
-        it('should show error notification when deletion fails', async () => {
+        it('should show error toast when deletion fails', async () => {
             const { handler } = mockDeleteAnalyticsCustomReportHandler(
                 async () => {
                     const error = {
@@ -136,12 +130,10 @@ describe('useDashboardActions', () => {
 
             expect(invalidateQueriesMock).not.toHaveBeenCalled()
 
-            await waitFor(() => {
-                expect(notify).toHaveBeenCalledWith({
-                    status: NotificationStatus.Error,
-                    message: `${dashboard.name} ${DASHBOARD_DELETED_ERROR_MESSAGE}`,
-                })
+            const toastEl = await screen.findByRole('status', {
+                name: `${dashboard.name} ${DASHBOARD_DELETED_ERROR_MESSAGE}`,
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
     })
 
@@ -208,12 +200,12 @@ describe('useDashboardActions', () => {
                 expect(invalidateQueriesMock).toHaveBeenCalledWith(
                     queryKeys.analyticsCustomReports.listAnalyticsCustomReports(),
                 )
-
-                expect(notify).toHaveBeenCalledWith({
-                    status: NotificationStatus.Success,
-                    message: `Successfully saved 1 chart to ${dashboard.name}`,
-                })
             })
+
+            const toastEl = await screen.findByRole('status', {
+                name: `Successfully saved 1 chart to ${dashboard.name}`,
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
         })
 
         it('should show a different message when saving multiple charts', async () => {
@@ -223,15 +215,13 @@ describe('useDashboardActions', () => {
                 chartIds: ['1', '2'],
             })
 
-            await waitFor(() => {
-                expect(notify).toHaveBeenCalledWith({
-                    status: NotificationStatus.Success,
-                    message: `Successfully saved 2 charts to ${dashboard.name}`,
-                })
+            const toastEl = await screen.findByRole('status', {
+                name: `Successfully saved 2 charts to ${dashboard.name}`,
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
         })
 
-        it('should show error notification when saving fails', async () => {
+        it('should show error toast when saving fails', async () => {
             const updateMock = mockUpdateAnalyticsCustomReportHandler(
                 async () => {
                     const error = {
@@ -247,12 +237,10 @@ describe('useDashboardActions', () => {
             const { result } = renderDashboardHook()
             result.current.updateDashboardHandler(updateHandlerData)
 
-            await waitFor(() => {
-                expect(notify).toHaveBeenCalledWith({
-                    status: NotificationStatus.Error,
-                    message: 'server error',
-                })
+            const toastEl = await screen.findByRole('status', {
+                name: 'server error',
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
 
         it('should show custom error message when saving fails', async () => {
@@ -275,12 +263,10 @@ describe('useDashboardActions', () => {
                 errorMessage: customError,
             })
 
-            await waitFor(() => {
-                expect(notify).toHaveBeenCalledWith({
-                    status: NotificationStatus.Error,
-                    message: customError,
-                })
+            const toastEl = await screen.findByRole('status', {
+                name: customError,
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
 
         it('should preserve layout metadata when chartIds is not provided', async () => {
@@ -453,12 +439,12 @@ describe('useDashboardActions', () => {
                 expect(invalidateQueriesMock).toHaveBeenCalledWith(
                     queryKeys.analyticsCustomReports.listAnalyticsCustomReports(),
                 )
-
-                expect(notify).toHaveBeenCalledWith({
-                    status: NotificationStatus.Success,
-                    message: `Successfully added chart to ${dashboard.name}`,
-                })
             })
+
+            const toastEl = await screen.findByRole('status', {
+                name: `Successfully added chart to ${dashboard.name}`,
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
         })
     })
 
@@ -532,12 +518,12 @@ describe('useDashboardActions', () => {
                 expect(invalidateQueriesMock).toHaveBeenCalledWith(
                     queryKeys.analyticsCustomReports.listAnalyticsCustomReports(),
                 )
-
-                expect(notify).toHaveBeenCalledWith({
-                    status: NotificationStatus.Success,
-                    message: 'Successfully removed chart from Test Report',
-                })
             })
+
+            const toastEl = await screen.findByRole('status', {
+                name: 'Successfully removed chart from Test Report',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
         })
     })
 
@@ -618,12 +604,12 @@ describe('useDashboardActions', () => {
                 expect(invalidateQueriesMock).toHaveBeenCalledWith(
                     queryKeys.analyticsCustomReports.listAnalyticsCustomReports(),
                 )
-
-                expect(notify).toHaveBeenCalledWith({
-                    status: NotificationStatus.Success,
-                    message: `${dashboard.name} ${SUCCESSFULLY_CREATED}`,
-                })
             })
+
+            const toastEl = await screen.findByRole('status', {
+                name: `${dashboard.name} ${SUCCESSFULLY_CREATED}`,
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
         })
 
         it('should preserve metadata when creating dashboard with chartIds and existing children', async () => {
@@ -833,15 +819,13 @@ describe('useDashboardActions', () => {
                 createHandlerDataWithoutChartIds,
             )
 
-            await waitFor(() => {
-                expect(notify).toHaveBeenCalledWith({
-                    status: NotificationStatus.Error,
-                    message: constants.LIMIT_REACHED_MESSAGE,
-                })
+            const toastEl = await screen.findByRole('status', {
+                name: constants.LIMIT_REACHED_MESSAGE,
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
 
-        it('should show error notification when creation fails', async () => {
+        it('should show error toast when creation fails', async () => {
             const createMock = mockCreateAnalyticsCustomReportHandler(
                 async () => {
                     const error = {
@@ -858,12 +842,10 @@ describe('useDashboardActions', () => {
             const { result } = renderDashboardHook()
             result.current.createDashboardHandler(createHandlerData)
 
-            await waitFor(() => {
-                expect(notify).toHaveBeenCalledWith({
-                    status: NotificationStatus.Error,
-                    message: 'server error',
-                })
+            const toastEl = await screen.findByRole('status', {
+                name: 'server error',
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
     })
 })

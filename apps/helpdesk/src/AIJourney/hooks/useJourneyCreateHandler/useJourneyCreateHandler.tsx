@@ -2,6 +2,7 @@ import { useCallback } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
+import { toast } from '@gorgias/axiom'
 import type { JourneyParticipationExecutionMode } from '@gorgias/convert-client'
 
 import type { UploadedImageAttachment } from 'AIJourney/components/ImageDropzone/ImageDropzone'
@@ -9,9 +10,6 @@ import type { JOURNEY_TYPES } from 'AIJourney/constants'
 import { JOURNEY_TYPE_MAP_FROM_URL } from 'AIJourney/constants'
 import { useCreateNewJourney } from 'AIJourney/queries'
 import { aiJourneyKeys } from 'AIJourney/queries/utils'
-import useAppDispatch from 'hooks/useAppDispatch'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 type UseJourneyCreateHandlerParams = {
     integrationId?: number
@@ -49,7 +47,6 @@ export const useJourneyCreateHandler = ({
     journeyType,
 }: UseJourneyCreateHandlerParams) => {
     const queryClient = useQueryClient()
-    const dispatch = useAppDispatch()
     const createNewJourney = useCreateNewJourney()
 
     const handleCreate = useCallback(
@@ -155,18 +152,12 @@ export const useJourneyCreateHandler = ({
 
                 return result
             } catch (error) {
-                void dispatch(
-                    notify({
-                        message: `Error creating new journey: ${error}`,
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error(`Error creating new journey: ${error}`)
                 throw error
             }
         },
         [
             createNewJourney,
-            dispatch,
             integrationId,
             integrationName,
             journeyType,

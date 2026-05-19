@@ -297,20 +297,15 @@ describe('SavedFiltersPanel', () => {
             },
             currentUser: defaultState.currentUser,
         } as RootState
-        const { store } = render(<SavedFiltersPanel optionalFilters={[]} />, {
+        render(<SavedFiltersPanel optionalFilters={[]} />, {
             storeState: state,
         })
         userEvent.click(screen.getByRole('button', { name: SAVE_BUTTON_LABEL }))
         expect(mutateMock).toHaveBeenCalled()
-        await waitFor(() => {
-            expect(store.getActions()).toContainEqual(
-                expect.objectContaining({
-                    payload: expect.objectContaining({
-                        message: FILTER_SAVED_ERROR_MESSAGE,
-                    }),
-                }),
-            )
+        const toastEl = await screen.findByRole('status', {
+            name: FILTER_SAVED_ERROR_MESSAGE,
         })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
     it('should update Saved Filter ', async () => {
         const savedFilterName = 'Some Name draft'
@@ -398,7 +393,7 @@ describe('SavedFiltersPanel', () => {
             },
             currentUser: defaultState.currentUser,
         } as RootState
-        const { store } = render(<SavedFiltersPanel optionalFilters={[]} />, {
+        render(<SavedFiltersPanel optionalFilters={[]} />, {
             storeState: state,
         })
         userEvent.click(screen.getByRole('button', { name: SAVE_BUTTON_LABEL }))
@@ -411,15 +406,10 @@ describe('SavedFiltersPanel', () => {
             )
         })
         expect(mutateMock).toHaveBeenCalled()
-        await waitFor(() => {
-            expect(store.getActions()).toContainEqual(
-                expect.objectContaining({
-                    payload: expect.objectContaining({
-                        message: FILTER_SAVED_ERROR_MESSAGE,
-                    }),
-                }),
-            )
+        const toastEl = await screen.findByRole('status', {
+            name: FILTER_SAVED_ERROR_MESSAGE,
         })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
     it('should update Filter name', async () => {
         const savedFilterName = 'Some Name draft'
@@ -592,7 +582,7 @@ describe('SavedFiltersPanel', () => {
             },
             currentUser: defaultState.currentUser,
         } as RootState
-        const { store } = render(<SavedFiltersPanel optionalFilters={[]} />, {
+        render(<SavedFiltersPanel optionalFilters={[]} />, {
             storeState: state,
         })
         userEvent.click(screen.getByText(COLLAPSE_CLOSED_ICON))
@@ -604,15 +594,10 @@ describe('SavedFiltersPanel', () => {
         )
         userEvent.click(screen.getByText(DELETE_CONFIRMATION_BUTTON_LABEL))
         expect(mutateMock).toHaveBeenCalled()
-        await waitFor(() => {
-            expect(store.getActions()).toContainEqual(
-                expect.objectContaining({
-                    payload: expect.objectContaining({
-                        message: FILTER_DELETED_ERROR_MESSAGE,
-                    }),
-                }),
-            )
+        const toastEl = await screen.findByRole('status', {
+            name: FILTER_DELETED_ERROR_MESSAGE,
         })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
     it('should duplicate Saved Filter ', () => {
         const mutateMock = jest.fn().mockResolvedValue({})
@@ -828,34 +813,27 @@ describe('SavedFiltersPanel', () => {
                 mutateAsync: mutateMock,
                 error: undefined,
             } as any)
-            const { store } = render(
-                <SavedFiltersPanel optionalFilters={[]} />,
-                { storeState: createState },
-            )
+            render(<SavedFiltersPanel optionalFilters={[]} />, {
+                storeState: createState,
+            })
             userEvent.click(
                 screen.getByRole('button', { name: SAVE_BUTTON_LABEL }),
             )
             expect(mutateMock).toHaveBeenCalled()
-            await waitFor(() => {
-                expect(store.getActions()).toContainEqual(
-                    expect.objectContaining({
-                        payload: expect.objectContaining({
-                            message: FILTER_SAVED_ERROR_MESSAGE,
-                        }),
-                    }),
-                )
-                expect(screen.getByText(errorMessageOnSave)).toBeInTheDocument()
+            const toastEl = await screen.findByRole('status', {
+                name: FILTER_SAVED_ERROR_MESSAGE,
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
+            expect(screen.getByText(errorMessageOnSave)).toBeInTheDocument()
         })
         it('should show error message when error response contains name on update of saved filters', async () => {
             const mutateMock = jest.fn().mockRejectedValue(gorgiasApiError)
             useUpdateAnalyticsFilterMock.mockReturnValue({
                 mutateAsync: mutateMock,
             } as any)
-            const { store } = render(
-                <SavedFiltersPanel optionalFilters={[]} />,
-                { storeState: updateState },
-            )
+            render(<SavedFiltersPanel optionalFilters={[]} />, {
+                storeState: updateState,
+            })
             userEvent.click(
                 screen.getByRole('button', { name: SAVE_BUTTON_LABEL }),
             )
@@ -873,16 +851,11 @@ describe('SavedFiltersPanel', () => {
             })
             expect(mutateMock).toHaveBeenCalled()
             userEvent.click(screen.getByText(COLLAPSE_CLOSED_ICON))
-            await waitFor(() => {
-                expect(store.getActions()).toContainEqual(
-                    expect.objectContaining({
-                        payload: expect.objectContaining({
-                            message: FILTER_SAVED_ERROR_MESSAGE,
-                        }),
-                    }),
-                )
-                expect(screen.getByText(errorMessageOnSave)).toBeInTheDocument()
+            const toastEl = await screen.findByRole('status', {
+                name: FILTER_SAVED_ERROR_MESSAGE,
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
+            expect(screen.getByText(errorMessageOnSave)).toBeInTheDocument()
         })
         it('should not show error message when error response contains name', async () => {
             const mutateMock = jest.fn().mockRejectedValue(notGorgiasApiError)
@@ -890,26 +863,20 @@ describe('SavedFiltersPanel', () => {
                 mutateAsync: mutateMock,
                 error: undefined,
             } as any)
-            const { store } = render(
-                <SavedFiltersPanel optionalFilters={[]} />,
-                { storeState: createState },
-            )
+            render(<SavedFiltersPanel optionalFilters={[]} />, {
+                storeState: createState,
+            })
             userEvent.click(
                 screen.getByRole('button', { name: SAVE_BUTTON_LABEL }),
             )
             expect(mutateMock).toHaveBeenCalled()
-            await waitFor(() => {
-                expect(store.getActions()).toContainEqual(
-                    expect.objectContaining({
-                        payload: expect.objectContaining({
-                            message: FILTER_SAVED_ERROR_MESSAGE,
-                        }),
-                    }),
-                )
-                expect(
-                    screen.queryByText(errorMessageOnSave),
-                ).not.toBeInTheDocument()
+            const toastEl = await screen.findByRole('status', {
+                name: FILTER_SAVED_ERROR_MESSAGE,
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
+            expect(
+                screen.queryByText(errorMessageOnSave),
+            ).not.toBeInTheDocument()
         })
         it('should check that cancel and save buttons are visible when user has admin role', () => {
             const savedFilterName = 'Some Name draft'

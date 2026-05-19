@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 
 import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { act, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -28,21 +28,9 @@ import type {
     DashboardLayoutConfig,
     GridSize,
 } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 jest.mock('domains/reporting/utils/managedDashboardMappers', () => ({
     buildDashboardConfig: jest.fn(),
-}))
-
-jest.mock('state/notifications/actions', () => ({
-    notify: jest.fn(),
-}))
-
-const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => ({
-    __esModule: true,
-    default: () => mockedDispatch,
 }))
 
 const server = setupServer()
@@ -53,8 +41,6 @@ beforeAll(() => {
 
 afterEach(() => {
     server.resetHandlers()
-    mockedDispatch.mockClear()
-    jest.mocked(notify).mockClear()
 })
 
 afterAll(() => {
@@ -141,12 +127,10 @@ describe('useUpdateManagedDashboard', () => {
                 )
             })
 
-            await waitFor(() => {
-                expect(notify).toHaveBeenCalledWith({
-                    status: NotificationStatus.Success,
-                    message: MANAGED_DASHBOARD_SAVED_MESSAGE,
-                })
+            const toastEl = await screen.findByRole('status', {
+                name: MANAGED_DASHBOARD_SAVED_MESSAGE,
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
         })
 
         it('should not dispatch success notification when silent is true', async () => {
@@ -178,11 +162,7 @@ describe('useUpdateManagedDashboard', () => {
 
             await waitFor(() => expect(mutationSettled).toBe(true))
 
-            expect(notify).not.toHaveBeenCalledWith(
-                expect.objectContaining({
-                    status: NotificationStatus.Success,
-                }),
-            )
+            expect(screen.queryByRole('status')).not.toBeInTheDocument()
         })
     })
 
@@ -212,12 +192,10 @@ describe('useUpdateManagedDashboard', () => {
                 )
             })
 
-            await waitFor(() => {
-                expect(notify).toHaveBeenCalledWith({
-                    status: NotificationStatus.Success,
-                    message: MANAGED_DASHBOARD_SAVED_MESSAGE,
-                })
+            const toastEl = await screen.findByRole('status', {
+                name: MANAGED_DASHBOARD_SAVED_MESSAGE,
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
 
             expect(queryClient.invalidateQueries).toHaveBeenCalledWith(
                 managedDashboardKeys.listAnalyticsManagedDashboards(),
@@ -263,12 +241,10 @@ describe('useUpdateManagedDashboard', () => {
                 )
             })
 
-            await waitFor(() => {
-                expect(notify).toHaveBeenCalledWith({
-                    status: NotificationStatus.Error,
-                    message: 'Internal server error',
-                })
+            const toastEl = await screen.findByRole('status', {
+                name: 'Internal server error',
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
 
         it('should dispatch error notification with API error message on 404', async () => {
@@ -295,12 +271,10 @@ describe('useUpdateManagedDashboard', () => {
                 )
             })
 
-            await waitFor(() => {
-                expect(notify).toHaveBeenCalledWith({
-                    status: NotificationStatus.Error,
-                    message: 'Not found',
-                })
+            const toastEl = await screen.findByRole('status', {
+                name: 'Not found',
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
 
         it('should dispatch generic error message for network failures', async () => {
@@ -325,12 +299,10 @@ describe('useUpdateManagedDashboard', () => {
                 )
             })
 
-            await waitFor(() => {
-                expect(notify).toHaveBeenCalledWith({
-                    status: NotificationStatus.Error,
-                    message: MANAGED_DASHBOARD_SAVE_FAILED_MESSAGE,
-                })
+            const toastEl = await screen.findByRole('status', {
+                name: MANAGED_DASHBOARD_SAVE_FAILED_MESSAGE,
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
     })
 
@@ -378,12 +350,10 @@ describe('useUpdateManagedDashboard', () => {
                 )
             })
 
-            await waitFor(() => {
-                expect(notify).toHaveBeenCalledWith({
-                    status: NotificationStatus.Success,
-                    message: MANAGED_DASHBOARD_SAVED_MESSAGE,
-                })
+            const toastEl = await screen.findByRole('status', {
+                name: MANAGED_DASHBOARD_SAVED_MESSAGE,
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
 
             const configPassedToMapper =
                 jest.mocked(buildDashboardConfig).mock.calls[0][3]
@@ -430,12 +400,10 @@ describe('useUpdateManagedDashboard', () => {
                 )
             })
 
-            await waitFor(() => {
-                expect(notify).toHaveBeenCalledWith({
-                    status: NotificationStatus.Success,
-                    message: MANAGED_DASHBOARD_SAVED_MESSAGE,
-                })
+            const toastEl = await screen.findByRole('status', {
+                name: MANAGED_DASHBOARD_SAVED_MESSAGE,
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
 
             expect(jest.mocked(buildDashboardConfig)).toHaveBeenCalledWith(
                 'ai-agent-overview',
@@ -475,12 +443,10 @@ describe('useUpdateManagedDashboard', () => {
                 )
             })
 
-            await waitFor(() => {
-                expect(notify).toHaveBeenCalledWith({
-                    status: NotificationStatus.Success,
-                    message: MANAGED_DASHBOARD_SAVED_MESSAGE,
-                })
+            const toastEl = await screen.findByRole('status', {
+                name: MANAGED_DASHBOARD_SAVED_MESSAGE,
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
 
             expect(jest.mocked(buildDashboardConfig)).toHaveBeenCalledWith(
                 'ai-agent-analytics',
@@ -515,12 +481,10 @@ describe('useUpdateManagedDashboard', () => {
                 )
             })
 
-            await waitFor(() => {
-                expect(notify).toHaveBeenCalledWith({
-                    status: NotificationStatus.Success,
-                    message: MANAGED_DASHBOARD_SAVED_MESSAGE,
-                })
+            const toastEl = await screen.findByRole('status', {
+                name: MANAGED_DASHBOARD_SAVED_MESSAGE,
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
 
             expect(jest.mocked(buildDashboardConfig)).toHaveBeenCalledWith(
                 'ai-agent-analytics',

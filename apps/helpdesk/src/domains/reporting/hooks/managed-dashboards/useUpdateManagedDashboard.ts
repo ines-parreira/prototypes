@@ -2,6 +2,7 @@ import { useCallback } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
+import { toast } from '@gorgias/axiom'
 import {
     queryKeys,
     useUpdateAnalyticsManagedDashboard,
@@ -13,15 +14,12 @@ import {
     MANAGED_DASHBOARD_SAVED_MESSAGE,
 } from 'domains/reporting/hooks/managed-dashboards/useCreateManagedDashboard'
 import { buildDashboardConfig } from 'domains/reporting/utils/managedDashboardMappers'
-import useAppDispatch from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'
 import type {
     DashboardLayoutConfig,
     LayoutSection,
     ManagedDashboardsTabId,
 } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 export const managedDashboardKeys = queryKeys.analyticsManagedDashboards
 
@@ -34,7 +32,6 @@ export function useUpdateManagedDashboard(
 ) {
     const { silent = false } = options ?? {}
     const queryClient = useQueryClient()
-    const dispatch = useAppDispatch()
 
     const { mutate: saveDashboard, isLoading } =
         useUpdateAnalyticsManagedDashboard({
@@ -44,24 +41,14 @@ export function useUpdateManagedDashboard(
                         managedDashboardKeys.listAnalyticsManagedDashboards(),
                     )
                     if (!silent) {
-                        void dispatch(
-                            notify({
-                                status: NotificationStatus.Success,
-                                message: MANAGED_DASHBOARD_SAVED_MESSAGE,
-                            }),
-                        )
+                        toast.success(MANAGED_DASHBOARD_SAVED_MESSAGE)
                     }
                 },
                 onError: (error) => {
                     const message = isGorgiasApiError(error)
                         ? error.response.data.error.msg
                         : MANAGED_DASHBOARD_SAVE_FAILED_MESSAGE
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Error,
-                            message,
-                        }),
-                    )
+                    toast.error(message)
                 },
             },
         })

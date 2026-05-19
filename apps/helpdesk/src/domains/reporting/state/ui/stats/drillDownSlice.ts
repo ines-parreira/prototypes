@@ -2,6 +2,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { appQueryClient } from '@repo/api-resources'
 
+import { toast } from '@gorgias/axiom'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import type { AIJourneyMetrics } from 'AIJourney/types/AIJourneyTypes'
@@ -43,8 +44,6 @@ import type {
 } from 'models/job/types'
 import { JobType } from 'models/job/types'
 import { getCurrentUser } from 'state/currentUser/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
 type CommonMetrics = {
@@ -386,10 +385,7 @@ export const createExportDrillDownJob = createAsyncThunk<
     { dispatch: StoreDispatch; state: RootState }
 >(
     EXPORT_DRILL_DOWN_JOB_ACTION,
-    async (
-        { query, jobType, context },
-        { dispatch, getState, rejectWithValue },
-    ) => {
+    async ({ query, jobType, context }, { getState, rejectWithValue }) => {
         const currentUser = getCurrentUser(getState())
         const currentUserEmail = String(currentUser.get('email'))
         const { metricName, ...restQuery } = query
@@ -404,7 +400,7 @@ export const createExportDrillDownJob = createAsyncThunk<
                 },
             })
 
-            void dispatch(notifyAboutExportSuccess(jobType, currentUserEmail))
+            notifyAboutExportSuccess(jobType, currentUserEmail)
 
             return response
         } catch (error) {
@@ -484,9 +480,7 @@ export const notifyAboutExportSuccess = (
 ) => {
     const confirmationText = getConfirmationText(jobType)
 
-    return notify({
-        message: `${confirmationText} You will receive the download link via email at <strong>${currentUserEmail}</strong> once the export is done.`,
-        allowHTML: true,
-        status: NotificationStatus.Success,
-    })
+    toast.success(
+        `${confirmationText} You will receive the download link via email at ${currentUserEmail} once the export is done.`,
+    )
 }

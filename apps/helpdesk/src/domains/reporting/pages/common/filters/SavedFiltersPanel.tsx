@@ -4,7 +4,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import classnames from 'classnames'
 
 import { Card } from '@gorgias/analytics-ui-kit'
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 import {
     useCreateAnalyticsFilter,
     useDeleteAnalyticsFilter,
@@ -50,8 +50,6 @@ import IconButton from 'pages/common/components/button/IconButton'
 import Collapse from 'pages/common/components/Collapse/Collapse'
 import { ConfirmationModal } from 'pages/settings/helpCenter/components/ConfirmationModal'
 import { getCurrentUser } from 'state/currentUser/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { isTeamLead } from 'utils'
 
 export const FILTER_SAVED_MESSAGE = 'Filter successfully saved!'
@@ -239,21 +237,11 @@ export const SavedFiltersPanel = ({
                             ),
                         )
 
-                        void dispatch(
-                            notify({
-                                status: NotificationStatus.Success,
-                                message: FILTER_EDIT_SAVED_MESSAGE,
-                            }),
-                        )
+                        toast.success(FILTER_EDIT_SAVED_MESSAGE)
                         setIsEditMode(false)
                     })
                     .catch((e: unknown) => {
-                        void dispatch(
-                            notify({
-                                status: NotificationStatus.Error,
-                                message: FILTER_SAVED_ERROR_MESSAGE,
-                            }),
-                        )
+                        toast.error(FILTER_SAVED_ERROR_MESSAGE)
 
                         if (
                             isGorgiasApiError(e) &&
@@ -280,21 +268,11 @@ export const SavedFiltersPanel = ({
                                 fromApiFormatted(res.data as SavedFilterAPI),
                             ),
                         )
-                        void dispatch(
-                            notify({
-                                status: NotificationStatus.Success,
-                                message: FILTER_SAVED_MESSAGE,
-                            }),
-                        )
+                        toast.success(FILTER_SAVED_MESSAGE)
                         setIsEditMode(false)
                     })
                     .catch((e: unknown) => {
-                        void dispatch(
-                            notify({
-                                status: NotificationStatus.Error,
-                                message: FILTER_SAVED_ERROR_MESSAGE,
-                            }),
-                        )
+                        toast.error(FILTER_SAVED_ERROR_MESSAGE)
 
                         if (
                             isGorgiasApiError(e) &&
@@ -318,20 +296,10 @@ export const SavedFiltersPanel = ({
                 .mutateAsync({ id: savedFilter.id })
                 .then(() => {
                     dispatch(clearSavedFilterDraft())
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Success,
-                            message: FILTER_DELETED_MESSAGE,
-                        }),
-                    )
+                    toast.success(FILTER_DELETED_MESSAGE)
                 })
                 .catch(() => {
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Error,
-                            message: FILTER_DELETED_ERROR_MESSAGE,
-                        }),
-                    )
+                    toast.error(FILTER_DELETED_ERROR_MESSAGE)
                 })
         },
         [deleteMutation, dispatch],

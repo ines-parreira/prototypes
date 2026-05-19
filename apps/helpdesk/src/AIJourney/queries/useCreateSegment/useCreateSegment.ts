@@ -1,12 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
+import { toast } from '@gorgias/axiom'
 import { createSegment } from '@gorgias/customer-segmentation-client'
 import type { CreateSegmentRequest } from '@gorgias/customer-segmentation-types'
 
 import { aiJourneyKeys } from 'AIJourney/queries/utils'
-import useAppDispatch from 'hooks/useAppDispatch'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 const postCreateSegment = async (params: CreateSegmentRequest) => {
     return createSegment(params).then((res) => res.data)
@@ -14,7 +12,6 @@ const postCreateSegment = async (params: CreateSegmentRequest) => {
 
 export const useCreateSegment = () => {
     const queryClient = useQueryClient()
-    const dispatch = useAppDispatch()
 
     return useMutation({
         mutationFn: (params: CreateSegmentRequest) => postCreateSegment(params),
@@ -25,20 +22,10 @@ export const useCreateSegment = () => {
             queryClient.invalidateQueries({
                 queryKey: ['audience-segments', integration_id],
             })
-            void dispatch(
-                notify({
-                    message: 'Segment created',
-                    status: NotificationStatus.Success,
-                }),
-            )
+            toast.success('Segment created')
         },
         onError: () => {
-            void dispatch(
-                notify({
-                    message: `Error creating segment`,
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error('Error creating segment')
         },
     })
 }

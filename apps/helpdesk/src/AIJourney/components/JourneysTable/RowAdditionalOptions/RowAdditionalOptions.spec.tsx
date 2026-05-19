@@ -9,9 +9,6 @@ import { CUSTOM_JOURNEY_TYPE, STEPS_NAMES } from 'AIJourney/constants'
 import { useJourneyUpdateHandler } from 'AIJourney/hooks'
 import { useJourneyContext } from 'AIJourney/providers'
 import { useDeleteJourney } from 'AIJourney/queries/useDeleteJourney/useDeleteJourney'
-import useAppDispatch from 'hooks/useAppDispatch'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { RowAdditionalOptions } from './RowAdditionalOptions'
 
@@ -25,8 +22,6 @@ jest.mock('@repo/feature-flags', () => ({
 
 jest.mock('AIJourney/hooks')
 jest.mock('AIJourney/providers')
-jest.mock('hooks/useAppDispatch')
-jest.mock('state/notifications/actions')
 jest.mock('AIJourney/queries/useDeleteJourney/useDeleteJourney')
 
 const mockUseJourneyUpdateHandler =
@@ -36,10 +31,6 @@ const mockUseJourneyUpdateHandler =
 const mockUseJourneyContext = useJourneyContext as jest.MockedFunction<
     typeof useJourneyContext
 >
-const mockUseAppDispatch = useAppDispatch as jest.MockedFunction<
-    typeof useAppDispatch
->
-const mockNotify = notify as jest.MockedFunction<typeof notify>
 const mockUseFlag = require('@repo/feature-flags').useFlag as jest.Mock
 const mockUseDeleteJourney = useDeleteJourney as jest.MockedFunction<
     typeof useDeleteJourney
@@ -54,7 +45,6 @@ jest.mock('react-router-dom', () => ({
 }))
 
 describe('<RowAdditionalOptions />', () => {
-    const mockDispatch = jest.fn()
     const mockHandleUpdate = jest.fn()
     const mockMutateAsync = jest.fn()
 
@@ -87,8 +77,6 @@ describe('<RowAdditionalOptions />', () => {
                 return true
             return false
         })
-        mockUseAppDispatch.mockReturnValue(mockDispatch)
-        mockNotify.mockReturnValue(() => Promise.resolve())
         mockUseJourneyContext.mockReturnValue({
             currentIntegration: mockCurrentIntegration,
         } as ReturnType<typeof useJourneyContext>)
@@ -344,12 +332,10 @@ describe('<RowAdditionalOptions />', () => {
                 await act(() => user.click(pauseListItem))
             }
 
-            expect(mockDispatch).toHaveBeenCalledWith(
-                notify({
-                    message: 'Error updating journey: Error: Update failed',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'Error updating journey: Error: Update failed',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
     })
 
@@ -721,6 +707,7 @@ describe('<RowAdditionalOptions />', () => {
 
         it('should dispatch error toast when DELETE returns 422', async () => {
             const apiError = {
+                isAxiosError: true,
                 response: {
                     status: 422,
                     data: {
@@ -759,14 +746,10 @@ describe('<RowAdditionalOptions />', () => {
             })
             await act(() => user.click(confirmButton))
 
-            await waitFor(() => {
-                expect(mockDispatch).toHaveBeenCalledWith(
-                    notify({
-                        message: 'Built-in flows cannot be deleted.',
-                        status: NotificationStatus.Error,
-                    }),
-                )
+            const toastEl = await screen.findByRole('status', {
+                name: 'Built-in flows cannot be deleted.',
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
 
         it('should disable delete confirm button while deletion is pending', async () => {
@@ -844,14 +827,10 @@ describe('<RowAdditionalOptions />', () => {
             })
             await act(() => user.click(confirmButton))
 
-            await waitFor(() => {
-                expect(mockDispatch).toHaveBeenCalledWith(
-                    notify({
-                        message: 'Failed to delete flow.',
-                        status: NotificationStatus.Error,
-                    }),
-                )
+            const toastEl = await screen.findByRole('status', {
+                name: 'Failed to delete flow.',
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
     })
 

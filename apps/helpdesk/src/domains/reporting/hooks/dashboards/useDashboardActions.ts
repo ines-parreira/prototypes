@@ -3,6 +3,7 @@ import { useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import _sortBy from 'lodash/sortBy'
 
+import { toast } from '@gorgias/axiom'
 import type {
     AnalyticsCustomReport,
     HttpResponse,
@@ -30,41 +31,13 @@ import {
     getErrorMessage,
     getGroupChartsIntoRows,
 } from 'domains/reporting/pages/dashboards/utils'
-import useAppDispatch from 'hooks/useAppDispatch'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 export const DASHBOARD_DELETED_SUCCESS_MESSAGE = 'successfully deleted'
 export const DASHBOARD_DELETED_ERROR_MESSAGE = 'could not be deleted'
 export const SUCCESSFULLY_CREATED = 'Successfully created'
 
-const handleMutationSuccess = (
-    dispatch: ReturnType<typeof useAppDispatch>,
-    successMessage: string,
-) => {
-    void dispatch(
-        notify({
-            status: NotificationStatus.Success,
-            message: successMessage,
-        }),
-    )
-}
-
-const handleMutationError = (
-    dispatch: ReturnType<typeof useAppDispatch>,
-    errorMessage: string,
-) => {
-    void dispatch(
-        notify({
-            status: NotificationStatus.Error,
-            message: errorMessage,
-        }),
-    )
-}
-
 export const useDashboardActions = () => {
     const queryClient = useQueryClient()
-    const dispatch = useAppDispatch()
 
     const createMutation = useCreateAnalyticsCustomReport({
         mutation: {
@@ -92,7 +65,8 @@ export const useDashboardActions = () => {
             const apiDashboards = listDashboardsQuery.data?.data?.data || []
 
             if (apiDashboards.length >= MAX_DASHBOARDS_ALLOWED) {
-                return handleMutationError(dispatch, LIMIT_REACHED_MESSAGE)
+                toast.error(LIMIT_REACHED_MESSAGE)
+                return
             }
 
             const children = chartIds
@@ -115,24 +89,17 @@ export const useDashboardActions = () => {
 
                         void queryClient.invalidateQueries(queryKey)
 
-                        handleMutationSuccess(
-                            dispatch,
+                        toast.success(
                             `${dashboard.name} ${SUCCESSFULLY_CREATED}`,
                         )
 
                         onSuccess && onSuccess(data)
                     },
-                    onError: (error) =>
-                        handleMutationError(dispatch, getErrorMessage(error)),
+                    onError: (error) => toast.error(getErrorMessage(error)),
                 },
             )
         },
-        [
-            createMutation,
-            dispatch,
-            listDashboardsQuery.data?.data?.data,
-            queryClient,
-        ],
+        [createMutation, listDashboardsQuery.data?.data?.data, queryClient],
     )
 
     const deleteReportHandler = useCallback(
@@ -156,8 +123,7 @@ export const useDashboardActions = () => {
                                 queryKeys.analyticsCustomReports.listAnalyticsCustomReports(),
                         })
 
-                        handleMutationSuccess(
-                            dispatch,
+                        toast.success(
                             `${name} ${DASHBOARD_DELETED_SUCCESS_MESSAGE}`,
                         )
 
@@ -166,14 +132,13 @@ export const useDashboardActions = () => {
                         }
                     },
                     onError: () =>
-                        handleMutationError(
-                            dispatch,
+                        toast.error(
                             `${name} ${DASHBOARD_DELETED_ERROR_MESSAGE}`,
                         ),
                 },
             )
         },
-        [deleteMutation, dispatch, queryClient],
+        [deleteMutation, queryClient],
     )
 
     const updateDashboardHandler = useCallback(
@@ -206,8 +171,7 @@ export const useDashboardActions = () => {
                 },
                 {
                     onSuccess(data: HttpResponse<AnalyticsCustomReport>) {
-                        handleMutationSuccess(
-                            dispatch,
+                        toast.success(
                             successMessage ||
                                 `Successfully saved ${chartIds?.length} ${chartIds?.length === 1 ? 'chart' : 'charts'} to ${dashboard.name}`,
                         )
@@ -226,15 +190,12 @@ export const useDashboardActions = () => {
                         }
                     },
                     onError: (error) =>
-                        handleMutationError(
-                            dispatch,
-                            errorMessage || getErrorMessage(error),
-                        ),
+                        toast.error(errorMessage || getErrorMessage(error)),
                 },
             )
         },
 
-        [updateMutation, dispatch, queryClient],
+        [updateMutation, queryClient],
     )
 
     const addChartToDashboardHandler = useCallback(

@@ -1,12 +1,8 @@
 import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { act } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 
 import { createSegment } from '@gorgias/customer-segmentation-client'
-
-import useAppDispatch from 'hooks/useAppDispatch'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { useCreateSegment } from './useCreateSegment'
 
@@ -14,15 +10,7 @@ jest.mock('@gorgias/customer-segmentation-client', () => ({
     createSegment: jest.fn(),
 }))
 
-jest.mock('hooks/useAppDispatch', () => jest.fn())
-
-jest.mock('state/notifications/actions', () => ({
-    notify: jest.fn(),
-}))
-
 const mockCreateSegment = createSegment as jest.Mock
-const mockUseAppDispatch = useAppDispatch as jest.Mock
-const mockDispatch = jest.fn()
 
 describe('useCreateSegment', () => {
     let queryClient: QueryClient
@@ -44,7 +32,6 @@ describe('useCreateSegment', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseAppDispatch.mockReturnValue(mockDispatch)
     })
 
     it('should call createSegment with the provided params and return res.data', async () => {
@@ -104,10 +91,8 @@ describe('useCreateSegment', () => {
         })
     })
 
-    it('should dispatch a success notification on success', async () => {
-        const mockNotifyAction = { type: 'notify/success' }
+    it('should show a success toast on success', async () => {
         mockCreateSegment.mockResolvedValue({ data: {} })
-        ;(notify as jest.Mock).mockReturnValue(mockNotifyAction)
 
         const { result } = renderHook(() => useCreateSegment(), {
             wrapper: createWrapper(),
@@ -121,17 +106,14 @@ describe('useCreateSegment', () => {
             })
         })
 
-        expect(notify).toHaveBeenCalledWith({
-            message: 'Segment created',
-            status: NotificationStatus.Success,
+        const toastEl = await screen.findByRole('status', {
+            name: 'Segment created',
         })
-        expect(mockDispatch).toHaveBeenCalledWith(mockNotifyAction)
+        expect(toastEl).toHaveAttribute('data-intent', 'success')
     })
 
-    it('should dispatch an error notification on failure', async () => {
-        const mockNotifyAction = { type: 'notify/error' }
+    it('should show an error toast on failure', async () => {
         mockCreateSegment.mockRejectedValue(new Error('Network error'))
-        ;(notify as jest.Mock).mockReturnValue(mockNotifyAction)
 
         const { result } = renderHook(() => useCreateSegment(), {
             wrapper: createWrapper(),
@@ -147,10 +129,9 @@ describe('useCreateSegment', () => {
             ).rejects.toThrow('Network error')
         })
 
-        expect(notify).toHaveBeenCalledWith({
-            message: 'Error creating segment',
-            status: NotificationStatus.Error,
+        const toastEl = await screen.findByRole('status', {
+            name: 'Error creating segment',
         })
-        expect(mockDispatch).toHaveBeenCalledWith(mockNotifyAction)
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
 })

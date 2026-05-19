@@ -1,5 +1,5 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import { act, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import type { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -43,11 +43,11 @@ describe('useTagSearch', () => {
     } as AxiosResponse<ApiListResponseCursorPagination<Tag[], any>>
 
     beforeEach(() => {
-        jest.useFakeTimers()
         fetchTagsMock.mockResolvedValue(sampleResponse)
     })
 
     it('should do nothing when no response', () => {
+        jest.useFakeTimers()
         fetchTagsMock.mockResolvedValue(undefined as any)
 
         const { result } = renderHook(() => useTagSearch(), {
@@ -66,9 +66,10 @@ describe('useTagSearch', () => {
         })
 
         expect(searchResponse).toEqual(undefined)
+        jest.useRealTimers()
     })
 
-    it('should dispatch the error notification on failed request', async () => {
+    it('should show an error toast on failed request', async () => {
         const store = mockStore(defaultState)
         fetchTagsMock.mockRejectedValue(new Error('some error'))
 
@@ -82,19 +83,10 @@ describe('useTagSearch', () => {
             result.current.handleTagsSearch('abc')
         })
 
-        act(() => {
-            jest.runOnlyPendingTimers()
+        const toastEl = await screen.findByRole('status', {
+            name: TAGS_FETCH_ERROR_MESSAGE,
         })
-
-        await waitFor(() => {
-            expect(store.getActions()).toContainEqual(
-                expect.objectContaining({
-                    payload: expect.objectContaining({
-                        message: TAGS_FETCH_ERROR_MESSAGE,
-                    }),
-                }),
-            )
-        })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
 
     it('shouldLoadMore when next cursor and not fetching', async () => {
@@ -121,9 +113,6 @@ describe('useTagSearch', () => {
 
         act(() => {
             result.current.handleTagsSearch('abc')
-        })
-        act(() => {
-            jest.runOnlyPendingTimers()
         })
 
         await waitFor(() => {

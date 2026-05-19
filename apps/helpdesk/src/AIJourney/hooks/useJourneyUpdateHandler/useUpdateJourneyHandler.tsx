@@ -2,6 +2,7 @@ import { useCallback } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
+import { toast } from '@gorgias/axiom'
 import type {
     CampaignJourneyConfigurationApiDTO,
     JourneyConfigurationApiDTO,
@@ -18,9 +19,6 @@ import type { UpdatableJourneyCampaignState } from 'AIJourney/constants'
 import { useUpdateJourney } from 'AIJourney/queries'
 import { aiJourneyKeys } from 'AIJourney/queries/utils'
 import { extractApiErrorMessage } from 'AIJourney/utils/extractApiErrorMessage'
-import useAppDispatch from 'hooks/useAppDispatch'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 type UseJourneyUpdateHandlerParams = {
     integrationId?: number
@@ -63,7 +61,6 @@ export const useJourneyUpdateHandler = ({
     entityLabel = 'journey',
 }: UseJourneyUpdateHandlerParams) => {
     const queryClient = useQueryClient()
-    const dispatch = useAppDispatch()
     const updateJourney = useUpdateJourney()
 
     const handleUpdate = useCallback(
@@ -180,25 +177,15 @@ export const useJourneyUpdateHandler = ({
                 return updateJourneyMutate
             } catch (error) {
                 const apiMessage = extractApiErrorMessage(error)
-                void dispatch(
-                    notify({
-                        message: apiMessage
-                            ? `Error updating ${entityLabel}: ${apiMessage}`
-                            : `Error updating ${entityLabel}: ${error}`,
-                        status: NotificationStatus.Error,
-                    }),
+                toast.error(
+                    apiMessage
+                        ? `Error updating ${entityLabel}: ${apiMessage}`
+                        : `Error updating ${entityLabel}: ${error}`,
                 )
                 throw error
             }
         },
-        [
-            dispatch,
-            entityLabel,
-            integrationId,
-            journeyId,
-            queryClient,
-            updateJourney,
-        ],
+        [entityLabel, integrationId, journeyId, queryClient, updateJourney],
     )
 
     return {

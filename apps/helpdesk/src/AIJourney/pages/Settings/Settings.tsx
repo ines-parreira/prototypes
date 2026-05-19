@@ -17,6 +17,7 @@ import {
     TabList,
     TabPanel,
     Tabs,
+    toast,
 } from '@gorgias/axiom'
 import type {
     JourneyParticipationExecutionMode,
@@ -31,10 +32,7 @@ import {
 } from 'AIJourney/components'
 import { useAiJourneyStoreConfiguration } from 'AIJourney/hooks/useAiJourneyStoreConfiguration/useAiJourneyStoreConfiguration'
 import { useJourneyContext } from 'AIJourney/providers'
-import useAppDispatch from 'hooks/useAppDispatch'
 import FormUnsavedChangesPrompt from 'pages/common/components/FormUnsavedChangesPrompt'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import css from './Settings.less'
 
@@ -61,7 +59,6 @@ type SettingsFormValues = {
 }
 
 export const Settings = () => {
-    const dispatch = useAppDispatch()
     const { currentIntegration } = useJourneyContext()
     const { url } = useRouteMatch()
     const { pathname } = useLocation()
@@ -146,12 +143,7 @@ export const Settings = () => {
                 }
                 await saveConfiguration(payload)
                 reset(values)
-                void dispatch(
-                    notify({
-                        message: 'Settings saved successfully.',
-                        status: NotificationStatus.Success,
-                    }),
-                )
+                toast.success('Settings saved successfully.')
             } catch (error) {
                 const response = (
                     error as {
@@ -184,16 +176,11 @@ export const Settings = () => {
                     throw error
                 }
 
-                void dispatch(
-                    notify({
-                        message: 'Error saving settings. Please try again.',
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error('Error saving settings. Please try again.')
                 throw error
             }
         },
-        [saveConfiguration, reset, dispatch, setError, isImpersonated],
+        [saveConfiguration, reset, setError, isImpersonated],
     )
 
     const handleSaveClick = useCallback(

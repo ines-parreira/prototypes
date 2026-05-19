@@ -6,30 +6,20 @@ import userEvent from '@testing-library/user-event'
 
 import type { GenericAttachment } from 'common/types'
 import uploadFiles from 'common/utils/uploadFiles'
-import useAppDispatch from 'hooks/useAppDispatch'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { getFileTooLargeError } from 'utils/file'
 
 import type { UploadedImageAttachment } from './ImageDropzone'
 import { ImageDropzone } from './ImageDropzone'
 
 jest.mock('common/utils/uploadFiles')
-jest.mock('hooks/useAppDispatch')
-jest.mock('state/notifications/actions')
 jest.mock('utils/file')
 
 const mockUploadFiles = uploadFiles as jest.MockedFunction<typeof uploadFiles>
-const mockUseAppDispatch = useAppDispatch as jest.MockedFunction<
-    typeof useAppDispatch
->
-const mockNotify = notify as jest.MockedFunction<typeof notify>
 const mockGetFileTooLargeError = getFileTooLargeError as jest.MockedFunction<
     typeof getFileTooLargeError
 >
 
 describe('ImageDropzone', () => {
-    let mockDispatch: jest.Mock
     const MAX_IMAGE_SIZE = 5 * 1000 * 1000
 
     const createMockFile = (
@@ -51,9 +41,6 @@ describe('ImageDropzone', () => {
     }
 
     beforeEach(() => {
-        mockDispatch = jest.fn()
-        mockUseAppDispatch.mockReturnValue(mockDispatch)
-        mockNotify.mockReturnValue(() => Promise.resolve() as any)
         mockGetFileTooLargeError.mockReturnValue(
             `Failed to upload files. Attached files must be smaller than 5MB.`,
         )
@@ -136,7 +123,7 @@ describe('ImageDropzone', () => {
                 ])
             })
 
-            expect(mockDispatch).not.toHaveBeenCalled()
+            expect(screen.queryByRole('status')).not.toBeInTheDocument()
         })
 
         it('should show error notification when file is too large', async () => {
@@ -161,12 +148,10 @@ describe('ImageDropzone', () => {
                 )
             })
 
-            expect(mockDispatch).toHaveBeenCalledWith(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: `Failed to upload files. Attached files must be smaller than 5MB.`,
-                }),
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'Failed to upload files. Attached files must be smaller than 5MB.',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
 
             expect(mockUploadFiles).not.toHaveBeenCalled()
             expect(onChange).not.toHaveBeenCalled()
@@ -192,14 +177,10 @@ describe('ImageDropzone', () => {
                 expect(mockUploadFiles).toHaveBeenCalledWith([file])
             })
 
-            await waitFor(() => {
-                expect(mockDispatch).toHaveBeenCalledWith(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message: `Error uploading image: ${uploadError}`,
-                    }),
-                )
+            const toastEl = await screen.findByRole('status', {
+                name: `Error uploading image: ${uploadError}`,
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
 
             expect(onChange).not.toHaveBeenCalled()
         })
@@ -334,12 +315,10 @@ describe('ImageDropzone', () => {
                 )
             })
 
-            expect(mockDispatch).toHaveBeenCalledWith(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: `Failed to upload files. Attached files must be smaller than 5MB.`,
-                }),
-            )
+            const toastEl = await screen.findByRole('status', {
+                name: 'Failed to upload files. Attached files must be smaller than 5MB.',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
 
             expect(mockUploadFiles).not.toHaveBeenCalled()
             expect(onChange).not.toHaveBeenCalled()

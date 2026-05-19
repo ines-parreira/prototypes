@@ -206,7 +206,7 @@ describe('AddChartsModal', () => {
         )
     })
 
-    it('should show a notification error if the number of selected charts is more than MAX_CHECKED_CHARTS', () => {
+    it('should show a notification error if the number of selected charts is more than MAX_CHECKED_CHARTS', async () => {
         jest.spyOn(constants, 'MAX_CHECKED_CHARTS', 'get').mockReturnValue(
             1 as any,
         )
@@ -228,7 +228,10 @@ describe('AddChartsModal', () => {
 
         userEvent.click(screen.getByText(String(secondChartDescription)))
 
-        expect(useAppDispatchMock).toHaveBeenCalled()
+        const toastEl = await screen.findByRole('status', {
+            name: 'You cannot select more than 1 charts',
+        })
+        expect(toastEl).toHaveAttribute('data-intent', 'destructive')
     })
 
     it('should should not return selectableReports if config is null', () => {

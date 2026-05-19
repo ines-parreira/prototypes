@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 
 import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { act, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -18,18 +18,6 @@ import {
     managedDashboardKeys,
     useCreateManagedDashboard,
 } from 'domains/reporting/hooks/managed-dashboards/useCreateManagedDashboard'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
-
-jest.mock('state/notifications/actions', () => ({
-    notify: jest.fn(),
-}))
-
-const mockedDispatch = jest.fn()
-jest.mock('hooks/useAppDispatch', () => ({
-    __esModule: true,
-    default: () => mockedDispatch,
-}))
 
 const server = setupServer()
 
@@ -39,8 +27,6 @@ beforeAll(() => {
 
 afterEach(() => {
     server.resetHandlers()
-    mockedDispatch.mockClear()
-    jest.mocked(notify).mockClear()
 })
 
 afterAll(() => {
@@ -95,7 +81,7 @@ function makeWrapperWithClient() {
 
 describe('useCreateManagedDashboard', () => {
     describe('successful create (POST)', () => {
-        it('should call createAnalyticsManagedDashboard and dispatch success notification', async () => {
+        it('should call createAnalyticsManagedDashboard and show success toast', async () => {
             const mockCreate = mockCreateAnalyticsManagedDashboardHandler(
                 async () => HttpResponse.json(mockDashboard, { status: 201 }),
             )
@@ -125,13 +111,13 @@ describe('useCreateManagedDashboard', () => {
                 expect(result.current.isSuccess).toBe(true)
             })
 
-            expect(notify).toHaveBeenCalledWith({
-                status: NotificationStatus.Success,
-                message: MANAGED_DASHBOARD_SAVED_MESSAGE,
+            const toastEl = await screen.findByRole('status', {
+                name: MANAGED_DASHBOARD_SAVED_MESSAGE,
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
         })
 
-        it('should not dispatch success notification when silent is true', async () => {
+        it('should not show success toast when silent is true', async () => {
             server.use(
                 mockCreateAnalyticsManagedDashboardHandler(async () =>
                     HttpResponse.json(mockDashboard, { status: 201 }),
@@ -153,11 +139,7 @@ describe('useCreateManagedDashboard', () => {
                 expect(result.current.isSuccess).toBe(true)
             })
 
-            expect(notify).not.toHaveBeenCalledWith(
-                expect.objectContaining({
-                    status: NotificationStatus.Success,
-                }),
-            )
+            expect(screen.queryByRole('status')).not.toBeInTheDocument()
         })
     })
 
@@ -193,7 +175,7 @@ describe('useCreateManagedDashboard', () => {
     })
 
     describe('error handling', () => {
-        it('should dispatch error notification with API error message on failure', async () => {
+        it('should show error toast with API error message on failure', async () => {
             server.use(
                 mockCreateAnalyticsManagedDashboardHandler(async () =>
                     HttpResponse.json(
@@ -217,13 +199,13 @@ describe('useCreateManagedDashboard', () => {
                 expect(result.current.isError).toBe(true)
             })
 
-            expect(notify).toHaveBeenCalledWith({
-                status: NotificationStatus.Error,
-                message: 'Internal server error',
+            const toastEl = await screen.findByRole('status', {
+                name: 'Internal server error',
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
 
-        it('should dispatch generic error message for network failures', async () => {
+        it('should show generic error toast for network failures', async () => {
             server.use(
                 mockCreateAnalyticsManagedDashboardHandler(
                     async () => HttpResponse.error() as any,
@@ -244,10 +226,10 @@ describe('useCreateManagedDashboard', () => {
                 expect(result.current.isError).toBe(true)
             })
 
-            expect(notify).toHaveBeenCalledWith({
-                status: NotificationStatus.Error,
-                message: MANAGED_DASHBOARD_SAVE_FAILED_MESSAGE,
+            const toastEl = await screen.findByRole('status', {
+                name: MANAGED_DASHBOARD_SAVE_FAILED_MESSAGE,
             })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
     })
 })

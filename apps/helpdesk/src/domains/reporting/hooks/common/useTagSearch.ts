@@ -5,6 +5,7 @@ import { notUndefined } from '@repo/utils'
 import type { CancelToken } from 'axios'
 import { filter } from 'lodash'
 
+import { toast } from '@gorgias/axiom'
 import type { ListTagsParams, Tag } from '@gorgias/helpdesk-types'
 import { ListTagsOrderBy } from '@gorgias/helpdesk-types'
 
@@ -16,8 +17,6 @@ import { fetchTags } from 'models/tag/resources'
 import type { OrderByOrderDir } from 'models/tag/types'
 import { tagsFetched } from 'state/entities/tags/actions'
 import { getEntitiesTags } from 'state/entities/tags/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 const ORDER_OPTIONS: { order_by: OrderByOrderDir } = {
     order_by: `${ListTagsOrderBy.Name}:${OrderDirection.Asc}`,
@@ -69,12 +68,7 @@ export const useTagSearch = () => {
                 ])
                 setNextCursor(res.data.meta.next_cursor ?? undefined)
             } catch {
-                void dispatch(
-                    notify({
-                        message: TAGS_FETCH_ERROR_MESSAGE,
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error(TAGS_FETCH_ERROR_MESSAGE)
             }
         },
         [dispatch, cancellableFetchTags, nextCursor, tagSearch, tagIds],

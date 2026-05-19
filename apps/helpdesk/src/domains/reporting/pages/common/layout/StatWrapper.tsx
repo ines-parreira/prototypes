@@ -10,7 +10,7 @@ import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import { Button } from 'reactstrap'
 
-import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import { toast, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { downloadStat } from 'domains/reporting/models/stat/resources'
 import type {
@@ -20,14 +20,11 @@ import type {
 } from 'domains/reporting/models/stat/types'
 import StatsHelpIcon from 'domains/reporting/pages/common/components/StatsHelpIcon'
 import css from 'domains/reporting/pages/common/layout/StatWrapper.less'
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import Loader from 'pages/common/components/Loader/Loader'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { saveFileAsDownloaded } from 'utils/file'
 
 type Props = {
@@ -65,7 +62,6 @@ export default function StatWrapper({
     refineDownload,
     ...wrapperProps
 }: Props) {
-    const dispatch = useAppDispatch()
     const currentUser = useAppSelector(getCurrentUser)
     const account = useAppSelector(getCurrentAccountState)
 
@@ -95,14 +91,10 @@ export default function StatWrapper({
                     return
                 }
 
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        title:
-                            (error as AxiosError<{ error?: { msg: string } }>)
-                                .response?.data?.error?.msg ||
-                            'Failed to download statistic. Please retry in a few seconds.',
-                    }),
+                toast.error(
+                    (error as AxiosError<{ error?: { msg: string } }>).response
+                        ?.data?.error?.msg ||
+                        'Failed to download statistic. Please retry in a few seconds.',
                 )
             }
         },
