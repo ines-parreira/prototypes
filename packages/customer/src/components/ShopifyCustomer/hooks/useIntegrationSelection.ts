@@ -19,7 +19,6 @@ export function useIntegrationSelection({
     const [selectedIntegration, setSelectedIntegration] = useState<
         Integration | undefined
     >()
-    const hasInitialized = useRef(false)
 
     const filteredIntegrations = useMemo(
         () =>
@@ -31,14 +30,25 @@ export function useIntegrationSelection({
         ? externalIdMap.get(selectedIntegration.id)
         : undefined
 
+    const selectedIntegrationRef = useRef(selectedIntegration)
+    selectedIntegrationRef.current = selectedIntegration
+
+    const onStoreChangeRef = useRef(onStoreChange)
+    onStoreChangeRef.current = onStoreChange
+
     useEffect(() => {
-        if (filteredIntegrations.length > 0 && !hasInitialized.current) {
+        if (filteredIntegrations.length === 0) return
+
+        const isCurrentSelectionValid = filteredIntegrations.some(
+            (i) => i.id === selectedIntegrationRef.current?.id,
+        )
+
+        if (!isCurrentSelectionValid) {
             const integration = filteredIntegrations[0]
             setSelectedIntegration(integration)
-            onStoreChange?.(integration.id)
-            hasInitialized.current = true
+            onStoreChangeRef.current?.(integration.id)
         }
-    }, [filteredIntegrations, onStoreChange])
+    }, [filteredIntegrations])
 
     const handleStoreChange = useCallback(
         (integration: Integration) => {
