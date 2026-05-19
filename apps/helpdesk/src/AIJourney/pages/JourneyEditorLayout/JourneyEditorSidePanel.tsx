@@ -1,42 +1,27 @@
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { Controller, useFormContext, useWatch } from 'react-hook-form'
 
-import {
-    Box,
-    Button,
-    Heading,
-    Skeleton,
-    Text,
-    ToggleField,
-} from '@gorgias/axiom'
+import { Box, Button, Heading, Skeleton, Text } from '@gorgias/axiom'
 import {
     JourneyCampaignStateEnum,
     JourneyStatusEnum,
 } from '@gorgias/convert-client'
 
+import { AudienceCard } from 'AIJourney/components/AudienceCard/AudienceCard'
+import { DiscountCodeCard } from 'AIJourney/components/DiscountCodeCard/DiscountCodeCard'
 import { ExecutionModeCard } from 'AIJourney/components/ExecutionModeCard/ExecutionModeCard'
-import { ImageDropzone } from 'AIJourney/components/ImageDropzone/ImageDropzone'
+import { GeneralCard } from 'AIJourney/components/GeneralCard/GeneralCard'
 import { JourneyStateBadge } from 'AIJourney/components/JourneysTable/JourneyStateBadge/JourneyStateBadge'
+import { RcsEnabledCard } from 'AIJourney/components/RcsEnabledCard/RcsEnabledCard'
 import { StaticTimingContent } from 'AIJourney/components/StaticTimingContent/StaticTimingContent'
 import { JOURNEY_TYPES } from 'AIJourney/constants'
-import {
-    AudienceSelect,
-    FollowUpWaitHours,
-    MaxDiscountCode,
-    MessageWithDiscountCode,
-    MinutesDelay,
-    NumberOfMessages,
-    SenderPhoneNumber,
-    TargetOrderStatus,
-} from 'AIJourney/formFields'
+import { MinutesDelay, TargetOrderStatus } from 'AIJourney/formFields'
 import { WaitingDays } from 'AIJourney/formFields/WaitingDays/WaitingDays'
 import {
     useAiJourneyStoreConfiguration,
     useSetupFormInit,
 } from 'AIJourney/hooks'
-import type { SetupFormValues } from 'AIJourney/pages/Setup/Setup'
 import { useJourneyContext } from 'AIJourney/providers'
 
 import css from './JourneyEditorSidePanel.module.less'
@@ -50,19 +35,7 @@ export const JourneyEditorSidePanel = () => {
         ? undefined
         : (storeConfiguration?.execution_mode_override ?? null)
 
-    const { control, setValue } = useFormContext<SetupFormValues>()
-
     const [isDetailsView, setIsDetailsView] = useState(true)
-
-    const maxFollowUpMessages = useWatch({
-        control,
-        name: 'max_follow_up_messages',
-    })
-    const isDiscountEnabled = useWatch({ control, name: 'offer_discount' })
-    const uploadedImageAttachment = useWatch({
-        control,
-        name: 'uploaded_image_attachment',
-    })
 
     const isAiJourneySegmentsEnabled = useFlag(
         FeatureFlagKey.AiJourneySegmentsUiEnabled,
@@ -80,34 +53,10 @@ export const JourneyEditorSidePanel = () => {
 
     const shouldRenderTimingSection = !isCampaign && !isCustom
     const shouldRenderAudienceSection = isCampaign || isAiJourneySegmentsEnabled
-    const shouldRenderIncludeImage = !isCampaign && !isWelcome
-    const shouldRenderMessageWithDiscountCode = (maxFollowUpMessages ?? 1) > 1
-
-    const hasFollowUps = (maxFollowUpMessages ?? 1) > 1
-    const [isCustomImageEnabled, setIsCustomImageEnabled] = useState(
-        !!uploadedImageAttachment?.[0],
-    )
 
     const displayState = isCampaign
         ? (journeyData?.campaign?.state ?? JourneyCampaignStateEnum.Draft)
         : (journeyData?.state ?? JourneyStatusEnum.Draft)
-
-    const handleFollowUpsToggle = useCallback(
-        (enabled: boolean) => {
-            setValue('max_follow_up_messages', enabled ? 2 : 1)
-        },
-        [setValue],
-    )
-
-    const handleCustomImageToggle = useCallback(
-        (enabled: boolean) => {
-            setIsCustomImageEnabled(enabled)
-            if (!enabled) {
-                setValue('uploaded_image_attachment', undefined)
-            }
-        },
-        [setValue],
-    )
 
     return (
         <Box flexDirection="row" className={css.sidePanel}>
@@ -181,125 +130,31 @@ export const JourneyEditorSidePanel = () => {
 
                                 {shouldRenderAudienceSection && (
                                     <div className={css.section}>
-                                        <AudienceSelect type="include" />
-                                        <AudienceSelect type="exclude" />
-                                    </div>
-                                )}
-
-                                <div className={css.section}>
-                                    <SenderPhoneNumber />
-                                </div>
-
-                                <div className={css.section}>
-                                    <ToggleField
-                                        value={hasFollowUps}
-                                        onChange={handleFollowUpsToggle}
-                                        label="Allow follow-ups"
-                                        aria-label="Allow follow-ups"
-                                    />
-                                    {hasFollowUps && (
-                                        <Box
-                                            flexDirection="column"
-                                            className={css.subFields}
-                                        >
-                                            <NumberOfMessages />
-                                            <FollowUpWaitHours />
-                                        </Box>
-                                    )}
-                                </div>
-
-                                <div className={css.section}>
-                                    <Controller
-                                        name="offer_discount"
-                                        control={control}
-                                        render={({ field }) => (
-                                            <ToggleField
-                                                value={field.value}
-                                                onChange={field.onChange}
-                                                label="Offer discount"
-                                                aria-label="Offer discount"
-                                            />
-                                        )}
-                                    />
-                                    {isDiscountEnabled && (
-                                        <Box
-                                            flexDirection="column"
-                                            className={css.subFields}
-                                        >
-                                            <MaxDiscountCode />
-                                            {shouldRenderMessageWithDiscountCode && (
-                                                <MessageWithDiscountCode />
-                                            )}
-                                        </Box>
-                                    )}
-                                </div>
-
-                                {shouldRenderIncludeImage && (
-                                    <div className={css.section}>
-                                        <Controller
-                                            name="include_image"
-                                            control={control}
-                                            render={({ field }) => (
-                                                <ToggleField
-                                                    value={field.value}
-                                                    onChange={field.onChange}
-                                                    label="Include image"
-                                                    aria-label="Include image"
-                                                />
-                                            )}
+                                        <AudienceCard
+                                            isFormReady={isFormReady}
+                                            isV3Architecture
                                         />
                                     </div>
                                 )}
 
-                                {isCampaign && (
-                                    <div className={css.section}>
-                                        <ToggleField
-                                            value={isCustomImageEnabled}
-                                            onChange={handleCustomImageToggle}
-                                            label="Include custom image"
-                                            aria-label="Include custom image"
-                                        />
-                                        {isCustomImageEnabled && (
-                                            <Box
-                                                flexDirection="column"
-                                                className={css.subFields}
-                                            >
-                                                <Controller
-                                                    name="uploaded_image_attachment"
-                                                    control={control}
-                                                    render={({ field }) => (
-                                                        <ImageDropzone
-                                                            imageUrl={
-                                                                field.value?.[0]
-                                                                    ?.url
-                                                            }
-                                                            onChange={
-                                                                field.onChange
-                                                            }
-                                                        />
-                                                    )}
-                                                />
-                                            </Box>
-                                        )}
-                                    </div>
-                                )}
+                                <GeneralCard
+                                    isFormReady={isFormReady}
+                                    isV3Architecture
+                                />
+
+                                <div className={css.section}>
+                                    <DiscountCodeCard
+                                        isFormReady={isFormReady}
+                                        isV3Architecture
+                                    />
+                                </div>
 
                                 {isAiJourneyRcsEnabled &&
                                     window.USER_IMPERSONATED && (
                                         <div className={css.section}>
-                                            <Controller
-                                                name="rcs_enabled"
-                                                control={control}
-                                                render={({ field }) => (
-                                                    <ToggleField
-                                                        value={field.value}
-                                                        onChange={
-                                                            field.onChange
-                                                        }
-                                                        label="RCS enabled"
-                                                        aria-label="RCS enabled"
-                                                    />
-                                                )}
+                                            <RcsEnabledCard
+                                                isFormReady={isFormReady}
+                                                isV3Architecture
                                             />
                                         </div>
                                     )}
@@ -311,6 +166,7 @@ export const JourneyEditorSidePanel = () => {
                                                 storeFallbackMode
                                             }
                                             collapsible
+                                            isV3Architecture
                                         />
                                     </div>
                                 )}

@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useFormContext } from 'react-hook-form'
 
@@ -24,9 +24,17 @@ type Props = {
     onClose: () => void
 }
 
+const COLLAPSIBLE_COLUMN_WIDTH = '380px'
+
 export const PreviewPanel = ({ onClose }: Props) => {
     const { journeyData, journeyType, currentIntegration } = useJourneyContext()
-    const { warpToCollapsibleColumn } = useCollapsibleColumn()
+    const { warpToCollapsibleColumn, setCollapsibleColumnWidthConfig } =
+        useCollapsibleColumn()
+
+    useEffect(() => {
+        setCollapsibleColumnWidthConfig({ width: COLLAPSIBLE_COLUMN_WIDTH })
+        return () => setCollapsibleColumnWidthConfig(undefined)
+    }, [setCollapsibleColumnWidthConfig])
     const { watch } = useFormContext<SetupFormValues>()
     const journeyMessageInstructions = watch('message_instructions')
 

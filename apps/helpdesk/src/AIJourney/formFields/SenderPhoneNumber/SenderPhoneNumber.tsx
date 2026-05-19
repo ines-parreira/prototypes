@@ -30,7 +30,7 @@ export const SenderPhoneNumber = () => {
         })
 
     return (
-        <Box flexDirection="column" gap="xxs">
+        <Box flexDirection="column" gap="xxs" width="100%">
             <Controller
                 name="sms_sender_integration_id"
                 control={control}

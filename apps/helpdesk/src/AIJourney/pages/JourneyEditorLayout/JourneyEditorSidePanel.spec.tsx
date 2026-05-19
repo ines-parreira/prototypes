@@ -50,7 +50,11 @@ jest.mock('AIJourney/formFields', () => ({
             {type === 'include' ? 'Include audience' : 'Exclude audience'}
         </div>
     ),
+    EnableDiscountCode: () => <div>EnableDiscountCode</div>,
+    EnableRcs: () => <div>EnableRcs</div>,
     FollowUpWaitHours: () => <div>FollowUpWaitHours</div>,
+    ImageUpload: () => <div>ImageUpload</div>,
+    IncludeImage: () => <div>IncludeImage</div>,
     MaxDiscountCode: () => <div>MaxDiscountCode</div>,
     MessageWithDiscountCode: () => <div>MessageWithDiscountCode</div>,
     MinutesDelay: () => <div>MinutesDelay</div>,
@@ -58,6 +62,13 @@ jest.mock('AIJourney/formFields', () => ({
     SenderPhoneNumber: () => <div>SenderPhoneNumber</div>,
     TargetOrderStatus: () => <div>TargetOrderStatus</div>,
 }))
+
+jest.mock(
+    'AIJourney/components/KlaviyoPermissionBanner/KlaviyoPermissionBanner',
+    () => ({
+        KlaviyoPermissionBanner: () => null,
+    }),
+)
 
 jest.mock('AIJourney/formFields/WaitingDays/WaitingDays', () => ({
     WaitingDays: ({ type }: { type: string }) => <div>{type}</div>,
@@ -199,12 +210,10 @@ describe('<JourneyEditorSidePanel />', () => {
         expect(screen.getByText('NumberOfMessages')).toBeInTheDocument()
     })
 
-    it('should render the "Offer discount" toggle', () => {
+    it('should render the DiscountCodeCard toggle', () => {
         renderComponent()
 
-        expect(
-            screen.getByRole('switch', { name: /offer discount/i }),
-        ).toBeInTheDocument()
+        expect(screen.getByText('EnableDiscountCode')).toBeInTheDocument()
     })
 
     it('should show discount sub-fields when discount is enabled', () => {
@@ -276,7 +285,7 @@ describe('<JourneyEditorSidePanel />', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('should render RCS toggle when RCS FF is enabled and USER_IMPERSONATED is true', () => {
+        it('should render the RcsEnabledCard when RCS FF is enabled and USER_IMPERSONATED is true', () => {
             window.USER_IMPERSONATED = true
             const mockUseFlag = require('@repo/feature-flags')
                 .useFlag as jest.Mock
@@ -287,12 +296,10 @@ describe('<JourneyEditorSidePanel />', () => {
 
             renderComponent()
 
-            expect(
-                screen.getByRole('switch', { name: /rcs enabled/i }),
-            ).toBeInTheDocument()
+            expect(screen.getByText('EnableRcs')).toBeInTheDocument()
         })
 
-        it('should not render RCS toggle when RCS FF is enabled but USER_IMPERSONATED is not set', () => {
+        it('should not render the RcsEnabledCard when RCS FF is enabled but USER_IMPERSONATED is not set', () => {
             const mockUseFlag = require('@repo/feature-flags')
                 .useFlag as jest.Mock
             mockUseFlag.mockImplementation(
@@ -302,9 +309,7 @@ describe('<JourneyEditorSidePanel />', () => {
 
             renderComponent()
 
-            expect(
-                screen.queryByRole('switch', { name: /rcs enabled/i }),
-            ).not.toBeInTheDocument()
+            expect(screen.queryByText('EnableRcs')).not.toBeInTheDocument()
         })
     })
 
@@ -363,7 +368,7 @@ describe('<JourneyEditorSidePanel />', () => {
             expect(screen.getByText('Exclude audience')).toBeInTheDocument()
         })
 
-        it('should show ImageDropzone when "Include custom image" toggle is enabled', async () => {
+        it('should show ImageUpload when "Include custom image" toggle is enabled', async () => {
             const user = userEvent.setup()
             renderComponent()
 
@@ -371,10 +376,10 @@ describe('<JourneyEditorSidePanel />', () => {
                 screen.getByRole('switch', { name: /include custom image/i }),
             )
 
-            expect(screen.getByText('ImageDropzone')).toBeInTheDocument()
+            expect(screen.getByText('ImageUpload')).toBeInTheDocument()
         })
 
-        it('should hide ImageDropzone when "Include custom image" toggle is disabled after being enabled', async () => {
+        it('should hide ImageUpload when "Include custom image" toggle is disabled after being enabled', async () => {
             const user = userEvent.setup()
             renderComponent()
 
@@ -385,12 +390,12 @@ describe('<JourneyEditorSidePanel />', () => {
                 screen.getByRole('switch', { name: /include custom image/i }),
             )
 
-            expect(screen.queryByText('ImageDropzone')).not.toBeInTheDocument()
+            expect(screen.queryByText('ImageUpload')).not.toBeInTheDocument()
         })
     })
 
     describe('non-campaign journey type', () => {
-        it('should render "Include image" toggle for non-campaign, non-welcome flows', () => {
+        it('should render the IncludeImage field for non-campaign, non-welcome flows', () => {
             mockUseJourneyContext.mockReturnValue({
                 journeyData: {
                     id: 'journey-123',
@@ -402,9 +407,7 @@ describe('<JourneyEditorSidePanel />', () => {
 
             renderComponent()
 
-            expect(
-                screen.getByRole('switch', { name: /^include image$/i }),
-            ).toBeInTheDocument()
+            expect(screen.getByText('IncludeImage')).toBeInTheDocument()
         })
 
         it('should not render "Include custom image" toggle for non-campaign', () => {

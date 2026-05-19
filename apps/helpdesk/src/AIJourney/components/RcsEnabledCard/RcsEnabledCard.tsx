@@ -2,13 +2,28 @@ import { Box, Card, CardHeader, Skeleton } from '@gorgias/axiom'
 
 import { EnableRcs } from 'AIJourney/formFields'
 
-export const RcsEnabledCard = ({ isFormReady }: { isFormReady: boolean }) => {
+type Props = {
+    isFormReady: boolean
+    isV3Architecture?: boolean
+}
+
+export const RcsEnabledCard = ({
+    isFormReady,
+    isV3Architecture = false,
+}: Props) => {
     if (!isFormReady) {
         return (
             <Box flexDirection="column" gap="lg">
-                <Skeleton width={680} height={200} />
+                <Skeleton
+                    width={isV3Architecture ? undefined : 680}
+                    height={200}
+                />
             </Box>
         )
+    }
+
+    if (isV3Architecture) {
+        return <EnableRcs label="RCS enabled" />
     }
 
     return (

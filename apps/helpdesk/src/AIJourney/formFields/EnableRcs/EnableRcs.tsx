@@ -2,7 +2,7 @@ import { Controller, useFormContext } from 'react-hook-form'
 
 import { Box, ToggleField } from '@gorgias/axiom'
 
-export const EnableRcs = () => {
+export const EnableRcs = ({ label }: { label?: string } = {}) => {
     const { control } = useFormContext()
 
     return (
@@ -14,6 +14,8 @@ export const EnableRcs = () => {
                     <ToggleField
                         value={field.value}
                         onChange={field.onChange}
+                        label={label}
+                        aria-label={label ?? 'Enable RCS'}
                     />
                 )}
             />

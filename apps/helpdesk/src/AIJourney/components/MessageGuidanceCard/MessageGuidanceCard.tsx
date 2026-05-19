@@ -28,10 +28,12 @@ const NEW_VARIANT_DEFAULT_WEIGHT = 50
 
 type MessageGuidanceCardProps = {
     onReturningCustomerChange?: (value: boolean) => void
+    fullWidth?: boolean
 }
 
 export const MessageGuidanceCard = ({
     onReturningCustomerChange,
+    fullWidth = false,
 }: MessageGuidanceCardProps) => {
     const [returningCustomer, setReturningCustomer] = useState(false)
 
@@ -80,7 +82,7 @@ export const MessageGuidanceCard = ({
     }
 
     return (
-        <Card width={680}>
+        <Card width={fullWidth ? '100%' : 680}>
             <Box flexDirection="column" gap="xxs">
                 <CardHeader title="Message guidance" />
                 <Text className={css.caption}>

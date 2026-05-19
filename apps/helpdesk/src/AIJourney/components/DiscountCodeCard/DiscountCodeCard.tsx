@@ -11,15 +11,24 @@ import {
 } from 'AIJourney/formFields'
 import type { SetupFormValues } from 'AIJourney/pages/Setup/Setup'
 
-export const DiscountCodeCard = ({ isFormReady }: { isFormReady: boolean }) => {
+type Props = {
+    isFormReady: boolean
+    isV3Architecture?: boolean
+}
+
+export const DiscountCodeCard = ({
+    isFormReady,
+    isV3Architecture = false,
+}: Props) => {
     const { control, setValue } = useFormContext<SetupFormValues>()
+
     const isDiscountEnabled = useWatch({ control, name: 'offer_discount' })
     const maxFollowUpMessages = useWatch({
         control,
         name: 'max_follow_up_messages',
     })
 
-    const shouldRenderMessageWithDiscountCode = maxFollowUpMessages !== 1
+    const shouldRenderMessageWithDiscountCode = (maxFollowUpMessages ?? 1) !== 1
 
     useEffect(() => {
         if (!shouldRenderMessageWithDiscountCode) {
@@ -30,7 +39,26 @@ export const DiscountCodeCard = ({ isFormReady }: { isFormReady: boolean }) => {
     if (!isFormReady) {
         return (
             <Box flexDirection="column" gap="lg">
-                <Skeleton width={680} height={200} />
+                <Skeleton
+                    width={isV3Architecture ? undefined : 680}
+                    height={200}
+                />
+            </Box>
+        )
+    }
+
+    if (isV3Architecture) {
+        return (
+            <Box flexDirection="column" gap="xs" width="100%">
+                <EnableDiscountCode label="Offer discount" />
+                {isDiscountEnabled && (
+                    <Box flexDirection="column" gap="sm" width="100%">
+                        <MaxDiscountCode fullWidth />
+                        {shouldRenderMessageWithDiscountCode && (
+                            <MessageWithDiscountCode isV3Architecture />
+                        )}
+                    </Box>
+                )}
             </Box>
         )
     }

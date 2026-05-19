@@ -54,6 +54,8 @@ describe('ImageDropzone', () => {
     const renderComponent = (props: {
         imageUrl?: string
         onChange?: (attachment: UploadedImageAttachment[] | undefined) => void
+        hideLabel?: boolean
+        fullWidth?: boolean
     }) => {
         return render(<ImageDropzone {...props} />)
     }
@@ -92,6 +94,35 @@ describe('ImageDropzone', () => {
             renderComponent({})
 
             expect(screen.queryByText('close')).not.toBeInTheDocument()
+        })
+
+        it('should hide the "Upload custom image" label when hideLabel is true', () => {
+            renderComponent({ hideLabel: true })
+
+            expect(
+                screen.queryByText('Upload custom image'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should still render the drop zone help text when hideLabel is true', () => {
+            renderComponent({ hideLabel: true })
+
+            expect(
+                screen.getByText(
+                    'Supported formats: JPG, PNG. Maximum file size: 5MB',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('should render with full-width class when fullWidth is true', () => {
+            const { container } = renderComponent({ fullWidth: true })
+
+            expect(
+                container.querySelector('[class*="uploadImageFieldFullWidth"]'),
+            ).toBeInTheDocument()
+            expect(
+                container.querySelector('[class*="dropZoneFullWidth"]'),
+            ).toBeInTheDocument()
         })
     })
 

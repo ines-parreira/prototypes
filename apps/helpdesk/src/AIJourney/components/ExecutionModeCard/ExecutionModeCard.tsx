@@ -42,6 +42,7 @@ type Props = {
      * does not crowd the regular journey config. Defaults to false.
      */
     collapsible?: boolean
+    isV3Architecture?: boolean
 }
 
 export const ExecutionModeCard = ({
@@ -54,13 +55,17 @@ export const ExecutionModeCard = ({
     defaultOptionLabel,
     defaultOptionDescription,
     collapsible = false,
+    isV3Architecture = false,
 }: Props) => {
     const [isExpanded, setIsExpanded] = useState(false)
 
     if (!isFormReady) {
         return (
             <Box flexDirection="column" gap="lg">
-                <Skeleton width={680} height={collapsible ? 64 : 240} />
+                <Skeleton
+                    width={isV3Architecture ? undefined : 680}
+                    height={collapsible ? 64 : 240}
+                />
             </Box>
         )
     }
@@ -75,6 +80,47 @@ export const ExecutionModeCard = ({
             ariaLabel={title}
         />
     )
+
+    if (isV3Architecture) {
+        if (collapsible) {
+            return (
+                <Disclosure
+                    isExpanded={isExpanded}
+                    onExpandedChange={setIsExpanded}
+                >
+                    <DisclosureHeader
+                        title={
+                            <Text size="md" variant="medium">
+                                {title}
+                            </Text>
+                        }
+                    />
+                    <DisclosurePanel pt="xs">
+                        <Box flexDirection="column" gap="sm" width="100%">
+                            <Text color="content-neutral-secondary">
+                                {description}
+                            </Text>
+                            {select}
+                        </Box>
+                    </DisclosurePanel>
+                </Disclosure>
+            )
+        }
+
+        return (
+            <Box flexDirection="column" gap="sm" width="100%">
+                <CardHeader
+                    title={title}
+                    description={
+                        <Text color="content-neutral-secondary">
+                            {description}
+                        </Text>
+                    }
+                />
+                {select}
+            </Box>
+        )
+    }
 
     if (collapsible) {
         return (

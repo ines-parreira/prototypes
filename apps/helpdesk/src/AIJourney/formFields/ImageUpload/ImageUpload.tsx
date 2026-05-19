@@ -4,7 +4,10 @@ import { Box } from '@gorgias/axiom'
 
 import { ImageDropzone } from 'AIJourney/components/ImageDropzone/ImageDropzone'
 
-export const ImageUpload = () => {
+export const ImageUpload = ({
+    hideLabel,
+    fullWidth,
+}: { hideLabel?: boolean; fullWidth?: boolean } = {}) => {
     const { control } = useFormContext()
 
     return (
@@ -16,6 +19,8 @@ export const ImageUpload = () => {
                     <ImageDropzone
                         imageUrl={field.value?.[0]?.url}
                         onChange={field.onChange}
+                        hideLabel={hideLabel}
+                        fullWidth={fullWidth}
                     />
                 )}
             />

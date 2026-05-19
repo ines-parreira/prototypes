@@ -1,5 +1,7 @@
+import type { ReactNode } from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
+import { FormProvider, useForm } from 'react-hook-form'
 
 import { JOURNEY_TYPES } from 'AIJourney/constants'
 
@@ -10,7 +12,7 @@ jest.mock('@repo/feature-flags', () => ({
         AiJourneyCampaignImageEnabled: 'ai_journey_campaign_image_enabled',
         AiJourneyStoreSettingsEnabled: 'ai-journey-store-settings-enabled',
     },
-    useFlag: jest.fn(),
+    useFlag: jest.fn(() => false),
 }))
 jest.mock('AIJourney/providers', () => ({
     useJourneyContext: jest.fn(),
@@ -30,8 +32,30 @@ const mockUseJourneyContext = jest.requireMock(
     'AIJourney/providers',
 ).useJourneyContext
 
+const FormWrapper = ({ children }: { children: ReactNode }) => {
+    const methods = useForm()
+    return <FormProvider {...methods}>{children}</FormProvider>
+}
+
+const renderCard = ({
+    isFormReady = true,
+    isV3Architecture = false,
+}: {
+    isFormReady?: boolean
+    isV3Architecture?: boolean
+} = {}) =>
+    render(
+        <FormWrapper>
+            <GeneralCard
+                isFormReady={isFormReady}
+                isV3Architecture={isV3Architecture}
+            />
+        </FormWrapper>,
+    )
+
 describe('<GeneralCard />', () => {
     beforeEach(() => {
+        mockUseFlag.mockReset()
         mockUseFlag.mockReturnValue(false)
         mockUseJourneyContext.mockReturnValue({
             journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
@@ -40,7 +64,7 @@ describe('<GeneralCard />', () => {
 
     describe('when isFormReady is false', () => {
         it('renders a skeleton instead of the card', () => {
-            render(<GeneralCard isFormReady={false} />)
+            renderCard({ isFormReady: false })
 
             expect(screen.queryByText('General')).not.toBeInTheDocument()
             expect(
@@ -49,16 +73,16 @@ describe('<GeneralCard />', () => {
         })
     })
 
-    describe('when isFormReady is true', () => {
+    describe('when isFormReady is true (legacy)', () => {
         it('renders the General card header', () => {
-            render(<GeneralCard isFormReady={true} />)
+            renderCard()
 
             expect(screen.getByText('General')).toBeInTheDocument()
         })
 
         describe('SenderPhoneNumber', () => {
             it('renders when AiJourneyStoreSettingsEnabled flag is off', () => {
-                render(<GeneralCard isFormReady={true} />)
+                renderCard()
 
                 expect(
                     screen.getByText('SenderPhoneNumber'),
@@ -71,7 +95,7 @@ describe('<GeneralCard />', () => {
                         key === 'ai-journey-store-settings-enabled',
                 )
 
-                render(<GeneralCard isFormReady={true} />)
+                renderCard()
 
                 expect(
                     screen.getByText('SenderPhoneNumber'),
@@ -85,13 +109,13 @@ describe('<GeneralCard />', () => {
                     journeyType: JOURNEY_TYPES.CAMPAIGN,
                 })
 
-                render(<GeneralCard isFormReady={true} />)
+                renderCard()
 
                 expect(screen.getByText('CampaignName')).toBeInTheDocument()
             })
 
             it('does not render when journey type is not CAMPAIGN', () => {
-                render(<GeneralCard isFormReady={true} />)
+                renderCard()
 
                 expect(
                     screen.queryByText('CampaignName'),
@@ -105,13 +129,13 @@ describe('<GeneralCard />', () => {
                     journeyType: JOURNEY_TYPES.CUSTOM,
                 })
 
-                render(<GeneralCard isFormReady={true} />)
+                renderCard()
 
                 expect(screen.getByText('FlowName')).toBeInTheDocument()
             })
 
             it('does not render when journey type is not CUSTOM', () => {
-                render(<GeneralCard isFormReady={true} />)
+                renderCard()
 
                 expect(screen.queryByText('FlowName')).not.toBeInTheDocument()
             })
@@ -121,7 +145,7 @@ describe('<GeneralCard />', () => {
                     journeyType: JOURNEY_TYPES.CAMPAIGN,
                 })
 
-                render(<GeneralCard isFormReady={true} />)
+                renderCard()
 
                 expect(screen.queryByText('FlowName')).not.toBeInTheDocument()
             })
@@ -129,7 +153,7 @@ describe('<GeneralCard />', () => {
 
         describe('NumberOfMessages', () => {
             it('renders when journey type is not CAMPAIGN', () => {
-                render(<GeneralCard isFormReady={true} />)
+                renderCard()
 
                 expect(screen.getByText('NumberOfMessages')).toBeInTheDocument()
             })
@@ -139,7 +163,7 @@ describe('<GeneralCard />', () => {
                     journeyType: JOURNEY_TYPES.CAMPAIGN,
                 })
 
-                render(<GeneralCard isFormReady={true} />)
+                renderCard()
 
                 expect(screen.getByText('NumberOfMessages')).toBeInTheDocument()
             })
@@ -147,7 +171,7 @@ describe('<GeneralCard />', () => {
 
         describe('IncludeImage', () => {
             it('should render when journey is not CAMPAIGN', () => {
-                render(<GeneralCard isFormReady={true} />)
+                renderCard()
 
                 expect(screen.getByText('IncludeImage')).toBeInTheDocument()
             })
@@ -157,7 +181,7 @@ describe('<GeneralCard />', () => {
                     journeyType: JOURNEY_TYPES.CAMPAIGN,
                 })
 
-                render(<GeneralCard isFormReady={true} />)
+                renderCard()
 
                 expect(
                     screen.queryByText('IncludeImage'),
@@ -169,7 +193,7 @@ describe('<GeneralCard />', () => {
                     journeyType: JOURNEY_TYPES.WELCOME,
                 })
 
-                render(<GeneralCard isFormReady={true} />)
+                renderCard()
 
                 expect(
                     screen.queryByText('IncludeImage'),
@@ -183,10 +207,41 @@ describe('<GeneralCard />', () => {
                     journeyType: JOURNEY_TYPES.CAMPAIGN,
                 })
 
-                render(<GeneralCard isFormReady={true} />)
+                renderCard()
 
                 expect(screen.getByText('ImageUpload')).toBeInTheDocument()
             })
+        })
+    })
+
+    describe('when isV3Architecture is true', () => {
+        it('renders inline sections without the legacy General card header', () => {
+            renderCard({ isV3Architecture: true })
+
+            expect(screen.queryByText('General')).not.toBeInTheDocument()
+            expect(screen.getByText('SenderPhoneNumber')).toBeInTheDocument()
+            expect(screen.getByText('Allow follow-ups')).toBeInTheDocument()
+        })
+
+        it('does not render CampaignName/FlowName (they are in the header for V3)', () => {
+            mockUseJourneyContext.mockReturnValue({
+                journeyType: JOURNEY_TYPES.CAMPAIGN,
+            })
+
+            renderCard({ isV3Architecture: true })
+
+            expect(screen.queryByText('CampaignName')).not.toBeInTheDocument()
+            expect(screen.queryByText('FlowName')).not.toBeInTheDocument()
+        })
+
+        it('shows "Include custom image" toggle for CAMPAIGN', () => {
+            mockUseJourneyContext.mockReturnValue({
+                journeyType: JOURNEY_TYPES.CAMPAIGN,
+            })
+
+            renderCard({ isV3Architecture: true })
+
+            expect(screen.getByText('Include custom image')).toBeInTheDocument()
         })
     })
 })

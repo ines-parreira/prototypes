@@ -13,6 +13,7 @@ import { PreviewPanel } from './PreviewPanel'
 jest.mock('pages/common/hooks/useCollapsibleColumn', () => ({
     useCollapsibleColumn: jest.fn(() => ({
         warpToCollapsibleColumn: (children: React.ReactNode) => children,
+        setCollapsibleColumnWidthConfig: jest.fn(),
     })),
 }))
 

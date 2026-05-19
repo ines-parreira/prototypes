@@ -2,7 +2,9 @@ import { Controller, useFormContext, useWatch } from 'react-hook-form'
 
 import { NumberField } from '@gorgias/axiom'
 
-export const MaxDiscountCode = () => {
+export const MaxDiscountCode = ({
+    fullWidth,
+}: { fullWidth?: boolean } = {}) => {
     const {
         control,
         formState: { errors },
@@ -37,7 +39,7 @@ export const MaxDiscountCode = () => {
                     onChange={(value) => field.onChange(value ?? undefined)}
                     error={errors.max_discount_percent?.message as string}
                     trailingSlot={'percent'}
-                    style={{ width: '150px' }}
+                    style={{ width: fullWidth ? '100%' : '150px' }}
                     formatOptions={{ style: 'decimal', useGrouping: false }}
                     isInvalid={!!errors.max_discount_percent}
                     isRequired

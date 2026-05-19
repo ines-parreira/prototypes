@@ -32,7 +32,11 @@ const SCHEDULE_TYPE_IMMEDIATE = 'immediate'
 const SCHEDULE_TYPE_LATER = 'later'
 const MAX_SCHEDULE_DAYS = 30
 
-export const ScheduleOrSend = () => {
+type Props = {
+    isV3Architecture?: boolean
+}
+
+export const ScheduleOrSend = ({ isV3Architecture = false }: Props) => {
     const {
         journeyData,
         isLoading: isLoadingJourneyData,
@@ -113,110 +117,144 @@ export const ScheduleOrSend = () => {
         !journeyData?.included_audience_list_ids ||
         journeyData.included_audience_list_ids.length === 0
     const isMissingMessageGuidance = !journeyData?.message_instructions
-
-    const missingSteps: string[] = []
-    if (isMissingAudience) missingSteps.push('audience')
-    if (isMissingMessageGuidance) missingSteps.push('message guidance')
+    const showWarningBanner = isMissingAudience || isMissingMessageGuidance
 
     if (!isReady) {
         return (
             <Box flexDirection="column" gap="lg">
-                <Skeleton width={680} height={200} />
+                <Skeleton
+                    width={isV3Architecture ? undefined : 680}
+                    height={200}
+                />
+            </Box>
+        )
+    }
+
+    const warningBanner = showWarningBanner ? (
+        <Banner
+            intent="warning"
+            icon="warning-triangle"
+            isClosable={false}
+            title="Campaign is not ready to send"
+            description={
+                <ul
+                    style={{
+                        margin: 0,
+                        paddingLeft: 'var(--spacing-md)',
+                    }}
+                >
+                    {isMissingAudience && (
+                        <li>Add an audience in the Setup step</li>
+                    )}
+                    {isMissingMessageGuidance && (
+                        <li>Add message guidance in the Preview step</li>
+                    )}
+                </ul>
+            }
+            size="md"
+        />
+    ) : null
+
+    const radioGroup = (
+        <RadioGroup
+            value={scheduleType ?? SCHEDULE_TYPE_LATER}
+            onChange={handleScheduleTypeChange}
+            width={isV3Architecture ? '100%' : undefined}
+        >
+            {isV3Architecture ? (
+                <Box flexDirection="column" gap="sm" width="100%">
+                    <RadioCard
+                        value={SCHEDULE_TYPE_LATER}
+                        title="Schedule"
+                        description="Pick a date and time to send"
+                    />
+                    <RadioCard
+                        value={SCHEDULE_TYPE_IMMEDIATE}
+                        title="Send now"
+                        description="Send immediately"
+                    />
+                </Box>
+            ) : (
+                <div
+                    style={{
+                        display: 'grid',
+                        gridTemplateColumns: '1fr 1fr',
+                        gap: 'var(--spacing-md)',
+                        width: '100%',
+                    }}
+                >
+                    <RadioCard
+                        value={SCHEDULE_TYPE_LATER}
+                        title="Schedule"
+                        description="Pick a date and time to send"
+                    />
+                    <RadioCard
+                        value={SCHEDULE_TYPE_IMMEDIATE}
+                        title="Send now"
+                        description="Send immediately"
+                    />
+                </div>
+            )}
+        </RadioGroup>
+    )
+
+    const dateTimeFields = scheduleType === SCHEDULE_TYPE_LATER && (
+        <Box gap="md" paddingTop="md" width="fit-content">
+            <DateField
+                label="Date"
+                isRequired
+                value={scheduledDate}
+                onChange={handleDateChange}
+                isDateUnavailable={isDateUnavailable}
+            />
+            <TimeField
+                label="Time"
+                isRequired
+                value={scheduledTime}
+                onChange={handleTimeChange}
+            />
+        </Box>
+    )
+
+    const settingsLink = (
+        <Text size="sm" color="content-neutral-secondary">
+            The scheduled time is based on your timezone. Messages to recipients
+            within their local quiet hours will be held and delivered once quiet
+            hours end. You can adjust quiet hours in{' '}
+            <Link
+                size="sm"
+                onClick={() =>
+                    history.push(
+                        `/app/ai-journey/${shopName}/settings#compliance`,
+                    )
+                }
+            >
+                Settings
+            </Link>
+            .
+        </Text>
+    )
+
+    if (isV3Architecture) {
+        return (
+            <Box flexDirection="column" gap="md" width="100%">
+                {warningBanner}
+                {radioGroup}
+                {dateTimeFields}
+                {settingsLink}
             </Box>
         )
     }
 
     return (
         <>
-            {missingSteps.length > 0 && (
-                <Banner
-                    intent="warning"
-                    icon="warning-triangle"
-                    isClosable={false}
-                    title="Campaign is not ready to send"
-                    description={
-                        <ul
-                            style={{
-                                margin: 0,
-                                paddingLeft: 'var(--spacing-md)',
-                            }}
-                        >
-                            {isMissingAudience && (
-                                <li>Add an audience in the Setup step</li>
-                            )}
-                            {isMissingMessageGuidance && (
-                                <li>
-                                    Add message guidance in the Preview step
-                                </li>
-                            )}
-                        </ul>
-                    }
-                    size="md"
-                />
-            )}
+            {warningBanner}
             <Card width={680}>
                 <CardHeader title="Choose when to send" />
-                <RadioGroup
-                    value={scheduleType ?? SCHEDULE_TYPE_LATER}
-                    onChange={handleScheduleTypeChange}
-                >
-                    <div
-                        style={{
-                            display: 'grid',
-                            gridTemplateColumns: '1fr 1fr',
-                            gap: 'var(--spacing-md)',
-                            width: '100%',
-                        }}
-                    >
-                        <RadioCard
-                            value={SCHEDULE_TYPE_LATER}
-                            title="Schedule"
-                            description="Pick a date and time to send"
-                        />
-                        <RadioCard
-                            value={SCHEDULE_TYPE_IMMEDIATE}
-                            title="Send now"
-                            description="Send immediately"
-                        />
-                    </div>
-                </RadioGroup>
-                {scheduleType === SCHEDULE_TYPE_LATER && (
-                    <Box gap="md" paddingTop="md" width="fit-content">
-                        <DateField
-                            label="Date"
-                            isRequired
-                            value={scheduledDate}
-                            onChange={handleDateChange}
-                            isDateUnavailable={isDateUnavailable}
-                        />
-                        <TimeField
-                            label="Time"
-                            isRequired
-                            value={scheduledTime}
-                            onChange={handleTimeChange}
-                        />
-                    </Box>
-                )}
+                {radioGroup}
+                {dateTimeFields}
             </Card>
-            <Box width={680}>
-                <Text size="sm" color="content-neutral-secondary">
-                    The scheduled time is based on your timezone. Messages to
-                    recipients within their local quiet hours will be held and
-                    delivered once quiet hours end. You can adjust quiet hours
-                    in{' '}
-                    <Link
-                        size="sm"
-                        onClick={() =>
-                            history.push(
-                                `/app/ai-journey/${shopName}/settings#compliance`,
-                            )
-                        }
-                    >
-                        Settings
-                    </Link>
-                    .
-                </Text>
-            </Box>
+            <Box width={680}>{settingsLink}</Box>
         </>
     )
 }

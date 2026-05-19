@@ -5,6 +5,13 @@
         width: 100%;
     }
 
+    .uploadImageFieldFullWidth {
+        // DropZone renders a <label class="wrapper"> with width: min-content
+        & > label {
+            width: 100%;
+        }
+    }
+
     .dropZone {
         border: 2px dashed var(--border-neutral-default);
         border-radius: 8px;
@@ -14,6 +21,10 @@
         &:hover {
             border-color: var(--border-accent-default);
         }
+    }
+
+    .dropZoneFullWidth.dropZoneFullWidth {
+        width: 100%;
     }
 
     .content {

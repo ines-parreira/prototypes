@@ -168,12 +168,14 @@ function Wrapper({ children }: { children: React.ReactNode }) {
     return <FormProvider {...methods}>{children}</FormProvider>
 }
 
-function renderComponent() {
+function renderComponent({
+    isV3Architecture,
+}: { isV3Architecture?: boolean } = {}) {
     const user = userEvent.setup()
     const result = render(
         <MemoryRouter>
             <Wrapper>
-                <ScheduleOrSend />
+                <ScheduleOrSend isV3Architecture={isV3Architecture} />
             </Wrapper>
         </MemoryRouter>,
     )
@@ -452,6 +454,55 @@ describe('<ScheduleOrSend />', () => {
         await waitFor(() => {
             expect(screen.getByText('Date')).toBeInTheDocument()
             expect(screen.getByText('Time')).toBeInTheDocument()
+        })
+    })
+
+    describe('when isV3Architecture is true', () => {
+        it('does not render the legacy Card header but still shows the radio options', async () => {
+            renderComponent({ isV3Architecture: true })
+
+            await waitFor(() => {
+                expect(screen.getByText('Schedule')).toBeInTheDocument()
+            })
+
+            expect(
+                screen.queryByText('Choose when to send'),
+            ).not.toBeInTheDocument()
+            expect(screen.getByText('Send now')).toBeInTheDocument()
+        })
+
+        it('still renders the Settings link', async () => {
+            renderComponent({ isV3Architecture: true })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('link', { name: 'Settings' }),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('shows the warning banner with the V2 copy when fields are missing', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyData: {
+                    ...defaultContextValue.journeyData,
+                    included_audience_list_ids: [],
+                    message_instructions: null,
+                },
+            } as any)
+
+            renderComponent({ isV3Architecture: true })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText('Add an audience in the Setup step'),
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByText(
+                        'Add message guidance in the Preview step',
+                    ),
+                ).toBeInTheDocument()
+            })
         })
     })
 })

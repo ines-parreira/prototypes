@@ -1,15 +1,75 @@
 :local {
     .required {
-        color: var(--content-negative-default);
+        color: var(--content-error-primary);
     }
 
-    .instructionsPlaceholder {
-        &::placeholder {
-            color: var(--content-neutral-secondary);
-        }
+    .errorMessage {
+        color: var(--content-error-primary);
+        font-size: 12px;
+        line-height: 16px;
+        margin-top: var(--spacing-xxxxs);
+    }
 
-        &:focus {
-            border-color: var(--border-brand-default);
-        }
+    .form {
+        display: flex;
+        flex-direction: row;
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
+    }
+
+    .mainColumn {
+        min-height: 0;
+        min-width: 0;
+    }
+
+    .mainContent {
+        overflow-y: auto;
+        padding: var(--spacing-lg);
+    }
+
+    .mainContentInner {
+        width: 648px;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    .titleField {
+        position: relative;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .titleInput {
+        background: transparent;
+        border: none;
+        outline: none;
+        padding: 0;
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 32px;
+        color: var(--content-neutral-default);
+        width: 100%;
+        font-family: inherit;
+    }
+
+    .titlePlaceholder {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xxs);
+        pointer-events: none;
+        color: var(--content-neutral-tertiary);
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 32px;
+        white-space: nowrap;
+        font-family: inherit;
+    }
+
+    .titleRequiredMark {
+        color: var(--content-error-primary);
     }
 }

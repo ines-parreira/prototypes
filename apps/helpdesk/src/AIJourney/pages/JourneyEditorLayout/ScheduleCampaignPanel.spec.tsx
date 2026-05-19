@@ -128,7 +128,7 @@ describe('<ScheduleCampaignPanel />', () => {
             screen.getByText('Campaign is not ready to send'),
         ).toBeInTheDocument()
         expect(
-            screen.getByText('Add message guidance in the Instructions field'),
+            screen.getByText('Add message guidance in the Preview step'),
         ).toBeInTheDocument()
     })
 
@@ -150,7 +150,7 @@ describe('<ScheduleCampaignPanel />', () => {
             screen.getByText('Add an audience in the Setup step'),
         ).toBeInTheDocument()
         expect(
-            screen.getByText('Add message guidance in the Instructions field'),
+            screen.getByText('Add message guidance in the Preview step'),
         ).toBeInTheDocument()
     })
 

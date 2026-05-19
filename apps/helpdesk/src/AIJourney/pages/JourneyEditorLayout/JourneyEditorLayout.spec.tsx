@@ -34,7 +34,10 @@ jest.mock('react-router-dom', () => ({
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
-    useFlag: jest.fn(() => false),
+    useFlag: jest.fn(
+        (key: string) => key === 'ai-journey-v3-architecture-enabled',
+    ),
+    useFlagWithLoading: jest.fn(() => ({ value: false, isLoading: false })),
 }))
 
 jest.mock('AIJourney/providers/JourneyProvider/JourneyProvider', () => ({
@@ -143,6 +146,14 @@ describe('<JourneyEditorLayout /> — Campaign mode (isCampaign = true)', () => 
         const user = userEvent.setup()
         renderComponent()
 
+        await user.type(
+            screen.getByRole('textbox', { name: /campaign title/i }),
+            'New Campaign',
+        )
+        await user.type(
+            screen.getByPlaceholderText(/describe tone/i),
+            'Test instructions',
+        )
         await user.click(screen.getByRole('button', { name: /save changes/i }))
 
         expect(mockHandleCreate).toHaveBeenCalled()
@@ -162,6 +173,7 @@ describe('<JourneyEditorLayout /> — Campaign mode (isCampaign = true)', () => 
             journeyData: {
                 id: 'journey-123',
                 campaign: { title: 'Existing Campaign' },
+                message_instructions: 'Existing instructions',
             },
             journeyType: JOURNEY_TYPES.CAMPAIGN,
             shopName: 'test-store',
@@ -413,6 +425,7 @@ describe('<JourneyEditorLayout /> — Non-campaign flow save', () => {
             journeyData: {
                 id: 'journey-123',
                 state: JourneyStatusEnum.Draft,
+                message_instructions: 'Existing instructions',
             },
             journeyType: JOURNEY_TYPES.POST_PURCHASE,
             shopName: 'test-store',

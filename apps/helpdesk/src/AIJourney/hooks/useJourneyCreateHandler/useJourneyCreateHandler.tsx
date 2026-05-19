@@ -27,6 +27,7 @@ type HandleCreateParams = {
     includedAudienceListIds?: string[]
     includeImage?: boolean
     isDiscountEnabled?: boolean
+    journeyMessageInstructions?: string | null
     phoneNumberIntegrationId?: number | null | undefined
     phoneNumber?: string | null | undefined
     inactiveDays?: number | null
@@ -60,6 +61,7 @@ export const useJourneyCreateHandler = ({
             includedAudienceListIds,
             includeImage,
             isDiscountEnabled,
+            journeyMessageInstructions,
             phoneNumberIntegrationId,
             phoneNumber,
             inactiveDays,
@@ -124,6 +126,7 @@ export const useJourneyCreateHandler = ({
                         store_integration_id: integrationId,
                         store_name: integrationName,
                         type: JOURNEY_TYPE_MAP_FROM_URL[journeyType],
+                        message_instructions: journeyMessageInstructions,
                         campaign: campaignTitle
                             ? {
                                   title: campaignTitle,

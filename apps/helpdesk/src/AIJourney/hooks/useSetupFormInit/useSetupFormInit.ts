@@ -106,6 +106,7 @@ export const useSetupFormInit = () => {
                     flowName: journeyData?.name ?? undefined,
                     message_instructions:
                         journeyData?.message_instructions ?? '',
+                    variants: journeyData?.variants ?? [],
                 })
             } else if (storeSettingsEnabled && storeConfiguration) {
                 reset({

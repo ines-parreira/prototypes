@@ -7,7 +7,9 @@ import { MAX_WAIT_TIME } from 'AIJourney/constants'
 const MIN_WAIT_HOURS = 1
 const MAX_WAIT_HOURS = MAX_WAIT_TIME / 60
 
-export const FollowUpWaitHours = () => {
+export const FollowUpWaitHours = ({
+    fullWidth,
+}: { fullWidth?: boolean } = {}) => {
     const {
         control,
         formState: { errors },
@@ -48,7 +50,7 @@ export const FollowUpWaitHours = () => {
                     }
                     error={errors.follow_up_wait_minutes?.message as string}
                     trailingSlot={'hr'}
-                    style={{ width: '390px' }}
+                    style={{ width: fullWidth ? '100%' : '390px' }}
                     formatOptions={{ style: 'decimal', useGrouping: false }}
                     isInvalid={!!errors.follow_up_wait_minutes}
                     isRequired

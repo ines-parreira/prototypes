@@ -11,6 +11,7 @@ const renderComponent = ({
     title,
     description,
     collapsible = false,
+    isV3Architecture = false,
     defaultValues = {},
 }: {
     isFormReady?: boolean
@@ -18,6 +19,7 @@ const renderComponent = ({
     title?: string
     description?: string
     collapsible?: boolean
+    isV3Architecture?: boolean
     defaultValues?: Record<string, unknown>
 } = {}) => {
     const Wrapper = () => {
@@ -30,6 +32,7 @@ const renderComponent = ({
                     title={title}
                     description={description}
                     collapsible={collapsible}
+                    isV3Architecture={isV3Architecture}
                 />
             </FormProvider>
         )
@@ -42,6 +45,13 @@ describe('<ExecutionModeCard />', () => {
     describe('when isFormReady is false', () => {
         it('does not render the card content', () => {
             renderComponent({ isFormReady: false })
+
+            expect(screen.queryByText('Execution mode')).not.toBeInTheDocument()
+            expect(screen.queryByText('Dry run')).not.toBeInTheDocument()
+        })
+
+        it('renders a skeleton without the fixed 680px width when isV3Architecture is true', () => {
+            renderComponent({ isFormReady: false, isV3Architecture: true })
 
             expect(screen.queryByText('Execution mode')).not.toBeInTheDocument()
             expect(screen.queryByText('Dry run')).not.toBeInTheDocument()
@@ -152,6 +162,36 @@ describe('<ExecutionModeCard />', () => {
                 expect(screen.queryAllByRole('radio')).toHaveLength(5)
                 expect(screen.getByLabelText(/Dry run/i)).toBeInTheDocument()
             })
+        })
+    })
+
+    describe('when isV3Architecture is true', () => {
+        it('renders the title, description, and execution mode options inline', () => {
+            renderComponent({
+                title: 'Override',
+                description: 'Custom description',
+                isV3Architecture: true,
+            })
+
+            expect(screen.getByText('Override')).toBeInTheDocument()
+            expect(screen.getByText('Custom description')).toBeInTheDocument()
+            expect(screen.getByText('Dry run')).toBeInTheDocument()
+        })
+
+        it('renders as a Disclosure when collapsible is true', async () => {
+            const user = userEvent.setup()
+            renderComponent({ collapsible: true, isV3Architecture: true })
+
+            const trigger = screen.getByRole('button', {
+                name: /Execution mode/i,
+            })
+            expect(trigger).toHaveAttribute('aria-expanded', 'false')
+            expect(screen.queryAllByRole('radio')).toHaveLength(0)
+
+            await user.click(trigger)
+
+            expect(trigger).toHaveAttribute('aria-expanded', 'true')
+            expect(screen.queryAllByRole('radio')).toHaveLength(5)
         })
     })
 })

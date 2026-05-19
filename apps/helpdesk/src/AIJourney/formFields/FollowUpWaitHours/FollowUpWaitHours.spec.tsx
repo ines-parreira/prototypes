@@ -8,13 +8,14 @@ import { FollowUpWaitHours } from './FollowUpWaitHours'
 const renderComponent = (
     defaultValues: Record<string, unknown> = {},
     onSubmit: (values: Record<string, unknown>) => void = () => {},
+    { fullWidth }: { fullWidth?: boolean } = {},
 ) => {
     const Wrapper = () => {
         const methods = useForm({ defaultValues })
         return (
             <FormProvider {...methods}>
                 <form onSubmit={methods.handleSubmit(onSubmit)}>
-                    <FollowUpWaitHours />
+                    <FollowUpWaitHours fullWidth={fullWidth} />
                     <button type="submit">Submit</button>
                 </form>
             </FormProvider>
@@ -137,6 +138,22 @@ describe('<FollowUpWaitHours />', () => {
                 ),
             ).not.toBeInTheDocument()
         })
+    })
+
+    it('renders the field when fullWidth is true', () => {
+        renderComponent(
+            {
+                max_follow_up_messages: 2,
+                follow_up_wait_minutes: 60,
+            },
+            () => {},
+            { fullWidth: true },
+        )
+
+        expect(
+            screen.getByText('Delay between follow-up messages'),
+        ).toBeInTheDocument()
+        expect(screen.getByRole('textbox')).toHaveValue('1')
     })
 
     it('persists the value as minutes (hours * 60) when submitted', async () => {

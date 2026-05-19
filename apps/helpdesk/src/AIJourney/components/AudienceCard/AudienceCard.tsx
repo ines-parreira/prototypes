@@ -4,13 +4,37 @@ import { KlaviyoPermissionBanner } from 'AIJourney/components/KlaviyoPermissionB
 import { AudienceSelect } from 'AIJourney/formFields'
 import { useJourneyContext } from 'AIJourney/providers'
 
-export const AudienceCard = ({ isFormReady }: { isFormReady: boolean }) => {
+type Props = {
+    isFormReady: boolean
+    isV3Architecture?: boolean
+}
+
+export const AudienceCard = ({
+    isFormReady,
+    isV3Architecture = false,
+}: Props) => {
     const { currentIntegration, shopName } = useJourneyContext()
 
     if (!isFormReady) {
         return (
             <Box flexDirection="column" gap="lg">
-                <Skeleton width={680} height={200} />
+                <Skeleton
+                    width={isV3Architecture ? undefined : 680}
+                    height={200}
+                />
+            </Box>
+        )
+    }
+
+    if (isV3Architecture) {
+        return (
+            <Box flexDirection="column" gap="xs" width="100%">
+                <KlaviyoPermissionBanner
+                    integrationId={currentIntegration?.id}
+                    settingsUrl={`/app/ai-journey/${shopName}/settings/integrations`}
+                />
+                <AudienceSelect type="include" />
+                <AudienceSelect type="exclude" />
             </Box>
         )
     }

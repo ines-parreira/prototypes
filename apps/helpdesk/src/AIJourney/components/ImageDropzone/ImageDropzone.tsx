@@ -22,11 +22,15 @@ export type UploadedImageAttachment = Pick<
 interface UploadImageFieldProps {
     imageUrl?: string
     onChange?: (attachment: UploadedImageAttachment[] | undefined) => void
+    hideLabel?: boolean
+    fullWidth?: boolean
 }
 
 export const ImageDropzone = ({
     imageUrl,
     onChange,
+    hideLabel,
+    fullWidth,
 }: UploadImageFieldProps) => {
     const [isUploading, setIsUploading] = useState(false)
 
@@ -114,15 +118,17 @@ export const ImageDropzone = ({
     }
 
     return (
-        <div className={css.uploadImageField}>
-            <Label>Upload custom image</Label>
+        <div
+            className={`${css.uploadImageField} ${fullWidth ? css.uploadImageFieldFullWidth : ''}`}
+        >
+            {!hideLabel && <Label>Upload custom image</Label>}
             <DropZone
                 id="ai-journey-image-upload"
                 accept="image/jpeg,image/png,image/jpg"
                 imageRole="default"
                 onDrop={handleOnDropFile}
                 onChange={handleOnChangeFile}
-                className={css.dropZone}
+                className={`${css.dropZone} ${fullWidth ? css.dropZoneFullWidth : ''}`}
             >
                 {content}
             </DropZone>

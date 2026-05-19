@@ -13,6 +13,7 @@ jest.mock('AIJourney/formFields', () => ({
 const renderComponent = (
     isFormReady: boolean,
     defaultValues: Record<string, unknown> = {},
+    { isV3Architecture = false }: { isV3Architecture?: boolean } = {},
 ) => {
     let capturedGetValues: (() => Record<string, unknown>) | undefined
 
@@ -27,7 +28,10 @@ const renderComponent = (
         return (
             <FormProvider {...methods}>
                 <ValuesCaptor />
-                <DiscountCodeCard isFormReady={isFormReady} />
+                <DiscountCodeCard
+                    isFormReady={isFormReady}
+                    isV3Architecture={isV3Architecture}
+                />
             </FormProvider>
         )
     }
@@ -46,7 +50,7 @@ describe('<DiscountCodeCard />', () => {
         })
     })
 
-    describe('when isFormReady is true', () => {
+    describe('when isFormReady is true (legacy)', () => {
         it('renders the Discount code card header', () => {
             renderComponent(true)
 
@@ -103,16 +107,6 @@ describe('<DiscountCodeCard />', () => {
             ).toBeInTheDocument()
         })
 
-        it('sets discount_code_message_threshold to 1 when max_follow_up_messages is 1', () => {
-            const { getValues } = renderComponent(true, {
-                offer_discount: true,
-                max_follow_up_messages: 1,
-                discount_code_message_threshold: 3,
-            })
-
-            expect(getValues().discount_code_message_threshold).toBe(1)
-        })
-
         it('does not reset discount_code_message_threshold when max_follow_up_messages is greater than 1', () => {
             const { getValues } = renderComponent(true, {
                 offer_discount: true,
@@ -121,6 +115,39 @@ describe('<DiscountCodeCard />', () => {
             })
 
             expect(getValues().discount_code_message_threshold).toBe(2)
+        })
+
+        it('resets discount_code_message_threshold to 1 when max_follow_up_messages is 1', () => {
+            const { getValues } = renderComponent(true, {
+                offer_discount: true,
+                max_follow_up_messages: 1,
+                discount_code_message_threshold: 3,
+            })
+
+            expect(getValues().discount_code_message_threshold).toBe(1)
+        })
+    })
+
+    describe('when isV3Architecture is true', () => {
+        it('renders without the legacy Card header', () => {
+            renderComponent(true, {}, { isV3Architecture: true })
+
+            expect(screen.queryByText('Discount code')).not.toBeInTheDocument()
+            expect(screen.getByText('EnableDiscountCode')).toBeInTheDocument()
+        })
+
+        it('resets discount_code_message_threshold to 1 when max_follow_up_messages is 1', () => {
+            const { getValues } = renderComponent(
+                true,
+                {
+                    offer_discount: true,
+                    max_follow_up_messages: 1,
+                    discount_code_message_threshold: 3,
+                },
+                { isV3Architecture: true },
+            )
+
+            expect(getValues().discount_code_message_threshold).toBe(1)
         })
     })
 })
