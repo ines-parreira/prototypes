@@ -1,6 +1,4 @@
-import { render } from '@repo/testing'
-import { screen } from '@testing-library/react'
-
+import client from '@repo/api-resources'
 import {
     payingWithCreditCard,
     payWithShopify,
@@ -8,25 +6,21 @@ import {
     payWithShopifyButNotActivatedAndPastDue,
     trial,
 } from '@repo/billing/fixtures'
-
-import { getBillingState } from 'models/billing/resources'
+import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
 
 import { ShopifyBillingInactiveBanner } from '../ShopifyBillingInactiveBanner'
 
-jest.mock('models/billing/resources', () => ({
-    ...jest.requireActual('models/billing/resources'),
-    getBillingState: jest.fn(),
-}))
-
-const mockGetBillingState = getBillingState as jest.Mock
-
+const mockedServer = new MockAdapter(client)
 describe('ShopifyBillingInactiveBanner', () => {
-    beforeEach(() => {
-        mockGetBillingState.mockReset()
+    afterEach(() => {
+        mockedServer.reset()
     })
-
     it('should render the banner when Shopify billing is inactive', async () => {
-        mockGetBillingState.mockResolvedValue(payWithShopifyButNotActivated)
+        mockedServer
+            .onGet('/billing/state')
+            .reply(200, payWithShopifyButNotActivated)
         render(<ShopifyBillingInactiveBanner />, { storeState: {} })
         expect(
             await screen.findByText(
@@ -42,11 +36,10 @@ describe('ShopifyBillingInactiveBanner', () => {
             screen.getByText('Activate Billing with Shopify'),
         ).toBeInTheDocument()
     })
-
     it('should render past due banner when Shopify billing is inactive and subscription is past due', async () => {
-        mockGetBillingState.mockResolvedValue(
-            payWithShopifyButNotActivatedAndPastDue,
-        )
+        mockedServer
+            .onGet('/billing/state')
+            .reply(200, payWithShopifyButNotActivatedAndPastDue)
         render(<ShopifyBillingInactiveBanner />, { storeState: {} })
         expect(
             await screen.findByText('Subscription payment past due'),
@@ -58,9 +51,8 @@ describe('ShopifyBillingInactiveBanner', () => {
         ).toBeInTheDocument()
         expect(screen.getByText('Go to Store Management')).toBeInTheDocument()
     })
-
     it('should not render the banner when Shopify billing is active', async () => {
-        mockGetBillingState.mockResolvedValue(payWithShopify)
+        mockedServer.onGet('/billing/state').reply(200, payWithShopify)
         render(<ShopifyBillingInactiveBanner />, { storeState: {} })
         // Wait for the query to complete
         await screen.findByText('', { selector: 'body' })
@@ -71,9 +63,8 @@ describe('ShopifyBillingInactiveBanner', () => {
             screen.queryByText('Subscription payment past due'),
         ).not.toBeInTheDocument()
     })
-
     it('should not render when not using Shopify billing', async () => {
-        mockGetBillingState.mockResolvedValue(payingWithCreditCard)
+        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
         render(<ShopifyBillingInactiveBanner />, { storeState: {} })
         // Wait for the query to complete
         await screen.findByText('', { selector: 'body' })
@@ -84,9 +75,8 @@ describe('ShopifyBillingInactiveBanner', () => {
             screen.queryByText('Subscription payment past due'),
         ).not.toBeInTheDocument()
     })
-
     it('should not render when Shopify billing is null', async () => {
-        mockGetBillingState.mockResolvedValue(trial)
+        mockedServer.onGet('/billing/state').reply(200, trial)
         render(<ShopifyBillingInactiveBanner />, { storeState: {} })
         // Wait for the query to complete
         await screen.findByText('', { selector: 'body' })
@@ -97,9 +87,10 @@ describe('ShopifyBillingInactiveBanner', () => {
             screen.queryByText('Subscription payment past due'),
         ).not.toBeInTheDocument()
     })
-
     it('should render link with correct attributes when Shopify billing is inactive', async () => {
-        mockGetBillingState.mockResolvedValue(payWithShopifyButNotActivated)
+        mockedServer
+            .onGet('/billing/state')
+            .reply(200, payWithShopifyButNotActivated)
         render(<ShopifyBillingInactiveBanner />, { storeState: {} })
         const link = await screen.findByRole('link', {
             name: /Activate Billing with Shopify/i,
@@ -111,11 +102,10 @@ describe('ShopifyBillingInactiveBanner', () => {
         expect(link).toHaveAttribute('target', '_blank')
         expect(link).toHaveAttribute('rel', 'noopener noreferrer')
     })
-
     it('should render link to Store Management when subscription is past due', async () => {
-        mockGetBillingState.mockResolvedValue(
-            payWithShopifyButNotActivatedAndPastDue,
-        )
+        mockedServer
+            .onGet('/billing/state')
+            .reply(200, payWithShopifyButNotActivatedAndPastDue)
         render(<ShopifyBillingInactiveBanner />, { storeState: {} })
         const link = await screen.findByRole('link', {
             name: /Go to Store Management/i,

@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import {
     ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
     BILLING_PAYMENT_CARD_PATH,
@@ -13,19 +14,15 @@ import {
 } from '@repo/billing/fixtures'
 import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
 
 import { AlertBannerTypes, BannerCategories } from 'AlertBanners'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { getBillingState } from 'models/billing/resources'
+import type { CreditCard } from 'models/billing/types'
 import { useIsPaymentEnabled } from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
 import { notify } from 'state/notifications/actions'
 
-jest.mock('models/billing/resources', () => ({
-    ...jest.requireActual('models/billing/resources'),
-    getBillingState: jest.fn(),
-}))
-
-const mockGetBillingState = getBillingState as jest.Mock
+const mockedServer = new MockAdapter(client)
 
 // Mock the use of const dispatch = useAppDispatch()
 jest.mock('hooks/useAppDispatch')
@@ -46,12 +43,8 @@ jest.mock('AlertBanners/hooks/useBanners', () => ({
 }))
 
 describe('useIsPaymentEnabled', () => {
-    afterEach(() => {
-        mockGetBillingState.mockReset()
-    })
-
     it('should render the no-payment-method use-case', async () => {
-        mockGetBillingState.mockResolvedValue(trial)
+        mockedServer.onGet('/billing/state').reply(200, trial)
 
         const { result } = renderHook(useIsPaymentEnabled)
 
@@ -73,7 +66,7 @@ describe('useIsPaymentEnabled', () => {
     })
 
     it('should render the credit-card use-case', async () => {
-        mockGetBillingState.mockResolvedValue(payingWithCreditCard)
+        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
 
         const { result: isPaymentEnabled } = renderHook(useIsPaymentEnabled)
 
@@ -85,8 +78,12 @@ describe('useIsPaymentEnabled', () => {
     })
 
     it('should render the expired-credit-card use-case', async () => {
-        mockGetBillingState.mockResolvedValue(payingWithExpiredCreditCard)
-        const creditCard = payingWithCreditCard.customer.credit_card
+        mockedServer
+            .onGet('/billing/state')
+            .reply(200, payingWithExpiredCreditCard)
+
+        const creditCard = payingWithCreditCard.customer
+            .credit_card as CreditCard
 
         const { result } = renderHook(useIsPaymentEnabled)
 
@@ -94,7 +91,7 @@ describe('useIsPaymentEnabled', () => {
             expect(result.current).toBe(false)
             expect(mockAddBanner).toHaveBeenCalledTimes(1)
             expect(mockAddBanner).toHaveBeenCalledWith({
-                message: `${creditCard?.brand} credit card ending with ${creditCard?.last4} is expired`,
+                message: `${creditCard.brand} credit card ending with ${creditCard.last4} is expired`,
                 type: AlertBannerTypes.Warning,
                 CTA: {
                     type: 'internal',
@@ -108,7 +105,7 @@ describe('useIsPaymentEnabled', () => {
     })
 
     it('should render the ach-debit use-case', async () => {
-        mockGetBillingState.mockResolvedValue(payingWithAchDebit)
+        mockedServer.onGet('/billing/state').reply(200, payingWithAchDebit)
 
         const { result: isPaymentEnabled } = renderHook(useIsPaymentEnabled)
 
@@ -120,7 +117,7 @@ describe('useIsPaymentEnabled', () => {
     })
 
     it('should render the ach-credit use-case', async () => {
-        mockGetBillingState.mockResolvedValue(payingWithAchCredit)
+        mockedServer.onGet('/billing/state').reply(200, payingWithAchCredit)
 
         const { result: isPaymentEnabled } = renderHook(useIsPaymentEnabled)
 
@@ -132,7 +129,9 @@ describe('useIsPaymentEnabled', () => {
     })
 
     it('should render the inactivated-shopify-billing use-case', async () => {
-        mockGetBillingState.mockResolvedValue(payWithShopifyButNotActivated)
+        mockedServer
+            .onGet('/billing/state')
+            .reply(200, payWithShopifyButNotActivated)
 
         const { result } = renderHook(useIsPaymentEnabled)
 
@@ -155,7 +154,7 @@ describe('useIsPaymentEnabled', () => {
     })
 
     it('should render the activated-shopify-billing use-case', async () => {
-        mockGetBillingState.mockResolvedValue(payWithShopify)
+        mockedServer.onGet('/billing/state').reply(200, payWithShopify)
 
         const { result: isPaymentEnabled } = renderHook(useIsPaymentEnabled)
 

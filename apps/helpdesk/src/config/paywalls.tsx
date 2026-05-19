@@ -1,7 +1,11 @@
 import type { ReactElement, ReactNode } from 'react'
 import React from 'react'
 
-import type {
+import {
+    GORGIAS_AUTOMATE_BADGE,
+    PAGE_TITLE_AUTOMATE_PAYWALL,
+} from 'domains/reporting/pages/self-service/constants'
+import {
     PaywallTheme,
     UpgradeType,
 } from 'pages/common/components/Paywall/Paywall'
@@ -71,5 +75,19 @@ export const paywallConfigs: Partial<Record<AccountFeature, PaywallConfig>> = {
         description:
             'Track your agents in real-time. See how long they have been online, how many tickets have been assigned to them and the work they have accomplished over a given day.',
         preview: assetsUrl('/img/paywalls/screens/live-agents-statistic.png'),
+    },
+
+    [AccountFeature.AutomationAddonOverview]: {
+        paywallTheme: PaywallTheme.Default,
+        header: PAGE_TITLE_AUTOMATE_PAYWALL,
+        description: (
+            <div>
+                With Gorgias AI Agent, you can track your automation performance
+                and leverage insights to improve.
+            </div>
+        ),
+        preview: assetsUrl('/img/paywalls/screens/automate-overview.png'),
+        requiredUpgrade: GORGIAS_AUTOMATE_BADGE,
+        upgradeType: UpgradeType.None,
     },
 }

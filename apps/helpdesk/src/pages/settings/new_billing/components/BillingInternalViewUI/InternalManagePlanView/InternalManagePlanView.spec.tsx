@@ -3,7 +3,6 @@ import { assumeMock, render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { SubscriptionStatus } from '@repo/billing'
 import {
     basicMonthlyHelpdeskPlan,
     proMonthlyHelpdeskPlan,
@@ -14,7 +13,7 @@ import {
     useUpdateInternalSubscription,
 } from 'models/billing/queries'
 import type { InternalProductCatalogPlans } from 'models/billing/types'
-import { ProductType } from 'models/billing/types'
+import { ProductType, SubscriptionStatus } from 'models/billing/types'
 
 import { InternalManagePlanView } from './InternalManagePlanView'
 

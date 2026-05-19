@@ -130,6 +130,7 @@ const accountFeatures = createHelpdeskPlanFeatures({
     [AccountFeature.AutomationCancellationsFlow]: { enabled: true },
     [AccountFeature.AutomationReturnFlow]: { enabled: true },
     [AccountFeature.AutomationSelfServiceStatistics]: { enabled: true },
+    [AccountFeature.AutomationAddonOverview]: { enabled: true },
 })
 
 export const HELPDESK_PRODUCT_ID = ProductType.Helpdesk

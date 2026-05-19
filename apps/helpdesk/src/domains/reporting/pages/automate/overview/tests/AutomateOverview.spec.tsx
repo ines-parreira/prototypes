@@ -228,6 +228,7 @@ describe('<AutomateOverview />', () => {
         features: {
             ...account.features,
             [AccountFeature.AutomationSelfServiceStatistics]: { enabled: true },
+            [AccountFeature.AutomationAddonOverview]: { enabled: true },
         },
     }
     const defaultState = {

@@ -35,11 +35,6 @@ function getSubscriptionStatusTag(subscription: SubscriptionSummary) {
             return { label: 'PAST DUE', color: Color.Red }
         case SubscriptionStatus.TRIALING:
             return { label: 'TRIALING', color: Color.Blue }
-        default:
-            return {
-                label: subscription.status.toUpperCase(),
-                color: Color.Orange,
-            }
     }
 }
 

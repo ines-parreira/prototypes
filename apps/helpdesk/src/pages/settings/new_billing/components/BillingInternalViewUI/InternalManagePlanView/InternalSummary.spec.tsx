@@ -2,6 +2,8 @@ import type { BillingState } from '@repo/billing'
 import { payingWithCreditCard } from '@repo/billing/fixtures'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
+import { http, HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
 import {
     DiscountApplicability,
@@ -10,7 +12,6 @@ import {
 } from '@gorgias/helpdesk-types'
 import type { DiscountReductionType, DiscountVO } from '@gorgias/helpdesk-types'
 
-import { SubscriptionStatus } from '@repo/billing'
 import {
     basicMonthlyHelpdeskPlan,
     basicYearlyInvoicedMonthlyHelpdeskPlan,
@@ -20,23 +21,32 @@ import {
     voicePlan3,
     voicePlan4,
 } from 'fixtures/plans'
-import { getBillingState } from 'models/billing/resources'
-import { ProductType } from 'models/billing/types'
+import { ProductType, SubscriptionStatus } from 'models/billing/types'
 
 import { InternalSummary } from './InternalSummary'
 import { derivePriceSummary } from './useInternalPlanEditor'
 import type { ResolvedPlan } from './useInternalPlanEditor'
 
-jest.mock('models/billing/resources', () => ({
-    ...jest.requireActual('models/billing/resources'),
-    getBillingState: jest.fn(),
-}))
+const server = setupServer()
 
-const mockGetBillingState = getBillingState as jest.Mock
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
 
 beforeEach(() => {
-    mockGetBillingState.mockReset()
-    mockGetBillingState.mockResolvedValue(payingWithCreditCard)
+    server.use(
+        http.get('*/billing/state', () =>
+            HttpResponse.json(payingWithCreditCard),
+        ),
+    )
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
 })
 
 function makeResolved(

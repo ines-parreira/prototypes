@@ -64,6 +64,9 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "cadence": "month",
             "amount": 1000,
             "features": Immutable.Map {
+              "automation_addon_overview": Immutable.Map {
+                "enabled": false,
+              },
               "view_sharing": Immutable.Map {
                 "enabled": true,
               },
@@ -92,9 +95,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
               },
               "user_roles": Immutable.Map {
                 "enabled": true,
-              },
-              "automation_opportunities": Immutable.Map {
-                "enabled": false,
               },
               "magento_integration": Immutable.Map {
                 "enabled": false,
@@ -167,6 +167,9 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "cadence": "quarter",
             "amount": 3000,
             "features": Immutable.Map {
+              "automation_addon_overview": Immutable.Map {
+                "enabled": false,
+              },
               "view_sharing": Immutable.Map {
                 "enabled": true,
               },
@@ -195,9 +198,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
               },
               "user_roles": Immutable.Map {
                 "enabled": true,
-              },
-              "automation_opportunities": Immutable.Map {
-                "enabled": false,
               },
               "magento_integration": Immutable.Map {
                 "enabled": false,
@@ -270,6 +270,9 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "cadence": "month",
             "amount": 6000,
             "features": Immutable.Map {
+              "automation_addon_overview": Immutable.Map {
+                "enabled": false,
+              },
               "view_sharing": Immutable.Map {
                 "enabled": true,
               },
@@ -298,9 +301,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
               },
               "user_roles": Immutable.Map {
                 "enabled": true,
-              },
-              "automation_opportunities": Immutable.Map {
-                "enabled": false,
               },
               "magento_integration": Immutable.Map {
                 "enabled": false,
@@ -373,6 +373,9 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "cadence": "quarter",
             "amount": 6000,
             "features": Immutable.Map {
+              "automation_addon_overview": Immutable.Map {
+                "enabled": false,
+              },
               "view_sharing": Immutable.Map {
                 "enabled": true,
               },
@@ -401,9 +404,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
               },
               "user_roles": Immutable.Map {
                 "enabled": true,
-              },
-              "automation_opportunities": Immutable.Map {
-                "enabled": false,
               },
               "magento_integration": Immutable.Map {
                 "enabled": false,
@@ -476,6 +476,9 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "cadence": "year",
             "amount": 10000,
             "features": Immutable.Map {
+              "automation_addon_overview": Immutable.Map {
+                "enabled": false,
+              },
               "view_sharing": Immutable.Map {
                 "enabled": true,
               },
@@ -504,9 +507,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
               },
               "user_roles": Immutable.Map {
                 "enabled": true,
-              },
-              "automation_opportunities": Immutable.Map {
-                "enabled": false,
               },
               "magento_integration": Immutable.Map {
                 "enabled": false,
@@ -579,6 +579,9 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "cadence": "month",
             "amount": 36000,
             "features": Immutable.Map {
+              "automation_addon_overview": Immutable.Map {
+                "enabled": false,
+              },
               "view_sharing": Immutable.Map {
                 "enabled": true,
               },
@@ -607,9 +610,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
               },
               "user_roles": Immutable.Map {
                 "enabled": true,
-              },
-              "automation_opportunities": Immutable.Map {
-                "enabled": false,
               },
               "magento_integration": Immutable.Map {
                 "enabled": true,
@@ -682,6 +682,9 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "cadence": "quarter",
             "amount": 36000,
             "features": Immutable.Map {
+              "automation_addon_overview": Immutable.Map {
+                "enabled": false,
+              },
               "view_sharing": Immutable.Map {
                 "enabled": true,
               },
@@ -710,9 +713,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
               },
               "user_roles": Immutable.Map {
                 "enabled": true,
-              },
-              "automation_opportunities": Immutable.Map {
-                "enabled": false,
               },
               "magento_integration": Immutable.Map {
                 "enabled": true,
@@ -785,6 +785,9 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "cadence": "year",
             "amount": 60000,
             "features": Immutable.Map {
+              "automation_addon_overview": Immutable.Map {
+                "enabled": false,
+              },
               "view_sharing": Immutable.Map {
                 "enabled": true,
               },
@@ -813,9 +816,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
               },
               "user_roles": Immutable.Map {
                 "enabled": true,
-              },
-              "automation_opportunities": Immutable.Map {
-                "enabled": false,
               },
               "magento_integration": Immutable.Map {
                 "enabled": false,
@@ -888,6 +888,9 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "cadence": "month",
             "amount": 90000,
             "features": Immutable.Map {
+              "automation_addon_overview": Immutable.Map {
+                "enabled": false,
+              },
               "view_sharing": Immutable.Map {
                 "enabled": true,
               },
@@ -916,9 +919,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
               },
               "user_roles": Immutable.Map {
                 "enabled": true,
-              },
-              "automation_opportunities": Immutable.Map {
-                "enabled": false,
               },
               "magento_integration": Immutable.Map {
                 "enabled": true,
@@ -991,6 +991,9 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "cadence": "quarter",
             "amount": 90000,
             "features": Immutable.Map {
+              "automation_addon_overview": Immutable.Map {
+                "enabled": false,
+              },
               "view_sharing": Immutable.Map {
                 "enabled": true,
               },
@@ -1019,9 +1022,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
               },
               "user_roles": Immutable.Map {
                 "enabled": true,
-              },
-              "automation_opportunities": Immutable.Map {
-                "enabled": false,
               },
               "magento_integration": Immutable.Map {
                 "enabled": true,
@@ -1094,6 +1094,9 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "cadence": "year",
             "amount": 360000,
             "features": Immutable.Map {
+              "automation_addon_overview": Immutable.Map {
+                "enabled": false,
+              },
               "view_sharing": Immutable.Map {
                 "enabled": true,
               },
@@ -1122,9 +1125,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
               },
               "user_roles": Immutable.Map {
                 "enabled": true,
-              },
-              "automation_opportunities": Immutable.Map {
-                "enabled": false,
               },
               "magento_integration": Immutable.Map {
                 "enabled": true,
@@ -1197,6 +1197,9 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
             "cadence": "year",
             "amount": 900000,
             "features": Immutable.Map {
+              "automation_addon_overview": Immutable.Map {
+                "enabled": false,
+              },
               "view_sharing": Immutable.Map {
                 "enabled": true,
               },
@@ -1225,9 +1228,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
               },
               "user_roles": Immutable.Map {
                 "enabled": true,
-              },
-              "automation_opportunities": Immutable.Map {
-                "enabled": false,
               },
               "magento_integration": Immutable.Map {
                 "enabled": true,
@@ -2285,6 +2285,9 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
     },
     "id": 1,
     "features": Immutable.Map {
+      "automation_addon_overview": Immutable.Map {
+        "enabled": true,
+      },
       "view_sharing": Immutable.Map {
         "enabled": true,
       },
@@ -2308,9 +2311,6 @@ exports[`toInitialStoreState should return the expected store state 1`] = `
         "limit": 2,
       },
       "user_roles": Immutable.Map {
-        "enabled": true,
-      },
-      "automation_opportunities": Immutable.Map {
         "enabled": true,
       },
       "magento_integration": Immutable.Map {

@@ -69,7 +69,7 @@ export function InternalConfirmModal({
         isOpen && !isCurrentSubscriptionCanceled,
         resolvedPlans,
         billingState.subscription.resource_version,
-        billingState.subscription.schedule_resource_version ?? undefined,
+        billingState.subscription.schedule_resource_version,
     )
 
     const hasUpgrade = resolvedPlans.some(

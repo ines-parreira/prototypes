@@ -1,9 +1,5 @@
 import client from '@repo/api-resources'
 
-import type * as API from '@gorgias/helpdesk-types'
-import { validateBillingState } from '@gorgias/helpdesk-validators'
-
-import { mapBillingState } from 'models/billing/mappers'
 import type {
     BillingState,
     ChurnMitigationOfferDecisionEvent,
@@ -38,16 +34,8 @@ export const trackBillingEvent = async (
     })
 
 export async function getBillingState(): Promise<BillingState> {
-    const res = await client.get<API.BillingState>('/billing/state')
-
-    const result = validateBillingState(res.data)
-    if (!result.isValid) {
-        throw new Error(
-            `Invalid billing state: ${result.errors.map((e) => e.message).join(', ')}`,
-        )
-    }
-
-    return mapBillingState(result.data)
+    const res = await client.get<BillingState>('/billing/state')
+    return res.data
 }
 
 export async function getCouponsForSales() {
