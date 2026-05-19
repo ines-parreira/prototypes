@@ -58,4 +58,21 @@ describe('AiAgentOnboardingRouter', () => {
             screen.queryByText('AI Agent Onboarding V3'),
         ).not.toBeInTheDocument()
     })
+
+    it('portals the V3 wizard out of the route container so helpdesk chrome cannot wrap it', () => {
+        mockFeatureFlags({ [FeatureFlagKey.AiAgentOnboardingV3]: true })
+
+        const { container } = render(<AiAgentOnboardingRouter />)
+
+        expect(container).not.toHaveTextContent('AI Agent Onboarding V3')
+        expect(screen.getByText('AI Agent Onboarding V3')).toBeInTheDocument()
+    })
+
+    it('renders the V2 wizard inline (no Overlay portal)', () => {
+        mockFeatureFlags({ [FeatureFlagKey.AiAgentOnboardingV3]: false })
+
+        const { container } = render(<AiAgentOnboardingRouter />)
+
+        expect(container).toHaveTextContent('AI Agent Onboarding V2')
+    })
 })
