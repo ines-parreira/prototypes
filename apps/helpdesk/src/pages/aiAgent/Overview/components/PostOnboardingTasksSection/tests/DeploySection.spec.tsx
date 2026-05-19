@@ -37,6 +37,7 @@ jest.mock('../../AiAgentTasks/EmailToggle', () => ({
         <div data-testid="email-toggle">
             <span>Email Toggle</span>
             <span>{props.isEmailChannelEnabled ? 'enabled' : 'disabled'}</span>
+            <span>email-readonly:{props.isReadOnly ? 'true' : 'false'}</span>
             <button
                 data-testid="email-toggle-button"
                 onClick={() => props.onEmailToggle(props.storeConfiguration)}
@@ -51,6 +52,7 @@ jest.mock('../../AiAgentTasks/ChatToggle', () => ({
         <div data-testid="chat-toggle">
             <span>Chat Toggle</span>
             <span>{props.isChatChannelEnabled ? 'enabled' : 'disabled'}</span>
+            <span>chat-readonly:{props.isReadOnly ? 'true' : 'false'}</span>
             <button
                 data-testid="chat-toggle-button"
                 onClick={() => props.onChatToggle(props.storeConfiguration)}
@@ -98,7 +100,9 @@ describe('DeploySection', () => {
         storeName: 'test-store',
         shopType: 'shopify',
     } as any
-    const renderDeploySection = () => {
+    const renderDeploySection = ({
+        needsTrialOptIn = false,
+    }: { needsTrialOptIn?: boolean } = {}) => {
         const __store = mockStore({})
         return render(
             <DeploySection
@@ -108,6 +112,7 @@ describe('DeploySection', () => {
                 markPostStoreInstallationAsCompleted={
                     mockMarkPostStoreInstallationAsCompleted
                 }
+                needsTrialOptIn={needsTrialOptIn}
             />,
         )
     }
@@ -194,5 +199,15 @@ describe('DeploySection', () => {
             stepCompletedDatetime: expect.any(String),
         })
         expect(mockMarkPostStoreInstallationAsCompleted).toHaveBeenCalled()
+    })
+    it('passes isReadOnly to both toggles when needsTrialOptIn is true', () => {
+        renderDeploySection({ needsTrialOptIn: true })
+        expect(screen.getByText('email-readonly:true')).toBeInTheDocument()
+        expect(screen.getByText('chat-readonly:true')).toBeInTheDocument()
+    })
+    it('passes isReadOnly=false to both toggles when needsTrialOptIn is false', () => {
+        renderDeploySection()
+        expect(screen.getByText('email-readonly:false')).toBeInTheDocument()
+        expect(screen.getByText('chat-readonly:false')).toBeInTheDocument()
     })
 })

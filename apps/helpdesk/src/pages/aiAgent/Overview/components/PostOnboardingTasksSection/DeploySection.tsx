@@ -25,6 +25,7 @@ type Props = {
     step: StepConfiguration
     updateStep: (step: StepConfiguration) => Promise<void>
     markPostStoreInstallationAsCompleted: () => Promise<void>
+    needsTrialOptIn: boolean
 }
 
 export const DeploySection = ({
@@ -32,6 +33,7 @@ export const DeploySection = ({
     step,
     updateStep,
     markPostStoreInstallationAsCompleted,
+    needsTrialOptIn,
 }: Props) => {
     const { shopName, shopType } = useParams<{
         shopName: string
@@ -121,6 +123,7 @@ export const DeploySection = ({
                 <EmailToggle
                     isEmailChannelEnabled={isEmailChannelEnabled}
                     isLoading={isAiAgentDuringDeployment && !isAiAgentDeployed}
+                    isReadOnly={needsTrialOptIn}
                     setIsEmailChannelEnabled={setIsEmailChannelEnabled}
                     onEmailToggle={updateAiAgentChannels}
                     storeConfiguration={storeConfiguration}
@@ -129,6 +132,7 @@ export const DeploySection = ({
                 <ChatToggle
                     isChatChannelEnabled={isChatChannelEnabled}
                     isLoading={isAiAgentDuringDeployment && !isAiAgentDeployed}
+                    isReadOnly={needsTrialOptIn}
                     setIsChatChannelEnabled={setIsChatChannelEnabled}
                     onChatToggle={updateAiAgentChannels}
                     storeConfiguration={storeConfiguration}

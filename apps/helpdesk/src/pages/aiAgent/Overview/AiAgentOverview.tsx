@@ -13,12 +13,15 @@ import { IntegrationType } from 'models/integration/constants'
 import { useActivation } from 'pages/aiAgent//Activation/hooks/useActivation'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import ThankYouModal from 'pages/aiAgent/components/ThankYouModal/ThankYouModal'
+import { useNeedsAiAgentTrialOptIn } from 'pages/aiAgent/hooks/useNeedsAiAgentTrialOptIn'
 import { useShopIntegrationId } from 'pages/aiAgent/hooks/useShopIntegrationId'
 import { useHasAccessToOpportunities } from 'pages/aiAgent/opportunities/hooks/useHasAccessToOpportunities'
 import { useKnowledgeServiceOpportunities } from 'pages/aiAgent/opportunities/hooks/useKnowledgeServiceOpportunities'
 import { AiAgentTaskSection } from 'pages/aiAgent/Overview/components/AiAgentTaskSection/AiAgentTaskSection'
 import { KpiSection } from 'pages/aiAgent/Overview/components/KpiSection/KpiSection'
 import { ResourcesSection } from 'pages/aiAgent/Overview/components/ResourcesSection/ResourcesSection'
+import { SetupModeBanner } from 'pages/aiAgent/Overview/components/SetupModeBanner/SetupModeBanner'
+import { TrialOptInBanner } from 'pages/aiAgent/Overview/components/TrialOptInBanner/TrialOptInBanner'
 import { useThankYouModal } from 'pages/aiAgent/Overview/hooks/useThankYouModal'
 import { AiAgentOverviewLayout } from 'pages/aiAgent/Overview/layout/AiAgentOverviewLayout'
 import {
@@ -127,6 +130,8 @@ export const AiAgentOverview = () => {
     const { canSeeTrialCTA, canBookDemo, hasAnyTrialStarted, trialType } =
         useTrialAccess(shopName)
 
+    const { needsOptIn } = useNeedsAiAgentTrialOptIn(shopName)
+
     const { storeActivations } = useStoreActivations()
 
     const {
@@ -217,8 +222,14 @@ export const AiAgentOverview = () => {
 
     return (
         <AiAgentOverviewLayout shopName={shopName}>
+            {needsOptIn ? (
+                <TrialOptInBanner shopName={shopName} />
+            ) : (
+                <SetupModeBanner />
+            )}
+
             {/* TODO: [AIFLY-547] remove this when the trial improvement is enabled */}
-            {!isShoppingAssistantTrialImprovement && (
+            {!isShoppingAssistantTrialImprovement && !needsOptIn && (
                 <>
                     {(canSeeTrialCTA || canBookDemo) && !hasAnyTrialStarted && (
                         <TrialAlertBanner
@@ -270,6 +281,7 @@ export const AiAgentOverview = () => {
                 shopName={shopName}
                 shopType={shopType}
                 setIsAiAgentPostLive={setIsAiAgentPostLive}
+                needsTrialOptIn={needsOptIn}
             />
             <ResourcesSection />
 

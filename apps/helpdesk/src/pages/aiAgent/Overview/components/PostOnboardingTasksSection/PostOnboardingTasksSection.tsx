@@ -21,7 +21,11 @@ import { mapTabToStepName, POST_ONBOARDING_STEPS_METADATA } from './utils'
 
 import css from './PostOnboardingTasksSection.less'
 
-export const PostOnboardingTasksSection = () => {
+type Props = {
+    needsTrialOptIn: boolean
+}
+
+export const PostOnboardingTasksSection = ({ needsTrialOptIn }: Props) => {
     const stepsMetadata = Object.values(POST_ONBOARDING_STEPS_METADATA)
     const { shopName, shopType } = useParams<{
         shopName: string
@@ -125,6 +129,7 @@ export const PostOnboardingTasksSection = () => {
                                         markPostStoreInstallationAsCompleted={
                                             markPostStoreInstallationAsCompleted
                                         }
+                                        needsTrialOptIn={needsTrialOptIn}
                                     />
                                 ) : null}
                             </AccordionBody>

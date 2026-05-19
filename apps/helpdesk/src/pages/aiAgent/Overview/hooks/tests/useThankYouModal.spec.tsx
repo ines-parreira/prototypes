@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { useNeedsAiAgentTrialOptIn } from 'pages/aiAgent/hooks/useNeedsAiAgentTrialOptIn'
 
 import { useThankYouModal } from '../useThankYouModal'
 
@@ -20,6 +21,9 @@ const mockUseAppSelector = useAppSelector as jest.Mock
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
 const useStoreActivationsMock = assumeMock(useStoreActivations)
 
+jest.mock('pages/aiAgent/hooks/useNeedsAiAgentTrialOptIn')
+const useNeedsAiAgentTrialOptInMock = assumeMock(useNeedsAiAgentTrialOptIn)
+
 describe('useThankYouModal', () => {
     const canActivateMock = jest.fn()
     const activateMock = jest.fn()
@@ -34,6 +38,7 @@ describe('useThankYouModal', () => {
                 isActivating: false,
             }),
         } as any)
+        useNeedsAiAgentTrialOptInMock.mockReturnValue({ needsOptIn: false })
     })
 
     it('should set isOpen to true when from=onboarding', () => {
@@ -103,5 +108,48 @@ describe('useThankYouModal', () => {
         const { result } = renderHook(() => useThankYouModal())
 
         expect(result.current.isOpen).toBe(false)
+    })
+
+    describe('when the user needs to opt into the AI Agent trial', () => {
+        beforeEach(() => {
+            mockUseLocation.mockReturnValue({
+                search: '?from=onboarding&shopName=test-shop',
+                pathname: '/test-path',
+            })
+            mockUseAppSelector.mockReturnValue('test-account')
+            canActivateMock.mockReturnValue({
+                isDisabled: false,
+                isLoading: false,
+            })
+            useNeedsAiAgentTrialOptInMock.mockReturnValue({ needsOptIn: true })
+        })
+
+        it('shows the "almost ready" content even when activation prerequisites are met', () => {
+            const { result } = renderHook(() => useThankYouModal())
+
+            expect(result.current.modalContent.actionLabel).toBe('Continue')
+            expect(result.current.modalContent.title).toBe(
+                "You're almost ready",
+            )
+            expect(result.current.isDisabled).toBe(true)
+        })
+
+        it('does not activate the shop on confirm and clears the query param instead', async () => {
+            const mockReplaceState = jest.fn()
+            global.window.history.replaceState = mockReplaceState
+
+            const { result } = renderHook(() => useThankYouModal())
+
+            await result.current.handleModalAction('confirm')
+
+            expect(activateMock).not.toHaveBeenCalled()
+            await waitFor(() => {
+                expect(mockReplaceState).toHaveBeenCalledWith(
+                    {},
+                    '',
+                    '/test-path',
+                )
+            })
+        })
     })
 })

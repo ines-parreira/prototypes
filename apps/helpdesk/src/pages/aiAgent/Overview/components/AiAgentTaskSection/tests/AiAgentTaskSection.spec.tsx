@@ -49,6 +49,7 @@ const renderComponent = (
         shopName: 'test-shop',
         shopType: 'shopify',
         setIsAiAgentPostLive: jest.fn(),
+        needsTrialOptIn: false,
     }
 
     return render(<AiAgentTaskSection {...defaultProps} {...props} />)

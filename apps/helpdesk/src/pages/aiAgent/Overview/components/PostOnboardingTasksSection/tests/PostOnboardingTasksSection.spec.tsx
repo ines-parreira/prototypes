@@ -100,14 +100,14 @@ describe('PostOnboardingTasksSection', () => {
         jest.useRealTimers()
     })
     it('renders the component with header and progress', () => {
-        render(<PostOnboardingTasksSection />)
+        render(<PostOnboardingTasksSection needsTrialOptIn={false} />)
         expect(
             screen.getByText('Get started with AI Agent'),
         ).toBeInTheDocument()
         expect(screen.getByText('1 / 3 steps')).toBeInTheDocument()
     })
     it('displays completion status indicators correctly', () => {
-        render(<PostOnboardingTasksSection />)
+        render(<PostOnboardingTasksSection needsTrialOptIn={false} />)
         // Check for completed step icon
         expect(
             screen.getByRole('img', { name: 'check-circle' }),
@@ -120,7 +120,7 @@ describe('PostOnboardingTasksSection', () => {
         const user = userEvent.setup({
             advanceTimers: jest.advanceTimersByTime,
         })
-        render(<PostOnboardingTasksSection />)
+        render(<PostOnboardingTasksSection needsTrialOptIn={false} />)
         // Train section
         await clickAccordionHeader(user, 'Train AI Agent')
         expect(screen.getByTestId('train-section')).toBeInTheDocument()

@@ -59,6 +59,21 @@ jest.mock('react-router-dom', () => ({
 }))
 jest.mock('pages/aiAgent/Overview/hooks/useThankYouModal')
 jest.mock('pages/aiAgent/trial/hooks/useTrialAccess')
+jest.mock(
+    'pages/aiAgent/Overview/components/TrialOptInBanner/TrialOptInBanner',
+    () => ({
+        TrialOptInBanner: () => null,
+    }),
+)
+jest.mock(
+    'pages/aiAgent/Overview/components/SetupModeBanner/SetupModeBanner',
+    () => ({
+        SetupModeBanner: () => null,
+    }),
+)
+jest.mock('pages/aiAgent/hooks/useNeedsAiAgentTrialOptIn', () => ({
+    useNeedsAiAgentTrialOptIn: () => ({ needsOptIn: false }),
+}))
 jest.mock('models/billing/queries')
 jest.mock('models/billing/utils')
 jest.mock('hooks/aiAgent/useAiAgentUpgradePlan')

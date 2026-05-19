@@ -12,12 +12,14 @@ interface AiAgentTaskSectionProps {
     shopName: string
     shopType: string
     setIsAiAgentPostLive: (isAiAgentPostLive: boolean) => void
+    needsTrialOptIn: boolean
 }
 
 export const AiAgentTaskSection = ({
     shopName,
     shopType,
     setIsAiAgentPostLive,
+    needsTrialOptIn,
 }: AiAgentTaskSectionProps) => {
     const aiAgentPostOnboardingStepsEnabled = useFlag(
         FeatureFlagKey.AiAgentPostOnboardingSteps,
@@ -59,7 +61,7 @@ export const AiAgentTaskSection = ({
     }
 
     if (aiAgentPostOnboardingStepsEnabled && !isAiAgentLiveModeEnabled) {
-        return <PostOnboardingTasksSection />
+        return <PostOnboardingTasksSection needsTrialOptIn={needsTrialOptIn} />
     }
 
     if (aiAgentPostStoreInstallationStepsEnabled) {

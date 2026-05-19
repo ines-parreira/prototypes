@@ -4,6 +4,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { useLocation } from 'react-router-dom'
 
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { useNeedsAiAgentTrialOptIn } from 'pages/aiAgent/hooks/useNeedsAiAgentTrialOptIn'
 
 export const useThankYouModal = () => {
     const [isOpen, setIsOpen] = useState(false)
@@ -30,6 +31,13 @@ export const useThankYouModal = () => {
     const activateShop = activation({ shopName })
     const canActivate = activateShop.canActivate()
 
+    const { needsOptIn } = useNeedsAiAgentTrialOptIn(shopName ?? undefined)
+
+    // V3 admins must start their trial before going live. The Deploy section
+    // already gates its toggles on `needsOptIn`; mirror that here so the post-
+    // onboarding modal can't bypass the trial opt-in.
+    const shouldBlockActivation = canActivate.isDisabled || needsOptIn
+
     const clearFromQueryParam = () => {
         const newQueryParams = new URLSearchParams(location.search)
         newQueryParams.delete('from')
@@ -49,20 +57,18 @@ export const useThankYouModal = () => {
     }
 
     const handleModalAction = async (action: 'confirm' | 'close') => {
-        const cta = canActivate.isDisabled
-            ? 'continue'
-            : 'go live with ai agent'
+        const cta = shouldBlockActivation ? 'continue' : 'go live with ai agent'
 
         logEvent(SegmentEvent.AiAgentOverviewPageView, { cta })
 
-        if (canActivate.isDisabled || action === 'close') {
+        if (shouldBlockActivation || action === 'close') {
             clearFromQueryParam()
         } else {
             await handleGoLiveClick()
         }
     }
 
-    const modalContent = canActivate.isDisabled
+    const modalContent = shouldBlockActivation
         ? {
               title: "You're almost ready",
               description:
@@ -80,7 +86,7 @@ export const useThankYouModal = () => {
 
     return {
         isOpen,
-        isDisabled: canActivate.isDisabled,
+        isDisabled: shouldBlockActivation,
         isLoading: canActivate.isLoading,
         handleModalAction,
         modalContent,
