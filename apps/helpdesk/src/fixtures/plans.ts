@@ -50,7 +50,7 @@ export const basicHelpdeskPlanFeatures: HelpdeskPlanFeatures = {
     [AccountFeature.AutomationCancellationsFlow]: { enabled: false },
     [AccountFeature.AutomationReturnFlow]: { enabled: false },
     [AccountFeature.AutomationSelfServiceStatistics]: { enabled: false },
-    [AccountFeature.AutomationAddonOverview]: { enabled: false },
+    [AccountFeature.AutomationOpportunities]: { enabled: false },
 }
 
 export const automatePlanFeatures: AutomatePlanFeatures = {
@@ -92,7 +92,7 @@ const proHelpdeskPlanFeatures: HelpdeskPlanFeatures = {
     [AccountFeature.AutomationCancellationsFlow]: { enabled: false },
     [AccountFeature.AutomationReturnFlow]: { enabled: false },
     [AccountFeature.AutomationSelfServiceStatistics]: { enabled: false },
-    [AccountFeature.AutomationAddonOverview]: { enabled: false },
+    [AccountFeature.AutomationOpportunities]: { enabled: false },
 }
 
 const advancedHelpdeskPlanFeatures: HelpdeskPlanFeatures = {
@@ -126,7 +126,7 @@ const advancedHelpdeskPlanFeatures: HelpdeskPlanFeatures = {
     [AccountFeature.AutomationCancellationsFlow]: { enabled: false },
     [AccountFeature.AutomationReturnFlow]: { enabled: false },
     [AccountFeature.AutomationSelfServiceStatistics]: { enabled: false },
-    [AccountFeature.AutomationAddonOverview]: { enabled: false },
+    [AccountFeature.AutomationOpportunities]: { enabled: false },
 }
 
 const customHelpdeskPlanFeatures: HelpdeskPlanFeatures = {
@@ -160,7 +160,7 @@ const customHelpdeskPlanFeatures: HelpdeskPlanFeatures = {
     [AccountFeature.AutomationCancellationsFlow]: { enabled: false },
     [AccountFeature.AutomationReturnFlow]: { enabled: false },
     [AccountFeature.AutomationSelfServiceStatistics]: { enabled: false },
-    [AccountFeature.AutomationAddonOverview]: { enabled: false },
+    [AccountFeature.AutomationOpportunities]: { enabled: false },
 }
 
 export const starterHelpdeskPlanFeatures: HelpdeskPlanFeatures = {
@@ -194,7 +194,7 @@ export const starterHelpdeskPlanFeatures: HelpdeskPlanFeatures = {
     [AccountFeature.AutomationCancellationsFlow]: { enabled: false },
     [AccountFeature.AutomationReturnFlow]: { enabled: false },
     [AccountFeature.AutomationSelfServiceStatistics]: { enabled: false },
-    [AccountFeature.AutomationAddonOverview]: { enabled: false },
+    [AccountFeature.AutomationOpportunities]: { enabled: false },
 }
 
 export const basicMonthlyHelpdeskPlan: HelpdeskPlan = {

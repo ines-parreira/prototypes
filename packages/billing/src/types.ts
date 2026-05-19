@@ -28,7 +28,7 @@ export enum AccountFeature {
     AutomationCancellationsFlow = 'automation_cancellations_flow',
     AutomationReturnFlow = 'automation_return_flow',
     AutomationSelfServiceStatistics = 'automation_self_service_statistics',
-    AutomationAddonOverview = 'automation_addon_overview',
+    AutomationOpportunities = 'automation_opportunities',
     AutomationManagedRules = 'automation_managed_rules',
 }
 
@@ -96,7 +96,7 @@ type BasePlan = {
     num_quota_tickets: number
     amount: number
     currency: string
-    custom: boolean
+    custom?: boolean
     extra_ticket_cost: number
     plan_id: PlanId
     cadence: Cadence
@@ -125,7 +125,7 @@ export type HelpdeskPlan = BasePlan & {
     integrations: number
     is_legacy: boolean
     features: HelpdeskPlanFeatures
-    tier: HelpdeskPlanTier
+    tier: HelpdeskPlanTier | undefined
 }
 
 export type AutomatePlanFeatures = Record<
@@ -148,7 +148,7 @@ export type SMSOrVoicePlan = BasePlan & {
 
 export type ConvertPlan = BasePlan & {
     num_quota_tickets: number | null
-    tier?: number
+    tier?: number | null
 }
 
 export type CouponSummary = {
@@ -168,11 +168,11 @@ type ProductUsage = {
 }
 
 export type ProductUsages = {
-    helpdesk: ProductUsage
-    automation: ProductUsage | null
-    sms: ProductUsage | null
-    voice: ProductUsage | null
-    convert: ProductUsage | null
+    helpdesk?: ProductUsage | null
+    automation?: ProductUsage | null
+    sms?: ProductUsage | null
+    voice?: ProductUsage | null
+    convert?: ProductUsage | null
 }
 
 export type UpcomingInvoiceSummary = {
@@ -194,8 +194,11 @@ export enum BillingAddressValidationStatus {
 export enum SubscriptionStatus {
     ACTIVE = 'active',
     CANCELED = 'canceled',
+    INCOMPLETE = 'incomplete',
+    INCOMPLETE_EXPIRED = 'incomplete_expired',
     PAST_DUE = 'past_due',
     TRIALING = 'trialing',
+    UNPAID = 'unpaid',
 }
 
 export type SubscriptionSummary = {
@@ -218,7 +221,7 @@ export type SubscriptionSummary = {
     discounts: DiscountVO[]
     trial_extended_until: string | null
     resource_version: number
-    schedule_resource_version?: number
+    schedule_resource_version?: number | null
 }
 
 export type CreditCard = {
@@ -251,7 +254,7 @@ type CustomerSummary = {
     ach_credit_bank_account?: AchCreditBankAccount | null
     payment_term_days: number | null
     is_vetted: boolean
-    billing_address_validation_status: BillingAddressValidationStatus
+    billing_address_validation_status?: BillingAddressValidationStatus | null
     unbilled_charges?: number | null
 }
 

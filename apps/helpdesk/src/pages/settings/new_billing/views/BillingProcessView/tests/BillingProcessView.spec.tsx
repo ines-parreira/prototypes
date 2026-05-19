@@ -1,4 +1,3 @@
-import client from '@repo/api-resources'
 import { useBillingState } from '@repo/billing'
 import { payingWithCreditCard } from '@repo/billing/fixtures'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
@@ -6,7 +5,6 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, render as testingRender } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
-import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
 import { useLocation } from 'react-router-dom'
 
@@ -29,6 +27,7 @@ import {
     VOICE_PRODUCT_ID,
     voicePlan1,
 } from 'fixtures/plans'
+import { getBillingState } from 'models/billing/resources'
 import { ProductType } from 'models/billing/types'
 import { useIsPaymentEnabled } from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
 import type { RootState } from 'state/types'
@@ -43,6 +42,11 @@ jest.mock('@repo/billing', () => ({
     useBillingState: jest.fn(),
 }))
 
+jest.mock('models/billing/resources', () => ({
+    ...jest.requireActual('models/billing/resources'),
+    getBillingState: jest.fn(),
+}))
+
 jest.mock('@gorgias/axiom', () => ({
     ...jest.requireActual('@gorgias/axiom'),
     toast: {
@@ -53,6 +57,7 @@ jest.mock('@gorgias/axiom', () => ({
 }))
 
 const mockUseBillingState = assumeMock(useBillingState)
+const mockGetBillingState = getBillingState as jest.Mock
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
@@ -113,8 +118,6 @@ const render = (
         },
     )
 
-const mockedServer = new MockAdapter(client)
-
 const storeInitialState = {
     billing: fromJS({
         invoices: [],
@@ -174,8 +177,7 @@ describe('BillingProcessView', () => {
     })
 
     it('should render', async () => {
-        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
-
+        mockGetBillingState.mockResolvedValue(payingWithCreditCard)
         render(
             <BillingProcessView
                 currentUsage={currentProductsUsage}
@@ -195,8 +197,7 @@ describe('BillingProcessView', () => {
     })
 
     it('should log BillingProductManagementVisited event on component mount', async () => {
-        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
-
+        mockGetBillingState.mockResolvedValue(payingWithCreditCard)
         render(
             <BillingProcessView
                 currentUsage={currentProductsUsage}
@@ -226,8 +227,7 @@ describe('BillingProcessView', () => {
     })
 
     it('should NOT render if subscription has been canceled', async () => {
-        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
-
+        mockGetBillingState.mockResolvedValue(payingWithCreditCard)
         render(
             <BillingProcessView
                 currentUsage={currentProductsUsage}
@@ -249,8 +249,7 @@ describe('BillingProcessView', () => {
         })
     })
     it('should render a scheduled cancellation summary if the subscription is scheduled to cancel', async () => {
-        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
-
+        mockGetBillingState.mockResolvedValue(payingWithCreditCard)
         const scheduledToCancelAt = '2021-01-01T00:00:00Z'
 
         const alteredStore = {
@@ -297,8 +296,7 @@ describe('BillingProcessView', () => {
     })
 
     it('should evaluate payment state when rendering scheduled cancellation summary', async () => {
-        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
-
+        mockGetBillingState.mockResolvedValue(payingWithCreditCard)
         const alteredStore = {
             ...storeInitialState,
             currentAccount: fromJS({
@@ -336,8 +334,7 @@ describe('BillingProcessView', () => {
     })
 
     it('should track event when clicking See Plans Details link', async () => {
-        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
-
+        mockGetBillingState.mockResolvedValue(payingWithCreditCard)
         render(
             <BillingProcessView
                 currentUsage={currentProductsUsage}
@@ -372,7 +369,7 @@ describe('BillingProcessView', () => {
     })
 
     it('rejects ineligible plan selection and shows warning toast', async () => {
-        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
+        mockGetBillingState.mockResolvedValue(payingWithCreditCard)
         useFlagMock.mockReturnValue(true)
         const setDefaultMessageMock = jest.fn()
         const setIsModalOpenMock = jest.fn()
@@ -496,7 +493,7 @@ describe('BillingProcessView', () => {
     })
 
     it('should evaluate payment state when selecting an ineligible plan', async () => {
-        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
+        mockGetBillingState.mockResolvedValue(payingWithCreditCard)
         useFlagMock.mockReturnValue(true)
 
         render(
@@ -540,7 +537,7 @@ describe('BillingProcessView', () => {
     })
 
     it('preserves contact-us enterprise behavior when flag is disabled', async () => {
-        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
+        mockGetBillingState.mockResolvedValue(payingWithCreditCard)
         useFlagMock.mockReturnValue(false)
 
         const setDefaultMessageMock = jest.fn()
@@ -603,10 +600,7 @@ describe('BillingProcessView', () => {
             mockUseProductCancellations.mockReturnValue({
                 data: undefined,
             } as any)
-            mockedServer
-                .onGet('/billing/state')
-                .reply(200, payingWithCreditCard)
-
+            mockGetBillingState.mockResolvedValue(payingWithCreditCard)
             render(
                 <BillingProcessView
                     currentUsage={currentProductsUsage}
@@ -635,10 +629,7 @@ describe('BillingProcessView', () => {
             mockUseProductCancellations.mockReturnValue({
                 data: new Map(),
             } as any)
-            mockedServer
-                .onGet('/billing/state')
-                .reply(200, payingWithCreditCard)
-
+            mockGetBillingState.mockResolvedValue(payingWithCreditCard)
             render(
                 <BillingProcessView
                     currentUsage={currentProductsUsage}
@@ -750,11 +741,7 @@ describe('BillingProcessView', () => {
                             },
                         }),
                     }
-
-                    mockedServer
-                        .onGet('/billing/state')
-                        .reply(200, payingWithCreditCard)
-
+                    mockGetBillingState.mockResolvedValue(payingWithCreditCard)
                     render(
                         <BillingProcessView
                             currentUsage={currentProductsUsage}
@@ -844,11 +831,7 @@ describe('BillingProcessView', () => {
                             },
                         }),
                     }
-
-                    mockedServer
-                        .onGet('/billing/state')
-                        .reply(200, payingWithCreditCard)
-
+                    mockGetBillingState.mockResolvedValue(payingWithCreditCard)
                     render(
                         <BillingProcessView
                             currentUsage={currentProductsUsage}
@@ -929,11 +912,7 @@ describe('BillingProcessView', () => {
                     },
                 }),
             }
-
-            mockedServer
-                .onGet('/billing/state')
-                .reply(200, payingWithCreditCard)
-
+            mockGetBillingState.mockResolvedValue(payingWithCreditCard)
             render(
                 <BillingProcessView
                     currentUsage={currentProductsUsage}
@@ -1008,11 +987,7 @@ describe('BillingProcessView', () => {
                     },
                 }),
             }
-
-            mockedServer
-                .onGet('/billing/state')
-                .reply(200, payingWithCreditCard)
-
+            mockGetBillingState.mockResolvedValue(payingWithCreditCard)
             render(
                 <BillingProcessView
                     currentUsage={currentProductsUsage}
@@ -1045,11 +1020,7 @@ describe('BillingProcessView', () => {
             mockUseProductCancellations.mockReturnValue({
                 data: undefined,
             } as any)
-
-            mockedServer
-                .onGet('/billing/state')
-                .reply(200, payingWithCreditCard)
-
+            mockGetBillingState.mockResolvedValue(payingWithCreditCard)
             render(
                 <BillingProcessView
                     currentUsage={currentProductsUsage}
@@ -1110,11 +1081,7 @@ describe('BillingProcessView', () => {
                     },
                 }),
             }
-
-            mockedServer
-                .onGet('/billing/state')
-                .reply(200, payingWithCreditCard)
-
+            mockGetBillingState.mockResolvedValue(payingWithCreditCard)
             render(
                 <BillingProcessView
                     currentUsage={currentProductsUsage}
@@ -1167,11 +1134,7 @@ describe('BillingProcessView', () => {
                     },
                 }),
             }
-
-            mockedServer
-                .onGet('/billing/state')
-                .reply(200, payingWithCreditCard)
-
+            mockGetBillingState.mockResolvedValue(payingWithCreditCard)
             render(
                 <BillingProcessView
                     currentUsage={currentProductsUsage}
@@ -1203,8 +1166,7 @@ describe('BillingProcessView', () => {
     })
 
     it('should track event when PendingChangesModal is shown', async () => {
-        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
-
+        mockGetBillingState.mockResolvedValue(payingWithCreditCard)
         render(
             <BillingProcessView
                 currentUsage={currentProductsUsage}
@@ -1240,8 +1202,7 @@ describe('BillingProcessView', () => {
     })
 
     it('should track event when Update Subscription button is clicked in PendingChangesModal', async () => {
-        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
-
+        mockGetBillingState.mockResolvedValue(payingWithCreditCard)
         render(
             <BillingProcessView
                 currentUsage={currentProductsUsage}
@@ -1278,8 +1239,7 @@ describe('BillingProcessView', () => {
     })
 
     it('should track event when Discard button is clicked in PendingChangesModal', async () => {
-        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
-
+        mockGetBillingState.mockResolvedValue(payingWithCreditCard)
         render(
             <BillingProcessView
                 currentUsage={currentProductsUsage}
@@ -1316,8 +1276,7 @@ describe('BillingProcessView', () => {
     })
 
     it('should track event when Back to Editing button is clicked in PendingChangesModal', async () => {
-        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
-
+        mockGetBillingState.mockResolvedValue(payingWithCreditCard)
         render(
             <BillingProcessView
                 currentUsage={currentProductsUsage}
@@ -1354,8 +1313,7 @@ describe('BillingProcessView', () => {
     })
 
     it('should pass onSave to PendingChangesModal when enterprise plan is not selected', async () => {
-        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
-
+        mockGetBillingState.mockResolvedValue(payingWithCreditCard)
         render(
             <BillingProcessView
                 currentUsage={currentProductsUsage}
@@ -1382,7 +1340,7 @@ describe('BillingProcessView', () => {
     })
 
     it('should keep onSave in PendingChangesModal when selecting an ineligible plan', async () => {
-        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
+        mockGetBillingState.mockResolvedValue(payingWithCreditCard)
         useFlagMock.mockReturnValue(true)
 
         render(
@@ -1430,7 +1388,7 @@ describe('BillingProcessView', () => {
     })
 
     it('should pass undefined for onSave in PendingChangesModal when enterprise plan is selected and flag is disabled', async () => {
-        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
+        mockGetBillingState.mockResolvedValue(payingWithCreditCard)
         useFlagMock.mockReturnValue(false)
 
         render(
@@ -1475,8 +1433,7 @@ describe('BillingProcessView', () => {
     })
 
     it('should render scheduled cancellation summary when enterprise plan subscription is scheduled to cancel', async () => {
-        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
-
+        mockGetBillingState.mockResolvedValue(payingWithCreditCard)
         const scheduledToCancelAt = '2021-01-01T00:00:00Z'
 
         const customHelpdeskProduct = {
@@ -1578,10 +1535,7 @@ describe('BillingProcessView', () => {
 
     describe('Yearly contract plan redirect', () => {
         it('should redirect to billing homepage when current helpdesk plan is a yearly contract plan', async () => {
-            mockedServer
-                .onGet('/billing/state')
-                .reply(200, payingWithCreditCard)
-
+            mockGetBillingState.mockResolvedValue(payingWithCreditCard)
             const yearlyContractProduct = {
                 type: ProductType.Helpdesk,
                 prices: [basicYearlyInvoicedMonthlyHelpdeskPlan],
@@ -1644,10 +1598,7 @@ describe('BillingProcessView', () => {
         })
 
         it('should not redirect when current helpdesk plan is not a yearly contract plan', async () => {
-            mockedServer
-                .onGet('/billing/state')
-                .reply(200, payingWithCreditCard)
-
+            mockGetBillingState.mockResolvedValue(payingWithCreditCard)
             render(
                 <BillingProcessView
                     currentUsage={currentProductsUsage}
@@ -1745,11 +1696,7 @@ describe('BillingProcessView', () => {
                     },
                 }),
             }
-
-            mockedServer
-                .onGet('/billing/state')
-                .reply(200, payingWithCreditCard)
-
+            mockGetBillingState.mockResolvedValue(payingWithCreditCard)
             render(
                 <BillingProcessView
                     currentUsage={currentProductsUsage}
@@ -1842,11 +1789,7 @@ describe('BillingProcessView', () => {
                     },
                 }),
             }
-
-            mockedServer
-                .onGet('/billing/state')
-                .reply(200, payingWithCreditCard)
-
+            mockGetBillingState.mockResolvedValue(payingWithCreditCard)
             render(
                 <BillingProcessView
                     currentUsage={currentProductsUsage}

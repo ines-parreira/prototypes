@@ -1,18 +1,32 @@
 import client from '@repo/api-resources'
 import MockAdapter from 'axios-mock-adapter'
 
+import {
+    mockBillingState,
+    mockSubscriptionSummary,
+} from '@gorgias/helpdesk-mocks'
+import * as API from '@gorgias/helpdesk-types'
+
 import { billingContact } from 'fixtures/resources'
 
 import {
     getAiAgentGeneration6Plan,
     getBillingContact,
+    getBillingState,
     getInternalProductCatalogPlans,
     getProductsUsage,
     trackBillingEvent,
     updateInternalSubscription,
     upgradeAiAgentSubscriptionGeneration6Plan,
 } from '../resources'
-import { ProductType } from '../types'
+import { Cadence, ProductType, SubscriptionStatus } from '../types'
+
+const validApiBillingState = mockBillingState({
+    subscription: mockSubscriptionSummary({
+        status: API.SubscriptionStatus.Active,
+        cadence: API.Interval.Month,
+    }),
+})
 
 const mockedServer = new MockAdapter(client)
 
@@ -40,6 +54,41 @@ describe('billing resources', () => {
                 expect(getBillingContact).rejects.toThrow()
             },
         )
+    })
+
+    describe('getBillingState', () => {
+        it('fetches, validates, and returns the mapped billing state', async () => {
+            mockedServer
+                .onGet('/billing/state')
+                .reply(200, validApiBillingState)
+
+            const result = await getBillingState()
+
+            expect(result.subscription.status).toBe(SubscriptionStatus.ACTIVE)
+            expect(result.subscription.cadence).toBe(Cadence.Month)
+            expect(result.current_plans.helpdesk.product).toBe(
+                ProductType.Helpdesk,
+            )
+        })
+
+        it.each([null, '', [], {}])(
+            'throws when the API response fails validation [value: %s]',
+            async (value) => {
+                mockedServer.onGet('/billing/state').reply(200, value)
+
+                await expect(getBillingState()).rejects.toThrow(
+                    'Invalid billing state:',
+                )
+            },
+        )
+
+        it('propagates HTTP errors', async () => {
+            mockedServer.onGet('/billing/state').reply(500)
+
+            await expect(getBillingState()).rejects.toThrow(
+                'Request failed with status code 500',
+            )
+        })
     })
 
     describe('trackBillingEvent', () => {

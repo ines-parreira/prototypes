@@ -1,4 +1,3 @@
-import client from '@repo/api-resources'
 import {
     payingWithAchCredit,
     payingWithAchDebit,
@@ -12,22 +11,28 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
-import MockAdapter from 'axios-mock-adapter'
 
-import type { BillingState } from 'models/billing/types'
+import { getBillingState } from 'models/billing/resources'
 import { ignoreHTML } from 'tests/ignoreHTML'
 
 import { NewSummaryPaymentSection } from '../NewSummaryPaymentSection'
 
 jest.mock('@repo/logging')
+jest.mock('models/billing/resources', () => ({
+    ...jest.requireActual('models/billing/resources'),
+    getBillingState: jest.fn(),
+}))
+
+const mockGetBillingState = getBillingState as jest.Mock
 const logEventMock = assumeMock(logEvent)
-const mockedServer = new MockAdapter(client)
+
 describe('NewSummaryPaymentSection', () => {
     beforeEach(() => {
         logEventMock.mockClear()
+        mockGetBillingState.mockReset()
     })
     it('should render the no-payment-method use-case', async () => {
-        mockedServer.onGet('/billing/state').reply(200, trial)
+        mockGetBillingState.mockResolvedValue(trial)
         render(<NewSummaryPaymentSection trackingSource="test" />, {
             storeState: {},
         })
@@ -43,7 +48,7 @@ describe('NewSummaryPaymentSection', () => {
         )
     })
     it('should render the credit-card use-case', async () => {
-        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
+        mockGetBillingState.mockResolvedValue(payingWithCreditCard)
         render(<NewSummaryPaymentSection trackingSource="test" />, {
             storeState: {},
         })
@@ -58,9 +63,7 @@ describe('NewSummaryPaymentSection', () => {
         )
     })
     it('should render the expired-credit-card use-case', async () => {
-        mockedServer
-            .onGet('/billing/state')
-            .reply(200, payingWithExpiredCreditCard)
+        mockGetBillingState.mockResolvedValue(payingWithExpiredCreditCard)
         render(<NewSummaryPaymentSection trackingSource="test" />, {
             storeState: {},
         })
@@ -76,7 +79,7 @@ describe('NewSummaryPaymentSection', () => {
         )
     })
     it('should render the ach-debit use-case', async () => {
-        mockedServer.onGet('/billing/state').reply(200, payingWithAchDebit)
+        mockGetBillingState.mockResolvedValue(payingWithAchDebit)
         render(<NewSummaryPaymentSection trackingSource="test" />, {
             storeState: {},
         })
@@ -94,7 +97,7 @@ describe('NewSummaryPaymentSection', () => {
         )
     })
     it('should render the ach-credit use-case', async () => {
-        mockedServer.onGet('/billing/state').reply(200, payingWithAchCredit)
+        mockGetBillingState.mockResolvedValue(payingWithAchCredit)
         render(<NewSummaryPaymentSection trackingSource="test" />, {
             storeState: {},
         })
@@ -107,9 +110,7 @@ describe('NewSummaryPaymentSection', () => {
         ).not.toBeInTheDocument()
     })
     it('should render the inactivated-shopify-billing use-case', async () => {
-        mockedServer
-            .onGet('/billing/state')
-            .reply(200, payWithShopifyButNotActivated)
+        mockGetBillingState.mockResolvedValue(payWithShopifyButNotActivated)
         render(<NewSummaryPaymentSection trackingSource="test" />, {
             storeState: {},
         })
@@ -122,7 +123,7 @@ describe('NewSummaryPaymentSection', () => {
         ).toHaveAttribute('href', '/integrations/shopify/billing/activate')
     })
     it('should render the activated-shopify-billing use-case', async () => {
-        mockedServer.onGet('/billing/state').reply(200, payWithShopify)
+        mockGetBillingState.mockResolvedValue(payWithShopify)
         render(<NewSummaryPaymentSection trackingSource="test" />, {
             storeState: {},
         })
@@ -137,7 +138,7 @@ describe('NewSummaryPaymentSection', () => {
     })
     describe('BillingUpdatePaymentMethodClicked tracking', () => {
         it('should track when Add Payment Method is clicked (no payment method)', async () => {
-            mockedServer.onGet('/billing/state').reply(200, trial)
+            mockGetBillingState.mockResolvedValue(trial)
             render(<NewSummaryPaymentSection trackingSource="TestSource" />, {
                 storeState: {},
             })
@@ -151,9 +152,7 @@ describe('NewSummaryPaymentSection', () => {
             expect(logEventMock).toHaveBeenCalledTimes(1)
         })
         it('should track when Change Payment Method is clicked (valid credit card)', async () => {
-            mockedServer
-                .onGet('/billing/state')
-                .reply(200, payingWithCreditCard)
+            mockGetBillingState.mockResolvedValue(payingWithCreditCard)
             render(<NewSummaryPaymentSection trackingSource="TestSource" />, {
                 storeState: {},
             })
@@ -167,9 +166,7 @@ describe('NewSummaryPaymentSection', () => {
             expect(logEventMock).toHaveBeenCalledTimes(1)
         })
         it('should track when Change Payment Method is clicked (expired credit card)', async () => {
-            mockedServer
-                .onGet('/billing/state')
-                .reply(200, payingWithExpiredCreditCard)
+            mockGetBillingState.mockResolvedValue(payingWithExpiredCreditCard)
             render(<NewSummaryPaymentSection trackingSource="TestSource" />, {
                 storeState: {},
             })
@@ -183,7 +180,7 @@ describe('NewSummaryPaymentSection', () => {
             expect(logEventMock).toHaveBeenCalledTimes(1)
         })
         it('should track when Change Payment Method is clicked (ACH debit)', async () => {
-            mockedServer.onGet('/billing/state').reply(200, payingWithAchDebit)
+            mockGetBillingState.mockResolvedValue(payingWithAchDebit)
             render(<NewSummaryPaymentSection trackingSource="TestSource" />, {
                 storeState: {},
             })
@@ -197,13 +194,10 @@ describe('NewSummaryPaymentSection', () => {
             expect(logEventMock).toHaveBeenCalledTimes(1)
         })
         it('should render the account-provisioning use-case when customer is undefined', async () => {
-            const accountCreationState: BillingState = {
-                ...trial,
-                customer: undefined as unknown as BillingState['customer'],
-            }
-            mockedServer
-                .onGet('/billing/state')
-                .reply(200, accountCreationState)
+            mockGetBillingState.mockResolvedValueOnce({
+                ...payingWithCreditCard,
+                customer: undefined,
+            } as any)
             render(<NewSummaryPaymentSection trackingSource="TestSource" />, {
                 storeState: {},
             })

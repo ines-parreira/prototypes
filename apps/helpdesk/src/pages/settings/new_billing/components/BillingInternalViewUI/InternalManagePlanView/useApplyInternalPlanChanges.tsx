@@ -70,7 +70,8 @@ export function useApplyInternalPlanChanges(
                 current_resource_version:
                     billingState.subscription.resource_version,
                 subscription_renewal_ramp_resource_version:
-                    billingState.subscription.schedule_resource_version,
+                    billingState.subscription.schedule_resource_version ??
+                    undefined,
                 new_plans: buildNewPlans(resolvedPlans),
                 invoice: { generate: generateInvoice },
                 reactivate,

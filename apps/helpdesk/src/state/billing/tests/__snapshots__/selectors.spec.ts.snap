@@ -463,13 +463,13 @@ exports[`billing selectors getAvailableHelpdeskPlans should return the available
       "auto_assignment": {
         "enabled": true,
       },
-      "automation_addon_overview": {
-        "enabled": false,
-      },
       "automation_cancellations_flow": {
         "enabled": false,
       },
       "automation_managed_rules": {
+        "enabled": false,
+      },
+      "automation_opportunities": {
         "enabled": false,
       },
       "automation_report_issue_flow": {
@@ -566,13 +566,13 @@ exports[`billing selectors getAvailableHelpdeskPlans should return the available
       "auto_assignment": {
         "enabled": true,
       },
-      "automation_addon_overview": {
-        "enabled": false,
-      },
       "automation_cancellations_flow": {
         "enabled": false,
       },
       "automation_managed_rules": {
+        "enabled": false,
+      },
+      "automation_opportunities": {
         "enabled": false,
       },
       "automation_report_issue_flow": {
@@ -669,13 +669,13 @@ exports[`billing selectors getAvailableHelpdeskPlans should return the available
       "auto_assignment": {
         "enabled": true,
       },
-      "automation_addon_overview": {
-        "enabled": false,
-      },
       "automation_cancellations_flow": {
         "enabled": false,
       },
       "automation_managed_rules": {
+        "enabled": false,
+      },
+      "automation_opportunities": {
         "enabled": false,
       },
       "automation_report_issue_flow": {
@@ -772,13 +772,13 @@ exports[`billing selectors getAvailableHelpdeskPlans should return the available
       "auto_assignment": {
         "enabled": true,
       },
-      "automation_addon_overview": {
-        "enabled": false,
-      },
       "automation_cancellations_flow": {
         "enabled": false,
       },
       "automation_managed_rules": {
+        "enabled": false,
+      },
+      "automation_opportunities": {
         "enabled": false,
       },
       "automation_report_issue_flow": {
@@ -875,13 +875,13 @@ exports[`billing selectors getAvailableHelpdeskPlans should return the available
       "auto_assignment": {
         "enabled": true,
       },
-      "automation_addon_overview": {
-        "enabled": false,
-      },
       "automation_cancellations_flow": {
         "enabled": false,
       },
       "automation_managed_rules": {
+        "enabled": false,
+      },
+      "automation_opportunities": {
         "enabled": false,
       },
       "automation_report_issue_flow": {
@@ -978,13 +978,13 @@ exports[`billing selectors getAvailableHelpdeskPlans should return the available
       "auto_assignment": {
         "enabled": true,
       },
-      "automation_addon_overview": {
-        "enabled": false,
-      },
       "automation_cancellations_flow": {
         "enabled": false,
       },
       "automation_managed_rules": {
+        "enabled": false,
+      },
+      "automation_opportunities": {
         "enabled": false,
       },
       "automation_report_issue_flow": {
@@ -1081,13 +1081,13 @@ exports[`billing selectors getAvailableHelpdeskPlans should return the available
       "auto_assignment": {
         "enabled": true,
       },
-      "automation_addon_overview": {
-        "enabled": false,
-      },
       "automation_cancellations_flow": {
         "enabled": false,
       },
       "automation_managed_rules": {
+        "enabled": false,
+      },
+      "automation_opportunities": {
         "enabled": false,
       },
       "automation_report_issue_flow": {
@@ -1184,13 +1184,13 @@ exports[`billing selectors getAvailableHelpdeskPlans should return the available
       "auto_assignment": {
         "enabled": true,
       },
-      "automation_addon_overview": {
-        "enabled": false,
-      },
       "automation_cancellations_flow": {
         "enabled": false,
       },
       "automation_managed_rules": {
+        "enabled": false,
+      },
+      "automation_opportunities": {
         "enabled": false,
       },
       "automation_report_issue_flow": {
@@ -1287,13 +1287,13 @@ exports[`billing selectors getAvailableHelpdeskPlans should return the available
       "auto_assignment": {
         "enabled": true,
       },
-      "automation_addon_overview": {
-        "enabled": false,
-      },
       "automation_cancellations_flow": {
         "enabled": false,
       },
       "automation_managed_rules": {
+        "enabled": false,
+      },
+      "automation_opportunities": {
         "enabled": false,
       },
       "automation_report_issue_flow": {
@@ -1390,13 +1390,13 @@ exports[`billing selectors getAvailableHelpdeskPlans should return the available
       "auto_assignment": {
         "enabled": true,
       },
-      "automation_addon_overview": {
-        "enabled": false,
-      },
       "automation_cancellations_flow": {
         "enabled": false,
       },
       "automation_managed_rules": {
+        "enabled": false,
+      },
+      "automation_opportunities": {
         "enabled": false,
       },
       "automation_report_issue_flow": {
@@ -1493,13 +1493,13 @@ exports[`billing selectors getAvailableHelpdeskPlans should return the available
       "auto_assignment": {
         "enabled": true,
       },
-      "automation_addon_overview": {
-        "enabled": false,
-      },
       "automation_cancellations_flow": {
         "enabled": false,
       },
       "automation_managed_rules": {
+        "enabled": false,
+      },
+      "automation_opportunities": {
         "enabled": false,
       },
       "automation_report_issue_flow": {
@@ -1596,13 +1596,13 @@ exports[`billing selectors getAvailableHelpdeskPlans should return the available
       "auto_assignment": {
         "enabled": true,
       },
-      "automation_addon_overview": {
-        "enabled": false,
-      },
       "automation_cancellations_flow": {
         "enabled": false,
       },
       "automation_managed_rules": {
+        "enabled": false,
+      },
+      "automation_opportunities": {
         "enabled": false,
       },
       "automation_report_issue_flow": {
@@ -1876,13 +1876,13 @@ exports[`billing selectors getAvailablePlans should return the available plans 1
       "auto_assignment": {
         "enabled": true,
       },
-      "automation_addon_overview": {
-        "enabled": false,
-      },
       "automation_cancellations_flow": {
         "enabled": false,
       },
       "automation_managed_rules": {
+        "enabled": false,
+      },
+      "automation_opportunities": {
         "enabled": false,
       },
       "automation_report_issue_flow": {
@@ -2018,13 +2018,13 @@ exports[`billing selectors getAvailablePlans should return the available plans 1
       "auto_assignment": {
         "enabled": true,
       },
-      "automation_addon_overview": {
-        "enabled": false,
-      },
       "automation_cancellations_flow": {
         "enabled": false,
       },
       "automation_managed_rules": {
+        "enabled": false,
+      },
+      "automation_opportunities": {
         "enabled": false,
       },
       "automation_report_issue_flow": {
@@ -2287,13 +2287,13 @@ exports[`billing selectors getAvailablePlans should return the available plans 1
       "auto_assignment": {
         "enabled": true,
       },
-      "automation_addon_overview": {
-        "enabled": false,
-      },
       "automation_cancellations_flow": {
         "enabled": false,
       },
       "automation_managed_rules": {
+        "enabled": false,
+      },
+      "automation_opportunities": {
         "enabled": false,
       },
       "automation_report_issue_flow": {
@@ -2390,13 +2390,13 @@ exports[`billing selectors getAvailablePlans should return the available plans 1
       "auto_assignment": {
         "enabled": true,
       },
-      "automation_addon_overview": {
-        "enabled": false,
-      },
       "automation_cancellations_flow": {
         "enabled": false,
       },
       "automation_managed_rules": {
+        "enabled": false,
+      },
+      "automation_opportunities": {
         "enabled": false,
       },
       "automation_report_issue_flow": {
@@ -2541,13 +2541,13 @@ exports[`billing selectors getAvailablePlans should return the available plans 1
       "auto_assignment": {
         "enabled": true,
       },
-      "automation_addon_overview": {
-        "enabled": false,
-      },
       "automation_cancellations_flow": {
         "enabled": false,
       },
       "automation_managed_rules": {
+        "enabled": false,
+      },
+      "automation_opportunities": {
         "enabled": false,
       },
       "automation_report_issue_flow": {
@@ -2864,13 +2864,13 @@ exports[`billing selectors getAvailablePlans should return the available plans 1
       "auto_assignment": {
         "enabled": true,
       },
-      "automation_addon_overview": {
-        "enabled": false,
-      },
       "automation_cancellations_flow": {
         "enabled": false,
       },
       "automation_managed_rules": {
+        "enabled": false,
+      },
+      "automation_opportunities": {
         "enabled": false,
       },
       "automation_report_issue_flow": {
@@ -2967,13 +2967,13 @@ exports[`billing selectors getAvailablePlans should return the available plans 1
       "auto_assignment": {
         "enabled": true,
       },
-      "automation_addon_overview": {
-        "enabled": false,
-      },
       "automation_cancellations_flow": {
         "enabled": false,
       },
       "automation_managed_rules": {
+        "enabled": false,
+      },
+      "automation_opportunities": {
         "enabled": false,
       },
       "automation_report_issue_flow": {
@@ -3164,13 +3164,13 @@ exports[`billing selectors getAvailablePlans should return the available plans 1
       "auto_assignment": {
         "enabled": true,
       },
-      "automation_addon_overview": {
-        "enabled": false,
-      },
       "automation_cancellations_flow": {
         "enabled": false,
       },
       "automation_managed_rules": {
+        "enabled": false,
+      },
+      "automation_opportunities": {
         "enabled": false,
       },
       "automation_report_issue_flow": {
@@ -3308,13 +3308,13 @@ exports[`billing selectors getAvailablePlans should return the available plans 1
       "auto_assignment": {
         "enabled": true,
       },
-      "automation_addon_overview": {
-        "enabled": false,
-      },
       "automation_cancellations_flow": {
         "enabled": false,
       },
       "automation_managed_rules": {
+        "enabled": false,
+      },
+      "automation_opportunities": {
         "enabled": false,
       },
       "automation_report_issue_flow": {
@@ -3411,13 +3411,13 @@ exports[`billing selectors getAvailablePlans should return the available plans 1
       "auto_assignment": {
         "enabled": true,
       },
-      "automation_addon_overview": {
-        "enabled": false,
-      },
       "automation_cancellations_flow": {
         "enabled": false,
       },
       "automation_managed_rules": {
+        "enabled": false,
+      },
+      "automation_opportunities": {
         "enabled": false,
       },
       "automation_report_issue_flow": {
@@ -3603,13 +3603,13 @@ exports[`billing selectors getAvailablePlans should return the available plans 1
       "auto_assignment": {
         "enabled": true,
       },
-      "automation_addon_overview": {
-        "enabled": false,
-      },
       "automation_cancellations_flow": {
         "enabled": false,
       },
       "automation_managed_rules": {
+        "enabled": false,
+      },
+      "automation_opportunities": {
         "enabled": false,
       },
       "automation_report_issue_flow": {
@@ -3753,13 +3753,13 @@ exports[`billing selectors getAvailablePlans should return the available plans 1
       "auto_assignment": {
         "enabled": true,
       },
-      "automation_addon_overview": {
-        "enabled": false,
-      },
       "automation_cancellations_flow": {
         "enabled": false,
       },
       "automation_managed_rules": {
+        "enabled": false,
+      },
+      "automation_opportunities": {
         "enabled": false,
       },
       "automation_report_issue_flow": {
@@ -3908,13 +3908,13 @@ exports[`billing selectors getCheapestProductPlans should return the cheapest pl
       "auto_assignment": {
         "enabled": true,
       },
-      "automation_addon_overview": {
-        "enabled": false,
-      },
       "automation_cancellations_flow": {
         "enabled": false,
       },
       "automation_managed_rules": {
+        "enabled": false,
+      },
+      "automation_opportunities": {
         "enabled": false,
       },
       "automation_report_issue_flow": {
@@ -4035,14 +4035,14 @@ exports[`billing selectors getCurrentProductsFeatures should return the current 
   "auto_assignment": {
     "enabled": true,
   },
-  "automation_addon_overview": {
-    "enabled": false,
-  },
   "automation_cancellations_flow": {
     "enabled": true,
   },
   "automation_managed_rules": {
     "enabled": true,
+  },
+  "automation_opportunities": {
+    "enabled": false,
   },
   "automation_report_issue_flow": {
     "enabled": true,
@@ -4134,13 +4134,13 @@ exports[`billing selectors getProducts should return products 1`] = `
           "auto_assignment": {
             "enabled": true,
           },
-          "automation_addon_overview": {
-            "enabled": false,
-          },
           "automation_cancellations_flow": {
             "enabled": false,
           },
           "automation_managed_rules": {
+            "enabled": false,
+          },
+          "automation_opportunities": {
             "enabled": false,
           },
           "automation_report_issue_flow": {
@@ -4237,13 +4237,13 @@ exports[`billing selectors getProducts should return products 1`] = `
           "auto_assignment": {
             "enabled": true,
           },
-          "automation_addon_overview": {
-            "enabled": false,
-          },
           "automation_cancellations_flow": {
             "enabled": false,
           },
           "automation_managed_rules": {
+            "enabled": false,
+          },
+          "automation_opportunities": {
             "enabled": false,
           },
           "automation_report_issue_flow": {
@@ -4340,13 +4340,13 @@ exports[`billing selectors getProducts should return products 1`] = `
           "auto_assignment": {
             "enabled": true,
           },
-          "automation_addon_overview": {
-            "enabled": false,
-          },
           "automation_cancellations_flow": {
             "enabled": false,
           },
           "automation_managed_rules": {
+            "enabled": false,
+          },
+          "automation_opportunities": {
             "enabled": false,
           },
           "automation_report_issue_flow": {
@@ -4443,13 +4443,13 @@ exports[`billing selectors getProducts should return products 1`] = `
           "auto_assignment": {
             "enabled": true,
           },
-          "automation_addon_overview": {
-            "enabled": false,
-          },
           "automation_cancellations_flow": {
             "enabled": false,
           },
           "automation_managed_rules": {
+            "enabled": false,
+          },
+          "automation_opportunities": {
             "enabled": false,
           },
           "automation_report_issue_flow": {
@@ -4546,13 +4546,13 @@ exports[`billing selectors getProducts should return products 1`] = `
           "auto_assignment": {
             "enabled": true,
           },
-          "automation_addon_overview": {
-            "enabled": false,
-          },
           "automation_cancellations_flow": {
             "enabled": false,
           },
           "automation_managed_rules": {
+            "enabled": false,
+          },
+          "automation_opportunities": {
             "enabled": false,
           },
           "automation_report_issue_flow": {
@@ -4649,13 +4649,13 @@ exports[`billing selectors getProducts should return products 1`] = `
           "auto_assignment": {
             "enabled": true,
           },
-          "automation_addon_overview": {
-            "enabled": false,
-          },
           "automation_cancellations_flow": {
             "enabled": false,
           },
           "automation_managed_rules": {
+            "enabled": false,
+          },
+          "automation_opportunities": {
             "enabled": false,
           },
           "automation_report_issue_flow": {
@@ -4752,13 +4752,13 @@ exports[`billing selectors getProducts should return products 1`] = `
           "auto_assignment": {
             "enabled": true,
           },
-          "automation_addon_overview": {
-            "enabled": false,
-          },
           "automation_cancellations_flow": {
             "enabled": false,
           },
           "automation_managed_rules": {
+            "enabled": false,
+          },
+          "automation_opportunities": {
             "enabled": false,
           },
           "automation_report_issue_flow": {
@@ -4855,13 +4855,13 @@ exports[`billing selectors getProducts should return products 1`] = `
           "auto_assignment": {
             "enabled": true,
           },
-          "automation_addon_overview": {
-            "enabled": false,
-          },
           "automation_cancellations_flow": {
             "enabled": false,
           },
           "automation_managed_rules": {
+            "enabled": false,
+          },
+          "automation_opportunities": {
             "enabled": false,
           },
           "automation_report_issue_flow": {
@@ -4958,13 +4958,13 @@ exports[`billing selectors getProducts should return products 1`] = `
           "auto_assignment": {
             "enabled": true,
           },
-          "automation_addon_overview": {
-            "enabled": false,
-          },
           "automation_cancellations_flow": {
             "enabled": false,
           },
           "automation_managed_rules": {
+            "enabled": false,
+          },
+          "automation_opportunities": {
             "enabled": false,
           },
           "automation_report_issue_flow": {
@@ -5061,13 +5061,13 @@ exports[`billing selectors getProducts should return products 1`] = `
           "auto_assignment": {
             "enabled": true,
           },
-          "automation_addon_overview": {
-            "enabled": false,
-          },
           "automation_cancellations_flow": {
             "enabled": false,
           },
           "automation_managed_rules": {
+            "enabled": false,
+          },
+          "automation_opportunities": {
             "enabled": false,
           },
           "automation_report_issue_flow": {
@@ -5164,13 +5164,13 @@ exports[`billing selectors getProducts should return products 1`] = `
           "auto_assignment": {
             "enabled": true,
           },
-          "automation_addon_overview": {
-            "enabled": false,
-          },
           "automation_cancellations_flow": {
             "enabled": false,
           },
           "automation_managed_rules": {
+            "enabled": false,
+          },
+          "automation_opportunities": {
             "enabled": false,
           },
           "automation_report_issue_flow": {
@@ -5267,13 +5267,13 @@ exports[`billing selectors getProducts should return products 1`] = `
           "auto_assignment": {
             "enabled": true,
           },
-          "automation_addon_overview": {
-            "enabled": false,
-          },
           "automation_cancellations_flow": {
             "enabled": false,
           },
           "automation_managed_rules": {
+            "enabled": false,
+          },
+          "automation_opportunities": {
             "enabled": false,
           },
           "automation_report_issue_flow": {

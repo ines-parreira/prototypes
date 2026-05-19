@@ -62,7 +62,7 @@ export enum AccountFeature {
     AutomationCancellationsFlow = 'automation_cancellations_flow',
     AutomationReturnFlow = 'automation_return_flow',
     AutomationSelfServiceStatistics = 'automation_self_service_statistics',
-    AutomationAddonOverview = 'automation_addon_overview',
+    AutomationOpportunities = 'automation_opportunities',
     AutomationManagedRules = 'automation_managed_rules',
 }
 
