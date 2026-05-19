@@ -19,6 +19,8 @@ function ObiSDK(
 ): void
 function ObiSDK(action: 'stopSession'): void
 
+type NoticeableAsyncResult = void | Promise<void>
+
 declare global {
     interface GorgiasStateCurrentAccount extends Account {}
 
@@ -39,13 +41,13 @@ declare global {
         }
         CSRF_TOKEN: string
         noticeable: {
-            render: (target: string, id: string) => Promise<void>
+            render: (target: string, id: string) => NoticeableAsyncResult
             on: (
                 event: string,
                 id: string,
                 callback: (e: Record<string, any>) => void,
             ) => void
-            destroy: (target: string, id: string) => Promise<void>
+            destroy: (target: string, id: string) => NoticeableAsyncResult
             do: (action: string, id: string) => void
         }
         noticeableWidgetId: string

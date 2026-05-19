@@ -14,8 +14,9 @@ export default function NoticeIndicator() {
 
     useEffect(() => {
         try {
-            void window.noticeable
-                .render('widget', window.noticeableWidgetId)
+            void Promise.resolve(
+                window.noticeable.render('widget', window.noticeableWidgetId),
+            )
                 .then(() => {
                     addBreadcrumb({
                         category: 'noticeable',
@@ -44,14 +45,14 @@ export default function NoticeIndicator() {
         )
 
         return () => {
-            void window.noticeable
-                .destroy('widget', window.noticeableWidgetId)
-                .then(() => {
-                    addBreadcrumb({
-                        category: 'noticeable',
-                        message: 'widget destroyed',
-                    })
+            void Promise.resolve(
+                window.noticeable.destroy('widget', window.noticeableWidgetId),
+            ).then(() => {
+                addBreadcrumb({
+                    category: 'noticeable',
+                    message: 'widget destroyed',
                 })
+            })
         }
     }, [])
 

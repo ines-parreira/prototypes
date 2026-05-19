@@ -73,6 +73,20 @@ describe('NoticeableIndicator', () => {
         })
     })
 
+    it('should support Noticeable render returning synchronously', async () => {
+        noticeableRender.mockReturnValueOnce(undefined)
+
+        render(<NoticeableIndicator />)
+
+        await waitFor(() => {
+            expect(reportError).not.toHaveBeenCalled()
+            expect(addBreadcrumb).toHaveBeenCalledWith({
+                category: 'noticeable',
+                message: 'widget rendered',
+            })
+        })
+    })
+
     it('should update the count when updated', () => {
         const result = render(<NoticeableIndicator />)
         expect(window.noticeable.on).toHaveBeenCalledWith(
@@ -104,6 +118,20 @@ describe('NoticeableIndicator', () => {
             'widget',
             'noticeable-widget-id',
         )
+        await waitFor(() => {
+            expect(addBreadcrumb).toHaveBeenCalledWith({
+                category: 'noticeable',
+                message: 'widget destroyed',
+            })
+        })
+    })
+
+    it('should support Noticeable destroy returning synchronously', async () => {
+        noticeableDestroy.mockReturnValueOnce(undefined)
+
+        const { unmount } = render(<NoticeableIndicator />)
+        unmount()
+
         await waitFor(() => {
             expect(addBreadcrumb).toHaveBeenCalledWith({
                 category: 'noticeable',

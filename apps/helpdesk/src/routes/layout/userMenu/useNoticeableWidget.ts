@@ -52,8 +52,9 @@ function ensureRendered(): Promise<void> {
     if (renderPromise) return renderPromise
 
     try {
-        renderPromise = window.noticeable
-            .render('widget', window.noticeableWidgetId)
+        renderPromise = Promise.resolve(
+            window.noticeable.render('widget', window.noticeableWidgetId),
+        )
             .then(() => {
                 addBreadcrumb({
                     category: 'noticeable',

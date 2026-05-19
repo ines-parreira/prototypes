@@ -173,6 +173,20 @@ describe('useNoticeableWidget module', () => {
                 expect(reportErrorMock).toHaveBeenCalledWith(error)
             }))
 
+        it('accepts Noticeable render returning synchronously', () =>
+            withFreshModule(async ({ mod, lib, noticeable }) => {
+                noticeable.render.mockReturnValueOnce(undefined)
+
+                lib.renderHook(() => mod.useNoticeableWidget())
+
+                await flush()
+
+                expect(reportErrorMock).not.toHaveBeenCalled()
+                expect(addBreadcrumbMock).toHaveBeenCalledWith(
+                    expect.objectContaining({ message: 'widget rendered' }),
+                )
+            }))
+
         it('caches the render promise across repeated mounts', () =>
             withFreshModule(({ mod, lib, noticeable }) => {
                 const { unmount } = lib.renderHook(() =>
