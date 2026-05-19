@@ -12,19 +12,37 @@ vi.mock('@repo/utils', () => ({
     formatDatetime: () => '2024-03-20 17:00',
 }))
 
+vi.mock('../MessageHeader/MessageChannel.less', () => ({
+    default: {
+        tooltipContent: 'tooltipContent',
+    },
+}))
+
 vi.mock('@gorgias/axiom', () => ({
-    Box: ({ children }: { children: ReactNode }) => <div>{children}</div>,
-    Icon: () => <div>Icon</div>,
+    Box: ({
+        children,
+        className,
+    }: {
+        children: ReactNode
+        className?: string
+    }) => <div className={className}>{children}</div>,
+    Icon: ({ color, name }: { color?: string; name?: string }) => (
+        <div data-color={color} data-name={name}>
+            Icon
+        </div>
+    ),
     Text: ({
         children,
+        className,
         color,
         variant,
     }: {
         children: ReactNode
+        className?: string
         color?: string
         variant?: string
     }) => (
-        <span data-color={color} data-variant={variant}>
+        <span className={className} data-color={color} data-variant={variant}>
             {children}
         </span>
     ),
@@ -40,7 +58,13 @@ vi.mock('@gorgias/axiom', () => ({
             {children}
         </>
     ),
-    TooltipContent: ({ children }: { children: ReactNode }) => <>{children}</>,
+    TooltipContent: ({
+        children,
+        maxWidth,
+    }: {
+        children: ReactNode
+        maxWidth?: number
+    }) => <div data-max-width={maxWidth}>{children}</div>,
 }))
 
 vi.mock('../../../../hooks/shared/useTicketThreadDateTimeFormat', () => ({
@@ -53,6 +77,36 @@ vi.mock('../../../../hooks/shared/useTicketThreadDateTimeFormat', () => ({
 }))
 
 describe('MessageChannel', () => {
+    it('renders nothing when no channel icon can be resolved', () => {
+        const { container } = render(<MessageChannel />)
+
+        expect(container).toBeEmptyDOMElement()
+    })
+
+    it('renders only the icon when the channel name is unavailable', () => {
+        render(<MessageChannel channelIcon="phone" />)
+
+        expect(screen.getByText('Icon')).toHaveAttribute('data-name', 'phone')
+        expect(screen.queryByText('Channel:')).not.toBeInTheDocument()
+    })
+
+    it('uses provided channel metadata and the internal note color', () => {
+        render(
+            <MessageChannel
+                channelIcon="note"
+                channelName="Internal note"
+                variant="internal-note"
+            />,
+        )
+
+        expect(screen.getByText('Icon')).toHaveAttribute('data-name', 'note')
+        expect(screen.getByText('Icon')).toHaveAttribute(
+            'data-color',
+            'content-additional-yellow',
+        )
+        expect(screen.getByText('Internal note')).toBeInTheDocument()
+    })
+
     it('renders from, to, cc, and bcc labels in the tooltip content', () => {
         render(
             <MessageChannel
@@ -84,26 +138,31 @@ describe('MessageChannel', () => {
     })
 
     it('renders the current page URL in the tooltip content', () => {
+        const currentPageUrl =
+            'https://example.com/products/sneakers?customerFormRef=really-long-unbroken-contact-form-url-token'
+
         render(
-            <MessageChannel
-                channel="chat"
-                currentPageUrl="https://example.com/products/sneakers"
-            />,
+            <MessageChannel channel="chat" currentPageUrl={currentPageUrl} />,
         )
 
         const link = screen.getByRole('link', {
-            name: 'https://example.com/products/sneakers',
+            name: currentPageUrl,
         })
 
         expect(screen.getByText('Url:')).toBeInTheDocument()
-        expect(link).toHaveAttribute(
-            'href',
-            'https://example.com/products/sneakers',
-        )
+        expect(link).toHaveAttribute('href', currentPageUrl)
         expect(link).toHaveAttribute('target', '_blank')
         expect(link).toHaveAttribute('rel', 'noopener noreferrer')
+        expect(screen.getByText(currentPageUrl)).toHaveAttribute(
+            'data-color',
+            'content-inverted-default',
+        )
         expect(
-            screen.getByText('https://example.com/products/sneakers'),
-        ).toHaveAttribute('data-color', 'content-inverted-default')
+            screen.getByText(currentPageUrl).closest('[data-max-width]'),
+        ).toHaveAttribute('data-max-width', '360')
+        expect(
+            screen.getByText(currentPageUrl).closest('[data-max-width]')
+                ?.firstChild,
+        ).toHaveClass('tooltipContent')
     })
 })

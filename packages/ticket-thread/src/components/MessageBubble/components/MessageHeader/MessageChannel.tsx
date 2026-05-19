@@ -6,6 +6,7 @@ import { Box, Icon, Text, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import type { TicketMessageChannel } from '../../../../hooks/messages/schemas'
 import { useTicketThreadDateTimeFormat } from '../../../../hooks/shared/useTicketThreadDateTimeFormat'
+import css from './MessageChannel.less'
 
 export type MessageChannelProps = {
     channel?: TicketMessageChannel | null
@@ -63,8 +64,12 @@ export function MessageChannel({
                 />
             )}
         >
-            <TooltipContent>
-                <Box flexDirection="column" gap="xxs">
+            <TooltipContent maxWidth={360}>
+                <Box
+                    className={css.tooltipContent}
+                    flexDirection="column"
+                    gap="xxs"
+                >
                     {from && (
                         <Text size="xs">
                             From:{' '}
