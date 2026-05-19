@@ -6839,6 +6839,9 @@
                                                 "requires_confirmation": {
                                                     "type": "boolean"
                                                 },
+                                                "is_standalone": {
+                                                    "type": "boolean"
+                                                },
                                                 "instructions": {
                                                     "type": "string"
                                                 }
@@ -6875,6 +6878,9 @@
                                             "type": "object",
                                             "properties": {
                                                 "requires_confirmation": {
+                                                    "type": "boolean"
+                                                },
+                                                "is_standalone": {
                                                     "type": "boolean"
                                                 },
                                                 "conditions": {
@@ -10402,6 +10408,9 @@
                                                 "requires_confirmation": {
                                                     "type": "boolean"
                                                 },
+                                                "is_standalone": {
+                                                    "type": "boolean"
+                                                },
                                                 "instructions": {
                                                     "type": "string"
                                                 }
@@ -10438,6 +10447,9 @@
                                             "type": "object",
                                             "properties": {
                                                 "requires_confirmation": {
+                                                    "type": "boolean"
+                                                },
+                                                "is_standalone": {
                                                     "type": "boolean"
                                                 },
                                                 "conditions": {
@@ -13979,6 +13991,9 @@
                                                 "requires_confirmation": {
                                                     "type": "boolean"
                                                 },
+                                                "is_standalone": {
+                                                    "type": "boolean"
+                                                },
                                                 "instructions": {
                                                     "type": "string"
                                                 }
@@ -14015,6 +14030,9 @@
                                             "type": "object",
                                             "properties": {
                                                 "requires_confirmation": {
+                                                    "type": "boolean"
+                                                },
+                                                "is_standalone": {
                                                     "type": "boolean"
                                                 },
                                                 "conditions": {
@@ -17565,6 +17583,9 @@
                                                 "requires_confirmation": {
                                                     "type": "boolean"
                                                 },
+                                                "is_standalone": {
+                                                    "type": "boolean"
+                                                },
                                                 "instructions": {
                                                     "type": "string"
                                                 }
@@ -17601,6 +17622,9 @@
                                             "type": "object",
                                             "properties": {
                                                 "requires_confirmation": {
+                                                    "type": "boolean"
+                                                },
+                                                "is_standalone": {
                                                     "type": "boolean"
                                                 },
                                                 "conditions": {
@@ -63135,6 +63159,9 @@
                                                 "requires_confirmation": {
                                                     "type": "boolean"
                                                 },
+                                                "is_standalone": {
+                                                    "type": "boolean"
+                                                },
                                                 "instructions": {
                                                     "type": "string"
                                                 }
@@ -63171,6 +63198,9 @@
                                             "type": "object",
                                             "properties": {
                                                 "requires_confirmation": {
+                                                    "type": "boolean"
+                                                },
+                                                "is_standalone": {
                                                     "type": "boolean"
                                                 },
                                                 "conditions": {
@@ -66715,6 +66745,9 @@
                                                 "requires_confirmation": {
                                                     "type": "boolean"
                                                 },
+                                                "is_standalone": {
+                                                    "type": "boolean"
+                                                },
                                                 "instructions": {
                                                     "type": "string"
                                                 }
@@ -66751,6 +66784,9 @@
                                             "type": "object",
                                             "properties": {
                                                 "requires_confirmation": {
+                                                    "type": "boolean"
+                                                },
+                                                "is_standalone": {
                                                     "type": "boolean"
                                                 },
                                                 "conditions": {
@@ -69602,6 +69638,9 @@
                                                 "requires_confirmation": {
                                                     "type": "boolean"
                                                 },
+                                                "is_standalone": {
+                                                    "type": "boolean"
+                                                },
                                                 "instructions": {
                                                     "type": "string"
                                                 }
@@ -69638,6 +69677,9 @@
                                             "type": "object",
                                             "properties": {
                                                 "requires_confirmation": {
+                                                    "type": "boolean"
+                                                },
+                                                "is_standalone": {
                                                     "type": "boolean"
                                                 },
                                                 "conditions": {
@@ -72263,6 +72305,9 @@
                                                 "requires_confirmation": {
                                                     "type": "boolean"
                                                 },
+                                                "is_standalone": {
+                                                    "type": "boolean"
+                                                },
                                                 "instructions": {
                                                     "type": "string"
                                                 }
@@ -72299,6 +72344,9 @@
                                             "type": "object",
                                             "properties": {
                                                 "requires_confirmation": {
+                                                    "type": "boolean"
+                                                },
+                                                "is_standalone": {
                                                     "type": "boolean"
                                                 },
                                                 "conditions": {
@@ -77659,6 +77707,9 @@
                                                 "requires_confirmation": {
                                                     "type": "boolean"
                                                 },
+                                                "is_standalone": {
+                                                    "type": "boolean"
+                                                },
                                                 "instructions": {
                                                     "type": "string"
                                                 }
@@ -77695,6 +77746,9 @@
                                             "type": "object",
                                             "properties": {
                                                 "requires_confirmation": {
+                                                    "type": "boolean"
+                                                },
+                                                "is_standalone": {
                                                     "type": "boolean"
                                                 },
                                                 "conditions": {

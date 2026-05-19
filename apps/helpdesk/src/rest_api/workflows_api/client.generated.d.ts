@@ -874,6 +874,7 @@ declare namespace Components {
                             trigger: 'llm-prompt'
                             settings: {
                                 requires_confirmation: boolean
+                                is_standalone?: boolean
                                 instructions: string
                             }
                         }
@@ -883,6 +884,7 @@ declare namespace Components {
                             trigger: 'reusable-llm-prompt'
                             settings: {
                                 requires_confirmation: boolean
+                                is_standalone?: boolean
                                 conditions?:
                                     | ({
                                           or: (
@@ -2244,6 +2246,7 @@ declare namespace Components {
                       trigger: 'llm-prompt'
                       settings: {
                           requires_confirmation: boolean
+                          is_standalone?: boolean
                           instructions: string
                       }
                   }
@@ -2253,6 +2256,7 @@ declare namespace Components {
                       trigger: 'reusable-llm-prompt'
                       settings: {
                           requires_confirmation: boolean
+                          is_standalone?: boolean
                           conditions?:
                               | ({
                                     or: (
@@ -2963,6 +2967,7 @@ declare namespace Components {
                       trigger: 'llm-prompt'
                       settings: {
                           requires_confirmation: boolean
+                          is_standalone?: boolean
                           instructions: string
                       }
                   }
@@ -2972,6 +2977,7 @@ declare namespace Components {
                       trigger: 'reusable-llm-prompt'
                       settings: {
                           requires_confirmation: boolean
+                          is_standalone?: boolean
                           conditions?:
                               | ({
                                     or: (
@@ -6427,6 +6433,7 @@ declare namespace Components {
                       trigger: 'llm-prompt'
                       settings: {
                           requires_confirmation: boolean
+                          is_standalone?: boolean
                           instructions: string
                       }
                   }
@@ -6436,6 +6443,7 @@ declare namespace Components {
                       trigger: 'reusable-llm-prompt'
                       settings: {
                           requires_confirmation: boolean
+                          is_standalone?: boolean
                           conditions?:
                               | ({
                                     or: (
@@ -7225,6 +7233,7 @@ declare namespace Components {
                       trigger: 'llm-prompt'
                       settings: {
                           requires_confirmation: boolean
+                          is_standalone?: boolean
                           instructions: string
                       }
                   }
@@ -7234,6 +7243,7 @@ declare namespace Components {
                       trigger: 'reusable-llm-prompt'
                       settings: {
                           requires_confirmation: boolean
+                          is_standalone?: boolean
                           conditions?:
                               | ({
                                     or: (
@@ -16743,6 +16753,7 @@ declare namespace Components {
                       trigger: 'llm-prompt'
                       settings: {
                           requires_confirmation: boolean
+                          is_standalone?: boolean
                           instructions: string
                       }
                   }
@@ -16752,6 +16763,7 @@ declare namespace Components {
                       trigger: 'reusable-llm-prompt'
                       settings: {
                           requires_confirmation: boolean
+                          is_standalone?: boolean
                           conditions?:
                               | ({
                                     or: (
@@ -17693,6 +17705,7 @@ declare namespace Components {
                       trigger: 'llm-prompt'
                       settings: {
                           requires_confirmation: boolean
+                          is_standalone?: boolean
                           instructions: string
                       }
                   }
@@ -17702,6 +17715,7 @@ declare namespace Components {
                       trigger: 'reusable-llm-prompt'
                       settings: {
                           requires_confirmation: boolean
+                          is_standalone?: boolean
                           conditions?:
                               | ({
                                     or: (
@@ -18641,6 +18655,7 @@ declare namespace Components {
                             trigger: 'llm-prompt'
                             settings: {
                                 requires_confirmation: boolean
+                                is_standalone?: boolean
                                 instructions: string
                             }
                         }
@@ -18650,6 +18665,7 @@ declare namespace Components {
                             trigger: 'reusable-llm-prompt'
                             settings: {
                                 requires_confirmation: boolean
+                                is_standalone?: boolean
                                 conditions?:
                                     | ({
                                           or: (
@@ -19595,6 +19611,7 @@ declare namespace Components {
                             trigger: 'llm-prompt'
                             settings: {
                                 requires_confirmation: boolean
+                                is_standalone?: boolean
                                 instructions: string
                             }
                         }
@@ -19604,6 +19621,7 @@ declare namespace Components {
                             trigger: 'reusable-llm-prompt'
                             settings: {
                                 requires_confirmation: boolean
+                                is_standalone?: boolean
                                 conditions?:
                                     | ({
                                           or: (
@@ -20311,6 +20329,7 @@ declare namespace Components {
                       trigger: 'llm-prompt'
                       settings: {
                           requires_confirmation: boolean
+                          is_standalone?: boolean
                           instructions: string
                       }
                   }
@@ -20320,6 +20339,7 @@ declare namespace Components {
                       trigger: 'reusable-llm-prompt'
                       settings: {
                           requires_confirmation: boolean
+                          is_standalone?: boolean
                           conditions?:
                               | ({
                                     or: (
@@ -21028,6 +21048,7 @@ declare namespace Components {
                       trigger: 'llm-prompt'
                       settings: {
                           requires_confirmation: boolean
+                          is_standalone?: boolean
                           instructions: string
                       }
                   }
@@ -21037,6 +21058,7 @@ declare namespace Components {
                       trigger: 'reusable-llm-prompt'
                       settings: {
                           requires_confirmation: boolean
+                          is_standalone?: boolean
                           conditions?:
                               | ({
                                     or: (

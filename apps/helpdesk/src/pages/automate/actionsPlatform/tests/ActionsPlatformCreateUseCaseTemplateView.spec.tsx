@@ -244,6 +244,7 @@ describe('<ActionsPlatformCreateUseCaseTemplateView />', () => {
                         settings: {
                             instructions: 'Some description',
                             requires_confirmation: false,
+                            is_standalone: true,
                         },
                         deactivated_datetime: null,
                     },

@@ -635,6 +635,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         settings: {
                             requires_confirmation:
                                 node.data.requires_confirmation,
+                            is_standalone: true,
                             instructions: node.data.instructions,
                         },
                         deactivated_datetime: node.data.deactivated_datetime,
@@ -678,6 +679,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         settings: {
                             requires_confirmation:
                                 node.data.requires_confirmation,
+                            is_standalone: true,
                             conditions:
                                 node.data.conditionsType === 'or'
                                     ? {

@@ -486,6 +486,7 @@ export type WorkflowConfiguration = {
               trigger: 'llm-prompt'
               settings: {
                   requires_confirmation: boolean
+                  is_standalone?: boolean
                   instructions: string
               }
           }
@@ -495,6 +496,7 @@ export type WorkflowConfiguration = {
               trigger: 'reusable-llm-prompt'
               settings: {
                   requires_confirmation: boolean
+                  is_standalone?: boolean
                   conditions?: ConditionsSchema | null
               }
           }

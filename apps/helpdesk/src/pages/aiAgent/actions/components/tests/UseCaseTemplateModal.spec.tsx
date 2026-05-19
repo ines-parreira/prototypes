@@ -56,6 +56,7 @@ const b = new WorkflowConfigurationBuilder({
             settings: {
                 instructions: 'test instructions',
                 requires_confirmation: true,
+                is_standalone: true,
             },
             deactivated_datetime: null,
         },

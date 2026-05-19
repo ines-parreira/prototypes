@@ -579,6 +579,7 @@ describe('<CreateActionView />', () => {
                         settings: {
                             instructions: 'Advanced description',
                             requires_confirmation: false,
+                            is_standalone: true,
                         },
                         deactivated_datetime: null,
                     },

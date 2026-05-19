@@ -654,6 +654,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                 trigger: 'llm-prompt',
                 settings: {
                     requires_confirmation: false,
+                    is_standalone: true,
                     instructions: 'This action creates a discount code',
                 },
             },
@@ -792,6 +793,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                 trigger: 'reusable-llm-prompt',
                 settings: {
                     conditions: null,
+                    is_standalone: true,
                     requires_confirmation: false,
                 },
                 deactivated_datetime: null,
@@ -897,6 +899,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                 trigger: 'llm-prompt',
                 settings: {
                     requires_confirmation: false,
+                    is_standalone: true,
                     instructions: 'This action reships an order for free',
                 },
             },
@@ -1028,6 +1031,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                 trigger: 'llm-prompt',
                 settings: {
                     requires_confirmation: false,
+                    is_standalone: true,
                     instructions: 'This action refunds the shipping costs',
                 },
             },
@@ -1194,6 +1198,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                 trigger: 'llm-prompt',
                 settings: {
                     requires_confirmation: false,
+                    is_standalone: true,
                     instructions: 'This action replaces an item',
                 },
             },
@@ -1408,6 +1413,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                 trigger: 'reusable-llm-prompt',
                 settings: {
                     requires_confirmation: false,
+                    is_standalone: true,
                     conditions: null,
                 },
                 deactivated_datetime: null,
@@ -1849,6 +1855,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                 trigger: 'llm-prompt',
                 settings: {
                     requires_confirmation: false,
+                    is_standalone: true,
                     instructions: '',
                 },
             },
@@ -2125,6 +2132,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                 trigger: 'llm-prompt',
                 settings: {
                     requires_confirmation: false,
+                    is_standalone: true,
                     instructions: 'This action uses a liquid template',
                 },
             },
@@ -2227,6 +2235,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                 trigger: 'reusable-llm-prompt',
                 settings: {
                     requires_confirmation: false,
+                    is_standalone: true,
                     conditions: null,
                 },
                 deactivated_datetime: null,

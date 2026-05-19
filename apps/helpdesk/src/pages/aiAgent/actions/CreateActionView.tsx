@@ -72,6 +72,7 @@ const getInitialConfiguration = () => {
                 settings: {
                     instructions: '',
                     requires_confirmation: false,
+                    is_standalone: true,
                 },
                 deactivated_datetime: null,
             },

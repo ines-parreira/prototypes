@@ -58,6 +58,7 @@ const getInitialTemplate = () => {
                 trigger: 'reusable-llm-prompt',
                 settings: {
                     requires_confirmation: false,
+                    is_standalone: true,
                     conditions: null,
                 },
                 deactivated_datetime: null,
