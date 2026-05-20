@@ -6,6 +6,7 @@ import type {
     GorgiasApiError,
     GorgiasApiResponseDataError,
 } from '../../models/api/types'
+import { isIntegrationLimitReachedError } from '../../models/api/types'
 import { notify } from '../../state/notifications/actions'
 import type { Notification } from '../../state/notifications/types'
 import { NotificationStatus } from '../../state/notifications/types'
@@ -13,6 +14,8 @@ import type { RootState, StoreDispatch } from '../../state/types'
 import { errorToChildren, stripErrorMessage } from '../../utils'
 
 const IGNORED_PREFIXES = ['SUBMIT_ACTIVITY_ERROR']
+
+const BILLING_SETTINGS_PATH = '/app/settings/billing'
 
 export type ServerErrorAction = {
     type: string
@@ -58,6 +61,32 @@ const serverErrorHandler: Middleware<
             window.location.href = loginUrl
         }, 3000)
 
+        return next(action)
+    }
+
+    // Handle the per-account integration limit specifically: render an actionable
+    // notification with the resolved limit, and route enterprise/legacy accounts
+    // (`upgradable: false`) to CSM contact instead of the self-serve upgrade path.
+    if (isIntegrationLimitReachedError(action.error)) {
+        const { limit, upgradable } = action.error.response.data.error.data
+        void store.dispatch(
+            notify({
+                status: NotificationStatus.Error,
+                title: `You've reached your plan's limit of ${limit} channels.`,
+                message: upgradable
+                    ? 'Upgrade your plan to add more channels.'
+                    : 'Reach out to your Customer Success Manager to raise your limit.',
+                buttons: [
+                    {
+                        name: upgradable ? 'Upgrade plan' : 'Contact us',
+                        primary: true,
+                        onClick: () => {
+                            window.location.assign(BILLING_SETTINGS_PATH)
+                        },
+                    },
+                ],
+            }),
+        )
         return next(action)
     }
 

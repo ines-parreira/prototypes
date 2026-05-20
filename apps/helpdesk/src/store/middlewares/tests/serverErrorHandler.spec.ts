@@ -189,6 +189,103 @@ describe('middlewares', () => {
             })
         })
 
+        describe('Integration limit reached', () => {
+            const originalHref = window.location.href
+
+            beforeEach(() => {
+                Object.defineProperty(window, 'location', {
+                    configurable: true,
+                    enumerable: true,
+                    value: new URL(originalHref),
+                })
+            })
+
+            const buildLimitReachedAction = (
+                limit: number,
+                current: number,
+                upgradable: boolean = true,
+            ) => ({
+                error: {
+                    isAxiosError: true,
+                    response: {
+                        status: 422,
+                        data: {
+                            error: {
+                                msg: `You've reached your plan's limit of ${limit} channels.`,
+                                data: {
+                                    error_code: 'integration_limit_reached',
+                                    limit,
+                                    current,
+                                    upgradable,
+                                },
+                            },
+                        },
+                    },
+                },
+                type: 'CREATE_INTEGRATION_ERROR',
+            })
+
+            it('should dispatch an upgrade notification when the merchant can self-serve', () => {
+                store.dispatch(buildLimitReachedAction(25, 25, true))
+
+                const payload = _get(store.getActions(), [0, 'payload'])
+                expect(payload).toMatchObject({
+                    title: "You've reached your plan's limit of 25 channels.",
+                    message: 'Upgrade your plan to add more channels.',
+                    buttons: [
+                        expect.objectContaining({ name: 'Upgrade plan' }),
+                    ],
+                })
+            })
+
+            it('should dispatch a CSM-contact notification when the merchant is on a non-upgradable plan', () => {
+                store.dispatch(buildLimitReachedAction(50, 50, false))
+
+                const payload = _get(store.getActions(), [0, 'payload'])
+                expect(payload).toMatchObject({
+                    title: "You've reached your plan's limit of 50 channels.",
+                    message:
+                        'Reach out to your Customer Success Manager to raise your limit.',
+                    buttons: [expect.objectContaining({ name: 'Contact us' })],
+                })
+            })
+
+            it('button onClick navigates to billing', () => {
+                const assignSpy = jest.fn()
+                Object.defineProperty(window.location, 'assign', {
+                    configurable: true,
+                    value: assignSpy,
+                })
+
+                store.dispatch(buildLimitReachedAction(10, 12, true))
+
+                const buttons = _get(store.getActions(), [
+                    0,
+                    'payload',
+                    'buttons',
+                ]) as Array<{
+                    name: string
+                    primary?: boolean
+                    onClick?: () => void
+                }>
+
+                expect(buttons).toHaveLength(1)
+                buttons[0].onClick?.()
+                expect(assignSpy).toHaveBeenCalledWith('/app/settings/billing')
+            })
+
+            it('should not also dispatch the generic error toast', () => {
+                store.dispatch(buildLimitReachedAction(5, 5))
+                // Exactly one notification is dispatched — the specialized one.
+                // The original action is still forwarded via next(), so total
+                // dispatched action count is 2, but only one is a notification.
+                const notifications = store
+                    .getActions()
+                    .filter((a) => a.type === types.upsertNotification)
+                expect(notifications).toHaveLength(1)
+            })
+        })
+
         describe('Login redirect', () => {
             const originalHref = window.location.href
             const errorAction = {
