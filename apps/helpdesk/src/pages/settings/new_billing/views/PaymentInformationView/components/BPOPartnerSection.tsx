@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
-import { LegacySelectField as SelectField } from '@gorgias/axiom'
+import { LegacySelectField as SelectField, toast } from '@gorgias/axiom'
 import {
     queryKeys,
     useGetCompany,
@@ -10,13 +10,10 @@ import {
 } from '@gorgias/helpdesk-queries'
 import { BPOPartner } from '@gorgias/helpdesk-types'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import Loader from 'pages/common/components/Loader/Loader'
 import { convertPartnerEnumToOptions } from 'pages/settings/new_billing/components/ConsultingAgencyPartnerDropdown/utils'
 import css from 'pages/settings/new_billing/views/PaymentInformationView/components/PartnerFields.less'
 import { Section } from 'pages/settings/new_billing/views/PaymentInformationView/components/Section'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 type PartnerOption = {
     value: string
@@ -24,7 +21,6 @@ type PartnerOption = {
 }
 
 export const BPOPartnerSection = () => {
-    const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
     const { data: companyData, isLoading } = useGetCompany({
         query: {
@@ -77,12 +73,7 @@ export const BPOPartnerSection = () => {
                 })
             } catch {
                 setBpoPartner(currentBpoPartner)
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message: 'Failed to update BPO partner',
-                    }),
-                )
+                toast.error('Failed to update BPO partner')
             }
             return
         }
@@ -102,12 +93,7 @@ export const BPOPartnerSection = () => {
             })
         } catch {
             setBpoPartner(currentBpoPartner)
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: 'Failed to update BPO partner',
-                }),
-            )
+            toast.error('Failed to update BPO partner')
         }
     }
 

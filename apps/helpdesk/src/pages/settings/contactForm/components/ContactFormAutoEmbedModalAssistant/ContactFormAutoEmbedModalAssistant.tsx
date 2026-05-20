@@ -3,9 +3,8 @@ import { get } from 'lodash'
 import _noop from 'lodash/noop'
 import { useHistory } from 'react-router-dom'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import type { CreateShopifyPageEmbedmentDto } from 'models/contactForm/types'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
@@ -21,8 +20,6 @@ import {
     CONTACT_FORM_MANAGE_EMBEDMENTS_PATH,
 } from 'pages/settings/contactForm/constants'
 import { insertContactFormIdParam } from 'pages/settings/contactForm/utils/navigation'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import {
     contactFormPageEmbedmentsKeys,
@@ -61,7 +58,6 @@ const ContactFormAutoEmbedModalAssistant = (
         reset: resetPageEmbedmentForm,
     } = usePageEmbedmentForm()
 
-    const appDispatch = useAppDispatch()
     const history = useHistory()
 
     const queryClient = useQueryClient()
@@ -69,20 +65,11 @@ const ContactFormAutoEmbedModalAssistant = (
     const createPageEmbedmentMutation = useCreatePageEmbedment({
         onSuccess: async (newPageEmbedment) => {
             if (!newPageEmbedment) {
-                void appDispatch(
-                    notify({
-                        message: 'Something went wrong',
-                    }),
-                )
+                toast.info('Something went wrong')
                 return
             }
 
-            void appDispatch(
-                notify({
-                    message: 'Form embedded to page.',
-                    status: NotificationStatus.Success,
-                }),
-            )
+            toast.success('Form embedded to page.')
 
             await queryClient.invalidateQueries(
                 contactFormPageEmbedmentsKeys.all(contactFormId),
@@ -114,12 +101,7 @@ const ContactFormAutoEmbedModalAssistant = (
                 })
             }
 
-            void appDispatch(
-                notify({
-                    message,
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error(message)
         },
     })
 

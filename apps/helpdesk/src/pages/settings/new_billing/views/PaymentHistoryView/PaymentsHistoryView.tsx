@@ -5,11 +5,10 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import type { AxiosError } from 'axios'
 import { useLocation } from 'react-router'
 
+import { toast } from '@gorgias/axiom'
+
 import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
-import useAppDispatch from 'hooks/useAppDispatch'
 import type { Invoice } from 'state/billing/types'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { useInvoicePayment } from './hooks/useInvoicePayment'
 import { PaymentHistoryTable } from './PaymentHistoryTable'
@@ -18,7 +17,6 @@ import css from './PaymentHistoryView.less'
 
 const PaymentsHistoryView = () => {
     const { pathname } = useLocation()
-    const dispatch = useAppDispatch()
 
     const {
         confirmPayment: confirmPaymentPrimitive,
@@ -53,15 +51,10 @@ const PaymentsHistoryView = () => {
                     responseError.response?.data.error?.msg ||
                     'Failed to confirm the payment. Please try again in a few seconds.'
 
-                dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        title: errorMsg,
-                    }),
-                )
+                toast.error(errorMsg)
             }
         },
-        [confirmPaymentPrimitive, dispatch],
+        [confirmPaymentPrimitive],
     )
 
     const retryPayment = useCallback(
@@ -76,15 +69,10 @@ const PaymentsHistoryView = () => {
                     responseError.response?.data.error?.msg ||
                     'Failed to pay the invoice. Please try again in a few seconds.'
 
-                await dispatch(
-                    notify({
-                        message: errorMsg,
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error(errorMsg)
             }
         },
-        [dispatch, retryPaymentPrimitive],
+        [retryPaymentPrimitive],
     )
 
     return (

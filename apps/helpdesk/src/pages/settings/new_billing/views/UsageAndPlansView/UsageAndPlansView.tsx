@@ -16,8 +16,8 @@ import classNames from 'classnames'
 import moment from 'moment'
 import { useHistory, useLocation } from 'react-router-dom'
 
-import { AlertBannerTypes } from 'AlertBanners'
-import useAppDispatch from 'hooks/useAppDispatch'
+import { Button, toast } from '@gorgias/axiom'
+
 import useAppSelector from 'hooks/useAppSelector'
 import { ProductType } from 'models/billing/types'
 import {
@@ -43,8 +43,6 @@ import {
     shouldPayWithShopify as getShouldPayWithShopify,
     isTrialing,
 } from 'state/currentAccount/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStyle } from 'state/notifications/types'
 
 import BillingScheduledUpdates from '../../components/BillingScheduledUpdates/BillingScheduledUpdates'
 import NavigateToChangeBillingFrequency from '../../components/NavigateToChangeBillingFrequency/NavigateToChangeBillingFrequency'
@@ -85,7 +83,6 @@ const UsageAndPlansView = ({
     voiceBanner,
     helpdeskBanner,
 }: UsageAndPlansViewProps) => {
-    const dispatch = useAppDispatch()
     const history = useHistory()
     const currentSubscription = useAppSelector(getCurrentSubscription)
     const isCurrentSubscriptionCanceled = currentSubscription.isEmpty()
@@ -168,50 +165,64 @@ const UsageAndPlansView = ({
                     .filter(Boolean)
                     .join(', ')
 
-                void dispatch(
-                    notify({
-                        style: NotificationStyle.Banner,
-                        type: AlertBannerTypes.Warning,
-                        message: `Your subscription to the ${helpdeskPlanName} plan ${
-                            otherPlans.length > 0 ? `with ${otherPlans}` : ''
-                        } starts on <b>${subscriptionStartDate}</b>.`,
-                        CTA: {
-                            type: 'internal',
-                            to: `${BILLING_PROCESS_PATH}/helpdesk`,
-                            text: 'Review Subscription',
-                        },
+                toast.warning(
+                    `Your subscription to the ${helpdeskPlanName} plan ${
+                        otherPlans.length > 0 ? `with ${otherPlans}` : ''
+                    } starts on ${subscriptionStartDate}.`,
+                    {
                         id: 'trial-start-subscription',
-                    }),
+                        duration: Infinity,
+                        inlineActions: (
+                            <Button
+                                size="sm"
+                                variant="tertiary"
+                                onClick={() =>
+                                    history.push(
+                                        `${BILLING_PROCESS_PATH}/helpdesk`,
+                                    )
+                                }
+                            >
+                                Review Subscription
+                            </Button>
+                        ),
+                    },
                 )
             } else if (showTrialBanner) {
-                const CTA = {
-                    type: 'internal' as const,
-                    ...(shouldPayWithShopify
-                        ? {
-                              to: ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
-                              text: 'Activate Billing with Shopify',
-                              openInNewTab: true,
-                          }
-                        : {
-                              to: BILLING_PAYMENT_CARD_PATH,
-                              text: 'Add a payment method',
-                          }),
-                }
+                const ctaButton = shouldPayWithShopify ? (
+                    <Button
+                        size="sm"
+                        variant="tertiary"
+                        onClick={() =>
+                            window.open(
+                                ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
+                                '_blank',
+                            )
+                        }
+                    >
+                        Activate Billing with Shopify
+                    </Button>
+                ) : (
+                    <Button
+                        size="sm"
+                        variant="tertiary"
+                        onClick={() => history.push(BILLING_PAYMENT_CARD_PATH)}
+                    >
+                        Add a payment method
+                    </Button>
+                )
 
-                void dispatch(
-                    notify({
+                toast.warning(
+                    `Your free trial is ending on ${trialPeriodEnd}.`,
+                    {
                         id: 'trial-start-subscription',
-                        style: NotificationStyle.Banner,
-                        type: AlertBannerTypes.Warning,
-                        CTA,
-                        message: `Your free trial is ending on ${trialPeriodEnd}.`,
-                    }),
+                        duration: Infinity,
+                        inlineActions: ctaButton,
+                    },
                 )
             }
         }
     }, [
         currentAutomatePlan,
-        dispatch,
         hasCreditCard,
         shouldPayWithShopify,
         currentHelpdeskPlan?.name,

@@ -16,7 +16,6 @@ describe('<APIView/>', () => {
         email: '',
         domain: 'justatest',
         fetchCurrentAuths: jest.fn(),
-        notify: jest.fn(),
         resetApiKey: jest.fn(),
     }
 

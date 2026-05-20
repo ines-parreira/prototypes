@@ -8,11 +8,10 @@ import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
 import { uploadFiles } from 'common/utils'
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import type { GorgiasApiError } from 'models/api/types'
 import { createJob } from 'models/job/resources'
@@ -20,8 +19,6 @@ import { JobType } from 'models/job/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Loader from 'pages/common/components/Loader/Loader'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { saveFileAsDownloaded } from 'utils/file'
 
 import css from './MacrosCSVImportPopover.less'
@@ -38,7 +35,6 @@ export const MacrosCSVImportPopover = ({ isOpen, onClose }: Props) => {
     const [pickedFile, setPickedFile] = useState<File | null>(null)
     const hiddenFileInputRef = useRef<HTMLInputElement>(null)
     const currentAccount = useAppSelector(getCurrentAccountState)
-    const dispatch = useAppDispatch()
     const appNode = useAppNode()
 
     const [{ loading: isImporting }, handleImport] = useAsyncFn(async () => {
@@ -53,15 +49,11 @@ export const MacrosCSVImportPopover = ({ isOpen, onClose }: Props) => {
             uploadedFiles = await uploadFiles([pickedFile])
         } catch (e) {
             const error = e as GorgiasApiError
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message:
-                        error.response?.status === 413
-                            ? 'Failed to upload file because its size is bigger than 10MB. Try splitting it into several smaller files.'
-                            : (error.response?.data.error.msg ??
-                              'Failed to upload file. Please try again later.'),
-                }),
+            toast.error(
+                error.response?.status === 413
+                    ? 'Failed to upload file because its size is bigger than 10MB. Try splitting it into several smaller files.'
+                    : (error.response?.data.error.msg ??
+                          'Failed to upload file. Please try again later.'),
             )
             return
         }
@@ -71,24 +63,16 @@ export const MacrosCSVImportPopover = ({ isOpen, onClose }: Props) => {
         }
         try {
             await createJob(requestPayload)
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Success,
-                    message:
-                        'All the macros will be imported. You will receive a notification via email once the import is done.',
-                }),
+            toast.success(
+                'All the macros will be imported. You will receive a notification via email once the import is done.',
             )
             onClose()
             setPickedFile(null)
         } catch (e) {
             const error = e as GorgiasApiError
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message:
-                        error.response?.data.error.msg ??
-                        'Failed to import macros. Please try again later.',
-                }),
+            toast.error(
+                error.response?.data.error.msg ??
+                    'Failed to import macros. Please try again later.',
             )
         }
     }, [pickedFile])

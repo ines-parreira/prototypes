@@ -2,9 +2,8 @@ import { useEffect, useMemo, useState } from 'react'
 
 import classNames from 'classnames'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import type {
     ContactForm,
     UpdateContactFormDto,
@@ -21,8 +20,6 @@ import { ContactFormDisplayMode } from 'pages/settings/contactForm/types/formDis
 import { catchAsync } from 'pages/settings/contactForm/utils/errorHandling'
 import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal'
 import SubjectLines from 'pages/settings/helpCenter/components/SubjectLines/SubjectLines'
-import { notify as notifyAction } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import ContactFormFlowsBanner from './ContactFormFlowsBanner'
 
@@ -47,7 +44,6 @@ const initUpdateDto = (
 }
 
 const ContactFormCustomization = (): JSX.Element => {
-    const dispatch = useAppDispatch()
     const { updateContactForm, isLoading } = useContactFormApi()
     const contactForm = useCurrentContactForm()
 
@@ -135,16 +131,11 @@ const ContactFormCustomization = (): JSX.Element => {
         )
         const isUpdated = !error && result
 
-        dispatch(
-            notifyAction({
-                status: isUpdated
-                    ? NotificationStatus.Success
-                    : NotificationStatus.Error,
-                message: isUpdated
-                    ? 'Contact form updated successfully'
-                    : 'Failed to update the Contact Form',
-            }),
-        )
+        if (isUpdated) {
+            toast.success('Contact form updated successfully')
+        } else {
+            toast.error('Failed to update the Contact Form')
+        }
 
         if (isUpdated) {
             setIsDirty(false)

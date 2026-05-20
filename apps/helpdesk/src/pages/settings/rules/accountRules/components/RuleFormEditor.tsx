@@ -6,7 +6,7 @@ import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Nav, Navbar } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { Button, toast } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
@@ -20,8 +20,6 @@ import {
     ruleDeleted,
     ruleUpdated,
 } from 'state/entities/rules/actions'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { ManagedRuleDisplayName } from 'state/rules/constants'
 import type {
     ManagedRule,
@@ -104,12 +102,7 @@ export const RuleFormEditor = ({ rule }: Props) => {
     const [{ loading: isSubmitting }, handleSubmit] = useAsyncFn(
         async (ruleDraft: Partial<RuleDraft>, hasMissingFields = false) => {
             if (hasMissingFields) {
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message: 'Complete required fields in order to save',
-                    }),
-                )
+                toast.error('Complete required fields in order to save')
                 return
             }
 
@@ -121,39 +114,19 @@ export const RuleFormEditor = ({ rule }: Props) => {
                         ...ruleDraft,
                     })
                     dispatch(ruleUpdated(newRule))
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Success,
-                            message: 'Successfully updated rule',
-                        }),
-                    )
+                    toast.success('Successfully updated rule')
                     history.push('/app/settings/rules')
                 } catch {
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Error,
-                            message: 'Failed to update rule',
-                        }),
-                    )
+                    toast.error('Failed to update rule')
                 }
             } else {
                 try {
                     newRule = await createRule(ruleDraft as RuleDraft)
                     dispatch(ruleCreated(newRule))
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Success,
-                            message: 'Successfully created rule',
-                        }),
-                    )
+                    toast.success('Successfully created rule')
                     history.push('/app/settings/rules')
                 } catch {
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Error,
-                            message: 'Failed to create rule',
-                        }),
-                    )
+                    toast.error('Failed to create rule')
                 }
             }
         },
@@ -169,19 +142,9 @@ export const RuleFormEditor = ({ rule }: Props) => {
             await deleteRule(rule.id)
             history.push('/app/settings/rules')
             dispatch(ruleDeleted(rule.id))
-            void dispatch(
-                notify({
-                    message: 'Successfully deleted rule',
-                    status: NotificationStatus.Success,
-                }),
-            )
+            toast.success('Successfully deleted rule')
         } catch {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: 'Failed to delete rule',
-                }),
-            )
+            toast.error('Failed to delete rule')
         }
     }, [rule])
 

@@ -1,9 +1,10 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { render } from '@repo/testing'
-import { fireEvent, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
+
+import { toast } from '@gorgias/axiom'
 
 import { OBJECT_TYPES } from 'custom-fields/constants'
-import * as notificationActions from 'state/notifications/actions'
 import * as fileUtils from 'utils/file'
 
 import { DropdownCSVImport } from '../DropdownCSVImport'
@@ -18,6 +19,9 @@ const props = {
     objectType: OBJECT_TYPES.TICKET,
 }
 describe('<DropdownCSVImport/>', () => {
+    afterEach(() => {
+        toast.dismiss()
+    })
     const simulateDrop = (dropZone: HTMLElement, contents: string) => {
         const dummyFile = {
             getAsFile: () =>
@@ -63,7 +67,6 @@ describe('<DropdownCSVImport/>', () => {
         expect(getByText('Import File')).toBeTruthy()
     })
     it('should call onImport() and onClose() on successful import', async () => {
-        const notify = jest.spyOn(notificationActions, 'notify')
         const { getByText } = render(<DropdownCSVImport {...props} />, {})
         const dropZone = getByText('Drop your CSV here, or')
         await simulateDrop(dropZone, 'value1,sub1\nvalue2,sub2')
@@ -73,9 +76,12 @@ describe('<DropdownCSVImport/>', () => {
             'value1::sub1',
             'value2::sub2',
         ])
-        expect(notify).toHaveBeenCalledWith({
-            status: 'success',
-            message: '2 values successfully imported.',
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: '2 values successfully imported.',
+                }),
+            ).toHaveAttribute('data-intent', 'success')
         })
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.CustomFieldDropdownCsvImportSuccessful,
@@ -94,18 +100,18 @@ describe('<DropdownCSVImport/>', () => {
         ])
     })
     it('should fail to import invalid CSV files', async () => {
-        const notify = jest.spyOn(notificationActions, 'notify')
         const { getByText } = render(<DropdownCSVImport {...props} />, {})
         const dropZone = getByText('Drop your CSV here, or')
         await simulateDrop(dropZone, 'a\nb,c')
         await waitFor(() => fireEvent.click(getByText('Import File')))
         await waitFor(() => props.onClose.mock.calls.length > 0)
         expect(props.onImport).not.toHaveBeenCalled()
-        expect(notify).toHaveBeenCalledWith({
-            status: 'error',
-            message:
-                'Import was unsuccessful: Invalid CSV file: Invalid Record Length: expect 1, got 2 on line 2',
-            allowHTML: true,
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Import was unsuccessful: Invalid CSV file: Invalid Record Length: expect 1, got 2 on line 2',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.CustomFieldDropdownCsvImportError,
@@ -115,17 +121,18 @@ describe('<DropdownCSVImport/>', () => {
         )
     })
     it('should fail to import on duplicated values', async () => {
-        const notify = jest.spyOn(notificationActions, 'notify')
         const { getByText } = render(<DropdownCSVImport {...props} />, {})
         const dropZone = getByText('Drop your CSV here, or')
         await simulateDrop(dropZone, 'value1\nvalue1')
         await waitFor(() => fireEvent.click(getByText('Import File')))
         await waitFor(() => props.onClose.mock.calls.length > 0)
         expect(props.onImport).not.toHaveBeenCalled()
-        expect(notify).toHaveBeenCalledWith({
-            status: 'error',
-            allowHTML: true,
-            message: 'Import was unsuccessful: File has duplicates',
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Import was unsuccessful: File has duplicates',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.CustomFieldDropdownCsvImportError,
@@ -135,18 +142,18 @@ describe('<DropdownCSVImport/>', () => {
         )
     })
     it('should fail to import on values with more than 5 levels of nesting', async () => {
-        const notify = jest.spyOn(notificationActions, 'notify')
         const { getByText } = render(<DropdownCSVImport {...props} />, {})
         const dropZone = getByText('Drop your CSV here, or')
         await simulateDrop(dropZone, 'a,b,c,d,e,f')
         await waitFor(() => fireEvent.click(getByText('Import File')))
         await waitFor(() => props.onClose.mock.calls.length > 0)
         expect(props.onImport).not.toHaveBeenCalled()
-        expect(notify).toHaveBeenCalledWith({
-            status: 'error',
-            message:
-                'Import was unsuccessful: Some values have more than 5 nested children levels',
-            allowHTML: true,
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Import was unsuccessful: Some values have more than 5 nested children levels',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.CustomFieldDropdownCsvImportError,
@@ -156,7 +163,6 @@ describe('<DropdownCSVImport/>', () => {
         )
     })
     it('should fail to import more than 2,000 values', async () => {
-        const notify = jest.spyOn(notificationActions, 'notify')
         const { getByText } = render(<DropdownCSVImport {...props} />, {})
         const dropZone = getByText('Drop your CSV here, or')
         const contents = Array.from(Array(2100).keys()).join('\n')
@@ -164,10 +170,12 @@ describe('<DropdownCSVImport/>', () => {
         await waitFor(() => fireEvent.click(getByText('Import File')))
         await waitFor(() => props.onClose.mock.calls.length > 0)
         expect(props.onImport).not.toHaveBeenCalled()
-        expect(notify).toHaveBeenCalledWith({
-            status: 'error',
-            message: 'Import was unsuccessful: File has more than 2,000 values',
-            allowHTML: true,
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Import was unsuccessful: File has more than 2,000 values',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.CustomFieldDropdownCsvImportError,
@@ -177,18 +185,18 @@ describe('<DropdownCSVImport/>', () => {
         )
     })
     it('should use a list for errors when there is more than one', async () => {
-        const notify = jest.spyOn(notificationActions, 'notify')
         const { getByText } = render(<DropdownCSVImport {...props} />, {})
         const dropZone = getByText('Drop your CSV here, or')
         await simulateDrop(dropZone, 'a,b,c,d,e,f\na,b,c,d,e,f')
         await waitFor(() => fireEvent.click(getByText('Import File')))
         await waitFor(() => props.onClose.mock.calls.length > 0)
         expect(props.onImport).not.toHaveBeenCalled()
-        expect(notify).toHaveBeenCalledWith({
-            status: 'error',
-            allowHTML: true,
-            message:
-                'Import was unsuccessful: <ul><li>File has duplicates</li><li>Some values have more than 5 nested children levels</li></ul>',
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Import was unsuccessful: <ul><li>File has duplicates</li><li>Some values have more than 5 nested children levels</li></ul>',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.CustomFieldDropdownCsvImportError,

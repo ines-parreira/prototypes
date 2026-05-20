@@ -1,8 +1,7 @@
-import useAppDispatch from 'hooks/useAppDispatch'
+import { toast } from '@gorgias/axiom'
+
 import Alert from 'pages/common/components/Alert/Alert'
 import MultiSelectField from 'pages/common/forms/MultiSelectField'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import type {
     AutoCloseSpamSettings,
     ManagedRuleSettings,
@@ -16,7 +15,6 @@ export const AutoCloseSpamEditor = ({
     settings,
     onChange,
 }: ManagedRuleDetailProps<AutoCloseSpamSettings>) => {
-    const dispatch = useAppDispatch()
     const setAllowlist = (newList: string[]) => ({
         ...settings,
         allow_list: newList,
@@ -43,12 +41,8 @@ export const AutoCloseSpamEditor = ({
                 (other) => other.includes(newValue) || newValue.includes(other),
             )
             if (overlap) {
-                void dispatch(
-                    notify({
-                        message: `"<b>${newValue}"</b> is already included in the other list as <b>"${overlap}"</b>`,
-                        status: NotificationStatus.Error,
-                        allowHTML: true,
-                    }),
+                toast.error(
+                    `"${newValue}" is already included in the other list as "${overlap}"`,
                 )
                 return
             }

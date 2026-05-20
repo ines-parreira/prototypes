@@ -2,20 +2,17 @@ import { useEffectOnce } from '@repo/hooks'
 import { history } from '@repo/routing'
 import { useLocation } from 'react-router-dom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
+import { toast } from '@gorgias/axiom'
 
-const NOTIF_TYPE_TO_STATUS: Record<string, NotificationStatus> = {
-    error: NotificationStatus.Error,
-    success: NotificationStatus.Success,
-    warning: NotificationStatus.Warning,
-    info: NotificationStatus.Info,
+const NOTIF_TYPE_TO_TOAST: Record<string, (msg: string) => void> = {
+    error: toast.error,
+    success: toast.success,
+    warning: toast.warning,
+    info: toast.info,
 }
 
 export function useUrlNotification() {
     const { search, pathname } = useLocation()
-    const dispatch = useAppDispatch()
 
     useEffectOnce(() => {
         const params = new URLSearchParams(search)
@@ -33,15 +30,8 @@ export function useUrlNotification() {
             message = rawNotifMsg
         }
 
-        const status =
-            NOTIF_TYPE_TO_STATUS[notifType] ?? NotificationStatus.Info
-
-        void dispatch(
-            notify({
-                message,
-                status,
-            }),
-        )
+        const showToast = NOTIF_TYPE_TO_TOAST[notifType] ?? toast.info
+        showToast(message)
 
         params.delete('notif_type')
         params.delete('notif_msg')

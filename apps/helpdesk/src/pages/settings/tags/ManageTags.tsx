@@ -9,7 +9,7 @@ import type { Map } from 'immutable'
 import { Link } from 'react-router-dom'
 import { Form, Popover, PopoverBody, PopoverHeader } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { Button, toast } from '@gorgias/axiom'
 import type {
     CursorPaginationMeta,
     ListTagsParams,
@@ -32,8 +32,6 @@ import Search from 'pages/common/components/Search'
 import Video from 'pages/common/components/Video/Video'
 import TextInput from 'pages/common/forms/input/TextInput'
 import settingsCss from 'pages/settings/settings.less'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { bulkDelete, create, merge, selectAll } from 'state/tags/actions'
 import { getIsCreating, getMeta, getSelectAll } from 'state/tags/selectors'
 
@@ -108,13 +106,9 @@ const ManageTags = () => {
                 const responseError = error as AxiosError<{
                     error?: { msg: string }
                 }>
-                await dispatch(
-                    notify({
-                        message:
-                            responseError.response?.data.error?.msg ||
-                            'Failed to fetch tags.',
-                        status: NotificationStatus.Error,
-                    }),
+                toast.error(
+                    responseError.response?.data.error?.msg ||
+                        'Failed to fetch tags.',
                 )
             }
         }

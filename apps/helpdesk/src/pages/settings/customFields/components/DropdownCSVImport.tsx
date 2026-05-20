@@ -9,6 +9,7 @@ import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 
 import {
     LegacyButton as Button,
+    toast,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
@@ -19,12 +20,9 @@ import {
     OBJECT_TYPE_SETTINGS,
 } from 'custom-fields/constants'
 import type { CustomFieldObjectTypes } from 'custom-fields/types'
-import useAppDispatch from 'hooks/useAppDispatch'
 import LinkButton from 'pages/common/components/button/LinkButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import { ConfirmationModal } from 'pages/settings/helpCenter/components/ConfirmationModal'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { getText, saveFileAsDownloaded } from 'utils/file'
 
 import { DropdownCSVImportDropZone } from './DropdownCSVImportDropZone'
@@ -63,7 +61,6 @@ export const DropdownCSVImport = ({
     needsConfirmation,
     objectType,
 }: Props) => {
-    const dispatch = useAppDispatch()
     const customFieldTypeLabel = OBJECT_TYPE_SETTINGS[objectType].LABEL
     const [isConfirmationOpen, setIsConfirmationOpen] = useState(false)
     const [pickedFile, setPickedFile] = useState<File | null>(null)
@@ -105,12 +102,7 @@ export const DropdownCSVImport = ({
                 objectType,
             })
 
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Success,
-                    message: `${lines.length} values successfully imported.`,
-                }),
-            )
+            toast.success(`${lines.length} values successfully imported.`)
         } else {
             logEvent(SegmentEvent.CustomFieldDropdownCsvImportError, {
                 objectType,
@@ -120,13 +112,7 @@ export const DropdownCSVImport = ({
                 errors.length > 1
                     ? '<ul><li>' + errors.join('</li><li>') + '</li></ul>'
                     : errors[0]
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: 'Import was unsuccessful: ' + errorMsg,
-                    allowHTML: true,
-                }),
-            )
+            toast.error('Import was unsuccessful: ' + errorMsg)
         }
 
         onClose()

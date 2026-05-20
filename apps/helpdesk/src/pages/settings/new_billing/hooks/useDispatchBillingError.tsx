@@ -1,23 +1,35 @@
 import { useCallback } from 'react'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import type { TicketPurpose } from 'state/billing/types'
-import { notify } from 'state/notifications/actions'
+import { Button, toast } from '@gorgias/axiom'
 
-import createBillingErrorNotification from '../utils/createBillingErrorNotification'
+import { isGorgiasApiError } from 'models/api/types'
+import { TicketPurpose } from 'state/billing/types'
 
 type ContactBilling = (ticketPurpose: TicketPurpose) => void
 
 const useDispatchBillingError = (contactBilling: ContactBilling) => {
-    const dispatch = useAppDispatch()
-
     return useCallback(
         (error: unknown) => {
-            void dispatch(
-                notify(createBillingErrorNotification(error, contactBilling)),
-            )
+            const apiError = isGorgiasApiError(error) ? error : undefined
+            const errorMsg = apiError
+                ? apiError.response.data.error.msg
+                : `We couldn't update your subscription. Please try again.`
+
+            toast.error(errorMsg, {
+                id: 'billing-error-notification',
+                duration: Infinity,
+                inlineActions: (
+                    <Button
+                        size="sm"
+                        variant="tertiary"
+                        onClick={() => contactBilling(TicketPurpose.ERROR)}
+                    >
+                        Contact Billing
+                    </Button>
+                ),
+            })
         },
-        [contactBilling, dispatch],
+        [contactBilling],
     )
 }
 

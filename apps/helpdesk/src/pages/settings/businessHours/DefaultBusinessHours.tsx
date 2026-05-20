@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import classnames from 'classnames'
 
-import { LegacyIconButton as IconButton } from '@gorgias/axiom'
+import { LegacyIconButton as IconButton, toast } from '@gorgias/axiom'
 import {
     queryKeys,
     useListAccountSettings,
@@ -13,10 +13,7 @@ import type { BusinessHoursTimeframe } from '@gorgias/helpdesk-types'
 
 import { useAppNode } from 'appNode'
 import { Drawer } from 'components/Drawer/Drawer'
-import useAppDispatch from 'hooks/useAppDispatch'
 import type { GorgiasApiError } from 'models/api/types'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import BusinessHoursDisplay from './BusinessHoursDisplay'
 import { DefaultBusinessHoursDrawer } from './DefaultBusinessHoursDrawer'
@@ -27,7 +24,6 @@ import css from './DefaultBusinessHours.less'
 const DefaultBusinessHours = () => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false)
     const appNode = useAppNode()
-    const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
 
     const { data } = useListAccountSettings({ type: 'business-hours' })
@@ -51,25 +47,14 @@ const DefaultBusinessHours = () => {
                     })
                 },
                 onError: (error) => {
-                    void dispatch(
-                        notify({
-                            message:
-                                (error as GorgiasApiError).response?.data?.error
-                                    ?.msg ??
-                                'Something went wrong, please try again',
-                            status: NotificationStatus.Error,
-                        }),
+                    toast.error(
+                        (error as GorgiasApiError).response?.data?.error?.msg ??
+                            'Something went wrong, please try again',
                     )
                 },
                 onSuccess: () => {
                     setIsDrawerOpen(false)
-                    void dispatch(
-                        notify({
-                            message:
-                                'Successfully updated default business hours',
-                            status: NotificationStatus.Success,
-                        }),
-                    )
+                    toast.success('Successfully updated default business hours')
                 },
             },
         })

@@ -8,6 +8,7 @@ import _isEqual from 'lodash/isEqual'
 import moment from 'moment-timezone'
 import { Table } from 'reactstrap'
 
+import { toast } from '@gorgias/axiom'
 import type { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
 
 import PeriodPicker from 'domains/reporting/pages/common/PeriodPicker'
@@ -26,8 +27,6 @@ import PageHeader from 'pages/common/components/PageHeader'
 import { getHumanAgents } from 'state/agents/selectors'
 import { auditLogEventsFetched } from 'state/entities/auditLogEvents/actions'
 import { getAuditLogEvents } from 'state/entities/auditLogEvents/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { humanizeString } from 'utils'
 import { getMoment } from 'utils/date'
 
@@ -101,13 +100,9 @@ const UserAuditList = () => {
                 const responseError = error as AxiosError<{
                     error?: { msg: string }
                 }>
-                await dispatch(
-                    notify({
-                        message:
-                            responseError.response?.data.error?.msg ||
-                            'Failed to fetch events.',
-                        status: NotificationStatus.Error,
-                    }),
+                toast.error(
+                    responseError.response?.data.error?.msg ||
+                        'Failed to fetch events.',
                 )
             }
         }

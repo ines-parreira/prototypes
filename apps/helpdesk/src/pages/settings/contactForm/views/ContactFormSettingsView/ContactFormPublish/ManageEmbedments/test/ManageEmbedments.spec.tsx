@@ -1,7 +1,8 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, render, userEvent } from '@repo/testing'
-import { screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
+import { toast } from '@gorgias/axiom'
 
 import { account, account as accountFixture } from 'fixtures/account'
 import { integrationsState } from 'fixtures/integrations'
@@ -34,6 +35,12 @@ const mockUpdatePageEmbedment = jest.fn()
 const mockDeletePageEmbedment = jest.fn()
 const useUpdatePageEmbedmentMock = assumeMock(useUpdatePageEmbedment)
 const useDeletePageEmbedmentMock = assumeMock(useDeletePageEmbedment)
+let capturedUpdateOverrides:
+    | Parameters<typeof useUpdatePageEmbedment>[0]
+    | undefined
+let capturedDeleteOverrides:
+    | Parameters<typeof useDeletePageEmbedment>[0]
+    | undefined
 const embedments: ContactFormPageEmbedment[] = Array.from({ length: 3 }).map(
     (_, i) => ({
         id: i + 1,
@@ -82,20 +89,28 @@ const renderView = ({
 describe('ContactFormPublish', () => {
     beforeEach(() => {
         jest.resetAllMocks()
-        useUpdatePageEmbedmentMock.mockImplementation(() => {
+        capturedUpdateOverrides = undefined
+        capturedDeleteOverrides = undefined
+        useUpdatePageEmbedmentMock.mockImplementation((overrides) => {
+            capturedUpdateOverrides = overrides
             return {
                 mutate: mockUpdatePageEmbedment,
                 mutateAsync: mockUpdatePageEmbedment,
                 isLoading: false,
             } as unknown as ReturnType<typeof useUpdatePageEmbedmentMock>
         })
-        useDeletePageEmbedmentMock.mockImplementation(() => {
+        useDeletePageEmbedmentMock.mockImplementation((overrides) => {
+            capturedDeleteOverrides = overrides
             return {
                 mutate: mockDeletePageEmbedment,
                 mutateAsync: mockDeletePageEmbedment,
                 isLoading: false,
             } as unknown as ReturnType<typeof useDeletePageEmbedmentMock>
         })
+    })
+
+    afterEach(() => {
+        toast.dismiss()
     })
     it('wording check', () => {
         renderView({ state: defaultState, embedments })
@@ -161,6 +176,103 @@ describe('ContactFormPublish', () => {
         //expect Delete action to be called
         await waitFor(() => {
             expect(mockDeletePageEmbedment).toHaveBeenCalled()
+        })
+    })
+
+    it('shows a success toast when a page embedment update succeeds', async () => {
+        renderView({ state: defaultState, embedments })
+        await act(async () => {
+            await capturedUpdateOverrides?.onSuccess?.(
+                embedments[0] as never,
+                [undefined, { contact_form_id: contactForm.id }] as never,
+                undefined,
+            )
+        })
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', { name: 'Form position updated' }),
+            ).toHaveAttribute('data-intent', 'success')
+        })
+    })
+
+    it('shows an info toast when the update returns no embedment', async () => {
+        renderView({ state: defaultState, embedments })
+        await act(async () => {
+            await capturedUpdateOverrides?.onSuccess?.(
+                undefined as never,
+                [undefined, { contact_form_id: contactForm.id }] as never,
+                undefined,
+            )
+        })
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', { name: 'Something went wrong' }),
+            ).toHaveAttribute('data-intent', 'info')
+        })
+    })
+
+    it('shows an error toast when a page embedment update fails', async () => {
+        renderView({ state: defaultState, embedments })
+        act(() => {
+            capturedUpdateOverrides?.onError?.(
+                {} as never,
+                [undefined, { contact_form_id: contactForm.id }] as never,
+                undefined,
+            )
+        })
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', { name: 'Something went wrong' }),
+            ).toHaveAttribute('data-intent', 'destructive')
+        })
+    })
+
+    it('shows a success toast when a page embedment is removed', async () => {
+        renderView({ state: defaultState, embedments })
+        await act(async () => {
+            await capturedDeleteOverrides?.onSuccess?.(
+                undefined as never,
+                [
+                    undefined,
+                    {
+                        contact_form_id: contactForm.id,
+                        embedment_id: embedments[0].id,
+                    },
+                ] as never,
+                undefined,
+            )
+        })
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', { name: 'Form removed from page.' }),
+            ).toHaveAttribute('data-intent', 'success')
+        })
+    })
+
+    it('shows an error toast when removing a page embedment fails', async () => {
+        renderView({ state: defaultState, embedments })
+        act(() => {
+            capturedDeleteOverrides?.onError?.(
+                {} as never,
+                [
+                    undefined,
+                    {
+                        contact_form_id: contactForm.id,
+                        embedment_id: embedments[0].id,
+                    },
+                ] as never,
+                undefined,
+            )
+        })
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', { name: 'Something went wrong' }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 })

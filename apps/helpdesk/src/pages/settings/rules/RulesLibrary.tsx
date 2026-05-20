@@ -8,7 +8,7 @@ import { parse } from 'qs'
 import { Link, useHistory, useLocation } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Container } from 'reactstrap'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -28,8 +28,6 @@ import {
     getRulesLimitStatus,
     getSortedRules,
 } from 'state/entities/rules/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { RuleLimitStatus } from 'state/rules/types'
 
 import CreateCustomRuleFooter from './components/CreateCustomRuleFooter'
@@ -70,12 +68,7 @@ export function RulesLibraryContainer() {
                 const res = await fetchRules()
                 dispatch(rulesFetched(res.data))
             } catch {
-                void dispatch(
-                    notify({
-                        message: 'Failed to fetch rules',
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error('Failed to fetch rules')
             }
         },
     )
@@ -86,12 +79,7 @@ export function RulesLibraryContainer() {
                 const res = await fetchRuleRecipes()
                 dispatch(ruleRecipesFetched(res.data))
             } catch {
-                void dispatch(
-                    notify({
-                        message: 'Failed to fetch template rules',
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error('Failed to fetch template rules')
             }
         },
     )

@@ -4,6 +4,7 @@ import { assumeMock, render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { Link } from 'react-router-dom'
 
+import { toast } from '@gorgias/axiom'
 import type { User } from '@gorgias/helpdesk-queries'
 
 import { agents } from 'fixtures/agents'
@@ -20,8 +21,6 @@ import UsersSettingsTable from 'pages/settings/users/List/UsersSettingsTable'
 import { useUserList } from 'pages/settings/users/List/useUserList'
 import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
 import { getAccountOwnerId } from 'state/currentAccount/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import UserList from '..'
 
@@ -38,7 +37,6 @@ const mockedUseUserList = assumeMock(useUserList)
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch')
 const mockedUseAppDispatch = assumeMock(useAppDispatch)
-jest.mock('state/notifications/actions')
 jest.mock('hooks/useAppSelector', () => jest.fn((fn: () => unknown) => fn()))
 jest.mock('state/currentAccount/selectors')
 const mockedGetAccountOwnerId = assumeMock(getAccountOwnerId)
@@ -84,6 +82,10 @@ describe('<List />', () => {
         }))
     })
 
+    afterEach(() => {
+        toast.dismiss()
+    })
+
     it('should render a link with correct `to` prop', () => {
         render(<UserList />)
         expect(mockedLink.mock.calls[0][0].to).toBe('/app/settings/users/add/')
@@ -123,7 +125,7 @@ describe('<List />', () => {
         )
     })
 
-    it('should dispatch an error', () => {
+    it('should dispatch an error', async () => {
         mockedUseUserList.mockImplementationOnce(() => ({
             params: { order_by: 'name:asc' },
             isLoading: false,
@@ -138,14 +140,11 @@ describe('<List />', () => {
             setSearch: jest.fn(),
         }))
         render(<UserList />)
-        expect(mockedDispatch).toHaveBeenCalledTimes(1)
-        expect(notify).toHaveBeenNthCalledWith(
-            1,
-            expect.objectContaining({
-                message: 'Failed to fetch users',
-                status: NotificationStatus.Error,
-            }),
-        )
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', { name: 'Failed to fetch users' }),
+            ).toHaveAttribute('data-intent', 'destructive')
+        })
     })
 
     it('should provide correct props to `Navigation`', () => {

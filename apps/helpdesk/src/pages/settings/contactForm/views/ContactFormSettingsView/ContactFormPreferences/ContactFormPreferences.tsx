@@ -5,10 +5,9 @@ import classNames from 'classnames'
 import { get } from 'lodash'
 import { useHistory } from 'react-router-dom'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useAppDispatch from 'hooks/useAppDispatch'
 import type {
     ContactFormIntegration,
     UpdateContactFormDto,
@@ -35,8 +34,6 @@ import { catchAsync } from 'pages/settings/contactForm/utils/errorHandling'
 import css from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPreferences/ContactFormPreferences.less'
 import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal'
 import settingsCss from 'pages/settings/settings.less'
-import { notify as notifyAction } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 const ContactFormPreferences = (): JSX.Element => {
     const {
@@ -47,7 +44,6 @@ const ContactFormPreferences = (): JSX.Element => {
         deleteContactForm,
     } = useContactFormApi()
     const history = useHistory()
-    const dispatch = useAppDispatch()
     const contactForm = useCurrentContactForm()
     const [isNameInvalid, setIsNameInvalid] = useState(false)
     const [isDeletionModalShown, setIsDeletionModalShown] = useState(false)
@@ -120,16 +116,11 @@ const ContactFormPreferences = (): JSX.Element => {
 
         const isUpdated = !error && result
 
-        dispatch(
-            notifyAction({
-                status: isUpdated
-                    ? NotificationStatus.Success
-                    : NotificationStatus.Error,
-                message: isUpdated
-                    ? 'Contact form updated successfully'
-                    : 'Failed to update the Contact Form',
-            }),
-        )
+        if (isUpdated) {
+            toast.success('Contact form updated successfully')
+        } else {
+            toast.error('Failed to update the Contact Form')
+        }
 
         if (isUpdated) {
             setIsChangesModalShown(false)
@@ -151,16 +142,11 @@ const ContactFormPreferences = (): JSX.Element => {
             'Failed to delete the Contact Form'
 
         setIsDeletionModalShown(false)
-        dispatch(
-            notifyAction({
-                status: isDeleted
-                    ? NotificationStatus.Success
-                    : NotificationStatus.Error,
-                message: isDeleted
-                    ? 'Contact form deleted successfully'
-                    : errorMessage,
-            }),
-        )
+        if (isDeleted) {
+            toast.success('Contact form deleted successfully')
+        } else {
+            toast.error(errorMessage)
+        }
 
         if (isDeleted) history.push(CONTACT_FORM_BASE_PATH)
     }

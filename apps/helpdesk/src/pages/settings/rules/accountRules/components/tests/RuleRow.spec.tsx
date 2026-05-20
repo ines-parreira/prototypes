@@ -5,10 +5,12 @@ import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { useLocation } from 'react-router-dom'
 
+import { toast } from '@gorgias/axiom'
+
 import { emptyManagedRule, emptyRule as ruleFixture } from 'fixtures/rule'
 import { user } from 'fixtures/users'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import { createRule, deleteRule } from 'models/rule/resources'
+import { createRule, deactivateRule, deleteRule } from 'models/rule/resources'
 import {
     ruleCreated,
     ruleDeleted,
@@ -57,6 +59,9 @@ describe('<RuleRow />', () => {
     >
     const createRuleMock = createRule as jest.MockedFunction<typeof createRule>
     const deleteRuleMock = deleteRule as jest.MockedFunction<typeof deleteRule>
+    const deactivateRuleMock = deactivateRule as jest.MockedFunction<
+        typeof deactivateRule
+    >
     const mockUseAiAgentAccess = useAiAgentAccess as jest.MockedFunction<
         typeof useAiAgentAccess
     >
@@ -79,6 +84,7 @@ describe('<RuleRow />', () => {
     })
     afterEach(() => {
         jest.clearAllMocks()
+        toast.dismiss()
     })
     it('should render a row with a rule', () => {
         const { container } = render(<RuleRow {...minProps} />, {})
@@ -201,6 +207,68 @@ describe('<RuleRow />', () => {
         fireEvent.click(getByRole('checkbox'))
         await waitFor(() => {
             expect(minProps.onActivate).toHaveBeenCalled()
+        })
+    })
+    it('should show a success toast when duplicating succeeds', async () => {
+        createRuleMock.mockResolvedValue(ruleFixture)
+        const { getByText } = render(<RuleRow {...minProps} />, {})
+        fireEvent.click(getByText(/file_copy/i))
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Rule duplicated successfully',
+                }),
+            ).toHaveAttribute('data-intent', 'success')
+        })
+    })
+    it('should show an error toast when duplicating fails', async () => {
+        createRuleMock.mockRejectedValue(new Error('boom'))
+        const { getByText } = render(<RuleRow {...minProps} />, {})
+        fireEvent.click(getByText(/file_copy/i))
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Failed to duplicate rule',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
+        })
+    })
+    it('should show the rule-limit error toast when canDuplicate is false', async () => {
+        const { getByText } = render(
+            <RuleRow {...minProps} canDuplicate={false} />,
+            {},
+        )
+        fireEvent.click(getByText(/file_copy/i))
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'You have reached the 70 rule limit. Delete existing rules to add more.',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
+        })
+    })
+    it('should show an error toast when deleting fails', async () => {
+        deleteRuleMock.mockRejectedValue(new Error('boom'))
+        const { getByText } = render(<RuleRow {...minProps} />, {})
+        fireEvent.click(getByText(/delete/i))
+        fireEvent.click(getByText(/confirm/i))
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', { name: 'Failed to delete rule' }),
+            ).toHaveAttribute('data-intent', 'destructive')
+        })
+    })
+    it('should show an error toast when deactivation fails', async () => {
+        deactivateRuleMock.mockRejectedValue(new Error('boom'))
+        const { getByText, getByRole } = render(<RuleRow {...minProps} />, {})
+        fireEvent.click(getByRole('checkbox'))
+        fireEvent.click(getByText(/confirm/i))
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Unable to deactivate rule',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 })

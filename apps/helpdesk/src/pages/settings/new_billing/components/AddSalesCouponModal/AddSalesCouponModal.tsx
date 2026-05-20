@@ -2,9 +2,12 @@ import React, { useState } from 'react'
 
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyLabel as Label,
+    toast,
+} from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'
 import { getBillingStateQuery } from 'models/billing/queries'
 import { addSalesCoupon, deleteSalesCoupon } from 'models/billing/resources'
@@ -14,11 +17,6 @@ import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import TextArea from 'pages/common/forms/TextArea'
-import { notify } from 'state/notifications/actions'
-import {
-    NotificationStatus,
-    NotificationStyle,
-} from 'state/notifications/types'
 
 import css from './AddSalesCouponModal.less'
 
@@ -37,7 +35,6 @@ export default function AddSalesCouponModal({
     availableCoupons,
     alreadyAppliedCoupon,
 }: AddSalesCouponModalProps) {
-    const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
     const [selectedCoupon, setSelectedCoupon] = useState('')
 
@@ -57,31 +54,15 @@ export default function AddSalesCouponModal({
         onSuccess: () => {
             void queryClient.invalidateQueries(getBillingStateQuery)
             handleCloseModalAndResetState()
-            void dispatch(
-                notify({
-                    message: `<strong>${selectedCoupon}</strong> coupon has been successfully applied`,
-                    status: NotificationStatus.Success,
-                    style: NotificationStyle.Alert,
-                    showDismissButton: true,
-                    noAutoDismiss: false,
-                    allowHTML: true,
-                }),
+            toast.success(
+                `${selectedCoupon} coupon has been successfully applied`,
             )
         },
         onError: (error) => {
             const msg = isGorgiasApiError(error)
                 ? error.response?.data?.error?.msg
                 : 'Oops something went wrong'
-            void dispatch(
-                notify({
-                    message: `Could not apply this coupon : ${msg}`,
-                    status: NotificationStatus.Error,
-                    style: NotificationStyle.Alert,
-                    showDismissButton: true,
-                    noAutoDismiss: false,
-                    allowHTML: true,
-                }),
-            )
+            toast.error(`Could not apply this coupon : ${msg}`)
         },
     })
 
@@ -90,30 +71,14 @@ export default function AddSalesCouponModal({
         onSuccess: () => {
             void queryClient.invalidateQueries(getBillingStateQuery)
             handleCloseModalAndResetState()
-            void dispatch(
-                notify({
-                    message: `Coupon has been successfully deleted`,
-                    status: NotificationStatus.Success,
-                    style: NotificationStyle.Alert,
-                    showDismissButton: true,
-                    noAutoDismiss: false,
-                    allowHTML: true,
-                }),
-            )
+            toast.success(`Coupon has been successfully deleted`)
         },
         onError: (error) => {
             const msg = isGorgiasApiError(error)
                 ? error.response?.data?.error?.msg
                 : 'Oops something went wrong'
-            void dispatch(
-                notify({
-                    message: `Could not delete the coupon from the subscription : ${msg}`,
-                    status: NotificationStatus.Error,
-                    style: NotificationStyle.Alert,
-                    showDismissButton: true,
-                    noAutoDismiss: false,
-                    allowHTML: true,
-                }),
+            toast.error(
+                `Could not delete the coupon from the subscription : ${msg}`,
             )
         },
     })

@@ -10,7 +10,7 @@ import { connect } from 'react-redux'
 import { FormGroup, Label } from 'reactstrap'
 import type { InputType } from 'reactstrap/es/Input'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
 import IconButton from 'pages/common/components/button/IconButton'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -20,8 +20,6 @@ import { fetchCurrentAuths, resetApiKey } from 'state/auths/actions'
 import { getApiKey } from 'state/auths/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import type { RootState } from 'state/types'
 
 import css from '../settings.less'
@@ -113,14 +111,10 @@ export class APIViewContainer extends Component<Props, State> {
     }
 
     _subscribeToDeveloperNewsletter = () => {
-        const { notify } = this.props
-
         logEvent(SegmentEvent.SubscribedToDevNewsletter)
-        void notify({
-            status: NotificationStatus.Success,
-            message:
-                'Thank you! You have been subscribed to our developer newsletter.',
-        })
+        toast.success(
+            'Thank you! You have been subscribed to our developer newsletter.',
+        )
     }
 
     _resetApiKey = () => {
@@ -390,7 +384,6 @@ const connector = connect(
     }),
     {
         fetchCurrentAuths,
-        notify,
         resetApiKey,
     },
 )

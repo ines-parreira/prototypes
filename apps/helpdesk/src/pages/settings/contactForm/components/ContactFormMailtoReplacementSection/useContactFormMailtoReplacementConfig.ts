@@ -2,11 +2,10 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { toast } from '@gorgias/axiom'
+
 import { isGorgiasApiError } from 'models/api/types'
 import type { Components } from 'rest_api/help_center_api/client.generated'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { useEmailIntegrations } from '../../hooks/useEmailIntegrations'
 import {
@@ -34,7 +33,6 @@ export const useContactFormMailtoReplacementConfig = ({
 }: {
     contactFormId: number
 }) => {
-    const dispatch = useAppDispatch()
     const { emailIntegrations } = useEmailIntegrations()
 
     const queryClient = useQueryClient()
@@ -91,13 +89,10 @@ export const useContactFormMailtoReplacementConfig = ({
             },
             // If the mutation fails, use the context we returned above
             onError: (error, _, context) => {
-                dispatch(
-                    notify({
-                        title: isGorgiasApiError(error)
-                            ? error.response?.data.error.msg
-                            : `Whoops, something went wrong during ${contactFormId} mailto replacement config update`,
-                        status: NotificationStatus.Error,
-                    }),
+                toast.error(
+                    isGorgiasApiError(error)
+                        ? error.response?.data.error.msg
+                        : `Whoops, something went wrong during ${contactFormId} mailto replacement config update`,
                 )
                 queryClient.setQueryData(
                     queryKey,
@@ -117,25 +112,17 @@ export const useContactFormMailtoReplacementConfig = ({
                     const currEmailsLength = data?.data.emails.length ?? 0
                     const isReverted = prevEmailsLength > currEmailsLength
 
-                    dispatch(
-                        notify({
-                            message: isReverted
-                                ? REVERTED_EMAIl_MESSAGE
-                                : MESSAGE_BY_STATUS_CODE[200],
-                            status: NotificationStatus.Success,
-                        }),
+                    toast.success(
+                        isReverted
+                            ? REVERTED_EMAIl_MESSAGE
+                            : MESSAGE_BY_STATUS_CODE[200],
                     )
                 } else {
                     const messageByStatusCode =
                         MESSAGE_BY_STATUS_CODE[statusCode] ??
                         MESSAGE_BY_STATUS_CODE[200]
 
-                    dispatch(
-                        notify({
-                            message: messageByStatusCode,
-                            status: NotificationStatus.Success,
-                        }),
-                    )
+                    toast.success(messageByStatusCode)
                 }
             },
         })

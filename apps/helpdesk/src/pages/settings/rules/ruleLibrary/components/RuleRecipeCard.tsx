@@ -7,6 +7,8 @@ import type { List, Map } from 'immutable'
 import _getIn from 'lodash/get'
 import { Badge } from 'reactstrap'
 
+import { toast } from '@gorgias/axiom'
+
 import successIcon from 'assets/img/icons/success.svg'
 import { fromAST } from 'common/utils'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
@@ -36,8 +38,6 @@ import { tagCreated } from 'state/entities/tags/actions'
 import { viewCreated, viewDeleted } from 'state/entities/views/actions'
 import { getTicketViews } from 'state/entities/views/selectors'
 import { getIntegrationsByType } from 'state/integrations/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import type {
     AnyManagedRuleSettings,
     ManagedRule,
@@ -210,22 +210,10 @@ function RuleRecipeCard({
         shouldCreateViews: boolean,
         installFromSuggestion = false,
     ) => {
-        void dispatch(
-            notify({
-                message: 'Installing rule',
-                status: NotificationStatus.Loading,
-                closeOnNext: true,
-                dismissAfter: 0,
-            }),
-        )
+        toast.info('Installing rule', { duration: Infinity })
 
         if (limitStatus === RuleLimitStatus.Reached) {
-            void dispatch(
-                notify({
-                    message: 'Rule limit reached',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error('Rule limit reached')
             return
         }
         if (shouldCreateViews) {
@@ -235,12 +223,7 @@ function RuleRecipeCard({
                         await handleCreateTag(tags[i])
                     }
                 } catch {
-                    void dispatch(
-                        notify({
-                            message: 'Failed to create all rule tags',
-                            status: NotificationStatus.Error,
-                        }),
-                    )
+                    toast.error('Failed to create all rule tags')
                 }
             }
             if (views_per_section) {
@@ -253,12 +236,7 @@ function RuleRecipeCard({
                 try {
                     await Promise.all(promises)
                 } catch {
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Error,
-                            message: 'Failed to create all rule views',
-                        }),
-                    )
+                    toast.error('Failed to create all rule views')
                     return
                 }
             }
@@ -288,24 +266,14 @@ function RuleRecipeCard({
 
             const newRule = await createRule(newRuleDraft)
             void dispatch(ruleCreated(newRule))
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Success,
-                    message: 'Successfully installed rule',
-                }),
-            )
+            toast.success('Successfully installed rule')
             logEvent(SegmentEvent.RuleLibraryItemInstalled, {
                 ...segmentEventProps,
                 views_installed: shouldCreateViews,
             })
             history.push(`/app/settings/rules/${newRule.id}`)
         } catch {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: 'Failed to install rule',
-                }),
-            )
+            toast.error('Failed to install rule')
             return
         }
     }

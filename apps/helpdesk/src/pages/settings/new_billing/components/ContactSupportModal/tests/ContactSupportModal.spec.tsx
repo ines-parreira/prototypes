@@ -1,18 +1,19 @@
 import client from '@repo/api-resources'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, render } from '@repo/testing'
-import { act, screen } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import { toast } from '@gorgias/axiom'
+
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { HELPDESK_PRODUCT_ID } from 'fixtures/plans'
 import { TicketPurpose } from 'state/billing/types'
-import * as actions from 'state/notifications/actions'
 import type { RootState, StoreDispatch } from 'state/types'
 
 import ContactSupportModal from '../ContactSupportModal'
@@ -39,19 +40,17 @@ const mockHandleClose = jest.fn()
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 
-jest.mock('state/notifications/actions', () => ({
-    notify: jest.fn(() => () => undefined),
-}))
-
 jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
-
-const notify = actions.notify as jest.Mock
 
 describe('ContactSupportModal', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         mockedServer.reset()
+    })
+
+    afterEach(() => {
+        toast.dismiss()
     })
 
     it('should render the modal with default message', () => {
@@ -120,11 +119,12 @@ describe('ContactSupportModal', () => {
         )
         await act(() => userEvent.click(sendButton))
 
-        expect(notify).toHaveBeenCalledWith({
-            message: `Your request has been submitted. We'll get back to you by email at ${props.from} within 24 business hours`,
-            status: 'success',
-            dismissAfter: 5000,
-            showDismissButton: true,
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: `Your request has been submitted. We'll get back to you by email at ${props.from} within 24 business hours`,
+                }),
+            ).toHaveAttribute('data-intent', 'success')
         })
 
         // Assert that the handleOnClose function is called
@@ -210,10 +210,12 @@ describe('ContactSupportModal', () => {
         )
         await act(() => userEvent.click(sendButton))
 
-        expect(notify).toHaveBeenCalledWith({
-            status: 'error',
-            message:
-                'There was an error sending your message. Please try again later.',
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'There was an error sending your message. Please try again later.',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
 
         expect(mockHandleClose).toHaveBeenCalledTimes(1)

@@ -1,17 +1,11 @@
 import { useQueryClient } from '@tanstack/react-query'
 
+import { toast } from '@gorgias/axiom'
 import { queryKeys, useUpdatePaymentTerms } from '@gorgias/helpdesk-queries'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'
-import { notify } from 'state/notifications/actions'
-import {
-    NotificationStatus,
-    NotificationStyle,
-} from 'state/notifications/types'
 
 export const useUpdatePaymentTermsWithSideEffects = () => {
-    const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
 
     return useUpdatePaymentTerms({
@@ -19,32 +13,15 @@ export const useUpdatePaymentTermsWithSideEffects = () => {
             onSuccess: () => {
                 const billingStateQueryKey = queryKeys.billing.getBillingState()
                 void queryClient.invalidateQueries(billingStateQueryKey)
-                void dispatch(
-                    notify({
-                        message:
-                            'The payment terms have been successfully updated.',
-                        status: NotificationStatus.Success,
-                        style: NotificationStyle.Alert,
-                        showDismissButton: true,
-                        noAutoDismiss: false,
-                        allowHTML: true,
-                    }),
+                toast.success(
+                    'The payment terms have been successfully updated.',
                 )
             },
             onError: (error) => {
                 const msg = isGorgiasApiError(error)
                     ? error.response?.data?.error?.msg
                     : 'Oops something went wrong'
-                void dispatch(
-                    notify({
-                        message: `Could not update payment terms: ${msg}`,
-                        status: NotificationStatus.Error,
-                        style: NotificationStyle.Alert,
-                        showDismissButton: true,
-                        noAutoDismiss: false,
-                        allowHTML: true,
-                    }),
-                )
+                toast.error(`Could not update payment terms: ${msg}`)
             },
         },
     })

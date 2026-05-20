@@ -4,11 +4,11 @@ import { history } from '@repo/routing'
 import classnames from 'classnames'
 import { NavLink, useRouteMatch } from 'react-router-dom'
 
+import { toast } from '@gorgias/axiom'
 import type { ListMacrosParams, Macro } from '@gorgias/helpdesk-queries'
 import { useListMacros } from '@gorgias/helpdesk-queries'
 
 import { useCreateMacro, useDeleteMacro } from 'hooks/macros'
-import useAppDispatch from 'hooks/useAppDispatch'
 import type { GorgiasApiError, OrderDirection } from 'models/api/types'
 import type { MacroSortableProperties } from 'models/macro/types'
 import MacroFilters from 'pages/common/components/MacroFilters/MacroFilters'
@@ -18,9 +18,6 @@ import Search from 'pages/common/components/Search'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import Video from 'pages/common/components/Video/Video'
 import settingsCss from 'pages/settings/settings.less'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
-import { errorToChildren } from 'utils'
 
 import { useMacroListSearchParams } from './hooks/useMacroListSearchParams'
 import { MacrosCreateDropdown } from './MacrosCreateDropdown'
@@ -31,7 +28,6 @@ import css from './MacrosSettingsContent.less'
 export const STALE_TIME_MS = 15 * 60 * 1000 // 15 minutes
 
 export function MacrosSettingsContent() {
-    const dispatch = useAppDispatch()
     const isArchiveTab = !!useRouteMatch('/app/settings/macros/archived')
 
     const [listMacrosParams, setListMacrosParams] = useMacroListSearchParams()
@@ -53,14 +49,9 @@ export function MacrosSettingsContent() {
 
     useEffect(() => {
         if (isError) {
-            void dispatch(
-                notify({
-                    message: 'Failed to fetch macros',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error('Failed to fetch macros')
         }
-    }, [dispatch, isError])
+    }, [isError])
 
     const onMacroDelete = (id: number) => {
         deleteMacro(
@@ -108,15 +99,9 @@ export function MacrosSettingsContent() {
                     history.push(`/app/settings/macros/${resp.data.id}`)
                 },
                 onError: (error) => {
-                    void dispatch(
-                        notify({
-                            title:
-                                (error as GorgiasApiError).response.data.error
-                                    .msg ?? 'Failed to duplicate macro',
-                            message: errorToChildren(error)!,
-                            allowHTML: true,
-                            status: NotificationStatus.Error,
-                        }),
+                    toast.error(
+                        (error as GorgiasApiError).response.data.error.msg ??
+                            'Failed to duplicate macro',
                     )
                 },
             },

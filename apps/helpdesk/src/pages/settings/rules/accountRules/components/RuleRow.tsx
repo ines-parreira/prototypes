@@ -7,7 +7,7 @@ import classnames from 'classnames'
 import { Link, useHistory } from 'react-router-dom'
 import { Popover, PopoverBody } from 'reactstrap'
 
-import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import { toast, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
@@ -26,8 +26,6 @@ import {
     ruleDeleted,
     ruleUpdated,
 } from 'state/entities/rules/actions'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { ManagedRuleDisplayName } from 'state/rules/constants'
 import type {
     AnyManagedRuleSettings,
@@ -106,27 +104,13 @@ export function RuleRow({
                 })
                 void dispatch(ruleCreated(newRule))
                 history.push(`/app/settings/rules/${newRule.id}`)
-                void dispatch(
-                    notify({
-                        message: 'Rule duplicated successfully',
-                        status: NotificationStatus.Success,
-                    }),
-                )
+                toast.success('Rule duplicated successfully')
             } catch {
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message: 'Failed to duplicate rule',
-                    }),
-                )
+                toast.error('Failed to duplicate rule')
             }
         } else {
-            void dispatch(
-                notify({
-                    message:
-                        'You have reached the 70 rule limit. Delete existing rules to add more.',
-                    status: NotificationStatus.Error,
-                }),
+            toast.error(
+                'You have reached the 70 rule limit. Delete existing rules to add more.',
             )
         }
     }
@@ -135,19 +119,9 @@ export function RuleRow({
         try {
             await deleteRule(rule.id)
             void dispatch(ruleDeleted(rule.id))
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Success,
-                    message: `Successfully deleted rule ${rule.name}`,
-                }),
-            )
+            toast.success(`Successfully deleted rule ${rule.name}`)
         } catch {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: 'Failed to delete rule',
-                }),
-            )
+            toast.error('Failed to delete rule')
         }
     })
 
@@ -167,19 +141,9 @@ export function RuleRow({
         try {
             const res = await deactivateRule(rule.id)
             void dispatch(ruleUpdated(res))
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Success,
-                    message: 'Rule deactivated successfully',
-                }),
-            )
+            toast.success('Rule deactivated successfully')
         } catch {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: 'Unable to deactivate rule',
-                }),
-            )
+            toast.error('Unable to deactivate rule')
         }
     }
 

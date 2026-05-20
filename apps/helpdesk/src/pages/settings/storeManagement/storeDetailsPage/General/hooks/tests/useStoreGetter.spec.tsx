@@ -1,12 +1,14 @@
-import { renderHook } from '@repo/testing'
+import React from 'react'
+
+import { render, renderHook } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 import type { AxiosError } from 'axios'
 import { useHistory } from 'react-router-dom'
 
+import { toast, Toaster } from '@gorgias/axiom'
 import { useGetIntegration } from '@gorgias/helpdesk-queries'
 
 import { IntegrationType } from 'models/integration/constants'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import useStoreGetter from '../useStoreGetter'
 
@@ -24,17 +26,16 @@ jest.mock('hooks/useAppDispatch', () => ({
     default: () => jest.fn(),
 }))
 
-jest.mock('state/notifications/actions', () => ({
-    notify: jest.fn(),
-}))
-
 describe('useStoreGetter', () => {
     const mockPush = jest.fn()
 
     beforeEach(() => {
         jest.clearAllMocks()
         ;(useHistory as jest.Mock).mockReturnValue({ push: mockPush })
-        ;(notify as jest.Mock).mockReturnValue({ type: 'NOTIFY' })
+    })
+
+    afterEach(() => {
+        toast.dismiss()
     })
 
     it('should return data and loading state for valid integration', () => {
@@ -58,7 +59,7 @@ describe('useStoreGetter', () => {
         expect(mockPush).not.toHaveBeenCalled()
     })
 
-    it('should redirect and show error for invalid integration type', () => {
+    it('should redirect and show error for invalid integration type', async () => {
         const mockData = {
             data: {
                 id: 1,
@@ -72,18 +73,20 @@ describe('useStoreGetter', () => {
             error: null,
         })
 
+        render(<Toaster />)
         renderHook(() => useStoreGetter(1))
 
         expect(mockPush).toHaveBeenCalledWith('/app/settings/store-management')
-        expect(notify).toHaveBeenCalledWith({
-            title: 'Integration type mismatch',
-            message: 'The Integration id 1 is not a valid store integration.',
-            allowHTML: true,
-            status: NotificationStatus.Error,
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Integration type mismatch',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 
-    it('should handle API errors correctly', () => {
+    it('should handle API errors correctly', async () => {
         const mockError = {
             name: 'AxiosError',
             message: 'API Error Message',
@@ -103,18 +106,20 @@ describe('useStoreGetter', () => {
             error: mockError,
         })
 
+        render(<Toaster />)
         renderHook(() => useStoreGetter(1))
 
         expect(mockPush).toHaveBeenCalledWith('/app/settings/store-management')
-        expect(notify).toHaveBeenCalledWith({
-            title: 'Failed to get integration',
-            message: 'API Error Message',
-            allowHTML: true,
-            status: NotificationStatus.Error,
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Failed to get integration',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 
-    it('should handle API errors with no error message', () => {
+    it('should handle API errors with no error message', async () => {
         const mockError = {
             response: {
                 data: {},
@@ -127,14 +132,16 @@ describe('useStoreGetter', () => {
             error: mockError,
         })
 
+        render(<Toaster />)
         renderHook(() => useStoreGetter(1))
 
         expect(mockPush).toHaveBeenCalledWith('/app/settings/store-management')
-        expect(notify).toHaveBeenCalledWith({
-            title: 'Failed to get integration',
-            message: 'Failed to get integration',
-            allowHTML: true,
-            status: NotificationStatus.Error,
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Failed to get integration',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 

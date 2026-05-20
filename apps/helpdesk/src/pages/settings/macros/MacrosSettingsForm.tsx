@@ -10,7 +10,7 @@ import _uniqWith from 'lodash/uniqWith'
 import { Link, useLocation, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Form } from 'reactstrap'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 import type {
     CreateMacroBody,
     Language,
@@ -27,7 +27,6 @@ import {
     useDeleteMacro,
     useUpdateMacro,
 } from 'hooks/macros'
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import { isGorgiasApiError } from 'models/api/types'
@@ -40,9 +39,6 @@ import settingsCss from 'pages/settings/settings.less'
 import { MacroEdit } from 'pages/tickets/common/macros/components/MacroEdit'
 import { getHumanAgents } from 'state/agents/selectors'
 import { getDefaultMacro } from 'state/macro/utils'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
-import { errorToChildren } from 'utils'
 
 import css from './MacrosSettingsForm.less'
 
@@ -52,7 +48,6 @@ const MacrosSettingsForm = () => {
     const { macroId } = useParams<{ macroId?: string }>()
     const location = useLocation()
     const agents = useAppSelector(getHumanAgents)
-    const dispatch = useAppDispatch()
     const [macroForm, setMacroForm] = useState<MacroDraft>(getDefaultMacro())
     const isMacroLoaded = useRef(false)
 
@@ -90,13 +85,11 @@ const MacrosSettingsForm = () => {
         query: {
             enabled: !!macroId,
             onError: (error) => {
-                void dispatch(
-                    notify({
-                        title: isGorgiasApiError(error)
-                            ? error.response?.data.error.msg
-                            : 'Failed to fetch macro',
-                        status: NotificationStatus.Error,
-                    }),
+                toast.error(
+                    isGorgiasApiError(error)
+                        ? (error.response?.data.error.msg ??
+                              'Failed to fetch macro')
+                        : 'Failed to fetch macro',
                 )
                 history.push('/app/settings/macros')
             },
@@ -119,23 +112,11 @@ const MacrosSettingsForm = () => {
 
     const { mutateAsync: createMacro } = useCreateMacro()
     const { mutateAsync: duplicateMacro } = useCreateMacro({
-        onError: (error) => {
-            void dispatch(
-                notify({
-                    title: 'Failed to duplicate macro',
-                    message: errorToChildren(error)!,
-                    allowHTML: true,
-                    status: NotificationStatus.Error,
-                }),
-            )
+        onError: () => {
+            toast.error('Failed to duplicate macro')
         },
         onSuccess: (res) => {
-            void dispatch(
-                notify({
-                    message: 'Successfully duplicated macro',
-                    status: NotificationStatus.Success,
-                }),
-            )
+            toast.success('Successfully duplicated macro')
             history.push(`/app/settings/macros/${res.data.id}`)
         },
     })
@@ -205,12 +186,7 @@ const MacrosSettingsForm = () => {
                     },
                     {
                         onSuccess: () => {
-                            void dispatch(
-                                notify({
-                                    message: 'Successfully updated macro',
-                                    status: NotificationStatus.Success,
-                                }),
-                            )
+                            toast.success('Successfully updated macro')
                             const basePath = macro?.archived_datetime
                                 ? '/app/settings/macros/archived'
                                 : '/app/settings/macros/active'
@@ -225,12 +201,7 @@ const MacrosSettingsForm = () => {
                     },
                     {
                         onSuccess: () => {
-                            void dispatch(
-                                notify({
-                                    message: 'Successfully created macro',
-                                    status: NotificationStatus.Success,
-                                }),
-                            )
+                            toast.success('Successfully created macro')
                             history.goBack()
                         },
                     },
@@ -281,12 +252,7 @@ const MacrosSettingsForm = () => {
                 { id: parseInt(macroId) },
                 {
                     onSuccess: () => {
-                        void dispatch(
-                            notify({
-                                message: 'Successfully deleted macro',
-                                status: NotificationStatus.Success,
-                            }),
-                        )
+                        toast.success('Successfully deleted macro')
                         history.goBack()
                     },
                 },

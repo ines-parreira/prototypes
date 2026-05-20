@@ -6,12 +6,12 @@ import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
+import { toast } from '@gorgias/axiom'
+
 import { fetchRule } from 'models/rule/resources'
 import Loader from 'pages/common/components/Loader/Loader'
 import { ruleFetched } from 'state/entities/rules/actions'
 import { getRulesLimitStatus } from 'state/entities/rules/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import type { RootState } from 'state/types'
 
 import { RuleFormEditor } from './components/RuleFormEditor'
@@ -19,7 +19,6 @@ import { RuleFormEditor } from './components/RuleFormEditor'
 export function RuleDetailForm({
     rules,
     ruleFetched,
-    notify,
 }: ConnectedProps<typeof connector>) {
     const { ruleId } = useParams<{ ruleId?: string }>()
     const [{ loading: isFetchPending }, handleFetchRule] = useAsyncFn(
@@ -28,10 +27,7 @@ export function RuleDetailForm({
                 const res = await fetchRule(ruleId)
                 ruleFetched(res)
             } catch {
-                void notify({
-                    message: `Could not find rule with id: ${ruleId}`,
-                    status: NotificationStatus.Error,
-                })
+                toast.error(`Could not find rule with id: ${ruleId}`)
                 history.push('/app/settings/rules')
             }
         },
@@ -64,7 +60,6 @@ const connector = connect(
     }),
     {
         ruleFetched,
-        notify,
     },
 )
 

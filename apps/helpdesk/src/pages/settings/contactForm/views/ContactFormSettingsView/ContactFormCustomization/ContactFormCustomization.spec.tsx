@@ -2,6 +2,8 @@ import { render, userEvent } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
+import { toast } from '@gorgias/axiom'
+
 import { account } from 'fixtures/account'
 import { integrationsState } from 'fixtures/integrations'
 import type { ContactForm } from 'models/contactForm/types'
@@ -266,18 +268,17 @@ const renderComponent = (contactFormOverrides: Partial<ContactForm> = {}) => {
 }
 describe('ContactFormCustomization', () => {
     const mockUpdateContactForm = jest.fn()
-    const mockDispatch = jest.fn()
     beforeEach(() => {
         jest.clearAllMocks()
-        // Mock useDispatch
-        jest.spyOn(require('react-redux'), 'useDispatch').mockReturnValue(
-            mockDispatch,
-        )
         mockedUseContactFormApi.mockReturnValue({
             updateContactForm: mockUpdateContactForm,
             isLoading: false,
             isReady: true,
         } as unknown as ReturnType<typeof useContactFormApi>)
+    })
+
+    afterEach(() => {
+        toast.dismiss()
     })
     describe('Rendering', () => {
         it('should render the customization page with all sections', () => {
@@ -461,7 +462,7 @@ describe('ContactFormCustomization', () => {
                 )
             })
         })
-        it('should dispatch success notification on successful save', async () => {
+        it('should show success toast on successful save', async () => {
             mockUpdateContactForm.mockResolvedValue(defaultContactForm)
             renderComponent()
             await userEvent.click(
@@ -469,10 +470,14 @@ describe('ContactFormCustomization', () => {
             )
             await userEvent.click(screen.getByText('Save Changes'))
             await waitFor(() => {
-                expect(mockDispatch).toHaveBeenCalledWith(expect.any(Function))
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Contact form updated successfully',
+                    }),
+                ).toHaveAttribute('data-intent', 'success')
             })
         })
-        it('should dispatch error notification on failed save', async () => {
+        it('should show error toast on failed save', async () => {
             mockUpdateContactForm.mockRejectedValue(new Error('API Error'))
             renderComponent()
             await userEvent.click(
@@ -480,7 +485,11 @@ describe('ContactFormCustomization', () => {
             )
             await userEvent.click(screen.getByText('Save Changes'))
             await waitFor(() => {
-                expect(mockDispatch).toHaveBeenCalledWith(expect.any(Function))
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Failed to update the Contact Form',
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive')
             })
         })
         it('should reset form state when cancel is clicked after making changes', async () => {
@@ -585,7 +594,11 @@ describe('ContactFormCustomization', () => {
             )
             await userEvent.click(screen.getByText('Save Changes'))
             await waitFor(() => {
-                expect(mockDispatch).toHaveBeenCalledWith(expect.any(Function))
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Failed to update the Contact Form',
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive')
             })
             consoleErrorSpy.mockRestore()
         })

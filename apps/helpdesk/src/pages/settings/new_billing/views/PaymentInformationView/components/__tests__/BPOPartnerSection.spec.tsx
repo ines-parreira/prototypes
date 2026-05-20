@@ -4,6 +4,7 @@ import { userEvent } from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
+import { toast } from '@gorgias/axiom'
 import {
     mockGetCompanyHandler,
     mockUpsertCompanyHandler,
@@ -12,11 +13,8 @@ import { BPOPartner } from '@gorgias/helpdesk-types'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { BPOPartnerSection } from 'pages/settings/new_billing/views/PaymentInformationView/components/BPOPartnerSection'
-import { notify } from 'state/notifications/actions'
 
-jest.mock('state/notifications/actions')
 jest.mock('hooks/useAppDispatch')
-const mockNotify = notify as jest.MockedFunction<typeof notify>
 const mockUseAppDispatch = useAppDispatch as jest.MockedFunction<
     typeof useAppDispatch
 >
@@ -42,6 +40,7 @@ describe('BPOPartnerSection', () => {
     afterEach(() => {
         server.resetHandlers()
         jest.clearAllMocks()
+        toast.dismiss()
     })
     afterAll(() => {
         server.close()
@@ -144,11 +143,11 @@ describe('BPOPartnerSection', () => {
             await user.click(clearOption)
         })
         await waitFor(() => {
-            expect(mockNotify).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    message: 'Failed to update BPO partner',
+            expect(
+                screen.getByRole('status', {
+                    name: 'Failed to update BPO partner',
                 }),
-            )
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
     it('should show loading state', async () => {
@@ -210,11 +209,11 @@ describe('BPOPartnerSection', () => {
             await user.click(clearOption)
         })
         await waitFor(() => {
-            expect(mockNotify).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    message: 'Failed to update BPO partner',
+            expect(
+                screen.getByRole('status', {
+                    name: 'Failed to update BPO partner',
                 }),
-            )
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
     it('should select partner from dropdown options', async () => {

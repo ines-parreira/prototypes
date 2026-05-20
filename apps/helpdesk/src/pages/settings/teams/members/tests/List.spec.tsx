@@ -8,9 +8,12 @@ import { MemoryRouter, Route } from 'react-router-dom'
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { toast } from '@gorgias/axiom'
+
 import {
     fetchTeam,
     fetchTeamMembers,
+    addTeamMember as mockAddTeamMember,
     deleteTeamMember as mockDeleteTeamMember,
     deleteTeamMembers as mockDeleteTeamMembers,
 } from 'models/team/resources'
@@ -22,10 +25,22 @@ jest.mock('models/team/resources', () => ({
     fetchTeamMembers: jest.fn(),
     deleteTeamMember: jest.fn(),
     deleteTeamMembers: jest.fn(),
+    addTeamMember: jest.fn(),
 }))
-jest.mock('../AddMember', () => () => <div>AddMember</div>)
+jest.mock(
+    '../AddMember',
+    () =>
+        ({
+            addTeamMember,
+        }: {
+            addTeamMember: (userId: number) => Promise<void>
+        }) => (
+            <button type="button" onClick={() => void addTeamMember(42)}>
+                Add Member Trigger
+            </button>
+        ),
+)
 
-const mockNotify = jest.fn()
 const mockFetchTeamSuccess = jest.fn()
 const mockFetchTeamMembersSuccess = jest.fn()
 const mockDeleteTeamSuccess = jest.fn()
@@ -65,7 +80,6 @@ function renderComponent({ members, meta }: { members: any[]; meta?: any }) {
                         fetchTeamMembersSuccess={mockFetchTeamMembersSuccess}
                         deleteTeamSuccess={mockDeleteTeamSuccess}
                         updateTeamSuccess={mockUpdateTeamSuccess}
-                        notify={mockNotify}
                     />
                 </Route>
             </MemoryRouter>
@@ -76,6 +90,10 @@ function renderComponent({ members, meta }: { members: any[]; meta?: any }) {
 describe('MembersListContainer - deleteTeamMember', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+    })
+
+    afterEach(() => {
+        toast.dismiss()
     })
 
     it('deletes a single member successfully', async () => {
@@ -105,10 +123,9 @@ describe('MembersListContainer - deleteTeamMember', () => {
             expect(mockDeleteTeamMember).toHaveBeenCalledWith(123, 1)
             expect(fetchTeamMembers).toHaveBeenCalledTimes(2) // re-fetched after deletion
             expect(fetchTeam).toHaveBeenCalledTimes(2) // re-fetched the team
-            expect(mockNotify).toHaveBeenCalledWith({
-                status: 'success',
-                message: 'Team member removed',
-            })
+            expect(
+                screen.getByRole('status', { name: 'Team member removed' }),
+            ).toHaveAttribute('data-intent', 'success')
         })
     })
 
@@ -138,10 +155,9 @@ describe('MembersListContainer - deleteTeamMember', () => {
         await waitFor(() => {
             expect(mockDeleteTeamMember).toHaveBeenCalledWith(123, 2)
             // Should notify an error w/ the "Custom 422 error"
-            expect(mockNotify).toHaveBeenCalledWith({
-                status: 'error',
-                message: 'Custom 422 error',
-            })
+            expect(
+                screen.getByRole('status', { name: 'Custom 422 error' }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 
@@ -168,11 +184,11 @@ describe('MembersListContainer - deleteTeamMember', () => {
         await waitFor(() => {
             expect(mockDeleteTeamMember).toHaveBeenCalledWith(123, 3)
             // fallback error msg
-            expect(mockNotify).toHaveBeenCalledWith({
-                status: 'error',
-                message:
-                    'Failed to remove team member. Please refresh the page and try again.',
-            })
+            expect(
+                screen.getByRole('status', {
+                    name: 'Failed to remove team member. Please refresh the page and try again.',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 })
@@ -180,6 +196,10 @@ describe('MembersListContainer - deleteTeamMember', () => {
 describe('MembersListContainer - deleteTeamMemberSelection', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+    })
+
+    afterEach(() => {
+        toast.dismiss()
     })
 
     it('deletes selected members successfully', async () => {
@@ -243,10 +263,9 @@ describe('MembersListContainer - deleteTeamMemberSelection', () => {
         await waitFor(() => {
             expect(mockDeleteTeamMembers).toHaveBeenCalledWith(123, Set([999]))
             // 422 error means we show server's error message
-            expect(mockNotify).toHaveBeenCalledWith({
-                status: 'error',
-                message: 'Bulk 422 error',
-            })
+            expect(
+                screen.getByRole('status', { name: 'Bulk 422 error' }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 
@@ -272,11 +291,123 @@ describe('MembersListContainer - deleteTeamMemberSelection', () => {
         await waitFor(() => {
             expect(mockDeleteTeamMembers).toHaveBeenCalledWith(123, Set([888]))
             // fallback error
-            expect(mockNotify).toHaveBeenCalledWith({
-                status: 'error',
-                message:
-                    'Failed to remove team members. Please refresh the page and try again.',
-            })
+            expect(
+                screen.getByRole('status', {
+                    name: 'Failed to remove team members. Please refresh the page and try again.',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
+        })
+    })
+})
+
+describe('MembersListContainer - fetchTeam error path', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
+
+    afterEach(() => {
+        toast.dismiss()
+    })
+
+    it('shows a toast error when fetchTeam rejects on mount', async () => {
+        const store = mockStore({
+            currentAccount: { user_id: 999 },
+        })
+        ;(fetchTeam as jest.Mock).mockRejectedValue(new Error('boom'))
+        ;(fetchTeamMembers as jest.Mock).mockResolvedValue({
+            data: { data: [], meta: {} },
+        })
+
+        render(
+            <Provider store={store}>
+                <MemoryRouter
+                    initialEntries={['/app/settings/teams/123/members']}
+                >
+                    <Route path="/app/settings/teams/:id/members">
+                        <MembersListContainer
+                            match={{
+                                params: { id: '123' },
+                                path: '/app/settings/teams/:id/members',
+                                url: '/app/settings/teams/123/members',
+                                isExact: true,
+                            }}
+                            location={
+                                {
+                                    pathname: '/app/settings/teams/123/members',
+                                } as any
+                            }
+                            history={{} as any}
+                            accountOwnerId={999}
+                            fetchTeamSuccess={mockFetchTeamSuccess}
+                            fetchTeamMembersSuccess={
+                                mockFetchTeamMembersSuccess
+                            }
+                            deleteTeamSuccess={mockDeleteTeamSuccess}
+                            updateTeamSuccess={mockUpdateTeamSuccess}
+                        />
+                    </Route>
+                </MemoryRouter>
+            </Provider>,
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Failed to fetch team. Please refresh the page and try again.',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
+        })
+    })
+})
+
+describe('MembersListContainer - addTeamMember', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
+
+    afterEach(() => {
+        toast.dismiss()
+    })
+
+    it('shows success toast when adding a member succeeds', async () => {
+        ;(mockAddTeamMember as jest.Mock).mockResolvedValue({})
+        renderComponent({ members: [{ id: 1, name: 'Existing Member' }] })
+
+        await waitFor(() => {
+            expect(screen.getByText('Existing Member')).toBeInTheDocument()
+        })
+
+        fireEvent.click(
+            screen.getByRole('button', { name: 'Add Member Trigger' }),
+        )
+
+        await waitFor(() => {
+            expect(mockAddTeamMember).toHaveBeenCalledWith(123, 42)
+            expect(
+                screen.getByRole('status', { name: 'Team member added' }),
+            ).toHaveAttribute('data-intent', 'success')
+        })
+    })
+
+    it('shows error toast when adding a member fails', async () => {
+        ;(mockAddTeamMember as jest.Mock).mockRejectedValue(new Error('nope'))
+        renderComponent({ members: [{ id: 1, name: 'Existing Member' }] })
+
+        await waitFor(() => {
+            expect(screen.getByText('Existing Member')).toBeInTheDocument()
+        })
+
+        fireEvent.click(
+            screen.getByRole('button', { name: 'Add Member Trigger' }),
+        )
+
+        await waitFor(() => {
+            expect(mockAddTeamMember).toHaveBeenCalledWith(123, 42)
+            expect(
+                screen.getByRole('status', {
+                    name: 'Failed to add team member. Please refresh the page and try again.',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 })

@@ -7,7 +7,7 @@ import classnames from 'classnames'
 import { Emoji } from 'emoji-mart'
 import { Link } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { Button, toast } from '@gorgias/axiom'
 import type { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -21,8 +21,6 @@ import Navigation from 'pages/common/components/Navigation/Navigation'
 import PageHeader from 'pages/common/components/PageHeader'
 import settingsCss from 'pages/settings/settings.less'
 import TeamCreationModal from 'pages/settings/teams/TeamCreationModal'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { FETCH_TEAMS_SUCCESS } from 'state/teams/constants'
 
 import css from './List.less'
@@ -126,13 +124,9 @@ const TeamList = () => {
                 const responseError = error as AxiosError<{
                     error?: { msg: string }
                 }>
-                await dispatch(
-                    notify({
-                        message:
-                            responseError.response?.data.error?.msg ||
-                            'Failed to fetch teams.',
-                        status: NotificationStatus.Error,
-                    }),
+                toast.error(
+                    responseError.response?.data.error?.msg ||
+                        'Failed to fetch teams.',
                 )
             }
         },

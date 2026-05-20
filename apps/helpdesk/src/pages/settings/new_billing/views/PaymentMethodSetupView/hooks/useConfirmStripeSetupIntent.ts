@@ -6,20 +6,14 @@ import type {
 } from '@stripe/stripe-js'
 import { useMutation } from '@tanstack/react-query'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { toast } from '@gorgias/axiom'
+
 import { useBillingContact } from 'models/billing/queries'
-import { notify } from 'state/notifications/actions'
-import {
-    NotificationStatus,
-    NotificationStyle,
-} from 'state/notifications/types'
 import type { MutationOverrides } from 'types/query'
 
 export const useConfirmStripeSetupIntent = (
     overrides?: MutationOverrides<() => Promise<SetupIntentResult>>,
 ) => {
-    const dispatch = useAppDispatch()
-
     const stripe = useStripe()
     const elements = useElements()
 
@@ -82,14 +76,7 @@ export const useConfirmStripeSetupIntent = (
                 errorMessage = stripeError.message
             }
 
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: errorMessage,
-                    style: NotificationStyle.Alert,
-                    showDismissButton: true,
-                }),
-            )
+            toast.error(errorMessage)
 
             overrides?.onError?.(error, ...args)
 

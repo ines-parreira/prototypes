@@ -10,19 +10,17 @@ import {
     UncontrolledButtonDropdown,
 } from 'reactstrap'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { toast } from '@gorgias/axiom'
+
 import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import { createJob } from 'models/job/resources'
 import { JobType } from 'models/job/types'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import MacrosCSVImportPopover from './MacrosCSVImportPopover'
 
 export function MacrosCreateDropdown(): JSX.Element {
-    const dispatch = useAppDispatch()
     const [isImportOpen, setImportOpen] = useState(false)
     const currentAccount = useAppSelector(getCurrentAccountState)
     const hasAgentPrivileges = useHasAgentPrivileges()
@@ -37,21 +35,12 @@ export function MacrosCreateDropdown(): JSX.Element {
             params: {},
         }
 
-        void dispatch(
-            notify({
-                status: NotificationStatus.Success,
-                message:
-                    'All the macros will be exported. You will receive the download link via email once the export is done.',
-            }),
+        toast.success(
+            'All the macros will be exported. You will receive the download link via email once the export is done.',
         )
 
         createJob(requestPayload).catch((error) => {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: 'Failed to export macros. Please try again.',
-                }),
-            )
+            toast.error('Failed to export macros. Please try again.')
             throw error
         })
     }

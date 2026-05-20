@@ -1,5 +1,7 @@
 import { useQueryClient } from '@tanstack/react-query'
 
+import { toast } from '@gorgias/axiom'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'
 import {
@@ -7,11 +9,6 @@ import {
     useReactivateAccount,
 } from 'models/billing/queries'
 import { fetchAccount } from 'state/currentAccount/actions'
-import { notify } from 'state/notifications/actions'
-import {
-    NotificationStatus,
-    NotificationStyle,
-} from 'state/notifications/types'
 
 export const useReactivateAccountWithSideEffects = () => {
     const dispatch = useAppDispatch()
@@ -21,31 +18,13 @@ export const useReactivateAccountWithSideEffects = () => {
         onSuccess: () => {
             void queryClient.invalidateQueries(getBillingStateQuery)
             void dispatch(fetchAccount())
-            void dispatch(
-                notify({
-                    message: 'Account has been successfully reactivated.',
-                    status: NotificationStatus.Success,
-                    style: NotificationStyle.Alert,
-                    showDismissButton: true,
-                    noAutoDismiss: false,
-                    allowHTML: true,
-                }),
-            )
+            toast.success('Account has been successfully reactivated.')
         },
         onError: (error) => {
             const msg = isGorgiasApiError(error)
                 ? error.response?.data?.error?.msg
                 : 'Oops something went wrong'
-            void dispatch(
-                notify({
-                    message: msg,
-                    status: NotificationStatus.Error,
-                    style: NotificationStyle.Alert,
-                    showDismissButton: true,
-                    noAutoDismiss: false,
-                    allowHTML: true,
-                }),
-            )
+            toast.error(msg)
         },
     })
 }

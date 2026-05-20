@@ -19,6 +19,7 @@ import { Modal, ModalFooter } from 'reactstrap'
 
 import {
     LegacyButton as Button,
+    toast,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 import { queryKeys } from '@gorgias/helpdesk-queries'
@@ -63,7 +64,6 @@ import {
     isTrialing,
 } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
-import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { hasRole } from 'utils'
 
@@ -286,13 +286,10 @@ const AutomateSubscriptionModalContent = ({
                             ? error
                             : new Error(String(error)),
                     )
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Error,
-                            message: isGorgiasApiError(error)
-                                ? error.response.data.error.msg
-                                : "Sorry, we couldn't update your subscription. Please try again.",
-                        }),
+                    toast.error(
+                        isGorgiasApiError(error)
+                            ? error.response.data.error.msg
+                            : "Sorry, we couldn't update your subscription. Please try again.",
                     )
                     return false
                 }
@@ -465,14 +462,10 @@ const AutomateSubscriptionModalContent = ({
                             ? error
                             : new Error(String(error)),
                     )
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Error,
-                            showDismissButton: true,
-                            message: isGorgiasApiError(error)
-                                ? error.response.data.error.msg
-                                : "Sorry, we couldn't update your subscription. Please try again.",
-                        }),
+                    toast.error(
+                        isGorgiasApiError(error)
+                            ? error.response.data.error.msg
+                            : "Sorry, we couldn't update your subscription. Please try again.",
                     )
                 }
             }

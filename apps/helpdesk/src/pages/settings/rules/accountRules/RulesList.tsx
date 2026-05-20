@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react'
 import classnames from 'classnames'
 import { Table } from 'reactstrap'
 
+import { toast } from '@gorgias/axiom'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
@@ -13,8 +15,6 @@ import {
     rulesReordered,
     ruleUpdated,
 } from '../../../../state/entities/rules/actions'
-import { notify } from '../../../../state/notifications/actions'
-import { NotificationStatus } from '../../../../state/notifications/types'
 import type { Rule, RulePriority } from '../../../../state/rules/types'
 import { RuleLimitStatus } from '../../../../state/rules/types'
 import ReactSortable from '../../../common/components/dragging/ReactSortable'
@@ -57,12 +57,7 @@ export function RulesList({
             await reorderRules(priorities)
             void dispatch(rulesReordered(priorities))
         } catch {
-            void dispatch(
-                notify({
-                    message: 'Failed to reorder rules',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error('Failed to reorder rules')
             rulesReordered(oldPriorities)
         }
     }
@@ -85,19 +80,9 @@ export function RulesList({
         try {
             const res = await activateRule(id)
             void dispatch(ruleUpdated(res))
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Success,
-                    message: 'Rule activated successfully',
-                }),
-            )
+            toast.success('Rule activated successfully')
         } catch {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: 'Unable to activate rule',
-                }),
-            )
+            toast.error('Unable to activate rule')
         }
     }
 

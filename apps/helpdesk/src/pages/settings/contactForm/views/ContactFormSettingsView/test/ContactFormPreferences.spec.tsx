@@ -1,6 +1,9 @@
 import { render, userEvent } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
+import { AxiosError, AxiosHeaders } from 'axios'
 import { fromJS } from 'immutable'
+
+import { toast } from '@gorgias/axiom'
 
 import {
     AUTOMATION_PRODUCT_ID,
@@ -89,6 +92,9 @@ describe('<ContactFormPreferences />', () => {
             isReady: true,
         } as unknown as ReturnType<typeof useContactFormApi>) // TODO: Discuss using of jest-mock-extended
     })
+    afterEach(() => {
+        toast.dismiss()
+    })
     it('should render with contact form name', () => {
         renderView({ path: CONTACT_FORM_PREFERENCES_PATH })
         expect(screen.getByLabelText('Contact form name')).toHaveValue(
@@ -125,6 +131,147 @@ describe('<ContactFormPreferences />', () => {
                     shop_integration_id: 1,
                 }),
             )
+        })
+    })
+    describe('onSave', () => {
+        it('should show a success toast when updating the contact form succeeds', async () => {
+            const updateContactForm = jest.fn(() =>
+                Promise.resolve(ContactFormFixture),
+            )
+            mockedUseContactFormApi.mockReturnValue({
+                isReady: true,
+                updateContactForm,
+            } as unknown as ReturnType<typeof useContactFormApi>)
+
+            renderView({ path: CONTACT_FORM_PREFERENCES_PATH })
+
+            userEvent.click(screen.getByLabelText('Connect a store'))
+            userEvent.click(screen.getByText('My Shop'))
+            await waitFor(() =>
+                expect(screen.getByText('Save Changes')).toBeEnabled(),
+            )
+            userEvent.click(screen.getByText('Save Changes'))
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Contact form updated successfully',
+                    }),
+                ).toHaveAttribute('data-intent', 'success')
+            })
+        })
+        it('should show an error toast when updating the contact form fails', async () => {
+            const updateContactForm = jest.fn(() =>
+                Promise.reject(new Error('boom')),
+            )
+            mockedUseContactFormApi.mockReturnValue({
+                isReady: true,
+                updateContactForm,
+            } as unknown as ReturnType<typeof useContactFormApi>)
+
+            renderView({ path: CONTACT_FORM_PREFERENCES_PATH })
+
+            userEvent.click(screen.getByLabelText('Connect a store'))
+            userEvent.click(screen.getByText('My Shop'))
+            await waitFor(() =>
+                expect(screen.getByText('Save Changes')).toBeEnabled(),
+            )
+            userEvent.click(screen.getByText('Save Changes'))
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Failed to update the Contact Form',
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive')
+            })
+        })
+    })
+    describe('onDelete', () => {
+        it('should show a success toast when deleting the contact form succeeds', async () => {
+            const deleteContactForm = jest.fn(() => Promise.resolve(true))
+            mockedUseContactFormApi.mockReturnValue({
+                isReady: true,
+                deleteContactForm,
+            } as unknown as ReturnType<typeof useContactFormApi>)
+
+            renderView({ path: CONTACT_FORM_PREFERENCES_PATH })
+
+            userEvent.click(screen.getByText('Delete Form'))
+            const confirmButtons = await screen.findAllByRole('button', {
+                name: 'Delete Form',
+            })
+            userEvent.click(confirmButtons[confirmButtons.length - 1])
+
+            await waitFor(() => {
+                expect(deleteContactForm).toHaveBeenCalledWith(FORM_ID)
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Contact form deleted successfully',
+                    }),
+                ).toHaveAttribute('data-intent', 'success')
+            })
+        })
+        it('should show the server error message when delete returns a 400 axios error', async () => {
+            const axiosError = new AxiosError(
+                'Bad Request',
+                'ERR_BAD_REQUEST',
+                undefined,
+                undefined,
+                {
+                    status: 400,
+                    statusText: 'Bad Request',
+                    headers: {},
+                    config: { headers: new AxiosHeaders() },
+                    data: { message: 'Cannot delete the only contact form' },
+                },
+            )
+            const deleteContactForm = jest.fn(() => Promise.reject(axiosError))
+            mockedUseContactFormApi.mockReturnValue({
+                isReady: true,
+                deleteContactForm,
+            } as unknown as ReturnType<typeof useContactFormApi>)
+
+            renderView({ path: CONTACT_FORM_PREFERENCES_PATH })
+
+            userEvent.click(screen.getByText('Delete Form'))
+            const confirmButtons = await screen.findAllByRole('button', {
+                name: 'Delete Form',
+            })
+            userEvent.click(confirmButtons[confirmButtons.length - 1])
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Cannot delete the only contact form',
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive')
+            })
+        })
+        it('should show the fallback error message when delete fails with a non-axios error', async () => {
+            const deleteContactForm = jest.fn(() =>
+                Promise.reject(new Error('Network down')),
+            )
+            mockedUseContactFormApi.mockReturnValue({
+                isReady: true,
+                deleteContactForm,
+            } as unknown as ReturnType<typeof useContactFormApi>)
+
+            renderView({ path: CONTACT_FORM_PREFERENCES_PATH })
+
+            userEvent.click(screen.getByText('Delete Form'))
+            const confirmButtons = await screen.findAllByRole('button', {
+                name: 'Delete Form',
+            })
+            userEvent.click(confirmButtons[confirmButtons.length - 1])
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Failed to delete the Contact Form',
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive')
+            })
         })
     })
 })

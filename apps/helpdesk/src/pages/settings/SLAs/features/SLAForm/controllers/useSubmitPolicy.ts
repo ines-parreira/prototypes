@@ -4,22 +4,19 @@ import { history } from '@repo/routing'
 import { useQueryClient } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 
+import { toast } from '@gorgias/axiom'
 import {
     queryKeys,
     useCreateSlaPolicy,
     useUpdateSlaPolicy,
 } from '@gorgias/helpdesk-queries'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import handleApiError from 'pages/settings/SLAs/utils/handleApiError'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import makeCreateSLAPolicyBody from './makeCreateSLAPolicyBody'
 import type { SLAFormValues } from './useFormValues'
 
 export default function useSubmitPolicy() {
-    const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
 
     const { policyId } = useParams<{ policyId?: string }>()
@@ -38,14 +35,9 @@ export default function useSubmitPolicy() {
                     ? await createSLA({ data: body })
                     : await updateSLA({ id: policyId!, data: body })
 
-                void (await dispatch(
-                    notify({
-                        status: NotificationStatus.Success,
-                        message: `SLA policy ${
-                            isNewPolicy ? 'created' : 'updated'
-                        }`,
-                    }),
-                ))
+                toast.success(
+                    `SLA policy ${isNewPolicy ? 'created' : 'updated'}`,
+                )
                 await queryClient.invalidateQueries({
                     queryKey: queryKeys.slaPolicies.listSlaPolicies(),
                 })
@@ -57,20 +49,15 @@ export default function useSubmitPolicy() {
                 history.push('/app/settings/sla')
             } catch (e) {
                 const apiErrorMessage = handleApiError(e as Error)
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message:
-                            apiErrorMessage ||
-                            `Failed to ${
-                                isNewPolicy ? 'create' : 'update'
-                            } SLA policy.`,
-                        allowHTML: true,
-                    }),
+                toast.error(
+                    apiErrorMessage ||
+                        `Failed to ${
+                            isNewPolicy ? 'create' : 'update'
+                        } SLA policy.`,
                 )
             }
         },
-        [createSLA, dispatch, isNewPolicy, policyId, queryClient, updateSLA],
+        [createSLA, isNewPolicy, policyId, queryClient, updateSLA],
     )
 
     return { save, isLoading: isCreating || isUpdating || false }

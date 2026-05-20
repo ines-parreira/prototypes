@@ -1,15 +1,12 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { produce } from 'immer'
 
+import { toast } from '@gorgias/axiom'
 import type { ListCustomFieldConditionsResult } from '@gorgias/helpdesk-queries'
 import {
     queryKeys,
     useDeleteCustomFieldCondition as useDelete,
 } from '@gorgias/helpdesk-queries'
-
-import useAppDispatch from 'hooks/useAppDispatch'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 /**
  * Wrapper for the SDK's useUpdateCustomFieldCondition method with:
@@ -18,7 +15,6 @@ import { NotificationStatus } from 'state/notifications/types'
  * - Notifications
  */
 export default function useDeleteCustomFieldCondition() {
-    const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
 
     return useDelete({
@@ -39,20 +35,10 @@ export default function useDeleteCustomFieldCondition() {
                 )
                 void queryClient.invalidateQueries({ queryKey })
 
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Success,
-                        message: 'Successfully deleted condition',
-                    }),
-                )
+                toast.success('Successfully deleted condition')
             },
             onError: () => {
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message: 'Failed to delete condition',
-                    }),
-                )
+                toast.error('Failed to delete condition')
             },
         },
     })

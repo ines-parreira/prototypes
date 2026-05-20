@@ -2,12 +2,10 @@ import { useCallback, useState } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 import classnames from 'classnames'
-import type { ConnectedProps } from 'react-redux'
-import { connect } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
 import type { CreateContactFormDto } from 'models/contactForm/types'
 import type { LocaleCode } from 'models/helpCenter/types'
@@ -25,17 +23,13 @@ import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailI
 import useViewStoreMapping from 'pages/settings/contactForm/hooks/useViewStoreMapping'
 import { insertContactFormIdParam } from 'pages/settings/contactForm/utils/navigation'
 import settingsCss from 'pages/settings/settings.less'
-import { notify as notifyAction } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { ConnectContactFormToShopSection } from '../../components/ConnectContactFormToShopSection/ConnectContactFormToShopSection'
 import { contactFormKeys, useCreateContactForm } from '../../queries'
 
 import contactFormCss from '../../contactForm.less'
 
-const ContactFormCreateView = ({
-    notify,
-}: ConnectedProps<typeof connector>): JSX.Element => {
+const ContactFormCreateView = (): JSX.Element => {
     const history = useHistory()
     const { defaultIntegration, emailIntegrations } = useEmailIntegrations()
     const { checkContactFormName, isReady } = useContactFormApi()
@@ -60,25 +54,17 @@ const ContactFormCreateView = ({
     const createContactFormMutation = useCreateContactForm({
         onSuccess: async (newContactForm) => {
             if (!newContactForm) {
-                void notify({
-                    message: 'Something went wrong',
-                })
+                toast.info('Something went wrong')
                 return
             }
             handleStoreMapping(newContactForm)
             // immediately navigate to the customization page with the success case
             navigateToContactFormCustomization(newContactForm.id)
-            void notify({
-                message: 'Contact Form successfully created',
-                status: NotificationStatus.Success,
-            })
+            toast.success('Contact Form successfully created')
             await queryClient.invalidateQueries(contactFormKeys.lists())
         },
         onError: () => {
-            void notify({
-                message: 'Failed to create the Contact Form',
-                status: NotificationStatus.Error,
-            })
+            toast.error('Failed to create the Contact Form')
         },
     })
 
@@ -213,8 +199,4 @@ const ContactFormCreateView = ({
     )
 }
 
-const connector = connect(null, {
-    notify: notifyAction,
-})
-
-export default connector(ContactFormCreateView)
+export default ContactFormCreateView

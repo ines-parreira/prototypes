@@ -11,10 +11,12 @@ import {
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, render } from '@repo/testing'
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { act } from 'react-dom/test-utils'
+
+import { toast } from '@gorgias/axiom'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
 import { account } from 'fixtures/account'
@@ -197,6 +199,10 @@ describe('UsageAndPlansView', () => {
             error: undefined,
             data: new Map(),
         } as any)
+    })
+
+    afterEach(() => {
+        toast.dismiss()
     })
 
     it('should render with active subscription containing Helpdesk and Convert products', () => {
@@ -923,6 +929,121 @@ describe('UsageAndPlansView', () => {
             'href',
             BILLING_PAYMENT_FREQUENCY_PATH,
         )
+    })
+
+    describe('Trial banners', () => {
+        it('shows a warning toast about subscription start when trialing with a credit card', async () => {
+            render(
+                <UsageAndPlansView
+                    contactBilling={jest.fn()}
+                    periodEnd="2021-01-01"
+                    currentUsage={mockedUsage}
+                />,
+                { storeState: storeWithTrialingSubscription },
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('status', {
+                        name: /Your subscription to the Basic plan/,
+                    }),
+                ).toHaveAttribute('data-intent', 'warning')
+            })
+            expect(
+                screen.getByRole('button', { name: 'Review Subscription' }),
+            ).toBeInTheDocument()
+        })
+
+        it('shows a warning toast about ending trial when trialing without a credit card', async () => {
+            const trialEnd = new Date(
+                Date.now() + 2 * 24 * 60 * 60 * 1000,
+            ).toISOString()
+            const trialingNoCardStore = {
+                billing: fromJS(mockedBilling),
+                integrations: fromJS(mockedIntegrations),
+                currentAccount: fromJS({
+                    ...account,
+                    meta: { hasCreditCard: false },
+                    current_subscription: {
+                        ...account.current_subscription,
+                        status: 'trialing',
+                        trial_end_datetime: trialEnd,
+                        products: {
+                            [HELPDESK_PRODUCT_ID]:
+                                basicMonthlyHelpdeskPlan.plan_id,
+                        },
+                    },
+                }),
+            }
+
+            render(
+                <UsageAndPlansView
+                    contactBilling={jest.fn()}
+                    periodEnd="2021-01-01"
+                    currentUsage={mockedUsage}
+                />,
+                { storeState: trialingNoCardStore },
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('status', {
+                        name: /Your free trial is ending on/,
+                    }),
+                ).toHaveAttribute('data-intent', 'warning')
+            })
+            expect(
+                screen.getByRole('button', { name: 'Add a payment method' }),
+            ).toBeInTheDocument()
+        })
+
+        it('shows the Shopify CTA when shouldPayWithShopify is true', async () => {
+            const trialEnd = new Date(
+                Date.now() + 2 * 24 * 60 * 60 * 1000,
+            ).toISOString()
+            const trialingShopifyStore = {
+                billing: fromJS(mockedBilling),
+                integrations: fromJS(mockedIntegrations),
+                currentAccount: fromJS({
+                    ...account,
+                    meta: {
+                        hasCreditCard: false,
+                        should_pay_with_shopify: true,
+                    },
+                    current_subscription: {
+                        ...account.current_subscription,
+                        status: 'trialing',
+                        trial_end_datetime: trialEnd,
+                        products: {
+                            [HELPDESK_PRODUCT_ID]:
+                                basicMonthlyHelpdeskPlan.plan_id,
+                        },
+                    },
+                }),
+            }
+
+            render(
+                <UsageAndPlansView
+                    contactBilling={jest.fn()}
+                    periodEnd="2021-01-01"
+                    currentUsage={mockedUsage}
+                />,
+                { storeState: trialingShopifyStore },
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('status', {
+                        name: /Your free trial is ending on/,
+                    }),
+                ).toHaveAttribute('data-intent', 'warning')
+            })
+            expect(
+                screen.getByRole('button', {
+                    name: 'Activate Billing with Shopify',
+                }),
+            ).toBeInTheDocument()
+        })
     })
 
     it('should pass cancellation date to ProductCard when product has scheduled cancellation', () => {

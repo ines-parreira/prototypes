@@ -4,6 +4,7 @@ import { userEvent } from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
+import { toast } from '@gorgias/axiom'
 import {
     mockListAccountSettingsHandler,
     mockUpdateAccountSettingHandler,
@@ -74,6 +75,7 @@ describe('<DefaultBusinessHours />', () => {
         document.body.removeChild(mockAppNode)
         jest.clearAllMocks()
         queryClient.clear()
+        toast.dismiss()
     })
     const renderComponent = () =>
         render(<DefaultBusinessHours />, { storeState: {} })
@@ -317,6 +319,70 @@ describe('<DefaultBusinessHours />', () => {
             await waitForUpdateRequest(async (request) => {
                 const body = await request.json()
                 expect(body.data.business_hours).toHaveLength(0)
+            })
+        })
+        it('should show a success toast after a successful save', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+            await user.click(
+                screen.getByLabelText('Edit default business hours'),
+            )
+            await waitFor(async () => {
+                await user.click(screen.getByText('Add time range'))
+            })
+            await user.click(screen.getByText('Save changes'))
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Successfully updated default business hours',
+                    }),
+                ).toHaveAttribute('data-intent', 'success')
+            })
+        })
+        it('should show an error toast with the server message when the save fails', async () => {
+            const failingUpdateMock = mockUpdateAccountSettingHandler(
+                async () =>
+                    HttpResponse.json(
+                        { error: { msg: 'Server says nope' } } as any,
+                        { status: 400 },
+                    ),
+            )
+            server.use(failingUpdateMock.handler)
+            const user = userEvent.setup()
+            renderComponent()
+            await user.click(
+                screen.getByLabelText('Edit default business hours'),
+            )
+            await waitFor(async () => {
+                await user.click(screen.getByText('Add time range'))
+            })
+            await user.click(screen.getByText('Save changes'))
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('status', { name: 'Server says nope' }),
+                ).toHaveAttribute('data-intent', 'destructive')
+            })
+        })
+        it('should show a fallback error toast when the server does not return a message', async () => {
+            const failingUpdateMock = mockUpdateAccountSettingHandler(
+                async () => new HttpResponse(null, { status: 500 }),
+            )
+            server.use(failingUpdateMock.handler)
+            const user = userEvent.setup()
+            renderComponent()
+            await user.click(
+                screen.getByLabelText('Edit default business hours'),
+            )
+            await waitFor(async () => {
+                await user.click(screen.getByText('Add time range'))
+            })
+            await user.click(screen.getByText('Save changes'))
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Something went wrong, please try again',
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive')
             })
         })
     })

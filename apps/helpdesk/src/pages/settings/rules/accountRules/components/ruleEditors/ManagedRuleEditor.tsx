@@ -15,6 +15,8 @@ import _isEqual from 'lodash/isEqual'
 import moment from 'moment'
 import { Label } from 'reactstrap'
 
+import { toast } from '@gorgias/axiom'
+
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
@@ -25,8 +27,6 @@ import FakeTicketComponent from 'pages/settings/rules/components/FakeTicketCompo
 import RuleItemButtons from 'pages/settings/rules/components/RuleItemButtons'
 import type { InstallationError } from 'pages/settings/rules/ruleLibrary/constants'
 import { ruleUpdated } from 'state/entities/rules/actions'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import type { ManagedRuleSettings } from 'state/rules/types'
 import { ManagedRulesSlugs } from 'state/rules/types'
 import { convertFromHTML, convertToHTML } from 'utils/editor'
@@ -164,20 +164,10 @@ export const ManagedRuleEditor = (
         try {
             const res = await activateRule(rule.id)
             void dispatch(ruleUpdated(res))
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Success,
-                    message: 'Rule activated successfully',
-                }),
-            )
+            toast.success('Rule activated successfully')
             setDeactivatedDatetime(null)
         } catch {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: 'Unable to deactivate rule',
-                }),
-            )
+            toast.error('Unable to deactivate rule')
         }
     }
 
@@ -197,13 +187,7 @@ export const ManagedRuleEditor = (
 
     const handleChange = () => {
         if (!hasAutomateAccess) {
-            void dispatch(
-                notify({
-                    message:
-                        'Please upgrade to an AI Agent plan to edit this rule',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error('Please upgrade to an AI Agent plan to edit this rule')
             return
         }
         return (settings: SettingsType, hasInvalidField?: boolean) => {

@@ -1,8 +1,10 @@
 import client from '@repo/api-resources'
 import { assumeMock, renderHook } from '@repo/testing'
 import { useElements, useStripe } from '@stripe/react-stripe-js'
-import { act, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
+
+import { toast } from '@gorgias/axiom'
 
 import { billingContact } from 'fixtures/resources'
 import * as queries from 'models/billing/queries'
@@ -32,6 +34,10 @@ describe('useConfirmStripeSetupIntent', () => {
         assumeMock(useStripe).mockReturnValue({
             confirmSetup: mockConfirmStripe,
         } as any)
+    })
+
+    afterEach(() => {
+        toast.dismiss()
     })
 
     it('should call stripe.confirmSetup with correct params', async () => {
@@ -136,7 +142,7 @@ describe('useConfirmStripeSetupIntent', () => {
             message: 'Card error message',
         })
 
-        const { result, store } = renderHook(useConfirmStripeSetupIntent)
+        const { result } = renderHook(useConfirmStripeSetupIntent)
 
         try {
             await act(async () => {
@@ -149,12 +155,11 @@ describe('useConfirmStripeSetupIntent', () => {
             })
         }
 
-        const notificationAction: { payload: { message: string } } =
-            store.getActions()[0]
-
-        expect(notificationAction?.payload.message).toEqual(
-            'Card error message',
-        )
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', { name: 'Card error message' }),
+            ).toHaveAttribute('data-intent', 'destructive')
+        })
     })
 
     it('should notify users with the default error message when the Stripe error type is NOT card_error or validation_error', async () => {
@@ -163,7 +168,7 @@ describe('useConfirmStripeSetupIntent', () => {
             message: 'Invalid request error message',
         })
 
-        const { result, store } = renderHook(useConfirmStripeSetupIntent)
+        const { result } = renderHook(useConfirmStripeSetupIntent)
 
         try {
             await act(async () => {
@@ -176,12 +181,13 @@ describe('useConfirmStripeSetupIntent', () => {
             })
         }
 
-        const notificationAction: { payload: { message: string } } =
-            store.getActions()[0]
-
-        expect(notificationAction?.payload.message).toEqual(
-            'Something went wrong unexpectedly. Please try again later, and contact support if the issue persists.',
-        )
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Something went wrong unexpectedly. Please try again later, and contact support if the issue persists.',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
+        })
     })
 
     it("should return setupIntent if the setup intent is successful, even when there's an error", async () => {

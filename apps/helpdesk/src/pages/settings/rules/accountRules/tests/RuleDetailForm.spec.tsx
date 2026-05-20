@@ -11,6 +11,8 @@ import { MemoryRouter, useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { toast } from '@gorgias/axiom'
+
 import { billingState } from 'fixtures/billing'
 import { emptyRule, rules } from 'fixtures/rule'
 import { user } from 'fixtures/users'
@@ -22,7 +24,6 @@ import {
     rulesFetched,
     ruleUpdated,
 } from 'state/entities/rules/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import type { Rule } from 'state/rules/types'
 import { getEmptyRule } from 'state/rules/utils'
 import type { RootState } from 'state/types'
@@ -70,8 +71,6 @@ describe('<RuleDetailForm />', () => {
     >
     const fetchRulesMock = fetchRules as jest.MockedFunction<typeof fetchRules>
 
-    const notifyMock = jest.fn()
-
     const minProps = {
         rules: { 1: { ...emptyRule, ...getEmptyRule() } },
         ruleCreated: ruleCreatedMock,
@@ -79,7 +78,6 @@ describe('<RuleDetailForm />', () => {
         ruleUpdated: ruleUpdatedMock,
         rulesFetched: rulesFetchedMock,
         schemas: fromJS({}),
-        notify: notifyMock,
     } as any as ComponentProps<typeof RuleDetailForm>
 
     const renderComponent = (
@@ -101,6 +99,7 @@ describe('<RuleDetailForm />', () => {
 
     afterEach(() => {
         mockDate.mockRestore()
+        toast.dismiss()
     })
 
     describe('rendering', () => {
@@ -135,10 +134,11 @@ describe('<RuleDetailForm />', () => {
             mockUseParams.mockReturnValue({ ruleId: '404' })
             renderComponent()
             await waitFor(() => {
-                expect(notifyMock).toHaveBeenNthCalledWith(1, {
-                    message: 'Could not find rule with id: 404',
-                    status: NotificationStatus.Error,
-                })
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Could not find rule with id: 404',
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive')
             })
             expect(history.push).toHaveBeenNthCalledWith(
                 1,

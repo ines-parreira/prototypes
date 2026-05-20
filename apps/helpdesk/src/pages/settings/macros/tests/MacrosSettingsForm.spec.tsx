@@ -11,6 +11,7 @@ import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 import { useParams } from 'react-router-dom'
 
+import { toast } from '@gorgias/axiom'
 import {
     mockBulkArchiveMacrosHandler,
     mockBulkUnarchiveMacrosHandler,
@@ -29,8 +30,6 @@ import { MacroActionName, MacroActionType } from 'models/macroAction/types'
 import type ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import type { MacroEdit } from 'pages/tickets/common/macros/components/MacroEdit'
 import { getDefaultMacro } from 'state/macro/utils'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import MacrosSettingsForm from '../MacrosSettingsForm'
@@ -109,8 +108,6 @@ jest.mock('react-router-dom', () => ({
 const mockedUseLocation = jest.requireMock('react-router-dom').useLocation
 const mockedUseParams = assumeMock(useParams)
 
-jest.mock('state/notifications/actions')
-
 const getMock = mockGetMacroHandler()
 const createMock = mockCreateMacroHandler()
 const deleteMock = mockDeleteMacroHandler()
@@ -128,6 +125,7 @@ beforeEach(() => {
 afterEach(() => {
     server.resetHandlers()
     queryClient.removeQueries()
+    toast.dismiss()
 })
 
 afterAll(() => {
@@ -215,10 +213,9 @@ describe('<MacrosSettingsForm />', () => {
         renderComponent()
 
         await waitFor(() => {
-            expect(notify).toHaveBeenNthCalledWith(1, {
-                title: 'Failed to fetch macro',
-                status: NotificationStatus.Error,
-            })
+            expect(
+                screen.getByRole('status', { name: 'Failed to fetch macro' }),
+            ).toHaveAttribute('data-intent', 'destructive')
             expect(history.push).toHaveBeenCalledWith('/app/settings/macros')
         })
     })
@@ -243,10 +240,11 @@ describe('<MacrosSettingsForm />', () => {
         })
 
         await waitFor(() => {
-            expect(notify).toHaveBeenNthCalledWith(1, {
-                message: 'Successfully created macro',
-                status: NotificationStatus.Success,
-            })
+            expect(
+                screen.getByRole('status', {
+                    name: 'Successfully created macro',
+                }),
+            ).toHaveAttribute('data-intent', 'success')
             expect(history.goBack).toHaveBeenCalled()
         })
     })
@@ -285,10 +283,11 @@ describe('<MacrosSettingsForm />', () => {
         })
 
         await waitFor(() => {
-            expect(notify).toHaveBeenNthCalledWith(1, {
-                message: 'Successfully updated macro',
-                status: NotificationStatus.Success,
-            })
+            expect(
+                screen.getByRole('status', {
+                    name: 'Successfully updated macro',
+                }),
+            ).toHaveAttribute('data-intent', 'success')
             expect(history.push).toHaveBeenCalledWith(
                 '/app/settings/macros/active',
             )
@@ -329,10 +328,11 @@ describe('<MacrosSettingsForm />', () => {
         })
 
         await waitFor(() => {
-            expect(notify).toHaveBeenNthCalledWith(1, {
-                message: 'Successfully updated macro',
-                status: NotificationStatus.Success,
-            })
+            expect(
+                screen.getByRole('status', {
+                    name: 'Successfully updated macro',
+                }),
+            ).toHaveAttribute('data-intent', 'success')
             expect(history.push).toHaveBeenCalledWith(
                 '/app/settings/macros/archived',
             )
@@ -404,10 +404,11 @@ describe('<MacrosSettingsForm />', () => {
         })
 
         await waitFor(() => {
-            expect(notify).toHaveBeenNthCalledWith(1, {
-                message: 'Successfully updated macro',
-                status: NotificationStatus.Success,
-            })
+            expect(
+                screen.getByRole('status', {
+                    name: 'Successfully updated macro',
+                }),
+            ).toHaveAttribute('data-intent', 'success')
             expect(history.push).toHaveBeenCalledWith(
                 '/app/settings/macros/active',
             )
@@ -456,10 +457,11 @@ describe('<MacrosSettingsForm />', () => {
         })
 
         await waitFor(() => {
-            expect(notify).toHaveBeenNthCalledWith(1, {
-                message: 'Successfully created macro',
-                status: NotificationStatus.Success,
-            })
+            expect(
+                screen.getByRole('status', {
+                    name: 'Successfully created macro',
+                }),
+            ).toHaveAttribute('data-intent', 'success')
             expect(history.goBack).toHaveBeenCalled()
         })
     })
@@ -479,11 +481,14 @@ describe('<MacrosSettingsForm />', () => {
         await user.click(screen.getByText('Delete macro'))
 
         await waitForDelete(async () => {
-            expect(notify).toHaveBeenNthCalledWith(1, {
-                message: 'Successfully deleted macro',
-                status: NotificationStatus.Success,
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Successfully deleted macro',
+                    }),
+                ).toHaveAttribute('data-intent', 'success')
+                expect(history.goBack).toHaveBeenCalled()
             })
-            expect(history.goBack).toHaveBeenCalled()
         })
     })
 
@@ -507,13 +512,16 @@ describe('<MacrosSettingsForm />', () => {
                 actions,
                 language,
             })
-            expect(notify).toHaveBeenNthCalledWith(1, {
-                message: 'Successfully duplicated macro',
-                status: NotificationStatus.Success,
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Successfully duplicated macro',
+                    }),
+                ).toHaveAttribute('data-intent', 'success')
+                expect(history.push).toHaveBeenCalledWith(
+                    `/app/settings/macros/${createMock.data.id}`,
+                )
             })
-            expect(history.push).toHaveBeenCalledWith(
-                `/app/settings/macros/${createMock.data.id}`,
-            )
         })
     })
 
@@ -536,12 +544,11 @@ describe('<MacrosSettingsForm />', () => {
         await user.click(screen.getByText('Duplicate macro'))
 
         await waitFor(() => {
-            expect(notify).toHaveBeenNthCalledWith(1, {
-                title: 'Failed to duplicate macro',
-                message: null,
-                status: NotificationStatus.Error,
-                allowHTML: true,
-            })
+            expect(
+                screen.getByRole('status', {
+                    name: 'Failed to duplicate macro',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 

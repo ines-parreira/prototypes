@@ -20,7 +20,6 @@ import { AlertBannerTypes, BannerCategories } from 'AlertBanners'
 import useAppDispatch from 'hooks/useAppDispatch'
 import type { CreditCard } from 'models/billing/types'
 import { useIsPaymentEnabled } from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
-import { notify } from 'state/notifications/actions'
 
 const mockedServer = new MockAdapter(client)
 
@@ -29,9 +28,6 @@ jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = useAppDispatch as jest.Mock
 const dispatch = jest.fn()
 useAppDispatchMock.mockReturnValue(dispatch)
-
-// Mock notify
-jest.mock('state/notifications/actions')
 
 const mockAddBanner = jest.fn()
 const mockRemoveBanner = jest.fn()
@@ -74,7 +70,6 @@ describe('useIsPaymentEnabled', () => {
             expect(isPaymentEnabled.current).toBe(true)
         })
         expect(dispatch).not.toHaveBeenCalled()
-        expect(notify).not.toHaveBeenCalled()
     })
 
     it('should render the expired-credit-card use-case', async () => {
@@ -113,7 +108,6 @@ describe('useIsPaymentEnabled', () => {
             expect(isPaymentEnabled.current).toBe(true)
         })
         expect(dispatch).not.toHaveBeenCalled()
-        expect(notify).not.toHaveBeenCalled()
     })
 
     it('should render the ach-credit use-case', async () => {
@@ -125,7 +119,6 @@ describe('useIsPaymentEnabled', () => {
             expect(isPaymentEnabled.current).toBe(true)
         })
         expect(dispatch).not.toHaveBeenCalled()
-        expect(notify).not.toHaveBeenCalled()
     })
 
     it('should render the inactivated-shopify-billing use-case', async () => {
@@ -162,6 +155,5 @@ describe('useIsPaymentEnabled', () => {
             expect(isPaymentEnabled.current).toBe(true)
         })
         expect(dispatch).not.toHaveBeenCalled()
-        expect(notify).not.toHaveBeenCalled()
     })
 })

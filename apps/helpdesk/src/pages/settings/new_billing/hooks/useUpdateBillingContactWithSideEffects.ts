@@ -1,11 +1,11 @@
 import { useQueryClient } from '@tanstack/react-query'
 
+import { toast } from '@gorgias/axiom'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import { billingKeys, useUpdateBillingContact } from 'models/billing/queries'
 import type { updateBillingContact } from 'models/billing/resources'
 import { UPDATE_BILLING_CONTACT_ERROR } from 'state/billing/constants'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import type { MutationOverrides } from 'types/query'
 
 export const useUpdateBillingContactWithSideEffects = (
@@ -17,12 +17,7 @@ export const useUpdateBillingContactWithSideEffects = (
     return useUpdateBillingContact({
         ...overrides,
         onSuccess: (response, ...args) => {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Success,
-                    message: 'Billing contact information updated',
-                }),
-            )
+            toast.success('Billing contact information updated')
 
             void queryClient.invalidateQueries({
                 queryKey: billingKeys.contact(),

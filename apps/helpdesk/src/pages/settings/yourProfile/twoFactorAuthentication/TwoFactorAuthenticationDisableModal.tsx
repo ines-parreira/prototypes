@@ -3,7 +3,7 @@ import React, { useCallback, useState } from 'react'
 
 import type { AxiosError } from 'axios'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
 import type { User } from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -15,8 +15,6 @@ import css from 'pages/common/components/PrivateReplyToFBComment/PrivateReplyMod
 import InputField from 'pages/common/forms/DEPRECATED_InputField'
 import { update2FAEnabled } from 'state/currentUser/actions'
 import { hasPassword as hasPasswordSelector } from 'state/currentUser/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 export type OwnProps = {
     user?: User
@@ -60,12 +58,8 @@ export default function TwoFactorAuthenticationDisableModal({
                 void dispatch(update2FAEnabled(false))
             } else {
                 await deleteTwoFASecret(user.id)
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Success,
-                        message: `Two-Factor Authentication token has been reset for <b>${user.name}</b>.`,
-                        allowHTML: true,
-                    }),
+                toast.success(
+                    `Two-Factor Authentication token has been reset for ${user.name}.`,
                 )
             }
 

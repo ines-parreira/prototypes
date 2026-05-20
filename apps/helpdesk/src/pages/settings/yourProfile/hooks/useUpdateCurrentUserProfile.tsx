@@ -1,8 +1,8 @@
+import { toast } from '@gorgias/axiom'
+
 import { useUpdateCurrentUser } from 'hooks/currentUser/useUpdateCurrentUser'
 import useAppDispatch from 'hooks/useAppDispatch'
 import * as constants from 'state/currentUser/constants'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 export function useUpdateCurrentUserProfile() {
     const dispatch = useAppDispatch()
@@ -15,12 +15,7 @@ export function useUpdateCurrentUserProfile() {
                     resp: response.data,
                 })
 
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Success,
-                        message: 'User successfully updated',
-                    }),
-                )
+                toast.success('User successfully updated')
             },
             onError: (error) => {
                 dispatch({
@@ -45,13 +40,10 @@ export function useUpdateCurrentUserProfilePicture() {
                     resp: response.data,
                 })
 
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Success,
-                        message: response.data.meta?.profile_picture_url
-                            ? 'User picture successfully uploaded'
-                            : 'User picture successfully removed',
-                    }),
+                toast.success(
+                    response.data.meta?.profile_picture_url
+                        ? 'User picture successfully uploaded'
+                        : 'User picture successfully removed',
                 )
             },
             onError: (error) => {

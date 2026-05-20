@@ -2,10 +2,9 @@ import React from 'react'
 
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import { act, screen, waitFor } from '@testing-library/react'
 
+import { toast } from '@gorgias/axiom'
 import {
     queryKeys,
     useDeleteCustomFieldCondition as useDelete,
@@ -13,7 +12,6 @@ import {
 
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { customFieldCondition } from 'fixtures/customFieldCondition'
-import { NotificationStatus } from 'state/notifications/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import useDeleteCustomFieldCondition from '../useDeleteCustomFieldCondition'
@@ -23,68 +21,68 @@ const queryClient = mockQueryClient()
 jest.mock('@gorgias/helpdesk-queries')
 const useDeleteCustomFieldConditionMock = assumeMock(useDelete)
 
-const mockStore = configureMockStore([thunk])()
-
 describe('useDeleteCustomFieldCondition', () => {
     beforeEach(() => {
-        mockStore.clearActions()
         jest.resetAllMocks()
     })
 
-    it('should dispatch success notification on success and invalidate proper query data', () => {
+    afterEach(() => {
+        toast.dismiss()
+    })
+
+    it('should show success toast on success and invalidate proper query data', async () => {
         const invalidateQueryMock = jest.spyOn(queryClient, 'invalidateQueries')
 
         renderHook(() => useDeleteCustomFieldCondition(), {
             wrapper: ({ children }) => (
                 <QueryClientProvider client={queryClient}>
-                    <Provider store={mockStore}>{children}</Provider>
+                    {children}
                 </QueryClientProvider>
             ),
         })
 
-        useDeleteCustomFieldConditionMock.mock.calls[0][0]?.mutation!
-            .onSuccess!(
-            axiosSuccessResponse(customFieldCondition) as any,
-            { id: customFieldCondition.id },
-            undefined,
-        )
+        act(() => {
+            useDeleteCustomFieldConditionMock.mock.calls[0][0]?.mutation!
+                .onSuccess!(
+                axiosSuccessResponse(customFieldCondition) as any,
+                { id: customFieldCondition.id },
+                undefined,
+            )
+        })
 
         expect(invalidateQueryMock).toHaveBeenLastCalledWith({
             queryKey:
                 queryKeys.customFieldConditions.listCustomFieldConditions(),
         })
-        expect(mockStore.getActions()).toMatchObject([
-            {
-                payload: {
-                    status: NotificationStatus.Success,
-                    message: 'Successfully deleted condition',
-                },
-            },
-        ])
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Successfully deleted condition',
+                }),
+            ).toHaveAttribute('data-intent', 'success')
+        })
     })
 
-    it('should dispatch failure notification on error', () => {
+    it('should show failure toast on error', async () => {
         renderHook(() => useDeleteCustomFieldCondition(), {
             wrapper: ({ children }) => (
                 <QueryClientProvider client={queryClient}>
-                    <Provider store={mockStore}>{children}</Provider>
+                    {children}
                 </QueryClientProvider>
             ),
         })
 
-        useDeleteCustomFieldConditionMock.mock.calls[0][0]?.mutation!.onError!(
-            {},
-            { id: customFieldCondition.id },
-            undefined,
-        )
+        act(() => {
+            useDeleteCustomFieldConditionMock.mock.calls[0][0]?.mutation!
+                .onError!({}, { id: customFieldCondition.id }, undefined)
+        })
 
-        expect(mockStore.getActions()).toMatchObject([
-            {
-                payload: {
-                    status: NotificationStatus.Error,
-                    message: 'Failed to delete condition',
-                },
-            },
-        ])
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Failed to delete condition',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
+        })
     })
 })

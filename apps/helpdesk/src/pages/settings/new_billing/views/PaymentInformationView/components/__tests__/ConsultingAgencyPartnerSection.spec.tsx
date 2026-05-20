@@ -4,6 +4,7 @@ import { userEvent } from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
+import { toast } from '@gorgias/axiom'
 import {
     mockGetCompanyHandler,
     mockUpsertCompanyHandler,
@@ -12,11 +13,8 @@ import { Partner } from '@gorgias/helpdesk-types'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { ConsultingAgencyPartnerSection } from 'pages/settings/new_billing/views/PaymentInformationView/components/ConsultingAgencyPartnerSection'
-import { notify } from 'state/notifications/actions'
 
-jest.mock('state/notifications/actions')
 jest.mock('hooks/useAppDispatch')
-const mockNotify = notify as jest.MockedFunction<typeof notify>
 const mockUseAppDispatch = useAppDispatch as jest.MockedFunction<
     typeof useAppDispatch
 >
@@ -42,6 +40,7 @@ describe('ConsultingAgencyPartnerSection', () => {
     afterEach(() => {
         server.resetHandlers()
         jest.clearAllMocks()
+        toast.dismiss()
     })
     afterAll(() => {
         server.close()
@@ -144,11 +143,11 @@ describe('ConsultingAgencyPartnerSection', () => {
             await user.click(clearOption)
         })
         await waitFor(() => {
-            expect(mockNotify).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    message: 'Failed to update consulting agency partner',
+            expect(
+                screen.getByRole('status', {
+                    name: 'Failed to update consulting agency partner',
                 }),
-            )
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
     it('should show loading state', async () => {
@@ -180,11 +179,11 @@ describe('ConsultingAgencyPartnerSection', () => {
             await user.click(clearOption)
         })
         await waitFor(() => {
-            expect(mockNotify).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    message: 'Failed to update consulting agency partner',
+            expect(
+                screen.getByRole('status', {
+                    name: 'Failed to update consulting agency partner',
                 }),
-            )
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
     it('should preserve BPO partner when updating consulting partner', async () => {

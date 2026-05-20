@@ -2,15 +2,12 @@ import { history } from '@repo/routing'
 import { assumeMock, renderHook } from '@repo/testing'
 import type { QueryClient } from '@tanstack/react-query'
 import { useQueryClient } from '@tanstack/react-query'
-import { act } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 
+import { toast } from '@gorgias/axiom'
 import { useCreateCustomFieldCondition } from '@gorgias/helpdesk-queries'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import { CUSTOM_FIELD_CONDITIONS_ROUTE } from 'routes/constants'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
-import { errorToChildren } from 'utils'
 
 import useSaveCondition from '../useSaveCondition'
 import useUpdateCustomFieldCondition from '../useUpdateCustomFieldCondition'
@@ -20,7 +17,6 @@ jest.mock('@tanstack/react-query', () => ({
     useQueryClient: jest.fn(),
 }))
 
-jest.mock('hooks/useAppDispatch')
 jest.mock('@gorgias/helpdesk-queries', () => ({
     ...jest.requireActual('@gorgias/helpdesk-queries'),
     useCreateCustomFieldCondition: jest.fn(),
@@ -33,10 +29,6 @@ jest.mock('@gorgias/helpdesk-queries', () => ({
     },
 }))
 jest.mock('../useUpdateCustomFieldCondition')
-jest.mock('state/notifications/actions', () => ({
-    ...jest.requireActual('state/notifications/actions'),
-    notify: jest.fn(),
-}))
 jest.mock('pages/settings/SLAs/utils/handleApiError', () => ({
     ...jest.requireActual('pages/settings/SLAs/utils/handleApiError'),
 }))
@@ -46,12 +38,7 @@ jest.mock('@repo/routing', () => ({
         push: jest.fn(),
     },
 }))
-jest.mock('utils', () => ({
-    ...jest.requireActual('utils'),
-    errorToChildren: jest.fn(),
-}))
 
-const useAppDispatchMock = assumeMock(useAppDispatch)
 const useQueryClientMock = assumeMock(useQueryClient)
 const useCreateCustomFieldConditionMock = assumeMock(
     useCreateCustomFieldCondition,
@@ -59,10 +46,8 @@ const useCreateCustomFieldConditionMock = assumeMock(
 const useUpdateCustomFieldConditionMock = assumeMock(
     useUpdateCustomFieldCondition,
 )
-const errorToChildrenMock = assumeMock(errorToChildren)
 
 describe('useSaveCondition', () => {
-    const dispatch = jest.fn()
     const queryClient = {
         invalidateQueries: jest.fn(),
     }
@@ -70,7 +55,6 @@ describe('useSaveCondition', () => {
     const updateCondition = jest.fn()
 
     beforeEach(() => {
-        useAppDispatchMock.mockReturnValue(dispatch)
         useQueryClientMock.mockReturnValue(
             queryClient as unknown as QueryClient,
         )
@@ -84,6 +68,10 @@ describe('useSaveCondition', () => {
         } as unknown as ReturnType<typeof useUpdateCustomFieldCondition>)
     })
 
+    afterEach(() => {
+        toast.dismiss()
+    })
+
     it('should create a condition successfully', async () => {
         const { result } = renderHook(() => useSaveCondition())
 
@@ -94,12 +82,13 @@ describe('useSaveCondition', () => {
         expect(createCondition).toHaveBeenCalledWith({
             data: { name: 'New Condition' },
         })
-        expect(dispatch).toHaveBeenCalledWith(
-            notify({
-                status: NotificationStatus.Success,
-                message: 'Condition created successfully',
-            }),
-        )
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Condition created successfully',
+                }),
+            ).toHaveAttribute('data-intent', 'success')
+        })
         expect(queryClient.invalidateQueries).toHaveBeenCalledTimes(1)
         expect(history.push).toHaveBeenCalledWith(
             `/app/settings/${CUSTOM_FIELD_CONDITIONS_ROUTE}`,
@@ -117,12 +106,13 @@ describe('useSaveCondition', () => {
             id: 1,
             data: { name: 'Updated Condition' },
         })
-        expect(dispatch).toHaveBeenCalledWith(
-            notify({
-                status: NotificationStatus.Success,
-                message: 'Condition updated successfully',
-            }),
-        )
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Condition updated successfully',
+                }),
+            ).toHaveAttribute('data-intent', 'success')
+        })
         expect(queryClient.invalidateQueries).toHaveBeenCalledTimes(2)
         expect(history.push).toHaveBeenCalledWith(
             `/app/settings/${CUSTOM_FIELD_CONDITIONS_ROUTE}`,
@@ -139,15 +129,13 @@ describe('useSaveCondition', () => {
             await result.current.onSubmit({ name: 'New Condition' })
         })
 
-        expect(dispatch).toHaveBeenCalledWith(
-            notify({
-                status: NotificationStatus.Error,
-                message: 'Create error message',
-                allowHTML: true,
-            }),
-        )
-
-        expect(errorToChildrenMock).toHaveBeenCalledWith(error)
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Failed to create condition.',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
+        })
     })
 
     it('should handle errors when updating a condition', async () => {
@@ -160,13 +148,13 @@ describe('useSaveCondition', () => {
             await result.current.onSubmit({ name: 'Updated Condition' })
         })
 
-        expect(dispatch).toHaveBeenCalledWith(
-            notify({
-                status: NotificationStatus.Error,
-                message: 'Update error message',
-                allowHTML: true,
-            }),
-        )
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Failed to update condition.',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
+        })
     })
 
     it('should return isSubmitting as true when creating or updating', () => {

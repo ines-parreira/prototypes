@@ -1,18 +1,13 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { useStore } from 'react-redux'
 
+import { toast } from '@gorgias/axiom'
 import { useConfirmBillingPaymentMethodSetup } from '@gorgias/helpdesk-queries'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import { getBillingStateQuery } from 'models/billing/queries'
 import { useStartSubscription } from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useStartSubscription'
 import type { ErrorResponse } from 'state/billing/types'
 import { getIsCurrentSubscriptionTrialingOrCanceled } from 'state/currentAccount/selectors'
-import { notify } from 'state/notifications/actions'
-import {
-    NotificationStatus,
-    NotificationStyle,
-} from 'state/notifications/types'
 
 export const useConfirmBillingPaymentMethodSetupWithSideEffects = (
     overrides?: NonNullable<
@@ -20,7 +15,6 @@ export const useConfirmBillingPaymentMethodSetupWithSideEffects = (
     >['mutation'],
 ) => {
     const queryClient = useQueryClient()
-    const dispatch = useAppDispatch()
     const store = useStore()
 
     const startSubscription = useStartSubscription()
@@ -31,14 +25,7 @@ export const useConfirmBillingPaymentMethodSetupWithSideEffects = (
             onSuccess: (resp, ...args) => {
                 void queryClient.invalidateQueries(getBillingStateQuery)
 
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Success,
-                        message: 'Payment method updated successfully!',
-                        style: NotificationStyle.Alert,
-                        showDismissButton: true,
-                    }),
-                )
+                toast.success('Payment method updated successfully!')
 
                 const isStartingSubscription =
                     getIsCurrentSubscriptionTrialingOrCanceled(store.getState())
@@ -61,14 +48,7 @@ export const useConfirmBillingPaymentMethodSetupWithSideEffects = (
                     errorMsg = error.error.message
                 }
 
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message: errorMsg,
-                        style: NotificationStyle.Alert,
-                        showDismissButton: true,
-                    }),
-                )
+                toast.error(errorMsg)
 
                 return overrides?.onError?.(err, ...args)
             },

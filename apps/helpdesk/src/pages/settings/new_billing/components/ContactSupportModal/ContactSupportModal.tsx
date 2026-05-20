@@ -4,9 +4,8 @@ import { BILLING_BASE_PATH } from '@repo/billing'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { useHistory } from 'react-router-dom'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
@@ -16,8 +15,6 @@ import TextArea from 'pages/common/forms/TextArea'
 import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
 import { TicketPurpose } from 'state/billing/types'
 import { isTrialing } from 'state/currentAccount/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { sendSupportTicket } from '../../utils/sendSupportTicket'
 import { prepareMessage } from './helpers/prepareMessage'
@@ -47,7 +44,6 @@ const ContactSupportModal = ({
     to,
     from,
 }: ContactSupportModalProps) => {
-    const dispatch = useAppDispatch()
     const [message, setMessage] = useState(defaultMessage)
     const [isSubmitting, setIsSubmitting] = useState(false)
     const isFreeTrial = useAppSelector(isTrialing)
@@ -81,21 +77,13 @@ const ContactSupportModal = ({
                 helpdeskPlan: helpdeskPlanName,
             })
 
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Success,
-                    message: `Your request has been submitted. We'll get back to you by email at ${from} within 24 business hours`,
-                    dismissAfter: 5000,
-                    showDismissButton: true,
-                }),
+            toast.success(
+                `Your request has been submitted. We'll get back to you by email at ${from} within 24 business hours`,
+                { duration: 5000 },
             )
         } catch {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message:
-                        'There was an error sending your message. Please try again later.',
-                }),
+            toast.error(
+                'There was an error sending your message. Please try again later.',
             )
         } finally {
             setMessage('')
@@ -114,7 +102,6 @@ const ContactSupportModal = ({
         to,
         domain,
         isFreeTrial,
-        dispatch,
         handleOnClose,
         history,
     ])

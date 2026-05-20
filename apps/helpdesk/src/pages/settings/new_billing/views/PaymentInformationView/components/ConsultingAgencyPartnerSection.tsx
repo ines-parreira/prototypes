@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
-import { LegacySelectField as SelectField } from '@gorgias/axiom'
+import { LegacySelectField as SelectField, toast } from '@gorgias/axiom'
 import {
     queryKeys,
     useGetCompany,
@@ -10,13 +10,10 @@ import {
 } from '@gorgias/helpdesk-queries'
 import { BPOPartner, Partner } from '@gorgias/helpdesk-types'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import Loader from 'pages/common/components/Loader/Loader'
 import { convertPartnerEnumToOptions } from 'pages/settings/new_billing/components/ConsultingAgencyPartnerDropdown/utils'
 import css from 'pages/settings/new_billing/views/PaymentInformationView/components/PartnerFields.less'
 import { Section } from 'pages/settings/new_billing/views/PaymentInformationView/components/Section'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 type PartnerOption = {
     value: string
@@ -24,7 +21,6 @@ type PartnerOption = {
 }
 
 export const ConsultingAgencyPartnerSection = () => {
-    const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
     const { data: companyData, isLoading } = useGetCompany({
         query: {
@@ -87,12 +83,7 @@ export const ConsultingAgencyPartnerSection = () => {
                 })
             } catch {
                 setConsultingPartner(currentConsultingPartner)
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message: 'Failed to update consulting agency partner',
-                    }),
-                )
+                toast.error('Failed to update consulting agency partner')
             }
             return
         }
@@ -112,12 +103,7 @@ export const ConsultingAgencyPartnerSection = () => {
             })
         } catch {
             setConsultingPartner(currentConsultingPartner)
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: 'Failed to update consulting agency partner',
-                }),
-            )
+            toast.error('Failed to update consulting agency partner')
         }
     }
 

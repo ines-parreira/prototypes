@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useAsyncFn } from '@repo/hooks'
 import { history } from '@repo/routing'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -12,8 +12,6 @@ import type { TagDraft } from 'models/tag/types'
 import { useRuleRecipes } from 'state/entities/ruleRecipes/hooks'
 import { tagCreated } from 'state/entities/tags/actions'
 import { getTicketViews } from 'state/entities/views/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 type Props = {
     recipeSlug: string
@@ -49,12 +47,7 @@ export const AutoresponderViewButton = ({ recipeSlug }: Props) => {
                 ).filter((tag) => !!tag)
                 return tags as TagDraft[]
             } catch {
-                void dispatch(
-                    notify({
-                        message: 'Could not fetch tags',
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error('Could not fetch tags')
                 setHasErrors(true)
             }
         }, [recipe])
@@ -102,12 +95,7 @@ export const AutoresponderViewButton = ({ recipeSlug }: Props) => {
             await Promise.all(
                 missingTags.map((tag) => handleCreateTag(tag)),
             ).catch(() => {
-                void dispatch(
-                    notify({
-                        message: 'Could not create all tags',
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error('Could not create all tags')
                 setHasErrors(true)
             })
         }

@@ -1,19 +1,16 @@
 import { useQueryClient } from '@tanstack/react-query'
 
+import { toast } from '@gorgias/axiom'
 import type { HttpResponse } from '@gorgias/helpdesk-queries'
 import { queryKeys, useUpdateSlaPolicy } from '@gorgias/helpdesk-queries'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import Loader from 'pages/settings/SLAs/features/Loader/Loader'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import LandingPage from '../../LandingPage/LandingPage'
 import SLAListView from '../views/SLAListView'
 import useGetSLAPolicies from './useGetSLAPolicies'
 
 export default function SLAListController() {
-    const dispatch = useAppDispatch()
     const { data, isLoading, refetch: refetchSLAPolicies } = useGetSLAPolicies()
     const queryClient = useQueryClient()
 
@@ -85,19 +82,9 @@ export default function SLAListController() {
             try {
                 await updateSLA({ id, data: { active } })
 
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Success,
-                        message: 'SLA policy toggled',
-                    }),
-                )
+                toast.success('SLA policy toggled')
             } catch {
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message: `Failed to toggle SLA policy`,
-                    }),
-                )
+                toast.error(`Failed to toggle SLA policy`)
             }
         })()
     }
@@ -108,12 +95,7 @@ export default function SLAListController() {
                 await updateSLA({ id, data: { priority: String(priority) } })
                 void refetchSLAPolicies()
             } catch {
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message: `Failed to change SLA policy priority`,
-                    }),
-                )
+                toast.error(`Failed to change SLA policy priority`)
             }
         })()
     }

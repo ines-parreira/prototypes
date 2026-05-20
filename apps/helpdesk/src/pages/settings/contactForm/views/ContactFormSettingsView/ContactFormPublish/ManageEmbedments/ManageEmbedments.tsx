@@ -6,9 +6,8 @@ import classNames from 'classnames'
 import _upperFirst from 'lodash/upperFirst'
 import { Link, useHistory } from 'react-router-dom'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import type { ContactFormPageEmbedment } from 'models/contactForm/types'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -42,8 +41,6 @@ import PendingChangesModal from 'pages/settings/helpCenter/components/PendingCha
 import settingsCss from 'pages/settings/settings.less'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import css from './ManageEmbedments.less'
 
@@ -72,7 +69,6 @@ const resetDraftPositions = (
 const ManageEmbedments = ({
     embedments,
 }: ManageEmbedmentsProps): JSX.Element | null => {
-    const appDispatch = useAppDispatch()
     const currentUser = useAppSelector(getCurrentUser)
     const currentAccount = useAppSelector(getCurrentAccountState)
     const history = useHistory()
@@ -111,52 +107,31 @@ const ManageEmbedments = ({
     const updatePageEmbedmentMutation = useUpdatePageEmbedment({
         onSuccess: async (updatedPageEmbedment) => {
             if (!updatedPageEmbedment) {
-                return void appDispatch(
-                    notify({ message: 'Something went wrong' }),
-                )
+                toast.info('Something went wrong')
+                return
             }
 
-            void appDispatch(
-                notify({
-                    message: 'Form position updated',
-                    status: NotificationStatus.Success,
-                }),
-            )
+            toast.success('Form position updated')
 
             await queryClient.invalidateQueries(
                 contactFormPageEmbedmentsKeys.lists(contactForm.id),
             )
         },
         onError: () => {
-            void appDispatch(
-                notify({
-                    message: 'Something went wrong',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error('Something went wrong')
         },
     })
 
     const deletePageEmbedmentMutation = useDeletePageEmbedment({
         onSuccess: async () => {
-            void appDispatch(
-                notify({
-                    message: 'Form removed from page.',
-                    status: NotificationStatus.Success,
-                }),
-            )
+            toast.success('Form removed from page.')
 
             await queryClient.invalidateQueries(
                 contactFormPageEmbedmentsKeys.lists(contactForm.id),
             )
         },
         onError: () => {
-            void appDispatch(
-                notify({
-                    message: 'Something went wrong',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error('Something went wrong')
         },
     })
 

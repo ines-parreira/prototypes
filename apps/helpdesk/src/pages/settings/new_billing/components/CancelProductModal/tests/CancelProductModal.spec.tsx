@@ -1,11 +1,13 @@
 import { SegmentEvent } from '@repo/logging'
 import { assumeMock, getLastMockCall, render } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act, fireEvent } from '@testing-library/react'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
+import { toast } from '@gorgias/axiom'
 
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
@@ -23,8 +25,6 @@ import { user } from 'fixtures/users'
 import { trackBillingEvent } from 'models/billing/resources'
 import { ProductType } from 'models/billing/types'
 import { cancelHelpdeskAutoRenewal } from 'state/currentAccount/actions'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { reportCRMGrowthError } from '../../../utils/reportCRMGrowthError'
@@ -114,8 +114,6 @@ const sendAcceptedChurnMitigationOfferToSupportMock = assumeMock(
     sendAcceptedChurnMitigationOfferToSupport,
 )
 
-jest.mock('state/notifications/actions')
-const notifyMock = notify as jest.Mock
 jest.mock('models/billing/resources')
 const trackBillingEventMock = assumeMock(trackBillingEvent)
 jest.mock('../../../utils/sendRemoveNotificationZap')
@@ -137,7 +135,6 @@ beforeEach(() => {
     useFindChurnMitigationOfferMock.mockReset()
     sendAcceptedChurnMitigationOfferToSupportMock.mockReset()
     sendRemoveNotificationZapMock.mockReset()
-    notifyMock.mockReset()
     reportCRMGrowthErrorMock.mockReset()
 
     // Mock async functions to resolve
@@ -160,14 +157,12 @@ beforeEach(() => {
         () => '5f5e3e3e4f3e4e001f3e4e4f',
     )
 
-    // Mock notify
-    notifyMock.mockImplementation((msg) => ({
-        type: 'mocked notify action',
-        message: msg,
-    }))
-
     // Reset store actions
     store.clearActions()
+})
+
+afterEach(() => {
+    toast.dismiss()
 })
 
 // constants
@@ -931,17 +926,15 @@ describe('CancelProductModal: step 3', () => {
             otherReason: mockState.additionalDetails?.label || null,
         })
         expect(mockHandleOnClose).toHaveBeenCalled()
-        expect(store.getActions()).toEqual([
-            {
-                type: 'mocked notify action',
-                message: {
-                    status: NotificationStatus.Success,
-                    message:
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name:
                         'We are happy you changed your mind! ' +
                         'Our support team will reach out to you shortly regarding this offer.',
-                },
-            },
-        ])
+                }),
+            ).toHaveAttribute('data-intent', 'success')
+        })
         expect(trackBillingEventMock).toHaveBeenCalledWith(
             SegmentEvent.SubscriptionCancellationChurnMitigationOfferDecision,
             {
@@ -976,19 +969,16 @@ describe('CancelProductModal: step 3', () => {
         await act(() => fireEvent.click(acceptOfferButtonElement))
         expect(sendAcceptedChurnMitigationOfferToSupportMock).toHaveBeenCalled()
         expect(mockHandleOnClose).toHaveBeenCalledTimes(0)
-        expect(store.getActions()).toEqual([
-            {
-                type: 'mocked notify action',
-                message: {
-                    status: NotificationStatus.Error,
-                    message:
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name:
                         "Couldn't send the request to our support team. " +
                         'If the problem persists, please contact our billing team via chat or ' +
-                        'at <a href="mailto:support@gorgias.com">support@gorgias.com</a> to make this change.',
-                    allowHTML: true,
-                },
-            },
-        ])
+                        'at support@gorgias.com to make this change.',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
+        })
     })
 
     it('should still track acceptance event even when offer submission fails', async () => {
@@ -1025,14 +1015,12 @@ describe('CancelProductModal: step 3', () => {
             },
         )
 
-        expect(store.getActions()).toContainEqual(
-            expect.objectContaining({
-                type: 'mocked notify action',
-                message: expect.objectContaining({
-                    status: NotificationStatus.Error,
-                }),
-            }),
-        )
+        await waitFor(() => {
+            expect(screen.getByRole('status')).toHaveAttribute(
+                'data-intent',
+                'destructive',
+            )
+        })
     })
 
     it('should still close modal when trackBillingEvent fails after accepting offer', async () => {
@@ -1061,14 +1049,12 @@ describe('CancelProductModal: step 3', () => {
         expect(mockHandleOnClose).toHaveBeenCalled()
 
         // Success notification should be shown
-        expect(store.getActions()).toContainEqual(
-            expect.objectContaining({
-                type: 'mocked notify action',
-                message: expect.objectContaining({
-                    status: NotificationStatus.Success,
-                }),
-            }),
-        )
+        await waitFor(() => {
+            expect(screen.getByRole('status')).toHaveAttribute(
+                'data-intent',
+                'success',
+            )
+        })
 
         // Error should be reported to Sentry
         expect(reportCRMGrowthErrorMock).toHaveBeenCalledWith(
@@ -1449,15 +1435,11 @@ describe('CancelProductModal: step 4', () => {
         expect(mockHandleOnClose).not.toHaveBeenCalled()
         expect(mockOnCancellationConfirmed).not.toHaveBeenCalled()
 
-        expect(store.getActions()).toContainEqual(
-            expect.objectContaining({
-                type: 'mocked notify action',
-                message: expect.objectContaining({
-                    status: NotificationStatus.Error,
-                    message: expect.stringContaining('AI Agent'),
-                }),
-            }),
-        )
+        await waitFor(() => {
+            const toastEl = screen.getByRole('status')
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
+            expect(toastEl).toHaveTextContent(/AI Agent/i)
+        })
     })
 })
 

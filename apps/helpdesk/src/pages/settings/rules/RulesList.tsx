@@ -7,7 +7,7 @@ import _debounce from 'lodash/debounce'
 import { useHistory } from 'react-router-dom'
 import { Container } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { Button, toast } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -25,8 +25,6 @@ import {
     getRulesLimitStatus,
     getSortedRules,
 } from 'state/entities/rules/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { RuleLimitStatus } from 'state/rules/types'
 
 import List from './accountRules/RulesList'
@@ -71,12 +69,7 @@ export function RulesList() {
                 const res = await fetchRules()
                 dispatch(rulesFetched(res.data))
             } catch {
-                void dispatch(
-                    notify({
-                        message: 'Failed to fetch rules',
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error('Failed to fetch rules')
             }
         },
     )

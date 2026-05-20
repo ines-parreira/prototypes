@@ -54,7 +54,7 @@ exports[`<RulesList/> should render the rules list 1`] = `
               data-name="button"
               data-rac=""
               data-react-aria-pressable="true"
-              id="react-aria-:r2:"
+              id="react-aria-:ra:"
               tabindex="0"
               type="button"
             >

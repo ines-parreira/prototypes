@@ -14,7 +14,11 @@ import type { BaseEmoji, EmojiData } from 'emoji-mart'
 import { emojiIndex } from 'emoji-mart'
 import type { Map } from 'immutable'
 
-import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyLabel as Label,
+    toast,
+} from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -43,8 +47,6 @@ import SelectInputBox, {
 } from 'pages/common/forms/input/SelectInputBox'
 import TextInput from 'pages/common/forms/input/TextInput'
 import { getHumanAgents } from 'state/agents/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { FETCH_TEAM_SUCCESS } from 'state/teams/constants'
 
 import RuleCreationModalContent from './RuleCreationModalContent'
@@ -145,24 +147,15 @@ export default function TeamCreationModal({
                     payload: res,
                 })
 
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Success,
-                        message: 'Team created',
-                    }),
-                )
+                toast.success('Team created')
 
                 setTeam(res)
                 resetForm()
                 setActiveStep('ruleCreation')
                 onTeamCreated?.()
             } catch {
-                void dispatch(
-                    notify({
-                        message:
-                            'Failed to create team. Please refresh the page and try again.',
-                        status: NotificationStatus.Error,
-                    }),
+                toast.error(
+                    'Failed to create team. Please refresh the page and try again.',
                 )
             }
         },

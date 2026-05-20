@@ -6,11 +6,14 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
 import pluralize from 'pluralize'
 
-import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyLabel as Label,
+    toast,
+} from '@gorgias/axiom'
 
 import { TicketChannel } from 'business/types/ticket'
 import { ISO639English } from 'constants/languages'
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { createRule } from 'models/rule/resources'
 import type { Team } from 'models/team/types'
@@ -28,8 +31,6 @@ import SelectInputBox, {
 import TextInput from 'pages/common/forms/input/TextInput'
 import { IntegrationsDetailLabel } from 'pages/common/utils/labels'
 import { getMessagingAndAppIntegrations } from 'state/integrations/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { getEmptyRule } from 'state/rules/utils'
 import { getAST } from 'utils'
 
@@ -68,7 +69,6 @@ function makeRuleCode(teamId: number, conditionStatement: string) {
 }
 
 export default function RuleCreationModalContent({ onClose, team }: Props) {
-    const dispatch = useAppDispatch()
     const integrations = useAppSelector(getMessagingAndAppIntegrations)
     const tags = useAppSelector((state) => state.entities.tags)
     const ref = useRef<HTMLFormElement>(null)
@@ -216,19 +216,9 @@ export default function RuleCreationModalContent({ onClose, team }: Props) {
                 code_ast: getAST(nextRuleCode),
             })
             onClose()
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Success,
-                    message: 'Rule created',
-                }),
-            )
+            toast.success('Rule created')
         } catch {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: 'Failed to create rule',
-                }),
-            )
+            toast.error('Failed to create rule')
         }
     }, [keyPlural, keyRule, onClose, ruleName, team, value])
 

@@ -1,26 +1,16 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import type { QueryClient } from '@tanstack/react-query'
 import { useQueryClient } from '@tanstack/react-query'
+import { act, screen, waitFor } from '@testing-library/react'
+
+import { toast } from '@gorgias/axiom'
 
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
-import useAppDispatch from 'hooks/useAppDispatch'
 import {
     getBillingStateQuery,
     useReactivateTrial,
 } from 'models/billing/queries'
 import { useReactivateTrialWithSideEffects } from 'pages/settings/new_billing/hooks/useReactivateTrialWithSideEffects'
-import { notify } from 'state/notifications/actions'
-import {
-    NotificationStatus,
-    NotificationStyle,
-} from 'state/notifications/types'
-
-jest.mock('hooks/useAppDispatch')
-const useAppDispatchMock = useAppDispatch as jest.Mock
-const dispatch = jest.fn()
-useAppDispatchMock.mockReturnValue(dispatch)
-
-jest.mock('state/notifications/actions')
 
 jest.mock('@tanstack/react-query', () => ({
     ...jest.requireActual('@tanstack/react-query'),
@@ -39,52 +29,54 @@ jest.mock('models/billing/queries')
 const useReactivateTrialMock = assumeMock(useReactivateTrial)
 
 describe('useReactivateTrialWithSideEffects', () => {
-    it('should dispatch success notification on success and invalidate billing state query', () => {
+    afterEach(() => {
+        toast.dismiss()
+    })
+
+    it('should show success toast on success and invalidate billing state query', async () => {
         renderHook(() => useReactivateTrialWithSideEffects())
 
-        useReactivateTrialMock.mock.calls[0][0]?.onSuccess!(
-            axiosSuccessResponse(undefined),
-            [],
-            undefined,
-        )
+        act(() => {
+            useReactivateTrialMock.mock.calls[0][0]?.onSuccess!(
+                axiosSuccessResponse(undefined),
+                [],
+                undefined,
+            )
+        })
 
         expect(useQueryClient().invalidateQueries).toHaveBeenLastCalledWith(
             getBillingStateQuery,
         )
 
-        expect(dispatch).toHaveBeenCalledTimes(1)
-
-        expect(notify).toHaveBeenNthCalledWith(1, {
-            message: 'Free trial has been successfully reactivated.',
-            status: NotificationStatus.Success,
-            style: NotificationStyle.Alert,
-            showDismissButton: true,
-            noAutoDismiss: false,
-            allowHTML: true,
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Free trial has been successfully reactivated.',
+                }),
+            ).toHaveAttribute('data-intent', 'success')
         })
     })
 
-    it('should dispatch error notification on failure and NOT invalidate billing state query', () => {
+    it('should show error toast on failure and NOT invalidate billing state query', async () => {
         renderHook(() => useReactivateTrialWithSideEffects())
 
         const myError = {}
-        useReactivateTrialMock.mock.calls[0][0]?.onError!(
-            myError,
-            [],
-            undefined,
-        )
+        act(() => {
+            useReactivateTrialMock.mock.calls[0][0]?.onError!(
+                myError,
+                [],
+                undefined,
+            )
+        })
 
         expect(useQueryClient().invalidateQueries).not.toHaveBeenCalled()
 
-        expect(dispatch).toHaveBeenCalledTimes(1)
-
-        expect(notify).toHaveBeenNthCalledWith(1, {
-            message: `Could not extend trial : Oops something went wrong`,
-            status: NotificationStatus.Error,
-            style: NotificationStyle.Alert,
-            showDismissButton: true,
-            noAutoDismiss: false,
-            allowHTML: true,
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Could not extend trial : Oops something went wrong',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 })

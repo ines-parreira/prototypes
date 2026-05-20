@@ -7,6 +7,8 @@ import { userEvent } from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
 
+import { toast } from '@gorgias/axiom'
+
 import { account } from 'fixtures/account'
 import useAppDispatch from 'hooks/useAppDispatch'
 import type {
@@ -16,14 +18,9 @@ import type {
 } from 'models/billing/types'
 import { ProductType, SubscriptionStatus } from 'models/billing/types'
 import { BillingInternalViewUI } from 'pages/settings/new_billing/components/BillingInternalViewUI/BillingInternalViewUI'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import type { RootState } from 'state/types'
 
 const mockedServer = new MockAdapter(client)
-
-// Mock notify
-jest.mock('state/notifications/actions')
 
 const mockHistoryPush = jest.fn()
 jest.mock('react-router-dom', () => ({
@@ -99,6 +96,7 @@ describe('BillingInternalViewUI', () => {
 
     afterEach(() => {
         jest.useRealTimers()
+        toast.dismiss()
     })
 
     it('When customer has a paying subscription', () => {
@@ -229,17 +227,13 @@ describe('BillingInternalViewUI', () => {
             '/billing/deactivate-account',
         )
 
-        await waitFor(() =>
-            expect(notify).toHaveBeenNthCalledWith(1, {
-                allowHTML: true,
-                message:
-                    'Account has been successfully banned and deactivated.',
-                noAutoDismiss: false,
-                showDismissButton: true,
-                status: NotificationStatus.Success,
-                style: 'alert',
-            }),
-        )
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Account has been successfully banned and deactivated.',
+                }),
+            ).toHaveAttribute('data-intent', 'success')
+        })
     })
 
     it('should be always possible to reactivate an account if deactivated', async () => {
@@ -272,16 +266,13 @@ describe('BillingInternalViewUI', () => {
             '/billing/reactivate-account',
         )
 
-        await waitFor(() =>
-            expect(notify).toHaveBeenNthCalledWith(1, {
-                allowHTML: true,
-                message: 'Account has been successfully reactivated.',
-                noAutoDismiss: false,
-                showDismissButton: true,
-                status: NotificationStatus.Success,
-                style: 'alert',
-            }),
-        )
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Account has been successfully reactivated.',
+                }),
+            ).toHaveAttribute('data-intent', 'success')
+        })
     })
 
     it('should be always possible to vet an account', async () => {
@@ -303,16 +294,13 @@ describe('BillingInternalViewUI', () => {
         await waitFor(() => expect(mockedServer.history.post.length).toBe(1))
         expect(mockedServer.history.post[0].url).toBe('/billing/vet-account')
 
-        await waitFor(() =>
-            expect(notify).toHaveBeenLastCalledWith({
-                allowHTML: true,
-                message: 'Account has been successfully (un)vetted.',
-                noAutoDismiss: false,
-                showDismissButton: true,
-                status: NotificationStatus.Success,
-                style: 'alert',
-            }),
-        )
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Account has been successfully (un)vetted.',
+                }),
+            ).toHaveAttribute('data-intent', 'success')
+        })
     })
 
     describe('Manage plans button', () => {
@@ -377,15 +365,12 @@ describe('BillingInternalViewUI', () => {
         await waitFor(() => expect(mockedServer.history.post.length).toBe(1))
         expect(mockedServer.history.post[0].url).toBe('/billing/vet-account')
 
-        await waitFor(() =>
-            expect(notify).toHaveBeenLastCalledWith({
-                allowHTML: true,
-                message: 'Account has been successfully (un)vetted.',
-                noAutoDismiss: false,
-                showDismissButton: true,
-                status: NotificationStatus.Success,
-                style: 'alert',
-            }),
-        )
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Account has been successfully (un)vetted.',
+                }),
+            ).toHaveAttribute('data-intent', 'success')
+        })
     })
 })

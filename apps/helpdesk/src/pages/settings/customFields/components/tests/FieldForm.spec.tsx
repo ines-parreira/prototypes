@@ -5,6 +5,7 @@ import { createEvent, fireEvent, screen, waitFor } from '@testing-library/react'
 import { omit } from 'lodash'
 import { Link } from 'react-router-dom'
 
+import { toast } from '@gorgias/axiom'
 import type { ManagedTicketFieldType } from '@gorgias/helpdesk-types'
 
 import {
@@ -28,15 +29,11 @@ import AIAutofill from 'pages/settings/customFields/components/AIAutofill'
 import ArchiveConfirmationModal from 'pages/settings/customFields/components/ArchiveConfirmationModal'
 import DropdownInput from 'pages/settings/customFields/components/DropdownInput'
 import FieldForm from 'pages/settings/customFields/components/FieldForm'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 const useAppDispatchMock = assumeMock(useAppDispatch)
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = assumeMock(useAppSelector)
-jest.mock('state/notifications/actions')
-const notifyMock = assumeMock(notify)
 jest.mock('@repo/logging')
 const reportErrorMock = assumeMock(reportError)
 jest.mock('@repo/feature-flags')
@@ -106,10 +103,12 @@ describe('<FieldForm/>', () => {
         } as any)
         useAppDispatchMock.mockClear()
         useAppDispatchMock.mockReturnValue(jest.fn())
-        notifyMock.mockClear()
         updateAiAutofillMock.mockClear()
         updateAiAutofillMock.mockResolvedValue({})
         reportErrorMock.mockClear()
+    })
+    afterEach(() => {
+        toast.dismiss()
     })
     it('should show archiving status and disable type change on edit', () => {
         render(<FieldForm {...defaultProps} />)
@@ -279,9 +278,12 @@ describe('<FieldForm/>', () => {
         await userEvent.click(
             screen.getByRole('button', { name: 'Save Changes' }),
         )
-        expect(notifyMock).toHaveBeenCalledWith({
-            title: 'Unable to save, please complete all required fields',
-            status: NotificationStatus.Error,
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Unable to save, please complete all required fields',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
         expect(defaultProps.onSubmit).not.toHaveBeenCalled()
     })
@@ -543,12 +545,13 @@ describe('<FieldForm/>', () => {
                         }),
                     }),
                 )
-                expect(dispatchMock).toHaveBeenCalledWith(
-                    notify({
-                        title: 'Failed to update AI Autofill settings',
-                        status: NotificationStatus.Error,
+            })
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Failed to update AI Autofill settings',
                     }),
-                )
+                ).toHaveAttribute('data-intent', 'destructive')
             })
         })
     })

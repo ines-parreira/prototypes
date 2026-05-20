@@ -8,12 +8,12 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { toast } from '@gorgias/axiom'
+
 import { integrationsState } from 'fixtures/integrations'
 import { tags } from 'fixtures/tag'
 import { createRule } from 'models/rule/resources'
 import type { TagsState } from 'state/entities/tags/types'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
 import RuleCreationModalContent from '../RuleCreationModalContent'
@@ -21,8 +21,6 @@ import RuleCreationModalContent from '../RuleCreationModalContent'
 jest.mock('models/rule/resources', () => ({
     createRule: jest.fn(() => () => Promise.resolve({})),
 }))
-
-jest.mock('state/notifications/actions')
 
 jest.mock('@repo/logging')
 
@@ -56,6 +54,10 @@ describe('<RuleCreationModalContent />', () => {
                 {},
             ),
         } as any,
+    })
+
+    afterEach(() => {
+        toast.dismiss()
     })
 
     it('should render', () => {
@@ -143,10 +145,11 @@ describe('<RuleCreationModalContent />', () => {
         fireEvent.click(getByText(/^Create Rule$/))
 
         await waitFor(() => {
-            expect(notify).toHaveBeenNthCalledWith(1, {
-                message: 'Failed to create rule',
-                status: NotificationStatus.Error,
-            })
+            expect(
+                screen.getByRole('status', {
+                    name: 'Failed to create rule',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 

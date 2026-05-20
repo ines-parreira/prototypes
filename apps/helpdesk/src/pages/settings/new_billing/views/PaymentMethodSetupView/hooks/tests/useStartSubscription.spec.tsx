@@ -1,18 +1,18 @@
 import React from 'react'
 
 import { assumeMock, renderHook } from '@repo/testing'
-import { act } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { toast } from '@gorgias/axiom'
+
 import GorgiasApi from 'services/gorgiasApi'
 import { setCurrentSubscription } from 'state/currentAccount/actions'
 import * as selectors from 'state/currentAccount/selectors'
-import * as actions from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { useStartSubscription } from '../useStartSubscription'
 
@@ -60,8 +60,6 @@ const startSubscription = async (
         gorgiasApiInstance.startSubscription.mockResolvedValue(fromJS(response))
     }
 
-    const notifySpy = jest.spyOn(actions, 'notify')
-
     const { result, store } = renderHookWithMockStore(useStartSubscription)
 
     await act(async () => {
@@ -71,7 +69,6 @@ const startSubscription = async (
 
     return {
         store,
-        notifySpy,
     }
 }
 
@@ -85,6 +82,10 @@ describe('useStartSubscription', () => {
         )
 
         assumeMock(useHistory).mockReturnValue({ push: jest.fn() } as any)
+    })
+
+    afterEach(() => {
+        toast.dismiss()
     })
 
     describe('if subscription IS NOT trialing or canceled', () => {
@@ -105,7 +106,7 @@ describe('useStartSubscription', () => {
         })
 
         it('should start subscription and handle confirmation_url', async () => {
-            const { store, notifySpy } = await startSubscription({
+            const { store } = await startSubscription({
                 subscription: {},
                 payment: { confirmation_url: 'https://example.com' },
             })
@@ -116,13 +117,14 @@ describe('useStartSubscription', () => {
                 setCurrentSubscription(fromJS({})),
             )
 
-            expect(notifySpy).toHaveBeenCalledWith({
-                status: NotificationStatus.Info,
-                message:
-                    'In order to activate your subscription, we need you to confirm this payment to your bank. ' +
-                    'You will be redirected in a few seconds to a secure page.',
-                dismissAfter: 5000,
-                dismissible: false,
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('status', {
+                        name:
+                            'In order to activate your subscription, we need you to confirm this payment to your bank. ' +
+                            'You will be redirected in a few seconds to a secure page.',
+                    }),
+                ).toHaveAttribute('data-intent', 'info')
             })
 
             jest.runAllTimers()
@@ -133,20 +135,22 @@ describe('useStartSubscription', () => {
         })
 
         it('should start subscription and handle payment error', async () => {
-            const { notifySpy } = await startSubscription({
+            await startSubscription({
                 subscription: {},
                 payment: { error: 'Payment failed' },
             })
 
-            expect(notifySpy).toHaveBeenCalledWith({
-                status: NotificationStatus.Error,
-                message:
-                    'Payment failed Please update your payment method and retry to pay your invoice.',
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Payment failed Please update your payment method and retry to pay your invoice.',
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive')
             })
         })
 
         it('should handle generic API error', async () => {
-            const { notifySpy } = await startSubscription(
+            await startSubscription(
                 {},
                 {
                     response: { data: { error: { msg: 'API Error' } } },
@@ -154,21 +158,22 @@ describe('useStartSubscription', () => {
                 },
             )
 
-            expect(notifySpy).toHaveBeenCalledWith({
-                status: NotificationStatus.Error,
-                title: 'API Error',
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('status', { name: 'API Error' }),
+                ).toHaveAttribute('data-intent', 'destructive')
             })
         })
 
         it('should handle unknown error', async () => {
-            const { notifySpy } = await startSubscription(
-                {},
-                new Error('Unknown error'),
-            )
+            await startSubscription({}, new Error('Unknown error'))
 
-            expect(notifySpy).toHaveBeenCalledWith({
-                status: NotificationStatus.Error,
-                title: 'Failed to update payment method. Please try again in a few seconds.',
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Failed to update payment method. Please try again in a few seconds.',
+                    }),
+                ).toHaveAttribute('data-intent', 'destructive')
             })
         })
     })

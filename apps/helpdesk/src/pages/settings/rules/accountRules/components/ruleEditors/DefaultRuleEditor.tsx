@@ -18,7 +18,7 @@ import _getIn from 'lodash/get'
 import moment from 'moment'
 import { FormGroup, Label } from 'reactstrap'
 
-import { LegacyToggleField as ToggleField } from '@gorgias/axiom'
+import { toast, LegacyToggleField as ToggleField } from '@gorgias/axiom'
 
 import { fromAST } from 'common/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -31,8 +31,6 @@ import { updateCodeAst } from 'pages/common/components/ast/utils'
 import TextInput from 'pages/common/forms/input/TextInput'
 import { ruleCreated } from 'state/entities/rules/actions'
 import { getRulesLimitStatus } from 'state/entities/rules/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { eventTypes as getEventTypes } from 'state/rules/helpers'
 import type { Rule, RuleDraft, RuleOperation } from 'state/rules/types'
 import { RuleLimitStatus } from 'state/rules/types'
@@ -100,18 +98,10 @@ const DefaultRuleEditor = (
                     deactivated_datetime: null,
                 })
                 void dispatch(ruleCreated(newRule))
-                void dispatch(
-                    notify({
-                        message: `Successfully duplicated rule.`,
-                        status: NotificationStatus.Success,
-                    }),
-                )
+                toast.success(`Successfully duplicated rule.`)
                 history.push(`/app/settings/rules/${newRule.id}`)
             } catch {
-                void notify({
-                    message: `Failed to duplicate rule.`,
-                    status: NotificationStatus.Error,
-                })
+                toast.error(`Failed to duplicate rule.`)
             }
         }, [rule, ruleDraft, eventTypes, canDuplicate])
 
@@ -177,10 +167,7 @@ const DefaultRuleEditor = (
 
     useEffect(() => {
         if (limitStatus === RuleLimitStatus.Reached && !rule) {
-            void notify({
-                message: 'Cannot create a new rule: Rule limit reached',
-                status: NotificationStatus.Warning,
-            })
+            toast.warning('Cannot create a new rule: Rule limit reached')
             history.push('/app/settings/rules')
         }
     }, [rule, limitStatus])

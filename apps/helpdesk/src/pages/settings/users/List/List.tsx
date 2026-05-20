@@ -3,9 +3,8 @@ import React, { useEffect } from 'react'
 import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { Button, toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { isStarterTier } from 'models/billing/utils'
 import Navigation from 'pages/common/components/Navigation/Navigation'
@@ -13,8 +12,6 @@ import PageHeader from 'pages/common/components/PageHeader'
 import Search from 'pages/common/components/Search'
 import settingsCss from 'pages/settings/settings.less'
 import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import UsersSettingsTable from './UsersSettingsTable'
 import { useUserList } from './useUserList'
@@ -22,7 +19,6 @@ import { useUserList } from './useUserList'
 import css from './List.less'
 
 const UserList = () => {
-    const dispatch = useAppDispatch()
     const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
     const isStarterPlan = isStarterTier(currentHelpdeskPlan)
     const usersList = useUserList()
@@ -34,14 +30,9 @@ const UserList = () => {
 
     useEffect(() => {
         if (usersList.isError) {
-            void dispatch(
-                notify({
-                    message: 'Failed to fetch users',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error('Failed to fetch users')
         }
-    }, [dispatch, usersList.isError])
+    }, [usersList.isError])
 
     return (
         <div className="full-width">

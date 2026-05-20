@@ -7,13 +7,13 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { toast } from '@gorgias/axiom'
+
 import type {
     GmailIntegration,
     ShopifyIntegration,
 } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { useEmailIntegrations } from '../../../hooks/useEmailIntegrations'
@@ -29,9 +29,6 @@ jest.mock('../../../hooks/useEmailIntegrations', () => ({
 jest.mock('../resources', () => ({
     getMailtoReplacementConfig: jest.fn(),
     upsertMailtoReplacementConfig: jest.fn(),
-}))
-jest.mock('state/notifications/actions', () => ({
-    notify: jest.fn(() => () => Promise.resolve()),
 }))
 
 const CONTACT_FORM_ID = 1
@@ -79,6 +76,10 @@ describe('<ContactFormMailtoReplacementSection />', () => {
         })
         mockGetMailtoReplacementConfig.mockReturnValue(Promise.resolve(null))
         queryClient.clear()
+    })
+
+    afterEach(() => {
+        toast.dismiss()
     })
     it('should render component', () => {
         renderComponent()
@@ -182,19 +183,21 @@ describe('<ContactFormMailtoReplacementSection />', () => {
             )
 
             await waitFor(() => {
-                expect(notify).toHaveBeenCalledWith({
-                    message: 'Replaced with link to Contact Form.',
-                    status: NotificationStatus.Success,
-                })
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Replaced with link to Contact Form.',
+                    }),
+                ).toHaveAttribute('data-intent', 'success')
             })
 
             userEvent.click(screen.getByTestId(`revert-email-${email}`))
 
             await waitFor(() => {
-                expect(notify).toHaveBeenCalledWith({
-                    message: 'Email reverted',
-                    status: NotificationStatus.Success,
-                })
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Email reverted',
+                    }),
+                ).toHaveAttribute('data-intent', 'success')
             })
         })
 
@@ -224,10 +227,11 @@ describe('<ContactFormMailtoReplacementSection />', () => {
             )
             expect(screen.getByLabelText(email)).toBeChecked()
             await waitFor(() => {
-                expect(notify).toHaveBeenCalledWith({
-                    message: 'Replaced with link to Contact Form.',
-                    status: NotificationStatus.Success,
-                })
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Replaced with link to Contact Form.',
+                    }),
+                ).toHaveAttribute('data-intent', 'success')
             })
         })
 

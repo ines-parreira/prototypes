@@ -8,7 +8,7 @@ import type { RouteComponentProps } from 'react-router-dom'
 import { NavLink } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Col, Container } from 'reactstrap'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
 import { CursorDirection, OrderDirection } from 'models/api/types'
 import {
@@ -30,8 +30,6 @@ import withRouter from 'pages/common/utils/withRouter'
 import settingsCss from 'pages/settings/settings.less'
 import css from 'pages/settings/teams/List.less'
 import membersCss from 'pages/settings/teams/members/List.less'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import {
     deleteTeamSuccess,
     fetchTeamMembersSuccess,
@@ -81,11 +79,9 @@ export class MembersListContainer extends Component<Props, State> {
             this.setState({ team: res })
             this.props.fetchTeamSuccess(res)
         } catch {
-            void this.props.notify({
-                message:
-                    'Failed to fetch team. Please refresh the page and try again.',
-                status: NotificationStatus.Error,
-            })
+            toast.error(
+                'Failed to fetch team. Please refresh the page and try again.',
+            )
         }
     }
 
@@ -155,16 +151,11 @@ export class MembersListContainer extends Component<Props, State> {
                 await this.fetchTeamMembers()
                 await this.fetchTeam()
 
-                void this.props.notify({
-                    status: NotificationStatus.Success,
-                    message: 'Team member added',
-                })
+                toast.success('Team member added')
             } catch {
-                void this.props.notify({
-                    status: NotificationStatus.Error,
-                    message:
-                        'Failed to add team member. Please refresh the page and try again.',
-                })
+                toast.error(
+                    'Failed to add team member. Please refresh the page and try again.',
+                )
             }
         }
     }
@@ -185,27 +176,19 @@ export class MembersListContainer extends Component<Props, State> {
                 await this.fetchTeamMembers({ cursor: newCursor })
                 await this.fetchTeam()
 
-                void this.props.notify({
-                    status: NotificationStatus.Success,
-                    message: 'Team member removed',
-                })
+                toast.success('Team member removed')
             } catch (error: any) {
                 const status = error?.response?.status
                 const fallbackErrorMessage =
                     'Failed to remove team member. Please refresh the page and try again.'
 
                 if (status === 422) {
-                    void this.props.notify({
-                        status: NotificationStatus.Error,
-                        message:
-                            error?.response?.data?.error?.msg ||
+                    toast.error(
+                        error?.response?.data?.error?.msg ||
                             fallbackErrorMessage,
-                    })
+                    )
                 } else {
-                    void this.props.notify({
-                        status: NotificationStatus.Error,
-                        message: fallbackErrorMessage,
-                    })
+                    toast.error(fallbackErrorMessage)
                 }
             }
         }
@@ -240,17 +223,11 @@ export class MembersListContainer extends Component<Props, State> {
             const status = error?.response?.status
 
             if (status === 422) {
-                void this.props.notify({
-                    status: NotificationStatus.Error,
-                    message:
-                        error?.response?.data?.error?.msg ??
-                        fallbackErrorMessage,
-                })
+                toast.error(
+                    error?.response?.data?.error?.msg ?? fallbackErrorMessage,
+                )
             } else {
-                void this.props.notify({
-                    status: NotificationStatus.Error,
-                    message: fallbackErrorMessage,
-                })
+                toast.error(fallbackErrorMessage)
             }
         } finally {
             this.setState({ isDeleting: false })
@@ -433,7 +410,6 @@ const connector = connect(
         fetchTeamMembersSuccess,
         deleteTeamSuccess,
         fetchTeamSuccess,
-        notify,
         updateTeamSuccess,
     },
 )

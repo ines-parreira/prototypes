@@ -2,13 +2,14 @@ import client from '@repo/api-resources'
 import { DATE_FORMAT } from '@repo/billing'
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import moment from 'moment'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { toast } from '@gorgias/axiom'
 import type { BillingState, HttpResponse } from '@gorgias/helpdesk-queries'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
@@ -46,7 +47,6 @@ import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import type { RevenueAddonClient } from 'rest_api/revenue_addon_api/client'
 import type { Components } from 'rest_api/revenue_addon_api/client.generated'
 import { notify } from 'state/notifications/actions'
-import type { Notification } from 'state/notifications/types'
 import {
     NotificationStatus,
     NotificationStyle,
@@ -116,6 +116,10 @@ const store: DeepPartial<StoreState> = {
 describe('useBillingPlans', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+    })
+
+    afterEach(() => {
+        toast.dismiss()
     })
 
     describe('updateSubscription', () => {
@@ -1115,7 +1119,7 @@ describe('useBillingPlans', () => {
             string, // name
             string | null, // confirmation_url
             string | null, // error
-            Notification,
+            { message: string; intent: string },
         ]
 
         const startSubscriptionOptions: StartSubscriptionOption[] = [
@@ -1124,7 +1128,7 @@ describe('useBillingPlans', () => {
                 null,
                 null,
                 {
-                    status: NotificationStatus.Success,
+                    intent: 'success',
                     message: 'Your subscription has started!',
                 },
             ],
@@ -1133,12 +1137,10 @@ describe('useBillingPlans', () => {
                 'confirmation.com/required',
                 null,
                 {
-                    status: NotificationStatus.Info,
+                    intent: 'info',
                     message:
                         'In order to activate your subscription, we need you to confirm this payment to your bank. ' +
                         'You will be redirected in a few seconds to a secure page.',
-                    dismissAfter: 5000,
-                    dismissible: false,
                 },
             ],
             [
@@ -1146,7 +1148,7 @@ describe('useBillingPlans', () => {
                 null,
                 'there was an error',
                 {
-                    status: NotificationStatus.Error,
+                    intent: 'destructive',
                     message: `there was an error Please update your payment method and retry to pay your invoice.`,
                 },
             ],
@@ -1157,7 +1159,7 @@ describe('useBillingPlans', () => {
                 name: string,
                 confirmation_url: string | null,
                 error: string | null,
-                notification: Notification,
+                expected: { message: string; intent: string },
             ) => {
                 const dispatchBillingError = jest.fn()
                 const queryClient = mockQueryClient()
@@ -1234,7 +1236,11 @@ describe('useBillingPlans', () => {
 
                 expect(mockStartSubscription).toHaveBeenCalledTimes(1)
 
-                expect(notifyMock).toHaveBeenCalledWith(notification)
+                await waitFor(() => {
+                    expect(
+                        screen.getByRole('status', { name: expected.message }),
+                    ).toHaveAttribute('data-intent', expected.intent)
+                })
             },
         )
     })

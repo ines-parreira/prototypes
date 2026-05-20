@@ -12,6 +12,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import moment from 'moment'
 import { useHistory } from 'react-router-dom'
 
+import { toast } from '@gorgias/axiom'
 import type { BillingState, HttpResponse } from '@gorgias/helpdesk-queries'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
@@ -59,7 +60,6 @@ import {
     isTrialing,
 } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
-import { notify } from 'state/notifications/actions'
 import type { Notification } from 'state/notifications/types'
 import {
     NotificationStatus,
@@ -440,18 +440,14 @@ export const useBillingPlans = ({
                     freeTrial: isFreeTrial,
                     helpdeskPlan: currentHelpdeskPlan?.name ?? '',
                 })
-                void dispatch(
-                    notify({
-                        message: `We're reviewing your <strong>${productsNames}</strong> plan${
-                            plansToBeHandledManually.length > 1 ? 's' : ''
-                        } request and will contact you at <b>${from}</b> within 24 business hours`,
-                        allowHTML: true,
-                        status: NotificationStatus.Info,
-                        style: NotificationStyle.Alert,
-                        showDismissButton: true,
-                        noAutoDismiss: true,
+                toast.info(
+                    `We're reviewing your ${productsNames} plan${
+                        plansToBeHandledManually.length > 1 ? 's' : ''
+                    } request and will contact you at ${from} within 24 business hours`,
+                    {
                         id: 'billing-voice-sms-request',
-                    }),
+                        duration: Infinity,
+                    },
                 )
             } catch (error) {
                 dispatchBillingError(error)
@@ -459,7 +455,6 @@ export const useBillingPlans = ({
             }
         }
     }, [
-        dispatch,
         dispatchBillingError,
         domain,
         from,
@@ -722,46 +717,30 @@ export const useBillingPlans = ({
 
             const payment: Map<any, any> | null = response.get('payment')
             if (payment!.get('confirmation_url')) {
-                await dispatch(
-                    notify({
-                        status: NotificationStatus.Info,
-                        message:
-                            'In order to activate your subscription, we need you to confirm this payment to your bank. ' +
-                            'You will be redirected in a few seconds to a secure page.',
-                        dismissAfter: 5000,
-                        dismissible: false,
-                    }),
+                toast.info(
+                    'In order to activate your subscription, we need you to confirm this payment to your bank. ' +
+                        'You will be redirected in a few seconds to a secure page.',
+                    { duration: 5000 },
                 )
 
                 setTimeout(() => {
                     history.push(payment!.get('confirmation_url'))
                 }, 4500)
             } else if (payment!.get('error')) {
-                void notify({
-                    status: NotificationStatus.Error,
-                    message: `${
+                toast.error(
+                    `${
                         payment!.get('error') as string
                     } Please update your payment method and retry to pay your invoice.`,
-                })
-            } else {
-                await dispatch(
-                    notify({
-                        status: NotificationStatus.Success,
-                        message: 'Your subscription has started!',
-                    }),
                 )
+            } else {
+                toast.success('Your subscription has started!')
             }
         } catch (exception) {
             const error = exception as Record<string, unknown>
             const errorMsg = isGorgiasApiError(error)
                 ? error.response.data.error.msg
                 : 'Failed to update payment method. Please try again in a few seconds.'
-            await dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    title: errorMsg,
-                }),
-            )
+            toast.error(errorMsg)
         }
     }, [dispatch, history, isFreeTrial, isSubscriptionCanceled])
 

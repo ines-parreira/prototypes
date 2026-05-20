@@ -1,15 +1,12 @@
 import { renderHook } from '@repo/testing'
+import { act, screen, waitFor } from '@testing-library/react'
 import type { AxiosError } from 'axios'
 import { useHistory } from 'react-router-dom'
 
+import { toast } from '@gorgias/axiom'
 import { useDeleteIntegration } from '@gorgias/helpdesk-queries'
 
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
-
 import useStoreDeleter from '../useStoreDeleter'
-
-jest.mock('state/notifications/actions')
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -46,23 +43,31 @@ describe('useStoreDeleter', () => {
         })
     })
 
-    it('should handle successful integration deletion', () => {
+    afterEach(() => {
+        toast.dismiss()
+    })
+
+    it('should handle successful integration deletion', async () => {
         renderHook(() => useStoreDeleter())
         const mutationOptions = (useDeleteIntegration as jest.Mock).mock
             .calls[0][0]
 
-        mutationOptions.mutation.onSuccess()
+        act(() => {
+            mutationOptions.mutation.onSuccess()
+        })
 
-        expect(notify).toHaveBeenCalledWith(
-            expect.objectContaining({
-                status: NotificationStatus.Success,
-            }),
-        )
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Store is successfully deleted. It may take a minute for all channels and features to disconnect.',
+                }),
+            ).toHaveAttribute('data-intent', 'success')
+        })
 
         expect(mockPush).toHaveBeenCalledWith('/app/settings/store-management')
     })
 
-    it('should handle integration deletion error with custom message', () => {
+    it('should handle integration deletion error with custom message', async () => {
         renderHook(() => useStoreDeleter())
         const mutationOptions = (useDeleteIntegration as jest.Mock).mock
             .calls[0][0]
@@ -78,17 +83,20 @@ describe('useStoreDeleter', () => {
             },
         } as AxiosError
 
-        mutationOptions.mutation.onError(mockError)
+        act(() => {
+            mutationOptions.mutation.onError(mockError)
+        })
 
-        expect(notify).toHaveBeenCalledWith(
-            expect.objectContaining({
-                message: mockErrorMessage,
-                status: NotificationStatus.Error,
-            }),
-        )
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Failed to delete integration',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
+        })
     })
 
-    it('should handle integration deletion error with default message', () => {
+    it('should handle integration deletion error with default message', async () => {
         renderHook(() => useStoreDeleter())
         const mutationOptions = (useDeleteIntegration as jest.Mock).mock
             .calls[0][0]
@@ -100,13 +108,17 @@ describe('useStoreDeleter', () => {
             },
         } as AxiosError
 
-        mutationOptions.mutation.onError(mockError)
-        expect(notify).toHaveBeenCalledWith(
-            expect.objectContaining({
-                message: 'Failed to delete integration',
-                status: NotificationStatus.Error,
-            }),
-        )
+        act(() => {
+            mutationOptions.mutation.onError(mockError)
+        })
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Failed to delete integration',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
+        })
 
         expect(mockPush).not.toHaveBeenCalled()
     })

@@ -7,6 +7,7 @@ import { Provider } from 'react-redux'
 import { useLocation, useRouteMatch } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
+import { toast } from '@gorgias/axiom'
 import type { ListMacrosParams } from '@gorgias/helpdesk-queries'
 import { useListMacros } from '@gorgias/helpdesk-queries'
 
@@ -21,7 +22,6 @@ import {
 import useAppDispatch from 'hooks/useAppDispatch'
 import { OrderDirection } from 'models/api/types'
 import { MacroSortableProperties } from 'models/macro/types'
-import { notify } from 'state/notifications/actions'
 import type { RootState, StoreDispatch } from 'state/types'
 
 import { MacrosSettingsContent } from '../MacrosSettingsContent'
@@ -79,9 +79,6 @@ jest.mock('pages/common/components/MacroFilters/MacroFilters', () => ({
     },
 }))
 
-jest.mock('state/notifications/actions')
-const mockNotify = notify as jest.Mock
-
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = useAppDispatch as jest.Mock
 
@@ -132,6 +129,10 @@ const mockMutateBulkArchive = jest.fn()
 const mockMutateBulkUnarchive = jest.fn()
 
 describe('<MacrosSettingsContent/>', () => {
+    afterEach(() => {
+        toast.dismiss()
+    })
+
     beforeEach(() => {
         mockListMacrosParams = { order_by: 'created_datetime:asc' }
         mockSetListMacrosParams.mockClear()
@@ -197,7 +198,7 @@ describe('<MacrosSettingsContent/>', () => {
         ).toBeInTheDocument()
     })
 
-    it('should notify when fetching macros fails', () => {
+    it('should notify when fetching macros fails', async () => {
         mockUseListMacros.mockReturnValue({
             data: {
                 data: {
@@ -220,9 +221,10 @@ describe('<MacrosSettingsContent/>', () => {
             </Provider>,
         )
 
-        expect(mockNotify).toHaveBeenCalledWith({
-            message: 'Failed to fetch macros',
-            status: 'error',
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', { name: 'Failed to fetch macros' }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 

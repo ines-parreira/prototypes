@@ -2,10 +2,9 @@ import React from 'react'
 
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import { act, screen, waitFor } from '@testing-library/react'
 
+import { toast } from '@gorgias/axiom'
 import {
     queryKeys,
     useCreateCustomFieldCondition as useCreate,
@@ -13,7 +12,6 @@ import {
 
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { customFieldCondition } from 'fixtures/customFieldCondition'
-import { NotificationStatus } from 'state/notifications/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import useCreateCustomFieldCondition from '../useCreateCustomFieldCondition'
@@ -23,68 +21,68 @@ const queryClient = mockQueryClient()
 jest.mock('@gorgias/helpdesk-queries')
 const useCreateCustomFieldConditionMock = assumeMock(useCreate)
 
-const mockStore = configureMockStore([thunk])()
-
 describe('useCreateCustomFieldCondition', () => {
     beforeEach(() => {
-        mockStore.clearActions()
         jest.resetAllMocks()
     })
 
-    it('should dispatch success notification on success and invalidate proper query data', () => {
+    afterEach(() => {
+        toast.dismiss()
+    })
+
+    it('should show success toast on success and invalidate proper query data', async () => {
         const invalidateQueryMock = jest.spyOn(queryClient, 'invalidateQueries')
 
         renderHook(() => useCreateCustomFieldCondition(), {
             wrapper: ({ children }) => (
                 <QueryClientProvider client={queryClient}>
-                    <Provider store={mockStore}>{children}</Provider>
+                    {children}
                 </QueryClientProvider>
             ),
         })
 
-        useCreateCustomFieldConditionMock.mock.calls[0][0]?.mutation!
-            .onSuccess!(
-            axiosSuccessResponse(customFieldCondition) as any,
-            { data: customFieldCondition },
-            undefined,
-        )
+        act(() => {
+            useCreateCustomFieldConditionMock.mock.calls[0][0]?.mutation!
+                .onSuccess!(
+                axiosSuccessResponse(customFieldCondition) as any,
+                { data: customFieldCondition },
+                undefined,
+            )
+        })
 
         expect(invalidateQueryMock).toHaveBeenLastCalledWith({
             queryKey:
                 queryKeys.customFieldConditions.listCustomFieldConditions(),
         })
-        expect(mockStore.getActions()).toMatchObject([
-            {
-                payload: {
-                    status: NotificationStatus.Success,
-                    message: 'Condition created successfully',
-                },
-            },
-        ])
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Condition created successfully',
+                }),
+            ).toHaveAttribute('data-intent', 'success')
+        })
     })
 
-    it('should dispatch failure notification on error', () => {
+    it('should show failure toast on error', async () => {
         renderHook(() => useCreateCustomFieldCondition(), {
             wrapper: ({ children }) => (
                 <QueryClientProvider client={queryClient}>
-                    <Provider store={mockStore}>{children}</Provider>
+                    {children}
                 </QueryClientProvider>
             ),
         })
 
-        useCreateCustomFieldConditionMock.mock.calls[0][0]?.mutation!.onError!(
-            {},
-            { data: customFieldCondition },
-            undefined,
-        )
+        act(() => {
+            useCreateCustomFieldConditionMock.mock.calls[0][0]?.mutation!
+                .onError!({}, { data: customFieldCondition }, undefined)
+        })
 
-        expect(mockStore.getActions()).toMatchObject([
-            {
-                payload: {
-                    status: NotificationStatus.Error,
-                    message: 'Failed to create condition',
-                },
-            },
-        ])
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Failed to create condition',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
+        })
     })
 })

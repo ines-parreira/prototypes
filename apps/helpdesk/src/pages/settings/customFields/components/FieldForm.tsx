@@ -9,6 +9,7 @@ import {
     LegacyBadge as Badge,
     LegacyButton as Button,
     Label,
+    toast,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
@@ -19,7 +20,6 @@ import { useUpdateAiAutofill } from 'custom-fields/hooks/queries/useUpdateAiAuto
 import { useUpdateCustomFieldArchiveStatus } from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
 import type { CustomField, CustomFieldInput } from 'custom-fields/types'
 import { isCustomField, isCustomFieldSystemReadOnly } from 'custom-fields/types'
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetAccountConfiguration } from 'models/aiAgent/queries'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
@@ -33,8 +33,6 @@ import css from 'pages/settings/customFields/components/FieldForm.less'
 import RequirementTypeInput from 'pages/settings/customFields/components/RequirementTypeInput'
 import TypeSelectInput from 'pages/settings/customFields/components/TypeSelectInput'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 const SAVE_BUTTON_ID = 'custom-fields-form-save-button'
 const TOOLTIP_MESSAGE =
@@ -81,7 +79,6 @@ function pickDefinitionFields(
 }
 
 export default function FieldForm(props: FieldFormProps) {
-    const dispatch = useAppDispatch()
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
     const isAiAutofillEnabled = useFlag(
@@ -169,12 +166,7 @@ export default function FieldForm(props: FieldFormProps) {
                             enabled: aiAutofillEnabled,
                         },
                     })
-                    dispatch(
-                        notify({
-                            title: 'Failed to update AI Autofill settings',
-                            status: NotificationStatus.Error,
-                        }),
-                    )
+                    toast.error('Failed to update AI Autofill settings')
                 }
             }
 
@@ -199,12 +191,7 @@ export default function FieldForm(props: FieldFormProps) {
     // When navigating away, save the data then navigate to the target location
     const handleSaveOnLeave = async () => {
         if (!isFormValid) {
-            dispatch(
-                notify({
-                    title: 'Unable to save, please complete all required fields',
-                    status: NotificationStatus.Error,
-                }),
-            )
+            toast.error('Unable to save, please complete all required fields')
             throw new Error('Error saving custom field')
         }
         const ok = await save()

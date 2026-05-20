@@ -9,10 +9,10 @@ import _uniqueId from 'lodash/uniqueId'
 import { Link } from 'react-router-dom'
 import { Table } from 'reactstrap'
 
+import { toast } from '@gorgias/axiom'
 import type { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
 
 import type { TicketMessageSourceType } from 'business/types/ticket'
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import { fetchTicketsByRuleId } from 'models/ticket/resources'
@@ -22,8 +22,6 @@ import Loader from 'pages/common/components/Loader/Loader'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import { ChannelLabel } from 'pages/common/utils/labels'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import css from './RuleTicketList.less'
 
@@ -33,7 +31,6 @@ type Props = {
 }
 
 export const RuleTicketList = ({ ruleId, numTickets = 10 }: Props) => {
-    const dispatch = useAppDispatch()
     const [paginationMeta, setPaginationMeta] =
         useState<CursorPaginationMeta | null>(null)
     const [ticketList, setTicketList] = useState<Ticket[]>([])
@@ -48,12 +45,7 @@ export const RuleTicketList = ({ ruleId, numTickets = 10 }: Props) => {
                 setTicketList(data)
                 setPaginationMeta(meta)
             } catch {
-                void dispatch(
-                    notify({
-                        message: 'Failed to fetch ticket list',
-                        status: NotificationStatus.Error,
-                    }),
-                )
+                toast.error('Failed to fetch ticket list')
             }
         },
         [],

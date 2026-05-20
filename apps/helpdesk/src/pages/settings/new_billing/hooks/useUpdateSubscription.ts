@@ -1,9 +1,9 @@
 import { useAsyncFn } from '@repo/hooks'
 
+import { toast } from '@gorgias/axiom'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import { updateSubscription } from 'state/currentAccount/actions'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 export type HandleSubscriptionUpdate = {
     isLoading: boolean
@@ -23,12 +23,7 @@ export const useUpdateSubscription = ({
                 await dispatch(updateSubscription({ prices }))
                 onSuccess?.()
             } catch (error) {
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message: String(error),
-                    }),
-                )
+                toast.error(String(error))
                 throw error
             }
         },

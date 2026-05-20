@@ -11,6 +11,7 @@ import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 import type { Store } from 'redux'
 
+import { toast } from '@gorgias/axiom'
 import {
     mockGetCurrentUserHandler,
     mockUpdateCurrentUserHandler,
@@ -22,8 +23,6 @@ import { LANGUAGE } from 'constants/languages'
 import { ThemeProvider } from 'core/theme'
 import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
 import { useStandaloneAiContext } from 'providers/standalone-ai/StandaloneAiContext'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { YourProfileView } from '../components/YourProfileView'
 import * as useYourProfileFormModule from '../hooks/useYourProfileForm'
@@ -126,10 +125,6 @@ jest.mock('providers/standalone-ai/StandaloneAiContext', () => ({
     useStandaloneAiContext: jest.fn(),
 }))
 const mockUseStandaloneAiContext = jest.mocked(useStandaloneAiContext)
-
-jest.mock('state/notifications/actions')
-
-const mockNotify = notify as jest.MockedFunction<typeof notify>
 
 const mocksStore = {
     getState: () => ({}),
@@ -263,6 +258,7 @@ describe('Your profile page', () => {
     afterEach(() => {
         global.Date.now = realDateNow
         jest.restoreAllMocks()
+        toast.dismiss()
     })
 
     describe('Personal informations section', () => {
@@ -671,10 +667,11 @@ describe('Your profile page', () => {
             })
 
             await waitFor(() => {
-                expect(mockNotify).toHaveBeenCalledWith({
-                    status: NotificationStatus.Success,
-                    message: 'User successfully updated',
-                })
+                expect(
+                    screen.getByRole('status', {
+                        name: 'User successfully updated',
+                    }),
+                ).toHaveAttribute('data-intent', 'success')
             })
         })
 
@@ -704,10 +701,11 @@ describe('Your profile page', () => {
             })
 
             await waitFor(() => {
-                expect(mockNotify).toHaveBeenCalledWith({
-                    status: NotificationStatus.Success,
-                    message: 'User successfully updated',
-                })
+                expect(
+                    screen.getByRole('status', {
+                        name: 'User successfully updated',
+                    }),
+                ).toHaveAttribute('data-intent', 'success')
             })
         })
     })
@@ -897,10 +895,11 @@ describe('Your profile page', () => {
             })
 
             await waitFor(() => {
-                expect(mockNotify).toHaveBeenCalledWith({
-                    status: NotificationStatus.Success,
-                    message: 'User successfully updated',
-                })
+                expect(
+                    screen.getByRole('status', {
+                        name: 'User successfully updated',
+                    }),
+                ).toHaveAttribute('data-intent', 'success')
             })
         })
 
@@ -957,10 +956,11 @@ describe('Your profile page', () => {
             })
 
             await waitFor(() => {
-                expect(mockNotify).toHaveBeenCalledWith({
-                    status: NotificationStatus.Success,
-                    message: 'User successfully updated',
-                })
+                expect(
+                    screen.getByRole('status', {
+                        name: 'User successfully updated',
+                    }),
+                ).toHaveAttribute('data-intent', 'success')
             })
         })
 

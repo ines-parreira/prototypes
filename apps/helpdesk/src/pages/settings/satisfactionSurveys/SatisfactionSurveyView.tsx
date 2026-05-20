@@ -6,7 +6,7 @@ import type { EditorState } from 'draft-js'
 import type { Map } from 'immutable'
 import { Form, FormGroup, Label, Row } from 'reactstrap'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
 import { UploadType } from 'common/types'
 import { DELAY_SURVEY_FOR } from 'config'
@@ -22,8 +22,6 @@ import { submitSetting } from 'state/currentAccount/actions'
 import { getSurveysSettings } from 'state/currentAccount/selectors'
 import type { AccountSettingSatisfactionSurvey } from 'state/currentAccount/types'
 import { AccountSettingType } from 'state/currentAccount/types'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { convertToHTML, getPlainText } from 'utils/editor'
 
 import css from '../settings.less'
@@ -71,12 +69,7 @@ function SatisfactionSurveyView() {
 
     const handleCancel = () => {
         setSettings(surveysSettings.get('data'))
-        void dispatch(
-            notify({
-                status: NotificationStatus.Success,
-                message: 'Changes have been canceled',
-            }),
-        )
+        toast.success('Changes have been canceled')
     }
 
     const checkBox = useCallback(

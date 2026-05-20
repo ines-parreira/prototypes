@@ -12,7 +12,7 @@ import {
 } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, toast } from '@gorgias/axiom'
 
 import dotError from 'assets/img/icons/dot-error.svg'
 import { TicketChannel } from 'business/types/ticket'
@@ -44,8 +44,6 @@ import ContactFormPreferences from 'pages/settings/contactForm/views/ContactForm
 import ContactFormPublish from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPublish'
 import settingsCss from 'pages/settings/settings.less'
 import { getCurrentContactForm } from 'state/entities/contactForm/contactForms'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { changeContactFormId } from 'state/ui/contactForm'
 
 import { ContactFormAutomateView } from './ContactFormAutomateView'
@@ -90,26 +88,15 @@ const ContactFormSettingsView = (): JSX.Element => {
 
             if (!error && !!result) return
 
-            void dispatch(
-                notify({
-                    message:
-                        result === null
-                            ? 'Contact Form not found'
-                            : 'Something went wrong',
-                    status: NotificationStatus.Error,
-                }),
+            toast.error(
+                result === null
+                    ? 'Contact Form not found'
+                    : 'Something went wrong',
             )
 
             history.push(CONTACT_FORM_BASE_PATH)
         })()
-    }, [
-        isReady,
-        fetchContactFormById,
-        contactFormId,
-        isIdValid,
-        history,
-        dispatch,
-    ])
+    }, [isReady, fetchContactFormById, contactFormId, isIdValid, history])
 
     if (!contactForm) {
         return (

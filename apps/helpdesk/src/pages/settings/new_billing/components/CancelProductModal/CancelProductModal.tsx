@@ -6,6 +6,7 @@ import { BILLING_SUPPORT_EMAIL, ZAPIER_REMOVE_AAO_HOOK } from '@repo/billing'
 import { SegmentEvent } from '@repo/logging'
 import { useQueryClient } from '@tanstack/react-query'
 
+import { toast } from '@gorgias/axiom'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -23,8 +24,6 @@ import {
 import type { CurrentProductsUsages, ProductToPlan } from 'state/billing/types'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 
 import { trackBillingEvent } from '../../../../../models/billing/resources'
 import { cancelHelpdeskAutoRenewal } from '../../../../../state/currentAccount/actions'
@@ -172,26 +171,17 @@ const CancelProductModal = ({
         })
 
         if (isSent) {
-            await dispatch(
-                notify({
-                    status: NotificationStatus.Success,
-                    message:
-                        'We are happy you changed your mind! ' +
-                        'Our support team will reach out to you shortly regarding this offer.',
-                }),
+            toast.success(
+                'We are happy you changed your mind! ' +
+                    'Our support team will reach out to you shortly regarding this offer.',
             )
             handleOnClose()
             setIsSubmitting(false)
         } else {
-            await dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message:
-                        "Couldn't send the request to our support team. " +
-                        'If the problem persists, please contact our billing team via chat or ' +
-                        'at <a href="mailto:support@gorgias.com">support@gorgias.com</a> to make this change.',
-                    allowHTML: true,
-                }),
+            toast.error(
+                "Couldn't send the request to our support team. " +
+                    'If the problem persists, please contact our billing team via chat or ' +
+                    'at support@gorgias.com to make this change.',
             )
             setIsSubmitting(false)
         }
@@ -249,20 +239,14 @@ const CancelProductModal = ({
                 )
             } else {
                 await updateSubscription()
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Success,
-                        message: `Your ${productCancellationScenario.productDisplayName} auto-renewal has been cancelled.`,
-                    }),
+                toast.success(
+                    `Your ${productCancellationScenario.productDisplayName} auto-renewal has been cancelled.`,
                 )
                 isCancelled = true
             }
         } catch {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: `Failed to remove ${productCancellationScenario.productDisplayName}. Please try again or contact support.`,
-                }),
+            toast.error(
+                `Failed to remove ${productCancellationScenario.productDisplayName}. Please try again or contact support.`,
             )
             isCancelled = false
         } finally {

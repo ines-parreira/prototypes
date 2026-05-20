@@ -2,7 +2,9 @@ import React from 'react'
 
 import { assumeMock, render, userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+
+import { toast } from '@gorgias/axiom'
 
 import { CONTACT_FORM_EMBED_FORM_TEXTS } from 'pages/settings/contactForm/constants'
 import { ShopifyPagesListFixture } from 'pages/settings/contactForm/fixtures/shopifyPage'
@@ -121,6 +123,121 @@ describe('<ContactFormAutoEmbedModalAssistant />', () => {
 
         await waitFor(() => {
             expect(mockCreatePageEmbedment).toHaveBeenCalled()
+        })
+    })
+
+    describe('toast notifications', () => {
+        afterEach(() => {
+            toast.dismiss()
+        })
+
+        it('should show a success toast when onSuccess is called with a new embedment', async () => {
+            let onSuccessCallback:
+                | ((newPageEmbedment: unknown) => void)
+                | undefined
+            useCreatePageEmbedmentMock.mockImplementation(((overrides: any) => {
+                onSuccessCallback = overrides?.onSuccess
+                return {
+                    mutate: jest.fn(),
+                    mutateAsync: jest.fn(),
+                    isLoading: false,
+                } as unknown as ReturnType<typeof useCreatePageEmbedment>
+            }) as any)
+
+            render(
+                <QueryClientProvider client={queryClient}>
+                    <ContactFormAutoEmbedModalAssistant
+                        isOpen={true}
+                        onClose={jest.fn()}
+                        pages={ShopifyPagesListFixture}
+                        contactFormId={1}
+                    />
+                </QueryClientProvider>,
+            )
+
+            await act(async () => {
+                onSuccessCallback?.({ id: 99 })
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Form embedded to page.',
+                    }),
+                ).toHaveAttribute('data-intent', 'success')
+            })
+        })
+
+        it('should show an info toast when onSuccess is called without a new embedment', async () => {
+            let onSuccessCallback:
+                | ((newPageEmbedment: unknown) => void)
+                | undefined
+            useCreatePageEmbedmentMock.mockImplementation(((overrides: any) => {
+                onSuccessCallback = overrides?.onSuccess
+                return {
+                    mutate: jest.fn(),
+                    mutateAsync: jest.fn(),
+                    isLoading: false,
+                } as unknown as ReturnType<typeof useCreatePageEmbedment>
+            }) as any)
+
+            render(
+                <QueryClientProvider client={queryClient}>
+                    <ContactFormAutoEmbedModalAssistant
+                        isOpen={true}
+                        onClose={jest.fn()}
+                        pages={ShopifyPagesListFixture}
+                        contactFormId={1}
+                    />
+                </QueryClientProvider>,
+            )
+
+            await act(async () => {
+                onSuccessCallback?.(undefined)
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('status', {
+                        name: 'Something went wrong',
+                    }),
+                ).toHaveAttribute('data-intent', 'info')
+            })
+        })
+
+        it('should show an error toast when onError is called with a generic error message', async () => {
+            let onErrorCallback: ((error: unknown) => void) | undefined
+            useCreatePageEmbedmentMock.mockImplementation(((overrides: any) => {
+                onErrorCallback = overrides?.onError
+                return {
+                    mutate: jest.fn(),
+                    mutateAsync: jest.fn(),
+                    isLoading: false,
+                } as unknown as ReturnType<typeof useCreatePageEmbedment>
+            }) as any)
+
+            render(
+                <QueryClientProvider client={queryClient}>
+                    <ContactFormAutoEmbedModalAssistant
+                        isOpen={true}
+                        onClose={jest.fn()}
+                        pages={ShopifyPagesListFixture}
+                        contactFormId={1}
+                    />
+                </QueryClientProvider>,
+            )
+
+            await act(async () => {
+                onErrorCallback?.({
+                    response: { data: { error: { msg: 'Server explosion' } } },
+                })
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('status', { name: 'Server explosion' }),
+                ).toHaveAttribute('data-intent', 'destructive')
+            })
         })
     })
 })

@@ -2,8 +2,6 @@ import React, { useEffect, useMemo } from 'react'
 
 import { reportError } from '@repo/logging'
 import _flatten from 'lodash/flatten'
-import type { ConnectedProps } from 'react-redux'
-import { connect } from 'react-redux'
 import {
     Link,
     NavLink,
@@ -13,7 +11,7 @@ import {
     useHistory,
 } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { Button, toast } from '@gorgias/axiom'
 
 import PageHeader from 'pages/common/components/PageHeader'
 import Detail from 'pages/common/components/ProductDetail'
@@ -26,10 +24,8 @@ import {
 } from 'pages/settings/contactForm/constants'
 import { CONTACT_FORM_APP_DETAIL } from 'pages/settings/contactForm/views/ContactFormStartView/constants'
 import ManageContactForms from 'pages/settings/contactForm/views/ContactFormStartView/ManageContactForms'
-import { notify as notifyAction } from 'state/notifications/actions'
 import { notEmpty } from 'utils'
 
-import { NotificationStatus } from '../../../../../state/notifications/types'
 import { useGetContactFormList } from '../../queries'
 
 const CONTACT_FORM_HOME_ROUTES = {
@@ -49,11 +45,7 @@ const CONTACT_FORM_DETAIL_PROPS: typeof CONTACT_FORM_APP_DETAIL = {
     },
 }
 
-type ContactFormStartViewProps = ConnectedProps<typeof connector>
-
-const ContactFormStartView = ({
-    notify,
-}: ContactFormStartViewProps): JSX.Element => {
+const ContactFormStartView = (): JSX.Element => {
     const history = useHistory()
     const handleAddHelpCenter = () => history.push(CONTACT_FORM_CREATE_PATH)
 
@@ -63,10 +55,7 @@ const ContactFormStartView = ({
 
     useEffect(() => {
         if (getContactFormList.isError && getContactFormList.error) {
-            void notify({
-                status: NotificationStatus.Error,
-                message: 'Failed to fetch Contact Forms',
-            })
+            toast.error('Failed to fetch Contact Forms')
             // redirect to the about page
             history.push(CONTACT_FORM_HOME_ROUTES.About)
             reportError(
@@ -76,7 +65,7 @@ const ContactFormStartView = ({
                     : undefined,
             )
         }
-    }, [getContactFormList.error, getContactFormList.isError, history, notify])
+    }, [getContactFormList.error, getContactFormList.isError, history])
 
     // until the first request is done, we don't know how many manual contact forms to display
     // so we return null until we have the data
@@ -142,8 +131,4 @@ const ContactFormStartView = ({
     )
 }
 
-const connector = connect(null, {
-    notify: notifyAction,
-})
-
-export default connector(ContactFormStartView)
+export default ContactFormStartView

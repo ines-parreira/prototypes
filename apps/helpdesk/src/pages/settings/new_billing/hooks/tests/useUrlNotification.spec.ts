@@ -1,9 +1,8 @@
 import { assumeMock, renderHook } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 import { useLocation } from 'react-router-dom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
+import { toast } from '@gorgias/axiom'
 
 import { useUrlNotification } from '../useUrlNotification'
 
@@ -19,68 +18,64 @@ jest.mock('@repo/routing', () => ({
     },
 }))
 
-jest.mock('hooks/useAppDispatch')
-jest.mock('state/notifications/actions')
-
-const mockUseAppDispatch = assumeMock(useAppDispatch)
 const mockUseLocation = assumeMock(useLocation)
-const mockNotify = assumeMock(notify)
 
 const { history } = require('@repo/routing') as {
     history: { replace: jest.Mock }
 }
 
+function mockLocationWith(search: string) {
+    mockUseLocation.mockReturnValue({
+        search,
+        pathname: '/app/settings/billing',
+        hash: '',
+        state: null,
+    })
+}
+
 describe('useUrlNotification', () => {
-    const mockDispatch = jest.fn()
-    const mockNotifyThunk = jest.fn().mockResolvedValue(undefined)
-
-    function mockLocationWith(search: string) {
-        mockUseLocation.mockReturnValue({
-            search,
-            pathname: '/app/settings/billing',
-            hash: '',
-            state: null,
-        })
-    }
-
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseAppDispatch.mockReturnValue(mockDispatch)
-        mockNotify.mockReturnValue(mockNotifyThunk)
     })
 
-    it('should dispatch error notification when notif_type=error and notif_msg are present', () => {
+    afterEach(() => {
+        toast.dismiss()
+    })
+
+    it('should show error toast when notif_type=error and notif_msg are present', async () => {
         mockLocationWith(
             '?notif_type=error&notif_msg=Shopify+store+is+still+in+trial',
         )
 
         renderHook(() => useUrlNotification())
 
-        expect(mockNotify).toHaveBeenCalledWith({
-            message: 'Shopify store is still in trial',
-            status: NotificationStatus.Error,
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Shopify store is still in trial',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
-        expect(mockDispatch).toHaveBeenCalledWith(mockNotifyThunk)
     })
 
-    it('should default to info status for unknown notif_type values', () => {
+    it('should default to info toast for unknown notif_type values', async () => {
         mockLocationWith('?notif_type=unknown&notif_msg=Something+happened')
 
         renderHook(() => useUrlNotification())
 
-        expect(mockNotify).toHaveBeenCalledWith({
-            message: 'Something happened',
-            status: NotificationStatus.Info,
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', { name: 'Something happened' }),
+            ).toHaveAttribute('data-intent', 'info')
         })
     })
 
-    it('should not dispatch when params are absent', () => {
+    it('should not show toast when params are absent', () => {
         mockLocationWith('')
 
         renderHook(() => useUrlNotification())
 
-        expect(mockNotify).not.toHaveBeenCalled()
-        expect(mockDispatch).not.toHaveBeenCalled()
+        expect(screen.queryByRole('status')).not.toBeInTheDocument()
     })
 
     it('should clean up notif_type and notif_msg from URL after dispatch', () => {
@@ -94,16 +89,19 @@ describe('useUrlNotification', () => {
         })
     })
 
-    it('should decode double-encoded notif_msg from backend redirects', () => {
+    it('should decode double-encoded notif_msg from backend redirects', async () => {
         mockLocationWith(
             '?notif_type=error&notif_msg=We%2Bdetected%2Bthat%2Byou%2Bdon%2527t%2Bhave%2Ban%2Bactive%2BShopify%2Bstore.',
         )
 
         renderHook(() => useUrlNotification())
 
-        expect(mockNotify).toHaveBeenCalledWith({
-            message: "We detected that you don't have an active Shopify store.",
-            status: NotificationStatus.Error,
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: "We detected that you don't have an active Shopify store.",
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
         })
     })
 

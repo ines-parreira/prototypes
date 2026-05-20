@@ -3,6 +3,7 @@ import { useCallback } from 'react'
 import { history } from '@repo/routing'
 import { useQueryClient } from '@tanstack/react-query'
 
+import { toast } from '@gorgias/axiom'
 import type {
     CreateCustomFieldCondition,
     UpdateCustomFieldCondition,
@@ -12,17 +13,12 @@ import {
     useCreateCustomFieldCondition,
 } from '@gorgias/helpdesk-queries'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'
 import { CUSTOM_FIELD_CONDITIONS_ROUTE } from 'routes/constants'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
-import { errorToChildren } from 'utils'
 
 import useUpdateCustomFieldCondition from './useUpdateCustomFieldCondition'
 
 export default function useSaveCondition(conditionId?: number) {
-    const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
 
     const { mutateAsync: createCondition, isLoading: isCreating } =
@@ -44,13 +40,10 @@ export default function useSaveCondition(conditionId?: number) {
                           data: data as UpdateCustomFieldCondition,
                       })
 
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Success,
-                        message: `Condition ${
-                            conditionId ? 'updated' : 'created'
-                        } successfully`,
-                    }),
+                toast.success(
+                    `Condition ${
+                        conditionId ? 'updated' : 'created'
+                    } successfully`,
                 )
                 void queryClient.invalidateQueries({
                     queryKey:
@@ -66,21 +59,16 @@ export default function useSaveCondition(conditionId?: number) {
                 }
                 history.push(`/app/settings/${CUSTOM_FIELD_CONDITIONS_ROUTE}`)
             } catch (error) {
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        title: isGorgiasApiError(error)
-                            ? error.response?.data.error.msg
-                            : `Failed to ${
-                                  conditionId ? 'update' : 'create'
-                              } condition.`,
-                        message: errorToChildren(error) || undefined,
-                        allowHTML: true,
-                    }),
+                toast.error(
+                    isGorgiasApiError(error)
+                        ? error.response?.data.error.msg
+                        : `Failed to ${
+                              conditionId ? 'update' : 'create'
+                          } condition.`,
                 )
             }
         },
-        [createCondition, updateCondition, dispatch, conditionId, queryClient],
+        [createCondition, updateCondition, conditionId, queryClient],
     )
 
     return { onSubmit, isSubmitting: isCreating || isUpdating }
