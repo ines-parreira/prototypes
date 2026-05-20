@@ -9,41 +9,29 @@ import { AiAgentOnboardingRouter } from '../AiAgentOnboardingRouter'
 jest.mock(
     'pages/aiAgent/Onboarding_V2/components/AiAgentOnboarding/AiAgentOnboarding',
     () => ({
-        AiAgentOnboarding: () => <div>AI Agent Onboarding V2</div>,
-    }),
-)
-
-jest.mock(
-    'pages/aiAgent/Onboarding_V3/components/AiAgentOnboarding/AiAgentOnboarding',
-    () => ({
-        AiAgentOnboardingV3: () => <div>AI Agent Onboarding V3</div>,
+        AiAgentOnboarding: () => <div>AI Agent Onboarding</div>,
     }),
 )
 
 describe('AiAgentOnboardingRouter', () => {
-    it('renders V2 onboarding when AiAgentOnboardingV3 is disabled', () => {
+    it('renders the wizard inline when AiAgentOnboardingV3 is disabled', () => {
         mockFeatureFlags({ [FeatureFlagKey.AiAgentOnboardingV3]: false })
 
-        render(<AiAgentOnboardingRouter />)
+        const { container } = render(<AiAgentOnboardingRouter />)
 
-        expect(screen.getByText('AI Agent Onboarding V2')).toBeInTheDocument()
-        expect(
-            screen.queryByText('AI Agent Onboarding V3'),
-        ).not.toBeInTheDocument()
+        expect(container).toHaveTextContent('AI Agent Onboarding')
     })
 
-    it('renders V3 onboarding when AiAgentOnboardingV3 is enabled', () => {
+    it('portals the wizard out of the route container when AiAgentOnboardingV3 is enabled', () => {
         mockFeatureFlags({ [FeatureFlagKey.AiAgentOnboardingV3]: true })
 
-        render(<AiAgentOnboardingRouter />)
+        const { container } = render(<AiAgentOnboardingRouter />)
 
-        expect(screen.getByText('AI Agent Onboarding V3')).toBeInTheDocument()
-        expect(
-            screen.queryByText('AI Agent Onboarding V2'),
-        ).not.toBeInTheDocument()
+        expect(container).not.toHaveTextContent('AI Agent Onboarding')
+        expect(screen.getByText('AI Agent Onboarding')).toBeInTheDocument()
     })
 
-    it('renders neither variant while the flag is loading', () => {
+    it('renders nothing while the flag is loading', () => {
         ;(useFlagWithLoading as jest.Mock).mockReturnValueOnce({
             value: false,
             isLoading: true,
@@ -52,27 +40,7 @@ describe('AiAgentOnboardingRouter', () => {
         render(<AiAgentOnboardingRouter />)
 
         expect(
-            screen.queryByText('AI Agent Onboarding V2'),
+            screen.queryByText('AI Agent Onboarding'),
         ).not.toBeInTheDocument()
-        expect(
-            screen.queryByText('AI Agent Onboarding V3'),
-        ).not.toBeInTheDocument()
-    })
-
-    it('portals the V3 wizard out of the route container so helpdesk chrome cannot wrap it', () => {
-        mockFeatureFlags({ [FeatureFlagKey.AiAgentOnboardingV3]: true })
-
-        const { container } = render(<AiAgentOnboardingRouter />)
-
-        expect(container).not.toHaveTextContent('AI Agent Onboarding V3')
-        expect(screen.getByText('AI Agent Onboarding V3')).toBeInTheDocument()
-    })
-
-    it('renders the V2 wizard inline (no Overlay portal)', () => {
-        mockFeatureFlags({ [FeatureFlagKey.AiAgentOnboardingV3]: false })
-
-        const { container } = render(<AiAgentOnboardingRouter />)
-
-        expect(container).toHaveTextContent('AI Agent Onboarding V2')
     })
 })
