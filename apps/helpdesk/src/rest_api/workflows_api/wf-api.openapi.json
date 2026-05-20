@@ -796,6 +796,17 @@
                             "type": "string",
                             "enum": ["0", "1", "true", "false"]
                         }
+                    },
+                    {
+                        "name": "is_standalone",
+                        "required": false,
+                        "in": "query",
+                        "schema": {
+                            "nullable": true,
+                            "default": null,
+                            "type": "string",
+                            "enum": ["true", "false"]
+                        }
                     }
                 ],
                 "responses": {

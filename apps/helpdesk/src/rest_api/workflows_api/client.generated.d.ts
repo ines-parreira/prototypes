@@ -21406,6 +21406,7 @@ declare namespace Paths {
     namespace StoreWfConfigurationControllerList {
         namespace Parameters {
             export type Enabled = '0' | '1' | 'true' | 'false'
+            export type IsStandalone = 'true' | 'false'
             export type StoreName = string
             export type StoreType = 'shopify' | 'bigcommerce' | 'magento2'
             export type Triggers = (
@@ -21421,6 +21422,7 @@ declare namespace Paths {
         export interface QueryParameters {
             triggers: Parameters.Triggers
             enabled?: Parameters.Enabled
+            is_standalone?: Parameters.IsStandalone
         }
         namespace Responses {
             export type $200 =

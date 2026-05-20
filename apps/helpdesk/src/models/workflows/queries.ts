@@ -380,11 +380,13 @@ export const useGetStoreWorkflowsConfigurations = (
         storeType,
         triggers,
         enabled,
+        isStandalone,
     }: {
         storeName: string
         storeType: string
         triggers: ['llm-prompt'] | ['reusable-llm-prompt']
         enabled?: boolean
+        isStandalone?: boolean
     },
     overrides: UseQueryOptions<
         Awaited<Paths.StoreWfConfigurationControllerList.Responses.$200>
@@ -409,6 +411,9 @@ export const useGetStoreWorkflowsConfigurations = (
                     triggers,
                     ...(enabled !== undefined
                         ? { enabled: enabled ? 'true' : 'false' }
+                        : {}),
+                    ...(isStandalone !== undefined
+                        ? { is_standalone: isStandalone ? 'true' : 'false' }
                         : {}),
                 },
                 {},

@@ -53,6 +53,7 @@ const ActionsView = () => {
         storeName: shopName,
         storeType: shopType,
         triggers: ['llm-prompt'],
+        isStandalone: true,
     })
     const { routes } = useAiAgentNavigation({ shopName })
 

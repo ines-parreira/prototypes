@@ -491,5 +491,79 @@ describe('queries', () => {
             await waitFor(() => expect(result.current.isSuccess).toEqual(true))
             expect(result.current.data).toEqual(mockResponse)
         })
+
+        it('should pass is_standalone parameter as "true" when set to true', async () => {
+            const mockResponse: any[] = []
+
+            mockedServer
+                .onPost(/auth/)
+                .reply(200, {})
+                .onGet(/\/stores\/.*\/.*\/configurations/)
+                .reply(function (config) {
+                    expect(config.params.is_standalone).toBe('true')
+                    return [200, mockResponse]
+                })
+
+            const { result } = renderHook(() =>
+                useGetStoreWorkflowsConfigurations({
+                    storeName: 'test-store',
+                    storeType: 'shopify',
+                    triggers: ['llm-prompt'],
+                    isStandalone: true,
+                }),
+            )
+
+            await waitFor(() => expect(result.current.isSuccess).toEqual(true))
+            expect(result.current.data).toEqual(mockResponse)
+        })
+
+        it('should pass is_standalone parameter as "false" when set to false', async () => {
+            const mockResponse: any[] = []
+
+            mockedServer
+                .onPost(/auth/)
+                .reply(200, {})
+                .onGet(/\/stores\/.*\/.*\/configurations/)
+                .reply(function (config) {
+                    expect(config.params.is_standalone).toBe('false')
+                    return [200, mockResponse]
+                })
+
+            const { result } = renderHook(() =>
+                useGetStoreWorkflowsConfigurations({
+                    storeName: 'test-store',
+                    storeType: 'shopify',
+                    triggers: ['llm-prompt'],
+                    isStandalone: false,
+                }),
+            )
+
+            await waitFor(() => expect(result.current.isSuccess).toEqual(true))
+            expect(result.current.data).toEqual(mockResponse)
+        })
+
+        it('should not include is_standalone parameter when it is undefined', async () => {
+            const mockResponse: any[] = []
+
+            mockedServer
+                .onPost(/auth/)
+                .reply(200, {})
+                .onGet(/\/stores\/.*\/.*\/configurations/)
+                .reply(function (config) {
+                    expect(config.params.is_standalone).toBeUndefined()
+                    return [200, mockResponse]
+                })
+
+            const { result } = renderHook(() =>
+                useGetStoreWorkflowsConfigurations({
+                    storeName: 'test-store',
+                    storeType: 'shopify',
+                    triggers: ['llm-prompt'],
+                }),
+            )
+
+            await waitFor(() => expect(result.current.isSuccess).toEqual(true))
+            expect(result.current.data).toEqual(mockResponse)
+        })
     })
 })
