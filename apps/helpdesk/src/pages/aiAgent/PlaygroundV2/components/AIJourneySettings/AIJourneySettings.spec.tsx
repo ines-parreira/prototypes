@@ -7,6 +7,7 @@ import { userEvent } from '@testing-library/user-event'
 import type { JourneyApiDTO } from '@gorgias/convert-client'
 import { JourneyTypeEnum } from '@gorgias/convert-client'
 
+import { useFlag } from '@repo/feature-flags'
 import { useAIJourneyProductList } from 'AIJourney/hooks'
 import type { Product } from 'constants/integrations/types/shopify'
 import { shopifyProductResult } from 'fixtures/shopify'
@@ -18,6 +19,11 @@ import {
 import { useEvents } from '../../contexts/EventsContext'
 import { PlaygroundEvent } from '../../types'
 import { AIJourneySettings } from './AIJourneySettings'
+
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
+}))
 
 jest.mock('lodash/debounce', () =>
     jest.fn((fn: (...args: unknown[]) => unknown) => fn),
@@ -40,6 +46,15 @@ jest.mock('AIJourney/hooks', () => ({
         isLoading: false,
     })),
 }))
+
+const mockUseFlag = assumeMock(useFlag)
+
+jest.mock(
+    'AIJourney/components/KlaviyoPermissionBanner/KlaviyoPermissionBanner',
+    () => ({
+        KlaviyoPermissionBanner: () => null,
+    }),
+)
 
 const mockAudienceSelect = jest.fn()
 jest.mock('AIJourney/pages/Setup/fields/AudienceSelect/AudienceSelect', () => ({
@@ -198,6 +213,8 @@ describe('AIJourneySettings', () => {
 
         mockSetAIJourneySettings = jest.fn()
         mockEmit = jest.fn()
+
+        mockUseFlag.mockReturnValue(false)
 
         mockUseEvents.mockReturnValue({
             emit: mockEmit,
@@ -1114,7 +1131,8 @@ describe('AIJourneySettings', () => {
             expect(excludeSelect).toHaveValue('audience-1')
         })
 
-        it('should render audience fields for non-campaign flows', () => {
+        it('should render audience fields for non-campaign flows when feature flag is enabled', () => {
+            mockUseFlag.mockReturnValue(true)
             const cartAbandonedFlow = mockFlows.find(
                 (f) => f.type === JourneyTypeEnum.CartAbandoned,
             )
@@ -1136,7 +1154,8 @@ describe('AIJourneySettings', () => {
             ).toBeInTheDocument()
         })
 
-        it('should render audience fields for win-back flow', () => {
+        it('should render audience fields for win-back flow when feature flag is enabled', () => {
+            mockUseFlag.mockReturnValue(true)
             const winBackFlow = mockFlows.find(
                 (f) => f.type === JourneyTypeEnum.WinBack,
             )
@@ -1186,6 +1205,7 @@ describe('AIJourneySettings', () => {
         })
 
         it('should pass integrationId and isCampaign=false to AudienceSelect for a non-campaign journey', () => {
+            mockUseFlag.mockReturnValue(true)
             const cartAbandonedFlow = mockFlows.find(
                 (f) => f.type === JourneyTypeEnum.CartAbandoned,
             )
@@ -1218,6 +1238,9 @@ describe('AIJourneySettings', () => {
         it('should fall back to empty array when audience list IDs are undefined', () => {
             mockUseAIJourneyContext.mockReturnValue(
                 createMockAIJourneyContextValue({
+                    currentJourney: mockCampaigns[0],
+                    flows: mockFlows,
+                    campaigns: mockCampaigns,
                     aiJourneySettings: {
                         ...AI_JOURNEY_DEFAULT_STATE,
                         includedAudienceListIds: undefined as any,
@@ -1235,6 +1258,7 @@ describe('AIJourneySettings', () => {
 
     describe('Fields rendering', () => {
         it('should show flows fields', () => {
+            mockUseFlag.mockReturnValue(true)
             mockUseAIJourneyContext.mockReturnValue(
                 createMockAIJourneyContextValue({
                     currentJourney: mockFlows[0],
@@ -1302,6 +1326,7 @@ describe('AIJourneySettings', () => {
 
         describe('Win-back flow', () => {
             it('should render inactive days and cooldown fields', () => {
+                mockUseFlag.mockReturnValue(true)
                 mockUseAIJourneyContext.mockReturnValue(
                     createMockAIJourneyContextValue({
                         currentJourney: mockFlows[2], // winback flow
@@ -1348,6 +1373,7 @@ describe('AIJourneySettings', () => {
 
     describe('Post purchase flow', () => {
         it('should render trigger event and wait time fields', () => {
+            mockUseFlag.mockReturnValue(true)
             const postPurchaseFlow = mockFlows.find(
                 (f) => f.type === JourneyTypeEnum.PostPurchase,
             )
@@ -1507,6 +1533,7 @@ describe('AIJourneySettings', () => {
 
     describe('Welcome flow', () => {
         it('should render trigger event and wait time fields', () => {
+            mockUseFlag.mockReturnValue(true)
             const welcomeFlow = mockFlows.find(
                 (f) => f.type === JourneyTypeEnum.Welcome,
             )
@@ -1696,6 +1723,94 @@ describe('AIJourneySettings', () => {
             expect(mockSetAIJourneySettings).toHaveBeenCalledWith({
                 returningCustomer: true,
             })
+        })
+    })
+
+    describe('Audience section visibility (shouldRenderAudienceCard)', () => {
+        it('should always render audience section for campaign journeys when feature flag is disabled', () => {
+            mockUseFlag.mockReturnValue(false)
+            mockUseAIJourneyContext.mockReturnValue(
+                createMockAIJourneyContextValue({
+                    currentJourney: mockCampaigns[0],
+                    flows: mockFlows,
+                    campaigns: mockCampaigns,
+                }),
+            )
+
+            renderComponent()
+
+            expect(
+                screen.getByLabelText('Audience to include'),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByLabelText('Audience to exclude'),
+            ).toBeInTheDocument()
+        })
+
+        it('should always render audience section for campaign journeys when feature flag is enabled', () => {
+            mockUseFlag.mockReturnValue(true)
+            mockUseAIJourneyContext.mockReturnValue(
+                createMockAIJourneyContextValue({
+                    currentJourney: mockCampaigns[0],
+                    flows: mockFlows,
+                    campaigns: mockCampaigns,
+                }),
+            )
+
+            renderComponent()
+
+            expect(
+                screen.getByLabelText('Audience to include'),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByLabelText('Audience to exclude'),
+            ).toBeInTheDocument()
+        })
+
+        it('should not render audience section for non-campaign flows when feature flag is disabled', () => {
+            mockUseFlag.mockReturnValue(false)
+            const cartAbandonedFlow = mockFlows.find(
+                (f) => f.type === JourneyTypeEnum.CartAbandoned,
+            )
+            mockUseAIJourneyContext.mockReturnValue(
+                createMockAIJourneyContextValue({
+                    currentJourney: cartAbandonedFlow,
+                    flows: mockFlows,
+                    campaigns: mockCampaigns,
+                }),
+            )
+
+            renderComponent()
+
+            expect(
+                screen.queryByLabelText('Audience to include'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByLabelText('Audience to exclude'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should render audience section for non-campaign flows when feature flag is enabled', () => {
+            mockUseFlag.mockReturnValue(true)
+            const cartAbandonedFlow = mockFlows.find(
+                (f) => f.type === JourneyTypeEnum.CartAbandoned,
+            )
+            mockUseAIJourneyContext.mockReturnValue(
+                createMockAIJourneyContextValue({
+                    currentJourney: cartAbandonedFlow,
+                    flows: mockFlows,
+                    campaigns: mockCampaigns,
+                }),
+            )
+
+            renderComponent()
+
+            expect(
+                screen.getByLabelText('Audience to include'),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByLabelText('Audience to exclude'),
+            ).toBeInTheDocument()
         })
     })
 

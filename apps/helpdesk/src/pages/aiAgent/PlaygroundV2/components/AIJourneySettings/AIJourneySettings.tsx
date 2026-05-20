@@ -31,6 +31,7 @@ import { useEvents } from 'pages/aiAgent/PlaygroundV2/contexts/EventsContext'
 import { PlaygroundEvent } from 'pages/aiAgent/PlaygroundV2/types'
 import TextArea from 'pages/common/forms/TextArea'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import css from './AIJourneySettings.less'
 
 type Entry = { id: string; label: string }
@@ -151,6 +152,10 @@ export const AIJourneySettings: React.FC = () => {
     const isPostPurchase = currentJourney?.type === JourneyTypeEnum.PostPurchase
     const isWelcome = currentJourney?.type === JourneyTypeEnum.Welcome
 
+    const isAiJourneySegmentsEnabled = useFlag(
+        FeatureFlagKey.AiJourneySegmentsUiEnabled,
+    )
+
     const flowsOptions = flows.map((journey) => ({
         id: journey.id,
         label: getJourneyLabel(journey.type),
@@ -263,6 +268,9 @@ export const AIJourneySettings: React.FC = () => {
 
     const shouldRenderImageToggle = !isCampaign && !isWelcome
     const shouldRenderTestingProduct = !isWelcome && !isCampaign && !isWinBack
+    const shouldRenderAudienceCard = isCampaign
+        ? true
+        : isAiJourneySegmentsEnabled
 
     if (isLoadingJourneys) {
         return <LoadingSpinner />
@@ -607,37 +615,39 @@ export const AIJourneySettings: React.FC = () => {
                 </div>
             )}
 
-            <div className={css.audiencesContainer}>
-                <KlaviyoPermissionBanner
-                    integrationId={integrationId}
-                    settingsUrl={`/app/ai-journey/${shopName}/settings/integrations`}
-                />
-                <AudienceSelect
-                    label="Audience to include"
-                    value={includedAudienceListIds ?? []}
-                    exclude={excludedAudienceListIds ?? []}
-                    onChange={(value: string[]) => {
-                        setAIJourneySettings({
-                            includedAudienceListIds: value,
-                        })
-                    }}
-                    required
-                    integrationId={integrationId}
-                    isCampaign={isCampaign}
-                />
-                <AudienceSelect
-                    label="Audience to exclude"
-                    value={excludedAudienceListIds ?? []}
-                    exclude={includedAudienceListIds ?? []}
-                    onChange={(value: string[]) => {
-                        setAIJourneySettings({
-                            excludedAudienceListIds: value,
-                        })
-                    }}
-                    integrationId={integrationId}
-                    isCampaign={isCampaign}
-                />
-            </div>
+            {shouldRenderAudienceCard && (
+                <div className={css.audiencesContainer}>
+                    <KlaviyoPermissionBanner
+                        integrationId={integrationId}
+                        settingsUrl={`/app/ai-journey/${shopName}/settings/integrations`}
+                    />
+                    <AudienceSelect
+                        label="Audience to include"
+                        value={includedAudienceListIds ?? []}
+                        exclude={excludedAudienceListIds ?? []}
+                        onChange={(value: string[]) => {
+                            setAIJourneySettings({
+                                includedAudienceListIds: value,
+                            })
+                        }}
+                        required
+                        integrationId={integrationId}
+                        isCampaign={isCampaign}
+                    />
+                    <AudienceSelect
+                        label="Audience to exclude"
+                        value={excludedAudienceListIds ?? []}
+                        exclude={includedAudienceListIds ?? []}
+                        onChange={(value: string[]) => {
+                            setAIJourneySettings({
+                                excludedAudienceListIds: value,
+                            })
+                        }}
+                        integrationId={integrationId}
+                        isCampaign={isCampaign}
+                    />
+                </div>
+            )}
 
             {isWelcome && (
                 <ToggleField
