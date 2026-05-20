@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo } from 'react'
 
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { useBeforeUnload } from '@repo/hooks'
 import { FormProvider, useForm } from 'react-hook-form'
 import {
@@ -48,7 +49,7 @@ type SmsSender = {
     sms_sender_number: string | null
 }
 
-type SettingsFormValues = {
+export type SettingsFormValues = {
     sms_sender: SmsSender
     brand_name: string
     texas_exclusion_enabled: boolean
@@ -56,6 +57,7 @@ type SettingsFormValues = {
     quiet_hours_start: string | null
     quiet_hours_end: string | null
     execution_mode_override: JourneyParticipationExecutionMode | null
+    tone_of_voice_guidance: string | null
 }
 
 export const Settings = () => {
@@ -65,6 +67,10 @@ export const Settings = () => {
     const history = useHistory()
 
     const isImpersonated = !!window.USER_IMPERSONATED
+
+    const { value: isToneOfVoiceEnabled } = useFlagWithLoading(
+        FeatureFlagKey.AiJourneyToneOfVoice,
+    )
 
     const tabRoutes = {
         [SettingsTab.SenderIdentity]: `${url}/${SettingsTab.SenderIdentity}`,
@@ -99,6 +105,7 @@ export const Settings = () => {
             quiet_hours_start: null,
             quiet_hours_end: null,
             execution_mode_override: null,
+            tone_of_voice_guidance: null,
         },
     })
 
@@ -121,6 +128,8 @@ export const Settings = () => {
                 quiet_hours_end: storeConfiguration.quiet_hours_end ?? null,
                 execution_mode_override:
                     storeConfiguration.execution_mode_override ?? null,
+                tone_of_voice_guidance:
+                    storeConfiguration.tone_of_voice_guidance ?? null,
             })
         }
     }, [storeConfiguration, reset])
@@ -137,6 +146,9 @@ export const Settings = () => {
                     klaviyo_api_key: values.klaviyo_api_key,
                     quiet_hours_start: values.quiet_hours_start,
                     quiet_hours_end: values.quiet_hours_end,
+                    ...(isToneOfVoiceEnabled && {
+                        tone_of_voice_guidance: values.tone_of_voice_guidance,
+                    }),
                     ...(isImpersonated && {
                         execution_mode_override: values.execution_mode_override,
                     }),
@@ -180,7 +192,13 @@ export const Settings = () => {
                 throw error
             }
         },
-        [saveConfiguration, reset, setError, isImpersonated],
+        [
+            saveConfiguration,
+            reset,
+            setError,
+            isImpersonated,
+            isToneOfVoiceEnabled,
+        ],
     )
 
     const handleSaveClick = useCallback(

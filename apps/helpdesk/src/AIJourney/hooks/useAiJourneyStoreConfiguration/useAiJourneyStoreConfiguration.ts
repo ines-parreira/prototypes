@@ -2,10 +2,7 @@ import { useCallback } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
-import type {
-    StoreConfigurationRequestSchema,
-    StoreConfigurationResponseSchema,
-} from '@gorgias/convert-client'
+import type { StoreConfigurationRequestSchema } from '@gorgias/convert-client'
 import {
     queryKeys,
     useCreateOrUpdateStoreConfiguration,
@@ -49,9 +46,7 @@ export const useAiJourneyStoreConfiguration = (
     )
 
     return {
-        storeConfiguration: data?.data as
-            | StoreConfigurationResponseSchema
-            | undefined,
+        storeConfiguration: data?.data,
         isLoading,
         error,
         isFetched,

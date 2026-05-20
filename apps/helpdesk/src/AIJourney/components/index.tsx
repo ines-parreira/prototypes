@@ -30,6 +30,7 @@ export { DeleteSegmentConfirmation } from './DeleteSegmentConfirmation/DeleteSeg
 export { SegmentInUseModal } from './SegmentInUseModal/SegmentInUseModal'
 export { IdentitySettingsCard } from './IdentitySettingsCard/IdentitySettingsCard'
 export { SenderIdentityTab } from './SenderIdentityTab/SenderIdentityTab'
+export { ToneOfVoiceCard } from './ToneOfVoiceCard/ToneOfVoiceCard'
 export { FrequencyCapsCard } from './FrequencyCapsCard/FrequencyCapsCard'
 export { ComplianceTab } from './ComplianceTab/ComplianceTab'
 export { StaticTimingContent } from './StaticTimingContent/StaticTimingContent'

@@ -138,6 +138,7 @@ describe('useAiJourneyStoreConfiguration', () => {
                 sms_sender_integration_id: 1,
                 sms_sender_number: '+15550001',
                 texas_exclusion_enabled: false,
+                tone_of_voice_guidance: null,
             }
 
             const wrapper = createWrapper()
@@ -170,7 +171,10 @@ describe('useAiJourneyStoreConfiguration', () => {
             )
 
             await act(async () => {
-                await result.current.saveConfiguration({ brand_name: 'Test' })
+                await result.current.saveConfiguration({
+                    brand_name: 'Test',
+                    tone_of_voice_guidance: null,
+                })
             })
 
             expect(invalidateQueriesSpy).toHaveBeenCalledWith({
@@ -186,7 +190,10 @@ describe('useAiJourneyStoreConfiguration', () => {
             )
 
             await act(async () => {
-                await result.current.saveConfiguration({ brand_name: 'Test' })
+                await result.current.saveConfiguration({
+                    brand_name: 'Test',
+                    tone_of_voice_guidance: null,
+                })
             })
 
             expect(mockMutateAsync).not.toHaveBeenCalled()

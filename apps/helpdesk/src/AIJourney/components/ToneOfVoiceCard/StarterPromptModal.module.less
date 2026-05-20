@@ -1,0 +1,28 @@
+:local {
+    .prompt {
+        border: 1px solid var(--border-neutral-default);
+        border-radius: var(--spacing-sm);
+        padding: var(--spacing-md);
+        margin: 0;
+        overflow: auto;
+        word-break: break-word;
+
+        p {
+            margin: 0 0 var(--spacing-sm);
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        ul,
+        ol {
+            margin: 0 0 var(--spacing-sm);
+            padding-left: var(--spacing-lg);
+        }
+
+        li {
+            margin-bottom: var(--spacing-xxs);
+        }
+    }
+}

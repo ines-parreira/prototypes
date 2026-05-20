@@ -1,3 +1,5 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
+import { featureFlagsClientMock } from '@repo/feature-flags/testing'
 import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -44,6 +46,12 @@ const mockUseAiJourneyStoreConfiguration =
 
 const mockSaveConfiguration = jest.fn()
 
+const enableToneOfVoiceFlag = () => {
+    featureFlagsClientMock.allFlags.mockReturnValue({
+        [FeatureFlagKey.AiJourneyToneOfVoice]: true,
+    })
+}
+
 const renderComponent = (initialTab = 'sender-identity') =>
     render(<Settings />, {
         path: '/settings',
@@ -56,6 +64,7 @@ describe('<Settings />', () => {
 
         mockUseJourneyContext.mockReturnValue({
             currentIntegration: { id: 42 },
+            shopName: 'test-shop',
             storeConfiguration: {
                 monitoredSmsIntegrations: [],
             },
@@ -519,6 +528,94 @@ describe('<Settings />', () => {
             expect(
                 screen.queryByText('Identity settings'),
             ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('tone of voice feature flag', () => {
+        it('should not render the Tone of voice card when ai-journey-tov flag is off', () => {
+            renderComponent()
+
+            expect(screen.queryByText('Tone of voice')).not.toBeInTheDocument()
+        })
+
+        it('should omit tone_of_voice_guidance from the save payload when the flag is off', async () => {
+            mockSaveConfiguration.mockResolvedValue(undefined)
+            const user = userEvent.setup()
+            renderComponent()
+
+            await user.type(screen.getByLabelText('Brand name'), 'My Store')
+
+            await act(async () => {
+                await user.click(screen.getByRole('button', { name: 'Save' }))
+            })
+
+            await waitFor(() => {
+                expect(mockSaveConfiguration).toHaveBeenCalled()
+            })
+            const payload = mockSaveConfiguration.mock.calls[0][0]
+            expect(payload).not.toHaveProperty('tone_of_voice_guidance')
+        })
+
+        it('should render the Tone of voice card when ai-journey-tov flag is on', () => {
+            enableToneOfVoiceFlag()
+            mockUseAiJourneyStoreConfiguration.mockReturnValue({
+                storeConfiguration: {
+                    brand_name: '',
+                    sms_sender_integration_id: null,
+                    sms_sender_number: null,
+                    texas_exclusion_enabled: false,
+                    tone_of_voice_guidance: null,
+                },
+                isLoading: false,
+                error: null,
+                isFetched: true,
+                saveConfiguration: mockSaveConfiguration,
+            })
+
+            renderComponent()
+
+            expect(screen.getByText('Tone of voice')).toBeInTheDocument()
+        })
+
+        it('should save tone_of_voice_guidance when the user provides custom guidance', async () => {
+            enableToneOfVoiceFlag()
+            mockSaveConfiguration.mockResolvedValue(undefined)
+            mockUseAiJourneyStoreConfiguration.mockReturnValue({
+                storeConfiguration: {
+                    brand_name: '',
+                    sms_sender_integration_id: null,
+                    sms_sender_number: null,
+                    texas_exclusion_enabled: false,
+                    tone_of_voice_guidance: null,
+                },
+                isLoading: false,
+                error: null,
+                isFetched: true,
+                saveConfiguration: mockSaveConfiguration,
+            })
+
+            const user = userEvent.setup()
+            renderComponent()
+
+            await user.click(
+                await screen.findByLabelText('Use custom tone of voice'),
+            )
+            await user.type(
+                screen.getByLabelText(/Tone of voice guidance/),
+                'Be friendly',
+            )
+
+            await act(async () => {
+                await user.click(screen.getByRole('button', { name: 'Save' }))
+            })
+
+            await waitFor(() => {
+                expect(mockSaveConfiguration).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        tone_of_voice_guidance: 'Be friendly',
+                    }),
+                )
+            })
         })
     })
 
