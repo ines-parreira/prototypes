@@ -104,6 +104,7 @@ export type ReportingQueryJobParams = {
     reporting_query: APIDrillDownReportingQuery
     metric_name: string
     context?: JobContext
+    add_messages_text?: boolean
 }
 
 export type Job = {

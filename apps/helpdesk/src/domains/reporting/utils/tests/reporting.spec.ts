@@ -33,6 +33,7 @@ import {
     formatReportingQueryDate,
     getPreviousPeriod,
     HelpCenterStatsFiltersMembers,
+    isPeriodExceedingDays,
     matchAndCalculateAllEntries,
     periodToReportingGranularity,
     sortAllData,
@@ -648,6 +649,44 @@ describe('reporting utils', () => {
                     [anotherMetricField]: '4520',
                 },
             ])
+        })
+    })
+
+    describe('isPeriodExceedingDays', () => {
+        it('should return false when period is exactly the threshold', () => {
+            expect(
+                isPeriodExceedingDays(
+                    {
+                        start_datetime: '2024-01-01T00:00:00.000',
+                        end_datetime: '2024-01-31T00:00:00.000',
+                    },
+                    30,
+                ),
+            ).toBe(false)
+        })
+
+        it('should return true when period exceeds the threshold', () => {
+            expect(
+                isPeriodExceedingDays(
+                    {
+                        start_datetime: '2024-01-01T00:00:00.000',
+                        end_datetime: '2024-02-01T00:00:00.000',
+                    },
+                    30,
+                ),
+            ).toBe(true)
+        })
+
+        it('should return false when period is shorter than the threshold', () => {
+            expect(
+                isPeriodExceedingDays(
+                    {
+                        start_datetime: '2024-01-01T00:00:00.000',
+                        end_datetime: '2024-01-15T00:00:00.000',
+                    },
+                    30,
+                ),
+            ).toBe(false)
         })
     })
 })

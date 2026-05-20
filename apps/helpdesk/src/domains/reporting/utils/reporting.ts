@@ -431,6 +431,15 @@ export const periodToReportingGranularity = (
     return granularity
 }
 
+export const isPeriodExceedingDays = (
+    period: StatsFilters['period'],
+    days: number,
+): boolean => {
+    const start = moment(period.start_datetime)
+    const end = moment(period.end_datetime)
+    return moment.duration(end.diff(start)).asDays() > days
+}
+
 export const periodAndAggregationWindowToReportingGranularity = (
     period: StatsFilters[FilterKey.Period],
     aggregationWindow: StatsFilters[FilterKey.AggregationWindow],

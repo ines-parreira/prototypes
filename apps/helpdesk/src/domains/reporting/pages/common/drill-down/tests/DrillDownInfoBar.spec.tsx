@@ -66,6 +66,9 @@ describe('<DrillDownInfoBar />', () => {
                             isRequested: false,
                         },
                     },
+                    filters: {
+                        cleanStatsFilters: null,
+                    },
                 },
             },
             ...overrides,
@@ -275,7 +278,7 @@ describe('<DrillDownInfoBar />', () => {
             expect(screen.getByText('Export')).toBeInTheDocument()
         })
 
-        it('should show "Export all tickets" when at or above limit', () => {
+        it('should show "Export" when at or above limit', () => {
             useDrillDownDataMock.mockReturnValue({
                 totalResults: 150,
                 isFetching: false,
@@ -283,7 +286,7 @@ describe('<DrillDownInfoBar />', () => {
 
             renderInfoBar(metricData)
 
-            expect(screen.getByText('Export all tickets')).toBeInTheDocument()
+            expect(screen.getByText('Export')).toBeInTheDocument()
         })
 
         it('should show "Loading" when export is loading', () => {
@@ -297,6 +300,7 @@ describe('<DrillDownInfoBar />', () => {
                                 isRequested: false,
                             },
                         },
+                        filters: { cleanStatsFilters: null },
                     },
                 },
             })
@@ -317,6 +321,7 @@ describe('<DrillDownInfoBar />', () => {
                                 isRequested: true,
                             },
                         },
+                        filters: { cleanStatsFilters: null },
                     },
                 },
             })
@@ -324,6 +329,42 @@ describe('<DrillDownInfoBar />', () => {
             renderInfoBar(metricData, store)
 
             expect(screen.getByText('Download Requested')).toBeInTheDocument()
+        })
+    })
+
+    describe('Warning banner', () => {
+        it('should show warning banner when period exceeds 30 days', async () => {
+            const store = createDefaultStore({
+                ui: {
+                    stats: {
+                        drillDown: {
+                            export: {
+                                isLoading: false,
+                                isError: false,
+                                isRequested: false,
+                            },
+                        },
+                        filters: {
+                            cleanStatsFilters: {
+                                period: {
+                                    start_datetime: '2024-01-01T00:00:00.000',
+                                    end_datetime: '2024-02-01T00:00:00.000',
+                                },
+                            },
+                        },
+                    },
+                },
+            })
+
+            renderInfoBar(metricData, store)
+
+            await act(() => userEvent.click(screen.getByRole('button')))
+
+            expect(
+                screen.getByText(
+                    'Your date range exceeds 1 month. The most recent 30 days will be exported.',
+                ),
+            ).toBeInTheDocument()
         })
     })
 
@@ -335,6 +376,31 @@ describe('<DrillDownInfoBar />', () => {
             renderInfoBar(metricData, store)
 
             await act(() => userEvent.click(screen.getByRole('button')))
+            await act(() =>
+                userEvent.click(
+                    screen.getByRole('menuitem', {
+                        name: /export metadata only/i,
+                    }),
+                ),
+            )
+
+            expect(dispatchSpy).toHaveBeenCalled()
+        })
+
+        it('should dispatch action with addMessagesText when clicking export with message content', async () => {
+            const store = createDefaultStore()
+            const dispatchSpy = jest.spyOn(store, 'dispatch')
+
+            renderInfoBar(metricData, store)
+
+            await act(() => userEvent.click(screen.getByRole('button')))
+            await act(() =>
+                userEvent.click(
+                    screen.getByRole('menuitem', {
+                        name: /export with message content/i,
+                    }),
+                ),
+            )
 
             expect(dispatchSpy).toHaveBeenCalled()
         })
@@ -350,6 +416,7 @@ describe('<DrillDownInfoBar />', () => {
                                 isRequested: true,
                             },
                         },
+                        filters: { cleanStatsFilters: null },
                     },
                 },
             })

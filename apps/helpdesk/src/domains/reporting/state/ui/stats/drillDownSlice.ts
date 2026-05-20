@@ -377,6 +377,7 @@ export type CreateExportDrillDownJobParams = {
     query: DrillDownReportingQuery
     jobType: JobType
     context?: JobContext
+    addMessagesText?: boolean
 }
 
 export const createExportDrillDownJob = createAsyncThunk<
@@ -385,7 +386,10 @@ export const createExportDrillDownJob = createAsyncThunk<
     { dispatch: StoreDispatch; state: RootState }
 >(
     EXPORT_DRILL_DOWN_JOB_ACTION,
-    async ({ query, jobType, context }, { getState, rejectWithValue }) => {
+    async (
+        { query, jobType, context, addMessagesText },
+        { getState, rejectWithValue },
+    ) => {
         const currentUser = getCurrentUser(getState())
         const currentUserEmail = String(currentUser.get('email'))
         const { metricName, ...restQuery } = query
@@ -397,6 +401,7 @@ export const createExportDrillDownJob = createAsyncThunk<
                     reporting_query: restQuery,
                     metric_name: drillDownMetricName,
                     context: context,
+                    add_messages_text: !!addMessagesText,
                 },
             })
 

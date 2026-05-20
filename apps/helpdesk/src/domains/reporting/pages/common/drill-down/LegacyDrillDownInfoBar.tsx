@@ -60,10 +60,7 @@ export const LegacyDrillDownInfoBar = ({
                     : getTheInfoLabel(totalResults, objectType)}
             </div>
             {shouldDisplayDownloadButton && (
-                <DrillDownDownloadButton
-                    metricData={metricData}
-                    objectType={objectType}
-                />
+                <DrillDownDownloadButton metricData={metricData} />
             )}
         </div>
     )

@@ -19,6 +19,8 @@ import {
     createExportDrillDownJob,
     drillDownSlice,
     getDrillDownCurrentPage,
+    getDrillDownExport,
+    getDrillDownMetric,
     getDrillDownModalState,
     initialState,
     setCurrentPage,
@@ -76,22 +78,44 @@ describe('drillDownSlice', () => {
             expect(newState.isOpen).toEqual(true)
         })
 
-        it('should close the modal', () => {
+        it('should close the modal and reset export and currentPage', () => {
+            const openState = {
+                ...initialState,
+                isOpen: true,
+                currentPage: 3,
+                export: {
+                    isLoading: false,
+                    isError: false,
+                    isRequested: true,
+                },
+            }
             const newState = drillDownSlice.reducer(
-                initialState,
+                openState,
                 closeDrillDownModal(),
             )
 
             expect(newState.isOpen).toEqual(false)
+            expect(newState.currentPage).toEqual(initialState.currentPage)
+            expect(newState.export).toEqual(initialState.export)
         })
 
-        it('should set export loading state', () => {
+        it('should set export loading and requested state on pending', () => {
             const newState = drillDownSlice.reducer(
                 initialState,
                 createExportDrillDownJob.pending,
             )
 
             expect(newState.export.isLoading).toEqual(true)
+            expect(newState.export.isRequested).toEqual(true)
+        })
+
+        it('should set isError to true on rejected', () => {
+            const newState = drillDownSlice.reducer(
+                initialState,
+                createExportDrillDownJob.rejected,
+            )
+
+            expect(newState.export.isError).toEqual(true)
         })
 
         it('should set current page state', () => {
@@ -125,6 +149,11 @@ describe('drillDownSlice', () => {
         const metricData = {
             metricName: 'someName',
         }
+        const exportState = {
+            isLoading: false,
+            isError: false,
+            isRequested: true,
+        }
 
         const state = {
             ui: {
@@ -133,6 +162,7 @@ describe('drillDownSlice', () => {
                         isOpen,
                         currentPage,
                         metricData,
+                        export: exportState,
                     },
                 },
             },
@@ -144,6 +174,14 @@ describe('drillDownSlice', () => {
 
         it('getDrillDownCurrentPage', () => {
             expect(getDrillDownCurrentPage(state)).toEqual(currentPage)
+        })
+
+        it('getDrillDownExport', () => {
+            expect(getDrillDownExport(state)).toEqual(exportState)
+        })
+
+        it('getDrillDownMetric', () => {
+            expect(getDrillDownMetric(state)).toEqual(metricData)
         })
     })
 
@@ -192,6 +230,7 @@ describe('drillDownSlice', () => {
                     context: {
                         channel_connection_external_ids: [],
                     },
+                    add_messages_text: false,
                 },
             })
         })
@@ -225,8 +264,45 @@ describe('drillDownSlice', () => {
                     reporting_query: { ...exampleQuery, metricName: undefined },
                     context,
                     metric_name: `${METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS}_drill_down_export`,
+                    add_messages_text: false,
                 },
             })
+        })
+
+        it('should include add_messages_text in params when addMessagesText is true', async () => {
+            await store.dispatch(
+                createExportDrillDownJob({
+                    ...actionParams,
+                    addMessagesText: true,
+                }),
+            )
+
+            expect(createJobMock).toHaveBeenCalledWith({
+                type: JobType.ExportTicketDrilldown,
+                params: {
+                    reporting_query: {
+                        ...exampleQuery,
+                        metricName: undefined,
+                    },
+                    metric_name: `${METRIC_NAMES.SUPPORT_PERFORMANCE_CLOSED_TICKETS}_drill_down_export`,
+                    context: {
+                        channel_connection_external_ids: [],
+                    },
+                    add_messages_text: true,
+                },
+            })
+        })
+
+        it('should default add_messages_text to false when addMessagesText is not set', async () => {
+            await store.dispatch(createExportDrillDownJob(actionParams))
+
+            expect(createJobMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    params: expect.objectContaining({
+                        add_messages_text: false,
+                    }),
+                }),
+            )
         })
 
         it('should invalidate Jobs query cache', async () => {

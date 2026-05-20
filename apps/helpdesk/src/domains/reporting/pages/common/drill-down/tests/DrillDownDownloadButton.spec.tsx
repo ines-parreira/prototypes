@@ -8,7 +8,6 @@ import {
     DOWNLOAD_LOADING_LABEL,
     DOWNLOAD_REQUESTED_LABEL,
     DrillDownDownloadButton,
-    TOTAL_OBJECTS_COUNT_PLACEHOLDER,
 } from 'domains/reporting/pages/common/drill-down/DrillDownDownloadButton'
 import type { AgentsMetrics } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import {
@@ -36,7 +35,6 @@ const getCleanStatsFiltersWithLogicalOperatorsWithTimezoneMock = assumeMock(
 jest.mock('jobs/useRunningJobs')
 const mockUseRunningJobs = assumeMock(useRunningJobs)
 describe('<DrillDownDownloadButton />', () => {
-    const objectType = 'tickets'
     const cleanStatsFilters = {
         period: {
             start_datetime: '1970-01-01T00:00:00+00:00',
@@ -75,15 +73,9 @@ describe('<DrillDownDownloadButton />', () => {
         },
     } as RootState
     it('should render button', () => {
-        render(
-            <DrillDownDownloadButton
-                metricData={metricData}
-                objectType={objectType}
-            />,
-            {
-                storeState: defaultState,
-            },
-        )
+        render(<DrillDownDownloadButton metricData={metricData} />, {
+            storeState: defaultState,
+        })
         expect(screen.getByRole('button')).toBeInTheDocument()
     })
     it('should render disabled button when user is not allowed', () => {
@@ -98,13 +90,9 @@ describe('<DrillDownDownloadButton />', () => {
                 },
             },
         } as RootState
-        render(
-            <DrillDownDownloadButton
-                metricData={metricData}
-                objectType={objectType}
-            />,
-            { storeState: state },
-        )
+        render(<DrillDownDownloadButton metricData={metricData} />, {
+            storeState: state,
+        })
         expect(screen.getByRole('button')).toBeAriaDisabled()
     })
     it('should render disabled button when background Jobs are running', () => {
@@ -122,24 +110,22 @@ describe('<DrillDownDownloadButton />', () => {
             refetch: jest.fn(),
             jobs: [],
         })
-        render(
-            <DrillDownDownloadButton
-                metricData={metricData}
-                objectType={objectType}
-            />,
-            { storeState: state },
-        )
+        render(<DrillDownDownloadButton metricData={metricData} />, {
+            storeState: state,
+        })
         expect(screen.getByRole('button')).toBeAriaDisabled()
     })
-    it('should dispatch export action', () => {
+    it('should dispatch export action', async () => {
         const { store } = render(
-            <DrillDownDownloadButton
-                metricData={metricData}
-                objectType={objectType}
-            />,
+            <DrillDownDownloadButton metricData={metricData} />,
             { storeState: defaultState },
         )
         fireEvent.click(screen.getByRole('button'))
+        fireEvent.click(
+            await screen.findByRole('menuitem', {
+                name: /export metadata only/i,
+            }),
+        )
         expect(store.getActions()).toContainEqual(
             expect.objectContaining({
                 type: `${EXPORT_DRILL_DOWN_JOB_ACTION}/pending`,
@@ -162,13 +148,9 @@ describe('<DrillDownDownloadButton />', () => {
                 },
             },
         } as RootState
-        render(
-            <DrillDownDownloadButton
-                metricData={metricData}
-                objectType={objectType}
-            />,
-            { storeState: state },
-        )
+        render(<DrillDownDownloadButton metricData={metricData} />, {
+            storeState: state,
+        })
         fireEvent.click(screen.getByRole('button'))
         expect(screen.getByText(DOWNLOAD_REQUESTED_LABEL)).toBeInTheDocument()
     })
@@ -188,13 +170,9 @@ describe('<DrillDownDownloadButton />', () => {
                 },
             },
         } as RootState
-        render(
-            <DrillDownDownloadButton
-                metricData={metricData}
-                objectType={objectType}
-            />,
-            { storeState: state },
-        )
+        render(<DrillDownDownloadButton metricData={metricData} />, {
+            storeState: state,
+        })
         expect(screen.getByText(DOWNLOAD_LOADING_LABEL)).toBeInTheDocument()
     })
     it('should render default state on error', () => {
@@ -213,17 +191,9 @@ describe('<DrillDownDownloadButton />', () => {
                 },
             },
         } as RootState
-        render(
-            <DrillDownDownloadButton
-                metricData={metricData}
-                objectType={objectType}
-            />,
-            { storeState: state },
-        )
-        expect(
-            screen.getByText(
-                `Download ${TOTAL_OBJECTS_COUNT_PLACEHOLDER} tickets`,
-            ),
-        ).toBeInTheDocument()
+        render(<DrillDownDownloadButton metricData={metricData} />, {
+            storeState: state,
+        })
+        expect(screen.getByText('Export')).toBeInTheDocument()
     })
 })

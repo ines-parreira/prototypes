@@ -1,8 +1,18 @@
-import { Box, Button, Tooltip, TooltipContent } from '@gorgias/axiom'
+import {
+    Box,
+    Button,
+    Icon,
+    Menu,
+    MenuItem,
+    MenuPlacement,
+    Tooltip,
+    TooltipContent,
+} from '@gorgias/axiom'
 
 import { UserRole } from 'config/types/user'
 import type { DrillDownDataHook } from 'domains/reporting/hooks/useDrillDownData'
 import { useDrillDownQueryWithoutLimit } from 'domains/reporting/hooks/useDrillDownData'
+import { FilterKey } from 'domains/reporting/models/stat/types'
 import { AiAgentDrillDownMetricName } from 'domains/reporting/pages/automate/aiAgent/aiAgentDrillDownMetrics'
 import type {
     ConvertDrillDownRowData,
@@ -21,11 +31,15 @@ import {
     createExportDrillDownJob,
     getDrillDownExport,
 } from 'domains/reporting/state/ui/stats/drillDownSlice'
+import { getCleanStatsFilters } from 'domains/reporting/state/ui/stats/selectors'
 import {
     ConvertMetric,
     KnowledgeMetric,
 } from 'domains/reporting/state/ui/stats/types'
-import { DRILLDOWN_QUERY_LIMIT } from 'domains/reporting/utils/reporting'
+import {
+    DRILLDOWN_QUERY_LIMIT,
+    isPeriodExceedingDays,
+} from 'domains/reporting/utils/reporting'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useRunningJobs } from 'jobs'
@@ -116,14 +130,22 @@ export const DrillDownInfoBar = ({
         getDrillDownQuery(metricData),
     )
 
+    const cleanStatsFilters = useAppSelector(getCleanStatsFilters)
+    const period = cleanStatsFilters?.[FilterKey.Period]
+    const isPeriodExceedingOneMonth = period
+        ? isPeriodExceedingDays(period, 30)
+        : false
+
     const hasNoPermissions = !(
         hasRole(currentUser, UserRole.Admin) ||
         hasRole(currentUser, UserRole.Agent)
     )
     const isDisabled = hasNoPermissions || isLoading || running !== false
 
+    const isExportSuccess = isRequested && !isError
+
     const getButtonIcon = () => {
-        if (isRequested && !isError) {
+        if (isExportSuccess) {
             return 'check'
         }
         return 'download'
@@ -133,21 +155,19 @@ export const DrillDownInfoBar = ({
         if (isLoading) {
             return DOWNLOAD_LOADING_LABEL
         }
-        if (isRequested && !isError) {
+        if (isExportSuccess) {
             return DOWNLOAD_REQUESTED_LABEL
         }
-        if (totalResults < DRILLDOWN_QUERY_LIMIT) {
-            return 'Export'
-        }
-        return `Export all ${objectType}`
+        return 'Export'
     }
 
-    const handleDownloadClick = () => {
+    const handleExportClick = (addMessagesText = false) => {
         void dispatch(
             createExportDrillDownJob({
                 query,
                 jobType: getDrillDownJobType(metricData),
                 context: getDrillDownJobContext(metricData),
+                addMessagesText,
             }),
         )
     }
@@ -158,7 +178,12 @@ export const DrillDownInfoBar = ({
             : NO_PERMISSIONS_CONTENT
 
     return (
-        <Box gap="sm" alignItems="center" className={css.wrapper}>
+        <Box
+            gap="sm"
+            alignItems="center"
+            justifyContent="space-between"
+            className={css.wrapper}
+        >
             <div className={css.text}>
                 {isFetching
                     ? resultsPlaceholder
@@ -169,28 +194,86 @@ export const DrillDownInfoBar = ({
                       )}
             </div>
             {shouldDisplayDownloadButton && (
-                <Tooltip
-                    trigger={
-                        <Button
-                            variant="primary"
-                            size="sm"
-                            leadingSlot={getButtonIcon()}
-                            isDisabled={isDisabled}
-                            className={
-                                isRequested && !isError
-                                    ? css.successButton
-                                    : undefined
-                            }
-                            {...(!isRequested && {
-                                onClick: handleDownloadClick,
-                            })}
-                        >
-                            {getButtonText()}
-                        </Button>
-                    }
+                <Menu
+                    placement={MenuPlacement.BottomRight}
+                    aria-label="Export options"
+                    trigger={({ isOpen }) => {
+                        const button = (
+                            <Button
+                                variant="primary"
+                                size="sm"
+                                leadingSlot={getButtonIcon()}
+                                isDisabled={isDisabled || isExportSuccess}
+                                className={
+                                    isExportSuccess
+                                        ? css.successButton
+                                        : undefined
+                                }
+                            >
+                                <Box display="flex" alignItems="center">
+                                    {getButtonText()}
+                                    {!isExportSuccess && !isLoading && (
+                                        <span
+                                            className={
+                                                isOpen
+                                                    ? `${css.chevronSeparator} ${css.chevronRotated}`
+                                                    : css.chevronSeparator
+                                            }
+                                        >
+                                            <Icon
+                                                name="arrow-chevron-down"
+                                                size="sm"
+                                            />
+                                        </span>
+                                    )}
+                                </Box>
+                            </Button>
+                        )
+                        if (!isDisabled) return button
+                        return (
+                            <Tooltip trigger={button}>
+                                <TooltipContent caption={tooltipMessage} />
+                            </Tooltip>
+                        )
+                    }}
                 >
-                    {isDisabled && <TooltipContent caption={tooltipMessage} />}
-                </Tooltip>
+                    <MenuItem
+                        label="Export metadata only"
+                        caption="ID, date, assignee, status — up to 2.5 years of data"
+                        leadingSlot="system-data"
+                        isDisabled={isDisabled}
+                        onAction={() => handleExportClick()}
+                    />
+                    <MenuItem
+                        label="Export with message content"
+                        caption="Full ticket body included — limited to 1 month of data"
+                        leadingSlot="chat-dots"
+                        isDisabled={isDisabled}
+                        onAction={() => handleExportClick(true)}
+                    />
+                    {isPeriodExceedingOneMonth && (
+                        <MenuItem asSlot>
+                            <div className={css.warningBanner}>
+                                <span className={css.warningIcon}>
+                                    <Icon
+                                        name="warning-triangle"
+                                        color="orange-800"
+                                    />
+                                </span>
+                                <div>
+                                    <div className={css.warningTitle}>
+                                        Your date range exceeds 1 month. The
+                                        most recent 30 days will be exported.
+                                    </div>
+                                    <div className={css.warningDescription}>
+                                        To choose a different range, adjust the
+                                        date filter on the AI Agent page.
+                                    </div>
+                                </div>
+                            </div>
+                        </MenuItem>
+                    )}
+                </Menu>
             )}
         </Box>
     )
