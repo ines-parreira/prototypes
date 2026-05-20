@@ -16,21 +16,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  workspace-vars:
-    name: Workspace vars
-    runs-on: gh-actions-0.5cpu1gb-runner-set
-    outputs:
-      assets-dir: apps/helpdesk/src/assets
-      build-dir: apps/helpdesk/build
-      bucket-path: web-app
-      node-version: "24.15.0"
-    steps:
-      - name: Workspace vars
-        run: echo "empty step"
-
   workspace-setup:
     name: Workspace setup
-    needs: workspace-vars
     runs-on: gh-actions-4cpu4gb-runner-set
     outputs:
       cache-key: ${{ env.CACHE_KEY }}
@@ -39,6 +26,10 @@ jobs:
       packages-test-buckets: ${{ env.PACKAGES_TEST_BUCKETS }}
       packages-test-bucket-count: ${{ env.PACKAGES_TEST_BUCKET_COUNT }}
       nx-base-commit: ${{ env.NX_BASE_COMMIT }}
+      assets-dir: apps/helpdesk/src/assets
+      build-dir: apps/helpdesk/build
+      bucket-path: web-app
+      node-version: "24.15.0"
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
@@ -50,7 +41,7 @@ jobs:
         uses: ./.github/actions/install-dependencies
         id: install-dependencies
         with:
-          node-version: ${{ needs.workspace-vars.outputs.node-version }}
+          node-version: "24.15.0"
           npm-token: ${{ secrets.GH_READ_PACKAGES_TOKEN }}
 
       - name: Get affected packages
@@ -100,13 +91,12 @@ jobs:
   quality-check:
     name: Quality check
     needs:
-      - workspace-vars
       - workspace-setup
     uses: ./.github/workflows/quality-check.yml
     secrets: inherit
     with:
       cache-key: ${{ needs.workspace-setup.outputs.cache-key }}
-      node-version: ${{ needs.workspace-vars.outputs.node-version }}
+      node-version: ${{ needs.workspace-setup.outputs.node-version }}
       helpdesk-affected: ${{ needs.workspace-setup.outputs.helpdesk-affected }}
       has-other-affected-packages: ${{ needs.workspace-setup.outputs.has-other-affected-packages }}
       packages-test-buckets: ${{ needs.workspace-setup.outputs.packages-test-buckets }}
@@ -117,31 +107,29 @@ jobs:
     name: Build smoke test
     if: github.ref != 'refs/heads/staging' && github.ref != 'refs/heads/main'
     needs:
-      - workspace-vars
       - workspace-setup
     uses: ./.github/workflows/build.yml
     secrets: inherit
     with:
       cache-key: ${{ needs.workspace-setup.outputs.cache-key }}
-      node-version: ${{ needs.workspace-vars.outputs.node-version }}
-      assets-url: https://gorgias-assets.gorgias.xyz/preview/${{ github.sha }}/${{ needs.workspace-vars.outputs.bucket-path }}
+      node-version: ${{ needs.workspace-setup.outputs.node-version }}
+      assets-url: https://gorgias-assets.gorgias.xyz/preview/${{ github.sha }}/${{ needs.workspace-setup.outputs.bucket-path }}
       release: smoke-test-${{ github.sha }}
-      build-dir: ${{ needs.workspace-vars.outputs.build-dir }}
+      build-dir: ${{ needs.workspace-setup.outputs.build-dir }}
       artifact: smoke-test-build
 
   build-staging:
     name: Build staging
     if: github.ref == 'refs/heads/staging'
     needs:
-      - workspace-vars
       - workspace-setup
     uses: ./.github/workflows/build.yml
     secrets: inherit
     with:
       cache-key: ${{ needs.workspace-setup.outputs.cache-key }}
-      node-version: ${{ needs.workspace-vars.outputs.node-version }}
-      assets-url: https://gorgias-assets.gorgias.xyz/${{ needs.workspace-vars.outputs.bucket-path }}
-      build-dir: ${{ needs.workspace-vars.outputs.build-dir }}
+      node-version: ${{ needs.workspace-setup.outputs.node-version }}
+      assets-url: https://gorgias-assets.gorgias.xyz/${{ needs.workspace-setup.outputs.bucket-path }}
+      build-dir: ${{ needs.workspace-setup.outputs.build-dir }}
       artifact: staging-build
       release: staging-${{ github.sha }}
 
@@ -149,20 +137,19 @@ jobs:
     name: Deploy staging
     if: github.ref == 'refs/heads/staging'
     needs:
-      - workspace-vars
       - workspace-setup
       - build-staging
     uses: ./.github/workflows/deploy.yml
     secrets: inherit
     with:
       cache-key: ${{ needs.workspace-setup.outputs.cache-key}}
-      node-version: ${{ needs.workspace-vars.outputs.node-version }}
+      node-version: ${{ needs.workspace-setup.outputs.node-version }}
       gcloud-project: gorgias-helpdesk-staging
       bucket: gs://gorgias-assets-staging
       clusters: gorgias-helpdesk-staging-us-east1-86cc
-      bucket-path: ${{ needs.workspace-vars.outputs.bucket-path }}
-      assets-dir: ${{ needs.workspace-vars.outputs.assets-dir }}
-      build-dir: ${{ needs.workspace-vars.outputs.build-dir }}
+      bucket-path: ${{ needs.workspace-setup.outputs.bucket-path }}
+      assets-dir: ${{ needs.workspace-setup.outputs.assets-dir }}
+      build-dir: ${{ needs.workspace-setup.outputs.build-dir }}
       artifact: staging-build
       sentry-project: helpdesk-staging
       release: staging-${{ github.sha }}
@@ -171,15 +158,14 @@ jobs:
     name: Build production
     if: github.ref == 'refs/heads/main'
     needs:
-      - workspace-vars
       - workspace-setup
     uses: ./.github/workflows/build.yml
     secrets: inherit
     with:
       cache-key: ${{ needs.workspace-setup.outputs.cache-key }}
-      node-version: ${{ needs.workspace-vars.outputs.node-version }}
-      assets-url: https://gorgias-assets.gorgias.io/${{ needs.workspace-vars.outputs.bucket-path }}
-      build-dir: ${{ needs.workspace-vars.outputs.build-dir }}
+      node-version: ${{ needs.workspace-setup.outputs.node-version }}
+      assets-url: https://gorgias-assets.gorgias.io/${{ needs.workspace-setup.outputs.bucket-path }}
+      build-dir: ${{ needs.workspace-setup.outputs.build-dir }}
       artifact: production-build
       release: production-${{ github.sha }}
 
@@ -187,7 +173,6 @@ jobs:
     name: Deploy production
     if: github.ref == 'refs/heads/main'
     needs:
-      - workspace-vars
       - workspace-setup
       - quality-check
       - build-production
@@ -195,7 +180,7 @@ jobs:
     secrets: inherit
     with:
       cache-key: ${{ needs.workspace-setup.outputs.cache-key}}
-      node-version: ${{ needs.workspace-vars.outputs.node-version }}
+      node-version: ${{ needs.workspace-setup.outputs.node-version }}
       bucket: gs://gorgias-assets-production
       gcloud-project: gorgias-helpdesk-production
       clusters: >-
@@ -210,9 +195,9 @@ jobs:
         gorgias-helpdesk-production-us-east4-65cd
         gorgias-helpdesk-production-europe-west4-e7f4
         gorgias-main-us-east1-635c
-      bucket-path: ${{ needs.workspace-vars.outputs.bucket-path }}
-      assets-dir: ${{ needs.workspace-vars.outputs.assets-dir }}
-      build-dir: ${{ needs.workspace-vars.outputs.build-dir }}
+      bucket-path: ${{ needs.workspace-setup.outputs.bucket-path }}
+      assets-dir: ${{ needs.workspace-setup.outputs.assets-dir }}
+      build-dir: ${{ needs.workspace-setup.outputs.build-dir }}
       artifact: production-build
       sentry-project: helpdesk-web-app
       release: production-${{ github.sha }}
@@ -220,7 +205,6 @@ jobs:
   Chromatic:
     name: Upload Chromatic
     needs:
-      - workspace-vars
       - workspace-setup
     runs-on: gh-actions-4cpu8gb-runner-set
 
@@ -233,7 +217,7 @@ jobs:
       - name: Setup workspace
         uses: ./.github/actions/setup-workspace
         with:
-          node-version: ${{ needs.workspace-vars.outputs.node-version }}
+          node-version: ${{ needs.workspace-setup.outputs.node-version }}
           cache-key: ${{ needs.workspace-setup.outputs.cache-key }}
           npm-token: ${{ secrets.GH_READ_PACKAGES_TOKEN }}
 
