@@ -3,7 +3,7 @@ import { screen } from '@testing-library/react'
 
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import { useChatPreviewChannelsContext } from 'pages/automate/connectedChannels/revamp/hooks/useChatPreviewChannels'
-import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp'
+import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp'
 
 import { TrackOrderFlowViewContainer } from '../TrackOrderFlowViewContainer'
 
@@ -12,7 +12,7 @@ jest.mock(
     'pages/automate/connectedChannels/revamp/hooks/useChatPreviewChannels',
 )
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp',
+    'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp',
 )
 
 jest.mock('../legacy/trackOrder/TrackOrderFlowViewContainer', () => ({

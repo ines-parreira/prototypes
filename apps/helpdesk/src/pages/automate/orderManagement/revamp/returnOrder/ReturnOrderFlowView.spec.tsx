@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { ReturnActionType } from 'models/selfServiceConfiguration/types'
-import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
+import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 
 import { useReturnOrderFlow } from './hooks/useReturnOrderFlow'
 import { ReturnOrderFlowView } from './ReturnOrderFlowView'
@@ -21,7 +21,7 @@ jest.mock('react-router-dom', () => ({
 jest.mock('hooks/aiAgent/useAiAgentAccess')
 jest.mock('./hooks/useReturnOrderFlow')
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
+    'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
 )
 
 const mockUseAiAgentAccess = useAiAgentAccess as jest.MockedFunction<

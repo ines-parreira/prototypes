@@ -2,13 +2,13 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp'
+import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp'
 import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
 
 import { GorgiasChatIntegrationInstall } from './GorgiasChatIntegrationInstall'
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp',
+    'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp',
 )
 
 jest.mock('pages/integrations/integration/hooks/useStoreIntegration')
@@ -19,7 +19,7 @@ jest.mock(
 )
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatIntegrationInstall',
+    'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Installation/GorgiasChatIntegrationInstall',
     () => ({
         GorgiasChatIntegrationInstallRevamp: () => (
             <div data-testid="new-revamp-install" />
@@ -28,7 +28,7 @@ jest.mock(
 )
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatIntegrationInstall/ChatSettingsInstallationSkeleton',
+    'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Installation/ChatSettingsInstallationSkeleton',
     () => ({
         ChatSettingsInstallationSkeleton: () => (
             <div data-testid="installation-skeleton" />

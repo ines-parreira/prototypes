@@ -2,19 +2,19 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp'
+import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp'
 import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
 
 import { GorgiasChatTranslateText } from './GorgiasChatTranslateText'
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp',
+    'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp',
 )
 
 jest.mock('pages/integrations/integration/hooks/useStoreIntegration')
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationTranslateText/components/ChatSettingsTranslateTextSkeleton',
+    'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Language/TranslateText/components/ChatSettingsTranslateTextSkeleton',
     () => ({
         ChatSettingsTranslateTextSkeleton: () => (
             <div data-testid="translate-text-skeleton" />
@@ -23,7 +23,7 @@ jest.mock(
 )
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationTranslateText/GorgiasChatIntegrationTranslateText',
+    'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Language/TranslateText/GorgiasChatIntegrationTranslateText',
     () => ({
         GorgiasChatIntegrationTranslateTextRevamp: () => (
             <div data-testid="revamp-translate-text" />

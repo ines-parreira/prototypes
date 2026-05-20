@@ -6,8 +6,8 @@ import type { Dictionary } from 'lodash'
 import { TicketChannel } from 'business/types/ticket'
 import { useListWorkflowEntryPoints } from 'models/workflows/queries'
 import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
-import type { Workflow } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/FlowsCard/types'
+import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
+import type { Workflow } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/FlowsCard/types'
 
 import { useArticleRecommendation } from '../../hooks/useArticleRecommendation'
 import { useFlows } from '../../hooks/useFlows'
@@ -39,7 +39,7 @@ jest.mock('../../hooks/useArticleRecommendation')
 jest.mock('../../hooks/useFlows')
 jest.mock('../../hooks/useOrderManagement')
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
+    'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
     () => ({
         useChatPreviewPanelContext: jest.fn(),
     }),
@@ -52,7 +52,7 @@ jest.mock('models/workflows/queries', () => ({
 }))
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/components/ArticleRecommendationCard/ArticleRecommendationCard',
+    'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ArticleRecommendationCard/ArticleRecommendationCard',
     () => ({
         ArticleRecommendationCard: () => <div>ArticleRecommendationCard</div>,
     }),
@@ -65,7 +65,7 @@ const mockFlowsCardHandlers: {
 } = {}
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/components/FlowsCard/FlowsCard',
+    'pages/integrations/integration/components/gorgias_chat/revamp/common/components/FlowsCard/FlowsCard',
     () => ({
         FlowsCard: ({
             onAdd,
@@ -85,7 +85,7 @@ jest.mock(
 )
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/components/OrderManagementCard/OrderManagementCard',
+    'pages/integrations/integration/components/gorgias_chat/revamp/common/components/OrderManagementCard/OrderManagementCard',
     () => ({
         OrderManagementCard: ({
             onChange,

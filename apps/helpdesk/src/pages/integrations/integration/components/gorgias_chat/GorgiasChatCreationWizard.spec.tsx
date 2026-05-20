@@ -7,7 +7,7 @@ import { GorgiasChatCreationWizard } from './GorgiasChatCreationWizard'
 const mockUseShouldShowChatSettingsRevamp = jest.fn()
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp',
+    'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp',
     () => ({
         useShouldShowChatSettingsRevamp: () =>
             mockUseShouldShowChatSettingsRevamp(),
@@ -22,20 +22,14 @@ jest.mock(
     }),
 )
 
-jest.mock(
-    './revamp/components/GorgiasChatCreationWizard/GorgiasChatCreationWizard',
-    () => ({
-        __esModule: true,
-        default: () => <div>Revamp Wizard</div>,
-    }),
-)
+jest.mock('./revamp/CreationWizard/GorgiasChatCreationWizard', () => ({
+    __esModule: true,
+    default: () => <div>Revamp Wizard</div>,
+}))
 
-jest.mock(
-    './revamp/components/GorgiasChatCreationWizard/GorgiasChatCreationWizardSkeleton',
-    () => ({
-        GorgiasChatCreationWizardSkeleton: () => <div>Skeleton</div>,
-    }),
-)
+jest.mock('./revamp/CreationWizard/GorgiasChatCreationWizardSkeleton', () => ({
+    GorgiasChatCreationWizardSkeleton: () => <div>Skeleton</div>,
+}))
 
 const defaultProps = {
     integration: fromJS({ id: 1, name: 'Test Chat' }),

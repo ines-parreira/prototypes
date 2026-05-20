@@ -1,5 +1,5 @@
 import type { ResponseMessageContent } from 'models/selfServiceConfiguration/types'
-import type { SimulateConversationMessage } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/ChatPreviewPanel'
+import type { SimulateConversationMessage } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/ChatPreviewPanel'
 
 const DESCRIPTION = "I'd like to return the following items:"
 const SAMPLE_ORDER_NUMBER = '#3089'

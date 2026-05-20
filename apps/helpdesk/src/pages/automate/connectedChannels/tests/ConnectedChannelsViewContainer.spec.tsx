@@ -3,13 +3,13 @@ import { screen } from '@testing-library/react'
 import { MemoryRouter, Route } from 'react-router-dom'
 
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
-import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp'
+import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp'
 
 import { ConnectedChannelsViewContainer } from '../ConnectedChannelsViewContainer'
 
 jest.mock('pages/automate/common/hooks/useStoreIntegrations')
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp',
+    'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp',
 )
 
 jest.mock('../legacy/ConnectedChannelsViewContainer', () => ({

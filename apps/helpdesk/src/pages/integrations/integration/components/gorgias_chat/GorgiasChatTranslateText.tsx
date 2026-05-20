@@ -1,8 +1,8 @@
 import type { Map } from 'immutable'
 
-import { ChatSettingsTranslateTextSkeleton } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationTranslateText/components/ChatSettingsTranslateTextSkeleton'
-import { GorgiasChatIntegrationTranslateTextRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationTranslateText/GorgiasChatIntegrationTranslateText'
-import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp'
+import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp'
+import { ChatSettingsTranslateTextSkeleton } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Language/TranslateText/components/ChatSettingsTranslateTextSkeleton'
+import { GorgiasChatIntegrationTranslateTextRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Language/TranslateText/GorgiasChatIntegrationTranslateText'
 import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
 
 import GorgiasTranslateText from './legacy/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText'

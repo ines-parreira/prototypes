@@ -25,14 +25,14 @@ jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
 }))
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp',
+    'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp',
 )
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
+    'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
     () => ({
         ...jest.requireActual(
-            'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
+            'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
         ),
         useChatPreviewPanel: jest.fn(),
     }),
@@ -42,10 +42,10 @@ const getHasAutomateMock = assumeMock(getHasAutomate)
 const useStoreSelectorMock = assumeMock(useStoreSelector)
 const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
 const mockUseShouldShowChatSettingsRevamp = jest.requireMock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp',
+    'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp',
 ).useShouldShowChatSettingsRevamp as jest.Mock
 const mockUseChatPreviewPanel = jest.requireMock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
+    'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
 ).useChatPreviewPanel as jest.Mock
 
 const initialState: Partial<RootState> = {

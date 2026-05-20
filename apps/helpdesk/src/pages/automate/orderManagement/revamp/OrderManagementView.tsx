@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react'
 
 import type { GorgiasChatPreviewSelfServiceFlows } from 'models/integration/types/gorgiasChat'
-import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
+import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 
 import { OrderManagementFlowsCard } from './components/OrderManagementFlowsCard/OrderManagementFlowsCard'
 import { useOrderManagementFlows } from './components/OrderManagementFlowsCard/useOrderManagementFlows'

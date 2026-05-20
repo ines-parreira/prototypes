@@ -14,8 +14,8 @@ import { ErrorBoundary } from 'pages/ErrorBoundary'
 import {
     ChatPreviewPanelContext,
     useChatPreviewPanel,
-} from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
-import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp'
+} from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
+import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp'
 import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
 import type * as IntegrationsActions from 'state/integrations/actions'
 

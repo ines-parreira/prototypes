@@ -1,7 +1,7 @@
 import GorgiasChatIntegrationInstallLegacy from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationInstall/GorgiasChatIntegrationInstall'
-import { GorgiasChatIntegrationInstallRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatIntegrationInstall'
-import { ChatSettingsInstallationSkeleton } from 'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatIntegrationInstall/ChatSettingsInstallationSkeleton'
-import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp'
+import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp'
+import { ChatSettingsInstallationSkeleton } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Installation/ChatSettingsInstallationSkeleton'
+import { GorgiasChatIntegrationInstallRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Installation/GorgiasChatIntegrationInstall'
 import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
 
 type Props = React.ComponentProps<typeof GorgiasChatIntegrationInstallLegacy>

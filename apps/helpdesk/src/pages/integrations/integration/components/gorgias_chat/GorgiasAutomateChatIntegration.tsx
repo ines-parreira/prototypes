@@ -1,11 +1,11 @@
 import type { ComponentProps } from 'react'
 
-import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp'
+import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp'
 import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
 
 import { GorgiasAutomateChatIntegration as GorgiasAutomateChatIntegrationLegacy } from './legacy/GorgiasAutomateChatIntegration'
-import { ChatSettingsAutomationSkeleton } from './revamp/ChatSettingsAutomationSkeleton'
-import { GorgiasAutomateChatIntegrationRevamp } from './revamp/GorgiasAutomateChatIntegration'
+import { ChatSettingsAutomationSkeleton } from './revamp/EditWizard/Automation/ChatSettingsAutomationSkeleton'
+import { GorgiasAutomateChatIntegrationRevamp } from './revamp/EditWizard/Automation/GorgiasAutomateChatIntegration'
 
 type Props = ComponentProps<typeof GorgiasAutomateChatIntegrationLegacy>
 

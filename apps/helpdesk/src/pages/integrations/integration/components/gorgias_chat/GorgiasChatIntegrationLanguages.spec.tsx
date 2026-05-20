@@ -2,13 +2,13 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp'
+import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp'
 import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
 
 import { GorgiasChatIntegrationLanguages } from './GorgiasChatIntegrationLanguages'
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp',
+    'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp',
 )
 
 jest.mock(
@@ -17,7 +17,7 @@ jest.mock(
 )
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatIntegrationLanguages',
+    'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Language/GorgiasChatIntegrationLanguages',
     () => ({
         GorgiasChatIntegrationLanguagesRevamp: () => (
             <div data-testid="revamp-languages" />
@@ -28,7 +28,7 @@ jest.mock(
 jest.mock('pages/integrations/integration/hooks/useStoreIntegration')
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationLanguages/ChatSettingsLanguagesSkeleton',
+    'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Language/ChatSettingsLanguagesSkeleton',
     () => ({
         ChatSettingsLanguagesSkeleton: () => (
             <div data-testid="languages-skeleton" />

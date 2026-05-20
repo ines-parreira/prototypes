@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import { useConnectedChannelsContext } from 'pages/automate/connectedChannels/ConnectedChannelsContext'
-import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp'
+import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp'
 
 import LegacyConnectedChannelsViewContainer from './legacy/ConnectedChannelsViewContainer'
 import { ConnectedChannelsViewContainerRevamp } from './revamp/ConnectedChannelsViewContainer'

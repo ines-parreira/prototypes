@@ -3,17 +3,17 @@ import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { useIsAiAgentEnabled } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useIsAiAgentEnabled'
-import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp'
+import { useIsAiAgentEnabled } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useIsAiAgentEnabled'
+import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp'
 
 import { GorgiasChatIntegrationPreferences } from './GorgiasChatIntegrationPreferences'
 
 jest.mock('hooks/useAppSelector')
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp',
+    'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp',
 )
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useIsAiAgentEnabled',
+    'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useIsAiAgentEnabled',
 )
 
 jest.mock(
@@ -23,7 +23,7 @@ jest.mock(
 
 const mockRevampPreferences = jest.fn()
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatIntegrationPreferences',
+    'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Preferences/GorgiasChatIntegrationPreferences',
     () => ({
         GorgiasChatIntegrationPreferencesRevamp: (props: any) => {
             mockRevampPreferences(props)
@@ -37,7 +37,7 @@ jest.mock('pages/integrations/integration/hooks/useStoreIntegration', () => ({
 }))
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationPreferences/ChatSettingsPreferencesSkeleton',
+    'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Preferences/ChatSettingsPreferencesSkeleton',
     () => ({
         ChatSettingsPreferencesSkeleton: () => (
             <div data-testid="preferences-skeleton" />

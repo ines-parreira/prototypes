@@ -7,7 +7,7 @@ import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useAp
 import useSelfServiceChannels from 'pages/automate/common/hooks/useSelfServiceChannels'
 import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import type { Workflow } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/FlowsCard/types'
+import type { Workflow } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/FlowsCard/types'
 
 type UseFlowsParams = {
     shopName: string

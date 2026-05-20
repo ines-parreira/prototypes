@@ -1,5 +1,5 @@
 import type { ResponseMessageContent } from 'models/selfServiceConfiguration/types'
-import type { SimulateConversationMessage } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/ChatPreviewPanel'
+import type { SimulateConversationMessage } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/ChatPreviewPanel'
 
 // Sample order data used for the cancel order simulation preview.
 // Mirrors the format produced by the widget's buildTemplatedMessage for Flow.CANCEL.

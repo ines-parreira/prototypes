@@ -2,7 +2,7 @@ import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
+import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 
 import { CreateReportOrderIssueScenarioView } from '../CreateReportOrderIssueFlowScenarioView'
 import { useCreateReportOrderIssueScenario } from '../hooks/useCreateReportOrderIssueScenario'
@@ -19,7 +19,7 @@ jest.mock('react-router-dom', () => ({
 
 jest.mock('../hooks/useCreateReportOrderIssueScenario')
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
+    'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
 )
 
 jest.mock(
@@ -53,7 +53,7 @@ jest.mock(
 )
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatCreationWizard/components/SaveChangesPrompt',
+    'pages/integrations/integration/components/gorgias_chat/revamp/CreationWizard/components/SaveChangesPrompt',
     () => ({
         __esModule: true,
         default: ({ when }: { when: boolean }) => (

@@ -10,7 +10,7 @@ import configureMockStore from 'redux-mock-store'
 import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
 import { entitiesInitialState } from 'fixtures/entities'
 import { user } from 'fixtures/users'
-import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp'
+import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp'
 import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
 import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -44,7 +44,7 @@ const defaultState = {
 jest.mock('lodash/uniqueId', () => (id?: string) => `${id || ''}42`)
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp',
+    'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp',
 )
 
 jest.mock('pages/integrations/integration/hooks/useStoreIntegration')
@@ -94,7 +94,7 @@ jest.mock(
 )
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationAppearance/ChatSettingsAppearanceSkeleton',
+    'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Appearance/ChatSettingsAppearanceSkeleton',
     () => ({
         ChatSettingsAppearanceSkeleton: () => (
             <div data-testid="appearance-skeleton" />
@@ -103,7 +103,7 @@ jest.mock(
 )
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatIntegrationAppearance',
+    'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Appearance/GorgiasChatIntegrationAppearance',
     () => ({
         GorgiasChatIntegrationAppearanceRevamp: () => {
             return <div data-testid="new-revamp-appearance" />

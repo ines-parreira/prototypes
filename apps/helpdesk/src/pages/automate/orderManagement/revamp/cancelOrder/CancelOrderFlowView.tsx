@@ -2,7 +2,7 @@ import { useEffect, useMemo } from 'react'
 
 import { useParams } from 'react-router-dom'
 
-import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
+import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 
 import { OrderManagementFlowHeader } from '../components/OrderManagementFlowHeader/OrderManagementFlowHeader'
 import { CancelOrderConfiguration } from './components/CancelOrderConfiguration'

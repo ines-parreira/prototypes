@@ -11,7 +11,7 @@ const mockSimulateConversation = jest.fn()
 let capturedOnPreviewLoaded: (() => void) | undefined
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/ChatPreviewPanel',
+    'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/ChatPreviewPanel',
     () => {
         const React = require('react')
 

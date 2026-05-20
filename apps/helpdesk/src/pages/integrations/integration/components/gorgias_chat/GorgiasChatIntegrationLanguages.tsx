@@ -1,8 +1,8 @@
 import type { ComponentProps } from 'react'
 
-import { ChatSettingsLanguagesSkeleton } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationLanguages/ChatSettingsLanguagesSkeleton'
-import { GorgiasChatIntegrationLanguagesRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatIntegrationLanguages'
-import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp'
+import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp'
+import { ChatSettingsLanguagesSkeleton } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Language/ChatSettingsLanguagesSkeleton'
+import { GorgiasChatIntegrationLanguagesRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Language/GorgiasChatIntegrationLanguages'
 import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
 
 import GorgiasChatIntegrationLanguagesLegacy from './legacy/GorgiasChatIntegrationLanguages/GorgiasChatIntegrationLanguages'

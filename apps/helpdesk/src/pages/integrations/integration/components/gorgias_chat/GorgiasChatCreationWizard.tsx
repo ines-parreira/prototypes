@@ -1,10 +1,10 @@
 import type { Map } from 'immutable'
 
-import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp'
+import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp'
 
 import GorgiasChatCreationWizardLegacy from './legacy/GorgiasChatCreationWizard/GorgiasChatCreationWizard'
-import GorgiasChatCreationWizardRevamp from './revamp/components/GorgiasChatCreationWizard/GorgiasChatCreationWizard'
-import { GorgiasChatCreationWizardSkeleton } from './revamp/components/GorgiasChatCreationWizard/GorgiasChatCreationWizardSkeleton'
+import GorgiasChatCreationWizardRevamp from './revamp/CreationWizard/GorgiasChatCreationWizard'
+import { GorgiasChatCreationWizardSkeleton } from './revamp/CreationWizard/GorgiasChatCreationWizardSkeleton'
 
 type Props = {
     integration: Map<any, any>

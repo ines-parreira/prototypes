@@ -2,8 +2,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { ToneOfVoice } from 'pages/aiAgent/constants'
 import { toneOfVoiceConversations } from 'pages/aiAgent/Onboarding_V2/constants/conversationExamples'
-import type { ChatPreviewPanelHandle } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/ChatPreviewPanel'
-import { ChatPreviewPanel } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/ChatPreviewPanel'
+import type { ChatPreviewPanelHandle } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/ChatPreviewPanel'
+import { ChatPreviewPanel } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/ChatPreviewPanel'
 
 import css from './ToneOfVoicePreviewSection.less'
 
