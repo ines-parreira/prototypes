@@ -8,7 +8,7 @@ export const useCustomFieldDefinitions = (
     return useListCustomFields(args[0], {
         ...args[1],
         query: {
-            staleTime: DurationInMs.OneHour,
+            staleTime: DurationInMs.OneDay,
             refetchOnWindowFocus: false,
             ...args[1]?.query,
             select: (data) => data.data,

@@ -1,7 +1,9 @@
 // Migrated from: apps/helpdesk/src/custom-fields/hooks/queries/useCustomFieldDefinitions.ts
+import { DurationInMs } from '@repo/utils'
+
 import { useListCustomFields } from '@gorgias/helpdesk-queries'
 
-export const STALE_TIME_MS = 60 * 60 * 1000 // 1 hour
+export const STALE_TIME_MS = DurationInMs.OneDay
 
 export const useCustomFieldDefinitions = (
     ...args: Parameters<typeof useListCustomFields>

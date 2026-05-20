@@ -124,7 +124,7 @@ describe('useUpdateCustomFieldDefinitions', () => {
             undefined,
         )
         expect(invalidateQueryMock).toHaveBeenLastCalledWith({
-            queryKey: queryKeys.customFields.listCustomFields(listParams),
+            queryKey: queryKeys.customFields.all(),
         })
     })
 

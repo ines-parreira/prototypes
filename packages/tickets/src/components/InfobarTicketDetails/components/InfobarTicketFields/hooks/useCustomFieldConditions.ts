@@ -36,7 +36,7 @@ export const useCustomFieldConditions = ({
         },
         {
             query: {
-                staleTime: invalidate ? 0 : DurationInMs.OneHour,
+                staleTime: invalidate ? 0 : DurationInMs.OneDay,
                 refetchOnWindowFocus: false,
                 enabled: enabled,
             },

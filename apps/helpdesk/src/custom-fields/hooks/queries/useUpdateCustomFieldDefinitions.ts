@@ -83,7 +83,7 @@ export const useUpdateCustomFieldDefinitions = (
             },
             onSettled: () => {
                 void queryClient.invalidateQueries({
-                    queryKey,
+                    queryKey: queryKeys.customFields.all(),
                 })
             },
         },
