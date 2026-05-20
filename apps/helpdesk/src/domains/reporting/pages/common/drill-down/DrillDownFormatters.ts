@@ -7,6 +7,10 @@ import {
 } from 'domains/reporting/hooks/automate/types'
 import type { MergedRecord } from 'domains/reporting/hooks/withEnrichment'
 import {
+    AIJourneyOrdersAsProviderDimension,
+    AIJourneyOrdersAsProviderMeasure,
+} from 'domains/reporting/models/cubes/ai-sales-agent/AIJourneyOrdersAsProvider'
+import {
     AiSalesAgentOrdersDimension,
     AiSalesAgentOrdersMeasure,
 } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
@@ -227,8 +231,12 @@ const formatTicketDrillDownRowDataInternal = (
         outcome: outcome,
         intent: intent,
         order: {
-            id: row[AiSalesAgentOrdersDimension.OrderId],
-            amount: row[AiSalesAgentOrdersMeasure.Gmv],
+            id:
+                row[AiSalesAgentOrdersDimension.OrderId] ??
+                row[AIJourneyOrdersAsProviderDimension.OrderId],
+            amount:
+                row[AiSalesAgentOrdersMeasure.Gmv] ??
+                row[AIJourneyOrdersAsProviderMeasure.Gmv],
             customer: row[EnrichmentFields.CustomerIntegrationDataByExternalId],
         },
         product: {

@@ -13,6 +13,7 @@ import {
     extraEnrichmentFieldsPerMetric,
     useEnrichedDrillDownData,
 } from 'domains/reporting/hooks/useDrillDownData'
+import { AIJourneyOrdersAsProviderMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AIJourneyOrdersAsProvider'
 import { AiSalesAgentOrdersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { TicketQAScoreMeasure } from 'domains/reporting/models/cubes/auto-qa/TicketQAScoreCube'
 import { EnrichmentFields } from 'domains/reporting/models/types'
@@ -180,6 +181,8 @@ export const TicketDrillDownTableContent = ({
         AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders
     const isAiJourneyTotalOrdersMetric =
         metricData.metricName === AIJourneyMetric.TotalOrders
+    const isAiJourneyProviderTotalOrdersMetric =
+        metricData.metricName === AIJourneyMetric.ProviderTotalOrders
 
     const isAiJourneyResponseRateMetric =
         metricData.metricName === AIJourneyMetric.ResponseRate
@@ -302,7 +305,8 @@ export const TicketDrillDownTableContent = ({
     const getColumnWidthsForSkeleton = () => {
         const hasOrderColumns =
             isAiSalesAgentTotalNumberOfOrdersMetric ||
-            isAiJourneyTotalOrdersMetric
+            isAiJourneyTotalOrdersMetric ||
+            isAiJourneyProviderTotalOrdersMetric
         const hasCustomerColumn =
             isAiJourneyResponseRateMetric ||
             isAiJourneyOptOutRateMetric ||
@@ -320,6 +324,7 @@ export const TicketDrillDownTableContent = ({
         const hasAssigneeColumn =
             (!isAiSalesAgentTotalNumberOfOrdersMetric ||
                 isAiJourneyTotalOrdersMetric ||
+                isAiJourneyProviderTotalOrdersMetric ||
                 hasCustomerColumn) &&
             !isKnowledgeMetric
         const hasContactReasonColumn = !(
@@ -385,7 +390,8 @@ export const TicketDrillDownTableContent = ({
                     titleClassName={css.headerCellTitle}
                 />
                 {(isAiSalesAgentTotalNumberOfOrdersMetric ||
-                    isAiJourneyTotalOrdersMetric) && (
+                    isAiJourneyTotalOrdersMetric ||
+                    isAiJourneyProviderTotalOrdersMetric) && (
                     <>
                         <HeaderCellProperty
                             title="Order"
@@ -505,6 +511,7 @@ export const TicketDrillDownTableContent = ({
                 )}
                 {(!isAiSalesAgentTotalNumberOfOrdersMetric ||
                     isAiJourneyTotalOrdersMetric ||
+                    isAiJourneyProviderTotalOrdersMetric ||
                     isAiJourneyResponseRateMetric ||
                     isAiJourneyOptOutRateMetric ||
                     isAiJourneyClickThroughRateMetric) &&
@@ -625,6 +632,7 @@ export const TicketDrillDownTableContent = ({
                     isAiSalesAgentTotalProductRecommendationsMetric ||
                     isAiSalesAgentTotalNumberOfOrdersMetric ||
                     isAiJourneyTotalOrdersMetric ||
+                    isAiJourneyProviderTotalOrdersMetric ||
                     isAiJourneyResponseRateMetric ||
                     isAiJourneyOptOutRateMetric ||
                     isAiJourneyClickThroughRateMetric ||
@@ -703,7 +711,8 @@ export const TicketDrillDownTableContent = ({
                                     </BodyCell>
                                 </>
                             )}
-                            {isAiJourneyTotalOrdersMetric && (
+                            {(isAiJourneyTotalOrdersMetric ||
+                                isAiJourneyProviderTotalOrdersMetric) && (
                                 <>
                                     <BodyCell width={columnWidths.order}>
                                         {item.order?.id}
@@ -714,7 +723,11 @@ export const TicketDrillDownTableContent = ({
                                                 item?.rowData?.[
                                                     AiSalesAgentOrdersMeasure
                                                         .GmvUsd
-                                                ],
+                                                ] ??
+                                                    item?.rowData?.[
+                                                        AIJourneyOrdersAsProviderMeasure
+                                                            .GmvUsd
+                                                    ],
                                             ),
                                             'currency',
                                         )}

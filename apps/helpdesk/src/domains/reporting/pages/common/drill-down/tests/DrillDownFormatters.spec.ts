@@ -1,4 +1,12 @@
 import {
+    AIJourneyOrdersAsProviderDimension,
+    AIJourneyOrdersAsProviderMeasure,
+} from 'domains/reporting/models/cubes/ai-sales-agent/AIJourneyOrdersAsProvider'
+import {
+    AiSalesAgentOrdersDimension,
+    AiSalesAgentOrdersMeasure,
+} from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
+import {
     TicketQAScoreDimensionName,
     TicketQAScoreMeasure,
 } from 'domains/reporting/models/cubes/auto-qa/TicketQAScoreCube'
@@ -269,6 +277,45 @@ describe('DrillDownFormatters', () => {
                             '1',
                         [TicketQAScoreDimensionName.CommunicationSkills]: '5',
                     },
+                }),
+            )
+        })
+
+        it('should populate order id and amount from AiSalesAgentOrders dimensions', () => {
+            const row = {
+                [AiSalesAgentOrdersDimension.OrderId]: 'order-1',
+                [AiSalesAgentOrdersMeasure.Gmv]: 42,
+            }
+
+            const result = formatTicketDrillDownRowData({
+                row,
+                metricField: 'metricField',
+            })
+
+            expect(result.order).toEqual(
+                expect.objectContaining({
+                    id: 'order-1',
+                    amount: 42,
+                }),
+            )
+        })
+
+        it('should populate order id and amount from AIJourneyOrdersAsProvider dimensions', () => {
+            const row = {
+                [AIJourneyOrdersAsProviderDimension.OrderId]:
+                    'provider-order-1',
+                [AIJourneyOrdersAsProviderMeasure.Gmv]: 99,
+            }
+
+            const result = formatTicketDrillDownRowData({
+                row,
+                metricField: 'metricField',
+            })
+
+            expect(result.order).toEqual(
+                expect.objectContaining({
+                    id: 'provider-order-1',
+                    amount: 99,
                 }),
             )
         })

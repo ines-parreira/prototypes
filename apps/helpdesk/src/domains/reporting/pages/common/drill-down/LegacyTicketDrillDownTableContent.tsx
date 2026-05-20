@@ -9,6 +9,7 @@ import {
     extraEnrichmentFieldsPerMetric,
     useEnrichedDrillDownData,
 } from 'domains/reporting/hooks/useDrillDownData'
+import { AIJourneyOrdersAsProviderMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AIJourneyOrdersAsProvider'
 import { AiSalesAgentOrdersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { TicketQAScoreMeasure } from 'domains/reporting/models/cubes/auto-qa/TicketQAScoreCube'
 import { EnrichmentFields } from 'domains/reporting/models/types'
@@ -170,6 +171,8 @@ export const LegacyTicketDrillDownTableContent = ({
         AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders
     const isAiJourneyTotalOrdersMetric =
         metricData.metricName === AIJourneyMetric.TotalOrders
+    const isAiJourneyProviderTotalOrdersMetric =
+        metricData.metricName === AIJourneyMetric.ProviderTotalOrders
 
     const isAiJourneyResponseRateMetric =
         metricData.metricName === AIJourneyMetric.ResponseRate
@@ -285,7 +288,8 @@ export const LegacyTicketDrillDownTableContent = ({
                     className={css.headerCell}
                 />
                 {(isAiSalesAgentTotalNumberOfOrdersMetric ||
-                    isAiJourneyTotalOrdersMetric) && (
+                    isAiJourneyTotalOrdersMetric ||
+                    isAiJourneyProviderTotalOrdersMetric) && (
                     <>
                         <HeaderCellProperty
                             title="Order"
@@ -375,6 +379,7 @@ export const LegacyTicketDrillDownTableContent = ({
                 )}
                 {(!isAiSalesAgentTotalNumberOfOrdersMetric ||
                     isAiJourneyTotalOrdersMetric ||
+                    isAiJourneyProviderTotalOrdersMetric ||
                     isAiJourneyResponseRateMetric ||
                     isAiJourneyOptOutRateMetric ||
                     isAiJourneyClickThroughRateMetric) &&
@@ -486,6 +491,7 @@ export const LegacyTicketDrillDownTableContent = ({
                     isAiSalesAgentTotalProductRecommendationsMetric ||
                     isAiSalesAgentTotalNumberOfOrdersMetric ||
                     isAiJourneyTotalOrdersMetric ||
+                    isAiJourneyProviderTotalOrdersMetric ||
                     isAiJourneyResponseRateMetric ||
                     isAiJourneyOptOutRateMetric ||
                     isAiJourneyClickThroughRateMetric ||
@@ -553,7 +559,8 @@ export const LegacyTicketDrillDownTableContent = ({
                                     </BodyCell>
                                 </>
                             )}
-                            {isAiJourneyTotalOrdersMetric && (
+                            {(isAiJourneyTotalOrdersMetric ||
+                                isAiJourneyProviderTotalOrdersMetric) && (
                                 <>
                                     <BodyCell width={columnWidths.order}>
                                         {item.order?.id}
@@ -564,7 +571,11 @@ export const LegacyTicketDrillDownTableContent = ({
                                                 item?.rowData?.[
                                                     AiSalesAgentOrdersMeasure
                                                         .GmvUsd
-                                                ],
+                                                ] ??
+                                                    item?.rowData?.[
+                                                        AIJourneyOrdersAsProviderMeasure
+                                                            .GmvUsd
+                                                    ],
                                             ),
                                             'currency',
                                         )}
