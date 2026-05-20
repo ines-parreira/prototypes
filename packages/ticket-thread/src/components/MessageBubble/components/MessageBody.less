@@ -95,6 +95,15 @@
         }
 
         .content {
+            // Authored background regions still need a local inherited text color for bare table-cell text.
+            :global(.message-body-element-with-authored-light-background) {
+                color: #333;
+            }
+
+            :global(.message-body-element-with-authored-dark-background) {
+                color: #fff;
+            }
+
             // Force readable text in dark mode, except inside email elements that paint their own background.
             :global(
                 *:not(.message-body-element-with-authored-background):not(
