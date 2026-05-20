@@ -10,9 +10,13 @@ import { usePerformanceMetricsPerFeatureV2 } from 'pages/aiAgent/analyticsOvervi
 
 type Props = {
     chartId?: string
+    withChartMenu?: boolean
 }
 
-export const PerformanceBreakdownTableV2 = ({ chartId }: Props) => {
+export const PerformanceBreakdownTableV2 = ({
+    chartId,
+    withChartMenu,
+}: Props) => {
     const { data = [], loadingStates } = usePerformanceMetricsPerFeatureV2()
 
     return (
@@ -22,7 +26,7 @@ export const PerformanceBreakdownTableV2 = ({ chartId }: Props) => {
             loadingStates={loadingStates}
             DownloadButton={<DownloadPerformanceBreakdownV2Button />}
             actionMenu={
-                chartId ? (
+                withChartMenu && chartId ? (
                     <ChartsActionMenu
                         chartId={chartId}
                         chartName="All features"

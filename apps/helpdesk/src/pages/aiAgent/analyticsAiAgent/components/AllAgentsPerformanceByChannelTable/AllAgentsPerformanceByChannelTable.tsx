@@ -10,9 +10,13 @@ import { useAllAgentsPerformanceByChannelMetrics } from 'pages/aiAgent/analytics
 
 type Props = {
     chartId?: string
+    withChartMenu?: boolean
 }
 
-export const AllAgentsPerformanceByChannelTable = ({ chartId }: Props) => {
+export const AllAgentsPerformanceByChannelTable = ({
+    chartId,
+    withChartMenu,
+}: Props) => {
     const { data = [], loadingStates } =
         useAllAgentsPerformanceByChannelMetrics()
 
@@ -24,7 +28,7 @@ export const AllAgentsPerformanceByChannelTable = ({ chartId }: Props) => {
             DownloadButton={<DownloadAllAgentsPerformanceByChannelButton />}
             nameColumns={ALL_AGENTS_PERFORMANCE_BY_CHANNEL_NAME_COLUMNS}
             actionMenu={
-                chartId ? (
+                withChartMenu && chartId ? (
                     <ChartsActionMenu chartId={chartId} chartName="Channel" />
                 ) : undefined
             }

@@ -9,9 +9,13 @@ import { useArticleRecommendationMetrics } from 'pages/aiAgent/analyticsOverview
 
 type Props = {
     chartId?: string
+    withChartMenu?: boolean
 }
 
-export const ArticleRecommendationTable = ({ chartId }: Props) => {
+export const ArticleRecommendationTable = ({
+    chartId,
+    withChartMenu,
+}: Props) => {
     const {
         data = [],
         loadingStates,
@@ -38,7 +42,7 @@ export const ArticleRecommendationTable = ({ chartId }: Props) => {
             DownloadButton={<DownloadArticleRecommendationButton />}
             nameColumns={nameColumns}
             actionMenu={
-                chartId ? (
+                withChartMenu && chartId ? (
                     <ChartsActionMenu
                         chartId={chartId}
                         chartName="Article Recommendation"

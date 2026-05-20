@@ -184,18 +184,38 @@ describe('OrderManagementTable', () => {
         ).toBeInTheDocument()
     })
 
-    it('passes actionMenu to ReportingMetricBreakdownTable when chartId is provided', () => {
+    it('passes actionMenu to ReportingMetricBreakdownTable when chartId and withChartMenu are provided', () => {
         mockUseOrderManagementMetrics.mockReturnValue({
             data: defaultData,
             loadingStates: defaultLoadingStates,
         })
-        render(<OrderManagementTable chartId="order_management_table" />)
+        render(
+            <OrderManagementTable
+                chartId="order_management_table"
+                withChartMenu
+            />,
+        )
 
         expect(getLastCallProps().actionMenu).toBeDefined()
     })
 
     it('does not pass actionMenu to ReportingMetricBreakdownTable when chartId is not provided', () => {
         renderComponent()
+
+        expect(getLastCallProps().actionMenu).toBeUndefined()
+    })
+
+    it('does not pass actionMenu to ReportingMetricBreakdownTable when chartId is provided but withChartMenu is false', () => {
+        mockUseOrderManagementMetrics.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+        })
+        render(
+            <OrderManagementTable
+                chartId="order_management_table"
+                withChartMenu={false}
+            />,
+        )
 
         expect(getLastCallProps().actionMenu).toBeUndefined()
     })

@@ -10,10 +10,12 @@ import { useShoppingAssistantPerformanceByEngagementFeatureMetrics } from 'pages
 
 type Props = {
     chartId?: string
+    withChartMenu?: boolean
 }
 
 export const ShoppingAssistantPerformanceByEngagementFeatureTable = ({
     chartId,
+    withChartMenu,
 }: Props) => {
     const { data = [], loadingStates } =
         useShoppingAssistantPerformanceByEngagementFeatureMetrics()
@@ -32,7 +34,7 @@ export const ShoppingAssistantPerformanceByEngagementFeatureTable = ({
                 SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_NAME_COLUMNS
             }
             actionMenu={
-                chartId ? (
+                withChartMenu && chartId ? (
                     <ChartsActionMenu
                         chartId={chartId}
                         chartName="Engagement feature"

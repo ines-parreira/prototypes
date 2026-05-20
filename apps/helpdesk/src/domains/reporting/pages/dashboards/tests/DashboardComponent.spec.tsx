@@ -77,13 +77,14 @@ describe('<DashboardComponent />', () => {
                 expect.objectContaining({
                     chartId: chart,
                     dashboard: dashboard,
+                    withChartMenu: true,
                 }),
                 {},
             )
         },
     )
 
-    it('should not pass menu props if withChartMenu is false', () => {
+    it('should always pass chartId but omit dashboard when withChartMenu is false', () => {
         render(
             <DashboardComponent
                 chart={chart}
@@ -93,13 +94,11 @@ describe('<DashboardComponent />', () => {
         )
 
         expect(chartComponentMock).toHaveBeenCalledWith(
-            { chartConfig: { chartComponent: chartComponentMock } },
-            {},
-        )
-        expect(chartComponentMock).not.toHaveBeenCalledWith(
-            expect.objectContaining({
+            {
+                chartConfig: { chartComponent: chartComponentMock },
                 chartId: chart,
-            }),
+                withChartMenu: false,
+            },
             {},
         )
     })
@@ -120,6 +119,7 @@ describe('<DashboardComponent />', () => {
             {
                 chartId: chart,
                 dashboard,
+                withChartMenu: true,
                 chartConfig: { chartComponent: chartComponentMock },
             },
             {},

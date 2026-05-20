@@ -137,13 +137,16 @@ describe('AllAgentsPerformanceByIntentTable', () => {
         ).toBeInTheDocument()
     })
 
-    it('passes actionMenu to ReportingMetricBreakdownTable when chartId is provided', () => {
+    it('passes actionMenu to ReportingMetricBreakdownTable when chartId and withChartMenu are provided', () => {
         mockUseAllAgentsPerformanceByIntentMetrics.mockReturnValue({
             data: defaultData,
             loadingStates: defaultLoadingStates,
         })
         render(
-            <AllAgentsPerformanceByIntentTable chartId="all_agents_performance_by_intent_table" />,
+            <AllAgentsPerformanceByIntentTable
+                chartId="all_agents_performance_by_intent_table"
+                withChartMenu
+            />,
         )
 
         expect(getLastCallProps().actionMenu).toBeDefined()
@@ -151,6 +154,21 @@ describe('AllAgentsPerformanceByIntentTable', () => {
 
     it('does not pass actionMenu to ReportingMetricBreakdownTable when chartId is not provided', () => {
         renderComponent()
+
+        expect(getLastCallProps().actionMenu).toBeUndefined()
+    })
+
+    it('does not pass actionMenu to ReportingMetricBreakdownTable when chartId is provided but withChartMenu is false', () => {
+        mockUseAllAgentsPerformanceByIntentMetrics.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+        })
+        render(
+            <AllAgentsPerformanceByIntentTable
+                chartId="all_agents_performance_by_intent_table"
+                withChartMenu={false}
+            />,
+        )
 
         expect(getLastCallProps().actionMenu).toBeUndefined()
     })

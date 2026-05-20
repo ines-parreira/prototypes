@@ -143,13 +143,16 @@ describe('AiAgentSalesPerformanceByChannelTable', () => {
         ).toBeInTheDocument()
     })
 
-    it('passes actionMenu to ReportingMetricBreakdownTable when chartId is provided', () => {
+    it('passes actionMenu to ReportingMetricBreakdownTable when chartId and withChartMenu are provided', () => {
         mockUseAiAgentSalesPerformanceByChannelMetrics.mockReturnValue({
             data: defaultData,
             loadingStates: defaultLoadingStates,
         })
         render(
-            <AiAgentSalesPerformanceByChannelTable chartId="ai_agent_sales_performance_by_channel_table" />,
+            <AiAgentSalesPerformanceByChannelTable
+                chartId="ai_agent_sales_performance_by_channel_table"
+                withChartMenu
+            />,
         )
 
         expect(getLastCallProps().actionMenu).toBeDefined()
@@ -157,6 +160,21 @@ describe('AiAgentSalesPerformanceByChannelTable', () => {
 
     it('does not pass actionMenu to ReportingMetricBreakdownTable when chartId is not provided', () => {
         renderComponent()
+
+        expect(getLastCallProps().actionMenu).toBeUndefined()
+    })
+
+    it('does not pass actionMenu to ReportingMetricBreakdownTable when chartId is provided but withChartMenu is false', () => {
+        mockUseAiAgentSalesPerformanceByChannelMetrics.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+        })
+        render(
+            <AiAgentSalesPerformanceByChannelTable
+                chartId="ai_agent_sales_performance_by_channel_table"
+                withChartMenu={false}
+            />,
+        )
 
         expect(getLastCallProps().actionMenu).toBeUndefined()
     })

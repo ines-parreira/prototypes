@@ -164,7 +164,7 @@ describe('ShoppingAssistantPerformanceByEngagementFeatureTable', () => {
         expect(getLastCallProps().data).toEqual([])
     })
 
-    it('passes actionMenu to ReportingMetricBreakdownTable when chartId is provided', () => {
+    it('passes actionMenu to ReportingMetricBreakdownTable when chartId and withChartMenu are provided', () => {
         mockUseShoppingAssistantPerformanceByEngagementFeatureMetrics.mockReturnValue(
             {
                 data: defaultData,
@@ -172,7 +172,10 @@ describe('ShoppingAssistantPerformanceByEngagementFeatureTable', () => {
             },
         )
         render(
-            <ShoppingAssistantPerformanceByEngagementFeatureTable chartId="shopping_assistant_performance_by_engagement_feature_table" />,
+            <ShoppingAssistantPerformanceByEngagementFeatureTable
+                chartId="shopping_assistant_performance_by_engagement_feature_table"
+                withChartMenu
+            />,
         )
 
         expect(getLastCallProps().actionMenu).toBeDefined()
@@ -180,6 +183,23 @@ describe('ShoppingAssistantPerformanceByEngagementFeatureTable', () => {
 
     it('does not pass actionMenu to ReportingMetricBreakdownTable when chartId is not provided', () => {
         renderComponent()
+
+        expect(getLastCallProps().actionMenu).toBeUndefined()
+    })
+
+    it('does not pass actionMenu to ReportingMetricBreakdownTable when chartId is provided but withChartMenu is false', () => {
+        mockUseShoppingAssistantPerformanceByEngagementFeatureMetrics.mockReturnValue(
+            {
+                data: defaultData,
+                loadingStates: defaultLoadingStates,
+            },
+        )
+        render(
+            <ShoppingAssistantPerformanceByEngagementFeatureTable
+                chartId="shopping_assistant_performance_by_engagement_feature_table"
+                withChartMenu={false}
+            />,
+        )
 
         expect(getLastCallProps().actionMenu).toBeUndefined()
     })

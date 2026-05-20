@@ -185,12 +185,15 @@ describe('ShoppingAssistantTopProductsTable', () => {
         expect(getLastCallProps().data).toEqual([])
     })
 
-    it('passes actionMenu to ReportingMetricBreakdownTable when chartId is provided', () => {
+    it('passes actionMenu to ReportingMetricBreakdownTable when chartId and withChartMenu are provided', () => {
         mockUseShoppingAssistantTopProductsMetrics.mockReturnValue(
             defaultMockReturn,
         )
         render(
-            <ShoppingAssistantTopProductsTable chartId="shopping_assistant_top_products_table" />,
+            <ShoppingAssistantTopProductsTable
+                chartId="shopping_assistant_top_products_table"
+                withChartMenu
+            />,
         )
 
         expect(getLastCallProps().actionMenu).toBeDefined()
@@ -198,6 +201,20 @@ describe('ShoppingAssistantTopProductsTable', () => {
 
     it('does not pass actionMenu to ReportingMetricBreakdownTable when chartId is not provided', () => {
         renderComponent()
+
+        expect(getLastCallProps().actionMenu).toBeUndefined()
+    })
+
+    it('does not pass actionMenu to ReportingMetricBreakdownTable when chartId is provided but withChartMenu is false', () => {
+        mockUseShoppingAssistantTopProductsMetrics.mockReturnValue(
+            defaultMockReturn,
+        )
+        render(
+            <ShoppingAssistantTopProductsTable
+                chartId="shopping_assistant_top_products_table"
+                withChartMenu={false}
+            />,
+        )
 
         expect(getLastCallProps().actionMenu).toBeUndefined()
     })

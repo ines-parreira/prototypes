@@ -123,19 +123,30 @@ describe('FlowsTable', () => {
         })
     })
 
-    it('passes actionMenu to ReportingMetricBreakdownTable when chartId is provided', () => {
+    it('passes actionMenu to ReportingMetricBreakdownTable when chartId and withChartMenu are provided', () => {
         mockUseFlowsMetrics.mockReturnValue({
             data: defaultData,
             loadingStates: defaultLoadingStates,
             displayNames: defaultDisplayNames,
         })
-        render(<FlowsTable chartId="flows_table" />)
+        render(<FlowsTable chartId="flows_table" withChartMenu />)
 
         expect(getLastCallProps().actionMenu).toBeDefined()
     })
 
     it('does not pass actionMenu to ReportingMetricBreakdownTable when chartId is not provided', () => {
         renderComponent()
+
+        expect(getLastCallProps().actionMenu).toBeUndefined()
+    })
+
+    it('does not pass actionMenu to ReportingMetricBreakdownTable when chartId is provided but withChartMenu is false', () => {
+        mockUseFlowsMetrics.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+            displayNames: defaultDisplayNames,
+        })
+        render(<FlowsTable chartId="flows_table" withChartMenu={false} />)
 
         expect(getLastCallProps().actionMenu).toBeUndefined()
     })

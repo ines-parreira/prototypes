@@ -10,9 +10,10 @@ import { useOrderManagementMetrics } from 'pages/aiAgent/analyticsOverview/hooks
 
 type Props = {
     chartId?: string
+    withChartMenu?: boolean
 }
 
-export const OrderManagementTable = ({ chartId }: Props) => {
+export const OrderManagementTable = ({ chartId, withChartMenu }: Props) => {
     const { data = [], loadingStates } = useOrderManagementMetrics()
 
     return (
@@ -23,7 +24,7 @@ export const OrderManagementTable = ({ chartId }: Props) => {
             DownloadButton={<DownloadOrderManagementButton />}
             nameColumns={ORDER_MANAGEMENT_NAME_COLUMNS}
             actionMenu={
-                chartId ? (
+                withChartMenu && chartId ? (
                     <ChartsActionMenu
                         chartId={chartId}
                         chartName="Order Management"

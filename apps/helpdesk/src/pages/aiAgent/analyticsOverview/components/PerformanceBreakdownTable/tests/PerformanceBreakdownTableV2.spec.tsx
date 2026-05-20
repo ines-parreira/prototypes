@@ -139,13 +139,16 @@ describe('PerformanceBreakdownTableV2', () => {
         expect(getLastCallProps().data).toEqual([])
     })
 
-    it('passes actionMenu to ReportingMetricBreakdownTable when chartId is provided', () => {
+    it('passes actionMenu to ReportingMetricBreakdownTable when chartId and withChartMenu are provided', () => {
         mockUsePerformanceMetricsPerFeatureV2.mockReturnValue({
             data: defaultData,
             loadingStates: defaultLoadingStates,
         })
         render(
-            <PerformanceBreakdownTableV2 chartId="performance_breakdown_table_v2" />,
+            <PerformanceBreakdownTableV2
+                chartId="performance_breakdown_table_v2"
+                withChartMenu
+            />,
         )
 
         expect(getLastCallProps().actionMenu).toBeDefined()
@@ -153,6 +156,21 @@ describe('PerformanceBreakdownTableV2', () => {
 
     it('does not pass actionMenu to ReportingMetricBreakdownTable when chartId is not provided', () => {
         renderComponent()
+
+        expect(getLastCallProps().actionMenu).toBeUndefined()
+    })
+
+    it('does not pass actionMenu to ReportingMetricBreakdownTable when chartId is provided but withChartMenu is false', () => {
+        mockUsePerformanceMetricsPerFeatureV2.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+        })
+        render(
+            <PerformanceBreakdownTableV2
+                chartId="performance_breakdown_table_v2"
+                withChartMenu={false}
+            />,
+        )
 
         expect(getLastCallProps().actionMenu).toBeUndefined()
     })

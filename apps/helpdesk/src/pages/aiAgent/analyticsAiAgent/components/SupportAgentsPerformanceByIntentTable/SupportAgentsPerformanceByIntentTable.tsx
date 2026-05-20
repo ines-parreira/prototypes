@@ -10,9 +10,13 @@ import { useSupportAgentsPerformanceByIntentMetrics } from 'pages/aiAgent/analyt
 
 type Props = {
     chartId?: string
+    withChartMenu?: boolean
 }
 
-export const SupportAgentsPerformanceByIntentTable = ({ chartId }: Props) => {
+export const SupportAgentsPerformanceByIntentTable = ({
+    chartId,
+    withChartMenu,
+}: Props) => {
     const { data = [], loadingStates } =
         useSupportAgentsPerformanceByIntentMetrics()
 
@@ -24,7 +28,7 @@ export const SupportAgentsPerformanceByIntentTable = ({ chartId }: Props) => {
             DownloadButton={<DownloadSupportAgentsPerformanceByIntentButton />}
             nameColumns={SUPPORT_AGENTS_PERFORMANCE_BY_INTENT_NAME_COLUMNS}
             actionMenu={
-                chartId ? (
+                withChartMenu && chartId ? (
                     <ChartsActionMenu chartId={chartId} chartName="Intent" />
                 ) : undefined
             }

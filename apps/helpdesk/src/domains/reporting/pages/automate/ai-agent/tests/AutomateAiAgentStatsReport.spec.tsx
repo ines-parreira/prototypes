@@ -285,7 +285,7 @@ describe('AutomateAiAgentStatsReport', () => {
             screen.queryByText('automated-interactions-metric'),
         ).toBeInTheDocument()
         expect(AutomatedInteractionsMetricMock).toHaveBeenCalledWith(
-            {
+            expect.objectContaining({
                 trend: {
                     isFetching: false,
                     isError: false,
@@ -294,7 +294,7 @@ describe('AutomateAiAgentStatsReport', () => {
                         prevValue: 140,
                     },
                 },
-            },
+            }),
             {},
         )
 

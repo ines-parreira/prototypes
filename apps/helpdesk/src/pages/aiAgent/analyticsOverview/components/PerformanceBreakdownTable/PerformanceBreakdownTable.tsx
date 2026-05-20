@@ -10,9 +10,13 @@ import { usePerformanceMetricsPerFeature } from 'pages/aiAgent/analyticsOverview
 
 type Props = {
     chartId?: string
+    withChartMenu?: boolean
 }
 
-export const PerformanceBreakdownTable = ({ chartId }: Props) => {
+export const PerformanceBreakdownTable = ({
+    chartId,
+    withChartMenu,
+}: Props) => {
     const { data = [], loadingStates } = usePerformanceMetricsPerFeature()
 
     return (
@@ -23,7 +27,7 @@ export const PerformanceBreakdownTable = ({ chartId }: Props) => {
             DownloadButton={<DownloadPerformanceBreakdownButton />}
             nameColumns={PERFORMANCE_BREAKDOWN_NAME_COLUMNS}
             actionMenu={
-                chartId ? (
+                withChartMenu && chartId ? (
                     <ChartsActionMenu
                         chartId={chartId}
                         chartName="All features"

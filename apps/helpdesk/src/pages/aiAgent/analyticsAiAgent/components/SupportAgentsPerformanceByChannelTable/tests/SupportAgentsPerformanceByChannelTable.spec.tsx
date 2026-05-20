@@ -140,13 +140,16 @@ describe('SupportAgentsPerformanceByChannelTable', () => {
         ).toBeInTheDocument()
     })
 
-    it('passes actionMenu to ReportingMetricBreakdownTable when chartId is provided', () => {
+    it('passes actionMenu to ReportingMetricBreakdownTable when chartId and withChartMenu are provided', () => {
         mockUseSupportAgentsPerformanceByChannelMetrics.mockReturnValue({
             data: defaultData,
             loadingStates: defaultLoadingStates,
         })
         render(
-            <SupportAgentsPerformanceByChannelTable chartId="support_agents_performance_by_channel_table" />,
+            <SupportAgentsPerformanceByChannelTable
+                chartId="support_agents_performance_by_channel_table"
+                withChartMenu
+            />,
         )
 
         expect(getLastCallProps().actionMenu).toBeDefined()
@@ -154,6 +157,21 @@ describe('SupportAgentsPerformanceByChannelTable', () => {
 
     it('does not pass actionMenu to ReportingMetricBreakdownTable when chartId is not provided', () => {
         renderComponent()
+
+        expect(getLastCallProps().actionMenu).toBeUndefined()
+    })
+
+    it('does not pass actionMenu to ReportingMetricBreakdownTable when chartId is provided but withChartMenu is false', () => {
+        mockUseSupportAgentsPerformanceByChannelMetrics.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+        })
+        render(
+            <SupportAgentsPerformanceByChannelTable
+                chartId="support_agents_performance_by_channel_table"
+                withChartMenu={false}
+            />,
+        )
 
         expect(getLastCallProps().actionMenu).toBeUndefined()
     })

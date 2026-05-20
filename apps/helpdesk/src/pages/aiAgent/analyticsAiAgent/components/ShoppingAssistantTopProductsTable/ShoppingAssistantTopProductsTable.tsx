@@ -11,9 +11,13 @@ import { DownloadShoppingAssistantTopProductsButton } from './DownloadShoppingAs
 
 type Props = {
     chartId?: string
+    withChartMenu?: boolean
 }
 
-export const ShoppingAssistantTopProductsTable = ({ chartId }: Props) => {
+export const ShoppingAssistantTopProductsTable = ({
+    chartId,
+    withChartMenu,
+}: Props) => {
     const {
         flatData,
         productNameMap,
@@ -49,7 +53,7 @@ export const ShoppingAssistantTopProductsTable = ({ chartId }: Props) => {
             }}
             DownloadButton={<DownloadShoppingAssistantTopProductsButton />}
             actionMenu={
-                chartId ? (
+                withChartMenu && chartId ? (
                     <ChartsActionMenu
                         chartId={chartId}
                         chartName="Top products recommended"

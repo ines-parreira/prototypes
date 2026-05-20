@@ -9,9 +9,10 @@ import { useFlowsMetrics } from 'pages/aiAgent/analyticsOverview/hooks/useFlowsM
 
 type Props = {
     chartId?: string
+    withChartMenu?: boolean
 }
 
-export const FlowsTable = ({ chartId }: Props) => {
+export const FlowsTable = ({ chartId, withChartMenu }: Props) => {
     const { data = [], loadingStates, displayNames } = useFlowsMetrics()
 
     const nameColumns = useMemo(
@@ -27,7 +28,7 @@ export const FlowsTable = ({ chartId }: Props) => {
             DownloadButton={<DownloadFlowsButton />}
             nameColumns={nameColumns}
             actionMenu={
-                chartId ? (
+                withChartMenu && chartId ? (
                     <ChartsActionMenu chartId={chartId} chartName="Flows" />
                 ) : undefined
             }

@@ -148,7 +148,7 @@ describe('ArticleRecommendationTable', () => {
         )
     })
 
-    it('passes actionMenu to ReportingMetricBreakdownTable when chartId is provided', () => {
+    it('passes actionMenu to ReportingMetricBreakdownTable when chartId and withChartMenu are provided', () => {
         mockUseArticleRecommendationMetrics.mockReturnValue({
             data: defaultData,
             loadingStates: defaultLoadingStates,
@@ -157,7 +157,10 @@ describe('ArticleRecommendationTable', () => {
             isError: false,
         })
         render(
-            <ArticleRecommendationTable chartId="article_recommendation_table" />,
+            <ArticleRecommendationTable
+                chartId="article_recommendation_table"
+                withChartMenu
+            />,
         )
 
         expect(getLastCallProps().actionMenu).toBeDefined()
@@ -165,6 +168,24 @@ describe('ArticleRecommendationTable', () => {
 
     it('does not pass actionMenu to ReportingMetricBreakdownTable when chartId is not provided', () => {
         renderComponent()
+
+        expect(getLastCallProps().actionMenu).toBeUndefined()
+    })
+
+    it('does not pass actionMenu to ReportingMetricBreakdownTable when chartId is provided but withChartMenu is false', () => {
+        mockUseArticleRecommendationMetrics.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+            displayNames: defaultDisplayNames,
+            isLoading: false,
+            isError: false,
+        })
+        render(
+            <ArticleRecommendationTable
+                chartId="article_recommendation_table"
+                withChartMenu={false}
+            />,
+        )
 
         expect(getLastCallProps().actionMenu).toBeUndefined()
     })
