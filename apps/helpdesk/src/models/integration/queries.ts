@@ -1,7 +1,13 @@
 import client from '@repo/api-resources'
 import { reportError } from '@repo/logging'
-import type { UseQueryOptions } from '@tanstack/react-query'
-import { useInfiniteQuery, useQueries, useQuery } from '@tanstack/react-query'
+import type { UseMutationOptions, UseQueryOptions } from '@tanstack/react-query'
+import {
+    useInfiniteQuery,
+    useMutation,
+    useQueries,
+    useQuery,
+    useQueryClient,
+} from '@tanstack/react-query'
 
 import { INTEGRATION_DATA_ITEM_TYPE_PRODUCT } from 'constants/integration'
 import type { Product } from 'constants/integrations/types/shopify'
@@ -28,6 +34,13 @@ import type {
     ShopifyTags,
 } from './types'
 import type { AppData, AppListData } from './types/app'
+import type {
+    ServiceConnectionApiDTO,
+    ServiceConnectionAuthApiDTO,
+    ServiceConnectionStatus,
+    StoreForServiceConnectionApiDTO,
+    UpdateServiceConnectionRequest,
+} from './types/serviceConnection'
 
 export const STALE_TIME_MS = 10 * 60 * 1000 // 10 minutes
 export const CACHE_TIME_MS = 20 * 60 * 1000 // 20 minutes
@@ -271,3 +284,200 @@ export const useGetAppsByIds = (appIds: string[]) => {
         })),
     })
 }
+
+// TODO(ORCSUP-358): migrate to `@gorgias/helpdesk-queries` once the SDK
+// publishes service-connection hooks and `@gorgias/helpdesk-mocks` ships
+// matching MSW handlers.
+
+export const serviceConnectionsQueryKey = (applicationId: string) =>
+    [
+        'integration',
+        'service-connections',
+        { application_id: applicationId },
+    ] as const
+
+export const serviceConnectionQueryKey = (connectionId: string) =>
+    ['integration', 'service-connections', connectionId] as const
+
+export const serviceConnectionAuthQueryKey = (connectionId: string) =>
+    ['integration', 'service-connections', connectionId, 'auth'] as const
+
+export const serviceConnectionStoresQueryKey = (connectionId: string) =>
+    ['integration', 'service-connections', connectionId, 'stores'] as const
+
+export const useListServiceConnectionsByAppId = (
+    applicationId: string,
+    overrides?: { enabled?: boolean },
+) =>
+    useQuery({
+        queryKey: serviceConnectionsQueryKey(applicationId),
+        queryFn: async () => {
+            const response = await client.get<
+                ApiListResponse<ServiceConnectionApiDTO[], unknown>
+            >('/api/service-connections/', {
+                params: { application_id: applicationId },
+            })
+            return response.data.data
+        },
+        enabled: !!applicationId && overrides?.enabled !== false,
+        staleTime: STALE_TIME_MS,
+        cacheTime: CACHE_TIME_MS,
+    })
+
+export const useGetServiceConnection = (
+    connectionId: string,
+    overrides?: { enabled?: boolean },
+) =>
+    useQuery({
+        queryKey: serviceConnectionQueryKey(connectionId),
+        queryFn: async () => {
+            const response = await client.get<ServiceConnectionApiDTO>(
+                `/api/service-connections/${connectionId}`,
+            )
+            return response.data
+        },
+        enabled: !!connectionId && overrides?.enabled !== false,
+        staleTime: STALE_TIME_MS,
+        cacheTime: CACHE_TIME_MS,
+    })
+
+export const useGetServiceConnectionAuth = (
+    connectionId: string,
+    overrides?: { enabled?: boolean },
+) =>
+    useQuery({
+        queryKey: serviceConnectionAuthQueryKey(connectionId),
+        queryFn: async () => {
+            const response = await client.get<ServiceConnectionAuthApiDTO>(
+                `/api/service-connections/${connectionId}/auth/`,
+            )
+            return response.data
+        },
+        enabled: !!connectionId && overrides?.enabled !== false,
+    })
+
+export const useListServiceConnectionStores = (
+    connectionId: string,
+    overrides?: { enabled?: boolean },
+) =>
+    useQuery({
+        queryKey: serviceConnectionStoresQueryKey(connectionId),
+        queryFn: async () => {
+            const response = await client.get<
+                ApiListResponse<StoreForServiceConnectionApiDTO[], unknown>
+            >(`/api/service-connections/${connectionId}/stores/`)
+            return response.data.data
+        },
+        enabled: !!connectionId && overrides?.enabled !== false,
+        staleTime: STALE_TIME_MS,
+        cacheTime: CACHE_TIME_MS,
+    })
+
+export const useAssignServiceConnectionStore = (
+    options?: UseMutationOptions<
+        StoreForServiceConnectionApiDTO,
+        unknown,
+        { connectionId: string; storeId: number }
+    >,
+) => {
+    const queryClient = useQueryClient()
+    return useMutation({
+        mutationFn: async ({ connectionId, storeId }) => {
+            const response = await client.post<StoreForServiceConnectionApiDTO>(
+                `/api/service-connections/${connectionId}/stores/`,
+                { store_id: storeId },
+            )
+            return response.data
+        },
+        onSuccess: (_data, vars, ctx) => {
+            void queryClient.invalidateQueries({
+                queryKey: serviceConnectionStoresQueryKey(vars.connectionId),
+            })
+            options?.onSuccess?.(_data, vars, ctx)
+        },
+        ...options,
+    })
+}
+
+export const useUnassignServiceConnectionStore = (
+    options?: UseMutationOptions<
+        void,
+        unknown,
+        { connectionId: string; storeId: number }
+    >,
+) => {
+    const queryClient = useQueryClient()
+    return useMutation({
+        mutationFn: async ({ connectionId, storeId }) => {
+            await client.delete(
+                `/api/service-connections/${connectionId}/stores/${storeId}/`,
+            )
+        },
+        onSuccess: (_data, vars, ctx) => {
+            void queryClient.invalidateQueries({
+                queryKey: serviceConnectionStoresQueryKey(vars.connectionId),
+            })
+            options?.onSuccess?.(_data, vars, ctx)
+        },
+        ...options,
+    })
+}
+
+export const useTrashServiceConnection = (
+    applicationId: string,
+    options?: UseMutationOptions<
+        ServiceConnectionApiDTO,
+        unknown,
+        { connectionId: string }
+    >,
+) => {
+    const queryClient = useQueryClient()
+    return useMutation({
+        mutationFn: async ({ connectionId }) => {
+            const response = await client.put<ServiceConnectionApiDTO>(
+                `/api/service-connections/${connectionId}/trash/`,
+            )
+            return response.data
+        },
+        onSuccess: (data, vars, ctx) => {
+            void queryClient.invalidateQueries({
+                queryKey: serviceConnectionsQueryKey(applicationId),
+            })
+            options?.onSuccess?.(data, vars, ctx)
+        },
+        ...options,
+    })
+}
+
+export const useUpdateServiceConnection = (
+    options?: UseMutationOptions<
+        ServiceConnectionApiDTO,
+        unknown,
+        { connectionId: string; payload: UpdateServiceConnectionRequest }
+    >,
+) => {
+    const queryClient = useQueryClient()
+    return useMutation({
+        mutationFn: async ({ connectionId, payload }) => {
+            const response = await client.put<ServiceConnectionApiDTO>(
+                `/api/service-connections/${connectionId}`,
+                payload,
+            )
+            return response.data
+        },
+        onSuccess: (data, vars, ctx) => {
+            void queryClient.invalidateQueries({
+                queryKey: serviceConnectionQueryKey(vars.connectionId),
+            })
+            void queryClient.invalidateQueries({
+                queryKey: serviceConnectionAuthQueryKey(vars.connectionId),
+            })
+            options?.onSuccess?.(data, vars, ctx)
+        },
+        ...options,
+    })
+}
+
+export const isServiceConnectionHealthy = (
+    status: ServiceConnectionStatus | undefined,
+) => status === 'active'

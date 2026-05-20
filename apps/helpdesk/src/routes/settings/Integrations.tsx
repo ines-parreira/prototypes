@@ -3,6 +3,7 @@ import { Route, Switch, useRouteMatch } from 'react-router-dom'
 import { PageSection } from 'config/pages'
 import { ADMIN_ROLE } from 'config/user'
 import AppDetail from 'pages/integrations/integration/components/app/App'
+import AppConnectionEdit from 'pages/integrations/integration/components/app/AppConnectionEdit'
 import IntegrationDetail from 'pages/integrations/integration/Integration'
 import IntegrationsStore from 'pages/integrations/Store'
 import MyIntegrations from 'pages/integrations/Store/Mine'
@@ -23,6 +24,12 @@ export function Integrations() {
             <Route path={`${path}/mine`} exact>
                 {renderAppSettings(MyIntegrations, {
                     roleParams: [ADMIN_ROLE, PageSection.Integrations],
+                })}
+            </Route>
+
+            <Route path={`${path}/app/:appId/connections/:connectionId`} exact>
+                {renderAppSettings(AppConnectionEdit, {
+                    roleParams: [ADMIN_ROLE],
                 })}
             </Route>
 

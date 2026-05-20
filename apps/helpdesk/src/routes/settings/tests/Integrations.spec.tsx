@@ -6,6 +6,7 @@ import { Route, useRouteMatch } from 'react-router-dom'
 import { PageSection } from 'config/pages'
 import { ADMIN_ROLE } from 'config/user'
 import AppDetail from 'pages/integrations/integration/components/app/App'
+import AppConnectionEdit from 'pages/integrations/integration/components/app/AppConnectionEdit'
 import IntegrationDetail from 'pages/integrations/integration/Integration'
 import IntegrationsStore from 'pages/integrations/Store'
 import MyIntegrations from 'pages/integrations/Store/Mine'
@@ -42,7 +43,7 @@ describe('Integration', () => {
             {
                 callOrder: 0,
                 path: basePath + '/',
-                pageSection: PageSection.Integrations,
+                roleParams: [ADMIN_ROLE, PageSection.Integrations],
                 component: IntegrationsStore,
             },
         ],
@@ -50,37 +51,45 @@ describe('Integration', () => {
             {
                 callOrder: 1,
                 path: basePath + '/mine',
-                pageSection: PageSection.Integrations,
+                roleParams: [ADMIN_ROLE, PageSection.Integrations],
                 component: MyIntegrations,
             },
         ],
         [
             {
                 callOrder: 2,
-                path: basePath + '/app/:appId/:extra?',
-                pageSection: undefined,
-                component: AppDetail,
+                path: basePath + '/app/:appId/connections/:connectionId',
+                roleParams: [ADMIN_ROLE],
+                component: AppConnectionEdit,
             },
         ],
         [
             {
                 callOrder: 3,
+                path: basePath + '/app/:appId/:extra?',
+                roleParams: [ADMIN_ROLE],
+                component: AppDetail,
+            },
+        ],
+        [
+            {
+                callOrder: 4,
                 path:
                     basePath +
                     '/:integrationType/:integrationId?/:extra?/:subId?',
-                pageSection: PageSection.Integrations,
+                roleParams: [ADMIN_ROLE, PageSection.Integrations],
                 component: IntegrationDetail,
             },
         ],
     ])(
         'should call renderer and Route with correct props',
-        ({ callOrder, path, pageSection, component }) => {
+        ({ callOrder, path, roleParams, component }) => {
             render(<Integrations />)
 
             expect(mockedRenderAppSettings.mock.calls[callOrder]).toEqual([
                 component,
                 {
-                    roleParams: [ADMIN_ROLE, pageSection],
+                    roleParams,
                 },
             ])
             expect(mockedRoute.mock.calls[callOrder]).toEqual([

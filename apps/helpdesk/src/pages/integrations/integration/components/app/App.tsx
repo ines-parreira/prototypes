@@ -39,6 +39,7 @@ import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { fetchIntegrations } from 'state/integrations/actions'
 import { getIntegrationsByAppId } from 'state/integrations/selectors'
 
+import AppActionsConnections from './AppActionsConnections'
 import AppActionsTab from './AppActionsTab'
 import IntegrationsList from './IntegrationsList'
 
@@ -182,7 +183,7 @@ export default function AppDetail() {
                     <NavLink to={`${baseURL}/advanced`} exact>
                         Advanced
                     </NavLink>
-                    {hasConnections && (
+                    {(hasConnections || isActionLibraryEnabled) && (
                         <NavLink to={`${baseURL}/connections`} exact>
                             Connections
                         </NavLink>
@@ -196,12 +197,18 @@ export default function AppDetail() {
             )}
             {extra === Tab.Advanced && <AppAdvanced {...appItem} />}
             {extra === Tab.Details && <Detail {...detailProps} />}
-            {extra === Tab.Connections && (
-                <IntegrationsList
-                    appId={appItem.appId}
-                    connectUrl={appItem.connectUrl}
-                />
-            )}
+            {extra === Tab.Connections &&
+                (isActionLibraryEnabled ? (
+                    <AppActionsConnections
+                        appId={appItem.appId}
+                        connectUrl={appItem.connectUrl}
+                    />
+                ) : (
+                    <IntegrationsList
+                        appId={appItem.appId}
+                        connectUrl={appItem.connectUrl}
+                    />
+                ))}
             {extra === Tab.Actions && isActionLibraryEnabled && (
                 <AppActionsTab
                     appId={appItem.appId}

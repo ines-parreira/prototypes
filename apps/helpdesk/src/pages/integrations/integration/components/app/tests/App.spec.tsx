@@ -352,5 +352,114 @@ describe(`App`, () => {
                 await screen.findByRole('link', { name: 'Actions' }),
             ).toBeInTheDocument()
         })
+
+        it('shows the Connections link even with no connected integrations when the FF is on', async () => {
+            mockServer
+                .onGet(`/api/apps/${appId}`)
+                .reply(200, { ...dummyAppData, id: appId, is_installed: true })
+            mockServer.onGet(`/api/async/errors`).reply(200, { data: [] })
+            featureFlagsClientMock.allFlags.mockReturnValue({
+                'action-centralized-library': 'MILESTONE-1',
+            })
+            render(<App />, {
+                path: '/integrations/app/:appId/:extra?',
+                initialEntries: [`/integrations/app/${appId}`],
+                storeState: store.getState() as object,
+            })
+            await screen.findAllByText(new RegExp(dummyAppData.name))
+            expect(
+                await screen.findByRole('link', { name: 'Connections' }),
+            ).toBeInTheDocument()
+        })
+
+        it('renders the health-aware Connections content when the FF is on', async () => {
+            const connectionId = '01970000-0000-7000-8000-000000000001'
+            mockServer
+                .onGet(`/api/apps/${appId}`)
+                .reply(200, { ...dummyAppData, id: appId, is_installed: true })
+            mockServer.onGet(`/api/async/errors`).reply(200, { data: [] })
+            mockServer.onGet('/api/service-connections/').reply(200, {
+                data: [
+                    {
+                        id: connectionId,
+                        name: 'Test connection',
+                        service: 'shipmonk',
+                        url: 'https://api.shipmonk.com',
+                        status: 'active',
+                        created_datetime: '2026-05-01T00:00:00',
+                        updated_datetime: null,
+                        trashed_datetime: null,
+                        created_by: 1,
+                        updated_by: null,
+                        trashed_by: null,
+                        external_id: null,
+                        vendor: null,
+                    },
+                ],
+                meta: {},
+            })
+            mockServer
+                .onGet(`/api/service-connections/${connectionId}/stores/`)
+                .reply(200, { data: [], meta: {} })
+            featureFlagsClientMock.allFlags.mockReturnValue({
+                'action-centralized-library': 'MILESTONE-1',
+            })
+            const integrationsStore = mockStore({
+                currentAccount: fromJS({ domain: '20-1 rpz' }),
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            id: 1,
+                            type: 'app',
+                            application_id: appId,
+                            name: 'My account',
+                            meta: { address: '@myapp' },
+                        } as Integration,
+                    ],
+                }),
+            } as unknown as RootState)
+            render(<App />, {
+                path: '/integrations/app/:appId/:extra?',
+                initialEntries: [
+                    `/integrations/app/${appId}/${Tab.Connections}`,
+                ],
+                storeState: integrationsStore.getState() as object,
+            })
+            expect(await screen.findByText('Healthy')).toBeInTheDocument()
+        })
+
+        it('keeps the legacy IntegrationsList in the Connections tab when the FF is off', async () => {
+            mockServer
+                .onGet(`/api/apps/${appId}`)
+                .reply(200, { ...dummyAppData, id: appId, is_installed: true })
+            mockServer.onGet(`/api/async/errors`).reply(200, { data: [] })
+            featureFlagsClientMock.allFlags.mockReturnValue({
+                'action-centralized-library': 'OFF',
+            })
+            const integrationsStore = mockStore({
+                currentAccount: fromJS({ domain: '20-1 rpz' }),
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            id: 1,
+                            type: 'app',
+                            application_id: appId,
+                            name: 'My account',
+                            meta: { address: '@myapp' },
+                        } as Integration,
+                    ],
+                }),
+            } as unknown as RootState)
+            render(<App />, {
+                path: '/integrations/app/:appId/:extra?',
+                initialEntries: [
+                    `/integrations/app/${appId}/${Tab.Connections}`,
+                ],
+                storeState: integrationsStore.getState() as object,
+            })
+            await screen.findAllByText(new RegExp(dummyAppData.name))
+            expect(screen.queryByText('Healthy')).not.toBeInTheDocument()
+            expect(screen.queryByText('Unhealthy')).not.toBeInTheDocument()
+        })
     })
 })
