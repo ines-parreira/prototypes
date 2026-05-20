@@ -42,7 +42,7 @@ describe('usePublishModal', () => {
         is_current: true,
         rating: { up: 0, down: 0 },
         draft_version_id: null,
-        published_version_id: null,
+        published_version_id: 123,
         published_datetime: null,
         publisher_user_id: null,
         commit_message: null,
@@ -62,6 +62,14 @@ describe('usePublishModal', () => {
         ingested_resource_id: null,
         translation: mockTranslation,
     }
+
+    const createFirstPublishArticle = () => ({
+        ...mockArticle,
+        translation: {
+            ...mockTranslation,
+            published_version_id: null,
+        },
+    })
 
     const createMockContext = (
         overrides: Partial<{
@@ -128,26 +136,20 @@ describe('usePublishModal', () => {
 
     describe('isOpen', () => {
         it('should return true when activeModal is "publish" and not first publish', () => {
-            mockUseArticleContext.mockReturnValue(
-                createMockContext({
-                    state: {
-                        article: {
-                            ...mockArticle,
-                            translation: {
-                                ...mockTranslation,
-                                published_version_id: 123,
-                            },
-                        },
-                    },
-                }),
-            )
-
             const { result } = renderHook(() => usePublishModal())
 
             expect(result.current.isOpen).toBe(true)
         })
 
         it('should return false when activeModal is "publish" but is first publish', () => {
+            mockUseArticleContext.mockReturnValue(
+                createMockContext({
+                    state: {
+                        article: createFirstPublishArticle(),
+                    },
+                }),
+            )
+
             const { result } = renderHook(() => usePublishModal())
 
             expect(result.current.isOpen).toBe(false)
@@ -210,6 +212,13 @@ describe('usePublishModal', () => {
                     content: 'Updated Content',
                 },
             })
+            mockUseArticleContext.mockReturnValue(
+                createMockContext({
+                    state: {
+                        article: createFirstPublishArticle(),
+                    },
+                }),
+            )
 
             renderHook(() => usePublishModal())
 
@@ -237,6 +246,13 @@ describe('usePublishModal', () => {
                     content: 'Updated Content',
                 },
             })
+            mockUseArticleContext.mockReturnValue(
+                createMockContext({
+                    state: {
+                        article: createFirstPublishArticle(),
+                    },
+                }),
+            )
 
             const { rerender } = renderHook(() => usePublishModal())
 
@@ -281,6 +297,7 @@ describe('usePublishModal', () => {
                 createMockContext({
                     state: {
                         activeModal: null,
+                        article: createFirstPublishArticle(),
                     },
                 }),
             )
