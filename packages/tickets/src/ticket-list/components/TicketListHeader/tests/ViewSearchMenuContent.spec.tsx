@@ -136,7 +136,7 @@ describe('ViewSearchMenuContent', () => {
         mockViewCountBadge.mockImplementation(({ viewId }) => {
             const count = mockUseViewCount(viewId)
 
-            if (!count) {
+            if (count === undefined) {
                 return null
             }
 
@@ -247,12 +247,12 @@ describe('ViewSearchMenuContent', () => {
         ).toBeInTheDocument()
     })
 
-    it('renders formatted count badges when counts exist and hides them when they do not', async () => {
+    it('renders formatted and zero count badges when counts exist', async () => {
         mockUseViewCount.mockImplementation((id) => {
             const counts: Record<number, number | undefined> = {
                 1: 20,
                 2: 1200,
-                3: undefined,
+                3: 0,
                 4: 5000,
             }
 
@@ -276,6 +276,25 @@ describe('ViewSearchMenuContent', () => {
         )
 
         expect(await screen.findByText('1.2k')).toBeInTheDocument()
+
+        renderContent({
+            searchValue: 'vip',
+            searchResults: [
+                {
+                    view: privateSectionView as View,
+                    breadcrumb: 'Private > My section',
+                    searchText: 'vip follow-up private my section',
+                },
+            ],
+        })
+
+        expect(
+            screen.getByRole('menuitemradio', { name: /vip follow-up/i }),
+        ).toHaveTextContent('0')
+    })
+
+    it('hides count badges when the count is missing', () => {
+        mockUseViewCount.mockReturnValue(undefined)
 
         renderContent({
             searchValue: 'vip',

@@ -3,7 +3,7 @@ import { createStore, useStore } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import { useShallow } from 'zustand/shallow'
 
-import { getViewIdFromUrl } from '../utils/url'
+import { getActiveViewIdFromUrl } from '../utils/activeView'
 
 export type ViewCountEntry = {
     count: number
@@ -73,13 +73,13 @@ export function setNextTickAt(value: number | null): void {
 }
 
 /**
- * Mirrors the URL's active view ID into the LRU recent set so the
- * scheduler's tick refresh picks up navigation. Runs after hydration
- * (via `onRehydrateStorage`) and on every URL change (`startUrlWatcher`).
+ * Mirrors the URL's active view into the LRU recent set so the scheduler's
+ * tick refresh picks up navigation. `/app/views` maps to the Inbox system
+ * view once the views cache can resolve it.
  */
-function syncViewedFromUrl(): void {
-    const urlViewId = getViewIdFromUrl()
-    if (urlViewId !== null) markViewAsViewed(urlViewId)
+export function syncViewedFromUrl(): void {
+    const activeViewId = getActiveViewIdFromUrl()
+    if (activeViewId !== null) markViewAsViewed(activeViewId)
 }
 
 function startUrlWatcher(): void {

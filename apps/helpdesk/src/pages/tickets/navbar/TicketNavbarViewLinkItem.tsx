@@ -88,7 +88,7 @@ export const TicketNavbarViewLinkItem = forwardRef<HTMLAnchorElement, Props>(
                             <TooltipContent title="This view is deactivated" />
                         </Tooltip>
                     ) : (
-                        !!viewCount && (
+                        viewCount !== undefined && (
                             <Quantity
                                 quantity={viewCount}
                                 color={isActive ? 'purple' : undefined}

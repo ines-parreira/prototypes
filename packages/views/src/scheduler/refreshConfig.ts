@@ -24,6 +24,14 @@ export type RefreshConfig = {
     ttlSecondsByCount: Record<number, number>
 
     /**
+     * Optional TTL override for the currently active view. When set, the
+     * active view uses this value instead of `ttlSecondsByCount`; `0` makes it
+     * eligible on every scheduler tick. `null` explicitly preserves the
+     * count-based TTL.
+     */
+    activeViewTtlSeconds: number | null
+
+    /**
      * TTL applied by the leader-takeover scan (boot or focus-driven
      * steal). A view is dispatched if its persisted `lastFetchedAt` is
      * missing or older than this. Uniform across all views — keeps the
@@ -47,6 +55,7 @@ export const DEFAULT_REFRESH_CONFIG: RefreshConfig = {
         500: 300,
         1000: 600,
     },
+    activeViewTtlSeconds: 30,
     initialFetchTtlSeconds: 3600, // 1 hour
 }
 
@@ -72,4 +81,20 @@ export function getTtlSecondsForCount(
         else break
     }
     return ttl
+}
+
+export function getTtlSecondsForView({
+    count,
+    isActiveView = false,
+    config = DEFAULT_REFRESH_CONFIG,
+}: {
+    count: number | undefined
+    isActiveView?: boolean
+    config?: RefreshConfig
+}): number {
+    if (isActiveView && config.activeViewTtlSeconds !== null) {
+        return config.activeViewTtlSeconds
+    }
+
+    return getTtlSecondsForCount(count, config)
 }

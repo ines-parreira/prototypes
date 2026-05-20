@@ -2,8 +2,10 @@ import { DurationInMs } from '@repo/utils'
 
 export const VIEWS_STALE_TIME = DurationInMs.OneDay * 2
 
+export const INBOX_SYSTEM_VIEW_NAME = 'Inbox'
+
 export const TOP_SYSTEM_VIEW_NAMES: readonly string[] = [
-    'Inbox',
+    INBOX_SYSTEM_VIEW_NAME,
     'Unassigned',
     'All',
     'Snoozed',

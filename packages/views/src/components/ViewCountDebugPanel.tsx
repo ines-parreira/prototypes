@@ -27,10 +27,11 @@ import { useAllViews } from '../hooks/useAllViews'
 import { useSchedulerConfig } from '../hooks/useSchedulerConfig'
 import { isViewDeactivated } from '../predicates/isViewDeactivated'
 import type { RefreshConfig } from '../scheduler/refreshConfig'
-import { getTtlSecondsForCount } from '../scheduler/refreshConfig'
+import { getTtlSecondsForView } from '../scheduler/refreshConfig'
 import type { ViewEvent } from '../store/viewEventLog'
 import { viewEventLogStore } from '../store/viewEventLog'
 import { viewsCountStore } from '../store/viewsCountStore'
+import { getActiveViewIdFromUrl } from '../utils/activeView'
 
 type ViewCountDebugPanelProps = {
     isOpen?: boolean
@@ -43,6 +44,7 @@ type RecentRow = {
     count: number
     lastFetchedAt: string | null
     viewedAt: string
+    isActiveView: boolean
 }
 
 export function ViewCountDebugPanel({
@@ -56,6 +58,7 @@ export function ViewCountDebugPanel({
     const events = useStore(viewEventLogStore, (s) => s.events)
 
     useNow()
+    const activeViewId = getActiveViewIdFromUrl()
 
     const viewName = useMemo(() => {
         const m = new Map<number, string>()
@@ -77,9 +80,10 @@ export function ViewCountDebugPanel({
                     count: counts[viewId]?.count ?? 0,
                     lastFetchedAt: counts[viewId]?.lastFetchedAt ?? null,
                     viewedAt: entry.viewedAt,
+                    isActiveView: viewId === activeViewId,
                 }
             })
-    }, [recent, counts, viewName, config.maxRecentViews])
+    }, [recent, counts, viewName, config.maxRecentViews, activeViewId])
 
     return (
         <SidePanel
@@ -429,10 +433,12 @@ const statsRowStyle = {
 function FetchAgeCell({
     lastFetchedAt,
     count,
+    isActiveView,
     config,
 }: {
     lastFetchedAt: string | null
     count: number
+    isActiveView: boolean
     config: RefreshConfig
 }) {
     const now = useNow()
@@ -446,7 +452,7 @@ function FetchAgeCell({
         )
     }
     const seconds = Math.round((now - new Date(lastFetchedAt).getTime()) / 1000)
-    const ttl = getTtlSecondsForCount(count, config)
+    const ttl = getTtlSecondsForView({ count, isActiveView, config })
     const expired = seconds >= ttl
     return (
         <DataTableBaseCell>
@@ -479,8 +485,16 @@ function formatTtl(seconds: number): string {
     return Number.isInteger(minutes) ? `${minutes}m` : `${minutes.toFixed(1)}m`
 }
 
-function TtlCell({ count, config }: { count: number; config: RefreshConfig }) {
-    const ttl = getTtlSecondsForCount(count, config)
+function TtlCell({
+    count,
+    isActiveView,
+    config,
+}: {
+    count: number
+    isActiveView: boolean
+    config: RefreshConfig
+}) {
+    const ttl = getTtlSecondsForView({ count, isActiveView, config })
     return (
         <DataTableBaseCell>
             <Tooltip
@@ -491,7 +505,7 @@ function TtlCell({ count, config }: { count: number; config: RefreshConfig }) {
                 }
             >
                 <TooltipContent
-                    title={`Refresh TTL for ${count} ticket${count === 1 ? '' : 's'}: ${ttl}s`}
+                    title={`${isActiveView ? 'Active view' : 'Refresh'} TTL for ${count} ticket${count === 1 ? '' : 's'}: ${ttl}s`}
                 />
             </Tooltip>
         </DataTableBaseCell>
@@ -550,18 +564,28 @@ function buildRecentColumns(config: RefreshConfig) {
                 <FetchAgeCell
                     lastFetchedAt={info.getValue()}
                     count={info.row.original.count}
+                    isActiveView={info.row.original.isActiveView}
                     config={config}
                 />
             ),
             hug: true,
         }),
         columnHelper.accessor(
-            (row) => getTtlSecondsForCount(row.count, config),
+            (row) =>
+                getTtlSecondsForView({
+                    count: row.count,
+                    isActiveView: row.isActiveView,
+                    config,
+                }),
             {
                 id: 'ttl',
                 header: 'TTL',
                 cell: (info) => (
-                    <TtlCell count={info.row.original.count} config={config} />
+                    <TtlCell
+                        count={info.row.original.count}
+                        isActiveView={info.row.original.isActiveView}
+                        config={config}
+                    />
                 ),
                 hug: true,
             },

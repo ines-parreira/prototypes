@@ -1,5 +1,9 @@
 import type { RefreshConfig } from '../refreshConfig'
-import { DEFAULT_REFRESH_CONFIG, getTtlSecondsForCount } from '../refreshConfig'
+import {
+    DEFAULT_REFRESH_CONFIG,
+    getTtlSecondsForCount,
+    getTtlSecondsForView,
+} from '../refreshConfig'
 
 describe('getTtlSecondsForCount (default config)', () => {
     it('returns the entry for the largest threshold ≤ count', () => {
@@ -61,5 +65,53 @@ describe('getTtlSecondsForCount (custom config)', () => {
         expect(getTtlSecondsForCount(50, config)).toBe(45)
         expect(getTtlSecondsForCount(100, config)).toBe(45)
         expect(getTtlSecondsForCount(700, config)).toBe(300)
+    })
+})
+
+describe('getTtlSecondsForView', () => {
+    it('uses the default active view TTL for active views', () => {
+        expect(
+            getTtlSecondsForView({
+                count: 1000,
+                isActiveView: true,
+            }),
+        ).toBe(30)
+    })
+
+    it('uses the count-based TTL when the active view override is explicitly disabled', () => {
+        const config: RefreshConfig = {
+            ...DEFAULT_REFRESH_CONFIG,
+            activeViewTtlSeconds: null,
+        }
+
+        expect(
+            getTtlSecondsForView({
+                count: 1000,
+                isActiveView: true,
+                config,
+            }),
+        ).toBe(600)
+    })
+
+    it('uses activeViewTtlSeconds only for the active view', () => {
+        const config: RefreshConfig = {
+            ...DEFAULT_REFRESH_CONFIG,
+            activeViewTtlSeconds: 0,
+        }
+
+        expect(
+            getTtlSecondsForView({
+                count: 50,
+                isActiveView: true,
+                config,
+            }),
+        ).toBe(0)
+        expect(
+            getTtlSecondsForView({
+                count: 50,
+                isActiveView: false,
+                config,
+            }),
+        ).toBe(30)
     })
 })

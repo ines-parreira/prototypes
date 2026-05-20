@@ -25,12 +25,12 @@ describe('ViewCountBadge', () => {
         expect(container).toBeEmptyDOMElement()
     })
 
-    it('renders nothing when count is zero', () => {
+    it('renders zero when count is zero', () => {
         setViewsCount({ 1: 0 })
 
-        const { container } = render(<ViewCountBadge viewId={1} />)
+        render(<ViewCountBadge viewId={1} />)
 
-        expect(container).toBeEmptyDOMElement()
+        expect(screen.getByText('0')).toBeInTheDocument()
     })
 
     it('renders the count when it exists', () => {

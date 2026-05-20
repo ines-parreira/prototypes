@@ -6,6 +6,7 @@ export {
     getViewCount,
     getViewCountEntry,
     markViewAsViewed,
+    syncViewedFromUrl,
     setNextTickAt,
     clearViewsCount,
     viewsCountStore,

@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import {
     createScheduler,
     logViewEvent,
+    syncViewedFromUrl,
     useAllViewsLoaded,
     useSchedulerConfig,
     useViewCountSchedulerVersion,
@@ -30,6 +31,12 @@ export default function useViewCountScheduler(): void {
     // takeover scan can send view IDs to a worker whose socket isn't live,
     // and the payload is silently dropped.
     const isSocketConnected = useIsSocketConnected()
+
+    useEffect(() => {
+        if (!isEnabled || !viewsLoaded) return
+
+        syncViewedFromUrl()
+    }, [isEnabled, viewsLoaded])
 
     useEffect(() => {
         if (!isEnabled || !viewsLoaded || !isSocketConnected) return

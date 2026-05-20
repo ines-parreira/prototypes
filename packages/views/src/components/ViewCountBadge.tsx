@@ -10,7 +10,7 @@ type Props = {
 export function ViewCountBadge({ viewId, isActive }: Props) {
     const count = useViewCount(viewId)
 
-    if (!count) return null
+    if (count === undefined) return null
 
     return (
         <Quantity

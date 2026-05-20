@@ -31,6 +31,7 @@ export const refreshConfigSchema = z
         tickIntervalSeconds: positive,
         maxRecentViews: positiveInt,
         ttlSecondsByCount: ttlSecondsByCountSchema,
+        activeViewTtlSeconds: nonNegative.nullable(),
         initialFetchTtlSeconds: nonNegative,
     })
     .partial()

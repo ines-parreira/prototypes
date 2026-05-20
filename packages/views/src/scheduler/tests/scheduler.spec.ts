@@ -79,6 +79,7 @@ beforeEach(() => {
     appQueryClient.clear()
     clearViewsCount()
     vi.useFakeTimers()
+    window.history.pushState({}, '', '/')
 })
 
 afterEach(() => {
@@ -143,6 +144,57 @@ describe('tick', () => {
         scheduler.tick()
 
         expect(onRefresh).toHaveBeenCalledWith([1])
+    })
+
+    it('uses the active view TTL override only for the URL-active view', () => {
+        const onRefresh = vi.fn()
+        const scheduler = createScheduler({
+            onRefresh,
+            config: { activeViewTtlSeconds: 0 },
+        })
+
+        setAllViews([makeView(1), makeView(2)])
+        setViewsCount({ 1: 50, 2: 50 })
+        markViewed(1)
+        markViewed(2)
+        window.history.pushState({}, '', '/app/views/1')
+
+        scheduler.tick()
+
+        expect(onRefresh).toHaveBeenCalledWith([1])
+    })
+
+    it('defaults the active URL view TTL to 30 s when no override is configured', () => {
+        const onRefresh = vi.fn()
+        const scheduler = createScheduler({ onRefresh })
+
+        setAllViews([makeView(1), makeView(2)])
+        setViewsCount({ 1: 1000, 2: 1000 })
+        markViewed(1)
+        markViewed(2)
+        window.history.pushState({}, '', '/app/views/1')
+
+        vi.advanceTimersByTime(31_000)
+        scheduler.tick()
+
+        expect(onRefresh).toHaveBeenCalledWith([1])
+    })
+
+    it('treats the /app/views inbox URL as the active Inbox view', () => {
+        const onRefresh = vi.fn()
+        const scheduler = createScheduler({
+            onRefresh,
+            config: { activeViewTtlSeconds: 0 },
+        })
+
+        setSystemViews([{ id: 10, name: 'Inbox' } as View])
+        setViewsCount({ 10: 1000 })
+        window.history.pushState({}, '', '/app/views')
+
+        scheduler.tick()
+
+        expect(viewsCountStore.getState().recent[10]).toBeDefined()
+        expect(onRefresh).toHaveBeenCalledWith([10])
     })
 
     it('refreshes a 100-count view after 60 s (1 min per 100 tickets)', () => {

@@ -1,9 +1,14 @@
 import { getAllViewsOrdered } from '../hooks/useAllViewsOrdered'
 import { isViewDeactivated } from '../predicates/isViewDeactivated'
 import { logViewEvent } from '../store/viewEventLog'
-import { setNextTickAt, viewsCountStore } from '../store/viewsCountStore'
+import {
+    setNextTickAt,
+    syncViewedFromUrl,
+    viewsCountStore,
+} from '../store/viewsCountStore'
+import { getActiveViewIdFromUrl } from '../utils/activeView'
 import type { RefreshConfig } from './refreshConfig'
-import { DEFAULT_REFRESH_CONFIG, getTtlSecondsForCount } from './refreshConfig'
+import { DEFAULT_REFRESH_CONFIG, getTtlSecondsForView } from './refreshConfig'
 
 export type RefreshCallback = (viewIds: number[]) => void
 export type FetchAllCallback = (viewIds: number[]) => void
@@ -31,6 +36,13 @@ export type Scheduler = {
     tick: () => void
 }
 
+type RecentRefreshEntry = {
+    viewId: number
+    count: number
+    lastFetchedAt: string | null
+    isActiveView: boolean
+}
+
 export function createScheduler(options: SchedulerOptions): Scheduler {
     const config: RefreshConfig = {
         ...DEFAULT_REFRESH_CONFIG,
@@ -43,8 +55,10 @@ export function createScheduler(options: SchedulerOptions): Scheduler {
      * `maxRecentViews`. Pairs each with its `count` and `lastFetchedAt` so
      * the per-count TTL check works against the same data the UI shows.
      */
-    function getRecentEntries(): Array<[number, number, string | null]> {
+    function getRecentEntries(): RecentRefreshEntry[] {
+        syncViewedFromUrl()
         const { recent, counts } = viewsCountStore.getState()
+        const activeViewId = getActiveViewIdFromUrl()
 
         return Object.entries(recent)
             .sort(
@@ -54,7 +68,12 @@ export function createScheduler(options: SchedulerOptions): Scheduler {
             .map(([id]) => {
                 const viewId = Number(id)
                 const entry = counts[viewId]
-                return [viewId, entry?.count ?? 0, entry?.lastFetchedAt ?? null]
+                return {
+                    viewId,
+                    count: entry?.count ?? 0,
+                    lastFetchedAt: entry?.lastFetchedAt ?? null,
+                    isActiveView: viewId === activeViewId,
+                }
             })
     }
 
@@ -62,9 +81,11 @@ export function createScheduler(options: SchedulerOptions): Scheduler {
         lastFetchedAt: string | null | undefined,
         count: number,
         now: number,
+        isActiveView: boolean,
     ): boolean {
         if (!lastFetchedAt) return true
-        const ttlMs = getTtlSecondsForCount(count, config) * 1000
+        const ttlMs =
+            getTtlSecondsForView({ count, isActiveView, config }) * 1000
         return now - Date.parse(lastFetchedAt) >= ttlMs
     }
 
@@ -75,8 +96,15 @@ export function createScheduler(options: SchedulerOptions): Scheduler {
 
         const now = Date.now()
         const expired: number[] = []
-        for (const [viewId, count, lastFetchedAt] of getRecentEntries()) {
-            if (isTickStale(lastFetchedAt, count, now)) expired.push(viewId)
+        for (const {
+            viewId,
+            count,
+            lastFetchedAt,
+            isActiveView,
+        } of getRecentEntries()) {
+            if (isTickStale(lastFetchedAt, count, now, isActiveView)) {
+                expired.push(viewId)
+            }
         }
 
         if (expired.length === 0) return

@@ -38,6 +38,7 @@ describe('useSchedulerConfig', () => {
         useFlagMock.mockReturnValue({
             tickIntervalSeconds: 10,
             maxRecentViews: 12,
+            activeViewTtlSeconds: 0,
         })
 
         const { result } = renderHook(() => useSchedulerConfig())
@@ -46,6 +47,7 @@ describe('useSchedulerConfig', () => {
             ...DEFAULT_REFRESH_CONFIG,
             tickIntervalSeconds: 10,
             maxRecentViews: 12,
+            activeViewTtlSeconds: 0,
         })
     })
 })

@@ -1,5 +1,5 @@
 import { assumeMock, render } from '@repo/testing'
-import { setViewsCount } from '@repo/views'
+import { clearViewsCount, setViewsCount } from '@repo/views'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -47,6 +47,7 @@ const renderComponent = ({
 
 describe('TicketNavbarViewLinkItem', () => {
     beforeEach(() => {
+        clearViewsCount()
         useSplitTicketViewMock.mockReturnValue({
             isEnabled: false,
         } as SplitTicketViewContext)
@@ -92,11 +93,11 @@ describe('TicketNavbarViewLinkItem', () => {
         expect(screen.getByText('7')).toBeInTheDocument()
     })
 
-    it('should not render view count when viewCount is 0', () => {
+    it('should render view count when viewCount is 0', () => {
         setViewsCount({ [defaultView.id]: 0 })
         renderComponent()
 
-        expect(screen.queryByText('0')).not.toBeInTheDocument()
+        expect(screen.getByText('0')).toBeInTheDocument()
     })
 
     it('should encode slug with special characters in the URL', () => {

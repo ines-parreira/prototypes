@@ -2,6 +2,7 @@ import { renderHook } from '@repo/testing'
 import {
     createScheduler,
     logViewEvent,
+    syncViewedFromUrl,
     useAllViewsLoaded,
     useViewCountSchedulerVersion,
     ViewCountSchedulerVersion,
@@ -22,6 +23,7 @@ var mockScheduler: {
 jest.mock('@repo/views', () => ({
     createScheduler: jest.fn(() => mockScheduler),
     logViewEvent: jest.fn(),
+    syncViewedFromUrl: jest.fn(),
     useSchedulerConfig: jest.fn(() => ({
         tickIntervalSeconds: 5,
         maxRecentViews: 8,
@@ -47,6 +49,7 @@ const useAllViewsLoadedMock = useAllViewsLoaded as jest.Mock
 const useIsSocketConnectedMock = useIsSocketConnected as jest.Mock
 const createSchedulerV3Mock = createScheduler as jest.Mock
 const logViewEventMock = logViewEvent as jest.Mock
+const syncViewedFromUrlMock = syncViewedFromUrl as jest.Mock
 const socketSendMock = socketManager.send as jest.Mock
 
 function mockVersion(version: ViewCountSchedulerVersion) {
@@ -70,6 +73,7 @@ describe('useViewCountScheduler', () => {
         useIsSocketConnectedMock.mockReturnValue(true)
         createSchedulerV3Mock.mockClear()
         logViewEventMock.mockClear()
+        syncViewedFromUrlMock.mockClear()
         socketSendMock.mockClear()
         mockVersion(ViewCountSchedulerVersion.Legacy)
     })
@@ -126,6 +130,28 @@ describe('useViewCountScheduler', () => {
         rerender()
 
         expect(mockScheduler.start).toHaveBeenCalled()
+    })
+
+    it('should sync the URL view once the views list finishes loading', () => {
+        mockVersion(ViewCountSchedulerVersion.V3)
+        useAllViewsLoadedMock.mockReturnValue(false)
+
+        const { rerender } = renderHook(() => useViewCountScheduler())
+        expect(syncViewedFromUrlMock).not.toHaveBeenCalled()
+
+        useAllViewsLoadedMock.mockReturnValue(true)
+        rerender()
+
+        expect(syncViewedFromUrlMock).toHaveBeenCalledTimes(1)
+    })
+
+    it('should not sync the URL view before the views list is loaded', () => {
+        mockVersion(ViewCountSchedulerVersion.V3)
+        useAllViewsLoadedMock.mockReturnValue(false)
+
+        renderHook(() => useViewCountScheduler())
+
+        expect(syncViewedFromUrlMock).not.toHaveBeenCalled()
     })
 
     it('should not start the scheduler while the websocket is disconnected', () => {

@@ -1,5 +1,10 @@
 import { renderHook } from '@testing-library/react'
 
+import { appQueryClient } from '@repo/api-resources'
+
+import { queryKeys } from '@gorgias/helpdesk-queries'
+import type { View } from '@gorgias/helpdesk-types'
+
 import {
     clearViewsCount,
     getViewCount,
@@ -21,7 +26,24 @@ vi.mock('@repo/browser-storage', () => ({
     },
 }))
 
+function setSystemViews(views: View[]): void {
+    appQueryClient.setQueryData(
+        queryKeys.views.listAllViews({ limit: 100, category: 'system' }),
+        {
+            pages: [
+                {
+                    data: {
+                        data: views,
+                    },
+                },
+            ],
+            pageParams: [undefined],
+        },
+    )
+}
+
 beforeEach(() => {
+    appQueryClient.clear()
     clearViewsCount()
 })
 
@@ -140,6 +162,25 @@ describe('URL watcher', () => {
 
         expect(viewsCountStore.getState().recent[77]).toBeDefined()
     })
+
+    it('marks the Inbox view as viewed when navigating to /app/views', () => {
+        setSystemViews([{ id: 5, name: 'Inbox' } as View])
+
+        history.pushState({}, '', '/app/views')
+
+        expect(viewsCountStore.getState().recent[5]).toBeDefined()
+    })
+
+    it.each(['/app', '/app/', '/app/tickets', '/app/tickets/'])(
+        'does not assume %s is the Inbox view',
+        (path) => {
+            setSystemViews([{ id: 5, name: 'Inbox' } as View])
+
+            history.pushState({}, '', path)
+
+            expect(viewsCountStore.getState().recent).toEqual({})
+        },
+    )
 
     it('does not mark anything when navigating to a non-view URL', () => {
         history.pushState({}, '', '/app/customers')

@@ -49,6 +49,36 @@ describe('parseRefreshConfig', () => {
         })
     })
 
+    it('defaults the active view TTL to 30 seconds when omitted', () => {
+        expect(parseRefreshConfig({ tickIntervalSeconds: 10 })).toMatchObject({
+            activeViewTtlSeconds: 30,
+        })
+    })
+
+    it('accepts zero as an active view TTL override', () => {
+        const result = parseRefreshConfig({ activeViewTtlSeconds: 0 })
+
+        expect(result).toEqual({
+            ...DEFAULT_REFRESH_CONFIG,
+            activeViewTtlSeconds: 0,
+        })
+    })
+
+    it('rejects negative active view TTL overrides', () => {
+        expect(parseRefreshConfig({ activeViewTtlSeconds: -1 })).toEqual(
+            DEFAULT_REFRESH_CONFIG,
+        )
+    })
+
+    it('allows null to explicitly use the count-based TTL for active views', () => {
+        const result = parseRefreshConfig({ activeViewTtlSeconds: null })
+
+        expect(result).toEqual({
+            ...DEFAULT_REFRESH_CONFIG,
+            activeViewTtlSeconds: null,
+        })
+    })
+
     it('replaces ttlSecondsByCount with the provided table (no per-key merge)', () => {
         const result = parseRefreshConfig({
             ttlSecondsByCount: { 0: 5, 50: 25 },
