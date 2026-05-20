@@ -4,6 +4,8 @@ import { Box, Icon, Tag, TagColor } from '@gorgias/axiom'
 
 import { useExpandedMessages } from '../../../contexts/ExpandedMessages'
 import type {
+    TicketThreadAiAgentHandoverMessageItem,
+    TicketThreadAiAgentMessageItem,
     TicketThreadInternalNoteItem,
     TicketThreadRegularMessageItem,
     TicketThreadSocialMediaFacebookCommentItem,
@@ -33,6 +35,8 @@ import css from './MessageFooter.less'
 type MessageFooterBaseItem =
     | TicketThreadRegularMessageItem
     | TicketThreadInternalNoteItem
+    | TicketThreadAiAgentMessageItem
+    | TicketThreadAiAgentHandoverMessageItem
     | TicketThreadSocialMediaFacebookCommentItem
     | TicketThreadSocialMediaFacebookMessageItem
     | TicketThreadSocialMediaFacebookPostItem
@@ -68,6 +72,8 @@ function canRenderAttachments(
     return (
         item._tag === TicketThreadItemTag.Messages.Message ||
         item._tag === TicketThreadItemTag.Messages.InternalNote ||
+        item._tag === TicketThreadItemTag.Messages.AiAgentMessage ||
+        item._tag === TicketThreadItemTag.Messages.AiAgentHandoverMessage ||
         item._tag === TicketThreadItemTag.Messages.SocialMediaFacebookMessage ||
         item._tag ===
             TicketThreadItemTag.Messages.SocialMediaInstagramDirectMessage ||

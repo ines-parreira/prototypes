@@ -186,7 +186,7 @@ export const AiAgentReasoningHelpdeskV2 = ({
     const renderHeaderTitle = ({ isExpanded }: { isExpanded: boolean }) => {
         if (isLoading) {
             return (
-                <Box display="flex" alignItems="center" gap="xxs">
+                <Box display="flex" alignItems="center" gap="xxs" pl="xxs">
                     <Loader size="sm" />
                     <Text size="sm" color="content-neutral-secondary">
                         Loading AI Agent reasoning
@@ -197,7 +197,7 @@ export const AiAgentReasoningHelpdeskV2 = ({
 
         if (isError) {
             return (
-                <Box display="flex" alignItems="center" py="xs">
+                <Box display="flex" alignItems="center" py="xs" pl="xxs">
                     <Text color="content-error-primary" size="sm">
                         Couldn&apos;t load reasoning. Please try again.
                     </Text>
@@ -206,7 +206,7 @@ export const AiAgentReasoningHelpdeskV2 = ({
         }
 
         return (
-            <Box display="flex" alignItems="center" gap="xxs">
+            <Box display="flex" alignItems="center" gap="xxs" pl="xxs">
                 <Text size="sm" color="content-neutral-secondary">
                     {isExpanded ? 'Hide reasoning' : 'Show reasoning'}
                 </Text>

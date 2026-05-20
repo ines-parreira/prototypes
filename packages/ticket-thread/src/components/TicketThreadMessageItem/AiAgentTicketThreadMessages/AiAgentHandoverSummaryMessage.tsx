@@ -3,10 +3,12 @@ import { AIThinking, Box } from '@gorgias/axiom'
 import type { TicketThreadAiAgentHandoverMessageItem } from '../../../hooks/messages/types'
 import { useTicketThreadLegacyBridge } from '../../../utils/LegacyBridge'
 import { MessageBody } from '../../MessageBubble/components/MessageBody'
+import { MessageFooter } from '../../MessageBubble/components/MessageFooter'
 import { MessageHeaderContainer } from '../../MessageBubble/components/MessageHeader/Layout'
 import { MessageSender } from '../../MessageBubble/components/MessageHeader/MessageSender'
 import { MessageTimestamp } from '../../MessageBubble/components/MessageHeader/MessageTimestamp'
 import { MessageBubble } from '../../MessageBubble/MessageBubble'
+import { useDisplayedTicketMessage } from '../../TicketMessage/hooks/useDisplayedTicketMessage'
 import { TicketMessageActions } from '../../TicketMessageActions/TicketMessageActions'
 import { getAiAgentDisplayName } from './getAiAgentDisplayName'
 
@@ -19,6 +21,7 @@ type AiAgentHandoverSummaryMessageProps = {
 export function AiAgentHandoverSummaryMessage({
     item,
 }: AiAgentHandoverSummaryMessageProps) {
+    const displayedItem = useDisplayedTicketMessage({ item })
     const { renderAiAgentHandoverSummary, renderAiAgentReasoning } =
         useTicketThreadLegacyBridge()
     const summaryContent = renderAiAgentHandoverSummary?.({
@@ -46,7 +49,8 @@ export function AiAgentHandoverSummaryMessage({
                             />
                         </Box>
                     </MessageHeaderContainer>
-                    <MessageBody item={item} />
+                    <MessageBody item={displayedItem} />
+                    <MessageFooter item={displayedItem} />
                     <TicketMessageActions message={item.data} />
                     {renderAiAgentReasoning?.({ message: item.data })}
                 </MessageBubble>

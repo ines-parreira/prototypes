@@ -12,7 +12,11 @@ import {
     mockRequestTicketTranslationHandler,
     mockTicketMessageTranslation,
 } from '@gorgias/helpdesk-mocks'
-import { Language, UserSettingType } from '@gorgias/helpdesk-types'
+import {
+    Language,
+    TicketMessageSourceType,
+    UserSettingType,
+} from '@gorgias/helpdesk-types'
 import type { TicketMessage } from '@gorgias/helpdesk-types'
 
 import { renderHook } from '../../tests/render.utils'
@@ -115,8 +119,30 @@ const mockTicketMessagesWithInternalNote: TicketMessage[] = [
         from_agent: true,
         created_datetime: '2024-01-01T12:00:00Z',
         source: {
-            type: 'internal-note',
-        } as any,
+            type: TicketMessageSourceType.InternalNote,
+        },
+    } as TicketMessage,
+    ...mockTicketMessages,
+]
+
+const mockTicketMessagesWithAiAgentResponse: TicketMessage[] = [
+    {
+        id: 104,
+        ticket_id: 123,
+        body_text: 'AI Agent response',
+        from_agent: true,
+        created_datetime: '2024-01-01T12:00:00Z',
+        sender: {
+            id: 1,
+            name: 'AI Agent',
+            firstname: 'AI',
+            lastname: 'Agent',
+            email: 'bot@658d6f54fbff9b7c6f2d0321',
+            meta: null,
+        },
+        source: {
+            type: TicketMessageSourceType.Chat,
+        },
     } as TicketMessage,
     ...mockTicketMessages,
 ]
@@ -402,6 +428,31 @@ describe('useLiveTicketTranslationsUpdates', () => {
                     allMessages.map((m: any) => m.messageId),
                 )
                 expect(uniqueMessageIds.has(103)).toBe(false)
+            })
+        })
+
+        it('should generate message translations for AI Agent outbound responses', async () => {
+            server.use(mockGetCurrentUserFrench.handler)
+
+            renderHook(() =>
+                useLiveTicketTranslationsUpdates({
+                    ticketId: 123,
+                    ticketLanguage: Language.En,
+                    ticketMessages: mockTicketMessagesWithAiAgentResponse,
+                }),
+            )
+
+            await waitFor(() => {
+                expect(
+                    mockSetTicketMessageTranslationDisplay,
+                ).toHaveBeenCalledWith(
+                    expect.arrayContaining([
+                        expect.objectContaining({
+                            messageId: 104,
+                            fetchingState: FetchingState.Loading,
+                        }),
+                    ]),
+                )
             })
         })
 

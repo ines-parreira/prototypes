@@ -106,7 +106,7 @@ export function AiAgentDraftMessageHelpdeskV2({ ticketId, message }: Props) {
                         <Disclosure>
                             <DisclosureHeader
                                 title={
-                                    <Box gap="xxxs">
+                                    <Box gap="xxxs" pl="xxs">
                                         <Icon name="tag" size="sm" />
                                         <Text variant="bold">
                                             Ticket actions

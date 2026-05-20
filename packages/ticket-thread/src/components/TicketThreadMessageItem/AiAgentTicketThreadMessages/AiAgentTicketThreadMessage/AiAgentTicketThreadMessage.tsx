@@ -2,9 +2,9 @@ import { AIThinking, Box } from '@gorgias/axiom'
 
 import type { TicketThreadAiAgentMessageItem } from '../../../../hooks/messages/types'
 import { useTicketThreadLegacyBridge } from '../../../../utils/LegacyBridge'
-import { MessageAttachments } from '../../../MessageBubble/components/MessageAttachments'
 import { MessageBody } from '../../../MessageBubble/components/MessageBody'
 import { MessageErrors } from '../../../MessageBubble/components/MessageErrors'
+import { MessageFooter } from '../../../MessageBubble/components/MessageFooter'
 import { getMessageChannelParticipants } from '../../../MessageBubble/components/MessageHeader/getMessageChannelParticipants'
 import { MessageHeaderContainer } from '../../../MessageBubble/components/MessageHeader/Layout'
 import { MessageChannel } from '../../../MessageBubble/components/MessageHeader/MessageChannel'
@@ -13,6 +13,7 @@ import { MessageMeta } from '../../../MessageBubble/components/MessageHeader/Mes
 import { MessageSender } from '../../../MessageBubble/components/MessageHeader/MessageSender'
 import { MessageTimestamp } from '../../../MessageBubble/components/MessageHeader/MessageTimestamp'
 import { MessageBubble } from '../../../MessageBubble/MessageBubble'
+import { useDisplayedTicketMessage } from '../../../TicketMessage/hooks/useDisplayedTicketMessage'
 import { TicketMessageActions } from '../../../TicketMessageActions/TicketMessageActions'
 import { AiAgentTicketThreadPseudoEvent } from '../AiAgentTicketThreadPseudoEvent'
 import { getAiAgentDisplayName } from '../getAiAgentDisplayName'
@@ -26,6 +27,7 @@ type AiAgentTicketThreadMessageProps = {
 export function AiAgentTicketThreadMessage({
     item,
 }: AiAgentTicketThreadMessageProps) {
+    const displayedItem = useDisplayedTicketMessage({ item })
     const { renderAiAgentReasoning } = useTicketThreadLegacyBridge()
     const aiAgentName = getAiAgentDisplayName(item.data.sender.name)
     const { from, to, cc, bcc } = getMessageChannelParticipants(
@@ -73,7 +75,9 @@ export function AiAgentTicketThreadMessage({
                     meta={item.data.meta}
                     integrationId={item.data.integration_id}
                 />
-                {shouldRenderMessageContent && <MessageBody item={item} />}
+                {shouldRenderMessageContent && (
+                    <MessageBody item={displayedItem} />
+                )}
                 {shouldRenderSmartFollowUps && (
                     <SmartFollowUps
                         selectedSmartFollowUpIndex={selectedSmartFollowUpIndex}
@@ -81,7 +85,7 @@ export function AiAgentTicketThreadMessage({
                         smartFollowUps={smartFollowUps}
                     />
                 )}
-                <MessageAttachments item={item} />
+                <MessageFooter item={displayedItem} />
                 <TicketMessageActions message={item.data} />
                 {item.data.ticket_id && (
                     <MessageErrors

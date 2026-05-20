@@ -7,6 +7,7 @@ import {
     mockGetUserAvailabilityHandler,
     mockTicket,
     mockTicketMessage,
+    mockTicketMessageTranslation,
     mockTicketMessageUserOrCustomer,
     mockUser,
 } from '@gorgias/helpdesk-mocks'
@@ -17,9 +18,21 @@ import { TicketThreadItemTag } from '../../../hooks/types'
 import { getCurrentUserHandler } from '../../../tests/getCurrentUser.mock'
 import { render } from '../../../tests/render.utils'
 import { server } from '../../../tests/server'
+import type { DisplayedTicketThreadMessageItem } from '../../TicketMessage/hooks/useDisplayedTicketMessage'
 import { AiAgentHandoverSummaryMessage } from './AiAgentHandoverSummaryMessage'
 
 const MESSAGE_DATETIME = '2024-03-21T11:00:00Z'
+const mockUseDisplayedTicketMessage = vi.fn()
+
+vi.mock('../../TicketMessage/hooks/useDisplayedTicketMessage', () => ({
+    useDisplayedTicketMessage: (args: {
+        item: TicketThreadAiAgentHandoverMessageItem
+    }) => mockUseDisplayedTicketMessage(args),
+}))
+
+vi.mock('../../MessageBubble/components/MessageFooter', () => ({
+    MessageFooter: () => <div>MessageFooter</div>,
+}))
 
 const aiAgentSender: TicketThreadAiAgentHandoverMessageItem['data']['sender'] =
     {
@@ -70,9 +83,11 @@ function createHandoverMessageItem(
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }))
 
 beforeEach(() => {
+    mockUseDisplayedTicketMessage.mockReset()
+    mockUseDisplayedTicketMessage.mockImplementation(({ item }) => item)
     server.use(
         getCurrentUserHandler().handler,
-        http.get('/api/users/:id', () => HttpResponse.json(mockUser())),
+        http.get('*/api/users/:id', () => HttpResponse.json(mockUser())),
         mockGetTicketHandler(async ({ params }) =>
             HttpResponse.json(mockTicket({ id: Number(params?.id ?? 1) })),
         ).handler,
@@ -117,6 +132,34 @@ describe('AiAgentHandoverSummaryMessage', () => {
         expect(
             screen.getByText('Handing over to a human agent'),
         ).toBeInTheDocument()
+    })
+
+    it('renders the displayed handover message body', () => {
+        const item = createHandoverMessageItem()
+        const displayedItem: DisplayedTicketThreadMessageItem<TicketThreadAiAgentHandoverMessageItem> =
+            {
+                ...item,
+                data: {
+                    ...item.data,
+                    translations: {
+                        ...mockTicketMessageTranslation({
+                            ticket_message_id: item.data.id,
+                        }),
+                        stripped_html: null,
+                        stripped_text:
+                            'Overdragen aan een menselijke medewerker',
+                    },
+                },
+            }
+        mockUseDisplayedTicketMessage.mockReturnValue(displayedItem)
+
+        render(<AiAgentHandoverSummaryMessage item={item} />)
+
+        expect(mockUseDisplayedTicketMessage).toHaveBeenCalledWith({ item })
+        expect(
+            screen.getByText('Overdragen aan een menselijke medewerker'),
+        ).toBeInTheDocument()
+        expect(screen.getByText('MessageFooter')).toBeInTheDocument()
     })
 
     it('does not render a handover summary section when no legacy bridge callback is provided', () => {

@@ -2,6 +2,8 @@ import ReactPlayer from 'react-player'
 
 import { useExpandedMessages } from '../../../contexts/ExpandedMessages'
 import type {
+    TicketThreadAiAgentHandoverMessageItem,
+    TicketThreadAiAgentMessageItem,
     TicketThreadInternalNoteItem,
     TicketThreadRegularMessageItem,
     TicketThreadSocialMediaFacebookMessageItem,
@@ -16,6 +18,8 @@ import css from './MessageVideos.less'
 type MessageVideosBaseItem =
     | TicketThreadRegularMessageItem
     | TicketThreadInternalNoteItem
+    | TicketThreadAiAgentMessageItem
+    | TicketThreadAiAgentHandoverMessageItem
     | TicketThreadSocialMediaFacebookMessageItem
     | TicketThreadSocialMediaInstagramDirectMessageItem
     | TicketThreadSocialMediaWhatsAppMessageItem

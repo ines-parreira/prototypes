@@ -16,7 +16,11 @@ import {
 } from '@gorgias/helpdesk-mocks'
 
 import * as ExpandedMessagesModule from '../../../../contexts/ExpandedMessages'
-import type { TicketThreadRegularMessageItem } from '../../../../hooks/messages/types'
+import { AI_AGENT_BOT_EMAILS } from '../../../../hooks/messages/constants'
+import type {
+    TicketThreadAiAgentHandoverMessageItem,
+    TicketThreadRegularMessageItem,
+} from '../../../../hooks/messages/types'
 import { TicketThreadItemTag } from '../../../../hooks/types'
 import { render } from '../../../../tests/render.utils'
 import { server } from '../../../../tests/server'
@@ -54,7 +58,7 @@ vi.mock('../MessageAttachments', async () => {
         MessageAttachments: ({
             item,
         }: {
-            item: TicketThreadRegularMessageItem
+            item: { data: { id?: number | null } }
         }) => <div>{`attachments:${item.data.id}`}</div>,
     }
 })
@@ -94,6 +98,40 @@ function makeItem(overrides: Partial<MessageFooterData> = {}) {
         }) as MessageFooterData,
         datetime: '2024-03-21T11:00:00Z',
     } as TicketThreadRegularMessageItem
+}
+
+function makeAiAgentHandoverItem(
+    overrides: Partial<TicketThreadAiAgentHandoverMessageItem['data']> = {},
+) {
+    return {
+        _tag: TicketThreadItemTag.Messages.AiAgentHandoverMessage,
+        data: mockTicketMessage({
+            id: 789,
+            ticket_id: 123,
+            channel: 'chat',
+            body_html: null,
+            body_text: 'Handing over to a human agent',
+            stripped_html: null,
+            stripped_text: 'Handing over to a human agent',
+            attachments: [],
+            sender: {
+                id: 1,
+                name: 'AI Agent',
+                firstname: 'AI',
+                lastname: 'Agent',
+                email: AI_AGENT_BOT_EMAILS[0],
+                meta: null,
+            },
+            actions: [
+                {
+                    name: 'addTags',
+                    arguments: { tags: 'ai_handover' },
+                },
+            ],
+            ...overrides,
+        }) as TicketThreadAiAgentHandoverMessageItem['data'],
+        datetime: '2024-03-21T11:00:00Z',
+    } as TicketThreadAiAgentHandoverMessageItem
 }
 
 beforeEach(() => {
@@ -142,6 +180,12 @@ describe('MessageFooter', () => {
 
         expect(screen.getByText('attachments:456')).toBeInTheDocument()
         expect(screen.getByText('translations:456:123')).toBeInTheDocument()
+    })
+
+    it('renders translations dropdown for AI Agent handover messages with id', () => {
+        render(<MessageFooter item={makeAiAgentHandoverItem()} />)
+
+        expect(screen.getByText('translations:789:123')).toBeInTheDocument()
     })
 
     it('renders strip toggle when stripped content differs and toggles expansion', async () => {

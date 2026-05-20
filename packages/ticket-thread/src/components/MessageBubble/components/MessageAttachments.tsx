@@ -12,6 +12,7 @@ import type { IconName } from '@gorgias/axiom'
 import type { TicketMessageAttachment } from '@gorgias/helpdesk-types'
 
 import type {
+    TicketThreadAiAgentHandoverMessageItem,
     TicketThreadAiAgentMessageItem,
     TicketThreadInternalNoteItem,
     TicketThreadRegularMessageItem,
@@ -30,6 +31,7 @@ type MessageAttachmentsBaseItem =
     | TicketThreadRegularMessageItem
     | TicketThreadInternalNoteItem
     | TicketThreadAiAgentMessageItem
+    | TicketThreadAiAgentHandoverMessageItem
     | TicketThreadSocialMediaFacebookMessageItem
     | TicketThreadSocialMediaInstagramDirectMessageItem
     | TicketThreadSocialMediaWhatsAppMessageItem
