@@ -26,7 +26,10 @@ export type SystemView = View & {
     icon: IconName | null
 }
 
-const SYSTEM_VIEWS_QUERY_PARAMS = { limit: 100, category: 'system' } as const
+export const SYSTEM_VIEWS_QUERY_PARAMS = {
+    limit: 100,
+    category: 'system',
+} as const
 
 export function useSystemViews(): SystemView[] {
     const { items: views } = useListAllViews(SYSTEM_VIEWS_QUERY_PARAMS, {
