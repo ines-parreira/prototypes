@@ -1,9 +1,14 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { render } from '@repo/testing'
-import { screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { useSkillPerformanceFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillPerformanceFromContext'
+import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 
 import { SkillEditorSidePanelPerformanceTab } from './SkillEditorSidePanelPerformanceTab'
+
+jest.mock('@repo/feature-flags')
 
 jest.mock(
     'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillPerformanceFromContext',
@@ -36,6 +41,7 @@ const defaultSkillMetrics = {
 
 describe('SkillEditorSidePanelPerformanceTab', () => {
     beforeEach(() => {
+        mockFeatureFlags({})
         mockUseSkillPerformanceFromContext.mockReturnValue({
             skillMetrics: defaultSkillMetrics,
             recentTickets: undefined,
@@ -108,5 +114,31 @@ describe('SkillEditorSidePanelPerformanceTab', () => {
         expect(screen.queryByText('No data yet')).not.toBeInTheDocument()
         expect(screen.getByText('Performance metric cards')).toBeInTheDocument()
         expect(screen.getByText('Recent tickets section')).toBeInTheDocument()
+    })
+
+    it('hides the Explore trend button when the new reporting layer flag is off', () => {
+        render(<SkillEditorSidePanelPerformanceTab />)
+
+        expect(
+            screen.queryByRole('button', { name: 'Explore trend' }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('opens the Skill performance modal from the Explore trend button when the new reporting layer flag is on', async () => {
+        const user = userEvent.setup()
+
+        mockFeatureFlags({
+            [FeatureFlagKey.IntentBasedKnowledgeMilestone3NewReportingLayer]: true,
+        })
+
+        render(<SkillEditorSidePanelPerformanceTab />)
+
+        await act(async () => {
+            await user.click(
+                screen.getByRole('button', { name: 'Explore trend' }),
+            )
+        })
+
+        expect(screen.getByText('Skill performance')).toBeInTheDocument()
     })
 })

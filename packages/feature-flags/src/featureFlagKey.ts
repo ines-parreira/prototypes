@@ -160,6 +160,7 @@ export enum FeatureFlagKey {
     ImprovedViewCountUpdates = 'improved-view-count-updates',
     IncreaseGuidanceCreationLimit = 'increase-guidance-creation-limitation',
     IncreaseVisibilityOfOpportunity = 'linear.project_increase-visibility-of-opportunities.top-opportunities',
+    IntentBasedKnowledgeMilestone3NewReportingLayer = 'linear-project_intent-based-knowledge-milstone-3-new-reporting-layer',
     KnowledgeIntentManagementSystem = 'linear.project_knowledge-intent-management-system.enable-feature',
     LiquidTemplateStep = 'liquid-template-step',
     MacroArchives = 'macro-archives',

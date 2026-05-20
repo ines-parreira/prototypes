@@ -1,14 +1,25 @@
-import { Box, Heading, Icon, Text } from '@gorgias/axiom'
+import { useState } from 'react'
+
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
+
+import { Box, Button, Heading, Icon, Text } from '@gorgias/axiom'
 
 import { useSkillPerformanceFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillPerformanceFromContext'
 import { SkillEditorSidePanelRecentTicketsSection } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/sidePanel/SkillEditorSidePanelRecentTicketsSection'
 import { formatDateRangeSubtitle } from 'pages/aiAgent/components/KnowledgeEditor/shared/useVersionHistoryBase/useVersionHistoryBase'
 
 import { SkillEditorSidePanelPerformanceMetricCards } from './SkillEditorSidePanelPerformanceMetricCards'
+import { SkillPerformanceTrendModal } from './SkillPerformanceTrendModal'
 
 import css from './SkillEditorSidePanelPerformanceTab.less'
 
 export const SkillEditorSidePanelPerformanceTab = () => {
+    const [isTrendModalOpen, setIsTrendModalOpen] = useState(false)
+    const { value: isNewReportingLayerEnabled } = useFlagWithLoading(
+        FeatureFlagKey.IntentBasedKnowledgeMilestone3NewReportingLayer,
+        false,
+    )
+
     const { skillMetrics, recentTickets, historicalVersionDateRange } =
         useSkillPerformanceFromContext()
 
@@ -24,7 +35,26 @@ export const SkillEditorSidePanelPerformanceTab = () => {
         <Box className={css.performanceTab}>
             <Box className={css.performanceSection}>
                 <Box display="flex" flexDirection="column">
-                    <Heading>Performance</Heading>
+                    <Box
+                        display="flex"
+                        justifyContent="space-between"
+                        alignItems="center"
+                        gap="sm"
+                    >
+                        <Heading>Performance</Heading>
+                        {isNewReportingLayerEnabled && (
+                            <Button
+                                className={css.exploreTrendButton}
+                                variant="secondary"
+                                size="md"
+                                leadingSlot="chart-line"
+                                aria-label="Explore trend"
+                                onClick={() => setIsTrendModalOpen(true)}
+                            >
+                                Explore trend
+                            </Button>
+                        )}
+                    </Box>
                     <Text size="sm" color="content-neutral-tertiary">
                         {formatDateRangeSubtitle(historicalVersionDateRange)}
                     </Text>
@@ -70,6 +100,10 @@ export const SkillEditorSidePanelPerformanceTab = () => {
             ) : (
                 <SkillEditorSidePanelRecentTicketsSection sectionId="recent-tickets" />
             )}
+            <SkillPerformanceTrendModal
+                isOpen={isTrendModalOpen}
+                onOpenChange={setIsTrendModalOpen}
+            />
         </Box>
     )
 }
