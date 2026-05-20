@@ -227,15 +227,6 @@ function FlowsConfigurationLinks() {
     return (
         <>
             <a
-                href="https://link.gorgias.com/pnl"
-                rel="noopener noreferrer"
-                target="_blank"
-                className={css.descriptionLink}
-            >
-                <i className="material-icons mr-2">ondemand_video</i>
-                Join our Flows Masterclass live webinar
-            </a>
-            <a
                 href="https://link.gorgias.com/z1e"
                 rel="noopener noreferrer"
                 target="_blank"
