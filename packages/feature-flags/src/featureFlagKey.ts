@@ -52,7 +52,6 @@ export enum FeatureFlagKey {
     AiAgentAnalyticsDashboardsNewScreens = 'linear.project_revamp-ai-agent-analytics-dashboards.show-new-screens',
     AiAgentAnalyticsDashboardsTrendCards = 'linear.project_revamp-ai-agent-analytics-dashboards.trendcards-and-preferences',
     AiAgentAnalyticsDashboardsDrillDown = 'linear.project_revamp-ai-agent-analytics-dashboards.drilldown',
-    AiAgentAnalyticsDashboardsChartsAndDropdowns = 'linear.project_revamp-ai-agent-analytics-dashboards.charts-and-dropdowns',
     AiAgentAnalyticsDashboardsTables = 'linear.project_revamp-ai-agent-analytics-dashboards.tables',
     AiAgentAnalyticsDashboardsTrendCardsWithTimeseries = 'linear.project_revamp-ai-agent-analytics-dashboards.trend-cards-with-timeseries',
     AiAgentAnalyticsCustomDashboards = 'linear-project_revamp-ai-agent-analytics-dashboards_custom-dashboards',

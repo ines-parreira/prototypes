@@ -19,18 +19,12 @@ import { saveZippedFiles } from 'utils/file'
 import { ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT } from '../config/aiAgentSupportAgentLayoutConfig'
 import { useDownloadIntentPerformanceData } from './useDownloadIntentPerformanceData'
 import { useDownloadSupportAgentChannelPerformanceData } from './useDownloadSupportAgentChannelPerformanceData'
-import { useDownloadSupportInteractionsByIntentData } from './useDownloadSupportInteractionsByIntentData'
-import { useDownloadSupportInteractionsTimeSeriesData } from './useDownloadSupportInteractionsTimeSeriesData'
 
 const REPORT_NAME = 'ai-agent-support-agent'
 
 export const useExportAiAgentSupportAgentToCSV = () => {
     const { value: isTrendCardsFFEnabled, isLoading: isTrendCardsFFLoading } =
         useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards)
-    const { value: isGraphsFFEnabled, isLoading: isGraphsFFLoading } =
-        useFlagWithLoading(
-            FeatureFlagKey.AiAgentAnalyticsDashboardsChartsAndDropdowns,
-        )
     const { value: isTablesFFEnabled, isLoading: isTablesFFLoading } =
         useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTables)
 
@@ -56,15 +50,9 @@ export const useExportAiAgentSupportAgentToCSV = () => {
                 REPORT_NAME,
                 layoutConfig,
                 isTrendCardsFFEnabled,
-                isGraphsFFEnabled,
                 isTablesFFEnabled,
             ),
-        [
-            isTrendCardsFFEnabled,
-            layoutConfig,
-            isGraphsFFEnabled,
-            isTablesFFEnabled,
-        ],
+        [isTrendCardsFFEnabled, layoutConfig, isTablesFFEnabled],
     )
 
     const { files: dashboardDataFiles, isLoading: isDashboardDataLoading } =
@@ -75,31 +63,19 @@ export const useExportAiAgentSupportAgentToCSV = () => {
             extraData,
         )
 
-    const supportInteractionsByIntentData =
-        useDownloadSupportInteractionsByIntentData()
-    const supportInteractionsTimeSeriesData =
-        useDownloadSupportInteractionsTimeSeriesData()
     const legacyChannelTable = useDownloadSupportAgentChannelPerformanceData()
     const legacyIntentTable = useDownloadIntentPerformanceData()
 
     const isLoading =
         isDashboardDataLoading ||
         isTrendCardsFFLoading ||
-        isGraphsFFLoading ||
         isTablesFFLoading ||
-        (!isGraphsFFEnabled &&
-            (supportInteractionsByIntentData.isLoading ||
-                supportInteractionsTimeSeriesData.isLoading)) ||
         (!isTablesFFEnabled &&
             (legacyChannelTable.isLoading || legacyIntentTable.isLoading))
 
     const files = useMemo(
         () => ({
             ...dashboardDataFiles,
-            ...(!isGraphsFFEnabled && {
-                ...supportInteractionsByIntentData.files,
-                ...supportInteractionsTimeSeriesData.files,
-            }),
             ...(!isTablesFFEnabled && {
                 ...legacyChannelTable.files,
                 ...legacyIntentTable.files,
@@ -107,11 +83,8 @@ export const useExportAiAgentSupportAgentToCSV = () => {
         }),
         [
             dashboardDataFiles,
-            supportInteractionsByIntentData.files,
-            supportInteractionsTimeSeriesData.files,
             legacyChannelTable.files,
             legacyIntentTable.files,
-            isGraphsFFEnabled,
             isTablesFFEnabled,
         ],
     )

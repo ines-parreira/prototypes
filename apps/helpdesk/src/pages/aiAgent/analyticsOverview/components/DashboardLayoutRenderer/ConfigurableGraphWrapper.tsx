@@ -1,5 +1,3 @@
-import type { ComponentType } from 'react'
-
 import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import type { ConfigurableGraphMetricConfig } from '@repo/reporting'
 import { ConfigurableGraph } from '@repo/reporting'
@@ -15,7 +13,6 @@ import { useManagedDashboardContext } from 'pages/aiAgent/analyticsOverview/comp
 type Props = {
     metrics: ConfigurableGraphMetricConfig[]
     analyticsChartId: string
-    DeprecatedChart: ComponentType
     chartId?: string
     dashboard?: DashboardSchema
     chartConfig?: ChartConfig
@@ -24,14 +21,10 @@ type Props = {
 export const ConfigurableGraphWrapper = ({
     metrics,
     analyticsChartId,
-    DeprecatedChart,
     chartId,
     dashboard,
     chartConfig,
 }: Props) => {
-    const { value: isAnalyticsDashboardsNewChartsEnabled } = useFlagWithLoading(
-        FeatureFlagKey.AiAgentAnalyticsDashboardsChartsAndDropdowns,
-    )
     const { value: isCustomDashboardsEnabled } = useFlagWithLoading(
         FeatureFlagKey.AiAgentAnalyticsCustomDashboards,
     )
@@ -48,7 +41,7 @@ export const ConfigurableGraphWrapper = ({
         .flatMap((s) => s.items)
         .find((item) => item.chartId === analyticsChartId)
 
-    return isAnalyticsDashboardsNewChartsEnabled ? (
+    return (
         <ConfigurableGraph
             // remount with the correct saved initialMeasure/initialDimension
             // if the managed dashboard API loads slower on refresh
@@ -67,7 +60,5 @@ export const ConfigurableGraphWrapper = ({
                 ) : undefined
             }
         />
-    ) : (
-        <DeprecatedChart />
     )
 }

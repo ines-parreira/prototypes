@@ -7,8 +7,6 @@ import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboar
 import { useGetManagedDashboardsLayoutConfig } from 'domains/reporting/hooks/managed-dashboards/useGetManagedDashboardsLayoutConfig'
 import { AnalyticsAiAgentAllAgentsReportConfig } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentAllAgentsReportConfig'
 import { ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT } from 'pages/aiAgent/analyticsAiAgent/config/aiAgentAllAgentsLayoutConfig'
-import { useDownloadAiAgentAutomationRateTimeSeriesData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadAiAgentAutomationRateTimeSeriesData'
-import { useDownloadAutomatedInteractionsBySkillData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadAutomatedInteractionsBySkillData'
 import { useDownloadChannelPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadChannelPerformanceData'
 import { useDownloadIntentPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadIntentPerformanceData'
 import {
@@ -26,10 +24,6 @@ const REPORT_NAME = 'ai-agent-all-agents'
 export const useExportAiAgentAllAgentsToCSV = () => {
     const { value: isTrendCardsFFEnabled, isLoading: isTrendCardsFFLoading } =
         useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards)
-    const { value: isGraphsFFEnabled, isLoading: isGraphsFFLoading } =
-        useFlagWithLoading(
-            FeatureFlagKey.AiAgentAnalyticsDashboardsChartsAndDropdowns,
-        )
     const { value: isTablesFFEnabled, isLoading: isTablesFFLoading } =
         useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTables)
 
@@ -55,15 +49,9 @@ export const useExportAiAgentAllAgentsToCSV = () => {
                 REPORT_NAME,
                 layoutConfig,
                 isTrendCardsFFEnabled,
-                isGraphsFFEnabled,
                 isTablesFFEnabled,
             ),
-        [
-            isTrendCardsFFEnabled,
-            layoutConfig,
-            isGraphsFFEnabled,
-            isTablesFFEnabled,
-        ],
+        [isTrendCardsFFEnabled, layoutConfig, isTablesFFEnabled],
     )
 
     const { files: dashboardDataFiles, isLoading: isDashboardDataLoading } =
@@ -74,10 +62,6 @@ export const useExportAiAgentAllAgentsToCSV = () => {
             extraData,
         )
 
-    const automatedInteractionsBySkillData =
-        useDownloadAutomatedInteractionsBySkillData()
-    const automationRateTimeSeriesData =
-        useDownloadAiAgentAutomationRateTimeSeriesData()
     const legacyChannelPerformanceTable = useDownloadChannelPerformanceData()
     const legacyIntentPerformanceTable = useDownloadIntentPerformanceData()
 
@@ -85,10 +69,6 @@ export const useExportAiAgentAllAgentsToCSV = () => {
         isDashboardDataLoading ||
         isTrendCardsFFLoading ||
         isTablesFFLoading ||
-        isGraphsFFLoading ||
-        (!isGraphsFFEnabled &&
-            (automatedInteractionsBySkillData.isLoading ||
-                automationRateTimeSeriesData.isLoading)) ||
         (!isTablesFFEnabled &&
             (legacyChannelPerformanceTable.isLoading ||
                 legacyIntentPerformanceTable.isLoading))
@@ -96,10 +76,6 @@ export const useExportAiAgentAllAgentsToCSV = () => {
     const files = useMemo(
         () => ({
             ...dashboardDataFiles,
-            ...(!isGraphsFFEnabled && {
-                ...automatedInteractionsBySkillData.files,
-                ...automationRateTimeSeriesData.files,
-            }),
             ...(!isTablesFFEnabled && {
                 ...legacyChannelPerformanceTable.files,
                 ...legacyIntentPerformanceTable.files,
@@ -107,11 +83,8 @@ export const useExportAiAgentAllAgentsToCSV = () => {
         }),
         [
             dashboardDataFiles,
-            automatedInteractionsBySkillData.files,
-            automationRateTimeSeriesData.files,
             legacyChannelPerformanceTable.files,
             legacyIntentPerformanceTable.files,
-            isGraphsFFEnabled,
             isTablesFFEnabled,
         ],
     )

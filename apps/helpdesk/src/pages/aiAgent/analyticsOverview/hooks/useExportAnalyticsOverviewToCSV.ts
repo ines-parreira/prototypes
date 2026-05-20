@@ -17,18 +17,12 @@ import { saveZippedFiles } from 'utils/file'
 import { AnalyticsOverviewReportConfig } from '../AnalyticsOverviewReportConfig'
 import { DEFAULT_ANALYTICS_OVERVIEW_LAYOUT } from '../config/defaultLayoutConfig'
 import { buildCustomDashboard } from '../utils/buildCustomDashboard'
-import { useDownloadAutomationRateByFeatureData } from './useDownloadAutomationRateByFeatureData'
-import { useDownloadAutomationRateTimeSeriesData } from './useDownloadAutomationRateTimeSeriesData'
 
 const REPORT_NAME = 'analytics-overview'
 
 export const useExportAnalyticsOverviewToCSV = () => {
     const { value: isTrendCardsFFEnabled, isLoading: isTrendCardsFFLoading } =
         useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards)
-    const { value: isGraphsFFEnabled, isLoading: isGraphsFFLoading } =
-        useFlagWithLoading(
-            FeatureFlagKey.AiAgentAnalyticsDashboardsChartsAndDropdowns,
-        )
     const { value: isTablesFFEnabled, isLoading: isTablesFFLoading } =
         useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTables)
 
@@ -54,53 +48,20 @@ export const useExportAnalyticsOverviewToCSV = () => {
                 REPORT_NAME,
                 layoutConfig,
                 isTrendCardsFFEnabled,
-                isGraphsFFEnabled,
                 isTablesFFEnabled,
             ),
-        [
-            isTrendCardsFFEnabled,
-            layoutConfig,
-            isGraphsFFEnabled,
-            isTablesFFEnabled,
-        ],
+        [isTrendCardsFFEnabled, layoutConfig, isTablesFFEnabled],
     )
 
-    const { files: dashboardDataFiles, isLoading: isDashboardDataLoading } =
-        useDashboardData(
-            analyticsOverviewDashboard,
-            true,
-            AnalyticsOverviewReportConfig.charts,
-            extraData,
-        )
-
-    const automationRateByFeatureData = useDownloadAutomationRateByFeatureData()
-    const automationRateTimeSeriesData =
-        useDownloadAutomationRateTimeSeriesData()
-
-    const files = useMemo(
-        () => ({
-            ...dashboardDataFiles,
-            ...(!isGraphsFFEnabled && {
-                ...automationRateByFeatureData.files,
-                ...automationRateTimeSeriesData.files,
-            }),
-        }),
-        [
-            dashboardDataFiles,
-            automationRateByFeatureData.files,
-            automationRateTimeSeriesData.files,
-            isGraphsFFEnabled,
-        ],
+    const { files, isLoading: isDashboardDataLoading } = useDashboardData(
+        analyticsOverviewDashboard,
+        true,
+        AnalyticsOverviewReportConfig.charts,
+        extraData,
     )
 
     const isLoading =
-        isDashboardDataLoading ||
-        isTrendCardsFFLoading ||
-        isGraphsFFLoading ||
-        isTablesFFLoading ||
-        (!isGraphsFFEnabled &&
-            (automationRateByFeatureData.isLoading ||
-                automationRateTimeSeriesData.isLoading))
+        isDashboardDataLoading || isTrendCardsFFLoading || isTablesFFLoading
 
     const triggerDownload = useCallback(async () => {
         const fileName = getCsvFileNameWithDates(

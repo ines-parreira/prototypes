@@ -6,11 +6,9 @@ import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboar
 import { useGetManagedDashboardsLayoutConfig } from 'domains/reporting/hooks/managed-dashboards/useGetManagedDashboardsLayoutConfig'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { AnalyticsAiAgentShoppingAssistantReportConfig } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentShoppingAssistantReportConfig'
-import { useDownloadGmvInfluenceTimeSeriesData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadGmvInfluenceTimeSeriesData'
 import { useDownloadShoppingAssistantChannelPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantChannelPerformanceData'
 import { useDownloadShoppingAssistantTopProductsData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantTopProductsData'
 import { useDownloadShoppingAssistantTopProductsDataLegacy } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantTopProductsDataLegacy'
-import { useDownloadTotalSalesByProductData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadTotalSalesByProductData'
 import { useExportAiAgentShoppingAssistantToCSV } from 'pages/aiAgent/analyticsAiAgent/hooks/useExportAiAgentShoppingAssistantToCSV'
 import { buildCustomDashboard } from 'pages/aiAgent/analyticsOverview/utils/buildCustomDashboard'
 import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
@@ -23,12 +21,6 @@ jest.mock(
     'domains/reporting/hooks/managed-dashboards/useGetManagedDashboardsLayoutConfig',
 )
 jest.mock('pages/aiAgent/analyticsOverview/utils/buildCustomDashboard')
-jest.mock(
-    'pages/aiAgent/analyticsAiAgent/hooks/useDownloadTotalSalesByProductData',
-)
-jest.mock(
-    'pages/aiAgent/analyticsAiAgent/hooks/useDownloadGmvInfluenceTimeSeriesData',
-)
 jest.mock(
     'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantChannelPerformanceData',
 )
@@ -50,12 +42,6 @@ const mockedUseGetManagedDashboardsLayoutConfig = jest.mocked(
     useGetManagedDashboardsLayoutConfig,
 )
 const mockedBuildKpiDashboard = jest.mocked(buildCustomDashboard)
-const mockedUseDownloadTotalSalesByProductData = jest.mocked(
-    useDownloadTotalSalesByProductData,
-)
-const mockedUseDownloadGmvInfluenceTimeSeriesData = jest.mocked(
-    useDownloadGmvInfluenceTimeSeriesData,
-)
 const mockedUseDownloadShoppingAssistantChannelPerformanceData = jest.mocked(
     useDownloadShoppingAssistantChannelPerformanceData,
 )
@@ -74,14 +60,6 @@ const mockPeriod = {
 
 const dashboardFiles = {
     'ai-agent-shopping-assistant - trends.csv': 'trends content',
-}
-
-const totalSalesByProductFiles = {
-    'total-sales-by-product.csv': 'product,total_sales\nProduct A,$10,000',
-}
-
-const gmvInfluenceTimeSeriesFiles = {
-    'gmv-influence-timeseries.csv': 'date,total_sales\n2024-01-01,$5,000',
 }
 
 const channelPerformanceFiles = {
@@ -140,16 +118,6 @@ describe('useExportAiAgentShoppingAssistantToCSV', () => {
             isLoading: false,
         })
 
-        mockedUseDownloadTotalSalesByProductData.mockReturnValue({
-            files: totalSalesByProductFiles,
-            isLoading: false,
-        })
-
-        mockedUseDownloadGmvInfluenceTimeSeriesData.mockReturnValue({
-            files: gmvInfluenceTimeSeriesFiles,
-            isLoading: false,
-        })
-
         mockedUseDownloadShoppingAssistantChannelPerformanceData.mockReturnValue(
             {
                 files: channelPerformanceFiles,
@@ -195,78 +163,10 @@ describe('useExportAiAgentShoppingAssistantToCSV', () => {
         expect(result.current.isLoading).toBe(true)
     })
 
-    it('should return isLoading as true when charts flag is loading', () => {
-        mockUseFlagWithLoading.mockImplementation((key) => {
-            if (
-                key ===
-                FeatureFlagKey.AiAgentAnalyticsDashboardsChartsAndDropdowns
-            )
-                return { value: false, isLoading: true }
-            return { value: false, isLoading: false }
-        })
-
-        const { result } = renderHook(() =>
-            useExportAiAgentShoppingAssistantToCSV(),
-        )
-
-        expect(result.current.isLoading).toBe(true)
-    })
-
     it('should return isLoading as true when KPI data is loading', () => {
         mockedUseDashboardData.mockReturnValue({
             files: {},
             fileName: '',
-            isLoading: true,
-        })
-
-        const { result } = renderHook(() =>
-            useExportAiAgentShoppingAssistantToCSV(),
-        )
-
-        expect(result.current.isLoading).toBe(true)
-    })
-
-    it('should return isLoading as true when total sales by product data is loading and graphs flag is disabled', () => {
-        mockedUseDownloadTotalSalesByProductData.mockReturnValue({
-            files: {},
-            isLoading: true,
-        })
-
-        const { result } = renderHook(() =>
-            useExportAiAgentShoppingAssistantToCSV(),
-        )
-
-        expect(result.current.isLoading).toBe(true)
-    })
-
-    it('should return isLoading as false when total sales by product data is loading but graphs flag is enabled', () => {
-        mockUseFlagWithLoading.mockImplementation((key) => {
-            if (
-                key ===
-                FeatureFlagKey.AiAgentAnalyticsDashboardsChartsAndDropdowns
-            )
-                return { value: true, isLoading: false }
-            return { value: false, isLoading: false }
-        })
-        mockedUseDownloadTotalSalesByProductData.mockReturnValue({
-            files: {},
-            isLoading: true,
-        })
-        mockedUseDownloadGmvInfluenceTimeSeriesData.mockReturnValue({
-            files: {},
-            isLoading: true,
-        })
-
-        const { result } = renderHook(() =>
-            useExportAiAgentShoppingAssistantToCSV(),
-        )
-
-        expect(result.current.isLoading).toBe(false)
-    })
-
-    it('should return isLoading as true when GMV influence time series is loading and graphs flag is disabled', () => {
-        mockedUseDownloadGmvInfluenceTimeSeriesData.mockReturnValue({
-            files: {},
             isLoading: true,
         })
 
@@ -375,7 +275,6 @@ describe('useExportAiAgentShoppingAssistantToCSV', () => {
             expect.any(Object),
             true,
             true,
-            true,
         )
     })
 
@@ -389,7 +288,6 @@ describe('useExportAiAgentShoppingAssistantToCSV', () => {
         expect(mockedBuildKpiDashboard).toHaveBeenCalledWith(
             'ai-agent-shopping-assistant',
             expect.any(Object),
-            true,
             true,
             false,
         )
@@ -417,14 +315,8 @@ describe('useExportAiAgentShoppingAssistantToCSV', () => {
         const [filesArg] = mockedSaveZippedFiles.mock.calls[0]
         const fileNames = Object.keys(filesArg)
 
-        expect(fileNames).toHaveLength(5)
+        expect(fileNames).toHaveLength(3)
         expect(fileNames.some((name) => name.includes('trends'))).toBe(true)
-        expect(
-            fileNames.some((name) => name.includes('total-sales-by-product')),
-        ).toBe(true)
-        expect(
-            fileNames.some((name) => name.includes('gmv-influence-timeseries')),
-        ).toBe(true)
         expect(
             fileNames.some((name) =>
                 name.includes('shopping-assistant-channel-performance'),
@@ -471,12 +363,6 @@ describe('useExportAiAgentShoppingAssistantToCSV', () => {
             ),
         ).toBe(true)
         expect(
-            fileNames.some((name) => name.includes('total-sales-by-product')),
-        ).toBe(false)
-        expect(
-            fileNames.some((name) => name.includes('gmv-influence-timeseries')),
-        ).toBe(false)
-        expect(
             fileNames.some((name) =>
                 name.includes('shopping-assistant-top-products'),
             ),
@@ -484,14 +370,6 @@ describe('useExportAiAgentShoppingAssistantToCSV', () => {
     })
 
     it('should include only dashboard files when download data files are empty', async () => {
-        mockedUseDownloadTotalSalesByProductData.mockReturnValue({
-            files: {},
-            isLoading: false,
-        })
-        mockedUseDownloadGmvInfluenceTimeSeriesData.mockReturnValue({
-            files: {},
-            isLoading: false,
-        })
         mockedUseDownloadShoppingAssistantChannelPerformanceData.mockReturnValue(
             {
                 files: {},

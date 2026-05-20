@@ -9,7 +9,6 @@ export const buildCustomDashboard = (
     name: string,
     layout: DashboardLayoutConfig,
     isFeatureFlagEnabled: boolean,
-    isChartsEnabled = false,
     isTablesFFEnabled = false,
 ): DashboardSchema => ({
     id: -1,
@@ -21,8 +20,8 @@ export const buildCustomDashboard = (
             (section) =>
                 section.type === ChartType.Card ||
                 section.type === ChartType.CardWithTimeseries ||
-                (section.type === ChartType.Table && isTablesFFEnabled) ||
-                (section.type === ChartType.Graph && isChartsEnabled),
+                section.type === ChartType.Graph ||
+                (section.type === ChartType.Table && isTablesFFEnabled),
         )
         .map((section) => ({
             type: DashboardChildType.Section,

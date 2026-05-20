@@ -24,12 +24,6 @@ jest.mock('@repo/reporting', () => ({
     ...jest.requireActual('@repo/reporting'),
     useDashboardContext: jest.fn().mockReturnValue(null),
 }))
-jest.mock(
-    'pages/aiAgent/analyticsOverview/components/AnalyticsOverviewConfigurableLineGraph/DEPRECATED_AutomationLineChart',
-    () => ({
-        DEPRECATED_AutomationLineChart: () => <div>Deprecated chart</div>,
-    }),
-)
 jest.mock('pages/aiAgent/utils/aiAgentMetrics.utils', () => ({
     ...jest.requireActual('pages/aiAgent/utils/aiAgentMetrics.utils'),
     getLineChartGraphConfig: jest.fn(),

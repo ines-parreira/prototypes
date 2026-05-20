@@ -7,10 +7,8 @@ import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboar
 import { useGetManagedDashboardsLayoutConfig } from 'domains/reporting/hooks/managed-dashboards/useGetManagedDashboardsLayoutConfig'
 import { AnalyticsAiAgentShoppingAssistantReportConfig } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentShoppingAssistantReportConfig'
 import { ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT } from 'pages/aiAgent/analyticsAiAgent/config/aiAgentShoppingAssistantLayoutConfig'
-import { useDownloadGmvInfluenceTimeSeriesData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadGmvInfluenceTimeSeriesData'
 import { useDownloadShoppingAssistantChannelPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantChannelPerformanceData'
 import { useDownloadShoppingAssistantTopProductsDataLegacy } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantTopProductsDataLegacy'
-import { useDownloadTotalSalesByProductData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadTotalSalesByProductData'
 import {
     ManagedDashboardId,
     ManagedDashboardsTabId,
@@ -24,10 +22,6 @@ const REPORT_NAME = 'ai-agent-shopping-assistant'
 export const useExportAiAgentShoppingAssistantToCSV = () => {
     const { value: isTrendCardsFFEnabled, isLoading: isTrendCardsFFLoading } =
         useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards)
-    const { value: isGraphsFFEnabled, isLoading: isGraphsFFLoading } =
-        useFlagWithLoading(
-            FeatureFlagKey.AiAgentAnalyticsDashboardsChartsAndDropdowns,
-        )
     const { value: isTablesFFEnabled, isLoading: isTablesFFLoading } =
         useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTables)
 
@@ -44,15 +38,9 @@ export const useExportAiAgentShoppingAssistantToCSV = () => {
                 REPORT_NAME,
                 layoutConfig,
                 isTrendCardsFFEnabled,
-                isGraphsFFEnabled,
                 isTablesFFEnabled,
             ),
-        [
-            isTrendCardsFFEnabled,
-            layoutConfig,
-            isGraphsFFEnabled,
-            isTablesFFEnabled,
-        ],
+        [isTrendCardsFFEnabled, layoutConfig, isTablesFFEnabled],
     )
 
     const { files: dashboardDataFiles, isLoading: isDashboardDataLoading } =
@@ -62,8 +50,6 @@ export const useExportAiAgentShoppingAssistantToCSV = () => {
             AnalyticsAiAgentShoppingAssistantReportConfig.charts,
         )
 
-    const totalSalesByProductData = useDownloadTotalSalesByProductData()
-    const gmvInfluenceTimeSeriesData = useDownloadGmvInfluenceTimeSeriesData()
     const legacySalesChannelTable =
         useDownloadShoppingAssistantChannelPerformanceData()
     const legacyTopProductsTable =
@@ -72,11 +58,7 @@ export const useExportAiAgentShoppingAssistantToCSV = () => {
     const isLoading =
         isDashboardDataLoading ||
         isTrendCardsFFLoading ||
-        isGraphsFFLoading ||
         isTablesFFLoading ||
-        (!isGraphsFFEnabled &&
-            (totalSalesByProductData.isLoading ||
-                gmvInfluenceTimeSeriesData.isLoading)) ||
         (!isTablesFFEnabled &&
             (legacySalesChannelTable.isLoading ||
                 legacyTopProductsTable.isLoading))
@@ -84,10 +66,6 @@ export const useExportAiAgentShoppingAssistantToCSV = () => {
     const files = useMemo(
         () => ({
             ...dashboardDataFiles,
-            ...(!isGraphsFFEnabled && {
-                ...totalSalesByProductData.files,
-                ...gmvInfluenceTimeSeriesData.files,
-            }),
             ...(!isTablesFFEnabled && {
                 ...legacySalesChannelTable.files,
                 ...legacyTopProductsTable.files,
@@ -95,11 +73,8 @@ export const useExportAiAgentShoppingAssistantToCSV = () => {
         }),
         [
             dashboardDataFiles,
-            totalSalesByProductData.files,
-            gmvInfluenceTimeSeriesData.files,
             legacySalesChannelTable.files,
             legacyTopProductsTable.files,
-            isGraphsFFEnabled,
             isTablesFFEnabled,
         ],
     )

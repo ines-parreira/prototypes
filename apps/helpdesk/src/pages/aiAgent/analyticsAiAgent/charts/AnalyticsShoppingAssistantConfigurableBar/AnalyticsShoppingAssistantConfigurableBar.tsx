@@ -19,8 +19,6 @@ import {
 } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 import type { BarChartMetricConfig } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 
-import { DEPRECATED_TotalSalesByProductComboChart } from './DEPRECATED_TotalSalesByProductComboChart'
-
 type Props = {
     chartId?: string
     dashboard?: DashboardSchema
@@ -103,7 +101,6 @@ export const AnalyticsShoppingAssistantConfigurableBar = ({
         <ConfigurableGraphWrapper
             metrics={metrics}
             analyticsChartId={chartId ?? ''}
-            DeprecatedChart={DEPRECATED_TotalSalesByProductComboChart}
             chartId={chartId}
             dashboard={dashboard}
             chartConfig={chartConfig}

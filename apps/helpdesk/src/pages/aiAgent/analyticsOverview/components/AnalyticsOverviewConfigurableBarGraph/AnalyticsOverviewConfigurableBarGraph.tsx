@@ -17,8 +17,6 @@ import type { BarChartMetricConfig } from 'pages/aiAgent/utils/aiAgentMetrics.ut
 import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
 import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 
-import { DEPRECATED_AutomationRateComboChart } from './DEPRECATED_AutomationRateComboChart'
-
 type Props = {
     chartId?: string
     dashboard?: DashboardSchema
@@ -90,7 +88,6 @@ export const AnalyticsOverviewConfigurableBarGraph = ({
         <ConfigurableGraphWrapper
             metrics={metrics}
             analyticsChartId={chartId ?? ''}
-            DeprecatedChart={DEPRECATED_AutomationRateComboChart}
             chartId={chartId}
             dashboard={dashboard}
             chartConfig={chartConfig}

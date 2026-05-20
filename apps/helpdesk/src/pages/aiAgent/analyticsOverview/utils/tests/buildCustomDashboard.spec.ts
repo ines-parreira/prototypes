@@ -55,15 +55,14 @@ describe('buildCustomDashboard', () => {
         expect(result.emoji).toBeNull()
     })
 
-    it('should include card and table sections but exclude graph sections', () => {
+    it('should include card, graph and table sections', () => {
         const result = buildCustomDashboard(
             'test',
             ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT,
             true,
-            false,
             true,
         )
-        expect(result.children).toHaveLength(2)
+        expect(result.children).toHaveLength(3)
     })
 
     it('should include only non-feature-flagged items when flag is disabled', () => {
@@ -156,7 +155,6 @@ describe('buildCustomDashboard', () => {
                 'test',
                 DEFAULT_ANALYTICS_OVERVIEW_LAYOUT,
                 false,
-                false,
                 true,
             )
             const tableSection = result.children.find((s) =>
@@ -180,7 +178,6 @@ describe('buildCustomDashboard', () => {
                 'test',
                 DEFAULT_ANALYTICS_OVERVIEW_LAYOUT,
                 true,
-                false,
                 true,
             )
             const tableSection = result.children.find((s) =>
@@ -205,7 +202,6 @@ describe('buildCustomDashboard', () => {
                 DEFAULT_ANALYTICS_OVERVIEW_LAYOUT,
                 true,
                 false,
-                false,
             )
             const tableSection = result.children.find((s) =>
                 (s as any).children?.some(
@@ -218,22 +214,11 @@ describe('buildCustomDashboard', () => {
     })
 
     describe('graph sections', () => {
-        it('should exclude graph sections when isChartsEnabled is false', () => {
+        it('should include graph sections', () => {
             const result = buildCustomDashboard(
                 'test',
                 LAYOUT_WITH_GRAPHS,
                 false,
-                false,
-            )
-            expect(result.children).toHaveLength(0)
-        })
-
-        it('should include graph sections when isChartsEnabled is true', () => {
-            const result = buildCustomDashboard(
-                'test',
-                LAYOUT_WITH_GRAPHS,
-                false,
-                true,
             )
             expect(result.children).toHaveLength(1)
         })
@@ -243,7 +228,6 @@ describe('buildCustomDashboard', () => {
                 'test',
                 LAYOUT_WITH_GRAPHS,
                 false,
-                true,
             )
             const section = result.children[0] as {
                 children: { config_id: string }[]
@@ -259,7 +243,6 @@ describe('buildCustomDashboard', () => {
                 'test',
                 LAYOUT_WITH_GRAPHS,
                 false,
-                true,
             )
             const section = result.children[0] as {
                 children: {

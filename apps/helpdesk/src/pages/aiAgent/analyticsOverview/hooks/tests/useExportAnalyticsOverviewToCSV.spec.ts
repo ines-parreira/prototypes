@@ -5,8 +5,6 @@ import { act } from '@testing-library/react'
 import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
 import { useGetManagedDashboardsLayoutConfig } from 'domains/reporting/hooks/managed-dashboards/useGetManagedDashboardsLayoutConfig'
 import { AnalyticsOverviewReportConfig } from 'pages/aiAgent/analyticsOverview/AnalyticsOverviewReportConfig'
-import { useDownloadAutomationRateByFeatureData } from 'pages/aiAgent/analyticsOverview/hooks/useDownloadAutomationRateByFeatureData'
-import { useDownloadAutomationRateTimeSeriesData } from 'pages/aiAgent/analyticsOverview/hooks/useDownloadAutomationRateTimeSeriesData'
 import { useExportAnalyticsOverviewToCSV } from 'pages/aiAgent/analyticsOverview/hooks/useExportAnalyticsOverviewToCSV'
 import { buildCustomDashboard } from 'pages/aiAgent/analyticsOverview/utils/buildCustomDashboard'
 import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
@@ -20,12 +18,6 @@ jest.mock(
     'domains/reporting/hooks/managed-dashboards/useGetManagedDashboardsLayoutConfig',
 )
 jest.mock('pages/aiAgent/analyticsOverview/utils/buildCustomDashboard')
-jest.mock(
-    'pages/aiAgent/analyticsOverview/hooks/useDownloadAutomationRateByFeatureData',
-)
-jest.mock(
-    'pages/aiAgent/analyticsOverview/hooks/useDownloadAutomationRateTimeSeriesData',
-)
 jest.mock('pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate')
 jest.mock('utils/file', () => ({
     ...jest.requireActual('utils/file'),
@@ -39,12 +31,6 @@ const mockedUseGetManagedDashboardsLayoutConfig = jest.mocked(
     useGetManagedDashboardsLayoutConfig,
 )
 const mockedBuildCustomDashboard = jest.mocked(buildCustomDashboard)
-const mockedUseDownloadAutomationRateByFeatureData = jest.mocked(
-    useDownloadAutomationRateByFeatureData,
-)
-const mockedUseDownloadAutomationRateTimeSeriesData = jest.mocked(
-    useDownloadAutomationRateTimeSeriesData,
-)
 const mockedUseMoneySavedPerInteractionWithAutomate = jest.mocked(
     useMoneySavedPerInteractionWithAutomate,
 )
@@ -59,14 +45,6 @@ const dashboardFiles = {
     'analytics-overview - trends.csv': 'trends content',
     'performance-breakdown-2024-01-01_2024-01-31.csv':
         'Feature,Overall automation rate\r\nAI Agent,18%',
-}
-
-const byFeatureFiles = {
-    'automation-rate-by-feature.csv': 'feature,automation_rate\nFeature A,85%',
-}
-
-const timeSeriesFiles = {
-    'automation-rate-timeseries.csv': 'date,automation_rate\n2024-01-01,85%',
 }
 
 describe('useExportAnalyticsOverviewToCSV', () => {
@@ -101,18 +79,6 @@ describe('useExportAnalyticsOverviewToCSV', () => {
             isLoading: false,
         })
 
-        mockedUseDownloadAutomationRateByFeatureData.mockReturnValue({
-            files: byFeatureFiles,
-            fileName: 'automation-rate-by-feature.csv',
-            isLoading: false,
-        })
-
-        mockedUseDownloadAutomationRateTimeSeriesData.mockReturnValue({
-            files: timeSeriesFiles,
-            fileName: 'automation-rate-timeseries.csv',
-            isLoading: false,
-        })
-
         mockedUseMoneySavedPerInteractionWithAutomate.mockReturnValue(1)
     })
 
@@ -134,12 +100,9 @@ describe('useExportAnalyticsOverviewToCSV', () => {
         expect(result.current.isLoading).toBe(true)
     })
 
-    it('should return isLoading as true when charts flag is loading', () => {
+    it('should return isLoading as true when tables flag is loading', () => {
         mockUseFlagWithLoading.mockImplementation((key) => {
-            if (
-                key ===
-                FeatureFlagKey.AiAgentAnalyticsDashboardsChartsAndDropdowns
-            )
+            if (key === FeatureFlagKey.AiAgentAnalyticsDashboardsTables)
                 return { value: false, isLoading: true }
             return { value: false, isLoading: false }
         })
@@ -161,137 +124,15 @@ describe('useExportAnalyticsOverviewToCSV', () => {
         expect(result.current.isLoading).toBe(true)
     })
 
-    describe('when isGraphsFFEnabled is false', () => {
-        beforeEach(() => {
-            mockUseFlagWithLoading.mockReturnValue({
-                value: false,
-                isLoading: false,
-            })
+    it('should include dashboard files in the ZIP', async () => {
+        const { result } = renderHook(() => useExportAnalyticsOverviewToCSV())
+
+        await act(async () => {
+            await result.current.triggerDownload()
         })
 
-        it('should return isLoading as true when automation rate by feature data is loading', () => {
-            mockedUseDownloadAutomationRateByFeatureData.mockReturnValue({
-                files: {},
-                fileName: '',
-                isLoading: true,
-            })
-
-            const { result } = renderHook(() =>
-                useExportAnalyticsOverviewToCSV(),
-            )
-
-            expect(result.current.isLoading).toBe(true)
-        })
-
-        it('should return isLoading as true when automation rate time series data is loading', () => {
-            mockedUseDownloadAutomationRateTimeSeriesData.mockReturnValue({
-                files: {},
-                fileName: '',
-                isLoading: true,
-            })
-
-            const { result } = renderHook(() =>
-                useExportAnalyticsOverviewToCSV(),
-            )
-
-            expect(result.current.isLoading).toBe(true)
-        })
-
-        it('should include dashboard, by-feature and timeseries files in the ZIP', async () => {
-            const { result } = renderHook(() =>
-                useExportAnalyticsOverviewToCSV(),
-            )
-
-            await act(async () => {
-                await result.current.triggerDownload()
-            })
-
-            const [filesArg] = mockedSaveZippedFiles.mock.calls[0]
-            const fileNames = Object.keys(filesArg)
-
-            expect(fileNames).toHaveLength(4)
-            expect(fileNames.some((n) => n.includes('trends'))).toBe(true)
-            expect(
-                fileNames.some((n) => n.includes('automation-rate-by-feature')),
-            ).toBe(true)
-            expect(
-                fileNames.some((n) => n.includes('automation-rate-timeseries')),
-            ).toBe(true)
-            expect(
-                fileNames.some((n) => n.includes('performance-breakdown')),
-            ).toBe(true)
-        })
-
-        it('should include only dashboard files when download data files are empty', async () => {
-            mockedUseDownloadAutomationRateByFeatureData.mockReturnValue({
-                files: {},
-                fileName: '',
-                isLoading: false,
-            })
-            mockedUseDownloadAutomationRateTimeSeriesData.mockReturnValue({
-                files: {},
-                fileName: '',
-                isLoading: false,
-            })
-
-            const { result } = renderHook(() =>
-                useExportAnalyticsOverviewToCSV(),
-            )
-
-            await act(async () => {
-                await result.current.triggerDownload()
-            })
-
-            const [filesArg] = mockedSaveZippedFiles.mock.calls[0]
-            const fileNames = Object.keys(filesArg)
-
-            expect(fileNames).toHaveLength(2)
-            expect(fileNames.some((n) => n.includes('trends'))).toBe(true)
-            expect(
-                fileNames.some((n) => n.includes('performance-breakdown')),
-            ).toBe(true)
-        })
-    })
-
-    describe('when isGraphsFFEnabled is true', () => {
-        beforeEach(() => {
-            mockUseFlagWithLoading.mockReturnValue({
-                value: true,
-                isLoading: false,
-            })
-        })
-
-        it('should return isLoading as false even when automation rate data is loading', () => {
-            mockedUseDownloadAutomationRateByFeatureData.mockReturnValue({
-                files: {},
-                fileName: '',
-                isLoading: true,
-            })
-            mockedUseDownloadAutomationRateTimeSeriesData.mockReturnValue({
-                files: {},
-                fileName: '',
-                isLoading: true,
-            })
-
-            const { result } = renderHook(() =>
-                useExportAnalyticsOverviewToCSV(),
-            )
-
-            expect(result.current.isLoading).toBe(false)
-        })
-
-        it('should include only dashboard files in the ZIP', async () => {
-            const { result } = renderHook(() =>
-                useExportAnalyticsOverviewToCSV(),
-            )
-
-            await act(async () => {
-                await result.current.triggerDownload()
-            })
-
-            const [filesArg] = mockedSaveZippedFiles.mock.calls[0]
-            expect(filesArg).toEqual(dashboardFiles)
-        })
+        const [filesArg] = mockedSaveZippedFiles.mock.calls[0]
+        expect(filesArg).toEqual(dashboardFiles)
     })
 
     it('should call saveZippedFiles when triggerDownload is called', async () => {
@@ -318,7 +159,6 @@ describe('useExportAnalyticsOverviewToCSV', () => {
         expect(mockedBuildCustomDashboard).toHaveBeenCalledWith(
             'analytics-overview',
             expect.any(Object),
-            true,
             true,
             true,
         )

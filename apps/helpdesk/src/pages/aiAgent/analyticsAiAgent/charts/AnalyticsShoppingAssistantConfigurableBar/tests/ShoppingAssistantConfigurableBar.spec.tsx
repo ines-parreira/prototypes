@@ -24,14 +24,6 @@ jest.mock('@repo/reporting', () => ({
     ...jest.requireActual('@repo/reporting'),
     useDashboardContext: jest.fn().mockReturnValue(null),
 }))
-jest.mock(
-    'pages/aiAgent/analyticsAiAgent/charts/AnalyticsShoppingAssistantConfigurableBar/DEPRECATED_TotalSalesByProductComboChart',
-    () => ({
-        DEPRECATED_TotalSalesByProductComboChart: () => (
-            <div>Deprecated chart</div>
-        ),
-    }),
-)
 jest.mock('pages/aiAgent/utils/aiAgentMetrics.utils', () => ({
     ...jest.requireActual('pages/aiAgent/utils/aiAgentMetrics.utils'),
     getBarChartGraphConfig: jest.fn(),
@@ -215,16 +207,5 @@ describe('AnalyticsShoppingAssistantConfigurableBar', () => {
         expect(
             screen.getByRole('button', { name: /Revenue influenced/i }),
         ).toBeInTheDocument()
-    })
-
-    it('should render deprecated chart when feature flag is disabled', () => {
-        useFlagWithLoadingMocked.mockReturnValue({
-            value: false,
-            isLoading: false,
-        })
-
-        render(<AnalyticsShoppingAssistantConfigurableBar />)
-
-        expect(screen.getByText('Deprecated chart')).toBeInTheDocument()
     })
 })

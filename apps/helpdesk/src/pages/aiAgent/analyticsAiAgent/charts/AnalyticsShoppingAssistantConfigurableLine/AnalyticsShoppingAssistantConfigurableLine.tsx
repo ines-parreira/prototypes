@@ -16,8 +16,6 @@ import {
 } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 import type { LineChartMetricConfig } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 
-import { DEPRECATED_AnalyticsShoppingAssistantLineChart } from './DEPRECATED_AnalyticsShoppingAssistantLineChart'
-
 type Props = {
     chartId?: string
     dashboard?: DashboardSchema
@@ -106,7 +104,6 @@ export const AnalyticsShoppingAssistantConfigurableLine = ({
         <ConfigurableGraphWrapper
             metrics={metrics}
             analyticsChartId={chartId ?? ''}
-            DeprecatedChart={DEPRECATED_AnalyticsShoppingAssistantLineChart}
             chartId={chartId}
             dashboard={dashboard}
             chartConfig={chartConfig}

@@ -1,6 +1,6 @@
-import type { ComponentType, ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
-import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
+import { useFlagWithLoading } from '@repo/feature-flags'
 import type { ConfigurableGraphMetricConfig } from '@repo/reporting'
 import { ConfigurableGraphType, useDashboardContext } from '@repo/reporting'
 import { assumeMock, render } from '@repo/testing'
@@ -82,12 +82,9 @@ const mockChartConfig = { label: 'Automation Rate' } as Parameters<
     typeof ConfigurableGraphWrapper
 >[0]['chartConfig']
 
-const DeprecatedChart: ComponentType = () => <div>Deprecated chart</div>
-
 const defaultProps = {
     metrics: [defaultMetricConfig],
     analyticsChartId: AnalyticsOverviewChart.ConfigurableLineGraph,
-    DeprecatedChart,
 }
 
 describe('ConfigurableGraphWrapper', () => {
@@ -103,23 +100,10 @@ describe('ConfigurableGraphWrapper', () => {
         jest.clearAllMocks()
     })
 
-    it('renders ConfigurableGraph when feature flag is on', () => {
+    it('renders ConfigurableGraph', () => {
         render(<ConfigurableGraphWrapper {...defaultProps} />)
 
         expect(screen.getByText('ConfigurableGraph')).toBeInTheDocument()
-        expect(screen.queryByText('Deprecated chart')).not.toBeInTheDocument()
-    })
-
-    it('renders DeprecatedChart when feature flag is off', () => {
-        useFlagWithLoadingMocked.mockReturnValue({
-            value: false,
-            isLoading: false,
-        })
-
-        render(<ConfigurableGraphWrapper {...defaultProps} />)
-
-        expect(screen.getByText('Deprecated chart')).toBeInTheDocument()
-        expect(screen.queryByText('ConfigurableGraph')).not.toBeInTheDocument()
     })
 
     describe('ChartsActionMenu', () => {
@@ -164,13 +148,9 @@ describe('ConfigurableGraphWrapper', () => {
         })
 
         it('does not render ChartsActionMenu when AiAgentAnalyticsCustomDashboards FF is disabled', () => {
-            useFlagWithLoadingMocked.mockImplementation((flag) => {
-                if (
-                    flag ===
-                    FeatureFlagKey.AiAgentAnalyticsDashboardsChartsAndDropdowns
-                )
-                    return { value: true, isLoading: false }
-                return { value: false, isLoading: false }
+            useFlagWithLoadingMocked.mockReturnValue({
+                value: false,
+                isLoading: false,
             })
 
             render(
