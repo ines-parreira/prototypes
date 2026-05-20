@@ -298,139 +298,181 @@ export const TicketDetailContainer = ({
             ],
         )
 
-    const prepareAndSubmitNewTicket = ({
-        status,
-        resetMessage,
-    }: SubmitArgs) => {
-        let submittedTicket
-        const receiver = newMessage.getIn(['newMessage', 'receiver'])
-        const sender = { id: currentUser.get('id') }
+    const prepareAndSubmitNewTicket = useCallback(
+        ({ status, resetMessage }: SubmitArgs) => {
+            let submittedTicket
+            const receiver = newMessage.getIn(['newMessage', 'receiver'])
+            const sender = { id: currentUser.get('id') }
 
-        const sourceType = newMessage.getIn(['newMessage', 'source', 'type'])
-        submittedTicket = ticket.setIn(['newMessage', 'sender'], sender)
+            const sourceType = newMessage.getIn([
+                'newMessage',
+                'source',
+                'type',
+            ])
+            submittedTicket = ticket.setIn(['newMessage', 'sender'], sender)
 
-        const hasInternalNoteAction = (
-            ticket.getIn(
-                ['state', 'appliedMacro', 'actions'],
-                fromJS([]),
-            ) as List<Map<any, any>>
-        ).some(
-            (action) => action?.get('name') === MacroActionName.AddInternalNote,
-        )
+            const hasInternalNoteAction = (
+                ticket.getIn(
+                    ['state', 'appliedMacro', 'actions'],
+                    fromJS([]),
+                ) as List<Map<any, any>>
+            ).some(
+                (action) =>
+                    action?.get('name') === MacroActionName.AddInternalNote,
+            )
 
-        // Ensure that a customer is always set on the ticket when created
-        if (sourceType !== 'internal-note' && !hasInternalNoteAction) {
-            submittedTicket = ticket.set('customer', receiver)
+            // Ensure that a customer is always set on the ticket when created
+            if (sourceType !== 'internal-note' && !hasInternalNoteAction) {
+                submittedTicket = ticket.set('customer', receiver)
+            }
+
+            return submitTicket(
+                submittedTicket,
+                status,
+                ticket.getIn(['state', 'appliedMacro', 'actions']),
+                currentUser,
+                resetMessage,
+                temporaryId,
+            )
+        },
+        [currentUser, newMessage, submitTicket, temporaryId, ticket],
+    )
+
+    const showTicket = useCallback(() => {
+        setIsTicketHidden(false)
+    }, [])
+
+    const hideTicket = useCallback(() => {
+        return new Promise<void>((resolve) => {
+            setIsTicketHidden(true)
+            // 100ms to let the animation goes
+            return setTimeout(resolve, 100)
+        })
+    }, [])
+
+    const maybeGoToNextTicket = useCallback(() => {
+        // If the history is open, we don't want to go to the next ticket
+        if (!ticket.getIn(['_internal', 'displayHistory'])) {
+            const promise = hideTicket().then(clearTicket)
+            void goToNextTicket(parseInt(ticketIdParamRef.current), promise)
         }
-
-        return submitTicket(
-            submittedTicket,
-            status,
-            ticket.getIn(['state', 'appliedMacro', 'actions']),
-            currentUser,
-            resetMessage,
-            temporaryId,
-        )
-    }
+    }, [clearTicket, goToNextTicket, hideTicket, ticket])
 
     /**
      * If the FF is ON we will avoid appending entire thread to body_html and body_text
      * For consistency and less chance of breaking existing implementation we will only remap values
      * using "userInput" that represents what user has entered in the text area
      */
-    const submitNewMessage = async ({
-        status,
-        action,
-        resetMessage = true,
-    }: SubmitArgs) => {
-        try {
-            const { messageId, messageToSend, replyAreaState } =
-                await prepareTicketMessage({
-                    status,
-                    macroActions: ticket.getIn([
-                        'state',
-                        'appliedMacro',
-                        'actions',
-                    ]),
-                    resetMessage,
-                    emailThreadSizeFF,
-                })
-            if (messageToSend.source.type === 'email') {
-                pendingMessageManager.sendMessage({
+    const submitNewMessage = useCallback(
+        async (
+            { status, action, resetMessage = true }: SubmitArgs,
+            submittedTicketId: string,
+        ) => {
+            try {
+                const { messageId, messageToSend, replyAreaState } =
+                    await prepareTicketMessage({
+                        status,
+                        macroActions: ticket.getIn([
+                            'state',
+                            'appliedMacro',
+                            'actions',
+                        ]),
+                        resetMessage,
+                        emailThreadSizeFF,
+                    })
+                if (messageToSend.source.type === 'email') {
+                    pendingMessageManager.sendMessage({
+                        messageId,
+                        messageToSend,
+                        action,
+                        resetMessage,
+                        ticketId: submittedTicketId,
+                        replyAreaState,
+                    })
+                    return
+                }
+                pendingMessageManager.skipExistingTimer()
+                return sendTicketMessage(
                     messageId,
                     messageToSend,
                     action,
                     resetMessage,
-                    ticketId: ticketIdParam,
-                    replyAreaState,
-                })
-                return
+                    submittedTicketId,
+                )
+            } catch (error) {
+                if (
+                    !(error instanceof TicketMessageInvalidSendDataError) &&
+                    !(error instanceof TicketMessageActionValidationError)
+                ) {
+                    throw error
+                }
             }
-            pendingMessageManager.skipExistingTimer()
-            return sendTicketMessage(
-                messageId,
-                messageToSend,
-                action,
-                resetMessage,
-            )
-        } catch (error) {
+        },
+        [emailThreadSizeFF, prepareTicketMessage, sendTicketMessage, ticket],
+    )
+
+    const submit = useCallback(
+        async ({ status, action, resetMessage = true }: SubmitArgs) => {
+            // For the MS1 of the Helpdesk 2.0, we don't really on the submit function to perform the ticket fields validation.
             if (
-                !(error instanceof TicketMessageInvalidSendDataError) &&
-                !(error instanceof TicketMessageActionValidationError)
+                !hasUIVisionMS1 &&
+                status === TicketStatus.Closed &&
+                checkTicketFieldErrors({ includeMacro: true })
             ) {
-                throw error
-            }
-        }
-    }
-
-    const submit = async ({
-        status,
-        action,
-        resetMessage = true,
-    }: SubmitArgs) => {
-        // For the MS1 of the Helpdesk 2.0, we don't really on the submit function to perform the ticket fields validation.
-        if (
-            !hasUIVisionMS1 &&
-            status === TicketStatus.Closed &&
-            checkTicketFieldErrors({ includeMacro: true })
-        ) {
-            return
-        }
-        if (newMessage.getIn(['_internal', 'loading', 'submitMessage'])) {
-            // We're already submitting something, we dont want to POST twice.
-            // Or the ticket isn't dirty, and we don't want to send an empty message.
-            return
-        }
-
-        if (!canSendMessage) {
-            return
-        }
-
-        // flush any pending updates from the TicketReplyEditor debouncer
-        updateMessageText.flush()
-
-        // The ticket does not exist yet.
-        if (!ticket.get('id')) {
-            const { error } = ((await prepareAndSubmitNewTicket({
-                status,
-                action,
-                resetMessage,
-            })) || {}) as { error: unknown }
-
-            if (error) {
                 return
             }
-            localForageManager.clearTable(DRAFT_TICKET_STORE)
-        } else {
-            await submitNewMessage({ status, action, resetMessage })
-        }
+            if (newMessage.getIn(['_internal', 'loading', 'submitMessage'])) {
+                // We're already submitting something, we dont want to POST twice.
+                // Or the ticket isn't dirty, and we don't want to send an empty message.
+                return
+            }
 
-        const callback = onGoToNextTicket || maybeGoToNextTicket
+            if (!canSendMessage) {
+                return
+            }
 
-        if (status === TicketStatus.Closed) {
-            callback()
-        }
-    }
+            // flush any pending updates from the TicketReplyEditor debouncer
+            updateMessageText.flush()
+
+            const activeTicketId = ticket.get('id') as Maybe<number>
+
+            // The ticket does not exist yet.
+            if (!activeTicketId) {
+                const { error } = ((await prepareAndSubmitNewTicket({
+                    status,
+                    action,
+                    resetMessage,
+                })) || {}) as { error: unknown }
+
+                if (error) {
+                    return
+                }
+                localForageManager.clearTable(DRAFT_TICKET_STORE)
+            } else {
+                await submitNewMessage(
+                    { status, action, resetMessage },
+                    String(activeTicketId),
+                )
+            }
+
+            const callback = onGoToNextTicket || maybeGoToNextTicket
+
+            if (status === TicketStatus.Closed) {
+                callback()
+            }
+        },
+        [
+            canSendMessage,
+            checkTicketFieldErrors,
+            hasUIVisionMS1,
+            maybeGoToNextTicket,
+            newMessage,
+            onGoToNextTicket,
+            prepareAndSubmitNewTicket,
+            submitNewMessage,
+            ticket,
+        ],
+    )
 
     useEffect(() => {
         shortcutManager.bind('TicketDetailContainer', {
@@ -650,26 +692,6 @@ export const TicketDetailContainer = ({
     }
 
     useKey(ctrlFPredicate, trackCtrlFKeyCombo, { event: 'keydown' })
-
-    const showTicket = () => {
-        setIsTicketHidden(false)
-    }
-
-    const hideTicket = () => {
-        return new Promise<void>((resolve) => {
-            setIsTicketHidden(true)
-            // 100ms to let the animation goes
-            return setTimeout(resolve, 100)
-        })
-    }
-
-    const maybeGoToNextTicket = () => {
-        // If the history is open, we don't want to go to the next ticket
-        if (!ticket.getIn(['_internal', 'displayHistory'])) {
-            const promise = hideTicket().then(clearTicket)
-            void goToNextTicket(parseInt(ticketIdParamRef.current), promise)
-        }
-    }
 
     const handleStatusChange = (status: string) => {
         if (status === TicketStatus.Closed) {

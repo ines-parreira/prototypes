@@ -997,6 +997,61 @@ describe('TicketDetailContainer component', () => {
         )
     })
 
+    it('should defer email sends using the submitted ticket id', async () => {
+        const preparedEmailData = {
+            ...preparedData,
+            messageToSend: {
+                ...preparedData.messageToSend,
+                ticket_id: 2,
+            },
+        }
+        prepareTicketMessageMock.mockResolvedValue(preparedEmailData)
+
+        const { getByTestId } = renderWithMockedStore(
+            <TicketDetailContainer
+                {...minProps}
+                ticket={existingTicket}
+                newMessage={newMessageState}
+                canSendMessage
+            />,
+            { path: '/foo/:ticketId', initialEntries: ['/foo/1'] },
+        )
+
+        userEvent.click(getByTestId('TicketView-submit'))
+        await waitFor(() =>
+            expect(pendingMessageManager.sendMessage).toHaveBeenNthCalledWith(
+                1,
+                expect.objectContaining({
+                    messageToSend: preparedEmailData.messageToSend,
+                    ticketId: '1',
+                }),
+            ),
+        )
+    })
+
+    it('should submit using the active ticket id when the route ticket differs', async () => {
+        const { getByTestId } = renderWithMockedStore(
+            <TicketDetailContainer
+                {...minProps}
+                ticket={existingTicket}
+                newMessage={newMessageState}
+                canSendMessage
+            />,
+            { path: '/foo/:ticketId', initialEntries: ['/foo/2'] },
+        )
+
+        userEvent.click(getByTestId('TicketView-submit'))
+
+        await waitFor(() =>
+            expect(pendingMessageManager.sendMessage).toHaveBeenNthCalledWith(
+                1,
+                expect.objectContaining({
+                    ticketId: '1',
+                }),
+            ),
+        )
+    })
+
     it('should NOT defer sending new message when new message is NOT of type email', async () => {
         const preparedFacebookData = {
             messageId: 1,
@@ -1040,6 +1095,7 @@ describe('TicketDetailContainer component', () => {
                 preparedFacebookData.messageToSend,
                 undefined,
                 true,
+                '1',
             ),
         )
     })

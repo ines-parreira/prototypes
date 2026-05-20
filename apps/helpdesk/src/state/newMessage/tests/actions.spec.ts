@@ -1677,6 +1677,78 @@ describe('actions', () => {
         })
 
         describe('sendTicketMessage', () => {
+            it('should not submit a message when the prepared ticket does not match the submitted ticket', async () => {
+                const reportErrorSpy = jest
+                    .spyOn(segmentTracker, 'reportError')
+                    .mockImplementation(jest.fn())
+                store = mockStore({
+                    ticket: ticketInitialState.set('id', 12),
+                    newMessage: initialState,
+                })
+
+                await store.dispatch(
+                    // @ts-ignore
+                    actions.sendTicketMessage(
+                        1,
+                        {
+                            ticket_id: 13,
+                            source: { type: TicketMessageSourceType.Email },
+                        } as any,
+                        null,
+                        true,
+                        '12',
+                    ),
+                )
+
+                expect(mockServer.history.post).toHaveLength(0)
+                expect(reportErrorSpy).toHaveBeenCalledWith(expect.any(Error), {
+                    extra: {
+                        ticket_id_arg: '12',
+                        ticket_id_redux: 12,
+                        ticket_id_used: 13,
+                        ticket_id_new_message: 13,
+                    },
+                })
+                expect(store.getActions()).toEqual([
+                    expect.objectContaining({
+                        type: types.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR,
+                        reason: 'Message was not sent because of an internal error. Please try again.',
+                        messageId: 1,
+                    }),
+                ])
+
+                reportErrorSpy.mockRestore()
+            })
+
+            it('should submit a message when the prepared ticket matches the submitted ticket even if the active ticket changed', async () => {
+                mockServer
+                    .onPost('/api/tickets/12/messages/')
+                    .reply(201, { ticket_id: 12, messages: [] })
+                store = mockStore({
+                    ticket: ticketInitialState.set('id', 99),
+                    newMessage: initialState,
+                })
+
+                await store.dispatch(
+                    // @ts-ignore
+                    actions.sendTicketMessage(
+                        1,
+                        {
+                            ticket_id: 12,
+                            source: { type: TicketMessageSourceType.Email },
+                        } as any,
+                        null,
+                        true,
+                        '12',
+                    ),
+                )
+
+                expect(mockServer.history.post).toHaveLength(1)
+                expect(mockServer.history.post[0].url).toBe(
+                    '/api/tickets/12/messages/',
+                )
+            })
+
             it('should submit new message', () => {
                 mockServer
                     .onPost('/api/tickets/12/messages/')
