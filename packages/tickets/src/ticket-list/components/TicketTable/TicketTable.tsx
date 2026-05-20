@@ -63,6 +63,8 @@ const DEFAULT_PAGINATION: PaginationState = {
     pageIndex: 0,
     pageSize: 20,
 }
+const VIRTUALIZATION_PAGE_SIZE_THRESHOLD = 50
+const VIRTUALIZATION_OVERSCAN = 20
 
 type Props = {
     viewId: number
@@ -454,6 +456,9 @@ function TicketTableComponent({
 
     const shouldShowErrorPlaceholder =
         placeholderKind === EmptyViewsState.Error && items.length === 0
+    const shouldEnableVirtualization =
+        (pagination?.pageSize ?? DEFAULT_PAGINATION.pageSize) >=
+        VIRTUALIZATION_PAGE_SIZE_THRESHOLD
 
     if (shouldShowErrorPlaceholder) {
         return (
@@ -498,6 +503,10 @@ function TicketTableComponent({
                 onRowClick={handleRowClick}
                 getRowHref={getRowHref}
                 overflow="scroll"
+                virtualization={{
+                    enable: shouldEnableVirtualization,
+                    overscan: VIRTUALIZATION_OVERSCAN,
+                }}
                 selection={{
                     enable: true,
                     multiple: true,

@@ -6,7 +6,6 @@ import { screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
-import type * as AxiomModule from '@gorgias/axiom'
 import {
     mockGetCurrentUserHandler,
     mockGetViewHandler,
@@ -64,19 +63,6 @@ vi.mock('react-router-dom', async () => {
     return {
         ...actual,
         useHistory: () => ({ push: pushMock }),
-    }
-})
-
-vi.mock('@gorgias/axiom', async () => {
-    const actual = await vi.importActual<typeof AxiomModule>('@gorgias/axiom')
-
-    return {
-        ...actual,
-        createLocalStoragePersistence: () => ({
-            read: () => ({}),
-            write: vi.fn(),
-            clear: vi.fn(() => true),
-        }),
     }
 })
 
@@ -400,7 +386,7 @@ describe('TicketTable', () => {
         await waitForTicketTableToBeReady()
 
         expect(screen.getByText('Ticket 501')).toBeInTheDocument()
-        expect(screen.getByText('Ticket 600')).toBeInTheDocument()
+        expect(screen.queryByText('Ticket 600')).not.toBeInTheDocument()
         expect(screen.getByText(/501.*600/)).toBeInTheDocument()
         await waitFor(() => {
             expect(
@@ -415,6 +401,36 @@ describe('TicketTable', () => {
                 }),
             )
         })
+    })
+
+    it('renders all rows when page size is below 50', async () => {
+        setViewsCount({ 123: 49 })
+        mockState.tickets = Array.from({ length: 49 }, (_, index) => ({
+            id: index + 1,
+            subject: `Ticket ${index + 1}`,
+        }))
+        window.history.pushState({}, '', '/?pageIndex=0&pageSize=49')
+
+        renderTicketTable()
+        await waitForTicketTableToBeReady()
+
+        expect(screen.getByText('Ticket 1')).toBeInTheDocument()
+        expect(screen.getByText('Ticket 49')).toBeInTheDocument()
+    })
+
+    it('virtualizes rows when page size is 50', async () => {
+        setViewsCount({ 123: 50 })
+        mockState.tickets = Array.from({ length: 50 }, (_, index) => ({
+            id: index + 1,
+            subject: `Ticket ${index + 1}`,
+        }))
+        window.history.pushState({}, '', '/?pageIndex=0&pageSize=50')
+
+        renderTicketTable()
+        await waitForTicketTableToBeReady()
+
+        expect(screen.getByText('Ticket 1')).toBeInTheDocument()
+        expect(screen.queryByText('Ticket 50')).not.toBeInTheDocument()
     })
 
     it('renders the table empty state when the loaded view has no tickets', async () => {
