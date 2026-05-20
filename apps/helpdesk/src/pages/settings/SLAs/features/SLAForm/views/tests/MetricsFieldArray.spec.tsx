@@ -171,4 +171,59 @@ describe('<MetricsFieldArray />', () => {
             expect(thresholdInput).toHaveAttribute('placeholder', '10')
         })
     })
+
+    describe('clearing the threshold via backspace', () => {
+        it('should let the user clear the threshold in edit mode', async () => {
+            const user = userEvent.setup()
+            const handleSubmit = jest.fn()
+            const editModeValues = {
+                metrics: [
+                    {
+                        id: '1',
+                        name: 'FRT',
+                        threshold: 10,
+                        unit: SLAPolicyMetricUnit.Hour,
+                    },
+                ],
+            }
+            render(
+                <Form
+                    defaultValues={editModeValues}
+                    values={editModeValues}
+                    onValidSubmit={handleSubmit}
+                    onInvalidSubmit={handleSubmit}
+                >
+                    <MetricsFieldArray />
+                    <button type="submit">Submit</button>
+                </Form>,
+            )
+
+            const thresholdInput =
+                screen.getByRole<HTMLInputElement>('spinbutton')
+            expect(thresholdInput.value).toBe('10')
+
+            await user.click(thresholdInput)
+            await user.keyboard('{Backspace}{Backspace}')
+
+            expect(thresholdInput.value).toBe('')
+
+            const submitButton = screen.getByRole('button', { name: /submit/i })
+            await user.click(submitButton)
+
+            await waitFor(() => {
+                expect(handleSubmit).toHaveBeenCalledWith(
+                    {
+                        metrics: [
+                            expect.objectContaining({
+                                threshold: expect.objectContaining({
+                                    message: 'This field is required',
+                                }),
+                            }),
+                        ],
+                    },
+                    expect.anything(),
+                )
+            })
+        })
+    })
 })

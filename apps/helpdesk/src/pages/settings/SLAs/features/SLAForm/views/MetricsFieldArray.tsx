@@ -109,6 +109,9 @@ export function MetricsFieldArray() {
                                     min={1}
                                     wrapperClassName={css.input}
                                     allowEmptyString
+                                    outputTransform={(value) =>
+                                        value === undefined ? '' : value
+                                    }
                                     isDisabled={!toggleState[index]}
                                 />
                                 <TimeUnitSelectField
