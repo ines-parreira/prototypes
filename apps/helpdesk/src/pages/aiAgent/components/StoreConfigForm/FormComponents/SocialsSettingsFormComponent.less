@@ -1,0 +1,48 @@
+@import (reference) '~css/typography';
+
+:local {
+    .formInputFooterInfo {
+        .caption-regular();
+        color: var(--neutral-grey-5); // legacy
+        margin-top: var(--layout-spacing-xxs);
+
+        &.error {
+            color: var(--feedback-error); // legacy
+        }
+    }
+
+    .socialsSettingsFormComponent {
+        section {
+            margin-bottom: var(--spacing-lg) !important;
+        }
+
+        .metaPoliciesNotice {
+            [class*='ui-text-ellipsis'] {
+                overflow: visible;
+                text-overflow: clip;
+                white-space: normal;
+            }
+        }
+    }
+
+    .emptyStateMessage {
+        .body-regular();
+        color: var(--neutral-grey-5); // legacy
+        margin-top: var(--layout-spacing-xs);
+        line-height: 20px;
+    }
+}
+
+.axiom :local {
+    .formInputFooterInfo {
+        color: var(--content-neutral-secondary);
+
+        &.error {
+            color: var(--content-error-primary);
+        }
+    }
+
+    .emptyStateMessage {
+        color: var(--content-neutral-secondary);
+    }
+}

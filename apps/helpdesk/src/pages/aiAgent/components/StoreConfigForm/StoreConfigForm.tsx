@@ -75,7 +75,7 @@ type Props = {
     shopType: string
     accountDomain: string
     faqHelpCenters: HelpCenter[]
-    section?: 'chat' | 'email' | 'sms'
+    section?: 'chat' | 'email' | 'sms' | 'socials'
 }
 
 export const StoreConfigForm = ({
@@ -191,6 +191,7 @@ export const StoreConfigForm = ({
         isChatChannelEnabled,
         isEmailChannelEnabled,
         isSmsChannelEnabled,
+        isSocialsChannelEnabled,
     } = useStoreConfigurationForm(shopName, shopType, faqHelpCenters)
 
     const { data: { data: accountCustomFields = [] } = {} } =
@@ -756,6 +757,22 @@ export const StoreConfigForm = ({
                                     deactivatedDatetime,
                                 )
                             }}
+                            monitoredSocialsIntegrations={
+                                formValues.monitoredSocialsIntegrations
+                            }
+                            socialsDisclaimer={formValues.socialsDisclaimer}
+                            isSocialsChannelEnabled={isSocialsChannelEnabled}
+                            socialsChannelDeactivatedDatetime={
+                                formValues.socialsChannelDeactivatedDatetime
+                            }
+                            updateSocialsChannelDeactivatedDatetime={(
+                                deactivatedDatetime,
+                            ) => {
+                                updateValue(
+                                    'socialsChannelDeactivatedDatetime',
+                                    deactivatedDatetime,
+                                )
+                            }}
                             section={section}
                         />
                     )}
@@ -894,26 +911,29 @@ export const StoreConfigForm = ({
                         </>
                     )}
 
-                    <section>
-                        <Button
-                            onClick={onSubmit}
-                            isDisabled={
-                                isPendingCreateOrUpdate ||
-                                isLoadingOnboardingNotificationState
-                            }
-                            isLoading={isPendingCreateOrUpdate}
-                            className="mb-3"
-                        >
-                            Save Changes
-                        </Button>
-                        <p className={css.legalDisclaimer}>
+                    <section className={css.footerSection}>
+                        <div>
+                            <Button
+                                onClick={onSubmit}
+                                isDisabled={
+                                    isPendingCreateOrUpdate ||
+                                    isLoadingOnboardingNotificationState
+                                }
+                                isLoading={isPendingCreateOrUpdate}
+                                size="md"
+                                variant="primary"
+                            >
+                                Save Changes
+                            </Button>
+                        </div>
+                        <div className={css.legalDisclaimer}>
                             By using AI Agent, you agree to comply with all
                             applicable laws, including, but not limited to, laws
                             prohibiting misleading consumers about the
                             artificial identity of an automated online account,
                             such as the California Bolstering Online
                             Transparency Act.
-                        </p>
+                        </div>
                     </section>
                 </form>
                 {shouldDisplayGeneralSections && !newToneOfVoiceEnabled && (

@@ -3,6 +3,7 @@ import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { keyBy } from 'lodash'
+import { Route, useLocation } from 'react-router-dom'
 
 import { account } from 'fixtures/account'
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
@@ -115,11 +116,14 @@ const getUseStoreConfigurationFormMock = () => ({
         monitoredChatIntegrations: [],
         monitoredEmailIntegrations: [],
         monitoredSmsIntegrations: [],
+        monitoredSocialsIntegrations: [],
         signature: 'This response was created by AI',
+        socialsDisclaimer: null,
         useEmailIntegrationSignature: false,
         emailChannelDeactivatedDatetime: null,
         chatChannelDeactivatedDatetime: null,
         smsChannelDeactivatedDatetime: null,
+        socialsChannelDeactivatedDatetime: null,
     },
     resetForm: jest.fn(),
     isFormDirty: false,
@@ -226,6 +230,10 @@ const getHelpCenterListResponse = {
     }),
     isInitialLoading: false,
 } as unknown as ReturnType<typeof useGetHelpCenterList>
+const LocationPath = () => {
+    const location = useLocation()
+    return <div aria-label="current-pathname">{location.pathname}</div>
+}
 const findToggle = (type: 'email' | 'chat') =>
     screen
         .queryAllByLabelText('Enable AI Agent')
@@ -632,6 +640,76 @@ describe('AiAgentConfigurationContainer', () => {
             })
             const heading = screen.getByRole('heading', { level: 1 })
             expect(heading).toHaveTextContent('Chat')
+        })
+        it('should determine socials section and display Socials title when AiAgentInstagramDms flag is enabled', () => {
+            setupMocks()
+            mockUseFlag.mockImplementation(
+                (key) => key === FeatureFlagKey.AiAgentInstagramDms || false,
+            )
+            render(
+                <>
+                    <Route path="/:shopType/:shopName/ai-agent/deploy/socials">
+                        <AiAgentConfigurationContainer />
+                    </Route>
+                    <LocationPath />
+                </>,
+                {
+                    initialEntries: [
+                        '/shopify/test-shop/ai-agent/deploy/socials',
+                    ],
+                    storeState: getState(),
+                },
+            )
+            const heading = screen.getByRole('heading', { level: 1 })
+            expect(heading).toHaveTextContent('Socials')
+            expect(screen.getByLabelText('current-pathname')).toHaveTextContent(
+                '/shopify/test-shop/ai-agent/deploy/socials',
+            )
+        })
+        it('should redirect to the email deploy path when route is /deploy/socials and AiAgentInstagramDms flag is disabled', () => {
+            setupMocks()
+            mockUseFlag.mockReturnValue(false)
+            render(
+                <>
+                    <Route path="/:shopType/:shopName/ai-agent/deploy/socials">
+                        <AiAgentConfigurationContainer />
+                    </Route>
+                    <LocationPath />
+                </>,
+                {
+                    initialEntries: [
+                        '/shopify/test-shop/ai-agent/deploy/socials',
+                    ],
+                    storeState: getState(),
+                },
+            )
+            expect(screen.getByLabelText('current-pathname')).toHaveTextContent(
+                '/app/ai-agent/shopify/test-shop/deploy/email',
+            )
+            expect(screen.queryByRole('heading', { level: 1 })).toBeNull()
+        })
+        it('should not redirect away from non-socials routes when AiAgentInstagramDms flag is disabled', () => {
+            setupMocks()
+            mockUseFlag.mockReturnValue(false)
+            render(
+                <>
+                    <Route path="/:shopType/:shopName/ai-agent/deploy/email">
+                        <AiAgentConfigurationContainer />
+                    </Route>
+                    <LocationPath />
+                </>,
+                {
+                    initialEntries: [
+                        '/shopify/test-shop/ai-agent/deploy/email',
+                    ],
+                    storeState: getState(),
+                },
+            )
+            expect(screen.getByLabelText('current-pathname')).toHaveTextContent(
+                '/shopify/test-shop/ai-agent/deploy/email',
+            )
+            const heading = screen.getByRole('heading', { level: 1 })
+            expect(heading).toHaveTextContent('Email')
         })
     })
 })

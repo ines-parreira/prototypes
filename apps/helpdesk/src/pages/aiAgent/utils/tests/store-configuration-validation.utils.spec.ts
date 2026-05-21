@@ -21,12 +21,14 @@ const VALID_FORM_VALUES: ValidFormValues = {
     chatChannelDeactivatedDatetime: undefined,
     emailChannelDeactivatedDatetime: undefined,
     smsChannelDeactivatedDatetime: undefined,
+    socialsChannelDeactivatedDatetime: undefined,
     previewModeActivatedDatetime: null,
     previewModeValidUntilDatetime: null,
     ticketSampleRate: null,
     silentHandover: null,
     monitoredEmailIntegrations: [],
     monitoredSmsIntegrations: [],
+    monitoredSocialsIntegrations: [],
     tags: null,
     excludedTopics: [],
     signature: 'Signature',
@@ -42,6 +44,7 @@ const VALID_FORM_VALUES: ValidFormValues = {
     handoverEmailIntegrationId: null,
     handoverHttpIntegrationId: null,
     smsDisclaimer: null,
+    socialsDisclaimer: null,
 }
 
 const DEFAULT_OPTIONS = {
@@ -124,6 +127,7 @@ describe('store-configuration-validation', () => {
                 monitoredChatIntegrations: [],
                 monitoredEmailIntegrations: [],
                 monitoredSmsIntegrations: [],
+                monitoredSocialsIntegrations: [],
             }
             expect(
                 getValidStoreConfigurationFormValues(
@@ -208,6 +212,7 @@ describe('store-configuration-validation', () => {
                 monitoredChatIntegrations: [],
                 monitoredEmailIntegrations: [],
                 monitoredSmsIntegrations: [],
+                monitoredSocialsIntegrations: [],
             }
 
             expect(
@@ -740,6 +745,46 @@ describe('store-configuration-validation', () => {
                 ).toThrow(
                     StoreConfigurationValidationMessage.ChatIntegrationError,
                 )
+            })
+
+            it('should throw an error if no socials integration is selected and socials channel is enabled', () => {
+                const formValues: FormValues = {
+                    ...VALID_FORM_VALUES,
+                    monitoredEmailIntegrations: [EMAIL_INTEGRATION],
+                    monitoredSocialsIntegrations: [],
+                    socialsChannelDeactivatedDatetime: null,
+                }
+                expect(() =>
+                    getValidStoreConfigurationFormValues(
+                        formValues,
+                        [],
+                        false,
+                        false,
+                        undefined,
+                        DEFAULT_OPTIONS,
+                    ),
+                ).toThrow(
+                    StoreConfigurationValidationMessage.SocialsIntegrationError,
+                )
+            })
+
+            it('should not throw a socials integration error if socials channel is disabled', () => {
+                const formValues: FormValues = {
+                    ...VALID_FORM_VALUES,
+                    monitoredEmailIntegrations: [EMAIL_INTEGRATION],
+                    monitoredSocialsIntegrations: [],
+                    socialsChannelDeactivatedDatetime: '2021-01-01T00:00:00',
+                }
+                expect(() =>
+                    getValidStoreConfigurationFormValues(
+                        formValues,
+                        [],
+                        false,
+                        false,
+                        undefined,
+                        DEFAULT_OPTIONS,
+                    ),
+                ).not.toThrow()
             })
         })
 

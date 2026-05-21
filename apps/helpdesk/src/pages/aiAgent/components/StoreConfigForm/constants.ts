@@ -2,6 +2,7 @@ export enum SettingsBannerType {
     Email = 'email',
     Chat = 'chat',
     Sms = 'sms',
+    Socials = 'socials',
 }
 
 export const BannerText = {
@@ -11,4 +12,6 @@ export const BannerText = {
         'When AI Agent is enabled on Chat, Article recommendation will be disabled to avoid conflicting responses.',
     // We don't want banner for SMS
     [SettingsBannerType.Sms]: '',
+    // We don't want banner for Socials
+    [SettingsBannerType.Socials]: '',
 }

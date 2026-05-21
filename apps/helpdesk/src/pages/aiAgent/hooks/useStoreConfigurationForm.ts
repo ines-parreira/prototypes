@@ -104,10 +104,18 @@ export const useStoreConfigurationForm = (
             : INITIAL_FORM_VALUES.smsChannelDeactivatedDatetime,
     )
 
+    const isSocialsChannelEnabled = isAiAgentEnabled(
+        configurationForm.formValues.socialsChannelDeactivatedDatetime !==
+            undefined
+            ? configurationForm.formValues.socialsChannelDeactivatedDatetime
+            : INITIAL_FORM_VALUES.socialsChannelDeactivatedDatetime,
+    )
+
     return {
         ...configurationForm,
         isEmailChannelEnabled,
         isChatChannelEnabled,
         isSmsChannelEnabled,
+        isSocialsChannelEnabled,
     }
 }

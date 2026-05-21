@@ -36,6 +36,7 @@ const dummyStoreActivation: StoreActivation = {
         emailChannelDeactivatedDatetime: null,
         chatChannelDeactivatedDatetime: null,
         smsChannelDeactivatedDatetime: null,
+        socialsChannelDeactivatedDatetime: null,
         previewModeActivatedDatetime: null,
         previewModeValidUntilDatetime: null,
         isPreviewModeActive: false,
@@ -49,6 +50,7 @@ const dummyStoreActivation: StoreActivation = {
         excludedTopics: [],
         signature: 'This response was created by AI',
         smsDisclaimer: 'Powered by AI',
+        socialsDisclaimer: null,
         tags: [],
         monitoredEmailIntegrations: [
             {
@@ -58,6 +60,7 @@ const dummyStoreActivation: StoreActivation = {
         ],
         monitoredChatIntegrations: [1, 2, 3],
         monitoredSmsIntegrations: [],
+        monitoredSocialsIntegrations: [],
         dryRun: false,
         isDraft: false,
         silentHandover: false,

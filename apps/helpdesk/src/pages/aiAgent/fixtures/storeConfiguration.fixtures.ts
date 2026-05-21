@@ -15,6 +15,7 @@ export const getStoreConfigurationFixture = (
     emailChannelDeactivatedDatetime: null,
     chatChannelDeactivatedDatetime: null,
     smsChannelDeactivatedDatetime: null,
+    socialsChannelDeactivatedDatetime: '1970-01-01T00:00:00.000Z',
     previewModeActivatedDatetime: null,
     previewModeValidUntilDatetime: null,
     isPreviewModeActive: false,
@@ -29,6 +30,7 @@ export const getStoreConfigurationFixture = (
     excludedTopics: [],
     signature: 'This response was created by AI',
     smsDisclaimer: 'Powered by AI',
+    socialsDisclaimer: null,
     tags: [],
     monitoredEmailIntegrations: [
         {
@@ -38,6 +40,7 @@ export const getStoreConfigurationFixture = (
     ],
     monitoredChatIntegrations: [1, 2, 3],
     monitoredSmsIntegrations: [],
+    monitoredSocialsIntegrations: [],
     dryRun: false,
     isDraft: false,
     silentHandover: false,

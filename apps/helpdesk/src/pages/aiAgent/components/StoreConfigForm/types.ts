@@ -7,3 +7,9 @@ export type SmsPhoneNumber = {
     isDeactivated: boolean
     channel: string
 }
+
+export type SocialsIntegration = {
+    id: number
+    pageName: string
+    instagramUsername: string
+}

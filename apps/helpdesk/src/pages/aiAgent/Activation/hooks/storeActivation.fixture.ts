@@ -49,6 +49,7 @@ export const storeActivationFixture = (
             emailChannelDeactivatedDatetime: null,
             chatChannelDeactivatedDatetime: null,
             smsChannelDeactivatedDatetime: null,
+            socialsChannelDeactivatedDatetime: null,
             previewModeActivatedDatetime: null,
             previewModeValidUntilDatetime: null,
             isPreviewModeActive: false,
@@ -61,6 +62,7 @@ export const storeActivationFixture = (
             excludedTopics: [],
             signature: 'This response was created by AI',
             smsDisclaimer: 'Powered by AI',
+            socialsDisclaimer: null,
             tags: [],
             monitoredEmailIntegrations: [
                 {
@@ -70,6 +72,7 @@ export const storeActivationFixture = (
             ],
             monitoredChatIntegrations: [1, 2, 3],
             monitoredSmsIntegrations: [],
+            monitoredSocialsIntegrations: [],
             dryRun: false,
             isDraft: false,
             silentHandover: false,

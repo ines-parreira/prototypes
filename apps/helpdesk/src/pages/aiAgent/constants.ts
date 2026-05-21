@@ -37,6 +37,7 @@ export const TONE_OF_VOICE = 'Tone of Voice'
 
 export const SIGNATURE_MAX_LENGTH = 250
 export const SMS_DISCLAIMER_MAX_LENGTH = 250
+export const SOCIALS_DISCLAIMER_MAX_LENGTH = 250
 export const CUSTOM_TONE_OF_VOICE_MAX_LENGTH = 1500
 export const CUSTOM_TONE_OF_VOICE_EXTENDED_MAX_LENGTH = 5000
 export const EXCLUDED_TOPIC_MAX_LENGTH = 100
@@ -61,6 +62,7 @@ export const DEFAULT_FORM_VALUES: FormValues = {
     emailChannelDeactivatedDatetime: undefined,
     chatChannelDeactivatedDatetime: undefined,
     smsChannelDeactivatedDatetime: undefined,
+    socialsChannelDeactivatedDatetime: undefined,
     previewModeActivatedDatetime: null,
     previewModeValidUntilDatetime: null,
     ticketSampleRate: null,
@@ -68,6 +70,7 @@ export const DEFAULT_FORM_VALUES: FormValues = {
     monitoredEmailIntegrations: null,
     monitoredChatIntegrations: null,
     monitoredSmsIntegrations: null,
+    monitoredSocialsIntegrations: null,
     tags: null,
     excludedTopics: null,
     conversationBot: {
@@ -78,6 +81,7 @@ export const DEFAULT_FORM_VALUES: FormValues = {
     useEmailIntegrationSignature: true,
     signature: null,
     smsDisclaimer: null,
+    socialsDisclaimer: null,
     toneOfVoice: null,
     aiAgentLanguage: null,
     customToneOfVoiceGuidance: null,
@@ -173,18 +177,21 @@ export const INITIAL_FORM_VALUES = {
     emailChannelDeactivatedDatetime: new Date().toISOString(),
     chatChannelDeactivatedDatetime: new Date().toISOString(),
     smsChannelDeactivatedDatetime: new Date().toISOString(),
+    socialsChannelDeactivatedDatetime: new Date().toISOString(),
     silentHandover: false,
     monitoredEmailIntegrations: [],
     tags: [],
     excludedTopics: [],
     signature: 'This response was created by AI',
     smsDisclaimer: 'Powered by AI',
+    socialsDisclaimer: 'Powered by AI',
     toneOfVoice: ToneOfVoice.Friendly,
     aiAgentLanguage: null,
     customToneOfVoiceGuidance: CUSTOM_TONE_OF_VOICE_GUIDANCE_DEFAULT_VALUE,
     helpCenter: null,
     monitoredChatIntegrations: [],
     monitoredSmsIntegrations: [],
+    monitoredSocialsIntegrations: [],
     customFieldIds: [],
     scopes: [],
     conversationBot: {

@@ -106,6 +106,11 @@ describe('ChannelsFormComponent', () => {
         isSmsChannelEnabled: false,
         smsChannelDeactivatedDatetime: null,
         updateSmsChannelDeactivatedDatetime: jest.fn(),
+        monitoredSocialsIntegrations: null,
+        socialsDisclaimer: null,
+        isSocialsChannelEnabled: false,
+        socialsChannelDeactivatedDatetime: null,
+        updateSocialsChannelDeactivatedDatetime: jest.fn(),
         setIsFormDirty: jest.fn(),
     }
 

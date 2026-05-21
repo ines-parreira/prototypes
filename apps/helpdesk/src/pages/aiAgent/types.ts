@@ -36,6 +36,7 @@ export type FormValues = {
     emailChannelDeactivatedDatetime: string | null | undefined
     chatChannelDeactivatedDatetime: string | null | undefined
     smsChannelDeactivatedDatetime: string | null | undefined
+    socialsChannelDeactivatedDatetime: string | null | undefined
     previewModeActivatedDatetime: string | null
     previewModeValidUntilDatetime: string | null
     ticketSampleRate: number | null
@@ -43,10 +44,12 @@ export type FormValues = {
     monitoredEmailIntegrations: { id: number; email: string }[] | null
     monitoredChatIntegrations: number[] | null
     monitoredSmsIntegrations: number[] | null
+    monitoredSocialsIntegrations: number[] | null
     tags: Tag[] | null
     excludedTopics: string[] | null
     signature: string | null
     smsDisclaimer: string | null
+    socialsDisclaimer: string | null
     toneOfVoice: ToneOfVoice | null
     aiAgentLanguage: string | null
     customToneOfVoiceGuidance: string | null
@@ -70,6 +73,7 @@ export type ValidFormValues = NonNullFields<
     | 'signature'
     | 'monitoredChatIntegrations'
     | 'monitoredSmsIntegrations'
+    | 'monitoredSocialsIntegrations'
 >
 
 export type AIGuidance = Omit<

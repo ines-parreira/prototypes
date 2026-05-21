@@ -20,6 +20,8 @@ export const getFormValuesFromStoreConfiguration = (
     useEmailIntegrationSignature: storeConfig.useEmailIntegrationSignature,
     chatChannelDeactivatedDatetime: storeConfig.chatChannelDeactivatedDatetime,
     smsChannelDeactivatedDatetime: storeConfig.smsChannelDeactivatedDatetime,
+    socialsChannelDeactivatedDatetime:
+        storeConfig.socialsChannelDeactivatedDatetime,
     emailChannelDeactivatedDatetime:
         storeConfig.emailChannelDeactivatedDatetime,
     previewModeActivatedDatetime: storeConfig.previewModeActivatedDatetime,
@@ -28,10 +30,12 @@ export const getFormValuesFromStoreConfiguration = (
     ticketSampleRate: null, // deprecated
     monitoredEmailIntegrations: storeConfig.monitoredEmailIntegrations,
     monitoredSmsIntegrations: storeConfig.monitoredSmsIntegrations,
+    monitoredSocialsIntegrations: storeConfig.monitoredSocialsIntegrations,
     tags: storeConfig.tags,
     excludedTopics: storeConfig.excludedTopics,
     signature: storeConfig.signature,
     smsDisclaimer: storeConfig.smsDisclaimer ?? null,
+    socialsDisclaimer: storeConfig.socialsDisclaimer ?? null,
     toneOfVoice: storeConfig.toneOfVoice,
     aiAgentLanguage: storeConfig.aiAgentLanguage,
     customToneOfVoiceGuidance: storeConfig.customToneOfVoiceGuidance,

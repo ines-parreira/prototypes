@@ -35,6 +35,7 @@ const INITIAL_FORM_VALUES: FormValues = {
     chatChannelDeactivatedDatetime: undefined,
     emailChannelDeactivatedDatetime: undefined,
     smsChannelDeactivatedDatetime: undefined,
+    socialsChannelDeactivatedDatetime: undefined,
     previewModeActivatedDatetime: null,
     previewModeValidUntilDatetime: null,
     helpCenterId: null,
@@ -46,6 +47,7 @@ const INITIAL_FORM_VALUES: FormValues = {
     ticketSampleRate: null,
     monitoredChatIntegrations: null,
     monitoredSmsIntegrations: null,
+    monitoredSocialsIntegrations: null,
     wizard: undefined,
     customFieldIds: null,
     handoverMethod: null,
@@ -53,6 +55,7 @@ const INITIAL_FORM_VALUES: FormValues = {
     handoverEmailIntegrationId: null,
     handoverHttpIntegrationId: null,
     smsDisclaimer: null,
+    socialsDisclaimer: null,
 }
 
 jest.mock('models/helpCenter/queries')

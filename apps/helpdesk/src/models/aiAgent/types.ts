@@ -98,11 +98,13 @@ export type StoreConfiguration = {
     aiAgentLanguage: string | null
     signature: string
     smsDisclaimer?: string | null
+    socialsDisclaimer?: string | null
     excludedTopics: string[]
     tags: Tag[]
     conversationBot: ConversationBot
     monitoredEmailIntegrations: EmailIntegration[]
     monitoredSmsIntegrations: number[]
+    monitoredSocialsIntegrations: number[]
     monitoredChatIntegrations: number[]
 
     silentHandover: boolean
@@ -122,6 +124,7 @@ export type StoreConfiguration = {
     chatChannelDeactivatedDatetime: string | null
     emailChannelDeactivatedDatetime: string | null
     smsChannelDeactivatedDatetime: string | null
+    socialsChannelDeactivatedDatetime: string | null
     previewModeValidUntilDatetime: string | null
     isPreviewModeActive?: boolean
 
@@ -185,12 +188,15 @@ export type CreateStoreConfigurationPayload = Pick<
     | 'aiAgentLanguage'
     | 'signature'
     | 'smsDisclaimer'
+    | 'socialsDisclaimer'
     | 'useEmailIntegrationSignature'
     | 'monitoredChatIntegrations'
     | 'monitoredSmsIntegrations'
+    | 'monitoredSocialsIntegrations'
     | 'chatChannelDeactivatedDatetime'
     | 'emailChannelDeactivatedDatetime'
     | 'smsChannelDeactivatedDatetime'
+    | 'socialsChannelDeactivatedDatetime'
     | 'excludedTopics'
     | 'customFieldIds'
     | 'handoverEmail'

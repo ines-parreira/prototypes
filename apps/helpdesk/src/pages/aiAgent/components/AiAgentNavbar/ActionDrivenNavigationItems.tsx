@@ -29,6 +29,13 @@ type Props = {
     getChannelStatus?: (channelType: NavigationChannelType) => boolean
 }
 
+const CHANNEL_TITLE_TO_TYPE: Record<string, NavigationChannelType> = {
+    Chat: 'chat',
+    Email: 'email',
+    SMS: 'sms',
+    Socials: 'socials',
+}
+
 const StatusIndicator = ({
     title,
     isActive,
@@ -102,42 +109,43 @@ export const ActionDrivenNavigationItems = ({
                             leadingSlot={item.icon}
                             id={item.id}
                         >
-                            {item.items?.map((subItem) => (
-                                <NavigationSectionItem
-                                    key={subItem.route}
-                                    to={subItem.route}
-                                    exact={subItem.exact}
-                                    label={subItem.title}
-                                    trailingSlot={
-                                        subItem.title === 'Chat' ||
-                                        subItem.title === 'Email' ||
-                                        subItem.title === 'SMS' ? (
-                                            <Box
-                                                paddingLeft="xxxs"
-                                                paddingRight="xxxs"
-                                            >
-                                                <Dot
-                                                    color={
-                                                        getChannelStatus?.(
-                                                            subItem.title.toLowerCase() as
-                                                                | 'chat'
-                                                                | 'email',
-                                                        )
-                                                            ? 'green'
-                                                            : 'grey'
-                                                    }
-                                                />
-                                            </Box>
-                                        ) : subItem.title === OPPORTUNITIES ? (
-                                            <Tag color="grey">Beta</Tag>
-                                        ) : subItem.title === SKILLS ? (
-                                            <Tag size="sm" color="purple">
-                                                {skillsTagLabel}
-                                            </Tag>
-                                        ) : null
-                                    }
-                                />
-                            ))}
+                            {item.items?.map((subItem) => {
+                                const channelType =
+                                    CHANNEL_TITLE_TO_TYPE[subItem.title]
+                                return (
+                                    <NavigationSectionItem
+                                        key={subItem.route}
+                                        to={subItem.route}
+                                        exact={subItem.exact}
+                                        label={subItem.title}
+                                        trailingSlot={
+                                            channelType ? (
+                                                <Box
+                                                    paddingLeft="xxxs"
+                                                    paddingRight="xxxs"
+                                                >
+                                                    <Dot
+                                                        color={
+                                                            getChannelStatus?.(
+                                                                channelType,
+                                                            )
+                                                                ? 'green'
+                                                                : 'grey'
+                                                        }
+                                                    />
+                                                </Box>
+                                            ) : subItem.title ===
+                                              OPPORTUNITIES ? (
+                                                <Tag color="grey">Beta</Tag>
+                                            ) : subItem.title === SKILLS ? (
+                                                <Tag size="sm" color="purple">
+                                                    {skillsTagLabel}
+                                                </Tag>
+                                            ) : null
+                                        }
+                                    />
+                                )
+                            })}
                         </NavigationSection>
                     ) : (
                         <NavigationSection
@@ -178,33 +186,66 @@ export const ActionDrivenNavigationItems = ({
                                 <Navigation.SectionIndicator />
                             </Navigation.SectionTrigger>
                             <Navigation.SectionContent>
-                                {item.items.map((subItem) => (
-                                    <Navigation.SectionItem
-                                        key={subItem.route}
-                                        as={NavLink}
-                                        to={subItem.route}
-                                        displayType="indent"
-                                        exact={subItem.exact}
-                                    >
-                                        {subItem.title === 'Chat' ||
-                                        subItem.title === 'Email' ||
-                                        subItem.title === 'SMS' ? (
-                                            <StatusIndicator
-                                                title={subItem.title}
-                                                isActive={
-                                                    getChannelStatus
-                                                        ? getChannelStatus(
-                                                              subItem.title.toLowerCase() as
-                                                                  | 'chat'
-                                                                  | 'email',
-                                                          )
-                                                        : false
-                                                }
-                                            />
-                                        ) : subItem.title === OPPORTUNITIES ? (
-                                            <div
-                                                className={css.navItemWithBadge}
-                                            >
+                                {item.items.map((subItem) => {
+                                    const channelType =
+                                        CHANNEL_TITLE_TO_TYPE[subItem.title]
+                                    return (
+                                        <Navigation.SectionItem
+                                            key={subItem.route}
+                                            as={NavLink}
+                                            to={subItem.route}
+                                            displayType="indent"
+                                            exact={subItem.exact}
+                                        >
+                                            {channelType ? (
+                                                <StatusIndicator
+                                                    title={subItem.title}
+                                                    isActive={
+                                                        getChannelStatus
+                                                            ? getChannelStatus(
+                                                                  channelType,
+                                                              )
+                                                            : false
+                                                    }
+                                                />
+                                            ) : subItem.title ===
+                                              OPPORTUNITIES ? (
+                                                <div
+                                                    className={
+                                                        css.navItemWithBadge
+                                                    }
+                                                >
+                                                    <div
+                                                        className={
+                                                            css.navItemWithBadgeContent
+                                                        }
+                                                    >
+                                                        <span>
+                                                            {subItem.title}
+                                                        </span>
+                                                        <Tag
+                                                            size="sm"
+                                                            color="purple"
+                                                        >
+                                                            Beta
+                                                        </Tag>
+                                                    </div>
+                                                    <div
+                                                        className={
+                                                            css.navItemCount
+                                                        }
+                                                    >
+                                                        {isLoadingOpportunities ? (
+                                                            <Skeleton
+                                                                width={24}
+                                                                height={24}
+                                                            />
+                                                        ) : (
+                                                            opportunitiesCount
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            ) : subItem.title === SKILLS ? (
                                                 <div
                                                     className={
                                                         css.navItemWithBadgeContent
@@ -215,38 +256,15 @@ export const ActionDrivenNavigationItems = ({
                                                         size="sm"
                                                         color="purple"
                                                     >
-                                                        Beta
+                                                        {skillsTagLabel}
                                                     </Tag>
                                                 </div>
-                                                <div
-                                                    className={css.navItemCount}
-                                                >
-                                                    {isLoadingOpportunities ? (
-                                                        <Skeleton
-                                                            width={24}
-                                                            height={24}
-                                                        />
-                                                    ) : (
-                                                        opportunitiesCount
-                                                    )}
-                                                </div>
-                                            </div>
-                                        ) : subItem.title === SKILLS ? (
-                                            <div
-                                                className={
-                                                    css.navItemWithBadgeContent
-                                                }
-                                            >
-                                                <span>{subItem.title}</span>
-                                                <Tag size="sm" color="purple">
-                                                    {skillsTagLabel}
-                                                </Tag>
-                                            </div>
-                                        ) : (
-                                            subItem.title
-                                        )}
-                                    </Navigation.SectionItem>
-                                ))}
+                                            ) : (
+                                                subItem.title
+                                            )}
+                                        </Navigation.SectionItem>
+                                    )
+                                })}
                             </Navigation.SectionContent>
                         </Navigation.Section>
                     )

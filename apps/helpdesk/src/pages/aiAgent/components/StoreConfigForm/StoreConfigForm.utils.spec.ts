@@ -21,6 +21,7 @@ describe('getStoreConfigurationFromFormValues', () => {
         chatChannelDeactivatedDatetime: '2024-01-01',
         emailChannelDeactivatedDatetime: '2024-01-01',
         smsChannelDeactivatedDatetime: '2024-01-01',
+        socialsChannelDeactivatedDatetime: null,
         previewModeActivatedDatetime: '2024-02-01',
         previewModeValidUntilDatetime: '2024-02-08',
         monitoredEmailIntegrations: [
@@ -29,6 +30,7 @@ describe('getStoreConfigurationFromFormValues', () => {
         ],
         monitoredChatIntegrations: [1, 2],
         monitoredSmsIntegrations: [],
+        monitoredSocialsIntegrations: [],
         customToneOfVoiceGuidance: 'Be friendly',
         useEmailIntegrationSignature: true,
         signature: 'Best regards, Store',
@@ -47,6 +49,7 @@ describe('getStoreConfigurationFromFormValues', () => {
         handoverEmailIntegrationId: null,
         handoverHttpIntegrationId: null,
         smsDisclaimer: null,
+        socialsDisclaimer: null,
     }
 
     const formValues: ValidFormValues = {

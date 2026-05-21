@@ -8,6 +8,12 @@
         align-items: stretch;
     }
 
+    .footerSection {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+
     .automateView {
         padding: var(--layout-spacing-m);
         flex: 1;
@@ -17,11 +23,11 @@
         }
 
         .section {
-            margin-bottom: var(--layout-spacing-l);
+            margin-bottom: var(--spacing-lg);
         }
 
         section {
-            margin-bottom: 48px;
+            margin-bottom: var(--spacing-lg);
         }
 
         section:last-child {

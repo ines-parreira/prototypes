@@ -18,7 +18,9 @@ import type { FormValues, UpdateValue } from 'pages/aiAgent/types'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 
 import { useSmsPhoneNumbers } from '../hooks/useSmsPhoneNumbers'
+import { useSocialsIntegrations } from '../hooks/useSocialsIntegrations'
 import { SmsSettingsFormComponent } from './SmsSettingsFormComponent'
+import { SocialsSettingsFormComponent } from './SocialsSettingsFormComponent'
 
 import css from '../StoreConfigForm.less'
 
@@ -45,12 +47,18 @@ type Props = {
     smsChannelDeactivatedDatetime: string | null | undefined
     updateSmsChannelDeactivatedDatetime: (datetime: string | null) => void
 
+    monitoredSocialsIntegrations: number[] | null
+    socialsDisclaimer: string | null
+    isSocialsChannelEnabled: boolean
+    socialsChannelDeactivatedDatetime: string | null | undefined
+    updateSocialsChannelDeactivatedDatetime: (datetime: string | null) => void
+
     setIsFormDirty: (
         element: StoreConfigFormSection,
         isFormDirty: boolean,
     ) => void
 
-    section?: 'chat' | 'email' | 'sms' | 'all'
+    section?: 'chat' | 'email' | 'sms' | 'socials' | 'all'
 }
 
 export const ChannelsFormComponent = ({
@@ -76,6 +84,12 @@ export const ChannelsFormComponent = ({
     smsChannelDeactivatedDatetime,
     updateSmsChannelDeactivatedDatetime,
 
+    monitoredSocialsIntegrations,
+    socialsDisclaimer,
+    isSocialsChannelEnabled,
+    socialsChannelDeactivatedDatetime,
+    updateSocialsChannelDeactivatedDatetime,
+
     setIsFormDirty,
     section = 'all',
 }: Props) => {
@@ -97,6 +111,13 @@ export const ChannelsFormComponent = ({
         !monitoredSmsIntegrations ||
         monitoredSmsIntegrations.length === 0 ||
         hasNoSmsIntegrations
+
+    const socialsIntegrations = useSocialsIntegrations()
+    const hasNoSocialsIntegrations = socialsIntegrations.length === 0
+    const hasNoSocialsSelected =
+        !monitoredSocialsIntegrations ||
+        monitoredSocialsIntegrations.length === 0 ||
+        hasNoSocialsIntegrations
 
     const chatChannels: InstallationStatusInjectedChatItem[] =
         useSelfServiceChatChannels(shopType, shopName)
@@ -291,6 +312,36 @@ export const ChannelsFormComponent = ({
                         </div>
                     </ConfigurationSection>
                 )}
+
+            {(section === 'socials' || section === 'all') && (
+                <ConfigurationSection
+                    title={''}
+                    data-candu-id="ai-agent-configuration-socials-settings"
+                >
+                    <div className={css.settingsSectionBlock}>
+                        <SocialsSettingsFormComponent
+                            updateValue={updateValue}
+                            monitoredSocialsIntegrations={
+                                monitoredSocialsIntegrations
+                            }
+                            socialsDisclaimer={socialsDisclaimer}
+                            isRequired={
+                                socialsChannelDeactivatedDatetime === null
+                            }
+                            isDisabled={hasNoSocialsSelected}
+                            showToggle={showToggles}
+                            isSocialsChannelEnabled={isSocialsChannelEnabled}
+                            socialsChannelDeactivatedDatetime={
+                                socialsChannelDeactivatedDatetime
+                            }
+                            onUpdateSocialsChannelDeactivatedDatetime={
+                                updateSocialsChannelDeactivatedDatetime
+                            }
+                            hasAccess={hasAccess}
+                        />
+                    </div>
+                </ConfigurationSection>
+            )}
         </>
     )
 }

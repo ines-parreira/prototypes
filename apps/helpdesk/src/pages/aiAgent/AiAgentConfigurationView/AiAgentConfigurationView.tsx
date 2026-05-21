@@ -28,7 +28,7 @@ type AiAgentConfigurationViewProps = {
     shopName: string
     shopType: string
     accountDomain: string
-    section?: 'chat' | 'email' | 'sms'
+    section?: 'chat' | 'email' | 'sms' | 'socials'
 }
 export const AiAgentConfigurationView = ({
     shopName,
@@ -77,6 +77,8 @@ export const AiAgentConfigurationView = ({
                 return 'Email'
             case 'sms':
                 return 'SMS'
+            case 'socials':
+                return 'Socials'
             default:
                 return SETTINGS
         }

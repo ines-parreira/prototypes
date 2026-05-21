@@ -26,7 +26,7 @@ import Tip from 'pages/common/components/tip/Tip'
 type Props = {
     isToggled: boolean
     onUpdate: (value: boolean) => void
-    channel: 'email' | 'chat' | 'sms'
+    channel: 'email' | 'chat' | 'sms' | 'socials'
     isDisabled?: boolean
     disabledTooltip?: string
     deactivatedDatetime?: string | null
@@ -69,6 +69,8 @@ export const ChannelToggleInput = ({
                 case 'sms':
                     logEvent(SegmentEvent.AiAgentSmsConfigurationDisabled)
                     break
+                case 'socials':
+                    break
             }
         }
     }
@@ -101,10 +103,18 @@ export const ChannelToggleInput = ({
                 )}
             </p>
         ),
+        [SettingsBannerType.Socials]: (
+            <p>
+                When shoppers message via socials, AI Agent automatically picks
+                up the tickets to respond.
+            </p>
+        ),
     }
 
     const channelName = useMemo(() => {
-        return type === SettingsBannerType.Sms ? 'SMS' : _upperFirst(type)
+        if (type === SettingsBannerType.Sms) return 'SMS'
+        if (type === SettingsBannerType.Socials) return 'Socials'
+        return _upperFirst(type)
     }, [type])
 
     return (

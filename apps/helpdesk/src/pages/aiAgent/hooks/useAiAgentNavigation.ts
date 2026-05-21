@@ -150,6 +150,7 @@ export const getAiAgentNavigationRoutes = (shopName: string) => {
         deployChat: `${basePath}/deploy/chat`,
         deployEmail: `${basePath}/deploy/email`,
         deploySms: `${basePath}/deploy/sms`,
+        deploySocials: `${basePath}/deploy/socials`,
     }
 }
 
@@ -184,6 +185,8 @@ const useNavigationItems = (
     )
 
     const isSmsChannelEnabled = useFlag(FeatureFlagKey.AiAgentSmsChannel)
+
+    const isInstagramDmsEnabled = useFlag(FeatureFlagKey.AiAgentInstagramDms)
 
     const isOpportunitiesEnabled = useFlag(
         FeatureFlagKey.OpportunitiesMilestone2,
@@ -323,6 +326,11 @@ const useNavigationItems = (
                         title: 'SMS',
                         exact: true,
                     },
+                    isInstagramDmsEnabled && {
+                        route: routes.deploySocials,
+                        title: 'Socials',
+                        exact: true,
+                    },
                 ].filter((x) => !!x) as NavigationItem[],
             },
             {
@@ -350,6 +358,7 @@ const useNavigationItems = (
         isAiAgentScrapeStoreDomainEnabled,
         isGorgiasUser,
         isSmsChannelEnabled,
+        isInstagramDmsEnabled,
         shouldRenderShoppingAssistantPages,
         shouldRenderToneOfVoice,
         isOpportunitiesEnabled,

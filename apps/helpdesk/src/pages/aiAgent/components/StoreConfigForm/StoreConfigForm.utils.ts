@@ -57,18 +57,22 @@ export const getStoreConfigurationFromFormValues = (
             formValues.emailChannelDeactivatedDatetime ?? null,
         smsChannelDeactivatedDatetime:
             formValues.smsChannelDeactivatedDatetime ?? null,
+        socialsChannelDeactivatedDatetime:
+            formValues.socialsChannelDeactivatedDatetime ?? null,
         customToneOfVoiceGuidance:
             formValues.toneOfVoice === ToneOfVoice.Custom
                 ? formValues.customToneOfVoiceGuidance
                 : null,
         signature,
         smsDisclaimer: formValues.smsDisclaimer ?? null,
+        socialsDisclaimer: formValues.socialsDisclaimer ?? null,
         useEmailIntegrationSignature:
             formValues.useEmailIntegrationSignature ?? false,
         helpCenterId,
         aiAgentLanguage: formValues.aiAgentLanguage,
         monitoredChatIntegrations: formValues.monitoredChatIntegrations,
         monitoredSmsIntegrations: formValues.monitoredSmsIntegrations,
+        monitoredSocialsIntegrations: formValues.monitoredSocialsIntegrations,
         wizard: formValues.wizard ? wizard : undefined,
         customFieldIds: formValues.customFieldIds ?? [],
         handoverEmail: formValues.handoverEmail,

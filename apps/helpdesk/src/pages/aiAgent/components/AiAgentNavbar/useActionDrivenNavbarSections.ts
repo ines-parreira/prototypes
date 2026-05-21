@@ -144,6 +144,12 @@ export const useActionDrivenNavbarSections = () => {
                     configuration.smsChannelDeactivatedDatetime,
                 )
             }
+
+            if (channelType === 'socials') {
+                return isAiAgentEnabled(
+                    configuration.socialsChannelDeactivatedDatetime,
+                )
+            }
             return false
         },
         [storeActivations, selectedStore],
