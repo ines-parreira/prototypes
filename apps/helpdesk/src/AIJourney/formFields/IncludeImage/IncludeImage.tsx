@@ -1,6 +1,6 @@
 import { Controller, useFormContext } from 'react-hook-form'
 
-import { Box, ToggleField } from '@gorgias/axiom'
+import { Box, Icon, ToggleField, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import { JOURNEY_TYPES } from 'AIJourney/constants'
 
@@ -15,7 +15,13 @@ const captions = {
         'Add an image of the last purchased product in the first message.',
 }
 
-export const IncludeImage = ({ journeyType }: { journeyType: string }) => {
+export const IncludeImage = ({
+    journeyType,
+    isV3Architecture,
+}: {
+    journeyType: string
+    isV3Architecture?: boolean
+}) => {
     const { control } = useFormContext()
 
     return (
@@ -23,14 +29,38 @@ export const IncludeImage = ({ journeyType }: { journeyType: string }) => {
             <Controller
                 name="include_image"
                 control={control}
-                render={({ field }) => (
-                    <ToggleField
-                        label="Include image"
-                        caption={captions[journeyType]}
-                        value={field.value}
-                        onChange={field.onChange}
-                    />
-                )}
+                render={({ field }) => {
+                    const toggle = (
+                        <ToggleField
+                            label="Include product image"
+                            caption={
+                                isV3Architecture
+                                    ? undefined
+                                    : captions[journeyType]
+                            }
+                            value={field.value}
+                            onChange={field.onChange}
+                        />
+                    )
+
+                    if (!isV3Architecture) {
+                        return toggle
+                    }
+
+                    return (
+                        <Box flexDirection="row" alignItems="center" gap="xxs">
+                            {toggle}
+                            <span>
+                                <Tooltip
+                                    delay={0}
+                                    trigger={<Icon name="info" />}
+                                >
+                                    <TooltipContent title="Shows the relevant product from the shopper's session, pulled from Shopify" />
+                                </Tooltip>
+                            </span>
+                        </Box>
+                    )
+                }}
             />
         </Box>
     )

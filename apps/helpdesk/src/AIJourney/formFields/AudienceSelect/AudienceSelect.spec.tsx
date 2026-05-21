@@ -104,13 +104,14 @@ const renderComponent = async (
     type: 'include' | 'exclude',
     defaultValues: Record<string, unknown> = {},
     onSubmit: jest.Mock = jest.fn(),
+    isRequired = false,
 ) => {
     const Wrapper = () => {
         const methods = useForm({ defaultValues })
         return (
             <FormProvider {...methods}>
                 <form onSubmit={methods.handleSubmit(onSubmit)}>
-                    <AudienceSelect type={type} />
+                    <AudienceSelect type={type} isRequired={isRequired} />
                     <button type="submit">Submit</button>
                 </form>
             </FormProvider>
@@ -142,16 +143,28 @@ describe('<AudienceSelect />', () => {
     })
 
     describe('label', () => {
-        it('renders "Segments to include" label for include type', async () => {
+        it('renders "Audience to include" label for include type', async () => {
             await renderComponent('include')
 
-            expect(screen.getByText('Segments to include')).toBeInTheDocument()
+            expect(screen.getByText('Audience to include')).toBeInTheDocument()
         })
 
-        it('renders "Segments to exclude" label for exclude type', async () => {
+        it('renders "Audience to exclude" label for exclude type', async () => {
             await renderComponent('exclude')
 
-            expect(screen.getByText('Segments to exclude')).toBeInTheDocument()
+            expect(screen.getByText('Audience to exclude')).toBeInTheDocument()
+        })
+
+        it('renders the required asterisk when isRequired is true', async () => {
+            await renderComponent('include', {}, jest.fn(), true)
+
+            expect(screen.getByLabelText('required')).toBeInTheDocument()
+        })
+
+        it('does not render the required asterisk when isRequired is false', async () => {
+            await renderComponent('include', {}, jest.fn(), false)
+
+            expect(screen.queryByLabelText('required')).not.toBeInTheDocument()
         })
     })
 

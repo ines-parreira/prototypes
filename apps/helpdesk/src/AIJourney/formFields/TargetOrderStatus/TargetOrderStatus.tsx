@@ -1,16 +1,25 @@
 import { Controller, useFormContext } from 'react-hook-form'
 
-import { Box, ButtonGroup, ButtonGroupItem, Text } from '@gorgias/axiom'
+import {
+    Box,
+    ButtonGroup,
+    ButtonGroupItem,
+    ListItem,
+    SelectField,
+    Text,
+} from '@gorgias/axiom'
 import { OrderStatusEnum } from '@gorgias/convert-client'
 
-const ORDER_STATUS_OPTIONS = [
-    { value: OrderStatusEnum.OrderPlaced, label: 'Order placed' },
-    { value: OrderStatusEnum.OrderFulfilled, label: 'Order fulfilled' },
+type OrderStatusOption = { id: OrderStatusEnum; label: string }
+
+const ORDER_STATUS_OPTIONS: OrderStatusOption[] = [
+    { id: OrderStatusEnum.OrderPlaced, label: 'Order placed' },
+    { id: OrderStatusEnum.OrderFulfilled, label: 'Order fulfilled' },
 ]
 
 const TargetOrderStatusOptionsGroupItem = () =>
     ORDER_STATUS_OPTIONS.map((option) => (
-        <ButtonGroupItem key={option.value} id={option.value}>
+        <ButtonGroupItem key={option.id} id={option.id}>
             {option.label}
         </ButtonGroupItem>
     ))
@@ -27,8 +36,46 @@ const renderButtonGroup = (field: {
     </ButtonGroup>
 )
 
-export const TargetOrderStatus = () => {
+const renderSelectField = (field: {
+    value: OrderStatusEnum
+    onChange: (value: OrderStatusEnum) => void
+}) => {
+    const selectedOption = ORDER_STATUS_OPTIONS.find(
+        (option) => option.id === field.value,
+    )
+
+    return (
+        <Box width="100%" flexDirection="column">
+            <SelectField
+                label="Start when"
+                items={ORDER_STATUS_OPTIONS}
+                value={selectedOption}
+                onChange={(option) => field.onChange(option.id)}
+            >
+                {(option) => <ListItem label={option.label} />}
+            </SelectField>
+        </Box>
+    )
+}
+
+type TargetOrderStatusProps = {
+    isV3Architecture?: boolean
+}
+
+export const TargetOrderStatus = ({
+    isV3Architecture,
+}: TargetOrderStatusProps) => {
     const { control } = useFormContext()
+
+    if (isV3Architecture) {
+        return (
+            <Controller
+                name="target_order_status"
+                control={control}
+                render={({ field }) => renderSelectField(field)}
+            />
+        )
+    }
 
     return (
         <Box flexDirection="column" gap="xxs">

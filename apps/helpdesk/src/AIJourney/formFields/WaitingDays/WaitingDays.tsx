@@ -1,17 +1,36 @@
+import { useEffect } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 
-import { Box, ButtonGroup, ButtonGroupItem, Text } from '@gorgias/axiom'
+import {
+    Box,
+    ButtonGroup,
+    ButtonGroupItem,
+    ListItem,
+    SelectField,
+    Text,
+} from '@gorgias/axiom'
+
+type DayOption = { id: string; label: string }
+
+const toDayOptions = (days: number[]): DayOption[] =>
+    days.map((d) => ({ id: String(d), label: `${d} days` }))
 
 const fieldProps = {
     ['cooldown']: {
         fieldName: 'cooldown_days',
         label: 'Shopper can re-enter after',
+        labelV3: 'Re-entry after',
         options: [30, 60, 90],
+        optionsV3: toDayOptions([30, 60, 90]),
+        defaultV3: 90,
     },
     ['inactive-days']: {
         fieldName: 'inactive_days',
         label: 'Shopper inactive for at least',
+        labelV3: 'Shopper inactive',
         options: [30, 60, 90, 120],
+        optionsV3: toDayOptions([30, 60, 90, 180]),
+        defaultV3: 60,
     },
 }
 
@@ -39,22 +58,65 @@ const renderButtonGroup = (
 
 export const WaitingDays = ({
     type,
+    isV3Architecture,
 }: {
     type: 'cooldown' | 'inactive-days'
+    isV3Architecture?: boolean
 }) => {
-    const { control } = useFormContext()
+    const { control, setValue, getValues } = useFormContext()
+    const props = fieldProps[type]
+
+    useEffect(() => {
+        if (!isV3Architecture) return
+        if (getValues(props.fieldName) == null) {
+            setValue(props.fieldName, props.defaultV3)
+        }
+    }, [
+        isV3Architecture,
+        props.fieldName,
+        props.defaultV3,
+        getValues,
+        setValue,
+    ])
+
+    if (isV3Architecture) {
+        return (
+            <Controller
+                name={props.fieldName}
+                control={control}
+                render={({ field }) => {
+                    const selectedOption = props.optionsV3.find(
+                        (option) => option.id === String(field.value),
+                    )
+
+                    return (
+                        <Box width="100%" flexDirection="column">
+                            <SelectField
+                                label={props.labelV3}
+                                items={props.optionsV3}
+                                value={selectedOption}
+                                onChange={(option) =>
+                                    field.onChange(Number(option.id))
+                                }
+                            >
+                                {(option) => <ListItem label={option.label} />}
+                            </SelectField>
+                        </Box>
+                    )
+                }}
+            />
+        )
+    }
 
     return (
         <Box flexDirection="column" gap="xxs">
             <Text as="span" size="md" variant="medium">
-                {fieldProps[type].label}
+                {props.label}
             </Text>
             <Controller
-                name={fieldProps[type].fieldName}
+                name={props.fieldName}
                 control={control}
-                render={({ field }) =>
-                    renderButtonGroup(field, fieldProps[type].options)
-                }
+                render={({ field }) => renderButtonGroup(field, props.options)}
             />
         </Box>
     )

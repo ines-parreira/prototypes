@@ -1,11 +1,33 @@
 import type { ReactNode } from 'react'
+
+import userEvent from '@testing-library/user-event'
+
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
-import { FormProvider, useForm } from 'react-hook-form'
+import { FormProvider, useForm, useFormContext } from 'react-hook-form'
 
 import { JOURNEY_TYPES } from 'AIJourney/constants'
 
 import { GeneralCard } from './GeneralCard'
+
+jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
+    Tooltip: ({
+        trigger,
+        children,
+    }: {
+        trigger: ReactNode
+        children: ReactNode
+    }) => (
+        <>
+            {trigger}
+            {children}
+        </>
+    ),
+    TooltipContent: ({ title }: { title?: ReactNode }) => (
+        <div role="tooltip">{title}</div>
+    ),
+}))
 
 jest.mock('@repo/feature-flags', () => ({
     FeatureFlagKey: {
@@ -32,26 +54,39 @@ const mockUseJourneyContext = jest.requireMock(
     'AIJourney/providers',
 ).useJourneyContext
 
-const FormWrapper = ({ children }: { children: ReactNode }) => {
-    const methods = useForm()
-    return <FormProvider {...methods}>{children}</FormProvider>
-}
-
 const renderCard = ({
     isFormReady = true,
     isV3Architecture = false,
+    defaultValues = {},
 }: {
     isFormReady?: boolean
     isV3Architecture?: boolean
-} = {}) =>
-    render(
-        <FormWrapper>
-            <GeneralCard
-                isFormReady={isFormReady}
-                isV3Architecture={isV3Architecture}
-            />
-        </FormWrapper>,
-    )
+    defaultValues?: Record<string, unknown>
+} = {}) => {
+    let capturedGetValues: (() => Record<string, unknown>) | undefined
+
+    const ValuesCaptor = () => {
+        const { getValues } = useFormContext()
+        capturedGetValues = getValues
+        return null
+    }
+
+    const Wrapper = () => {
+        const methods = useForm({ defaultValues })
+        return (
+            <FormProvider {...methods}>
+                <ValuesCaptor />
+                <GeneralCard
+                    isFormReady={isFormReady}
+                    isV3Architecture={isV3Architecture}
+                />
+            </FormProvider>
+        )
+    }
+
+    const result = render(<Wrapper />)
+    return { ...result, getValues: () => capturedGetValues?.() ?? {} }
+}
 
 describe('<GeneralCard />', () => {
     beforeEach(() => {
@@ -215,6 +250,15 @@ describe('<GeneralCard />', () => {
     })
 
     describe('when isV3Architecture is true', () => {
+        it('renders a skeleton without the card content', () => {
+            renderCard({ isFormReady: false, isV3Architecture: true })
+
+            expect(screen.queryByText('General')).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('SenderPhoneNumber'),
+            ).not.toBeInTheDocument()
+        })
+
         it('renders inline sections without the legacy General card header', () => {
             renderCard({ isV3Architecture: true })
 
@@ -234,14 +278,193 @@ describe('<GeneralCard />', () => {
             expect(screen.queryByText('FlowName')).not.toBeInTheDocument()
         })
 
-        it('shows "Include custom image" toggle for CAMPAIGN', () => {
-            mockUseJourneyContext.mockReturnValue({
-                journeyType: JOURNEY_TYPES.CAMPAIGN,
+        describe('Allow follow-ups toggle', () => {
+            it('renders the info tooltip with correct content', () => {
+                renderCard({ isV3Architecture: true })
+
+                expect(
+                    screen.getByText(
+                        "Nudge shoppers who didn't engage with the first message.",
+                    ),
+                ).toBeInTheDocument()
             })
 
-            renderCard({ isV3Architecture: true })
+            it('is off by default and does not render follow-up fields', () => {
+                renderCard({ isV3Architecture: true })
 
-            expect(screen.getByText('Include custom image')).toBeInTheDocument()
+                expect(
+                    screen.getByRole('switch', { name: 'Allow follow-ups' }),
+                ).not.toBeChecked()
+                expect(
+                    screen.queryByText('NumberOfMessages'),
+                ).not.toBeInTheDocument()
+                expect(
+                    screen.queryByText('FollowUpWaitHours'),
+                ).not.toBeInTheDocument()
+            })
+
+            it('starts on and shows follow-up fields when max_follow_up_messages is greater than 1', () => {
+                renderCard({
+                    isV3Architecture: true,
+                    defaultValues: { max_follow_up_messages: 2 },
+                })
+
+                expect(
+                    screen.getByRole('switch', { name: 'Allow follow-ups' }),
+                ).toBeChecked()
+                expect(screen.getByText('NumberOfMessages')).toBeInTheDocument()
+                expect(
+                    screen.getByText('FollowUpWaitHours'),
+                ).toBeInTheDocument()
+            })
+
+            it('shows follow-up fields after toggling on and sets max_follow_up_messages to 2', async () => {
+                const user = userEvent.setup()
+                const { getValues } = renderCard({ isV3Architecture: true })
+
+                await user.click(
+                    screen.getByRole('switch', { name: 'Allow follow-ups' }),
+                )
+
+                expect(screen.getByText('NumberOfMessages')).toBeInTheDocument()
+                expect(
+                    screen.getByText('FollowUpWaitHours'),
+                ).toBeInTheDocument()
+                expect(getValues().max_follow_up_messages).toBe(2)
+            })
+
+            it('hides follow-up fields after toggling off and sets max_follow_up_messages to 1', async () => {
+                const user = userEvent.setup()
+                const { getValues } = renderCard({
+                    isV3Architecture: true,
+                    defaultValues: { max_follow_up_messages: 2 },
+                })
+
+                await user.click(
+                    screen.getByRole('switch', { name: 'Allow follow-ups' }),
+                )
+
+                expect(
+                    screen.queryByText('NumberOfMessages'),
+                ).not.toBeInTheDocument()
+                expect(
+                    screen.queryByText('FollowUpWaitHours'),
+                ).not.toBeInTheDocument()
+                expect(getValues().max_follow_up_messages).toBe(1)
+            })
+        })
+
+        describe('IncludeImage', () => {
+            it('renders for non-CAMPAIGN/non-WELCOME journey types', () => {
+                renderCard({ isV3Architecture: true })
+
+                expect(screen.getByText('IncludeImage')).toBeInTheDocument()
+            })
+
+            it('does not render for CAMPAIGN', () => {
+                mockUseJourneyContext.mockReturnValue({
+                    journeyType: JOURNEY_TYPES.CAMPAIGN,
+                })
+
+                renderCard({ isV3Architecture: true })
+
+                expect(
+                    screen.queryByText('IncludeImage'),
+                ).not.toBeInTheDocument()
+            })
+
+            it('does not render for WELCOME', () => {
+                mockUseJourneyContext.mockReturnValue({
+                    journeyType: JOURNEY_TYPES.WELCOME,
+                })
+
+                renderCard({ isV3Architecture: true })
+
+                expect(
+                    screen.queryByText('IncludeImage'),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        describe('Include custom image toggle', () => {
+            it('shows the toggle for CAMPAIGN', () => {
+                mockUseJourneyContext.mockReturnValue({
+                    journeyType: JOURNEY_TYPES.CAMPAIGN,
+                })
+
+                renderCard({ isV3Architecture: true })
+
+                expect(
+                    screen.getByText('Include custom image'),
+                ).toBeInTheDocument()
+            })
+
+            it('does not show the toggle for non-CAMPAIGN', () => {
+                renderCard({ isV3Architecture: true })
+
+                expect(
+                    screen.queryByText('Include custom image'),
+                ).not.toBeInTheDocument()
+            })
+
+            it('renders the info tooltip with correct content', () => {
+                mockUseJourneyContext.mockReturnValue({
+                    journeyType: JOURNEY_TYPES.CAMPAIGN,
+                })
+
+                renderCard({ isV3Architecture: true })
+
+                expect(
+                    screen.getByText(
+                        "Upload an image to attach to your campaign's first message.",
+                    ),
+                ).toBeInTheDocument()
+            })
+
+            it('shows ImageUpload after toggling on', async () => {
+                const user = userEvent.setup()
+                mockUseJourneyContext.mockReturnValue({
+                    journeyType: JOURNEY_TYPES.CAMPAIGN,
+                })
+
+                renderCard({ isV3Architecture: true })
+
+                expect(
+                    screen.queryByText('ImageUpload'),
+                ).not.toBeInTheDocument()
+
+                await user.click(
+                    screen.getByRole('switch', {
+                        name: 'Include custom image',
+                    }),
+                )
+
+                expect(screen.getByText('ImageUpload')).toBeInTheDocument()
+            })
+
+            it('hides ImageUpload after toggling off', async () => {
+                const user = userEvent.setup()
+                mockUseJourneyContext.mockReturnValue({
+                    journeyType: JOURNEY_TYPES.CAMPAIGN,
+                })
+
+                renderCard({ isV3Architecture: true })
+
+                await user.click(
+                    screen.getByRole('switch', {
+                        name: 'Include custom image',
+                    }),
+                )
+                await user.click(
+                    screen.getByRole('switch', {
+                        name: 'Include custom image',
+                    }),
+                )
+
+                expect(
+                    screen.queryByText('ImageUpload'),
+                ).not.toBeInTheDocument()
+            })
         })
     })
 })

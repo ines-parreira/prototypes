@@ -2,7 +2,15 @@ import { useEffect } from 'react'
 
 import { useFormContext, useWatch } from 'react-hook-form'
 
-import { Box, Card, CardHeader, Skeleton } from '@gorgias/axiom'
+import {
+    Box,
+    Card,
+    CardHeader,
+    Icon,
+    Skeleton,
+    Tooltip,
+    TooltipContent,
+} from '@gorgias/axiom'
 
 import {
     EnableDiscountCode,
@@ -50,7 +58,14 @@ export const DiscountCodeCard = ({
     if (isV3Architecture) {
         return (
             <Box flexDirection="column" gap="xs" width="100%">
-                <EnableDiscountCode label="Offer discount" />
+                <Box flexDirection="row" alignItems="center" gap="xxs">
+                    <EnableDiscountCode label="Offer discount" />
+                    <span>
+                        <Tooltip delay={0} trigger={<Icon name="info" />}>
+                            <TooltipContent title="Add a discount amount or code, and choose which message offers it." />
+                        </Tooltip>
+                    </span>
+                </Box>
                 {isDiscountEnabled && (
                     <Box flexDirection="column" gap="sm" width="100%">
                         <MaxDiscountCode fullWidth />

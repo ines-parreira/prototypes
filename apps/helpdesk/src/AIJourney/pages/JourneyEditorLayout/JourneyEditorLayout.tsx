@@ -73,6 +73,9 @@ export const JourneyEditorLayout = ({ step }: Props) => {
             offer_discount: false,
             message_instructions: journeyData?.message_instructions ?? '',
             execution_mode_override: null,
+            narrow_audience_enabled:
+                (journeyData?.included_audience_list_ids?.length ?? 0) > 0 ||
+                (journeyData?.excluded_audience_list_ids?.length ?? 0) > 0,
             ...(isCampaign && {
                 campaignTitle: journeyData?.campaign?.title,
                 scheduleType: 'later' as const,
@@ -133,6 +136,8 @@ export const JourneyEditorLayout = ({ step }: Props) => {
               }
             : {}
 
+        const shouldClearAudience = !isCampaign && !data.narrow_audience_enabled
+
         const commonFields = {
             ...smsSenderFields,
             followUpValue: data.max_follow_up_messages - 1,
@@ -143,8 +148,12 @@ export const JourneyEditorLayout = ({ step }: Props) => {
             discountValue: data.max_discount_percent,
             discountCodeThresholdValue: data.discount_code_message_threshold,
             targetOrderStatus: data.target_order_status,
-            includedAudienceListIds: data.included_audience_list_ids,
-            excludedAudienceListIds: data.excluded_audience_list_ids,
+            includedAudienceListIds: shouldClearAudience
+                ? []
+                : data.included_audience_list_ids,
+            excludedAudienceListIds: shouldClearAudience
+                ? []
+                : data.excluded_audience_list_ids,
             rcsEnabled: data.rcs_enabled,
             journeyMessageInstructions: data.message_instructions,
             journeyVariants: data.variants ?? [],
@@ -168,14 +177,23 @@ export const JourneyEditorLayout = ({ step }: Props) => {
                 })
             }
         } else {
-            await handleUpdate({
+            const params = {
                 ...commonFields,
                 postPurchaseWaitMinutes: data.post_purchase_wait_minutes,
                 waitTimeMinutes: data.wait_time_minutes,
                 cooldownDays: data.cooldown_days,
                 inactiveDays: data.inactive_days,
                 flowName: data.flowName,
-            })
+            }
+            if (journeyData?.id) {
+                await handleUpdate(params)
+            } else {
+                await handleCreate(params).then((res) => {
+                    history.replace(
+                        `/app/ai-journey/${shopName}/${journeyType}/setup/${res.id}`,
+                    )
+                })
+            }
         }
     }
 

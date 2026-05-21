@@ -1,5 +1,5 @@
 import { render } from '@repo/testing'
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import { WaitingDays } from './WaitingDays'
@@ -7,21 +7,23 @@ import { WaitingDays } from './WaitingDays'
 const renderComponent = (
     type: 'cooldown' | 'inactive-days',
     defaultValues: Record<string, unknown> = {},
-    onSubmit: jest.Mock = jest.fn(),
+    isV3Architecture?: boolean,
 ) => {
     const Wrapper = () => {
         const methods = useForm({ defaultValues })
         return (
             <FormProvider {...methods}>
-                <form onSubmit={methods.handleSubmit(onSubmit)}>
-                    <WaitingDays type={type} />
+                <form onSubmit={methods.handleSubmit(() => {})}>
+                    <WaitingDays
+                        type={type}
+                        isV3Architecture={isV3Architecture}
+                    />
                     <button type="submit">Submit</button>
                 </form>
             </FormProvider>
         )
     }
     render(<Wrapper />)
-    return { onSubmit }
 }
 
 describe('<WaitingDays />', () => {
@@ -56,5 +58,57 @@ describe('<WaitingDays />', () => {
             screen.getByText('Shopper can re-enter after'),
         ).toBeInTheDocument()
         expect(screen.getByText('30 days')).toBeInTheDocument()
+    })
+
+    describe('v3 architecture', () => {
+        it('should render a SelectField with "Shopper inactive" label for inactive-days type', () => {
+            renderComponent('inactive-days', { inactive_days: 60 }, true)
+
+            expect(
+                screen.getByRole('button', { name: /shopper inactive/i }),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText('Shopper inactive for at least'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should render a SelectField with "Re-entry after" label for cooldown type', () => {
+            renderComponent('cooldown', { cooldown_days: 90 }, true)
+
+            expect(
+                screen.getByRole('button', { name: /re-entry after/i }),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText('Shopper can re-enter after'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should default inactive_days to 60 when field value is undefined', async () => {
+            renderComponent('inactive-days', {}, true)
+
+            await waitFor(() => {
+                expect(screen.getByText('60 days')).toBeInTheDocument()
+            })
+        })
+
+        it('should default cooldown_days to 90 when field value is undefined', async () => {
+            renderComponent('cooldown', {}, true)
+
+            await waitFor(() => {
+                expect(screen.getByText('90 days')).toBeInTheDocument()
+            })
+        })
+
+        it('should display 180 days when inactive_days is set to 180', () => {
+            renderComponent('inactive-days', { inactive_days: 180 }, true)
+
+            expect(screen.getByText('180 days')).toBeInTheDocument()
+        })
+
+        it('should not display 120 days option for inactive-days type', () => {
+            renderComponent('inactive-days', { inactive_days: 60 }, true)
+
+            expect(screen.queryByText('120 days')).not.toBeInTheDocument()
+        })
     })
 })

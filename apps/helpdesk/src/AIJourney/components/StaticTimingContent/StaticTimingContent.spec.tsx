@@ -87,3 +87,152 @@ describe('<StaticTimingContent />', () => {
         })
     })
 })
+
+describe('<StaticTimingContent /> with isV3Architecture', () => {
+    it('should render a disabled select with "Cart abandoned" for cart abandonment', () => {
+        render(
+            <StaticTimingContent
+                journeyType={JOURNEY_TYPES.CART_ABANDONMENT}
+                isV3Architecture
+            />,
+        )
+
+        const select = screen.getByRole('button', {
+            name: /start when/i,
+        })
+        expect(select).toBeInTheDocument()
+        expect(select).toBeDisabled()
+        expect(screen.getByText('Cart abandoned')).toBeInTheDocument()
+    })
+
+    it('should render a disabled select with "Browse abandoned" for session abandonment', () => {
+        render(
+            <StaticTimingContent
+                journeyType={JOURNEY_TYPES.SESSION_ABANDONMENT}
+                isV3Architecture
+            />,
+        )
+
+        const select = screen.getByRole('button', {
+            name: /start when/i,
+        })
+        expect(select).toBeDisabled()
+        expect(screen.getByText('Browse abandoned')).toBeInTheDocument()
+    })
+
+    it('should render a disabled select with "Subscribed to SMS" for welcome', () => {
+        render(
+            <StaticTimingContent
+                journeyType={JOURNEY_TYPES.WELCOME}
+                isV3Architecture
+            />,
+        )
+
+        const select = screen.getByRole('button', {
+            name: /start when/i,
+        })
+        expect(select).toBeDisabled()
+        expect(screen.getByText('Subscribed to SMS')).toBeInTheDocument()
+    })
+
+    it('should default to "Cart abandoned" when no journeyType is passed', () => {
+        render(<StaticTimingContent isV3Architecture />)
+
+        expect(screen.getByText('Cart abandoned')).toBeInTheDocument()
+    })
+
+    it('should not render the v2 "Delay before first message" label', () => {
+        render(
+            <StaticTimingContent
+                journeyType={JOURNEY_TYPES.CART_ABANDONMENT}
+                isV3Architecture
+            />,
+        )
+
+        expect(
+            screen.queryByText('Delay before first message'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should not render the tooltip for welcome', () => {
+        render(
+            <StaticTimingContent
+                journeyType={JOURNEY_TYPES.WELCOME}
+                isV3Architecture
+            />,
+        )
+
+        expect(
+            screen.queryByText(
+                'These settings are managed by Gorgias and cannot be edited for this flow type.',
+            ),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should render a disabled "Send delay" select with "30 min" for cart abandonment', () => {
+        render(
+            <StaticTimingContent
+                journeyType={JOURNEY_TYPES.CART_ABANDONMENT}
+                isV3Architecture
+            />,
+        )
+
+        const delaySelect = screen.getByRole('button', { name: /send delay/i })
+        expect(delaySelect).toBeDisabled()
+        expect(screen.getByText('30 min')).toBeInTheDocument()
+    })
+
+    it('should render a disabled "Send delay" select with "30 min" for session abandonment', () => {
+        render(
+            <StaticTimingContent
+                journeyType={JOURNEY_TYPES.SESSION_ABANDONMENT}
+                isV3Architecture
+            />,
+        )
+
+        const delaySelect = screen.getByRole('button', { name: /send delay/i })
+        expect(delaySelect).toBeDisabled()
+        expect(screen.getByText('30 min')).toBeInTheDocument()
+    })
+
+    it('should not render the "Send delay" select for welcome', () => {
+        render(
+            <StaticTimingContent
+                journeyType={JOURNEY_TYPES.WELCOME}
+                isV3Architecture
+            />,
+        )
+
+        expect(
+            screen.queryByRole('button', { name: /send delay/i }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should render a disabled select with "Shopper inactive" for win back', () => {
+        render(
+            <StaticTimingContent
+                journeyType={JOURNEY_TYPES.WIN_BACK}
+                isV3Architecture
+            />,
+        )
+
+        const startWhenSelect = screen.getByRole('button', {
+            name: /start when/i,
+        })
+        expect(startWhenSelect).toBeDisabled()
+        expect(screen.getByText('Shopper inactive')).toBeInTheDocument()
+    })
+
+    it('should not render the "Send delay" select for win back', () => {
+        render(
+            <StaticTimingContent
+                journeyType={JOURNEY_TYPES.WIN_BACK}
+                isV3Architecture
+            />,
+        )
+
+        expect(
+            screen.queryByRole('button', { name: /send delay/i }),
+        ).not.toBeInTheDocument()
+    })
+})

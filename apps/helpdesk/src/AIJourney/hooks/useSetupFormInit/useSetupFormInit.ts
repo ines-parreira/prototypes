@@ -98,6 +98,11 @@ export const useSetupFormInit = () => {
                         journeyData?.included_audience_list_ids ?? undefined,
                     excluded_audience_list_ids:
                         journeyData?.excluded_audience_list_ids ?? undefined,
+                    narrow_audience_enabled:
+                        (journeyData?.included_audience_list_ids?.length ?? 0) >
+                            0 ||
+                        (journeyData?.excluded_audience_list_ids?.length ?? 0) >
+                            0,
                     campaignTitle: journeyData?.campaign?.title ?? undefined,
                     rcs_enabled:
                         journeyData?.configuration?.rcs_enabled ?? undefined,

@@ -53,6 +53,7 @@ export type SetupFormValues = {
     variants?: MessageInstructionsVariant[]
     included_audience_list_ids?: string[]
     excluded_audience_list_ids?: string[]
+    narrow_audience_enabled?: boolean
     campaignTitle?: string
     rcs_enabled?: boolean
     execution_mode_override?: JourneyParticipationExecutionMode | null

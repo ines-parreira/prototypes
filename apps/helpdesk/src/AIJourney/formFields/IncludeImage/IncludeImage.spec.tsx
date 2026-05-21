@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -7,15 +9,38 @@ import { JOURNEY_TYPES } from 'AIJourney/constants'
 
 import { IncludeImage } from './IncludeImage'
 
+jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
+    Tooltip: ({
+        trigger,
+        children,
+    }: {
+        trigger: React.ReactNode
+        children: React.ReactNode
+    }) => (
+        <>
+            {trigger}
+            {children}
+        </>
+    ),
+    TooltipContent: ({ title }: { title?: React.ReactNode }) => (
+        <div role="tooltip">{title}</div>
+    ),
+}))
+
 const renderComponent = (
     journeyType: string,
     defaultValues: Record<string, unknown> = {},
+    isV3Architecture?: boolean,
 ) => {
     const Wrapper = () => {
         const methods = useForm({ defaultValues })
         return (
             <FormProvider {...methods}>
-                <IncludeImage journeyType={journeyType} />
+                <IncludeImage
+                    journeyType={journeyType}
+                    isV3Architecture={isV3Architecture}
+                />
             </FormProvider>
         )
     }
@@ -23,10 +48,10 @@ const renderComponent = (
 }
 
 describe('<IncludeImage />', () => {
-    it('should render the toggle with the label "Include image"', () => {
+    it('should render the toggle with the label "Include product image"', () => {
         renderComponent(JOURNEY_TYPES.CART_ABANDONMENT)
 
-        expect(screen.getByText('Include image')).toBeInTheDocument()
+        expect(screen.getByText('Include product image')).toBeInTheDocument()
     })
 
     it('should render the correct caption for CART_ABANDONMENT', () => {
@@ -65,6 +90,26 @@ describe('<IncludeImage />', () => {
         expect(
             screen.getByText(
                 'Add an image of the last purchased product in the first message.',
+            ),
+        ).toBeInTheDocument()
+    })
+
+    it('should not render a caption when isV3Architecture is true', () => {
+        renderComponent(JOURNEY_TYPES.CART_ABANDONMENT, {}, true)
+
+        expect(
+            screen.queryByText(
+                'Add an image of the items left in their cart in the first message.',
+            ),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should render the caption when isV3Architecture is false', () => {
+        renderComponent(JOURNEY_TYPES.CART_ABANDONMENT, {}, false)
+
+        expect(
+            screen.getByText(
+                'Add an image of the items left in their cart in the first message.',
             ),
         ).toBeInTheDocument()
     })
@@ -111,5 +156,27 @@ describe('<IncludeImage />', () => {
         await user.click(toggle)
 
         expect(toggle).not.toBeChecked()
+    })
+
+    describe('info tooltip (v3 architecture)', () => {
+        it('should render the info tooltip with the correct content when isV3Architecture is true', () => {
+            renderComponent(JOURNEY_TYPES.CART_ABANDONMENT, {}, true)
+
+            expect(screen.getByRole('tooltip')).toHaveTextContent(
+                "Shows the relevant product from the shopper's session, pulled from Shopify",
+            )
+        })
+
+        it('should not render the info tooltip when isV3Architecture is false', () => {
+            renderComponent(JOURNEY_TYPES.CART_ABANDONMENT, {}, false)
+
+            expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
+        })
+
+        it('should not render the info tooltip when isV3Architecture is undefined', () => {
+            renderComponent(JOURNEY_TYPES.CART_ABANDONMENT)
+
+            expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
+        })
     })
 })

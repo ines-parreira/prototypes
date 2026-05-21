@@ -2,7 +2,16 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { useFormContext, useWatch } from 'react-hook-form'
 
-import { Box, Card, CardHeader, Skeleton, ToggleField } from '@gorgias/axiom'
+import {
+    Box,
+    Card,
+    CardHeader,
+    Icon,
+    Skeleton,
+    ToggleField,
+    Tooltip,
+    TooltipContent,
+} from '@gorgias/axiom'
 
 import { JOURNEY_TYPES } from 'AIJourney/constants'
 import {
@@ -92,12 +101,19 @@ export const GeneralCard = ({
                     <SenderPhoneNumber />
                 </div>
                 <div className={css.section}>
-                    <ToggleField
-                        value={hasFollowUps}
-                        onChange={handleFollowUpsToggle}
-                        label="Allow follow-ups"
-                        aria-label="Allow follow-ups"
-                    />
+                    <Box flexDirection="row" alignItems="center" gap="xxs">
+                        <ToggleField
+                            value={hasFollowUps}
+                            onChange={handleFollowUpsToggle}
+                            label="Allow follow-ups"
+                            aria-label="Allow follow-ups"
+                        />
+                        <span>
+                            <Tooltip delay={0} trigger={<Icon name="info" />}>
+                                <TooltipContent title="Nudge shoppers who didn't engage with the first message." />
+                            </Tooltip>
+                        </span>
+                    </Box>
                     {hasFollowUps && (
                         <Box flexDirection="column" gap="sm" width="100%">
                             <NumberOfMessages isV3Architecture />
@@ -107,17 +123,30 @@ export const GeneralCard = ({
                 </div>
                 {shouldRenderIncludeImage && (
                     <div className={css.section}>
-                        <IncludeImage journeyType={journeyType} />
+                        <IncludeImage
+                            journeyType={journeyType}
+                            isV3Architecture
+                        />
                     </div>
                 )}
                 {isCampaign && (
                     <div className={`${css.section} ${css.sectionImageUpload}`}>
-                        <ToggleField
-                            value={isCustomImageEnabled}
-                            onChange={handleCustomImageToggle}
-                            label="Include custom image"
-                            aria-label="Include custom image"
-                        />
+                        <Box flexDirection="row" alignItems="center" gap="xxs">
+                            <ToggleField
+                                value={isCustomImageEnabled}
+                                onChange={handleCustomImageToggle}
+                                label="Include custom image"
+                                aria-label="Include custom image"
+                            />
+                            <span>
+                                <Tooltip
+                                    delay={0}
+                                    trigger={<Icon name="info" />}
+                                >
+                                    <TooltipContent title="Upload an image to attach to your campaign's first message." />
+                                </Tooltip>
+                            </span>
+                        </Box>
                         {isCustomImageEnabled && (
                             <Box flexDirection="column" width="100%">
                                 <ImageUpload hideLabel fullWidth />

@@ -22,12 +22,12 @@ const fieldProps = {
     include: {
         fieldName: 'included_audience_list_ids',
         excludeFieldName: 'excluded_audience_list_ids',
-        label: 'Segments to include',
+        label: 'Audience to include',
     },
     exclude: {
         fieldName: 'excluded_audience_list_ids',
         excludeFieldName: 'included_audience_list_ids',
-        label: 'Segments to exclude',
+        label: 'Audience to exclude',
     },
 }
 
@@ -37,7 +37,13 @@ type AudienceSegmentWithIdentifier = {
     name: string
 }
 
-export const AudienceSelect = ({ type }: { type: 'include' | 'exclude' }) => {
+export const AudienceSelect = ({
+    type,
+    isRequired = false,
+}: {
+    type: 'include' | 'exclude'
+    isRequired?: boolean
+}) => {
     const { control, getValues, setValue } = useFormContext()
     const { currentIntegration, journeyType } = useJourneyContext()
 
@@ -211,6 +217,7 @@ export const AudienceSelect = ({ type }: { type: 'include' | 'exclude' }) => {
                 render={({ field }) => (
                     <MultiSelectField
                         isSearchable
+                        isRequired={isRequired}
                         items={sections}
                         isOpen={isMultiSelectOpen}
                         onOpenChange={setIsMultiSelectOpen}

@@ -53,6 +53,8 @@ export const JourneyEditorSidePanel = () => {
 
     const shouldRenderTimingSection = !isCampaign && !isCustom
     const shouldRenderAudienceSection = isCampaign || isAiJourneySegmentsEnabled
+    const shouldRenderStaticTiming =
+        isCartAbandonment || isSessionAbandonment || isWelcome || isWinBack
 
     const displayState = isCampaign
         ? (journeyData?.campaign?.state ?? JourneyCampaignStateEnum.Draft)
@@ -93,47 +95,57 @@ export const JourneyEditorSidePanel = () => {
                             </div>
                         ) : (
                             <>
+                                {isCampaign && shouldRenderAudienceSection && (
+                                    <div className={css.section}>
+                                        <AudienceCard
+                                            isFormReady={isFormReady}
+                                            isV3Architecture
+                                            isAudienceRequired={true}
+                                        />
+                                    </div>
+                                )}
+
                                 {shouldRenderTimingSection && (
                                     <div className={css.section}>
-                                        {(isCartAbandonment ||
-                                            isSessionAbandonment ||
-                                            isWelcome) && (
+                                        {shouldRenderStaticTiming && (
                                             <StaticTimingContent
                                                 journeyType={
                                                     journeyType as Parameters<
                                                         typeof StaticTimingContent
                                                     >[0]['journeyType']
                                                 }
+                                                isV3Architecture
                                             />
                                         )}
                                         {isPostPurchase && (
                                             <>
-                                                <TargetOrderStatus />
+                                                <TargetOrderStatus
+                                                    isV3Architecture
+                                                />
                                                 <MinutesDelay
                                                     journeyType={journeyType}
+                                                    isV3Architecture
                                                 />
                                             </>
                                         )}
                                         {isWelcome && (
                                             <MinutesDelay
                                                 journeyType={journeyType}
+                                                isV3Architecture
                                             />
                                         )}
                                         {isWinBack && (
                                             <>
-                                                <WaitingDays type="inactive-days" />
-                                                <WaitingDays type="cooldown" />
+                                                <WaitingDays
+                                                    type="inactive-days"
+                                                    isV3Architecture
+                                                />
+                                                <WaitingDays
+                                                    type="cooldown"
+                                                    isV3Architecture
+                                                />
                                             </>
                                         )}
-                                    </div>
-                                )}
-
-                                {shouldRenderAudienceSection && (
-                                    <div className={css.section}>
-                                        <AudienceCard
-                                            isFormReady={isFormReady}
-                                            isV3Architecture
-                                        />
                                     </div>
                                 )}
 
@@ -148,6 +160,16 @@ export const JourneyEditorSidePanel = () => {
                                         isV3Architecture
                                     />
                                 </div>
+
+                                {!isCampaign && shouldRenderAudienceSection && (
+                                    <div className={css.section}>
+                                        <AudienceCard
+                                            isFormReady={isFormReady}
+                                            isV3Architecture
+                                            isAudienceRequired={false}
+                                        />
+                                    </div>
+                                )}
 
                                 {isAiJourneyRcsEnabled &&
                                     window.USER_IMPERSONATED && (

@@ -3,6 +3,8 @@ import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { FormProvider, useForm } from 'react-hook-form'
 
+import { OrderStatusEnum } from '@gorgias/convert-client'
+
 import { JOURNEY_TYPES, MAX_WAIT_TIME } from 'AIJourney/constants'
 
 import { MinutesDelay } from './MinutesDelay'
@@ -19,6 +21,33 @@ const renderComponent = (
             <FormProvider {...methods}>
                 <form onSubmit={methods.handleSubmit(() => {})}>
                     <MinutesDelay journeyType={journeyType} />
+                    <button type="submit">Submit</button>
+                </form>
+            </FormProvider>
+        )
+    }
+    return render(<Wrapper />)
+}
+
+const renderV3Component = (
+    journeyType:
+        | typeof JOURNEY_TYPES.POST_PURCHASE
+        | typeof JOURNEY_TYPES.WELCOME = JOURNEY_TYPES.POST_PURCHASE,
+    defaultValues: Record<string, unknown> = {},
+) => {
+    const Wrapper = () => {
+        const methods = useForm({
+            defaultValues: {
+                target_order_status: OrderStatusEnum.OrderPlaced,
+                post_purchase_wait_minutes: 30,
+                wait_time_minutes: 60,
+                ...defaultValues,
+            },
+        })
+        return (
+            <FormProvider {...methods}>
+                <form onSubmit={methods.handleSubmit(() => {})}>
+                    <MinutesDelay journeyType={journeyType} isV3Architecture />
                     <button type="submit">Submit</button>
                 </form>
             </FormProvider>
@@ -142,5 +171,122 @@ describe('<MinutesDelay />', () => {
         renderComponent(JOURNEY_TYPES.WELCOME, { wait_time_minutes: 15 })
 
         expect(screen.getByRole('textbox')).toHaveValue('15')
+    })
+})
+
+describe('<MinutesDelay /> with isV3Architecture', () => {
+    it('should render a SelectField button with the "Send delay" label', () => {
+        renderV3Component()
+
+        expect(
+            screen.getByRole('button', { name: /send delay/i }),
+        ).toBeInTheDocument()
+    })
+
+    it('should not render a number input field', () => {
+        renderV3Component()
+
+        expect(screen.queryByRole('spinbutton')).not.toBeInTheDocument()
+    })
+
+    it('should not render the "min" trailing unit', () => {
+        renderV3Component()
+
+        expect(screen.queryByText('min')).not.toBeInTheDocument()
+    })
+
+    it('should display the selected delay label for OrderPlaced (30 minutes default)', () => {
+        renderV3Component(JOURNEY_TYPES.POST_PURCHASE, {
+            target_order_status: OrderStatusEnum.OrderPlaced,
+            post_purchase_wait_minutes: 30,
+        })
+
+        expect(screen.getByText('30 minutes')).toBeInTheDocument()
+    })
+
+    it('should display "Immediate" when delay is 0 for OrderPlaced', () => {
+        renderV3Component(JOURNEY_TYPES.POST_PURCHASE, {
+            target_order_status: OrderStatusEnum.OrderPlaced,
+            post_purchase_wait_minutes: 0,
+        })
+
+        expect(screen.getByText('Immediate')).toBeInTheDocument()
+    })
+
+    it('should display the selected delay label for OrderFulfilled (1 hour default)', () => {
+        renderV3Component(JOURNEY_TYPES.POST_PURCHASE, {
+            target_order_status: OrderStatusEnum.OrderFulfilled,
+            post_purchase_wait_minutes: 60,
+        })
+
+        expect(screen.getByText('1 hour')).toBeInTheDocument()
+    })
+
+    it('should not render "Immediate" option label for OrderFulfilled', () => {
+        renderV3Component(JOURNEY_TYPES.POST_PURCHASE, {
+            target_order_status: OrderStatusEnum.OrderFulfilled,
+            post_purchase_wait_minutes: 60,
+        })
+
+        expect(screen.queryByText('Immediate')).not.toBeInTheDocument()
+    })
+})
+
+describe('<MinutesDelay /> with isV3Architecture - Welcome flow', () => {
+    const renderV3WelcomeComponent = (
+        defaultValues: Record<string, unknown> = {},
+    ) => {
+        const Wrapper = () => {
+            const methods = useForm({ defaultValues })
+            return (
+                <FormProvider {...methods}>
+                    <form>
+                        <MinutesDelay
+                            journeyType={JOURNEY_TYPES.WELCOME}
+                            isV3Architecture
+                        />
+                    </form>
+                </FormProvider>
+            )
+        }
+        return render(<Wrapper />)
+    }
+
+    it('should default to 5 minutes when no value is provided', async () => {
+        renderV3WelcomeComponent()
+
+        await waitFor(() => {
+            expect(screen.getByText('5 minutes')).toBeInTheDocument()
+        })
+    })
+
+    it('should display the selected welcome delay option', () => {
+        renderV3WelcomeComponent({ wait_time_minutes: 15 })
+
+        expect(screen.getByText('15 minutes')).toBeInTheDocument()
+    })
+
+    it('should display "Immediate" when delay is 0', () => {
+        renderV3WelcomeComponent({ wait_time_minutes: 0 })
+
+        expect(screen.getByText('Immediate')).toBeInTheDocument()
+    })
+
+    it('should display "1 hour" when delay is 60', () => {
+        renderV3WelcomeComponent({ wait_time_minutes: 60 })
+
+        expect(screen.getByText('1 hour')).toBeInTheDocument()
+    })
+
+    it('should not display "4 hours" as it is not a valid welcome option', () => {
+        renderV3WelcomeComponent({ wait_time_minutes: 240 })
+
+        expect(screen.queryByText('4 hours')).not.toBeInTheDocument()
+    })
+
+    it('should not display "24 hours" as it is not a valid welcome option', () => {
+        renderV3WelcomeComponent({ wait_time_minutes: 1440 })
+
+        expect(screen.queryByText('24 hours')).not.toBeInTheDocument()
     })
 })

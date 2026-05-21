@@ -1,5 +1,5 @@
 import { render } from '@repo/testing'
-import { screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { FormProvider, useForm } from 'react-hook-form'
 import { Provider } from 'react-redux'
@@ -158,6 +158,18 @@ describe('<JourneyEditorSidePanel />', () => {
         expect(screen.getByText('Details')).toBeInTheDocument()
     })
 
+    it('should render StaticTimingContent for welcome flow', () => {
+        renderComponent()
+
+        expect(screen.getByText('StaticTimingContent')).toBeInTheDocument()
+    })
+
+    it('should render MinutesDelay for welcome flow', () => {
+        renderComponent()
+
+        expect(screen.getByText('MinutesDelay')).toBeInTheDocument()
+    })
+
     it('should render a skeleton loading state when form is not ready', () => {
         const mockUseSetupFormInit = require('AIJourney/hooks')
             .useSetupFormInit as jest.Mock
@@ -203,9 +215,11 @@ describe('<JourneyEditorSidePanel />', () => {
         const user = userEvent.setup()
         renderComponent()
 
-        await user.click(
-            screen.getByRole('switch', { name: /allow follow-ups/i }),
-        )
+        await act(async () => {
+            await user.click(
+                screen.getByRole('switch', { name: /allow follow-ups/i }),
+            )
+        })
 
         expect(screen.getByText('NumberOfMessages')).toBeInTheDocument()
     })
@@ -242,8 +256,9 @@ describe('<JourneyEditorSidePanel />', () => {
 
         expect(screen.getByText('Details')).toBeInTheDocument()
 
-        await user.click(screen.getByRole('button', { name: /collapse/i }))
-
+        await act(async () => {
+            await user.click(screen.getByRole('button', { name: /collapse/i }))
+        })
         expect(screen.queryByText('Details')).not.toBeInTheDocument()
     })
 
@@ -251,8 +266,9 @@ describe('<JourneyEditorSidePanel />', () => {
         const user = userEvent.setup()
         renderComponent()
 
-        await user.click(screen.getByRole('button', { name: /collapse/i }))
-
+        await act(async () => {
+            await user.click(screen.getByRole('button', { name: /collapse/i }))
+        })
         expect(
             screen.getByRole('button', { name: /expand/i }),
         ).toBeInTheDocument()
@@ -313,6 +329,70 @@ describe('<JourneyEditorSidePanel />', () => {
         })
     })
 
+    describe('cart abandonment journey type', () => {
+        beforeEach(() => {
+            mockUseJourneyContext.mockReturnValue({
+                journeyData: {
+                    id: 'journey-123',
+                    state: JourneyStatusEnum.Draft,
+                },
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+                currentIntegration: { id: 1 },
+            })
+        })
+
+        it('should render StaticTimingContent', () => {
+            renderComponent()
+
+            expect(screen.getByText('StaticTimingContent')).toBeInTheDocument()
+        })
+
+        it('should not render MinutesDelay', () => {
+            renderComponent()
+
+            expect(screen.queryByText('MinutesDelay')).not.toBeInTheDocument()
+        })
+
+        it('should not render WaitingDays fields', () => {
+            renderComponent()
+
+            expect(screen.queryByText('inactive-days')).not.toBeInTheDocument()
+            expect(screen.queryByText('cooldown')).not.toBeInTheDocument()
+        })
+    })
+
+    describe('session abandonment journey type', () => {
+        beforeEach(() => {
+            mockUseJourneyContext.mockReturnValue({
+                journeyData: {
+                    id: 'journey-123',
+                    state: JourneyStatusEnum.Draft,
+                },
+                journeyType: JOURNEY_TYPES.SESSION_ABANDONMENT,
+                currentIntegration: { id: 1 },
+            })
+        })
+
+        it('should render StaticTimingContent', () => {
+            renderComponent()
+
+            expect(screen.getByText('StaticTimingContent')).toBeInTheDocument()
+        })
+
+        it('should not render MinutesDelay', () => {
+            renderComponent()
+
+            expect(screen.queryByText('MinutesDelay')).not.toBeInTheDocument()
+        })
+
+        it('should not render WaitingDays fields', () => {
+            renderComponent()
+
+            expect(screen.queryByText('inactive-days')).not.toBeInTheDocument()
+            expect(screen.queryByText('cooldown')).not.toBeInTheDocument()
+        })
+    })
+
     describe('win-back journey type', () => {
         beforeEach(() => {
             mockUseJourneyContext.mockReturnValue({
@@ -339,6 +419,7 @@ describe('<JourneyEditorSidePanel />', () => {
                 journeyData: {
                     id: 'journey-123',
                     campaign: { state: JourneyCampaignStateEnum.Draft },
+                    included_audience_list_ids: [1],
                 },
                 journeyType: JOURNEY_TYPES.CAMPAIGN,
                 currentIntegration: { id: 1 },
@@ -372,10 +453,13 @@ describe('<JourneyEditorSidePanel />', () => {
             const user = userEvent.setup()
             renderComponent()
 
-            await user.click(
-                screen.getByRole('switch', { name: /include custom image/i }),
-            )
-
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('switch', {
+                        name: /include custom image/i,
+                    }),
+                )
+            })
             expect(screen.getByText('ImageUpload')).toBeInTheDocument()
         })
 
@@ -383,14 +467,59 @@ describe('<JourneyEditorSidePanel />', () => {
             const user = userEvent.setup()
             renderComponent()
 
-            await user.click(
-                screen.getByRole('switch', { name: /include custom image/i }),
-            )
-            await user.click(
-                screen.getByRole('switch', { name: /include custom image/i }),
-            )
-
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('switch', {
+                        name: /include custom image/i,
+                    }),
+                )
+                await user.click(
+                    screen.getByRole('switch', {
+                        name: /include custom image/i,
+                    }),
+                )
+            })
             expect(screen.queryByText('ImageUpload')).not.toBeInTheDocument()
+        })
+    })
+
+    describe('post-purchase journey type', () => {
+        beforeEach(() => {
+            mockUseJourneyContext.mockReturnValue({
+                journeyData: {
+                    id: 'journey-123',
+                    state: JourneyStatusEnum.Draft,
+                },
+                journeyType: JOURNEY_TYPES.POST_PURCHASE,
+                currentIntegration: { id: 1 },
+            })
+        })
+
+        it('should render TargetOrderStatus', () => {
+            renderComponent()
+
+            expect(screen.getByText('TargetOrderStatus')).toBeInTheDocument()
+        })
+
+        it('should render MinutesDelay', () => {
+            renderComponent()
+
+            expect(screen.getByText('MinutesDelay')).toBeInTheDocument()
+        })
+
+        it('should not render StaticTimingContent', () => {
+            renderComponent()
+
+            expect(
+                screen.queryByText('StaticTimingContent'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not render WaitingDays fields', () => {
+            renderComponent()
+
+            expect(screen.queryByText('inactive-days')).not.toBeInTheDocument()
+            expect(screen.queryByText('cooldown')).not.toBeInTheDocument()
         })
     })
 

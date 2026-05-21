@@ -482,6 +482,155 @@ describe('<JourneyEditorLayout /> — Non-campaign flow save', () => {
 
         window.USER_IMPERSONATED = originalImpersonated
     })
+
+    it('should send empty audience arrays when the narrow audience toggle is off on save', async () => {
+        const mockUseFlag = require('@repo/feature-flags').useFlag as jest.Mock
+        mockUseFlag.mockImplementation(
+            (key: string) =>
+                key === 'ai-journey-v3-architecture-enabled' ||
+                key === 'ai-journey-segments-ui-enabled',
+        )
+
+        const mockHandleUpdate = jest.fn().mockResolvedValue({})
+        const mockUseJourneyUpdateHandler = require('AIJourney/hooks')
+            .useJourneyUpdateHandler as jest.Mock
+        mockUseJourneyUpdateHandler.mockReturnValue({
+            handleUpdate: mockHandleUpdate,
+            isLoading: false,
+        })
+
+        mockUseJourneyContext.mockReturnValue({
+            currentIntegration: { id: 1 },
+            journeyData: {
+                id: 'journey-123',
+                state: JourneyStatusEnum.Draft,
+                message_instructions: 'Existing instructions',
+                included_audience_list_ids: ['previous-1'],
+                excluded_audience_list_ids: ['previous-2'],
+            },
+            journeyType: JOURNEY_TYPES.POST_PURCHASE,
+            shopName: 'test-store',
+        })
+
+        const user = userEvent.setup()
+        renderComponent()
+
+        await user.click(
+            await screen.findByRole('switch', {
+                name: /Narrow down audience/i,
+            }),
+        )
+        await user.click(screen.getByRole('button', { name: /save changes/i }))
+
+        await waitFor(() => {
+            expect(mockHandleUpdate).toHaveBeenCalled()
+        })
+        const callArgs = mockHandleUpdate.mock.calls[0][0] as Record<
+            string,
+            unknown
+        >
+        expect(callArgs.includedAudienceListIds).toEqual([])
+        expect(callArgs.excludedAudienceListIds).toEqual([])
+    })
+
+    it('should not clear audience values on save when the narrow audience toggle stays on', async () => {
+        const mockUseFlag = require('@repo/feature-flags').useFlag as jest.Mock
+        mockUseFlag.mockImplementation(
+            (key: string) =>
+                key === 'ai-journey-v3-architecture-enabled' ||
+                key === 'ai-journey-segments-ui-enabled',
+        )
+
+        const mockHandleUpdate = jest.fn().mockResolvedValue({})
+        const mockUseJourneyUpdateHandler = require('AIJourney/hooks')
+            .useJourneyUpdateHandler as jest.Mock
+        mockUseJourneyUpdateHandler.mockReturnValue({
+            handleUpdate: mockHandleUpdate,
+            isLoading: false,
+        })
+
+        mockUseJourneyContext.mockReturnValue({
+            currentIntegration: { id: 1 },
+            journeyData: {
+                id: 'journey-123',
+                state: JourneyStatusEnum.Draft,
+                message_instructions: 'Existing instructions',
+                included_audience_list_ids: ['previous-1'],
+                excluded_audience_list_ids: ['previous-2'],
+            },
+            journeyType: JOURNEY_TYPES.POST_PURCHASE,
+            shopName: 'test-store',
+        })
+
+        const user = userEvent.setup()
+        renderComponent()
+
+        await user.click(screen.getByRole('button', { name: /save changes/i }))
+
+        await waitFor(() => {
+            expect(mockHandleUpdate).toHaveBeenCalled()
+        })
+        const callArgs = mockHandleUpdate.mock.calls[0][0] as Record<
+            string,
+            unknown
+        >
+        expect(callArgs.includedAudienceListIds).not.toEqual([])
+        expect(callArgs.excludedAudienceListIds).not.toEqual([])
+    })
+
+    it('should call handleCreate when saving a new non-campaign journey with no journeyData.id', async () => {
+        const mockHandleCreate = jest.fn().mockResolvedValue({ id: 'new-456' })
+        const mockHandleUpdate = jest.fn().mockResolvedValue({})
+        const mockReplace = jest.fn()
+
+        const mockUseJourneyCreateHandler = require('AIJourney/hooks')
+            .useJourneyCreateHandler as jest.Mock
+        const mockUseJourneyUpdateHandler = require('AIJourney/hooks')
+            .useJourneyUpdateHandler as jest.Mock
+        const mockUseHistory = require('react-router-dom')
+            .useHistory as jest.Mock
+
+        mockUseJourneyCreateHandler.mockReturnValue({
+            handleCreate: mockHandleCreate,
+            isLoading: false,
+        })
+        mockUseJourneyUpdateHandler.mockReturnValue({
+            handleUpdate: mockHandleUpdate,
+            isLoading: false,
+        })
+        mockUseHistory.mockReturnValue({
+            push: jest.fn(),
+            replace: mockReplace,
+        })
+
+        mockUseJourneyContext.mockReturnValue({
+            currentIntegration: { id: 1 },
+            journeyData: undefined,
+            journeyType: JOURNEY_TYPES.CUSTOM,
+            shopName: 'test-store',
+        })
+
+        const user = userEvent.setup()
+        renderComponent()
+
+        await user.type(
+            screen.getByRole('textbox', { name: /flow name/i }),
+            'New Custom Flow',
+        )
+        await user.type(
+            screen.getByPlaceholderText(/describe tone/i),
+            'Test instructions',
+        )
+        await user.click(screen.getByRole('button', { name: /save changes/i }))
+
+        await waitFor(() => {
+            expect(mockHandleCreate).toHaveBeenCalled()
+        })
+        expect(mockHandleUpdate).not.toHaveBeenCalled()
+        expect(mockReplace).toHaveBeenCalledWith(
+            '/app/ai-journey/test-store/custom/setup/new-456',
+        )
+    })
 })
 
 describe('<JourneyEditorLayout /> — Schedule campaign panel', () => {
