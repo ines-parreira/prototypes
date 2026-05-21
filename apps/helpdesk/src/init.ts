@@ -141,7 +141,12 @@ export function initApp() {
 
     void initGaia()
 
-    void initClarity()
+    void initClarity({
+        user: state.currentUser?.toJS(),
+        account: state.currentAccount?.toJS(),
+        helpdeskPriceId: currentHelpdeskPlan?.plan_id,
+        automationPriceId: currentAutomatePlan?.plan_id,
+    })
 
     Chart.register(
         BarController,
