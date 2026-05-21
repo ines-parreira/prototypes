@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { sanitizeHtmlDefault } from '@repo/utils'
 import cn from 'classnames'
 import moment from 'moment'
 import ReactMarkdown from 'react-markdown'
@@ -29,6 +28,12 @@ const isKnownResourceType = (markerString: string): boolean => {
         resourceType as AiAgentKnowledgeResourceTypeEnum,
     )
 }
+
+const replaceFirstOccurrence = (
+    value: string,
+    search: string,
+    replacement: string,
+) => value.replace(search, replacement)
 
 const getActionEventsUrl = ({
     resourceId,
@@ -137,16 +142,7 @@ export const AiAgentReasoningContent = ({
     // remove all unknown resource markers
     allResourceMatches.forEach((match) => {
         if (!isKnownResourceType(match)) {
-            const contentMatch = match.match(/<<<(.*?)>>>/)
-            if (contentMatch) {
-                const innerContent = contentMatch[1]
-                const sanitizedContent = sanitizeHtmlDefault(innerContent)
-                const escapedPattern = `<<<${sanitizedContent}>>>`
-                processedContent = processedContent.replace(
-                    new RegExp(escapedPattern, 'g'),
-                    '',
-                )
-            }
+            processedContent = processedContent.split(match).join('')
         }
     })
 
@@ -162,11 +158,9 @@ export const AiAgentReasoningContent = ({
     resourceMatches.forEach((match, index) => {
         const contentMatch = match.match(/<<<(.*?)>>>/)
         if (contentMatch) {
-            const innerContent = contentMatch[1]
-            const sanitizedContent = sanitizeHtmlDefault(innerContent)
-            const escapedPattern = `<<<${sanitizedContent}>>>`
-            processedContent = processedContent.replace(
-                new RegExp(escapedPattern, 'g'),
+            processedContent = replaceFirstOccurrence(
+                processedContent,
+                match,
                 `<kbd id="${index}"></kbd>`,
             )
         }

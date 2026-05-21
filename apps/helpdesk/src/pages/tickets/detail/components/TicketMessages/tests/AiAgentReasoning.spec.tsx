@@ -142,11 +142,6 @@ jest.mock('pages/tickets/detail/components/AIAgentFeedbackBar/utils', () => ({
     knowledgeResourceShouldBeLink: jest.fn(() => true),
 }))
 
-jest.mock('@repo/utils', () => ({
-    ...jest.requireActual('@repo/utils'),
-    sanitizeHtmlDefault: jest.fn((content: string) => content),
-}))
-
 jest.mock('react-markdown', () => {
     return function MockReactMarkdown({
         children,
@@ -1503,6 +1498,77 @@ describe('AiAgentReasoning', () => {
                 '<<<discount::1234::recommendation>>>',
             )
             expect(content).not.toContain('<<<unknown_type::999>>>')
+        })
+
+        it('should remove unknown resource markers with regex characters', () => {
+            const orderContextMarker =
+                "<<<orders::Order context: {'created_datetime': '2026-04-21T02:12:39+01:00', 'line_items': [{'name': 'Washup Refills - Apple + Nashi Pear'}]}>>>"
+
+            render(
+                <AiAgentReasoningContent
+                    reasoningContent={`Order context ${orderContextMarker} rendered`}
+                    reasoningResources={[]}
+                    data={[]}
+                    openPreview={jest.fn()}
+                />,
+            )
+
+            expect(
+                screen.getByText(/Order context\s+rendered/),
+            ).toBeInTheDocument()
+            expect(document.body.textContent).not.toContain(orderContextMarker)
+        })
+
+        it('should preserve duplicated known resource marker positions', () => {
+            render(
+                <AiAgentReasoningContent
+                    reasoningContent="First <<<article::16::13608>>> second <<<article::16::13608>>>"
+                    reasoningResources={[
+                        {
+                            resourceType:
+                                AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                            resourceId: '13608',
+                            resourceSetId: '16',
+                            resourceTitle: 'First Article',
+                        },
+                        {
+                            resourceType:
+                                AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                            resourceId: '13608',
+                            resourceSetId: '16',
+                            resourceTitle: 'Second Article',
+                        },
+                    ]}
+                    data={[
+                        {
+                            title: 'First Article',
+                            content: 'First content',
+                            url: 'https://example.com/first',
+                            isDeleted: false,
+                        },
+                        {
+                            title: 'Second Article',
+                            content: 'Second content',
+                            url: 'https://example.com/second',
+                            isDeleted: false,
+                        },
+                    ]}
+                    openPreview={jest.fn()}
+                />,
+            )
+
+            const articlePopovers = screen.getAllByTestId(
+                'knowledge-source-popover-ARTICLE',
+            )
+            expect(articlePopovers).toHaveLength(2)
+            expect(articlePopovers[0]).toHaveAttribute(
+                'data-title',
+                'First Article',
+            )
+            expect(articlePopovers[1]).toHaveAttribute(
+                'data-title',
+                'Second Article',
+            )
         })
 
         it('should render only known resource types when mixed with unknown types', () => {
