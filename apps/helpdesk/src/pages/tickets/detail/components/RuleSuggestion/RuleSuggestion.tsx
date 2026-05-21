@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { fromJS } from 'immutable'
@@ -34,6 +35,7 @@ import { useRuleRecipes } from 'state/entities/ruleRecipes/hooks'
 import { useRules } from 'state/entities/rules/hooks'
 import { getEmailChannels } from 'state/integrations/selectors'
 import { sendTicketMessage } from 'state/newMessage/actions'
+import { ticketMessageSubmissionIdentityReportingEnabledContextKey } from 'state/newMessage/ticketSubmissionDiagnostics'
 import type { NewMessage } from 'state/newMessage/types'
 import { transformToInternalNote } from 'state/newMessage/utils'
 import type { ManagedRule } from 'state/rules/types'
@@ -102,6 +104,9 @@ export default function RuleSuggestion({ ticket, isCollapsed }: Props) {
     const emailChannels = useAppSelector(getEmailChannels)
     const currentUser = useAppSelector(getCurrentUser)
     const accountOwnerId = useAppSelector(getAccountOwnerId)
+    const isTicketMessageSubmissionIdentityReportingEnabled = useFlag(
+        FeatureFlagKey.TicketMessagesAssignedToWrongTicketDebugging,
+    )
     const [rules, isLoadingRules] = useRules()
     const [isSending, setIsSending] = useState(false)
 
@@ -184,7 +189,13 @@ export default function RuleSuggestion({ ticket, isCollapsed }: Props) {
             message = { ...newMessage, actions: newActions ?? fromJS([]) }
         }
 
-        await dispatch(sendTicketMessage(getMomentNow(), message, null))
+        await dispatch(
+            sendTicketMessage(getMomentNow(), message, null, true, undefined, {
+                submission_path: 'rule_suggestion',
+                [ticketMessageSubmissionIdentityReportingEnabledContextKey]:
+                    isTicketMessageSubmissionIdentityReportingEnabled,
+            }),
+        )
     }
 
     const handleBookDemo = () => {

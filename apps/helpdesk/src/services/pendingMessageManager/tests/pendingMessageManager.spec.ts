@@ -59,9 +59,22 @@ describe('services', () => {
         const getSendTicketMessageCallArgs = (
             sendMessageArgs: SendMessageArgs,
         ): Parameters<typeof sendTicketMessage> => {
-            const { messageId, messageToSend, action, resetMessage, ticketId } =
-                sendMessageArgs
-            return [messageId, messageToSend, action, resetMessage, ticketId]
+            const {
+                messageId,
+                messageToSend,
+                action,
+                resetMessage,
+                ticketId,
+                submissionContext,
+            } = sendMessageArgs
+            return [
+                messageId,
+                messageToSend,
+                action,
+                resetMessage,
+                ticketId,
+                submissionContext,
+            ]
         }
 
         it('should send deferred message', () => {

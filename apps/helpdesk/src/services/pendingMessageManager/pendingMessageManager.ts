@@ -9,6 +9,16 @@ import {
     newMessageResetFromMessage,
     sendTicketMessage,
 } from 'state/newMessage/actions'
+import {
+    getBrowserTicketSubmissionDiagnostics,
+    getTicketMessageDiagnostics,
+    haveDifferentTicketIds,
+    reportTicketMessageSubmissionIdentityMismatch,
+} from 'state/newMessage/ticketSubmissionDiagnostics'
+import type {
+    TicketMessageSubmissionDiagnosticsContext,
+    TicketMessageSubmissionDiagnosticsStage,
+} from 'state/newMessage/ticketSubmissionDiagnostics'
 import type { NewMessage, ReplyAreaState } from 'state/newMessage/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -26,6 +36,7 @@ export type SendMessageArgs = {
     action: Maybe<string>
     resetMessage: boolean
     ticketId: Maybe<string>
+    submissionContext?: TicketMessageSubmissionDiagnosticsContext
 }
 
 export class PendingMessageManager {
@@ -53,11 +64,42 @@ export class PendingMessageManager {
         window.removeEventListener('beforeunload', this.handleBeforeUnload)
     }
 
+    reportPendingMessageMismatch = (
+        stage: TicketMessageSubmissionDiagnosticsStage,
+        sendMessageArgs: SendMessageArgs,
+    ) => {
+        const { action, messageId, messageToSend, resetMessage, ticketId } =
+            sendMessageArgs
+
+        if (!haveDifferentTicketIds(messageToSend.ticket_id, ticketId)) {
+            return
+        }
+
+        const state = typeSafeReduxStore.getState() as {
+            ticket?: { get?: (key: string) => unknown }
+        }
+
+        reportTicketMessageSubmissionIdentityMismatch(stage, {
+            ...getBrowserTicketSubmissionDiagnostics(),
+            ...sendMessageArgs.submissionContext,
+            ...getTicketMessageDiagnostics(messageToSend),
+            ticket_id_submitted: ticketId,
+            ticket_id_redux: state.ticket?.get?.('id'),
+            message_id: messageId,
+            action,
+            reset_message: resetMessage,
+        })
+    }
+
     sendMessage = (sendMessageArgs: SendMessageArgs) => {
         const { messageId, messageToSend, action, resetMessage, ticketId } =
             sendMessageArgs
 
         this.skipExistingTimer()
+        this.reportPendingMessageMismatch(
+            'pending_send_scheduled',
+            sendMessageArgs,
+        )
         typeSafeReduxStore.dispatch(
             notify({
                 id: String(messageId),
@@ -77,6 +119,10 @@ export class PendingMessageManager {
         this.pendingSendMessagesArgs = sendMessageArgs
         this.listenUnloadEvent()
         this.timeoutId = window.setTimeout(() => {
+            this.reportPendingMessageMismatch(
+                'pending_send_timeout',
+                sendMessageArgs,
+            )
             //$TsFixMe remove casting on init.js migration
             typeSafeReduxStore.dispatch(
                 sendTicketMessage(
@@ -85,6 +131,7 @@ export class PendingMessageManager {
                     action,
                     resetMessage,
                     ticketId,
+                    sendMessageArgs.submissionContext,
                 ) as any,
             )
             this.dismissUnloadListener()
@@ -135,9 +182,19 @@ export class PendingMessageManager {
 
     skipExistingTimer = () => {
         if (this.timeoutId && this.pendingSendMessagesArgs) {
-            const { messageId, messageToSend, action, resetMessage, ticketId } =
-                this.pendingSendMessagesArgs
+            const {
+                messageId,
+                messageToSend,
+                action,
+                resetMessage,
+                ticketId,
+                submissionContext,
+            } = this.pendingSendMessagesArgs
 
+            this.reportPendingMessageMismatch(
+                'pending_send_flushed',
+                this.pendingSendMessagesArgs,
+            )
             typeSafeReduxStore.dispatch(dismissNotification(String(messageId)))
             //$TsFixMe remove casting on init.js migration
             typeSafeReduxStore.dispatch(
@@ -147,6 +204,7 @@ export class PendingMessageManager {
                     action,
                     resetMessage,
                     ticketId,
+                    submissionContext,
                 ) as any,
             )
             this.clearMessage()

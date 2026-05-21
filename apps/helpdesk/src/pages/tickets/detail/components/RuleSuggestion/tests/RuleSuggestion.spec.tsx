@@ -1,7 +1,7 @@
-import { useFlag } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useMeasure } from '@repo/hooks'
 import { render } from '@repo/testing'
-import { fireEvent, screen } from '@testing-library/react'
+import { act, fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -89,6 +89,11 @@ const minProps = {
 describe('RuleSuggestion', () => {
     beforeEach(() => {
         ;(sendTicketMessage as jest.Mock).mockReset()
+        useFlagMock.mockImplementation((flag: FeatureFlagKey) =>
+            flag === FeatureFlagKey.TicketMessagesAssignedToWrongTicketDebugging
+                ? true
+                : 10,
+        )
         mockUseAiAgentAccess.mockReturnValue({
             hasAccess: true,
             isLoading: false,
@@ -101,12 +106,18 @@ describe('RuleSuggestion', () => {
     })
 
     it('should display RuleSuggestion', () => {
-        const { container } = render(
+        render(
             <Provider store={mockStore(store)}>
                 <RuleSuggestion {...minProps} />
             </Provider>,
         )
-        expect(container).toMatchSnapshot()
+        expect(screen.getByText('Gorgias Tips')).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: /Apply Rule & Send/ }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText('Text coming from rule suggestion'),
+        ).toBeInTheDocument()
     })
 
     it('should not display RuleSuggestion (no addon)', () => {
@@ -147,7 +158,20 @@ describe('RuleSuggestion', () => {
         )
 
         fireEvent.click(screen.getByText(/Apply/))
-        expect((sendTicketMessage as jest.Mock).mock.calls).toMatchSnapshot()
+        expect(sendTicketMessage).toHaveBeenCalledWith(
+            'nowTimestamp',
+            expect.objectContaining({
+                body_text: expect.stringContaining('Sent via suggested rule'),
+                public: false,
+            }),
+            null,
+            true,
+            undefined,
+            {
+                submission_path: 'rule_suggestion',
+                ticket_message_submission_identity_reporting_enabled: true,
+            },
+        )
 
         const placeholder = screen.queryByText('(No reply will be sent)')
         expect(placeholder).not.toBeNull()
@@ -162,7 +186,20 @@ describe('RuleSuggestion', () => {
 
         const button = screen.getByRole('button', { name: /Apply/ })
         fireEvent.click(button)
-        expect((sendTicketMessage as jest.Mock).mock.calls).toMatchSnapshot()
+        expect(sendTicketMessage).toHaveBeenCalledWith(
+            'nowTimestamp',
+            expect.objectContaining({
+                body_text: 'Text coming from rule suggestion',
+                public: true,
+            }),
+            null,
+            true,
+            undefined,
+            {
+                submission_path: 'rule_suggestion',
+                ticket_message_submission_identity_reporting_enabled: true,
+            },
+        )
         expect(button).toBeAriaDisabled()
     })
 
@@ -173,16 +210,20 @@ describe('RuleSuggestion', () => {
             bodyHeight,
         ])
 
-        const { container } = render(
+        render(
             <Provider store={mockStore(store)}>
                 <RuleSuggestion {...minProps} />
             </Provider>,
         )
 
         fireEvent.click(await screen.findByText('Expand'))
-        jest.runAllTimers()
+        act(() => {
+            jest.runAllTimers()
+        })
         expect(screen.queryByText('Expand')).toBeNull()
-        expect(container).toMatchSnapshot()
+        expect(
+            screen.getByText('Text coming from rule suggestion'),
+        ).toBeInTheDocument()
     })
 
     it('should disable install if not admin or lead', () => {

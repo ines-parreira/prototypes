@@ -75,6 +75,12 @@ import {
 } from 'state/newMessage/errors'
 import { canSend, getNewMessageSource } from 'state/newMessage/selectors'
 import {
+    getBrowserTicketSubmissionDiagnostics,
+    getTicketMessageDiagnostics,
+    haveDifferentTicketIds,
+    reportTicketMessageSubmissionIdentityMismatch,
+} from 'state/newMessage/ticketSubmissionDiagnostics'
+import {
     clearTicket,
     fetchTicket,
     findAndSetCustomer,
@@ -270,6 +276,9 @@ export const TicketDetailContainer = ({
     }, [])
 
     const emailThreadSizeFF = useFlag(FeatureFlagKey.EmailReducedThreadSize)
+    const isTicketMessageSubmissionIdentityReportingEnabled = useFlag(
+        FeatureFlagKey.TicketMessagesAssignedToWrongTicketDebugging,
+    )
 
     const { goToTicket: goToPrevious, isEnabled: isPrevEnabled } =
         useGoToPreviousTicket(ticketIdParam)
@@ -350,6 +359,33 @@ export const TicketDetailContainer = ({
         })
     }, [])
 
+    const getSubmitDiagnosticsContext = useCallback(
+        ({
+            activeTicketId,
+            action,
+            resetMessage,
+            status,
+        }: SubmitArgs & { activeTicketId: Maybe<number> }) => ({
+            ...getBrowserTicketSubmissionDiagnostics(),
+            ticket_id_url: ticketIdParamRef.current,
+            ticket_id_redux: activeTicketId,
+            ticket_id_submitted: activeTicketId,
+            status,
+            action,
+            reset_message: resetMessage,
+            source_type: newMessage.getIn(['newMessage', 'source', 'type']),
+            is_helpdesk_v2: hasUIVisionMS1 || hasUIVisionMS3,
+            ticket_message_submission_identity_reporting_enabled:
+                isTicketMessageSubmissionIdentityReportingEnabled,
+        }),
+        [
+            hasUIVisionMS1,
+            hasUIVisionMS3,
+            isTicketMessageSubmissionIdentityReportingEnabled,
+            newMessage,
+        ],
+    )
+
     const maybeGoToNextTicket = useCallback(() => {
         // If the history is open, we don't want to go to the next ticket
         if (!ticket.getIn(['_internal', 'displayHistory'])) {
@@ -380,6 +416,38 @@ export const TicketDetailContainer = ({
                         resetMessage,
                         emailThreadSizeFF,
                     })
+                const submitDiagnosticsContext = {
+                    ...getSubmitDiagnosticsContext({
+                        activeTicketId: Number(submittedTicketId),
+                        status,
+                        action,
+                        resetMessage,
+                    }),
+                    ticket_id_redux: ticket.get('id'),
+                    ticket_id_submitted: submittedTicketId,
+                    ...getTicketMessageDiagnostics(messageToSend),
+                }
+
+                if (
+                    haveDifferentTicketIds(
+                        ticketIdParamRef.current,
+                        submittedTicketId,
+                    ) ||
+                    haveDifferentTicketIds(
+                        ticket.get('id'),
+                        submittedTicketId,
+                    ) ||
+                    haveDifferentTicketIds(
+                        messageToSend.ticket_id,
+                        submittedTicketId,
+                    )
+                ) {
+                    reportTicketMessageSubmissionIdentityMismatch(
+                        'after_prepare',
+                        submitDiagnosticsContext,
+                    )
+                }
+
                 if (messageToSend.source.type === 'email') {
                     pendingMessageManager.sendMessage({
                         messageId,
@@ -388,6 +456,7 @@ export const TicketDetailContainer = ({
                         resetMessage,
                         ticketId: submittedTicketId,
                         replyAreaState,
+                        submissionContext: submitDiagnosticsContext,
                     })
                     return
                 }
@@ -398,6 +467,7 @@ export const TicketDetailContainer = ({
                     action,
                     resetMessage,
                     submittedTicketId,
+                    submitDiagnosticsContext,
                 )
             } catch (error) {
                 if (
@@ -408,7 +478,13 @@ export const TicketDetailContainer = ({
                 }
             }
         },
-        [emailThreadSizeFF, prepareTicketMessage, sendTicketMessage, ticket],
+        [
+            emailThreadSizeFF,
+            getSubmitDiagnosticsContext,
+            prepareTicketMessage,
+            sendTicketMessage,
+            ticket,
+        ],
     )
 
     const submit = useCallback(
@@ -435,6 +511,19 @@ export const TicketDetailContainer = ({
             updateMessageText.flush()
 
             const activeTicketId = ticket.get('id') as Maybe<number>
+            if (
+                haveDifferentTicketIds(ticketIdParamRef.current, activeTicketId)
+            ) {
+                reportTicketMessageSubmissionIdentityMismatch(
+                    'submit_click',
+                    getSubmitDiagnosticsContext({
+                        activeTicketId,
+                        status,
+                        action,
+                        resetMessage,
+                    }),
+                )
+            }
 
             // The ticket does not exist yet.
             if (!activeTicketId) {
@@ -469,6 +558,7 @@ export const TicketDetailContainer = ({
             newMessage,
             onGoToNextTicket,
             prepareAndSubmitNewTicket,
+            getSubmitDiagnosticsContext,
             submitNewMessage,
             ticket,
         ],

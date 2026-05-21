@@ -1,9 +1,9 @@
 import type { ComponentProps, ReactElement, ReactNode } from 'react'
 
 import { localForageManager } from '@repo/browser-storage'
-import { useFlag } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useIsMobileResolution } from '@repo/hooks'
-import { logEvent, SegmentEvent } from '@repo/logging'
+import { logEvent, reportError, SegmentEvent } from '@repo/logging'
 import { assumeMock, flushPromises, render, userEvent } from '@repo/testing'
 import { useRealtimeTicketUpdates } from '@repo/ticket-thread'
 import { useLiveTicketTranslationsUpdates } from '@repo/tickets'
@@ -126,6 +126,7 @@ jest.mock('services/pendingMessageManager/pendingMessageManager', () => ({
 }))
 
 jest.mock('@repo/logging')
+const mockReportError = assumeMock(reportError)
 jest.mock('state/ticket/actions', () => ({
     ...jest.requireActual<Record<string, unknown>>('state/ticket/actions'),
     triggerTicketFieldsErrors: jest.fn(),
@@ -985,14 +986,20 @@ describe('TicketDetailContainer component', () => {
         await waitFor(() =>
             expect(pendingMessageManager.sendMessage).toHaveBeenNthCalledWith(
                 1,
-                {
+                expect.objectContaining({
                     action: undefined,
                     messageId: 1,
                     messageToSend: preparedData.messageToSend,
                     replyAreaState: undefined,
                     resetMessage: true,
                     ticketId: '1',
-                },
+                    submissionContext: expect.objectContaining({
+                        ticket_id_url: '1',
+                        ticket_id_submitted: '1',
+                        ticket_id_redux: 1,
+                        source_type: 'email',
+                    }),
+                }),
             ),
         )
     })
@@ -1029,7 +1036,7 @@ describe('TicketDetailContainer component', () => {
         )
     })
 
-    it('should submit using the active ticket id when the route ticket differs', async () => {
+    it('should not report ticket identity mismatches when the reporting flag is disabled', async () => {
         const { getByTestId } = renderWithMockedStore(
             <TicketDetailContainer
                 {...minProps}
@@ -1049,6 +1056,70 @@ describe('TicketDetailContainer component', () => {
                     ticketId: '1',
                 }),
             ),
+        )
+        expect(mockReportError).not.toHaveBeenCalled()
+    })
+
+    it('should submit using the active ticket id when the route ticket differs', async () => {
+        mockUseFlag.mockImplementation(
+            (flag) =>
+                flag ===
+                FeatureFlagKey.TicketMessagesAssignedToWrongTicketDebugging,
+        )
+
+        const { getByTestId } = renderWithMockedStore(
+            <TicketDetailContainer
+                {...minProps}
+                ticket={existingTicket}
+                newMessage={newMessageState}
+                canSendMessage
+            />,
+            { path: '/foo/:ticketId', initialEntries: ['/foo/2'] },
+        )
+
+        userEvent.click(getByTestId('TicketView-submit'))
+
+        await waitFor(() =>
+            expect(pendingMessageManager.sendMessage).toHaveBeenNthCalledWith(
+                1,
+                expect.objectContaining({
+                    ticketId: '1',
+                }),
+            ),
+        )
+        expect(mockReportError).toHaveBeenNthCalledWith(
+            1,
+            expect.any(Error),
+            {
+                extra: expect.objectContaining({
+                    stage: 'submit_click',
+                    ticket_id_url: '2',
+                    ticket_id_redux: 1,
+                    ticket_id_submitted: 1,
+                    status: 'closed',
+                    reset_message: true,
+                    source_type: 'email',
+                    is_helpdesk_v2: false,
+                    ticket_message_submission_identity_reporting_enabled: true,
+                }),
+            },
+            ['ticket-message-submission-identity-mismatch', 'submit_click'],
+        )
+        expect(mockReportError).toHaveBeenNthCalledWith(
+            2,
+            expect.any(Error),
+            {
+                extra: expect.objectContaining({
+                    stage: 'after_prepare',
+                    ticket_id_url: '2',
+                    ticket_id_redux: 1,
+                    ticket_id_submitted: '1',
+                    source_type: 'email',
+                    is_helpdesk_v2: false,
+                    ticket_message_submission_identity_reporting_enabled: true,
+                }),
+            },
+            ['ticket-message-submission-identity-mismatch', 'after_prepare'],
         )
     })
 
@@ -1096,6 +1167,12 @@ describe('TicketDetailContainer component', () => {
                 undefined,
                 true,
                 '1',
+                expect.objectContaining({
+                    ticket_id_url: '1',
+                    ticket_id_submitted: '1',
+                    ticket_id_redux: 1,
+                    source_type: 'facebook',
+                }),
             ),
         )
     })
@@ -1116,14 +1193,20 @@ describe('TicketDetailContainer component', () => {
         await waitFor(() =>
             expect(pendingMessageManager.sendMessage).toHaveBeenNthCalledWith(
                 1,
-                {
+                expect.objectContaining({
                     action: undefined,
                     messageId: 1,
                     messageToSend: preparedData.messageToSend,
                     replyAreaState: undefined,
                     resetMessage: true,
                     ticketId: '1',
-                },
+                    submissionContext: expect.objectContaining({
+                        ticket_id_url: '1',
+                        ticket_id_submitted: '1',
+                        ticket_id_redux: 1,
+                        source_type: 'email',
+                    }),
+                }),
             ),
         )
     })

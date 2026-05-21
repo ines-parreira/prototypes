@@ -1,6 +1,7 @@
 import { createAction } from '@reduxjs/toolkit'
 import { ActivityEvents, logActivityEvent } from '@repo/activity-tracker'
 import client, { appQueryClient } from '@repo/api-resources'
+import { FeatureFlagKey, fetchFlag } from '@repo/feature-flags'
 import { logEvent, reportError, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import { upsertTicketMessageInListMessagesCache } from '@repo/tickets'
@@ -105,6 +106,13 @@ import {
     updateNewMessageWithContentState,
 } from './responseUtils'
 import * as selectors from './selectors'
+import {
+    getTicketMessageDiagnostics,
+    haveDifferentTicketIds,
+    reportTicketMessageSubmissionIdentityMismatch,
+    ticketMessageSubmissionIdentityReportingEnabledContextKey,
+} from './ticketSubmissionDiagnostics'
+import type { TicketMessageSubmissionDiagnosticsContext } from './ticketSubmissionDiagnostics'
 import type { MacroActions, Message, NewMessage, ReplyAreaState } from './types'
 import {
     applyExternalTemplateAction,
@@ -1262,6 +1270,7 @@ export function sendTicketMessage(
     action: Maybe<string>,
     resetMessage = true,
     ticketId?: Maybe<string>,
+    submissionContext?: TicketMessageSubmissionDiagnosticsContext,
 ) {
     return (
         dispatch: StoreDispatch,
@@ -1274,6 +1283,18 @@ export function sendTicketMessage(
             const ticketIdArg = ticketId || (ticket.get('id') as number)
             const messageTicketId = messageToSend?.ticket_id
             const ticketIdToUse = messageTicketId ?? ticketIdArg
+            const requestDiagnosticsContext = {
+                ...submissionContext,
+                ...getTicketMessageDiagnostics(messageToSend),
+                ticket_id_arg: ticketId,
+                ticket_id_arg_resolved: ticketIdArg,
+                ticket_id_redux: ticket.get('id'),
+                ticket_id_used: ticketIdToUse,
+                message_id: messageId,
+                action,
+                reset_message: resetMessage,
+                is_update_request: !!action,
+            }
 
             if (
                 messageTicketId &&
@@ -1288,6 +1309,11 @@ export function sendTicketMessage(
                         ticket_id_new_message: messageTicketId,
                     },
                 })
+
+                reportTicketMessageSubmissionIdentityMismatch(
+                    'request_boundary',
+                    requestDiagnosticsContext,
+                )
 
                 return resolve(
                     dispatch({
@@ -1323,6 +1349,21 @@ export function sendTicketMessage(
                         const sentTicketId = Number(
                             resp.ticket_id ?? ticketIdToUse,
                         )
+
+                        if (
+                            haveDifferentTicketIds(
+                                resp.ticket_id,
+                                ticketIdToUse,
+                            )
+                        ) {
+                            reportTicketMessageSubmissionIdentityMismatch(
+                                'request_response',
+                                {
+                                    ...requestDiagnosticsContext,
+                                    ticket_id_response: resp.ticket_id,
+                                },
+                            )
+                        }
 
                         if (sentTicketId) {
                             upsertTicketMessageInListMessagesCache(
@@ -1409,18 +1450,35 @@ export function sendTicketMessage(
 }
 
 export function retrySubmitTicketMessage(message: Map<any, any>) {
-    return (dispatch: StoreDispatch) => {
+    return async (dispatch: StoreDispatch) => {
+        const [{ flag: isReportingEnabled }, { messageId, messageToSend }] =
+            await Promise.all([
+                fetchFlag(
+                    FeatureFlagKey.TicketMessagesAssignedToWrongTicketDebugging,
+                ),
+                dispatch(
+                    prepareTicketMessage({
+                        status: message.getIn(['_internal', 'status']),
+                        resetMessage: false,
+                        retryMessage: message,
+                    }),
+                ),
+            ])
+
         return dispatch(
-            prepareTicketMessage({
-                status: message.getIn(['_internal', 'status']),
-                resetMessage: false,
-                retryMessage: message,
-            }),
-        ).then(({ messageId, messageToSend }) => {
-            return dispatch(
-                sendTicketMessage(messageId, messageToSend, null, false),
-            )
-        })
+            sendTicketMessage(
+                messageId,
+                messageToSend,
+                null,
+                false,
+                undefined,
+                {
+                    submission_path: 'retry',
+                    [ticketMessageSubmissionIdentityReportingEnabledContextKey]:
+                        isReportingEnabled,
+                },
+            ),
+        )
     }
 }
 

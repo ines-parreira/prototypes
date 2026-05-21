@@ -1697,6 +1697,9 @@ describe('actions', () => {
                         null,
                         true,
                         '12',
+                        {
+                            ticket_message_submission_identity_reporting_enabled: true,
+                        },
                     ),
                 )
 
@@ -1709,6 +1712,26 @@ describe('actions', () => {
                         ticket_id_new_message: 13,
                     },
                 })
+                expect(reportErrorSpy).toHaveBeenCalledWith(
+                    expect.any(Error),
+                    {
+                        extra: expect.objectContaining({
+                            stage: 'request_boundary',
+                            ticket_id_arg: '12',
+                            ticket_id_arg_resolved: '12',
+                            ticket_id_redux: 12,
+                            ticket_id_used: 13,
+                            ticket_id_new_message: 13,
+                            message_id: 1,
+                            reset_message: true,
+                            is_update_request: false,
+                        }),
+                    },
+                    [
+                        'ticket-message-submission-identity-mismatch',
+                        'request_boundary',
+                    ],
+                )
                 expect(store.getActions()).toEqual([
                     expect.objectContaining({
                         type: types.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR,
@@ -1716,6 +1739,46 @@ describe('actions', () => {
                         messageId: 1,
                     }),
                 ])
+
+                reportErrorSpy.mockRestore()
+            })
+
+            it('should keep the legacy request-boundary report when identity diagnostics are disabled', async () => {
+                const reportErrorSpy = jest
+                    .spyOn(segmentTracker, 'reportError')
+                    .mockImplementation(jest.fn())
+                store = mockStore({
+                    ticket: ticketInitialState.set('id', 12),
+                    newMessage: initialState,
+                })
+
+                await store.dispatch(
+                    // @ts-ignore
+                    actions.sendTicketMessage(
+                        1,
+                        {
+                            ticket_id: 13,
+                            source: { type: TicketMessageSourceType.Email },
+                        } as any,
+                        null,
+                        true,
+                        '12',
+                    ),
+                )
+
+                expect(mockServer.history.post).toHaveLength(0)
+                expect(reportErrorSpy).toHaveBeenCalledTimes(1)
+                expect(reportErrorSpy.mock.calls[0][0]).toEqual(
+                    new Error('Invalid ticket message request.'),
+                )
+                expect(reportErrorSpy).toHaveBeenCalledWith(expect.any(Error), {
+                    extra: {
+                        ticket_id_arg: '12',
+                        ticket_id_redux: 12,
+                        ticket_id_used: 13,
+                        ticket_id_new_message: 13,
+                    },
+                })
 
                 reportErrorSpy.mockRestore()
             })
@@ -1740,6 +1803,9 @@ describe('actions', () => {
                         null,
                         true,
                         '12',
+                        {
+                            ticket_message_submission_identity_reporting_enabled: true,
+                        },
                     ),
                 )
 
@@ -1747,6 +1813,57 @@ describe('actions', () => {
                 expect(mockServer.history.post[0].url).toBe(
                     '/api/tickets/12/messages/',
                 )
+            })
+
+            it('should report when the response ticket does not match the requested ticket', async () => {
+                const reportErrorSpy = jest
+                    .spyOn(segmentTracker, 'reportError')
+                    .mockImplementation(jest.fn())
+                mockServer
+                    .onPost('/api/tickets/12/messages/')
+                    .reply(201, { ticket_id: 13, messages: [] })
+                store = mockStore({
+                    ticket: ticketInitialState.set('id', 12),
+                    newMessage: initialState,
+                })
+
+                await store.dispatch(
+                    // @ts-ignore
+                    actions.sendTicketMessage(
+                        1,
+                        {
+                            ticket_id: 12,
+                            source: { type: TicketMessageSourceType.Email },
+                        } as any,
+                        null,
+                        true,
+                        '12',
+                        {
+                            ticket_message_submission_identity_reporting_enabled: true,
+                        },
+                    ),
+                )
+
+                expect(reportErrorSpy).toHaveBeenCalledWith(
+                    expect.any(Error),
+                    {
+                        extra: expect.objectContaining({
+                            stage: 'request_response',
+                            ticket_id_arg: '12',
+                            ticket_id_arg_resolved: '12',
+                            ticket_id_redux: 12,
+                            ticket_id_used: 12,
+                            ticket_id_new_message: 12,
+                            ticket_id_response: 13,
+                        }),
+                    },
+                    [
+                        'ticket-message-submission-identity-mismatch',
+                        'request_response',
+                    ],
+                )
+
+                reportErrorSpy.mockRestore()
             })
 
             it('should submit new message', () => {
