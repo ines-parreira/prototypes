@@ -5,7 +5,11 @@ import {
     AI_AGENT_DRAFT_MESSAGE_TAG,
     AI_AGENT_TRIAL_MESSAGE_TAG,
 } from '../constants'
-import { groupConsecutiveMessages, toTaggedMessage } from '../transforms'
+import {
+    groupConsecutiveMessages,
+    markLastCustomerMessage,
+    toTaggedMessage,
+} from '../transforms'
 import { TicketThreadPendingState } from '../types'
 import type { TicketThreadMessageData } from '../types'
 
@@ -259,6 +263,68 @@ describe('groupConsecutiveMessages', () => {
             _tag: TicketThreadItemTag.Messages.GroupedMessages,
         })
         expect((merged[0] as any).data).toHaveLength(3)
+    })
+
+    it('propagates the last customer message marker to the grouped item', () => {
+        const first = toTaggedMessage(
+            createMessage({
+                id: 1,
+                created_datetime: '2024-03-21T11:00:00Z',
+            }),
+        )
+        const second = toTaggedMessage(
+            createMessage({
+                id: 2,
+                created_datetime: '2024-03-21T11:03:00Z',
+            }),
+        )
+
+        const [groupedItem] = groupConsecutiveMessages(
+            markLastCustomerMessage([first, second]),
+        )
+
+        expect(groupedItem).toMatchObject({
+            _tag: TicketThreadItemTag.Messages.GroupedMessages,
+            shouldShowCustomerLastSeenStatus: true,
+        })
+    })
+})
+
+describe('markLastCustomerMessage', () => {
+    it('marks only the newest non-agent message by datetime', () => {
+        const firstCustomer = toTaggedMessage(
+            createMessage({
+                id: 1,
+                created_datetime: '2024-03-21T11:00:00Z',
+            }),
+        )
+        const agentMessage = toTaggedMessage(
+            createMessage({
+                id: 2,
+                created_datetime: '2024-03-21T11:05:00Z',
+                from_agent: true,
+            }),
+        )
+        const lastCustomer = toTaggedMessage(
+            createMessage({
+                id: 3,
+                created_datetime: '2024-03-21T11:03:00Z',
+            }),
+        )
+
+        const markedMessages = markLastCustomerMessage([
+            firstCustomer,
+            agentMessage,
+            lastCustomer,
+        ])
+
+        expect(markedMessages[0].shouldShowCustomerLastSeenStatus).toBe(
+            undefined,
+        )
+        expect(markedMessages[1].shouldShowCustomerLastSeenStatus).toBe(
+            undefined,
+        )
+        expect(markedMessages[2].shouldShowCustomerLastSeenStatus).toBe(true)
     })
 })
 

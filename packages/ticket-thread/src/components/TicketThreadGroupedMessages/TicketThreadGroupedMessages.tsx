@@ -237,6 +237,9 @@ export function TicketThreadGroupedMessages({
                                 <MessageAvatar
                                     sender={firstMessage.data.sender}
                                     fromAgent={firstMessage.data.from_agent}
+                                    showCustomerLastSeenStatus={
+                                        item.shouldShowCustomerLastSeenStatus
+                                    }
                                 />
                                 <MessageSender
                                     sender={firstMessage.data.sender}

@@ -13,23 +13,29 @@ import css from './MessageAvatar.less'
 export type MessageAvatarProps = {
     sender: TicketMessageUserOrCustomer
     fromAgent?: boolean
+    showCustomerLastSeenStatus?: boolean
 }
 
 export function MessageAvatar({
     sender,
     fromAgent = false,
+    showCustomerLastSeenStatus = false,
 }: MessageAvatarProps) {
     const name = sender.name ?? sender.email ?? '??'
     const url =
         (sender.meta as { profile_picture_url?: string } | null)
             ?.profile_picture_url ?? ''
 
-    const { tooltipText, isActive } = useMessageAvatarTooltip({
-        sender,
-        fromAgent,
-    })
+    const { tooltipText, isActive, showStatusIndicator } =
+        useMessageAvatarTooltip({
+            sender,
+            fromAgent,
+            showCustomerLastSeenStatus,
+        })
 
-    const status = <AvatarStatusIndicator color={isActive ? 'green' : 'grey'} />
+    const status = showStatusIndicator ? (
+        <AvatarStatusIndicator color={isActive ? 'green' : 'grey'} />
+    ) : undefined
 
     return (
         <div className={css.messageAvatar}>

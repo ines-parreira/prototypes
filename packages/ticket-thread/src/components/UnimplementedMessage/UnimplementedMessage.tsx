@@ -34,6 +34,9 @@ export function UnimplementedMessage({ item }: UnimplementedMessageProps) {
                     <MessageAvatar
                         sender={message.sender}
                         fromAgent={message.from_agent}
+                        showCustomerLastSeenStatus={
+                            item.shouldShowCustomerLastSeenStatus
+                        }
                     />
                     <MessageSender sender={message.sender} />
                 </Box>

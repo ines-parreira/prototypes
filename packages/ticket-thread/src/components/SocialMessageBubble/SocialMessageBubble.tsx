@@ -105,6 +105,9 @@ export function SocialMessageBubble({
                         <MessageAvatar
                             sender={item.data.sender}
                             fromAgent={item.data.from_agent}
+                            showCustomerLastSeenStatus={
+                                item.shouldShowCustomerLastSeenStatus
+                            }
                         />
                         <MessageSender sender={item.data.sender} />
                     </Box>

@@ -268,6 +268,33 @@ function shouldGroupConsecutiveMessages(
     return msg2Created < msg1Created + DurationInMs.FiveMinutes
 }
 
+export function markLastCustomerMessage(
+    messages: TicketThreadSingleMessageItem[],
+): TicketThreadSingleMessageItem[] {
+    let lastCustomerMessage: TicketThreadSingleMessageItem | undefined
+
+    for (const message of messages) {
+        if (
+            !message.data.from_agent &&
+            (!lastCustomerMessage ||
+                message.datetime > lastCustomerMessage.datetime)
+        ) {
+            lastCustomerMessage = message
+        }
+    }
+
+    if (!lastCustomerMessage) return messages
+
+    return messages.map((message) =>
+        message === lastCustomerMessage
+            ? {
+                  ...message,
+                  shouldShowCustomerLastSeenStatus: true,
+              }
+            : message,
+    )
+}
+
 /**
  * Group consecutive messages into a single merged messages item if they meet the following criteria
  * - The messages are from the same channel (chat or facebook-messenger only)
@@ -300,11 +327,17 @@ export function groupConsecutiveMessages(
                 prevItem._tag === TicketThreadItemTag.Messages.GroupedMessages
             ) {
                 prevItem.data.push(message)
+                prevItem.shouldShowCustomerLastSeenStatus =
+                    prevItem.shouldShowCustomerLastSeenStatus ||
+                    message.shouldShowCustomerLastSeenStatus
             } else {
                 items[items.length - 1] = {
                     _tag: TicketThreadItemTag.Messages.GroupedMessages,
                     data: [prevItem, message],
                     datetime: prevItem.datetime,
+                    shouldShowCustomerLastSeenStatus:
+                        prevItem.shouldShowCustomerLastSeenStatus ||
+                        message.shouldShowCustomerLastSeenStatus,
                 }
             }
         } else {

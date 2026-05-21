@@ -27,6 +27,14 @@ function createMessage(overrides?: Record<string, unknown>) {
         from_agent: false,
         via: 'email',
         created_datetime: '2024-03-21T11:00:00Z',
+        sender: {
+            id: 1,
+            name: 'Alice',
+            firstname: 'Alice',
+            lastname: '',
+            email: 'alice@example.com',
+            meta: {},
+        },
         ...overrides,
     } as any)
 }
@@ -137,6 +145,57 @@ describe('useTicketThreadMessages', () => {
             findMessageItemById(result.current.activePendingMessages, 50)
                 ?.pendingState,
         ).toBe(TicketThreadPendingState.Active)
+    })
+
+    it('marks the group containing the latest customer message for last-seen status', async () => {
+        server.use(
+            getTicketMessagesHandler([
+                createMessage({
+                    id: 10,
+                    channel: 'chat',
+                    public: true,
+                    created_datetime: '2024-03-21T10:00:00Z',
+                }),
+                createMessage({
+                    id: 20,
+                    channel: 'chat',
+                    public: true,
+                    created_datetime: '2024-03-21T10:03:00Z',
+                }),
+                createMessage({
+                    id: 30,
+                    created_datetime: '2024-03-21T10:05:00Z',
+                    from_agent: true,
+                }),
+            ]).handler,
+        )
+
+        const { result } = renderHook(() =>
+            useTicketThreadMessages({
+                ticketId: 123,
+            }),
+        )
+
+        await waitFor(() => {
+            expect(getMessageIds(result.current.messages)).toEqual([10, 20, 30])
+        })
+
+        const groupedCustomerMessages = result.current.messages[0]
+        const agentMessage = result.current.messages[1]
+
+        expect(groupedCustomerMessages).toMatchObject({
+            _tag: TicketThreadItemTag.Messages.GroupedMessages,
+            shouldShowCustomerLastSeenStatus: true,
+        })
+        expect(
+            findMessageItemById(result.current.messages, 10)
+                ?.shouldShowCustomerLastSeenStatus,
+        ).toBe(undefined)
+        expect(
+            findMessageItemById(result.current.messages, 20)
+                ?.shouldShowCustomerLastSeenStatus,
+        ).toBe(true)
+        expect(agentMessage.shouldShowCustomerLastSeenStatus).toBe(undefined)
     })
 
     it('ignores non-ticket pending payloads', async () => {

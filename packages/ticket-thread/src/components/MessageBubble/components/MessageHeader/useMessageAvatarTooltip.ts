@@ -8,6 +8,7 @@ import {
 } from '@gorgias/helpdesk-queries'
 import type { TicketMessageUserOrCustomer } from '@gorgias/helpdesk-types'
 
+import { customerGetQueryOptions } from '../../../../hooks/shared/customerQueryOptions'
 import { useTicketThreadDateTimeFormat } from '../../../../hooks/shared/useTicketThreadDateTimeFormat'
 
 const GORGIAS_CHAT_INTEGRATION_TYPE = 'gorgias_chat'
@@ -47,23 +48,25 @@ export function getLastSeenTooltipText(
 type Params = {
     sender: TicketMessageUserOrCustomer
     fromAgent: boolean
+    showCustomerLastSeenStatus: boolean
 }
 
 type AvatarTooltipResult = {
     tooltipText: string | undefined
     isActive: boolean
+    showStatusIndicator: boolean
 }
 
 export function useMessageAvatarTooltip({
     sender,
     fromAgent,
+    showCustomerLastSeenStatus,
 }: Params): AvatarTooltipResult {
     const { format, timezone } = useTicketThreadDateTimeFormat()
     const { data: customerData } = useGetCustomer(sender.id, undefined, {
         query: {
-            enabled: !fromAgent && !!sender.id,
-            staleTime: DurationInMs.OneDay,
-            cacheTime: DurationInMs.OneDay,
+            ...customerGetQueryOptions,
+            enabled: showCustomerLastSeenStatus && !fromAgent && !!sender.id,
         },
     })
     const { data: availabilityData } = useGetUserAvailability(sender.id, {
@@ -86,6 +89,15 @@ export function useMessageAvatarTooltip({
         return {
             tooltipText: isActive ? 'Active now' : undefined,
             isActive,
+            showStatusIndicator: true,
+        }
+    }
+
+    if (!showCustomerLastSeenStatus) {
+        return {
+            tooltipText: undefined,
+            isActive: false,
+            showStatusIndicator: false,
         }
     }
 
@@ -106,7 +118,13 @@ export function useMessageAvatarTooltip({
     // presence data and always show grey. This matches the legacy UI behavior.
     const timestamp = chatIntegration?.chat_recent_activity_timestamp
 
-    if (!timestamp) return { tooltipText: undefined, isActive: false }
+    if (!timestamp) {
+        return {
+            tooltipText: undefined,
+            isActive: false,
+            showStatusIndicator: true,
+        }
+    }
 
     return {
         tooltipText: getLastSeenTooltipText(
@@ -115,5 +133,6 @@ export function useMessageAvatarTooltip({
             timezone,
         ),
         isActive: getSecondsSince(timestamp) < ACTIVE_THRESHOLD_SECONDS,
+        showStatusIndicator: true,
     }
 }

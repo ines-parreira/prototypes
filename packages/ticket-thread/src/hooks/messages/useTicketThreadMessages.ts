@@ -8,7 +8,11 @@ import {
     isSignalMessage,
     isTicketMessage,
 } from './predicates'
-import { groupConsecutiveMessages, toTaggedMessage } from './transforms'
+import {
+    groupConsecutiveMessages,
+    markLastCustomerMessage,
+    toTaggedMessage,
+} from './transforms'
 import { TicketThreadPendingState } from './types'
 import type {
     TicketThreadMessageData,
@@ -108,25 +112,43 @@ export function useTicketThreadMessages({
         const activePendingMessages = deduplicatedPendingMessages.filter(
             isActivePendingMessage,
         )
+        const persistedMessageItems = sortMessagesByDate(persistedMessages).map(
+            (message) => toTaggedMessage(message),
+        )
+        const failedPendingMessageItems = sortMessagesByDate(
+            failedPendingMessages,
+        ).map((message) =>
+            toTaggedMessage(message, {
+                pendingState: TicketThreadPendingState.Failed,
+            }),
+        )
+        const activePendingMessageItems = sortMessagesByDate(
+            activePendingMessages,
+        ).map((message) =>
+            toTaggedMessage(message, {
+                pendingState: TicketThreadPendingState.Active,
+            }),
+        )
+        const messagesWithCustomerLastSeenStatus = markLastCustomerMessage([
+            ...persistedMessageItems,
+            ...failedPendingMessageItems,
+            ...activePendingMessageItems,
+        ])
+        const persistedAndFailedMessages =
+            messagesWithCustomerLastSeenStatus.slice(
+                0,
+                persistedMessageItems.length + failedPendingMessageItems.length,
+            )
+        const activePendingMessageItemsWithCustomerLastSeenStatus =
+            messagesWithCustomerLastSeenStatus.slice(
+                persistedMessageItems.length + failedPendingMessageItems.length,
+            )
         const groupedMessages = groupConsecutiveMessages(
-            sortItemsByDate([
-                ...sortMessagesByDate(persistedMessages).map((message) =>
-                    toTaggedMessage(message),
-                ),
-                ...sortMessagesByDate(failedPendingMessages).map((message) =>
-                    toTaggedMessage(message, {
-                        pendingState: TicketThreadPendingState.Failed,
-                    }),
-                ),
-            ]),
+            sortItemsByDate(persistedAndFailedMessages),
         )
         const groupedActivePendingMessages = groupConsecutiveMessages(
             sortItemsByDate(
-                sortMessagesByDate(activePendingMessages).map((message) =>
-                    toTaggedMessage(message, {
-                        pendingState: TicketThreadPendingState.Active,
-                    }),
-                ),
+                activePendingMessageItemsWithCustomerLastSeenStatus,
             ),
         )
 

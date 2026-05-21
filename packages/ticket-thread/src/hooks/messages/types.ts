@@ -53,6 +53,7 @@ type TicketThreadSingleMessageItemBase<TTag, TData> = {
     data: TData
     datetime: string
     pendingState?: TicketThreadPendingState
+    shouldShowCustomerLastSeenStatus?: boolean
 }
 
 export type TicketThreadRegularMessageItem = TicketThreadSingleMessageItemBase<
@@ -182,6 +183,7 @@ export type TicketThreadGroupedMessagesItem = {
     _tag: typeof TicketThreadItemTag.Messages.GroupedMessages
     data: TicketThreadSingleMessageItem[]
     datetime: string
+    shouldShowCustomerLastSeenStatus?: boolean
 }
 
 export type TicketThreadMessageItem =
