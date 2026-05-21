@@ -84,12 +84,14 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
     it('should render the skeleton while revamp hooks are loading', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             shouldShowRevampWhenAiAgentEnabled: false,
+            shouldShowRevampForNonAiAgent: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: true,
             isChatSettingsRevampEnabled: false,
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
+            isNonAiAgentChat2RevampEnabled: false,
         })
 
         render(<GorgiasChatIntegrationPreferences {...minProps} />)
@@ -108,7 +110,9 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
             isChatSettingsRevampEnabled: false,
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
+            isNonAiAgentChat2RevampEnabled: false,
             shouldShowRevampWhenAiAgentEnabled: false,
+            shouldShowRevampForNonAiAgent: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
@@ -133,12 +137,14 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
     it('should render the legacy component when shouldShowRevampWhenAiAgentEnabled is false', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             shouldShowRevampWhenAiAgentEnabled: false,
+            shouldShowRevampForNonAiAgent: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
             isChatSettingsRevampEnabled: false,
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
+            isNonAiAgentChat2RevampEnabled: false,
         })
 
         render(<GorgiasChatIntegrationPreferences {...minProps} />)
@@ -152,12 +158,14 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
     it('should render the revamp component when shouldShowRevampWhenAiAgentEnabled is true', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             shouldShowRevampWhenAiAgentEnabled: true,
+            shouldShowRevampForNonAiAgent: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
             isChatSettingsRevampEnabled: false,
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
+            isNonAiAgentChat2RevampEnabled: false,
         })
 
         render(<GorgiasChatIntegrationPreferences {...minProps} />)
@@ -173,12 +181,14 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
         mockUseAppSelector.mockReturnValue(integrationsLoading)
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             shouldShowRevampWhenAiAgentEnabled: true,
+            shouldShowRevampForNonAiAgent: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
             isChatSettingsRevampEnabled: false,
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
+            isNonAiAgentChat2RevampEnabled: false,
         })
 
         render(<GorgiasChatIntegrationPreferences {...minProps} />)
@@ -195,12 +205,14 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
         })
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             shouldShowRevampWhenAiAgentEnabled: true,
+            shouldShowRevampForNonAiAgent: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
             isChatSettingsRevampEnabled: false,
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
+            isNonAiAgentChat2RevampEnabled: false,
         })
 
         render(<GorgiasChatIntegrationPreferences {...minProps} />)

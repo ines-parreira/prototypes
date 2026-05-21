@@ -69,24 +69,28 @@ describe('<GorgiasChatIntegrationInstall />', () => {
 
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             shouldShowRevampWhenAiAgentEnabled: false,
+            shouldShowRevampForNonAiAgent: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
             isChatSettingsRevampEnabled: false,
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
+            isNonAiAgentChat2RevampEnabled: false,
         })
     })
 
     it('should render the skeleton while the revamp hooks are loading', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             shouldShowRevampWhenAiAgentEnabled: false,
+            shouldShowRevampForNonAiAgent: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: true,
             isChatSettingsRevampEnabled: false,
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
+            isNonAiAgentChat2RevampEnabled: false,
         })
 
         render(<GorgiasChatIntegrationInstall {...minProps} />)
@@ -125,12 +129,14 @@ describe('<GorgiasChatIntegrationInstall />', () => {
     it('should render the new revamp component when shouldShowRevampWhenAiAgentEnabled is true', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             shouldShowRevampWhenAiAgentEnabled: true,
+            shouldShowRevampForNonAiAgent: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
             isChatSettingsRevampEnabled: false,
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
+            isNonAiAgentChat2RevampEnabled: false,
         })
 
         render(<GorgiasChatIntegrationInstall {...minProps} />)

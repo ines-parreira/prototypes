@@ -142,6 +142,7 @@ beforeEach(() => {
     })
     mockUseShouldShowChatSettingsRevamp.mockReturnValue({
         shouldShowRevampWhenAiAgentEnabled: false,
+        shouldShowRevampForNonAiAgent: false,
     })
     mockUseStoreIntegration.mockReturnValue({ storeIntegration: undefined })
     mockUseIsQuickRepliesEnabled.mockReturnValue(false)
@@ -307,6 +308,7 @@ describe('<GorgiasChatIntegration />', () => {
         beforeEach(() => {
             mockUseShouldShowChatSettingsRevamp.mockReturnValue({
                 shouldShowRevampWhenAiAgentEnabled: true,
+                shouldShowRevampForNonAiAgent: false,
             })
         })
 

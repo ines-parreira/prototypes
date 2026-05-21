@@ -168,12 +168,14 @@ describe('OrderManagementSettings', () => {
         useSelfServiceChannelsMock.mockReturnValue([])
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             shouldShowRevampWhenAiAgentEnabled: false,
+            shouldShowRevampForNonAiAgent: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
             isChatSettingsRevampEnabled: false,
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
+            isNonAiAgentChat2RevampEnabled: false,
         })
         mockUseChatPreviewPanel.mockReturnValue(buildChatPreviewPanelMock())
     })
@@ -232,12 +234,14 @@ describe('OrderManagementSettings', () => {
         beforeEach(() => {
             mockUseShouldShowChatSettingsRevamp.mockReturnValue({
                 shouldShowRevampWhenAiAgentEnabled: true,
+                shouldShowRevampForNonAiAgent: false,
                 shouldShowFlowsScreensRevamp: false,
                 shouldShowOrderManagementScreensRevamp: true,
                 isLoading: false,
                 isChatSettingsRevampEnabled: false,
                 isChatSettingsScreensRevampFlowsEnabled: false,
                 isChatSettingsScreensRevampOrderManagementEnabled: false,
+                isNonAiAgentChat2RevampEnabled: false,
             })
         })
 
