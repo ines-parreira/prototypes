@@ -34,7 +34,7 @@ export const OBJECT_TYPE_SETTINGS: {
     [OBJECT_TYPES.TICKET]: {
         LABEL: 'ticket',
         TITLE_LABEL: 'Ticket',
-        MAX_FIELDS: 25,
+        MAX_FIELDS: 50,
         PLACEHOLDERS: {
             LABEL: 'e.g. Contact Reason',
             DESCRIPTION: 'e.g. Reasons why customers reach out to us',
@@ -49,7 +49,7 @@ export const OBJECT_TYPE_SETTINGS: {
     [OBJECT_TYPES.CUSTOMER]: {
         LABEL: 'customer',
         TITLE_LABEL: 'Customer',
-        MAX_FIELDS: 4,
+        MAX_FIELDS: 10,
         PLACEHOLDERS: {
             LABEL: 'e.g. Customer Type',
             DESCRIPTION:
