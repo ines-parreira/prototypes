@@ -1,6 +1,7 @@
 import type React from 'react'
 
 import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -8,10 +9,19 @@ import { Router } from 'react-router'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { GorgiasChatCreationWizardStatus } from 'models/integration/types/gorgiasChat'
+import {
+    GorgiasChatCreationWizardStatus,
+    GorgiasChatCreationWizardSteps,
+} from 'models/integration/types/gorgiasChat'
 import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
 
 import GorgiasChatCreationWizard from './GorgiasChatCreationWizard'
+
+const mockUseAiAgentAccess = jest.fn()
+
+jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
+    useAiAgentAccess: () => mockUseAiAgentAccess(),
+}))
 
 jest.mock(
     'pages/common/hooks/useIsIntersectingWithBrowserViewport',
@@ -19,9 +29,66 @@ jest.mock(
 )
 jest.mock('pages/common/hooks/useCollapsibleColumn')
 
+const mockWizardSteps = jest.fn()
+
+jest.mock('pages/common/components/wizard/Wizard', () => ({
+    __esModule: true,
+    default: ({
+        children,
+        steps,
+    }: {
+        children: React.ReactNode
+        steps: string[]
+    }) => {
+        mockWizardSteps(steps)
+        return <div data-testid="wizard">{children}</div>
+    },
+}))
+
+jest.mock('pages/common/components/wizard/WizardStep', () => ({
+    __esModule: true,
+    default: ({
+        children,
+        name,
+    }: {
+        children: React.ReactNode
+        name: string
+    }) => <div data-testid={`wizard-step-${name}`}>{children}</div>,
+}))
+
+jest.mock('./steps/Basics/GorgiasChatCreationWizardStepBasics', () => ({
+    __esModule: true,
+    default: () => <div>Basics Step</div>,
+}))
+
+jest.mock('./steps/Brand/GorgiasChatCreationWizardStepBranding', () => ({
+    __esModule: true,
+    default: () => <div>Branding Step</div>,
+}))
+
+jest.mock('./steps/Automate/GorgiasChatCreationWizardStepAutomate', () => ({
+    __esModule: true,
+    default: () => <div>Automate Step</div>,
+}))
+
+jest.mock(
+    './steps/Installation/GorgiasChatCreationWizardStepInstallation',
+    () => ({
+        __esModule: true,
+        GorgiasChatCreationWizardStepInstallation: () => (
+            <div>Installation Step</div>
+        ),
+    }),
+)
+
 const mockStore = configureMockStore([thunk])
 
 beforeEach(() => {
+    jest.clearAllMocks()
+    mockUseAiAgentAccess.mockReturnValue({
+        hasAccess: true,
+        isLoading: false,
+    })
     ;(useCollapsibleColumn as jest.Mock).mockReturnValue({
         warpToCollapsibleColumn: jest.fn().mockReturnValue(null),
         setIsCollapsibleColumnOpen: jest.fn(),
@@ -111,5 +178,56 @@ describe('GorgiasChatCreationWizard (revamp minimal)', () => {
         expect(history.location.pathname).toBe(
             '/app/settings/channels/gorgias_chat',
         )
+    })
+
+    describe('wizard steps based on AI agent access', () => {
+        it('should include all steps including Automate when user has AI agent access', () => {
+            mockUseAiAgentAccess.mockReturnValue({
+                hasAccess: true,
+                isLoading: false,
+            })
+
+            renderComponent()
+
+            expect(mockWizardSteps).toHaveBeenCalledWith([
+                GorgiasChatCreationWizardSteps.Basics,
+                GorgiasChatCreationWizardSteps.Branding,
+                GorgiasChatCreationWizardSteps.Automate,
+                GorgiasChatCreationWizardSteps.Installation,
+            ])
+        })
+
+        it('should not render Automate step component when user does not have AI agent access', () => {
+            mockUseAiAgentAccess.mockReturnValue({
+                hasAccess: false,
+                isLoading: false,
+            })
+
+            renderComponent()
+
+            expect(screen.queryByText('Automate Step')).not.toBeInTheDocument()
+        })
+
+        it('should not render wizard while AI agent access is loading', () => {
+            mockUseAiAgentAccess.mockReturnValue({
+                hasAccess: false,
+                isLoading: true,
+            })
+
+            renderComponent()
+
+            expect(screen.queryByTestId('wizard')).not.toBeInTheDocument()
+        })
+
+        it('should render wizard when AI agent access loading completes', () => {
+            mockUseAiAgentAccess.mockReturnValue({
+                hasAccess: false,
+                isLoading: false,
+            })
+
+            renderComponent()
+
+            expect(screen.getByTestId('wizard')).toBeInTheDocument()
+        })
     })
 })

@@ -1,10 +1,11 @@
 import type React from 'react'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import type { Map } from 'immutable'
 import { Link, Redirect } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { IntegrationType } from 'models/integration/types'
 import {
     GorgiasChatCreationWizardStatus,
@@ -38,7 +39,18 @@ const GorgiasChatCreationWizard: React.FC<Props> = ({
 }) => {
     const { ...chatPreviewPanel } = useChatPreviewPanel()
 
-    const steps = Object.values(GorgiasChatCreationWizardSteps)
+    const { hasAccess: hasAiAgentAccess, isLoading: isAiAgentAccessLoading } =
+        useAiAgentAccess()
+
+    const steps = useMemo(() => {
+        const allSteps = Object.values(GorgiasChatCreationWizardSteps)
+        if (!hasAiAgentAccess) {
+            return allSteps.filter(
+                (step) => step !== GorgiasChatCreationWizardSteps.Automate,
+            )
+        }
+        return allSteps
+    }, [hasAiAgentAccess])
 
     const integrationId = integration.get('id')
 
@@ -89,7 +101,7 @@ const GorgiasChatCreationWizard: React.FC<Props> = ({
                     }
                 />
                 <div className={css.wrapper}>
-                    {hasIntegrationLoaded && (
+                    {hasIntegrationLoaded && !isAiAgentAccessLoading && (
                         <ChatPreviewPanelContext.Provider
                             value={chatPreviewPanel}
                         >
@@ -113,16 +125,18 @@ const GorgiasChatCreationWizard: React.FC<Props> = ({
                                         integration={integration}
                                     />
                                 </WizardStep>
-                                <WizardStep
-                                    name={
-                                        GorgiasChatCreationWizardSteps.Automate
-                                    }
-                                >
-                                    <GorgiasChatCreationWizardStepAutomate
-                                        isSubmitting={isSubmitting}
-                                        integration={integration}
-                                    />
-                                </WizardStep>
+                                {hasAiAgentAccess && (
+                                    <WizardStep
+                                        name={
+                                            GorgiasChatCreationWizardSteps.Automate
+                                        }
+                                    >
+                                        <GorgiasChatCreationWizardStepAutomate
+                                            isSubmitting={isSubmitting}
+                                            integration={integration}
+                                        />
+                                    </WizardStep>
+                                )}
                                 <WizardStep
                                     name={
                                         GorgiasChatCreationWizardSteps.Installation
