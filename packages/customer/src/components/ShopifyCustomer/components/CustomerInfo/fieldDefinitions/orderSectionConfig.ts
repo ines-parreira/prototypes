@@ -26,12 +26,26 @@ export const ORDER_SECTION_CONFIGS: readonly OrderSectionConfig[] = [
         dragType: 'field-order-details',
     },
     {
+        key: 'discounts',
+        label: 'Discounts',
+        fieldDefinitions: {},
+        dragType: 'field-discounts',
+        isNonConfigurable: true,
+    },
+    {
         key: 'lineItems',
         label: 'Line items',
         fieldDefinitions: {},
         dragType: 'field-line-items',
         isNonConfigurable: true,
         isToggleDisabled: true,
+    },
+    {
+        key: 'refunds',
+        label: 'Refunds',
+        fieldDefinitions: {},
+        dragType: 'field-refunds',
+        isNonConfigurable: true,
     },
     {
         key: 'shipping',

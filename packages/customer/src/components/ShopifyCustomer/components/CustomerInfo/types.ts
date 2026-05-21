@@ -5,6 +5,7 @@ import type { DateFormatType, TimeFormatType } from '@repo/utils'
 import type {
     EmailMarketingConsentData,
     MoneySet,
+    OrderRefund,
     PurchaseSummaryData,
     ShopperEcommerceData,
     SmsMarketingConsentData,
@@ -40,6 +41,8 @@ export type SectionPreferences = {
 export type OrderSectionKey =
     | 'orderDetails'
     | 'lineItems'
+    | 'discounts'
+    | 'refunds'
     | 'shipping'
     | 'shippingAddress'
     | 'billingAddress'
@@ -61,6 +64,12 @@ export type OrderDetailsData = {
     invoice_url?: string
     order_status_url?: string
     discount_codes?: Array<{ code: string; amount: string; type: string }>
+    discount_applications?: Array<{
+        code?: string
+        value?: string
+        value_type?: string
+    }>
+    total_discounts?: string
     metafields?: unknown[]
     fulfillments?: Array<{
         tracking_url?: string | null
@@ -91,6 +100,7 @@ export type OrderDetailsData = {
     total_shipping_price?: string
     total_shipping_price_set?: MoneySet | null
     currency?: string
+    refunds?: OrderRefund[]
 }
 
 export type FieldRenderContext = {

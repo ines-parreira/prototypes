@@ -116,17 +116,6 @@ export const FIELD_DEFINITIONS: Record<string, OrderFieldConfig> = {
                 <CheckoutUrlField url={ctx.order.invoice_url} />
             ) : null,
     },
-    discount_codes: {
-        id: 'discount_codes',
-        type: 'readonly',
-        label: 'Discount codes',
-        copyable: true,
-        getValue: (ctx) => {
-            const codes = ctx.order.discount_codes
-            if (!codes || codes.length === 0) return undefined
-            return codes.map((c) => c.code).join(', ')
-        },
-    },
     order_status_url: {
         id: 'order_status_url',
         type: 'component',

@@ -13,24 +13,27 @@ import type {
 } from '../orderFieldPreferences.utils'
 
 describe('buildPreferencesFromStored (no args = defaults)', () => {
-    it('returns sections for all 5 ORDER_SECTION_CONFIGS keys', () => {
+    it('returns sections for all ORDER_SECTION_CONFIGS keys', () => {
         const prefs = buildPreferencesFromStored()
         const keys = Object.keys(prefs.sections)
         expect(keys).toEqual(
             expect.arrayContaining([
                 'orderDetails',
+                'discounts',
                 'lineItems',
+                'refunds',
                 'shipping',
                 'shippingAddress',
                 'billingAddress',
             ]),
         )
-        expect(keys).toHaveLength(5)
+        expect(keys).toHaveLength(7)
     })
 
     it('returns empty fields for non-configurable sections', () => {
         const prefs = buildPreferencesFromStored()
         expect(prefs.sections.lineItems?.fields).toEqual([])
+        expect(prefs.sections.refunds?.fields).toEqual([])
         expect(prefs.sections.shippingAddress?.fields).toEqual([])
         expect(prefs.sections.billingAddress?.fields).toEqual([])
     })
@@ -232,6 +235,8 @@ describe('initSections', () => {
         const result = initSections(preferences)
         expect(result.lineItems.fields).toEqual([])
         expect(result.lineItems.sectionVisible).toBe(true)
+        expect(result.refunds.fields).toEqual([])
+        expect(result.refunds.sectionVisible).toBe(true)
         expect(result.shippingAddress.fields).toEqual([])
         expect(result.shippingAddress.sectionVisible).toBe(true)
     })
@@ -246,7 +251,9 @@ describe('sectionsEqual', () => {
                 fields: [{ id: 'tags', visible: true }],
                 sectionVisible: true,
             },
+            discounts: { fields: [], sectionVisible: true },
             lineItems: { fields: [], sectionVisible: true },
+            refunds: { fields: [], sectionVisible: true },
             shipping: {
                 fields: [{ id: 'tracking_url', visible: true }],
                 sectionVisible: true,
@@ -366,6 +373,7 @@ describe('buildPreferencesFromStored', () => {
     it('falls back to { fields: [] } for missing non-configurable sections', () => {
         const result = buildPreferencesFromStored({})
         expect(result.sections.lineItems).toEqual({ fields: [] })
+        expect(result.sections.refunds).toEqual({ fields: [] })
         expect(result.sections.shippingAddress).toEqual({ fields: [] })
         expect(result.sections.billingAddress).toEqual({ fields: [] })
     })
@@ -381,16 +389,18 @@ describe('buildPreferencesFromStored', () => {
         expect(shippingFields.every((f) => f.visible)).toBe(true)
     })
 
-    it('returns all 5 section keys regardless of input', () => {
+    it('returns all section keys regardless of input', () => {
         const result = buildPreferencesFromStored({
             orderDetails: { fields: [{ id: 'tags', visible: true }] },
         })
         const keys = Object.keys(result.sections)
-        expect(keys).toHaveLength(5)
+        expect(keys).toHaveLength(7)
         expect(keys).toEqual(
             expect.arrayContaining([
                 'orderDetails',
+                'discounts',
                 'lineItems',
+                'refunds',
                 'shipping',
                 'shippingAddress',
                 'billingAddress',

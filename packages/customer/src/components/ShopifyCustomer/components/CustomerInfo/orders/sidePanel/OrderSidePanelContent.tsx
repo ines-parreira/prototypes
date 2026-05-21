@@ -25,9 +25,11 @@ import { useOrderFieldPreferences } from '../../widget/useOrderFieldPreferences'
 import { OrderActions } from '../OrderActions'
 import { isFulfilledStatus, isRefundedStatus } from '../orderStatusUtils'
 import { BillingAddressSection } from '../sections/BillingAddressSection'
+import { DiscountsSection } from '../sections/DiscountsSection'
 import { OrderDetailsSection } from '../sections/OrderDetailsSection'
 import { OrderLineItemsSection } from '../sections/OrderLineItemsSection'
 import { OrderShipmentSection } from '../sections/OrderShipmentSection'
+import { RefundsSection } from '../sections/RefundsSection'
 import type {
     EditShippingAddressModalRenderProps,
     ShippingAddress,
@@ -82,6 +84,11 @@ export type OrderData = {
         zip?: string | null
     } | null
     discount_codes?: Array<{ code: string; amount: string; type: string }>
+    discount_applications?: Array<{
+        code?: string
+        value?: string
+        value_type?: string
+    }>
     shipping_lines?: OrderShippingLine[] | null
     metafields?: FullShopifyMetafield[]
     refunds?: OrderRefund[]
@@ -221,6 +228,10 @@ export function OrderSidePanelContent<T extends OrderData = OrderData>({
                         ticketId={ticketId}
                         storeName={storeName}
                     />
+
+                    <DiscountsSection order={order} />
+
+                    <RefundsSection order={order} />
 
                     {lineItemsVisible && (
                         <OrderLineItemsSection
