@@ -8,16 +8,22 @@ import { visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture } fr
 
 import ActionFormView from '../ActionFormView'
 
+let mockCanBeDeleted: jest.Mock<boolean, [string]>
+
 jest.mock('pages/aiAgent/actions/providers/GuidanceReferenceContext', () => {
     return {
         useGuidanceReferenceContext: () => ({
-            canBeDeleted: () => true,
+            canBeDeleted: (id: string) => mockCanBeDeleted(id),
             references: {
                 [visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture.id]:
                     [{ id: 1, title: 'Guidance 1', sourceId: '1' }],
             },
         }),
     }
+})
+
+beforeEach(() => {
+    mockCanBeDeleted = jest.fn((__id: string) => true)
 })
 jest.mock('react-router-dom', () => {
     return {
@@ -615,6 +621,74 @@ describe('<ActionFormView />', () => {
             expect(
                 screen.queryByText('Disable confirmation requirement?'),
             ).not.toBeInTheDocument()
+        })
+    })
+
+    it('should not dispatch SET_LLM_PROMPT_TRIGGER_DEACTIVATED_DATETIME when the Action is enabled and referenced in Guidance', () => {
+        mockCanBeDeleted = jest.fn((__id: string) => false)
+        const mockDispatch = jest.fn()
+
+        render(
+            <VisualBuilderContext.Provider
+                value={{
+                    visualBuilderGraph:
+                        visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
+                    initialVisualBuilderGraph:
+                        visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
+                    checkNodeHasVariablesUsedInChildren: () => false,
+                    dispatch: mockDispatch,
+                    getVariableListInChildren: () => [],
+                    checkNewVisualBuilderNode: () => false,
+                    getVariableListForNode: () => [],
+                    isNew: false,
+                }}
+            >
+                <ActionFormView onEditSteps={jest.fn()} steps={[]} />
+            </VisualBuilderContext.Provider>,
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('Enable Action'))
+        })
+
+        expect(mockDispatch).not.toHaveBeenCalled()
+    })
+
+    it('should dispatch SET_LLM_PROMPT_TRIGGER_DEACTIVATED_DATETIME when the Action is disabled but referenced in Guidance', () => {
+        mockCanBeDeleted = jest.fn((__id: string) => false)
+        const mockDispatch = jest.fn()
+
+        render(
+            <VisualBuilderContext.Provider
+                value={{
+                    visualBuilderGraph: produce(
+                        visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
+                        (draft) => {
+                            draft.nodes[0].data.deactivated_datetime =
+                                new Date().toISOString()
+                        },
+                    ),
+                    initialVisualBuilderGraph:
+                        visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
+                    checkNodeHasVariablesUsedInChildren: () => false,
+                    dispatch: mockDispatch,
+                    getVariableListInChildren: () => [],
+                    checkNewVisualBuilderNode: () => false,
+                    getVariableListForNode: () => [],
+                    isNew: false,
+                }}
+            >
+                <ActionFormView onEditSteps={jest.fn()} steps={[]} />
+            </VisualBuilderContext.Provider>,
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('Enable Action'))
+        })
+
+        expect(mockDispatch).toHaveBeenCalledWith({
+            type: 'SET_LLM_PROMPT_TRIGGER_DEACTIVATED_DATETIME',
+            deactivated_datetime: null,
         })
     })
 

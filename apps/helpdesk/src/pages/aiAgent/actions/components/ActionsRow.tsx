@@ -153,6 +153,10 @@ export default function ActionsRow({ action }: Props) {
 
     const enabledToggleRef = useRef<HTMLDivElement>(null)
 
+    const isCurrentlyEnabled = !action.entrypoints[0]?.deactivated_datetime
+    const isReferencedInGuidance = !canBeDeleted(action.id)
+    const isEnableToggleDisabled = isReferencedInGuidance && isCurrentlyEnabled
+
     return (
         <TableBodyRow
             className={css.container}
@@ -174,13 +178,13 @@ export default function ActionsRow({ action }: Props) {
                             isDisabled={
                                 isDeleteActionLoading ||
                                 isFakeAction ||
-                                !canBeDeleted(action.id)
+                                isEnableToggleDisabled
                             }
                             onChange={handleToggleAction}
-                            value={!action.entrypoints[0]?.deactivated_datetime}
+                            value={isCurrentlyEnabled}
                         />
                     </div>
-                    {!canBeDeleted(action.id) && enabledToggleRef && (
+                    {isEnableToggleDisabled && enabledToggleRef && (
                         <Tooltip placement="top" target={enabledToggleRef}>
                             This Action is currently being used in Guidance.
                             Remove the Action from all Guidance in order to

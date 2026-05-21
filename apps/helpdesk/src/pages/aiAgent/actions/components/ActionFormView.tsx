@@ -59,6 +59,10 @@ const ActionFormView = ({
 
     const isAdvanced = visualBuilderGraph.advanced_datetime
 
+    const isCurrentlyEnabled = !triggerNode.data.deactivated_datetime
+    const isReferencedInGuidance = !canBeDeleted(visualBuilderGraph.id)
+    const isEnableToggleDisabled = isReferencedInGuidance && isCurrentlyEnabled
+
     const enabledToggleRef = useRef<HTMLDivElement>(null)
     return (
         <>
@@ -201,11 +205,11 @@ const ActionFormView = ({
                             </div>
                         }
                         label="Enable Action"
-                        isDisabled={!canBeDeleted(visualBuilderGraph.id)}
+                        isDisabled={isEnableToggleDisabled}
                     />
                 </div>
 
-                {!canBeDeleted(visualBuilderGraph.id) && enabledToggleRef && (
+                {isEnableToggleDisabled && enabledToggleRef && (
                     <Tooltip placement="top" target={enabledToggleRef}>
                         This Action is currently being used in Guidance. Remove
                         the Action from all Guidance in order to disable.

@@ -18,10 +18,12 @@ import { WorkflowConfigurationBuilder } from 'pages/automate/workflows/models/wo
 import StoreTrackstarProvider from '../../providers/StoreTrackstarProvider'
 import ActionsRow from '../ActionsRow'
 
+let mockCanBeDeleted: jest.Mock<boolean, [string]>
+
 jest.mock('pages/aiAgent/actions/providers/GuidanceReferenceContext', () => {
     return {
         useGuidanceReferenceContext: () => ({
-            canBeDeleted: () => true,
+            canBeDeleted: (id: string) => mockCanBeDeleted(id),
             references: {},
         }),
     }
@@ -119,6 +121,7 @@ const LocationPath = () => {
 
 describe('<ActionsRow />', () => {
     beforeEach(() => {
+        mockCanBeDeleted = jest.fn((__id: string) => true)
         mockUseApps.mockReturnValue({
             apps: [
                 {
@@ -245,6 +248,52 @@ describe('<ActionsRow />', () => {
             isSuccess: false,
         } as unknown as ReturnType<typeof useUpsertAction>)
         render(<ActionsRow action={configuration} />, {})
+        act(() => {
+            fireEvent.click(screen.getByRole('switch'))
+        })
+        expect(mockUpsertAction).toHaveBeenCalled()
+    })
+    it('should not toggle availability when the Action is enabled and referenced in Guidance', () => {
+        mockCanBeDeleted = jest.fn((__id: string) => false)
+        const mockUpsertAction = jest.fn()
+        mockUseUpsertAction.mockReturnValue({
+            mutate: mockUpsertAction,
+            isLoading: false,
+            isSuccess: false,
+        } as unknown as ReturnType<typeof useUpsertAction>)
+        render(<ActionsRow action={configuration} />, {})
+
+        act(() => {
+            fireEvent.click(screen.getByRole('switch'))
+        })
+        expect(mockUpsertAction).not.toHaveBeenCalled()
+    })
+    it('should toggle availability when the Action is disabled but referenced in Guidance', () => {
+        mockCanBeDeleted = jest.fn((__id: string) => false)
+        const mockUpsertAction = jest.fn()
+        mockUseUpsertAction.mockReturnValue({
+            mutate: mockUpsertAction,
+            isLoading: false,
+            isSuccess: false,
+        } as unknown as ReturnType<typeof useUpsertAction>)
+        render(
+            <ActionsRow
+                action={{
+                    ...configuration,
+                    entrypoints: configuration.entrypoints.map((entrypoint) =>
+                        entrypoint.kind === 'llm-conversation'
+                            ? {
+                                  ...entrypoint,
+                                  deactivated_datetime:
+                                      new Date().toISOString(),
+                              }
+                            : entrypoint,
+                    ),
+                }}
+            />,
+            {},
+        )
+
         act(() => {
             fireEvent.click(screen.getByRole('switch'))
         })
