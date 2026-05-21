@@ -262,6 +262,7 @@ export const GorgiasChatIntegrationPreferencesRevamp = ({
                             onEmailCaptureEnforcementChange={(value) =>
                                 setFieldValue('emailCaptureEnforcement', value)
                             }
+                            isAiAgentEnabled={isAiAgentEnabled}
                         />
                         <ChatShopperExperienceCard
                             linkedEmailIntegration={

@@ -123,6 +123,68 @@ describe('ChatEmailCaptureCard', () => {
         ).toBeInTheDocument()
     })
 
+    describe('when isAiAgentEnabled is true', () => {
+        it('should render the AI Agent heading', () => {
+            renderComponent({ isAiAgentEnabled: true })
+
+            expect(
+                screen.getByRole('heading', {
+                    name: 'Collect shopper emails at handover',
+                }),
+            ).toBeInTheDocument()
+        })
+
+        it('should render the AI Agent description', () => {
+            renderComponent({ isAiAgentEnabled: true })
+
+            expect(
+                screen.getByText(
+                    'When AI Agent hands over to your team, ask the shopper for their email so your team can follow up.',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('should render the AI Agent optional caption', () => {
+            renderComponent({ isAiAgentEnabled: true })
+
+            expect(
+                screen.getByText(
+                    'Email is requested but skippable, a ticket opens in your helpdesk in all cases.',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('should render the AI Agent required caption', () => {
+            renderComponent({ isAiAgentEnabled: true })
+
+            expect(
+                screen.getByText(
+                    'Email is required before the conversation can continue. The ticket stays closed until the email is provided.',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('should not render the default required caption', () => {
+            renderComponent({ isAiAgentEnabled: true })
+
+            expect(
+                screen.queryByText(
+                    'Reduces incoming conversations by about 70%',
+                ),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not render the default description', () => {
+            renderComponent({ isAiAgentEnabled: true })
+
+            expect(
+                screen.queryByText(
+                    'Grow your email list and send follow-up messages.',
+                ),
+            ).not.toBeInTheDocument()
+        })
+    })
+
     describe('toggle state', () => {
         it('should render checked when emailCaptureEnabled is true', () => {
             renderComponent({ emailCaptureEnabled: true })
