@@ -1,5 +1,5 @@
 import type { DrillDownDataHook } from 'domains/reporting/hooks/useDrillDownData'
-import { DrillDownDownloadButton } from 'domains/reporting/pages/common/drill-down/DrillDownDownloadButton'
+import { DrillDownExportMenu } from 'domains/reporting/pages/common/drill-down/DrillDownExportMenu'
 import type {
     ConvertDrillDownRowData,
     TicketDrillDownRowData,
@@ -60,7 +60,10 @@ export const LegacyDrillDownInfoBar = ({
                     : getTheInfoLabel(totalResults, objectType)}
             </div>
             {shouldDisplayDownloadButton && (
-                <DrillDownDownloadButton metricData={metricData} />
+                <DrillDownExportMenu
+                    metricData={metricData}
+                    isFetching={isFetching}
+                />
             )}
         </div>
     )

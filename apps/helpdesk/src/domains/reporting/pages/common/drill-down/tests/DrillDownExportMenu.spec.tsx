@@ -4,11 +4,13 @@ import { fromJS } from 'immutable'
 
 import { UserRole } from 'config/types/user'
 import { ReportingGranularity } from 'domains/reporting/models/types'
+import { EXPORT_WARNING_TITLE } from 'domains/reporting/pages/common/drill-down/constants'
 import {
     DOWNLOAD_LOADING_LABEL,
     DOWNLOAD_REQUESTED_LABEL,
-    DrillDownDownloadButton,
-} from 'domains/reporting/pages/common/drill-down/DrillDownDownloadButton'
+    DrillDownExportMenu,
+} from 'domains/reporting/pages/common/drill-down/DrillDownExportMenu'
+
 import type { AgentsMetrics } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import {
     drillDownSlice,
@@ -16,6 +18,7 @@ import {
     initialState,
 } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import {
+    getCleanStatsFilters,
     getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
     getCleanStatsFiltersWithTimezone,
 } from 'domains/reporting/state/ui/stats/selectors'
@@ -32,9 +35,10 @@ const getCleanStatsFiltersWithTimezoneMock = assumeMock(
 const getCleanStatsFiltersWithLogicalOperatorsWithTimezoneMock = assumeMock(
     getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
 )
+const getCleanStatsFiltersMock = assumeMock(getCleanStatsFilters)
 jest.mock('jobs/useRunningJobs')
 const mockUseRunningJobs = assumeMock(useRunningJobs)
-describe('<DrillDownDownloadButton />', () => {
+describe('<DrillDownExportMenu />', () => {
     const cleanStatsFilters = {
         period: {
             start_datetime: '1970-01-01T00:00:00+00:00',
@@ -54,6 +58,7 @@ describe('<DrillDownDownloadButton />', () => {
                 granularity: ReportingGranularity.Day,
             },
         )
+        getCleanStatsFiltersMock.mockReturnValue(cleanStatsFilters)
         mockUseRunningJobs.mockReturnValue({
             running: false,
             jobs: [],
@@ -73,7 +78,7 @@ describe('<DrillDownDownloadButton />', () => {
         },
     } as RootState
     it('should render button', () => {
-        render(<DrillDownDownloadButton metricData={metricData} />, {
+        render(<DrillDownExportMenu metricData={metricData} />, {
             storeState: defaultState,
         })
         expect(screen.getByRole('button')).toBeInTheDocument()
@@ -90,7 +95,7 @@ describe('<DrillDownDownloadButton />', () => {
                 },
             },
         } as RootState
-        render(<DrillDownDownloadButton metricData={metricData} />, {
+        render(<DrillDownExportMenu metricData={metricData} />, {
             storeState: state,
         })
         expect(screen.getByRole('button')).toBeAriaDisabled()
@@ -110,14 +115,14 @@ describe('<DrillDownDownloadButton />', () => {
             refetch: jest.fn(),
             jobs: [],
         })
-        render(<DrillDownDownloadButton metricData={metricData} />, {
+        render(<DrillDownExportMenu metricData={metricData} />, {
             storeState: state,
         })
         expect(screen.getByRole('button')).toBeAriaDisabled()
     })
     it('should dispatch export action', async () => {
         const { store } = render(
-            <DrillDownDownloadButton metricData={metricData} />,
+            <DrillDownExportMenu metricData={metricData} />,
             { storeState: defaultState },
         )
         fireEvent.click(screen.getByRole('button'))
@@ -148,7 +153,7 @@ describe('<DrillDownDownloadButton />', () => {
                 },
             },
         } as RootState
-        render(<DrillDownDownloadButton metricData={metricData} />, {
+        render(<DrillDownExportMenu metricData={metricData} />, {
             storeState: state,
         })
         fireEvent.click(screen.getByRole('button'))
@@ -170,7 +175,7 @@ describe('<DrillDownDownloadButton />', () => {
                 },
             },
         } as RootState
-        render(<DrillDownDownloadButton metricData={metricData} />, {
+        render(<DrillDownExportMenu metricData={metricData} />, {
             storeState: state,
         })
         expect(screen.getByText(DOWNLOAD_LOADING_LABEL)).toBeInTheDocument()
@@ -191,9 +196,31 @@ describe('<DrillDownDownloadButton />', () => {
                 },
             },
         } as RootState
-        render(<DrillDownDownloadButton metricData={metricData} />, {
+        render(<DrillDownExportMenu metricData={metricData} />, {
             storeState: state,
         })
         expect(screen.getByText('Export')).toBeInTheDocument()
+    })
+    it('should render disabled button when data is fetching', () => {
+        render(
+            <DrillDownExportMenu metricData={metricData} isFetching={true} />,
+            { storeState: defaultState },
+        )
+        expect(screen.getByRole('button')).toBeAriaDisabled()
+    })
+    it('should show warning banner when period exceeds 30 days', async () => {
+        getCleanStatsFiltersMock.mockReturnValue({
+            period: {
+                start_datetime: '2024-01-01T00:00:00.000',
+                end_datetime: '2024-02-01T00:00:00.000',
+            },
+        })
+        render(<DrillDownExportMenu metricData={metricData} />, {
+            storeState: defaultState,
+        })
+        fireEvent.click(screen.getByRole('button'))
+        expect(
+            await screen.findByText(EXPORT_WARNING_TITLE),
+        ).toBeInTheDocument()
     })
 })

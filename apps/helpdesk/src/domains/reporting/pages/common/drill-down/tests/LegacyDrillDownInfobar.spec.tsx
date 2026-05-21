@@ -4,7 +4,7 @@ import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { DRILL_DOWN_PER_PAGE } from 'domains/reporting/hooks/useDrillDownData'
-import { DrillDownDownloadButton } from 'domains/reporting/pages/common/drill-down/DrillDownDownloadButton'
+import { DrillDownExportMenu } from 'domains/reporting/pages/common/drill-down/DrillDownExportMenu'
 import { getDrillDownConfig } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 import { LegacyDrillDownInfoBar } from 'domains/reporting/pages/common/drill-down/LegacyDrillDownInfoBar'
 import { OverviewMetric } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
@@ -16,8 +16,8 @@ import {
 } from 'domains/reporting/state/ui/stats/types'
 import { DRILLDOWN_QUERY_LIMIT } from 'domains/reporting/utils/reporting'
 
-jest.mock('domains/reporting/pages/common/drill-down/DrillDownDownloadButton')
-const DrillDownDownloadButtonMock = assumeMock(DrillDownDownloadButton)
+jest.mock('domains/reporting/pages/common/drill-down/DrillDownExportMenu')
+const DrillDownExportMenuMock = assumeMock(DrillDownExportMenu)
 
 describe('<DrillDownInfobar />', () => {
     const metricData: DrillDownMetric = {
@@ -32,7 +32,7 @@ describe('<DrillDownInfobar />', () => {
     } as any)
 
     beforeEach(() => {
-        DrillDownDownloadButtonMock.mockImplementation(() => (
+        DrillDownExportMenuMock.mockImplementation(() => (
             <div data-testid="download" />
         ))
     })

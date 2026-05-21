@@ -12,8 +12,16 @@ import {
 import { UserRole } from 'config/types/user'
 import { useDrillDownQueryWithoutLimit } from 'domains/reporting/hooks/useDrillDownData'
 import { FilterKey } from 'domains/reporting/models/stat/types'
-import css from 'domains/reporting/pages/common/drill-down/DrillDownDownloadButton.less'
-import infoCss from 'domains/reporting/pages/common/drill-down/DrillDownInfoBar.less'
+import {
+    DATA_LOADING_CONTENT,
+    DOWNLOAD_LOADING_LABEL,
+    DOWNLOAD_REQUESTED_LABEL,
+    EXPORT_WARNING_DESCRIPTION,
+    EXPORT_WARNING_TITLE,
+    NO_PERMISSIONS_CONTENT,
+    OPERATION_IN_PROGRESS_CONTENT,
+} from 'domains/reporting/pages/common/drill-down/constants'
+import css from 'domains/reporting/pages/common/drill-down/DrillDownExportMenu.less'
 import { getDrillDownQuery } from 'domains/reporting/pages/common/drill-down/helpers'
 import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import {
@@ -31,13 +39,11 @@ import { JobType } from 'models/job/types'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { hasRole } from 'utils'
 
-export const DOWNLOAD_REQUESTED_LABEL = 'Download Requested'
-export const TOTAL_OBJECTS_COUNT_PLACEHOLDER = 'All'
-export const DOWNLOAD_LOADING_LABEL = 'Loading'
-const NO_PERMISSIONS_CONTENT =
-    'You don’t have enough permissions to download this content.'
-const OPERATION_IN_PROGRESS_CONTENT =
-    'A long-running job (e.g., ticket export, bulk action) is currently in progress on your account. Please wait until it is finished before requesting a new export.'
+export {
+    DOWNLOAD_LOADING_LABEL,
+    DOWNLOAD_REQUESTED_LABEL,
+} from 'domains/reporting/pages/common/drill-down/constants'
+
 const getDrillDownJobType = (
     metricData: DrillDownMetric,
 ):
@@ -62,10 +68,12 @@ const getDrillDownJobContext = (
     }
 }
 
-export const DrillDownDownloadButton = ({
+export const DrillDownExportMenu = ({
     metricData,
+    isFetching = false,
 }: {
     metricData: DrillDownMetric
+    isFetching?: boolean
 }) => {
     const dispatch = useAppDispatch()
     const { isLoading, isError, isRequested } =
@@ -76,7 +84,8 @@ export const DrillDownDownloadButton = ({
         hasRole(currentUser, UserRole.Admin) ||
         hasRole(currentUser, UserRole.Agent)
     )
-    const isDisabled = hasNoPermissions || isLoading || running !== false
+    const isDisabled =
+        hasNoPermissions || isLoading || running !== false || isFetching
     const cleanStatsFilters = useAppSelector(getCleanStatsFilters)
     const period = cleanStatsFilters?.[FilterKey.Period]
     const isPeriodExceedingOneMonth = period
@@ -111,10 +120,11 @@ export const DrillDownDownloadButton = ({
         return 'Export'
     }
 
-    const tooltipMessage =
-        running !== false
-            ? OPERATION_IN_PROGRESS_CONTENT
-            : NO_PERMISSIONS_CONTENT
+    const tooltipMessage = isFetching
+        ? DATA_LOADING_CONTENT
+        : running !== false
+          ? OPERATION_IN_PROGRESS_CONTENT
+          : NO_PERMISSIONS_CONTENT
 
     return (
         <Menu
@@ -127,7 +137,9 @@ export const DrillDownDownloadButton = ({
                         size="sm"
                         leadingSlot={getButtonIcon()}
                         isDisabled={isDisabled || isExportSuccess}
-                        className={isExportSuccess ? css.success : undefined}
+                        className={
+                            isExportSuccess ? css.successButton : undefined
+                        }
                     >
                         <Box display="flex" alignItems="center">
                             {getButtonText()}
@@ -135,8 +147,8 @@ export const DrillDownDownloadButton = ({
                                 <span
                                     className={
                                         isOpen
-                                            ? `${infoCss.chevronSeparator} ${infoCss.chevronRotated}`
-                                            : infoCss.chevronSeparator
+                                            ? `${css.chevronSeparator} ${css.chevronRotated}`
+                                            : css.chevronSeparator
                                     }
                                 >
                                     <Icon name="arrow-chevron-down" size="sm" />
@@ -169,18 +181,16 @@ export const DrillDownDownloadButton = ({
             />
             {isPeriodExceedingOneMonth && (
                 <MenuItem asSlot>
-                    <div className={infoCss.warningBanner}>
-                        <span className={infoCss.warningIcon}>
+                    <div className={css.warningBanner}>
+                        <span className={css.warningIcon}>
                             <Icon name="warning-triangle" color="orange-800" />
                         </span>
                         <div>
-                            <div className={infoCss.warningTitle}>
-                                Your date range exceeds 1 month. The most recent
-                                30 days will be exported.
+                            <div className={css.warningTitle}>
+                                {EXPORT_WARNING_TITLE}
                             </div>
-                            <div className={infoCss.warningDescription}>
-                                To choose a different range, adjust the date
-                                filter on the AI Agent page.
+                            <div className={css.warningDescription}>
+                                {EXPORT_WARNING_DESCRIPTION}
                             </div>
                         </div>
                     </div>
