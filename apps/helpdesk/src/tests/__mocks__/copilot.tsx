@@ -20,9 +20,7 @@ export type CopilotProviderProps = {
     accountDomain?: string
 }
 
-export function CopilotWorkspace() {
-    return null
-}
+export const CopilotWorkspace = jest.fn(() => null)
 
 export const useCopilot = jest.fn(() => ({
     open: false,

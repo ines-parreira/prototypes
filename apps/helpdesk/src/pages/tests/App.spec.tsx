@@ -7,11 +7,17 @@ import { assumeMock, render } from '@repo/testing'
 import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 
+import { CopilotWorkspace } from '@gorgias/copilot'
+
+import { copilotAttachmentsConfig } from 'common/copilot/copilotAttachmentsConfig'
 import { NavBarProvider } from 'common/navigation/components/NavBarProvider'
 import { store } from 'common/store'
+import { useCopilotEnabled } from 'hooks/useCopilotEnabled'
 import { openPanel } from 'state/layout/actions'
 
 import App from '../App'
+
+jest.mock('@gorgias/copilot')
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
@@ -47,6 +53,8 @@ jest.mock('hooks/useCopilotEnabled', () => ({
     useCopilotEnabled: jest.fn(() => false),
 }))
 
+const mockUseCopilotEnabled = assumeMock(useCopilotEnabled)
+const mockCopilotWorkspace = assumeMock(CopilotWorkspace)
 const mockUseIsMobileResolution = useIsMobileResolution as jest.MockedFunction<
     typeof useIsMobileResolution
 >
@@ -66,6 +74,8 @@ describe('App Navbar rendering', () => {
 
     beforeEach(() => {
         onChangeTab = jest.fn()
+        mockUseCopilotEnabled.mockReturnValue(false)
+        mockCopilotWorkspace.mockClear()
         useTicketInfobarNavigationMock.mockReturnValue({
             activeTab: TicketInfobarTab.Customer,
             onChangeTab,
@@ -141,6 +151,19 @@ describe('App Navbar rendering', () => {
             expect(queryByTestId('global-navigation')).not.toBeInTheDocument()
             expect(queryByTestId('navbar')).not.toBeInTheDocument()
         })
+    })
+
+    it('passes image attachment settings to copilot workspace when copilot is enabled', () => {
+        mockUseIsMobileResolution.mockReturnValue(false)
+        mockUseCopilotEnabled.mockReturnValue(true)
+
+        renderWithContext(<App />)
+
+        expect(mockCopilotWorkspace.mock.calls[0][0]).toEqual(
+            expect.objectContaining({
+                attachmentsConfig: copilotAttachmentsConfig,
+            }),
+        )
     })
 })
 

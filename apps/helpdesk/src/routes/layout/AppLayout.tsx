@@ -7,6 +7,7 @@ import { SidebarProvider } from '@repo/navigation'
 import { Box, Button, SidePanel } from '@gorgias/axiom'
 import { CopilotWorkspace } from '@gorgias/copilot'
 
+import { copilotAttachmentsConfig } from 'common/copilot/copilotAttachmentsConfig'
 import { useCopilotEnabled } from 'hooks/useCopilotEnabled'
 import { NavigationSidebar } from 'routes/layout/NavigationSidebar'
 
@@ -75,7 +76,9 @@ export function AppLayout({ children, hasPanel }: AppLayoutProps) {
                     </PanelGroup>
                     {isCopilotEnabled && (
                         <Box pt="xs" pr="xs" pb="xs">
-                            <CopilotWorkspace />
+                            <CopilotWorkspace
+                                attachmentsConfig={copilotAttachmentsConfig}
+                            />
                         </Box>
                     )}
                 </Panels>
@@ -119,7 +122,9 @@ export function AppLayout({ children, hasPanel }: AppLayoutProps) {
                         </PanelGroup>
                         {isCopilotEnabled && (
                             <Box pt="xs" pr="xs" pb="xs">
-                                <CopilotWorkspace />
+                                <CopilotWorkspace
+                                    attachmentsConfig={copilotAttachmentsConfig}
+                                />
                             </Box>
                         )}
                     </>

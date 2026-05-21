@@ -10,6 +10,7 @@ import { Container } from 'reactstrap'
 import { Box, LegacyButton as Button } from '@gorgias/axiom'
 
 import { CopilotWorkspace } from '@gorgias/copilot'
+import { copilotAttachmentsConfig } from 'common/copilot/copilotAttachmentsConfig'
 import { GlobalNavigation } from 'common/navigation'
 import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
 
@@ -157,7 +158,9 @@ const App = ({
             <CollapsibleColumn />
             {isCopilotEnabled && (
                 <Box pt="xs" pr="xs" pb="xs">
-                    <CopilotWorkspace />
+                    <CopilotWorkspace
+                        attachmentsConfig={copilotAttachmentsConfig}
+                    />
                 </Box>
             )}
 
