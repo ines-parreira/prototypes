@@ -692,7 +692,7 @@ describe('<AIAgentWelcomePageView />', () => {
         expect(passedProps.someModalProp).toBe('value')
     })
 
-    it('renders the V3 welcome page when the AiAgentOnboardingV3 flag is on and the user can start onboarding', () => {
+    it('renders the V3 welcome page when the AiAgentOnboardingV3 flag is on (any cohort)', () => {
         mockUseFlagWithLoading.mockReturnValue({
             value: true,
             isLoading: false,
@@ -711,7 +711,7 @@ describe('<AIAgentWelcomePageView />', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('renders the V3 welcome page for non-admin users that can start onboarding (matches V2 behavior)', () => {
+    it('renders V3 for non-admin users when the flag is on', () => {
         mockUseFlagWithLoading.mockReturnValue({
             value: true,
             isLoading: false,
@@ -727,7 +727,7 @@ describe('<AIAgentWelcomePageView />', () => {
         ).toBeInTheDocument()
     })
 
-    it('falls back to V2 when the AiAgentOnboardingV3 flag is on but the user cannot start onboarding', () => {
+    it('renders V3 even when the cohort would not qualify for canStartOnboarding', () => {
         mockUseFlagWithLoading.mockReturnValue({
             value: true,
             isLoading: false,
@@ -743,8 +743,8 @@ describe('<AIAgentWelcomePageView />', () => {
         renderWithProvider()
 
         expect(
-            screen.queryByText(`V3 welcome page for ${SHOP_NAME}`),
-        ).not.toBeInTheDocument()
+            screen.getByText(`V3 welcome page for ${SHOP_NAME}`),
+        ).toBeInTheDocument()
     })
 
     it('renders a loader while the AiAgentOnboardingV3 flag is loading', () => {
@@ -760,54 +760,10 @@ describe('<AIAgentWelcomePageView />', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('renders a loader while trial access is loading and the AiAgentOnboardingV3 flag is on', () => {
-        mockUseFlagWithLoading.mockReturnValue({
-            value: true,
-            isLoading: false,
-        })
-        mockUseTrialAccess.mockReturnValue({
-            ...DEFAULT_TRIAL_ACCESS_MOCK,
-            isAdminUser: true,
-            isLoading: true,
-        })
-        renderWithProvider()
-
-        expect(screen.getByLabelText('Loading')).toBeInTheDocument()
-        expect(
-            screen.queryByText(`V3 welcome page for ${SHOP_NAME}`),
-        ).not.toBeInTheDocument()
-        expect(
-            screen.queryByRole('button', { name: /Set Up AI Agent/i }),
-        ).not.toBeInTheDocument()
-    })
-
-    it('renders a loader while onboarding state is unresolved and the AiAgentOnboardingV3 flag is on', () => {
-        mockUseFlagWithLoading.mockReturnValue({
-            value: true,
-            isLoading: false,
-        })
-        mockUseTrialAccess.mockReturnValue({
-            ...DEFAULT_TRIAL_ACCESS_MOCK,
-            isAdminUser: true,
-            isOnboarded: undefined,
-        })
-        renderWithProvider()
-
-        expect(screen.getByLabelText('Loading')).toBeInTheDocument()
-        expect(
-            screen.queryByText(`V3 welcome page for ${SHOP_NAME}`),
-        ).not.toBeInTheDocument()
-    })
-
-    it('renders V2 immediately when the AiAgentOnboardingV3 flag is off, even while trial access is loading', () => {
+    it('renders V2 immediately when the AiAgentOnboardingV3 flag is off', () => {
         mockUseFlagWithLoading.mockReturnValue({
             value: false,
             isLoading: false,
-        })
-        mockUseTrialAccess.mockReturnValue({
-            ...DEFAULT_TRIAL_ACCESS_MOCK,
-            isLoading: true,
-            isOnboarded: undefined,
         })
         renderWithProvider()
 

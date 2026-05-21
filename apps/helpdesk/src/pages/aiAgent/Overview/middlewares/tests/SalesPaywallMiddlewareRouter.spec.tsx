@@ -52,7 +52,7 @@ describe('SalesPaywallMiddlewareRouter', () => {
         expect(screen.getByText('Child component')).toBeInTheDocument()
     })
 
-    it('delegates to neither middleware while the flag is loading', () => {
+    it('renders a loader while the flag is loading', () => {
         ;(useFlagWithLoading as jest.Mock).mockReturnValueOnce({
             value: false,
             isLoading: true,
@@ -60,6 +60,7 @@ describe('SalesPaywallMiddlewareRouter', () => {
 
         render(<WrappedComponent />)
 
+        expect(screen.getByLabelText('Loading')).toBeInTheDocument()
         expect(screen.queryByText('Sales Paywall V2')).not.toBeInTheDocument()
         expect(screen.queryByText('Sales Paywall V3')).not.toBeInTheDocument()
         expect(screen.queryByText('Child component')).not.toBeInTheDocument()

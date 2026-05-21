@@ -1,16 +1,14 @@
+import type { ReactNode } from 'react'
 import { useCallback, useState } from 'react'
-
-import { useEffectOnce } from '@repo/hooks'
-import { logEvent, SegmentEvent } from '@repo/logging'
 
 import {
     Box,
-    Button,
     ButtonGroup,
     ButtonGroupItem,
     Heading,
     Icon,
     Image,
+    Loader,
     Text,
 } from '@gorgias/axiom'
 
@@ -19,21 +17,33 @@ import AiAgentLogo from 'assets/img/ai-agent/ai-agent-logo.svg'
 import SalesStrategyImage from 'assets/img/ai-agent/ai-agent_paywall_sales-strategy.png'
 import { useTheme } from 'core/theme'
 import type { StoreConfiguration } from 'models/aiAgent/types'
+import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { JtbdPicker } from 'pages/aiAgent/components/JtbdPicker/JtbdPicker'
-import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
+import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
+import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
+import { useNotifyAdmins } from 'pages/aiAgent/trial/hooks/useNotifyAdmins'
+import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
+import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
+import {
+    EXTERNAL_URLS,
+    useTrialModalProps,
+} from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import type { JtbdValue } from 'pages/aiAgent/utils/jtbd'
 import { JTBD_QUERY_KEY } from 'pages/aiAgent/utils/jtbd'
+import { hasAutomatePlanAboveGen6 } from 'pages/aiAgent/utils/trial.utils'
+import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 import { assetsUrl } from 'utils'
 
+import { useAiAgentCtas } from './useAiAgentPaywallCta'
 import { useAiAgentWelcomePageV3SideEffects } from './useAiAgentWelcomePageV3SideEffects'
+
+const SUPPORT_VIDEO_SRC = assetsUrl('/video/ai-agent_paywall_support.mp4')
 
 const DESCRIPTIONS = [
     'Define how it responds to specific topics',
     'Test and refine conversations',
     'Preview the shopper experience before going live',
 ]
-
-const SUPPORT_VIDEO_SRC = assetsUrl('/video/ai-agent_paywall_support.mp4')
 
 const PREVIEW_OPTION = {
     Support: 'support',
@@ -42,66 +52,165 @@ const PREVIEW_OPTION = {
 type PreviewOption = (typeof PREVIEW_OPTION)[keyof typeof PREVIEW_OPTION]
 
 type Props = {
+    accountDomain: string
+    shopType: string
     shopName: string
     storeConfiguration?: StoreConfiguration
 }
 
-export const AIAgentWelcomePageViewV3 = ({
-    shopName,
-    storeConfiguration,
-}: Props) => {
-    const { onCtaTransition, isOnUpdateOnboardingWizard } =
-        useAiAgentWelcomePageV3SideEffects({
-            shopName,
-            storeConfiguration,
-        })
+export const AIAgentWelcomePageViewV3 = (props: Props) => {
+    const trialAccess = useTrialAccess(props.shopName)
 
-    // Mirrors V2's AiAgentPaywallView, which logs this from the view container.
-    // The other V3 analytics live in useAiAgentWelcomePageV3SideEffects because
-    // they depend on trialAccess; this one does not.
-    useEffectOnce(() => {
-        logEvent(SegmentEvent.AutomatePaywallVisited, {
-            location: AIAgentPaywallFeatures.TrialSetup,
-        })
+    if (trialAccess.isLoading || trialAccess.isOnboarded === undefined) {
+        return (
+            <Box
+                alignItems="center"
+                justifyContent="center"
+                width="100%"
+                height="100%"
+            >
+                <Loader size="sm" aria-label="Loading" />
+            </Box>
+        )
+    }
+
+    return <AIAgentWelcomePageViewV3Body {...props} />
+}
+
+const AIAgentWelcomePageViewV3Body = (props: Props) => {
+    const trialAccess = useTrialAccess(props.shopName)
+
+    const trialModalProps = useTrialModalProps({
+        storeName: props.shopName,
     })
 
-    const handleJtbdSelect = useCallback(
+    const { storeActivations } = useStoreActivations({
+        storeName: props.shopName,
+        withChatIntegrationsStatus: true,
+        withStoresKnowledgeStatus: true,
+    })
+
+    const trialFlow = useShoppingAssistantTrialFlow({
+        accountDomain: props.accountDomain,
+        storeActivations,
+        trialType: trialAccess.trialType,
+    })
+
+    const { onCtaTransition, isOnUpdateOnboardingWizard } =
+        useAiAgentWelcomePageV3SideEffects({
+            shopName: props.shopName,
+            storeConfiguration: props.storeConfiguration,
+            isTrialFinishSetupModalOpen: trialFlow.isTrialFinishSetupModalOpen,
+        })
+
+    const [isAutomationModalOpened, setIsAutomationModalOpened] =
+        useState(false)
+    const [showJtbdPicker, setShowJtbdPicker] = useState(false)
+
+    const { isDisabled: isNotifyAdminDisabled } = useNotifyAdmins(
+        props.shopName,
+        trialAccess.trialType,
+    )
+
+    const isAiAgentTrial = trialAccess.trialType === TrialType.AiAgent
+    const hasAutomate = !!trialAccess.currentAutomatePlan
+    const canStartOnboarding =
+        (trialAccess.hasCurrentStoreTrialExpired ||
+            trialAccess.isTrialingSubscription ||
+            hasAutomatePlanAboveGen6(trialAccess.currentAutomatePlan)) &&
+        !trialAccess.isOnboarded
+
+    const isDuringOrAfterTrial =
+        trialAccess.hasCurrentStoreTrialStarted ||
+        trialAccess.hasCurrentStoreTrialExpired ||
+        trialAccess.hasCurrentStoreTrialOptedOut
+
+    const learnMoreUrl = isAiAgentTrial
+        ? EXTERNAL_URLS.AI_AGENT_TRIAL_LEARN_MORE_PAYWALL
+        : EXTERNAL_URLS.SHOPPING_ASSISTANT_TRIAL_LEARN_MORE_PAYWALL
+
+    const onOpenWizard = useCallback(() => {
+        if (canStartOnboarding) {
+            setShowJtbdPicker(true)
+            return
+        }
+        onCtaTransition()
+    }, [canStartOnboarding, onCtaTransition])
+
+    const onJtbdSelect = useCallback(
         (jtbd: JtbdValue) => {
             onCtaTransition({ [JTBD_QUERY_KEY]: jtbd })
         },
         [onCtaTransition],
     )
 
+    const { ctas, modals } = useAiAgentCtas({
+        canStartOnboarding,
+        hasAutomate,
+        isDuringOrAfterTrial,
+        canBookDemo: trialAccess.canBookDemo,
+        canNotifyAdmin: trialAccess.canNotifyAdmin,
+        canSeeTrial: trialAccess.canSeeTrialCTA,
+        canSeeSubscribeNow: trialAccess.canSeeSubscribeNowCTA,
+        isAdmin: trialAccess.isAdminUser,
+        learnMoreUrl,
+        isOnboarded: !!trialAccess.isOnboarded,
+        onOpenWizard,
+        onOpenSubscribeModal: () => setIsAutomationModalOpened(true),
+        onOpenTrialUpgradeModal: trialFlow.openTrialUpgradeModal,
+        onOpenTrialRequestModal: trialFlow.openTrialRequestModal,
+        onOpenUpgradePlanModal: trialFlow.openUpgradePlanModal,
+        onCloseTrialRequestModal: trialFlow.closeTrialRequestModal,
+        onCloseTrialFinishSetupModal: trialFlow.closeTrialFinishSetupModal,
+        isNotifyAdminDisabled,
+        trialModals: {
+            isTrialModalOpen: trialFlow.isTrialModalOpen,
+            newTrialUpgradePlanModal: trialModalProps.newTrialUpgradePlanModal,
+            isTrialRequestModalOpen: trialFlow.isTrialRequestModalOpen,
+            trialRequestModal: trialModalProps.trialRequestModal,
+            isTrialFinishSetupModalOpen: trialFlow.isTrialFinishSetupModalOpen,
+            trialFinishSetupModal: trialModalProps.trialFinishSetupModal,
+        },
+        isOnUpdateOnboardingWizard,
+    })
+
     return (
-        <Box flexDirection="row" width="100%" height="100%">
-            <PaywallInfo
-                onJtbdSelect={handleJtbdSelect}
-                ctaLabel={
-                    isOnUpdateOnboardingWizard
-                        ? 'Continue setup'
-                        : 'Start setup'
-                }
+        <>
+            <Box flexDirection="row" width="100%" height="100%">
+                <PaywallInfo
+                    showJtbdPicker={showJtbdPicker}
+                    onJtbdSelect={onJtbdSelect}
+                    ctas={ctas}
+                />
+                <PaywallPreview />
+            </Box>
+            {modals}
+            {trialModalProps.upgradePlanModal.isOpen && (
+                <UpgradePlanModal {...trialModalProps.upgradePlanModal} />
+            )}
+            <AutomateSubscriptionModal
+                confirmLabel="Subscribe"
+                isOpen={isAutomationModalOpened}
+                onClose={() => setIsAutomationModalOpened(false)}
             />
-            <PaywallPreview />
-        </Box>
+        </>
     )
 }
 
 type PaywallInfoProps = {
+    showJtbdPicker: boolean
     onJtbdSelect: (jtbd: JtbdValue) => void
-    ctaLabel: string
+    ctas: ReactNode
 }
 
-const PaywallInfo = ({ onJtbdSelect, ctaLabel }: PaywallInfoProps) => {
+export const PaywallInfo = ({
+    showJtbdPicker,
+    onJtbdSelect,
+    ctas,
+}: PaywallInfoProps) => {
     const theme = useTheme()
     const isDarkTheme = theme.resolvedName === 'dark'
     const logoSrc = isDarkTheme ? AiAgentLogoWhite : AiAgentLogo
-
-    const [showPicker, setShowPicker] = useState(false)
-
-    const onStartSetup = useCallback(() => {
-        setShowPicker(true)
-    }, [])
 
     return (
         <Box
@@ -120,7 +229,7 @@ const PaywallInfo = ({ onJtbdSelect, ctaLabel }: PaywallInfoProps) => {
                     width={170}
                     fallback="AI Agent Logo"
                 />
-                {showPicker ? (
+                {showJtbdPicker ? (
                     <JtbdPicker onSelect={onJtbdSelect} />
                 ) : (
                     <>
@@ -152,24 +261,7 @@ const PaywallInfo = ({ onJtbdSelect, ctaLabel }: PaywallInfoProps) => {
                             </Box>
                         </Box>
                         <Box flexDirection="column" gap="md">
-                            <Box>
-                                <Button
-                                    data-candu-id="ai-agent-welcome-page"
-                                    trailingSlot={<Icon name="arrow-right" />}
-                                    onClick={onStartSetup}
-                                >
-                                    {ctaLabel}
-                                </Button>
-                            </Box>
-                            <Text
-                                variant="italic"
-                                size="xs"
-                                color="content-neutral-tertiary"
-                            >
-                                Set up and test for free. Your 2-week trial
-                                starts only when AI Agent goes live for
-                                shoppers.
-                            </Text>
+                            {ctas}
                         </Box>
                     </>
                 )}
@@ -178,7 +270,7 @@ const PaywallInfo = ({ onJtbdSelect, ctaLabel }: PaywallInfoProps) => {
     )
 }
 
-const PaywallPreview = () => {
+export const PaywallPreview = () => {
     const [preview, setPreview] = useState<PreviewOption>(
         PREVIEW_OPTION.Support,
     )
@@ -220,6 +312,11 @@ const PaywallPreview = () => {
                         playsInline
                         loop
                         src={SUPPORT_VIDEO_SRC}
+                        style={{
+                            width: '100%',
+                            height: 'auto',
+                            display: 'block',
+                        }}
                     />
                 ) : (
                     <Image

@@ -31,7 +31,7 @@ describe('AiAgentOnboardingRouter', () => {
         expect(screen.getByText('AI Agent Onboarding')).toBeInTheDocument()
     })
 
-    it('renders nothing while the flag is loading', () => {
+    it('renders a loader while the flag is loading', () => {
         ;(useFlagWithLoading as jest.Mock).mockReturnValueOnce({
             value: false,
             isLoading: true,
@@ -39,6 +39,7 @@ describe('AiAgentOnboardingRouter', () => {
 
         render(<AiAgentOnboardingRouter />)
 
+        expect(screen.getByLabelText('Loading')).toBeInTheDocument()
         expect(
             screen.queryByText('AI Agent Onboarding'),
         ).not.toBeInTheDocument()

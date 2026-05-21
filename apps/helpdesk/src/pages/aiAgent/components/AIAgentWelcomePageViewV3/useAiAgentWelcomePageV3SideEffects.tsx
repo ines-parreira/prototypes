@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
 import type {
@@ -20,13 +20,16 @@ import {
 } from 'pages/aiAgent/hooks/useAiAgentOnboardingState'
 import { WizardStepEnum } from 'pages/aiAgent/Onboarding_V2/types'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
+import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
 import { extractShopNameFromUrl } from 'pages/aiAgent/utils/extractShopNameFromUrl'
+import { hasAutomatePlanAboveGen6 } from 'pages/aiAgent/utils/trial.utils'
 
 const WELCOME_PAGE_VERSION = 'V3'
 
 type Params = {
     shopName: string
     storeConfiguration?: StoreConfiguration
+    isTrialFinishSetupModalOpen: boolean
 }
 
 type Result = {
@@ -37,6 +40,7 @@ type Result = {
 export const useAiAgentWelcomePageV3SideEffects = ({
     shopName,
     storeConfiguration,
+    isTrialFinishSetupModalOpen,
 }: Params): Result => {
     const {
         isAdmin,
@@ -52,10 +56,10 @@ export const useAiAgentWelcomePageV3SideEffects = ({
     const trialAccess = useTrialAccess(shopName)
 
     const history = useHistory()
+    const location = useLocation()
     const aiAgentNavigation = useAiAgentNavigation({ shopName })
 
-    const isOnStorePage =
-        extractShopNameFromUrl(window.location.href) === shopName
+    const isOnStorePage = extractShopNameFromUrl(location.pathname) === shopName
     const isOnUpdateOnboardingWizard =
         storeConfiguration?.wizard?.completedDatetime === null
 
@@ -79,6 +83,35 @@ export const useAiAgentWelcomePageV3SideEffects = ({
             })
         }
     }, [shopName, trialAccess.canSeeTrialCTA])
+
+    const isAiAgentTrial = trialAccess.trialType === TrialType.AiAgent
+    const canStartOnboarding =
+        (trialAccess.hasCurrentStoreTrialExpired ||
+            trialAccess.isTrialingSubscription ||
+            hasAutomatePlanAboveGen6(trialAccess.currentAutomatePlan)) &&
+        !trialAccess.isOnboarded
+
+    const paywallFeature = useMemo(
+        () =>
+            isAiAgentTrial || canStartOnboarding
+                ? AIAgentPaywallFeatures.TrialSetup
+                : AIAgentPaywallFeatures.ShoppingAssistantTrialSetup,
+        [isAiAgentTrial, canStartOnboarding],
+    )
+
+    const automatePaywallFiredRef = useRef(false)
+    useEffect(() => {
+        if (
+            trialAccess.isLoading ||
+            trialAccess.isOnboarded === undefined ||
+            automatePaywallFiredRef.current
+        )
+            return
+        automatePaywallFiredRef.current = true
+        logEvent(SegmentEvent.AutomatePaywallVisited, {
+            location: paywallFeature,
+        })
+    }, [paywallFeature, trialAccess.isLoading, trialAccess.isOnboarded])
 
     const handleOnFinishSetupNotification = useCallback(async () => {
         const isFinishedSetupNotificationAlreadyReceived =
@@ -147,8 +180,6 @@ export const useAiAgentWelcomePageV3SideEffects = ({
         ],
     )
 
-    // V2 also guards on !trialFlow.isTrialFinishSetupModalOpen here; V3 omits it
-    // because that modal lives in useAiAgentCtas, which V3 does not use.
     useEffect(() => {
         if (!isOnStorePage || onboardingState === OnboardingState.Loading) {
             return
@@ -156,7 +187,8 @@ export const useAiAgentWelcomePageV3SideEffects = ({
 
         const requiresOnboardingWizard =
             onboardingState === OnboardingState.OnboardingWizard &&
-            trialAccess.isInAiAgentTrial
+            trialAccess.isInAiAgentTrial &&
+            !isTrialFinishSetupModalOpen
 
         if (requiresOnboardingWizard) {
             onCtaTransition()
@@ -165,6 +197,7 @@ export const useAiAgentWelcomePageV3SideEffects = ({
         isOnStorePage,
         onboardingState,
         trialAccess.isInAiAgentTrial,
+        isTrialFinishSetupModalOpen,
         onCtaTransition,
     ])
 

@@ -12,6 +12,7 @@ import {
     useAiAgentOnboardingState,
 } from 'pages/aiAgent/hooks/useAiAgentOnboardingState'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
+import { AIAgentPaywallFeatures } from 'pages/aiAgent/types'
 import { extractShopNameFromUrl } from 'pages/aiAgent/utils/extractShopNameFromUrl'
 
 import { useAiAgentWelcomePageV3SideEffects } from './useAiAgentWelcomePageV3SideEffects'
@@ -24,6 +25,7 @@ jest.mock('@repo/logging', () => ({
         AiAgentWelcomePageViewed: 'ai-agent-welcome-page-viewed',
         AiAgentWelcomePageCtaClicked: 'ai-agent-welcome-page-cta-clicked',
         TrialLinkPaywallViewed: 'trial-link-paywall-viewed',
+        AutomatePaywallVisited: 'automate-paywall-visited',
     },
 }))
 jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingNotification')
@@ -54,6 +56,7 @@ const mockHistoryPush = jest.fn()
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useHistory: () => ({ push: mockHistoryPush }),
+    useLocation: () => ({ pathname: `/app/ai-agent/shopify/${SHOP_NAME}` }),
 }))
 
 const handleOnSave = jest.fn()
@@ -73,7 +76,12 @@ const baseOnboardingNotification = {
 const baseTrialAccess = {
     canSeeTrialCTA: false,
     isInAiAgentTrial: false,
+    isLoading: false,
     trialType: TrialType.AiAgent,
+    hasCurrentStoreTrialExpired: false,
+    isTrialingSubscription: false,
+    currentAutomatePlan: undefined,
+    isOnboarded: true,
 }
 
 describe('useAiAgentWelcomePageV3SideEffects', () => {
@@ -90,11 +98,15 @@ describe('useAiAgentWelcomePageV3SideEffects', () => {
         mockExtractShopNameFromUrl.mockReturnValue(SHOP_NAME)
     })
 
-    const renderSideEffects = (storeConfiguration?: object) =>
+    const renderSideEffects = (
+        storeConfiguration?: object,
+        { isTrialFinishSetupModalOpen = false } = {},
+    ) =>
         renderHook(() =>
             useAiAgentWelcomePageV3SideEffects({
                 shopName: SHOP_NAME,
                 storeConfiguration: storeConfiguration as never,
+                isTrialFinishSetupModalOpen,
             }),
         )
 
@@ -127,6 +139,80 @@ describe('useAiAgentWelcomePageV3SideEffects', () => {
             SegmentEvent.TrialLinkPaywallViewed,
             { trialType: TrialType.AiAgent },
         )
+    })
+
+    it('fires AutomatePaywallVisited with the resolved paywallFeature once trial data is loaded', () => {
+        mockUseTrialAccess.mockReturnValue({
+            ...baseTrialAccess,
+            isLoading: false,
+            currentAutomatePlan: { generation: 7 },
+            trialType: TrialType.ShoppingAssistant,
+            isOnboarded: true,
+        })
+
+        renderSideEffects()
+
+        expect(mockLogEvent).toHaveBeenCalledWith(
+            SegmentEvent.AutomatePaywallVisited,
+            { location: AIAgentPaywallFeatures.ShoppingAssistantTrialSetup },
+        )
+    })
+
+    it('does not fire AutomatePaywallVisited while trialAccess is loading', () => {
+        mockUseTrialAccess.mockReturnValue({
+            ...baseTrialAccess,
+            isLoading: true,
+        })
+
+        renderSideEffects()
+
+        expect(mockLogEvent).not.toHaveBeenCalledWith(
+            SegmentEvent.AutomatePaywallVisited,
+            expect.anything(),
+        )
+    })
+
+    it('does not fire AutomatePaywallVisited while onboarding state is still resolving', () => {
+        mockUseTrialAccess.mockReturnValue({
+            ...baseTrialAccess,
+            isLoading: false,
+            isOnboarded: undefined,
+        })
+
+        renderSideEffects()
+
+        expect(mockLogEvent).not.toHaveBeenCalledWith(
+            SegmentEvent.AutomatePaywallVisited,
+            expect.anything(),
+        )
+    })
+
+    it('only fires AutomatePaywallVisited once even if paywallFeature would change later', () => {
+        mockUseTrialAccess.mockReturnValue({
+            ...baseTrialAccess,
+            isLoading: false,
+            currentAutomatePlan: undefined,
+            trialType: TrialType.AiAgent,
+        })
+
+        const { rerender } = renderSideEffects()
+
+        mockUseTrialAccess.mockReturnValue({
+            ...baseTrialAccess,
+            isLoading: false,
+            currentAutomatePlan: { generation: 7 },
+            trialType: TrialType.ShoppingAssistant,
+            isOnboarded: true,
+        })
+        rerender()
+
+        const automateCalls = mockLogEvent.mock.calls.filter(
+            ([event]) => event === SegmentEvent.AutomatePaywallVisited,
+        )
+        expect(automateCalls).toHaveLength(1)
+        expect(automateCalls[0][1]).toEqual({
+            location: AIAgentPaywallFeatures.TrialSetup,
+        })
     })
 
     it('navigates to the wizard step and logs the CTA-clicked event on onCtaTransition', () => {
@@ -188,6 +274,20 @@ describe('useAiAgentWelcomePageV3SideEffects', () => {
         )
 
         renderSideEffects()
+
+        expect(mockHistoryPush).not.toHaveBeenCalled()
+    })
+
+    it('does not auto-redirect while the trial finish-setup modal is open', () => {
+        mockUseTrialAccess.mockReturnValue({
+            ...baseTrialAccess,
+            isInAiAgentTrial: true,
+        })
+        mockUseAiAgentOnboardingState.mockReturnValue(
+            OnboardingState.OnboardingWizard,
+        )
+
+        renderSideEffects(undefined, { isTrialFinishSetupModalOpen: true })
 
         expect(mockHistoryPush).not.toHaveBeenCalled()
     })
