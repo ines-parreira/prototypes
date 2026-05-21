@@ -28,14 +28,14 @@ const SHARED_AI_AGENT_NAV_TOOLTIP = {
     videoPoster:
         'https://embed-ssl.wistia.com/deliveries/9ef6818ab34540e0468b60c7b31d8f52f657ee64.bin',
     videoDuration: '2:00',
-    // learnMoreUrl: 'https://docs.gorgias.com/en-US/articles/ai-agent-analytics',
-    learnMoreUrl: null,
+    learnMoreUrl: 'https://link.gorgias.com/839665',
 }
 
 export const AI_AGENT_AI_AGENT_NAV_TOOLTIP = {
     ...SHARED_AI_AGENT_NAV_TOOLTIP,
     title: 'AI Agent',
     body: 'A deeper look at AI Agent performance, with sub-reports for Support Agent and Shopping Assistant.',
+    learnMoreUrl: 'https://link.gorgias.com/2e3b0b',
 }
 
 export const OVERVIEW_AI_AGENT_NAV_TOOLTIP = {
