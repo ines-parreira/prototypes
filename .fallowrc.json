@@ -46,7 +46,8 @@
                     "packages/debug/src/**",
                     "packages/forms/src/**",
                     "packages/layout/src/**",
-                    "packages/navigation/src/**"
+                    "packages/navigation/src/**",
+                    "packages/ui/src/**"
                 ]
             },
             {
