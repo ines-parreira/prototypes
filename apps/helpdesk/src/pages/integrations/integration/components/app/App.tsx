@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { useEffectOnce, useTitle } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -23,6 +23,7 @@ import {
     useAssignServiceConnectionStore,
     useCreateServiceConnection,
     useListServiceConnectionsByAppId,
+    useListServiceConnectionStoresByConnectionIds,
 } from 'models/integration/queries'
 import { disconnectApp, fetchApp } from 'models/integration/resources'
 import type { StoreIntegration } from 'models/integration/types'
@@ -71,6 +72,8 @@ export enum Tab {
     Connections = 'connections',
     Actions = 'actions',
 }
+
+const EXTERNAL_CONNECT_AWAIT_TIMEOUT_MS = 5 * 60 * 1000
 
 function queryStringToBool(flag?: string): boolean {
     return flag === '' || flag === '1' || flag?.toLowerCase() === 'true'
@@ -131,12 +134,29 @@ export default function AppDetail() {
     const supportsMultipleConnections = () =>
         getApplicationById(appId)?.supports_multiple_connections || false
 
-    const { data: existingConnections } = useListServiceConnectionsByAppId(
-        appId,
-        { enabled: isActionLibraryEnabled },
-    )
+    const { data: existingConnections, refetch: refetchServiceConnections } =
+        useListServiceConnectionsByAppId(appId, {
+            enabled: isActionLibraryEnabled,
+        })
 
     const hasServiceConnections = !isEmpty(existingConnections)
+
+    const connectionStoreQueries =
+        useListServiceConnectionStoresByConnectionIds(
+            (existingConnections ?? []).map((connection) => connection.id),
+        )
+
+    const disabledStoreIdsForConnectModal = useMemo<ReadonlySet<number>>(() => {
+        const disabled = new Set<number>()
+        ;(existingConnections ?? []).forEach((connection, index) => {
+            if (connection.id === createdConnectionId) return
+            const stores = connectionStoreQueries[index]?.data ?? []
+            for (const store of stores) {
+                disabled.add(store.store_id)
+            }
+        })
+        return disabled
+    }, [existingConnections, connectionStoreQueries, createdConnectionId])
 
     const {
         mutateAsync: createServiceConnection,
@@ -154,16 +174,95 @@ export default function AppDetail() {
         }
     }, [appId, preview])
 
-    const hasAutoRedirectedRef = useRef(false)
+    const awaitingStorageKey = `app-awaiting-connect-${appId}`
+    const awaitingConnectionRef = useRef(false)
+    const connectionsSnapshotRef = useRef<Set<string>>(new Set())
+    const awaitingTimeoutRef = useRef<number | null>(null)
+
+    useEffectOnce(() => {
+        try {
+            const raw = sessionStorage.getItem(awaitingStorageKey)
+            if (!raw) return
+            const parsed = JSON.parse(raw) as {
+                snapshotIds?: string[]
+                expiresAt?: number
+            }
+            if (parsed.expiresAt && parsed.expiresAt < Date.now()) {
+                sessionStorage.removeItem(awaitingStorageKey)
+                return
+            }
+            connectionsSnapshotRef.current = new Set(parsed.snapshotIds ?? [])
+            awaitingConnectionRef.current = true
+        } catch {
+            sessionStorage.removeItem(awaitingStorageKey)
+        }
+    })
+
+    const clearAwaitingState = useCallback(() => {
+        awaitingConnectionRef.current = false
+        if (awaitingTimeoutRef.current !== null) {
+            window.clearTimeout(awaitingTimeoutRef.current)
+            awaitingTimeoutRef.current = null
+        }
+        sessionStorage.removeItem(awaitingStorageKey)
+    }, [awaitingStorageKey])
+
+    const handleExternalConnectClick = useCallback(() => {
+        const snapshotIds = (existingConnections ?? []).map(
+            (connection) => connection.id,
+        )
+        connectionsSnapshotRef.current = new Set(snapshotIds)
+        awaitingConnectionRef.current = true
+        sessionStorage.setItem(
+            awaitingStorageKey,
+            JSON.stringify({
+                snapshotIds,
+                expiresAt: Date.now() + EXTERNAL_CONNECT_AWAIT_TIMEOUT_MS,
+            }),
+        )
+        if (awaitingTimeoutRef.current !== null) {
+            window.clearTimeout(awaitingTimeoutRef.current)
+        }
+        awaitingTimeoutRef.current = window.setTimeout(() => {
+            awaitingConnectionRef.current = false
+            awaitingTimeoutRef.current = null
+            sessionStorage.removeItem(awaitingStorageKey)
+        }, EXTERNAL_CONNECT_AWAIT_TIMEOUT_MS)
+    }, [existingConnections, awaitingStorageKey])
+
+    const openPostConnectFlow = useCallback(
+        async (connectionId: string) => {
+            const title = appItem?.title ?? ''
+            if (storeIntegrations.length === 1) {
+                const onlyStore = storeIntegrations[0]
+                try {
+                    await assignStore({
+                        connectionId,
+                        storeId: onlyStore.id,
+                    })
+                    setPrimaryStore(onlyStore)
+                    setInstallSuccessOpen(true)
+                } catch {
+                    toast.error(
+                        `Connected ${title}, but failed to link your store. You can link it from the Connections tab.`,
+                    )
+                }
+            } else if (storeIntegrations.length > 1) {
+                setConnectModalOpen(true)
+            } else {
+                setInstallSuccessOpen(true)
+            }
+        },
+        [appItem, storeIntegrations, assignStore],
+    )
+
+    const hasAttemptedAutoRedirectRef = useRef(false)
     useEffect(() => {
-        if (hasAutoRedirectedRef.current) return
-        if (
-            !extraParam &&
-            isActionLibraryEnabled &&
-            existingConnections &&
-            existingConnections.length > 0
-        ) {
-            hasAutoRedirectedRef.current = true
+        if (hasAttemptedAutoRedirectRef.current) return
+        if (!isActionLibraryEnabled) return
+        if (!existingConnections) return
+        hasAttemptedAutoRedirectRef.current = true
+        if (!extraParam && existingConnections.length > 0) {
             history.replace(`${baseURL}/connections`)
         }
     }, [
@@ -190,17 +289,60 @@ export default function AppDetail() {
 
         void loadAppDetails(true)
 
+        const refetchAwaited = () => {
+            if (awaitingConnectionRef.current) {
+                void loadAppDetails(false)
+                void refetchServiceConnections()
+            }
+        }
         const onVisibilityChange = () => {
             if (document.visibilityState === 'visible') {
                 void loadAppDetails(false)
+                refetchAwaited()
             }
         }
+        const onWindowFocus = () => {
+            refetchAwaited()
+        }
         document.addEventListener('visibilitychange', onVisibilityChange)
+        window.addEventListener('focus', onWindowFocus)
         return () => {
             cancelled = true
             document.removeEventListener('visibilitychange', onVisibilityChange)
+            window.removeEventListener('focus', onWindowFocus)
         }
-    }, [appId, preview])
+    }, [appId, preview, refetchServiceConnections])
+
+    useEffect(() => {
+        if (!awaitingConnectionRef.current || !existingConnections) return
+        const newConnection = existingConnections.find(
+            (connection) => !connectionsSnapshotRef.current.has(connection.id),
+        )
+        if (!newConnection) return
+        clearAwaitingState()
+        setCreatedConnectionId(newConnection.id)
+        void openPostConnectFlow(newConnection.id)
+    }, [existingConnections, clearAwaitingState, openPostConnectFlow])
+
+    const hasAutoOpenedAuthModalRef = useRef(false)
+    const hasObservedConnectionsRef = useRef(false)
+    useEffect(() => {
+        if (existingConnections && existingConnections.length > 0) {
+            hasObservedConnectionsRef.current = true
+        }
+    }, [existingConnections])
+
+    useEffect(() => {
+        if (hasAutoOpenedAuthModalRef.current) return
+        if (hasObservedConnectionsRef.current) return
+        if (!isActionLibraryEnabled) return
+        if (!appItem?.outboundAuth || !appItem.isConnected) return
+        if (!existingConnections || existingConnections.length > 0) return
+        hasAutoOpenedAuthModalRef.current = true
+        setAuthModalOpen(true)
+    }, [appItem, existingConnections, isActionLibraryEnabled])
+
+    useEffect(() => clearAwaitingState, [clearAwaitingState])
 
     useTitle(appItem?.title)
 
@@ -252,13 +394,8 @@ export default function AppDetail() {
     detailProps.infocard.CTA = (
         <AppCTA
             {...appItem}
-            isConnected={isAppConnected}
-            hasConnections={
-                isActionLibraryEnabled ? hasServiceConnections : undefined
-            }
-            hideDisconnect={isActionLibraryEnabled}
-            onConnectClick={() => setAuthModalOpen(true)}
-            useLegacyConnect={!useModalConnect}
+            onConnectClick={handleExternalConnectClick}
+            onDisconnected={refetchAppItem}
         />
     )
 
@@ -290,25 +427,7 @@ export default function AppDetail() {
             await refetchAppItem()
             setAuthModalOpen(false)
 
-            if (storeIntegrations.length === 1) {
-                const onlyStore = storeIntegrations[0]
-                try {
-                    await assignStore({
-                        connectionId: connection.id,
-                        storeId: onlyStore.id,
-                    })
-                    setPrimaryStore(onlyStore)
-                    setInstallSuccessOpen(true)
-                } catch {
-                    toast.error(
-                        `Connected ${appItem.title}, but failed to link your store. You can link it from the Connections tab.`,
-                    )
-                }
-            } else if (storeIntegrations.length > 1) {
-                setConnectModalOpen(true)
-            } else {
-                setInstallSuccessOpen(true)
-            }
+            await openPostConnectFlow(connection.id)
         } catch {
             toast.error(
                 `Sorry, we couldn't connect ${appItem.title}. Please check your credentials and try again.`,
@@ -354,31 +473,24 @@ export default function AppDetail() {
                     </Breadcrumb>
                 }
             >
-                {extra === Tab.Connections && useModalConnect ? (
-                    <Button onClick={() => setAuthModalOpen(true)}>
-                        Add connection
-                    </Button>
-                ) : extra === Tab.Connections &&
-                  (isActionLibraryEnabled || supportsMultipleConnections()) ? (
-                    <ConnectLink
-                        connectUrl={appItem.connectUrl}
-                        isApp
-                        integrationTitle={appItem.title}
-                    >
-                        <Button>
-                            {isActionLibraryEnabled
-                                ? 'Add connection'
-                                : 'Add Account'}
+                {(extra === Tab.Connections &&
+                    (isActionLibraryEnabled ||
+                        supportsMultipleConnections())) ||
+                (extra === Tab.Actions && isActionLibraryEnabled) ? (
+                    useModalConnect ? (
+                        <Button onClick={() => setAuthModalOpen(true)}>
+                            Add connection
                         </Button>
-                    </ConnectLink>
-                ) : extra === Tab.Actions && isActionLibraryEnabled ? (
-                    <ConnectLink
-                        connectUrl={appItem.connectUrl}
-                        isApp
-                        integrationTitle={appItem.title}
-                    >
-                        <Button>Add connection</Button>
-                    </ConnectLink>
+                    ) : (
+                        <ConnectLink
+                            connectUrl={appItem.connectUrl}
+                            isApp
+                            integrationTitle={appItem.title}
+                            onClick={handleExternalConnectClick}
+                        >
+                            <Button>Add connection</Button>
+                        </ConnectLink>
+                    )
                 ) : null}
             </PageHeader>
 
@@ -391,7 +503,7 @@ export default function AppDetail() {
                         Advanced
                     </NavLink>
                     {(isActionLibraryEnabled
-                        ? hasServiceConnections
+                        ? appItem.isConnected || hasServiceConnections
                         : hasConnections) && (
                         <NavLink to={`${baseURL}/connections`} exact>
                             Connections
@@ -439,11 +551,11 @@ export default function AppDetail() {
                 app={{ name: appItem.title }}
                 isSubmitting={isAssigningStore}
                 onSubmit={handleStorePickerSubmit}
+                disabledStoreIds={disabledStoreIdsForConnectModal}
             />
             <InstallSuccessModal
                 isOpen={isInstallSuccessOpen}
                 onOpenChange={setInstallSuccessOpen}
-                appName={appItem.title}
                 onViewActions={() => {
                     setInstallSuccessOpen(false)
                     if (primaryStore) {
@@ -462,10 +574,8 @@ export default function AppDetail() {
 }
 
 type AppCTAProps = AppDetailType & {
-    onConnectClick: () => void
-    hasConnections?: boolean
-    hideDisconnect?: boolean
-    useLegacyConnect?: boolean
+    onConnectClick?: () => void
+    onDisconnected?: () => void | Promise<void>
 }
 
 function AppCTA({
@@ -476,20 +586,16 @@ function AppCTA({
     title,
     connectUrl,
     onConnectClick,
-    hasConnections: hasConnectionsOverride,
-    hideDisconnect = false,
-    useLegacyConnect = false,
+    onDisconnected,
 }: AppCTAProps) {
     const domain = useAppSelector(getCurrentAccountState).get('domain')
 
     const [isLoading, setLoading] = useState(false)
-    const [isAppInstalled, setAppInstalled] = useState<boolean>(isConnected)
     const [isModalOpen, setModalOpen] = useState(false)
 
-    const legacyHasConnections = !isEmpty(
+    const hasConnections = !isEmpty(
         useAppSelector(getIntegrationsByAppId(appId)),
     )
-    const hasConnections = hasConnectionsOverride ?? legacyHasConnections
 
     const supportsMultipleConnections =
         getApplicationById(appId)?.supports_multiple_connections || false
@@ -506,12 +612,11 @@ function AppCTA({
         setLoading(true)
         try {
             const isUninstalled = await disconnectApp(appId)
-            if (isUninstalled) {
-                setAppInstalled(!isUninstalled)
-                toast.success(`${title} has been disconnected.`)
-            } else {
+            if (!isUninstalled) {
                 throw new Error(`Not disconnected`)
             }
+            toast.success(`${title} has been disconnected.`)
+            await onDisconnected?.()
         } catch {
             toast.error(
                 `Sorry, something went wrong. ${title} is still connected.`,
@@ -529,7 +634,7 @@ function AppCTA({
                     integrationId={alloyIntegrationId}
                     name={title}
                 />
-            ) : isAppInstalled && !hideDisconnect ? (
+            ) : isConnected ? (
                 <>
                     <Button
                         intent="destructive"
@@ -547,11 +652,12 @@ function AppCTA({
                         </Tooltip>
                     )}
                 </>
-            ) : useLegacyConnect ? (
+            ) : (
                 <ConnectLink
                     connectUrl={connectUrl}
                     isApp
                     integrationTitle={title}
+                    onClick={onConnectClick}
                 >
                     <Button>
                         {isUnapproved
@@ -559,10 +665,6 @@ function AppCTA({
                             : 'Connect App'}
                     </Button>
                 </ConnectLink>
-            ) : (
-                <Button onClick={onConnectClick}>
-                    {isUnapproved ? 'Connect Unapproved App' : 'Connect App'}
-                </Button>
             )}
             <Modal
                 onClose={() => setModalOpen(false)}

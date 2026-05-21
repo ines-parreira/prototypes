@@ -12,25 +12,27 @@ import {
 interface InstallSuccessModalProps {
     isOpen: boolean
     onOpenChange: (open: boolean) => void
-    appName: string
     onViewActions: () => void
 }
 
 export const InstallSuccessModal = ({
     isOpen,
     onOpenChange,
-    appName,
     onViewActions,
 }: InstallSuccessModalProps) => {
     return (
         <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="sm">
             <OverlayHeader
-                title={<Heading size="lg">Connected to {appName}</Heading>}
+                title={
+                    <Heading size="lg">
+                        Actions are now available in your store
+                    </Heading>
+                }
             />
             <OverlayContent display="block">
                 <Text>
-                    Your actions from this app are now available in AI Agent
-                    settings. Insert them in{' '}
+                    Manage your actions from the AI Agent settings. Actions can
+                    be inserted in{' '}
                     <Text as="span" variant="bold">
                         skills
                     </Text>{' '}
@@ -38,7 +40,7 @@ export const InstallSuccessModal = ({
                     <Text as="span" variant="bold">
                         guidance
                     </Text>{' '}
-                    for AI Agent to perform actions on your behalf.
+                    for AI Agent to perform them on your behalf.
                 </Text>
             </OverlayContent>
             <OverlayFooter hideCancelButton>

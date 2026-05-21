@@ -68,11 +68,16 @@ const prefilledOauth2Auth: ServiceConnectionAuthApiDTO = {
 function buildHandlers(options?: {
     auth?: ServiceConnectionAuthApiDTO
     connection?: ServiceConnectionApiDTO
+    appTitle?: string
     onUpdate?: (body: Record<string, unknown>) => Response | Promise<Response>
 }) {
     const auth = options?.auth ?? basicAuth
     const connection = options?.connection ?? baseConnection
+    const appTitle = options?.appTitle ?? 'ShipMonk'
     return [
+        http.get(`*/api/apps/${APP_ID}`, () =>
+            HttpResponse.json({ id: APP_ID, name: appTitle }),
+        ),
         http.get(`*/api/service-connections/${CONNECTION_ID}`, () =>
             HttpResponse.json(connection),
         ),
@@ -117,7 +122,7 @@ const renderComponent = () =>
     })
 
 describe('AppConnectionEdit', () => {
-    it('renders the breadcrumbs and the connection name as heading', async () => {
+    it('renders the breadcrumbs with the app title and the connection name as heading', async () => {
         renderComponent()
 
         expect(
@@ -131,7 +136,7 @@ describe('AppConnectionEdit', () => {
             '/app/settings/integrations',
         )
         expect(
-            screen.getByRole('link', { name: 'ShipMonk connection 1' }),
+            await screen.findByRole('link', { name: 'ShipMonk' }),
         ).toHaveAttribute('href', APP_BASE_URL)
         expect(
             screen.getByRole('link', { name: 'Connections' }),
@@ -249,8 +254,9 @@ describe('AppConnectionEdit', () => {
         })
 
         expect(
-            await screen.findByRole('status', { name: 'Saved New name.' }),
+            await screen.findByRole('status', { name: 'Credentials updated' }),
         ).toBeInTheDocument()
+        expect(mockHistoryPush).toHaveBeenCalledWith(CONNECTIONS_URL)
     })
 
     it('saves the OAuth2 payload with the fields that were changed', async () => {
@@ -290,7 +296,7 @@ describe('AppConnectionEdit', () => {
         })
     })
 
-    it('shows an error toast when the update request fails', async () => {
+    it('shows a friendly error toast when the update request fails', async () => {
         server.use(
             ...buildHandlers({
                 onUpdate: () =>
@@ -308,26 +314,8 @@ describe('AppConnectionEdit', () => {
         await user.click(screen.getByRole('button', { name: 'Save' }))
 
         expect(
-            await screen.findByRole('status', { name: 'Backend exploded' }),
-        ).toBeInTheDocument()
-    })
-
-    it('shows a generic error toast when the update fails with a non-Gorgias error shape', async () => {
-        server.use(
-            ...buildHandlers({
-                onUpdate: () => new HttpResponse(null, { status: 500 }),
-            }),
-        )
-
-        const { user } = renderComponent()
-
-        await user.type(await screen.findByLabelText(/^Name/), '!')
-        await user.type(screen.getByLabelText(/^Bearer token/), 'secret')
-        await user.click(screen.getByRole('button', { name: 'Save' }))
-
-        expect(
             await screen.findByRole('status', {
-                name: 'Failed to save the connection.',
+                name: "Couldn't update credentials. Check that they're correct and try again.",
             }),
         ).toBeInTheDocument()
     })
@@ -479,7 +467,7 @@ describe('AppConnectionEdit', () => {
 
         expect(
             await screen.findByRole('status', {
-                name: /^Saved/,
+                name: 'Credentials updated',
             }),
         ).toBeInTheDocument()
     })
@@ -501,5 +489,35 @@ describe('AppConnectionEdit', () => {
         expect(saveButton).toBeDisabled()
 
         expect(updateCalled).toBe(false)
+    })
+
+    it('falls back to the connection name in the breadcrumb when the app title is empty', async () => {
+        server.use(...buildHandlers({ appTitle: '' }))
+
+        renderComponent()
+
+        const appBreadcrumbLink = await screen.findByRole('link', {
+            name: 'ShipMonk connection 1',
+        })
+        expect(appBreadcrumbLink).toHaveAttribute('href', APP_BASE_URL)
+    })
+
+    it('prompts to save unsaved changes when navigating away via a router Link', async () => {
+        const { user } = renderComponent()
+
+        const nameInput = await screen.findByLabelText(/^Name/)
+        await user.type(nameInput, '!')
+
+        await user.click(screen.getByRole('link', { name: 'Apps' }))
+
+        expect(
+            await screen.findByRole('button', { name: 'Back To Editing' }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: 'Discard Changes' }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: 'Save Changes' }),
+        ).toBeInTheDocument()
     })
 })

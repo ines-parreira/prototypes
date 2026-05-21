@@ -36,6 +36,7 @@ interface ConnectAppModalProps {
     app: ConnectAppModalApp
     onSubmit: (stores: StoreIntegration[]) => void | Promise<void>
     isSubmitting?: boolean
+    disabledStoreIds?: ReadonlySet<number>
 }
 
 type StoreItem = {
@@ -50,6 +51,7 @@ export const ConnectAppModal = ({
     app,
     onSubmit,
     isSubmitting = false,
+    disabledStoreIds,
 }: ConnectAppModalProps) => {
     const storeIntegrations = useStoreIntegrations(SUPPORTED_STORE_TYPES)
     const [selectedStoreIds, setSelectedStoreIds] = useState<number[]>([])
@@ -59,10 +61,20 @@ export const ConnectAppModal = ({
             setSelectedStoreIds([])
             return
         }
-        if (storeIntegrations.length === 1) {
+        if (
+            storeIntegrations.length === 1 &&
+            !disabledStoreIds?.has(storeIntegrations[0].id)
+        ) {
             setSelectedStoreIds([storeIntegrations[0].id])
         }
-    }, [isOpen, storeIntegrations])
+    }, [isOpen, storeIntegrations, disabledStoreIds])
+
+    useEffect(() => {
+        if (!disabledStoreIds || disabledStoreIds.size === 0) return
+        setSelectedStoreIds((prev) =>
+            prev.filter((id) => !disabledStoreIds.has(id)),
+        )
+    }, [disabledStoreIds])
 
     const storeItems = useMemo<StoreItem[]>(
         () =>
@@ -147,14 +159,11 @@ export const ConnectAppModal = ({
                                 maxHeight={250}
                             >
                                 {(item) => (
-                                    // TODO: once the API exposes which service
-                                    // connections each store already has for
-                                    // this app, set `isDisabled` on stores that
-                                    // are already connected — a store may only
-                                    // be linked to one service connection per
-                                    // app at a time.
                                     <MultiSelectItem
                                         label={item.name}
+                                        isDisabled={disabledStoreIds?.has(
+                                            item.id,
+                                        )}
                                         leadingSlot={
                                             <IntegrationIcon kind={item.type} />
                                         }

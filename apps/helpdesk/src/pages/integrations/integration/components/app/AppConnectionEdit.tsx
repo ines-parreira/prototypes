@@ -15,8 +15,8 @@ import {
     toast,
 } from '@gorgias/axiom'
 
-import { isGorgiasApiError } from 'models/api/types'
 import {
+    useGetAppsByIds,
     useGetServiceConnection,
     useGetServiceConnectionAuth,
     useUpdateServiceConnection,
@@ -28,6 +28,7 @@ import type {
     UpdateServiceConnectionRequest,
 } from 'models/integration/types/serviceConnection'
 import { deriveSingleValueLabel } from 'pages/aiAgent/actionsV2/apps/components'
+import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 
 export type Props = {
     appId: string
@@ -82,6 +83,9 @@ export default function AppConnectionEdit() {
         useGetServiceConnectionAuth(connectionId)
     const { mutateAsync: updateConnection, isLoading: isSaving } =
         useUpdateServiceConnection(appId)
+
+    const [appQuery] = useGetAppsByIds(appId ? [appId] : [])
+    const appTitle = appQuery?.data?.name ?? ''
 
     const initialForm = useMemo<FormState>(() => {
         if (!connection || !auth) return EMPTY_FORM
@@ -161,13 +165,12 @@ export default function AppConnectionEdit() {
                 connectionId,
                 payload,
             })
-            toast.success(`Saved ${form.name}.`)
             setIsDirty(false)
-        } catch (error) {
+            toast.success('Credentials updated')
+            history.push(connectionsURL)
+        } catch {
             toast.error(
-                isGorgiasApiError(error)
-                    ? error.response.data.error.msg
-                    : 'Failed to save the connection.',
+                "Couldn't update credentials. Check that they're correct and try again.",
             )
         }
     }
@@ -181,8 +184,15 @@ export default function AppConnectionEdit() {
         )
     }
 
+    const breadcrumbAppLabel = appTitle || connection.name
+
     return (
         <div className="full-width">
+            <UnsavedChangesPrompt
+                when={isDirty}
+                onSave={handleSave}
+                shouldRedirectAfterSave
+            />
             <Box
                 flexDirection="column"
                 gap="sm"
@@ -196,7 +206,7 @@ export default function AppConnectionEdit() {
                         <Link to="/app/settings/integrations">Apps</Link>
                     </Breadcrumb>
                     <Breadcrumb>
-                        <Link to={appBaseURL}>{connection.name}</Link>
+                        <Link to={appBaseURL}>{breadcrumbAppLabel}</Link>
                     </Breadcrumb>
                     <Breadcrumb>
                         <Link to={connectionsURL}>Connections</Link>
@@ -210,6 +220,7 @@ export default function AppConnectionEdit() {
                 >
                     <Box alignItems="center" gap="sm">
                         <Button
+                            size="sm"
                             variant="secondary"
                             aria-label="Back to connections"
                             icon={<Icon name="arrow-left" />}

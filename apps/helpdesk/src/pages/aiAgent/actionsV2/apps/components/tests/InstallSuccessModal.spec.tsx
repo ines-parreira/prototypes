@@ -17,7 +17,6 @@ const renderComponent = (
                 <InstallSuccessModal
                     isOpen={true}
                     onOpenChange={jest.fn()}
-                    appName="ShipMonk"
                     onViewActions={jest.fn()}
                     {...props}
                 />
@@ -32,18 +31,25 @@ describe('InstallSuccessModal', () => {
         expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     })
 
-    it('renders the connected heading with the app name', () => {
+    it('renders the heading announcing actions are available', () => {
         renderComponent()
 
         expect(
-            screen.getByRole('heading', { name: 'Connected to ShipMonk' }),
+            screen.getByRole('heading', {
+                name: 'Actions are now available in your store',
+            }),
         ).toBeInTheDocument()
     })
 
     it('renders the description with skills and guidance emphasized', () => {
         renderComponent()
 
-        expect(screen.getByText(/Insert them in/i)).toBeInTheDocument()
+        expect(
+            screen.getByText(/Manage your actions from the AI Agent settings/i),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText(/Actions can be inserted in/i),
+        ).toBeInTheDocument()
         expect(screen.getByText('skills')).toBeInTheDocument()
         expect(screen.getByText('guidance')).toBeInTheDocument()
     })

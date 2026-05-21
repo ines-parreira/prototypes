@@ -264,4 +264,86 @@ describe('ConnectAppModal', () => {
 
         expect(onOpenChange).toHaveBeenCalledWith(false)
     })
+
+    it('renders disabled stores with an aria-disabled state', async () => {
+        const user = userEvent.setup()
+        mockedUseStoreIntegrations.mockReturnValue([
+            buildStore({ id: 1, name: 'store-a' }),
+            buildStore({ id: 2, name: 'store-b' }),
+        ])
+
+        renderComponent({ disabledStoreIds: new Set([2]) })
+
+        await user.click(
+            within(screen.getByRole('dialog')).getByRole('button', {
+                name: /select stores/i,
+            }),
+        )
+        const listbox = await screen.findByRole('listbox')
+        expect(
+            within(listbox).getByRole('option', { name: 'store-b' }),
+        ).toHaveAttribute('aria-disabled', 'true')
+        expect(
+            within(listbox).getByRole('option', { name: 'store-a' }),
+        ).not.toHaveAttribute('aria-disabled', 'true')
+    })
+
+    it('does not submit a disabled store even if it was previously selected', async () => {
+        const user = userEvent.setup()
+        const onSubmit = jest.fn()
+        mockedUseStoreIntegrations.mockReturnValue([
+            buildStore({ id: 1, name: 'store-a' }),
+            buildStore({ id: 2, name: 'store-b' }),
+        ])
+
+        const { rerender } = renderComponent({ onSubmit })
+
+        await user.click(
+            within(screen.getByRole('dialog')).getByRole('button', {
+                name: /select stores/i,
+            }),
+        )
+        const listbox = await screen.findByRole('listbox')
+        await user.click(
+            within(listbox).getByRole('option', { name: 'store-a' }),
+        )
+        await user.click(
+            within(listbox).getByRole('option', { name: 'store-b' }),
+        )
+        await user.keyboard('{Escape}')
+
+        rerender(
+            <AxiomProvider rootNode={document.body}>
+                <ThemeProvider>
+                    <ConnectAppModal
+                        isOpen
+                        onOpenChange={jest.fn()}
+                        app={{ name: 'ShipMonk' }}
+                        onSubmit={onSubmit}
+                        disabledStoreIds={new Set([2])}
+                    />
+                </ThemeProvider>
+            </AxiomProvider>,
+        )
+
+        await user.click(screen.getByRole('button', { name: /connect store/i }))
+
+        expect(onSubmit).toHaveBeenCalledTimes(1)
+        const submittedStores = onSubmit.mock.calls[0][0]
+        expect(
+            submittedStores.map((store: StoreIntegration) => store.id),
+        ).toEqual([1])
+    })
+
+    it('does not auto-select the single available store when it is disabled', () => {
+        mockedUseStoreIntegrations.mockReturnValue([
+            buildStore({ id: 1, name: 'store-a' }),
+        ])
+
+        renderComponent({ disabledStoreIds: new Set([1]) })
+
+        expect(
+            screen.getByRole('button', { name: /connect store/i }),
+        ).toBeDisabled()
+    })
 })

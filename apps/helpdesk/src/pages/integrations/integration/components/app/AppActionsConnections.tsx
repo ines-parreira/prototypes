@@ -27,11 +27,11 @@ import {
 } from '@gorgias/axiom'
 import { useListStores } from '@gorgias/helpdesk-queries'
 
+import { IntegrationType } from 'models/integration/constants'
 import {
     isServiceConnectionHealthy,
     useAssignServiceConnectionStore,
     useListServiceConnectionsByAppId,
-    useListServiceConnectionStores,
     useListServiceConnectionStoresByConnectionIds,
     useTrashServiceConnection,
 } from 'models/integration/queries'
@@ -39,6 +39,9 @@ import type {
     ServiceConnectionApiDTO,
     StoreForServiceConnectionApiDTO,
 } from 'models/integration/types/serviceConnection'
+import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
+import { InstallSuccessModal } from 'pages/aiAgent/actionsV2/apps/components'
+import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 
 const STORE_SEARCH_THRESHOLD = 10
 const MAX_VISIBLE_STORES = 3
@@ -51,6 +54,7 @@ export type Props = {
 type Store = { id: number; name: string }
 
 export default function AppActionsConnections({ appId }: Props) {
+    const history = useHistory()
     const { data: storesResponse } = useListStores({ limit: 100 })
     const {
         data: connections,
@@ -59,6 +63,12 @@ export default function AppActionsConnections({ appId }: Props) {
     } = useListServiceConnectionsByAppId(appId)
     const [connectionSortDirection, setConnectionSortDirection] =
         useState<SortDirection>('asc')
+    const [installSuccessStore, setInstallSuccessStore] = useState<{
+        type: string
+        shopName: string | undefined
+    } | null>(null)
+
+    const storeIntegrations = useStoreIntegrations([IntegrationType.Shopify])
 
     useEffect(() => {
         if (isError) {
@@ -76,9 +86,22 @@ export default function AppActionsConnections({ appId }: Props) {
         useListServiceConnectionStoresByConnectionIds(
             sortedConnections.map((connection) => connection.id),
         )
-    const areConnectionStoresLoading = connectionStoreQueries.some(
-        (query) => query.isLoading,
-    )
+
+    const storesByConnectionId = useMemo(() => {
+        const map = new Map<string, StoreForServiceConnectionApiDTO[]>()
+        sortedConnections.forEach((connection, index) => {
+            map.set(connection.id, connectionStoreQueries[index]?.data ?? [])
+        })
+        return map
+    }, [sortedConnections, connectionStoreQueries])
+
+    const loadingByConnectionId = useMemo(() => {
+        const map = new Map<string, boolean>()
+        sortedConnections.forEach((connection, index) => {
+            map.set(connection.id, !!connectionStoreQueries[index]?.isLoading)
+        })
+        return map
+    }, [sortedConnections, connectionStoreQueries])
 
     const availableStores = useMemo<Store[]>(
         () =>
@@ -91,7 +114,7 @@ export default function AppActionsConnections({ appId }: Props) {
         [storesResponse?.data?.data],
     )
 
-    if (isLoading || areConnectionStoresLoading) {
+    if (isLoading) {
         return (
             <Box flexDirection="column" gap="md" padding="lg">
                 <Skeleton height="20px" />
@@ -108,6 +131,32 @@ export default function AppActionsConnections({ appId }: Props) {
                 </Text>
             </Box>
         )
+    }
+
+    function handleAssignedStore(storeId: number) {
+        const integration = storeIntegrations.find(
+            (store) => store.id === storeId,
+        )
+        if (!integration) {
+            setInstallSuccessStore({ type: '', shopName: undefined })
+            return
+        }
+        setInstallSuccessStore({
+            type: integration.type,
+            shopName: getShopNameFromStoreIntegration(integration),
+        })
+    }
+
+    function handleViewActions() {
+        const target = installSuccessStore
+        setInstallSuccessStore(null)
+        if (target && target.type && target.shopName) {
+            history.push(
+                `/app/ai-agent/${target.type}/${target.shopName}/actions`,
+            )
+        } else {
+            history.push('/app/ai-agent')
+        }
     }
 
     return (
@@ -134,16 +183,42 @@ export default function AppActionsConnections({ appId }: Props) {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {sortedConnections.map((connection) => (
-                        <ConnectionRow
-                            key={connection.id}
-                            appId={appId}
-                            connection={connection}
-                            availableStores={availableStores}
-                        />
-                    ))}
+                    {sortedConnections.map((connection) => {
+                        const assignedStores =
+                            storesByConnectionId.get(connection.id) ?? []
+                        const disabledStoreIdsForRow = new Set<number>()
+                        for (const [otherId, stores] of storesByConnectionId) {
+                            if (otherId === connection.id) continue
+                            for (const store of stores) {
+                                disabledStoreIdsForRow.add(store.store_id)
+                            }
+                        }
+
+                        return (
+                            <ConnectionRow
+                                key={connection.id}
+                                appId={appId}
+                                connection={connection}
+                                availableStores={availableStores}
+                                assignedStores={assignedStores}
+                                isAssignedStoresLoading={
+                                    loadingByConnectionId.get(connection.id) ??
+                                    false
+                                }
+                                disabledStoreIds={disabledStoreIdsForRow}
+                                onAssignStoreSuccess={handleAssignedStore}
+                            />
+                        )
+                    })}
                 </TableBody>
             </Table>
+            <InstallSuccessModal
+                isOpen={installSuccessStore !== null}
+                onOpenChange={(open) => {
+                    if (!open) setInstallSuccessStore(null)
+                }}
+                onViewActions={handleViewActions}
+            />
         </Box>
     )
 }
@@ -152,14 +227,23 @@ type RowProps = {
     appId: string
     connection: ServiceConnectionApiDTO
     availableStores: Store[]
+    assignedStores: StoreForServiceConnectionApiDTO[]
+    isAssignedStoresLoading: boolean
+    disabledStoreIds: ReadonlySet<number>
+    onAssignStoreSuccess: (storeId: number) => void
 }
 
-function ConnectionRow({ appId, connection, availableStores }: RowProps) {
+function ConnectionRow({
+    appId,
+    connection,
+    availableStores,
+    assignedStores,
+    isAssignedStoresLoading,
+    disabledStoreIds,
+    onAssignStoreSuccess,
+}: RowProps) {
     const history = useHistory()
     const editUrl = `/app/settings/integrations/app/${appId}/connections/${connection.id}`
-    const { data: assignedStores = [] } = useListServiceConnectionStores(
-        connection.id,
-    )
     const { mutateAsync: assignStore, isLoading: isAssigning } =
         useAssignServiceConnectionStore()
     const { mutateAsync: trashConnection, isLoading: isTrashing } =
@@ -171,7 +255,6 @@ function ConnectionRow({ appId, connection, availableStores }: RowProps) {
 
     const needsStore = assignedStores.length === 0
     const healthy = isServiceConnectionHealthy(connection.status)
-    const storesToRender: StoreForServiceConnectionApiDTO[] = assignedStores
 
     async function handleAssignStores() {
         try {
@@ -183,9 +266,12 @@ function ConnectionRow({ appId, connection, availableStores }: RowProps) {
                     }),
                 ),
             )
-            toast.success(`Stores linked to ${connection.name}.`)
+            const firstStore = selectedStores[0]
             setSelectedStores([])
             setIsStoreSelectOpen(false)
+            if (firstStore) {
+                onAssignStoreSuccess(firstStore.id)
+            }
         } catch {
             toast.error(`Failed to link stores to ${connection.name}.`)
         }
@@ -201,12 +287,21 @@ function ConnectionRow({ appId, connection, availableStores }: RowProps) {
         }
     }
 
+    const storeItems = useMemo<(Store & { isDisabled: boolean })[]>(
+        () =>
+            availableStores.map((store) => ({
+                ...store,
+                isDisabled: disabledStoreIds.has(store.id),
+            })),
+        [availableStores, disabledStoreIds],
+    )
+
     return (
         <TableRow>
             <TableCell>
                 <Box alignItems="center" gap="xs">
                     <Text variant="bold">{connection.name}</Text>
-                    {needsStore && (
+                    {!isAssignedStoresLoading && needsStore && (
                         <Tooltip
                             delay={0}
                             trigger={
@@ -229,12 +324,18 @@ function ConnectionRow({ appId, connection, availableStores }: RowProps) {
                 </Tag>
             </TableCell>
             <TableCell>
-                {needsStore ? (
+                {isAssignedStoresLoading ? (
+                    <Skeleton height="24px" width="160px" />
+                ) : needsStore ? (
                     <MultiSelect
                         aria-label={`Connect store to ${connection.name}`}
-                        items={availableStores}
+                        items={storeItems}
                         selectedItems={selectedStores}
-                        onSelect={setSelectedStores}
+                        onSelect={(items) =>
+                            setSelectedStores(
+                                items.map(({ id, name }) => ({ id, name })),
+                            )
+                        }
                         isOpen={isStoreSelectOpen}
                         onOpenChange={setIsStoreSelectOpen}
                         isSearchable={
@@ -282,6 +383,7 @@ function ConnectionRow({ appId, connection, availableStores }: RowProps) {
                                 key={store.id}
                                 label={store.name}
                                 textValue={store.name}
+                                isDisabled={store.isDisabled}
                                 leadingSlot={({ isSelected }) => (
                                     <Box
                                         alignItems="center"
@@ -297,7 +399,7 @@ function ConnectionRow({ appId, connection, availableStores }: RowProps) {
                     </MultiSelect>
                 ) : (
                     <AssignedStoresList
-                        stores={storesToRender}
+                        stores={assignedStores}
                         availableStores={availableStores}
                     />
                 )}

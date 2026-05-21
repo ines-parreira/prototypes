@@ -14,13 +14,19 @@ import css from './ConnectLink.less'
 const CONNECT_BUTTON_ID = 'connect-button'
 
 const trackInstalls =
-    (integrationTitle = '', isApp: boolean, domain: string) =>
+    (
+        integrationTitle = '',
+        isApp: boolean,
+        domain: string,
+        onClick?: () => void,
+    ) =>
     () => {
         logEvent(SegmentEvent.IntegrationConnectClicked, {
             integration: integrationTitle.toLowerCase(),
             is_openchannel_app: isApp,
             account_domain: domain,
         })
+        onClick?.()
     }
 
 type Props = {
@@ -30,6 +36,7 @@ type Props = {
     integrationTitle: string
     isDisabled?: boolean
     disabledMessage?: ReactElement | string
+    onClick?: () => void
     children: ReactNode
 }
 
@@ -40,6 +47,7 @@ export default function ConnectLink({
     isApp = false,
     isDisabled,
     disabledMessage,
+    onClick,
     children,
 }: Props) {
     const domain = useAppSelector(getCurrentAccountState).get('domain')
@@ -77,7 +85,7 @@ export default function ConnectLink({
     return isApp || isExternal ? (
         <a
             href={sanitizedConnectUrl}
-            onClick={trackInstalls(integrationTitle, isApp, domain)}
+            onClick={trackInstalls(integrationTitle, isApp, domain, onClick)}
             target="_blank"
             rel="noopener noreferrer"
             className={css.connectButtonWrapper}
@@ -87,7 +95,7 @@ export default function ConnectLink({
     ) : (
         <Link
             to={connectUrl}
-            onClick={trackInstalls(integrationTitle, isApp, domain)}
+            onClick={trackInstalls(integrationTitle, isApp, domain, onClick)}
             className={css.connectButtonWrapper}
         >
             {children}
