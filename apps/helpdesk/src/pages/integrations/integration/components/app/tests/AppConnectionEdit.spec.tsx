@@ -44,6 +44,13 @@ const basicAuth: ServiceConnectionAuthApiDTO = {
     value: '',
 }
 
+const prefilledBearerAuth: ServiceConnectionAuthApiDTO = {
+    type: 'bearer-token',
+    location: 'header',
+    key: 'Authorization',
+    value: 'existing-secret',
+}
+
 const oauth2Auth: ServiceConnectionAuthApiDTO = {
     type: 'oauth2',
     location: 'header',
@@ -51,10 +58,17 @@ const oauth2Auth: ServiceConnectionAuthApiDTO = {
     value: '',
 }
 
+const prefilledOauth2Auth: ServiceConnectionAuthApiDTO = {
+    type: 'oauth2',
+    location: 'header',
+    key: 'Authorization',
+    value: 'existing-oauth-secret',
+}
+
 function buildHandlers(options?: {
     auth?: ServiceConnectionAuthApiDTO
     connection?: ServiceConnectionApiDTO
-    onUpdate?: (body: Record<string, unknown>) => Response
+    onUpdate?: (body: Record<string, unknown>) => Response | Promise<Response>
 }) {
     const auth = options?.auth ?? basicAuth
     const connection = options?.connection ?? baseConnection
@@ -116,10 +130,9 @@ describe('AppConnectionEdit', () => {
             'href',
             '/app/settings/integrations',
         )
-        expect(screen.getByRole('link', { name: 'shipmonk' })).toHaveAttribute(
-            'href',
-            APP_BASE_URL,
-        )
+        expect(
+            screen.getByRole('link', { name: 'ShipMonk connection 1' }),
+        ).toHaveAttribute('href', APP_BASE_URL)
         expect(
             screen.getByRole('link', { name: 'Connections' }),
         ).toHaveAttribute('href', CONNECTIONS_URL)
@@ -131,15 +144,13 @@ describe('AppConnectionEdit', () => {
         expect(await screen.findByLabelText(/^Name/)).toHaveValue(
             'ShipMonk connection 1',
         )
-        expect(screen.getByLabelText(/^URL/)).toHaveValue(
-            'https://api.shipmonk.com',
-        )
-        expect(screen.getByLabelText('Token value')).toBeInTheDocument()
-        expect(screen.getByLabelText(/^Token key/)).toHaveValue('Authorization')
+        expect(screen.getByLabelText(/^Bearer token/)).toBeInTheDocument()
 
         expect(screen.queryByLabelText('Token URL')).not.toBeInTheDocument()
         expect(screen.queryByLabelText('Client ID')).not.toBeInTheDocument()
-        expect(screen.queryByLabelText('Client secret')).not.toBeInTheDocument()
+        expect(
+            screen.queryByLabelText(/^Client secret/),
+        ).not.toBeInTheDocument()
         expect(screen.queryByLabelText('Scopes')).not.toBeInTheDocument()
     })
 
@@ -150,18 +161,57 @@ describe('AppConnectionEdit', () => {
 
         expect(await screen.findByLabelText('Token URL')).toBeInTheDocument()
         expect(screen.getByLabelText('Client ID')).toBeInTheDocument()
-        expect(screen.getByLabelText('Client secret')).toBeInTheDocument()
+        expect(screen.getByLabelText(/^Client secret/)).toBeInTheDocument()
         expect(screen.getByLabelText('Scopes')).toBeInTheDocument()
-        expect(screen.queryByLabelText('Token value')).not.toBeInTheDocument()
+        expect(screen.queryByLabelText(/^Bearer token/)).not.toBeInTheDocument()
     })
 
-    it('keeps the Save button disabled until the form is dirty', async () => {
+    it('uses the auth key as the value label when it is custom', async () => {
+        server.use(
+            ...buildHandlers({
+                auth: {
+                    type: 'api-key',
+                    location: 'header',
+                    key: 'X-ShipMonk-Token',
+                    value: '',
+                },
+            }),
+        )
+
+        renderComponent()
+
+        expect(
+            await screen.findByLabelText(/^X-ShipMonk-Token/),
+        ).toBeInTheDocument()
+    })
+
+    it('uses "API key" when the auth key is x-api-key', async () => {
+        server.use(
+            ...buildHandlers({
+                auth: {
+                    type: 'api-key',
+                    location: 'header',
+                    key: 'x-api-key',
+                    value: '',
+                },
+            }),
+        )
+
+        renderComponent()
+
+        expect(await screen.findByLabelText(/^API key/)).toBeInTheDocument()
+    })
+
+    it('keeps the Save button disabled until name and the auth value are set', async () => {
         const { user } = renderComponent()
 
         const saveButton = await screen.findByRole('button', { name: 'Save' })
         expect(saveButton).toBeDisabled()
 
         await user.type(await screen.findByLabelText(/^Name/), '!')
+        expect(saveButton).toBeDisabled()
+
+        await user.type(screen.getByLabelText(/^Bearer token/), 'secret')
         expect(saveButton).toBeEnabled()
     })
 
@@ -181,7 +231,7 @@ describe('AppConnectionEdit', () => {
         const nameInput = await screen.findByLabelText(/^Name/)
         await user.clear(nameInput)
         await user.type(nameInput, 'New name')
-        await user.type(await screen.findByLabelText('Token value'), 'secret')
+        await user.type(screen.getByLabelText(/^Bearer token/), 'secret')
 
         await user.click(screen.getByRole('button', { name: 'Save' }))
 
@@ -203,7 +253,7 @@ describe('AppConnectionEdit', () => {
         ).toBeInTheDocument()
     })
 
-    it('saves the OAuth2 payload only including the fields that were changed', async () => {
+    it('saves the OAuth2 payload with the fields that were changed', async () => {
         let receivedBody: Record<string, unknown> | undefined
         server.use(
             ...buildHandlers({
@@ -222,6 +272,7 @@ describe('AppConnectionEdit', () => {
             'https://api.example.com/token',
         )
         await user.type(screen.getByLabelText('Client ID'), 'my-client-id')
+        await user.type(screen.getByLabelText(/^Client secret/), 'super-secret')
         await user.type(screen.getByLabelText('Scopes'), 'read write')
 
         await user.click(screen.getByRole('button', { name: 'Save' }))
@@ -233,6 +284,7 @@ describe('AppConnectionEdit', () => {
                 key: 'Authorization',
                 token_url: 'https://api.example.com/token',
                 client_id: 'my-client-id',
+                client_secret: 'super-secret',
                 scopes: 'read write',
             })
         })
@@ -252,6 +304,7 @@ describe('AppConnectionEdit', () => {
         const { user } = renderComponent()
 
         await user.type(await screen.findByLabelText(/^Name/), '!')
+        await user.type(screen.getByLabelText(/^Bearer token/), 'secret')
         await user.click(screen.getByRole('button', { name: 'Save' }))
 
         expect(
@@ -269,6 +322,7 @@ describe('AppConnectionEdit', () => {
         const { user } = renderComponent()
 
         await user.type(await screen.findByLabelText(/^Name/), '!')
+        await user.type(screen.getByLabelText(/^Bearer token/), 'secret')
         await user.click(screen.getByRole('button', { name: 'Save' }))
 
         expect(
@@ -286,5 +340,166 @@ describe('AppConnectionEdit', () => {
         )
 
         expect(mockHistoryPush).toHaveBeenCalledWith(CONNECTIONS_URL)
+    })
+
+    it('updates the heading to reflect the typed name', async () => {
+        const { user } = renderComponent()
+
+        const nameInput = await screen.findByLabelText(/^Name/)
+        await user.clear(nameInput)
+        await user.type(nameInput, 'My new connection')
+
+        expect(
+            screen.getByRole('heading', { name: 'My new connection' }),
+        ).toBeInTheDocument()
+    })
+
+    it('falls back to the connection name in the heading when the name field is cleared', async () => {
+        const { user } = renderComponent()
+
+        const nameInput = await screen.findByLabelText(/^Name/)
+        await user.clear(nameInput)
+
+        expect(
+            screen.getByRole('heading', { name: 'ShipMonk connection 1' }),
+        ).toBeInTheDocument()
+    })
+
+    it('omits the auth field from the payload when only the name changes', async () => {
+        let receivedBody: Record<string, unknown> | undefined
+        server.use(
+            ...buildHandlers({
+                auth: prefilledBearerAuth,
+                onUpdate: (body) => {
+                    receivedBody = body
+                    return HttpResponse.json({ ...baseConnection })
+                },
+            }),
+        )
+
+        const { user } = renderComponent()
+
+        const nameInput = await screen.findByLabelText(/^Name/)
+        await user.clear(nameInput)
+        await user.type(nameInput, 'Renamed')
+        await user.click(screen.getByRole('button', { name: 'Save' }))
+
+        await waitFor(() => {
+            expect(receivedBody).toEqual({
+                name: 'Renamed',
+                url: 'https://api.shipmonk.com',
+            })
+        })
+        expect(receivedBody).not.toHaveProperty('auth')
+    })
+
+    it('omits the auth field from the OAuth2 payload when only the name changes', async () => {
+        let receivedBody: Record<string, unknown> | undefined
+        server.use(
+            ...buildHandlers({
+                auth: prefilledOauth2Auth,
+                onUpdate: (body) => {
+                    receivedBody = body
+                    return HttpResponse.json({ ...baseConnection })
+                },
+            }),
+        )
+
+        const { user } = renderComponent()
+
+        const nameInput = await screen.findByLabelText(/^Name/)
+        await user.clear(nameInput)
+        await user.type(nameInput, 'Renamed OAuth')
+        await user.click(screen.getByRole('button', { name: 'Save' }))
+
+        await waitFor(() => {
+            expect(receivedBody).toEqual({
+                name: 'Renamed OAuth',
+                url: 'https://api.shipmonk.com',
+            })
+        })
+        expect(receivedBody).not.toHaveProperty('auth')
+    })
+
+    it('includes only the OAuth2 fields that the user filled in', async () => {
+        let receivedBody: Record<string, unknown> | undefined
+        server.use(
+            ...buildHandlers({
+                auth: prefilledOauth2Auth,
+                onUpdate: (body) => {
+                    receivedBody = body
+                    return HttpResponse.json({ ...baseConnection })
+                },
+            }),
+        )
+
+        const { user } = renderComponent()
+
+        await user.type(
+            await screen.findByLabelText('Token URL'),
+            'https://api.example.com/token',
+        )
+        await user.click(screen.getByRole('button', { name: 'Save' }))
+
+        await waitFor(() => {
+            expect(receivedBody?.auth).toEqual({
+                type: 'oauth2',
+                location: 'header',
+                key: 'Authorization',
+                token_url: 'https://api.example.com/token',
+                client_secret: 'existing-oauth-secret',
+            })
+        })
+    })
+
+    it('disables the Save button while the update request is in flight', async () => {
+        let resolveUpdate: ((response: Response) => void) | undefined
+        server.use(
+            ...buildHandlers({
+                onUpdate: () =>
+                    new Promise<Response>((resolve) => {
+                        resolveUpdate = resolve
+                    }),
+            }),
+        )
+
+        const { user } = renderComponent()
+
+        await user.type(await screen.findByLabelText(/^Name/), '!')
+        await user.type(screen.getByLabelText(/^Bearer token/), 'secret')
+
+        const saveButton = screen.getByRole('button', { name: 'Save' })
+        await user.click(saveButton)
+
+        await waitFor(() => {
+            expect(saveButton).toBeDisabled()
+        })
+
+        resolveUpdate?.(HttpResponse.json({ ...baseConnection }))
+
+        expect(
+            await screen.findByRole('status', {
+                name: /^Saved/,
+            }),
+        ).toBeInTheDocument()
+    })
+
+    it('does not save when the Save button is disabled (no name, no auth value)', async () => {
+        let updateCalled = false
+        server.use(
+            ...buildHandlers({
+                onUpdate: () => {
+                    updateCalled = true
+                    return HttpResponse.json({ ...baseConnection })
+                },
+            }),
+        )
+
+        renderComponent()
+
+        const saveButton = await screen.findByRole('button', { name: 'Save' })
+        expect(saveButton).toBeDisabled()
+
+        expect(updateCalled).toBe(false)
     })
 })

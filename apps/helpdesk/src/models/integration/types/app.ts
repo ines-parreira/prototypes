@@ -4,6 +4,22 @@ import type { IntegrationListItem } from 'state/integrations/types'
 import type { Integration } from '.'
 import { IntegrationType } from '../constants'
 import type { IntegrationBase } from './base'
+import type {
+    ServiceConnectionAuthLocation,
+    ServiceConnectionVendor,
+} from './serviceConnection'
+
+export type OutboundAuthType = 'api-key' | 'bearer-token' | 'basic'
+
+export type OutboundAuth = {
+    type: OutboundAuthType
+    url: string
+    setup_description: string
+    location: ServiceConnectionAuthLocation
+    key: string
+    vendor: ServiceConnectionVendor | null
+    trackstar_integration_name?: string | null
+}
 
 export type AppIntegration = IntegrationBase & {
     type: IntegrationType.App
@@ -84,6 +100,7 @@ export type AppData = AppListData & {
     support_email: string
     support_phone: string
     alloy_integration_id?: string
+    outbound_auth: OutboundAuth | null
 }
 
 export type AppListItem = IntegrationListItem & {
@@ -106,6 +123,7 @@ export type AppDetail = Omit<IntegrationConfig, 'isExternalConnectUrl'> & {
     supportEmail: AppData['support_email']
     supportPhone: AppData['support_phone']
     alloyIntegrationId?: AppData['alloy_integration_id']
+    outboundAuth: AppData['outbound_auth']
 }
 
 export type DisconnectResponse = {

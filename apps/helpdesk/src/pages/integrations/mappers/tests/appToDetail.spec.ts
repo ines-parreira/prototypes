@@ -55,6 +55,7 @@ describe(`mapAppToDetail`, () => {
             <li>In which noting that really matters is said but at least you see it!</li>
             <li>Isn&rsquo;t it nice?</li>
             </ul>",
+              "outboundAuth": null,
               "pricingDetails": "<p>They are several options:&nbsp;</p>
             <ul>
             <li>Pay once</li>

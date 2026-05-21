@@ -1,9 +1,11 @@
 import React from 'react'
 
+import client from '@repo/api-resources'
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import * as reactQuery from '@tanstack/react-query'
-import { waitFor } from '@testing-library/react'
+import { act, waitFor } from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
 
 import {
@@ -15,13 +17,19 @@ import {
     shopifyProductFixture,
 } from 'fixtures/shopify'
 import {
+    serviceConnectionsQueryKey,
     useCollectionsFromShopifyIntegration,
+    useCreateServiceConnection,
     useGetProductsByIdsFromIntegration,
     useListProducts,
 } from 'models/integration/queries'
 import { fetchIntegrationProducts } from 'models/integration/resources'
 import { fetchShopifyCollections } from 'models/integration/resources/shopify'
 import type { ShopifyCollectionResponse } from 'models/integration/types'
+import type {
+    CreateServiceConnectionRequest,
+    ServiceConnectionApiDTO,
+} from 'models/integration/types/serviceConnection'
 import { fetchIntegrationProducts as fetchIntegrationProductsByIds } from 'state/integrations/helpers'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
@@ -151,6 +159,134 @@ describe('queries', () => {
 
             expect(fetchIntegrationProductsByIdsMock).toBeCalled()
             expect(result.current.error).toStrictEqual(Error('test error'))
+        })
+    })
+
+    describe('useCreateServiceConnection', () => {
+        const applicationId = 'app-123'
+        const mockedServer = new MockAdapter(client)
+
+        beforeEach(() => {
+            queryClient.clear()
+            mockedServer.reset()
+        })
+
+        afterAll(() => {
+            mockedServer.restore()
+        })
+
+        const buildPayload = (): CreateServiceConnectionRequest => ({
+            name: 'My connection',
+            service: 'shipmonk',
+            url: 'https://api.shipmonk.com',
+            auth: {
+                type: 'api-key',
+                location: 'header',
+                key: 'X-Api-Key',
+                value: 'secret',
+            },
+            application_id: applicationId,
+            vendor: null,
+        })
+
+        const responseBody: ServiceConnectionApiDTO = {
+            id: '01970000-0000-7000-8000-000000000001',
+            name: 'My connection',
+            service: 'shipmonk',
+            url: 'https://api.shipmonk.com',
+            status: 'active',
+            created_datetime: '2026-05-01T00:00:00',
+            updated_datetime: null,
+            trashed_datetime: null,
+            created_by: 1,
+            updated_by: null,
+            trashed_by: null,
+            external_id: null,
+            vendor: null,
+        }
+
+        it('POSTs the payload and returns the created service connection', async () => {
+            const payload = buildPayload()
+            mockedServer.onPost('/api/service-connections/').reply((config) => {
+                expect(JSON.parse(config.data)).toEqual(payload)
+                return [200, responseBody]
+            })
+
+            const { result } = renderHook(
+                () => useCreateServiceConnection(applicationId),
+                { wrapper },
+            )
+
+            await act(async () => {
+                const created = await result.current.mutateAsync(payload)
+                expect(created).toEqual(responseBody)
+            })
+
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+        })
+
+        it('invalidates the service connections list for the application on success', async () => {
+            mockedServer
+                .onPost('/api/service-connections/')
+                .reply(200, responseBody)
+
+            const invalidateSpy = jest.spyOn(queryClient, 'invalidateQueries')
+
+            const { result } = renderHook(
+                () => useCreateServiceConnection(applicationId),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.mutateAsync(buildPayload())
+            })
+
+            expect(invalidateSpy).toHaveBeenCalledWith({
+                queryKey: serviceConnectionsQueryKey(applicationId),
+            })
+
+            invalidateSpy.mockRestore()
+        })
+
+        it('calls the user-provided onSuccess after invalidating the cache', async () => {
+            mockedServer
+                .onPost('/api/service-connections/')
+                .reply(200, responseBody)
+
+            const onSuccess = jest.fn()
+            const payload = buildPayload()
+
+            const { result } = renderHook(
+                () => useCreateServiceConnection(applicationId, { onSuccess }),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.mutateAsync(payload)
+            })
+
+            expect(onSuccess).toHaveBeenCalledWith(
+                responseBody,
+                payload,
+                undefined,
+            )
+        })
+
+        it('surfaces errors from the API as a failed mutation', async () => {
+            mockedServer
+                .onPost('/api/service-connections/')
+                .reply(500, { error: { msg: 'boom' } })
+
+            const { result } = renderHook(
+                () => useCreateServiceConnection(applicationId),
+                { wrapper },
+            )
+
+            await expect(
+                result.current.mutateAsync(buildPayload()),
+            ).rejects.toBeDefined()
+
+            await waitFor(() => expect(result.current.isError).toBe(true))
         })
     })
 

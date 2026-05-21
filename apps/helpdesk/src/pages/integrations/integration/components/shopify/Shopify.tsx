@@ -77,7 +77,7 @@ function Shopify({ integration, integrations, loading, redirectUri }: Props) {
             integrationTitle={IntegrationType.Shopify}
             isExternal={connectProps.isExternalConnectUrl}
         >
-            <Button>Add new connection</Button>
+            <Button>Add connection</Button>
         </ConnectLink>
     )
     detailProps.infocard.CTA = CTA

@@ -111,7 +111,7 @@ function Recharge({ integration, integrations, loading, redirectUri }: Props) {
             }
         >
             <Button isDisabled={connectProps.isConnectionDisabled}>
-                Add new connection
+                Add connection
             </Button>
         </ConnectLink>
     )

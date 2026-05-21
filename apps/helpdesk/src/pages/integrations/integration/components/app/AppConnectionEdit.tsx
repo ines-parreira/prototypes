@@ -9,8 +9,6 @@ import {
     Button,
     Heading,
     Icon,
-    ListItem,
-    SelectField,
     Skeleton,
     Text,
     TextField,
@@ -25,18 +23,15 @@ import {
 } from 'models/integration/queries'
 import type {
     ServiceConnectionAuthLocation,
+    ServiceConnectionAuthType,
     UpdateServiceConnectionAuthRequest,
+    UpdateServiceConnectionRequest,
 } from 'models/integration/types/serviceConnection'
+import { deriveSingleValueLabel } from 'pages/aiAgent/actionsV2/apps/components'
 
 export type Props = {
     appId: string
 }
-
-type TokenLocation = { id: ServiceConnectionAuthLocation; name: string }
-const TOKEN_LOCATIONS: TokenLocation[] = [
-    { id: 'header', name: 'header' },
-    { id: 'query', name: 'query' },
-]
 
 type FormState = {
     name: string
@@ -47,6 +42,17 @@ type FormState = {
     tokenLocation: ServiceConnectionAuthLocation
     tokenKey: string
     scopes: string
+}
+
+function getValueLabel(
+    authType: ServiceConnectionAuthType | undefined,
+    key: string,
+): string {
+    if (authType === 'oauth2') return 'Client secret'
+    if (authType === 'api-key' || authType === 'bearer-token') {
+        return deriveSingleValueLabel(authType, key)
+    }
+    return 'Token value'
 }
 
 const EMPTY_FORM: FormState = {
@@ -75,17 +81,16 @@ export default function AppConnectionEdit() {
     const { data: auth, isLoading: isLoadingAuth } =
         useGetServiceConnectionAuth(connectionId)
     const { mutateAsync: updateConnection, isLoading: isSaving } =
-        useUpdateServiceConnection()
+        useUpdateServiceConnection(appId)
 
     const initialForm = useMemo<FormState>(() => {
         if (!connection || !auth) return EMPTY_FORM
-        const isOAuth2 = auth.type === 'oauth2'
         return {
             name: connection.name,
             url: connection.url,
-            tokenUrl: isOAuth2 ? '' : '',
+            tokenUrl: '',
             clientId: '',
-            clientSecret: '',
+            clientSecret: auth.value ?? '',
             tokenLocation: auth.location,
             tokenKey: auth.key,
             scopes: '',
@@ -110,33 +115,51 @@ export default function AppConnectionEdit() {
 
     const isLoading = isLoadingConnection || isLoadingAuth
     const isOAuth2 = auth?.type === 'oauth2'
+    const valueLabel = getValueLabel(auth?.type, auth?.key ?? '')
 
     async function handleSave() {
         if (!auth || !connection) return
 
-        const authPayload: UpdateServiceConnectionAuthRequest = {
-            type: auth.type,
-            location: form.tokenLocation,
-            key: form.tokenKey,
+        const clientSecretChanged =
+            form.clientSecret !== initialForm.clientSecret
+        const hasAuthChanges = isOAuth2
+            ? Boolean(
+                  form.tokenUrl ||
+                  form.clientId ||
+                  form.scopes ||
+                  clientSecretChanged,
+              )
+            : clientSecretChanged
+
+        const payload: UpdateServiceConnectionRequest = {
+            name: form.name,
+            url: form.url,
         }
 
-        if (isOAuth2) {
-            if (form.tokenUrl) authPayload.token_url = form.tokenUrl
-            if (form.clientId) authPayload.client_id = form.clientId
-            if (form.clientSecret) authPayload.client_secret = form.clientSecret
-            if (form.scopes) authPayload.scopes = form.scopes
-        } else if (form.clientSecret) {
-            authPayload.value = form.clientSecret
+        if (hasAuthChanges) {
+            const authPayload: UpdateServiceConnectionAuthRequest = {
+                type: auth.type,
+                location: form.tokenLocation,
+                key: form.tokenKey,
+            }
+
+            if (isOAuth2) {
+                if (form.tokenUrl) authPayload.token_url = form.tokenUrl
+                if (form.clientId) authPayload.client_id = form.clientId
+                if (form.clientSecret)
+                    authPayload.client_secret = form.clientSecret
+                if (form.scopes) authPayload.scopes = form.scopes
+            } else if (form.clientSecret) {
+                authPayload.value = form.clientSecret
+            }
+
+            payload.auth = authPayload
         }
 
         try {
             await updateConnection({
                 connectionId,
-                payload: {
-                    name: form.name,
-                    url: form.url,
-                    auth: authPayload,
-                },
+                payload,
             })
             toast.success(`Saved ${form.name}.`)
             setIsDirty(false)
@@ -173,7 +196,7 @@ export default function AppConnectionEdit() {
                         <Link to="/app/settings/integrations">Apps</Link>
                     </Breadcrumb>
                     <Breadcrumb>
-                        <Link to={appBaseURL}>{connection.service}</Link>
+                        <Link to={appBaseURL}>{connection.name}</Link>
                     </Breadcrumb>
                     <Breadcrumb>
                         <Link to={connectionsURL}>Connections</Link>
@@ -197,7 +220,12 @@ export default function AppConnectionEdit() {
                         </Heading>
                     </Box>
                     <Button
-                        isDisabled={!isDirty || isSaving}
+                        isDisabled={
+                            !isDirty ||
+                            isSaving ||
+                            !form.name ||
+                            !form.clientSecret
+                        }
                         isLoading={isSaving}
                         onClick={handleSave}
                     >
@@ -217,13 +245,6 @@ export default function AppConnectionEdit() {
                         isRequired
                         value={form.name}
                         onChange={(value) => updateField('name', value)}
-                    />
-                    <TextField
-                        label="URL"
-                        isRequired
-                        value={form.url}
-                        onChange={(value) => updateField('url', value)}
-                        caption="The base URL of the external API."
                     />
                     {isOAuth2 && (
                         <>
@@ -246,36 +267,11 @@ export default function AppConnectionEdit() {
                         </>
                     )}
                     <TextField
-                        label={isOAuth2 ? 'Client secret' : 'Token value'}
+                        label={valueLabel}
                         type="password"
+                        isRequired
                         value={form.clientSecret}
                         onChange={(value) => updateField('clientSecret', value)}
-                        caption="Leave empty to keep the existing value."
-                    />
-                    <SelectField
-                        label="Token location"
-                        isRequired
-                        items={TOKEN_LOCATIONS}
-                        value={TOKEN_LOCATIONS.find(
-                            (loc) => loc.id === form.tokenLocation,
-                        )}
-                        onChange={(selection) => {
-                            if (selection) {
-                                updateField('tokenLocation', selection.id)
-                            }
-                        }}
-                        placeholder="header"
-                    >
-                        {(option) => (
-                            <ListItem id={option.id} label={option.name} />
-                        )}
-                    </SelectField>
-                    <TextField
-                        label="Token key"
-                        isRequired
-                        value={form.tokenKey}
-                        onChange={(value) => updateField('tokenKey', value)}
-                        caption="Key used to authenticate API requests."
                     />
                     {isOAuth2 && (
                         <TextField

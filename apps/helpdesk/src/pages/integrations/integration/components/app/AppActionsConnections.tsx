@@ -32,6 +32,7 @@ import {
     useAssignServiceConnectionStore,
     useListServiceConnectionsByAppId,
     useListServiceConnectionStores,
+    useListServiceConnectionStoresByConnectionIds,
     useTrashServiceConnection,
 } from 'models/integration/queries'
 import type {
@@ -40,6 +41,7 @@ import type {
 } from 'models/integration/types/serviceConnection'
 
 const STORE_SEARCH_THRESHOLD = 10
+const MAX_VISIBLE_STORES = 3
 
 export type Props = {
     appId: string
@@ -70,6 +72,14 @@ export default function AppActionsConnections({ appId }: Props) {
         return connectionSortDirection === 'asc' ? sorted : sorted.reverse()
     }, [connections, connectionSortDirection])
 
+    const connectionStoreQueries =
+        useListServiceConnectionStoresByConnectionIds(
+            sortedConnections.map((connection) => connection.id),
+        )
+    const areConnectionStoresLoading = connectionStoreQueries.some(
+        (query) => query.isLoading,
+    )
+
     const availableStores = useMemo<Store[]>(
         () =>
             (storesResponse?.data?.data ?? []).map(
@@ -81,7 +91,7 @@ export default function AppActionsConnections({ appId }: Props) {
         [storesResponse?.data?.data],
     )
 
-    if (isLoading) {
+    if (isLoading || areConnectionStoresLoading) {
         return (
             <Box flexDirection="column" gap="md" padding="lg">
                 <Skeleton height="20px" />
@@ -286,19 +296,10 @@ function ConnectionRow({ appId, connection, availableStores }: RowProps) {
                         )}
                     </MultiSelect>
                 ) : (
-                    <Box alignItems="center" gap="xs" flexWrap="wrap">
-                        {storesToRender.map((store) => (
-                            <Tag
-                                key={store.store_id}
-                                size="sm"
-                                leadingSlot={
-                                    <Icon name="app-shopify" size="xs" />
-                                }
-                            >
-                                {store.store_name ?? `Store #${store.store_id}`}
-                            </Tag>
-                        ))}
-                    </Box>
+                    <AssignedStoresList
+                        stores={storesToRender}
+                        availableStores={availableStores}
+                    />
                 )}
             </TableCell>
             <TableCell hug>
@@ -376,5 +377,82 @@ function ConnectionRow({ appId, connection, availableStores }: RowProps) {
                 </Box>
             </TableCell>
         </TableRow>
+    )
+}
+
+type AssignedStoresListProps = {
+    stores: StoreForServiceConnectionApiDTO[]
+    availableStores: Store[]
+}
+
+function AssignedStoresList({
+    stores,
+    availableStores,
+}: AssignedStoresListProps) {
+    const [isOverflowOpen, setIsOverflowOpen] = useState(false)
+
+    const resolvedStores = useMemo(
+        () =>
+            stores.map((store) => ({
+                id: store.store_id,
+                name:
+                    store.store_name ??
+                    availableStores.find(({ id }) => id === store.store_id)
+                        ?.name ??
+                    `Store #${store.store_id}`,
+            })),
+        [stores, availableStores],
+    )
+
+    const visibleStores = resolvedStores.slice(0, MAX_VISIBLE_STORES)
+    const overflowStores = resolvedStores.slice(MAX_VISIBLE_STORES)
+
+    return (
+        <Box alignItems="center" gap="xs" flexWrap="wrap">
+            {visibleStores.map((store) => (
+                <Tag
+                    key={store.id}
+                    size="sm"
+                    leadingSlot={<Icon name="app-shopify" size="xs" />}
+                >
+                    {store.name}
+                </Tag>
+            ))}
+            {overflowStores.length > 0 && (
+                <Popover
+                    isOpen={isOverflowOpen}
+                    onOpenChange={setIsOverflowOpen}
+                    placement="bottom left"
+                    padding="sm"
+                    trigger={
+                        <Button
+                            size="sm"
+                            variant="tertiary"
+                            aria-label={`Show ${overflowStores.length} more stores`}
+                        >
+                            +{overflowStores.length}
+                        </Button>
+                    }
+                >
+                    <Box
+                        flexDirection="column"
+                        gap="xs"
+                        alignItems="flex-start"
+                    >
+                        {overflowStores.map((store) => (
+                            <Tag
+                                key={store.id}
+                                size="sm"
+                                leadingSlot={
+                                    <Icon name="app-shopify" size="xs" />
+                                }
+                            >
+                                {store.name}
+                            </Tag>
+                        ))}
+                    </Box>
+                </Popover>
+            )}
+        </Box>
     )
 }

@@ -53,6 +53,7 @@ export const dummyAppData: AppData = {
     ],
     support_email: 'support@gotolstoy.com',
     categories: [Category.ECOMMERCE, Category.REVIEWS],
+    outbound_auth: null,
 }
 
 export const dummyAppDetail = appDataToAppDetailMapper(dummyAppData)

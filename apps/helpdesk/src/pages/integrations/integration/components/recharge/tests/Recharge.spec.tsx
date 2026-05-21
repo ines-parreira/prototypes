@@ -194,7 +194,7 @@ describe('<Recharge/>', () => {
             ).toBeInTheDocument()
         })
 
-        it('renders the AppActionsTab and the Add new connection CTA when navigated to /actions with the FF on', () => {
+        it('renders the AppActionsTab and the Add connection CTA when navigated to /actions with the FF on', () => {
             featureFlagsClientMock.allFlags.mockReturnValue({
                 'action-centralized-library': 'MILESTONE-1',
             })
@@ -209,7 +209,7 @@ describe('<Recharge/>', () => {
                 }),
             ).toBeInTheDocument()
             expect(
-                screen.getByRole('button', { name: 'Add new connection' }),
+                screen.getByRole('button', { name: 'Add connection' }),
             ).toBeInTheDocument()
         })
 
@@ -228,7 +228,7 @@ describe('<Recharge/>', () => {
                 }),
             ).toBeNull()
             expect(
-                screen.queryByRole('button', { name: 'Add new connection' }),
+                screen.queryByRole('button', { name: 'Add connection' }),
             ).toBeNull()
         })
     })

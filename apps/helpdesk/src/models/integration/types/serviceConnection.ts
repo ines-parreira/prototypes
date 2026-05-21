@@ -59,3 +59,20 @@ export type UpdateServiceConnectionRequest = {
     url?: string
     auth?: UpdateServiceConnectionAuthRequest
 }
+
+export type CreateServiceConnectionAuthRequest = {
+    type: ServiceConnectionAuthType
+    location: ServiceConnectionAuthLocation
+    key: string
+    value: string
+}
+
+export type CreateServiceConnectionRequest = {
+    name: string
+    service: string
+    url: string
+    auth: CreateServiceConnectionAuthRequest
+    application_id?: string | null
+    external_id?: string | null
+    vendor?: ServiceConnectionVendor | null
+}

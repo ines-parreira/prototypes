@@ -35,6 +35,7 @@ import type {
 } from './types'
 import type { AppData, AppListData } from './types/app'
 import type {
+    CreateServiceConnectionRequest,
     ServiceConnectionApiDTO,
     ServiceConnectionAuthApiDTO,
     ServiceConnectionStatus,
@@ -317,7 +318,9 @@ export const useListServiceConnectionsByAppId = (
             >('/api/service-connections/', {
                 params: { application_id: applicationId },
             })
-            return response.data.data
+            return response.data.data.filter(
+                (connection) => connection.trashed_datetime === null,
+            )
         },
         enabled: !!applicationId && overrides?.enabled !== false,
         staleTime: STALE_TIME_MS,
@@ -372,6 +375,50 @@ export const useListServiceConnectionStores = (
         staleTime: STALE_TIME_MS,
         cacheTime: CACHE_TIME_MS,
     })
+
+export const useListServiceConnectionStoresByConnectionIds = (
+    connectionIds: string[],
+) =>
+    useQueries({
+        queries: connectionIds.map((connectionId) => ({
+            queryKey: serviceConnectionStoresQueryKey(connectionId),
+            queryFn: async () => {
+                const response = await client.get<
+                    ApiListResponse<StoreForServiceConnectionApiDTO[], unknown>
+                >(`/api/service-connections/${connectionId}/stores/`)
+                return response.data.data
+            },
+            staleTime: STALE_TIME_MS,
+            cacheTime: CACHE_TIME_MS,
+        })),
+    })
+
+export const useCreateServiceConnection = (
+    applicationId: string,
+    options?: UseMutationOptions<
+        ServiceConnectionApiDTO,
+        unknown,
+        CreateServiceConnectionRequest
+    >,
+) => {
+    const queryClient = useQueryClient()
+    return useMutation({
+        mutationFn: async (payload) => {
+            const response = await client.post<ServiceConnectionApiDTO>(
+                '/api/service-connections/',
+                payload,
+            )
+            return response.data
+        },
+        onSuccess: (data, vars, ctx) => {
+            void queryClient.invalidateQueries({
+                queryKey: serviceConnectionsQueryKey(applicationId),
+            })
+            options?.onSuccess?.(data, vars, ctx)
+        },
+        ...options,
+    })
+}
 
 export const useAssignServiceConnectionStore = (
     options?: UseMutationOptions<
@@ -436,6 +483,7 @@ export const useTrashServiceConnection = (
         mutationFn: async ({ connectionId }) => {
             const response = await client.put<ServiceConnectionApiDTO>(
                 `/api/service-connections/${connectionId}/trash/`,
+                {},
             )
             return response.data
         },
@@ -450,6 +498,7 @@ export const useTrashServiceConnection = (
 }
 
 export const useUpdateServiceConnection = (
+    applicationId: string,
     options?: UseMutationOptions<
         ServiceConnectionApiDTO,
         unknown,
@@ -466,6 +515,9 @@ export const useUpdateServiceConnection = (
             return response.data
         },
         onSuccess: (data, vars, ctx) => {
+            void queryClient.invalidateQueries({
+                queryKey: serviceConnectionsQueryKey(applicationId),
+            })
             void queryClient.invalidateQueries({
                 queryKey: serviceConnectionQueryKey(vars.connectionId),
             })

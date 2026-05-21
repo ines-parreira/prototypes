@@ -71,6 +71,7 @@ export const appDataToAppDetailMapper = (data: AppData): AppDetail => ({
     supportEmail: data.support_email,
     supportPhone: data.support_phone,
     alloyIntegrationId: data.alloy_integration_id,
+    outboundAuth: data.outbound_auth ?? null,
 })
 
 export const fetchApps = async (): Promise<AppListItem[]> => {
