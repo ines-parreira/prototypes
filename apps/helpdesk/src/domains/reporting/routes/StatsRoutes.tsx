@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { logPageChange } from '@repo/logging'
 import type { RouteComponentProps } from 'react-router-dom'
 import {
@@ -24,6 +25,8 @@ import DefaultStatsFilters from 'domains/reporting/pages/DefaultStatsFilters'
 import HelpCenterStats from 'domains/reporting/pages/help-center/pages/HelpCenterStats'
 import LiveAgents from 'domains/reporting/pages/live/agents/LiveAgents'
 import LiveOverview from 'domains/reporting/pages/live/overview/LiveOverview'
+import PerformanceChannelsReport from 'domains/reporting/pages/performance/channels/PerformanceChannelsReport'
+import PerformanceOverviewReport from 'domains/reporting/pages/performance/overview/PerformanceOverviewReport'
 import SatisfactionReport from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionReport'
 import { ProtectedRoute } from 'domains/reporting/pages/report-chart-restrictions/ProtectedRoute'
 import {
@@ -89,6 +92,9 @@ export const StatsRoutes = () => {
     const hasLiveOverviewFeature = useAppSelector(
         currentAccountHasFeature(AccountFeature.OverviewLiveStatistics),
     )
+
+    const { value: isRevampOverallPerformanceNewScreensEnabled } =
+        useFlagWithLoading(FeatureFlagKey.RevampOverallPerformanceNewScreens)
 
     useEffect(logPageChange, [location.pathname])
 
@@ -163,6 +169,39 @@ export const StatsRoutes = () => {
                         )}
                     />
                 </ProtectedRoute>
+
+                {isRevampOverallPerformanceNewScreensEnabled && (
+                    <ProtectedRoute
+                        path={`${path}/${STATS_ROUTES.PERFORMANCE_OVERVIEW}`}
+                    >
+                        <Route
+                            exact
+                            path={`${path}/${STATS_ROUTES.PERFORMANCE_OVERVIEW}`}
+                            render={() => (
+                                <App
+                                    content={PerformanceOverviewReport}
+                                    navbar={StatsNavbarContainer}
+                                />
+                            )}
+                        />
+                    </ProtectedRoute>
+                )}
+                {isRevampOverallPerformanceNewScreensEnabled && (
+                    <ProtectedRoute
+                        path={`${path}/${STATS_ROUTES.PERFORMANCE_CHANNELS}`}
+                    >
+                        <Route
+                            exact
+                            path={`${path}/${STATS_ROUTES.PERFORMANCE_CHANNELS}`}
+                            render={() => (
+                                <App
+                                    content={PerformanceChannelsReport}
+                                    navbar={StatsNavbarContainer}
+                                />
+                            )}
+                        />
+                    </ProtectedRoute>
+                )}
                 <ProtectedRoute path={`${path}/${STATS_ROUTES.DASHBOARDS_NEW}`}>
                     <Route
                         exact

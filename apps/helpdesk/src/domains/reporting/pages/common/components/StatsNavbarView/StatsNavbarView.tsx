@@ -2,6 +2,8 @@ import { useMemo } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
+import { Tag } from '@gorgias/axiom'
+
 import { Navigation } from 'components/Navigation/Navigation'
 import { STATS_ROUTE_PREFIX } from 'domains/reporting/pages/common/components/constants'
 import { StatsNavbarViewSections } from 'domains/reporting/pages/common/components/StatsNavbarView/constants'
@@ -35,6 +37,9 @@ export function StatsNavbarView() {
     const isTeamLeadOrAdmin = isTeamLead(user)
     const isNewSatisfactionReportEnabled = useFlag(
         FeatureFlagKey.NewSatisfactionReport,
+    )
+    const isRevampOverallPerformanceNewScreensEnabled = useFlag(
+        FeatureFlagKey.RevampOverallPerformanceNewScreens,
     )
 
     const { isStandaloneAiAgent } = useStandaloneAiContext()
@@ -99,6 +104,28 @@ export function StatsNavbarView() {
                     <Navigation.SectionIndicator />
                 </Navigation.SectionTrigger>
                 <Navigation.SectionContent className={css.sectionContent}>
+                    {isRevampOverallPerformanceNewScreensEnabled && (
+                        <>
+                            <StatsNavSectionItem
+                                to={`${STATS_ROUTE_PREFIX}${STATS_ROUTES.PERFORMANCE_OVERVIEW}`}
+                                className={css.statsLink}
+                            >
+                                Overview
+                                <Tag color="purple" size="sm">
+                                    Beta
+                                </Tag>
+                            </StatsNavSectionItem>
+                            <StatsNavSectionItem
+                                to={`${STATS_ROUTE_PREFIX}${STATS_ROUTES.PERFORMANCE_CHANNELS}`}
+                                className={css.statsLink}
+                            >
+                                Channels
+                                <Tag color="purple" size="sm">
+                                    Beta
+                                </Tag>
+                            </StatsNavSectionItem>
+                        </>
+                    )}
                     <StatsNavSectionItem
                         to={`${STATS_ROUTE_PREFIX}${STATS_ROUTES.SUPPORT_PERFORMANCE_OVERVIEW}`}
                     >

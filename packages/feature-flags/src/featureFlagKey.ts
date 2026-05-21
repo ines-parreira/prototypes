@@ -178,6 +178,7 @@ export enum FeatureFlagKey {
     OfficeHours = 'office-hours',
     OnlyShowReasoningWhileImpersonating = 'linear.project_surface-ai-reasoning-in-ticket.only-show-reasoning-while-impersonating',
     OpportunitiesMilestone2 = 'linear.project_proactively-surface-opportunities.enable-milestone-2-features',
+    RevampOverallPerformanceNewScreens = 'linear-project-revamp-overall-performance-new-screens',
     PhoneStatusBatchPollingInterval = 'linear.task_HELP-5435.phone-status-batch-polling-interval',
     PhrasePredictionDebounce = 'phrase-prediction-debounce',
     PlaygroundV3BetaRollout = 'playground-v3-beta-rollout',

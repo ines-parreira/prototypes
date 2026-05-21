@@ -249,6 +249,50 @@ describe('StatsNavbarViewV2', () => {
         expect(autoQATextInclusion).toBe(true)
         expect(autoQANavbarLinks.length).toBe(1)
     })
+    describe('Revamp overall performance new screens', () => {
+        it('should render the new performance overview and channels links when RevampOverallPerformanceNewScreens flag is enabled', () => {
+            useFlagMock.mockImplementation(
+                (flag) =>
+                    flag === FeatureFlagKey.RevampOverallPerformanceNewScreens,
+            )
+
+            const { container } = render(<StatsNavbarView />, {
+                storeState: defaultState,
+            })
+
+            expect(
+                container.querySelector(
+                    `a[href="${STATS_ROUTE_PREFIX}${STATS_ROUTES.PERFORMANCE_OVERVIEW}"]`,
+                ),
+            ).toBeInTheDocument()
+            expect(
+                container.querySelector(
+                    `a[href="${STATS_ROUTE_PREFIX}${STATS_ROUTES.PERFORMANCE_CHANNELS}"]`,
+                ),
+            ).toBeInTheDocument()
+            expect(screen.getAllByText('Beta').length).toBeGreaterThanOrEqual(2)
+        })
+
+        it('should not render the new performance overview and channels links when RevampOverallPerformanceNewScreens flag is disabled', () => {
+            useFlagMock.mockReturnValue(false)
+
+            const { container } = render(<StatsNavbarView />, {
+                storeState: defaultState,
+            })
+
+            expect(
+                container.querySelector(
+                    `a[href="${STATS_ROUTE_PREFIX}${STATS_ROUTES.PERFORMANCE_OVERVIEW}"]`,
+                ),
+            ).not.toBeInTheDocument()
+            expect(
+                container.querySelector(
+                    `a[href="${STATS_ROUTE_PREFIX}${STATS_ROUTES.PERFORMANCE_CHANNELS}"]`,
+                ),
+            ).not.toBeInTheDocument()
+            expect(screen.queryByText('Beta')).not.toBeInTheDocument()
+        })
+    })
     it('should render only AutomateStatsNavbar when standalone AI agent', () => {
         useStandaloneAiContextMock.mockReturnValue(
             createMockStandaloneAiAccess({

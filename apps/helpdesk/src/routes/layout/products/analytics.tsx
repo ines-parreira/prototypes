@@ -140,6 +140,8 @@ export function useStatsNavbarConfig() {
     const { value: isNavTooltipEnabled } = useFlagWithLoading(
         FeatureFlagKey.AiAgentAnalyticsNavTooltip,
     )
+    const { value: isRevampOverallPerformanceNewScreensEnabled } =
+        useFlagWithLoading(FeatureFlagKey.RevampOverallPerformanceNewScreens)
 
     const isAutoQANavLinkAvailable = useMemo(
         () => isTeamLeadOrAdmin && hasAccess,
@@ -330,6 +332,22 @@ export function useStatsNavbarConfig() {
                 ].icon,
                 sectionCanduId: 'navbar-block-support-performance',
                 items: [
+                    ...(isRevampOverallPerformanceNewScreensEnabled
+                        ? [
+                              {
+                                  id: 'performance-overview',
+                                  route: STATS_ROUTES.PERFORMANCE_OVERVIEW,
+                                  label: 'Overview',
+                                  trailingSlot: <Tag color="grey">Beta</Tag>,
+                              },
+                              {
+                                  id: 'performance-channels',
+                                  route: STATS_ROUTES.PERFORMANCE_CHANNELS,
+                                  label: 'Channels',
+                                  trailingSlot: <Tag color="grey">Beta</Tag>,
+                              },
+                          ]
+                        : []),
                     {
                         id: 'support-performance-overview',
                         route: STATS_ROUTES.SUPPORT_PERFORMANCE_OVERVIEW,
@@ -467,6 +485,7 @@ export function useStatsNavbarConfig() {
         isAnalyticsDashboardsNewScreensEnabled,
         isLegacyReportsDisabled,
         isNavTooltipEnabled,
+        isRevampOverallPerformanceNewScreensEnabled,
         canUseAiSalesAgent,
         getDashboardsHandler,
         isConvertSubscriber,

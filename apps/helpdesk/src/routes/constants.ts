@@ -25,6 +25,8 @@ export const STATS_ROUTES = {
     LIVE_AGENTS: 'live-agents',
     LIVE_OVERVIEW: 'live-overview',
     LIVE_VOICE: 'live-voice',
+    PERFORMANCE_CHANNELS: 'performance-channels',
+    PERFORMANCE_OVERVIEW: 'performance-overview',
     QUALITY_MANAGEMENT_AUTO_QA: 'auto-qa',
     QUALITY_MANAGEMENT_SATISFACTION: 'quality-management-satisfaction',
     SUPPORT_PERFORMANCE_AGENTS: 'support-performance-agents',

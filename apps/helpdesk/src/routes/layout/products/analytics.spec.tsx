@@ -378,6 +378,65 @@ describe('useStatsNavbarConfig', () => {
         })
     })
 
+    describe('Revamp overall performance new screens', () => {
+        it('should include performance-overview and performance-channels items with a trailingSlot when RevampOverallPerformanceNewScreens flag is enabled', () => {
+            useFlagMock.mockImplementation((flag) => ({
+                value:
+                    flag === FeatureFlagKey.RevampOverallPerformanceNewScreens,
+                isLoading: false,
+            }))
+
+            const { result } = renderHook(() => useStatsNavbarConfig(), {
+                storeState: defaultState,
+            })
+            const supportPerfSection = result.current.sections.find(
+                (s) => s.id === StatsNavbarViewSections.SupportPerformance,
+            )
+            const performanceOverviewItem = supportPerfSection?.items?.find(
+                (item) => item.id === 'performance-overview',
+            )
+            const performanceChannelsItem = supportPerfSection?.items?.find(
+                (item) => item.id === 'performance-channels',
+            )
+
+            expect(performanceOverviewItem).toBeDefined()
+            expect(performanceOverviewItem?.route).toBe(
+                STATS_ROUTES.PERFORMANCE_OVERVIEW,
+            )
+            expect(performanceOverviewItem?.label).toBe('Overview')
+            expect(performanceOverviewItem?.trailingSlot).toBeDefined()
+
+            expect(performanceChannelsItem).toBeDefined()
+            expect(performanceChannelsItem?.route).toBe(
+                STATS_ROUTES.PERFORMANCE_CHANNELS,
+            )
+            expect(performanceChannelsItem?.label).toBe('Channels')
+            expect(performanceChannelsItem?.trailingSlot).toBeDefined()
+        })
+
+        it('should not include performance-overview or performance-channels items when RevampOverallPerformanceNewScreens flag is disabled', () => {
+            useFlagMock.mockReturnValue({ value: false, isLoading: false })
+
+            const { result } = renderHook(() => useStatsNavbarConfig(), {
+                storeState: defaultState,
+            })
+            const supportPerfSection = result.current.sections.find(
+                (s) => s.id === StatsNavbarViewSections.SupportPerformance,
+            )
+
+            expect(
+                supportPerfSection?.items?.find(
+                    (item) => item.id === 'performance-overview',
+                ),
+            ).toBeUndefined()
+            expect(
+                supportPerfSection?.items?.find(
+                    (item) => item.id === 'performance-channels',
+                ),
+            ).toBeUndefined()
+        })
+    })
+
     describe('Convert section', () => {
         it('should include a Campaigns item with the correct route', () => {
             const { result } = renderHook(() => useStatsNavbarConfig(), {
