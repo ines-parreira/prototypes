@@ -389,9 +389,9 @@ export const getChatActivation = ({
     })
 
     const availableMonitoredChat =
-        storeConfiguration.monitoredChatIntegrations.filter((it) =>
+        storeConfiguration.monitoredChatIntegrations?.filter((it) =>
             selfServiceChatChannels.some((chat) => chat.value.id === it),
-        )
+        ) ?? []
 
     const isChatIntegrationMissing = !availableMonitoredChat.length
     let isChatInstallationMissing: boolean
@@ -477,7 +477,7 @@ export const storeConfigurationToState = (
                 storeKnowledgeStatus: storesKnowledgeStatus?.[storeName],
             })
 
-            const isEmailIntegrationMissing = !monitoredEmailIntegrations.some(
+            const isEmailIntegrationMissing = !monitoredEmailIntegrations?.some(
                 ({ id }) => emailIntegrations.some((email) => email.id === id),
             )
 

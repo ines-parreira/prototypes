@@ -26,6 +26,7 @@ import {
 import { THEME_NAME, useApplyTheme, useTheme } from 'core/theme'
 import { useAxiomMigration } from 'hooks/useAxiomMigration'
 import useHasPhone from 'hooks/useHasPhone'
+import { CopilotProvider } from 'main/app/components/CopilotProvider'
 import UIKitRootNodeProvider from 'main/app/components/UIKitRootNodeProvider'
 import { isAiAgentOnboarding } from 'main/app/utils/isAiAgentOnboarding'
 import { AlertNotifications } from 'notifications'
@@ -112,57 +113,59 @@ export default function App({ children }: Props) {
     const isOnboarding = isAiAgentOnboarding(history.location.pathname)
 
     return (
-        <AppNode
-            className={cn({
-                axiom: isAxiomEnabled,
-                legacy: !isAxiomEnabled,
-                classic: theme.resolvedName === THEME_NAME.Classic,
-                globalNav: hasGlobalNav,
-                uiVisionMilestone1: hasUIVisionMS1,
-            })}
-        >
-            <UIKitRootNodeProvider>
-                <SessionChangeDetection />
-                <NotificationsToasts />
-                <AlertNotifications />
-                <Toaster />
-                {!isOnboarding && (
-                    <>
-                        <AlertBanners />
-                        <ImpersonationBanner />
-                        {!bannerList?.scriptTagMigrationBanner && (
-                            <ScriptTagMigrationBanner />
-                        )}
-                        {!bannerList?.emailDomainVerificationBanner && (
-                            <EmailDomainVerificationBanner />
-                        )}
-                        {!bannerList?.emailDisconnectedBanner && (
-                            <EmailDisconnectedBanner />
-                        )}
-                        {!bannerList?.emailMigrationBanner && (
-                            <EmailMigrationBanner />
-                        )}
-                    </>
-                )}
-                <ScriptTagMigrationModal />
-                <Spotlight />
-                <div className={css.content}>
-                    {!hasWayfindingMS1Flag && <NotificationsOverlay />}
-                    {children}
-                </div>
-                <KeyboardHelp />
-                {hasPhone && <PhoneIntegrationBar />}
-                <OutOfRecoveryCodesModal />
-            </UIKitRootNodeProvider>
-            <div
-                id="notifications-root"
-                data-react-aria-top-layer="true"
-                style={{
-                    position: 'fixed',
-                    zIndex: 10000,
-                    pointerEvents: 'none',
-                }}
-            />
-        </AppNode>
+        <CopilotProvider>
+            <AppNode
+                className={cn({
+                    axiom: isAxiomEnabled,
+                    legacy: !isAxiomEnabled,
+                    classic: theme.resolvedName === THEME_NAME.Classic,
+                    globalNav: hasGlobalNav,
+                    uiVisionMilestone1: hasUIVisionMS1,
+                })}
+            >
+                <UIKitRootNodeProvider>
+                    <SessionChangeDetection />
+                    <NotificationsToasts />
+                    <AlertNotifications />
+                    <Toaster />
+                    {!isOnboarding && (
+                        <>
+                            <AlertBanners />
+                            <ImpersonationBanner />
+                            {!bannerList?.scriptTagMigrationBanner && (
+                                <ScriptTagMigrationBanner />
+                            )}
+                            {!bannerList?.emailDomainVerificationBanner && (
+                                <EmailDomainVerificationBanner />
+                            )}
+                            {!bannerList?.emailDisconnectedBanner && (
+                                <EmailDisconnectedBanner />
+                            )}
+                            {!bannerList?.emailMigrationBanner && (
+                                <EmailMigrationBanner />
+                            )}
+                        </>
+                    )}
+                    <ScriptTagMigrationModal />
+                    <Spotlight />
+                    <div className={css.content}>
+                        {!hasWayfindingMS1Flag && <NotificationsOverlay />}
+                        {children}
+                    </div>
+                    <KeyboardHelp />
+                    {hasPhone && <PhoneIntegrationBar />}
+                    <OutOfRecoveryCodesModal />
+                </UIKitRootNodeProvider>
+                <div
+                    id="notifications-root"
+                    data-react-aria-top-layer="true"
+                    style={{
+                        position: 'fixed',
+                        zIndex: 10000,
+                        pointerEvents: 'none',
+                    }}
+                />
+            </AppNode>
+        </CopilotProvider>
     )
 }

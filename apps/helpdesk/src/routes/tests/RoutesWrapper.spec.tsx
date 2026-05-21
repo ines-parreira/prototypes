@@ -22,6 +22,9 @@ jest.mock('../Routes', () => () => <div>Routes</div>)
 jest.mock('../layout/NavigationSidebar', () => ({
     NavigationSidebar: () => <div>Sidebar</div>,
 }))
+jest.mock('hooks/useCopilotEnabled', () => ({
+    useCopilotEnabled: jest.fn(() => false),
+}))
 
 describe('RoutesWrapper', () => {
     describe('when wayfinding flag is disabled', () => {

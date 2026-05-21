@@ -12,7 +12,9 @@ import {
 import { ViewCountDebugPanel } from '@repo/views'
 
 import { Box, Button, Separator, TooltipContent } from '@gorgias/axiom'
+import { useCopilot } from '@gorgias/copilot'
 
+import { useCopilotEnabled } from 'hooks/useCopilotEnabled'
 import { useIsChatReady } from 'hooks/useIsChatReady'
 import { useCurrentRouteProduct } from 'routes/hooks/useCurrentRouteProduct'
 import { usePreviousProductNavigation } from 'routes/hooks/usePreviousProductNavigation'
@@ -34,6 +36,8 @@ export function NavigationSidebar() {
     const buttonSize = useSidebarButtonSize()
     const isChatReady = useIsChatReady()
     const isMobileResolution = useIsMobileResolution()
+    const isCopilotEnabled = useCopilotEnabled()
+    const { open: isCopilotOpen, setOpen: setCopilotOpen } = useCopilot()
 
     useSidebarShortcuts()
 
@@ -137,6 +141,18 @@ export function NavigationSidebar() {
                         >
                             <ViewCountDebugPanel />
                         </DebugMenuItem>
+                        {isCopilotEnabled && (
+                            <DebugMenuItem
+                                id="copilot-toggle"
+                                icon="ai-skill"
+                                label={
+                                    isCopilotOpen
+                                        ? 'Hide copilot'
+                                        : 'Show copilot'
+                                }
+                                onSelect={() => setCopilotOpen(!isCopilotOpen)}
+                            />
+                        )}
                     </DebugMenu>
                     <NavigationSidebarTooltip
                         placement="top"

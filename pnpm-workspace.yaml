@@ -48,6 +48,8 @@ catalogs:
     '@internationalized/date': '3.10.0'
   analytics-ui-kit:
     '@gorgias/analytics-ui-kit': '0.1.25'
+  copilot:
+    '@gorgias/copilot': '0.28.2'
   rest-api-sdk:
     '@gorgias/convert-client': '^0.3.60'
     '@gorgias/convert-mocks': '^0.2.77'

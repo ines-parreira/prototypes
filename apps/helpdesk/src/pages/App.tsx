@@ -7,14 +7,17 @@ import cn from 'classnames'
 import _isEqual from 'lodash/isEqual'
 import { Container } from 'reactstrap'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Box, LegacyButton as Button } from '@gorgias/axiom'
 
+import { CopilotWorkspace } from '@gorgias/copilot'
 import { GlobalNavigation } from 'common/navigation'
 import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
+
 import { CollapsibleNavBarWrapper } from 'core/navigation/components/CollapsibleNavBarWrapper'
 import { useFetchManagedDashboards } from 'domains/reporting/hooks/managed-dashboards/useFetchManagedDashboards'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import { useCopilotEnabled } from 'hooks/useCopilotEnabled'
 import { AppContextProvider } from 'pages/AppContext'
 import { CollapsibleColumn } from 'pages/CollapsibleColumn'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -51,6 +54,7 @@ const App = ({
 }: Props) => {
     const showGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
     const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
+    const isCopilotEnabled = useCopilotEnabled()
     const dispatch = useAppDispatch()
 
     // Prefetch managed dashboards at the app root to avoid loading states when
@@ -151,6 +155,11 @@ const App = ({
             </div>
 
             <CollapsibleColumn />
+            {isCopilotEnabled && (
+                <Box pt="xs" pr="xs" pb="xs">
+                    <CopilotWorkspace />
+                </Box>
+            )}
 
             <div
                 className={cn(css.backdrop, {

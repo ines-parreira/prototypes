@@ -43,6 +43,10 @@ jest.mock(
     }),
 )
 
+jest.mock('hooks/useCopilotEnabled', () => ({
+    useCopilotEnabled: jest.fn(() => false),
+}))
+
 const mockUseIsMobileResolution = useIsMobileResolution as jest.MockedFunction<
     typeof useIsMobileResolution
 >

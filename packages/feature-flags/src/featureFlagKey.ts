@@ -133,6 +133,7 @@ export enum FeatureFlagKey {
     DistributeToTeamsRuleAction = 'distribute_to_teams_rule_action',
     DontTriggerLoginsOnInactiveTabs = 'dont-trigger-logins-on-inactive-tabs',
     EmailReducedThreadSize = 'linear.email-size-reduction-to-ensure-deliverability.reducing-body-html-payload',
+    EnableCopilotUi = 'linear-project_copilot-enabled',
     EnableEmailToStoreMapping = 'enable-email-to-store-mapping',
     EnableNewLanguages = 'enable-new-languages',
     EnableNonShopifyStoresInHelpCenter = 'enable-non-shopify-stores-in-help-center',

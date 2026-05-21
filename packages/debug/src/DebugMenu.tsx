@@ -13,6 +13,14 @@ type DebugMenuProps = {
     children: ReactNode
 }
 
+type ResolvedItem = {
+    id: string
+    icon: DebugMenuItemProps['icon']
+    label: string
+    panel: ReactNode
+    onSelect?: () => void
+}
+
 export function DebugMenu({ children }: DebugMenuProps) {
     const isFlagEnabled = useFlag(FeatureFlagKey.DebugMenu, false)
     const isEnabled = isFlagEnabled || !!window.USER_IMPERSONATED
@@ -20,12 +28,7 @@ export function DebugMenu({ children }: DebugMenuProps) {
 
     if (!isEnabled) return null
 
-    const items: Array<{
-        id: string
-        icon: string
-        label: string
-        panel: ReactNode
-    }> = []
+    const items: ResolvedItem[] = []
 
     Children.forEach(children, (child) => {
         if (isValidElement<DebugMenuItemProps>(child)) {
@@ -34,11 +37,24 @@ export function DebugMenu({ children }: DebugMenuProps) {
                 icon: child.props.icon,
                 label: child.props.label,
                 panel: child.props.children,
+                onSelect: child.props.onSelect,
             })
         }
     })
 
     if (items.length === 0) return null
+
+    function handleAction(key: Key) {
+        const id = String(key)
+        const item = items.find((i) => i.id === id)
+
+        if (item?.onSelect) {
+            item.onSelect()
+            return
+        }
+
+        setOpenPanel(id)
+    }
 
     return (
         <>
@@ -58,7 +74,7 @@ export function DebugMenu({ children }: DebugMenuProps) {
                     </NavigationSidebarTooltip>
                 }
                 aria-label="Debug menu"
-                onAction={(key: Key) => setOpenPanel(String(key))}
+                onAction={handleAction}
             >
                 {items.map((item) => (
                     <MenuItem
@@ -70,7 +86,7 @@ export function DebugMenu({ children }: DebugMenuProps) {
                 ))}
             </Menu>
             {items.map((item) =>
-                isValidElement(item.panel)
+                !item.onSelect && isValidElement(item.panel)
                     ? cloneElement(item.panel, {
                           ...item.panel.props,
                           key: item.id,

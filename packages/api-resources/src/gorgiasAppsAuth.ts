@@ -3,6 +3,10 @@ import { AxiosHeaders } from 'axios'
 
 import gorgiasApiClient from './client'
 
+type GorgiasAppAuthServiceOptions = {
+    client?: string
+}
+
 function isValidAccessToken(token: string | null): boolean {
     if (!token) {
         return false
@@ -28,10 +32,16 @@ export const buildGorgiasAppsAuthInterceptor = () => {
 
 export class GorgiasAppAuthService {
     accessToken: string | null = null
-    authPendingRequest: Promise<AxiosResponse> | null = null
+    authPendingRequest: Promise<AxiosResponse<{ token: string }>> | null = null
+
+    constructor(private readonly options: GorgiasAppAuthServiceOptions = {}) {}
 
     private setAccessToken(token: string) {
         this.accessToken = token
+    }
+
+    public clearAccessToken() {
+        this.accessToken = null
     }
 
     private async renewAccessToken() {
@@ -40,22 +50,34 @@ export class GorgiasAppAuthService {
             return
         }
 
-        this.authPendingRequest = gorgiasApiClient.post('/gorgias-apps/auth')
+        this.authPendingRequest = gorgiasApiClient.post(
+            '/gorgias-apps/auth',
+            this.options.client ? { client: this.options.client } : undefined,
+        )
 
-        const {
-            data: { token },
-        } = await this.authPendingRequest
+        try {
+            const {
+                data: { token },
+            } = await this.authPendingRequest
 
-        this.setAccessToken(token)
-        this.authPendingRequest = null
+            this.setAccessToken(token)
+        } finally {
+            this.authPendingRequest = null
+        }
     }
 
     public async getAccessToken() {
+        const accessToken = await this.getRawAccessToken()
+
+        return accessToken ? `Bearer ${accessToken}` : ''
+    }
+
+    public async getRawAccessToken() {
         if (!isValidAccessToken(this.accessToken)) {
             await this.renewAccessToken()
         }
 
-        return this.accessToken ? `Bearer ${this.accessToken}` : ''
+        return this.accessToken ?? ''
     }
 
     public async getAccessTokenHeaders() {

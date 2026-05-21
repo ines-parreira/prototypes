@@ -6,7 +6,16 @@ export type DebugMenuItemProps = {
     id: string
     icon: IconName
     label: string
-    children: ReactNode
+    /**
+     * Panel rendered when the item is selected. Required unless `onSelect` is
+     * provided, in which case the item behaves as a one-shot action.
+     */
+    children?: ReactNode
+    /**
+     * Called when the item is selected. When set, no panel is rendered and the
+     * `children` prop is ignored.
+     */
+    onSelect?: () => void
 }
 
 export function DebugMenuItem(_props: DebugMenuItemProps) {

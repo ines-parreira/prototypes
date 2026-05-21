@@ -74,6 +74,7 @@
         "@gorgias/convert-client": "catalog:rest-api-sdk",
         "@gorgias/convert-mocks": "catalog:rest-api-sdk",
         "@gorgias/convert-queries": "catalog:rest-api-sdk",
+        "@gorgias/copilot": "catalog:copilot",
         "@gorgias/customer-segmentation-client": "catalog:rest-api-sdk",
         "@gorgias/customer-segmentation-queries": "catalog:rest-api-sdk",
         "@gorgias/customer-segmentation-types": "catalog:rest-api-sdk",

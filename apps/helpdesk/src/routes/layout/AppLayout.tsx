@@ -5,7 +5,9 @@ import { Handle, Panel, PanelGroup, Panels } from '@repo/layout'
 import { SidebarProvider } from '@repo/navigation'
 
 import { Box, Button, SidePanel } from '@gorgias/axiom'
+import { CopilotWorkspace } from '@gorgias/copilot'
 
+import { useCopilotEnabled } from 'hooks/useCopilotEnabled'
 import { NavigationSidebar } from 'routes/layout/NavigationSidebar'
 
 import css from './AppLayout.less'
@@ -39,6 +41,7 @@ export function AppLayout({ children, hasPanel }: AppLayoutProps) {
     const { width } = useWindowSize()
     const isMobileResolution = useIsMobileResolution()
     const [isSidePanelOpen, setIsSidePanelOpen] = useState(false)
+    const isCopilotEnabled = useCopilotEnabled()
 
     if (isMobileResolution) {
         return (
@@ -70,6 +73,11 @@ export function AppLayout({ children, hasPanel }: AppLayoutProps) {
                             {children}
                         </Panel>
                     </PanelGroup>
+                    {isCopilotEnabled && (
+                        <Box pt="xs" pr="xs" pb="xs">
+                            <CopilotWorkspace />
+                        </Box>
+                    )}
                 </Panels>
             </Box>
         )
@@ -109,6 +117,11 @@ export function AppLayout({ children, hasPanel }: AppLayoutProps) {
                                 </Panel>
                             )}
                         </PanelGroup>
+                        {isCopilotEnabled && (
+                            <Box pt="xs" pr="xs" pb="xs">
+                                <CopilotWorkspace />
+                            </Box>
+                        )}
                     </>
                 )}
             </SidebarProvider>

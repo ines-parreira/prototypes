@@ -9,6 +9,7 @@ const config: Config = {
         '\\?raw$': '<rootDir>/tests/__mocks__/fileMock.ts',
         '\\.(css|less)$': 'identity-obj-proxy',
         uuid: 'uuid',
+        '^@gorgias/copilot$': '<rootDir>/tests/__mocks__/copilot.tsx',
         'react-markdown': '<rootDir>/tests/__mocks__/react-markdown.ts',
         'rehype-raw': '<rootDir>/tests/__mocks__/rehype-raw.ts',
         tabbable: '<rootDir>/tests/__mocks__/tabbable.js',
