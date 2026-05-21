@@ -1,5 +1,6 @@
 import { ActivityEvents, logActivityEvent } from '@repo/activity-tracker'
 import { appQueryClient } from '@repo/api-resources'
+import { FeatureFlagKey, fetchFlag } from '@repo/feature-flags'
 import { history } from '@repo/routing'
 import { upsertTicketMessageInListMessagesCache } from '@repo/tickets'
 import { logViewEvent, setViewsCount } from '@repo/views'
@@ -93,6 +94,15 @@ import { isCurrentlyOnTicket } from 'utils'
 /**
  * Events that can be received from server via socket
  */
+async function isEmailIntegrationMigrationToAblyEnabled() {
+    const { flag } = await fetchFlag(
+        FeatureFlagKey.EmailIntegrationMigrationToAbly,
+        false,
+    )
+
+    return flag
+}
+
 const receivedEvents: ReceivedEvent[] = [
     {
         name: 'customer-updated',
@@ -532,7 +542,9 @@ const receivedEvents: ReceivedEvent[] = [
     },
     {
         name: SocketEventType.MigrationIntegrationInboundVerified,
-        onReceive: function (json) {
+        onReceive: async function (json) {
+            if (await isEmailIntegrationMigrationToAblyEnabled()) return
+
             const integrationId = (json as EmailIntegrationVerifiedEvent)
                 .integration_id
             const migration = getEmailMigrations(reduxStore.getState()).find(
@@ -550,7 +562,9 @@ const receivedEvents: ReceivedEvent[] = [
     },
     {
         name: SocketEventType.MigrationIntegrationInboundFailed,
-        onReceive: function (json) {
+        onReceive: async function (json) {
+            if (await isEmailIntegrationMigrationToAblyEnabled()) return
+
             const integrationId = (json as EmailIntegrationVerifiedEvent)
                 .integration_id
             const migration = getEmailMigrations(reduxStore.getState()).find(

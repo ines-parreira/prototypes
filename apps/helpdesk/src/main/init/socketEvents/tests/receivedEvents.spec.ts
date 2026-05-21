@@ -13,6 +13,7 @@ import _isObject from 'lodash/isObject'
 import * as activityTracker from '@repo/activity-tracker'
 import { ActivityEvents } from '@repo/activity-tracker'
 import { appQueryClient } from '@repo/api-resources'
+import { FeatureFlagKey, fetchFlag } from '@repo/feature-flags'
 import { history } from '@repo/routing'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 import { shouldTicketBeDisplayedInRecentChats } from 'business/recentChats'
@@ -152,8 +153,11 @@ jest.mock('state/views/utils')
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
+    fetchFlag: jest.fn(async () => ({ flag: false, error: null })),
     useFlag: jest.fn((flag, defaultValue) => defaultValue),
 }))
+
+const mockFetchFlag = fetchFlag as jest.MockedFunction<typeof fetchFlag>
 
 describe('receivedEvents', () => {
     afterEach(() => {
@@ -1288,7 +1292,11 @@ describe('receivedEvents', () => {
             },
         }
 
-        it('MigrationIntegrationInboundVerified - should find migration and dispatch onVerifyMigrationForwarding action with correct args', () => {
+        beforeEach(() => {
+            mockFetchFlag.mockResolvedValue({ flag: false, error: null })
+        })
+
+        it('MigrationIntegrationInboundVerified - should find migration and dispatch onVerifyMigrationForwarding action with correct args', async () => {
             const handler = _find(receivedEvents, {
                 name: SocketEventType.MigrationIntegrationInboundVerified,
             }) as ReceivedEvent
@@ -1305,7 +1313,7 @@ describe('receivedEvents', () => {
                 'onVerifyMigrationForwarding',
             )
 
-            handler.onReceive({
+            await handler.onReceive({
                 event: {
                     type: SocketEventType.EmailIntegrationVerified,
                 },
@@ -1317,9 +1325,37 @@ describe('receivedEvents', () => {
                 migration.integration.id,
                 migration.integration.meta.address,
             )
+            expect(mockFetchFlag).toHaveBeenCalledWith(
+                FeatureFlagKey.EmailIntegrationMigrationToAbly,
+                false,
+            )
         })
 
-        it('MigrationIntegrationInboundFailed - should find migration and dispatch onVerifyMigrationForwardingFailure action with correct args', () => {
+        it('MigrationIntegrationInboundVerified - should not dispatch when the Ably migration feature flag is enabled', async () => {
+            mockFetchFlag.mockResolvedValueOnce({ flag: true, error: null })
+
+            const handler = _find(receivedEvents, {
+                name: SocketEventType.MigrationIntegrationInboundVerified,
+            }) as ReceivedEvent
+
+            const getStateSpy = jest.spyOn(reduxStore, 'getState')
+            const spy = jest.spyOn(
+                integrationActions,
+                'onVerifyMigrationForwarding',
+            )
+
+            await handler.onReceive({
+                event: {
+                    type: SocketEventType.EmailIntegrationVerified,
+                },
+                integration_id: 1,
+            })
+
+            expect(spy).not.toHaveBeenCalled()
+            expect(getStateSpy).not.toHaveBeenCalled()
+        })
+
+        it('MigrationIntegrationInboundFailed - should find migration and dispatch onVerifyMigrationForwardingFailure action with correct args', async () => {
             const handler = _find(receivedEvents, {
                 name: SocketEventType.MigrationIntegrationInboundFailed,
             }) as ReceivedEvent
@@ -1336,7 +1372,7 @@ describe('receivedEvents', () => {
                 'onVerifyMigrationForwardingFailure',
             )
 
-            handler.onReceive({
+            await handler.onReceive({
                 event: {
                     type: SocketEventType.EmailIntegrationVerified,
                 },
@@ -1348,6 +1384,34 @@ describe('receivedEvents', () => {
                 migration.integration.id,
                 migration.integration.meta.address,
             )
+            expect(mockFetchFlag).toHaveBeenCalledWith(
+                FeatureFlagKey.EmailIntegrationMigrationToAbly,
+                false,
+            )
+        })
+
+        it('MigrationIntegrationInboundFailed - should not dispatch when the Ably migration feature flag is enabled', async () => {
+            mockFetchFlag.mockResolvedValueOnce({ flag: true, error: null })
+
+            const handler = _find(receivedEvents, {
+                name: SocketEventType.MigrationIntegrationInboundFailed,
+            }) as ReceivedEvent
+
+            const getStateSpy = jest.spyOn(reduxStore, 'getState')
+            const spy = jest.spyOn(
+                integrationActions,
+                'onVerifyMigrationForwardingFailure',
+            )
+
+            await handler.onReceive({
+                event: {
+                    type: SocketEventType.EmailIntegrationVerified,
+                },
+                integration_id: 1,
+            })
+
+            expect(spy).not.toHaveBeenCalled()
+            expect(getStateSpy).not.toHaveBeenCalled()
         })
     })
 

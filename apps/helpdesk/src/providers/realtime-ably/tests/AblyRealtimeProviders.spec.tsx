@@ -26,6 +26,12 @@ jest.mock('../hooks/useRealtimeConnectionStateChanges', () => ({
     }),
 }))
 
+jest.mock('../EmailIntegrationMigrationRealtimeHandler', () => ({
+    EmailIntegrationMigrationRealtimeHandler: () => (
+        <div data-testid="email-migration-realtime-handler" />
+    ),
+}))
+
 jest.mock('@gorgias/realtime', () => ({
     RealtimeProvider: ({
         children,
@@ -93,6 +99,30 @@ describe('AblyRealtimeProviders', () => {
         expect(getByTestId('agent-activity-provider')).toBeInTheDocument()
         expect(getByTestId('agent-online-status-provider')).toBeInTheDocument()
         expect(getByText('foo')).toBeInTheDocument()
+    })
+
+    it('should render the email migration realtime handler when the migration feature flag is enabled', () => {
+        mockUseFlag.mockImplementation((flag) => {
+            return flag === FeatureFlagKey.EmailIntegrationMigrationToAbly
+        })
+
+        const { getByTestId } = render(
+            <AblyRealtimeProviders>foo</AblyRealtimeProviders>,
+        )
+
+        expect(
+            getByTestId('email-migration-realtime-handler'),
+        ).toBeInTheDocument()
+    })
+
+    it('should not render the email migration realtime handler when the migration feature flag is disabled', () => {
+        const { queryByTestId } = render(
+            <AblyRealtimeProviders>foo</AblyRealtimeProviders>,
+        )
+
+        expect(
+            queryByTestId('email-migration-realtime-handler'),
+        ).not.toBeInTheDocument()
     })
 
     it('should enable logging if feature flag is enabled', () => {

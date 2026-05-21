@@ -132,6 +132,7 @@ export enum FeatureFlagKey {
     DisableAutoRenewalCancellationForEnterpriseGMV = 'linear.project_quick-win-fix-gmv-enterprise-self-downgradecancellation.disable_cancellations',
     DistributeToTeamsRuleAction = 'distribute_to_teams_rule_action',
     DontTriggerLoginsOnInactiveTabs = 'dont-trigger-logins-on-inactive-tabs',
+    EmailIntegrationMigrationToAbly = 'linear-task_HELP-5516-migrate-email-integration-migration-to-ably',
     EmailReducedThreadSize = 'linear.email-size-reduction-to-ensure-deliverability.reducing-body-html-payload',
     EnableCopilotUi = 'linear-project_copilot-enabled',
     EnableEmailToStoreMapping = 'enable-email-to-store-mapping',

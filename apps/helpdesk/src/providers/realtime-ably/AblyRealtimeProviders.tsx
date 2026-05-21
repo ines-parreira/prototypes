@@ -11,6 +11,7 @@ import {
 } from '@gorgias/realtime'
 import type { RealtimeConnectionStateChange } from '@gorgias/realtime'
 
+import { EmailIntegrationMigrationRealtimeHandler } from './EmailIntegrationMigrationRealtimeHandler'
 import { useRealtimeConnectionStateChanges } from './hooks/useRealtimeConnectionStateChanges'
 
 type Props = {
@@ -26,6 +27,9 @@ const AblyRealtimeProviders = ({ children }: Props) => {
     )
     const isAblyFailedStateReportingEnabled = useFlag(
         FeatureFlagKey.AblyFailedStateReporting,
+    )
+    const isEmailIntegrationMigrationToAblyEnabled = useFlag(
+        FeatureFlagKey.EmailIntegrationMigrationToAbly,
     )
 
     const isErrorReportingEnabled = useRef(isAblyRealtimeErrorReportingEnabled)
@@ -84,7 +88,12 @@ const AblyRealtimeProviders = ({ children }: Props) => {
             onConnectionStateChange={onConnectionStateChange}
         >
             <AgentOnlineStatusProvider>
-                <AgentActivityProvider>{children}</AgentActivityProvider>
+                <AgentActivityProvider>
+                    {isEmailIntegrationMigrationToAblyEnabled && (
+                        <EmailIntegrationMigrationRealtimeHandler />
+                    )}
+                    {children}
+                </AgentActivityProvider>
             </AgentOnlineStatusProvider>
         </RealtimeProvider>
     )
