@@ -1,0 +1,26 @@
+name: Claude Code Review
+
+on:
+  pull_request:
+    types: [labeled]
+
+concurrency:
+  group: claude-review-pr${{ github.event.pull_request.number }}
+  cancel-in-progress: ${{ github.event.label.name == 'claude:review' }}
+
+jobs:
+  review:
+    if: github.event.label.name == 'claude:review'
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+    uses: gorgias/ai-workflows/.github/workflows/claude-review-reusable.yml@main
+    secrets:
+      gh_token: ${{ secrets.GITHUB_TOKEN }}
+      anthropic_api_key: ${{ secrets.PR_REVIEW_AGENT_CLAUDE_API_KEY }}
+      gh_packages_token: ${{ secrets.GH_READ_PACKAGES_TOKEN }}
+      ai_workflows_token: ${{ secrets.GORGIAS_BOT_READONLY_GH_ACTIONS_REPO_READ_TOKEN }}
+    with:
+      trigger_label: 'claude:review'
+      success_labels: 'needs:human'
