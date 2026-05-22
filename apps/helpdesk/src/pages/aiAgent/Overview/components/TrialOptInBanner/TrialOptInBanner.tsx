@@ -24,7 +24,11 @@ type Props = {
 export const TrialOptInBanner = ({ shopName }: Props) => {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
-    const { storeActivations } = useStoreActivations({ storeName: shopName })
+    const { storeActivations } = useStoreActivations({
+        storeName: shopName,
+        withChatIntegrationsStatus: true,
+        withStoresKnowledgeStatus: true,
+    })
 
     const trialAccess = useTrialAccess(shopName)
 
