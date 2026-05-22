@@ -44,12 +44,12 @@ export const SmsSenderSelect = ({ monitoredSmsIntegrations }: Props) => {
             name="sms_sender"
             control={control}
             render={({ field }) => {
-                const currentOption =
+                const currentOption: PhoneOption | null =
                     phoneOptions.find(
                         (phoneOption) =>
                             phoneOption.id ===
                             field.value?.sms_sender_integration_id,
-                    ) ?? undefined
+                    ) ?? null
 
                 return (
                     <SelectField
@@ -57,7 +57,9 @@ export const SmsSenderSelect = ({ monitoredSmsIntegrations }: Props) => {
                         caption="Shoppers will see this as the sender."
                         placeholder="Select phone number"
                         items={phoneOptions}
-                        value={currentOption}
+                        // Pass null (not undefined) so the underlying field stays
+                        // controlled before phoneOptions resolve a match.
+                        value={currentOption as PhoneOption | undefined}
                         leadingSlot={
                             currentOption?.countryCode ? (
                                 <FlagIcon code={currentOption.countryCode} />
