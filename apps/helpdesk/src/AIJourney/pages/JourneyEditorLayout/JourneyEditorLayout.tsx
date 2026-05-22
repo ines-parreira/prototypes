@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useId } from '@repo/hooks'
 import type { SubmitHandler } from 'react-hook-form'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
@@ -14,6 +13,7 @@ import {
     Menu,
     MenuItem,
     PanelHeader,
+    toast,
 } from '@gorgias/axiom'
 import { JourneyStatusEnum } from '@gorgias/convert-client'
 
@@ -24,6 +24,8 @@ import {
 } from 'AIJourney/hooks'
 import type { SetupFormValues } from 'AIJourney/pages/Setup/Setup'
 import { useJourneyContext } from 'AIJourney/providers'
+import type { UnsavedChangesPromptTrigger } from 'pages/common/components/UnsavedChangesPrompt'
+import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
 
 import { KlaviyoSetupCard, MessageGuidanceCard } from 'AIJourney/components'
@@ -57,9 +59,6 @@ export const JourneyEditorLayout = ({ step }: Props) => {
     const [isSchedulePanelOpen, setIsSchedulePanelOpen] = useState(false)
     const [isTestModalOpen, setIsTestModalOpen] = useState(false)
     const titleErrorId = `journey-title-error-${useId()}`
-    const storeSettingsEnabled = useFlag(
-        FeatureFlagKey.AiJourneyStoreSettingsEnabled,
-    )
     const isCampaign = journeyType === JOURNEY_TYPES.CAMPAIGN
     const isCustomFlow = journeyType === JOURNEY_TYPES.CUSTOM
     const isEditableTitle = isCampaign || isCustomFlow
@@ -92,7 +91,20 @@ export const JourneyEditorLayout = ({ step }: Props) => {
                 }),
         },
     })
-    const { handleSubmit, control } = methods
+    const { handleSubmit, control, formState } = methods
+
+    const unsavedChangesPromptRef = useRef<UnsavedChangesPromptTrigger>(null)
+
+    const runActionWithUnsavedChangesPrompt = (action: () => void) => {
+        if (!formState.isDirty) {
+            action()
+            return
+        }
+        unsavedChangesPromptRef.current?.onLeaveContext({
+            onSave: action,
+            onDiscard: action,
+        })
+    }
 
     const { handleCreate, isLoading: isLoadingCreate } =
         useJourneyCreateHandler({
@@ -129,17 +141,11 @@ export const JourneyEditorLayout = ({ step }: Props) => {
     }
 
     const handleSave: SubmitHandler<SetupFormValues> = async (data) => {
-        const smsSenderFields = !storeSettingsEnabled
-            ? {
-                  phoneNumberIntegrationId: data.sms_sender_integration_id?.id,
-                  phoneNumber: data.sms_sender_integration_id?.label,
-              }
-            : {}
-
         const shouldClearAudience = !isCampaign && !data.narrow_audience_enabled
 
         const commonFields = {
-            ...smsSenderFields,
+            phoneNumberIntegrationId: data.sms_sender_integration_id?.id,
+            phoneNumber: data.sms_sender_integration_id?.label,
             followUpValue: data.max_follow_up_messages - 1,
             followUpWaitMinutes: data.follow_up_wait_minutes,
             includeImage: data.include_image,
@@ -162,39 +168,46 @@ export const JourneyEditorLayout = ({ step }: Props) => {
             }),
         }
 
-        if (isCampaign) {
-            const params = {
-                ...commonFields,
-                campaignTitle: data.campaignTitle,
-            }
-            if (journeyData?.id) {
-                await handleUpdate(params)
+        try {
+            if (isCampaign) {
+                const params = {
+                    ...commonFields,
+                    campaignTitle: data.campaignTitle,
+                }
+                if (journeyData?.id) {
+                    await handleUpdate(params)
+                } else {
+                    await handleCreate(params).then((res) => {
+                        history.replace(
+                            `/app/ai-journey/${shopName}/campaign/setup/${res.id}`,
+                        )
+                    })
+                }
             } else {
-                await handleCreate(params).then((res) => {
-                    history.replace(
-                        `/app/ai-journey/${shopName}/campaign/setup/${res.id}`,
-                    )
-                })
+                const params = {
+                    ...commonFields,
+                    postPurchaseWaitMinutes: data.post_purchase_wait_minutes,
+                    waitTimeMinutes: data.wait_time_minutes,
+                    cooldownDays: data.cooldown_days,
+                    inactiveDays: data.inactive_days,
+                    flowName: data.flowName,
+                }
+                if (journeyData?.id) {
+                    await handleUpdate(params)
+                } else {
+                    await handleCreate(params).then((res) => {
+                        history.replace(
+                            `/app/ai-journey/${shopName}/${journeyType}/setup/${res.id}`,
+                        )
+                    })
+                }
             }
-        } else {
-            const params = {
-                ...commonFields,
-                postPurchaseWaitMinutes: data.post_purchase_wait_minutes,
-                waitTimeMinutes: data.wait_time_minutes,
-                cooldownDays: data.cooldown_days,
-                inactiveDays: data.inactive_days,
-                flowName: data.flowName,
-            }
-            if (journeyData?.id) {
-                await handleUpdate(params)
-            } else {
-                await handleCreate(params).then((res) => {
-                    history.replace(
-                        `/app/ai-journey/${shopName}/${journeyType}/setup/${res.id}`,
-                    )
-                })
-            }
+        } catch {
+            return
         }
+
+        methods.reset(data)
+        toast.success('Changes saved successfully')
     }
 
     const webhookUrl = journeyData?.webhook_url ?? undefined
@@ -214,8 +227,23 @@ export const JourneyEditorLayout = ({ step }: Props) => {
 
     const backAriaLabel = isCampaign ? 'Back to campaigns' : 'Back to flows'
 
+    const handlePromptSave = async () => {
+        await handleSubmit(handleSave, () =>
+            toast.error(
+                'Please make sure all fields are filled out correctly before saving',
+            ),
+        )()
+    }
+
     return (
         <FormProvider {...methods}>
+            <UnsavedChangesPrompt
+                ref={unsavedChangesPromptRef}
+                when={formState.isDirty}
+                onSave={handlePromptSave}
+                onDiscard={() => methods.reset()}
+                shouldRedirectAfterSave
+            />
             <form className={css.form} onSubmit={handleSubmit(handleSave)}>
                 <Box flex={1} flexDirection="column" className={css.mainColumn}>
                     <PanelHeader
@@ -302,7 +330,12 @@ export const JourneyEditorLayout = ({ step }: Props) => {
                                     <Button
                                         variant="secondary"
                                         onClick={() =>
-                                            setIsSchedulePanelOpen(true)
+                                            runActionWithUnsavedChangesPrompt(
+                                                () =>
+                                                    setIsSchedulePanelOpen(
+                                                        true,
+                                                    ),
+                                            )
                                         }
                                         isDisabled={
                                             isLoading || !journeyData?.id
@@ -314,7 +347,10 @@ export const JourneyEditorLayout = ({ step }: Props) => {
                                     <Button
                                         variant="secondary"
                                         onClick={() =>
-                                            void handleToggleFlowState()
+                                            runActionWithUnsavedChangesPrompt(
+                                                () =>
+                                                    void handleToggleFlowState(),
+                                            )
                                         }
                                         isDisabled={
                                             isLoading || !journeyData?.id
@@ -348,20 +384,28 @@ export const JourneyEditorLayout = ({ step }: Props) => {
                                         id="send-test-sms"
                                         label="Send test SMS"
                                         onAction={() =>
-                                            setIsTestModalOpen(true)
+                                            runActionWithUnsavedChangesPrompt(
+                                                () => setIsTestModalOpen(true),
+                                            )
                                         }
                                     />
                                     <MenuItem
                                         id="preview-here"
                                         label="Preview here"
                                         onAction={() =>
-                                            setIsCollapsibleColumnOpen(true)
+                                            runActionWithUnsavedChangesPrompt(
+                                                () =>
+                                                    setIsCollapsibleColumnOpen(
+                                                        true,
+                                                    ),
+                                            )
                                         }
                                     />
                                 </Menu>
                                 <Button
                                     onClick={handleSubmit(handleSave)}
                                     isDisabled={isLoading}
+                                    isLoading={formState.isSubmitting}
                                 >
                                     Save changes
                                 </Button>
@@ -383,7 +427,7 @@ export const JourneyEditorLayout = ({ step }: Props) => {
                                 <KlaviyoSetupCard webhookUrl={webhookUrl} />
                             )}
                             {/* TODO: replace with GuidanceEditor (AIJOU-2016) */}
-                            <MessageGuidanceCard fullWidth />
+                            <MessageGuidanceCard fullWidth isV3Architecture />
                         </Box>
                     </Box>
                 </Box>

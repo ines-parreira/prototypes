@@ -54,6 +54,16 @@ const DEFAULT_DELAY_MINUTES = {
     [OrderStatusEnum.OrderFulfilled]: 60,
 }
 
+const formatMinutesLabel = (minutes: number): string => {
+    if (minutes === 0) return 'Immediate'
+    if (minutes < 60) return `${minutes} minute${minutes === 1 ? '' : 's'}`
+    if (minutes % 60 === 0) {
+        const hours = minutes / 60
+        return `${hours} hour${hours === 1 ? '' : 's'}`
+    }
+    return `${minutes} minutes`
+}
+
 export const MinutesDelay = ({
     journeyType = JOURNEY_TYPES.POST_PURCHASE,
     isV3Architecture,
@@ -74,19 +84,30 @@ export const MinutesDelay = ({
 
     const { fieldName, caption } = fieldProps[journeyType]
 
-    const isFirstRender = useRef(true)
+    const prevTargetOrderStatus = useRef<OrderStatusEnum | undefined>(undefined)
 
     useEffect(() => {
         if (!isV3Architecture) return
-        if (isFirstRender.current) {
-            isFirstRender.current = false
-            return
-        }
+        const prev = prevTargetOrderStatus.current
+        prevTargetOrderStatus.current = targetOrderStatus as
+            | OrderStatusEnum
+            | undefined
+
+        if (prev === targetOrderStatus) return
+
         const defaultMinutes =
             DEFAULT_DELAY_MINUTES[targetOrderStatus as OrderStatusEnum] ??
             DEFAULT_DELAY_MINUTES[OrderStatusEnum.OrderPlaced]
+
+        if (prev == null) {
+            if (targetOrderStatus != null && getValues(fieldName) == null) {
+                setValue(fieldName, defaultMinutes)
+            }
+            return
+        }
+
         setValue(fieldName, defaultMinutes)
-    }, [targetOrderStatus, isV3Architecture, fieldName, setValue])
+    }, [targetOrderStatus, isV3Architecture, fieldName, getValues, setValue])
 
     useEffect(() => {
         if (!isV3Architecture || journeyType !== JOURNEY_TYPES.WELCOME) return
@@ -108,15 +129,30 @@ export const MinutesDelay = ({
                 name={fieldName}
                 control={control}
                 render={({ field }) => {
-                    const selectedOption = delayOptions.find(
-                        (option) => option.id === String(field.value),
+                    const currentValueId =
+                        field.value != null ? String(field.value) : undefined
+                    const items =
+                        currentValueId != null &&
+                        !delayOptions.some((o) => o.id === currentValueId)
+                            ? [
+                                  ...delayOptions,
+                                  {
+                                      id: currentValueId,
+                                      label: formatMinutesLabel(
+                                          Number(currentValueId),
+                                      ),
+                                  },
+                              ]
+                            : delayOptions
+                    const selectedOption = items.find(
+                        (option) => option.id === currentValueId,
                     )
 
                     return (
                         <Box width="100%" flexDirection="column">
                             <SelectField
                                 label="Send delay"
-                                items={delayOptions}
+                                items={items}
                                 value={selectedOption}
                                 onChange={(option) =>
                                     field.onChange(Number(option.id))

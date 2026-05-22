@@ -230,6 +230,217 @@ describe('<MinutesDelay /> with isV3Architecture', () => {
 
         expect(screen.queryByText('Immediate')).not.toBeInTheDocument()
     })
+
+    it('should preserve a legacy post_purchase_wait_minutes that is not in the v3 options (1 minute)', () => {
+        renderV3Component(JOURNEY_TYPES.POST_PURCHASE, {
+            target_order_status: OrderStatusEnum.OrderPlaced,
+            post_purchase_wait_minutes: 1,
+        })
+
+        expect(screen.getByText('1 minute')).toBeInTheDocument()
+    })
+
+    it('should preserve a legacy post_purchase_wait_minutes that is not in the v3 options (120 minutes)', () => {
+        renderV3Component(JOURNEY_TYPES.POST_PURCHASE, {
+            target_order_status: OrderStatusEnum.OrderFulfilled,
+            post_purchase_wait_minutes: 120,
+        })
+
+        expect(screen.getByText('2 hours')).toBeInTheDocument()
+    })
+
+    it('should preserve a legacy wait_time_minutes for the Welcome flow that is not in the v3 options', () => {
+        renderV3Component(JOURNEY_TYPES.WELCOME, {
+            wait_time_minutes: 7,
+        })
+
+        expect(screen.getByText('7 minutes')).toBeInTheDocument()
+    })
+
+    it('should preserve a saved post_purchase_wait_minutes when the form reset arrives after mount', async () => {
+        const onSubmit = jest.fn()
+
+        const Wrapper = () => {
+            const methods = useForm<{
+                target_order_status?: OrderStatusEnum
+                post_purchase_wait_minutes?: number
+            }>({
+                defaultValues: {
+                    target_order_status: undefined,
+                    post_purchase_wait_minutes: undefined,
+                },
+            })
+
+            return (
+                <FormProvider {...methods}>
+                    <form onSubmit={methods.handleSubmit(onSubmit)}>
+                        <MinutesDelay
+                            journeyType={JOURNEY_TYPES.POST_PURCHASE}
+                            isV3Architecture
+                        />
+                        <button
+                            type="button"
+                            onClick={() =>
+                                methods.reset({
+                                    target_order_status:
+                                        OrderStatusEnum.OrderFulfilled,
+                                    post_purchase_wait_minutes: 1440,
+                                })
+                            }
+                        >
+                            Apply server data
+                        </button>
+                        <button type="submit">Submit</button>
+                    </form>
+                </FormProvider>
+            )
+        }
+
+        render(<Wrapper />)
+
+        const user = userEvent.setup()
+
+        await act(async () => {
+            await user.click(
+                screen.getByRole('button', { name: /apply server data/i }),
+            )
+        })
+
+        expect(await screen.findByText('24 hours')).toBeInTheDocument()
+
+        await user.click(screen.getByRole('button', { name: /submit/i }))
+
+        await waitFor(() => {
+            expect(onSubmit).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    post_purchase_wait_minutes: 1440,
+                }),
+                expect.anything(),
+            )
+        })
+    })
+
+    it('should reset post_purchase_wait_minutes to the default when the user switches between two defined statuses', async () => {
+        const onSubmit = jest.fn()
+
+        const Wrapper = () => {
+            const methods = useForm<{
+                target_order_status: OrderStatusEnum
+                post_purchase_wait_minutes: number
+            }>({
+                defaultValues: {
+                    target_order_status: OrderStatusEnum.OrderFulfilled,
+                    post_purchase_wait_minutes: 1440,
+                },
+            })
+
+            return (
+                <FormProvider {...methods}>
+                    <form onSubmit={methods.handleSubmit(onSubmit)}>
+                        <MinutesDelay
+                            journeyType={JOURNEY_TYPES.POST_PURCHASE}
+                            isV3Architecture
+                        />
+                        <button
+                            type="button"
+                            onClick={() =>
+                                methods.setValue(
+                                    'target_order_status',
+                                    OrderStatusEnum.OrderPlaced,
+                                )
+                            }
+                        >
+                            Switch to OrderPlaced
+                        </button>
+                        <button type="submit">Submit</button>
+                    </form>
+                </FormProvider>
+            )
+        }
+
+        render(<Wrapper />)
+
+        const user = userEvent.setup()
+
+        await user.click(
+            screen.getByRole('button', { name: /switch to orderplaced/i }),
+        )
+
+        await user.click(screen.getByRole('button', { name: /submit/i }))
+
+        await waitFor(() => {
+            expect(onSubmit).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    target_order_status: OrderStatusEnum.OrderPlaced,
+                    post_purchase_wait_minutes: 30,
+                }),
+                expect.anything(),
+            )
+        })
+    })
+
+    it('should seed the default post_purchase_wait_minutes when the user picks a status on a brand-new flow (no saved value)', async () => {
+        const onSubmit = jest.fn()
+
+        const Wrapper = () => {
+            const methods = useForm<{
+                target_order_status?: OrderStatusEnum
+                post_purchase_wait_minutes?: number
+            }>({
+                defaultValues: {
+                    target_order_status: undefined,
+                    post_purchase_wait_minutes: undefined,
+                },
+            })
+
+            return (
+                <FormProvider {...methods}>
+                    <form onSubmit={methods.handleSubmit(onSubmit)}>
+                        <MinutesDelay
+                            journeyType={JOURNEY_TYPES.POST_PURCHASE}
+                            isV3Architecture
+                        />
+                        <button
+                            type="button"
+                            onClick={() =>
+                                methods.setValue(
+                                    'target_order_status',
+                                    OrderStatusEnum.OrderPlaced,
+                                )
+                            }
+                        >
+                            Pick OrderPlaced
+                        </button>
+                        <button type="submit">Submit</button>
+                    </form>
+                </FormProvider>
+            )
+        }
+
+        render(<Wrapper />)
+
+        const user = userEvent.setup()
+
+        await act(async () => {
+            await user.click(
+                screen.getByRole('button', { name: /pick orderplaced/i }),
+            )
+        })
+
+        expect(await screen.findByText('30 minutes')).toBeInTheDocument()
+
+        await user.click(screen.getByRole('button', { name: /submit/i }))
+
+        await waitFor(() => {
+            expect(onSubmit).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    target_order_status: OrderStatusEnum.OrderPlaced,
+                    post_purchase_wait_minutes: 30,
+                }),
+                expect.anything(),
+            )
+        })
+    })
 })
 
 describe('<MinutesDelay /> with isV3Architecture - Welcome flow', () => {
@@ -278,15 +489,15 @@ describe('<MinutesDelay /> with isV3Architecture - Welcome flow', () => {
         expect(screen.getByText('1 hour')).toBeInTheDocument()
     })
 
-    it('should not display "4 hours" as it is not a valid welcome option', () => {
+    it('should preserve a legacy 240 (4 hours) value even though it is not in the static welcome options', () => {
         renderV3WelcomeComponent({ wait_time_minutes: 240 })
 
-        expect(screen.queryByText('4 hours')).not.toBeInTheDocument()
+        expect(screen.getByText('4 hours')).toBeInTheDocument()
     })
 
-    it('should not display "24 hours" as it is not a valid welcome option', () => {
+    it('should preserve a legacy 1440 (24 hours) value even though it is not in the static welcome options', () => {
         renderV3WelcomeComponent({ wait_time_minutes: 1440 })
 
-        expect(screen.queryByText('24 hours')).not.toBeInTheDocument()
+        expect(screen.getByText('24 hours')).toBeInTheDocument()
     })
 })

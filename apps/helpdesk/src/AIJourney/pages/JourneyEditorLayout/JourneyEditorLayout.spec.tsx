@@ -1,5 +1,5 @@
 import { render } from '@repo/testing'
-import { screen, waitFor } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -186,6 +186,83 @@ describe('<JourneyEditorLayout /> — Campaign mode (isCampaign = true)', () => 
 
         expect(mockHandleUpdate).toHaveBeenCalled()
     })
+
+    it('should show a success toast after the save completes', async () => {
+        const mockHandleUpdate = jest.fn().mockResolvedValue({})
+        const mockUseJourneyUpdateHandler = require('AIJourney/hooks')
+            .useJourneyUpdateHandler as jest.Mock
+        mockUseJourneyUpdateHandler.mockReturnValue({
+            handleUpdate: mockHandleUpdate,
+            isLoading: false,
+        })
+        const toastSuccessSpy = jest.spyOn(
+            require('@gorgias/axiom').toast,
+            'success',
+        )
+
+        mockUseJourneyContext.mockReturnValue({
+            currentIntegration: { id: 1, name: 'Test Store' },
+            journeyData: {
+                id: 'journey-123',
+                campaign: { title: 'Existing Campaign' },
+                message_instructions: 'Existing instructions',
+            },
+            journeyType: JOURNEY_TYPES.CAMPAIGN,
+            shopName: 'test-store',
+        })
+
+        const user = userEvent.setup()
+        renderComponent()
+
+        await user.click(screen.getByRole('button', { name: /save changes/i }))
+
+        await waitFor(() => {
+            expect(toastSuccessSpy).toHaveBeenCalledWith(
+                'Changes saved successfully',
+            )
+        })
+
+        toastSuccessSpy.mockRestore()
+    })
+
+    it('should not toast on success when the save throws', async () => {
+        const mockHandleUpdate = jest.fn().mockRejectedValue(new Error('boom'))
+        const mockUseJourneyUpdateHandler = require('AIJourney/hooks')
+            .useJourneyUpdateHandler as jest.Mock
+        mockUseJourneyUpdateHandler.mockReturnValue({
+            handleUpdate: mockHandleUpdate,
+            isLoading: false,
+        })
+        const toastSuccessSpy = jest.spyOn(
+            require('@gorgias/axiom').toast,
+            'success',
+        )
+
+        mockUseJourneyContext.mockReturnValue({
+            currentIntegration: { id: 1, name: 'Test Store' },
+            journeyData: {
+                id: 'journey-123',
+                campaign: { title: 'Existing Campaign' },
+                message_instructions: 'Existing instructions',
+            },
+            journeyType: JOURNEY_TYPES.CAMPAIGN,
+            shopName: 'test-store',
+        })
+
+        const user = userEvent.setup()
+        renderComponent()
+
+        await user.click(screen.getByRole('button', { name: /save changes/i }))
+
+        await waitFor(() => {
+            expect(mockHandleUpdate).toHaveBeenCalled()
+        })
+        expect(toastSuccessSpy).not.toHaveBeenCalledWith(
+            'Changes saved successfully',
+        )
+
+        toastSuccessSpy.mockRestore()
+    })
 })
 
 describe('<JourneyEditorLayout /> — Flow mode (isCampaign = false)', () => {
@@ -287,6 +364,75 @@ describe('<JourneyEditorLayout /> — Flow mode (isCampaign = false)', () => {
         expect(mockHandleUpdate).toHaveBeenCalledWith({
             journeyState: JourneyStatusEnum.Active,
         })
+    })
+
+    it('should open the unsaved changes modal when clicking "Enable" while the form is dirty', async () => {
+        const mockHandleUpdate = jest.fn().mockResolvedValue({})
+        const mockUseJourneyUpdateHandler = require('AIJourney/hooks')
+            .useJourneyUpdateHandler as jest.Mock
+        mockUseJourneyUpdateHandler.mockReturnValue({
+            handleUpdate: mockHandleUpdate,
+            isLoading: false,
+        })
+
+        const user = userEvent.setup()
+        renderComponent()
+
+        await user.type(
+            screen.getByPlaceholderText(/describe tone/i),
+            'New instructions',
+        )
+        await user.click(screen.getByRole('button', { name: /enable/i }))
+
+        expect(
+            await screen.findByRole('dialog', { name: /save changes/i }),
+        ).toBeInTheDocument()
+        expect(mockHandleUpdate).not.toHaveBeenCalled()
+    })
+
+    it('should not re-open the unsaved changes modal on a second action after the form was saved through the modal', async () => {
+        const mockHandleUpdate = jest.fn().mockResolvedValue({})
+        const mockUseJourneyUpdateHandler = require('AIJourney/hooks')
+            .useJourneyUpdateHandler as jest.Mock
+        mockUseJourneyUpdateHandler.mockReturnValue({
+            handleUpdate: mockHandleUpdate,
+            isLoading: false,
+        })
+
+        const user = userEvent.setup()
+        renderComponent()
+
+        await user.type(
+            screen.getByPlaceholderText(/describe tone/i),
+            'New instructions',
+        )
+        await user.click(screen.getByRole('button', { name: /enable/i }))
+
+        const dialog = await screen.findByRole('dialog', {
+            name: /save changes/i,
+        })
+        expect(dialog).toBeInTheDocument()
+
+        await user.click(
+            within(dialog).getByRole('button', { name: /save changes/i }),
+        )
+
+        await waitFor(() => {
+            expect(mockHandleUpdate).toHaveBeenCalled()
+        })
+        await waitFor(() => {
+            expect(
+                screen.queryByRole('dialog', { name: /save changes/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        mockHandleUpdate.mockClear()
+        await user.click(screen.getByRole('button', { name: /enable/i }))
+
+        expect(
+            screen.queryByRole('dialog', { name: /save changes/i }),
+        ).not.toBeInTheDocument()
+        expect(mockHandleUpdate).toHaveBeenCalled()
     })
 
     it('should call handleUpdate with Paused state when clicking "Pause"', async () => {

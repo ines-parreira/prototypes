@@ -106,7 +106,7 @@ describe('<ScheduleCampaignPanel />', () => {
             screen.getByText('Campaign is not ready to send'),
         ).toBeInTheDocument()
         expect(
-            screen.getByText('Add an audience in the Setup step'),
+            screen.getByText('Add an audience to include'),
         ).toBeInTheDocument()
     })
 
@@ -127,9 +127,7 @@ describe('<ScheduleCampaignPanel />', () => {
         expect(
             screen.getByText('Campaign is not ready to send'),
         ).toBeInTheDocument()
-        expect(
-            screen.getByText('Add message guidance in the Preview step'),
-        ).toBeInTheDocument()
+        expect(screen.getByText('Add message guidance')).toBeInTheDocument()
     })
 
     it('should show both warning items when both audience and guidance are missing', () => {
@@ -147,11 +145,9 @@ describe('<ScheduleCampaignPanel />', () => {
         renderComponent(true)
 
         expect(
-            screen.getByText('Add an audience in the Setup step'),
+            screen.getByText('Add an audience to include'),
         ).toBeInTheDocument()
-        expect(
-            screen.getByText('Add message guidance in the Preview step'),
-        ).toBeInTheDocument()
+        expect(screen.getByText('Add message guidance')).toBeInTheDocument()
     })
 
     it('should not show warning banner when audience and guidance are provided', () => {

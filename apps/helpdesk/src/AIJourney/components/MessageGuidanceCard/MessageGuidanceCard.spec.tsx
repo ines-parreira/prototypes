@@ -162,6 +162,18 @@ describe('<MessageGuidanceCard />', () => {
         expect(screen.getByText('Returning customer')).toBeInTheDocument()
     })
 
+    it('should not show the returning customer toggle when isV3Architecture is true (toggle lives in the Test configuration panel instead)', () => {
+        mockUseJourneyContext.mockReturnValue({
+            journeyData: {
+                type: JourneyTypeEnum.Welcome,
+            },
+        })
+
+        render(<MessageGuidanceCard isV3Architecture />)
+
+        expect(screen.queryByText('Returning customer')).not.toBeInTheDocument()
+    })
+
     it('should toggle returning customer on and call onReturningCustomerChange with true', async () => {
         mockUseJourneyContext.mockReturnValue({
             journeyData: {

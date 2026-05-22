@@ -144,10 +144,18 @@ export const ScheduleOrSend = ({ isV3Architecture = false }: Props) => {
                     }}
                 >
                     {isMissingAudience && (
-                        <li>Add an audience in the Setup step</li>
+                        <li>
+                            {isV3Architecture
+                                ? 'Add an audience to include'
+                                : 'Add an audience in the Setup step'}
+                        </li>
                     )}
                     {isMissingMessageGuidance && (
-                        <li>Add message guidance in the Preview step</li>
+                        <li>
+                            {isV3Architecture
+                                ? 'Add message guidance'
+                                : 'Add message guidance in the Preview step'}
+                        </li>
                     )}
                 </ul>
             }

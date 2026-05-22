@@ -29,11 +29,13 @@ const NEW_VARIANT_DEFAULT_WEIGHT = 50
 type MessageGuidanceCardProps = {
     onReturningCustomerChange?: (value: boolean) => void
     fullWidth?: boolean
+    isV3Architecture?: boolean
 }
 
 export const MessageGuidanceCard = ({
     onReturningCustomerChange,
     fullWidth = false,
+    isV3Architecture = false,
 }: MessageGuidanceCardProps) => {
     const [returningCustomer, setReturningCustomer] = useState(false)
 
@@ -89,7 +91,7 @@ export const MessageGuidanceCard = ({
                     Tell the AI how to write messages to your shoppers.
                 </Text>
             </Box>
-            {isWelcomeFlow && (
+            {isWelcomeFlow && !isV3Architecture && (
                 <ToggleField
                     value={returningCustomer}
                     onChange={handleReturningCustomerChange}

@@ -85,15 +85,25 @@ export const WaitingDays = ({
                 name={props.fieldName}
                 control={control}
                 render={({ field }) => {
-                    const selectedOption = props.optionsV3.find(
-                        (option) => option.id === String(field.value),
+                    const currentValueId =
+                        field.value != null ? String(field.value) : undefined
+                    const items =
+                        currentValueId != null &&
+                        !props.optionsV3.some((o) => o.id === currentValueId)
+                            ? [
+                                  ...props.optionsV3,
+                                  ...toDayOptions([Number(currentValueId)]),
+                              ]
+                            : props.optionsV3
+                    const selectedOption = items.find(
+                        (option) => option.id === currentValueId,
                     )
 
                     return (
                         <Box width="100%" flexDirection="column">
                             <SelectField
                                 label={props.labelV3}
-                                items={props.optionsV3}
+                                items={items}
                                 value={selectedOption}
                                 onChange={(option) =>
                                     field.onChange(Number(option.id))

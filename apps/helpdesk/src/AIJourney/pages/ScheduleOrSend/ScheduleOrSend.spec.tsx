@@ -481,7 +481,7 @@ describe('<ScheduleOrSend />', () => {
             })
         })
 
-        it('shows the warning banner with the V2 copy when fields are missing', async () => {
+        it('shows the warning banner with v3 copy (no Setup/Preview step references) when fields are missing', async () => {
             mockUseJourneyContext.mockReturnValue({
                 ...defaultContextValue,
                 journeyData: {
@@ -495,14 +495,18 @@ describe('<ScheduleOrSend />', () => {
 
             await waitFor(() => {
                 expect(
-                    screen.getByText('Add an audience in the Setup step'),
+                    screen.getByText('Add an audience to include'),
                 ).toBeInTheDocument()
                 expect(
-                    screen.getByText(
-                        'Add message guidance in the Preview step',
-                    ),
+                    screen.getByText('Add message guidance'),
                 ).toBeInTheDocument()
             })
+            expect(
+                screen.queryByText('Add an audience in the Setup step'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('Add message guidance in the Preview step'),
+            ).not.toBeInTheDocument()
         })
     })
 })

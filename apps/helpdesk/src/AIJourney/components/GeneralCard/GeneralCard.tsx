@@ -68,7 +68,9 @@ export const GeneralCard = ({
 
     const handleFollowUpsToggle = useCallback(
         (enabled: boolean) => {
-            setValue('max_follow_up_messages', enabled ? 2 : 1)
+            setValue('max_follow_up_messages', enabled ? 2 : 1, {
+                shouldDirty: true,
+            })
         },
         [setValue],
     )
@@ -77,7 +79,9 @@ export const GeneralCard = ({
         (enabled: boolean) => {
             setIsCustomImageEnabled(enabled)
             if (!enabled) {
-                setValue('uploaded_image_attachment', undefined)
+                setValue('uploaded_image_attachment', undefined, {
+                    shouldDirty: true,
+                })
             }
         },
         [setValue],

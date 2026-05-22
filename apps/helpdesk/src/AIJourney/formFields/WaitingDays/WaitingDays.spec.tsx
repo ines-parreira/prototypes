@@ -110,5 +110,17 @@ describe('<WaitingDays />', () => {
 
             expect(screen.queryByText('120 days')).not.toBeInTheDocument()
         })
+
+        it('should preserve a legacy inactive_days value that is not in the v3 options', () => {
+            renderComponent('inactive-days', { inactive_days: 120 }, true)
+
+            expect(screen.getByText('120 days')).toBeInTheDocument()
+        })
+
+        it('should preserve a legacy cooldown_days value that is not in the v3 options', () => {
+            renderComponent('cooldown', { cooldown_days: 120 }, true)
+
+            expect(screen.getByText('120 days')).toBeInTheDocument()
+        })
     })
 })

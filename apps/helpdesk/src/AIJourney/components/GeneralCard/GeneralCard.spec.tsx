@@ -64,10 +64,12 @@ const renderCard = ({
     defaultValues?: Record<string, unknown>
 } = {}) => {
     let capturedGetValues: (() => Record<string, unknown>) | undefined
+    let capturedIsDirty = false
 
     const ValuesCaptor = () => {
-        const { getValues } = useFormContext()
+        const { getValues, formState } = useFormContext()
         capturedGetValues = getValues
+        capturedIsDirty = formState.isDirty
         return null
     }
 
@@ -85,7 +87,11 @@ const renderCard = ({
     }
 
     const result = render(<Wrapper />)
-    return { ...result, getValues: () => capturedGetValues?.() ?? {} }
+    return {
+        ...result,
+        getValues: () => capturedGetValues?.() ?? {},
+        isDirty: () => capturedIsDirty,
+    }
 }
 
 describe('<GeneralCard />', () => {
@@ -352,6 +358,35 @@ describe('<GeneralCard />', () => {
                 ).not.toBeInTheDocument()
                 expect(getValues().max_follow_up_messages).toBe(1)
             })
+
+            it('marks the form as dirty when toggling on', async () => {
+                const user = userEvent.setup()
+                const { isDirty } = renderCard({ isV3Architecture: true })
+
+                expect(isDirty()).toBe(false)
+
+                await user.click(
+                    screen.getByRole('switch', { name: 'Allow follow-ups' }),
+                )
+
+                expect(isDirty()).toBe(true)
+            })
+
+            it('marks the form as dirty when toggling off', async () => {
+                const user = userEvent.setup()
+                const { isDirty } = renderCard({
+                    isV3Architecture: true,
+                    defaultValues: { max_follow_up_messages: 2 },
+                })
+
+                expect(isDirty()).toBe(false)
+
+                await user.click(
+                    screen.getByRole('switch', { name: 'Allow follow-ups' }),
+                )
+
+                expect(isDirty()).toBe(true)
+            })
         })
 
         describe('IncludeImage', () => {
@@ -464,6 +499,36 @@ describe('<GeneralCard />', () => {
                 expect(
                     screen.queryByText('ImageUpload'),
                 ).not.toBeInTheDocument()
+            })
+
+            it('marks the form as dirty when toggling off (clears the uploaded image)', async () => {
+                const user = userEvent.setup()
+                mockUseJourneyContext.mockReturnValue({
+                    journeyType: JOURNEY_TYPES.CAMPAIGN,
+                })
+
+                const { isDirty } = renderCard({
+                    isV3Architecture: true,
+                    defaultValues: {
+                        uploaded_image_attachment: [
+                            {
+                                url: 'https://example.com/image.jpg',
+                                name: 'image.jpg',
+                                content_type: 'image/jpeg',
+                            },
+                        ],
+                    },
+                })
+
+                expect(isDirty()).toBe(false)
+
+                await user.click(
+                    screen.getByRole('switch', {
+                        name: 'Include custom image',
+                    }),
+                )
+
+                expect(isDirty()).toBe(true)
             })
         })
     })
