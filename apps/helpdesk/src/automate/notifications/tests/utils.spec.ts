@@ -323,6 +323,24 @@ describe('getNotificationParams', () => {
         })
     })
 
+    it('should return correct params for SkillWizardReady', () => {
+        const payload = {
+            ...basePayload,
+            ai_agent_notification_type:
+                AiAgentNotificationType.SkillWizardReady,
+            help_center_id: 7,
+            account_id: 42,
+        } as const
+
+        const result = getNotificationParams(payload, null)
+
+        expect(result).toEqual({
+            title: 'Skills are here!',
+            subtitle: 'Your recommended skills are ready for review.',
+            redirectTo: '/app/ai-agent/shopify/store_1/skills/wizard',
+        })
+    })
+
     it('should return null for unsupported notification series', () => {
         const payload = {
             ...basePayload,

@@ -136,6 +136,12 @@ export const getNotificationParams = (
                     "We couldn't sync one or more of your URLs. Make sure URLs are correct and publicly accessible.",
                 redirectTo: routes.knowledgeSourcesByUrl(payload.source_url),
             }
+        case AiAgentNotificationType.SkillWizardReady:
+            return {
+                title: 'Skills are here!',
+                subtitle: 'Your recommended skills are ready for review.',
+                redirectTo: routes.skillsWizard,
+            }
         default:
             return null
     }

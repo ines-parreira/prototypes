@@ -58,7 +58,9 @@ export default function AiAgentNotification({ notification, ...props }: Props) {
             payload.ai_agent_notification_type ===
                 AiAgentNotificationType.UrlSyncCompleted ||
             payload.ai_agent_notification_type ===
-                AiAgentNotificationType.UrlSyncFailed
+                AiAgentNotificationType.UrlSyncFailed ||
+            payload.ai_agent_notification_type ===
+                AiAgentNotificationType.SkillWizardReady
         )
             return
 

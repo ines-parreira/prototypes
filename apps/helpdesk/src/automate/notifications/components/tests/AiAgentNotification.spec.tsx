@@ -250,6 +250,72 @@ describe('AiAgentNotification', () => {
         },
     )
 
+    it('should render SkillWizardReady notification and redirect to the skills wizard when clicked', () => {
+        const notification: Notification<AiAgentNotificationPayload> = {
+            id: '1',
+            inserted_datetime: '2024-11-04T13:07:00',
+            read_datetime: null,
+            seen_datetime: null,
+            type: 'automate-setup-and-optimization',
+            payload: {
+                ...basePayload,
+                ai_agent_notification_type:
+                    AiAgentNotificationType.SkillWizardReady,
+                help_center_id: 7,
+                account_id: 42,
+            },
+        }
+
+        const { getByText, container } = render(
+            <AiAgentNotification notification={notification} />,
+        )
+
+        expect(getByText('Skills are here!')).toBeInTheDocument()
+        expect(
+            getByText('Your recommended skills are ready for review.'),
+        ).toBeInTheDocument()
+
+        const linkElement = container.querySelector(
+            'a[href="/app/ai-agent/shopify/store_1/skills/wizard"]',
+        )
+        expect(linkElement).toBeInTheDocument()
+
+        fireEvent.click(linkElement as HTMLElement)
+
+        expect(logEvent).toHaveBeenCalledWith(
+            SegmentEvent.AiAgentOnboardingNotificationClicked,
+            { type: AiAgentNotificationType.SkillWizardReady },
+        )
+    })
+
+    it('should not save onboarding state when SkillWizardReady notification is received', () => {
+        const notification: Notification<AiAgentNotificationPayload> = {
+            id: '1',
+            inserted_datetime: '2024-11-04T13:07:00',
+            read_datetime: null,
+            seen_datetime: null,
+            type: 'automate-setup-and-optimization',
+            payload: {
+                ...basePayload,
+                ai_agent_notification_type:
+                    AiAgentNotificationType.SkillWizardReady,
+                help_center_id: 7,
+                account_id: 42,
+            },
+        }
+
+        render(<AiAgentNotification notification={notification} />)
+
+        expect(
+            defaultUseAiAgentOnboardingNotification.handleOnSave,
+        ).not.toHaveBeenCalled()
+
+        expect(logEvent).not.toHaveBeenCalledWith(
+            SegmentEvent.AiAgentOnboardingNotificationReceived,
+            expect.anything(),
+        )
+    })
+
     it('should not save and log event when NewOpportunityGenerated notification is received', () => {
         const notification: Notification<AiAgentNotificationPayload> = {
             id: '1',
