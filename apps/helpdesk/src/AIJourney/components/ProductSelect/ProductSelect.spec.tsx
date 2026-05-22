@@ -281,6 +281,7 @@ describe('<ProductSelect />', () => {
 
             expect(mockUseAIJourneyProductList).toHaveBeenCalledWith({
                 integrationId: 42,
+                filter: undefined,
             })
         })
 
@@ -295,7 +296,45 @@ describe('<ProductSelect />', () => {
 
             expect(mockUseAIJourneyProductList).toHaveBeenCalledWith({
                 integrationId: undefined,
+                filter: undefined,
             })
+        })
+    })
+
+    describe('search', () => {
+        it('should forward the debounced search term to useAIJourneyProductList', async () => {
+            jest.useFakeTimers()
+            const user = userEvent.setup({
+                advanceTimers: jest.advanceTimersByTime,
+            })
+
+            render(
+                <ProductSelect
+                    selectedProduct={productList[0]}
+                    setSelectedProduct={mockSetSelectedProduct}
+                />,
+            )
+
+            await act(async () => {
+                await user.click(screen.getByRole('button'))
+            })
+
+            const searchBox = screen.getByRole('searchbox')
+
+            await act(async () => {
+                await user.type(searchBox, 'unicorn')
+            })
+
+            await act(async () => {
+                jest.advanceTimersByTime(250)
+            })
+
+            expect(mockUseAIJourneyProductList).toHaveBeenLastCalledWith({
+                integrationId: 1,
+                filter: 'unicorn',
+            })
+
+            jest.useRealTimers()
         })
     })
 })

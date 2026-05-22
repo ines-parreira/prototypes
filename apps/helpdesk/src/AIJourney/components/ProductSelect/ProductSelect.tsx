@@ -1,4 +1,6 @@
-import { useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+
+import _debounce from 'lodash/debounce'
 
 import {
     Icon,
@@ -17,6 +19,8 @@ import { useJourneyContext } from 'AIJourney/providers'
 import type { Product } from 'constants/integrations/types/shopify'
 
 import css from './ProductSelect.less'
+
+const SEARCH_DEBOUNCE_MS = 250
 
 const ProductSelectTrigger = ({
     isOpen,
@@ -49,11 +53,37 @@ export const ProductSelect = ({
 
     const integrationId = currentIntegration?.id
 
+    const [searchInput, setSearchInput] = useState('')
+    const [debouncedSearch, setDebouncedSearch] = useState('')
+
     const {
         productList,
         isLoading: isLoadingProducts,
         isError,
-    } = useAIJourneyProductList({ integrationId })
+    } = useAIJourneyProductList({
+        integrationId,
+        filter: debouncedSearch || undefined,
+    })
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const debouncedSetSearch = useCallback(
+        _debounce((value: string) => {
+            setDebouncedSearch(value)
+        }, SEARCH_DEBOUNCE_MS),
+        [],
+    )
+
+    const handleSearchChange = (value: string) => {
+        setSearchInput(value)
+        debouncedSetSearch(value)
+    }
+
+    const handleOpenChange = (isOpen: boolean) => {
+        if (!isOpen) {
+            setSearchInput('')
+            setDebouncedSearch('')
+        }
+    }
 
     const { resolveProduct } = useLastSelectedProduct()
 
@@ -95,6 +125,10 @@ export const ProductSelect = ({
             selectedItem={currentProduct}
             onSelect={(value) => setSelectedProduct(value)}
             isSearchable
+            searchValue={searchInput}
+            onSearchChange={handleSearchChange}
+            onOpenChange={handleOpenChange}
+            isLoading={isLoadingProducts}
         >
             {(option: (typeof productList)[number]) => (
                 <ListItem
