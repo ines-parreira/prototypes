@@ -33,6 +33,7 @@ export enum StoreConfigurationValidationMessage {
     EmailIntegrationError = 'Please select at least 1 email integration for AI Agent to use or disable AI Agent for email to proceed.',
     ChatIntegrationError = 'Please select at least 1 chat integration for AI Agent to use or disable AI Agent for chat to proceed.',
     ChatIntegrationUninstalledError = 'All selected chat integrations need to be installed to continue.',
+    SocialsIntegrationError = 'Please select at least 1 social integration for AI Agent to use or disable AI Agent for socials to proceed.',
     NoChannelError = 'At least one channel must be selected.',
     HelpCenterError = 'You must add at least one knowledge source to continue.',
     FieldsMissing = 'One or more required fields not filled.',
@@ -48,6 +49,9 @@ const isEmailIntegrationMissing = (formValues: FormValues) =>
 
 const isChatIntegrationMissing = (formValues: FormValues) =>
     formValues.monitoredChatIntegrations?.length === 0
+
+const isSocialsIntegrationMissing = (formValues: FormValues) =>
+    formValues.monitoredSocialsIntegrations?.length === 0
 
 const simplifyWizardErrors = (formValues: FormValues, message: string) => {
     if (formValues.wizard) {
@@ -168,6 +172,15 @@ export const getValidStoreConfigurationFormValues = (
     ) {
         throw new Error(
             StoreConfigurationValidationMessage.ChatIntegrationError,
+        )
+    }
+
+    if (
+        isSocialsIntegrationMissing(formValues) &&
+        formValues.socialsChannelDeactivatedDatetime === null
+    ) {
+        throw new Error(
+            StoreConfigurationValidationMessage.SocialsIntegrationError,
         )
     }
 

@@ -747,6 +747,27 @@ describe('store-configuration-validation', () => {
                 )
             })
 
+            it('should throw an error if no socials integration is selected and socials channel is enabled', () => {
+                const formValues: FormValues = {
+                    ...VALID_FORM_VALUES,
+                    monitoredEmailIntegrations: [EMAIL_INTEGRATION],
+                    monitoredSocialsIntegrations: [],
+                    socialsChannelDeactivatedDatetime: null,
+                }
+                expect(() =>
+                    getValidStoreConfigurationFormValues(
+                        formValues,
+                        [],
+                        false,
+                        false,
+                        undefined,
+                        DEFAULT_OPTIONS,
+                    ),
+                ).toThrow(
+                    StoreConfigurationValidationMessage.SocialsIntegrationError,
+                )
+            })
+
             it('should not throw a socials integration error if socials channel is disabled', () => {
                 const formValues: FormValues = {
                     ...VALID_FORM_VALUES,
