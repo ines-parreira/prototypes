@@ -4,6 +4,8 @@ import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { Excerpt, NotificationFeedItem } from '@repo/notifications'
 
+import { AIThinking } from '@gorgias/axiom'
+
 import { Content, Subtitle } from 'common/notifications'
 import type { ContentProps, Notification } from 'common/notifications'
 import { useAccountStoreConfiguration } from 'pages/aiAgent/hooks/useAccountStoreConfiguration'
@@ -115,7 +117,7 @@ export default function AiAgentNotification({ notification, ...props }: Props) {
         return (
             <NotificationFeedItem
                 notification={notification}
-                icon="ai"
+                icon={<AIThinking size="sm" variant="static" />}
                 title={notificationParams.title}
                 href={notificationParams.redirectTo}
                 onClick={handleOnClick}

@@ -182,5 +182,15 @@ describe('ImportEmailFailedNotification', () => {
                 { importId: 456 },
             )
         })
+
+        it('should render the error-octagon icon', () => {
+            const notification = createMockFailedNotification()
+            const { getByRole } = render(
+                <ImportEmailFailedNotification notification={notification} />,
+            )
+            expect(
+                getByRole('img', { name: 'error-octagon' }),
+            ).toBeInTheDocument()
+        })
     })
 })

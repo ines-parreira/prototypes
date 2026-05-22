@@ -148,5 +148,16 @@ describe('WorkflowConfigurationUpdatedNotification', () => {
                 queryKey: trackstarDefinitionKeys.all(),
             })
         })
+
+        it('should render the warning-triangle icon', () => {
+            const { getByRole } = render(
+                <WorkflowConfigurationUpdatedNotification
+                    notification={notification}
+                />,
+            )
+            expect(
+                getByRole('img', { name: 'warning-triangle' }),
+            ).toBeInTheDocument()
+        })
     })
 })

@@ -167,5 +167,12 @@ describe('UserMentionedNotification', () => {
                 container.querySelector('a[href="/app/ticket/123"]'),
             ).toBeInTheDocument()
         })
+
+        it('should render the mention icon', () => {
+            const { getByRole } = render(
+                <UserMentionedNotification notification={notification} />,
+            )
+            expect(getByRole('img', { name: 'mention' })).toBeInTheDocument()
+        })
     })
 })

@@ -506,5 +506,28 @@ describe('AiAgentNotification', () => {
 
             expect(container).toBeEmptyDOMElement()
         })
+
+        it('should render the AI Agent indicator', () => {
+            const notification: Notification<AiAgentNotificationPayload> = {
+                id: '4',
+                inserted_datetime: '2024-11-04T13:07:00',
+                read_datetime: null,
+                seen_datetime: null,
+                type: 'automate-setup-and-optimization',
+                payload: {
+                    ...basePayload,
+                    ai_agent_notification_type:
+                        AiAgentNotificationType.MeetAiAgent,
+                },
+            }
+
+            const { getByRole } = render(
+                <AiAgentNotification notification={notification} />,
+            )
+
+            expect(
+                getByRole('status', { name: 'AI is thinking' }),
+            ).toBeInTheDocument()
+        })
     })
 })

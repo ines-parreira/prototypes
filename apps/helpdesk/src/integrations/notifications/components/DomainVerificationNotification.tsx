@@ -2,7 +2,7 @@ import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { Excerpt, NotificationFeedItem } from '@repo/notifications'
 import { ticketMessageSourceToIconName } from '@repo/tickets'
 
-import { Text } from '@gorgias/axiom'
+import { IconBox, Text } from '@gorgias/axiom'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 import {
@@ -24,14 +24,22 @@ export default function DomainVerificationNotification({
 }: Props) {
     const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
     const { domain } = notification.payload
+    const systemMessageIconName = ticketMessageSourceToIconName(
+        TicketMessageSourceType.SystemMessage,
+    )
 
     if (hasWayfindingMS1Flag) {
         return (
             <NotificationFeedItem
                 notification={notification}
-                icon={ticketMessageSourceToIconName(
-                    TicketMessageSourceType.SystemMessage,
-                )}
+                icon={
+                    <IconBox
+                        icon={systemMessageIconName}
+                        alt={systemMessageIconName}
+                        size="sm"
+                        color="blue"
+                    />
+                }
                 title="Domain verification complete"
                 href="/app/settings/channels/email"
                 onClick={props.onClick}

@@ -2,7 +2,7 @@ import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { NotificationFeedItem, Subject } from '@repo/notifications'
 
-import { Text } from '@gorgias/axiom'
+import { IconBox, Text } from '@gorgias/axiom'
 
 import type { ContentProps, Notification } from 'common/notifications'
 import { Content, Subtitle } from 'common/notifications'
@@ -42,7 +42,7 @@ const ImportEmailSuccessNotification = ({
         return (
             <NotificationFeedItem
                 notification={notification}
-                icon="mail"
+                icon={<IconBox icon="mail" alt="mail" size="sm" color="blue" />}
                 title="Email history imported"
                 href="#"
                 onClick={handleOnClick}

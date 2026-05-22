@@ -183,5 +183,13 @@ describe('ImportEmailSuccessNotification', () => {
                 { importId: 456 },
             )
         })
+
+        it('should render the mail icon', () => {
+            const notification = createMockNotification()
+            const { getByRole } = render(
+                <ImportEmailSuccessNotification notification={notification} />,
+            )
+            expect(getByRole('img', { name: 'mail' })).toBeInTheDocument()
+        })
     })
 })

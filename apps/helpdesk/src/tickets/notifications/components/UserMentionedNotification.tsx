@@ -1,8 +1,7 @@
 import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { Excerpt, NotificationFeedItem, Subject } from '@repo/notifications'
-import { ticketMessageSourceToIconName } from '@repo/tickets'
 
-import { Text } from '@gorgias/axiom'
+import { IconBox, Text } from '@gorgias/axiom'
 
 import {
     Content,
@@ -28,7 +27,14 @@ export default function UserMentionedNotification({
         return (
             <NotificationFeedItem
                 notification={notification}
-                icon={ticketMessageSourceToIconName(ticket.channel)}
+                icon={
+                    <IconBox
+                        icon="mention"
+                        alt="mention"
+                        size="sm"
+                        color="coral"
+                    />
+                }
                 title="New mention"
                 href={`/app/ticket/${ticket.id}`}
                 onClick={props.onClick}

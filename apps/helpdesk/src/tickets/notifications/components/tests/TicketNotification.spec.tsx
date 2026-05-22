@@ -114,7 +114,7 @@ describe('<TicketNotification />', () => {
         })
 
         it('should render overridden title for assigned type', () => {
-            const { getByText } = render(
+            const { getByRole, getByText } = render(
                 <TicketNotification
                     notification={{ ...notification, type: 'ticket.assigned' }}
                 />,
@@ -122,6 +122,9 @@ describe('<TicketNotification />', () => {
             expect(
                 getByText("You've been assigned to a ticket"),
             ).toBeInTheDocument()
+            expect(
+                getByRole('img', { name: 'mail' }).closest('[data-color]'),
+            ).toHaveAttribute('data-color', 'teal')
         })
 
         it('should render the ticket subject', () => {
@@ -152,6 +155,18 @@ describe('<TicketNotification />', () => {
             expect(
                 container.querySelector('a[href="/app/ticket/1"]'),
             ).toBeInTheDocument()
+        })
+
+        it('should render the channel icon from ticketMessageSourceToIconName', () => {
+            const { getByRole } = render(
+                <TicketNotification notification={notification} />,
+            )
+            const icon = getByRole('img', { name: 'mail' })
+            expect(icon).toBeInTheDocument()
+            expect(icon.closest('[data-color]')).toHaveAttribute(
+                'data-color',
+                'blue',
+            )
         })
     })
 })

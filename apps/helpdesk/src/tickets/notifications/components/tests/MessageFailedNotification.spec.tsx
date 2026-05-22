@@ -211,5 +211,14 @@ describe('<MessageFailedNotification />', () => {
                 { ticketId: notification.payload.ticket.id },
             )
         })
+
+        it('should render the error-octagon icon', () => {
+            const { getByRole } = render(
+                <MessageFailedNotification notification={notification} />,
+            )
+            expect(
+                getByRole('img', { name: 'error-octagon' }),
+            ).toBeInTheDocument()
+        })
     })
 })

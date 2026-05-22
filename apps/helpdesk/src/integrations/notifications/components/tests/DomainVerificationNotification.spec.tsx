@@ -138,5 +138,12 @@ describe('DomainVerificationNotification', () => {
             link.click()
             expect(onClick).toHaveBeenCalled()
         })
+
+        it('should render the system message icon from ticketMessageSourceToIconName', () => {
+            const { getByRole } = render(
+                <DomainVerificationNotification notification={notification} />,
+            )
+            expect(getByRole('img', { name: 'mail' })).toBeInTheDocument()
+        })
     })
 })
