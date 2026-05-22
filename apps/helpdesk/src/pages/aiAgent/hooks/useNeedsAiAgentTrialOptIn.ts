@@ -34,7 +34,7 @@ export const useNeedsAiAgentTrialOptIn = (
         !isStoreConfigLoading &&
         !isAiAgentAlreadyLive &&
         !trialAccess.isInAiAgentTrial &&
-        (trialAccess.canSeeTrialCTA || trialAccess.canSeeSubscribeNowCTA)
+        trialAccess.canSeeTrialCTA
 
     return { needsOptIn }
 }

@@ -19,7 +19,6 @@ import type { TrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalPro
 import { EXTERNAL_URLS } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import RequestTrialModal from 'pages/common/components/RequestTrialModal/RequestTrialModal'
 import TrialFinishSetupModal from 'pages/common/components/TrialFinishSetupModal/TrialFinishSetupModal'
-import TrialTryModal from 'pages/common/components/TrialTryModal/TrialTryModal'
 
 export type AiAgentCtasParams = {
     canStartOnboarding: boolean
@@ -34,15 +33,12 @@ export type AiAgentCtasParams = {
     isOnboarded: boolean
     onOpenWizard: () => void
     onOpenSubscribeModal: () => void
-    onOpenTrialUpgradeModal: () => void
     onOpenTrialRequestModal: () => void
     onOpenUpgradePlanModal: (isInTrial: boolean) => void
     onCloseTrialRequestModal: () => void
     onCloseTrialFinishSetupModal: () => void
     isNotifyAdminDisabled: boolean
     trialModals: {
-        isTrialModalOpen: boolean
-        newTrialUpgradePlanModal: TrialModalProps['newTrialUpgradePlanModal']
         isTrialRequestModalOpen: boolean
         trialRequestModal: TrialModalProps['trialRequestModal']
         isTrialFinishSetupModalOpen: boolean
@@ -80,7 +76,6 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
         isOnboarded,
         onOpenWizard,
         onOpenSubscribeModal,
-        onOpenTrialUpgradeModal,
         onOpenTrialRequestModal,
         onCloseTrialRequestModal,
         onCloseTrialFinishSetupModal,
@@ -128,10 +123,10 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
                         ? TrialType.ShoppingAssistant
                         : TrialType.AiAgent,
                 )
-                onOpenTrialUpgradeModal()
+                onOpenWizard()
             },
         }),
-        [onOpenTrialUpgradeModal, hasAutomate],
+        [onOpenWizard, hasAutomate],
     )
 
     const NotifyAdminAction = useMemo(
@@ -201,10 +196,6 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
     const modals = useMemo(
         () => (
             <>
-                <TrialTryModal
-                    {...trialModals.newTrialUpgradePlanModal}
-                    isOpen={trialModals.isTrialModalOpen}
-                />
                 <RequestTrialModal
                     {...trialModals.trialRequestModal}
                     isOpen={trialModals.isTrialRequestModalOpen}
@@ -237,6 +228,12 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
                 canBookDemo ? BookDemoAction : LearnMoreAction,
                 canBookDemo ? LearnMoreAction : null,
             )
+        } else if (hasAutomate && canSeeTrial && !isOnboarded) {
+            // §5 collapse (CRMGROW-3797): USD-5 trial-eligible admins on a
+            // not-yet-onboarded store get a single "Set Up AI Agent" CTA that
+            // routes through the wizard. Trial opt-in is offered afterwards
+            // via TrialOptInBanner → TrialActivationModal.
+            actionsOrderedByPriority.push(SetupAIAgentAction)
         } else {
             // Only admins can self serve, but not all merchants can
             const selfService = canSeeSubscribeNow

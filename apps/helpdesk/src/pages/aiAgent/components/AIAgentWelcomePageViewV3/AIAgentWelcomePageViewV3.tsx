@@ -20,7 +20,6 @@ import type { StoreConfiguration } from 'models/aiAgent/types'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { JtbdPicker } from 'pages/aiAgent/components/JtbdPicker/JtbdPicker'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
-import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 import { useNotifyAdmins } from 'pages/aiAgent/trial/hooks/useNotifyAdmins'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
@@ -157,15 +156,12 @@ const AIAgentWelcomePageViewV3Body = (props: Props) => {
         isOnboarded: !!trialAccess.isOnboarded,
         onOpenWizard,
         onOpenSubscribeModal: () => setIsAutomationModalOpened(true),
-        onOpenTrialUpgradeModal: trialFlow.openTrialUpgradeModal,
         onOpenTrialRequestModal: trialFlow.openTrialRequestModal,
         onOpenUpgradePlanModal: trialFlow.openUpgradePlanModal,
         onCloseTrialRequestModal: trialFlow.closeTrialRequestModal,
         onCloseTrialFinishSetupModal: trialFlow.closeTrialFinishSetupModal,
         isNotifyAdminDisabled,
         trialModals: {
-            isTrialModalOpen: trialFlow.isTrialModalOpen,
-            newTrialUpgradePlanModal: trialModalProps.newTrialUpgradePlanModal,
             isTrialRequestModalOpen: trialFlow.isTrialRequestModalOpen,
             trialRequestModal: trialModalProps.trialRequestModal,
             isTrialFinishSetupModalOpen: trialFlow.isTrialFinishSetupModalOpen,
@@ -185,9 +181,6 @@ const AIAgentWelcomePageViewV3Body = (props: Props) => {
                 <PaywallPreview />
             </Box>
             {modals}
-            {trialModalProps.upgradePlanModal.isOpen && (
-                <UpgradePlanModal {...trialModalProps.upgradePlanModal} />
-            )}
             <AutomateSubscriptionModal
                 confirmLabel="Subscribe"
                 isOpen={isAutomationModalOpened}
@@ -262,6 +255,14 @@ export const PaywallInfo = ({
                         </Box>
                         <Box flexDirection="column" gap="md">
                             {ctas}
+                            <Text
+                                size="sm"
+                                variant="italic"
+                                color="content-neutral-secondary"
+                            >
+                                Your 2-week trial starts only when AI Agent goes
+                                live for shoppers.
+                            </Text>
                         </Box>
                     </>
                 )}

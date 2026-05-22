@@ -31,6 +31,11 @@ export type PaywallCohortFixture = {
     name: string
     inputs: PaywallCohortInput
     expectedCtas: ExpectedCta[]
+    /**
+     * V3 §5 (CRMGROW-3797) intentional divergence from V2. When set, the V3
+     * parity branch asserts against this list instead of `expectedCtas`.
+     */
+    v3ExpectedCtas?: ExpectedCta[]
 }
 
 const baseInput: PaywallCohortInput = {
@@ -189,6 +194,10 @@ export const paywallCohortFixtures: PaywallCohortFixture[] = [
             { label: 'Learn more' },
             { label: 'Start AI Agent only' },
         ],
+        // V3 §5 (CRMGROW-3797): cohort collapses to a single "Set Up AI Agent"
+        // CTA that routes through the wizard. Trial opt-in is re-offered via
+        // TrialOptInBanner → TrialActivationModal post-wizard.
+        v3ExpectedCtas: [{ label: 'Set Up AI Agent' }],
     },
     {
         name: 'admin (Shopping Assistant) can trial 14 days, can demo, not onboarded: Learn more dropped',
@@ -204,5 +213,7 @@ export const paywallCohortFixtures: PaywallCohortFixture[] = [
             { label: 'Book a demo' },
             { label: 'Start AI Agent only' },
         ],
+        // V3 §5 (CRMGROW-3797): same single-CTA collapse as above.
+        v3ExpectedCtas: [{ label: 'Set Up AI Agent' }],
     },
 ]

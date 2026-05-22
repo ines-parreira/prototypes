@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import {
+    FeatureFlagKey,
+    useFlag,
+    useFlagWithLoading,
+} from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { useParams } from 'react-router-dom'
@@ -60,6 +64,11 @@ export const AiAgentOverview = () => {
     const isShoppingAssistantTrialImprovement = useFlag(
         FeatureFlagKey.ShoppingAssistantTrialImprovement,
     )
+
+    const {
+        value: isAiAgentOnboardingV3Enabled,
+        isLoading: isAiAgentOnboardingV3FlagLoading,
+    } = useFlagWithLoading(FeatureFlagKey.AiAgentOnboardingV3, false)
 
     const isTopOpportunitiesEnabled = useFlag(
         FeatureFlagKey.IncreaseVisibilityOfOpportunity,
@@ -149,12 +158,14 @@ export const AiAgentOverview = () => {
         trialType,
     })
 
-    /* TODO: [AIFLY-547] remove this when the trial improvement is enabled */
+    /* TODO: [COACH-718] remove this when the trial improvement is enabled */
     useEffect(() => {
         if (
             (canSeeTrialCTA || canBookDemo) &&
             !hasAnyTrialStarted &&
-            !isShoppingAssistantTrialImprovement
+            !isShoppingAssistantTrialImprovement &&
+            !isAiAgentOnboardingV3FlagLoading &&
+            !isAiAgentOnboardingV3Enabled
         ) {
             logEvent(SegmentEvent.TrialBannerOverviewViewed, {
                 type: canBookDemo ? 'Demo' : 'Trial',
@@ -166,6 +177,8 @@ export const AiAgentOverview = () => {
         canBookDemo,
         hasAnyTrialStarted,
         isShoppingAssistantTrialImprovement,
+        isAiAgentOnboardingV3FlagLoading,
+        isAiAgentOnboardingV3Enabled,
         trialType,
     ])
 
@@ -228,34 +241,38 @@ export const AiAgentOverview = () => {
                 <SetupModeBanner />
             )}
 
-            {/* TODO: [AIFLY-547] remove this when the trial improvement is enabled */}
-            {!isShoppingAssistantTrialImprovement && !needsOptIn && (
-                <>
-                    {(canSeeTrialCTA || canBookDemo) && !hasAnyTrialStarted && (
-                        <TrialAlertBanner
-                            {...trialModalProps.trialAlertBanner}
-                        />
-                    )}
+            {/* TODO: [COACH-718] remove this when the trial improvement is enabled */}
+            {!isShoppingAssistantTrialImprovement &&
+                !needsOptIn &&
+                !isAiAgentOnboardingV3FlagLoading &&
+                !isAiAgentOnboardingV3Enabled && (
+                    <>
+                        {(canSeeTrialCTA || canBookDemo) &&
+                            !hasAnyTrialStarted && (
+                                <TrialAlertBanner
+                                    {...trialModalProps.trialAlertBanner}
+                                />
+                            )}
 
-                    {isTrialUpgradeModalOpen && (
-                        <UpgradePlanModal
-                            {...trialModalProps.trialUpgradePlanModal}
-                            onClose={closeTrialUpgradeModal}
-                            onConfirm={startTrialDeprecated}
-                            onDismiss={onDismissTrialUpgradeModal}
-                            isLoading={isTrialRevampLoading}
-                            isTrial
-                        />
-                    )}
+                        {isTrialUpgradeModalOpen && (
+                            <UpgradePlanModal
+                                {...trialModalProps.trialUpgradePlanModal}
+                                onClose={closeTrialUpgradeModal}
+                                onConfirm={startTrialDeprecated}
+                                onDismiss={onDismissTrialUpgradeModal}
+                                isLoading={isTrialRevampLoading}
+                                isTrial
+                            />
+                        )}
 
-                    {isSuccessModalOpen && (
-                        <TrialActivatedModal
-                            {...trialModalProps.trialActivatedModal}
-                            onConfirm={closeSuccessModal}
-                        />
-                    )}
-                </>
-            )}
+                        {isSuccessModalOpen && (
+                            <TrialActivatedModal
+                                {...trialModalProps.trialActivatedModal}
+                                onConfirm={closeSuccessModal}
+                            />
+                        )}
+                    </>
+                )}
 
             {isAiAgentPostLive && (
                 <KpiSection

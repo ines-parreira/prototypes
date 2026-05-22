@@ -12,9 +12,6 @@ import { useAiAgentCtas } from './useAiAgentPaywallCta'
 const NOOP = () => undefined
 
 const STORY_TRIAL_MODALS: AiAgentCtasParams['trialModals'] = {
-    isTrialModalOpen: false,
-    newTrialUpgradePlanModal:
-        {} as AiAgentCtasParams['trialModals']['newTrialUpgradePlanModal'],
     isTrialRequestModalOpen: false,
     trialRequestModal:
         {} as AiAgentCtasParams['trialModals']['trialRequestModal'],
@@ -38,7 +35,6 @@ const PaywallStory = ({
         learnMoreUrl: 'https://www.gorgias.com/products/automate',
         onOpenWizard: NOOP,
         onOpenSubscribeModal: NOOP,
-        onOpenTrialUpgradeModal: NOOP,
         onOpenTrialRequestModal: NOOP,
         onOpenUpgradePlanModal: NOOP,
         onCloseTrialRequestModal: NOOP,

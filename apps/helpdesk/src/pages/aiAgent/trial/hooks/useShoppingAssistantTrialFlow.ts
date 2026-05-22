@@ -52,7 +52,7 @@ const NOTIFY_SUCCESS_MESSAGE =
 const NOTIFY_ERROR_MESSAGE =
     "We couldn't send your trial extension request. Please try again later or contact our billing team via chat or email."
 
-// TODO: [AIFLY-547] remove startTrialDeprecated
+// TODO: [COACH-718] remove startTrialDeprecated
 export type UseShoppingAssistantTrialFlowReturn = {
     startTrialDeprecated: () => void
     startTrial: (optedInForUpgrade?: boolean) => void
@@ -194,19 +194,25 @@ export const useShoppingAssistantTrialFlow = ({
     )
     const { routes } = useAiAgentNavigation({ shopName })
 
-    const { mutateAsync: triggerTrialMutation, isLoading } =
-        useStartShoppingAssistantTrial({
-            onError: () => {
-                trialModal.closeModal(trialUpgradeModalName)
-            },
-        })
+    const {
+        mutateAsync: triggerTrialMutation,
+        isLoading: isShoppingAssistantTrialLoading,
+    } = useStartShoppingAssistantTrial({
+        onError: () => {
+            trialModal.closeModal(trialUpgradeModalName)
+        },
+    })
 
-    const { mutateAsync: triggerAiAgentTrialMutation } =
-        useStartAiAgentTrialMutation({
-            onError: () => {
-                trialModal.closeModal(trialUpgradeModalName)
-            },
-        })
+    const {
+        mutateAsync: triggerAiAgentTrialMutation,
+        isLoading: isAiAgentTrialLoading,
+    } = useStartAiAgentTrialMutation({
+        onError: () => {
+            trialModal.closeModal(trialUpgradeModalName)
+        },
+    })
+
+    const isLoading = isShoppingAssistantTrialLoading || isAiAgentTrialLoading
 
     const { startOnboardingWizard } = useAiAgentTrialOnboarding({
         shopName,

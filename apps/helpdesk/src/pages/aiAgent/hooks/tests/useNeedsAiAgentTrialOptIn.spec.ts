@@ -118,7 +118,7 @@ describe('useNeedsAiAgentTrialOptIn', () => {
     it('does not need opt-in when AI Agent is already live on a channel', () => {
         mockUseTrialAccess.mockReturnValue({
             ...baseTrialAccess,
-            canSeeSubscribeNowCTA: true,
+            canSeeTrialCTA: true,
         })
         mockUseStoreConfigContext.mockReturnValue({
             storeConfiguration: liveStoreConfig,
@@ -162,7 +162,7 @@ describe('useNeedsAiAgentTrialOptIn', () => {
         expect(result.current.needsOptIn).toBe(true)
     })
 
-    it('needs opt-in when admin can see subscribe-now CTA', () => {
+    it('does not need opt-in for subscribe-now-only cohorts (no trial offer makes sense)', () => {
         mockUseTrialAccess.mockReturnValue({
             ...baseTrialAccess,
             canSeeSubscribeNowCTA: true,
@@ -172,7 +172,7 @@ describe('useNeedsAiAgentTrialOptIn', () => {
             useNeedsAiAgentTrialOptIn(SHOP_NAME),
         )
 
-        expect(result.current.needsOptIn).toBe(true)
+        expect(result.current.needsOptIn).toBe(false)
     })
 
     it('needs opt-in when store configuration is absent (fresh user pre-deploy)', () => {

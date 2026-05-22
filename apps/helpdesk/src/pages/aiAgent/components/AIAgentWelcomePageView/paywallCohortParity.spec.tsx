@@ -15,6 +15,7 @@ import { render } from '@repo/testing'
 
 import { EXTERNAL_URLS } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 
+import type { AiAgentCtasParams as AiAgentCtasParamsV3 } from '../AIAgentWelcomePageViewV3/useAiAgentPaywallCta'
 import { useAiAgentCtas as useAiAgentCtasV3 } from '../AIAgentWelcomePageViewV3/useAiAgentPaywallCta'
 import type { AiAgentCtasParams } from '../ShoppingAssistant/hooks/useAiAgentPaywallCTA'
 import { useAiAgentCtas as useAiAgentCtasV2 } from '../ShoppingAssistant/hooks/useAiAgentPaywallCTA'
@@ -77,8 +78,28 @@ const V2CohortHarness = ({ inputs }: HarnessProps) => {
     )
 }
 
+const buildV3Params = (inputs: PaywallCohortInput): AiAgentCtasParamsV3 => ({
+    ...inputs,
+    isDuringOrAfterTrial: false,
+    learnMoreUrl: EXTERNAL_URLS.AI_AGENT_TRIAL_LEARN_MORE_PAYWALL,
+    onOpenWizard: jest.fn(),
+    onOpenSubscribeModal: jest.fn(),
+    onOpenTrialRequestModal: jest.fn(),
+    onOpenUpgradePlanModal: jest.fn(),
+    onCloseTrialRequestModal: jest.fn(),
+    onCloseTrialFinishSetupModal: jest.fn(),
+    trialModals: {
+        isTrialRequestModalOpen: false,
+        trialRequestModal:
+            {} as AiAgentCtasParamsV3['trialModals']['trialRequestModal'],
+        isTrialFinishSetupModalOpen: false,
+        trialFinishSetupModal:
+            {} as AiAgentCtasParamsV3['trialModals']['trialFinishSetupModal'],
+    },
+})
+
 const V3CohortHarness = ({ inputs }: HarnessProps) => {
-    const { ctas } = useAiAgentCtasV3(buildV2Params(inputs))
+    const { ctas } = useAiAgentCtasV3(buildV3Params(inputs))
     return <>{ctas}</>
 }
 
@@ -139,9 +160,9 @@ describe('paywall cohort parity (V2)', () => {
 describe('paywall cohort parity (V3)', () => {
     it.each<PaywallCohortFixture>(paywallCohortFixtures)(
         'V3 renders expected CTAs for: $name',
-        ({ inputs, expectedCtas }) => {
+        ({ inputs, expectedCtas, v3ExpectedCtas }) => {
             const { container } = render(<V3CohortHarness inputs={inputs} />)
-            assertCohortRender(container, expectedCtas)
+            assertCohortRender(container, v3ExpectedCtas ?? expectedCtas)
         },
     )
 })
