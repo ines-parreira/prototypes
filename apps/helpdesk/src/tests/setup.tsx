@@ -178,6 +178,23 @@ jest.mock(
 
 jest.mock('chart.js')
 
+jest.mock('@gorgias/copilot', () => ({
+    __esModule: true,
+    CopilotProvider: jest.fn(
+        ({ children }: { children: import('react').ReactNode }) => children,
+    ),
+    CopilotWorkspace: jest.fn(() => null),
+    useCopilot: jest.fn(() => ({
+        open: false,
+        setOpen: () => undefined,
+        sendPrompt: () => undefined,
+        resetThread: () => undefined,
+        abort: () => undefined,
+        agent: undefined,
+        runtimeUrl: '',
+    })),
+}))
+
 Object.defineProperty(window, 'requestAnimationFrame', { value: jest.fn() })
 
 Object.defineProperty(window, 'cancelAnimationFrame', { value: jest.fn() })

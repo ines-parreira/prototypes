@@ -1,13 +1,9 @@
-import { mockFeatureFlagsValues } from '@repo/feature-flags/testing'
 import { useIsMobileResolution } from '@repo/hooks'
 import { MockSidebarProvider } from '@repo/navigation/fixtures'
 import { assumeMock, render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { useCopilot } from '@gorgias/copilot'
-
-import { useCopilotEnabled } from 'hooks/useCopilotEnabled'
 import { useIsChatReady } from 'hooks/useIsChatReady'
 import { Product, productConfig } from 'routes/layout/productConfig'
 
@@ -69,8 +65,6 @@ jest.mock('utils', () => ({
 jest.mock('hooks/useCopilotEnabled', () => ({
     useCopilotEnabled: jest.fn(() => false),
 }))
-const mockUseCopilotEnabled = assumeMock(useCopilotEnabled)
-const mockUseCopilot = assumeMock(useCopilot)
 
 const mockToggleChat = jest.requireMock('utils').toggleChat as jest.Mock
 const mockToggleCollapse = jest.fn()
@@ -382,86 +376,5 @@ describe('NavigationSidebar', () => {
         expect(
             container.querySelector('[data-name="sidebar-content"]'),
         ).toBeEmptyDOMElement()
-    })
-
-    describe('copilot debug menu toggle', () => {
-        const setCopilotOpen = jest.fn()
-        const buildCopilotMockReturn = (open: boolean) =>
-            ({
-                open,
-                setOpen: setCopilotOpen,
-                sendPrompt: jest.fn(),
-                resetThread: jest.fn(),
-                abort: jest.fn(),
-                agent: undefined,
-                runtimeUrl: '',
-            }) as unknown as ReturnType<typeof useCopilot>
-
-        beforeEach(() => {
-            useCurrentRouteProductMock.mockReturnValue(
-                productConfig[Product.Inbox],
-            )
-            mockFeatureFlagsValues({ 'show-debug-menu': true })
-            setCopilotOpen.mockClear()
-            mockUseCopilot.mockReturnValue(buildCopilotMockReturn(false))
-        })
-
-        it('does not render the copilot toggle when copilot is disabled', async () => {
-            const user = userEvent.setup()
-            mockUseCopilotEnabled.mockReturnValue(false)
-            render(
-                <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
-                    <NavigationSidebar />
-                </MockSidebarProvider>,
-            )
-
-            await user.click(
-                screen.getByRole('button', { name: /system-window-terminal/i }),
-            )
-
-            expect(
-                screen.queryByRole('menuitem', { name: /show copilot/i }),
-            ).not.toBeInTheDocument()
-        })
-
-        it('toggles copilot open when "Show copilot" is clicked', async () => {
-            const user = userEvent.setup()
-            mockUseCopilotEnabled.mockReturnValue(true)
-            render(
-                <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
-                    <NavigationSidebar />
-                </MockSidebarProvider>,
-            )
-
-            await user.click(
-                screen.getByRole('button', { name: /system-window-terminal/i }),
-            )
-            await user.click(
-                await screen.findByRole('menuitem', { name: /show copilot/i }),
-            )
-
-            expect(setCopilotOpen).toHaveBeenCalledWith(true)
-        })
-
-        it('shows "Hide copilot" label when copilot is already open', async () => {
-            const user = userEvent.setup()
-            mockUseCopilotEnabled.mockReturnValue(true)
-            mockUseCopilot.mockReturnValue(buildCopilotMockReturn(true))
-
-            render(
-                <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
-                    <NavigationSidebar />
-                </MockSidebarProvider>,
-            )
-
-            await user.click(
-                screen.getByRole('button', { name: /system-window-terminal/i }),
-            )
-            await user.click(
-                await screen.findByRole('menuitem', { name: /hide copilot/i }),
-            )
-
-            expect(setCopilotOpen).toHaveBeenCalledWith(false)
-        })
     })
 })

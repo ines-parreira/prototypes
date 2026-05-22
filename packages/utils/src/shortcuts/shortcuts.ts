@@ -28,6 +28,15 @@ export const shortcuts: Shortcuts = {
             },
         },
     },
+    Copilot: {
+        description: 'Copilot',
+        actions: {
+            TOGGLE_COPILOT: {
+                key: ['mod+g'],
+                description: 'Toggle the copilot panel',
+            },
+        },
+    },
     SpotlightTrigger: {
         description: 'Spotlight search',
         actions: {

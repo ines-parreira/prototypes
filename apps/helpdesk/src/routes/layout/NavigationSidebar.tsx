@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+
 import { DebugMenu, DebugMenuItem } from '@repo/debug'
 import { useIsMobileResolution } from '@repo/hooks'
 import {
@@ -9,11 +11,13 @@ import {
     useSidebarButtonSize,
     useSidebarShortcuts,
 } from '@repo/navigation'
+import { shortcutManager } from '@repo/utils'
 import { ViewCountDebugPanel } from '@repo/views'
 
 import { Box, Button, Separator, TooltipContent } from '@gorgias/axiom'
 import { useCopilot } from '@gorgias/copilot'
 
+import { AskGaiaButton } from 'copilot'
 import { useCopilotEnabled } from 'hooks/useCopilotEnabled'
 import { useIsChatReady } from 'hooks/useIsChatReady'
 import { useCurrentRouteProduct } from 'routes/hooks/useCurrentRouteProduct'
@@ -40,6 +44,21 @@ export function NavigationSidebar() {
     const { open: isCopilotOpen, setOpen: setCopilotOpen } = useCopilot()
 
     useSidebarShortcuts()
+
+    useEffect(() => {
+        if (!isCopilotEnabled) return
+        shortcutManager.bind('Copilot', {
+            TOGGLE_COPILOT: {
+                action: (e) => {
+                    e.preventDefault()
+                    setCopilotOpen(!isCopilotOpen)
+                },
+            },
+        })
+        return () => {
+            shortcutManager.unbind('Copilot')
+        }
+    }, [isCopilotEnabled, isCopilotOpen, setCopilotOpen])
 
     const CurrentContent = currentProduct.sidebar
     const isSticky =
@@ -126,6 +145,8 @@ export function NavigationSidebar() {
                 {!!CurrentContent && <CurrentContent />}
             </SidebarContent>
 
+            <AskGaiaButton />
+
             <SidebarFooter>
                 <UserMenu />
                 <Box
@@ -141,18 +162,6 @@ export function NavigationSidebar() {
                         >
                             <ViewCountDebugPanel />
                         </DebugMenuItem>
-                        {isCopilotEnabled && (
-                            <DebugMenuItem
-                                id="copilot-toggle"
-                                icon="ai-skill"
-                                label={
-                                    isCopilotOpen
-                                        ? 'Hide copilot'
-                                        : 'Show copilot'
-                                }
-                                onSelect={() => setCopilotOpen(!isCopilotOpen)}
-                            />
-                        )}
                     </DebugMenu>
                     <NavigationSidebarTooltip
                         placement="top"

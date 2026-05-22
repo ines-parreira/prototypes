@@ -1,0 +1,104 @@
+import { useEffect, useRef } from 'react'
+
+import { useSidebar } from '@repo/navigation'
+
+import { ShortcutKey } from '@gorgias/axiom'
+import { useCopilot } from '@gorgias/copilot'
+
+import { useCopilotEnabled } from 'hooks/useCopilotEnabled'
+
+import css from './AskGaiaButton.less'
+
+// Orbiting light on the AskGaia button's border. One full orbit in ms.
+const GLOW_DURATION_MS = 3000
+
+export const AskGaiaButton = () => {
+    const isCopilotEnabled = useCopilotEnabled()
+    const { isCollapsed } = useSidebar()
+    const { open: isCopilotOpen, setOpen: setCopilotOpen } = useCopilot()
+
+    const glowShapeClass = isCollapsed ? css.glowShapeCircle : css.glowShapePill
+
+    // Drive the spinner via Web Animations API. CSS @keyframes inside
+    // :local {} blocks of CSS Modules can silently fail to scope
+    // animation-name references in lockstep with the keyframe
+    // definition, which results in a non-running animation with no
+    // visible error. WAAPI takes raw keyframe values and animates the
+    // element directly — no identifier matching, no scoping, no
+    // pipeline surprises.
+    const spinnerRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        const el = spinnerRef.current
+        if (!el) return
+
+        // Respect prefers-reduced-motion at mount time. Doesn't need
+        // to react to runtime changes — this is purely decorative.
+        if (
+            typeof window !== 'undefined' &&
+            window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        ) {
+            return
+        }
+
+        const animation = el.animate(
+            [{ transform: 'rotate(0deg)' }, { transform: 'rotate(360deg)' }],
+            {
+                duration: GLOW_DURATION_MS,
+                iterations: Infinity,
+                easing: 'linear',
+            },
+        )
+
+        return () => animation.cancel()
+    }, [])
+
+    if (!isCopilotEnabled) return null
+
+    const handleClick = () => setCopilotOpen(!isCopilotOpen)
+
+    return (
+        <div
+            className={`${css.wrapper} ${
+                isCollapsed ? css.wrapperCollapsed : css.wrapperExpanded
+            }`}
+        >
+            <div className={css.entry}>
+                <div
+                    aria-hidden
+                    className={`${css.glowRoot} ${glowShapeClass}`}
+                >
+                    <div ref={spinnerRef} className={css.glowSpinner} />
+                </div>
+                {isCollapsed ? (
+                    <button
+                        type="button"
+                        className={css.collapsedTrigger}
+                        aria-label="Ask Gaia"
+                        onClick={handleClick}
+                    >
+                        <GaiaAvatar size={18} />
+                    </button>
+                ) : (
+                    <button
+                        type="button"
+                        className={css.expandedTrigger}
+                        onClick={handleClick}
+                    >
+                        <GaiaAvatar size={20} />
+                        <span className={css.expandedLabel}>Ask Gaia</span>
+                        <ShortcutKey>⌘ + G</ShortcutKey>
+                    </button>
+                )}
+            </div>
+        </div>
+    )
+}
+
+const GaiaAvatar = ({ size = 24 }: { size?: number }) => (
+    <span
+        className={css.gaiaAvatar}
+        style={{ width: size, height: size }}
+        aria-hidden
+    />
+)

@@ -1,0 +1,149 @@
+:local {
+    .wrapper {
+        position: relative;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .wrapperCollapsed {
+        padding: var(--spacing-xxs, 6px) 0 var(--spacing-xs, 8px);
+    }
+
+    .wrapperExpanded {
+        padding: var(--spacing-sm, 12px) var(--spacing-md, 16px) 0;
+        margin-bottom: -4px;
+    }
+
+    // Content-width anchor so the glow lines up with the trigger bounds
+    // rather than the wrapper. Position: relative makes it the glow's
+    // containing block.
+    .entry {
+        position: relative;
+        display: inline-flex;
+    }
+
+    // ---------- Collapsed nav: small circular icon ----------
+    .collapsedTrigger {
+        position: relative;
+        isolation: isolate;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        padding: 0;
+        background: transparent;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background-color 120ms ease;
+
+        &:hover {
+            background: var(--hover-default);
+        }
+    }
+
+    // ---------- Expanded nav: "Ask Gaia" pill ----------
+    .expandedTrigger {
+        position: relative;
+        isolation: isolate;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 6px 12px 6px 6px;
+        background: var(--elevation-neutral-default, #ffffff);
+        border: 1px solid var(--border-neutral-default);
+        border-radius: 999px;
+        box-shadow:
+            0 1px 3px rgba(0, 0, 0, 0.06),
+            0 4px 12px rgba(0, 0, 0, 0.04);
+        cursor: pointer;
+        font: inherit;
+        color: var(--content-neutral-default);
+        transition:
+            background-color 120ms ease,
+            border-color 120ms ease,
+            box-shadow 120ms ease;
+
+        &:hover {
+            background: var(--hover-default);
+            box-shadow:
+                0 1px 3px rgba(0, 0, 0, 0.08),
+                0 6px 16px rgba(0, 0, 0, 0.06);
+        }
+    }
+
+    // ---------- AskGaia orbiting light ----------
+    // Two layers:
+    //   .glowRoot    — stationary masked frame around the trigger
+    //                  perimeter. The padding-box/border-box mask-
+    //                  composite trick keeps only a 1.5px ring visible.
+    //   .glowSpinner — oversized square carrying a conic-gradient with
+    //                  a narrow bright arc; rotated via
+    //                  Element.animate() from AskGaiaEntry.tsx.
+    .glowRoot {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 1;
+        padding: 1.5px;
+        overflow: hidden;
+        -webkit-mask:
+            linear-gradient(#000, #000) content-box,
+            linear-gradient(#000, #000);
+        -webkit-mask-composite: xor;
+        mask:
+            linear-gradient(#000, #000) content-box,
+            linear-gradient(#000, #000);
+        mask-composite: exclude;
+    }
+
+    .glowShapeCircle {
+        border-radius: 50%;
+    }
+
+    .glowShapePill {
+        border-radius: 999px;
+    }
+
+    .glowSpinner {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        left: 50%;
+        top: 50%;
+        margin-left: -150px;
+        margin-top: -150px;
+        background: conic-gradient(
+            from 0deg,
+            transparent 0deg,
+            transparent 320deg,
+            #ff9780 345deg,
+            #ffd4c4 360deg
+        );
+        will-change: transform;
+    }
+
+    .expandedLabel {
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1;
+        white-space: nowrap;
+    }
+
+    // Gaia "avatar" — soft peach/coral gradient sphere.
+    .gaiaAvatar {
+        flex-shrink: 0;
+        display: inline-block;
+        border-radius: 50%;
+        background: radial-gradient(
+            circle at 30% 30%,
+            #fde7e2 0%,
+            #f4b8ac 35%,
+            #d97766 75%,
+            #8a3625 100%
+        );
+    }
+}

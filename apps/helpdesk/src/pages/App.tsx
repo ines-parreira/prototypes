@@ -156,7 +156,7 @@ const App = ({
             </div>
 
             <CollapsibleColumn />
-            {isCopilotEnabled && (
+            {!hasWayfindingMS1Flag && isCopilotEnabled && (
                 <Box pt="xs" pr="xs" pb="xs">
                     <CopilotWorkspace
                         attachmentsConfig={copilotAttachmentsConfig}

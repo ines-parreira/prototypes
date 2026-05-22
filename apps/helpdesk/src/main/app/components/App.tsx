@@ -23,10 +23,10 @@ import {
     NotificationsToasts,
     useDesktopNotifications,
 } from 'common/notifications'
+import { CopilotProvider } from 'copilot'
 import { THEME_NAME, useApplyTheme, useTheme } from 'core/theme'
 import { useAxiomMigration } from 'hooks/useAxiomMigration'
 import useHasPhone from 'hooks/useHasPhone'
-import { CopilotProvider } from 'main/app/components/CopilotProvider'
 import UIKitRootNodeProvider from 'main/app/components/UIKitRootNodeProvider'
 import { isAiAgentOnboarding } from 'main/app/utils/isAiAgentOnboarding'
 import { AlertNotifications } from 'notifications'
