@@ -285,8 +285,6 @@ export const METRIC_NAMES = {
         'ai-sales-agent-total-number-of-order',
     AI_SALES_AGENT_TOTAL_NUMBER_OF_SALES_CONVERSATIONS:
         'ai-sales-agent-total-number-of-sales-conversations',
-    AI_SALES_AGENT_AUTOMATED_SALES_CONVERSATIONS:
-        'ai-sales-agent-automated-sales-conversations',
     AI_SALES_AGENT_TOTAL_NUMBER_OF_SALES_CONVERSATIONS_DRILL_DOWN:
         'ai-sales-agent-total-number-of-sales-conversations-drill-down',
     AI_SALES_AGENT_TOTAL_PRODUCT_BOUGHT: 'ai-sales-agent-total-product-bought',
@@ -411,8 +409,6 @@ export const METRIC_NAMES = {
     // Automation
     AUTOMATE_AI_AGENT_INTERACTIONS_BY_SKILL:
         'automate-ai-agent-interactions-by-skill',
-    AUTOMATE_AI_AGENT_SUPPORT_INTERACTIONS_BY_SKILL:
-        'automate-ai-agent-support-interactions-by-skill',
     AUTOMATE_AI_AGENT_INTERACTIONS_BY_SKILL_TIMESERIES:
         'automate-ai-agent-interactions-by-skill-timeseries',
     AUTOMATE_ARTICLE_RECOMMENDATION_INTERACTIONS:

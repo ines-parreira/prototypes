@@ -20,6 +20,7 @@ import type { AutomateTimeseries } from 'domains/reporting/hooks/automate/types'
 import { useAIAgentAutomatedInteractionsTrend } from 'domains/reporting/hooks/automate/useAIAgentAutomatedInteractionsTrend'
 import { useAIAgentAutomationRateTrend } from 'domains/reporting/hooks/automate/useAIAgentAutomationRateTrend'
 import { useAIAgentInteractionsBySkillTimeSeries } from 'domains/reporting/hooks/automate/useAIAgentInteractionsBySkillTimeSeries'
+import { useAutomationCostSavedTrend } from 'domains/reporting/hooks/automate/useAutomationCostSavedTrend'
 import {
     useAutomateMetricsTimeSeries,
     useAutomateMetricsTrend,
@@ -124,6 +125,8 @@ const mockedUseSearchParam = assumeMock(useSearchParam)
 
 jest.mock('domains/reporting/hooks/automate/useAutomationRateTrend')
 const useAutomationRateTrendMock = assumeMock(useAutomationRateTrend)
+jest.mock('domains/reporting/hooks/automate/useAutomationCostSavedTrend')
+const useAutomationCostSavedTrendMock = assumeMock(useAutomationCostSavedTrend)
 jest.mock('domains/reporting/hooks/automate/useDecreaseInResolutionTimeTrend')
 const useDecreaseInResolutionTimeTrendMock = assumeMock(
     useDecreaseInResolutionTimeTrend,
@@ -285,6 +288,13 @@ describe('<AutomateOverview />', () => {
             prevValue: 100,
         },
     }
+    const automationCostSavedTrend = {
+        ...defaultMetricTrend,
+        data: {
+            value: 228,
+            prevValue: 123,
+        },
+    }
 
     const automateMetricsTimeSeries: AutomateTimeseries = {
         isFetching: false,
@@ -328,6 +338,9 @@ describe('<AutomateOverview />', () => {
             automatedInteractionTrend,
         )
         useAutomationRateTrendMock.mockReturnValue(automationRateTrend)
+        useAutomationCostSavedTrendMock.mockReturnValue(
+            automationCostSavedTrend,
+        )
         useDecreaseInResolutionTimeTrendMock.mockReturnValue(
             decreaseInResolutionTimeWithAutomateTrend,
         )

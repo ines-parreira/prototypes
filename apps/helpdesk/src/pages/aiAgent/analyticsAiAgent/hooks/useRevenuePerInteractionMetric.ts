@@ -1,57 +1,17 @@
 import type { MetricTrend } from '@repo/reporting'
 
-import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import useStatsMetricTrend, {
     fetchStatsMetricTrend,
 } from 'domains/reporting/hooks/useStatsMetricTrend'
 import { revenuePerInteractionQueryV2Factory } from 'domains/reporting/models/scopes/aiSalesAgentActivity'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
-import {
-    fetchGenericTrend,
-    useGenericTrend,
-} from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGenericTrend'
-import {
-    fetchGmvInfluencedTrend,
-    useGmvInfluencedTrend,
-} from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluencedTrend'
-import {
-    fetchTotalNumberOfSalesConversationsTrend,
-    useTotalNumberOfSalesConversationsTrend,
-} from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useTotalNumberOfSalesConversationsTrend'
-import safeDivide from 'domains/reporting/pages/automate/aiSalesAgent/util/safeDivide'
-import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
-import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
 import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
 export const useRevenuePerInteractionMetric = (): MetricTrend => {
     const { statsFilters, userTimezone } = useAiAgentStatsFilters()
 
-    const { stage, isLoading } = useGetNewStatsFeatureFlagMigration(
-        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_REVENUE_PER_INTERACTION,
-    )
-    const isV2 = stage === 'live' || stage === 'complete'
-
-    const v1Trend = useGenericTrend(
-        {
-            gmvInfluenced: useGmvInfluencedTrend(
-                statsFilters,
-                userTimezone,
-                !isLoading && !isV2,
-            ),
-            totalNumberOfAgentSalesConverations:
-                useTotalNumberOfSalesConversationsTrend(
-                    statsFilters,
-                    userTimezone,
-                    !isLoading && !isV2,
-                ),
-        },
-        ({ gmvInfluenced, totalNumberOfAgentSalesConverations }) =>
-            safeDivide(gmvInfluenced, totalNumberOfAgentSalesConverations),
-        !isLoading && !isV2,
-    )
-
-    const v2Trend = useStatsMetricTrend(
+    const { isFetching, isError, data } = useStatsMetricTrend(
         revenuePerInteractionQueryV2Factory({
             filters: statsFilters,
             timezone: userTimezone,
@@ -63,10 +23,7 @@ export const useRevenuePerInteractionMetric = (): MetricTrend => {
             },
             timezone: userTimezone,
         }),
-        !isLoading && isV2,
     )
-
-    const { isFetching, isError, data } = isV2 ? v2Trend : v1Trend
 
     return {
         isFetching,
@@ -79,32 +36,17 @@ export const useRevenuePerInteractionMetric = (): MetricTrend => {
     }
 }
 
-export const fetchRevenuePerInteractionMetric = async (
+export const fetchRevenuePerInteractionMetric = (
     filters: StatsFilters,
     timezone: string,
-) => {
-    const stage = await getNewStatsFeatureFlagMigration(
-        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_REVENUE_PER_INTERACTION,
+) =>
+    fetchStatsMetricTrend(
+        revenuePerInteractionQueryV2Factory({ filters, timezone }),
+        revenuePerInteractionQueryV2Factory({
+            filters: {
+                ...filters,
+                period: getPreviousPeriod(filters.period),
+            },
+            timezone,
+        }),
     )
-    if (stage === 'live' || stage === 'complete') {
-        return fetchStatsMetricTrend(
-            revenuePerInteractionQueryV2Factory({ filters, timezone }),
-            revenuePerInteractionQueryV2Factory({
-                filters: {
-                    ...filters,
-                    period: getPreviousPeriod(filters.period),
-                },
-                timezone,
-            }),
-        )
-    }
-    return fetchGenericTrend(
-        {
-            gmvInfluenced: fetchGmvInfluencedTrend(filters, timezone),
-            totalNumberOfAgentSalesConverations:
-                fetchTotalNumberOfSalesConversationsTrend(filters, timezone),
-        },
-        ({ gmvInfluenced, totalNumberOfAgentSalesConverations }) =>
-            safeDivide(gmvInfluenced, totalNumberOfAgentSalesConverations),
-    )
-}

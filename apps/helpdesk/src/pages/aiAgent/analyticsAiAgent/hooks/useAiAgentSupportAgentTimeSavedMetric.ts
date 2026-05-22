@@ -1,39 +1,17 @@
 import type { MetricTrend } from '@repo/reporting'
 
-import {
-    fetchAiAgentTimeSavedByAgentsTrend,
-    useAiAgentTimeSavedByAgentsTrend,
-} from 'domains/reporting/hooks/automate/useAiAgentTimeSavedByAgentsTrend'
-import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import useStatsMetricTrend, {
     fetchStatsMetricTrend,
 } from 'domains/reporting/hooks/useStatsMetricTrend'
-import {
-    dynamicSupportAgentTimeSaved,
-    dynamicSupportAgentTimeSavedQueryFactoryV2,
-} from 'domains/reporting/models/scopes/aiAgentTimeSaved'
+import { dynamicSupportAgentTimeSavedQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentTimeSaved'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
-import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
-import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
 import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
 export const useAiAgentSupportAgentTimeSavedMetric = (): MetricTrend => {
     const { statsFilters, userTimezone } = useAiAgentStatsFilters()
 
-    const { stage, isLoading: isFlagLoading } =
-        useGetNewStatsFeatureFlagMigration(
-            METRIC_NAMES.AI_AGENT_DYNAMIC_SUPPORT_AGENT_TIME_SAVED,
-        )
-    const isV2 = stage === 'live' || stage === 'complete'
-
-    const v1Trend = useAiAgentTimeSavedByAgentsTrend(
-        statsFilters,
-        userTimezone,
-        !isFlagLoading && !isV2,
-    )
-
-    const v2Trend = useStatsMetricTrend(
+    const { isFetching, isError, data } = useStatsMetricTrend(
         dynamicSupportAgentTimeSavedQueryFactoryV2({
             filters: statsFilters,
             timezone: userTimezone,
@@ -45,13 +23,10 @@ export const useAiAgentSupportAgentTimeSavedMetric = (): MetricTrend => {
             },
             timezone: userTimezone,
         }),
-        !isFlagLoading && isV2,
     )
 
-    const { isFetching, isError, data } = isV2 ? v2Trend : v1Trend
-
     return {
-        isFetching: isFetching || isFlagLoading,
+        isFetching,
         isError,
         data: {
             label: 'Time saved by agents',
@@ -61,27 +36,20 @@ export const useAiAgentSupportAgentTimeSavedMetric = (): MetricTrend => {
     }
 }
 
-export const fetchAiAgentSupportAgentTimeSavedTrend = async (
+export const fetchAiAgentSupportAgentTimeSavedTrend = (
     statsFilters: StatsFilters,
     userTimezone: string,
-) => {
-    const stage = await getNewStatsFeatureFlagMigration(
-        dynamicSupportAgentTimeSaved.name,
+) =>
+    fetchStatsMetricTrend(
+        dynamicSupportAgentTimeSavedQueryFactoryV2({
+            filters: statsFilters,
+            timezone: userTimezone,
+        }),
+        dynamicSupportAgentTimeSavedQueryFactoryV2({
+            filters: {
+                ...statsFilters,
+                period: getPreviousPeriod(statsFilters.period),
+            },
+            timezone: userTimezone,
+        }),
     )
-    if (stage === 'live' || stage === 'complete') {
-        return fetchStatsMetricTrend(
-            dynamicSupportAgentTimeSavedQueryFactoryV2({
-                filters: statsFilters,
-                timezone: userTimezone,
-            }),
-            dynamicSupportAgentTimeSavedQueryFactoryV2({
-                filters: {
-                    ...statsFilters,
-                    period: getPreviousPeriod(statsFilters.period),
-                },
-                timezone: userTimezone,
-            }),
-        )
-    }
-    return fetchAiAgentTimeSavedByAgentsTrend(statsFilters, userTimezone)
-}

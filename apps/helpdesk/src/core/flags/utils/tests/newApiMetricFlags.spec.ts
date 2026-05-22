@@ -3,7 +3,6 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import {
     P1_SCOPES,
     resolveMetricFlag,
-    skipMetricComparison,
 } from 'core/flags/utils/newApiMetricFlags'
 import {
     METRIC_NAMES,
@@ -51,41 +50,9 @@ describe('resolveMetricFlag', () => {
         )
     })
 
-    it('should return the correct flag for P5 AI agent revamp metrics', () => {
+    it('should return the unsorted flag for former P5 AI agent revamp metrics', () => {
         expect(
             resolveMetricFlag(METRIC_NAMES.AI_AGENT_OVERALL_AUTOMATION_RATE),
-        ).toBe(FeatureFlagKey.ReportingP5AiAgentRevampQueryScopes)
-    })
-})
-
-describe('skipMetricComparison', () => {
-    it('should return true for P5 AI agent revamp metrics', () => {
-        expect(
-            skipMetricComparison(METRIC_NAMES.AI_AGENT_OVERALL_AUTOMATION_RATE),
-        ).toBe(true)
-
-        expect(
-            skipMetricComparison(
-                METRIC_NAMES.AI_AGENT_ALL_AGENTS_AUTOMATION_RATE,
-            ),
-        ).toBe(true)
-    })
-
-    it('should return false for non-P5 metrics', () => {
-        expect(
-            skipMetricComparison(
-                METRIC_NAMES.AGENTXP_TICKET_AVERAGE_HANDLE_TIME,
-            ),
-        ).toBe(false)
-
-        expect(
-            skipMetricComparison(METRIC_NAMES.KNOWLEDGE_HANDOVER_TICKETS),
-        ).toBe(false)
-
-        expect(
-            skipMetricComparison(
-                METRIC_NAMES.CONVERT_CAMPAIGN_ORDER_PERFORMANCE_DRILL_DOWN,
-            ),
-        ).toBe(false)
+        ).toBe(FeatureFlagKey.ReportingUnsortedMetricMigration)
     })
 })

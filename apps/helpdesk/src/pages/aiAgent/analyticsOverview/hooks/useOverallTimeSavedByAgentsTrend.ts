@@ -1,32 +1,15 @@
-import {
-    fetchTimeSavedByAgentsTrend,
-    useTimeSavedByAgentsTrend,
-} from 'domains/reporting/hooks/automate/useTimeSavedByAgentsTrend'
-import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import useStatsMetricTrend, {
     fetchStatsMetricTrend,
 } from 'domains/reporting/hooks/useStatsMetricTrend'
 import { dynamicMedianTimeSavedByAgentQueryFactoryV2 } from 'domains/reporting/models/scopes/overallTimeSavedByAgent'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
-import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
-import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
 
 export const useOverallTimeSavedByAgentsTrend = (
     statsFilters: StatsFilters,
     userTimezone: string,
-) => {
-    const { stage, isLoading } = useGetNewStatsFeatureFlagMigration(
-        METRIC_NAMES.AI_AGENT_DYNAMIC_AVERAGE_TIME_SAVED_BY_AGENT,
-    )
-    const isV2 = stage === 'live' || stage === 'complete'
-
-    const v1Trend = useTimeSavedByAgentsTrend(
-        statsFilters,
-        userTimezone,
-        !isLoading && !isV2,
-    )
-    const v2Trend = useStatsMetricTrend(
+) =>
+    useStatsMetricTrend(
         dynamicMedianTimeSavedByAgentQueryFactoryV2({
             filters: statsFilters,
             timezone: userTimezone,
@@ -38,34 +21,22 @@ export const useOverallTimeSavedByAgentsTrend = (
             },
             timezone: userTimezone,
         }),
-        !isLoading && isV2,
     )
 
-    return isV2 ? v2Trend : v1Trend
-}
-
-export const fetchOverallTimeSavedByAgentsTrend = async (
+export const fetchOverallTimeSavedByAgentsTrend = (
     statsFilters: StatsFilters,
     userTimezone: string,
-) => {
-    const stage = await getNewStatsFeatureFlagMigration(
-        METRIC_NAMES.AI_AGENT_DYNAMIC_AVERAGE_TIME_SAVED_BY_AGENT,
+) =>
+    fetchStatsMetricTrend(
+        dynamicMedianTimeSavedByAgentQueryFactoryV2({
+            filters: statsFilters,
+            timezone: userTimezone,
+        }),
+        dynamicMedianTimeSavedByAgentQueryFactoryV2({
+            filters: {
+                ...statsFilters,
+                period: getPreviousPeriod(statsFilters.period),
+            },
+            timezone: userTimezone,
+        }),
     )
-    const isV2 = stage === 'live' || stage === 'complete'
-
-    return isV2
-        ? await fetchStatsMetricTrend(
-              dynamicMedianTimeSavedByAgentQueryFactoryV2({
-                  filters: statsFilters,
-                  timezone: userTimezone,
-              }),
-              dynamicMedianTimeSavedByAgentQueryFactoryV2({
-                  filters: {
-                      ...statsFilters,
-                      period: getPreviousPeriod(statsFilters.period),
-                  },
-                  timezone: userTimezone,
-              }),
-          )
-        : await fetchTimeSavedByAgentsTrend(statsFilters, userTimezone)
-}

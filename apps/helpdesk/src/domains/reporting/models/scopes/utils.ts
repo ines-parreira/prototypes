@@ -3,7 +3,6 @@ import { reportError } from '@repo/logging'
 import { ReportingStatsOperatorsEnum } from '@gorgias/helpdesk-types'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import { skipMetricComparison } from 'core/flags/utils/newApiMetricFlags'
 import type { MetricName } from 'domains/reporting/hooks/metricNames'
 import { TicketMember } from 'domains/reporting/models/cubes/TicketCube'
 import {
@@ -873,10 +872,6 @@ export function compareAndReportQueries<TCube extends Cube = Cube>(
     v1query: ReportingQuery<TCube>,
     v2query: ReportingQuery<TCube>,
 ) {
-    if (skipMetricComparison(metricName)) {
-        return true
-    }
-
     try {
         const differences: string[] = []
 

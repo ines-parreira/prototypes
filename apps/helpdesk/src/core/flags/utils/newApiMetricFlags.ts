@@ -48,26 +48,6 @@ export const P3_SCOPES: MetricScope[] = [
     MetricScope.AISalesAgentOrders,
 ]
 
-export const P5_AI_AGENT_REVAMP_SCOPES: MetricScope[] = [
-    MetricScope.OverallAutomationRate,
-    MetricScope.OverallAutomatedInteractions,
-    MetricScope.AiAgentCoverageRate,
-    MetricScope.AiSalesAgentConversionRate,
-    MetricScope.AiSalesAgentBuyThroughRate,
-    MetricScope.AiSalesAgentActivity,
-    MetricScope.AiSalesAgentDiscounts,
-    MetricScope.AiSalesAgentOrdersPerformance,
-    MetricScope.AiAgentAutomatedInteractions,
-    MetricScope.AiAgentTimeSaved,
-    MetricScope.OverallTimeSavedByAgent,
-    MetricScope.AiAgentDecreaseInFirstResponseTime,
-    MetricScope.AiAgentDecreaseInResolutionTime,
-    MetricScope.OverallDecreaseInResolutionTime,
-    MetricScope.OverallDecreaseInFirstResponseTime,
-    MetricScope.AiAgentTicketsClosed,
-    MetricScope.AiAgentCsat,
-]
-
 const METRIC_TO_FLAG_MAP = new Map<MetricName, FeatureFlagKey>()
 
 P1_SCOPES.forEach((scope) => {
@@ -97,25 +77,9 @@ P3_SCOPES.forEach((scope) => {
     })
 })
 
-P5_AI_AGENT_REVAMP_SCOPES.forEach((scope) => {
-    METRIC_NAMES_BY_SCOPE[scope].forEach((metricName) => {
-        METRIC_TO_FLAG_MAP.set(
-            metricName,
-            FeatureFlagKey.ReportingP5AiAgentRevampQueryScopes,
-        )
-    })
-})
-
 export function resolveMetricFlag(name: MetricName): FeatureFlagKey {
     return (
         METRIC_TO_FLAG_MAP.get(name) ??
         FeatureFlagKey.ReportingUnsortedMetricMigration
-    )
-}
-
-export function skipMetricComparison(name: MetricName): boolean {
-    return (
-        resolveMetricFlag(name) ===
-        FeatureFlagKey.ReportingP5AiAgentRevampQueryScopes
     )
 }

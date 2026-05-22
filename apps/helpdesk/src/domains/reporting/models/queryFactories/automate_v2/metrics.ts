@@ -8,7 +8,6 @@ import type { AIAgentAutomatedInteractionsCube } from 'domains/reporting/models/
 import {
     AIAgentInteractionsBySkillDatasetDimension,
     AIAgentInteractionsBySkillMeasure,
-    AIAgentSkills,
 } from 'domains/reporting/models/cubes/automate_v2/AIAgentIntercationsBySkillDatasetCube'
 import type { AutomationDatasetCube } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
 import {
@@ -65,24 +64,6 @@ export const aiAgentAutomatedInteractionsQueryFactory = (
             member: AutomationDatasetFilterMember.EventType,
             operator: ReportingFilterOperator.Equals,
             values: [AutomateEventType.AI_AGENT_TICKET_RESOLVED],
-        },
-    ],
-})
-
-export const aiAgentSupportInteractionsQueryFactory = (
-    filters: StatsFilters,
-    timezone: string,
-): ReportingQuery<AIAgentAutomatedInteractionsCube> => ({
-    metricName: METRIC_NAMES.AUTOMATE_AI_AGENT_SUPPORT_INTERACTIONS_BY_SKILL,
-    measures: [AIAgentInteractionsBySkillMeasure.Count],
-    dimensions: [AIAgentInteractionsBySkillDatasetDimension.BillableType],
-    timezone,
-    filters: [
-        ...aiAgentInteractionsBySkillDefaultFilters(filters),
-        {
-            member: AIAgentInteractionsBySkillDatasetDimension.BillableType,
-            operator: ReportingFilterOperator.Equals,
-            values: [AIAgentSkills.AIAgentSupport],
         },
     ],
 })
