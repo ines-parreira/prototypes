@@ -27,7 +27,7 @@ import { SkillWizard } from './SkillWizard'
 import { SkillWizardIntro } from './SkillWizardIntro'
 
 const STEP_QUERY_PARAM = 'step'
-const INTRO_DURATION_MS = 2000
+const INTRO_DURATION_MS = 2500
 
 type SkillWizardPageContentProps = {
     wizard: EnrichedSkillWizard

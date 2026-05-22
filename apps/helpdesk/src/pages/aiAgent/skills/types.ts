@@ -53,6 +53,12 @@ export const SkillWizardSkillStatus = {
 export type SkillWizardSkillStatus =
     (typeof SkillWizardSkillStatus)[keyof typeof SkillWizardSkillStatus]
 
+export type SkillsView =
+    | 'wizard-loading'
+    | 'wizard-active'
+    | 'wizard-completed'
+    | 'no-wizard'
+
 /**
  * Metrics for a skill article
  */

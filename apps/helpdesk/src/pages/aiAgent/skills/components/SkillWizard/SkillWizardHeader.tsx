@@ -1,8 +1,13 @@
 import { Box, Button, Heading, Loader, ProgressBar, Text } from '@gorgias/axiom'
 
+import { TruncatedTextWithTooltip } from 'pages/aiAgent/KnowledgeHub/Table/TruncatedTextWithTooltip'
+
 import { useSkillWizardContext } from './SkillWizardContext'
+import { useMinDisplayTime } from './useMinDisplayTime'
 
 import css from './SkillWizardHeader.less'
+
+const MIN_SAVING_DISPLAY_MS = 30
 
 type Props = {
     isSaving?: boolean
@@ -10,6 +15,10 @@ type Props = {
 }
 
 export const SkillWizardHeader = ({ isSaving, onClose }: Props) => {
+    const isSavingVisible = useMinDisplayTime(
+        isSaving ?? false,
+        MIN_SAVING_DISPLAY_MS,
+    )
     const {
         currentStep,
         reviewStepsCount,
@@ -41,10 +50,16 @@ export const SkillWizardHeader = ({ isSaving, onClose }: Props) => {
                     aria-label="Back to skills"
                     onClick={onClose}
                 />
-                <Heading size="xl">
-                    {isRecapStep ? 'Final approval' : 'Review skill'}
+                <Heading size="xl" className={css.heading}>
+                    <TruncatedTextWithTooltip
+                        tooltipContent={
+                            isRecapStep ? 'Final approval' : 'Review skill'
+                        }
+                    >
+                        {isRecapStep ? 'Final approval' : 'Review skill'}
+                    </TruncatedTextWithTooltip>
                 </Heading>
-                {isSaving ? (
+                {isSavingVisible ? (
                     <span className={css.savingIndicator}>
                         <Loader size="sm" aria-label="Saving" />
                         <Text size="sm" color="content-neutral-secondary">
@@ -86,17 +101,19 @@ export const SkillWizardHeader = ({ isSaving, onClose }: Props) => {
                         variant="secondary"
                         leadingSlot="arrow-chevron-left"
                         onClick={goBack}
-                        isDisabled={isFirstStep || isSaving}
+                        isDisabled={isFirstStep || isSavingVisible}
+                        aria-label="Back"
                     >
-                        Back
+                        <span className={css.buttonLabel}>Back</span>
                     </Button>
                     <Button
                         variant="primary"
                         trailingSlot="arrow-chevron-right"
                         onClick={goNext}
-                        isDisabled={isLastStep || isSaving}
+                        isDisabled={isLastStep || isSavingVisible}
+                        aria-label="Next"
                     >
-                        Next
+                        <span className={css.buttonLabel}>Next</span>
                     </Button>
                 </Box>
             )}

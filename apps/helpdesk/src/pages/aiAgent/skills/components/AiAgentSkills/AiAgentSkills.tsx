@@ -17,7 +17,7 @@ import { WizardSkillsBanner } from 'pages/aiAgent/skills/components/WizardSkills
 import { useEnrichedSkillWizard } from 'pages/aiAgent/skills/hooks/useEnrichedSkillWizard'
 import { useHasLinkedSkills } from 'pages/aiAgent/skills/hooks/useHasLinkedSkills'
 import { useSkillsTemplates } from 'pages/aiAgent/skills/hooks/useSkillsTemplates'
-import { SkillWizardStatus } from 'pages/aiAgent/skills/types'
+import { getSkillsView } from 'pages/aiAgent/skills/utils'
 
 import { AiAgentSkillsSkeleton } from '../AiAgentSkillsSkeleton/AiAgentSkillsSkeleton'
 import { IntentsTable } from '../IntentsTable/IntentsTable'
@@ -52,12 +52,11 @@ export const AiAgentSkills = () => {
     const { wizard: enrichedWizard, isLoading: isWizardLoading } =
         useEnrichedSkillWizard(wizard)
 
-    const isWizardActive =
-        isSkillWizardEnabled &&
-        !!wizard &&
-        wizard.status !== SkillWizardStatus.Completed
-
-    const isWizardDecisionLoading = isSkillWizardEnabled && isWizardQueryLoading
+    const skillsView = getSkillsView({
+        isSkillWizardEnabled,
+        isWizardQueryLoading,
+        wizardStatus: wizard?.status,
+    })
 
     const handleOpenSkillWizard = () => {
         if (!enrichedWizard) return
@@ -88,53 +87,73 @@ export const AiAgentSkills = () => {
         setIsIntentsTableOpen(true)
     }
 
+    const skillsListBlock = isLoading ? (
+        <SkillsLoading />
+    ) : !hasSkills ? (
+        <SkillsEmptyState
+            onCreateSkillFromScratch={handleCreateSkillFromScratch}
+            onCreateSkillFromTemplate={handleOpenTemplateModal}
+        />
+    ) : (
+        <SkillsTable />
+    )
+
+    const renderContent = () => {
+        switch (skillsView) {
+            case 'wizard-loading':
+                return <AiAgentSkillsSkeleton />
+
+            case 'wizard-active':
+                return (
+                    <Box flexDirection="column" className={css.wizardContent}>
+                        <WizardSkillsBanner />
+                        {!isWizardLoading && enrichedWizard && (
+                            <ReviewSkillsSection
+                                wizard={enrichedWizard}
+                                onCTA={handleOpenSkillWizard}
+                            />
+                        )}
+                    </Box>
+                )
+
+            case 'wizard-completed':
+                return (
+                    <Box flexDirection="column" className={css.content}>
+                        {skillsListBlock}
+                    </Box>
+                )
+
+            case 'no-wizard':
+                return (
+                    <Box flexDirection="column" className={css.content}>
+                        <IntroducingSkillsBanner shopName={shopName} />
+                        {availableSkillsTemplates.length > 0 && (
+                            <RecommendedSkillsSection
+                                skillsTemplates={availableSkillsTemplates}
+                                onCreateSkillsFromTemplate={
+                                    handleCreateSkillsFromTemplate
+                                }
+                            />
+                        )}
+                        {skillsListBlock}
+                    </Box>
+                )
+        }
+    }
+
     return (
         <Box flexDirection="column" width="100%">
             <SkillsHeader
-                showActions={!isWizardActive && !isWizardDecisionLoading}
+                showActions={
+                    skillsView === 'wizard-completed' ||
+                    skillsView === 'no-wizard'
+                }
                 onViewIntents={handleViewIntents}
                 onCreateSkillFromScratch={handleCreateSkillFromScratch}
                 onCreateSkillFromTemplate={handleOpenTemplateModal}
             />
 
-            {isWizardDecisionLoading ? (
-                <AiAgentSkillsSkeleton />
-            ) : isWizardActive ? (
-                <Box flexDirection="column" className={css.wizardContent}>
-                    <WizardSkillsBanner />
-                    {!isWizardLoading && enrichedWizard && (
-                        <ReviewSkillsSection
-                            wizard={enrichedWizard}
-                            onCTA={handleOpenSkillWizard}
-                        />
-                    )}
-                </Box>
-            ) : (
-                <Box flexDirection="column" className={css.content}>
-                    <IntroducingSkillsBanner shopName={shopName} />
-                    {availableSkillsTemplates.length > 0 && (
-                        <RecommendedSkillsSection
-                            skillsTemplates={availableSkillsTemplates}
-                            onCreateSkillsFromTemplate={
-                                handleCreateSkillsFromTemplate
-                            }
-                        />
-                    )}
-
-                    {isLoading ? (
-                        <SkillsLoading />
-                    ) : !hasSkills ? (
-                        <SkillsEmptyState
-                            onCreateSkillFromScratch={
-                                handleCreateSkillFromScratch
-                            }
-                            onCreateSkillFromTemplate={handleOpenTemplateModal}
-                        />
-                    ) : (
-                        <SkillsTable />
-                    )}
-                </Box>
-            )}
+            {renderContent()}
 
             <IntentsTable
                 isOpen={isIntentsTableOpen}

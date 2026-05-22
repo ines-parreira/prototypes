@@ -1,11 +1,15 @@
 import { Box, Icon, Text } from '@gorgias/axiom'
 
+import { useTypewriter } from './useTypewriter'
+
 import css from './SkillWizardIntro.less'
 
 type Props = {
     reviewableCount: number
     totalCount: number
 }
+
+const SUBTITLE = 'Give them a quick review first'
 
 export const SkillWizardIntro = ({ reviewableCount, totalCount }: Props) => {
     const allReviewable = reviewableCount > 0 && reviewableCount === totalCount
@@ -14,9 +18,22 @@ export const SkillWizardIntro = ({ reviewableCount, totalCount }: Props) => {
         ? 'All of your skills are ready to enable'
         : `Good news: ${reviewableCount} of your skills are ready to enable`
 
+    const { typed: typedHeading, isComplete: headingDone } = useTypewriter(
+        heading,
+        { delayMs: 30 },
+    )
+    const { typed: typedSubtitle, isComplete: subtitleDone } = useTypewriter(
+        SUBTITLE,
+        { delayMs: 30, enabled: headingDone },
+    )
+
+    const isHeadingTyping = !headingDone
+    const isSubtitleTyping = headingDone && !subtitleDone
+
     return (
         <Box
             role="status"
+            aria-label={`${heading}. ${SUBTITLE}`}
             alignItems="center"
             justifyContent="center"
             className={css.container}
@@ -36,10 +53,16 @@ export const SkillWizardIntro = ({ reviewableCount, totalCount }: Props) => {
                 </Box>
                 <Box flexDirection="column" gap="xxxs" alignItems="center">
                     <Text size="md" variant="bold">
-                        {heading}
+                        {typedHeading}
+                        {isHeadingTyping && (
+                            <span className={css.caret} aria-hidden="true" />
+                        )}
                     </Text>
                     <Text size="sm" color="var(--content-neutral-secondary)">
-                        Give them a quick review first
+                        {typedSubtitle}
+                        {isSubtitleTyping && (
+                            <span className={css.caret} aria-hidden="true" />
+                        )}
                     </Text>
                 </Box>
             </Box>

@@ -1,5 +1,3 @@
-import classNames from 'classnames'
-
 import {
     Box,
     CheckBoxField,
@@ -17,11 +15,10 @@ import {
 } from '@gorgias/axiom'
 
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { TruncatedTextWithTooltip } from 'pages/aiAgent/KnowledgeHub/Table/TruncatedTextWithTooltip'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 
 import type { GuidanceDisableEntry } from './skillRecap.utils'
-
-import css from './GuidanceSidePanel.less'
 
 type Props = {
     isOpen: boolean
@@ -30,6 +27,8 @@ type Props = {
     getGuidanceTitle: (guidanceId: number) => string
     onToggleGuidance: (guidanceId: number, isMarkedForDisable: boolean) => void
 }
+
+const CHECKBOX_COLUMN_WIDTH = '110px'
 
 export const GuidanceSidePanel = ({
     isOpen,
@@ -60,11 +59,11 @@ export const GuidanceSidePanel = ({
             />
             <OverlayContent>
                 <Box width="100%" height="fit-content">
-                    <Table withBorder>
+                    <Table withBorder layout="fixed">
                         <TableHeader>
                             <TableRow>
                                 <TableHeaderCell>Guidance</TableHeaderCell>
-                                <TableHeaderCell hug>
+                                <TableHeaderCell width={CHECKBOX_COLUMN_WIDTH}>
                                     To disable
                                 </TableHeaderCell>
                             </TableRow>
@@ -80,14 +79,19 @@ export const GuidanceSidePanel = ({
                                             <Box
                                                 flexDirection="column"
                                                 gap="xxxs"
-                                                className={classNames({
-                                                    [css.dimmed]:
-                                                        entry.isMarkedForDisable,
-                                                })}
+                                                style={
+                                                    entry.isMarkedForDisable
+                                                        ? { opacity: 0.65 }
+                                                        : undefined
+                                                }
                                             >
-                                                <Text
-                                                    color="var(--content-accent-default)"
-                                                    className={css.guidanceLink}
+                                                <Box
+                                                    flex={1}
+                                                    minWidth={0}
+                                                    style={{
+                                                        cursor: 'pointer',
+                                                        color: 'var(--content-accent-default)',
+                                                    }}
                                                     onClick={() =>
                                                         window.open(
                                                             routes.knowledgeArticle(
@@ -99,8 +103,14 @@ export const GuidanceSidePanel = ({
                                                         )
                                                     }
                                                 >
-                                                    {title}
-                                                </Text>
+                                                    <TruncatedTextWithTooltip
+                                                        tooltipContent={title}
+                                                    >
+                                                        <Text color="var(--content-accent-default)">
+                                                            {title}
+                                                        </Text>
+                                                    </TruncatedTextWithTooltip>
+                                                </Box>
                                                 <Text
                                                     size="sm"
                                                     color="content-neutral-secondary"
@@ -109,8 +119,11 @@ export const GuidanceSidePanel = ({
                                                 </Text>
                                             </Box>
                                         </TableCell>
-                                        <TableCell hug verticalAlign="middle">
-                                            <div className={css.checkboxCell}>
+                                        <TableCell
+                                            width={CHECKBOX_COLUMN_WIDTH}
+                                            verticalAlign="middle"
+                                        >
+                                            <Box justifyContent="center">
                                                 <CheckBoxField
                                                     value={
                                                         entry.isMarkedForDisable
@@ -122,7 +135,7 @@ export const GuidanceSidePanel = ({
                                                         )
                                                     }
                                                 />
-                                            </div>
+                                            </Box>
                                         </TableCell>
                                     </TableRow>
                                 )

@@ -435,6 +435,51 @@ describe('AiAgentSkills', () => {
             ).not.toBeInTheDocument()
         })
 
+        it('hides IntroducingSkillsBanner and RecommendedSkillsSection when the wizard is completed', () => {
+            enableWizardMode({ status: SkillWizardStatus.Completed })
+            mockUseHasLinkedSkills.mockReturnValue({
+                hasSkills: true,
+                isLoading: false,
+                isError: false,
+            })
+            renderComponent()
+
+            expect(
+                screen.queryByText('Introducing Skills Banner'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText(/Recommended Skills/),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('region', {
+                    name: 'Wizard Skills Banner',
+                }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.getByRole('region', { name: 'Skills Table' }),
+            ).toBeInTheDocument()
+        })
+
+        it('shows the empty state without the banner or recommended section when the wizard is completed and there are no skills', () => {
+            enableWizardMode({ status: SkillWizardStatus.Completed })
+            mockUseHasLinkedSkills.mockReturnValue({
+                hasSkills: false,
+                isLoading: false,
+                isError: false,
+            })
+            renderComponent()
+
+            expect(
+                screen.queryByText('Introducing Skills Banner'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText(/Recommended Skills/),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.getByRole('heading', { name: 'No skills yet' }),
+            ).toBeInTheDocument()
+        })
+
         it('does not render ReviewSkillsSection when the feature flag is off', () => {
             mockUseFlag.mockReturnValue(false)
             mockUseSkillWizard.mockReturnValue({

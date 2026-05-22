@@ -15,9 +15,9 @@ import {
     ToggleField,
 } from '@gorgias/axiom'
 
-import type { SkillToggleState } from './skillRecap.utils'
+import { TruncatedTextWithTooltip } from 'pages/aiAgent/KnowledgeHub/Table/TruncatedTextWithTooltip'
 
-import css from './SkillsSidePanel.less'
+import type { SkillToggleState } from './skillRecap.utils'
 
 type Props = {
     isOpen: boolean
@@ -25,6 +25,8 @@ type Props = {
     skillStates: SkillToggleState[]
     onToggleSkill: (skillId: number, isEnabled: boolean) => void
 }
+
+const TOGGLE_COLUMN_WIDTH = '130px'
 
 export const SkillsSidePanel = ({
     isOpen,
@@ -68,11 +70,11 @@ export const SkillsSidePanel = ({
                             </Text>
                         </Box>
                     )}
-                    <Table withBorder>
+                    <Table withBorder layout="fixed">
                         <TableHeader>
                             <TableRow>
                                 <TableHeaderCell>Skills</TableHeaderCell>
-                                <TableHeaderCell hug>
+                                <TableHeaderCell width={TOGGLE_COLUMN_WIDTH}>
                                     Ready to enable
                                 </TableHeaderCell>
                             </TableRow>
@@ -100,14 +102,22 @@ export const SkillsSidePanel = ({
                                                             alt={`${title} has actions that need to be enabled`}
                                                         />
                                                     )}
-                                                    <Text>{title}</Text>
+                                                    <Box flex={1} minWidth={0}>
+                                                        <TruncatedTextWithTooltip
+                                                            tooltipContent={
+                                                                title
+                                                            }
+                                                        >
+                                                            <Text>{title}</Text>
+                                                        </TruncatedTextWithTooltip>
+                                                    </Box>
                                                 </Box>
                                             </TableCell>
                                             <TableCell
-                                                hug
+                                                width={TOGGLE_COLUMN_WIDTH}
                                                 verticalAlign="middle"
                                             >
-                                                <div className={css.toggleCell}>
+                                                <Box justifyContent="flex-end">
                                                     <ToggleField
                                                         value={isEnabled}
                                                         onChange={(next) =>
@@ -117,7 +127,7 @@ export const SkillsSidePanel = ({
                                                             )
                                                         }
                                                     />
-                                                </div>
+                                                </Box>
                                             </TableCell>
                                         </TableRow>
                                     )

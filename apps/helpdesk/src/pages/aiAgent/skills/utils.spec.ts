@@ -1,4 +1,5 @@
-import { formatIntentName } from './utils'
+import { SkillWizardStatus } from './types'
+import { formatIntentName, getSkillsView } from './utils'
 
 describe('formatIntentName', () => {
     it('capitalizes each part and joins with " / "', () => {
@@ -23,5 +24,67 @@ describe('formatIntentName', () => {
         expect(formatIntentName('promotion & discount::information')).toBe(
             'Promotion & Discount / Information',
         )
+    })
+})
+
+describe('getSkillsView', () => {
+    it('returns "no-wizard" when the feature flag is disabled', () => {
+        expect(
+            getSkillsView({
+                isSkillWizardEnabled: false,
+                isWizardQueryLoading: false,
+                wizardStatus: SkillWizardStatus.InProgress,
+            }),
+        ).toBe('no-wizard')
+    })
+
+    it('returns "wizard-loading" when the wizard query is loading', () => {
+        expect(
+            getSkillsView({
+                isSkillWizardEnabled: true,
+                isWizardQueryLoading: true,
+                wizardStatus: undefined,
+            }),
+        ).toBe('wizard-loading')
+    })
+
+    it('returns "no-wizard" when the wizard is enabled but no wizard exists', () => {
+        expect(
+            getSkillsView({
+                isSkillWizardEnabled: true,
+                isWizardQueryLoading: false,
+                wizardStatus: undefined,
+            }),
+        ).toBe('no-wizard')
+    })
+
+    it('returns "wizard-completed" when the wizard status is completed', () => {
+        expect(
+            getSkillsView({
+                isSkillWizardEnabled: true,
+                isWizardQueryLoading: false,
+                wizardStatus: SkillWizardStatus.Completed,
+            }),
+        ).toBe('wizard-completed')
+    })
+
+    it('returns "wizard-active" when the wizard is not started', () => {
+        expect(
+            getSkillsView({
+                isSkillWizardEnabled: true,
+                isWizardQueryLoading: false,
+                wizardStatus: SkillWizardStatus.NotStarted,
+            }),
+        ).toBe('wizard-active')
+    })
+
+    it('returns "wizard-active" when the wizard is in progress', () => {
+        expect(
+            getSkillsView({
+                isSkillWizardEnabled: true,
+                isWizardQueryLoading: false,
+                wizardStatus: SkillWizardStatus.InProgress,
+            }),
+        ).toBe('wizard-active')
     })
 })

@@ -1,15 +1,25 @@
 :local {
     .header {
-        position: relative;
+        gap: var(--spacing-md);
     }
 
     .leftSlot {
-        flex: 1;
+        flex: 1 1 0;
         min-width: 0;
+        overflow: hidden;
+    }
+
+    .heading {
+        margin: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     .rightSlot {
-        flex-shrink: 0;
+        flex: 1 1 0;
+        display: flex;
+        justify-content: flex-end;
     }
 
     .savingIndicator {
@@ -21,14 +31,16 @@
     }
 
     .progressIndicator {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        pointer-events: none;
+        flex-shrink: 0;
 
         [class*='ui-progressbar-track'] {
             width: 100%;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .buttonLabel {
+            display: none;
         }
     }
 }

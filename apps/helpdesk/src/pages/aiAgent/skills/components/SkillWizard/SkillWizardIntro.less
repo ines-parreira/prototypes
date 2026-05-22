@@ -29,4 +29,26 @@
             fill: #fff;
         }
     }
+
+    .caret {
+        display: inline-block;
+        width: 2px;
+        height: 1em;
+        margin-left: 2px;
+        vertical-align: text-bottom;
+        background-color: currentColor;
+        animation: caretBlink 1s steps(2, start) infinite;
+    }
+
+    @keyframes caretBlink {
+        to {
+            visibility: hidden;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .caret {
+            animation: none;
+        }
+    }
 }
