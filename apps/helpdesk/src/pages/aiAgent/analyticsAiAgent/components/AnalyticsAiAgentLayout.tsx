@@ -7,6 +7,7 @@ import moment from 'moment/moment'
 
 import { Box } from '@gorgias/axiom'
 
+import { DashboardExportButton } from '@repo/reporting'
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
@@ -17,8 +18,8 @@ import {
 import { AnalyticsPage } from 'domains/reporting/pages/common/layout/AnalyticsPage'
 import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import { useSearchParam } from 'hooks/useSearchParam'
-import { DashboardExportButton } from 'pages/aiAgent/analyticsOverview/components/DashboardExportButton/DashboardExportButton'
-import { DashboardLayoutRenderer } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/DashboardLayoutRenderer'
+
+import { AiAgentDashboardLayoutRenderer } from 'pages/aiAgent/analyticsOverview/components/AiAgentDashboardLayoutRenderer'
 import {
     ManagedDashboardId,
     ManagedDashboardsTabId,
@@ -69,6 +70,7 @@ export const AnalyticsAiAgentLayout = () => {
         onAnalyticsReportViewed,
         onAnalyticsAiAgentTabSelected,
         onTableTabInteraction,
+        onExport,
     } = useAiAgentAnalyticsDashboardTracking()
     const canUseAiSalesAgent = useCanUseAiSalesAgent()
 
@@ -117,7 +119,7 @@ export const AnalyticsAiAgentLayout = () => {
     const ShoppingAssistantDashboardWithPaywall = useMemo(
         () =>
             SalesPaywallMiddlewareRouter(() => (
-                <DashboardLayoutRenderer
+                <AiAgentDashboardLayoutRenderer
                     defaultLayoutConfig={
                         ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT
                     }
@@ -152,7 +154,7 @@ export const AnalyticsAiAgentLayout = () => {
         switch (activeTab) {
             case AiAgentAnalyticsQueryParams.AllAgents:
                 return (
-                    <DashboardLayoutRenderer
+                    <AiAgentDashboardLayoutRenderer
                         defaultLayoutConfig={
                             ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT
                         }
@@ -165,7 +167,7 @@ export const AnalyticsAiAgentLayout = () => {
                 )
             case AiAgentAnalyticsQueryParams.SupportAgent:
                 return (
-                    <DashboardLayoutRenderer
+                    <AiAgentDashboardLayoutRenderer
                         defaultLayoutConfig={
                             ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT
                         }
@@ -211,6 +213,11 @@ export const AnalyticsAiAgentLayout = () => {
                         contentRef={contentRef}
                         useCsvExport={useCsvExport}
                         pdfFileName={`ai-agent-${activeTab}`}
+                        onExport={(format) =>
+                            onExport({
+                                format,
+                            })
+                        }
                     />
                 ) : (
                     <Box height="32px" />

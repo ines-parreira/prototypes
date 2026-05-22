@@ -6,6 +6,7 @@ import { getPreviousUrl } from '@repo/routing'
 
 import { Box } from '@gorgias/axiom'
 
+import { DashboardExportButton } from '@repo/reporting'
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
@@ -15,8 +16,7 @@ import {
 } from 'domains/reporting/pages/common/filters/utils'
 import { AnalyticsPage } from 'domains/reporting/pages/common/layout/AnalyticsPage'
 import { AnalyticsOverviewReportConfig } from 'pages/aiAgent/analyticsOverview/AnalyticsOverviewReportConfig'
-import { DashboardExportButton } from 'pages/aiAgent/analyticsOverview/components/DashboardExportButton/DashboardExportButton'
-import { DashboardLayoutRenderer } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/DashboardLayoutRenderer'
+import { AiAgentDashboardLayoutRenderer } from 'pages/aiAgent/analyticsOverview/components/AiAgentDashboardLayoutRenderer'
 import { DEFAULT_ANALYTICS_OVERVIEW_LAYOUT } from 'pages/aiAgent/analyticsOverview/config/defaultLayoutConfig'
 import { useExportAnalyticsOverviewToCSV } from 'pages/aiAgent/analyticsOverview/hooks/useExportAnalyticsOverviewToCSV'
 import {
@@ -30,7 +30,8 @@ import { STATS_ROUTES } from 'routes/constants'
 export const AnalyticsOverviewLayout = () => {
     useCleanStatsFilters()
     const contentRef = useRef<HTMLDivElement>(null)
-    const { onAnalyticsReportViewed } = useAiAgentAnalyticsDashboardTracking()
+    const { onAnalyticsReportViewed, onExport } =
+        useAiAgentAnalyticsDashboardTracking()
 
     useEffectOnce(() => {
         const previousUrl = getPreviousUrl()
@@ -67,6 +68,11 @@ export const AnalyticsOverviewLayout = () => {
                 <DashboardExportButton
                     contentRef={contentRef}
                     useCsvExport={useExportAnalyticsOverviewToCSV}
+                    onExport={(format) =>
+                        onExport({
+                            format,
+                        })
+                    }
                 />
             }
             filtersSlot={
@@ -97,7 +103,7 @@ export const AnalyticsOverviewLayout = () => {
                 </Box>
             }
         >
-            <DashboardLayoutRenderer
+            <AiAgentDashboardLayoutRenderer
                 defaultLayoutConfig={DEFAULT_ANALYTICS_OVERVIEW_LAYOUT}
                 reportConfig={AnalyticsOverviewReportConfig}
                 dashboardId={ManagedDashboardId.AiAgentOverview}

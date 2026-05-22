@@ -2,14 +2,55 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { useSaveTableColumnVisibility } from '../../hooks/useSaveTableColumnVisibility'
+import { useDashboardContext } from '../../contexts/DashboardContext'
+import type { DashboardContextValue } from '../../contexts/DashboardContext'
+import { useSaveTableColumnVisibility } from '../ManagedDashboards/hooks/useSaveTableColumnVisibility'
+import { ChartType } from '../ManagedDashboards/types'
 import type {
     MetricColumnConfig,
     MetricLoadingStates,
 } from './ReportingMetricBreakdownTable'
 import { ReportingMetricBreakdownTable } from './ReportingMetricBreakdownTable'
 
-vi.mock('../../hooks/useSaveTableColumnVisibility')
+vi.mock('../../contexts/DashboardContext', () => ({
+    useDashboardContext: vi.fn(),
+}))
+
+vi.mock('../ManagedDashboards/hooks/useSaveTableColumnVisibility', () => ({
+    useSaveTableColumnVisibility: vi.fn(),
+}))
+
+const CHART_ID = 'performance_breakdown_table'
+
+const baseContext: DashboardContextValue = {
+    dashboardId: 'ai-agent-overview',
+    tabId: 'overview',
+    tabName: 'Overview',
+    isLoaded: true,
+    layoutConfig: { sections: [] },
+}
+
+const contextWithSavedColumns = (
+    visibleColumns: string[] | null,
+): DashboardContextValue => ({
+    ...baseContext,
+    layoutConfig: {
+        sections: [
+            {
+                id: 'section_tables',
+                type: ChartType.Table,
+                items: [
+                    {
+                        chartId: CHART_ID,
+                        gridSize: 12,
+                        visibility: true,
+                        visibleColumns,
+                    },
+                ],
+            },
+        ],
+    },
+})
 
 type Row = { name: string; value: number }
 
@@ -39,16 +80,14 @@ const sampleData: Row[] = [
     { name: 'Flows', value: 18 },
 ]
 
-const mockOnSaveVisibleColumns = vi.fn()
+const mockSaveVisibleColumns = vi.fn()
 
 beforeEach(() => {
+    vi.mocked(useDashboardContext).mockReturnValue(baseContext)
     vi.mocked(useSaveTableColumnVisibility).mockReturnValue({
-        onSaveVisibleColumns: mockOnSaveVisibleColumns,
-        defaultVisibleColumns: undefined,
-        isLoaded: true,
-        tabId: 'overview',
+        saveVisibleColumns: mockSaveVisibleColumns,
     })
-    mockOnSaveVisibleColumns.mockClear()
+    mockSaveVisibleColumns.mockClear()
 })
 
 describe('ReportingMetricBreakdownTable', () => {
@@ -230,24 +269,7 @@ describe('ReportingMetricBreakdownTable', () => {
     })
 
     describe('column visibility persistence', () => {
-        it('passes chartId to useSaveTableColumnVisibility', () => {
-            render(
-                <ReportingMetricBreakdownTable
-                    data={[]}
-                    metricColumns={metricColumns}
-                    loadingStates={defaultLoadingStates}
-                    DownloadButton={null}
-                    nameColumns={nameColumns}
-                    chartId="performance_breakdown_table"
-                />,
-            )
-
-            expect(useSaveTableColumnVisibility).toHaveBeenCalledWith(
-                'performance_breakdown_table',
-            )
-        })
-
-        it('calls onSaveVisibleColumns when Save is clicked', async () => {
+        it('saves visible columns with the chartId when Save is clicked', async () => {
             const user = userEvent.setup()
 
             render(
@@ -257,7 +279,7 @@ describe('ReportingMetricBreakdownTable', () => {
                     loadingStates={defaultLoadingStates}
                     DownloadButton={null}
                     nameColumns={nameColumns}
-                    chartId="performance_breakdown_table"
+                    chartId={CHART_ID}
                 />,
             )
 
@@ -266,17 +288,18 @@ describe('ReportingMetricBreakdownTable', () => {
             )
             await user.click(screen.getByRole('button', { name: /save/i }))
 
-            expect(mockOnSaveVisibleColumns).toHaveBeenCalledTimes(1)
+            expect(mockSaveVisibleColumns).toHaveBeenCalledTimes(1)
+            expect(mockSaveVisibleColumns).toHaveBeenCalledWith(
+                CHART_ID,
+                expect.any(Array),
+            )
         })
 
-        it('initializes saved columns from defaultVisibleColumns', async () => {
+        it('initializes saved columns from the context layoutConfig', async () => {
             const user = userEvent.setup()
-            vi.mocked(useSaveTableColumnVisibility).mockReturnValue({
-                onSaveVisibleColumns: mockOnSaveVisibleColumns,
-                defaultVisibleColumns: ['value'],
-                isLoaded: true,
-                tabId: 'overview',
-            })
+            vi.mocked(useDashboardContext).mockReturnValue(
+                contextWithSavedColumns(['value']),
+            )
 
             render(
                 <ReportingMetricBreakdownTable
@@ -285,7 +308,7 @@ describe('ReportingMetricBreakdownTable', () => {
                     loadingStates={defaultLoadingStates}
                     DownloadButton={null}
                     nameColumns={nameColumns}
-                    chartId="performance_breakdown_table"
+                    chartId={CHART_ID}
                 />,
             )
 
@@ -294,15 +317,15 @@ describe('ReportingMetricBreakdownTable', () => {
             )
             await user.click(screen.getByRole('button', { name: /save/i }))
 
-            expect(mockOnSaveVisibleColumns).toHaveBeenCalledWith(['value'])
+            expect(mockSaveVisibleColumns).toHaveBeenCalledWith(CHART_ID, [
+                'value',
+            ])
         })
 
         it('does not render rows while the dashboard context is loading', () => {
-            vi.mocked(useSaveTableColumnVisibility).mockReturnValue({
-                onSaveVisibleColumns: mockOnSaveVisibleColumns,
-                defaultVisibleColumns: undefined,
+            vi.mocked(useDashboardContext).mockReturnValue({
+                ...baseContext,
                 isLoaded: false,
-                tabId: 'overview',
             })
 
             render(
@@ -312,7 +335,7 @@ describe('ReportingMetricBreakdownTable', () => {
                     loadingStates={defaultLoadingStates}
                     DownloadButton={null}
                     nameColumns={nameColumns}
-                    chartId="performance_breakdown_table"
+                    chartId={CHART_ID}
                 />,
             )
 
@@ -333,11 +356,9 @@ describe('ReportingMetricBreakdownTable', () => {
                 },
             ]
 
-            vi.mocked(useSaveTableColumnVisibility).mockReturnValue({
-                onSaveVisibleColumns: mockOnSaveVisibleColumns,
-                defaultVisibleColumns: undefined,
+            vi.mocked(useDashboardContext).mockReturnValue({
+                ...baseContext,
                 isLoaded: false,
-                tabId: 'overview',
             })
 
             const { rerender } = render(
@@ -347,16 +368,13 @@ describe('ReportingMetricBreakdownTable', () => {
                     loadingStates={defaultLoadingStates}
                     DownloadButton={null}
                     nameColumns={nameColumns}
-                    chartId="performance_breakdown_table"
+                    chartId={CHART_ID}
                 />,
             )
 
-            vi.mocked(useSaveTableColumnVisibility).mockReturnValue({
-                onSaveVisibleColumns: mockOnSaveVisibleColumns,
-                defaultVisibleColumns: ['value'],
-                isLoaded: true,
-                tabId: 'overview',
-            })
+            vi.mocked(useDashboardContext).mockReturnValue(
+                contextWithSavedColumns(['value']),
+            )
 
             rerender(
                 <ReportingMetricBreakdownTable
@@ -365,7 +383,7 @@ describe('ReportingMetricBreakdownTable', () => {
                     loadingStates={defaultLoadingStates}
                     DownloadButton={null}
                     nameColumns={nameColumns}
-                    chartId="performance_breakdown_table"
+                    chartId={CHART_ID}
                 />,
             )
 

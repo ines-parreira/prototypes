@@ -3,10 +3,7 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import {
-    ExportFormat,
-    useAiAgentAnalyticsDashboardTracking,
-} from 'pages/aiAgent/hooks/useAiAgentAnalyticsDashboardTracking'
+import { useAiAgentAnalyticsDashboardTracking } from 'pages/aiAgent/hooks/useAiAgentAnalyticsDashboardTracking'
 import { saveFileAsDownloaded } from 'utils/file'
 
 import { DownloadTableButton } from '../DownloadTableButton'
@@ -77,7 +74,7 @@ describe('DownloadTableButton', () => {
             SegmentEvent.StatDownloadClicked,
             { name: 'Test Table' },
         )
-        expect(mockOnExport).toHaveBeenCalledWith({ format: ExportFormat.CSV })
+        expect(mockOnExport).toHaveBeenCalledWith({ format: 'csv' })
         expect(mockedSaveFileAsDownloaded).toHaveBeenCalledWith(
             'test-file.csv',
             'csv,content,here',

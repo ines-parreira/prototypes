@@ -11,14 +11,19 @@ import { ReportingGranularity } from 'domains/reporting/models/types'
 import { AnalyticsShoppingAssistantConfigurableLine } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsShoppingAssistantConfigurableLine/AnalyticsShoppingAssistantConfigurableLine'
 import { getLineChartGraphConfig } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 
-jest.mock('@gorgias/helpdesk-queries')
+jest.mock('@gorgias/helpdesk-queries', () => ({
+    ...jest.requireActual('@gorgias/helpdesk-queries'),
+    useListStores: jest.fn(),
+    useUpdateAnalyticsManagedDashboard: jest.fn(() => ({
+        mutate: jest.fn(),
+        isLoading: false,
+    })),
+    useListAnalyticsManagedDashboards: jest.fn(() => ({
+        data: undefined,
+        isLoading: false,
+    })),
+}))
 jest.mock('@repo/feature-flags')
-jest.mock(
-    'domains/reporting/hooks/managed-dashboards/useSaveConfigurableGraphSelection',
-    () => ({
-        useSaveConfigurableGraphSelection: () => ({ onSelect: jest.fn() }),
-    }),
-)
 jest.mock('@repo/reporting', () => ({
     ...jest.requireActual('@repo/reporting'),
     useDashboardContext: jest.fn().mockReturnValue(null),

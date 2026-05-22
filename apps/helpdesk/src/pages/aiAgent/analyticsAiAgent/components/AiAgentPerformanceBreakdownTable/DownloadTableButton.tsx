@@ -2,10 +2,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 
 import { Box, Button } from '@gorgias/axiom'
 
-import {
-    ExportFormat,
-    useAiAgentAnalyticsDashboardTracking,
-} from 'pages/aiAgent/hooks/useAiAgentAnalyticsDashboardTracking'
+import { useAiAgentAnalyticsDashboardTracking } from 'pages/aiAgent/hooks/useAiAgentAnalyticsDashboardTracking'
 import { saveFileAsDownloaded } from 'utils/file'
 
 import css from './DownloadTableButton.less'
@@ -32,7 +29,7 @@ export const DownloadTableButton = ({
                     logEvent(SegmentEvent.StatDownloadClicked, {
                         name: tableName,
                     })
-                    onExport({ format: ExportFormat.CSV })
+                    onExport({ format: 'csv' })
                     const csvContent = Object.values(files)[0]
                     saveFileAsDownloaded(fileName, csvContent, 'text/csv')
                 }}

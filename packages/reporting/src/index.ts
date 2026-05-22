@@ -87,5 +87,17 @@ export {
     DashboardContext,
     useDashboardContext,
     type DashboardContextValue,
-    type DashboardLayoutConfig,
 } from './contexts/DashboardContext'
+export { DashboardExportButton } from './components/DashboardExportButton/DashboardExportButton'
+export type { DashboardExportFormat } from './components/DashboardExportButton/DashboardExportButton'
+export {
+    DashboardLayoutRenderer,
+    useFetchManagedDashboards,
+    useGetManagedDashboardsLayoutConfig,
+    type GridSize,
+    type LayoutItem,
+    type LayoutSection,
+    type DashboardLayoutConfig,
+    type LayoutReportConfig,
+    type DashboardComponentType,
+} from './components/ManagedDashboards'

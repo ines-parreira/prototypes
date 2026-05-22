@@ -22,6 +22,7 @@ jest.mock('@gorgias/copilot')
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useHelpdeskV2WayfindingMS1Flag: jest.fn().mockReturnValue(false),
+    useFlag: jest.fn().mockReturnValue(false),
 }))
 
 const useHelpdeskV2WayfindingMS1FlagMock = assumeMock(
@@ -42,12 +43,10 @@ jest.mock('common/navigation', () => ({
     GlobalNavigation: jest.fn(() => <div data-testid="global-navigation" />),
 }))
 
-jest.mock(
-    'domains/reporting/hooks/managed-dashboards/useFetchManagedDashboards',
-    () => ({
-        useFetchManagedDashboards: jest.fn(),
-    }),
-)
+jest.mock('@repo/reporting', () => ({
+    ...jest.requireActual('@repo/reporting'),
+    useFetchManagedDashboards: jest.fn(),
+}))
 
 jest.mock('hooks/useCopilotEnabled', () => ({
     useCopilotEnabled: jest.fn(() => false),

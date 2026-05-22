@@ -41,18 +41,16 @@ jest.mock('pages/aiAgent/hooks/useAiAgentAnalyticsDashboardTracking', () => ({
         onAnalyticsAiAgentTabSelected: mockOnAnalyticsAiAgentTabSelected,
     }),
 }))
+jest.mock('@repo/reporting', () => ({
+    ...jest.requireActual('@repo/reporting'),
+    DashboardExportButton: () => (
+        <div data-testid="download-button">Download</div>
+    ),
+}))
 jest.mock(
-    'pages/aiAgent/analyticsOverview/components/DashboardExportButton/DashboardExportButton',
+    'pages/aiAgent/analyticsOverview/components/AiAgentDashboardLayoutRenderer',
     () => ({
-        DashboardExportButton: () => (
-            <div data-testid="download-button">Download</div>
-        ),
-    }),
-)
-jest.mock(
-    'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/DashboardLayoutRenderer',
-    () => ({
-        DashboardLayoutRenderer: ({ reportConfig }: any) => (
+        AiAgentDashboardLayoutRenderer: ({ reportConfig }: any) => (
             <div data-testid="dashboard-renderer">
                 {reportConfig?.reportName || 'Dashboard'}
             </div>

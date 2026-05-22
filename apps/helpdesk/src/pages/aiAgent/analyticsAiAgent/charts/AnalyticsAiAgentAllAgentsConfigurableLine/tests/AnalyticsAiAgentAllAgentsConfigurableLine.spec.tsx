@@ -14,15 +14,10 @@ import {
 import { AnalyticsAiAgentAllAgentsConfigurableLine } from '../AnalyticsAiAgentAllAgentsConfigurableLine'
 
 jest.mock('@repo/feature-flags')
-jest.mock(
-    'domains/reporting/hooks/managed-dashboards/useSaveConfigurableGraphSelection',
-    () => ({
-        useSaveConfigurableGraphSelection: () => ({ onSelect: jest.fn() }),
-    }),
-)
 jest.mock('@repo/reporting', () => ({
     ...jest.requireActual('@repo/reporting'),
     useDashboardContext: jest.fn().mockReturnValue(null),
+    useSaveConfigurableGraphSelection: () => ({ onSelect: jest.fn() }),
 }))
 jest.mock('pages/aiAgent/utils/aiAgentMetrics.utils', () => ({
     ...jest.requireActual('pages/aiAgent/utils/aiAgentMetrics.utils'),

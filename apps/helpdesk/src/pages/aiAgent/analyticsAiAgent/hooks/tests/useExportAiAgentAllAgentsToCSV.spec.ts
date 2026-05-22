@@ -13,15 +13,16 @@ import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilte
 import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 import * as fileUtils from 'utils/file'
 
-import { useGetManagedDashboardsLayoutConfig } from '../../../../../domains/reporting/hooks/managed-dashboards/useGetManagedDashboardsLayoutConfig'
+import { useGetManagedDashboardsLayoutConfig } from '@repo/reporting'
 
 jest.mock('@repo/feature-flags')
 jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
 jest.mock('domains/reporting/hooks/dashboards/useDashboardData')
 jest.mock('pages/aiAgent/analyticsOverview/utils/buildCustomDashboard')
-jest.mock(
-    'domains/reporting/hooks/managed-dashboards/useGetManagedDashboardsLayoutConfig',
-)
+jest.mock('@repo/reporting', () => ({
+    ...jest.requireActual('@repo/reporting'),
+    useGetManagedDashboardsLayoutConfig: jest.fn(),
+}))
 jest.mock(
     'pages/aiAgent/analyticsAiAgent/hooks/useDownloadChannelPerformanceData',
 )

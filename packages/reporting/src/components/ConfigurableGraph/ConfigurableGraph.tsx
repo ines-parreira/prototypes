@@ -4,6 +4,7 @@ import { useState } from 'react'
 import type { MetricTrend } from '../../types'
 import { formatMetricValue } from '../../utils/helpers'
 import { ChartCard } from '../ChartCard'
+import { useSyncConfigurableGraphWithDashboard } from '../ManagedDashboards/hooks/useSyncConfigurableGraphWithDashboard'
 import { ConfigurableGraphContent } from './components/ConfigurableGraphContent'
 import { MetricGroupingSelect } from './components/MetricGroupingSelect'
 import type {
@@ -24,6 +25,14 @@ type Props = {
     actionMenu?: ReactNode
     initialMeasure?: string
     initialDimension?: string
+    /**
+     * When provided AND a managed-dashboard context is present, the chart
+     * syncs its selected measure/dimension with that context: it reads the
+     * saved values on mount and saves any user changes back. Otherwise the
+     * chart behaves as a controlled component driven by `initialMeasure` /
+     * `initialDimension` and never touches the managed dashboard.
+     */
+    analyticsChartId?: string
 }
 
 const NO_TREND: MetricTrend = { isFetching: false, isError: false }
@@ -31,11 +40,47 @@ const useNoTrendData = () => NO_TREND
 
 export function ConfigurableGraph({
     metrics,
+    onSelect: callerOnSelect,
+    actionMenu,
+    initialMeasure: callerInitialMeasure,
+    initialDimension: callerInitialDimension,
+    analyticsChartId,
+}: Props) {
+    const { remountKey, initialMeasure, initialDimension, onSelect } =
+        useSyncConfigurableGraphWithDashboard({
+            analyticsChartId,
+            initialMeasure: callerInitialMeasure,
+            initialDimension: callerInitialDimension,
+            onSelect: callerOnSelect,
+        })
+
+    return (
+        <ConfigurableGraphInner
+            key={remountKey}
+            metrics={metrics}
+            actionMenu={actionMenu}
+            onSelect={onSelect}
+            initialMeasure={initialMeasure}
+            initialDimension={initialDimension}
+        />
+    )
+}
+
+type InnerProps = {
+    metrics: ConfigurableGraphMetricConfig[]
+    onSelect: (selection: Selection) => void
+    actionMenu?: ReactNode
+    initialMeasure?: string
+    initialDimension?: string
+}
+
+function ConfigurableGraphInner({
+    metrics,
     onSelect,
     actionMenu,
     initialMeasure,
     initialDimension,
-}: Props) {
+}: InnerProps) {
     const [selectedMeasure, setSelectedMeasure] = useState(
         initialMeasure ?? metrics[0].measure,
     )
@@ -58,12 +103,12 @@ export function ConfigurableGraph({
         const dimension = newMetric.dimensions[0].id
         setSelectedMeasure(measure)
         setSelectedDimension(dimension)
-        onSelect?.({ measure, dimension })
+        onSelect({ measure, dimension })
     }
 
     const handleGroupingChange = (dimension: string) => {
         setSelectedDimension(dimension)
-        onSelect?.({ measure: selectedMeasure, dimension })
+        onSelect({ measure: selectedMeasure, dimension })
     }
 
     const chartControls = (

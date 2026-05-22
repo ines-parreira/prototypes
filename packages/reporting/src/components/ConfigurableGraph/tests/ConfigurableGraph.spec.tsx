@@ -1,11 +1,19 @@
-import { render, screen } from '@testing-library/react'
+import { render } from '@repo/testing/vitest'
+import { screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
 import { ConfigurableGraph } from '../ConfigurableGraph'
 import type { ConfigurableGraphMetricConfig } from '../types'
 
+const { mockConfigurableGraphContent } = vi.hoisted(() => ({
+    mockConfigurableGraphContent: vi.fn(),
+}))
+
 vi.mock('../components/ConfigurableGraphContent', () => ({
-    ConfigurableGraphContent: () => <div>ChartContent</div>,
+    ConfigurableGraphContent: (props: any) => {
+        mockConfigurableGraphContent(props)
+        return <div>ChartContent</div>
+    },
 }))
 
 // axiom Select renders both visual popup items and a hidden native <select>,
@@ -450,6 +458,78 @@ describe('ConfigurableChart', () => {
                 measure: 'resolution_time',
                 dimension: 'by_channel',
             })
+        })
+    })
+
+    describe('valueFormatter passed to ConfigurableGraphContent', () => {
+        beforeEach(() => {
+            mockConfigurableGraphContent.mockClear()
+        })
+
+        it('formats raw values using the selected metric format', () => {
+            const metrics: ConfigurableGraphMetricConfig[] = [
+                {
+                    measure: 'automation_rate',
+                    name: 'Automation Rate',
+                    metricFormat: 'decimal-to-percent',
+                    dimensions: [featureGrouping],
+                },
+            ]
+
+            render(<ConfigurableGraph metrics={metrics} />)
+
+            const props = mockConfigurableGraphContent.mock.calls[0][0]
+            expect(props.groupingConfig.valueFormatter(0.42)).toBe('42%')
+        })
+
+        it('spreads the selected grouping into the groupingConfig', () => {
+            const metrics: ConfigurableGraphMetricConfig[] = [
+                {
+                    measure: 'automation_rate',
+                    name: 'Automation Rate',
+                    metricFormat: 'decimal-to-percent',
+                    dimensions: [featureGrouping],
+                },
+            ]
+
+            render(<ConfigurableGraph metrics={metrics} />)
+
+            const props = mockConfigurableGraphContent.mock.calls[0][0]
+            expect(props.groupingConfig).toEqual(
+                expect.objectContaining({
+                    id: 'by_feature',
+                    name: 'Feature',
+                    configurableGraphType: 'donut',
+                }),
+            )
+        })
+
+        it('updates the groupingConfig when the user picks a different grouping', async () => {
+            const user = userEvent.setup()
+            const metrics: ConfigurableGraphMetricConfig[] = [
+                {
+                    measure: 'automation_rate',
+                    name: 'Automation Rate',
+                    metricFormat: 'decimal-to-percent',
+                    dimensions: [featureGrouping, channelGrouping],
+                },
+            ]
+
+            render(<ConfigurableGraph metrics={metrics} />)
+
+            await user.click(screen.getByRole('button', { name: /Feature/i }))
+            await user.click(getVisualItem('Channel'))
+
+            const lastProps =
+                mockConfigurableGraphContent.mock.calls[
+                    mockConfigurableGraphContent.mock.calls.length - 1
+                ][0]
+            expect(lastProps.groupingConfig).toEqual(
+                expect.objectContaining({
+                    id: 'by_channel',
+                    configurableGraphType: 'bar',
+                }),
+            )
         })
     })
 })

@@ -2,10 +2,7 @@ import { useCallback } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 
-export enum ExportFormat {
-    PDF = 'pdf',
-    CSV = 'csv',
-}
+export type ExportFormat = 'csv' | 'pdf'
 
 interface AiAgentAnalyticsDashboardTrackingCallbacks {
     onAnalyticsReportViewed: ({

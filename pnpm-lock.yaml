@@ -3030,6 +3030,12 @@ importers:
       '@gorgias/axiom':
         specifier: catalog:axiom
         version: 0.270.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+      html2canvas:
+        specifier: ^1.4.1
+        version: 1.4.1
+      jspdf:
+        specifier: ^4.2.1
+        version: 4.2.1
       react-dnd:
         specifier: catalog:react-dnd
         version: 16.0.1(@types/hoist-non-react-statics@3.3.5)(@types/node@24.12.2)(@types/react@18.2.67)(react@18.2.0)
@@ -3049,15 +3055,30 @@ importers:
       '@gorgias/design-tokens':
         specifier: catalog:axiom
         version: 0.11.4
+      '@gorgias/helpdesk-mocks':
+        specifier: catalog:rest-api-sdk
+        version: 0.8.95(@types/node@24.12.2)(typescript@6.0.3)
+      '@gorgias/helpdesk-queries':
+        specifier: catalog:rest-api-sdk
+        version: 0.10.42(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
+      '@gorgias/helpdesk-types':
+        specifier: catalog:rest-api-sdk
+        version: 0.9.126
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
       '@repo/hooks':
         specifier: workspace:*
         version: link:../hooks
+      '@repo/logging':
+        specifier: workspace:*
+        version: link:../logging
       '@repo/testing':
         specifier: workspace:*
         version: link:../testing
+      '@tanstack/react-query':
+        specifier: 4.36.1
+        version: 4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@testing-library/dom':
         specifier: catalog:test
         version: 10.4.0
@@ -3094,6 +3115,9 @@ importers:
       moment-timezone:
         specifier: catalog:moment
         version: 0.6.2
+      msw:
+        specifier: catalog:test
+        version: 2.9.0(@types/node@24.12.2)(typescript@6.0.3)
       oxfmt:
         specifier: catalog:formatter
         version: 0.48.0
@@ -20469,7 +20493,7 @@ snapshots:
     dependencies:
       string-width: 5.1.2
       string-width-cjs: string-width@4.2.3
-      strip-ansi: 7.1.0
+      strip-ansi: 7.1.2
       strip-ansi-cjs: strip-ansi@6.0.1
       wrap-ansi: 8.1.0
       wrap-ansi-cjs: wrap-ansi@7.0.0
@@ -29652,7 +29676,7 @@ snapshots:
 
   jspdf@4.2.1:
     dependencies:
-      '@babel/runtime': 7.28.6
+      '@babel/runtime': 7.29.2
       fast-png: 6.4.0
       fflate: 0.8.2
     optionalDependencies:

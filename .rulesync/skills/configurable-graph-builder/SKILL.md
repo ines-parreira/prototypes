@@ -13,7 +13,7 @@ Apply this skill when the user asks to:
 
 - Add a new metric to an analytics configurable graph
 - Extend a `ConfigurableGraph` line or bar chart with an additional data series
-- Replace an existing chart with a configurable graph (preserving the old chart as a deprecated fallback)
+- Replace an existing chart with a configurable graph
 - Create a brand new configurable graph component from scratch
 
 ---
@@ -36,8 +36,8 @@ Confirm all four inputs:
 
 1. **Metric name** — Human-readable label, e.g. `Deflection rate`.
 2. **Scope file** — Path to the existing scope file, e.g. `domains/reporting/models/scopes/overallAutomationRate.ts`.
-3. **Configurable graph component file** — Path to the configurable graph component that holds the metrics config constant, e.g. `pages/aiAgent/analyticsOverview/components/AutomationLineChart/AutomationLineChart.tsx`.
-4. **Chart type** — `line` or `bar`. Infer from the component file name if obvious (`LineChart` → `line`, `ComboChart`/`BarChart` → `bar`), otherwise ask.
+3. **Configurable graph component file** — Path to the configurable graph component that holds the metrics config constant, e.g. `pages/aiAgent/analyticsOverview/components/AnalyticsOverviewConfigurableLineGraph/AnalyticsOverviewConfigurableLineGraph.tsx`.
+4. **Chart type** — `line` or `bar`. Infer from the component file name if obvious (`ConfigurableLineGraph`/`ConfigurableLine` → `line`, `ConfigurableBarGraph`/`ConfigurableBar` → `bar`), otherwise ask.
 
 Then follow **Steps 1–7 (Mode A)** below.
 
@@ -49,10 +49,10 @@ Confirm all inputs:
 
 1. **Metric name(s)** — One or more human-readable metric names for the initial metrics, e.g. `Deflection rate`.
 2. **Scope file(s)** — Path(s) to the scope file(s) for each metric.
-3. **Component name** — PascalCase name for the new component, e.g. `DeflectionRateLineConfigurableGraph`.
-4. **Component location** — Directory where the component should live, e.g. `pages/aiAgent/analyticsOverview/components/`.
+3. **Component name** — PascalCase name for the new component, e.g. `AnalyticsAiAgentDeflectionConfigurableLine`.
+4. **Component location** — Directory where the component should live, e.g. `pages/aiAgent/analyticsAiAgent/charts/`.
 5. **Chart type** — `line` or `bar`. Infer from the component name if obvious, otherwise ask.
-6. **Filters hook** — Which filters hook to use. Default: `useAutomateFilters` from `domains/reporting/hooks/automate/useAutomateFilters`.
+6. **Filters hook** — Which filters hook to use. Default: `useAiAgentStatsFilters` from `pages/aiAgent/hooks/useAiAgentStatsFilters`.
 
 Then follow **Steps 1–7 (Mode B)** below.
 
@@ -60,15 +60,15 @@ Then follow **Steps 1–7 (Mode B)** below.
 
 ### Mode C — Replacing an existing chart with a configurable graph
 
-Use this mode when the chart already exists but is not yet a `ConfigurableGraph`. The old implementation is preserved as a deprecated fallback behind a feature flag using `ConfigurableGraphWrapper`.
+Use this mode when the chart already exists but is not yet a `ConfigurableGraph`. Unlike older revamp PRs, there is no longer a deprecated fallback — the old implementation is removed and replaced outright. Feature-flag gating of the dashboard action menu is handled inside `AiAgentConfigurableGraphWrapper`.
 
 Confirm all inputs:
 
-1. **Existing component file** — Path to the chart component to replace, e.g. `pages/aiAgent/analyticsAiAgent/charts/TotalSalesByProductComboChart/TotalSalesByProductComboChart.tsx`.
+1. **Existing component file** — Path to the chart component to replace.
 2. **Metric name(s)** — Human-readable label(s) for the initial metric(s), e.g. `Total sales`.
 3. **Scope file** — Path to the scope file for the metric(s). If it doesn't exist yet, run `/implement-stats-scope` first.
 4. **Chart type** — `line` or `bar`. Infer from the component name if obvious, otherwise ask.
-5. **Filters hook** — Which filters hook to use. Default: `useAutomateFilters` from `domains/reporting/hooks/automate/useAutomateFilters`.
+5. **Filters hook** — Which filters hook to use. Default: `useAiAgentStatsFilters` from `pages/aiAgent/hooks/useAiAgentStatsFilters`.
 
 Then follow **Steps 1–7 (Mode C)** below.
 
@@ -79,14 +79,17 @@ Then follow **Steps 1–7 (Mode C)** below.
 ### Step 1 — Read and understand the existing scope and component
 
 Read `<scope-file>` to understand:
+
 - The `MetricScope` key used (e.g. `MetricScope.OverallAutomationRate`)
 - The available `measures` in `defineScope`
 - For `line`: confirm `timeDimensions` is present (required for the timeseries query)
 
 Read `<configurable-graph-component-file>` to understand:
-- The existing metrics config constant name (e.g. `AUTOMATION_LINE_CHART_METRICS`)
+
+- The existing metrics config constant name (e.g. `OVERVIEW_LINE_CHART_METRICS`)
 - The config type in use (`LineChartMetricConfig[]` or `BarChartMetricConfig[]`)
 - The `measure` + `metricFormat` conventions used by existing entries
+- Which extras are passed through `getLineChartGraphConfig` / `getBarChartGraphConfig` (`stores` from `useStoreIntegrations`, `costSavedPerInteraction` from `useMoneySavedPerInteractionWithAutomate`)
 
 ---
 
@@ -166,6 +169,7 @@ export const dynamic<MetricName>QueryFactoryV2 = (ctx: Context) =>
 Add a new entry to the metrics config constant and import the new factory functions.
 
 **For `line`**:
+
 ```ts
 {
     measure: '<measureName>',
@@ -173,11 +177,12 @@ Add a new entry to the metrics config constant and import the new factory functi
     metricFormat: '<format>' as const,
     interpretAs: 'more-is-better' as const,
     timeSeriesQueryFactory: dynamic<MetricName>TimeseriesQueryFactoryV2,
-    dimensions: ['overall', 'channel', 'automationFeatureType'],
+    dimensions: ['overall', 'channel', 'storeIntegrationId', 'automationFeatureType'],
 },
 ```
 
 **For `bar`**:
+
 ```ts
 {
     measure: '<measureName>',
@@ -185,9 +190,11 @@ Add a new entry to the metrics config constant and import the new factory functi
     metricFormat: '<format>' as const,
     interpretAs: 'more-is-better' as const,
     queryFactory: dynamic<MetricName>QueryFactoryV2,
-    dimensions: ['channel', 'automationFeatureType'],
+    dimensions: ['channel', 'storeIntegrationId', 'automationFeatureType'],
 },
 ```
+
+For derived metrics (e.g. `costSaved`) reuse an existing `queryFactory` and add a `valueTransform` that reads from `extra` (`costSavedPerInteraction`, `stores`, …). See `OVERVIEW_BAR_CHART_METRICS` for the canonical example.
 
 ---
 
@@ -205,55 +212,73 @@ See **Scope Test Patterns** in the reference section at the bottom.
 
 ### Step 6 — Write chart component tests
 
-Update the existing spec file for the chart component.
+Update the existing spec file for the chart component. The component now renders `AiAgentConfigurableGraphWrapper`, which internally calls `useFlagWithLoading` and `useDashboardContext` (from `@repo/reporting`). Spec files mock those modules, **not** the wrapper component itself.
 
-**First, check which wrapper the existing component uses** — read the component file:
-- If it uses `ConfigurableGraphWrapper` (converted via Mode C), add the mocks for `@repo/feature-flags`, `useSaveConfigurableGraphSelection`, `useDashboardContext`, and `DEPRECATED_<ComponentName>` as shown below.
-- If it uses `ConfigurableGraph` directly (created via Mode B), add only the mocks for `useSaveConfigurableGraphSelection`, `useDashboardContext`, and `ChartsActionMenu` — no feature flag mock needed.
-
-For a `ConfigurableGraphWrapper`-based component, the spec must include these mocks at the top:
+Top-of-file mock skeleton (applies to both `line` and `bar`):
 
 ```ts
-import { useFlag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
+import { useFlagWithLoading } from '@repo/feature-flags'
+import type { ConfigurableGraphMetricConfig } from '@repo/reporting'
+import { ConfigurableGraphType } from '@repo/reporting'
+import { assumeMock, render } from '@repo/testing'
+import { screen } from '@testing-library/react'
+
+import { useListStores } from '@gorgias/helpdesk-queries'
+
+import { ReportingGranularity } from 'domains/reporting/models/types'
+import * as aiAgentStatsFiltersHooks from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
+import { get<Line|Bar>ChartGraphConfig } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
+
+import { <ComponentName> } from '../<ComponentName>'
 
 jest.mock('@repo/feature-flags')
-jest.mock(
-    'domains/reporting/hooks/managed-dashboards/useSaveConfigurableGraphSelection',
-    () => ({
-        useSaveConfigurableGraphSelection: () => ({ onSelect: jest.fn() }),
-    }),
-)
-jest.mock(
-    'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/DashboardContext',
-    () => ({
-        useDashboardContext: jest.fn().mockReturnValue(null),
-    }),
-)
-jest.mock(
-    '<component-path>/DEPRECATED_<ComponentName>',
-    () => ({
-        DEPRECATED_<ComponentName>: () => <div>Deprecated chart</div>,
-    }),
-)
+jest.mock('@gorgias/helpdesk-queries', () => ({
+    ...jest.requireActual('@gorgias/helpdesk-queries'),
+    useListStores: jest.fn(),
+    useUpdateAnalyticsManagedDashboard: jest.fn(() => ({
+        mutate: jest.fn(),
+        isLoading: false,
+    })),
+    useListAnalyticsManagedDashboards: jest.fn(() => ({
+        data: undefined,
+        isLoading: false,
+    })),
+}))
+jest.mock('@repo/reporting', () => ({
+    ...jest.requireActual('@repo/reporting'),
+    useDashboardContext: jest.fn().mockReturnValue(null),
+}))
 jest.mock('pages/aiAgent/utils/aiAgentMetrics.utils', () => ({
     ...jest.requireActual('pages/aiAgent/utils/aiAgentMetrics.utils'),
     get<Line|Bar>ChartGraphConfig: jest.fn(),
 }))
 const get<Line|Bar>ChartGraphConfigMock = assumeMock(get<Line|Bar>ChartGraphConfig)
-const useFlagMocked = assumeMock(useFlag)
+const useListStoresMock = assumeMock(useListStores)
+const useFlagWithLoadingMocked = assumeMock(useFlagWithLoading)
 ```
 
-And in `beforeEach`, enable the new charts feature flag:
+And in `beforeEach`, set up the stats filters mock, the chart config mock, the stores list, and the feature flag:
 
 ```ts
 beforeEach(() => {
-    // ... other setup ...
-    useFlagMocked.mockReturnValue(true)
+    jest.spyOn(
+        aiAgentStatsFiltersHooks,
+        'useAiAgentStatsFilters',
+    ).mockReturnValue({
+        statsFilters: {
+            period: { start_datetime: '...', end_datetime: '...' },
+        },
+        userTimezone: 'UTC',
+        granularity: ReportingGranularity.Day,
+    })
+    useListStoresMock.mockReturnValue({ data: [] } as any)
+    ;(get < Line) |
+        (Bar > ChartGraphConfigMock.mockReturnValue([defaultMetricConfig]))
+    useFlagWithLoadingMocked.mockReturnValue({ value: true, isLoading: false })
 })
 ```
 
-- **For `line`**: use `ConfigurableGraphType.TimeSeries` for `'overall'` and `ConfigurableGraphType.MultipleTimeSeries` for `'channel'`/`'automationFeatureType'` in the `defaultDimension` mock.
+- **For `line`**: use `ConfigurableGraphType.TimeSeries` for `'overall'` and `ConfigurableGraphType.MultipleTimeSeries` for breakdown dimensions in the `defaultDimension` mock.
 - **For `bar`**: use `ConfigurableGraphType.Donut` in the `defaultDimension` mock.
 
 If adding a second metric to a chart that previously had only one, add a metric selector test. This test **must** override the mock to return two metrics — with only one metric mocked, no selector button renders:
@@ -286,8 +311,8 @@ it('should render metric selector when multiple metrics are present', () => {
 ### Step 7 — Run tests, lint, typecheck, and format
 
 ```
-pnpm test @repo/helpdesk <scope-spec-filename>
-pnpm test @repo/helpdesk <chart-component-spec-filename>
+pnpm --filter @repo/helpdesk test -- <scope-spec-filename>
+pnpm --filter @repo/helpdesk test -- <chart-component-spec-filename>
 pnpm lint:affected
 pnpm typecheck:affected
 pnpm format:fix:affected
@@ -302,6 +327,7 @@ Fix any failures before finishing.
 ### Step 1 — Read and understand the scope file(s)
 
 For each scope file, read it to understand:
+
 - The `MetricScope` key and the `scope` variable name
 - The available `measures` in `defineScope`
 - For `line`: confirm `timeDimensions` is present
@@ -322,24 +348,21 @@ Same as Mode A Step 3. Repeat for each metric across each scope file.
 
 ### Step 4 — Create the configurable graph component
 
-Create `<component-location>/<ComponentName>/<ComponentName>.tsx`.
-
-New charts have no deprecated version, so omit the feature flag check and render `ConfigurableGraph` directly.
+Create `<component-location>/<ComponentName>/<ComponentName>.tsx`. New charts always render `AiAgentConfigurableGraphWrapper` (aliased as `ConfigurableGraphWrapper`) — the wrapper owns the `ConfigurableGraph` render, the feature-flag check for the dashboard action menu, and `ChartsActionMenu` wiring. The chart component itself only computes the metrics config and passes through dashboard props.
 
 **For `line`**:
 
 ```tsx
 import { useMemo } from 'react'
 
-import { ConfigurableGraph } from '@repo/reporting'
-
-import { use<Domain>Filters } from '<filters-hook-path>'
 import { dynamic<MetricName>TimeseriesQueryFactoryV2 } from '<scope-file-path>'
-import { useSaveConfigurableGraphSelection } from 'domains/reporting/hooks/managed-dashboards/useSaveConfigurableGraphSelection'
-import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
 import type { ChartConfig, DashboardSchema } from 'domains/reporting/pages/dashboards/types'
-import { useDashboardContext } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/DashboardContext'
-import { getLineChartGraphConfig } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
+import { AiAgentConfigurableGraphWrapper as ConfigurableGraphWrapper } from 'pages/aiAgent/analyticsOverview/components/AiAgentConfigurableGraphWrapper'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
+import {
+    getLineChartGraphConfig,
+    useStoreIntegrations,
+} from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 import type { LineChartMetricConfig } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 
 type Props = {
@@ -348,58 +371,46 @@ type Props = {
     chartConfig?: ChartConfig
 }
 
-const <CHART_NAME>_METRICS: LineChartMetricConfig[] = [
+export const <CHART_NAME>_METRICS: LineChartMetricConfig[] = [
     {
         measure: '<measureName>',
         name: '<metric-name>',
         metricFormat: '<format>' as const,
         interpretAs: 'more-is-better' as const,
         timeSeriesQueryFactory: dynamic<MetricName>TimeseriesQueryFactoryV2,
-        dimensions: ['overall', 'channel', 'automationFeatureType'],
+        dimensions: ['overall', 'channel', 'storeIntegrationId', 'automationFeatureType'],
     },
 ]
 
 export const <ComponentName> = ({ chartId, dashboard, chartConfig }: Props) => {
-    const { statsFilters, userTimezone, granularity } = use<Domain>Filters()
-    const dashboardContext = useDashboardContext()
-    const { onSelect } = useSaveConfigurableGraphSelection({
-        chartId: chartId ?? '',
-        dashboardId: dashboardContext?.dashboardId,
-        tabId: dashboardContext?.tabId,
-        tabName: dashboardContext?.tabName,
-        layoutConfig: dashboardContext?.layoutConfig ?? { sections: [] },
-    })
-    const savedItem = dashboardContext?.layoutConfig?.sections
-        .flatMap((s) => s.items)
-        .find((item) => item.chartId === (chartId ?? ''))
+    const { statsFilters, userTimezone, granularity } = useAiAgentStatsFilters()
+    const stores = useStoreIntegrations()
 
     const metrics = useMemo(
-        () => getLineChartGraphConfig(<CHART_NAME>_METRICS, statsFilters, userTimezone, granularity),
-        [statsFilters, userTimezone, granularity],
+        () =>
+            getLineChartGraphConfig(
+                <CHART_NAME>_METRICS,
+                statsFilters,
+                userTimezone,
+                granularity,
+                { stores },
+            ),
+        [statsFilters, userTimezone, granularity, stores],
     )
 
     return (
-        <ConfigurableGraph
-            key={`${savedItem?.chartId}-${dashboardContext?.isLoaded ?? false}`}
+        <ConfigurableGraphWrapper
             metrics={metrics}
-            onSelect={onSelect}
-            initialMeasure={savedItem?.measures?.[0]}
-            initialDimension={savedItem?.dimensions?.[0]}
-            actionMenu={
-                chartId && chartConfig ? (
-                    <ChartsActionMenu
-                        chartId={chartId}
-                        dashboard={dashboard}
-                        chartName={chartConfig.label}
-                    />
-                ) : undefined
-            }
+            analyticsChartId={chartId ?? ''}
+            chartId={chartId}
+            dashboard={dashboard}
+            chartConfig={chartConfig}
         />
     )
 }
 ```
 
-**For `bar`** — same structure but use `getBarChartGraphConfig` + `BarChartMetricConfig`, omit `granularity` from the filters destructure, and omit it from the `useMemo` deps and the config util call.
+**For `bar`** — same structure but use `getBarChartGraphConfig` + `BarChartMetricConfig`, omit `granularity` from the filters destructure and `useMemo` deps, and pass extras as `{ stores, costSavedPerInteraction }` when any metric needs `costSaved`-style derivations (then also call `useMoneySavedPerInteractionWithAutomate(AGENT_COST_PER_TICKET)`).
 
 ---
 
@@ -411,47 +422,9 @@ Same as Mode A Step 5. See **Scope Test Patterns** in the reference section.
 
 ### Step 6 — Write chart component tests
 
-Create `<component-location>/<ComponentName>/tests/<ComponentName>.spec.tsx`.
-
-New charts have no deprecated fallback, so omit the deprecated chart test and `useFlag` mock. Follow this spec structure:
+Create `<component-location>/<ComponentName>/tests/<ComponentName>.spec.tsx`. Use the same mock skeleton and `beforeEach` setup as Mode A Step 6 — there is no deprecated-chart variant. Suggested spec structure:
 
 ```tsx
-import { render, screen } from '@testing-library/react'
-import { assumeMock } from '@repo/testing'
-import type { ConfigurableGraphMetricConfig } from '@repo/reporting'
-import { ConfigurableGraphType } from '@repo/reporting'
-
-import * as statsHooks from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { ReportingGranularity } from 'domains/reporting/models/types'
-import { <ComponentName> } from '<component-path>'
-import { get<Line|Bar>ChartGraphConfig } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
-
-jest.mock(
-    'domains/reporting/hooks/managed-dashboards/useSaveConfigurableGraphSelection',
-    () => ({
-        useSaveConfigurableGraphSelection: () => ({ onSelect: jest.fn() }),
-    }),
-)
-jest.mock(
-    'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/DashboardContext',
-    () => ({
-        useDashboardContext: jest.fn().mockReturnValue(null),
-    }),
-)
-jest.mock(
-    'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu',
-    () => ({
-        ChartsActionMenu: () => (
-            <div aria-label="charts-action-menu">Charts Action Menu</div>
-        ),
-    }),
-)
-jest.mock('pages/aiAgent/utils/aiAgentMetrics.utils', () => ({
-    ...jest.requireActual('pages/aiAgent/utils/aiAgentMetrics.utils'),
-    get<Line|Bar>ChartGraphConfig: jest.fn(),
-}))
-const get<Line|Bar>ChartGraphConfigMock = assumeMock(get<Line|Bar>ChartGraphConfig)
-
 describe('<ComponentName>', () => {
     const defaultDimension = {
         id: 'overall',                          // 'automationFeatureType' for bar
@@ -483,15 +456,7 @@ describe('<ComponentName>', () => {
         Element.prototype.getAnimations = function () { return [] }
     })
 
-    beforeEach(() => {
-        jest.spyOn(statsHooks, 'useStatsFilters').mockReturnValue({
-            cleanStatsFilters: { period: { start_datetime: '...', end_datetime: '...' } },
-            userTimezone: 'UTC',
-            granularity: ReportingGranularity.Day,
-        })
-        get<Line|Bar>ChartGraphConfigMock.mockReturnValue([defaultMetricConfig])
-    })
-
+    beforeEach(() => { /* setup as in Mode A Step 6 */ })
     afterEach(() => { jest.clearAllMocks() })
 
     it('should render the metric title', () => { ... })
@@ -514,21 +479,20 @@ describe('<ComponentName>', () => {
         expect(hasTrendIcon).toBe(false)
     })
 
-    describe('ChartsActionMenu', () => {
-        it('should render ChartsActionMenu when chartId and chartConfig are provided', () => { ... })
-        it('should not render ChartsActionMenu when chartId is not provided', () => { ... })
-        it('should not render ChartsActionMenu when chartConfig is not provided', () => { ... })
-    })
+    // When the metrics config consumes extras like `stores`, also assert wiring:
+    it('should pass stores from useListStores to get<Line|Bar>ChartGraphConfig', () => { ... })
 })
 ```
+
+The dashboard action menu is rendered by `AiAgentConfigurableGraphWrapper`, so its presence/absence is covered by the wrapper's own tests — don't re-test it from each chart spec.
 
 ---
 
 ### Step 7 — Run tests, lint, typecheck, and format
 
 ```
-pnpm test @repo/helpdesk <scope-spec-filename>
-pnpm test @repo/helpdesk <ComponentName>.spec.tsx
+pnpm --filter @repo/helpdesk test -- <scope-spec-filename>
+pnpm --filter @repo/helpdesk test -- <ComponentName>.spec.tsx
 pnpm lint:affected
 pnpm typecheck:affected
 pnpm format:fix:affected
@@ -543,86 +507,36 @@ Fix any failures before finishing.
 ### Step 1 — Read the existing component
 
 Read `<existing-component-file>` to understand:
+
 - The existing component name (e.g. `TotalSalesByProductComboChart`)
-- Which hooks, props, and logic it contains — these move to the deprecated file
+- Which hooks, props, and logic it contains — confirm there is no behavior worth preserving outside what the configurable graph already covers
 - The existing spec file location
 
----
-
-### Step 2 — Move the old component to a deprecated file
-
-Create `<component-dir>/DEPRECATED_<ComponentName>.tsx` and copy the full existing implementation into it, renaming the exported component to `DEPRECATED_<ComponentName>`.
-
-Do not modify the logic — this file is a verbatim copy of the old implementation under a new name.
+There is no longer a deprecated fallback pattern: the old implementation is removed in this mode, **not** preserved behind a feature flag.
 
 ---
 
-### Step 3 — Add metric names to `metricNames.ts`
+### Step 2 — Add metric names to `metricNames.ts`
 
-Same as Mode A Step 2. Add one entry per metric (for `bar`) or two entries per metric (for `line`), and add them to `METRIC_NAMES_BY_SCOPE` under the correct `MetricScope` key.
+Same as Mode A Step 2. Add one entry per metric, and add them to `METRIC_NAMES_BY_SCOPE` under the correct `MetricScope` key.
 
 ---
 
-### Step 4 — Add query factories to the scope file
+### Step 3 — Add query factories to the scope file
 
 Same as Mode A Step 3. Append the query factory exports to the scope file.
 
 ---
 
-### Step 5 — Rewrite the main component
+### Step 4 — Rewrite the main component
 
-Replace the contents of `<existing-component-file>` with a component that uses `ConfigurableGraphWrapper`:
+Replace the contents of `<existing-component-file>` with a component that uses `AiAgentConfigurableGraphWrapper` (see the Mode B Step 4 template). Keep the file path and exported component name stable so import sites elsewhere don't need updates.
 
-```tsx
-import { useMemo } from 'react'
+---
 
-import { use<Domain>Filters } from '<filters-hook-path>'
-import { dynamic<MetricName>QueryFactoryV2 } from '<scope-file-path>'
-import type { ChartConfig, DashboardSchema } from 'domains/reporting/pages/dashboards/types'
-import { ConfigurableGraphWrapper } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/ConfigurableGraphWrapper'
-import { get<Line|Bar>ChartGraphConfig } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
-import type { <Line|Bar>ChartMetricConfig } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
+### Step 5 — Delete the old spec file
 
-import { DEPRECATED_<ComponentName> } from './DEPRECATED_<ComponentName>'
-
-type Props = {
-    chartId?: string
-    dashboard?: DashboardSchema
-    chartConfig?: ChartConfig
-}
-
-const <CHART_NAME>_METRICS: <Line|Bar>ChartMetricConfig[] = [
-    {
-        measure: '<measureName>',
-        name: '<metric-name>',
-        metricFormat: '<format>' as const,
-        interpretAs: 'more-is-better' as const,
-        // bar: queryFactory; line: timeSeriesQueryFactory only (no trend factory)
-        queryFactory: dynamic<MetricName>QueryFactoryV2,
-        // bar: ['channel']; line: ['overall', 'channel', 'automationFeatureType']
-        dimensions: ['channel'],
-    },
-]
-
-export const <ComponentName> = ({ chartId, dashboard, chartConfig }: Props) => {
-    const { statsFilters, userTimezone } = use<Domain>Filters()  // add granularity for line
-    const metrics = useMemo(
-        () => get<Line|Bar>ChartGraphConfig(<CHART_NAME>_METRICS, statsFilters, userTimezone),
-        [statsFilters, userTimezone],
-    )
-
-    return (
-        <ConfigurableGraphWrapper
-            metrics={metrics}
-            analyticsChartId={chartId ?? ''}
-            DeprecatedChart={DEPRECATED_<ComponentName>}
-            chartId={chartId}
-            dashboard={dashboard}
-            chartConfig={chartConfig}
-        />
-    )
-}
-```
+The previous spec validated the old chart's internals; with the configurable replacement the assertions no longer apply. Delete `<component-dir>/tests/<ComponentName>.spec.tsx` and replace it in Step 7 with a new spec written against the configurable graph.
 
 ---
 
@@ -632,144 +546,17 @@ Same as Mode A Step 5. Add `describe` blocks for each new query factory in the s
 
 ---
 
-### Step 7 — Write chart component tests
+### Step 7 — Write the new chart component spec
 
-Move the existing spec file to `<component-dir>/tests/DEPRECATED_<ComponentName>.spec.tsx` (renaming it to match the deprecated component). Do not modify its contents.
-
-Then create a new `<component-dir>/tests/<ComponentName>.spec.tsx` for the new configurable component. Follow the same `defaultDimension` / `defaultMetricConfig` setup pattern as Mode B Step 6, but add the `@repo/feature-flags` mock and `DEPRECATED_<ComponentName>` mock, and include the deprecated fallback test:
-
-```tsx
-import { useFlag } from '@repo/feature-flags'
-import type { ConfigurableGraphMetricConfig } from '@repo/reporting'
-import { ConfigurableGraphType } from '@repo/reporting'
-import { assumeMock } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
-
-import * as statsHooks from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { ReportingGranularity } from 'domains/reporting/models/types'
-import { <ComponentName> } from '<component-path>'
-import { get<Line|Bar>ChartGraphConfig } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
-
-jest.mock('@repo/feature-flags')
-jest.mock(
-    'domains/reporting/hooks/managed-dashboards/useSaveConfigurableGraphSelection',
-    () => ({
-        useSaveConfigurableGraphSelection: () => ({ onSelect: jest.fn() }),
-    }),
-)
-jest.mock(
-    'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/DashboardContext',
-    () => ({
-        useDashboardContext: jest.fn().mockReturnValue(null),
-    }),
-)
-jest.mock(
-    '<component-path>/DEPRECATED_<ComponentName>',
-    () => ({
-        DEPRECATED_<ComponentName>: () => <div>Deprecated chart</div>,
-    }),
-)
-jest.mock('pages/aiAgent/utils/aiAgentMetrics.utils', () => ({
-    ...jest.requireActual('pages/aiAgent/utils/aiAgentMetrics.utils'),
-    get<Line|Bar>ChartGraphConfig: jest.fn(),
-}))
-const get<Line|Bar>ChartGraphConfigMock = assumeMock(get<Line|Bar>ChartGraphConfig)
-const useFlagMocked = assumeMock(useFlag)
-
-describe('<ComponentName>', () => {
-    const mockChartData = [
-        { name: 'Email', value: 5000 },
-        { name: 'Chat', value: 3000 },
-    ]
-
-    const defaultDimension = {
-        id: 'channel',
-        name: 'Channel',
-        configurableGraphType: ConfigurableGraphType.Donut,  // TimeSeries for line
-        useChartData: jest.fn().mockReturnValue({
-            data: mockChartData,
-            isLoading: false,
-        }),
-    }
-
-    const defaultMetricConfig: ConfigurableGraphMetricConfig = {
-        measure: '<measureName>',
-        name: '<metric-name>',
-        metricFormat: '<format>',
-        interpretAs: 'more-is-better',
-        // bar only — omit for line (configurable line charts do not render a trend):
-        // useTrendData: jest.fn().mockReturnValue({
-        //     isFetching: false,
-        //     isError: false,
-        //     data: { value: <mockValue>, prevValue: <lowerValue> },
-        // }),
-        dimensions: [defaultDimension],
-    }
-
-    beforeAll(() => {
-        global.ResizeObserver = class ResizeObserver {
-            observe() {}
-            unobserve() {}
-            disconnect() {}
-        }
-        Element.prototype.getAnimations = function () { return [] }
-    })
-
-    beforeEach(() => {
-        jest.spyOn(statsHooks, 'useStatsFilters').mockReturnValue({
-            cleanStatsFilters: {
-                period: {
-                    start_datetime: '2024-01-01',
-                    end_datetime: '2024-01-31',
-                },
-            },
-            userTimezone: 'UTC',
-            granularity: ReportingGranularity.Day,
-        })
-        get<Line|Bar>ChartGraphConfigMock.mockReturnValue([defaultMetricConfig])
-        useFlagMocked.mockReturnValue(true)
-    })
-
-    afterEach(() => { jest.clearAllMocks() })
-
-    it('should render the metric title', () => { ... })
-    it('should render all channel legend items', () => { ... })
-    it('should render responsive container for chart', () => { ... })
-
-    // bar only — configurable line charts no longer show a trend:
-    it('should render the metric value from trend data', () => { ... })
-    it('should render the trend badge', () => { ... })
-    it('should render with positive trend icon', () => { ... })
-    it('should render with negative trend icon when trend is negative', () => { ... })
-    it('should render loading skeleton when trend data is fetching', () => { ... })
-
-    // line only — assert the absence of the trend area:
-    it('should not render a trend badge', () => {
-        const { container } = render(<ComponentName />)
-        const icons = container.querySelectorAll('svg')
-        const hasTrendIcon = Array.from(icons).some((icon) =>
-            icon.getAttribute('aria-label')?.includes('trending'),
-        )
-        expect(hasTrendIcon).toBe(false)
-    })
-
-    it('should render deprecated chart when feature flag is disabled', () => {
-        useFlagMocked.mockReturnValue(false)
-
-        render(<ComponentName />)
-
-        expect(screen.getByText('Deprecated chart')).toBeInTheDocument()
-    })
-})
-```
+Create `<component-dir>/tests/<ComponentName>.spec.tsx` following Mode B Step 6. No `DEPRECATED_<ComponentName>` mock or deprecated-fallback test is needed.
 
 ---
 
 ### Step 8 — Run tests, lint, typecheck, and format
 
 ```
-pnpm test @repo/helpdesk <scope-spec-filename>
-pnpm test @repo/helpdesk <ComponentName>.spec.tsx
+pnpm --filter @repo/helpdesk test -- <scope-spec-filename>
+pnpm --filter @repo/helpdesk test -- <ComponentName>.spec.tsx
 pnpm lint:affected
 pnpm typecheck:affected
 pnpm format:fix:affected
@@ -826,20 +613,21 @@ describe('dynamic<MetricName>QueryFactoryV2', () => {
 
 ## Key Conventions
 
-|                            | `line`                                            | `bar`                                  |
-| -------------------------- | ------------------------------------------------- | -------------------------------------- |
-| Config type                | `LineChartMetricConfig`                           | `BarChartMetricConfig`                 |
-| Config util                | `getLineChartGraphConfig`                         | `getBarChartGraphConfig`               |
-| Query factories            | `timeSeriesQueryFactory` only (no trend)          | `queryFactory` only                    |
-| Metric names               | One (`slug-timeseries` only)                      | One (`slug` only)                      |
-| Dimensions                 | `['overall', 'channel', 'automationFeatureType']` | `['channel', 'automationFeatureType']` |
-| Chart types in tests       | `TimeSeries` / `MultipleTimeSeries`               | `Donut`                                |
-| `granularity` in component | Yes (filters destructure + useMemo deps)          | No                                     |
-| Trend header in chart      | No — `ConfigurableGraph` hides the trend area     | Yes — driven by `useTrendData`         |
+|                            | `line`                                                                  | `bar`                                                        |
+| -------------------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------ |
+| Config type                | `LineChartMetricConfig`                                                 | `BarChartMetricConfig`                                       |
+| Config util                | `getLineChartGraphConfig`                                               | `getBarChartGraphConfig`                                     |
+| Query factories            | `timeSeriesQueryFactory` only (no trend)                                | `queryFactory` only                                          |
+| Metric names               | One (`slug-timeseries` only)                                            | One (`slug` only)                                            |
+| Dimensions                 | `['overall', 'channel', 'storeIntegrationId', 'automationFeatureType']` | `['channel', 'storeIntegrationId', 'automationFeatureType']` |
+| Chart types in tests       | `TimeSeries` / `MultipleTimeSeries`                                     | `Donut`                                                      |
+| `granularity` in component | Yes (filters destructure + useMemo deps)                                | No                                                           |
+| Trend header in chart      | No — `ConfigurableGraph` hides the trend area                           | Yes — driven by `useTrendData`                               |
 
 - **Metric name slug**: kebab-case, prefixed with `ai-agent-dynamic-`, e.g. `ai-agent-dynamic-deflection-rate`
 - **`as const`**: Use on `metricFormat` and `interpretAs` in the metrics config array
 - **Module-level constant**: Keep the metrics array at module scope, not inside the component
-- **`metricFormat`**: `'decimal-to-percent'` for rates/percentages, `'decimal'` for raw counts
-- **Mode B (new chart)**: Renders `ConfigurableGraph` directly with dashboard context wiring — no `DEPRECATED_` fallback, no feature flag
-- **Mode C (replacement)**: Uses `ConfigurableGraphWrapper` — preserves old chart as `DEPRECATED_<ComponentName>` behind a feature flag
+- **`metricFormat`**: `'decimal-to-percent'` for rates/percentages, `'decimal'` for raw counts, `'duration'` for time-saved measures, `'currency-precision-1'` for cost-saved derived metrics
+- **Wrapper component**: All AI Agent configurable charts render through `AiAgentConfigurableGraphWrapper` (from `pages/aiAgent/analyticsOverview/components/AiAgentConfigurableGraphWrapper`). The wrapper owns the `useFlagWithLoading` feature-flag check for the dashboard action menu and the `ChartsActionMenu` render — chart components do not call these directly.
+- **Dashboard context**: `useDashboardContext` is exported from `@repo/reporting`. Chart specs mock it via `jest.mock('@repo/reporting', ...)`.
+- **Extras**: `getLineChartGraphConfig` / `getBarChartGraphConfig` accept an optional final argument `{ stores, costSavedPerInteraction }`. Pull `stores` from `useStoreIntegrations()` and `costSavedPerInteraction` from `useMoneySavedPerInteractionWithAutomate(AGENT_COST_PER_TICKET)` when any metric needs them. Specs assert this wiring by mocking `useListStores` from `@gorgias/helpdesk-queries` and checking the final argument passed to the config util.

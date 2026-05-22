@@ -11,7 +11,7 @@ import type {
     ChartConfig,
     DashboardSchema,
 } from 'domains/reporting/pages/dashboards/types'
-import { ConfigurableGraphWrapper } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/ConfigurableGraphWrapper'
+import { AiAgentConfigurableGraphWrapper as ConfigurableGraphWrapper } from 'pages/aiAgent/analyticsOverview/components/AiAgentConfigurableGraphWrapper'
 import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import {
     getBarChartGraphConfig,

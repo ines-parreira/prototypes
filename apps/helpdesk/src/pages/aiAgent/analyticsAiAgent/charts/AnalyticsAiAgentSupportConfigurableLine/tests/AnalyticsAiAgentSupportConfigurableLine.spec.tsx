@@ -13,13 +13,18 @@ import { getLineChartGraphConfig } from 'pages/aiAgent/utils/aiAgentMetrics.util
 import { AnalyticsAiAgentSupportConfigurableLine } from '../AnalyticsAiAgentSupportConfigurableLine'
 
 jest.mock('@repo/feature-flags')
-jest.mock('@gorgias/helpdesk-queries')
-jest.mock(
-    'domains/reporting/hooks/managed-dashboards/useSaveConfigurableGraphSelection',
-    () => ({
-        useSaveConfigurableGraphSelection: () => ({ onSelect: jest.fn() }),
-    }),
-)
+jest.mock('@gorgias/helpdesk-queries', () => ({
+    ...jest.requireActual('@gorgias/helpdesk-queries'),
+    useListStores: jest.fn(),
+    useUpdateAnalyticsManagedDashboard: jest.fn(() => ({
+        mutate: jest.fn(),
+        isLoading: false,
+    })),
+    useListAnalyticsManagedDashboards: jest.fn(() => ({
+        data: undefined,
+        isLoading: false,
+    })),
+}))
 jest.mock('@repo/reporting', () => ({
     ...jest.requireActual('@repo/reporting'),
     useDashboardContext: jest.fn().mockReturnValue(null),

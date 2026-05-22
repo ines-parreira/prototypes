@@ -9,7 +9,8 @@ import {
     DataTableColumnEditing,
 } from '@gorgias/axiom'
 
-import { useSaveTableColumnVisibility } from '../../hooks/useSaveTableColumnVisibility'
+import { useDashboardContext } from '../../contexts/DashboardContext'
+import { useSaveTableColumnVisibility } from '../ManagedDashboards/hooks/useSaveTableColumnVisibility'
 import { NoDataPlaceholder } from '../NoDataPlaceholder/NoDataPlaceholder'
 import { buildMetricColumnDefs, buildNameColDef } from './columnBuilders'
 import { ColumnEditingFooter } from './ColumnEditingFooter'
@@ -54,8 +55,26 @@ export function ReportingMetricBreakdownTable<TData>({
         [nameColumns],
     )
 
-    const { onSaveVisibleColumns, defaultVisibleColumns, isLoaded, tabId } =
-        useSaveTableColumnVisibility(chartId ?? '')
+    const context = useDashboardContext()
+    const { saveVisibleColumns } = useSaveTableColumnVisibility({
+        dashboardId: context?.dashboardId,
+        tabId: context?.tabId,
+        tabName: context?.tabName,
+        layoutConfig: context?.layoutConfig ?? { sections: [] },
+    })
+    const savedItem = context?.layoutConfig.sections
+        .flatMap((s) => s.items)
+        .find((item) => item.chartId === chartId)
+    const defaultVisibleColumns = savedItem?.visibleColumns ?? undefined
+    const isLoaded = context !== null ? context.isLoaded : true
+    const tabId = context?.tabId
+
+    const onSaveVisibleColumns = useCallback(
+        (visibleColumns: string[]) => {
+            saveVisibleColumns(chartId ?? '', visibleColumns)
+        },
+        [chartId, saveVisibleColumns],
+    )
 
     const [savedColumns, setSavedColumns] = useState<string[]>(() => {
         if (defaultVisibleColumns === undefined) {

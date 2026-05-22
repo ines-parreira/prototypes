@@ -1,21 +1,6 @@
 import { createContext, useContext } from 'react'
 
-type DashboardLayoutItem = {
-    chartId: string
-    visibleColumns?: string[] | null
-    measures?: string[] | null
-    dimensions?: string[] | null
-}
-
-type DashboardLayoutSection = {
-    id: string
-    type: 'card' | 'card-with-timeseries' | 'graph' | 'table'
-    items: DashboardLayoutItem[]
-}
-
-export type DashboardLayoutConfig = {
-    sections: DashboardLayoutSection[]
-}
+import type { DashboardLayoutConfig } from '../components/ManagedDashboards/types'
 
 export type DashboardContextValue = {
     dashboardId?: string
@@ -23,7 +8,6 @@ export type DashboardContextValue = {
     tabName?: string
     layoutConfig: DashboardLayoutConfig
     isLoaded: boolean
-    saveVisibleColumns?: (chartId: string, visibleColumns: string[]) => void
 }
 
 export const DashboardContext = createContext<DashboardContextValue | null>(

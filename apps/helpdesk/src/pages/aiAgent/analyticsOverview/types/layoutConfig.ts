@@ -1,8 +1,15 @@
-import type { ChartType } from 'domains/reporting/pages/dashboards/types'
+import type {
+    DashboardLayoutConfig as PackageDashboardLayoutConfig,
+    LayoutItem as PackageLayoutItem,
+    LayoutSection as PackageLayoutSection,
+} from '@repo/reporting'
+
 import type { AnalyticsAiAgentAllAgentsChart } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentAllAgentsReportConfig'
 import type { AnalyticsAiAgentShoppingAssistantChart } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentShoppingAssistantReportConfig'
 import type { AnalyticsAiAgentSupportAgentChart } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentSupportAgentReportConfig'
 import type { AnalyticsOverviewChart } from 'pages/aiAgent/analyticsOverview/AnalyticsOverviewReportConfig'
+
+export type { GridSize } from '@repo/reporting'
 
 export type AnalyticsChartType =
     | AnalyticsOverviewChart
@@ -10,36 +17,16 @@ export type AnalyticsChartType =
     | AnalyticsAiAgentSupportAgentChart
     | AnalyticsAiAgentShoppingAssistantChart
 
-export type GridSize = 3 | 6 | 12
-
 export type LayoutItem<TChart extends AnalyticsChartType = AnalyticsChartType> =
-    {
-        chartId: TChart
-        gridSize: GridSize
-        visibility: boolean
-        // Temporary value to hide TrendCards under feature flag until all of them are ready to be shown
-        requiresFeatureFlag?: boolean
-        // Configurable graphs
-        dimensions?: string[] | null
-        measures?: string[] | null
-        // Table column visibility
-        visibleColumns?: string[] | null
-    }
+    PackageLayoutItem<TChart>
 
 export type LayoutSection<
     TChart extends AnalyticsChartType = AnalyticsChartType,
-> = {
-    id: string
-    type: ChartType
-    tableTitle?: string
-    items: LayoutItem<TChart>[]
-}
+> = PackageLayoutSection<TChart>
 
 export type DashboardLayoutConfig<
     TChart extends AnalyticsChartType = AnalyticsChartType,
-> = {
-    sections: LayoutSection<TChart>[]
-}
+> = PackageDashboardLayoutConfig<TChart>
 
 export enum ManagedDashboardId {
     AiAgentOverview = 'ai-agent-overview',

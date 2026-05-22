@@ -1,10 +1,7 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { renderHook } from '@repo/testing'
 
-import {
-    ExportFormat,
-    useAiAgentAnalyticsDashboardTracking,
-} from './useAiAgentAnalyticsDashboardTracking'
+import { useAiAgentAnalyticsDashboardTracking } from './useAiAgentAnalyticsDashboardTracking'
 
 jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
@@ -81,10 +78,10 @@ describe('useAiAgentAnalyticsDashboardTracking', () => {
             useAiAgentAnalyticsDashboardTracking(),
         )
 
-        result.current.onExport({ format: ExportFormat.PDF })
+        result.current.onExport({ format: 'pdf' })
 
         expect(logEvent).toHaveBeenCalledWith(SegmentEvent.ExportType, {
-            format: ExportFormat.PDF,
+            format: 'pdf',
         })
     })
 
@@ -93,10 +90,10 @@ describe('useAiAgentAnalyticsDashboardTracking', () => {
             useAiAgentAnalyticsDashboardTracking(),
         )
 
-        result.current.onExport({ format: ExportFormat.CSV })
+        result.current.onExport({ format: 'csv' })
 
         expect(logEvent).toHaveBeenCalledWith(SegmentEvent.ExportType, {
-            format: ExportFormat.CSV,
+            format: 'csv',
         })
     })
 

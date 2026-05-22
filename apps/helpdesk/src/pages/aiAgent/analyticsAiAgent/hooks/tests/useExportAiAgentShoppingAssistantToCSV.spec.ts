@@ -2,8 +2,8 @@ import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
+import { useGetManagedDashboardsLayoutConfig } from '@repo/reporting'
 import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
-import { useGetManagedDashboardsLayoutConfig } from 'domains/reporting/hooks/managed-dashboards/useGetManagedDashboardsLayoutConfig'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { AnalyticsAiAgentShoppingAssistantReportConfig } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentShoppingAssistantReportConfig'
 import { useDownloadShoppingAssistantChannelPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantChannelPerformanceData'
@@ -17,9 +17,10 @@ import * as fileUtils from 'utils/file'
 jest.mock('@repo/feature-flags')
 jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
 jest.mock('domains/reporting/hooks/dashboards/useDashboardData')
-jest.mock(
-    'domains/reporting/hooks/managed-dashboards/useGetManagedDashboardsLayoutConfig',
-)
+jest.mock('@repo/reporting', () => ({
+    ...jest.requireActual('@repo/reporting'),
+    useGetManagedDashboardsLayoutConfig: jest.fn(),
+}))
 jest.mock('pages/aiAgent/analyticsOverview/utils/buildCustomDashboard')
 jest.mock(
     'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantChannelPerformanceData',
