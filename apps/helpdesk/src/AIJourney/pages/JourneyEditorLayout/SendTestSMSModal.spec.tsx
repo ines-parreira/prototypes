@@ -1,29 +1,43 @@
 import { render } from '@repo/testing'
-import { screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { FormProvider, useForm } from 'react-hook-form'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { JourneyTypeEnum } from '@gorgias/convert-client'
+
 import { SendTestSMSModal } from './SendTestSMSModal'
+
+const mockUseJourneyContext = jest.fn()
 
 jest.mock('AIJourney/providers/JourneyProvider/JourneyProvider', () => ({
     ...jest.requireActual(
         'AIJourney/providers/JourneyProvider/JourneyProvider',
     ),
-    useJourneyContext: jest.fn(() => ({
-        journeyData: { id: 'journey-123' },
-        currentIntegration: { id: 1, name: 'Test Store' },
-    })),
+    useJourneyContext: () => mockUseJourneyContext(),
 }))
+
+const mockHandleTestSms = jest.fn().mockResolvedValue(undefined)
 
 jest.mock('AIJourney/hooks', () => ({
     ...jest.requireActual('AIJourney/hooks'),
     useHandleSendTestSMS: jest.fn(() => ({
-        handleTestSms: jest.fn().mockResolvedValue(undefined),
+        handleTestSms: mockHandleTestSms,
+    })),
+    useLastSelectedProduct: jest.fn(() => ({
+        resolveProduct: jest.fn(),
+        setLastSelectedProductId: jest.fn(),
     })),
 }))
+
+jest.mock(
+    'AIJourney/hooks/useAIJourneyProductList/useAIJourneyProductList',
+    () => ({
+        useAIJourneyProductList: jest.fn(() => ({ productList: [] })),
+    }),
+)
 
 jest.mock('AIJourney/components/CountryCodeSelect/CountryCodeSelect', () => ({
     CountryCodeSelect: ({
@@ -36,6 +50,20 @@ jest.mock('AIJourney/components/CountryCodeSelect/CountryCodeSelect', () => ({
             aria-label="Select country"
         >
             +1
+        </button>
+    ),
+}))
+
+jest.mock('AIJourney/components/ProductSelect/ProductSelect', () => ({
+    ProductSelect: ({
+        setSelectedProduct,
+    }: {
+        setSelectedProduct: (product: { id: number; title: string }) => void
+    }) => (
+        <button
+            onClick={() => setSelectedProduct({ id: 1, title: 'Test Product' })}
+        >
+            Product selector
         </button>
     ),
 }))
@@ -60,10 +88,17 @@ const renderComponent = (isOpen = true, onClose = jest.fn()) =>
         wrapper: Wrapper,
     })
 
+const defaultContextValue = {
+    journeyData: { id: 'journey-123' },
+    currentIntegration: { id: 1, name: 'Test Store' },
+    journeyType: JourneyTypeEnum.CartAbandoned,
+}
+
 describe('<SendTestSMSModal />', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         localStorage.clear()
+        mockUseJourneyContext.mockReturnValue(defaultContextValue)
     })
 
     it('should render the modal when open', () => {
@@ -87,10 +122,12 @@ describe('<SendTestSMSModal />', () => {
         const user = userEvent.setup()
         renderComponent(true)
 
-        await user.type(
-            screen.getByRole('textbox', { name: /phone number/i }),
-            '6501234567',
-        )
+        await act(async () => {
+            await user.type(
+                screen.getByRole('textbox', { name: /phone number/i }),
+                '6501234567',
+            )
+        })
 
         await waitFor(() => {
             expect(
@@ -104,12 +141,16 @@ describe('<SendTestSMSModal />', () => {
         const user = userEvent.setup()
         renderComponent(true, mockOnClose)
 
-        await user.type(
-            screen.getByRole('textbox', { name: /phone number/i }),
-            '6501234567',
-        )
+        await act(async () => {
+            await user.type(
+                screen.getByRole('textbox', { name: /phone number/i }),
+                '6501234567',
+            )
+        })
 
-        await user.click(screen.getByRole('button', { name: /send test/i }))
+        await act(async () => {
+            await user.click(screen.getByRole('button', { name: /send test/i }))
+        })
 
         await waitFor(() => {
             expect(mockOnClose).toHaveBeenCalled()
@@ -124,9 +165,11 @@ describe('<SendTestSMSModal />', () => {
         const user = userEvent.setup()
         renderComponent(true)
 
-        await user.click(
-            screen.getByRole('button', { name: /select country/i }),
-        )
+        await act(async () => {
+            await user.click(
+                screen.getByRole('button', { name: /select country/i }),
+            )
+        })
 
         expect(mockGetCountryCallingCodeFixed).toHaveBeenCalledWith('FR')
     })
@@ -135,12 +178,237 @@ describe('<SendTestSMSModal />', () => {
         const user = userEvent.setup()
         renderComponent(true)
 
-        await user.click(
-            screen.getByRole('button', { name: /select country/i }),
-        )
+        await act(async () => {
+            await user.click(
+                screen.getByRole('button', { name: /select country/i }),
+            )
+        })
 
         expect(
             screen.getByRole('textbox', { name: /phone number/i }),
         ).toHaveValue('')
+    })
+
+    describe('journey type conditional rendering', () => {
+        it('should show the "Returning customer" toggle for Welcome journeys', () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyType: JourneyTypeEnum.Welcome,
+            })
+
+            renderComponent()
+
+            expect(
+                screen.getByRole('switch', { name: /returning customer/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('should not show the "Returning customer" toggle for non-Welcome journeys', () => {
+            renderComponent()
+
+            expect(
+                screen.queryByRole('switch', { name: /returning customer/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should show the product selector for non-Welcome, non-Campaign journeys', () => {
+            renderComponent()
+
+            expect(screen.getByText('Product selector')).toBeInTheDocument()
+        })
+
+        it('should not show the product selector for Welcome journeys', () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyType: JourneyTypeEnum.Welcome,
+            })
+
+            renderComponent()
+
+            expect(
+                screen.queryByText('Product selector'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not show the product selector for Campaign journeys', () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyType: JourneyTypeEnum.Campaign,
+            })
+
+            renderComponent()
+
+            expect(
+                screen.queryByText('Product selector'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not show "Returning customer" toggle for Campaign journeys', () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyType: JourneyTypeEnum.Campaign,
+            })
+
+            renderComponent()
+
+            expect(
+                screen.queryByRole('switch', { name: /returning customer/i }),
+            ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('Welcome journey returning customer toggle', () => {
+        beforeEach(() => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyType: JourneyTypeEnum.Welcome,
+            })
+        })
+
+        it('should start with "Returning customer" toggled off', () => {
+            renderComponent()
+
+            expect(
+                screen.getByRole('switch', { name: /returning customer/i }),
+            ).not.toBeChecked()
+        })
+
+        it('should toggle "Returning customer" when clicked', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            const toggle = screen.getByRole('switch', {
+                name: /returning customer/i,
+            })
+
+            await act(async () => {
+                await user.click(toggle)
+            })
+
+            expect(toggle).toBeChecked()
+        })
+    })
+
+    describe('product selection', () => {
+        const mockProduct = { id: 1, title: 'Test Product' }
+
+        afterEach(() => {
+            const { useLastSelectedProduct } = require('AIJourney/hooks') as {
+                useLastSelectedProduct: jest.Mock
+            }
+            const { useAIJourneyProductList } =
+                require('AIJourney/hooks/useAIJourneyProductList/useAIJourneyProductList') as {
+                    useAIJourneyProductList: jest.Mock
+                }
+
+            useLastSelectedProduct.mockImplementation(() => ({
+                resolveProduct: jest.fn(),
+                setLastSelectedProductId: jest.fn(),
+            }))
+            useAIJourneyProductList.mockImplementation(() => ({
+                productList: [],
+            }))
+        })
+
+        it('should auto-select the resolved product when productList loads', async () => {
+            const mockResolveProduct = jest.fn().mockReturnValue(mockProduct)
+            const { useLastSelectedProduct, useHandleSendTestSMS } =
+                require('AIJourney/hooks') as {
+                    useLastSelectedProduct: jest.Mock
+                    useHandleSendTestSMS: jest.Mock
+                }
+            const { useAIJourneyProductList } =
+                require('AIJourney/hooks/useAIJourneyProductList/useAIJourneyProductList') as {
+                    useAIJourneyProductList: jest.Mock
+                }
+
+            useLastSelectedProduct.mockReturnValue({
+                resolveProduct: mockResolveProduct,
+                setLastSelectedProductId: jest.fn(),
+            })
+            useAIJourneyProductList.mockReturnValue({
+                productList: [mockProduct],
+            })
+
+            renderComponent()
+
+            await waitFor(() => {
+                expect(useHandleSendTestSMS).toHaveBeenLastCalledWith(
+                    expect.objectContaining({ selectedProduct: mockProduct }),
+                )
+            })
+        })
+
+        it('should update selected product and persist last selection when a product is selected', async () => {
+            const mockSetLastSelectedProductId = jest.fn()
+            const { useLastSelectedProduct, useHandleSendTestSMS } =
+                require('AIJourney/hooks') as {
+                    useLastSelectedProduct: jest.Mock
+                    useHandleSendTestSMS: jest.Mock
+                }
+            const { useAIJourneyProductList } =
+                require('AIJourney/hooks/useAIJourneyProductList/useAIJourneyProductList') as {
+                    useAIJourneyProductList: jest.Mock
+                }
+
+            useLastSelectedProduct.mockReturnValue({
+                resolveProduct: jest.fn().mockReturnValue(null),
+                setLastSelectedProductId: mockSetLastSelectedProductId,
+            })
+            useAIJourneyProductList.mockReturnValue({
+                productList: [mockProduct],
+            })
+
+            const user = userEvent.setup()
+            renderComponent()
+
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /product selector/i }),
+                )
+            })
+
+            expect(mockSetLastSelectedProductId).toHaveBeenCalledWith(
+                mockProduct.id,
+            )
+            await waitFor(() => {
+                expect(useHandleSendTestSMS).toHaveBeenLastCalledWith(
+                    expect.objectContaining({ selectedProduct: mockProduct }),
+                )
+            })
+        })
+    })
+
+    describe('Send button loading state', () => {
+        it('should disable the "Send test" button while sending', async () => {
+            let resolveSend: () => void
+            mockHandleTestSms.mockReturnValue(
+                new Promise<void>((resolve) => {
+                    resolveSend = resolve
+                }),
+            )
+
+            const user = userEvent.setup()
+            renderComponent()
+
+            await act(async () => {
+                await user.type(
+                    screen.getByRole('textbox', { name: /phone number/i }),
+                    '6501234567',
+                )
+            })
+
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /send test/i }),
+                )
+            })
+
+            expect(
+                screen.getByRole('button', { name: /send test/i }),
+            ).toBeDisabled()
+
+            resolveSend!()
+        })
     })
 })

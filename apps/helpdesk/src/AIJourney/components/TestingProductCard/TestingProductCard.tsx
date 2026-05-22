@@ -8,12 +8,29 @@ import css from './TestingProductCard.less'
 type TestingProductCardProps = {
     selectedProduct?: Product
     onProductChange?: (product: Product) => void
+    isV3Architecture?: boolean
 }
 
 export const TestingProductCard = ({
     selectedProduct,
     onProductChange,
+    isV3Architecture,
 }: TestingProductCardProps) => {
+    if (isV3Architecture) {
+        return (
+            <Box flexDirection="column" gap="xs">
+                <Text className={css.caption}>
+                    Select a product to be used in testing messages.
+                </Text>
+                <ProductSelect
+                    selectedProduct={selectedProduct}
+                    setSelectedProduct={(product: Product) =>
+                        onProductChange?.(product)
+                    }
+                />
+            </Box>
+        )
+    }
     return (
         <Card minWidth={680}>
             <Box flexDirection="column" gap="xxs">

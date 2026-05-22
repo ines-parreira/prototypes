@@ -102,3 +102,98 @@ describe('<TestingProductCard />', () => {
         })
     })
 })
+
+describe('<TestingProductCard isV3Architecture />', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
+
+    describe('rendering', () => {
+        it('should not render the card title', () => {
+            render(<TestingProductCard isV3Architecture />)
+
+            expect(
+                screen.queryByText('Testing product'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should render the v3 caption text', () => {
+            render(<TestingProductCard isV3Architecture />)
+
+            expect(
+                screen.getByText(
+                    'Select a product to be used in testing messages.',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('should render the ProductSelect component', () => {
+            render(<TestingProductCard isV3Architecture />)
+
+            expect(
+                screen.getByRole('button', { name: /mock productselect/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('should pass selectedProduct to ProductSelect', () => {
+            const product = {
+                id: '2',
+                title: 'White Shirt',
+            } as unknown as Product
+
+            render(
+                <TestingProductCard
+                    isV3Architecture
+                    selectedProduct={product}
+                />,
+            )
+
+            expect(
+                screen.getByText('Selected: White Shirt'),
+            ).toBeInTheDocument()
+        })
+    })
+
+    describe('product selection', () => {
+        it('should call onProductChange when a product is selected', async () => {
+            const user = userEvent.setup()
+            const onProductChange = jest.fn()
+
+            render(
+                <TestingProductCard
+                    isV3Architecture
+                    onProductChange={onProductChange}
+                />,
+            )
+
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /mock productselect/i }),
+                )
+            })
+
+            expect(onProductChange).toHaveBeenCalledWith({
+                id: '1',
+                title: 'Black Shirt',
+            })
+        })
+
+        it('should not throw when onProductChange is not provided and a product is selected', async () => {
+            const user = userEvent.setup()
+
+            render(<TestingProductCard isV3Architecture />)
+
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /mock productselect/i }),
+                )
+            })
+
+            expect(
+                screen.getByText(
+                    'Select a product to be used in testing messages.',
+                ),
+            ).toBeInTheDocument()
+        })
+    })
+})

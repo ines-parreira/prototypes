@@ -107,13 +107,13 @@ export const PreviewPanel = ({ onClose }: Props) => {
     return warpToCollapsibleColumn(
         <>
             {shouldRenderTestConfiguration && (
-                <Box
-                    flexDirection="column"
-                    gap="sm"
-                    style={{ padding: 'var(--spacing-md) var(--spacing-lg)' }}
-                >
+                <Box flexDirection="column" gap="sm" padding="md">
                     <Box alignItems="center" justifyContent="space-between">
-                        <Heading size="lg">Test configuration</Heading>
+                        <Heading size="lg">
+                            {shouldRenderTestingProductCard
+                                ? 'Testing product'
+                                : 'Test configuration'}
+                        </Heading>
                         <Button
                             variant="tertiary"
                             icon="close"
@@ -125,6 +125,7 @@ export const PreviewPanel = ({ onClose }: Props) => {
                         <TestingProductCard
                             selectedProduct={selectedProduct ?? undefined}
                             onProductChange={handleProductChange}
+                            isV3Architecture
                         />
                     )}
                     {isWelcome && (

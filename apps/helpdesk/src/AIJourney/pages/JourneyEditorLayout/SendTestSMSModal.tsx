@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useLocalStorage } from '@repo/hooks'
 import type { CountryCode } from 'libphonenumber-js'
@@ -13,11 +13,16 @@ import {
     OverlayHeader,
     Text,
     TextField,
+    ToggleField,
 } from '@gorgias/axiom'
+import { JourneyTypeEnum } from '@gorgias/convert-client'
 
 import { CountryCodeSelect } from 'AIJourney/components/CountryCodeSelect/CountryCodeSelect'
-import { useHandleSendTestSMS } from 'AIJourney/hooks'
+import { ProductSelect } from 'AIJourney/components/ProductSelect/ProductSelect'
+import { useHandleSendTestSMS, useLastSelectedProduct } from 'AIJourney/hooks'
+import { useAIJourneyProductList } from 'AIJourney/hooks/useAIJourneyProductList/useAIJourneyProductList'
 import { useJourneyContext } from 'AIJourney/providers'
+import type { Product } from 'constants/integrations/types/shopify'
 import { getCountryCallingCodeFixed } from 'pages/settings/helpCenter/utils/phoneCodeSelectOptions'
 
 const TEST_SMS_NUMBER_KEY = 'ai-journey-test-sms-number'
@@ -29,7 +34,16 @@ type Props = {
 }
 
 export const SendTestSMSModal = ({ isOpen, onClose }: Props) => {
-    const { journeyData, currentIntegration } = useJourneyContext()
+    const { journeyData, currentIntegration, journeyType } = useJourneyContext()
+    const { resolveProduct, setLastSelectedProductId } =
+        useLastSelectedProduct()
+
+    const [returningCustomer, setReturningCustomer] = useState(false)
+    const [selectedProduct, setSelectedProduct] = useState<Product | undefined>(
+        undefined,
+    )
+    const [selectedFullProduct, setSelectedFullProduct] =
+        useState<Product | null>(null)
     const [selectedCountryCode, setSelectedCountryCode] = useLocalStorage<
         CountryCode | undefined
     >(TEST_SMS_COUNTRY_CODE_KEY, undefined)
@@ -38,6 +52,25 @@ export const SendTestSMSModal = ({ isOpen, onClose }: Props) => {
         '',
     )
     const [isSending, setIsSending] = useState(false)
+
+    const { productList } = useAIJourneyProductList({
+        integrationId: currentIntegration?.id,
+    })
+
+    const isWelcome = journeyType === JourneyTypeEnum.Welcome
+    const isCampaign = journeyType === JourneyTypeEnum.Campaign
+    const shouldRenderProductSelect = !isWelcome && !isCampaign
+
+    useEffect(() => {
+        if (isWelcome) setSelectedFullProduct(null)
+        else if (productList.length > 0 && !selectedFullProduct) {
+            const resolved = resolveProduct(productList)
+            if (resolved) {
+                setSelectedFullProduct(resolved)
+                setSelectedProduct(resolved)
+            }
+        }
+    }, [isWelcome, productList, selectedFullProduct, resolveProduct])
 
     const callingCode = selectedCountryCode
         ? getCountryCallingCodeFixed(selectedCountryCode)
@@ -60,12 +93,21 @@ export const SendTestSMSModal = ({ isOpen, onClose }: Props) => {
         setPhoneNumber((prev) => formatPhone(prev, code))
     }
 
+    const handleProductSelect = (item: Product) => {
+        setSelectedProduct(item)
+        const fullProduct = productList.find((p) => p.id === item.id)
+        if (fullProduct) {
+            setSelectedFullProduct(fullProduct)
+            setLastSelectedProductId(fullProduct.id)
+        }
+    }
+
     const { handleTestSms } = useHandleSendTestSMS({
         journeyData,
-        selectedProduct: null,
+        selectedProduct: selectedFullProduct,
         testSmsNumber,
         currentIntegration,
-        returningCustomer: false,
+        returningCustomer,
     })
 
     const handleSend = async () => {
@@ -93,6 +135,19 @@ export const SendTestSMSModal = ({ isOpen, onClose }: Props) => {
                         Preview how your message will look on a real phone.
                         We&apos;ll send a test SMS to the number you enter.
                     </Text>
+                    {isWelcome && (
+                        <ToggleField
+                            value={returningCustomer}
+                            onChange={setReturningCustomer}
+                            label="Returning customer"
+                        />
+                    )}
+                    {shouldRenderProductSelect && (
+                        <ProductSelect
+                            selectedProduct={selectedProduct}
+                            setSelectedProduct={handleProductSelect}
+                        />
+                    )}
                     <TextField
                         label="Phone number"
                         value={phoneNumber}

@@ -1,5 +1,5 @@
 import { render } from '@repo/testing'
-import { screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { FormProvider, useForm } from 'react-hook-form'
 import { Provider } from 'react-redux'
@@ -59,8 +59,10 @@ jest.mock('AIJourney/components', () => ({
     ),
     TestingProductCard: ({
         onProductChange,
+        isV3Architecture,
     }: {
         onProductChange?: (product: { id: string; image: null }) => void
+        isV3Architecture?: boolean
     }) => (
         <div>
             <button
@@ -70,6 +72,7 @@ jest.mock('AIJourney/components', () => ({
             >
                 Select product
             </button>
+            {isV3Architecture && <span>v3</span>}
             TestingProductCard
         </div>
     ),
@@ -179,9 +182,11 @@ describe('<PreviewPanel />', () => {
             const user = userEvent.setup()
             renderComponent(mockOnClose)
 
-            await user.click(
-                screen.getByRole('button', { name: /close preview/i }),
-            )
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /close preview/i }),
+                )
+            })
 
             expect(mockOnClose).toHaveBeenCalled()
         })
@@ -200,16 +205,30 @@ describe('<PreviewPanel />', () => {
             })
         })
 
-        it('should render the "Test configuration" section', () => {
+        it('should render the "Testing product" heading', () => {
             renderComponent()
 
-            expect(screen.getByText('Test configuration')).toBeInTheDocument()
+            expect(screen.getByText('Testing product')).toBeInTheDocument()
+        })
+
+        it('should not render "Test configuration" heading', () => {
+            renderComponent()
+
+            expect(
+                screen.queryByText('Test configuration'),
+            ).not.toBeInTheDocument()
         })
 
         it('should render TestingProductCard', () => {
             renderComponent()
 
             expect(screen.getByText('TestingProductCard')).toBeInTheDocument()
+        })
+
+        it('should render TestingProductCard with isV3Architecture prop', () => {
+            renderComponent()
+
+            expect(screen.getByText('v3')).toBeInTheDocument()
         })
 
         it('should not render "Returning customer" toggle', () => {
@@ -281,8 +300,9 @@ describe('<PreviewPanel />', () => {
                 name: /returning customer/i,
             })
 
-            await user.click(toggle)
-
+            await act(async () => {
+                await user.click(toggle)
+            })
             expect(toggle).toBeChecked()
         })
     })
@@ -315,10 +335,11 @@ describe('<PreviewPanel />', () => {
             const user = userEvent.setup()
             renderComponent()
 
-            await user.click(
-                screen.getByRole('button', { name: /generate messages/i }),
-            )
-
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /generate messages/i }),
+                )
+            })
             expect(mockHandleGenerateMessages).toHaveBeenCalled()
         })
     })
@@ -346,10 +367,11 @@ describe('<PreviewPanel />', () => {
 
             const user = userEvent.setup()
             renderComponent()
-
-            await user.click(
-                screen.getByRole('button', { name: /select product/i }),
-            )
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /select product/i }),
+                )
+            })
 
             expect(mockSetLastSelectedProductId).toHaveBeenCalledWith(
                 'product-1',
