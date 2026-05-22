@@ -196,6 +196,38 @@ describe('useConfirmChangesEstimate', () => {
         expect(params.subscription_renewal_ramp_resource_version).toBe(200)
     })
 
+    it('passes reactivate=true when reactivate is true', () => {
+        renderHook(() =>
+            useConfirmChangesEstimate(
+                true,
+                baseSelectedPlans,
+                basePlansByProduct,
+                123,
+                undefined,
+                true,
+            ),
+        )
+
+        const params = mockUseGetBillingEstimatesSubscription.mock
+            .calls[0][0] as Record<string, unknown>
+        expect(params.reactivate).toBe(true)
+    })
+
+    it('omits reactivate from params when not provided', () => {
+        renderHook(() =>
+            useConfirmChangesEstimate(
+                true,
+                baseSelectedPlans,
+                basePlansByProduct,
+                123,
+            ),
+        )
+
+        const params = mockUseGetBillingEstimatesSubscription.mock
+            .calls[0][0] as Record<string, unknown>
+        expect(params.reactivate).toBeUndefined()
+    })
+
     it('disables query when helpdesk has no current plan and no selection', () => {
         const noHelpdeskPlan: SelectedPlans = {
             ...baseSelectedPlans,

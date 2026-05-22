@@ -574,13 +574,240 @@ describe('InternalConfirmModal', () => {
             expect(props.onApply).toHaveBeenCalledWith(true, true)
         })
 
-        it('does not disable the Reactivate button while estimate is pending (estimate is skipped)', () => {
+        it('disables the Reactivate button while estimate is loading', () => {
             server.use(estimatePendingHandler())
             renderComponent({ billingState: canceledBillingState })
 
             expect(
                 screen.getByRole('button', { name: /reactivate/i }),
-            ).toBeEnabled()
+            ).toBeDisabled()
+        })
+
+        it('enables the Reactivate button once estimate succeeds', async () => {
+            renderComponent({ billingState: canceledBillingState })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /reactivate/i }),
+                ).toBeEnabled()
+            })
+        })
+
+        it('disables the Reactivate button when estimate errors', async () => {
+            server.use(estimateErrorHandler())
+            renderComponent({ billingState: canceledBillingState })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /reactivate/i }),
+                ).toBeDisabled()
+            })
+        })
+
+        it('shows balance due from the estimate', async () => {
+            server.use(estimateSuccessHandler({ balance_due: 2550 }))
+            renderComponent({ billingState: canceledBillingState })
+
+            expect(
+                await screen.findByText('$25.50 due today'),
+            ).toBeInTheDocument()
+        })
+
+        it('sends reactivate=true as a query param', async () => {
+            const requestUrls: string[] = []
+            server.use(
+                http.get(ESTIMATE_URL, ({ request }) => {
+                    requestUrls.push(request.url)
+                    return HttpResponse.json({
+                        balance_due: 0,
+                        immediate_changes_summary: null,
+                    })
+                }),
+            )
+            renderComponent({ billingState: canceledBillingState })
+
+            await waitFor(() => expect(requestUrls.length).toBeGreaterThan(0))
+
+            const url = new URL(requestUrls[0])
+            expect(url.searchParams.get('reactivate')).toBe('true')
+        })
+
+        it('shows term disclaimer when balance due is positive and estimate has immediate_changes_summary', async () => {
+            server.use(
+                estimateSuccessHandler({
+                    balance_due: 2550,
+                    immediate_changes_summary: {
+                        new_term_start: 1704067200,
+                        new_term_end: 1735689600,
+                        contract_cadence_change: null,
+                        invoice_cadence_change: null,
+                        is_ramp: false,
+                        product_changes: {},
+                    },
+                }),
+            )
+            renderComponent({ billingState: canceledBillingState })
+
+            expect(
+                await screen.findByText(
+                    /A new term for the subscription will start:/i,
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('shows invoices to pay when estimate returns current_invoices_to_pay', async () => {
+            server.use(
+                estimateSuccessHandler({
+                    balance_due: 0,
+                    // @ts-expect-error SDK type not yet updated
+                    current_invoices_to_pay: [
+                        {
+                            id: 'inv_001',
+                            invoice_pdf: 'https://example.com/inv_001.pdf',
+                            total: 5100,
+                            amount_paid: 1275,
+                            amount_due: 3825,
+                            paid: false,
+                        },
+                    ],
+                }),
+            )
+            renderComponent({ billingState: canceledBillingState })
+
+            expect(
+                await screen.findByText('Invoices to pay'),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('link', { name: 'inv_001' }),
+            ).toHaveAttribute('href', 'https://example.com/inv_001.pdf')
+            expect(screen.getByText('$51')).toBeInTheDocument()
+            expect(screen.getByText('$12.75')).toBeInTheDocument()
+            expect(screen.getByText('$38.25')).toBeInTheDocument()
+            expect(screen.getByText('Unpaid')).toBeInTheDocument()
+        })
+
+        it('does not show invoices section when current_invoices_to_pay is null', async () => {
+            server.use(
+                estimateSuccessHandler({
+                    balance_due: 2550,
+                    // @ts-expect-error SDK type not yet updated
+                    current_invoices_to_pay: null,
+                }),
+            )
+            renderComponent({ billingState: canceledBillingState })
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByText('Invoices to pay'),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('does not show invoices section when current_invoices_to_pay is an empty array', async () => {
+            server.use(
+                estimateSuccessHandler({
+                    balance_due: 0,
+                    // @ts-expect-error SDK type not yet updated
+                    current_invoices_to_pay: [],
+                }),
+            )
+            renderComponent({ billingState: canceledBillingState })
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByText('Invoices to pay'),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('renders multiple invoices when estimate returns several', async () => {
+            server.use(
+                estimateSuccessHandler({
+                    balance_due: 0,
+                    // @ts-expect-error SDK type not yet updated
+                    current_invoices_to_pay: [
+                        {
+                            id: 'inv_001',
+                            invoice_pdf: 'https://example.com/inv_001.pdf',
+                            total: 5100,
+                            amount_paid: 1275,
+                            amount_due: 3825,
+                            paid: false,
+                        },
+                        {
+                            id: 'inv_002',
+                            invoice_pdf: 'https://example.com/inv_002.pdf',
+                            total: 2550,
+                            amount_paid: 2550,
+                            amount_due: 0,
+                            paid: true,
+                        },
+                    ],
+                }),
+            )
+            renderComponent({ billingState: canceledBillingState })
+
+            expect(
+                await screen.findByRole('link', { name: 'inv_001' }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('link', { name: 'inv_002' }),
+            ).toBeInTheDocument()
+            expect(screen.getByText('Unpaid')).toBeInTheDocument()
+            expect(screen.getByText('Paid')).toBeInTheDocument()
+        })
+
+        it('does not show term disclaimer when balance due is zero', async () => {
+            server.use(
+                estimateSuccessHandler({
+                    balance_due: 0,
+                    immediate_changes_summary: {
+                        new_term_start: 1704067200,
+                        new_term_end: 1735689600,
+                        contract_cadence_change: null,
+                        invoice_cadence_change: null,
+                        is_ramp: false,
+                        product_changes: {},
+                    },
+                }),
+            )
+            renderComponent({ billingState: canceledBillingState })
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByText(
+                        /A new term for the subscription will start:/i,
+                    ),
+                ).not.toBeInTheDocument()
+            })
+        })
+    })
+
+    it('does not show invoices section for a non-cancelled subscription even if estimate returns invoices', async () => {
+        server.use(
+            http.get(ESTIMATE_URL, () =>
+                HttpResponse.json({
+                    balance_due: 0,
+                    immediate_changes_summary: null,
+                    current_invoices_to_pay: [
+                        {
+                            id: 'inv_001',
+                            invoice_pdf: 'https://example.com/inv_001.pdf',
+                            total: 5100,
+                            amount_paid: 0,
+                            amount_due: 5100,
+                            paid: false,
+                        },
+                    ],
+                }),
+            ),
+        )
+        renderComponent()
+
+        await waitFor(() => {
+            expect(
+                screen.queryByText('Invoices to pay'),
+            ).not.toBeInTheDocument()
         })
     })
 

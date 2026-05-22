@@ -142,11 +142,11 @@ export function BillingSummaryCard({
 
             setSessionSelectedPlans?.(selectedPlans)
 
-            // Trialing always redirects to payment setup (card or ACH) — trial activation
-            // requires an explicit payment-method confirmation step, unlike canceled reactivation.
             if (
                 isTrialing ||
-                (isCurrentSubscriptionCanceled && !hasStripePaymentMethod)
+                (isCurrentSubscriptionCanceled &&
+                    !shouldPayWithShopify &&
+                    !hasStripePaymentMethod)
             ) {
                 history.push(BILLING_PAYMENT_CARD_PATH)
             } else if (
@@ -209,9 +209,7 @@ export function BillingSummaryCard({
                 anyNewProductSelected={anyNewProductSelected}
                 anyDowngradedPlanSelected={!!anyDowngradedPlanSelected}
                 onOpenConfirmationModal={
-                    isMidCycleUpgradeEnabled &&
-                    !isCurrentSubscriptionCanceled &&
-                    !isTrialing
+                    isMidCycleUpgradeEnabled && !isTrialing
                         ? () => {
                               logEvent(
                                   SegmentEvent.BillingUsageAndPlansUpdateSubscriptionClicked,
@@ -261,6 +259,7 @@ export function BillingSummaryCard({
                     pendingInvoiceError={hasPendingInvoiceError}
                     versionConflictError={hasVersionConflictError}
                     isPaymentMethodMissing={isPaymentMethodMissing}
+                    reactivate={isCurrentSubscriptionCanceled}
                 />
             )}
         </Card>

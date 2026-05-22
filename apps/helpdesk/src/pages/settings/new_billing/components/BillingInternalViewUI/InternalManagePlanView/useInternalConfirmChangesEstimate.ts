@@ -1,9 +1,13 @@
 import { useMemo } from 'react'
 
 import { useGetBillingInternalEstimatesSubscription } from '@gorgias/helpdesk-queries'
-import type { GetBillingInternalEstimatesSubscriptionParams } from '@gorgias/helpdesk-types'
+import type {
+    BillingInternalEstimatesSubscription,
+    GetBillingInternalEstimatesSubscriptionParams,
+} from '@gorgias/helpdesk-types'
 
 import { ProductType } from 'models/billing/types'
+import type { Invoice } from 'state/billing/types'
 
 import type { ResolvedPlan } from './useInternalPlanEditor'
 
@@ -21,6 +25,7 @@ export function useInternalConfirmChangesEstimate(
     resolvedPlans: ResolvedPlan[],
     subscriptionResourceVersion: number,
     subscriptionRenewalRampResourceVersion?: number,
+    reactivate?: boolean,
 ) {
     const plansByProductType = useMemo(() => {
         const map: Partial<Record<ProductType, ResolvedPlan>> = {}
@@ -34,7 +39,10 @@ export function useInternalConfirmChangesEstimate(
         plansByProductType[ProductType.Helpdesk],
     )
 
-    const params = useMemo<GetBillingInternalEstimatesSubscriptionParams>(
+    // TODO: remove cast once @gorgias/helpdesk-types adds `reactivate` to GetBillingInternalEstimatesSubscriptionParams
+    const params = useMemo<
+        GetBillingInternalEstimatesSubscriptionParams & { reactivate?: boolean }
+    >(
         () => ({
             new_helpdesk_plan_id: helpdeskPlanId ?? '',
             new_automate_plan_id: getEffectivePlanId(
@@ -52,31 +60,43 @@ export function useInternalConfirmChangesEstimate(
             subscription_resource_version: subscriptionResourceVersion,
             subscription_renewal_ramp_resource_version:
                 subscriptionRenewalRampResourceVersion,
+            reactivate: reactivate || undefined,
         }),
         [
             helpdeskPlanId,
             plansByProductType,
             subscriptionResourceVersion,
             subscriptionRenewalRampResourceVersion,
+            reactivate,
         ],
     )
 
     const enabled =
         isOpen && subscriptionResourceVersion != null && !!helpdeskPlanId
 
-    return useGetBillingInternalEstimatesSubscription(params, {
-        query: {
-            enabled,
-            staleTime: ESTIMATE_FRESHNESS_MS,
-            refetchInterval: ESTIMATE_FRESHNESS_MS,
-            retry: false,
-            select: (response) => ({
-                ...response.data,
-                balance_due:
-                    response.data.balance_due == null
-                        ? response.data.balance_due
-                        : response.data.balance_due / 100,
-            }),
+    return useGetBillingInternalEstimatesSubscription(
+        params as GetBillingInternalEstimatesSubscriptionParams,
+        {
+            query: {
+                enabled,
+                staleTime: ESTIMATE_FRESHNESS_MS,
+                refetchInterval: ESTIMATE_FRESHNESS_MS,
+                retry: false,
+                // TODO: remove cast once @gorgias/helpdesk-types adds `current_invoices_to_pay` to BillingInternalEstimatesSubscription
+                select: (response) => {
+                    const data =
+                        response.data as BillingInternalEstimatesSubscription & {
+                            current_invoices_to_pay?: Invoice[] | null
+                        }
+                    return {
+                        ...data,
+                        balance_due:
+                            data.balance_due == null
+                                ? data.balance_due
+                                : data.balance_due / 100,
+                    }
+                },
+            },
         },
-    })
+    )
 }

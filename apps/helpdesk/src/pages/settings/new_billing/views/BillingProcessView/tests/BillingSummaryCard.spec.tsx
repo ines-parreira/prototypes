@@ -1,5 +1,8 @@
 import type { PlansByProduct } from '@repo/billing'
-import { ACTIVATE_PAYMENT_WITH_SHOPIFY_URL } from '@repo/billing'
+import {
+    ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
+    BILLING_PAYMENT_CARD_PATH,
+} from '@repo/billing'
 import { useFlag } from '@repo/feature-flags'
 import { logEvent, reportError, SegmentEvent } from '@repo/logging'
 import { render } from '@repo/testing'
@@ -316,7 +319,7 @@ describe('BillingSummaryCard', () => {
         expect(mockSetUpdateProcessStarted).toHaveBeenCalledWith(false)
     })
 
-    it('skips ConfirmChangesModal when subscription is canceled (FF on)', async () => {
+    it('opens ConfirmChangesModal for cancelled subscription when feature flag is on', async () => {
         const user = userEvent.setup()
 
         render(
@@ -356,21 +359,16 @@ describe('BillingSummaryCard', () => {
             />,
         )
 
-        expect(
-            screen.queryByRole('button', { name: /open modal/i }),
-        ).not.toBeInTheDocument()
-        expect(
-            screen.getByRole('button', { name: /legacy submit/i }),
-        ).toBeInTheDocument()
+        expect(screen.getByText('closed')).toBeInTheDocument()
 
-        await user.click(screen.getByRole('button', { name: /legacy submit/i }))
+        await user.click(screen.getByRole('button', { name: /open modal/i }))
 
         await waitFor(() => {
-            expect(updateSubscription).toHaveBeenCalledTimes(1)
+            expect(screen.getByText('open')).toBeInTheDocument()
         })
     })
 
-    it('skips ConfirmChangesModal when canceled with no payment method (Stripe path)', async () => {
+    it('does not flag payment method missing for cancelled subscription', async () => {
         const user = userEvent.setup()
 
         render(
@@ -411,14 +409,15 @@ describe('BillingSummaryCard', () => {
             />,
         )
 
-        expect(
-            screen.queryByRole('button', { name: /open modal/i }),
-        ).not.toBeInTheDocument()
-        await user.click(screen.getByRole('button', { name: /legacy submit/i }))
+        await user.click(screen.getByRole('button', { name: /open modal/i }))
 
         await waitFor(() => {
-            expect(updateSubscription).toHaveBeenCalledTimes(1)
+            expect(screen.getByText('open')).toBeInTheDocument()
         })
+
+        expect(
+            screen.queryByText('payment method missing'),
+        ).not.toBeInTheDocument()
     })
 
     it('skips ConfirmChangesModal when subscription is trialing (FF on)', async () => {
@@ -497,6 +496,69 @@ describe('BillingSummaryCard', () => {
                 ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
             )
         })
+    })
+
+    it('redirects cancelled Shopify subscription with inactive billing to Shopify activation, not card setup', async () => {
+        const user = userEvent.setup()
+        mockShouldPayWithShopify.mockReturnValue(true)
+        mockGetShopifyBillingStatus.mockReturnValue(
+            ShopifyBillingStatus.Inactive,
+        )
+
+        render(
+            <BillingSummaryCard
+                selectedPlans={{
+                    [ProductType.Helpdesk]: {
+                        plan: basicMonthlyHelpdeskPlan,
+                        isSelected: true,
+                    },
+                    [ProductType.Automation]: { isSelected: false },
+                    [ProductType.Voice]: { isSelected: false },
+                    [ProductType.SMS]: { isSelected: false },
+                    [ProductType.Convert]: { isSelected: false },
+                }}
+                cadence={Cadence.Month}
+                plansByProduct={plansByProduct}
+                totalProductAmount={basicMonthlyHelpdeskPlan.amount}
+                anyProductChanged={true}
+                anyNewProductSelected={false}
+                anyDowngradedPlanSelected={false}
+                updateSubscription={updateSubscription}
+                startSubscription={jest.fn()}
+                isSubscriptionUpdating={false}
+                autoUpgradeChanged={false}
+                cancellationDates={{}}
+                totalCancelledAmount={0}
+                cancelledProducts={[]}
+                isTrialing={false}
+                isCurrentSubscriptionCanceled={true}
+                periodEnd="2026-12-31"
+                ctaText="Subscribe now"
+                hasCreditCard={false}
+                hasAchPaymentMethod={false}
+                isPaymentEnabled={true}
+                setUpdateProcessStarted={mockSetUpdateProcessStarted}
+                setSessionSelectedPlans={jest.fn()}
+                subscriptionResourceVersion={12345}
+            />,
+        )
+
+        await user.click(screen.getByRole('button', { name: /open modal/i }))
+
+        await waitFor(() => {
+            expect(screen.getByText('open')).toBeInTheDocument()
+        })
+
+        await user.click(screen.getByRole('button', { name: /confirm modal/i }))
+
+        await waitFor(() => {
+            expect(mockHistoryPush).toHaveBeenCalledWith(
+                ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
+            )
+        })
+        expect(mockHistoryPush).not.toHaveBeenCalledWith(
+            BILLING_PAYMENT_CARD_PATH,
+        )
     })
 
     describe('apply-time error handling', () => {

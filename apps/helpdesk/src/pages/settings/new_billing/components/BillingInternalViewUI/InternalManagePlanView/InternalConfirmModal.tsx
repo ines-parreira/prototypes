@@ -12,6 +12,7 @@ import {
     OverlayContent,
     OverlayFooter,
     OverlayHeader,
+    Separator,
     Text,
     Tooltip,
     TooltipContent,
@@ -23,6 +24,7 @@ import type { BillingState, Cadence } from 'models/billing/types'
 import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
 
 import { ConfirmSummaryTable } from './ConfirmSummaryTable'
+import { ReactivationInvoiceList } from './ReactivationInvoiceList'
 import { useInternalConfirmChangesEstimate } from './useInternalConfirmChangesEstimate'
 import type { PriceSummary, ResolvedPlan } from './useInternalPlanEditor'
 
@@ -66,10 +68,11 @@ export function InternalConfirmModal({
         isError: isEstimateError,
         refetch: refetchEstimate,
     } = useInternalConfirmChangesEstimate(
-        isOpen && !isCurrentSubscriptionCanceled,
+        isOpen,
         resolvedPlans,
         billingState.subscription.resource_version,
         billingState.subscription.schedule_resource_version,
+        isCurrentSubscriptionCanceled,
     )
 
     const hasUpgrade = resolvedPlans.some(
@@ -225,8 +228,14 @@ export function InternalConfirmModal({
         )
     }
 
+    const currency = billingState.current_plans.helpdesk.currency ?? 'usd'
+    const currentInvoicesToPay = estimate?.current_invoices_to_pay
+
     const termChangeDisclaimer =
-        isCadenceChange && estimate?.immediate_changes_summary
+        (isCadenceChange ||
+            (isCurrentSubscriptionCanceled &&
+                (estimate?.balance_due ?? 0) > 0)) &&
+        estimate?.immediate_changes_summary
             ? `A new term for the subscription will start: ${moment.unix(estimate.immediate_changes_summary.new_term_start).format('LL')} to ${moment.unix(estimate.immediate_changes_summary.new_term_end).format('LL')}.`
             : null
 
@@ -251,7 +260,7 @@ export function InternalConfirmModal({
                     isEstimateLoading={isEstimateLoading || isEstimateFetching}
                     estimateErrorMessage={estimateErrorMessage}
                     onRetryEstimate={() => void refetchEstimate()}
-                    showBalanceDue={!isCurrentSubscriptionCanceled}
+                    showBalanceDue={true}
                 />
             </OverlayContent>
             {termChangeDisclaimer && (
@@ -265,6 +274,17 @@ export function InternalConfirmModal({
                     />
                 </OverlayContent>
             )}
+            {isCurrentSubscriptionCanceled &&
+                currentInvoicesToPay != null &&
+                currentInvoicesToPay.length > 0 && (
+                    <OverlayContent>
+                        <Separator direction="horizontal" variant="solid" />
+                        <ReactivationInvoiceList
+                            invoices={currentInvoicesToPay}
+                            currency={currency}
+                        />
+                    </OverlayContent>
+                )}
             <OverlayContent>
                 <NewSummaryPaymentSection trackingSource="internal_subscription_update" />
             </OverlayContent>

@@ -316,6 +316,54 @@ describe('ConfirmChangesModal', () => {
             })
         })
 
+        it('sends reactivate=true as a query param when reactivate prop is true', async () => {
+            const requestUrls: string[] = []
+            server.use(
+                mockGetBillingEstimatesSubscriptionHandler(
+                    async ({ request }) => {
+                        requestUrls.push(request.url)
+                        return HttpResponse.json(
+                            mockGetBillingEstimatesSubscriptionResponse({
+                                balance_due: null,
+                                immediate_changes_summary: immediateOnlySummary,
+                                scheduled_changes_summary: null,
+                            }),
+                        )
+                    },
+                ).handler,
+            )
+            renderModal({ reactivate: true })
+
+            await waitFor(() => expect(requestUrls.length).toBeGreaterThan(0))
+
+            const url = new URL(requestUrls[0])
+            expect(url.searchParams.get('reactivate')).toBe('true')
+        })
+
+        it('omits reactivate query param when reactivate prop is not set', async () => {
+            const requestUrls: string[] = []
+            server.use(
+                mockGetBillingEstimatesSubscriptionHandler(
+                    async ({ request }) => {
+                        requestUrls.push(request.url)
+                        return HttpResponse.json(
+                            mockGetBillingEstimatesSubscriptionResponse({
+                                balance_due: null,
+                                immediate_changes_summary: immediateOnlySummary,
+                                scheduled_changes_summary: null,
+                            }),
+                        )
+                    },
+                ).handler,
+            )
+            renderModal()
+
+            await waitFor(() => expect(requestUrls.length).toBeGreaterThan(0))
+
+            const url = new URL(requestUrls[0])
+            expect(url.searchParams.get('reactivate')).toBeNull()
+        })
+
         it('passes balanceDue to BillingSummaryBreakdown when estimate has balance_due', async () => {
             const { BillingSummaryBreakdown } = jest.requireMock(
                 '../../BillingSummaryBreakdown',

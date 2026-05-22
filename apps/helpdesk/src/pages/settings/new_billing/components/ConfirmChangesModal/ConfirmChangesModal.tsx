@@ -48,6 +48,7 @@ export type ConfirmChangesModalProps = {
     pendingInvoiceError?: boolean
     versionConflictError?: boolean
     isPaymentMethodMissing?: boolean
+    reactivate?: boolean
 }
 
 export function ConfirmChangesModal({
@@ -69,6 +70,7 @@ export function ConfirmChangesModal({
     pendingInvoiceError = false,
     versionConflictError = false,
     isPaymentMethodMissing = false,
+    reactivate,
 }: ConfirmChangesModalProps) {
     const {
         data: estimateResponse,
@@ -83,6 +85,7 @@ export function ConfirmChangesModal({
         plansByProduct,
         subscriptionResourceVersion,
         subscriptionRenewalRampResourceVersion,
+        reactivate,
     )
 
     const hasPendingInvoiceFromEstimate =

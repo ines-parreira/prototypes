@@ -35,6 +35,7 @@ export function useConfirmChangesEstimate(
     plansByProduct: PlansByProduct,
     subscriptionResourceVersion: number,
     subscriptionRenewalRampResourceVersion?: number,
+    reactivate?: boolean,
 ) {
     const isMidCycleUpgradeEnabled = useFlag(
         FeatureFlagKey.MidCycleUpgradeBillingLogic,
@@ -46,7 +47,10 @@ export function useConfirmChangesEstimate(
         plansByProduct,
     )
 
-    const params = useMemo<GetBillingEstimatesSubscriptionParams>(
+    // TODO: remove cast once @gorgias/helpdesk-types adds `reactivate` to GetBillingEstimatesSubscriptionParams
+    const params = useMemo<
+        GetBillingEstimatesSubscriptionParams & { reactivate?: boolean }
+    >(
         () => ({
             new_helpdesk_plan_id: helpdeskPlanId ?? '',
             new_automate_plan_id: getEffectivePlanId(
@@ -72,6 +76,7 @@ export function useConfirmChangesEstimate(
             subscription_resource_version: subscriptionResourceVersion,
             subscription_renewal_ramp_resource_version:
                 subscriptionRenewalRampResourceVersion,
+            reactivate: reactivate || undefined,
         }),
         [
             helpdeskPlanId,
@@ -79,6 +84,7 @@ export function useConfirmChangesEstimate(
             plansByProduct,
             subscriptionResourceVersion,
             subscriptionRenewalRampResourceVersion,
+            reactivate,
         ],
     )
 
@@ -88,12 +94,15 @@ export function useConfirmChangesEstimate(
         !!subscriptionResourceVersion &&
         !!helpdeskPlanId
 
-    return useGetBillingEstimatesSubscription(params, {
-        query: {
-            enabled,
-            staleTime: ESTIMATE_FRESHNESS_MS,
-            refetchInterval: ESTIMATE_FRESHNESS_MS,
-            retry: false,
+    return useGetBillingEstimatesSubscription(
+        params as GetBillingEstimatesSubscriptionParams,
+        {
+            query: {
+                enabled,
+                staleTime: ESTIMATE_FRESHNESS_MS,
+                refetchInterval: ESTIMATE_FRESHNESS_MS,
+                retry: false,
+            },
         },
-    })
+    )
 }
