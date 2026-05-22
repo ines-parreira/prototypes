@@ -61,6 +61,16 @@ const getAgentMetric = (
 ) => {
     if (!data.data) return null
     const metricData = data.data
+    // We first try to find the metric value in the allValues array, which is already formatted and has the dimension and measure keys normalized.
+    // If we don't find it, we fallback to finding the metric value in the allData array, which is not formatted and has the original dimension and measure keys.
+    const normalizedMetricValue = metricData.allValues?.find(
+        (item) => item.dimension?.toString() === agentId.toString(),
+    )?.value
+
+    if (normalizedMetricValue !== undefined) {
+        return normalizedMetricValue
+    }
+
     const firstDimension = metricData.dimensions?.[0] || ''
     const firstMeasure = metricData.measures?.[0] || ''
     const metricValue = metricData.allData.find(

@@ -230,6 +230,60 @@ describe('agentsPerformanceReportingService', () => {
         expect(firstAgentName).toEqual(agents[0].name)
     })
 
+    it('should prefer normalized metric values when generating percentage cells', () => {
+        const fileName = 'someFileName'
+        const createCsvMock = jest
+            .spyOn(files, 'createCsv')
+            .mockReturnValue('someString')
+
+        const percentageValue = 2.88
+        const { data, summaryData, totalData } = reportDataFactory(
+            agents,
+            reportDataWithCubeMetrics,
+        )
+        const dataWithNormalizedPercentage = {
+            ...data,
+            percentageOfClosedTicketsMetric: {
+                data: {
+                    ...reportDataWithCubeMetrics,
+                    allData: [
+                        {
+                            [TicketDimension.AssigneeUserId]: '123',
+                            [HelpdeskMessageMeasure.TicketCount]: '92',
+                        },
+                    ],
+                    allValues: [
+                        {
+                            dimension: '123',
+                            value: percentageValue,
+                            decile: null,
+                        },
+                    ],
+                },
+                isError: false,
+                isFetching: false,
+            },
+        }
+
+        createAgentsReport(
+            agents,
+            dataWithNormalizedPercentage,
+            summaryData,
+            totalData,
+            [
+                AgentsTableColumn.AgentName,
+                AgentsTableColumn.PercentageOfClosedTickets,
+            ],
+            rowsOrder,
+            fileName,
+        )
+
+        expect(createCsvMock.mock.calls[0][0]).toEqual([
+            ['Agent', TableLabels[AgentsTableColumn.PercentageOfClosedTickets]],
+            [agents[0].name, `${percentageValue}%`],
+        ])
+    })
+
     it('should return empty when no data', () => {
         const fileName = 'someFileName'
 
@@ -360,6 +414,38 @@ describe('agentsPerformanceReportingService', () => {
             expect(result[2][0]).toEqual(TOTAL_ROW_AGENT_COLUMN_LABEL)
 
             expect(result.length).toEqual(4)
+        })
+
+        it('should show N/A for perAgent column when summaryData is null', () => {
+            const { data, summaryData, totalData } = reportDataFactory(
+                agents,
+                reportDataWithCubeMetrics,
+                {
+                    closedTicketsMetric: {
+                        data: { value: null },
+                        isFetching: false,
+                        isError: false,
+                    },
+                },
+            )
+
+            const columnsOrder = [
+                AgentsTableColumn.AgentName,
+                AgentsTableColumn.ClosedTickets,
+            ]
+            const rowsOrder = [AgentsTableRow.Average]
+
+            const result = getData(
+                agents,
+                data,
+                summaryData,
+                totalData,
+                columnsOrder,
+                rowsOrder,
+            )
+
+            expect(result[1][0]).toEqual(SUMMARY_ROW_AGENT_COLUMN_LABEL)
+            expect(result[1][1]).toEqual(NOT_AVAILABLE_PLACEHOLDER)
         })
 
         it('should calculate per-agent metrics correctly in average row', () => {

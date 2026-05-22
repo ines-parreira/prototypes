@@ -65,7 +65,10 @@ describe('PercentageOfClosedTicketsMetricPerAgent', () => {
             useClosedTicketsMetricPerAgentMock.mockReturnValue({
                 data: {
                     allData: [
-                        { [TicketMeasure.TicketCount]: `${ticketCount}` },
+                        {
+                            [TicketDimension.AssigneeUserId]: agentId,
+                            [TicketMeasure.TicketCount]: `${ticketCount}`,
+                        },
                     ],
                     value: ticketCount,
                     decile: null,
@@ -97,15 +100,85 @@ describe('PercentageOfClosedTicketsMetricPerAgent', () => {
                 data: {
                     allData: [
                         {
+                            [TicketDimension.AssigneeUserId]: agentId,
                             [TicketMeasure.TicketCount]: `${
                                 (ticketCount / closedTickets) * 100
                             }`,
+                        },
+                    ],
+                    allValues: [
+                        {
+                            dimension: agentId,
+                            value: (ticketCount / closedTickets) * 100,
+                            decile: null,
                         },
                     ],
                     value: (ticketCount / closedTickets) * 100,
                     decile: null,
                     dimensions: [TicketDimension.AssigneeUserId],
                     measures: [TicketMeasure.TicketCount],
+                },
+                isFetching: false,
+                isError: false,
+            })
+        })
+
+        it('should support v2 dimension and measure keys', () => {
+            useClosedTicketsMetricPerAgentMock.mockReturnValue({
+                data: {
+                    allData: [
+                        {
+                            agentId: agentId,
+                            ticketCount: `${ticketCount}`,
+                        },
+                    ],
+                    value: ticketCount,
+                    decile: null,
+                    dimensions: ['agentId'],
+                    measures: ['ticketCount'],
+                },
+                isError: false,
+                isFetching: false,
+            })
+
+            useClosedTicketsMetricMock.mockReturnValue({
+                data: { value: closedTickets },
+                isError: false,
+                isFetching: false,
+            })
+
+            const { result } = renderHook(
+                () =>
+                    usePercentageOfClosedTicketsMetricPerAgent(
+                        statsFilters,
+                        timezone,
+                        sorting,
+                        agentId,
+                    ),
+                {},
+            )
+
+            expect(result.current).toEqual({
+                data: {
+                    allData: [
+                        {
+                            agentId: agentId,
+                            ticketCount: `${
+                                (ticketCount / closedTickets) * 100
+                            }`,
+                        },
+                    ],
+                    allValues: [
+                        {
+                            dimension: agentId,
+                            value: (ticketCount / closedTickets) * 100,
+                            decile: null,
+                        },
+                    ],
+                    value: (ticketCount / closedTickets) * 100,
+                    decile: null,
+                    dimensions: ['agentId'],
+                    measures: ['ticketCount'],
                 },
                 isFetching: false,
                 isError: false,
@@ -139,6 +212,7 @@ describe('PercentageOfClosedTicketsMetricPerAgent', () => {
             expect(result.current).toEqual({
                 data: {
                     allData: [],
+                    allValues: [],
                     value: null,
                     decile: null,
                     dimensions: [],
@@ -153,7 +227,10 @@ describe('PercentageOfClosedTicketsMetricPerAgent', () => {
             useClosedTicketsMetricPerAgentMock.mockReturnValue({
                 data: {
                     allData: [
-                        { [TicketMeasure.TicketCount]: `${ticketCount}` },
+                        {
+                            [TicketDimension.AssigneeUserId]: agentId,
+                            [TicketMeasure.TicketCount]: `${ticketCount}`,
+                        },
                     ],
                     value: ticketCount,
                     decile: null,
@@ -185,7 +262,15 @@ describe('PercentageOfClosedTicketsMetricPerAgent', () => {
                 data: {
                     allData: [
                         {
+                            [TicketDimension.AssigneeUserId]: agentId,
                             [TicketMeasure.TicketCount]: `${ticketCount}`,
+                        },
+                    ],
+                    allValues: [
+                        {
+                            dimension: agentId,
+                            value: ticketCount,
+                            decile: null,
                         },
                     ],
                     value: null,
@@ -197,6 +282,75 @@ describe('PercentageOfClosedTicketsMetricPerAgent', () => {
                 isError: false,
             })
         })
+
+        it('should produce null allValues entry when measure value is null', () => {
+            useClosedTicketsMetricPerAgentMock.mockReturnValue({
+                data: {
+                    allData: [
+                        {
+                            [TicketDimension.AssigneeUserId]: agentId,
+                            [TicketMeasure.TicketCount]:
+                                null as unknown as string,
+                        },
+                    ],
+                    value: null,
+                    decile: null,
+                    dimensions: [TicketDimension.AssigneeUserId],
+                    measures: [TicketMeasure.TicketCount],
+                },
+                isError: false,
+                isFetching: false,
+            })
+
+            useClosedTicketsMetricMock.mockReturnValue({
+                data: { value: closedTickets },
+                isError: false,
+                isFetching: false,
+            })
+
+            const { result } = renderHook(
+                () =>
+                    usePercentageOfClosedTicketsMetricPerAgent(
+                        statsFilters,
+                        timezone,
+                        sorting,
+                        agentId,
+                    ),
+                {},
+            )
+
+            expect(result.current.data?.allValues).toEqual([
+                { dimension: agentId, value: null, decile: null },
+            ])
+        })
+
+        it('should reflect isFetching and isError from either metric', () => {
+            useClosedTicketsMetricPerAgentMock.mockReturnValue({
+                data: null,
+                isError: false,
+                isFetching: false,
+            })
+
+            useClosedTicketsMetricMock.mockReturnValue({
+                data: undefined,
+                isError: true,
+                isFetching: true,
+            })
+
+            const { result } = renderHook(
+                () =>
+                    usePercentageOfClosedTicketsMetricPerAgent(
+                        statsFilters,
+                        timezone,
+                        sorting,
+                        agentId,
+                    ),
+                {},
+            )
+
+            expect(result.current.isFetching).toBe(true)
+            expect(result.current.isError).toBe(true)
+        })
     })
 
     describe('fetchPercentageOfClosedTicketsMetricPerAgent', () => {
@@ -204,7 +358,10 @@ describe('PercentageOfClosedTicketsMetricPerAgent', () => {
             fetchClosedTicketsMetricPerAgentMock.mockResolvedValue({
                 data: {
                     allData: [
-                        { [TicketMeasure.TicketCount]: `${ticketCount}` },
+                        {
+                            [TicketDimension.AssigneeUserId]: agentId,
+                            [TicketMeasure.TicketCount]: `${ticketCount}`,
+                        },
                     ],
                     value: ticketCount,
                     decile: null,
@@ -232,9 +389,17 @@ describe('PercentageOfClosedTicketsMetricPerAgent', () => {
                 data: {
                     allData: [
                         {
+                            [TicketDimension.AssigneeUserId]: agentId,
                             [TicketMeasure.TicketCount]: `${
                                 (ticketCount / closedTickets) * 100
                             }`,
+                        },
+                    ],
+                    allValues: [
+                        {
+                            dimension: agentId,
+                            value: (ticketCount / closedTickets) * 100,
+                            decile: null,
                         },
                     ],
                     value: (ticketCount / closedTickets) * 100,
@@ -270,6 +435,7 @@ describe('PercentageOfClosedTicketsMetricPerAgent', () => {
             expect(result).toEqual({
                 data: {
                     allData: [],
+                    allValues: [],
                     value: null,
                     decile: null,
                     dimensions: [],
@@ -311,7 +477,10 @@ describe('PercentageOfClosedTicketsMetricPerAgent', () => {
             fetchClosedTicketsMetricPerAgentMock.mockResolvedValue({
                 data: {
                     allData: [
-                        { [TicketMeasure.TicketCount]: `${ticketCount}` },
+                        {
+                            [TicketDimension.AssigneeUserId]: agentId,
+                            [TicketMeasure.TicketCount]: `${ticketCount}`,
+                        },
                     ],
                     value: ticketCount,
                     decile: null,
@@ -339,7 +508,15 @@ describe('PercentageOfClosedTicketsMetricPerAgent', () => {
                 data: {
                     allData: [
                         {
+                            [TicketDimension.AssigneeUserId]: agentId,
                             [TicketMeasure.TicketCount]: `${ticketCount}`,
+                        },
+                    ],
+                    allValues: [
+                        {
+                            dimension: agentId,
+                            value: ticketCount,
+                            decile: null,
                         },
                     ],
                     value: null,

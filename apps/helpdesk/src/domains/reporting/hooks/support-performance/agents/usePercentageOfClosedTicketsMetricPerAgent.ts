@@ -13,12 +13,9 @@ import type {
     MetricWithDecile,
     MetricWithDecileFetch,
 } from 'domains/reporting/hooks/types'
-import { TicketMeasure } from 'domains/reporting/models/cubes/TicketCube'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { calculatePercentage } from 'domains/reporting/utils/reporting'
 import type { OrderDirection } from 'models/api/types'
-
-const ticketCountField = TicketMeasure.TicketCount
 
 const formatResult = (
     closedTicketsPerAgent: MetricWithDecile,
@@ -33,24 +30,36 @@ const formatResult = (
     }
 
     const allData = closedTicketsPerAgent.data?.allData || []
+    const measureKey = closedTicketsPerAgent.data?.measures?.[0] || ''
+    const dimensionKey = closedTicketsPerAgent.data?.dimensions?.[0] || ''
+
+    const transformedAllData = allData.map((item) => ({
+        ...item,
+        [measureKey]:
+            item[measureKey] && allClosedTickets.data?.value
+                ? String(
+                      calculatePercentage(
+                          Number(item[measureKey]),
+                          allClosedTickets.data.value,
+                      ),
+                  )
+                : item[measureKey],
+    }))
 
     return {
         value: metricValue,
         decile: closedTicketsPerAgent.data?.decile || null,
         dimensions: closedTicketsPerAgent.data?.dimensions || [],
         measures: closedTicketsPerAgent.data?.measures || [],
-        allData: allData.map((item) => ({
-            ...item,
-            [ticketCountField]:
-                item[ticketCountField] && allClosedTickets.data?.value
-                    ? String(
-                          calculatePercentage(
-                              Number(item[ticketCountField]),
-                              allClosedTickets.data.value,
-                          ),
-                      )
-                    : item[ticketCountField],
+        allValues: transformedAllData.map((item) => ({
+            dimension: item[dimensionKey] || '',
+            value:
+                item[measureKey] === null || item[measureKey] === undefined
+                    ? null
+                    : Number(item[measureKey]),
+            decile: null,
         })),
+        allData: transformedAllData,
     }
 }
 
