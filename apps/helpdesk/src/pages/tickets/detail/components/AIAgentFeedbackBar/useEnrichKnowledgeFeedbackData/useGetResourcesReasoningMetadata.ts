@@ -21,7 +21,7 @@ type HelpCenterMetadata = {
         ids: number[]
         recordIds: number[]
     }
-    actionIds: string[] | undefined
+    actionIds: string[]
 }
 
 const createEmptyHelpCenterMetadata = (): HelpCenterMetadata => ({
@@ -37,7 +37,7 @@ const createEmptyHelpCenterMetadata = (): HelpCenterMetadata => ({
         ids: [],
         recordIds: [],
     },
-    actionIds: undefined,
+    actionIds: [],
 })
 
 const categorizeResources = (
@@ -117,9 +117,6 @@ const categorizeResources = (
                 }
                 break
             case AiAgentKnowledgeResourceTypeEnum.ACTION:
-                if (!acc.actionIds) {
-                    acc.actionIds = []
-                }
                 if (!acc.actionIds.includes(resource.resourceId)) {
                     acc.actionIds.push(resource.resourceId)
                 }
@@ -143,6 +140,7 @@ export const useGetResourcesReasoningMetadata = ({
 }) => {
     const shopName = storeConfiguration?.shopName ?? ''
     const shopType = storeConfiguration?.shopType ?? ''
+    const shouldFetchMetadata = queriesEnabled && resources.length > 0
 
     const { integrationId } = useShopifyIntegrationAndScope(shopName)
 
@@ -173,7 +171,7 @@ export const useGetResourcesReasoningMetadata = ({
 
     // Fetch all resources with 'current' version (published content)
     const publishedResourceData = useGetResourceData({
-        queriesEnabled,
+        queriesEnabled: shouldFetchMetadata,
         ...relatedHelpCenterData,
         shopName,
         shopType,
@@ -184,7 +182,7 @@ export const useGetResourcesReasoningMetadata = ({
 
     // Fetch only draft resources with 'latest_draft' version
     const draftResourceData = useGetResourceData({
-        queriesEnabled: queriesEnabled && hasDraftArticlesOrGuidance,
+        queriesEnabled: shouldFetchMetadata && hasDraftArticlesOrGuidance,
         ...draftRelatedHelpCenterData,
         shopName,
         shopType,
@@ -194,7 +192,7 @@ export const useGetResourcesReasoningMetadata = ({
     })
 
     const { isLoading: isVersionedLoading, versionedArticlesMap } =
-        useGetVersionedArticles(resources, queriesEnabled)
+        useGetVersionedArticles(resources, shouldFetchMetadata)
 
     if (!publishedResourceData) {
         return null

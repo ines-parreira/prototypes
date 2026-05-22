@@ -197,7 +197,7 @@ describe('useGetResourcesReasoningMetadata', () => {
                 ids: [],
                 recordIds: [],
             },
-            actionIds: undefined,
+            actionIds: [],
             shopName: 'test-store',
             shopType: 'shopify',
             shopIntegrationId: 1,
@@ -262,7 +262,7 @@ describe('useGetResourcesReasoningMetadata', () => {
                 ids: [],
                 recordIds: [],
             },
-            actionIds: undefined,
+            actionIds: [],
             shopName: 'test-store',
             shopType: 'shopify',
             shopIntegrationId: 1,
@@ -316,7 +316,7 @@ describe('useGetResourcesReasoningMetadata', () => {
                     ids: [100],
                     recordIds: [1, 2],
                 },
-                actionIds: undefined,
+                actionIds: [],
             }),
         )
     })
@@ -416,7 +416,7 @@ describe('useGetResourcesReasoningMetadata', () => {
 
         // First call: fetch all resources with 'current' version
         expect(useGetResourceData).toHaveBeenCalledWith({
-            queriesEnabled: true,
+            queriesEnabled: false,
             faqHelpCenterMetadata: {
                 ids: [],
                 recordIds: [],
@@ -429,7 +429,7 @@ describe('useGetResourcesReasoningMetadata', () => {
                 ids: [],
                 recordIds: [],
             },
-            actionIds: undefined,
+            actionIds: [],
             shopName: 'test-store',
             shopType: 'shopify',
             shopIntegrationId: 1,
@@ -683,7 +683,7 @@ describe('useGetResourcesReasoningMetadata', () => {
 
         expect(useGetResourceData).toHaveBeenCalledWith(
             expect.objectContaining({
-                actionIds: undefined,
+                actionIds: [],
                 faqHelpCenterMetadata: {
                     ids: [],
                     recordIds: [],
@@ -722,7 +722,7 @@ describe('useGetResourcesReasoningMetadata', () => {
 
         expect(useGetResourceData).toHaveBeenCalledWith(
             expect.objectContaining({
-                actionIds: undefined,
+                actionIds: [],
                 faqHelpCenterMetadata: {
                     ids: [],
                     recordIds: [],

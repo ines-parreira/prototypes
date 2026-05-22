@@ -49,6 +49,8 @@ export const useGetResourceData = ({
     shopIntegrationId: number
     versionStatus?: GetArticleVersionStatus
 }) => {
+    const shouldFetchProducts = queriesEnabled && productIds.length > 0
+
     const { articles, isLoading: isArticlesLoading } =
         useGetMultipleHelpCenterArticleLists(
             faqHelpCenterMetadata.ids,
@@ -72,7 +74,7 @@ export const useGetResourceData = ({
         useGetProductsByIdsFromIntegration(
             shopIntegrationId,
             productIds,
-            queriesEnabled,
+            shouldFetchProducts,
         )
 
     const helpCenterIds = useMemo(
@@ -151,7 +153,7 @@ export const useGetResourceData = ({
         queriesEnabled &&
             !!shopName &&
             !!shopType &&
-            (actionIds?.length ?? 1) > 0,
+            (actionIds === undefined || actionIds.length > 0),
         actionIds,
     )
 
@@ -163,7 +165,7 @@ export const useGetResourceData = ({
         isIngesting ||
         isHelpCentersLoading ||
         isStoreWebsiteQuestionsLoading ||
-        isProductsLoading
+        (shouldFetchProducts && isProductsLoading)
 
     return useMemo(() => {
         return {

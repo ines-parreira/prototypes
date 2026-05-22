@@ -3,7 +3,6 @@ import { render } from '@repo/testing'
 import '@testing-library/jest-dom'
 
 import { isSessionImpersonated } from '@repo/activity-tracker/utils'
-import { QueryClient } from '@tanstack/react-query'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS, Map } from 'immutable'
@@ -345,7 +344,6 @@ describe('PlaygroundReasoning', () => {
 })
 describe('PlaygroundReasoning (Connected Component)', () => {
     const server = setupServer()
-    let __testQueryClient: QueryClient
     const renderConnectedComponent = (
         props: Partial<React.ComponentProps<typeof PlaygroundReasoning>> = {},
     ) => {
@@ -364,16 +362,10 @@ describe('PlaygroundReasoning (Connected Component)', () => {
         )
     }
     beforeAll(() => {
-        server.listen({ onUnhandledRequest: 'bypass' })
+        server.listen({ onUnhandledRequest: 'error' })
     })
     beforeEach(() => {
         jest.clearAllMocks()
-        __testQueryClient = new QueryClient({
-            defaultOptions: {
-                queries: { retry: false },
-                mutations: { retry: false },
-            },
-        })
     })
     afterEach(() => {
         server.resetHandlers()
@@ -413,46 +405,61 @@ describe('PlaygroundReasoning (Connected Component)', () => {
             ).not.toBeInTheDocument()
         })
         it('should continue polling when reasoning content is empty', async () => {
-            let callCount = 0
-            const mockReasoning = mockFindAiReasoningAiReasoningHandler(
-                async () => {
-                    callCount++
-                    const baseReasoning = mockAiReasoning()
-                    if (callCount < 3) {
+            jest.useFakeTimers()
+
+            try {
+                let callCount = 0
+                const mockReasoning = mockFindAiReasoningAiReasoningHandler(
+                    async () => {
+                        callCount++
+                        const baseReasoning = mockAiReasoning()
+                        if (callCount < 3) {
+                            return HttpResponse.json({
+                                ...baseReasoning,
+                                reasoning: [],
+                                resources: [],
+                            })
+                        }
                         return HttpResponse.json({
                             ...baseReasoning,
-                            reasoning: [],
+                            reasoning: [
+                                {
+                                    ...baseReasoning.reasoning[0],
+                                    responseType: 'RESPONSE',
+                                    targetId: 'test',
+                                    value: 'Loaded content',
+                                },
+                            ],
                             resources: [],
                         })
-                    }
-                    return HttpResponse.json({
-                        ...baseReasoning,
-                        reasoning: [
-                            {
-                                ...baseReasoning.reasoning[0],
-                                responseType: 'RESPONSE',
-                                targetId: 'test',
-                                value: 'Loaded content',
-                            },
-                        ],
-                        resources: [],
-                    })
-                },
-            )
-            server.use(mockReasoning.handler)
-            renderConnectedComponent()
-            expect(
-                screen.getByText('Generating reasoning...'),
-            ).toBeInTheDocument()
-            await waitFor(
-                () => {
+                    },
+                )
+                server.use(mockReasoning.handler)
+                renderConnectedComponent()
+                expect(
+                    screen.getByText('Generating reasoning...'),
+                ).toBeInTheDocument()
+                await waitFor(() => {
+                    expect(callCount).toBe(1)
+                })
+                await act(async () => {
+                    await jest.advanceTimersByTimeAsync(2000)
+                })
+                await waitFor(() => {
+                    expect(callCount).toBe(2)
+                })
+                await act(async () => {
+                    await jest.advanceTimersByTimeAsync(2000)
+                })
+                await waitFor(() => {
                     expect(
                         screen.getByText('Show reasoning'),
                     ).toBeInTheDocument()
-                },
-                { timeout: 10000 },
-            )
-            expect(callCount).toBeGreaterThanOrEqual(3)
+                })
+                expect(callCount).toBeGreaterThanOrEqual(3)
+            } finally {
+                jest.useRealTimers()
+            }
         })
     })
     describe('Expand/Collapse Behavior', () => {

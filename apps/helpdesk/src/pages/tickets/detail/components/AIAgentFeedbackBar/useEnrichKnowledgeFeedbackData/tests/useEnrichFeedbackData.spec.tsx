@@ -441,7 +441,7 @@ describe('useGetResourceData', () => {
             { wrapper },
         )
         expect(emptyRecordIdsResult.current).toEqual({
-            isLoading: true,
+            isLoading: false,
             articles: [],
             guidanceArticles: [],
             sourceItems: [],
