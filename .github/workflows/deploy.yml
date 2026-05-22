@@ -108,7 +108,7 @@ jobs:
   create-release:
     name: Create release
     needs: deploy
-    runs-on: gh-actions-1cpu2gb-runner-set
+    runs-on: gh-actions-2cpu4gb-runner-set
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
