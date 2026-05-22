@@ -90,6 +90,8 @@ CLAUDE.md
 
 .agents/
 
+.worktrees/
+
 __pycache__
 
 .fallow/

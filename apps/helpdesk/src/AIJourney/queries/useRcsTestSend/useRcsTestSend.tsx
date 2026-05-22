@@ -1,32 +1,19 @@
 import client from '@repo/api-resources'
 import { useMutation } from '@tanstack/react-query'
 
-export type RcsButton = {
-    type: string
-    text: string
-    value?: string
-}
+import type { RcsContext } from 'AIJourney/types/RcsTestSend'
 
-type RcsProduct = {
-    title: string
-    body?: string
-    image: string
-    product_id: number
-    variant_id: number
-    url?: string | null
-}
+export type {
+    RcsButton,
+    RcsContext,
+    RcsProduct,
+} from 'AIJourney/types/RcsTestSend'
 
 type RcsTestSendRequest = {
     integration_id: number
     recipient_phone: string
     dry_run?: boolean
-    rcs_context: {
-        text: string
-        title?: string
-        images?: string[]
-        buttons?: RcsButton[]
-        products?: RcsProduct[]
-    }
+    rcs_context: RcsContext
 }
 
 export type RcsTestSendResponse = {

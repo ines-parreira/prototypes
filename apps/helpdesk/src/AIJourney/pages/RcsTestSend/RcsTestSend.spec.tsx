@@ -106,18 +106,30 @@ jest.mock('AIJourney/components/RcsMessageCard/RcsMessageCard', () => ({
                 Add button
             </button>
             {form.buttons.map((button) => (
-                <input
-                    key={button.id}
-                    aria-label="button text"
-                    value={button.text}
-                    onChange={(e) =>
-                        dispatch({
-                            type: 'UPDATE_BUTTON',
-                            id: button.id,
-                            patch: { text: e.target.value },
-                        })
-                    }
-                />
+                <div key={button.id}>
+                    <input
+                        aria-label="button text"
+                        value={button.text}
+                        onChange={(e) =>
+                            dispatch({
+                                type: 'UPDATE_BUTTON',
+                                id: button.id,
+                                patch: { text: e.target.value },
+                            })
+                        }
+                    />
+                    <button
+                        onClick={() =>
+                            dispatch({
+                                type: 'UPDATE_BUTTON',
+                                id: button.id,
+                                patch: { type: 'URL' },
+                            })
+                        }
+                    >
+                        Set URL type
+                    </button>
+                </div>
             ))}
             <button onClick={() => dispatch({ type: 'ADD_PRODUCT' })}>
                 Add product
@@ -429,6 +441,11 @@ describe('<RcsTestSend />', () => {
             await user.click(
                 screen.getByRole('button', { name: 'Set product' }),
             )
+            await user.click(screen.getByRole('button', { name: 'Add button' }))
+            await user.type(
+                screen.getByRole('textbox', { name: 'button text' }),
+                'Shop',
+            )
         }
 
         it('includes product with body, image, variant_id, and url', async () => {
@@ -636,6 +653,190 @@ describe('<RcsTestSend />', () => {
         })
     })
 
+    describe('product + button validation', () => {
+        const withPhoneOptions = () => {
+            jest.mocked(useAiJourneyPhoneList).mockReturnValue({
+                marketingCapabilityPhoneNumbers: [
+                    {
+                        name: '[MKT] Test Phone',
+                        phone_number: '+15551234567',
+                        capabilities: { sms: true },
+                        integrations: [{ id: 42, type: 'sms' }],
+                    },
+                ] as ReturnType<
+                    typeof useAiJourneyPhoneList
+                >['marketingCapabilityPhoneNumbers'],
+            })
+        }
+
+        const validProduct = {
+            id: 99,
+            title: 'Test Shirt',
+            image: { src: 'https://cdn.shopify.com/img.jpg' },
+            variants: [{ id: 1001 }],
+            images: [],
+            options: [],
+            created_at: '2024-01-01',
+        } as unknown as Product
+
+        const fillRequiredFields = async (
+            user: ReturnType<typeof userEvent.setup>,
+        ) => {
+            await user.click(
+                screen.getByRole('button', { name: 'Select phone' }),
+            )
+            await user.type(
+                screen.getByRole('textbox', { name: 'phone number' }),
+                '5551234567',
+            )
+            await user.type(
+                screen.getByRole('textbox', { name: 'context text' }),
+                'Hello',
+            )
+        }
+
+        it('disables send button when a product is set without any button', async () => {
+            withPhoneOptions()
+            mockProductDispatchData.shopifyProduct = validProduct
+            mockProductDispatchData.url = 'https://example.com/product'
+
+            const user = userEvent.setup()
+            renderComponent()
+
+            await fillRequiredFields(user)
+            await user.click(
+                screen.getByRole('button', { name: 'Add product' }),
+            )
+            await user.click(
+                screen.getByRole('button', { name: 'Set product' }),
+            )
+
+            expect(
+                screen.getByRole('button', { name: 'Send RCS test' }),
+            ).toBeDisabled()
+        })
+
+        it('shows guidance when a product is set without any button', async () => {
+            withPhoneOptions()
+            mockProductDispatchData.shopifyProduct = validProduct
+            mockProductDispatchData.url = 'https://example.com/product'
+
+            const user = userEvent.setup()
+            renderComponent()
+
+            await fillRequiredFields(user)
+            await user.click(
+                screen.getByRole('button', { name: 'Add product' }),
+            )
+            await user.click(
+                screen.getByRole('button', { name: 'Set product' }),
+            )
+
+            expect(
+                screen.getByText(
+                    /Carousels and product cards require at least one button/,
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('enables send button once a button with text is added alongside the product', async () => {
+            withPhoneOptions()
+            mockProductDispatchData.shopifyProduct = validProduct
+            mockProductDispatchData.url = 'https://example.com/product'
+
+            const user = userEvent.setup()
+            renderComponent()
+
+            await fillRequiredFields(user)
+            await user.click(
+                screen.getByRole('button', { name: 'Add product' }),
+            )
+            await user.click(
+                screen.getByRole('button', { name: 'Set product' }),
+            )
+            await user.click(screen.getByRole('button', { name: 'Add button' }))
+            await user.type(
+                screen.getByRole('textbox', { name: 'button text' }),
+                'Shop',
+            )
+
+            expect(
+                screen.getByRole('button', { name: 'Send RCS test' }),
+            ).toBeEnabled()
+        })
+
+        it('still allows sending text-only with no products and no buttons', async () => {
+            withPhoneOptions()
+
+            const user = userEvent.setup()
+            renderComponent()
+
+            await fillRequiredFields(user)
+
+            expect(
+                screen.getByRole('button', { name: 'Send RCS test' }),
+            ).toBeEnabled()
+        })
+
+        it('does not show the guidance message when no product is set', async () => {
+            withPhoneOptions()
+
+            const user = userEvent.setup()
+            renderComponent()
+
+            await fillRequiredFields(user)
+
+            expect(
+                screen.queryByText(
+                    /Carousels and product cards require at least one button/,
+                ),
+            ).not.toBeInTheDocument()
+        })
+
+        it('treats an empty product entry as no product (send remains enabled without a button)', async () => {
+            withPhoneOptions()
+
+            const user = userEvent.setup()
+            renderComponent()
+
+            await fillRequiredFields(user)
+            await user.click(
+                screen.getByRole('button', { name: 'Add product' }),
+            )
+            // Intentionally skip "Set product" — entry has shopifyProduct: undefined
+
+            expect(
+                screen.getByRole('button', { name: 'Send RCS test' }),
+            ).toBeEnabled()
+        })
+
+        it('treats whitespace-only button text as no button (send stays disabled)', async () => {
+            withPhoneOptions()
+            mockProductDispatchData.shopifyProduct = validProduct
+            mockProductDispatchData.url = 'https://example.com/product'
+
+            const user = userEvent.setup()
+            renderComponent()
+
+            await fillRequiredFields(user)
+            await user.click(
+                screen.getByRole('button', { name: 'Add product' }),
+            )
+            await user.click(
+                screen.getByRole('button', { name: 'Set product' }),
+            )
+            await user.click(screen.getByRole('button', { name: 'Add button' }))
+            await user.type(
+                screen.getByRole('textbox', { name: 'button text' }),
+                '   ',
+            )
+
+            expect(
+                screen.getByRole('button', { name: 'Send RCS test' }),
+            ).toBeDisabled()
+        })
+    })
+
     describe('buttons mapping', () => {
         const withPhoneOptions = () => {
             jest.mocked(useAiJourneyPhoneList).mockReturnValue({
@@ -680,6 +881,9 @@ describe('<RcsTestSend />', () => {
                 'Click me',
             )
             await user.click(
+                screen.getByRole('button', { name: 'Set URL type' }),
+            )
+            await user.click(
                 screen.getByRole('button', { name: 'Send RCS test' }),
             )
 
@@ -688,7 +892,7 @@ describe('<RcsTestSend />', () => {
             expect(buttons).toHaveLength(1)
             expect(buttons[0]).not.toHaveProperty('id')
             expect(buttons[0]).toMatchObject({
-                type: 'QUICK_REPLY',
+                type: 'URL',
                 text: 'Click me',
             })
         })

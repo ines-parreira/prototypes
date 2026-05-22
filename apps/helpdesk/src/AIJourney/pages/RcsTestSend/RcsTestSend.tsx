@@ -17,6 +17,10 @@ import {
     Card,
     CardHeader,
     PanelHeader,
+    TabItem,
+    TabList,
+    TabPanel,
+    Tabs,
     Text,
 } from '@gorgias/axiom'
 
@@ -24,7 +28,10 @@ import { RcsMessageCard } from '../../components/RcsMessageCard/RcsMessageCard'
 import { RcsRequestCard } from '../../components/RcsRequestCard/RcsRequestCard'
 import { RcsResponseSection } from '../../components/RcsResponseSection/RcsResponseSection'
 import type { PhoneOption } from '../../types/RcsTestSend'
+import { RcsBoundaryTests } from './RcsBoundaryTests'
+import { RcsTemplateReference } from './RcsTemplateReference'
 import { INITIAL_FORM, messageFormReducer } from './reducer'
+import { validateTemplateInputs } from './validateTemplateInputs'
 
 import css from './RcsTestSend.less'
 
@@ -68,10 +75,25 @@ export const RcsTestSend = () => {
     const phoneDigits = phoneInput.replace(/\D/g, '')
     const recipientPhone = phoneDigits ? `+${callingCode}${phoneDigits}` : ''
     const integrationId = selectedOption?.id ?? undefined
+
+    const templateValidation = validateTemplateInputs({
+        productCount: form.productEntries.filter(
+            (entry) => entry.shopifyProduct != null,
+        ).length,
+        urlButtonCount: form.buttons.filter(
+            (b) => b.type === 'URL' && b.text.trim(),
+        ).length,
+        qrButtonCount: form.buttons.filter(
+            (b) => b.type === 'QUICK_REPLY' && b.text.trim(),
+        ).length,
+        hasImage: form.image.trim().length > 0,
+    })
+
     const isValid =
         integrationId != null &&
         recipientPhone.trim() &&
-        form.contextText.trim()
+        form.contextText.trim() &&
+        templateValidation.isValid
 
     const formatPhone = (value: string, code: CountryCode | undefined) => {
         const raw = value.replace(/\D/g, '')
@@ -140,52 +162,75 @@ export const RcsTestSend = () => {
                     description="Available for impersonated sessions only"
                     size="md"
                 />
-                <RcsRequestCard
-                    phoneOptions={phoneOptions}
-                    selectedOption={selectedOption}
-                    onOptionChange={setSelectedOption}
-                    phoneInput={phoneInput}
-                    onPhoneChange={handlePhoneChange}
-                    selectedCountryCode={selectedCountryCode}
-                    onCountryChange={handleCountryChange}
-                    dryRun={dryRun}
-                    onDryRunChange={setDryRun}
-                />
-                <RcsMessageCard
-                    form={form}
-                    dispatch={dispatch}
-                    shopName={shopName}
-                />
-                <Box flexDirection="row" gap="sm">
-                    <Button
-                        onClick={handleSubmit}
-                        isDisabled={!isValid || isLoading}
-                    >
-                        {isLoading
-                            ? 'Sending...'
-                            : dryRun
-                              ? 'Send (dry run)'
-                              : 'Send RCS test'}
-                    </Button>
-                    {(response != null || error != null) && (
-                        <Button variant="secondary" onClick={reset}>
-                            Clear
-                        </Button>
-                    )}
-                </Box>
-                {error != null && (
-                    <Card>
-                        <CardHeader title="Error" />
-                        <Box flexDirection="column" gap="sm">
-                            <Text>
-                                {error instanceof Error
-                                    ? error.message
-                                    : 'An unexpected error occurred'}
-                            </Text>
+                <RcsTemplateReference />
+                <Tabs defaultSelectedItem="test-send">
+                    <TabList>
+                        <TabItem id="test-send" label="Test send" />
+                        <TabItem id="boundary-tests" label="Boundary tests" />
+                    </TabList>
+                    <TabPanel id="test-send">
+                        <Box flexDirection="column" gap="md">
+                            <RcsRequestCard
+                                phoneOptions={phoneOptions}
+                                selectedOption={selectedOption}
+                                onOptionChange={setSelectedOption}
+                                phoneInput={phoneInput}
+                                onPhoneChange={handlePhoneChange}
+                                selectedCountryCode={selectedCountryCode}
+                                onCountryChange={handleCountryChange}
+                                dryRun={dryRun}
+                                onDryRunChange={setDryRun}
+                            />
+                            <RcsMessageCard
+                                form={form}
+                                dispatch={dispatch}
+                                shopName={shopName}
+                            />
+                            <Box flexDirection="row" gap="sm">
+                                <Button
+                                    onClick={handleSubmit}
+                                    isDisabled={!isValid || isLoading}
+                                >
+                                    {isLoading
+                                        ? 'Sending...'
+                                        : dryRun
+                                          ? 'Send (dry run)'
+                                          : 'Send RCS test'}
+                                </Button>
+                                {(response != null || error != null) && (
+                                    <Button variant="secondary" onClick={reset}>
+                                        Clear
+                                    </Button>
+                                )}
+                            </Box>
+                            {!templateValidation.isValid &&
+                                templateValidation.reason && (
+                                    <Text>{templateValidation.reason}</Text>
+                                )}
+                            {error != null && (
+                                <Card>
+                                    <CardHeader title="Error" />
+                                    <Box flexDirection="column" gap="sm">
+                                        <Text>
+                                            {error instanceof Error
+                                                ? error.message
+                                                : 'An unexpected error occurred'}
+                                        </Text>
+                                    </Box>
+                                </Card>
+                            )}
+                            {response && (
+                                <RcsResponseSection response={response} />
+                            )}
                         </Box>
-                    </Card>
-                )}
-                {response && <RcsResponseSection response={response} />}
+                    </TabPanel>
+                    <TabPanel id="boundary-tests">
+                        <RcsBoundaryTests
+                            integrationId={integrationId}
+                            recipientPhone={recipientPhone}
+                        />
+                    </TabPanel>
+                </Tabs>
             </Box>
         </Box>
     )

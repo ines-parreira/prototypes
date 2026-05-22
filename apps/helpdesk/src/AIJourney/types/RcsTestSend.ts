@@ -1,12 +1,34 @@
 import type { CountryCode } from 'libphonenumber-js'
 
-import type { RcsButton } from 'AIJourney/queries/useRcsTestSend/useRcsTestSend'
 import type { Product } from 'constants/integrations/types/shopify'
 
 export type PhoneOption = {
     id: number
     label: string
     countryCode: CountryCode | undefined
+}
+
+export type RcsButton = {
+    type: string
+    text: string
+    value?: string
+}
+
+export type RcsProduct = {
+    title: string
+    body?: string
+    image: string
+    product_id: number
+    variant_id: number
+    url?: string | null
+}
+
+export type RcsContext = {
+    text: string
+    title?: string
+    images?: string[]
+    buttons?: RcsButton[]
+    products?: RcsProduct[]
 }
 
 export type ButtonEntry = RcsButton & { id: string }
