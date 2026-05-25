@@ -116,6 +116,17 @@ describe('handleCallEvents', () => {
             expect(disconnectCall).toHaveBeenCalledTimes(1)
         })
 
+        it('should handle "reconnecting" event', () => {
+            call.emit('reconnecting')
+
+            expect(sendTwilioSocketEvent).toHaveBeenCalledWith({
+                type: TwilioSocketEventType.CallReconnecting,
+                data: callContext,
+            })
+
+            expect(actions.setCall).toHaveBeenCalledWith(call)
+        })
+
         it('should handle "reconnected" event', () => {
             call.emit('reconnected')
 
@@ -125,6 +136,7 @@ describe('handleCallEvents', () => {
             })
 
             expect(actions.setError).toHaveBeenCalledWith(null)
+            expect(actions.setCall).toHaveBeenCalledWith(call)
         })
 
         it('should handle "error" event', () => {

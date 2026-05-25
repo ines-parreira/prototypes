@@ -94,6 +94,15 @@ export function handleCallEvents(
         void disconnectCall()
     })
 
+    call.on('reconnecting', () => {
+        twilioCallUtils.sendTwilioSocketEvent({
+            type: TwilioSocketEventType.CallReconnecting,
+            data: twilioCallUtils.gatherCallContext(call),
+        })
+
+        actions.setCall(call)
+    })
+
     call.on('reconnected', () => {
         twilioCallUtils.sendTwilioSocketEvent({
             type: TwilioSocketEventType.CallReconnected,
@@ -101,6 +110,7 @@ export function handleCallEvents(
         })
 
         actions.setError(null)
+        actions.setCall(call)
     })
 
     call.on('error', (error: TwilioError.TwilioError) => {

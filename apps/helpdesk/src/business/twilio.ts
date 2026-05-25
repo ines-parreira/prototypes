@@ -463,6 +463,7 @@ export enum TwilioSocketEventType {
     CallRejected = 'call-rejected',
     CallCancelled = 'call-cancelled',
     CallDisconnected = 'call-disconnected',
+    CallReconnecting = 'call-reconnecting',
     CallReconnected = 'call-reconnected',
     CallWarningStarted = 'call-warning-started',
     CallWarningEnded = 'call-warning-ended',
@@ -500,6 +501,7 @@ export type TwilioSocketEvent =
               | TwilioSocketEventType.CallAccepted
               | TwilioSocketEventType.CallRejected
               | TwilioSocketEventType.CallDisconnected
+              | TwilioSocketEventType.CallReconnecting
               | TwilioSocketEventType.CallReconnected
               | TwilioSocketEventType.CallCancelled
               | TwilioSocketEventType.CallRecordingStarted
