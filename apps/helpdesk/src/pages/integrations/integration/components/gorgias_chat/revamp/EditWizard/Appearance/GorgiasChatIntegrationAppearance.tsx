@@ -4,12 +4,14 @@ import type { Map } from 'immutable'
 
 import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 import { GorgiasChatRevampLayout } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/GorgiasChatRevampLayout'
+import { useIsAiAgentEnabled } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useIsAiAgentEnabled'
 import SaveChangesPrompt from 'pages/integrations/integration/components/gorgias_chat/revamp/CreationWizard/components/SaveChangesPrompt'
 import { AvatarCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Appearance/components/AvatarCard/AvatarCard'
 import { BrandCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Appearance/components/BrandCard/BrandCard'
 import { ChatLauncherCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Appearance/components/ChatLauncherCard/ChatLauncherCard'
 import { LegalCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Appearance/components/LegalCard/LegalCard'
 import { useAppearanceForm } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Appearance/hooks/useAppearanceForm'
+import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
 
 import css from './GorgiasChatIntegrationAppearance.less'
 
@@ -32,6 +34,12 @@ export const GorgiasChatIntegrationAppearanceRevamp = ({
         setPrivacyPolicyText,
         onSubmit,
     } = useAppearanceForm({ integration, loading })
+
+    const { storeIntegration } = useStoreIntegration(integration)
+    const { isAiAgentEnabled, isLoading: isAiAgentConfigLoading } =
+        useIsAiAgentEnabled(storeIntegration, integration.get('id'))
+    const shouldShowAdvancedColors =
+        !isAiAgentConfigLoading && !isAiAgentEnabled
 
     const { reloadPreview, onChatPreviewLoaded, updateLegalDisclaimerEnabled } =
         useChatPreviewPanelContext()
@@ -66,12 +74,26 @@ export const GorgiasChatIntegrationAppearanceRevamp = ({
                     <div className={css.cardsWrapper}>
                         <BrandCard
                             mainColor={values.mainColor}
+                            conversationColor={values.conversationColor}
+                            useMainColorOutsideBusinessHours={
+                                values.useMainColorOutsideBusinessHours
+                            }
                             headerPictureUrl={values.headerPictureUrl}
                             headerAlternativePictureUrl={
                                 values.headerAlternativePictureUrl
                             }
+                            showAdvancedColors={shouldShowAdvancedColors}
                             onMainColorChange={(value) =>
                                 setValue('mainColor', value)
+                            }
+                            onConversationColorChange={(value) =>
+                                setValue('conversationColor', value)
+                            }
+                            onUseMainColorOutsideBusinessHoursChange={(value) =>
+                                setValue(
+                                    'useMainColorOutsideBusinessHours',
+                                    value,
+                                )
                             }
                             onHeaderLogoUrlChange={(url) =>
                                 setValue('headerPictureUrl', url)

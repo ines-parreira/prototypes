@@ -2,9 +2,13 @@ import {
     Card,
     CardContent,
     CardHeader,
+    CheckBoxField,
     Elevation,
     Heading,
+    Icon,
     Text,
+    Tooltip,
+    TooltipContent,
 } from '@gorgias/axiom'
 
 import { GORGIAS_CHAT_DEFAULT_COLOR } from 'config/integrations/gorgias_chat'
@@ -16,23 +20,34 @@ import css from '../../GorgiasChatIntegrationAppearance.less'
 
 type Props = {
     mainColor: string
+    conversationColor: string
+    useMainColorOutsideBusinessHours: boolean
     headerPictureUrl?: string
     headerAlternativePictureUrl?: string
+    showAdvancedColors?: boolean
     onMainColorChange: (value: string) => void
+    onConversationColorChange: (value: string) => void
+    onUseMainColorOutsideBusinessHoursChange: (value: boolean) => void
     onHeaderLogoUrlChange: (url?: string) => void
     onHeaderAlternativePictureUrlChange: (url?: string) => void
 }
 
 export const BrandCard = ({
     mainColor,
+    conversationColor,
+    useMainColorOutsideBusinessHours,
     headerPictureUrl,
     headerAlternativePictureUrl,
+    showAdvancedColors = false,
     onMainColorChange,
+    onConversationColorChange,
+    onUseMainColorOutsideBusinessHoursChange,
     onHeaderLogoUrlChange,
     onHeaderAlternativePictureUrlChange,
 }: Props) => {
     const {
         updateMainColor,
+        updateConversationColor,
         updateHeaderPictureUrl,
         updateHeaderAlternativePictureUrl,
         openChat,
@@ -49,25 +64,88 @@ export const BrandCard = ({
                     </Text>
                 </div>
                 <div className={css.mainContent}>
-                    <div className={css.fieldSection}>
-                        <Text variant="bold" size="md">
-                            Brand color
-                        </Text>
-                        <Text size="sm" className={css.caption}>
-                            Select your brand color to personalize the chat
-                            experience.
-                        </Text>
-                        <ColorPicker
-                            className={css.brandColorPicker}
-                            value={mainColor}
-                            defaultValue={GORGIAS_CHAT_DEFAULT_COLOR}
-                            onChange={(value) => {
-                                onMainColorChange(value)
-                                updateMainColor(value)
-                            }}
-                            onFocus={openChat}
-                        />
-                    </div>
+                    {showAdvancedColors ? (
+                        <div className={css.fieldSection}>
+                            <div className={css.colorPickersWrapper}>
+                                <div className={css.colorPickerField}>
+                                    <Text variant="bold" size="md">
+                                        Main color
+                                    </Text>
+                                    <ColorPicker
+                                        value={mainColor}
+                                        defaultValue={
+                                            GORGIAS_CHAT_DEFAULT_COLOR
+                                        }
+                                        onChange={(value) => {
+                                            onMainColorChange(value)
+                                            updateMainColor(value)
+                                        }}
+                                        onFocus={openChat}
+                                    />
+                                </div>
+                                <div className={css.colorPickerField}>
+                                    <Text variant="bold" size="md">
+                                        Conversation color
+                                    </Text>
+                                    <ColorPicker
+                                        value={conversationColor}
+                                        defaultValue={
+                                            GORGIAS_CHAT_DEFAULT_COLOR
+                                        }
+                                        onChange={(value) => {
+                                            onConversationColorChange(value)
+                                            updateConversationColor(value)
+                                        }}
+                                        onFocus={openChat}
+                                    />
+                                </div>
+                            </div>
+                            <div className={css.outsideBusinessHoursRow}>
+                                <CheckBoxField
+                                    label="Keep main color when outside business hours"
+                                    value={useMainColorOutsideBusinessHours}
+                                    onChange={
+                                        onUseMainColorOutsideBusinessHoursChange
+                                    }
+                                />
+                                <Tooltip
+                                    trigger={
+                                        <span
+                                            className={
+                                                css.outsideBusinessHoursTooltipTrigger
+                                            }
+                                            aria-label="More information about keeping main color outside business hours"
+                                        >
+                                            <Icon name="help-circle" />
+                                        </span>
+                                    }
+                                >
+                                    <TooltipContent title="When unselected, the Chat will turn gray when outside business hours." />
+                                </Tooltip>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className={css.fieldSection}>
+                            <Text variant="bold" size="md">
+                                Brand color
+                            </Text>
+                            <Text size="sm" className={css.caption}>
+                                Select your brand color to personalize the chat
+                                experience.
+                            </Text>
+                            <ColorPicker
+                                className={css.brandColorPicker}
+                                value={mainColor}
+                                defaultValue={GORGIAS_CHAT_DEFAULT_COLOR}
+                                onChange={(value) => {
+                                    onMainColorChange(value)
+                                    onConversationColorChange(value)
+                                    updateMainColor(value)
+                                }}
+                                onFocus={openChat}
+                            />
+                        </div>
+                    )}
 
                     <div className={css.fieldSection}>
                         <Text variant="bold" size="md">

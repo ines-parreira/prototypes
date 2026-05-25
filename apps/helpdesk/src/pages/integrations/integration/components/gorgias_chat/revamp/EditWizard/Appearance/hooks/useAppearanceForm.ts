@@ -31,6 +31,8 @@ export type GorgiasChatLauncherSettings = {
 export type AppearanceFormValues = {
     name: string
     mainColor: string
+    conversationColor: string
+    useMainColorOutsideBusinessHours: boolean
     headerPictureUrl?: string
     headerAlternativePictureUrl?: string
     position: GorgiasChatPosition
@@ -39,58 +41,73 @@ export type AppearanceFormValues = {
     legalDisclaimerEnabled: boolean
 }
 
-const buildFormValues = (integration: Map<any, any>): AppearanceFormValues => ({
-    name: integration.get('name', ''),
-    mainColor: integration.getIn(
+const buildFormValues = (integration: Map<any, any>): AppearanceFormValues => {
+    const mainColor = integration.getIn(
         ['decoration', 'main_color'],
         GORGIAS_CHAT_DEFAULT_COLOR,
-    ),
-    headerPictureUrl: integration.getIn(['decoration', 'header_picture_url']),
-    headerAlternativePictureUrl: integration.getIn([
-        'decoration',
-        'header_alternative_picture_url',
-    ]),
-    position: {
-        alignment: integration.getIn(
-            ['decoration', 'position', 'alignment'],
-            GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.alignment,
+    )
+
+    return {
+        name: integration.get('name', ''),
+        mainColor,
+        conversationColor: integration.getIn(
+            ['decoration', 'conversation_color'],
+            mainColor,
         ),
-        offsetX: integration.getIn(
-            ['decoration', 'position', 'offsetX'],
-            GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.offsetX,
+        useMainColorOutsideBusinessHours: integration.getIn(
+            ['decoration', 'use_main_color_outside_business_hours'],
+            false,
         ),
-        offsetY: integration.getIn(
-            ['decoration', 'position', 'offsetY'],
-            GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.offsetY,
-        ),
-    },
-    launcher: {
-        type: integration.getIn(
-            ['decoration', 'launcher', 'type'],
-            GorgiasChatLauncherType.ICON,
-        ),
-        label: integration.getIn(['decoration', 'launcher', 'label'], ''),
-    },
-    avatar: {
-        imageType: integration.getIn(
-            ['decoration', 'avatar', 'image_type'],
-            GorgiasChatAvatarImageType.AGENT_PICTURE,
-        ),
-        nameType: integration.getIn(
-            ['decoration', 'avatar', 'name_type'],
-            GorgiasChatAvatarNameType.AGENT_FIRST_NAME,
-        ),
-        companyLogoUrl: integration.getIn([
+        headerPictureUrl: integration.getIn([
             'decoration',
-            'avatar',
-            'company_logo_url',
+            'header_picture_url',
         ]),
-    },
-    legalDisclaimerEnabled: integration.getIn(
-        ['meta', 'preferences', 'privacy_policy_disclaimer_enabled'],
-        false,
-    ),
-})
+        headerAlternativePictureUrl: integration.getIn([
+            'decoration',
+            'header_alternative_picture_url',
+        ]),
+        position: {
+            alignment: integration.getIn(
+                ['decoration', 'position', 'alignment'],
+                GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.alignment,
+            ),
+            offsetX: integration.getIn(
+                ['decoration', 'position', 'offsetX'],
+                GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.offsetX,
+            ),
+            offsetY: integration.getIn(
+                ['decoration', 'position', 'offsetY'],
+                GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.offsetY,
+            ),
+        },
+        launcher: {
+            type: integration.getIn(
+                ['decoration', 'launcher', 'type'],
+                GorgiasChatLauncherType.ICON,
+            ),
+            label: integration.getIn(['decoration', 'launcher', 'label'], ''),
+        },
+        avatar: {
+            imageType: integration.getIn(
+                ['decoration', 'avatar', 'image_type'],
+                GorgiasChatAvatarImageType.AGENT_PICTURE,
+            ),
+            nameType: integration.getIn(
+                ['decoration', 'avatar', 'name_type'],
+                GorgiasChatAvatarNameType.AGENT_FIRST_NAME,
+            ),
+            companyLogoUrl: integration.getIn([
+                'decoration',
+                'avatar',
+                'company_logo_url',
+            ]),
+        },
+        legalDisclaimerEnabled: integration.getIn(
+            ['meta', 'preferences', 'privacy_policy_disclaimer_enabled'],
+            false,
+        ),
+    }
+}
 
 type UseAppearanceFormParams = {
     integration: Map<any, any>
@@ -156,6 +173,9 @@ export const useAppearanceForm = ({
         const mainColor = CSS.supports('color', data.mainColor)
             ? data.mainColor.trim()
             : GORGIAS_CHAT_DEFAULT_COLOR
+        const conversationColor = CSS.supports('color', data.conversationColor)
+            ? data.conversationColor.trim()
+            : GORGIAS_CHAT_DEFAULT_COLOR
 
         const originalDecoration = integration.get('decoration')?.toJS() ?? {}
         const originalMeta = integration.get('meta')?.toJS() ?? {}
@@ -167,7 +187,9 @@ export const useAppearanceForm = ({
             decoration: {
                 ...originalDecoration,
                 main_color: mainColor,
-                conversation_color: mainColor,
+                conversation_color: conversationColor,
+                use_main_color_outside_business_hours:
+                    data.useMainColorOutsideBusinessHours,
                 header_picture_url: data.headerPictureUrl,
                 header_alternative_picture_url:
                     data.headerAlternativePictureUrl,

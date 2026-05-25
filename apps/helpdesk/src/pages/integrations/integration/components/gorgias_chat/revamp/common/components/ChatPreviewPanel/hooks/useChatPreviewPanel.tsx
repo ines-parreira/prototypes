@@ -10,6 +10,7 @@ import {
 
 import { toHex } from 'color2k'
 
+import { GORGIAS_CHAT_DEFAULT_COLOR } from 'config/integrations/gorgias_chat'
 import type { LANGUAGE } from 'constants/languages'
 import type { GorgiasChatPosition } from 'models/integration/types'
 import type {
@@ -139,7 +140,7 @@ export const useChatPreviewPanel = ({
             try {
                 normalizedColor = toHex(color)
             } catch {
-                normalizedColor = '#808080'
+                normalizedColor = GORGIAS_CHAT_DEFAULT_COLOR
             }
 
             chatPreviewPanelRef.current?.updateSettings({
@@ -150,6 +151,27 @@ export const useChatPreviewPanel = ({
             openChat()
         },
         [openChat],
+    )
+
+    const updateConversationColor = useCallback(
+        (color: string) => {
+            let normalizedColor = color
+
+            try {
+                normalizedColor = toHex(color)
+            } catch {
+                normalizedColor = GORGIAS_CHAT_DEFAULT_COLOR
+            }
+
+            chatPreviewPanelRef.current?.updateSettings({
+                decoration: {
+                    conversationColor: normalizedColor,
+                },
+            })
+            displayPage('conversation')
+            openChat()
+        },
+        [openChat, displayPage],
     )
 
     const updatePosition = useCallback(
@@ -285,6 +307,7 @@ export const useChatPreviewPanel = ({
         closeChat,
         displayPage,
         updateMainColor,
+        updateConversationColor,
         updatePosition,
         updateHeaderPictureUrl,
         updateHeaderAlternativePictureUrl,

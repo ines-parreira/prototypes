@@ -33,6 +33,23 @@ jest.mock('state/integrations/actions', () => ({
     updateOrCreateIntegration: jest.fn(() => () => Promise.resolve()),
 }))
 
+const mockUseIsAiAgentEnabled = jest.fn()
+
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useIsAiAgentEnabled',
+    () => ({
+        useIsAiAgentEnabled: () => mockUseIsAiAgentEnabled(),
+    }),
+)
+
+jest.mock('pages/integrations/integration/hooks/useStoreIntegration', () => ({
+    useStoreIntegration: () => ({
+        storeIntegration: undefined,
+        isConnected: false,
+        isConnectedToShopify: false,
+    }),
+}))
+
 const mockDispatch = jest.fn().mockResolvedValue({})
 const mockUseAppDispatch = jest.mocked(useAppDispatch)
 const mockGetApplicationTexts = jest.mocked(getApplicationTexts)
@@ -41,9 +58,14 @@ const mockUpdateOrCreateIntegration = jest.mocked(updateOrCreateIntegration)
 
 type BrandCardProps = {
     mainColor: string
+    conversationColor: string
+    useMainColorOutsideBusinessHours: boolean
     headerPictureUrl?: string
     headerAlternativePictureUrl?: string
+    showAdvancedColors?: boolean
     onMainColorChange: (value: string) => void
+    onConversationColorChange: (value: string) => void
+    onUseMainColorOutsideBusinessHoursChange: (value: boolean) => void
     onHeaderLogoUrlChange: (url?: string) => void
     onHeaderAlternativePictureUrlChange: (url?: string) => void
 }
@@ -226,6 +248,10 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
         jest.clearAllMocks()
         mockUseAppDispatch.mockReturnValue(mockDispatch)
         mockDispatch.mockClear()
+        mockUseIsAiAgentEnabled.mockReturnValue({
+            isAiAgentEnabled: true,
+            isLoading: false,
+        })
         mockGetApplicationTexts.mockResolvedValue(mockApplicationTextsResponse)
         mockUpdateApplicationTexts.mockResolvedValue(undefined)
         mockOnChatPreviewLoaded.mockImplementation(
@@ -239,6 +265,102 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
         global.CSS = {
             supports: jest.fn().mockReturnValue(true),
         } as unknown as typeof CSS
+    })
+
+    describe('BrandCard advanced colors visibility', () => {
+        it('should not show advanced colors when AI agent is enabled', () => {
+            mockUseIsAiAgentEnabled.mockReturnValue({
+                isAiAgentEnabled: true,
+                isLoading: false,
+            })
+
+            renderComponent()
+
+            expect(mockBrandCard).toHaveBeenCalledWith(
+                expect.objectContaining({ showAdvancedColors: false }),
+            )
+        })
+
+        it('should show advanced colors when AI agent is disabled', () => {
+            mockUseIsAiAgentEnabled.mockReturnValue({
+                isAiAgentEnabled: false,
+                isLoading: false,
+            })
+
+            renderComponent()
+
+            expect(mockBrandCard).toHaveBeenCalledWith(
+                expect.objectContaining({ showAdvancedColors: true }),
+            )
+        })
+
+        it('should not show advanced colors while AI agent config is loading', () => {
+            mockUseIsAiAgentEnabled.mockReturnValue({
+                isAiAgentEnabled: false,
+                isLoading: true,
+            })
+
+            renderComponent()
+
+            expect(mockBrandCard).toHaveBeenCalledWith(
+                expect.objectContaining({ showAdvancedColors: false }),
+            )
+        })
+
+        it('should default conversationColor to mainColor when missing on integration', () => {
+            renderComponent()
+
+            expect(mockBrandCard).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    mainColor: '#FF0000',
+                    conversationColor: '#FF0000',
+                }),
+            )
+        })
+
+        it('should read conversationColor and useMainColorOutsideBusinessHours from integration', () => {
+            const integration = fromJS({
+                ...mockIntegration.toJS(),
+                decoration: {
+                    ...mockIntegration.get('decoration').toJS(),
+                    conversation_color: '#123456',
+                    use_main_color_outside_business_hours: true,
+                },
+            })
+
+            renderComponent(integration)
+
+            expect(mockBrandCard).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    conversationColor: '#123456',
+                    useMainColorOutsideBusinessHours: true,
+                }),
+            )
+        })
+
+        it('should save conversation_color and use_main_color_outside_business_hours independently', async () => {
+            const user = userEvent.setup()
+            const { getByRole } = renderComponent()
+
+            act(() => {
+                const {
+                    onConversationColorChange,
+                    onUseMainColorOutsideBusinessHoursChange,
+                } = mockBrandCard.mock.calls[0][0] as BrandCardProps
+                onConversationColorChange('#ABCDEF')
+                onUseMainColorOutsideBusinessHoursChange(true)
+            })
+
+            await user.click(getByRole('button', { name: 'Save' }))
+
+            const calledWith =
+                mockUpdateOrCreateIntegration.mock.calls[0][0].toJS()
+            expect(calledWith.decoration).toMatchObject({
+                main_color: '#FF0000',
+                conversation_color: '#ABCDEF',
+                use_main_color_outside_business_hours: true,
+            })
+        })
     })
 
     describe('BrandCard', () => {
@@ -627,9 +749,10 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
             const { getByRole } = renderComponent()
 
             act(() => {
-                const { onMainColorChange } = mockBrandCard.mock
-                    .calls[0][0] as BrandCardProps
+                const { onMainColorChange, onConversationColorChange } =
+                    mockBrandCard.mock.calls[0][0] as BrandCardProps
                 onMainColorChange('#00FF00')
+                onConversationColorChange('#00FF00')
             })
 
             await user.click(getByRole('button', { name: 'Save' }))

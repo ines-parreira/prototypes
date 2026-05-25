@@ -114,6 +114,28 @@ describe('useChatPreviewPanel', () => {
         expect(() => result.current.updateMainColor('')).not.toThrow()
     })
 
+    it('updateConversationColor does not throw when ref is unattached', () => {
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        expect(() =>
+            result.current.updateConversationColor('#ff0000'),
+        ).not.toThrow()
+    })
+
+    it('updateConversationColor does not throw when called with an invalid hex color', () => {
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        expect(() =>
+            result.current.updateConversationColor('not-a-valid-color'),
+        ).not.toThrow()
+    })
+
+    it('updateConversationColor does not throw when called with an empty string', () => {
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        expect(() => result.current.updateConversationColor('')).not.toThrow()
+    })
+
     it('updatePosition does not throw when ref is unattached', () => {
         const { result } = renderHook(() => useChatPreviewPanel())
 
@@ -534,6 +556,7 @@ describe('useChatPreviewPanelContext', () => {
     it('returns context value when used within ChatPreviewPanelContext', () => {
         const mockContextValue: ChatPreviewPanelContextValue = {
             updateMainColor: jest.fn(),
+            updateConversationColor: jest.fn(),
             updatePosition: jest.fn(),
             updateHeaderPictureUrl: jest.fn(),
             updateHeaderAlternativePictureUrl: jest.fn(),
