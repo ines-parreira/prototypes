@@ -254,4 +254,10 @@ export const METRIC_TOOLTIPS = {
         link: GLOSSARY_LINK,
         linkText: HOW_IS_IT_CALCULATED,
     },
+    // Performance overview
+    averageCSAT: {
+        title: 'Average CSAT',
+        caption:
+            'Average satisfaction (CSAT) score for interactions handled during the selected period.',
+    },
 } as const satisfies Record<string, MetricTooltipConfig>

@@ -26,7 +26,7 @@ import HelpCenterStats from 'domains/reporting/pages/help-center/pages/HelpCente
 import LiveAgents from 'domains/reporting/pages/live/agents/LiveAgents'
 import LiveOverview from 'domains/reporting/pages/live/overview/LiveOverview'
 import PerformanceChannelsReport from 'domains/reporting/pages/performance/channels/PerformanceChannelsReport'
-import PerformanceOverviewReport from 'domains/reporting/pages/performance/overview/PerformanceOverviewReport'
+import { PerformanceOverviewReport } from 'domains/reporting/pages/performance/overview/PerformanceOverviewReport'
 import SatisfactionReport from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionReport'
 import { ProtectedRoute } from 'domains/reporting/pages/report-chart-restrictions/ProtectedRoute'
 import {

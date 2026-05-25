@@ -18,6 +18,7 @@ export enum ReportsIDs {
     CampaignsReportConfig = 'CampaignsReportConfig',
     ChannelsReportConfig = 'ChannelsReportConfig',
     HelpCenterReportConfig = 'HelpCenterReportConfig',
+    PerformanceOverviewReportConfig = 'PerformanceOverviewReportConfig',
     ProductInsightsReportConfig = 'ProductInsightsReportConfig',
     SatisfactionReportConfig = 'SatisfactionReportConfig',
     ServiceLevelAgreementsReportConfig = 'ServiceLevelAgreementsReportConfig',

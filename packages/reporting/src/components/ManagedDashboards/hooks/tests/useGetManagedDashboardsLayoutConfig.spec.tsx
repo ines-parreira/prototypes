@@ -289,17 +289,15 @@ describe('useGetManagedDashboardsLayoutConfig', () => {
         await waitForRequest()
 
         await waitFor(() => {
-            expect(result.current.isLoading).toBe(false)
+            const kpisSection = result.current.layoutConfig.sections.find(
+                (s) => s.id === 'kpis',
+            )
+            const kpi = kpisSection?.items.find(
+                (i) => i.chartId === AUTOMATION_RATE_CARD,
+            )
+            expect(kpi).toBeDefined()
+            expect(kpi?.visibility).toBe(false)
         })
-
-        const kpisSection = result.current.layoutConfig.sections.find(
-            (s) => s.id === 'kpis',
-        )
-        const kpi = kpisSection?.items.find(
-            (i) => i.chartId === AUTOMATION_RATE_CARD,
-        )
-        expect(kpi).toBeDefined()
-        expect(kpi?.visibility).toBe(false)
     })
 
     it('should merge saved table items with newer local default table items while keeping saved values', async () => {
@@ -324,39 +322,37 @@ describe('useGetManagedDashboardsLayoutConfig', () => {
         )
 
         await waitFor(() => {
-            expect(result.current.isLoading).toBe(false)
+            expect(result.current.layoutConfig.sections).toEqual([
+                {
+                    id: 'breakdown',
+                    type: ChartType.Table,
+                    items: [
+                        {
+                            chartId: PERFORMANCE_TABLE,
+                            gridSize: 6,
+                            visibility: false,
+                            measures: undefined,
+                            dimensions: undefined,
+                            requiresFeatureFlag: undefined,
+                        },
+                        {
+                            chartId: ARTICLE_RECOMMENDATION_TABLE,
+                            gridSize: 12,
+                            visibility: true,
+                            measures: undefined,
+                            dimensions: undefined,
+                            requiresFeatureFlag: true,
+                        },
+                        {
+                            chartId: FLOWS_TABLE,
+                            gridSize: 12,
+                            visibility: false,
+                            requiresFeatureFlag: true,
+                        },
+                    ],
+                },
+            ])
         })
-
-        expect(result.current.layoutConfig.sections).toEqual([
-            {
-                id: 'breakdown',
-                type: ChartType.Table,
-                items: [
-                    {
-                        chartId: PERFORMANCE_TABLE,
-                        gridSize: 6,
-                        visibility: false,
-                        measures: undefined,
-                        dimensions: undefined,
-                        requiresFeatureFlag: undefined,
-                    },
-                    {
-                        chartId: ARTICLE_RECOMMENDATION_TABLE,
-                        gridSize: 12,
-                        visibility: true,
-                        measures: undefined,
-                        dimensions: undefined,
-                        requiresFeatureFlag: true,
-                    },
-                    {
-                        chartId: FLOWS_TABLE,
-                        gridSize: 12,
-                        visibility: false,
-                        requiresFeatureFlag: true,
-                    },
-                ],
-            },
-        ])
     })
 
     it('should return defaultLayoutConfig while data is loading', () => {
@@ -447,15 +443,13 @@ describe('useGetManagedDashboardsLayoutConfig', () => {
         await waitForRequest()
 
         await waitFor(() => {
-            expect(result.current.isLoading).toBe(false)
+            const kpisSection = result.current.layoutConfig.sections.find(
+                (s) => s.id === 'kpis',
+            )
+            const kpi = kpisSection?.items.find(
+                (i) => i.chartId === AUTOMATED_INTERACTIONS_CARD,
+            )
+            expect(kpi?.visibility).toBe(false)
         })
-
-        const kpisSection = result.current.layoutConfig.sections.find(
-            (s) => s.id === 'kpis',
-        )
-        const kpi = kpisSection?.items.find(
-            (i) => i.chartId === AUTOMATED_INTERACTIONS_CARD,
-        )
-        expect(kpi?.visibility).toBe(false)
     })
 })
