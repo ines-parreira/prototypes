@@ -49,22 +49,24 @@ export function UserInfoHeader({
                 </Box>
                 <Box flexDirection="column" gap="xxxxs" minWidth={0}>
                     <Text overflow="ellipsis">{userName}</Text>
-                    {statusText && (
+                    <div className={css.textStack}>
+                        {statusText && (
+                            <Text
+                                className={css.statusText}
+                                overflow="ellipsis"
+                                size="sm"
+                            >
+                                {statusText}
+                            </Text>
+                        )}
                         <Text
-                            className={css.statusText}
+                            className={css.viewProfile}
                             overflow="ellipsis"
                             size="sm"
                         >
-                            {statusText}
+                            View profile
                         </Text>
-                    )}
-                    <Text
-                        className={css.viewProfile}
-                        overflow="ellipsis"
-                        size="sm"
-                    >
-                        View profile
-                    </Text>
+                    </div>
                 </Box>
             </Box>
         )
