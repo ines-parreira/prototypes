@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 import {
     Box,
     Disclosure,
@@ -23,6 +25,8 @@ export function VoiceCallTranscription({
     audio,
     type,
 }: VoiceCallTranscriptionProps) {
+    const [isExpanded, setIsExpanded] = useState(false)
+
     if (!!audio.deleted_datetime || !!audio.error_code) {
         return null
     }
@@ -38,7 +42,7 @@ export function VoiceCallTranscription({
                 return null
             }
             return (
-                <Disclosure>
+                <Disclosure onExpandedChange={setIsExpanded}>
                     <DisclosureHeader
                         title={({ isExpanded }) => (
                             <Box gap="xxs" alignItems="center">
@@ -54,6 +58,7 @@ export function VoiceCallTranscription({
                         <VoiceCallTranscriptionData
                             recordingType={type}
                             recordingId={audio.id}
+                            enabled={isExpanded}
                         />
                     </DisclosurePanel>
                 </Disclosure>

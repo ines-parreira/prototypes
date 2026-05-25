@@ -1,4 +1,5 @@
 import { screen } from '@testing-library/react'
+import { vi } from 'vitest'
 
 import {
     mockGetVoiceCallRecordingTranscriptionHandler,
@@ -14,6 +15,25 @@ import {
     VoiceCallRecordingTranscriptionStatus,
     VoiceCallRecordingType,
 } from '../models/types'
+
+beforeAll(() => {
+    class MockIntersectionObserver {
+        observe = vi.fn()
+        disconnect = vi.fn()
+        unobserve = vi.fn()
+    }
+
+    class MockResizeObserver {
+        observe = vi.fn()
+        disconnect = vi.fn()
+        unobserve = vi.fn()
+    }
+
+    window.IntersectionObserver =
+        MockIntersectionObserver as unknown as typeof IntersectionObserver
+    window.ResizeObserver =
+        MockResizeObserver as unknown as typeof ResizeObserver
+})
 
 const baseAudio = mockVoiceCallRecording({
     id: 1,
@@ -71,6 +91,44 @@ describe('VoiceCallTranscription', () => {
                 />,
             )
             expect(screen.getByText('Call transcription')).toBeInTheDocument()
+        })
+
+        it('does not fetch transcription data when the panel is collapsed', () => {
+            render(
+                <VoiceCallTranscription
+                    audio={{
+                        ...baseAudio,
+                        transcription_status:
+                            VoiceCallRecordingTranscriptionStatus.Completed,
+                    }}
+                    type={VoiceCallRecordingType.Recording}
+                />,
+            )
+
+            expect(
+                screen.queryByText(/loading the call transcription/i),
+            ).not.toBeInTheDocument()
+        })
+
+        it('fetches transcription data when the panel is expanded', async () => {
+            const { user } = render(
+                <VoiceCallTranscription
+                    audio={{
+                        ...baseAudio,
+                        transcription_status:
+                            VoiceCallRecordingTranscriptionStatus.Completed,
+                    }}
+                    type={VoiceCallRecordingType.Recording}
+                />,
+            )
+
+            await user.click(
+                screen.getByRole('button', { name: /call transcription/i }),
+            )
+
+            expect(
+                screen.getByText(/loading the call transcription/i),
+            ).toBeInTheDocument()
         })
     })
 

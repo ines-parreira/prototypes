@@ -46,6 +46,7 @@ describe('VoiceCallTranscriptionData', () => {
                 <VoiceCallTranscriptionData
                     recordingId={1}
                     recordingType={VoiceCallRecordingType.Recording}
+                    enabled={true}
                 />,
             )
 
@@ -59,12 +60,27 @@ describe('VoiceCallTranscriptionData', () => {
                 <VoiceCallTranscriptionData
                     recordingId={1}
                     recordingType={VoiceCallRecordingType.Voicemail}
+                    enabled={true}
                 />,
             )
 
             expect(
                 screen.getByText(/loading the voicemail transcription/i),
             ).toBeInTheDocument()
+        })
+
+        it('does not fetch when enabled is false', () => {
+            render(
+                <VoiceCallTranscriptionData
+                    recordingId={1}
+                    recordingType={VoiceCallRecordingType.Recording}
+                    enabled={false}
+                />,
+            )
+
+            expect(
+                screen.queryByText(/loading the call transcription/i),
+            ).not.toBeInTheDocument()
         })
     })
 
@@ -96,6 +112,7 @@ describe('VoiceCallTranscriptionData', () => {
                 <VoiceCallTranscriptionData
                     recordingId={1}
                     recordingType={VoiceCallRecordingType.Recording}
+                    enabled={true}
                 />,
             )
 
@@ -121,6 +138,7 @@ describe('VoiceCallTranscriptionData', () => {
                 <VoiceCallTranscriptionData
                     recordingId={1}
                     recordingType={VoiceCallRecordingType.Recording}
+                    enabled={true}
                 />,
             )
 
@@ -136,6 +154,7 @@ describe('VoiceCallTranscriptionData', () => {
                 <VoiceCallTranscriptionData
                     recordingId={1}
                     recordingType={VoiceCallRecordingType.Recording}
+                    enabled={true}
                 />,
             )
 

@@ -19,20 +19,24 @@ import css from './VoiceCallTranscriptionData.less'
 type VoiceCallTranscriptionDataProps = {
     recordingType: VoiceCallRecordingType
     recordingId: number
+    enabled: boolean
 }
 
 export function VoiceCallTranscriptionData({
     recordingId,
     recordingType,
+    enabled,
 }: VoiceCallTranscriptionDataProps) {
     const [speakerMapping, setSpeakerMapping] = useState<
         Record<string, VoiceCallRecordingTranscriptionSpeakersItem>
     >({})
 
-    const { data, isLoading, isError, refetch } =
+    const { data, isInitialLoading, isError, refetch } =
         useGetVoiceCallRecordingTranscription(recordingId, {
             query: {
+                enabled,
                 select: (data) => data.data,
+                staleTime: Infinity,
             },
         })
 
@@ -59,7 +63,7 @@ export function VoiceCallTranscriptionData({
             ? 'call'
             : 'voicemail'
 
-    if (isLoading) {
+    if (isInitialLoading) {
         return (
             <Text color="content-neutral-secondary">
                 We&apos;re currently loading the {entityLabel} transcription.
