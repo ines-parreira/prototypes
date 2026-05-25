@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { formatMetricValue } from '@repo/reporting'
 
 import { useAiAgentTrendCardDrillDown } from 'domains/reporting/hooks/drill-down/useAiAgentTrendCardDrillDown'
@@ -58,13 +57,6 @@ export const useReportingTrendCardProps = ({
         assigneeUserId,
     })
 
-    const { value: isTimeSeriesFFEnabled, isLoading: isFFLoading } =
-        useFlagWithLoading(
-            FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCardsWithTimeseries,
-        )
-    const isTimeSeriesEnabled =
-        isAiAgentTrendCard && isTimeSeriesFFEnabled && !isFFLoading
-
     const trend = useMemo(
         () => ({
             isFetching: trendData.isFetching,
@@ -79,7 +71,7 @@ export const useReportingTrendCardProps = ({
     )
 
     const timeSeriesViewProps = useMemo(() => {
-        if (!isTimeSeriesEnabled) {
+        if (!isAiAgentTrendCard) {
             return undefined
         }
 
@@ -109,7 +101,7 @@ export const useReportingTrendCardProps = ({
         }
     }, [
         timeSeriesView,
-        isTimeSeriesEnabled,
+        isAiAgentTrendCard,
         filters,
         userTimezone,
         granularity,

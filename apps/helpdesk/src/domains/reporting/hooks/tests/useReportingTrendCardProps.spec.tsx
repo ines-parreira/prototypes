@@ -1,4 +1,3 @@
-import { useFlagWithLoading } from '@repo/feature-flags'
 import { formatMetricValue } from '@repo/reporting'
 import { assumeMock, renderHook } from '@repo/testing'
 
@@ -19,17 +18,6 @@ import { initialState } from 'domains/reporting/state/stats/statsSlice'
 import { formatPreviousPeriod } from 'pages/aiAgent/analyticsOverview/utils/formatPreviousPeriod'
 import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { useOverallTimeSeries } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
-
-jest.mock('@repo/feature-flags', () => ({
-    FeatureFlagKey: {
-        AiAgentAnalyticsDashboardsTrendCardsWithTimeseries:
-            'ai-agent-analytics-dashboards-trend-cards-with-timeseries',
-        AiAgentAnalyticsFilters:
-            'linear_project_revamp-ai-agent-analytics_filters',
-    },
-    useFlagWithLoading: jest.fn(),
-}))
-const mockUseFlagWithLoading = jest.mocked(useFlagWithLoading)
 
 jest.mock('@repo/reporting', () => ({
     formatMetricValue: jest.fn(),
@@ -125,10 +113,6 @@ describe('useReportingTrendCardProps', () => {
         })
         formatPreviousPeriodMock.mockReturnValue('Jan 1 - Jan 7')
         useAiAgentTrendCardDrillDownMock.mockReturnValue(undefined)
-        mockUseFlagWithLoading.mockReturnValue({
-            value: true,
-            isLoading: false,
-        })
         mockUseAiAgentStatsFilters.mockReturnValue({
             statsFilters: {
                 period: mockCleanStatsFilters.period,
@@ -407,7 +391,7 @@ describe('useReportingTrendCardProps', () => {
         expect(mockUseTrend).toHaveBeenCalledWith(mockCleanStatsFilters, 'UTC')
     })
 
-    it('should pass period and stores to useTrend when isAiAgentTrendCard is true and filters FF is enabled', () => {
+    it('should pass period and stores to useTrend when isAiAgentTrendCard is true', () => {
         mockUseTrend.mockReturnValue(mockTrendData)
 
         renderHook(
@@ -431,7 +415,7 @@ describe('useReportingTrendCardProps', () => {
         )
     })
 
-    it('should pass period only to useTrend when isAiAgentTrendCard is true and filters FF is disabled', () => {
+    it('should pass period only to useTrend when isAiAgentTrendCard is true and period is before stores availability date', () => {
         mockUseAiAgentStatsFilters.mockReturnValue({
             statsFilters: { period: mockCleanStatsFilters.period },
         } as any)
@@ -455,7 +439,7 @@ describe('useReportingTrendCardProps', () => {
         )
     })
 
-    it('should pass period only to useTrend when isAiAgentTrendCard is true and filters FF is loading', () => {
+    it('should pass period only to useTrend when isAiAgentTrendCard is true and useAiAgentStatsFilters omits stores', () => {
         mockUseAiAgentStatsFilters.mockReturnValue({
             statsFilters: { period: mockCleanStatsFilters.period },
         } as any)
@@ -542,10 +526,6 @@ describe('useReportingTrendCardProps', () => {
 
     describe('timeSeriesView properties', () => {
         beforeEach(() => {
-            mockUseFlagWithLoading.mockReturnValue({
-                value: true,
-                isLoading: false,
-            })
             mockUseTrend.mockReturnValue(mockTrendData)
         })
 
@@ -568,12 +548,7 @@ describe('useReportingTrendCardProps', () => {
                 },
             )
 
-        it('is enabled when feature flag is on and isAiAgentTrendCard is true', () => {
-            mockUseFlagWithLoading.mockReturnValue({
-                value: true,
-                isLoading: false,
-            })
-
+        it('is enabled when isAiAgentTrendCard is true', () => {
             const { result } = renderWithTimeSeries({ comingSoon: true })
 
             expect(result.current.timeSeriesView).toBeDefined()
@@ -595,34 +570,7 @@ describe('useReportingTrendCardProps', () => {
             expect(result.current.timeSeriesView).toEqual({ comingSoon: true })
         })
 
-        it('is disabled when feature flag is still loading', () => {
-            mockUseFlagWithLoading.mockReturnValue({
-                value: true,
-                isLoading: true,
-            })
-
-            const { result } = renderWithTimeSeries({})
-
-            expect(result.current.timeSeriesView).toBeUndefined()
-        })
-
-        it('is disabled when feature flag is off', () => {
-            mockUseFlagWithLoading.mockReturnValue({
-                value: false,
-                isLoading: false,
-            })
-
-            const { result } = renderWithTimeSeries({ comingSoon: true })
-
-            expect(result.current.timeSeriesView).toBeUndefined()
-        })
-
         it('is disabled when isAiAgentTrendCard is false', () => {
-            mockUseFlagWithLoading.mockReturnValue({
-                value: true,
-                isLoading: false,
-            })
-
             const { result } = renderWithTimeSeries({ comingSoon: true }, false)
 
             expect(result.current.timeSeriesView).toBeUndefined()

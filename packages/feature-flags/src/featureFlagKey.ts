@@ -52,7 +52,6 @@ export enum FeatureFlagKey {
     AiAgentSmsChannel = 'ai-agent-sms-channel',
     AiAgentAnalyticsDashboardsNewScreens = 'linear.project_revamp-ai-agent-analytics-dashboards.show-new-screens',
     AiAgentAnalyticsDashboardsTrendCards = 'linear.project_revamp-ai-agent-analytics-dashboards.trendcards-and-preferences',
-    AiAgentAnalyticsDashboardsTrendCardsWithTimeseries = 'linear.project_revamp-ai-agent-analytics-dashboards.trend-cards-with-timeseries',
     AiAgentAnalyticsCustomDashboards = 'linear-project_revamp-ai-agent-analytics-dashboards_custom-dashboards',
     AiAgentAnalyticsNavTooltip = 'linear-project_revamp-ai-agent-analytics-dashboards_nav-tooltip',
     AiAgentAnalyticsDisableLegacyReports = 'linear-project_revamp-ai-agent-analytics_disable-legacy-reports',
