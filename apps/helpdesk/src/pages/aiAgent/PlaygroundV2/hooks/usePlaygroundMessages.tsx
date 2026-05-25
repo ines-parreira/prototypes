@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
+import { useGetCustomer } from '@repo/customer/hooks'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { reportError } from '@repo/logging'
 import { isCancel } from 'axios'
@@ -11,7 +12,6 @@ import type {
     PlaygroundTextMessage,
 } from 'models/aiAgentPlayground/types'
 import { MessageType, TestSessionLogType } from 'models/aiAgentPlayground/types'
-import { useGetCustomer } from 'models/customer/queries'
 import { DEFAULT_PLAYGROUND_CUSTOMER } from 'pages/aiAgent/constants'
 import { PlaygroundGenericErrorMessage } from 'pages/aiAgent/PlaygroundV2/components/PlaygroundGenericErrorMessage/PlaygroundGenericErrorMessage'
 import {
@@ -32,6 +32,15 @@ import { handleAiAgentTestSessionLog } from '../utils/playground-handler.utils'
 import { usePlaygroundApi } from './usePlaygroundApi'
 
 const OPTIMISTIC_MESSAGE_ID = '00000000-0000-0000-0000-000000000000'
+
+type FetchedCustomer = PlaygroundCustomer & {
+    firstname?: string | null
+    lastname?: string | null
+}
+
+type FetchedCustomerResponse = {
+    data: FetchedCustomer
+}
 
 const PLACEHOLDER_MESSAGE: PlaygroundMessage = {
     sender: AI_AGENT_SENDER,
@@ -160,9 +169,15 @@ export const usePlaygroundMessages = () => {
             ? latestShopperCustomerId
             : undefined
 
-    const { data: fetchedCustomer } = useGetCustomer(customerToFetch ?? 0, {
-        enabled: !!customerToFetch,
-    })
+    const { data: fetchedCustomer } = useGetCustomer<FetchedCustomerResponse>(
+        customerToFetch ?? 0,
+        undefined,
+        {
+            query: {
+                enabled: !!customerToFetch,
+            },
+        },
+    )
 
     useEffect(() => {
         const data = fetchedCustomer?.data

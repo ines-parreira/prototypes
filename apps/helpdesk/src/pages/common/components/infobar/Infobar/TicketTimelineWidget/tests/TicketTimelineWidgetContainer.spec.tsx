@@ -1,5 +1,6 @@
 import type { ComponentProps } from 'react'
 
+import { useGetCustomer } from '@repo/customer/hooks'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { render } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
@@ -10,7 +11,6 @@ import type { CustomField, TicketCompact } from '@gorgias/helpdesk-queries'
 import { useGetTicket } from '@gorgias/helpdesk-queries'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import { useGetCustomer } from 'models/customer/queries'
 import { useTicketList } from 'timeline/hooks/useTicketList'
 
 import { CurrentTicketTimelineWidgetContainer } from '../CurrentTicketTimelineWidgetContainer'
@@ -46,7 +46,7 @@ jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions', () => ({
     useCustomFieldDefinitions: jest.fn(),
 }))
 
-jest.mock('models/customer/queries', () => ({
+jest.mock('@repo/customer/hooks', () => ({
     useGetCustomer: jest.fn(),
 }))
 
@@ -296,7 +296,9 @@ describe('TicketTimelineWidgetContainer', () => {
 
         renderTicketTimelineWidgetContainer()
 
-        expect(mockUseGetCustomer).toHaveBeenCalledWith(123, { enabled: true })
+        expect(mockUseGetCustomer).toHaveBeenCalledWith(123, undefined, {
+            query: { enabled: true },
+        })
         expect(
             screen.getByText("This is John Doe's first ticket"),
         ).toBeInTheDocument()
@@ -313,8 +315,8 @@ describe('TicketTimelineWidgetContainer', () => {
 
         renderTicketTimelineWidgetContainer()
 
-        expect(mockUseGetCustomer).toHaveBeenCalledWith(123, {
-            enabled: false,
+        expect(mockUseGetCustomer).toHaveBeenCalledWith(123, undefined, {
+            query: { enabled: false },
         })
         expect(screen.queryByText(/first ticket/)).not.toBeInTheDocument()
     })

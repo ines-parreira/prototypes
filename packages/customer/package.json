@@ -4,7 +4,8 @@
     "description": "Customer",
     "private": true,
     "exports": {
-        ".": "./src/index.ts"
+        ".": "./src/index.ts",
+        "./hooks": "./src/hooks/index.ts"
     },
     "scripts": {
         "format:check": "oxfmt --check .",

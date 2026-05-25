@@ -1,4 +1,5 @@
 import { CustomerInfo } from '@repo/customer'
+import { useGetCustomer } from '@repo/customer/hooks'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { render } from '@repo/testing'
 import {
@@ -8,7 +9,7 @@ import {
 import { screen } from '@testing-library/react'
 
 import type { TicketCustomer } from '@gorgias/helpdesk-queries'
-import { useGetCurrentUser, useGetCustomer } from '@gorgias/helpdesk-queries'
+import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
 
 import { useCustomerProfileActions } from 'pages/common/components/infobar/Infobar/useCustomerProfileActions'
 import { TimelineSidePanel } from 'pages/tickets/detail/TimelineSidePanel'
@@ -69,6 +70,9 @@ jest.mock('@repo/tickets/infobar-sections', () => ({
 jest.mock('@gorgias/helpdesk-queries', () => ({
     ...jest.requireActual('@gorgias/helpdesk-queries'),
     useGetCurrentUser: jest.fn(),
+}))
+
+jest.mock('@repo/customer/hooks', () => ({
     useGetCustomer: jest.fn(),
 }))
 

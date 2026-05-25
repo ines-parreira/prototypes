@@ -1,4 +1,4 @@
-import { useGetCustomer } from '@gorgias/helpdesk-queries'
+import { useGetCustomer } from '@repo/customer/hooks'
 
 import { customerGetQueryOptions } from '../../../hooks/shared/customerQueryOptions'
 

@@ -1,3 +1,4 @@
+import { useGetCustomer } from '@repo/customer/hooks'
 import { assumeMock, render, userEvent } from '@repo/testing'
 import {
     act,
@@ -9,12 +10,13 @@ import {
 import { isValidPhoneNumber } from 'libphonenumber-js'
 
 import { toast } from '@gorgias/axiom'
-import { useGetCustomer, useUpdateCustomer } from '@gorgias/helpdesk-queries'
+import { useUpdateCustomer } from '@gorgias/helpdesk-queries'
 import { LegacyChannelSlug } from '@gorgias/helpdesk-types'
 
 import NewPhoneNumber from '../NewPhoneNumber'
 
 jest.mock('@gorgias/helpdesk-queries')
+jest.mock('@repo/customer/hooks')
 jest.mock('libphonenumber-js')
 
 jest.mock(

@@ -10,7 +10,7 @@ export function useSourceCustomer(sourceCustomer: Customer | null) {
         {
             query: {
                 enabled: !!sourceCustomer?.id,
-                staleTime: DurationInMs.FiveMinutes,
+                staleTime: DurationInMs.OneHour,
             },
         },
     )

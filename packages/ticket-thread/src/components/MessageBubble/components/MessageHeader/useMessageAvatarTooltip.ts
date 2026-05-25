@@ -1,11 +1,9 @@
+import { useGetCustomer } from '@repo/customer/hooks'
 import type { DateTimeResultFormatType } from '@repo/utils'
 import { DurationInMs, formatDatetime } from '@repo/utils'
 
 import type { UserAvailability } from '@gorgias/helpdesk-queries'
-import {
-    useGetCustomer,
-    useGetUserAvailability,
-} from '@gorgias/helpdesk-queries'
+import { useGetUserAvailability } from '@gorgias/helpdesk-queries'
 import type { TicketMessageUserOrCustomer } from '@gorgias/helpdesk-types'
 
 import { customerGetQueryOptions } from '../../../../hooks/shared/customerQueryOptions'

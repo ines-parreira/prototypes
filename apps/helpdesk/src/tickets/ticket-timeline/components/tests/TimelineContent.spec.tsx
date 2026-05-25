@@ -1,3 +1,4 @@
+import { useGetCustomer } from '@repo/customer/hooks'
 import { useHelpdeskV2MS2Flag } from '@repo/feature-flags'
 import { assumeMock, render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
@@ -9,7 +10,6 @@ import { TicketStatus } from '@gorgias/helpdesk-types'
 
 import { TicketChannel } from 'business/types/ticket'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import { useGetCustomer } from 'models/customer/queries'
 import type { Customer } from 'models/customer/types'
 import { TimelineItemKind } from 'timeline/types'
 import type { FilterKey, InteractionFilterType } from 'timeline/types'
@@ -36,8 +36,7 @@ jest.mock('../../hooks/useTicketList', () => ({
 jest.mock('tickets/ticket-detail/hooks/useTicket')
 jest.mock('timeline/ticket-modal/hooks/useTicketModalContext')
 
-jest.mock('models/customer/queries', () => ({
-    ...jest.requireActual('models/customer/queries'),
+jest.mock('@repo/customer/hooks', () => ({
     useGetCustomer: jest.fn(),
 }))
 

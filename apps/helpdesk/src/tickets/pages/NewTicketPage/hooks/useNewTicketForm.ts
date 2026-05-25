@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { useGetCustomer } from '@repo/customer/hooks'
 import { useSearchParams } from '@repo/routing'
 import { fromJS } from 'immutable'
 import { useLocation } from 'react-router-dom'
 import { z } from 'zod'
 
 import { getCustomer } from '@gorgias/helpdesk-client'
-import { useGetCustomer } from '@gorgias/helpdesk-queries'
 import type {
     Team,
     TicketCustomer,

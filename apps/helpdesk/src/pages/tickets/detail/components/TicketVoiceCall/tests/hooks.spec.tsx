@@ -1,13 +1,14 @@
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
+import * as customerHooks from '@repo/customer/hooks'
+
 import * as agentsQueries from 'models/agents/queries'
-import * as customersQueries from 'models/customer/queries'
 
 import { useAgentDetails, useCustomerDetails } from '../hooks'
 
 const useGetAgentSpy = jest.spyOn(agentsQueries, 'useGetAgent')
-const useGetCustomerSpy = jest.spyOn(customersQueries, 'useGetCustomer')
+const useGetCustomerSpy = jest.spyOn(customerHooks, 'useGetCustomer')
 
 describe('hooks', () => {
     describe('useCustomerDetails', () => {
@@ -71,7 +72,9 @@ describe('hooks', () => {
                 useCustomerDetails({ customerId: 1, isEnabled: true }),
             )
 
-            expect(useGetCustomerSpy.mock.calls?.[0]?.[1]?.enabled).toBe(true)
+            expect(useGetCustomerSpy.mock.calls?.[0]?.[2]?.query?.enabled).toBe(
+                true,
+            )
         })
 
         it('should disable query when isEnabled is false', () => {
@@ -79,7 +82,9 @@ describe('hooks', () => {
                 useCustomerDetails({ customerId: 1, isEnabled: false }),
             )
 
-            expect(useGetCustomerSpy.mock.calls?.[0]?.[1]?.enabled).toBe(false)
+            expect(useGetCustomerSpy.mock.calls?.[0]?.[2]?.query?.enabled).toBe(
+                false,
+            )
         })
     })
 

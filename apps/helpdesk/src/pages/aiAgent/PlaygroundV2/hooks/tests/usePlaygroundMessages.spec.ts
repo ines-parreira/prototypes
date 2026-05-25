@@ -1,3 +1,4 @@
+import { useGetCustomer } from '@repo/customer/hooks'
 import { useFlag } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
@@ -7,7 +8,6 @@ import {
     TestSessionLogType,
     TicketOutcome,
 } from 'models/aiAgentPlayground/types'
-import { useGetCustomer } from 'models/customer/queries'
 import { DEFAULT_PLAYGROUND_CUSTOMER } from 'pages/aiAgent/constants'
 
 import { playgroundMessageFixture } from '../../../fixtures/playgroundMessages.fixture'
@@ -22,7 +22,7 @@ jest.mock('../usePlaygroundApi', () => ({
 }))
 const mockedUsePlaygroundApi = jest.mocked(usePlaygroundApi)
 
-jest.mock('models/customer/queries', () => ({
+jest.mock('@repo/customer/hooks', () => ({
     useGetCustomer: jest.fn(),
 }))
 const mockedUseGetCustomer = jest.mocked(useGetCustomer)
@@ -860,8 +860,10 @@ describe('usePlaygroundMessages hook', () => {
 
             renderHook(() => usePlaygroundMessages())
 
-            expect(mockedUseGetCustomer).toHaveBeenCalledWith(42, {
-                enabled: true,
+            expect(mockedUseGetCustomer).toHaveBeenCalledWith(42, undefined, {
+                query: {
+                    enabled: true,
+                },
             })
             expect(setSettingsMock).toHaveBeenCalledWith({
                 selectedCustomer: {
@@ -913,8 +915,10 @@ describe('usePlaygroundMessages hook', () => {
 
             renderHook(() => usePlaygroundMessages())
 
-            expect(mockedUseGetCustomer).toHaveBeenCalledWith(0, {
-                enabled: false,
+            expect(mockedUseGetCustomer).toHaveBeenCalledWith(0, undefined, {
+                query: {
+                    enabled: false,
+                },
             })
             expect(setSettingsMock).not.toHaveBeenCalled()
         })
@@ -976,8 +980,10 @@ describe('usePlaygroundMessages hook', () => {
 
             renderHook(() => usePlaygroundMessages())
 
-            expect(mockedUseGetCustomer).toHaveBeenCalledWith(99, {
-                enabled: true,
+            expect(mockedUseGetCustomer).toHaveBeenCalledWith(99, undefined, {
+                query: {
+                    enabled: true,
+                },
             })
         })
 

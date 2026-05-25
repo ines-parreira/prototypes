@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { ShopifyCustomerProvider } from '@repo/customer'
+import { useGetCustomer } from '@repo/customer/hooks'
 import { useHelpdeskV2MS2Flag } from '@repo/feature-flags'
 import type { EnrichedTicket } from '@repo/tickets'
 
@@ -10,7 +11,7 @@ import { useGetIntegration } from '@gorgias/helpdesk-queries'
 import type { Order } from 'constants/integrations/types/shopify'
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import { useGetCustomer } from 'models/customer/queries'
+import type { Customer } from 'models/customer/types'
 import { extractOrders } from 'timeline/helpers/orders'
 import { TimelineItemKind } from 'timeline/types'
 
@@ -32,6 +33,10 @@ type Props = {
     onClose?: () => void
 }
 
+type CustomerResponse = {
+    data: Customer
+}
+
 export function TimelineContent({
     shopperId,
     activeTicketId,
@@ -46,9 +51,15 @@ export function TimelineContent({
         isFetchingNextPage,
     } = useTicketList(shopperId)
 
-    const { data: customerData } = useGetCustomer(shopperId ?? 0, {
-        enabled: !!shopperId,
-    })
+    const { data: customerData } = useGetCustomer<CustomerResponse>(
+        shopperId ?? 0,
+        undefined,
+        {
+            query: {
+                enabled: !!shopperId,
+            },
+        },
+    )
 
     const customer = customerData?.data
     const orders = customer ? extractOrders(customer) : []

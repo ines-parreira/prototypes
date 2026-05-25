@@ -36,7 +36,7 @@ describe('useSourceCustomer', () => {
         expect(mockedUseGetCustomer).toHaveBeenCalledWith(0, undefined, {
             query: {
                 enabled: false,
-                staleTime: DurationInMs.FiveMinutes,
+                staleTime: DurationInMs.OneHour,
             },
         })
 
@@ -61,7 +61,7 @@ describe('useSourceCustomer', () => {
         expect(mockedUseGetCustomer).toHaveBeenCalledWith(2, undefined, {
             query: {
                 enabled: true,
-                staleTime: DurationInMs.FiveMinutes,
+                staleTime: DurationInMs.OneHour,
             },
         })
 

@@ -1,9 +1,8 @@
+import { useGetCustomer } from '@repo/customer/hooks'
+
 import { mockTicketMessageUserOrCustomer } from '@gorgias/helpdesk-mocks'
 import type * as HelpdeskQueries from '@gorgias/helpdesk-queries'
-import {
-    useGetCustomer,
-    useGetUserAvailability,
-} from '@gorgias/helpdesk-queries'
+import { useGetUserAvailability } from '@gorgias/helpdesk-queries'
 
 import { render } from '../../../../tests/render.utils'
 import { MessageAvatar } from '../MessageHeader/MessageAvatar'
@@ -13,10 +12,13 @@ vi.mock('@gorgias/helpdesk-queries', async (importOriginal) => {
 
     return {
         ...actual,
-        useGetCustomer: vi.fn(),
         useGetUserAvailability: vi.fn(),
     }
 })
+
+vi.mock('@repo/customer/hooks', () => ({
+    useGetCustomer: vi.fn(),
+}))
 
 vi.mock('../../../../hooks/shared/useTicketThreadDateTimeFormat', () => ({
     useTicketThreadDateTimeFormat: vi.fn(() => ({

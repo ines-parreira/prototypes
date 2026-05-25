@@ -1,6 +1,7 @@
 import type { ComponentType } from 'react'
 import type React from 'react'
 
+import { useGetCustomer } from '@repo/customer/hooks'
 import { renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 import type { LocationDescriptor } from 'history'
@@ -11,7 +12,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { getCustomer } from '@gorgias/helpdesk-client'
-import { useGetCustomer } from '@gorgias/helpdesk-queries'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 import type { RootState, StoreDispatch } from 'state/types'
@@ -24,8 +24,7 @@ jest.mock('../hooks/useNewTicketSubmit')
 jest.mock('@gorgias/helpdesk-client', () => ({
     getCustomer: jest.fn(),
 }))
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    ...jest.requireActual('@gorgias/helpdesk-queries'),
+jest.mock('@repo/customer/hooks', () => ({
     useGetCustomer: jest.fn(),
 }))
 

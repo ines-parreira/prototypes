@@ -3483,6 +3483,9 @@ importers:
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
+      '@repo/customer':
+        specifier: workspace:*
+        version: link:../customer
       '@repo/feature-flags':
         specifier: workspace:*
         version: link:../feature-flags

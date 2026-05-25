@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
+import { useGetCustomer } from '@repo/customer/hooks'
 import type { TicketCustomer } from '@gorgias/helpdesk-queries'
-import { useGetCustomer } from '@gorgias/helpdesk-queries'
 
 import { getShopifyCustomerAssociations } from './getShopifyCustomerAssociations'
 

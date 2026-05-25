@@ -19,6 +19,7 @@ import {
 import { IntegrationType } from 'models/integration/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
+import { DurationInMs } from '@repo/utils'
 import {
     getDefaultAddressInfoFromActiveCustomer,
     getPhoneNumberFromActiveCustomer,
@@ -543,7 +544,7 @@ describe('throttledUpdateCustomerCache()', () => {
         expect(appQueryClient.invalidateQueries).toHaveBeenCalledTimes(2)
     })
 
-    it('should call invalidate at most once every 5 seconds', () => {
+    it('should call invalidate at most once per throttle interval', () => {
         jest.useFakeTimers()
 
         throttledUpdateCustomerCache(1)
@@ -554,7 +555,7 @@ describe('throttledUpdateCustomerCache()', () => {
         throttledUpdateCustomerCache(1)
         expect(appQueryClient.invalidateQueries).toHaveBeenCalledTimes(1)
 
-        jest.advanceTimersByTime(5_000)
+        jest.advanceTimersByTime(DurationInMs.FifteenSeconds)
         expect(appQueryClient.invalidateQueries).toHaveBeenCalledTimes(2)
 
         throttledUpdateCustomerCache(1)

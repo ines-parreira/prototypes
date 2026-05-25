@@ -1,10 +1,11 @@
 import { useState } from 'react'
 
+import { useGetCustomer } from '@repo/customer/hooks'
 import { isValidPhoneNumber } from 'libphonenumber-js'
 
 import { LegacyButton as Button, toast } from '@gorgias/axiom'
 import type { UpdateCustomerBodyChannelsItem } from '@gorgias/helpdesk-queries'
-import { useGetCustomer, useUpdateCustomer } from '@gorgias/helpdesk-queries'
+import { useUpdateCustomer } from '@gorgias/helpdesk-queries'
 import { LegacyChannelSlug } from '@gorgias/helpdesk-types'
 
 import useAppDispatch from 'hooks/useAppDispatch'

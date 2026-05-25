@@ -1,12 +1,14 @@
 import { useMemo } from 'react'
 
 import { appQueryClient } from '@repo/api-resources'
+import { useGetCustomer } from '@repo/customer/hooks'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 import { memoize, throttle } from 'lodash'
 
-import { queryKeys, useGetCustomer } from '@gorgias/helpdesk-queries'
+import { queryKeys } from '@gorgias/helpdesk-queries'
 
+import { DurationInMs } from '@repo/utils'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
 import { makeHasIntegrationOfTypes } from 'state/integrations/selectors'
@@ -86,9 +88,6 @@ export type UseWidgetDataResult = {
 //   which is causing issues due to payload size and frequency
 //
 
-export const CUSTOMER_DATA_STALE_TIME_MS = 60 * 60 * 1000 // 60 minutes
-export const CUSTOMER_DATA_CACHE_TIME_MS = 61 * 60 * 1000 // 61 minutes
-
 export function useWidgetData({
     source,
     path,
@@ -97,7 +96,6 @@ export function useWidgetData({
     const { data: customerRQData } = useGetCustomer(customerId!, undefined, {
         query: {
             enabled: !!customerId,
-            staleTime: CUSTOMER_DATA_STALE_TIME_MS,
         },
     })
 
@@ -129,7 +127,7 @@ export const getThrottledUpdateForCustomer = memoize((id: number) =>
                 queryKey: queryKeys.customers.getCustomer(id),
             })
         },
-        5_000,
-        { leading: true },
+        DurationInMs.FifteenSeconds,
+        { leading: true, trailing: true },
     ),
 )

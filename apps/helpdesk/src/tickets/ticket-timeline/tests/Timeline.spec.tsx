@@ -1,3 +1,4 @@
+import { useGetCustomer } from '@repo/customer/hooks'
 import { useFlag } from '@repo/feature-flags'
 import { assumeMock, render } from '@repo/testing'
 import { screen, within } from '@testing-library/react'
@@ -9,7 +10,6 @@ import { TicketStatus } from '@gorgias/helpdesk-types'
 
 import { TicketChannel } from 'business/types/ticket'
 import type { Order } from 'constants/integrations/types/shopify'
-import { useGetCustomer } from 'models/customer/queries'
 import type { Customer } from 'models/customer/types'
 import { IntegrationType } from 'models/integration/constants'
 import { getActiveCustomer } from 'state/customers/selectors'
@@ -30,8 +30,7 @@ jest.mock('state/customers/selectors', () => ({
 
 jest.mock('@repo/logging')
 
-jest.mock('models/customer/queries', () => ({
-    ...jest.requireActual('models/customer/queries'),
+jest.mock('@repo/customer/hooks', () => ({
     useGetCustomer: jest.fn(),
 }))
 

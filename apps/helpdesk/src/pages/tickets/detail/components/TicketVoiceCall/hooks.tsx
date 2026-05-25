@@ -1,9 +1,18 @@
+import { useGetCustomer } from '@repo/customer/hooks'
+
+import type { getCustomer } from '@gorgias/helpdesk-client'
+
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetAgent } from 'models/agents/queries'
-import { useGetCustomer } from 'models/customer/queries'
 import type { Customer } from 'models/customer/types'
 import { getTicketCustomer } from 'state/ticket/selectors'
+
+type CustomerResponse = {
+    data: Customer
+}
+
+type GeneratedCustomerResponse = Awaited<ReturnType<typeof getCustomer>>
 
 export function useCustomerDetails({
     customerId,
@@ -20,14 +29,21 @@ export function useCustomerDetails({
         ? ticketCustomer
         : null
 
-    const customerResponse = useGetCustomer(customerId, {
-        retry: false,
-        staleTime: 30 * 60 * 1000, // 30 minutes
-        initialData: customerDetails
-            ? axiosSuccessResponse(customerDetails)
-            : undefined,
-        enabled: isEnabled,
-    })
+    const customerResponse = useGetCustomer<CustomerResponse>(
+        customerId,
+        undefined,
+        {
+            query: {
+                retry: false,
+                initialData: customerDetails
+                    ? (axiosSuccessResponse(
+                          customerDetails,
+                      ) as unknown as GeneratedCustomerResponse)
+                    : undefined,
+                enabled: isEnabled,
+            },
+        },
+    )
 
     return {
         customer: customerResponse.data?.data,

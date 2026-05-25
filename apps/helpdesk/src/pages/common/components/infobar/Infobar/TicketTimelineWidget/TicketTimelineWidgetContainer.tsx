@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from 'react'
 
+import { useGetCustomer } from '@repo/customer/hooks'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import type { EnrichedTicket } from '@repo/tickets'
 import { TicketTimelineWidget } from '@repo/tickets'
 
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import { useGetCustomer } from 'models/customer/queries'
 import type { Customer } from 'models/customer/types'
 import { TicketTimelineSidePanelPreview } from 'tickets/ticket-timeline/components/TicketTimelineSidePanelPreview'
 import { TICKET_FETCHED_LIMIT } from 'tickets/ticket-timeline/constants'
@@ -30,6 +30,10 @@ function getCustomerName(
 type TicketTimelineWidgetContainerProps = {
     shopperId?: number
     activeTicketId?: string
+}
+
+type CustomerResponse = {
+    data: Customer
 }
 
 export function TicketTimelineWidgetContainer({
@@ -60,9 +64,15 @@ export function TicketTimelineWidgetContainer({
         channelToIcon: channelToCommunicationIcon,
     })
 
-    const { data: customerData } = useGetCustomer(shopperId ?? 0, {
-        enabled: totalNumber === 1 && !!shopperId,
-    })
+    const { data: customerData } = useGetCustomer<CustomerResponse>(
+        shopperId ?? 0,
+        undefined,
+        {
+            query: {
+                enabled: totalNumber === 1 && !!shopperId,
+            },
+        },
+    )
 
     const customerName =
         totalNumber === 1 ? getCustomerName(customerData?.data) : undefined
