@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react'
 
+import { screen } from '@testing-library/react'
+
 import {
     mockListTicketTagsHandler,
     mockTicketMessage,
@@ -179,6 +181,27 @@ describe('TicketMessage', () => {
                 cc: 'Manager (manager@example.com)',
                 bcc: 'Audit (audit@example.com)',
                 currentPageUrl: 'https://example.com/products/sneakers',
+            }),
+        )
+    })
+
+    it('renders forwarded email metadata and passes the forward icon', () => {
+        const item = createItem()
+
+        item.data.source = {
+            ...item.data.source,
+            type: item.data.source?.type ?? 'email',
+            extra: {
+                forward: true,
+            },
+        } as TicketThreadRegularMessageItem['data']['source']
+
+        render(<TicketMessage item={item} />)
+
+        expect(screen.getByText('forwarded this email')).toBeInTheDocument()
+        expect(messageChannelSpy.mock.calls[0]?.[0]).toEqual(
+            expect.objectContaining({
+                channelIcon: 'forward',
             }),
         )
     })

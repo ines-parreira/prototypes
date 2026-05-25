@@ -2,6 +2,7 @@ import { screen } from '@testing-library/react'
 
 import { render } from '../../../../tests/render.utils'
 import { MessageCampaignLink } from '../MessageHeader/MessageCampaignLink'
+import { MessageMeta } from '../MessageHeader/MessageMeta'
 import { MessageMetaLabel } from '../MessageHeader/MessageMetaLabel'
 import { MessageMetaLink } from '../MessageHeader/MessageMetaLink'
 import { MessageSearchQuery } from '../MessageHeader/MessageSearchQuery'
@@ -41,6 +42,14 @@ describe('MessageSearchQuery', () => {
         render(<MessageSearchQuery query="return policy" />)
 
         expect(screen.getByText('return policy')).toBeInTheDocument()
+    })
+})
+
+describe('MessageMeta', () => {
+    it('renders forwarded metadata', () => {
+        render(<MessageMeta meta={null} isForwarded />)
+
+        expect(screen.getByText('forwarded this email')).toBeInTheDocument()
     })
 })
 

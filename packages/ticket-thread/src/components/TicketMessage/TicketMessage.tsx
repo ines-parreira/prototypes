@@ -12,6 +12,7 @@ import { MessageErrors } from '../MessageBubble/components/MessageErrors'
 import { MessageFooter } from '../MessageBubble/components/MessageFooter'
 import { getMessageChannelParticipants } from '../MessageBubble/components/MessageHeader/getMessageChannelParticipants'
 import { getMessageCurrentPageUrl } from '../MessageBubble/components/MessageHeader/getMessageCurrentPageUrl'
+import { isForwardedMessageSource } from '../MessageBubble/components/MessageHeader/isForwardedMessageSource'
 import { MessageHeaderContainer } from '../MessageBubble/components/MessageHeader/Layout'
 import { MessageAvatar } from '../MessageBubble/components/MessageHeader/MessageAvatar'
 import { MessageChannel } from '../MessageBubble/components/MessageHeader/MessageChannel'
@@ -37,6 +38,8 @@ export function TicketMessage({ item }: TicketMessageProps) {
         item.data.source,
     )
     const currentPageUrl = getMessageCurrentPageUrl(item.data.meta)
+    const isForwarded = isForwardedMessageSource(item.data.source)
+    const channelIcon = isForwarded ? 'forward' : undefined
     const senderEmail =
         item.data.source?.type === 'email'
             ? item.data.source.from?.address
@@ -80,6 +83,7 @@ export function TicketMessage({ item }: TicketMessageProps) {
                             cc={cc}
                             bcc={bcc}
                             currentPageUrl={currentPageUrl}
+                            channelIcon={channelIcon}
                         />
                         <MessageDeliveryIcon item={item} />
                         <MessageTimestamp
@@ -90,6 +94,7 @@ export function TicketMessage({ item }: TicketMessageProps) {
                 <MessageMeta
                     meta={item.data.meta}
                     integrationId={item.data.integration_id}
+                    isForwarded={isForwarded}
                 />
                 <MessageBody item={displayedItem} />
                 <MessageFooter item={displayedItem} />
