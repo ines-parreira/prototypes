@@ -6,8 +6,8 @@ import { reportError } from '@repo/logging'
 
 import {
     AgentActivityProvider,
-    AgentOnlineStatusProvider,
     RealtimeProvider,
+    useRealtimeAccountSubscription,
 } from '@gorgias/realtime'
 import type { RealtimeConnectionStateChange } from '@gorgias/realtime'
 
@@ -16,6 +16,14 @@ import { useRealtimeConnectionStateChanges } from './hooks/useRealtimeConnection
 
 type Props = {
     children: ReactNode
+}
+
+// this subscription hook depends on ably client context, so it must be rendered
+// from within `RealtimeProvider`
+const AgentsOnlineStatusInitializer = () => {
+    useRealtimeAccountSubscription()
+
+    return null
 }
 
 const AblyRealtimeProviders = ({ children }: Props) => {
@@ -87,14 +95,13 @@ const AblyRealtimeProviders = ({ children }: Props) => {
             logHandler={logHandler}
             onConnectionStateChange={onConnectionStateChange}
         >
-            <AgentOnlineStatusProvider>
-                <AgentActivityProvider>
-                    {isEmailIntegrationMigrationToAblyEnabled && (
-                        <EmailIntegrationMigrationRealtimeHandler />
-                    )}
-                    {children}
-                </AgentActivityProvider>
-            </AgentOnlineStatusProvider>
+            <AgentsOnlineStatusInitializer />
+            <AgentActivityProvider>
+                {isEmailIntegrationMigrationToAblyEnabled && (
+                    <EmailIntegrationMigrationRealtimeHandler />
+                )}
+                {children}
+            </AgentActivityProvider>
         </RealtimeProvider>
     )
 }

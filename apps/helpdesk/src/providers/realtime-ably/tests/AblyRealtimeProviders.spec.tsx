@@ -1,6 +1,7 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { reportError } from '@repo/logging'
 import { render } from '@repo/testing'
+import { useRealtimeAccountSubscription } from '@gorgias/realtime'
 
 import AblyRealtimeProviders from '../AblyRealtimeProviders'
 
@@ -18,6 +19,8 @@ let mockOnConnectionStateChange:
     | undefined
 
 const mockHookOnRealtimeConnectionStateChange = jest.fn()
+const mockUseRealtimeAccountSubscription =
+    useRealtimeAccountSubscription as jest.Mock
 
 jest.mock('../hooks/useRealtimeConnectionStateChanges', () => ({
     useRealtimeConnectionStateChanges: () => ({
@@ -64,11 +67,7 @@ jest.mock('@gorgias/realtime', () => ({
     AgentActivityProvider: ({ children }: { children?: React.ReactNode }) => (
         <div data-testid="agent-activity-provider">{children}</div>
     ),
-    AgentOnlineStatusProvider: ({
-        children,
-    }: {
-        children: React.ReactNode
-    }) => <div data-testid="agent-online-status-provider">{children}</div>,
+    useRealtimeAccountSubscription: jest.fn(),
 }))
 
 jest.mock('@repo/feature-flags')
@@ -83,6 +82,7 @@ describe('AblyRealtimeProviders', () => {
         mockLogHandler = undefined
         mockOnConnectionStateChange = undefined
         mockHookOnRealtimeConnectionStateChange.mockClear()
+        mockUseRealtimeAccountSubscription.mockClear()
         mockReportError.mockClear()
     })
 
@@ -97,8 +97,8 @@ describe('AblyRealtimeProviders', () => {
 
         expect(getByTestId('realtime-provider')).toBeInTheDocument()
         expect(getByTestId('agent-activity-provider')).toBeInTheDocument()
-        expect(getByTestId('agent-online-status-provider')).toBeInTheDocument()
         expect(getByText('foo')).toBeInTheDocument()
+        expect(mockUseRealtimeAccountSubscription).toHaveBeenCalled()
     })
 
     it('should render the email migration realtime handler when the migration feature flag is enabled', () => {
