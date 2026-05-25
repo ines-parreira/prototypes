@@ -1,9 +1,5 @@
-import { useGetTicket } from '@gorgias/helpdesk-queries'
+import { useGetTicket } from '../../../../../hooks/useGetTicket'
 
 export function useGetTicketData(ticketId: string) {
-    return useGetTicket(Number(ticketId), undefined, {
-        query: {
-            staleTime: 60000 * 5,
-        },
-    })
+    return useGetTicket(Number(ticketId))
 }

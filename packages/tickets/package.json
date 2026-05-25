@@ -12,7 +12,8 @@
         "./ticket-list": "./src/ticket-list/index.ts",
         "./views": "./src/views/index.ts",
         "./utils/views": "./src/utils/views/index.ts",
-        "./utils/routing": "./src/utils/routing/index.ts"
+        "./utils/routing": "./src/utils/routing/index.ts",
+        "./useGetTicket": "./src/hooks/useGetTicket.ts"
     },
     "scripts": {
         "format:check": "oxfmt --check .",

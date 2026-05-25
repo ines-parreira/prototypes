@@ -1,6 +1,7 @@
 import { waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 
+import { useGetTicket } from '@repo/tickets/useGetTicket'
 import {
     mockEvent,
     mockListEventsHandler,
@@ -13,6 +14,12 @@ import { TicketThreadItemTag } from '../../types'
 import type { TicketThreadAuditLogEventItem } from '../types'
 import { useTicketThreadEvents } from '../useTicketThreadEvents'
 
+vi.mock('@repo/tickets/useGetTicket', () => ({
+    useGetTicket: vi.fn(),
+}))
+
+const mockUseGetTicket = vi.mocked(useGetTicket)
+
 type AuditLogEventParams = {
     id: number
     type:
@@ -20,6 +27,7 @@ type AuditLogEventParams = {
         | 'rule-suggestion-suggested'
         | 'ticket-assigned'
         | 'ticket-closed'
+        | 'ticket-message-summary-created'
     created_datetime: string
     context?: string | null
     user_id?: number | null
@@ -71,6 +79,10 @@ function getAuditLogItemByType(
 }
 
 describe('useTicketThreadEvents', () => {
+    beforeEach(() => {
+        mockUseGetTicket.mockReturnValue({ data: undefined } as any)
+    })
+
     it('applies strict action-executed filtering to renderable ticket events', async () => {
         const mockListEvents = getEventsHandler([
             mockEvent({
@@ -284,6 +296,225 @@ describe('useTicketThreadEvents', () => {
 
         expect(closedEvents[0]?.meta.attribution).toBe('author')
         expect(closedEvents[1]?.meta.attribution).toBe('none')
+    })
+
+    it('includes audit log events returned on the ticket object', async () => {
+        const mockListEvents = getEventsHandler([])
+
+        mockUseGetTicket.mockReturnValue({
+            data: {
+                data: {
+                    events: [
+                        {
+                            id: 24699541487,
+                            type: 'ticket-message-summary-created',
+                            created_datetime:
+                                '2026-05-08T08:55:51.442134+00:00',
+                            data: {
+                                first_unseen_id: 1480358400,
+                                last_unseen_id: 1480363805,
+                            },
+                            user: null,
+                        },
+                    ],
+                },
+            },
+        } as any)
+
+        server.use(mockListEvents.handler)
+
+        const { result } = renderHook(() =>
+            useTicketThreadEvents({ ticketId: 574622116 }),
+        )
+
+        await waitFor(() => {
+            expect(result.current.events).toHaveLength(1)
+        })
+
+        const summaryEvent = getAuditLogItemByType(
+            result.current.events,
+            'ticket-message-summary-created',
+        )
+
+        expect(summaryEvent).toMatchObject({
+            datetime: '2026-05-08T08:55:51.442134+00:00',
+            meta: {
+                attribution: 'none',
+            },
+            data: {
+                id: 24699541487,
+                object_type: 'ticket',
+                type: 'ticket-message-summary-created',
+                user_id: null,
+                data: {
+                    first_unseen_id: 1480358400,
+                    last_unseen_id: 1480363805,
+                },
+            },
+        })
+    })
+
+    it('does not duplicate ticket object events already returned by the events endpoint', async () => {
+        const mockListEvents = getEventsHandler([
+            getAuditLogEvent({
+                id: 24699541487,
+                type: 'ticket-message-summary-created',
+                created_datetime: '2026-05-08T08:55:51.442134+00:00',
+                data: {
+                    first_unseen_id: 1480358400,
+                    last_unseen_id: 1480363805,
+                },
+            }),
+        ])
+
+        mockUseGetTicket.mockReturnValue({
+            data: {
+                data: {
+                    events: [
+                        {
+                            id: 24699541487,
+                            type: 'ticket-message-summary-created',
+                            created_datetime:
+                                '2026-05-08T08:55:51.442134+00:00',
+                            data: {
+                                first_unseen_id: 1480358400,
+                                last_unseen_id: 1480363805,
+                            },
+                            user: null,
+                        },
+                    ],
+                },
+            },
+        } as any)
+
+        server.use(mockListEvents.handler)
+
+        const { result } = renderHook(() =>
+            useTicketThreadEvents({ ticketId: 574622116 }),
+        )
+
+        await waitFor(() => {
+            expect(result.current.events).toHaveLength(1)
+        })
+    })
+
+    it('uses the ticket object event user as the audit log author', async () => {
+        const mockListEvents = getEventsHandler([])
+
+        mockUseGetTicket.mockReturnValue({
+            data: {
+                data: {
+                    events: [
+                        {
+                            id: 24699541488,
+                            type: 'ticket-assigned',
+                            created_datetime:
+                                '2026-05-08T08:56:51.442134+00:00',
+                            data: {
+                                assignee_user_id: 12,
+                            },
+                            user: {
+                                id: 12,
+                            },
+                        },
+                    ],
+                },
+            },
+        } as any)
+
+        server.use(mockListEvents.handler)
+
+        const { result } = renderHook(() =>
+            useTicketThreadEvents({ ticketId: 574622116 }),
+        )
+
+        await waitFor(() => {
+            expect(result.current.events).toHaveLength(1)
+        })
+
+        const assignedEvent = getAuditLogItemByType(
+            result.current.events,
+            'ticket-assigned',
+        )
+
+        expect(assignedEvent).toMatchObject({
+            meta: {
+                attribution: 'author',
+            },
+            data: {
+                id: 24699541488,
+                object_type: 'ticket',
+                user_id: 12,
+            },
+        })
+    })
+
+    it('keeps ticket object events without ids and preserves existing user ids', async () => {
+        const mockListEvents = getEventsHandler([
+            mockEvent({
+                id: {},
+                object_type: 'ticket',
+                type: 'ticket-closed',
+                created_datetime: '2026-05-08T08:56:51.442134+00:00',
+                user_id: null,
+            } as any),
+        ])
+
+        mockUseGetTicket.mockReturnValue({
+            data: {
+                data: {
+                    events: [
+                        {
+                            type: 'ticket-closed',
+                            created_datetime:
+                                '2026-05-08T08:57:51.442134+00:00',
+                            user: {
+                                id: 'system',
+                            },
+                        },
+                        {
+                            id: 24699541489,
+                            type: 'ticket-assigned',
+                            created_datetime:
+                                '2026-05-08T08:58:51.442134+00:00',
+                            data: {
+                                assignee_user_id: 12,
+                            },
+                            user: {
+                                id: 12,
+                            },
+                            user_id: 34,
+                        },
+                    ],
+                },
+            },
+        } as any)
+
+        server.use(mockListEvents.handler)
+
+        const { result } = renderHook(() =>
+            useTicketThreadEvents({ ticketId: 574622116 }),
+        )
+
+        await waitFor(() => {
+            expect(result.current.events).toHaveLength(3)
+        })
+
+        const assignedEvent = getAuditLogItemByType(
+            result.current.events,
+            'ticket-assigned',
+        )
+
+        expect(assignedEvent).toMatchObject({
+            meta: {
+                attribution: 'author',
+            },
+            data: {
+                id: 24699541489,
+                object_type: 'ticket',
+                user_id: 34,
+            },
+        })
     })
 
     it('returns empty events and false survey flag when no event source exists', async () => {

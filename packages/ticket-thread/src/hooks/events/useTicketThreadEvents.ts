@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { useGetTicket } from '@repo/tickets/useGetTicket'
 import {
     isAuditLogEvent,
     isNonRenderablePrivateReplyEvent,
@@ -9,9 +10,23 @@ import {
 import { shouldRenderTicketThreadEvent, toTaggedEvent } from './transforms'
 import type {
     TicketThreadAuditLogAttribution,
+    TicketThreadEventSource,
     TicketThreadSingleEventItem,
 } from './types'
 import { useListAllTicketEvents } from './useListAllEvents'
+
+type EventIdentifier = number | string
+
+type TicketObjectEvent = {
+    id?: EventIdentifier
+    object_type?: string
+    type?: string
+    user?: {
+        id?: unknown
+    } | null
+    user_id?: number | null
+    [key: string]: unknown
+}
 
 type UseTicketThreadEventsParams = {
     ticketId: number
@@ -49,14 +64,74 @@ function getAuditLogAttribution(
     return 'none'
 }
 
+function getEventIdentifier(event: unknown): EventIdentifier | null {
+    if (!event || typeof event !== 'object' || !('id' in event)) {
+        return null
+    }
+
+    const id = event.id
+
+    if (typeof id !== 'number' && typeof id !== 'string') {
+        return null
+    }
+
+    return id
+}
+
+function getTicketObjectEventUserId(event: TicketObjectEvent): number | null {
+    if (typeof event.user?.id !== 'number') {
+        return null
+    }
+
+    return event.user.id
+}
+
+function normalizeTicketObjectEvent(
+    event: TicketObjectEvent,
+): TicketThreadEventSource {
+    return {
+        ...event,
+        object_type: event.object_type ?? 'ticket',
+        user_id:
+            event.user_id !== undefined
+                ? event.user_id
+                : getTicketObjectEventUserId(event),
+    } as TicketThreadEventSource
+}
+
+function mergeTicketEvents(
+    events: readonly TicketThreadEventSource[],
+    ticketObjectEvents: readonly TicketObjectEvent[],
+): TicketThreadEventSource[] {
+    const eventIds = new Set(
+        events
+            .map(getEventIdentifier)
+            .filter((id): id is EventIdentifier => id != null),
+    )
+
+    const normalizedTicketObjectEvents = ticketObjectEvents
+        .map(normalizeTicketObjectEvent)
+        .filter((event) => {
+            const eventId = getEventIdentifier(event)
+
+            return eventId == null || !eventIds.has(eventId)
+        })
+
+    return [...events, ...normalizedTicketObjectEvents]
+}
+
 export function useTicketThreadEvents({
     ticketId,
 }: UseTicketThreadEventsParams): UseTicketThreadEventsResult {
     const { data: events } = useListAllTicketEvents(ticketId)
+    const { data: ticket } = useGetTicket(ticketId)
 
     return useMemo(() => {
         let hasSatisfactionSurveyRespondedEvent = false
-        const rawTicketEvents = events ?? []
+        const rawTicketEvents = mergeTicketEvents(
+            events ?? [],
+            ticket?.data?.events ?? [],
+        )
         const items = rawTicketEvents
             .filter((event) => !isNonRenderablePrivateReplyEvent(event))
             .filter(shouldRenderTicketThreadEvent)
@@ -80,5 +155,5 @@ export function useTicketThreadEvents({
             .filter((item): item is TicketThreadSingleEventItem => !!item)
 
         return { events: items, hasSatisfactionSurveyRespondedEvent }
-    }, [events])
+    }, [events, ticket])
 }

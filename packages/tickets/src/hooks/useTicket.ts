@@ -1,4 +1,4 @@
-import { useGetTicket } from '@gorgias/helpdesk-queries'
+import { useGetTicket } from './useGetTicket'
 
 export function useTicket(id: number) {
     return useGetTicket(id)
