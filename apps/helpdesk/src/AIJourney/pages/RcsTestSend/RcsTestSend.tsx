@@ -14,8 +14,6 @@ import {
     Banner,
     Box,
     Button,
-    Card,
-    CardHeader,
     PanelHeader,
     TabItem,
     TabList,
@@ -29,6 +27,7 @@ import { RcsRequestCard } from '../../components/RcsRequestCard/RcsRequestCard'
 import { RcsResponseSection } from '../../components/RcsResponseSection/RcsResponseSection'
 import type { PhoneOption } from '../../types/RcsTestSend'
 import { RcsBoundaryTests } from './RcsBoundaryTests'
+import { buildRcsErrorView } from './rcsErrorView'
 import { RcsTemplateReference } from './RcsTemplateReference'
 import { INITIAL_FORM, messageFormReducer } from './reducer'
 import { validateTemplateInputs } from './validateTemplateInputs'
@@ -117,9 +116,6 @@ export const RcsTestSend = () => {
         )
             return
 
-        const filteredButtons = form.buttons
-            .filter((b) => b.text.trim())
-            .map(({ id: __id, ...rest }) => rest)
         const rcsProducts = form.productEntries
             .filter((e) => e.shopifyProduct != null)
             .map((e) => ({
@@ -130,6 +126,22 @@ export const RcsTestSend = () => {
                 variant_id: e.shopifyProduct!.variants[0]?.id ?? 0,
                 url: e.url.trim() || null,
             }))
+        const hasProductWithUrl = rcsProducts.some(
+            (p) => p.url != null && p.url.length > 0,
+        )
+        const filteredButtons = form.buttons
+            .filter((b) => b.text.trim())
+            .map(({ id: __id, type, text, value }) => {
+                const valueIsIgnored =
+                    type === 'QUICK_REPLY' ||
+                    (type === 'URL' && hasProductWithUrl)
+                return { type, text, value: valueIsIgnored ? '' : value }
+            })
+
+        const sendImage =
+            form.image.trim().length > 0 && rcsProducts.length === 0
+        const titleCanRender =
+            sendImage || filteredButtons.length > 0 || rcsProducts.length > 0
 
         mutate({
             integration_id: integrationId,
@@ -137,13 +149,11 @@ export const RcsTestSend = () => {
             dry_run: dryRun,
             rcs_context: {
                 text: form.contextText.trim(),
-                ...(form.contextTitle.trim() && {
-                    title: form.contextTitle.trim(),
-                }),
-                ...(form.image.trim() &&
-                    rcsProducts.length === 0 && {
-                        images: [form.image.trim()],
+                ...(titleCanRender &&
+                    form.contextTitle.trim() && {
+                        title: form.contextTitle.trim(),
                     }),
+                ...(sendImage && { images: [form.image.trim()] }),
                 ...(filteredButtons.length > 0 && { buttons: filteredButtons }),
                 ...(rcsProducts.length > 0 && { products: rcsProducts }),
             },
@@ -169,7 +179,7 @@ export const RcsTestSend = () => {
                         <TabItem id="boundary-tests" label="Boundary tests" />
                     </TabList>
                     <TabPanel id="test-send">
-                        <Box flexDirection="column" gap="md">
+                        <Box flexDirection="column" gap="md" width="100%">
                             <RcsRequestCard
                                 phoneOptions={phoneOptions}
                                 selectedOption={selectedOption}
@@ -207,18 +217,46 @@ export const RcsTestSend = () => {
                                 templateValidation.reason && (
                                     <Text>{templateValidation.reason}</Text>
                                 )}
-                            {error != null && (
-                                <Card>
-                                    <CardHeader title="Error" />
-                                    <Box flexDirection="column" gap="sm">
-                                        <Text>
-                                            {error instanceof Error
-                                                ? error.message
-                                                : 'An unexpected error occurred'}
-                                        </Text>
-                                    </Box>
-                                </Card>
-                            )}
+                            {error != null &&
+                                (() => {
+                                    const view = buildRcsErrorView(error)
+                                    return (
+                                        <>
+                                            <Banner
+                                                intent="destructive"
+                                                icon="warning-triangle"
+                                                isClosable={false}
+                                                size="md"
+                                                title={view.title}
+                                                description={view.rawMessage}
+                                            >
+                                                {view.hint != null && (
+                                                    <Text size="sm">
+                                                        {view.hint}
+                                                    </Text>
+                                                )}
+                                                {view.fieldErrors && (
+                                                    <pre
+                                                        className={
+                                                            css.codeBlock
+                                                        }
+                                                    >
+                                                        {JSON.stringify(
+                                                            view.fieldErrors,
+                                                            null,
+                                                            2,
+                                                        )}
+                                                    </pre>
+                                                )}
+                                            </Banner>
+                                            {view.responseData && (
+                                                <RcsResponseSection
+                                                    response={view.responseData}
+                                                />
+                                            )}
+                                        </>
+                                    )
+                                })()}
                             {response && (
                                 <RcsResponseSection response={response} />
                             )}

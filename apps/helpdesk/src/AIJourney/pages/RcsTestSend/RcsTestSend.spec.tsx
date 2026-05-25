@@ -118,6 +118,17 @@ jest.mock('AIJourney/components/RcsMessageCard/RcsMessageCard', () => ({
                             })
                         }
                     />
+                    <input
+                        aria-label="button value"
+                        value={button.value ?? ''}
+                        onChange={(e) =>
+                            dispatch({
+                                type: 'UPDATE_BUTTON',
+                                id: button.id,
+                                patch: { value: e.target.value },
+                            })
+                        }
+                    />
                     <button
                         onClick={() =>
                             dispatch({
@@ -128,6 +139,17 @@ jest.mock('AIJourney/components/RcsMessageCard/RcsMessageCard', () => ({
                         }
                     >
                         Set URL type
+                    </button>
+                    <button
+                        onClick={() =>
+                            dispatch({
+                                type: 'UPDATE_BUTTON',
+                                id: button.id,
+                                patch: { type: 'QUICK_REPLY' },
+                            })
+                        }
+                    >
+                        Set QR type
                     </button>
                 </div>
             ))}
@@ -379,6 +401,81 @@ describe('<RcsTestSend />', () => {
 
         expect(
             screen.getByText('An unexpected error occurred'),
+        ).toBeInTheDocument()
+    })
+
+    it('renders the response section beside the banner for no-match errors', () => {
+        const error = Object.assign(new Error('Bad'), {
+            isAxiosError: true,
+            toJSON: () => ({}),
+            config: {},
+            response: {
+                status: 400,
+                statusText: 'Bad Request',
+                headers: {},
+                config: {},
+                data: {
+                    error: {
+                        msg: 'No matching RCS template for sub_account_sid=AC...',
+                        data: {
+                            content_sid: null,
+                            template_name: null,
+                            variables: null,
+                            message_classification: 'rich_content',
+                            resolution_path: 'none',
+                            twilio_message_sid: null,
+                            warnings: [],
+                            templates_in_pool: 0,
+                        },
+                    },
+                },
+            },
+        })
+
+        jest.mocked(useRcsTestSend).mockReturnValue({
+            ...defaultMutationState,
+            error,
+        } as unknown as ReturnType<typeof useRcsTestSend>)
+
+        renderComponent()
+
+        expect(screen.getByText('No matching RCS template')).toBeInTheDocument()
+        expect(screen.getByText('Response')).toBeInTheDocument()
+        expect(screen.getByText('rich_content')).toBeInTheDocument()
+        expect(screen.getByText('none')).toBeInTheDocument()
+    })
+
+    it('renders field error JSON for validation failures', () => {
+        const error = Object.assign(new Error('Bad'), {
+            isAxiosError: true,
+            toJSON: () => ({}),
+            config: {},
+            response: {
+                status: 400,
+                statusText: 'Bad Request',
+                headers: {},
+                config: {},
+                data: {
+                    error: {
+                        msg: 'Failed to validate RCS test send request.',
+                        data: { recipient_phone: ['must be E.164'] },
+                    },
+                },
+            },
+        })
+
+        jest.mocked(useRcsTestSend).mockReturnValue({
+            ...defaultMutationState,
+            error,
+        } as unknown as ReturnType<typeof useRcsTestSend>)
+
+        renderComponent()
+
+        expect(
+            screen.getByText('Request validation failed'),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText(/recipient_phone/, { selector: 'pre' }),
         ).toBeInTheDocument()
     })
 
@@ -895,6 +992,131 @@ describe('<RcsTestSend />', () => {
                 type: 'URL',
                 text: 'Click me',
             })
+        })
+
+        it('preserves URL button value when no product is attached', async () => {
+            withPhoneOptions()
+            const user = userEvent.setup()
+            renderComponent()
+
+            await fillRequiredFields(user)
+            await user.click(screen.getByRole('button', { name: 'Add button' }))
+            await user.type(
+                screen.getByRole('textbox', { name: 'button text' }),
+                'Open',
+            )
+            await user.click(
+                screen.getByRole('button', { name: 'Set URL type' }),
+            )
+            await user.type(
+                screen.getByRole('textbox', { name: 'button value' }),
+                'https://example.com/landing',
+            )
+            await user.click(
+                screen.getByRole('button', { name: 'Send RCS test' }),
+            )
+
+            const [call] = mockMutate.mock.calls
+            expect(call[0].rcs_context.buttons[0]).toMatchObject({
+                type: 'URL',
+                text: 'Open',
+                value: 'https://example.com/landing',
+            })
+        })
+
+        it('blanks URL button value when a product carries a URL', async () => {
+            withPhoneOptions()
+            mockProductDispatchData.shopifyProduct = {
+                id: 99,
+                title: 'Test Shirt',
+                image: {
+                    src: 'https://cdn.shopify.com/img.jpg',
+                    alt: null,
+                    variant_ids: [],
+                },
+                variants: [{ id: 1001 }],
+                images: [],
+                options: [],
+                created_at: '2024-01-01',
+            } as unknown as Product
+            mockProductDispatchData.body = ''
+            mockProductDispatchData.url =
+                'https://my-store.myshopify.com/products/test-shirt'
+
+            const user = userEvent.setup()
+            renderComponent()
+
+            await fillRequiredFields(user)
+            await user.click(
+                screen.getByRole('button', { name: 'Add product' }),
+            )
+            await user.click(
+                screen.getByRole('button', { name: 'Set product' }),
+            )
+            await user.click(screen.getByRole('button', { name: 'Add button' }))
+            await user.type(
+                screen.getByRole('textbox', { name: 'button text' }),
+                'Shop',
+            )
+            await user.click(
+                screen.getByRole('button', { name: 'Set URL type' }),
+            )
+            await user.type(
+                screen.getByRole('textbox', { name: 'button value' }),
+                'https://override.example.com',
+            )
+            await user.click(
+                screen.getByRole('button', { name: 'Send RCS test' }),
+            )
+
+            const [call] = mockMutate.mock.calls
+            expect(call[0].rcs_context.buttons[0]).toEqual({
+                type: 'URL',
+                text: 'Shop',
+                value: '',
+            })
+        })
+
+        it('blanks Quick Reply value regardless of products', async () => {
+            withPhoneOptions()
+            const user = userEvent.setup()
+            renderComponent()
+
+            await fillRequiredFields(user)
+            // Two QR buttons → validateTemplateInputs treats this as valid
+            // (a single QR with no other trigger is rejected as
+            // template-degraded).
+            await user.click(screen.getByRole('button', { name: 'Add button' }))
+            const textInputs = screen.getAllByRole('textbox', {
+                name: 'button text',
+            })
+            await user.type(textInputs[0], 'Reply')
+            await user.click(
+                screen.getAllByRole('button', { name: 'Set QR type' })[0],
+            )
+            const valueInputs = screen.getAllByRole('textbox', {
+                name: 'button value',
+            })
+            await user.type(valueInputs[0], 'some-payload')
+
+            await user.click(screen.getByRole('button', { name: 'Add button' }))
+            const textInputsAfter = screen.getAllByRole('textbox', {
+                name: 'button text',
+            })
+            await user.type(textInputsAfter[1], 'Other')
+            await user.click(
+                screen.getAllByRole('button', { name: 'Set QR type' })[1],
+            )
+
+            await user.click(
+                screen.getByRole('button', { name: 'Send RCS test' }),
+            )
+
+            const [call] = mockMutate.mock.calls
+            expect(call[0].rcs_context.buttons).toEqual([
+                { type: 'QUICK_REPLY', text: 'Reply', value: '' },
+                { type: 'QUICK_REPLY', text: 'Other', value: '' },
+            ])
         })
     })
 })

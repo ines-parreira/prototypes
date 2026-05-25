@@ -45,7 +45,11 @@ export const RcsRequestCard = ({
                 label="Phone integration"
                 placeholder="Select phone integration"
                 items={phoneOptions}
-                value={selectedOption}
+                // @ts-ignore — axiom SelectField types value as T | undefined,
+                // but undefined makes react-aria treat the input as
+                // uncontrolled and warn on first selection. Pass null so the
+                // field stays controlled from mount.
+                value={selectedOption ?? null}
                 leadingSlot={
                     selectedOption?.countryCode ? (
                         <FlagIcon code={selectedOption.countryCode} />

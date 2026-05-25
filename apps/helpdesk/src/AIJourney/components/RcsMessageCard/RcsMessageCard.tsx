@@ -37,6 +37,11 @@ export const RcsMessageCard = ({
         (e) => e.shopifyProduct != null,
     )
     const hasImage = form.image.trim().length > 0
+    const hasButtons = form.buttons.some((b) => b.text.trim().length > 0)
+    const titleCanRender = hasImage || hasButtons || hasProducts
+    const hasProductWithUrl = form.productEntries.some(
+        (e) => e.shopifyProduct != null && e.url.trim().length > 0,
+    )
 
     const handleProductSelect = (id: string, product: Product | undefined) => {
         const entry = form.productEntries.find((e) => e.id === id)
@@ -70,11 +75,16 @@ export const RcsMessageCard = ({
                 />
                 <TextField
                     label="Title"
-                    caption="Optional — rich card title"
+                    caption={
+                        titleCanRender
+                            ? 'Optional — rich card title'
+                            : 'Add an image, button, or product first. The resolver classifies text-only sends as twilio/text, which has no title slot — so a title here would be silently dropped.'
+                    }
                     value={form.contextTitle}
                     onChange={(val) =>
                         dispatch({ type: 'SET_TITLE', payload: val })
                     }
+                    isDisabled={!titleCanRender}
                 />
 
                 <div className={css.section}>
@@ -96,77 +106,87 @@ export const RcsMessageCard = ({
 
                 <div className={css.section}>
                     <Text className={css.sectionLabel}>Buttons (up to 5)</Text>
-                    {form.buttons.map((btn, i) => (
-                        <div key={btn.id} className={css.arrayItem}>
-                            <div className={css.arrayItemHeader}>
-                                <Text className={css.sectionLabel}>
-                                    Button {i + 1}
-                                </Text>
-                                <Button
-                                    variant="secondary"
-                                    onClick={() =>
+                    {form.buttons.map((btn, i) => {
+                        const isQuickReply = btn.type === 'QUICK_REPLY'
+                        const valueIsIgnored = isQuickReply || hasProductWithUrl
+                        const valueCaption = isQuickReply
+                            ? 'Quick Reply payload is encoded from the selected product. The value is not sent.'
+                            : hasProductWithUrl
+                              ? "URL ignored when products are attached — each card links to its product's URL."
+                              : 'Destination URL opened when tapped.'
+                        return (
+                            <div key={btn.id} className={css.arrayItem}>
+                                <div className={css.arrayItemHeader}>
+                                    <Text className={css.sectionLabel}>
+                                        Button {i + 1}
+                                    </Text>
+                                    <Button
+                                        variant="secondary"
+                                        onClick={() =>
+                                            dispatch({
+                                                type: 'REMOVE_BUTTON',
+                                                id: btn.id,
+                                            })
+                                        }
+                                    >
+                                        Remove
+                                    </Button>
+                                </div>
+                                <SelectField
+                                    label="Type"
+                                    items={BUTTON_TYPES}
+                                    value={
+                                        BUTTON_TYPES.find(
+                                            (t) => t.id === btn.type,
+                                        ) ?? BUTTON_TYPES[0]
+                                    }
+                                    onChange={(
+                                        item: (typeof BUTTON_TYPES)[number],
+                                    ) =>
                                         dispatch({
-                                            type: 'REMOVE_BUTTON',
+                                            type: 'UPDATE_BUTTON',
                                             id: btn.id,
+                                            patch: { type: item.id },
                                         })
                                     }
                                 >
-                                    Remove
-                                </Button>
+                                    {(item: (typeof BUTTON_TYPES)[number]) => (
+                                        <ListItem
+                                            key={item.id}
+                                            id={item.id}
+                                            label={item.label}
+                                            textValue={item.label}
+                                        />
+                                    )}
+                                </SelectField>
+                                <TextField
+                                    label="Text"
+                                    caption="Button label"
+                                    value={btn.text}
+                                    onChange={(val) =>
+                                        dispatch({
+                                            type: 'UPDATE_BUTTON',
+                                            id: btn.id,
+                                            patch: { text: val },
+                                        })
+                                    }
+                                />
+                                <TextField
+                                    label="Value"
+                                    caption={valueCaption}
+                                    value={btn.value ?? ''}
+                                    onChange={(val) =>
+                                        dispatch({
+                                            type: 'UPDATE_BUTTON',
+                                            id: btn.id,
+                                            patch: { value: val },
+                                        })
+                                    }
+                                    isDisabled={valueIsIgnored}
+                                />
                             </div>
-                            <SelectField
-                                label="Type"
-                                items={BUTTON_TYPES}
-                                value={
-                                    BUTTON_TYPES.find(
-                                        (t) => t.id === btn.type,
-                                    ) ?? BUTTON_TYPES[0]
-                                }
-                                onChange={(
-                                    item: (typeof BUTTON_TYPES)[number],
-                                ) =>
-                                    dispatch({
-                                        type: 'UPDATE_BUTTON',
-                                        id: btn.id,
-                                        patch: { type: item.id },
-                                    })
-                                }
-                            >
-                                {(item: (typeof BUTTON_TYPES)[number]) => (
-                                    <ListItem
-                                        key={item.id}
-                                        id={item.id}
-                                        label={item.label}
-                                        textValue={item.label}
-                                    />
-                                )}
-                            </SelectField>
-                            <TextField
-                                label="Text"
-                                caption="Button label"
-                                value={btn.text}
-                                onChange={(val) =>
-                                    dispatch({
-                                        type: 'UPDATE_BUTTON',
-                                        id: btn.id,
-                                        patch: { text: val },
-                                    })
-                                }
-                            />
-                            <TextField
-                                label="Value"
-                                caption="URL or quick reply payload"
-                                value={btn.value ?? ''}
-                                onChange={(val) =>
-                                    dispatch({
-                                        type: 'UPDATE_BUTTON',
-                                        id: btn.id,
-                                        patch: { value: val },
-                                    })
-                                }
-                            />
-                        </div>
-                    ))}
+                        )
+                    })}
                     {form.buttons.length < 5 && (
                         <Button
                             variant="secondary"

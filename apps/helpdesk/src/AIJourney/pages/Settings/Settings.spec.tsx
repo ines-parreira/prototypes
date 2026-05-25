@@ -637,4 +637,60 @@ describe('<Settings />', () => {
             expect(screen.queryByRole('tab')).not.toBeInTheDocument()
         })
     })
+
+    describe('Internal tab RCS test send link', () => {
+        let originalImpersonated: typeof window.USER_IMPERSONATED
+
+        beforeEach(() => {
+            originalImpersonated = window.USER_IMPERSONATED
+        })
+
+        afterEach(() => {
+            window.USER_IMPERSONATED = originalImpersonated
+        })
+
+        const enableRcsFlag = () => {
+            featureFlagsClientMock.allFlags.mockReturnValue({
+                [FeatureFlagKey.AiJourneyRcsEnable]: true,
+            })
+        }
+
+        const setupConfigured = () => {
+            mockUseAiJourneyStoreConfiguration.mockReturnValue({
+                storeConfiguration: {},
+                isLoading: false,
+                error: null,
+                isFetched: true,
+                saveConfiguration: mockSaveConfiguration,
+            })
+        }
+
+        it('renders the link card when impersonated and the RCS flag is on', () => {
+            window.USER_IMPERSONATED = true
+            enableRcsFlag()
+            setupConfigured()
+
+            renderComponent('internal')
+
+            const link = screen.getByRole('link', {
+                name: /Open RCS test send/i,
+            })
+            expect(link).toHaveAttribute(
+                'href',
+                expect.stringContaining('/rcs-test-send'),
+            )
+        })
+
+        it('does not render the link card when the RCS flag is off', () => {
+            window.USER_IMPERSONATED = true
+            featureFlagsClientMock.allFlags.mockReturnValue({})
+            setupConfigured()
+
+            renderComponent('internal')
+
+            expect(
+                screen.queryByRole('link', { name: /Open RCS test send/i }),
+            ).not.toBeInTheDocument()
+        })
+    })
 })

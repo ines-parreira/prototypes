@@ -57,10 +57,19 @@ describe('<MessageCard />', () => {
         expect(screen.getByText('Required — message body')).toBeInTheDocument()
     })
 
-    it('renders the Title field with optional caption', () => {
+    it('disables the Title field and explains why when no card trigger is set', () => {
         renderComponent()
 
-        expect(screen.getByLabelText(/^Title/)).toBeInTheDocument()
+        expect(screen.getByLabelText(/^Title/)).toBeDisabled()
+        expect(
+            screen.getByText(/Add an image, button, or product first\./),
+        ).toBeInTheDocument()
+    })
+
+    it('enables the Title field once an image is set', () => {
+        renderComponent({ ...INITIAL_FORM, image: 'https://example.com/i.png' })
+
+        expect(screen.getByLabelText(/^Title/)).toBeEnabled()
         expect(
             screen.getByText('Optional — rich card title'),
         ).toBeInTheDocument()
@@ -86,7 +95,7 @@ describe('<MessageCard />', () => {
 
     it('dispatches SET_TITLE when title field changes', async () => {
         const user = userEvent.setup()
-        renderComponent()
+        renderComponent({ ...INITIAL_FORM, image: 'https://example.com/i.png' })
 
         await user.type(screen.getByLabelText(/^Title/), 'My Title')
 
@@ -425,6 +434,71 @@ describe('<MessageCard />', () => {
                 type: 'REMOVE_PRODUCT',
                 id: 'p1',
             })
+        })
+    })
+
+    describe('button value field gating', () => {
+        const productWithUrl: MessageFormState['productEntries'][number] = {
+            id: 'p1',
+            shopifyProduct: {
+                id: 1,
+                title: 'T-Shirt',
+                handle: 't-shirt',
+                body_html: '',
+                variants: [],
+                image: null,
+                images: [],
+                options: [],
+                created_at: '2024-01-01',
+            } as MessageFormState['productEntries'][number]['shopifyProduct'],
+            body: '',
+            url: 'https://shop.example.com/p/t-shirt',
+        }
+
+        it('disables Value on a Quick Reply button with the encoded-payload caption', () => {
+            renderComponent({
+                ...INITIAL_FORM,
+                buttons: [
+                    {
+                        id: 'b1',
+                        type: 'QUICK_REPLY',
+                        text: 'Buy now',
+                        value: '',
+                    },
+                ],
+            })
+
+            expect(screen.getByLabelText('Value')).toBeDisabled()
+            expect(
+                screen.getByText(
+                    /Quick Reply payload is encoded from the selected product\./,
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('enables Value on a URL button when no product carries a URL', () => {
+            renderComponent({
+                ...INITIAL_FORM,
+                buttons: [{ id: 'b1', type: 'URL', text: 'Open', value: '' }],
+            })
+
+            expect(screen.getByLabelText('Value')).toBeEnabled()
+            expect(
+                screen.getByText('Destination URL opened when tapped.'),
+            ).toBeInTheDocument()
+        })
+
+        it('disables Value on a URL button when an attached product carries a URL', () => {
+            renderComponent({
+                ...INITIAL_FORM,
+                buttons: [{ id: 'b1', type: 'URL', text: 'Shop', value: '' }],
+                productEntries: [productWithUrl],
+            })
+
+            expect(screen.getByLabelText('Value')).toBeDisabled()
+            expect(
+                screen.getByText(/URL ignored when products are attached/),
+            ).toBeInTheDocument()
         })
     })
 })

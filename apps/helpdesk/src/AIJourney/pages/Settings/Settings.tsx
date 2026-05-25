@@ -13,11 +13,15 @@ import {
 import {
     Box,
     Button,
+    Card,
+    CardHeader,
+    Link,
     PanelHeader,
     TabItem,
     TabList,
     TabPanel,
     Tabs,
+    Text,
     toast,
 } from '@gorgias/axiom'
 import type {
@@ -71,6 +75,11 @@ export const Settings = () => {
     const { value: isToneOfVoiceEnabled } = useFlagWithLoading(
         FeatureFlagKey.AiJourneyToneOfVoice,
     )
+    const { value: isAiJourneyRcsEnabled } = useFlagWithLoading(
+        FeatureFlagKey.AiJourneyRcsEnable,
+    )
+
+    const rcsTestSendUrl = url.replace(/\/settings\/?$/, '/rcs-test-send')
 
     const tabRoutes = {
         [SettingsTab.SenderIdentity]: `${url}/${SettingsTab.SenderIdentity}`,
@@ -280,14 +289,41 @@ export const Settings = () => {
                         </TabPanel>
                         {isImpersonated && (
                             <TabPanel id={tabRoutes[SettingsTab.Internal]!}>
-                                <ExecutionModeCard
-                                    isFormReady={!isLoading}
-                                    title="Store-level execution mode"
-                                    description="Default execution mode for all flows in this store. If unset, flows fall back to Dry run. Per-flow overrides on the Setup screen take precedence over this value."
-                                    showDefaultOption={true}
-                                    defaultOptionLabel="No override"
-                                    defaultOptionDescription="Clears the store-level value. Flows fall back to Dry run (system default)."
-                                />
+                                <Box flexDirection="column" gap="md">
+                                    <ExecutionModeCard
+                                        isFormReady={!isLoading}
+                                        title="Store-level execution mode"
+                                        description="Default execution mode for all flows in this store. If unset, flows fall back to Dry run. Per-flow overrides on the Setup screen take precedence over this value."
+                                        showDefaultOption={true}
+                                        defaultOptionLabel="No override"
+                                        defaultOptionDescription="Clears the store-level value. Flows fall back to Dry run (system default)."
+                                    />
+                                    {isAiJourneyRcsEnabled && (
+                                        <Card width={680}>
+                                            <CardHeader title="RCS test send" />
+                                            <Box
+                                                flexDirection="column"
+                                                gap="sm"
+                                            >
+                                                <Text color="content-neutral-secondary">
+                                                    Resolve a Twilio RCS
+                                                    template from a hand-crafted
+                                                    payload and send (or
+                                                    dry-run) a test message via
+                                                    the production resolver.
+                                                </Text>
+                                                <Box flexDirection="row">
+                                                    <Link
+                                                        href={rcsTestSendUrl}
+                                                        trailingSlot="arrow-right"
+                                                    >
+                                                        Open RCS test send
+                                                    </Link>
+                                                </Box>
+                                            </Box>
+                                        </Card>
+                                    )}
+                                </Box>
                             </TabPanel>
                         )}
                     </Tabs>
