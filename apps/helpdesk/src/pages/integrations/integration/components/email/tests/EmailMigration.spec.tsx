@@ -15,8 +15,14 @@ jest.mock('react-router-dom', () => {
         Redirect: jest.fn(({ to }: { to: string }) => `Redirected to ${to}`),
     } as Record<string, unknown>
 })
-jest.mock('../EmailMigration/StartMigrationIntegrationsTable', () => () => (
-    <div data-testid="integrations-table" />
+jest.mock('../EmailMigration/MigrationComplete', () => () => (
+    <div data-testid="migration-complete" />
+))
+jest.mock('../EmailMigration/MigrationInProgress', () => () => (
+    <div data-testid="migration-pending" />
+))
+jest.mock('../EmailMigration/StartMigration', () => () => (
+    <div data-testid="migration-not-started" />
 ))
 describe('EmailMigration', () => {
     const renderComponent = (
