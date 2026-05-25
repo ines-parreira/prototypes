@@ -10,6 +10,7 @@ declare module 'sortablejs' {
 
         export interface SortableEvent extends Event {
             from: HTMLElement
+            to: HTMLElement
             item: HTMLElement
             oldIndex: number | undefined
             newIndex: number | undefined

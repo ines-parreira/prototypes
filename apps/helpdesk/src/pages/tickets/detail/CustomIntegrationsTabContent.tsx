@@ -28,6 +28,7 @@ type Props = {
 }
 
 const NAMED_WIDGET_PLACEHOLDER_FILTER = '.named-widget-placeholder'
+const CUSTOM_INTEGRATION_ITEM = 'custom-integration-item'
 
 export default function CustomIntegrationsTabContent({
     sources,
@@ -85,6 +86,10 @@ export default function CustomIntegrationsTabContent({
 
     const allItems = toWidgetArray(contextFilteredItems)
 
+    const domItems = isEditing
+        ? allItems.map((widget, editedIndex) => ({ widget, editedIndex }))
+        : null
+
     return (
         <div className={css.integrationContainer}>
             <EditionContext.Provider value={{ isEditing }}>
@@ -99,35 +104,77 @@ export default function CustomIntegrationsTabContent({
                     watchDrop
                     tag={null}
                     filter={NAMED_WIDGET_PLACEHOLDER_FILTER}
+                    draggableSelector={
+                        isEditing ? `.${CUSTOM_INTEGRATION_ITEM}` : '.draggable'
+                    }
                 >
                     <div
                         className={css.integrationContent}
                         data-dragging={isDragging}
                     >
-                        {allItems.map((widget, index) => {
-                            const isNamed = NAMED_INTEGRATION_WIDGET_TYPES.has(
-                                getWidgetType(widget),
-                            )
+                        {isEditing && domItems
+                            ? domItems.map(({ widget, editedIndex }) => {
+                                  const isNamed =
+                                      NAMED_INTEGRATION_WIDGET_TYPES.has(
+                                          getWidgetType(widget),
+                                      )
 
-                            if (isNamed) {
-                                return (
-                                    <div
-                                        key={getWidgetId(widget)}
-                                        className={`draggable named-widget-placeholder ${css.namedWidgetPlaceholder}`}
-                                    />
-                                )
-                            }
+                                  if (isNamed) {
+                                      return (
+                                          <div
+                                              key={getWidgetId(widget)}
+                                              data-key={String(editedIndex)}
+                                              className={`${CUSTOM_INTEGRATION_ITEM} named-widget-placeholder ${css.namedWidgetPlaceholder}`}
+                                          />
+                                      )
+                                  }
 
-                            return (
-                                <CustomWidgetItem
-                                    key={getWidgetId(widget) ?? `new-${index}`}
-                                    widget={widget}
-                                    sources={effectiveSource}
-                                    widgetIndex={index}
-                                    fallbackIndex={index}
-                                />
-                            )
-                        })}
+                                  return (
+                                      <div
+                                          key={
+                                              getWidgetId(widget) ??
+                                              `new-${editedIndex}`
+                                          }
+                                          data-key={String(editedIndex)}
+                                          className={CUSTOM_INTEGRATION_ITEM}
+                                      >
+                                          <CustomWidgetItem
+                                              widget={widget}
+                                              sources={effectiveSource}
+                                              widgetIndex={editedIndex}
+                                              fallbackIndex={editedIndex}
+                                          />
+                                      </div>
+                                  )
+                              })
+                            : allItems.map((widget, index) => {
+                                  const isNamed =
+                                      NAMED_INTEGRATION_WIDGET_TYPES.has(
+                                          getWidgetType(widget),
+                                      )
+
+                                  if (isNamed) {
+                                      return (
+                                          <div
+                                              key={getWidgetId(widget)}
+                                              className={`named-widget-placeholder ${css.namedWidgetPlaceholder}`}
+                                          />
+                                      )
+                                  }
+
+                                  return (
+                                      <CustomWidgetItem
+                                          key={
+                                              getWidgetId(widget) ??
+                                              `new-${index}`
+                                          }
+                                          widget={widget}
+                                          sources={effectiveSource}
+                                          widgetIndex={index}
+                                          fallbackIndex={index}
+                                      />
+                                  )
+                              })}
                     </div>
                 </DragWrapper>
                 {isEditing && (

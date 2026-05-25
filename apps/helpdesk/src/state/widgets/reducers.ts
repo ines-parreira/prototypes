@@ -305,10 +305,14 @@ export default function reducer(
                 }
             } else if (eventType === 'update') {
                 // on update, move the element in previously calculated path
-                const oldItem = currentList.get(fromIndex as number)
+                const parsedKey = parseInt(key ?? '', 10)
+                const actualFromIndex = !isNaN(parsedKey)
+                    ? parsedKey
+                    : (fromIndex ?? 0)
+                const oldItem = currentList.get(actualFromIndex)
                 const newList = reorderWidgets(
                     currentList
-                        .delete(fromIndex as number)
+                        .delete(actualFromIndex)
                         .insert(toIndex as number, oldItem),
                 )
 

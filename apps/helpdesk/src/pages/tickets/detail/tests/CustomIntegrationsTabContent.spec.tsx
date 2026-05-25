@@ -397,6 +397,60 @@ describe('CustomIntegrationsTabContent', () => {
         expect(screen.queryByText(/MockTemplate/)).not.toBeInTheDocument()
     })
 
+    it('renders custom widget without an id in edit mode using fallback key', () => {
+        const items = [buildWidget(CUSTOM_WIDGET_TYPE, { id: undefined })]
+        const widgets = buildWidgets({
+            isEditing: true,
+            items,
+            editedItems: items,
+        })
+        const sources = fromJS({
+            ticket: { customer: { data: { someField: 'value' } } },
+        })
+
+        renderWithProviders(
+            <CustomIntegrationsTabContent
+                sources={sources}
+                widgets={widgets}
+                customerId={null}
+            />,
+        )
+
+        expect(screen.getByText(/MockTemplate/)).toBeInTheDocument()
+    })
+
+    it('renders named integration type as empty placeholder in edit mode', () => {
+        const items = [
+            buildWidget('shopify', { id: 20 }),
+            buildWidget(CUSTOM_WIDGET_TYPE, { id: 21 }),
+        ]
+        const widgets = buildWidgets({
+            isEditing: true,
+            items,
+            editedItems: items,
+        })
+        const sources = fromJS({
+            ticket: {
+                customer: {
+                    data: { someField: 'value' },
+                },
+            },
+        })
+
+        const { container } = renderWithProviders(
+            <CustomIntegrationsTabContent
+                sources={sources}
+                widgets={widgets}
+                customerId={null}
+            />,
+        )
+
+        expect(screen.getAllByText(/MockTemplate/)).toHaveLength(1)
+        const placeholder = container.querySelector('[data-key="0"]')
+        expect(placeholder).toBeInTheDocument()
+        expect(placeholder).toBeEmptyDOMElement()
+    })
+
     it('should render klaviyo widget alongside other custom types', () => {
         const widgets = buildWidgets({
             items: [
