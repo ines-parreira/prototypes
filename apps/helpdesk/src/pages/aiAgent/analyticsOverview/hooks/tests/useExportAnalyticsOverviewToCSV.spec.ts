@@ -101,18 +101,6 @@ describe('useExportAnalyticsOverviewToCSV', () => {
         expect(result.current.isLoading).toBe(true)
     })
 
-    it('should return isLoading as true when tables flag is loading', () => {
-        mockUseFlagWithLoading.mockImplementation((key) => {
-            if (key === FeatureFlagKey.AiAgentAnalyticsDashboardsTables)
-                return { value: false, isLoading: true }
-            return { value: false, isLoading: false }
-        })
-
-        const { result } = renderHook(() => useExportAnalyticsOverviewToCSV())
-
-        expect(result.current.isLoading).toBe(true)
-    })
-
     it('should return isLoading as true when KPI data is loading', () => {
         mockedUseDashboardData.mockReturnValue({
             files: {},
@@ -160,7 +148,6 @@ describe('useExportAnalyticsOverviewToCSV', () => {
         expect(mockedBuildCustomDashboard).toHaveBeenCalledWith(
             'analytics-overview',
             expect.any(Object),
-            true,
             true,
         )
     })

@@ -3,14 +3,13 @@ import { useEffect, useState } from 'react'
 import { reportError } from '@repo/logging'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import { fetchPerformanceMetricsPerFeature } from 'pages/aiAgent/analyticsOverview/hooks/fetchPerformanceBreakdownData'
+import { fetchPerformanceMetricsPerFeature } from 'pages/aiAgent/analyticsOverview/hooks/usePerformanceMetricsPerFeature'
 import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
 import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 
 export const useDownloadPerformanceBreakdownData = () => {
     const { statsFilters, userTimezone } = useAiAgentStatsFilters()
-
     const costSavedPerInteraction = useMoneySavedPerInteractionWithAutomate(
         AGENT_COST_PER_TICKET,
     )

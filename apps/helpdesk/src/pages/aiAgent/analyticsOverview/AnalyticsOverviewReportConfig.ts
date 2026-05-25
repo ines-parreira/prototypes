@@ -30,7 +30,7 @@ import { FlowsTable } from 'pages/aiAgent/analyticsOverview/components/FlowsTabl
 import { ORDER_MANAGEMENT_TABLE } from 'pages/aiAgent/analyticsOverview/components/OrderManagementTable/columns'
 import { OrderManagementTable } from 'pages/aiAgent/analyticsOverview/components/OrderManagementTable/OrderManagementTable'
 import { PERFORMANCE_BREAKDOWN_TABLE } from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/columns'
-import { PerformanceBreakdownTableWrapper } from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/PerformanceBreakdownTableWrapper'
+import { PerformanceBreakdownTable } from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/PerformanceBreakdownTable'
 import { fetchAiAgentOverviewDecreaseInFRTTrend } from 'pages/aiAgent/analyticsOverview/hooks/useAiAgentOverviewDecreaseInFRTTrend'
 import { fetchAiAgentOverviewDecreaseInResolutionTimeTrend } from 'pages/aiAgent/analyticsOverview/hooks/useAiAgentOverviewDecreaseInResolutionTimeTrend'
 import { fetchArticleRecommendationAsConfigurableTable } from 'pages/aiAgent/analyticsOverview/hooks/useArticleRecommendationMetrics'
@@ -39,7 +39,7 @@ import { fetchOrderManagementAsConfigurableTable } from 'pages/aiAgent/analytics
 import { fetchOverallAutomatedInteractionsTrend } from 'pages/aiAgent/analyticsOverview/hooks/useOverallAutomatedInteractionsTrend'
 import { fetchOverallAutomationRateTrend } from 'pages/aiAgent/analyticsOverview/hooks/useOverallAutomationRateTrend'
 import { fetchOverallTimeSavedByAgentsTrend } from 'pages/aiAgent/analyticsOverview/hooks/useOverallTimeSavedByAgentsTrend'
-import { fetchPerformanceMetricsPerFeatureV2AsConfigurableTable } from 'pages/aiAgent/analyticsOverview/hooks/usePerformanceMetricsPerFeatureV2'
+import { fetchPerformanceMetricsPerFeatureAsConfigurableTable } from 'pages/aiAgent/analyticsOverview/hooks/usePerformanceMetricsPerFeature'
 import {
     fetchConfigurableBarChartDownloadData,
     fetchConfigurableLineChartDownloadData,
@@ -207,12 +207,12 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
                 interpretAs: 'more-is-better',
             },
             [AnalyticsOverviewChart.PerformanceTable]: {
-                chartComponent: PerformanceBreakdownTableWrapper,
+                chartComponent: PerformanceBreakdownTable,
                 label: PERFORMANCE_BREAKDOWN_TABLE.title,
                 csvProducer: [
                     {
                         type: DataExportFormat.ConfigurableTable,
-                        fetch: fetchPerformanceMetricsPerFeatureV2AsConfigurableTable,
+                        fetch: fetchPerformanceMetricsPerFeatureAsConfigurableTable,
                     },
                 ],
                 description: PERFORMANCE_BREAKDOWN_TABLE.description,

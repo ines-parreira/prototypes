@@ -32,8 +32,8 @@ import { AnalyticsAiAgentCostSavedCard } from 'pages/aiAgent/analyticsAiAgent/ch
 import { AnalyticsAiAgentDecreaseInResolutionTimeCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDecreaseInResolutionTimeCard'
 import { AnalyticsAiAgentTotalSalesCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTotalSalesCard'
 import { AnalyticsAiAgentZeroTouchTicketsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentZeroTouchTicketsCard'
-import { ChannelPerformanceBreakdownTableWrapper } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ChannelPerformanceBreakdownTableWrapper'
-import { IntentPerformanceBreakdownTableWrapper } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/IntentPerformanceBreakdownTableWrapper'
+import { AllAgentsPerformanceByChannelTable } from 'pages/aiAgent/analyticsAiAgent/components/AllAgentsPerformanceByChannelTable/AllAgentsPerformanceByChannelTable'
+import { AllAgentsPerformanceByIntentTable } from 'pages/aiAgent/analyticsAiAgent/components/AllAgentsPerformanceByIntentTable/AllAgentsPerformanceByIntentTable'
 import { fetchAiAgentAllAgentsAutomatedInteractionsTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAllAgentsAutomatedInteractionsTrend'
 import { fetchAiAgentAllAgentsAutomationRateTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAllAgentsAutomationRateTrend'
 import { fetchAiAgentAllAgentsAverageCsatTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAllAgentsAverageCsatTrend'
@@ -363,7 +363,7 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                 interpretAs: 'more-is-better',
             },
             [AnalyticsAiAgentAllAgentsChart.ChannelPerformanceTable]: {
-                chartComponent: ChannelPerformanceBreakdownTableWrapper,
+                chartComponent: AllAgentsPerformanceByChannelTable,
                 label: 'Channel',
                 csvProducer: [
                     {
@@ -375,7 +375,7 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                 chartType: ChartType.Table,
             },
             [AnalyticsAiAgentAllAgentsChart.IntentPerformanceTable]: {
-                chartComponent: IntentPerformanceBreakdownTableWrapper,
+                chartComponent: AllAgentsPerformanceByIntentTable,
                 label: 'Intent',
                 csvProducer: [
                     {

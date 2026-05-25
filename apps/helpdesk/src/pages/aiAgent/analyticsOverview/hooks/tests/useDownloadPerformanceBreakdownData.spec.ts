@@ -6,8 +6,15 @@ import { useDownloadPerformanceBreakdownData } from 'pages/aiAgent/analyticsOver
 
 jest.mock('@repo/logging', () => ({ reportError: jest.fn() }))
 
-jest.mock('../fetchPerformanceBreakdownData', () => ({
-    fetchPerformanceMetricsPerFeature: jest.fn(),
+jest.mock(
+    'pages/aiAgent/analyticsOverview/hooks/usePerformanceMetricsPerFeature',
+    () => ({
+        fetchPerformanceMetricsPerFeature: jest.fn(),
+    }),
+)
+
+jest.mock('pages/automate/automate-metrics/constants', () => ({
+    AGENT_COST_PER_TICKET: 3.1,
 }))
 
 jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters', () => {
@@ -29,12 +36,14 @@ jest.mock(
     () => ({ useMoneySavedPerInteractionWithAutomate: jest.fn(() => 3.1) }),
 )
 
-const mockFetch = jest.requireMock('../fetchPerformanceBreakdownData')
+const mockFetch = jest.requireMock(
+    'pages/aiAgent/analyticsOverview/hooks/usePerformanceMetricsPerFeature',
+)
 const mockReportError = jest.requireMock('@repo/logging').reportError
 
-const MOCK_FILE_NAME = 'performance-breakdown-2024-01-01_2024-01-31.csv'
+const MOCK_FILE_NAME = 'all_features_table-2024-01-01_2024-01-31.csv'
 const MOCK_CSV =
-    'Feature,Overall automation rate,Automated interactions\r\nAI Agent,18%,2700'
+    'All features,Overall automation rate,Automated interactions\r\nAI Agent,18%,2700'
 
 describe('useDownloadPerformanceBreakdownData', () => {
     beforeEach(() => {
@@ -86,12 +95,12 @@ describe('useDownloadPerformanceBreakdownData', () => {
             expect(
                 mockFetch.fetchPerformanceMetricsPerFeature,
             ).toHaveBeenCalledWith(
-                expect.objectContaining({
+                {
                     period: {
                         start_datetime: '2024-01-01T00:00:00Z',
                         end_datetime: '2024-01-31T23:59:59Z',
                     },
-                }),
+                },
                 'UTC',
                 3.1,
             ),

@@ -4,10 +4,7 @@ import { screen } from '@testing-library/react'
 
 import { PERFORMANCE_BREAKDOWN_COLUMNS } from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/columns'
 import { PerformanceBreakdownTable } from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/PerformanceBreakdownTable'
-import type {
-    FeatureMetrics,
-    PerformanceMetricsPerFeature,
-} from 'pages/aiAgent/analyticsOverview/hooks/usePerformanceMetricsPerFeature'
+import type { FeatureMetrics } from 'pages/aiAgent/analyticsOverview/hooks/usePerformanceMetricsPerFeature'
 
 const mockReportingMetricBreakdownTable = jest.fn(({ DownloadButton }) => (
     <div>{DownloadButton}</div>
@@ -39,7 +36,7 @@ const mockUsePerformanceMetricsPerFeature = jest.requireMock(
     'pages/aiAgent/analyticsOverview/hooks/usePerformanceMetricsPerFeature',
 ).usePerformanceMetricsPerFeature as jest.Mock
 
-const defaultLoadingStates: PerformanceMetricsPerFeature['loadingStates'] = {
+const defaultLoadingStates = {
     automationRate: false,
     automatedInteractions: false,
     handoverInteractions: false,
@@ -49,7 +46,7 @@ const defaultLoadingStates: PerformanceMetricsPerFeature['loadingStates'] = {
 
 const defaultData: FeatureMetrics[] = [
     {
-        feature: 'AI Agent' as const,
+        feature: 'AI Agent',
         automationRate: 18,
         automatedInteractions: 2700,
         handoverInteractions: 189,
@@ -57,7 +54,7 @@ const defaultData: FeatureMetrics[] = [
         timeSaved: 9900,
     },
     {
-        feature: 'Flows' as const,
+        feature: 'Flows',
         automationRate: 7,
         automatedInteractions: 900,
         handoverInteractions: 63,
@@ -70,7 +67,10 @@ const renderComponent = (
     data = defaultData,
     loadingStates = defaultLoadingStates,
 ) => {
-    mockUsePerformanceMetricsPerFeature.mockReturnValue({ data, loadingStates })
+    mockUsePerformanceMetricsPerFeature.mockReturnValue({
+        data,
+        loadingStates,
+    })
     return render(<PerformanceBreakdownTable />)
 }
 
@@ -127,6 +127,16 @@ describe('PerformanceBreakdownTable', () => {
         expect(
             screen.getByText('Download Performance Breakdown'),
         ).toBeInTheDocument()
+    })
+
+    it('defaults data to empty array when hook returns undefined data', () => {
+        mockUsePerformanceMetricsPerFeature.mockReturnValue({
+            data: undefined,
+            loadingStates: defaultLoadingStates,
+        })
+        render(<PerformanceBreakdownTable />)
+
+        expect(getLastCallProps().data).toEqual([])
     })
 
     it('passes actionMenu to ReportingMetricBreakdownTable when chartId and withChartMenu are provided', () => {

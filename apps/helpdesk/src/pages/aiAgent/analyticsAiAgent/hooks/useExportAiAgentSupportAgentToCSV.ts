@@ -17,16 +17,12 @@ import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/h
 import { saveZippedFiles } from 'utils/file'
 
 import { ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT } from '../config/aiAgentSupportAgentLayoutConfig'
-import { useDownloadIntentPerformanceData } from './useDownloadIntentPerformanceData'
-import { useDownloadSupportAgentChannelPerformanceData } from './useDownloadSupportAgentChannelPerformanceData'
 
 const REPORT_NAME = 'ai-agent-support-agent'
 
 export const useExportAiAgentSupportAgentToCSV = () => {
     const { value: isTrendCardsFFEnabled, isLoading: isTrendCardsFFLoading } =
         useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards)
-    const { value: isTablesFFEnabled, isLoading: isTablesFFLoading } =
-        useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTables)
 
     const { statsFilters } = useAiAgentStatsFilters()
     const costSavedPerInteraction = useMoneySavedPerInteractionWithAutomate(
@@ -50,9 +46,8 @@ export const useExportAiAgentSupportAgentToCSV = () => {
                 REPORT_NAME,
                 layoutConfig,
                 isTrendCardsFFEnabled,
-                isTablesFFEnabled,
             ),
-        [isTrendCardsFFEnabled, layoutConfig, isTablesFFEnabled],
+        [isTrendCardsFFEnabled, layoutConfig],
     )
 
     const { files: dashboardDataFiles, isLoading: isDashboardDataLoading } =
@@ -63,31 +58,9 @@ export const useExportAiAgentSupportAgentToCSV = () => {
             extraData,
         )
 
-    const legacyChannelTable = useDownloadSupportAgentChannelPerformanceData()
-    const legacyIntentTable = useDownloadIntentPerformanceData()
+    const isLoading = isDashboardDataLoading || isTrendCardsFFLoading
 
-    const isLoading =
-        isDashboardDataLoading ||
-        isTrendCardsFFLoading ||
-        isTablesFFLoading ||
-        (!isTablesFFEnabled &&
-            (legacyChannelTable.isLoading || legacyIntentTable.isLoading))
-
-    const files = useMemo(
-        () => ({
-            ...dashboardDataFiles,
-            ...(!isTablesFFEnabled && {
-                ...legacyChannelTable.files,
-                ...legacyIntentTable.files,
-            }),
-        }),
-        [
-            dashboardDataFiles,
-            legacyChannelTable.files,
-            legacyIntentTable.files,
-            isTablesFFEnabled,
-        ],
-    )
+    const files = dashboardDataFiles
 
     const triggerDownload = useCallback(async () => {
         const fileName = getCsvFileNameWithDates(

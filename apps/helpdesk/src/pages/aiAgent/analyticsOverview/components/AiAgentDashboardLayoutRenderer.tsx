@@ -42,9 +42,6 @@ export function AiAgentDashboardLayoutRenderer<
     const { value: enableCustomDashboards } = useFlagWithLoading(
         FeatureFlagKey.AiAgentAnalyticsCustomDashboards,
     )
-    const { value: enableTablesPersistence } = useFlagWithLoading(
-        FeatureFlagKey.AiAgentAnalyticsDashboardsTables,
-    )
 
     const isArticleRecommendationTableVisible =
         useIsArticleRecommendationTableVisible()
@@ -68,7 +65,7 @@ export function AiAgentDashboardLayoutRenderer<
             onTableTabChange={onTableTabChange}
             enableTrendCards={enableTrendCards}
             enableCustomDashboards={enableCustomDashboards}
-            enableTablesPersistence={enableTablesPersistence}
+            enableTablesPersistence
             isItemVisible={isItemVisible}
         />
     )

@@ -23,8 +23,6 @@ const REPORT_NAME = 'analytics-overview'
 export const useExportAnalyticsOverviewToCSV = () => {
     const { value: isTrendCardsFFEnabled, isLoading: isTrendCardsFFLoading } =
         useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards)
-    const { value: isTablesFFEnabled, isLoading: isTablesFFLoading } =
-        useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTables)
 
     const { statsFilters } = useAiAgentStatsFilters()
     const costSavedPerInteraction = useMoneySavedPerInteractionWithAutomate(
@@ -48,9 +46,8 @@ export const useExportAnalyticsOverviewToCSV = () => {
                 REPORT_NAME,
                 layoutConfig,
                 isTrendCardsFFEnabled,
-                isTablesFFEnabled,
             ),
-        [isTrendCardsFFEnabled, layoutConfig, isTablesFFEnabled],
+        [isTrendCardsFFEnabled, layoutConfig],
     )
 
     const { files, isLoading: isDashboardDataLoading } = useDashboardData(
@@ -60,8 +57,7 @@ export const useExportAnalyticsOverviewToCSV = () => {
         extraData,
     )
 
-    const isLoading =
-        isDashboardDataLoading || isTrendCardsFFLoading || isTablesFFLoading
+    const isLoading = isDashboardDataLoading || isTrendCardsFFLoading
 
     const triggerDownload = useCallback(async () => {
         const fileName = getCsvFileNameWithDates(

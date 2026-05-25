@@ -116,7 +116,7 @@ describe('AiAgentDashboardLayoutRenderer', () => {
             const props = getLastProps()
             expect(props.enableTrendCards).toBe(true)
             expect(props.enableCustomDashboards).toBe(false)
-            expect(props.enableTablesPersistence).toBe(false)
+            expect(props.enableTablesPersistence).toBe(true)
         })
 
         it('passes enableCustomDashboards from AiAgentAnalyticsCustomDashboards flag', () => {
@@ -130,34 +130,18 @@ describe('AiAgentDashboardLayoutRenderer', () => {
             const props = getLastProps()
             expect(props.enableTrendCards).toBe(false)
             expect(props.enableCustomDashboards).toBe(true)
-            expect(props.enableTablesPersistence).toBe(false)
-        })
-
-        it('passes enableTablesPersistence from AiAgentAnalyticsDashboardsTables flag', () => {
-            mockedUseFlagWithLoading.mockImplementation((flag) => ({
-                value: flag === FeatureFlagKey.AiAgentAnalyticsDashboardsTables,
-                isLoading: false,
-            }))
-
-            render(<AiAgentDashboardLayoutRenderer {...baseProps} />)
-
-            const props = getLastProps()
-            expect(props.enableTrendCards).toBe(false)
-            expect(props.enableCustomDashboards).toBe(false)
             expect(props.enableTablesPersistence).toBe(true)
         })
 
-        it('passes all flag booleans through when all are enabled', () => {
+        it('always passes enableTablesPersistence as true', () => {
             mockedUseFlagWithLoading.mockReturnValue({
-                value: true,
+                value: false,
                 isLoading: false,
             })
 
             render(<AiAgentDashboardLayoutRenderer {...baseProps} />)
 
             const props = getLastProps()
-            expect(props.enableTrendCards).toBe(true)
-            expect(props.enableCustomDashboards).toBe(true)
             expect(props.enableTablesPersistence).toBe(true)
         })
     })

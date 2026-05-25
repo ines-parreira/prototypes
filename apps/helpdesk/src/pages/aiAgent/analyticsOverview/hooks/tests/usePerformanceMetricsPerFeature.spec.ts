@@ -1,202 +1,192 @@
 import { renderHook } from '@repo/testing'
 
-import { usePerformanceMetricsPerFeature } from '../usePerformanceMetricsPerFeature'
+import { ReportingGranularity } from 'domains/reporting/models/types'
 
-jest.mock('domains/reporting/hooks/automate/automationTrends')
-jest.mock('domains/reporting/hooks/metricTrends')
-jest.mock('domains/reporting/hooks/automate/useAutomateFilters')
-jest.mock('../useAutomationRateByFeature')
-jest.mock('../useHandoverInteractionsPerFeature')
-jest.mock('pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate')
+import {
+    fetchPerformanceMetricsPerFeature,
+    fetchPerformanceMetricsPerFeatureAsConfigurableTable,
+    usePerformanceMetricsPerFeature,
+} from '../usePerformanceMetricsPerFeature'
 
-const mockUseAutomateFilters = jest.requireMock(
-    'domains/reporting/hooks/automate/useAutomateFilters',
-).useAutomateFilters as jest.Mock
+jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters', () => ({
+    useAiAgentStatsFilters: jest.fn(),
+}))
+jest.mock('domains/reporting/hooks/useStatsMetricPerDimension', () => ({
+    useEntityMetrics: jest.fn(),
+    assembleEntityRows: jest.fn(),
+    fetchEntityMetrics: jest.fn(),
+    toEntityMap: jest.fn(),
+    mapMetricValues: jest.fn(),
+}))
+jest.mock('domains/reporting/hooks/common/utils', () => ({
+    getCsvFileNameWithDates: jest.fn(),
+}))
+jest.mock('@repo/reporting', () => ({
+    formatMetricValue: jest.fn((v: number) => String(v ?? '')),
+}))
+jest.mock('utils/file', () => ({
+    createCsv: jest.fn(),
+}))
+jest.mock(
+    'pages/aiAgent/analyticsOverview/hooks/useAutomatedInteractionsPerFeature',
+    () => ({
+        useAutomatedInteractionsPerFeature: jest.fn(),
+        fetchAutomatedInteractionsPerFeature: jest.fn(),
+    }),
+)
+jest.mock(
+    'pages/aiAgent/analyticsOverview/hooks/useOverallAutomationRatePerFeature',
+    () => ({
+        useOverallAutomationRatePerFeature: jest.fn(),
+        fetchOverallAutomationRatePerFeature: jest.fn(),
+    }),
+)
+jest.mock(
+    'pages/aiAgent/analyticsOverview/hooks/useHandoverInteractionsPerFeature',
+    () => ({
+        useHandoverInteractionsPerFeature: jest.fn(),
+        fetchHandoverInteractionsPerFeature: jest.fn(),
+    }),
+)
+jest.mock(
+    'pages/aiAgent/analyticsOverview/hooks/useCostSavedPerFeature',
+    () => ({
+        useCostSavedPerFeature: jest.fn(),
+        fetchCostSavedPerFeature: jest.fn(),
+    }),
+)
+jest.mock(
+    'pages/aiAgent/analyticsOverview/hooks/useTimeSavedPerFeature',
+    () => ({
+        useTimeSavedPerFeature: jest.fn(),
+        fetchTimeSavedPerFeature: jest.fn(),
+    }),
+)
 
-const mockUseTrendFromMultipleMetricsTrend = jest.requireMock(
-    'domains/reporting/hooks/automate/automationTrends',
-).useTrendFromMultipleMetricsTrend as jest.Mock
+const mockUseAiAgentStatsFilters = jest.requireMock(
+    'pages/aiAgent/hooks/useAiAgentStatsFilters',
+).useAiAgentStatsFilters as jest.Mock
 
-const mockUseTicketHandleTimeTrend = jest.requireMock(
-    'domains/reporting/hooks/metricTrends',
-).useTicketHandleTimeTrend as jest.Mock
+const mockUseEntityMetrics = jest.requireMock(
+    'domains/reporting/hooks/useStatsMetricPerDimension',
+).useEntityMetrics as jest.Mock
 
-const mockUseAutomationRateByFeature = jest.requireMock(
-    '../useAutomationRateByFeature',
-).useAutomationRateByFeature as jest.Mock
+const mockAssembleEntityRows = jest.requireMock(
+    'domains/reporting/hooks/useStatsMetricPerDimension',
+).assembleEntityRows as jest.Mock
 
-const mockUseHandoverInteractionsPerFeature = jest.requireMock(
-    '../useHandoverInteractionsPerFeature',
-).useHandoverInteractionsPerFeature as jest.Mock
+const mockFetchEntityMetrics = jest.requireMock(
+    'domains/reporting/hooks/useStatsMetricPerDimension',
+).fetchEntityMetrics as jest.Mock
 
-const mockUseMoneySavedPerInteractionWithAutomate = jest.requireMock(
-    'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate',
-).useMoneySavedPerInteractionWithAutomate as jest.Mock
+const mockGetCsvFileNameWithDates = jest.requireMock(
+    'domains/reporting/hooks/common/utils',
+).getCsvFileNameWithDates as jest.Mock
+
+const mockCreateCsv = jest.requireMock('utils/file').createCsv as jest.Mock
+
+const MOCK_STATS_FILTERS = {
+    period: {
+        start_datetime: '2024-01-01T00:00:00Z',
+        end_datetime: '2024-01-31T23:59:59Z',
+    },
+}
+const MOCK_TIMEZONE = 'UTC'
+
+const defaultEntityData = {
+    automationRate: {
+        'ai-agent': 0.18,
+        flow: 0.07,
+        'article-recommendation': 0.05,
+        'order-management': 0.12,
+    },
+    automatedInteractions: {
+        'ai-agent': 2700,
+        flow: 900,
+        'article-recommendation': 300,
+        'order-management': 150,
+    },
+    handoverInteractions: {
+        'ai-agent': 189,
+        flow: 63,
+        'article-recommendation': 0,
+        'order-management': 15,
+    },
+    costSaved: {
+        'ai-agent': 8370,
+        flow: 2790,
+        'article-recommendation': 930,
+        'order-management': 465,
+    },
+    timeSaved: {
+        'ai-agent': 9900,
+        flow: 3300,
+        'article-recommendation': 1100,
+        'order-management': 550,
+    },
+}
+
+const defaultRows = [
+    {
+        feature: 'AI Agent',
+        automationRate: 0.18,
+        automatedInteractions: 2700,
+        handoverInteractions: 189,
+        costSaved: 8370,
+        timeSaved: 9900,
+    },
+    {
+        feature: 'Article Recommendation',
+        automationRate: 0.05,
+        automatedInteractions: 300,
+        handoverInteractions: 0,
+        costSaved: 930,
+        timeSaved: 1100,
+    },
+]
 
 describe('usePerformanceMetricsPerFeature', () => {
     beforeEach(() => {
-        mockUseAutomateFilters.mockReturnValue({
-            statsFilters: {
-                period: { from: '2024-01-01', to: '2024-01-31' },
-            },
-            userTimezone: 'UTC',
-            granularity: 'day',
+        jest.clearAllMocks()
+        mockUseAiAgentStatsFilters.mockReturnValue({
+            statsFilters: MOCK_STATS_FILTERS,
+            userTimezone: MOCK_TIMEZONE,
         })
-
-        mockUseMoneySavedPerInteractionWithAutomate.mockReturnValue(3.1)
-
-        mockUseTrendFromMultipleMetricsTrend.mockReturnValue({
-            data: { value: 100 },
-            isFetching: false,
-            isError: false,
-        })
-
-        mockUseTicketHandleTimeTrend.mockReturnValue({
-            data: { value: 1.5 },
-            isFetching: false,
-            isError: false,
-        })
-
-        mockUseAutomationRateByFeature.mockReturnValue({
-            data: [
-                { name: 'AI Agent', value: 18 },
-                { name: 'Flows', value: 8 },
-                { name: 'Article Recommendation', value: 4 },
-                { name: 'Order Management', value: 6 },
-            ],
+        mockUseEntityMetrics.mockReturnValue({
+            data: defaultEntityData,
             isLoading: false,
             isError: false,
-        })
-
-        mockUseHandoverInteractionsPerFeature.mockReturnValue({
-            data: {
-                allValues: [
-                    { dimension: 'ai-agent', value: 120, decile: null },
-                    { dimension: 'flow', value: 45, decile: null },
-                    {
-                        dimension: 'article-recommendation',
-                        value: 10,
-                        decile: null,
-                    },
-                    { dimension: 'order-management', value: 5, decile: null },
-                ],
+            loadingStates: {
+                automationRate: false,
+                automatedInteractions: false,
+                handoverInteractions: false,
+                costSaved: false,
+                timeSaved: false,
             },
-            isFetching: false,
-            isError: false,
         })
+        mockAssembleEntityRows.mockReturnValue(defaultRows)
     })
 
-    afterEach(() => {
-        jest.clearAllMocks()
-    })
-
-    it('should return data when all dependencies are loaded', () => {
+    it('returns assembled rows when all data is loaded', () => {
         const { result } = renderHook(() => usePerformanceMetricsPerFeature())
 
+        expect(result.current.data).toEqual(defaultRows)
         expect(result.current.isLoading).toBe(false)
         expect(result.current.isError).toBe(false)
-        expect(result.current.data).toBeDefined()
-        expect(result.current.data).toHaveLength(4)
     })
 
-    it('should return correct feature names', () => {
-        const { result } = renderHook(() => usePerformanceMetricsPerFeature())
-
-        expect(result.current.data).toBeDefined()
-        const features = result.current.data?.map((item) => item.feature)
-        expect(features).toEqual([
-            'AI Agent',
-            'Article Recommendation',
-            'Flows',
-            'Order Management',
-        ])
-    })
-
-    it('should calculate AI Agent metrics correctly', () => {
-        const { result } = renderHook(() => usePerformanceMetricsPerFeature())
-
-        const aiAgentMetrics = result.current.data?.find(
-            (item) => item.feature === 'AI Agent',
-        )
-        expect(aiAgentMetrics).toBeDefined()
-        expect(aiAgentMetrics?.automationRate).toBe(18)
-        expect(aiAgentMetrics?.automatedInteractions).toBe(100)
-        expect(aiAgentMetrics?.handoverInteractions).toBe(120)
-        expect(aiAgentMetrics?.costSaved).toBe(100 * 3.1)
-        expect(aiAgentMetrics?.timeSaved).toBe(100 * 1.5)
-    })
-
-    it('should calculate Flows metrics correctly', () => {
-        const { result } = renderHook(() => usePerformanceMetricsPerFeature())
-
-        const flowsMetrics = result.current.data?.find(
-            (item) => item.feature === 'Flows',
-        )
-        expect(flowsMetrics).toBeDefined()
-        expect(flowsMetrics?.automationRate).toBe(8)
-        expect(flowsMetrics?.automatedInteractions).toBe(100)
-        expect(flowsMetrics?.handoverInteractions).toBe(45)
-        expect(flowsMetrics?.costSaved).toBe(100 * 3.1)
-        expect(flowsMetrics?.timeSaved).toBe(100 * 1.5)
-    })
-
-    it('should calculate Article Recommendation metrics correctly', () => {
-        const { result } = renderHook(() => usePerformanceMetricsPerFeature())
-
-        const articleMetrics = result.current.data?.find(
-            (item) => item.feature === 'Article Recommendation',
-        )
-        expect(articleMetrics).toBeDefined()
-        expect(articleMetrics?.automationRate).toBe(4)
-        expect(articleMetrics?.automatedInteractions).toBe(100)
-        expect(articleMetrics?.handoverInteractions).toBe(10)
-        expect(articleMetrics?.costSaved).toBe(100 * 3.1)
-        expect(articleMetrics?.timeSaved).toBe(100 * 1.5)
-    })
-
-    it('should calculate Order Management metrics correctly', () => {
-        const { result } = renderHook(() => usePerformanceMetricsPerFeature())
-
-        const orderMetrics = result.current.data?.find(
-            (item) => item.feature === 'Order Management',
-        )
-        expect(orderMetrics).toBeDefined()
-        expect(orderMetrics?.automationRate).toBe(6)
-        expect(orderMetrics?.automatedInteractions).toBe(100)
-        expect(orderMetrics?.handoverInteractions).toBe(5)
-        expect(orderMetrics?.costSaved).toBe(100 * 3.1)
-        expect(orderMetrics?.timeSaved).toBe(100 * 1.5)
-    })
-
-    it('should return isLoading true when any dependency is fetching', () => {
-        mockUseTrendFromMultipleMetricsTrend.mockReturnValueOnce({
-            data: { value: 100 },
-            isFetching: true,
-            isError: false,
-        })
-
-        const { result } = renderHook(() => usePerformanceMetricsPerFeature())
-
-        expect(result.current.isLoading).toBe(true)
-    })
-
-    it('should return isLoading true when ticket handle time is fetching', () => {
-        mockUseTicketHandleTimeTrend.mockReturnValue({
-            data: { value: 1.5 },
-            isFetching: true,
-            isError: false,
-        })
-
-        const { result } = renderHook(() => usePerformanceMetricsPerFeature())
-
-        expect(result.current.isLoading).toBe(true)
-    })
-
-    it('should return isLoading true when automation rate is loading', () => {
-        mockUseAutomationRateByFeature.mockReturnValue({
-            data: [],
+    it('returns isLoading true when entity metrics are loading', () => {
+        mockUseEntityMetrics.mockReturnValue({
+            data: defaultEntityData,
             isLoading: true,
             isError: false,
+            loadingStates: {
+                automationRate: true,
+                automatedInteractions: false,
+                handoverInteractions: false,
+                costSaved: false,
+                timeSaved: false,
+            },
         })
 
         const { result } = renderHook(() => usePerformanceMetricsPerFeature())
@@ -204,47 +194,18 @@ describe('usePerformanceMetricsPerFeature', () => {
         expect(result.current.isLoading).toBe(true)
     })
 
-    it('should return isLoading true when handover interactions per feature is fetching', () => {
-        mockUseHandoverInteractionsPerFeature.mockReturnValue({
-            data: undefined,
-            isFetching: true,
-            isError: false,
-        })
-
-        const { result } = renderHook(() => usePerformanceMetricsPerFeature())
-
-        expect(result.current.isLoading).toBe(true)
-    })
-
-    it('should return isError true when any dependency has error', () => {
-        mockUseTrendFromMultipleMetricsTrend.mockReturnValueOnce({
-            data: { value: 100 },
-            isFetching: false,
-            isError: true,
-        })
-
-        const { result } = renderHook(() => usePerformanceMetricsPerFeature())
-
-        expect(result.current.isError).toBe(true)
-    })
-
-    it('should return isError true when ticket handle time has error', () => {
-        mockUseTicketHandleTimeTrend.mockReturnValue({
-            data: { value: 1.5 },
-            isFetching: false,
-            isError: true,
-        })
-
-        const { result } = renderHook(() => usePerformanceMetricsPerFeature())
-
-        expect(result.current.isError).toBe(true)
-    })
-
-    it('should return isError true when automation rate has error', () => {
-        mockUseAutomationRateByFeature.mockReturnValue({
-            data: undefined,
+    it('returns isError true when entity metrics have an error', () => {
+        mockUseEntityMetrics.mockReturnValue({
+            data: defaultEntityData,
             isLoading: false,
             isError: true,
+            loadingStates: {
+                automationRate: false,
+                automatedInteractions: false,
+                handoverInteractions: false,
+                costSaved: false,
+                timeSaved: false,
+            },
         })
 
         const { result } = renderHook(() => usePerformanceMetricsPerFeature())
@@ -252,140 +213,291 @@ describe('usePerformanceMetricsPerFeature', () => {
         expect(result.current.isError).toBe(true)
     })
 
-    it('should handle null interactions gracefully', () => {
-        mockUseTrendFromMultipleMetricsTrend.mockReturnValue({
-            data: undefined,
-            isFetching: false,
-            isError: false,
-        })
-
-        const { result } = renderHook(() => usePerformanceMetricsPerFeature())
-
-        const aiAgentMetrics = result.current.data?.find(
-            (item) => item.feature === 'AI Agent',
-        )
-        expect(aiAgentMetrics?.automatedInteractions).toBeNull()
-        expect(aiAgentMetrics?.costSaved).toBeNull()
-        expect(aiAgentMetrics?.timeSaved).toBeNull()
-    })
-
-    it('should handle null handle time gracefully', () => {
-        mockUseTicketHandleTimeTrend.mockReturnValue({
-            data: undefined,
-            isFetching: false,
-            isError: false,
-        })
-
-        const { result } = renderHook(() => usePerformanceMetricsPerFeature())
-
-        const aiAgentMetrics = result.current.data?.find(
-            (item) => item.feature === 'AI Agent',
-        )
-        expect(aiAgentMetrics?.timeSaved).toBeNull()
-    })
-
-    it('should handle missing automation rate data gracefully', () => {
-        mockUseAutomationRateByFeature.mockReturnValue({
-            data: [{ name: 'AI Agent', value: 18 }],
+    it('maps entity loading states to output loading states', () => {
+        mockUseEntityMetrics.mockReturnValue({
+            data: defaultEntityData,
             isLoading: false,
             isError: false,
+            loadingStates: {
+                automationRate: false,
+                automatedInteractions: true,
+                handoverInteractions: false,
+                costSaved: true,
+                timeSaved: false,
+            },
         })
 
         const { result } = renderHook(() => usePerformanceMetricsPerFeature())
 
-        const flowsMetrics = result.current.data?.find(
-            (item) => item.feature === 'Flows',
-        )
-        expect(flowsMetrics?.automationRate).toBeNull()
-    })
-
-    it('should calculate cost saved correctly with different interaction values', () => {
-        mockUseTrendFromMultipleMetricsTrend.mockReturnValueOnce({
-            data: { value: 500 },
-            isFetching: false,
-            isError: false,
-        })
-
-        const { result } = renderHook(() => usePerformanceMetricsPerFeature())
-
-        const aiAgentMetrics = result.current.data?.find(
-            (item) => item.feature === 'AI Agent',
-        )
-        expect(aiAgentMetrics?.costSaved).toBe(500 * 3.1)
-    })
-
-    it('should calculate time saved correctly with different values', () => {
-        mockUseTrendFromMultipleMetricsTrend.mockReturnValueOnce({
-            data: { value: 200 },
-            isFetching: false,
-            isError: false,
-        })
-
-        mockUseTicketHandleTimeTrend.mockReturnValue({
-            data: { value: 2.5 },
-            isFetching: false,
-            isError: false,
-        })
-
-        const { result } = renderHook(() => usePerformanceMetricsPerFeature())
-
-        const aiAgentMetrics = result.current.data?.find(
-            (item) => item.feature === 'AI Agent',
-        )
-        expect(aiAgentMetrics?.timeSaved).toBe(200 * 2.5)
-    })
-
-    it('should provide correct loading states', () => {
-        const { result } = renderHook(() => usePerformanceMetricsPerFeature())
-
-        expect(result.current.loadingStates).toBeDefined()
         expect(result.current.loadingStates.automationRate).toBe(false)
-        expect(result.current.loadingStates.automatedInteractions).toBe(false)
+        expect(result.current.loadingStates.automatedInteractions).toBe(true)
         expect(result.current.loadingStates.handoverInteractions).toBe(false)
+        expect(result.current.loadingStates.costSaved).toBe(true)
         expect(result.current.loadingStates.timeSaved).toBe(false)
     })
 
-    it('should set automationRate loading state correctly', () => {
-        mockUseAutomationRateByFeature.mockReturnValue({
-            data: undefined,
-            isLoading: true,
-            isError: false,
+    describe('buildAllFeaturesRow', () => {
+        it('falls back to null when entity data values are missing', () => {
+            mockUseEntityMetrics.mockReturnValue({
+                data: {
+                    automationRate: {},
+                    automatedInteractions: {},
+                    handoverInteractions: {},
+                    costSaved: {},
+                    timeSaved: {},
+                },
+                isLoading: false,
+                isError: false,
+                loadingStates: {
+                    automationRate: false,
+                    automatedInteractions: false,
+                    handoverInteractions: false,
+                    costSaved: false,
+                    timeSaved: false,
+                },
+            })
+
+            renderHook(() => usePerformanceMetricsPerFeature())
+
+            const rowBuilder = mockAssembleEntityRows.mock.calls[0][1]
+            const row = rowBuilder('ai-agent')
+
+            expect(row.feature).toBe('AI Agent')
+            expect(row.automationRate).toBeNull()
+            expect(row.automatedInteractions).toBeNull()
+            expect(row.handoverInteractions).toBeNull()
+            expect(row.costSaved).toBeNull()
+            expect(row.timeSaved).toBeNull()
         })
 
-        const { result } = renderHook(() => usePerformanceMetricsPerFeature())
+        it('maps AutomationFeatureType values to display names', () => {
+            renderHook(() => usePerformanceMetricsPerFeature())
 
-        expect(result.current.loadingStates.automationRate).toBe(true)
+            const rowBuilder = mockAssembleEntityRows.mock.calls[0][1]
+
+            expect(rowBuilder('ai-agent').feature).toBe('AI Agent')
+            expect(rowBuilder('flow').feature).toBe('Flows')
+            expect(rowBuilder('article-recommendation').feature).toBe(
+                'Article Recommendation',
+            )
+            expect(rowBuilder('order-management').feature).toBe(
+                'Order Management',
+            )
+        })
     })
+})
 
-    it('should set automatedInteractions loading state correctly', () => {
-        mockUseTrendFromMultipleMetricsTrend.mockReturnValue({
-            data: { value: 100 },
-            isFetching: true,
+describe('fetchPerformanceMetricsPerFeature', () => {
+    const mockMetricsData = {
+        automationRate: { 'ai-agent': 0.18 },
+        automatedInteractions: { 'ai-agent': 2700 },
+        handoverInteractions: { 'ai-agent': 189 },
+        costSaved: { 'ai-agent': 8370 },
+        timeSaved: { 'ai-agent': 9900 },
+    }
+
+    const mockRow = {
+        feature: 'AI Agent' as const,
+        automationRate: 0.18,
+        automatedInteractions: 2700,
+        handoverInteractions: 189,
+        costSaved: 8370,
+        timeSaved: 9900,
+    }
+
+    beforeEach(() => {
+        jest.clearAllMocks()
+        mockFetchEntityMetrics.mockResolvedValue({
+            data: mockMetricsData,
+            isLoading: false,
             isError: false,
         })
-
-        const { result } = renderHook(() => usePerformanceMetricsPerFeature())
-
-        expect(result.current.loadingStates.automatedInteractions).toBe(true)
+        mockAssembleEntityRows.mockReturnValue([mockRow])
+        mockGetCsvFileNameWithDates.mockReturnValue(
+            '2024-01-01_2024-01-31-all_features_table',
+        )
+        mockCreateCsv.mockReturnValue('csv-content')
     })
 
-    it('should set timeSaved loading state correctly', () => {
-        mockUseTicketHandleTimeTrend.mockReturnValue({
-            data: { value: 1.5 },
-            isFetching: true,
-            isError: false,
+    it('returns empty file content when data is empty', async () => {
+        mockAssembleEntityRows.mockReturnValue([])
+
+        const result = await fetchPerformanceMetricsPerFeature(
+            MOCK_STATS_FILTERS,
+            MOCK_TIMEZONE,
+        )
+
+        expect(result.files[result.fileName]).toBe('')
+    })
+
+    it('returns CSV content when data is available', async () => {
+        const result = await fetchPerformanceMetricsPerFeature(
+            MOCK_STATS_FILTERS,
+            MOCK_TIMEZONE,
+        )
+
+        expect(result.files[result.fileName]).toBe('csv-content')
+    })
+
+    it('passes full statsFilters to fetchEntityMetrics', async () => {
+        const filtersWithExtra = {
+            ...MOCK_STATS_FILTERS,
+            channel: 'chat',
+            stores: [1, 2],
+        } as any
+
+        await fetchPerformanceMetricsPerFeature(filtersWithExtra, MOCK_TIMEZONE)
+
+        const [, passedFilters] = mockFetchEntityMetrics.mock.calls[0]
+        expect(passedFilters).toEqual(filtersWithExtra)
+    })
+
+    it('passes costSavedPerInteraction override to the cost fetch config', async () => {
+        const customCost = 42
+
+        await fetchPerformanceMetricsPerFeature(
+            MOCK_STATS_FILTERS,
+            MOCK_TIMEZONE,
+            customCost,
+        )
+
+        const [passedConfig] = mockFetchEntityMetrics.mock.calls[0]
+        expect(typeof passedConfig.costSaved.fetch).toBe('function')
+    })
+
+    it('the costSaved fetch config calls fetchCostSavedPerFeature with the custom cost', async () => {
+        const customCost = 42
+        const mockFetchCostSavedPerFeature = jest.requireMock(
+            'pages/aiAgent/analyticsOverview/hooks/useCostSavedPerFeature',
+        ).fetchCostSavedPerFeature as jest.Mock
+        mockFetchCostSavedPerFeature.mockResolvedValue({
+            data: { allValues: [] },
         })
 
-        const { result } = renderHook(() => usePerformanceMetricsPerFeature())
+        await fetchPerformanceMetricsPerFeature(
+            MOCK_STATS_FILTERS,
+            MOCK_TIMEZONE,
+            customCost,
+        )
 
-        expect(result.current.loadingStates.timeSaved).toBe(true)
+        const [passedConfig] = mockFetchEntityMetrics.mock.calls[0]
+        await passedConfig.costSaved.fetch(MOCK_STATS_FILTERS, MOCK_TIMEZONE)
+
+        expect(mockFetchCostSavedPerFeature).toHaveBeenCalledWith(
+            MOCK_STATS_FILTERS,
+            MOCK_TIMEZONE,
+            customCost,
+        )
     })
 
-    it('should call hooks with stable filters without aggregation', () => {
-        renderHook(() => usePerformanceMetricsPerFeature())
+    it('uses feature display names in CSV rows', async () => {
+        await fetchPerformanceMetricsPerFeature(
+            MOCK_STATS_FILTERS,
+            MOCK_TIMEZONE,
+        )
 
-        expect(mockUseTrendFromMultipleMetricsTrend).toHaveBeenCalled()
-        const firstCallArgs = mockUseTrendFromMultipleMetricsTrend.mock.calls[0]
-        expect(firstCallArgs[0]).not.toHaveProperty('aggregation_window')
+        const csvCallArgs = mockCreateCsv.mock.calls[0][0]
+        const firstDataRow = csvCallArgs[1]
+        expect(firstDataRow[0]).toBe('AI Agent')
+    })
+
+    it('returns fileName from getCsvFileNameWithDates', async () => {
+        const result = await fetchPerformanceMetricsPerFeature(
+            MOCK_STATS_FILTERS,
+            MOCK_TIMEZONE,
+        )
+
+        expect(result.fileName).toBe('2024-01-01_2024-01-31-all_features_table')
+    })
+})
+
+describe('fetchPerformanceMetricsPerFeatureAsConfigurableTable', () => {
+    const mockRow = {
+        feature: 'AI Agent' as const,
+        automationRate: 0.18,
+        automatedInteractions: 2700,
+        handoverInteractions: 189,
+        costSaved: 8370,
+        timeSaved: 9900,
+    }
+
+    beforeEach(() => {
+        jest.clearAllMocks()
+        mockFetchEntityMetrics.mockResolvedValue({
+            data: {
+                automationRate: { 'ai-agent': 0.18 },
+                automatedInteractions: { 'ai-agent': 2700 },
+                handoverInteractions: { 'ai-agent': 189 },
+                costSaved: { 'ai-agent': 8370 },
+                timeSaved: { 'ai-agent': 9900 },
+            },
+            isLoading: false,
+            isError: false,
+        })
+        mockAssembleEntityRows.mockReturnValue([mockRow])
+        mockGetCsvFileNameWithDates.mockReturnValue(
+            '2024-01-01_2024-01-31-all_features_table',
+        )
+        mockCreateCsv.mockReturnValue('csv-content')
+    })
+
+    it('returns files from the underlying fetch', async () => {
+        const result =
+            await fetchPerformanceMetricsPerFeatureAsConfigurableTable(
+                null,
+                null,
+                MOCK_STATS_FILTERS,
+                MOCK_TIMEZONE,
+                ReportingGranularity.Day,
+            )
+
+        expect(result.files).toBeDefined()
+        expect(result.files['2024-01-01_2024-01-31-all_features_table']).toBe(
+            'csv-content',
+        )
+    })
+
+    it('returns empty file content when no data is available', async () => {
+        mockAssembleEntityRows.mockReturnValue([])
+
+        const result =
+            await fetchPerformanceMetricsPerFeatureAsConfigurableTable(
+                null,
+                null,
+                MOCK_STATS_FILTERS,
+                MOCK_TIMEZONE,
+                ReportingGranularity.Day,
+            )
+
+        expect(result.files['2024-01-01_2024-01-31-all_features_table']).toBe(
+            '',
+        )
+    })
+
+    it('forwards costSavedPerInteraction from extra to the underlying fetch', async () => {
+        await fetchPerformanceMetricsPerFeatureAsConfigurableTable(
+            null,
+            null,
+            MOCK_STATS_FILTERS,
+            MOCK_TIMEZONE,
+            ReportingGranularity.Day,
+            { costSavedPerInteraction: 5.5 },
+        )
+
+        const [passedConfig] = mockFetchEntityMetrics.mock.calls[0]
+        expect(typeof passedConfig.costSaved.fetch).toBe('function')
+    })
+
+    it('ignores savedMeasure and savedDimension parameters', async () => {
+        const result =
+            await fetchPerformanceMetricsPerFeatureAsConfigurableTable(
+                'some-measure',
+                'some-dimension',
+                MOCK_STATS_FILTERS,
+                MOCK_TIMEZONE,
+                ReportingGranularity.Day,
+            )
+
+        expect(result.files).toBeDefined()
     })
 })

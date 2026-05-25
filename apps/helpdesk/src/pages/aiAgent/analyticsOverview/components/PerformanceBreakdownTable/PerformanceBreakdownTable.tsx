@@ -25,7 +25,6 @@ export const PerformanceBreakdownTable = ({
             metricColumns={PERFORMANCE_BREAKDOWN_COLUMNS}
             loadingStates={loadingStates}
             DownloadButton={<DownloadPerformanceBreakdownButton />}
-            nameColumns={PERFORMANCE_BREAKDOWN_NAME_COLUMNS}
             actionMenu={
                 withChartMenu && chartId ? (
                     <ChartsActionMenu
@@ -35,6 +34,7 @@ export const PerformanceBreakdownTable = ({
                 ) : undefined
             }
             chartId={chartId}
+            nameColumns={PERFORMANCE_BREAKDOWN_NAME_COLUMNS}
         />
     )
 }

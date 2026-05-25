@@ -60,7 +60,6 @@ describe('buildCustomDashboard', () => {
             'test',
             ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT,
             true,
-            true,
         )
         expect(result.children).toHaveLength(3)
     })
@@ -150,12 +149,11 @@ describe('buildCustomDashboard', () => {
     })
 
     describe('table items with requiresFeatureFlag', () => {
-        it('should include all eligible table items when isTablesFFEnabled is true, regardless of the trend cards flag', () => {
+        it('should always include all table items regardless of the feature flag', () => {
             const result = buildCustomDashboard(
                 'test',
                 DEFAULT_ANALYTICS_OVERVIEW_LAYOUT,
                 false,
-                true,
             )
             const tableSection = result.children.find((s) =>
                 (s as any).children?.some(
@@ -171,45 +169,6 @@ describe('buildCustomDashboard', () => {
                 AnalyticsOverviewChart.FlowsTable,
                 AnalyticsOverviewChart.OrderManagementTable,
             ])
-        })
-
-        it('should include all eligible table items when both feature flags are enabled', () => {
-            const result = buildCustomDashboard(
-                'test',
-                DEFAULT_ANALYTICS_OVERVIEW_LAYOUT,
-                true,
-                true,
-            )
-            const tableSection = result.children.find((s) =>
-                (s as any).children?.some(
-                    (c: any) =>
-                        c.config_id === AnalyticsOverviewChart.PerformanceTable,
-                ),
-            ) as { children: { config_id: string }[] } | undefined
-            const chartIds =
-                tableSection?.children.map((c) => c.config_id) ?? []
-            expect(chartIds).toEqual([
-                AnalyticsOverviewChart.PerformanceTable,
-                AnalyticsOverviewChart.ArticleRecommendationTable,
-                AnalyticsOverviewChart.FlowsTable,
-                AnalyticsOverviewChart.OrderManagementTable,
-            ])
-        })
-
-        it('should not include requiresFeatureFlag table items when isTablesFFEnabled is false even if isFeatureFlagEnabled is true', () => {
-            const result = buildCustomDashboard(
-                'test',
-                DEFAULT_ANALYTICS_OVERVIEW_LAYOUT,
-                true,
-                false,
-            )
-            const tableSection = result.children.find((s) =>
-                (s as any).children?.some(
-                    (c: any) =>
-                        c.config_id === AnalyticsOverviewChart.PerformanceTable,
-                ),
-            )
-            expect(tableSection).toBeUndefined()
         })
     })
 

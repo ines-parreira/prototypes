@@ -1,28 +1,44 @@
 import { useMemo } from 'react'
 
-import type { ChartDataItem } from '@repo/reporting'
+import { formatMetricValue } from '@repo/reporting'
 
-import { useTrendFromMultipleMetricsTrend } from 'domains/reporting/hooks/automate/automationTrends'
-import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
-import { useTicketHandleTimeTrend } from 'domains/reporting/hooks/metricTrends'
-import { AutomationDatasetMeasure } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
+import type { ConfigurableGraphFetch } from 'domains/reporting/hooks/common/useConfigurableGraphsReportData'
+import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
+import type { EntityMetricConfig } from 'domains/reporting/hooks/useStatsMetricPerDimension'
 import {
-    aiAgentAutomatedInteractionsQueryFactory,
-    articleRecommendationAutomatedInteractionsQueryFactory,
-    flowsAutomatedInteractionsQueryFactory,
-    orderManagementAutomatedInteractionsQueryFactory,
-} from 'domains/reporting/models/queryFactories/automate_v2/metrics'
-import {
-    aiAgentAutomatedInteractionsQueryV2Factory,
-    articleRecommendationAutomatedInteractionsQueryV2Factory,
-    flowsAutomatedInteractionsQueryV2Factory,
-    orderManagementAutomatedInteractionsQueryV2Factory,
-} from 'domains/reporting/models/scopes/automatedInteractions'
+    assembleEntityRows,
+    fetchEntityMetrics,
+    useEntityMetrics,
+} from 'domains/reporting/hooks/useStatsMetricPerDimension'
 import { AutomationFeatureType } from 'domains/reporting/models/scopes/constants'
-import { useAutomationRateByFeature } from 'pages/aiAgent/analyticsOverview/hooks/useAutomationRateByFeature'
-import { useHandoverInteractionsPerFeature } from 'pages/aiAgent/analyticsOverview/hooks/useHandoverInteractionsPerFeature'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import {
+    PERFORMANCE_BREAKDOWN_COLUMNS,
+    PERFORMANCE_BREAKDOWN_TABLE,
+} from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/columns'
+import {
+    fetchAutomatedInteractionsPerFeature,
+    useAutomatedInteractionsPerFeature,
+} from 'pages/aiAgent/analyticsOverview/hooks/useAutomatedInteractionsPerFeature'
+import {
+    fetchCostSavedPerFeature,
+    useCostSavedPerFeature,
+} from 'pages/aiAgent/analyticsOverview/hooks/useCostSavedPerFeature'
+import {
+    fetchHandoverInteractionsPerFeature,
+    useHandoverInteractionsPerFeature,
+} from 'pages/aiAgent/analyticsOverview/hooks/useHandoverInteractionsPerFeature'
+import {
+    fetchOverallAutomationRatePerFeature,
+    useOverallAutomationRatePerFeature,
+} from 'pages/aiAgent/analyticsOverview/hooks/useOverallAutomationRatePerFeature'
+import {
+    fetchTimeSavedPerFeature,
+    useTimeSavedPerFeature,
+} from 'pages/aiAgent/analyticsOverview/hooks/useTimeSavedPerFeature'
+import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
-import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
+import { createCsv } from 'utils/file'
 
 export type FeatureName =
     | 'AI Agent'
@@ -39,217 +55,163 @@ export type FeatureMetrics = {
     timeSaved: number | null
 }
 
-export type PerformanceMetricsPerFeature = {
-    data: FeatureMetrics[] | undefined
-    isLoading: boolean
-    isError: boolean
-    loadingStates: {
-        automationRate: boolean
-        automatedInteractions: boolean
-        handoverInteractions: boolean
-        timeSaved: boolean
-        costSaved: boolean
+const FEATURE_TYPE_TO_NAME: Record<AutomationFeatureType, FeatureName> = {
+    [AutomationFeatureType.AiAgent]: 'AI Agent',
+    [AutomationFeatureType.Flows]: 'Flows',
+    [AutomationFeatureType.ArticleRecommendation]: 'Article Recommendation',
+    [AutomationFeatureType.OrderManagement]: 'Order Management',
+}
+
+const FEATURE_ENTITIES: AutomationFeatureType[] = [
+    AutomationFeatureType.AiAgent,
+    AutomationFeatureType.ArticleRecommendation,
+    AutomationFeatureType.Flows,
+    AutomationFeatureType.OrderManagement,
+]
+
+type AllFeaturesMetricKeys =
+    | 'automationRate'
+    | 'automatedInteractions'
+    | 'handoverInteractions'
+    | 'costSaved'
+    | 'timeSaved'
+
+const buildAllFeaturesRow =
+    (
+        entityData: Record<
+            AllFeaturesMetricKeys,
+            Partial<Record<string, number | null | undefined>>
+        >,
+    ) =>
+    (entity: AutomationFeatureType): FeatureMetrics => ({
+        feature: FEATURE_TYPE_TO_NAME[entity],
+        automationRate: entityData.automationRate[entity] ?? null,
+        automatedInteractions: entityData.automatedInteractions[entity] ?? null,
+        handoverInteractions: entityData.handoverInteractions[entity] ?? null,
+        costSaved: entityData.costSaved[entity] ?? null,
+        timeSaved: entityData.timeSaved[entity] ?? null,
+    })
+
+const ALL_FEATURES_METRICS_CONFIG: Record<
+    AllFeaturesMetricKeys,
+    EntityMetricConfig
+> = {
+    automationRate: {
+        use: useOverallAutomationRatePerFeature,
+        fetch: fetchOverallAutomationRatePerFeature,
+    },
+    automatedInteractions: {
+        use: useAutomatedInteractionsPerFeature,
+        fetch: fetchAutomatedInteractionsPerFeature,
+    },
+    handoverInteractions: {
+        use: useHandoverInteractionsPerFeature,
+        fetch: fetchHandoverInteractionsPerFeature,
+    },
+    costSaved: {
+        use: useCostSavedPerFeature,
+        fetch: fetchCostSavedPerFeature,
+    },
+    timeSaved: {
+        use: useTimeSavedPerFeature,
+        fetch: fetchTimeSavedPerFeature,
+    },
+}
+
+export const usePerformanceMetricsPerFeature = () => {
+    const { statsFilters, userTimezone } = useAiAgentStatsFilters()
+
+    const {
+        data: entityData,
+        isLoading,
+        isError,
+        loadingStates,
+    } = useEntityMetrics(
+        ALL_FEATURES_METRICS_CONFIG,
+        statsFilters,
+        userTimezone,
+    )
+
+    const data = useMemo(() => {
+        return assembleEntityRows(
+            FEATURE_ENTITIES,
+            buildAllFeaturesRow(entityData),
+        )
+    }, [entityData])
+
+    return { data, isLoading, isError, loadingStates }
+}
+
+function createAllFeaturesFetchConfig(
+    costSavedPerInteraction: number,
+): Record<AllFeaturesMetricKeys, EntityMetricConfig> {
+    return {
+        ...ALL_FEATURES_METRICS_CONFIG,
+        costSaved: {
+            ...ALL_FEATURES_METRICS_CONFIG.costSaved,
+            fetch: (filters, tz) =>
+                fetchCostSavedPerFeature(filters, tz, costSavedPerInteraction),
+        },
     }
 }
 
-const FEATURE_TO_AUTOMATION_TYPE: Record<FeatureName, AutomationFeatureType> = {
-    'AI Agent': AutomationFeatureType.AiAgent,
-    Flows: AutomationFeatureType.Flows,
-    'Article Recommendation': AutomationFeatureType.ArticleRecommendation,
-    'Order Management': AutomationFeatureType.OrderManagement,
-}
+const ALL_FEATURES_FILENAME = `${PERFORMANCE_BREAKDOWN_TABLE.title.toLowerCase().replace(/\s+/g, '_')}_table`
 
-export type RawPerformanceData = {
-    aiAgentInteractionsValue: number | null | undefined
-    flowsInteractionsValue: number | null | undefined
-    articleRecommendationInteractionsValue: number | null | undefined
-    orderManagementInteractionsValue: number | null | undefined
-    handoversByFeature: Partial<
-        Record<AutomationFeatureType, number | null | undefined>
-    >
-    handleTimeValue: number | null | undefined
-    automationRateByFeature: ChartDataItem[] | undefined
-    costSavedPerInteraction: number
-}
+export const fetchPerformanceMetricsPerFeature = async (
+    statsFilters: StatsFilters,
+    timezone: string,
+    costSavedPerInteraction: number = AGENT_COST_PER_TICKET,
+): Promise<{ fileName: string; files: Record<string, string> }> => {
+    const fileName = getCsvFileNameWithDates(
+        statsFilters.period,
+        ALL_FEATURES_FILENAME,
+    )
 
-export const buildPerformanceMetrics = (
-    raw: RawPerformanceData,
-): FeatureMetrics[] => {
-    const buildMetric = (
-        feature: FeatureName,
-        interactions: number | null | undefined,
-    ): FeatureMetrics => {
-        const interactionsValue = interactions ?? null
-        const automationRate =
-            raw.automationRateByFeature?.find((item) => item.name === feature)
-                ?.value ?? null
-        const handoverInteractions =
-            raw.handoversByFeature[FEATURE_TO_AUTOMATION_TYPE[feature]] ?? null
+    const metrics = await fetchEntityMetrics(
+        createAllFeaturesFetchConfig(costSavedPerInteraction),
+        statsFilters,
+        timezone,
+    )
 
-        return {
-            feature,
-            automationRate,
-            automatedInteractions: interactionsValue,
-            handoverInteractions,
-            costSaved:
-                interactionsValue !== null
-                    ? interactionsValue * raw.costSavedPerInteraction
-                    : null,
-            timeSaved:
-                interactionsValue !== null && raw.handleTimeValue != null
-                    ? interactionsValue * raw.handleTimeValue
-                    : null,
-        }
+    const data = assembleEntityRows(
+        FEATURE_ENTITIES,
+        buildAllFeaturesRow(metrics.data),
+    )
+
+    if (data.length === 0) {
+        return { fileName, files: { [fileName]: '' } }
     }
 
-    return [
-        buildMetric('AI Agent', raw.aiAgentInteractionsValue),
-        buildMetric(
-            'Article Recommendation',
-            raw.articleRecommendationInteractionsValue,
-        ),
-        buildMetric('Flows', raw.flowsInteractionsValue),
-        buildMetric('Order Management', raw.orderManagementInteractionsValue),
+    const headers = [
+        PERFORMANCE_BREAKDOWN_TABLE.title,
+        ...PERFORMANCE_BREAKDOWN_COLUMNS.map((col) => col.label),
     ]
+    const rows = data.map((row) => [
+        row.feature,
+        ...PERFORMANCE_BREAKDOWN_COLUMNS.map((col) =>
+            formatMetricValue(
+                row[col.accessorKey as keyof FeatureMetrics] as number,
+                col.metricFormat,
+            ),
+        ),
+    ])
+
+    return { fileName, files: { [fileName]: createCsv([headers, ...rows]) } }
 }
 
-export const usePerformanceMetricsPerFeature =
-    (): PerformanceMetricsPerFeature => {
-        const { statsFilters, userTimezone } = useAutomateFilters()
-
-        const costSavedPerInteraction = useMoneySavedPerInteractionWithAutomate(
-            AGENT_COST_PER_TICKET,
+export const fetchPerformanceMetricsPerFeatureAsConfigurableTable: ConfigurableGraphFetch =
+    async (
+        _savedMeasure,
+        _savedDimension,
+        filters,
+        timezone,
+        _granularity,
+        extra,
+    ) => {
+        const { files } = await fetchPerformanceMetricsPerFeature(
+            filters,
+            timezone,
+            extra?.costSavedPerInteraction,
         )
-
-        const aiAgentInteractions = useTrendFromMultipleMetricsTrend(
-            statsFilters,
-            userTimezone,
-            aiAgentAutomatedInteractionsQueryFactory,
-            AutomationDatasetMeasure.AutomatedInteractions,
-            aiAgentAutomatedInteractionsQueryV2Factory,
-            'automatedInteractions',
-        )
-
-        const flowsInteractions = useTrendFromMultipleMetricsTrend(
-            statsFilters,
-            userTimezone,
-            flowsAutomatedInteractionsQueryFactory,
-            AutomationDatasetMeasure.AutomatedInteractions,
-            flowsAutomatedInteractionsQueryV2Factory,
-            'automatedInteractions',
-        )
-
-        const articleRecommendationInteractions =
-            useTrendFromMultipleMetricsTrend(
-                statsFilters,
-                userTimezone,
-                articleRecommendationAutomatedInteractionsQueryFactory,
-                AutomationDatasetMeasure.AutomatedInteractions,
-                articleRecommendationAutomatedInteractionsQueryV2Factory,
-                'automatedInteractions',
-            )
-
-        const orderManagementInteractions = useTrendFromMultipleMetricsTrend(
-            statsFilters,
-            userTimezone,
-            orderManagementAutomatedInteractionsQueryFactory,
-            AutomationDatasetMeasure.AutomatedInteractions,
-            orderManagementAutomatedInteractionsQueryV2Factory,
-            'automatedInteractions',
-        )
-
-        const handoverInteractionsPerFeature =
-            useHandoverInteractionsPerFeature(statsFilters, userTimezone)
-
-        const ticketHandleTime = useTicketHandleTimeTrend(
-            statsFilters,
-            userTimezone,
-        )
-
-        const automationRateByFeature = useAutomationRateByFeature()
-
-        const isLoading =
-            aiAgentInteractions.isFetching ||
-            flowsInteractions.isFetching ||
-            articleRecommendationInteractions.isFetching ||
-            orderManagementInteractions.isFetching ||
-            handoverInteractionsPerFeature.isFetching ||
-            ticketHandleTime.isFetching ||
-            automationRateByFeature.isLoading
-
-        const isError =
-            aiAgentInteractions.isError ||
-            flowsInteractions.isError ||
-            articleRecommendationInteractions.isError ||
-            orderManagementInteractions.isError ||
-            handoverInteractionsPerFeature.isError ||
-            ticketHandleTime.isError ||
-            automationRateByFeature.isError
-
-        const data = useMemo(
-            () =>
-                buildPerformanceMetrics({
-                    aiAgentInteractionsValue: aiAgentInteractions.data?.value,
-                    flowsInteractionsValue: flowsInteractions.data?.value,
-                    articleRecommendationInteractionsValue:
-                        articleRecommendationInteractions.data?.value,
-                    orderManagementInteractionsValue:
-                        orderManagementInteractions.data?.value,
-                    handoversByFeature: Object.fromEntries(
-                        (
-                            handoverInteractionsPerFeature.data?.allValues ?? []
-                        ).map((v) => [v.dimension, v.value]),
-                    ),
-                    handleTimeValue: ticketHandleTime.data?.value,
-                    automationRateByFeature: automationRateByFeature.data,
-                    costSavedPerInteraction,
-                }),
-            [
-                aiAgentInteractions.data?.value,
-                flowsInteractions.data?.value,
-                articleRecommendationInteractions.data?.value,
-                orderManagementInteractions.data?.value,
-                handoverInteractionsPerFeature.data?.allValues,
-                ticketHandleTime.data?.value,
-                automationRateByFeature.data,
-                costSavedPerInteraction,
-            ],
-        )
-
-        const loadingStates = useMemo(
-            () => ({
-                automationRate:
-                    automationRateByFeature.isLoading ||
-                    !automationRateByFeature.data,
-                automatedInteractions:
-                    aiAgentInteractions.isFetching ||
-                    flowsInteractions.isFetching ||
-                    articleRecommendationInteractions.isFetching ||
-                    orderManagementInteractions.isFetching,
-                handoverInteractions: handoverInteractionsPerFeature.isFetching,
-                timeSaved: ticketHandleTime.isFetching,
-                costSaved:
-                    aiAgentInteractions.isFetching ||
-                    flowsInteractions.isFetching ||
-                    articleRecommendationInteractions.isFetching ||
-                    orderManagementInteractions.isFetching,
-            }),
-            [
-                automationRateByFeature.isLoading,
-                automationRateByFeature.data,
-                aiAgentInteractions.isFetching,
-                flowsInteractions.isFetching,
-                articleRecommendationInteractions.isFetching,
-                orderManagementInteractions.isFetching,
-                handoverInteractionsPerFeature.isFetching,
-                ticketHandleTime.isFetching,
-            ],
-        )
-
-        return {
-            data,
-            isLoading,
-            isError,
-            loadingStates,
-        }
+        return { files }
     }

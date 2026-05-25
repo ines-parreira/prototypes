@@ -7,8 +7,6 @@ import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
 import { AnalyticsAiAgentShoppingAssistantReportConfig } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentShoppingAssistantReportConfig'
 import { ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT } from 'pages/aiAgent/analyticsAiAgent/config/aiAgentShoppingAssistantLayoutConfig'
-import { useDownloadShoppingAssistantChannelPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantChannelPerformanceData'
-import { useDownloadShoppingAssistantTopProductsDataLegacy } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantTopProductsDataLegacy'
 import {
     ManagedDashboardId,
     ManagedDashboardsTabId,
@@ -22,8 +20,6 @@ const REPORT_NAME = 'ai-agent-shopping-assistant'
 export const useExportAiAgentShoppingAssistantToCSV = () => {
     const { value: isTrendCardsFFEnabled, isLoading: isTrendCardsFFLoading } =
         useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards)
-    const { value: isTablesFFEnabled, isLoading: isTablesFFLoading } =
-        useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTables)
 
     const { statsFilters } = useAiAgentStatsFilters()
 
@@ -38,9 +34,8 @@ export const useExportAiAgentShoppingAssistantToCSV = () => {
                 REPORT_NAME,
                 layoutConfig,
                 isTrendCardsFFEnabled,
-                isTablesFFEnabled,
             ),
-        [isTrendCardsFFEnabled, layoutConfig, isTablesFFEnabled],
+        [isTrendCardsFFEnabled, layoutConfig],
     )
 
     const { files: dashboardDataFiles, isLoading: isDashboardDataLoading } =
@@ -50,34 +45,9 @@ export const useExportAiAgentShoppingAssistantToCSV = () => {
             AnalyticsAiAgentShoppingAssistantReportConfig.charts,
         )
 
-    const legacySalesChannelTable =
-        useDownloadShoppingAssistantChannelPerformanceData()
-    const legacyTopProductsTable =
-        useDownloadShoppingAssistantTopProductsDataLegacy()
+    const isLoading = isDashboardDataLoading || isTrendCardsFFLoading
 
-    const isLoading =
-        isDashboardDataLoading ||
-        isTrendCardsFFLoading ||
-        isTablesFFLoading ||
-        (!isTablesFFEnabled &&
-            (legacySalesChannelTable.isLoading ||
-                legacyTopProductsTable.isLoading))
-
-    const files = useMemo(
-        () => ({
-            ...dashboardDataFiles,
-            ...(!isTablesFFEnabled && {
-                ...legacySalesChannelTable.files,
-                ...legacyTopProductsTable.files,
-            }),
-        }),
-        [
-            dashboardDataFiles,
-            legacySalesChannelTable.files,
-            legacyTopProductsTable.files,
-            isTablesFFEnabled,
-        ],
-    )
+    const files = dashboardDataFiles
 
     const triggerDownload = useCallback(async () => {
         const fileName = getCsvFileNameWithDates(

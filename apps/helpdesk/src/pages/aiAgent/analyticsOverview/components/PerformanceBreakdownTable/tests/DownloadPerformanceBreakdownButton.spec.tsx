@@ -22,7 +22,7 @@ const mockUseDownloadPerformanceBreakdownData = jest.requireMock(
 ).useDownloadPerformanceBreakdownData as jest.Mock
 
 const mockFiles = { 'report.csv': '"Feature"\r\n"AI Agent"' }
-const mockFileName = '2024-01-01_2024-01-31-performance-breakdown.csv'
+const mockFileName = '2024-01-01_2024-01-31-all_features_table.csv'
 
 beforeEach(() => {
     mockUseDownloadPerformanceBreakdownData.mockReturnValue({
