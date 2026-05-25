@@ -2,7 +2,17 @@ import { useCallback, useMemo, useState } from 'react'
 
 import { useHistory, useParams } from 'react-router-dom'
 
-import { Box, Button, Card, Heading, Icon, Text, toast } from '@gorgias/axiom'
+import {
+    Box,
+    Button,
+    Card,
+    Dot,
+    Heading,
+    Icon,
+    Tag,
+    Text,
+    toast,
+} from '@gorgias/axiom'
 
 import { useGetHelpCenter } from 'models/helpCenter/queries'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
@@ -156,6 +166,15 @@ export const SkillRecapStep = ({ wizard }: Props) => {
         [wizard],
     )
 
+    const hasEnabledSkillsWithActions = useMemo(
+        () =>
+            skillStates.some(
+                (state) =>
+                    state.isEnabled && state.disabledActionIds.length > 0,
+            ),
+        [skillStates],
+    )
+
     const hasGuidancesToDisable = hasEnabledSkills && guidanceEntries.length > 0
 
     const guidanceCardTitle = hasGuidancesToDisable
@@ -230,13 +249,23 @@ export const SkillRecapStep = ({ wizard }: Props) => {
                                 </Text>
                             </Box>
                         </Box>
-                        {hasApprovedSkills && (
-                            <Icon
-                                name="arrow-chevron-right"
-                                size="md"
-                                color="var(--content-neutral-default)"
-                            />
-                        )}
+                        <Box gap="xs" alignItems="center">
+                            {hasEnabledSkillsWithActions && (
+                                <Tag
+                                    color="orange"
+                                    leadingSlot={<Dot color="orange" />}
+                                >
+                                    Review actions
+                                </Tag>
+                            )}
+                            {hasApprovedSkills && (
+                                <Icon
+                                    name="arrow-chevron-right"
+                                    size="md"
+                                    color="var(--content-neutral-default)"
+                                />
+                            )}
+                        </Box>
                     </Card>
 
                     <Card
@@ -308,6 +337,7 @@ export const SkillRecapStep = ({ wizard }: Props) => {
                 onOpenChange={setIsSkillsPanelOpen}
                 skillStates={skillStates}
                 onToggleSkill={handleToggleSkill}
+                actionsUrl={routes.actions}
             />
 
             <GuidanceSidePanel

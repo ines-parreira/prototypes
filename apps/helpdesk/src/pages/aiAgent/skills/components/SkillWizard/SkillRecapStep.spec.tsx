@@ -457,9 +457,13 @@ describe('SkillRecapStep', () => {
             const dialog = await screen.findByRole('dialog')
             expect(
                 within(dialog).getByText(
-                    'Some skills include actions that will activate when you apply changes',
+                    'Review new actions and their conditions before applying all changes',
                 ),
             ).toBeInTheDocument()
+            const reviewActionsLink = within(dialog).getByRole('link', {
+                name: /review actions/i,
+            })
+            expect(reviewActionsLink).toHaveAttribute('target', '_blank')
         })
 
         it('renders a warning icon only on rows whose skill needs action setup', async () => {
@@ -525,9 +529,33 @@ describe('SkillRecapStep', () => {
             const dialog = await screen.findByRole('dialog')
             expect(
                 within(dialog).queryByText(
-                    'Some skills include actions that will activate when you apply changes',
+                    'Review new actions and their conditions before applying all changes',
                 ),
             ).not.toBeInTheDocument()
+        })
+
+        it('shows a "Review actions" tag on the skills card when an enabled skill needs action setup', () => {
+            mockDisabledAction()
+            renderRecap(
+                buildWizardWithActionContent([
+                    { id: 1, status: SkillWizardSkillStatus.Approved },
+                    { id: 2, status: SkillWizardSkillStatus.Approved },
+                ]),
+            )
+
+            expect(screen.getByText('Review actions')).toBeInTheDocument()
+        })
+
+        it('does not show the "Review actions" tag when no enabled skill needs action setup', () => {
+            // Default mock has no available actions => no skill flagged.
+            renderRecap(
+                buildWizardWithActionContent([
+                    { id: 1, status: SkillWizardSkillStatus.Approved },
+                    { id: 2, status: SkillWizardSkillStatus.Draft },
+                ]),
+            )
+
+            expect(screen.queryByText('Review actions')).not.toBeInTheDocument()
         })
     })
 

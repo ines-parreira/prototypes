@@ -1,5 +1,7 @@
 import {
+    Banner,
     Box,
+    Button,
     Heading,
     Icon,
     OverlayContent,
@@ -24,6 +26,7 @@ type Props = {
     onOpenChange: (open: boolean) => void
     skillStates: SkillToggleState[]
     onToggleSkill: (skillId: number, isEnabled: boolean) => void
+    actionsUrl: string
 }
 
 const TOGGLE_COLUMN_WIDTH = '130px'
@@ -33,6 +36,7 @@ export const SkillsSidePanel = ({
     onOpenChange,
     skillStates,
     onToggleSkill,
+    actionsUrl,
 }: Props) => {
     const hasAnyDisabledActions = skillStates.some(
         (s) => s.disabledActionIds.length > 0,
@@ -58,17 +62,32 @@ export const SkillsSidePanel = ({
                     width="100%"
                 >
                     {hasAnyDisabledActions && (
-                        <Box alignItems="center" gap="xxxs">
-                            <Icon
-                                name="warning-triangle"
+                        <Banner
+                            intent="warning"
+                            icon="warning-triangle"
+                            isClosable={false}
+                            size="sm"
+                            title="Review new actions and their conditions before applying all changes"
+                            description={
+                                <Text size="sm" wrap="wrap">
+                                    Some skills you&apos;re about to enable
+                                    include new actions that will be enabled
+                                    when you apply all changes. Review them to
+                                    ensure AI Agent will perform them correctly.
+                                </Text>
+                            }
+                        >
+                            <Button
+                                as="a"
+                                href={actionsUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 size="sm"
-                                color="content-warning-default"
-                            />
-                            <Text color="content-warning-default">
-                                Some skills include actions that will activate
-                                when you apply changes
-                            </Text>
-                        </Box>
+                                trailingSlot="external-link"
+                            >
+                                Review actions
+                            </Button>
+                        </Banner>
                     )}
                     <Table withBorder layout="fixed">
                         <TableHeader>
