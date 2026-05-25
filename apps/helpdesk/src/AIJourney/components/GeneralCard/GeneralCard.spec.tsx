@@ -501,7 +501,34 @@ describe('<GeneralCard />', () => {
                 ).not.toBeInTheDocument()
             })
 
-            it('marks the form as dirty when toggling off (clears the uploaded image)', async () => {
+            it('starts ON when an image is already attached', () => {
+                mockUseJourneyContext.mockReturnValue({
+                    journeyType: JOURNEY_TYPES.CAMPAIGN,
+                })
+
+                renderCard({
+                    isV3Architecture: true,
+                    defaultValues: {
+                        include_custom_image: true,
+                        uploaded_image_attachment: [
+                            {
+                                url: 'https://example.com/image.jpg',
+                                name: 'image.jpg',
+                                content_type: 'image/jpeg',
+                            },
+                        ],
+                    },
+                })
+
+                expect(
+                    screen.getByRole('switch', {
+                        name: 'Include custom image',
+                    }),
+                ).toBeChecked()
+                expect(screen.getByText('ImageUpload')).toBeInTheDocument()
+            })
+
+            it('marks the form as dirty when toggling off, even without an uploaded image', async () => {
                 const user = userEvent.setup()
                 mockUseJourneyContext.mockReturnValue({
                     journeyType: JOURNEY_TYPES.CAMPAIGN,
@@ -510,13 +537,7 @@ describe('<GeneralCard />', () => {
                 const { isDirty } = renderCard({
                     isV3Architecture: true,
                     defaultValues: {
-                        uploaded_image_attachment: [
-                            {
-                                url: 'https://example.com/image.jpg',
-                                name: 'image.jpg',
-                                content_type: 'image/jpeg',
-                            },
-                        ],
+                        include_custom_image: true,
                     },
                 })
 

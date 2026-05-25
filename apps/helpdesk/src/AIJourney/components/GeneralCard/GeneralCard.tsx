@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback } from 'react'
 
 import { useFormContext, useWatch } from 'react-hook-form'
 
@@ -44,20 +44,8 @@ export const GeneralCard = ({
         control,
         name: 'max_follow_up_messages',
     })
-    const uploadedImageAttachment = useWatch({
-        control,
-        name: 'uploaded_image_attachment',
-    })
-
-    const [isCustomImageEnabled, setIsCustomImageEnabled] = useState(
-        !!uploadedImageAttachment?.[0],
-    )
-
-    useEffect(() => {
-        if (uploadedImageAttachment?.[0]) {
-            setIsCustomImageEnabled(true)
-        }
-    }, [uploadedImageAttachment])
+    const isCustomImageEnabled =
+        useWatch({ control, name: 'include_custom_image' }) ?? false
 
     const isCampaign = journeyType === JOURNEY_TYPES.CAMPAIGN
     const isCustom = journeyType === JOURNEY_TYPES.CUSTOM
@@ -77,12 +65,7 @@ export const GeneralCard = ({
 
     const handleCustomImageToggle = useCallback(
         (enabled: boolean) => {
-            setIsCustomImageEnabled(enabled)
-            if (!enabled) {
-                setValue('uploaded_image_attachment', undefined, {
-                    shouldDirty: true,
-                })
-            }
+            setValue('include_custom_image', enabled, { shouldDirty: true })
         },
         [setValue],
     )

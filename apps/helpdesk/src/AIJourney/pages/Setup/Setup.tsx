@@ -40,6 +40,7 @@ export type SetupFormValues = {
     max_follow_up_messages: number
     follow_up_wait_minutes?: number
     include_image?: boolean
+    include_custom_image?: boolean
     uploaded_image_attachment?: UploadedImageAttachment[]
     offer_discount?: boolean
     max_discount_percent?: number

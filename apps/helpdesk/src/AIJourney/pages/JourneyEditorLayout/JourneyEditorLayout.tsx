@@ -69,6 +69,7 @@ export const JourneyEditorLayout = ({ step }: Props) => {
         defaultValues: {
             max_follow_up_messages: 1,
             include_image: false,
+            include_custom_image: false,
             offer_discount: false,
             message_instructions: journeyData?.message_instructions ?? '',
             execution_mode_override: null,
@@ -142,6 +143,7 @@ export const JourneyEditorLayout = ({ step }: Props) => {
 
     const handleSave: SubmitHandler<SetupFormValues> = async (data) => {
         const shouldClearAudience = !isCampaign && !data.narrow_audience_enabled
+        const shouldClearCustomImage = isCampaign && !data.include_custom_image
 
         const commonFields = {
             phoneNumberIntegrationId: data.sms_sender_integration_id?.id,
@@ -149,7 +151,9 @@ export const JourneyEditorLayout = ({ step }: Props) => {
             followUpValue: data.max_follow_up_messages - 1,
             followUpWaitMinutes: data.follow_up_wait_minutes,
             includeImage: data.include_image,
-            uploadedImageAttachment: data.uploaded_image_attachment,
+            uploadedImageAttachment: shouldClearCustomImage
+                ? []
+                : data.uploaded_image_attachment,
             isDiscountEnabled: data.offer_discount,
             discountValue: data.max_discount_percent,
             discountCodeThresholdValue: data.discount_code_message_threshold,
@@ -239,7 +243,7 @@ export const JourneyEditorLayout = ({ step }: Props) => {
         <FormProvider {...methods}>
             <UnsavedChangesPrompt
                 ref={unsavedChangesPromptRef}
-                when={formState.isDirty}
+                when={formState.isDirty && !formState.isSubmitting}
                 onSave={handlePromptSave}
                 onDiscard={() => methods.reset()}
                 shouldRedirectAfterSave

@@ -61,6 +61,7 @@ export const useSetupFormInit = () => {
                     follow_up_wait_minutes:
                         journeyParams.follow_up_wait_minutes ?? 24 * 60,
                     include_image: journeyParams.include_image ?? false,
+                    include_custom_image: !!hasCustomImage,
                     uploaded_image_attachment: hasCustomImage
                         ? [
                               {

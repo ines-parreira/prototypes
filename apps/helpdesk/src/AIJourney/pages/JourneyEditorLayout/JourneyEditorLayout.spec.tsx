@@ -225,6 +225,41 @@ describe('<JourneyEditorLayout /> — Campaign mode (isCampaign = true)', () => 
         toastSuccessSpy.mockRestore()
     })
 
+    it('should send an empty uploadedImageAttachment when the include-custom-image toggle is off on save', async () => {
+        const mockHandleUpdate = jest.fn().mockResolvedValue({})
+        const mockUseJourneyUpdateHandler = require('AIJourney/hooks')
+            .useJourneyUpdateHandler as jest.Mock
+        mockUseJourneyUpdateHandler.mockReturnValue({
+            handleUpdate: mockHandleUpdate,
+            isLoading: false,
+        })
+
+        mockUseJourneyContext.mockReturnValue({
+            currentIntegration: { id: 1, name: 'Test Store' },
+            journeyData: {
+                id: 'journey-123',
+                campaign: { title: 'Existing Campaign' },
+                message_instructions: 'Existing instructions',
+            },
+            journeyType: JOURNEY_TYPES.CAMPAIGN,
+            shopName: 'test-store',
+        })
+
+        const user = userEvent.setup()
+        renderComponent()
+
+        await user.click(screen.getByRole('button', { name: /save changes/i }))
+
+        await waitFor(() => {
+            expect(mockHandleUpdate).toHaveBeenCalled()
+        })
+        const callArgs = mockHandleUpdate.mock.calls[0][0] as Record<
+            string,
+            unknown
+        >
+        expect(callArgs.uploadedImageAttachment).toEqual([])
+    })
+
     it('should not toast on success when the save throws', async () => {
         const mockHandleUpdate = jest.fn().mockRejectedValue(new Error('boom'))
         const mockUseJourneyUpdateHandler = require('AIJourney/hooks')
