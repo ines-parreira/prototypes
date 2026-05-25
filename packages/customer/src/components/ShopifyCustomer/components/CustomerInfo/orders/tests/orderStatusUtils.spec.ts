@@ -5,8 +5,8 @@ describe('isRefundedStatus', () => {
         expect(isRefundedStatus('refunded')).toBe(true)
     })
 
-    it('returns true for partially_refunded', () => {
-        expect(isRefundedStatus('partially_refunded')).toBe(true)
+    it('returns false for partially_refunded (further refunds are still allowed)', () => {
+        expect(isRefundedStatus('partially_refunded')).toBe(false)
     })
 
     it('returns true for voided', () => {
@@ -25,8 +25,8 @@ describe('isRefundedStatus', () => {
         expect(isRefundedStatus('REFUNDED')).toBe(true)
     })
 
-    it('handles GraphQL uppercase PARTIALLY_REFUNDED', () => {
-        expect(isRefundedStatus('PARTIALLY_REFUNDED')).toBe(true)
+    it('handles GraphQL uppercase PARTIALLY_REFUNDED (further refunds are still allowed)', () => {
+        expect(isRefundedStatus('PARTIALLY_REFUNDED')).toBe(false)
     })
 
     it('handles GraphQL uppercase VOIDED', () => {
