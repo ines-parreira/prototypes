@@ -223,6 +223,16 @@ describe('PlaygroundMessage', () => {
         expect(screen.getByTitle('sms channel')).toBeInTheDocument()
         expect(screen.getByText('sms')).toBeInTheDocument()
     })
+    it('should render instagram icon when channel is instagram-direct-message', () => {
+        renderComponent({
+            channel: 'instagram-direct-message',
+            message: { ...playgroundMessageFixture, sender: AI_AGENT },
+        })
+        expect(
+            screen.getByTitle('instagram-direct-message channel'),
+        ).toBeInTheDocument()
+        expect(screen.getByText('photo_camera')).toBeInTheDocument()
+    })
     it('should render products carousel when message contains attachments', () => {
         renderComponent({
             channel: 'chat',

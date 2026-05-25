@@ -2,6 +2,7 @@ import type {
     AiAgentPlaygroundOptions,
     ChatConfig,
     EmailConfig,
+    InstagramConfig,
     KnowledgeOverrideRule,
     SmsConfig,
     StoreConfiguration,
@@ -13,6 +14,13 @@ import type {
     PlaygroundChannels,
     PlaygroundCustomer,
 } from '../types'
+
+const getUseCase = (channel: PlaygroundChannels): string => {
+    if (channel === 'instagram-direct-message') {
+        return 'gorgias-instagram-dm'
+    }
+    return `gorgias-${channel}`
+}
 
 export const buildKnowledgeOverrideRules = (
     draftKnowledge: DraftKnowledge | undefined,
@@ -46,6 +54,7 @@ export const buildOfflineEvalPayload = ({
     chatConfig,
     smsConfig,
     emailConfig,
+    instagramConfig,
 }: {
     customer: PlaygroundCustomer
     storeData: StoreConfiguration
@@ -56,6 +65,7 @@ export const buildOfflineEvalPayload = ({
     chatConfig?: ChatConfig
     smsConfig?: SmsConfig
     emailConfig?: EmailConfig
+    instagramConfig?: InstagramConfig
 }): AiAgentPlaygroundOptions => {
     const customerId = customer.id ?? DEFAULT_PLAYGROUND_CUSTOMER.id
     const customerName = customer.name ?? DEFAULT_PLAYGROUND_CUSTOMER.name
@@ -65,7 +75,7 @@ export const buildOfflineEvalPayload = ({
         areActionsAllowedToExecute,
         offlineEvalSettings: {
             app: {
-                evaluatedUseCase: `gorgias-${channel}`,
+                useCase: getUseCase(channel),
                 shopName: storeData.storeName,
                 shopType: storeData.shopType,
                 gorgiasDomain,
@@ -77,6 +87,9 @@ export const buildOfflineEvalPayload = ({
                 ...(customer.phoneNumber && {
                     phoneNumber: customer.phoneNumber,
                 }),
+                ...(customer.instagramAddress && {
+                    instagramAddress: customer.instagramAddress,
+                }),
             },
             session: {
                 channel,
@@ -87,6 +100,7 @@ export const buildOfflineEvalPayload = ({
             chatConfig: chatConfig,
             smsConfig: smsConfig,
             emailConfig: emailConfig,
+            instagramConfig: instagramConfig,
         },
     }
 }

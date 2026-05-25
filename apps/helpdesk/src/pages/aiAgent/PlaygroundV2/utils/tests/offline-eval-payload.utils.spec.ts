@@ -49,7 +49,7 @@ describe('buildOfflineEvalPayload', () => {
         expect(result.areActionsAllowedToExecute).toBe(true)
         expect(result.offlineEvalSettings).toMatchObject({
             app: {
-                evaluatedUseCase: 'gorgias-email',
+                useCase: 'gorgias-email',
                 shopName: 'Test Store',
                 gorgiasDomain: 'acme',
             },
@@ -171,12 +171,69 @@ describe('buildOfflineEvalPayload', () => {
         expect(result.offlineEvalSettings?.smsConfig).toBeUndefined()
     })
 
+    it('includes instagramConfig when provided', () => {
+        const instagramConfig = { integrationId: 99 }
+        const result = buildOfflineEvalPayload({
+            customer: defaultCustomer,
+            storeData: defaultStoreData,
+            gorgiasDomain: 'acme',
+            channel: 'instagram-direct-message',
+            areActionsAllowedToExecute: false,
+            instagramConfig,
+        })
+
+        expect(result.offlineEvalSettings?.instagramConfig).toEqual(
+            instagramConfig,
+        )
+    })
+
+    it('instagramConfig is undefined when not provided', () => {
+        const result = buildOfflineEvalPayload({
+            customer: defaultCustomer,
+            storeData: defaultStoreData,
+            gorgiasDomain: 'acme',
+            channel: 'instagram-direct-message',
+            areActionsAllowedToExecute: false,
+        })
+
+        expect(result.offlineEvalSettings?.instagramConfig).toBeUndefined()
+    })
+
+    it('includes instagramAddress in user when customer has instagramAddress', () => {
+        const result = buildOfflineEvalPayload({
+            customer: { ...defaultCustomer, instagramAddress: '12345-abcde' },
+            storeData: defaultStoreData,
+            gorgiasDomain: 'acme',
+            channel: 'instagram-direct-message',
+            areActionsAllowedToExecute: false,
+        })
+
+        expect(result.offlineEvalSettings?.user.instagramAddress).toBe(
+            '12345-abcde',
+        )
+    })
+
+    it('does not include instagramAddress in user when customer instagramAddress is not provided', () => {
+        const result = buildOfflineEvalPayload({
+            customer: defaultCustomer,
+            storeData: defaultStoreData,
+            gorgiasDomain: 'acme',
+            channel: 'instagram-direct-message',
+            areActionsAllowedToExecute: false,
+        })
+
+        expect(result.offlineEvalSettings?.user).not.toHaveProperty(
+            'instagramAddress',
+        )
+    })
+
     it.each([
         ['email', 'gorgias-email'],
         ['sms', 'gorgias-sms'],
         ['chat', 'gorgias-chat'],
+        ['instagram-direct-message', 'gorgias-instagram-dm'],
     ] as const)(
-        'sets evaluatedUseCase to "%s" for channel "%s"',
+        'sets useCase to "%s" for channel "%s"',
         (channel, expectedUseCase) => {
             const result = buildOfflineEvalPayload({
                 customer: defaultCustomer,
@@ -186,7 +243,7 @@ describe('buildOfflineEvalPayload', () => {
                 areActionsAllowedToExecute: false,
             })
 
-            expect(result.offlineEvalSettings?.app.evaluatedUseCase).toBe(
+            expect(result.offlineEvalSettings?.app.useCase).toBe(
                 expectedUseCase,
             )
         },

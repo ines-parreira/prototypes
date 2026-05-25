@@ -78,6 +78,7 @@ const defaultConfigurationContext = {
     chatIntegrationId: 123,
     smsIntegrationId: undefined,
     emailIntegrationId: 456,
+    instagramDmIntegrationId: undefined,
     shopName: 'test-store',
 }
 
@@ -308,6 +309,25 @@ describe('usePlaygroundMessages hook', () => {
             expect(mockedUsePlaygroundApi).toHaveBeenCalledWith(
                 expect.objectContaining({
                     channelIntegrationId: 555,
+                }),
+            )
+        })
+
+        it('should use instagramDmIntegrationId from configuration context when channel is instagram-direct-message', () => {
+            mockedUseCoreContext.mockReturnValue({
+                ...defaultCoreContext,
+                channel: 'instagram-direct-message',
+            } as any)
+            mockUseConfigurationContextFn.mockReturnValue({
+                ...defaultConfigurationContext,
+                instagramDmIntegrationId: 888,
+            })
+
+            renderHook(() => usePlaygroundMessages())
+
+            expect(mockedUsePlaygroundApi).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    channelIntegrationId: 888,
                 }),
             )
         })

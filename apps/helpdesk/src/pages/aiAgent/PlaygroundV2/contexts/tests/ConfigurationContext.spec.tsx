@@ -262,6 +262,52 @@ describe('ConfigurationContext', () => {
             expect(result.current.emailIntegrationId).toBe(789)
         })
 
+        it('should use first integration id from monitoredInstagramDmIntegrations', () => {
+            const usePlaygroundResources =
+                require('../../hooks/usePlaygroundResources')
+                    .usePlaygroundResources as jest.Mock
+
+            usePlaygroundResources.mockReturnValueOnce({
+                storeConfiguration: getStoreConfigurationFixture({
+                    storeName: 'test-store',
+                    monitoredInstagramDmIntegrations: [321],
+                }),
+                accountConfiguration: {
+                    httpIntegration: { id: 999 },
+                    gorgiasDomain: 'test-domain.gorgias.com',
+                    accountId: 123,
+                },
+                snippetHelpCenterId: 456,
+                isLoading: false,
+            })
+
+            const { result } = renderHook(() => useConfigurationContext(), {
+                wrapper: ({ children }) => (
+                    <Provider store={mockStore}>
+                        <ConfigurationProvider>
+                            {children}
+                        </ConfigurationProvider>
+                    </Provider>
+                ),
+            })
+
+            expect(result.current.instagramDmIntegrationId).toBe(321)
+        })
+
+        it('should leave instagramDmIntegrationId undefined when monitoredInstagramDmIntegrations is missing', () => {
+            const { result } = renderHook(() => useConfigurationContext(), {
+                wrapper: ({ children }) => (
+                    <Provider store={mockStore}>
+                        <ConfigurationProvider>
+                            {children}
+                        </ConfigurationProvider>
+                    </Provider>
+                ),
+            })
+
+            expect(result.current.instagramDmIntegrationId).toBeUndefined()
+        })
+
         it('should prefer storeName from storeConfiguration over resolved shop name', () => {
             const { result } = renderHook(() => useConfigurationContext(), {
                 wrapper: ({ children }) => (

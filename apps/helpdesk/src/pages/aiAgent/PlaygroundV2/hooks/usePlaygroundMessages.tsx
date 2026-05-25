@@ -52,6 +52,7 @@ const getChannelIntegrationId = (
         chatIntegrationId?: number
         smsIntegrationId?: number
         emailIntegrationId?: number
+        instagramDmIntegrationId?: number
     },
 ) => {
     switch (channel) {
@@ -61,6 +62,8 @@ const getChannelIntegrationId = (
             return ids.smsIntegrationId
         case 'email':
             return ids.emailIntegrationId
+        case 'instagram-direct-message':
+            return ids.instagramDmIntegrationId
         default:
             return
     }
@@ -80,6 +83,7 @@ export const usePlaygroundMessages = () => {
         chatIntegrationId,
         smsIntegrationId,
         emailIntegrationId,
+        instagramDmIntegrationId,
         baseUrl,
     } = useConfigurationContext()
 
@@ -119,6 +123,7 @@ export const usePlaygroundMessages = () => {
             chatIntegrationId,
             smsIntegrationId,
             emailIntegrationId,
+            instagramDmIntegrationId,
         })
 
     const { submitMessage, isSubmitting, abortCurrentRequest } =

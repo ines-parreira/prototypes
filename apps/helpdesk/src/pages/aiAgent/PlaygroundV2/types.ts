@@ -14,6 +14,7 @@ export type PlaygroundCustomer = {
     name?: string
     id: number
     phoneNumber?: string
+    instagramAddress?: string
 }
 
 export type PlaygroundFormValues = {
@@ -22,7 +23,11 @@ export type PlaygroundFormValues = {
     customer: PlaygroundCustomer
 }
 
-export type PlaygroundChannels = 'chat' | 'email' | 'sms'
+export type PlaygroundChannels =
+    | 'chat'
+    | 'email'
+    | 'sms'
+    | 'instagram-direct-message'
 export type PlaygroundChannelAvailability = 'online' | 'offline'
 
 export enum PlaygroundEvent {

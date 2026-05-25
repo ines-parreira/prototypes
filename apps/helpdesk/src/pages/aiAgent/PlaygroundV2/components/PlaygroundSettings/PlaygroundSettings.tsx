@@ -1,5 +1,7 @@
 import React, { useCallback, useMemo } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+
 import {
     Button,
     ListItem,
@@ -50,6 +52,14 @@ const CHANNEL_OPTIONS: { id: PlaygroundChannels; label: string }[] = [
     },
 ]
 
+const INSTAGRAM_DM_CHANNEL_OPTION: {
+    id: PlaygroundChannels
+    label: string
+} = {
+    id: 'instagram-direct-message',
+    label: 'Instagram DM',
+}
+
 const SEGMENTS: { value: 'inbound' | 'outbound'; label: string }[] = [
     { value: 'inbound', label: 'Inbound' },
     { value: 'outbound', label: 'Outbound' },
@@ -68,13 +78,27 @@ const InboundSettings: React.FC = () => {
         onChannelChange,
         setAreActionsEnabled,
         areActionsEnabled,
+        useV3,
     } = useCoreContext()
+
+    const isInstagramDmsEnabled = useFlag(
+        FeatureFlagKey.AiAgentInstagramDms,
+        false,
+    )
 
     const isSettingsLocked = messages.length > 0
 
+    const channelOptions = useMemo(
+        () =>
+            useV3 && isInstagramDmsEnabled
+                ? [...CHANNEL_OPTIONS, INSTAGRAM_DM_CHANNEL_OPTION]
+                : CHANNEL_OPTIONS,
+        [useV3, isInstagramDmsEnabled],
+    )
+
     const selectedOption = useMemo(
-        () => CHANNEL_OPTIONS.find((option) => option.id === channel),
-        [channel],
+        () => channelOptions.find((option) => option.id === channel),
+        [channel, channelOptions],
     )
 
     const handleChannelUpdate = useCallback(
@@ -152,11 +176,11 @@ const InboundSettings: React.FC = () => {
                 <SelectField
                     value={selectedOption}
                     onChange={handleChannelUpdate}
-                    items={CHANNEL_OPTIONS}
+                    items={channelOptions}
                     isDisabled={isSettingsLocked}
                     label="Channel"
                 >
-                    {(option: (typeof CHANNEL_OPTIONS)[number]) => (
+                    {(option: (typeof channelOptions)[number]) => (
                         <ListItem label={option.label} />
                     )}
                 </SelectField>,

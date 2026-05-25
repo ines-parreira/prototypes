@@ -26,6 +26,7 @@ type ConfigurationContextValue = {
     chatIntegrationId: number | undefined
     smsIntegrationId: number | undefined
     emailIntegrationId: number | undefined
+    instagramDmIntegrationId: number | undefined
     shopName: string
 }
 
@@ -81,6 +82,8 @@ export const ConfigurationProvider = ({
     const smsIntegrationId = storeConfiguration?.monitoredSmsIntegrations?.[0]
     const emailIntegrationId =
         storeConfiguration?.monitoredEmailIntegrations?.[0]?.id
+    const instagramDmIntegrationId =
+        storeConfiguration?.monitoredInstagramDmIntegrations?.[0]
 
     const contextValue = useMemo(
         () => ({
@@ -94,6 +97,7 @@ export const ConfigurationProvider = ({
             chatIntegrationId,
             smsIntegrationId,
             emailIntegrationId,
+            instagramDmIntegrationId,
             shopName,
         }),
         [
@@ -107,6 +111,7 @@ export const ConfigurationProvider = ({
             chatIntegrationId,
             smsIntegrationId,
             emailIntegrationId,
+            instagramDmIntegrationId,
             shopName,
         ],
     )

@@ -682,6 +682,85 @@ describe('usePlaygroundApi', () => {
             )
         })
 
+        it('includes instagramConfig in offline eval payload when channel is instagram-direct-message and channelIntegrationId is set', async () => {
+            const createTestSession = jest.fn().mockResolvedValue('v3-session')
+
+            const { result } = renderHook(() => usePlaygroundApi(defaultProps))
+
+            await result.current.submitMessage({
+                messages: [playgroundCustomerMessage],
+                customer: DEFAULT_PLAYGROUND_CUSTOMER,
+                channel: 'instagram-direct-message',
+                storeData: { storeName: 'Test Store' } as StoreConfiguration,
+                testSessionId: null,
+                createTestSession,
+            })
+
+            expect(createTestSession).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    offlineEvalSettings: expect.objectContaining({
+                        instagramConfig: {
+                            integrationId: defaultParams.channelIntegrationId,
+                        },
+                        session: expect.objectContaining({
+                            channel: 'instagram-direct-message',
+                        }),
+                    }),
+                }),
+            )
+        })
+
+        it('omits instagramConfig from offline eval payload when channel is not instagram-direct-message', async () => {
+            const createTestSession = jest.fn().mockResolvedValue('v3-session')
+
+            const { result } = renderHook(() => usePlaygroundApi(defaultProps))
+
+            await result.current.submitMessage({
+                messages: [playgroundCustomerMessage],
+                customer: DEFAULT_PLAYGROUND_CUSTOMER,
+                channel: 'email',
+                storeData: { storeName: 'Test Store' } as StoreConfiguration,
+                testSessionId: null,
+                createTestSession,
+            })
+
+            expect(createTestSession).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    offlineEvalSettings: expect.not.objectContaining({
+                        instagramConfig: expect.anything(),
+                    }),
+                }),
+            )
+        })
+
+        it('omits instagramConfig when channel is instagram-direct-message but channelIntegrationId is missing', async () => {
+            const createTestSession = jest.fn().mockResolvedValue('v3-session')
+
+            const { result } = renderHook(() =>
+                usePlaygroundApi({
+                    ...defaultProps,
+                    channelIntegrationId: undefined,
+                }),
+            )
+
+            await result.current.submitMessage({
+                messages: [playgroundCustomerMessage],
+                customer: DEFAULT_PLAYGROUND_CUSTOMER,
+                channel: 'instagram-direct-message',
+                storeData: { storeName: 'Test Store' } as StoreConfiguration,
+                testSessionId: null,
+                createTestSession,
+            })
+
+            expect(createTestSession).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    offlineEvalSettings: expect.not.objectContaining({
+                        instagramConfig: expect.anything(),
+                    }),
+                }),
+            )
+        })
+
         it('omits chatConfig from offline eval payload when channel is not chat', async () => {
             const createTestSession = jest.fn().mockResolvedValue('v3-session')
 

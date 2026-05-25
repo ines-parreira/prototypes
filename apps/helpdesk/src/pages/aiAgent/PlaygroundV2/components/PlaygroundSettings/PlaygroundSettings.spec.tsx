@@ -180,6 +180,10 @@ jest.mock('@repo/feature-flags', () => ({
     useFlagWithLoading: jest.fn(() => ({ value: false, isLoading: false })),
 }))
 
+const mockUseFlagWithLoading = require('@repo/feature-flags')
+    .useFlagWithLoading as jest.Mock
+const mockUseFlag = require('@repo/feature-flags').useFlag as jest.Mock
+
 const mockUseSettingsChanged = jest.fn()
 jest.mock('pages/aiAgent/PlaygroundV2/hooks/useSettingsChanged', () => ({
     useSettingsChanged: () => mockUseSettingsChanged(),
@@ -340,6 +344,11 @@ describe('PlaygroundSettings', () => {
             hasInboundChanged: false,
             hasOutboundChanged: false,
             resetInitialState: jest.fn(),
+        })
+        mockUseFlag.mockReturnValue(false)
+        mockUseFlagWithLoading.mockReturnValue({
+            value: false,
+            isLoading: false,
         })
         mockAIJourneyContext()
         mockUseMessagesContextValue.messages = []
@@ -980,6 +989,74 @@ describe('PlaygroundSettings', () => {
                 const updatedChannelSelect = screen.getByLabelText('Channel')
                 expect(updatedChannelSelect).toHaveValue('sms')
             })
+        })
+
+        it('should not offer Instagram DM channel when V3 is disabled and AiAgentInstagramDms flag is disabled', () => {
+            mockUseFlagWithLoading.mockReturnValue({
+                value: false,
+                isLoading: false,
+            })
+            mockUseFlag.mockReturnValue(false)
+            renderComponent()
+
+            const channelSelect = screen.getByLabelText(
+                'Channel',
+            ) as HTMLSelectElement
+            const optionLabels = Array.from(channelSelect.options).map(
+                (option) => option.label,
+            )
+            expect(optionLabels).not.toContain('Instagram DM')
+        })
+
+        it('should not offer Instagram DM channel when V3 is enabled but AiAgentInstagramDms flag is disabled', () => {
+            mockUseFlagWithLoading.mockReturnValue({
+                value: true,
+                isLoading: false,
+            })
+            mockUseFlag.mockReturnValue(false)
+            renderComponent()
+
+            const channelSelect = screen.getByLabelText(
+                'Channel',
+            ) as HTMLSelectElement
+            const optionLabels = Array.from(channelSelect.options).map(
+                (option) => option.label,
+            )
+            expect(optionLabels).not.toContain('Instagram DM')
+        })
+
+        it('should not offer Instagram DM channel when AiAgentInstagramDms flag is enabled but V3 is disabled', () => {
+            mockUseFlagWithLoading.mockReturnValue({
+                value: false,
+                isLoading: false,
+            })
+            mockUseFlag.mockReturnValue(true)
+            renderComponent()
+
+            const channelSelect = screen.getByLabelText(
+                'Channel',
+            ) as HTMLSelectElement
+            const optionLabels = Array.from(channelSelect.options).map(
+                (option) => option.label,
+            )
+            expect(optionLabels).not.toContain('Instagram DM')
+        })
+
+        it('should offer Instagram DM channel when V3 is enabled and AiAgentInstagramDms flag is enabled', () => {
+            mockUseFlagWithLoading.mockReturnValue({
+                value: true,
+                isLoading: false,
+            })
+            mockUseFlag.mockReturnValue(true)
+            renderComponent()
+
+            const channelSelect = screen.getByLabelText(
+                'Channel',
+            ) as HTMLSelectElement
+            const optionLabels = Array.from(channelSelect.options).map(
+                (option) => option.label,
+            )
+            expect(optionLabels).toContain('Instagram DM')
         })
     })
 

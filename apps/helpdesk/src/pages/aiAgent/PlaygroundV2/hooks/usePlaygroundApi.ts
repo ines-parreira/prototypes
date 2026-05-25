@@ -129,6 +129,11 @@ export const usePlaygroundApi = ({
                             channel === 'email' && channelIntegrationId
                                 ? { integrationId: channelIntegrationId }
                                 : undefined,
+                        instagramConfig:
+                            channel === 'instagram-direct-message' &&
+                            channelIntegrationId
+                                ? { integrationId: channelIntegrationId }
+                                : undefined,
                     })
                     consolidatedTestSessionId =
                         await createTestSession(offlineEvalPayload)

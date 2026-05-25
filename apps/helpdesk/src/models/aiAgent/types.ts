@@ -106,6 +106,7 @@ export type StoreConfiguration = {
     monitoredSmsIntegrations: number[]
     monitoredSocialsIntegrations: number[]
     monitoredChatIntegrations: number[]
+    monitoredInstagramDmIntegrations?: number[]
 
     silentHandover: boolean
     ticketSampleRate: number
@@ -504,11 +505,15 @@ export type EmailConfig = {
     integrationId: number
 }
 
+export type InstagramConfig = {
+    integrationId: number
+}
+
 export type AiAgentPlaygroundOptions = {
     areActionsAllowedToExecute: boolean
     offlineEvalSettings?: {
         app: {
-            evaluatedUseCase?: string
+            useCase?: string
             shopName: string
             shopType: string
             gorgiasDomain: string
@@ -518,6 +523,7 @@ export type AiAgentPlaygroundOptions = {
             name: string
             email?: string
             phoneNumber?: string
+            instagramAddress?: string
         }
         session: {
             channel?: string
@@ -526,6 +532,7 @@ export type AiAgentPlaygroundOptions = {
         chatConfig?: ChatConfig
         smsConfig?: SmsConfig
         emailConfig?: EmailConfig
+        instagramConfig?: InstagramConfig
     }
 }
 

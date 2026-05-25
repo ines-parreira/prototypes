@@ -231,6 +231,8 @@ const MessageContainer = ({
                 return 'mail'
             case 'sms':
                 return 'sms'
+            case 'instagram-direct-message':
+                return 'photo_camera'
             default:
                 return 'mail'
         }
