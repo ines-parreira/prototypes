@@ -23,7 +23,12 @@ describe('SkillReviewCardHeader', () => {
             </ThemeProvider>,
         )
 
-        expect(screen.getByText('Returns and exchanges')).toBeInTheDocument()
+        expect(
+            screen.getByRole('heading', {
+                name: 'Returns and exchanges',
+                level: 4,
+            }),
+        ).toBeInTheDocument()
         expect(screen.getByText('Keep as draft')).toBeInTheDocument()
         expect(screen.getByText('Looks good')).toBeInTheDocument()
     })

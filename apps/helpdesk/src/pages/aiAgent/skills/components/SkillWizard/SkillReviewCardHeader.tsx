@@ -52,7 +52,7 @@ export const SkillReviewCardHeader = ({
             justifyContent="space-between"
             gap="md"
         >
-            <Heading>{title}</Heading>
+            <Heading size="md">{title}</Heading>
             {isApprovedDisabled && approvedDisabledReason ? (
                 <Tooltip delay={0} trigger={<Box>{buttonGroup}</Box>}>
                     <TooltipContent caption={approvedDisabledReason} />
