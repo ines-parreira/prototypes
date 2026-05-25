@@ -1,4 +1,5 @@
 export { InboxSidebar } from './InboxSidebar'
+export { HomeSidebar } from './HomeSidebar'
 export { AiAgentSidebar } from './AiAgentSidebar'
 export { MarketingSidebar } from './MarketingSidebar'
 export { AnalyticsSidebar } from './AnalyticsSidebar/AnalyticsSidebar'

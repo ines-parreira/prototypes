@@ -1,7 +1,4 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useSidebar } from '@repo/navigation'
-import { UserRole } from '@repo/permissions'
-import { useCurrentUserRole } from '@repo/users'
 
 import type { IconName } from '@gorgias/axiom'
 import {
@@ -16,10 +13,10 @@ import {
     TooltipContent,
 } from '@gorgias/axiom'
 
-import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import type { ProductConfig } from 'routes/layout/productConfig'
 import { Product, productConfig } from 'routes/layout/productConfig'
 import { SidebarProductHeaderMenuItem } from 'routes/layout/SidebarProductHeaderMenuItem'
+import { useNavigationProducts } from 'routes/layout/useNavigationProducts'
 
 type SelectedItem = Omit<ProductConfig, 'icon'> & {
     icon?: IconName
@@ -33,9 +30,12 @@ export function SidebarProductHeader({
     selectedItem,
 }: SidebarProductHeaderProps) {
     const { isCollapsed } = useSidebar()
-    const isAiJourneyEnabled = useFlag(FeatureFlagKey.AiJourneyEnabled)
-    const { hasAccess } = useAiAgentAccess()
-    const { isAdmin, hasRole } = useCurrentUserRole()
+    const {
+        canAccessAiAgent,
+        aiAgentRequiresUpgrade,
+        isAiJourneyVisible,
+        isConvertVisible,
+    } = useNavigationProducts()
 
     const icon =
         selectedItem.icon != null ? (
@@ -84,18 +84,18 @@ export function SidebarProductHeader({
                 <SidebarProductHeaderMenuItem
                     item={productConfig[Product.Inbox]}
                 />
-                {hasRole(UserRole.Agent) && (
+                {canAccessAiAgent && (
                     <SidebarProductHeaderMenuItem
                         item={productConfig[Product.AiAgent]}
-                        requiresUpgrade={!hasAccess}
+                        requiresUpgrade={aiAgentRequiresUpgrade}
                     />
                 )}
-                {isAiJourneyEnabled && (
+                {isAiJourneyVisible && (
                     <SidebarProductHeaderMenuItem
                         item={productConfig[Product.Marketing]}
                     />
                 )}
-                {isAdmin && (
+                {isConvertVisible && (
                     <SidebarProductHeaderMenuItem
                         item={productConfig[Product.Convert]}
                     />

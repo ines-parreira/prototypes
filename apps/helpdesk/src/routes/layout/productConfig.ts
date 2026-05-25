@@ -1,132 +1,73 @@
 import type { ComponentType } from 'react'
 
-import type { IconName } from '@gorgias/axiom'
-
-import { ANALYTICS_DEFAULT_PATH } from 'routes/layout/products/analytics'
-import { CUSTOMERS_DEFAULT_PATH } from 'routes/layout/products/customers'
-import { SETTINGS_DEFAULT_PATH } from 'routes/layout/products/settings'
-import { WORKFLOWS_DEFAULT_PATH } from 'routes/layout/products/workflows'
+import type { ProductMetadata } from 'routes/layout/productMetadata'
+import { Product, productMetadata } from 'routes/layout/productMetadata'
 
 import {
     AiAgentSidebar,
     AnalyticsSidebar,
     ConvertSidebar,
     CustomersSidebar,
+    HomeSidebar,
     InboxSidebar,
     MarketingSidebar,
     SettingsSidebar,
     WorkflowsSidebar,
 } from './sidebars'
 
-export enum SidebarContentType {
-    Default = 'default',
-    Sticky = 'sticky',
-}
+export { Product, SidebarContentType } from 'routes/layout/productMetadata'
 
-export enum Product {
-    Home = 'home',
-    Inbox = 'inbox',
-    AiAgent = 'aiAgent',
-    Marketing = 'marketing',
-    Analytics = 'analytics',
-    Convert = 'convert',
-    Workflows = 'workflows',
-    Customers = 'customers',
-    Settings = 'settings',
-}
-
-export type ProductConfig = {
-    id: Product
-    name: string
-    productType?: 'primary' | 'secondary'
-    sidebarContentType?: SidebarContentType
+export type ProductConfig = ProductMetadata & {
     sidebar: ComponentType | null
-    urlPatterns: string[]
-    icon: IconName
-    defaultPath: string
+}
+
+const productSidebars: Record<Product, ComponentType | null> = {
+    [Product.Home]: HomeSidebar,
+    [Product.Inbox]: InboxSidebar,
+    [Product.AiAgent]: AiAgentSidebar,
+    [Product.Marketing]: MarketingSidebar,
+    [Product.Analytics]: AnalyticsSidebar,
+    [Product.Convert]: ConvertSidebar,
+    [Product.Workflows]: WorkflowsSidebar,
+    [Product.Customers]: CustomersSidebar,
+    [Product.Settings]: SettingsSidebar,
 }
 
 export const productConfig: Record<Product, ProductConfig> = {
     [Product.Home]: {
-        id: Product.Home,
-        name: 'Home',
-        productType: 'secondary',
-        sidebar: null,
-        urlPatterns: ['home'],
-        icon: 'nav-home',
-        defaultPath: '/app/home',
+        ...productMetadata[Product.Home],
+        sidebar: productSidebars[Product.Home],
     },
     [Product.Inbox]: {
-        id: Product.Inbox,
-        name: 'Inbox',
-        productType: 'primary',
-        sidebar: InboxSidebar,
-        urlPatterns: ['tickets', 'ticket', 'views'],
-        icon: 'chat-conversation-circle',
-        defaultPath: '/app/',
+        ...productMetadata[Product.Inbox],
+        sidebar: productSidebars[Product.Inbox],
     },
     [Product.AiAgent]: {
-        id: Product.AiAgent,
-        name: 'AI Agent',
-        productType: 'primary',
-        sidebar: AiAgentSidebar,
-        urlPatterns: ['ai-agent', 'automation'],
-        icon: 'ai-alt-1',
-        defaultPath: '/app/ai-agent',
+        ...productMetadata[Product.AiAgent],
+        sidebar: productSidebars[Product.AiAgent],
     },
     [Product.Marketing]: {
-        id: Product.Marketing,
-        name: 'AI Journey',
-        productType: 'primary',
-        sidebar: MarketingSidebar,
-        urlPatterns: ['ai-journey'],
-        icon: 'send',
-        defaultPath: '/app/ai-journey',
+        ...productMetadata[Product.Marketing],
+        sidebar: productSidebars[Product.Marketing],
     },
     [Product.Analytics]: {
-        id: Product.Analytics,
-        name: 'Analytics',
-        productType: 'primary',
-        sidebar: AnalyticsSidebar,
-        urlPatterns: ['stats', 'voice-of-customer'],
-        icon: 'chart-bar-vertical',
-        defaultPath: ANALYTICS_DEFAULT_PATH,
+        ...productMetadata[Product.Analytics],
+        sidebar: productSidebars[Product.Analytics],
     },
     [Product.Convert]: {
-        id: Product.Convert,
-        name: 'Convert',
-        productType: 'primary',
-        sidebar: ConvertSidebar,
-        urlPatterns: ['convert'],
-        icon: 'attach-money',
-        defaultPath: '/app/convert/overview',
+        ...productMetadata[Product.Convert],
+        sidebar: productSidebars[Product.Convert],
     },
     [Product.Workflows]: {
-        id: Product.Workflows,
-        name: 'Workflows',
-        productType: 'secondary',
-        sidebar: WorkflowsSidebar,
-        urlPatterns: ['workflows'],
-        icon: 'route',
-        defaultPath: WORKFLOWS_DEFAULT_PATH,
+        ...productMetadata[Product.Workflows],
+        sidebar: productSidebars[Product.Workflows],
     },
     [Product.Customers]: {
-        id: Product.Customers,
-        name: 'Customers',
-        productType: 'secondary',
-        sidebar: CustomersSidebar,
-        urlPatterns: ['customers', 'customer'],
-        icon: 'users',
-        defaultPath: CUSTOMERS_DEFAULT_PATH,
+        ...productMetadata[Product.Customers],
+        sidebar: productSidebars[Product.Customers],
     },
     [Product.Settings]: {
-        id: Product.Settings,
-        sidebarContentType: SidebarContentType.Sticky,
-        name: 'Settings',
-        productType: 'secondary',
-        sidebar: SettingsSidebar,
-        urlPatterns: ['settings'],
-        icon: 'settings',
-        defaultPath: SETTINGS_DEFAULT_PATH,
+        ...productMetadata[Product.Settings],
+        sidebar: productSidebars[Product.Settings],
     },
 }

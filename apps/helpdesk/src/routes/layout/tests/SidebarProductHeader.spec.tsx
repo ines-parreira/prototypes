@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { MockSidebarProvider } from '@repo/navigation/fixtures'
 import { assumeMock, render } from '@repo/testing'
 import { useCurrentUserRole } from '@repo/users'
@@ -17,7 +17,7 @@ import { SidebarProductHeader } from '../SidebarProductHeader'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
-    useFlag: jest.fn(),
+    useFlagWithLoading: jest.fn(),
 }))
 
 jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
@@ -29,7 +29,7 @@ jest.mock('@repo/users', () => ({
     useCurrentUserRole: jest.fn(),
 }))
 
-const mockUseFlag = assumeMock(useFlag)
+const mockUseFlagWithLoading = assumeMock(useFlagWithLoading)
 const mockUseAiAgentAccess = assumeMock(useAiAgentAccess)
 const mockUseCurrentUserRole = assumeMock(useCurrentUserRole)
 
@@ -74,7 +74,10 @@ function expectMenuItems(menu: HTMLElement, labels: string[]) {
 describe('SidebarProductHeader', () => {
     beforeEach(() => {
         mockToggleCollapse.mockClear()
-        mockUseFlag.mockReturnValue(false)
+        mockUseFlagWithLoading.mockReturnValue({
+            value: false,
+            isLoading: false,
+        })
         mockUseAiAgentAccess.mockReturnValue({
             hasAccess: true,
             isLoading: false,
@@ -115,8 +118,10 @@ describe('SidebarProductHeader', () => {
 
         it('should not render AI Journey menu item when AiJourneyEnabled flag is off', async () => {
             const user = userEvent.setup()
-            mockUseFlag.mockImplementation((key: FeatureFlagKey) =>
-                key === FeatureFlagKey.AiJourneyEnabled ? false : false,
+            mockUseFlagWithLoading.mockImplementation((key: FeatureFlagKey) =>
+                key === FeatureFlagKey.AiJourneyEnabled
+                    ? { value: false, isLoading: false }
+                    : { value: false, isLoading: false },
             )
 
             renderComponent()
@@ -130,8 +135,10 @@ describe('SidebarProductHeader', () => {
 
         it('should render AI Journey menu item when AiJourneyEnabled flag is on', async () => {
             const user = userEvent.setup()
-            mockUseFlag.mockImplementation((key: FeatureFlagKey) =>
-                key === FeatureFlagKey.AiJourneyEnabled ? true : false,
+            mockUseFlagWithLoading.mockImplementation((key: FeatureFlagKey) =>
+                key === FeatureFlagKey.AiJourneyEnabled
+                    ? { value: true, isLoading: false }
+                    : { value: false, isLoading: false },
             )
 
             renderComponent()
