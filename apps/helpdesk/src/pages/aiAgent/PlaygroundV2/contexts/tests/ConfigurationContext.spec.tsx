@@ -262,7 +262,7 @@ describe('ConfigurationContext', () => {
             expect(result.current.emailIntegrationId).toBe(789)
         })
 
-        it('should use first integration id from monitoredInstagramDmIntegrations', () => {
+        it('should use first integration id from monitoredSocialsIntegrations', () => {
             const usePlaygroundResources =
                 require('../../hooks/usePlaygroundResources')
                     .usePlaygroundResources as jest.Mock
@@ -270,7 +270,7 @@ describe('ConfigurationContext', () => {
             usePlaygroundResources.mockReturnValueOnce({
                 storeConfiguration: getStoreConfigurationFixture({
                     storeName: 'test-store',
-                    monitoredInstagramDmIntegrations: [321],
+                    monitoredSocialsIntegrations: [321],
                 }),
                 accountConfiguration: {
                     httpIntegration: { id: 999 },
@@ -294,7 +294,7 @@ describe('ConfigurationContext', () => {
             expect(result.current.instagramDmIntegrationId).toBe(321)
         })
 
-        it('should leave instagramDmIntegrationId undefined when monitoredInstagramDmIntegrations is missing', () => {
+        it('should leave instagramDmIntegrationId undefined when monitoredSocialsIntegrations is missing', () => {
             const { result } = renderHook(() => useConfigurationContext(), {
                 wrapper: ({ children }) => (
                     <Provider store={mockStore}>

@@ -106,7 +106,6 @@ export type StoreConfiguration = {
     monitoredSmsIntegrations: number[]
     monitoredSocialsIntegrations: number[]
     monitoredChatIntegrations: number[]
-    monitoredInstagramDmIntegrations?: number[]
 
     silentHandover: boolean
     ticketSampleRate: number

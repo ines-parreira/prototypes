@@ -83,7 +83,7 @@ export const ConfigurationProvider = ({
     const emailIntegrationId =
         storeConfiguration?.monitoredEmailIntegrations?.[0]?.id
     const instagramDmIntegrationId =
-        storeConfiguration?.monitoredInstagramDmIntegrations?.[0]
+        storeConfiguration?.monitoredSocialsIntegrations?.[0]
 
     const contextValue = useMemo(
         () => ({
