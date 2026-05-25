@@ -57,8 +57,10 @@ export function useUpdateTicketCustomer(ticketId: string) {
                 await queryClient.invalidateQueries({
                     queryKey,
                 })
+                return true
             } catch {
                 toast.error('Failed to update ticket customer')
+                return false
             }
         },
         [mutateAsyncUpdateTicket, queryClient, queryKey, ticketIdNum],

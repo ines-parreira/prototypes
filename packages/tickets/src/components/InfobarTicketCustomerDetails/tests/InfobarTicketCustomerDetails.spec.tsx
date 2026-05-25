@@ -456,8 +456,12 @@ describe('InfobarTicketCustomerDetails', () => {
             ).handler,
         )
 
+        const onSwitchCustomer = vi.fn()
         const { user } = render(
-            <InfobarTicketCustomerDetails {...defaultProps} />,
+            <InfobarTicketCustomerDetails
+                {...defaultProps}
+                onSwitchCustomer={onSwitchCustomer}
+            />,
             {
                 path: '/ticket/:ticketId',
                 initialEntries: [`/ticket/${ticketId}`],
@@ -506,9 +510,104 @@ describe('InfobarTicketCustomerDetails', () => {
         })
 
         await waitFor(() => {
+            expect(onSwitchCustomer).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    id: 999,
+                    name: 'Antonio Lopez',
+                    email: 'antonio@example.com',
+                }),
+            )
+        })
+
+        await waitFor(() => {
             expect(
                 screen.queryByText('Change ticket customer?'),
             ).not.toBeInTheDocument()
         })
+    })
+
+    it('should keep the switch panel open and skip legacy sync when the update fails', async () => {
+        const searchResult: CustomerHighlightDataItem = {
+            entity: mockCustomer({
+                id: 999,
+                name: 'Antonio Lopez',
+                email: 'antonio@example.com',
+                channels: [],
+            }) as any,
+            highlights: {
+                name: ['Antonio Lopez'],
+            },
+        }
+
+        const mockUpdateTicketFailure = mockUpdateTicketHandler(async () =>
+            HttpResponse.json(null, { status: 500 }),
+        )
+
+        server.use(
+            mockSearchCustomersHandler(async () =>
+                HttpResponse.json(
+                    mockSearchCustomersResponse({
+                        data: [searchResult],
+                    }),
+                ),
+            ).handler,
+            mockUpdateTicketFailure.handler,
+            http.get(`/api/customers/999/similar/`, () => {
+                return new HttpResponse(null, { status: 404 })
+            }),
+        )
+
+        const onSwitchCustomer = vi.fn()
+        const { user } = render(
+            <InfobarTicketCustomerDetails
+                {...defaultProps}
+                onSwitchCustomer={onSwitchCustomer}
+            />,
+            {
+                path: '/ticket/:ticketId',
+                initialEntries: [`/ticket/${ticketId}`],
+            },
+        )
+
+        await waitUntilLoaded()
+
+        await user.click(screen.getByLabelText('Customer menu'))
+
+        const mergeOptions = screen.getAllByText('Merge or switch customer')
+        await user.click(mergeOptions[mergeOptions.length - 1])
+
+        const searchInput = await screen.findByPlaceholderText(
+            'Search by name, email or order no.',
+        )
+
+        await user.type(searchInput, 'Antonio')
+
+        await screen.findByText(/Antonio Lopez/)
+
+        await user.click(
+            screen.getByRole('button', {
+                name: 'Switch customer',
+            }),
+        )
+
+        await screen.findByText('Change ticket customer?')
+
+        const waitForUpdateRequest =
+            mockUpdateTicketFailure.waitForRequest(server)
+
+        await user.click(screen.getByRole('button', { name: 'Confirm' }))
+
+        await waitForUpdateRequest()
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Failed to update ticket customer',
+                }),
+            ).toHaveAttribute('data-intent', 'destructive')
+        })
+
+        expect(onSwitchCustomer).not.toHaveBeenCalled()
+        expect(screen.getByText('Search customers')).toBeInTheDocument()
     })
 })

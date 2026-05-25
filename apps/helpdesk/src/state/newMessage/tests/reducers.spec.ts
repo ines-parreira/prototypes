@@ -20,6 +20,7 @@ import { NEW_MESSAGE_FETCH_TICKET_SUCCESS } from '../constants'
 import * as emailExtraUtils from '../emailExtraUtils'
 import reducer, { initialState, makeNewMessage } from '../reducers'
 import * as responseUtils from '../responseUtils'
+import ticketReplyCache from '../ticketReplyCache'
 import type { NewMessage, ReplyAreaState } from '../types'
 import { getMessageContextSnapshot } from './testUtils'
 
@@ -860,6 +861,31 @@ describe('new message reducer', () => {
                     } as any,
                 }),
             ).toEqualImmutable(expected)
+        })
+
+        it('should persist receivers to the ticket draft cache when ticket id is provided', () => {
+            const receiver = {
+                id: 3,
+                name: 'Dark Vador',
+                address: 'dark.vador@gmail.com',
+            }
+            const ticketReplyCacheSetSpy = jest
+                .spyOn(ticketReplyCache, 'set')
+                .mockImplementation(() => undefined)
+
+            const result = reducer(initialState, {
+                type: types.NEW_MESSAGE_SET_RECEIVERS,
+                receivers: {
+                    to: [receiver],
+                } as any,
+                ticketId: '123',
+            })
+
+            expect(ticketReplyCacheSetSpy).toHaveBeenCalledWith('123', {
+                source: result.getIn(['newMessage', 'source'])?.toJS(),
+            })
+
+            ticketReplyCacheSetSpy.mockRestore()
         })
     })
 

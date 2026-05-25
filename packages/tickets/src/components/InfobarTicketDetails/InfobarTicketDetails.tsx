@@ -14,6 +14,7 @@ type InfobarTicketDetailsProps = {
     ticketSummaryIcon: ReactNode
     onEditCustomer: (customer: TicketCustomer) => void
     onSyncToShopify: (customer: TicketCustomer) => void
+    onSwitchCustomer?: (customer: TicketCustomer) => void
     hasShopifyIntegration?: boolean
 }
 
@@ -21,6 +22,7 @@ export function InfobarTicketDetails({
     ticketSummaryIcon,
     onEditCustomer,
     onSyncToShopify,
+    onSwitchCustomer,
     hasShopifyIntegration,
 }: InfobarTicketDetailsProps) {
     const { ticketId } = useParams<{ ticketId: string }>()
@@ -41,6 +43,7 @@ export function InfobarTicketDetails({
             <InfobarTicketCustomerDetails
                 onEditCustomer={onEditCustomer}
                 onSyncToShopify={onSyncToShopify}
+                onSwitchCustomer={onSwitchCustomer}
                 hasShopifyIntegration={hasShopifyIntegration}
                 ticketId={ticketId}
             />

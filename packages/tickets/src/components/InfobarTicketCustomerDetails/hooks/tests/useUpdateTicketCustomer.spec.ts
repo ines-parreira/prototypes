@@ -33,7 +33,11 @@ describe('useUpdateTicketCustomer', () => {
 
         const { result } = renderHook(() => useUpdateTicketCustomer('123'))
 
-        await result.current.updateTicketCustomer({ id: 456 } as any)
+        const didUpdate = await result.current.updateTicketCustomer({
+            id: 456,
+        } as any)
+
+        expect(didUpdate).toBe(false)
 
         await waitFor(() => {
             expect(

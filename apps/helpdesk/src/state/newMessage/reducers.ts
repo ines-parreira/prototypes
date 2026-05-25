@@ -27,7 +27,7 @@ import type { MessageContext } from './responseUtils'
 import {
     addCache,
     applyMacro,
-    deleteReplyCache,
+    deleteReplyContentCache,
     updateCache,
     updateNewMessageWithContentState,
 } from './responseUtils'
@@ -273,8 +273,8 @@ export default function reducer(
         case types.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START: {
             const messages = fromJS(action.messages) as List<any>
             const via = action.ticketVia
-            // clear the reply cache
-            deleteReplyCache(action.ticketId as unknown as string)
+            // clear the reply content cache
+            deleteReplyContentCache(action.ticketId as unknown as string)
 
             const newState = resetContentState(state).mergeDeep({
                 state: {
@@ -620,11 +620,15 @@ export default function reducer(
                 getReceiversProperties(),
             )
 
-            // setting new receivers in source
-            return state.setIn(
-                ['newMessage', 'source'],
-                fromJS(_assign(sourceWithoutReceivers, newReceivers)),
-            )
+            const source = fromJS(_assign(sourceWithoutReceivers, newReceivers))
+
+            if (action.ticketId) {
+                ticketReplyCache.set(action.ticketId as string, {
+                    source: source.toJS() as NewMessage['source'],
+                })
+            }
+
+            return state.setIn(['newMessage', 'source'], source)
         }
 
         case types.NEW_MESSAGE_RESET_FROM_MESSAGE: {

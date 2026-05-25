@@ -22,6 +22,7 @@ import css from './InfobarTicketCustomerDetails.less'
 export type InfobarTicketCustomerDetailsProps = {
     onEditCustomer: (customer: TicketCustomer) => void
     onSyncToShopify: (customer: TicketCustomer) => void
+    onSwitchCustomer?: (customer: TicketCustomer) => void
     hasShopifyIntegration?: boolean
     ticketId: string
 }
@@ -29,6 +30,7 @@ export type InfobarTicketCustomerDetailsProps = {
 export function InfobarTicketCustomerDetails({
     onEditCustomer,
     onSyncToShopify,
+    onSwitchCustomer,
     hasShopifyIntegration = false,
     ticketId,
 }: InfobarTicketCustomerDetailsProps) {
@@ -76,11 +78,17 @@ export function InfobarTicketCustomerDetails({
     }
 
     const handleConfirmSwitch = useCallback(
-        (customer: Customer) => {
-            void updateTicketCustomer(customer as TicketCustomer)
+        async (customer: Customer) => {
+            const didUpdate = await updateTicketCustomer(
+                customer as TicketCustomer,
+            )
+            if (!didUpdate) {
+                return
+            }
+            onSwitchCustomer?.(customer as TicketCustomer)
             closeAllPanels()
         },
-        [updateTicketCustomer],
+        [onSwitchCustomer, updateTicketCustomer],
     )
 
     const handleOpenMergeModal = useCallback((customer: Customer) => {

@@ -23,6 +23,7 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 import { useGetTicket } from '@gorgias/helpdesk-queries'
+import type { TicketCustomer } from '@gorgias/helpdesk-types'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -49,7 +50,7 @@ import { getCurrentUser } from 'state/currentUser/selectors'
 import * as infobarActions from 'state/infobar/actions'
 import { makeHasIntegrationOfTypes } from 'state/integrations/selectors'
 import { setActiveCustomerAsReceiver } from 'state/newMessage/actions'
-import { setCustomer } from 'state/ticket/actions'
+import { setCustomer, setCustomerInTicketState } from 'state/ticket/actions'
 import * as widgetsActions from 'state/widgets/actions'
 import type { WidgetEnvironment } from 'state/widgets/types'
 import { isAdmin, isCurrentlyOnCustomerPage } from 'utils'
@@ -279,6 +280,14 @@ export const Infobar = ({
             .then(() => dispatch(setActiveCustomerAsReceiver()))
     }
 
+    const handleSwitchCustomer = useCallback(
+        (switchedCustomer: TicketCustomer) => {
+            dispatch(setCustomerInTicketState(fromJS(switchedCustomer)))
+            dispatch(setActiveCustomerAsReceiver())
+        },
+        [dispatch],
+    )
+
     const hasFetchedWidgets = widgets.getIn(['_internal', 'hasFetchedWidgets'])
 
     const currentContext = widgets.get('currentContext', '')
@@ -306,6 +315,7 @@ export const Infobar = ({
                         }
                         onEditCustomer={handleEditCustomer}
                         onSyncToShopify={handleSyncToShopify}
+                        onSwitchCustomer={handleSwitchCustomer}
                         hasShopifyIntegration={hasShopifyIntegration}
                     />
                 )}

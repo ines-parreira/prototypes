@@ -59,6 +59,14 @@ export const getSourceTypeCache = (
         .get('sourceType') as TicketMessageSourceType
 }
 
+export const getSourceCache = (ticketId: string): Map<any, any> | null => {
+    const source = ticketReplyCache.get(ticketId).get('source') as
+        | Map<any, any>
+        | undefined
+
+    return source && !source.isEmpty() ? source : null
+}
+
 export const setSourceTypeCache = (
     ticketId: string,
     sourceType: string,
@@ -68,6 +76,20 @@ export const setSourceTypeCache = (
 
 export const deleteReplyCache = (ticketId: string): void => {
     return ticketReplyCache.delete(ticketId)
+}
+
+export const deleteReplyContentCache = (ticketId = 'new'): void => {
+    const cachedSource = ticketReplyCache.get(ticketId).get('source') as
+        | Map<any, any>
+        | undefined
+
+    ticketReplyCache.delete(ticketId)
+
+    if (cachedSource && !cachedSource.isEmpty()) {
+        ticketReplyCache.set(ticketId, {
+            source: cachedSource.toJS() as NewMessage['source'],
+        })
+    }
 }
 
 /**
@@ -209,7 +231,7 @@ export const updateCache = (context: MessageContext) => {
         })
     } else {
         // we're deleting the data from cache so we don't explode the storage
-        ticketReplyCache.delete(action.ticketId)
+        deleteReplyContentCache(action.ticketId)
     }
 }
 

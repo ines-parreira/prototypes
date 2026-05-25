@@ -328,6 +328,39 @@ describe('responseUtils', () => {
             )
         })
 
+        it('should preserve cached source when clearing an empty message cache', () => {
+            const cachedSource = fromJS({
+                type: TicketMessageSourceType.Email,
+                to: [
+                    {
+                        name: 'Ada Lovelace',
+                        address: 'ada@example.com',
+                    },
+                ],
+            })
+            const ticketReplyCacheGetSpy = jest
+                .spyOn(ticketReplyCache, 'get')
+                .mockReturnValue(fromJS({ source: cachedSource }))
+            const context: MessageContext = {
+                ...updateCacheContext,
+                contentState: ContentState.createFromText(''),
+            }
+
+            updateCache(context)
+
+            expect(ticketReplyCacheDeleteSpy).toHaveBeenLastCalledWith(
+                updateCacheContext.action.ticketId,
+            )
+            expect(ticketReplyCacheSetSpy).toHaveBeenLastCalledWith(
+                updateCacheContext.action.ticketId,
+                {
+                    source: cachedSource.toJS(),
+                },
+            )
+
+            ticketReplyCacheGetSpy.mockRestore()
+        })
+
         it('should remove the cache item if message contains only the signature', () => {
             const context: MessageContext = {
                 ...updateCacheContext,

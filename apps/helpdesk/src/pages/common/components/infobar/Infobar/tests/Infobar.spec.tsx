@@ -4,6 +4,7 @@ import { useState as mockUseState } from 'react'
 import { useHelpdeskV2MS2Flag } from '@repo/feature-flags'
 import { SegmentEvent, useSearchRankScenario } from '@repo/logging'
 import { assumeMock, render } from '@repo/testing'
+import { InfobarTicketDetails } from '@repo/tickets'
 import {
     useHelpdeskV2MS1Flag,
     useHelpdeskV2MS3Flag,
@@ -29,7 +30,7 @@ import {
 } from 'state/infobar/actions'
 import { FETCH_PREVIEW_CUSTOMER_SUCCESS } from 'state/infobar/constants'
 import { setActiveCustomerAsReceiver } from 'state/newMessage/actions'
-import { setCustomer } from 'state/ticket/actions'
+import { setCustomer, setCustomerInTicketState } from 'state/ticket/actions'
 import { startEditionMode, stopEditionMode } from 'state/widgets/actions'
 import { WidgetEnvironment } from 'state/widgets/types'
 import { isCurrentlyOnCustomerPage } from 'utils'
@@ -57,6 +58,15 @@ jest.mock(
 const { logEvent } = jest.requireMock('@repo/logging') as {
     logEvent: jest.Mock
 }
+
+jest.mock('@repo/tickets', () => ({
+    InfobarTicketDetails: jest.fn(() => <div>InfobarTicketDetails</div>),
+    InfobarTicketCustomerInstagramSection: jest.fn(() => (
+        <div>InfobarTicketCustomerInstagramSection</div>
+    )),
+}))
+
+const InfobarTicketDetailsMock = assumeMock(InfobarTicketDetails)
 
 const store = mockStore({
     currentUser: fromJS(agents[1]),
@@ -239,6 +249,10 @@ jest.mock('@gorgias/helpdesk-queries', () => ({
 jest.mock('state/ticket/actions', () => ({
     ...jest.requireActual('state/ticket/actions'),
     setCustomer: jest.fn(() => () => Promise.resolve()),
+    setCustomerInTicketState: jest.fn((customer) => ({
+        type: 'setCustomer',
+        args: { customer },
+    })),
 }))
 
 jest.mock('state/newMessage/actions', () => ({
@@ -283,6 +297,9 @@ describe('<Infobar/>', () => {
         useHelpdeskV2MS2FlagMock.mockReturnValue(false)
         makeHasIntegrationOfTypesMock.mockReturnValue(() => false)
         useSearchRankScenarioMock.mockImplementation(() => mockSearchRank)
+        InfobarTicketDetailsMock.mockImplementation(() => (
+            <div>InfobarTicketDetails</div>
+        ))
         dateNowSpy = jest
             .spyOn(Date, 'now')
             .mockImplementation(() => defaultDateNowValue)
@@ -342,11 +359,54 @@ describe('<Infobar/>', () => {
     it('should render ticket context', () => {
         const { container } = render(
             <Provider store={store}>
-                <Infobar {...commonProps} />)
+                <Infobar {...commonProps} />
             </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should sync switched customers from the new ticket details panel to the reply editor state', () => {
+        const switchedCustomer = {
+            id: 9,
+            name: 'Ada Lovelace',
+            email: 'ada@example.com',
+            channels: [],
+        }
+        const mockedSetCustomerInTicketState = jest.mocked(
+            setCustomerInTicketState,
+        )
+        const mockedSetActiveCustomerAsReceiver = jest.mocked(
+            setActiveCustomerAsReceiver,
+        )
+
+        useHelpdeskV2MS1FlagMock.mockReturnValue(true)
+        InfobarTicketDetailsMock.mockImplementation(
+            ({
+                onSwitchCustomer,
+            }: ComponentProps<typeof InfobarTicketDetails>) => (
+                <button
+                    onClick={() => {
+                        onSwitchCustomer?.(switchedCustomer as any)
+                    }}
+                >
+                    Switch customer in details
+                </button>
+            ),
+        )
+
+        render(
+            <Provider store={store}>
+                <Infobar {...commonProps} />
+            </Provider>,
+        )
+
+        fireEvent.click(screen.getByText('Switch customer in details'))
+
+        expect(mockedSetCustomerInTicketState).toHaveBeenCalledWith(
+            fromJS(switchedCustomer),
+        )
+        expect(mockedSetActiveCustomerAsReceiver).toHaveBeenCalled()
     })
 
     it('should render customer context', () => {

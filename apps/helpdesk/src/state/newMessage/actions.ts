@@ -100,6 +100,7 @@ import {
 } from './errors'
 import type { MessageContext } from './responseUtils'
 import {
+    getSourceCache,
     selectionAfter,
     setSourceTypeCache,
     toReplyAreaState,
@@ -308,19 +309,23 @@ export const addEmailExtra = createAction<{
 export const setReceivers = (
     receivers: Record<string, unknown> = {},
     replaceAll = true,
-) => ({
-    type: constants.NEW_MESSAGE_SET_RECEIVERS,
-    receivers,
-    replaceAll,
-})
+    ticketId?: number | string,
+) => {
+    return {
+        type: constants.NEW_MESSAGE_SET_RECEIVERS,
+        receivers,
+        replaceAll,
+        ...(ticketId ? { ticketId: String(ticketId) } : {}),
+    }
+}
 
 export const setActiveCustomerAsReceiver =
     () => (dispatch: StoreDispatch, getState: () => RootState) => {
         const state = getState()
         const ticket = state.ticket
+        const type = selectors.getNewMessageType(state)
 
-        // We only change this when type is Email
-        if (ticket.getIn(['channel']) !== TicketChannel.Email) {
+        if (type !== TicketMessageSourceType.Email) {
             return
         }
 
@@ -329,17 +334,30 @@ export const setActiveCustomerAsReceiver =
                 ticket.getIn(['customer', 'channels']) as List<CustomerChannel>
             )?.toJS() || []
 
-        const customerChannel = customerChannels.find(
-            (channel: CustomerChannel) => channel.type === TicketChannel.Email,
-        )
+        const customerChannel = customerChannels
+            .filter(
+                (channel: CustomerChannel) =>
+                    channel.type === TicketChannel.Email,
+            )
+            .sort(
+                (currentChannel, nextChannel) =>
+                    Number(!currentChannel.preferred) -
+                    Number(!nextChannel.preferred),
+            )[0]
 
         const address = customerChannel
             ? customerChannel.address
             : ticket.getIn(['customer', 'email'])
-        const name = ticket.getIn(['customer', 'name'])
+        const name = ticket.getIn(['customer', 'name']) || ''
 
-        if (address && name) {
-            void dispatch(setReceivers({ to: [{ name, address }] }, false))
+        if (address) {
+            void dispatch(
+                setReceivers(
+                    { to: [{ name, address }] },
+                    false,
+                    ticket.get('id') as number | string | undefined,
+                ),
+            )
         }
     }
 
@@ -1597,14 +1615,27 @@ export function resetReceiversAndSender(
     const state = getState()
     const { ticket } = state
     const type = selectors.getNewMessageType(state)
-    // set receivers according to last sent message
-    const receivers = guessReceiversFromTicket(
-        ticket,
-        type,
-        integrationSelectors.getChannelsByType(type)(state),
-    )
-    const receiversValues = receiversValueFromState(receivers, type)
-    void dispatch(setReceivers(receiversStateFromValue(receiversValues, type)))
+    const ticketId = ticket.get('id') as number | string | undefined
+    const cachedSource = ticketId ? getSourceCache(String(ticketId)) : null
+
+    if (cachedSource?.get('type') === type) {
+        void dispatch(
+            setReceivers(
+                _pick(cachedSource.toJS(), selectors.getReceiversProperties()),
+            ),
+        )
+    } else {
+        // set receivers according to last sent message
+        const receivers = guessReceiversFromTicket(
+            ticket,
+            type,
+            integrationSelectors.getChannelsByType(type)(state),
+        )
+        const receiversValues = receiversValueFromState(receivers, type)
+        void dispatch(
+            setReceivers(receiversStateFromValue(receiversValues, type)),
+        )
+    }
     // set sender according to last sent message
     return dispatch(setSender())
 }

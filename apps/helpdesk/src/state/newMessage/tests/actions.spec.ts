@@ -53,6 +53,7 @@ import {
     TicketMessageInvalidSendDataError,
 } from 'state/newMessage/errors'
 import { initialState, makeNewMessage } from 'state/newMessage/reducers'
+import ticketReplyCache from 'state/newMessage/ticketReplyCache'
 import type { ReplyAreaState } from 'state/newMessage/types'
 import { initialState as ticketInitialState } from 'state/ticket/reducers'
 import {
@@ -2590,6 +2591,29 @@ describe('actions', () => {
             ])
         })
 
+        it('should include the active ticket id when setting the receiver', () => {
+            store = mockStore({
+                ticket: emailTicket
+                    .set('id', 123)
+                    .setIn(['channel'], TicketChannel.Email)
+                    .setIn(['customer', 'name'], 'Marc')
+                    .setIn(['customer', 'email'], 'marc.wall@gmail.com'),
+                newMessage: initialState,
+            })
+            store.dispatch(actions.setActiveCustomerAsReceiver())
+
+            expect(store.getActions()).toEqual([
+                {
+                    type: types.NEW_MESSAGE_SET_RECEIVERS,
+                    receivers: {
+                        to: [{ name: 'Marc', address: 'marc.wall@gmail.com' }],
+                    },
+                    replaceAll: false,
+                    ticketId: '123',
+                },
+            ])
+        })
+
         it('should use customer email when no channel with type Email exists', () => {
             store = mockStore({
                 ticket: emailTicket
@@ -2620,7 +2644,7 @@ describe('actions', () => {
             ])
         })
 
-        it('should not set receiver when customer has no name', () => {
+        it('should set receiver when customer has an email and no name', () => {
             store = mockStore({
                 ticket: emailTicket
                     .setIn(['channel'], TicketChannel.Email)
@@ -2639,7 +2663,15 @@ describe('actions', () => {
             })
             store.dispatch(actions.setActiveCustomerAsReceiver())
 
-            expect(store.getActions()).toEqual([])
+            expect(store.getActions()).toEqual([
+                {
+                    type: types.NEW_MESSAGE_SET_RECEIVERS,
+                    receivers: {
+                        to: [{ name: '', address: 'john@example.com' }],
+                    },
+                    replaceAll: false,
+                },
+            ])
         })
 
         it('should not set receiver when customer has no email', () => {
@@ -2654,7 +2686,7 @@ describe('actions', () => {
             expect(store.getActions()).toEqual([])
         })
 
-        it('should return early when ticket channel is not Email', () => {
+        it('should set receiver when the ticket channel is not Email but the response type is Email', () => {
             store = mockStore({
                 ticket: emailTicket
                     .setIn(['channel'], TicketChannel.Phone)
@@ -2664,7 +2696,65 @@ describe('actions', () => {
             })
             store.dispatch(actions.setActiveCustomerAsReceiver())
 
+            expect(store.getActions()).toEqual([
+                {
+                    type: types.NEW_MESSAGE_SET_RECEIVERS,
+                    receivers: {
+                        to: [{ name: 'Marc', address: 'marc.wall@gmail.com' }],
+                    },
+                    replaceAll: false,
+                },
+            ])
+        })
+
+        it('should return early when the response type is not Email', () => {
+            store = mockStore({
+                ticket: emailTicket
+                    .setIn(['channel'], TicketChannel.Email)
+                    .setIn(['customer', 'name'], 'Marc')
+                    .setIn(['customer', 'email'], 'marc.wall@gmail.com'),
+                newMessage: initialState.setIn(
+                    ['newMessage', 'source', 'type'],
+                    TicketMessageSourceType.InternalNote,
+                ),
+            })
+            store.dispatch(actions.setActiveCustomerAsReceiver())
+
             expect(store.getActions()).toEqual([])
+        })
+
+        it('should restore cached draft receivers for the active ticket', () => {
+            const cachedReceiver = {
+                name: 'Ada Lovelace',
+                address: 'ada@example.com',
+            }
+            const ticketReplyCacheGetSpy = jest
+                .spyOn(ticketReplyCache, 'get')
+                .mockReturnValue(
+                    fromJS({
+                        source: {
+                            type: TicketMessageSourceType.Email,
+                            to: [cachedReceiver],
+                        },
+                    }),
+                )
+
+            store = mockStore({
+                integrations: fromJS(integrationsState),
+                ticket: emailTicket.set('id', 123),
+                newMessage: initialState,
+            })
+            store.dispatch(actions.resetReceiversAndSender)
+
+            expect(store.getActions()[0]).toEqual({
+                type: types.NEW_MESSAGE_SET_RECEIVERS,
+                receivers: {
+                    to: [cachedReceiver],
+                },
+                replaceAll: true,
+            })
+
+            ticketReplyCacheGetSpy.mockRestore()
         })
     })
 })

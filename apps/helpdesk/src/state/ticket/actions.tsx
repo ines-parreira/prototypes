@@ -438,13 +438,15 @@ export const setTeam =
         )
     }
 
+export const setCustomerInTicketState = (customer: Maybe<Map<any, any>>) => ({
+    type: types.SET_CUSTOMER,
+    args: fromJS({ customer }),
+})
+
 export const setCustomer =
     (customer: Maybe<Map<any, any>>) =>
     (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
-        dispatch({
-            type: types.SET_CUSTOMER,
-            args: fromJS({ customer }),
-        })
+        dispatch(setCustomerInTicketState(customer))
 
         if (!customer || customer.isEmpty()) {
             return Promise.resolve()

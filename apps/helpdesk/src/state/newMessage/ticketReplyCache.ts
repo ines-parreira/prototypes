@@ -5,6 +5,8 @@ import { fromJS } from 'immutable'
 
 import type { DiscountCode } from 'models/discountCodes/types'
 
+import type { NewMessage } from './types'
+
 export interface TopRankMacroState {
     state: 'accepted' | 'pending' | 'rejected'
     macroId: number
@@ -18,6 +20,7 @@ export type RawCachedTicket = {
     contentState: RawDraftContentState | null
     selectionState: SelectionState | null
     macro: Map<any, any> | null
+    source?: NewMessage['source'] | null
     sourceType: string | null
     emailExtraAdded: boolean
     topRankMacroState?: TopRankMacroState | null
