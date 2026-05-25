@@ -24,11 +24,13 @@ describe('WizardSkillsBanner', () => {
         expect(screen.getByText('New')).toBeInTheDocument()
         expect(
             screen.getByRole('heading', {
-                name: /Skills: more consistent answers for your most common conversations/i,
+                name: /We created your core skills using some of your existing guidance/i,
             }),
         ).toBeInTheDocument()
         expect(
-            screen.getByText(/We built skills from some of your existing/i),
+            screen.getByText(
+                /With skills, AI Agent will now follow specific instructions every time it detects matching intents/i,
+            ),
         ).toBeInTheDocument()
     })
 })

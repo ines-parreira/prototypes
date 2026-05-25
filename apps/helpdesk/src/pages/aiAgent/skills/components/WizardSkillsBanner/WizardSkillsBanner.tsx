@@ -16,14 +16,13 @@ export const WizardSkillsBanner = () => (
                 <Tag color={TagColor.Purple}>New</Tag>
             </Box>
             <Heading size="xl">
-                Skills: more consistent answers for your most common
-                conversations
+                We created your core skills using some of your existing guidance
             </Heading>
             <Text>
-                We built skills from some of your existing guidance. With
-                skills, AI Agent will now follow specific instructions every
-                time it detects a matching intent. The rest of your guidance
-                stays active to answer everything skills don&apos;t cover.
+                With skills, AI Agent will now follow specific instructions
+                every time it detects matching intents, so answers are more
+                consistent. The rest of your guidance stays active to answer
+                everything skills don&apos;t cover.
             </Text>
         </Box>
         <Box
