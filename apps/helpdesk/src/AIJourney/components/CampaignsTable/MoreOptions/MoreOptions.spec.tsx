@@ -62,13 +62,22 @@ describe('<MoreOptions />', () => {
                 />,
             )
 
-            const trigger = screen.getByLabelText('Actions for test-shop')
-            await user.click(trigger)
+            await user.click(
+                screen.getByRole('button', { name: 'Actions for test-shop' }),
+            )
 
-            expect(screen.getAllByText('Edit').length).toBeGreaterThan(0)
-            expect(screen.getAllByText('Send now').length).toBeGreaterThan(0)
-            expect(screen.getAllByText('Duplicate').length).toBeGreaterThan(0)
-            expect(screen.getAllByText('Delete').length).toBeGreaterThan(0)
+            expect(
+                await screen.findByRole('menuitem', { name: /Edit/ }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('menuitem', { name: /Send now/ }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('menuitem', { name: /Duplicate/ }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('menuitem', { name: /Delete/ }),
+            ).toBeInTheDocument()
         })
 
         it('should show Edit, Duplicate and Cancel options for Scheduled state', async () => {
@@ -80,12 +89,19 @@ describe('<MoreOptions />', () => {
                 />,
             )
 
-            const trigger = screen.getByLabelText('Actions for test-shop')
-            await user.click(trigger)
+            await user.click(
+                screen.getByRole('button', { name: 'Actions for test-shop' }),
+            )
 
-            expect(screen.getAllByText('Edit').length).toBeGreaterThan(0)
-            expect(screen.getAllByText('Duplicate').length).toBeGreaterThan(0)
-            expect(screen.getAllByText('Cancel').length).toBeGreaterThan(0)
+            expect(
+                await screen.findByRole('menuitem', { name: /Edit/ }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('menuitem', { name: /Duplicate/ }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('menuitem', { name: /Cancel/ }),
+            ).toBeInTheDocument()
         })
 
         it('should show Duplicate, Pause, and Cancel options for Active state', async () => {
@@ -97,12 +113,19 @@ describe('<MoreOptions />', () => {
                 />,
             )
 
-            const trigger = screen.getByLabelText('Actions for test-shop')
-            await user.click(trigger)
+            await user.click(
+                screen.getByRole('button', { name: 'Actions for test-shop' }),
+            )
 
-            expect(screen.getAllByText('Duplicate').length).toBeGreaterThan(0)
-            expect(screen.getAllByText('Pause').length).toBeGreaterThan(0)
-            expect(screen.getAllByText('Cancel').length).toBeGreaterThan(0)
+            expect(
+                await screen.findByRole('menuitem', { name: /Duplicate/ }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('menuitem', { name: /Pause/ }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('menuitem', { name: /Cancel/ }),
+            ).toBeInTheDocument()
         })
 
         it('should show Resume and Cancel options for Paused state', async () => {
@@ -114,11 +137,16 @@ describe('<MoreOptions />', () => {
                 />,
             )
 
-            const trigger = screen.getByLabelText('Actions for test-shop')
-            await user.click(trigger)
+            await user.click(
+                screen.getByRole('button', { name: 'Actions for test-shop' }),
+            )
 
-            expect(screen.getAllByText('Resume').length).toBeGreaterThan(0)
-            expect(screen.getAllByText('Cancel').length).toBeGreaterThan(0)
+            expect(
+                await screen.findByRole('menuitem', { name: /Resume/ }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('menuitem', { name: /Cancel/ }),
+            ).toBeInTheDocument()
         })
 
         it('should show only Duplicate option for Canceled state', async () => {
@@ -130,13 +158,22 @@ describe('<MoreOptions />', () => {
                 />,
             )
 
-            const trigger = screen.getByLabelText('Actions for test-shop')
-            await user.click(trigger)
+            await user.click(
+                screen.getByRole('button', { name: 'Actions for test-shop' }),
+            )
 
-            expect(screen.getAllByText('Duplicate').length).toBeGreaterThan(0)
-            expect(screen.queryByText('Edit')).not.toBeInTheDocument()
-            expect(screen.queryByText('Send now')).not.toBeInTheDocument()
-            expect(screen.queryByText('Delete')).not.toBeInTheDocument()
+            expect(
+                await screen.findByRole('menuitem', { name: /Duplicate/ }),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByRole('menuitem', { name: /Edit/ }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('menuitem', { name: /Send now/ }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('menuitem', { name: /Delete/ }),
+            ).not.toBeInTheDocument()
         })
 
         it('should show only Duplicate option for Sent state', async () => {
@@ -148,13 +185,22 @@ describe('<MoreOptions />', () => {
                 />,
             )
 
-            const trigger = screen.getByLabelText('Actions for test-shop')
-            await user.click(trigger)
+            await user.click(
+                screen.getByRole('button', { name: 'Actions for test-shop' }),
+            )
 
-            expect(screen.getAllByText('Duplicate').length).toBeGreaterThan(0)
-            expect(screen.queryByText('Edit')).not.toBeInTheDocument()
-            expect(screen.queryByText('Send now')).not.toBeInTheDocument()
-            expect(screen.queryByText('Delete')).not.toBeInTheDocument()
+            expect(
+                await screen.findByRole('menuitem', { name: /Duplicate/ }),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByRole('menuitem', { name: /Edit/ }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('menuitem', { name: /Send now/ }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('menuitem', { name: /Delete/ }),
+            ).not.toBeInTheDocument()
         })
     })
 
@@ -169,18 +215,12 @@ describe('<MoreOptions />', () => {
                 />,
             )
 
-            const trigger = screen.getByLabelText('Actions for test-shop')
-            await user.click(trigger)
-
-            const sendOptions = screen.getAllByText('Send now')
-            const sendOption = sendOptions.find(
-                (el) =>
-                    el.closest('[role="option"]') ||
-                    el.closest('.ui-text-text-d239'),
+            await user.click(
+                screen.getByRole('button', { name: 'Actions for test-shop' }),
             )
-            if (sendOption) {
-                await user.click(sendOption)
-            }
+            await user.click(
+                await screen.findByRole('menuitem', { name: /Send now/ }),
+            )
 
             expect(handleSendClick).toHaveBeenCalledTimes(1)
         })
@@ -189,18 +229,12 @@ describe('<MoreOptions />', () => {
             const user = userEvent.setup()
             render(<MoreOptions {...defaultProps} />)
 
-            const trigger = screen.getByLabelText('Actions for test-shop')
-            await user.click(trigger)
-
-            const editOptions = screen.getAllByText('Edit')
-            const editListItem = editOptions.find(
-                (el) =>
-                    el.closest('[role="option"]') ||
-                    el.closest('.ui-text-text-d239'),
+            await user.click(
+                screen.getByRole('button', { name: 'Actions for test-shop' }),
             )
-            if (editListItem) {
-                await user.click(editListItem)
-            }
+            await user.click(
+                await screen.findByRole('menuitem', { name: /Edit/ }),
+            )
 
             expect(mockHistoryPush).toHaveBeenCalledWith(
                 '/app/ai-journey/test-shop/campaign/setup/journey-123',
@@ -217,18 +251,12 @@ describe('<MoreOptions />', () => {
                 />,
             )
 
-            const trigger = screen.getByLabelText('Actions for test-shop')
-            await user.click(trigger)
-
-            const deleteOptions = screen.getAllByText('Delete')
-            const deleteListItem = deleteOptions.find(
-                (el) =>
-                    el.closest('[role="option"]') ||
-                    el.closest('.ui-text-text-d239'),
+            await user.click(
+                screen.getByRole('button', { name: 'Actions for test-shop' }),
             )
-            if (deleteListItem) {
-                await user.click(deleteListItem)
-            }
+            await user.click(
+                await screen.findByRole('menuitem', { name: /Delete/ }),
+            )
 
             expect(handleRemoveClick).toHaveBeenCalledTimes(1)
         })
@@ -243,18 +271,12 @@ describe('<MoreOptions />', () => {
                 />,
             )
 
-            const trigger = screen.getByLabelText('Actions for test-shop')
-            await user.click(trigger)
-
-            const duplicateOptions = screen.getAllByText('Duplicate')
-            const duplicateListItem = duplicateOptions.find(
-                (el) =>
-                    el.closest('[role="option"]') ||
-                    el.closest('.ui-text-text-d239'),
+            await user.click(
+                screen.getByRole('button', { name: 'Actions for test-shop' }),
             )
-            if (duplicateListItem) {
-                await user.click(duplicateListItem)
-            }
+            await user.click(
+                await screen.findByRole('menuitem', { name: /Duplicate/ }),
+            )
 
             expect(handleDuplicateClick).toHaveBeenCalledTimes(1)
         })
@@ -270,18 +292,12 @@ describe('<MoreOptions />', () => {
                 />,
             )
 
-            const trigger = screen.getByLabelText('Actions for test-shop')
-            await user.click(trigger)
-
-            const cancelOptions = screen.getAllByText('Cancel')
-            const cancelListItem = cancelOptions.find(
-                (el) =>
-                    el.closest('[role="option"]') ||
-                    el.closest('.ui-text-text-d239'),
+            await user.click(
+                screen.getByRole('button', { name: 'Actions for test-shop' }),
             )
-            if (cancelListItem) {
-                await user.click(cancelListItem)
-            }
+            await user.click(
+                await screen.findByRole('menuitem', { name: /Cancel/ }),
+            )
 
             expect(handleCancelClick).toHaveBeenCalledTimes(1)
         })
@@ -297,18 +313,12 @@ describe('<MoreOptions />', () => {
                 />,
             )
 
-            const trigger = screen.getByLabelText('Actions for test-shop')
-            await user.click(trigger)
-
-            const pauseOptions = screen.getAllByText('Pause')
-            const pauseListItem = pauseOptions.find(
-                (el) =>
-                    el.closest('[role="option"]') ||
-                    el.closest('.ui-text-text-d239'),
+            await user.click(
+                screen.getByRole('button', { name: 'Actions for test-shop' }),
             )
-            if (pauseListItem) {
-                await user.click(pauseListItem)
-            }
+            await user.click(
+                await screen.findByRole('menuitem', { name: /Pause/ }),
+            )
 
             expect(handleChangeStatus).toHaveBeenCalledWith('paused')
         })
@@ -324,18 +334,12 @@ describe('<MoreOptions />', () => {
                 />,
             )
 
-            const trigger = screen.getByLabelText('Actions for test-shop')
-            await user.click(trigger)
-
-            const resumeOptions = screen.getAllByText('Resume')
-            const resumeListItem = resumeOptions.find(
-                (el) =>
-                    el.closest('[role="option"]') ||
-                    el.closest('.ui-text-text-d239'),
+            await user.click(
+                screen.getByRole('button', { name: 'Actions for test-shop' }),
             )
-            if (resumeListItem) {
-                await user.click(resumeListItem)
-            }
+            await user.click(
+                await screen.findByRole('menuitem', { name: /Resume/ }),
+            )
 
             expect(handleChangeStatus).toHaveBeenCalledWith('active')
         })
@@ -353,10 +357,13 @@ describe('<MoreOptions />', () => {
                 />,
             )
 
-            const trigger = screen.getByLabelText('Actions for test-shop')
-            await user.click(trigger)
+            await user.click(
+                screen.getByRole('button', { name: 'Actions for test-shop' }),
+            )
 
-            expect(screen.getAllByText('Send now').length).toBeGreaterThan(0)
+            expect(
+                await screen.findByRole('menuitem', { name: /Send now/ }),
+            ).toBeInTheDocument()
         })
 
         it('should not show Send now option when feature flag is disabled and user is not impersonated', async () => {
@@ -370,13 +377,22 @@ describe('<MoreOptions />', () => {
                 />,
             )
 
-            const trigger = screen.getByLabelText('Actions for test-shop')
-            await user.click(trigger)
+            await user.click(
+                screen.getByRole('button', { name: 'Actions for test-shop' }),
+            )
 
-            expect(screen.queryByText('Send now')).not.toBeInTheDocument()
-            expect(screen.getAllByText('Edit').length).toBeGreaterThan(0)
-            expect(screen.getAllByText('Duplicate').length).toBeGreaterThan(0)
-            expect(screen.getAllByText('Delete').length).toBeGreaterThan(0)
+            expect(
+                await screen.findByRole('menuitem', { name: /Edit/ }),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByRole('menuitem', { name: /Send now/ }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.getByRole('menuitem', { name: /Duplicate/ }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('menuitem', { name: /Delete/ }),
+            ).toBeInTheDocument()
         })
 
         it('should show Send now option when user is impersonated even if feature flag is disabled', async () => {
@@ -391,10 +407,13 @@ describe('<MoreOptions />', () => {
                 />,
             )
 
-            const trigger = screen.getByLabelText('Actions for test-shop')
-            await user.click(trigger)
+            await user.click(
+                screen.getByRole('button', { name: 'Actions for test-shop' }),
+            )
 
-            expect(screen.getAllByText('Send now').length).toBeGreaterThan(0)
+            expect(
+                await screen.findByRole('menuitem', { name: /Send now/ }),
+            ).toBeInTheDocument()
         })
 
         it('should not show Send now option when campaign has no included audiences', async () => {
@@ -407,13 +426,22 @@ describe('<MoreOptions />', () => {
                 />,
             )
 
-            const trigger = screen.getByLabelText('Actions for test-shop')
-            await user.click(trigger)
+            await user.click(
+                screen.getByRole('button', { name: 'Actions for test-shop' }),
+            )
 
-            expect(screen.queryByText('Send now')).not.toBeInTheDocument()
-            expect(screen.getAllByText('Edit').length).toBeGreaterThan(0)
-            expect(screen.getAllByText('Duplicate').length).toBeGreaterThan(0)
-            expect(screen.getAllByText('Delete').length).toBeGreaterThan(0)
+            expect(
+                await screen.findByRole('menuitem', { name: /Edit/ }),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByRole('menuitem', { name: /Send now/ }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.getByRole('menuitem', { name: /Duplicate/ }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('menuitem', { name: /Delete/ }),
+            ).toBeInTheDocument()
         })
 
         it('should show Send now option when campaign has included audiences', async () => {
@@ -426,10 +454,13 @@ describe('<MoreOptions />', () => {
                 />,
             )
 
-            const trigger = screen.getByLabelText('Actions for test-shop')
-            await user.click(trigger)
+            await user.click(
+                screen.getByRole('button', { name: 'Actions for test-shop' }),
+            )
 
-            expect(screen.getAllByText('Send now').length).toBeGreaterThan(0)
+            expect(
+                await screen.findByRole('menuitem', { name: /Send now/ }),
+            ).toBeInTheDocument()
         })
     })
 })

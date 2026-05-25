@@ -216,13 +216,9 @@ describe('CampaignsTable', () => {
         )
         await act(() => user.click(moreOptionsButtons[0]))
 
-        const duplicateOption = screen
-            .getAllByText('Duplicate')
-            .find((el) => el.closest('[role="option"]'))
-
-        if (duplicateOption) {
-            await act(() => user.click(duplicateOption))
-        }
+        await act(() =>
+            user.click(screen.getByRole('menuitem', { name: /Duplicate/ })),
+        )
 
         await waitFor(() => {
             expect(mockGetJourneyData).toHaveBeenCalledWith('1')
@@ -348,13 +344,9 @@ describe('CampaignsTable', () => {
         )
         await act(() => user.click(moreOptionsButton))
 
-        const cancelOption = screen
-            .getAllByText('Cancel')
-            .find((el) => el.closest('[role="option"]'))
-
-        if (cancelOption) {
-            await act(() => user.click(cancelOption))
-        }
+        await act(() =>
+            user.click(screen.getByRole('menuitem', { name: /Cancel/ })),
+        )
 
         await waitFor(() => {
             expect(screen.getByText('Cancel Campaign?')).toBeInTheDocument()
@@ -421,13 +413,9 @@ describe('CampaignsTable', () => {
         )[0]
         await act(() => user.click(moreOptionsButton))
 
-        const sendOption = screen
-            .getAllByText('Send now')
-            .find((el) => el.closest('[role="option"]'))
-
-        if (sendOption) {
-            await act(() => user.click(sendOption))
-        }
+        await act(() =>
+            user.click(screen.getByRole('menuitem', { name: /Send now/ })),
+        )
 
         await waitFor(() => {
             expect(screen.getByText('Send campaign now?')).toBeInTheDocument()
@@ -464,13 +452,9 @@ describe('CampaignsTable', () => {
         )[0]
         await act(() => user.click(moreOptionsButton))
 
-        const sendOption = screen
-            .getAllByText('Send now')
-            .find((el) => el.closest('[role="option"]'))
-
-        if (sendOption) {
-            await act(() => user.click(sendOption))
-        }
+        await act(() =>
+            user.click(screen.getByRole('menuitem', { name: /Send now/ })),
+        )
 
         await waitFor(() => {
             expect(screen.getByText('Send campaign now?')).toBeInTheDocument()

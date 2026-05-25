@@ -3,7 +3,7 @@ import { useCallback, useMemo } from 'react'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useHistory } from 'react-router-dom'
 
-import { ListItem, Select, SelectTrigger } from '@gorgias/axiom'
+import { Button, Menu, MenuItem } from '@gorgias/axiom'
 import { JourneyCampaignStateEnum } from '@gorgias/convert-client'
 
 import {
@@ -79,8 +79,8 @@ export const MoreOptions = ({
     )
 
     const handleAction = useCallback(
-        (option: OptionEntry) => {
-            switch (option.id) {
+        (key: string) => {
+            switch (key) {
                 case Options.Send:
                     handleSendClick()
                     break
@@ -104,8 +104,6 @@ export const MoreOptions = ({
                 case Options.Delete:
                     handleRemoveClick()
                     break
-                default:
-                    break
             }
         },
         [
@@ -120,7 +118,7 @@ export const MoreOptions = ({
         ],
     )
 
-    const options = useMemo(() => {
+    const options = useMemo<OptionEntry[]>(() => {
         const availableOptions = CAMPAIGN_STATE_TO_FIELDS[state] || []
         return availableOptions
             .map((option) => {
@@ -186,31 +184,35 @@ export const MoreOptions = ({
     }
 
     return (
-        <div className={css.statusRight} style={{ position: 'relative' }}>
-            <Select
-                data-name="select-field"
-                placement="bottom right"
+        <div className={css.statusRight}>
+            <Menu
                 aria-label={`Actions for ${shopName}`}
-                trigger={({ ref }) => (
-                    <SelectTrigger ref={ref}>
-                        <div className={css.menuButton}>
-                            <i className="material-icons-outlined">
+                placement="bottom right"
+                trigger={
+                    <Button
+                        variant="tertiary"
+                        icon={
+                            <i
+                                className="material-icons-outlined"
+                                style={{ fontSize: 20 }}
+                            >
                                 more_horiz
                             </i>
-                        </div>
-                    </SelectTrigger>
-                )}
+                        }
+                        aria-label={`Actions for ${shopName}`}
+                    />
+                }
                 items={options}
-                onSelect={handleAction}
+                onAction={(key) => handleAction(key as string)}
             >
                 {(option) => (
-                    <ListItem
+                    <MenuItem
                         id={option.id}
                         leadingSlot={option.icon}
                         label={option.name}
                     />
                 )}
-            </Select>
+            </Menu>
         </div>
     )
 }
