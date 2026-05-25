@@ -99,7 +99,7 @@ describe('ConnectedChannelsView', () => {
         ;(useShouldShowChatSettingsRevamp as jest.Mock).mockReturnValue({
             shouldShowRevamp: false,
             shouldShowPreviewForRevamp: false,
-            shouldShowRevampWhenAiAgentEnabled: false,
+            shouldShowChatSettingsRevamp: false,
             isLoading: false,
         })
         ;(useApplicationsAutomationSettings as jest.Mock).mockReturnValue({

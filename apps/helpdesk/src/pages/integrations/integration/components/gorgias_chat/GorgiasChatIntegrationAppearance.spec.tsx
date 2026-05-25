@@ -151,8 +151,7 @@ describe('<GorgiasChatIntegrationAppearance />', () => {
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
             isNonAiAgentChat2RevampEnabled: false,
-            shouldShowRevampWhenAiAgentEnabled: false,
-            shouldShowRevampForNonAiAgent: false,
+            shouldShowChatSettingsRevamp: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
@@ -169,8 +168,7 @@ describe('<GorgiasChatIntegrationAppearance />', () => {
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
             isNonAiAgentChat2RevampEnabled: false,
-            shouldShowRevampWhenAiAgentEnabled: false,
-            shouldShowRevampForNonAiAgent: false,
+            shouldShowChatSettingsRevamp: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
@@ -202,8 +200,7 @@ describe('<GorgiasChatIntegrationAppearance />', () => {
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
             isNonAiAgentChat2RevampEnabled: false,
-            shouldShowRevampWhenAiAgentEnabled: false,
-            shouldShowRevampForNonAiAgent: false,
+            shouldShowChatSettingsRevamp: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: true,
@@ -226,14 +223,13 @@ describe('<GorgiasChatIntegrationAppearance />', () => {
         expect(screen.queryByText('Chat title')).not.toBeInTheDocument()
     })
 
-    it('should render the legacy component when shouldShowRevampWhenAiAgentEnabled is false', () => {
+    it('should render the legacy component when shouldShowChatSettingsRevamp is false', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             isChatSettingsRevampEnabled: false,
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
             isNonAiAgentChat2RevampEnabled: false,
-            shouldShowRevampWhenAiAgentEnabled: false,
-            shouldShowRevampForNonAiAgent: false,
+            shouldShowChatSettingsRevamp: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
@@ -255,14 +251,13 @@ describe('<GorgiasChatIntegrationAppearance />', () => {
         expect(screen.getByText('Chat title')).toBeInTheDocument()
     })
 
-    it('should render the new revamp component when shouldShowRevampWhenAiAgentEnabled is true', () => {
+    it('should render the new revamp component when shouldShowChatSettingsRevamp is true', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             isChatSettingsRevampEnabled: true,
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
             isNonAiAgentChat2RevampEnabled: false,
-            shouldShowRevampWhenAiAgentEnabled: true,
-            shouldShowRevampForNonAiAgent: false,
+            shouldShowChatSettingsRevamp: true,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,

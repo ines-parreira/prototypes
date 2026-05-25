@@ -15,7 +15,7 @@ export const GorgiasChatIntegrationPreferences = (props: Props) => {
     const { storeIntegration } = useStoreIntegration(props.integration)
     const chatId = props.integration.get('id') as number | undefined
 
-    const { shouldShowRevampWhenAiAgentEnabled, isLoading: isRevampLoading } =
+    const { shouldShowChatSettingsRevamp, isLoading: isRevampLoading } =
         useShouldShowChatSettingsRevamp(storeIntegration, chatId)
 
     const { isAiAgentEnabled } = useIsAiAgentEnabled(storeIntegration, chatId)
@@ -28,7 +28,7 @@ export const GorgiasChatIntegrationPreferences = (props: Props) => {
         return <ChatSettingsPreferencesSkeleton />
     }
 
-    if (shouldShowRevampWhenAiAgentEnabled) {
+    if (shouldShowChatSettingsRevamp) {
         return (
             <GorgiasChatIntegrationPreferencesRevamp
                 {...props}

@@ -13,14 +13,14 @@ export function GorgiasAutomateChatIntegration(props: Props) {
     const { storeIntegration } = useStoreIntegration(props.integration)
     const chatId = props.integration.get('id') as number | undefined
 
-    const { shouldShowRevampWhenAiAgentEnabled, isLoading: isRevampLoading } =
+    const { shouldShowChatSettingsRevamp, isLoading: isRevampLoading } =
         useShouldShowChatSettingsRevamp(storeIntegration, chatId)
 
     if (isRevampLoading || !chatId) {
         return <ChatSettingsAutomationSkeleton />
     }
 
-    if (shouldShowRevampWhenAiAgentEnabled) {
+    if (shouldShowChatSettingsRevamp) {
         return <GorgiasAutomateChatIntegrationRevamp {...props} />
     }
 

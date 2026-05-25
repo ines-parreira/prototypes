@@ -98,8 +98,7 @@ describe('FlowsSettings', () => {
             isLoading: false,
         })
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
-            shouldShowRevampWhenAiAgentEnabled: false,
-            shouldShowRevampForNonAiAgent: false,
+            shouldShowChatSettingsRevamp: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,

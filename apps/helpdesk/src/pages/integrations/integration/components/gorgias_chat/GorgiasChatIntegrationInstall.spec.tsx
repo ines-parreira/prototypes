@@ -68,8 +68,7 @@ describe('<GorgiasChatIntegrationInstall />', () => {
         })
 
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
-            shouldShowRevampWhenAiAgentEnabled: false,
-            shouldShowRevampForNonAiAgent: false,
+            shouldShowChatSettingsRevamp: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
@@ -82,8 +81,7 @@ describe('<GorgiasChatIntegrationInstall />', () => {
 
     it('should render the skeleton while the revamp hooks are loading', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
-            shouldShowRevampWhenAiAgentEnabled: false,
-            shouldShowRevampForNonAiAgent: false,
+            shouldShowChatSettingsRevamp: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: true,
@@ -117,7 +115,7 @@ describe('<GorgiasChatIntegrationInstall />', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('should render the legacy component when shouldShowRevampWhenAiAgentEnabled is false', () => {
+    it('should render the legacy component when shouldShowChatSettingsRevamp is false', () => {
         render(<GorgiasChatIntegrationInstall {...minProps} />)
 
         expect(screen.getByTestId('legacy-install')).toBeInTheDocument()
@@ -126,10 +124,9 @@ describe('<GorgiasChatIntegrationInstall />', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('should render the new revamp component when shouldShowRevampWhenAiAgentEnabled is true', () => {
+    it('should render the new revamp component when shouldShowChatSettingsRevamp is true', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
-            shouldShowRevampWhenAiAgentEnabled: true,
-            shouldShowRevampForNonAiAgent: false,
+            shouldShowChatSettingsRevamp: true,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,

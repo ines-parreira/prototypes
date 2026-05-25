@@ -14,14 +14,14 @@ type Props = {
 export const GorgiasChatTranslateText = ({ integration }: Props) => {
     const { storeIntegration } = useStoreIntegration(integration)
     const chatId = integration.get('id') as number | undefined
-    const { shouldShowRevampWhenAiAgentEnabled, isLoading } =
+    const { shouldShowChatSettingsRevamp, isLoading } =
         useShouldShowChatSettingsRevamp(storeIntegration, chatId)
 
     if (isLoading || !chatId) {
         return <ChatSettingsTranslateTextSkeleton />
     }
 
-    if (shouldShowRevampWhenAiAgentEnabled) {
+    if (shouldShowChatSettingsRevamp) {
         return (
             <GorgiasChatIntegrationTranslateTextRevamp
                 integration={integration}

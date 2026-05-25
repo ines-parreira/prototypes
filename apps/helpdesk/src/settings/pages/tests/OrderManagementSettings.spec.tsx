@@ -167,8 +167,7 @@ describe('OrderManagementSettings', () => {
         })
         useSelfServiceChannelsMock.mockReturnValue([])
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
-            shouldShowRevampWhenAiAgentEnabled: false,
-            shouldShowRevampForNonAiAgent: false,
+            shouldShowChatSettingsRevamp: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
@@ -233,8 +232,7 @@ describe('OrderManagementSettings', () => {
     describe('revamp header', () => {
         beforeEach(() => {
             mockUseShouldShowChatSettingsRevamp.mockReturnValue({
-                shouldShowRevampWhenAiAgentEnabled: true,
-                shouldShowRevampForNonAiAgent: false,
+                shouldShowChatSettingsRevamp: true,
                 shouldShowFlowsScreensRevamp: false,
                 shouldShowOrderManagementScreensRevamp: true,
                 isLoading: false,

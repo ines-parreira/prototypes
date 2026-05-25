@@ -72,8 +72,7 @@ describe('<GorgiasChatIntegrationLanguages />', () => {
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
             isNonAiAgentChat2RevampEnabled: false,
-            shouldShowRevampWhenAiAgentEnabled: false,
-            shouldShowRevampForNonAiAgent: false,
+            shouldShowChatSettingsRevamp: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
@@ -86,8 +85,7 @@ describe('<GorgiasChatIntegrationLanguages />', () => {
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
             isNonAiAgentChat2RevampEnabled: false,
-            shouldShowRevampWhenAiAgentEnabled: false,
-            shouldShowRevampForNonAiAgent: false,
+            shouldShowChatSettingsRevamp: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: true,
@@ -113,21 +111,20 @@ describe('<GorgiasChatIntegrationLanguages />', () => {
         expect(screen.queryByTestId('revamp-languages')).not.toBeInTheDocument()
     })
 
-    it('should render the legacy component when shouldShowRevampWhenAiAgentEnabled is false', () => {
+    it('should render the legacy component when shouldShowChatSettingsRevamp is false', () => {
         render(<GorgiasChatIntegrationLanguages {...minProps} />)
 
         expect(screen.getByTestId('legacy-languages')).toBeInTheDocument()
         expect(screen.queryByTestId('revamp-languages')).not.toBeInTheDocument()
     })
 
-    it('should render the revamp component when shouldShowRevampWhenAiAgentEnabled is true', () => {
+    it('should render the revamp component when shouldShowChatSettingsRevamp is true', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             isChatSettingsRevampEnabled: true,
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
             isNonAiAgentChat2RevampEnabled: false,
-            shouldShowRevampWhenAiAgentEnabled: true,
-            shouldShowRevampForNonAiAgent: false,
+            shouldShowChatSettingsRevamp: true,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
