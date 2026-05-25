@@ -46,4 +46,21 @@ describe('WhyWeCreatedThisSkillCard', () => {
             screen.getByText('Generated from 5 guidances'),
         ).toBeInTheDocument()
     })
+
+    it('hides the generated from label and tooltip when there are no guidances', () => {
+        render(
+            <ThemeProvider>
+                <WhyWeCreatedThisSkillCard
+                    recommendation="Automate refund requests."
+                    estimatedImpact="+6%"
+                    guidanceCount={0}
+                />
+            </ThemeProvider>,
+        )
+
+        expect(screen.queryByText(/Generated from/i)).not.toBeInTheDocument()
+        expect(
+            screen.queryByLabelText('Why we created this skill info'),
+        ).not.toBeInTheDocument()
+    })
 })
