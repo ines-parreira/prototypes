@@ -18,6 +18,6 @@ export function getAddressParts(address: Address): string[] {
         address.address1 ? `${address.address1},` : null,
         address.address2 ? `${address.address2},` : null,
         cityLine,
-        `${address.country_code ?? address.country ?? ''} ${address.zip ?? ''}`.trim(),
+        `${address.country ?? address.country_code ?? ''} ${address.zip ?? ''}`.trim(),
     ].filter(Boolean) as string[]
 }
