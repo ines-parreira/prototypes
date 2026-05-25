@@ -3,7 +3,7 @@ import { assumeMock, renderHook } from '@repo/testing'
 import useStatsMetricTrend, {
     fetchStatsMetricTrend,
 } from 'domains/reporting/hooks/useStatsMetricTrend'
-import { dynamicSupportAgentAutomatedInteractionsQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
+import { supportAgentAutomatedInteractionsValueQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
@@ -53,11 +53,11 @@ describe('useAiAgentSupportAgentAutomatedInteractionsTrend', () => {
         renderHookUnderTest()
 
         expect(mockUseStatsMetricTrend).toHaveBeenCalledWith(
-            dynamicSupportAgentAutomatedInteractionsQueryFactoryV2({
+            supportAgentAutomatedInteractionsValueQueryFactoryV2({
                 filters: statsFilters,
                 timezone: userTimezone,
             }),
-            dynamicSupportAgentAutomatedInteractionsQueryFactoryV2({
+            supportAgentAutomatedInteractionsValueQueryFactoryV2({
                 filters: {
                     ...statsFilters,
                     period: getPreviousPeriod(statsFilters.period),
@@ -133,11 +133,11 @@ describe('fetchAiAgentSupportAgentAutomatedInteractionsTrend', () => {
         )
 
         expect(mockFetchStatsMetricTrend).toHaveBeenCalledWith(
-            dynamicSupportAgentAutomatedInteractionsQueryFactoryV2({
+            supportAgentAutomatedInteractionsValueQueryFactoryV2({
                 filters: statsFilters,
                 timezone: userTimezone,
             }),
-            dynamicSupportAgentAutomatedInteractionsQueryFactoryV2({
+            supportAgentAutomatedInteractionsValueQueryFactoryV2({
                 filters: {
                     ...statsFilters,
                     period: getPreviousPeriod(statsFilters.period),

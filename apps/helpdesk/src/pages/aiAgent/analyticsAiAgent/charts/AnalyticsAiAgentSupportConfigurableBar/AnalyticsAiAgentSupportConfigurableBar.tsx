@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { dynamicSupportAgentAutomatedInteractionsQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
+import { supportAgentAutomatedInteractionsBreakdownQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
 import { dynamicSupportAgentDecreaseInFRTQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentDecreaseInFirstResponseTime'
 import { dynamicSupportAgentTimeSavedQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentTimeSaved'
 import type {
@@ -29,7 +29,7 @@ export const SUPPORT_BAR_CHART_METRICS: BarChartMetricConfig[] = [
         name: 'Automated interactions',
         metricFormat: 'decimal' as const,
         interpretAs: 'more-is-better' as const,
-        queryFactory: dynamicSupportAgentAutomatedInteractionsQueryFactoryV2,
+        queryFactory: supportAgentAutomatedInteractionsBreakdownQueryFactoryV2,
         dimensions: ['channel', 'storeIntegrationId', 'aiIntentCustomField'],
     },
     {
@@ -53,7 +53,7 @@ export const SUPPORT_BAR_CHART_METRICS: BarChartMetricConfig[] = [
         name: 'Cost saved',
         metricFormat: 'currency-precision-1' as const,
         interpretAs: 'more-is-better' as const,
-        queryFactory: dynamicSupportAgentAutomatedInteractionsQueryFactoryV2,
+        queryFactory: supportAgentAutomatedInteractionsBreakdownQueryFactoryV2,
         dimensions: ['channel', 'storeIntegrationId', 'aiIntentCustomField'],
         valueTransform: (v, extra) =>
             v !== null && extra?.costSavedPerInteraction != null

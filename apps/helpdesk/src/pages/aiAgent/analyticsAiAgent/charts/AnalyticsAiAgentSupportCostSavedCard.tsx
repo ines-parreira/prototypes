@@ -1,7 +1,7 @@
 import { TrendCard } from '@repo/reporting'
 
 import { useReportingTrendCardProps } from 'domains/reporting/hooks/useReportingTrendCardProps'
-import { dynamicSupportAgentAutomatedInteractionsQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
+import { supportAgentAutomatedInteractionsBreakdownQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
 import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
@@ -24,7 +24,7 @@ export const AnalyticsAiAgentSupportCostSavedCard = ({
         dashboard,
         timeSeriesView: {
             queryFactory:
-                dynamicSupportAgentAutomatedInteractionsQueryFactoryV2,
+                supportAgentAutomatedInteractionsBreakdownQueryFactoryV2,
             valueTransform: (value: number | null) =>
                 costSavedPerInteraction * (value ?? 0),
         },

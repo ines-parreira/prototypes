@@ -31,7 +31,7 @@ jest.mock('domains/reporting/hooks/useStatsMetricPerDimension', () => ({
 jest.mock(
     'domains/reporting/models/scopes/aiAgentAutomatedInteractions',
     () => ({
-        aiAgentAutomatedInteractionsPerIntentQueryFactoryV2: jest.fn(),
+        allAgentsAutomatedInteractionsBreakdownQueryFactoryV2: jest.fn(),
     }),
 )
 jest.mock(
@@ -58,7 +58,7 @@ const mockUseMoneySaved = jest.requireMock(
 
 const mockQueryFactory = jest.requireMock(
     'domains/reporting/models/scopes/aiAgentAutomatedInteractions',
-).aiAgentAutomatedInteractionsPerIntentQueryFactoryV2 as jest.Mock
+).allAgentsAutomatedInteractionsBreakdownQueryFactoryV2 as jest.Mock
 
 const MOCK_STATS_FILTERS = {
     period: {
@@ -100,6 +100,7 @@ describe('useCostSavedPerIntent', () => {
         expect(mockQueryFactory).toHaveBeenCalledWith({
             filters: MOCK_STATS_FILTERS,
             timezone: MOCK_TIMEZONE,
+            dimensions: ['aiIntentCustomField'],
         })
     })
 
@@ -182,6 +183,7 @@ describe('fetchCostSavedPerIntent', () => {
         expect(mockQueryFactory).toHaveBeenCalledWith({
             filters: MOCK_STATS_FILTERS,
             timezone: MOCK_TIMEZONE,
+            dimensions: ['aiIntentCustomField'],
         })
     })
 

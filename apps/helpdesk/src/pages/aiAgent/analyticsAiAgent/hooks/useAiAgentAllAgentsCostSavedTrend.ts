@@ -4,7 +4,7 @@ import type { MetricTrendFetch } from 'domains/reporting/hooks/useMetricTrend'
 import useStatsMetricTrend, {
     fetchStatsMetricTrend,
 } from 'domains/reporting/hooks/useStatsMetricTrend'
-import { dynamicAllAgentsAutomatedInteractionsQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
+import { allAgentsAutomatedInteractionsValueQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import { applyAiAgentFilter } from 'pages/aiAgent/analyticsAiAgent/utils/applyAiAgentFilter'
@@ -22,11 +22,11 @@ export const useAiAgentAllAgentsCostSavedTrend = (
     )
 
     const trend = useStatsMetricTrend(
-        dynamicAllAgentsAutomatedInteractionsQueryFactoryV2({
+        allAgentsAutomatedInteractionsValueQueryFactoryV2({
             filters: filteredFilters,
             timezone,
         }),
-        dynamicAllAgentsAutomatedInteractionsQueryFactoryV2({
+        allAgentsAutomatedInteractionsValueQueryFactoryV2({
             filters: {
                 ...filteredFilters,
                 period: getPreviousPeriod(filteredFilters.period),
@@ -50,11 +50,11 @@ export const fetchAiAgentAllAgentsCostSavedTrend: MetricTrendFetch = async (
     const filteredFilters = applyAiAgentFilter(statsFilters, aiAgentUserId)
 
     const automatedInteractionTrend = await fetchStatsMetricTrend(
-        dynamicAllAgentsAutomatedInteractionsQueryFactoryV2({
+        allAgentsAutomatedInteractionsValueQueryFactoryV2({
             filters: filteredFilters,
             timezone: userTimezone,
         }),
-        dynamicAllAgentsAutomatedInteractionsQueryFactoryV2({
+        allAgentsAutomatedInteractionsValueQueryFactoryV2({
             filters: {
                 ...filteredFilters,
                 period: getPreviousPeriod(filteredFilters.period),

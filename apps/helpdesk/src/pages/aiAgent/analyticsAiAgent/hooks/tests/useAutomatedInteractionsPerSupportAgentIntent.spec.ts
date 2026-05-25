@@ -12,7 +12,7 @@ jest.mock('domains/reporting/hooks/useStatsMetricPerDimension', () => ({
 jest.mock(
     'domains/reporting/models/scopes/aiAgentAutomatedInteractions',
     () => ({
-        aiSupportAgentAutomatedInteractionsPerIntentQueryFactoryV2: jest.fn(),
+        supportAgentAutomatedInteractionsBreakdownQueryFactoryV2: jest.fn(),
     }),
 )
 
@@ -26,7 +26,7 @@ const mockFetchStatsMetricPerDimension = jest.requireMock(
 
 const mockQueryFactory = jest.requireMock(
     'domains/reporting/models/scopes/aiAgentAutomatedInteractions',
-).aiSupportAgentAutomatedInteractionsPerIntentQueryFactoryV2 as jest.Mock
+).supportAgentAutomatedInteractionsBreakdownQueryFactoryV2 as jest.Mock
 
 const MOCK_STATS_FILTERS = {
     period: {
@@ -70,6 +70,7 @@ describe('useAutomatedInteractionsPerSupportAgentIntent', () => {
         expect(mockQueryFactory).toHaveBeenCalledWith({
             filters: MOCK_STATS_FILTERS,
             timezone: MOCK_TIMEZONE,
+            dimensions: ['aiIntentCustomField'],
         })
     })
 
@@ -152,6 +153,7 @@ describe('fetchAutomatedInteractionsPerSupportAgentIntent', () => {
         expect(mockQueryFactory).toHaveBeenCalledWith({
             filters: MOCK_STATS_FILTERS,
             timezone: MOCK_TIMEZONE,
+            dimensions: ['aiIntentCustomField'],
         })
     })
 

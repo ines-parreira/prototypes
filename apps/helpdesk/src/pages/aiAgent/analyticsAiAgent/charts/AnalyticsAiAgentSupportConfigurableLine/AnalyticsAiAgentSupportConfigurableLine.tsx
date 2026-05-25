@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { dynamicSupportAgentAutomatedInteractionsTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
+import { supportAgentAutomatedInteractionsTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
 import { dynamicSupportAgentDecreaseInFRTTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentDecreaseInFirstResponseTime'
 import type {
     ChartConfig,
@@ -27,7 +27,7 @@ export const SUPPORT_LINE_CHART_METRICS: LineChartMetricConfig[] = [
         metricFormat: 'decimal' as const,
         interpretAs: 'more-is-better' as const,
         timeSeriesQueryFactory:
-            dynamicSupportAgentAutomatedInteractionsTimeseriesQueryFactoryV2,
+            supportAgentAutomatedInteractionsTimeseriesQueryFactoryV2,
         dimensions: [
             'overall',
             'channel',

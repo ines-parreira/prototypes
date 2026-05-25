@@ -7,22 +7,46 @@ export const METRIC_NAMES = {
         'ai-agent-dynamic-overall-automated-interactions',
     AI_AGENT_DYNAMIC_OVERALL_AUTOMATED_INTERACTIONS_TIMESERIES:
         'ai-agent-dynamic-overall-automated-interactions-timeseries',
-    AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS:
-        'ai-agent-dynamic-shopping-assistant-automated-interactions',
-    AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_TIMESERIES:
-        'ai-agent-dynamic-shopping-assistant-automated-interactions-timeseries',
-    AI_AGENT_DYNAMIC_ALL_AGENTS_AUTOMATED_INTERACTIONS:
-        'ai-agent-dynamic-all-agents-automated-interactions',
-    AI_AGENT_DYNAMIC_ALL_AGENTS_AUTOMATED_INTERACTIONS_TIMESERIES:
-        'ai-agent-dynamic-all-agents-automated-interactions-timeseries',
+    AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_VALUE:
+        'ai-agent-shopping-assistant-automated-interactions-value',
+    AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_BREAKDOWN:
+        'ai-agent-shopping-assistant-automated-interactions-breakdown',
+    AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_BREAKDOWN_PER_CHANNEL:
+        'ai-agent-shopping-assistant-automated-interactions-breakdown-per-channel',
+    AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_BREAKDOWN_PER_STORE:
+        'ai-agent-shopping-assistant-automated-interactions-breakdown-per-store',
+    AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_BREAKDOWN_PER_ENGAGEMENT_TYPE:
+        'ai-agent-shopping-assistant-automated-interactions-breakdown-per-engagement-type',
+    AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_TIMESERIES:
+        'ai-agent-shopping-assistant-automated-interactions-timeseries',
+    AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_TIMESERIES_PER_CHANNEL:
+        'ai-agent-shopping-assistant-automated-interactions-timeseries-per-channel',
+    AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_TIMESERIES_PER_STORE:
+        'ai-agent-shopping-assistant-automated-interactions-timeseries-per-store',
+    AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_TIMESERIES_PER_ENGAGEMENT_TYPE:
+        'ai-agent-shopping-assistant-automated-interactions-timeseries-per-engagement-type',
     AI_AGENT_DYNAMIC_ALL_AGENTS_TIME_SAVED_BY_AGENT:
         'ai-agent-dynamic-all-agents-time-saved-by-agent',
     AI_AGENT_DYNAMIC_ALL_AGENTS_TIME_SAVED_BY_AGENT_TIMESERIES:
         'ai-agent-dynamic-all-agents-time-saved-by-agent-timeseries',
-    AI_AGENT_DYNAMIC_SUPPORT_AGENT_AUTOMATED_INTERACTIONS:
-        'ai-agent-dynamic-support-agent-automated-interactions',
-    AI_AGENT_DYNAMIC_SUPPORT_AGENT_AUTOMATED_INTERACTIONS_TIMESERIES:
-        'ai-agent-dynamic-support-agent-automated-interactions-timeseries',
+    AI_AGENT_SUPPORT_AGENT_AUTOMATED_INTERACTIONS_VALUE:
+        'ai-agent-support-agent-automated-interactions-value',
+    AI_AGENT_SUPPORT_AGENT_AUTOMATED_INTERACTIONS_BREAKDOWN:
+        'ai-agent-support-agent-automated-interactions-breakdown',
+    AI_AGENT_SUPPORT_AGENT_AUTOMATED_INTERACTIONS_BREAKDOWN_PER_CHANNEL:
+        'ai-agent-support-agent-automated-interactions-breakdown-per-channel',
+    AI_AGENT_SUPPORT_AGENT_AUTOMATED_INTERACTIONS_BREAKDOWN_PER_STORE:
+        'ai-agent-support-agent-automated-interactions-breakdown-per-store',
+    AI_AGENT_SUPPORT_AGENT_AUTOMATED_INTERACTIONS_BREAKDOWN_PER_INTENT:
+        'ai-agent-support-agent-automated-interactions-breakdown-per-intent',
+    AI_AGENT_SUPPORT_AGENT_AUTOMATED_INTERACTIONS_TIMESERIES:
+        'ai-agent-support-agent-automated-interactions-timeseries',
+    AI_AGENT_SUPPORT_AGENT_AUTOMATED_INTERACTIONS_TIMESERIES_PER_CHANNEL:
+        'ai-agent-support-agent-automated-interactions-timeseries-per-channel',
+    AI_AGENT_SUPPORT_AGENT_AUTOMATED_INTERACTIONS_TIMESERIES_PER_STORE:
+        'ai-agent-support-agent-automated-interactions-timeseries-per-store',
+    AI_AGENT_SUPPORT_AGENT_AUTOMATED_INTERACTIONS_TIMESERIES_PER_INTENT:
+        'ai-agent-support-agent-automated-interactions-timeseries-per-intent',
     AI_AGENT_DYNAMIC_SUPPORT_AGENT_DECREASE_IN_FRT_TIMESERIES:
         'ai-agent-dynamic-support-agent-decrease-in-frt-timeseries',
     AI_AGENT_DYNAMIC_SUPPORT_AGENT_TIME_SAVED:
@@ -87,32 +111,38 @@ export const METRIC_NAMES = {
     AUTOMATED_INTERACTIONS_PER_FLOWS: 'automated-interactions-per-flows',
     OVERALL_TIME_SAVED_BY_AGENT_PER_FLOWS:
         'overall-time-saved-by-agent-per-flows',
-    AI_AGENT_AUTOMATED_INTERACTIONS_PER_CHANNEL:
-        'ai-agent-automated-interactions-per-channel',
+    AI_AGENT_AUTOMATED_INTERACTIONS_VALUE:
+        'ai-agent-automated-interactions-value',
+    AI_AGENT_AUTOMATED_INTERACTIONS_BREAKDOWN:
+        'ai-agent-automated-interactions-breakdown',
+    AI_AGENT_AUTOMATED_INTERACTIONS_BREAKDOWN_PER_CHANNEL:
+        'ai-agent-automated-interactions-breakdown-per-channel',
+    AI_AGENT_AUTOMATED_INTERACTIONS_BREAKDOWN_PER_STORE:
+        'ai-agent-automated-interactions-breakdown-per-store',
+    AI_AGENT_AUTOMATED_INTERACTIONS_BREAKDOWN_PER_INTENT:
+        'ai-agent-automated-interactions-breakdown-per-intent',
+    AI_AGENT_AUTOMATED_INTERACTIONS_TIMESERIES:
+        'ai-agent-automated-interactions-timeseries',
+    AI_AGENT_AUTOMATED_INTERACTIONS_TIMESERIES_PER_CHANNEL:
+        'ai-agent-automated-interactions-timeseries-per-channel',
+    AI_AGENT_AUTOMATED_INTERACTIONS_TIMESERIES_PER_STORE:
+        'ai-agent-automated-interactions-timeseries-per-store',
+    AI_AGENT_AUTOMATED_INTERACTIONS_TIMESERIES_PER_INTENT:
+        'ai-agent-automated-interactions-timeseries-per-intent',
     AI_AGENT_OVERALL_AUTOMATION_RATE_PER_INTENT:
         'ai-agent-overall-automation-rate-per-intent',
-    AI_AGENT_AUTOMATED_INTERACTIONS_PER_INTENT:
-        'ai-agent-automated-interactions-per-intent',
     AI_AGENT_DYNAMIC_AVERAGE_TIME_SAVED_BY_AGENT:
         'ai-agent-dynamic-average-time-saved-by-agent',
     AI_AGENT_DYNAMIC_AVERAGE_TIME_SAVED_BY_AGENT_TIMESERIES:
         'ai-agent-dynamic-average-time-saved-by-agent-timeseries',
-    AI_AGENT_SALES_AUTOMATED_INTERACTIONS_PER_CHANNEL:
-        'ai-agent-sales-automated-interactions-per-channel',
     AI_AGENT_SALES_HANDOVER_INTERACTIONS_PER_CHANNEL:
         'ai-agent-sales-handover-interactions-per-channel',
     AI_AGENT_SALES_AGENT_TIME_SAVED_PER_CHANNEL:
         'ai-agent-sales-agent-time-saved-per-channel',
     AI_AGENT_SALES_AGENT_DECREASE_IN_FRT_PER_CHANNEL:
         'ai-agent-sales-agent-decrease-in-first-response-time-per-channel',
-    AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_PER_CHANNEL:
-        'ai-agent-shopping-assistant-automated-interactions-per-channel',
     AI_AGENT_SHOPPING_ASSISTANT_HANDOVER_INTERACTIONS_PER_CHANNEL:
         'ai-agent-shopping-assistant-handover-interactions-per-channel',
-    AI_AGENT_SUPPORT_AUTOMATED_INTERACTIONS_PER_CHANNEL:
-        'ai-agent-support-automated-interactions-per-channel',
-    AI_AGENT_SUPPORT_AUTOMATED_INTERACTIONS_PER_INTENT:
-        'ai-agent-support-automated-interactions-per-intent',
     AI_AGENT_SUPPORT_HANDOVER_INTERACTIONS_PER_CHANNEL:
         'ai-agent-support-handover-interactions-per-channel',
     AI_AGENT_SUPPORT_HANDOVER_INTERACTIONS_PER_INTENT:
@@ -336,8 +366,6 @@ export const METRIC_NAMES = {
         'ai-agent-sales-performance-total-sales-per-channel',
     AI_AGENT_SALES_PERFORMANCE_REVENUE_PER_INTERACTION_PER_CHANNEL:
         'ai-agent-sales-performance-revenue-per-interaction-per-channel',
-    AI_AGENT_SALES_PERFORMANCE_AUTOMATED_INTERACTIONS_PER_ENGAGEMENT_TYPE:
-        'ai-agent-sales-performance-automated-interactions-per-engagement-type',
     AI_AGENT_SALES_PERFORMANCE_HANDOVER_INTERACTIONS_PER_ENGAGEMENT_TYPE:
         'ai-agent-sales-performance-handover-interactions-per-engagement-type',
     AI_AGENT_SALES_PERFORMANCE_ORDERS_INFLUENCED_PER_ENGAGEMENT_TYPE:
@@ -1149,7 +1177,6 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AI_AGENT_DYNAMIC_OVERALL_AUTOMATED_INTERACTIONS_TIMESERIES,
         METRIC_NAMES.AUTOMATED_INTERACTIONS_PER_ORDER_MANAGEMENT_TYPE,
         METRIC_NAMES.AI_AGENT_OVERVIEW_AUTOMATED_INTERACTIONS_PER_FEATURE,
-        METRIC_NAMES.AI_AGENT_AUTOMATED_INTERACTIONS_PER_CHANNEL,
     ],
     [MetricScope.OverallTimeSavedByAgent]: [
         METRIC_NAMES.OVERALL_TIME_SAVED_BY_AGENT_PER_ORDER_MANAGEMENT_TYPE,
@@ -1211,16 +1238,33 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AI_AGENT_SALES_PERFORMANCE_ORDERS_INFLUENCED_PER_ENGAGEMENT_TYPE,
     ],
     [MetricScope.AiAgentAutomatedInteractions]: [
-        METRIC_NAMES.AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS,
-        METRIC_NAMES.AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_TIMESERIES,
-        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_PER_CHANNEL,
-        METRIC_NAMES.AI_AGENT_SUPPORT_AUTOMATED_INTERACTIONS_PER_CHANNEL,
-        METRIC_NAMES.AI_AGENT_SUPPORT_AUTOMATED_INTERACTIONS_PER_INTENT,
-        METRIC_NAMES.AI_AGENT_DYNAMIC_ALL_AGENTS_AUTOMATED_INTERACTIONS,
-        METRIC_NAMES.AI_AGENT_DYNAMIC_ALL_AGENTS_AUTOMATED_INTERACTIONS_TIMESERIES,
-        METRIC_NAMES.AI_AGENT_SALES_PERFORMANCE_AUTOMATED_INTERACTIONS_PER_ENGAGEMENT_TYPE,
-        METRIC_NAMES.AI_AGENT_DYNAMIC_SUPPORT_AGENT_AUTOMATED_INTERACTIONS,
-        METRIC_NAMES.AI_AGENT_DYNAMIC_SUPPORT_AGENT_AUTOMATED_INTERACTIONS_TIMESERIES,
+        METRIC_NAMES.AI_AGENT_AUTOMATED_INTERACTIONS_VALUE,
+        METRIC_NAMES.AI_AGENT_AUTOMATED_INTERACTIONS_BREAKDOWN,
+        METRIC_NAMES.AI_AGENT_AUTOMATED_INTERACTIONS_BREAKDOWN_PER_CHANNEL,
+        METRIC_NAMES.AI_AGENT_AUTOMATED_INTERACTIONS_BREAKDOWN_PER_STORE,
+        METRIC_NAMES.AI_AGENT_AUTOMATED_INTERACTIONS_BREAKDOWN_PER_INTENT,
+        METRIC_NAMES.AI_AGENT_AUTOMATED_INTERACTIONS_TIMESERIES,
+        METRIC_NAMES.AI_AGENT_AUTOMATED_INTERACTIONS_TIMESERIES_PER_CHANNEL,
+        METRIC_NAMES.AI_AGENT_AUTOMATED_INTERACTIONS_TIMESERIES_PER_STORE,
+        METRIC_NAMES.AI_AGENT_AUTOMATED_INTERACTIONS_TIMESERIES_PER_INTENT,
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_VALUE,
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_BREAKDOWN,
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_BREAKDOWN_PER_CHANNEL,
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_BREAKDOWN_PER_STORE,
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_BREAKDOWN_PER_ENGAGEMENT_TYPE,
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_TIMESERIES,
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_TIMESERIES_PER_CHANNEL,
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_TIMESERIES_PER_STORE,
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_TIMESERIES_PER_ENGAGEMENT_TYPE,
+        METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_AUTOMATED_INTERACTIONS_VALUE,
+        METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_AUTOMATED_INTERACTIONS_BREAKDOWN,
+        METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_AUTOMATED_INTERACTIONS_BREAKDOWN_PER_CHANNEL,
+        METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_AUTOMATED_INTERACTIONS_BREAKDOWN_PER_STORE,
+        METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_AUTOMATED_INTERACTIONS_BREAKDOWN_PER_INTENT,
+        METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_AUTOMATED_INTERACTIONS_TIMESERIES,
+        METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_AUTOMATED_INTERACTIONS_TIMESERIES_PER_CHANNEL,
+        METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_AUTOMATED_INTERACTIONS_TIMESERIES_PER_STORE,
+        METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_AUTOMATED_INTERACTIONS_TIMESERIES_PER_INTENT,
     ],
     [MetricScope.AiAgentDecreaseInFirstResponseTime]: [
         METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_DECREASE_IN_FRT_PER_CHANNEL,

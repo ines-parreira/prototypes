@@ -291,7 +291,10 @@ class MetricBuilder<
     }
 }
 
-class ScopeBuilder<TMeta extends ScopeMeta, TContext extends Context<TMeta>> {
+export class ScopeBuilder<
+    TMeta extends ScopeMeta,
+    TContext extends Context<TMeta>,
+> {
     constructor(public config: TMeta) {}
 
     defineMetricName<const TMetricName extends MetricName>(

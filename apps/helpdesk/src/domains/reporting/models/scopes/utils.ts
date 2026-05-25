@@ -10,6 +10,10 @@ import {
     toLowerCaseString,
 } from 'domains/reporting/models/queryFactories/utils'
 import type {
+    BuiltQuery,
+    Context,
+    QueryFor,
+    ScopeBuilder,
     ScopeFilters,
     ScopeMeta,
 } from 'domains/reporting/models/scopes/scope'
@@ -426,6 +430,305 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
     })
 
     return filters as ScopeFilters<TMeta>
+}
+
+/**
+ * Builds a "value" query (single aggregated number, no dimensions, no time
+ * dimensions) from a scope and a base payload factory, plus the matching
+ * `(ctx) => BuiltQuery` wrapper ready to be consumed by stats hooks.
+ *
+ * Use this when a metric should return one number per request (e.g. a trend
+ * card showing "Automated interactions: 1,234").
+ *
+ * @param scope - Scope builder returned by `defineScope(...)`.
+ * @param baseQuery - Factory returning the core `{ measures, filters? }`
+ *   payload. Any `ctx.dimensions` / `time_dimensions` in the context are
+ *   ignored by this shape.
+ * @param metricName - Metric name string (also sent to the backend as
+ *   `metric_name` query parameter and used for feature-flag routing).
+ * @returns `{ valueQuery, valueQueryFactory }` — the `MetricQuery` and its
+ *   `(ctx) => BuiltQuery` wrapper.
+ */
+export const getValueQuery = <
+    TMeta extends ScopeMeta,
+    TContext extends Context<TMeta> = Context<TMeta>,
+>(
+    scope: ScopeBuilder<TMeta, TContext>,
+    baseQuery: (args: { ctx: TContext; config: TMeta }) => QueryFor<TMeta>,
+    metricName: MetricName,
+) => {
+    const valueQuery = scope.defineMetricName(metricName).defineQuery(baseQuery)
+    const valueQueryFactory = (ctx: TContext) => valueQuery.build(ctx)
+
+    return { valueQuery, valueQueryFactory }
+}
+
+/**
+ * Extracts the union of literal dimension names declared by a scope's
+ * `dimensions` tuple (e.g. `'channel' | 'aiIntentCustomField' | ...`). Used
+ * to narrow the keys of the per-dimension metric-name override maps accepted
+ * by {@link getBreakdownQuery} / {@link getTimeseriesQuery}.
+ */
+type DimensionOf<TMeta extends ScopeMeta> =
+    TMeta['dimensions'] extends readonly (infer U)[]
+        ? U extends string
+            ? U
+            : never
+        : never
+
+type BreakdownQueryHandle<TMeta extends ScopeMeta, TContext extends Context> = {
+    config: TMeta
+    build: (ctx: TContext) => BuiltQuery<TMeta>
+}
+
+/**
+ * Shared plumbing for breakdown-style helpers: eagerly constructs one
+ * `MetricQuery` per dimension override (plus one default) via the
+ * shape-specific `buildMetric` closure, and returns a handle whose `.build()`
+ * routes based on `ctx.dimensions`.
+ *
+ * Factored out of {@link getBreakdownQuery} and
+ * {@link getTimeseriesQuery} — which only differ in the shape of the
+ * `MetricQuery` they construct from a name.
+ */
+const makeDimensionRoutedHandle = <
+    TMeta extends ScopeMeta,
+    TContext extends Context<TMeta>,
+>(
+    buildMetric: (name: MetricName) => BreakdownQueryHandle<TMeta, TContext>,
+    metricName: MetricName,
+    dimensionMetricNames:
+        | Partial<Record<DimensionOf<TMeta>, MetricName>>
+        | undefined,
+): BreakdownQueryHandle<TMeta, TContext> => {
+    const defaultQuery = buildMetric(metricName)
+    const overrides = new Map<string, BreakdownQueryHandle<TMeta, TContext>>()
+    for (const [dim, name] of Object.entries(dimensionMetricNames ?? {})) {
+        overrides.set(dim, buildMetric(name as MetricName))
+    }
+
+    const pick = (ctx: TContext) => {
+        if (ctx.dimensions?.length === 1) {
+            const override = overrides.get(ctx.dimensions[0] as string)
+            if (override) return override
+        }
+        return defaultQuery
+    }
+
+    return {
+        config: defaultQuery.config,
+        build: (ctx) => pick(ctx).build(ctx),
+    }
+}
+
+/**
+ * Builds a "breakdown" query (one value per dimension group) from a scope and
+ * a base payload factory, plus the matching `(ctx) => BuiltQuery` wrapper.
+ *
+ * Dimensions are pulled from `ctx.dimensions` at call time, so the same
+ * metric can slice by channel, intent, etc. depending on the caller — ideal
+ * for bar charts and configurable graphs where the dimension is picked in
+ * the UI. The query can be also used in tables, when slicing by a given dimension.
+ *
+ * When `dimensionMetricNames` is provided, a call with `ctx.dimensions` of
+ * length 1 whose single value has a mapping uses that override metric name
+ * in the built query. Every other shape (no dims, multi-dim, or an unmapped
+ * single dim) falls back to the default `metricName`. Routing is applied
+ * both via the returned factory AND via `breakdownQuery.build(ctx)`, so
+ * callers that `.build()` directly (e.g. tests) see the same resolution.
+ *
+ * @param scope - Scope builder returned by `defineScope(...)`.
+ * @param baseQuery - Factory returning the core `{ measures, filters? }`
+ *   payload. `dimensions` are injected on top from `ctx.dimensions`.
+ * @param metricName - Default metric name used when no override matches.
+ * @param dimensionMetricNames - Optional map from a single dimension key to
+ *   a dedicated metric name. E.g. `{ channel: 'ai-agent-...-per-channel' }`.
+ *   Keys are constrained to the scope's declared `dimensions` via
+ *   {@link DimensionOf}.
+ * @returns `{ breakdownQuery, breakdownQueryFactory }` — a routing handle and
+ *   its `(ctx) => BuiltQuery` wrapper. Note `breakdownQuery` is no longer a
+ *   `MetricQuery` instance but a structural `{ config, build }` that proxies
+ *   to the right underlying `MetricQuery` based on `ctx.dimensions`.
+ */
+export const getBreakdownQuery = <
+    TMeta extends ScopeMeta,
+    TContext extends Context<TMeta> = Context<TMeta>,
+>(
+    scope: ScopeBuilder<TMeta, TContext>,
+    baseQuery: (args: { ctx: TContext; config: TMeta }) => QueryFor<TMeta>,
+    metricName: MetricName,
+    dimensionMetricNames?: Partial<Record<DimensionOf<TMeta>, MetricName>>,
+) => {
+    const buildBreakdown = (name: MetricName) =>
+        scope.defineMetricName(name).defineQuery(({ ctx, config }) => ({
+            ...baseQuery({ ctx, config }),
+            dimensions: ctx.dimensions,
+        }))
+
+    const breakdownQuery = makeDimensionRoutedHandle<TMeta, TContext>(
+        buildBreakdown,
+        metricName,
+        dimensionMetricNames,
+    )
+    const breakdownQueryFactory = (ctx: TContext) => breakdownQuery.build(ctx)
+
+    return { breakdownQuery, breakdownQueryFactory }
+}
+
+type TimeDimensionOf<TMeta extends ScopeMeta> =
+    TMeta['timeDimensions'] extends readonly (infer U)[] ? U : never
+
+/**
+ * Builds a "timeseries" (time-series) query from a scope and a base
+ * payload factory, plus the matching `(ctx) => BuiltQuery` wrapper.
+ *
+ * Behaves like {@link getBreakdownQuery} but also attaches
+ * `time_dimensions: [{ dimension, granularity: ctx.granularity }]` and a
+ * default `limit: 10000` — ideal for line-chart data feeds where points are
+ * bucketed by granularity. Same single-dim override semantics as
+ * {@link getBreakdownQuery}.
+ *
+ * @param scope - Scope builder returned by `defineScope(...)`.
+ * @param baseQuery - Factory returning the core `{ measures, filters? }`
+ *   payload.
+ * @param metricName - Default metric name used when no override matches.
+ * @param timeDimension - Which time dimension to aggregate over, constrained
+ *   to the scope's declared `timeDimensions` via {@link TimeDimensionOf}.
+ * @param dimensionMetricNames - Optional map from a single dimension key to
+ *   a dedicated metric name. See {@link getBreakdownQuery} for semantics.
+ * @returns `{ timeseriesQuery, timeseriesQueryFactory }` — same
+ *   routing-handle shape as {@link getBreakdownQuery} returns for breakdown.
+ */
+export const getTimeseriesQuery = <
+    TMeta extends ScopeMeta,
+    TContext extends Context<TMeta> = Context<TMeta>,
+>(
+    scope: ScopeBuilder<TMeta, TContext>,
+    baseQuery: (args: { ctx: TContext; config: TMeta }) => QueryFor<TMeta>,
+    metricName: MetricName,
+    timeDimension: TimeDimensionOf<TMeta>,
+    dimensionMetricNames?: Partial<Record<DimensionOf<TMeta>, MetricName>>,
+) => {
+    const buildTimeseries = (name: MetricName) =>
+        scope.defineMetricName(name).defineQuery(({ ctx, config }) => ({
+            ...baseQuery({ ctx, config }),
+            dimensions: ctx.dimensions,
+            time_dimensions: [
+                {
+                    dimension: timeDimension,
+                    granularity: ctx.granularity,
+                },
+            ],
+            limit: 10000,
+        }))
+
+    const timeseriesQuery = makeDimensionRoutedHandle<TMeta, TContext>(
+        buildTimeseries,
+        metricName,
+        dimensionMetricNames,
+    )
+    const timeseriesQueryFactory = (ctx: TContext) => timeseriesQuery.build(ctx)
+
+    return { timeseriesQuery, timeseriesQueryFactory }
+}
+
+/**
+ * Convenience composition of {@link getValueQuery},
+ * {@link getBreakdownQuery}, and {@link getTimeseriesQuery} — the
+ * standard "value + breakdown + timeseries" triplet built over a
+ * single shared `baseQuery`. Use this when a scope needs all three shapes
+ * (the common case for trend cards backed by bar/table + line charts); reach for
+ * the individual helpers when a scope only needs a subset.
+ *
+ * Returns all six items (one `MetricQuery` and one factory per shape) in a
+ * flat object so callers can destructure-and-rename to their scope-specific
+ * export names.
+ *
+ * @param scope - Scope builder returned by `defineScope(...)`.
+ * @param baseQuery - Factory returning the core `{ measures, filters? }`
+ *   payload shared across all three shapes. `dimensions`, `time_dimensions`,
+ *   and `limit` are added by the respective shape builders.
+ * @param options
+ * @param options.valueMetricName - Metric name for the value shape.
+ * @param options.breakdownMetricName - Metric name for the breakdown shape.
+ * @param options.timeseriesMetricName - Metric name for the
+ *   timeseries shape.
+ * @param options.timeDimension - Time dimension used by the breakdown-over-
+ *   time shape; constrained to the scope's declared `timeDimensions`.
+ * @param options.breakdownDimensionMetricNames - Optional per-dimension
+ *   metric-name overrides for the breakdown shape; see
+ *   {@link getBreakdownQuery}.
+ * @param options.timeseriesDimensionMetricNames - Optional
+ *   per-dimension metric-name overrides for the timeseries shape;
+ *   see {@link getTimeseriesQuery}.
+ * @returns `{ valueQuery, valueQueryFactory, breakdownQuery,
+ *   breakdownQueryFactory, timeseriesQuery,
+ *   timeseriesQueryFactory }`.
+ *
+ * @example
+ * ```ts
+ * const baseQuery = () => ({ measures: ['automatedInteractionsCount'] as const })
+ *
+ * export const {
+ *     valueQuery: allAgentsAutomatedInteractionsValue,
+ *     valueQueryFactory: allAgentsAutomatedInteractionsValueQueryFactoryV2,
+ *     breakdownQuery: allAgentsAutomatedInteractionsBreakdown,
+ *     breakdownQueryFactory: allAgentsAutomatedInteractionsBreakdownQueryFactoryV2,
+ *     timeseriesQuery: allAgentsAutomatedInteractionsTimeseries,
+ *     timeseriesQueryFactory: allAgentsAutomatedInteractionsTimeseriesQueryFactoryV2,
+ * } = getGenericQueries(aiAgentAutomatedInteractionsScope, baseQuery, {
+ *     valueMetricName: METRIC_NAMES.AI_AGENT_AUTOMATED_INTERACTIONS_VALUE,
+ *     breakdownMetricName: METRIC_NAMES.AI_AGENT_AUTOMATED_INTERACTIONS_BREAKDOWN,
+ *     timeseriesMetricName:
+ *         METRIC_NAMES.AI_AGENT_AUTOMATED_INTERACTIONS_TIMESERIES,
+ *     timeDimension: 'eventDatetime',
+ * })
+ * ```
+ */
+export const getGenericQueries = <
+    TMeta extends ScopeMeta,
+    TContext extends Context<TMeta> = Context<TMeta>,
+>(
+    scope: ScopeBuilder<TMeta, TContext>,
+    baseQuery: (args: { ctx: TContext; config: TMeta }) => QueryFor<TMeta>,
+    options: {
+        valueMetricName: MetricName
+        breakdownMetricName: MetricName
+        timeseriesMetricName: MetricName
+        timeDimension: TimeDimensionOf<TMeta>
+        breakdownDimensionMetricNames?: Partial<
+            Record<DimensionOf<TMeta>, MetricName>
+        >
+        timeseriesDimensionMetricNames?: Partial<
+            Record<DimensionOf<TMeta>, MetricName>
+        >
+    },
+) => {
+    const {
+        valueMetricName,
+        breakdownMetricName,
+        timeseriesMetricName,
+        timeDimension,
+        breakdownDimensionMetricNames,
+        timeseriesDimensionMetricNames,
+    } = options
+
+    return {
+        ...getValueQuery(scope, baseQuery, valueMetricName),
+        ...getBreakdownQuery(
+            scope,
+            baseQuery,
+            breakdownMetricName,
+            breakdownDimensionMetricNames,
+        ),
+        ...getTimeseriesQuery(
+            scope,
+            baseQuery,
+            timeseriesMetricName,
+            timeDimension,
+            timeseriesDimensionMetricNames,
+        ),
+    }
 }
 
 type SegmentToFilterMapping = {

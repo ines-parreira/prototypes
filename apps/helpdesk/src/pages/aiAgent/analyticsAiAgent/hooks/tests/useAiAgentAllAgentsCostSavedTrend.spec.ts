@@ -5,7 +5,7 @@ import { formatCostSavedData } from 'domains/reporting/hooks/automate/useAutomat
 import useStatsMetricTrend, {
     fetchStatsMetricTrend,
 } from 'domains/reporting/hooks/useStatsMetricTrend'
-import { dynamicAllAgentsAutomatedInteractionsQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
+import { allAgentsAutomatedInteractionsValueQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import {
@@ -110,11 +110,11 @@ describe('useAiAgentAllAgentsCostSavedTrend', () => {
         renderCostSavedTrendHook()
 
         expect(mockUseStatsMetricTrend).toHaveBeenCalledWith(
-            dynamicAllAgentsAutomatedInteractionsQueryFactoryV2({
+            allAgentsAutomatedInteractionsValueQueryFactoryV2({
                 filters: mockFilteredFilters,
                 timezone,
             }),
-            dynamicAllAgentsAutomatedInteractionsQueryFactoryV2({
+            allAgentsAutomatedInteractionsValueQueryFactoryV2({
                 filters: {
                     ...mockFilteredFilters,
                     period: getPreviousPeriod(mockFilteredFilters.period),
@@ -209,11 +209,11 @@ describe('fetchAiAgentAllAgentsCostSavedTrend', () => {
         )
 
         expect(mockFetchStatsMetricTrend).toHaveBeenCalledWith(
-            dynamicAllAgentsAutomatedInteractionsQueryFactoryV2({
+            allAgentsAutomatedInteractionsValueQueryFactoryV2({
                 filters: mockFilteredFilters,
                 timezone,
             }),
-            dynamicAllAgentsAutomatedInteractionsQueryFactoryV2({
+            allAgentsAutomatedInteractionsValueQueryFactoryV2({
                 filters: {
                     ...mockFilteredFilters,
                     period: getPreviousPeriod(mockFilteredFilters.period),

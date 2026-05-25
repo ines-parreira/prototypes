@@ -3,7 +3,7 @@ import { assumeMock, renderHook } from '@repo/testing'
 import useStatsMetricTrend, {
     fetchStatsMetricTrend,
 } from 'domains/reporting/hooks/useStatsMetricTrend'
-import { dynamicShoppingAssistantAutomatedInteractionsQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
+import { shoppingAssistantAutomatedInteractionsValueQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
@@ -55,11 +55,11 @@ describe('useAiAgentShoppingAssistantAutomatedInteractionsTrend', () => {
         renderHookUnderTest()
 
         expect(mockUseStatsMetricTrend).toHaveBeenCalledWith(
-            dynamicShoppingAssistantAutomatedInteractionsQueryFactoryV2({
+            shoppingAssistantAutomatedInteractionsValueQueryFactoryV2({
                 filters: statsFilters,
                 timezone: userTimezone,
             }),
-            dynamicShoppingAssistantAutomatedInteractionsQueryFactoryV2({
+            shoppingAssistantAutomatedInteractionsValueQueryFactoryV2({
                 filters: {
                     ...statsFilters,
                     period: getPreviousPeriod(statsFilters.period),
@@ -135,11 +135,11 @@ describe('fetchAiAgentShoppingAssistantAutomatedInteractionsTrend', () => {
         )
 
         expect(mockFetchStatsMetricTrend).toHaveBeenCalledWith(
-            dynamicShoppingAssistantAutomatedInteractionsQueryFactoryV2({
+            shoppingAssistantAutomatedInteractionsValueQueryFactoryV2({
                 filters: statsFilters,
                 timezone: userTimezone,
             }),
-            dynamicShoppingAssistantAutomatedInteractionsQueryFactoryV2({
+            shoppingAssistantAutomatedInteractionsValueQueryFactoryV2({
                 filters: {
                     ...statsFilters,
                     period: getPreviousPeriod(statsFilters.period),

@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { dynamicAllAgentsAutomatedInteractionsTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
+import { allAgentsAutomatedInteractionsTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
 import { dynamicConversionRateTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/aiSalesAgentConversionRate'
 import { dynamicTotalSalesAmountTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/aiSalesAgentOrdersPerformance'
 import { dynamicAllAgentsAutomationRateTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/overallAutomationRate'
@@ -38,7 +38,7 @@ export const ALL_AGENTS_LINE_CHART_METRICS: LineChartMetricConfig[] = [
         metricFormat: 'decimal' as const,
         interpretAs: 'more-is-better' as const,
         timeSeriesQueryFactory:
-            dynamicAllAgentsAutomatedInteractionsTimeseriesQueryFactoryV2,
+            allAgentsAutomatedInteractionsTimeseriesQueryFactoryV2,
         dimensions: [
             'overall',
             'channel',

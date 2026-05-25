@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { dynamicShoppingAssistantAutomatedInteractionsQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
+import { shoppingAssistantAutomatedInteractionsBreakdownQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
 import { dynamicRevenuePerInteractionQueryFactoryV2 } from 'domains/reporting/models/scopes/aiSalesAgentActivity'
 import { dynamicConversionRateQueryFactoryV2 } from 'domains/reporting/models/scopes/aiSalesAgentConversionRate'
 import {
@@ -45,7 +45,7 @@ export const SHOPPING_ASSISTANT_BAR_CHART_METRICS: BarChartMetricConfig[] = [
         metricFormat: 'decimal' as const,
         interpretAs: 'more-is-better' as const,
         queryFactory:
-            dynamicShoppingAssistantAutomatedInteractionsQueryFactoryV2,
+            shoppingAssistantAutomatedInteractionsBreakdownQueryFactoryV2,
         dimensions: [
             'channel',
             'storeIntegrationId',

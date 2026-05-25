@@ -3,7 +3,7 @@ import {
     mapMetricValues,
     useStatsMetricPerDimension,
 } from 'domains/reporting/hooks/useStatsMetricPerDimension'
-import { aiSupportAgentAutomatedInteractionsPerChannelQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
+import { supportAgentAutomatedInteractionsBreakdownQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
 import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
@@ -12,9 +12,10 @@ export const useCostSavedPerSupportAgentChannel = (
     statsFilters: StatsFilters,
     timezone: string,
 ) => {
-    const query = aiSupportAgentAutomatedInteractionsPerChannelQueryFactoryV2({
+    const query = supportAgentAutomatedInteractionsBreakdownQueryFactoryV2({
         filters: statsFilters,
         timezone,
+        dimensions: ['channel'],
     })
     const automatedInteractions = useStatsMetricPerDimension(query)
     const costSavedPerInteraction = useMoneySavedPerInteractionWithAutomate(
@@ -30,9 +31,10 @@ export const fetchCostSavedPerSupportAgentChannel = async (
     timezone: string,
     costSavedPerInteraction: number = AGENT_COST_PER_TICKET,
 ) => {
-    const query = aiSupportAgentAutomatedInteractionsPerChannelQueryFactoryV2({
+    const query = supportAgentAutomatedInteractionsBreakdownQueryFactoryV2({
         filters: statsFilters,
         timezone,
+        dimensions: ['channel'],
     })
     const automatedInteractions = await fetchStatsMetricPerDimension(query)
     return mapMetricValues(automatedInteractions, (v) =>
