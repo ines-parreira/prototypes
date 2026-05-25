@@ -73,4 +73,65 @@ describe('useExhaustEndpoint', () => {
         expect(mockFetch).toHaveBeenCalledTimes(1)
         expect(result.current.data).toEqual([{ id: 1 }, { id: 2 }])
     })
+
+    it('ignores malformed list responses', async () => {
+        const mockFetch = vi.fn().mockResolvedValue({
+            data: '<html><body>BlockPage</body></html>',
+        })
+
+        const { result } = renderHook(() =>
+            useExhaustEndpoint(['test-malformed-response'], (cursor) =>
+                mockFetch(cursor),
+            ),
+        )
+
+        await waitFor(() => {
+            expect(result.current.isLoading).toBe(false)
+        })
+
+        expect(mockFetch).toHaveBeenCalledTimes(1)
+        expect(result.current.data).toEqual([])
+    })
+
+    it('ignores null list responses', async () => {
+        const mockFetch = vi.fn().mockResolvedValue({
+            data: null,
+        })
+
+        const { result } = renderHook(() =>
+            useExhaustEndpoint(['test-null-response'], (cursor) =>
+                mockFetch(cursor),
+            ),
+        )
+
+        await waitFor(() => {
+            expect(result.current.isLoading).toBe(false)
+        })
+
+        expect(mockFetch).toHaveBeenCalledTimes(1)
+        expect(result.current.data).toEqual([])
+    })
+
+    it('ignores object responses without list data', async () => {
+        const mockFetch = vi.fn().mockResolvedValue({
+            data: {
+                error: {
+                    msg: 'You have exceeded your rate limit.',
+                },
+            },
+        })
+
+        const { result } = renderHook(() =>
+            useExhaustEndpoint(['test-object-without-list-data'], (cursor) =>
+                mockFetch(cursor),
+            ),
+        )
+
+        await waitFor(() => {
+            expect(result.current.isLoading).toBe(false)
+        })
+
+        expect(mockFetch).toHaveBeenCalledTimes(1)
+        expect(result.current.data).toEqual([])
+    })
 })

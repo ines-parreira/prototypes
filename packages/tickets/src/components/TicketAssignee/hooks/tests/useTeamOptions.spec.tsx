@@ -141,6 +141,40 @@ describe('useTeamOptions', () => {
         expect(result.current.teamsMap.size).toBe(3)
     })
 
+    it('should ignore teams without required fields', async () => {
+        server.use(
+            mockListTeamsHandler(async ({ data }) =>
+                HttpResponse.json({
+                    ...data,
+                    data: [
+                        team1,
+                        undefined,
+                        { ...team2, id: undefined },
+                        { ...team3, name: null },
+                    ],
+                    meta: {
+                        prev_cursor: null,
+                        next_cursor: null,
+                    },
+                } as any),
+            ).handler,
+        )
+
+        const { result } = renderHook(() =>
+            useTeamOptions({ currentTeam: null }),
+        )
+
+        await waitFor(() => {
+            expect(result.current.isLoading).toBe(false)
+        })
+
+        expect(result.current.teamSections[0].items).toEqual([
+            { id: 1, label: 'Support' },
+        ])
+        expect(result.current.teamsMap.size).toBe(1)
+        expect(result.current.teamsMap.get(1)).toEqual(team1)
+    })
+
     it('should append the current team when it is missing from the fetched teams', async () => {
         const legacyTeam = mockTicketTeam({
             id: 99,

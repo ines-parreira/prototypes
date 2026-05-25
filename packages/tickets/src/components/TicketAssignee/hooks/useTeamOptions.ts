@@ -55,7 +55,9 @@ export function useTeamOptions({
     const teams = useMemo<TeamWithRequiredFields[]>(() => {
         const validTeams = allTeams.filter(
             (team): team is TeamWithRequiredFields =>
-                typeof team.id === 'number' && typeof team.name === 'string',
+                Boolean(team) &&
+                typeof team.id === 'number' &&
+                typeof team.name === 'string',
         )
 
         const sortedTeams = [...validTeams].sort((teamA, teamB) =>
@@ -72,9 +74,9 @@ export function useTeamOptions({
         )
     }, [allTeams, search])
 
-    const teamsMap = useMemo(() => {
-        return new Map(allTeams.map((team) => [team.id, team]))
-    }, [allTeams])
+    const teamsMap = useMemo<Map<number, Team>>(() => {
+        return new Map(teams.map((team): [number, Team] => [team.id, team]))
+    }, [teams])
 
     const teamSections = useMemo<TeamSection[]>(() => {
         const sections: TeamSection[] = []

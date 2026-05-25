@@ -12,6 +12,18 @@ type ListResponse<ListItemType> = {
 
 type Response<ListItemType> = HttpResponse<ListResponse<ListItemType>>
 
+function isListResponse<ListItemType>(
+    data: unknown,
+): data is ListResponse<ListItemType> {
+    if (data === null) {
+        return false
+    }
+    if (typeof data !== 'object') {
+        return false
+    }
+    return Array.isArray((data as ListResponse<ListItemType>).data)
+}
+
 export function useExhaustEndpoint<ListItemType>(
     queryKey: QueryKey,
     fetchPage: (cursor?: string) => Promise<Response<ListItemType>>,
@@ -27,7 +39,12 @@ export function useExhaustEndpoint<ListItemType>(
         refetch,
     } = useInfiniteQuery(queryKey, ({ pageParam }) => fetchPage(pageParam), {
         ...options,
-        getNextPageParam: ({ data }) => data.meta?.next_cursor ?? undefined,
+        getNextPageParam: ({ data }) => {
+            if (!isListResponse<ListItemType>(data)) {
+                return undefined
+            }
+            return data.meta?.next_cursor ?? undefined
+        },
     })
 
     useEffect(() => {
@@ -43,7 +60,12 @@ export function useExhaustEndpoint<ListItemType>(
 
     const allData = useMemo(() => {
         if (isLoading || !data) return []
-        return data.pages.flatMap((page) => page.data.data)
+        return data.pages.flatMap((page) => {
+            if (!isListResponse<ListItemType>(page.data)) {
+                return []
+            }
+            return page.data.data
+        })
     }, [data, isLoading])
 
     return useMemo(
