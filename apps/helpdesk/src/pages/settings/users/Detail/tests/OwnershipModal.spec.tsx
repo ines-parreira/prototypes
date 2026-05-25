@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { assumeMock, render, userEvent } from '@repo/testing'
-import { screen, waitFor } from '@testing-library/react'
+import { act, assumeMock, render, userEvent } from '@repo/testing'
+import { screen } from '@testing-library/react'
 
 import { updateAccountOwner } from 'state/currentAccount/actions'
 
@@ -21,16 +21,24 @@ describe('OwnershipModal', () => {
         setModalOpen: jest.fn(),
     }
 
-    it('should display or not according to `isModalOpen` prop', async () => {
+    afterEach(() => {
+        jest.useRealTimers()
+    })
+
+    it('should display or not according to `isModalOpen` prop', () => {
+        jest.useFakeTimers()
+
         const { rerender } = render(<OwnershipModal {...props} />)
         expect(screen.getByText(`Set ${props.name} as owner`))
 
         rerender(<OwnershipModal {...props} isModalOpen={false} />)
-        await waitFor(() => {
-            expect(
-                screen.queryByText(`Set ${props.name} as owner`),
-            ).not.toBeInTheDocument()
+        act(() => {
+            jest.advanceTimersByTime(200)
         })
+
+        expect(
+            screen.queryByText(`Set ${props.name} as owner`),
+        ).not.toBeInTheDocument()
     })
 
     it('should call `setModalOpen` props when clicking cancel', () => {

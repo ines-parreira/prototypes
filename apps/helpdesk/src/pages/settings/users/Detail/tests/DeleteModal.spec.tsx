@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render, userEvent } from '@repo/testing'
+import { act, render, userEvent } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 
 import { navigateBackToUserList } from 'pages/settings/users/Detail/constants'
@@ -25,16 +25,24 @@ describe('DeleteModal', () => {
         setModalOpen: jest.fn(),
     }
 
-    it('should display or not according to `isModalOpen` prop', async () => {
+    afterEach(() => {
+        jest.useRealTimers()
+    })
+
+    it('should display or not according to `isModalOpen` prop', () => {
+        jest.useFakeTimers()
+
         const { rerender } = render(<DeleteModal {...props} />)
         expect(screen.getByText(`Delete ${props.name}?`))
 
         rerender(<DeleteModal {...props} isModalOpen={false} />)
-        await waitFor(() => {
-            expect(
-                screen.queryByText(`Delete ${props.name}?`),
-            ).not.toBeInTheDocument()
+        act(() => {
+            jest.advanceTimersByTime(200)
         })
+
+        expect(
+            screen.queryByText(`Delete ${props.name}?`),
+        ).not.toBeInTheDocument()
     })
 
     it('should call `setModalOpen` props when clicking cancel', () => {
