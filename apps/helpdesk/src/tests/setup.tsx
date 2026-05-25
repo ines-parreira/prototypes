@@ -193,6 +193,7 @@ jest.mock('@gorgias/copilot', () => ({
         agent: undefined,
         runtimeUrl: '',
     })),
+    useCopilotContext: jest.fn(),
 }))
 
 Object.defineProperty(window, 'requestAnimationFrame', { value: jest.fn() })

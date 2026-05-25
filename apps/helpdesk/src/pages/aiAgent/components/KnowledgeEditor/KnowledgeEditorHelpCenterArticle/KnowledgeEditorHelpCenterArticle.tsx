@@ -108,6 +108,7 @@ export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
     const { article, isOpen = true, onClose } = props
     const isExisting = article.type === 'existing'
     const articleId = isExisting ? article.articleId : 0
+
     const versionStatus: GetArticleVersionStatus = isExisting
         ? (article.versionStatus ?? 'latest_draft')
         : 'latest_draft'

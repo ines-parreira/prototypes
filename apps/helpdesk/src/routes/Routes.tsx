@@ -30,6 +30,7 @@ import DefaultStatsFilters from 'domains/reporting/pages/DefaultStatsFilters'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 import { StatsRoutes } from 'domains/reporting/routes/StatsRoutes'
 import { VoiceOfCustomerRoutes } from 'domains/reporting/routes/VoiceOfCustomerRoutes'
+import { useCopilotShopContext } from 'main/app/hooks/useCopilotShopContext'
 // DON'T add 'pages/*' imports above to ensure CSS ordering is preserved. Placing this import elsewhere
 // may cause unexpected CSS precedence issues, breaking the intended design.
 //
@@ -343,6 +344,8 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
         shopType: string
         shopName: string
     }>()
+
+    useCopilotShopContext(shopName)
 
     const isAiAgentOnboardingWizardEnabled = useFlag(
         FeatureFlagKey.AiAgentOnboardingWizard,

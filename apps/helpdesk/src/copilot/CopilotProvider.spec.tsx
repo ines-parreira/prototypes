@@ -27,7 +27,7 @@ describe('CopilotProvider', () => {
         mockGetRawAccessToken.mockReset()
         mockClearAccessToken.mockReset()
         window.GORGIAS_STATE = {
-            currentAccount: { domain: 'acme' },
+            currentAccount: { domain: 'acme', id: 123 },
         } as typeof window.GORGIAS_STATE
         window.STAGING = false
         window.PRODUCTION = false
