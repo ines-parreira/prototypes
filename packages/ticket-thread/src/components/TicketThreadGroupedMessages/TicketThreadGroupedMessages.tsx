@@ -270,6 +270,8 @@ export function TicketThreadGroupedMessages({
                     </Box>
                     <MessageMeta
                         meta={firstMessage.data.meta}
+                        messageId={firstMessage.data.message_id}
+                        source={firstMessage.data.source}
                         integrationId={firstMessage.data.integration_id}
                     />
                     <Box flexDirection="column" className={css.groupedMessages}>

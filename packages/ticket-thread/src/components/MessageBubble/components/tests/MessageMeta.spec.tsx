@@ -7,6 +7,10 @@ import { MessageMetaLabel } from '../MessageHeader/MessageMetaLabel'
 import { MessageMetaLink } from '../MessageHeader/MessageMetaLink'
 import { MessageSearchQuery } from '../MessageHeader/MessageSearchQuery'
 
+vi.mock('react-rating-stars-component', () => ({
+    default: ({ value }: { value: number }) => <div>{`Rating: ${value}`}</div>,
+}))
+
 describe('MessageMetaLabel', () => {
     it('renders children text', () => {
         render(<MessageMetaLabel icon="zap">some label text</MessageMetaLabel>)
@@ -28,6 +32,12 @@ describe('MessageMetaLabel', () => {
         )
 
         expect(screen.getByText('error label')).toBeInTheDocument()
+    })
+
+    it('renders without an icon', () => {
+        render(<MessageMetaLabel>label without icon</MessageMetaLabel>)
+
+        expect(screen.getByText('label without icon')).toBeInTheDocument()
     })
 })
 
@@ -116,6 +126,28 @@ describe('MessageCampaignLink', () => {
         expect(screen.getByRole('link', { name: /Campaign/ })).toHaveAttribute(
             'href',
             '/app/convert/10/campaigns/camp-01',
+        )
+    })
+})
+
+describe('MessageMeta', () => {
+    it('renders a Yotpo review score from the message source', () => {
+        render(
+            <MessageMeta
+                meta={null}
+                messageId="12345"
+                source={{
+                    type: 'yotpo-review',
+                    extra: { score: 4.3 },
+                }}
+            />,
+        )
+
+        expect(screen.getByText('Rating: 4.3')).toBeInTheDocument()
+        expect(screen.queryByText('(0)')).not.toBeInTheDocument()
+        expect(screen.getByRole('link', { name: /review/i })).toHaveAttribute(
+            'href',
+            'https://reviews.yotpo.com/#/moderation/reviews?filterType=reviews&id=12345',
         )
     })
 })

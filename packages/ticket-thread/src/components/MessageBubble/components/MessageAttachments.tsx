@@ -7,8 +7,7 @@ import Thumbnails from 'yet-another-react-lightbox/plugins/thumbnails'
 import 'yet-another-react-lightbox/styles.css'
 import 'yet-another-react-lightbox/plugins/thumbnails.css'
 
-import { Banner, Box, Icon, Text } from '@gorgias/axiom'
-import type { IconName } from '@gorgias/axiom'
+import { Banner, Box, IconName } from '@gorgias/axiom'
 import type { TicketMessageAttachment } from '@gorgias/helpdesk-types'
 
 import type {
@@ -24,6 +23,7 @@ import type { DisplayedTicketThreadMessageItem } from '../../TicketMessage/hooks
 import { Attachment } from './Attachment'
 import { DiscountOfferAttachment } from './DiscountOfferAttachment'
 import { isProductAttachment, ProductAttachment } from './ProductAttachment'
+import { SectionHeader } from './SectionHeader'
 import { isDiscountOfferAttachment } from './utils/discountOffer'
 import { isImage } from './utils/image'
 
@@ -43,17 +43,6 @@ export type MessageAttachmentsItem =
 type MessageAttachmentsProps = {
     item: MessageAttachmentsItem
     attachmentsLabel?: string
-}
-
-function SectionHeader({ icon, label }: { icon: IconName; label: string }) {
-    return (
-        <Box alignItems="center" gap="xxxxs">
-            <Icon name={icon} size="sm" color="content-neutral-secondary" />
-            <Text size="sm" color="content-neutral-secondary">
-                {label}
-            </Text>
-        </Box>
-    )
 }
 
 function partitionAttachments(attachments: TicketMessageAttachment[]) {
@@ -135,7 +124,7 @@ export function MessageAttachments({
             {linkedAttachments.length > 0 && (
                 <Box flexDirection="column" gap="xs">
                     <SectionHeader
-                        icon="link-horizontal"
+                        icon={IconName.LinkHorizontal}
                         label="Linked products"
                     />
                     <Box flexWrap="wrap" gap="xs">
@@ -158,7 +147,7 @@ export function MessageAttachments({
             {regularAttachments.length > 0 && (
                 <Box flexDirection="column" gap="xs">
                     <SectionHeader
-                        icon="paperclip-attachment"
+                        icon={IconName.PaperclipAttachment}
                         label={attachmentsLabel}
                     />
                     <Box flexWrap="wrap" gap="xs">

@@ -4,7 +4,9 @@ import { Banner } from '@gorgias/axiom'
 import type { TicketMessageTranslation } from '@gorgias/helpdesk-types'
 
 import { useExpandedMessages } from '../../../contexts/ExpandedMessages'
+import { ReviewedProductCard } from './ReviewedProductCard'
 import { getMessageContent } from './utils/getMessageContent'
+import { getReviewedProductData } from './utils/product'
 import { useDarkModeReadableEmailHtml } from './utils/useDarkModeReadableEmailHtml'
 
 import css from './MessageBody.less'
@@ -36,24 +38,30 @@ export function MessageBody({ className, item }: MessageBodyProps) {
         isHtml ? displayedContent : '',
     )
     const content = isHtml ? readableContent : displayedContent
+    const reviewedProduct = getReviewedProductData(item.data.meta)
 
-    if (!displayedContent && !isStripped) {
+    if (!displayedContent && !isStripped && !reviewedProduct) {
         return null
     }
 
     return (
         <>
-            <div
-                className={classNames(
-                    'message-content',
-                    css.content,
-                    className,
-                    {
-                        [css.whitespace]: !isHtml,
-                    },
-                )}
-                dangerouslySetInnerHTML={{ __html: content }}
-            />
+            {displayedContent || isStripped ? (
+                <div
+                    className={classNames(
+                        'message-content',
+                        css.content,
+                        className,
+                        {
+                            [css.whitespace]: !isHtml,
+                        },
+                    )}
+                    dangerouslySetInnerHTML={{ __html: content }}
+                />
+            ) : null}
+            {reviewedProduct && (
+                <ReviewedProductCard product={item.data.meta} />
+            )}
             {isTruncated && (
                 <Banner
                     isClosable={false}

@@ -93,6 +93,8 @@ export function TicketMessage({ item }: TicketMessageProps) {
                 </MessageHeaderContainer>
                 <MessageMeta
                     meta={item.data.meta}
+                    messageId={item.data.message_id}
+                    source={item.data.source}
                     integrationId={item.data.integration_id}
                     isForwarded={isForwarded}
                 />

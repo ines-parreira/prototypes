@@ -201,6 +201,10 @@ catalogs:
     react-json-pretty:
       specifier: 2.2.0
       version: 2.2.0
+  react-rating-stars-component:
+    react-rating-stars-component:
+      specifier: 2.2.0
+      version: 2.2.0
   react-router:
     '@types/history':
       specifier: ^4.7.11
@@ -1119,7 +1123,7 @@ importers:
         specifier: catalog:video
         version: 2.11.0(react@18.2.0)
       react-rating-stars-component:
-        specifier: 2.2.0
+        specifier: catalog:react-rating-stars-component
         version: 2.2.0
       react-redux:
         specifier: catalog:redux
@@ -3579,6 +3583,9 @@ importers:
       react-player:
         specifier: catalog:video
         version: 2.11.0(react@18.2.0)
+      react-rating-stars-component:
+        specifier: catalog:react-rating-stars-component
+        version: 2.2.0
       react-router:
         specifier: catalog:react-router
         version: 5.2.0(react@18.2.0)

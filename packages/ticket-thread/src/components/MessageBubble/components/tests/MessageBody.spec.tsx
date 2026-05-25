@@ -1,5 +1,7 @@
 import { screen } from '@testing-library/react'
 
+import { proxifyURL } from '@repo/utils'
+import type * as Utils from '@repo/utils'
 import {
     mockTicketMessage,
     mockTicketMessageTranslation,
@@ -10,6 +12,19 @@ import { TicketThreadItemTag } from '../../../../hooks/types'
 import { render } from '../../../../tests/render.utils'
 import type { DisplayedTicketThreadMessageItem } from '../../../TicketMessage/hooks/useDisplayedTicketMessage'
 import { MessageBody } from '../MessageBody'
+
+vi.mock('@repo/utils', async (importOriginal) => {
+    const actual = await importOriginal<typeof Utils>()
+
+    return {
+        ...actual,
+        proxifyURL: vi.fn((url: string, size?: string) =>
+            size ? `${url}?proxy=${size}` : `${url}?proxy=cw-1`,
+        ),
+    }
+})
+
+const mockProxifyURL = vi.mocked(proxifyURL)
 
 type MessageBodyData =
     DisplayedTicketThreadMessageItem<TicketThreadRegularMessageItem>['data']
@@ -27,6 +42,10 @@ function renderMessageBody(data: MessageBodyData) {
 }
 
 describe('MessageBody', () => {
+    beforeEach(() => {
+        vi.clearAllMocks()
+    })
+
     it('renders plain text content', () => {
         renderMessageBody(
             mockTicketMessage({
@@ -110,6 +129,43 @@ describe('MessageBody', () => {
                 'This message is too large to display. To see the entire message, open it in the original provider.',
             ),
         ).toBeInTheDocument()
+    })
+
+    it('renders a reviewed product when present in the message meta', () => {
+        renderMessageBody(
+            mockTicketMessage({
+                body_html: null,
+                body_text: null,
+                stripped_html: null,
+                stripped_text: null,
+                meta: {
+                    product: {
+                        average_score: 4.3,
+                        category: { name: 'Electronics' },
+                        description: 'Economic washing machine',
+                        images: [
+                            {
+                                original:
+                                    'https://cdn.example.com/product-original.png',
+                                square: 'https://cdn.example.com/product-square.png',
+                            },
+                        ],
+                        name: 'Tandem washing machine',
+                        total_reviews: 100,
+                        url: 'https://www.yotpo.com/product/GGGGG',
+                    },
+                },
+            }) as TicketThreadRegularMessageItem['data'],
+        )
+
+        expect(screen.getByText('Reviewed product')).toBeInTheDocument()
+        expect(
+            screen.getByRole('link', { name: /Tandem washing machine/i }),
+        ).toHaveAttribute('href', 'https://www.yotpo.com/product/GGGGG')
+        expect(mockProxifyURL).toHaveBeenCalledWith(
+            'https://cdn.example.com/product-square.png',
+            '120x120',
+        )
     })
 
     it('renders nothing when there is no content', () => {

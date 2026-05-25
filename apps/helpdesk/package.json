@@ -236,7 +236,7 @@
         "react-markdown": "^10.1.0",
         "react-paginate": "6.3.0",
         "react-player": "catalog:video",
-        "react-rating-stars-component": "2.2.0",
+        "react-rating-stars-component": "catalog:react-rating-stars-component",
         "react-redux": "catalog:redux",
         "react-router": "catalog:react-router",
         "react-router-dom": "catalog:react-router",
