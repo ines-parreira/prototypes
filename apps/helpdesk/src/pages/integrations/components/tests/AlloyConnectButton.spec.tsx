@@ -9,6 +9,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import type { AlloySdk } from 'models/integration/types/alloy'
 import AlloyConnectButton from 'pages/integrations/components/AlloyConnectButton'
 import * as actions from 'state/integrations/actions'
 
@@ -20,6 +21,7 @@ const updateOrCreateIntegrationRequest =
 
 const mockStore = configureMockStore([thunk])
 const mockedServer = new MockAdapter(client)
+const alloyWindow = window as unknown as Window & { Alloy: AlloySdk }
 
 describe('AlloyConnectButton', () => {
     afterEach(() => {
@@ -44,7 +46,7 @@ describe('AlloyConnectButton', () => {
                 isInstalled: true,
             })
 
-        window.Alloy = {
+        alloyWindow.Alloy = {
             setToken: jest.fn(),
             install: jest
                 .fn()
@@ -79,8 +81,8 @@ describe('AlloyConnectButton', () => {
         await waitFor(
             () => updateOrCreateIntegrationRequest.mock.calls.length > 0,
         )
-        expect(window.Alloy.setToken).toHaveBeenCalledWith('user-token')
-        expect(window.Alloy.install).toHaveBeenCalled()
+        expect(alloyWindow.Alloy.setToken).toHaveBeenCalledWith('user-token')
+        expect(alloyWindow.Alloy.install).toHaveBeenCalled()
         expect(updateOrCreateIntegrationRequest).toHaveBeenCalledWith(
             fromJS({
                 name: 'Test',

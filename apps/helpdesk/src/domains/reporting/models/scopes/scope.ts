@@ -121,10 +121,49 @@ export type Context<TMeta extends ScopeMeta = ScopeMeta> = {
     dimensions?: readonly Values<TMeta['dimensions']>[]
 }
 
+const isScopeValue = <TValues extends readonly string[] | undefined>(
+    value: string | undefined,
+    supportedValues: TValues,
+): value is Values<TValues> =>
+    value !== undefined &&
+    (supportedValues as readonly string[] | undefined)?.includes(value) === true
+
+const createScopedContext = <TMeta extends ScopeMeta>(
+    ctx: Context,
+    config: TMeta,
+): Context<TMeta> => {
+    const rawSortBy = ctx.sortBy
+    const sortBy: Values<TMeta['order']> | undefined = isScopeValue<
+        TMeta['order']
+    >(rawSortBy, config.order)
+        ? rawSortBy
+        : undefined
+    const dimensions =
+        ctx.dimensions === undefined
+            ? undefined
+            : ctx.dimensions.filter(
+                  (dimension): dimension is Values<TMeta['dimensions']> =>
+                      isScopeValue<TMeta['dimensions']>(
+                          dimension,
+                          config.dimensions,
+                      ),
+              )
+    const granularity = (
+        config.timeDimensions?.length ? ctx.granularity : undefined
+    ) as Context<TMeta>['granularity']
+
+    return {
+        ...ctx,
+        sortBy,
+        granularity,
+        dimensions,
+    }
+}
+
 export type MetricQueryFactory<
     TMeta extends ScopeMeta = ScopeMeta,
     TMetricName extends MetricName = MetricName,
-    TContext extends Context = Context<TMeta>,
+    TContext extends Context<TMeta> = Context<TMeta>,
 > = (ctx: TContext) => BuiltQuery<TMeta, TMetricName>
 
 class MetricQuery<
@@ -139,76 +178,86 @@ class MetricQuery<
         private queryFactory: (ctx: { ctx: TContext; config: TMeta }) => TQuery,
     ) {}
 
-    public build(ctx: TContext): BuiltQuery<TMeta, TMetricName> {
+    public build(ctx: TContext): BuiltQuery<TMeta, TMetricName>
+    public build(ctx: Context): BuiltQuery<TMeta, TMetricName>
+    public build(ctx: TContext | Context): BuiltQuery<TMeta, TMetricName> {
+        const scopedContext = createScopedContext(ctx, this.config) as TContext
         const query = this.queryFactory({
-            ctx,
+            ctx: scopedContext,
             config: this.config,
         })
         // If query factory did not override timezone, use the one from context
         if (query.timezone === undefined) {
-            query.timezone = ctx.timezone
+            query.timezone = scopedContext.timezone
         }
         // If query factory did not define filters, use the default ones
         if (query.filters === undefined) {
-            query.filters = createScopeFilters(ctx.filters, this.config)
+            query.filters = createScopeFilters(
+                scopedContext.filters,
+                this.config,
+            )
         }
         // If query factory did not define granularity, use the one from context
         if (
             query.time_dimensions === undefined &&
             this.config.timeDimensions &&
             this.config.timeDimensions.length > 0 &&
-            ctx.granularity
+            scopedContext.granularity
         ) {
             query.time_dimensions = [
                 {
                     dimension: this.config.timeDimensions[0] as Values<
                         TMeta['timeDimensions']
                     >,
-                    granularity: ctx.granularity,
+                    granularity: scopedContext.granularity,
                 },
             ]
         }
         // If query factory did not override dimensions, use the one from context
-        if (query.dimensions === undefined && ctx.dimensions) {
-            query.dimensions = ctx.dimensions
+        if (query.dimensions === undefined && scopedContext.dimensions) {
+            query.dimensions = scopedContext.dimensions
         }
 
         // If query limit is not defined, use context limit
-        if (query.limit === undefined && ctx.limit !== undefined) {
-            query.limit = ctx.limit
+        if (query.limit === undefined && scopedContext.limit !== undefined) {
+            query.limit = scopedContext.limit
         }
 
         // If query offset is not defined, use context offset
-        if (query.offset === undefined && ctx.offset !== undefined) {
-            query.offset = ctx.offset
+        if (query.offset === undefined && scopedContext.offset !== undefined) {
+            query.offset = scopedContext.offset
         }
 
         // If query total is not defined, use context total
-        if (query.total === undefined && ctx.total !== undefined) {
-            query.total = ctx.total
+        if (query.total === undefined && scopedContext.total !== undefined) {
+            query.total = scopedContext.total
         }
 
         // If query order is not defined, use context sortDirection and sortBy
         if (
             query.order === undefined &&
-            ctx.sortDirection &&
+            scopedContext.sortDirection &&
             this.config.order
         ) {
-            if (ctx.sortBy) {
+            if (scopedContext.sortBy) {
                 // Use context sortBy if provided
-                query.order = [[ctx.sortBy, ctx.sortDirection]]
+                query.order = [
+                    [scopedContext.sortBy, scopedContext.sortDirection],
+                ]
             } else if (
                 query.measures?.[0] &&
                 this.config.order.includes(query.measures[0])
             ) {
                 // otherwise, use first measure if it's in config order
-                query.order = [[query.measures[0], ctx.sortDirection]]
+                query.order = [[query.measures[0], scopedContext.sortDirection]]
             } else if (
                 query.dimensions?.[0] &&
                 this.config.order.includes(query.dimensions[0])
             ) {
                 // otherwise, use first dimension if it's in config order
-                query.order = [[query.dimensions[0], ctx.sortDirection]]
+                query.order = [
+                    [query.dimensions[0], scopedContext.sortDirection],
+                ]
             }
         }
 
@@ -224,7 +273,7 @@ class MetricQuery<
 class MetricBuilder<
     TMetricName extends MetricName,
     TMeta extends ScopeMeta,
-    TContext extends Context,
+    TContext extends Context<TMeta>,
 > {
     constructor(
         public readonly config: TMeta,
@@ -242,7 +291,7 @@ class MetricBuilder<
     }
 }
 
-class ScopeBuilder<TMeta extends ScopeMeta, TContext extends Context> {
+class ScopeBuilder<TMeta extends ScopeMeta, TContext extends Context<TMeta>> {
     constructor(public config: TMeta) {}
 
     defineMetricName<const TMetricName extends MetricName>(
@@ -257,7 +306,7 @@ class ScopeBuilder<TMeta extends ScopeMeta, TContext extends Context> {
 
 export function defineScope<
     const TMeta extends ScopeMeta,
-    TContext extends Context = Context<TMeta>,
+    TContext extends Context<TMeta> = Context<TMeta>,
 >(config: TMeta) {
     return new ScopeBuilder<TMeta, TContext>(config)
 }

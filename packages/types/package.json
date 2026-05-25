@@ -11,7 +11,7 @@
         "format:fix": "oxfmt --write .",
         "lint": "oxlint --quiet",
         "lint:unused": "knip --directory ../.. --workspace @repo/types --no-progress",
-        "typecheck": "tsc -p ./tsconfig.json --noEmit true"
+        "typecheck": "tsgo -p ./tsconfig.json --noEmit true"
     },
     "peerDependencies": {},
     "devDependencies": {

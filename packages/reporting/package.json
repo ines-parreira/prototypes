@@ -14,7 +14,7 @@
         "test": "vitest run --configLoader=runner",
         "test:ci:cover": "NODE_OPTIONS=\"--max-old-space-size=4096\" vitest run --maxWorkers=2 --configLoader=runner --coverage --silent=true",
         "test:watch": "vitest watch --configLoader=runner",
-        "typecheck": "tsc -p ./tsconfig.json --noEmit true"
+        "typecheck": "tsgo -p ./tsconfig.json --noEmit true"
     },
     "peerDependencies": {
         "@gorgias/analytics-ui-kit": "catalog:analytics-ui-kit",

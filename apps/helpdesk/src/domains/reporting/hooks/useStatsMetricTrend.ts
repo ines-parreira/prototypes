@@ -83,7 +83,7 @@ export const getStatsTrendHook =
     <
         TMeta extends ScopeMeta,
         TMetricName extends MetricName,
-        TContext extends Context = Context<TMeta>,
+        TContext extends Context<TMeta> = Context<TMeta>,
     >(
         query: MetricQueryFactory<TMeta, TMetricName, TContext>,
     ) =>
@@ -103,7 +103,7 @@ export const getStatsTrendFetch =
     <
         TMeta extends ScopeMeta,
         TMetricName extends MetricName,
-        TContext extends Context = Context<TMeta>,
+        TContext extends Context<TMeta> = Context<TMeta>,
     >(
         query: MetricQueryFactory<TMeta, TMetricName, TContext>,
     ) =>

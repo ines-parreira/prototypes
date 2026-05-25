@@ -8,7 +8,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import { loadIntegration } from 'models/integration/resources/alloy'
-import type { AlloyIntegration } from 'models/integration/types/alloy'
+import type { AlloyIntegration, AlloySdk } from 'models/integration/types/alloy'
 import {
     deleteIntegration,
     updateOrCreateIntegrationRequest,
@@ -18,10 +18,18 @@ import {
     getIntegrationsLoading,
 } from 'state/integrations/selectors'
 
+type WindowWithAlloy = Window & {
+    Alloy: AlloySdk
+}
+
+const getAlloySdk = () => (window as unknown as WindowWithAlloy).Alloy
+
 function installAlloy(integrationId: string, userToken: string): Promise<void> {
     return new Promise((resolve) => {
-        window.Alloy.setToken(userToken)
-        window.Alloy.install({
+        const alloy = getAlloySdk()
+
+        alloy.setToken(userToken)
+        alloy.install({
             integrationId,
             callback: resolve,
             alwaysShowAuthentication: false,

@@ -5,7 +5,7 @@ import {
 
 import type { MetricName } from 'domains/reporting/hooks/metricNames'
 import { MetricScope } from 'domains/reporting/hooks/metricNames'
-import type { QueryFor } from 'domains/reporting/models/scopes/scope'
+import type { Context, QueryFor } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
 import type { MeasureName } from 'domains/reporting/models/scopes/types'
 import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
@@ -440,6 +440,75 @@ describe('scope', () => {
             })
 
             expect(result.order).toEqual([['agentId', 'desc']])
+        })
+
+        it('should ignore unsupported sortBy from raw context', () => {
+            const scope = defineScope({
+                scope: MetricScope.TicketsOpen,
+                measures: ['ticketCount'],
+                dimensions: ['agentId'],
+                filters: ['periodStart', 'periodEnd'] as const,
+                order: ['ticketCount', 'agentId'] as const,
+            })
+
+            const metric = scope
+                .defineMetricName('test-metric')
+                .defineQuery(() => ({
+                    measures: ['ticketCount'],
+                    dimensions: ['agentId'],
+                }))
+
+            const result = metric.build({
+                ...mockContextWithoutGranularity,
+                sortDirection: OrderDirection.Desc,
+                sortBy: 'not-supported',
+            } as Context)
+
+            expect(result.order).toEqual([['ticketCount', 'desc']])
+        })
+
+        it('should preserve explicit empty dimensions from context', () => {
+            const scope = defineScope({
+                scope: MetricScope.TicketsOpen,
+                measures: ['ticketCount'],
+                dimensions: ['agentId'],
+                filters: ['periodStart', 'periodEnd'] as const,
+            })
+
+            const metric = scope
+                .defineMetricName('test-metric')
+                .defineQuery(() => ({
+                    measures: ['ticketCount'],
+                }))
+
+            const result = metric.build({
+                ...mockContextWithoutGranularity,
+                dimensions: [],
+            })
+
+            expect(result.dimensions).toEqual([])
+        })
+
+        it('should filter unsupported dimensions from raw context', () => {
+            const scope = defineScope({
+                scope: MetricScope.TicketsOpen,
+                measures: ['ticketCount'],
+                dimensions: ['agentId'],
+                filters: ['periodStart', 'periodEnd'] as const,
+            })
+
+            const metric = scope
+                .defineMetricName('test-metric')
+                .defineQuery(() => ({
+                    measures: ['ticketCount'],
+                }))
+
+            const result = metric.build({
+                ...mockContextWithoutGranularity,
+                dimensions: ['not-supported'],
+            } as unknown as Context)
+
+            expect(result.dimensions).toEqual([])
         })
 
         it('should apply order using first measure when sortBy not provided and measure in config.order', () => {

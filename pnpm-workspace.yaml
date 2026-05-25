@@ -145,6 +145,7 @@ catalogs:
   bundler:
     'process': '^0.11.10'
   typescript:
+    '@typescript/native-preview': '7.0.0-dev.20260421.2'
     'tsx': '^4.20.3'
     'typescript': '6.0.3'
   formatter:

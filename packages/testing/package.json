@@ -12,7 +12,7 @@
         "format:fix": "oxfmt --write .",
         "lint": "oxlint --quiet",
         "lint:unused": "knip --directory ../.. --workspace @repo/testing --no-progress",
-        "typecheck": "tsc -p ./tsconfig.json --noEmit true",
+        "typecheck": "tsgo -p ./tsconfig.json --noEmit true",
         "test": "vitest run --configLoader=runner",
         "test:ci:cover": "TZ=UTC LC_ALL=\"en_US.UTF-8\" NODE_OPTIONS=\"--max-old-space-size=4096\" vitest run --maxWorkers=2 --configLoader=runner --coverage --silent=true"
     },

@@ -5,8 +5,8 @@
     "main": "src/main/init/index.tsx",
     "private": true,
     "scripts": {
-        "typecheck": "NODE_OPTIONS=\"--max-old-space-size=8192\" tsc -p ./tsconfig.json --noEmit true",
-        "typecheck:watch": "tsc -p ./tsconfig.json --noEmit true --watch",
+        "typecheck": "tsgo -p ./tsconfig.json --noEmit true",
+        "typecheck:watch": "tsgo -p ./tsconfig.json --noEmit true --watch",
         "oxlint": "oxlint --quiet",
         "stylelint:less": "stylelint \"src/**/*.less\"",
         "lint": "run-p stylelint:less oxlint*",

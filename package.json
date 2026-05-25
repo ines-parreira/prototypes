@@ -54,6 +54,7 @@
         "@sentry/cli": "catalog:sentry",
         "@types/node": "24.12.2",
         "@types/semver": "^7.7.0",
+        "@typescript/native-preview": "catalog:typescript",
         "chokidar": "^4.0.3",
         "deepmerge": "^4.3.1",
         "fallow": "2.73.0",
