@@ -5,6 +5,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { ThemeProvider } from 'core/theme'
+import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { useStoreIntegrationByShopName } from 'pages/settings/helpCenter/hooks/useStoreIntegrationByShopName'
@@ -30,6 +31,9 @@ jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
 }))
 jest.mock('../../hooks/useSkillsArticles')
 jest.mock('../../hooks/useTotalAiAgentTickets')
+jest.mock(
+    'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions',
+)
 jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext')
 jest.mock('pages/settings/helpCenter/hooks/useStoreIntegrationByShopName')
 jest.mock(
@@ -37,6 +41,8 @@ jest.mock(
 )
 const mockUseSkillsArticles = useSkillsArticles as jest.Mock
 const mockUseTotalAiAgentTickets = useTotalAiAgentTickets as jest.Mock
+const mockUseGetGuidancesAvailableActions =
+    useGetGuidancesAvailableActions as jest.Mock
 const mockUseAiAgentStoreConfigurationContext =
     useAiAgentStoreConfigurationContext as jest.Mock
 const mockUseStoreIntegrationByShopName =
@@ -114,6 +120,11 @@ describe('SkillsTable', () => {
             outcomeCustomFieldId: 111,
             intentCustomFieldId: 222,
         })
+        mockUseGetGuidancesAvailableActions.mockReturnValue({
+            guidanceActions: [],
+            isLoading: false,
+            rawActions: [],
+        })
         mockUseSkillsArticles.mockReturnValue({
             articles: mockArticles,
             isLoading: false,
@@ -139,6 +150,77 @@ describe('SkillsTable', () => {
             {},
         )
     }
+
+    describe('Name column', () => {
+        it('should show continue editing for draft skills without setup required actions', () => {
+            mockUseSkillsArticles.mockReturnValue({
+                articles: [
+                    {
+                        id: 4,
+                        title: 'Draft skill',
+                        content: '',
+                        intents: [],
+                        status: 'enabled',
+                        draftVersion: {
+                            locale: 'en-US',
+                            article_translation_version_id: 456,
+                        },
+                    },
+                ],
+                isLoading: false,
+                isError: false,
+                isMetricsLoading: false,
+                isMetricsError: false,
+                metricsDateRange: undefined,
+            })
+
+            renderComponent()
+
+            expect(screen.getByText('Continue editing')).toBeInTheDocument()
+        })
+
+        it('should hide continue editing when setup required is rendered', () => {
+            mockUseGetGuidancesAvailableActions.mockReturnValue({
+                guidanceActions: [
+                    {
+                        name: 'Cancel order',
+                        value: 'cancel-order',
+                        enabled: false,
+                    },
+                ],
+                isLoading: false,
+                rawActions: [],
+            })
+            mockUseSkillsArticles.mockReturnValue({
+                articles: [
+                    {
+                        id: 4,
+                        title: 'Draft skill',
+                        content: '$$$cancel-order$$$',
+                        intents: [],
+                        status: 'enabled',
+                        draftVersion: {
+                            locale: 'en-US',
+                            article_translation_version_id: 456,
+                        },
+                    },
+                ],
+                isLoading: false,
+                isError: false,
+                isMetricsLoading: false,
+                isMetricsError: false,
+                metricsDateRange: undefined,
+            })
+
+            renderComponent()
+
+            expect(screen.getByText('Setup required')).toBeInTheDocument()
+            expect(
+                screen.queryByText('Continue editing'),
+            ).not.toBeInTheDocument()
+        })
+    })
+
     describe('Rendering', () => {
         it('should render table with all articles', () => {
             renderComponent()

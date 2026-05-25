@@ -14,12 +14,30 @@ import { GuidanceActionsBadge } from 'pages/aiAgent/components/GuidanceList/Guid
 import { TruncatedTextWithTooltip } from 'pages/aiAgent/KnowledgeHub/Table/TruncatedTextWithTooltip'
 import type { GuidanceArticle } from 'pages/aiAgent/types'
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
+import { isActionSetupRequired } from 'pages/common/draftjs/plugins/guidanceActions/types'
+import { guidanceActionRegex } from 'pages/common/draftjs/plugins/guidanceActions/utils'
 
 import type { TransformedArticle } from '../../types'
 import { MetricCell } from '../SharedTableComponents/MetricCells'
 import { SortableHeaderCell } from './SortableHeaderCell'
 
 import css from './SkillsTable.less'
+
+const hasSetupRequiredGuidanceAction = (
+    content: string,
+    availableActions: GuidanceAction[],
+) => {
+    const mentionedIds = new Set(
+        [...content.matchAll(new RegExp(guidanceActionRegex.source, 'g'))].map(
+            ([, id]) => id,
+        ),
+    )
+
+    return availableActions.some(
+        (action) =>
+            mentionedIds.has(action.value) && isActionSetupRequired(action),
+    )
+}
 
 export const COLUMN_IDS = {
     NAME: 'name',
@@ -65,6 +83,10 @@ export const getColumns = ({
         cell: ({ row }) => {
             const article = row.original
             const hasDraft = !!article.draftVersion
+            const hasSetupRequired = hasSetupRequiredGuidanceAction(
+                article.content,
+                availableActions,
+            )
 
             return (
                 <Box flexDirection="row" alignItems="center" gap="xs">
@@ -81,7 +103,7 @@ export const getColumns = ({
                         }
                         availableActions={availableActions}
                     />
-                    {hasDraft && (
+                    {hasDraft && !hasSetupRequired && (
                         <Box
                             flexDirection="row"
                             gap="xxxxs"
