@@ -47,6 +47,8 @@ transaction.yaml
 
 # V8 compile cache
 v8-compile-cache-*
+*.tsbuildinfo
+node_modules/.cache/tsgo/
 
 # Storybook
 **/build-storybook.log

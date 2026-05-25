@@ -7,7 +7,8 @@ import ReactRefreshPlugin from '@rspack/plugin-react-refresh'
 import dotenv from 'dotenv'
 import NodePolyfillPlugin from 'node-polyfill-webpack-plugin'
 import { RspackManifestPlugin } from 'rspack-manifest-plugin'
-import { TsCheckerRspackPlugin } from 'ts-checker-rspack-plugin'
+
+import { TsgoCheckerRspackPlugin } from './plugins/tsgo-checker-rspack-plugin.mjs'
 
 dotenv.config()
 
@@ -191,8 +192,10 @@ const config = {
             'WEB_APP_RELEASE: ' + WEB_APP_RELEASE || 'undefined',
         ),
         !isCi &&
-            new TsCheckerRspackPlugin({
-                formatter: { type: 'codeframe', pathType: 'absolute' },
+            new TsgoCheckerRspackPlugin({
+                async: isDev,
+                configFile: path.join(__dirname, 'tsconfig.json'),
+                incremental: isDev,
             }),
     ].filter(Boolean),
     module: {
