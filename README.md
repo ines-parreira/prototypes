@@ -1,12 +1,14 @@
 # Gorgias JavaScript Application
 
-This js app is the frontend for the Gorgias helpdesk.
-It's built using ReactJS + Redux + many other smaller tools.
+The Helpdesk web app is the React/Redux frontend for Gorgias Helpdesk, organized as a PNPM/Nx monorepo with a single host app and internal packages for migrated domains and shared foundations.
+
+For monorepo boundaries and package migration guidance, see [Architecture.md](./Architecture.md).
 
 ## Table of Contents
 
 - [Gorgias JavaScript Application](#gorgias-javascript-application)
     - [Table of Contents](#table-of-contents)
+    - [Getting Started](#getting-started)
     - [Setup NPM to access private packages](#setup-npm-to-access-private-packages)
     - [Prerequisites](#prerequisites)
     - [Installation](#installation)
@@ -49,6 +51,13 @@ It's built using ReactJS + Redux + many other smaller tools.
     - [Update gorgias-chat client](#update-gorgias-chat-client)
     - [FAQ / Troubleshooting](#faq--troubleshooting)
         - [Revert PR was blocked by Codecov](#revert-pr-was-blocked-by-codecov)
+
+## Getting Started
+
+1. Configure GitHub Packages access in [Setup NPM to access private packages](#setup-npm-to-access-private-packages).
+2. Install the required Node.js and pnpm versions from [Prerequisites](#prerequisites).
+3. Run `pnpm install` from the repository root.
+4. Create `apps/helpdesk/.env` from `apps/helpdesk/.env.example`, then follow [Running the Development Server](#running-the-development-server).
 
 ## Setup NPM to access private packages
 
