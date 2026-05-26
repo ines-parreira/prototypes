@@ -27,9 +27,9 @@ const fieldProps = {
     ['inactive-days']: {
         fieldName: 'inactive_days',
         label: 'Shopper inactive for at least',
-        labelV3: 'Shopper inactive',
+        labelV3: 'Shopper inactive for',
         options: [30, 60, 90, 120],
-        optionsV3: toDayOptions([30, 60, 90, 180]),
+        optionsV3: toDayOptions([30, 60, 90, 120]),
         defaultV3: 60,
     },
 }

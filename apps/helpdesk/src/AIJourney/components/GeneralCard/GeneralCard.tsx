@@ -104,7 +104,7 @@ export const GeneralCard = ({
                     {hasFollowUps && (
                         <Box flexDirection="column" gap="sm" width="100%">
                             <NumberOfMessages isV3Architecture />
-                            <FollowUpWaitHours fullWidth />
+                            <FollowUpWaitHours fullWidth isV3Architecture />
                         </Box>
                     )}
                 </div>

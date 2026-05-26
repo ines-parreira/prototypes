@@ -4,12 +4,27 @@ import { NumberField } from '@gorgias/axiom'
 
 import { MAX_WAIT_TIME } from 'AIJourney/constants'
 
-const MIN_WAIT_HOURS = 1
+import { ValueWithUnitField } from '../ValueWithUnitField/ValueWithUnitField'
+import type { UnitOption } from '../ValueWithUnitField/ValueWithUnitField'
+
+const FOLLOW_UP_UNITS: UnitOption[] = [
+    { id: 'hours', label: 'hr', factorToBase: 60 },
+    { id: 'days', label: 'days', factorToBase: 60 * 24 },
+]
+
+const MIN_WAIT_MINUTES = 60
+const MIN_WAIT_HOURS = MIN_WAIT_MINUTES / 60
 const MAX_WAIT_HOURS = MAX_WAIT_TIME / 60
+
+type FollowUpWaitHoursProps = {
+    fullWidth?: boolean
+    isV3Architecture?: boolean
+}
 
 export const FollowUpWaitHours = ({
     fullWidth,
-}: { fullWidth?: boolean } = {}) => {
+    isV3Architecture,
+}: FollowUpWaitHoursProps = {}) => {
     const {
         control,
         formState: { errors },
@@ -22,6 +37,22 @@ export const FollowUpWaitHours = ({
 
     if (!maxFollowUpMessages || maxFollowUpMessages <= 1) {
         return null
+    }
+
+    if (isV3Architecture) {
+        return (
+            <div style={{ width: fullWidth ? '100%' : '390px' }}>
+                <ValueWithUnitField
+                    fieldName="follow_up_wait_minutes"
+                    label="Delay between follow-up messages"
+                    caption="Hours to wait between each follow-up message."
+                    units={FOLLOW_UP_UNITS}
+                    minBaseValue={MIN_WAIT_MINUTES}
+                    maxBaseValue={MAX_WAIT_TIME}
+                    unitAriaLabel="Delay between follow-up messages unit"
+                />
+            </div>
+        )
     }
 
     return (

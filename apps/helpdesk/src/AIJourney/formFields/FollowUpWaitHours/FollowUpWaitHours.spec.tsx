@@ -1,5 +1,5 @@
 import { render } from '@repo/testing'
-import { act, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { FormProvider, useForm } from 'react-hook-form'
 
@@ -16,6 +16,25 @@ const renderComponent = (
             <FormProvider {...methods}>
                 <form onSubmit={methods.handleSubmit(onSubmit)}>
                     <FollowUpWaitHours fullWidth={fullWidth} />
+                    <button type="submit">Submit</button>
+                </form>
+            </FormProvider>
+        )
+    }
+    return render(<Wrapper />)
+}
+
+const renderV3Component = (
+    defaultValues: Record<string, unknown> = {},
+    onSubmit: (values: Record<string, unknown>) => void = () => {},
+    { fullWidth }: { fullWidth?: boolean } = {},
+) => {
+    const Wrapper = () => {
+        const methods = useForm({ defaultValues })
+        return (
+            <FormProvider {...methods}>
+                <form onSubmit={methods.handleSubmit(onSubmit)}>
+                    <FollowUpWaitHours fullWidth={fullWidth} isV3Architecture />
                     <button type="submit">Submit</button>
                 </form>
             </FormProvider>
@@ -75,11 +94,9 @@ describe('<FollowUpWaitHours />', () => {
         const input = screen.getByRole('textbox')
         const submitButton = screen.getByRole('button', { name: /submit/i })
 
-        await act(async () => {
-            await user.clear(input)
-            await user.type(input, '0')
-            await user.click(submitButton)
-        })
+        await user.clear(input)
+        await user.type(input, '0')
+        await user.click(submitButton)
 
         await waitFor(() => {
             expect(
@@ -100,11 +117,9 @@ describe('<FollowUpWaitHours />', () => {
         const input = screen.getByRole('textbox')
         const submitButton = screen.getByRole('button', { name: /submit/i })
 
-        await act(async () => {
-            await user.clear(input)
-            await user.type(input, '200')
-            await user.click(submitButton)
-        })
+        await user.clear(input)
+        await user.type(input, '200')
+        await user.click(submitButton)
 
         await waitFor(() => {
             expect(
@@ -125,11 +140,9 @@ describe('<FollowUpWaitHours />', () => {
         const input = screen.getByRole('textbox')
         const submitButton = screen.getByRole('button', { name: /submit/i })
 
-        await act(async () => {
-            await user.clear(input)
-            await user.type(input, '48')
-            await user.click(submitButton)
-        })
+        await user.clear(input)
+        await user.type(input, '48')
+        await user.click(submitButton)
 
         await waitFor(() => {
             expect(
@@ -170,16 +183,128 @@ describe('<FollowUpWaitHours />', () => {
         const input = screen.getByRole('textbox')
         const submitButton = screen.getByRole('button', { name: /submit/i })
 
-        await act(async () => {
-            await user.clear(input)
-            await user.type(input, '48')
-            await user.click(submitButton)
-        })
+        await user.clear(input)
+        await user.type(input, '48')
+        await user.click(submitButton)
 
         await waitFor(() => {
             expect(onSubmit).toHaveBeenCalledWith(
                 expect.objectContaining({
                     follow_up_wait_minutes: 2880,
+                }),
+                expect.anything(),
+            )
+        })
+    })
+})
+
+describe('<FollowUpWaitHours /> with isV3Architecture', () => {
+    const getValueInput = () =>
+        screen.getByLabelText(/delay between follow-up messages(?! unit)/i, {
+            selector: 'input',
+        })
+
+    const getUnitDisplay = () =>
+        screen.getByLabelText(/delay between follow-up messages unit/i, {
+            selector: 'input',
+        })
+
+    it('renders nothing when max_follow_up_messages is 1', () => {
+        renderV3Component({ max_follow_up_messages: 1 })
+
+        expect(
+            screen.queryByText('Delay between follow-up messages'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('renders the field with hr/days units when max_follow_up_messages > 1', () => {
+        renderV3Component({
+            max_follow_up_messages: 2,
+            follow_up_wait_minutes: 1440,
+        })
+
+        expect(
+            screen.getByText('Delay between follow-up messages'),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText('Hours to wait between each follow-up message.'),
+        ).toBeInTheDocument()
+    })
+
+    it('pre-populates as days when stored value is a whole-day multiple', () => {
+        renderV3Component({
+            max_follow_up_messages: 3,
+            follow_up_wait_minutes: 1440,
+        })
+
+        expect(getValueInput()).toHaveValue('1')
+        expect(getUnitDisplay()).toHaveValue('days')
+    })
+
+    it('pre-populates in hours when value is not divisible by 24h', () => {
+        renderV3Component({
+            max_follow_up_messages: 2,
+            follow_up_wait_minutes: 60 * 3,
+        })
+
+        expect(getValueInput()).toHaveValue('3')
+        expect(getUnitDisplay()).toHaveValue('hr')
+    })
+
+    it('persists the value as minutes when the user types in hours', async () => {
+        const user = userEvent.setup()
+        const onSubmit = jest.fn()
+
+        renderV3Component(
+            {
+                max_follow_up_messages: 2,
+                follow_up_wait_minutes: 60,
+            },
+            onSubmit,
+        )
+
+        const input = getValueInput()
+        const submitButton = screen.getByRole('button', { name: /submit/i })
+
+        await user.clear(input)
+        await user.type(input, '48')
+        await user.click(submitButton)
+
+        await waitFor(() => {
+            expect(onSubmit).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    follow_up_wait_minutes: 2880,
+                }),
+                expect.anything(),
+            )
+        })
+    })
+
+    it('persists the value as days * 1440 minutes when switching to days unit', async () => {
+        const user = userEvent.setup()
+        const onSubmit = jest.fn()
+
+        renderV3Component(
+            {
+                max_follow_up_messages: 2,
+                follow_up_wait_minutes: 60,
+            },
+            onSubmit,
+        )
+
+        await user.click(
+            screen.getByLabelText(/delay between follow-up messages unit/i, {
+                selector: 'button',
+            }),
+        )
+        await user.click(await screen.findByRole('option', { name: 'days' }))
+
+        await user.click(screen.getByRole('button', { name: /submit/i }))
+
+        await waitFor(() => {
+            expect(onSubmit).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    follow_up_wait_minutes: 1440,
                 }),
                 expect.anything(),
             )

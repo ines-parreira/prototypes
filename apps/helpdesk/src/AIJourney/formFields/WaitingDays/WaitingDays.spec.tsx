@@ -99,22 +99,16 @@ describe('<WaitingDays />', () => {
             })
         })
 
-        it('should display 180 days when inactive_days is set to 180', () => {
-            renderComponent('inactive-days', { inactive_days: 180 }, true)
-
-            expect(screen.getByText('180 days')).toBeInTheDocument()
-        })
-
-        it('should not display 120 days option for inactive-days type', () => {
-            renderComponent('inactive-days', { inactive_days: 60 }, true)
-
-            expect(screen.queryByText('120 days')).not.toBeInTheDocument()
-        })
-
-        it('should preserve a legacy inactive_days value that is not in the v3 options', () => {
+        it('should display 120 days when inactive_days is set to 120', () => {
             renderComponent('inactive-days', { inactive_days: 120 }, true)
 
             expect(screen.getByText('120 days')).toBeInTheDocument()
+        })
+
+        it('should preserve a legacy inactive_days value that is not in the v3 options', () => {
+            renderComponent('inactive-days', { inactive_days: 180 }, true)
+
+            expect(screen.getByText('180 days')).toBeInTheDocument()
         })
 
         it('should preserve a legacy cooldown_days value that is not in the v3 options', () => {
