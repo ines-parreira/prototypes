@@ -49,9 +49,9 @@ export function TicketThreadItem({ item }: TicketThreadItemProps) {
         case TicketThreadItemTag.Messages.GroupedMessages:
             return <TicketThreadMessageItem item={item} />
         case TicketThreadItemTag.Events.ActionExecutedEvent:
+        case TicketThreadItemTag.Events.PhoneEvent:
             return <TicketThreadSingleEventItem item={item} />
         case TicketThreadItemTag.Events.TicketEvent:
-        case TicketThreadItemTag.Events.PhoneEvent:
         case TicketThreadItemTag.Events.AuditLogEvent:
         case TicketThreadItemTag.Events.SatisfactionSurveyRespondedEvent:
         case TicketThreadItemTag.Events.PrivateReplyEvent: {
@@ -64,16 +64,17 @@ export function TicketThreadItem({ item }: TicketThreadItemProps) {
             if (showTicketEvents) {
                 return <TicketThreadGroupedEventsItem item={item} />
             }
-            const actionExecutedItems = item.data.filter(
+            const visibleItems = item.data.filter(
                 (e) =>
-                    e._tag === TicketThreadItemTag.Events.ActionExecutedEvent,
+                    e._tag === TicketThreadItemTag.Events.ActionExecutedEvent ||
+                    e._tag === TicketThreadItemTag.Events.PhoneEvent,
             )
-            if (actionExecutedItems.length === 0) {
+            if (visibleItems.length === 0) {
                 return <div />
             }
             return (
                 <TicketThreadGroupedEventsItem
-                    item={{ ...item, data: actionExecutedItems }}
+                    item={{ ...item, data: visibleItems }}
                 />
             )
         }

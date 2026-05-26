@@ -265,6 +265,35 @@ describe('TicketThreadItem', () => {
         ).not.toBeInTheDocument()
     })
 
+    it('renders a phone event item when ticket events are hidden', () => {
+        renderItem({
+            _tag: TicketThreadItemTag.Events.PhoneEvent,
+            data: phoneEventData,
+            datetime: '2024-03-21T11:00:00Z',
+        } as TicketThreadItem)
+
+        expect(
+            screen.getByText('Phone conversation started'),
+        ).toBeInTheDocument()
+    })
+
+    it('renders a phone event ticket link when ticket events are hidden', () => {
+        renderItem({
+            _tag: TicketThreadItemTag.Events.PhoneEvent,
+            data: {
+                ...phoneEventData,
+                data: {
+                    phone_ticket_id: 123,
+                },
+            },
+            datetime: '2024-03-21T11:00:00Z',
+        } as TicketThreadItem)
+
+        expect(
+            screen.getByRole('link', { name: 'View ticket' }),
+        ).toHaveAttribute('href', '/app/ticket/123')
+    })
+
     it('renders an action executed event item', async () => {
         renderItem(
             {
@@ -309,7 +338,7 @@ describe('TicketThreadItem', () => {
         ).toBeInTheDocument()
     })
 
-    it('does not render a merged events item when ticket events are hidden', () => {
+    it('renders phone events from a grouped events item when ticket events are hidden', () => {
         renderItem({
             _tag: TicketThreadItemTag.Events.GroupedEvents,
             datetime: '2024-03-21T11:00:00Z',
@@ -331,8 +360,8 @@ describe('TicketThreadItem', () => {
             screen.queryByText(JSON.stringify(eventData)),
         ).not.toBeInTheDocument()
         expect(
-            screen.queryByText('Phone conversation started'),
-        ).not.toBeInTheDocument()
+            screen.getByText('Phone conversation started'),
+        ).toBeInTheDocument()
     })
 
     it('renders a voice call item', async () => {
