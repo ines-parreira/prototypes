@@ -281,14 +281,14 @@ export const auditLogEventSchema = z.discriminatedUnion('type', [
         'rule-executed',
         auditLogEventDataSchema
             .extend({
-                code: z.string().optional(),
+                code: z.string().nullish(),
                 failed_actions: z
                     .array(auditLogFailedRuleActionSchema)
-                    .optional(),
-                id: auditLogIdSchema.optional(),
-                name: z.string().optional(),
-                slug: z.string().optional(),
-                triggering_event_type: z.string().optional(),
+                    .nullish(),
+                id: auditLogIdSchema.nullish(),
+                name: z.string().nullish(),
+                slug: z.string().nullish(),
+                triggering_event_type: z.string().nullish(),
             })
             .nullish(),
     ),

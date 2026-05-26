@@ -254,6 +254,45 @@ describe('useTicketThreadEvents', () => {
         expect(suggestion?.meta.attribution).toBe('none')
     })
 
+    it('keeps rule-executed events with nullable rule metadata', async () => {
+        const mockListEvents = getEventsHandler([
+            getAuditLogEvent({
+                id: 1,
+                type: 'rule-executed',
+                context: 'ctx-1',
+                created_datetime: '2024-03-21T11:00:00Z',
+                data: {
+                    code: null,
+                    failed_actions: null,
+                    id: 86123,
+                    name: '[Auto Close] Auto-close spam emails',
+                    triggering_event_type: 'ticket-created',
+                },
+            }),
+        ])
+
+        server.use(mockListEvents.handler)
+
+        const { result } = renderHook(() =>
+            useTicketThreadEvents({ ticketId: 7 }),
+        )
+
+        await waitFor(() => {
+            expect(result.current.events).toHaveLength(1)
+        })
+
+        const ruleExecuted = getAuditLogItemByType(
+            result.current.events,
+            'rule-executed',
+        )
+
+        expect(ruleExecuted?.data.data).toMatchObject({
+            id: 86123,
+            name: '[Auto Close] Auto-close spam emails',
+            failed_actions: null,
+        })
+    })
+
     it('falls back to author or none when no via-rule context match exists', async () => {
         const mockListEvents = getEventsHandler([
             getAuditLogEvent({
