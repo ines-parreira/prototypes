@@ -4,6 +4,7 @@ import { BASE_STATS_PATH } from 'routes/constants'
 
 const LOOPY_CASES_ACCOUNT_ID = 141994
 const JAXXON_ACCOUNT_ID = 14516
+const SHOWROOM_PRIVE_ACCOUNT_ID = 203771
 
 export enum RestrictedComponentType {
     Module = 'module',
@@ -66,6 +67,14 @@ export const RBAC_RESTRICTIONS: RestrictionsPerCustomer = {
             ],
             type: RestrictedComponentType.Report,
             role: UserRole.Admin,
+        },
+    ],
+    [SHOWROOM_PRIVE_ACCOUNT_ID]: [
+        {
+            // restrict access to the whole stats module: only Agents or higher can access it
+            ids: [BASE_STATS_PATH],
+            type: RestrictedComponentType.Module,
+            role: UserRole.Agent,
         },
     ],
 }

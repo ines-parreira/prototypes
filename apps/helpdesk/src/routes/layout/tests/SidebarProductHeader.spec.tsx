@@ -9,6 +9,7 @@ import { act, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 
+import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { Product, productConfig } from 'routes/layout/productConfig'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -24,6 +25,13 @@ jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
     useAiAgentAccess: jest.fn(),
 }))
 
+jest.mock(
+    'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions',
+    () => ({
+        useReportChartRestrictions: jest.fn(),
+    }),
+)
+
 jest.mock('@repo/users', () => ({
     ...jest.requireActual('@repo/users'),
     useCurrentUserRole: jest.fn(),
@@ -32,6 +40,7 @@ jest.mock('@repo/users', () => ({
 const mockUseFlagWithLoading = assumeMock(useFlagWithLoading)
 const mockUseAiAgentAccess = assumeMock(useAiAgentAccess)
 const mockUseCurrentUserRole = assumeMock(useCurrentUserRole)
+const mockUseReportChartRestrictions = assumeMock(useReportChartRestrictions)
 
 const mockToggleCollapse = jest.fn()
 const queryClient = mockQueryClient()
@@ -86,6 +95,12 @@ describe('SidebarProductHeader', () => {
             isAdmin: true,
             hasRole: jest.fn().mockReturnValue(true),
             currentUser: { id: 1, role: { name: 'viewer' } },
+        })
+        mockUseReportChartRestrictions.mockReturnValue({
+            isModuleRestrictedToCurrentUser: jest.fn().mockReturnValue(false),
+            isRouteRestrictedToCurrentUser: jest.fn().mockReturnValue(false),
+            isReportRestrictedToCurrentUser: jest.fn().mockReturnValue(false),
+            isChartRestrictedToCurrentUser: jest.fn().mockReturnValue(false),
         })
     })
 
@@ -202,6 +217,42 @@ describe('SidebarProductHeader', () => {
 
             expect(
                 screen.queryByRole('menuitemradio', { name: /Convert/ }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should render Analytics menu item when module is not restricted', async () => {
+            const user = userEvent.setup()
+
+            renderComponent()
+
+            const menu = await openProductMenu(user)
+
+            expect(within(menu).getByText('Analytics')).toBeInTheDocument()
+        })
+
+        it('should not render Analytics menu item when module is restricted', async () => {
+            const user = userEvent.setup()
+            mockUseReportChartRestrictions.mockReturnValue({
+                isModuleRestrictedToCurrentUser: jest
+                    .fn()
+                    .mockReturnValue(true),
+                isRouteRestrictedToCurrentUser: jest
+                    .fn()
+                    .mockReturnValue(false),
+                isReportRestrictedToCurrentUser: jest
+                    .fn()
+                    .mockReturnValue(false),
+                isChartRestrictedToCurrentUser: jest
+                    .fn()
+                    .mockReturnValue(false),
+            })
+
+            renderComponent()
+
+            const menu = await openProductMenu(user)
+
+            expect(
+                within(menu).queryByText('Analytics'),
             ).not.toBeInTheDocument()
         })
 

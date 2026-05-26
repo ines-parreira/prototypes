@@ -13,6 +13,8 @@ import {
     TooltipContent,
 } from '@gorgias/axiom'
 
+import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
+import { BASE_STATS_PATH } from 'routes/constants'
 import type { ProductConfig } from 'routes/layout/productConfig'
 import { Product, productConfig } from 'routes/layout/productConfig'
 import { SidebarProductHeaderMenuItem } from 'routes/layout/SidebarProductHeaderMenuItem'
@@ -36,6 +38,9 @@ export function SidebarProductHeader({
         isAiJourneyVisible,
         isConvertVisible,
     } = useNavigationProducts()
+    const { isModuleRestrictedToCurrentUser } = useReportChartRestrictions()
+    const isAnalyticsRestricted =
+        isModuleRestrictedToCurrentUser(BASE_STATS_PATH)
 
     const icon =
         selectedItem.icon != null ? (
@@ -100,9 +105,11 @@ export function SidebarProductHeader({
                         item={productConfig[Product.Convert]}
                     />
                 )}
-                <SidebarProductHeaderMenuItem
-                    item={productConfig[Product.Analytics]}
-                />
+                {!isAnalyticsRestricted && (
+                    <SidebarProductHeaderMenuItem
+                        item={productConfig[Product.Analytics]}
+                    />
+                )}
             </MenuSection>
             <MenuSection id={'secondary-nav-items'}>
                 <SidebarProductHeaderMenuItem
