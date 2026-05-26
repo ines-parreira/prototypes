@@ -133,10 +133,10 @@ const auditLogFailedRuleActionSchema = z
     })
     .passthrough()
 
-const auditLogCustomerSchema = z
+const auditLogCustomerChangeSchema = z
     .object({
         id: auditLogIdSchema,
-        name: z.string().optional(),
+        name: z.string().nullish(),
     })
     .passthrough()
 
@@ -208,8 +208,8 @@ export const auditLogEventSchema = z.discriminatedUnion('type', [
         'ticket-customer-updated',
         auditLogEventDataSchema
             .extend({
-                new_customer: auditLogCustomerSchema.optional(),
-                old_customer: auditLogCustomerSchema.optional(),
+                new_customer: auditLogCustomerChangeSchema.optional(),
+                old_customer: auditLogCustomerChangeSchema.optional(),
             })
             .nullish(),
     ),

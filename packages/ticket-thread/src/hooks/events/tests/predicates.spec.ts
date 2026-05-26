@@ -189,6 +189,33 @@ describe('ticket thread event predicates', () => {
         })
     })
 
+    it('keeps customer-change audit log events when a customer name is null', () => {
+        const event = {
+            ...baseEvent,
+            id: 11214810449,
+            context: '0d465cb4-f349-4536-8774-c70767d8cb85',
+            type: 'ticket-customer-updated',
+            user_id: 325201328,
+            data: {
+                new_customer: {
+                    id: 337053890,
+                    name: 'Stephanie Enright',
+                },
+                old_customer: {
+                    id: 963116088,
+                    name: null,
+                },
+            },
+        }
+
+        expect(isAuditLogEvent(event)).toBe(true)
+        expect(shouldRenderTicketThreadEvent(event as any)).toBe(true)
+        expect(toTaggedEvent(event as any)).toMatchObject({
+            _tag: TicketThreadItemTag.Events.AuditLogEvent,
+            type: 'ticket-customer-updated',
+        })
+    })
+
     it('filters malformed audit log payloads with invalid data shape', () => {
         const event = {
             ...baseEvent,

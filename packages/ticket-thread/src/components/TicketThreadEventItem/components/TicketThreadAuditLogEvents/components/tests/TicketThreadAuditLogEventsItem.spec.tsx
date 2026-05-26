@@ -203,6 +203,47 @@ describe('TicketThread audit-log rendering', () => {
         expect(screen.getByText('Updated subject')).toBeInTheDocument()
     })
 
+    it('renders customer transition with id fallback when customer names are empty', () => {
+        renderAuditEvent('ticket-customer-updated', {
+            old_customer: {
+                id: 963116088,
+                name: null,
+            },
+            new_customer: {
+                id: 337053890,
+                name: 'Stephanie Enright',
+            },
+        })
+
+        expect(screen.getByText(/Customer changed from/)).toBeInTheDocument()
+        expect(
+            screen.getByRole('link', { name: 'Customer #963116088' }),
+        ).toHaveAttribute('href', '/app/customer/963116088')
+        expect(
+            screen.getByRole('link', { name: 'Stephanie Enright' }),
+        ).toHaveAttribute('href', '/app/customer/337053890')
+    })
+
+    it('renders customer transition with id fallback when the new customer name is empty', () => {
+        renderAuditEvent('ticket-customer-updated', {
+            old_customer: {
+                id: 963116088,
+                name: 'Legacy Customer',
+            },
+            new_customer: {
+                id: 337053890,
+                name: null,
+            },
+        })
+
+        expect(
+            screen.getByRole('link', { name: 'Legacy Customer' }),
+        ).toHaveAttribute('href', '/app/customer/963116088')
+        expect(
+            screen.getByRole('link', { name: 'Customer #337053890' }),
+        ).toHaveAttribute('href', '/app/customer/337053890')
+    })
+
     it('renders ticket summary generated event when first_unseen_id is absent', () => {
         render(
             <TicketThreadAuditLogEventItem
