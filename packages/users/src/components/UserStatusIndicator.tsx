@@ -1,6 +1,7 @@
 import { AvatarStatusIndicator } from '@gorgias/axiom'
 import type { User } from '@gorgias/helpdesk-queries'
-import { useAgentsOnlineStatus } from '@gorgias/realtime'
+
+import { useUserStatus } from '../hooks/useUserStatus'
 
 export type UserStatusIndicatorProps = {
     user: User
@@ -9,11 +10,11 @@ export type UserStatusIndicatorProps = {
 export function UserStatusIndicator({
     user,
 }: UserStatusIndicatorProps): JSX.Element | null {
-    const { onlineAgents } = useAgentsOnlineStatus()
+    const { status } = useUserStatus(user.id)
 
     if (!user.id) return null
 
-    const isOnline = Boolean(onlineAgents[user.id])
+    const isOnline = status === 'online'
 
     return (
         <AvatarStatusIndicator

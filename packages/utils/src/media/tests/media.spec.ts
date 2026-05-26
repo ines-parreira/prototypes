@@ -61,7 +61,9 @@ describe('isPrivateAsset', () => {
 
 describe('replaceAttachmentURL', () => {
     beforeAll(() => {
-        window.GORGIAS_STATE = { currentAccount: { domain: 'acme' } }
+        window.GORGIAS_STATE = {
+            currentAccount: { domain: 'acme', user_id: 1 },
+        }
     })
 
     it('should replace attachment url for production environment', () => {
@@ -103,7 +105,9 @@ describe('parseMedia', () => {
     beforeEach(() => {
         window.IMAGE_PROXY_URL = 'http://proxy-url/'
         window.IMAGE_PROXY_SIGN_KEY = 'test-key'
-        window.GORGIAS_STATE = { currentAccount: { domain: 'acme' } }
+        window.GORGIAS_STATE = {
+            currentAccount: { domain: 'acme', user_id: 1 },
+        }
         mockIsProduction.mockReturnValue(true)
         mockGetEnvironment.mockReturnValue(GorgiasUIEnv.Development)
     })

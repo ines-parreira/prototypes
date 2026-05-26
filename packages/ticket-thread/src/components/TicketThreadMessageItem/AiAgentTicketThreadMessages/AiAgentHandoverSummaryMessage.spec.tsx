@@ -94,7 +94,9 @@ beforeEach(() => {
         mockGetCustomerHandler().handler,
         mockGetUserAvailabilityHandler().handler,
     )
-    window.GORGIAS_STATE = { currentAccount: { domain: 'acme' } }
+    window.GORGIAS_STATE = {
+        currentAccount: { domain: 'acme', user_id: 1 },
+    }
 })
 
 afterEach(() => server.resetHandlers())

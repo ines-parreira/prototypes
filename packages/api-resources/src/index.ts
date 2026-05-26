@@ -1,5 +1,9 @@
 // No-op change to validate CI behavior on app and package updates.
 export {
+    patchInfiniteListCache,
+    removeFromInfiniteListCache,
+} from './cachePatch'
+export {
     createClient,
     default,
     handleNewRelease,

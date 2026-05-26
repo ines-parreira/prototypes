@@ -3873,6 +3873,9 @@ importers:
       '@gorgias/axiom':
         specifier: catalog:axiom
         version: 0.271.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+      '@gorgias/events':
+        specifier: catalog:events
+        version: 0.14.5
       '@gorgias/helpdesk-client':
         specifier: catalog:rest-api-sdk
         version: 0.10.157
@@ -3888,6 +3891,9 @@ importers:
       '@gorgias/realtime':
         specifier: catalog:realtime
         version: 1.2.11(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)(zustand@5.0.9(@types/react@18.2.67)(immer@10.1.1)(react@18.2.0)(use-sync-external-store@1.5.0(react@18.2.0)))
+      '@repo/api-resources':
+        specifier: workspace:*
+        version: link:../api-resources
       '@repo/config':
         specifier: workspace:*
         version: link:../../config

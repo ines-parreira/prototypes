@@ -1,6 +1,7 @@
 declare global {
     interface GorgiasStateCurrentAccount {
         domain: string
+        user_id: number
     }
 
     interface GorgiasStateCurrentUser {

@@ -58,6 +58,7 @@ beforeEach(() => {
     window.GORGIAS_STATE = {
         currentAccount: {
             domain: 'acme',
+            user_id: 1,
         },
     }
     server.use(

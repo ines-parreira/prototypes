@@ -64,14 +64,11 @@ jest.mock('main/app', () => ({
 }))
 jest.mock('routes', () => () => <div>RoutesWrapper</div>)
 jest.mock('@repo/activity-tracker', () => ({ createUserContext: jest.fn() }))
-jest.mock(
-    'pages/common/components/CurrentUserRealtimeAvailabilityUpdates',
-    () => ({
-        CurrentUserRealtimeAvailabilityUpdates: () => (
-            <div>CurrentUserRealtimeAvailabilityUpdates</div>
-        ),
-    }),
-)
+jest.mock('pages/common/components/UserAvailabilityRealtimeUpdates', () => ({
+    UserAvailabilityRealtimeUpdates: () => (
+        <div>UserAvailabilityRealtimeUpdates</div>
+    ),
+}))
 jest.mock('@repo/feature-flags', () => ({
     FeatureFlagsProvider: ({ children }: { children?: ReactNode }) => (
         <div>
@@ -124,10 +121,10 @@ describe('Root', () => {
         })
     })
 
-    it('should render CurrentUserRealtimeAvailabilityUpdates', () => {
+    it('should render UserAvailabilityRealtimeUpdates', () => {
         render(<Root store={store} />)
         expect(
-            screen.getByText('CurrentUserRealtimeAvailabilityUpdates'),
+            screen.getByText('UserAvailabilityRealtimeUpdates'),
         ).toBeInTheDocument()
     })
 })
