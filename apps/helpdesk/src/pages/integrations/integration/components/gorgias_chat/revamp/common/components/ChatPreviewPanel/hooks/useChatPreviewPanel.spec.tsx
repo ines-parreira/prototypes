@@ -84,6 +84,14 @@ describe('useChatPreviewPanel', () => {
         expect(lastElement.props.appId).toBeNull()
     })
 
+    it('passes showBusinessHoursToggle to ChatPreviewPanel', () => {
+        renderHook(() => useChatPreviewPanel({ showBusinessHoursToggle: true }))
+
+        const lastElement = mockWarpToCollapsibleColumn.mock.calls.at(-1)[0]
+        expect(lastElement.type).toBe(ChatPreviewPanel)
+        expect(lastElement.props.showBusinessHoursToggle).toBe(true)
+    })
+
     it('closes the collapsible column when hidePreviewPanel is called', () => {
         const { result } = renderHook(() => useChatPreviewPanel())
 

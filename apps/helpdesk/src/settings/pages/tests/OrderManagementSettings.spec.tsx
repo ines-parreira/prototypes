@@ -176,6 +176,7 @@ describe('OrderManagementSettings', () => {
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
             isNonAiAgentChat2RevampEnabled: false,
+            shouldShowNonAiAgentChatSettingsRevamp: false,
         })
         mockUseChatPreviewPanel.mockReturnValue(buildChatPreviewPanelMock())
     })
@@ -241,6 +242,7 @@ describe('OrderManagementSettings', () => {
                 isChatSettingsScreensRevampFlowsEnabled: false,
                 isChatSettingsScreensRevampOrderManagementEnabled: false,
                 isNonAiAgentChat2RevampEnabled: false,
+                shouldShowNonAiAgentChatSettingsRevamp: false,
             })
         })
 

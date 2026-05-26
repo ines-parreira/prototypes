@@ -11,6 +11,24 @@
         flex-shrink: 0;
     }
 
+    .headerWithBusinessHoursToggle {
+        border-bottom: 0;
+    }
+
+    .businessHoursToggle {
+        padding: var(--spacing-sm) var(--spacing-md);
+        border-bottom: 1px solid var(--border-neutral-default);
+        flex-shrink: 0;
+
+        :global([class*='ui-buttongroup-group']) {
+            width: 100%;
+        }
+
+        :global([class*='ui-buttongroupitem-item']) {
+            flex: 1 1 0;
+        }
+    }
+
     .content {
         overflow: hidden;
         position: relative;

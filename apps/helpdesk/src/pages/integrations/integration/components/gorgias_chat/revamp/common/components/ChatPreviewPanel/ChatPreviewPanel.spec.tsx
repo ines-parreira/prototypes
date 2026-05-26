@@ -17,22 +17,33 @@ let mockHasError = false
 let mockHasGorgiasChat = true
 
 jest.mock('@gorgias/axiom', () => {
-    let capturedOnSelectionChange: ((key: string) => void) | undefined
+    const React = jest.requireActual<typeof import('react')>('react')
+    const actualAxiom =
+        jest.requireActual<typeof import('@gorgias/axiom')>('@gorgias/axiom')
+    const ButtonGroupContext = React.createContext<
+        ((key: string) => void) | undefined
+    >(undefined)
 
     return {
-        ...jest.requireActual('@gorgias/axiom'),
+        ...actualAxiom,
         ButtonGroup: ({ children, onSelectionChange }: ButtonGroupProps) => {
-            capturedOnSelectionChange = onSelectionChange
-            return <div>{children}</div>
+            return (
+                <ButtonGroupContext.Provider value={onSelectionChange}>
+                    <div>{children}</div>
+                </ButtonGroupContext.Provider>
+            )
         },
-        ButtonGroupItem: ({ id }: ButtonGroupItemProps) => (
-            <button
-                data-testid={`button-group-item-${id}`}
-                onClick={() => capturedOnSelectionChange?.(id)}
-            >
-                {id}
-            </button>
-        ),
+        ButtonGroupItem: (props: ButtonGroupItemProps) => {
+            const onSelectionChange = React.useContext(ButtonGroupContext)
+            return (
+                <button
+                    data-testid={`button-group-item-${props.id}`}
+                    onClick={() => onSelectionChange?.(props.id)}
+                >
+                    {'children' in props ? props.children : props.id}
+                </button>
+            )
+        },
     }
 })
 
@@ -56,6 +67,7 @@ jest.mock(
             setOrders: jest.fn(),
             setConversationMessages: jest.fn(),
             simulateConversation: jest.fn(),
+            setCustomBusinessHours: jest.fn(),
         }
 
         const mockGorgiasChatConfiguration = {
@@ -581,6 +593,127 @@ describe('ChatPreviewPanel', () => {
             expect(
                 screen.queryByTestId('chat-preview-default'),
             ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('business hours toggle', () => {
+        it('does not render by default', () => {
+            renderComponent('test-app-id')
+
+            expect(
+                screen.queryByRole('button', {
+                    name: 'During Business Hours',
+                }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', {
+                    name: 'Outside Business Hours',
+                }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('renders when enabled and an appId is provided', () => {
+            renderComponent('test-app-id', { showBusinessHoursToggle: true })
+
+            expect(
+                screen.getByRole('button', { name: 'During Business Hours' }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: 'Outside Business Hours' }),
+            ).toBeInTheDocument()
+        })
+
+        it('renders when enabled with the default chat preview', () => {
+            renderComponent(null, {
+                showBusinessHoursToggle: true,
+                supportDefaultChatPreview: true,
+            })
+
+            expect(
+                screen.getByRole('button', { name: 'During Business Hours' }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: 'Outside Business Hours' }),
+            ).toBeInTheDocument()
+        })
+
+        it('does not render when enabled without an appId or default chat preview support', () => {
+            renderComponent(null, { showBusinessHoursToggle: true })
+
+            expect(
+                screen.queryByRole('button', {
+                    name: 'During Business Hours',
+                }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', {
+                    name: 'Outside Business Hours',
+                }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('applies during-business-hours mode when the preview loads', () => {
+            renderComponent('test-app-id', { showBusinessHoursToggle: true })
+
+            act(() => {
+                triggerOnLoaded()
+            })
+
+            expect(mockGorgiasChat.setCustomBusinessHours).toHaveBeenCalledWith(
+                {
+                    timezone: 'UTC',
+                    businessHours: [
+                        {
+                            days: [1, 2, 3, 4, 5, 6, 7],
+                            fromTime: '00:00',
+                            toTime: '00:00',
+                        },
+                    ],
+                },
+            )
+        })
+
+        it('does not apply business hours when the toggle is hidden', () => {
+            renderComponent('test-app-id')
+
+            act(() => {
+                triggerOnLoaded()
+            })
+
+            expect(
+                mockGorgiasChat.setCustomBusinessHours,
+            ).not.toHaveBeenCalled()
+        })
+
+        it('applies outside-business-hours mode when the toggle selection changes', async () => {
+            const user = userEvent.setup()
+            renderComponent('test-app-id', { showBusinessHoursToggle: true })
+
+            await user.click(
+                screen.getByRole('button', {
+                    name: 'Outside Business Hours',
+                }),
+            )
+
+            expect(mockGorgiasChat.setCustomBusinessHours).toHaveBeenCalledWith(
+                {
+                    timezone: 'UTC',
+                    businessHours: [],
+                },
+            )
+        })
+
+        it('keeps the page navigation buttons wired when the business hours toggle is visible', async () => {
+            const user = userEvent.setup()
+            renderComponent('test-app-id', { showBusinessHoursToggle: true })
+
+            await user.click(screen.getByTestId('button-group-item-homepage'))
+
+            expect(mockGorgiasChat.setPage).toHaveBeenCalledWith(
+                'homepage',
+                undefined,
+            )
+            expect(mockGorgiasChat.open).toHaveBeenCalled()
         })
     })
 

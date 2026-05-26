@@ -51,11 +51,13 @@ export const useChatPreviewPanelContext = (): ChatPreviewPanelContextValue => {
 
 type UseChatPreviewPanelOptions = {
     headerActions?: ReactNode
+    showBusinessHoursToggle?: boolean
     locale?: LANGUAGE
 }
 
 export const useChatPreviewPanel = ({
     headerActions,
+    showBusinessHoursToggle,
     locale,
 }: UseChatPreviewPanelOptions = {}) => {
     const { setIsCollapsibleColumnOpen, warpToCollapsibleColumn } =
@@ -95,6 +97,7 @@ export const useChatPreviewPanel = ({
             ref={chatPreviewPanelRef}
             appId={appId}
             headerActions={headerActions}
+            showBusinessHoursToggle={showBusinessHoursToggle}
             locale={locale}
             onPreviewLoaded={handlePreviewLoaded}
         />,

@@ -33,11 +33,16 @@ export const useShouldShowChatSettingsRevamp = (
     const { isAiAgentEnabled, isLoading: isAiAgentLoading } =
         useIsAiAgentEnabled(storeIntegration, chatId)
 
+    // Shows the chat settings revamp UI for non-AI-agent customers
+    // gated behind the NonAiAgentChat2Revamp flag (Chat 2.0 migration).
+    const shouldShowNonAiAgentChatSettingsRevamp =
+        !isAiAgentEnabled && isNonAiAgentChat2RevampEnabled
+
     // Shows the chat settings revamp UI for AI-agent customers, or for non-AI-agent
     // customers gated behind the NonAiAgentChat2Revamp flag (Chat 2.0 migration).
     const shouldShowChatSettingsRevamp =
         isChatSettingsRevampEnabled &&
-        (isAiAgentEnabled || isNonAiAgentChat2RevampEnabled)
+        (isAiAgentEnabled || shouldShowNonAiAgentChatSettingsRevamp)
 
     // Section-specific flags — each adds an independent rollout gate on top of the base flag
     const shouldShowFlowsScreensRevamp =
@@ -53,6 +58,7 @@ export const useShouldShowChatSettingsRevamp = (
         isChatSettingsScreensRevampOrderManagementEnabled,
         isNonAiAgentChat2RevampEnabled,
         shouldShowChatSettingsRevamp,
+        shouldShowNonAiAgentChatSettingsRevamp,
         shouldShowFlowsScreensRevamp,
         shouldShowOrderManagementScreensRevamp,
         isLoading:

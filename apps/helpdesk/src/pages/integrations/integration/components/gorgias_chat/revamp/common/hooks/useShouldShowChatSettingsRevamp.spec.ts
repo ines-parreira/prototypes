@@ -33,6 +33,57 @@ beforeEach(() => {
 })
 
 describe('useShouldShowChatSettingsRevamp', () => {
+    describe('shouldShowNonAiAgentChatSettingsRevamp', () => {
+        it('is true when NonAiAgentChat2Revamp is enabled and AI agent is disabled', () => {
+            mockUseFlagWithLoading.mockImplementation((key) => ({
+                value: key === FeatureFlagKey.NonAiAgentChat2Revamp,
+                isLoading: false,
+            }))
+            mockUseIsAiAgentEnabled.mockReturnValue({
+                isAiAgentEnabled: false,
+                isLoading: false,
+            })
+
+            const { result } = renderHook(() =>
+                useShouldShowChatSettingsRevamp(mockStoreIntegration, 1),
+            )
+
+            expect(result.current.shouldShowNonAiAgentChatSettingsRevamp).toBe(
+                true,
+            )
+        })
+
+        it('is false when AI agent is enabled even if NonAiAgentChat2Revamp is enabled', () => {
+            mockUseFlagWithLoading.mockImplementation((key) => ({
+                value: key === FeatureFlagKey.NonAiAgentChat2Revamp,
+                isLoading: false,
+            }))
+
+            const { result } = renderHook(() =>
+                useShouldShowChatSettingsRevamp(mockStoreIntegration, 1),
+            )
+
+            expect(result.current.shouldShowNonAiAgentChatSettingsRevamp).toBe(
+                false,
+            )
+        })
+
+        it('is false when AI agent is disabled and NonAiAgentChat2Revamp is disabled', () => {
+            mockUseIsAiAgentEnabled.mockReturnValue({
+                isAiAgentEnabled: false,
+                isLoading: false,
+            })
+
+            const { result } = renderHook(() =>
+                useShouldShowChatSettingsRevamp(mockStoreIntegration, 1),
+            )
+
+            expect(result.current.shouldShowNonAiAgentChatSettingsRevamp).toBe(
+                false,
+            )
+        })
+    })
+
     describe('shouldShowChatSettingsRevamp', () => {
         it('is true when ChatSettingsRevamp is enabled and AI agent is enabled', () => {
             const { result } = renderHook(() =>

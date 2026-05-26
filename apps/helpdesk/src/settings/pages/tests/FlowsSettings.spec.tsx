@@ -106,6 +106,7 @@ describe('FlowsSettings', () => {
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
             isNonAiAgentChat2RevampEnabled: false,
+            shouldShowNonAiAgentChatSettingsRevamp: false,
         })
         mockUseChatPreviewPanel.mockReturnValue({
             chatPreviewPortal: null,

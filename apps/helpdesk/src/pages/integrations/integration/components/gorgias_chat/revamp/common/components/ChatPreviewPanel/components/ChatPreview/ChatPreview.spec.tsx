@@ -1,4 +1,5 @@
 import { createRef } from 'react'
+import type { ComponentProps } from 'react'
 
 import { render } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -23,13 +24,20 @@ const mockRefetchInstallationSnippet = jest.fn()
 const SNIPPET_WITH_SCRIPT =
     '<script src="https://chat.example.com/chat.js"></script>'
 
-const renderComponent = (appId = 'test-app-id') => {
+const renderComponent = (
+    props: Partial<ComponentProps<typeof ChatPreview>> = {},
+) => {
     const queryClient = mockQueryClient()
     const ref = createRef<ChatPreviewHandle>()
 
     const result = render(
         <QueryClientProvider client={queryClient}>
-            <ChatPreview ref={ref} appId={appId} onLoaded={() => {}} />
+            <ChatPreview
+                ref={ref}
+                appId="test-app-id"
+                onLoaded={() => {}}
+                {...props}
+            />
         </QueryClientProvider>,
     )
 
@@ -329,6 +337,42 @@ describe('ChatPreview', () => {
             expect(iframe).toHaveAttribute(
                 'srcdoc',
                 expect.stringContaining('</body>'),
+            )
+        })
+
+        it('should include the chat window height override when fitChatWindowHeight is true', () => {
+            mockUseGetInstallationSnippet.mockReturnValue({
+                data: { snippet: SNIPPET_WITH_SCRIPT },
+                isLoading: false,
+                isError: false,
+            })
+
+            renderComponent({ fitChatWindowHeight: true })
+
+            const iframe = screen.getByTitle('helpdesk-chat-preview-iframe')
+            expect(iframe).toHaveAttribute(
+                'srcdoc',
+                expect.stringContaining(
+                    '#chat-window { height: calc(100% - 100px) !important; }',
+                ),
+            )
+        })
+
+        it('should not include the chat window height override by default', () => {
+            mockUseGetInstallationSnippet.mockReturnValue({
+                data: { snippet: SNIPPET_WITH_SCRIPT },
+                isLoading: false,
+                isError: false,
+            })
+
+            renderComponent()
+
+            const iframe = screen.getByTitle('helpdesk-chat-preview-iframe')
+            expect(iframe).toHaveAttribute(
+                'srcdoc',
+                expect.not.stringContaining(
+                    '#chat-window { height: calc(100% - 100px) !important; }',
+                ),
             )
         })
     })

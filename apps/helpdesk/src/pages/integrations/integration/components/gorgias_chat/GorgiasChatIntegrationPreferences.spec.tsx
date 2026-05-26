@@ -91,6 +91,7 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
             isNonAiAgentChat2RevampEnabled: false,
+            shouldShowNonAiAgentChatSettingsRevamp: false,
         })
 
         render(<GorgiasChatIntegrationPreferences {...minProps} />)
@@ -110,6 +111,7 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
             isNonAiAgentChat2RevampEnabled: false,
+            shouldShowNonAiAgentChatSettingsRevamp: false,
             shouldShowChatSettingsRevamp: false,
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
@@ -142,6 +144,7 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
             isNonAiAgentChat2RevampEnabled: false,
+            shouldShowNonAiAgentChatSettingsRevamp: false,
         })
 
         render(<GorgiasChatIntegrationPreferences {...minProps} />)
@@ -162,6 +165,7 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
             isNonAiAgentChat2RevampEnabled: false,
+            shouldShowNonAiAgentChatSettingsRevamp: false,
         })
 
         render(<GorgiasChatIntegrationPreferences {...minProps} />)
@@ -184,6 +188,7 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
             isNonAiAgentChat2RevampEnabled: false,
+            shouldShowNonAiAgentChatSettingsRevamp: false,
         })
 
         render(<GorgiasChatIntegrationPreferences {...minProps} />)
@@ -207,6 +212,7 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
             isChatSettingsScreensRevampFlowsEnabled: false,
             isChatSettingsScreensRevampOrderManagementEnabled: false,
             isNonAiAgentChat2RevampEnabled: false,
+            shouldShowNonAiAgentChatSettingsRevamp: false,
         })
 
         render(<GorgiasChatIntegrationPreferences {...minProps} />)

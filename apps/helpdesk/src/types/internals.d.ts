@@ -69,6 +69,14 @@ declare global {
             updateSSPTexts(param: Record<string, string>): void
             updateTexts(texts: Record<string, string>): void
             setPosition(position: GorgiasChatPosition): void
+            setCustomBusinessHours?: (input: {
+                timezone: string
+                businessHours: {
+                    days: number[]
+                    fromTime: string
+                    toTime: string
+                }[]
+            }) => void
             updateSettings?: (
                 settings: GorgiasChatPreviewApplicationSettings,
             ) => void

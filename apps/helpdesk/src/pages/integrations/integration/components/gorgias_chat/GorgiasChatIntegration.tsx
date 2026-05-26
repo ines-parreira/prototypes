@@ -75,20 +75,24 @@ export const GorgiasChatIntegration = ({
         return primaryLanguage
     }, [integration])
 
+    const { storeIntegration } = useStoreIntegration(integration)
+
+    const {
+        shouldShowChatSettingsRevamp,
+        shouldShowNonAiAgentChatSettingsRevamp,
+    } = useShouldShowChatSettingsRevamp(storeIntegration, integration.get('id'))
+
     const {
         showPreviewPanel,
         hidePreviewPanel,
         chatPreviewPortal,
         ...charPreviewPanelControls
-    } = useChatPreviewPanel({ locale: chatLanguage })
+    } = useChatPreviewPanel({
+        locale: chatLanguage,
+        showBusinessHoursToggle: shouldShowNonAiAgentChatSettingsRevamp,
+    })
     const isQuickRepliesEnabled = useIsQuickRepliesEnabled()
     const { hasAccess } = useAiAgentAccess()
-    const { storeIntegration } = useStoreIntegration(integration)
-
-    const { shouldShowChatSettingsRevamp } = useShouldShowChatSettingsRevamp(
-        storeIntegration,
-        integration.get('id'),
-    )
 
     const editLinkDefaultTab = useMemo(() => {
         return `/app/settings/channels/${IntegrationType.GorgiasChat}/${integrationId}/${Tab.Appearance}`

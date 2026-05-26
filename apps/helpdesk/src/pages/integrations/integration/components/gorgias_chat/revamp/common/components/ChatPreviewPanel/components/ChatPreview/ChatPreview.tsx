@@ -22,6 +22,14 @@ type Props = {
     appId: string
     language?: LANGUAGE
     onLoaded: (gorgiasChat: any) => void
+    /**
+     * When true, injects a CSS override that constrains the legacy chat
+     * window iframe (`#chat-window`) to fit inside its container minus the
+     * launcher gap. Required when the preview shares vertical space with
+     * additional UI (e.g. the business hours toggle); must stay off for the
+     * chat 2.0 redesign which manages its own positioning.
+     */
+    fitChatWindowHeight?: boolean
 }
 
 export type ChatPreviewHandle = {
@@ -31,7 +39,7 @@ export type ChatPreviewHandle = {
 }
 
 export const ChatPreview = forwardRef<ChatPreviewHandle, Props>(
-    ({ appId, language, onLoaded }, ref) => {
+    ({ appId, language, onLoaded, fitChatWindowHeight = false }, ref) => {
         const iframeRef = useRef<HTMLIFrameElement>(null)
         const [isLoaded, setIsWidgetLoaded] = useState(false)
         const [hasError, setHasError] = useState(false)
@@ -93,9 +101,16 @@ export const ChatPreview = forwardRef<ChatPreviewHandle, Props>(
                 String(Math.floor(Math.random() * Number.MAX_SAFE_INTEGER)),
             )
 
+            const fitChatWindowStyle = fitChatWindowHeight
+                ? `<style>#chat-window { height: calc(100% - 100px) !important; }</style>`
+                : ''
+
             script.src = scriptSrc.toString()
             return `
             <html>
+                <head>
+                    ${fitChatWindowStyle}
+                </head>
                 <body>
                     <script type="application/javascript">
                         ${iframeBootstrapScript}
@@ -113,7 +128,7 @@ export const ChatPreview = forwardRef<ChatPreviewHandle, Props>(
                 </body>
             </html>
         `
-        }, [installationSnippet?.snippet, language])
+        }, [installationSnippet?.snippet, language, fitChatWindowHeight])
 
         useEffect(() => {
             if (

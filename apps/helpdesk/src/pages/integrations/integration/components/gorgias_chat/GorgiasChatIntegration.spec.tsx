@@ -142,6 +142,7 @@ beforeEach(() => {
     })
     mockUseShouldShowChatSettingsRevamp.mockReturnValue({
         shouldShowChatSettingsRevamp: false,
+        shouldShowNonAiAgentChatSettingsRevamp: false,
     })
     mockUseStoreIntegration.mockReturnValue({ storeIntegration: undefined })
     mockUseIsQuickRepliesEnabled.mockReturnValue(false)
@@ -426,6 +427,7 @@ describe('<GorgiasChatIntegration />', () => {
 
             expect(mockUseChatPreviewPanel).toHaveBeenCalledWith({
                 locale: 'en',
+                showBusinessHoursToggle: false,
             })
         })
 
@@ -442,6 +444,21 @@ describe('<GorgiasChatIntegration />', () => {
 
             expect(mockUseChatPreviewPanel).toHaveBeenCalledWith({
                 locale: undefined,
+                showBusinessHoursToggle: false,
+            })
+        })
+
+        it('passes showBusinessHoursToggle when non-AI-agent chat settings revamp is enabled', () => {
+            mockUseShouldShowChatSettingsRevamp.mockReturnValue({
+                shouldShowChatSettingsRevamp: true,
+                shouldShowNonAiAgentChatSettingsRevamp: true,
+            })
+
+            render(<GorgiasChatIntegration {...defaultProps} />)
+
+            expect(mockUseChatPreviewPanel).toHaveBeenCalledWith({
+                locale: undefined,
+                showBusinessHoursToggle: true,
             })
         })
     })

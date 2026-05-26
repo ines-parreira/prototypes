@@ -37,6 +37,7 @@ const defaultMockFlags = {
     isChatSettingsScreensRevampFlowsEnabled: false,
     isChatSettingsScreensRevampOrderManagementEnabled: false,
     isNonAiAgentChat2RevampEnabled: false,
+    shouldShowNonAiAgentChatSettingsRevamp: false,
     shouldShowChatSettingsRevamp: false,
     shouldShowFlowsScreensRevamp: false,
     shouldShowOrderManagementScreensRevamp: false,

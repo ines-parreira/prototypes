@@ -54,6 +54,51 @@ export type ChatPreviewPageOptions = {
     showHelpfulPrompt?: boolean
 }
 
+export type ChatPreviewBusinessHoursMode =
+    | 'during-business-hours'
+    | 'outside-business-hours'
+
+const PREVIEW_BUSINESS_HOURS_INPUT: Record<
+    ChatPreviewBusinessHoursMode,
+    {
+        timezone: string
+        businessHours: {
+            days: number[]
+            fromTime: string
+            toTime: string
+        }[]
+    }
+> = {
+    'during-business-hours': {
+        timezone: 'UTC',
+        businessHours: [
+            {
+                days: [1, 2, 3, 4, 5, 6, 7],
+                fromTime: '00:00',
+                toTime: '00:00',
+            },
+        ],
+    },
+    'outside-business-hours': {
+        timezone: 'UTC',
+        businessHours: [],
+    },
+}
+
+const BUSINESS_HOURS_PREVIEW_OPTIONS: {
+    id: ChatPreviewBusinessHoursMode
+    label: string
+}[] = [
+    {
+        id: 'during-business-hours',
+        label: 'During Business Hours',
+    },
+    {
+        id: 'outside-business-hours',
+        label: 'Outside Business Hours',
+    },
+]
+
 export type SimulateConversationMessage = {
     text: string
     isHtml?: boolean
@@ -93,7 +138,31 @@ type Props = {
     withHeader?: boolean
     supportDefaultChatPreview?: boolean
     forceChatRedesign?: boolean
+    showBusinessHoursToggle?: boolean
 }
+
+type BusinessHoursToggleProps = {
+    selectedMode: ChatPreviewBusinessHoursMode
+    onSelectionChange: (mode: string) => void
+}
+
+const BusinessHoursToggle = ({
+    selectedMode,
+    onSelectionChange,
+}: BusinessHoursToggleProps) => (
+    <Box alignItems="stretch" className={css.businessHoursToggle}>
+        <ButtonGroup
+            selectedKey={selectedMode}
+            onSelectionChange={onSelectionChange}
+        >
+            {BUSINESS_HOURS_PREVIEW_OPTIONS.map(({ id, label }) => (
+                <ButtonGroupItem key={id} id={id}>
+                    {label}
+                </ButtonGroupItem>
+            ))}
+        </ButtonGroup>
+    </Box>
+)
 
 export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
     (
@@ -105,6 +174,7 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
             withHeader = true,
             supportDefaultChatPreview = false,
             forceChatRedesign = false,
+            showBusinessHoursToggle = false,
         }: Props,
         ref,
     ) => {
@@ -113,6 +183,13 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
             useState<ChatPreviewPage>('homepage')
 
         const [reloadKey, setReloadKey] = useState(0)
+        const [businessHoursMode, setBusinessHoursMode] =
+            useState<ChatPreviewBusinessHoursMode>('during-business-hours')
+
+        const shouldRenderBusinessHoursToggle =
+            showBusinessHoursToggle &&
+            Boolean(appId || supportDefaultChatPreview)
+
         const chatPreviewKey = useMemo(() => {
             return `${reloadKey}${locale ? '-' + locale : ''}`
         }, [reloadKey, locale])
@@ -179,6 +256,30 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
                 gorgiasChat.updateSettings?.(settings),
             )
         }
+
+        const applyBusinessHoursMode = useCallback(
+            (mode: ChatPreviewBusinessHoursMode) => {
+                withGorgiasChat((gorgiasChat) => {
+                    gorgiasChat.setCustomBusinessHours?.(
+                        PREVIEW_BUSINESS_HOURS_INPUT[mode],
+                    )
+                })
+            },
+            [],
+        )
+
+        const handleBusinessHoursModeChange = useCallback(
+            (mode: string) => {
+                if (
+                    mode === 'during-business-hours' ||
+                    mode === 'outside-business-hours'
+                ) {
+                    setBusinessHoursMode(mode)
+                    applyBusinessHoursMode(mode)
+                }
+            },
+            [applyBusinessHoursMode],
+        )
 
         /**
          * The iframe runs in a separate JS realm, so plain objects created in this
@@ -287,6 +388,12 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
                     }
                 }
 
+                if (showBusinessHoursToggle) {
+                    gorgiasChat.setCustomBusinessHours?.(
+                        PREVIEW_BUSINESS_HOURS_INPUT[businessHoursMode],
+                    )
+                }
+
                 const sspTexts =
                     GORGIAS_CHAT_SSP_TEXTS[
                         locale ?? GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT
@@ -306,6 +413,8 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
                 locale,
                 createIframeObject,
                 forceChatRedesign,
+                showBusinessHoursToggle,
+                businessHoursMode,
             ],
         )
 
@@ -318,6 +427,7 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
                         appId={appId}
                         language={locale}
                         onLoaded={onLoaded}
+                        fitChatWindowHeight={showBusinessHoursToggle}
                     />
                 )
             }
@@ -369,7 +479,11 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
                     <Box
                         alignItems="center"
                         justifyContent="space-between"
-                        className={css.header}
+                        className={`${css.header} ${
+                            shouldRenderBusinessHoursToggle
+                                ? css.headerWithBusinessHoursToggle
+                                : ''
+                        }`}
                     >
                         <Text variant={TextVariant.Medium}>Chat preview</Text>
                         {headerActions ??
@@ -392,6 +506,12 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
                                 </ButtonGroup>
                             ))}
                     </Box>
+                )}
+                {withHeader && shouldRenderBusinessHoursToggle && (
+                    <BusinessHoursToggle
+                        selectedMode={businessHoursMode}
+                        onSelectionChange={handleBusinessHoursModeChange}
+                    />
                 )}
                 <Box
                     flexGrow={appId || supportDefaultChatPreview ? 1 : 0}
