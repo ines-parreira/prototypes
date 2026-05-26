@@ -81,6 +81,7 @@ import type { CurrentUser, RootState, StoreDispatch } from 'state/types'
 import {
     castGorgiasVideosForUnsupportedSources,
     getActionTemplate,
+    getCurrentTicketIdFromLocation,
     toJS,
 } from 'utils'
 import { getMomentNow } from 'utils/date'
@@ -96,6 +97,7 @@ import {
 } from './emailExtraUtils'
 import {
     TicketMessageActionValidationError,
+    TicketMessageIdentityMismatchError,
     TicketMessageInvalidSendDataError,
 } from './errors'
 import type { MessageContext } from './responseUtils'
@@ -278,7 +280,10 @@ export const setResponseText =
     ): ReturnType<StoreDispatch> => {
         const state = getState()
         const { ticket, currentUser } = state
-        const ticketId = ticket.get('id') as string
+        const ticketId =
+            (args.get('ticketId') as Maybe<string | number>) ??
+            getCurrentTicketIdFromLocation() ??
+            (ticket.get('id') as string)
         const signature = selectors.getNewMessageSignature(state)
 
         const topRankMacroState = ticketSelectors.getTopRankMacroState(state)
@@ -1053,12 +1058,16 @@ export function prepareTicketMessage({
     resetMessage = true,
     retryMessage,
     emailThreadSizeFF,
+    submittedTicketId,
+    submissionContext,
 }: {
     status?: TicketStatus
     macroActions?: MacroActions
     resetMessage?: boolean
     retryMessage?: Map<any, any>
     emailThreadSizeFF?: boolean
+    submittedTicketId?: Maybe<string | number>
+    submissionContext?: TicketMessageSubmissionDiagnosticsContext
 } = {}) {
     return (
         dispatch: StoreDispatch,
@@ -1075,11 +1084,45 @@ export function prepareTicketMessage({
             let messageId = getMomentNow()
             let messageToSend: NewMessage
             let replyAreaState = toReplyAreaState(newMessage.get('state'))
+            const reduxTicketId = ticket?.get('id')
+            const ticketIdForPreparedMessage =
+                submittedTicketId ?? reduxTicketId
+            const ticketIdForStateUpdates = ticketIdForPreparedMessage
+
+            if (
+                !retryMessage &&
+                haveDifferentTicketIds(submittedTicketId, reduxTicketId)
+            ) {
+                reportTicketMessageSubmissionIdentityMismatch(
+                    'before_prepare',
+                    {
+                        ...submissionContext,
+                        ticket_id_redux: reduxTicketId,
+                        ticket_id_submitted: submittedTicketId,
+                        message_id: messageId,
+                        status,
+                        reset_message: resetMessage,
+                    },
+                )
+                return reject(new TicketMessageIdentityMismatchError())
+            }
 
             // message already parsed
             if (!!retryMessage) {
                 messageId = retryMessage.getIn(['_internal', 'id'])
-                messageToSend = retryMessage.get('originalMessage')
+                const originalMessage = retryMessage.get('originalMessage')
+                messageToSend = (
+                    isImmutable(originalMessage)
+                        ? toJS<NewMessage>(originalMessage)
+                        : originalMessage
+                ) as NewMessage
+
+                if (ticketIdForPreparedMessage && !messageToSend.ticket_id) {
+                    messageToSend = {
+                        ...messageToSend,
+                        ticket_id: ticketIdForPreparedMessage,
+                    }
+                }
             } else {
                 const dataToSend = prepareTicketDataToSend(
                     dispatch,
@@ -1115,7 +1158,7 @@ export function prepareTicketMessage({
 
                     messageToSend = {
                         ...dataToSend.newMessage,
-                        ticket_id: ticket?.get('id'),
+                        ticket_id: ticketIdForPreparedMessage,
                         source: {
                             ...dataToSend.newMessage.source,
                             extra: shouldLetBackendRebuildThread
@@ -1132,7 +1175,7 @@ export function prepareTicketMessage({
                 } else {
                     messageToSend = {
                         ...dataToSend.newMessage,
-                        ticket_id: ticket?.get('id'),
+                        ticket_id: ticketIdForPreparedMessage,
                     }
                 }
 
@@ -1223,7 +1266,7 @@ export function prepareTicketMessage({
                 logEvent(SegmentEvent.TopRankMacro, {
                     action: 'accepted',
                     user_id: state.currentUser.get('id'),
-                    ticketId: state.ticket.get('id'),
+                    ticketId: ticketIdForPreparedMessage,
                     macro: appliedMacro.toJS(),
                 })
             }
@@ -1254,7 +1297,7 @@ export function prepareTicketMessage({
                         state: RootState,
                     ) => List<any>
                 )(state),
-                ticketId: ticket.get('id'),
+                ticketId: ticketIdForStateUpdates,
                 ticketVia: ticket.get('via'),
                 events: ticket.get('events'),
             })
@@ -1276,7 +1319,7 @@ export function prepareTicketMessage({
 
             dispatch({
                 type: ticketConstants.SET_TOP_RANK_MACRO_STATE,
-                ticketId: ticket.get('id'),
+                ticketId: ticketIdForStateUpdates,
                 topRankMacroState: null,
             })
         })
@@ -1467,8 +1510,15 @@ export function sendTicketMessage(
         })
 }
 
-export function retrySubmitTicketMessage(message: Map<any, any>) {
+export function retrySubmitTicketMessage(
+    message: Map<any, any>,
+    submittedTicketId?: Maybe<string | number>,
+) {
     return async (dispatch: StoreDispatch) => {
+        const retryTicketId =
+            message.getIn(['originalMessage', 'ticket_id']) ??
+            message.get('ticket_id') ??
+            submittedTicketId
         const [{ flag: isReportingEnabled }, { messageId, messageToSend }] =
             await Promise.all([
                 fetchFlag(
@@ -1479,9 +1529,11 @@ export function retrySubmitTicketMessage(message: Map<any, any>) {
                         status: message.getIn(['_internal', 'status']),
                         resetMessage: false,
                         retryMessage: message,
+                        submittedTicketId: retryTicketId,
                     }),
                 ),
             ])
+        const ticketIdToRetry = retryTicketId ?? messageToSend.ticket_id
 
         return dispatch(
             sendTicketMessage(
@@ -1489,9 +1541,10 @@ export function retrySubmitTicketMessage(message: Map<any, any>) {
                 messageToSend,
                 null,
                 false,
-                undefined,
+                ticketIdToRetry ? String(ticketIdToRetry) : undefined,
                 {
                     submission_path: 'retry',
+                    ticket_id_submitted: ticketIdToRetry,
                     [ticketMessageSubmissionIdentityReportingEnabledContextKey]:
                         isReportingEnabled,
                 },

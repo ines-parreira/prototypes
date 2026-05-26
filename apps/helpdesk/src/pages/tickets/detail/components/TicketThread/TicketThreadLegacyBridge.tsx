@@ -72,10 +72,13 @@ export const TicketThreadLegacyBridge = ({
                 ),
             retrySubmitTicketMessage: (message: unknown) =>
                 dispatch(
-                    NewMessageActions.retrySubmitTicketMessage(fromJS(message)),
+                    NewMessageActions.retrySubmitTicketMessage(
+                        fromJS(message),
+                        ticketId,
+                    ),
                 ),
         }),
-        [dispatch],
+        [dispatch, ticketId],
     )
     const legacyState = useMemo(
         () => ({

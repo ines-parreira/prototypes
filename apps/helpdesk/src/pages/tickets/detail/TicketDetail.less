@@ -2,6 +2,85 @@
     .loader {
         background-color: var(--neutral-grey-0); // legacy
     }
+
+    .ticketIdentityDebugMenu {
+        position: fixed;
+        right: 100px;
+        bottom: 100px;
+        z-index: 1100;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-end;
+    }
+
+    .ticketIdentityDebugPanel {
+        width: min(440px, calc(100vw - 24px));
+        max-height: min(620px, calc(100vh - 88px));
+        padding: 12px;
+        overflow: auto;
+        color: var(--content-neutral-default, #111827);
+        background: var(--surface-neutral-primary, #fff);
+        border: 1px solid var(--border-neutral-default, #d8dee4);
+        border-radius: 8px;
+        box-shadow: 0 12px 36px fade(black, 24%);
+    }
+
+    .ticketIdentityDebugHeader {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 10px;
+    }
+
+    .ticketIdentityDebugRows {
+        display: grid;
+        gap: 6px;
+        margin: 0 0 10px;
+
+        > div {
+            display: grid;
+            grid-template-columns: 128px 1fr;
+            gap: 8px;
+            align-items: baseline;
+        }
+
+        dt {
+            margin: 0;
+            color: var(--content-neutral-secondary, #596579);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        dd {
+            min-width: 0;
+            margin: 0;
+            font-family:
+                ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+                'Liberation Mono', 'Courier New', monospace;
+            font-size: 12px;
+            overflow-wrap: anywhere;
+        }
+    }
+
+    .ticketIdentityDebugJson {
+        max-height: 440px;
+        padding: 10px;
+        margin: 0;
+        overflow: auto;
+        color: var(--content-neutral-default, #111827);
+        background: var(--surface-neutral-secondary, #f6f8fa);
+        border: 1px solid var(--border-neutral-default, #d8dee4);
+        border-radius: 6px;
+        font-family:
+            ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+            'Liberation Mono', 'Courier New', monospace;
+        font-size: 11px;
+        line-height: 1.45;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+    }
 }
 
 .axiom :local {

@@ -90,6 +90,7 @@ export type GorgiasAction = {
     tickets?: List<any>
     ticket?: Map<any, any>
     ticketId?: number | string
+    requestedTicketId?: number | string
     ticketVia?: TicketVia
     events?: TicketEvent[] | List<TicketEvent>
     userId?: number
@@ -127,6 +128,7 @@ export type GorgiasAction = {
     appId?: string
     integrationType?: IntegrationType
     forceOverride?: boolean
+    discreetly?: boolean
     panelName?: string
     args?: Map<any, any>
     index?: number

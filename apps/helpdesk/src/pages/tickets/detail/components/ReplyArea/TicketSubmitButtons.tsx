@@ -12,6 +12,7 @@ import classnames from 'classnames'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 import _sample from 'lodash/sample'
+import { useParams } from 'react-router-dom'
 
 import {
     LegacyButton as Button,
@@ -93,17 +94,21 @@ export function TicketSubmitButtons({ submit }: Props) {
     const canSend = useAppSelector(getCanSend)
     const hasContentlessAction = useAppSelector(getHasContentlessAction)
     const ticket = useAppSelector((state) => state.ticket)
-    const { validateTicketFields } = useTicketFieldsValidation(
-        Number(ticket.get('id')),
-    )
+    const { ticketId: ticketIdParam } = useParams<{ ticketId?: string }>()
+    const routeTicketId = Number(ticketIdParam)
+    const validationTicketId = Number.isNaN(routeTicketId)
+        ? Number(ticket.get('id'))
+        : routeTicketId
+    const { validateTicketFields } =
+        useTicketFieldsValidation(validationTicketId)
 
     const tip = useMemo(() => _sample(TIPS), [])
 
     const trackSendAndClosedClicked = useCallback(() => {
         logEvent(SegmentEvent.TicketSendAndCloseButtonClicked, {
-            ticketId: ticket.get('id'),
+            ticketId: validationTicketId,
         })
-    }, [ticket])
+    }, [validationTicketId])
 
     const handleClickHideTips = useCallback(() => {
         const newPreferences = currentUserPreferences.setIn(

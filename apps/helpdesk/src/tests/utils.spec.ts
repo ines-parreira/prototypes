@@ -258,6 +258,9 @@ describe('global utils', () => {
             expect(utils.isCurrentlyOnTicket()).toBe(true)
             window.location.pathname = '/app/ticket/12'
             expect(utils.isCurrentlyOnTicket(12)).toBe(true)
+            window.location.pathname = '/app/views/1/12'
+            expect(utils.isCurrentlyOnTicket()).toBe(true)
+            expect(utils.isCurrentlyOnTicket('12')).toBe(true)
         })
 
         it('should be false', () => {
@@ -266,6 +269,7 @@ describe('global utils', () => {
             window.location.pathname = '/app/tickets'
             expect(utils.isCurrentlyOnTicket()).toBe(false)
             window.location.pathname = '/app/ticket/12'
+            expect(utils.isCurrentlyOnTicket(1)).toBe(false)
             expect(utils.isCurrentlyOnTicket(13)).toBe(false)
         })
     })

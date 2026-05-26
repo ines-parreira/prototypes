@@ -28,7 +28,7 @@ import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import { useLocation, useParams } from 'react-router-dom'
 
-import { toast } from '@gorgias/axiom'
+import { Button, Text, toast } from '@gorgias/axiom'
 import type { DomainEvent } from '@gorgias/events'
 import type { Macro } from '@gorgias/helpdesk-types'
 import { useAgentActivity } from '@gorgias/realtime'
@@ -71,6 +71,7 @@ import {
 } from 'state/newMessage/actions'
 import {
     TicketMessageActionValidationError,
+    TicketMessageIdentityMismatchError,
     TicketMessageInvalidSendDataError,
 } from 'state/newMessage/errors'
 import { canSend, getNewMessageSource } from 'state/newMessage/selectors'
@@ -147,7 +148,6 @@ export const TicketDetailContainer = ({
     const hasUIVisionMS3 = useHelpdeskV2MS3Flag()
     const { ticketId: ticketIdParam } = useParams<{ ticketId: string }>()
     const { customer: customerId } = useSearch<{ customer?: string }>()
-    const ticketIdParamRef = useRef(ticketIdParam)
     const hasSelectedDefaultChannel = useRef(false)
     const { setRecentItem } = useRecentItems<PickedTicket>(RecentItems.Tickets)
     const { data: voiceCallsData, isLoading: isVoiceCallsDataLoading } =
@@ -184,13 +184,17 @@ export const TicketDetailContainer = ({
         ticketId: ticket.get('id'),
     })
 
-    useEffect(() => {
-        ticketIdParamRef.current = ticketIdParam
-    })
-
     const [isTicketHidden, setIsTicketHidden] = useState(false)
 
     const ticketId = useMemo(() => ticket.get('id') as number, [ticket])
+    const routeTicketId = useMemo(() => {
+        if (!ticketIdParam || ticketIdParam === 'new') {
+            return undefined
+        }
+
+        const parsedTicketId = Number(ticketIdParam)
+        return Number.isNaN(parsedTicketId) ? undefined : parsedTicketId
+    }, [ticketIdParam])
     const ticketStatus = useMemo(() => ticket.get('status') as string, [ticket])
 
     useTicketActivityTracking(
@@ -246,8 +250,8 @@ export const TicketDetailContainer = ({
         voiceCallsData,
     ])
 
-    const { checkTicketFieldErrors } = useTicketFieldsCheck(ticketId)
-    const { validateTicketFields } = useTicketFieldsValidation(ticketId)
+    const { checkTicketFieldErrors } = useTicketFieldsCheck(routeTicketId)
+    const { validateTicketFields } = useTicketFieldsValidation(routeTicketId)
 
     useEffect(() => {
         if (
@@ -279,6 +283,9 @@ export const TicketDetailContainer = ({
     const isTicketMessageSubmissionIdentityReportingEnabled = useFlag(
         FeatureFlagKey.TicketMessagesAssignedToWrongTicketDebugging,
     )
+    const isDebugMenuFlagEnabled = useFlag(FeatureFlagKey.DebugMenu, false)
+    const isTicketIdentityDebugMenuEnabled =
+        isDebugMenuFlagEnabled || !!window.USER_IMPERSONATED
 
     const { goToTicket: goToPrevious, isEnabled: isPrevEnabled } =
         useGoToPreviousTicket(ticketIdParam)
@@ -361,15 +368,21 @@ export const TicketDetailContainer = ({
 
     const getSubmitDiagnosticsContext = useCallback(
         ({
-            activeTicketId,
             action,
+            reduxTicketId,
             resetMessage,
             status,
-        }: SubmitArgs & { activeTicketId: Maybe<number> }) => ({
+            ticketIdUrl,
+            submittedTicketId,
+        }: SubmitArgs & {
+            reduxTicketId: Maybe<number>
+            submittedTicketId: Maybe<number | string>
+            ticketIdUrl: Maybe<string>
+        }) => ({
             ...getBrowserTicketSubmissionDiagnostics(),
-            ticket_id_url: ticketIdParamRef.current,
-            ticket_id_redux: activeTicketId,
-            ticket_id_submitted: activeTicketId,
+            ticket_id_url: ticketIdUrl,
+            ticket_id_redux: reduxTicketId,
+            ticket_id_submitted: submittedTicketId,
             status,
             action,
             reset_message: resetMessage,
@@ -386,13 +399,21 @@ export const TicketDetailContainer = ({
         ],
     )
 
-    const maybeGoToNextTicket = useCallback(() => {
-        // If the history is open, we don't want to go to the next ticket
-        if (!ticket.getIn(['_internal', 'displayHistory'])) {
-            const promise = hideTicket().then(clearTicket)
-            void goToNextTicket(parseInt(ticketIdParamRef.current), promise)
-        }
-    }, [clearTicket, goToNextTicket, hideTicket, ticket])
+    const maybeGoToNextTicket = useCallback(
+        (closedTicketId: Maybe<number | string> = ticketIdParam) => {
+            const closedTicketIdNumber = Number(closedTicketId)
+            if (Number.isNaN(closedTicketIdNumber)) {
+                return
+            }
+
+            // If the history is open, we don't want to go to the next ticket
+            if (!ticket.getIn(['_internal', 'displayHistory'])) {
+                const promise = hideTicket().then(clearTicket)
+                void goToNextTicket(closedTicketIdNumber, promise)
+            }
+        },
+        [clearTicket, goToNextTicket, hideTicket, ticket, ticketIdParam],
+    )
 
     /**
      * If the FF is ON we will avoid appending entire thread to body_html and body_text
@@ -405,6 +426,15 @@ export const TicketDetailContainer = ({
             submittedTicketId: string,
         ) => {
             try {
+                const baseSubmitDiagnosticsContext =
+                    getSubmitDiagnosticsContext({
+                        reduxTicketId: ticket.get('id') as Maybe<number>,
+                        ticketIdUrl: submittedTicketId,
+                        submittedTicketId,
+                        status,
+                        action,
+                        resetMessage,
+                    })
                 const { messageId, messageToSend, replyAreaState } =
                     await prepareTicketMessage({
                         status,
@@ -415,24 +445,18 @@ export const TicketDetailContainer = ({
                         ]),
                         resetMessage,
                         emailThreadSizeFF,
+                        submittedTicketId,
+                        submissionContext: baseSubmitDiagnosticsContext,
                     })
                 const submitDiagnosticsContext = {
-                    ...getSubmitDiagnosticsContext({
-                        activeTicketId: Number(submittedTicketId),
-                        status,
-                        action,
-                        resetMessage,
-                    }),
+                    ...baseSubmitDiagnosticsContext,
                     ticket_id_redux: ticket.get('id'),
                     ticket_id_submitted: submittedTicketId,
                     ...getTicketMessageDiagnostics(messageToSend),
                 }
 
                 if (
-                    haveDifferentTicketIds(
-                        ticketIdParamRef.current,
-                        submittedTicketId,
-                    ) ||
+                    haveDifferentTicketIds(ticketIdParam, submittedTicketId) ||
                     haveDifferentTicketIds(
                         ticket.get('id'),
                         submittedTicketId,
@@ -470,6 +494,14 @@ export const TicketDetailContainer = ({
                     submitDiagnosticsContext,
                 )
             } catch (error) {
+                if (error instanceof TicketMessageIdentityMismatchError) {
+                    void fetchTicket(submittedTicketId, {
+                        isCurrentlyOnTicket: true,
+                    })
+                    toast.error(error.message)
+                    return
+                }
+
                 if (
                     !(error instanceof TicketMessageInvalidSendDataError) &&
                     !(error instanceof TicketMessageActionValidationError)
@@ -480,10 +512,12 @@ export const TicketDetailContainer = ({
         },
         [
             emailThreadSizeFF,
+            fetchTicket,
             getSubmitDiagnosticsContext,
             prepareTicketMessage,
             sendTicketMessage,
             ticket,
+            ticketIdParam,
         ],
     )
 
@@ -510,14 +544,16 @@ export const TicketDetailContainer = ({
             // flush any pending updates from the TicketReplyEditor debouncer
             updateMessageText.flush()
 
-            const activeTicketId = ticket.get('id') as Maybe<number>
-            if (
-                haveDifferentTicketIds(ticketIdParamRef.current, activeTicketId)
-            ) {
+            const reduxTicketId = ticket.get('id') as Maybe<number>
+            const submittedTicketId = ticketIdParam
+            let closedTicketId = submittedTicketId
+            if (haveDifferentTicketIds(submittedTicketId, reduxTicketId)) {
                 reportTicketMessageSubmissionIdentityMismatch(
                     'submit_click',
                     getSubmitDiagnosticsContext({
-                        activeTicketId,
+                        reduxTicketId,
+                        ticketIdUrl: submittedTicketId,
+                        submittedTicketId,
                         status,
                         action,
                         resetMessage,
@@ -526,28 +562,36 @@ export const TicketDetailContainer = ({
             }
 
             // The ticket does not exist yet.
-            if (!activeTicketId) {
-                const { error } = ((await prepareAndSubmitNewTicket({
+            if (!submittedTicketId || submittedTicketId === 'new') {
+                const { error, resp } = ((await prepareAndSubmitNewTicket({
                     status,
                     action,
                     resetMessage,
-                })) || {}) as { error: unknown }
+                })) || {}) as {
+                    error: unknown
+                    resp?: Pick<Ticket, 'id'>
+                }
 
                 if (error) {
                     return
+                }
+                if (resp?.id) {
+                    closedTicketId = String(resp.id)
                 }
                 localForageManager.clearTable(DRAFT_TICKET_STORE)
             } else {
                 await submitNewMessage(
                     { status, action, resetMessage },
-                    String(activeTicketId),
+                    submittedTicketId,
                 )
             }
 
-            const callback = onGoToNextTicket || maybeGoToNextTicket
-
             if (status === TicketStatus.Closed) {
-                callback()
+                if (onGoToNextTicket) {
+                    onGoToNextTicket()
+                } else {
+                    maybeGoToNextTicket(closedTicketId)
+                }
             }
         },
         [
@@ -561,6 +605,7 @@ export const TicketDetailContainer = ({
             getSubmitDiagnosticsContext,
             submitNewMessage,
             ticket,
+            ticketIdParam,
         ],
     )
 
@@ -834,20 +879,36 @@ export const TicketDetailContainer = ({
     }, [ticketIdParam, joinTicket, leaveTicket])
 
     const isMobileResolution = useIsMobileResolution()
+    const ticketIdentityDebugMenu = isTicketIdentityDebugMenuEnabled ? (
+        <TicketIdentityDebugMenu
+            reduxTicketId={ticket.get('id') as Maybe<number>}
+            ticket={ticket}
+            urlTicketId={ticketIdParam}
+            newMessage={newMessage}
+        />
+    ) : null
 
     if (isLoading || isLoadingPhoneTicketData) {
-        return <Loader className={css.loader} message="Loading ticket..." />
+        return (
+            <>
+                <Loader className={css.loader} message="Loading ticket..." />
+                {ticketIdentityDebugMenu}
+            </>
+        )
     }
 
     const ticketView = (
-        <TicketView
-            hideTicket={hideTicket}
-            isTicketHidden={isTicketHidden}
-            submit={submit}
-            setStatus={handleStatusChange}
-            onGoToNextTicket={onGoToNextTicket}
-            onToggleUnread={onToggleUnread}
-        />
+        <>
+            <TicketView
+                hideTicket={hideTicket}
+                isTicketHidden={isTicketHidden}
+                submit={submit}
+                setStatus={handleStatusChange}
+                onGoToNextTicket={onGoToNextTicket}
+                onToggleUnread={onToggleUnread}
+            />
+            {ticketIdentityDebugMenu}
+        </>
     )
 
     // Only wrap with provider on mobile, desktop already has it in TicketDetailWithInfobar
@@ -865,6 +926,7 @@ export const TicketDetailContainer = ({
                 <TicketThreadLegacyBridge>
                     <TicketThread submit={submit} />
                 </TicketThreadLegacyBridge>
+                {ticketIdentityDebugMenu}
                 <DrillDownModal isLegacy={false} />
             </>
         )
@@ -916,6 +978,239 @@ function MobileViewWithSidebar({
             <DrillDownModal isLegacy={false} />
         </>
     )
+}
+
+type TicketIdentityDebugMenuProps = {
+    reduxTicketId: Maybe<number | string>
+    ticket: Map<any, any>
+    urlTicketId: Maybe<string>
+    newMessage: Map<any, any>
+}
+
+function TicketIdentityDebugMenu({
+    reduxTicketId,
+    ticket,
+    urlTicketId,
+    newMessage,
+}: TicketIdentityDebugMenuProps) {
+    const [isOpen, setIsOpen] = useState(false)
+    const debugState = useMemo(
+        () => ({
+            ticket_id_redux: reduxTicketId,
+            ticket_id_url: urlTicketId,
+            ticket_fetch: getTicketFetchDebugState(ticket, urlTicketId),
+            composer: getComposerDebugState(newMessage),
+        }),
+        [newMessage, reduxTicketId, ticket, urlTicketId],
+    )
+    const debugStateJson = useMemo(
+        () => JSON.stringify(debugState, null, 2),
+        [debugState],
+    )
+
+    const copyDebugState = useCallback(() => {
+        console.warn('Ticket identity debug state', debugState)
+        const clipboard = window.navigator.clipboard
+
+        if (!clipboard) {
+            return
+        }
+
+        void clipboard.writeText(debugStateJson).then(() => {
+            toast.success('Ticket debug state copied')
+        })
+    }, [debugState, debugStateJson])
+
+    return (
+        <div className={css.ticketIdentityDebugMenu}>
+            <Button
+                aria-controls="ticket-identity-debug-panel"
+                aria-expanded={isOpen}
+                aria-label="Toggle ticket identity debug menu"
+                icon="system-window-terminal"
+                onClick={() => setIsOpen((current) => !current)}
+                size="sm"
+                variant={isOpen ? 'secondary' : 'tertiary'}
+            />
+            {isOpen && (
+                <div
+                    aria-label="Ticket identity debug details"
+                    className={css.ticketIdentityDebugPanel}
+                    id="ticket-identity-debug-panel"
+                    role="dialog"
+                >
+                    <div className={css.ticketIdentityDebugHeader}>
+                        <Text size="sm" variant="bold">
+                            Ticket identity debug
+                        </Text>
+                        <Button
+                            aria-label="Copy ticket identity debug state"
+                            icon="copy"
+                            onClick={copyDebugState}
+                            size="sm"
+                            variant="tertiary"
+                        />
+                    </div>
+                    <dl className={css.ticketIdentityDebugRows}>
+                        <div>
+                            <dt>Redux ticket id</dt>
+                            <dd>{String(reduxTicketId ?? 'empty')}</dd>
+                        </div>
+                        <div>
+                            <dt>URL ticket id</dt>
+                            <dd>{String(urlTicketId ?? 'empty')}</dd>
+                        </div>
+                        <div>
+                            <dt>Fetch loading</dt>
+                            <dd>
+                                {String(debugState.ticket_fetch.is_loading)}
+                            </dd>
+                        </div>
+                        <div>
+                            <dt>Latest fetch id</dt>
+                            <dd>
+                                {String(
+                                    debugState.ticket_fetch
+                                        .latest_requested_ticket_id ?? 'empty',
+                                )}
+                            </dd>
+                        </div>
+                        <div>
+                            <dt>Fetch guard cleared</dt>
+                            <dd>
+                                {String(
+                                    debugState.ticket_fetch
+                                        .is_latest_fetch_guard_cleared,
+                                )}
+                            </dd>
+                        </div>
+                        <div>
+                            <dt>Fetch matches URL</dt>
+                            <dd>
+                                {String(
+                                    debugState.ticket_fetch
+                                        .does_latest_fetch_match_url_ticket,
+                                )}
+                            </dd>
+                        </div>
+                    </dl>
+                    <pre className={css.ticketIdentityDebugJson}>
+                        {debugStateJson}
+                    </pre>
+                </div>
+            )}
+        </div>
+    )
+}
+
+const toDebugValue = (value: unknown) => {
+    if (
+        value &&
+        typeof value === 'object' &&
+        typeof (value as { toJS?: () => unknown }).toJS === 'function'
+    ) {
+        return (value as { toJS: () => unknown }).toJS()
+    }
+
+    return value
+}
+
+const getContentStateTextLength = (contentState: unknown) => {
+    if (
+        !contentState ||
+        typeof (contentState as { getPlainText?: () => string })
+            .getPlainText !== 'function'
+    ) {
+        return null
+    }
+
+    return (contentState as { getPlainText: () => string }).getPlainText()
+        .length
+}
+
+const isComparableDebugTicketId = (ticketId: unknown) =>
+    ticketId !== undefined &&
+    ticketId !== null &&
+    ticketId !== '' &&
+    ticketId !== 'new' &&
+    !Number.isNaN(Number(ticketId))
+
+const doDebugTicketIdsMatch = (
+    firstTicketId: unknown,
+    secondTicketId: unknown,
+) =>
+    isComparableDebugTicketId(firstTicketId) &&
+    isComparableDebugTicketId(secondTicketId) &&
+    Number(firstTicketId) === Number(secondTicketId)
+
+const getTicketFetchDebugState = (
+    ticket: Map<any, any>,
+    urlTicketId: Maybe<string>,
+) => {
+    const latestRequestedTicketId = ticket.getIn([
+        '_internal',
+        'latestFetchTicketRequestedId',
+    ])
+    const reduxTicketId = ticket.get('id')
+
+    return {
+        is_loading: !!ticket.getIn(['_internal', 'loading', 'fetchTicket']),
+        latest_requested_ticket_id: latestRequestedTicketId ?? null,
+        is_latest_fetch_guard_cleared: latestRequestedTicketId == null,
+        does_latest_fetch_match_url_ticket: doDebugTicketIdsMatch(
+            latestRequestedTicketId,
+            urlTicketId,
+        ),
+        does_redux_ticket_match_url_ticket: doDebugTicketIdsMatch(
+            reduxTicketId,
+            urlTicketId,
+        ),
+        is_latest_fetch_stale_for_url_ticket:
+            isComparableDebugTicketId(latestRequestedTicketId) &&
+            isComparableDebugTicketId(urlTicketId) &&
+            !doDebugTicketIdsMatch(latestRequestedTicketId, urlTicketId),
+    }
+}
+
+const getComposerDebugState = (newMessage: Map<any, any>) => {
+    const replyAreaState = newMessage.get('state') as Maybe<Map<any, any>>
+    const message = newMessage.get('newMessage') as Maybe<Map<any, any>>
+
+    return {
+        internal: toDebugValue(newMessage.get('_internal')),
+        reply_area_state: {
+            dirty: replyAreaState?.get('dirty'),
+            email_extra_added: replyAreaState?.get('emailExtraAdded'),
+            cache_added: replyAreaState?.get('cacheAdded'),
+            force_update: replyAreaState?.get('forceUpdate'),
+            force_focus: replyAreaState?.get('forceFocus'),
+            first_new_message: replyAreaState?.get('firstNewMessage'),
+            has_selection_state: !!replyAreaState?.get('selectionState'),
+            content_text_length: getContentStateTextLength(
+                replyAreaState?.get('contentState'),
+            ),
+            original_content_text_length: getContentStateTextLength(
+                replyAreaState?.get('originalContentState'),
+            ),
+            applied_macro: toDebugValue(replyAreaState?.get('appliedMacro')),
+            inserted_discounts: toDebugValue(
+                replyAreaState?.get('inserted_discounts'),
+            ),
+        },
+        new_message: {
+            ticket_id: message?.get('ticket_id'),
+            source_type: message?.getIn(['source', 'type']),
+            channel: message?.get('channel'),
+            public: message?.get('public'),
+            from_agent: message?.get('from_agent'),
+            subject: message?.get('subject'),
+            body_text_length: String(message?.get('body_text') ?? '').length,
+            body_html_length: String(message?.get('body_html') ?? '').length,
+            attachments_count: message?.get('attachments')?.size ?? 0,
+            actions_count: message?.get('actions')?.size ?? 0,
+            source: toDebugValue(message?.get('source')),
+        },
+    }
 }
 
 export default connector(TicketDetailContainer)

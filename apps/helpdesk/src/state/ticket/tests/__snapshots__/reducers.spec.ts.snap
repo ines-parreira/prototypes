@@ -894,6 +894,7 @@ exports[`ticket reducers should handle CLEAR_TICKET 1`] = `
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
+    "latestFetchTicketRequestedId": null,
     "loading": {
       "deleteMessage": false,
       "fetchTicket": false,

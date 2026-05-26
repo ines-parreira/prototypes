@@ -160,7 +160,9 @@ export default function RuleSuggestion({ ticket, isCollapsed }: Props) {
         : undefined
 
     const applySuggestion = async () => {
+        const submittedTicketId = String(ticket.id)
         let message = {
+            ticket_id: submittedTicketId,
             source: {
                 from: { address: channel.get('address') },
                 to: to,
@@ -186,15 +188,27 @@ export default function RuleSuggestion({ ticket, isCollapsed }: Props) {
                 fromJS(actions),
                 `Sent via suggested rule: <a target="_blank" href="/app/settings/rules/library?${suggestion.slug}">${ruleName}</a>`,
             )
-            message = { ...newMessage, actions: newActions ?? fromJS([]) }
+            message = {
+                ...newMessage,
+                ticket_id: submittedTicketId,
+                actions: newActions ?? fromJS([]),
+            }
         }
 
         await dispatch(
-            sendTicketMessage(getMomentNow(), message, null, true, undefined, {
-                submission_path: 'rule_suggestion',
-                [ticketMessageSubmissionIdentityReportingEnabledContextKey]:
-                    isTicketMessageSubmissionIdentityReportingEnabled,
-            }),
+            sendTicketMessage(
+                getMomentNow(),
+                message,
+                null,
+                true,
+                submittedTicketId,
+                {
+                    submission_path: 'rule_suggestion',
+                    ticket_id_submitted: submittedTicketId,
+                    [ticketMessageSubmissionIdentityReportingEnabledContextKey]:
+                        isTicketMessageSubmissionIdentityReportingEnabled,
+                },
+            ),
         )
     }
 

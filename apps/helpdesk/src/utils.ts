@@ -724,28 +724,42 @@ export function hasRole(user: Map<any, any>, requiredRole: UserRole): boolean {
     )
 }
 
+export const getCurrentTicketIdFromLocation = (): Maybe<string> => {
+    if (typeof window === 'undefined') {
+        return undefined
+    }
+
+    const { pathname } = window.location
+    const ticketMatch = pathname.match(/^\/app\/ticket\/([^/?]+)/)
+    const ticketId = ticketMatch?.[1]
+
+    if (ticketId && ticketId !== 'new') {
+        return ticketId
+    }
+
+    const viewTicketMatch = pathname.match(/^\/app\/views\/\d+\/(\d+)/)
+    return viewTicketMatch?.[1]
+}
+
 /**
  * Return true if user is currently on ticket of passed ticket id, based on url
  */
 export const isCurrentlyOnTicket = (
     ticketId?: Maybe<string | number>,
 ): boolean => {
-    const { pathname } = window.location
-    let matchUrl = '/app/ticket/'
+    const currentTicketId = getCurrentTicketIdFromLocation()
 
-    if (ticketId) {
-        matchUrl += ticketId
+    if (!ticketId) {
+        return (
+            !!currentTicketId ||
+            window.location.pathname.startsWith('/app/ticket/')
+        )
     }
 
-    if (pathname.startsWith(matchUrl)) {
-        return true
-    }
-
-    const match = pathname.match(/\/app\/views\/\d+\/(\d+)/)
-    if (!match || !match[1]) return false
-
-    const ticketIdParam = parseInt(match[1], 10)
-    return ticketId === ticketIdParam
+    return (
+        currentTicketId !== undefined &&
+        Number(currentTicketId) === Number(ticketId)
+    )
 }
 
 /**

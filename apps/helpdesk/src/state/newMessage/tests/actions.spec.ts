@@ -1,6 +1,7 @@
 import * as activityTracker from '@repo/activity-tracker'
 import { ActivityEvents } from '@repo/activity-tracker'
 import client, { appQueryClient } from '@repo/api-resources'
+import { fetchFlag } from '@repo/feature-flags'
 import * as segmentTracker from '@repo/logging'
 import MockAdapter from 'axios-mock-adapter'
 import { ContentState } from 'draft-js'
@@ -50,6 +51,7 @@ import {
 import * as emailExtraUtils from 'state/newMessage/emailExtraUtils'
 import {
     TicketMessageActionValidationError,
+    TicketMessageIdentityMismatchError,
     TicketMessageInvalidSendDataError,
 } from 'state/newMessage/errors'
 import { initialState, makeNewMessage } from 'state/newMessage/reducers'
@@ -99,6 +101,12 @@ jest.mock(
 )
 
 jest.mock('@repo/activity-tracker')
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    fetchFlag: jest.fn(async () => ({ flag: true, error: null })),
+}))
+
+const mockFetchFlag = fetchFlag as jest.MockedFunction<typeof fetchFlag>
 
 describe('actions', () => {
     let mockServer: MockAdapter
@@ -106,6 +114,7 @@ describe('actions', () => {
 
     beforeEach(() => {
         mockServer = new MockAdapter(client)
+        mockFetchFlag.mockResolvedValue({ flag: true, error: null })
         appQueryClient.setQueryData(mockChannelsQueryKeys.list(), {
             data: mockChannels,
         })
@@ -113,6 +122,7 @@ describe('actions', () => {
 
     afterEach(() => {
         appQueryClient.clear()
+        window.location.pathname = '/'
     })
 
     describe('new message', () => {
@@ -936,6 +946,26 @@ describe('actions', () => {
 
                 expect(store.getActions()).toMatchSnapshot()
             })
+
+            it('should key the draft cache with the route ticket id when it exists', () => {
+                window.location.pathname = '/app/views/1/456'
+                store = mockStore({
+                    ticket: emailTicket.set('id', 123),
+                    newMessage: initialState,
+                })
+
+                const contentState = ContentState.createFromText('foo')
+                store.dispatch(
+                    actions.setResponseText(fromJS({ contentState })),
+                )
+
+                expect(store.getActions()).toContainEqual(
+                    expect.objectContaining({
+                        type: types.SET_RESPONSE_TEXT,
+                        ticketId: '456',
+                    }),
+                )
+            })
         })
 
         describe('prepareTicketDataToSend()', () => {
@@ -1509,6 +1539,79 @@ describe('actions', () => {
                 ).rejects.toBeInstanceOf(TicketMessageInvalidSendDataError)
             })
 
+            it('should use the submitted ticket id when preparing the message payload', async () => {
+                store = mockStore({
+                    ...defaultState,
+                    ticket: emailTicket.set('id', 12),
+                })
+
+                const { messageToSend } = await store.dispatch(
+                    actions.prepareTicketMessage({
+                        submittedTicketId: '12',
+                    }),
+                )
+
+                expect(messageToSend.ticket_id).toBe('12')
+                expect(store.getActions()).toEqual(
+                    expect.arrayContaining([
+                        expect.objectContaining({
+                            type: types.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START,
+                            message: expect.objectContaining({
+                                ticket_id: '12',
+                            }),
+                            ticketId: '12',
+                        }),
+                    ]),
+                )
+            })
+
+            it('should reject before preparing the message when the submitted ticket id differs from Redux', async () => {
+                const reportErrorSpy = jest
+                    .spyOn(segmentTracker, 'reportError')
+                    .mockImplementation(jest.fn())
+                store = mockStore({
+                    ...defaultState,
+                    ticket: emailTicket.set('id', 12),
+                })
+
+                await expect(
+                    store.dispatch(
+                        actions.prepareTicketMessage({
+                            submittedTicketId: '13',
+                            submissionContext: {
+                                ticket_message_submission_identity_reporting_enabled: true,
+                                ticket_id_url: '13',
+                            },
+                        }),
+                    ),
+                ).rejects.toBeInstanceOf(TicketMessageIdentityMismatchError)
+
+                expect(reportErrorSpy).toHaveBeenCalledWith(
+                    expect.any(Error),
+                    {
+                        extra: expect.objectContaining({
+                            stage: 'before_prepare',
+                            ticket_id_url: '13',
+                            ticket_id_redux: 12,
+                            ticket_id_submitted: '13',
+                        }),
+                    },
+                    [
+                        'ticket-message-submission-identity-mismatch',
+                        'before_prepare',
+                    ],
+                )
+                expect(store.getActions()).not.toEqual(
+                    expect.arrayContaining([
+                        expect.objectContaining({
+                            type: types.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START,
+                        }),
+                    ]),
+                )
+
+                reportErrorSpy.mockRestore()
+            })
+
             it('should create actions with setStatus=close action when status is closed and no macro actions', async () => {
                 store = mockStore(defaultState)
 
@@ -2063,6 +2166,63 @@ describe('actions', () => {
                         },
                     ],
                 })
+            })
+        })
+
+        describe('retrySubmitTicketMessage', () => {
+            it('should retry with the original message ticket id instead of the active Redux ticket id', async () => {
+                mockServer
+                    .onPost('/api/tickets/12/messages/')
+                    .reply(201, { ticket_id: 12, messages: [] })
+                store = mockStore({
+                    ticket: ticketInitialState.set('id', 99),
+                    newMessage: initialState,
+                    currentUser: fromJS({
+                        id: 1,
+                        name: 'foo',
+                    }),
+                    integrations: fromJS(integrationsState),
+                })
+
+                await store.dispatch(
+                    actions.retrySubmitTicketMessage(
+                        fromJS({
+                            _internal: {
+                                id: 1,
+                                status: TicketStatus.Open,
+                            },
+                            ticket_id: 12,
+                            originalMessage: {
+                                ticket_id: 12,
+                                source: {
+                                    type: TicketMessageSourceType.Email,
+                                },
+                                channel: TicketChannel.Email,
+                                body_text: 'retry me',
+                                body_html: '<div>retry me</div>',
+                                public: true,
+                                attachments: [],
+                                actions: [],
+                            },
+                        }),
+                        12,
+                    ),
+                )
+
+                expect(mockServer.history.post).toHaveLength(1)
+                expect(mockServer.history.post[0].url).toBe(
+                    '/api/tickets/12/messages/',
+                )
+                expect(store.getActions()).toContainEqual(
+                    expect.objectContaining({
+                        type: types.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START,
+                        ticketId: 12,
+                        retry: true,
+                        message: expect.objectContaining({
+                            ticket_id: 12,
+                        }),
+                    }),
+                )
             })
         })
 

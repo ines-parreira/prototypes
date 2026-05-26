@@ -36,6 +36,8 @@ import { SocketEventType } from 'services/socketManager/types'
 import { initialState as integrationsState } from 'state/integrations/reducers'
 import { initialState as newMessageState } from 'state/newMessage/reducers'
 import {
+    FETCH_TICKET_ERROR,
+    FETCH_TICKET_SUCCESS,
     MERGE_CUSTOMER_ECOMMERCE_DATA_ORDER,
     MERGE_CUSTOMER_ECOMMERCE_DATA_SHOPPER,
     MERGE_CUSTOMER_ECOMMERCE_DATA_SHOPPER_ADDRESS,
@@ -131,6 +133,8 @@ jest.mock('@repo/feature-flags', () => ({
     })),
 }))
 const fetchFlagMock = require('@repo/feature-flags').fetchFlag as jest.Mock
+const mockIsCurrentlyOnTicket = jest.requireMock('utils')
+    .isCurrentlyOnTicket as jest.Mock
 
 describe('ticket actions', () => {
     let store: MockStoreEnhanced<MockedRootState, StoreDispatch>
@@ -152,6 +156,9 @@ describe('ticket actions', () => {
             newMessage: newMessageState,
         })
         mockServer = new MockAdapter(client)
+        mockIsCurrentlyOnTicket.mockImplementation(
+            (ticketId: string) => ticketId === '1',
+        )
         fetchFlagMock.mockImplementation(
             async (_flag, defaultValue = false) => ({
                 flag: defaultValue,
@@ -164,6 +171,7 @@ describe('ticket actions', () => {
         anyTicket: new RegExp('/api/tickets/\\d+'),
         ticket1: new RegExp('/api/tickets/1'),
         ticket2: new RegExp('/api/tickets/2'),
+        ticket3: new RegExp('/api/tickets/3'),
     }
 
     const ticket = {
@@ -874,6 +882,199 @@ describe('ticket actions', () => {
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
 
+        it('should ignore a stale ticket response when a newer current ticket fetch started', async () => {
+            let resolveTicket1!: (response: [number, Partial<Ticket>]) => void
+            let resolveTicket2!: (response: [number, Partial<Ticket>]) => void
+
+            mockServer.onGet(endpointMatchers.ticket1).reply(
+                () =>
+                    new Promise<[number, Partial<Ticket>]>((resolve) => {
+                        resolveTicket1 = resolve
+                    }),
+            )
+            mockServer.onGet(endpointMatchers.ticket2).reply(
+                () =>
+                    new Promise<[number, Partial<Ticket>]>((resolve) => {
+                        resolveTicket2 = resolve
+                    }),
+            )
+            store = mockStore({
+                newMessage: newMessageState,
+                ticket: initialState,
+                currentUser: fromJS({ id: 1 }),
+            })
+
+            const staleFetch = store.dispatch(
+                actions.fetchTicket('1', { isCurrentlyOnTicket: true }),
+            )
+            const latestFetch = store.dispatch(
+                actions.fetchTicket('2', { isCurrentlyOnTicket: true }),
+            )
+
+            resolveTicket2([200, { id: 2, messages: [], events: [] }])
+            await latestFetch
+
+            resolveTicket1([200, { id: 1, messages: [], events: [] }])
+            await staleFetch
+
+            const fetchTicketSuccessActions = store
+                .getActions()
+                .filter(
+                    (action: { type: string }) =>
+                        action.type === FETCH_TICKET_SUCCESS,
+                )
+
+            expect(fetchTicketSuccessActions).toHaveLength(1)
+            expect(fetchTicketSuccessActions[0]).toEqual(
+                expect.objectContaining({
+                    response: expect.objectContaining({ id: 2 }),
+                    requestedTicketId: '2',
+                }),
+            )
+        })
+
+        it('should ignore stale ticket responses when three current ticket fetches resolve out of order', async () => {
+            let resolveTicket1!: (response: [number, Partial<Ticket>]) => void
+            let resolveTicket2!: (response: [number, Partial<Ticket>]) => void
+            let resolveTicket3!: (response: [number, Partial<Ticket>]) => void
+
+            mockServer.onGet(endpointMatchers.ticket1).reply(
+                () =>
+                    new Promise<[number, Partial<Ticket>]>((resolve) => {
+                        resolveTicket1 = resolve
+                    }),
+            )
+            mockServer.onGet(endpointMatchers.ticket2).reply(
+                () =>
+                    new Promise<[number, Partial<Ticket>]>((resolve) => {
+                        resolveTicket2 = resolve
+                    }),
+            )
+            mockServer.onGet(endpointMatchers.ticket3).reply(
+                () =>
+                    new Promise<[number, Partial<Ticket>]>((resolve) => {
+                        resolveTicket3 = resolve
+                    }),
+            )
+            store = mockStore({
+                newMessage: newMessageState,
+                ticket: initialState,
+                currentUser: fromJS({ id: 1 }),
+            })
+
+            const firstFetch = store.dispatch(
+                actions.fetchTicket('1', { isCurrentlyOnTicket: true }),
+            )
+            const secondFetch = store.dispatch(
+                actions.fetchTicket('2', { isCurrentlyOnTicket: true }),
+            )
+            const latestFetch = store.dispatch(
+                actions.fetchTicket('3', { isCurrentlyOnTicket: true }),
+            )
+
+            resolveTicket1([200, { id: 1, messages: [], events: [] }])
+            await firstFetch
+
+            resolveTicket3([200, { id: 3, messages: [], events: [] }])
+            await latestFetch
+
+            resolveTicket2([200, { id: 2, messages: [], events: [] }])
+            await secondFetch
+
+            const fetchTicketSuccessActions = store
+                .getActions()
+                .filter(
+                    (action: { type: string }) =>
+                        action.type === FETCH_TICKET_SUCCESS,
+                )
+
+            expect(fetchTicketSuccessActions).toHaveLength(1)
+            expect(fetchTicketSuccessActions[0]).toEqual(
+                expect.objectContaining({
+                    response: expect.objectContaining({ id: 3 }),
+                    requestedTicketId: '3',
+                }),
+            )
+        })
+
+        it('should ignore an inflight current ticket response after clearing the ticket', async () => {
+            let resolveTicket1!: (response: [number, Partial<Ticket>]) => void
+
+            mockServer.onGet(endpointMatchers.ticket1).reply(
+                () =>
+                    new Promise<[number, Partial<Ticket>]>((resolve) => {
+                        resolveTicket1 = resolve
+                    }),
+            )
+            store = mockStore({
+                newMessage: newMessageState,
+                ticket: initialState,
+                currentUser: fromJS({ id: 1 }),
+            })
+
+            const fetch = store.dispatch(
+                actions.fetchTicket('1', { isCurrentlyOnTicket: true }),
+            )
+            store.dispatch(actions.clearTicket())
+
+            resolveTicket1([200, { id: 1, messages: [], events: [] }])
+            await fetch
+
+            const fetchTicketSuccessActions = store
+                .getActions()
+                .filter(
+                    (action: { type: string }) =>
+                        action.type === FETCH_TICKET_SUCCESS,
+                )
+
+            expect(fetchTicketSuccessActions).toHaveLength(0)
+        })
+
+        it('should ignore a stale current ticket error when a newer current ticket fetch started', async () => {
+            let resolveTicket1!: (response: [number, Partial<Ticket>]) => void
+            let resolveTicket2!: (response: [number, Partial<Ticket>]) => void
+
+            mockServer.onGet(endpointMatchers.ticket1).reply(
+                () =>
+                    new Promise<[number, Partial<Ticket>]>((resolve) => {
+                        resolveTicket1 = resolve
+                    }),
+            )
+            mockServer.onGet(endpointMatchers.ticket2).reply(
+                () =>
+                    new Promise<[number, Partial<Ticket>]>((resolve) => {
+                        resolveTicket2 = resolve
+                    }),
+            )
+            store = mockStore({
+                newMessage: newMessageState,
+                ticket: initialState,
+                currentUser: fromJS({ id: 1 }),
+            })
+
+            const staleFetch = store.dispatch(
+                actions.fetchTicket('1', { isCurrentlyOnTicket: true }),
+            )
+            const latestFetch = store.dispatch(
+                actions.fetchTicket('2', { isCurrentlyOnTicket: true }),
+            )
+
+            resolveTicket2([200, { id: 2, messages: [], events: [] }])
+            await latestFetch
+
+            resolveTicket1([500, { id: 1 }])
+            await staleFetch
+
+            const fetchTicketErrorActions = store
+                .getActions()
+                .filter(
+                    (action: { type: string }) =>
+                        action.type === FETCH_TICKET_ERROR,
+                )
+
+            expect(fetchTicketErrorActions).toHaveLength(0)
+        })
+
         it('existing instagram ticket', () => {
             mockServer.onGet(endpointMatchers.ticket1).reply(200, {
                 id: 1,
@@ -1578,6 +1779,72 @@ describe('ticket actions', () => {
             })
         })
 
+        it('should ignore an older legacy navigation response after a newer navigation starts', async () => {
+            let resolveFirstNavigation!: (
+                response: [number, Partial<Ticket>],
+            ) => void
+            let resolveSecondNavigation!: (
+                response: [number, Partial<Ticket>],
+            ) => void
+            const firstTicket = {
+                id: 2,
+                customerId: 1,
+                messages: [],
+                events: [],
+            }
+            const secondTicket = {
+                id: 3,
+                customerId: 1,
+                messages: [],
+                events: [],
+            }
+
+            mockServer.onPut('/api/views/1/tickets/1/next').replyOnce(
+                () =>
+                    new Promise<[number, Partial<Ticket>]>((resolve) => {
+                        resolveFirstNavigation = resolve
+                    }),
+            )
+            mockServer.onPut('/api/views/1/tickets/1/next').replyOnce(
+                () =>
+                    new Promise<[number, Partial<Ticket>]>((resolve) => {
+                        resolveSecondNavigation = resolve
+                    }),
+            )
+            mockServer.onGet('/api/tickets/2').reply(200, firstTicket)
+            mockServer.onGet('/api/tickets/3').reply(200, secondTicket)
+            store = mockStore({
+                ticket: initialState,
+                views: fromJS({ active: { ...defaultActiveView, id: 1 } }),
+            })
+
+            const firstNavigation = store.dispatch(actions.goToNextTicket(1))
+            const secondNavigation = store.dispatch(actions.goToNextTicket(1))
+
+            resolveSecondNavigation([200, _pick(secondTicket, ['id'])])
+            await secondNavigation
+
+            resolveFirstNavigation([200, _pick(firstTicket, ['id'])])
+            await firstNavigation
+
+            const fetchTicketSuccessActions = store
+                .getActions()
+                .filter(
+                    (action: { type: string }) =>
+                        action.type === FETCH_TICKET_SUCCESS,
+                )
+
+            expect(fetchTicketSuccessActions).toHaveLength(1)
+            expect(fetchTicketSuccessActions[0]).toEqual(
+                expect.objectContaining({
+                    response: expect.objectContaining({ id: 3 }),
+                    requestedTicketId: 3,
+                }),
+            )
+            expect(history.push).toHaveBeenCalledWith('/app/ticket/3')
+            expect(history.push).not.toHaveBeenCalledWith('/app/ticket/2')
+        })
+
         it(
             'should fetch next ticket and go to this ticket, and prepare new message correctly as the ticket is an ' +
                 'instagram ticket',
@@ -1686,6 +1953,12 @@ describe('ticket actions', () => {
 
     describe('goToPrevTicket()', () => {
         const defaultActiveView = { order_by: 'created_datetime' }
+
+        beforeEach(() => {
+            mockIsCurrentlyOnTicket.mockImplementation(
+                (ticketId: string) => ticketId === '2',
+            )
+        })
 
         it('should go to first view because there is no active view', (done) => {
             void store.dispatch(actions.goToPrevTicket(2)).then(() => {

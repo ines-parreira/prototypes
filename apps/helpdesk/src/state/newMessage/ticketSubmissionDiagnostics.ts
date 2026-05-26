@@ -4,6 +4,7 @@ import type { NewMessage } from './types'
 
 export type TicketMessageSubmissionDiagnosticsStage =
     | 'submit_click'
+    | 'before_prepare'
     | 'after_prepare'
     | 'pending_send_scheduled'
     | 'pending_send_flushed'

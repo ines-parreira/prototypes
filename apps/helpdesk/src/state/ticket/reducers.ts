@@ -34,6 +34,22 @@ import {
 import type { TicketState } from './types'
 import { getPendingMessageIndex, mergeActions } from './utils'
 
+const isStaleFetchTicketAction = (
+    state: TicketState,
+    action: GorgiasAction,
+) => {
+    const latestRequestedTicketId = state.getIn([
+        '_internal',
+        'latestFetchTicketRequestedId',
+    ])
+
+    return (
+        action.requestedTicketId !== undefined &&
+        latestRequestedTicketId !== undefined &&
+        String(latestRequestedTicketId) !== String(action.requestedTicketId)
+    )
+}
+
 export const initialState: TicketState = fromJS({
     state: {
         dirty: false,
@@ -184,10 +200,25 @@ export default function reducer(
         }
 
         case types.FETCH_TICKET_START: {
-            return state.setIn(['_internal', 'loading', 'fetchTicket'], true)
+            const newState =
+                action.requestedTicketId === undefined
+                    ? state
+                    : state.setIn(
+                          ['_internal', 'latestFetchTicketRequestedId'],
+                          action.requestedTicketId,
+                      )
+
+            return newState.setIn(
+                ['_internal', 'loading', 'fetchTicket'],
+                !action.discreetly,
+            )
         }
 
         case types.FETCH_TICKET_SUCCESS: {
+            if (isStaleFetchTicketAction(state, action)) {
+                return state
+            }
+
             const newState = state.merge(action.response as Map<any, any>)
             return newState.setIn(
                 ['_internal', 'loading', 'fetchTicket'],
@@ -196,11 +227,18 @@ export default function reducer(
         }
 
         case types.FETCH_TICKET_ERROR: {
+            if (isStaleFetchTicketAction(state, action)) {
+                return state
+            }
+
             return state.setIn(['_internal', 'loading', 'fetchTicket'], false)
         }
 
         case types.CLEAR_TICKET: {
-            return initialState
+            return initialState.setIn(
+                ['_internal', 'latestFetchTicketRequestedId'],
+                null,
+            )
         }
 
         case types.ADD_TICKET_TAG: {

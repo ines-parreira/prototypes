@@ -23,7 +23,7 @@ import {
     mergeFieldsStateWithMacroValues,
 } from 'utils/customFields'
 
-export function useTicketFieldsCheck(ticketId: number) {
+export function useTicketFieldsCheck(ticketId?: number) {
     const dispatch = useAppDispatch()
     const fieldsState = useAppSelector(getTicketFieldState)
     const appliedMacro = useAppSelector(getAppliedMacro)

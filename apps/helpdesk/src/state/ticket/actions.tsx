@@ -80,6 +80,28 @@ type MacroAlert = {
     status?: string
 }
 
+let latestFetchTicketRequestedId: number | string | null = null
+let latestTicketNavigationRequestId = 0
+
+const markLatestFetchTicketRequest = (requestedTicketId: number | string) => {
+    latestFetchTicketRequestedId = requestedTicketId
+}
+
+const invalidateInflightTicketFetches = () => {
+    latestFetchTicketRequestedId = null
+}
+
+const isStaleFetchTicketRequest = (requestedTicketId: number | string) =>
+    String(latestFetchTicketRequestedId) !== String(requestedTicketId)
+
+const markLatestTicketNavigationRequest = () => {
+    latestTicketNavigationRequestId += 1
+    return latestTicketNavigationRequestId
+}
+
+const isStaleTicketNavigationRequest = (requestId: number) =>
+    latestTicketNavigationRequestId !== requestId
+
 export const notifyFromMacroAlert = (notification: MacroAlert) => {
     const text = notification.title || notification.message || ''
     const status = notification.type ?? notification.status
@@ -768,7 +790,11 @@ export const fetchTicket =
         },
     ) =>
     (dispatch: StoreDispatch, getState: () => RootState) => {
+        const requestedTicketId = ticketId
+
         if (ticketId === 'new') {
+            markLatestFetchTicketRequest(requestedTicketId)
+
             return new Promise<ReturnType<StoreDispatch>>((resolve) => {
                 // wait next tick before initializing the draft
                 // so that draft-js is mounted (and Editor plugins are ran) before we initialize message content
@@ -782,10 +808,18 @@ export const fetchTicket =
         }
 
         const parsedTicketId = parseInt(ticketId)
+        const shouldGuardCurrentTicketFetch = options.isCurrentlyOnTicket
+        const shouldFetchDiscreetly = options.discreetly === true
 
-        if (!options.discreetly) {
+        if (shouldGuardCurrentTicketFetch) {
+            markLatestFetchTicketRequest(requestedTicketId)
+        }
+
+        if (!shouldFetchDiscreetly || shouldGuardCurrentTicketFetch) {
             dispatch({
                 type: types.FETCH_TICKET_START,
+                ...(shouldGuardCurrentTicketFetch ? { requestedTicketId } : {}),
+                ...(shouldFetchDiscreetly ? { discreetly: true } : {}),
             })
         }
 
@@ -793,42 +827,23 @@ export const fetchTicket =
 
         return client
             .get<Ticket>(url)
-            .then((response) => {
-                if (options.isCurrentlyOnTicket) {
-                    const wasRedirected =
-                        response?.data?.uri &&
-                        response.data?.id &&
-                        url !== response.data.uri
-
-                    if (wasRedirected) {
-                        history.push(`/app/ticket/${response.data.id}`)
-                    }
-                }
-
-                return response?.data
-            })
+            .then((response) => response?.data)
             .then(
                 async (response) => {
-                    if (_isEmpty(response)) {
-                        console.error('No results for', url)
-                    }
-
-                    if (!options.isCurrentlyOnTicket) {
+                    if (
+                        shouldGuardCurrentTicketFetch &&
+                        isStaleFetchTicketRequest(requestedTicketId)
+                    ) {
                         return Promise.resolve()
                     }
 
-                    const immutableTicket = fromJS(response) as Map<any, any>
-                    const customerId = immutableTicket.getIn([
-                        'customer',
-                        'id',
-                    ]) as number
-
-                    if (parsedTicketId) {
-                        socketManager.join(JoinEventType.Ticket, parsedTicketId)
+                    if (_isEmpty(response)) {
+                        console.error('No results for', url)
+                        return Promise.resolve()
                     }
 
-                    if (customerId) {
-                        socketManager.join(JoinEventType.Customer, customerId)
+                    if (!shouldGuardCurrentTicketFetch) {
+                        return Promise.resolve()
                     }
 
                     const client = new GorgiasApi()
@@ -847,11 +862,37 @@ export const fetchTicket =
                         response.events = [...response.events, ...surveyEvents]
                     }
 
+                    if (isStaleFetchTicketRequest(requestedTicketId)) {
+                        return Promise.resolve()
+                    }
+
+                    const wasRedirected =
+                        response?.uri && response.id && url !== response.uri
+
+                    if (wasRedirected) {
+                        history.push(`/app/ticket/${response.id}`)
+                    }
+
+                    const immutableTicket = fromJS(response) as Map<any, any>
+                    const customerId = immutableTicket.getIn([
+                        'customer',
+                        'id',
+                    ]) as number
+
+                    if (parsedTicketId) {
+                        socketManager.join(JoinEventType.Ticket, parsedTicketId)
+                    }
+
+                    if (customerId) {
+                        socketManager.join(JoinEventType.Customer, customerId)
+                    }
+
                     // dispatch for ticket reducer branch
                     dispatch({
                         type: types.FETCH_TICKET_SUCCESS,
                         response,
                         ticketId: parsedTicketId,
+                        requestedTicketId,
                     })
 
                     // dispatch for newMessage reducer branch
@@ -911,11 +952,23 @@ export const fetchTicket =
                     return dispatch(newMessageActions.resetReceiversAndSender)
                 },
                 (error) => {
-                    return dispatch({
+                    if (
+                        shouldGuardCurrentTicketFetch &&
+                        isStaleFetchTicketRequest(requestedTicketId)
+                    ) {
+                        return Promise.resolve()
+                    }
+
+                    dispatch({
                         type: types.FETCH_TICKET_ERROR,
                         error,
                         reason: `Failed to fetch ticket ${parsedTicketId}`,
+                        ...(shouldGuardCurrentTicketFetch
+                            ? { requestedTicketId }
+                            : {}),
                     })
+
+                    return Promise.resolve()
                 },
             )
     }
@@ -930,6 +983,8 @@ export const _goToNextOrPrevTicket = (
     promise?: Promise<Maybe<ReturnType<StoreDispatch>>>,
 ) => {
     return (dispatch: StoreDispatch, getState: () => RootState) => {
+        const navigationRequestId = markLatestTicketNavigationRequest()
+
         if (!promise) {
             // we do not display the loading state if there is a promise to resolve
             // because we want to do it discreetly: while something else is happening.
@@ -981,6 +1036,15 @@ export const _goToNextOrPrevTicket = (
                 (ticket) => {
                     // wait for the promise to be resolved to go to the ticket
                     return returnedPromise.then(() => {
+                        if (
+                            isStaleTicketNavigationRequest(
+                                navigationRequestId,
+                            ) ||
+                            !isCurrentlyOnTicket(String(ticketId))
+                        ) {
+                            return
+                        }
+
                         if (!ticket && viewId) {
                             // there is no other ticket the user can handle so we go back to the view
                             history.push(`/app/tickets/${viewId}`)
@@ -1001,17 +1065,36 @@ export const _goToNextOrPrevTicket = (
                             return
                         }
 
-                        const ticketId = ticket.id
-                        const getTicketUrl = `/api/tickets/${ticketId}`
+                        const nextTicketId = ticket.id
+                        const requestedTicketId = nextTicketId
+                        markLatestFetchTicketRequest(requestedTicketId)
+                        dispatch({
+                            type: types.FETCH_TICKET_START,
+                            requestedTicketId,
+                            ...(promise ? { discreetly: true } : {}),
+                        })
+                        const getTicketUrl = `/api/tickets/${nextTicketId}`
                         return client
                             .get<Ticket>(getTicketUrl)
                             .then((fullTicket) => fullTicket?.data)
                             .then((fullTicket) => {
+                                if (
+                                    isStaleTicketNavigationRequest(
+                                        navigationRequestId,
+                                    ) ||
+                                    isStaleFetchTicketRequest(
+                                        requestedTicketId,
+                                    ) ||
+                                    !isCurrentlyOnTicket(String(ticketId))
+                                ) {
+                                    return
+                                }
+
                                 const customerId = (
                                     fromJS(ticket) as Map<any, any>
                                 ).getIn(['customer', 'id'])
 
-                                if (ticketId) {
+                                if (nextTicketId) {
                                     socketManager.join(
                                         JoinEventType.Ticket,
                                         fullTicket.id,
@@ -1029,6 +1112,7 @@ export const _goToNextOrPrevTicket = (
                                     type: types.FETCH_TICKET_SUCCESS,
                                     response: fullTicket,
                                     ticketId: fullTicket.id,
+                                    requestedTicketId,
                                 })
 
                                 dispatch({
@@ -1074,10 +1158,20 @@ export const _goToNextOrPrevTicket = (
                                 history.push(`/app/ticket/${fullTicket.id}`)
                             })
                             .catch((error) => {
+                                if (
+                                    isStaleTicketNavigationRequest(
+                                        navigationRequestId,
+                                    ) ||
+                                    isStaleFetchTicketRequest(requestedTicketId)
+                                ) {
+                                    return
+                                }
+
                                 dispatch({
                                     type: types.FETCH_TICKET_ERROR,
                                     error,
                                     reason: 'Failed to fetch complete ticket data',
+                                    requestedTicketId,
                                 })
                             })
                     })
@@ -1275,6 +1369,8 @@ export function updateTicketMessage(
 
 export function clearTicket() {
     return (dispatch: StoreDispatch) => {
+        invalidateInflightTicketFetches()
+
         dispatch({
             type: types.CLEAR_TICKET,
         })

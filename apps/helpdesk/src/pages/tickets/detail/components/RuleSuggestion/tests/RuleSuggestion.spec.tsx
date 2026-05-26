@@ -64,6 +64,7 @@ const store = {
 
 const ticket = {
     ...emailTicket.toJS(),
+    id: 354,
     meta: {
         rule_suggestion: {
             slug: emptyRuleRecipeFixture.slug,
@@ -141,6 +142,7 @@ describe('RuleSuggestion', () => {
     it('should send internal note because no text in suggestion', () => {
         const ticket = {
             ...emailTicket.toJS(),
+            id: 354,
             meta: {
                 rule_suggestion: {
                     slug: emptyRuleRecipeFixture.slug,
@@ -163,12 +165,14 @@ describe('RuleSuggestion', () => {
             expect.objectContaining({
                 body_text: expect.stringContaining('Sent via suggested rule'),
                 public: false,
+                ticket_id: '354',
             }),
             null,
             true,
-            undefined,
+            '354',
             {
                 submission_path: 'rule_suggestion',
+                ticket_id_submitted: '354',
                 ticket_message_submission_identity_reporting_enabled: true,
             },
         )
@@ -191,12 +195,14 @@ describe('RuleSuggestion', () => {
             expect.objectContaining({
                 body_text: 'Text coming from rule suggestion',
                 public: true,
+                ticket_id: '354',
             }),
             null,
             true,
-            undefined,
+            '354',
             {
                 submission_path: 'rule_suggestion',
+                ticket_id_submitted: '354',
                 ticket_message_submission_identity_reporting_enabled: true,
             },
         )

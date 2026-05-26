@@ -8,7 +8,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import type { Map as ImmutableMap } from 'immutable'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
-import { MemoryRouter } from 'react-router-dom'
+import { MemoryRouter, Route } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -35,15 +35,17 @@ jest.mock('@repo/feature-flags', () => ({
 const mockUseFlag = useFlag as jest.Mock
 
 const mockValidateTicketFields = jest.fn()
+const mockUseTicketFieldsValidation = jest.fn((__ticketId?: number) => ({
+    validateTicketFields: mockValidateTicketFields,
+    isValidating: false,
+}))
 const mockCloseTicket = jest.fn()
 const mockUseHelpdeskV2MS1Flag = jest.fn(() => false)
 
 jest.mock('@repo/tickets', () => ({
     ...jest.requireActual('@repo/tickets'),
-    useTicketFieldsValidation: () => ({
-        validateTicketFields: mockValidateTicketFields,
-        isValidating: false,
-    }),
+    useTicketFieldsValidation: (ticketId?: number) =>
+        mockUseTicketFieldsValidation(ticketId),
 }))
 
 jest.mock('@repo/tickets/feature-flags', () => ({
@@ -149,6 +151,7 @@ describe('<TicketSubmitButtons />', () => {
             hasErrors: false,
             invalidFieldIds: [],
         })
+        mockUseTicketFieldsValidation.mockClear()
         testQueryClient.clear()
     })
 
@@ -156,16 +159,24 @@ describe('<TicketSubmitButtons />', () => {
         store: any,
         props?: {
             submit?: jest.Mock
+            route?: string
         },
     ) => {
         return render(
-            <MemoryRouter>
+            <MemoryRouter initialEntries={[props?.route ?? '/app/ticket/123']}>
                 <Provider store={store}>
                     <TicketsLegacyBridgeProvider {...legacyBridgeTestProps}>
                         <QueryClientProvider client={testQueryClient}>
-                            <TicketSubmitButtons
-                                submit={props?.submit ?? mockSubmit}
-                            />
+                            <Route
+                                path={[
+                                    '/app/ticket/:ticketId',
+                                    '/app/views/:viewId/:ticketId',
+                                ]}
+                            >
+                                <TicketSubmitButtons
+                                    submit={props?.submit ?? mockSubmit}
+                                />
+                            </Route>
                         </QueryClientProvider>
                     </TicketsLegacyBridgeProvider>
                 </Provider>
@@ -206,6 +217,14 @@ describe('<TicketSubmitButtons />', () => {
     it('should render buttons with a filled ticket', () => {
         const { container } = renderComponent(mockStore(state))
         expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should validate ticket fields with the route ticket id', () => {
+        renderComponent(mockStore(state), {
+            route: '/app/views/1/456',
+        })
+
+        expect(mockUseTicketFieldsValidation).toHaveBeenCalledWith(456)
     })
 
     it('should hide tips', () => {

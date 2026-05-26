@@ -160,6 +160,7 @@ describe('Error', () => {
         fireEvent.click(screen.getByText('Retry'))
         expect(NewMessageActions.retrySubmitTicketMessage).toHaveBeenCalledWith(
             props.message,
+            props.ticketId,
         )
 
         await new Promise(process.nextTick)

@@ -95,6 +95,7 @@ class Error extends Component<Props, State> {
         return (
             actions.newMessage.retrySubmitTicketMessage(
                 message,
+                ticketId,
             ) as unknown as Promise<any>
         ).then(() => {
             if (status && setStatus) {

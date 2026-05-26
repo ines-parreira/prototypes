@@ -16,6 +16,7 @@ import { useHistory } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { toast } from '@gorgias/axiom'
 import { useAgentActivity } from '@gorgias/realtime'
 
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
@@ -36,6 +37,7 @@ import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { initialState as currentUser } from 'state/currentUser/reducers'
 import {
     TicketMessageActionValidationError,
+    TicketMessageIdentityMismatchError,
     TicketMessageInvalidSendDataError,
 } from 'state/newMessage/errors'
 import { triggerTicketFieldsErrors } from 'state/ticket/actions'
@@ -261,6 +263,16 @@ const mockTicketThread =
         .TicketThread as jest.Mock
 
 const mockValidateTicketFields = jest.fn()
+const mockUseTicketFieldsValidation: jest.Mock<
+    {
+        validateTicketFields: typeof mockValidateTicketFields
+        isValidating: boolean
+    },
+    [number?]
+> = jest.fn(() => ({
+    validateTicketFields: mockValidateTicketFields,
+    isValidating: false,
+}))
 const mockUseHelpdeskV2MS1Flag = jest.fn(() => false)
 const mockUseHelpdeskV2MS3Flag = jest.fn(() => false)
 
@@ -268,10 +280,8 @@ jest.mock('@repo/tickets', () => ({
     ...jest.requireActual('@repo/tickets'),
     useLiveTicketTranslationsUpdates: jest.fn(),
     useHelpdeskV2MS1Flag: () => mockUseHelpdeskV2MS1Flag(),
-    useTicketFieldsValidation: () => ({
-        validateTicketFields: mockValidateTicketFields,
-        isValidating: false,
-    }),
+    useTicketFieldsValidation: (ticketId?: number) =>
+        mockUseTicketFieldsValidation(ticketId),
 }))
 jest.mock('@repo/ticket-thread', () => ({
     ...jest.requireActual('@repo/ticket-thread'),
@@ -431,6 +441,7 @@ describe('TicketDetailContainer component', () => {
             handleTicketUpdateEvents: jest.fn(),
         })
         mockJoinTicket.mockClear()
+        window.USER_IMPERSONATED = null
         mockUseFlag.mockReturnValue(false)
         mockUseHelpdeskV2MS1Flag.mockReturnValue(false)
         mockUseHelpdeskV2MS3Flag.mockReturnValue(false)
@@ -448,6 +459,215 @@ describe('TicketDetailContainer component', () => {
         )
 
         expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should hide the ticket identity debug menu when the debug menu flag is off', () => {
+        const { queryByRole } = renderWithMockedStore(
+            <TicketDetailContainer
+                {...minProps}
+                ticket={existingTicket}
+                newMessage={newMessageState}
+            />,
+            { path: '/foo/:ticketId', initialEntries: ['/foo/1'] },
+        )
+
+        expect(
+            queryByRole('button', {
+                name: 'Toggle ticket identity debug menu',
+            }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should show ticket identity debug details when the debug menu flag is on', async () => {
+        const consoleWarnSpy = jest
+            .spyOn(console, 'warn')
+            .mockImplementation(jest.fn())
+        const writeTextSpy = jest
+            .spyOn(window.navigator.clipboard, 'writeText')
+            .mockResolvedValue(undefined)
+        const toastSuccessSpy = jest
+            .spyOn(toast, 'success')
+            .mockImplementation(jest.fn())
+
+        mockUseFlag.mockImplementation(
+            (flag) => flag === FeatureFlagKey.DebugMenu,
+        )
+
+        const contentState = {
+            getPlainText: () => 'draft body',
+        }
+        const originalContentState = {
+            getPlainText: () => 'original draft',
+        }
+        const debugTicket = existingTicket
+            .setIn(['_internal', 'loading', 'fetchTicket'], true)
+            .setIn(['_internal', 'latestFetchTicketRequestedId'], 1)
+        const debugNewMessage = fromJS({
+            _internal: {
+                loading: {
+                    submitMessage: false,
+                },
+            },
+            state: {
+                dirty: true,
+                emailExtraAdded: false,
+                cacheAdded: true,
+                forceUpdate: false,
+                forceFocus: true,
+                firstNewMessage: false,
+                selectionState: {},
+            },
+            newMessage: {
+                ticket_id: '1',
+                source: {
+                    type: 'email',
+                    to: [],
+                },
+                channel: 'email',
+                public: true,
+                from_agent: true,
+                subject: 'Debug subject',
+                body_text: 'Hello',
+                body_html: '<p>Hello</p>',
+                attachments: [{ id: 1 }],
+                actions: [{ name: 'tag' }],
+            },
+        })
+            .setIn(['state', 'contentState'], contentState)
+            .setIn(['state', 'originalContentState'], originalContentState)
+
+        const { getByRole } = renderWithMockedStore(
+            <TicketDetailContainer
+                {...minProps}
+                ticket={debugTicket}
+                newMessage={debugNewMessage}
+            />,
+            { path: '/foo/:ticketId', initialEntries: ['/foo/1'] },
+        )
+
+        act(() => {
+            fireEvent.click(
+                getByRole('button', {
+                    name: 'Toggle ticket identity debug menu',
+                }),
+            )
+        })
+
+        const dialog = getByRole('dialog', {
+            name: 'Ticket identity debug details',
+        })
+        expect(dialog).toHaveTextContent('Redux ticket id')
+        expect(dialog).toHaveTextContent('URL ticket id')
+        expect(dialog).toHaveTextContent('Fetch loading')
+        expect(dialog).toHaveTextContent('"latest_requested_ticket_id": 1')
+        expect(dialog).toHaveTextContent('"content_text_length": 10')
+        expect(dialog).toHaveTextContent('"attachments_count": 1')
+
+        act(() => {
+            fireEvent.click(
+                getByRole('button', {
+                    name: 'Copy ticket identity debug state',
+                }),
+            )
+        })
+
+        expect(consoleWarnSpy).toHaveBeenCalledWith(
+            'Ticket identity debug state',
+            expect.objectContaining({
+                ticket_id_redux: 1,
+                ticket_id_url: '1',
+            }),
+        )
+        await waitFor(() => {
+            expect(writeTextSpy).toHaveBeenCalledWith(
+                expect.stringContaining('"ticket_id_url": "1"'),
+            )
+            expect(toastSuccessSpy).toHaveBeenCalledWith(
+                'Ticket debug state copied',
+            )
+        })
+
+        toastSuccessSpy.mockRestore()
+        writeTextSpy.mockRestore()
+        consoleWarnSpy.mockRestore()
+    })
+
+    it('should skip copying ticket identity debug details when clipboard is unavailable', () => {
+        const originalClipboard = window.navigator.clipboard
+        const consoleWarnSpy = jest
+            .spyOn(console, 'warn')
+            .mockImplementation(jest.fn())
+        const toastSuccessSpy = jest
+            .spyOn(toast, 'success')
+            .mockImplementation(jest.fn())
+
+        Object.defineProperty(window.navigator, 'clipboard', {
+            configurable: true,
+            value: undefined,
+        })
+        mockUseFlag.mockImplementation(
+            (flag) => flag === FeatureFlagKey.DebugMenu,
+        )
+
+        const { getByRole } = renderWithMockedStore(
+            <TicketDetailContainer
+                {...minProps}
+                ticket={existingTicket}
+                newMessage={newMessageState}
+            />,
+            { path: '/foo/:ticketId', initialEntries: ['/foo/1'] },
+        )
+
+        act(() => {
+            fireEvent.click(
+                getByRole('button', {
+                    name: 'Toggle ticket identity debug menu',
+                }),
+            )
+        })
+
+        act(() => {
+            fireEvent.click(
+                getByRole('button', {
+                    name: 'Copy ticket identity debug state',
+                }),
+            )
+        })
+
+        expect(consoleWarnSpy).toHaveBeenCalledWith(
+            'Ticket identity debug state',
+            expect.objectContaining({
+                ticket_id_redux: 1,
+                ticket_id_url: '1',
+            }),
+        )
+        expect(toastSuccessSpy).not.toHaveBeenCalled()
+
+        Object.defineProperty(window.navigator, 'clipboard', {
+            configurable: true,
+            value: originalClipboard,
+        })
+        toastSuccessSpy.mockRestore()
+        consoleWarnSpy.mockRestore()
+    })
+
+    it('should show the ticket identity debug menu for impersonated sessions', () => {
+        window.USER_IMPERSONATED = true
+
+        const { getByRole } = renderWithMockedStore(
+            <TicketDetailContainer
+                {...minProps}
+                ticket={existingTicket}
+                newMessage={newMessageState}
+            />,
+            { path: '/foo/:ticketId', initialEntries: ['/foo/1'] },
+        )
+
+        expect(
+            getByRole('button', {
+                name: 'Toggle ticket identity debug menu',
+            }),
+        ).toBeInTheDocument()
     })
 
     it('should fetch customer details from url', () => {
@@ -1002,6 +1222,16 @@ describe('TicketDetailContainer component', () => {
                 }),
             ),
         )
+        expect(prepareTicketMessageMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                submittedTicketId: '1',
+                submissionContext: expect.objectContaining({
+                    ticket_id_url: '1',
+                    ticket_id_submitted: '1',
+                    ticket_id_redux: 1,
+                }),
+            }),
+        )
     })
 
     it('should defer email sends using the submitted ticket id', async () => {
@@ -1053,14 +1283,14 @@ describe('TicketDetailContainer component', () => {
             expect(pendingMessageManager.sendMessage).toHaveBeenNthCalledWith(
                 1,
                 expect.objectContaining({
-                    ticketId: '1',
+                    ticketId: '2',
                 }),
             ),
         )
         expect(mockReportError).not.toHaveBeenCalled()
     })
 
-    it('should submit using the active ticket id when the route ticket differs', async () => {
+    it('should submit using the route ticket id when the route ticket differs from Redux', async () => {
         mockUseFlag.mockImplementation(
             (flag) =>
                 flag ===
@@ -1083,9 +1313,19 @@ describe('TicketDetailContainer component', () => {
             expect(pendingMessageManager.sendMessage).toHaveBeenNthCalledWith(
                 1,
                 expect.objectContaining({
-                    ticketId: '1',
+                    ticketId: '2',
                 }),
             ),
+        )
+        expect(prepareTicketMessageMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                submittedTicketId: '2',
+                submissionContext: expect.objectContaining({
+                    ticket_id_url: '2',
+                    ticket_id_submitted: '2',
+                    ticket_id_redux: 1,
+                }),
+            }),
         )
         expect(mockReportError).toHaveBeenNthCalledWith(
             1,
@@ -1095,7 +1335,7 @@ describe('TicketDetailContainer component', () => {
                     stage: 'submit_click',
                     ticket_id_url: '2',
                     ticket_id_redux: 1,
-                    ticket_id_submitted: 1,
+                    ticket_id_submitted: '2',
                     status: 'closed',
                     reset_message: true,
                     source_type: 'email',
@@ -1113,7 +1353,7 @@ describe('TicketDetailContainer component', () => {
                     stage: 'after_prepare',
                     ticket_id_url: '2',
                     ticket_id_redux: 1,
-                    ticket_id_submitted: '1',
+                    ticket_id_submitted: '2',
                     source_type: 'email',
                     is_helpdesk_v2: false,
                     ticket_message_submission_identity_reporting_enabled: true,
@@ -1123,7 +1363,41 @@ describe('TicketDetailContainer component', () => {
         )
     })
 
-    it('should NOT defer sending new message when new message is NOT of type email', async () => {
+    it('should refetch the route ticket when message preparation detects an identity mismatch', async () => {
+        const toastErrorSpy = jest
+            .spyOn(toast, 'error')
+            .mockImplementation(jest.fn())
+        prepareTicketMessageMock.mockRejectedValue(
+            new TicketMessageIdentityMismatchError(),
+        )
+
+        const { getByTestId } = renderWithMockedStore(
+            <TicketDetailContainer
+                {...minProps}
+                ticket={existingTicket}
+                newMessage={newMessageState}
+                canSendMessage
+            />,
+            { path: '/foo/:ticketId', initialEntries: ['/foo/1'] },
+        )
+
+        userEvent.click(getByTestId('TicketView-submit'))
+
+        await waitFor(() =>
+            expect(minProps.fetchTicket).toHaveBeenCalledWith('1', {
+                isCurrentlyOnTicket: true,
+            }),
+        )
+        expect(toastErrorSpy).toHaveBeenCalledWith(
+            'Ticket is still loading. Please try again in a moment.',
+        )
+        expect(pendingMessageManager.sendMessage).not.toHaveBeenCalled()
+        expect(minProps.sendTicketMessage).not.toHaveBeenCalled()
+
+        toastErrorSpy.mockRestore()
+    })
+
+    it('should send non-email messages using the route ticket id', async () => {
         const preparedFacebookData = {
             messageId: 1,
             messageToSend: {
@@ -1155,7 +1429,7 @@ describe('TicketDetailContainer component', () => {
                 newMessage={newMessageState}
                 canSendMessage
             />,
-            { path: '/foo/:ticketId', initialEntries: ['/foo/1'] },
+            { path: '/foo/:ticketId', initialEntries: ['/foo/2'] },
         )
 
         userEvent.click(getByTestId('TicketView-submit'))
@@ -1166,10 +1440,10 @@ describe('TicketDetailContainer component', () => {
                 preparedFacebookData.messageToSend,
                 undefined,
                 true,
-                '1',
+                '2',
                 expect.objectContaining({
-                    ticket_id_url: '1',
-                    ticket_id_submitted: '1',
+                    ticket_id_url: '2',
+                    ticket_id_submitted: '2',
                     ticket_id_redux: 1,
                     source_type: 'facebook',
                 }),
@@ -1212,11 +1486,11 @@ describe('TicketDetailContainer component', () => {
     })
 
     it.each([
-        ['new ticket', newTicket],
-        ['existing ticket', existingTicket],
+        ['new ticket', newTicket, 123],
+        ['existing ticket', existingTicket, 1],
     ])(
         'should close the ticket and redirect to the next ticket on %s submit success',
-        async (testName, ticket) => {
+        async (testName, ticket, expectedTicketId) => {
             let resolveSubmit: (value?: unknown) => void
             const submitMock = jest.fn().mockImplementation(
                 () =>
@@ -1247,12 +1521,12 @@ describe('TicketDetailContainer component', () => {
             userEvent.click(getByTestId('TicketView-submit'))
             act(() => {
                 getByText('Change ticket route').click()
-                resolveSubmit?.()
+                resolveSubmit?.({ resp: { id: 123 } })
             })
 
             await waitFor(() => {
                 expect(minProps.goToNextTicket).toHaveBeenLastCalledWith(
-                    123,
+                    expectedTicketId,
                     expect.any(Promise),
                 )
             })
@@ -1597,6 +1871,41 @@ describe('TicketDetailContainer component', () => {
             )
         })
 
+        it('should use the route ticket id when checking ticket fields', async () => {
+            useCustomFieldDefinitionsMock.mockReturnValue({
+                isLoading: false,
+                data: {
+                    data: [
+                        ticketDropdownFieldDefinition,
+                        { ...ticketInputFieldDefinition, required: true },
+                    ],
+                },
+            })
+            const { getByTestId } = renderWithMockedStore(
+                <TicketDetailContainer
+                    {...{
+                        ...minProps,
+                        ticket: existingTicket,
+                        canSendMessage: true,
+                        fieldsState: {},
+                    }}
+                />,
+                { path: '/foo/:ticketId', initialEntries: ['/foo/2'] },
+            )
+
+            userEvent.click(getByTestId('TicketView-submit'))
+
+            expect(logEvent).toHaveBeenCalledWith(
+                SegmentEvent.CustomFieldTicketValueRequiredMissingError,
+                {
+                    ticketId: 2,
+                },
+            )
+            expect(triggerTicketFieldsErrors).toHaveBeenCalledWith([
+                ticketInputFieldDefinition.id,
+            ])
+        })
+
         it('should not trigger ticket field validation when sending a message without closing on existing ticket', async () => {
             mockUseHelpdeskV2MS1Flag.mockReturnValue(true)
             useCustomFieldDefinitionsMock.mockReturnValue({
@@ -1688,6 +1997,36 @@ describe('TicketDetailContainer component', () => {
             expect(mockValidateTicketFields).toHaveBeenCalled()
             expect(pendingMessageManager.sendMessage).not.toHaveBeenCalled()
             expect(minProps.submitTicket).not.toHaveBeenCalled()
+        })
+
+        it('should use the route ticket id when validating ticket fields', async () => {
+            mockUseHelpdeskV2MS1Flag.mockReturnValue(true)
+            mockValidateTicketFields.mockReturnValue({
+                hasErrors: true,
+                invalidFieldIds: [ticketInputFieldDefinition.id],
+            })
+
+            renderWithMockedStore(
+                <TicketDetailContainer
+                    {...{
+                        ...minProps,
+                        ticket: existingTicket,
+                        newMessage: newMessageState,
+                        canSendMessage: true,
+                    }}
+                />,
+                { path: '/foo/:ticketId', initialEntries: ['/foo/2'] },
+            )
+
+            makeExecuteKeyboardAction(shortcutManagerMock)(
+                'SUBMIT_CLOSE_TICKET',
+            )
+
+            await flushPromises()
+
+            expect(mockUseTicketFieldsValidation).toHaveBeenCalledWith(2)
+            expect(mockValidateTicketFields).toHaveBeenCalled()
+            expect(pendingMessageManager.sendMessage).not.toHaveBeenCalled()
         })
 
         it('should allow keyboard shortcut submit when ticket field validation passes on existing ticket', async () => {

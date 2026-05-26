@@ -238,6 +238,69 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
+    it('should ignore stale FETCH_TICKET_SUCCESS actions', () => {
+        const state = reducer(
+            reducer(initialState, {
+                type: types.FETCH_TICKET_START,
+                requestedTicketId: '1',
+            }),
+            {
+                type: types.FETCH_TICKET_START,
+                requestedTicketId: '2',
+            },
+        )
+
+        const staleState = reducer(state, {
+            type: types.FETCH_TICKET_SUCCESS,
+            requestedTicketId: '1',
+            response: {
+                id: 1,
+                subject: 'stale ticket',
+            },
+        })
+
+        expect(staleState).toBe(state)
+
+        const latestState = reducer(state, {
+            type: types.FETCH_TICKET_SUCCESS,
+            requestedTicketId: '2',
+            response: {
+                id: 2,
+                subject: 'latest ticket',
+            },
+        })
+
+        expect(latestState.get('id')).toBe(2)
+        expect(latestState.get('subject')).toBe('latest ticket')
+        expect(latestState.getIn(['_internal', 'loading', 'fetchTicket'])).toBe(
+            false,
+        )
+    })
+
+    it('should ignore inflight FETCH_TICKET_SUCCESS actions after clearing the ticket', () => {
+        const state = reducer(initialState, {
+            type: types.FETCH_TICKET_START,
+            requestedTicketId: '1',
+        })
+        const clearedState = reducer(state, {
+            type: types.CLEAR_TICKET,
+        })
+
+        const staleState = reducer(clearedState, {
+            type: types.FETCH_TICKET_SUCCESS,
+            requestedTicketId: '1',
+            response: {
+                id: 1,
+                subject: 'stale ticket',
+            },
+        })
+
+        expect(
+            clearedState.getIn(['_internal', 'latestFetchTicketRequestedId']),
+        ).toBe(null)
+        expect(staleState).toBe(clearedState)
+    })
+
     it('should handle CLEAR_TICKET', () => {
         expect(
             reducer(initialState.mergeDeep(ticketFixtures.ticket), {

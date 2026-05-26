@@ -4,6 +4,12 @@ export class TicketMessageInvalidSendDataError extends Error {
     }
 }
 
+export class TicketMessageIdentityMismatchError extends Error {
+    constructor() {
+        super('Ticket is still loading. Please try again in a moment.')
+    }
+}
+
 export class TicketMessageActionValidationError extends Error {
     reason: string
 

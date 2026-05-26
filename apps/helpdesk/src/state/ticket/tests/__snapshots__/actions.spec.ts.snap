@@ -404,9 +404,11 @@ exports[`ticket actions displayAuditLogEvents() should skip satisfaction survey 
 exports[`ticket actions fetchTicket() existing instagram ticket 1`] = `
 [
   {
+    "requestedTicketId": "1",
     "type": "FETCH_TICKET_START",
   },
   {
+    "requestedTicketId": "1",
     "response": {
       "events": [],
       "id": 1,
@@ -543,9 +545,11 @@ exports[`ticket actions fetchTicket() existing instagram ticket 1`] = `
 exports[`ticket actions fetchTicket() existing ticket 1`] = `
 [
   {
+    "requestedTicketId": "1",
     "type": "FETCH_TICKET_START",
   },
   {
+    "requestedTicketId": "1",
     "response": {
       "events": [],
       "id": 1,
@@ -707,9 +711,11 @@ exports[`ticket actions fetchTicket() new ticket 1`] = `
 exports[`ticket actions fetchTicket() should send ticket-viewed event when ticket is unread 1`] = `
 [
   {
+    "requestedTicketId": "1",
     "type": "FETCH_TICKET_START",
   },
   {
+    "requestedTicketId": "1",
     "response": {
       "events": [],
       "id": 1,
@@ -848,6 +854,11 @@ exports[`ticket actions goToNextTicket() should fetch next ticket and go to this
     "type": "FETCH_TICKET_START",
   },
   {
+    "requestedTicketId": 2,
+    "type": "FETCH_TICKET_START",
+  },
+  {
+    "requestedTicketId": 2,
     "response": {
       "customerId": 1,
       "events": [],
@@ -946,6 +957,11 @@ exports[`ticket actions goToNextTicket() should fetch next ticket and go to this
     "type": "FETCH_TICKET_START",
   },
   {
+    "requestedTicketId": 2,
+    "type": "FETCH_TICKET_START",
+  },
+  {
+    "requestedTicketId": 2,
     "response": {
       "customerId": 1,
       "events": [],
@@ -1081,6 +1097,12 @@ exports[`ticket actions goToNextTicket() should fetch next ticket and go to this
 exports[`ticket actions goToNextTicket() should fetch next ticket and wait for promise to be resolved to go to this ticket 1`] = `
 [
   {
+    "discreetly": true,
+    "requestedTicketId": 2,
+    "type": "FETCH_TICKET_START",
+  },
+  {
+    "requestedTicketId": 2,
     "response": {
       "events": [],
       "id": 2,
@@ -1209,6 +1231,11 @@ exports[`ticket actions goToPrevTicket() should fetch previous ticket and go to 
     "type": "FETCH_TICKET_START",
   },
   {
+    "requestedTicketId": 1,
+    "type": "FETCH_TICKET_START",
+  },
+  {
+    "requestedTicketId": 1,
     "response": {
       "customerId": 1,
       "events": [],
@@ -1307,6 +1334,11 @@ exports[`ticket actions goToPrevTicket() should fetch previous ticket and go to 
     "type": "FETCH_TICKET_START",
   },
   {
+    "requestedTicketId": 1,
+    "type": "FETCH_TICKET_START",
+  },
+  {
+    "requestedTicketId": 1,
     "response": {
       "customerId": 1,
       "events": [],
@@ -1442,6 +1474,12 @@ exports[`ticket actions goToPrevTicket() should fetch previous ticket and go to 
 exports[`ticket actions goToPrevTicket() should fetch previous ticket and wait for promise to be resolved to go to this ticket 1`] = `
 [
   {
+    "discreetly": true,
+    "requestedTicketId": 1,
+    "type": "FETCH_TICKET_START",
+  },
+  {
+    "requestedTicketId": 1,
     "response": {
       "events": [],
       "id": 1,
@@ -1543,6 +1581,12 @@ exports[`ticket actions goToPrevTicket() should go to first view because there i
 exports[`ticket actions handleMessageActionError() should fetch the ticket because the user is currently on it 1`] = `
 [
   {
+    "discreetly": true,
+    "requestedTicketId": "1",
+    "type": "FETCH_TICKET_START",
+  },
+  {
+    "requestedTicketId": "1",
     "response": {
       "events": [],
       "id": 1,
@@ -1853,11 +1897,13 @@ exports[`ticket actions setSpam() should undo when clicking on notification butt
     "type": "setSpamSuccess",
   },
   {
+    "requestedTicketId": 1,
     "type": "FETCH_TICKET_START",
   },
   {
     "error": [Error: Request failed with status code 404],
     "reason": "Failed to fetch ticket 1",
+    "requestedTicketId": 1,
     "type": "FETCH_TICKET_ERROR",
   },
 ]
@@ -1993,11 +2039,13 @@ exports[`ticket actions setTrashed() should undo when clicking on notification b
     "type": "setTrashedSuccess",
   },
   {
+    "requestedTicketId": 1,
     "type": "FETCH_TICKET_START",
   },
   {
     "error": [Error: Request failed with status code 404],
     "reason": "Failed to fetch ticket 1",
+    "requestedTicketId": 1,
     "type": "FETCH_TICKET_ERROR",
   },
   {
