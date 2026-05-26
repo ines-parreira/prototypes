@@ -137,6 +137,47 @@ export function useCustomerInfoData({
         sortedOrders,
     ])
 
+    // Enrich the ticket object with type-mapped integration data so that legacy
+    // custom-action templates like {{ticket.customer.integrations.shopify.orders[0].name}}
+    // continue to resolve in the new UI. The raw ticket API response keys integrations
+    // by numeric ID; we add an alias keyed by integration type (e.g. "shopify") that
+    // mirrors the same enrichment already applied to `enrichedCustomer`.
+    const enrichedTicket = useMemo(() => {
+        const ticketRaw = ticketData?.data as
+            | Record<string, unknown>
+            | undefined
+        if (!ticketRaw) return ticketRaw
+
+        const integrationType = selectedIntegration?.type
+        if (!integrationType) return ticketRaw
+
+        const ticketCustomer = (ticketRaw.customer ?? {}) as Record<
+            string,
+            unknown
+        >
+        const existingIntegrations = (ticketCustomer.integrations ??
+            {}) as Record<string, unknown>
+
+        return {
+            ...ticketRaw,
+            customer: {
+                ...ticketCustomer,
+                integrations: {
+                    ...existingIntegrations,
+                    [integrationType]: {
+                        ...shopper?.data,
+                        orders: sortedOrders?.map((o) => o.data) ?? [],
+                    },
+                },
+            },
+        }
+    }, [
+        ticketData?.data,
+        selectedIntegration?.type,
+        shopper?.data,
+        sortedOrders,
+    ])
+
     const { dateFormat, timeFormat, timezone } = useUserDateTimePreferences()
 
     const context: FieldRenderContext = {
@@ -172,6 +213,7 @@ export function useCustomerInfoData({
         purchaseSummary,
         isLoadingPurchaseSummary,
         enrichedCustomer,
+        enrichedTicket,
         context,
         hasData,
         ticketData,

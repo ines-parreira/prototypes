@@ -67,6 +67,14 @@ export function TemplateResolverProvider({
         const baseVariables = parent?.variables ?? {}
         return {
             objects: {
+                // Spread order fields at root level first so that legacy custom-action
+                // templates like {{order_number}} (instead of {{order.order_number}})
+                // continue to resolve. Parent context and explicit named keys override
+                // any order fields that share the same name (e.g. order.customer won't
+                // shadow the enriched customer object).
+                ...(order !== undefined
+                    ? (order as Record<string, unknown>)
+                    : {}),
                 ...baseObjects,
                 ...(ticket !== undefined && { ticket }),
                 ...(customer !== undefined && { customer }),

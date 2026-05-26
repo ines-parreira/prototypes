@@ -546,6 +546,126 @@ describe('CustomActions', () => {
         })
     })
 
+    it('resolves root-level order fields for backward-compatible templates (e.g. {{order_number}})', async () => {
+        // Old-UI templates used {{order_number}} directly (the order was spread at root).
+        // The new UI must support the same paths for existing customer configurations.
+        const widgetWithLegacyOrderTemplate: Widget = {
+            id: 1,
+            type: 'shopify',
+            context: 'ticket',
+            template: {
+                type: 'wrapper',
+                widgets: [
+                    {
+                        path: 'order',
+                        type: 'order',
+                        widgets: [],
+                        meta: {
+                            custom: {
+                                links: [
+                                    {
+                                        label: 'ShipStation',
+                                        url: 'https://app.shipstation.com/search?q={{order_number}}',
+                                    },
+                                ],
+                                buttons: [],
+                            },
+                        },
+                    },
+                ],
+            },
+        }
+
+        setupHandlers([widgetWithLegacyOrderTemplate])
+
+        render(
+            <TemplateResolverProvider
+                order={{ id: '5001', name: '#5001', order_number: 5001 }}
+            >
+                <CustomActions
+                    widgetPath="order"
+                    integrationId={1}
+                    customerId={42}
+                    ticketId="100"
+                />
+            </TemplateResolverProvider>,
+        )
+
+        await vi.waitFor(() => {
+            expect(
+                screen.getByRole('link', { name: /shipstation/i }),
+            ).toBeInTheDocument()
+        })
+
+        const link = screen.getByRole('link', { name: /shipstation/i })
+        expect(link).toHaveAttribute(
+            'href',
+            'https://app.shipstation.com/search?q=5001',
+        )
+    })
+
+    it('resolves ticket.customer.integrations.shopify paths for backward-compatible templates', async () => {
+        // Old-UI templates used {{ticket.customer.integrations.shopify.orders[0].name}}.
+        // The new UI enriches the ticket context with type-keyed integration data so
+        // these paths continue to resolve correctly.
+        const widgetWithLegacyTicketTemplate: Widget = {
+            id: 1,
+            type: 'shopify',
+            context: 'ticket',
+            template: {
+                type: 'wrapper',
+                widgets: [
+                    {
+                        path: 'customer',
+                        type: 'customer',
+                        meta: {
+                            custom: {
+                                links: [
+                                    {
+                                        label: 'Last Order',
+                                        url: 'https://example.com/orders/{{ticket.customer.integrations.shopify.orders[0].name}}',
+                                    },
+                                ],
+                                buttons: [],
+                            },
+                        },
+                    },
+                ],
+            },
+        }
+
+        setupHandlers([widgetWithLegacyTicketTemplate])
+
+        render(
+            <TemplateResolverProvider
+                ticket={{
+                    customer: {
+                        integrations: {
+                            shopify: {
+                                orders: [{ id: '1001', name: '#1001' }],
+                            },
+                        },
+                    },
+                }}
+            >
+                <CustomActions
+                    integrationId={1}
+                    customerId={42}
+                    ticketId="100"
+                />
+            </TemplateResolverProvider>,
+        )
+
+        await vi.waitFor(() => {
+            expect(
+                screen.getByRole('link', { name: /last order/i }),
+            ).toBeInTheDocument()
+        })
+
+        const link = screen.getByRole('link', { name: /last order/i })
+        expect(link).toHaveAttribute('href', 'https://example.com/orders/#1001')
+    })
+
     it('renders order-scoped actions when widgetPath="order"', async () => {
         const orderWidget: Widget = {
             id: 1,

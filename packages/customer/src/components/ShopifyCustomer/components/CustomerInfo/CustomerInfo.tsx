@@ -85,9 +85,9 @@ export function CustomerInfo({
         productsMap,
         isLoadingPurchaseSummary,
         enrichedCustomer,
+        enrichedTicket,
         context,
         hasData,
-        ticketData,
         dateFormat,
         timeFormat,
         timezone,
@@ -167,7 +167,7 @@ export function CustomerInfo({
 
     return (
         <TemplateResolverProvider
-            ticket={ticketData?.data as Record<string, unknown> | undefined}
+            ticket={enrichedTicket}
             customer={enrichedCustomer as Record<string, unknown> | undefined}
             currentUser={currentUser}
             variables={{
