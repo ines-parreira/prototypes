@@ -4,11 +4,6 @@ import {
     AutomatedTicketsMeasure,
 } from 'domains/reporting/models/cubes/automate_v2/AutomatedTicketsCube'
 import {
-    RecommendedResourcesDimension,
-    RecommendedResourcesFilterMember,
-    RecommendedResourcesMeasure,
-} from 'domains/reporting/models/cubes/automate_v2/RecommendedResourcesCube'
-import {
     TicketDimension,
     TicketMeasure,
     TicketMember,
@@ -26,7 +21,6 @@ import {
     aiAgentTouchedTicketTotalCountQueryFactory,
     allTicketsForAiAgentTotalCountQueryFactory,
     customerSatisfactionPerIntentLevelQueryFactory,
-    recommendedResourceQueryFactory,
 } from 'domains/reporting/models/queryFactories/ai-agent-insights/metrics'
 import { AI_AGENT_TICKETS_CHANNELS } from 'domains/reporting/models/queryFactories/ai-agent-insights/utils'
 import { ReportingFilterOperator } from 'domains/reporting/models/types'
@@ -196,41 +190,6 @@ describe('AI Agent metrics', () => {
                 TicketSatisfactionSurveyMeasure.AvgSurveyScore,
             ],
             segments: [TicketSatisfactionSurveySegment.SurveyScored],
-            timezone: timezone,
-        })
-    })
-
-    it('recommendedResourceQueryFactory', () => {
-        expect(
-            recommendedResourceQueryFactory(filters, timezone, ['1', '2']),
-        ).toEqual({
-            metricName: METRIC_NAMES.AI_AGENT_RECOMMENDED_RESOURCES,
-            dimensions: [
-                RecommendedResourcesDimension.TicketId,
-                RecommendedResourcesDimension.RecommendedResourceId,
-            ],
-            filters: [
-                {
-                    member: RecommendedResourcesFilterMember.PeriodStart,
-                    operator: ReportingFilterOperator.AfterDate,
-                    values: [
-                        formatReportingQueryDate(filters.period.start_datetime),
-                    ],
-                },
-                {
-                    member: RecommendedResourcesFilterMember.PeriodEnd,
-                    operator: ReportingFilterOperator.BeforeDate,
-                    values: [
-                        formatReportingQueryDate(filters.period.end_datetime),
-                    ],
-                },
-                {
-                    member: RecommendedResourcesFilterMember.TicketId,
-                    operator: ReportingFilterOperator.In,
-                    values: ['1', '2'],
-                },
-            ],
-            measures: [RecommendedResourcesMeasure.NumRecommendedResources],
             timezone: timezone,
         })
     })

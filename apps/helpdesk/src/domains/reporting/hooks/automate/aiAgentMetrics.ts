@@ -19,7 +19,6 @@ import {
     aiAgentTouchedTicketQueryFactory,
     aiAgentTouchedTicketTotalCountQueryFactory,
     customerSatisfactionPerIntentLevelQueryFactory,
-    recommendedResourceQueryFactory,
 } from 'domains/reporting/models/queryFactories/ai-agent-insights/metrics'
 import { aiAgentAutomatedInteractionsQueryFactory } from 'domains/reporting/models/queryFactories/automate_v2/metrics'
 import {
@@ -272,20 +271,6 @@ export const useGetTicketIntentsForTicketIds = (
               }
             : {}),
     })
-}
-
-export const useAIAgentResourcePerTicket = (
-    filters: StatsFilters,
-    timezone: string,
-    ticketIds: string[],
-    sorting?: OrderDirection,
-    enabled?: boolean,
-) => {
-    return useMetricPerDimension<string>(
-        recommendedResourceQueryFactory(filters, timezone, ticketIds, sorting),
-        undefined,
-        enabled,
-    )
 }
 
 export const useAiAgentAutomatedTicketsCountTrends = ({

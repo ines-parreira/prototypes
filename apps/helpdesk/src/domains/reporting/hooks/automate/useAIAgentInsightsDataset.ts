@@ -1,10 +1,7 @@
 import { useMemo } from 'react'
 
 import {
-    useAIAgentResourcePerTicket,
     useAiAgentTicketCountFromTicketCustomFieldsPerIntent,
-    useAiAgentTickets,
-    useAIAgentTicketsWithIntent,
     useCustomerSatisfactionMetricPerIntentLevel,
     useGetTicketIntentsForTicketIds,
     useTotalAiAgentTicketsByCustomField,
@@ -16,7 +13,6 @@ import {
 import { CUSTOM_FIELD_AI_AGENT_HANDOVER } from 'domains/reporting/hooks/automate/types'
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
 import {
-    calculateAiAgentKnowledgeResourcePerIntent,
     enrichWithSuccessRate,
     enrichWithSuccessRateUpliftOpportunity,
     filterMetricDataByIntentLevel,
@@ -345,83 +341,6 @@ export const useSuccessRatePerIntent = (
     }
 }
 
-// AI AGENT Recommended resources per intent
-export const useAiAgentKnowledgeResourcePerIntent = (
-    filters: StatsFilters,
-    timezone: string,
-    sorting?: OrderDirection,
-    intentId?: string,
-    integrationIds?: string[],
-) => {
-    const { intentCustomFieldId, outcomeCustomFieldId } =
-        useGetCustomTicketsFieldsDefinitionData()
-
-    const aiAgentNotAutomatedTicketsData = useAiAgentTickets({
-        filters,
-        timezone,
-        outcomeFieldId: outcomeCustomFieldId,
-        intentFieldId: intentCustomFieldId,
-        integrationIds,
-    })
-
-    const aiAgentTicketIds = aiAgentNotAutomatedTicketsData.data?.allData
-        .map((item) => item[TicketDimension.TicketId])
-        .filter((id): id is string => typeof id === 'string')
-
-    const aiAgentTicketsWithIntent = useAIAgentTicketsWithIntent(
-        filters,
-        timezone,
-        intentCustomFieldId,
-        aiAgentTicketIds,
-        sorting,
-        intentId,
-    )
-
-    const aiAgentTicketsWithIntentData =
-        aiAgentTicketsWithIntent.data?.allData.map((item) => {
-            // value is in format 111::L1::L2::L3, remove first part 111:: and leave only L1::L2::L3
-            const intent =
-                item[TicketDimension.CustomField]
-                    ?.split('::')
-                    .slice(1)
-                    .join('::') ?? null
-            return {
-                [TicketDimension.TicketId]: item[TicketDimension.TicketId],
-                [TicketDimension.CustomField]: intent,
-            }
-        })
-
-    const ticketIds =
-        (aiAgentTicketsWithIntentData &&
-            aiAgentTicketsWithIntentData
-                .map((item) => item[TicketDimension.TicketId])
-                .filter((id): id is string => typeof id === 'string')) ||
-        []
-
-    const resourcePerTicketId = useAIAgentResourcePerTicket(
-        filters,
-        timezone,
-        ticketIds,
-        sorting,
-        !!aiAgentTicketsWithIntentData,
-    )
-
-    const aiAgentKnowledgeResourcePerIntent =
-        calculateAiAgentKnowledgeResourcePerIntent(
-            aiAgentTicketsWithIntentData || [],
-            resourcePerTicketId.data?.allData || [],
-        )
-
-    return {
-        isError:
-            aiAgentTicketsWithIntent.isError || resourcePerTicketId.isError,
-        isFetching:
-            aiAgentTicketsWithIntent.isFetching ||
-            resourcePerTicketId.isFetching,
-        data: aiAgentKnowledgeResourcePerIntent,
-    }
-}
-
 export const useCustomerSatisfactionPerIntent = (
     filters: StatsFilters,
     timezone: string,
@@ -608,26 +527,6 @@ const useFetchAllIntentsMetrics = (
         metricFor: IntentTableColumn.AvgCustomerSatisfaction,
     })
 
-    // TODO uncomment when AI Agent Knowledge Resource per intent events are available with all needed data
-    // const aiAgentKnowledgeResourcePerIntent =
-    //     useAiAgentKnowledgeResourcePerIntent(
-    //         filters,
-    //         timezone,
-    //         sorting,
-    //         intentId,
-    //         integrationIds,
-    //     )
-    //
-    // const aiAgentKnowledgeResourcePerIntentPerIntentLevel =
-    //     filterMetricDataByIntentLevel({
-    //         metricData: aiAgentKnowledgeResourcePerIntent.data,
-    //         level: INTENT_LEVEL,
-    //         intentKey: 'TicketEnriched.customField',
-    //         valueKey: 'resources',
-    //         resultKey: 'resources',
-    //         metricFor: IntentTableColumn.Resources,
-    //     })
-
     return {
         successRateUpliftOpportunityPerIntent: {
             ...successRateUpliftOpportunityPerIntent,
@@ -644,10 +543,6 @@ const useFetchAllIntentsMetrics = (
         customerSatisfactionPerIntent: {
             ...customerSatisfactionPerIntent,
             data: customerSatisfactionPerIntentLevel,
-        },
-        aiAgentKnowledgeResourcePerIntent: {
-            // ...aiAgentKnowledgeResourcePerIntent,
-            // data: aiAgentKnowledgeResourcePerIntentPerIntentLevel,
         },
     }
 }
@@ -680,7 +575,6 @@ export const useAIAgentInsightsDataset = (
         ticketsPerIntent,
         successRatePerIntent,
         customerSatisfactionPerIntent,
-        // aiAgentKnowledgeResourcePerIntent,
     } = useFetchAllIntentsMetrics(
         filters,
         timezone,
@@ -710,12 +604,6 @@ export const useAIAgentInsightsDataset = (
             metricKey: 'avgCustomerSatisfaction',
             resultKey: 'avgCustomerSatisfaction',
         },
-        // {
-        //     data: aiAgentKnowledgeResourcePerIntent.data || [],
-        //     metricKey: 'resources',
-        //     resultKey: 'resources',
-        //     itemKey: 'TicketEnriched.customField',
-        // },
     ]
 
     metrics.forEach(({ data, metricKey, resultKey }) =>
@@ -730,7 +618,6 @@ export const useAIAgentInsightsDataset = (
         ticketsPerIntent.isFetching ||
         successRatePerIntent.isFetching ||
         customerSatisfactionPerIntent.isFetching
-    // aiAgentKnowledgeResourcePerIntent.isFetching
 
     return {
         data: convertedArray,

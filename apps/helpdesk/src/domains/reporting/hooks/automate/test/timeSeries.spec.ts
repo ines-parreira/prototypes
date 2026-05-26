@@ -4,7 +4,6 @@ import {
     fetchAutomationDatasetByEventTypeTimeSeries,
     fetchAutomationDatasetTimeSeries,
     fetchBillableTicketDatasetTimeSeries,
-    fetchRecommendedResourcesTimeSeries,
     useAutomationDatasetByEventTypeTimeSeries,
     useAutomationDatasetTimeSeries,
     useBillableTicketDatasetTimeSeries,
@@ -16,7 +15,6 @@ import {
     useTimeSeriesPerDimension,
 } from 'domains/reporting/hooks/useTimeSeries'
 import {
-    articleRecommendedInteractionsTimeSeriesQueryFactory,
     billableTicketDatasetExcludingAIAgentTimeSeriesQueryFactory,
     interactionsByEventTypeTimeSeriesQueryFactory,
     interactionsTimeSeriesQueryFactory,
@@ -119,11 +117,6 @@ describe('Automate V2 time series', () => {
                 method: fetchBillableTicketDatasetTimeSeries,
                 hook: billableTicketDatasetExcludingAIAgentTimeSeriesQueryFactory,
             },
-
-            {
-                method: fetchRecommendedResourcesTimeSeries,
-                hook: articleRecommendedInteractionsTimeSeriesQueryFactory,
-            },
         ])(
             'should pass the respective query to the fetchTimeSeriesHook',
             async ({ method, hook }) => {
@@ -197,24 +190,6 @@ describe('Automate V2 time series', () => {
 
                 expect(fetchTimeSeriesMock.mock.calls[0]).toEqual([
                     billableTicketDatasetExcludingAIAgentTimeSeriesQueryFactory(
-                        statsFilters,
-                        timezone,
-                        granularity,
-                    ),
-                ])
-            })
-        })
-
-        describe('fetchRecommendedResourcesTimeSeries', () => {
-            it('should pass the query to the fetchTimeSeries hook', async () => {
-                await fetchRecommendedResourcesTimeSeries(
-                    statsFilters,
-                    timezone,
-                    granularity,
-                )
-
-                expect(fetchTimeSeriesMock.mock.calls[0]).toEqual([
-                    articleRecommendedInteractionsTimeSeriesQueryFactory(
                         statsFilters,
                         timezone,
                         granularity,

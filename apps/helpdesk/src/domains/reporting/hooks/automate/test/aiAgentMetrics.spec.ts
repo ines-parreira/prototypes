@@ -1,7 +1,6 @@
 import { assumeMock, renderHook } from '@repo/testing'
 
 import {
-    useAIAgentResourcePerTicket,
     useAiAgentTicketCountFromTicketCustomFieldsPerIntent,
     useAiAgentTicketCountPerIntent,
     useAiAgentTickets,
@@ -9,14 +8,8 @@ import {
     useTotalAiAgentTicketsByCustomField,
 } from 'domains/reporting/hooks/automate/aiAgentMetrics'
 import { CUSTOM_FIELD_AI_AGENT_HANDOVER } from 'domains/reporting/hooks/automate/types'
-import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { useMetric } from 'domains/reporting/hooks/useMetric'
 import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
-import {
-    RecommendedResourcesDimension,
-    RecommendedResourcesFilterMember,
-    RecommendedResourcesMeasure,
-} from 'domains/reporting/models/cubes/automate_v2/RecommendedResourcesCube'
 import {
     aiAgentTouchedTicketQueryFactory,
     aiAgentTouchedTicketTotalCountQueryFactory,
@@ -27,7 +20,6 @@ import {
     aiAgentTicketsPerIntentCountQueryFactory,
 } from 'domains/reporting/models/queryFactories/ticket-insights/customFieldsTicketCount'
 import { ReportingFilterOperator } from 'domains/reporting/models/types'
-import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
 
 jest.mock('domains/reporting/hooks/useMetric')
@@ -196,182 +188,6 @@ describe('aiAgentMetrics', () => {
                     intentId: intentId,
                     sorting,
                 }),
-            )
-        })
-    })
-
-    describe('useAIAgentResourcePerTicket', () => {
-        const filters = {
-            period: {
-                start_datetime: '2021-01-01T00:00:00Z',
-                end_datetime: '2021-01-02T00:00:00Z',
-            },
-        }
-        const timezone = 'UTC'
-        const ticketIds = ['489105395', '489104880']
-        const sorting = OrderDirection.Asc
-
-        it('should pass the correct query to useMetricPerDimension hook', () => {
-            renderHook(
-                () =>
-                    useAIAgentResourcePerTicket(
-                        filters,
-                        timezone,
-                        ticketIds,
-                        sorting,
-                        false,
-                    ),
-                {},
-            )
-
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-                {
-                    metricName: METRIC_NAMES.AI_AGENT_RECOMMENDED_RESOURCES,
-                    measures: [
-                        RecommendedResourcesMeasure.NumRecommendedResources,
-                    ],
-                    dimensions: [
-                        RecommendedResourcesDimension.TicketId,
-                        RecommendedResourcesDimension.RecommendedResourceId,
-                    ],
-                    timezone,
-                    filters: [
-                        {
-                            member: RecommendedResourcesFilterMember.PeriodStart,
-                            operator: ReportingFilterOperator.AfterDate,
-                            values: [
-                                formatReportingQueryDate(
-                                    filters.period.start_datetime,
-                                ),
-                            ],
-                        },
-                        {
-                            member: RecommendedResourcesFilterMember.PeriodEnd,
-                            operator: ReportingFilterOperator.BeforeDate,
-                            values: [
-                                formatReportingQueryDate(
-                                    filters.period.end_datetime,
-                                ),
-                            ],
-                        },
-                        {
-                            member: RecommendedResourcesFilterMember.TicketId,
-                            operator: ReportingFilterOperator.In,
-                            values: ticketIds,
-                        },
-                    ],
-                    order: [
-                        [RecommendedResourcesFilterMember.TicketId, sorting],
-                    ],
-                },
-                undefined,
-                false,
-            )
-        })
-
-        it('should handle empty ticketIds array', () => {
-            renderHook(
-                () =>
-                    useAIAgentResourcePerTicket(
-                        filters,
-                        timezone,
-                        [],
-                        sorting,
-                        true,
-                    ),
-                {},
-            )
-
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-                {
-                    metricName: METRIC_NAMES.AI_AGENT_RECOMMENDED_RESOURCES,
-                    measures: [
-                        RecommendedResourcesMeasure.NumRecommendedResources,
-                    ],
-                    dimensions: [
-                        RecommendedResourcesDimension.TicketId,
-                        RecommendedResourcesDimension.RecommendedResourceId,
-                    ],
-                    timezone,
-                    filters: [
-                        {
-                            member: RecommendedResourcesFilterMember.PeriodStart,
-                            operator: ReportingFilterOperator.AfterDate,
-                            values: [
-                                formatReportingQueryDate(
-                                    filters.period.start_datetime,
-                                ),
-                            ],
-                        },
-                        {
-                            member: RecommendedResourcesFilterMember.PeriodEnd,
-                            operator: ReportingFilterOperator.BeforeDate,
-                            values: [
-                                formatReportingQueryDate(
-                                    filters.period.end_datetime,
-                                ),
-                            ],
-                        },
-                        {
-                            member: RecommendedResourcesFilterMember.TicketId,
-                            operator: ReportingFilterOperator.In,
-                            values: [],
-                        },
-                    ],
-                    order: [
-                        [RecommendedResourcesFilterMember.TicketId, sorting],
-                    ],
-                },
-                undefined,
-                true,
-            )
-        })
-
-        it('should handle undefined sorting', () => {
-            renderHook(
-                () => useAIAgentResourcePerTicket(filters, timezone, ticketIds),
-                {},
-            )
-
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-                {
-                    metricName: METRIC_NAMES.AI_AGENT_RECOMMENDED_RESOURCES,
-                    measures: [
-                        RecommendedResourcesMeasure.NumRecommendedResources,
-                    ],
-                    dimensions: [
-                        RecommendedResourcesDimension.TicketId,
-                        RecommendedResourcesDimension.RecommendedResourceId,
-                    ],
-                    timezone,
-                    filters: [
-                        {
-                            member: RecommendedResourcesFilterMember.PeriodStart,
-                            operator: ReportingFilterOperator.AfterDate,
-                            values: [
-                                formatReportingQueryDate(
-                                    filters.period.start_datetime,
-                                ),
-                            ],
-                        },
-                        {
-                            member: RecommendedResourcesFilterMember.PeriodEnd,
-                            operator: ReportingFilterOperator.BeforeDate,
-                            values: [
-                                formatReportingQueryDate(
-                                    filters.period.end_datetime,
-                                ),
-                            ],
-                        },
-                        {
-                            member: RecommendedResourcesFilterMember.TicketId,
-                            operator: ReportingFilterOperator.In,
-                            values: ticketIds,
-                        },
-                    ],
-                },
-                undefined,
-                undefined,
             )
         })
     })

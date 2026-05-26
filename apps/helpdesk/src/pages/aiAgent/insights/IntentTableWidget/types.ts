@@ -4,7 +4,6 @@ export enum IntentTableColumn {
     Tickets = 'tickets',
     SuccessRate = 'automationRate',
     AvgCustomerSatisfaction = 'avgCustomerSatisfaction',
-    // Resources = 'resources',
 }
 
 export type Intent = {
@@ -14,7 +13,6 @@ export type Intent = {
     [IntentTableColumn.Tickets]: number
     [IntentTableColumn.SuccessRate]: number
     [IntentTableColumn.AvgCustomerSatisfaction]: number
-    // [IntentTableColumn.Resources]: number
 }
 
 export type PaginatedIntents = {
@@ -31,5 +29,4 @@ export type IntentMetrics = {
     [IntentTableColumn.Tickets]: number | null
     [IntentTableColumn.SuccessRate]: number | null
     [IntentTableColumn.AvgCustomerSatisfaction]: number | null
-    // [IntentTableColumn.Resources]: number | null
 }

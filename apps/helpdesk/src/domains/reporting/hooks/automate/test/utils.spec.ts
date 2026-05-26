@@ -14,7 +14,6 @@ import {
     AutomateEventType,
     automateInteractionsByEventTypeToTimeSeries,
     automatePercentLabel,
-    calculateAiAgentKnowledgeResourcePerIntent,
     calculateGreyArea,
     enrichWithSuccessRate,
     enrichWithSuccessRateUpliftOpportunity,
@@ -27,15 +26,8 @@ import {
     sortAllData,
     sortByAutomateFeatureLabels,
 } from 'domains/reporting/hooks/automate/utils'
-import type { QueryReturnType } from 'domains/reporting/hooks/types'
 import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
-import type { Cubes } from 'domains/reporting/models/cubes'
 import { AutomationBillingEventMeasure } from 'domains/reporting/models/cubes/automate/AutomationBillingEventCube'
-import {
-    RecommendedResourcesDimension,
-    RecommendedResourcesMeasure,
-} from 'domains/reporting/models/cubes/automate_v2/RecommendedResourcesCube'
-import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketCustomFieldsMeasure } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
@@ -888,148 +880,6 @@ describe('enrichWithSuccessRate', () => {
             emptyMetric,
             TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
         )
-        expect(result).toEqual([])
-    })
-})
-
-describe('calculateAiAgentKnowledgeResourcePerIntent', () => {
-    it('returns correct resource mapping for valid inputs', () => {
-        const aiAgentTicketsWithIntentData = [
-            {
-                [TicketDimension.CustomField]: '1::intentA',
-                [TicketDimension.TicketId]: 'ticket1',
-            },
-            {
-                [TicketDimension.CustomField]: '2::intentB',
-                [TicketDimension.TicketId]: 'ticket2',
-            },
-        ]
-        const resourcePerTicketIdData = [
-            {
-                [RecommendedResourcesDimension.TicketId]: 'ticket1',
-                [RecommendedResourcesMeasure.NumRecommendedResources]: '5',
-                [RecommendedResourcesDimension.RecommendedResourceId]:
-                    'resource1',
-            },
-            {
-                [RecommendedResourcesDimension.TicketId]: 'ticket2',
-                [RecommendedResourcesMeasure.NumRecommendedResources]: '3',
-                [RecommendedResourcesDimension.RecommendedResourceId]:
-                    'resource2',
-            },
-        ]
-
-        const result = calculateAiAgentKnowledgeResourcePerIntent(
-            aiAgentTicketsWithIntentData,
-            resourcePerTicketIdData,
-        )
-
-        expect(result).toEqual([
-            {
-                'TicketEnriched.customField': '1::intentA',
-                resources: 5,
-            },
-            {
-                'TicketEnriched.customField': '2::intentB',
-                resources: 3,
-            },
-        ])
-    })
-
-    it('returns empty array when no intents are present', () => {
-        const aiAgentTicketsWithIntentData: QueryReturnType<string, Cubes> = []
-        const resourcePerTicketIdData: QueryReturnType<string, Cubes> = []
-
-        const result = calculateAiAgentKnowledgeResourcePerIntent(
-            aiAgentTicketsWithIntentData,
-            resourcePerTicketIdData,
-        )
-
-        expect(result).toEqual([])
-    })
-
-    it('ignores tickets without matching resources', () => {
-        const aiAgentTicketsWithIntentData = [
-            {
-                [TicketDimension.CustomField]: '1::intentA',
-                [TicketDimension.TicketId]: 'ticket1',
-            },
-        ]
-        const resourcePerTicketIdData: QueryReturnType<string, Cubes> = []
-
-        const result = calculateAiAgentKnowledgeResourcePerIntent(
-            aiAgentTicketsWithIntentData,
-            resourcePerTicketIdData,
-        )
-
-        expect(result).toEqual([
-            {
-                'TicketEnriched.customField': '1::intentA',
-                resources: 0,
-            },
-        ])
-    })
-
-    it('handles multiple resources for the same intent', () => {
-        const aiAgentTicketsWithIntentData = [
-            {
-                [TicketDimension.CustomField]: '1::intentA',
-                [TicketDimension.TicketId]: 'ticket1',
-            },
-            {
-                [TicketDimension.CustomField]: '1::intentA',
-                [TicketDimension.TicketId]: 'ticket2',
-            },
-        ]
-        const resourcePerTicketIdData = [
-            {
-                [RecommendedResourcesDimension.TicketId]: 'ticket1',
-                [RecommendedResourcesMeasure.NumRecommendedResources]: '5',
-                [RecommendedResourcesDimension.RecommendedResourceId]:
-                    'resource1',
-            },
-            {
-                [RecommendedResourcesDimension.TicketId]: 'ticket2',
-                [RecommendedResourcesMeasure.NumRecommendedResources]: '3',
-                [RecommendedResourcesDimension.RecommendedResourceId]:
-                    'resource2',
-            },
-        ]
-
-        const result = calculateAiAgentKnowledgeResourcePerIntent(
-            aiAgentTicketsWithIntentData,
-            resourcePerTicketIdData,
-        )
-
-        expect(result).toEqual([
-            {
-                'TicketEnriched.customField': '1::intentA',
-                resources: 8,
-            },
-        ])
-    })
-
-    it('handles tickets with null intents', () => {
-        const aiAgentTicketsWithIntentData = [
-            {
-                [TicketDimension.CustomField]: '',
-                [TicketDimension.TicketId]: 'ticket1',
-            },
-        ]
-        const resourcePerTicketIdData = [
-            {
-                [RecommendedResourcesDimension.TicketId]: 'ticket1',
-                [RecommendedResourcesMeasure.NumRecommendedResources]: '5',
-                [RecommendedResourcesDimension.RecommendedResourceId]:
-                    'resource1',
-            },
-        ]
-
-        const result = calculateAiAgentKnowledgeResourcePerIntent(
-            aiAgentTicketsWithIntentData,
-            resourcePerTicketIdData,
-        )
-
         expect(result).toEqual([])
     })
 })

@@ -13,7 +13,6 @@ import {
 import {
     addMetricDataToResults,
     convertResultToTableArrayFormat,
-    useAiAgentKnowledgeResourcePerIntent,
     useAIAgentMetrics,
     useAIAgentTicketsPerIntent,
     useCustomerSatisfactionPerIntent,
@@ -24,10 +23,6 @@ import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUse
 import { useMetric } from 'domains/reporting/hooks/useMetric'
 import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import { useMultipleMetricsTrends } from 'domains/reporting/hooks/useMultipleMetricsTrend'
-import {
-    RecommendedResourcesDimension,
-    RecommendedResourcesMeasure,
-} from 'domains/reporting/models/cubes/automate_v2/RecommendedResourcesCube'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
@@ -577,153 +572,6 @@ describe('useAiAgentInsightsDataset', () => {
                 isError: false,
                 isFetching: false,
             })
-        })
-    })
-
-    describe('useAiAgentKnowledgeResourcePerIntent', () => {
-        it('should return ai agent knowledge resource per intent correctly', () => {
-            useMetricPerDimensionMock
-                .mockReturnValueOnce({
-                    // mock useAiAgenTickets
-                    data: {
-                        decile: null,
-                        value: null,
-                        allData: [
-                            {
-                                'TicketEnriched.ticketId': '1',
-                            },
-                            {
-                                'TicketEnriched.ticketId': '2',
-                            },
-                            {
-                                'TicketEnriched.ticketId': '3',
-                            },
-                        ],
-                    },
-                    isFetching: false,
-                    isError: false,
-                })
-                .mockReturnValueOnce({
-                    // aiAgentAutomatedTicketsDataWithIntent
-                    data: {
-                        decile: null,
-                        value: null,
-                        allData: [
-                            {
-                                'TicketEnriched.customField': '1::intentA',
-                                'TicketEnriched.ticketId': '1',
-                            },
-                            {
-                                'TicketEnriched.customField': '1::intentA',
-                                'TicketEnriched.ticketId': '2',
-                            },
-                            {
-                                'TicketEnriched.customField': '1::intentA',
-                                'TicketEnriched.ticketId': '3',
-                            },
-                        ],
-                    },
-                    isFetching: false,
-                    isError: false,
-                })
-                .mockReturnValueOnce({
-                    // resourcePerTicketId
-                    data: {
-                        decile: null,
-                        value: null,
-                        allData: [
-                            {
-                                [RecommendedResourcesMeasure.NumRecommendedResources]:
-                                    '1',
-                                [RecommendedResourcesDimension.RecommendedResourceId]:
-                                    '1',
-                                [RecommendedResourcesDimension.TicketId]: '1',
-                            },
-                            {
-                                [RecommendedResourcesMeasure.NumRecommendedResources]:
-                                    '2',
-                                [RecommendedResourcesDimension.TicketId]: '2',
-                                [RecommendedResourcesDimension.RecommendedResourceId]:
-                                    '2',
-                            },
-                        ],
-                    },
-                    isFetching: false,
-                    isError: false,
-                })
-
-            jest.spyOn(queryClient, 'invalidateQueries')
-            const { result } = renderHook(
-                () =>
-                    useAiAgentKnowledgeResourcePerIntent(
-                        statsFilters,
-                        timezone,
-                    ),
-                {
-                    wrapper: ({ children }) => (
-                        <QueryClientProvider client={queryClient}>
-                            {children}
-                        </QueryClientProvider>
-                    ),
-                },
-            )
-            expect(result.current.data).toEqual([
-                {
-                    'TicketEnriched.customField': 'intentA',
-                    resources: 3,
-                },
-            ])
-        })
-
-        it('should return empty array when data not available', () => {
-            useMetricPerDimensionMock
-                .mockReturnValueOnce({
-                    // mock useAiAgenTickets
-                    data: {
-                        decile: null,
-                        value: null,
-                        allData: [],
-                    },
-                    isFetching: false,
-                    isError: false,
-                })
-                .mockReturnValueOnce({
-                    // aiAgentAutomatedTicketsDataWithIntent
-                    data: {
-                        decile: null,
-                        value: null,
-                        allData: [],
-                    },
-                    isFetching: false,
-                    isError: false,
-                })
-                .mockReturnValueOnce({
-                    // resourcePerTicketId
-                    data: {
-                        decile: null,
-                        value: null,
-                        allData: [],
-                    },
-                    isFetching: false,
-                    isError: false,
-                })
-
-            jest.spyOn(queryClient, 'invalidateQueries')
-            const { result } = renderHook(
-                () =>
-                    useAiAgentKnowledgeResourcePerIntent(
-                        statsFilters,
-                        timezone,
-                    ),
-                {
-                    wrapper: ({ children }) => (
-                        <QueryClientProvider client={queryClient}>
-                            {children}
-                        </QueryClientProvider>
-                    ),
-                },
-            )
-            expect(result.current.data).toEqual([])
         })
     })
 

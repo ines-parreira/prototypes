@@ -4,12 +4,6 @@ import {
     AutomatedTicketsFilterMember,
     AutomatedTicketsMeasure,
 } from 'domains/reporting/models/cubes/automate_v2/AutomatedTicketsCube'
-import type { RecommendedResourcesCube } from 'domains/reporting/models/cubes/automate_v2/RecommendedResourcesCube'
-import {
-    RecommendedResourcesDimension,
-    RecommendedResourcesFilterMember,
-    RecommendedResourcesMeasure,
-} from 'domains/reporting/models/cubes/automate_v2/RecommendedResourcesCube'
 import type { HelpdeskMessageCubeWithJoins } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import type { TicketCubeWithJoins } from 'domains/reporting/models/cubes/TicketCube'
 import {
@@ -24,10 +18,7 @@ import {
     TicketSatisfactionSurveySegment,
 } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
 import { AI_AGENT_TICKETS_CHANNELS } from 'domains/reporting/models/queryFactories/ai-agent-insights/utils'
-import {
-    aiAgentTicketsDefaultFilters,
-    recommendedResourceDatasetDefaultFilters,
-} from 'domains/reporting/models/queryFactories/automate_v2/filters'
+import { aiAgentTicketsDefaultFilters } from 'domains/reporting/models/queryFactories/automate_v2/filters'
 import {
     addFieldIdToCustomFieldValues,
     countUniquePrefixes,
@@ -110,34 +101,6 @@ export const customerSatisfactionPerIntentLevelQueryFactory = ({
             : {}),
     }
 }
-
-export const recommendedResourceQueryFactory = (
-    statsFilters: StatsFilters,
-    timezone: string,
-    ticketIds: string[],
-    sorting?: OrderDirection,
-): ReportingQuery<RecommendedResourcesCube> => ({
-    metricName: METRIC_NAMES.AI_AGENT_RECOMMENDED_RESOURCES,
-    measures: [RecommendedResourcesMeasure.NumRecommendedResources],
-    dimensions: [
-        RecommendedResourcesDimension.TicketId,
-        RecommendedResourcesDimension.RecommendedResourceId,
-    ],
-    timezone,
-    filters: [
-        ...recommendedResourceDatasetDefaultFilters(statsFilters),
-        {
-            member: RecommendedResourcesFilterMember.TicketId,
-            operator: ReportingFilterOperator.In,
-            values: ticketIds,
-        },
-    ],
-    ...(sorting
-        ? {
-              order: [[RecommendedResourcesDimension.TicketId, sorting]],
-          }
-        : {}),
-})
 
 export const aiAgentTicketsWithIntentQueryFactory = (
     filters: StatsFilters,

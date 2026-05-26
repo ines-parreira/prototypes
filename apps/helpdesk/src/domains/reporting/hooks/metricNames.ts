@@ -81,7 +81,6 @@ export const METRIC_NAMES = {
     AI_AGENT_CUSTOMER_SATISFACTION_PER_INTENT_LEVEL:
         'ai-agent-customer-satisfaction-per-intent-level',
     AI_AGENT_INFLUENCED_ORDERS: 'ai-agent-influenced-orders',
-    AI_AGENT_RECOMMENDED_RESOURCES: 'ai-agent-recommended-resources',
     AI_AGENT_TICKET_INTENTS_FOR_TICKETS: 'ai-agent-ticket-intents-for-tickets',
     AI_AGENT_TICKETS_WITH_INTENT: 'ai-agent-tickets-with-intent',
     AI_AGENT_TOUCHED_TICKET: 'ai-agent-touched-ticket',

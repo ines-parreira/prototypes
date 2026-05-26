@@ -47,14 +47,9 @@ import type { Cubes } from 'domains/reporting/models/cubes'
 import type { AutomationBillingEventCubeWithJoins } from 'domains/reporting/models/cubes/automate/AutomationBillingEventCube'
 import { AutomationBillingEventMeasure } from 'domains/reporting/models/cubes/automate/AutomationBillingEventCube'
 import {
-    RecommendedResourcesDimension,
-    RecommendedResourcesMeasure,
-} from 'domains/reporting/models/cubes/automate_v2/RecommendedResourcesCube'
-import {
     WorkflowDatasetDimension,
     WorkflowDatasetMeasure,
 } from 'domains/reporting/models/cubes/automate_v2/WorkflowDatasetCube'
-import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import type {
     TicketCustomFieldsCube,
     TicketCustomFieldsMeasure,
@@ -634,93 +629,6 @@ export const transformIntentName = (name: string, intentLevel?: number) =>
         ? name.split('::').pop()
         : name.replace(/::/g, '/')
 /**
- * Calculates the number of AI agent knowledge resource per intent.
- *
- * @param {QueryReturnType<string, Cubes>} aiAgentTicketsWithIntentData - Array of ticket data with intents.
- * @param {QueryReturnType<string, Cubes>} resourcePerTicketIdData - Array of resource data per ticket ID.
- * @returns {Array} - An array of objects mapping intents to number of resource used in tickets.
- */
-export const calculateAiAgentKnowledgeResourcePerIntent = (
-    aiAgentTicketsWithIntentData: QueryReturnType<string, Cubes>,
-    resourcePerTicketIdData: QueryReturnType<string, Cubes>,
-): {
-    'TicketEnriched.customField': string
-    resources: number
-}[] => {
-    const aiAgentKnowledgeResourcePerIntent: Record<string, number> = {}
-    const aiAgentCountedResourcesPerIntent: Record<string, Set<string>> = {}
-
-    // Get the intent and all ticket ids with that intent
-    const ticketIdsPerIntent = groupBy(
-        aiAgentTicketsWithIntentData,
-        TicketDimension.CustomField,
-    )
-
-    if (!ticketIdsPerIntent || ticketIdsPerIntent['null']) {
-        return []
-    }
-    // Loop through each intent and get the resources used in each ticket
-    Object.entries(ticketIdsPerIntent).forEach(([intent, tickets]) => {
-        const ticketIds = tickets.map(
-            (ticket) => ticket[TicketDimension.TicketId],
-        )
-
-        // Get all resources used in the tickets
-        const resources = resourcePerTicketIdData.filter((item) =>
-            ticketIds.includes(item[RecommendedResourcesDimension.TicketId]),
-        )
-
-        if (!intent) {
-            return
-        }
-
-        if (!aiAgentKnowledgeResourcePerIntent[intent]) {
-            aiAgentKnowledgeResourcePerIntent[intent] = 0
-            aiAgentCountedResourcesPerIntent[intent] = new Set()
-        }
-
-        if (resources && resources?.length > 0) {
-            resources.forEach((resource) => {
-                if (
-                    !resource ||
-                    !resource[
-                        RecommendedResourcesDimension.RecommendedResourceId
-                    ]
-                ) {
-                    return
-                }
-
-                if (
-                    !aiAgentCountedResourcesPerIntent[intent].has(
-                        resource[
-                            RecommendedResourcesDimension.RecommendedResourceId
-                        ],
-                    )
-                ) {
-                    aiAgentCountedResourcesPerIntent[intent].add(
-                        resource[
-                            RecommendedResourcesDimension.RecommendedResourceId
-                        ],
-                    )
-                    aiAgentKnowledgeResourcePerIntent[intent] += Number(
-                        resource[
-                            RecommendedResourcesMeasure.NumRecommendedResources
-                        ],
-                    )
-                }
-            })
-        }
-    })
-
-    return Object.entries(aiAgentKnowledgeResourcePerIntent).map(
-        ([intent, resources]) => ({
-            [TicketDimension.CustomField]: intent,
-            resources,
-        }),
-    )
-}
-
-/**
  * Get intent by level
  * @param {string} intent - intent name in format L1::L2::L3
  * @param {number }level - level of intent
@@ -773,9 +681,6 @@ export const filterMetricDataByIntentLevel = ({
                 adjustedData[intent].sum += value
                 break
             case IntentTableColumn.Tickets:
-            // case IntentTableColumn.Resources:
-            //     adjustedData[intent].sum += value
-            //     break
             case IntentTableColumn.SuccessRate:
                 adjustedData[intent].length += total
                 adjustedData[intent].sum += value
@@ -803,7 +708,6 @@ export const filterMetricDataByIntentLevel = ({
                                 : null,
                     }
                 case IntentTableColumn.Tickets:
-                    // case IntentTableColumn.Resources:
                     return {
                         [intentKey]: intent,
                         [resultKey]: adjustedData[intent].sum,

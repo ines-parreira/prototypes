@@ -17,7 +17,6 @@ import type { AIAgentAutomatedInteractionsCube } from 'domains/reporting/models/
 import type { AutomatedTicketsCube } from 'domains/reporting/models/cubes/automate_v2/AutomatedTicketsCube'
 import type { AutomationDatasetCube } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
 import type { BillableTicketDatasetCube } from 'domains/reporting/models/cubes/automate_v2/BillableTicketDatasetCube'
-import type { RecommendedResourcesCube } from 'domains/reporting/models/cubes/automate_v2/RecommendedResourcesCube'
 import type { WorkflowDatasetCube } from 'domains/reporting/models/cubes/automate_v2/WorkflowDatasetCube'
 import type { ConvertTrackingEventsCube } from 'domains/reporting/models/cubes/convert/ConvertTrackingEventsCube'
 import type { ConvertOrderConversionCube } from 'domains/reporting/models/cubes/ConvertOrderConversionCube'
@@ -55,7 +54,6 @@ export type Cubes =
     | VoiceEventsByAgentCube
     | WorkflowDatasetCube
     | TicketTagsEnrichedCube
-    | RecommendedResourcesCube
     | AiSalesAgentConversationsCube
     | AIJourneyOrdersAsProviderCube
     | AiSalesAgentOrdersCube

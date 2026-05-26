@@ -1,7 +1,6 @@
 import { AIAgentInteractionsBySkillFilterMember } from 'domains/reporting/models/cubes/automate_v2/AIAgentIntercationsBySkillDatasetCube'
 import { AutomationDatasetFilterMember } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
 import { BillableTicketDatasetFilterMember } from 'domains/reporting/models/cubes/automate_v2/BillableTicketDatasetCube'
-import { RecommendedResourcesFilterMember } from 'domains/reporting/models/cubes/automate_v2/RecommendedResourcesCube'
 import { TicketMember } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketCustomFieldsMember } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
 import { TicketMessagesMember } from 'domains/reporting/models/cubes/TicketMessagesCube'
@@ -234,21 +233,6 @@ export const mapTicketChannelsToAutomateChannelsInFilter = (
 
     return channels.map(ticketChannelToAutomateChannel)
 }
-
-export const recommendedResourceDatasetDefaultFilters = (
-    filters: StatsFilters,
-): ReportingFilter[] => [
-    {
-        member: RecommendedResourcesFilterMember.PeriodStart,
-        operator: ReportingFilterOperator.AfterDate,
-        values: [formatReportingQueryDate(filters.period.start_datetime)],
-    },
-    {
-        member: RecommendedResourcesFilterMember.PeriodEnd,
-        operator: ReportingFilterOperator.BeforeDate,
-        values: [formatReportingQueryDate(filters.period.end_datetime)],
-    },
-]
 
 export const aiAgentInteractionsBySkillDefaultFilters = (
     filters: StatsFilters,
