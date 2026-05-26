@@ -54,6 +54,13 @@ export type SearchRank = {
     endScenario: () => void
 }
 
+export type SearchRankScenarioOptions = {
+    scenarioTimeout?: number
+    searchQueryRankedEvent?: SegmentEvent
+}
+
+const DEFAULT_SCENARIO_TIMEOUT = 60000
+
 export const DATABASE_TYPE: Record<SearchEngine, string> = {
     [SearchEngine.ES]: 'elasticsearch',
     [SearchEngine.GCP_ES]: 'elasticsearch-gcp', // fixme(@Illia): deprecate this search engine after migration is done
@@ -74,8 +81,12 @@ const detailedSource = (
 
 export function useSearchRankScenario(
     source: SearchRankSource,
-    scenarioTimeout = 60000,
+    options: SearchRankScenarioOptions = {},
 ): SearchRank {
+    const {
+        scenarioTimeout = DEFAULT_SCENARIO_TIMEOUT,
+        searchQueryRankedEvent = SegmentEvent.SearchQueryRanked,
+    } = options
     const request = useRef<SearchRankRequest | undefined>()
     const response = useRef<SearchRankResponse | undefined>()
     const selectedItem = useRef<SearchRankSelectedItem | undefined>()
@@ -87,7 +98,7 @@ export function useSearchRankScenario(
             const { query, requestTime } = request.current
             const { responseTime, numberOfResults, searchEngine } =
                 response.current
-            logEvent(SegmentEvent.SearchQueryRanked, {
+            logEvent(searchQueryRankedEvent, {
                 search_query: query,
                 datetime: new Date(requestTime).toISOString(),
                 query_source: detailedSource(
@@ -111,7 +122,7 @@ export function useSearchRankScenario(
         }
         setIsRunning(false)
         selectedItem.current = undefined
-    }, [source])
+    }, [searchQueryRankedEvent, source])
 
     const registerResultsRequest = useCallback(
         (req: SearchRankRequest) => {

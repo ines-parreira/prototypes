@@ -1,4 +1,9 @@
-import { logEvent, SegmentEvent, useSearchRankScenario } from '@repo/logging'
+import {
+    logEvent,
+    SearchRankSource,
+    SegmentEvent,
+    useSearchRankScenario,
+} from '@repo/logging'
 import { act, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 
@@ -104,6 +109,13 @@ describe('useCustomerSearch', () => {
     it('tracks a single request when the debounced query starts and records the response when results become available', async () => {
         const { result } = renderHook(() => useCustomerSearch())
 
+        expect(mockUseSearchRankScenario).toHaveBeenCalledWith(
+            SearchRankSource.CustomerProfile,
+            {
+                searchQueryRankedEvent: SegmentEvent.SearchQueryRankedV2,
+            },
+        )
+
         act(() => {
             result.current.setSearchTerm('Jo')
         })
@@ -131,7 +143,7 @@ describe('useCustomerSearch', () => {
         })
 
         expect(mockLogEvent).toHaveBeenCalledWith(
-            SegmentEvent.InfobarSearchUsed,
+            SegmentEvent.InfobarSearchUsedV2,
             {
                 account_domain: 'acme',
                 user_id: 123,

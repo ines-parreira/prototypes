@@ -36,7 +36,7 @@ describe('SearchRankScenarioProvider', () => {
 
         expect(useSearchRankScenarioMock).toHaveBeenCalledWith(
             SearchRankSource.CustomerProfile,
-            10,
+            { scenarioTimeout: 10 },
         )
     })
 

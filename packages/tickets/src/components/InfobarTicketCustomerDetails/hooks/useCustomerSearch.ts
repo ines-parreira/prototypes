@@ -25,7 +25,9 @@ export function useCustomerSearch() {
         registerResultsRequest,
         registerResultsResponse,
         registerResultSelection,
-    } = useSearchRankScenario(SearchRankSource.CustomerProfile)
+    } = useSearchRankScenario(SearchRankSource.CustomerProfile, {
+        searchQueryRankedEvent: SegmentEvent.SearchQueryRankedV2,
+    })
     // ref to prevent late requests from registering
     const hasPendingSearchRankRequestRef = useRef(false)
 
@@ -64,7 +66,7 @@ export function useCustomerSearch() {
         }
 
         // generic Segment event
-        logEvent(SegmentEvent.InfobarSearchUsed, {
+        logEvent(SegmentEvent.InfobarSearchUsedV2, {
             account_domain: window.GORGIAS_STATE.currentAccount.domain,
             user_id: window.GORGIAS_STATE.currentUser?.id,
             timestamp: Date.now(),

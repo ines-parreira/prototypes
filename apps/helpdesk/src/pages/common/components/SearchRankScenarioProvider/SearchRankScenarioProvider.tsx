@@ -17,7 +17,7 @@ export default function SearchRankScenarioProvider({
     scenarioTimeout,
     children,
 }: Props) {
-    const searchRank = useSearchRankScenario(source, scenarioTimeout)
+    const searchRank = useSearchRankScenario(source, { scenarioTimeout })
     return (
         <SearchRankScenarioContext.Provider value={searchRank}>
             {children}

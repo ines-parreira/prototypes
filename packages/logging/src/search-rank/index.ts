@@ -9,5 +9,6 @@ export type {
     SearchRank,
     SearchRankRequest,
     SearchRankResponse,
+    SearchRankScenarioOptions,
     SearchRankSelectedItem,
 } from './useSearchRankScenario'

@@ -47,10 +47,9 @@ describe('useSearchRankScenario', () => {
     it('should log search success when user clicks the result', () => {
         const selectedResultObjectId = 'bar'
         const { result } = renderHook(() =>
-            useSearchRankScenario(
-                SearchRankSource.CustomerProfile,
-                defaultScenarioTimeout,
-            ),
+            useSearchRankScenario(SearchRankSource.CustomerProfile, {
+                scenarioTimeout: defaultScenarioTimeout,
+            }),
         )
 
         act(() => {
@@ -94,12 +93,37 @@ describe('useSearchRankScenario', () => {
         ])
     })
 
+    it('should use a custom search query ranked event when provided', () => {
+        const { result } = renderHook(() =>
+            useSearchRankScenario(SearchRankSource.CustomerProfile, {
+                searchQueryRankedEvent: SegmentEvent.SearchQueryRankedV2,
+            }),
+        )
+
+        act(() => {
+            const { registerResultsRequest, registerResultsResponse } =
+                result.current
+            registerResultsRequest(defaultResultsRequest)
+            registerResultsResponse({
+                ...defaultResultsResponse,
+                numberOfResults: 0,
+            })
+        })
+
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.SearchQueryRankedV2,
+            expect.objectContaining({
+                search_query: defaultResultsRequest.query,
+                rank: -1,
+            }),
+        )
+    })
+
     it('should set isRunning flag to true when scenario is running', () => {
         const { result } = renderHook(() =>
-            useSearchRankScenario(
-                SearchRankSource.CustomerProfile,
-                defaultScenarioTimeout,
-            ),
+            useSearchRankScenario(SearchRankSource.CustomerProfile, {
+                scenarioTimeout: defaultScenarioTimeout,
+            }),
         )
 
         expect(result.current.isRunning).toBe(false)
@@ -118,10 +142,9 @@ describe('useSearchRankScenario', () => {
 
     it('should log search failure immediately when results are empty', () => {
         const { result } = renderHook(() =>
-            useSearchRankScenario(
-                SearchRankSource.CustomerProfile,
-                defaultScenarioTimeout,
-            ),
+            useSearchRankScenario(SearchRankSource.CustomerProfile, {
+                scenarioTimeout: defaultScenarioTimeout,
+            }),
         )
 
         act(() => {
@@ -144,10 +167,9 @@ describe('useSearchRankScenario', () => {
 
     it('should log search failure if no result selection is registered within the timeout', () => {
         const { result } = renderHook(() =>
-            useSearchRankScenario(
-                SearchRankSource.CustomerProfile,
-                defaultScenarioTimeout,
-            ),
+            useSearchRankScenario(SearchRankSource.CustomerProfile, {
+                scenarioTimeout: defaultScenarioTimeout,
+            }),
         )
 
         act(() => {
@@ -168,10 +190,9 @@ describe('useSearchRankScenario', () => {
 
     it('should log rank when second results request is registered', () => {
         const { result } = renderHook(() =>
-            useSearchRankScenario(
-                SearchRankSource.CustomerProfile,
-                defaultScenarioTimeout,
-            ),
+            useSearchRankScenario(SearchRankSource.CustomerProfile, {
+                scenarioTimeout: defaultScenarioTimeout,
+            }),
         )
 
         act(() => {
@@ -204,10 +225,9 @@ describe('useSearchRankScenario', () => {
 
     it('should log rank on unmount', () => {
         const { result, unmount } = renderHook(() =>
-            useSearchRankScenario(
-                SearchRankSource.CustomerProfile,
-                defaultScenarioTimeout,
-            ),
+            useSearchRankScenario(SearchRankSource.CustomerProfile, {
+                scenarioTimeout: defaultScenarioTimeout,
+            }),
         )
 
         act(() => {
@@ -236,10 +256,9 @@ describe('useSearchRankScenario', () => {
 
     it('should log rank on endScenario call', () => {
         const { result } = renderHook(() =>
-            useSearchRankScenario(
-                SearchRankSource.CustomerProfile,
-                defaultScenarioTimeout,
-            ),
+            useSearchRankScenario(SearchRankSource.CustomerProfile, {
+                scenarioTimeout: defaultScenarioTimeout,
+            }),
         )
 
         act(() => {
@@ -271,10 +290,9 @@ describe('useSearchRankScenario', () => {
         DATABASE_TYPE[SearchEngine.PG]
     } database type by default`, () => {
         const { result } = renderHook(() =>
-            useSearchRankScenario(
-                SearchRankSource.CustomerProfile,
-                defaultScenarioTimeout,
-            ),
+            useSearchRankScenario(SearchRankSource.CustomerProfile, {
+                scenarioTimeout: defaultScenarioTimeout,
+            }),
         )
 
         act(() => {
@@ -307,10 +325,9 @@ describe('useSearchRankScenario', () => {
 
     it('should log rank once when two requests are registered', () => {
         const { result } = renderHook(() =>
-            useSearchRankScenario(
-                SearchRankSource.CustomerProfile,
-                defaultScenarioTimeout,
-            ),
+            useSearchRankScenario(SearchRankSource.CustomerProfile, {
+                scenarioTimeout: defaultScenarioTimeout,
+            }),
         )
 
         act(() => {

@@ -18,6 +18,7 @@ export type {
     SearchRank,
     SearchRankRequest,
     SearchRankResponse,
+    SearchRankScenarioOptions,
     SearchRankSelectedItem,
 } from './search-rank'
 export { useSearchRankScenario } from './search-rank'
