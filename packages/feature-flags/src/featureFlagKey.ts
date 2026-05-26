@@ -55,7 +55,6 @@ export enum FeatureFlagKey {
     AiAgentAnalyticsCustomDashboards = 'linear-project_revamp-ai-agent-analytics-dashboards_custom-dashboards',
     AiAgentAnalyticsNavTooltip = 'linear-project_revamp-ai-agent-analytics-dashboards_nav-tooltip',
     AiAgentAnalyticsDisableLegacyReports = 'linear-project_revamp-ai-agent-analytics_disable-legacy-reports',
-    AiAgentAnalyticsFilters = 'linear_project_revamp-ai-agent-analytics_filters',
     AiJourneyEnabled = 'ai-journey-ui-enabled',
     AiJourneyRcsEnable = 'linear.task_AIJOU-1526.enable-rcs-messages',
     AiJourneyAttributionModelComparison = 'linear.AIJOU-1796-show-custom-attribution-model',

@@ -1,6 +1,5 @@
-import { useMemo, useRef } from 'react'
+import { useRef } from 'react'
 
-import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import { getPreviousUrl } from '@repo/routing'
 
@@ -43,18 +42,8 @@ export const AnalyticsOverviewLayout = () => {
         })
     })
 
-    const { value: isFiltersEnabled, isLoading: isFiltersFFLoading } =
-        useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsFilters)
-
-    const optionalFilters = useMemo(
-        () =>
-            !isFiltersFFLoading && isFiltersEnabled
-                ? AnalyticsOverviewReportConfig.reportFilters.optional
-                : [],
-        [isFiltersEnabled, isFiltersFFLoading],
-    )
-
     const { statsFilters } = useAiAgentStatsFilters()
+
     const isStoresComingSoon = isPeriodBeforeDate({
         period: statsFilters.period,
         date: STORES_FILTER_AVAILABILITY_DATE,
@@ -83,7 +72,9 @@ export const AnalyticsOverviewLayout = () => {
                                 .persistent
                         }
                         withSavedFilters={false}
-                        optionalFilters={optionalFilters}
+                        optionalFilters={
+                            AnalyticsOverviewReportConfig.reportFilters.optional
+                        }
                         filterSettingsOverrides={{
                             [FilterKey.Period]: {
                                 initialSettings: {

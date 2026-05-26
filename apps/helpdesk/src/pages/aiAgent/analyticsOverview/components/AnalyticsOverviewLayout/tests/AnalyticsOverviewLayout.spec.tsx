@@ -1,4 +1,3 @@
-import { useFlagWithLoading } from '@repo/feature-flags'
 import { getPreviousUrl } from '@repo/routing'
 import { render } from '@repo/testing'
 import { QueryClient } from '@tanstack/react-query'
@@ -10,11 +9,6 @@ import { STORES_FILTER_AVAILABILITY_DATE } from 'domains/reporting/pages/common/
 import { AnalyticsOverviewLayout } from 'pages/aiAgent/analyticsOverview/components/AnalyticsOverviewLayout/AnalyticsOverviewLayout'
 import { useExportAnalyticsOverviewToCSV } from 'pages/aiAgent/analyticsOverview/hooks/useExportAnalyticsOverviewToCSV'
 import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
-
-jest.mock('@repo/feature-flags', () => ({
-    ...jest.requireActual('@repo/feature-flags'),
-    useFlagWithLoading: jest.fn(),
-}))
 
 jest.mock('@repo/routing', () => ({
     getPreviousUrl: jest.fn(),
@@ -63,7 +57,6 @@ jest.mock('hooks/candu/useInjectStyleToCandu', () => ({
 }))
 jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
 
-const mockedUseFlagWithLoading = jest.mocked(useFlagWithLoading)
 const mockFiltersPanelWrapper = jest.requireMock(
     'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper',
 ).FiltersPanelWrapper as jest.Mock
@@ -93,11 +86,6 @@ describe('AnalyticsOverviewLayout', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         queryClient.clear()
-
-        mockedUseFlagWithLoading.mockReturnValue({
-            value: true,
-            isLoading: false,
-        })
 
         mockedGetPreviousUrl.mockReturnValue('/app/dashboard')
         mockedUseExportAnalyticsOverviewToCSV.mockReturnValue({
@@ -146,46 +134,13 @@ describe('AnalyticsOverviewLayout', () => {
         expect(screen.getByText('Overview')).toBeInTheDocument()
     })
 
-    it('passes optional filters to FiltersPanelWrapper when flag is enabled', () => {
-        mockedUseFlagWithLoading.mockReturnValue({
-            value: true,
-            isLoading: false,
-        })
-
+    it('always passes optional filters to FiltersPanelWrapper', () => {
         renderComponent()
 
         expect(mockFiltersPanelWrapper).toHaveBeenCalledWith(
             expect.objectContaining({
                 optionalFilters: [FilterKey.Stores, FilterKey.Channels],
             }),
-            expect.anything(),
-        )
-    })
-
-    it('passes empty optionalFilters to FiltersPanelWrapper when flag is disabled', () => {
-        mockedUseFlagWithLoading.mockReturnValue({
-            value: false,
-            isLoading: false,
-        })
-
-        renderComponent()
-
-        expect(mockFiltersPanelWrapper).toHaveBeenCalledWith(
-            expect.objectContaining({ optionalFilters: [] }),
-            expect.anything(),
-        )
-    })
-
-    it('passes empty optionalFilters to FiltersPanelWrapper while flag is loading', () => {
-        mockedUseFlagWithLoading.mockReturnValue({
-            value: false,
-            isLoading: true,
-        })
-
-        renderComponent()
-
-        expect(mockFiltersPanelWrapper).toHaveBeenCalledWith(
-            expect.objectContaining({ optionalFilters: [] }),
             expect.anything(),
         )
     })

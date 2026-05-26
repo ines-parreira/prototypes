@@ -1,4 +1,3 @@
-import { useFlagWithLoading } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
@@ -6,14 +5,8 @@ import { STORES_FILTER_AVAILABILITY_DATE } from 'domains/reporting/pages/common/
 
 import { useAiAgentStatsFilters } from '../useAiAgentStatsFilters'
 
-jest.mock('@repo/feature-flags', () => ({
-    ...jest.requireActual('@repo/feature-flags'),
-    useFlagWithLoading: jest.fn(),
-}))
-
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 
-const mockedUseFlagWithLoading = jest.mocked(useFlagWithLoading)
 const mockedUseStatsFilters = jest.mocked(useStatsFilters)
 
 const oneDayBeforeAvailability = new Date(STORES_FILTER_AVAILABILITY_DATE)
@@ -50,12 +43,7 @@ describe('useAiAgentStatsFilters', () => {
         } as any)
     })
 
-    it('includes stores and channels in statsFilters when flag is enabled and period is after availability date', () => {
-        mockedUseFlagWithLoading.mockReturnValue({
-            value: true,
-            isLoading: false,
-        })
-
+    it('includes stores and channels in statsFilters when period is after availability date', () => {
         const { result } = renderHook(() => useAiAgentStatsFilters())
 
         expect(result.current.statsFilters).toEqual({
@@ -65,7 +53,7 @@ describe('useAiAgentStatsFilters', () => {
         })
     })
 
-    it('includes channels but omits stores when flag is enabled and period is before availability date', () => {
+    it('includes channels but omits stores when period is before availability date', () => {
         mockedUseStatsFilters.mockReturnValue({
             cleanStatsFilters: {
                 period: periodBeforeAvailability,
@@ -76,11 +64,6 @@ describe('useAiAgentStatsFilters', () => {
             granularity: 'day',
         } as any)
 
-        mockedUseFlagWithLoading.mockReturnValue({
-            value: true,
-            isLoading: false,
-        })
-
         const { result } = renderHook(() => useAiAgentStatsFilters())
 
         expect(result.current.statsFilters).toEqual({
@@ -89,38 +72,7 @@ describe('useAiAgentStatsFilters', () => {
         })
     })
 
-    it('omits stores and channels from statsFilters when flag is disabled', () => {
-        mockedUseFlagWithLoading.mockReturnValue({
-            value: false,
-            isLoading: false,
-        })
-
-        const { result } = renderHook(() => useAiAgentStatsFilters())
-
-        expect(result.current.statsFilters).toEqual({
-            period: periodAfterAvailability,
-        })
-    })
-
-    it('omits stores and channels from statsFilters while flag is loading', () => {
-        mockedUseFlagWithLoading.mockReturnValue({
-            value: false,
-            isLoading: true,
-        })
-
-        const { result } = renderHook(() => useAiAgentStatsFilters())
-
-        expect(result.current.statsFilters).toEqual({
-            period: periodAfterAvailability,
-        })
-    })
-
     it('returns userTimezone and granularity from useStatsFilters', () => {
-        mockedUseFlagWithLoading.mockReturnValue({
-            value: true,
-            isLoading: false,
-        })
-
         const { result } = renderHook(() => useAiAgentStatsFilters())
 
         expect(result.current.userTimezone).toBe('UTC')

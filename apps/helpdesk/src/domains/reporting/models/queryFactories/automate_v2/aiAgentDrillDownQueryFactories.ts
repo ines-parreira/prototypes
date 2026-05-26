@@ -49,9 +49,6 @@ import {
 } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
 
-// Channels and stores are conditionally included when the AiAgentAnalyticsFilters feature flag is enabled —
-// useDrillDownQuery (domains/reporting/hooks/useDrillDownData.ts) passes them via useAiAgentStatsFilters
-
 // Maps ticket channel values (e.g. 'contact_form') to automate cube channel values ('contact-form')
 const withAutomateChannels = (filters: StatsFilters): StatsFilters => {
     if (!filters.channels) return filters
