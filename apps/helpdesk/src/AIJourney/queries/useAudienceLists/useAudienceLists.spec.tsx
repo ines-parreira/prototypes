@@ -1,25 +1,48 @@
 import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { getAudiencesLists } from '@gorgias/convert-client'
+import {
+    mockAudienceSchema,
+    mockGetAudiencesListsHandler,
+    mockGetAudiencesListsResponse,
+} from '@gorgias/convert-mocks'
 
 import { getGorgiasRevenueAddonApiBaseUrl } from 'rest_api/revenue_addon_api/client'
 
 import { useAudienceLists } from './useAudienceLists'
 
-jest.mock('@gorgias/convert-client', () => ({
-    ...jest.requireActual('@gorgias/convert-client'),
-    getAudiencesLists: jest.fn(),
-}))
-
 jest.mock('rest_api/revenue_addon_api/client', () => ({
     getGorgiasRevenueAddonApiBaseUrl: jest.fn(),
 }))
 
-const mockGetAudiencesLists = getAudiencesLists as jest.Mock
 const mockGetGorgiasRevenueAddonApiBaseUrl =
     getGorgiasRevenueAddonApiBaseUrl as jest.Mock
+
+const server = setupServer()
+
+const createAudiencesResponse = (
+    data: ReturnType<typeof mockAudienceSchema>[],
+) =>
+    mockGetAudiencesListsResponse({
+        data,
+        links: null,
+        permission_error: null,
+    })
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('useAudienceLists', () => {
     beforeEach(() => {
@@ -38,6 +61,7 @@ describe('useAudienceLists', () => {
                     retry: false,
                 },
             },
+            logger: { log: () => {}, warn: () => {}, error: () => {} },
         })
 
         return ({ children }: { children?: React.ReactNode }) => (
@@ -49,71 +73,94 @@ describe('useAudienceLists', () => {
 
     it('should fetch audience lists successfully', async () => {
         const mockAudienceLists = [
-            { id: '1', name: 'VIP Customers' },
-            { id: '2', name: 'Newsletter Subscribers' },
+            mockAudienceSchema({ id: '1', name: 'VIP Customers' }),
+            mockAudienceSchema({
+                id: '2',
+                name: 'Newsletter Subscribers',
+            }),
         ]
+        const mockResponse = createAudiencesResponse(mockAudienceLists)
+        const getAudiencesListsMock = mockGetAudiencesListsHandler(async () =>
+            HttpResponse.json(mockResponse),
+        )
+        const waitForGetAudiencesListsRequest =
+            getAudiencesListsMock.waitForRequest(server)
 
-        mockGetAudiencesLists.mockResolvedValue({ data: mockAudienceLists })
+        server.use(getAudiencesListsMock.handler)
 
         const { result } = renderHook(() => useAudienceLists(123), {
             wrapper: createWrapper(),
         })
 
+        await waitForGetAudiencesListsRequest((request) => {
+            const url = new URL(request.url)
+
+            expect(url.origin).toBe('http://mocked-base-url')
+            expect(url.searchParams.get('store_integration_id')).toBe('123')
+            expect(url.searchParams.has('search')).toBe(false)
+        })
         await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-        expect(mockGetAudiencesLists).toHaveBeenCalledTimes(1)
-        expect(mockGetAudiencesLists).toHaveBeenCalledWith(
-            {
-                store_integration_id: 123,
-                search: undefined,
-            },
-            {
-                baseURL: 'http://mocked-base-url',
-            },
-        )
-        expect(result.current.data).toEqual(mockAudienceLists)
+        expect(result.current.data).toEqual(mockResponse)
     })
 
     it('should fetch audience lists with search parameter', async () => {
-        const mockAudienceLists = [{ id: '1', name: 'VIP Customers' }]
+        const mockAudienceLists = [
+            mockAudienceSchema({ id: '1', name: 'VIP Customers' }),
+        ]
+        const mockResponse = createAudiencesResponse(mockAudienceLists)
+        const getAudiencesListsMock = mockGetAudiencesListsHandler(async () =>
+            HttpResponse.json(mockResponse),
+        )
+        const waitForGetAudiencesListsRequest =
+            getAudiencesListsMock.waitForRequest(server)
 
-        mockGetAudiencesLists.mockResolvedValue({ data: mockAudienceLists })
+        server.use(getAudiencesListsMock.handler)
 
         const { result } = renderHook(() => useAudienceLists(123, 'VIP'), {
             wrapper: createWrapper(),
         })
 
+        await waitForGetAudiencesListsRequest((request) => {
+            const url = new URL(request.url)
+
+            expect(url.searchParams.get('store_integration_id')).toBe('123')
+            expect(url.searchParams.get('search')).toBe('VIP')
+        })
         await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-        expect(mockGetAudiencesLists).toHaveBeenCalledTimes(1)
-        expect(mockGetAudiencesLists).toHaveBeenCalledWith(
-            {
-                store_integration_id: 123,
-                search: 'VIP',
-            },
-            {
-                baseURL: 'http://mocked-base-url',
-            },
-        )
-        expect(result.current.data).toEqual(mockAudienceLists)
+        expect(result.current.data).toEqual(mockResponse)
     })
 
     it('should handle errors when fetching audience lists', async () => {
-        const mockError = new Error('Failed to fetch audience lists')
-
-        mockGetAudiencesLists.mockRejectedValue(mockError)
+        const getAudiencesListsMock = mockGetAudiencesListsHandler(async () =>
+            HttpResponse.json(createAudiencesResponse([]), { status: 500 }),
+        )
+        const waitForGetAudiencesListsRequest =
+            getAudiencesListsMock.waitForRequest(server)
+        server.use(getAudiencesListsMock.handler)
 
         const { result } = renderHook(() => useAudienceLists(123), {
             wrapper: createWrapper(),
         })
 
+        await waitForGetAudiencesListsRequest()
         await waitFor(() => expect(result.current.isError).toBe(true))
 
-        expect(mockGetAudiencesLists).toHaveBeenCalledTimes(1)
-        expect(result.current.error).toEqual(mockError)
+        expect(result.current.error).toBeDefined()
     })
 
     it('should not fetch audience lists if integrationId is undefined', async () => {
+        const requests: Request[] = []
+        const getAudiencesListsMock = mockGetAudiencesListsHandler(
+            async ({ request }) => {
+                requests.push(request)
+
+                return HttpResponse.json(createAudiencesResponse([]))
+            },
+        )
+        server.use(getAudiencesListsMock.handler)
+
         const { result } = renderHook(() => useAudienceLists(undefined), {
             wrapper: createWrapper(),
         })
@@ -122,11 +169,21 @@ describe('useAudienceLists', () => {
             expect(result.current.fetchStatus).toBe('idle')
         })
 
-        expect(mockGetAudiencesLists).not.toHaveBeenCalled()
         expect(result.current.data).toBeUndefined()
+        expect(requests).toHaveLength(0)
     })
 
     it('should respect the enabled option when set to false', async () => {
+        const requests: Request[] = []
+        const getAudiencesListsMock = mockGetAudiencesListsHandler(
+            async ({ request }) => {
+                requests.push(request)
+
+                return HttpResponse.json(createAudiencesResponse([]))
+            },
+        )
+        server.use(getAudiencesListsMock.handler)
+
         const { result } = renderHook(
             () => useAudienceLists(123, undefined, { enabled: false }),
             { wrapper: createWrapper() },
@@ -136,17 +193,33 @@ describe('useAudienceLists', () => {
             expect(result.current.fetchStatus).toBe('idle')
         })
 
-        expect(mockGetAudiencesLists).not.toHaveBeenCalled()
         expect(result.current.data).toBeUndefined()
+        expect(requests).toHaveLength(0)
     })
 
     it('should refetch audience lists when integrationId changes', async () => {
-        const mockAudienceLists1 = [{ id: '1', name: 'List 1' }]
-        const mockAudienceLists2 = [{ id: '2', name: 'List 2' }]
+        const mockAudienceLists1 = [
+            mockAudienceSchema({ id: '1', name: 'List 1' }),
+        ]
+        const mockAudienceLists2 = [
+            mockAudienceSchema({ id: '2', name: 'List 2' }),
+        ]
+        const requests: Request[] = []
+        const getAudiencesListsMock = mockGetAudiencesListsHandler(
+            async ({ request }) => {
+                requests.push(request)
+                const integrationId = new URL(request.url).searchParams.get(
+                    'store_integration_id',
+                )
+                const responseData =
+                    integrationId === '123'
+                        ? mockAudienceLists1
+                        : mockAudienceLists2
 
-        mockGetAudiencesLists
-            .mockResolvedValueOnce({ data: mockAudienceLists1 })
-            .mockResolvedValueOnce({ data: mockAudienceLists2 })
+                return HttpResponse.json(createAudiencesResponse(responseData))
+            },
+        )
+        server.use(getAudiencesListsMock.handler)
 
         const { result, rerender } = renderHook(
             ({ integrationId }) => useAudienceLists(integrationId),
@@ -157,43 +230,44 @@ describe('useAudienceLists', () => {
         )
 
         await waitFor(() => expect(result.current.isSuccess).toBe(true))
-        expect(result.current.data).toEqual(mockAudienceLists1)
+        expect(result.current.data?.data).toEqual(mockAudienceLists1)
 
         rerender({ integrationId: 456 })
 
         await waitFor(() =>
-            expect(result.current.data).toEqual(mockAudienceLists2),
+            expect(result.current.data?.data).toEqual(mockAudienceLists2),
         )
 
-        expect(mockGetAudiencesLists).toHaveBeenCalledTimes(2)
-        expect(mockGetAudiencesLists).toHaveBeenNthCalledWith(
-            1,
-            {
-                store_integration_id: 123,
-                search: undefined,
-            },
-            expect.any(Object),
-        )
-        expect(mockGetAudiencesLists).toHaveBeenNthCalledWith(
-            2,
-            {
-                store_integration_id: 456,
-                search: undefined,
-            },
-            expect.any(Object),
-        )
+        expect(
+            requests.map((request) =>
+                new URL(request.url).searchParams.get('store_integration_id'),
+            ),
+        ).toEqual(['123', '456'])
     })
 
     it('should refetch audience lists when search parameter changes', async () => {
         const mockAudienceLists1 = [
-            { id: '1', name: 'VIP Customers' },
-            { id: '2', name: 'VIP Members' },
+            mockAudienceSchema({ id: '1', name: 'VIP Customers' }),
+            mockAudienceSchema({ id: '2', name: 'VIP Members' }),
         ]
-        const mockAudienceLists2 = [{ id: '3', name: 'Newsletter Subscribers' }]
+        const mockAudienceLists2 = [
+            mockAudienceSchema({
+                id: '3',
+                name: 'Newsletter Subscribers',
+            }),
+        ]
+        const requests: Request[] = []
+        const getAudiencesListsMock = mockGetAudiencesListsHandler(
+            async ({ request }) => {
+                requests.push(request)
+                const search = new URL(request.url).searchParams.get('search')
+                const responseData =
+                    search === 'VIP' ? mockAudienceLists1 : mockAudienceLists2
 
-        mockGetAudiencesLists
-            .mockResolvedValueOnce({ data: mockAudienceLists1 })
-            .mockResolvedValueOnce({ data: mockAudienceLists2 })
+                return HttpResponse.json(createAudiencesResponse(responseData))
+            },
+        )
+        server.use(getAudiencesListsMock.handler)
 
         const { result, rerender } = renderHook(
             ({ search }) => useAudienceLists(123, search),
@@ -204,38 +278,34 @@ describe('useAudienceLists', () => {
         )
 
         await waitFor(() => expect(result.current.isSuccess).toBe(true))
-        expect(result.current.data).toEqual(mockAudienceLists1)
+        expect(result.current.data?.data).toEqual(mockAudienceLists1)
 
         rerender({ search: 'Newsletter' })
 
         await waitFor(() =>
-            expect(result.current.data).toEqual(mockAudienceLists2),
+            expect(result.current.data?.data).toEqual(mockAudienceLists2),
         )
 
-        expect(mockGetAudiencesLists).toHaveBeenCalledTimes(2)
-        expect(mockGetAudiencesLists).toHaveBeenNthCalledWith(
-            1,
-            {
-                store_integration_id: 123,
-                search: 'VIP',
-            },
-            expect.any(Object),
-        )
-        expect(mockGetAudiencesLists).toHaveBeenNthCalledWith(
-            2,
-            {
-                store_integration_id: 123,
-                search: 'Newsletter',
-            },
-            expect.any(Object),
-        )
+        expect(
+            requests.map((request) =>
+                new URL(request.url).searchParams.get('search'),
+            ),
+        ).toEqual(['VIP', 'Newsletter'])
     })
 
     it('should pass custom options to useQuery', async () => {
-        const mockAudienceLists = [{ id: '1', name: 'Test List' }]
-        const mockSelect = jest.fn((data) => data.map((list: any) => list.id))
+        const mockAudienceLists = [
+            mockAudienceSchema({ id: '1', name: 'Test List' }),
+        ]
+        const mockSelect = jest.fn((data) =>
+            data.data.map((list: { id: string }) => list.id),
+        )
+        const mockResponse = createAudiencesResponse(mockAudienceLists)
+        const getAudiencesListsMock = mockGetAudiencesListsHandler(async () =>
+            HttpResponse.json(mockResponse),
+        )
 
-        mockGetAudiencesLists.mockResolvedValue({ data: mockAudienceLists })
+        server.use(getAudiencesListsMock.handler)
 
         const { result } = renderHook(
             () => useAudienceLists(123, undefined, { select: mockSelect }),
@@ -246,7 +316,7 @@ describe('useAudienceLists', () => {
 
         await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-        expect(mockSelect).toHaveBeenCalledWith(mockAudienceLists)
+        expect(mockSelect).toHaveBeenCalledWith(mockResponse)
         expect(result.current.data).toEqual(['1'])
     })
 })
