@@ -115,6 +115,82 @@ describe('useTicketThreadSatisfactionSurveys', () => {
         })
     })
 
+    it('renders every responded survey item when multiple responded events exist', async () => {
+        const ticket = createTicketWithSurvey()
+        server.use(
+            mockListEventsHandler(async () =>
+                HttpResponse.json(
+                    mockListEventsResponse({
+                        data: [
+                            mockEvent({
+                                id: 45,
+                                object_id: 11,
+                                object_type:
+                                    ListEventsObjectType.SatisfactionSurvey,
+                                type: SATISFACTION_SURVEY_RESPONDED_EVENT_TYPE,
+                                created_datetime: '2024-03-21T11:50:00Z',
+                                data: {
+                                    score: 2,
+                                    body_text: 'Second response',
+                                },
+                            } as any),
+                            mockEvent({
+                                id: 44,
+                                object_id: 11,
+                                object_type:
+                                    ListEventsObjectType.SatisfactionSurvey,
+                                type: SATISFACTION_SURVEY_RESPONDED_EVENT_TYPE,
+                                created_datetime: '2024-03-21T11:45:00Z',
+                                data: {
+                                    score: 4,
+                                    body_text: 'First response',
+                                },
+                            } as any),
+                        ],
+                        meta: {
+                            prev_cursor: null,
+                            next_cursor: null,
+                        },
+                    }),
+                ),
+            ).handler,
+        )
+
+        const { result } = renderHook(() =>
+            useTicketThreadSatisfactionSurveys({
+                ticketId: 24,
+                ticket,
+            }),
+        )
+
+        await waitFor(() => {
+            expect(result.current).toEqual([
+                {
+                    _tag: TicketThreadItemTag.SatisfactionSurvey,
+                    status: 'responded',
+                    data: {
+                        authorLabel: 'Jane Customer',
+                        body_text: 'First response',
+                        score: 4,
+                        source: 'event',
+                    },
+                    datetime: '2024-03-21T11:45:00Z',
+                },
+                {
+                    _tag: TicketThreadItemTag.SatisfactionSurvey,
+                    status: 'responded',
+                    data: {
+                        authorLabel: 'Jane Customer',
+                        body_text: 'Second response',
+                        score: 2,
+                        source: 'event',
+                    },
+                    datetime: '2024-03-21T11:50:00Z',
+                },
+            ])
+        })
+    })
+
     it('uses scored_datetime as primary timeline datetime', () => {
         const ticket = createTicketWithSurvey(undefined, {
             score: 3,

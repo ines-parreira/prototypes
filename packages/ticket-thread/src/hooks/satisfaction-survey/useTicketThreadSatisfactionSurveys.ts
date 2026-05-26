@@ -6,7 +6,7 @@ import { useListSatisfactionSurveys } from '@gorgias/helpdesk-queries'
 import { isTicketSatisfactionSurvey } from './predicates'
 import { toSurveyItemFromEvent, toSurveyItemFromSurvey } from './transforms'
 import type { TicketThreadSatisfactionSurveyItem } from './types'
-import { useGetSatisfactionSurveyRespondedEvent } from './useGetSatisfactionSurveyRespondedEvent'
+import { useListSatisfactionSurveyRespondedEvents } from './useListSatisfactionSurveyRespondedEvents'
 
 type UseTicketThreadSatisfactionSurveysParams = {
     ticketId: number
@@ -36,15 +36,17 @@ export function useTicketThreadSatisfactionSurveys({
     const survey = ticket?.satisfaction_survey ?? fallbackSurvey
     const satisfactionSurveyId =
         ticket?.satisfaction_survey?.id ?? fallbackSurvey?.id ?? null
-    const respondedEvent =
-        useGetSatisfactionSurveyRespondedEvent(satisfactionSurveyId)
+    const respondedEvents =
+        useListSatisfactionSurveyRespondedEvents(satisfactionSurveyId)
 
     return useMemo(() => {
         const authorLabel =
             ticket?.customer?.name || ticket?.customer?.email || ''
 
-        if (respondedEvent) {
-            return [toSurveyItemFromEvent(respondedEvent, authorLabel)]
+        if (respondedEvents.length > 0) {
+            return respondedEvents.map((event) =>
+                toSurveyItemFromEvent(event, authorLabel),
+            )
         }
 
         if (isTicketSatisfactionSurvey(survey)) {
@@ -53,7 +55,7 @@ export function useTicketThreadSatisfactionSurveys({
 
         return []
     }, [
-        respondedEvent,
+        respondedEvents,
         survey,
         ticket?.customer?.email,
         ticket?.customer?.name,

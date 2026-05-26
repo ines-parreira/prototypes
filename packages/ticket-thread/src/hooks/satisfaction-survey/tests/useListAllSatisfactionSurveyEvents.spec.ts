@@ -12,8 +12,66 @@ import { renderHook } from '../../../tests/render.utils'
 import { server } from '../../../tests/server'
 import { SATISFACTION_SURVEY_RESPONDED_EVENT_TYPE } from '../constants'
 import { useListAllSatisfactionSurveyEvents } from '../useListAllSatisfactionSurveyEvents'
+import { useListSatisfactionSurveyRespondedEvents } from '../useListSatisfactionSurveyRespondedEvents'
 
 describe('useListAllSatisfactionSurveyEvents', () => {
+    it('returns no responded events when there is no satisfaction survey id', () => {
+        const { result } = renderHook(() =>
+            useListSatisfactionSurveyRespondedEvents(null),
+        )
+
+        expect(result.current).toEqual([])
+    })
+
+    it('returns responded survey events sorted by creation date', async () => {
+        server.use(
+            mockListEventsHandler(async () =>
+                HttpResponse.json(
+                    mockListEventsResponse({
+                        data: [
+                            mockEvent({
+                                id: 902,
+                                object_id: 456,
+                                object_type:
+                                    ListEventsObjectType.SatisfactionSurvey,
+                                type: SATISFACTION_SURVEY_RESPONDED_EVENT_TYPE,
+                                data: {
+                                    score: 2,
+                                    body_text: 'Second response',
+                                },
+                                created_datetime: '2024-03-21T11:05:00Z',
+                            }),
+                            mockEvent({
+                                id: 901,
+                                object_id: 456,
+                                object_type:
+                                    ListEventsObjectType.SatisfactionSurvey,
+                                type: SATISFACTION_SURVEY_RESPONDED_EVENT_TYPE,
+                                data: {
+                                    score: 5,
+                                    body_text: 'First response',
+                                },
+                                created_datetime: '2024-03-21T11:00:00Z',
+                            }),
+                        ],
+                        meta: {
+                            prev_cursor: null,
+                            next_cursor: null,
+                        },
+                    }),
+                ),
+            ).handler,
+        )
+
+        const { result } = renderHook(() =>
+            useListSatisfactionSurveyRespondedEvents(456),
+        )
+
+        await waitFor(() => {
+            expect(result.current.map((event) => event.id)).toEqual([901, 902])
+        })
+    })
+
     it('fetches responded survey events with expected request parameters', async () => {
         const event = mockEvent({
             id: 901,
