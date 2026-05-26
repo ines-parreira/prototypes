@@ -14,10 +14,12 @@ describe('SkillWizardIntro', () => {
         )
 
         expect(
-            screen.getByText('All of your skills are ready to enable'),
+            screen.getByText('Preparing your skills for review'),
         ).toBeInTheDocument()
         expect(
-            screen.getByText('Give them a quick review first'),
+            screen.getByText(
+                'They’re all ready to enable, give them a quick look first',
+            ),
         ).toBeInTheDocument()
     })
 
@@ -29,10 +31,12 @@ describe('SkillWizardIntro', () => {
         )
 
         expect(
-            screen.getByText('Good news: 7 of your skills are ready to enable'),
+            screen.getByText('Preparing your skills for review'),
         ).toBeInTheDocument()
         expect(
-            screen.getByText('Give them a quick review first'),
+            screen.getByText(
+                '7 of your skills are ready to enable, give them a quick look first',
+            ),
         ).toBeInTheDocument()
     })
 })

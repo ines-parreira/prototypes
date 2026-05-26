@@ -184,7 +184,12 @@ describe('SkillWizardPage', () => {
             renderAt(WIZARD_PATH)
 
             expect(
-                screen.getByText('All of your skills are ready to enable'),
+                screen.getByText('Preparing your skills for review'),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    'They’re all ready to enable, give them a quick look first',
+                ),
             ).toBeInTheDocument()
         })
 
@@ -205,7 +210,7 @@ describe('SkillWizardPage', () => {
 
             expect(
                 screen.getByText(
-                    'Good news: 2 of your skills are ready to enable',
+                    '2 of your skills are ready to enable, give them a quick look first',
                 ),
             ).toBeInTheDocument()
         })
@@ -222,13 +227,13 @@ describe('SkillWizardPage', () => {
             renderAt(WIZARD_PATH)
 
             expect(
-                screen.getByText('All of your skills are ready to enable'),
+                screen.getByText('Preparing your skills for review'),
             ).toBeInTheDocument()
 
             skipIntro()
 
             expect(
-                screen.queryByText('All of your skills are ready to enable'),
+                screen.queryByText('Preparing your skills for review'),
             ).not.toBeInTheDocument()
             expect(screen.getByText('itemsCount: 1')).toBeInTheDocument()
         })
