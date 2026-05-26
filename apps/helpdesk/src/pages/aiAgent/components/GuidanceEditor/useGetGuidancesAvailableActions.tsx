@@ -31,21 +31,6 @@ const fetchStoreGuidanceActions = async (
     return response.data
 }
 
-const isEnabled = (action: StoreConfiguration): boolean =>
-    action.entrypoints.some((ep) => !ep.deactivated_datetime)
-
-const hasUnauthenticatedAuthStep = (action: StoreConfiguration): boolean => {
-    const hasShopperAuthStep = action.steps.some(
-        (step) => step.kind === 'shopper-authentication',
-    )
-    if (!hasShopperAuthStep) {
-        return false
-    }
-    return (action.apps ?? []).some(
-        (app) => app.type === 'app' && !app.refresh_token,
-    )
-}
-
 const getMissingValuesDetails = (
     action: StoreConfiguration,
 ): MissingValuesDetail[] => {
@@ -82,13 +67,15 @@ export const useGetGuidancesAvailableActions = (
 
     const guidanceActions: GuidanceAction[] = useMemo(() => {
         return allActions.map((action) => {
-            const missingValuesDetails = getMissingValuesDetails(action)
+            const missingValuesDetails = action.has_missing_values
+                ? getMissingValuesDetails(action)
+                : []
             return {
                 name: action.name,
                 value: action.id,
-                enabled: isEnabled(action),
-                requiresAuth: hasUnauthenticatedAuthStep(action),
-                hasMissingValues: missingValuesDetails.length > 0,
+                enabled: action.enabled,
+                requiresAuth: action.requires_auth,
+                hasMissingValues: action.has_missing_values,
                 missingValuesDetails:
                     missingValuesDetails.length > 0
                         ? missingValuesDetails

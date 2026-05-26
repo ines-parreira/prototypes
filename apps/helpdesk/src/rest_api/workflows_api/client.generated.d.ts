@@ -1,9 +1,9 @@
 import type {
-    AxiosRequestConfig,
     OpenAPIClient,
-    OperationResponse,
     Parameters,
     UnknownParamsObject,
+    OperationResponse,
+    AxiosRequestConfig,
 } from 'openapi-client-axios'
 
 declare namespace Components {
@@ -48,7 +48,7 @@ declare namespace Components {
             internal_id: string
             id: string
             account_id: number | null
-            template_internal_id?: string | null
+            step_internal_id?: string | null
             name: string
             description?: string | null
             short_description?: string | null
@@ -232,7 +232,8 @@ declare namespace Components {
                           } | null
                           trackstar_integration_name?: string | null
                           service_connection_settings?: {
-                              integration_id: string | number
+                              integration_id?: null | null
+                              service_connection_id?: string | null
                               path: string
                           } | null
                           variables: {
@@ -244,6 +245,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'date'
                                   | 'boolean'
+                                  | 'json'
                           }[]
                       }
                   }
@@ -465,6 +467,10 @@ declare namespace Components {
                                   | number
                                   | boolean
                                   | string /* date-time */
+                                  | any[]
+                                  | {
+                                        [name: string]: any
+                                    }
                                   | string
                           }
                       }
@@ -491,6 +497,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'boolean'
                                   | 'date'
+                                  | 'json'
                           }
                       }
                   }
@@ -539,6 +546,12 @@ declare namespace Components {
                             description: string
                             data_type: 'date'
                         }
+                      | {
+                            id: string
+                            name: string
+                            description: string
+                            data_type: 'json'
+                        }
                   )[]
                 | null
             values?: {
@@ -546,6 +559,10 @@ declare namespace Components {
                     | number
                     | boolean
                     | string /* date-time */
+                    | any[]
+                    | {
+                          [name: string]: any
+                      }
                     | string
             } | null
             transitions: {
@@ -861,6 +878,7 @@ declare namespace Components {
                                         | 'number'
                                         | 'date'
                                         | 'boolean'
+                                        | 'json'
                                 }[]
                             }
                         }
@@ -874,8 +892,8 @@ declare namespace Components {
                             trigger: 'llm-prompt'
                             settings: {
                                 requires_confirmation: boolean
-                                is_standalone?: boolean
                                 instructions: string
+                                is_standalone?: boolean
                             }
                         }
                       | {
@@ -884,7 +902,6 @@ declare namespace Components {
                             trigger: 'reusable-llm-prompt'
                             settings: {
                                 requires_confirmation: boolean
-                                is_standalone?: boolean
                                 conditions?:
                                     | ({
                                           or: (
@@ -1053,7 +1070,12 @@ declare namespace Components {
                 | 'action_triggered'
                 | 'action_succeeded'
                 | 'action_failed'
-            channel: 'chat' | 'help-center' | 'contact-form' | 'email'
+            channel:
+                | 'chat'
+                | 'help-center'
+                | 'contact-form'
+                | 'contact_form'
+                | 'email'
             flow_id: string
             flow_step_id?: string | null
             flow_execution_id?: string | null
@@ -1063,6 +1085,22 @@ declare namespace Components {
                 | 'invalid_object_inputs'
                 | 'invalid_conditions'
                 | 'upstream_error'
+            input_errors?:
+                | {
+                      [name: string]: any
+                      code: string
+                      path: string[]
+                      message: string
+                  }[]
+                | null
+            precondition_errors?:
+                | {
+                      [name: string]: any
+                      code: string
+                      path: string[]
+                      message: string
+                  }[]
+                | null
             created_datetime?: string | null // date-time
         }
         export interface GetExecutionsPaginationResponseDto {
@@ -1423,7 +1461,7 @@ declare namespace Components {
             internal_id: string
             id: string
             account_id: number | null
-            template_internal_id?: string | null
+            step_internal_id?: string | null
             name: string
             description?: string | null
             short_description?: string | null
@@ -1607,7 +1645,8 @@ declare namespace Components {
                           } | null
                           trackstar_integration_name?: string | null
                           service_connection_settings?: {
-                              integration_id: string | number
+                              integration_id?: null | null
+                              service_connection_id?: string | null
                               path: string
                           } | null
                           variables: {
@@ -1619,6 +1658,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'date'
                                   | 'boolean'
+                                  | 'json'
                           }[]
                       }
                   }
@@ -1840,6 +1880,10 @@ declare namespace Components {
                                   | number
                                   | boolean
                                   | string /* date-time */
+                                  | any[]
+                                  | {
+                                        [name: string]: any
+                                    }
                                   | string
                           }
                       }
@@ -1866,6 +1910,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'boolean'
                                   | 'date'
+                                  | 'json'
                           }
                       }
                   }
@@ -1914,6 +1959,12 @@ declare namespace Components {
                             description: string
                             data_type: 'date'
                         }
+                      | {
+                            id: string
+                            name: string
+                            description: string
+                            data_type: 'json'
+                        }
                   )[]
                 | null
             values?: {
@@ -1921,6 +1972,10 @@ declare namespace Components {
                     | number
                     | boolean
                     | string /* date-time */
+                    | any[]
+                    | {
+                          [name: string]: any
+                      }
                     | string
             } | null
             transitions: {
@@ -2235,6 +2290,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'date'
                                   | 'boolean'
+                                  | 'json'
                           }[]
                       }
                   }
@@ -2246,8 +2302,8 @@ declare namespace Components {
                       trigger: 'llm-prompt'
                       settings: {
                           requires_confirmation: boolean
-                          is_standalone?: boolean
                           instructions: string
+                          is_standalone?: boolean
                       }
                   }
                 | {
@@ -2256,7 +2312,6 @@ declare namespace Components {
                       trigger: 'reusable-llm-prompt'
                       settings: {
                           requires_confirmation: boolean
-                          is_standalone?: boolean
                           conditions?:
                               | ({
                                     or: (
@@ -2401,7 +2456,8 @@ declare namespace Components {
                           } | null
                           trackstar_integration_name?: string | null
                           service_connection_settings?: {
-                              integration_id: string | number
+                              integration_id?: null | null
+                              service_connection_id?: string | null
                               path: string
                           } | null
                           variables: {
@@ -2413,6 +2469,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'date'
                                   | 'boolean'
+                                  | 'json'
                           }[]
                       }
                   }
@@ -2564,6 +2621,10 @@ declare namespace Components {
                                   | number
                                   | boolean
                                   | string /* date-time */
+                                  | any[]
+                                  | {
+                                        [name: string]: any
+                                    }
                                   | string
                           }
                       }
@@ -2587,6 +2648,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'boolean'
                                   | 'date'
+                                  | 'json'
                           }
                       }
                   }
@@ -2635,6 +2697,12 @@ declare namespace Components {
                             description: string
                             data_type: 'date'
                         }
+                      | {
+                            id: string
+                            name: string
+                            description: string
+                            data_type: 'json'
+                        }
                   )[]
                 | null
             values?: {
@@ -2642,6 +2710,10 @@ declare namespace Components {
                     | number
                     | boolean
                     | string /* date-time */
+                    | any[]
+                    | {
+                          [name: string]: any
+                      }
                     | string
             } | null
             transitions: {
@@ -2956,6 +3028,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'date'
                                   | 'boolean'
+                                  | 'json'
                           }[]
                       }
                   }
@@ -2967,8 +3040,8 @@ declare namespace Components {
                       trigger: 'llm-prompt'
                       settings: {
                           requires_confirmation: boolean
-                          is_standalone?: boolean
                           instructions: string
+                          is_standalone?: boolean
                       }
                   }
                 | {
@@ -2977,7 +3050,6 @@ declare namespace Components {
                       trigger: 'reusable-llm-prompt'
                       settings: {
                           requires_confirmation: boolean
-                          is_standalone?: boolean
                           conditions?:
                               | ({
                                     or: (
@@ -3437,6 +3509,7 @@ declare namespace Components {
             triggerable: boolean
             entrypoint?: {
                 requires_confirmation: boolean
+                is_standalone: boolean
                 instructions: string
                 configuration_name: string
                 configuration_template_slug: string | null
@@ -3498,6 +3571,9 @@ declare namespace Components {
                     }
                 }
             } | null
+            /**
+             * Deprecated. Use `input_errors` and `precondition_errors` instead.
+             */
             errors?:
                 | {
                       code: string
@@ -3505,6 +3581,62 @@ declare namespace Components {
                       path: string[]
                   }[]
                 | null
+            input_errors: (
+                | {
+                      code:
+                          | 'invalid_type'
+                          | 'invalid_date'
+                          | 'invalid_product_input'
+                          | 'missing_customer'
+                          | 'missing_order'
+                          | 'missing_product'
+                          | 'missing_product_variant'
+                      path: string[]
+                      message: string
+                  }
+                | {
+                      code: 'invalid_union'
+                      path: string[]
+                      message: string
+                      errors: {
+                          code:
+                              | 'invalid_type'
+                              | 'invalid_date'
+                              | 'invalid_product_input'
+                              | 'missing_customer'
+                              | 'missing_order'
+                              | 'missing_product'
+                              | 'missing_product_variant'
+                          path: string[]
+                          message: string
+                      }[]
+                  }
+                | {
+                      code: 'invalid_enum_value'
+                      path: string[]
+                      message: string
+                      options: string[]
+                  }
+            )[]
+            precondition_errors: {
+                code:
+                    | 'equals'
+                    | 'not_equal'
+                    | 'contains'
+                    | 'does_not_contain'
+                    | 'does_not_end_with'
+                    | 'does_not_start_with'
+                    | 'does_not_exist'
+                    | 'exists'
+                    | 'greater_than'
+                    | 'greater_than_or_equal'
+                    | 'greater_than_interval'
+                    | 'less_than'
+                    | 'less_than_or_equal'
+                    | 'less_than_interval'
+                path: string[]
+                message: string
+            }[]
             state?: {
                 store?: {
                     type: 'shopify' | 'bigcommerce' | 'magento2'
@@ -3873,6 +4005,10 @@ declare namespace Components {
                         | number
                         | boolean
                         | string /* date-time */
+                        | any[]
+                        | {
+                              [name: string]: any
+                          }
                         | string
                 } | null
                 values?: {
@@ -3880,6 +4016,10 @@ declare namespace Components {
                         | number
                         | boolean
                         | string /* date-time */
+                        | any[]
+                        | {
+                              [name: string]: any
+                          }
                         | string
                 } | null
                 user_journey_id?: string | null
@@ -4516,6 +4656,7 @@ declare namespace Components {
                                                     | 'number'
                                                     | 'boolean'
                                                     | 'date'
+                                                    | 'json'
                                                 value?: any
                                             }
                                             at: string // date-time
@@ -4667,6 +4808,10 @@ declare namespace Components {
                                       | number
                                       | boolean
                                       | string /* date-time */
+                                      | any[]
+                                      | {
+                                            [name: string]: any
+                                        }
                                       | string
                               } | null
                               store?: {
@@ -4951,6 +5096,10 @@ declare namespace Components {
                                       | number
                                       | boolean
                                       | string /* date-time */
+                                      | any[]
+                                      | {
+                                            [name: string]: any
+                                        }
                                       | string
                               } | null
                               success: boolean
@@ -5318,6 +5467,7 @@ declare namespace Components {
                                                     | 'number'
                                                     | 'boolean'
                                                     | 'date'
+                                                    | 'json'
                                                 value?: any
                                             }
                                             at: string // date-time
@@ -5428,6 +5578,7 @@ declare namespace Components {
                                       | 'number'
                                       | 'boolean'
                                       | 'date'
+                                      | 'json'
                                   value?: any
                               }
                               at: string // date-time
@@ -5535,8 +5686,15 @@ declare namespace Components {
                   }
               }
         )[]
+        export type ListHelpdeskAppIntegrationResponseDto = {
+            account_id: number
+            integration_id: number
+            app_id: string
+            service_connection_id: string | null
+        }[]
         export type ListLlmConversationEntrypointsResponseDto = {
             requires_confirmation: boolean
+            is_standalone: boolean
             instructions: string
             configuration_id: string
             configuration_name: string
@@ -5599,6 +5757,14 @@ declare namespace Components {
                 }
             }
         }[]
+        export type ListStoreAppMappingResponseDto = {
+            account_id: number
+            store_type: 'shopify' | 'bigcommerce' | 'magento2'
+            store_name: string
+            app_id: string
+            integration_id: number | null
+            service_connection_id: string | null
+        }[]
         export type ListStoreAppResponseDto = {
             store_type: 'shopify' | 'bigcommerce' | 'magento2'
             store_name: string
@@ -5610,7 +5776,7 @@ declare namespace Components {
             internal_id: string
             id: string
             account_id: number | null
-            template_internal_id?: string | null
+            step_internal_id?: string | null
             name: string
             description?: string | null
             short_description?: string | null
@@ -5794,7 +5960,8 @@ declare namespace Components {
                           } | null
                           trackstar_integration_name?: string | null
                           service_connection_settings?: {
-                              integration_id: string | number
+                              integration_id?: null | null
+                              service_connection_id?: string | null
                               path: string
                           } | null
                           variables: {
@@ -5806,6 +5973,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'date'
                                   | 'boolean'
+                                  | 'json'
                           }[]
                       }
                   }
@@ -6027,6 +6195,10 @@ declare namespace Components {
                                   | number
                                   | boolean
                                   | string /* date-time */
+                                  | any[]
+                                  | {
+                                        [name: string]: any
+                                    }
                                   | string
                           }
                       }
@@ -6053,6 +6225,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'boolean'
                                   | 'date'
+                                  | 'json'
                           }
                       }
                   }
@@ -6101,6 +6274,12 @@ declare namespace Components {
                             description: string
                             data_type: 'date'
                         }
+                      | {
+                            id: string
+                            name: string
+                            description: string
+                            data_type: 'json'
+                        }
                   )[]
                 | null
             values?: {
@@ -6108,6 +6287,10 @@ declare namespace Components {
                     | number
                     | boolean
                     | string /* date-time */
+                    | any[]
+                    | {
+                          [name: string]: any
+                      }
                     | string
             } | null
             transitions: {
@@ -6422,6 +6605,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'date'
                                   | 'boolean'
+                                  | 'json'
                           }[]
                       }
                   }
@@ -6433,8 +6617,8 @@ declare namespace Components {
                       trigger: 'llm-prompt'
                       settings: {
                           requires_confirmation: boolean
-                          is_standalone?: boolean
                           instructions: string
+                          is_standalone?: boolean
                       }
                   }
                 | {
@@ -6443,7 +6627,6 @@ declare namespace Components {
                       trigger: 'reusable-llm-prompt'
                       settings: {
                           requires_confirmation: boolean
-                          is_standalone?: boolean
                           conditions?:
                               | ({
                                     or: (
@@ -6557,9 +6740,13 @@ declare namespace Components {
                         }
                   )[]
                 | null
+            enabled: boolean
+            requires_auth: boolean
+            has_missing_values: boolean
         }[]
         export type ListStoreWfEntrypointsResponseDto = {
             requires_confirmation: boolean
+            is_standalone: boolean
             instructions: string
             configuration_id: string
             configuration_name: string
@@ -6667,7 +6854,8 @@ declare namespace Components {
                           } | null
                           trackstar_integration_name?: string | null
                           service_connection_settings?: {
-                              integration_id: string | number
+                              integration_id?: null | null
+                              service_connection_id?: string | null
                               path: string
                           } | null
                           variables: {
@@ -6679,6 +6867,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'date'
                                   | 'boolean'
+                                  | 'json'
                           }[]
                       }
                   }
@@ -6830,6 +7019,10 @@ declare namespace Components {
                                   | number
                                   | boolean
                                   | string /* date-time */
+                                  | any[]
+                                  | {
+                                        [name: string]: any
+                                    }
                                   | string
                           }
                       }
@@ -6853,6 +7046,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'boolean'
                                   | 'date'
+                                  | 'json'
                           }
                       }
                   }
@@ -6901,6 +7095,12 @@ declare namespace Components {
                             description: string
                             data_type: 'date'
                         }
+                      | {
+                            id: string
+                            name: string
+                            description: string
+                            data_type: 'json'
+                        }
                   )[]
                 | null
             values?: {
@@ -6908,6 +7108,10 @@ declare namespace Components {
                     | number
                     | boolean
                     | string /* date-time */
+                    | any[]
+                    | {
+                          [name: string]: any
+                      }
                     | string
             } | null
             transitions: {
@@ -7222,6 +7426,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'date'
                                   | 'boolean'
+                                  | 'json'
                           }[]
                       }
                   }
@@ -7233,8 +7438,8 @@ declare namespace Components {
                       trigger: 'llm-prompt'
                       settings: {
                           requires_confirmation: boolean
-                          is_standalone?: boolean
                           instructions: string
+                          is_standalone?: boolean
                       }
                   }
                 | {
@@ -7243,7 +7448,6 @@ declare namespace Components {
                       trigger: 'reusable-llm-prompt'
                       settings: {
                           requires_confirmation: boolean
-                          is_standalone?: boolean
                           conditions?:
                               | ({
                                     or: (
@@ -7360,7 +7564,7 @@ declare namespace Components {
             internal_id: string
             id: string
             account_id: number | null
-            template_internal_id?: string | null
+            step_internal_id?: string | null
             name: string
             description?: string | null
             short_description?: string | null
@@ -7749,6 +7953,10 @@ declare namespace Components {
                                   | number
                                   | boolean
                                   | string /* date-time */
+                                  | any[]
+                                  | {
+                                        [name: string]: any
+                                    }
                                   | string
                           }
                       }
@@ -7775,6 +7983,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'boolean'
                                   | 'date'
+                                  | 'json'
                           }
                       }
                   }
@@ -7823,6 +8032,12 @@ declare namespace Components {
                             description: string
                             data_type: 'date'
                         }
+                      | {
+                            id: string
+                            name: string
+                            description: string
+                            data_type: 'json'
+                        }
                   )[]
                 | null
             values?: {
@@ -7830,6 +8045,10 @@ declare namespace Components {
                     | number
                     | boolean
                     | string /* date-time */
+                    | any[]
+                    | {
+                          [name: string]: any
+                      }
                     | string
             } | null
             transitions: {
@@ -8436,6 +8655,7 @@ declare namespace Components {
                   trigger: 'llm-prompt'
                   entrypoint: {
                       requires_confirmation: boolean
+                      is_standalone: boolean
                       instructions: string
                       configuration_name: string
                       configuration_template_slug: string | null
@@ -8450,6 +8670,7 @@ declare namespace Components {
                                       | 'number'
                                       | 'date'
                                       | 'boolean'
+                                      | 'json'
                               }
                           }
                           object_inputs: {
@@ -9165,6 +9386,10 @@ declare namespace Components {
                               | number
                               | boolean
                               | string /* date-time */
+                              | any[]
+                              | {
+                                    [name: string]: any
+                                }
                               | string
                       } | null
                       values?: {
@@ -9172,6 +9397,10 @@ declare namespace Components {
                               | number
                               | boolean
                               | string /* date-time */
+                              | any[]
+                              | {
+                                    [name: string]: any
+                                }
                               | string
                       } | null
                       user_journey_id?: string | null
@@ -9908,6 +10137,7 @@ declare namespace Components {
                                                           | 'number'
                                                           | 'boolean'
                                                           | 'date'
+                                                          | 'json'
                                                       value?: any
                                                   }
                                                   at: string // date-time
@@ -10059,6 +10289,10 @@ declare namespace Components {
                                             | number
                                             | boolean
                                             | string /* date-time */
+                                            | any[]
+                                            | {
+                                                  [name: string]: any
+                                              }
                                             | string
                                     } | null
                                     store?: {
@@ -10376,6 +10610,10 @@ declare namespace Components {
                                             | number
                                             | boolean
                                             | string /* date-time */
+                                            | any[]
+                                            | {
+                                                  [name: string]: any
+                                              }
                                             | string
                                     } | null
                                     success: boolean
@@ -10819,6 +11057,7 @@ declare namespace Components {
                                                           | 'number'
                                                           | 'boolean'
                                                           | 'date'
+                                                          | 'json'
                                                       value?: any
                                                   }
                                                   at: string // date-time
@@ -10929,6 +11168,7 @@ declare namespace Components {
                                             | 'number'
                                             | 'boolean'
                                             | 'date'
+                                            | 'json'
                                         value?: any
                                     }
                                     at: string // date-time
@@ -10977,7 +11217,14 @@ declare namespace Components {
                   trigger: 'llm-prompt'
                   entrypoint?: 'llm-conversation'
                   custom_inputs?: {
-                      [name: string]: string
+                      [name: string]:
+                          | string
+                          | number
+                          | boolean
+                          | any[]
+                          | {
+                                [name: string]: any
+                            }
                   } | null
                   object_inputs?: {
                       customer_id?: string | null
@@ -11308,6 +11555,7 @@ declare namespace Components {
                   trigger: 'llm-prompt'
                   entrypoint: {
                       requires_confirmation: boolean
+                      is_standalone: boolean
                       instructions: string
                       configuration_name: string
                       configuration_template_slug: string | null
@@ -11322,6 +11570,7 @@ declare namespace Components {
                                       | 'number'
                                       | 'date'
                                       | 'boolean'
+                                      | 'json'
                               }
                           }
                           object_inputs: {
@@ -12037,6 +12286,10 @@ declare namespace Components {
                               | number
                               | boolean
                               | string /* date-time */
+                              | any[]
+                              | {
+                                    [name: string]: any
+                                }
                               | string
                       } | null
                       values?: {
@@ -12044,6 +12297,10 @@ declare namespace Components {
                               | number
                               | boolean
                               | string /* date-time */
+                              | any[]
+                              | {
+                                    [name: string]: any
+                                }
                               | string
                       } | null
                       user_journey_id?: string | null
@@ -12780,6 +13037,7 @@ declare namespace Components {
                                                           | 'number'
                                                           | 'boolean'
                                                           | 'date'
+                                                          | 'json'
                                                       value?: any
                                                   }
                                                   at: string // date-time
@@ -12931,6 +13189,10 @@ declare namespace Components {
                                             | number
                                             | boolean
                                             | string /* date-time */
+                                            | any[]
+                                            | {
+                                                  [name: string]: any
+                                              }
                                             | string
                                     } | null
                                     store?: {
@@ -13248,6 +13510,10 @@ declare namespace Components {
                                             | number
                                             | boolean
                                             | string /* date-time */
+                                            | any[]
+                                            | {
+                                                  [name: string]: any
+                                              }
                                             | string
                                     } | null
                                     success: boolean
@@ -13691,6 +13957,7 @@ declare namespace Components {
                                                           | 'number'
                                                           | 'boolean'
                                                           | 'date'
+                                                          | 'json'
                                                       value?: any
                                                   }
                                                   at: string // date-time
@@ -13801,6 +14068,7 @@ declare namespace Components {
                                             | 'number'
                                             | 'boolean'
                                             | 'date'
+                                            | 'json'
                                         value?: any
                                     }
                                     at: string // date-time
@@ -13820,7 +14088,14 @@ declare namespace Components {
             trigger: 'llm-prompt'
             entrypoint?: 'llm-conversation'
             custom_inputs?: {
-                [name: string]: string
+                [name: string]:
+                    | string
+                    | number
+                    | boolean
+                    | any[]
+                    | {
+                          [name: string]: any
+                      }
             } | null
             object_inputs?: {
                 customer_id?: string | null
@@ -13846,6 +14121,7 @@ declare namespace Components {
             triggerable: boolean
             entrypoint?: {
                 requires_confirmation: boolean
+                is_standalone: boolean
                 instructions: string
                 configuration_name: string
                 configuration_template_slug: string | null
@@ -13907,6 +14183,9 @@ declare namespace Components {
                     }
                 }
             } | null
+            /**
+             * Deprecated. Use `input_errors` and `precondition_errors` instead.
+             */
             errors?:
                 | {
                       code: string
@@ -13914,6 +14193,62 @@ declare namespace Components {
                       path: string[]
                   }[]
                 | null
+            input_errors: (
+                | {
+                      code:
+                          | 'invalid_type'
+                          | 'invalid_date'
+                          | 'invalid_product_input'
+                          | 'missing_customer'
+                          | 'missing_order'
+                          | 'missing_product'
+                          | 'missing_product_variant'
+                      path: string[]
+                      message: string
+                  }
+                | {
+                      code: 'invalid_union'
+                      path: string[]
+                      message: string
+                      errors: {
+                          code:
+                              | 'invalid_type'
+                              | 'invalid_date'
+                              | 'invalid_product_input'
+                              | 'missing_customer'
+                              | 'missing_order'
+                              | 'missing_product'
+                              | 'missing_product_variant'
+                          path: string[]
+                          message: string
+                      }[]
+                  }
+                | {
+                      code: 'invalid_enum_value'
+                      path: string[]
+                      message: string
+                      options: string[]
+                  }
+            )[]
+            precondition_errors: {
+                code:
+                    | 'equals'
+                    | 'not_equal'
+                    | 'contains'
+                    | 'does_not_contain'
+                    | 'does_not_end_with'
+                    | 'does_not_start_with'
+                    | 'does_not_exist'
+                    | 'exists'
+                    | 'greater_than'
+                    | 'greater_than_or_equal'
+                    | 'greater_than_interval'
+                    | 'less_than'
+                    | 'less_than_or_equal'
+                    | 'less_than_interval'
+                path: string[]
+                message: string
+            }[]
             state?: {
                 store?: {
                     type: 'shopify' | 'bigcommerce' | 'magento2'
@@ -14282,6 +14617,10 @@ declare namespace Components {
                         | number
                         | boolean
                         | string /* date-time */
+                        | any[]
+                        | {
+                              [name: string]: any
+                          }
                         | string
                 } | null
                 values?: {
@@ -14289,6 +14628,10 @@ declare namespace Components {
                         | number
                         | boolean
                         | string /* date-time */
+                        | any[]
+                        | {
+                              [name: string]: any
+                          }
                         | string
                 } | null
                 user_journey_id?: string | null
@@ -14925,6 +15268,7 @@ declare namespace Components {
                                                     | 'number'
                                                     | 'boolean'
                                                     | 'date'
+                                                    | 'json'
                                                 value?: any
                                             }
                                             at: string // date-time
@@ -15076,6 +15420,10 @@ declare namespace Components {
                                       | number
                                       | boolean
                                       | string /* date-time */
+                                      | any[]
+                                      | {
+                                            [name: string]: any
+                                        }
                                       | string
                               } | null
                               store?: {
@@ -15360,6 +15708,10 @@ declare namespace Components {
                                       | number
                                       | boolean
                                       | string /* date-time */
+                                      | any[]
+                                      | {
+                                            [name: string]: any
+                                        }
                                       | string
                               } | null
                               success: boolean
@@ -15727,6 +16079,7 @@ declare namespace Components {
                                                     | 'number'
                                                     | 'boolean'
                                                     | 'date'
+                                                    | 'json'
                                                 value?: any
                                             }
                                             at: string // date-time
@@ -15837,6 +16190,7 @@ declare namespace Components {
                                       | 'number'
                                       | 'boolean'
                                       | 'date'
+                                      | 'json'
                                   value?: any
                               }
                               at: string // date-time
@@ -15933,7 +16287,7 @@ declare namespace Components {
         }
         export interface UpsertStoreWfConfigurationRequestBodyDto {
             id: string
-            template_internal_id?: string | null
+            step_internal_id?: string | null
             name: string
             description?: string | null
             short_description?: string | null
@@ -16117,7 +16471,8 @@ declare namespace Components {
                           } | null
                           trackstar_integration_name?: string | null
                           service_connection_settings?: {
-                              integration_id: string | number
+                              integration_id?: null | null
+                              service_connection_id?: string | null
                               path: string
                           } | null
                           variables: {
@@ -16129,6 +16484,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'date'
                                   | 'boolean'
+                                  | 'json'
                           }[]
                       }
                   }
@@ -16350,6 +16706,10 @@ declare namespace Components {
                                   | number
                                   | boolean
                                   | string /* date-time */
+                                  | any[]
+                                  | {
+                                        [name: string]: any
+                                    }
                                   | string
                           }
                       }
@@ -16376,6 +16736,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'boolean'
                                   | 'date'
+                                  | 'json'
                           }
                       }
                   }
@@ -16424,6 +16785,12 @@ declare namespace Components {
                             description: string
                             data_type: 'date'
                         }
+                      | {
+                            id: string
+                            name: string
+                            description: string
+                            data_type: 'json'
+                        }
                   )[]
                 | null
             values?: {
@@ -16431,6 +16798,10 @@ declare namespace Components {
                     | number
                     | boolean
                     | string /* date-time */
+                    | any[]
+                    | {
+                          [name: string]: any
+                      }
                     | string
             } | null
             transitions: {
@@ -16742,6 +17113,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'date'
                                   | 'boolean'
+                                  | 'json'
                           }[]
                       }
                   }
@@ -16753,8 +17125,8 @@ declare namespace Components {
                       trigger: 'llm-prompt'
                       settings: {
                           requires_confirmation: boolean
-                          is_standalone?: boolean
                           instructions: string
+                          is_standalone?: boolean
                       }
                   }
                 | {
@@ -16763,7 +17135,6 @@ declare namespace Components {
                       trigger: 'reusable-llm-prompt'
                       settings: {
                           requires_confirmation: boolean
-                          is_standalone?: boolean
                           conditions?:
                               | ({
                                     or: (
@@ -16882,7 +17253,7 @@ declare namespace Components {
             internal_id: string
             id: string
             account_id: number | null
-            template_internal_id?: string | null
+            step_internal_id?: string | null
             name: string
             description?: string | null
             short_description?: string | null
@@ -17066,7 +17437,8 @@ declare namespace Components {
                           } | null
                           trackstar_integration_name?: string | null
                           service_connection_settings?: {
-                              integration_id: string | number
+                              integration_id?: null | null
+                              service_connection_id?: string | null
                               path: string
                           } | null
                           variables: {
@@ -17078,6 +17450,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'date'
                                   | 'boolean'
+                                  | 'json'
                           }[]
                       }
                   }
@@ -17299,6 +17672,10 @@ declare namespace Components {
                                   | number
                                   | boolean
                                   | string /* date-time */
+                                  | any[]
+                                  | {
+                                        [name: string]: any
+                                    }
                                   | string
                           }
                       }
@@ -17325,6 +17702,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'boolean'
                                   | 'date'
+                                  | 'json'
                           }
                       }
                   }
@@ -17373,6 +17751,12 @@ declare namespace Components {
                             description: string
                             data_type: 'date'
                         }
+                      | {
+                            id: string
+                            name: string
+                            description: string
+                            data_type: 'json'
+                        }
                   )[]
                 | null
             values?: {
@@ -17380,6 +17764,10 @@ declare namespace Components {
                     | number
                     | boolean
                     | string /* date-time */
+                    | any[]
+                    | {
+                          [name: string]: any
+                      }
                     | string
             } | null
             transitions: {
@@ -17694,6 +18082,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'date'
                                   | 'boolean'
+                                  | 'json'
                           }[]
                       }
                   }
@@ -17705,8 +18094,8 @@ declare namespace Components {
                       trigger: 'llm-prompt'
                       settings: {
                           requires_confirmation: boolean
-                          is_standalone?: boolean
                           instructions: string
+                          is_standalone?: boolean
                       }
                   }
                 | {
@@ -17715,7 +18104,6 @@ declare namespace Components {
                       trigger: 'reusable-llm-prompt'
                       settings: {
                           requires_confirmation: boolean
-                          is_standalone?: boolean
                           conditions?:
                               | ({
                                     or: (
@@ -17832,7 +18220,7 @@ declare namespace Components {
         }
         export interface UpsertWfConfigurationRequestDto {
             id: string
-            template_internal_id?: string | null
+            step_internal_id?: string | null
             name: string
             description?: string | null
             short_description?: string | null
@@ -18016,7 +18404,8 @@ declare namespace Components {
                           } | null
                           trackstar_integration_name?: string | null
                           service_connection_settings?: {
-                              integration_id: string | number
+                              integration_id?: null | null
+                              service_connection_id?: string | null
                               path: string
                           } | null
                           variables: {
@@ -18028,6 +18417,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'date'
                                   | 'boolean'
+                                  | 'json'
                           }[]
                       }
                   }
@@ -18249,6 +18639,10 @@ declare namespace Components {
                                   | number
                                   | boolean
                                   | string /* date-time */
+                                  | any[]
+                                  | {
+                                        [name: string]: any
+                                    }
                                   | string
                           }
                       }
@@ -18275,6 +18669,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'boolean'
                                   | 'date'
+                                  | 'json'
                           }
                       }
                   }
@@ -18323,6 +18718,12 @@ declare namespace Components {
                             description: string
                             data_type: 'date'
                         }
+                      | {
+                            id: string
+                            name: string
+                            description: string
+                            data_type: 'json'
+                        }
                   )[]
                 | null
             values?: {
@@ -18330,6 +18731,10 @@ declare namespace Components {
                     | number
                     | boolean
                     | string /* date-time */
+                    | any[]
+                    | {
+                          [name: string]: any
+                      }
                     | string
             } | null
             transitions: {
@@ -18642,6 +19047,7 @@ declare namespace Components {
                                         | 'number'
                                         | 'date'
                                         | 'boolean'
+                                        | 'json'
                                 }[]
                             }
                         }
@@ -18655,8 +19061,8 @@ declare namespace Components {
                             trigger: 'llm-prompt'
                             settings: {
                                 requires_confirmation: boolean
-                                is_standalone?: boolean
                                 instructions: string
+                                is_standalone?: boolean
                             }
                         }
                       | {
@@ -18665,7 +19071,6 @@ declare namespace Components {
                             trigger: 'reusable-llm-prompt'
                             settings: {
                                 requires_confirmation: boolean
-                                is_standalone?: boolean
                                 conditions?:
                                     | ({
                                           or: (
@@ -18785,7 +19190,7 @@ declare namespace Components {
             internal_id: string
             id: string
             account_id: number | null
-            template_internal_id?: string | null
+            step_internal_id?: string | null
             name: string
             description?: string | null
             short_description?: string | null
@@ -18969,7 +19374,8 @@ declare namespace Components {
                           } | null
                           trackstar_integration_name?: string | null
                           service_connection_settings?: {
-                              integration_id: string | number
+                              integration_id?: null | null
+                              service_connection_id?: string | null
                               path: string
                           } | null
                           variables: {
@@ -18981,6 +19387,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'date'
                                   | 'boolean'
+                                  | 'json'
                           }[]
                       }
                   }
@@ -19202,6 +19609,10 @@ declare namespace Components {
                                   | number
                                   | boolean
                                   | string /* date-time */
+                                  | any[]
+                                  | {
+                                        [name: string]: any
+                                    }
                                   | string
                           }
                       }
@@ -19228,6 +19639,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'boolean'
                                   | 'date'
+                                  | 'json'
                           }
                       }
                   }
@@ -19276,6 +19688,12 @@ declare namespace Components {
                             description: string
                             data_type: 'date'
                         }
+                      | {
+                            id: string
+                            name: string
+                            description: string
+                            data_type: 'json'
+                        }
                   )[]
                 | null
             values?: {
@@ -19283,6 +19701,10 @@ declare namespace Components {
                     | number
                     | boolean
                     | string /* date-time */
+                    | any[]
+                    | {
+                          [name: string]: any
+                      }
                     | string
             } | null
             transitions: {
@@ -19598,6 +20020,7 @@ declare namespace Components {
                                         | 'number'
                                         | 'date'
                                         | 'boolean'
+                                        | 'json'
                                 }[]
                             }
                         }
@@ -19611,8 +20034,8 @@ declare namespace Components {
                             trigger: 'llm-prompt'
                             settings: {
                                 requires_confirmation: boolean
-                                is_standalone?: boolean
                                 instructions: string
+                                is_standalone?: boolean
                             }
                         }
                       | {
@@ -19621,7 +20044,6 @@ declare namespace Components {
                             trigger: 'reusable-llm-prompt'
                             settings: {
                                 requires_confirmation: boolean
-                                is_standalone?: boolean
                                 conditions?:
                                     | ({
                                           or: (
@@ -19766,7 +20188,8 @@ declare namespace Components {
                           } | null
                           trackstar_integration_name?: string | null
                           service_connection_settings?: {
-                              integration_id: string | number
+                              integration_id?: null | null
+                              service_connection_id?: string | null
                               path: string
                           } | null
                           variables: {
@@ -19778,6 +20201,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'date'
                                   | 'boolean'
+                                  | 'json'
                           }[]
                       }
                   }
@@ -19929,6 +20353,10 @@ declare namespace Components {
                                   | number
                                   | boolean
                                   | string /* date-time */
+                                  | any[]
+                                  | {
+                                        [name: string]: any
+                                    }
                                   | string
                           }
                       }
@@ -19952,6 +20380,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'boolean'
                                   | 'date'
+                                  | 'json'
                           }
                       }
                   }
@@ -20000,6 +20429,12 @@ declare namespace Components {
                             description: string
                             data_type: 'date'
                         }
+                      | {
+                            id: string
+                            name: string
+                            description: string
+                            data_type: 'json'
+                        }
                   )[]
                 | null
             values?: {
@@ -20007,6 +20442,10 @@ declare namespace Components {
                     | number
                     | boolean
                     | string /* date-time */
+                    | any[]
+                    | {
+                          [name: string]: any
+                      }
                     | string
             } | null
             transitions: {
@@ -20318,6 +20757,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'date'
                                   | 'boolean'
+                                  | 'json'
                           }[]
                       }
                   }
@@ -20329,8 +20769,8 @@ declare namespace Components {
                       trigger: 'llm-prompt'
                       settings: {
                           requires_confirmation: boolean
-                          is_standalone?: boolean
                           instructions: string
+                          is_standalone?: boolean
                       }
                   }
                 | {
@@ -20339,7 +20779,6 @@ declare namespace Components {
                       trigger: 'reusable-llm-prompt'
                       settings: {
                           requires_confirmation: boolean
-                          is_standalone?: boolean
                           conditions?:
                               | ({
                                     or: (
@@ -20482,7 +20921,8 @@ declare namespace Components {
                           } | null
                           trackstar_integration_name?: string | null
                           service_connection_settings?: {
-                              integration_id: string | number
+                              integration_id?: null | null
+                              service_connection_id?: string | null
                               path: string
                           } | null
                           variables: {
@@ -20494,6 +20934,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'date'
                                   | 'boolean'
+                                  | 'json'
                           }[]
                       }
                   }
@@ -20645,6 +21086,10 @@ declare namespace Components {
                                   | number
                                   | boolean
                                   | string /* date-time */
+                                  | any[]
+                                  | {
+                                        [name: string]: any
+                                    }
                                   | string
                           }
                       }
@@ -20668,6 +21113,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'boolean'
                                   | 'date'
+                                  | 'json'
                           }
                       }
                   }
@@ -20716,6 +21162,12 @@ declare namespace Components {
                             description: string
                             data_type: 'date'
                         }
+                      | {
+                            id: string
+                            name: string
+                            description: string
+                            data_type: 'json'
+                        }
                   )[]
                 | null
             values?: {
@@ -20723,6 +21175,10 @@ declare namespace Components {
                     | number
                     | boolean
                     | string /* date-time */
+                    | any[]
+                    | {
+                          [name: string]: any
+                      }
                     | string
             } | null
             transitions: {
@@ -21037,6 +21493,7 @@ declare namespace Components {
                                   | 'number'
                                   | 'date'
                                   | 'boolean'
+                                  | 'json'
                           }[]
                       }
                   }
@@ -21048,8 +21505,8 @@ declare namespace Components {
                       trigger: 'llm-prompt'
                       settings: {
                           requires_confirmation: boolean
-                          is_standalone?: boolean
                           instructions: string
+                          is_standalone?: boolean
                       }
                   }
                 | {
@@ -21058,7 +21515,6 @@ declare namespace Components {
                       trigger: 'reusable-llm-prompt'
                       settings: {
                           requires_confirmation: boolean
-                          is_standalone?: boolean
                           conditions?:
                               | ({
                                     or: (
@@ -21350,6 +21806,12 @@ declare namespace Paths {
             }
         }
     }
+    namespace HelpdeskAppIntegrationControllerList {
+        namespace Responses {
+            export type $200 =
+                Components.Schemas.ListHelpdeskAppIntegrationResponseDto
+        }
+    }
     namespace LiquidTemplateStepValidationControllerValidateStep {
         export type RequestBody =
             Components.Schemas.LiquidTemplateStepValidationRequestDto
@@ -21403,6 +21865,19 @@ declare namespace Paths {
             export type $201 = Components.Schemas.UpsertStoreAppResponseDto
         }
     }
+    namespace StoreAppMappingControllerList {
+        namespace Parameters {
+            export type StoreName = string
+            export type StoreType = 'shopify' | 'bigcommerce' | 'magento2'
+        }
+        export interface PathParameters {
+            store_type: Parameters.StoreType
+            store_name: Parameters.StoreName
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.ListStoreAppMappingResponseDto
+        }
+    }
     namespace StoreWfConfigurationControllerList {
         namespace Parameters {
             export type Enabled = '0' | '1' | 'true' | 'false'
@@ -21450,6 +21925,7 @@ declare namespace Paths {
     namespace StoreWfEntrypointControllerList {
         namespace Parameters {
             export type AccountId = number
+            export type IsStandalone = 'true' | 'false'
             export type StoreName = string
             export type StoreType = 'shopify' | 'bigcommerce' | 'magento2'
         }
@@ -21457,6 +21933,9 @@ declare namespace Paths {
             account_id: Parameters.AccountId
             store_type: Parameters.StoreType
             store_name: Parameters.StoreName
+        }
+        export interface QueryParameters {
+            is_standalone?: Parameters.IsStandalone
         }
         namespace Responses {
             export type $200 =
@@ -22047,7 +22526,10 @@ export interface OperationMethods {
      * StoreWfEntrypointController_list
      */
     'StoreWfEntrypointController_list'(
-        parameters: Parameters<Paths.StoreWfEntrypointControllerList.PathParameters>,
+        parameters: Parameters<
+            Paths.StoreWfEntrypointControllerList.QueryParameters &
+                Paths.StoreWfEntrypointControllerList.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.StoreWfEntrypointControllerList.Responses.$200>
@@ -22107,6 +22589,22 @@ export interface OperationMethods {
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.StoreAppControllerDelete.Responses.$204>
+    /**
+     * StoreAppMappingController_list
+     */
+    'StoreAppMappingController_list'(
+        parameters: Parameters<Paths.StoreAppMappingControllerList.PathParameters>,
+        data?: any,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.StoreAppMappingControllerList.Responses.$200>
+    /**
+     * HelpdeskAppIntegrationController_list
+     */
+    'HelpdeskAppIntegrationController_list'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: any,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.HelpdeskAppIntegrationControllerList.Responses.$200>
     /**
      * AppController_list
      */
@@ -22418,7 +22916,10 @@ export interface PathsDictionary {
          * StoreWfEntrypointController_list
          */
         'get'(
-            parameters: Parameters<Paths.StoreWfEntrypointControllerList.PathParameters>,
+            parameters: Parameters<
+                Paths.StoreWfEntrypointControllerList.QueryParameters &
+                    Paths.StoreWfEntrypointControllerList.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.StoreWfEntrypointControllerList.Responses.$200>
@@ -22488,6 +22989,26 @@ export interface PathsDictionary {
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.StoreAppControllerDelete.Responses.$204>
+    }
+    ['/stores/{store_type}/{store_name}/store-apps']: {
+        /**
+         * StoreAppMappingController_list
+         */
+        'get'(
+            parameters: Parameters<Paths.StoreAppMappingControllerList.PathParameters>,
+            data?: any,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.StoreAppMappingControllerList.Responses.$200>
+    }
+    ['/helpdesk-app-integrations']: {
+        /**
+         * HelpdeskAppIntegrationController_list
+         */
+        'get'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: any,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.HelpdeskAppIntegrationControllerList.Responses.$200>
     }
     ['/apps']: {
         /**

@@ -50,4 +50,7 @@ export const actionConfigurationFixture: StoresWorkflowConfiguration[number] = {
             deactivated_datetime: '2024-04-29T13:32:57.190Z',
         },
     ],
+    enabled: true,
+    requires_auth: false,
+    has_missing_values: false,
 }

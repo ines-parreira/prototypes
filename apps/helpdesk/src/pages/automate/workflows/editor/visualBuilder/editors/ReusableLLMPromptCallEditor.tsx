@@ -171,7 +171,16 @@ export default function ReusableLLMPromptCallEditor({
                                     <ActionFormMerchantInputValue
                                         key={input.id}
                                         input={input}
-                                        value={values[input.id]}
+                                        // ActionFormMerchantInputValue renders
+                                        // string/number/boolean inputs only; json
+                                        // and array values aren't supported by
+                                        // this editor yet.
+                                        value={
+                                            values[input.id] as
+                                                | string
+                                                | number
+                                                | boolean
+                                        }
                                         onChange={(nextValue) => {
                                             dispatch({
                                                 type: 'SET_REUSABLE_LLM_PROMPT_CALL_VALUE',

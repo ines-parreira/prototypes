@@ -17,6 +17,8 @@ const execution: LlmTriggeredExecution = {
     configuration_id: '1',
     configuration_internal_id: '1',
     current_step_id: '1',
+    input_errors: [],
+    precondition_errors: [],
 }
 const actionConfiguration = {
     account_id: 1,

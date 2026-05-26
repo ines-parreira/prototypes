@@ -281,7 +281,8 @@ export type HttpRequestNodeType = Node<
         } | null
         trackstar_integration_name?: string | null
         serviceConnectionSettings?: {
-            integration_id: string | number
+            integration_id?: string | number | null
+            service_connection_id?: string | null
             path: string
         } | null
         errors?: {
@@ -646,7 +647,10 @@ export type ReusableLLMPromptCallNodeType = Node<
             products?: Record<string, string> | null
         } | null
         custom_inputs?: Record<string, string> | null
-        values: Record<string, string | number | boolean>
+        values: Record<
+            string,
+            string | number | boolean | unknown[] | Record<string, unknown>
+        >
         isGreyedOut?: boolean | null
         errors?: Record<string, never> | null
         touched?: Record<string, never> | null
@@ -773,9 +777,18 @@ export type VisualBuilderGraph<
                     data_type: 'number'
                     options?: { value: number; label: string }[] | null
                 }
+              | {
+                    id: string
+                    name: string
+                    description: string
+                    data_type: 'json'
+                }
           )[]
         | null
-    values?: Record<string, string | number | boolean> | null
+    values?: Record<
+        string,
+        string | number | boolean | unknown[] | Record<string, unknown>
+    > | null
     nodeEditingId: VisualBuilderNode['id'] | null
     choiceEventIdEditing:
         | MultipleChoicesNodeType['data']['choices'][number]['event_id']

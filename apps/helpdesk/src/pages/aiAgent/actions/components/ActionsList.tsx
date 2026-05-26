@@ -70,6 +70,9 @@ export default function ActionsList({ actions }: Props) {
                 updated_datetime: '',
                 name: 'Get order info',
                 apps: [{ type: 'shopify' }],
+                enabled: true,
+                requires_auth: false,
+                has_missing_values: false,
             }),
             [shopifyActionTemplate],
         )

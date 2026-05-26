@@ -24,6 +24,8 @@ describe('ActionEventRow', () => {
             trigger: 'llm-prompt',
             triggerable: false,
             status: 'success',
+            input_errors: [],
+            precondition_errors: [],
         } as LlmTriggeredExecution
         const { rerender } = render(
             <ActionEventRow
@@ -66,6 +68,8 @@ describe('ActionEventRow', () => {
             },
             trigger: 'llm-prompt',
             triggerable: false,
+            input_errors: [],
+            precondition_errors: [],
         } as LlmTriggeredExecution
         const handleClick = jest.fn()
         const { rerender } = render(
@@ -103,6 +107,8 @@ describe('ActionEventRow', () => {
             },
             trigger: 'llm-prompt',
             triggerable: false,
+            input_errors: [],
+            precondition_errors: [],
         } as LlmTriggeredExecution
         render(
             <ActionEventRow
@@ -136,6 +142,8 @@ describe('ActionEventRow', () => {
             },
             trigger: 'llm-prompt',
             triggerable: false,
+            input_errors: [],
+            precondition_errors: [],
         } as LlmTriggeredExecution
         const handleRowClick = jest.fn()
         render(
@@ -172,6 +180,8 @@ describe('ActionEventRow', () => {
             },
             trigger: 'llm-prompt',
             triggerable: false,
+            input_errors: [],
+            precondition_errors: [],
         } as LlmTriggeredExecution
         render(
             <ActionEventRow

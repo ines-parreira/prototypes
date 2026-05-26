@@ -802,8 +802,6 @@
                         "required": false,
                         "in": "query",
                         "schema": {
-                            "nullable": true,
-                            "default": null,
                             "type": "string",
                             "enum": ["true", "false"]
                         }
@@ -901,6 +899,15 @@
                         "required": true,
                         "in": "path",
                         "schema": { "type": "string" }
+                    },
+                    {
+                        "name": "is_standalone",
+                        "required": false,
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": ["true", "false"]
+                        }
                     }
                 ],
                 "responses": {
@@ -1149,6 +1156,62 @@
                 "responses": { "204": { "description": "" } },
                 "security": [{ "bearer": [] }],
                 "tags": ["StoreApp"]
+            }
+        },
+        "/stores/{store_type}/{store_name}/store-apps": {
+            "get": {
+                "operationId": "StoreAppMappingController_list",
+                "parameters": [
+                    {
+                        "name": "store_type",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string",
+                            "enum": ["shopify", "bigcommerce", "magento2"]
+                        }
+                    },
+                    {
+                        "name": "store_name",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "string" }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListStoreAppMappingResponseDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [{ "bearer": [] }],
+                "tags": ["StoreAppMapping"]
+            }
+        },
+        "/helpdesk-app-integrations": {
+            "get": {
+                "operationId": "HelpdeskAppIntegrationController_list",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListHelpdeskAppIntegrationResponseDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [{ "bearer": [] }],
+                "tags": ["HelpdeskAppIntegration"]
             }
         },
         "/apps": {
@@ -1588,7 +1651,13 @@
                     },
                     "channel": {
                         "type": "string",
-                        "enum": ["chat", "help-center", "contact-form", "email"]
+                        "enum": [
+                            "chat",
+                            "help-center",
+                            "contact-form",
+                            "contact_form",
+                            "email"
+                        ]
                     },
                     "flow_id": { "type": "string" },
                     "flow_step_id": { "type": "string", "nullable": true },
@@ -1602,6 +1671,40 @@
                             "invalid_conditions",
                             "upstream_error"
                         ],
+                        "nullable": true
+                    },
+                    "input_errors": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "code": { "type": "string" },
+                                "path": {
+                                    "type": "array",
+                                    "items": { "type": "string" }
+                                },
+                                "message": { "type": "string" }
+                            },
+                            "required": ["code", "path", "message"],
+                            "additionalProperties": {}
+                        },
+                        "nullable": true
+                    },
+                    "precondition_errors": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "code": { "type": "string" },
+                                "path": {
+                                    "type": "array",
+                                    "items": { "type": "string" }
+                                },
+                                "message": { "type": "string" }
+                            },
+                            "required": ["code", "path", "message"],
+                            "additionalProperties": {}
+                        },
                         "nullable": true
                     },
                     "created_datetime": {
@@ -1628,7 +1731,7 @@
                         "internal_id": { "type": "string", "maxLength": 26 },
                         "id": { "type": "string", "maxLength": 26 },
                         "account_id": { "type": "number", "nullable": true },
-                        "template_internal_id": {
+                        "step_internal_id": {
                             "type": "string",
                             "maxLength": 26,
                             "nullable": true
@@ -3150,6 +3253,14 @@
                                                                     "format": "date-time"
                                                                 },
                                                                 {
+                                                                    "type": "array",
+                                                                    "items": {}
+                                                                },
+                                                                {
+                                                                    "type": "object",
+                                                                    "additionalProperties": {}
+                                                                },
+                                                                {
                                                                     "type": "string",
                                                                     "maxLength": 5000
                                                                 }
@@ -3236,7 +3347,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "boolean",
-                                                                    "date"
+                                                                    "date",
+                                                                    "json"
                                                                 ]
                                                             }
                                                         },
@@ -3399,6 +3511,25 @@
                                             "data_type"
                                         ],
                                         "additionalProperties": false
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": { "type": "string" },
+                                            "name": { "type": "string" },
+                                            "description": { "type": "string" },
+                                            "data_type": {
+                                                "type": "string",
+                                                "enum": ["json"]
+                                            }
+                                        },
+                                        "required": [
+                                            "id",
+                                            "name",
+                                            "description",
+                                            "data_type"
+                                        ],
+                                        "additionalProperties": false
                                     }
                                 ]
                             },
@@ -3411,6 +3542,11 @@
                                     { "type": "number" },
                                     { "type": "boolean" },
                                     { "type": "string", "format": "date-time" },
+                                    { "type": "array", "items": {} },
+                                    {
+                                        "type": "object",
+                                        "additionalProperties": {}
+                                    },
                                     { "type": "string", "maxLength": 5000 }
                                 ]
                             },
@@ -3837,7 +3973,7 @@
                     "internal_id": { "type": "string", "maxLength": 26 },
                     "id": { "type": "string", "maxLength": 26 },
                     "account_id": { "type": "number", "nullable": true },
-                    "template_internal_id": {
+                    "step_internal_id": {
                         "type": "string",
                         "maxLength": 26,
                         "nullable": true
@@ -4577,16 +4713,18 @@
                                                                 {
                                                                     "type": "number"
                                                                 }
-                                                            ]
+                                                            ],
+                                                            "nullable": true
+                                                        },
+                                                        "service_connection_id": {
+                                                            "type": "string",
+                                                            "nullable": true
                                                         },
                                                         "path": {
                                                             "type": "string"
                                                         }
                                                     },
-                                                    "required": [
-                                                        "integration_id",
-                                                        "path"
-                                                    ],
+                                                    "required": ["path"],
                                                     "nullable": true
                                                 },
                                                 "variables": {
@@ -4610,7 +4748,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "date",
-                                                                    "boolean"
+                                                                    "boolean",
+                                                                    "json"
                                                                 ],
                                                                 "nullable": true
                                                             }
@@ -5450,6 +5589,14 @@
                                                                 "format": "date-time"
                                                             },
                                                             {
+                                                                "type": "array",
+                                                                "items": {}
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "additionalProperties": {}
+                                                            },
+                                                            {
                                                                 "type": "string",
                                                                 "maxLength": 5000
                                                             }
@@ -5536,7 +5683,8 @@
                                                                 "string",
                                                                 "number",
                                                                 "boolean",
-                                                                "date"
+                                                                "date",
+                                                                "json"
                                                             ]
                                                         }
                                                     },
@@ -5686,6 +5834,25 @@
                                         "data_type"
                                     ],
                                     "additionalProperties": false
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": { "type": "string" },
+                                        "name": { "type": "string" },
+                                        "description": { "type": "string" },
+                                        "data_type": {
+                                            "type": "string",
+                                            "enum": ["json"]
+                                        }
+                                    },
+                                    "required": [
+                                        "id",
+                                        "name",
+                                        "description",
+                                        "data_type"
+                                    ],
+                                    "additionalProperties": false
                                 }
                             ]
                         },
@@ -5698,6 +5865,11 @@
                                 { "type": "number" },
                                 { "type": "boolean" },
                                 { "type": "string", "format": "date-time" },
+                                { "type": "array", "items": {} },
+                                {
+                                    "type": "object",
+                                    "additionalProperties": {}
+                                },
                                 { "type": "string", "maxLength": 5000 }
                             ]
                         },
@@ -6138,7 +6310,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "date",
-                                                                    "boolean"
+                                                                    "boolean",
+                                                                    "json"
                                                                 ]
                                                             },
                                                             "optional": {
@@ -6688,7 +6861,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "date",
-                                                                    "boolean"
+                                                                    "boolean",
+                                                                    "json"
                                                                 ]
                                                             },
                                                             "optional": {
@@ -6795,7 +6969,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "date",
-                                                                    "boolean"
+                                                                    "boolean",
+                                                                    "json"
                                                                 ],
                                                                 "nullable": true
                                                             }
@@ -6850,11 +7025,12 @@
                                                 "requires_confirmation": {
                                                     "type": "boolean"
                                                 },
-                                                "is_standalone": {
-                                                    "type": "boolean"
-                                                },
                                                 "instructions": {
                                                     "type": "string"
+                                                },
+                                                "is_standalone": {
+                                                    "default": true,
+                                                    "type": "boolean"
                                                 }
                                             },
                                             "required": [
@@ -6889,9 +7065,6 @@
                                             "type": "object",
                                             "properties": {
                                                 "requires_confirmation": {
-                                                    "type": "boolean"
-                                                },
-                                                "is_standalone": {
                                                     "type": "boolean"
                                                 },
                                                 "conditions": {
@@ -7424,7 +7597,7 @@
                 "type": "object",
                 "properties": {
                     "id": { "type": "string", "maxLength": 26 },
-                    "template_internal_id": {
+                    "step_internal_id": {
                         "type": "string",
                         "maxLength": 26,
                         "nullable": true
@@ -8160,16 +8333,18 @@
                                                                 {
                                                                     "type": "number"
                                                                 }
-                                                            ]
+                                                            ],
+                                                            "nullable": true
+                                                        },
+                                                        "service_connection_id": {
+                                                            "type": "string",
+                                                            "nullable": true
                                                         },
                                                         "path": {
                                                             "type": "string"
                                                         }
                                                     },
-                                                    "required": [
-                                                        "integration_id",
-                                                        "path"
-                                                    ],
+                                                    "required": ["path"],
                                                     "nullable": true
                                                 },
                                                 "variables": {
@@ -8193,7 +8368,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "date",
-                                                                    "boolean"
+                                                                    "boolean",
+                                                                    "json"
                                                                 ],
                                                                 "nullable": true
                                                             }
@@ -9033,6 +9209,14 @@
                                                                 "format": "date-time"
                                                             },
                                                             {
+                                                                "type": "array",
+                                                                "items": {}
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "additionalProperties": {}
+                                                            },
+                                                            {
                                                                 "type": "string",
                                                                 "maxLength": 5000
                                                             }
@@ -9119,7 +9303,8 @@
                                                                 "string",
                                                                 "number",
                                                                 "boolean",
-                                                                "date"
+                                                                "date",
+                                                                "json"
                                                             ]
                                                         }
                                                     },
@@ -9269,6 +9454,25 @@
                                         "data_type"
                                     ],
                                     "additionalProperties": false
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": { "type": "string" },
+                                        "name": { "type": "string" },
+                                        "description": { "type": "string" },
+                                        "data_type": {
+                                            "type": "string",
+                                            "enum": ["json"]
+                                        }
+                                    },
+                                    "required": [
+                                        "id",
+                                        "name",
+                                        "description",
+                                        "data_type"
+                                    ],
+                                    "additionalProperties": false
                                 }
                             ]
                         },
@@ -9281,6 +9485,11 @@
                                 { "type": "number" },
                                 { "type": "boolean" },
                                 { "type": "string", "format": "date-time" },
+                                { "type": "array", "items": {} },
+                                {
+                                    "type": "object",
+                                    "additionalProperties": {}
+                                },
                                 { "type": "string", "maxLength": 5000 }
                             ]
                         },
@@ -9706,7 +9915,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "date",
-                                                                    "boolean"
+                                                                    "boolean",
+                                                                    "json"
                                                                 ]
                                                             },
                                                             "optional": {
@@ -10256,7 +10466,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "date",
-                                                                    "boolean"
+                                                                    "boolean",
+                                                                    "json"
                                                                 ]
                                                             },
                                                             "optional": {
@@ -10363,7 +10574,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "date",
-                                                                    "boolean"
+                                                                    "boolean",
+                                                                    "json"
                                                                 ],
                                                                 "nullable": true
                                                             }
@@ -10419,11 +10631,12 @@
                                                 "requires_confirmation": {
                                                     "type": "boolean"
                                                 },
-                                                "is_standalone": {
-                                                    "type": "boolean"
-                                                },
                                                 "instructions": {
                                                     "type": "string"
+                                                },
+                                                "is_standalone": {
+                                                    "default": true,
+                                                    "type": "boolean"
                                                 }
                                             },
                                             "required": [
@@ -10458,9 +10671,6 @@
                                             "type": "object",
                                             "properties": {
                                                 "requires_confirmation": {
-                                                    "type": "boolean"
-                                                },
-                                                "is_standalone": {
                                                     "type": "boolean"
                                                 },
                                                 "conditions": {
@@ -10992,7 +11202,7 @@
                     "internal_id": { "type": "string", "maxLength": 26 },
                     "id": { "type": "string", "maxLength": 26 },
                     "account_id": { "type": "number", "nullable": true },
-                    "template_internal_id": {
+                    "step_internal_id": {
                         "type": "string",
                         "maxLength": 26,
                         "nullable": true
@@ -11728,16 +11938,18 @@
                                                                 {
                                                                     "type": "number"
                                                                 }
-                                                            ]
+                                                            ],
+                                                            "nullable": true
+                                                        },
+                                                        "service_connection_id": {
+                                                            "type": "string",
+                                                            "nullable": true
                                                         },
                                                         "path": {
                                                             "type": "string"
                                                         }
                                                     },
-                                                    "required": [
-                                                        "integration_id",
-                                                        "path"
-                                                    ],
+                                                    "required": ["path"],
                                                     "nullable": true
                                                 },
                                                 "variables": {
@@ -11761,7 +11973,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "date",
-                                                                    "boolean"
+                                                                    "boolean",
+                                                                    "json"
                                                                 ],
                                                                 "nullable": true
                                                             }
@@ -12601,6 +12814,14 @@
                                                                 "format": "date-time"
                                                             },
                                                             {
+                                                                "type": "array",
+                                                                "items": {}
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "additionalProperties": {}
+                                                            },
+                                                            {
                                                                 "type": "string",
                                                                 "maxLength": 5000
                                                             }
@@ -12687,7 +12908,8 @@
                                                                 "string",
                                                                 "number",
                                                                 "boolean",
-                                                                "date"
+                                                                "date",
+                                                                "json"
                                                             ]
                                                         }
                                                     },
@@ -12837,6 +13059,25 @@
                                         "data_type"
                                     ],
                                     "additionalProperties": false
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": { "type": "string" },
+                                        "name": { "type": "string" },
+                                        "description": { "type": "string" },
+                                        "data_type": {
+                                            "type": "string",
+                                            "enum": ["json"]
+                                        }
+                                    },
+                                    "required": [
+                                        "id",
+                                        "name",
+                                        "description",
+                                        "data_type"
+                                    ],
+                                    "additionalProperties": false
                                 }
                             ]
                         },
@@ -12849,6 +13090,11 @@
                                 { "type": "number" },
                                 { "type": "boolean" },
                                 { "type": "string", "format": "date-time" },
+                                { "type": "array", "items": {} },
+                                {
+                                    "type": "object",
+                                    "additionalProperties": {}
+                                },
                                 { "type": "string", "maxLength": 5000 }
                             ]
                         },
@@ -13289,7 +13535,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "date",
-                                                                    "boolean"
+                                                                    "boolean",
+                                                                    "json"
                                                                 ]
                                                             },
                                                             "optional": {
@@ -13839,7 +14086,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "date",
-                                                                    "boolean"
+                                                                    "boolean",
+                                                                    "json"
                                                                 ]
                                                             },
                                                             "optional": {
@@ -13946,7 +14194,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "date",
-                                                                    "boolean"
+                                                                    "boolean",
+                                                                    "json"
                                                                 ],
                                                                 "nullable": true
                                                             }
@@ -14002,11 +14251,12 @@
                                                 "requires_confirmation": {
                                                     "type": "boolean"
                                                 },
-                                                "is_standalone": {
-                                                    "type": "boolean"
-                                                },
                                                 "instructions": {
                                                     "type": "string"
+                                                },
+                                                "is_standalone": {
+                                                    "default": true,
+                                                    "type": "boolean"
                                                 }
                                             },
                                             "required": [
@@ -14041,9 +14291,6 @@
                                             "type": "object",
                                             "properties": {
                                                 "requires_confirmation": {
-                                                    "type": "boolean"
-                                                },
-                                                "is_standalone": {
                                                     "type": "boolean"
                                                 },
                                                 "conditions": {
@@ -14584,7 +14831,7 @@
                     "internal_id": { "type": "string", "maxLength": 26 },
                     "id": { "type": "string", "maxLength": 26 },
                     "account_id": { "type": "number", "nullable": true },
-                    "template_internal_id": {
+                    "step_internal_id": {
                         "type": "string",
                         "maxLength": 26,
                         "nullable": true
@@ -15320,16 +15567,18 @@
                                                                 {
                                                                     "type": "number"
                                                                 }
-                                                            ]
+                                                            ],
+                                                            "nullable": true
+                                                        },
+                                                        "service_connection_id": {
+                                                            "type": "string",
+                                                            "nullable": true
                                                         },
                                                         "path": {
                                                             "type": "string"
                                                         }
                                                     },
-                                                    "required": [
-                                                        "integration_id",
-                                                        "path"
-                                                    ],
+                                                    "required": ["path"],
                                                     "nullable": true
                                                 },
                                                 "variables": {
@@ -15353,7 +15602,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "date",
-                                                                    "boolean"
+                                                                    "boolean",
+                                                                    "json"
                                                                 ],
                                                                 "nullable": true
                                                             }
@@ -16193,6 +16443,14 @@
                                                                 "format": "date-time"
                                                             },
                                                             {
+                                                                "type": "array",
+                                                                "items": {}
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "additionalProperties": {}
+                                                            },
+                                                            {
                                                                 "type": "string",
                                                                 "maxLength": 5000
                                                             }
@@ -16279,7 +16537,8 @@
                                                                 "string",
                                                                 "number",
                                                                 "boolean",
-                                                                "date"
+                                                                "date",
+                                                                "json"
                                                             ]
                                                         }
                                                     },
@@ -16429,6 +16688,25 @@
                                         "data_type"
                                     ],
                                     "additionalProperties": false
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": { "type": "string" },
+                                        "name": { "type": "string" },
+                                        "description": { "type": "string" },
+                                        "data_type": {
+                                            "type": "string",
+                                            "enum": ["json"]
+                                        }
+                                    },
+                                    "required": [
+                                        "id",
+                                        "name",
+                                        "description",
+                                        "data_type"
+                                    ],
+                                    "additionalProperties": false
                                 }
                             ]
                         },
@@ -16441,6 +16719,11 @@
                                 { "type": "number" },
                                 { "type": "boolean" },
                                 { "type": "string", "format": "date-time" },
+                                { "type": "array", "items": {} },
+                                {
+                                    "type": "object",
+                                    "additionalProperties": {}
+                                },
                                 { "type": "string", "maxLength": 5000 }
                             ]
                         },
@@ -16881,7 +17164,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "date",
-                                                                    "boolean"
+                                                                    "boolean",
+                                                                    "json"
                                                                 ]
                                                             },
                                                             "optional": {
@@ -17431,7 +17715,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "date",
-                                                                    "boolean"
+                                                                    "boolean",
+                                                                    "json"
                                                                 ]
                                                             },
                                                             "optional": {
@@ -17538,7 +17823,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "date",
-                                                                    "boolean"
+                                                                    "boolean",
+                                                                    "json"
                                                                 ],
                                                                 "nullable": true
                                                             }
@@ -17594,11 +17880,12 @@
                                                 "requires_confirmation": {
                                                     "type": "boolean"
                                                 },
-                                                "is_standalone": {
-                                                    "type": "boolean"
-                                                },
                                                 "instructions": {
                                                     "type": "string"
+                                                },
+                                                "is_standalone": {
+                                                    "default": true,
+                                                    "type": "boolean"
                                                 }
                                             },
                                             "required": [
@@ -17633,9 +17920,6 @@
                                             "type": "object",
                                             "properties": {
                                                 "requires_confirmation": {
-                                                    "type": "boolean"
-                                                },
-                                                "is_standalone": {
                                                     "type": "boolean"
                                                 },
                                                 "conditions": {
@@ -21906,6 +22190,7 @@
                     "type": "object",
                     "properties": {
                         "requires_confirmation": { "type": "boolean" },
+                        "is_standalone": { "type": "boolean" },
                         "instructions": { "type": "string" },
                         "configuration_id": {
                             "type": "string",
@@ -21938,7 +22223,8 @@
                                                     "string",
                                                     "number",
                                                     "date",
-                                                    "boolean"
+                                                    "boolean",
+                                                    "json"
                                                 ]
                                             }
                                         },
@@ -22129,6 +22415,7 @@
                     },
                     "required": [
                         "requires_confirmation",
+                        "is_standalone",
                         "instructions",
                         "configuration_id",
                         "configuration_name",
@@ -22235,7 +22522,18 @@
                             },
                             "custom_inputs": {
                                 "type": "object",
-                                "additionalProperties": { "type": "string" },
+                                "additionalProperties": {
+                                    "oneOf": [
+                                        { "type": "string" },
+                                        { "type": "number" },
+                                        { "type": "boolean" },
+                                        { "type": "array", "items": {} },
+                                        {
+                                            "type": "object",
+                                            "additionalProperties": {}
+                                        }
+                                    ]
+                                },
                                 "nullable": true
                             },
                             "object_inputs": {
@@ -23437,6 +23735,7 @@
                                     "requires_confirmation": {
                                         "type": "boolean"
                                     },
+                                    "is_standalone": { "type": "boolean" },
                                     "instructions": { "type": "string" },
                                     "configuration_name": { "type": "string" },
                                     "configuration_template_slug": {
@@ -23467,7 +23766,8 @@
                                                                 "string",
                                                                 "number",
                                                                 "date",
-                                                                "boolean"
+                                                                "boolean",
+                                                                "json"
                                                             ]
                                                         }
                                                     },
@@ -23673,6 +23973,7 @@
                                 },
                                 "required": [
                                     "requires_confirmation",
+                                    "is_standalone",
                                     "instructions",
                                     "configuration_name",
                                     "configuration_template_slug",
@@ -26042,6 +26343,14 @@
                                                     "format": "date-time"
                                                 },
                                                 {
+                                                    "type": "array",
+                                                    "items": {}
+                                                },
+                                                {
+                                                    "type": "object",
+                                                    "additionalProperties": {}
+                                                },
+                                                {
                                                     "type": "string",
                                                     "maxLength": 5000
                                                 }
@@ -26058,6 +26367,14 @@
                                                 {
                                                     "type": "string",
                                                     "format": "date-time"
+                                                },
+                                                {
+                                                    "type": "array",
+                                                    "items": {}
+                                                },
+                                                {
+                                                    "type": "object",
+                                                    "additionalProperties": {}
                                                 },
                                                 {
                                                     "type": "string",
@@ -28028,7 +28345,8 @@
                                                                                             "string",
                                                                                             "number",
                                                                                             "boolean",
-                                                                                            "date"
+                                                                                            "date",
+                                                                                            "json"
                                                                                         ]
                                                                                     },
                                                                                     "value": {}
@@ -29043,6 +29361,14 @@
                                                                         "format": "date-time"
                                                                     },
                                                                     {
+                                                                        "type": "array",
+                                                                        "items": {}
+                                                                    },
+                                                                    {
+                                                                        "type": "object",
+                                                                        "additionalProperties": {}
+                                                                    },
+                                                                    {
                                                                         "type": "string",
                                                                         "maxLength": 5000
                                                                     }
@@ -29964,6 +30290,14 @@
                                                                     {
                                                                         "type": "string",
                                                                         "format": "date-time"
+                                                                    },
+                                                                    {
+                                                                        "type": "array",
+                                                                        "items": {}
+                                                                    },
+                                                                    {
+                                                                        "type": "object",
+                                                                        "additionalProperties": {}
                                                                     },
                                                                     {
                                                                         "type": "string",
@@ -30995,7 +31329,8 @@
                                                                                             "string",
                                                                                             "number",
                                                                                             "boolean",
-                                                                                            "date"
+                                                                                            "date",
+                                                                                            "json"
                                                                                         ]
                                                                                     },
                                                                                     "value": {}
@@ -31741,7 +32076,8 @@
                                                                         "string",
                                                                         "number",
                                                                         "boolean",
-                                                                        "date"
+                                                                        "date",
+                                                                        "json"
                                                                     ]
                                                                 },
                                                                 "value": {}
@@ -31818,7 +32154,18 @@
                             },
                             "custom_inputs": {
                                 "type": "object",
-                                "additionalProperties": { "type": "string" },
+                                "additionalProperties": {
+                                    "oneOf": [
+                                        { "type": "string" },
+                                        { "type": "number" },
+                                        { "type": "boolean" },
+                                        { "type": "array", "items": {} },
+                                        {
+                                            "type": "object",
+                                            "additionalProperties": {}
+                                        }
+                                    ]
+                                },
                                 "nullable": true
                             },
                             "object_inputs": {
@@ -31910,6 +32257,7 @@
                                     "requires_confirmation": {
                                         "type": "boolean"
                                     },
+                                    "is_standalone": { "type": "boolean" },
                                     "instructions": { "type": "string" },
                                     "configuration_name": { "type": "string" },
                                     "configuration_template_slug": {
@@ -31940,7 +32288,8 @@
                                                                 "string",
                                                                 "number",
                                                                 "date",
-                                                                "boolean"
+                                                                "boolean",
+                                                                "json"
                                                             ]
                                                         }
                                                     },
@@ -32146,6 +32495,7 @@
                                 },
                                 "required": [
                                     "requires_confirmation",
+                                    "is_standalone",
                                     "instructions",
                                     "configuration_name",
                                     "configuration_template_slug",
@@ -32167,7 +32517,164 @@
                                     },
                                     "required": ["code", "message", "path"]
                                 },
-                                "nullable": true
+                                "nullable": true,
+                                "deprecated": true,
+                                "description": "Deprecated. Use `input_errors` and `precondition_errors` instead."
+                            },
+                            "input_errors": {
+                                "type": "array",
+                                "items": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "code": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "invalid_type",
+                                                        "invalid_date",
+                                                        "invalid_product_input",
+                                                        "missing_customer",
+                                                        "missing_order",
+                                                        "missing_product",
+                                                        "missing_product_variant"
+                                                    ]
+                                                },
+                                                "path": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "message": { "type": "string" }
+                                            },
+                                            "required": [
+                                                "code",
+                                                "path",
+                                                "message"
+                                            ]
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "code": {
+                                                    "type": "string",
+                                                    "enum": ["invalid_union"]
+                                                },
+                                                "path": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "message": { "type": "string" },
+                                                "errors": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "code": {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                    "invalid_type",
+                                                                    "invalid_date",
+                                                                    "invalid_product_input",
+                                                                    "missing_customer",
+                                                                    "missing_order",
+                                                                    "missing_product",
+                                                                    "missing_product_variant"
+                                                                ]
+                                                            },
+                                                            "path": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "message": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "code",
+                                                            "path",
+                                                            "message"
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            "required": [
+                                                "code",
+                                                "path",
+                                                "message",
+                                                "errors"
+                                            ]
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "code": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "invalid_enum_value"
+                                                    ]
+                                                },
+                                                "path": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "message": { "type": "string" },
+                                                "options": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            },
+                                            "required": [
+                                                "code",
+                                                "path",
+                                                "message",
+                                                "options"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "precondition_errors": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "string",
+                                            "enum": [
+                                                "equals",
+                                                "not_equal",
+                                                "contains",
+                                                "does_not_contain",
+                                                "does_not_end_with",
+                                                "does_not_start_with",
+                                                "does_not_exist",
+                                                "exists",
+                                                "greater_than",
+                                                "greater_than_or_equal",
+                                                "greater_than_interval",
+                                                "less_than",
+                                                "less_than_or_equal",
+                                                "less_than_interval"
+                                            ]
+                                        },
+                                        "path": {
+                                            "type": "array",
+                                            "items": { "type": "string" }
+                                        },
+                                        "message": { "type": "string" }
+                                    },
+                                    "required": ["code", "path", "message"]
+                                }
                             },
                             "state": {
                                 "type": "object",
@@ -33450,6 +33957,14 @@
                                                     "format": "date-time"
                                                 },
                                                 {
+                                                    "type": "array",
+                                                    "items": {}
+                                                },
+                                                {
+                                                    "type": "object",
+                                                    "additionalProperties": {}
+                                                },
+                                                {
                                                     "type": "string",
                                                     "maxLength": 5000
                                                 }
@@ -33466,6 +33981,14 @@
                                                 {
                                                     "type": "string",
                                                     "format": "date-time"
+                                                },
+                                                {
+                                                    "type": "array",
+                                                    "items": {}
+                                                },
+                                                {
+                                                    "type": "object",
+                                                    "additionalProperties": {}
                                                 },
                                                 {
                                                     "type": "string",
@@ -35436,7 +35959,8 @@
                                                                                             "string",
                                                                                             "number",
                                                                                             "boolean",
-                                                                                            "date"
+                                                                                            "date",
+                                                                                            "json"
                                                                                         ]
                                                                                     },
                                                                                     "value": {}
@@ -36451,6 +36975,14 @@
                                                                         "format": "date-time"
                                                                     },
                                                                     {
+                                                                        "type": "array",
+                                                                        "items": {}
+                                                                    },
+                                                                    {
+                                                                        "type": "object",
+                                                                        "additionalProperties": {}
+                                                                    },
+                                                                    {
                                                                         "type": "string",
                                                                         "maxLength": 5000
                                                                     }
@@ -37372,6 +37904,14 @@
                                                                     {
                                                                         "type": "string",
                                                                         "format": "date-time"
+                                                                    },
+                                                                    {
+                                                                        "type": "array",
+                                                                        "items": {}
+                                                                    },
+                                                                    {
+                                                                        "type": "object",
+                                                                        "additionalProperties": {}
                                                                     },
                                                                     {
                                                                         "type": "string",
@@ -38403,7 +38943,8 @@
                                                                                             "string",
                                                                                             "number",
                                                                                             "boolean",
-                                                                                            "date"
+                                                                                            "date",
+                                                                                            "json"
                                                                                         ]
                                                                                     },
                                                                                     "value": {}
@@ -39149,7 +39690,8 @@
                                                                         "string",
                                                                         "number",
                                                                         "boolean",
-                                                                        "date"
+                                                                        "date",
+                                                                        "json"
                                                                     ]
                                                                 },
                                                                 "value": {}
@@ -39191,7 +39733,12 @@
                                 "nullable": true
                             }
                         },
-                        "required": ["trigger", "triggerable"],
+                        "required": [
+                            "trigger",
+                            "triggerable",
+                            "input_errors",
+                            "precondition_errors"
+                        ],
                         "additionalProperties": false
                     }
                 ]
@@ -40851,6 +41398,7 @@
                                     "requires_confirmation": {
                                         "type": "boolean"
                                     },
+                                    "is_standalone": { "type": "boolean" },
                                     "instructions": { "type": "string" },
                                     "configuration_name": { "type": "string" },
                                     "configuration_template_slug": {
@@ -40881,7 +41429,8 @@
                                                                 "string",
                                                                 "number",
                                                                 "date",
-                                                                "boolean"
+                                                                "boolean",
+                                                                "json"
                                                             ]
                                                         }
                                                     },
@@ -41087,6 +41636,7 @@
                                 },
                                 "required": [
                                     "requires_confirmation",
+                                    "is_standalone",
                                     "instructions",
                                     "configuration_name",
                                     "configuration_template_slug",
@@ -43456,6 +44006,14 @@
                                                     "format": "date-time"
                                                 },
                                                 {
+                                                    "type": "array",
+                                                    "items": {}
+                                                },
+                                                {
+                                                    "type": "object",
+                                                    "additionalProperties": {}
+                                                },
+                                                {
                                                     "type": "string",
                                                     "maxLength": 5000
                                                 }
@@ -43472,6 +44030,14 @@
                                                 {
                                                     "type": "string",
                                                     "format": "date-time"
+                                                },
+                                                {
+                                                    "type": "array",
+                                                    "items": {}
+                                                },
+                                                {
+                                                    "type": "object",
+                                                    "additionalProperties": {}
                                                 },
                                                 {
                                                     "type": "string",
@@ -45442,7 +46008,8 @@
                                                                                             "string",
                                                                                             "number",
                                                                                             "boolean",
-                                                                                            "date"
+                                                                                            "date",
+                                                                                            "json"
                                                                                         ]
                                                                                     },
                                                                                     "value": {}
@@ -46457,6 +47024,14 @@
                                                                         "format": "date-time"
                                                                     },
                                                                     {
+                                                                        "type": "array",
+                                                                        "items": {}
+                                                                    },
+                                                                    {
+                                                                        "type": "object",
+                                                                        "additionalProperties": {}
+                                                                    },
+                                                                    {
                                                                         "type": "string",
                                                                         "maxLength": 5000
                                                                     }
@@ -47378,6 +47953,14 @@
                                                                     {
                                                                         "type": "string",
                                                                         "format": "date-time"
+                                                                    },
+                                                                    {
+                                                                        "type": "array",
+                                                                        "items": {}
+                                                                    },
+                                                                    {
+                                                                        "type": "object",
+                                                                        "additionalProperties": {}
                                                                     },
                                                                     {
                                                                         "type": "string",
@@ -48409,7 +48992,8 @@
                                                                                             "string",
                                                                                             "number",
                                                                                             "boolean",
-                                                                                            "date"
+                                                                                            "date",
+                                                                                            "json"
                                                                                         ]
                                                                                     },
                                                                                     "value": {}
@@ -49155,7 +49739,8 @@
                                                                         "string",
                                                                         "number",
                                                                         "boolean",
-                                                                        "date"
+                                                                        "date",
+                                                                        "json"
                                                                     ]
                                                                 },
                                                                 "value": {}
@@ -49224,6 +49809,7 @@
                                     "requires_confirmation": {
                                         "type": "boolean"
                                     },
+                                    "is_standalone": { "type": "boolean" },
                                     "instructions": { "type": "string" },
                                     "configuration_name": { "type": "string" },
                                     "configuration_template_slug": {
@@ -49254,7 +49840,8 @@
                                                                 "string",
                                                                 "number",
                                                                 "date",
-                                                                "boolean"
+                                                                "boolean",
+                                                                "json"
                                                             ]
                                                         }
                                                     },
@@ -49460,6 +50047,7 @@
                                 },
                                 "required": [
                                     "requires_confirmation",
+                                    "is_standalone",
                                     "instructions",
                                     "configuration_name",
                                     "configuration_template_slug",
@@ -49481,7 +50069,164 @@
                                     },
                                     "required": ["code", "message", "path"]
                                 },
-                                "nullable": true
+                                "nullable": true,
+                                "deprecated": true,
+                                "description": "Deprecated. Use `input_errors` and `precondition_errors` instead."
+                            },
+                            "input_errors": {
+                                "type": "array",
+                                "items": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "code": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "invalid_type",
+                                                        "invalid_date",
+                                                        "invalid_product_input",
+                                                        "missing_customer",
+                                                        "missing_order",
+                                                        "missing_product",
+                                                        "missing_product_variant"
+                                                    ]
+                                                },
+                                                "path": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "message": { "type": "string" }
+                                            },
+                                            "required": [
+                                                "code",
+                                                "path",
+                                                "message"
+                                            ]
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "code": {
+                                                    "type": "string",
+                                                    "enum": ["invalid_union"]
+                                                },
+                                                "path": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "message": { "type": "string" },
+                                                "errors": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "code": {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                    "invalid_type",
+                                                                    "invalid_date",
+                                                                    "invalid_product_input",
+                                                                    "missing_customer",
+                                                                    "missing_order",
+                                                                    "missing_product",
+                                                                    "missing_product_variant"
+                                                                ]
+                                                            },
+                                                            "path": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "message": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "code",
+                                                            "path",
+                                                            "message"
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            "required": [
+                                                "code",
+                                                "path",
+                                                "message",
+                                                "errors"
+                                            ]
+                                        },
+                                        {
+                                            "type": "object",
+                                            "properties": {
+                                                "code": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "invalid_enum_value"
+                                                    ]
+                                                },
+                                                "path": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "message": { "type": "string" },
+                                                "options": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            },
+                                            "required": [
+                                                "code",
+                                                "path",
+                                                "message",
+                                                "options"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            },
+                            "precondition_errors": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "string",
+                                            "enum": [
+                                                "equals",
+                                                "not_equal",
+                                                "contains",
+                                                "does_not_contain",
+                                                "does_not_end_with",
+                                                "does_not_start_with",
+                                                "does_not_exist",
+                                                "exists",
+                                                "greater_than",
+                                                "greater_than_or_equal",
+                                                "greater_than_interval",
+                                                "less_than",
+                                                "less_than_or_equal",
+                                                "less_than_interval"
+                                            ]
+                                        },
+                                        "path": {
+                                            "type": "array",
+                                            "items": { "type": "string" }
+                                        },
+                                        "message": { "type": "string" }
+                                    },
+                                    "required": ["code", "path", "message"]
+                                }
                             },
                             "state": {
                                 "type": "object",
@@ -50764,6 +51509,14 @@
                                                     "format": "date-time"
                                                 },
                                                 {
+                                                    "type": "array",
+                                                    "items": {}
+                                                },
+                                                {
+                                                    "type": "object",
+                                                    "additionalProperties": {}
+                                                },
+                                                {
                                                     "type": "string",
                                                     "maxLength": 5000
                                                 }
@@ -50780,6 +51533,14 @@
                                                 {
                                                     "type": "string",
                                                     "format": "date-time"
+                                                },
+                                                {
+                                                    "type": "array",
+                                                    "items": {}
+                                                },
+                                                {
+                                                    "type": "object",
+                                                    "additionalProperties": {}
                                                 },
                                                 {
                                                     "type": "string",
@@ -52750,7 +53511,8 @@
                                                                                             "string",
                                                                                             "number",
                                                                                             "boolean",
-                                                                                            "date"
+                                                                                            "date",
+                                                                                            "json"
                                                                                         ]
                                                                                     },
                                                                                     "value": {}
@@ -53765,6 +54527,14 @@
                                                                         "format": "date-time"
                                                                     },
                                                                     {
+                                                                        "type": "array",
+                                                                        "items": {}
+                                                                    },
+                                                                    {
+                                                                        "type": "object",
+                                                                        "additionalProperties": {}
+                                                                    },
+                                                                    {
                                                                         "type": "string",
                                                                         "maxLength": 5000
                                                                     }
@@ -54686,6 +55456,14 @@
                                                                     {
                                                                         "type": "string",
                                                                         "format": "date-time"
+                                                                    },
+                                                                    {
+                                                                        "type": "array",
+                                                                        "items": {}
+                                                                    },
+                                                                    {
+                                                                        "type": "object",
+                                                                        "additionalProperties": {}
                                                                     },
                                                                     {
                                                                         "type": "string",
@@ -55717,7 +56495,8 @@
                                                                                             "string",
                                                                                             "number",
                                                                                             "boolean",
-                                                                                            "date"
+                                                                                            "date",
+                                                                                            "json"
                                                                                         ]
                                                                                     },
                                                                                     "value": {}
@@ -56463,7 +57242,8 @@
                                                                         "string",
                                                                         "number",
                                                                         "boolean",
-                                                                        "date"
+                                                                        "date",
+                                                                        "json"
                                                                     ]
                                                                 },
                                                                 "value": {}
@@ -56505,7 +57285,12 @@
                                 "nullable": true
                             }
                         },
-                        "required": ["trigger", "triggerable"],
+                        "required": [
+                            "trigger",
+                            "triggerable",
+                            "input_errors",
+                            "precondition_errors"
+                        ],
                         "additionalProperties": false
                     }
                 ]
@@ -56523,7 +57308,7 @@
                         "internal_id": { "type": "string", "maxLength": 26 },
                         "id": { "type": "string", "maxLength": 26 },
                         "account_id": { "type": "number", "nullable": true },
-                        "template_internal_id": {
+                        "step_internal_id": {
                             "type": "string",
                             "maxLength": 26,
                             "nullable": true
@@ -57273,16 +58058,18 @@
                                                                     {
                                                                         "type": "number"
                                                                     }
-                                                                ]
+                                                                ],
+                                                                "nullable": true
+                                                            },
+                                                            "service_connection_id": {
+                                                                "type": "string",
+                                                                "nullable": true
                                                             },
                                                             "path": {
                                                                 "type": "string"
                                                             }
                                                         },
-                                                        "required": [
-                                                            "integration_id",
-                                                            "path"
-                                                        ],
+                                                        "required": ["path"],
                                                         "nullable": true
                                                     },
                                                     "variables": {
@@ -57306,7 +58093,8 @@
                                                                         "string",
                                                                         "number",
                                                                         "date",
-                                                                        "boolean"
+                                                                        "boolean",
+                                                                        "json"
                                                                     ],
                                                                     "nullable": true
                                                                 }
@@ -58172,6 +58960,14 @@
                                                                     "format": "date-time"
                                                                 },
                                                                 {
+                                                                    "type": "array",
+                                                                    "items": {}
+                                                                },
+                                                                {
+                                                                    "type": "object",
+                                                                    "additionalProperties": {}
+                                                                },
+                                                                {
                                                                     "type": "string",
                                                                     "maxLength": 5000
                                                                 }
@@ -58258,7 +59054,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "boolean",
-                                                                    "date"
+                                                                    "date",
+                                                                    "json"
                                                                 ]
                                                             }
                                                         },
@@ -58421,6 +59218,25 @@
                                             "data_type"
                                         ],
                                         "additionalProperties": false
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": { "type": "string" },
+                                            "name": { "type": "string" },
+                                            "description": { "type": "string" },
+                                            "data_type": {
+                                                "type": "string",
+                                                "enum": ["json"]
+                                            }
+                                        },
+                                        "required": [
+                                            "id",
+                                            "name",
+                                            "description",
+                                            "data_type"
+                                        ],
+                                        "additionalProperties": false
                                     }
                                 ]
                             },
@@ -58433,6 +59249,11 @@
                                     { "type": "number" },
                                     { "type": "boolean" },
                                     { "type": "string", "format": "date-time" },
+                                    { "type": "array", "items": {} },
+                                    {
+                                        "type": "object",
+                                        "additionalProperties": {}
+                                    },
                                     { "type": "string", "maxLength": 5000 }
                                 ]
                             },
@@ -58873,7 +59694,8 @@
                                                                         "string",
                                                                         "number",
                                                                         "date",
-                                                                        "boolean"
+                                                                        "boolean",
+                                                                        "json"
                                                                     ]
                                                                 },
                                                                 "optional": {
@@ -59427,7 +60249,8 @@
                                                                         "string",
                                                                         "number",
                                                                         "date",
-                                                                        "boolean"
+                                                                        "boolean",
+                                                                        "json"
                                                                     ]
                                                                 },
                                                                 "optional": {
@@ -59534,7 +60357,8 @@
                                                                         "string",
                                                                         "number",
                                                                         "date",
-                                                                        "boolean"
+                                                                        "boolean",
+                                                                        "json"
                                                                     ],
                                                                     "nullable": true
                                                                 }
@@ -59591,6 +60415,10 @@
                                                     },
                                                     "instructions": {
                                                         "type": "string"
+                                                    },
+                                                    "is_standalone": {
+                                                        "default": true,
+                                                        "type": "boolean"
                                                     }
                                                 },
                                                 "required": [
@@ -60151,7 +60979,10 @@
                                 ]
                             },
                             "nullable": true
-                        }
+                        },
+                        "enabled": { "type": "boolean" },
+                        "requires_auth": { "type": "boolean" },
+                        "has_missing_values": { "type": "boolean" }
                     },
                     "required": [
                         "internal_id",
@@ -60163,7 +60994,10 @@
                         "transitions",
                         "available_languages",
                         "triggers",
-                        "entrypoints"
+                        "entrypoints",
+                        "enabled",
+                        "requires_auth",
+                        "has_missing_values"
                     ],
                     "additionalProperties": false
                 }
@@ -60172,7 +61006,7 @@
                 "type": "object",
                 "properties": {
                     "id": { "type": "string", "maxLength": 26 },
-                    "template_internal_id": {
+                    "step_internal_id": {
                         "type": "string",
                         "maxLength": 26,
                         "nullable": true
@@ -60912,16 +61746,18 @@
                                                                 {
                                                                     "type": "number"
                                                                 }
-                                                            ]
+                                                            ],
+                                                            "nullable": true
+                                                        },
+                                                        "service_connection_id": {
+                                                            "type": "string",
+                                                            "nullable": true
                                                         },
                                                         "path": {
                                                             "type": "string"
                                                         }
                                                     },
-                                                    "required": [
-                                                        "integration_id",
-                                                        "path"
-                                                    ],
+                                                    "required": ["path"],
                                                     "nullable": true
                                                 },
                                                 "variables": {
@@ -60945,7 +61781,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "date",
-                                                                    "boolean"
+                                                                    "boolean",
+                                                                    "json"
                                                                 ],
                                                                 "nullable": true
                                                             }
@@ -61785,6 +62622,14 @@
                                                                 "format": "date-time"
                                                             },
                                                             {
+                                                                "type": "array",
+                                                                "items": {}
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "additionalProperties": {}
+                                                            },
+                                                            {
                                                                 "type": "string",
                                                                 "maxLength": 5000
                                                             }
@@ -61871,7 +62716,8 @@
                                                                 "string",
                                                                 "number",
                                                                 "boolean",
-                                                                "date"
+                                                                "date",
+                                                                "json"
                                                             ]
                                                         }
                                                     },
@@ -62021,6 +62867,25 @@
                                         "data_type"
                                     ],
                                     "additionalProperties": false
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": { "type": "string" },
+                                        "name": { "type": "string" },
+                                        "description": { "type": "string" },
+                                        "data_type": {
+                                            "type": "string",
+                                            "enum": ["json"]
+                                        }
+                                    },
+                                    "required": [
+                                        "id",
+                                        "name",
+                                        "description",
+                                        "data_type"
+                                    ],
+                                    "additionalProperties": false
                                 }
                             ]
                         },
@@ -62033,6 +62898,11 @@
                                 { "type": "number" },
                                 { "type": "boolean" },
                                 { "type": "string", "format": "date-time" },
+                                { "type": "array", "items": {} },
+                                {
+                                    "type": "object",
+                                    "additionalProperties": {}
+                                },
                                 { "type": "string", "maxLength": 5000 }
                             ]
                         },
@@ -62458,7 +63328,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "date",
-                                                                    "boolean"
+                                                                    "boolean",
+                                                                    "json"
                                                                 ]
                                                             },
                                                             "optional": {
@@ -63008,7 +63879,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "date",
-                                                                    "boolean"
+                                                                    "boolean",
+                                                                    "json"
                                                                 ]
                                                             },
                                                             "optional": {
@@ -63115,7 +63987,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "date",
-                                                                    "boolean"
+                                                                    "boolean",
+                                                                    "json"
                                                                 ],
                                                                 "nullable": true
                                                             }
@@ -63170,11 +64043,12 @@
                                                 "requires_confirmation": {
                                                     "type": "boolean"
                                                 },
-                                                "is_standalone": {
-                                                    "type": "boolean"
-                                                },
                                                 "instructions": {
                                                     "type": "string"
+                                                },
+                                                "is_standalone": {
+                                                    "default": true,
+                                                    "type": "boolean"
                                                 }
                                             },
                                             "required": [
@@ -63209,9 +64083,6 @@
                                             "type": "object",
                                             "properties": {
                                                 "requires_confirmation": {
-                                                    "type": "boolean"
-                                                },
-                                                "is_standalone": {
                                                     "type": "boolean"
                                                 },
                                                 "conditions": {
@@ -63743,7 +64614,7 @@
                     "internal_id": { "type": "string", "maxLength": 26 },
                     "id": { "type": "string", "maxLength": 26 },
                     "account_id": { "type": "number", "nullable": true },
-                    "template_internal_id": {
+                    "step_internal_id": {
                         "type": "string",
                         "maxLength": 26,
                         "nullable": true
@@ -64483,16 +65354,18 @@
                                                                 {
                                                                     "type": "number"
                                                                 }
-                                                            ]
+                                                            ],
+                                                            "nullable": true
+                                                        },
+                                                        "service_connection_id": {
+                                                            "type": "string",
+                                                            "nullable": true
                                                         },
                                                         "path": {
                                                             "type": "string"
                                                         }
                                                     },
-                                                    "required": [
-                                                        "integration_id",
-                                                        "path"
-                                                    ],
+                                                    "required": ["path"],
                                                     "nullable": true
                                                 },
                                                 "variables": {
@@ -64516,7 +65389,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "date",
-                                                                    "boolean"
+                                                                    "boolean",
+                                                                    "json"
                                                                 ],
                                                                 "nullable": true
                                                             }
@@ -65356,6 +66230,14 @@
                                                                 "format": "date-time"
                                                             },
                                                             {
+                                                                "type": "array",
+                                                                "items": {}
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "additionalProperties": {}
+                                                            },
+                                                            {
                                                                 "type": "string",
                                                                 "maxLength": 5000
                                                             }
@@ -65442,7 +66324,8 @@
                                                                 "string",
                                                                 "number",
                                                                 "boolean",
-                                                                "date"
+                                                                "date",
+                                                                "json"
                                                             ]
                                                         }
                                                     },
@@ -65592,6 +66475,25 @@
                                         "data_type"
                                     ],
                                     "additionalProperties": false
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": { "type": "string" },
+                                        "name": { "type": "string" },
+                                        "description": { "type": "string" },
+                                        "data_type": {
+                                            "type": "string",
+                                            "enum": ["json"]
+                                        }
+                                    },
+                                    "required": [
+                                        "id",
+                                        "name",
+                                        "description",
+                                        "data_type"
+                                    ],
+                                    "additionalProperties": false
                                 }
                             ]
                         },
@@ -65604,6 +66506,11 @@
                                 { "type": "number" },
                                 { "type": "boolean" },
                                 { "type": "string", "format": "date-time" },
+                                { "type": "array", "items": {} },
+                                {
+                                    "type": "object",
+                                    "additionalProperties": {}
+                                },
                                 { "type": "string", "maxLength": 5000 }
                             ]
                         },
@@ -66044,7 +66951,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "date",
-                                                                    "boolean"
+                                                                    "boolean",
+                                                                    "json"
                                                                 ]
                                                             },
                                                             "optional": {
@@ -66594,7 +67502,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "date",
-                                                                    "boolean"
+                                                                    "boolean",
+                                                                    "json"
                                                                 ]
                                                             },
                                                             "optional": {
@@ -66701,7 +67610,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "date",
-                                                                    "boolean"
+                                                                    "boolean",
+                                                                    "json"
                                                                 ],
                                                                 "nullable": true
                                                             }
@@ -66756,11 +67666,12 @@
                                                 "requires_confirmation": {
                                                     "type": "boolean"
                                                 },
-                                                "is_standalone": {
-                                                    "type": "boolean"
-                                                },
                                                 "instructions": {
                                                     "type": "string"
+                                                },
+                                                "is_standalone": {
+                                                    "default": true,
+                                                    "type": "boolean"
                                                 }
                                             },
                                             "required": [
@@ -66795,9 +67706,6 @@
                                             "type": "object",
                                             "properties": {
                                                 "requires_confirmation": {
-                                                    "type": "boolean"
-                                                },
-                                                "is_standalone": {
                                                     "type": "boolean"
                                                 },
                                                 "conditions": {
@@ -67332,6 +68240,7 @@
                     "type": "object",
                     "properties": {
                         "requires_confirmation": { "type": "boolean" },
+                        "is_standalone": { "type": "boolean" },
                         "instructions": { "type": "string" },
                         "configuration_id": {
                             "type": "string",
@@ -67364,7 +68273,8 @@
                                                     "string",
                                                     "number",
                                                     "date",
-                                                    "boolean"
+                                                    "boolean",
+                                                    "json"
                                                 ]
                                             }
                                         },
@@ -67555,6 +68465,7 @@
                     },
                     "required": [
                         "requires_confirmation",
+                        "is_standalone",
                         "instructions",
                         "configuration_id",
                         "configuration_name",
@@ -67682,16 +68593,18 @@
                                                                 {
                                                                     "type": "number"
                                                                 }
-                                                            ]
+                                                            ],
+                                                            "nullable": true
+                                                        },
+                                                        "service_connection_id": {
+                                                            "type": "string",
+                                                            "nullable": true
                                                         },
                                                         "path": {
                                                             "type": "string"
                                                         }
                                                     },
-                                                    "required": [
-                                                        "integration_id",
-                                                        "path"
-                                                    ],
+                                                    "required": ["path"],
                                                     "nullable": true
                                                 },
                                                 "variables": {
@@ -67715,7 +68628,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "date",
-                                                                    "boolean"
+                                                                    "boolean",
+                                                                    "json"
                                                                 ],
                                                                 "nullable": true
                                                             }
@@ -68277,6 +69191,14 @@
                                                                 "format": "date-time"
                                                             },
                                                             {
+                                                                "type": "array",
+                                                                "items": {}
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "additionalProperties": {}
+                                                            },
+                                                            {
                                                                 "type": "string",
                                                                 "maxLength": 5000
                                                             }
@@ -68350,7 +69272,8 @@
                                                                 "string",
                                                                 "number",
                                                                 "boolean",
-                                                                "date"
+                                                                "date",
+                                                                "json"
                                                             ]
                                                         }
                                                     },
@@ -68500,6 +69423,25 @@
                                         "data_type"
                                     ],
                                     "additionalProperties": false
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": { "type": "string" },
+                                        "name": { "type": "string" },
+                                        "description": { "type": "string" },
+                                        "data_type": {
+                                            "type": "string",
+                                            "enum": ["json"]
+                                        }
+                                    },
+                                    "required": [
+                                        "id",
+                                        "name",
+                                        "description",
+                                        "data_type"
+                                    ],
+                                    "additionalProperties": false
                                 }
                             ]
                         },
@@ -68512,6 +69454,11 @@
                                 { "type": "number" },
                                 { "type": "boolean" },
                                 { "type": "string", "format": "date-time" },
+                                { "type": "array", "items": {} },
+                                {
+                                    "type": "object",
+                                    "additionalProperties": {}
+                                },
                                 { "type": "string", "maxLength": 5000 }
                             ]
                         },
@@ -68937,7 +69884,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "date",
-                                                                    "boolean"
+                                                                    "boolean",
+                                                                    "json"
                                                                 ]
                                                             },
                                                             "optional": {
@@ -69487,7 +70435,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "date",
-                                                                    "boolean"
+                                                                    "boolean",
+                                                                    "json"
                                                                 ]
                                                             },
                                                             "optional": {
@@ -69594,7 +70543,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "date",
-                                                                    "boolean"
+                                                                    "boolean",
+                                                                    "json"
                                                                 ],
                                                                 "nullable": true
                                                             }
@@ -69649,11 +70599,12 @@
                                                 "requires_confirmation": {
                                                     "type": "boolean"
                                                 },
-                                                "is_standalone": {
-                                                    "type": "boolean"
-                                                },
                                                 "instructions": {
                                                     "type": "string"
+                                                },
+                                                "is_standalone": {
+                                                    "default": true,
+                                                    "type": "boolean"
                                                 }
                                             },
                                             "required": [
@@ -69688,9 +70639,6 @@
                                             "type": "object",
                                             "properties": {
                                                 "requires_confirmation": {
-                                                    "type": "boolean"
-                                                },
-                                                "is_standalone": {
                                                     "type": "boolean"
                                                 },
                                                 "conditions": {
@@ -70336,16 +71284,18 @@
                                                                 {
                                                                     "type": "number"
                                                                 }
-                                                            ]
+                                                            ],
+                                                            "nullable": true
+                                                        },
+                                                        "service_connection_id": {
+                                                            "type": "string",
+                                                            "nullable": true
                                                         },
                                                         "path": {
                                                             "type": "string"
                                                         }
                                                     },
-                                                    "required": [
-                                                        "integration_id",
-                                                        "path"
-                                                    ],
+                                                    "required": ["path"],
                                                     "nullable": true
                                                 },
                                                 "variables": {
@@ -70369,7 +71319,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "date",
-                                                                    "boolean"
+                                                                    "boolean",
+                                                                    "json"
                                                                 ],
                                                                 "nullable": true
                                                             }
@@ -70931,6 +71882,14 @@
                                                                 "format": "date-time"
                                                             },
                                                             {
+                                                                "type": "array",
+                                                                "items": {}
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "additionalProperties": {}
+                                                            },
+                                                            {
                                                                 "type": "string",
                                                                 "maxLength": 5000
                                                             }
@@ -71004,7 +71963,8 @@
                                                                 "string",
                                                                 "number",
                                                                 "boolean",
-                                                                "date"
+                                                                "date",
+                                                                "json"
                                                             ]
                                                         }
                                                     },
@@ -71154,6 +72114,25 @@
                                         "data_type"
                                     ],
                                     "additionalProperties": false
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": { "type": "string" },
+                                        "name": { "type": "string" },
+                                        "description": { "type": "string" },
+                                        "data_type": {
+                                            "type": "string",
+                                            "enum": ["json"]
+                                        }
+                                    },
+                                    "required": [
+                                        "id",
+                                        "name",
+                                        "description",
+                                        "data_type"
+                                    ],
+                                    "additionalProperties": false
                                 }
                             ]
                         },
@@ -71166,6 +72145,11 @@
                                 { "type": "number" },
                                 { "type": "boolean" },
                                 { "type": "string", "format": "date-time" },
+                                { "type": "array", "items": {} },
+                                {
+                                    "type": "object",
+                                    "additionalProperties": {}
+                                },
                                 { "type": "string", "maxLength": 5000 }
                             ]
                         },
@@ -71604,7 +72588,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "date",
-                                                                    "boolean"
+                                                                    "boolean",
+                                                                    "json"
                                                                 ]
                                                             },
                                                             "optional": {
@@ -72154,7 +73139,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "date",
-                                                                    "boolean"
+                                                                    "boolean",
+                                                                    "json"
                                                                 ]
                                                             },
                                                             "optional": {
@@ -72261,7 +73247,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "date",
-                                                                    "boolean"
+                                                                    "boolean",
+                                                                    "json"
                                                                 ],
                                                                 "nullable": true
                                                             }
@@ -72316,11 +73303,12 @@
                                                 "requires_confirmation": {
                                                     "type": "boolean"
                                                 },
-                                                "is_standalone": {
-                                                    "type": "boolean"
-                                                },
                                                 "instructions": {
                                                     "type": "string"
+                                                },
+                                                "is_standalone": {
+                                                    "default": true,
+                                                    "type": "boolean"
                                                 }
                                             },
                                             "required": [
@@ -72355,9 +73343,6 @@
                                             "type": "object",
                                             "properties": {
                                                 "requires_confirmation": {
-                                                    "type": "boolean"
-                                                },
-                                                "is_standalone": {
                                                     "type": "boolean"
                                                 },
                                                 "conditions": {
@@ -73015,16 +74000,18 @@
                                                                     {
                                                                         "type": "number"
                                                                     }
-                                                                ]
+                                                                ],
+                                                                "nullable": true
+                                                            },
+                                                            "service_connection_id": {
+                                                                "type": "string",
+                                                                "nullable": true
                                                             },
                                                             "path": {
                                                                 "type": "string"
                                                             }
                                                         },
-                                                        "required": [
-                                                            "integration_id",
-                                                            "path"
-                                                        ],
+                                                        "required": ["path"],
                                                         "nullable": true
                                                     },
                                                     "variables": {
@@ -73048,7 +74035,8 @@
                                                                         "string",
                                                                         "number",
                                                                         "date",
-                                                                        "boolean"
+                                                                        "boolean",
+                                                                        "json"
                                                                     ],
                                                                     "nullable": true
                                                                 }
@@ -73634,6 +74622,14 @@
                                                                     "format": "date-time"
                                                                 },
                                                                 {
+                                                                    "type": "array",
+                                                                    "items": {}
+                                                                },
+                                                                {
+                                                                    "type": "object",
+                                                                    "additionalProperties": {}
+                                                                },
+                                                                {
                                                                     "type": "string",
                                                                     "maxLength": 5000
                                                                 }
@@ -73709,7 +74705,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "boolean",
-                                                                    "date"
+                                                                    "date",
+                                                                    "json"
                                                                 ]
                                                             }
                                                         },
@@ -73872,6 +74869,25 @@
                                             "data_type"
                                         ],
                                         "additionalProperties": false
+                                    },
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": { "type": "string" },
+                                            "name": { "type": "string" },
+                                            "description": { "type": "string" },
+                                            "data_type": {
+                                                "type": "string",
+                                                "enum": ["json"]
+                                            }
+                                        },
+                                        "required": [
+                                            "id",
+                                            "name",
+                                            "description",
+                                            "data_type"
+                                        ],
+                                        "additionalProperties": false
                                     }
                                 ]
                             },
@@ -73884,6 +74900,11 @@
                                     { "type": "number" },
                                     { "type": "boolean" },
                                     { "type": "string", "format": "date-time" },
+                                    { "type": "array", "items": {} },
+                                    {
+                                        "type": "object",
+                                        "additionalProperties": {}
+                                    },
                                     { "type": "string", "maxLength": 5000 }
                                 ]
                             },
@@ -74322,7 +75343,8 @@
                                                                         "string",
                                                                         "number",
                                                                         "date",
-                                                                        "boolean"
+                                                                        "boolean",
+                                                                        "json"
                                                                     ]
                                                                 },
                                                                 "optional": {
@@ -74876,7 +75898,8 @@
                                                                         "string",
                                                                         "number",
                                                                         "date",
-                                                                        "boolean"
+                                                                        "boolean",
+                                                                        "json"
                                                                     ]
                                                                 },
                                                                 "optional": {
@@ -74983,7 +76006,8 @@
                                                                         "string",
                                                                         "number",
                                                                         "date",
-                                                                        "boolean"
+                                                                        "boolean",
+                                                                        "json"
                                                                     ],
                                                                     "nullable": true
                                                                 }
@@ -75040,6 +76064,10 @@
                                                     },
                                                     "instructions": {
                                                         "type": "string"
+                                                    },
+                                                    "is_standalone": {
+                                                        "default": true,
+                                                        "type": "boolean"
                                                     }
                                                 },
                                                 "required": [
@@ -75738,16 +76766,18 @@
                                                                 {
                                                                     "type": "number"
                                                                 }
-                                                            ]
+                                                            ],
+                                                            "nullable": true
+                                                        },
+                                                        "service_connection_id": {
+                                                            "type": "string",
+                                                            "nullable": true
                                                         },
                                                         "path": {
                                                             "type": "string"
                                                         }
                                                     },
-                                                    "required": [
-                                                        "integration_id",
-                                                        "path"
-                                                    ],
+                                                    "required": ["path"],
                                                     "nullable": true
                                                 },
                                                 "variables": {
@@ -75771,7 +76801,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "date",
-                                                                    "boolean"
+                                                                    "boolean",
+                                                                    "json"
                                                                 ],
                                                                 "nullable": true
                                                             }
@@ -76333,6 +77364,14 @@
                                                                 "format": "date-time"
                                                             },
                                                             {
+                                                                "type": "array",
+                                                                "items": {}
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "additionalProperties": {}
+                                                            },
+                                                            {
                                                                 "type": "string",
                                                                 "maxLength": 5000
                                                             }
@@ -76406,7 +77445,8 @@
                                                                 "string",
                                                                 "number",
                                                                 "boolean",
-                                                                "date"
+                                                                "date",
+                                                                "json"
                                                             ]
                                                         }
                                                     },
@@ -76556,6 +77596,25 @@
                                         "data_type"
                                     ],
                                     "additionalProperties": false
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": { "type": "string" },
+                                        "name": { "type": "string" },
+                                        "description": { "type": "string" },
+                                        "data_type": {
+                                            "type": "string",
+                                            "enum": ["json"]
+                                        }
+                                    },
+                                    "required": [
+                                        "id",
+                                        "name",
+                                        "description",
+                                        "data_type"
+                                    ],
+                                    "additionalProperties": false
                                 }
                             ]
                         },
@@ -76568,6 +77627,11 @@
                                 { "type": "number" },
                                 { "type": "boolean" },
                                 { "type": "string", "format": "date-time" },
+                                { "type": "array", "items": {} },
+                                {
+                                    "type": "object",
+                                    "additionalProperties": {}
+                                },
                                 { "type": "string", "maxLength": 5000 }
                             ]
                         },
@@ -77006,7 +78070,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "date",
-                                                                    "boolean"
+                                                                    "boolean",
+                                                                    "json"
                                                                 ]
                                                             },
                                                             "optional": {
@@ -77556,7 +78621,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "date",
-                                                                    "boolean"
+                                                                    "boolean",
+                                                                    "json"
                                                                 ]
                                                             },
                                                             "optional": {
@@ -77663,7 +78729,8 @@
                                                                     "string",
                                                                     "number",
                                                                     "date",
-                                                                    "boolean"
+                                                                    "boolean",
+                                                                    "json"
                                                                 ],
                                                                 "nullable": true
                                                             }
@@ -77718,11 +78785,12 @@
                                                 "requires_confirmation": {
                                                     "type": "boolean"
                                                 },
-                                                "is_standalone": {
-                                                    "type": "boolean"
-                                                },
                                                 "instructions": {
                                                     "type": "string"
+                                                },
+                                                "is_standalone": {
+                                                    "default": true,
+                                                    "type": "boolean"
                                                 }
                                             },
                                             "required": [
@@ -77757,9 +78825,6 @@
                                             "type": "object",
                                             "properties": {
                                                 "requires_confirmation": {
-                                                    "type": "boolean"
-                                                },
-                                                "is_standalone": {
                                                     "type": "boolean"
                                                 },
                                                 "conditions": {
@@ -78338,6 +79403,58 @@
                     "type"
                 ]
             },
+            "ListStoreAppMappingResponseDto": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "account_id": { "type": "number" },
+                        "store_type": {
+                            "type": "string",
+                            "enum": ["shopify", "bigcommerce", "magento2"]
+                        },
+                        "store_name": { "type": "string" },
+                        "app_id": { "type": "string" },
+                        "integration_id": {
+                            "type": "number",
+                            "nullable": true
+                        },
+                        "service_connection_id": {
+                            "type": "string",
+                            "nullable": true
+                        }
+                    },
+                    "required": [
+                        "account_id",
+                        "store_type",
+                        "store_name",
+                        "app_id",
+                        "integration_id",
+                        "service_connection_id"
+                    ]
+                }
+            },
+            "ListHelpdeskAppIntegrationResponseDto": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "account_id": { "type": "number" },
+                        "integration_id": { "type": "number" },
+                        "app_id": { "type": "string" },
+                        "service_connection_id": {
+                            "type": "string",
+                            "nullable": true
+                        }
+                    },
+                    "required": [
+                        "account_id",
+                        "integration_id",
+                        "app_id",
+                        "service_connection_id"
+                    ]
+                }
+            },
             "ListAppResponseDto": {
                 "type": "array",
                 "items": {
@@ -78879,7 +79996,8 @@
                                                     "string",
                                                     "number",
                                                     "boolean",
-                                                    "date"
+                                                    "date",
+                                                    "json"
                                                 ]
                                             }
                                         },
@@ -78922,7 +80040,8 @@
                                                     "string",
                                                     "number",
                                                     "boolean",
-                                                    "date"
+                                                    "date",
+                                                    "json"
                                                 ]
                                             },
                                             "value": {}

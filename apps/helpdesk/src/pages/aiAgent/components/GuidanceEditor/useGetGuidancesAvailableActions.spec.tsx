@@ -17,31 +17,22 @@ jest.mock('models/workflows/queries', () => ({
 
 const mockGetGorgiasWfApiClient = getGorgiasWfApiClient as jest.Mock
 
-const activeEntrypoint = {
-    deactivated_datetime: null,
-    kind: 'llm-conversation',
-}
-const inactiveEntrypoint = {
-    deactivated_datetime: '2024-01-01T00:00:00Z',
-    kind: 'llm-conversation',
-}
-
 const mockAllActions = [
     {
         id: 'toto-id',
         name: 'TOTO action',
-        entrypoints: [activeEntrypoint],
-        steps: [],
-        apps: [],
+        enabled: true,
+        requires_auth: false,
+        has_missing_values: false,
         inputs: [],
         values: {},
     },
     {
         id: 'foobar-id',
         name: 'Foobar action',
-        entrypoints: [inactiveEntrypoint],
-        steps: [],
-        apps: [],
+        enabled: false,
+        requires_auth: false,
+        has_missing_values: false,
         inputs: [],
         values: {},
     },
@@ -57,7 +48,7 @@ describe('useGetGuidancesAvailableActions', () => {
         mockGetGorgiasWfApiClient.mockResolvedValue(mockApiClient)
     })
 
-    it('should return the correct actions with enabled status', async () => {
+    it('should pass through enabled, requiresAuth, and hasMissingValues from the API', async () => {
         const { QueryClientProvider } = mockQueryClientProvider()
         const { result } = renderHook(
             () => useGetGuidancesAvailableActions('store1', 'shopify'),
@@ -84,6 +75,83 @@ describe('useGetGuidancesAvailableActions', () => {
                 missingValuesDetails: undefined,
             },
         ])
+    })
+
+    it('should derive missingValuesDetails from inputs when has_missing_values is true', async () => {
+        const mockApiClient = {
+            StoreWfConfigurationController_list: jest.fn().mockResolvedValue({
+                data: [
+                    {
+                        id: 'missing-id',
+                        name: 'Missing action',
+                        enabled: true,
+                        requires_auth: false,
+                        has_missing_values: true,
+                        inputs: [
+                            { id: 'input-1', name: 'Input one' },
+                            { id: 'input-2', name: 'Input two' },
+                        ],
+                        values: { 'input-1': 'value-1' },
+                    },
+                ],
+            }),
+        }
+        mockGetGorgiasWfApiClient.mockResolvedValue(mockApiClient)
+
+        const { QueryClientProvider } = mockQueryClientProvider()
+        const { result } = renderHook(
+            () => useGetGuidancesAvailableActions('store1', 'shopify'),
+            { wrapper: QueryClientProvider },
+        )
+
+        await waitFor(() => expect(result.current.isLoading).toBe(false))
+
+        expect(result.current.guidanceActions).toEqual([
+            {
+                name: 'Missing action',
+                value: 'missing-id',
+                enabled: true,
+                requiresAuth: false,
+                hasMissingValues: true,
+                missingValuesDetails: [{ inputNames: ['Input two'] }],
+            },
+        ])
+    })
+
+    it('should pass through requiresAuth when API reports it', async () => {
+        const mockApiClient = {
+            StoreWfConfigurationController_list: jest.fn().mockResolvedValue({
+                data: [
+                    {
+                        id: 'auth-id',
+                        name: 'Auth action',
+                        enabled: true,
+                        requires_auth: true,
+                        has_missing_values: false,
+                        inputs: [],
+                        values: {},
+                    },
+                ],
+            }),
+        }
+        mockGetGorgiasWfApiClient.mockResolvedValue(mockApiClient)
+
+        const { QueryClientProvider } = mockQueryClientProvider()
+        const { result } = renderHook(
+            () => useGetGuidancesAvailableActions('store1', 'shopify'),
+            { wrapper: QueryClientProvider },
+        )
+
+        await waitFor(() => expect(result.current.isLoading).toBe(false))
+
+        expect(result.current.guidanceActions[0]).toEqual({
+            name: 'Auth action',
+            value: 'auth-id',
+            enabled: true,
+            requiresAuth: true,
+            hasMissingValues: false,
+            missingValuesDetails: undefined,
+        })
     })
 
     it('should not fetch when shopType is not shopify', () => {

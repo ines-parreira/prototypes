@@ -65,6 +65,9 @@ const mockActions: StoresWorkflowConfiguration = [
         ],
         updated_datetime: '2023-01-01T00:00:00Z',
         short_description: 'Action 1 short description',
+        enabled: true,
+        requires_auth: false,
+        has_missing_values: false,
     },
     {
         id: '2',
@@ -88,6 +91,9 @@ const mockActions: StoresWorkflowConfiguration = [
         ],
         updated_datetime: '2023-01-02T00:00:00Z',
         short_description: 'Action 2 short description',
+        enabled: true,
+        requires_auth: false,
+        has_missing_values: false,
     },
 ]
 const defaultState = {

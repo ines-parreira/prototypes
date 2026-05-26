@@ -24,6 +24,8 @@ describe('<ActionEventRow />', () => {
         },
         awaited_callbacks: [],
         channel_actions: [],
+        input_errors: [],
+        precondition_errors: [],
     } as LlmTriggeredExecution
     beforeEach(() => {
         jest.clearAllMocks()

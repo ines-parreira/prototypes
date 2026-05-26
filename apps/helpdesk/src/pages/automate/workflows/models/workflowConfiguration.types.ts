@@ -110,7 +110,8 @@ export type WorkflowStepHttpRequest = {
         } | null
         trackstar_integration_name?: string | null
         service_connection_settings?: {
-            integration_id: string | number
+            integration_id?: string | number | null
+            service_connection_id?: string | null
             path: string
         } | null
         variables: {
@@ -304,7 +305,10 @@ export type WorkflowStepReusableLLMPromptCall = {
             products?: Record<string, string> | null
         } | null
         custom_inputs?: Record<string, string> | null
-        values: Record<string, string | number | boolean>
+        values: Record<
+            string,
+            string | number | boolean | unknown[] | Record<string, unknown>
+        >
     }
 }
 
@@ -536,11 +540,26 @@ export type WorkflowConfiguration = {
                     id: string
                     name: string
                     description: string
-                    data_type: 'boolean' | 'date'
+                    data_type: 'boolean'
+                }
+              | {
+                    id: string
+                    name: string
+                    description: string
+                    data_type: 'date'
+                }
+              | {
+                    id: string
+                    name: string
+                    description: string
+                    data_type: 'json'
                 }
           )[]
         | null
-    values?: Record<string, string | number | boolean> | null
+    values?: Record<
+        string,
+        string | number | boolean | unknown[] | Record<string, unknown>
+    > | null
     steps: WorkflowStep[]
     transitions: WorkflowTransition[]
     available_languages: LanguageCode[]
