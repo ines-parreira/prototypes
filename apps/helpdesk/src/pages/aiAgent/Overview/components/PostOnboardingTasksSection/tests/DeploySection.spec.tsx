@@ -1,11 +1,15 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { toast } from '@gorgias/axiom'
+
 import { StepName } from 'models/aiAgentPostStoreInstallationSteps/types'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 
 import { DeploySection } from '../DeploySection'
 import type { PostOnboardingStepMetadata } from '../types'
@@ -25,8 +29,12 @@ jest.mock('pages/aiAgent/hooks/useAiAgentEnabled', () => ({
         updateSettingsAfterAiAgentEnabled: jest.fn(),
     }),
 }))
+const mockSetIsAiAgentDuringDeployment = jest.fn()
 jest.mock('../../../hooks/useIsAiAgentDuringDeployment', () => ({
-    useIsAiAgentDuringDeployment: () => [false, jest.fn()],
+    useIsAiAgentDuringDeployment: () => [
+        false,
+        mockSetIsAiAgentDuringDeployment,
+    ],
 }))
 jest.mock('hooks/useAppDispatch', () => ({
     __esModule: true,
@@ -118,6 +126,7 @@ describe('DeploySection', () => {
     }
     beforeEach(() => {
         jest.clearAllMocks()
+        mockFeatureFlags({ [FeatureFlagKey.AiAgentOnboardingV3]: false })
         const mockUseAiAgentStoreConfigurationContext =
             useAiAgentStoreConfigurationContext as jest.MockedFunction<
                 typeof useAiAgentStoreConfigurationContext
@@ -128,6 +137,12 @@ describe('DeploySection', () => {
             createStoreConfiguration: jest.fn(),
             isLoading: false,
             isPendingCreateOrUpdate: false,
+        })
+    })
+
+    afterEach(() => {
+        act(() => {
+            toast.dismiss()
         })
     })
     it('renders the component with correct description', () => {
@@ -209,5 +224,48 @@ describe('DeploySection', () => {
         renderDeploySection()
         expect(screen.getByText('email-readonly:false')).toBeInTheDocument()
         expect(screen.getByText('chat-readonly:false')).toBeInTheDocument()
+    })
+
+    describe('when AiAgentOnboardingV3 is enabled', () => {
+        beforeEach(() => {
+            mockFeatureFlags({ [FeatureFlagKey.AiAgentOnboardingV3]: true })
+        })
+
+        it('shows the toast and skips the modal when Email toggle is clicked', async () => {
+            renderDeploySection()
+
+            const emailToggleButton = screen.getByTestId('email-toggle-button')
+            await act(async () => {
+                await userEvent.click(emailToggleButton)
+            })
+
+            const toastEl = await screen.findByRole('status', { hidden: true })
+            expect(toastEl).toHaveTextContent('AI Agent is now live on email')
+            expect(screen.queryByTestId('live-modal')).not.toBeInTheDocument()
+        })
+
+        it('shows the toast and skips the modal when Chat toggle is clicked', async () => {
+            renderDeploySection()
+
+            const chatToggleButton = screen.getByTestId('chat-toggle-button')
+            await act(async () => {
+                await userEvent.click(chatToggleButton)
+            })
+
+            const toastEl = await screen.findByRole('status', { hidden: true })
+            expect(toastEl).toHaveTextContent('AI Agent is now live on chat')
+            expect(screen.queryByTestId('live-modal')).not.toBeInTheDocument()
+        })
+
+        it('clears the during-deployment flag after a successful deploy (no modal close to do it)', async () => {
+            renderDeploySection()
+
+            const emailToggleButton = screen.getByTestId('email-toggle-button')
+            await act(async () => {
+                await userEvent.click(emailToggleButton)
+            })
+
+            expect(mockSetIsAiAgentDuringDeployment).toHaveBeenCalledWith(false)
+        })
     })
 })

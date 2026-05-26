@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { useParams } from 'react-router-dom'
 
-import { Text } from '@gorgias/axiom'
+import { Text, toast } from '@gorgias/axiom'
 
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import type { StepConfiguration } from 'models/aiAgentPostStoreInstallationSteps/types'
@@ -41,6 +42,10 @@ export const DeploySection = ({
     }>()
     const { storeConfiguration, updateStoreConfiguration } =
         useAiAgentStoreConfigurationContext()
+    const { value: isAiAgentOnboardingV3Enabled } = useFlagWithLoading(
+        FeatureFlagKey.AiAgentOnboardingV3,
+        false,
+    )
 
     const [isEmailChannelEnabled, setIsEmailChannelEnabled] = useState(false)
     const [isChatChannelEnabled, setIsChatChannelEnabled] = useState(false)
@@ -72,6 +77,7 @@ export const DeploySection = ({
 
     const updateAiAgentChannels = async (
         storeConfiguration: StoreConfiguration,
+        channel: 'chat' | 'email',
     ): Promise<void> => {
         try {
             setIsAiAgentDuringDeployment(true)
@@ -82,6 +88,11 @@ export const DeploySection = ({
             })
             await markPostStoreInstallationAsCompleted()
             setIsAiAgentDeployed(true)
+
+            if (isAiAgentOnboardingV3Enabled) {
+                setIsAiAgentDuringDeployment(false)
+                toast.success(`AI Agent is now live on ${channel}`)
+            }
 
             logEventsForDeploymentStep()
         } catch (error) {
@@ -125,7 +136,9 @@ export const DeploySection = ({
                     isLoading={isAiAgentDuringDeployment && !isAiAgentDeployed}
                     isReadOnly={needsTrialOptIn}
                     setIsEmailChannelEnabled={setIsEmailChannelEnabled}
-                    onEmailToggle={updateAiAgentChannels}
+                    onEmailToggle={(storeConfig) =>
+                        updateAiAgentChannels(storeConfig, 'email')
+                    }
                     storeConfiguration={storeConfiguration}
                     shopName={shopName}
                 />
@@ -134,7 +147,9 @@ export const DeploySection = ({
                     isLoading={isAiAgentDuringDeployment && !isAiAgentDeployed}
                     isReadOnly={needsTrialOptIn}
                     setIsChatChannelEnabled={setIsChatChannelEnabled}
-                    onChatToggle={updateAiAgentChannels}
+                    onChatToggle={(storeConfig) =>
+                        updateAiAgentChannels(storeConfig, 'chat')
+                    }
                     storeConfiguration={storeConfiguration}
                     shopName={shopName}
                     shopType={shopType}
@@ -142,7 +157,7 @@ export const DeploySection = ({
             </div>
 
             <SuccessModal
-                isOpen={isAiAgentDeployed}
+                isOpen={isAiAgentDeployed && !isAiAgentOnboardingV3Enabled}
                 title={`AI Agent is now live on your ${channel}!`}
                 description={
                     <>
