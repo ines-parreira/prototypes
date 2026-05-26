@@ -65,7 +65,10 @@ describe('PercentageOfCreatedTicketsMetricPerChannel', () => {
             useTicketsCreatedMetricPerChannelMock.mockReturnValue({
                 data: {
                     allData: [
-                        { [TicketMeasure.TicketCount]: `${ticketCount}` },
+                        {
+                            [CHANNEL_DIMENSION]: agentId,
+                            [TicketMeasure.TicketCount]: `${ticketCount}`,
+                        },
                     ],
                     value: ticketCount,
                     decile: null,
@@ -97,9 +100,17 @@ describe('PercentageOfCreatedTicketsMetricPerChannel', () => {
                 data: {
                     allData: [
                         {
+                            [CHANNEL_DIMENSION]: agentId,
                             [TicketMeasure.TicketCount]: `${
                                 (ticketCount / closedTickets) * 100
                             }`,
+                        },
+                    ],
+                    allValues: [
+                        {
+                            dimension: agentId,
+                            value: (ticketCount / closedTickets) * 100,
+                            decile: null,
                         },
                     ],
                     value: (ticketCount / closedTickets) * 100,
@@ -110,6 +121,146 @@ describe('PercentageOfCreatedTicketsMetricPerChannel', () => {
                 isFetching: false,
                 isError: false,
             })
+        })
+
+        it('should support v2 dimension and measure keys', () => {
+            useTicketsCreatedMetricPerChannelMock.mockReturnValue({
+                data: {
+                    allData: [
+                        {
+                            channelId: agentId,
+                            ticketCount: `${ticketCount}`,
+                        },
+                    ] as any,
+                    value: ticketCount,
+                    decile: null,
+                    dimensions: ['channelId'] as any,
+                    measures: ['ticketCount'] as any,
+                },
+                isError: false,
+                isFetching: false,
+            })
+
+            useTicketsCreatedMetricMock.mockReturnValue({
+                data: { value: closedTickets },
+                isError: false,
+                isFetching: false,
+            })
+
+            const { result } = renderHook(
+                () =>
+                    usePercentageOfCreatedTicketsMetricPerChannel(
+                        statsFilters,
+                        timezone,
+                        sorting,
+                        agentId,
+                    ),
+                {},
+            )
+
+            expect(result.current).toEqual({
+                data: {
+                    allData: [
+                        {
+                            channelId: agentId,
+                            ticketCount: `${
+                                (ticketCount / closedTickets) * 100
+                            }`,
+                        },
+                    ],
+                    allValues: [
+                        {
+                            dimension: agentId,
+                            value: (ticketCount / closedTickets) * 100,
+                            decile: null,
+                        },
+                    ],
+                    value: (ticketCount / closedTickets) * 100,
+                    decile: null,
+                    dimensions: ['channelId'],
+                    measures: ['ticketCount'],
+                },
+                isFetching: false,
+                isError: false,
+            })
+        })
+
+        it('should produce null allValues entry when measure value is null', () => {
+            useTicketsCreatedMetricPerChannelMock.mockReturnValue({
+                data: {
+                    allData: [
+                        {
+                            [CHANNEL_DIMENSION]: agentId,
+                            [TicketMeasure.TicketCount]:
+                                null as unknown as string,
+                        },
+                    ],
+                    value: null,
+                    decile: null,
+                    dimensions: [CHANNEL_DIMENSION],
+                    measures: [TicketMeasure.TicketCount],
+                },
+                isError: false,
+                isFetching: false,
+            })
+
+            useTicketsCreatedMetricMock.mockReturnValue({
+                data: { value: closedTickets },
+                isError: false,
+                isFetching: false,
+            })
+
+            const { result } = renderHook(
+                () =>
+                    usePercentageOfCreatedTicketsMetricPerChannel(
+                        statsFilters,
+                        timezone,
+                        sorting,
+                        agentId,
+                    ),
+                {},
+            )
+
+            expect(result.current.data?.allValues).toEqual([
+                { dimension: agentId, value: null, decile: null },
+            ])
+        })
+
+        it('should use empty string dimension when dimension key is missing from allData item', () => {
+            useTicketsCreatedMetricPerChannelMock.mockReturnValue({
+                data: {
+                    allData: [
+                        {
+                            [TicketMeasure.TicketCount]: `${ticketCount}`,
+                        },
+                    ],
+                    value: ticketCount,
+                    decile: null,
+                    dimensions: [CHANNEL_DIMENSION],
+                    measures: [TicketMeasure.TicketCount],
+                },
+                isError: false,
+                isFetching: false,
+            })
+
+            useTicketsCreatedMetricMock.mockReturnValue({
+                data: { value: closedTickets },
+                isError: false,
+                isFetching: false,
+            })
+
+            const { result } = renderHook(
+                () =>
+                    usePercentageOfCreatedTicketsMetricPerChannel(
+                        statsFilters,
+                        timezone,
+                        sorting,
+                        agentId,
+                    ),
+                {},
+            )
+
+            expect(result.current.data?.allValues?.[0].dimension).toBe('')
         })
 
         it('should return null when missing data', () => {
@@ -139,6 +290,7 @@ describe('PercentageOfCreatedTicketsMetricPerChannel', () => {
             expect(result.current).toEqual({
                 data: {
                     allData: [],
+                    allValues: [],
                     value: null,
                     decile: null,
                     dimensions: [],
@@ -153,7 +305,10 @@ describe('PercentageOfCreatedTicketsMetricPerChannel', () => {
             useTicketsCreatedMetricPerChannelMock.mockReturnValue({
                 data: {
                     allData: [
-                        { [TicketMeasure.TicketCount]: `${ticketCount}` },
+                        {
+                            [CHANNEL_DIMENSION]: agentId,
+                            [TicketMeasure.TicketCount]: `${ticketCount}`,
+                        },
                     ],
                     value: ticketCount,
                     decile: null,
@@ -185,7 +340,15 @@ describe('PercentageOfCreatedTicketsMetricPerChannel', () => {
                 data: {
                     allData: [
                         {
+                            [CHANNEL_DIMENSION]: agentId,
                             [TicketMeasure.TicketCount]: `${ticketCount}`,
+                        },
+                    ],
+                    allValues: [
+                        {
+                            dimension: agentId,
+                            value: ticketCount,
+                            decile: null,
                         },
                     ],
                     value: null,
@@ -204,7 +367,10 @@ describe('PercentageOfCreatedTicketsMetricPerChannel', () => {
             fetchTicketsCreatedMetricPerChannelMock.mockResolvedValue({
                 data: {
                     allData: [
-                        { [TicketMeasure.TicketCount]: `${ticketCount}` },
+                        {
+                            [CHANNEL_DIMENSION]: agentId,
+                            [TicketMeasure.TicketCount]: `${ticketCount}`,
+                        },
                     ],
                     value: ticketCount,
                     decile: null,
@@ -233,9 +399,17 @@ describe('PercentageOfCreatedTicketsMetricPerChannel', () => {
                 data: {
                     allData: [
                         {
+                            [CHANNEL_DIMENSION]: agentId,
                             [TicketMeasure.TicketCount]: `${
                                 (ticketCount / closedTickets) * 100
                             }`,
+                        },
+                    ],
+                    allValues: [
+                        {
+                            dimension: agentId,
+                            value: (ticketCount / closedTickets) * 100,
+                            decile: null,
                         },
                     ],
                     value: (ticketCount / closedTickets) * 100,
@@ -272,6 +446,7 @@ describe('PercentageOfCreatedTicketsMetricPerChannel', () => {
             expect(result).toEqual({
                 data: {
                     allData: [],
+                    allValues: [],
                     value: null,
                     decile: null,
                     dimensions: [],
@@ -286,7 +461,10 @@ describe('PercentageOfCreatedTicketsMetricPerChannel', () => {
             fetchTicketsCreatedMetricPerChannelMock.mockResolvedValue({
                 data: {
                     allData: [
-                        { [TicketMeasure.TicketCount]: `${ticketCount}` },
+                        {
+                            [CHANNEL_DIMENSION]: agentId,
+                            [TicketMeasure.TicketCount]: `${ticketCount}`,
+                        },
                     ],
                     value: ticketCount,
                     decile: null,
@@ -315,7 +493,15 @@ describe('PercentageOfCreatedTicketsMetricPerChannel', () => {
                 data: {
                     allData: [
                         {
+                            [CHANNEL_DIMENSION]: agentId,
                             [TicketMeasure.TicketCount]: `${ticketCount}`,
+                        },
+                    ],
+                    allValues: [
+                        {
+                            dimension: agentId,
+                            value: ticketCount,
+                            decile: null,
                         },
                     ],
                     value: null,

@@ -10,12 +10,9 @@ import {
     useCreatedTicketsMetricPerChannel,
 } from 'domains/reporting/hooks/support-performance/channels/metricsPerChannel'
 import type { MetricWithDecile } from 'domains/reporting/hooks/types'
-import { TicketMeasure } from 'domains/reporting/models/cubes/TicketCube'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { calculatePercentage } from 'domains/reporting/utils/reporting'
 import type { OrderDirection } from 'models/api/types'
-
-const ticketCountField = TicketMeasure.TicketCount
 
 const formatResult = (
     createdTicketsPerChannel: MetricWithDecile,
@@ -31,21 +28,33 @@ const formatResult = (
     }
 
     const allData = createdTicketsPerChannel.data?.allData || []
+    const measureKey = createdTicketsPerChannel.data?.measures?.[0] || ''
+    const dimensionKey = createdTicketsPerChannel.data?.dimensions?.[0] || ''
+
+    const transformedAllData = allData.map((item) => ({
+        ...item,
+        [measureKey]:
+            item[measureKey] && allCreatedTickets.data?.value
+                ? String(
+                      calculatePercentage(
+                          Number(item[measureKey]),
+                          allCreatedTickets.data.value,
+                      ),
+                  )
+                : item[measureKey],
+    }))
 
     return {
         value: metricValue,
         decile: createdTicketsPerChannel.data?.decile || null,
-        allData: allData.map((item) => ({
-            ...item,
-            [ticketCountField]:
-                item[ticketCountField] && allCreatedTickets.data?.value
-                    ? String(
-                          calculatePercentage(
-                              Number(item[ticketCountField]),
-                              allCreatedTickets.data.value,
-                          ),
-                      )
-                    : item[ticketCountField],
+        allData: transformedAllData,
+        allValues: transformedAllData.map((item) => ({
+            dimension: item[dimensionKey] || '',
+            value:
+                item[measureKey] === null || item[measureKey] === undefined
+                    ? null
+                    : Number(item[measureKey]),
+            decile: null,
         })),
         dimensions: createdTicketsPerChannel.data?.dimensions || [],
         measures: createdTicketsPerChannel.data?.measures || [],

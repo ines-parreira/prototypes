@@ -48,6 +48,14 @@ export const getChannelMetric = (
     if (!data.data) return null
     const metricData = data.data
 
+    const normalizedMetricValue = metricData.allValues?.find(
+        (item) => item.dimension?.toString() === channelSlug,
+    )?.value
+
+    if (normalizedMetricValue !== undefined) {
+        return normalizedMetricValue
+    }
+
     const firstDimension = metricData.dimensions?.[0] || ''
     const firstMeasure = metricData.measures?.[0] || ''
 
