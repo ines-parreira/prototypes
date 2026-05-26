@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -40,7 +40,11 @@ export default function AiAgentNotification({ notification, ...props }: Props) {
 
     const { onRedirectToOpportunityPage } = useOpportunitiesTracking()
 
+    const hasAttemptedSaveRef = useRef(false)
+
     useEffect(() => {
+        if (hasAttemptedSaveRef.current) return
+
         if (
             isLoading ||
             !payload ||
@@ -72,6 +76,8 @@ export default function AiAgentNotification({ notification, ...props }: Props) {
         )
 
         if (!isAlreadyReceived) {
+            hasAttemptedSaveRef.current = true
+
             const notificationReceivedDatetimePayload =
                 getNotificationReceivedDatetimePayload(
                     payload,

@@ -250,6 +250,78 @@ describe('AiAgentNotification', () => {
         },
     )
 
+    describe('save-once guard against the GET/PUT loop', () => {
+        // Regression: opening the notifications popover used to trigger an
+        // infinite GET/PUT cycle on /onboarding-notification. With several
+        // sibling AiAgentNotification components for the same shop, each
+        // effect would auto-save concurrently with a stale closure; one PUT
+        // clobbered the others, the post-mutation refetch reported the
+        // clobbered fields as still null, and the effects re-fired.
+        //
+        // The fix is a per-mount ref guard. These tests pin the guard by
+        // verifying that a second render (which models the refetch:
+        // handleOnSave reference changes, the cached state's reference
+        // changes, and this notification's received-datetime field is still
+        // null) does NOT trigger another save or another received-event log.
+
+        const notification: Notification<AiAgentNotificationPayload> = {
+            id: '1',
+            inserted_datetime: '2024-11-04T13:07:00',
+            read_datetime: null,
+            seen_datetime: null,
+            type: 'automate-setup-and-optimization',
+            payload: {
+                ...basePayload,
+                ai_agent_notification_type:
+                    AiAgentNotificationType.ScrapingProcessingFinished,
+            },
+        }
+
+        it('does not call the new handleOnSave reference on a subsequent render where this notification field is still null', () => {
+            const { rerender } = render(
+                <AiAgentNotification notification={notification} />,
+            )
+
+            const newHandleOnSave = jest.fn()
+            mockUseAiAgentOnboardingNotification.mockReturnValue({
+                ...defaultUseAiAgentOnboardingNotificationFixture({
+                    shopName: SHOP_NAME,
+                }),
+                handleOnSave: newHandleOnSave,
+            })
+
+            rerender(<AiAgentNotification notification={notification} />)
+
+            expect(newHandleOnSave).not.toHaveBeenCalled()
+        })
+
+        it('logs the AiAgentOnboardingNotificationReceived event exactly once across re-renders', () => {
+            const countReceivedEvents = () =>
+                (logEvent as jest.Mock).mock.calls.filter(
+                    ([event]) =>
+                        event ===
+                        SegmentEvent.AiAgentOnboardingNotificationReceived,
+                ).length
+
+            const { rerender } = render(
+                <AiAgentNotification notification={notification} />,
+            )
+
+            expect(countReceivedEvents()).toBe(1)
+
+            mockUseAiAgentOnboardingNotification.mockReturnValue({
+                ...defaultUseAiAgentOnboardingNotificationFixture({
+                    shopName: SHOP_NAME,
+                }),
+                handleOnSave: jest.fn(),
+            })
+
+            rerender(<AiAgentNotification notification={notification} />)
+
+            expect(countReceivedEvents()).toBe(1)
+        })
+    })
+
     it('should render SkillWizardReady notification and redirect to the skills wizard when clicked', () => {
         const notification: Notification<AiAgentNotificationPayload> = {
             id: '1',
