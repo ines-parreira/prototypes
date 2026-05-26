@@ -35,8 +35,8 @@ export function CustomActions({
     }
 
     return (
-        <Box flexWrap="wrap" gap="sm">
-            <Box gap="xxxs" flexWrap="wrap">
+        <Box flexWrap="wrap" gap="sm" pb="md">
+            <Box gap="xs" flexWrap="wrap">
                 {buttons.map((button, index) => (
                     <Box
                         key={`button-${index}-${button.label}-${button.action.url}`}

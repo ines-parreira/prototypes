@@ -16,13 +16,19 @@ export function OrderActions({
     return (
         <Box flexDirection="row" alignItems="center" gap="xs" pt="xs" pb="md">
             {onEdit && (
-                <Button variant="secondary" leadingSlot="edit" onClick={onEdit}>
+                <Button
+                    variant="secondary"
+                    size="sm"
+                    leadingSlot="edit"
+                    onClick={onEdit}
+                >
                     Edit
                 </Button>
             )}
             {onDuplicate && (
                 <Button
                     variant="secondary"
+                    size="sm"
                     leadingSlot="select-multiple"
                     onClick={onDuplicate}
                 >
@@ -32,6 +38,7 @@ export function OrderActions({
             {onRefund && (
                 <Button
                     variant="secondary"
+                    size="sm"
                     leadingSlot="undo"
                     onClick={onRefund}
                 >
@@ -41,6 +48,7 @@ export function OrderActions({
             {onCancel && (
                 <Button
                     variant="secondary"
+                    size="sm"
                     leadingSlot="stop-sign"
                     onClick={onCancel}
                 >
