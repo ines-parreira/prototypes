@@ -1,11 +1,14 @@
-import { useMemo } from 'react'
+import type { ReactNode } from 'react'
+import { createContext, createElement, useContext, useMemo } from 'react'
 
 import { useShallow } from 'zustand/react/shallow'
 
 import { getLast28DaysDateRange } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
+import type { ResourceMetricsByDay } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
 import type { ImpactDateRange } from 'pages/aiAgent/components/KnowledgeEditor/shared/useVersionHistoryBase/useVersionHistoryBase'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { useSkillsMetrics } from 'pages/aiAgent/skills/hooks/useSkillsMetrics'
+import { useSkillsMetricsByDay } from 'pages/aiAgent/skills/hooks/useSkillsMetricsByDay'
 import { useTotalAiAgentTickets } from 'pages/aiAgent/skills/hooks/useTotalAiAgentTickets'
 import type { SkillMetrics } from 'pages/aiAgent/skills/types'
 
@@ -15,7 +18,9 @@ import { useSkillEditorStore } from '../context'
 
 export type SkillMetricsData = {
     metrics: SkillMetrics | null
+    metricsByDay: ResourceMetricsByDay[] | null
     isLoading: boolean
+    isMetricsByDayLoading: boolean
     resourceSourceId: number
     shopIntegrationId: number
     dateRange: { start_datetime: string; end_datetime: string }
@@ -31,6 +36,33 @@ export type SkillPerformanceData = {
     recentTickets: SkillRecentTicketsData | undefined
     isPreview?: boolean
     historicalVersionDateRange?: ImpactDateRange
+}
+
+const SkillPerformanceDataContext = createContext<
+    SkillPerformanceData | undefined
+>(undefined)
+
+type SkillPerformanceDataProviderProps = {
+    children?: ReactNode
+    value: SkillPerformanceData
+}
+
+export const SkillPerformanceDataProvider = ({
+    children,
+    value,
+}: SkillPerformanceDataProviderProps) =>
+    createElement(SkillPerformanceDataContext.Provider, { value }, children)
+
+export const useSkillPerformanceDataContext = (): SkillPerformanceData => {
+    const skillPerformanceData = useContext(SkillPerformanceDataContext)
+
+    if (!skillPerformanceData) {
+        throw new Error(
+            'useSkillPerformanceDataContext must be used within SkillPerformanceDataProvider',
+        )
+    }
+
+    return skillPerformanceData
 }
 
 export const useSkillPerformanceFromContext = (): SkillPerformanceData => {
@@ -63,6 +95,15 @@ export const useSkillPerformanceFromContext = (): SkillPerformanceData => {
         dateRange,
     )
 
+    const { data: metricsByDayData, isLoading: isMetricsByDayLoading } =
+        useSkillsMetricsByDay(
+            shopIntegrationId,
+            skillArticleId ?? 0,
+            helpCenterId,
+            !!skillArticleId && !!shopIntegrationId && !!helpCenterId,
+            dateRange,
+        )
+
     const metrics = useMemo<SkillMetrics | null>(() => {
         if (!metricsData || !skillArticleId) return null
 
@@ -78,6 +119,11 @@ export const useSkillPerformanceFromContext = (): SkillPerformanceData => {
             resourceSourceSetId: entry.resourceSourceSetId,
         }
     }, [metricsData, skillArticleId])
+
+    const metricsByDay = useMemo<ResourceMetricsByDay[] | null>(() => {
+        if (!metricsByDayData || !skillArticleId) return null
+        return metricsByDayData
+    }, [metricsByDayData, skillArticleId])
 
     const { totalCount: totalAiAgentTickets } = useTotalAiAgentTickets()
 
@@ -95,7 +141,9 @@ export const useSkillPerformanceFromContext = (): SkillPerformanceData => {
     const skillMetrics = useMemo<SkillMetricsData>(
         () => ({
             metrics,
+            metricsByDay,
             isLoading,
+            isMetricsByDayLoading,
             resourceSourceId: skillArticleId ?? 0,
             shopIntegrationId,
             dateRange,
@@ -105,7 +153,9 @@ export const useSkillPerformanceFromContext = (): SkillPerformanceData => {
         }),
         [
             metrics,
+            metricsByDay,
             isLoading,
+            isMetricsByDayLoading,
             skillArticleId,
             shopIntegrationId,
             dateRange,

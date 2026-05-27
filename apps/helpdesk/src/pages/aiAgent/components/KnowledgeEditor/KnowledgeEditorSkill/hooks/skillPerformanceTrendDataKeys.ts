@@ -1,0 +1,2 @@
+export const SKILL_PERFORMANCE_TREND_TICKET_VOLUME_DATA_KEY = 'ticketVolume'
+export const SKILL_PERFORMANCE_TREND_CSAT_DATA_KEY = 'csat'

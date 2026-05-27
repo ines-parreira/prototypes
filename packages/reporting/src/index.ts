@@ -31,6 +31,18 @@ export {
     renderTimeSeriesTooltipContent,
 } from './components/TimeSeriesChart/TimeSeriesChart'
 export { MultipleTimeSeriesChart } from './components/TimeSeriesChart/MultipleTimeSeriesChart'
+export {
+    ComposedMetricTimeSeriesChart,
+    renderComposedMetricTimeSeriesTooltipContent,
+} from './components/ComposedMetricTimeSeriesChart/ComposedMetricTimeSeriesChart'
+export type {
+    ComposedMetricTimeSeriesChartProps,
+    ComposedMetricTimeSeriesDataItem,
+    ComposedMetricTimeSeriesMarker,
+    ComposedMetricTimeSeriesMetricConfig,
+    ComposedMetricTimeSeriesTooltipMetric,
+    ComposedMetricTimeSeriesTooltipProps,
+} from './components/ComposedMetricTimeSeriesChart/types'
 export { TrendChart } from './components/TrendChart/TrendChart'
 export { TrendCard } from './components/TrendCard/TrendCard'
 export { NoDataPlaceholder } from './components/NoDataPlaceholder/NoDataPlaceholder'

@@ -15,8 +15,11 @@ import {
 } from 'domains/reporting/models/cubes/TicketInsightsTaskCube'
 import {
     aggregateResourceMetrics,
+    aggregateResourceMetricsByDay,
+    createKnowledgeDailyMetricQuery,
     createV1DrillDownQuery,
     createV1Query,
+    createV1TimeSeriesQuery,
     getLast28DaysDateRange,
     knowledgeCSATDrillDownQueryFactory,
     knowledgeHandoverTicketsDrillDownQueryFactory,
@@ -33,7 +36,11 @@ import type {
     ApiStatsFilters,
     StatsFilters,
 } from 'domains/reporting/models/stat/types'
-import { FilterKey } from 'domains/reporting/models/stat/types'
+import {
+    APIOnlyFilterKey,
+    FilterKey,
+} from 'domains/reporting/models/stat/types'
+import { ReportingGranularity } from 'domains/reporting/models/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
@@ -3967,5 +3974,478 @@ describe('useRecentTicketsWithDrilldown', () => {
             outcomeCustomFieldId: 123,
             intentCustomFieldId: 456,
         })
+    })
+})
+
+describe('createV1TimeSeriesQuery', () => {
+    const periodStart = moment('2026-04-01T00:00:00Z')
+    const periodEnd = periodStart.clone().add(28, 'days')
+    const resourceSourceId = 123
+    const resourceSourceSetId = 456
+    const timezone = 'America/New_York'
+
+    const baseStatsFilters: StatsFilters = {
+        [FilterKey.Period]: {
+            start_datetime: periodStart.toISOString(),
+            end_datetime: periodEnd.toISOString(),
+        },
+    }
+
+    it('throws when the period boundaries are empty', () => {
+        const filtersWithEmptyPeriod: StatsFilters = {
+            [FilterKey.Period]: { start_datetime: '', end_datetime: '' },
+        }
+
+        expect(() =>
+            createV1TimeSeriesQuery(
+                METRIC_NAMES.KNOWLEDGE_TICKETS,
+                resourceSourceId,
+                resourceSourceSetId,
+                filtersWithEmptyPeriod,
+                timezone,
+                TicketInsightsTaskMeasure.TicketCount,
+                ReportingGranularity.Day,
+            ),
+        ).toThrow(
+            'Period filters (start_datetime and end_datetime) are required for knowledge metrics queries',
+        )
+    })
+
+    it('emits a time dimension on CreatedDatetime over the requested range', () => {
+        const query = createV1TimeSeriesQuery(
+            METRIC_NAMES.KNOWLEDGE_TICKETS,
+            resourceSourceId,
+            resourceSourceSetId,
+            baseStatsFilters,
+            timezone,
+            TicketInsightsTaskMeasure.TicketCount,
+            ReportingGranularity.Day,
+        )
+
+        expect(query.timeDimensions).toEqual([
+            {
+                dimension: TicketDimension.CreatedDatetime,
+                granularity: ReportingGranularity.Day,
+                dateRange: [
+                    baseStatsFilters[FilterKey.Period]?.start_datetime,
+                    baseStatsFilters[FilterKey.Period]?.end_datetime,
+                ],
+            },
+        ])
+    })
+
+    it('does not include resource dimensions because the cube rejects them with time_dimensions', () => {
+        const query = createV1TimeSeriesQuery(
+            METRIC_NAMES.KNOWLEDGE_TICKETS,
+            resourceSourceId,
+            resourceSourceSetId,
+            baseStatsFilters,
+            timezone,
+            TicketInsightsTaskMeasure.TicketCount,
+            ReportingGranularity.Day,
+        )
+
+        expect(query.dimensions).toEqual([])
+    })
+
+    it('filters by the specific resource and resource set', () => {
+        const query = createV1TimeSeriesQuery(
+            METRIC_NAMES.KNOWLEDGE_TICKETS,
+            resourceSourceId,
+            resourceSourceSetId,
+            baseStatsFilters,
+            timezone,
+            TicketInsightsTaskMeasure.TicketCount,
+            ReportingGranularity.Day,
+        )
+
+        expect(query.filters).toContainEqual({
+            member: TicketInsightsTaskDimension.ResourceSourceId,
+            operator: 'equals',
+            values: [String(resourceSourceId)],
+        })
+        expect(query.filters).toContainEqual({
+            member: TicketInsightsTaskDimension.ResourceSourceSetId,
+            operator: 'equals',
+            values: [String(resourceSourceSetId)],
+        })
+    })
+
+    it('restricts to knowledge-bearing resource types', () => {
+        const query = createV1TimeSeriesQuery(
+            METRIC_NAMES.KNOWLEDGE_TICKETS,
+            resourceSourceId,
+            resourceSourceSetId,
+            baseStatsFilters,
+            timezone,
+            TicketInsightsTaskMeasure.TicketCount,
+            ReportingGranularity.Day,
+        )
+
+        expect(query.filters).toContainEqual({
+            member: TicketInsightsTaskDimension.ResourceType,
+            operator: 'equals',
+            values: [
+                'GUIDANCE',
+                'ARTICLE',
+                'MACRO',
+                'EXTERNAL_SNIPPET',
+                'FILE_EXTERNAL_SNIPPET',
+                'STORE_WEBSITE_QUESTION_SNIPPET',
+            ],
+        })
+    })
+
+    it('appends custom field filters when provided', () => {
+        const filtersWithCustomFields: ApiStatsFilters = {
+            ...baseStatsFilters,
+            [FilterKey.CustomFields]: [
+                {
+                    customFieldId: 99,
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: ['Handover::With message'],
+                },
+            ],
+        }
+
+        const query = createV1TimeSeriesQuery(
+            METRIC_NAMES.KNOWLEDGE_HANDOVER_TICKETS,
+            resourceSourceId,
+            resourceSourceSetId,
+            filtersWithCustomFields,
+            timezone,
+            TicketInsightsTaskMeasure.TicketCount,
+            ReportingGranularity.Day,
+        )
+
+        expect(query.filters).toContainEqual({
+            member: 'TicketCustomFieldsEnriched.customFieldId',
+            operator: 'equals',
+            values: ['99'],
+        })
+    })
+
+    it('carries through the requested measure, metric name, and timezone', () => {
+        const query = createV1TimeSeriesQuery(
+            METRIC_NAMES.KNOWLEDGE_HANDOVER_TICKETS,
+            resourceSourceId,
+            resourceSourceSetId,
+            baseStatsFilters,
+            timezone,
+            TicketInsightsTaskMeasure.TicketCount,
+            ReportingGranularity.Week,
+        )
+
+        expect(query).toMatchObject({
+            metricName: METRIC_NAMES.KNOWLEDGE_HANDOVER_TICKETS,
+            measures: [TicketInsightsTaskMeasure.TicketCount],
+            timezone,
+        })
+    })
+})
+
+describe('aggregateResourceMetricsByDay', () => {
+    it('returns an empty array when both inputs are undefined', () => {
+        expect(aggregateResourceMetricsByDay(undefined, undefined)).toEqual([])
+    })
+
+    it('buckets tickets by day and leaves csat null when missing', () => {
+        const ticketsData = [
+            {
+                'TicketEnriched.createdDatetime.day':
+                    '2026-04-20T00:00:00.000Z',
+                'TicketInsightsTask.ticketCount': '12',
+            },
+            {
+                'TicketEnriched.createdDatetime.day':
+                    '2026-04-21T00:00:00.000Z',
+                'TicketInsightsTask.ticketCount': '8',
+            },
+        ]
+
+        expect(aggregateResourceMetricsByDay(ticketsData, undefined)).toEqual([
+            { date: '2026-04-20', tickets: 12, csat: null },
+            { date: '2026-04-21', tickets: 8, csat: null },
+        ])
+    })
+
+    it('merges tickets and csat scores onto the same date bucket', () => {
+        const ticketsData = [
+            {
+                'TicketEnriched.createdDatetime.day':
+                    '2026-04-20T00:00:00.000Z',
+                'TicketInsightsTask.ticketCount': '10',
+            },
+        ]
+        const csatData = [
+            {
+                'TicketEnriched.createdDatetime.day':
+                    '2026-04-20T00:00:00.000Z',
+                'TicketInsightsTask.avgSurveyScore': '4.3',
+            },
+        ]
+
+        expect(aggregateResourceMetricsByDay(ticketsData, csatData)).toEqual([
+            { date: '2026-04-20', tickets: 10, csat: 4.3 },
+        ])
+    })
+
+    it('keeps days that only appear in csat data', () => {
+        const ticketsData = [
+            {
+                'TicketEnriched.createdDatetime.day':
+                    '2026-04-20T00:00:00.000Z',
+                'TicketInsightsTask.ticketCount': '10',
+            },
+        ]
+        const csatData = [
+            {
+                'TicketEnriched.createdDatetime.day':
+                    '2026-04-21T00:00:00.000Z',
+                'TicketInsightsTask.avgSurveyScore': '4.6',
+            },
+        ]
+
+        const result = aggregateResourceMetricsByDay(ticketsData, csatData)
+
+        expect(result).toContainEqual({
+            date: '2026-04-20',
+            tickets: 10,
+            csat: null,
+        })
+        expect(result).toContainEqual({
+            date: '2026-04-21',
+            tickets: null,
+            csat: 4.6,
+        })
+    })
+
+    it('skips records that have no recognizable date bucket', () => {
+        const ticketsData = [
+            { 'TicketInsightsTask.ticketCount': '10' },
+            {
+                'TicketEnriched.createdDatetime.day':
+                    '2026-04-20T00:00:00.000Z',
+                'TicketInsightsTask.ticketCount': '7',
+            },
+        ]
+
+        expect(aggregateResourceMetricsByDay(ticketsData, undefined)).toEqual([
+            { date: '2026-04-20', tickets: 7, csat: null },
+        ])
+    })
+
+    it('reads V2 unprefixed field names when V1 names are absent', () => {
+        const ticketsData = [
+            {
+                createdDatetime: '2026-04-20T00:00:00.000Z',
+                ticketCount: '5',
+            },
+        ]
+        const csatData = [
+            {
+                createdDatetime: '2026-04-20T00:00:00.000Z',
+                averageSurveyScore: '4.8',
+            },
+        ]
+
+        expect(aggregateResourceMetricsByDay(ticketsData, csatData)).toEqual([
+            { date: '2026-04-20', tickets: 5, csat: 4.8 },
+        ])
+    })
+
+    it('coerces non-numeric ticket counts to zero and non-numeric csat to null', () => {
+        const ticketsData = [
+            {
+                'TicketEnriched.createdDatetime.day':
+                    '2026-04-20T00:00:00.000Z',
+                'TicketInsightsTask.ticketCount': 'not-a-number',
+            },
+        ]
+        const csatData = [
+            {
+                'TicketEnriched.createdDatetime.day':
+                    '2026-04-20T00:00:00.000Z',
+                'TicketInsightsTask.avgSurveyScore': 'not-a-number',
+            },
+        ]
+
+        expect(aggregateResourceMetricsByDay(ticketsData, csatData)).toEqual([
+            { date: '2026-04-20', tickets: 0, csat: null },
+        ])
+    })
+})
+
+describe('createKnowledgeDailyMetricQuery', () => {
+    const baseParams = {
+        metricName: METRIC_NAMES.KNOWLEDGE_TICKETS_TICKET_COUNT,
+        measure: TicketInsightsTaskMeasure.TicketCount,
+        resourceSourceId: 42,
+        resourceSourceSetId: 100,
+        shopIntegrationId: 7,
+        timezone: 'America/New_York',
+        dateRange: {
+            start_datetime: '2026-04-01T00:00:00Z',
+            end_datetime: '2026-04-28T23:59:59Z',
+        },
+    }
+
+    it('produces a daily granularity time-series query over the requested range', () => {
+        const query = createKnowledgeDailyMetricQuery(baseParams)
+
+        expect(query.timeDimensions).toEqual([
+            {
+                dimension: 'TicketEnriched.createdDatetime',
+                granularity: ReportingGranularity.Day,
+                dateRange: [
+                    baseParams.dateRange.start_datetime,
+                    baseParams.dateRange.end_datetime,
+                ],
+            },
+        ])
+        expect(query.measures).toEqual([TicketInsightsTaskMeasure.TicketCount])
+        expect(query.metricName).toBe(
+            METRIC_NAMES.KNOWLEDGE_TICKETS_TICKET_COUNT,
+        )
+        expect(query.timezone).toBe(baseParams.timezone)
+    })
+
+    it('filters by the specific resource source and resource set', () => {
+        const query = createKnowledgeDailyMetricQuery(baseParams)
+
+        expect(query.filters).toContainEqual({
+            member: TicketInsightsTaskDimension.ResourceSourceId,
+            operator: 'equals',
+            values: [String(baseParams.resourceSourceId)],
+        })
+        expect(query.filters).toContainEqual({
+            member: TicketInsightsTaskDimension.ResourceSourceSetId,
+            operator: 'equals',
+            values: [String(baseParams.resourceSourceSetId)],
+        })
+    })
+
+    it('skips the store filter when no shop integration id is provided', () => {
+        const query = createKnowledgeDailyMetricQuery({
+            ...baseParams,
+            shopIntegrationId: undefined,
+        })
+
+        const storeFilter = query.filters.find(
+            (filter) =>
+                'member' in filter &&
+                filter.member === TicketInsightsTaskDimension.ShopIntegrationId,
+        )
+
+        expect(storeFilter).toBeUndefined()
+    })
+
+    it('forwards a single shop integration id as a one-of store filter', () => {
+        const query = createKnowledgeDailyMetricQuery(baseParams)
+
+        const storeFilter = query.filters.find(
+            (filter) =>
+                'member' in filter &&
+                filter.member === TicketInsightsTaskDimension.ShopIntegrationId,
+        )
+
+        expect(storeFilter).toMatchObject({
+            operator: 'equals',
+            values: [String(baseParams.shopIntegrationId)],
+        })
+    })
+
+    it('omits custom field filters when none are provided', () => {
+        const query = createKnowledgeDailyMetricQuery(baseParams)
+
+        const customFieldFilter = query.filters.find(
+            (filter) =>
+                'member' in filter &&
+                filter.member === 'TicketCustomFieldsEnriched.customFieldId',
+        )
+
+        expect(customFieldFilter).toBeUndefined()
+    })
+
+    it('appends each custom field filter and derives the matching customFieldId filter', () => {
+        const query = createKnowledgeDailyMetricQuery({
+            ...baseParams,
+            metricName: METRIC_NAMES.KNOWLEDGE_HANDOVER_TICKETS,
+            customFields: [
+                {
+                    customFieldId: 555,
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [
+                        'Handover::With message',
+                        'Handover::Without message',
+                    ],
+                },
+            ],
+        })
+
+        expect(query.filters).toContainEqual({
+            member: 'TicketCustomFieldsEnriched.customFieldId',
+            operator: 'equals',
+            values: ['555'],
+        })
+        expect(query.metricName).toBe(METRIC_NAMES.KNOWLEDGE_HANDOVER_TICKETS)
+    })
+
+    it('throws via the underlying factory when the date range is empty', () => {
+        expect(() =>
+            createKnowledgeDailyMetricQuery({
+                ...baseParams,
+                dateRange: { start_datetime: '', end_datetime: '' },
+            }),
+        ).toThrow(
+            'Period filters (start_datetime and end_datetime) are required for knowledge metrics queries',
+        )
+    })
+
+    it('matches the legacy ApiStatsFilters shape the previous hook built inline', () => {
+        const handoverCustomField = {
+            customFieldId: 555,
+            operator: LogicalOperatorEnum.ONE_OF,
+            values: ['Handover::With message', 'Handover::Without message'],
+        }
+
+        const helperQuery = createKnowledgeDailyMetricQuery({
+            ...baseParams,
+            metricName: METRIC_NAMES.KNOWLEDGE_HANDOVER_TICKETS,
+            customFields: [handoverCustomField],
+        })
+
+        const legacyFilters: ApiStatsFilters = {
+            [FilterKey.Period]: baseParams.dateRange,
+            [APIOnlyFilterKey.ResourceSourceId]: {
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [String(baseParams.resourceSourceId)],
+            },
+            [APIOnlyFilterKey.ResourceSourceSetId]: {
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [String(baseParams.resourceSourceSetId)],
+            },
+            [FilterKey.Stores]: {
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [baseParams.shopIntegrationId],
+            },
+            [APIOnlyFilterKey.CustomFieldId]: {
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [handoverCustomField.customFieldId],
+            },
+            [FilterKey.CustomFields]: [handoverCustomField],
+        }
+
+        const legacyQuery = createV1TimeSeriesQuery(
+            METRIC_NAMES.KNOWLEDGE_HANDOVER_TICKETS,
+            baseParams.resourceSourceId,
+            baseParams.resourceSourceSetId,
+            legacyFilters,
+            baseParams.timezone,
+            TicketInsightsTaskMeasure.TicketCount,
+            ReportingGranularity.Day,
+        )
+
+        expect(helperQuery).toEqual(legacyQuery)
     })
 })

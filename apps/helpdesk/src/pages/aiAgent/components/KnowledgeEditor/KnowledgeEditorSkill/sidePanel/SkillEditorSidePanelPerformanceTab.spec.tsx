@@ -1,19 +1,51 @@
+import type { ReactNode } from 'react'
+
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { useSkillPerformanceFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillPerformanceFromContext'
+import { useSkillPerformanceTrendFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillPerformanceTrendFromContext'
 import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 
 import { SkillEditorSidePanelPerformanceTab } from './SkillEditorSidePanelPerformanceTab'
 
 jest.mock('@repo/feature-flags')
 
+Element.prototype.getAnimations = jest.fn(() => [])
+
+const mockComposedMetricTimeSeriesChart = jest.fn((__props: unknown) => (
+    <div data-testid="skill-performance-chart">Skill performance chart</div>
+))
+const mockChartCard = jest.fn(({ children }: { children: ReactNode }) => (
+    <div data-testid="skill-performance-chart-card">{children}</div>
+))
+
 jest.mock(
     'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillPerformanceFromContext',
-    () => ({ useSkillPerformanceFromContext: jest.fn() }),
+    () => ({
+        SkillPerformanceDataProvider: ({
+            children,
+        }: {
+            children: ReactNode
+        }) => <>{children}</>,
+        useSkillPerformanceFromContext: jest.fn(),
+    }),
 )
+jest.mock(
+    'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillPerformanceTrendFromContext',
+    () => ({
+        useSkillPerformanceTrendFromContext: jest.fn(),
+    }),
+)
+
+jest.mock('@repo/reporting', () => ({
+    ChartCard: (props: { children: ReactNode }) => mockChartCard(props),
+    ComposedMetricTimeSeriesChart: (props: unknown) =>
+        mockComposedMetricTimeSeriesChart(props),
+    NoDataPlaceholder: () => <div>No data found</div>,
+}))
 
 jest.mock('./SkillEditorSidePanelRecentTicketsSection', () => ({
     SkillEditorSidePanelRecentTicketsSection: () => (
@@ -29,6 +61,8 @@ jest.mock('./SkillEditorSidePanelPerformanceMetricCards', () => ({
 
 const mockUseSkillPerformanceFromContext =
     useSkillPerformanceFromContext as jest.Mock
+const mockUseSkillPerformanceTrendFromContext =
+    useSkillPerformanceTrendFromContext as jest.Mock
 
 const defaultSkillMetrics = {
     metrics: null,
@@ -38,13 +72,31 @@ const defaultSkillMetrics = {
     dateRange: { start_datetime: '2024-01-01', end_datetime: '2024-01-28' },
     totalAiAgentTickets: 0,
 }
+const defaultTrendChartData = [
+    { date: '2026-04-20', ticketVolume: 34, csat: 4.3 },
+    { date: '2026-05-17', ticketVolume: 99, csat: 4.5 },
+]
+const defaultTrendChartMarkers = [
+    {
+        id: 'mock-version-published-2026-04-30',
+        date: '2026-04-30',
+        label: 'Changes published',
+    },
+]
 
 describe('SkillEditorSidePanelPerformanceTab', () => {
     beforeEach(() => {
+        jest.clearAllMocks()
         mockFeatureFlags({})
         mockUseSkillPerformanceFromContext.mockReturnValue({
             skillMetrics: defaultSkillMetrics,
             recentTickets: undefined,
+        })
+        mockUseSkillPerformanceTrendFromContext.mockReturnValue({
+            chartData: defaultTrendChartData,
+            chartMarkers: defaultTrendChartMarkers,
+            dateRange: defaultSkillMetrics.dateRange,
+            isLoading: false,
         })
     })
 
@@ -133,6 +185,12 @@ describe('SkillEditorSidePanelPerformanceTab', () => {
 
         render(<SkillEditorSidePanelPerformanceTab />)
 
+        expect(
+            screen.getByRole('button', { name: 'Explore trend' }),
+        ).toBeInTheDocument()
+        expect(mockComposedMetricTimeSeriesChart).not.toHaveBeenCalled()
+        expect(mockUseSkillPerformanceTrendFromContext).not.toHaveBeenCalled()
+
         await act(async () => {
             await user.click(
                 screen.getByRole('button', { name: 'Explore trend' }),
@@ -140,5 +198,93 @@ describe('SkillEditorSidePanelPerformanceTab', () => {
         })
 
         expect(screen.getByText('Skill performance')).toBeInTheDocument()
+        expect(mockUseSkillPerformanceTrendFromContext).toHaveBeenCalled()
+        expect(
+            screen.getByTestId('skill-performance-chart-card'),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByTestId('skill-performance-chart'),
+        ).toBeInTheDocument()
+        expect(mockChartCard).toHaveBeenCalledWith(
+            expect.objectContaining({
+                title: 'CSAT',
+                withTrend: false,
+            }),
+        )
+        expect(mockComposedMetricTimeSeriesChart).toHaveBeenCalledWith(
+            expect.objectContaining({
+                data: expect.arrayContaining([
+                    {
+                        date: '2026-04-20',
+                        ticketVolume: 34,
+                        csat: 4.3,
+                    },
+                    {
+                        date: '2026-05-17',
+                        ticketVolume: 99,
+                        csat: 4.5,
+                    },
+                ]),
+                markers: expect.arrayContaining([
+                    expect.objectContaining({
+                        date: '2026-04-30',
+                        label: 'Changes published',
+                    }),
+                ]),
+                barMetric: expect.objectContaining({
+                    dataKey: 'ticketVolume',
+                    label: 'Tickets',
+                    color: 'var(--dataviz-coral)',
+                    yAxisDomain: [0, 200],
+                }),
+                lineMetric: expect.objectContaining({
+                    dataKey: 'csat',
+                    label: 'CSAT',
+                    color: 'var(--dataviz-purple)',
+                }),
+                chartHeight: 262,
+                isLoading: false,
+                legendGap: 36,
+            }),
+        )
+
+        const chartProps = mockComposedMetricTimeSeriesChart.mock
+            .calls[0][0] as {
+            data: unknown[]
+            dateFormatter: (date: string) => string
+        }
+
+        expect(chartProps.data).toHaveLength(defaultTrendChartData.length)
+        expect(chartProps.dateFormatter('2026-04-20')).toBe(
+            new Intl.DateTimeFormat(undefined, {
+                month: 'short',
+                day: 'numeric',
+            }).format(new Date(2026, 3, 20)),
+        )
+    })
+
+    it('shows a no-data placeholder in the trend modal when chart data is empty', async () => {
+        const user = userEvent.setup()
+
+        mockFeatureFlags({
+            [FeatureFlagKey.IntentBasedKnowledgeMilestone3NewReportingLayer]: true,
+        })
+        mockUseSkillPerformanceTrendFromContext.mockReturnValue({
+            chartData: [],
+            chartMarkers: undefined,
+            dateRange: defaultSkillMetrics.dateRange,
+            isLoading: false,
+        })
+
+        render(<SkillEditorSidePanelPerformanceTab />)
+
+        await act(async () => {
+            await user.click(
+                screen.getByRole('button', { name: 'Explore trend' }),
+            )
+        })
+
+        expect(screen.getByText('No data found')).toBeInTheDocument()
+        expect(mockComposedMetricTimeSeriesChart).not.toHaveBeenCalled()
     })
 })

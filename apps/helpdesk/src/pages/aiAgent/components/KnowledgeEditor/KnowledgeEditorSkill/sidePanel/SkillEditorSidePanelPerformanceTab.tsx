@@ -4,7 +4,10 @@ import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 
 import { Box, Button, Heading, Icon, Text } from '@gorgias/axiom'
 
-import { useSkillPerformanceFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillPerformanceFromContext'
+import {
+    SkillPerformanceDataProvider,
+    useSkillPerformanceFromContext,
+} from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillPerformanceFromContext'
 import { SkillEditorSidePanelRecentTicketsSection } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/sidePanel/SkillEditorSidePanelRecentTicketsSection'
 import { formatDateRangeSubtitle } from 'pages/aiAgent/components/KnowledgeEditor/shared/useVersionHistoryBase/useVersionHistoryBase'
 
@@ -19,9 +22,9 @@ export const SkillEditorSidePanelPerformanceTab = () => {
         FeatureFlagKey.IntentBasedKnowledgeMilestone3NewReportingLayer,
         false,
     )
-
+    const skillPerformanceData = useSkillPerformanceFromContext()
     const { skillMetrics, recentTickets, historicalVersionDateRange } =
-        useSkillPerformanceFromContext()
+        skillPerformanceData
 
     const hasMetrics = skillMetrics.metrics !== null
     const hasRecentTickets =
@@ -32,78 +35,84 @@ export const SkillEditorSidePanelPerformanceTab = () => {
     const hasNoData = !isDataLoading && !hasMetrics && !hasRecentTickets
 
     return (
-        <Box className={css.performanceTab}>
-            <Box className={css.performanceSection}>
-                <Box display="flex" flexDirection="column">
-                    <Box
-                        display="flex"
-                        justifyContent="space-between"
-                        alignItems="center"
-                        gap="sm"
-                    >
-                        <Heading>Performance</Heading>
-                        {isNewReportingLayerEnabled && (
-                            <Button
-                                className={css.exploreTrendButton}
-                                variant="secondary"
-                                size="md"
-                                leadingSlot="chart-line"
-                                aria-label="Explore trend"
-                                onClick={() => setIsTrendModalOpen(true)}
-                            >
-                                Explore trend
-                            </Button>
-                        )}
+        <SkillPerformanceDataProvider value={skillPerformanceData}>
+            <Box className={css.performanceTab}>
+                <Box className={css.performanceSection}>
+                    <Box display="flex" flexDirection="column">
+                        <Box
+                            display="flex"
+                            justifyContent="space-between"
+                            alignItems="center"
+                            gap="sm"
+                        >
+                            <Heading>Performance</Heading>
+                            {isNewReportingLayerEnabled && (
+                                <Button
+                                    className={css.exploreTrendButton}
+                                    variant="secondary"
+                                    size="md"
+                                    leadingSlot="chart-line"
+                                    aria-label="Explore trend"
+                                    onClick={() => setIsTrendModalOpen(true)}
+                                >
+                                    Explore trend
+                                </Button>
+                            )}
+                        </Box>
+                        <Text size="sm" color="content-neutral-tertiary">
+                            {formatDateRangeSubtitle(
+                                historicalVersionDateRange,
+                            )}
+                        </Text>
                     </Box>
-                    <Text size="sm" color="content-neutral-tertiary">
-                        {formatDateRangeSubtitle(historicalVersionDateRange)}
-                    </Text>
-                </Box>
 
-                {!hasNoData && (
-                    <SkillEditorSidePanelPerformanceMetricCards
-                        {...skillMetrics}
-                    />
-                )}
-            </Box>
-            {hasNoData ? (
-                <Box
-                    flexGrow={1}
-                    display="flex"
-                    flexDirection="column"
-                    alignItems="center"
-                    justifyContent="center"
-                    gap="sm"
-                >
-                    <Icon name="chart-bar-vertical" />
+                    {!hasNoData && (
+                        <SkillEditorSidePanelPerformanceMetricCards
+                            {...skillMetrics}
+                        />
+                    )}
+                </Box>
+                {hasNoData ? (
                     <Box
-                        width="220px"
+                        flexGrow={1}
                         display="flex"
                         flexDirection="column"
                         alignItems="center"
                         justifyContent="center"
-                        gap="xxxxs"
+                        gap="sm"
                     >
-                        <Text size="md" variant="bold">
-                            No data yet
-                        </Text>
-                        <Text
-                            size="sm"
-                            color="content-neutral-tertiary"
-                            align="center"
+                        <Icon name="chart-bar-vertical" />
+                        <Box
+                            width="220px"
+                            display="flex"
+                            flexDirection="column"
+                            alignItems="center"
+                            justifyContent="center"
+                            gap="xxxxs"
                         >
-                            Data will appear here once AI Agent handles
-                            conversations using this skill.
-                        </Text>
+                            <Text size="md" variant="bold">
+                                No data yet
+                            </Text>
+                            <Text
+                                size="sm"
+                                color="content-neutral-tertiary"
+                                align="center"
+                            >
+                                Data will appear here once AI Agent handles
+                                conversations using this skill.
+                            </Text>
+                        </Box>
                     </Box>
-                </Box>
-            ) : (
-                <SkillEditorSidePanelRecentTicketsSection sectionId="recent-tickets" />
-            )}
-            <SkillPerformanceTrendModal
-                isOpen={isTrendModalOpen}
-                onOpenChange={setIsTrendModalOpen}
-            />
-        </Box>
+                ) : (
+                    <SkillEditorSidePanelRecentTicketsSection sectionId="recent-tickets" />
+                )}
+                {isNewReportingLayerEnabled && isTrendModalOpen && (
+                    <SkillPerformanceTrendModal
+                        isOpen={isTrendModalOpen}
+                        onOpenChange={setIsTrendModalOpen}
+                    />
+                )}
+            </Box>
+        </SkillPerformanceDataProvider>
     )
 }

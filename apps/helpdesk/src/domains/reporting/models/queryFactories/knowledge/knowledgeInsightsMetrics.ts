@@ -9,7 +9,10 @@ import { AI_AGENT_OUTCOME_DISPLAY_LABELS } from 'domains/reporting/hooks/automat
 import type { MetricName } from 'domains/reporting/hooks/metricNames'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { useMetric } from 'domains/reporting/hooks/useMetric'
-import { useMetricPerDimensionV2 } from 'domains/reporting/hooks/useMetricPerDimension'
+import {
+    useMetricPerDimension,
+    useMetricPerDimensionV2,
+} from 'domains/reporting/hooks/useMetricPerDimension'
 import type { Cubes } from 'domains/reporting/models/cubes'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketCustomFieldsDimension } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
@@ -33,7 +36,10 @@ import {
     knowledgeTicketsCountQueryV2Factory,
     knowledgeTicketsResourceCountQueryV2Factory,
 } from 'domains/reporting/models/scopes/knowledgeInsights'
-import type { ApiStatsFilters } from 'domains/reporting/models/stat/types'
+import type {
+    ApiStatsFilters,
+    CustomFieldFilter,
+} from 'domains/reporting/models/stat/types'
 import {
     APIOnlyFilterKey,
     FilterKey,
@@ -42,7 +48,10 @@ import type {
     ReportingFilter,
     ReportingQuery,
 } from 'domains/reporting/models/types'
-import { ReportingFilterOperator } from 'domains/reporting/models/types'
+import {
+    ReportingFilterOperator,
+    ReportingGranularity,
+} from 'domains/reporting/models/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { setMetricData } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { KnowledgeMetric } from 'domains/reporting/state/ui/stats/types'
@@ -116,6 +125,30 @@ type AllResourcesMetricsResult = {
     isLoading: boolean
     isError: boolean
     data?: ResourceMetrics[]
+}
+
+export type ResourceMetricsByDay = {
+    date: string
+    tickets: number | null
+    csat: number | null
+}
+
+type ResourceMetricsByDayResult = {
+    isLoading: boolean
+    isError: boolean
+    data?: ResourceMetricsByDay[]
+}
+
+type ResourceMetricsByDayParams = {
+    shopIntegrationId?: number
+    resourceSourceId: number
+    resourceSourceSetId: number
+    timezone: string
+    enabled?: boolean
+    dateRange: {
+        start_datetime: string
+        end_datetime: string
+    }
 }
 
 type MetricDataRecord = Record<string, string | number | null | undefined>
@@ -243,6 +276,169 @@ export const createV1Query = <TCube extends Cubes = Cubes>(
         metricName,
         timezone,
     }
+}
+
+/**
+ * V1 time-series query for a single skill resource. Filters by resourceSourceId
+ * and resourceSourceSetId, omits resource dimensions, and groups only by the
+ * configured granularity. The cube backend does not allow mixing resource
+ * dimensions with time_dimensions, so per-skill filtering is required.
+ */
+export const createV1TimeSeriesQuery = <TCube extends Cubes = Cubes>(
+    metricName: MetricName,
+    resourceSourceId: number,
+    resourceSourceSetId: number,
+    filters: ApiStatsFilters,
+    timezone: string,
+    measure: string,
+    granularity: ReportingGranularity,
+): ReportingQuery<TCube> => {
+    if (!filters.period?.start_datetime || !filters.period?.end_datetime) {
+        throw new Error(
+            'Period filters (start_datetime and end_datetime) are required for knowledge metrics queries',
+        )
+    }
+
+    const baseFilters: ReportingFilter[] = [
+        {
+            member: TicketInsightsTaskDimension.ResourceSourceId,
+            operator: ReportingFilterOperator.Equals,
+            values: [String(resourceSourceId)],
+        },
+        {
+            member: TicketInsightsTaskDimension.ResourceSourceSetId,
+            operator: ReportingFilterOperator.Equals,
+            values: [String(resourceSourceSetId)],
+        },
+        {
+            member: TicketInsightsTaskDimension.ResourceType,
+            operator: ReportingFilterOperator.Equals,
+            values: [
+                'GUIDANCE',
+                'ARTICLE',
+                'MACRO',
+                'EXTERNAL_SNIPPET',
+                'FILE_EXTERNAL_SNIPPET',
+                'STORE_WEBSITE_QUESTION_SNIPPET',
+            ],
+        },
+    ]
+
+    const customFields: {
+        customFieldId: number
+        operator: any
+        values: string[]
+    }[] = []
+    if (
+        filters[FilterKey.CustomFields] &&
+        filters[FilterKey.CustomFields].length > 0
+    ) {
+        filters[FilterKey.CustomFields].forEach((cf) => {
+            baseFilters.push({
+                member: 'TicketCustomFieldsEnriched.customFieldId',
+                operator: ReportingFilterOperator.Equals,
+                values: [cf.customFieldId.toString()],
+            })
+            customFields.push({
+                customFieldId: cf.customFieldId,
+                operator: cf.operator,
+                values: cf.values.map((value) =>
+                    cf.customFieldId.toString().concat('::' + String(value)),
+                ),
+            })
+        })
+    }
+
+    return {
+        measures: [measure] as TCube['measures'][],
+        dimensions: [] as TCube['dimensions'][],
+        filters: [
+            ...NotSpamNorTrashedTicketsFilter,
+            ...statsFiltersToReportingFilters(KnowledgeStatsFiltersMembers, {
+                ...filters,
+                ...(customFields.length > 0
+                    ? { [FilterKey.CustomFields]: customFields }
+                    : {}),
+            }),
+            ...baseFilters,
+        ],
+        timeDimensions: [
+            {
+                dimension: TicketDimension.CreatedDatetime,
+                granularity,
+                dateRange: [
+                    filters.period.start_datetime,
+                    filters.period.end_datetime,
+                ],
+            },
+        ] as ReportingQuery<TCube>['timeDimensions'],
+        metricName,
+        timezone,
+    }
+}
+
+type KnowledgeDailyMetricQueryParams = {
+    metricName: MetricName
+    measure: string
+    resourceSourceId: number
+    resourceSourceSetId: number
+    shopIntegrationId?: number
+    timezone: string
+    dateRange: { start_datetime: string; end_datetime: string }
+    customFields?: CustomFieldFilter[]
+}
+
+/**
+ * Builds a per-day V1 time-series query for a single knowledge resource.
+ * Owns the ApiStatsFilters shape (period, resource IDs, optional store and
+ * custom field filters) so callers only need to think in domain terms.
+ */
+export const createKnowledgeDailyMetricQuery = <TCube extends Cubes = Cubes>({
+    metricName,
+    measure,
+    resourceSourceId,
+    resourceSourceSetId,
+    shopIntegrationId,
+    timezone,
+    dateRange,
+    customFields,
+}: KnowledgeDailyMetricQueryParams): ReportingQuery<TCube> => {
+    const filters: ApiStatsFilters = {
+        [FilterKey.Period]: {
+            start_datetime: dateRange.start_datetime,
+            end_datetime: dateRange.end_datetime,
+        },
+        [APIOnlyFilterKey.ResourceSourceId]: withLogicalOperator([
+            String(resourceSourceId),
+        ]),
+        [APIOnlyFilterKey.ResourceSourceSetId]: withLogicalOperator([
+            String(resourceSourceSetId),
+        ]),
+        ...(shopIntegrationId && {
+            [FilterKey.Stores]: {
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [shopIntegrationId],
+            },
+        }),
+        ...(customFields?.length
+            ? {
+                  [APIOnlyFilterKey.CustomFieldId]: withLogicalOperator(
+                      customFields.map((cf) => cf.customFieldId),
+                  ),
+                  [FilterKey.CustomFields]: customFields,
+              }
+            : {}),
+    }
+
+    return createV1TimeSeriesQuery<TCube>(
+        metricName,
+        resourceSourceId,
+        resourceSourceSetId,
+        filters,
+        timezone,
+        measure,
+        ReportingGranularity.Day,
+    )
 }
 
 /**
@@ -1078,6 +1274,75 @@ export const aggregateResourceMetrics = (
     return Array.from(resourceMap.values())
 }
 
+const KNOWLEDGE_TIMESERIES_DATE_KEYS = [
+    'createdDatetime.day',
+    'createdDatetime',
+    `${TicketDimension.CreatedDatetime}.day`,
+    TicketDimension.CreatedDatetime as string,
+] as const
+
+const readDateBucket = (record: MetricDataRecord): string | null => {
+    for (const key of KNOWLEDGE_TIMESERIES_DATE_KEYS) {
+        const value = record[key]
+        if (value != null) return moment(value).format('YYYY-MM-DD')
+    }
+    return null
+}
+
+const readCountMeasure = (record: MetricDataRecord): number | null => {
+    const raw =
+        record[TicketInsightsTaskMeasureV2.TicketCount] ??
+        record[TicketInsightsTaskMeasure.TicketCount]
+    if (raw == null) return null
+    const value = Number(raw)
+    return Number.isNaN(value) ? null : value
+}
+
+const readCsatMeasure = (record: MetricDataRecord): number | null => {
+    const raw =
+        record[TicketInsightsTaskMeasureV2.AverageSurveyScore] ??
+        record[TicketInsightsTaskMeasure.AvgSurveyScore]
+    if (raw == null) return null
+    const value = Number(raw)
+    return Number.isNaN(value) ? null : value
+}
+
+/**
+ * Aggregates per-day metrics for a single skill resource.
+ * The response is already filtered to one resource, so we only bucket by date.
+ */
+export const aggregateResourceMetricsByDay = (
+    ticketsData: MetricDataRecord[] | undefined,
+    csatData: MetricDataRecord[] | undefined,
+): ResourceMetricsByDay[] => {
+    const entryMap = new Map<string, ResourceMetricsByDay>()
+
+    const getEntry = (date: string) => {
+        if (!entryMap.has(date)) {
+            entryMap.set(date, {
+                date,
+                tickets: null,
+                csat: null,
+            })
+        }
+        return entryMap.get(date)!
+    }
+
+    ticketsData?.forEach((record) => {
+        const date = readDateBucket(record)
+        if (!date) return
+        getEntry(date).tickets = readCountMeasure(record) ?? 0
+    })
+
+    csatData?.forEach((record) => {
+        const date = readDateBucket(record)
+        if (!date) return
+        getEntry(date).csat = readCsatMeasure(record)
+    })
+
+    return Array.from(entryMap.values())
+}
+
 /**
  * Hook to fetch resource metrics for all resources
  * Fetches metrics for the last 28 days filtered by shopIntegrationId:
@@ -1259,6 +1524,90 @@ export const useAllResourcesMetrics = ({
         csatMetric.data,
         intentsMetric.data,
     ])
+
+    return {
+        isLoading,
+        isError,
+        data,
+    }
+}
+
+/**
+ * Hook to fetch per-day metrics for a single skill resource. Powers the daily
+ * timeseries view in SkillPerformanceTrendModal. The query filters on the
+ * specific resource and groups only by day — the cube backend does not allow
+ * mixing resource dimensions with time_dimensions.
+ */
+export const useResourceMetricsByDay = ({
+    shopIntegrationId,
+    resourceSourceId,
+    resourceSourceSetId,
+    timezone,
+    enabled = true,
+    dateRange,
+}: ResourceMetricsByDayParams): ResourceMetricsByDayResult => {
+    const ticketsQuery = useMemo(
+        () =>
+            createKnowledgeDailyMetricQuery({
+                metricName: METRIC_NAMES.KNOWLEDGE_TICKETS_TICKET_COUNT,
+                measure: TicketInsightsTaskMeasure.TicketCount,
+                resourceSourceId,
+                resourceSourceSetId,
+                shopIntegrationId,
+                timezone,
+                dateRange,
+            }),
+        [
+            resourceSourceId,
+            resourceSourceSetId,
+            shopIntegrationId,
+            timezone,
+            dateRange,
+        ],
+    )
+
+    const csatQuery = useMemo(
+        () =>
+            createKnowledgeDailyMetricQuery({
+                metricName: METRIC_NAMES.KNOWLEDGE_CSAT,
+                measure: TicketInsightsTaskMeasure.AvgSurveyScore,
+                resourceSourceId,
+                resourceSourceSetId,
+                shopIntegrationId,
+                timezone,
+                dateRange,
+            }),
+        [
+            resourceSourceId,
+            resourceSourceSetId,
+            shopIntegrationId,
+            timezone,
+            dateRange,
+        ],
+    )
+
+    const ticketsMetric = useMetricPerDimension(
+        ticketsQuery,
+        undefined,
+        enabled,
+    )
+
+    const csatMetric = useMetricPerDimension(csatQuery, undefined, enabled)
+
+    const isLoading = ticketsMetric.isFetching || csatMetric.isFetching
+
+    const isError = ticketsMetric.isError || csatMetric.isError
+
+    const data = useMemo(() => {
+        if (isLoading || isError) {
+            return undefined
+        }
+
+        return aggregateResourceMetricsByDay(
+            ticketsMetric.data?.allData,
+            csatMetric.data?.allData,
+        )
+    }, [isLoading, isError, ticketsMetric.data, csatMetric.data])
 
     return {
         isLoading,

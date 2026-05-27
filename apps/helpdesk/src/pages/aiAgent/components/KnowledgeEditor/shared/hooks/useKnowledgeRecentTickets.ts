@@ -9,12 +9,9 @@ import useAppSelector from 'hooks/useAppSelector'
 import type { Props as RecentTicketsProps } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSectionRecentTickets'
 import { getTimezone } from 'state/currentUser/selectors'
 
-export type KnowledgeRecentTicketsData = Omit<RecentTicketsProps, 'sectionId'>
+import type { DateRange } from '../types'
 
-export type DateRange = {
-    start_datetime: string
-    end_datetime: string
-}
+export type KnowledgeRecentTicketsData = Omit<RecentTicketsProps, 'sectionId'>
 
 type Params = {
     resourceSourceId: number

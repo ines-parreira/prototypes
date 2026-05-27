@@ -3,6 +3,7 @@ import { renderHook } from '@repo/testing'
 import { getLast28DaysDateRange } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { useSkillsMetrics } from 'pages/aiAgent/skills/hooks/useSkillsMetrics'
+import { useSkillsMetricsByDay } from 'pages/aiAgent/skills/hooks/useSkillsMetricsByDay'
 import { useTotalAiAgentTickets } from 'pages/aiAgent/skills/hooks/useTotalAiAgentTickets'
 
 import { useKnowledgeRecentTickets } from '../../shared/hooks/useKnowledgeRecentTickets'
@@ -12,6 +13,9 @@ import { useSkillPerformanceFromContext } from './useSkillPerformanceFromContext
 jest.mock('../context', () => ({ useSkillEditorStore: jest.fn() }))
 jest.mock('pages/aiAgent/skills/hooks/useSkillsMetrics', () => ({
     useSkillsMetrics: jest.fn(),
+}))
+jest.mock('pages/aiAgent/skills/hooks/useSkillsMetricsByDay', () => ({
+    useSkillsMetricsByDay: jest.fn(),
 }))
 jest.mock('pages/aiAgent/skills/hooks/useTotalAiAgentTickets', () => ({
     useTotalAiAgentTickets: jest.fn(),
@@ -34,6 +38,7 @@ jest.mock('../../shared/hooks/useKnowledgeRecentTickets', () => ({
 
 const mockUseSkillEditorStore = useSkillEditorStore as jest.Mock
 const mockUseSkillsMetrics = useSkillsMetrics as jest.Mock
+const mockUseSkillsMetricsByDay = useSkillsMetricsByDay as jest.Mock
 const mockUseTotalAiAgentTickets = useTotalAiAgentTickets as jest.Mock
 const mockGetLast28DaysDateRange = getLast28DaysDateRange as jest.Mock
 const mockUseGetCustomTicketsFieldsDefinitionData =
@@ -91,6 +96,11 @@ describe('useSkillPerformanceFromContext', () => {
 
         mockUseSkillsMetrics.mockReturnValue({
             data: mockMetricsData,
+            isLoading: false,
+        })
+
+        mockUseSkillsMetricsByDay.mockReturnValue({
+            data: [],
             isLoading: false,
         })
 

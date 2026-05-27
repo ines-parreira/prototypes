@@ -103,6 +103,9 @@ const MAP_AI_AGENT_ROLE_NAME: Record<string, string> = {
     [AutomationSkillType.AiAgentSales]: 'Shopping Assistant',
 }
 
+export const formatCsat = (csat: number): string =>
+    Number.isInteger(csat) ? csat.toString() : csat.toFixed(1)
+
 export const formatChannelName = (channel: string): string => {
     const channelNames: Record<string, string> = {
         email: 'Email',
