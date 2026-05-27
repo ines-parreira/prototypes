@@ -1,5 +1,4 @@
 import { spawn } from 'node:child_process'
-import fs from 'node:fs'
 import { createRequire } from 'node:module'
 import path from 'node:path'
 
@@ -7,9 +6,6 @@ const PLUGIN_NAME = 'TsgoCheckerRspackPlugin'
 const DIAGNOSTIC_PATTERN =
     /^(?<file>.+):(?<line>\d+):(?<column>\d+) - (?<severity>error|warning) TS(?<code>\d+): (?<message>.*)$/
 const ANSI_PATTERN = /\u001b\[[0-9;?]*[A-Za-z]/g
-const WATCH_STATUS_PATTERN =
-    /^(?:(?:\d{1,2}:\d{2}:\d{2} (?:AM|PM)|\[\d{1,2}:\d{2}:\d{2} (?:AM|PM)\])[\s-]+)?(?<message>Starting compilation in watch mode(?:\.\.\.)?|File change detected\. Starting incremental compilation(?:\.\.\.)?|Found \d+ errors?\. Watching for file changes\.)$/
-const TYPESCRIPT_INPUT_PATTERN = /\.(?:cts|mts|tsx?|json)$/
 
 const require = createRequire(import.meta.url)
 
@@ -69,34 +65,12 @@ function formatDuration(startTime) {
     return `${((performance.now() - startTime) / 1000).toFixed(2)}s`
 }
 
-function createTsgoArgs({ configFile, tsBuildInfoFile, tsgoBin, watch }) {
-    const args = [tsgoBin, '-p', configFile, '--noEmit', 'true']
-
-    if (tsBuildInfoFile) {
-        args.push('--incremental', 'true', '--tsBuildInfoFile', tsBuildInfoFile)
-    }
-
-    if (watch) {
-        args.push('--watch', '--preserveWatchOutput', 'true')
-    }
-
-    args.push('--pretty', 'true')
-
-    return args
+function createTsgoArgs({ configFile, tsgoBin }) {
+    return [tsgoBin, '-p', configFile, '--noEmit', 'true', '--pretty', 'true']
 }
 
-function runTsgo({
-    cwd,
-    configFile,
-    signal,
-    tsBuildInfoFile,
-    tsgoBin = resolveTsgoBin(),
-}) {
+function runTsgo({ cwd, configFile, signal, tsgoBin = resolveTsgoBin() }) {
     return new Promise((resolve) => {
-        if (tsBuildInfoFile) {
-            fs.mkdirSync(path.dirname(tsBuildInfoFile), { recursive: true })
-        }
-
         if (signal?.aborted) {
             resolve({ aborted: true, issues: [], stdout: '', stderr: '' })
             return
@@ -104,7 +78,7 @@ function runTsgo({
 
         const child = spawn(
             process.execPath,
-            createTsgoArgs({ configFile, tsBuildInfoFile, tsgoBin }),
+            createTsgoArgs({ configFile, tsgoBin }),
             {
                 cwd,
                 env: process.env,
@@ -161,33 +135,6 @@ function runTsgo({
     })
 }
 
-function normalizeTsgoOutputLine(line) {
-    return line.replace(ANSI_PATTERN, '').trim()
-}
-
-function isTypeScriptInputFile(file) {
-    return TYPESCRIPT_INPUT_PATTERN.test(file)
-}
-
-function getCompilerChangedFiles(compiler) {
-    return new Set([
-        ...(compiler.modifiedFiles ?? []),
-        ...(compiler.removedFiles ?? []),
-    ])
-}
-
-function shouldWaitForFreshWatchResult({ changedFiles, latestResult }) {
-    if (!latestResult) {
-        return true
-    }
-
-    if (changedFiles.size === 0) {
-        return true
-    }
-
-    return Array.from(changedFiles).some(isTypeScriptInputFile)
-}
-
 function isPending(promise) {
     return Promise.race([
         promise.then(
@@ -196,199 +143,6 @@ function isPending(promise) {
         ),
         Promise.resolve(true),
     ])
-}
-
-function wait(timeout) {
-    return new Promise((resolve) => setTimeout(resolve, timeout))
-}
-
-class TsgoWatchWorker {
-    constructor({
-        configFile,
-        cwd,
-        logger,
-        timeoutMs,
-        tsBuildInfoFile,
-        tsgoBin = resolveTsgoBin(),
-    }) {
-        this.configFile = configFile
-        this.cwd = cwd
-        this.logger = logger
-        this.timeoutMs = timeoutMs
-        this.tsBuildInfoFile = tsBuildInfoFile
-        this.tsgoBin = tsgoBin
-        this.currentIssues = []
-        this.currentRawOutput = ''
-        this.outputBuffer = ''
-        this.waiters = new Set()
-    }
-
-    start() {
-        if (this.child) {
-            return
-        }
-
-        this.isStopping = false
-
-        if (this.tsBuildInfoFile) {
-            fs.mkdirSync(path.dirname(this.tsBuildInfoFile), {
-                recursive: true,
-            })
-        }
-
-        this.watchCheckStartTime = performance.now()
-        this.child = spawn(
-            process.execPath,
-            createTsgoArgs({
-                configFile: this.configFile,
-                tsBuildInfoFile: this.tsBuildInfoFile,
-                tsgoBin: this.tsgoBin,
-                watch: true,
-            }),
-            {
-                cwd: this.cwd,
-                env: process.env,
-                stdio: ['ignore', 'pipe', 'pipe'],
-            },
-        )
-
-        this.child.stdout.on('data', (chunk) => this.handleOutput(chunk))
-        this.child.stderr.on('data', (chunk) => this.handleOutput(chunk))
-        this.child.on('error', (error) => {
-            this.resolveWaiters({
-                issues: [],
-                processError: error,
-            })
-        })
-        this.child.on('close', (exitCode) => {
-            this.child = undefined
-
-            if (!this.isStopping && exitCode) {
-                this.resolveWaiters({
-                    exitCode,
-                    issues: [],
-                    stderr: '',
-                    stdout: '',
-                })
-            }
-        })
-    }
-
-    requestCheck({ changedFiles }) {
-        this.start()
-
-        if (
-            !shouldWaitForFreshWatchResult({
-                changedFiles,
-                latestResult: this.latestResult,
-            })
-        ) {
-            return Promise.resolve({
-                ...this.latestResult,
-                reusedPreviousResult: true,
-            })
-        }
-
-        const requestedAt = performance.now()
-        const waiter = { requestedAt }
-        const waitForResult = new Promise((resolve) => {
-            waiter.resolve = resolve
-            this.waiters.add(waiter)
-        })
-
-        return Promise.race([
-            waitForResult,
-            wait(this.timeoutMs).then(() => {
-                this.waiters.delete(waiter)
-
-                return {
-                    ...(this.latestResult ?? {
-                        issues: [],
-                        processError: new Error(
-                            `tsgo watch typecheck did not finish within ${formatDuration(
-                                requestedAt,
-                            )}.`,
-                        ),
-                    }),
-                    timedOut: true,
-                }
-            }),
-        ])
-    }
-
-    stop() {
-        this.isStopping = true
-        this.child?.kill()
-        this.child = undefined
-        this.resolveWaiters({
-            aborted: true,
-            issues: [],
-        })
-        this.waiters.clear()
-    }
-
-    handleOutput(chunk) {
-        this.outputBuffer += chunk.toString('utf8')
-        const lines = this.outputBuffer.split(/\r?\n/)
-        this.outputBuffer = lines.pop() ?? ''
-
-        lines.forEach((rawLine) => this.handleOutputLine(rawLine))
-    }
-
-    handleOutputLine(rawLine) {
-        const stripped = normalizeTsgoOutputLine(rawLine)
-        const statusMessage =
-            stripped.match(WATCH_STATUS_PATTERN)?.groups?.message
-
-        if (
-            statusMessage?.startsWith('Starting compilation') ||
-            statusMessage?.startsWith('File change detected')
-        ) {
-            this.currentIssues = []
-            this.currentRawOutput = ''
-            this.watchCheckStartTime = performance.now()
-            return
-        }
-
-        if (statusMessage?.startsWith('Found')) {
-            this.completeCurrentCheck()
-            return
-        }
-
-        const issues = parseTsgoIssues(stripped)
-        if (issues.length > 0) {
-            this.currentIssues.push(...issues)
-        }
-
-        this.currentRawOutput += `${rawLine}\n`
-    }
-
-    completeCurrentCheck() {
-        const completedAt = performance.now()
-        const result = {
-            completedAt,
-            duration: formatDuration(this.watchCheckStartTime ?? completedAt),
-            issues: this.currentIssues,
-            prettyOutput: this.currentRawOutput.replace(/^\n+|\n+$/g, ''),
-        }
-
-        this.currentIssues = []
-        this.currentRawOutput = ''
-        this.latestResult = result
-        this.resolveWaiters(result)
-    }
-
-    resolveWaiters(result) {
-        Array.from(this.waiters).forEach((waiter) => {
-            if (
-                !result.completedAt ||
-                result.completedAt >= waiter.requestedAt
-            ) {
-                waiter.resolve(result)
-                this.waiters.delete(waiter)
-            }
-        })
-    }
 }
 
 export class TsgoCheckerRspackPlugin {
@@ -403,57 +157,27 @@ export class TsgoCheckerRspackPlugin {
             cwd,
             this.options.configFile ?? 'tsconfig.json',
         )
-        const isIncremental =
-            this.options.incremental ?? compiler.options.mode === 'development'
-        const tsBuildInfoFile =
-            isIncremental === false
-                ? undefined
-                : path.resolve(
-                      cwd,
-                      this.options.tsBuildInfoFile ??
-                          'node_modules/.cache/tsgo/rspack.tsbuildinfo',
-                  )
         const isAsync =
             this.options.async ?? compiler.options.mode === 'development'
-        const useWatchWorker =
-            this.options.watchWorker ?? compiler.options.mode === 'development'
-        const watchTimeoutMs = this.options.watchTimeoutMs ?? 60000
         let activeCheck
         let iteration = 0
         const checksByCompilation = new WeakMap()
-        const watchWorker = new TsgoWatchWorker({
-            configFile,
-            cwd,
-            logger,
-            timeoutMs: watchTimeoutMs,
-            tsBuildInfoFile,
-            tsgoBin: this.options.tsgoBin,
-        })
 
         const startCheck = (compilation) => {
             activeCheck?.abortController?.abort()
 
-            const abortController = useWatchWorker
-                ? undefined
-                : new AbortController()
+            const abortController = new AbortController()
             const checkIteration = ++iteration
             const startTime = performance.now()
 
             logger.info(`Starting tsgo typecheck for ${configFile}`)
 
-            const promise = (
-                useWatchWorker
-                    ? watchWorker.requestCheck({
-                          changedFiles: getCompilerChangedFiles(compiler),
-                      })
-                    : runTsgo({
-                          cwd,
-                          configFile,
-                          signal: abortController.signal,
-                          tsBuildInfoFile,
-                          tsgoBin: this.options.tsgoBin,
-                      })
-            ).then((result) => ({
+            const promise = runTsgo({
+                cwd,
+                configFile,
+                signal: abortController.signal,
+                tsgoBin: this.options.tsgoBin,
+            }).then((result) => ({
                 ...result,
                 duration: result.duration ?? formatDuration(startTime),
                 iteration: checkIteration,
@@ -488,20 +212,9 @@ export class TsgoCheckerRspackPlugin {
                 )
             } else if (result.exitCode) {
                 logger.error(createTsgoProcessError(result).message)
-            } else if (result.reusedPreviousResult) {
-                logger.info(
-                    `tsgo typecheck reused previous result from ${result.duration}`,
-                )
             } else {
                 logger.info(`tsgo typecheck passed in ${result.duration}`)
             }
-        }
-
-        if (isAsync && useWatchWorker) {
-            compiler.hooks.environment.tap(PLUGIN_NAME, () => {
-                logger.info(`Starting tsgo watch worker for ${configFile}`)
-                watchWorker.start()
-            })
         }
 
         compiler.hooks.compilation.tap(PLUGIN_NAME, (compilation) => {
@@ -539,7 +252,6 @@ export class TsgoCheckerRspackPlugin {
             compiler.hooks.watchClose?.tap(PLUGIN_NAME, () => {
                 activeCheck?.abortController?.abort()
                 activeCheck = undefined
-                watchWorker.stop()
             })
             return
         }

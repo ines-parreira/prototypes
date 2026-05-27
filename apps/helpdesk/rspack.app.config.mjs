@@ -195,7 +195,6 @@ const config = {
             new TsgoCheckerRspackPlugin({
                 async: isDev,
                 configFile: path.join(__dirname, 'tsconfig.json'),
-                incremental: isDev,
             }),
     ].filter(Boolean),
     module: {
