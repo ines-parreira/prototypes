@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { useQueryClient } from '@tanstack/react-query'
 import classNames from 'classnames'
 import { noop } from 'lodash'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
@@ -10,7 +11,7 @@ import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 import { TicketChannel } from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useSearchParam } from 'hooks/useSearchParam'
-import { useUpdateHelpCenter } from 'models/helpCenter/queries'
+import { helpCenterKeys, useUpdateHelpCenter } from 'models/helpCenter/queries'
 import type { HelpCenter } from 'models/helpCenter/types'
 import { IntegrationType } from 'models/integration/types'
 import { useGetWorkflowConfigurations } from 'models/workflows/queries'
@@ -106,6 +107,7 @@ export const ConnectedChannelsHelpCenterView = ({
         isFetchPending,
     } = useHelpCentersAutomationSettings(currentChannelId)
     const { mutateAsync: updateHelpCenterMutateAsync } = useUpdateHelpCenter()
+    const queryClient = useQueryClient()
 
     const updateOrderManagement = useCallback(
         async (value: boolean) => {
@@ -119,6 +121,10 @@ export const ConnectedChannelsHelpCenterView = ({
                 ])
 
                 dispatch(helpCenterUpdated(res!.data))
+
+                await queryClient.invalidateQueries({
+                    queryKey: helpCenterKeys.all(),
+                })
 
                 void dispatch(
                     notify({
@@ -139,7 +145,7 @@ export const ConnectedChannelsHelpCenterView = ({
                 )
             }
         },
-        [updateHelpCenterMutateAsync, dispatch, currentChannelId],
+        [updateHelpCenterMutateAsync, dispatch, currentChannelId, queryClient],
     )
 
     const currentlyViewingDropdownOptions = useMemo(

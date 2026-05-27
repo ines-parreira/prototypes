@@ -1205,22 +1205,24 @@ describe('ConnectedChannelsContactFormView', () => {
                 },
             ])
         })
-        expect(store.getActions()).toEqual([
-            expect.objectContaining({
-                type: 'HELPCENTER/HELPCENTER_UPDATED',
-                payload: {
-                    ...mockHelpCenterChannels[0].value,
-                    self_service_deactivated_datetime:
-                        '2024-09-04T10:02:02.163Z',
-                },
-            }),
-            expect.objectContaining({
-                payload: expect.objectContaining({
-                    message: 'Order Management disabled',
-                    status: NotificationStatus.Success,
+        await waitFor(() => {
+            expect(store.getActions()).toEqual([
+                expect.objectContaining({
+                    type: 'HELPCENTER/HELPCENTER_UPDATED',
+                    payload: {
+                        ...mockHelpCenterChannels[0].value,
+                        self_service_deactivated_datetime:
+                            '2024-09-04T10:02:02.163Z',
+                    },
                 }),
-            }),
-        ])
+                expect.objectContaining({
+                    payload: expect.objectContaining({
+                        message: 'Order Management disabled',
+                        status: NotificationStatus.Success,
+                    }),
+                }),
+            ])
+        })
     })
     it('should toggle order management on', async () => {
         const mockUpdateHelpCenterMutateAsync = jest.fn().mockResolvedValue({
@@ -1373,21 +1375,23 @@ describe('ConnectedChannelsContactFormView', () => {
                 },
             ])
         })
-        expect(store.getActions()).toEqual([
-            expect.objectContaining({
-                type: 'HELPCENTER/HELPCENTER_UPDATED',
-                payload: {
-                    ...mockHelpCenterChannels[0].value,
-                    self_service_deactivated_datetime: null,
-                },
-            }),
-            expect.objectContaining({
-                payload: expect.objectContaining({
-                    message: 'Order Management enabled',
-                    status: NotificationStatus.Success,
+        await waitFor(() => {
+            expect(store.getActions()).toEqual([
+                expect.objectContaining({
+                    type: 'HELPCENTER/HELPCENTER_UPDATED',
+                    payload: {
+                        ...mockHelpCenterChannels[0].value,
+                        self_service_deactivated_datetime: null,
+                    },
                 }),
-            }),
-        ])
+                expect.objectContaining({
+                    payload: expect.objectContaining({
+                        message: 'Order Management enabled',
+                        status: NotificationStatus.Success,
+                    }),
+                }),
+            ])
+        })
     })
     it('should show loading spinner when data is being fetched', () => {
         ;(useSelfServiceConfiguration as jest.Mock).mockReturnValue({
