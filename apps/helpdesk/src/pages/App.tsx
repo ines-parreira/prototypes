@@ -7,19 +7,17 @@ import cn from 'classnames'
 import _isEqual from 'lodash/isEqual'
 import { Container } from 'reactstrap'
 
-import { Box, LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useFetchManagedDashboards } from '@repo/reporting'
-import { CopilotWorkspace } from '@gorgias/copilot'
-import { copilotAttachmentsConfig } from 'common/copilot/copilotAttachmentsConfig'
 import { GlobalNavigation } from 'common/navigation'
 import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
+import { CopilotWorkspaceContainer } from 'copilot/CopilotWorkspaceContainer'
 
 import { CollapsibleNavBarWrapper } from 'core/navigation/components/CollapsibleNavBarWrapper'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useCopilotEnabled } from 'hooks/useCopilotEnabled'
-import { AppContextProvider } from 'pages/AppContext'
 import { CollapsibleColumn } from 'pages/CollapsibleColumn'
 import IconButton from 'pages/common/components/button/IconButton'
 import FullPage from 'pages/common/components/FullPage'
@@ -155,13 +153,9 @@ const App = ({
                 </div>
             </div>
 
-            <CollapsibleColumn />
+            {!hasWayfindingMS1Flag && <CollapsibleColumn />}
             {!hasWayfindingMS1Flag && isCopilotEnabled && (
-                <Box pt="xs" pr="xs" pb="xs">
-                    <CopilotWorkspace
-                        attachmentsConfig={copilotAttachmentsConfig}
-                    />
-                </Box>
+                <CopilotWorkspaceContainer />
             )}
 
             <div
@@ -174,12 +168,4 @@ const App = ({
     )
 }
 
-const AppWrapper = (props: Props) => {
-    return (
-        <AppContextProvider>
-            <App {...props} />
-        </AppContextProvider>
-    )
-}
-
-export default memo(AppWrapper, _isEqual)
+export default memo(App, _isEqual)

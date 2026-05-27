@@ -5,10 +5,10 @@ import { Handle, Panel, PanelGroup, Panels } from '@repo/layout'
 import { SidebarProvider } from '@repo/navigation'
 
 import { Box, Button, SidePanel } from '@gorgias/axiom'
-import { CopilotWorkspace } from '@gorgias/copilot'
 
-import { copilotAttachmentsConfig } from 'common/copilot/copilotAttachmentsConfig'
+import { CopilotWorkspaceContainer } from 'copilot/CopilotWorkspaceContainer'
 import { useCopilotEnabled } from 'hooks/useCopilotEnabled'
+import { CollapsibleColumn } from 'pages/CollapsibleColumn'
 import { NavigationSidebar } from 'routes/layout/NavigationSidebar'
 
 import css from './AppLayout.less'
@@ -74,13 +74,8 @@ export function AppLayout({ children, hasPanel }: AppLayoutProps) {
                             {children}
                         </Panel>
                     </PanelGroup>
-                    {isCopilotEnabled && (
-                        <Box pt="xs" pr="xs" pb="xs">
-                            <CopilotWorkspace
-                                attachmentsConfig={copilotAttachmentsConfig}
-                            />
-                        </Box>
-                    )}
+                    <CollapsibleColumn />
+                    {isCopilotEnabled && <CopilotWorkspaceContainer />}
                 </Panels>
             </Box>
         )
@@ -120,13 +115,8 @@ export function AppLayout({ children, hasPanel }: AppLayoutProps) {
                                 </Panel>
                             )}
                         </PanelGroup>
-                        {isCopilotEnabled && (
-                            <Box pt="xs" pr="xs" pb="xs">
-                                <CopilotWorkspace
-                                    attachmentsConfig={copilotAttachmentsConfig}
-                                />
-                            </Box>
-                        )}
+                        <CollapsibleColumn />
+                        {isCopilotEnabled && <CopilotWorkspaceContainer />}
                     </>
                 )}
             </SidebarProvider>
