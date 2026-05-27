@@ -499,6 +499,7 @@ overrides:
   node-forge: 1.4.0
   '@babel/plugin-transform-modules-systemjs': 7.29.4
   fast-uri: 3.1.2
+  tmp@0.2.5: 0.2.6
 
 importers:
 
@@ -5735,6 +5736,9 @@ packages:
       react: ^18
       react-dom: ^18
       rxjs: ^7.8.0
+    peerDependenciesMeta:
+      rxjs:
+        optional: true
 
   '@gorgias/customer-segmentation-client@0.2.9':
     resolution: {integrity: sha512-VOS6eQA+J53lSWXYzAPexRGLrjA3RM0YzzxG4kdj+acxKtIEsoyJe8BRJvMzHO+nLgQWcs90vtWkrWZiyDdGEw==, tarball: https://npm.pkg.github.com/download/@gorgias/customer-segmentation-client/0.2.9/f504bf90c80bfe6d867fa0521f4eee735676f639}
@@ -17048,12 +17052,8 @@ packages:
     resolution: {integrity: sha512-jRCJlojKnZ3addtTOjdIqoRuPEKBvNXcGYqzO6zWZX8KfKEpnGY5jfggJQ3EjKuu8D4bJRr0y+cYJFmYbImXGw==}
     engines: {node: '>=0.6.0'}
 
-  tmp@0.2.3:
-    resolution: {integrity: sha512-nZD7m9iCPC5g0pYmcaxogYKggSfLsdxl8of3Q/oIbqCqLLIO9IAF0GWjX1z9NZRHPiXv8Wex4yDCaZsgEw0Y8w==}
-    engines: {node: '>=14.14'}
-
-  tmp@0.2.5:
-    resolution: {integrity: sha512-voyz6MApa1rQGUxT3E+BK7/ROe8itEx7vD8/HEvt4xwXucvQ5G5oeEiHkmHZJuBO21RpOf+YYm9MOivj709jow==}
+  tmp@0.2.6:
+    resolution: {integrity: sha512-5sJPdPjfI5Kx+qbrDesxkglRBxW//g7hCsqspEjwkewGvBMGIKMOTKzLt1hFVJzyadba3lDUN20O9qhvbQUSTA==}
     engines: {node: '>=14.14'}
 
   tmpl@1.0.5:
@@ -19961,9 +19961,10 @@ snapshots:
       react-dom: 18.2.0(react@18.2.0)
       react-markdown: 10.1.0(@types/react@18.2.67)(react@18.2.0)
       remark-gfm: 4.0.1
-      rxjs: 7.8.1
       use-stick-to-bottom: 1.1.4(react@18.2.0)
       zod: 3.25.76
+    optionalDependencies:
+      rxjs: 7.8.1
     transitivePeerDependencies:
       - '@emotion/is-prop-valid'
       - '@types/mdast'
@@ -29591,7 +29592,7 @@ snapshots:
       neo-async: 2.6.2
       picocolors: 1.1.1
       recast: 0.23.11
-      tmp: 0.2.5
+      tmp: 0.2.6
       write-file-atomic: 5.0.1
     optionalDependencies:
       '@babel/preset-env': 7.10.2(@babel/core@7.29.0)
@@ -31304,7 +31305,7 @@ snapshots:
       semver: 7.7.2
       string-width: 4.2.3
       tar-stream: 2.2.0
-      tmp: 0.2.3
+      tmp: 0.2.6
       tree-kill: 1.2.2
       tsconfig-paths: 4.2.0
       tslib: 2.8.1
@@ -34351,10 +34352,7 @@ snapshots:
     dependencies:
       os-tmpdir: 1.0.2
 
-  tmp@0.2.3: {}
-
-  tmp@0.2.5:
-    optional: true
+  tmp@0.2.6: {}
 
   tmpl@1.0.5: {}
 
