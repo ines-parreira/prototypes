@@ -208,12 +208,132 @@ describe('useChatPreviewPanel', () => {
         ).not.toThrow()
     })
 
+    it('updateIntroductionText does not throw when ref is unattached', () => {
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        expect(() =>
+            result.current.updateIntroductionText('How can we help?'),
+        ).not.toThrow()
+    })
+
+    it('updateIntroductionText does not throw when called with an empty string', () => {
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        expect(() => result.current.updateIntroductionText('')).not.toThrow()
+    })
+
+    it('updateIntroductionText updates preview text without changing the chat page or open state when attached', () => {
+        const mockDisplayPage = jest.fn()
+        const mockOpenChat = jest.fn()
+        const mockUpdateSettings = jest.fn()
+        const mockUpdateTexts = jest.fn()
+        const mockUpdatePreviewTexts = jest.fn()
+
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        const panelArg = mockWarpToCollapsibleColumn.mock.calls.at(-1)?.[0]
+        if (panelArg?.ref) {
+            panelArg.ref.current = {
+                displayPage: mockDisplayPage,
+                openChat: mockOpenChat,
+                updateSettings: mockUpdateSettings,
+                updateTexts: mockUpdateTexts,
+                updatePreviewTexts: mockUpdatePreviewTexts,
+            }
+        }
+
+        result.current.updateIntroductionText('How can we help?')
+
+        expect(mockDisplayPage).not.toHaveBeenCalled()
+        expect(mockOpenChat).not.toHaveBeenCalled()
+        expect(mockUpdateSettings).not.toHaveBeenCalled()
+        expect(mockUpdateTexts).not.toHaveBeenCalled()
+        expect(mockUpdatePreviewTexts).toHaveBeenCalledWith({
+            introductionText: 'How can we help?',
+        })
+    })
+
+    it('updateOfflineIntroductionText does not throw when ref is unattached', () => {
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        expect(() =>
+            result.current.updateOfflineIntroductionText("We'll be back soon"),
+        ).not.toThrow()
+    })
+
+    it('updateOfflineIntroductionText does not throw when called with an empty string', () => {
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        expect(() =>
+            result.current.updateOfflineIntroductionText(''),
+        ).not.toThrow()
+    })
+
+    it('updateOfflineIntroductionText updates preview text without changing the chat page or open state when attached', () => {
+        const mockDisplayPage = jest.fn()
+        const mockOpenChat = jest.fn()
+        const mockUpdateSettings = jest.fn()
+        const mockUpdateTexts = jest.fn()
+        const mockUpdatePreviewTexts = jest.fn()
+
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        const panelArg = mockWarpToCollapsibleColumn.mock.calls.at(-1)?.[0]
+        if (panelArg?.ref) {
+            panelArg.ref.current = {
+                displayPage: mockDisplayPage,
+                openChat: mockOpenChat,
+                updateSettings: mockUpdateSettings,
+                updateTexts: mockUpdateTexts,
+                updatePreviewTexts: mockUpdatePreviewTexts,
+            }
+        }
+
+        result.current.updateOfflineIntroductionText("We'll be back soon")
+
+        expect(mockDisplayPage).not.toHaveBeenCalled()
+        expect(mockOpenChat).not.toHaveBeenCalled()
+        expect(mockUpdateSettings).not.toHaveBeenCalled()
+        expect(mockUpdateTexts).not.toHaveBeenCalled()
+        expect(mockUpdatePreviewTexts).toHaveBeenCalledWith({
+            offlineIntroductionText: "We'll be back soon",
+        })
+    })
+
     it('updateTexts does not throw when ref is unattached', () => {
         const { result } = renderHook(() => useChatPreviewPanel())
 
         expect(() =>
             result.current.updateTexts({ title: 'Hello' }),
         ).not.toThrow()
+    })
+
+    it('updatePreviewTexts does not throw when ref is unattached', () => {
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        expect(() =>
+            result.current.updatePreviewTexts({
+                introductionText: 'How can we help?',
+            }),
+        ).not.toThrow()
+    })
+
+    it('updatePreviewTexts calls updatePreviewTexts on the ref when attached', () => {
+        const mockUpdatePreviewTexts = jest.fn()
+
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        const panelArg = mockWarpToCollapsibleColumn.mock.calls.at(-1)?.[0]
+        if (panelArg?.ref) {
+            panelArg.ref.current = {
+                updatePreviewTexts: mockUpdatePreviewTexts,
+            }
+        }
+
+        const texts = { introductionText: 'How can we help?' }
+        result.current.updatePreviewTexts(texts)
+
+        expect(mockUpdatePreviewTexts).toHaveBeenCalledWith(texts)
     })
 
     it('updateSSPTexts does not throw when ref is unattached', () => {
@@ -584,11 +704,14 @@ describe('useChatPreviewPanelContext', () => {
             updatePosition: jest.fn(),
             updateHeaderPictureUrl: jest.fn(),
             updateHeaderAlternativePictureUrl: jest.fn(),
+            updateIntroductionText: jest.fn(),
+            updateOfflineIntroductionText: jest.fn(),
             openChat: jest.fn(),
             closeChat: jest.fn(),
             displayPage: jest.fn(),
             updateLauncher: jest.fn(),
             updateTexts: jest.fn(),
+            updatePreviewTexts: jest.fn(),
             updateSSPTexts: jest.fn(),
             updateLegalDisclaimer: jest.fn(),
             updateLegalDisclaimerEnabled: jest.fn(),

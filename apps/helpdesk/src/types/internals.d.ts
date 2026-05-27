@@ -68,6 +68,7 @@ declare global {
             }) => void
             updateSSPTexts(param: Record<string, string>): void
             updateTexts(texts: Record<string, string>): void
+            updatePreviewTexts?(texts: Record<string, string>): void
             setPosition(position: GorgiasChatPosition): void
             setCustomBusinessHours?: (input: {
                 timezone: string

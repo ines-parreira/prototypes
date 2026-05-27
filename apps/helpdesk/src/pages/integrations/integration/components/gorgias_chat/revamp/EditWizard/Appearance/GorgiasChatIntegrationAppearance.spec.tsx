@@ -62,12 +62,17 @@ type BrandCardProps = {
     useMainColorOutsideBusinessHours: boolean
     headerPictureUrl?: string
     headerAlternativePictureUrl?: string
+    introductionText: string
+    offlineIntroductionText: string
+    isAiAgentEnabled?: boolean
     showAdvancedColors?: boolean
     onMainColorChange: (value: string) => void
     onConversationColorChange: (value: string) => void
     onUseMainColorOutsideBusinessHoursChange: (value: boolean) => void
     onHeaderLogoUrlChange: (url?: string) => void
     onHeaderAlternativePictureUrlChange: (url?: string) => void
+    onIntroductionTextChange: (value: string) => void
+    onOfflineIntroductionTextChange: (value: string) => void
 }
 
 type ChatLauncherCardProps = {
@@ -91,10 +96,10 @@ type AvatarCardProps = {
     onAvatarChange: (avatar: GorgiasChatAvatarSettings) => void
 }
 
-const mockBrandCard = jest.fn()
-const mockChatLauncherCard = jest.fn()
-const mockLegalCard = jest.fn()
-const mockAvatarCard = jest.fn()
+const mockBrandCard = jest.fn<void, [BrandCardProps]>()
+const mockChatLauncherCard = jest.fn<void, [ChatLauncherCardProps]>()
+const mockLegalCard = jest.fn<void, [LegalCardProps]>()
+const mockAvatarCard = jest.fn<void, [AvatarCardProps]>()
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/common/GorgiasChatRevampLayout',
@@ -216,6 +221,8 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
             header_picture_url: 'https://example.com/logo.png',
             header_alternative_picture_url:
                 'https://example.com/alternative-logo.png',
+            introduction_text: 'How can we help?',
+            offline_introduction_text: "We'll be back soon",
             position: {
                 alignment: GorgiasChatPositionAlignmentEnum.BOTTOM_LEFT,
                 offsetX: 10,
@@ -249,7 +256,7 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
         mockUseAppDispatch.mockReturnValue(mockDispatch)
         mockDispatch.mockClear()
         mockUseIsAiAgentEnabled.mockReturnValue({
-            isAiAgentEnabled: true,
+            isAiAgentEnabled: false,
             isLoading: false,
         })
         mockGetApplicationTexts.mockResolvedValue(mockApplicationTextsResponse)
@@ -388,8 +395,7 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
             renderComponent()
 
             act(() => {
-                const { onMainColorChange } = mockBrandCard.mock
-                    .calls[0][0] as BrandCardProps
+                const { onMainColorChange } = mockBrandCard.mock.calls[0][0]
                 onMainColorChange('#00FF00')
             })
 
@@ -402,8 +408,7 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
             renderComponent()
 
             act(() => {
-                const { onHeaderLogoUrlChange } = mockBrandCard.mock
-                    .calls[0][0] as BrandCardProps
+                const { onHeaderLogoUrlChange } = mockBrandCard.mock.calls[0][0]
                 onHeaderLogoUrlChange('https://new-logo.png')
             })
 
@@ -429,8 +434,8 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
             renderComponent()
 
             act(() => {
-                const { onHeaderAlternativePictureUrlChange } = mockBrandCard
-                    .mock.calls[0][0] as BrandCardProps
+                const { onHeaderAlternativePictureUrlChange } =
+                    mockBrandCard.mock.calls[0][0]
                 onHeaderAlternativePictureUrlChange(
                     'https://new-alternative-logo.png',
                 )
@@ -442,6 +447,88 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
                         'https://new-alternative-logo.png',
                 }),
             )
+        })
+
+        it('should receive greeting texts from integration decoration', () => {
+            renderComponent()
+
+            expect(mockBrandCard).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    introductionText: 'How can we help?',
+                    offlineIntroductionText: "We'll be back soon",
+                }),
+            )
+        })
+
+        it('should update introductionText when onIntroductionTextChange is called', () => {
+            renderComponent()
+
+            act(() => {
+                const { onIntroductionTextChange } =
+                    mockBrandCard.mock.calls[0][0]
+                onIntroductionTextChange('Hi there!')
+            })
+
+            expect(mockBrandCard).toHaveBeenLastCalledWith(
+                expect.objectContaining({ introductionText: 'Hi there!' }),
+            )
+        })
+
+        it('should update offlineIntroductionText when onOfflineIntroductionTextChange is called', () => {
+            renderComponent()
+
+            act(() => {
+                const { onOfflineIntroductionTextChange } =
+                    mockBrandCard.mock.calls[0][0]
+                onOfflineIntroductionTextChange('Back tomorrow')
+            })
+
+            expect(mockBrandCard).toHaveBeenLastCalledWith(
+                expect.objectContaining({
+                    offlineIntroductionText: 'Back tomorrow',
+                }),
+            )
+        })
+
+        it('should pass isAiAgentEnabled=false from the hook', () => {
+            renderComponent()
+
+            expect(mockBrandCard).toHaveBeenCalledWith(
+                expect.objectContaining({ isAiAgentEnabled: false }),
+            )
+        })
+
+        it('should pass isAiAgentEnabled=true when the hook reports AI Agent enabled', () => {
+            mockUseIsAiAgentEnabled.mockReturnValue({
+                isAiAgentEnabled: true,
+                isLoading: false,
+            })
+
+            renderComponent()
+
+            expect(mockBrandCard).toHaveBeenCalledWith(
+                expect.objectContaining({ isAiAgentEnabled: true }),
+            )
+        })
+
+        it('should submit greeting texts in the decoration payload', async () => {
+            const user = userEvent.setup()
+            const { getByRole } = renderComponent()
+
+            act(() => {
+                const { onIntroductionTextChange } =
+                    mockBrandCard.mock.calls[0][0]
+                onIntroductionTextChange('Hi there!')
+            })
+
+            await user.click(getByRole('button', { name: 'Save' }))
+
+            const calledWith =
+                mockUpdateOrCreateIntegration.mock.calls[0][0].toJS()
+            expect(calledWith.decoration).toMatchObject({
+                introduction_text: 'Hi there!',
+                offline_introduction_text: "We'll be back soon",
+            })
         })
     })
 
@@ -464,8 +551,8 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
             renderComponent()
 
             act(() => {
-                const { onPositionChange } = mockChatLauncherCard.mock
-                    .calls[0][0] as ChatLauncherCardProps
+                const { onPositionChange } =
+                    mockChatLauncherCard.mock.calls[0][0]
                 onPositionChange({
                     alignment: GorgiasChatPositionAlignmentEnum.TOP_RIGHT,
                     offsetX: 5,
@@ -522,8 +609,8 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
             renderComponent()
 
             act(() => {
-                const { onLegalDisclaimerEnabledChange } = mockLegalCard.mock
-                    .calls[0][0] as LegalCardProps
+                const { onLegalDisclaimerEnabledChange } =
+                    mockLegalCard.mock.calls[0][0]
                 onLegalDisclaimerEnabledChange(false)
             })
 
@@ -540,10 +627,10 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
             })
 
             act(() => {
-                const { onLegalDisclaimerTextChange } = mockLegalCard.mock
-                    .calls[
-                    mockLegalCard.mock.calls.length - 1
-                ][0] as LegalCardProps
+                const { onLegalDisclaimerTextChange } =
+                    mockLegalCard.mock.calls[
+                        mockLegalCard.mock.calls.length - 1
+                    ][0]
                 onLegalDisclaimerTextChange('Updated disclaimer')
             })
 
@@ -625,10 +712,10 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
             )
 
             act(() => {
-                const { onLegalDisclaimerEnabledChange } = mockLegalCard.mock
-                    .calls[
-                    mockLegalCard.mock.calls.length - 1
-                ][0] as LegalCardProps
+                const { onLegalDisclaimerEnabledChange } =
+                    mockLegalCard.mock.calls[
+                        mockLegalCard.mock.calls.length - 1
+                    ][0]
                 onLegalDisclaimerEnabledChange(false)
             })
 
@@ -683,8 +770,7 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
             }
 
             act(() => {
-                const { onAvatarChange } = mockAvatarCard.mock
-                    .calls[0][0] as AvatarCardProps
+                const { onAvatarChange } = mockAvatarCard.mock.calls[0][0]
                 onAvatarChange(newAvatar)
             })
 
@@ -784,10 +870,10 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
             })
 
             act(() => {
-                const { onLegalDisclaimerTextChange } = mockLegalCard.mock
-                    .calls[
-                    mockLegalCard.mock.calls.length - 1
-                ][0] as LegalCardProps
+                const { onLegalDisclaimerTextChange } =
+                    mockLegalCard.mock.calls[
+                        mockLegalCard.mock.calls.length - 1
+                    ][0]
                 onLegalDisclaimerTextChange('Updated disclaimer')
             })
 
@@ -816,8 +902,8 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
             const { getByRole } = renderComponent(integrationWithInvalidColor)
 
             act(() => {
-                const { onAvatarChange, avatar } = mockAvatarCard.mock
-                    .calls[0][0] as AvatarCardProps
+                const { onAvatarChange, avatar } =
+                    mockAvatarCard.mock.calls[0][0]
                 onAvatarChange({
                     ...avatar,
                     nameType: GorgiasChatAvatarNameType.AGENT_FIRST_NAME,
@@ -897,12 +983,25 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
             expect(getByRole('button', { name: 'Save' })).toBeDisabled()
         })
 
+        it('should stay disabled after privacy policy text loads', async () => {
+            const { getByRole } = renderComponent()
+
+            await waitFor(() => {
+                expect(mockLegalCard).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        legalDisclaimerText: 'Privacy policy text from API',
+                    }),
+                )
+            })
+
+            expect(getByRole('button', { name: 'Save' })).toBeDisabled()
+        })
+
         it('should become enabled after a field is changed', () => {
             const { getByRole } = renderComponent()
 
             act(() => {
-                const { onMainColorChange } = mockBrandCard.mock
-                    .calls[0][0] as BrandCardProps
+                const { onMainColorChange } = mockBrandCard.mock.calls[0][0]
                 onMainColorChange('#00FF00')
             })
 

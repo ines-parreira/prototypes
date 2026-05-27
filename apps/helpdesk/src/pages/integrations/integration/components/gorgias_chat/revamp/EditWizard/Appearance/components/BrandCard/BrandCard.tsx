@@ -1,3 +1,5 @@
+import { useCallback } from 'react'
+
 import {
     Card,
     CardContent,
@@ -7,11 +9,15 @@ import {
     Heading,
     Icon,
     Text,
+    TextField,
     Tooltip,
     TooltipContent,
 } from '@gorgias/axiom'
 
-import { GORGIAS_CHAT_DEFAULT_COLOR } from 'config/integrations/gorgias_chat'
+import {
+    GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH,
+    GORGIAS_CHAT_DEFAULT_COLOR,
+} from 'config/integrations/gorgias_chat'
 import { ColorPicker } from 'pages/integrations/integration/components/gorgias_chat/legacy/components/ColorPicker'
 import { LogoUpload } from 'pages/integrations/integration/components/gorgias_chat/legacy/components/LogoUpload'
 import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
@@ -24,12 +30,17 @@ type Props = {
     useMainColorOutsideBusinessHours: boolean
     headerPictureUrl?: string
     headerAlternativePictureUrl?: string
+    introductionText: string
+    offlineIntroductionText: string
+    isAiAgentEnabled?: boolean
     showAdvancedColors?: boolean
     onMainColorChange: (value: string) => void
     onConversationColorChange: (value: string) => void
     onUseMainColorOutsideBusinessHoursChange: (value: boolean) => void
     onHeaderLogoUrlChange: (url?: string) => void
     onHeaderAlternativePictureUrlChange: (url?: string) => void
+    onIntroductionTextChange: (value: string) => void
+    onOfflineIntroductionTextChange: (value: string) => void
 }
 
 export const BrandCard = ({
@@ -38,20 +49,33 @@ export const BrandCard = ({
     useMainColorOutsideBusinessHours,
     headerPictureUrl,
     headerAlternativePictureUrl,
+    introductionText,
+    offlineIntroductionText,
+    isAiAgentEnabled = false,
     showAdvancedColors = false,
     onMainColorChange,
     onConversationColorChange,
     onUseMainColorOutsideBusinessHoursChange,
     onHeaderLogoUrlChange,
     onHeaderAlternativePictureUrlChange,
+    onIntroductionTextChange,
+    onOfflineIntroductionTextChange,
 }: Props) => {
     const {
         updateMainColor,
         updateConversationColor,
         updateHeaderPictureUrl,
         updateHeaderAlternativePictureUrl,
+        updateIntroductionText,
+        updateOfflineIntroductionText,
         openChat,
+        displayPage,
     } = useChatPreviewPanelContext()
+
+    const showGreetingPreview = useCallback(() => {
+        displayPage('homepage')
+        openChat()
+    }, [displayPage, openChat])
 
     return (
         <Card className={css.card} elevation={Elevation.Mid}>
@@ -195,6 +219,45 @@ export const BrandCard = ({
                             </Card>
                         </div>
                     </div>
+
+                    {!isAiAgentEnabled && (
+                        <div className={css.fieldSection}>
+                            <Text variant="bold" size="md">
+                                Greeting
+                            </Text>
+                            <Text size="sm" className={css.caption}>
+                                Set a greeting when customers open the chat ·{' '}
+                                {
+                                    GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH
+                                }{' '}
+                                characters max
+                            </Text>
+                            <TextField
+                                label="During business hours"
+                                value={introductionText}
+                                maxLength={
+                                    GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH
+                                }
+                                onChange={(value) => {
+                                    onIntroductionTextChange(value)
+                                    updateIntroductionText(value)
+                                }}
+                                onFocus={showGreetingPreview}
+                            />
+                            <TextField
+                                label="Outside business hours"
+                                value={offlineIntroductionText}
+                                maxLength={
+                                    GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH
+                                }
+                                onChange={(value) => {
+                                    onOfflineIntroductionTextChange(value)
+                                    updateOfflineIntroductionText(value)
+                                }}
+                                onFocus={showGreetingPreview}
+                            />
+                        </div>
+                    )}
                 </div>
             </div>
         </Card>

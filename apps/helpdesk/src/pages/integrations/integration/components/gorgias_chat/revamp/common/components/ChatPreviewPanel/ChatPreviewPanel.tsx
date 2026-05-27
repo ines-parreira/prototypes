@@ -116,6 +116,7 @@ export type ChatPreviewPanelHandle = {
     updatePosition: (position: GorgiasChatPosition) => void
     updateSettings: (settings: GorgiasChatPreviewApplicationSettings) => void
     updateTexts: (texts: Record<string, string>) => void
+    updatePreviewTexts: (texts: Record<string, string>) => void
     updateSSPTexts: (texts: Record<string, string>) => void
     closeChat: () => void
     openChat: () => void
@@ -316,6 +317,20 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
             })
         }
 
+        const updatePreviewTexts = (texts: Record<string, string>) => {
+            withGorgiasChat((gorgiasChat) => {
+                const iframeTexts = createIframeObject(texts)
+                if (!iframeTexts) return
+
+                if (gorgiasChat.updatePreviewTexts) {
+                    gorgiasChat.updatePreviewTexts(iframeTexts)
+                    return
+                }
+
+                gorgiasChat.updateTexts(iframeTexts)
+            })
+        }
+
         const updateSSPTexts = (texts: Record<string, string>) => {
             withGorgiasChat((gorgiasChat) => {
                 const iframeTexts = createIframeObject(texts)
@@ -494,6 +509,7 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
             updatePosition,
             updateSettings,
             updateTexts,
+            updatePreviewTexts,
             updateSSPTexts,
             closeChat,
             openChat,

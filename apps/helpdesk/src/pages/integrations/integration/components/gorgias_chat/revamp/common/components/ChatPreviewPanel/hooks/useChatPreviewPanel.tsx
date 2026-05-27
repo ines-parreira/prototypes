@@ -210,8 +210,27 @@ export const useChatPreviewPanel = ({
         [displayPage, openChat],
     )
 
+    const updateIntroductionText = useCallback((introductionText: string) => {
+        chatPreviewPanelRef.current?.updatePreviewTexts({
+            introductionText,
+        })
+    }, [])
+
+    const updateOfflineIntroductionText = useCallback(
+        (offlineIntroductionText: string) => {
+            chatPreviewPanelRef.current?.updatePreviewTexts({
+                offlineIntroductionText,
+            })
+        },
+        [],
+    )
+
     const updateTexts = useCallback((texts: Record<string, string>) => {
         chatPreviewPanelRef.current?.updateTexts(texts)
+    }, [])
+
+    const updatePreviewTexts = useCallback((texts: Record<string, string>) => {
+        chatPreviewPanelRef.current?.updatePreviewTexts(texts)
     }, [])
 
     const updateSSPTexts = useCallback((texts: Record<string, string>) => {
@@ -317,8 +336,11 @@ export const useChatPreviewPanel = ({
         updatePosition,
         updateHeaderPictureUrl,
         updateHeaderAlternativePictureUrl,
+        updateIntroductionText,
+        updateOfflineIntroductionText,
         updateLauncher,
         updateTexts,
+        updatePreviewTexts,
         updateSSPTexts,
         updateLegalDisclaimer,
         updateLegalDisclaimerEnabled,

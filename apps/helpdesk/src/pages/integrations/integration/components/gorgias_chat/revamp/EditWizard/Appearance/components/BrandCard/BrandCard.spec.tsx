@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react'
 
 import { render } from '@repo/testing'
+import { fireEvent, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { GORGIAS_CHAT_DEFAULT_COLOR } from 'config/integrations/gorgias_chat'
 
@@ -8,6 +10,10 @@ import { BrandCard } from './BrandCard'
 
 const mockUpdateMainColor = jest.fn()
 const mockUpdateConversationColor = jest.fn()
+const mockUpdateIntroductionText = jest.fn()
+const mockUpdateOfflineIntroductionText = jest.fn()
+const mockOpenChat = jest.fn()
+const mockDisplayPage = jest.fn()
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
@@ -18,12 +24,15 @@ jest.mock(
                 mockUpdateConversationColor(value),
             updateHeaderPictureUrl: jest.fn(),
             updateHeaderAlternativePictureUrl: jest.fn(),
-            openChat: jest.fn(),
+            updateIntroductionText: mockUpdateIntroductionText,
+            updateOfflineIntroductionText: mockUpdateOfflineIntroductionText,
+            openChat: mockOpenChat,
             closeChat: jest.fn(),
-            displayPage: jest.fn(),
+            displayPage: mockDisplayPage,
             updatePosition: jest.fn(),
             updateLauncher: jest.fn(),
             updateTexts: jest.fn(),
+            updatePreviewTexts: jest.fn(),
             updateLegalDisclaimer: jest.fn(),
             updateLegalDisclaimerEnabled: jest.fn(),
         }),
@@ -62,6 +71,27 @@ jest.mock('@gorgias/axiom', () => ({
         mockCheckBoxField(props)
         return null
     },
+    TextField: ({
+        label,
+        value,
+        onChange,
+        onFocus,
+    }: {
+        label: string
+        value: string
+        onChange: (value: string) => void
+        onFocus?: () => void
+    }) => (
+        <div>
+            <label>{label}</label>
+            <input
+                aria-label={label}
+                value={value}
+                onChange={(event) => onChange(event.target.value)}
+                onFocus={onFocus}
+            />
+        </div>
+    ),
 }))
 
 jest.mock(
@@ -91,11 +121,15 @@ describe('BrandCard', () => {
         useMainColorOutsideBusinessHours: false,
         headerPictureUrl: 'https://example.com/logo.png',
         headerAlternativePictureUrl: 'https://example.com/alternative-logo.png',
+        introductionText: 'How can we help?',
+        offlineIntroductionText: "We'll be back soon",
         onMainColorChange: jest.fn(),
         onConversationColorChange: jest.fn(),
         onUseMainColorOutsideBusinessHoursChange: jest.fn(),
         onHeaderLogoUrlChange: jest.fn(),
         onHeaderAlternativePictureUrlChange: jest.fn(),
+        onIntroductionTextChange: jest.fn(),
+        onOfflineIntroductionTextChange: jest.fn(),
     }
 
     const renderComponent = (props = {}) => {
@@ -271,6 +305,78 @@ describe('BrandCard', () => {
             ).toHaveBeenCalledWith(
                 'https://example.com/new-alternative-logo.png',
             )
+        })
+    })
+
+    describe('Greeting section', () => {
+        it('should render the greeting inputs when AI Agent is disabled', () => {
+            renderComponent({ isAiAgentEnabled: false })
+
+            expect(
+                screen.getByRole('textbox', { name: 'During business hours' }),
+            ).toHaveValue('How can we help?')
+            expect(
+                screen.getByRole('textbox', { name: 'Outside business hours' }),
+            ).toHaveValue("We'll be back soon")
+        })
+
+        it('should not render the greeting inputs when AI Agent is enabled', () => {
+            renderComponent({ isAiAgentEnabled: true })
+
+            expect(
+                screen.queryByRole('textbox', {
+                    name: 'During business hours',
+                }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('textbox', {
+                    name: 'Outside business hours',
+                }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should call onIntroductionTextChange and push the live preview update when typing during business hours', () => {
+            renderComponent({ isAiAgentEnabled: false })
+
+            const input = screen.getByRole('textbox', {
+                name: 'During business hours',
+            })
+            fireEvent.change(input, { target: { value: 'Hi there!' } })
+
+            expect(defaultProps.onIntroductionTextChange).toHaveBeenCalledWith(
+                'Hi there!',
+            )
+            expect(mockUpdateIntroductionText).toHaveBeenCalledWith('Hi there!')
+        })
+
+        it('should call onOfflineIntroductionTextChange and push the live preview update when typing outside business hours', () => {
+            renderComponent({ isAiAgentEnabled: false })
+
+            const input = screen.getByRole('textbox', {
+                name: 'Outside business hours',
+            })
+            fireEvent.change(input, { target: { value: 'See you tomorrow' } })
+
+            expect(
+                defaultProps.onOfflineIntroductionTextChange,
+            ).toHaveBeenCalledWith('See you tomorrow')
+            expect(mockUpdateOfflineIntroductionText).toHaveBeenCalledWith(
+                'See you tomorrow',
+            )
+        })
+
+        it('should show the homepage preview when focusing a greeting input', async () => {
+            const user = userEvent.setup()
+            renderComponent({ isAiAgentEnabled: false })
+
+            await user.click(
+                screen.getByRole('textbox', {
+                    name: 'During business hours',
+                }),
+            )
+
+            expect(mockDisplayPage).toHaveBeenCalledWith('homepage')
+            expect(mockOpenChat).toHaveBeenCalled()
         })
     })
 })

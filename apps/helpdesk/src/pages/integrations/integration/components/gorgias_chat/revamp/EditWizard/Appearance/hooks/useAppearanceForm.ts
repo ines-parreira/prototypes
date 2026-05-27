@@ -35,6 +35,8 @@ export type AppearanceFormValues = {
     useMainColorOutsideBusinessHours: boolean
     headerPictureUrl?: string
     headerAlternativePictureUrl?: string
+    introductionText: string
+    offlineIntroductionText: string
     position: GorgiasChatPosition
     launcher: GorgiasChatLauncherSettings
     avatar: GorgiasChatAvatarSettings
@@ -66,6 +68,14 @@ const buildFormValues = (integration: Map<any, any>): AppearanceFormValues => {
             'decoration',
             'header_alternative_picture_url',
         ]),
+        introductionText: integration.getIn(
+            ['decoration', 'introduction_text'],
+            '',
+        ),
+        offlineIntroductionText: integration.getIn(
+            ['decoration', 'offline_introduction_text'],
+            '',
+        ),
         position: {
             alignment: integration.getIn(
                 ['decoration', 'position', 'alignment'],
@@ -169,6 +179,8 @@ export const useAppearanceForm = ({
         [setValueRaw],
     )
 
+    const isDirty = isFormDirty || isPrivacyPolicyTextDirty
+
     const onSubmit = async (data: AppearanceFormValues) => {
         const mainColor = CSS.supports('color', data.mainColor)
             ? data.mainColor.trim()
@@ -193,6 +205,8 @@ export const useAppearanceForm = ({
                 header_picture_url: data.headerPictureUrl,
                 header_alternative_picture_url:
                     data.headerAlternativePictureUrl,
+                introduction_text: data.introductionText,
+                offline_introduction_text: data.offlineIntroductionText,
                 position: data.position,
                 launcher: {
                     type: data.launcher.type,
@@ -228,7 +242,7 @@ export const useAppearanceForm = ({
         setValue,
         values: watch(),
         isSubmitting,
-        isDirty: isFormDirty || isPrivacyPolicyTextDirty,
+        isDirty,
         privacyPolicyText,
         setPrivacyPolicyText,
         onSubmit,

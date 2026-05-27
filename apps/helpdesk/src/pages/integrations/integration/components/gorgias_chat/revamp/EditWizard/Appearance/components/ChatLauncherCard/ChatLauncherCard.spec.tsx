@@ -89,6 +89,7 @@ jest.mock(
             updateHeaderAlternativePictureUrl: jest.fn(),
             updateLauncher: jest.fn(),
             updateTexts: jest.fn(),
+            updatePreviewTexts: jest.fn(),
             updateLegalDisclaimer: jest.fn(),
             updateLegalDisclaimerEnabled: jest.fn(),
         }),

@@ -4,7 +4,11 @@ import { sanitizeHtmlDefault } from '@repo/utils'
 import { produce } from 'immer'
 import { set } from 'lodash'
 
-import { getPrimaryLanguageFromChatConfig } from 'config/integrations/gorgias_chat'
+import {
+    getPrimaryLanguageFromChatConfig,
+    GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
+    GORGIAS_CHAT_WIDGET_TEXTS,
+} from 'config/integrations/gorgias_chat'
 import type { LanguageChat } from 'constants/languages'
 import type { GorgiasChatIntegrationMeta } from 'models/integration/types'
 import { multiLanguageInitialTextsEmptyData } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText'
@@ -17,6 +21,22 @@ import {
 type UsePrivacyPolicyTextParams = {
     chatApplicationId: string | undefined
     integrationMeta: GorgiasChatIntegrationMeta | undefined
+}
+
+const getDefaultPrivacyPolicyText = (language: string): string =>
+    GORGIAS_CHAT_WIDGET_TEXTS[language]?.privacyPolicyDisclaimer ??
+    GORGIAS_CHAT_WIDGET_TEXTS[GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT]
+        .privacyPolicyDisclaimer
+
+const normalizePrivacyPolicyTextForComparison = (
+    text: string | undefined,
+): string => {
+    const sanitizedText = sanitizeHtmlDefault(text ?? '').trim()
+
+    return sanitizedText
+        .replace(/^<(div|p)>(.*)<\/\1>$/s, '$2')
+        .replace(/&nbsp;/g, ' ')
+        .trim()
 }
 
 export const usePrivacyPolicyText = ({
@@ -45,7 +65,9 @@ export const usePrivacyPolicyText = ({
 
             const textsPerLanguage =
                 multiLanguage[defaultLanguage as LanguageChat]
-            const text = textsPerLanguage?.texts?.privacyPolicyDisclaimer ?? ''
+            const text =
+                textsPerLanguage?.texts?.privacyPolicyDisclaimer ||
+                getDefaultPrivacyPolicyText(defaultLanguage)
 
             // Normalize with sanitizeHtmlDefault so privacyPolicyText and the
             // saved baseline both hold the same value on initial load.
@@ -77,7 +99,10 @@ export const usePrivacyPolicyText = ({
 
     const isPrivacyPolicyTextDirty =
         privacyPolicyText !== undefined &&
-        privacyPolicyText !== savedPrivacyPolicyTextRef.current
+        normalizePrivacyPolicyTextForComparison(privacyPolicyText) !==
+            normalizePrivacyPolicyTextForComparison(
+                savedPrivacyPolicyTextRef.current,
+            )
 
     return {
         privacyPolicyText,

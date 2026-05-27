@@ -141,6 +141,8 @@ export type GorgiasChatPreviewApplicationSettings = {
         conversationColor?: string
         headerPictureUrl?: string
         headerAlternativePictureUrl?: string
+        introductionText?: string
+        offlineIntroductionText?: string
         position?: GorgiasChatPosition
         launcher?: GorgiasChatLauncherSettings
         avatarTeamPictureUrl?: string

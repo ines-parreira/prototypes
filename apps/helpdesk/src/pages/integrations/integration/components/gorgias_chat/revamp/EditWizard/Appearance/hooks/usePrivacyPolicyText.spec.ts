@@ -1,6 +1,7 @@
 import { renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 
+import { GORGIAS_CHAT_WIDGET_TEXTS } from 'config/integrations/gorgias_chat'
 import { LANGUAGE, LanguageChat } from 'constants/languages'
 import { GorgiasChatEmailCaptureType } from 'models/integration/types'
 import {
@@ -83,7 +84,7 @@ describe('usePrivacyPolicyText', () => {
         })
     })
 
-    it('should set privacyPolicyText to empty string when privacyPolicyDisclaimer is missing', async () => {
+    it('should set privacyPolicyText to the default widget text when privacyPolicyDisclaimer is missing', async () => {
         mockGetApplicationTexts.mockResolvedValue({
             [LanguageChat.EnglishUs]: {
                 texts: {},
@@ -100,7 +101,47 @@ describe('usePrivacyPolicyText', () => {
         )
 
         await waitFor(() => {
-            expect(result.current.privacyPolicyText).toBe('')
+            expect(result.current.privacyPolicyText).toBe(
+                GORGIAS_CHAT_WIDGET_TEXTS[LanguageChat.EnglishUs]
+                    .privacyPolicyDisclaimer,
+            )
+        })
+    })
+
+    it('should not mark default rich-text initialization as dirty', async () => {
+        mockGetApplicationTexts.mockResolvedValue({
+            [LanguageChat.EnglishUs]: {
+                texts: {},
+                sspTexts: {},
+                meta: {},
+            },
+        } as any)
+
+        const { result } = renderHook(() =>
+            usePrivacyPolicyText({
+                chatApplicationId: 'app-123',
+                integrationMeta: mockIntegrationMeta,
+            }),
+        )
+
+        await waitFor(() => {
+            expect(result.current.privacyPolicyText).toBe(
+                GORGIAS_CHAT_WIDGET_TEXTS[LanguageChat.EnglishUs]
+                    .privacyPolicyDisclaimer,
+            )
+        })
+
+        act(() => {
+            result.current.setPrivacyPolicyText(
+                `<div>${
+                    GORGIAS_CHAT_WIDGET_TEXTS[LanguageChat.EnglishUs]
+                        .privacyPolicyDisclaimer
+                }</div>`,
+            )
+        })
+
+        await waitFor(() => {
+            expect(result.current.isPrivacyPolicyTextDirty).toBe(false)
         })
     })
 

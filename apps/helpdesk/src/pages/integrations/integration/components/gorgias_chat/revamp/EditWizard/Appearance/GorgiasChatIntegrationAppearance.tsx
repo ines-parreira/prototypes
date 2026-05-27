@@ -36,8 +36,10 @@ export const GorgiasChatIntegrationAppearanceRevamp = ({
     } = useAppearanceForm({ integration, loading })
 
     const { storeIntegration } = useStoreIntegration(integration)
+    const rawChatId: unknown = integration.get('id')
+    const chatId = typeof rawChatId === 'number' ? rawChatId : undefined
     const { isAiAgentEnabled, isLoading: isAiAgentConfigLoading } =
-        useIsAiAgentEnabled(storeIntegration, integration.get('id'))
+        useIsAiAgentEnabled(storeIntegration, chatId)
     const shouldShowAdvancedColors =
         !isAiAgentConfigLoading && !isAiAgentEnabled
 
@@ -82,6 +84,11 @@ export const GorgiasChatIntegrationAppearanceRevamp = ({
                             headerAlternativePictureUrl={
                                 values.headerAlternativePictureUrl
                             }
+                            introductionText={values.introductionText}
+                            offlineIntroductionText={
+                                values.offlineIntroductionText
+                            }
+                            isAiAgentEnabled={isAiAgentEnabled}
                             showAdvancedColors={shouldShowAdvancedColors}
                             onMainColorChange={(value) =>
                                 setValue('mainColor', value)
@@ -100,6 +107,12 @@ export const GorgiasChatIntegrationAppearanceRevamp = ({
                             }
                             onHeaderAlternativePictureUrlChange={(url) =>
                                 setValue('headerAlternativePictureUrl', url)
+                            }
+                            onIntroductionTextChange={(value) =>
+                                setValue('introductionText', value)
+                            }
+                            onOfflineIntroductionTextChange={(value) =>
+                                setValue('offlineIntroductionText', value)
                             }
                         />
                         <ChatLauncherCard

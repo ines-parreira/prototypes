@@ -61,6 +61,7 @@ jest.mock(
             setPosition: jest.fn(),
             updateSettings: jest.fn(),
             updateTexts: jest.fn(),
+            updatePreviewTexts: jest.fn(),
             updateSSPTexts: jest.fn(),
             setLanguage: jest.fn().mockResolvedValue(undefined),
             updateSelfServiceConfiguration: jest.fn(),
@@ -290,6 +291,7 @@ describe('ChatPreviewPanel', () => {
             expect(ref.current?.updatePosition).toBeDefined()
             expect(ref.current?.updateSettings).toBeDefined()
             expect(ref.current?.updateTexts).toBeDefined()
+            expect(ref.current?.updatePreviewTexts).toBeDefined()
             expect(ref.current?.updateSSPTexts).toBeDefined()
             expect(ref.current?.closeChat).toBeDefined()
             expect(ref.current?.openChat).toBeDefined()
@@ -384,6 +386,32 @@ describe('ChatPreviewPanel', () => {
             expect(mockGorgiasChat.updateTexts).toHaveBeenCalledWith(
                 expect.objectContaining(texts),
             )
+        })
+
+        it('updatePreviewTexts calls GorgiasChat.updatePreviewTexts with the provided texts', () => {
+            const { ref } = renderComponent()
+            const texts = { introductionText: 'How can we help?' }
+
+            ref.current?.updatePreviewTexts(texts)
+
+            expect(mockGorgiasChat.updatePreviewTexts).toHaveBeenCalledWith(
+                expect.objectContaining(texts),
+            )
+        })
+
+        it('updatePreviewTexts falls back to GorgiasChat.updateTexts when updatePreviewTexts is unavailable', () => {
+            const savedFn = mockGorgiasChat.updatePreviewTexts
+            mockGorgiasChat.updatePreviewTexts = undefined as any
+            const { ref } = renderComponent()
+            const texts = { title: 'Hello' }
+
+            ref.current?.updatePreviewTexts(texts)
+
+            expect(mockGorgiasChat.updateTexts).toHaveBeenCalledWith(
+                expect.objectContaining(texts),
+            )
+
+            mockGorgiasChat.updatePreviewTexts = savedFn
         })
 
         it('updateSSPTexts calls GorgiasChat.updateSSPTexts with the provided texts', () => {

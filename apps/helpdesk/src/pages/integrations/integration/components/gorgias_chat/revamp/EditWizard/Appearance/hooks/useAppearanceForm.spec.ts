@@ -52,6 +52,8 @@ const makeIntegration = (overrides = {}) =>
             header_picture_url: 'https://example.com/logo.png',
             header_alternative_picture_url:
                 'https://example.com/alternative-logo.png',
+            introduction_text: 'How can we help?',
+            offline_introduction_text: "We'll be back soon",
             position: {
                 alignment: GorgiasChatPositionAlignmentEnum.BOTTOM_LEFT,
                 offsetX: 10,
@@ -96,6 +98,8 @@ describe('useAppearanceForm', () => {
                 headerPictureUrl: 'https://example.com/logo.png',
                 headerAlternativePictureUrl:
                     'https://example.com/alternative-logo.png',
+                introductionText: 'How can we help?',
+                offlineIntroductionText: "We'll be back soon",
                 position: {
                     alignment: GorgiasChatPositionAlignmentEnum.BOTTOM_LEFT,
                     offsetX: 10,
@@ -131,6 +135,8 @@ describe('useAppearanceForm', () => {
             expect(
                 result.current.values.headerAlternativePictureUrl,
             ).toBeUndefined()
+            expect(result.current.values.introductionText).toBe('')
+            expect(result.current.values.offlineIntroductionText).toBe('')
             expect(result.current.values.legalDisclaimerEnabled).toBe(false)
             expect(result.current.values.launcher).toEqual({
                 type: GorgiasChatLauncherType.ICON,
@@ -197,6 +203,8 @@ describe('useAppearanceForm', () => {
                     header_picture_url: 'https://example.com/logo.png',
                     header_alternative_picture_url:
                         'https://example.com/alternative-logo.png',
+                    introduction_text: 'How can we help?',
+                    offline_introduction_text: "We'll be back soon",
                     launcher: {
                         type: GorgiasChatLauncherType.ICON_AND_LABEL,
                         label: 'Shop with AI',
