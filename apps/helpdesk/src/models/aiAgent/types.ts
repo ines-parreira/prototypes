@@ -165,6 +165,10 @@ export type StoreConfiguration = {
             customToneOfVoice: string
             verbosity?: Verbosity
         }
+        socials?: {
+            customToneOfVoice: string
+            verbosity?: Verbosity
+        }
     }
     toneOfVoiceOptions?: {
         greetingGuidance: string

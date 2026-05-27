@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useState } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 
 import {
@@ -106,9 +107,11 @@ const getSavedValues = (storeConfiguration: StoreConfiguration | undefined) => {
             emailInstructions: '',
             chatInstructions: '',
             smsInstructions: '',
+            socialsInstructions: '',
             emailVerbosity: undefined,
             chatVerbosity: undefined,
             smsVerbosity: undefined,
+            socialsVerbosity: undefined,
             allowEmojis: false,
             allowedEmojis: '',
             forbiddenEmojis: '',
@@ -141,10 +144,15 @@ const getSavedValues = (storeConfiguration: StoreConfiguration | undefined) => {
         smsInstructions:
             storeConfiguration.toneOfVoiceByChannel?.sms?.customToneOfVoice ||
             '',
+        socialsInstructions:
+            storeConfiguration.toneOfVoiceByChannel?.socials
+                ?.customToneOfVoice || '',
         emailVerbosity:
             storeConfiguration.toneOfVoiceByChannel?.email?.verbosity,
         chatVerbosity: storeConfiguration.toneOfVoiceByChannel?.chat?.verbosity,
         smsVerbosity: storeConfiguration.toneOfVoiceByChannel?.sms?.verbosity,
+        socialsVerbosity:
+            storeConfiguration.toneOfVoiceByChannel?.socials?.verbosity,
         allowEmojis:
             storeConfiguration.toneOfVoiceOptions?.emojisEnabled || false,
         allowedEmojis:
@@ -167,6 +175,8 @@ export function AiAgentToneOfVoice() {
         shopName: resolvedShopName,
         shopType: SHOPIFY_INTEGRATION_TYPE,
     })
+
+    const isInstagramDmsEnabled = useFlag(FeatureFlagKey.AiAgentInstagramDms)
 
     const [activeTab, setActiveTab] = useState<ToneOfVoiceTab>(
         ToneOfVoiceTab.General,
@@ -211,6 +221,7 @@ export function AiAgentToneOfVoice() {
     const [emailExpanded, setEmailExpanded] = useState<boolean>(true)
     const [chatExpanded, setChatExpanded] = useState<boolean>(false)
     const [smsExpanded, setSmsExpanded] = useState<boolean>(false)
+    const [socialsExpanded, setSocialsExpanded] = useState<boolean>(false)
 
     const [emailInstructions, setEmailInstructions] = useState<string>(
         savedValues.emailInstructions,
@@ -221,6 +232,9 @@ export function AiAgentToneOfVoice() {
     const [smsInstructions, setSmsInstructions] = useState<string>(
         savedValues.smsInstructions,
     )
+    const [socialsInstructions, setSocialsInstructions] = useState<string>(
+        savedValues.socialsInstructions,
+    )
 
     const [emailVerbosity, setEmailVerbosity] = useState<Verbosity>(
         savedValues.emailVerbosity ?? 'concise',
@@ -230,6 +244,9 @@ export function AiAgentToneOfVoice() {
     )
     const [smsVerbosity, setSmsVerbosity] = useState<Verbosity>(
         savedValues.smsVerbosity ?? 'concise',
+    )
+    const [socialsVerbosity, setSocialsVerbosity] = useState<Verbosity>(
+        savedValues.socialsVerbosity ?? 'concise',
     )
 
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
@@ -254,9 +271,13 @@ export function AiAgentToneOfVoice() {
             emailInstructions !== savedValues.emailInstructions ||
             chatInstructions !== savedValues.chatInstructions ||
             smsInstructions !== savedValues.smsInstructions ||
+            (isInstagramDmsEnabled &&
+                socialsInstructions !== savedValues.socialsInstructions) ||
             emailVerbosity !== savedValues.emailVerbosity ||
             chatVerbosity !== savedValues.chatVerbosity ||
             smsVerbosity !== savedValues.smsVerbosity ||
+            (isInstagramDmsEnabled &&
+                socialsVerbosity !== savedValues.socialsVerbosity) ||
             allowEmojis !== savedValues.allowEmojis ||
             allowedEmojis !== savedValues.allowedEmojis ||
             forbiddenEmojis !== savedValues.forbiddenEmojis
@@ -272,9 +293,12 @@ export function AiAgentToneOfVoice() {
         emailInstructions,
         chatInstructions,
         smsInstructions,
+        socialsInstructions,
         emailVerbosity,
         chatVerbosity,
         smsVerbosity,
+        socialsVerbosity,
+        isInstagramDmsEnabled,
         allowEmojis,
         allowedEmojis,
         forbiddenEmojis,
@@ -305,6 +329,14 @@ export function AiAgentToneOfVoice() {
                         customToneOfVoice: smsInstructions,
                         ...(smsVerbosity && { verbosity: smsVerbosity }),
                     },
+                    ...(isInstagramDmsEnabled && {
+                        socials: {
+                            customToneOfVoice: socialsInstructions,
+                            ...(socialsVerbosity && {
+                                verbosity: socialsVerbosity,
+                            }),
+                        },
+                    }),
                 },
                 toneOfVoiceOptions: {
                     greetingGuidance: greetingsGuidance,
@@ -331,9 +363,12 @@ export function AiAgentToneOfVoice() {
         emailInstructions,
         chatInstructions,
         smsInstructions,
+        socialsInstructions,
         emailVerbosity,
         chatVerbosity,
         smsVerbosity,
+        socialsVerbosity,
+        isInstagramDmsEnabled,
         greetingsGuidance,
         signoffGuidance,
         brandSpecificGuidance,
@@ -353,9 +388,11 @@ export function AiAgentToneOfVoice() {
         setEmailInstructions(savedValues.emailInstructions)
         setChatInstructions(savedValues.chatInstructions)
         setSmsInstructions(savedValues.smsInstructions)
+        setSocialsInstructions(savedValues.socialsInstructions)
         setEmailVerbosity(savedValues.emailVerbosity ?? 'concise')
         setChatVerbosity(savedValues.chatVerbosity ?? 'concise')
         setSmsVerbosity(savedValues.smsVerbosity ?? 'concise')
+        setSocialsVerbosity(savedValues.socialsVerbosity ?? 'concise')
         setAllowEmojis(savedValues.allowEmojis)
         setAllowedEmojis(savedValues.allowedEmojis)
         setForbiddenEmojis(savedValues.forbiddenEmojis)
@@ -624,6 +661,37 @@ export function AiAgentToneOfVoice() {
                         />
                     </Box>
                 </CollapsibleSection>
+
+                {isInstagramDmsEnabled && (
+                    <CollapsibleSection
+                        title="Socials"
+                        isExpanded={socialsExpanded}
+                        onToggle={() => setSocialsExpanded(!socialsExpanded)}
+                    >
+                        <Box
+                            display="flex"
+                            flexDirection="column"
+                            gap="md"
+                            width="100%"
+                        >
+                            <VerbositySelectField
+                                value={socialsVerbosity}
+                                onChange={setSocialsVerbosity}
+                            />
+                            <TextAreaField
+                                value={socialsInstructions}
+                                onChange={createCharacterLimitHandler(
+                                    setSocialsInstructions,
+                                    PER_CHANNEL_PER_PERSONALITY_CHARACTER_LIMIT,
+                                )}
+                                label="Instructions"
+                                placeholder="To sound more human, please never submit responses in numbered lists. Instead, separate by paragraphs."
+                                caption={`${socialsInstructions.length}/${PER_CHANNEL_PER_PERSONALITY_CHARACTER_LIMIT}`}
+                                rows={3}
+                            />
+                        </Box>
+                    </CollapsibleSection>
+                )}
             </Box>
         </Box>
     )

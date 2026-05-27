@@ -1,3 +1,4 @@
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { render, userEvent } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 
@@ -16,6 +17,10 @@ if (typeof Element.prototype.getAnimations === 'undefined') {
         return []
     }
 }
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(() => false),
+}))
 jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext')
 jest.mock('pages/AppContext')
 jest.mock('react-router', () => ({
@@ -109,6 +114,7 @@ const mockUsePlaygroundPanel = jest.mocked(
 const mockUseDisplayPlaygroundButtonInLayoutHeader = jest.mocked(
     playgroundButtonHook.useDisplayPlaygroundButtonInLayoutHeader,
 )
+const mockUseFlag = jest.mocked(useFlag)
 describe('AiAgentToneOfVoice', () => {
     const mockUpdateStoreConfiguration = jest.fn()
     const mockTogglePlayground = jest.fn()
@@ -137,6 +143,7 @@ describe('AiAgentToneOfVoice', () => {
             isPlaygroundOpen: false,
         } as any)
         mockUseDisplayPlaygroundButtonInLayoutHeader.mockReturnValue(true)
+        mockUseFlag.mockReturnValue(false)
         mockTogglePlayground.mockClear()
     })
     describe('Component rendering', () => {
@@ -477,6 +484,125 @@ describe('AiAgentToneOfVoice', () => {
             await waitFor(() => {
                 expect(emailVerbosity).toHaveValue('Detailed')
             })
+        })
+    })
+    describe('Socials channel', () => {
+        const enableInstagramDms = () => {
+            mockUseFlag.mockImplementation(
+                (key) => key === FeatureFlagKey.AiAgentInstagramDms,
+            )
+        }
+        const switchToChannelTab = async () => {
+            const user = userEvent.setup()
+            await user.click(
+                screen.getByRole('tab', { name: /channel-specific/i }),
+            )
+            return user
+        }
+        const expandAllChannelSections = async (
+            user: ReturnType<typeof userEvent.setup>,
+        ) => {
+            await user.click(screen.getByRole('button', { name: /chat/i }))
+            await user.click(screen.getByRole('button', { name: /sms/i }))
+            await user.click(screen.getByRole('button', { name: /socials/i }))
+        }
+        it('should not render the Socials section when the flag is disabled', async () => {
+            setupComponent({})
+            await switchToChannelTab()
+            expect(
+                screen.queryByRole('button', { name: /socials/i }),
+            ).not.toBeInTheDocument()
+        })
+        it('should render the Socials section when the flag is enabled', async () => {
+            enableInstagramDms()
+            setupComponent({})
+            await switchToChannelTab()
+            expect(
+                screen.getByRole('button', { name: /socials/i }),
+            ).toBeInTheDocument()
+        })
+        it('should load saved instructions and verbosity for the Socials channel', async () => {
+            enableInstagramDms()
+            setupComponent({
+                toneOfVoiceByChannel: {
+                    email: { customToneOfVoice: '' },
+                    chat: { customToneOfVoice: '' },
+                    sms: { customToneOfVoice: '' },
+                    socials: {
+                        customToneOfVoice: 'Socials instructions',
+                        verbosity: 'detailed',
+                    },
+                },
+            })
+            const user = await switchToChannelTab()
+            await expandAllChannelSections(user)
+            await waitFor(() => {
+                const instructions = screen.getAllByLabelText(/instructions/i)
+                expect(instructions).toHaveLength(4)
+                expect(instructions[3]).toHaveValue('Socials instructions')
+                const verbosityFields = screen.getAllByRole('textbox', {
+                    name: /verbosity/i,
+                })
+                expect(verbosityFields).toHaveLength(4)
+                expect(verbosityFields[3]).toHaveValue('Detailed')
+            })
+        })
+        it('should default Socials verbosity to concise when not set', async () => {
+            enableInstagramDms()
+            setupComponent({})
+            const user = await switchToChannelTab()
+            await expandAllChannelSections(user)
+            await waitFor(() => {
+                const verbosityFields = screen.getAllByRole('textbox', {
+                    name: /verbosity/i,
+                })
+                expect(verbosityFields[3]).toHaveValue('Concise')
+            })
+        })
+        it('should save Socials instructions and verbosity', async () => {
+            enableInstagramDms()
+            setupComponent({
+                toneOfVoiceByChannel: {
+                    email: { customToneOfVoice: '', verbosity: 'concise' },
+                    chat: { customToneOfVoice: '', verbosity: 'concise' },
+                    sms: { customToneOfVoice: '', verbosity: 'concise' },
+                    socials: { customToneOfVoice: '', verbosity: 'concise' },
+                },
+            })
+            const user = await switchToChannelTab()
+            await expandAllChannelSections(user)
+            await waitFor(() => {
+                expect(screen.getAllByLabelText(/instructions/i)).toHaveLength(
+                    4,
+                )
+            })
+            const socialsInstructions =
+                screen.getAllByLabelText(/instructions/i)[3]
+            await user.type(socialsInstructions, 'Casual DM tone')
+            await user.click(screen.getByRole('button', { name: /save/i }))
+            await waitFor(() => {
+                expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        toneOfVoiceByChannel: expect.objectContaining({
+                            socials: {
+                                customToneOfVoice: 'Casual DM tone',
+                                verbosity: 'concise',
+                            },
+                        }),
+                    }),
+                )
+            })
+        })
+        it('should omit the socials key from the save payload when the flag is disabled', async () => {
+            setupComponent({})
+            const user = userEvent.setup()
+            await user.type(screen.getByLabelText(/greeting/i), 'Hi!')
+            await user.click(screen.getByRole('button', { name: /save/i }))
+            await waitFor(() => {
+                expect(mockUpdateStoreConfiguration).toHaveBeenCalled()
+            })
+            const call = mockUpdateStoreConfiguration.mock.calls[0][0]
+            expect(call.toneOfVoiceByChannel).not.toHaveProperty('socials')
         })
     })
     describe('Save functionality', () => {
