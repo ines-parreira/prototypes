@@ -14,6 +14,8 @@ import type {
 
 import '@gorgias/copilot/copilot.css'
 
+import { CopilotConversationStarters } from './CopilotConversationStarters'
+
 type Props = {
     children: ReactNode
 }
@@ -39,6 +41,7 @@ export function CopilotProvider({ children }: Props) {
             accountDomain={window.GORGIAS_STATE?.currentAccount?.domain}
             renderReference={renderReference}
         >
+            <CopilotConversationStarters />
             {children}
         </BaseCopilotProvider>
     )
