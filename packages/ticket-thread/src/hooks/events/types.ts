@@ -50,7 +50,11 @@ export type TicketThreadAuditLogEventByType<
     TType extends TicketThreadAuditLogEvent['type'],
 > = Extract<TicketThreadAuditLogEventItem, { type: TType }>
 
-export type TicketThreadAuditLogAttribution = 'none' | 'via-rule' | 'author'
+export type TicketThreadAuditLogAttribution =
+    | 'none'
+    | 'via-rule'
+    | 'via-team-auto-assignment'
+    | 'author'
 
 export type TicketThreadSatisfactionSurveyRespondedEventItem = {
     _tag: typeof TicketThreadItemTag.Events.SatisfactionSurveyRespondedEvent

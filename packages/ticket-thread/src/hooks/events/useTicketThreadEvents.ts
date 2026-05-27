@@ -61,6 +61,10 @@ function getAuditLogAttribution(
         return 'author'
     }
 
+    if (event.data?.auto_assigned) {
+        return 'via-team-auto-assignment'
+    }
+
     return 'none'
 }
 

@@ -20,7 +20,6 @@ export function TicketThreadAuditLogTicketUnassignedEvent({
             <TicketThreadAuditLogEventAttribution
                 attribution={item.meta.attribution}
                 authorId={event.user_id}
-                allowAuthorFallback={false}
             />
             {event.created_datetime && (
                 <TicketThreadEventDateTime datetime={event.created_datetime} />

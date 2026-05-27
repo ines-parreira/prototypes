@@ -337,6 +337,37 @@ describe('useTicketThreadEvents', () => {
         expect(closedEvents[1]?.meta.attribution).toBe('none')
     })
 
+    it('sets team auto-assignment attribution when an assignment event is auto-assigned without a user', async () => {
+        const mockListEvents = getEventsHandler([
+            getAuditLogEvent({
+                id: 1,
+                type: 'ticket-assigned',
+                created_datetime: '2024-03-21T11:00:00Z',
+                data: {
+                    assignee_user_id: 12,
+                    auto_assigned: true,
+                },
+            }),
+        ])
+
+        server.use(mockListEvents.handler)
+
+        const { result } = renderHook(() =>
+            useTicketThreadEvents({ ticketId: 7 }),
+        )
+
+        await waitFor(() => {
+            expect(result.current.events).toHaveLength(1)
+        })
+
+        const assignedEvent = getAuditLogItemByType(
+            result.current.events,
+            'ticket-assigned',
+        )
+
+        expect(assignedEvent?.meta.attribution).toBe('via-team-auto-assignment')
+    })
+
     it('includes audit log events returned on the ticket object', async () => {
         const mockListEvents = getEventsHandler([])
 

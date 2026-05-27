@@ -25,14 +25,14 @@ export function TicketThreadAuditLogTicketAssignedEvent({
         [agents, event.data?.assignee_user_id],
     )
 
-    if (!assignedAgent) {
-        return null
-    }
-
     return (
         <TicketThreadEventContainer>
             <Icon name="user" />
-            <Text size="sm">Ticket assigned to {assignedAgent?.name}</Text>
+            <Text size="sm">
+                {assignedAgent
+                    ? `Ticket assigned to ${assignedAgent.name}`
+                    : 'Ticket assigned'}
+            </Text>
             <TicketThreadAuditLogEventAttribution
                 attribution={item.meta.attribution}
                 authorId={event.user_id}

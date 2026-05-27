@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 
 import {
@@ -92,9 +92,15 @@ function buildItem<TType extends TicketThreadAuditLogEvent['type']>(
 function renderAuditEvent<TType extends TicketThreadAuditLogEvent['type']>(
     type: TType,
     eventData?: Extract<TicketThreadAuditLogEvent, { type: TType }>['data'],
+    options?: {
+        attribution?: TicketThreadAuditLogAttribution
+        userId?: number | null
+    },
 ) {
     return render(
-        <TicketThreadAuditLogEventItem item={buildItem(type, eventData)} />,
+        <TicketThreadAuditLogEventItem
+            item={buildItem(type, eventData, options)}
+        />,
     )
 }
 
@@ -174,20 +180,67 @@ describe('TicketThread audit-log rendering', () => {
         expect(screen.getByText('via rule')).toBeInTheDocument()
     })
 
-    it('renders nothing for ticket-assigned when assignee cannot be resolved', async () => {
+    it('keeps ticket-assigned visible when assignee cannot be resolved', async () => {
         const mockListUsers = getUsersHandler([])
         const waitForUsersRequest = mockListUsers.waitForRequest(server)
 
         server.use(mockListUsers.handler)
 
-        const { container } = renderAuditEvent('ticket-assigned', {
+        renderAuditEvent('ticket-assigned', {
             assignee_user_id: 999,
         })
 
         await waitForUsersRequest(() => undefined)
-        await waitFor(() => {
-            expect(container).toBeEmptyDOMElement()
+        expect(screen.getByText('Ticket assigned')).toBeInTheDocument()
+        expect(screen.getByText('via rule')).toBeInTheDocument()
+    })
+
+    it('renders ticket-assigned author when attribution is author', async () => {
+        renderAuditEvent(
+            'ticket-assigned',
+            {
+                assignee_user_id: 101,
+            },
+            {
+                attribution: 'author',
+                userId: 101,
+            },
+        )
+
+        expect(
+            await screen.findByText('Ticket assigned to Nicolas Agent'),
+        ).toBeInTheDocument()
+        expect(screen.getByText('by')).toBeInTheDocument()
+        expect(screen.getByText('Nicolas Agent')).toBeInTheDocument()
+    })
+
+    it('renders ticket-assigned team auto-assignment attribution', async () => {
+        renderAuditEvent(
+            'ticket-assigned',
+            {
+                assignee_user_id: 101,
+            },
+            {
+                attribution: 'via-team-auto-assignment',
+                userId: null,
+            },
+        )
+
+        expect(
+            await screen.findByText('Ticket assigned to Nicolas Agent'),
+        ).toBeInTheDocument()
+        expect(screen.getByText('via Team auto-assignment')).toBeInTheDocument()
+    })
+
+    it('renders ticket-unassigned author when attribution is author', async () => {
+        renderAuditEvent('ticket-unassigned', undefined, {
+            attribution: 'author',
+            userId: 101,
         })
+
+        expect(screen.getByText('Ticket was unassigned')).toBeInTheDocument()
+        expect(await screen.findByText('Nicolas Agent')).toBeInTheDocument()
+        expect(screen.getByText('by')).toBeInTheDocument()
     })
 
     it('renders team assignment target when assignee_team_id exists', async () => {

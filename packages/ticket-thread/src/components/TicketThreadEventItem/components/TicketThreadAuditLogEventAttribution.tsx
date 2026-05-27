@@ -17,6 +17,10 @@ export function TicketThreadAuditLogEventAttribution({
         return <TicketThreadEventMethod method="rule" />
     }
 
+    if (attribution === 'via-team-auto-assignment') {
+        return <TicketThreadEventMethod method="Team auto-assignment" />
+    }
+
     if (attribution === 'author' && allowAuthorFallback && authorId != null) {
         return <TicketThreadEventAuthor authorId={authorId} />
     }
