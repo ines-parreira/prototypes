@@ -1,9 +1,14 @@
-import { NavigationSection, NavigationSectionGroup } from '@repo/navigation'
+import {
+    NavigationSection,
+    NavigationSectionGroup,
+    useSidebar,
+} from '@repo/navigation'
 
 import { Box, Tag } from '@gorgias/axiom'
 
 import type { ProductMetadata } from 'routes/layout/productMetadata'
 import { Product, productMetadata } from 'routes/layout/productMetadata'
+import { CollapsedHomeSidebar } from 'routes/layout/sidebars/CollapsedHomeSidebar'
 import { useNavigationProducts } from 'routes/layout/useNavigationProducts'
 
 type ProductNavigationSectionProps = {
@@ -38,12 +43,17 @@ function ProductNavigationSection({
 }
 
 export function HomeSidebar() {
+    const { isCollapsed } = useSidebar()
     const {
         canAccessAiAgent,
         aiAgentRequiresUpgrade,
         isAiJourneyVisible,
         isConvertVisible,
     } = useNavigationProducts()
+
+    if (isCollapsed) {
+        return <CollapsedHomeSidebar />
+    }
 
     return (
         <NavigationSectionGroup storageKey="home" defaultExpandedKeys={[]}>

@@ -1,4 +1,5 @@
 import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
+import { MockSidebarProvider } from '@repo/navigation/fixtures'
 import { assumeMock, render } from '@repo/testing'
 import { useCurrentUserRole } from '@repo/users'
 import { screen } from '@testing-library/react'
@@ -21,9 +22,21 @@ jest.mock('@repo/users', () => ({
     useCurrentUserRole: jest.fn(),
 }))
 
+jest.mock('routes/layout/sidebars/CollapsedHomeSidebar', () => ({
+    CollapsedHomeSidebar: () => <div>CollapsedHomeSidebar</div>,
+}))
+
 const mockUseFlagWithLoading = assumeMock(useFlagWithLoading)
 const mockUseAiAgentAccess = assumeMock(useAiAgentAccess)
 const mockUseCurrentUserRole = assumeMock(useCurrentUserRole)
+
+function renderHomeSidebar(isCollapsed = false) {
+    return render(
+        <MockSidebarProvider isCollapsed={isCollapsed}>
+            <HomeSidebar />
+        </MockSidebarProvider>,
+    )
+}
 
 describe('HomeSidebar', () => {
     beforeEach(() => {
@@ -42,8 +55,23 @@ describe('HomeSidebar', () => {
         })
     })
 
+    it('should render CollapsedHomeSidebar when the sidebar is collapsed', () => {
+        renderHomeSidebar(true)
+
+        expect(screen.getByText('CollapsedHomeSidebar')).toBeInTheDocument()
+    })
+
+    it('should render the expanded view when the sidebar is not collapsed', () => {
+        renderHomeSidebar(false)
+
+        expect(
+            screen.queryByText('CollapsedHomeSidebar'),
+        ).not.toBeInTheDocument()
+        expect(screen.getByRole('link', { name: /Inbox/i })).toBeInTheDocument()
+    })
+
     it('should render the always-visible product links', () => {
-        render(<HomeSidebar />)
+        renderHomeSidebar()
 
         expect(screen.getByRole('link', { name: /Inbox/i })).toBeInTheDocument()
         expect(
@@ -61,7 +89,7 @@ describe('HomeSidebar', () => {
     })
 
     it('should render the AI Agent link when user has Agent role', () => {
-        render(<HomeSidebar />)
+        renderHomeSidebar()
 
         expect(
             screen.getByRole('link', { name: /AI Agent/i }),
@@ -75,7 +103,7 @@ describe('HomeSidebar', () => {
             currentUser: { id: 1, role: { name: 'observer-agent' } },
         })
 
-        render(<HomeSidebar />)
+        renderHomeSidebar()
 
         expect(
             screen.queryByRole('link', { name: /AI Agent/i }),
@@ -88,7 +116,7 @@ describe('HomeSidebar', () => {
             isLoading: false,
         })
 
-        render(<HomeSidebar />)
+        renderHomeSidebar()
 
         expect(screen.getByText('Upgrade')).toBeInTheDocument()
     })
@@ -99,7 +127,7 @@ describe('HomeSidebar', () => {
             isLoading: false,
         })
 
-        render(<HomeSidebar />)
+        renderHomeSidebar()
 
         expect(screen.queryByText('Upgrade')).not.toBeInTheDocument()
     })
@@ -111,7 +139,7 @@ describe('HomeSidebar', () => {
                 : { value: false, isLoading: false },
         )
 
-        render(<HomeSidebar />)
+        renderHomeSidebar()
 
         expect(
             screen.getByRole('link', { name: /AI Journey/i }),
@@ -119,7 +147,7 @@ describe('HomeSidebar', () => {
     })
 
     it('should not render the AI Journey link when AiJourneyEnabled flag is off', () => {
-        render(<HomeSidebar />)
+        renderHomeSidebar()
 
         expect(
             screen.queryByRole('link', { name: /AI Journey/i }),
@@ -127,7 +155,7 @@ describe('HomeSidebar', () => {
     })
 
     it('should render the Convert link for admin users', () => {
-        render(<HomeSidebar />)
+        renderHomeSidebar()
 
         expect(
             screen.getByRole('link', { name: /Convert/i }),
@@ -141,7 +169,7 @@ describe('HomeSidebar', () => {
             currentUser: { id: 1, role: { name: 'agent' } },
         })
 
-        render(<HomeSidebar />)
+        renderHomeSidebar()
 
         expect(
             screen.queryByRole('link', { name: /Convert/i }),
