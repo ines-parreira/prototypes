@@ -1,0 +1,20 @@
+// Axiom's TooltipContent ships with dark/inverted defaults intended for short
+// text tooltips. The reference popover renders an axiom `Card` that owns its
+// own background, border, radius, and shadow — so we strip the tooltip
+// wrapper down to a sized, transparent positioning container.
+//
+// Note: axiom's tooltip container is `display: flex; align-items: center`,
+// which shrinks children to content width. Override with `stretch` so the
+// inner card always fills the 320px popover (otherwise the skeleton popover
+// collapses to its content width while the loaded card looks full-width).
+:global([data-name='tooltip-content']:has([data-reference-card])) {
+    width: 320px;
+    max-width: none;
+    padding: 0;
+    background: transparent;
+    color: var(--content-neutral-default);
+    border: none;
+    box-shadow: none;
+    text-align: left;
+    align-items: stretch;
+}

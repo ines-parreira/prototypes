@@ -117,71 +117,23 @@ describe('CopilotProvider', () => {
         })
     })
 
-    describe('renderReference', () => {
-        function captureRenderReference() {
-            render(
-                <CopilotProvider>
-                    <div>Helpdesk</div>
-                </CopilotProvider>,
-            )
-            const props = baseCopilotProviderMock.mock.calls[0][0]
-            return props.renderReference
-        }
+    it('hands a renderReference function to BaseCopilotProvider', () => {
+        render(
+            <CopilotProvider>
+                <div>Helpdesk</div>
+            </CopilotProvider>,
+        )
+        const props = baseCopilotProviderMock.mock.calls[0][0]
+        expect(typeof props.renderReference).toBe('function')
 
-        it.each([
-            ['ticket', { type: 'ticket', id: 42 }, '/app/ticket/42'],
-            [
-                'guidance',
-                {
-                    type: 'guidance',
-                    id: 7,
-                    shopType: 'shopify',
-                    shopName: 'acme',
-                },
-                '/app/ai-agent/shopify/acme/knowledge/guidance/7',
-            ],
-            [
-                'skill',
-                {
-                    type: 'skill',
-                    id: 12,
-                    shopType: 'shopify',
-                    shopName: 'acme',
-                },
-                '/app/ai-agent/shopify/acme/skills/12',
-            ],
-            [
-                'opportunity',
-                {
-                    type: 'opportunity',
-                    id: 3,
-                    shopType: 'shopify',
-                    shopName: 'acme',
-                },
-                '/app/ai-agent/shopify/acme/opportunities/3',
-            ],
-            [
-                'support-action',
-                {
-                    type: 'support-action',
-                    id: 'wf_abc',
-                    shopType: 'shopify',
-                    shopName: 'acme',
-                },
-                '/app/ai-agent/shopify/acme/actions/edit/wf_abc',
-            ],
-        ] as const)(
-            'renders a SPA link for %s references',
-            (_label, reference, expectedRoute) => {
-                const renderReference = captureRenderReference()
-                const element = renderReference({
-                    reference,
-                    children: 'label',
-                })
-                render(<>{element}</>)
-                const link = screen.getByRole('link', { name: 'label' })
-                expect(link).toHaveAttribute('href', expectedRoute)
-            },
+        const element = props.renderReference({
+            reference: { type: 'ticket', id: 42 },
+            children: 'label',
+        })
+        render(<>{element}</>)
+        expect(screen.getByRole('link', { name: 'label' })).toHaveAttribute(
+            'href',
+            '/app/ticket/42',
         )
     })
 })

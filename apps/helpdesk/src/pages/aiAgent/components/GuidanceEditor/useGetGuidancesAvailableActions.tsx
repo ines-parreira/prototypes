@@ -51,8 +51,9 @@ const getMissingValuesDetails = (
 export const useGetGuidancesAvailableActions = (
     shopName: string,
     shopType: string,
+    enabled = true,
 ) => {
-    const canFetch = !!shopName && shopType === 'shopify'
+    const canFetch = enabled && !!shopName && shopType === 'shopify'
 
     const { data: allActions = [], isLoading } = useQuery({
         queryKey: ['guidance-actions-all', shopName, shopType],

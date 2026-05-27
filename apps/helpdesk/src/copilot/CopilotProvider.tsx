@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
 import type { ReactNode } from 'react'
-import { Link } from 'react-router-dom'
 
 import { GorgiasAppAuthService } from '@repo/api-resources/gorgiasAppsAuth'
 import { isLocalDev, isProduction, isStaging } from '@repo/utils'
@@ -8,13 +7,13 @@ import { isLocalDev, isProduction, isStaging } from '@repo/utils'
 import { CopilotProvider as BaseCopilotProvider } from '@gorgias/copilot'
 import type {
     GorgiasAgentConfig,
-    GorgiasCopilotReference,
     RenderCopilotReference,
 } from '@gorgias/copilot'
 
 import '@gorgias/copilot/copilot.css'
 
 import { CopilotConversationStarters } from './CopilotConversationStarters'
+import { ReferenceLink } from './reference/ReferenceLink'
 
 type Props = {
     children: ReactNode
@@ -47,28 +46,9 @@ export function CopilotProvider({ children }: Props) {
     )
 }
 
-const renderReference: RenderCopilotReference = ({ reference, children }) => {
-    const to = resolveReferenceRoute(reference)
-    if (!to) return null
-    return <Link to={to}>{children}</Link>
-}
-
-function resolveReferenceRoute(
-    reference: GorgiasCopilotReference,
-): string | null {
-    switch (reference.type) {
-        case 'ticket':
-            return `/app/ticket/${reference.id}`
-        case 'guidance':
-            return `/app/ai-agent/${reference.shopType}/${reference.shopName}/knowledge/guidance/${reference.id}`
-        case 'skill':
-            return `/app/ai-agent/${reference.shopType}/${reference.shopName}/skills/${reference.id}`
-        case 'opportunity':
-            return `/app/ai-agent/${reference.shopType}/${reference.shopName}/opportunities/${reference.id}`
-        case 'support-action':
-            return `/app/ai-agent/${reference.shopType}/${reference.shopName}/actions/edit/${reference.id}`
-    }
-}
+const renderReference: RenderCopilotReference = ({ reference, children }) => (
+    <ReferenceLink reference={reference}>{children}</ReferenceLink>
+)
 
 function getCopilotApiBaseUrl(): string {
     if (isProduction()) return 'https://copilot.gorgias.help/api/copilot'

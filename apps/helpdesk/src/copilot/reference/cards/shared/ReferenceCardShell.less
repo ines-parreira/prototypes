@@ -1,0 +1,39 @@
+:local {
+    .typeLabel {
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+    .titleRow {
+        margin-top: 2px;
+    }
+
+    .title {
+        flex: 1;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        word-break: break-word;
+    }
+
+    .body {
+        font-size: 12px;
+        line-height: 16px;
+        color: var(--content-neutral-secondary, #5f6b7a);
+        display: -webkit-box !important; // beats Box/Text defaults
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: break-word;
+        max-height: 32px;
+    }
+
+    .rows {
+        margin-top: 4px;
+        padding-top: var(--spacing-xxs);
+        border-top: 1px solid var(--border-neutral-default);
+    }
+}
