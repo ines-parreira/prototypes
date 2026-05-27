@@ -3,6 +3,7 @@ import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketMessagesDimension } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
+import { getGenericQueries } from 'domains/reporting/models/scopes/utils'
 
 // TODO use correct type to dimensions in scope
 export type SatisfactionSurveysDimension =
@@ -176,3 +177,30 @@ export const integrationCsatQueryBuilder = {
     [TicketMessagesDimension.Integration]:
         averageCsatScorePerIntegrationTimeseriesQueryV2Factory,
 }
+
+const averageCsatBaseQuery = () => ({
+    measures: ['averageSurveyScore'] as const,
+})
+
+export const {
+    valueQueryFactory: averageCsatValueQueryFactoryV2,
+    breakdownQuery: averageCsatBreakdownQueryFactoryV2,
+    timeseriesQueryFactory: averageCsatTimeseriesQueryFactoryV2,
+} = getGenericQueries(satisfactionSurveysScope, averageCsatBaseQuery, {
+    valueMetricName: METRIC_NAMES.PERFORMANCE_OVERVIEW_AVERAGE_CSAT_VALUE,
+    breakdownMetricName:
+        METRIC_NAMES.PERFORMANCE_OVERVIEW_AVERAGE_CSAT_BREAKDOWN,
+    breakdownDimensionMetricNames: {
+        channel:
+            METRIC_NAMES.PERFORMANCE_OVERVIEW_AVERAGE_CSAT_BREAKDOWN_PER_CHANNEL,
+        agentId:
+            METRIC_NAMES.PERFORMANCE_OVERVIEW_AVERAGE_CSAT_BREAKDOWN_PER_AGENT,
+    },
+    timeseriesMetricName:
+        METRIC_NAMES.PERFORMANCE_OVERVIEW_AVERAGE_CSAT_TIMESERIES,
+    timeseriesDimensionMetricNames: {
+        channel:
+            METRIC_NAMES.PERFORMANCE_OVERVIEW_AVERAGE_CSAT_TIMESERIES_PER_CHANNEL,
+    },
+    timeDimension: 'createdDatetime',
+})

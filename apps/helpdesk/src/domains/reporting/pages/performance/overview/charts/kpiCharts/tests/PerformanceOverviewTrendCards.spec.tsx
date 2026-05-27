@@ -9,6 +9,9 @@ import type {
 } from 'domains/reporting/pages/dashboards/types'
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { OverviewAverageCSATCard } from 'domains/reporting/pages/performance/overview/charts/kpiCharts/OverviewAverageCSATCard'
+import { OverviewFirstResponseTimeCard } from 'domains/reporting/pages/performance/overview/charts/kpiCharts/OverviewFirstResponseTimeCard'
+import { OverviewMessagesPerTicketCard } from 'domains/reporting/pages/performance/overview/charts/kpiCharts/OverviewMessagesPerTicketCard'
+import { OverviewResolutionTimeCard } from 'domains/reporting/pages/performance/overview/charts/kpiCharts/OverviewResolutionTimeCard'
 
 jest.mock('domains/reporting/hooks/useReportingTrendCardProps')
 const mockUseReportingTrendCardProps = assumeMock(useReportingTrendCardProps)
@@ -111,6 +114,55 @@ describe('Performance Overview Trend Cards', () => {
                 value: 4.5,
                 prevValue: 4.2,
             },
+            timeSeriesView: { queryFactory: expect.any(Function) },
+        },
+        {
+            name: 'OverviewResolutionTimeCard',
+            Component: OverviewResolutionTimeCard,
+            config: {
+                label: 'Resolution time',
+                tooltipConfig: {
+                    title: 'Resolution time',
+                    caption:
+                        'Median time to fully resolve a ticket from creation to close during the selected period.',
+                },
+                metricFormat: 'duration',
+                value: 3600,
+                prevValue: 4200,
+            },
+            timeSeriesView: { queryFactory: expect.any(Function) },
+        },
+        {
+            name: 'OverviewMessagesPerTicketCard',
+            Component: OverviewMessagesPerTicketCard,
+            config: {
+                label: 'Messages per ticket',
+                tooltipConfig: {
+                    title: 'Messages per ticket',
+                    caption:
+                        'Average number of messages exchanged per ticket during the selected period.',
+                },
+                metricFormat: 'decimal',
+                value: 3.4,
+                prevValue: 3.8,
+            },
+            timeSeriesView: { queryFactory: expect.any(Function) },
+        },
+        {
+            name: 'OverviewFirstResponseTimeCard',
+            Component: OverviewFirstResponseTimeCard,
+            config: {
+                label: 'First response time',
+                tooltipConfig: {
+                    title: 'First response time',
+                    caption:
+                        'Median time from ticket creation to the first agent response during the selected period.',
+                },
+                metricFormat: 'duration',
+                value: 1800,
+                prevValue: 2400,
+            },
+            timeSeriesView: { queryFactory: expect.any(Function) },
         },
     ] as TestCase[]
 

@@ -1,6 +1,7 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
+import { getGenericQueries } from 'domains/reporting/models/scopes/utils'
 
 const messagesPerTicketScope = defineScope({
     scope: MetricScope.MessagesPerTicket,
@@ -51,3 +52,31 @@ export const messagesPerTicketCount = messagesPerTicketScope
 export const messagesPerTicketCountQueryV2Factory = (
     ctx: MessagesPerTicketContext,
 ) => messagesPerTicketCount.build(ctx)
+
+const messagesPerTicketBaseQuery = () => ({
+    measures: ['averageMessagesCount'] as const,
+})
+
+export const {
+    valueQueryFactory: messagesPerTicketValueQueryFactoryV2,
+    breakdownQuery: messagesPerTicketBreakdownQueryFactoryV2,
+    timeseriesQueryFactory: messagesPerTicketTimeseriesQueryFactoryV2,
+} = getGenericQueries(messagesPerTicketScope, messagesPerTicketBaseQuery, {
+    valueMetricName:
+        METRIC_NAMES.PERFORMANCE_OVERVIEW_MESSAGES_PER_TICKET_VALUE,
+    breakdownMetricName:
+        METRIC_NAMES.PERFORMANCE_OVERVIEW_MESSAGES_PER_TICKET_BREAKDOWN,
+    breakdownDimensionMetricNames: {
+        channel:
+            METRIC_NAMES.PERFORMANCE_OVERVIEW_MESSAGES_PER_TICKET_BREAKDOWN_PER_CHANNEL,
+        agentId:
+            METRIC_NAMES.PERFORMANCE_OVERVIEW_MESSAGES_PER_TICKET_BREAKDOWN_PER_AGENT,
+    },
+    timeseriesMetricName:
+        METRIC_NAMES.PERFORMANCE_OVERVIEW_MESSAGES_PER_TICKET_TIMESERIES,
+    timeseriesDimensionMetricNames: {
+        channel:
+            METRIC_NAMES.PERFORMANCE_OVERVIEW_MESSAGES_PER_TICKET_TIMESERIES_PER_CHANNEL,
+    },
+    timeDimension: 'createdDatetime',
+})

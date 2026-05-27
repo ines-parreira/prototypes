@@ -1,6 +1,7 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
+import { getGenericQueries } from 'domains/reporting/models/scopes/utils'
 
 const resolutionTimeScope = defineScope({
     scope: MetricScope.ResolutionTime,
@@ -86,3 +87,30 @@ export const aiAgentAllAgentsResolutionTime = resolutionTimeScope
 
 export const aiAgentAllAgentsResolutionTimeQueryV2Factory = (ctx: Context) =>
     aiAgentAllAgentsResolutionTime.build(ctx)
+
+const resolutionTimeBaseQuery = () => ({
+    measures: ['medianResolutionTime'] as const,
+})
+
+export const {
+    valueQueryFactory: resolutionTimeValueQueryFactoryV2,
+    breakdownQuery: resolutionTimeBreakdownQueryFactoryV2,
+    timeseriesQueryFactory: resolutionTimeTimeseriesQueryFactoryV2,
+} = getGenericQueries(resolutionTimeScope, resolutionTimeBaseQuery, {
+    valueMetricName: METRIC_NAMES.PERFORMANCE_OVERVIEW_RESOLUTION_TIME_VALUE,
+    breakdownMetricName:
+        METRIC_NAMES.PERFORMANCE_OVERVIEW_RESOLUTION_TIME_BREAKDOWN,
+    breakdownDimensionMetricNames: {
+        channel:
+            METRIC_NAMES.PERFORMANCE_OVERVIEW_RESOLUTION_TIME_BREAKDOWN_PER_CHANNEL,
+        agentId:
+            METRIC_NAMES.PERFORMANCE_OVERVIEW_RESOLUTION_TIME_BREAKDOWN_PER_AGENT,
+    },
+    timeseriesMetricName:
+        METRIC_NAMES.PERFORMANCE_OVERVIEW_RESOLUTION_TIME_TIMESERIES,
+    timeseriesDimensionMetricNames: {
+        channel:
+            METRIC_NAMES.PERFORMANCE_OVERVIEW_RESOLUTION_TIME_TIMESERIES_PER_CHANNEL,
+    },
+    timeDimension: 'createdDatetime',
+})

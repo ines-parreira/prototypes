@@ -3,24 +3,24 @@ import { TrendCard } from '@repo/reporting'
 import { useReportingTrendCardProps } from 'domains/reporting/hooks/useReportingTrendCardProps'
 import { getStatsTrendHook } from 'domains/reporting/hooks/useStatsMetricTrend'
 import {
-    averageCsatTimeseriesQueryFactoryV2,
-    averageCsatValueQueryFactoryV2,
-} from 'domains/reporting/models/scopes/satisfactionSurveys'
+    resolutionTimeTimeseriesQueryFactoryV2,
+    resolutionTimeValueQueryFactoryV2,
+} from 'domains/reporting/models/scopes/resolutionTime'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 
-export const OverviewAverageCSATCard = ({
+export const OverviewResolutionTimeCard = ({
     chartId,
     dashboard,
     chartConfig,
 }: DashboardChartProps) => {
     const trendCardProps = useReportingTrendCardProps({
-        useTrend: getStatsTrendHook(averageCsatValueQueryFactoryV2),
+        useTrend: getStatsTrendHook(resolutionTimeValueQueryFactoryV2),
         chartConfig: chartConfig!,
         isAiAgentTrendCard: false,
         chartId,
         dashboard,
         timeSeriesView: {
-            queryFactory: averageCsatTimeseriesQueryFactoryV2,
+            queryFactory: resolutionTimeTimeseriesQueryFactoryV2,
         },
     })
 

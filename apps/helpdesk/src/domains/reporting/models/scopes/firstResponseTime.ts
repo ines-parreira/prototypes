@@ -1,6 +1,7 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
+import { getGenericQueries } from 'domains/reporting/models/scopes/utils'
 
 const firstResponseTimeScope = defineScope({
     scope: MetricScope.FirstResponseTime,
@@ -129,3 +130,31 @@ export const aiAgentAllAgentsFRT = firstResponseTimeScope
 export const aiAgentAllAgentsFRTQueryV2Factory = (
     ctx: FirstResponseTimeContext,
 ) => aiAgentAllAgentsFRT.build(ctx)
+
+const firstResponseTimeBaseQuery = () => ({
+    measures: ['medianFirstResponseTime'] as const,
+})
+
+export const {
+    valueQueryFactory: firstResponseTimeValueQueryFactoryV2,
+    breakdownQuery: firstResponseTimeBreakdownQueryFactoryV2,
+    timeseriesQueryFactory: firstResponseTimeTimeseriesQueryFactoryV2,
+} = getGenericQueries(firstResponseTimeScope, firstResponseTimeBaseQuery, {
+    valueMetricName:
+        METRIC_NAMES.PERFORMANCE_OVERVIEW_FIRST_RESPONSE_TIME_VALUE,
+    breakdownMetricName:
+        METRIC_NAMES.PERFORMANCE_OVERVIEW_FIRST_RESPONSE_TIME_BREAKDOWN,
+    breakdownDimensionMetricNames: {
+        channel:
+            METRIC_NAMES.PERFORMANCE_OVERVIEW_FIRST_RESPONSE_TIME_BREAKDOWN_PER_CHANNEL,
+        agentId:
+            METRIC_NAMES.PERFORMANCE_OVERVIEW_FIRST_RESPONSE_TIME_BREAKDOWN_PER_AGENT,
+    },
+    timeseriesMetricName:
+        METRIC_NAMES.PERFORMANCE_OVERVIEW_FIRST_RESPONSE_TIME_TIMESERIES,
+    timeseriesDimensionMetricNames: {
+        channel:
+            METRIC_NAMES.PERFORMANCE_OVERVIEW_FIRST_RESPONSE_TIME_TIMESERIES_PER_CHANNEL,
+    },
+    timeDimension: 'createdDatetime',
+})

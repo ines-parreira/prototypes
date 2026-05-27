@@ -828,6 +828,63 @@ export const METRIC_NAMES = {
 
     // Test and utility
     TEST_METRIC: 'test-metric',
+
+    // --- Overall Performance Revamp - No FF ---
+    // Satisfaction Surveys
+    PERFORMANCE_OVERVIEW_AVERAGE_CSAT_VALUE:
+        'performance-overview-average-csat-value',
+    PERFORMANCE_OVERVIEW_AVERAGE_CSAT_BREAKDOWN:
+        'performance-overview-average-csat-breakdown',
+    PERFORMANCE_OVERVIEW_AVERAGE_CSAT_BREAKDOWN_PER_CHANNEL:
+        'performance-overview-average-csat-breakdown-per-channel',
+    PERFORMANCE_OVERVIEW_AVERAGE_CSAT_BREAKDOWN_PER_AGENT:
+        'performance-overview-average-csat-breakdown-per-agent',
+    PERFORMANCE_OVERVIEW_AVERAGE_CSAT_TIMESERIES:
+        'performance-overview-average-csat-timeseries',
+    PERFORMANCE_OVERVIEW_AVERAGE_CSAT_TIMESERIES_PER_CHANNEL:
+        'performance-overview-average-csat-timeseries-per-channel',
+
+    // Resolution Time
+    PERFORMANCE_OVERVIEW_RESOLUTION_TIME_VALUE:
+        'performance-overview-resolution-time-value',
+    PERFORMANCE_OVERVIEW_RESOLUTION_TIME_BREAKDOWN:
+        'performance-overview-resolution-time-breakdown',
+    PERFORMANCE_OVERVIEW_RESOLUTION_TIME_BREAKDOWN_PER_CHANNEL:
+        'performance-overview-resolution-time-breakdown-per-channel',
+    PERFORMANCE_OVERVIEW_RESOLUTION_TIME_BREAKDOWN_PER_AGENT:
+        'performance-overview-resolution-time-breakdown-per-agent',
+    PERFORMANCE_OVERVIEW_RESOLUTION_TIME_TIMESERIES:
+        'performance-overview-resolution-time-timeseries',
+    PERFORMANCE_OVERVIEW_RESOLUTION_TIME_TIMESERIES_PER_CHANNEL:
+        'performance-overview-resolution-time-timeseries-per-channel',
+
+    // Messages Per Ticket
+    PERFORMANCE_OVERVIEW_MESSAGES_PER_TICKET_VALUE:
+        'performance-overview-messages-per-ticket-value',
+    PERFORMANCE_OVERVIEW_MESSAGES_PER_TICKET_BREAKDOWN:
+        'performance-overview-messages-per-ticket-breakdown',
+    PERFORMANCE_OVERVIEW_MESSAGES_PER_TICKET_BREAKDOWN_PER_CHANNEL:
+        'performance-overview-messages-per-ticket-breakdown-per-channel',
+    PERFORMANCE_OVERVIEW_MESSAGES_PER_TICKET_BREAKDOWN_PER_AGENT:
+        'performance-overview-messages-per-ticket-breakdown-per-agent',
+    PERFORMANCE_OVERVIEW_MESSAGES_PER_TICKET_TIMESERIES:
+        'performance-overview-messages-per-ticket-timeseries',
+    PERFORMANCE_OVERVIEW_MESSAGES_PER_TICKET_TIMESERIES_PER_CHANNEL:
+        'performance-overview-messages-per-ticket-timeseries-per-channel',
+
+    // First Response Time
+    PERFORMANCE_OVERVIEW_FIRST_RESPONSE_TIME_VALUE:
+        'performance-overview-first-response-time-value',
+    PERFORMANCE_OVERVIEW_FIRST_RESPONSE_TIME_BREAKDOWN:
+        'performance-overview-first-response-time-breakdown',
+    PERFORMANCE_OVERVIEW_FIRST_RESPONSE_TIME_BREAKDOWN_PER_CHANNEL:
+        'performance-overview-first-response-time-breakdown-per-channel',
+    PERFORMANCE_OVERVIEW_FIRST_RESPONSE_TIME_BREAKDOWN_PER_AGENT:
+        'performance-overview-first-response-time-breakdown-per-agent',
+    PERFORMANCE_OVERVIEW_FIRST_RESPONSE_TIME_TIMESERIES:
+        'performance-overview-first-response-time-timeseries',
+    PERFORMANCE_OVERVIEW_FIRST_RESPONSE_TIME_TIMESERIES_PER_CHANNEL:
+        'performance-overview-first-response-time-timeseries-per-channel',
 } as const
 
 export enum MetricScope {

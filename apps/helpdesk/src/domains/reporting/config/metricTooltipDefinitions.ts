@@ -260,4 +260,19 @@ export const METRIC_TOOLTIPS = {
         caption:
             'Average satisfaction (CSAT) score for interactions handled during the selected period.',
     },
+    resolutionTime: {
+        title: 'Resolution time',
+        caption:
+            'Median time to fully resolve a ticket from creation to close during the selected period.',
+    },
+    messagesPerTicket: {
+        title: 'Messages per ticket',
+        caption:
+            'Average number of messages exchanged per ticket during the selected period.',
+    },
+    firstResponseTime: {
+        title: 'First response time',
+        caption:
+            'Median time from ticket creation to the first agent response during the selected period.',
+    },
 } as const satisfies Record<string, MetricTooltipConfig>

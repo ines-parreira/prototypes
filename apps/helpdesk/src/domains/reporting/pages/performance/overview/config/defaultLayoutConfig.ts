@@ -15,6 +15,21 @@ export const DEFAULT_PERFORMANCE_OVERVIEW_LAYOUT: DashboardLayoutConfig<Performa
                         gridSize: 3,
                         visibility: true,
                     },
+                    {
+                        chartId: PerformanceOverviewChart.ResolutionTimeCard,
+                        gridSize: 3,
+                        visibility: true,
+                    },
+                    {
+                        chartId: PerformanceOverviewChart.MessagesPerTicketCard,
+                        gridSize: 3,
+                        visibility: true,
+                    },
+                    {
+                        chartId: PerformanceOverviewChart.FirstResponseTimeCard,
+                        gridSize: 3,
+                        visibility: true,
+                    },
                 ],
             },
         ],

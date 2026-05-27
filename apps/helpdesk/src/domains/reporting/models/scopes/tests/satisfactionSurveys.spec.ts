@@ -1,12 +1,15 @@
 import { OrderDirection } from '@gorgias/helpdesk-types'
 
 import {
+    averageCsatBreakdownQueryFactoryV2,
     averageCsatScorePerAgentTimeseries,
     averageCsatScorePerAgentTimeseriesQueryV2Factory,
     averageCsatScorePerChannelTimeseries,
     averageCsatScorePerChannelTimeseriesQueryV2Factory,
     averageCsatScorePerIntegrationTimeseries,
     averageCsatScorePerIntegrationTimeseriesQueryV2Factory,
+    averageCsatTimeseriesQueryFactoryV2,
+    averageCsatValueQueryFactoryV2,
     averageScore,
     averageScoreQueryV2Factory,
 } from 'domains/reporting/models/scopes/satisfactionSurveys'
@@ -442,6 +445,114 @@ describe('averageCsatScope', () => {
                         granularity: 'month',
                     },
                 ])
+            })
+        })
+
+        describe('performance overview average CSAT triplet', () => {
+            const periodFilters = [
+                {
+                    member: 'periodStart',
+                    operator: 'afterDate',
+                    values: ['2025-09-03T00:00:00.000'],
+                },
+                {
+                    member: 'periodEnd',
+                    operator: 'beforeDate',
+                    values: ['2025-09-03T23:59:59.000'],
+                },
+            ]
+
+            it('value returns measures + period filters with auto-injected time_dimensions', () => {
+                expect(averageCsatValueQueryFactoryV2(context)).toEqual({
+                    metricName: 'performance-overview-average-csat-value',
+                    scope: 'satisfaction-surveys',
+                    measures: ['averageSurveyScore'],
+                    timezone: 'utc',
+                    filters: periodFilters,
+                    time_dimensions: [
+                        { dimension: 'createdDatetime', granularity: 'day' },
+                    ],
+                })
+            })
+
+            it('breakdown forwards ctx.dimensions and uses the default metric name for unmapped dims', () => {
+                expect(
+                    averageCsatBreakdownQueryFactoryV2.build({
+                        ...context,
+                        dimensions: ['integrationId'],
+                    }),
+                ).toEqual({
+                    metricName: 'performance-overview-average-csat-breakdown',
+                    scope: 'satisfaction-surveys',
+                    measures: ['averageSurveyScore'],
+                    dimensions: ['integrationId'],
+                    timezone: 'utc',
+                    filters: periodFilters,
+                    time_dimensions: [
+                        { dimension: 'createdDatetime', granularity: 'day' },
+                    ],
+                })
+            })
+
+            it.each([
+                [
+                    'channel',
+                    'performance-overview-average-csat-breakdown-per-channel',
+                ],
+                [
+                    'agentId',
+                    'performance-overview-average-csat-breakdown-per-agent',
+                ],
+            ] as const)(
+                'breakdown uses the per-dimension metric name when ctx.dimensions=[%s]',
+                (dimension, expectedMetricName) => {
+                    expect(
+                        averageCsatBreakdownQueryFactoryV2.build({
+                            ...context,
+                            dimensions: [dimension],
+                        }).metricName,
+                    ).toBe(expectedMetricName)
+                },
+            )
+
+            it('breakdown falls back to the default metric name for multi-dim breakdowns', () => {
+                expect(
+                    averageCsatBreakdownQueryFactoryV2.build({
+                        ...context,
+                        dimensions: ['channel', 'agentId'],
+                    }).metricName,
+                ).toBe('performance-overview-average-csat-breakdown')
+            })
+
+            it('timeseries pins createdDatetime time dimension and adds limit', () => {
+                expect(
+                    averageCsatTimeseriesQueryFactoryV2({
+                        ...context,
+                        dimensions: [],
+                    }),
+                ).toEqual({
+                    metricName: 'performance-overview-average-csat-timeseries',
+                    scope: 'satisfaction-surveys',
+                    measures: ['averageSurveyScore'],
+                    dimensions: [],
+                    time_dimensions: [
+                        { dimension: 'createdDatetime', granularity: 'day' },
+                    ],
+                    timezone: 'utc',
+                    filters: periodFilters,
+                    limit: 10000,
+                })
+            })
+
+            it('timeseries uses the per-dimension metric name when ctx.dimensions=[channel]', () => {
+                expect(
+                    averageCsatTimeseriesQueryFactoryV2({
+                        ...context,
+                        dimensions: ['channel'],
+                    }).metricName,
+                ).toBe(
+                    'performance-overview-average-csat-timeseries-per-channel',
+                )
             })
         })
 

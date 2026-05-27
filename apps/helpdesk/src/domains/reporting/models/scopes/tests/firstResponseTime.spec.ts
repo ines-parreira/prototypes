@@ -3,6 +3,9 @@ import { OrderDirection } from '@gorgias/helpdesk-types'
 import {
     aiAgentAllAgentsFRT,
     aiAgentAllAgentsFRTQueryV2Factory,
+    firstResponseTimeBreakdownQueryFactoryV2,
+    firstResponseTimeTimeseriesQueryFactoryV2,
+    firstResponseTimeValueQueryFactoryV2,
     medianFirstResponseTime,
     medianFirstResponseTimePerAgent,
     medianFirstResponseTimePerAgentQueryV2Factory,
@@ -415,6 +418,117 @@ describe('firstResponseTimeScope', () => {
                         granularity: 'month',
                     },
                 ])
+            })
+        })
+
+        describe('performance overview first response time triplet', () => {
+            const periodFilters = [
+                {
+                    member: 'periodStart',
+                    operator: 'afterDate',
+                    values: ['2025-09-03T00:00:00.000'],
+                },
+                {
+                    member: 'periodEnd',
+                    operator: 'beforeDate',
+                    values: ['2025-09-03T23:59:59.000'],
+                },
+            ]
+
+            it('value returns measures + period filters with auto-injected time_dimensions', () => {
+                expect(firstResponseTimeValueQueryFactoryV2(context)).toEqual({
+                    metricName:
+                        'performance-overview-first-response-time-value',
+                    scope: 'first-response-time',
+                    measures: ['medianFirstResponseTime'],
+                    timezone: 'utc',
+                    filters: periodFilters,
+                    time_dimensions: [
+                        { dimension: 'createdDatetime', granularity: 'day' },
+                    ],
+                })
+            })
+
+            it('breakdown forwards ctx.dimensions and uses the default metric name for unmapped dims', () => {
+                expect(
+                    firstResponseTimeBreakdownQueryFactoryV2.build({
+                        ...context,
+                        dimensions: ['integrationId'],
+                    }),
+                ).toEqual({
+                    metricName:
+                        'performance-overview-first-response-time-breakdown',
+                    scope: 'first-response-time',
+                    measures: ['medianFirstResponseTime'],
+                    dimensions: ['integrationId'],
+                    timezone: 'utc',
+                    filters: periodFilters,
+                    time_dimensions: [
+                        { dimension: 'createdDatetime', granularity: 'day' },
+                    ],
+                })
+            })
+
+            it.each([
+                [
+                    'channel',
+                    'performance-overview-first-response-time-breakdown-per-channel',
+                ],
+                [
+                    'agentId',
+                    'performance-overview-first-response-time-breakdown-per-agent',
+                ],
+            ] as const)(
+                'breakdown uses the per-dimension metric name when ctx.dimensions=[%s]',
+                (dimension, expectedMetricName) => {
+                    expect(
+                        firstResponseTimeBreakdownQueryFactoryV2.build({
+                            ...context,
+                            dimensions: [dimension],
+                        }).metricName,
+                    ).toBe(expectedMetricName)
+                },
+            )
+
+            it('breakdown falls back to the default metric name for multi-dim breakdowns', () => {
+                expect(
+                    firstResponseTimeBreakdownQueryFactoryV2.build({
+                        ...context,
+                        dimensions: ['channel', 'agentId'],
+                    }).metricName,
+                ).toBe('performance-overview-first-response-time-breakdown')
+            })
+
+            it('timeseries pins createdDatetime time dimension and adds limit', () => {
+                expect(
+                    firstResponseTimeTimeseriesQueryFactoryV2({
+                        ...context,
+                        dimensions: [],
+                    }),
+                ).toEqual({
+                    metricName:
+                        'performance-overview-first-response-time-timeseries',
+                    scope: 'first-response-time',
+                    measures: ['medianFirstResponseTime'],
+                    dimensions: [],
+                    time_dimensions: [
+                        { dimension: 'createdDatetime', granularity: 'day' },
+                    ],
+                    timezone: 'utc',
+                    filters: periodFilters,
+                    limit: 10000,
+                })
+            })
+
+            it('timeseries uses the per-dimension metric name when ctx.dimensions=[channel]', () => {
+                expect(
+                    firstResponseTimeTimeseriesQueryFactoryV2({
+                        ...context,
+                        dimensions: ['channel'],
+                    }).metricName,
+                ).toBe(
+                    'performance-overview-first-response-time-timeseries-per-channel',
+                )
             })
         })
     })

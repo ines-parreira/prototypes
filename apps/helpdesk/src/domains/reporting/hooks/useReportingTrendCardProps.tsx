@@ -37,6 +37,7 @@ export const useReportingTrendCardProps = ({
     outcomeCustomFieldId?: number
     assigneeUserId?: number
     timeSeriesView?: {
+        disabled?: boolean
         comingSoon?: boolean
         queryFactory?: MetricQueryFactory
         valueFormatter?: (value: number) => string
@@ -71,7 +72,7 @@ export const useReportingTrendCardProps = ({
     )
 
     const timeSeriesViewProps = useMemo(() => {
-        if (!isAiAgentTrendCard) {
+        if (timeSeriesView?.disabled) {
             return undefined
         }
 
@@ -101,7 +102,6 @@ export const useReportingTrendCardProps = ({
         }
     }, [
         timeSeriesView,
-        isAiAgentTrendCard,
         filters,
         userTimezone,
         granularity,

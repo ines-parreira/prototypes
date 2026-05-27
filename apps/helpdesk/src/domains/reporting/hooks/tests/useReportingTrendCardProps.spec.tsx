@@ -570,8 +570,11 @@ describe('useReportingTrendCardProps', () => {
             expect(result.current.timeSeriesView).toEqual({ comingSoon: true })
         })
 
-        it('is disabled when isAiAgentTrendCard is false', () => {
-            const { result } = renderWithTimeSeries({ comingSoon: true }, false)
+        it('is disabled when prop is passed', () => {
+            const { result } = renderWithTimeSeries({
+                disabled: true,
+                comingSoon: true,
+            })
 
             expect(result.current.timeSeriesView).toBeUndefined()
         })
