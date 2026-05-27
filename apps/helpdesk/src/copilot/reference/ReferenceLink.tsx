@@ -5,7 +5,10 @@ import { Link } from 'react-router-dom'
 import type { GorgiasCopilotReference } from '@gorgias/copilot'
 
 import { GuidanceReferenceCard } from './cards/guidance/GuidanceReferenceCard'
+import { OpportunityReferenceCard } from './cards/opportunity/OpportunityReferenceCard'
 import { SkillReferenceCard } from './cards/skill/SkillReferenceCard'
+import { SupportActionReferenceCard } from './cards/supportAction/SupportActionReferenceCard'
+import { TicketReferenceCard } from './cards/ticket/TicketReferenceCard'
 import { ReferencePopover } from './ReferencePopover'
 import { resolveReferenceRoute } from './routes'
 
@@ -53,7 +56,25 @@ function getCardForReference(
                     isOpen={isOpen}
                 />
             )
-        // ticket / opportunity / support-action will follow in subsequent PRs.
+        case 'ticket':
+            return (isOpen) => (
+                <TicketReferenceCard ticketId={reference.id} isOpen={isOpen} />
+            )
+        case 'opportunity':
+            return (isOpen) => (
+                <OpportunityReferenceCard
+                    opportunityId={reference.id}
+                    shopName={reference.shopName}
+                    isOpen={isOpen}
+                />
+            )
+        case 'support-action':
+            return (isOpen) => (
+                <SupportActionReferenceCard
+                    workflowId={reference.id}
+                    isOpen={isOpen}
+                />
+            )
         default:
             return null
     }
