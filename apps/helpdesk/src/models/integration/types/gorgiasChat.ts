@@ -83,6 +83,7 @@ export type GorgiasChatIntegrationMeta = {
     one_click_installation_method?: GorgiasChatInstallationMethod
     one_click_installation_datetime?: string
     one_click_uninstallation_datetime?: string
+    chat_redesign_opt_in_datetime?: string | null
 }
 
 export enum GorgiasChatInstallationMethod {
