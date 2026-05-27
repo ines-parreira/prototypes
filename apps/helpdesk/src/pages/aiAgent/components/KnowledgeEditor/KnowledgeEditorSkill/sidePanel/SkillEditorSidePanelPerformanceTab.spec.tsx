@@ -5,6 +5,7 @@ import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import { useSkillEventMarkers } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillEventMarkers'
 import { useSkillPerformanceFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillPerformanceFromContext'
 import { useSkillPerformanceTrendFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillPerformanceTrendFromContext'
 import { mockFeatureFlags } from 'tests/mockFeatureFlags'
@@ -31,12 +32,24 @@ jest.mock(
             children: ReactNode
         }) => <>{children}</>,
         useSkillPerformanceFromContext: jest.fn(),
+        useSkillPerformanceDataContext: jest.fn(() => ({
+            skillMetrics: { resourceSourceId: 42 },
+        })),
     }),
 )
 jest.mock(
     'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillPerformanceTrendFromContext',
     () => ({
         useSkillPerformanceTrendFromContext: jest.fn(),
+    }),
+)
+jest.mock(
+    'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillEventMarkers',
+    () => ({
+        useSkillEventMarkers: jest.fn(() => ({
+            markers: [],
+            isLoading: false,
+        })),
     }),
 )
 
@@ -63,6 +76,7 @@ const mockUseSkillPerformanceFromContext =
     useSkillPerformanceFromContext as jest.Mock
 const mockUseSkillPerformanceTrendFromContext =
     useSkillPerformanceTrendFromContext as jest.Mock
+const mockUseSkillEventMarkers = useSkillEventMarkers as jest.Mock
 
 const defaultSkillMetrics = {
     metrics: null,
@@ -76,9 +90,9 @@ const defaultTrendChartData = [
     { date: '2026-04-20', ticketVolume: 34, csat: 4.3 },
     { date: '2026-05-17', ticketVolume: 99, csat: 4.5 },
 ]
-const defaultTrendChartMarkers = [
+const defaultEventMarkers = [
     {
-        id: 'mock-version-published-2026-04-30',
+        id: 'skill-version-1',
         date: '2026-04-30',
         label: 'Changes published',
     },
@@ -94,8 +108,11 @@ describe('SkillEditorSidePanelPerformanceTab', () => {
         })
         mockUseSkillPerformanceTrendFromContext.mockReturnValue({
             chartData: defaultTrendChartData,
-            chartMarkers: defaultTrendChartMarkers,
             dateRange: defaultSkillMetrics.dateRange,
+            isLoading: false,
+        })
+        mockUseSkillEventMarkers.mockReturnValue({
+            markers: defaultEventMarkers,
             isLoading: false,
         })
     })
@@ -227,6 +244,7 @@ describe('SkillEditorSidePanelPerformanceTab', () => {
                 ]),
                 markers: expect.arrayContaining([
                     expect.objectContaining({
+                        id: 'skill-version-1',
                         date: '2026-04-30',
                         label: 'Changes published',
                     }),
@@ -271,7 +289,6 @@ describe('SkillEditorSidePanelPerformanceTab', () => {
         })
         mockUseSkillPerformanceTrendFromContext.mockReturnValue({
             chartData: [],
-            chartMarkers: undefined,
             dateRange: defaultSkillMetrics.dateRange,
             isLoading: false,
         })

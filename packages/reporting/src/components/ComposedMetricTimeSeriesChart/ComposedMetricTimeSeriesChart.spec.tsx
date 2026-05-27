@@ -287,6 +287,27 @@ describe('ComposedMetricTimeSeriesChart', () => {
                 container.querySelector(`circle[fill="${MARKER_COLOR}"]`),
             ).toBeInTheDocument()
         })
+
+        it('still renders markers when the line metric is null on the marker date, anchored to the line metric domain top', () => {
+            const dataWithNullLine: ComposedMetricTimeSeriesDataItem[] = [
+                { date: '2026-04-20', ticketVolume: 120, successRate: 72 },
+                { date: '2026-04-21', ticketVolume: 150, successRate: null },
+            ]
+
+            const { container } = render(
+                <ComposedMetricTimeSeriesChart
+                    {...propsWithNumericAxisDomains}
+                    containerWidth={600}
+                    data={dataWithNullLine}
+                    markers={mockMarkers}
+                    markerColor={MARKER_COLOR}
+                />,
+            )
+
+            expect(
+                container.querySelector(`circle[fill="${MARKER_COLOR}"]`),
+            ).toBeInTheDocument()
+        })
     })
 
     describe('legend', () => {

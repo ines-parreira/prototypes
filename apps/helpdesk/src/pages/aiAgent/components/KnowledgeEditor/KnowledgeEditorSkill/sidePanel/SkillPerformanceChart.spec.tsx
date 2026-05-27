@@ -3,6 +3,8 @@ import type { ReactNode } from 'react'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
+import { useSkillEventMarkers } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillEventMarkers'
+import { useSkillPerformanceDataContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillPerformanceFromContext'
 import { useSkillPerformanceTrendFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillPerformanceTrendFromContext'
 
 import { SkillPerformanceChart } from './SkillPerformanceChart'
@@ -26,6 +28,20 @@ jest.mock(
     }),
 )
 
+jest.mock(
+    'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillPerformanceFromContext',
+    () => ({
+        useSkillPerformanceDataContext: jest.fn(),
+    }),
+)
+
+jest.mock(
+    'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillEventMarkers',
+    () => ({
+        useSkillEventMarkers: jest.fn(),
+    }),
+)
+
 jest.mock('@repo/reporting', () => ({
     ChartCard: (props: { title: ReactNode; children: ReactNode }) =>
         mockChartCard(props),
@@ -36,6 +52,9 @@ jest.mock('@repo/reporting', () => ({
 
 const mockUseSkillPerformanceTrendFromContext =
     useSkillPerformanceTrendFromContext as jest.Mock
+const mockUseSkillPerformanceDataContext =
+    useSkillPerformanceDataContext as jest.Mock
+const mockUseSkillEventMarkers = useSkillEventMarkers as jest.Mock
 
 type ChartProps = {
     data: { date: string; ticketVolume: number; csat: number | null }[]
@@ -73,8 +92,14 @@ describe('SkillPerformanceChart', () => {
                 { date: '2026-04-20', ticketVolume: 34, csat: 4.2 },
                 { date: '2026-04-21', ticketVolume: 99, csat: 4.55 },
             ],
-            chartMarkers: [],
             dateRange: mockDateRange,
+            isLoading: false,
+        })
+        mockUseSkillPerformanceDataContext.mockReturnValue({
+            skillMetrics: { resourceSourceId: 42 },
+        })
+        mockUseSkillEventMarkers.mockReturnValue({
+            markers: [],
             isLoading: false,
         })
     })
@@ -94,7 +119,6 @@ describe('SkillPerformanceChart', () => {
     it('renders the no-data placeholder when trend data is empty', () => {
         mockUseSkillPerformanceTrendFromContext.mockReturnValue({
             chartData: [],
-            chartMarkers: undefined,
             dateRange: mockDateRange,
             isLoading: false,
         })
@@ -108,7 +132,6 @@ describe('SkillPerformanceChart', () => {
     it('keeps the chart visible while loading rather than swapping in the no-data placeholder', () => {
         mockUseSkillPerformanceTrendFromContext.mockReturnValue({
             chartData: [],
-            chartMarkers: undefined,
             dateRange: mockDateRange,
             isLoading: true,
         })
@@ -121,10 +144,27 @@ describe('SkillPerformanceChart', () => {
         )
     })
 
-    it('forwards the marker legend label and markers to the chart', () => {
+    it('forwards skillId and the active date range from the data context to useSkillEventMarkers', () => {
+        const dateRange = {
+            start_datetime: '2026-04-01T00:00:00.000Z',
+            end_datetime: '2026-04-28T23:59:59.999Z',
+        }
+
+        mockUseSkillPerformanceDataContext.mockReturnValue({
+            skillMetrics: { resourceSourceId: 99, dateRange },
+        })
+
+        renderChart()
+
+        expect(mockUseSkillEventMarkers).toHaveBeenCalledWith(99, {
+            dateRange,
+        })
+    })
+
+    it('forwards the marker legend label and the event markers from useSkillEventMarkers', () => {
         const markers = [
             {
-                id: 'm1',
+                id: 'skill-version-7',
                 date: '2026-04-25',
                 label: 'Changes published',
             },
@@ -132,8 +172,11 @@ describe('SkillPerformanceChart', () => {
 
         mockUseSkillPerformanceTrendFromContext.mockReturnValue({
             chartData: [{ date: '2026-04-20', ticketVolume: 10, csat: 4.3 }],
-            chartMarkers: markers,
             dateRange: mockDateRange,
+            isLoading: false,
+        })
+        mockUseSkillEventMarkers.mockReturnValue({
+            markers,
             isLoading: false,
         })
 
@@ -155,7 +198,6 @@ describe('SkillPerformanceChart', () => {
                         csat: 4.3,
                     },
                 ],
-                chartMarkers: [],
                 dateRange: mockDateRange,
                 isLoading: false,
             })
@@ -199,7 +241,6 @@ describe('SkillPerformanceChart', () => {
                     { date: '2026-04-21', ticketVolume: 80, csat: 4.3 },
                     { date: '2026-04-22', ticketVolume: 12, csat: 4.3 },
                 ],
-                chartMarkers: [],
                 dateRange: mockDateRange,
                 isLoading: false,
             })

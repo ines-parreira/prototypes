@@ -114,11 +114,20 @@ export const ComposedMetricTimeSeriesChart = ({
         color: lineMetric.color ?? DEFAULT_LINE_COLOR,
     }
     const resolvedMarkerColor = markerColor ?? resolvedLineMetric.color
+    // When the line metric gaps on a marker's date, anchor the marker at the
+    // vertical middle of the line metric's domain so the dot doesn't collide
+    // with the topmost axis tick/gridline.
+    const lineMetricDomainFallback =
+        typeof lineMetric.yAxisDomain?.[0] === 'number' &&
+        typeof lineMetric.yAxisDomain?.[1] === 'number'
+            ? (lineMetric.yAxisDomain[0] + lineMetric.yAxisDomain[1]) / 2
+            : undefined
     const markerPoints = getMarkerPoints(
         data,
         markers,
         dateKey,
         lineMetric.dataKey,
+        lineMetricDomainFallback,
     )
     const responsiveContainerWidth =
         resolveResponsiveContainerWidth(containerWidth)

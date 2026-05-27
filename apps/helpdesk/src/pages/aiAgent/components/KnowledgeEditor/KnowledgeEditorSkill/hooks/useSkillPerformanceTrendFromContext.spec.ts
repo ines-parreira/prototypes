@@ -3,10 +3,7 @@ import { createElement } from 'react'
 
 import { renderHook } from '@repo/testing'
 
-import {
-    mockSkillPerformanceChartData,
-    mockSkillPerformanceChartMarkers,
-} from './SkillPerformanceTrendMockData'
+import { mockSkillPerformanceChartData } from './SkillPerformanceTrendMockData'
 import type { SkillPerformanceData } from './useSkillPerformanceFromContext'
 import { SkillPerformanceDataProvider } from './useSkillPerformanceFromContext'
 import {
@@ -63,9 +60,6 @@ describe('useSkillPerformanceTrendFromContext', () => {
         })
 
         expect(result.current.chartData).toBe(mockSkillPerformanceChartData)
-        expect(result.current.chartMarkers).toBe(
-            mockSkillPerformanceChartMarkers,
-        )
         expect(result.current.isLoading).toBe(false)
     })
 
@@ -79,7 +73,6 @@ describe('useSkillPerformanceTrendFromContext', () => {
             { date: '2024-01-02', ticketVolume: 0, csat: null },
             { date: '2024-01-03', ticketVolume: 6, csat: 4.6 },
         ])
-        expect(result.current.chartMarkers).toBeUndefined()
     })
 
     it('uses the date range from the shared skill performance data', () => {

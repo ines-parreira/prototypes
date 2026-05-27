@@ -64,16 +64,21 @@ export const getMarkerPoints = (
     markers: ComposedMetricTimeSeriesMarker[],
     dateKey: string,
     lineMetricDataKey: string,
+    fallbackY?: number,
 ): ComposedMetricTimeSeriesMarkerPoint[] =>
     markers.flatMap((marker) => {
         const dataItem = data.find(
             (item) => getTooltipDate(item, dateKey) === marker.date,
         )
-        const value = dataItem
-            ? getMetricValue(dataItem, lineMetricDataKey)
-            : null
 
-        return value === null ? [] : [{ ...marker, value }]
+        if (!dataItem) return []
+
+        const value = getMetricValue(dataItem, lineMetricDataKey)
+        if (value !== null) return [{ ...marker, value }]
+
+        if (fallbackY === undefined) return []
+
+        return [{ ...marker, value: fallbackY }]
     })
 
 export const resolveResponsiveContainerWidth = (

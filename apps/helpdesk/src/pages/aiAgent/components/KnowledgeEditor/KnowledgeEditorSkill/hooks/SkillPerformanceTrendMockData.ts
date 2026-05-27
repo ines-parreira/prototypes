@@ -46,13 +46,14 @@ export const mockSkillPerformanceChartMarkers: ComposedMetricTimeSeriesMarker[] 
             description:
                 'Updated conditions to handover unfulfilled orders older than 3 days',
             actionHref:
-                '/app/ai-agent/skills/mock-version-published-2026-04-30',
+                '/app/ai-agent/shopify/acme/skills/1?versionId=mock-version-published-2026-04-30',
         },
         {
             id: 'mock-intent-routing-2026-05-09',
             date: '2026-05-09',
             label: 'Changes published',
             description: 'Updated handover intent routing conditions',
-            actionHref: '/app/ai-agent/skills/mock-intent-routing-2026-05-09',
+            actionHref:
+                '/app/ai-agent/shopify/acme/skills/1?versionId=mock-intent-routing-2026-05-09',
         },
     ]

@@ -21,6 +21,8 @@ import {
     SKILL_PERFORMANCE_TREND_CSAT_DATA_KEY,
     SKILL_PERFORMANCE_TREND_TICKET_VOLUME_DATA_KEY,
 } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/skillPerformanceTrendDataKeys'
+import { useSkillEventMarkers } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillEventMarkers'
+import { useSkillPerformanceDataContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillPerformanceFromContext'
 import { useSkillPerformanceTrendFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillPerformanceTrendFromContext'
 import { formatCsat } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 
@@ -88,8 +90,12 @@ const buildTicketVolumeAxisDomain = (
 }
 
 export const SkillPerformanceChart = () => {
-    const { chartData, chartMarkers, isLoading } =
-        useSkillPerformanceTrendFromContext()
+    const { chartData, isLoading } = useSkillPerformanceTrendFromContext()
+    const { skillMetrics } = useSkillPerformanceDataContext()
+    const { markers } = useSkillEventMarkers(skillMetrics.resourceSourceId, {
+        dateRange: skillMetrics.dateRange,
+    })
+
     const chartBarMetric = useMemo<ComposedMetricTimeSeriesMetricConfig>(
         () => ({
             ...barMetric,
@@ -118,7 +124,7 @@ export const SkillPerformanceChart = () => {
                         chartHeight={CHART_HEIGHT}
                         legendGap={CHART_LEGEND_GAP}
                         markerLegendLabel={MARKER_LEGEND_LABEL}
-                        markers={chartMarkers}
+                        markers={markers}
                     />
                 )}
             </ChartCard>

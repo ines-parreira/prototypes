@@ -169,6 +169,40 @@ describe('getMarkerPoints', () => {
             [],
         )
     })
+
+    it('anchors markers to the fallback y when the line metric gaps for that date', () => {
+        const markers: ComposedMetricTimeSeriesMarker[] = [
+            { id: 'm1', date: '2026-04-21', label: 'Published' },
+        ]
+
+        expect(
+            getMarkerPoints(data, markers, 'date', 'handoverRate', 5),
+        ).toEqual([
+            { id: 'm1', date: '2026-04-21', label: 'Published', value: 5 },
+        ])
+    })
+
+    it('still drops markers with no matching date even when a fallback is provided', () => {
+        const markers: ComposedMetricTimeSeriesMarker[] = [
+            { id: 'm1', date: '2026-05-01', label: 'Published' },
+        ]
+
+        expect(
+            getMarkerPoints(data, markers, 'date', 'handoverRate', 5),
+        ).toEqual([])
+    })
+
+    it('prefers the real line value over the fallback when both are available', () => {
+        const markers: ComposedMetricTimeSeriesMarker[] = [
+            { id: 'm1', date: '2026-04-20', label: 'Published' },
+        ]
+
+        expect(
+            getMarkerPoints(data, markers, 'date', 'handoverRate', 5),
+        ).toEqual([
+            { id: 'm1', date: '2026-04-20', label: 'Published', value: 50 },
+        ])
+    })
 })
 
 describe('resolveResponsiveContainerWidth', () => {

@@ -14,7 +14,6 @@ import {
 } from './skillPerformanceTrendDataKeys'
 import {
     mockSkillPerformanceChartData,
-    mockSkillPerformanceChartMarkers,
     USE_MOCK_SKILL_PERFORMANCE_CHART_DATA,
 } from './SkillPerformanceTrendMockData'
 import { useSkillPerformanceDataContext } from './useSkillPerformanceFromContext'
@@ -73,7 +72,6 @@ export const useSkillPerformanceTrendFromContext = ({
         if (shouldUseMockData) {
             return {
                 chartData: mockSkillPerformanceChartData,
-                chartMarkers: mockSkillPerformanceChartMarkers,
                 dateRange: skillMetrics.dateRange,
                 isLoading: false,
             }
