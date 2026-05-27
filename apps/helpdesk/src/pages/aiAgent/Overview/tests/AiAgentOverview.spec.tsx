@@ -20,6 +20,7 @@ import { IntegrationType } from 'models/integration/constants'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from 'pages/aiAgent/components/ShoppingAssistant/constants/shoppingAssistant'
 import { useShopIntegrationId } from 'pages/aiAgent/hooks/useShopIntegrationId'
+import { useSkillsAccess } from 'pages/aiAgent/hooks/useSkillsAccess'
 import { useHasAccessToOpportunities } from 'pages/aiAgent/opportunities/hooks/useHasAccessToOpportunities'
 import { useKnowledgeServiceOpportunities } from 'pages/aiAgent/opportunities/hooks/useKnowledgeServiceOpportunities'
 import { useAiAgentOverviewModeEnabled } from 'pages/aiAgent/Overview/hooks/useAiAgentOverviewModeEnabled'
@@ -74,6 +75,9 @@ jest.mock(
 jest.mock('pages/aiAgent/hooks/useNeedsAiAgentTrialOptIn', () => ({
     useNeedsAiAgentTrialOptIn: () => ({ needsOptIn: false }),
 }))
+jest.mock('pages/aiAgent/hooks/useSkillsAccess', () => ({
+    useSkillsAccess: jest.fn(),
+}))
 jest.mock('models/billing/queries')
 jest.mock('models/billing/utils')
 jest.mock('hooks/aiAgent/useAiAgentUpgradePlan')
@@ -125,6 +129,7 @@ const defaultThankYouModalValues = {
 
 const mockUseThankYouModal = useThankYouModal as jest.Mock
 const mockUseTrialAccess = useTrialAccess as jest.Mock
+const mockUseSkillsAccess = jest.mocked(useSkillsAccess)
 const mockUseHasAccessToOpportunities = useHasAccessToOpportunities as jest.Mock
 const mockUseBillingState = assumeMock(useBillingState)
 const mockUseAiAgentUpgradePlan = assumeMock(useAiAgentUpgradePlan)
@@ -166,6 +171,12 @@ const renderComponent = (storeState: StoreState = defaultStore) =>
 describe('AiAgentOverview', () => {
     beforeEach(() => {
         logEventMock.mockClear()
+        localStorage.clear()
+        useParamsMock.mockReturnValue({
+            shopName: undefined,
+            shopType: undefined,
+        })
+        mockUseSkillsAccess.mockReturnValue(false)
         mockUseThankYouModal.mockReturnValue(defaultThankYouModalValues)
         useStoreActivationsMock.mockReturnValue({
             storeActivations: {},
@@ -256,6 +267,50 @@ describe('AiAgentOverview', () => {
                 shopType: undefined,
             },
         )
+    })
+
+    describe('Skills banner', () => {
+        beforeEach(() => {
+            useParamsMock.mockReturnValue({
+                shopName: 'test-shop',
+                shopType: 'shopify',
+            })
+        })
+
+        it('renders the overview skills banner when skills access is enabled', () => {
+            mockUseSkillsAccess.mockReturnValue(true)
+
+            renderComponent()
+
+            expect(
+                screen.getByText(
+                    /Skills are here: review and enable your recommendations/i,
+                ),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    /We created the core set of skills your AI Agent needs./i,
+                ),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /go to skills/i }),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText(
+                    /Skills are here: your recommendations are ready to review/i,
+                ),
+            ).not.toBeInTheDocument()
+        })
+
+        it('does not render the overview skills banner without skills access', () => {
+            renderComponent()
+
+            expect(
+                screen.queryByText(
+                    /Skills are here: review and enable your recommendations/i,
+                ),
+            ).not.toBeInTheDocument()
+        })
     })
 
     describe('Thank you Modal', () => {

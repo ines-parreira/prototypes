@@ -1,3 +1,5 @@
+import type { ComponentProps } from 'react'
+
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -18,11 +20,13 @@ const SHOP_NAME = 'test-shop'
 const SKILLS_ROUTE = '/ai-agent/test-shop/skills'
 const DISMISSED_KEY = `go-to-skills-banner-dismissed-${SHOP_NAME}`
 
-const renderComponent = () =>
+const renderComponent = (
+    props: Partial<ComponentProps<typeof GoToSkillsBanner>> = {},
+) =>
     render(
         <MemoryRouter>
             <ThemeProvider>
-                <GoToSkillsBanner shopName={SHOP_NAME} />
+                <GoToSkillsBanner shopName={SHOP_NAME} {...props} />
             </ThemeProvider>
         </MemoryRouter>,
     )
@@ -52,6 +56,29 @@ describe('GoToSkillsBanner', () => {
         expect(
             screen.getByRole('button', { name: /go to skills/i }),
         ).toBeInTheDocument()
+    })
+
+    it('renders custom title, description, and width when provided', () => {
+        const { container } = renderComponent({
+            title: 'Skills are here: review and enable your recommendations',
+            description:
+                'We created the core set of skills your AI Agent needs.',
+            width: 'fit-content',
+        })
+
+        expect(
+            screen.getByText(
+                'Skills are here: review and enable your recommendations',
+            ),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'We created the core set of skills your AI Agent needs.',
+            ),
+        ).toBeInTheDocument()
+        expect(container.firstElementChild).toHaveStyle({
+            width: 'fit-content',
+        })
     })
 
     it('renders the close button', () => {

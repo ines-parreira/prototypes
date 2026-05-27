@@ -19,6 +19,8 @@ import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActi
 import ThankYouModal from 'pages/aiAgent/components/ThankYouModal/ThankYouModal'
 import { useNeedsAiAgentTrialOptIn } from 'pages/aiAgent/hooks/useNeedsAiAgentTrialOptIn'
 import { useShopIntegrationId } from 'pages/aiAgent/hooks/useShopIntegrationId'
+import { useSkillsAccess } from 'pages/aiAgent/hooks/useSkillsAccess'
+import { GoToSkillsBanner } from 'pages/aiAgent/KnowledgeHub/GoToSkillsBanner/GoToSkillsBanner'
 import { useHasAccessToOpportunities } from 'pages/aiAgent/opportunities/hooks/useHasAccessToOpportunities'
 import { useKnowledgeServiceOpportunities } from 'pages/aiAgent/opportunities/hooks/useKnowledgeServiceOpportunities'
 import { AiAgentTaskSection } from 'pages/aiAgent/Overview/components/AiAgentTaskSection/AiAgentTaskSection'
@@ -140,6 +142,7 @@ export const AiAgentOverview = () => {
         useTrialAccess(shopName)
 
     const { needsOptIn } = useNeedsAiAgentTrialOptIn(shopName)
+    const hasSkillsAccess = useSkillsAccess()
 
     const { storeActivations } = useStoreActivations()
 
@@ -239,6 +242,14 @@ export const AiAgentOverview = () => {
                 <TrialOptInBanner shopName={shopName} />
             ) : (
                 <SetupModeBanner />
+            )}
+            {hasSkillsAccess && (
+                <GoToSkillsBanner
+                    shopName={shopName}
+                    title="Skills are here: review and enable your recommendations"
+                    description="We created the core set of skills your AI Agent needs."
+                    width="fit-content"
+                />
             )}
 
             {/* TODO: [COACH-718] remove this when the trial improvement is enabled */}
