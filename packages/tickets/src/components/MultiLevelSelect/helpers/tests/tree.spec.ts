@@ -3,8 +3,8 @@ import {
     buildTreeFromChoices,
     flattenTreeWithCaptions,
     getDisplayLabel,
+    getInitialPathFromValue,
     getOptionsAtPath,
-    getPathFromValue,
 } from '../tree'
 
 describe('buildTreeFromChoices', () => {
@@ -88,6 +88,29 @@ describe('getOptionsAtPath', () => {
         expect(options[0].hasChildren).toBe(false)
     })
 
+    it('should include selectable parent value before child options', () => {
+        const tree = buildTreeFromChoices([
+            'high level',
+            'high level::123',
+            'high level::456',
+        ])
+
+        const options = getOptionsAtPath(tree, ['high level'])
+
+        expect(options).toHaveLength(3)
+        expect(options[0]).toMatchObject({
+            label: 'high level',
+            value: 'high level',
+            hasChildren: false,
+        })
+        expect(options[1]).toMatchObject({
+            id: '123',
+            label: '123',
+            value: 'high level::123',
+            hasChildren: false,
+        })
+    })
+
     it('should show "Yes" and "No" labels for boolean choices', () => {
         const tree = buildTreeFromChoices([true, false])
 
@@ -144,15 +167,36 @@ describe('flattenTreeWithCaptions', () => {
     })
 })
 
-describe('getPathFromValue', () => {
-    it('should extract path from value', () => {
-        const path = getPathFromValue('Status::Shipping::Pending')
+describe('getInitialPathFromValue', () => {
+    it('should extract parent path from nested value', () => {
+        const tree = buildTreeFromChoices(['Status::Shipping::Pending'])
+        const path = getInitialPathFromValue(tree, 'Status::Shipping::Pending')
 
         expect(path).toEqual(['Status', 'Shipping'])
     })
 
-    it('should return empty array for undefined', () => {
-        const path = getPathFromValue(undefined)
+    it('should reopen flat parent-only values at their own level', () => {
+        const tree = buildTreeFromChoices([
+            'high level',
+            'high level::123',
+            'high level::456',
+        ])
+
+        const path = getInitialPathFromValue(tree, 'high level')
+
+        expect(path).toEqual(['high level'])
+    })
+
+    it('should keep flat leaf values at the root level', () => {
+        const tree = buildTreeFromChoices(['wrong address', 'refund'])
+        const path = getInitialPathFromValue(tree, 'wrong address')
+
+        expect(path).toEqual([])
+    })
+
+    it('should return empty array for undefined value', () => {
+        const tree = buildTreeFromChoices(['Status::Shipping::Pending'])
+        const path = getInitialPathFromValue(tree, undefined)
 
         expect(path).toEqual([])
     })

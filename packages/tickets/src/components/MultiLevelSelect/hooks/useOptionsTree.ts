@@ -3,8 +3,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
     buildTreeFromChoices,
     flattenTreeWithCaptions,
+    getInitialPathFromValue,
     getOptionsAtPath,
-    getPathFromValue,
 } from '../helpers/tree'
 import type { NavigationState, TreeOption, TreeValue } from '../types'
 
@@ -22,8 +22,8 @@ export function useOptionsTree({
     const tree = useMemo(() => buildTreeFromChoices(choices), [choices])
 
     const initialPath = useMemo(() => {
-        return getPathFromValue(selectedValue)
-    }, [selectedValue])
+        return getInitialPathFromValue(tree, selectedValue)
+    }, [tree, selectedValue])
 
     const [currentPath, setCurrentPath] = useState<string[]>(initialPath)
 

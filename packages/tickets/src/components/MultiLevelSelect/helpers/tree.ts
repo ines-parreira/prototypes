@@ -108,7 +108,36 @@ export function getOptionsAtPath(
     currentPath: string[],
 ): TreeOption[] {
     const currentLevelTree = navigateToPath(tree, currentPath)
-    return treeToOptions(currentLevelTree, currentPath)
+    const options = treeToOptions(currentLevelTree, currentPath)
+
+    // Root and leaf levels do not need a parent value inserted.
+    if (currentPath.length === 0 || options.length === 0) {
+        return options
+    }
+
+    // Look up the node represented by the current path, not its children.
+    const currentKey = currentPath[currentPath.length - 1]
+    const currentValue = navigateToPath(tree, currentPath.slice(0, -1)).get(
+        currentKey,
+    )?.value
+
+    // Some parent nodes are only navigation groups; selectable parents have a value.
+    if (currentValue === null || currentValue === undefined) {
+        return options
+    }
+
+    // Show the selectable parent before its children without making it navigable.
+    return [
+        {
+            type: OptionEnum.Option,
+            id: String(currentValue),
+            label: getOptionLabel(currentKey),
+            value: currentValue,
+            path: currentPath,
+            hasChildren: false,
+        },
+        ...options,
+    ]
 }
 
 /**
@@ -156,11 +185,30 @@ export function flattenTreeWithCaptions(
 }
 
 /**
+ * Resolves the initial navigation path for a selected value.
+ * Nested values reopen at their parent path, including the case where the
+ * parent itself is also a selectable value in that level.
+ */
+export function getInitialPathFromValue(
+    tree: Map<string, TreeNode>,
+    value: TreeValue | undefined,
+): string[] {
+    const path = getPathFromValue(value)
+
+    if (path.length > 0 || typeof value !== 'string') {
+        return path
+    }
+
+    const node = tree.get(value)
+    return node?.children.size ? [value] : path
+}
+
+/**
  * Extracts the current tree path from a full value
  * "Order::Missing" -> ["Order"]
  * For boolean dropdowns, returns empty array (no path)
  */
-export function getPathFromValue(value: TreeValue | undefined): string[] {
+function getPathFromValue(value: TreeValue | undefined): string[] {
     if (!value) return []
     if (typeof value !== 'string') return []
 

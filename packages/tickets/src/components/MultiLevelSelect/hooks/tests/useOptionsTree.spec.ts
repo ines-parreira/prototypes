@@ -1,6 +1,7 @@
-import { act, renderHook } from '@testing-library/react'
+import { act } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 
+import { renderHook } from '../../../../tests/render.utils'
 import type { TreeOption } from '../../types'
 import { OptionEnum } from '../../types'
 import { useOptionsTree } from '../useOptionsTree'
@@ -11,6 +12,11 @@ describe('useOptionsTree', () => {
         'Status::Closed',
         'Priority::High',
         'Priority::Low',
+    ]
+    const parentOnlyChoices = [
+        'high level',
+        'high level::123',
+        'high level::456',
     ]
 
     describe('hierarchical navigation', () => {
@@ -55,6 +61,46 @@ describe('useOptionsTree', () => {
                 canGoBack: true,
                 parentLevelName: 'Status',
             })
+        })
+
+        it('should show parent-only values after navigating into their parent level', () => {
+            const { result } = renderHook(() =>
+                useOptionsTree({
+                    choices: parentOnlyChoices,
+                    selectedValue: undefined,
+                }),
+            )
+
+            act(() => {
+                result.current.goToLevel(result.current.selectOptions[0])
+            })
+
+            expect(result.current.selectOptions).toEqual([
+                {
+                    type: OptionEnum.Option,
+                    id: 'high level',
+                    label: 'high level',
+                    value: 'high level',
+                    path: ['high level'],
+                    hasChildren: false,
+                },
+                {
+                    type: OptionEnum.Option,
+                    id: '123',
+                    label: '123',
+                    value: 'high level::123',
+                    path: ['high level', '123'],
+                    hasChildren: false,
+                },
+                {
+                    type: OptionEnum.Option,
+                    id: '456',
+                    label: '456',
+                    value: 'high level::456',
+                    path: ['high level', '456'],
+                    hasChildren: false,
+                },
+            ])
         })
 
         it('should go back to parent level', () => {
@@ -106,6 +152,46 @@ describe('useOptionsTree', () => {
             expect(result.current.navigationState).toEqual({
                 canGoBack: true,
                 parentLevelName: 'Status',
+            })
+        })
+
+        it('should initialize at selected parent-only value level', () => {
+            const { result } = renderHook(() =>
+                useOptionsTree({
+                    choices: parentOnlyChoices,
+                    selectedValue: 'high level',
+                }),
+            )
+
+            expect(result.current.selectOptions).toEqual([
+                {
+                    type: OptionEnum.Option,
+                    id: 'high level',
+                    label: 'high level',
+                    value: 'high level',
+                    path: ['high level'],
+                    hasChildren: false,
+                },
+                {
+                    type: OptionEnum.Option,
+                    id: '123',
+                    label: '123',
+                    value: 'high level::123',
+                    path: ['high level', '123'],
+                    hasChildren: false,
+                },
+                {
+                    type: OptionEnum.Option,
+                    id: '456',
+                    label: '456',
+                    value: 'high level::456',
+                    path: ['high level', '456'],
+                    hasChildren: false,
+                },
+            ])
+            expect(result.current.navigationState).toEqual({
+                canGoBack: true,
+                parentLevelName: 'high level',
             })
         })
 

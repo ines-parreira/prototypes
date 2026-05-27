@@ -147,6 +147,13 @@ export function MultiLevelSelect(props: Props) {
         [selectedValue],
     )
 
+    // Parent-only values can also act as navigation entries. Keeping them selected
+    // makes Axiom treat a reopen click as a reselect, so we clear selectedItem and
+    // let the hook-driven current path represent the active nested level instead.
+    const selectedItem = selectedOption?.hasChildren
+        ? null
+        : (selectedOption ?? null)
+
     return (
         <Tooltip
             isDisabled={!showTooltip || !tooltipContent}
@@ -166,7 +173,7 @@ export function MultiLevelSelect(props: Props) {
                     onOpenChange={handleOpenChange}
                     trigger={trigger}
                     keyName="id"
-                    selectedItem={selectedOption ?? null}
+                    selectedItem={selectedItem}
                     onSelect={handleSelect}
                     minWidth={256}
                     maxWidth={256}

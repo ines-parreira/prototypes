@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 import { act, screen, waitFor, within } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
@@ -124,6 +126,96 @@ describe('MultiLevelSelect', () => {
         await act(() => user.click(openOptions[1]))
 
         expect(onSelect).toHaveBeenCalledWith('Status::Open')
+    })
+
+    it('should call onSelect when selecting a parent-only option', async () => {
+        const onSelect = vi.fn()
+        const { user } = render(
+            <MultiLevelSelect
+                choices={['high level', 'high level::123', 'high level::456']}
+                placeholder="Select option"
+                ariaLabel="Select field"
+                onSelect={onSelect}
+            />,
+        )
+
+        const trigger = screen.getByLabelText('Select field')
+        await act(() => user.click(trigger))
+
+        const rootListbox = await screen.findByRole('listbox')
+        await act(() => user.click(within(rootListbox).getByText('high level')))
+
+        await waitFor(() => {
+            expect(
+                within(screen.getByRole('listbox')).getByRole('option', {
+                    name: '123',
+                }),
+            ).toBeInTheDocument()
+        })
+
+        const nestedListbox = screen.getByRole('listbox')
+        await act(() =>
+            user.click(
+                within(nestedListbox).getByRole('option', {
+                    name: 'high level',
+                }),
+            ),
+        )
+
+        expect(onSelect).toHaveBeenCalledWith('high level')
+    })
+
+    it('should reopen at the selected parent-only value level', async () => {
+        function ControlledSelect() {
+            const [selectedValue, setSelectedValue] = useState<
+                string | boolean | undefined
+            >()
+
+            return (
+                <MultiLevelSelect
+                    choices={[
+                        'high level',
+                        'high level::123',
+                        'high level::456',
+                    ]}
+                    placeholder="Select option"
+                    ariaLabel="Select field"
+                    selectedValue={selectedValue}
+                    onSelect={setSelectedValue}
+                />
+            )
+        }
+
+        const { user } = render(<ControlledSelect />)
+
+        const trigger = screen.getByLabelText('Select field')
+        await act(() => user.click(trigger))
+
+        const rootListbox = await screen.findByRole('listbox')
+        await act(() => user.click(within(rootListbox).getByText('high level')))
+
+        const nestedListbox = await screen.findByRole('listbox')
+        await act(() =>
+            user.click(
+                within(nestedListbox).getByRole('option', {
+                    name: 'high level',
+                }),
+            ),
+        )
+
+        await waitFor(() => {
+            expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
+        })
+
+        await act(() => user.click(trigger))
+
+        const reopenedListbox = await screen.findByRole('listbox')
+        expect(
+            within(reopenedListbox).getByRole('option', { name: '123' }),
+        ).toBeInTheDocument()
+        expect(
+            within(reopenedListbox).getByRole('option', { name: 'high level' }),
+        ).toBeInTheDocument()
     })
 
     it('should navigate up a level when clicking the back button', async () => {
