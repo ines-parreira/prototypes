@@ -1,7 +1,8 @@
 import React from 'react'
 
-import { render, userEvent } from '@repo/testing'
-import { act, screen, waitFor } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { act, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import {
     TicketSLADimension,
@@ -68,29 +69,22 @@ describe('<SLAStatusCell />', () => {
         }
 
         render(<SLAStatusCell item={slaData} />)
+        const user = userEvent.setup()
         const slaStatusBadge = screen.getByText(SlaStatusLabel[ticketSlaStatus])
 
-        act(() => {
-            userEvent.hover(slaStatusBadge)
+        await act(async () => {
+            await user.hover(slaStatusBadge)
         })
 
         expect(slaStatusBadge).toBeInTheDocument()
-        await waitFor(() => {
-            expect(
-                screen.getByText(
-                    formatDuration(breachedMetric[TicketSLADimension.SlaDelta]),
-                ),
-            ).toBeInTheDocument()
-            expect(
-                screen.getByText(
-                    new RegExp(
-                        SlaStatusLabel[satisfiedMetricStatus].toLowerCase(),
-                    ),
-                ),
-            ).toBeInTheDocument()
-            expect(
-                screen.getByText(new RegExp(PENDING_SLA_TIME_LABEL)),
-            ).toBeInTheDocument()
-        })
+        const tooltip = await screen.findByRole('tooltip')
+
+        expect(tooltip).toHaveTextContent(
+            formatDuration(breachedMetric[TicketSLADimension.SlaDelta]),
+        )
+        expect(tooltip).toHaveTextContent(
+            SlaStatusLabel[satisfiedMetricStatus].toLowerCase(),
+        )
+        expect(tooltip).toHaveTextContent(PENDING_SLA_TIME_LABEL)
     })
 })
