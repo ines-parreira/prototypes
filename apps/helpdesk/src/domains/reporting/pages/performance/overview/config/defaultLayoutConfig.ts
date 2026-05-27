@@ -30,6 +30,32 @@ export const DEFAULT_PERFORMANCE_OVERVIEW_LAYOUT: DashboardLayoutConfig<Performa
                         gridSize: 3,
                         visibility: true,
                     },
+                    {
+                        chartId:
+                            PerformanceOverviewChart.HumanResponseTimeAfterAiHandoffCard,
+                        gridSize: 3,
+                        visibility: true,
+                    },
+                    {
+                        chartId: PerformanceOverviewChart.CreatedTicketsCard,
+                        gridSize: 3,
+                        visibility: true,
+                    },
+                    {
+                        chartId: PerformanceOverviewChart.ClosedTicketsCard,
+                        gridSize: 3,
+                        visibility: true,
+                    },
+                    {
+                        chartId: PerformanceOverviewChart.TicketsRepliedCard,
+                        gridSize: 3,
+                        visibility: true,
+                    },
+                    {
+                        chartId: PerformanceOverviewChart.MessagesSentCard,
+                        gridSize: 3,
+                        visibility: true,
+                    },
                 ],
             },
         ],

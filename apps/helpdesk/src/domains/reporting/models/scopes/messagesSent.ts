@@ -1,6 +1,7 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
+import { getGenericQueries } from 'domains/reporting/models/scopes/utils'
 
 const messagesSentScope = defineScope({
     scope: MetricScope.MessagesSent,
@@ -104,3 +105,30 @@ export const sentMessagesPerChannel = messagesSentScope
 export const sentMessagesPerChannelQueryV2Factory = (
     ctx: MessagesSentContext,
 ) => sentMessagesPerChannel.build(ctx)
+
+const sentMessagesBaseQuery = () => ({
+    measures: ['messagesCount'] as const,
+})
+
+export const {
+    valueQueryFactory: sentMessagesValueQueryFactoryV2,
+    breakdownQuery: sentMessagesBreakdownQueryFactoryV2,
+    timeseriesQueryFactory: sentMessagesTimeseriesQueryFactoryV2,
+} = getGenericQueries(messagesSentScope, sentMessagesBaseQuery, {
+    valueMetricName: METRIC_NAMES.PERFORMANCE_OVERVIEW_MESSAGES_SENT_VALUE,
+    breakdownMetricName:
+        METRIC_NAMES.PERFORMANCE_OVERVIEW_MESSAGES_SENT_BREAKDOWN,
+    breakdownDimensionMetricNames: {
+        channel:
+            METRIC_NAMES.PERFORMANCE_OVERVIEW_MESSAGES_SENT_BREAKDOWN_PER_CHANNEL,
+        agentId:
+            METRIC_NAMES.PERFORMANCE_OVERVIEW_MESSAGES_SENT_BREAKDOWN_PER_AGENT,
+    },
+    timeseriesMetricName:
+        METRIC_NAMES.PERFORMANCE_OVERVIEW_MESSAGES_SENT_TIMESERIES,
+    timeseriesDimensionMetricNames: {
+        channel:
+            METRIC_NAMES.PERFORMANCE_OVERVIEW_MESSAGES_SENT_TIMESERIES_PER_CHANNEL,
+    },
+    timeDimension: 'sentDatetime',
+})

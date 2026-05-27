@@ -258,21 +258,46 @@ export const METRIC_TOOLTIPS = {
     averageCSAT: {
         title: 'Average CSAT',
         caption:
-            'Average satisfaction (CSAT) score for interactions handled during the selected period.',
+            'Average CSAT score for tickets for which a survey was sent during the selected period; surveys are sent following ticket resolution.',
     },
     resolutionTime: {
         title: 'Resolution time',
         caption:
-            'Median time to fully resolve a ticket from creation to close during the selected period.',
+            'Median time between first customer message and the last time the ticket was closed, for tickets closed within the selected timeframe.',
     },
     messagesPerTicket: {
         title: 'Messages per ticket',
         caption:
-            'Average number of messages exchanged per ticket during the selected period.',
+            'Average number of messages exchanged in tickets closed within the selected timeframe; includes auto-responses.',
     },
     firstResponseTime: {
         title: 'First response time',
         caption:
-            'Median time from ticket creation to the first agent response during the selected period.',
+            'Median time between first customer message and first agent response, for tickets where the response was sent within the selected timeframe.',
+    },
+    humanResponseTimeAfterAiHandoff: {
+        title: 'Human response time after AI handoff',
+        caption:
+            'Median time between first human agent response and last AI Agent response, for tickets where the response was sent within the selected timeframe.',
+    },
+    createdTickets: {
+        title: 'Created tickets',
+        caption:
+            'Total number of inbound and outbound tickets created created within the selected timeframe.',
+    },
+    performanceClosedTickets: {
+        title: 'Closed tickets',
+        caption:
+            'Total number of unique tickets closed within the selected timeframe (that did not reopen).',
+    },
+    ticketsReplied: {
+        title: 'Tickets replied',
+        caption:
+            'Total number of unique tickets where an agent sent a message within the selected timeframe.',
+    },
+    messagesSent: {
+        title: 'Messages sent',
+        caption:
+            'Total number of messages sent by agents within the selected timeframe (excluding internal-notes).',
     },
 } as const satisfies Record<string, MetricTooltipConfig>

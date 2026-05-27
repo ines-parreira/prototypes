@@ -4,6 +4,7 @@ import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactor
 import {
     aiAgentAllAgentsClosedTickets,
     aiAgentAllAgentsClosedTicketsQueryV2Factory,
+    closedTicketsBreakdownQueryFactoryV2,
     closedTicketsCount,
     closedTicketsCountQueryV2Factory,
     closedTicketsPerAgent,
@@ -11,7 +12,9 @@ import {
     closedTicketsPerChannel,
     closedTicketsPerChannelQueryV2Factory,
     closedTicketsTimeseries,
+    closedTicketsTimeseriesQueryFactoryV2,
     closedTicketsTimeseriesQueryV2Factory,
+    closedTicketsValueQueryFactoryV2,
 } from 'domains/reporting/models/scopes/ticketsClosed'
 import type {
     AggregationWindow,
@@ -412,6 +415,120 @@ describe('ticketsClosedScope', () => {
                 const buildResult = aiAgentAllAgentsClosedTickets.build(context)
 
                 expect(factoryResult).toEqual(buildResult)
+            })
+        })
+
+        describe('performance overview closed tickets triplet', () => {
+            const baseFilters = [
+                {
+                    member: 'periodStart',
+                    operator: 'afterDate',
+                    values: ['2025-09-03T00:00:00.000'],
+                },
+                {
+                    member: 'periodEnd',
+                    operator: 'beforeDate',
+                    values: ['2025-09-03T23:59:59.000'],
+                },
+                {
+                    member: 'agentId',
+                    operator: 'one-of',
+                    values: [123],
+                },
+            ]
+
+            it('value returns measures + period filters with auto-injected time_dimensions', () => {
+                expect(closedTicketsValueQueryFactoryV2(context)).toEqual({
+                    metricName: 'performance-overview-closed-tickets-value',
+                    scope: 'tickets-closed',
+                    measures: ['ticketCount'],
+                    timezone: 'utc',
+                    filters: baseFilters,
+                    time_dimensions: [
+                        { dimension: 'closedDatetime', granularity: 'day' },
+                    ],
+                })
+            })
+
+            it('breakdown forwards ctx.dimensions and uses the default metric name for unmapped dims', () => {
+                expect(
+                    closedTicketsBreakdownQueryFactoryV2.build({
+                        ...context,
+                        dimensions: ['integrationId'],
+                    }),
+                ).toEqual({
+                    metricName: 'performance-overview-closed-tickets-breakdown',
+                    scope: 'tickets-closed',
+                    measures: ['ticketCount'],
+                    dimensions: ['integrationId'],
+                    timezone: 'utc',
+                    filters: baseFilters,
+                    time_dimensions: [
+                        { dimension: 'closedDatetime', granularity: 'day' },
+                    ],
+                })
+            })
+
+            it.each([
+                [
+                    'channel',
+                    'performance-overview-closed-tickets-breakdown-per-channel',
+                ],
+                [
+                    'agentId',
+                    'performance-overview-closed-tickets-breakdown-per-agent',
+                ],
+            ] as const)(
+                'breakdown uses the per-dimension metric name when ctx.dimensions=[%s]',
+                (dimension, expectedMetricName) => {
+                    expect(
+                        closedTicketsBreakdownQueryFactoryV2.build({
+                            ...context,
+                            dimensions: [dimension],
+                        }).metricName,
+                    ).toBe(expectedMetricName)
+                },
+            )
+
+            it('breakdown falls back to the default metric name for multi-dim breakdowns', () => {
+                expect(
+                    closedTicketsBreakdownQueryFactoryV2.build({
+                        ...context,
+                        dimensions: ['channel', 'agentId'],
+                    }).metricName,
+                ).toBe('performance-overview-closed-tickets-breakdown')
+            })
+
+            it('timeseries pins closedDatetime time dimension and adds limit', () => {
+                expect(
+                    closedTicketsTimeseriesQueryFactoryV2({
+                        ...context,
+                        dimensions: [],
+                    }),
+                ).toEqual({
+                    metricName:
+                        'performance-overview-closed-tickets-timeseries',
+                    scope: 'tickets-closed',
+                    measures: ['ticketCount'],
+                    dimensions: [],
+                    time_dimensions: [
+                        { dimension: 'closedDatetime', granularity: 'day' },
+                    ],
+                    timezone: 'utc',
+                    filters: baseFilters,
+                    limit: 10000,
+                })
+            })
+
+            it('timeseries uses the per-dimension metric name when ctx.dimensions=[channel]', () => {
+                expect(
+                    closedTicketsTimeseriesQueryFactoryV2({
+                        ...context,
+                        dimensions: ['channel'],
+                    }).metricName,
+                ).toBe(
+                    'performance-overview-closed-tickets-timeseries-per-channel',
+                )
             })
         })
     })

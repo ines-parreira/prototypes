@@ -9,9 +9,14 @@ import type {
 } from 'domains/reporting/pages/dashboards/types'
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { OverviewAverageCSATCard } from 'domains/reporting/pages/performance/overview/charts/kpiCharts/OverviewAverageCSATCard'
+import { OverviewClosedTicketsCard } from 'domains/reporting/pages/performance/overview/charts/kpiCharts/OverviewClosedTicketsCard'
+import { OverviewCreatedTicketsCard } from 'domains/reporting/pages/performance/overview/charts/kpiCharts/OverviewCreatedTicketsCard'
 import { OverviewFirstResponseTimeCard } from 'domains/reporting/pages/performance/overview/charts/kpiCharts/OverviewFirstResponseTimeCard'
+import { OverviewHumanResponseTimeAfterAiHandoffCard } from 'domains/reporting/pages/performance/overview/charts/kpiCharts/OverviewHumanResponseTimeAfterAiHandoffCard'
 import { OverviewMessagesPerTicketCard } from 'domains/reporting/pages/performance/overview/charts/kpiCharts/OverviewMessagesPerTicketCard'
+import { OverviewMessagesSentCard } from 'domains/reporting/pages/performance/overview/charts/kpiCharts/OverviewMessagesSentCard'
 import { OverviewResolutionTimeCard } from 'domains/reporting/pages/performance/overview/charts/kpiCharts/OverviewResolutionTimeCard'
+import { OverviewTicketsRepliedCard } from 'domains/reporting/pages/performance/overview/charts/kpiCharts/OverviewTicketsRepliedCard'
 
 jest.mock('domains/reporting/hooks/useReportingTrendCardProps')
 const mockUseReportingTrendCardProps = assumeMock(useReportingTrendCardProps)
@@ -161,6 +166,86 @@ describe('Performance Overview Trend Cards', () => {
                 metricFormat: 'duration',
                 value: 1800,
                 prevValue: 2400,
+            },
+            timeSeriesView: { queryFactory: expect.any(Function) },
+        },
+        {
+            name: 'OverviewHumanResponseTimeAfterAiHandoffCard',
+            Component: OverviewHumanResponseTimeAfterAiHandoffCard,
+            config: {
+                label: 'Human response time after AI handoff',
+                tooltipConfig: {
+                    title: 'Human response time after AI handoff',
+                    caption:
+                        'Median time from an AI Agent handoff to the first human agent response during the selected period.',
+                },
+                metricFormat: 'duration',
+                value: 1200,
+                prevValue: 1500,
+            },
+            timeSeriesView: { queryFactory: expect.any(Function) },
+        },
+        {
+            name: 'OverviewCreatedTicketsCard',
+            Component: OverviewCreatedTicketsCard,
+            config: {
+                label: 'Created tickets',
+                tooltipConfig: {
+                    title: 'Created tickets',
+                    caption:
+                        'Total number of tickets created during the selected period.',
+                },
+                metricFormat: 'decimal',
+                value: 320,
+                prevValue: 280,
+            },
+            timeSeriesView: { queryFactory: expect.any(Function) },
+        },
+        {
+            name: 'OverviewClosedTicketsCard',
+            Component: OverviewClosedTicketsCard,
+            config: {
+                label: 'Closed tickets',
+                tooltipConfig: {
+                    title: 'Closed tickets',
+                    caption:
+                        'Total number of tickets closed during the selected period.',
+                },
+                metricFormat: 'decimal',
+                value: 290,
+                prevValue: 250,
+            },
+            timeSeriesView: { queryFactory: expect.any(Function) },
+        },
+        {
+            name: 'OverviewTicketsRepliedCard',
+            Component: OverviewTicketsRepliedCard,
+            config: {
+                label: 'Tickets replied',
+                tooltipConfig: {
+                    title: 'Tickets replied',
+                    caption:
+                        'Total number of tickets that received at least one agent reply during the selected period.',
+                },
+                metricFormat: 'decimal',
+                value: 305,
+                prevValue: 270,
+            },
+            timeSeriesView: { queryFactory: expect.any(Function) },
+        },
+        {
+            name: 'OverviewMessagesSentCard',
+            Component: OverviewMessagesSentCard,
+            config: {
+                label: 'Messages sent',
+                tooltipConfig: {
+                    title: 'Messages sent',
+                    caption:
+                        'Total number of messages sent by agents during the selected period.',
+                },
+                metricFormat: 'decimal',
+                value: 980,
+                prevValue: 870,
             },
             timeSeriesView: { queryFactory: expect.any(Function) },
         },

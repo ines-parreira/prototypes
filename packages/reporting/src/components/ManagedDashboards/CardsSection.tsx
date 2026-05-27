@@ -60,6 +60,7 @@ export function CardsSection<TChart extends string>({
                         flex="1 1 calc(25% - 16px)"
                         minWidth="240px"
                         display="block"
+                        maxWidth="calc(25% - 16px)"
                     >
                         <DashboardComponent
                             chart={item.chartId}

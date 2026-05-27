@@ -1,6 +1,7 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
+import { getGenericQueries } from 'domains/reporting/models/scopes/utils'
 
 const humanResponseTimeAfterAiHandoffScope = defineScope({
     scope: MetricScope.HumanFirstResponseTime,
@@ -115,3 +116,32 @@ export const humanResponseTimeAfterAiHandoffPerChannel =
 export const humanResponseTimeAfterAiHandoffPerChannelQueryV2Factory = (
     ctx: HumanResponseTimeAfterAiHandoffContext,
 ) => humanResponseTimeAfterAiHandoffPerChannel.build(ctx)
+
+const humanResponseTimeAfterAiHandoffBaseQuery = () => ({
+    measures: ['medianFirstResponseTime'] as const,
+})
+
+export const {
+    valueQueryFactory: humanResponseTimeAfterAiHandoffValueQueryFactoryV2,
+    breakdownQuery: humanResponseTimeAfterAiHandoffBreakdownQueryFactoryV2,
+    timeseriesQueryFactory:
+        humanResponseTimeAfterAiHandoffTimeseriesQueryFactoryV2,
+} = getGenericQueries(
+    humanResponseTimeAfterAiHandoffScope,
+    humanResponseTimeAfterAiHandoffBaseQuery,
+    {
+        valueMetricName:
+            METRIC_NAMES.PERFORMANCE_OVERVIEW_HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF_VALUE,
+        breakdownMetricName:
+            METRIC_NAMES.PERFORMANCE_OVERVIEW_HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF_BREAKDOWN,
+        breakdownDimensionMetricNames: {
+            channel:
+                METRIC_NAMES.PERFORMANCE_OVERVIEW_HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF_BREAKDOWN_PER_CHANNEL,
+            agentId:
+                METRIC_NAMES.PERFORMANCE_OVERVIEW_HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF_BREAKDOWN_PER_AGENT,
+        },
+        timeseriesMetricName:
+            METRIC_NAMES.PERFORMANCE_OVERVIEW_HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF_TIMESERIES,
+        timeDimension: 'createdDatetime',
+    },
+)

@@ -885,6 +885,74 @@ export const METRIC_NAMES = {
         'performance-overview-first-response-time-timeseries',
     PERFORMANCE_OVERVIEW_FIRST_RESPONSE_TIME_TIMESERIES_PER_CHANNEL:
         'performance-overview-first-response-time-timeseries-per-channel',
+
+    // Human Response Time After AI Handoff
+    PERFORMANCE_OVERVIEW_HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF_VALUE:
+        'performance-overview-human-response-time-after-ai-handoff-value',
+    PERFORMANCE_OVERVIEW_HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF_BREAKDOWN:
+        'performance-overview-human-response-time-after-ai-handoff-breakdown',
+    PERFORMANCE_OVERVIEW_HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF_BREAKDOWN_PER_CHANNEL:
+        'performance-overview-human-response-time-after-ai-handoff-breakdown-per-channel',
+    PERFORMANCE_OVERVIEW_HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF_BREAKDOWN_PER_AGENT:
+        'performance-overview-human-response-time-after-ai-handoff-breakdown-per-agent',
+    PERFORMANCE_OVERVIEW_HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF_TIMESERIES:
+        'performance-overview-human-response-time-after-ai-handoff-timeseries',
+
+    // Created Tickets
+    PERFORMANCE_OVERVIEW_CREATED_TICKETS_VALUE:
+        'performance-overview-created-tickets-value',
+    PERFORMANCE_OVERVIEW_CREATED_TICKETS_BREAKDOWN:
+        'performance-overview-created-tickets-breakdown',
+    PERFORMANCE_OVERVIEW_CREATED_TICKETS_BREAKDOWN_PER_CHANNEL:
+        'performance-overview-created-tickets-breakdown-per-channel',
+    PERFORMANCE_OVERVIEW_CREATED_TICKETS_BREAKDOWN_PER_AGENT:
+        'performance-overview-created-tickets-breakdown-per-agent',
+    PERFORMANCE_OVERVIEW_CREATED_TICKETS_TIMESERIES:
+        'performance-overview-created-tickets-timeseries',
+    PERFORMANCE_OVERVIEW_CREATED_TICKETS_TIMESERIES_PER_CHANNEL:
+        'performance-overview-created-tickets-timeseries-per-channel',
+
+    // Closed Tickets
+    PERFORMANCE_OVERVIEW_CLOSED_TICKETS_VALUE:
+        'performance-overview-closed-tickets-value',
+    PERFORMANCE_OVERVIEW_CLOSED_TICKETS_BREAKDOWN:
+        'performance-overview-closed-tickets-breakdown',
+    PERFORMANCE_OVERVIEW_CLOSED_TICKETS_BREAKDOWN_PER_CHANNEL:
+        'performance-overview-closed-tickets-breakdown-per-channel',
+    PERFORMANCE_OVERVIEW_CLOSED_TICKETS_BREAKDOWN_PER_AGENT:
+        'performance-overview-closed-tickets-breakdown-per-agent',
+    PERFORMANCE_OVERVIEW_CLOSED_TICKETS_TIMESERIES:
+        'performance-overview-closed-tickets-timeseries',
+    PERFORMANCE_OVERVIEW_CLOSED_TICKETS_TIMESERIES_PER_CHANNEL:
+        'performance-overview-closed-tickets-timeseries-per-channel',
+
+    // Tickets Replied
+    PERFORMANCE_OVERVIEW_TICKETS_REPLIED_VALUE:
+        'performance-overview-tickets-replied-value',
+    PERFORMANCE_OVERVIEW_TICKETS_REPLIED_BREAKDOWN:
+        'performance-overview-tickets-replied-breakdown',
+    PERFORMANCE_OVERVIEW_TICKETS_REPLIED_BREAKDOWN_PER_CHANNEL:
+        'performance-overview-tickets-replied-breakdown-per-channel',
+    PERFORMANCE_OVERVIEW_TICKETS_REPLIED_BREAKDOWN_PER_AGENT:
+        'performance-overview-tickets-replied-breakdown-per-agent',
+    PERFORMANCE_OVERVIEW_TICKETS_REPLIED_TIMESERIES:
+        'performance-overview-tickets-replied-timeseries',
+    PERFORMANCE_OVERVIEW_TICKETS_REPLIED_TIMESERIES_PER_CHANNEL:
+        'performance-overview-tickets-replied-timeseries-per-channel',
+
+    // Messages Sent
+    PERFORMANCE_OVERVIEW_MESSAGES_SENT_VALUE:
+        'performance-overview-messages-sent-value',
+    PERFORMANCE_OVERVIEW_MESSAGES_SENT_BREAKDOWN:
+        'performance-overview-messages-sent-breakdown',
+    PERFORMANCE_OVERVIEW_MESSAGES_SENT_BREAKDOWN_PER_CHANNEL:
+        'performance-overview-messages-sent-breakdown-per-channel',
+    PERFORMANCE_OVERVIEW_MESSAGES_SENT_BREAKDOWN_PER_AGENT:
+        'performance-overview-messages-sent-breakdown-per-agent',
+    PERFORMANCE_OVERVIEW_MESSAGES_SENT_TIMESERIES:
+        'performance-overview-messages-sent-timeseries',
+    PERFORMANCE_OVERVIEW_MESSAGES_SENT_TIMESERIES_PER_CHANNEL:
+        'performance-overview-messages-sent-timeseries-per-channel',
 } as const
 
 export enum MetricScope {

@@ -1,6 +1,7 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
+import { getGenericQueries } from 'domains/reporting/models/scopes/utils'
 
 const ticketsRepliedScope = defineScope({
     scope: MetricScope.TicketsReplied,
@@ -107,3 +108,30 @@ export const ticketsRepliedCountPerChannel = ticketsRepliedScope
 export const ticketsRepliedCountPerChannelQueryV2Factory = (
     ctx: TicketsRepliedContext,
 ) => ticketsRepliedCountPerChannel.build(ctx)
+
+const ticketsRepliedBaseQuery = () => ({
+    measures: ['ticketCount'] as const,
+})
+
+export const {
+    valueQueryFactory: ticketsRepliedValueQueryFactoryV2,
+    breakdownQuery: ticketsRepliedBreakdownQueryFactoryV2,
+    timeseriesQueryFactory: ticketsRepliedTimeseriesQueryFactoryV2,
+} = getGenericQueries(ticketsRepliedScope, ticketsRepliedBaseQuery, {
+    valueMetricName: METRIC_NAMES.PERFORMANCE_OVERVIEW_TICKETS_REPLIED_VALUE,
+    breakdownMetricName:
+        METRIC_NAMES.PERFORMANCE_OVERVIEW_TICKETS_REPLIED_BREAKDOWN,
+    breakdownDimensionMetricNames: {
+        channel:
+            METRIC_NAMES.PERFORMANCE_OVERVIEW_TICKETS_REPLIED_BREAKDOWN_PER_CHANNEL,
+        agentId:
+            METRIC_NAMES.PERFORMANCE_OVERVIEW_TICKETS_REPLIED_BREAKDOWN_PER_AGENT,
+    },
+    timeseriesMetricName:
+        METRIC_NAMES.PERFORMANCE_OVERVIEW_TICKETS_REPLIED_TIMESERIES,
+    timeseriesDimensionMetricNames: {
+        channel:
+            METRIC_NAMES.PERFORMANCE_OVERVIEW_TICKETS_REPLIED_TIMESERIES_PER_CHANNEL,
+    },
+    timeDimension: 'sentDatetime',
+})

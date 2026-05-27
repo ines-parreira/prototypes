@@ -1,12 +1,15 @@
 import { OrderDirection } from '@gorgias/helpdesk-types'
 
 import {
+    createdTicketsBreakdownQueryFactoryV2,
     createdTicketsCount,
     createdTicketsCountQueryV2Factory,
     createdTicketsPerChannel,
     createdTicketsPerChannelQueryV2Factory,
     createdTicketsTimeseries,
+    createdTicketsTimeseriesQueryFactoryV2,
     createdTicketsTimeseriesQueryV2Factory,
+    createdTicketsValueQueryFactoryV2,
 } from 'domains/reporting/models/scopes/ticketsCreated'
 import type {
     AggregationWindow,
@@ -280,6 +283,116 @@ describe('ticketsCreatedScope', () => {
 
                 expect(factoryResult).toEqual(buildResult)
                 expect(factoryResult.order).toEqual([['ticketCount', 'asc']])
+            })
+        })
+
+        describe('performance overview created tickets triplet', () => {
+            const periodFilters = [
+                {
+                    member: 'periodStart',
+                    operator: 'afterDate',
+                    values: ['2025-09-03T00:00:00.000'],
+                },
+                {
+                    member: 'periodEnd',
+                    operator: 'beforeDate',
+                    values: ['2025-09-03T23:59:59.000'],
+                },
+            ]
+
+            it('value returns measures + period filters with auto-injected time_dimensions', () => {
+                expect(createdTicketsValueQueryFactoryV2(context)).toEqual({
+                    metricName: 'performance-overview-created-tickets-value',
+                    scope: 'tickets-created',
+                    measures: ['ticketCount'],
+                    timezone: 'utc',
+                    filters: periodFilters,
+                    time_dimensions: [
+                        { dimension: 'createdDatetime', granularity: 'day' },
+                    ],
+                })
+            })
+
+            it('breakdown forwards ctx.dimensions and uses the default metric name for unmapped dims', () => {
+                expect(
+                    createdTicketsBreakdownQueryFactoryV2.build({
+                        ...context,
+                        dimensions: ['integrationId'],
+                    }),
+                ).toEqual({
+                    metricName:
+                        'performance-overview-created-tickets-breakdown',
+                    scope: 'tickets-created',
+                    measures: ['ticketCount'],
+                    dimensions: ['integrationId'],
+                    timezone: 'utc',
+                    filters: periodFilters,
+                    time_dimensions: [
+                        { dimension: 'createdDatetime', granularity: 'day' },
+                    ],
+                })
+            })
+
+            it.each([
+                [
+                    'channel',
+                    'performance-overview-created-tickets-breakdown-per-channel',
+                ],
+                [
+                    'agentId',
+                    'performance-overview-created-tickets-breakdown-per-agent',
+                ],
+            ] as const)(
+                'breakdown uses the per-dimension metric name when ctx.dimensions=[%s]',
+                (dimension, expectedMetricName) => {
+                    expect(
+                        createdTicketsBreakdownQueryFactoryV2.build({
+                            ...context,
+                            dimensions: [dimension],
+                        }).metricName,
+                    ).toBe(expectedMetricName)
+                },
+            )
+
+            it('breakdown falls back to the default metric name for multi-dim breakdowns', () => {
+                expect(
+                    createdTicketsBreakdownQueryFactoryV2.build({
+                        ...context,
+                        dimensions: ['channel', 'agentId'],
+                    }).metricName,
+                ).toBe('performance-overview-created-tickets-breakdown')
+            })
+
+            it('timeseries pins createdDatetime time dimension and adds limit', () => {
+                expect(
+                    createdTicketsTimeseriesQueryFactoryV2({
+                        ...context,
+                        dimensions: [],
+                    }),
+                ).toEqual({
+                    metricName:
+                        'performance-overview-created-tickets-timeseries',
+                    scope: 'tickets-created',
+                    measures: ['ticketCount'],
+                    dimensions: [],
+                    time_dimensions: [
+                        { dimension: 'createdDatetime', granularity: 'day' },
+                    ],
+                    timezone: 'utc',
+                    filters: periodFilters,
+                    limit: 10000,
+                })
+            })
+
+            it('timeseries uses the per-dimension metric name when ctx.dimensions=[channel]', () => {
+                expect(
+                    createdTicketsTimeseriesQueryFactoryV2({
+                        ...context,
+                        dimensions: ['channel'],
+                    }).metricName,
+                ).toBe(
+                    'performance-overview-created-tickets-timeseries-per-channel',
+                )
             })
         })
     })

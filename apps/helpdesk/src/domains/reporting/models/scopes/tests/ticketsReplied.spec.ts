@@ -1,4 +1,5 @@
 import {
+    ticketsRepliedBreakdownQueryFactoryV2,
     ticketsRepliedCount,
     ticketsRepliedCountPerAgent,
     ticketsRepliedCountPerAgentQueryV2Factory,
@@ -6,7 +7,9 @@ import {
     ticketsRepliedCountPerChannelQueryV2Factory,
     ticketsRepliedCountQueryV2Factory,
     ticketsRepliedTimeseries,
+    ticketsRepliedTimeseriesQueryFactoryV2,
     ticketsRepliedTimeseriesQueryV2Factory,
+    ticketsRepliedValueQueryFactoryV2,
 } from 'domains/reporting/models/scopes/ticketsReplied'
 import type {
     AggregationWindow,
@@ -287,6 +290,116 @@ describe('ticketsRepliedScope', () => {
 
                 expect(factoryResult).toEqual(buildResult)
                 expect(factoryResult.order).toEqual([['ticketCount', 'desc']])
+            })
+        })
+
+        describe('performance overview tickets replied triplet', () => {
+            const periodFilters = [
+                {
+                    member: 'periodStart',
+                    operator: 'afterDate',
+                    values: ['2025-09-03T00:00:00.000'],
+                },
+                {
+                    member: 'periodEnd',
+                    operator: 'beforeDate',
+                    values: ['2025-09-03T23:59:59.000'],
+                },
+            ]
+
+            it('value returns measures + period filters with auto-injected time_dimensions', () => {
+                expect(ticketsRepliedValueQueryFactoryV2(context)).toEqual({
+                    metricName: 'performance-overview-tickets-replied-value',
+                    scope: 'tickets-replied',
+                    measures: ['ticketCount'],
+                    timezone: 'utc',
+                    filters: periodFilters,
+                    time_dimensions: [
+                        { dimension: 'sentDatetime', granularity: 'day' },
+                    ],
+                })
+            })
+
+            it('breakdown forwards ctx.dimensions and uses the default metric name for unmapped dims', () => {
+                expect(
+                    ticketsRepliedBreakdownQueryFactoryV2.build({
+                        ...context,
+                        dimensions: ['integrationId'],
+                    }),
+                ).toEqual({
+                    metricName:
+                        'performance-overview-tickets-replied-breakdown',
+                    scope: 'tickets-replied',
+                    measures: ['ticketCount'],
+                    dimensions: ['integrationId'],
+                    timezone: 'utc',
+                    filters: periodFilters,
+                    time_dimensions: [
+                        { dimension: 'sentDatetime', granularity: 'day' },
+                    ],
+                })
+            })
+
+            it.each([
+                [
+                    'channel',
+                    'performance-overview-tickets-replied-breakdown-per-channel',
+                ],
+                [
+                    'agentId',
+                    'performance-overview-tickets-replied-breakdown-per-agent',
+                ],
+            ] as const)(
+                'breakdown uses the per-dimension metric name when ctx.dimensions=[%s]',
+                (dimension, expectedMetricName) => {
+                    expect(
+                        ticketsRepliedBreakdownQueryFactoryV2.build({
+                            ...context,
+                            dimensions: [dimension],
+                        }).metricName,
+                    ).toBe(expectedMetricName)
+                },
+            )
+
+            it('breakdown falls back to the default metric name for multi-dim breakdowns', () => {
+                expect(
+                    ticketsRepliedBreakdownQueryFactoryV2.build({
+                        ...context,
+                        dimensions: ['channel', 'agentId'],
+                    }).metricName,
+                ).toBe('performance-overview-tickets-replied-breakdown')
+            })
+
+            it('timeseries pins sentDatetime time dimension and adds limit', () => {
+                expect(
+                    ticketsRepliedTimeseriesQueryFactoryV2({
+                        ...context,
+                        dimensions: [],
+                    }),
+                ).toEqual({
+                    metricName:
+                        'performance-overview-tickets-replied-timeseries',
+                    scope: 'tickets-replied',
+                    measures: ['ticketCount'],
+                    dimensions: [],
+                    time_dimensions: [
+                        { dimension: 'sentDatetime', granularity: 'day' },
+                    ],
+                    timezone: 'utc',
+                    filters: periodFilters,
+                    limit: 10000,
+                })
+            })
+
+            it('timeseries uses the per-dimension metric name when ctx.dimensions=[channel]', () => {
+                expect(
+                    ticketsRepliedTimeseriesQueryFactoryV2({
+                        ...context,
+                        dimensions: ['channel'],
+                    }).metricName,
+                ).toBe(
+                    'performance-overview-tickets-replied-timeseries-per-channel',
+                )
             })
         })
     })

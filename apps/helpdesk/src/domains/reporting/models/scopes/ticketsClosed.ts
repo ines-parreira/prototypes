@@ -1,6 +1,7 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
+import { getGenericQueries } from 'domains/reporting/models/scopes/utils'
 import { OrderDirection } from 'models/api/types'
 
 const ticketsClosedScope = defineScope({
@@ -118,3 +119,30 @@ export const aiAgentAllAgentsClosedTickets = ticketsClosedScope
 export const aiAgentAllAgentsClosedTicketsQueryV2Factory = (
     ctx: TicketsClosedContext,
 ) => aiAgentAllAgentsClosedTickets.build(ctx)
+
+const closedTicketsBaseQuery = () => ({
+    measures: ['ticketCount'] as const,
+})
+
+export const {
+    valueQueryFactory: closedTicketsValueQueryFactoryV2,
+    breakdownQuery: closedTicketsBreakdownQueryFactoryV2,
+    timeseriesQueryFactory: closedTicketsTimeseriesQueryFactoryV2,
+} = getGenericQueries(ticketsClosedScope, closedTicketsBaseQuery, {
+    valueMetricName: METRIC_NAMES.PERFORMANCE_OVERVIEW_CLOSED_TICKETS_VALUE,
+    breakdownMetricName:
+        METRIC_NAMES.PERFORMANCE_OVERVIEW_CLOSED_TICKETS_BREAKDOWN,
+    breakdownDimensionMetricNames: {
+        channel:
+            METRIC_NAMES.PERFORMANCE_OVERVIEW_CLOSED_TICKETS_BREAKDOWN_PER_CHANNEL,
+        agentId:
+            METRIC_NAMES.PERFORMANCE_OVERVIEW_CLOSED_TICKETS_BREAKDOWN_PER_AGENT,
+    },
+    timeseriesMetricName:
+        METRIC_NAMES.PERFORMANCE_OVERVIEW_CLOSED_TICKETS_TIMESERIES,
+    timeseriesDimensionMetricNames: {
+        channel:
+            METRIC_NAMES.PERFORMANCE_OVERVIEW_CLOSED_TICKETS_TIMESERIES_PER_CHANNEL,
+    },
+    timeDimension: 'closedDatetime',
+})
