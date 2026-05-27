@@ -33,7 +33,7 @@ import css from './TicketThreadActionExecutedEvent.less'
 
 type TicketThreadActionExecutedEventProps = {
     item: TicketThreadActionExecutedEventItemType
-    integration: BaseIntegration
+    integration: BaseIntegration | null
 }
 
 export function TicketThreadActionExecutedEvent({

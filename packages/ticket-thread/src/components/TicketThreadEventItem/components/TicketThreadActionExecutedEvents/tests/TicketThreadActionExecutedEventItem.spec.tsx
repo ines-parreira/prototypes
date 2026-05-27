@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { screen, waitFor } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
 
@@ -289,7 +289,7 @@ describe('TicketThreadActionExecutedEventItem', () => {
         expect(screen.getByText('{"status":"ok"}')).toBeInTheDocument()
     })
 
-    it('does not render when integration cannot be resolved', async () => {
+    it('renders action details when integration cannot be resolved', async () => {
         server.use(
             mockGetIntegrationHandler(async () => HttpResponse.json(null))
                 .handler,
@@ -312,15 +312,61 @@ describe('TicketThreadActionExecutedEventItem', () => {
             />,
         )
 
-        await waitFor(() => {
-            expect(
-                screen.queryByText('Cancel subscription'),
-            ).not.toBeInTheDocument()
-        })
+        expect(
+            await screen.findByText('Cancel subscription'),
+        ).toBeInTheDocument()
+        expect(screen.getByText('#987654')).toBeInTheDocument()
         expect(
             screen.queryByRole('link', {
                 name: '#987654',
             }),
         ).not.toBeInTheDocument()
+    })
+
+    it('renders custom HTTP actions without an integration id', async () => {
+        server.use(
+            getUsersHandler([
+                mockUser({
+                    id: 42,
+                    name: 'Alex Agent',
+                }),
+            ]).handler,
+        )
+
+        const user = userEvent.setup()
+
+        render(
+            <TicketThreadActionExecutedEventItemComponent
+                item={buildItem({
+                    dataOverrides: {
+                        action_name: 'customHttpAction',
+                        action_label: 'Handed over',
+                        integration_id: null,
+                        payload: {
+                            url: 'https://api.example.com/handover',
+                            response: {
+                                status_code: 200,
+                                body: '{"status":"ok"}',
+                            },
+                        },
+                    },
+                })}
+            />,
+        )
+
+        expect(await screen.findByText('Handed over')).toBeInTheDocument()
+        expect(screen.queryByText(/ on /)).not.toBeInTheDocument()
+
+        await user.click(
+            screen.getByRole('button', {
+                name: 'Show action details',
+            }),
+        )
+
+        expect(screen.getByText('Request')).toBeInTheDocument()
+        expect(screen.getByText('Url:')).toBeInTheDocument()
+        expect(
+            screen.getByText('https://api.example.com/handover'),
+        ).toBeInTheDocument()
     })
 })
