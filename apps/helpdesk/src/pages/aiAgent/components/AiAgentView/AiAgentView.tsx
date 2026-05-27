@@ -22,7 +22,9 @@ type NavbarItem = {
 
 type Props = {
     title?: ReactNode
+    pageHeaderClassName?: string
     headerNavbarItems?: NavbarItem[]
+    headerNavbarClassName?: string
     action?: ReactNode
     isLoading?: boolean
     children: ReactNode
@@ -32,8 +34,10 @@ type Props = {
 
 export const AiAgentView = ({
     title,
+    pageHeaderClassName,
     action,
     headerNavbarItems,
+    headerNavbarClassName,
     isLoading,
     children,
     className,
@@ -50,9 +54,13 @@ export const AiAgentView = ({
             })}
         >
             <div className={css.pageHeaderContainer}>
-                {title && <PageHeader title={title}>{action}</PageHeader>}
+                {title && (
+                    <PageHeader title={title} className={pageHeaderClassName}>
+                        {action}
+                    </PageHeader>
+                )}
                 {headerNavbarItems && (
-                    <SecondaryNavbar>
+                    <SecondaryNavbar className={headerNavbarClassName}>
                         {headerNavbarItems.map(
                             ({ route, title, exact, dataCanduId }) => (
                                 <NavLink

@@ -1,4 +1,8 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import {
+    FeatureFlagKey,
+    useFlag,
+    useFlagWithLoading,
+} from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 
 import {
@@ -18,14 +22,27 @@ import { useAiAgentNavigation } from '../useAiAgentNavigation'
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
+    useFlagWithLoading: jest.fn(
+        (_flag: string, defaultValue: unknown = false) => ({
+            value: defaultValue,
+            isLoading: false,
+        }),
+    ),
 }))
 const mockUseFlag = jest.mocked(useFlag)
+const mockUseFlagWithLoading = jest.mocked(useFlagWithLoading)
 
 describe('useAiAgentNavigation', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         mockUseFlag.mockImplementation(
             (key) => key === FeatureFlagKey.AiAgentKnowledgeTab || false,
+        )
+        mockUseFlagWithLoading.mockImplementation(
+            (_flag, defaultValue = false) => ({
+                value: defaultValue,
+                isLoading: false,
+            }),
         )
     })
 

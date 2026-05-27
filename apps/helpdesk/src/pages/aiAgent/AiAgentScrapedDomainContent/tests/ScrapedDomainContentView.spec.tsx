@@ -1,4 +1,4 @@
-import { useFlag } from '@repo/feature-flags'
+import { useFlag, useFlagWithLoading } from '@repo/feature-flags'
 import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 
@@ -11,8 +11,10 @@ jest.mock('state/notifications/actions')
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
+    useFlagWithLoading: jest.fn(),
 }))
 const mockUseFlag = assumeMock(useFlag)
+const mockUseFlagWithLoading = assumeMock(useFlagWithLoading)
 
 const mockOnSelect = jest.fn()
 const mockOnFetchNextItems = jest.fn()
@@ -77,6 +79,12 @@ describe('ScrapedDomainContentView', () => {
         mockUseFlag.mockImplementation(() => {
             return false
         })
+        mockUseFlagWithLoading.mockImplementation(
+            (_flag: unknown, defaultValue: unknown) => ({
+                value: defaultValue,
+                isLoading: false,
+            }),
+        )
     })
 
     afterEach(() => {

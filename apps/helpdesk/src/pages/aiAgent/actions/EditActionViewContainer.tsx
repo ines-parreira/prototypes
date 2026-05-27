@@ -6,7 +6,7 @@ import {
     useGetWorkflowConfiguration,
 } from 'models/workflows/queries'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
-import { SUPPORT_ACTIONS } from 'pages/aiAgent/constants'
+import { useActionsLabel } from 'pages/aiAgent/hooks/useActionsLabel'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import type { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 
@@ -24,6 +24,7 @@ const EditActionViewContainer = () => {
         id: string
     }>()
     const { routes } = useAiAgentNavigation({ shopName })
+    const actionsLabel = useActionsLabel()
 
     const storeConfigurationQueryKey =
         storeWorkflowsConfigurationDefinitionKeys.list({
@@ -45,11 +46,7 @@ const EditActionViewContainer = () => {
 
     if (isInitialLoading) {
         return (
-            <AiAgentLayout
-                isLoading
-                shopName={shopName}
-                title={SUPPORT_ACTIONS}
-            />
+            <AiAgentLayout isLoading shopName={shopName} title={actionsLabel} />
         )
     }
 

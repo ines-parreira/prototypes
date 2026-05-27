@@ -10,7 +10,7 @@ import {
     useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
-import { SUPPORT_ACTIONS } from 'pages/aiAgent/constants'
+import { useActionsLabel } from 'pages/aiAgent/hooks/useActionsLabel'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import AutomateViewEmptyStateBanner from 'pages/automate/common/components/AutomateViewEmptyStateBanner'
 
@@ -39,6 +39,7 @@ const ActionsView = () => {
     }>()
 
     const { onActionPageViewed } = useSupportActionTracking({ shopName })
+    const actionsLabel = useActionsLabel()
 
     useEffectOnce(() => {
         onActionPageViewed()
@@ -79,7 +80,7 @@ const ActionsView = () => {
                 isTemplateConfigurationsInitialLoading
             }
             className={css.container}
-            title={SUPPORT_ACTIONS}
+            title={actionsLabel}
         >
             {showFakeActions || storeWfConfigurations.length > 0 ? (
                 <StoreTrackstarProvider

@@ -145,6 +145,10 @@ jest.mock('pages/aiAgent/hooks/useGuidanceArticleMutation', () => ({
 jest.mock('@repo/feature-flags', () => ({
     FeatureFlagKey: jest.requireActual('@repo/feature-flags').FeatureFlagKey,
     useFlag: (key: string) => mockUseFlag(key),
+    useFlagWithLoading: (_key: string, defaultValue: unknown = false) => ({
+        value: defaultValue,
+        isLoading: false,
+    }),
 }))
 
 describe('KnowledgeEditorSidePanelGuidance', () => {

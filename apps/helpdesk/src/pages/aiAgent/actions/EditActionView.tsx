@@ -15,7 +15,7 @@ import {
     useListActionsApps,
 } from 'models/workflows/queries'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
-import { SUPPORT_ACTIONS } from 'pages/aiAgent/constants'
+import { useActionsLabel } from 'pages/aiAgent/hooks/useActionsLabel'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { usePlaygroundPanel } from 'pages/aiAgent/hooks/usePlaygroundPanel'
 import ActionsPlatformTemplateVisualBuilderView from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateVisualBuilderView'
@@ -61,6 +61,7 @@ const EditActionView = ({ configuration }: Props) => {
         shopType: 'shopify'
     }>()
     const { routes } = useAiAgentNavigation({ shopName })
+    const actionsLabel = useActionsLabel()
     const {
         isLoading: isEditActionLoading,
         mutateAsync: editAction,
@@ -269,7 +270,7 @@ const EditActionView = ({ configuration }: Props) => {
         <AiAgentLayout
             shopName={shopName}
             className={css.container}
-            title={SUPPORT_ACTIONS}
+            title={actionsLabel}
         >
             <div>
                 <div className={css.links}>

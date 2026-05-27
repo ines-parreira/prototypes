@@ -20,6 +20,12 @@ import { ActionName } from '../types'
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
+    useFlagWithLoading: jest.fn(
+        (_flag: string, defaultValue: unknown = false) => ({
+            value: defaultValue,
+            isLoading: false,
+        }),
+    ),
 }))
 
 const insertTextSpy = jest.spyOn(utils, 'insertText')

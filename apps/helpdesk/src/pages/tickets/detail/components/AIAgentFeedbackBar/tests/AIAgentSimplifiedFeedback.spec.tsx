@@ -114,9 +114,14 @@ jest.mock('pages/aiAgent/hooks/useShopIntegrationId', () => ({
 
 jest.mock('@repo/feature-flags', () => ({
     useFlag: jest.fn(),
+    useFlagWithLoading: jest.fn((_flag, defaultValue = false) => ({
+        value: defaultValue,
+        isLoading: false,
+    })),
     FeatureFlagKey: {
         IncreaseVisibilityOfOpportunity: 'increase-visibility-of-opportunity',
         OpportunitiesMilestone2: 'opportunities-milestone-2',
+        ActionCentralizedLibrary: 'action-centralized-library',
     },
 }))
 

@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
-import { SUPPORT_ACTIONS } from 'pages/aiAgent/constants'
+import { useActionsLabel } from 'pages/aiAgent/hooks/useActionsLabel'
 
 import ActionsUseCaseTemplatesCards from './components/ActionsUseCaseTemplatesCards'
 import BackToActionButton from './components/BackToActionButton'
@@ -14,6 +14,7 @@ import css from './ActionTemplatesView.less'
 
 const ActionTemplatesView = () => {
     const { shopName } = useParams<{ shopName: string }>()
+    const actionsLabel = useActionsLabel()
     const { data: templateConfigurations = [], isInitialLoading } =
         useGetWorkflowConfigurationTemplates({
             triggers: ['llm-prompt'],
@@ -28,7 +29,7 @@ const ActionTemplatesView = () => {
             shopName={shopName}
             isLoading={isInitialLoading}
             className={css.container}
-            title={SUPPORT_ACTIONS}
+            title={actionsLabel}
         >
             <div className={css.backButtonContainer}>
                 <BackToActionButton />

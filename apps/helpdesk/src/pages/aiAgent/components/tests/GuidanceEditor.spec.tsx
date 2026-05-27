@@ -10,6 +10,7 @@ jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
+    useFlagWithLoading: jest.fn(() => ({ value: 'OFF', isLoading: false })),
 }))
 const mockUseFlag = useFlag as jest.Mock
 

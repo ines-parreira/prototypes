@@ -1,4 +1,4 @@
-import { useFlag } from '@repo/feature-flags'
+import { useFlag, useFlagWithLoading } from '@repo/feature-flags'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -34,6 +34,7 @@ const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
 const mockUseListTrackstarConnections = jest.mocked(useListTrackstarConnections)
 jest.mock('@repo/feature-flags')
 const mockUseFlag = jest.mocked(useFlag)
+const mockUseFlagWithLoading = jest.mocked(useFlagWithLoading)
 const { useAppContext } = require('pages/AppContext')
 const mockUseAppContext = jest.mocked(useAppContext)
 const {
@@ -76,6 +77,10 @@ describe('ActionsViewContainer', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         mockUseFlag.mockReturnValue(false)
+        mockUseFlagWithLoading.mockReturnValue({
+            value: 'OFF',
+            isLoading: false,
+        } as unknown as ReturnType<typeof useFlagWithLoading>)
         mockUseGetStoreWorkflowsConfigurations.mockReturnValue({
             data: [actionConfigurationFixture],
             isLoading: false,

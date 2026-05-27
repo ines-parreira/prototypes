@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { assumeMock, render, userEvent } from '@repo/testing'
-import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 
 import type { User } from 'config/types/user'
 import { UserRole } from 'config/types/user'
@@ -98,7 +98,7 @@ describe('Footer', () => {
             name: 'Save Changes',
         })
         expect(submitButton).toBeAriaDisabled()
-        fireEvent.mouseOver(submitButton)
+        userEvent.hover(submitButton)
         await waitFor(() => {
             expect(screen.getByText(/cannot edit/)).toBeVisible()
         })

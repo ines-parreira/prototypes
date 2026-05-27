@@ -1,4 +1,8 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import {
+    FeatureFlagKey,
+    useFlag,
+    useFlagWithLoading,
+} from '@repo/feature-flags'
 import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -22,8 +26,10 @@ import type { StoresWorkflowConfiguration } from '../types'
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
+    useFlagWithLoading: jest.fn(),
 }))
 const mockUseFlag = jest.mocked(useFlag)
+const mockUseFlagWithLoading = jest.mocked(useFlagWithLoading)
 jest.mock('models/workflows/queries')
 jest.mock('models/knowledgeService/queries')
 jest.mock('pages/aiAgent/actions/hooks/useAddStoreApp')
@@ -101,6 +107,10 @@ const defaultState = {
 } as RootState
 describe('ActionsList', () => {
     beforeEach(() => {
+        mockUseFlagWithLoading.mockReturnValue({
+            value: 'OFF',
+            isLoading: false,
+        } as unknown as ReturnType<typeof useFlagWithLoading>)
         mockUseGetStoreApps.mockReturnValue({
             data: [],
             isInitialLoading: false,

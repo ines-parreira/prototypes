@@ -25,5 +25,24 @@
                 }
             }
         }
+
+        &.compact {
+            thead {
+                th {
+                    padding-top: var(--spacing-xs);
+                    padding-bottom: var(--spacing-xs);
+                }
+            }
+
+            tbody {
+                td {
+                    > div,
+                    > a > div {
+                        padding-top: var(--spacing-xs);
+                        padding-bottom: var(--spacing-xs);
+                    }
+                }
+            }
+        }
     }
 }

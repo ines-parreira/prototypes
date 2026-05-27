@@ -23,11 +23,11 @@ import {
     SKILLS,
     SOURCES,
     STRATEGY,
-    SUPPORT_ACTIONS,
     TEST,
     TONE_OF_VOICE,
     TRAIN,
 } from 'pages/aiAgent/constants'
+import { useActionsLabel } from 'pages/aiAgent/hooks/useActionsLabel'
 import { useSkillsAccess } from 'pages/aiAgent/hooks/useSkillsAccess'
 
 export enum AIAgentNavigationSection {
@@ -199,6 +199,7 @@ const useNavigationItems = (
         (isShoppingAssistantDeactivationEnforced && isAbTestingEnabled)
 
     const shouldRenderToneOfVoice = useFlag(FeatureFlagKey.AiAgentToneOfVoice)
+    const actionsLabel = useActionsLabel()
     // Actions platform is rendered outside the per-shop navigation in the
     // ActionDrivenNavigation component.
 
@@ -267,7 +268,7 @@ const useNavigationItems = (
                     },
                     {
                         route: routes.actions,
-                        title: SUPPORT_ACTIONS,
+                        title: actionsLabel,
                     },
                     {
                         route: routes.products,
@@ -363,6 +364,7 @@ const useNavigationItems = (
         shouldRenderToneOfVoice,
         isOpportunitiesEnabled,
         isKnowledgeIntentManagementSystemEnabled,
+        actionsLabel,
         routes,
     ])
 }

@@ -1,4 +1,8 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import {
+    FeatureFlagKey,
+    useFlag,
+    useFlagWithLoading,
+} from '@repo/feature-flags'
 import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -169,6 +173,7 @@ const mockedUseHandoverCustomizationChatFallbackSettingsFormProps = {
 }
 jest.mock('@repo/feature-flags')
 const mockUseFlag = jest.mocked(useFlag)
+const mockUseFlagWithLoading = jest.mocked(useFlagWithLoading)
 const contactForm = ContactFormFixture
 const getState = (accountId?: number) => ({
     currentAccount: fromJS(
@@ -335,6 +340,12 @@ const setupMocks = ({
 describe('AiAgentConfigurationContainer', () => {
     beforeEach(() => {
         jest.resetAllMocks()
+        mockUseFlagWithLoading.mockImplementation(
+            (_flag, defaultValue = false) => ({
+                value: defaultValue,
+                isLoading: false,
+            }),
+        )
         // Reset the mock to default values
         mockUseStoreConfigurationForm.mockReturnValue(
             getUseStoreConfigurationFormMock(),

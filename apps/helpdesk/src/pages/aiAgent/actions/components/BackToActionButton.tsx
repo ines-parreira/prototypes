@@ -2,6 +2,7 @@ import { Link, useParams } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
+import { useActionsLabel } from 'pages/aiAgent/hooks/useActionsLabel'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
 export default function BackToActionButton() {
@@ -9,6 +10,7 @@ export default function BackToActionButton() {
         shopName: string
     }>()
     const { routes } = useAiAgentNavigation({ shopName })
+    const actionsLabel = useActionsLabel()
 
     return (
         <Link to={routes.actions}>
@@ -17,7 +19,7 @@ export default function BackToActionButton() {
                 intent="secondary"
                 leadingIcon="arrow_back"
             >
-                Back to Support Actions
+                Back to {actionsLabel}
             </Button>
         </Link>
     )

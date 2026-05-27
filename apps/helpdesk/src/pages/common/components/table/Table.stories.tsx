@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
-
 import GaugeAddon from 'domains/reporting/pages/common/components/charts/GaugeAddon'
 import { DistributionCategoryCell } from 'domains/reporting/pages/ticket-insights/components/DistributionCategoryCell'
 import { OrderDirection } from 'models/api/types'
@@ -106,6 +105,33 @@ const HeaderCellPropertyTable: StoryObj<typeof TableWrapper> = {
     },
 }
 
+const CompactTable: StoryObj<typeof TableWrapper> = {
+    render: function Template(props) {
+        return (
+            <TableWrapper {...props} height="compact">
+                <TableHead>
+                    {tableColumns.map((column) => (
+                        <HeaderCell key={column.key} style={{ width: '25%' }}>
+                            {column.title}
+                        </HeaderCell>
+                    ))}
+                </TableHead>
+                <TableBody>
+                    {tableColumns.map((_, rowIndex) => (
+                        <TableBodyRow key={rowIndex}>
+                            {tableColumns.map((_, cellIndex) => (
+                                <BodyCell key={cellIndex}>
+                                    Lorem ipsum dolor sit.
+                                </BodyCell>
+                            ))}
+                        </TableBodyRow>
+                    ))}
+                </TableBody>
+            </TableWrapper>
+        )
+    },
+}
+
 const TableWithGauges: StoryObj<typeof TableWrapper> = {
     render: function Template(props) {
         return (
@@ -165,6 +191,7 @@ const TableWithGauges: StoryObj<typeof TableWrapper> = {
 
 export const Default = SimpleTable
 export const WithProperty = HeaderCellPropertyTable
+export const Compact = CompactTable
 export const WithGauges = TableWithGauges
 
 export default storyConfig

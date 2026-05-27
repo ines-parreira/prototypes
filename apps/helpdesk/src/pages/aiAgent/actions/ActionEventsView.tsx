@@ -13,7 +13,7 @@ import {
     useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
-import { SUPPORT_ACTIONS } from 'pages/aiAgent/constants'
+import { useActionsLabel } from 'pages/aiAgent/hooks/useActionsLabel'
 
 import ActionEventsHeader from './components/ActionEventsHeader'
 import ActionEventSidePanel from './components/ActionEventSidePanel'
@@ -41,6 +41,7 @@ const getDateFromQueryParam = (value: string | null) => {
 export default function ActionExecutionsView() {
     const location = useLocation()
     const history = useHistory()
+    const actionsLabel = useActionsLabel()
 
     const queryParams = useMemo(
         () => new URLSearchParams(location.search),
@@ -208,7 +209,7 @@ export default function ActionExecutionsView() {
             isLoading={isFetching}
             shopName={shopName}
             className={classnames(css.container, css.actionLogsView)}
-            title={SUPPORT_ACTIONS}
+            title={actionsLabel}
         >
             <ActionEventsHeader
                 initialEndDate={filterState.to}

@@ -31,6 +31,9 @@ type Props = {
     fullscreen?: boolean
     titleChildren?: ReactNode
     hideSaveAndTest?: boolean
+    hideTestButton?: boolean
+    pageHeaderClassName?: string
+    headerNavbarClassName?: string
 }
 
 export const AiAgentLayout = ({
@@ -41,6 +44,9 @@ export const AiAgentLayout = ({
     isLoading,
     fullscreen,
     titleChildren,
+    hideTestButton,
+    pageHeaderClassName,
+    headerNavbarClassName,
 }: Props) => {
     const headerNavbarItems = useAiAgentHeaderNavbarItems(shopName)
     const { togglePlayground, isPlaygroundOpen } = usePlaygroundPanel()
@@ -85,7 +91,8 @@ export const AiAgentLayout = ({
                 </div>
                 <div className={css.testButtonContainer}>
                     {titleChildren}
-                    {displayPlaygroundButtonInLayoutHeader &&
+                    {!hideTestButton &&
+                        displayPlaygroundButtonInLayoutHeader &&
                         !isPlaygroundOpen && (
                             <Button
                                 onClick={togglePlayground}
@@ -103,13 +110,16 @@ export const AiAgentLayout = ({
         displayPlaygroundButtonInLayoutHeader,
         isPlaygroundOpen,
         togglePlayground,
+        hideTestButton,
     ])
 
     return (
         <AiAgentView
             isLoading={isLoading}
             title={!fullscreen ? AiAgentTitle : undefined}
+            pageHeaderClassName={pageHeaderClassName}
             headerNavbarItems={!fullscreen ? headerNavbarItems : undefined}
+            headerNavbarClassName={headerNavbarClassName}
             className={classnames(css.container, className)}
         >
             {children}
