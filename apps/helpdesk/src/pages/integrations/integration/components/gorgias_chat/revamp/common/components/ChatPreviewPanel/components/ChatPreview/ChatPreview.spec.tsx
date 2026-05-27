@@ -238,6 +238,270 @@ describe('ChatPreview', () => {
         })
     })
 
+    describe('message event listener', () => {
+        it('calls onLoaded when helpdesk-chat-preview-loaded is received', async () => {
+            mockUseGetInstallationSnippet.mockReturnValue({
+                data: { snippet: SNIPPET_WITH_SCRIPT },
+                isLoading: false,
+                isError: false,
+                refetch: mockRefetchInstallationSnippet,
+            })
+
+            const onLoaded = jest.fn()
+            const queryClient = mockQueryClient()
+            render(
+                <QueryClientProvider client={queryClient}>
+                    <ChatPreview appId="test-app-id" onLoaded={onLoaded} />
+                </QueryClientProvider>,
+            )
+
+            act(() => {
+                window.dispatchEvent(
+                    new MessageEvent('message', {
+                        data: { type: 'helpdesk-chat-preview-loaded' },
+                    }),
+                )
+            })
+
+            await waitFor(() => {
+                expect(onLoaded).toHaveBeenCalledTimes(1)
+            })
+        })
+
+        it('calls onLoaded with GorgiasChat and gorgiasChatConfiguration from the iframe contentWindow', async () => {
+            mockUseGetInstallationSnippet.mockReturnValue({
+                data: { snippet: SNIPPET_WITH_SCRIPT },
+                isLoading: false,
+                isError: false,
+                refetch: mockRefetchInstallationSnippet,
+            })
+
+            const onLoaded = jest.fn()
+            const queryClient = mockQueryClient()
+            const { container } = render(
+                <QueryClientProvider client={queryClient}>
+                    <ChatPreview appId="test-app-id" onLoaded={onLoaded} />
+                </QueryClientProvider>,
+            )
+
+            const iframe = container.querySelector('iframe')!
+            const mockGorgiasChat = { setPage: jest.fn() }
+            const mockConfig = { featureFlags: {} }
+            Object.defineProperty(iframe, 'contentWindow', {
+                value: {
+                    GorgiasChat: mockGorgiasChat,
+                    gorgiasChatConfiguration: mockConfig,
+                },
+                configurable: true,
+            })
+
+            act(() => {
+                window.dispatchEvent(
+                    new MessageEvent('message', {
+                        data: { type: 'helpdesk-chat-preview-loaded' },
+                    }),
+                )
+            })
+
+            await waitFor(() => {
+                expect(onLoaded).toHaveBeenCalledWith(
+                    mockGorgiasChat,
+                    mockConfig,
+                )
+            })
+        })
+
+        it('calls onLoaded with undefined args when the iframe has no contentWindow globals', async () => {
+            mockUseGetInstallationSnippet.mockReturnValue({
+                data: { snippet: SNIPPET_WITH_SCRIPT },
+                isLoading: false,
+                isError: false,
+                refetch: mockRefetchInstallationSnippet,
+            })
+
+            const onLoaded = jest.fn()
+            const queryClient = mockQueryClient()
+            render(
+                <QueryClientProvider client={queryClient}>
+                    <ChatPreview appId="test-app-id" onLoaded={onLoaded} />
+                </QueryClientProvider>,
+            )
+
+            act(() => {
+                window.dispatchEvent(
+                    new MessageEvent('message', {
+                        data: { type: 'helpdesk-chat-preview-loaded' },
+                    }),
+                )
+            })
+
+            await waitFor(() => {
+                expect(onLoaded).toHaveBeenCalledWith(undefined, undefined)
+            })
+        })
+
+        it('calls onLoaded with undefined args when the iframe contentWindow is null', async () => {
+            mockUseGetInstallationSnippet.mockReturnValue({
+                data: { snippet: SNIPPET_WITH_SCRIPT },
+                isLoading: false,
+                isError: false,
+                refetch: mockRefetchInstallationSnippet,
+            })
+
+            const onLoaded = jest.fn()
+            const queryClient = mockQueryClient()
+            const { container } = render(
+                <QueryClientProvider client={queryClient}>
+                    <ChatPreview appId="test-app-id" onLoaded={onLoaded} />
+                </QueryClientProvider>,
+            )
+
+            const iframe = container.querySelector('iframe')!
+            Object.defineProperty(iframe, 'contentWindow', {
+                value: null,
+                configurable: true,
+            })
+
+            act(() => {
+                window.dispatchEvent(
+                    new MessageEvent('message', {
+                        data: { type: 'helpdesk-chat-preview-loaded' },
+                    }),
+                )
+            })
+
+            await waitFor(() => {
+                expect(onLoaded).toHaveBeenCalledWith(undefined, undefined)
+            })
+        })
+
+        it('does not call onLoaded or set error state when message event has no data', async () => {
+            mockUseGetInstallationSnippet.mockReturnValue({
+                data: { snippet: SNIPPET_WITH_SCRIPT },
+                isLoading: false,
+                isError: false,
+                refetch: mockRefetchInstallationSnippet,
+            })
+
+            const onLoaded = jest.fn()
+            const queryClient = mockQueryClient()
+            render(
+                <QueryClientProvider client={queryClient}>
+                    <ChatPreview appId="test-app-id" onLoaded={onLoaded} />
+                </QueryClientProvider>,
+            )
+
+            act(() => {
+                window.dispatchEvent(new MessageEvent('message'))
+            })
+
+            expect(onLoaded).not.toHaveBeenCalled()
+            expect(
+                screen.queryByText("Couldn't load preview."),
+            ).not.toBeInTheDocument()
+        })
+
+        it('does not call onLoaded or change error state for unrelated message types', async () => {
+            mockUseGetInstallationSnippet.mockReturnValue({
+                data: { snippet: SNIPPET_WITH_SCRIPT },
+                isLoading: false,
+                isError: false,
+                refetch: mockRefetchInstallationSnippet,
+            })
+
+            const onLoaded = jest.fn()
+            const queryClient = mockQueryClient()
+            render(
+                <QueryClientProvider client={queryClient}>
+                    <ChatPreview appId="test-app-id" onLoaded={onLoaded} />
+                </QueryClientProvider>,
+            )
+
+            act(() => {
+                window.dispatchEvent(
+                    new MessageEvent('message', {
+                        data: { type: 'some-unrelated-message' },
+                    }),
+                )
+            })
+
+            expect(onLoaded).not.toHaveBeenCalled()
+            expect(
+                screen.queryByText("Couldn't load preview."),
+            ).not.toBeInTheDocument()
+        })
+
+        it('does not call onLoaded after the component is unmounted', async () => {
+            mockUseGetInstallationSnippet.mockReturnValue({
+                data: { snippet: SNIPPET_WITH_SCRIPT },
+                isLoading: false,
+                isError: false,
+                refetch: mockRefetchInstallationSnippet,
+            })
+
+            const onLoaded = jest.fn()
+            const queryClient = mockQueryClient()
+            const { unmount } = render(
+                <QueryClientProvider client={queryClient}>
+                    <ChatPreview appId="test-app-id" onLoaded={onLoaded} />
+                </QueryClientProvider>,
+            )
+
+            unmount()
+
+            act(() => {
+                window.dispatchEvent(
+                    new MessageEvent('message', {
+                        data: { type: 'helpdesk-chat-preview-loaded' },
+                    }),
+                )
+            })
+
+            expect(onLoaded).not.toHaveBeenCalled()
+        })
+
+        it('uses the latest onLoaded callback after a re-render', async () => {
+            mockUseGetInstallationSnippet.mockReturnValue({
+                data: { snippet: SNIPPET_WITH_SCRIPT },
+                isLoading: false,
+                isError: false,
+                refetch: mockRefetchInstallationSnippet,
+            })
+
+            const firstOnLoaded = jest.fn()
+            const secondOnLoaded = jest.fn()
+            const queryClient = mockQueryClient()
+
+            const { rerender } = render(
+                <QueryClientProvider client={queryClient}>
+                    <ChatPreview appId="test-app-id" onLoaded={firstOnLoaded} />
+                </QueryClientProvider>,
+            )
+
+            rerender(
+                <QueryClientProvider client={queryClient}>
+                    <ChatPreview
+                        appId="test-app-id"
+                        onLoaded={secondOnLoaded}
+                    />
+                </QueryClientProvider>,
+            )
+
+            act(() => {
+                window.dispatchEvent(
+                    new MessageEvent('message', {
+                        data: { type: 'helpdesk-chat-preview-loaded' },
+                    }),
+                )
+            })
+
+            await waitFor(() => {
+                expect(secondOnLoaded).toHaveBeenCalledTimes(1)
+            })
+            expect(firstOnLoaded).not.toHaveBeenCalled()
+        })
+    })
+
     describe('appId change', () => {
         it('should reset to loading state when appId changes', async () => {
             mockUseGetInstallationSnippet.mockReturnValue({

@@ -24,7 +24,10 @@ import css from '../ChatPreview/ChatPreview.less'
  * `useGetPreviewInstallationSnippet` and constructs the iframe directly.
  */
 type Props = {
-    onLoaded?: (gorgiasChat: NonNullable<Window['GorgiasChat']>) => void
+    onLoaded?: (
+        gorgiasChat: Window['GorgiasChat'],
+        gorgiasChatConfiguration: Window['gorgiasChatConfiguration'],
+    ) => void
 }
 
 export const ChatPreviewDefault = forwardRef<ChatPreviewHandle, Props>(
@@ -50,9 +53,11 @@ export const ChatPreviewDefault = forwardRef<ChatPreviewHandle, Props>(
                     setIsLoaded(true)
                     const gorgiasChat =
                         iframeRef.current?.contentWindow?.GorgiasChat
-                    if (gorgiasChat) {
-                        onLoaded?.(gorgiasChat)
-                    }
+                    const gorgiasChatConfiguration =
+                        iframeRef.current?.contentWindow
+                            ?.gorgiasChatConfiguration
+
+                    onLoaded?.(gorgiasChat, gorgiasChatConfiguration)
                 } else if (event.data?.type === 'helpdesk-chat-preview-error') {
                     setHasError(true)
                 }

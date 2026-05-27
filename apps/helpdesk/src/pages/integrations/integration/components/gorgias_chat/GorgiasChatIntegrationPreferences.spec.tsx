@@ -92,6 +92,7 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
             isChatSettingsScreensRevampOrderManagementEnabled: false,
             isNonAiAgentChat2RevampEnabled: false,
             shouldShowNonAiAgentChatSettingsRevamp: false,
+            shouldShowNonAiAgentRevamp: false,
         })
 
         render(<GorgiasChatIntegrationPreferences {...minProps} />)
@@ -116,6 +117,7 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
+            shouldShowNonAiAgentRevamp: false,
         })
 
         render(
@@ -145,6 +147,7 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
             isChatSettingsScreensRevampOrderManagementEnabled: false,
             isNonAiAgentChat2RevampEnabled: false,
             shouldShowNonAiAgentChatSettingsRevamp: false,
+            shouldShowNonAiAgentRevamp: false,
         })
 
         render(<GorgiasChatIntegrationPreferences {...minProps} />)
@@ -166,6 +169,7 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
             isChatSettingsScreensRevampOrderManagementEnabled: false,
             isNonAiAgentChat2RevampEnabled: false,
             shouldShowNonAiAgentChatSettingsRevamp: false,
+            shouldShowNonAiAgentRevamp: false,
         })
 
         render(<GorgiasChatIntegrationPreferences {...minProps} />)
@@ -189,6 +193,7 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
             isChatSettingsScreensRevampOrderManagementEnabled: false,
             isNonAiAgentChat2RevampEnabled: false,
             shouldShowNonAiAgentChatSettingsRevamp: false,
+            shouldShowNonAiAgentRevamp: false,
         })
 
         render(<GorgiasChatIntegrationPreferences {...minProps} />)
@@ -213,6 +218,7 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
             isChatSettingsScreensRevampOrderManagementEnabled: false,
             isNonAiAgentChat2RevampEnabled: false,
             shouldShowNonAiAgentChatSettingsRevamp: false,
+            shouldShowNonAiAgentRevamp: false,
         })
 
         render(<GorgiasChatIntegrationPreferences {...minProps} />)

@@ -37,7 +37,7 @@ const queryClient = new QueryClient({
 })
 
 const renderComponent = (
-    props: { onLoaded?: (gc: NonNullable<Window['GorgiasChat']>) => void } = {},
+    props: { onLoaded?: (gc: Window['GorgiasChat']) => void } = {},
 ) => {
     const ref = createRef<ChatPreviewHandle>()
     const result = render(
@@ -179,6 +179,175 @@ describe('ChatPreviewDefault', () => {
             expect(
                 screen.getByText("Couldn't load preview."),
             ).toBeInTheDocument()
+        })
+
+        it('calls onLoaded when helpdesk-chat-preview-loaded is received', () => {
+            const onLoaded = jest.fn()
+            renderComponent({ onLoaded })
+
+            act(() => {
+                window.dispatchEvent(
+                    new MessageEvent('message', {
+                        data: { type: 'helpdesk-chat-preview-loaded' },
+                    }),
+                )
+            })
+
+            expect(onLoaded).toHaveBeenCalledTimes(1)
+        })
+
+        it('calls onLoaded with GorgiasChat and gorgiasChatConfiguration from the iframe contentWindow', () => {
+            const onLoaded = jest.fn()
+            const { container } = renderComponent({ onLoaded })
+
+            const iframe = container.querySelector('iframe')!
+            const mockGorgiasChat = { setPage: jest.fn() }
+            const mockConfig = { featureFlags: {} }
+            Object.defineProperty(iframe, 'contentWindow', {
+                value: {
+                    GorgiasChat: mockGorgiasChat,
+                    gorgiasChatConfiguration: mockConfig,
+                },
+                configurable: true,
+            })
+
+            act(() => {
+                window.dispatchEvent(
+                    new MessageEvent('message', {
+                        data: { type: 'helpdesk-chat-preview-loaded' },
+                    }),
+                )
+            })
+
+            expect(onLoaded).toHaveBeenCalledWith(mockGorgiasChat, mockConfig)
+        })
+
+        it('calls onLoaded with undefined args when the iframe has no contentWindow globals', () => {
+            const onLoaded = jest.fn()
+            renderComponent({ onLoaded })
+
+            act(() => {
+                window.dispatchEvent(
+                    new MessageEvent('message', {
+                        data: { type: 'helpdesk-chat-preview-loaded' },
+                    }),
+                )
+            })
+
+            expect(onLoaded).toHaveBeenCalledWith(undefined, undefined)
+        })
+
+        it('calls onLoaded with undefined args when the iframe contentWindow is null', () => {
+            const onLoaded = jest.fn()
+            const { container } = renderComponent({ onLoaded })
+
+            const iframe = container.querySelector('iframe')!
+            Object.defineProperty(iframe, 'contentWindow', {
+                value: null,
+                configurable: true,
+            })
+
+            act(() => {
+                window.dispatchEvent(
+                    new MessageEvent('message', {
+                        data: { type: 'helpdesk-chat-preview-loaded' },
+                    }),
+                )
+            })
+
+            expect(onLoaded).toHaveBeenCalledWith(undefined, undefined)
+        })
+
+        it('does not call onLoaded or set error state when message event has no data', () => {
+            const onLoaded = jest.fn()
+            renderComponent({ onLoaded })
+
+            act(() => {
+                window.dispatchEvent(new MessageEvent('message'))
+            })
+
+            expect(onLoaded).not.toHaveBeenCalled()
+            expect(
+                screen.queryByText("Couldn't load preview."),
+            ).not.toBeInTheDocument()
+        })
+
+        it('does not throw when loaded message arrives without an onLoaded prop', () => {
+            renderComponent()
+
+            expect(() => {
+                act(() => {
+                    window.dispatchEvent(
+                        new MessageEvent('message', {
+                            data: { type: 'helpdesk-chat-preview-loaded' },
+                        }),
+                    )
+                })
+            }).not.toThrow()
+        })
+
+        it('does not call onLoaded or change error state for unrelated message types', () => {
+            const onLoaded = jest.fn()
+            renderComponent({ onLoaded })
+
+            act(() => {
+                window.dispatchEvent(
+                    new MessageEvent('message', {
+                        data: { type: 'some-unrelated-message' },
+                    }),
+                )
+            })
+
+            expect(onLoaded).not.toHaveBeenCalled()
+            expect(
+                screen.queryByText("Couldn't load preview."),
+            ).not.toBeInTheDocument()
+        })
+
+        it('does not call onLoaded after the component is unmounted', () => {
+            const onLoaded = jest.fn()
+            const { unmount } = renderComponent({ onLoaded })
+
+            unmount()
+
+            act(() => {
+                window.dispatchEvent(
+                    new MessageEvent('message', {
+                        data: { type: 'helpdesk-chat-preview-loaded' },
+                    }),
+                )
+            })
+
+            expect(onLoaded).not.toHaveBeenCalled()
+        })
+
+        it('uses the latest onLoaded callback after a re-render', () => {
+            const firstOnLoaded = jest.fn()
+            const secondOnLoaded = jest.fn()
+            const ref = createRef<ChatPreviewHandle>()
+
+            const { rerender } = render(
+                <QueryClientProvider client={queryClient}>
+                    <ChatPreviewDefault ref={ref} onLoaded={firstOnLoaded} />
+                </QueryClientProvider>,
+            )
+
+            rerender(
+                <QueryClientProvider client={queryClient}>
+                    <ChatPreviewDefault ref={ref} onLoaded={secondOnLoaded} />
+                </QueryClientProvider>,
+            )
+
+            act(() => {
+                window.dispatchEvent(
+                    new MessageEvent('message', {
+                        data: { type: 'helpdesk-chat-preview-loaded' },
+                    }),
+                )
+            })
+
+            expect(secondOnLoaded).toHaveBeenCalledTimes(1)
+            expect(firstOnLoaded).not.toHaveBeenCalled()
         })
     })
 

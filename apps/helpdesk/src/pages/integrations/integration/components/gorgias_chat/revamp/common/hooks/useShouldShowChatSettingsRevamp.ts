@@ -44,6 +44,11 @@ export const useShouldShowChatSettingsRevamp = (
         isChatSettingsRevampEnabled &&
         (isAiAgentEnabled || shouldShowNonAiAgentChatSettingsRevamp)
 
+    const shouldShowNonAiAgentRevamp =
+        isChatSettingsRevampEnabled &&
+        isNonAiAgentChat2RevampEnabled &&
+        !isAiAgentEnabled
+
     // Section-specific flags — each adds an independent rollout gate on top of the base flag
     const shouldShowFlowsScreensRevamp =
         shouldShowChatSettingsRevamp && isChatSettingsScreensRevampFlowsEnabled
@@ -61,6 +66,7 @@ export const useShouldShowChatSettingsRevamp = (
         shouldShowNonAiAgentChatSettingsRevamp,
         shouldShowFlowsScreensRevamp,
         shouldShowOrderManagementScreensRevamp,
+        shouldShowNonAiAgentRevamp,
         isLoading:
             isRevampFlagLoading ||
             isChatSettingsScreensRevampFlowsLoading ||

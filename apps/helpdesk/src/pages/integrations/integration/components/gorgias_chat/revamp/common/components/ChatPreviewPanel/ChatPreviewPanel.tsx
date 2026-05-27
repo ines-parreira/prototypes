@@ -39,6 +39,8 @@ import { ChatPreviewDefault } from './components/ChatPreviewDefault/ChatPreviewD
 
 import css from './ChatPreviewPanel.less'
 
+export type ChatDisplayVersion = 'current' | 'new'
+
 export type ChatPreviewPage =
     | 'homepage'
     | 'conversation'
@@ -139,6 +141,7 @@ type Props = {
     supportDefaultChatPreview?: boolean
     forceChatRedesign?: boolean
     showBusinessHoursToggle?: boolean
+    shouldShowChatVersionSwitcher?: boolean
 }
 
 type BusinessHoursToggleProps = {
@@ -175,12 +178,17 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
             supportDefaultChatPreview = false,
             forceChatRedesign = false,
             showBusinessHoursToggle = false,
+            shouldShowChatVersionSwitcher = false,
         }: Props,
         ref,
     ) => {
         const chatPreviewRef = useRef<ChatPreviewHandle>(null)
         const [selectedPage, setSelectedPage] =
             useState<ChatPreviewPage>('homepage')
+
+        const [chatDisplayVersion, setChatDisplayVersion] = useState<
+            ChatDisplayVersion | undefined
+        >(undefined)
 
         const [reloadKey, setReloadKey] = useState(0)
         const [businessHoursMode, setBusinessHoursMode] =
@@ -344,6 +352,11 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
             setReloadKey(reloadKey + 1)
         }
 
+        const handleChatDisplayVersionChange = (key: string) => {
+            setChatDisplayVersion(key as ChatDisplayVersion)
+            reloadPreview()
+        }
+
         const updatePreviewOrders = (
             options: GorgiasChatPreviewOrdersOptions,
         ) => {
@@ -375,21 +388,41 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
         )
 
         const onLoaded = useCallback(
-            (gorgiasChat: NonNullable<Window['GorgiasChat']>) => {
-                if (forceChatRedesign) {
-                    const iframeWindow =
-                        chatPreviewRef.current?.iframeRef.current?.contentWindow
-                    if (iframeWindow?.gorgiasChatConfiguration) {
-                        iframeWindow.gorgiasChatConfiguration.featureFlags = {
-                            ...iframeWindow.gorgiasChatConfiguration
-                                .featureFlags,
-                            'linear.AIEXP-8485.enforce-chat-2-0-without-ai-agent': true,
+            (
+                gorgiasChat: Window['GorgiasChat'],
+                gorgiasChatConfiguration: Window['gorgiasChatConfiguration'],
+            ) => {
+                if (gorgiasChatConfiguration) {
+                    let resolvedChatDisplayVersion = chatDisplayVersion
+
+                    if (shouldShowChatVersionSwitcher) {
+                        if (chatDisplayVersion === undefined) {
+                            resolvedChatDisplayVersion = 'current'
+                            setChatDisplayVersion(resolvedChatDisplayVersion)
+                        }
+
+                        const featureFlagValue =
+                            resolvedChatDisplayVersion === 'current'
+                                ? false
+                                : true
+
+                        gorgiasChatConfiguration.featureFlags = {
+                            ...gorgiasChatConfiguration.featureFlags,
+                            'chat-client-ui-redesign-project': featureFlagValue,
+                            'linear.AIEXP-8485.enforce-chat-2-0-without-ai-agent':
+                                featureFlagValue,
+                        }
+                    } else if (forceChatRedesign) {
+                        gorgiasChatConfiguration.featureFlags = {
+                            ...gorgiasChatConfiguration.featureFlags,
+                            'linear.AIEXP-8485.enforce-chat-2-0-without-ai-agent':
+                                forceChatRedesign,
                         }
                     }
                 }
 
                 if (showBusinessHoursToggle) {
-                    gorgiasChat.setCustomBusinessHours?.(
+                    gorgiasChat?.setCustomBusinessHours?.(
                         PREVIEW_BUSINESS_HOURS_INPUT[businessHoursMode],
                     )
                 }
@@ -401,10 +434,10 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
                     GORGIAS_CHAT_SSP_TEXTS[GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT]
                 if (sspTexts) {
                     const iframeTexts = createIframeObject(sspTexts)
-                    if (iframeTexts) gorgiasChat.updateSSPTexts(iframeTexts)
+                    if (iframeTexts) gorgiasChat?.updateSSPTexts(iframeTexts)
                 }
 
-                gorgiasChat.setPage(selectedPage)
+                gorgiasChat?.setPage(selectedPage)
                 onPreviewLoaded?.()
             },
             [
@@ -415,6 +448,8 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
                 forceChatRedesign,
                 showBusinessHoursToggle,
                 businessHoursMode,
+                chatDisplayVersion,
+                shouldShowChatVersionSwitcher,
             ],
         )
 
@@ -478,6 +513,7 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
                 {withHeader && (
                     <Box
                         alignItems="center"
+                        flexDirection="column"
                         justifyContent="space-between"
                         className={`${css.header} ${
                             shouldRenderBusinessHoursToggle
@@ -485,26 +521,54 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
                                 : ''
                         }`}
                     >
-                        <Text variant={TextVariant.Medium}>Chat preview</Text>
-                        {headerActions ??
-                            (appId && (
+                        <Box
+                            justifyContent="space-between"
+                            alignItems="center"
+                            width={'100%'}
+                        >
+                            <Text variant={TextVariant.Medium}>
+                                Chat preview
+                            </Text>
+                            {headerActions ??
+                                (appId && (
+                                    <>
+                                        <ButtonGroup
+                                            selectedKey={selectedPage}
+                                            defaultSelectedKey="homepage"
+                                            onSelectionChange={handlePageChange}
+                                        >
+                                            <ButtonGroupItem
+                                                id="homepage"
+                                                icon={<Icon name="nav-home" />}
+                                            />
+                                            <ButtonGroupItem
+                                                id="conversation"
+                                                icon={
+                                                    <Icon name="chat-conversation-circle" />
+                                                }
+                                            />
+                                        </ButtonGroup>
+                                    </>
+                                ))}
+                        </Box>
+                        {shouldShowChatVersionSwitcher && (
+                            <Box width={'100%'}>
                                 <ButtonGroup
-                                    selectedKey={selectedPage}
-                                    defaultSelectedKey="homepage"
-                                    onSelectionChange={handlePageChange}
+                                    selectedKey={chatDisplayVersion}
+                                    defaultSelectedKey="current"
+                                    onSelectionChange={
+                                        handleChatDisplayVersionChange
+                                    }
                                 >
-                                    <ButtonGroupItem
-                                        id="homepage"
-                                        icon={<Icon name="nav-home" />}
-                                    />
-                                    <ButtonGroupItem
-                                        id="conversation"
-                                        icon={
-                                            <Icon name="chat-conversation-circle" />
-                                        }
-                                    />
+                                    <ButtonGroupItem id="current">
+                                        Current
+                                    </ButtonGroupItem>
+                                    <ButtonGroupItem id="new">
+                                        New &#40;2.0&#41;
+                                    </ButtonGroupItem>
                                 </ButtonGroup>
-                            ))}
+                            </Box>
+                        )}
                     </Box>
                 )}
                 {withHeader && shouldRenderBusinessHoursToggle && (

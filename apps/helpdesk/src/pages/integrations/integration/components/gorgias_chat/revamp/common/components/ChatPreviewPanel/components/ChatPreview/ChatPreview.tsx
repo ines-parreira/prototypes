@@ -21,7 +21,10 @@ import css from './ChatPreview.less'
 type Props = {
     appId: string
     language?: LANGUAGE
-    onLoaded: (gorgiasChat: any) => void
+    onLoaded: (
+        gorgiasChat: Window['GorgiasChat'],
+        gorgiasChatConfiguration: Window['gorgiasChatConfiguration'],
+    ) => void
     /**
      * When true, injects a CSS override that constrains the legacy chat
      * window iframe (`#chat-window`) to fit inside its container minus the
@@ -68,7 +71,11 @@ export const ChatPreview = forwardRef<ChatPreviewHandle, Props>(
             const handleMessage = (event: MessageEvent) => {
                 if (event.data?.type === 'helpdesk-chat-preview-loaded') {
                     setIsWidgetLoaded(true)
-                    onLoaded(iframeRef.current?.contentWindow?.GorgiasChat)
+                    onLoaded(
+                        iframeRef.current?.contentWindow?.GorgiasChat,
+                        iframeRef.current?.contentWindow
+                            ?.gorgiasChatConfiguration,
+                    )
                 } else if (event.data?.type === 'helpdesk-chat-preview-error') {
                     setHasError(true)
                 }

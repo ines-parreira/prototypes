@@ -53,12 +53,14 @@ type UseChatPreviewPanelOptions = {
     headerActions?: ReactNode
     showBusinessHoursToggle?: boolean
     locale?: LANGUAGE
+    shouldShowChatVersionSwitcher?: boolean
 }
 
 export const useChatPreviewPanel = ({
     headerActions,
     showBusinessHoursToggle,
     locale,
+    shouldShowChatVersionSwitcher = false,
 }: UseChatPreviewPanelOptions = {}) => {
     const { setIsCollapsibleColumnOpen, warpToCollapsibleColumn } =
         useCollapsibleColumn()
@@ -100,6 +102,7 @@ export const useChatPreviewPanel = ({
             showBusinessHoursToggle={showBusinessHoursToggle}
             locale={locale}
             onPreviewLoaded={handlePreviewLoaded}
+            shouldShowChatVersionSwitcher={shouldShowChatVersionSwitcher}
         />,
     )
 

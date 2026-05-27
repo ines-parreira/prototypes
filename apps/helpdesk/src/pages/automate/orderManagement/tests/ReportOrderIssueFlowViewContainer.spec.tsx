@@ -50,6 +50,7 @@ describe('ReportOrderIssueFlowViewContainer', () => {
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
+            shouldShowNonAiAgentRevamp: false,
         })
     })
 
@@ -64,6 +65,7 @@ describe('ReportOrderIssueFlowViewContainer', () => {
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: true,
             isLoading: false,
+            shouldShowNonAiAgentRevamp: false,
         })
 
         render(<ReportOrderIssueFlowViewContainer />)

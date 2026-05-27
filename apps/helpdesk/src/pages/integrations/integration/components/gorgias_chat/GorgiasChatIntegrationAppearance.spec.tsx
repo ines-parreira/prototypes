@@ -156,6 +156,7 @@ describe('<GorgiasChatIntegrationAppearance />', () => {
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
+            shouldShowNonAiAgentRevamp: false,
         })
     })
 
@@ -174,6 +175,7 @@ describe('<GorgiasChatIntegrationAppearance />', () => {
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
+            shouldShowNonAiAgentRevamp: false,
         })
 
         render(
@@ -207,6 +209,7 @@ describe('<GorgiasChatIntegrationAppearance />', () => {
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: true,
+            shouldShowNonAiAgentRevamp: false,
         })
 
         render(
@@ -237,6 +240,7 @@ describe('<GorgiasChatIntegrationAppearance />', () => {
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
+            shouldShowNonAiAgentRevamp: false,
         })
 
         render(
@@ -266,6 +270,7 @@ describe('<GorgiasChatIntegrationAppearance />', () => {
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
+            shouldShowNonAiAgentRevamp: false,
         })
 
         render(

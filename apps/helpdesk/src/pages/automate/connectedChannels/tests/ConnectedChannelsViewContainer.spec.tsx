@@ -38,6 +38,7 @@ const defaultMockFlags = {
     isChatSettingsScreensRevampOrderManagementEnabled: false,
     isNonAiAgentChat2RevampEnabled: false,
     shouldShowNonAiAgentChatSettingsRevamp: false,
+    shouldShowNonAiAgentRevamp: false,
     shouldShowChatSettingsRevamp: false,
     shouldShowFlowsScreensRevamp: false,
     shouldShowOrderManagementScreensRevamp: false,
@@ -64,6 +65,7 @@ describe('ConnectedChannelsViewContainer', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             ...defaultMockFlags,
             shouldShowFlowsScreensRevamp: true,
+            shouldShowNonAiAgentRevamp: false,
         })
 
         renderComponent()

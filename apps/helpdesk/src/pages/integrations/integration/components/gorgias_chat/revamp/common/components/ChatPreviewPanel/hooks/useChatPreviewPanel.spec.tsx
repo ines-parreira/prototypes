@@ -53,6 +53,22 @@ describe('useChatPreviewPanel', () => {
         )
     })
 
+    it('forwards shouldShowChatVersionSwitcher=true to ChatPreviewPanel', () => {
+        renderHook(() =>
+            useChatPreviewPanel({ shouldShowChatVersionSwitcher: true }),
+        )
+
+        const lastElement = mockWarpToCollapsibleColumn.mock.calls.at(-1)[0]
+        expect(lastElement.props.shouldShowChatVersionSwitcher).toBe(true)
+    })
+
+    it('forwards shouldShowChatVersionSwitcher=false to ChatPreviewPanel by default', () => {
+        renderHook(() => useChatPreviewPanel())
+
+        const lastElement = mockWarpToCollapsibleColumn.mock.calls.at(-1)[0]
+        expect(lastElement.props.shouldShowChatVersionSwitcher).toBe(false)
+    })
+
     it('closes the collapsible column on unmount', () => {
         const { unmount } = renderHook(() => useChatPreviewPanel())
 

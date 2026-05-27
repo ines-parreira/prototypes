@@ -143,6 +143,7 @@ beforeEach(() => {
     mockUseShouldShowChatSettingsRevamp.mockReturnValue({
         shouldShowChatSettingsRevamp: false,
         shouldShowNonAiAgentChatSettingsRevamp: false,
+        isNonAiAgentChat2RevampEnabled: false,
     })
     mockUseStoreIntegration.mockReturnValue({ storeIntegration: undefined })
     mockUseIsQuickRepliesEnabled.mockReturnValue(false)
@@ -308,6 +309,8 @@ describe('<GorgiasChatIntegration />', () => {
         beforeEach(() => {
             mockUseShouldShowChatSettingsRevamp.mockReturnValue({
                 shouldShowChatSettingsRevamp: true,
+                sholdShowNonAiAgentRevamp: false,
+                isNonAiAgentChat2RevampEnabled: false,
             })
         })
 
@@ -425,10 +428,12 @@ describe('<GorgiasChatIntegration />', () => {
                 />,
             )
 
-            expect(mockUseChatPreviewPanel).toHaveBeenCalledWith({
-                locale: 'en',
-                showBusinessHoursToggle: false,
-            })
+            expect(mockUseChatPreviewPanel).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    locale: 'en',
+                    showBusinessHoursToggle: false,
+                }),
+            )
         })
 
         it('passes undefined as the language to useChatPreviewPanel when the integration has no languages', () => {
@@ -442,24 +447,45 @@ describe('<GorgiasChatIntegration />', () => {
                 />,
             )
 
-            expect(mockUseChatPreviewPanel).toHaveBeenCalledWith({
-                locale: undefined,
-                showBusinessHoursToggle: false,
-            })
+            expect(mockUseChatPreviewPanel).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    locale: undefined,
+                    showBusinessHoursToggle: false,
+                }),
+            )
         })
 
-        it('passes showBusinessHoursToggle when non-AI-agent chat settings revamp is enabled', () => {
+        it('passes showBusinessHoursToggle and shouldShowChatVersionSwitcher when non-AI-agent chat settings revamp is enabled', () => {
             mockUseShouldShowChatSettingsRevamp.mockReturnValue({
                 shouldShowChatSettingsRevamp: true,
                 shouldShowNonAiAgentChatSettingsRevamp: true,
+                isNonAiAgentChat2RevampEnabled: true,
             })
 
             render(<GorgiasChatIntegration {...defaultProps} />)
 
-            expect(mockUseChatPreviewPanel).toHaveBeenCalledWith({
-                locale: undefined,
-                showBusinessHoursToggle: true,
+            expect(mockUseChatPreviewPanel).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    showBusinessHoursToggle: true,
+                    shouldShowChatVersionSwitcher: true,
+                }),
+            )
+        })
+
+        it('passes shouldShowChatVersionSwitcher as false when non-AI-agent chat settings revamp is disabled', () => {
+            mockUseShouldShowChatSettingsRevamp.mockReturnValue({
+                shouldShowChatSettingsRevamp: false,
+                shouldShowNonAiAgentChatSettingsRevamp: false,
+                isNonAiAgentChat2RevampEnabled: false,
             })
+
+            render(<GorgiasChatIntegration {...defaultProps} />)
+
+            expect(mockUseChatPreviewPanel).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    shouldShowChatVersionSwitcher: false,
+                }),
+            )
         })
     })
 

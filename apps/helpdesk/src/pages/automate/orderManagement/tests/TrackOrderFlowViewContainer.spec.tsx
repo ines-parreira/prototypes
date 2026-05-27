@@ -57,6 +57,7 @@ describe('TrackOrderFlowViewContainer', () => {
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
+            shouldShowNonAiAgentRevamp: false,
         })
     })
 
@@ -71,6 +72,7 @@ describe('TrackOrderFlowViewContainer', () => {
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: true,
             isLoading: false,
+            shouldShowNonAiAgentRevamp: false,
         })
 
         render(<TrackOrderFlowViewContainer />)

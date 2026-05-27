@@ -139,6 +139,80 @@ describe('useShouldShowChatSettingsRevamp', () => {
         })
     })
 
+    describe('shouldShowNonAiAgentRevamp', () => {
+        it('is true when ChatSettingsRevamp and NonAiAgentChat2Revamp are enabled and AI agent is disabled', () => {
+            mockUseFlagWithLoading.mockImplementation((key) => ({
+                value:
+                    key === FeatureFlagKey.ChatSettingsRevamp ||
+                    key === FeatureFlagKey.NonAiAgentChat2Revamp,
+                isLoading: false,
+            }))
+            mockUseIsAiAgentEnabled.mockReturnValue({
+                isAiAgentEnabled: false,
+                isLoading: false,
+            })
+
+            const { result } = renderHook(() =>
+                useShouldShowChatSettingsRevamp(mockStoreIntegration, 1),
+            )
+
+            expect(result.current.shouldShowNonAiAgentRevamp).toBe(true)
+        })
+
+        it('is false when ChatSettingsRevamp is disabled', () => {
+            mockUseFlagWithLoading.mockImplementation((key) => ({
+                value: key === FeatureFlagKey.NonAiAgentChat2Revamp,
+                isLoading: false,
+            }))
+            mockUseIsAiAgentEnabled.mockReturnValue({
+                isAiAgentEnabled: false,
+                isLoading: false,
+            })
+
+            const { result } = renderHook(() =>
+                useShouldShowChatSettingsRevamp(mockStoreIntegration, 1),
+            )
+
+            expect(result.current.shouldShowNonAiAgentRevamp).toBe(false)
+        })
+
+        it('is false when NonAiAgentChat2Revamp is disabled', () => {
+            mockUseFlagWithLoading.mockImplementation((key) => ({
+                value: key === FeatureFlagKey.ChatSettingsRevamp,
+                isLoading: false,
+            }))
+            mockUseIsAiAgentEnabled.mockReturnValue({
+                isAiAgentEnabled: false,
+                isLoading: false,
+            })
+
+            const { result } = renderHook(() =>
+                useShouldShowChatSettingsRevamp(mockStoreIntegration, 1),
+            )
+
+            expect(result.current.shouldShowNonAiAgentRevamp).toBe(false)
+        })
+
+        it('is false when AI agent is enabled even if both flags are on', () => {
+            mockUseFlagWithLoading.mockImplementation((key) => ({
+                value:
+                    key === FeatureFlagKey.ChatSettingsRevamp ||
+                    key === FeatureFlagKey.NonAiAgentChat2Revamp,
+                isLoading: false,
+            }))
+            mockUseIsAiAgentEnabled.mockReturnValue({
+                isAiAgentEnabled: true,
+                isLoading: false,
+            })
+
+            const { result } = renderHook(() =>
+                useShouldShowChatSettingsRevamp(mockStoreIntegration, 1),
+            )
+
+            expect(result.current.shouldShowNonAiAgentRevamp).toBe(false)
+        })
+    })
+
     describe('isLoading', () => {
         it('should be true when ChatSettingsRevamp flag is loading', () => {
             mockUseFlagWithLoading.mockImplementation((key) => ({

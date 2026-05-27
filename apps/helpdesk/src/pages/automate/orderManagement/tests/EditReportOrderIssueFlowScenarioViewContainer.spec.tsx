@@ -47,6 +47,7 @@ const defaultRevampFlags = {
     shouldShowChatSettingsRevamp: false,
     shouldShowFlowsScreensRevamp: false,
     shouldShowOrderManagementScreensRevamp: false,
+    shouldShowNonAiAgentRevamp: false,
     isLoading: false,
 }
 
@@ -61,6 +62,7 @@ describe('EditReportOrderIssueFlowScenarioViewContainer', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             ...defaultRevampFlags,
             shouldShowOrderManagementScreensRevamp: true,
+            shouldShowNonAiAgentRevamp: false,
         })
 
         render(<EditReportOrderIssueFlowScenarioViewContainer />)

@@ -44,6 +44,7 @@ describe('ReturnOrderFlowViewContainer', () => {
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
+            shouldShowNonAiAgentRevamp: false,
         })
     })
 
@@ -58,6 +59,7 @@ describe('ReturnOrderFlowViewContainer', () => {
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: true,
             isLoading: false,
+            shouldShowNonAiAgentRevamp: false,
         })
 
         render(<ReturnOrderFlowViewContainer />)

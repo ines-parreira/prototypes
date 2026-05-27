@@ -43,6 +43,7 @@ describe('OrderManagementViewContainer', () => {
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
+            shouldShowNonAiAgentRevamp: false,
         })
     })
 
@@ -57,6 +58,7 @@ describe('OrderManagementViewContainer', () => {
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: true,
             isLoading: false,
+            shouldShowNonAiAgentRevamp: false,
         })
 
         render(<OrderManagementViewContainer />)

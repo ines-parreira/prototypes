@@ -68,6 +68,7 @@ describe('<GorgiasChatTranslateText />', () => {
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
+            shouldShowNonAiAgentRevamp: false,
         })
     })
 
@@ -82,6 +83,7 @@ describe('<GorgiasChatTranslateText />', () => {
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: true,
+            shouldShowNonAiAgentRevamp: false,
         })
 
         render(<GorgiasChatTranslateText integration={fromJS({ id: 1 })} />)
@@ -131,6 +133,7 @@ describe('<GorgiasChatTranslateText />', () => {
             shouldShowFlowsScreensRevamp: false,
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
+            shouldShowNonAiAgentRevamp: false,
         })
 
         render(<GorgiasChatTranslateText integration={fromJS({ id: 1 })} />)
