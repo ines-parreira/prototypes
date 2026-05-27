@@ -14,6 +14,7 @@ import {
 } from '@gorgias/helpdesk-mocks'
 
 import type {
+    TicketThreadAuditLogAttribution,
     TicketThreadAuditLogEvent,
     TicketThreadAuditLogEventByType,
 } from '../../../../../../hooks/events/types'
@@ -63,19 +64,25 @@ function getTeamsHandler(teams: unknown[]) {
     )
 }
 
+type BuildItemOptions = {
+    attribution?: TicketThreadAuditLogAttribution
+    userId?: number | null
+}
+
 function buildItem<TType extends TicketThreadAuditLogEvent['type']>(
     type: TType,
     eventData?: Extract<TicketThreadAuditLogEvent, { type: TType }>['data'],
+    options: BuildItemOptions = {},
 ): TicketThreadAuditLogEventByType<TType> {
     return {
         _tag: TicketThreadItemTag.Events.AuditLogEvent,
         type,
         datetime: '2024-03-21T11:00:00Z',
-        meta: { attribution: 'via-rule' },
+        meta: { attribution: options.attribution ?? 'via-rule' },
         data: {
             object_type: 'Ticket',
             type,
-            user_id: 42,
+            user_id: options.userId === undefined ? 42 : options.userId,
             created_datetime: '2024-03-21T11:00:00Z',
             data: eventData ?? {},
         },
@@ -344,6 +351,37 @@ describe('TicketThread audit-log rendering', () => {
         renderAuditEvent(type)
 
         expect(screen.getByText(text)).toBeInTheDocument()
+    })
+
+    it('renders auto-merge service attribution for system merge events', () => {
+        render(
+            <TicketThreadAuditLogEventItem
+                item={buildItem(
+                    'ticket-merged',
+                    {},
+                    {
+                        attribution: 'none',
+                        userId: null,
+                    },
+                )}
+            />,
+        )
+
+        expect(screen.getByText('Merged')).toBeInTheDocument()
+        expect(screen.getByText('by auto-merge service')).toBeInTheDocument()
+    })
+
+    it('keeps rule attribution for rule-driven merge events', () => {
+        render(
+            <TicketThreadAuditLogEventItem
+                item={buildItem('ticket-merged', {}, { userId: null })}
+            />,
+        )
+
+        expect(screen.getByText('via rule')).toBeInTheDocument()
+        expect(
+            screen.queryByText('by auto-merge service'),
+        ).not.toBeInTheDocument()
     })
 
     it('renders split event link to the target ticket', () => {
