@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
@@ -24,7 +24,11 @@ import {
 } from 'AIJourney/hooks'
 import { useJourneyContext } from 'AIJourney/providers'
 
+import { KlaviyoSetupCard } from 'AIJourney/components/KlaviyoSetupCard/KlaviyoSetupCard'
+
 import css from './JourneyEditorSidePanel.module.less'
+
+type ActiveView = 'details' | 'webhook'
 
 export const JourneyEditorSidePanel = () => {
     const { journeyData, journeyType, currentIntegration } = useJourneyContext()
@@ -35,7 +39,7 @@ export const JourneyEditorSidePanel = () => {
         ? undefined
         : (storeConfiguration?.execution_mode_override ?? null)
 
-    const [isDetailsView, setIsDetailsView] = useState(true)
+    const [activeView, setActiveView] = useState<ActiveView | null>('details')
 
     const isAiJourneySegmentsEnabled = useFlag(
         FeatureFlagKey.AiJourneySegmentsUiEnabled,
@@ -51,6 +55,17 @@ export const JourneyEditorSidePanel = () => {
     const isSessionAbandonment =
         journeyType === JOURNEY_TYPES.SESSION_ABANDONMENT
 
+    const webhookUrl = journeyData?.webhook_url ?? undefined
+    const hasWebhookUrl = isCustom && !!webhookUrl
+
+    useEffect(() => {
+        if (!hasWebhookUrl || !journeyData?.id) return
+        const seenKey = `klaviyo-setup-seen-${journeyData.id}`
+        if (localStorage.getItem(seenKey)) return
+        localStorage.setItem(seenKey, 'true')
+        setActiveView('webhook')
+    }, [hasWebhookUrl, journeyData?.id])
+
     const shouldRenderTimingSection = !isCampaign && !isCustom
     const shouldRenderAudienceSection = isCampaign || isAiJourneySegmentsEnabled
     const shouldRenderStaticTiming =
@@ -62,7 +77,7 @@ export const JourneyEditorSidePanel = () => {
 
     return (
         <Box flexDirection="row" className={css.sidePanel}>
-            {isDetailsView && (
+            {activeView === 'details' && (
                 <div className={css.contentArea}>
                     <div className={css.fields}>
                         <div className={`${css.section} ${css.sectionDetails}`}>
@@ -198,17 +213,60 @@ export const JourneyEditorSidePanel = () => {
                 </div>
             )}
 
+            {activeView === 'webhook' && isCustom && (
+                <div className={css.contentArea}>
+                    <KlaviyoSetupCard
+                        webhookUrl={webhookUrl}
+                        isV3Architecture
+                    />
+                </div>
+            )}
+
             <div className={css.iconBar}>
                 <Button
                     variant="tertiary"
                     icon={
-                        isDetailsView
+                        activeView !== null
                             ? 'system-bar-collapse'
                             : 'system-bar-expand'
                     }
-                    aria-label={isDetailsView ? 'Collapse' : 'Expand'}
-                    onClick={() => setIsDetailsView((prev) => !prev)}
+                    aria-label={activeView !== null ? 'Collapse' : 'Expand'}
+                    onClick={() =>
+                        setActiveView((prev) =>
+                            prev !== null ? null : 'details',
+                        )
+                    }
                 />
+                <div
+                    className={
+                        activeView === 'details'
+                            ? css.iconButtonActive
+                            : undefined
+                    }
+                >
+                    <Button
+                        variant="tertiary"
+                        icon="list-unordered"
+                        aria-label="Details"
+                        onClick={() => setActiveView('details')}
+                    />
+                </div>
+                {isCustom && (
+                    <div
+                        className={
+                            activeView === 'webhook'
+                                ? css.iconButtonActive
+                                : undefined
+                        }
+                    >
+                        <Button
+                            variant="tertiary"
+                            icon="code"
+                            aria-label="Webhook"
+                            onClick={() => setActiveView('webhook')}
+                        />
+                    </div>
+                )}
             </div>
         </Box>
     )

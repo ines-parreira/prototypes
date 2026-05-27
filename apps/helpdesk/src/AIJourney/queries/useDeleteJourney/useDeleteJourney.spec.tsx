@@ -88,9 +88,15 @@ describe('useDeleteJourney', () => {
         })
 
         await waitFor(() => {
-            expect(invalidateQueriesSpy).toHaveBeenCalledTimes(1)
+            expect(invalidateQueriesSpy).toHaveBeenCalledTimes(3)
             expect(invalidateQueriesSpy).toHaveBeenCalledWith({
                 queryKey: expect.arrayContaining(['journeys']),
+            })
+            expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+                queryKey: expect.arrayContaining(['workflow-configuration']),
+            })
+            expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+                queryKey: expect.arrayContaining(['flowsList']),
             })
         })
     })

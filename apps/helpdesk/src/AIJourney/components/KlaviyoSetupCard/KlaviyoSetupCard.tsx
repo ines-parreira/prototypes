@@ -5,6 +5,7 @@ import {
     Button,
     Card,
     CardHeader,
+    Heading,
     Text,
     TextAreaField,
     TextField,
@@ -15,7 +16,8 @@ import { copyToClipboard } from 'AIJourney/utils/copyToClipboard'
 import css from './KlaviyoSetupCard.less'
 
 type KlaviyoSetupCardProps = {
-    webhookUrl: string
+    webhookUrl?: string
+    isV3Architecture?: boolean
 }
 
 const PAYLOAD_TEMPLATE = JSON.stringify(
@@ -44,7 +46,13 @@ const PAYLOAD_TEMPLATE = JSON.stringify(
 
 const COPY_FEEDBACK_DURATION_MS = 1500
 
-export const KlaviyoSetupCard = ({ webhookUrl }: KlaviyoSetupCardProps) => {
+const KlavyioCardContent = ({
+    isV3Architecture,
+    webhookUrl,
+}: {
+    isV3Architecture?: boolean
+    webhookUrl?: string
+}) => {
     const [copiedField, setCopiedField] = useState<'url' | 'payload' | null>(
         null,
     )
@@ -57,14 +65,16 @@ export const KlaviyoSetupCard = ({ webhookUrl }: KlaviyoSetupCardProps) => {
     }
 
     return (
-        <Card gap="lg" width={680}>
-            <CardHeader title="Klaviyo setup" />
-
+        <>
             <Box flexDirection="column" gap="sm">
-                <Text variant="bold">Webhook URL</Text>
-                <Box alignItems="center" gap="sm">
+                <Text variant="bold">URL</Text>
+                <Box
+                    alignItems={isV3Architecture ? 'flex-end' : 'center'}
+                    gap="sm"
+                    flexDirection={isV3Architecture ? 'column' : 'row'}
+                >
                     <TextField
-                        value={webhookUrl}
+                        value={webhookUrl ?? ''}
                         onChange={() => {}}
                         isReadOnly
                         className={css.monoInput}
@@ -72,7 +82,8 @@ export const KlaviyoSetupCard = ({ webhookUrl }: KlaviyoSetupCardProps) => {
                     <Button
                         size="sm"
                         variant="secondary"
-                        onClick={() => handleCopy(webhookUrl, 'url')}
+                        leadingSlot="copy"
+                        onClick={() => handleCopy(webhookUrl ?? '', 'url')}
                     >
                         {copiedField === 'url' ? 'Copied!' : 'Copy'}
                     </Button>
@@ -86,18 +97,20 @@ export const KlaviyoSetupCard = ({ webhookUrl }: KlaviyoSetupCardProps) => {
                         Paste this JSON body into Klaviyo&apos;s webhook
                         configuration.
                     </Text>
-                    <Text size="sm" className={css.secondary}>
-                        Event fields (order_id, checkout_url, etc.) will be
-                        empty string for list/segment-triggered flows — only
-                        profile fields populate in that case.
-                    </Text>
+                    {!isV3Architecture && (
+                        <Text size="sm" className={css.secondary}>
+                            Event fields (order_id, checkout_url, etc.) will be
+                            empty string for list/segment-triggered flows — only
+                            profile fields populate in that case.
+                        </Text>
+                    )}
                 </Box>
                 <Box flexDirection="column" gap="xs">
                     <TextAreaField
                         value={PAYLOAD_TEMPLATE}
                         onChange={() => {}}
                         rows={10}
-                        autoResize={false}
+                        autoResize={isV3Architecture}
                         isReadOnly
                         className={css.monoTextArea}
                     />
@@ -105,6 +118,7 @@ export const KlaviyoSetupCard = ({ webhookUrl }: KlaviyoSetupCardProps) => {
                         <Button
                             size="sm"
                             variant="secondary"
+                            leadingSlot="copy"
                             onClick={() =>
                                 handleCopy(PAYLOAD_TEMPLATE, 'payload')
                             }
@@ -114,6 +128,51 @@ export const KlaviyoSetupCard = ({ webhookUrl }: KlaviyoSetupCardProps) => {
                     </Box>
                 </Box>
             </Box>
+        </>
+    )
+}
+
+export const KlaviyoSetupCard = ({
+    webhookUrl,
+    isV3Architecture = false,
+}: KlaviyoSetupCardProps) => {
+    if (isV3Architecture) {
+        if (!webhookUrl) {
+            return (
+                <div className={css.emptyState}>
+                    <Text size="md" variant="bold" align="center">
+                        Activate the flow
+                        <br />
+                        to generate your webhook
+                    </Text>
+                    <Text
+                        align="center"
+                        size="sm"
+                        color="var(--content-neutral-secondary)"
+                    >
+                        The URL and JSON body will appear here once the flow is
+                        live. Copy them into Klaviyo to start triggering this
+                        flow.
+                    </Text>
+                </div>
+            )
+        }
+        return (
+            <Box flexDirection="column" gap="sm" padding="md" paddingTop="lg">
+                <Heading>Webhook</Heading>
+                <KlavyioCardContent
+                    isV3Architecture={isV3Architecture}
+                    webhookUrl={webhookUrl}
+                />
+            </Box>
+        )
+    }
+
+    return (
+        <Card gap="lg" width={isV3Architecture ? undefined : 680}>
+            <CardHeader title="Klaviyo setup" />
+
+            <KlavyioCardContent webhookUrl={webhookUrl} />
         </Card>
     )
 }

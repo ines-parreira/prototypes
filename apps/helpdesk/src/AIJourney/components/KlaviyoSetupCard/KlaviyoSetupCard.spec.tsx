@@ -1,160 +1,396 @@
 import { render } from '@repo/testing'
-import { screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { KlaviyoSetupCard } from './KlaviyoSetupCard'
+
+jest.mock('AIJourney/utils/copyToClipboard', () => ({
+    copyToClipboard: jest.fn(),
+}))
+
+const mockCopyToClipboard = require('AIJourney/utils/copyToClipboard')
+    .copyToClipboard as jest.Mock
+
+const WEBHOOK_URL = 'https://app.gorgias.com/webhooks/journey/abc123'
 
 describe('<KlaviyoSetupCard />', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        mockCopyToClipboard.mockResolvedValue(true)
     })
 
-    it('renders the webhook URL', () => {
-        render(
-            <KlaviyoSetupCard webhookUrl="https://app.gorgias.com/webhooks/journey/abc123" />,
-        )
+    describe('v2 (default)', () => {
+        it('renders the webhook URL', () => {
+            render(<KlaviyoSetupCard webhookUrl={WEBHOOK_URL} />)
 
-        expect(
-            screen.getByDisplayValue(
-                'https://app.gorgias.com/webhooks/journey/abc123',
-            ),
-        ).toBeInTheDocument()
-    })
+            expect(screen.getByDisplayValue(WEBHOOK_URL)).toBeInTheDocument()
+        })
 
-    it('renders a copy button for the webhook URL', () => {
-        render(
-            <KlaviyoSetupCard webhookUrl="https://app.gorgias.com/webhooks/journey/abc123" />,
-        )
+        it('renders a copy button for the webhook URL', () => {
+            render(<KlaviyoSetupCard webhookUrl={WEBHOOK_URL} />)
 
-        const copyButtons = screen.getAllByRole('button', { name: /copy/i })
-        expect(copyButtons.length).toBeGreaterThanOrEqual(1)
-    })
+            const copyButtons = screen.getAllByRole('button', { name: /copy/i })
+            expect(copyButtons.length).toBeGreaterThanOrEqual(1)
+        })
 
-    it('copies webhook URL to clipboard when copy button is clicked', async () => {
-        const { user } = render(
-            <KlaviyoSetupCard webhookUrl="https://app.gorgias.com/webhooks/journey/abc123" />,
-        )
-        const writeTextSpy = jest
-            .spyOn(navigator.clipboard, 'writeText')
-            .mockResolvedValue(undefined)
+        it('copies webhook URL to clipboard when copy button is clicked', async () => {
+            const { user } = render(
+                <KlaviyoSetupCard webhookUrl={WEBHOOK_URL} />,
+            )
 
-        const copyButtons = screen.getAllByRole('button', { name: /copy/i })
-        await user.click(copyButtons[0])
+            const copyButtons = screen.getAllByRole('button', { name: /copy/i })
+            await user.click(copyButtons[0])
 
-        await waitFor(() => {
-            expect(writeTextSpy).toHaveBeenCalledWith(
-                'https://app.gorgias.com/webhooks/journey/abc123',
+            expect(mockCopyToClipboard).toHaveBeenCalledWith(WEBHOOK_URL)
+        })
+
+        it('renders the payload template without integration_id', () => {
+            render(<KlaviyoSetupCard webhookUrl={WEBHOOK_URL} />)
+
+            expect(screen.queryByText(/integration_id/)).not.toBeInTheDocument()
+        })
+
+        it('copies payload template to clipboard when payload copy button is clicked', async () => {
+            const { user } = render(
+                <KlaviyoSetupCard webhookUrl={WEBHOOK_URL} />,
+            )
+
+            const copyButtons = screen.getAllByRole('button', { name: /copy/i })
+            await user.click(copyButtons[1])
+
+            expect(mockCopyToClipboard).toHaveBeenCalledWith(
+                expect.stringContaining('"phone_number"'),
+            )
+        })
+
+        it('renders a note about event fields being empty for list/segment-triggered flows', () => {
+            render(<KlaviyoSetupCard webhookUrl={WEBHOOK_URL} />)
+
+            expect(
+                screen.getByText(/event.*empty string.*list.*segment/i),
+            ).toBeInTheDocument()
+        })
+
+        it('shows "Copied!" feedback after clicking copy and reverts after timeout', async () => {
+            const { user } = render(
+                <KlaviyoSetupCard webhookUrl={WEBHOOK_URL} />,
+            )
+
+            const copyButtons = screen.getAllByRole('button', {
+                name: /^copy copy$/i,
+            })
+            expect(copyButtons).toHaveLength(2)
+
+            await user.click(copyButtons[0])
+
+            expect(
+                await screen.findByRole('button', { name: /copied!/i }),
+            ).toBeInTheDocument()
+
+            await waitFor(
+                () => {
+                    const updatedCopyButtons = screen.getAllByRole('button', {
+                        name: /^copy copy$/i,
+                    })
+                    expect(updatedCopyButtons).toHaveLength(2)
+                },
+                { timeout: 2500 },
             )
         })
     })
 
-    it('renders the payload template without integration_id', () => {
-        render(
-            <KlaviyoSetupCard webhookUrl="https://app.gorgias.com/webhooks/journey/abc123" />,
-        )
+    describe('isV3Architecture', () => {
+        describe('empty state (no webhookUrl)', () => {
+            it('should render the empty state heading', () => {
+                render(<KlaviyoSetupCard isV3Architecture />)
 
-        expect(screen.queryByText(/integration_id/)).not.toBeInTheDocument()
-    })
+                expect(
+                    screen.getByText(
+                        /activate the flow.*to generate your webhook/is,
+                    ),
+                ).toBeInTheDocument()
+            })
 
-    it('copies payload template to clipboard when payload copy button is clicked', async () => {
-        const { user } = render(
-            <KlaviyoSetupCard webhookUrl="https://app.gorgias.com/webhooks/journey/abc123" />,
-        )
-        const writeTextSpy = jest
-            .spyOn(navigator.clipboard, 'writeText')
-            .mockResolvedValue(undefined)
+            it('should render the empty state description', () => {
+                render(<KlaviyoSetupCard isV3Architecture />)
 
-        const copyButtons = screen.getAllByRole('button', { name: /copy/i })
-        await user.click(copyButtons[1])
+                expect(
+                    screen.getByText(/the url and json body will appear here/i),
+                ).toBeInTheDocument()
+            })
 
-        await waitFor(() => {
-            expect(writeTextSpy).toHaveBeenCalled()
+            it('should not render any text input or textarea', () => {
+                render(<KlaviyoSetupCard isV3Architecture />)
+
+                expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
+            })
+
+            it('should not render any Copy button', () => {
+                render(<KlaviyoSetupCard isV3Architecture />)
+
+                expect(
+                    screen.queryByRole('button', { name: /^copy copy$/i }),
+                ).not.toBeInTheDocument()
+            })
         })
 
-        const copiedText = writeTextSpy.mock.calls[0][0] as string
-        expect(copiedText).toContain('"phone_number"')
-        expect(copiedText).not.toContain('integration_id')
-    })
+        describe('webhook content (webhookUrl provided)', () => {
+            it('should render the Webhook heading', () => {
+                render(
+                    <KlaviyoSetupCard
+                        webhookUrl={WEBHOOK_URL}
+                        isV3Architecture
+                    />,
+                )
 
-    it('renders a note about event fields being empty for list/segment-triggered flows', () => {
-        render(
-            <KlaviyoSetupCard webhookUrl="https://app.gorgias.com/webhooks/journey/abc123" />,
-        )
+                expect(
+                    screen.getByRole('heading', { name: /webhook/i }),
+                ).toBeInTheDocument()
+            })
 
-        expect(
-            screen.getByText(/event.*empty string.*list.*segment/i),
-        ).toBeInTheDocument()
-    })
+            it('should not show the event fields note', () => {
+                render(
+                    <KlaviyoSetupCard
+                        webhookUrl={WEBHOOK_URL}
+                        isV3Architecture
+                    />,
+                )
 
-    it('uses document.execCommand fallback when navigator.clipboard is unavailable', async () => {
-        document.execCommand = jest.fn().mockReturnValue(true)
-        const mockExecCommand = document.execCommand as jest.Mock
-        const appendSpy = jest.spyOn(document.body, 'appendChild')
-        const removeSpy = jest.spyOn(document.body, 'removeChild')
+                expect(
+                    screen.queryByText(/event.*empty string.*list.*segment/i),
+                ).not.toBeInTheDocument()
+            })
 
-        const { user } = render(
-            <KlaviyoSetupCard webhookUrl="https://app.gorgias.com/webhooks/journey/abc123" />,
-        )
-        const originalClipboard = navigator.clipboard
+            it('should display the webhook URL in a read-only input', () => {
+                render(
+                    <KlaviyoSetupCard
+                        webhookUrl={WEBHOOK_URL}
+                        isV3Architecture
+                    />,
+                )
 
-        Object.defineProperty(navigator, 'clipboard', {
-            value: undefined,
-            writable: true,
-            configurable: true,
+                expect(
+                    screen.getByDisplayValue(WEBHOOK_URL),
+                ).toBeInTheDocument()
+            })
+
+            it('should display the payload template in a textarea', () => {
+                render(
+                    <KlaviyoSetupCard
+                        webhookUrl={WEBHOOK_URL}
+                        isV3Architecture
+                    />,
+                )
+
+                expect(screen.getByText('Payload template')).toBeInTheDocument()
+                expect(
+                    screen.getByDisplayValue(/"phone_number"/),
+                ).toBeInTheDocument()
+            })
+
+            it('should render two Copy buttons (one for URL, one for payload)', () => {
+                render(
+                    <KlaviyoSetupCard
+                        webhookUrl={WEBHOOK_URL}
+                        isV3Architecture
+                    />,
+                )
+
+                expect(
+                    screen.getAllByRole('button', { name: /^copy copy$/i }),
+                ).toHaveLength(2)
+            })
         })
 
-        const copyButtons = screen.getAllByRole('button', { name: /copy/i })
-        await user.click(copyButtons[0])
+        describe('copy URL', () => {
+            it('should call copyToClipboard with the webhook URL', async () => {
+                const user = userEvent.setup()
+                render(
+                    <KlaviyoSetupCard
+                        webhookUrl={WEBHOOK_URL}
+                        isV3Architecture
+                    />,
+                )
 
-        await waitFor(() => {
-            expect(mockExecCommand).toHaveBeenCalledWith('copy')
-        })
-        expect(appendSpy).toHaveBeenCalled()
-        expect(removeSpy).toHaveBeenCalled()
-
-        const appendCalls = appendSpy.mock.calls.filter(
-            ([node]) => node instanceof HTMLTextAreaElement,
-        )
-        const textarea = appendCalls[0][0] as HTMLTextAreaElement
-        expect(textarea.value).toBe(
-            'https://app.gorgias.com/webhooks/journey/abc123',
-        )
-
-        appendSpy.mockRestore()
-        removeSpy.mockRestore()
-
-        Object.defineProperty(navigator, 'clipboard', {
-            value: originalClipboard,
-            writable: true,
-            configurable: true,
-        })
-    })
-
-    it('shows "Copied!" feedback after clicking copy and reverts after timeout', async () => {
-        const { user } = render(
-            <KlaviyoSetupCard webhookUrl="https://app.gorgias.com/webhooks/journey/abc123" />,
-        )
-
-        const copyButtons = screen.getAllByRole('button', { name: /^copy$/i })
-        expect(copyButtons).toHaveLength(2)
-
-        await user.click(copyButtons[0])
-
-        // handleCopy awaits navigator.clipboard.writeText before flipping
-        // state to "Copied!"; findByRole waits for the post-await render.
-        expect(
-            await screen.findByRole('button', { name: 'Copied!' }),
-        ).toBeInTheDocument()
-
-        // The component sets a 1.5s timer to revert the state. waitFor
-        // polls until the button label flips back.
-        await waitFor(
-            () => {
-                const updatedCopyButtons = screen.getAllByRole('button', {
-                    name: /^copy$/i,
+                const [urlCopyButton] = screen.getAllByRole('button', {
+                    name: /^copy copy$/i,
                 })
-                expect(updatedCopyButtons).toHaveLength(2)
-            },
-            { timeout: 2500 },
-        )
+                await user.click(urlCopyButton)
+
+                expect(mockCopyToClipboard).toHaveBeenCalledWith(WEBHOOK_URL)
+            })
+
+            it('should show "Copied!" on the URL button after a successful copy', async () => {
+                const user = userEvent.setup()
+                render(
+                    <KlaviyoSetupCard
+                        webhookUrl={WEBHOOK_URL}
+                        isV3Architecture
+                    />,
+                )
+
+                const [urlCopyButton] = screen.getAllByRole('button', {
+                    name: /^copy copy$/i,
+                })
+                await user.click(urlCopyButton)
+
+                expect(
+                    await screen.findByRole('button', { name: /copied!/i }),
+                ).toBeInTheDocument()
+            })
+
+            it('should not show "Copied!" when copyToClipboard returns false', async () => {
+                mockCopyToClipboard.mockResolvedValue(false)
+                const user = userEvent.setup()
+                render(
+                    <KlaviyoSetupCard
+                        webhookUrl={WEBHOOK_URL}
+                        isV3Architecture
+                    />,
+                )
+
+                const [urlCopyButton] = screen.getAllByRole('button', {
+                    name: /^copy copy$/i,
+                })
+                await user.click(urlCopyButton)
+
+                expect(
+                    screen.queryByRole('button', { name: /copied!/i }),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        describe('copy payload', () => {
+            it('should call copyToClipboard with the payload template JSON', async () => {
+                const user = userEvent.setup()
+                render(
+                    <KlaviyoSetupCard
+                        webhookUrl={WEBHOOK_URL}
+                        isV3Architecture
+                    />,
+                )
+
+                const copyButtons = screen.getAllByRole('button', {
+                    name: /^copy copy$/i,
+                })
+                await user.click(copyButtons[1])
+
+                expect(mockCopyToClipboard).toHaveBeenCalledWith(
+                    expect.stringContaining('"phone_number"'),
+                )
+            })
+
+            it('should show "Copied!" on the payload button after a successful copy', async () => {
+                const user = userEvent.setup()
+                render(
+                    <KlaviyoSetupCard
+                        webhookUrl={WEBHOOK_URL}
+                        isV3Architecture
+                    />,
+                )
+
+                const copyButtons = screen.getAllByRole('button', {
+                    name: /^copy copy$/i,
+                })
+                await user.click(copyButtons[1])
+
+                expect(
+                    await screen.findByRole('button', { name: /copied!/i }),
+                ).toBeInTheDocument()
+            })
+
+            it('should not show "Copied!" when copyToClipboard returns false', async () => {
+                mockCopyToClipboard.mockResolvedValue(false)
+                const user = userEvent.setup()
+                render(
+                    <KlaviyoSetupCard
+                        webhookUrl={WEBHOOK_URL}
+                        isV3Architecture
+                    />,
+                )
+
+                const copyButtons = screen.getAllByRole('button', {
+                    name: /^copy copy$/i,
+                })
+                await user.click(copyButtons[1])
+
+                expect(
+                    screen.queryByRole('button', { name: /copied!/i }),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        describe('copy feedback timer', () => {
+            beforeEach(() => {
+                jest.useFakeTimers()
+            })
+
+            afterEach(() => {
+                jest.runOnlyPendingTimers()
+                jest.useRealTimers()
+            })
+
+            it('should revert the URL "Copied!" label back to "Copy" after 1500ms', async () => {
+                const user = userEvent.setup({
+                    advanceTimers: jest.advanceTimersByTime,
+                })
+                render(
+                    <KlaviyoSetupCard
+                        webhookUrl={WEBHOOK_URL}
+                        isV3Architecture
+                    />,
+                )
+
+                const [urlCopyButton] = screen.getAllByRole('button', {
+                    name: /^copy copy$/i,
+                })
+                await user.click(urlCopyButton)
+
+                expect(
+                    await screen.findByRole('button', { name: /copied!/i }),
+                ).toBeInTheDocument()
+
+                act(() => {
+                    jest.advanceTimersByTime(1500)
+                })
+
+                await waitFor(() => {
+                    expect(
+                        screen.queryByRole('button', { name: /copied!/i }),
+                    ).not.toBeInTheDocument()
+                })
+            })
+
+            it('should revert the payload "Copied!" label back to "Copy" after 1500ms', async () => {
+                const user = userEvent.setup({
+                    advanceTimers: jest.advanceTimersByTime,
+                })
+                render(
+                    <KlaviyoSetupCard
+                        webhookUrl={WEBHOOK_URL}
+                        isV3Architecture
+                    />,
+                )
+
+                const copyButtons = screen.getAllByRole('button', {
+                    name: /^copy copy$/i,
+                })
+                await user.click(copyButtons[1])
+
+                expect(
+                    await screen.findByRole('button', { name: /copied!/i }),
+                ).toBeInTheDocument()
+
+                act(() => {
+                    jest.advanceTimersByTime(1500)
+                })
+
+                await waitFor(() => {
+                    expect(
+                        screen.queryByRole('button', { name: /copied!/i }),
+                    ).not.toBeInTheDocument()
+                })
+            })
+        })
     })
 })

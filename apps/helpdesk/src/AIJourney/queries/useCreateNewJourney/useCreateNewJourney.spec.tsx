@@ -1,6 +1,6 @@
 import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { act } from '@testing-library/react'
+import { act, waitFor } from '@testing-library/react'
 
 import { createJourney } from '@gorgias/convert-client'
 
@@ -65,6 +65,60 @@ describe('useCreateNewJourney', () => {
                     baseURL: expect.any(String),
                 },
             )
+        })
+    })
+
+    it('should invalidate queries on successful creation', async () => {
+        const mockResponse = { id: 1, type: 'cart_abandoned' }
+        mockCreateJourney.mockResolvedValue({ data: mockResponse })
+
+        const freshClient = new QueryClient({
+            defaultOptions: {
+                queries: { retry: false },
+                mutations: { retry: false },
+            },
+        })
+        const freshWrapper = ({ children }: { children?: React.ReactNode }) => (
+            <QueryClientProvider client={freshClient}>
+                {children}
+            </QueryClientProvider>
+        )
+        const invalidateQueriesSpy = jest.spyOn(
+            freshClient,
+            'invalidateQueries',
+        )
+
+        const { result } = renderHook(() => useCreateNewJourney(), {
+            wrapper: freshWrapper,
+        })
+
+        await act(async () => {
+            await result.current.mutateAsync({
+                params: {
+                    store_integration_id: 123,
+                    store_name: 'shopify-store',
+                    type: 'cart_abandoned',
+                },
+                journeyConfigs: {
+                    max_follow_up_messages: 3,
+                    offer_discount: true,
+                    max_discount_percent: 20,
+                    sms_sender_number: '(415)-111-111',
+                },
+            })
+        })
+
+        await waitFor(() => {
+            expect(invalidateQueriesSpy).toHaveBeenCalledTimes(3)
+            expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+                queryKey: expect.arrayContaining(['journeys']),
+            })
+            expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+                queryKey: expect.arrayContaining(['workflow-configuration']),
+            })
+            expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+                queryKey: expect.arrayContaining(['flowsList']),
+            })
         })
     })
 

@@ -814,6 +814,194 @@ describe('<JourneyEditorLayout /> — Non-campaign flow save', () => {
     })
 })
 
+describe('<JourneyEditorLayout /> — Klaviyo webhook panel', () => {
+    const mockStore = configureMockStore([thunk])()
+
+    const renderComponent = () =>
+        render(
+            <Provider store={mockStore}>
+                <JourneyEditorLayout step="setup" />
+            </Provider>,
+        )
+
+    beforeEach(() => {
+        jest.clearAllMocks()
+        localStorage.clear()
+    })
+
+    it('should auto-open the webhook panel on first visit when the custom flow has a webhook URL', async () => {
+        mockUseJourneyContext.mockReturnValue({
+            currentIntegration: { id: 1 },
+            journeyData: {
+                id: 'journey-123',
+                state: JourneyStatusEnum.Draft,
+                name: 'My Custom Flow',
+                webhook_url: 'https://example.com/webhook',
+            },
+            journeyType: JOURNEY_TYPES.CUSTOM,
+            shopName: 'test-store',
+        })
+
+        renderComponent()
+
+        expect(
+            await screen.findByDisplayValue('https://example.com/webhook'),
+        ).toBeInTheDocument()
+    })
+
+    it('should not auto-open the webhook panel on subsequent visits for the same journey', () => {
+        mockUseJourneyContext.mockReturnValue({
+            currentIntegration: { id: 1 },
+            journeyData: {
+                id: 'journey-123',
+                state: JourneyStatusEnum.Draft,
+                name: 'My Custom Flow',
+                webhook_url: 'https://example.com/webhook',
+            },
+            journeyType: JOURNEY_TYPES.CUSTOM,
+            shopName: 'test-store',
+        })
+
+        localStorage.setItem('klaviyo-setup-seen-journey-123', 'true')
+
+        renderComponent()
+
+        expect(
+            screen.queryByDisplayValue('https://example.com/webhook'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should show the webhook icon button for a draft custom flow without a webhook URL', () => {
+        mockUseJourneyContext.mockReturnValue({
+            currentIntegration: { id: 1 },
+            journeyData: {
+                id: 'journey-123',
+                state: JourneyStatusEnum.Draft,
+                name: 'My Custom Flow',
+            },
+            journeyType: JOURNEY_TYPES.CUSTOM,
+            shopName: 'test-store',
+        })
+
+        renderComponent()
+
+        expect(
+            screen.getByRole('button', { name: /^webhook$/i }),
+        ).toBeInTheDocument()
+    })
+
+    it('should not auto-open the webhook panel when there is no webhook URL', () => {
+        mockUseJourneyContext.mockReturnValue({
+            currentIntegration: { id: 1 },
+            journeyData: {
+                id: 'journey-123',
+                state: JourneyStatusEnum.Draft,
+                name: 'My Custom Flow',
+            },
+            journeyType: JOURNEY_TYPES.CUSTOM,
+            shopName: 'test-store',
+        })
+
+        renderComponent()
+
+        expect(screen.getByText('Details')).toBeInTheDocument()
+        expect(screen.queryByText(/activate the flow/i)).not.toBeInTheDocument()
+    })
+
+    it('should show the empty state when the webhook icon is clicked on a draft flow without a URL', async () => {
+        mockUseJourneyContext.mockReturnValue({
+            currentIntegration: { id: 1 },
+            journeyData: {
+                id: 'journey-123',
+                state: JourneyStatusEnum.Draft,
+                name: 'My Custom Flow',
+            },
+            journeyType: JOURNEY_TYPES.CUSTOM,
+            shopName: 'test-store',
+        })
+
+        const user = userEvent.setup()
+        renderComponent()
+
+        await user.click(screen.getByRole('button', { name: /^webhook$/i }))
+
+        expect(
+            await screen.findByText(/activate the flow/i),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByDisplayValue('https://example.com/webhook'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should not show the webhook icon button for non-custom flows', () => {
+        mockUseJourneyContext.mockReturnValue({
+            currentIntegration: { id: 1 },
+            journeyData: {
+                id: 'journey-123',
+                state: JourneyStatusEnum.Draft,
+                webhook_url: 'https://example.com/webhook',
+            },
+            journeyType: JOURNEY_TYPES.WELCOME,
+            shopName: 'test-store',
+        })
+
+        renderComponent()
+
+        expect(
+            screen.queryByRole('button', { name: /^webhook$/i }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should open the webhook panel when the webhook icon button is clicked', async () => {
+        mockUseJourneyContext.mockReturnValue({
+            currentIntegration: { id: 1 },
+            journeyData: {
+                id: 'journey-123',
+                state: JourneyStatusEnum.Draft,
+                name: 'My Custom Flow',
+                webhook_url: 'https://example.com/webhook',
+            },
+            journeyType: JOURNEY_TYPES.CUSTOM,
+            shopName: 'test-store',
+        })
+
+        localStorage.setItem('klaviyo-setup-seen-journey-123', 'true')
+
+        const user = userEvent.setup()
+        renderComponent()
+
+        await user.click(screen.getByRole('button', { name: /^webhook$/i }))
+
+        expect(
+            await screen.findByDisplayValue('https://example.com/webhook'),
+        ).toBeInTheDocument()
+    })
+
+    it('should switch back to the details panel when the details icon button is clicked', async () => {
+        mockUseJourneyContext.mockReturnValue({
+            currentIntegration: { id: 1 },
+            journeyData: {
+                id: 'journey-123',
+                state: JourneyStatusEnum.Draft,
+                name: 'My Custom Flow',
+                webhook_url: 'https://example.com/webhook',
+            },
+            journeyType: JOURNEY_TYPES.CUSTOM,
+            shopName: 'test-store',
+        })
+
+        const user = userEvent.setup()
+        renderComponent()
+
+        await user.click(screen.getByRole('button', { name: /^details$/i }))
+
+        expect(screen.getByText('Details')).toBeInTheDocument()
+        expect(
+            screen.queryByDisplayValue('https://example.com/webhook'),
+        ).not.toBeInTheDocument()
+    })
+})
+
 describe('<JourneyEditorLayout /> — Schedule campaign panel', () => {
     const mockStore = configureMockStore([thunk])()
 

@@ -10,7 +10,9 @@ import type {
 } from '@gorgias/convert-client'
 import { createJourney } from '@gorgias/convert-client'
 
+import { flowsListKeys } from 'AIJourney/queries/useCustomFlows/useCustomFlows'
 import { aiJourneyKeys } from 'AIJourney/queries/utils'
+import { workflowsConfigurationDefinitionKeys } from 'models/workflows/queries'
 import { getGorgiasRevenueAddonApiBaseUrl } from 'rest_api/revenue_addon_api/client'
 
 const createNewJourney = async (
@@ -36,10 +38,18 @@ export const useCreateNewJourney = () => {
     const queryClient = useQueryClient()
 
     return useMutation({
-        onSuccess: async (_, { params: { store_integration_id } }) => {
-            await queryClient.invalidateQueries({
-                queryKey: aiJourneyKeys.journeys(store_integration_id),
-            })
+        onSuccess: async () => {
+            await Promise.all([
+                queryClient.invalidateQueries({
+                    queryKey: aiJourneyKeys.all(),
+                }),
+                queryClient.invalidateQueries({
+                    queryKey: workflowsConfigurationDefinitionKeys.all(),
+                }),
+                queryClient.invalidateQueries({
+                    queryKey: flowsListKeys.all(),
+                }),
+            ])
         },
         mutationFn: async ({
             params,

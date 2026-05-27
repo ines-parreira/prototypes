@@ -1,19 +1,28 @@
-.monoInput {
-    flex: 1;
-    min-width: 0;
-}
+:local {
+    .monoInput {
+        flex: 1;
+        min-width: 0;
+    }
 
-.monoInput input {
-    font-family: monospace;
-    font-size: 13px;
-}
+    .monoInput input {
+        font-family: monospace;
+        font-size: 13px;
+    }
 
-.monoTextArea textarea {
-    font-family: monospace;
-    font-size: 12px;
-    resize: none;
-}
+    .monoTextArea textarea {
+        font-family: monospace;
+        font-size: 12px;
+        resize: none;
+    }
 
-.secondary {
-    color: var(--content-neutral-secondary);
+    .emptyState {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: var(--spacing-xl);
+        gap: var(--spacing-sm);
+        text-align: center;
+    }
 }

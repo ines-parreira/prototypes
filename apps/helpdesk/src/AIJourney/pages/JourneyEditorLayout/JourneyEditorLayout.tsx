@@ -28,7 +28,7 @@ import type { UnsavedChangesPromptTrigger } from 'pages/common/components/Unsave
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
 
-import { KlaviyoSetupCard, MessageGuidanceCard } from 'AIJourney/components'
+import { MessageGuidanceCard } from 'AIJourney/components'
 
 import { JourneyEditorSidePanel } from './JourneyEditorSidePanel'
 import { PreviewPanel } from './PreviewPanel'
@@ -213,9 +213,6 @@ export const JourneyEditorLayout = ({ step }: Props) => {
         methods.reset(data)
         toast.success('Changes saved successfully')
     }
-
-    const webhookUrl = journeyData?.webhook_url ?? undefined
-    const hasWebhookUrl = isCustomFlow && !!webhookUrl
 
     const staticTitle = isCampaign
         ? (journeyData?.campaign?.title ?? 'Create new campaign')
@@ -427,9 +424,6 @@ export const JourneyEditorLayout = ({ step }: Props) => {
                             gap="lg"
                             className={css.mainContentInner}
                         >
-                            {hasWebhookUrl && (
-                                <KlaviyoSetupCard webhookUrl={webhookUrl} />
-                            )}
                             {/* TODO: replace with GuidanceEditor (AIJOU-2016) */}
                             <MessageGuidanceCard fullWidth isV3Architecture />
                         </Box>
