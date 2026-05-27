@@ -22,8 +22,11 @@ const makeArticle = (
     status: 'enabled',
     metrics: {
         tickets: 672,
+        prevTickets: null,
         handoverTickets: 50,
+        prevHandoverTickets: null,
         csat: 4.0,
+        prevCsat: null,
         resourceSourceSetId: 1,
     },
     ...overrides,

@@ -65,4 +65,24 @@ describe('TrendCardTimeSeries', () => {
             container.querySelector('.recharts-responsive-container'),
         ).toBeInTheDocument()
     })
+
+    it('renders a 24px-tall chart in compact mode and 26px otherwise', () => {
+        const useChartData = () => ({ data: mockData, isLoading: false })
+
+        const { container, rerender } = render(
+            <TrendCardTimeSeries useChartData={useChartData} />,
+        )
+
+        const defaultContainer = container.querySelector<HTMLElement>(
+            '.recharts-responsive-container',
+        )
+        expect(defaultContainer?.style.height).toBe('26px')
+
+        rerender(<TrendCardTimeSeries useChartData={useChartData} compact />)
+
+        const compactContainer = container.querySelector<HTMLElement>(
+            '.recharts-responsive-container',
+        )
+        expect(compactContainer?.style.height).toBe('24px')
+    })
 })

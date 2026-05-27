@@ -65,10 +65,16 @@ export type SkillsView =
 export interface SkillMetrics {
     /** Number of tickets where this skill was used */
     tickets: number | null
+    /** Tickets count for the immediately-prior period of the same length. */
+    prevTickets: number | null
     /** Number of handover tickets */
     handoverTickets: number | null
+    /** Handover tickets count for the prior period. */
+    prevHandoverTickets: number | null
     /** Average CSAT score */
     csat: number | null
+    /** Average CSAT for the prior period. */
+    prevCsat: number | null
     /** Resource source set ID (required for drilldown) */
     resourceSourceSetId: number
 }

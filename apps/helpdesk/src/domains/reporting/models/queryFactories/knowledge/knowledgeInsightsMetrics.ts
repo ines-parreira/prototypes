@@ -13,6 +13,7 @@ import {
     useMetricPerDimension,
     useMetricPerDimensionV2,
 } from 'domains/reporting/hooks/useMetricPerDimension'
+import { useMetricPerDimensionTrendV2 } from 'domains/reporting/hooks/useMetricPerDimensionTrend'
 import type { Cubes } from 'domains/reporting/models/cubes'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketCustomFieldsDimension } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
@@ -57,6 +58,7 @@ import { setMetricData } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { KnowledgeMetric } from 'domains/reporting/state/ui/stats/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
+    getPreviousPeriod,
     KnowledgeStatsFiltersMembers,
     NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
@@ -116,8 +118,11 @@ type ResourceMetrics = {
     resourceSourceId: number
     resourceSourceSetId: number
     tickets: number | null
+    prevTickets: number | null
     handoverTickets: number | null
+    prevHandoverTickets: number | null
     csat: number | null
+    prevCsat: number | null
     intents: KnowledgeIntentMetric[] | null
 }
 
@@ -1174,15 +1179,62 @@ export const useResourceMetrics = ({
     }
 }
 
-/**
- * Helper function to aggregate resource metrics from multiple queries
- */
+const readResourceKey = (
+    record: MetricDataRecord,
+): { resourceSourceId: string; resourceSourceSetId: string } | null => {
+    const resourceSourceId =
+        record[TicketInsightsTaskDimensionV2.ResourceSourceId] ??
+        record[TicketInsightsTaskDimension.ResourceSourceId]
+    const resourceSourceSetId =
+        record[TicketInsightsTaskDimensionV2.ResourceSourceSetId] ??
+        record[TicketInsightsTaskDimension.ResourceSourceSetId]
+    if (resourceSourceId == null || resourceSourceSetId == null) return null
+
+    return {
+        resourceSourceId: String(resourceSourceId),
+        resourceSourceSetId: String(resourceSourceSetId),
+    }
+}
+
+const readTicketCount = (record: MetricDataRecord): number =>
+    Number(
+        record[TicketInsightsTaskMeasureV2.TicketCount] ??
+            record[TicketInsightsTaskMeasure.TicketCount],
+    ) || 0
+
+const readAvgSurveyScore = (record: MetricDataRecord): number | null => {
+    const raw = Number(
+        record[TicketInsightsTaskMeasureV2.AverageSurveyScore] ??
+            record[TicketInsightsTaskMeasure.AvgSurveyScore],
+    )
+
+    return raw ? Number(raw.toFixed(1)) : null
+}
+
+export type AggregateResourceMetricsInput = {
+    ticketsData?: MetricDataRecord[]
+    handoverData?: MetricDataRecord[]
+    csatData?: MetricDataRecord[]
+    intentsData?: MetricDataRecord[]
+    /** Previous-period datasets for trend comparison. */
+    prevTicketsData?: MetricDataRecord[]
+    prevHandoverData?: MetricDataRecord[]
+    prevCsatData?: MetricDataRecord[]
+}
+
 export const aggregateResourceMetrics = (
-    ticketsData: MetricDataRecord[] | undefined,
-    handoverData: MetricDataRecord[] | undefined,
-    csatData: MetricDataRecord[] | undefined,
-    intentsData: MetricDataRecord[] | undefined,
+    input: AggregateResourceMetricsInput,
 ): ResourceMetrics[] => {
+    const {
+        ticketsData,
+        handoverData,
+        csatData,
+        intentsData,
+        prevTicketsData,
+        prevHandoverData,
+        prevCsatData,
+    } = input
+
     const resourceMap = new Map<string, ResourceMetrics>()
 
     const getResource = (
@@ -1195,74 +1247,57 @@ export const aggregateResourceMetrics = (
                 resourceSourceId: Number(resourceSourceId),
                 resourceSourceSetId: Number(resourceSourceSetId),
                 tickets: null,
+                prevTickets: null,
                 handoverTickets: null,
+                prevHandoverTickets: null,
                 csat: null,
+                prevCsat: null,
                 intents: null,
             })
         }
         return resourceMap.get(key)!
     }
 
-    // Support both V1 (cube-prefixed) and V2 (unprefixed) field names
-    ticketsData?.forEach((record) => {
-        const resourceSourceId =
-            record[TicketInsightsTaskDimensionV2.ResourceSourceId] ??
-            record[TicketInsightsTaskDimension.ResourceSourceId]
-        const resourceSourceSetId =
-            record[TicketInsightsTaskDimensionV2.ResourceSourceSetId] ??
-            record[TicketInsightsTaskDimension.ResourceSourceSetId]
-        if (resourceSourceId == null || resourceSourceSetId == null) return
+    const applyCount = (
+        data: MetricDataRecord[] | undefined,
+        field:
+            | 'tickets'
+            | 'prevTickets'
+            | 'handoverTickets'
+            | 'prevHandoverTickets',
+    ) => {
+        data?.forEach((record) => {
+            const key = readResourceKey(record)
+            if (!key) return
+            const resource = getResource(
+                key.resourceSourceId,
+                key.resourceSourceSetId,
+            )
+            resource[field] = readTicketCount(record)
+        })
+    }
 
-        const resource = getResource(
-            String(resourceSourceId),
-            String(resourceSourceSetId),
-        )
-        resource.tickets =
-            Number(
-                record[TicketInsightsTaskMeasureV2.TicketCount] ??
-                    record[TicketInsightsTaskMeasure.TicketCount],
-            ) || 0
-    })
+    const applyCsat = (
+        data: MetricDataRecord[] | undefined,
+        field: 'csat' | 'prevCsat',
+    ) => {
+        data?.forEach((record) => {
+            const key = readResourceKey(record)
+            if (!key) return
+            const resource = getResource(
+                key.resourceSourceId,
+                key.resourceSourceSetId,
+            )
+            resource[field] = readAvgSurveyScore(record)
+        })
+    }
 
-    handoverData?.forEach((record) => {
-        const resourceSourceId =
-            record[TicketInsightsTaskDimensionV2.ResourceSourceId] ??
-            record[TicketInsightsTaskDimension.ResourceSourceId]
-        const resourceSourceSetId =
-            record[TicketInsightsTaskDimensionV2.ResourceSourceSetId] ??
-            record[TicketInsightsTaskDimension.ResourceSourceSetId]
-        if (resourceSourceId == null || resourceSourceSetId == null) return
-
-        const resource = getResource(
-            String(resourceSourceId),
-            String(resourceSourceSetId),
-        )
-        resource.handoverTickets =
-            Number(
-                record[TicketInsightsTaskMeasureV2.TicketCount] ??
-                    record[TicketInsightsTaskMeasure.TicketCount],
-            ) || 0
-    })
-
-    csatData?.forEach((record) => {
-        const resourceSourceId =
-            record[TicketInsightsTaskDimensionV2.ResourceSourceId] ??
-            record[TicketInsightsTaskDimension.ResourceSourceId]
-        const resourceSourceSetId =
-            record[TicketInsightsTaskDimensionV2.ResourceSourceSetId] ??
-            record[TicketInsightsTaskDimension.ResourceSourceSetId]
-        if (resourceSourceId == null || resourceSourceSetId == null) return
-
-        const resource = getResource(
-            String(resourceSourceId),
-            String(resourceSourceSetId),
-        )
-        const avgScore = Number(
-            record[TicketInsightsTaskMeasureV2.AverageSurveyScore] ??
-                record[TicketInsightsTaskMeasure.AvgSurveyScore],
-        )
-        resource.csat = avgScore ? Number(avgScore.toFixed(1)) : null
-    })
+    applyCount(ticketsData, 'tickets')
+    applyCount(prevTicketsData, 'prevTickets')
+    applyCount(handoverData, 'handoverTickets')
+    applyCount(prevHandoverData, 'prevHandoverTickets')
+    applyCsat(csatData, 'csat')
+    applyCsat(prevCsatData, 'prevCsat')
 
     const intentsByResource = parseIntentsDataByResource(intentsData, false)
     Object.entries(intentsByResource).forEach(([key, intents]) => {
@@ -1379,6 +1414,22 @@ export const useAllResourcesMetrics = ({
         }
     }, [shopIntegrationId, dateRange])
 
+    // `getPreviousPeriod` dereferences `period.start_datetime`, so we only
+    // call it when a Period filter is actually present. Without one, prev
+    // queries fall back to the current filters and the trend just compares
+    // against itself (returns 0%) instead of crashing.
+    const prevPeriod = useMemo(() => {
+        const period = filters[FilterKey.Period]
+        return period ? getPreviousPeriod(period) : undefined
+    }, [filters])
+    const prevFilters: ApiStatsFilters = useMemo(
+        () =>
+            prevPeriod
+                ? { ...filters, [FilterKey.Period]: prevPeriod }
+                : filters,
+        [filters, prevPeriod],
+    )
+
     const handoverFilters: ApiStatsFilters = useMemo(() => {
         return {
             ...filters,
@@ -1397,6 +1448,14 @@ export const useAllResourcesMetrics = ({
             ],
         }
     }, [filters, outcomeCustomFieldId])
+
+    const prevHandoverFilters: ApiStatsFilters = useMemo(
+        () =>
+            prevPeriod
+                ? { ...handoverFilters, [FilterKey.Period]: prevPeriod }
+                : handoverFilters,
+        [handoverFilters, prevPeriod],
+    )
 
     const intentFilters: ApiStatsFilters = useMemo(() => {
         return {
@@ -1420,7 +1479,7 @@ export const useAllResourcesMetrics = ({
         }
     }, [filters, intentCustomFieldId])
 
-    const ticketsMetric = useMetricPerDimensionV2(
+    const ticketsTrend = useMetricPerDimensionTrendV2(
         createV1Query(
             METRIC_NAMES.KNOWLEDGE_TICKETS_TICKET_COUNT,
             null,
@@ -1429,16 +1488,29 @@ export const useAllResourcesMetrics = ({
             timezone,
             TicketInsightsTaskMeasure.TicketCount,
         ),
+        createV1Query(
+            METRIC_NAMES.KNOWLEDGE_TICKETS_TICKET_COUNT,
+            null,
+            null,
+            prevFilters,
+            timezone,
+            TicketInsightsTaskMeasure.TicketCount,
+        ),
         knowledgeTicketsCountQueryV2Factory({
             timezone,
             filters,
+            limit: KNOWLEDGE_QUERY_LIMIT,
+        }),
+        knowledgeTicketsCountQueryV2Factory({
+            timezone,
+            filters: prevFilters,
             limit: KNOWLEDGE_QUERY_LIMIT,
         }),
         undefined,
         enabled,
     )
 
-    const handoverTicketsMetric = useMetricPerDimensionV2(
+    const handoverTicketsTrend = useMetricPerDimensionTrendV2(
         createV1Query(
             METRIC_NAMES.KNOWLEDGE_HANDOVER_TICKETS,
             null,
@@ -1447,16 +1519,29 @@ export const useAllResourcesMetrics = ({
             timezone,
             TicketInsightsTaskMeasure.TicketCount,
         ),
+        createV1Query(
+            METRIC_NAMES.KNOWLEDGE_HANDOVER_TICKETS,
+            null,
+            null,
+            prevHandoverFilters,
+            timezone,
+            TicketInsightsTaskMeasure.TicketCount,
+        ),
         knowledgeHandoverTicketsCountQueryV2Factory({
             timezone,
             filters: handoverFilters,
+            limit: KNOWLEDGE_QUERY_LIMIT,
+        }),
+        knowledgeHandoverTicketsCountQueryV2Factory({
+            timezone,
+            filters: prevHandoverFilters,
             limit: KNOWLEDGE_QUERY_LIMIT,
         }),
         undefined,
         enabled && !isCustomFieldsLoading,
     )
 
-    const csatMetric = useMetricPerDimensionV2(
+    const csatTrend = useMetricPerDimensionTrendV2(
         createV1Query(
             METRIC_NAMES.KNOWLEDGE_CSAT,
             null,
@@ -1465,9 +1550,22 @@ export const useAllResourcesMetrics = ({
             timezone,
             TicketInsightsTaskMeasure.AvgSurveyScore,
         ),
+        createV1Query(
+            METRIC_NAMES.KNOWLEDGE_CSAT,
+            null,
+            null,
+            prevFilters,
+            timezone,
+            TicketInsightsTaskMeasure.AvgSurveyScore,
+        ),
         knowledgeCSATQueryV2Factory({
             timezone,
             filters,
+            limit: KNOWLEDGE_QUERY_LIMIT,
+        }),
+        knowledgeCSATQueryV2Factory({
+            timezone,
+            filters: prevFilters,
             limit: KNOWLEDGE_QUERY_LIMIT,
         }),
         undefined,
@@ -1493,15 +1591,15 @@ export const useAllResourcesMetrics = ({
     )
 
     const isLoading =
-        ticketsMetric.isFetching ||
-        handoverTicketsMetric.isFetching ||
-        csatMetric.isFetching ||
+        ticketsTrend.isFetching ||
+        handoverTicketsTrend.isFetching ||
+        csatTrend.isFetching ||
         (loadIntents && intentsMetric.isFetching)
 
     const isError =
-        ticketsMetric.isError ||
-        handoverTicketsMetric.isError ||
-        csatMetric.isError ||
+        ticketsTrend.isError ||
+        handoverTicketsTrend.isError ||
+        csatTrend.isError ||
         (loadIntents && intentsMetric.isError)
 
     const data = useMemo(() => {
@@ -1509,19 +1607,25 @@ export const useAllResourcesMetrics = ({
             return undefined
         }
 
-        return aggregateResourceMetrics(
-            ticketsMetric.data?.allData,
-            handoverTicketsMetric.data?.allData,
-            csatMetric.data?.allData,
-            loadIntents ? intentsMetric.data?.allData : undefined,
-        )
+        return aggregateResourceMetrics({
+            ticketsData: ticketsTrend.currentPeriod.data?.allData,
+            handoverData: handoverTicketsTrend.currentPeriod.data?.allData,
+            csatData: csatTrend.currentPeriod.data?.allData,
+            intentsData: loadIntents ? intentsMetric.data?.allData : undefined,
+            prevTicketsData: ticketsTrend.prevPeriod.data?.allData,
+            prevHandoverData: handoverTicketsTrend.prevPeriod.data?.allData,
+            prevCsatData: csatTrend.prevPeriod.data?.allData,
+        })
     }, [
         isLoading,
         isError,
         loadIntents,
-        ticketsMetric.data,
-        handoverTicketsMetric.data,
-        csatMetric.data,
+        ticketsTrend.currentPeriod.data,
+        ticketsTrend.prevPeriod.data,
+        handoverTicketsTrend.currentPeriod.data,
+        handoverTicketsTrend.prevPeriod.data,
+        csatTrend.currentPeriod.data,
+        csatTrend.prevPeriod.data,
         intentsMetric.data,
     ])
 

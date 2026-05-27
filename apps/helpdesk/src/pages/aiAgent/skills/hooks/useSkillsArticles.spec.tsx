@@ -168,8 +168,11 @@ describe('useSkillsArticles', () => {
 
         expect(result.current.articles[0].metrics).toEqual({
             tickets: 100,
+            prevTickets: null,
             handoverTickets: 20,
+            prevHandoverTickets: null,
             csat: 4.5,
+            prevCsat: null,
             resourceSourceSetId: 123,
         })
     })

@@ -1047,20 +1047,23 @@ describe('aggregateResourceMetrics', () => {
                 },
             ]
 
-            const result = aggregateResourceMetrics(
-                ticketsData,
-                handoverData,
-                csatData,
-                intentsData,
-            )
+            const result = aggregateResourceMetrics({
+                ticketsData: ticketsData,
+                handoverData: handoverData,
+                csatData: csatData,
+                intentsData: intentsData,
+            })
 
             expect(result).toEqual([
                 {
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
                     tickets: 50,
+                    prevTickets: null,
                     handoverTickets: 5,
+                    prevHandoverTickets: null,
                     csat: 4.5,
+                    prevCsat: null,
                     intents: [{ intent: 'Intent::A', ticketCount: 10 }],
                 },
             ])
@@ -1093,28 +1096,34 @@ describe('aggregateResourceMetrics', () => {
                 },
             ]
 
-            const result = aggregateResourceMetrics(
-                ticketsData,
-                handoverData,
-                undefined,
-                undefined,
-            )
+            const result = aggregateResourceMetrics({
+                ticketsData: ticketsData,
+                handoverData: handoverData,
+                csatData: undefined,
+                intentsData: undefined,
+            })
 
             expect(result).toHaveLength(2)
             expect(result).toContainEqual({
                 resourceSourceId: 100,
                 resourceSourceSetId: 200,
                 tickets: 50,
+                prevTickets: null,
                 handoverTickets: 5,
+                prevHandoverTickets: null,
                 csat: null,
+                prevCsat: null,
                 intents: null,
             })
             expect(result).toContainEqual({
                 resourceSourceId: 101,
                 resourceSourceSetId: 201,
                 tickets: 30,
+                prevTickets: null,
                 handoverTickets: 3,
+                prevHandoverTickets: null,
                 csat: null,
+                prevCsat: null,
                 intents: null,
             })
         })
@@ -1130,20 +1139,23 @@ describe('aggregateResourceMetrics', () => {
                 },
             ]
 
-            const result = aggregateResourceMetrics(
-                ticketsData,
-                undefined,
-                undefined,
-                undefined,
-            )
+            const result = aggregateResourceMetrics({
+                ticketsData: ticketsData,
+                handoverData: undefined,
+                csatData: undefined,
+                intentsData: undefined,
+            })
 
             expect(result).toEqual([
                 {
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
                     tickets: 50,
+                    prevTickets: null,
                     handoverTickets: null,
+                    prevHandoverTickets: null,
                     csat: null,
+                    prevCsat: null,
                     intents: null,
                 },
             ])
@@ -1168,20 +1180,23 @@ describe('aggregateResourceMetrics', () => {
                 },
             ]
 
-            const result = aggregateResourceMetrics(
-                ticketsData,
-                handoverData,
-                undefined,
-                undefined,
-            )
+            const result = aggregateResourceMetrics({
+                ticketsData: ticketsData,
+                handoverData: handoverData,
+                csatData: undefined,
+                intentsData: undefined,
+            })
 
             expect(result).toEqual([
                 {
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
                     tickets: 50,
+                    prevTickets: null,
                     handoverTickets: 5,
+                    prevHandoverTickets: null,
                     csat: null,
+                    prevCsat: null,
                     intents: null,
                 },
             ])
@@ -1209,28 +1224,34 @@ describe('aggregateResourceMetrics', () => {
                 },
             ]
 
-            const result = aggregateResourceMetrics(
-                ticketsData,
-                handoverData,
-                undefined,
-                undefined,
-            )
+            const result = aggregateResourceMetrics({
+                ticketsData: ticketsData,
+                handoverData: handoverData,
+                csatData: undefined,
+                intentsData: undefined,
+            })
 
             expect(result).toHaveLength(2)
             expect(result).toContainEqual({
                 resourceSourceId: 100,
                 resourceSourceSetId: 200,
                 tickets: 50,
+                prevTickets: null,
                 handoverTickets: 5,
+                prevHandoverTickets: null,
                 csat: null,
+                prevCsat: null,
                 intents: null,
             })
             expect(result).toContainEqual({
                 resourceSourceId: 101,
                 resourceSourceSetId: 201,
                 tickets: 30,
+                prevTickets: null,
                 handoverTickets: null,
+                prevHandoverTickets: null,
                 csat: null,
+                prevCsat: null,
                 intents: null,
             })
         })
@@ -1246,12 +1267,12 @@ describe('aggregateResourceMetrics', () => {
                 },
             ]
 
-            const result = aggregateResourceMetrics(
-                undefined,
-                undefined,
-                csatData,
-                undefined,
-            )
+            const result = aggregateResourceMetrics({
+                ticketsData: undefined,
+                handoverData: undefined,
+                csatData: csatData,
+                intentsData: undefined,
+            })
 
             expect(result[0].csat).toBe(4.6)
         })
@@ -1265,12 +1286,12 @@ describe('aggregateResourceMetrics', () => {
                 },
             ]
 
-            const result = aggregateResourceMetrics(
-                undefined,
-                undefined,
-                csatData,
-                undefined,
-            )
+            const result = aggregateResourceMetrics({
+                ticketsData: undefined,
+                handoverData: undefined,
+                csatData: csatData,
+                intentsData: undefined,
+            })
 
             expect(result[0].csat).toBeNull()
         })
@@ -1284,12 +1305,12 @@ describe('aggregateResourceMetrics', () => {
                 },
             ]
 
-            const result = aggregateResourceMetrics(
-                undefined,
-                undefined,
-                csatData,
-                undefined,
-            )
+            const result = aggregateResourceMetrics({
+                ticketsData: undefined,
+                handoverData: undefined,
+                csatData: csatData,
+                intentsData: undefined,
+            })
 
             expect(result[0].csat).toBeNull()
         })
@@ -1303,12 +1324,12 @@ describe('aggregateResourceMetrics', () => {
                 },
             ]
 
-            const result = aggregateResourceMetrics(
-                undefined,
-                undefined,
-                csatData,
-                undefined,
-            )
+            const result = aggregateResourceMetrics({
+                ticketsData: undefined,
+                handoverData: undefined,
+                csatData: csatData,
+                intentsData: undefined,
+            })
 
             expect(result[0].csat).toBeNull()
         })
@@ -1322,12 +1343,12 @@ describe('aggregateResourceMetrics', () => {
                 },
             ]
 
-            const result = aggregateResourceMetrics(
-                undefined,
-                undefined,
-                csatData,
-                undefined,
-            )
+            const result = aggregateResourceMetrics({
+                ticketsData: undefined,
+                handoverData: undefined,
+                csatData: csatData,
+                intentsData: undefined,
+            })
 
             expect(result[0].csat).toBeNull()
         })
@@ -1358,12 +1379,12 @@ describe('aggregateResourceMetrics', () => {
                 },
             ]
 
-            const result = aggregateResourceMetrics(
-                ticketsData,
-                undefined,
-                undefined,
-                intentsData,
-            )
+            const result = aggregateResourceMetrics({
+                ticketsData: ticketsData,
+                handoverData: undefined,
+                csatData: undefined,
+                intentsData: intentsData,
+            })
 
             expect(result[0].intents).toEqual([
                 { intent: 'Intent::B', ticketCount: 10 },
@@ -1400,12 +1421,12 @@ describe('aggregateResourceMetrics', () => {
                 },
             ]
 
-            const result = aggregateResourceMetrics(
-                ticketsData,
-                undefined,
-                undefined,
-                intentsData,
-            )
+            const result = aggregateResourceMetrics({
+                ticketsData: ticketsData,
+                handoverData: undefined,
+                csatData: undefined,
+                intentsData: intentsData,
+            })
 
             expect(result).toHaveLength(2)
             const resource100 = result.find((r) => r.resourceSourceId === 100)
@@ -1443,12 +1464,12 @@ describe('aggregateResourceMetrics', () => {
                 },
             ]
 
-            const result = aggregateResourceMetrics(
-                ticketsData,
-                undefined,
-                undefined,
-                intentsData,
-            )
+            const result = aggregateResourceMetrics({
+                ticketsData: ticketsData,
+                handoverData: undefined,
+                csatData: undefined,
+                intentsData: intentsData,
+            })
 
             expect(result).toHaveLength(1)
             expect(result[0].resourceSourceId).toBe(100)
@@ -1460,18 +1481,23 @@ describe('aggregateResourceMetrics', () => {
 
     describe('edge cases', () => {
         it('should return empty array when all data is undefined', () => {
-            const result = aggregateResourceMetrics(
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-            )
+            const result = aggregateResourceMetrics({
+                ticketsData: undefined,
+                handoverData: undefined,
+                csatData: undefined,
+                intentsData: undefined,
+            })
 
             expect(result).toEqual([])
         })
 
         it('should return empty array when all data is empty arrays', () => {
-            const result = aggregateResourceMetrics([], [], [], [])
+            const result = aggregateResourceMetrics({
+                ticketsData: [],
+                handoverData: [],
+                csatData: [],
+                intentsData: [],
+            })
 
             expect(result).toEqual([])
         })
@@ -1490,12 +1516,12 @@ describe('aggregateResourceMetrics', () => {
                 },
             ]
 
-            const result = aggregateResourceMetrics(
-                ticketsData,
-                undefined,
-                undefined,
-                undefined,
-            )
+            const result = aggregateResourceMetrics({
+                ticketsData: ticketsData,
+                handoverData: undefined,
+                csatData: undefined,
+                intentsData: undefined,
+            })
 
             expect(result).toHaveLength(1)
             expect(result[0].resourceSourceId).toBe(100)
@@ -1515,12 +1541,12 @@ describe('aggregateResourceMetrics', () => {
                 },
             ]
 
-            const result = aggregateResourceMetrics(
-                ticketsData,
-                undefined,
-                undefined,
-                undefined,
-            )
+            const result = aggregateResourceMetrics({
+                ticketsData: ticketsData,
+                handoverData: undefined,
+                csatData: undefined,
+                intentsData: undefined,
+            })
 
             expect(result).toHaveLength(1)
             expect(result[0].resourceSourceSetId).toBe(200)
@@ -1534,12 +1560,12 @@ describe('aggregateResourceMetrics', () => {
                 },
             ]
 
-            const result = aggregateResourceMetrics(
-                ticketsData,
-                undefined,
-                undefined,
-                undefined,
-            )
+            const result = aggregateResourceMetrics({
+                ticketsData: ticketsData,
+                handoverData: undefined,
+                csatData: undefined,
+                intentsData: undefined,
+            })
 
             expect(result[0].tickets).toBe(0)
         })
@@ -1553,12 +1579,12 @@ describe('aggregateResourceMetrics', () => {
                 },
             ]
 
-            const result = aggregateResourceMetrics(
-                ticketsData,
-                undefined,
-                undefined,
-                undefined,
-            )
+            const result = aggregateResourceMetrics({
+                ticketsData: ticketsData,
+                handoverData: undefined,
+                csatData: undefined,
+                intentsData: undefined,
+            })
 
             expect(result[0].tickets).toBe(0)
         })
@@ -1627,12 +1653,12 @@ describe('aggregateResourceMetrics', () => {
                 },
             ]
 
-            const result = aggregateResourceMetrics(
-                ticketsData,
-                handoverData,
-                csatData,
-                intentsData,
-            )
+            const result = aggregateResourceMetrics({
+                ticketsData: ticketsData,
+                handoverData: handoverData,
+                csatData: csatData,
+                intentsData: intentsData,
+            })
 
             expect(result).toHaveLength(3)
 
@@ -1640,8 +1666,11 @@ describe('aggregateResourceMetrics', () => {
                 resourceSourceId: 100,
                 resourceSourceSetId: 200,
                 tickets: 100,
+                prevTickets: null,
                 handoverTickets: 10,
+                prevHandoverTickets: null,
                 csat: 4.5,
+                prevCsat: null,
                 intents: [{ intent: 'Billing::Payment', ticketCount: 20 }],
             })
 
@@ -1649,8 +1678,11 @@ describe('aggregateResourceMetrics', () => {
                 resourceSourceId: 101,
                 resourceSourceSetId: 201,
                 tickets: 75,
+                prevTickets: null,
                 handoverTickets: 5,
+                prevHandoverTickets: null,
                 csat: null,
+                prevCsat: null,
                 intents: [{ intent: 'Support::Technical', ticketCount: 15 }],
             })
 
@@ -1658,8 +1690,11 @@ describe('aggregateResourceMetrics', () => {
                 resourceSourceId: 102,
                 resourceSourceSetId: 202,
                 tickets: 50,
+                prevTickets: null,
                 handoverTickets: null,
+                prevHandoverTickets: null,
                 csat: 3.8,
+                prevCsat: null,
                 intents: null,
             })
         })
@@ -1700,20 +1735,23 @@ describe('aggregateResourceMetrics', () => {
                 },
             ]
 
-            const result = aggregateResourceMetrics(
-                ticketsData,
-                handoverData,
-                csatData,
-                intentsData,
-            )
+            const result = aggregateResourceMetrics({
+                ticketsData: ticketsData,
+                handoverData: handoverData,
+                csatData: csatData,
+                intentsData: intentsData,
+            })
 
             expect(result).toEqual([
                 {
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
                     tickets: 50,
+                    prevTickets: null,
                     handoverTickets: 5,
+                    prevHandoverTickets: null,
                     csat: 4.5,
+                    prevCsat: null,
                     intents: [{ intent: 'Intent::A', ticketCount: 10 }],
                 },
             ])
@@ -1749,28 +1787,34 @@ describe('aggregateResourceMetrics', () => {
                 },
             ]
 
-            const result = aggregateResourceMetrics(
-                ticketsData,
-                handoverData,
-                csatData,
-                undefined,
-            )
+            const result = aggregateResourceMetrics({
+                ticketsData: ticketsData,
+                handoverData: handoverData,
+                csatData: csatData,
+                intentsData: undefined,
+            })
 
             expect(result).toHaveLength(2)
             expect(result).toContainEqual({
                 resourceSourceId: 100,
                 resourceSourceSetId: 200,
                 tickets: 50,
+                prevTickets: null,
                 handoverTickets: 5,
+                prevHandoverTickets: null,
                 csat: null,
+                prevCsat: null,
                 intents: null,
             })
             expect(result).toContainEqual({
                 resourceSourceId: 101,
                 resourceSourceSetId: 201,
                 tickets: 30,
+                prevTickets: null,
                 handoverTickets: null,
+                prevHandoverTickets: null,
                 csat: 3.8,
+                prevCsat: null,
                 intents: null,
             })
         })
@@ -1815,20 +1859,23 @@ describe('aggregateResourceMetrics', () => {
                 },
             ]
 
-            const result = aggregateResourceMetrics(
-                ticketsData,
-                handoverData,
-                csatData,
-                intentsData,
-            )
+            const result = aggregateResourceMetrics({
+                ticketsData: ticketsData,
+                handoverData: handoverData,
+                csatData: csatData,
+                intentsData: intentsData,
+            })
 
             expect(result).toEqual([
                 {
                     resourceSourceId: 100,
                     resourceSourceSetId: 200,
                     tickets: 50,
+                    prevTickets: null,
                     handoverTickets: 5,
+                    prevHandoverTickets: null,
                     csat: 4.5,
+                    prevCsat: null,
                     intents: [
                         { intent: 'Intent::V2', ticketCount: 15 },
                         { intent: 'Intent::V1', ticketCount: 10 },
@@ -1846,12 +1893,12 @@ describe('aggregateResourceMetrics', () => {
                 },
             ]
 
-            const result = aggregateResourceMetrics(
-                undefined,
-                undefined,
-                csatData,
-                undefined,
-            )
+            const result = aggregateResourceMetrics({
+                ticketsData: undefined,
+                handoverData: undefined,
+                csatData: csatData,
+                intentsData: undefined,
+            })
 
             expect(result[0].csat).toBe(4.6)
         })
@@ -1865,12 +1912,12 @@ describe('aggregateResourceMetrics', () => {
                 },
             ]
 
-            const result = aggregateResourceMetrics(
-                ticketsData,
-                undefined,
-                undefined,
-                undefined,
-            )
+            const result = aggregateResourceMetrics({
+                ticketsData: ticketsData,
+                handoverData: undefined,
+                csatData: undefined,
+                intentsData: undefined,
+            })
 
             expect(result[0].tickets).toBe(0)
         })
@@ -1889,12 +1936,12 @@ describe('aggregateResourceMetrics', () => {
                 },
             ]
 
-            const result = aggregateResourceMetrics(
-                ticketsData,
-                undefined,
-                undefined,
-                undefined,
-            )
+            const result = aggregateResourceMetrics({
+                ticketsData: ticketsData,
+                handoverData: undefined,
+                csatData: undefined,
+                intentsData: undefined,
+            })
 
             expect(result).toHaveLength(1)
             expect(result[0].resourceSourceId).toBe(100)
@@ -1914,12 +1961,12 @@ describe('aggregateResourceMetrics', () => {
                 },
             ]
 
-            const result = aggregateResourceMetrics(
-                ticketsData,
-                undefined,
-                undefined,
-                undefined,
-            )
+            const result = aggregateResourceMetrics({
+                ticketsData: ticketsData,
+                handoverData: undefined,
+                csatData: undefined,
+                intentsData: undefined,
+            })
 
             expect(result).toHaveLength(1)
             expect(result[0].resourceSourceSetId).toBe(200)
@@ -2280,6 +2327,14 @@ describe('useAllResourcesMetrics', () => {
     })
 
     it('should aggregate data for multiple resources', () => {
+        const EMPTY = {
+            isFetching: false,
+            isError: false,
+            data: { allData: [] },
+        }
+        // useAllResourcesMetrics now fires 7 queries (tickets, prevTickets,
+        // handover, prevHandover, csat, prevCsat, intents). This test focuses
+        // on current-period aggregation, so the prev-period mocks are empty.
         ;(useMetricPerDimensionV2 as jest.Mock)
             .mockReturnValueOnce({
                 isFetching: false,
@@ -2299,6 +2354,7 @@ describe('useAllResourcesMetrics', () => {
                     ],
                 },
             })
+            .mockReturnValueOnce(EMPTY)
             .mockReturnValueOnce({
                 isFetching: false,
                 isError: false,
@@ -2312,6 +2368,7 @@ describe('useAllResourcesMetrics', () => {
                     ],
                 },
             })
+            .mockReturnValueOnce(EMPTY)
             .mockReturnValueOnce({
                 isFetching: false,
                 isError: false,
@@ -2325,6 +2382,7 @@ describe('useAllResourcesMetrics', () => {
                     ],
                 },
             })
+            .mockReturnValueOnce(EMPTY)
             .mockReturnValueOnce({
                 isFetching: false,
                 isError: false,
@@ -2366,8 +2424,11 @@ describe('useAllResourcesMetrics', () => {
             resourceSourceId: 100,
             resourceSourceSetId: 200,
             tickets: 50,
+            prevTickets: null,
             handoverTickets: 5,
+            prevHandoverTickets: null,
             csat: 4.5,
+            prevCsat: null,
             intents: [{ intent: 'Intent::A', ticketCount: 10 }],
         })
 
@@ -2375,8 +2436,11 @@ describe('useAllResourcesMetrics', () => {
             resourceSourceId: 101,
             resourceSourceSetId: 201,
             tickets: 30,
+            prevTickets: null,
             handoverTickets: null,
+            prevHandoverTickets: null,
             csat: null,
+            prevCsat: null,
             intents: null,
         })
     })
@@ -2460,22 +2524,21 @@ describe('useAllResourcesMetrics', () => {
     })
 
     it('should not include intents in loading state when loadIntents is false', () => {
+        const EMPTY = {
+            isFetching: false,
+            isError: false,
+            data: { allData: [] },
+        }
+        // 6 current + previous-period queries (tickets/prevTickets,
+        // handover/prevHandover, csat/prevCsat) all settled; only the 7th
+        // (intents) is left loading — but loadIntents=false disables it.
         ;(useMetricPerDimensionV2 as jest.Mock)
-            .mockReturnValueOnce({
-                isFetching: false,
-                isError: false,
-                data: { allData: [] },
-            })
-            .mockReturnValueOnce({
-                isFetching: false,
-                isError: false,
-                data: { allData: [] },
-            })
-            .mockReturnValueOnce({
-                isFetching: false,
-                isError: false,
-                data: { allData: [] },
-            })
+            .mockReturnValueOnce(EMPTY)
+            .mockReturnValueOnce(EMPTY)
+            .mockReturnValueOnce(EMPTY)
+            .mockReturnValueOnce(EMPTY)
+            .mockReturnValueOnce(EMPTY)
+            .mockReturnValueOnce(EMPTY)
             .mockReturnValueOnce({
                 isFetching: true,
                 isError: false,
@@ -2497,22 +2560,20 @@ describe('useAllResourcesMetrics', () => {
     })
 
     it('should not include intents in error state when loadIntents is false', () => {
+        const EMPTY = {
+            isFetching: false,
+            isError: false,
+            data: { allData: [] },
+        }
+        // Same shape as the loading test: only the 7th call (intents) is in
+        // an error state, but loadIntents=false should swallow it.
         ;(useMetricPerDimensionV2 as jest.Mock)
-            .mockReturnValueOnce({
-                isFetching: false,
-                isError: false,
-                data: { allData: [] },
-            })
-            .mockReturnValueOnce({
-                isFetching: false,
-                isError: false,
-                data: { allData: [] },
-            })
-            .mockReturnValueOnce({
-                isFetching: false,
-                isError: false,
-                data: { allData: [] },
-            })
+            .mockReturnValueOnce(EMPTY)
+            .mockReturnValueOnce(EMPTY)
+            .mockReturnValueOnce(EMPTY)
+            .mockReturnValueOnce(EMPTY)
+            .mockReturnValueOnce(EMPTY)
+            .mockReturnValueOnce(EMPTY)
             .mockReturnValueOnce({
                 isFetching: false,
                 isError: true,
@@ -2663,6 +2724,14 @@ describe('useAllResourcesMetrics', () => {
     })
 
     it('should handle realistic multi-resource data with all metrics', () => {
+        const EMPTY = {
+            isFetching: false,
+            isError: false,
+            data: { allData: [] },
+        }
+        // Interleave empty prev-period responses for the three new queries
+        // (prevTickets, prevHandover, prevCsat) so the original four datasets
+        // line up with the current-period query positions.
         ;(useMetricPerDimensionV2 as jest.Mock)
             .mockReturnValueOnce({
                 isFetching: false,
@@ -2687,6 +2756,7 @@ describe('useAllResourcesMetrics', () => {
                     ],
                 },
             })
+            .mockReturnValueOnce(EMPTY)
             .mockReturnValueOnce({
                 isFetching: false,
                 isError: false,
@@ -2705,6 +2775,7 @@ describe('useAllResourcesMetrics', () => {
                     ],
                 },
             })
+            .mockReturnValueOnce(EMPTY)
             .mockReturnValueOnce({
                 isFetching: false,
                 isError: false,
@@ -2723,6 +2794,7 @@ describe('useAllResourcesMetrics', () => {
                     ],
                 },
             })
+            .mockReturnValueOnce(EMPTY)
             .mockReturnValueOnce({
                 isFetching: false,
                 isError: false,
@@ -2764,8 +2836,11 @@ describe('useAllResourcesMetrics', () => {
             resourceSourceId: 100,
             resourceSourceSetId: 200,
             tickets: 100,
+            prevTickets: null,
             handoverTickets: 10,
+            prevHandoverTickets: null,
             csat: 4.5,
+            prevCsat: null,
             intents: [{ intent: 'Billing::Payment', ticketCount: 20 }],
         })
 
@@ -2773,8 +2848,11 @@ describe('useAllResourcesMetrics', () => {
             resourceSourceId: 101,
             resourceSourceSetId: 201,
             tickets: 75,
+            prevTickets: null,
             handoverTickets: 5,
+            prevHandoverTickets: null,
             csat: null,
+            prevCsat: null,
             intents: [{ intent: 'Support::Technical', ticketCount: 15 }],
         })
 
@@ -2782,8 +2860,11 @@ describe('useAllResourcesMetrics', () => {
             resourceSourceId: 102,
             resourceSourceSetId: 202,
             tickets: 50,
+            prevTickets: null,
             handoverTickets: null,
+            prevHandoverTickets: null,
             csat: 3.8,
+            prevCsat: null,
             intents: null,
         })
     })

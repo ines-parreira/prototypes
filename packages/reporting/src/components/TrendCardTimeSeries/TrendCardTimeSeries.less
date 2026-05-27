@@ -14,6 +14,11 @@
             calc(-1 * var(--spacing-xxxs));
         width: calc(100% + 2 * var(--spacing-xxxs));
 
+        &.chartWrapperCompact {
+            margin-top: calc(var(--spacing-md) - var(--spacing-xxxxs));
+            margin-bottom: 0;
+        }
+
         :global {
             .recharts-wrapper {
                 outline: none !important;

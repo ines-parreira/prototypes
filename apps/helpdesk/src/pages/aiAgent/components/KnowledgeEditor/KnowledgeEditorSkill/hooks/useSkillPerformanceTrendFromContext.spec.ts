@@ -22,8 +22,11 @@ const mockSkillPerformanceData: SkillPerformanceData = {
     skillMetrics: {
         metrics: {
             tickets: 10,
+            prevTickets: 8,
             handoverTickets: 3,
+            prevHandoverTickets: 2,
             csat: 4.5,
+            prevCsat: 4.3,
             resourceSourceSetId: 100,
         },
         metricsByDay: [

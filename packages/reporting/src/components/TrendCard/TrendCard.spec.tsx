@@ -315,4 +315,26 @@ describe('TrendCard', () => {
             expect(screen.getByText('$1,234.56')).toBeInTheDocument()
         })
     })
+
+    describe('compact', () => {
+        it('forwards compact to the sparkline so it renders at the compact height', () => {
+            const useChartData = () => ({
+                data: [{ date: '2024-01-01', value: 1 }],
+                isLoading: false,
+            })
+
+            const { container } = render(
+                <TrendCard
+                    {...defaultProps}
+                    compact
+                    timeSeriesView={{ useChartData }}
+                />,
+            )
+
+            const chartContainer = container.querySelector<HTMLElement>(
+                '.recharts-responsive-container',
+            )
+            expect(chartContainer?.style.height).toBe('24px')
+        })
+    })
 })

@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import {
     Area,
     AreaChart,
@@ -16,6 +17,7 @@ import { renderTimeSeriesTooltipContent } from '../TimeSeriesChart/TimeSeriesCha
 import css from './TrendCardTimeSeries.less'
 
 const CHART_HEIGHT = 26
+const COMPACT_CHART_HEIGHT = 24
 const DEFAULT_COLOR = colors['Dataviz-purple'].$value
 const GRADIENT_ID = `trendCardLineGradient-${DEFAULT_COLOR.replace('#', '')}`
 
@@ -26,12 +28,17 @@ export type TrendCardTimeSeriesProps = {
     dateFormatter?: (date: string) => string
 }
 
+type TrendCardTimeSeriesInternalProps = TrendCardTimeSeriesProps & {
+    compact?: boolean
+}
+
 export const TrendCardTimeSeries = ({
     comingSoon,
     useChartData,
     valueFormatter,
     dateFormatter,
-}: TrendCardTimeSeriesProps) => {
+    compact = false,
+}: TrendCardTimeSeriesInternalProps) => {
     if (comingSoon || !useChartData) {
         return (
             <>
@@ -54,14 +61,15 @@ export const TrendCardTimeSeries = ({
             useChartData={useChartData}
             valueFormatter={valueFormatter}
             dateFormatter={dateFormatter}
+            compact={compact}
         />
     )
 }
 
 type TrendCardTimeSeriesContentProps = Omit<
     Pick<
-        TrendCardTimeSeriesProps,
-        'useChartData' | 'valueFormatter' | 'dateFormatter'
+        TrendCardTimeSeriesInternalProps,
+        'useChartData' | 'valueFormatter' | 'dateFormatter' | 'compact'
     >,
     'useChartData'
 > & { useChartData: NonNullable<TrendCardTimeSeriesProps['useChartData']> }
@@ -70,6 +78,7 @@ const TrendCardTimeSeriesContent = ({
     useChartData,
     valueFormatter,
     dateFormatter,
+    compact,
 }: TrendCardTimeSeriesContentProps) => {
     const { data, isLoading } = useChartData()
 
@@ -82,8 +91,15 @@ const TrendCardTimeSeriesContent = ({
     }
 
     return (
-        <div className={css.chartWrapper}>
-            <ResponsiveContainer width="100%" height={CHART_HEIGHT}>
+        <div
+            className={classNames(css.chartWrapper, {
+                [css.chartWrapperCompact]: compact,
+            })}
+        >
+            <ResponsiveContainer
+                width="100%"
+                height={compact ? COMPACT_CHART_HEIGHT : CHART_HEIGHT}
+            >
                 <AreaChart
                     data={data}
                     margin={{ top: 4, right: 4, left: 4, bottom: 4 }}

@@ -114,8 +114,11 @@ export const useSkillPerformanceFromContext = (): SkillPerformanceData => {
 
         return {
             tickets: entry.tickets,
+            prevTickets: entry.prevTickets,
             handoverTickets: entry.handoverTickets,
+            prevHandoverTickets: entry.prevHandoverTickets,
             csat: entry.csat,
+            prevCsat: entry.prevCsat,
             resourceSourceSetId: entry.resourceSourceSetId,
         }
     }, [metricsData, skillArticleId])

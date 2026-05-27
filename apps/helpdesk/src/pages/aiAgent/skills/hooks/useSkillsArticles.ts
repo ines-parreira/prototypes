@@ -41,8 +41,11 @@ export const useSkillsArticles = (
         metricsData.forEach((metric) => {
             map.set(String(metric.resourceSourceId), {
                 tickets: metric.tickets,
+                prevTickets: null,
                 handoverTickets: metric.handoverTickets,
+                prevHandoverTickets: null,
                 csat: metric.csat,
+                prevCsat: null,
                 resourceSourceSetId: metric.resourceSourceSetId,
             })
         })

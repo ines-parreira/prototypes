@@ -12,6 +12,7 @@ import type {
 } from '../../types'
 import { formatMetricValue } from '../../utils/helpers'
 import { DrillDownModalTrigger } from '../DrillDownModal/DrillDownModalTrigger'
+import type { MetricCardCompactVariant } from '../MetricCard/MetricCard'
 import { MetricCard } from '../MetricCard/MetricCard'
 import { MetricCardHeader } from '../MetricCardHeader/MetricCardHeader'
 import type { TrendBadgeProps } from '../TrendBadge/TrendBadge'
@@ -31,6 +32,7 @@ export type TrendCardProps = {
     trend: MetricTrend
     withBorder?: boolean
     withFixedWidth?: boolean
+    compact?: boolean
     trendBadgeTooltipData?: TrendBadgeProps['tooltipData']
     drillDown?: { tooltipText: string; openDrillDownModal: () => void }
     timeSeriesView?: TrendCardTimeSeriesProps
@@ -47,6 +49,7 @@ export const TrendCard = memo<TrendCardProps>(
         trend,
         withBorder,
         withFixedWidth,
+        compact = false,
         trendBadgeTooltipData,
         drillDown,
         timeSeriesView,
@@ -61,6 +64,12 @@ export const TrendCard = memo<TrendCardProps>(
             ? formatMetricValue(data?.value, metricFormat, currency)
             : NOT_AVAILABLE_PLACEHOLDER
 
+        const compactVariant: MetricCardCompactVariant | undefined = compact
+            ? timeSeriesView
+                ? 'with-sparkline'
+                : 'plain'
+            : undefined
+
         return (
             <div
                 onMouseEnter={() => setIsHovered(true)}
@@ -69,11 +78,13 @@ export const TrendCard = memo<TrendCardProps>(
                 <MetricCard
                     withBorder={withBorder}
                     withFixedWidth={withFixedWidth}
+                    compactVariant={compactVariant}
                 >
                     <MetricCardHeader
                         title={data?.label}
                         hint={hint}
                         actionMenu={isHovered ? actionMenu : undefined}
+                        compact={compact}
                     />
 
                     <div className={css.dataContent}>
@@ -130,7 +141,10 @@ export const TrendCard = memo<TrendCardProps>(
                         </div>
                     </div>
                     {timeSeriesView && (
-                        <TrendCardTimeSeries {...timeSeriesView} />
+                        <TrendCardTimeSeries
+                            {...timeSeriesView}
+                            compact={compact}
+                        />
                     )}
                 </MetricCard>
             </div>

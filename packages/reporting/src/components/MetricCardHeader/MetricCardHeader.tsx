@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react'
 import { useEffect, useRef, useState } from 'react'
 
+import classNames from 'classnames'
+
 import { Icon, Text, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import type { TooltipData } from '../../types'
@@ -12,11 +14,13 @@ export function MetricCardHeader({
     hint,
     titleExtra,
     actionMenu,
+    compact = false,
 }: {
     title: ReactNode
     hint?: TooltipData
     titleExtra?: ReactNode
     actionMenu?: ReactNode
+    compact?: boolean
 }) {
     const titleRef = useRef<HTMLDivElement>(null)
     const [isTitleTruncated, setIsTitleTruncated] = useState(false)
@@ -75,7 +79,11 @@ export function MetricCardHeader({
 
     return (
         <div className={css.wrapper}>
-            <div className={css.title}>
+            <div
+                className={classNames(css.title, {
+                    [css.titleCompact]: compact,
+                })}
+            >
                 {isTitleTruncated && typeof title === 'string' ? (
                     <Tooltip delay={0} trigger={titleElement}>
                         <TooltipContent title={title} />
