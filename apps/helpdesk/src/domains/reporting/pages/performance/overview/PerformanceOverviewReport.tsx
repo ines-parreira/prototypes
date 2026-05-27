@@ -43,7 +43,6 @@ export const PerformanceOverviewReport = () => {
                             PerformanceOverviewReportConfig.reportFilters
                                 .optional
                         }
-                        withSavedFilters={false}
                         filterSettingsOverrides={{
                             [FilterKey.Period]: {
                                 initialSettings: {

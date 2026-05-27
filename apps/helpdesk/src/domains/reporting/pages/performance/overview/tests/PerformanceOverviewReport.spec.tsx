@@ -87,7 +87,6 @@ describe('PerformanceOverviewReport', () => {
                         initialSettings: { maxSpan: 365 },
                     },
                 }),
-                withSavedFilters: false,
                 compact: true,
             }),
             expect.anything(),

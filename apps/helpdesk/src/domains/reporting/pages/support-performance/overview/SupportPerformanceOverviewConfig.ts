@@ -424,6 +424,16 @@ export const PERFORMANCE_OVERVIEW_OPTIONAL_FILTERS = [
     FilterKey.Stores,
     ...AUTO_QA_FILTER_KEYS,
 ]
+export const PERFORMANCE_CHANNELS_OPTIONAL_FILTERS = [
+    FilterKey.Integrations,
+    FilterKey.Tags,
+    FilterKey.Agents,
+    FilterKey.AssignedTeam,
+    FilterKey.CustomFields,
+    FilterKey.Score,
+    FilterKey.Stores,
+    ...AUTO_QA_FILTER_KEYS,
+]
 
 export const PERFORMANCE_OVERVIEW_CHART_TYPE = 'bar'
 export const STATS_TIPS_VISIBILITY_KEY = 'gorgias-stats-tips-visibility'
