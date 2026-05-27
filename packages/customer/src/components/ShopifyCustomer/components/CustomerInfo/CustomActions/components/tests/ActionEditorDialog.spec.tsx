@@ -1,11 +1,12 @@
 import { render } from '@repo/testing/vitest'
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 
 import type { ButtonAction } from '../../utils/customActionTypes'
 import {
     ActionEditorDialog,
     hasEditableParameters,
 } from '../ActionEditorDialog'
+import { TemplateResolverProvider } from '../TemplateResolverContext'
 
 const baseAction: ButtonAction = {
     method: 'POST',
@@ -351,6 +352,62 @@ describe('ActionEditorDialog', () => {
         render(<ActionEditorDialog {...defaultProps} action={action} />)
 
         expect(screen.getByText('Region *')).toBeInTheDocument()
+    })
+
+    describe('template resolution', () => {
+        it('resolves template variables to their values when the dialog opens', async () => {
+            const action: ButtonAction = {
+                ...baseAction,
+                params: [
+                    {
+                        id: '1',
+                        key: 'name',
+                        value: '{{customer.first_name}}',
+                        editable: true,
+                        label: 'Customer Name',
+                    },
+                ],
+            }
+
+            render(
+                <TemplateResolverProvider customer={{ first_name: 'John' }}>
+                    <ActionEditorDialog {...defaultProps} action={action} />
+                </TemplateResolverProvider>,
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('textbox', { name: /customer name/i }),
+                ).toHaveValue('John')
+            })
+        })
+
+        it('shows empty string instead of raw template when variable cannot be resolved', async () => {
+            const action: ButtonAction = {
+                ...baseAction,
+                params: [
+                    {
+                        id: '1',
+                        key: 'name',
+                        value: '{{customer.first_name}}',
+                        editable: true,
+                        label: 'Customer Name',
+                    },
+                ],
+            }
+
+            render(
+                <TemplateResolverProvider>
+                    <ActionEditorDialog {...defaultProps} action={action} />
+                </TemplateResolverProvider>,
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('textbox', { name: /customer name/i }),
+                ).toHaveValue('')
+            })
+        })
     })
 
     it('renders editable params from multiple sources', () => {

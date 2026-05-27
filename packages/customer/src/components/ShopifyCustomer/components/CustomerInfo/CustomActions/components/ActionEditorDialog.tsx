@@ -14,6 +14,7 @@ import {
 } from '@gorgias/axiom'
 
 import type { ButtonAction, Parameter } from '../utils/customActionTypes'
+import { useTemplateResolver } from './TemplateResolverContext'
 
 type Props = {
     isOpen: boolean
@@ -111,6 +112,7 @@ export function ActionEditorDialog({
     label,
     onExecute,
 }: Props) {
+    const resolve = useTemplateResolver()
     const [localAction, setLocalAction] = useState<ButtonAction>(action)
 
     const editableParams = useMemo(
@@ -129,6 +131,8 @@ export function ActionEditorDialog({
                 if (options.length > 0 && !param.value) {
                     param.value = options[0]
                 }
+            } else if (param.editable && param.type !== 'dropdown') {
+                param.value = resolve(param.value)
             }
         }
 
@@ -137,7 +141,7 @@ export function ActionEditorDialog({
         cloned.body['application/x-www-form-urlencoded'].forEach(initParam)
 
         setLocalAction(cloned)
-    }, [isOpen, action])
+    }, [isOpen, action, resolve])
 
     const getParamValue = useCallback(
         (ep: EditableParam): string => {

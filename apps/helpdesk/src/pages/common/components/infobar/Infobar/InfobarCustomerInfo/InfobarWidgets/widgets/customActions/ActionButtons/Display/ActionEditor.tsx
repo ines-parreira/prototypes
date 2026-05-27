@@ -4,9 +4,6 @@ import { useCallback } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { get as _get } from 'lodash'
-
-import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
-
 import type {
     Action,
     Parameter,
@@ -18,6 +15,8 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
+
+import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 
 import { ACTION_PARAMETER_PATHS } from '../../constants'
 import { getDropdownOptions, prepareDropdownValue } from '../helpers/dropdown'
