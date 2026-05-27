@@ -4,6 +4,7 @@ import { delay, http, HttpResponse } from 'msw'
 import {
     mockCustomer,
     mockGetCurrentUserHandler,
+    mockGetCustomerHandler,
     mockGetTicketHandler,
     mockListCustomerCustomFieldsValuesHandler,
     mockListCustomerCustomFieldsValuesResponse,
@@ -18,7 +19,10 @@ import {
     mockUpdateTicketHandler,
     mockUser,
 } from '@gorgias/helpdesk-mocks'
-import type { CustomerHighlightDataItem } from '@gorgias/helpdesk-types'
+import type {
+    CustomerHighlightDataItem,
+    TicketCustomerChannel,
+} from '@gorgias/helpdesk-types'
 
 import { render } from '../../../tests/render.utils'
 import { server } from '../../../tests/server'
@@ -54,6 +58,17 @@ const mockGetCurrentUser = mockGetCurrentUserHandler(async () =>
     HttpResponse.json(mockUser()),
 )
 
+const mockGetCustomer = mockGetCustomerHandler(async () =>
+    HttpResponse.json(
+        mockCustomer({
+            id: mockTicketCustomerData.id,
+            name: mockTicketCustomerData.name,
+            email: mockTicketCustomerData.email,
+            channels: mockTicketCustomerData.channels,
+        }),
+    ),
+)
+
 const mockListCustomFields = mockListCustomFieldsHandler(async () =>
     HttpResponse.json(mockListCustomFieldsResponse({ data: [] })),
 )
@@ -87,6 +102,7 @@ beforeEach(() => {
     } as Window['GORGIAS_STATE']
     server.use(
         mockGetTicket.handler,
+        mockGetCustomer.handler,
         mockGetCurrentUser.handler,
         mockListCustomFields.handler,
         mockListCustomerFieldsValues.handler,
@@ -169,6 +185,42 @@ describe('InfobarTicketCustomerDetails', () => {
         })
 
         await waitUntilLoaded()
+    })
+
+    it('renders full customer data for base customer fields', async () => {
+        server.use(
+            mockGetCustomerHandler(async () =>
+                HttpResponse.json(
+                    mockCustomer({
+                        id: mockTicketCustomerData.id,
+                        email: mockTicketCustomerData.email,
+                        channels: [
+                            {
+                                id: 1,
+                                address: 'updated@example.com',
+                                type: 'email',
+                                preferred: true,
+                            } as TicketCustomerChannel,
+                        ],
+                        name: 'Updated Customer Name',
+                    }),
+                ),
+            ).handler,
+        )
+
+        render(<InfobarTicketCustomerDetails {...defaultProps} />, {
+            path: '/ticket/:ticketId',
+            initialEntries: [`/ticket/${ticketId}`],
+        })
+
+        expect(
+            await screen.findByRole('link', {
+                name: 'Updated Customer Name',
+            }),
+        ).toBeInTheDocument()
+        expect(
+            await screen.findByText('updated@example.com'),
+        ).toBeInTheDocument()
     })
 
     it('should render InfobarCustomerFields', async () => {

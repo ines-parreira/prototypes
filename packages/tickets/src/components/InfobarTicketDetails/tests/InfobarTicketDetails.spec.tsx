@@ -2,7 +2,9 @@ import { screen, waitFor } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 
 import {
+    mockCustomer,
     mockGetCurrentUserHandler,
+    mockGetCustomerHandler,
     mockGetTicketHandler,
     mockListCustomerCustomFieldsValuesHandler,
     mockListCustomerCustomFieldsValuesResponse,
@@ -73,6 +75,17 @@ const mockGetCurrentUser = mockGetCurrentUserHandler(async () =>
     HttpResponse.json(mockUser()),
 )
 
+const mockGetCustomer = mockGetCustomerHandler(async () =>
+    HttpResponse.json(
+        mockCustomer({
+            id: customerId,
+            name: 'John Doe',
+            email: 'john@example.com',
+            channels: [],
+        }),
+    ),
+)
+
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
 })
@@ -86,6 +99,7 @@ beforeEach(() => {
         mockListTicketCustomFields.handler,
         mockListCustomerCustomFieldsValues.handler,
         mockGetCurrentUser.handler,
+        mockGetCustomer.handler,
         mockListIntegrationsHandler().handler,
         mockListPhoneNumbersHandler().handler,
         mockSearchCustomersHandler().handler,

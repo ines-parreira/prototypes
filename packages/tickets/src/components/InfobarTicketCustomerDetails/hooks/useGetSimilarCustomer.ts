@@ -1,3 +1,5 @@
+import { DurationInMs } from '@repo/utils'
+
 import { useQuery } from '@tanstack/react-query'
 
 import type { Customer } from '@gorgias/helpdesk-types'
@@ -9,9 +11,6 @@ export const similarCustomerQueryKeys = {
     detail: (customerId?: number) =>
         ['customers', 'similar', customerId] as const,
 }
-
-const STALE_TIME = 5 * 60 * 1000
-const CACHE_TIME = 5 * 60 * 1000
 
 /**
  * temporary hook until we get OpenAPI spec to include this
@@ -28,7 +27,8 @@ export function useGetSimilarCustomer(customerId?: number) {
             return getSimilarCustomer({ customerId }, signal)
         },
         enabled: !!customerId,
-        staleTime: STALE_TIME,
-        cacheTime: CACHE_TIME,
+        staleTime: DurationInMs.FiveMinutes,
+        cacheTime: DurationInMs.FiveMinutes,
+        refetchOnWindowFocus: false,
     })
 }

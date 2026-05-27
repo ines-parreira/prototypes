@@ -1,5 +1,7 @@
 import { useCallback, useState } from 'react'
 
+import { useGetCustomer } from '@repo/customer/hooks'
+
 import { SidePanel } from '@gorgias/axiom'
 import type { Customer, TicketCustomer } from '@gorgias/helpdesk-types'
 
@@ -38,6 +40,20 @@ export function InfobarTicketCustomerDetails({
         ticketId!,
     )
     const ticketCustomer = ticket?.data?.customer
+    const ticketCustomerId = ticketCustomer?.id
+    const { data: fullCustomerResponse } = useGetCustomer(
+        ticketCustomerId ?? 0,
+        undefined,
+        {
+            query: {
+                enabled: !!ticketCustomerId,
+                refetchOnWindowFocus: false,
+            },
+        },
+    )
+    const customer = (fullCustomerResponse?.data ?? ticketCustomer) as
+        | TicketCustomer
+        | undefined
     const isLoadingDetails = !ticketCustomer && isLoadingTicket
 
     const { updateTicketCustomer } = useUpdateTicketCustomer(ticketId!)
@@ -59,7 +75,7 @@ export function InfobarTicketCustomerDetails({
     )
 
     const { data: similarCustomer, isLoading: isLoadingSimilarCustomer } =
-        useGetSimilarCustomer(ticketCustomer?.id)
+        useGetSimilarCustomer(ticketCustomerId)
 
     const handleViewSimilarCustomer = useCallback(() => {
         if (similarCustomer?.id) {
@@ -106,7 +122,7 @@ export function InfobarTicketCustomerDetails({
             ) : (
                 <>
                     <InfobarTicketCustomerHeader
-                        customer={ticketCustomer}
+                        customer={customer}
                         onOpenMergePanel={() => {
                             setIsSearchAndPreviewPanelOpen(true)
                         }}
@@ -122,7 +138,7 @@ export function InfobarTicketCustomerDetails({
                         </div>
                     )}
                     <InfobarCustomerFields
-                        customer={ticketCustomer}
+                        customer={customer}
                         ticketId={ticketId}
                     />
                 </>
@@ -133,7 +149,7 @@ export function InfobarTicketCustomerDetails({
                     setIsSearchAndPreviewPanelOpen(false)
                 }}
                 previewedCustomer={similarCustomer}
-                currentCustomerId={ticketCustomer?.id}
+                currentCustomerId={customer?.id}
                 onSetCustomer={handleOpenSwitchModal}
                 onMergeCustomer={handleOpenMergeModal}
             />
@@ -159,11 +175,11 @@ export function InfobarTicketCustomerDetails({
                 customer={customerToSwitch}
                 onConfirm={handleConfirmSwitch}
             />
-            {ticketCustomer && (
+            {customer && (
                 <MergeCustomersModal
                     isOpen={isMergeModalOpen}
                     onOpenChange={setIsMergeModalOpen}
-                    destinationCustomer={ticketCustomer as Customer}
+                    destinationCustomer={customer as Customer}
                     sourceCustomer={customerToMerge}
                     ticketId={Number(ticketId)}
                     onMerge={closeAllPanels}

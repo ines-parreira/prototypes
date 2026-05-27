@@ -1,5 +1,7 @@
 import { useCallback, useState } from 'react'
 
+import { useUpdateEffect } from '@repo/hooks'
+
 import type {
     TicketCustomer,
     TicketCustomerChannel,
@@ -29,6 +31,14 @@ export function useBaseCustomerFields({
     const [channels, setChannels] = useState<TicketCustomerChannel[]>(
         customer?.channels ?? [],
     )
+
+    // we should think about a more durable long-term sync strategy,
+    // possibly moving this to a react-hookform
+    // so incoming updates cannot overwrite in-progress local field edits.
+    useUpdateEffect(() => {
+        setNote(customer?.note ?? '')
+        setChannels(customer?.channels ?? [])
+    }, [customer?.channels, customer?.note])
 
     const sortedChannels = useCustomerChannels(channels)
 

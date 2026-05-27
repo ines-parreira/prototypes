@@ -1,7 +1,9 @@
 import { useCallback, useMemo, useState } from 'react'
 
+import { appQueryClient } from '@repo/api-resources'
 import { fromJS } from 'immutable'
 
+import { queryKeys } from '@gorgias/helpdesk-queries'
 import type { TicketCustomer } from '@gorgias/helpdesk-types'
 
 import CustomerSyncForm from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerSyncForm/CustomerSyncForm'
@@ -30,6 +32,18 @@ export function useCustomerProfileActions() {
         setSelectedCustomerForModal(null)
     }, [])
 
+    const handleCustomerUpdated = useCallback(() => {
+        if (!selectedCustomerForModal?.id) {
+            return
+        }
+
+        void appQueryClient.invalidateQueries({
+            queryKey: queryKeys.customers.getCustomer(
+                selectedCustomerForModal.id,
+            ),
+        })
+    }, [selectedCustomerForModal])
+
     const setCustomerSyncFormOpen = useCallback((isOpen: boolean) => {
         setIsCustomerSyncFormOpen(isOpen)
         if (!isOpen) {
@@ -55,6 +69,7 @@ export function useCustomerProfileActions() {
                     <ModalHeader title={modalTitle} />
                     <CustomerForm
                         customer={fromJS(selectedCustomerForModal)}
+                        onSuccess={handleCustomerUpdated}
                         closeModal={closeCustomerEditForm}
                     />
                 </Modal>
@@ -69,6 +84,7 @@ export function useCustomerProfileActions() {
         )
     }, [
         closeCustomerEditForm,
+        handleCustomerUpdated,
         isCustomerEditFormOpen,
         isCustomerSyncFormOpen,
         selectedCustomerForModal,
