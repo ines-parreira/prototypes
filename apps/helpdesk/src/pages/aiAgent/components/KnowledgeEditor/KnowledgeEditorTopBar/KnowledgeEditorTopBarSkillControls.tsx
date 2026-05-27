@@ -239,9 +239,9 @@ export const SkillToolbarControls = () => {
     const enableButton = wrapWithValidationTooltip(
         <Button
             variant="primary"
-            intent="success"
             onClick={requestEnable}
             isDisabled={isBusy || !formValid}
+            leadingSlot="check"
         >
             Enable
         </Button>,
@@ -250,9 +250,10 @@ export const SkillToolbarControls = () => {
 
     const disableButton = (
         <Button
-            variant="primary"
+            variant="secondary"
             onClick={onOpenDisableModal}
             isDisabled={isBusy}
+            leadingSlot="stop-sign"
         >
             Disable
         </Button>

@@ -108,7 +108,7 @@ describe('SkillEnableModal', () => {
 
         const modal = screen.getByRole('dialog')
         const enableButton = within(modal).getByRole('button', {
-            name: 'Enable',
+            name: /Enable/i,
         })
 
         await user.click(enableButton)
