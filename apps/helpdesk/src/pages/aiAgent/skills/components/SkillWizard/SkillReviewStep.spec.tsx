@@ -80,6 +80,7 @@ type RenderOptions = {
     status?: SkillWizardSkillStatus
     onStatusChange?: (status: SkillWizardSkillStatus) => void
     onInstructionsChange?: (content: string) => void
+    contextOverrides?: Partial<SkillWizardContextValue>
 }
 
 const renderStep = ({
@@ -87,10 +88,13 @@ const renderStep = ({
     status = SkillWizardSkillStatus.Approved,
     onStatusChange = jest.fn(),
     onInstructionsChange,
+    contextOverrides,
 }: RenderOptions = {}) =>
     render(
         <ThemeProvider>
-            <SkillWizardContext.Provider value={wizardContextValue}>
+            <SkillWizardContext.Provider
+                value={{ ...wizardContextValue, ...contextOverrides }}
+            >
                 <SkillReviewStep
                     skill={skill}
                     status={status}
@@ -100,6 +104,18 @@ const renderStep = ({
             </SkillWizardContext.Provider>
         </ThemeProvider>,
     )
+
+const buildSkillWithEmptyInstructions = () =>
+    buildSkill({
+        article: {
+            id: 11,
+            translation: {
+                title: 'Returns and exchanges',
+                content: '',
+                intents: [],
+            },
+        } as unknown as WizardSkill['article'],
+    })
 
 describe('SkillReviewStep', () => {
     beforeEach(() => {
@@ -189,18 +205,7 @@ describe('SkillReviewStep', () => {
     })
 
     it('disables the Approved option and shows the blocked banner when instructions are empty', () => {
-        renderStep({
-            skill: buildSkill({
-                article: {
-                    id: 11,
-                    translation: {
-                        title: 'Returns and exchanges',
-                        content: '',
-                        intents: [],
-                    },
-                } as unknown as WizardSkill['article'],
-            }),
-        })
+        renderStep({ skill: buildSkillWithEmptyInstructions() })
 
         expect(
             screen.getByText(
@@ -210,6 +215,34 @@ describe('SkillReviewStep', () => {
         expect(
             screen.getByRole('radio', { name: /Looks good/i }),
         ).toBeDisabled()
+    })
+
+    it('labels the banner CTA "Review next skill" when more review steps remain', () => {
+        renderStep({
+            skill: buildSkillWithEmptyInstructions(),
+            contextOverrides: { currentStep: 1, reviewStepsCount: 2 },
+        })
+
+        expect(
+            screen.getByRole('button', { name: /^Review next skill/ }),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: /^Next\b/ }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('labels the banner CTA "Next" on the last review step', () => {
+        renderStep({
+            skill: buildSkillWithEmptyInstructions(),
+            contextOverrides: { currentStep: 2, reviewStepsCount: 2 },
+        })
+
+        expect(
+            screen.getByRole('button', { name: /^Next\b/ }),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: /^Review next skill/ }),
+        ).not.toBeInTheDocument()
     })
 
     it('emits onStatusChange when the user keeps the skill as draft from the body link', async () => {

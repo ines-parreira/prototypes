@@ -7,7 +7,7 @@ import { useMinDisplayTime } from './useMinDisplayTime'
 
 import css from './SkillWizardHeader.less'
 
-const MIN_SAVING_DISPLAY_MS = 30
+const MIN_SAVING_DISPLAY_MS = 45
 
 type Props = {
     isSaving?: boolean

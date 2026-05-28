@@ -36,6 +36,8 @@ const wizardSkillToTemplate = (skill: WizardSkill): SkillTemplate | null => {
 export const ReviewSkillsSection: React.FC<Props> = ({ wizard, onCTA }) => {
     const isInProgress = wizard.status === SkillWizardStatus.InProgress
     const { current_step, total_count } = wizard.ui_wizard_state
+    const reviewedCount = Math.max(0, current_step - 1)
+    const showReviewedCount = isInProgress && reviewedCount > 0
 
     const templatesWithCoverage = useMemo(
         () =>
@@ -82,10 +84,9 @@ export const ReviewSkillsSection: React.FC<Props> = ({ wizard, onCTA }) => {
                     flexShrink={0}
                 >
                     <Box flexDirection="row" alignItems="center" gap="xxxxs">
-                        {isInProgress ? (
+                        {showReviewedCount ? (
                             <Text size="sm" variant="regular">
-                                {Math.max(0, current_step - 1)} of {total_count}{' '}
-                                reviewed
+                                {reviewedCount} of {total_count} reviewed
                             </Text>
                         ) : (
                             <>

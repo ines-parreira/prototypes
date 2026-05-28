@@ -94,7 +94,7 @@ export const SkillReviewStep = ({
 
     const { goNext, currentStep, reviewStepsCount } = useSkillWizardContext()
     const isLastReviewStep = currentStep >= reviewStepsCount
-    const ctaLabel = isLastReviewStep ? 'Go next' : 'Review next skill'
+    const ctaLabel = isLastReviewStep ? 'Next' : 'Review next skill'
 
     return (
         <Box flexDirection="column" gap="md" className={css.container}>

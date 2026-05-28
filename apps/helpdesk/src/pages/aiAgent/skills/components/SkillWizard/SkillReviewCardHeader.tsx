@@ -48,7 +48,7 @@ export const SkillReviewCardHeader = ({
     return (
         <Box
             flexDirection="row"
-            alignItems="center"
+            alignItems="flex-start"
             justifyContent="space-between"
             gap="md"
         >

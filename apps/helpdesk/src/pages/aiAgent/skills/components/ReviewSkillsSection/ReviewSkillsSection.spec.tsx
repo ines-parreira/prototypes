@@ -145,7 +145,10 @@ describe('ReviewSkillsSection', () => {
 
     describe('in_progress state', () => {
         it('renders the "Resume skill review" CTA', () => {
-            renderSection({ status: SkillWizardStatus.InProgress })
+            renderSection({
+                status: SkillWizardStatus.InProgress,
+                ui_wizard_state: { total_count: 3, current_step: 2 },
+            })
 
             expect(
                 screen.getByRole('button', { name: /Resume skill review/i }),
@@ -162,13 +165,16 @@ describe('ReviewSkillsSection', () => {
             expect(screen.getByText('1 of 3 reviewed')).toBeInTheDocument()
         })
 
-        it('clamps the reviewed count at 0 when current_step is 1', () => {
+        it('renders the "~5 minutes" estimate instead of "0 of N reviewed" when no skills have been reviewed yet', () => {
             renderSection({
                 status: SkillWizardStatus.InProgress,
                 ui_wizard_state: { total_count: 3, current_step: 1 },
             })
 
-            expect(screen.getByText('0 of 3 reviewed')).toBeInTheDocument()
+            expect(screen.getByText('~5 minutes')).toBeInTheDocument()
+            expect(
+                screen.queryByText('0 of 3 reviewed'),
+            ).not.toBeInTheDocument()
         })
     })
 
