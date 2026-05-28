@@ -20,6 +20,7 @@ import type {
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
+    GorgiasChatBackgroundColorStyle,
     GorgiasChatLauncherType,
 } from 'models/integration/types'
 import { usePrivacyPolicyText } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Appearance/hooks/usePrivacyPolicyText'
@@ -36,6 +37,7 @@ export type AppearanceFormValues = {
     mainColor: string
     conversationColor: string
     useMainColorOutsideBusinessHours: boolean
+    backgroundStyle: GorgiasChatBackgroundColorStyle
     headerPictureUrl?: string
     headerAlternativePictureUrl?: string
     introductionText: string
@@ -62,6 +64,10 @@ const buildFormValues = (integration: Map<any, any>): AppearanceFormValues => {
         useMainColorOutsideBusinessHours: integration.getIn(
             ['decoration', 'use_main_color_outside_business_hours'],
             false,
+        ),
+        backgroundStyle: integration.getIn(
+            ['decoration', 'background_color_style'],
+            GorgiasChatBackgroundColorStyle.Gradient,
         ),
         headerPictureUrl: integration.getIn([
             'decoration',
@@ -205,6 +211,7 @@ export const useAppearanceForm = ({
                 conversation_color: conversationColor,
                 use_main_color_outside_business_hours:
                     data.useMainColorOutsideBusinessHours,
+                background_color_style: data.backgroundStyle,
                 header_picture_url: data.headerPictureUrl,
                 header_alternative_picture_url:
                     data.headerAlternativePictureUrl,

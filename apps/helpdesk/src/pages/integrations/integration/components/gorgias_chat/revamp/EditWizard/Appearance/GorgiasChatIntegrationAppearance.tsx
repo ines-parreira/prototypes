@@ -40,8 +40,7 @@ export const GorgiasChatIntegrationAppearanceRevamp = ({
     const chatId = typeof rawChatId === 'number' ? rawChatId : undefined
     const { isAiAgentEnabled, isLoading: isAiAgentConfigLoading } =
         useIsAiAgentEnabled(storeIntegration, chatId)
-    const shouldShowAdvancedColors =
-        !isAiAgentConfigLoading && !isAiAgentEnabled
+    const isAiAgentDisabled = !isAiAgentConfigLoading && !isAiAgentEnabled
 
     const { reloadPreview, onChatPreviewLoaded, updateLegalDisclaimerEnabled } =
         useChatPreviewPanelContext()
@@ -80,6 +79,7 @@ export const GorgiasChatIntegrationAppearanceRevamp = ({
                             useMainColorOutsideBusinessHours={
                                 values.useMainColorOutsideBusinessHours
                             }
+                            backgroundStyle={values.backgroundStyle}
                             headerPictureUrl={values.headerPictureUrl}
                             headerAlternativePictureUrl={
                                 values.headerAlternativePictureUrl
@@ -89,7 +89,7 @@ export const GorgiasChatIntegrationAppearanceRevamp = ({
                                 values.offlineIntroductionText
                             }
                             isAiAgentEnabled={isAiAgentEnabled}
-                            showAdvancedColors={shouldShowAdvancedColors}
+                            isAiAgentDisabled={isAiAgentDisabled}
                             onMainColorChange={(value) =>
                                 setValue('mainColor', value)
                             }
@@ -101,6 +101,9 @@ export const GorgiasChatIntegrationAppearanceRevamp = ({
                                     'useMainColorOutsideBusinessHours',
                                     value,
                                 )
+                            }
+                            onBackgroundStyleChange={(value) =>
+                                setValue('backgroundStyle', value)
                             }
                             onHeaderLogoUrlChange={(url) =>
                                 setValue('headerPictureUrl', url)

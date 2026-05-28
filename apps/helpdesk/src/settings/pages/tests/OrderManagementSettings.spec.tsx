@@ -82,6 +82,7 @@ const buildChatPreviewPanelMock = (
     displayPage: jest.fn(),
     updateMainColor: jest.fn(),
     updateConversationColor: jest.fn(),
+    updateBackgroundStyle: jest.fn(),
     updatePosition: jest.fn(),
     updateHeaderPictureUrl: jest.fn(),
     updateHeaderAlternativePictureUrl: jest.fn(),

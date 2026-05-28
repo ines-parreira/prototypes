@@ -13,6 +13,7 @@ import type {
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
+    GorgiasChatBackgroundColorStyle,
     GorgiasChatPositionAlignmentEnum,
     IntegrationType,
 } from 'models/integration/types'
@@ -60,15 +61,17 @@ type BrandCardProps = {
     mainColor: string
     conversationColor: string
     useMainColorOutsideBusinessHours: boolean
+    backgroundStyle: GorgiasChatBackgroundColorStyle
     headerPictureUrl?: string
     headerAlternativePictureUrl?: string
     introductionText: string
     offlineIntroductionText: string
     isAiAgentEnabled?: boolean
-    showAdvancedColors?: boolean
+    isAiAgentDisabled?: boolean
     onMainColorChange: (value: string) => void
     onConversationColorChange: (value: string) => void
     onUseMainColorOutsideBusinessHoursChange: (value: boolean) => void
+    onBackgroundStyleChange: (value: GorgiasChatBackgroundColorStyle) => void
     onHeaderLogoUrlChange: (url?: string) => void
     onHeaderAlternativePictureUrlChange: (url?: string) => void
     onIntroductionTextChange: (value: string) => void
@@ -284,7 +287,7 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
             renderComponent()
 
             expect(mockBrandCard).toHaveBeenCalledWith(
-                expect.objectContaining({ showAdvancedColors: false }),
+                expect.objectContaining({ isAiAgentDisabled: false }),
             )
         })
 
@@ -297,7 +300,7 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
             renderComponent()
 
             expect(mockBrandCard).toHaveBeenCalledWith(
-                expect.objectContaining({ showAdvancedColors: true }),
+                expect.objectContaining({ isAiAgentDisabled: true }),
             )
         })
 
@@ -310,7 +313,7 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
             renderComponent()
 
             expect(mockBrandCard).toHaveBeenCalledWith(
-                expect.objectContaining({ showAdvancedColors: false }),
+                expect.objectContaining({ isAiAgentDisabled: false }),
             )
         })
 
@@ -366,6 +369,54 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
                 main_color: '#FF0000',
                 conversation_color: '#ABCDEF',
                 use_main_color_outside_business_hours: true,
+            })
+        })
+
+        it('should default backgroundStyle to Gradient when missing on integration', () => {
+            renderComponent()
+
+            expect(mockBrandCard).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    backgroundStyle: GorgiasChatBackgroundColorStyle.Gradient,
+                }),
+            )
+        })
+
+        it('should read backgroundStyle from integration', () => {
+            const integration = fromJS({
+                ...mockIntegration.toJS(),
+                decoration: {
+                    ...mockIntegration.get('decoration').toJS(),
+                    background_color_style:
+                        GorgiasChatBackgroundColorStyle.Solid,
+                },
+            })
+
+            renderComponent(integration)
+
+            expect(mockBrandCard).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    backgroundStyle: GorgiasChatBackgroundColorStyle.Solid,
+                }),
+            )
+        })
+
+        it('should save background_color_style', async () => {
+            const user = userEvent.setup()
+            const { getByRole } = renderComponent()
+
+            act(() => {
+                const { onBackgroundStyleChange } = mockBrandCard.mock
+                    .calls[0][0] as BrandCardProps
+                onBackgroundStyleChange(GorgiasChatBackgroundColorStyle.Solid)
+            })
+
+            await user.click(getByRole('button', { name: 'Save' }))
+
+            const calledWith =
+                mockUpdateOrCreateIntegration.mock.calls[0][0].toJS()
+            expect(calledWith.decoration).toMatchObject({
+                background_color_style: GorgiasChatBackgroundColorStyle.Solid,
             })
         })
     })

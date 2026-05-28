@@ -139,6 +139,7 @@ export type GorgiasChatPreviewApplicationSettings = {
     decoration?: {
         mainColor?: string
         conversationColor?: string
+        backgroundColorStyle?: GorgiasChatBackgroundColorStyle
         headerPictureUrl?: string
         headerAlternativePictureUrl?: string
         introductionText?: string

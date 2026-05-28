@@ -5,11 +5,13 @@ import { fireEvent, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { GORGIAS_CHAT_DEFAULT_COLOR } from 'config/integrations/gorgias_chat'
+import { GorgiasChatBackgroundColorStyle } from 'models/integration/types'
 
 import { BrandCard } from './BrandCard'
 
 const mockUpdateMainColor = jest.fn()
 const mockUpdateConversationColor = jest.fn()
+const mockUpdateBackgroundStyle = jest.fn()
 const mockUpdateIntroductionText = jest.fn()
 const mockUpdateOfflineIntroductionText = jest.fn()
 const mockOpenChat = jest.fn()
@@ -22,6 +24,8 @@ jest.mock(
             updateMainColor: (value: string) => mockUpdateMainColor(value),
             updateConversationColor: (value: string) =>
                 mockUpdateConversationColor(value),
+            updateBackgroundStyle: (value: string) =>
+                mockUpdateBackgroundStyle(value),
             updateHeaderPictureUrl: jest.fn(),
             updateHeaderAlternativePictureUrl: jest.fn(),
             updateIntroductionText: mockUpdateIntroductionText,
@@ -57,9 +61,16 @@ type CheckBoxFieldProps = {
     onChange: (value: boolean) => void
 }
 
+type RadioGroupProps = {
+    value: string
+    onChange: (value: string) => void
+    children?: ReactNode
+}
+
 const mockColorPicker = jest.fn()
 const mockLogoUpload = jest.fn()
 const mockCheckBoxField = jest.fn()
+const mockRadioGroup = jest.fn()
 
 jest.mock('@gorgias/axiom', () => ({
     ...jest.requireActual('@gorgias/axiom'),
@@ -71,6 +82,13 @@ jest.mock('@gorgias/axiom', () => ({
         mockCheckBoxField(props)
         return null
     },
+    RadioGroup: (props: RadioGroupProps) => {
+        mockRadioGroup(props)
+        return <div>{props.children}</div>
+    },
+    Radio: ({ value, label }: { value: string; label: string }) => (
+        <span data-value={value}>{label}</span>
+    ),
     TextField: ({
         label,
         value,
@@ -119,6 +137,7 @@ describe('BrandCard', () => {
         mainColor: '#FF0000',
         conversationColor: '#FF0000',
         useMainColorOutsideBusinessHours: false,
+        backgroundStyle: GorgiasChatBackgroundColorStyle.Gradient,
         headerPictureUrl: 'https://example.com/logo.png',
         headerAlternativePictureUrl: 'https://example.com/alternative-logo.png',
         introductionText: 'How can we help?',
@@ -126,6 +145,7 @@ describe('BrandCard', () => {
         onMainColorChange: jest.fn(),
         onConversationColorChange: jest.fn(),
         onUseMainColorOutsideBusinessHoursChange: jest.fn(),
+        onBackgroundStyleChange: jest.fn(),
         onHeaderLogoUrlChange: jest.fn(),
         onHeaderAlternativePictureUrlChange: jest.fn(),
         onIntroductionTextChange: jest.fn(),
@@ -152,7 +172,7 @@ describe('BrandCard', () => {
             )
         })
 
-        it('should call onMainColorChange and mirror to conversation color when showAdvancedColors is false', () => {
+        it('should call onMainColorChange and mirror to conversation color when isAiAgentDisabled is false', () => {
             renderComponent()
 
             const { onChange } = mockColorPicker.mock
@@ -170,9 +190,9 @@ describe('BrandCard', () => {
     })
 
     describe('Advanced colors (AI agent disabled)', () => {
-        it('should render both main and conversation color pickers when showAdvancedColors is true', () => {
+        it('should render both main and conversation color pickers when isAiAgentDisabled is true', () => {
             renderComponent({
-                showAdvancedColors: true,
+                isAiAgentDisabled: true,
                 mainColor: '#111111',
                 conversationColor: '#222222',
             })
@@ -186,7 +206,7 @@ describe('BrandCard', () => {
         })
 
         it('should call onMainColorChange without mirroring to conversation color', () => {
-            renderComponent({ showAdvancedColors: true })
+            renderComponent({ isAiAgentDisabled: true })
 
             const mainCall = mockColorPicker.mock.calls.find(
                 ([props]: [ColorPickerProps]) => props.value === '#FF0000',
@@ -205,7 +225,7 @@ describe('BrandCard', () => {
 
         it('should call onConversationColorChange and sync the chat preview when the conversation color changes', () => {
             renderComponent({
-                showAdvancedColors: true,
+                isAiAgentDisabled: true,
                 conversationColor: '#AAAAAA',
             })
 
@@ -224,7 +244,7 @@ describe('BrandCard', () => {
 
         it('should render the outside-business-hours checkbox with the current value', () => {
             renderComponent({
-                showAdvancedColors: true,
+                isAiAgentDisabled: true,
                 useMainColorOutsideBusinessHours: true,
             })
 
@@ -237,7 +257,7 @@ describe('BrandCard', () => {
         })
 
         it('should call onUseMainColorOutsideBusinessHoursChange when the checkbox toggles', () => {
-            renderComponent({ showAdvancedColors: true })
+            renderComponent({ isAiAgentDisabled: true })
 
             const { onChange } = mockCheckBoxField.mock
                 .calls[0][0] as CheckBoxFieldProps
@@ -248,10 +268,44 @@ describe('BrandCard', () => {
             ).toHaveBeenCalledWith(true)
         })
 
-        it('should not render the checkbox when showAdvancedColors is false', () => {
+        it('should not render the checkbox when isAiAgentDisabled is false', () => {
             renderComponent()
 
             expect(mockCheckBoxField).not.toHaveBeenCalled()
+        })
+
+        it('should render the background style radio group with the current value', () => {
+            renderComponent({
+                isAiAgentDisabled: true,
+                backgroundStyle: GorgiasChatBackgroundColorStyle.Solid,
+            })
+
+            expect(mockRadioGroup).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    value: GorgiasChatBackgroundColorStyle.Solid,
+                }),
+            )
+        })
+
+        it('should call onBackgroundStyleChange and sync the preview when the background style changes', () => {
+            renderComponent({ isAiAgentDisabled: true })
+
+            const { onChange } = mockRadioGroup.mock
+                .calls[0][0] as RadioGroupProps
+            onChange(GorgiasChatBackgroundColorStyle.Solid)
+
+            expect(defaultProps.onBackgroundStyleChange).toHaveBeenCalledWith(
+                GorgiasChatBackgroundColorStyle.Solid,
+            )
+            expect(mockUpdateBackgroundStyle).toHaveBeenCalledWith(
+                GorgiasChatBackgroundColorStyle.Solid,
+            )
+        })
+
+        it('should not render the background style radio group when isAiAgentDisabled is false', () => {
+            renderComponent()
+
+            expect(mockRadioGroup).not.toHaveBeenCalled()
         })
     })
 

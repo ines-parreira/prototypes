@@ -16,6 +16,7 @@ import type { GorgiasChatPosition } from 'models/integration/types'
 import type {
     GorgiasChatAvatarSettings,
     GorgiasChatAvatarType,
+    GorgiasChatBackgroundColorStyle,
     GorgiasChatLauncherSettings,
     GorgiasChatPreviewOrdersOptions,
     GorgiasChatPreviewSelfServiceFlows,
@@ -178,6 +179,19 @@ export const useChatPreviewPanel = ({
             openChat()
         },
         [openChat, displayPage],
+    )
+
+    const updateBackgroundStyle = useCallback(
+        (backgroundColorStyle: GorgiasChatBackgroundColorStyle) => {
+            chatPreviewPanelRef.current?.updateSettings({
+                decoration: {
+                    backgroundColorStyle,
+                },
+            })
+            displayPage('homepage')
+            openChat()
+        },
+        [displayPage, openChat],
     )
 
     const updatePosition = useCallback(
@@ -345,6 +359,7 @@ export const useChatPreviewPanel = ({
         displayPage,
         updateMainColor,
         updateConversationColor,
+        updateBackgroundStyle,
         updatePosition,
         updateHeaderPictureUrl,
         updateHeaderAlternativePictureUrl,

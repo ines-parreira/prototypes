@@ -8,6 +8,8 @@ import {
     Elevation,
     Heading,
     Icon,
+    Radio,
+    RadioGroup,
     Text,
     TextField,
     Tooltip,
@@ -18,6 +20,7 @@ import {
     GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH,
     GORGIAS_CHAT_DEFAULT_COLOR,
 } from 'config/integrations/gorgias_chat'
+import { GorgiasChatBackgroundColorStyle } from 'models/integration/types'
 import { ColorPicker } from 'pages/integrations/integration/components/gorgias_chat/legacy/components/ColorPicker'
 import { LogoUpload } from 'pages/integrations/integration/components/gorgias_chat/legacy/components/LogoUpload'
 import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
@@ -28,15 +31,17 @@ type Props = {
     mainColor: string
     conversationColor: string
     useMainColorOutsideBusinessHours: boolean
+    backgroundStyle: GorgiasChatBackgroundColorStyle
     headerPictureUrl?: string
     headerAlternativePictureUrl?: string
     introductionText: string
     offlineIntroductionText: string
     isAiAgentEnabled?: boolean
-    showAdvancedColors?: boolean
+    isAiAgentDisabled?: boolean
     onMainColorChange: (value: string) => void
     onConversationColorChange: (value: string) => void
     onUseMainColorOutsideBusinessHoursChange: (value: boolean) => void
+    onBackgroundStyleChange: (value: GorgiasChatBackgroundColorStyle) => void
     onHeaderLogoUrlChange: (url?: string) => void
     onHeaderAlternativePictureUrlChange: (url?: string) => void
     onIntroductionTextChange: (value: string) => void
@@ -47,15 +52,17 @@ export const BrandCard = ({
     mainColor,
     conversationColor,
     useMainColorOutsideBusinessHours,
+    backgroundStyle,
     headerPictureUrl,
     headerAlternativePictureUrl,
     introductionText,
     offlineIntroductionText,
     isAiAgentEnabled = false,
-    showAdvancedColors = false,
+    isAiAgentDisabled = false,
     onMainColorChange,
     onConversationColorChange,
     onUseMainColorOutsideBusinessHoursChange,
+    onBackgroundStyleChange,
     onHeaderLogoUrlChange,
     onHeaderAlternativePictureUrlChange,
     onIntroductionTextChange,
@@ -64,6 +71,7 @@ export const BrandCard = ({
     const {
         updateMainColor,
         updateConversationColor,
+        updateBackgroundStyle,
         updateHeaderPictureUrl,
         updateHeaderAlternativePictureUrl,
         updateIntroductionText,
@@ -88,7 +96,7 @@ export const BrandCard = ({
                     </Text>
                 </div>
                 <div className={css.mainContent}>
-                    {showAdvancedColors ? (
+                    {isAiAgentDisabled ? (
                         <div className={css.fieldSection}>
                             <div className={css.colorPickersWrapper}>
                                 <div className={css.colorPickerField}>
@@ -168,6 +176,38 @@ export const BrandCard = ({
                                 }}
                                 onFocus={openChat}
                             />
+                        </div>
+                    )}
+
+                    {isAiAgentDisabled && (
+                        <div className={css.fieldSection}>
+                            <Text variant="bold" size="md">
+                                Background style
+                            </Text>
+                            <RadioGroup
+                                value={backgroundStyle}
+                                onChange={(value) => {
+                                    const next =
+                                        value as GorgiasChatBackgroundColorStyle
+                                    onBackgroundStyleChange(next)
+                                    updateBackgroundStyle(next)
+                                }}
+                                flexDirection="column"
+                                gap="xs"
+                            >
+                                <Radio
+                                    value={
+                                        GorgiasChatBackgroundColorStyle.Gradient
+                                    }
+                                    label="Gradient"
+                                />
+                                <Radio
+                                    value={
+                                        GorgiasChatBackgroundColorStyle.Solid
+                                    }
+                                    label="Solid"
+                                />
+                            </RadioGroup>
                         </div>
                     )}
 

@@ -5,6 +5,7 @@ import { act } from '@testing-library/react'
 
 import {
     GorgiasChatAvatarType,
+    GorgiasChatBackgroundColorStyle,
     GorgiasChatLauncherType,
     GorgiasChatPositionAlignmentEnum,
 } from 'models/integration/types/gorgiasChat'
@@ -158,6 +159,16 @@ describe('useChatPreviewPanel', () => {
         const { result } = renderHook(() => useChatPreviewPanel())
 
         expect(() => result.current.updateConversationColor('')).not.toThrow()
+    })
+
+    it('updateBackgroundStyle does not throw when ref is unattached', () => {
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        expect(() =>
+            result.current.updateBackgroundStyle(
+                GorgiasChatBackgroundColorStyle.Solid,
+            ),
+        ).not.toThrow()
     })
 
     it('updatePosition does not throw when ref is unattached', () => {
@@ -757,6 +768,7 @@ describe('useChatPreviewPanelContext', () => {
         const mockContextValue: ChatPreviewPanelContextValue = {
             updateMainColor: jest.fn(),
             updateConversationColor: jest.fn(),
+            updateBackgroundStyle: jest.fn(),
             updatePosition: jest.fn(),
             updateHeaderPictureUrl: jest.fn(),
             updateHeaderAlternativePictureUrl: jest.fn(),
