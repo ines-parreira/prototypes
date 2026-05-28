@@ -144,7 +144,11 @@ export const AiAgentOverview = () => {
     const { needsOptIn } = useNeedsAiAgentTrialOptIn(shopName)
     const hasSkillsAccess = useSkillsAccess()
 
-    const { storeActivations } = useStoreActivations()
+    const { storeActivations, isFetchLoading } = useStoreActivations({
+        storeName: shopName,
+        withChatIntegrationsStatus: needsOptIn,
+        withStoresKnowledgeStatus: needsOptIn,
+    })
 
     const {
         startTrialDeprecated,
@@ -239,7 +243,11 @@ export const AiAgentOverview = () => {
     return (
         <AiAgentOverviewLayout shopName={shopName}>
             {needsOptIn ? (
-                <TrialOptInBanner shopName={shopName} />
+                <TrialOptInBanner
+                    shopName={shopName}
+                    storeActivations={storeActivations}
+                    isStoreActivationsLoading={isFetchLoading}
+                />
             ) : (
                 <SetupModeBanner />
             )}

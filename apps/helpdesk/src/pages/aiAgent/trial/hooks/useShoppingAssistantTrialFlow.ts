@@ -208,6 +208,7 @@ export const useShoppingAssistantTrialFlow = ({
         isLoading: isAiAgentTrialLoading,
     } = useStartAiAgentTrialMutation({
         onError: () => {
+            toast.error('Failed to start your trial. Please try again.')
             trialModal.closeModal(trialUpgradeModalName)
         },
     })
@@ -242,6 +243,8 @@ export const useShoppingAssistantTrialFlow = ({
         )
     }
 
+    const isPostSetupSource = source === 'overview_post_setup'
+
     const startShoppingAssistantTrial = () => {
         logEvent(SegmentEvent.PricingModalClicked, {
             type: 'trial_started',
@@ -255,9 +258,12 @@ export const useShoppingAssistantTrialFlow = ({
             },
             {
                 onSuccess: () => {
-                    // Close upgrade modal and open finish setup modal
                     trialModal.closeModal(trialUpgradeModalName)
-                    trialFinishSetupModal.openModal(trialFinishSetupModalName)
+                    if (!isPostSetupSource) {
+                        trialFinishSetupModal.openModal(
+                            trialFinishSetupModalName,
+                        )
+                    }
 
                     onUpgradeModalClose?.()
                 },
@@ -275,7 +281,9 @@ export const useShoppingAssistantTrialFlow = ({
             onSuccess: async () => {
                 trialModal.closeModal(trialUpgradeModalName)
                 onUpgradeModalClose?.()
-                openTrialFinishSetupModal()
+                if (!isPostSetupSource) {
+                    openTrialFinishSetupModal()
+                }
             },
         })
     }

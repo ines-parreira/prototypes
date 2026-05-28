@@ -22,6 +22,36 @@ describe('AiAgentOnboardingRouter', () => {
         expect(container).toHaveTextContent('AI Agent Onboarding')
     })
 
+    it('hides page banners on the V2 path', () => {
+        mockFeatureFlags({ [FeatureFlagKey.AiAgentOnboardingV3]: false })
+
+        document.body.innerHTML = `
+            <div class="ui-banner-banner" style="display: block;">Banner 1</div>
+        `
+
+        render(<AiAgentOnboardingRouter />)
+
+        const banner = document.querySelector(
+            '.ui-banner-banner',
+        ) as HTMLElement
+        expect(banner.style.display).toBe('none')
+    })
+
+    it('does not hide page banners on the V3 path', () => {
+        mockFeatureFlags({ [FeatureFlagKey.AiAgentOnboardingV3]: true })
+
+        document.body.innerHTML = `
+            <div class="ui-banner-banner" style="display: block;">Banner 1</div>
+        `
+
+        render(<AiAgentOnboardingRouter />)
+
+        const banner = document.querySelector(
+            '.ui-banner-banner',
+        ) as HTMLElement
+        expect(banner.style.display).toBe('block')
+    })
+
     it('portals the wizard out of the route container when AiAgentOnboardingV3 is enabled', () => {
         mockFeatureFlags({ [FeatureFlagKey.AiAgentOnboardingV3]: true })
 

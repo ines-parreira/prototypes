@@ -1,4 +1,4 @@
-import { useFlag } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 import { assumeMock, render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
@@ -90,7 +90,7 @@ const mockUseTopLocations = assumeMock(useTopLocations)
 const mockUseGetOnboardingData = useGetOnboardingData as jest.Mock
 const mockUseUpdateOnboarding = useUpdateOnboarding as jest.Mock
 const mockUseGetKnowledgePreviewData = useGetKnowledgePreviewData as jest.Mock
-const mockUseFlag = useFlag as jest.Mock
+const mockUseFlagWithLoading = useFlagWithLoading as jest.Mock
 const mockUseTrialAccess = useTrialAccess as jest.Mock
 const mockUseLocalStorage = useLocalStorage as jest.Mock
 const mockUseStartSalesTrialMutation = useStartSalesTrialMutation as jest.Mock
@@ -180,7 +180,10 @@ describe('KnowledgeStep', () => {
                 isTopProductsLoading: false,
             },
         })
-        mockUseFlag.mockReturnValue(false)
+        mockUseFlagWithLoading.mockReturnValue({
+            value: false,
+            isLoading: false,
+        })
         mockUseTrialAccess.mockReturnValue({
             trialType: TrialType.ShoppingAssistant,
             hasCurrentStoreTrialStarted: false,
@@ -289,7 +292,10 @@ describe('KnowledgeStep', () => {
         )
     })
     it('should navigate to per-shop overview when feature flag is enabled', async () => {
-        mockUseFlag.mockReturnValueOnce(true)
+        mockUseFlagWithLoading.mockImplementation((key) => ({
+            value: key === FeatureFlagKey.AiAgentExpandingTrialExperienceForAll,
+            isLoading: false,
+        }))
         useGetHelpCentersByShopNameMock.mockReturnValue({
             isHelpCenterLoading: false,
             helpCenters: getHelpCentersResponseFixture.data,
@@ -406,6 +412,22 @@ describe('KnowledgeStep', () => {
                         `/app/ai-agent/overview?shopName=${encodeURIComponent(shopifyIntegration.meta.shop_name)}&from=onboarding`,
                     ),
                 ).toBeInTheDocument()
+            })
+        })
+        it('should clear stale opt-in but NOT start Shopping Assistant trial when V3 onboarding flag is enabled', async () => {
+            mockUseFlagWithLoading.mockImplementation((key) => ({
+                value: key === FeatureFlagKey.AiAgentOnboardingV3,
+                isLoading: false,
+            }))
+            renderWithProvider()
+            jest.runAllTimers()
+            const nextButton = screen.getByText('Finish setup')
+            act(() => {
+                fireEvent.click(nextButton)
+            })
+            await waitFor(() => {
+                expect(mockStartSalesTrialMutateAsync).not.toHaveBeenCalled()
+                expect(mockRemoveShoppingAssistantTrialOptin).toHaveBeenCalled()
             })
         })
         it('should configure error handling correctly in the mutation hook', async () => {

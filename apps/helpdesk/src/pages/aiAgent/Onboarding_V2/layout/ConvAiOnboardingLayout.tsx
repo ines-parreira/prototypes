@@ -4,7 +4,6 @@ import classNames from 'classnames'
 
 import { Box, ProgressBar, Text } from '@gorgias/axiom'
 
-import { useHideBanners } from 'AlertBanners/hooks/useHideBanners'
 import { OnboardingNavigationButtons } from 'pages/aiAgent/Onboarding_V2/components/common/OnboardingNavigationButtons/OnboardingNavigationButtons'
 import { useOnboardingStepTracking } from 'pages/aiAgent/Onboarding_V2/hooks/useOnboardingStepTracking'
 
@@ -133,6 +132,5 @@ export const OnboardingContentContainer: React.FC<{
 export const ConvAiOnboardingLayout: React.FC<{
     children: ReactNode
 }> = ({ children }) => {
-    useHideBanners()
     return <div className={css.onboardingLayout}>{children}</div>
 }

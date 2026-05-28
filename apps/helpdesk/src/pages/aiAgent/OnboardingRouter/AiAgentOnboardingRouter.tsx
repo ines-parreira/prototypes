@@ -2,7 +2,13 @@ import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 
 import { Box, Loader, Overlay } from '@gorgias/axiom'
 
+import { useHideBanners } from 'AlertBanners/hooks/useHideBanners'
 import { AiAgentOnboarding } from 'pages/aiAgent/Onboarding_V2/components/AiAgentOnboarding/AiAgentOnboarding'
+
+const AiAgentOnboardingV2 = () => {
+    useHideBanners()
+    return <AiAgentOnboarding />
+}
 
 export const AiAgentOnboardingRouter = () => {
     const { value: isAiAgentOnboardingV3Enabled, isLoading } =
@@ -29,5 +35,5 @@ export const AiAgentOnboardingRouter = () => {
         )
     }
 
-    return <AiAgentOnboarding />
+    return <AiAgentOnboardingV2 />
 }

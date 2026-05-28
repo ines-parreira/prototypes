@@ -34,6 +34,7 @@ export type TrialActivationModalProps = {
     trialType: TrialType
     newPlan: PlanDetails
     isLoading?: boolean
+    isConfirmDisabled?: boolean
 }
 
 const DESCRIPTION_BY_TRIAL_TYPE: Record<TrialType, string> = {
@@ -53,6 +54,7 @@ export const TrialActivationModal = ({
     trialType,
     newPlan,
     isLoading = false,
+    isConfirmDisabled = false,
 }: TrialActivationModalProps) => {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
@@ -128,7 +130,11 @@ export const TrialActivationModal = ({
                             <Button
                                 variant="primary"
                                 onClick={handleConfirm}
-                                isDisabled={isLoading || !hasUpgradePlan}
+                                isDisabled={
+                                    isLoading ||
+                                    isConfirmDisabled ||
+                                    !hasUpgradePlan
+                                }
                                 isLoading={isLoading}
                             >
                                 Start trial

@@ -86,6 +86,7 @@ const defaultProps = {
     trialType: TrialType.AiAgent,
     newPlan: mockNewPlan,
     isLoading: false,
+    isConfirmDisabled: false,
 }
 
 const renderModal = (
@@ -186,6 +187,28 @@ describe('<TrialActivationModal />', () => {
 
         const startTrial = screen.getByRole('button', { name: /Start trial/i })
         expect(startTrial).toHaveAttribute('aria-disabled', 'true')
+    })
+
+    it('disables only Start trial when confirmation is disabled', () => {
+        renderModal({ isConfirmDisabled: true })
+
+        expect(
+            screen.getByRole('button', { name: /Start trial/i }),
+        ).toHaveAttribute('aria-disabled', 'true')
+
+        const notNowButton = screen.getByRole('button', { name: /Not now/i })
+        expect(notNowButton).not.toHaveAttribute('aria-disabled', 'true')
+    })
+
+    it('disables both modal actions while loading', () => {
+        renderModal({ isLoading: true })
+
+        expect(
+            screen.getByRole('button', { name: /Start trial/i }),
+        ).toHaveAttribute('aria-disabled', 'true')
+        expect(
+            screen.getByRole('button', { name: /Not now/i }),
+        ).toHaveAttribute('aria-disabled', 'true')
     })
 
     it('does not call onConfirm when terms are unchecked', async () => {

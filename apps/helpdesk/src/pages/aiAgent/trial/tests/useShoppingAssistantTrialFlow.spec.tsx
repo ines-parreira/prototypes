@@ -3,6 +3,8 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { act, assumeMock, renderHook } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
+import { toast } from '@gorgias/axiom'
+
 import useAppSelector from 'hooks/useAppSelector'
 import type { useModalManagerApi } from 'hooks/useModalManager'
 import { useModalManager } from 'hooks/useModalManager'
@@ -149,6 +151,10 @@ describe('useShoppingAssistantTrialFlow', () => {
         mockUseAppSelector.mockReturnValue([])
         mockExtractShopNameFromUrl.mockReturnValue(undefined)
         mockGetShopNameFromStoreActivations.mockReturnValue('Test Store 1')
+    })
+
+    afterEach(() => {
+        jest.restoreAllMocks()
     })
 
     const renderHookWithDefaults = (
@@ -920,6 +926,32 @@ describe('useShoppingAssistantTrialFlow', () => {
                     'AiAgentTrialFinishSetupModal',
                 )
             })
+
+            it('should show an error toast when the AI Agent trial start fails', () => {
+                const toastErrorSpy = jest
+                    .spyOn(toast, 'error')
+                    .mockImplementation()
+
+                renderHookWithProps({})
+
+                const mutationOptions =
+                    mockUseStartAiAgentTrialMutation.mock.calls[0]?.[0]
+                if (!mutationOptions?.onError) {
+                    throw new Error('Expected AI Agent trial onError callback')
+                }
+                const onErrorCallback = mutationOptions.onError as () => void
+
+                act(() => {
+                    onErrorCallback()
+                })
+
+                expect(toastErrorSpy).toHaveBeenCalledWith(
+                    'Failed to start your trial. Please try again.',
+                )
+                expect(mockModalManager.closeModal).toHaveBeenCalledWith(
+                    'AiAgentTrialUpgradeModal',
+                )
+            })
         })
 
         describe('closeAllTrialModals', () => {
@@ -1321,6 +1353,54 @@ describe('useShoppingAssistantTrialFlow', () => {
                     source: OPPORTUNITIES,
                 },
             )
+        })
+
+        it('should skip the finish setup modal after post-setup Shopping Assistant trial start', async () => {
+            const { result } = renderHookWithDefaults({
+                source: 'overview_post_setup',
+            })
+
+            act(() => {
+                result.current.startTrial()
+            })
+
+            const onSuccessCallback = mockMutateAsync.mock.calls[0][1].onSuccess
+            await act(async () => {
+                await onSuccessCallback()
+            })
+
+            expect(mockModalManager.closeModal).toHaveBeenCalledWith(
+                'ShoppingAssistantTrialUpgradeModal',
+            )
+            expect(mockModalManager.openModal).not.toHaveBeenCalledWith(
+                'ShoppingAssistantTrialFinishSetupModal',
+            )
+            expect(result.current.isTrialFinishSetupModalOpen).toBe(false)
+        })
+
+        it('should skip the finish setup modal after post-setup AI Agent trial start', async () => {
+            const { result } = renderHookWithDefaults({
+                trialType: TrialType.AiAgent,
+                source: 'overview_post_setup',
+            })
+
+            act(() => {
+                result.current.startTrial(true)
+            })
+
+            const onSuccessCallback =
+                mockAiAgentMutateAsync.mock.calls[0][1].onSuccess
+            await act(async () => {
+                await onSuccessCallback()
+            })
+
+            expect(mockModalManager.closeModal).toHaveBeenCalledWith(
+                'AiAgentTrialUpgradeModal',
+            )
+            expect(mockModalManager.openModal).not.toHaveBeenCalledWith(
+                'AiAgentTrialFinishSetupModal',
+            )
+            expect(result.current.isTrialFinishSetupModalOpen).toBe(false)
         })
 
         it('should not include source in events when source is not provided', () => {

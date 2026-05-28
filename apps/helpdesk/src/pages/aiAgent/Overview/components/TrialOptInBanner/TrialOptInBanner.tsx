@@ -1,9 +1,8 @@
 import { Banner, Button } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import type { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
-import { TrialActivatedModal } from 'pages/aiAgent/trial/components/TrialActivatedModal/TrialActivatedModal'
 import { TrialActivationModal } from 'pages/aiAgent/trial/components/TrialActivationModal'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
@@ -19,16 +18,17 @@ const BANNER_DESCRIPTION_BY_TRIAL_TYPE: Record<TrialType, string> = {
 
 type Props = {
     shopName: string | undefined
+    storeActivations: Record<string, StoreActivation>
+    isStoreActivationsLoading: boolean
 }
 
-export const TrialOptInBanner = ({ shopName }: Props) => {
+export const TrialOptInBanner = ({
+    shopName,
+    storeActivations,
+    isStoreActivationsLoading,
+}: Props) => {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
-    const { storeActivations } = useStoreActivations({
-        storeName: shopName,
-        withChatIntegrationsStatus: true,
-        withStoresKnowledgeStatus: true,
-    })
 
     const trialAccess = useTrialAccess(shopName)
 
@@ -36,9 +36,7 @@ export const TrialOptInBanner = ({ shopName }: Props) => {
         startTrial,
         isLoading,
         isTrialModalOpen,
-        isSuccessModalOpen,
         closeTrialUpgradeModal,
-        closeSuccessModal,
         openTrialUpgradeModal,
     } = useShoppingAssistantTrialFlow({
         accountDomain,
@@ -76,14 +74,8 @@ export const TrialOptInBanner = ({ shopName }: Props) => {
                 trialType={trialAccess.trialType}
                 newPlan={trialModalProps.newTrialUpgradePlanModal.newPlan}
                 isLoading={isLoading}
+                isConfirmDisabled={isStoreActivationsLoading}
             />
-
-            {isSuccessModalOpen && (
-                <TrialActivatedModal
-                    {...trialModalProps.trialActivatedModal}
-                    onConfirm={closeSuccessModal}
-                />
-            )}
         </>
     )
 }

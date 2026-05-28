@@ -1,3 +1,5 @@
+import type { ComponentProps } from 'react'
+
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -11,38 +13,37 @@ import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps
 jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow')
 jest.mock('pages/aiAgent/trial/hooks/useTrialModalProps')
 jest.mock('pages/aiAgent/trial/hooks/useTrialAccess')
-jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations', () => ({
-    useStoreActivations: () => ({ storeActivations: {} }),
-}))
 jest.mock('pages/aiAgent/trial/components/TrialActivationModal', () => ({
     TrialActivationModal: ({
         isOpen,
         trialType,
         onConfirm,
         onClose,
+        isLoading,
+        isConfirmDisabled,
     }: {
         isOpen: boolean
         trialType: TrialType
         onConfirm: (optedInForUpgrade?: boolean) => void
         onClose: () => void
+        isLoading?: boolean
+        isConfirmDisabled?: boolean
     }) =>
         isOpen ? (
             <div role="dialog" aria-label="Trial activation">
                 <span data-trial-type>{trialType}</span>
-                <button onClick={() => onConfirm(true)}>Confirm trial</button>
-                <button onClick={onClose}>Dismiss trial</button>
+                <button
+                    onClick={() => onConfirm(true)}
+                    disabled={isLoading || isConfirmDisabled}
+                >
+                    Confirm trial
+                </button>
+                <button onClick={onClose} disabled={isLoading}>
+                    Dismiss trial
+                </button>
             </div>
         ) : null,
 }))
-jest.mock(
-    'pages/aiAgent/trial/components/TrialActivatedModal/TrialActivatedModal',
-    () => ({
-        TrialActivatedModal: () => (
-            <div role="dialog" aria-label="Trial activated" />
-        ),
-    }),
-)
-
 const mockUseShoppingAssistantTrialFlow =
     useShoppingAssistantTrialFlow as jest.Mock
 const mockUseTrialModalProps = useTrialModalProps as jest.Mock
@@ -54,15 +55,25 @@ const baseTrialFlow = {
     startTrial: jest.fn(),
     isLoading: false,
     isTrialModalOpen: false,
-    isSuccessModalOpen: false,
     closeTrialUpgradeModal: jest.fn(),
-    closeSuccessModal: jest.fn(),
     openTrialUpgradeModal: jest.fn(),
 }
 
 const baseTrialAccess = {
     trialType: TrialType.AiAgent,
 }
+
+const renderBanner = (
+    props: Partial<ComponentProps<typeof TrialOptInBanner>> = {},
+) =>
+    render(
+        <TrialOptInBanner
+            shopName={SHOP_NAME}
+            storeActivations={{}}
+            isStoreActivationsLoading={false}
+            {...props}
+        />,
+    )
 
 describe('<TrialOptInBanner />', () => {
     beforeEach(() => {
@@ -76,7 +87,7 @@ describe('<TrialOptInBanner />', () => {
     })
 
     it('renders banner with Start trial CTA', () => {
-        render(<TrialOptInBanner shopName={SHOP_NAME} />)
+        renderBanner()
 
         expect(screen.getByText(/AI Agent is ready/i)).toBeInTheDocument()
         expect(screen.getByText(/Start your 2-week trial/i)).toBeInTheDocument()
@@ -94,7 +105,7 @@ describe('<TrialOptInBanner />', () => {
             openTrialUpgradeModal,
         })
 
-        render(<TrialOptInBanner shopName={SHOP_NAME} />)
+        renderBanner()
 
         await user.click(screen.getByRole('button', { name: /Start trial/i }))
 
@@ -107,7 +118,7 @@ describe('<TrialOptInBanner />', () => {
             isTrialModalOpen: true,
         })
 
-        render(<TrialOptInBanner shopName={SHOP_NAME} />)
+        renderBanner()
 
         expect(
             screen.getByRole('dialog', { name: /Trial activation/i }),
@@ -120,7 +131,7 @@ describe('<TrialOptInBanner />', () => {
             isTrialModalOpen: true,
         })
 
-        render(<TrialOptInBanner shopName={SHOP_NAME} />)
+        renderBanner()
 
         expect(
             screen.getByRole('dialog', { name: /Trial activation/i }),
@@ -137,7 +148,7 @@ describe('<TrialOptInBanner />', () => {
             isTrialModalOpen: true,
         })
 
-        render(<TrialOptInBanner shopName={SHOP_NAME} />)
+        renderBanner()
 
         expect(
             screen.getByRole('dialog', { name: /Trial activation/i }),
@@ -153,12 +164,53 @@ describe('<TrialOptInBanner />', () => {
             startTrial,
         })
 
-        render(<TrialOptInBanner shopName={SHOP_NAME} />)
+        renderBanner()
 
         await user.click(screen.getByRole('button', { name: /Confirm trial/i }))
 
         expect(startTrial).toHaveBeenCalledTimes(1)
         expect(startTrial).toHaveBeenCalledWith(true)
+    })
+
+    it('disables Confirm but leaves Dismiss available while store activations are still loading', async () => {
+        const user = userEvent.setup()
+        const closeTrialUpgradeModal = jest.fn()
+        mockUseShoppingAssistantTrialFlow.mockReturnValue({
+            ...baseTrialFlow,
+            isTrialModalOpen: true,
+            closeTrialUpgradeModal,
+        })
+
+        renderBanner({ isStoreActivationsLoading: true })
+
+        expect(
+            screen.getByRole('button', { name: /Confirm trial/i }),
+        ).toBeDisabled()
+        const dismissButton = screen.getByRole('button', {
+            name: /Dismiss trial/i,
+        })
+        expect(dismissButton).toBeEnabled()
+
+        await user.click(dismissButton)
+
+        expect(closeTrialUpgradeModal).toHaveBeenCalledTimes(1)
+    })
+
+    it('disables Confirm while the trial mutation is in flight', () => {
+        mockUseShoppingAssistantTrialFlow.mockReturnValue({
+            ...baseTrialFlow,
+            isTrialModalOpen: true,
+            isLoading: true,
+        })
+
+        renderBanner()
+
+        expect(
+            screen.getByRole('button', { name: /Confirm trial/i }),
+        ).toBeDisabled()
+        expect(
+            screen.getByRole('button', { name: /Dismiss trial/i }),
+        ).toBeDisabled()
     })
 
     it('closes the activation modal when the user dismisses', async () => {
@@ -170,23 +222,10 @@ describe('<TrialOptInBanner />', () => {
             closeTrialUpgradeModal,
         })
 
-        render(<TrialOptInBanner shopName={SHOP_NAME} />)
+        renderBanner()
 
         await user.click(screen.getByRole('button', { name: /Dismiss trial/i }))
 
         expect(closeTrialUpgradeModal).toHaveBeenCalledTimes(1)
-    })
-
-    it('mounts the trial activated modal when isSuccessModalOpen is true', () => {
-        mockUseShoppingAssistantTrialFlow.mockReturnValue({
-            ...baseTrialFlow,
-            isSuccessModalOpen: true,
-        })
-
-        render(<TrialOptInBanner shopName={SHOP_NAME} />)
-
-        expect(
-            screen.getByRole('dialog', { name: /Trial activated/i }),
-        ).toBeInTheDocument()
     })
 })

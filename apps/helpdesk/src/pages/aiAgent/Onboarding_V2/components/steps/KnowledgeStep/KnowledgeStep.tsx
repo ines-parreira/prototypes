@@ -1,4 +1,4 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { getMomentUtcISOString } from '@repo/utils'
@@ -53,8 +53,11 @@ export const KnowledgeStep: React.FC<StepProps> = ({
 }) => {
     const history = useHistory()
 
-    const isAiAgentExpandingTrialExperienceForAllEnabled = useFlag(
-        FeatureFlagKey.AiAgentExpandingTrialExperienceForAll,
+    const { value: isAiAgentExpandingTrialExperienceForAllEnabled } =
+        useFlagWithLoading(FeatureFlagKey.AiAgentExpandingTrialExperienceForAll)
+
+    const { value: isAiAgentOnboardingV3Enabled } = useFlagWithLoading(
+        FeatureFlagKey.AiAgentOnboardingV3,
     )
 
     const { shopName } = useParams<{ shopName: string }>()
@@ -120,7 +123,9 @@ export const KnowledgeStep: React.FC<StepProps> = ({
                                 TrialType.ShoppingAssistant &&
                             shoppingAssistantTrialOptin
                         ) {
-                            await startShoppingAssistantTrial([shopName])
+                            if (!isAiAgentOnboardingV3Enabled) {
+                                await startShoppingAssistantTrial([shopName])
+                            }
                             removeShoppingAssistantTrialOptin()
                         }
 
