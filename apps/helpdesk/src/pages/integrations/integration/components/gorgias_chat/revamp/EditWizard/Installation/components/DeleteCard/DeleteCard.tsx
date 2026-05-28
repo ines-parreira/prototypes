@@ -18,9 +18,11 @@ import {
     OverlayFooter,
     OverlayHeader,
     Text,
+    toast,
 } from '@gorgias/axiom'
 
 import type { deleteIntegration } from 'state/integrations/actions'
+import { errorToPlainText } from 'utils'
 
 import css from './DeleteCard.less'
 
@@ -50,9 +52,15 @@ const DeleteCard = ({
     const handleDeleteIntegration = async () => {
         setIsDeleting(true)
 
-        await onDeleteIntegration(integration)
-
-        setIsDeleteConfirmationOpen(false)
+        try {
+            await onDeleteIntegration(integration, true, true)
+            toast.success('Integration successfully deleted')
+            setIsDeleteConfirmationOpen(false)
+        } catch (error) {
+            toast.error(
+                errorToPlainText(error) ?? 'Failed to delete integration',
+            )
+        }
         setIsDeleting(false)
     }
 

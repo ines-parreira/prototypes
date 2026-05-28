@@ -19,6 +19,7 @@ import {
     Text,
     TextSize,
     TextVariant,
+    toast,
 } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -31,17 +32,20 @@ import useThemeAppExtensionInstallation, {
 } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useThemeAppExtensionInstallation'
 import type { VisibilityControlsHandle } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Installation/components/InstallationCard/VisibilityControls'
 import VisibilityControls from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Installation/components/InstallationCard/VisibilityControls'
-import { updateOrCreateIntegrationRequest } from 'state/integrations/actions'
+import {
+    updateOrCreateIntegration as updateOrCreateIntegrationAction,
+    updateOrCreateIntegrationRequest,
+} from 'state/integrations/actions'
 import {
     getStoreIntegrations,
     makeGetPreRedirectUri,
 } from 'state/integrations/selectors'
+import { errorToPlainText } from 'utils'
 
 import css from './OneClickinstall.less'
 
 type Props = {
     integration: Map<any, any>
-    updateOrCreateIntegration: (integration: Map<any, any>) => Promise<void>
     themeAppExtensionInstallation: boolean
     themeAppExtensionInstallationUrl: string | null
     isConnected: boolean
@@ -51,7 +55,6 @@ type Props = {
 
 const OneClickInstall = ({
     integration,
-    updateOrCreateIntegration,
     themeAppExtensionInstallation,
     themeAppExtensionInstallationUrl,
     isConnected,
@@ -113,8 +116,25 @@ const OneClickInstall = ({
                 meta: meta.set('shopify_integration_ids', []),
             }
 
-            await updateOrCreateIntegration(fromJS(form))
-        }, [integration, updateOrCreateIntegration])
+            try {
+                await dispatch(
+                    updateOrCreateIntegrationAction(
+                        fromJS(form),
+                        undefined,
+                        undefined,
+                        undefined,
+                        true,
+                        undefined,
+                        true,
+                    ),
+                )
+                toast.success('Integration successfully updated')
+            } catch (error) {
+                toast.error(
+                    errorToPlainText(error) ?? 'Failed to update integration',
+                )
+            }
+        }, [integration, dispatch])
 
     const [wasShopifyThemeSettingsOpened, setWasShopifyThemeSettingsOpened] =
         useState(false)
@@ -157,20 +177,26 @@ const OneClickInstall = ({
                     ),
             }
 
-            await dispatch(
-                updateOrCreateIntegrationRequest(
-                    fromJS(form),
-                    undefined,
-                    null,
-                    true,
-                    openShopifyThemeSettingsInNewTabIfNeeded,
-                ),
-            )
-        }, [
-            integration,
-            updateOrCreateIntegration,
-            openShopifyThemeSettingsInNewTabIfNeeded,
-        ])
+            try {
+                await dispatch(
+                    updateOrCreateIntegrationRequest(
+                        fromJS(form),
+                        undefined,
+                        null,
+                        true,
+                        openShopifyThemeSettingsInNewTabIfNeeded,
+                        true,
+                        undefined,
+                        true,
+                    ),
+                )
+                toast.success('Integration successfully updated')
+            } catch (error) {
+                toast.error(
+                    errorToPlainText(error) ?? 'Failed to update integration',
+                )
+            }
+        }, [integration, dispatch, openShopifyThemeSettingsInNewTabIfNeeded])
 
     const [
         { loading: __shopifyScriptTagScopeLoading },

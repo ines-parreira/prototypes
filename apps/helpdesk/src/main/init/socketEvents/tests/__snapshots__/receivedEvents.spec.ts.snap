@@ -8,14 +8,3 @@ exports[`receivedEvents OutboundPhoneCallInitiated handler should redirect to ti
 ]
 `;
 
-exports[`receivedEvents VIEW_DEACTIVATED handler should notify 1`] = `
-[
-  [
-    {
-      "allowHTML": true,
-      "message": "View "Foo" has been deactivated.",
-      "status": "warning",
-    },
-  ],
-]
-`;

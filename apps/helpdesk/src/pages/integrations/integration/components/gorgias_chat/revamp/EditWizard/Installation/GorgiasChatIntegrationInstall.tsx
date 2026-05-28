@@ -5,33 +5,24 @@ import AdvancedInstallationCard from 'pages/integrations/integration/components/
 import DeleteCard from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Installation/components/DeleteCard/DeleteCard'
 import InstallationCard from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Installation/components/InstallationCard/InstallationCard'
 import css from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Installation/GorgiasChatIntegrationInstall.less'
-import type {
-    deleteIntegration,
-    updateOrCreateIntegration,
-} from 'state/integrations/actions'
+import type { deleteIntegration } from 'state/integrations/actions'
 
 type Props = {
     integration: Map<any, any>
     actions: {
-        updateOrCreateIntegration: typeof updateOrCreateIntegration
         deleteIntegration: typeof deleteIntegration
     }
 }
 
 export const GorgiasChatIntegrationInstallRevamp = ({
     integration,
-    actions: { deleteIntegration, updateOrCreateIntegration },
+    actions: { deleteIntegration },
 }: Props) => {
     return (
         <GorgiasChatRevampLayout integration={integration}>
             <div className={css.installationTab}>
                 <div className={css.cardsWrapper}>
-                    <InstallationCard
-                        integration={integration}
-                        actions={{
-                            updateOrCreateIntegration,
-                        }}
-                    />
+                    <InstallationCard integration={integration} />
                     <AdvancedInstallationCard integration={integration} />
                     <DeleteCard
                         integration={integration}

@@ -10,6 +10,7 @@ import { fromJS } from 'immutable'
 import { cloneDeep } from 'lodash'
 import _find from 'lodash/find'
 
+import { toast } from '@gorgias/axiom'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { shouldTicketBeDisplayedInRecentChats } from 'business/recentChats'
@@ -82,7 +83,6 @@ import * as integrationsActions from 'state/integrations/actions'
 import { getEmailMigrations } from 'state/integrations/selectors'
 import { MACRO_PARAMS_UPDATED } from 'state/macro/constants'
 import * as notificationsActions from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { getTeams } from 'state/teams/selectors'
 import * as ticketActions from 'state/ticket/actions'
 import type { RootState } from 'state/types'
@@ -430,11 +430,8 @@ const receivedEvents: ReceivedEvent[] = [
             )
 
             if (!areProductsLoaded) {
-                reduxStore.dispatch(
-                    notificationsActions.notify({
-                        message:
-                            'The app will reload automatically in a few seconds to reflect your subscription changes.',
-                    }) as any,
+                toast.info(
+                    'The app will reload automatically in a few seconds to reflect your subscription changes.',
                 )
                 setTimeout(() => {
                     window.location.reload()
@@ -594,18 +591,11 @@ const receivedEvents: ReceivedEvent[] = [
         onReceive: function (json) {
             reduxStore.dispatch(integrationsActions.fetchIntegrations() as any)
 
-            reduxStore.dispatch(
-                notificationsActions.notify({
-                    status: NotificationStatus.Success,
-                    message:
-                        (json as FacebookIntegrationsReconnected).event
-                            .total === 1
-                            ? 'One Facebook page has been reconnected.'
-                            : `${
-                                  (json as FacebookIntegrationsReconnected)
-                                      .event.total
-                              } Facebook pages have been reconnected.`,
-                }) as any,
+            const { total } = (json as FacebookIntegrationsReconnected).event
+            toast.success(
+                total === 1
+                    ? 'One Facebook page has been reconnected.'
+                    : `${total} Facebook pages have been reconnected.`,
             )
         },
     },
@@ -673,15 +663,7 @@ const receivedEvents: ReceivedEvent[] = [
         name: SocketEventType.ViewDeactivated,
         onReceive: function (json) {
             const { event } = json as unknown as ViewDeactivated
-            const message = `View "${event.name}" has been deactivated.`
-
-            reduxStore.dispatch(
-                notificationsActions.notify({
-                    status: NotificationStatus.Warning,
-                    allowHTML: true,
-                    message,
-                }) as any,
-            )
+            toast.warning(`View "${event.name}" has been deactivated.`)
         },
     },
     {
@@ -696,11 +678,9 @@ const receivedEvents: ReceivedEvent[] = [
             if (window.location.pathname !== listPath) {
                 history.push(listPath)
             }
-            reduxStore.dispatch(
-                notificationsActions.notify({
-                    dismissAfter: 10000,
-                    message: `WhatsApp successfully connected for number ${phone_number!}.`,
-                }) as any,
+            toast.info(
+                `WhatsApp successfully connected for number ${phone_number!}.`,
+                { duration: 10000 },
             )
             reduxStore.dispatch(integrationsActions.fetchIntegrations() as any)
             const phoneNumbers = await fetchNewPhoneNumbers()
@@ -721,13 +701,7 @@ const receivedEvents: ReceivedEvent[] = [
             const message = error?.message
                 ? `${error.message} (number: ${phone_number!})`
                 : `Failed to connect WhatsApp for number ${phone_number!}. Please try again or contact support.`
-            reduxStore.dispatch(
-                notificationsActions.notify({
-                    dismissAfter: 10000,
-                    status: NotificationStatus.Error,
-                    message,
-                }) as any,
-            )
+            toast.error(message, { duration: 10000 })
         },
     },
     {

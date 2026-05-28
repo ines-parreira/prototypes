@@ -12,14 +12,20 @@ const mockButton = jest.fn((__props: any) => null)
 const mockStoreNameDropdown = jest.fn((__props: any) => null)
 const mockDisconnectStoreModal = jest.fn((__props: any) => null)
 
-const mockDispatch = jest.fn()
+const mockDispatch = jest.fn().mockResolvedValue(undefined)
 const mockUseAppDispatch = jest.fn(() => mockDispatch)
 const mockUseAppSelector = jest.fn((__selector) => [])
 const mockUseAsyncFn = jest.fn((fn: any) => [{ loading: false }, fn])
+const mockToastSuccess = jest.fn()
+const mockToastError = jest.fn()
 
 jest.mock('@gorgias/axiom', () => ({
     ...jest.requireActual('@gorgias/axiom'),
     Button: (props: any) => mockButton(props),
+    toast: {
+        success: (...args: any[]) => mockToastSuccess(...args),
+        error: (...args: any[]) => mockToastError(...args),
+    },
 }))
 
 jest.mock(
@@ -110,6 +116,7 @@ describe('StoreController', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+        mockDispatch.mockResolvedValue(undefined)
         mockUseAsyncFn.mockImplementation((fn: any) => [{ loading: false }, fn])
     })
 
@@ -374,6 +381,100 @@ describe('StoreController', () => {
             )
 
             expect(newChangeButton).toBeDefined()
+        })
+    })
+
+    describe('handleConnect', () => {
+        it('should show success toast after connecting a store', async () => {
+            renderComponent({ storeIntegration: undefined })
+
+            const initialDropdownCalls = mockStoreNameDropdown.mock.calls.length
+            act(() => {
+                mockStoreNameDropdown.mock.calls[
+                    initialDropdownCalls - 1
+                ][0].onChange(1)
+            })
+
+            const buttonCalls = mockButton.mock.calls as any[]
+            const connectButton = [...buttonCalls]
+                .reverse()
+                .find((call) => call[0].children === 'Connect store')
+
+            await act(async () => {
+                await connectButton[0].onClick()
+            })
+
+            expect(mockDispatch).toHaveBeenCalled()
+            expect(mockToastSuccess).toHaveBeenCalledWith(
+                'Integration successfully updated',
+            )
+        })
+    })
+
+    describe('handleDisconnect', () => {
+        it('should show success toast after disconnecting a store', async () => {
+            renderComponent()
+
+            const modalCall = mockDisconnectStoreModal.mock.calls[0] as any[]
+
+            await act(async () => {
+                await modalCall[0].onDisconnect()
+            })
+
+            expect(mockDispatch).toHaveBeenCalled()
+            expect(mockToastSuccess).toHaveBeenCalledWith(
+                'Integration successfully updated',
+            )
+        })
+
+        it('should show error toast when disconnect fails', async () => {
+            mockDispatch.mockRejectedValueOnce({
+                response: {
+                    data: { error: { msg: 'Disconnect failed' } },
+                },
+            })
+
+            renderComponent()
+
+            const modalCall = mockDisconnectStoreModal.mock.calls[0] as any[]
+
+            await act(async () => {
+                await modalCall[0].onDisconnect()
+            })
+
+            expect(mockToastError).toHaveBeenCalledWith('Disconnect failed')
+            expect(mockToastSuccess).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('handleConnect error path', () => {
+        it('should show error toast when connect fails', async () => {
+            mockDispatch.mockRejectedValueOnce({
+                response: {
+                    data: { error: { msg: 'Connect failed' } },
+                },
+            })
+
+            renderComponent({ storeIntegration: undefined })
+
+            const initialDropdownCalls = mockStoreNameDropdown.mock.calls.length
+            act(() => {
+                mockStoreNameDropdown.mock.calls[
+                    initialDropdownCalls - 1
+                ][0].onChange(1)
+            })
+
+            const buttonCalls = mockButton.mock.calls as any[]
+            const connectButton = [...buttonCalls]
+                .reverse()
+                .find((call) => call[0].children === 'Connect store')
+
+            await act(async () => {
+                await connectButton[0].onClick()
+            })
+
+            expect(mockToastError).toHaveBeenCalledWith('Connect failed')
+            expect(mockToastSuccess).not.toHaveBeenCalled()
         })
     })
 

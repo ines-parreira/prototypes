@@ -4,7 +4,14 @@ import { useAsyncFn } from '@repo/hooks'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 
-import { Button, ButtonIntent, ButtonVariant, Icon, Text } from '@gorgias/axiom'
+import {
+    Button,
+    ButtonIntent,
+    ButtonVariant,
+    Icon,
+    Text,
+    toast,
+} from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -16,6 +23,7 @@ import DisconnectStoreModal from 'pages/integrations/integration/components/gorg
 import { updateOrCreateIntegration } from 'state/integrations/actions'
 import { getStoreIconNameFromType } from 'state/integrations/helpers'
 import { getIntegrationsByType } from 'state/integrations/selectors'
+import { errorToPlainText } from 'utils'
 
 import css from './StoreController.less'
 
@@ -71,9 +79,26 @@ const StoreController = ({
                     .set('shopify_integration_ids', []),
             }
 
-            await dispatch(updateOrCreateIntegration(fromJS(form)))
+            try {
+                await dispatch(
+                    updateOrCreateIntegration(
+                        fromJS(form),
+                        undefined,
+                        undefined,
+                        undefined,
+                        true,
+                        undefined,
+                        true,
+                    ),
+                )
 
-            setIsChangingStore(false)
+                toast.success('Integration successfully updated')
+                setIsChangingStore(false)
+            } catch (error) {
+                toast.error(
+                    errorToPlainText(error) ?? 'Failed to update integration',
+                )
+            }
         },
         [integration],
     )
@@ -103,9 +128,26 @@ const StoreController = ({
                     .set('shopify_integration_ids', []),
             }
 
-            await dispatch(updateOrCreateIntegration(fromJS(form)))
+            try {
+                await dispatch(
+                    updateOrCreateIntegration(
+                        fromJS(form),
+                        undefined,
+                        undefined,
+                        undefined,
+                        true,
+                        undefined,
+                        true,
+                    ),
+                )
 
-            setIsDisconnectModalOpen(false)
+                toast.success('Integration successfully updated')
+                setIsDisconnectModalOpen(false)
+            } catch (error) {
+                toast.error(
+                    errorToPlainText(error) ?? 'Failed to update integration',
+                )
+            }
         }, [integration])
 
     const handleDeleteModalOpenChange = useCallback(

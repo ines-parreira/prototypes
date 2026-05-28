@@ -847,6 +847,12 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
                 expect.objectContaining({
                     toJS: expect.any(Function),
                 }),
+                undefined,
+                undefined,
+                undefined,
+                true,
+                undefined,
+                true,
             )
 
             const calledWith =

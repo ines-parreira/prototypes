@@ -5,6 +5,8 @@ import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 
+import { toast } from '@gorgias/axiom'
+
 import { IntegrationType } from 'models/integration/types'
 import { GorgiasChatIntegrationPreferencesRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Preferences/GorgiasChatIntegrationPreferences'
 import { submitSetting } from 'state/currentAccount/actions'
@@ -686,7 +688,36 @@ describe('GorgiasChatIntegrationPreferencesRevamp', () => {
                 expect.objectContaining({
                     toJS: expect.any(Function),
                 }),
+                undefined,
+                undefined,
+                undefined,
+                true,
+                undefined,
+                true,
             )
+        })
+
+        it('should show an error toast when updateOrCreateIntegration fails', async () => {
+            const user = userEvent.setup()
+            mockUpdateOrCreateIntegration.mockRejectedValueOnce({
+                response: { data: { error: { msg: 'Save failed' } } },
+            })
+            const toastErrorSpy = jest
+                .spyOn(toast, 'error')
+                .mockImplementation(jest.fn())
+            const toastSuccessSpy = jest
+                .spyOn(toast, 'success')
+                .mockImplementation(jest.fn())
+
+            renderComponent()
+
+            const { onChange } = mockChatAvailabilityCard.mock.calls[0][0]
+            act(() => onChange('always-online'))
+
+            await user.click(screen.getByRole('button', { name: 'Save' }))
+
+            expect(toastErrorSpy).toHaveBeenCalledWith('Save failed')
+            expect(toastSuccessSpy).not.toHaveBeenCalled()
         })
 
         it('should not call submitSetting when sendCsat has not changed', async () => {

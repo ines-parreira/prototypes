@@ -30,6 +30,7 @@ import type {
     Translations,
 } from 'rest_api/gorgias_chat_protected_api/types'
 import * as IntegrationsActions from 'state/integrations/actions'
+import { errorToPlainText } from 'utils'
 
 import {
     emptyTextsPerLanguage,
@@ -432,6 +433,8 @@ export const useGorgiasTranslateText = ({ integration }: Props) => {
                     undefined,
                     undefined,
                     true,
+                    undefined,
+                    true,
                 ),
             )
             setTranslations({
@@ -486,8 +489,11 @@ export const useGorgiasTranslateText = ({ integration }: Props) => {
             logEvent(SegmentEvent.ChatSettingsToneOfVoicePageSaved, {
                 id: integration.get('id'),
             })
-        } catch {
-            toast.error(`There was a problem. We couldn't update your changes`)
+        } catch (error) {
+            toast.error(
+                errorToPlainText(error) ??
+                    `There was a problem. We couldn't update your changes`,
+            )
         }
     }, [saveApplicationTexts, form, integration, language, initialTexts])
 

@@ -4,6 +4,8 @@ import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { MemoryRouter } from 'react-router-dom'
 
+import { toast } from '@gorgias/axiom'
+
 import { TicketChannel } from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useListWorkflowEntryPoints } from 'models/workflows/queries'
@@ -417,6 +419,8 @@ describe('<GorgiasAutomateChatIntegrationRevamp />', () => {
                 expect.objectContaining({
                     orderManagement: { enabled: true },
                 }),
+                undefined,
+                true,
             )
         })
 
@@ -437,6 +441,8 @@ describe('<GorgiasAutomateChatIntegrationRevamp />', () => {
                 expect.objectContaining({
                     articleRecommendation: { enabled: true },
                 }),
+                undefined,
+                true,
             )
         })
 
@@ -466,6 +472,8 @@ describe('<GorgiasAutomateChatIntegrationRevamp />', () => {
                     orderManagement: { enabled: true },
                     articleRecommendation: { enabled: true },
                 }),
+                undefined,
+                true,
             )
         })
 
@@ -525,6 +533,8 @@ describe('<GorgiasAutomateChatIntegrationRevamp />', () => {
                         entrypoints: [{ workflow_id: 'wf-1', enabled: true }],
                     }),
                 }),
+                undefined,
+                true,
             )
         })
 
@@ -591,6 +601,35 @@ describe('<GorgiasAutomateChatIntegrationRevamp />', () => {
             expect(
                 mockHandleChatApplicationAutomationSettingsUpdate,
             ).not.toHaveBeenCalled()
+        })
+
+        it('should show an error toast when the save promise rejects', async () => {
+            mockHandleChatApplicationAutomationSettingsUpdate.mockRejectedValueOnce(
+                {
+                    response: {
+                        data: { error: { msg: 'Automation save failed' } },
+                    },
+                },
+            )
+            const toastErrorSpy = jest
+                .spyOn(toast, 'error')
+                .mockImplementation(jest.fn())
+            const toastSuccessSpy = jest
+                .spyOn(toast, 'success')
+                .mockImplementation(jest.fn())
+
+            const user = userEvent.setup()
+            render(<GorgiasAutomateChatIntegrationRevamp {...defaultProps} />)
+
+            await user.click(
+                screen.getByRole('button', {
+                    name: 'Order management: off',
+                }),
+            )
+            await user.click(screen.getByRole('button', { name: 'Save' }))
+
+            expect(toastErrorSpy).toHaveBeenCalledWith('Automation save failed')
+            expect(toastSuccessSpy).not.toHaveBeenCalled()
         })
     })
 

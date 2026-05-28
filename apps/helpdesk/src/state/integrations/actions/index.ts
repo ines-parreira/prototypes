@@ -349,7 +349,11 @@ export function fetchIntegration(
     }
 }
 
-export function deleteIntegration(integration: Map<any, any>) {
+export function deleteIntegration(
+    integration: Map<any, any>,
+    disableSuccessNotification?: boolean,
+    disableErrorNotification?: boolean,
+) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         dispatch({
             type: constants.DELETE_INTEGRATION_START,
@@ -381,6 +385,10 @@ export function deleteIntegration(integration: Map<any, any>) {
                         history.push(nextUrl)
                     }
 
+                    if (disableSuccessNotification) {
+                        return Promise.resolve()
+                    }
+
                     return dispatch(
                         notify({
                             status: NotificationStatus.Success,
@@ -389,6 +397,13 @@ export function deleteIntegration(integration: Map<any, any>) {
                     )
                 },
                 (error: AxiosError) => {
+                    if (disableErrorNotification) {
+                        dispatch({
+                            type: constants.DELETE_INTEGRATION_ERROR,
+                        })
+                        throw error
+                    }
+
                     return dispatch({
                         type: constants.DELETE_INTEGRATION_ERROR,
                         reason: 'Failed to delete the integration',
@@ -408,6 +423,7 @@ export function updateOrCreateIntegrationRequest(
     onSuccess?: (resp: any) => void,
     disableSuccessNotification?: boolean,
     message?: string,
+    disableErrorNotification?: boolean,
 ) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         const isUpdate = integration.get('id') as number
@@ -465,6 +481,15 @@ export function updateOrCreateIntegrationRequest(
                     )
                 },
                 (error: AxiosError) => {
+                    if (disableErrorNotification) {
+                        dispatch({
+                            type: isUpdate
+                                ? constants.UPDATE_INTEGRATION_ERROR
+                                : constants.CREATE_INTEGRATION_ERROR,
+                        })
+                        throw error
+                    }
+
                     return dispatch({
                         type: isUpdate
                             ? constants.UPDATE_INTEGRATION_ERROR
@@ -679,6 +704,7 @@ export function updateOrCreateIntegration(
     onSuccess?: (resp: any) => void,
     disableSuccessNotification?: boolean,
     message?: string,
+    disableErrorNotification?: boolean,
 ) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         return dispatch(
@@ -690,6 +716,7 @@ export function updateOrCreateIntegration(
                 onSuccess,
                 disableSuccessNotification,
                 message,
+                disableErrorNotification,
             ),
         )
     }

@@ -15,6 +15,7 @@ import { ActivityEvents } from '@repo/activity-tracker'
 import { appQueryClient } from '@repo/api-resources'
 import { FeatureFlagKey, fetchFlag } from '@repo/feature-flags'
 import { history } from '@repo/routing'
+import { toast } from '@gorgias/axiom'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 import { shouldTicketBeDisplayedInRecentChats } from 'business/recentChats'
 import { TicketStatuses } from 'business/ticket'
@@ -78,6 +79,14 @@ import receivedEvents from '../receivedEvents'
 
 //$TsFixMe remove once init.js is migrated
 const typeSafeReduxStore = reduxStore as EnhancedStore
+
+jest.mock('hooks/useWhatsAppMigration', () => ({
+    isMigrationInProgress: jest.fn(() => false),
+}))
+
+jest.mock('models/phoneNumber/resources', () => ({
+    fetchNewPhoneNumbers: jest.fn(() => Promise.resolve({ data: [] })),
+}))
 
 jest.mock('services/browserNotification', () => ({ newMessage: jest.fn() }))
 
@@ -373,7 +382,7 @@ describe('receivedEvents', () => {
         )
 
         it('should not notify and reload app if new account is preloaded', () => {
-            const notifySpy = jest.spyOn(notificationActions, 'notify')
+            const notifySpy = jest.spyOn(toast, 'info')
             ;(
                 currentAccountSelectors.getTicketAssignmentSettings as jest.MockedFunction<
                     typeof currentAccountSelectors.getTicketAssignmentSettings
@@ -393,16 +402,13 @@ describe('receivedEvents', () => {
                 } as any)
             }
 
-            expect(notifySpy).not.toHaveBeenCalledWith({
-                message:
-                    'The app will reload automatically in a few seconds to reflect your subscription changes.',
-            })
+            expect(notifySpy).not.toHaveBeenCalled()
             jest.runAllTimers()
             expect(window.location.reload).not.toHaveBeenCalled()
         })
 
         it('should not notify and reload app if new account is preloaded - with PlanId-Plan mapping', () => {
-            const notifySpy = jest.spyOn(notificationActions, 'notify')
+            const notifySpy = jest.spyOn(toast, 'info')
             ;(
                 currentAccountSelectors.getTicketAssignmentSettings as jest.MockedFunction<
                     typeof currentAccountSelectors.getTicketAssignmentSettings
@@ -422,16 +428,13 @@ describe('receivedEvents', () => {
                 } as any)
             }
 
-            expect(notifySpy).not.toHaveBeenCalledWith({
-                message:
-                    'The app will reload automatically in a few seconds to reflect your subscription changes.',
-            })
+            expect(notifySpy).not.toHaveBeenCalled()
             jest.runAllTimers()
             expect(window.location.reload).not.toHaveBeenCalled()
         })
 
         it('should notify and reload app if new account price is not preloaded', () => {
-            const spy = jest.spyOn(notificationActions, 'notify')
+            const spy = jest.spyOn(toast, 'info')
             ;(
                 currentAccountSelectors.getTicketAssignmentSettings as jest.MockedFunction<
                     typeof currentAccountSelectors.getTicketAssignmentSettings
@@ -451,10 +454,9 @@ describe('receivedEvents', () => {
                 } as any)
             }
 
-            expect(spy).toHaveBeenCalledWith({
-                message:
-                    'The app will reload automatically in a few seconds to reflect your subscription changes.',
-            })
+            expect(spy).toHaveBeenCalledWith(
+                'The app will reload automatically in a few seconds to reflect your subscription changes.',
+            )
             jest.runAllTimers()
             expect(window.location.reload).toHaveBeenCalled()
         })
@@ -695,24 +697,22 @@ describe('receivedEvents', () => {
             expect(spy).toHaveBeenCalled()
         })
 
-        it('should notify', () => {
-            const spy = jest.spyOn(notificationActions, 'notify')
+        it('should show a success toast', () => {
+            const spy = jest.spyOn(toast, 'success')
 
             if (handler) {
                 handler.onReceive({ event: { total: 1 } } as any)
             }
-            expect(spy).toHaveBeenCalledWith({
-                status: 'success',
-                message: 'One Facebook page has been reconnected.',
-            })
+            expect(spy).toHaveBeenCalledWith(
+                'One Facebook page has been reconnected.',
+            )
 
             if (handler) {
                 handler.onReceive({ event: { total: 2 } } as any)
             }
-            expect(spy).toHaveBeenCalledWith({
-                status: 'success',
-                message: '2 Facebook pages have been reconnected.',
-            })
+            expect(spy).toHaveBeenCalledWith(
+                '2 Facebook pages have been reconnected.',
+            )
         })
     })
 
@@ -721,18 +721,84 @@ describe('receivedEvents', () => {
             name: SocketEventType.ViewDeactivated,
         })
 
-        it('should notify', () => {
+        it('should show a warning toast', () => {
             const event = {
                 name: 'Foo',
             }
 
-            const spy = jest.spyOn(notificationActions, 'notify')
+            const spy = jest.spyOn(toast, 'warning')
 
             if (handler) {
                 handler.onReceive({ event: event } as any)
             }
 
-            expect(spy.mock.calls).toMatchSnapshot()
+            expect(spy).toHaveBeenCalledWith('View "Foo" has been deactivated.')
+        })
+    })
+
+    describe('WhatsAppOnboardingSucceeded handler', () => {
+        const handler = _find(receivedEvents, {
+            name: SocketEventType.WhatsAppOnboardingSucceeded,
+        })
+
+        beforeEach(() => {
+            jest.resetModules()
+            window.location.pathname =
+                '/app/settings/integrations/whatsapp/integrations'
+        })
+
+        it('should show a success toast with the connected phone number', async () => {
+            const useWhatsAppMigration = jest.requireMock(
+                'hooks/useWhatsAppMigration',
+            ) as { isMigrationInProgress: jest.Mock }
+            useWhatsAppMigration.isMigrationInProgress.mockReturnValue(false)
+
+            const phoneNumberResources = jest.requireMock(
+                'models/phoneNumber/resources',
+            ) as { fetchNewPhoneNumbers: jest.Mock }
+            phoneNumberResources.fetchNewPhoneNumbers.mockResolvedValue({
+                data: [],
+            })
+
+            const spy = jest.spyOn(toast, 'info')
+
+            await handler?.onReceive({ phone_number: '+1555' } as any)
+
+            expect(spy).toHaveBeenCalledWith(
+                'WhatsApp successfully connected for number +1555.',
+                { duration: 10000 },
+            )
+        })
+    })
+
+    describe('WhatsAppOnboardingFailed handler', () => {
+        const handler = _find(receivedEvents, {
+            name: SocketEventType.WhatsAppOnboardingFailed,
+        })
+
+        it('should show an error toast with the API message', () => {
+            const spy = jest.spyOn(toast, 'error')
+
+            handler?.onReceive({
+                phone_number: '+1555',
+                error: { message: 'Something broke' },
+            } as any)
+
+            expect(spy).toHaveBeenCalledWith(
+                'Something broke (number: +1555)',
+                { duration: 10000 },
+            )
+        })
+
+        it('should fall back to a generic error toast when no message', () => {
+            const spy = jest.spyOn(toast, 'error')
+
+            handler?.onReceive({ phone_number: '+1555' } as any)
+
+            expect(spy).toHaveBeenCalledWith(
+                expect.stringContaining('Failed to connect WhatsApp'),
+                { duration: 10000 },
+            )
         })
     })
 

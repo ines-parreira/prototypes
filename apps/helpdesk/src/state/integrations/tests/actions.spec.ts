@@ -166,6 +166,30 @@ describe('integrations actions', () => {
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
+    it('delete integration with disableSuccessNotification skips notify', () => {
+        const integration = fromJS({
+            id: 1,
+            type: IntegrationType.Email,
+        })
+        mockServer
+            .onGet('/api/account/settings/?type=default-integration')
+            .reply(200, {
+                data: [{ type: 'default-integration', data: { email: 1 } }],
+            })
+        mockServer.onDelete('/api/integrations/1/').reply(200)
+        return store
+            .dispatch(actions.deleteIntegration(integration, true))
+            .then(() => {
+                const dispatched = store.getActions()
+                expect(
+                    dispatched.some(
+                        (a: any) =>
+                            a?.message === 'Integration successfully deleted',
+                    ),
+                ).toBe(false)
+            })
+    })
+
     it('delete integration error', () => {
         const integration = fromJS({
             id: 1,
@@ -177,6 +201,57 @@ describe('integrations actions', () => {
         return store
             .dispatch(actions.deleteIntegration(integration))
             .then(() => expect(store.getActions()).toMatchSnapshot())
+    })
+
+    it('delete integration with disableErrorNotification rethrows and skips reason', async () => {
+        const integration = fromJS({
+            id: 1,
+            type: IntegrationType.Email,
+        })
+        mockServer.onDelete('/api/integrations/1/').reply(400)
+
+        await expect(
+            store.dispatch(
+                actions.deleteIntegration(integration, undefined, true),
+            ),
+        ).rejects.toBeDefined()
+
+        const dispatched = store.getActions()
+        expect(
+            dispatched.some(
+                (a: any) => a?.reason === 'Failed to delete the integration',
+            ),
+        ).toBe(false)
+    })
+
+    it('updateOrCreateIntegrationRequest with disableErrorNotification rethrows and skips reason', async () => {
+        const integration = fromJS({
+            id: 1,
+            type: IntegrationType.Email,
+        })
+        mockServer.onPut('/api/integrations/1/').reply(400)
+
+        await expect(
+            store.dispatch(
+                actions.updateOrCreateIntegrationRequest(
+                    integration,
+                    undefined,
+                    null,
+                    false,
+                    undefined,
+                    false,
+                    undefined,
+                    true,
+                ),
+            ),
+        ).rejects.toBeDefined()
+
+        const dispatched = store.getActions()
+        expect(
+            dispatched.some(
+                (a: any) => a?.reason === 'Failed to update connection',
+            ),
+        ).toBe(false)
     })
 
     it('hideShopifyCheckoutChatBanner action', () => {

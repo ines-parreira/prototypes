@@ -2,6 +2,8 @@ import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
+import { toast } from '@gorgias/axiom'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     GorgiasChatAvatarImageType,
@@ -191,6 +193,12 @@ describe('useAppearanceForm', () => {
 
             expect(mockUpdateOrCreateIntegration).toHaveBeenCalledWith(
                 expect.objectContaining({ toJS: expect.any(Function) }),
+                undefined,
+                undefined,
+                undefined,
+                true,
+                undefined,
+                true,
             )
 
             const form = mockUpdateOrCreateIntegration.mock.calls[0][0].toJS()
@@ -297,6 +305,54 @@ describe('useAppearanceForm', () => {
             })
 
             expect(mockDispatch).toHaveBeenCalledTimes(1)
+        })
+
+        it('should show an error toast when the dispatch rejects', async () => {
+            const integration = makeIntegration()
+            const loading = makeLoading(false)
+            mockDispatch.mockRejectedValueOnce({
+                response: {
+                    data: { error: { msg: 'Save failed' } },
+                },
+            })
+            const toastErrorSpy = jest
+                .spyOn(toast, 'error')
+                .mockImplementation(jest.fn())
+            const toastSuccessSpy = jest
+                .spyOn(toast, 'success')
+                .mockImplementation(jest.fn())
+
+            const { result } = renderHook(() =>
+                useAppearanceForm({ integration, loading }),
+            )
+
+            await act(async () => {
+                await result.current.handleSubmit(result.current.onSubmit)()
+            })
+
+            expect(toastErrorSpy).toHaveBeenCalledWith('Save failed')
+            expect(toastSuccessSpy).not.toHaveBeenCalled()
+        })
+
+        it('should fall back to a generic error toast when no API message', async () => {
+            const integration = makeIntegration()
+            const loading = makeLoading(false)
+            mockDispatch.mockRejectedValueOnce(new Error('network down'))
+            const toastErrorSpy = jest
+                .spyOn(toast, 'error')
+                .mockImplementation(jest.fn())
+
+            const { result } = renderHook(() =>
+                useAppearanceForm({ integration, loading }),
+            )
+
+            await act(async () => {
+                await result.current.handleSubmit(result.current.onSubmit)()
+            })
+
+            expect(toastErrorSpy).toHaveBeenCalledWith(
+                'Failed to update integration',
+            )
         })
     })
 

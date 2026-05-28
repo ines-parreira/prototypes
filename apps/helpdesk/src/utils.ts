@@ -968,6 +968,31 @@ export const errorToChildren = (incomingError: unknown): string | null => {
 }
 
 /**
+ * Return a plain text summary of an API error suitable for `toast.error`.
+ * Prefers flattened validation errors (`response.data.error.data`),
+ * falling back to the top-level `msg`. Returns `null` when neither is set.
+ */
+export const errorToPlainText = (incomingError: unknown): string | null => {
+    const error = _get(incomingError, 'response.data.error', {}) as
+        | GorgiasApiResponseDataError
+        | { data?: ValidationErrors; msg?: string }
+    const validationErrors = error.data
+
+    if (validationErrors) {
+        const lines = flattenErrors(validationErrors as ValidationErrors).map(
+            ({ key, value }) => `${_startCase(key)}: ${value}`,
+        )
+        if (lines.length > 0) {
+            return lines.join('\n')
+        }
+    }
+
+    return typeof error.msg === 'string' && error.msg.length > 0
+        ? error.msg
+        : null
+}
+
+/**
  * Function that wraps functionality for checking webhook url and return a valid or invalid pattern
  */
 export const validateWebhookURLToPattern = (

@@ -56,7 +56,6 @@ describe('GorgiasChatIntegrationInstallRevamp', () => {
     })
 
     const mockActions = {
-        updateOrCreateIntegration: jest.fn(),
         deleteIntegration: jest.fn(),
     }
 
@@ -83,19 +82,6 @@ describe('GorgiasChatIntegrationInstallRevamp', () => {
             expect(mockInstallationCard).toHaveBeenCalledWith(
                 expect.objectContaining({
                     integration: mockIntegration,
-                }),
-            )
-        })
-
-        it('should pass updateOrCreateIntegration action', () => {
-            renderComponent()
-
-            expect(mockInstallationCard).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    actions: {
-                        updateOrCreateIntegration:
-                            mockActions.updateOrCreateIntegration,
-                    },
                 }),
             )
         })

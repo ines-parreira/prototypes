@@ -2,6 +2,8 @@ import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
+import { toast } from '@gorgias/axiom'
+
 import { LANGUAGE } from 'constants/languages'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { GorgiasChatLauncherType } from 'models/integration/types/gorgiasChat'
@@ -325,6 +327,60 @@ describe('useLanguagesTable', () => {
             )
 
             expect(result.current.isUpdatePending).toBe(false)
+        })
+    })
+
+    describe('error handling', () => {
+        it('should show an error toast when dispatch rejects', async () => {
+            mockDispatch.mockRejectedValueOnce({
+                response: { data: { error: { msg: 'Language save failed' } } },
+            })
+            const toastErrorSpy = jest
+                .spyOn(toast, 'error')
+                .mockImplementation(jest.fn())
+            const toastSuccessSpy = jest
+                .spyOn(toast, 'success')
+                .mockImplementation(jest.fn())
+
+            const integration = makeIntegration()
+            const loading = makeLoading(false)
+            const { result } = renderHook(() =>
+                useLanguagesTable({ integration, loading }),
+            )
+
+            await act(async () => {
+                await result.current.addLanguage({
+                    language: LANGUAGE.FR,
+                    primary: false,
+                })
+            })
+
+            expect(toastErrorSpy).toHaveBeenCalledWith('Language save failed')
+            expect(toastSuccessSpy).not.toHaveBeenCalled()
+        })
+
+        it('should fall back to a generic error toast when no API message', async () => {
+            mockDispatch.mockRejectedValueOnce(new Error('boom'))
+            const toastErrorSpy = jest
+                .spyOn(toast, 'error')
+                .mockImplementation(jest.fn())
+
+            const integration = makeIntegration()
+            const loading = makeLoading(false)
+            const { result } = renderHook(() =>
+                useLanguagesTable({ integration, loading }),
+            )
+
+            await act(async () => {
+                await result.current.addLanguage({
+                    language: LANGUAGE.FR,
+                    primary: false,
+                })
+            })
+
+            expect(toastErrorSpy).toHaveBeenCalledWith(
+                'Failed to update integration',
+            )
         })
     })
 })

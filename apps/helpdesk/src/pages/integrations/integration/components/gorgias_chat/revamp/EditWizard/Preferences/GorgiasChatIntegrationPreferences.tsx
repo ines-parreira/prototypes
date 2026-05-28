@@ -6,6 +6,8 @@ import moment from 'moment'
 import type { FieldPath, PathValue } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
 
+import { toast } from '@gorgias/axiom'
+
 import {
     GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
@@ -30,6 +32,7 @@ import { submitSetting } from 'state/currentAccount/actions'
 import { getSurveysSettingsJS } from 'state/currentAccount/selectors'
 import { AccountSettingType } from 'state/currentAccount/types'
 import type { updateOrCreateIntegration } from 'state/integrations/actions'
+import { errorToPlainText } from 'utils'
 
 import css from './GorgiasChatIntegrationPreferences.less'
 
@@ -136,7 +139,7 @@ export const GorgiasChatIntegrationPreferencesRevamp = ({
     const values = watch()
     const isSubmitting = loading.get('updateIntegration') === integration.id
 
-    const onSubmit = (data: PreferencesFormValues) => {
+    const onSubmit = async (data: PreferencesFormValues) => {
         const payload = fromJS({
             id: integration.id,
             deactivated_datetime: !data.displayChat
@@ -165,9 +168,24 @@ export const GorgiasChatIntegrationPreferencesRevamp = ({
             },
         })
 
-        void (actions.updateOrCreateIntegration(
-            payload,
-        ) as unknown as Promise<unknown>)
+        try {
+            await (actions.updateOrCreateIntegration(
+                payload,
+                undefined,
+                undefined,
+                undefined,
+                true,
+                undefined,
+                true,
+            ) as unknown as Promise<unknown>)
+
+            toast.success('Integration successfully updated')
+        } catch (error) {
+            toast.error(
+                errorToPlainText(error) ?? 'Failed to update integration',
+            )
+            return
+        }
 
         if (surveysSettings && data.sendCsat !== sendCsatGlobal) {
             void dispatch(

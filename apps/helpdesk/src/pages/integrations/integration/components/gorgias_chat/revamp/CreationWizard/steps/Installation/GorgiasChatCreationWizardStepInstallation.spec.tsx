@@ -9,6 +9,8 @@ import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { toast } from '@gorgias/axiom'
+
 import {
     GorgiasChatCreationWizardInstallationMethod,
     GorgiasChatCreationWizardStatus,
@@ -191,5 +193,97 @@ describe('<GorgiasChatCreationWizardStepInstallation />', () => {
         expect(form.meta.wizard.installation_method).toBe(
             GorgiasChatCreationWizardInstallationMethod.Manual,
         )
+    })
+
+    it('shows an error toast when the install fails', async () => {
+        const apiError = {
+            response: {
+                data: {
+                    error: {
+                        msg: "There's already a chat installed on this store",
+                    },
+                },
+            },
+        }
+
+        const updateSpy = jest
+            .spyOn(actions, 'updateOrCreateIntegration')
+            .mockImplementationOnce(
+                (() => () => Promise.reject(apiError)) as any,
+            )
+        const toastSpy = jest
+            .spyOn(toast, 'error')
+            .mockImplementation(jest.fn())
+
+        const { getByRole } = renderComponent()
+
+        await act(() =>
+            userEvent.click(getByRole('button', { name: 'Install Manually' })),
+        )
+
+        await waitFor(() => {
+            expect(updateSpy).toHaveBeenCalledTimes(1)
+        })
+
+        expect(toastSpy).toHaveBeenCalledWith(
+            "There's already a chat installed on this store",
+        )
+    })
+
+    it('invokes the onSuccess callback that handles redirect and event log', async () => {
+        const updateSpy = jest
+            .spyOn(actions, 'updateOrCreateIntegration')
+            .mockImplementationOnce(((
+                _integration: any,
+                _action: any,
+                _disableRedirect: any,
+                onSuccess?: (resp: any) => void,
+            ) =>
+                () => {
+                    onSuccess?.({ id: 1 })
+                    return Promise.resolve()
+                }) as any)
+
+        const { getByRole } = renderComponent({
+            integration: integration.setIn(['meta', 'shop_integration_id'], 1),
+        })
+
+        await act(() =>
+            userEvent.click(getByRole('button', { name: /^Install$/ })),
+        )
+
+        await waitFor(() => {
+            expect(updateSpy).toHaveBeenCalledTimes(1)
+        })
+
+        const [, , , onSuccess] = updateSpy.mock.calls[0]
+        expect(typeof onSuccess).toBe('function')
+    })
+
+    it('runs Save & Install Later through the wizard event branch', async () => {
+        const updateSpy = jest
+            .spyOn(actions, 'updateOrCreateIntegration')
+            .mockImplementationOnce(((
+                _integration: any,
+                _action: any,
+                _disableRedirect: any,
+                onSuccess?: (resp: any) => void,
+            ) =>
+                () => {
+                    onSuccess?.({ id: 1 })
+                    return Promise.resolve()
+                }) as any)
+
+        const { getByRole } = renderComponent()
+
+        await act(() =>
+            userEvent.click(
+                getByRole('button', { name: 'Save & Install Later' }),
+            ),
+        )
+
+        await waitFor(() => {
+            expect(updateSpy).toHaveBeenCalledTimes(1)
+        })
     })
 })

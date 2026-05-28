@@ -4,6 +4,8 @@ import { useAsyncFn } from '@repo/hooks'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 
+import { toast } from '@gorgias/axiom'
+
 import type { LanguageItem } from 'config/integrations/gorgias_chat'
 import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS,
@@ -15,6 +17,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import { IntegrationType } from 'models/integration/constants'
 import { GorgiasChatLauncherType } from 'models/integration/types/gorgiasChat'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
+import { errorToPlainText } from 'utils'
 
 import type { LanguageItemRow } from './types'
 
@@ -151,8 +154,25 @@ export const useLanguagesTable = ({
                 form.decoration = decoration
             }
 
-            await dispatch(updateOrCreateIntegration(fromJS(form)))
-            setLanguages(updatedLanguages)
+            try {
+                await dispatch(
+                    updateOrCreateIntegration(
+                        fromJS(form),
+                        undefined,
+                        undefined,
+                        undefined,
+                        true,
+                        undefined,
+                        true,
+                    ),
+                )
+                setLanguages(updatedLanguages)
+                toast.success('Integration successfully updated')
+            } catch (error) {
+                toast.error(
+                    errorToPlainText(error) ?? 'Failed to update integration',
+                )
+            }
         },
         [integration],
     )

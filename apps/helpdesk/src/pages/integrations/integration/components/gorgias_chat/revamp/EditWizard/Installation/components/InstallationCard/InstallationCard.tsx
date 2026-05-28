@@ -31,15 +31,9 @@ import css from './InstallationCard.less'
 
 type Props = {
     integration: Map<any, any>
-    actions: {
-        updateOrCreateIntegration: any
-    }
 }
 
-const InstallationCard = ({
-    integration,
-    actions: { updateOrCreateIntegration },
-}: Props) => {
+const InstallationCard = ({ integration }: Props) => {
     const storeIntegrations = useAppSelector(getStoreIntegrations)
     const shopIntegrationId = integration.getIn(['meta', 'shop_integration_id'])
     const shopifyIntegrationIds: List<number> = integration.getIn(
@@ -129,7 +123,6 @@ const InstallationCard = ({
                 <div>
                     <OneClickInstall
                         integration={integration}
-                        updateOrCreateIntegration={updateOrCreateIntegration}
                         themeAppExtensionInstallation={
                             shouldUseThemeAppExtensionInstallation
                         }

@@ -6,7 +6,7 @@ import { history } from '@repo/routing'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 
-import { Card, Heading, Radio, RadioGroup } from '@gorgias/axiom'
+import { Card, Heading, Radio, RadioGroup, toast } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -26,6 +26,7 @@ import { GorgiasChatCreationWizardStep } from 'pages/integrations/integration/co
 import { Tab } from 'pages/integrations/integration/types'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
+import { errorToPlainText } from 'utils'
 
 import { GorgiasChatCreationWizardFooter } from '../../components/GorgiasChatCreationWizardFooter'
 import SaveChangesPrompt from '../../components/SaveChangesPrompt'
@@ -128,56 +129,63 @@ export const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
             meta: meta.toJS(),
         }
 
-        return dispatch(
-            updateOrCreateIntegration(
-                fromJS(form),
-                undefined,
-                true,
-                () => {
-                    logWizardEvent(
-                        isContinueLater
-                            ? SegmentEvent.ChatWidgetWizardSaveLaterClicked
-                            : SegmentEvent.ChatWidgetWizardStepCompleted,
-                        {
-                            installation_method: installationMethod,
-                        },
-                    )
-
-                    setHasSubmitted(true)
-
-                    if (shouldPublish) {
-                        const redirectUrl = `/app/settings/channels/gorgias_chat/${id}/${
-                            isOneClickInstallation
-                                ? Tab.Preferences
-                                : Tab.Installation
-                        }`
-                        const locationState: NavigatedSuccessModalLocationState =
+        try {
+            await dispatch(
+                updateOrCreateIntegration(
+                    fromJS(form),
+                    undefined,
+                    true,
+                    () => {
+                        logWizardEvent(
+                            isContinueLater
+                                ? SegmentEvent.ChatWidgetWizardSaveLaterClicked
+                                : SegmentEvent.ChatWidgetWizardStepCompleted,
                             {
-                                showModal: isOneClickInstallation
-                                    ? NavigatedSuccessModalName.GorgiasChatAutoInstallation
-                                    : NavigatedSuccessModalName.GorgiasChatManualInstallation,
+                                installation_method: installationMethod,
+                            },
+                        )
+
+                        setHasSubmitted(true)
+
+                        if (shouldPublish) {
+                            const redirectUrl = `/app/settings/channels/gorgias_chat/${id}/${
+                                isOneClickInstallation
+                                    ? Tab.Preferences
+                                    : Tab.Installation
+                            }`
+                            const locationState: NavigatedSuccessModalLocationState =
+                                {
+                                    showModal: isOneClickInstallation
+                                        ? NavigatedSuccessModalName.GorgiasChatAutoInstallation
+                                        : NavigatedSuccessModalName.GorgiasChatManualInstallation,
+                                }
+
+                            history.push(redirectUrl, locationState)
+
+                            if (
+                                isOneClickInstallation &&
+                                shouldUseThemeAppExtensionInstallation &&
+                                themeAppExtensionInstallationUrl &&
+                                !isThemeAppExtensionInstalled
+                            ) {
+                                window.open(
+                                    themeAppExtensionInstallationUrl,
+                                    '_blank',
+                                    'noopener noreferrer',
+                                )
                             }
-
-                        history.push(redirectUrl, locationState)
-
-                        if (
-                            isOneClickInstallation &&
-                            shouldUseThemeAppExtensionInstallation &&
-                            themeAppExtensionInstallationUrl &&
-                            !isThemeAppExtensionInstalled
-                        ) {
-                            window.open(
-                                themeAppExtensionInstallationUrl,
-                                '_blank',
-                                'noopener noreferrer',
-                            )
                         }
-                    }
-                },
-                shouldPublish,
-                'Changes saved',
-            ),
-        )
+                    },
+                    shouldPublish,
+                    'Changes saved',
+                    true,
+                ),
+            )
+        } catch (error) {
+            toast.error(
+                errorToPlainText(error) ?? 'Failed to update integration',
+            )
+        }
     }
 
     return (

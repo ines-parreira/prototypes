@@ -5,6 +5,8 @@ import { fromJS } from 'immutable'
 import type { FieldPath, PathValue } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
 
+import { toast } from '@gorgias/axiom'
+
 import {
     GORGIAS_CHAT_DEFAULT_COLOR,
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
@@ -22,6 +24,7 @@ import {
 } from 'models/integration/types'
 import { usePrivacyPolicyText } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Appearance/hooks/usePrivacyPolicyText'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
+import { errorToPlainText } from 'utils'
 
 export type GorgiasChatLauncherSettings = {
     type: GorgiasChatLauncherType
@@ -233,8 +236,25 @@ export const useAppearanceForm = ({
             },
         }
 
-        await dispatch(updateOrCreateIntegration(fromJS(form)))
-        savePrivacyPolicyText(privacyPolicyText)
+        try {
+            await dispatch(
+                updateOrCreateIntegration(
+                    fromJS(form),
+                    undefined,
+                    undefined,
+                    undefined,
+                    true,
+                    undefined,
+                    true,
+                ),
+            )
+            savePrivacyPolicyText(privacyPolicyText)
+            toast.success('Integration successfully updated')
+        } catch (error) {
+            toast.error(
+                errorToPlainText(error) ?? 'Failed to update integration',
+            )
+        }
     }
 
     return {

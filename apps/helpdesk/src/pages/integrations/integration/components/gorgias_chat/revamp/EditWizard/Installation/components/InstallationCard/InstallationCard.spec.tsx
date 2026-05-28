@@ -129,9 +129,6 @@ describe('InstallationCard', () => {
 
     const defaultProps = {
         integration: defaultIntegration,
-        actions: {
-            updateOrCreateIntegration: jest.fn(),
-        },
     }
 
     beforeEach(() => {
@@ -222,17 +219,6 @@ describe('InstallationCard', () => {
                     isConnected: true,
                     isInstalled: true,
                     hasShopifyScriptTagScope: false,
-                }),
-            )
-        })
-
-        it('should pass updateOrCreateIntegration action', () => {
-            renderComponent()
-
-            expect(mockOneClickInstall).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    updateOrCreateIntegration:
-                        defaultProps.actions.updateOrCreateIntegration,
                 }),
             )
         })

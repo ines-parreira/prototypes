@@ -3,6 +3,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 
+import { toast } from '@gorgias/axiom'
+
 import { QUICK_REPLIES_DEFAULTS } from 'config/integrations/gorgias_chat'
 import useAppDispatch from 'hooks/useAppDispatch'
 import type { GorgiasChatIntegration } from 'models/integration/types'
@@ -23,6 +25,7 @@ import { useOrderManagement } from 'pages/integrations/integration/components/go
 import SaveChangesPrompt from 'pages/integrations/integration/components/gorgias_chat/revamp/CreationWizard/components/SaveChangesPrompt'
 import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
+import { errorToPlainText } from 'utils'
 
 import { ConnectedChannelsEmptyView } from './components/ConnectedChannelsEmptyView/ConnectedChannelsEmptyView'
 
@@ -174,23 +177,29 @@ export const GorgiasAutomateChatIntegrationRevamp = ({
                 pendingFlows !== null)
         ) {
             promises.push(
-                handleChatApplicationAutomationSettingsUpdate({
-                    ...serverSettings,
-                    ...(pendingOrderManagement !== null && {
-                        orderManagement: { enabled: pendingOrderManagement },
-                    }),
-                    ...(pendingArticleRecommendation !== null && {
-                        articleRecommendation: {
-                            enabled: pendingArticleRecommendation,
-                        },
-                    }),
-                    ...(pendingFlows !== null && {
-                        workflows: {
-                            ...serverSettings.workflows,
-                            entrypoints: pendingFlows,
-                        },
-                    }),
-                }),
+                handleChatApplicationAutomationSettingsUpdate(
+                    {
+                        ...serverSettings,
+                        ...(pendingOrderManagement !== null && {
+                            orderManagement: {
+                                enabled: pendingOrderManagement,
+                            },
+                        }),
+                        ...(pendingArticleRecommendation !== null && {
+                            articleRecommendation: {
+                                enabled: pendingArticleRecommendation,
+                            },
+                        }),
+                        ...(pendingFlows !== null && {
+                            workflows: {
+                                ...serverSettings.workflows,
+                                entrypoints: pendingFlows,
+                            },
+                        }),
+                    },
+                    undefined,
+                    true,
+                ),
             )
         }
 
@@ -212,12 +221,27 @@ export const GorgiasAutomateChatIntegrationRevamp = ({
                                 },
                             },
                         }),
+                        undefined,
+                        undefined,
+                        undefined,
+                        true,
+                        undefined,
+                        true,
                     ),
                 ) as unknown as Promise<unknown>,
             )
         }
 
-        await Promise.all(promises)
+        try {
+            await Promise.all(promises)
+        } catch (error) {
+            toast.error(
+                errorToPlainText(error) ?? 'Failed to update integration',
+            )
+            return
+        }
+
+        toast.success('Integration successfully updated')
 
         setPendingOrderManagement(null)
         setPendingArticleRecommendation(null)

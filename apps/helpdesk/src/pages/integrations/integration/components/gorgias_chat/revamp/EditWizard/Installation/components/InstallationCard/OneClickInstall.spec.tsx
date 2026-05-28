@@ -25,7 +25,10 @@ const mockText = jest.fn(({ children }: any) => children)
 const mockSkeletonLoader = jest.fn((__props: any) => null)
 const mockVisibilityControls = jest.fn((__props: any) => null)
 
-const mockUseAppDispatch = jest.fn(() => jest.fn())
+const mockDispatch = jest.fn().mockResolvedValue(undefined)
+const mockUseAppDispatch = jest.fn(() => mockDispatch)
+const mockToastSuccess = jest.fn()
+const mockToastError = jest.fn()
 const mockUseAppSelector = jest.fn()
 const mockUseFlag = jest.fn((__key) => false)
 const mockUseAsyncFn = jest.fn((fn: any) => [{ loading: false }, fn])
@@ -48,6 +51,10 @@ jest.mock('@gorgias/axiom', () => ({
     OverlayContent: (props: any) => mockOverlayContent(props),
     OverlayFooter: (props: any) => mockOverlayFooter(props),
     Text: (props: any) => mockText(props),
+    toast: {
+        success: (...args: any[]) => mockToastSuccess(...args),
+        error: (...args: any[]) => mockToastError(...args),
+    },
 }))
 
 jest.mock('pages/common/components/SkeletonLoader', () => ({
@@ -110,6 +117,10 @@ jest.mock(
 )
 
 jest.mock('state/integrations/actions', () => ({
+    updateOrCreateIntegration: jest.fn((form: any) => ({
+        type: 'UPDATE_INTEGRATION',
+        payload: form,
+    })),
     updateOrCreateIntegrationRequest: jest.fn((form: any) => ({
         type: 'UPDATE_INTEGRATION_REQUEST',
         payload: form,
@@ -140,7 +151,6 @@ describe('OneClickInstall', () => {
 
     const defaultProps = {
         integration: defaultIntegration,
-        updateOrCreateIntegration: jest.fn(),
         themeAppExtensionInstallation: false,
         themeAppExtensionInstallationUrl: null,
         isConnected: true,
@@ -150,6 +160,7 @@ describe('OneClickInstall', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+        mockDispatch.mockResolvedValue(undefined)
         mockUseAppSelector.mockReturnValue([mockStoreIntegration])
         mockUseFlag.mockReturnValue(false)
         mockUseAsyncFn.mockImplementation((fn: any) => [{ loading: false }, fn])
@@ -429,6 +440,90 @@ describe('OneClickInstall', () => {
             )
 
             expect(uninstallButton[0].isLoading).toBe(true)
+        })
+
+        it('should dispatch and show success toast when Uninstall is clicked', async () => {
+            renderComponent({
+                isInstalled: true,
+            })
+
+            const buttonCalls = mockButton.mock.calls as any[]
+            const uninstallButton = buttonCalls.find(
+                (call) => call[0].children === 'Uninstall',
+            )
+
+            await act(async () => {
+                await uninstallButton[0].onClick()
+            })
+
+            expect(mockDispatch).toHaveBeenCalled()
+            expect(mockToastSuccess).toHaveBeenCalledWith(
+                'Integration successfully updated',
+            )
+        })
+
+        it('should dispatch and show success toast when Install is clicked', async () => {
+            renderComponent({
+                isInstalled: false,
+            })
+
+            const buttonCalls = mockButton.mock.calls as any[]
+            const installButton = buttonCalls.find(
+                (call) => call[0].children === 'Install',
+            )
+
+            await act(async () => {
+                await installButton[0].onClick()
+            })
+
+            expect(mockDispatch).toHaveBeenCalled()
+            expect(mockToastSuccess).toHaveBeenCalledWith(
+                'Integration successfully updated',
+            )
+        })
+
+        it('should show error toast when Uninstall fails', async () => {
+            mockDispatch.mockRejectedValueOnce({
+                response: { data: { error: { msg: 'Uninstall failed' } } },
+            })
+
+            renderComponent({
+                isInstalled: true,
+            })
+
+            const buttonCalls = mockButton.mock.calls as any[]
+            const uninstallButton = buttonCalls.find(
+                (call) => call[0].children === 'Uninstall',
+            )
+
+            await act(async () => {
+                await uninstallButton[0].onClick()
+            })
+
+            expect(mockToastError).toHaveBeenCalledWith('Uninstall failed')
+            expect(mockToastSuccess).not.toHaveBeenCalled()
+        })
+
+        it('should show error toast when Install fails', async () => {
+            mockDispatch.mockRejectedValueOnce({
+                response: { data: { error: { msg: 'Install failed' } } },
+            })
+
+            renderComponent({
+                isInstalled: false,
+            })
+
+            const buttonCalls = mockButton.mock.calls as any[]
+            const installButton = buttonCalls.find(
+                (call) => call[0].children === 'Install',
+            )
+
+            await act(async () => {
+                await installButton[0].onClick()
+            })
+
+            expect(mockToastError).toHaveBeenCalledWith('Install failed')
+            expect(mockToastSuccess).not.toHaveBeenCalled()
         })
     })
 

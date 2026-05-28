@@ -19,6 +19,9 @@ const mockButton = jest.fn(
     ),
 )
 
+const mockToastSuccess = jest.fn()
+const mockToastError = jest.fn()
+
 jest.mock('@gorgias/axiom', () => ({
     ...jest.requireActual('@gorgias/axiom'),
     Button: (props: any) => mockButton(props),
@@ -43,6 +46,10 @@ jest.mock('@gorgias/axiom', () => ({
         <div data-testid="overlay-header">{title}</div>
     ),
     Text: ({ children }: any) => <p>{children}</p>,
+    toast: {
+        success: (...args: any[]) => mockToastSuccess(...args),
+        error: (...args: any[]) => mockToastError(...args),
+    },
 }))
 
 describe('DeleteCard', () => {
@@ -208,7 +215,40 @@ describe('DeleteCard', () => {
             await user.click(confirmButton)
         })
 
-        expect(mockOnDeleteIntegration).toHaveBeenCalledWith(defaultIntegration)
+        expect(mockOnDeleteIntegration).toHaveBeenCalledWith(
+            defaultIntegration,
+            true,
+            true,
+        )
+        expect(mockToastSuccess).toHaveBeenCalledWith(
+            'Integration successfully deleted',
+        )
+    })
+
+    it('should show error toast when delete fails', async () => {
+        const user = userEvent.setup()
+        mockOnDeleteIntegration.mockRejectedValueOnce({
+            response: { data: { error: { msg: 'Delete failed' } } },
+        })
+
+        renderComponent()
+
+        await act(async () => {
+            await user.click(
+                screen.getByTestId('delete-chat-integration-button'),
+            )
+        })
+
+        await act(async () => {
+            await user.click(
+                screen.getByTestId(
+                    'delete-chat-integration-confirmation-button',
+                ),
+            )
+        })
+
+        expect(mockToastError).toHaveBeenCalledWith('Delete failed')
+        expect(mockToastSuccess).not.toHaveBeenCalled()
     })
 
     it('should disable cancel button while deleting', async () => {
