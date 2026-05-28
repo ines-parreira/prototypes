@@ -99,7 +99,8 @@ export const GorgiasChatIntegrationPreferencesRevamp = ({
     isAiAgentEnabled = false,
 }: Props) => {
     const dispatch = useAppDispatch()
-    const { reloadPreview } = useChatPreviewPanelContext()
+    const { reloadPreview, onChatPreviewLoaded, updateControlTicketVolume } =
+        useChatPreviewPanelContext()
     const surveysSettings = useAppSelector(getSurveysSettingsJS)
     const sendCsatGlobal = surveysSettings?.data?.send_survey_for_chat ?? false
     const hasConvert = Boolean(useAppSelector(getCurrentConvertPlan))
@@ -184,6 +185,16 @@ export const GorgiasChatIntegrationPreferencesRevamp = ({
 
     const onSave = handleSubmit(onSubmit)
 
+    useEffect(() => {
+        return onChatPreviewLoaded(() => {
+            updateControlTicketVolume(values.controlTicketVolume)
+        }, true)
+    }, [
+        onChatPreviewLoaded,
+        updateControlTicketVolume,
+        values.controlTicketVolume,
+    ])
+
     return (
         <>
             <SaveChangesPrompt
@@ -246,9 +257,10 @@ export const GorgiasChatIntegrationPreferencesRevamp = ({
                         {!isAiAgentEnabled && (
                             <ChatAutomationCard
                                 controlTicketVolume={values.controlTicketVolume}
-                                onControlTicketVolumeChange={(value) =>
+                                onControlTicketVolumeChange={(value) => {
                                     setFieldValue('controlTicketVolume', value)
-                                }
+                                    updateControlTicketVolume(value)
+                                }}
                             />
                         )}
                         <ChatEmailCaptureCard

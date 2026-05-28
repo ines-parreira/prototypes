@@ -316,6 +316,18 @@ export const useChatPreviewPanel = ({
         [openChat],
     )
 
+    const updateControlTicketVolume = useCallback(
+        (controlTicketVolume: boolean) => {
+            openChat()
+            displayPage('homepage')
+
+            chatPreviewPanelRef.current?.updateSettings({
+                preferences: { controlTicketVolume },
+            })
+        },
+        [openChat, displayPage],
+    )
+
     const setConversationMessages = useCallback(
         (messages: SimulateConversationMessage[]) => {
             chatPreviewPanelRef.current?.setConversationMessages(messages)
@@ -351,5 +363,6 @@ export const useChatPreviewPanel = ({
         updateQuickReplies,
         updatePreviewOrders,
         setConversationMessages,
+        updateControlTicketVolume,
     }
 }

@@ -16,6 +16,8 @@ const mockChatAutomationCard = jest.fn()
 const mockChatEmailCaptureCard = jest.fn()
 const mockChatShopperExperienceCard = jest.fn()
 const mockDispatch = jest.fn()
+const mockUpdateControlTicketVolume = jest.fn()
+const mockOnChatPreviewLoaded = jest.fn()
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/common/GorgiasChatRevampLayout',
@@ -51,7 +53,11 @@ jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
     () => ({
         useChatPreviewPanel: jest.fn(),
-        useChatPreviewPanelContext: () => ({ reloadPreview: jest.fn() }),
+        useChatPreviewPanelContext: () => ({
+            reloadPreview: jest.fn(),
+            updateControlTicketVolume: mockUpdateControlTicketVolume,
+            onChatPreviewLoaded: mockOnChatPreviewLoaded,
+        }),
     }),
 )
 
@@ -192,6 +198,7 @@ describe('GorgiasChatIntegrationPreferencesRevamp', () => {
         jest.clearAllMocks()
         mockDispatch.mockResolvedValue(undefined)
         mockUpdateOrCreateIntegration.mockResolvedValue(undefined)
+        mockOnChatPreviewLoaded.mockReturnValue(() => {})
     })
 
     it('should render the save button', () => {
@@ -269,6 +276,16 @@ describe('GorgiasChatIntegrationPreferencesRevamp', () => {
             expect(mockChatAutomationCard).toHaveBeenCalledWith(
                 expect.objectContaining({ controlTicketVolume: false }),
             )
+        })
+
+        it('should call updateControlTicketVolume when onControlTicketVolumeChange is triggered', () => {
+            renderComponent()
+
+            const { onControlTicketVolumeChange } =
+                mockChatAutomationCard.mock.calls[0][0]
+            act(() => onControlTicketVolumeChange(true))
+
+            expect(mockUpdateControlTicketVolume).toHaveBeenCalledWith(true)
         })
     })
 
@@ -698,6 +715,41 @@ describe('GorgiasChatIntegrationPreferencesRevamp', () => {
                     }),
                 }),
             )
+        })
+    })
+
+    describe('Chat preview panel synchronization', () => {
+        it('should register a callback with onChatPreviewLoaded on mount', () => {
+            renderComponent()
+
+            expect(mockOnChatPreviewLoaded).toHaveBeenCalledWith(
+                expect.any(Function),
+                true,
+            )
+        })
+
+        it('should call updateControlTicketVolume with the current controlTicketVolume value when the preview loaded callback fires', () => {
+            renderComponent()
+
+            const [callback] = mockOnChatPreviewLoaded.mock.calls[0]
+            callback()
+
+            expect(mockUpdateControlTicketVolume).toHaveBeenCalledWith(false)
+        })
+
+        it('should call updateControlTicketVolume with the updated value when the callback fires after controlTicketVolume changes', () => {
+            renderComponent()
+
+            const { onControlTicketVolumeChange } =
+                mockChatAutomationCard.mock.calls[0][0]
+            act(() => onControlTicketVolumeChange(true))
+
+            mockUpdateControlTicketVolume.mockClear()
+
+            const latestCallback = mockOnChatPreviewLoaded.mock.calls.at(-1)![0]
+            latestCallback()
+
+            expect(mockUpdateControlTicketVolume).toHaveBeenCalledWith(true)
         })
     })
 

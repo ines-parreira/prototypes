@@ -151,6 +151,7 @@ export type GorgiasChatPreviewApplicationSettings = {
     }
     preferences?: {
         privacyPolicyDisclaimerEnabled?: boolean
+        controlTicketVolume?: boolean
     }
     quickReplies?: {
         enabled: boolean

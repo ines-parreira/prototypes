@@ -658,6 +658,62 @@ describe('useChatPreviewPanel', () => {
         expect(mockSetConversationMessages).toHaveBeenCalledWith(messages)
     })
 
+    it('updateControlTicketVolume does not throw when ref is unattached', () => {
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        expect(() =>
+            result.current.updateControlTicketVolume(true),
+        ).not.toThrow()
+    })
+
+    it('updateControlTicketVolume calls openChat, displayPage with homepage, and updateSettings on the ref when attached', () => {
+        const mockOpenChat = jest.fn()
+        const mockDisplayPage = jest.fn()
+        const mockUpdateSettings = jest.fn()
+
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        const panelArg = mockWarpToCollapsibleColumn.mock.calls.at(-1)?.[0]
+        if (panelArg?.ref) {
+            panelArg.ref.current = {
+                openChat: mockOpenChat,
+                displayPage: mockDisplayPage,
+                updateSettings: mockUpdateSettings,
+            }
+        }
+
+        result.current.updateControlTicketVolume(true)
+
+        expect(mockOpenChat).toHaveBeenCalled()
+        expect(mockDisplayPage).toHaveBeenCalledWith('homepage', undefined)
+        expect(mockUpdateSettings).toHaveBeenCalledWith({
+            preferences: { controlTicketVolume: true },
+        })
+    })
+
+    it('updateControlTicketVolume passes false to updateSettings when called with false', () => {
+        const mockOpenChat = jest.fn()
+        const mockDisplayPage = jest.fn()
+        const mockUpdateSettings = jest.fn()
+
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        const panelArg = mockWarpToCollapsibleColumn.mock.calls.at(-1)?.[0]
+        if (panelArg?.ref) {
+            panelArg.ref.current = {
+                openChat: mockOpenChat,
+                displayPage: mockDisplayPage,
+                updateSettings: mockUpdateSettings,
+            }
+        }
+
+        result.current.updateControlTicketVolume(false)
+
+        expect(mockUpdateSettings).toHaveBeenCalledWith({
+            preferences: { controlTicketVolume: false },
+        })
+    })
+
     it('onChatPreviewLoaded registers a callback that fires when onPreviewLoaded is called', () => {
         const mockCallback = jest.fn()
         const { result } = renderHook(() => useChatPreviewPanel())
@@ -723,6 +779,7 @@ describe('useChatPreviewPanelContext', () => {
             updatePreviewOrders: jest.fn(),
             setConversationMessages: jest.fn(),
             onChatPreviewLoaded: jest.fn(),
+            updateControlTicketVolume: jest.fn(),
         }
 
         const wrapper = ({ children }: { children?: ReactNode }) => (
