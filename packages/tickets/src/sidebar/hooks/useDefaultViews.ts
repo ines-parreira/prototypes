@@ -3,6 +3,8 @@ import { useMemo } from 'react'
 import { useListAccountSettings, useListViews } from '@gorgias/helpdesk-queries'
 import type { ListViews200, View } from '@gorgias/helpdesk-types'
 
+import { DurationInMs } from '@repo/utils'
+
 import { SYSTEM_VIEW_DEFINITIONS } from '../constants/views'
 import type { SystemView, ViewsVisibilityData } from '../types/views'
 
@@ -60,7 +62,7 @@ export function useDefaultViews() {
         },
         {
             query: {
-                staleTime: Infinity,
+                staleTime: DurationInMs.OneMinute * 10,
                 refetchOnWindowFocus: false,
                 select: (data) => data?.data?.data?.[0],
             },
