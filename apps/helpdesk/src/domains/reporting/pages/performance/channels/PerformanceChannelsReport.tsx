@@ -100,20 +100,18 @@ export const PerformanceChannelsReport = () => {
             defaultTab={PerformanceChannelsQueryParams.Email}
             filtersSlot={
                 persistentFilters ? (
-                    <Box padding="lg" paddingBottom="0px">
-                        <FiltersPanelWrapper
-                            persistentFilters={persistentFilters}
-                            optionalFilters={optionalFilters}
-                            filterSettingsOverrides={{
-                                [FilterKey.Period]: {
-                                    initialSettings: {
-                                        maxSpan: 365,
-                                    },
+                    <FiltersPanelWrapper
+                        persistentFilters={persistentFilters}
+                        optionalFilters={optionalFilters}
+                        filterSettingsOverrides={{
+                            [FilterKey.Period]: {
+                                initialSettings: {
+                                    maxSpan: 365,
                                 },
-                            }}
-                            compact
-                        />
-                    </Box>
+                            },
+                        }}
+                        compact
+                    />
                 ) : null
             }
         >

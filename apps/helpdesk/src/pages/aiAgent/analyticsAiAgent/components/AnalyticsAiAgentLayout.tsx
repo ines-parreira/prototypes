@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useRef } from 'react'
 
-import { useEffectOnce } from '@repo/hooks'
+import { useEffectOnce, useLocalStorage } from '@repo/hooks'
 import { getPreviousUrl } from '@repo/routing'
 import moment from 'moment/moment'
 
@@ -18,6 +18,7 @@ import { AnalyticsPage } from 'domains/reporting/pages/common/layout/AnalyticsPa
 import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import { useSearchParam } from 'hooks/useSearchParam'
 
+import { AiAgentDataDelayBanner } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentDataDelayBanner'
 import { AiAgentDashboardLayoutRenderer } from 'pages/aiAgent/analyticsOverview/components/AiAgentDashboardLayoutRenderer'
 import {
     ManagedDashboardId,
@@ -36,6 +37,8 @@ import { ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT } from '../config/aiAgentSuppor
 import {
     AiAgentAnalyticsContent,
     AiAgentAnalyticsQueryParams,
+    DATA_FILTERING_WARNING_MESSAGE,
+    DISMISSED_FILTERING_MESSAGE_BANNER,
     MIN_DATE_FOR_AI_AGENT,
 } from '../constants'
 import { useExportAiAgentAllAgentsToCSV } from '../hooks/useExportAiAgentAllAgentsToCSV'
@@ -138,6 +141,11 @@ export const AnalyticsAiAgentLayout = () => {
         date: STORES_FILTER_AVAILABILITY_DATE,
     })
 
+    const [isDataFilteringBannerDismissed] = useLocalStorage(
+        DISMISSED_FILTERING_MESSAGE_BANNER,
+        false,
+    )
+
     const renderDashboard = useMemo(() => {
         switch (activeTab) {
             case AiAgentAnalyticsQueryParams.AllAgents:
@@ -194,6 +202,11 @@ export const AnalyticsAiAgentLayout = () => {
         <AnalyticsPage
             ref={contentRef}
             title="AI Agent"
+            banner={
+                isDataFilteringBannerDismissed ? undefined : (
+                    <AiAgentDataDelayBanner />
+                )
+            }
             titleExtra={
                 paywallHidden ? (
                     <DashboardExportButton
@@ -218,37 +231,40 @@ export const AnalyticsAiAgentLayout = () => {
             onTabChangeCallback={handleTabChangeCallback}
             filtersSlot={
                 paywallHidden ? (
-                    <Box padding="lg" paddingBottom="0px">
-                        <FiltersPanelWrapper
-                            persistentFilters={
-                                activeTabConfig.reportConfig.reportFilters
-                                    .persistent
-                            }
-                            withSavedFilters={false}
-                            optionalFilters={
-                                activeTabConfig.reportConfig.reportFilters
-                                    .optional
-                            }
-                            filterSettingsOverrides={{
-                                [FilterKey.Period]: {
-                                    initialSettings: {
-                                        maxSpan: 365,
-                                        minDate: moment(
-                                            MIN_DATE_FOR_AI_AGENT,
-                                            'YYYY-MM-DD',
-                                        ).toDate(),
-                                    },
+                    <FiltersPanelWrapper
+                        persistentFilters={
+                            activeTabConfig.reportConfig.reportFilters
+                                .persistent
+                        }
+                        withSavedFilters={false}
+                        optionalFilters={
+                            activeTabConfig.reportConfig.reportFilters.optional
+                        }
+                        filterSettingsOverrides={{
+                            [FilterKey.Period]: {
+                                initialSettings: {
+                                    maxSpan: 365,
+                                    minDate: moment(
+                                        MIN_DATE_FOR_AI_AGENT,
+                                        'YYYY-MM-DD',
+                                    ).toDate(),
+                                    maxDate: moment()
+                                        .subtract(3, 'days')
+                                        .toDate(),
                                 },
-                                ...(isStoresComingSoon && {
-                                    [FilterKey.Stores]: {
-                                        isDisabled: true,
-                                        warningMessage: `The store filter will be available in AI Agent ${activeTabConfig.title} starting August 1, 2025.`,
-                                    },
-                                }),
-                            }}
-                            compact
-                        />
-                    </Box>
+                                warningMessage: isDataFilteringBannerDismissed
+                                    ? DATA_FILTERING_WARNING_MESSAGE
+                                    : undefined,
+                            },
+                            ...(isStoresComingSoon && {
+                                [FilterKey.Stores]: {
+                                    isDisabled: true,
+                                    warningMessage: `The store filter will be available in AI Agent ${activeTabConfig.title} starting August 1, 2025.`,
+                                },
+                            }),
+                        }}
+                        compact
+                    />
                 ) : null
             }
         >

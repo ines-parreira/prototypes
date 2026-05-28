@@ -1,7 +1,5 @@
 import { useRef } from 'react'
 
-import { Box } from '@gorgias/axiom'
-
 import { DashboardExportButton, DashboardLayoutRenderer } from '@repo/reporting'
 
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
@@ -33,26 +31,22 @@ export const PerformanceOverviewReport = () => {
                 />
             }
             filtersSlot={
-                <Box padding="lg" paddingBottom="0px">
-                    <FiltersPanelWrapper
-                        persistentFilters={
-                            PerformanceOverviewReportConfig.reportFilters
-                                .persistent
-                        }
-                        optionalFilters={
-                            PerformanceOverviewReportConfig.reportFilters
-                                .optional
-                        }
-                        filterSettingsOverrides={{
-                            [FilterKey.Period]: {
-                                initialSettings: {
-                                    maxSpan: 365,
-                                },
+                <FiltersPanelWrapper
+                    persistentFilters={
+                        PerformanceOverviewReportConfig.reportFilters.persistent
+                    }
+                    optionalFilters={
+                        PerformanceOverviewReportConfig.reportFilters.optional
+                    }
+                    filterSettingsOverrides={{
+                        [FilterKey.Period]: {
+                            initialSettings: {
+                                maxSpan: 365,
                             },
-                        }}
-                        compact
-                    />
-                </Box>
+                        },
+                    }}
+                    compact
+                />
             }
         >
             <DashboardLayoutRenderer

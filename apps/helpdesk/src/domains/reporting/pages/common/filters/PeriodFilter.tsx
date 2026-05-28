@@ -36,6 +36,7 @@ type Props = {
     initialSettings?: Omit<InitialSettings, 'maxSpan'> & { maxSpan?: number }
     value: StatsFilters[FilterKey.Period]
     tooltipMessageForPreviousPeriod?: string
+    warningMessage?: string
     initialV2Props?: {
         dateRanges?: { [label: string]: [Moment, Moment] }
     }
@@ -46,6 +47,7 @@ export function PeriodFilter({
     initialSettings: initialSettingsProp,
     value,
     tooltipMessageForPreviousPeriod,
+    warningMessage,
     initialV2Props,
     compact = false,
 }: Props) {
@@ -130,6 +132,7 @@ export function PeriodFilter({
             <PeriodFilterCompact
                 value={value}
                 initialSettings={initialSettings}
+                warningMessage={warningMessage}
             />
         )
     }

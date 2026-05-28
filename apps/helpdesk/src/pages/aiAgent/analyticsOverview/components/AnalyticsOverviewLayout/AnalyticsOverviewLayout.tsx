@@ -1,11 +1,10 @@
 import { useRef } from 'react'
 
-import { useEffectOnce } from '@repo/hooks'
+import { useEffectOnce, useLocalStorage } from '@repo/hooks'
 import { getPreviousUrl } from '@repo/routing'
 
-import { Box } from '@gorgias/axiom'
-
 import { DashboardExportButton } from '@repo/reporting'
+import moment from 'moment'
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
@@ -14,6 +13,11 @@ import {
     STORES_FILTER_AVAILABILITY_DATE,
 } from 'domains/reporting/pages/common/filters/utils'
 import { AnalyticsPage } from 'domains/reporting/pages/common/layout/AnalyticsPage'
+import { AiAgentDataDelayBanner } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentDataDelayBanner'
+import {
+    DATA_FILTERING_WARNING_MESSAGE,
+    DISMISSED_FILTERING_MESSAGE_BANNER,
+} from 'pages/aiAgent/analyticsAiAgent/constants'
 import { AnalyticsOverviewReportConfig } from 'pages/aiAgent/analyticsOverview/AnalyticsOverviewReportConfig'
 import { AiAgentDashboardLayoutRenderer } from 'pages/aiAgent/analyticsOverview/components/AiAgentDashboardLayoutRenderer'
 import { DEFAULT_ANALYTICS_OVERVIEW_LAYOUT } from 'pages/aiAgent/analyticsOverview/config/defaultLayoutConfig'
@@ -49,6 +53,11 @@ export const AnalyticsOverviewLayout = () => {
         date: STORES_FILTER_AVAILABILITY_DATE,
     })
 
+    const [isDataFilteringBannerDismissed] = useLocalStorage(
+        DISMISSED_FILTERING_MESSAGE_BANNER,
+        false,
+    )
+
     return (
         <AnalyticsPage
             ref={contentRef}
@@ -64,34 +73,38 @@ export const AnalyticsOverviewLayout = () => {
                     }
                 />
             }
+            banner={
+                !isDataFilteringBannerDismissed && <AiAgentDataDelayBanner />
+            }
             filtersSlot={
-                <Box padding="lg" paddingBottom="0px">
-                    <FiltersPanelWrapper
-                        persistentFilters={
-                            AnalyticsOverviewReportConfig.reportFilters
-                                .persistent
-                        }
-                        withSavedFilters={false}
-                        optionalFilters={
-                            AnalyticsOverviewReportConfig.reportFilters.optional
-                        }
-                        filterSettingsOverrides={{
-                            [FilterKey.Period]: {
-                                initialSettings: {
-                                    maxSpan: 365,
-                                },
+                <FiltersPanelWrapper
+                    persistentFilters={
+                        AnalyticsOverviewReportConfig.reportFilters.persistent
+                    }
+                    withSavedFilters={false}
+                    optionalFilters={
+                        AnalyticsOverviewReportConfig.reportFilters.optional
+                    }
+                    filterSettingsOverrides={{
+                        [FilterKey.Period]: {
+                            initialSettings: {
+                                maxSpan: 365,
+                                maxDate: moment().subtract(3, 'days').toDate(),
                             },
-                            ...(isStoresComingSoon && {
-                                [FilterKey.Stores]: {
-                                    isDisabled: true,
-                                    warningMessage:
-                                        'The store filter will be available in AI Agent Overview starting August 1, 2025.',
-                                },
-                            }),
-                        }}
-                        compact
-                    />
-                </Box>
+                            warningMessage: isDataFilteringBannerDismissed
+                                ? DATA_FILTERING_WARNING_MESSAGE
+                                : undefined,
+                        },
+                        ...(isStoresComingSoon && {
+                            [FilterKey.Stores]: {
+                                isDisabled: true,
+                                warningMessage:
+                                    'The store filter will be available in AI Agent Overview starting August 1, 2025.',
+                            },
+                        }),
+                    }}
+                    compact
+                />
             }
         >
             <AiAgentDashboardLayoutRenderer

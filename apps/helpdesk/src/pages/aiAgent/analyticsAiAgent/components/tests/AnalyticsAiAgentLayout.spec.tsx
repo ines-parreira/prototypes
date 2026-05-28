@@ -10,7 +10,11 @@ import { STORES_FILTER_AVAILABILITY_DATE } from 'domains/reporting/pages/common/
 import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
 
-import { AiAgentAnalyticsContent } from '../../constants'
+import {
+    AiAgentAnalyticsContent,
+    DATA_FILTERING_WARNING_MESSAGE,
+    DISMISSED_FILTERING_MESSAGE_BANNER,
+} from '../../constants'
 import { useExportAiAgentAllAgentsToCSV } from '../../hooks/useExportAiAgentAllAgentsToCSV'
 import { useExportAiAgentShoppingAssistantToCSV } from '../../hooks/useExportAiAgentShoppingAssistantToCSV'
 import { useExportAiAgentSupportAgentToCSV } from '../../hooks/useExportAiAgentSupportAgentToCSV'
@@ -120,6 +124,7 @@ describe('AnalyticsAiAgentLayout', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         queryClient.clear()
+        localStorage.clear()
 
         mockedGetPreviousUrl.mockReturnValue('/app/dashboard')
         mockedUseExportAiAgentAllAgentsToCSV.mockReturnValue({
@@ -359,6 +364,41 @@ describe('AnalyticsAiAgentLayout', () => {
             expect.objectContaining({
                 filterSettingsOverrides: expect.not.objectContaining({
                     [FilterKey.Stores]: expect.anything(),
+                }),
+            }),
+            expect.anything(),
+        )
+    })
+
+    it('passes period warningMessage when the data delay banner has been dismissed', () => {
+        localStorage.setItem(
+            DISMISSED_FILTERING_MESSAGE_BANNER,
+            JSON.stringify(true),
+        )
+
+        renderComponent()
+
+        expect(mockFiltersPanelWrapper).toHaveBeenCalledWith(
+            expect.objectContaining({
+                filterSettingsOverrides: expect.objectContaining({
+                    [FilterKey.Period]: expect.objectContaining({
+                        warningMessage: DATA_FILTERING_WARNING_MESSAGE,
+                    }),
+                }),
+            }),
+            expect.anything(),
+        )
+    })
+
+    it('does not pass period warningMessage when the data delay banner has not been dismissed', () => {
+        renderComponent()
+
+        expect(mockFiltersPanelWrapper).toHaveBeenCalledWith(
+            expect.objectContaining({
+                filterSettingsOverrides: expect.objectContaining({
+                    [FilterKey.Period]: expect.objectContaining({
+                        warningMessage: undefined,
+                    }),
                 }),
             }),
             expect.anything(),

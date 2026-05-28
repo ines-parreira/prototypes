@@ -44,6 +44,7 @@ describe('PeriodFilterCompact', () => {
     const renderComponent = (
         value: { start_datetime: string; end_datetime: string },
         initialSettings?: { maxSpan?: number; minDate?: Date; maxDate?: Date },
+        extraProps?: { warningMessage?: string },
     ) => {
         const user = userEvent.setup()
         const store = mockStore(defaultState)
@@ -52,6 +53,7 @@ describe('PeriodFilterCompact', () => {
                 <PeriodFilterCompact
                     value={value}
                     initialSettings={initialSettings}
+                    warningMessage={extraProps?.warningMessage}
                 />
             </Provider>,
         )
@@ -137,6 +139,72 @@ describe('PeriodFilterCompact', () => {
 
             expect(store.getActions()).toHaveLength(0)
         })
+
+        it('clamps end date to maxDate when initial end is after maxDate', () => {
+            const start = '2017-02-01T00:00:00.000Z'
+            const end = '2017-03-10T00:00:00.000Z'
+            const maxDate = new Date('2017-02-20')
+
+            const { store } = renderComponent(
+                { start_datetime: start, end_datetime: end },
+                { maxSpan: 90, maxDate },
+            )
+
+            const tz = moment.tz.guess()
+            expect(store.getActions()).toContainEqual(
+                mergeStatsFilters({
+                    period: {
+                        start_datetime: moment
+                            .tz(start, tz)
+                            .startOf('day')
+                            .format(),
+                        end_datetime: moment
+                            .tz(maxDate, tz)
+                            .endOf('day')
+                            .format(),
+                    },
+                }),
+            )
+        })
+
+        it('clamps end to maxDate when both maxSpan and maxDate would clamp', () => {
+            const start = '2017-01-01T00:00:00.000Z'
+            const end = '2017-06-01T00:00:00.000Z'
+            const maxDate = new Date('2017-01-20')
+
+            const { store } = renderComponent(
+                { start_datetime: start, end_datetime: end },
+                { maxSpan: 60, maxDate },
+            )
+
+            const tz = moment.tz.guess()
+            expect(store.getActions()).toContainEqual(
+                mergeStatsFilters({
+                    period: {
+                        start_datetime: moment
+                            .tz(start, tz)
+                            .startOf('day')
+                            .format(),
+                        end_datetime: moment
+                            .tz(maxDate, tz)
+                            .endOf('day')
+                            .format(),
+                    },
+                }),
+            )
+        })
+
+        it('does not dispatch when end is before maxDate and within maxSpan', () => {
+            const start = '2017-01-01T00:00:00.000Z'
+            const end = '2017-01-10T00:00:00.000Z'
+
+            const { store } = renderComponent(
+                { start_datetime: start, end_datetime: end },
+                { maxDate: new Date('2017-01-15') },
+            )
+
+            expect(store.getActions()).toHaveLength(0)
+        })
     })
 
     describe('preset filtering', () => {
@@ -188,6 +256,57 @@ describe('PeriodFilterCompact', () => {
                 expect(screen.getByText('Last 30 days')).toBeInTheDocument()
                 expect(screen.getByText('Last 7 days')).toBeInTheDocument()
                 expect(screen.getByText('Today')).toBeInTheDocument()
+            })
+        })
+
+        it('excludes the Today preset when maxDate is in the past', async () => {
+            const { user } = renderComponent(
+                {
+                    start_datetime: '2017-01-01T00:00:00.000Z',
+                    end_datetime: '2017-01-30T00:00:00.000Z',
+                },
+                { maxDate: moment('2017-02-13').toDate() },
+            )
+
+            await user.click(screen.getByRole('button', { name: /calendar/i }))
+
+            await waitFor(() => {
+                expect(screen.queryByText('Today')).not.toBeInTheDocument()
+                expect(screen.getByText('Last 7 days')).toBeInTheDocument()
+            })
+        })
+
+        it('keeps the Today preset when maxDate is today or later', async () => {
+            const { user } = renderComponent(
+                {
+                    start_datetime: '2017-01-01T00:00:00.000Z',
+                    end_datetime: '2017-01-30T00:00:00.000Z',
+                },
+                { maxDate: moment('2017-02-17').toDate() },
+            )
+
+            await user.click(screen.getByRole('button', { name: /calendar/i }))
+
+            await waitFor(() => {
+                expect(screen.getByText('Today')).toBeInTheDocument()
+            })
+        })
+
+        it('keeps presets visible when maxDate is in the past (range is shifted to anchor on maxDate)', async () => {
+            const { user } = renderComponent(
+                {
+                    start_datetime: '2017-01-01T00:00:00.000Z',
+                    end_datetime: '2017-01-30T00:00:00.000Z',
+                },
+                { maxDate: moment('2017-02-06').toDate() },
+            )
+
+            await user.click(screen.getByRole('button', { name: /calendar/i }))
+
+            await waitFor(() => {
+                expect(screen.queryByText('Today')).not.toBeInTheDocument()
+                expect(screen.getByText('Last 7 days')).toBeInTheDocument()
+                expect(screen.getByText('Last 30 days')).toBeInTheDocument()
             })
         })
 
@@ -297,6 +416,42 @@ describe('PeriodFilterCompact', () => {
             })
         })
 
+        it('dispatches end at maxDate when user selects the boundary date', async () => {
+            const { user, store } = renderComponent(
+                {
+                    start_datetime: '2017-01-01T00:00:00.000Z',
+                    end_datetime: '2017-01-08T00:00:00.000Z',
+                },
+                { maxDate: new Date('2017-01-10') },
+            )
+
+            await user.click(screen.getByRole('button', { name: /calendar/i }))
+            await user.click(
+                screen.getByRole('button', { name: /January 5, 2017/ }),
+            )
+            await user.click(
+                screen.getByRole('button', { name: /January 10, 2017/ }),
+            )
+
+            const tz = moment.tz.guess()
+            await waitFor(() => {
+                expect(store.getActions()).toContainEqual(
+                    mergeStatsFilters({
+                        period: {
+                            start_datetime: moment
+                                .tz('2017-01-05', tz)
+                                .startOf('day')
+                                .format(),
+                            end_datetime: moment
+                                .tz('2017-01-10', tz)
+                                .endOf('day')
+                                .format(),
+                        },
+                    }),
+                )
+            })
+        })
+
         it('clamps end date to effectiveMaxSpan when selected range is too wide', async () => {
             const { user, store } = renderComponent(
                 {
@@ -332,6 +487,94 @@ describe('PeriodFilterCompact', () => {
                         },
                     }),
                 )
+            })
+        })
+    })
+
+    describe('warningMessage', () => {
+        it('does not show a tooltip on hover when warningMessage is not set', async () => {
+            const { user } = renderComponent({
+                start_datetime: '2017-01-01T00:00:00.000Z',
+                end_datetime: '2017-01-30T00:00:00.000Z',
+            })
+
+            await user.hover(screen.getByRole('button', { name: /calendar/i }))
+
+            expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
+        })
+
+        it('shows the tooltip message on hover when warningMessage is set', async () => {
+            const message = 'Data restricted to up to 3 days ago'
+            const { user } = renderComponent(
+                {
+                    start_datetime: '2017-01-01T00:00:00.000Z',
+                    end_datetime: '2017-01-30T00:00:00.000Z',
+                },
+                undefined,
+                { warningMessage: message },
+            )
+
+            await user.hover(screen.getByRole('button', { name: /calendar/i }))
+
+            await waitFor(() => {
+                expect(screen.getByText(message)).toBeInTheDocument()
+            })
+        })
+    })
+
+    describe('preset shift on maxDate', () => {
+        it('shifts a preset range back so end = maxDate when the preset would exceed it', async () => {
+            const maxDate = moment('2017-02-11').toDate()
+
+            const { user, store } = renderComponent(
+                {
+                    start_datetime: '2017-01-01T00:00:00.000Z',
+                    end_datetime: '2017-01-30T00:00:00.000Z',
+                },
+                { maxDate },
+            )
+
+            await user.click(screen.getByRole('button', { name: /calendar/i }))
+            await user.click(screen.getByText('Last 7 days'))
+
+            const tz = moment.tz.guess()
+            await waitFor(() => {
+                expect(store.getActions()).toContainEqual(
+                    mergeStatsFilters({
+                        period: {
+                            start_datetime: moment
+                                .tz(maxDate, tz)
+                                .subtract(6, 'days')
+                                .startOf('day')
+                                .format(),
+                            end_datetime: moment
+                                .tz(maxDate, tz)
+                                .endOf('day')
+                                .format(),
+                        },
+                    }),
+                )
+            })
+        })
+
+        it('hides a preset whose shifted start would fall before minDate', async () => {
+            const { user } = renderComponent(
+                {
+                    start_datetime: '2017-02-09T00:00:00.000Z',
+                    end_datetime: '2017-02-10T00:00:00.000Z',
+                },
+                {
+                    maxDate: moment('2017-02-11').toDate(),
+                    minDate: moment('2017-02-08').toDate(),
+                },
+            )
+
+            await user.click(screen.getByRole('button', { name: /calendar/i }))
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByText('Last 7 days'),
+                ).not.toBeInTheDocument()
             })
         })
     })

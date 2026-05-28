@@ -16,6 +16,7 @@ type TabConfig = {
 type AnalyticsPageProps = {
     title: ReactNode
     titleExtra?: ReactNode
+    banner?: ReactNode
     tabs?: readonly TabConfig[]
     tabParamName?: string
     activeTab?: string
@@ -34,6 +35,7 @@ export const AnalyticsPage = forwardRef<HTMLDivElement, AnalyticsPageProps>(
         {
             title,
             titleExtra,
+            banner,
             tabs,
             tabParamName,
             activeTab,
@@ -47,6 +49,7 @@ export const AnalyticsPage = forwardRef<HTMLDivElement, AnalyticsPageProps>(
     ) => {
         const headerRef = useRef(null)
         useInjectStyleToCandu(headerRef.current)
+        const hasTabs = tabs && tabs.length > 0
 
         const [currentTab, setTabParam] = useSearchParam(tabParamName || '')
 
@@ -97,8 +100,13 @@ export const AnalyticsPage = forwardRef<HTMLDivElement, AnalyticsPageProps>(
                         )}
                         {titleExtra}
                     </Box>
-                    {tabs && tabs.length > 0 && (
-                        <Box width="100%" display="flex" flexDirection="column">
+                    {hasTabs && (
+                        <Box
+                            width="100%"
+                            display="flex"
+                            flexDirection="column"
+                            marginLeft="-8px"
+                        >
                             <Tabs
                                 selectedItem={activeTab || defaultTab}
                                 onSelectionChange={handleTabChange}
@@ -115,7 +123,22 @@ export const AnalyticsPage = forwardRef<HTMLDivElement, AnalyticsPageProps>(
                             </Tabs>
                         </Box>
                     )}
-                    {filtersSlot}
+                    {banner && (
+                        <Box
+                            display="flex"
+                            flexDirection="column"
+                            paddingRight="lg"
+                            paddingLeft="lg"
+                            paddingTop={hasTabs ? 'md' : 0}
+                        >
+                            {banner}
+                        </Box>
+                    )}
+                    {filtersSlot && (
+                        <Box padding="lg" paddingTop="md" paddingBottom="0px">
+                            {filtersSlot}
+                        </Box>
+                    )}
                 </Box>
                 <Box
                     display="flex"

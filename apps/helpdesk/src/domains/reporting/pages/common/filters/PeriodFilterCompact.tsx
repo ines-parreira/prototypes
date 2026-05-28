@@ -11,7 +11,13 @@ import {
 import type { DateOrString, Options as InitialSettings } from 'daterangepicker'
 import moment from 'moment-timezone'
 
-import { Button, DateRangePicker } from '@gorgias/axiom'
+import {
+    Button,
+    DateRangePicker,
+    DateRangePickerChangeEventSource,
+    Tooltip,
+    TooltipContent,
+} from '@gorgias/axiom'
 
 import type {
     FilterKey,
@@ -26,6 +32,7 @@ const MAX_SPAN = 90
 type CompactPeriodFilterProps = {
     value: StatsFilters[FilterKey.Period]
     initialSettings?: Omit<InitialSettings, 'maxSpan'> & { maxSpan?: number }
+    warningMessage?: string
 }
 
 function toCalendarDate(
@@ -41,54 +48,99 @@ function toCalendarDate(
 export function PeriodFilterCompact({
     value,
     initialSettings: initialSettingsProp,
+    warningMessage,
 }: CompactPeriodFilterProps) {
     const dispatch = useAppDispatch()
     const effectiveMaxSpan = initialSettingsProp?.maxSpan ?? MAX_SPAN
     const timeZone = moment.tz.guess()
+    const maxDateMoment = useMemo(
+        () =>
+            initialSettingsProp?.maxDate
+                ? moment.tz(initialSettingsProp.maxDate, timeZone)
+                : null,
+        [initialSettingsProp?.maxDate, timeZone],
+    )
 
     useEffectOnce(() => {
         const start = moment.tz(value.start_datetime, timeZone)
         const end = moment.tz(value.end_datetime, timeZone)
-        if (end.diff(start, 'days') > effectiveMaxSpan) {
+        const exceedsMaxSpan = end.diff(start, 'days') > effectiveMaxSpan
+        const exceedsMaxDate = !!maxDateMoment && end.isAfter(maxDateMoment)
+        if (exceedsMaxSpan || exceedsMaxDate) {
+            const spanClampedEnd = exceedsMaxSpan
+                ? start
+                      .clone()
+                      .add(effectiveMaxSpan, 'days')
+                      .subtract(1, 'seconds')
+                : end
+            const clampedEnd =
+                maxDateMoment && spanClampedEnd.isAfter(maxDateMoment)
+                    ? maxDateMoment.clone().endOf('day')
+                    : spanClampedEnd
             dispatch(
                 mergeStatsFilters({
                     period: {
                         start_datetime: start.clone().startOf('day').format(),
-                        end_datetime: start
-                            .clone()
-                            .add(effectiveMaxSpan, 'days')
-                            .subtract(1, 'seconds')
-                            .format(),
+                        end_datetime: clampedEnd.format(),
                     },
                 }),
             )
         }
     })
 
+    const minDateMoment = useMemo(
+        () =>
+            initialSettingsProp?.minDate
+                ? moment.tz(initialSettingsProp.minDate, timeZone)
+                : null,
+        [initialSettingsProp?.minDate, timeZone],
+    )
+
     const handleChange = useCallback(
-        (newValue: { start: ZonedDateTime; end: ZonedDateTime } | null) => {
+        (
+            newValue: { start: ZonedDateTime; end: ZonedDateTime } | null,
+            source?: DateRangePickerChangeEventSource,
+        ) => {
             if (!newValue) return
-            const start = moment
+            let start = moment
                 .tz(newValue.start.toDate(), timeZone)
                 .startOf('day')
-            const end = moment.tz(newValue.end.toDate(), timeZone).endOf('day')
-            const clampedEnd =
-                end.diff(start, 'days') > effectiveMaxSpan
-                    ? start
-                          .clone()
-                          .add(effectiveMaxSpan, 'days')
-                          .subtract(1, 'seconds')
-                    : end
+            let end = moment.tz(newValue.end.toDate(), timeZone).endOf('day')
+
+            if (end.diff(start, 'days') > effectiveMaxSpan) {
+                end = start
+                    .clone()
+                    .add(effectiveMaxSpan, 'days')
+                    .subtract(1, 'seconds')
+            }
+
+            if (maxDateMoment && end.isAfter(maxDateMoment)) {
+                if (source === DateRangePickerChangeEventSource.Preset) {
+                    const span = end.diff(start, 'days')
+                    end = maxDateMoment.clone().endOf('day')
+                    start = maxDateMoment
+                        .clone()
+                        .subtract(span, 'days')
+                        .startOf('day')
+                } else {
+                    end = maxDateMoment.clone().endOf('day')
+                }
+            }
+
+            if (minDateMoment && start.isBefore(minDateMoment, 'day')) {
+                start = minDateMoment.clone().startOf('day')
+            }
+
             dispatch(
                 mergeStatsFilters({
                     period: {
                         start_datetime: start.format(),
-                        end_datetime: clampedEnd.format(),
+                        end_datetime: end.format(),
                     },
                 }),
             )
         },
-        [dispatch, effectiveMaxSpan, timeZone],
+        [dispatch, effectiveMaxSpan, maxDateMoment, minDateMoment, timeZone],
     )
 
     const pickerValue = useMemo(() => {
@@ -121,41 +173,51 @@ export function PeriodFilterCompact({
         const allPresets = [
             { id: 'all-time', label: 'All time', duration: { years: -10 } },
             { id: 'today', label: 'Today', duration: { days: 0 } },
-            { id: 'last-7-days', label: 'Last 7 days', duration: { days: -7 } },
+            { id: 'last-7-days', label: 'Last 7 days', duration: { days: -6 } },
             {
                 id: 'last-30-days',
                 label: 'Last 30 days',
-                duration: { days: -30 },
+                duration: { days: -29 },
             },
             {
                 id: 'last-60-days',
                 label: 'Last 60 days',
-                duration: { days: -60 },
+                duration: { days: -59 },
             },
             {
                 id: 'last-3-months',
                 label: 'Last 3 months',
-                duration: { months: -3 },
+                duration: { months: -3, days: 1 },
             },
             {
                 id: 'last-6-months',
                 label: 'Last 6 months',
-                duration: { months: -6 },
+                duration: { months: -6, days: 1 },
             },
-            { id: 'last-year', label: 'Last year', duration: { years: -1 } },
+            {
+                id: 'last-year',
+                label: 'Last year',
+                duration: { years: -1, days: 1 },
+            },
         ]
 
         const nowTz = moment.tz(timeZone)
-        const minDateMoment = initialSettingsProp?.minDate
-            ? moment.tz(initialSettingsProp.minDate, timeZone)
-            : null
+        const isMaxDateInPast =
+            !!maxDateMoment && maxDateMoment.isBefore(nowTz, 'day')
+        const anchorMoment = isMaxDateInPast ? maxDateMoment : nowTz
 
         return allPresets.filter((preset) => {
-            const presetStart = nowTz.clone().add(preset.duration)
-            if (nowTz.diff(presetStart, 'days') > effectiveMaxSpan) return false
-            return !minDateMoment || !presetStart.isBefore(minDateMoment, 'day')
+            if (preset.id === 'today' && isMaxDateInPast) return false
+
+            const shiftedStart = anchorMoment.clone().add(preset.duration)
+            if (anchorMoment.diff(shiftedStart, 'days') > effectiveMaxSpan)
+                return false
+            if (minDateMoment && shiftedStart.isBefore(minDateMoment, 'day'))
+                return false
+
+            return true
         })
-    }, [effectiveMaxSpan, initialSettingsProp?.minDate, timeZone])
+    }, [effectiveMaxSpan, maxDateMoment, minDateMoment, timeZone])
 
     const isDateUnavailable = useCallback(
         (date: DateValue) => {
@@ -180,18 +242,27 @@ export function PeriodFilterCompact({
                 aria-label="Date range picker"
                 placement="bottom left"
                 isDateUnavailable={isDateUnavailable}
-                trigger={(renderProps) => (
-                    <Button
-                        {...renderProps}
-                        variant="tertiary"
-                        id="period-filter-compact-trigger"
-                    >
-                        <span className={css.compactLabel}>Date</span>
-                        <span className={css.compactValue}>
-                            {formatDateRange()}
-                        </span>
-                    </Button>
-                )}
+                trigger={(renderProps) => {
+                    const button = (
+                        <Button
+                            {...renderProps}
+                            variant="tertiary"
+                            id="period-filter-compact-trigger"
+                        >
+                            <span className={css.compactLabel}>Date</span>
+                            <span className={css.compactValue}>
+                                {formatDateRange()}
+                            </span>
+                        </Button>
+                    )
+                    return warningMessage ? (
+                        <Tooltip trigger={button}>
+                            <TooltipContent title={warningMessage} />
+                        </Tooltip>
+                    ) : (
+                        button
+                    )
+                }}
             />
         </div>
     )

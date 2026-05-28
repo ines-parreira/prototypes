@@ -137,6 +137,51 @@ describe('AnalyticsPage', () => {
 
             expect(screen.getByText('Filters Panel')).toBeInTheDocument()
         })
+
+        it('should render banner when provided', () => {
+            renderComponent({
+                title: 'Test Analytics',
+                banner: <div>Banner Content</div>,
+                children: <div>Content</div>,
+            })
+
+            expect(screen.getByText('Banner Content')).toBeInTheDocument()
+        })
+
+        it('should not render anything for banner when not provided', () => {
+            renderComponent({
+                title: 'Test Analytics',
+                children: <div>Content</div>,
+            })
+
+            expect(screen.queryByText('Banner Content')).not.toBeInTheDocument()
+        })
+
+        it('should render banner after tabs', () => {
+            renderComponent({
+                title: 'Test Analytics',
+                banner: <div>Banner Content</div>,
+                tabs: [
+                    { param: 'tab1', title: 'Tab 1' },
+                    { param: 'tab2', title: 'Tab 2' },
+                ],
+                tabParamName: 'test-tab',
+                children: <div>Content</div>,
+            })
+
+            const title = screen.getByText('Test Analytics')
+            const firstTab = screen.getByRole('tab', { name: /tab 1/i })
+            const banner = screen.getByText('Banner Content')
+
+            expect(
+                title.compareDocumentPosition(firstTab) &
+                    Node.DOCUMENT_POSITION_FOLLOWING,
+            ).toBeTruthy()
+            expect(
+                firstTab.compareDocumentPosition(banner) &
+                    Node.DOCUMENT_POSITION_FOLLOWING,
+            ).toBeTruthy()
+        })
     })
 
     describe('Tabs', () => {
