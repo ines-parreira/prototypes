@@ -4,6 +4,11 @@
         border-bottom: 1px solid var(--border-neutral-default);
         background: var(--elevation-neutral-default);
         box-sizing: border-box;
+        padding: var(--spacing-md) 0 var(--spacing-sm);
+    }
+
+    .header {
+        margin: 0 var(--spacing-md);
     }
 
     .heading {
@@ -19,6 +24,11 @@
     .overflowListItem {
         width: 100%;
         min-height: 24px;
+        padding: 0 var(--spacing-md);
+    }
+
+    .standaloneField {
+        padding: 0 var(--spacing-md);
     }
 
     .instagramHandle {
@@ -36,5 +46,9 @@
 
     .overflowListToggle {
         padding-top: calc(var(--spacing-xxs) - var(--spacing-xxxxs));
+
+        > button {
+            margin-left: var(--spacing-xs);
+        }
     }
 }

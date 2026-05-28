@@ -83,39 +83,33 @@ export const InfobarTicketCustomerInstagramSection = ({
                 className={css.instagramContainer}
                 flexDirection="column"
                 gap="xs"
-                padding="md"
-                paddingBottom="sm"
             >
-                <Box alignItems="center" gap="xxs">
+                <Box className={css.header} alignItems="center" gap="xxs">
                     <Icon name="channel-instagram" size="sm" />
                     <Heading size="sm" className={css.heading}>
                         Instagram
                     </Heading>
                 </Box>
-                <FieldRow label="Handle">
-                    <a
-                        href={`https://www.instagram.com/${customerInstagramHandle}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={handleIgHandleClick}
-                        className={css.instagramHandle}
-                    >
-                        <Text size="md">@{customerInstagramHandle}</Text>
-                    </a>
-                </FieldRow>
+                <div className={css.standaloneField}>
+                    <FieldRow label="Handle">
+                        <a
+                            href={`https://www.instagram.com/${customerInstagramHandle}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={handleIgHandleClick}
+                            className={css.instagramHandle}
+                        >
+                            <Text size="md">@{customerInstagramHandle}</Text>
+                        </a>
+                    </FieldRow>
+                </div>
             </Box>
         )
     }
 
     return (
-        <Box
-            className={css.instagramContainer}
-            flexDirection="column"
-            gap="xs"
-            padding="md"
-            paddingBottom="sm"
-        >
-            <Box alignItems="center" gap="xxs">
+        <Box className={css.instagramContainer} flexDirection="column" gap="xs">
+            <Box className={css.header} alignItems="center" gap="xxs">
                 <Icon name="channel-instagram" size="sm" />
                 <Heading size="sm" className={css.heading}>
                     Instagram
@@ -195,10 +189,7 @@ export const InfobarTicketCustomerInstagramSection = ({
                     </FieldRow>
                 </OverflowListItem>
                 <Box className={css.overflowListToggle}>
-                    <OverflowListShowMore
-                        leadingSlot="arrow-chevron-down"
-                        className={css.overflowListToggle}
-                    >
+                    <OverflowListShowMore leadingSlot="arrow-chevron-down">
                         Show more
                     </OverflowListShowMore>
                 </Box>
