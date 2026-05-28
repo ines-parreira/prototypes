@@ -1,5 +1,5 @@
 import { CopyableField } from '@repo/ecommerce/shopify/components'
-import { FieldRow } from '@repo/tickets'
+import { FieldRow } from '@repo/ui'
 
 import { OverflowListItem, Text } from '@gorgias/axiom'
 

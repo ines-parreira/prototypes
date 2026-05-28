@@ -75,8 +75,6 @@ export type { DisplayType } from './translations/store/constants'
 
 export { useCloseTicket } from './components/TicketStatusActions/useCloseTicket'
 export { useTicketFieldsValidation } from './components/InfobarTicketDetails/components/InfobarTicketFields/hooks/useTicketFieldsValidation'
-export { FieldRow } from './components/InfobarCustomerFields/components/FieldRow'
-export type { FieldRowProps } from './components/InfobarCustomerFields/components/FieldRow'
 export { EditableField } from './components/InfobarCustomerFields/components/EditableField'
 
 export { InfobarTicketCustomerInstagramSection } from './components/InfobarTicketCustomerInstagram/InfobarTicketCustomerInstagramSection'

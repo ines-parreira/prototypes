@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
+import { FieldRow } from '@repo/ui'
+
 import type { CustomField } from '@gorgias/helpdesk-types'
 
 import { useUpdateOrDeleteCustomCustomerFieldValue } from '../hooks'
 import type { CustomFieldValue } from '../types'
 import { getNumberOrUndefined, isNumberInput, isTextInput } from '../utils'
 import { CustomCustomerFieldInput } from './CustomCustomerFieldInput'
-import { FieldRow } from './FieldRow'
 
 interface CustomCustomerFieldProps {
     field: CustomField

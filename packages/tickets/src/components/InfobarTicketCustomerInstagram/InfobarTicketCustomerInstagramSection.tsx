@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { FieldRow } from '@repo/ui'
 import { getFormattedDate } from '@repo/utils'
 
 import {
@@ -15,7 +16,6 @@ import {
 } from '@gorgias/axiom'
 import type { TicketCustomer, TicketMessage } from '@gorgias/helpdesk-types'
 
-import { FieldRow } from '../InfobarCustomerFields/components/FieldRow'
 import { useCustomerInstagramHandle } from './useCustomerInstagramHandle'
 import { useCustomerInstagramProfile } from './useCustomerInstagramProfile'
 

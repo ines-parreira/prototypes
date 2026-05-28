@@ -1,12 +1,13 @@
 import cn from 'classnames'
 
+import { FieldRow } from '@repo/ui'
+
 import { OverflowListItem, Text } from '@gorgias/axiom'
 import type { TicketCustomer } from '@gorgias/helpdesk-types'
 
 import { validateChannelField } from '../../utils/validation'
 import { EditableField } from './components/EditableField'
 import { EmailChannelField } from './components/EmailChannelField'
-import { FieldRow } from './components/FieldRow'
 import { OtherChannelField } from './components/OtherChannelField'
 import { PhoneChannelField } from './components/PhoneChannelField'
 import {

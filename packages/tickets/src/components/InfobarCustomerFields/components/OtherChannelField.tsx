@@ -1,7 +1,7 @@
+import { FieldRow } from '@repo/ui'
+
 import { OverflowListItem, Text } from '@gorgias/axiom'
 import type { TicketCustomerChannel } from '@gorgias/helpdesk-types'
-
-import { FieldRow } from './FieldRow'
 
 import css from '../InfobarCustomerFields.less'
 

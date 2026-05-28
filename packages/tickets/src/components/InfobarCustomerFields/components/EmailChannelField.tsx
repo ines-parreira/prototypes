@@ -1,5 +1,7 @@
 import { useHistory } from 'react-router-dom'
 
+import { FieldRow } from '@repo/ui'
+
 import { MenuItem, OverflowListItem, SubMenu } from '@gorgias/axiom'
 import type {
     TicketCustomer,
@@ -9,7 +11,6 @@ import type {
 import { useTicketsLegacyBridge } from '../../../utils/LegacyBridge'
 import { validateChannelField } from '../../../utils/validation'
 import { EditableMenuField } from './EditableMenuField'
-import { FieldRow } from './FieldRow'
 import { TriggerLabel } from './TriggerLabel'
 
 import css from '../InfobarCustomerFields.less'

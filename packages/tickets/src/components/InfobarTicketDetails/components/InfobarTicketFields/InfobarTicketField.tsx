@@ -1,9 +1,10 @@
 import { useCallback } from 'react'
 
+import { FieldRow } from '@repo/ui'
+
 import { OverflowListItem } from '@gorgias/axiom'
 
 import { CustomCustomerFieldInput } from '../../../InfobarCustomerFields/components/CustomCustomerFieldInput'
-import { FieldRow } from '../../../InfobarCustomerFields/components/FieldRow'
 import type { VisibleTicketField } from './hooks/useFilteredTicketFields'
 import type {
     CustomFieldState,

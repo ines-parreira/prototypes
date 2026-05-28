@@ -18,6 +18,7 @@
     },
     "peerDependencies": {
         "@gorgias/axiom": "catalog:axiom",
+        "classnames": "catalog:styles",
         "react": "catalog:react",
         "react-dom": "catalog:react"
     },
@@ -28,10 +29,12 @@
         "@testing-library/jest-dom": "catalog:test",
         "@testing-library/react": "catalog:test",
         "@testing-library/user-event": "catalog:test",
+        "@types/classnames": "catalog:styles",
         "@types/lodash": "catalog:lodash",
         "@types/react": "catalog:react",
         "@types/react-dom": "catalog:react",
         "@vitest/coverage-v8": "catalog:test",
+        "classnames": "catalog:styles",
         "oxfmt": "catalog:formatter",
         "oxlint": "catalog:oxlint",
         "react": "catalog:react",

@@ -2186,12 +2186,12 @@ importers:
       '@repo/testing':
         specifier: workspace:*
         version: link:../testing
-      '@repo/tickets':
-        specifier: workspace:*
-        version: link:../tickets
       '@repo/types':
         specifier: workspace:*
         version: link:../types
+      '@repo/ui':
+        specifier: workspace:*
+        version: link:../ui
       '@repo/utils':
         specifier: workspace:*
         version: link:../utils
@@ -3696,6 +3696,9 @@ importers:
       '@repo/types':
         specifier: workspace:*
         version: link:../types
+      '@repo/ui':
+        specifier: workspace:*
+        version: link:../ui
       '@repo/utils':
         specifier: workspace:*
         version: link:../utils
@@ -3835,6 +3838,9 @@ importers:
       '@testing-library/user-event':
         specifier: catalog:test
         version: 14.5.2(@testing-library/dom@10.4.0)
+      '@types/classnames':
+        specifier: catalog:styles
+        version: 2.2.10
       '@types/lodash':
         specifier: catalog:lodash
         version: 4.14.158
@@ -3847,6 +3853,9 @@ importers:
       '@vitest/coverage-v8':
         specifier: catalog:test
         version: 4.1.5(vitest@4.1.5)
+      classnames:
+        specifier: catalog:styles
+        version: 2.2.6
       oxfmt:
         specifier: catalog:formatter
         version: 0.48.0

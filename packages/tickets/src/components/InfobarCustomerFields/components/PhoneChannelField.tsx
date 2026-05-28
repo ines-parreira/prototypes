@@ -1,3 +1,5 @@
+import { FieldRow } from '@repo/ui'
+
 import { OverflowListItem } from '@gorgias/axiom'
 import type {
     TicketCustomer,
@@ -10,7 +12,6 @@ import {
 } from '../../../utils/validation'
 import { usePhoneAndSMSIntegrations } from '../hooks/usePhoneAndSMSIntegrations'
 import { EditableMenuField } from './EditableMenuField'
-import { FieldRow } from './FieldRow'
 import { TriggerLabel } from './TriggerLabel'
 import { VoiceFieldMenuItems } from './VoiceFieldMenuItems'
 
