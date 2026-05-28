@@ -1,11 +1,6 @@
 import { useEffect } from 'react'
 
-import type { ActionCentralizedLibraryMilestone } from '@repo/feature-flags'
-import {
-    FeatureFlagKey,
-    useFlag,
-    useFlagWithLoading,
-} from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logPageChange } from '@repo/logging'
 import { TicketsLegacyBridgeProvider } from '@repo/tickets'
 import type { History } from 'history'
@@ -30,6 +25,10 @@ import DefaultStatsFilters from 'domains/reporting/pages/DefaultStatsFilters'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 import { StatsRoutes } from 'domains/reporting/routes/StatsRoutes'
 import { VoiceOfCustomerRoutes } from 'domains/reporting/routes/VoiceOfCustomerRoutes'
+import {
+    isAtLeastMilestone,
+    useActionCentralizedLibraryEnabled,
+} from 'hooks/integrations/useActionCentralizedLibraryEnabled'
 import { useCopilotShopContext } from 'main/app/hooks/useCopilotShopContext'
 // DON'T add 'pages/*' imports above to ensure CSS ordering is preserved. Placing this import elsewhere
 // may cause unexpected CSS precedence issues, breaking the intended design.
@@ -40,6 +39,7 @@ import ActionsTemplatesViewContainer from 'pages/aiAgent/actions/ActionsTemplate
 import ActionsViewContainer from 'pages/aiAgent/actions/ActionsViewContainer'
 import CreateActionViewContainer from 'pages/aiAgent/actions/CreateActionViewContainer'
 import EditActionViewContainer from 'pages/aiAgent/actions/EditActionViewContainer'
+import ActionDetailView from 'pages/aiAgent/actionsV2/ActionDetailView'
 import AiAgentConfigurationContainer from 'pages/aiAgent/AiAgentConfigurationContainer'
 import { AiAgentCustomerEngagement } from 'pages/aiAgent/AiAgentCustomerEngagement'
 import AiAgentMainViewContainer from 'pages/aiAgent/AiAgentMainViewContainer'
@@ -53,10 +53,12 @@ import { AiAgentSalesStrategy } from 'pages/aiAgent/AiAgentSalesStrategy'
 import AiAgentScrapedDomainProductsContainer from 'pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainProductsContainer'
 import AiAgentScrapedDomainQuestionsContainer from 'pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainQuestionsContainer'
 import { AiAgentToneOfVoice } from 'pages/aiAgent/AiAgentToneOfVoice'
+import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import { AiAgentNavbar } from 'pages/aiAgent/components/AiAgentNavbar/AiAgentNavbar'
 import { AiAgentRedirect } from 'pages/aiAgent/components/AiAgentRedirect/AiAgentRedirect'
 import AiAgentExternalDocumentsArticleContainer from 'pages/aiAgent/components/Knowledge/AiAgentExternalDocumentsArticleContainer'
 import AiAgentUrlSourcesArticleContainer from 'pages/aiAgent/components/Knowledge/AiAgentUrlSourcesArticleContainer'
+import { SUPPORT_ACTIONS } from 'pages/aiAgent/constants'
 import {
     aiAgentRoutes,
     useAiAgentNavigation,
@@ -364,11 +366,14 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
 
     const isSkillWizardEnabled = useFlag(FeatureFlagKey.SkillWizard)
 
-    const { value: __actionCentralizedLibraryMilestone } =
-        useFlagWithLoading<ActionCentralizedLibraryMilestone>(
-            FeatureFlagKey.ActionCentralizedLibrary,
-            'OFF',
-        )
+    const {
+        milestone: actionCentralizedLibraryMilestone,
+        isLoading: isActionCentralizedLibraryFlagLoading,
+    } = useActionCentralizedLibraryEnabled()
+    const isActionCentralizedLibraryEnabled = isAtLeastMilestone(
+        actionCentralizedLibraryMilestone,
+        'MILESTONE-2',
+    )
 
     const { routes } = useAiAgentNavigation({ shopName })
 
@@ -464,7 +469,19 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                         <Route
                             path={`${path}/actions/edit/:id`}
                             exact
-                            component={EditActionViewContainer}
+                            render={() =>
+                                isActionCentralizedLibraryFlagLoading ? (
+                                    <AiAgentLayout
+                                        isLoading
+                                        shopName={shopName}
+                                        title={SUPPORT_ACTIONS}
+                                    />
+                                ) : isActionCentralizedLibraryEnabled ? (
+                                    <ActionDetailView />
+                                ) : (
+                                    <EditActionViewContainer />
+                                )
+                            }
                         />
                         <Route
                             path={`${path}/actions/templates`}
