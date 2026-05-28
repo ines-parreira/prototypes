@@ -94,6 +94,7 @@ const buildChatPreviewPanelMock = (
     updateSSPTexts: jest.fn(),
     updateLegalDisclaimer: jest.fn(),
     updateLegalDisclaimerEnabled: jest.fn(),
+    updateChatTitle: jest.fn(),
     updateWorkflowEntryPoints: jest.fn(),
     updateOrderManagementFlows: jest.fn(),
     reloadPreview: jest.fn(),

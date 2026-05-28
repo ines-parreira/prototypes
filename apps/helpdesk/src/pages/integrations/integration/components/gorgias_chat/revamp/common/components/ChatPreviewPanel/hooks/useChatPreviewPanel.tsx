@@ -281,6 +281,10 @@ export const useChatPreviewPanel = ({
         [],
     )
 
+    const updateChatTitle = useCallback((chatTitle: string) => {
+        chatPreviewPanelRef.current?.updatePreviewTexts({ chatTitle })
+    }, [])
+
     const updateLegalDisclaimerEnabled = useCallback((enabled: boolean) => {
         chatPreviewPanelRef.current?.updateSettings({
             preferences: { privacyPolicyDisclaimerEnabled: enabled },
@@ -393,6 +397,7 @@ export const useChatPreviewPanel = ({
         updateSSPTexts,
         updateLegalDisclaimer,
         updateLegalDisclaimerEnabled,
+        updateChatTitle,
         updateWorkflowEntryPoints,
         updateOrderManagementFlows,
         reloadPreview,

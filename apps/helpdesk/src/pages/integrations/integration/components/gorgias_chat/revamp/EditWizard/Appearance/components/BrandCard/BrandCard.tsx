@@ -19,6 +19,7 @@ import {
 import {
     GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH,
     GORGIAS_CHAT_DEFAULT_COLOR,
+    GORGIAS_CHAT_NAME_MAX_LENGTH,
 } from 'config/integrations/gorgias_chat'
 import { GorgiasChatBackgroundColorStyle } from 'models/integration/types'
 import { ColorPicker } from 'pages/integrations/integration/components/gorgias_chat/legacy/components/ColorPicker'
@@ -29,6 +30,7 @@ import { FontSelector } from 'pages/integrations/integration/components/gorgias_
 import css from '../../GorgiasChatIntegrationAppearance.less'
 
 type Props = {
+    name: string
     mainColor: string
     mainFontFamily: string
     conversationColor: string
@@ -40,6 +42,7 @@ type Props = {
     offlineIntroductionText: string
     isAiAgentEnabled?: boolean
     isAiAgentDisabled?: boolean
+    onNameChange: (value: string) => void
     onMainColorChange: (value: string) => void
     onMainFontFamilyChange: (value: string) => void
     onConversationColorChange: (value: string) => void
@@ -52,6 +55,7 @@ type Props = {
 }
 
 export const BrandCard = ({
+    name,
     mainColor,
     mainFontFamily,
     conversationColor,
@@ -63,6 +67,7 @@ export const BrandCard = ({
     offlineIntroductionText,
     isAiAgentEnabled = false,
     isAiAgentDisabled = false,
+    onNameChange,
     onMainColorChange,
     onMainFontFamilyChange,
     onConversationColorChange,
@@ -79,13 +84,14 @@ export const BrandCard = ({
         updateBackgroundStyle,
         updateHeaderPictureUrl,
         updateHeaderAlternativePictureUrl,
+        updateChatTitle,
         updateIntroductionText,
         updateOfflineIntroductionText,
         openChat,
         displayPage,
     } = useChatPreviewPanelContext()
 
-    const showGreetingPreview = useCallback(() => {
+    const showHomepagePreview = useCallback(() => {
         displayPage('homepage')
         openChat()
     }, [displayPage, openChat])
@@ -101,6 +107,20 @@ export const BrandCard = ({
                     </Text>
                 </div>
                 <div className={css.mainContent}>
+                    {isAiAgentDisabled && (
+                        <div className={css.fieldSection}>
+                            <TextField
+                                label="Chat title"
+                                value={name}
+                                maxLength={GORGIAS_CHAT_NAME_MAX_LENGTH}
+                                onChange={(value) => {
+                                    onNameChange(value)
+                                    updateChatTitle(value)
+                                }}
+                                onFocus={showHomepagePreview}
+                            />
+                        </div>
+                    )}
                     {isAiAgentDisabled ? (
                         <div className={css.fieldSection}>
                             <div className={css.colorPickersWrapper}>
@@ -302,7 +322,7 @@ export const BrandCard = ({
                                     onIntroductionTextChange(value)
                                     updateIntroductionText(value)
                                 }}
-                                onFocus={showGreetingPreview}
+                                onFocus={showHomepagePreview}
                             />
                             <TextField
                                 label="Outside business hours"
@@ -314,7 +334,7 @@ export const BrandCard = ({
                                     onOfflineIntroductionTextChange(value)
                                     updateOfflineIntroductionText(value)
                                 }}
-                                onFocus={showGreetingPreview}
+                                onFocus={showHomepagePreview}
                             />
                         </div>
                     )}

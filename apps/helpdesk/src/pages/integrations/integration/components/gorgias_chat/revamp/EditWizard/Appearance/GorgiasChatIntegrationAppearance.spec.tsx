@@ -58,6 +58,7 @@ const mockUpdateApplicationTexts = jest.mocked(updateApplicationTexts)
 const mockUpdateOrCreateIntegration = jest.mocked(updateOrCreateIntegration)
 
 type BrandCardProps = {
+    name: string
     mainColor: string
     conversationColor: string
     useMainColorOutsideBusinessHours: boolean
@@ -68,6 +69,7 @@ type BrandCardProps = {
     offlineIntroductionText: string
     isAiAgentEnabled?: boolean
     isAiAgentDisabled?: boolean
+    onNameChange: (value: string) => void
     onMainColorChange: (value: string) => void
     onConversationColorChange: (value: string) => void
     onUseMainColorOutsideBusinessHoursChange: (value: boolean) => void
@@ -386,6 +388,40 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
                 conversation_color: '#ABCDEF',
                 use_main_color_outside_business_hours: true,
             })
+        })
+
+        it('should pass the integration name to BrandCard', () => {
+            mockUseIsAiAgentEnabled.mockReturnValue({
+                isAiAgentEnabled: false,
+                isLoading: false,
+            })
+
+            renderComponent()
+
+            expect(mockBrandCard).toHaveBeenCalledWith(
+                expect.objectContaining({ name: 'Test Chat' }),
+            )
+        })
+
+        it('should save the updated chat title', async () => {
+            mockUseIsAiAgentEnabled.mockReturnValue({
+                isAiAgentEnabled: false,
+                isLoading: false,
+            })
+            const user = userEvent.setup()
+            const { getByRole } = renderComponent()
+
+            act(() => {
+                const { onNameChange } = mockBrandCard.mock
+                    .calls[0][0] as BrandCardProps
+                onNameChange('New chat title')
+            })
+
+            await user.click(getByRole('button', { name: 'Save' }))
+
+            const calledWith =
+                mockUpdateOrCreateIntegration.mock.calls[0][0].toJS()
+            expect(calledWith.name).toBe('New chat title')
         })
 
         it('should default backgroundStyle to Gradient when missing on integration', () => {

@@ -392,6 +392,31 @@ describe('useChatPreviewPanel', () => {
         ).not.toThrow()
     })
 
+    it('updateChatTitle does not throw when ref is unattached', () => {
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        expect(() => result.current.updateChatTitle('My chat')).not.toThrow()
+    })
+
+    it('updateChatTitle calls updatePreviewTexts on the ref when attached', () => {
+        const mockUpdatePreviewTexts = jest.fn()
+
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        const panelArg = mockWarpToCollapsibleColumn.mock.calls.at(-1)?.[0]
+        if (panelArg?.ref) {
+            panelArg.ref.current = {
+                updatePreviewTexts: mockUpdatePreviewTexts,
+            }
+        }
+
+        result.current.updateChatTitle('Brand chat')
+
+        expect(mockUpdatePreviewTexts).toHaveBeenCalledWith({
+            chatTitle: 'Brand chat',
+        })
+    })
+
     it('updateLegalDisclaimerEnabled does not throw when ref is unattached', () => {
         const { result } = renderHook(() => useChatPreviewPanel())
 
@@ -814,6 +839,7 @@ describe('useChatPreviewPanelContext', () => {
             updateSSPTexts: jest.fn(),
             updateLegalDisclaimer: jest.fn(),
             updateLegalDisclaimerEnabled: jest.fn(),
+            updateChatTitle: jest.fn(),
             updateWorkflowEntryPoints: jest.fn(),
             updateOrderManagementFlows: jest.fn(),
             reloadPreview: jest.fn(),

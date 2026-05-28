@@ -79,6 +79,7 @@ export const GorgiasChatIntegrationAppearanceRevamp = ({
                 <div className={css.appearanceTab}>
                     <div className={css.cardsWrapper}>
                         <BrandCard
+                            name={values.name}
                             mainColor={values.mainColor}
                             conversationColor={values.conversationColor}
                             useMainColorOutsideBusinessHours={
@@ -95,6 +96,7 @@ export const GorgiasChatIntegrationAppearanceRevamp = ({
                             }
                             isAiAgentEnabled={isAiAgentEnabled}
                             isAiAgentDisabled={isAiAgentDisabled}
+                            onNameChange={(value) => setValue('name', value)}
                             onMainColorChange={(value) =>
                                 setValue('mainColor', value)
                             }

@@ -11,6 +11,7 @@ import { BrandCard } from './BrandCard'
 
 const mockUpdateMainColor = jest.fn()
 const mockUpdateConversationColor = jest.fn()
+const mockUpdateChatTitle = jest.fn()
 const mockUpdateBackgroundStyle = jest.fn()
 const mockUpdateIntroductionText = jest.fn()
 const mockUpdateOfflineIntroductionText = jest.fn()
@@ -24,6 +25,7 @@ jest.mock(
             updateMainColor: (value: string) => mockUpdateMainColor(value),
             updateConversationColor: (value: string) =>
                 mockUpdateConversationColor(value),
+            updateChatTitle: mockUpdateChatTitle,
             updateBackgroundStyle: (value: string) =>
                 mockUpdateBackgroundStyle(value),
             updateHeaderPictureUrl: jest.fn(),
@@ -134,6 +136,7 @@ jest.mock(
 
 describe('BrandCard', () => {
     const defaultProps = {
+        name: 'My chat',
         mainColor: '#FF0000',
         conversationColor: '#FF0000',
         useMainColorOutsideBusinessHours: false,
@@ -142,6 +145,7 @@ describe('BrandCard', () => {
         headerAlternativePictureUrl: 'https://example.com/alternative-logo.png',
         introductionText: 'How can we help?',
         offlineIntroductionText: "We'll be back soon",
+        onNameChange: jest.fn(),
         onMainColorChange: jest.fn(),
         onConversationColorChange: jest.fn(),
         onUseMainColorOutsideBusinessHoursChange: jest.fn(),
@@ -274,6 +278,49 @@ describe('BrandCard', () => {
             renderComponent()
 
             expect(mockCheckBoxField).not.toHaveBeenCalled()
+        })
+
+        it('should render the Chat title field with the current name', () => {
+            renderComponent({
+                isAiAgentDisabled: true,
+                name: 'Brand chat',
+            })
+
+            expect(
+                screen.getByRole('textbox', { name: 'Chat title' }),
+            ).toHaveValue('Brand chat')
+        })
+
+        it('should call onNameChange and sync the chat preview when the Chat title changes', () => {
+            renderComponent({ isAiAgentDisabled: true })
+
+            const input = screen.getByRole('textbox', { name: 'Chat title' })
+            fireEvent.change(input, { target: { value: 'Updated title' } })
+
+            expect(defaultProps.onNameChange).toHaveBeenCalledWith(
+                'Updated title',
+            )
+            expect(mockUpdateChatTitle).toHaveBeenCalledWith('Updated title')
+        })
+
+        it('should open the chat preview on the homepage when the Chat title field is focused', async () => {
+            const user = userEvent.setup()
+            renderComponent({ isAiAgentDisabled: true })
+
+            await user.click(
+                screen.getByRole('textbox', { name: 'Chat title' }),
+            )
+
+            expect(mockOpenChat).toHaveBeenCalled()
+            expect(mockDisplayPage).toHaveBeenCalledWith('homepage')
+        })
+
+        it('should not render the Chat title field when isAiAgentDisabled is false', () => {
+            renderComponent()
+
+            expect(
+                screen.queryByRole('textbox', { name: 'Chat title' }),
+            ).not.toBeInTheDocument()
         })
 
         it('should render the background style radio group with the current value', () => {
