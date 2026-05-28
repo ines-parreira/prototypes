@@ -284,6 +284,13 @@ describe('NewTicketPage', () => {
             await waitForSelectsToLoad()
         })
 
+        it('focuses the title input by default', async () => {
+            renderComponent()
+
+            expect(screen.getByRole('textbox')).toHaveFocus()
+            await waitForSelectsToLoad()
+        })
+
         it('renders the main content panel', async () => {
             renderComponent()
 

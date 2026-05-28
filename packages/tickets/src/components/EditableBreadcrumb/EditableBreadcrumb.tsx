@@ -10,9 +10,15 @@ type Props = {
     value: string | null
     placeholder?: string
     onChange?: (value: string) => void
+    autoFocus?: boolean
 }
 
-export function EditableBreadcrumb({ value, placeholder, onChange }: Props) {
+export function EditableBreadcrumb({
+    value,
+    placeholder,
+    onChange,
+    autoFocus,
+}: Props) {
     const {
         subjectRef,
         handleMouseDown,
@@ -22,7 +28,7 @@ export function EditableBreadcrumb({ value, placeholder, onChange }: Props) {
         handleKeyDown,
         handleInput,
         handleEditClick,
-    } = useEditableBreadcrumb({ value, onChange })
+    } = useEditableBreadcrumb({ value, onChange, autoFocus })
 
     return (
         <div className={css.container} onMouseDown={handleMouseDown}>

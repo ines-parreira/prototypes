@@ -51,12 +51,14 @@ type TicketTitleSubjectProps = {
     value: string | null
     placeholder?: string
     onChange?: (value: string) => void
+    autoFocus?: boolean
 }
 
 export function TicketTitleSubject({
     value,
     placeholder,
     onChange,
+    autoFocus,
 }: TicketTitleSubjectProps) {
     return (
         <Breadcrumb asSlot>
@@ -64,6 +66,7 @@ export function TicketTitleSubject({
                 placeholder={placeholder}
                 value={value}
                 onChange={onChange}
+                autoFocus={autoFocus}
             />
         </Breadcrumb>
     )

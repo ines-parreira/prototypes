@@ -70,6 +70,7 @@ export function NewTicketPage() {
                             placeholder="New ticket"
                             value={ticketState.subject}
                             onChange={handleSubjectChange}
+                            autoFocus
                         />
                     </TicketTitle>
                 </TicketHeaderLeft>

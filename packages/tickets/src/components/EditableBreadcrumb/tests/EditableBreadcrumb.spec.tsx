@@ -35,4 +35,10 @@ describe('EditableBreadcrumb', () => {
 
         expect(screen.getByText('Test Ticket')).toHaveFocus()
     })
+
+    it('should focus the breadcrumb by default when autoFocus is enabled', () => {
+        render(<EditableBreadcrumb value="Test Ticket" autoFocus />)
+
+        expect(screen.getByRole('textbox')).toHaveFocus()
+    })
 })

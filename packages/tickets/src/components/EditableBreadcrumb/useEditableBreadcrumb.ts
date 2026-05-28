@@ -1,16 +1,24 @@
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 
 type UseEditableBreadcrumbProps = {
     value: string | null
     onChange?: (value: string) => void
+    autoFocus?: boolean
 }
 
 export function useEditableBreadcrumb({
     value,
     onChange,
+    autoFocus,
 }: UseEditableBreadcrumbProps) {
     const subjectRef = useRef<HTMLSpanElement>(null)
     const wasMouseDownRef = useRef(false)
+
+    useEffect(() => {
+        if (autoFocus) {
+            subjectRef.current?.focus()
+        }
+    }, [autoFocus])
 
     const handleMouseDown = () => {
         wasMouseDownRef.current = true
