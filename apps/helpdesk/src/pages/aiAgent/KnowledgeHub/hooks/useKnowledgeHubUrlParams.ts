@@ -1,57 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { reportError } from '@repo/logging'
 import { useHistory, useLocation } from 'react-router-dom'
 
 import { toast } from '@gorgias/axiom'
 
 import { useAiAgentNavigation } from '../../hooks/useAiAgentNavigation'
 import type { GroupedKnowledgeItem, KnowledgeType } from '../types'
-
-/**
- * Safely decodes a URL parameter that may be encoded multiple times.
- * Falls back to the original value if decoding fails.
- *
- * @param encoded - The URL-encoded string to decode
- * @returns The fully decoded string, or the original value if decoding fails
- */
-function safeDecodeUrlParameter(encoded: string): string {
-    try {
-        let decodedSource = encoded
-        let previousValue = ''
-        // Limit iterations to prevent infinite loops
-        let iterations = 0
-        const MAX_ITERATIONS = 10
-
-        while (
-            decodedSource.includes('%') &&
-            decodedSource !== previousValue &&
-            iterations < MAX_ITERATIONS
-        ) {
-            previousValue = decodedSource
-            decodedSource = decodeURIComponent(decodedSource)
-            iterations++
-        }
-
-        return decodedSource
-    } catch (e) {
-        // Report error with context for debugging
-        reportError(
-            e instanceof Error
-                ? e
-                : new Error('Failed to decode folder parameter'),
-            {
-                extra: {
-                    original: encoded,
-                    error: e instanceof Error ? e.message : String(e),
-                },
-            },
-        )
-
-        // Fallback to original encoded value - safer than using partial decode
-        return encoded
-    }
-}
 
 /**
  * Determines if the current URL path represents viewing an article/snippet.
@@ -98,13 +52,11 @@ export function useKnowledgeHubUrlParams(
             const params = new URLSearchParams(location.search)
             const folderParam = params.get('folder')
             if (folderParam) {
-                const decodedSource = safeDecodeUrlParameter(folderParam)
-
                 // Create minimal folder object with source and title
                 // Will be upgraded to full object by useEffect once tableData loads
                 return {
-                    source: decodedSource,
-                    title: decodedSource,
+                    source: folderParam,
+                    title: folderParam,
                 } as GroupedKnowledgeItem
             }
             return null
@@ -157,7 +109,7 @@ export function useKnowledgeHubUrlParams(
                 params.set('filter', selectedFilter)
             }
             if (selectedFolder?.source) {
-                params.set('folder', encodeURIComponent(selectedFolder.source))
+                params.set('folder', selectedFolder.source)
             }
             if (searchTerm) {
                 params.set('search', searchTerm)
@@ -210,16 +162,13 @@ export function useKnowledgeHubUrlParams(
     const folderObjectFromUrl = useMemo(() => {
         const params = new URLSearchParams(location.search)
         const folderParam = params.get('folder')
-        const decodedFolder = folderParam
-            ? safeDecodeUrlParameter(folderParam)
-            : null
 
-        if (!decodedFolder) {
+        if (!folderParam) {
             return null
         }
 
         const matchingItems = tableData.filter(
-            (item) => item.source === decodedFolder,
+            (item) => item.source === folderParam,
         )
 
         if (matchingItems.length === 0) {
@@ -244,8 +193,8 @@ export function useKnowledgeHubUrlParams(
             // Create minimal folder object when tableData hasn't loaded yet
             // This happens during initialization before tableData loads
             return {
-                source: decodedFolder,
-                title: decodedFolder,
+                source: folderParam,
+                title: folderParam,
             } as GroupedKnowledgeItem
         }
 
@@ -260,7 +209,7 @@ export function useKnowledgeHubUrlParams(
             ...mostRecentItem,
             title: mostRecentItem.isGrouped
                 ? mostRecentItem.title
-                : decodedFolder,
+                : folderParam,
             isGrouped: true,
             itemCount: matchingItems.length,
         } as GroupedKnowledgeItem
@@ -341,13 +290,13 @@ export function useKnowledgeHubUrlParams(
 
         // Case 3: Set or upgrade folder if URL has folder param and we have a valid folder object
         if (folderObjectFromUrl && currentFolderParam) {
-            const decodedFolder = folderObjectFromUrl.source
+            const folderSource = folderObjectFromUrl.source
 
             // When viewing an article, only upgrade if selectedFolder is missing required properties
             if (isViewingArticle) {
                 if (
                     selectedFolder &&
-                    selectedFolder.source === decodedFolder &&
+                    selectedFolder.source === folderSource &&
                     selectedFolder.type &&
                     selectedFolder.lastUpdatedAt
                 ) {
@@ -359,7 +308,7 @@ export function useKnowledgeHubUrlParams(
             // Upgrade to full folder object only if necessary
             const shouldUpgrade =
                 !selectedFolder ||
-                selectedFolder.source !== decodedFolder ||
+                selectedFolder.source !== folderSource ||
                 (!selectedFolder.type && folderObjectFromUrl.type)
 
             if (shouldUpgrade) {
@@ -456,7 +405,7 @@ export function useKnowledgeHubUrlParams(
             params.delete('inUseByAI')
 
             if (data.source) {
-                params.set('folder', encodeURIComponent(data.source))
+                params.set('folder', data.source)
             }
 
             const newSearch = params.toString()

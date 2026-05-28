@@ -241,66 +241,13 @@ describe('useKnowledgeHubUrlParams', () => {
     })
 
     describe('URL decoding', () => {
-        it('handles double-encoded URLs', () => {
-            const originalUrl = 'https://example.com/path'
-            const doubleEncoded = encodeURIComponent(
-                encodeURIComponent(originalUrl),
-            )
-            const history = createMemoryHistory({
-                initialEntries: [`/knowledge?folder=${doubleEncoded}`],
-            })
-
-            const { result } = renderHook(
-                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
-                {
-                    wrapper: createRouterWrapper(history),
-                },
-            )
-
-            expect(result.current.selectedFolder?.source).toBe(originalUrl)
-        })
-
-        it('handles decoding errors gracefully', () => {
-            const consoleErrorSpy = jest
-                .spyOn(console, 'error')
-                .mockImplementation()
-
-            const invalidEncoded = '%E0%A4%A'
-            const history = createMemoryHistory({
-                initialEntries: [`/knowledge?folder=${invalidEncoded}`],
-            })
-
-            const { result } = renderHook(
-                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
-                {
-                    wrapper: createRouterWrapper(history),
-                },
-            )
-
-            // The URL router decodes once: %E0%A4%A → �%A
-            // Then our code tries to decode �%A which fails
-            const partiallyDecoded = '�%A'
-
-            // reportError logs the error in development
-            expect(consoleErrorSpy).toHaveBeenCalledWith(expect.any(Error))
-            expect(consoleErrorSpy).toHaveBeenCalledWith(
-                'Error extra:',
-                expect.objectContaining({
-                    original: partiallyDecoded,
-                    error: expect.any(String),
-                }),
-            )
-            // Fallback to the value we received (already decoded once by router)
-            expect(result.current.selectedFolder?.source).toBe(partiallyDecoded)
-
-            consoleErrorSpy.mockRestore()
-        })
-
-        it('stops decoding when no more percent-encoded characters', () => {
-            const partiallyEncoded = 'https://example.com/test%20space'
+        it('preserves source URLs that contain percent-encoded characters', () => {
+            // URL where %20, %28, %29 are part of the literal item.source
+            const folderUrl =
+                'https://example.com/Products%20Related/INSPIRE_%2828-DAY%29/'
             const history = createMemoryHistory({
                 initialEntries: [
-                    `/knowledge?folder=${encodeURIComponent(partiallyEncoded)}`,
+                    `/knowledge?folder=${encodeURIComponent(folderUrl)}`,
                 ],
             })
 
@@ -311,37 +258,9 @@ describe('useKnowledgeHubUrlParams', () => {
                 },
             )
 
-            // The hook decodes until no more % characters remain
-            expect(result.current.selectedFolder?.source).toBe(
-                'https://example.com/test space',
-            )
-        })
-
-        it('limits decoding iterations to prevent infinite loops', () => {
-            // Create a URL with many layers of encoding (more than MAX_ITERATIONS)
-            let deeplyEncoded = 'https://example.com'
-            for (let i = 0; i < 15; i++) {
-                deeplyEncoded = encodeURIComponent(deeplyEncoded)
-            }
-
-            const history = createMemoryHistory({
-                initialEntries: [`/knowledge?folder=${deeplyEncoded}`],
-            })
-
-            const { result } = renderHook(
-                () => useKnowledgeHubUrlParams(TEST_SHOP_NAME, []),
-                {
-                    wrapper: createRouterWrapper(history),
-                },
-            )
-
-            // Should stop after MAX_ITERATIONS (10) and return partially decoded result
-            expect(result.current.selectedFolder?.source).toBeDefined()
-            expect(result.current.selectedFolder?.source).not.toBe(
-                deeplyEncoded,
-            )
-            // Should still contain % characters since we exceeded iteration limit
-            expect(result.current.selectedFolder?.source).toContain('%')
+            // Source must match the original API value byte-for-byte so that
+            // tableData.filter(item => item.source === folderParam) can match.
+            expect(result.current.selectedFolder?.source).toBe(folderUrl)
         })
     })
 
@@ -380,10 +299,9 @@ describe('useKnowledgeHubUrlParams', () => {
 
         it('includes folder parameter when folder is selected', () => {
             const folderUrl = 'https://example.com/folder'
-            // Pass double-encoded to simulate real URL encoding behavior
             const history = createMemoryHistory({
                 initialEntries: [
-                    `/knowledge?folder=${encodeURIComponent(encodeURIComponent(folderUrl))}`,
+                    `/knowledge?folder=${encodeURIComponent(folderUrl)}`,
                 ],
             })
 
@@ -395,18 +313,16 @@ describe('useKnowledgeHubUrlParams', () => {
             )
 
             const url = result.current.buildUrlWithParams('/knowledge')
-            // buildUrlWithParams encodes with encodeURIComponent, then URLSearchParams.toString() encodes again
             expect(url).toBe(
-                `/knowledge?folder=${encodeURIComponent(encodeURIComponent(folderUrl))}`,
+                `/knowledge?folder=${encodeURIComponent(folderUrl)}`,
             )
         })
 
         it('includes both filter and folder parameters', () => {
             const folderUrl = 'https://example.com/folder'
-            // Pass double-encoded to simulate real URL encoding behavior
             const history = createMemoryHistory({
                 initialEntries: [
-                    `/knowledge?filter=url&folder=${encodeURIComponent(encodeURIComponent(folderUrl))}`,
+                    `/knowledge?filter=url&folder=${encodeURIComponent(folderUrl)}`,
                 ],
             })
 
@@ -418,9 +334,8 @@ describe('useKnowledgeHubUrlParams', () => {
             )
 
             const url = result.current.buildUrlWithParams('/knowledge')
-            // buildUrlWithParams encodes with encodeURIComponent, then URLSearchParams.toString() encodes again
             expect(url).toBe(
-                `/knowledge?filter=url&folder=${encodeURIComponent(encodeURIComponent(folderUrl))}`,
+                `/knowledge?filter=url&folder=${encodeURIComponent(folderUrl)}`,
             )
         })
 
@@ -480,7 +395,7 @@ describe('useKnowledgeHubUrlParams', () => {
             const folderUrl = 'https://example.com/folder'
             const history = createMemoryHistory({
                 initialEntries: [
-                    `/knowledge?filter=url&folder=${encodeURIComponent(encodeURIComponent(folderUrl))}&search=test&startDate=2024-01-01&endDate=2024-12-31&inUseByAI=true`,
+                    `/knowledge?filter=url&folder=${encodeURIComponent(folderUrl)}&search=test&startDate=2024-01-01&endDate=2024-12-31&inUseByAI=true`,
                 ],
             })
 
@@ -497,9 +412,7 @@ describe('useKnowledgeHubUrlParams', () => {
             expect(url).toContain('startDate=2024-01-01')
             expect(url).toContain('endDate=2024-12-31')
             expect(url).toContain('inUseByAI=true')
-            expect(url).toContain(
-                `folder=${encodeURIComponent(encodeURIComponent(folderUrl))}`,
-            )
+            expect(url).toContain(`folder=${encodeURIComponent(folderUrl)}`)
         })
     })
 
@@ -573,7 +486,7 @@ describe('useKnowledgeHubUrlParams', () => {
             const folderUrl = 'https://example.com/url'
             const history = createMemoryHistory({
                 initialEntries: [
-                    `/knowledge?folder=${encodeURIComponent(encodeURIComponent(folderUrl))}`,
+                    `/knowledge?folder=${encodeURIComponent(folderUrl)}`,
                 ],
             })
 
@@ -997,16 +910,15 @@ describe('useKnowledgeHubUrlParams', () => {
                 result.current.updateUrlWithFolderParam(mockTableData[0])
             })
 
-            // URLSearchParams.toString() encodes the already-encoded value, resulting in double-encoding
             expect(history.location.search).toBe(
-                `?folder=${encodeURIComponent(encodeURIComponent(mockTableData[0].source!))}`,
+                `?folder=${encodeURIComponent(mockTableData[0].source!)}`,
             )
         })
 
         it('updates existing folder parameter in URL', () => {
             const history = createMemoryHistory({
                 initialEntries: [
-                    `/knowledge?folder=${encodeURIComponent(encodeURIComponent('https://old.com'))}`,
+                    `/knowledge?folder=${encodeURIComponent('https://old.com')}`,
                 ],
             })
 
@@ -1021,9 +933,8 @@ describe('useKnowledgeHubUrlParams', () => {
                 result.current.updateUrlWithFolderParam(mockTableData[0])
             })
 
-            // URLSearchParams.toString() encodes the already-encoded value, resulting in double-encoding
             expect(history.location.search).toBe(
-                `?folder=${encodeURIComponent(encodeURIComponent(mockTableData[0].source!))}`,
+                `?folder=${encodeURIComponent(mockTableData[0].source!)}`,
             )
         })
 
@@ -1044,9 +955,8 @@ describe('useKnowledgeHubUrlParams', () => {
             })
 
             expect(history.location.search).toContain('filter=url')
-            // URLSearchParams.toString() encodes the already-encoded value, resulting in double-encoding
             expect(history.location.search).toContain(
-                `folder=${encodeURIComponent(encodeURIComponent(mockTableData[0].source!))}`,
+                `folder=${encodeURIComponent(mockTableData[0].source!)}`,
             )
         })
     })
@@ -1483,7 +1393,7 @@ describe('useKnowledgeHubUrlParams', () => {
             ]
             const history = createMemoryHistory({
                 initialEntries: [
-                    `/knowledge/edit?folder=${encodeURIComponent(encodeURIComponent(folderUrl))}`,
+                    `/knowledge/edit?folder=${encodeURIComponent(folderUrl)}`,
                 ],
             })
 
@@ -1502,7 +1412,7 @@ describe('useKnowledgeHubUrlParams', () => {
                 '/app/shop/test-shop/ai-agent/knowledge',
             )
             expect(history.location.search).toBe(
-                `?folder=${encodeURIComponent(encodeURIComponent(folderUrl))}`,
+                `?folder=${encodeURIComponent(folderUrl)}`,
             )
         })
 
@@ -1519,7 +1429,7 @@ describe('useKnowledgeHubUrlParams', () => {
             ]
             const history = createMemoryHistory({
                 initialEntries: [
-                    `/knowledge/edit?filter=url&folder=${encodeURIComponent(encodeURIComponent(folderUrl))}`,
+                    `/knowledge/edit?filter=url&folder=${encodeURIComponent(folderUrl)}`,
                 ],
             })
 
@@ -1538,7 +1448,7 @@ describe('useKnowledgeHubUrlParams', () => {
                 '/app/shop/test-shop/ai-agent/knowledge',
             )
             expect(history.location.search).toBe(
-                `?filter=url&folder=${encodeURIComponent(encodeURIComponent(folderUrl))}`,
+                `?filter=url&folder=${encodeURIComponent(folderUrl)}`,
             )
         })
 

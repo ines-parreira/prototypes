@@ -1598,46 +1598,6 @@ describe('KnowledgeHubContainer', () => {
     })
 
     describe('URL parameter decoding', () => {
-        it('handles decoding errors gracefully', () => {
-            const consoleErrorSpy = jest
-                .spyOn(console, 'error')
-                .mockImplementation()
-
-            mockUseGetKnowledgeHubArticles.mockReturnValue({
-                data: {
-                    articles: [],
-                },
-                isInitialLoading: false,
-                refetch: jest.fn(),
-            })
-
-            const invalidEncodedUrl = '%E0%A4%A'
-
-            render(
-                <MemoryRouter
-                    initialEntries={['/knowledge?folder=' + invalidEncodedUrl]}
-                >
-                    <Provider store={mocksStore}>
-                        <QueryClientProvider client={appQueryClient}>
-                            <KnowledgeHubContainer />
-                        </QueryClientProvider>
-                    </Provider>
-                </MemoryRouter>,
-            )
-
-            // reportError logs the error in development
-            expect(consoleErrorSpy).toHaveBeenCalledWith(expect.any(Error))
-            expect(consoleErrorSpy).toHaveBeenCalledWith(
-                'Error extra:',
-                expect.objectContaining({
-                    original: expect.any(String),
-                    error: expect.any(String),
-                }),
-            )
-
-            consoleErrorSpy.mockRestore()
-        })
-
         it('handles malformed encoding that cannot be decoded further', () => {
             mockUseGetKnowledgeHubArticles.mockReturnValue({
                 data: {
