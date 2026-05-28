@@ -1,11 +1,17 @@
-import { assumeMock, render } from '@repo/testing'
+import { assumeMock, render, renderHook } from '@repo/testing'
 
 import '@testing-library/react'
 
 import { useDownloadShoppingAssistantTopProductsData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantTopProductsData'
-import { DownloadTableButton } from 'pages/aiAgent/analyticsOverview/components/shared/DownloadTableButton'
+import {
+    DownloadTableButton,
+    useDownloadTableAction,
+} from 'pages/aiAgent/analyticsOverview/components/shared/DownloadTableButton'
 
-import { DownloadShoppingAssistantTopProductsButton } from '../DownloadShoppingAssistantTopProductsButton'
+import {
+    DownloadShoppingAssistantTopProductsButton,
+    useDownloadShoppingAssistantTopProductsAction,
+} from '../DownloadShoppingAssistantTopProductsButton'
 
 jest.mock(
     'pages/aiAgent/analyticsOverview/components/shared/DownloadTableButton',
@@ -15,6 +21,7 @@ jest.mock(
 )
 
 const mockDownloadTableButton = assumeMock(DownloadTableButton)
+const mockUseDownloadTableAction = assumeMock(useDownloadTableAction)
 const mockUseDownloadShoppingAssistantTopProductsData = assumeMock(
     useDownloadShoppingAssistantTopProductsData,
 )
@@ -32,6 +39,25 @@ beforeEach(() => {
         files: mockFiles,
         fileName: mockFileName,
         isLoading: false,
+    })
+})
+
+describe('useDownloadShoppingAssistantTopProductsAction', () => {
+    it('calls useDownloadTableAction with data from the hook and the correct segment event name', () => {
+        const mockResult = { onClick: jest.fn(), isLoading: false }
+        mockUseDownloadTableAction.mockReturnValue(mockResult)
+
+        const { result } = renderHook(() =>
+            useDownloadShoppingAssistantTopProductsAction(),
+        )
+
+        expect(mockUseDownloadTableAction).toHaveBeenCalledWith({
+            files: mockFiles,
+            fileName: mockFileName,
+            isLoading: false,
+            segmentEventName: 'ai-agent_shopping-assistant_top-products-table',
+        })
+        expect(result.current).toBe(mockResult)
     })
 })
 

@@ -22,6 +22,10 @@ jest.mock(
         DownloadAiAgentSalesPerformanceByChannelButton: () => (
             <div>Download AI Agent Sales Performance By Channel</div>
         ),
+        useDownloadAiAgentSalesPerformanceByChannelAction: () => ({
+            onClick: jest.fn(),
+            isLoading: false,
+        }),
     }),
 )
 

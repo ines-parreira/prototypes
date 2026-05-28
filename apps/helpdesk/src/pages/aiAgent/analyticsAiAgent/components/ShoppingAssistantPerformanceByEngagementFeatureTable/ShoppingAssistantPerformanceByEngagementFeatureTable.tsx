@@ -5,7 +5,10 @@ import {
     SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_COLUMNS,
     SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_NAME_COLUMNS,
 } from 'pages/aiAgent/analyticsAiAgent/components/ShoppingAssistantPerformanceByEngagementFeatureTable/columns'
-import { DownloadShoppingAssistantPerformanceByEngagementFeatureButton } from 'pages/aiAgent/analyticsAiAgent/components/ShoppingAssistantPerformanceByEngagementFeatureTable/DownloadShoppingAssistantPerformanceByEngagementFeatureButton'
+import {
+    DownloadShoppingAssistantPerformanceByEngagementFeatureButton,
+    useDownloadShoppingAssistantPerformanceByEngagementFeatureAction,
+} from 'pages/aiAgent/analyticsAiAgent/components/ShoppingAssistantPerformanceByEngagementFeatureTable/DownloadShoppingAssistantPerformanceByEngagementFeatureButton'
 import { useShoppingAssistantPerformanceByEngagementFeatureMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantPerformanceByEngagementFeatureMetrics'
 
 type Props = {
@@ -19,6 +22,9 @@ export const ShoppingAssistantPerformanceByEngagementFeatureTable = ({
 }: Props) => {
     const { data = [], loadingStates } =
         useShoppingAssistantPerformanceByEngagementFeatureMetrics()
+    const exportCsvAction =
+        useDownloadShoppingAssistantPerformanceByEngagementFeatureAction()
+    const withMenu = withChartMenu && chartId
 
     return (
         <ReportingMetricBreakdownTable
@@ -28,16 +34,19 @@ export const ShoppingAssistantPerformanceByEngagementFeatureTable = ({
             }
             loadingStates={loadingStates}
             DownloadButton={
-                <DownloadShoppingAssistantPerformanceByEngagementFeatureButton />
+                !withMenu ? (
+                    <DownloadShoppingAssistantPerformanceByEngagementFeatureButton />
+                ) : undefined
             }
             nameColumns={
                 SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_NAME_COLUMNS
             }
             actionMenu={
-                withChartMenu && chartId ? (
+                withMenu ? (
                     <ChartsActionMenu
                         chartId={chartId}
                         chartName="Engagement feature"
+                        exportCsvAction={exportCsvAction}
                     />
                 ) : undefined
             }

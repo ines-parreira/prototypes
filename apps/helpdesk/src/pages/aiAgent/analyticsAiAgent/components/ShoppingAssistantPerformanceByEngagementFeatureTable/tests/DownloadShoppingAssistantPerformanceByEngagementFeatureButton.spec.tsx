@@ -1,15 +1,21 @@
-import { render } from '@repo/testing'
+import { render, renderHook } from '@repo/testing'
 
 import '@testing-library/react'
 
-import { DownloadShoppingAssistantPerformanceByEngagementFeatureButton } from 'pages/aiAgent/analyticsAiAgent/components/ShoppingAssistantPerformanceByEngagementFeatureTable/DownloadShoppingAssistantPerformanceByEngagementFeatureButton'
+import {
+    DownloadShoppingAssistantPerformanceByEngagementFeatureButton,
+    useDownloadShoppingAssistantPerformanceByEngagementFeatureAction,
+} from 'pages/aiAgent/analyticsAiAgent/components/ShoppingAssistantPerformanceByEngagementFeatureTable/DownloadShoppingAssistantPerformanceByEngagementFeatureButton'
 
 const mockDownloadTableButton = jest.fn()
+const mockUseDownloadTableAction = jest.fn()
 
 jest.mock(
     'pages/aiAgent/analyticsOverview/components/shared/DownloadTableButton',
     () => ({
         DownloadTableButton: (props: unknown) => mockDownloadTableButton(props),
+        useDownloadTableAction: (...args: unknown[]) =>
+            mockUseDownloadTableAction(...args),
     }),
 )
 
@@ -37,6 +43,26 @@ beforeEach(() => {
             isLoading: false,
         },
     )
+})
+
+describe('useDownloadShoppingAssistantPerformanceByEngagementFeatureAction', () => {
+    it('calls useDownloadTableAction with data from the hook and the correct segment event name', () => {
+        const mockResult = { onClick: jest.fn(), isLoading: false }
+        mockUseDownloadTableAction.mockReturnValue(mockResult)
+
+        const { result } = renderHook(() =>
+            useDownloadShoppingAssistantPerformanceByEngagementFeatureAction(),
+        )
+
+        expect(mockUseDownloadTableAction).toHaveBeenCalledWith({
+            files: mockFiles,
+            fileName: mockFileName,
+            isLoading: false,
+            segmentEventName:
+                'ai-agent_shopping-assistant_engagement-feature-breakdown-table',
+        })
+        expect(result.current).toBe(mockResult)
+    })
 })
 
 describe('DownloadShoppingAssistantPerformanceByEngagementFeatureButton', () => {

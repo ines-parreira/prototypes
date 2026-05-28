@@ -1,15 +1,21 @@
-import { render } from '@repo/testing'
+import { render, renderHook } from '@repo/testing'
 
 import '@testing-library/react'
 
-import { DownloadArticleRecommendationButton } from 'pages/aiAgent/analyticsOverview/components/ArticleRecommendationTable/DownloadArticleRecommendationButton'
+import {
+    DownloadArticleRecommendationButton,
+    useDownloadArticleRecommendationAction,
+} from 'pages/aiAgent/analyticsOverview/components/ArticleRecommendationTable/DownloadArticleRecommendationButton'
 
 const mockDownloadTableButton = jest.fn((__props: unknown) => null)
+const mockUseDownloadTableAction = jest.fn()
 
 jest.mock(
     'pages/aiAgent/analyticsOverview/components/shared/DownloadTableButton',
     () => ({
         DownloadTableButton: (props: unknown) => mockDownloadTableButton(props),
+        useDownloadTableAction: (...args: unknown[]) =>
+            mockUseDownloadTableAction(...args),
     }),
 )
 
@@ -31,6 +37,25 @@ beforeEach(() => {
         files: mockFiles,
         fileName: mockFileName,
         isLoading: false,
+    })
+})
+
+describe('useDownloadArticleRecommendationAction', () => {
+    it('calls useDownloadTableAction with data from the hook and the correct segment event name', () => {
+        const mockResult = { onClick: jest.fn(), isLoading: false }
+        mockUseDownloadTableAction.mockReturnValue(mockResult)
+
+        const { result } = renderHook(() =>
+            useDownloadArticleRecommendationAction(),
+        )
+
+        expect(mockUseDownloadTableAction).toHaveBeenCalledWith({
+            files: mockFiles,
+            fileName: mockFileName,
+            isLoading: false,
+            segmentEventName: 'ai-agent_overview_article-recommendation-table',
+        })
+        expect(result.current).toBe(mockResult)
     })
 })
 

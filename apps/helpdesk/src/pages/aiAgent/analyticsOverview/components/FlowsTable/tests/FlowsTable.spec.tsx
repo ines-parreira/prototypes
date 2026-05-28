@@ -23,6 +23,10 @@ jest.mock(
     'pages/aiAgent/analyticsOverview/components/FlowsTable/DownloadFlowsButton',
     () => ({
         DownloadFlowsButton: () => <div>Download Flows</div>,
+        useDownloadFlowsAction: () => ({
+            onClick: jest.fn(),
+            isLoading: false,
+        }),
     }),
 )
 

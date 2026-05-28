@@ -20,6 +20,73 @@ import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 import { OverviewChart } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewReportConfig'
 import { user } from 'fixtures/users'
 
+jest.mock('@repo/reporting', () => ({
+    AnalyticsActionMenu: ({
+        actions,
+    }: {
+        actions: {
+            label: string
+            onClick?: () => void
+            isDisabled?: boolean
+            dropdownContent?: (close: () => void) => React.ReactNode
+        }[]
+    }) => {
+        const [isOpen, setIsOpen] = React.useState(false)
+        const [dropdownLabel, setDropdownLabel] = React.useState<string | null>(
+            null,
+        )
+        const closeDropdown = () => setDropdownLabel(null)
+        const activeAction = actions.find((a) => a.label === dropdownLabel)
+
+        if (actions.length === 1) {
+            const [action] = actions
+            return (
+                <>
+                    <button
+                        aria-label={action.label}
+                        onClick={() => {
+                            if (action.dropdownContent) {
+                                setDropdownLabel(action.label)
+                            } else {
+                                action.onClick?.()
+                            }
+                        }}
+                        disabled={action.isDisabled}
+                    />
+                    {activeAction?.dropdownContent?.(closeDropdown)}
+                </>
+            )
+        }
+
+        return (
+            <>
+                <button
+                    aria-label="Chart actions"
+                    onClick={() => setIsOpen(!isOpen)}
+                />
+                {isOpen &&
+                    actions.map((a) => (
+                        <button
+                            key={a.label}
+                            onClick={() => {
+                                if (a.dropdownContent) {
+                                    setIsOpen(false)
+                                    setDropdownLabel(a.label)
+                                } else {
+                                    a.onClick?.()
+                                }
+                            }}
+                            disabled={a.isDisabled}
+                        >
+                            {a.label}
+                        </button>
+                    ))}
+                {activeAction?.dropdownContent?.(closeDropdown)}
+            </>
+        )
+    },
+}))
+
 jest.mock('domains/reporting/hooks/dashboards/useDashboardActions')
 const useDashboardActionsMock = assumeMock(useDashboardActions)
 jest.mock(
@@ -30,7 +97,7 @@ jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
 
 describe('<ChartsActionMenu />', () => {
-    const updateDashboardMock = jest.fn()
+    const updateDashboardMock = jest.fn(({ onSuccess }) => onSuccess?.())
     const removeChartFromDashboardMock = jest.fn()
     const createDashboardMock = jest.fn()
     const chartName = 'chartName'
@@ -99,16 +166,10 @@ describe('<ChartsActionMenu />', () => {
             storeState: defaultState,
         })
 
-        const menu = screen.getByText('more_vert')
-        expect(menu).toBeInTheDocument()
-        userEvent.click(menu)
-        const action = screen.getByText(ADD_TO_DASHBOARD)
+        const trigger = screen.getByRole('button', { name: ADD_TO_DASHBOARD })
+        expect(trigger).toBeInTheDocument()
+        userEvent.click(trigger)
 
-        // show the dashboard list
-        expect(action).toBeInTheDocument()
-        act(() => {
-            userEvent.click(action)
-        })
         mockData.forEach((dashboard) => {
             if (dashboard.emoji) {
                 expect(screen.getByText(dashboard.emoji)).toBeInTheDocument()
@@ -119,7 +180,6 @@ describe('<ChartsActionMenu />', () => {
         expect(firstDashboard).toBeInTheDocument()
         userEvent.click(firstDashboard)
 
-        // selects the first dashboard
         expect(updateDashboardMock).toHaveBeenCalledWith(
             expect.objectContaining({
                 chartId: '123',
@@ -137,12 +197,7 @@ describe('<ChartsActionMenu />', () => {
             storeState: defaultState,
         })
 
-        const menu = screen.getByText('more_vert')
-        userEvent.click(menu)
-        const action = screen.getByText(ADD_TO_DASHBOARD)
-        act(() => {
-            userEvent.click(action)
-        })
+        userEvent.click(screen.getByRole('button', { name: ADD_TO_DASHBOARD }))
 
         expect(
             screen.queryByText(dashboardWithANestedChart.name),
@@ -154,11 +209,7 @@ describe('<ChartsActionMenu />', () => {
             storeState: defaultState,
         })
 
-        userEvent.click(screen.getByText('more_vert'))
-
-        act(() => {
-            userEvent.click(screen.getByText(ADD_TO_DASHBOARD))
-        })
+        userEvent.click(screen.getByRole('button', { name: ADD_TO_DASHBOARD }))
 
         expect(screen.getByText(mockData[0].name)).toBeInTheDocument()
         expect(screen.getByText(mockData[1].name)).toBeInTheDocument()
@@ -187,15 +238,11 @@ describe('<ChartsActionMenu />', () => {
             storeState: defaultState,
         })
 
-        userEvent.click(screen.getByText('more_vert'))
-
-        act(() => {
-            userEvent.click(screen.getByText(ADD_TO_DASHBOARD))
-        })
+        userEvent.click(screen.getByRole('button', { name: ADD_TO_DASHBOARD }))
 
         const button = screen.getByText(CREATE_NEW_DASHBOARD_LABEL)
 
-        expect(button).toHaveClass('disabled')
+        expect(button).toBeDisabled()
 
         act(() => {
             userEvent.click(button)
@@ -204,7 +251,7 @@ describe('<ChartsActionMenu />', () => {
         expect(AddChartToDashboardModalMock).not.toHaveBeenCalled()
     })
 
-    it('should show label when no Dashboards ', () => {
+    it('should show label when no Dashboards', () => {
         useDashboardActionsMock.mockReturnValue({
             getDashboardsHandler: () => [],
         } as any)
@@ -213,11 +260,7 @@ describe('<ChartsActionMenu />', () => {
             storeState: defaultState,
         })
 
-        userEvent.click(screen.getByText('more_vert'))
-
-        act(() => {
-            userEvent.click(screen.getByText(ADD_TO_DASHBOARD))
-        })
+        userEvent.click(screen.getByRole('button', { name: ADD_TO_DASHBOARD }))
 
         expect(screen.getByText(NO_DASHBOARDS_LABEL)).toBeInTheDocument()
     })
@@ -232,7 +275,7 @@ describe('<ChartsActionMenu />', () => {
             { storeState: defaultState },
         )
 
-        userEvent.click(screen.getByText('more_vert'))
+        userEvent.click(screen.getByRole('button', { name: 'Chart actions' }))
         const action = screen.getByText(REMOVE_FROM_DASHBOARD)
 
         act(() => {
@@ -250,11 +293,7 @@ describe('<ChartsActionMenu />', () => {
             storeState: defaultState,
         })
 
-        userEvent.click(screen.getByText('more_vert'))
-
-        act(() => {
-            userEvent.click(screen.getByText(ADD_TO_DASHBOARD))
-        })
+        userEvent.click(screen.getByRole('button', { name: ADD_TO_DASHBOARD }))
 
         act(() => {
             userEvent.click(screen.getByText(CREATE_NEW_DASHBOARD_LABEL))
@@ -284,5 +323,31 @@ describe('<ChartsActionMenu />', () => {
         )
 
         expect(container).toBeEmptyDOMElement()
+    })
+
+    it('should render a CSV export button for non-team-lead users when exportCsvAction is provided', () => {
+        const onExportClick = jest.fn()
+
+        render(
+            <ChartsActionMenu
+                chartId="123"
+                chartName={chartName}
+                exportCsvAction={{ onClick: onExportClick }}
+            />,
+            {
+                storeState: {
+                    currentUser: fromJS({
+                        ...user,
+                        role: { name: UserRole.LiteAgent },
+                    }),
+                },
+            },
+        )
+
+        const button = screen.getByRole('button', { name: 'Export as CSV' })
+        expect(button).toBeInTheDocument()
+
+        userEvent.click(button)
+        expect(onExportClick).toHaveBeenCalledTimes(1)
     })
 })

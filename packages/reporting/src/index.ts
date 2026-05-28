@@ -4,6 +4,10 @@
  * @date 2025-09-05
  * @type reporting-ui-kit
  */
+export {
+    AnalyticsActionMenu,
+    type AnalyticsActionItem,
+} from './components/AnalyticsActionMenu/AnalyticsActionMenu'
 export { TrendIcon } from './components/TrendIcon/TrendIcon'
 export { TrendBadge } from './components/TrendBadge/TrendBadge'
 export {

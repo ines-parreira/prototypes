@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { memo, useState } from 'react'
+import { memo } from 'react'
 
 import { Box, Skeleton } from '@gorgias/axiom'
 
@@ -55,7 +55,6 @@ export const TrendCard = memo<TrendCardProps>(
         timeSeriesView,
     }) => {
         const { data } = trend
-        const [isHovered, setIsHovered] = useState(false)
 
         const hasData = !isLoading && data?.value != null
         const dataNotEqualToZero = data?.value !== 0
@@ -71,83 +70,74 @@ export const TrendCard = memo<TrendCardProps>(
             : undefined
 
         return (
-            <div
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
+            <MetricCard
+                withBorder={withBorder}
+                withFixedWidth={withFixedWidth}
+                compactVariant={compactVariant}
             >
-                <MetricCard
-                    withBorder={withBorder}
-                    withFixedWidth={withFixedWidth}
-                    compactVariant={compactVariant}
-                >
-                    <MetricCardHeader
-                        title={data?.label}
-                        hint={hint}
-                        actionMenu={isHovered ? actionMenu : undefined}
+                <MetricCardHeader
+                    title={data?.label}
+                    hint={hint}
+                    actionMenu={actionMenu}
+                    compact={compact}
+                />
+
+                <div className={css.dataContent}>
+                    <div className={css.trendData}>
+                        <span className={css.metricData}>
+                            {!hasData ? (
+                                <Skeleton
+                                    height={36}
+                                    width={
+                                        metricFormat === 'duration' ? 64 : 52
+                                    }
+                                />
+                            ) : drillDown && hasData && dataNotEqualToZero ? (
+                                <DrillDownModalTrigger
+                                    enabled={hasData}
+                                    tooltipText={drillDown.tooltipText}
+                                    openDrillDownModal={
+                                        drillDown.openDrillDownModal
+                                    }
+                                >
+                                    {formattedMetricValue}
+                                </DrillDownModalTrigger>
+                            ) : (
+                                formattedMetricValue
+                            )}
+                        </span>
+                        {!hasData && (
+                            <Box
+                                display="flex"
+                                alignItems="center"
+                                height="14px"
+                            >
+                                <Skeleton
+                                    height={14}
+                                    width={14}
+                                    style={{ marginTop: '5px' }}
+                                />
+                            </Box>
+                        )}
+                        {hasData && (
+                            <TrendBadge
+                                value={data?.value}
+                                prevValue={data?.prevValue}
+                                metricFormat={metricFormat}
+                                interpretAs={interpretAs}
+                                currency={currency}
+                                tooltipData={trendBadgeTooltipData}
+                            />
+                        )}
+                    </div>
+                </div>
+                {timeSeriesView && (
+                    <TrendCardTimeSeries
+                        {...timeSeriesView}
                         compact={compact}
                     />
-
-                    <div className={css.dataContent}>
-                        <div className={css.trendData}>
-                            <span className={css.metricData}>
-                                {!hasData ? (
-                                    <Skeleton
-                                        height={36}
-                                        width={
-                                            metricFormat === 'duration'
-                                                ? 64
-                                                : 52
-                                        }
-                                    />
-                                ) : drillDown &&
-                                  hasData &&
-                                  dataNotEqualToZero ? (
-                                    <DrillDownModalTrigger
-                                        enabled={hasData}
-                                        tooltipText={drillDown.tooltipText}
-                                        openDrillDownModal={
-                                            drillDown.openDrillDownModal
-                                        }
-                                    >
-                                        {formattedMetricValue}
-                                    </DrillDownModalTrigger>
-                                ) : (
-                                    formattedMetricValue
-                                )}
-                            </span>
-                            {!hasData && (
-                                <Box
-                                    display="flex"
-                                    alignItems="center"
-                                    height="14px"
-                                >
-                                    <Skeleton
-                                        height={14}
-                                        width={14}
-                                        style={{ marginTop: '5px' }}
-                                    />
-                                </Box>
-                            )}
-                            {hasData && (
-                                <TrendBadge
-                                    value={data?.value}
-                                    prevValue={data?.prevValue}
-                                    metricFormat={metricFormat}
-                                    interpretAs={interpretAs}
-                                    currency={currency}
-                                    tooltipData={trendBadgeTooltipData}
-                                />
-                            )}
-                        </div>
-                    </div>
-                    {timeSeriesView && (
-                        <TrendCardTimeSeries
-                            {...timeSeriesView}
-                            compact={compact}
-                        />
-                    )}
-                </MetricCard>
-            </div>
+                )}
+            </MetricCard>
         )
     },
 )

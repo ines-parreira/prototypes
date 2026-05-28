@@ -5,7 +5,10 @@ import {
     ORDER_MANAGEMENT_COLUMNS,
     ORDER_MANAGEMENT_NAME_COLUMNS,
 } from 'pages/aiAgent/analyticsOverview/components/OrderManagementTable/columns'
-import { DownloadOrderManagementButton } from 'pages/aiAgent/analyticsOverview/components/OrderManagementTable/DownloadOrderManagementButton'
+import {
+    DownloadOrderManagementButton,
+    useDownloadOrderManagementAction,
+} from 'pages/aiAgent/analyticsOverview/components/OrderManagementTable/DownloadOrderManagementButton'
 import { useOrderManagementMetrics } from 'pages/aiAgent/analyticsOverview/hooks/useOrderManagementMetrics'
 
 type Props = {
@@ -15,19 +18,24 @@ type Props = {
 
 export const OrderManagementTable = ({ chartId, withChartMenu }: Props) => {
     const { data = [], loadingStates } = useOrderManagementMetrics()
+    const exportCsvAction = useDownloadOrderManagementAction()
+    const withMenu = withChartMenu && chartId
 
     return (
         <ReportingMetricBreakdownTable
             data={data}
             metricColumns={ORDER_MANAGEMENT_COLUMNS}
             loadingStates={loadingStates}
-            DownloadButton={<DownloadOrderManagementButton />}
+            DownloadButton={
+                !withMenu ? <DownloadOrderManagementButton /> : undefined
+            }
             nameColumns={ORDER_MANAGEMENT_NAME_COLUMNS}
             actionMenu={
-                withChartMenu && chartId ? (
+                withMenu ? (
                     <ChartsActionMenu
                         chartId={chartId}
                         chartName="Order Management"
+                        exportCsvAction={exportCsvAction}
                     />
                 ) : undefined
             }

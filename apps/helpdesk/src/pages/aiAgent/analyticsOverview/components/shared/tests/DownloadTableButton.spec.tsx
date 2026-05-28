@@ -1,9 +1,12 @@
 import * as logging from '@repo/logging'
-import { render } from '@repo/testing'
+import { render, renderHook } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { DownloadTableButton } from 'pages/aiAgent/analyticsOverview/components/shared/DownloadTableButton'
+import {
+    DownloadTableButton,
+    useDownloadTableAction,
+} from 'pages/aiAgent/analyticsOverview/components/shared/DownloadTableButton'
 import * as fileUtils from 'utils/file'
 
 jest.mock('@repo/logging', () => ({
@@ -29,6 +32,51 @@ const renderComponent = (overrides = {}) =>
             {...overrides}
         />,
     )
+
+describe('useDownloadTableAction', () => {
+    afterEach(() => {
+        jest.clearAllMocks()
+    })
+
+    it('returns onClick that logs and saves the file', () => {
+        const saveFileSpy = jest.spyOn(fileUtils, 'saveFileAsDownloaded')
+        const logEventSpy = jest.spyOn(logging, 'logEvent')
+
+        const { result } = renderHook(() =>
+            useDownloadTableAction({
+                files: mockFiles,
+                fileName: mockFileName,
+                isLoading: false,
+                segmentEventName: 'test-table',
+            }),
+        )
+
+        result.current.onClick()
+
+        expect(logEventSpy).toHaveBeenCalledWith(
+            logging.SegmentEvent.StatDownloadClicked,
+            { name: 'test-table' },
+        )
+        expect(saveFileSpy).toHaveBeenCalledWith(
+            mockFileName,
+            mockFiles[mockFileName],
+            'text/csv',
+        )
+    })
+
+    it('passes isLoading through', () => {
+        const { result } = renderHook(() =>
+            useDownloadTableAction({
+                files: mockFiles,
+                fileName: mockFileName,
+                isLoading: true,
+                segmentEventName: 'test-table',
+            }),
+        )
+
+        expect(result.current.isLoading).toBe(true)
+    })
+})
 
 describe('DownloadTableButton', () => {
     afterEach(() => {

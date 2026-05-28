@@ -5,7 +5,10 @@ import {
     PERFORMANCE_BREAKDOWN_COLUMNS,
     PERFORMANCE_BREAKDOWN_NAME_COLUMNS,
 } from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/columns'
-import { DownloadPerformanceBreakdownButton } from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/DownloadPerformanceBreakdownButton'
+import {
+    DownloadPerformanceBreakdownButton,
+    useDownloadPerformanceBreakdownAction,
+} from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/DownloadPerformanceBreakdownButton'
 import { usePerformanceMetricsPerFeature } from 'pages/aiAgent/analyticsOverview/hooks/usePerformanceMetricsPerFeature'
 
 type Props = {
@@ -18,18 +21,23 @@ export const PerformanceBreakdownTable = ({
     withChartMenu,
 }: Props) => {
     const { data = [], loadingStates } = usePerformanceMetricsPerFeature()
+    const exportCsvAction = useDownloadPerformanceBreakdownAction()
+    const withMenu = withChartMenu && chartId
 
     return (
         <ReportingMetricBreakdownTable
             data={data}
             metricColumns={PERFORMANCE_BREAKDOWN_COLUMNS}
             loadingStates={loadingStates}
-            DownloadButton={<DownloadPerformanceBreakdownButton />}
+            DownloadButton={
+                !withMenu ? <DownloadPerformanceBreakdownButton /> : undefined
+            }
             actionMenu={
-                withChartMenu && chartId ? (
+                withMenu ? (
                     <ChartsActionMenu
                         chartId={chartId}
                         chartName="All features"
+                        exportCsvAction={exportCsvAction}
                     />
                 ) : undefined
             }

@@ -1,16 +1,22 @@
-import { render } from '@repo/testing'
+import { render, renderHook } from '@repo/testing'
 
 import '@testing-library/react'
 
 import { ALL_AGENTS_PERFORMANCE_BY_CHANNEL_TABLE } from 'pages/aiAgent/analyticsAiAgent/components/AllAgentsPerformanceByChannelTable/columns'
-import { DownloadAllAgentsPerformanceByChannelButton } from 'pages/aiAgent/analyticsAiAgent/components/AllAgentsPerformanceByChannelTable/DownloadAllAgentsPerformanceByChannelButton'
+import {
+    DownloadAllAgentsPerformanceByChannelButton,
+    useDownloadAllAgentsPerformanceByChannelAction,
+} from 'pages/aiAgent/analyticsAiAgent/components/AllAgentsPerformanceByChannelTable/DownloadAllAgentsPerformanceByChannelButton'
 
 const mockDownloadTableButton = jest.fn()
+const mockUseDownloadTableAction = jest.fn()
 
 jest.mock(
     'pages/aiAgent/analyticsOverview/components/shared/DownloadTableButton',
     () => ({
         DownloadTableButton: (props: unknown) => mockDownloadTableButton(props),
+        useDownloadTableAction: (...args: unknown[]) =>
+            mockUseDownloadTableAction(...args),
     }),
 )
 
@@ -33,6 +39,25 @@ beforeEach(() => {
         files: mockFiles,
         fileName: mockFileName,
         isLoading: false,
+    })
+})
+
+describe('useDownloadAllAgentsPerformanceByChannelAction', () => {
+    it('calls useDownloadTableAction with data from the hook and the correct segment event name', () => {
+        const mockResult = { onClick: jest.fn(), isLoading: false }
+        mockUseDownloadTableAction.mockReturnValue(mockResult)
+
+        const { result } = renderHook(() =>
+            useDownloadAllAgentsPerformanceByChannelAction(),
+        )
+
+        expect(mockUseDownloadTableAction).toHaveBeenCalledWith({
+            files: mockFiles,
+            fileName: mockFileName,
+            isLoading: false,
+            segmentEventName: 'ai-agent_all-agents_channel-performance-table',
+        })
+        expect(result.current).toBe(mockResult)
     })
 })
 

@@ -4,7 +4,10 @@ import { ReportingMetricBreakdownTable } from '@repo/reporting'
 
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
 import { FLOWS_COLUMNS } from 'pages/aiAgent/analyticsOverview/components/FlowsTable/columns'
-import { DownloadFlowsButton } from 'pages/aiAgent/analyticsOverview/components/FlowsTable/DownloadFlowsButton'
+import {
+    DownloadFlowsButton,
+    useDownloadFlowsAction,
+} from 'pages/aiAgent/analyticsOverview/components/FlowsTable/DownloadFlowsButton'
 import { useFlowsMetrics } from 'pages/aiAgent/analyticsOverview/hooks/useFlowsMetrics'
 
 type Props = {
@@ -14,6 +17,8 @@ type Props = {
 
 export const FlowsTable = ({ chartId, withChartMenu }: Props) => {
     const { data = [], loadingStates, displayNames } = useFlowsMetrics()
+    const exportCsvAction = useDownloadFlowsAction()
+    const withMenu = withChartMenu && chartId
 
     const nameColumns = useMemo(
         () => [{ accessor: 'entity', label: 'Flows', displayNames }],
@@ -25,11 +30,15 @@ export const FlowsTable = ({ chartId, withChartMenu }: Props) => {
             data={data}
             metricColumns={FLOWS_COLUMNS}
             loadingStates={loadingStates}
-            DownloadButton={<DownloadFlowsButton />}
+            DownloadButton={!withMenu ? <DownloadFlowsButton /> : undefined}
             nameColumns={nameColumns}
             actionMenu={
-                withChartMenu && chartId ? (
-                    <ChartsActionMenu chartId={chartId} chartName="Flows" />
+                withMenu ? (
+                    <ChartsActionMenu
+                        chartId={chartId}
+                        chartName="Flows"
+                        exportCsvAction={exportCsvAction}
+                    />
                 ) : undefined
             }
             chartId={chartId}

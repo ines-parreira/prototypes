@@ -1,4 +1,4 @@
-import { act, render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { vi } from 'vitest'
 
@@ -125,22 +125,12 @@ describe('TrendCard', () => {
         expect(loadingElements.length).toBeGreaterThan(0)
     })
 
-    it('should render action menu on hover when provided', async () => {
+    it('should render action menu when provided', () => {
         const actionMenu = <button>Action Menu</button>
 
-        const { container } = render(
-            <TrendCard {...defaultProps} actionMenu={actionMenu} />,
-        )
+        render(<TrendCard {...defaultProps} actionMenu={actionMenu} />)
 
         expect(screen.getByText('Test Metric')).toBeInTheDocument()
-        expect(screen.queryByText('Action Menu')).not.toBeInTheDocument()
-
-        const card = container.firstChild as HTMLElement
-
-        await act(async () => {
-            await userEvent.hover(card)
-        })
-
         expect(screen.getByText('Action Menu')).toBeInTheDocument()
     })
 
@@ -149,6 +139,18 @@ describe('TrendCard', () => {
 
         expect(screen.getByText('Test Metric')).toBeInTheDocument()
         expect(screen.queryByText('Action Menu')).not.toBeInTheDocument()
+    })
+
+    it('should render with withBorder={false}', () => {
+        render(<TrendCard {...defaultProps} withBorder={false} />)
+
+        expect(screen.getByText('Test Metric')).toBeInTheDocument()
+    })
+
+    it('should render with withFixedWidth={false}', () => {
+        render(<TrendCard {...defaultProps} withFixedWidth={false} />)
+
+        expect(screen.getByText('Test Metric')).toBeInTheDocument()
     })
 
     describe('DrillDownModalTrigger', () => {

@@ -1,16 +1,22 @@
-import { render } from '@repo/testing'
+import { render, renderHook } from '@repo/testing'
 
 import '@testing-library/react'
 
 import { SUPPORT_AGENTS_PERFORMANCE_BY_CHANNEL_TABLE } from 'pages/aiAgent/analyticsAiAgent/components/SupportAgentsPerformanceByChannelTable/columns'
-import { DownloadSupportAgentsPerformanceByChannelButton } from 'pages/aiAgent/analyticsAiAgent/components/SupportAgentsPerformanceByChannelTable/DownloadSupportAgentsPerformanceByChannelButton'
+import {
+    DownloadSupportAgentsPerformanceByChannelButton,
+    useDownloadSupportAgentsPerformanceByChannelAction,
+} from 'pages/aiAgent/analyticsAiAgent/components/SupportAgentsPerformanceByChannelTable/DownloadSupportAgentsPerformanceByChannelButton'
 
 const mockDownloadTableButton = jest.fn()
+const mockUseDownloadTableAction = jest.fn()
 
 jest.mock(
     'pages/aiAgent/analyticsOverview/components/shared/DownloadTableButton',
     () => ({
         DownloadTableButton: (props: unknown) => mockDownloadTableButton(props),
+        useDownloadTableAction: (...args: unknown[]) =>
+            mockUseDownloadTableAction(...args),
     }),
 )
 
@@ -33,6 +39,26 @@ beforeEach(() => {
         files: mockFiles,
         fileName: mockFileName,
         isLoading: false,
+    })
+})
+
+describe('useDownloadSupportAgentsPerformanceByChannelAction', () => {
+    it('calls useDownloadTableAction with data from the hook and the correct segment event name', () => {
+        const mockResult = { onClick: jest.fn(), isLoading: false }
+        mockUseDownloadTableAction.mockReturnValue(mockResult)
+
+        const { result } = renderHook(() =>
+            useDownloadSupportAgentsPerformanceByChannelAction(),
+        )
+
+        expect(mockUseDownloadTableAction).toHaveBeenCalledWith({
+            files: mockFiles,
+            fileName: mockFileName,
+            isLoading: false,
+            segmentEventName:
+                'ai-agent_support-agent_channel-performance-table',
+        })
+        expect(result.current).toBe(mockResult)
     })
 })
 

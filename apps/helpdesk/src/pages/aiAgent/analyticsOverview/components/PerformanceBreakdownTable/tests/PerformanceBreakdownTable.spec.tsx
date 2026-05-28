@@ -21,6 +21,10 @@ jest.mock(
         DownloadPerformanceBreakdownButton: () => (
             <div>Download Performance Breakdown</div>
         ),
+        useDownloadPerformanceBreakdownAction: () => ({
+            onClick: jest.fn(),
+            isLoading: false,
+        }),
     }),
 )
 

@@ -11,23 +11,38 @@ type Props = {
     segmentEventName: string
 }
 
+export const useDownloadTableAction = ({
+    files,
+    fileName,
+    isLoading,
+    segmentEventName,
+}: Props) => ({
+    onClick: () => {
+        logEvent(SegmentEvent.StatDownloadClicked, { name: segmentEventName })
+        saveFileAsDownloaded(fileName, Object.values(files)[0], 'text/csv')
+    },
+    isLoading,
+})
+
 export const DownloadTableButton = ({
     files,
     fileName,
     isLoading,
     segmentEventName,
-}: Props) => (
-    <Button
-        onClick={() => {
-            logEvent(SegmentEvent.StatDownloadClicked, {
-                name: segmentEventName,
-            })
-            const csvContent = Object.values(files)[0]
-            saveFileAsDownloaded(fileName, csvContent, 'text/csv')
-        }}
-        isDisabled={isLoading}
-        size="sm"
-        variant="tertiary"
-        icon="download"
-    />
-)
+}: Props) => {
+    const { onClick } = useDownloadTableAction({
+        files,
+        fileName,
+        isLoading,
+        segmentEventName,
+    })
+    return (
+        <Button
+            onClick={onClick}
+            isDisabled={isLoading}
+            size="sm"
+            variant="tertiary"
+            icon="download"
+        />
+    )
+}

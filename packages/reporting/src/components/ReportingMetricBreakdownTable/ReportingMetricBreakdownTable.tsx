@@ -28,7 +28,7 @@ type Props<TData> = {
     data: TData[]
     metricColumns: MetricColumnConfig[]
     loadingStates: MetricLoadingStates
-    DownloadButton: ReactNode
+    DownloadButton?: ReactNode
     nameColumns: NameColumnConfig[]
     chartId?: string
 }

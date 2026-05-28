@@ -109,7 +109,7 @@ export const ChartHeader = ({
                     )}
                 </Box>
                 {(alwaysShowChartControls || hasData) && chartControls && (
-                    <Box display="flex" gap="xxxs">
+                    <Box display="flex" gap="xxxs" alignItems="center">
                         {chartControls}
                     </Box>
                 )}

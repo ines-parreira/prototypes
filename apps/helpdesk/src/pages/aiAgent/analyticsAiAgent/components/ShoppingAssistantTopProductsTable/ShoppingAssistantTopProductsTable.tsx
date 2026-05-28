@@ -7,7 +7,10 @@ import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActio
 import { useShoppingAssistantTopProductsMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantTopProductsMetrics'
 
 import { SHOPPING_ASSISTANT_TOP_PRODUCTS_COLUMNS } from './columns'
-import { DownloadShoppingAssistantTopProductsButton } from './DownloadShoppingAssistantTopProductsButton'
+import {
+    DownloadShoppingAssistantTopProductsButton,
+    useDownloadShoppingAssistantTopProductsAction,
+} from './DownloadShoppingAssistantTopProductsButton'
 
 type Props = {
     chartId?: string
@@ -26,6 +29,8 @@ export const ShoppingAssistantTopProductsTable = ({
         isFetching,
     } = useShoppingAssistantTopProductsMetrics()
 
+    const exportCsvAction = useDownloadShoppingAssistantTopProductsAction()
+
     const nameColumns = useMemo(
         () => [
             {
@@ -42,6 +47,8 @@ export const ShoppingAssistantTopProductsTable = ({
         [productNameMap, productUrlMap, productImageMap],
     )
 
+    const withMenu = withChartMenu && chartId
+
     return (
         <ReportingMetricBreakdownTable
             data={flatData}
@@ -51,12 +58,17 @@ export const ShoppingAssistantTopProductsTable = ({
                 [ProductTableKeys.CTR]: isFetching,
                 [ProductTableKeys.BTR]: isFetching,
             }}
-            DownloadButton={<DownloadShoppingAssistantTopProductsButton />}
+            DownloadButton={
+                !withMenu ? (
+                    <DownloadShoppingAssistantTopProductsButton />
+                ) : undefined
+            }
             actionMenu={
-                withChartMenu && chartId ? (
+                withMenu ? (
                     <ChartsActionMenu
                         chartId={chartId}
                         chartName="Top products recommended"
+                        exportCsvAction={exportCsvAction}
                     />
                 ) : undefined
             }

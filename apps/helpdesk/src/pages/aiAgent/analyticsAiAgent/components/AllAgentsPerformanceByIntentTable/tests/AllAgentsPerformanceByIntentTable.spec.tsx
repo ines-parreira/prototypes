@@ -21,6 +21,10 @@ jest.mock(
         DownloadAllAgentsPerformanceByIntentButton: () => (
             <div>Download All Agents Performance By Intent</div>
         ),
+        useDownloadAllAgentsPerformanceByIntentAction: () => ({
+            onClick: jest.fn(),
+            isLoading: false,
+        }),
     }),
 )
 

@@ -5,7 +5,10 @@ import {
     ALL_AGENTS_PERFORMANCE_BY_CHANNEL_COLUMNS,
     ALL_AGENTS_PERFORMANCE_BY_CHANNEL_NAME_COLUMNS,
 } from 'pages/aiAgent/analyticsAiAgent/components/AllAgentsPerformanceByChannelTable/columns'
-import { DownloadAllAgentsPerformanceByChannelButton } from 'pages/aiAgent/analyticsAiAgent/components/AllAgentsPerformanceByChannelTable/DownloadAllAgentsPerformanceByChannelButton'
+import {
+    DownloadAllAgentsPerformanceByChannelButton,
+    useDownloadAllAgentsPerformanceByChannelAction,
+} from 'pages/aiAgent/analyticsAiAgent/components/AllAgentsPerformanceByChannelTable/DownloadAllAgentsPerformanceByChannelButton'
 import { useAllAgentsPerformanceByChannelMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useAllAgentsPerformanceByChannelMetrics'
 
 type Props = {
@@ -19,17 +22,27 @@ export const AllAgentsPerformanceByChannelTable = ({
 }: Props) => {
     const { data = [], loadingStates } =
         useAllAgentsPerformanceByChannelMetrics()
+    const exportCsvAction = useDownloadAllAgentsPerformanceByChannelAction()
+    const withMenu = withChartMenu && chartId
 
     return (
         <ReportingMetricBreakdownTable
             data={data}
             metricColumns={ALL_AGENTS_PERFORMANCE_BY_CHANNEL_COLUMNS}
             loadingStates={loadingStates}
-            DownloadButton={<DownloadAllAgentsPerformanceByChannelButton />}
+            DownloadButton={
+                !withMenu ? (
+                    <DownloadAllAgentsPerformanceByChannelButton />
+                ) : undefined
+            }
             nameColumns={ALL_AGENTS_PERFORMANCE_BY_CHANNEL_NAME_COLUMNS}
             actionMenu={
-                withChartMenu && chartId ? (
-                    <ChartsActionMenu chartId={chartId} chartName="Channel" />
+                withMenu ? (
+                    <ChartsActionMenu
+                        chartId={chartId}
+                        chartName="Channel"
+                        exportCsvAction={exportCsvAction}
+                    />
                 ) : undefined
             }
             chartId={chartId}

@@ -25,6 +25,10 @@ jest.mock(
         DownloadArticleRecommendationButton: () => (
             <div>Download Article Recommendation</div>
         ),
+        useDownloadArticleRecommendationAction: () => ({
+            onClick: jest.fn(),
+            isLoading: false,
+        }),
     }),
 )
 

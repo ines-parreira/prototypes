@@ -24,6 +24,11 @@ jest.mock(
                 Download Shopping Assistant Performance By Engagement Feature
             </div>
         ),
+        useDownloadShoppingAssistantPerformanceByEngagementFeatureAction:
+            () => ({
+                onClick: jest.fn(),
+                isLoading: false,
+            }),
     }),
 )
 

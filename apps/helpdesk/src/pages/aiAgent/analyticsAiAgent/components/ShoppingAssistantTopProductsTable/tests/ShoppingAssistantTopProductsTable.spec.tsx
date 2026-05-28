@@ -19,6 +19,10 @@ jest.mock(
         DownloadShoppingAssistantTopProductsButton: () => (
             <div>Download Shopping Assistant Top Products</div>
         ),
+        useDownloadShoppingAssistantTopProductsAction: () => ({
+            onClick: jest.fn(),
+            isLoading: false,
+        }),
     }),
 )
 jest.mock(

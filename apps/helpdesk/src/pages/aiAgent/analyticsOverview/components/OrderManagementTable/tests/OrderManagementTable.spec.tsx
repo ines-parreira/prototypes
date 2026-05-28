@@ -30,6 +30,10 @@ jest.mock(
         DownloadOrderManagementButton: () => (
             <div>Download Order Management</div>
         ),
+        useDownloadOrderManagementAction: () => ({
+            onClick: jest.fn(),
+            isLoading: false,
+        }),
     }),
 )
 

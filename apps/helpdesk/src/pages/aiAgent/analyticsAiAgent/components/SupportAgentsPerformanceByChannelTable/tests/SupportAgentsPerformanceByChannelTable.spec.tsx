@@ -22,6 +22,10 @@ jest.mock(
         DownloadSupportAgentsPerformanceByChannelButton: () => (
             <div>Download Support Agents Performance By Channel</div>
         ),
+        useDownloadSupportAgentsPerformanceByChannelAction: () => ({
+            onClick: jest.fn(),
+            isLoading: false,
+        }),
     }),
 )
 

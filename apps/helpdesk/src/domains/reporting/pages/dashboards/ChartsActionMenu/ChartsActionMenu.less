@@ -1,68 +1,41 @@
 @import (reference) '~css/typography';
 
 :local {
-    .wrapper {
-        cursor: pointer;
-        color: var(--neutral-grey-6); // legacy
-        .body-regular();
-        :hover {
-            background: var(--neutral-grey-2); // legacy
-        }
-    }
-
-    .dropdownWrapper {
-        padding: 0;
-    }
-
     .dropdownItem {
         display: flex;
         align-items: center;
         gap: var(--layout-spacing-xs);
-        border-radius: 0;
-    }
+        width: 100%;
+        min-height: 36px;
+        padding: 0 var(--layout-spacing-xs);
+        text-align: left;
+        color: var(--neutral-grey-6); // legacy
+        background: none;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        .body-regular();
 
-    .moreVertIcon {
-        padding: var(--layout-spacing-xxs);
-        border-radius: var(--layout-spacing-xxs);
-        color: var(--neutral-grey-5); // legacy
-    }
-
-    .chevronRightIcon {
-        color: var(--neutral-grey-4); // legacy
+        &:hover:not(:disabled) {
+            background: var(--neutral-grey-1); // legacy
+        }
     }
 
     .addToDashboardAction {
-        .body-medium();
-        &:hover:not(.disabled) {
-            background: var(--neutral-grey-3); // legacy
-        }
         position: sticky;
-        text-transform: capitalize;
-        justify-content: center;
         inset: 0;
-        background: var(--neutral-grey-2); // legacy
-        border: 1px solid var(--neutral-grey-3); // legacy
-        color: var(--main-primary); // legacy
-        height: 40px;
-        padding: 0 var(--layout-spacing-xs);
-        > i {
-            color: var(--main-primary); // legacy
-        }
+        border-top: 1px solid var(--neutral-grey-3); // legacy
     }
 
     .disableAddToDashboardAction {
         color: var(--neutral-grey-3); // legacy
-        &:hover:not(.disabled) {
+        cursor: not-allowed;
+        &:hover:not(:disabled) {
             background: var(--neutral-grey-2); // legacy
-            cursor: not-allowed;
         }
         i {
             color: var(--neutral-grey-3); // legacy
         }
-    }
-
-    .dropdownLeftIcon {
-        color: var(--neutral-grey-6); // legacy
     }
 
     .dashboardName {
@@ -86,40 +59,15 @@
 }
 
 .axiom :local {
-    .wrapper {
-        color: var(--content-neutral-default);
-
-        :hover {
-            background: var(--hover-default);
-        }
-    }
-
-    .moreVertIcon {
-        color: var(--content-neutral-secondary);
-    }
-
-    .chevronRightIcon {
-        color: var(--content-neutral-secondary);
-    }
-
     .addToDashboardAction {
-        border-color: var(--border-neutral-default);
-        background: var(--surface-neutral-tertiary);
-        color: var(--content-accent-default);
-
-        &:hover:not(.disabled) {
-            background: var(--elevation-neutral-default);
-        }
-
-        > i {
-            color: var(--content-accent-default);
-        }
+        border-top-color: var(--border-neutral-default);
     }
 
     .disableAddToDashboardAction {
         color: var(--content-neutral-tertiary);
+        cursor: not-allowed;
 
-        &:hover:not(.disabled) {
+        &:hover:not(:disabled) {
             background: var(--surface-neutral-tertiary);
         }
 
@@ -128,8 +76,12 @@
         }
     }
 
-    .dropdownLeftIcon {
+    .dropdownItem {
         color: var(--content-neutral-default);
+
+        &:hover:not(:disabled) {
+            background: var(--hover-default);
+        }
     }
 
     .dashboardName:after {

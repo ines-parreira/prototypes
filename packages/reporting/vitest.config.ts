@@ -1,3 +1,7 @@
 import { createConfig } from '@repo/config/vitest'
 
-export default createConfig()
+export default createConfig({
+    test: {
+        setupFiles: ['./src/tests/setup.ts'],
+    },
+})

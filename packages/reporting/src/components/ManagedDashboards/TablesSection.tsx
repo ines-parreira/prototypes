@@ -127,36 +127,42 @@ export function TablesSection<TChart extends string>({
                     </Heading>
                 </Box>
             )}
-            {availableItems.length > 1 && (
-                <ButtonGroup
-                    selectedKey={activeTableId}
-                    onSelectionChange={(key: string) => {
-                        if (enableTablesPersistence) {
-                            saveSelectedTable(key)
-                        } else {
-                            setLocalActiveTableId(key)
-                        }
-                        onTabChange?.(key)
-                    }}
-                >
-                    {availableItems.map((item) => (
-                        <ButtonGroupItem key={item.chartId} id={item.chartId}>
-                            {reportConfig.charts[item.chartId].label}
-                        </ButtonGroupItem>
-                    ))}
-                </ButtonGroup>
-            )}
-            {availableItems
-                .filter((item) => activeTableId === item.chartId)
-                .map((item) => (
-                    <Box key={item.chartId} width="100%" minWidth="0px">
+            <div className={css.tableContainer}>
+                {availableItems.length > 1 && (
+                    <div className={css.tabs}>
+                        <ButtonGroup
+                            selectedKey={activeTableId}
+                            onSelectionChange={(key: string) => {
+                                if (enableTablesPersistence) {
+                                    saveSelectedTable(key)
+                                } else {
+                                    setLocalActiveTableId(key)
+                                }
+                                onTabChange?.(key)
+                            }}
+                        >
+                            {availableItems.map((item) => (
+                                <ButtonGroupItem
+                                    key={item.chartId}
+                                    id={item.chartId}
+                                >
+                                    {reportConfig.charts[item.chartId].label}
+                                </ButtonGroupItem>
+                            ))}
+                        </ButtonGroup>
+                    </div>
+                )}
+                {availableItems
+                    .filter((item) => activeTableId === item.chartId)
+                    .map((item) => (
                         <DashboardComponent
+                            key={item.chartId}
                             chart={item.chartId}
                             config={reportConfig}
                             withChartMenu={enableCustomDashboards}
                         />
-                    </Box>
-                ))}
+                    ))}
+            </div>
         </Box>
     )
 }
