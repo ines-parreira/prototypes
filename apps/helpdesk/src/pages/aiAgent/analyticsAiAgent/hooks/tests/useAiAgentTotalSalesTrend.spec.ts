@@ -1,8 +1,8 @@
 import { assumeMock, renderHook } from '@repo/testing'
 
-import useMetricTrend, {
-    fetchMetricTrend,
-} from 'domains/reporting/hooks/useMetricTrend'
+import useStatsMetricTrend, {
+    fetchStatsMetricTrend,
+} from 'domains/reporting/hooks/useStatsMetricTrend'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     fetchAiAgentTotalSalesTrend,
@@ -18,18 +18,29 @@ const statsFilters: StatsFilters = {
     },
 }
 
-jest.mock('domains/reporting/hooks/useMetricTrend', () => ({
+jest.mock('domains/reporting/hooks/useStatsMetricTrend', () => ({
+    ...jest.requireActual('domains/reporting/hooks/useStatsMetricTrend'),
     __esModule: true,
     default: jest.fn(),
-    fetchMetricTrend: jest.fn(),
+    fetchStatsMetricTrend: jest.fn(),
+    getStatsTrendHook: jest.fn(() => (...args: unknown[]) => {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
+        const mod = require('domains/reporting/hooks/useStatsMetricTrend')
+        return mod.default(...args)
+    }),
+    getStatsTrendFetch: jest.fn(() => (...args: unknown[]) => {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
+        const mod = require('domains/reporting/hooks/useStatsMetricTrend')
+        return mod.fetchStatsMetricTrend(...args)
+    }),
 }))
-const mockUseMetricTrend = assumeMock(useMetricTrend)
-const mockFetchMetricTrend = assumeMock(fetchMetricTrend)
+const mockUseStatsMetricTrend = assumeMock(useStatsMetricTrend)
+const mockFetchStatsMetricTrend = assumeMock(fetchStatsMetricTrend)
 
 describe('useAiAgentTotalSalesTrend', () => {
     describe('useAiAgentTotalSalesTrend', () => {
-        it('should return data from useMetricTrend', () => {
-            mockUseMetricTrend.mockReturnValue({
+        it('should return data from useStatsMetricTrend', () => {
+            mockUseStatsMetricTrend.mockReturnValue({
                 data: { value: 1234.56, prevValue: 1000.0 },
                 isFetching: false,
                 isError: false,
@@ -47,7 +58,7 @@ describe('useAiAgentTotalSalesTrend', () => {
         })
 
         it('should forward isFetching state', () => {
-            mockUseMetricTrend.mockReturnValue({
+            mockUseStatsMetricTrend.mockReturnValue({
                 data: undefined as any,
                 isFetching: true,
                 isError: false,
@@ -62,7 +73,7 @@ describe('useAiAgentTotalSalesTrend', () => {
         })
 
         it('should forward isError state', () => {
-            mockUseMetricTrend.mockReturnValue({
+            mockUseStatsMetricTrend.mockReturnValue({
                 data: undefined as any,
                 isFetching: false,
                 isError: true,
@@ -77,8 +88,8 @@ describe('useAiAgentTotalSalesTrend', () => {
     })
 
     describe('fetchAiAgentTotalSalesTrend', () => {
-        it('should return data from fetchMetricTrend', async () => {
-            mockFetchMetricTrend.mockResolvedValue({
+        it('should return data from fetchStatsMetricTrend', async () => {
+            mockFetchStatsMetricTrend.mockResolvedValue({
                 data: { value: 1234.56, prevValue: 1000.0 },
                 isFetching: false,
                 isError: false,
@@ -96,8 +107,8 @@ describe('useAiAgentTotalSalesTrend', () => {
             })
         })
 
-        it('should forward isError when fetchMetricTrend fails', async () => {
-            mockFetchMetricTrend.mockResolvedValue({
+        it('should forward isError when fetchStatsMetricTrend fails', async () => {
+            mockFetchStatsMetricTrend.mockResolvedValue({
                 data: undefined as any,
                 isFetching: false,
                 isError: true,
