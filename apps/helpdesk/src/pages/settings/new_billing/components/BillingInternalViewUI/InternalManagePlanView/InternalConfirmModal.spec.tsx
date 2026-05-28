@@ -27,6 +27,7 @@ function estimateSuccessHandler(
     body: {
         balance_due?: number | null
         immediate_changes_summary?: object | null
+        estimated_prorated_credits_charges?: object | null
     } = { balance_due: 0 },
 ) {
     return http.get(ESTIMATE_URL, () =>
@@ -1141,6 +1142,148 @@ describe('InternalConfirmModal', () => {
                     ),
                 ).not.toBeInTheDocument()
             })
+        })
+    })
+
+    describe('balance breakdown button', () => {
+        it('does not show the button when estimated_prorated_credits_charges is absent', async () => {
+            server.use(estimateSuccessHandler({ balance_due: 0 }))
+            renderComponent()
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByRole('button', {
+                        name: /view balance breakdown/i,
+                    }),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('shows the button when estimated_prorated_credits_charges is present', async () => {
+            server.use(
+                estimateSuccessHandler({
+                    estimated_prorated_credits_charges: { amount: 1000 },
+                }),
+            )
+            renderComponent()
+
+            expect(
+                await screen.findByRole('button', {
+                    name: /view balance breakdown/i,
+                }),
+            ).toBeInTheDocument()
+        })
+
+        it('toggles the raw JSON on click', async () => {
+            const user = userEvent.setup()
+            server.use(
+                estimateSuccessHandler({
+                    estimated_prorated_credits_charges: { amount: 1000 },
+                }),
+            )
+            renderComponent()
+
+            const toggleButton = await screen.findByRole('button', {
+                name: /view balance breakdown/i,
+            })
+
+            await user.click(toggleButton)
+            expect(screen.getByText(/"amount": 1000/)).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /hide balance breakdown/i }),
+            ).toBeInTheDocument()
+
+            await user.click(
+                screen.getByRole('button', { name: /hide balance breakdown/i }),
+            )
+            expect(screen.queryByText(/"amount": 1000/)).not.toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /view balance breakdown/i }),
+            ).toBeInTheDocument()
+        })
+    })
+
+    describe('immediate changes summary button', () => {
+        it('does not show the button when immediate_changes_summary is null', async () => {
+            server.use(
+                estimateSuccessHandler({ immediate_changes_summary: null }),
+            )
+            renderComponent()
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByRole('button', {
+                        name: /view immediate changes summary/i,
+                    }),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('shows the button when immediate_changes_summary is present', async () => {
+            server.use(
+                estimateSuccessHandler({
+                    immediate_changes_summary: {
+                        new_term_start: 1704067200,
+                        new_term_end: 1735689600,
+                        contract_cadence_change: null,
+                        invoice_cadence_change: null,
+                        is_ramp: false,
+                        product_changes: {},
+                    },
+                }),
+            )
+            renderComponent()
+
+            expect(
+                await screen.findByRole('button', {
+                    name: /view immediate changes summary/i,
+                }),
+            ).toBeInTheDocument()
+        })
+
+        it('toggles the raw JSON on click', async () => {
+            const user = userEvent.setup()
+            server.use(
+                estimateSuccessHandler({
+                    immediate_changes_summary: {
+                        new_term_start: 1704067200,
+                        new_term_end: 1735689600,
+                        contract_cadence_change: null,
+                        invoice_cadence_change: null,
+                        is_ramp: false,
+                        product_changes: {},
+                    },
+                }),
+            )
+            renderComponent()
+
+            const toggleButton = await screen.findByRole('button', {
+                name: /view immediate changes summary/i,
+            })
+
+            await user.click(toggleButton)
+            expect(
+                screen.getByText(/"new_term_start": 1704067200/),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', {
+                    name: /hide immediate changes summary/i,
+                }),
+            ).toBeInTheDocument()
+
+            await user.click(
+                screen.getByRole('button', {
+                    name: /hide immediate changes summary/i,
+                }),
+            )
+            expect(
+                screen.queryByText(/"new_term_start": 1704067200/),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.getByRole('button', {
+                    name: /view immediate changes summary/i,
+                }),
+            ).toBeInTheDocument()
         })
     })
 })

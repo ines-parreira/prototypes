@@ -82,11 +82,12 @@ export function useInternalConfirmChangesEstimate(
                 staleTime: ESTIMATE_FRESHNESS_MS,
                 refetchInterval: ESTIMATE_FRESHNESS_MS,
                 retry: false,
-                // TODO: remove cast once @gorgias/helpdesk-types adds `current_invoices_to_pay` to BillingInternalEstimatesSubscription
+                // TODO: remove cast once @gorgias/helpdesk-types adds `current_invoices_to_pay` and `estimated_prorated_credits_charges` to BillingInternalEstimatesSubscription
                 select: (response) => {
                     const data =
                         response.data as BillingInternalEstimatesSubscription & {
                             current_invoices_to_pay?: Invoice[] | null
+                            estimated_prorated_credits_charges?: object | null
                         }
                     return {
                         ...data,

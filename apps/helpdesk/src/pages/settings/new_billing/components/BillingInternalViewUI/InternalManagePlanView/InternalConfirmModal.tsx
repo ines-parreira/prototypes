@@ -55,6 +55,9 @@ export function InternalConfirmModal({
     isSubmitting,
 }: InternalConfirmModalProps) {
     const [activeAction, setActiveAction] = useState<InvoiceAction | null>(null)
+    const [showRawBreakdown, setShowRawBreakdown] = useState(false)
+    const [showRawImmediateChanges, setShowRawImmediateChanges] =
+        useState(false)
 
     const isTrialing = billingState.subscription.is_trialing
     const isCurrentSubscriptionCanceled =
@@ -288,6 +291,76 @@ export function InternalConfirmModal({
             <OverlayContent>
                 <NewSummaryPaymentSection trackingSource="internal_subscription_update" />
             </OverlayContent>
+            {(estimate?.estimated_prorated_credits_charges != null ||
+                estimate?.immediate_changes_summary != null) && (
+                <OverlayContent>
+                    <Box flexDirection="column" gap="sm">
+                        {estimate?.estimated_prorated_credits_charges !=
+                            null && (
+                            <Box flexDirection="column" gap="sm">
+                                <Button
+                                    variant="secondary"
+                                    size="sm"
+                                    onClick={() =>
+                                        setShowRawBreakdown((v) => !v)
+                                    }
+                                >
+                                    {showRawBreakdown
+                                        ? 'Hide balance breakdown'
+                                        : 'View balance breakdown'}
+                                </Button>
+                                {showRawBreakdown && (
+                                    <pre
+                                        style={{
+                                            fontSize: 12,
+                                            overflowX: 'auto',
+                                            whiteSpace: 'pre-wrap',
+                                            wordBreak: 'break-all',
+                                        }}
+                                    >
+                                        {JSON.stringify(
+                                            estimate.estimated_prorated_credits_charges,
+                                            null,
+                                            2,
+                                        )}
+                                    </pre>
+                                )}
+                            </Box>
+                        )}
+                        {estimate?.immediate_changes_summary != null && (
+                            <Box flexDirection="column" gap="sm">
+                                <Button
+                                    variant="secondary"
+                                    size="sm"
+                                    onClick={() =>
+                                        setShowRawImmediateChanges((v) => !v)
+                                    }
+                                >
+                                    {showRawImmediateChanges
+                                        ? 'Hide immediate changes summary'
+                                        : 'View immediate changes summary'}
+                                </Button>
+                                {showRawImmediateChanges && (
+                                    <pre
+                                        style={{
+                                            fontSize: 12,
+                                            overflowX: 'auto',
+                                            whiteSpace: 'pre-wrap',
+                                            wordBreak: 'break-all',
+                                        }}
+                                    >
+                                        {JSON.stringify(
+                                            estimate.immediate_changes_summary,
+                                            null,
+                                            2,
+                                        )}
+                                    </pre>
+                                )}
+                            </Box>
+                        )}
+                    </Box>
+                </OverlayContent>
+            )}
             <OverlayFooter>
                 <Box gap="sm">{renderFooterButtons()}</Box>
             </OverlayFooter>
