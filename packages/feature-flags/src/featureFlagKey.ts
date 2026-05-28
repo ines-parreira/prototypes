@@ -219,6 +219,7 @@ export enum FeatureFlagKey {
     SwitchToShopifyThemeAppExtension = 'switch-to-shopify-theme-app-extension',
     TicketDemoSuggestion = 'ticket-demo-suggestion',
     TicketMessagesAssignedToWrongTicketDebugging = 'linear-HELP-6492-ticket-messages-assigned-to-wrong-ticket-debugging',
+    TicketThreadLoadingState = 'linear-HELP-6428-ticket-thread-loading-state',
     TicketThreadRevamp = 'linear.project_ticket-thread-revamp.access',
     UIVisionBetaBaseline = 'linear.initiative_helpdesk-v2',
     UIVisionMilestone1 = 'linear.project_ui-vision.milestone-1',

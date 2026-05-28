@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 
 import { useElementSize } from '@repo/hooks'
 import type { Components, VirtuosoHandle } from 'react-virtuoso'
@@ -7,7 +7,9 @@ import { Virtuoso } from 'react-virtuoso'
 import { ExpandedMessagesProvider } from '../../contexts/ExpandedMessages'
 import { TicketThreadWidthContext } from '../../contexts/TicketThreadWidth'
 import type { TicketThreadItem } from '../../hooks/types'
+import { TicketThreadEmptyPlaceholder } from './TicketThreadEmptyPlaceholder'
 import { getThreadItemKey } from './utils'
+import css from './TicketThreadContainer.less'
 
 type TicketThreadContainerProps = {
     items: TicketThreadItem[]
@@ -23,17 +25,19 @@ export function TicketThreadContainer({
     renderThreadItem,
 }: TicketThreadContainerProps) {
     const ticketThreadRef = useRef<VirtuosoHandle>(null)
+    const appliedInitialScrollRef = useRef<string | null>(null)
     const [measuredWidth] = useElementSize(containerElement ?? null)
     const containerWidth = measuredWidth || Infinity
+    const isEmpty = items.length === 0
 
     const getItemKey = useCallback(
         (index: number, item: TicketThreadItem) =>
             getThreadItemKey(item, index, ticketId),
         [ticketId],
     )
-
     const virtuosoComponents = useMemo<Components<TicketThreadItem>>(
         () => ({
+            EmptyPlaceholder: TicketThreadEmptyPlaceholder,
             Item: ({
                 context: __context,
                 item: __item,
@@ -59,12 +63,24 @@ export function TicketThreadContainer({
         [],
     )
 
+    useEffect(() => {
+        const isReady = containerElement && items.length > 0
+        const isScrollApplied = appliedInitialScrollRef.current === ticketId
+        if (!isReady || isScrollApplied) {
+            return
+        }
+
+        ticketThreadRef.current?.scrollToIndex({ index: 'LAST' })
+        appliedInitialScrollRef.current = ticketId
+    }, [containerElement, items.length, ticketId])
+
     return (
         <TicketThreadWidthContext.Provider value={{ containerWidth }}>
             <ExpandedMessagesProvider>
                 <Virtuoso<TicketThreadItem>
                     ref={ticketThreadRef}
                     aria-label="Ticket thread"
+                    className={isEmpty ? css.emptyContainer : undefined}
                     components={virtuosoComponents}
                     computeItemKey={getItemKey}
                     customScrollParent={containerElement ?? undefined}

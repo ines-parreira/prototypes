@@ -51,17 +51,21 @@ export const useTicketSummary = ({
         )
     }, [ticketId, generateSummary])
 
+    const initialSummaryDatetime =
+        initialSummary?.updated_datetime ??
+        initialSummary?.created_datetime ??
+        null
+    const summaryDatetime =
+        summary?.updated_datetime ?? summary?.created_datetime ?? null
+
     useEffect(() => {
-        if (
-            (initialSummary?.updated_datetime ?? null) !==
-            (summary?.updated_datetime ?? null)
-        ) {
+        if (initialSummaryDatetime !== summaryDatetime) {
             setSummary(initialSummary)
             setErrorMessage('')
             setIsRetriable(true)
             setIsLoading(false)
         }
-    }, [initialSummary, summary?.updated_datetime])
+    }, [initialSummary, initialSummaryDatetime, summaryDatetime])
 
     return { summary, isLoading, errorMessage, isRetriable, requestSummary }
 }

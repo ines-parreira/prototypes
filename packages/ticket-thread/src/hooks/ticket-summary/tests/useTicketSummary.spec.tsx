@@ -142,4 +142,26 @@ describe('useTicketSummary', () => {
         expect(result.current.isLoading).toBe(false)
         expect(result.current.errorMessage).toBe('')
     })
+
+    it('should update summary when initialSummary arrives without updated_datetime', () => {
+        const { result, rerender } = renderHook(
+            ({ initialSummary }) =>
+                useTicketSummary({ ticketId: 1, initialSummary }),
+            { initialProps: { initialSummary: undefined } },
+        )
+
+        expect(result.current.summary).toBeUndefined()
+
+        rerender({
+            initialSummary: {
+                ...mockSummary,
+                updated_datetime: null,
+            },
+        } as never)
+
+        expect(result.current.summary).toEqual({
+            ...mockSummary,
+            updated_datetime: null,
+        })
+    })
 })

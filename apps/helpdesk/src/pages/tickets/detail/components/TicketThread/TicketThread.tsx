@@ -30,16 +30,18 @@ import { TicketThreadSummarySection } from './TicketThreadSummarySection'
 import { useTicketThreadSummary } from './useTicketThreadSummary'
 import { toActivityParticipants } from './utils/toActivityParticipants'
 
+import { TicketThreadEditorSkeleton } from './TicketThreadEditorSkeleton'
 import css from './TicketThread.less'
 
 type TicketThreadProps = {
     submit: (params: SubmitArgs) => any
+    isLoading?: boolean
 }
 
 const { key: showTicketEventsKey, parse: parseShowTicketEvents } =
     TicketSearchParamsKeys.showTicketEvents
 
-export function TicketThread({ submit }: TicketThreadProps) {
+export function TicketThread({ submit, isLoading = false }: TicketThreadProps) {
     const dispatch = useAppDispatch()
     const [threadContainerElement, setThreadContainerElement] = useCallbackRef()
     const ticketState = useAppSelector(getTicketState)
@@ -168,16 +170,20 @@ export function TicketThread({ submit }: TicketThreadProps) {
                     agents={activityAgentsTyping}
                     customers={customersTyping}
                 />
-                <WhatsAppEditorProvider>
-                    <Editor
-                        internalNotesOnly={internalNotesOnly}
-                        initialMacroFilters={initialMacroFilters}
-                        submit={submit}
-                        ticket={ticket}
-                        onFocus={handleFocus}
-                        onBlur={handleBlur}
-                    />
-                </WhatsAppEditorProvider>
+                {isLoading ? (
+                    <TicketThreadEditorSkeleton />
+                ) : (
+                    <WhatsAppEditorProvider>
+                        <Editor
+                            internalNotesOnly={internalNotesOnly}
+                            initialMacroFilters={initialMacroFilters}
+                            submit={submit}
+                            ticket={ticket}
+                            onFocus={handleFocus}
+                            onBlur={handleBlur}
+                        />
+                    </WhatsAppEditorProvider>
+                )}
             </div>
         </div>
     )

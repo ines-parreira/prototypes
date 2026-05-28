@@ -258,6 +258,16 @@ describe('<TicketThread />', () => {
         )
     })
 
+    it('renders the editor loading state instead of the editor while loading', () => {
+        render(<TicketThread submit={submit} isLoading />)
+
+        expect(
+            screen.getByRole('status', { name: 'Loading reply editor' }),
+        ).toBeInTheDocument()
+        expect(screen.getByText('Thread feed item 1')).toBeInTheDocument()
+        expect(mockEditor).not.toHaveBeenCalled()
+    })
+
     it('uses the shared thread key helper for rendered list items', () => {
         render(<TicketThread submit={submit} />)
 

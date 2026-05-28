@@ -1,13 +1,15 @@
 import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
-import { fromJS } from 'immutable'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
 import {
     mockGenerateTicketSummaryHandler,
     mockGetCurrentUserHandler,
+    mockGetTicketHandler,
+    mockTicket,
 } from '@gorgias/helpdesk-mocks'
+import type { Ticket } from '@gorgias/helpdesk-types'
 import { setDefaultConfig } from '@gorgias/knowledge-service-client'
 import {
     mockFindAiReasoningAiReasoningHandler,
@@ -31,9 +33,7 @@ const message = {
     created_datetime: '2026-04-07T17:04:06.597334+00:00',
 }
 
-const ticketStoreState = {
-    ticket: fromJS({ id: 12345, summary: null }),
-}
+const ticketId = 12345
 
 const mockCurrentUser = mockGetCurrentUserHandler()
 const mockGenerateSummary = mockGenerateTicketSummaryHandler()
@@ -91,9 +91,33 @@ afterEach(() => server.resetHandlers())
 
 afterAll(() => server.close())
 
-function renderComponent(props = { message }) {
+function mockTicketResponse(overrides: Partial<Ticket> = {}) {
+    const { handler } = mockGetTicketHandler(async () =>
+        HttpResponse.json(
+            mockTicket({
+                id: ticketId,
+                last_message_datetime: message.created_datetime,
+                summary: null,
+                ...overrides,
+            }),
+        ),
+    )
+
+    server.use(handler)
+}
+
+function renderComponent({
+    props = { message },
+    ticketOverrides = {},
+}: {
+    props?: Parameters<typeof TicketThreadAiAgentHandoverSummary>[0]
+    ticketOverrides?: Partial<Ticket>
+} = {}) {
+    mockTicketResponse(ticketOverrides)
+
     return render(<TicketThreadAiAgentHandoverSummary {...props} />, {
-        storeState: ticketStoreState,
+        path: '/tickets/:ticketId',
+        initialEntries: [`/tickets/${ticketId}`],
     })
 }
 
@@ -136,17 +160,14 @@ describe('TicketThreadAiAgentHandoverSummary', () => {
     })
 
     it('shows the ticket summary when the summary predates the handover message', async () => {
-        render(<TicketThreadAiAgentHandoverSummary message={message} />, {
-            storeState: {
-                ticket: fromJS({
-                    id: 12345,
-                    summary: {
-                        content: 'Customer asked about delayed order #981075',
-                        created_datetime: '2026-04-06T10:00:00.000Z',
-                        updated_datetime: null,
-                        triggered_by: 1,
-                    },
-                }),
+        renderComponent({
+            ticketOverrides: {
+                summary: {
+                    content: 'Customer asked about delayed order #981075',
+                    created_datetime: '2026-04-06T10:00:00.000Z',
+                    updated_datetime: '2026-04-06T10:00:00.000Z',
+                    triggered_by: 1,
+                },
             },
         })
 
@@ -174,17 +195,14 @@ describe('TicketThreadAiAgentHandoverSummary', () => {
         )
         server.use(handler)
 
-        render(<TicketThreadAiAgentHandoverSummary message={message} />, {
-            storeState: {
-                ticket: fromJS({
-                    id: 12345,
-                    summary: {
-                        content: 'Customer asked about delayed order #981075',
-                        created_datetime: '2026-04-09T21:12:12.000Z',
-                        updated_datetime: null,
-                        triggered_by: 1,
-                    },
-                }),
+        renderComponent({
+            ticketOverrides: {
+                summary: {
+                    content: 'Customer asked about delayed order #981075',
+                    created_datetime: '2026-04-09T21:12:12.000Z',
+                    updated_datetime: '2026-04-09T21:12:12.000Z',
+                    triggered_by: 1,
+                },
             },
         })
 
@@ -231,17 +249,14 @@ describe('TicketThreadAiAgentHandoverSummary', () => {
     })
 
     it('shows the ticket summary when it was generated after the handover', async () => {
-        render(<TicketThreadAiAgentHandoverSummary message={message} />, {
-            storeState: {
-                ticket: fromJS({
-                    id: 12345,
-                    summary: {
-                        content: 'Customer asked about delayed order #981075',
-                        created_datetime: '2026-04-08T10:00:00.000Z',
-                        updated_datetime: null,
-                        triggered_by: 1,
-                    },
-                }),
+        renderComponent({
+            ticketOverrides: {
+                summary: {
+                    content: 'Customer asked about delayed order #981075',
+                    created_datetime: '2026-04-08T10:00:00.000Z',
+                    updated_datetime: '2026-04-08T10:00:00.000Z',
+                    triggered_by: 1,
+                },
             },
         })
 
@@ -253,17 +268,14 @@ describe('TicketThreadAiAgentHandoverSummary', () => {
     })
 
     it('shows the ticket summary when updated_datetime is after the handover even if created_datetime predates it', async () => {
-        render(<TicketThreadAiAgentHandoverSummary message={message} />, {
-            storeState: {
-                ticket: fromJS({
-                    id: 12345,
-                    summary: {
-                        content: 'Old summary content',
-                        created_datetime: '2026-04-06T10:00:00.000Z',
-                        updated_datetime: '2026-04-08T10:00:00.000Z',
-                        triggered_by: 1,
-                    },
-                }),
+        renderComponent({
+            ticketOverrides: {
+                summary: {
+                    content: 'Old summary content',
+                    created_datetime: '2026-04-06T10:00:00.000Z',
+                    updated_datetime: '2026-04-08T10:00:00.000Z',
+                    triggered_by: 1,
+                },
             },
         })
 
@@ -289,17 +301,14 @@ describe('TicketThreadAiAgentHandoverSummary', () => {
         )
         server.use(handler)
 
-        render(<TicketThreadAiAgentHandoverSummary message={message} />, {
-            storeState: {
-                ticket: fromJS({
-                    id: 12345,
-                    summary: {
-                        content: 'Customer asked about delayed order #981075',
-                        created_datetime: '2026-04-08T10:00:00.000Z',
-                        updated_datetime: null,
-                        triggered_by: 1,
-                    },
-                }),
+        renderComponent({
+            ticketOverrides: {
+                summary: {
+                    content: 'Customer asked about delayed order #981075',
+                    created_datetime: '2026-04-08T10:00:00.000Z',
+                    updated_datetime: '2026-04-08T10:00:00.000Z',
+                    triggered_by: 1,
+                },
             },
         })
 
@@ -344,18 +353,15 @@ describe('TicketThreadAiAgentHandoverSummary', () => {
     })
 
     it('shows only the stale warning when there are new messages after the summary was generated', async () => {
-        render(<TicketThreadAiAgentHandoverSummary message={message} />, {
-            storeState: {
-                ticket: fromJS({
-                    id: 12345,
-                    last_message_datetime: '2026-05-06T11:49:11.000Z',
-                    summary: {
-                        content: 'Customer asked about delayed order #981075',
-                        created_datetime: '2026-04-15T14:23:10.000Z',
-                        updated_datetime: '2026-05-06T11:49:11.000Z',
-                        triggered_by: 1,
-                    },
-                }),
+        renderComponent({
+            ticketOverrides: {
+                last_message_datetime: '2026-05-06T11:49:11.000Z',
+                summary: {
+                    content: 'Customer asked about delayed order #981075',
+                    created_datetime: '2026-04-15T14:23:10.000Z',
+                    updated_datetime: '2026-05-06T11:49:11.000Z',
+                    triggered_by: 1,
+                },
             },
         })
 
@@ -373,17 +379,14 @@ describe('TicketThreadAiAgentHandoverSummary', () => {
     })
 
     it('does not show the stale warning when the summary covers all messages', async () => {
-        render(<TicketThreadAiAgentHandoverSummary message={message} />, {
-            storeState: {
-                ticket: fromJS({
-                    id: 12345,
-                    summary: {
-                        content: 'Customer asked about delayed order #981075',
-                        created_datetime: '2026-04-15T14:23:10.000Z',
-                        updated_datetime: '2026-04-27T10:19:18.000Z',
-                        triggered_by: 1,
-                    },
-                }),
+        renderComponent({
+            ticketOverrides: {
+                summary: {
+                    content: 'Customer asked about delayed order #981075',
+                    created_datetime: '2026-04-15T14:23:10.000Z',
+                    updated_datetime: '2026-04-27T10:19:18.000Z',
+                    triggered_by: 1,
+                },
             },
         })
 

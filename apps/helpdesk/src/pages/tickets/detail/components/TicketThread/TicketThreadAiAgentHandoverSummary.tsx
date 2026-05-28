@@ -11,7 +11,11 @@ import {
 } from '@repo/ticket-thread'
 import type { BubbleActionItem } from '@repo/ticket-thread'
 import type { TicketThreadAiAgentHandoverSummaryParams } from '@repo/ticket-thread/legacy-bridge'
-import useAppSelector from 'hooks/useAppSelector'
+
+import { DurationInMs } from '@repo/utils'
+import { useParams } from 'react-router-dom'
+import { AIThinking, Box, Button, Icon, Text } from '@gorgias/axiom'
+import { useGetTicket } from '@gorgias/helpdesk-queries'
 import {
     ReasoningResponseType,
     useGetFeedback,
@@ -20,9 +24,6 @@ import {
 import { AiAgentFeedbackTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import type { FeedbackRating } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { AiAgentHandoverOutcome } from 'pages/tickets/detail/components/TicketMessages/AiAgentHandoverOutcome'
-import { getTicketState } from 'state/ticket/selectors'
-
-import { AIThinking, Box, Button, Icon, Text } from '@gorgias/axiom'
 
 import { AiAgentRatingTag } from './AiAgentRatingTag'
 import { SummaryContent } from './SummaryContent'
@@ -35,17 +36,26 @@ type Props = {
 }
 
 export function TicketThreadAiAgentHandoverSummary({ message }: Props) {
-    const ticket = useAppSelector(getTicketState)
-    const ticketId: number = ticket.get('id')
-    const initialSummary = ticket.get('summary')?.toJS()
+    const { ticketId } = useParams<{ ticketId: string }>()
+    const { data: ticket, isInitialLoading } = useGetTicket(
+        Number(ticketId),
+        undefined,
+        {
+            query: {
+                select: (data) => data?.data,
+                staleTime: DurationInMs.FiveMinutes,
+            },
+        },
+    )
+    const initialSummary = ticket?.summary
 
     const { summary, isLoading, errorMessage, isRetriable, requestSummary } =
         useTicketSummary({
-            ticketId,
+            ticketId: Number(ticketId),
             initialSummary,
         })
 
-    const lastMessageDatetime = ticket.get('last_message_datetime')
+    const lastMessageDatetime = ticket?.last_message_datetime
     const isSummaryStale = Boolean(
         lastMessageDatetime && lastMessageDatetime > message.created_datetime,
     )
@@ -53,7 +63,7 @@ export function TicketThreadAiAgentHandoverSummary({ message }: Props) {
     const messageId = String(message.id ?? '')
     const { data: reasoningData, isLoading: isOutcomeLoading } =
         useGetMessageAiReasoning(
-            { objectId: ticketId.toString(), objectType: 'TICKET', messageId },
+            { objectId: ticketId, objectType: 'TICKET', messageId },
             { enabled: !!messageId },
         )
 
@@ -66,7 +76,7 @@ export function TicketThreadAiAgentHandoverSummary({ message }: Props) {
     )
 
     const { data: feedback, isLoading: isFeedbackLoading } = useGetFeedback(
-        { objectId: ticketId.toString(), objectType: 'TICKET' },
+        { objectId: ticketId, objectType: 'TICKET' },
         { enabled: !!ticketId },
     )
 
@@ -84,10 +94,11 @@ export function TicketThreadAiAgentHandoverSummary({ message }: Props) {
     const [isExpanded, setIsExpanded] = useState(true)
 
     useEffect(() => {
+        if (isInitialLoading) return
         if (!initialSummary && !isSummaryStale) {
             requestSummary()
         }
-    }, [initialSummary, isSummaryStale, requestSummary])
+    }, [initialSummary, isSummaryStale, requestSummary, isInitialLoading])
 
     const hasSummaryContentIgnoringStale = Boolean(
         summary?.content || isLoading || errorMessage,

@@ -7,6 +7,10 @@ import { TicketThreadItemTag } from '../../../hooks/types'
 import type { TicketThreadItem } from '../../../hooks/types'
 import { TicketThreadContainer } from '../TicketThreadContainer'
 
+const { mockScrollToIndex } = vi.hoisted(() => ({
+    mockScrollToIndex: vi.fn(),
+}))
+
 let recordedVirtuosoProps: VirtuosoProps<unknown, unknown>[] = []
 
 vi.mock('react-virtuoso', async () => {
@@ -14,9 +18,13 @@ vi.mock('react-virtuoso', async () => {
 
     const Virtuoso = React.forwardRef(function MockVirtuoso(
         props: VirtuosoProps<unknown, unknown>,
-        __ref,
+        ref,
     ) {
+        React.useImperativeHandle(ref, () => ({
+            scrollToIndex: mockScrollToIndex,
+        }))
         recordedVirtuosoProps.push(props)
+        const EmptyPlaceholder = props.components?.EmptyPlaceholder
 
         return (
             <div
@@ -25,6 +33,9 @@ vi.mock('react-virtuoso', async () => {
                 role={props.role}
                 style={props.style}
             >
+                {props.data?.length === 0 && EmptyPlaceholder && (
+                    <EmptyPlaceholder context={props.context} />
+                )}
                 {props.data?.map((value, index) => (
                     <div
                         key={
@@ -45,6 +56,12 @@ vi.mock('react-virtuoso', async () => {
     return { Virtuoso }
 })
 
+vi.mock('../TicketThreadContainer.less', () => ({
+    default: {
+        emptyContainer: 'emptyContainer',
+    },
+}))
+
 describe('TicketThreadContainer', () => {
     const ticketThreadItems = [
         {
@@ -61,6 +78,7 @@ describe('TicketThreadContainer', () => {
 
     beforeEach(() => {
         recordedVirtuosoProps = []
+        mockScrollToIndex.mockClear()
     })
 
     it('configures Virtuoso to render the thread items inside the provided scroll container', () => {
@@ -150,6 +168,117 @@ describe('TicketThreadContainer', () => {
             minHeight: '0.5px',
             top: '16px',
         })
+    })
+
+    it('scrolls to the last item when thread items become available after initial mount', () => {
+        const containerElement = document.createElement('div')
+
+        const { rerender } = render(
+            <TicketThreadContainer
+                containerElement={containerElement}
+                items={[]}
+                renderThreadItem={(index, item) => (
+                    <div>{`${index}:${item._tag}`}</div>
+                )}
+                ticketId="123"
+            />,
+        )
+
+        expect(mockScrollToIndex).not.toHaveBeenCalled()
+
+        rerender(
+            <TicketThreadContainer
+                containerElement={containerElement}
+                items={ticketThreadItems}
+                renderThreadItem={(index, item) => (
+                    <div>{`${index}:${item._tag}`}</div>
+                )}
+                ticketId="123"
+            />,
+        )
+
+        expect(mockScrollToIndex).toHaveBeenCalledTimes(1)
+        expect(mockScrollToIndex).toHaveBeenCalledWith({ index: 'LAST' })
+
+        rerender(
+            <TicketThreadContainer
+                containerElement={containerElement}
+                items={[
+                    ...ticketThreadItems,
+                    {
+                        _tag: TicketThreadItemTag.Events.TicketEvent,
+                        data: { id: 'event-2' } as any,
+                        datetime: '2024-03-21T11:02:00Z',
+                    } as TicketThreadItem,
+                ]}
+                renderThreadItem={(index, item) => (
+                    <div>{`${index}:${item._tag}`}</div>
+                )}
+                ticketId="123"
+            />,
+        )
+
+        expect(mockScrollToIndex).toHaveBeenCalledTimes(1)
+    })
+
+    it('renders the centered loader as the empty placeholder when there are no items', () => {
+        render(
+            <TicketThreadContainer
+                items={[]}
+                renderThreadItem={(index, item) => (
+                    <div>{`${index}:${item._tag}`}</div>
+                )}
+                ticketId="123"
+            />,
+        )
+
+        expect(
+            screen.getByRole('progressbar', {
+                name: 'Loading ticket thread',
+            }),
+        ).toBeInTheDocument()
+
+        const virtuosoProps =
+            recordedVirtuosoProps[recordedVirtuosoProps.length - 1]
+        expect(virtuosoProps.className).toEqual(expect.any(String))
+    })
+
+    it('removes the empty placeholder loader once items are available', () => {
+        const { rerender } = render(
+            <TicketThreadContainer
+                items={[]}
+                renderThreadItem={(index, item) => (
+                    <div>{`${index}:${item._tag}`}</div>
+                )}
+                ticketId="123"
+            />,
+        )
+
+        expect(
+            screen.getByRole('progressbar', {
+                name: 'Loading ticket thread',
+            }),
+        ).toBeInTheDocument()
+
+        rerender(
+            <TicketThreadContainer
+                items={ticketThreadItems}
+                renderThreadItem={(index, item) => (
+                    <div>{`${index}:${item._tag}`}</div>
+                )}
+                ticketId="123"
+            />,
+        )
+
+        expect(
+            screen.queryByRole('progressbar', {
+                name: 'Loading ticket thread',
+            }),
+        ).not.toBeInTheDocument()
+
+        const virtuosoProps =
+            recordedVirtuosoProps[recordedVirtuosoProps.length - 1]
+        expect(virtuosoProps.className).toBeUndefined()
     })
 
     it('keeps the same key for an existing item after a new row is inserted', () => {

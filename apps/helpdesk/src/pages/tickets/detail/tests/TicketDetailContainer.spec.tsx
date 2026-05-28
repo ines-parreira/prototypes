@@ -2260,9 +2260,61 @@ describe('TicketDetailContainer component', () => {
             expect(getByText('TicketThread mock')).toBeInTheDocument()
             expect(queryByTestId('TicketView-submit')).not.toBeInTheDocument()
             expect(mockTicketThread).toHaveBeenCalledWith(
-                { submit: expect.any(Function) },
+                {
+                    submit: expect.any(Function),
+                    isLoading: false,
+                },
                 expect.objectContaining({}),
             )
+        })
+
+        it('should pass loading state to TicketThread on desktop when MS3 phone data is loading', () => {
+            mockUseIsMobileResolution.mockReturnValue(false)
+            mockUseHelpdeskV2MS3Flag.mockReturnValue(true)
+            mockUseFlag.mockImplementation(
+                (flag) => flag === FeatureFlagKey.TicketThreadLoadingState,
+            )
+            voiceCallsSpy.mockImplementation((() => ({
+                isLoading: true,
+            })) as jest.MockedFn<any>)
+
+            const { getByText, queryByText } = renderWithMockedStore(
+                <TicketDetailContainer
+                    {...minProps}
+                    ticket={existingTicket.set('channel', TicketChannel.Phone)}
+                />,
+                { path: '/foo/:ticketId', initialEntries: ['/foo/1'] },
+            )
+
+            expect(getByText('TicketThread mock')).toBeInTheDocument()
+            expect(queryByText('Loading ticket...')).not.toBeInTheDocument()
+            expect(mockTicketThread).toHaveBeenCalledWith(
+                {
+                    submit: expect.any(Function),
+                    isLoading: true,
+                },
+                expect.objectContaining({}),
+            )
+        })
+
+        it('should keep the full page loader on desktop when MS3 phone data is loading and ticket thread loading state is disabled', () => {
+            mockUseIsMobileResolution.mockReturnValue(false)
+            mockUseHelpdeskV2MS3Flag.mockReturnValue(true)
+            voiceCallsSpy.mockImplementation((() => ({
+                isLoading: true,
+            })) as jest.MockedFn<any>)
+
+            const { getByText, queryByText } = renderWithMockedStore(
+                <TicketDetailContainer
+                    {...minProps}
+                    ticket={existingTicket.set('channel', TicketChannel.Phone)}
+                />,
+                { path: '/foo/:ticketId', initialEntries: ['/foo/1'] },
+            )
+
+            expect(getByText('Loading ticket...')).toBeInTheDocument()
+            expect(queryByText('TicketThread mock')).not.toBeInTheDocument()
+            expect(mockTicketThread).not.toHaveBeenCalled()
         })
 
         it('should keep rendering the mobile TicketView when hasUIVisionMS3 is enabled', () => {

@@ -283,6 +283,9 @@ export const TicketDetailContainer = ({
     const isTicketMessageSubmissionIdentityReportingEnabled = useFlag(
         FeatureFlagKey.TicketMessagesAssignedToWrongTicketDebugging,
     )
+    const isTicketThreadLoadingStateEnabled = useFlag(
+        FeatureFlagKey.TicketThreadLoadingState,
+    )
     const isDebugMenuFlagEnabled = useFlag(FeatureFlagKey.DebugMenu, false)
     const isTicketIdentityDebugMenuEnabled =
         isDebugMenuFlagEnabled || !!window.USER_IMPERSONATED
@@ -888,7 +891,13 @@ export const TicketDetailContainer = ({
         />
     ) : null
 
-    if (isLoading || isLoadingPhoneTicketData) {
+    const shouldRenderTicketThreadLoadingState =
+        hasUIVisionMS3 && isTicketThreadLoadingStateEnabled
+
+    if (
+        !shouldRenderTicketThreadLoadingState &&
+        (isLoading || isLoadingPhoneTicketData)
+    ) {
         return (
             <>
                 <Loader className={css.loader} message="Loading ticket..." />
@@ -924,7 +933,13 @@ export const TicketDetailContainer = ({
         return (
             <>
                 <TicketThreadLegacyBridge>
-                    <TicketThread submit={submit} />
+                    <TicketThread
+                        submit={submit}
+                        isLoading={
+                            shouldRenderTicketThreadLoadingState &&
+                            (isLoading || isLoadingPhoneTicketData)
+                        }
+                    />
                 </TicketThreadLegacyBridge>
                 {ticketIdentityDebugMenu}
                 <DrillDownModal isLegacy={false} />
