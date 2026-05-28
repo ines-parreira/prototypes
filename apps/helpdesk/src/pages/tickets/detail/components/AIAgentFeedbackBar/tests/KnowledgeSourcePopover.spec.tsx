@@ -1,5 +1,5 @@
 import { assumeMock, render } from '@repo/testing'
-import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, screen } from '@testing-library/react'
 
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
@@ -21,24 +21,38 @@ const useGetGuidancesAvailableActionsMocked = assumeMock(
 const popoverProps = {
     url: 'https://admin.shopify.com/store/artemisathletix/orders/5994752147558',
     title: 'Order #3584',
-    content: 'Order #3584',
+    content: 'Customer asked about order delivery.',
     knowledgeResourceType: AiAgentKnowledgeResourceTypeEnum.ORDER,
     id: 'order-3584',
     shopName: 'test-shop',
     shopType: 'test-type',
 }
 
+const advancePopoverDelay = () => {
+    act(() => {
+        jest.advanceTimersByTime(100)
+    })
+}
+
 describe('KnowledgeSourcePopover', () => {
     beforeEach(() => {
+        jest.useFakeTimers()
+
         useGetGuidancesAvailableActionsMocked.mockReturnValue({
             isLoading: false,
             guidanceActions: [],
             rawActions: [],
         })
     })
+
+    afterEach(() => {
+        jest.clearAllTimers()
+        jest.useRealTimers()
+    })
+
     it('should show popover content on hover and hides on mouse leave', async () => {
         render(
-            <KnowledgeSourcePopover {...popoverProps}>
+            <KnowledgeSourcePopover {...popoverProps} forceShowBody>
                 {(ref, eventHandlers) => (
                     <div
                         ref={ref as React.RefObject<HTMLDivElement>}
@@ -56,20 +70,15 @@ describe('KnowledgeSourcePopover', () => {
         const trigger = screen.getByText('Hover me')
 
         fireEvent.mouseOver(trigger)
+        advancePopoverDelay()
 
-        await waitFor(() =>
-            expect(screen.getByText(popoverProps.title)).toBeInTheDocument(),
-        )
-
+        expect(screen.getByText(popoverProps.title)).toBeInTheDocument()
         expect(screen.getByText(popoverProps.content)).toBeInTheDocument()
 
         fireEvent.mouseOut(trigger)
+        advancePopoverDelay()
 
-        await waitFor(() =>
-            expect(
-                screen.queryByText(popoverProps.title),
-            ).not.toBeInTheDocument(),
-        )
+        expect(screen.queryByText(popoverProps.title)).not.toBeInTheDocument()
     })
 
     it('should have correct href and target attributes for popover link', async () => {
@@ -88,10 +97,9 @@ describe('KnowledgeSourcePopover', () => {
 
         const trigger = screen.getByText('Hover me')
         fireEvent.mouseOver(trigger)
+        advancePopoverDelay()
 
-        await waitFor(() =>
-            expect(screen.getByText(popoverProps.title)).toBeInTheDocument(),
-        )
+        expect(screen.getByText(popoverProps.title)).toBeInTheDocument()
 
         const link = screen.getByRole('link', { name: /Order #3584/i })
 
@@ -116,10 +124,9 @@ describe('KnowledgeSourcePopover', () => {
 
         const trigger = screen.getByText('Hover me')
         fireEvent.mouseOver(trigger)
+        advancePopoverDelay()
 
-        await waitFor(() =>
-            expect(screen.getByText(popoverProps.title)).toBeInTheDocument(),
-        )
+        expect(screen.getByText(popoverProps.title)).toBeInTheDocument()
 
         expect(screen.getByText('Draft')).toBeInTheDocument()
     })
@@ -140,10 +147,9 @@ describe('KnowledgeSourcePopover', () => {
 
         const trigger = screen.getByText('Hover me')
         fireEvent.mouseOver(trigger)
+        advancePopoverDelay()
 
-        await waitFor(() =>
-            expect(screen.getByText(popoverProps.title)).toBeInTheDocument(),
-        )
+        expect(screen.getByText(popoverProps.title)).toBeInTheDocument()
 
         expect(screen.queryByText('Draft')).not.toBeInTheDocument()
     })
