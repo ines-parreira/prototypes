@@ -58,13 +58,13 @@
         "moment": "catalog:moment",
         "moment-timezone": "catalog:moment",
         "msw": "catalog:test",
+        "oxfmt": "catalog:formatter",
         "oxlint": "catalog:oxlint",
         "react": "catalog:react",
         "react-dom": "catalog:react",
         "reactstrap": "8.9.0",
         "typescript": "catalog:typescript",
-        "vitest": "catalog:test",
-        "oxfmt": "catalog:formatter"
+        "vitest": "catalog:test"
     },
     "dependencies": {
         "html2canvas": "^1.4.1",

@@ -38,12 +38,12 @@
         "@types/react-dom": "catalog:react",
         "@types/react-router-dom": "catalog:react-router",
         "@vitest/coverage-v8": "catalog:test",
+        "oxfmt": "catalog:formatter",
         "oxlint": "catalog:oxlint",
         "react": "catalog:react",
         "react-dom": "catalog:react",
         "typescript": "catalog:typescript",
-        "vitest": "catalog:test",
-        "oxfmt": "catalog:formatter"
+        "vitest": "catalog:test"
     },
     "dependencies": {
         "@repo/hooks": "workspace:*"

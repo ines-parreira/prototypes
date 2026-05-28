@@ -36,10 +36,10 @@
         "@types/react": "catalog:react",
         "@vitest/coverage-v8": "catalog:test",
         "msw": "catalog:test",
+        "oxfmt": "catalog:formatter",
         "oxlint": "catalog:oxlint",
         "react": "catalog:react",
         "typescript": "catalog:typescript",
-        "vitest": "catalog:test",
-        "oxfmt": "catalog:formatter"
+        "vitest": "catalog:test"
     }
 }

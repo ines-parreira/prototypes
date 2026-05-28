@@ -54,8 +54,8 @@
         "@gorgias/helpdesk-mocks": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-queries": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-types": "catalog:rest-api-sdk",
-        "@repo/customer": "workspace:*",
         "@repo/config": "workspace:*",
+        "@repo/customer": "workspace:*",
         "@repo/feature-flags": "workspace:*",
         "@repo/hooks": "workspace:*",
         "@repo/preferences": "workspace:*",
@@ -82,6 +82,7 @@
         "libphonenumber-js": "catalog:libphonenumber",
         "lodash": "catalog:lodash",
         "msw": "catalog:test",
+        "oxfmt": "catalog:formatter",
         "oxlint": "catalog:oxlint",
         "react": "catalog:react",
         "react-dom": "catalog:react",
@@ -94,7 +95,6 @@
         "typescript": "catalog:typescript",
         "vitest": "catalog:test",
         "yet-another-react-lightbox": "catalog:images",
-        "zod": "catalog:zod",
-        "oxfmt": "catalog:formatter"
+        "zod": "catalog:zod"
     }
 }

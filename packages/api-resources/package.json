@@ -47,12 +47,12 @@
         "axios": "catalog:rest-api-sdk",
         "axios-mock-adapter": "^1.22.0",
         "axios-rate-limit": "^1.4.0",
+        "oxfmt": "catalog:formatter",
         "oxlint": "catalog:oxlint",
         "react": "catalog:react",
         "react-dom": "catalog:react",
         "tsx": "catalog:typescript",
         "typescript": "catalog:typescript",
-        "vitest": "catalog:test",
-        "oxfmt": "catalog:formatter"
+        "vitest": "catalog:test"
     }
 }

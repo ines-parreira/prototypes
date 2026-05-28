@@ -16,8 +16,8 @@
     "peerDependencies": {},
     "devDependencies": {
         "@repo/config": "workspace:*",
+        "oxfmt": "catalog:formatter",
         "oxlint": "catalog:oxlint",
-        "typescript": "catalog:typescript",
-        "oxfmt": "catalog:formatter"
+        "typescript": "catalog:typescript"
     }
 }

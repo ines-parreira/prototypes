@@ -31,9 +31,9 @@
         "@testing-library/user-event": "catalog:test",
         "@types/zen-observable": "catalog:browser-storage",
         "@vitest/coverage-v8": "catalog:test",
+        "oxfmt": "catalog:formatter",
         "oxlint": "catalog:oxlint",
         "typescript": "catalog:typescript",
-        "vitest": "catalog:test",
-        "oxfmt": "catalog:formatter"
+        "vitest": "catalog:test"
     }
 }

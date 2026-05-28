@@ -54,12 +54,12 @@
         "@vitest/coverage-v8": "catalog:test",
         "lodash": "catalog:lodash",
         "msw": "catalog:test",
+        "oxfmt": "catalog:formatter",
         "oxlint": "catalog:oxlint",
         "react": "catalog:react",
         "react-dom": "catalog:react",
         "react-router-dom": "catalog:react-router",
         "typescript": "catalog:typescript",
-        "vitest": "catalog:test",
-        "oxfmt": "catalog:formatter"
+        "vitest": "catalog:test"
     }
 }

@@ -51,6 +51,7 @@
         "@types/react-router-dom": "catalog:react-router",
         "@vitest/coverage-v8": "catalog:test",
         "msw": "catalog:test",
+        "oxfmt": "catalog:formatter",
         "oxlint": "catalog:oxlint",
         "react": "catalog:react",
         "react-router": "catalog:react-router",
@@ -58,7 +59,6 @@
         "typescript": "catalog:typescript",
         "vitest": "catalog:test",
         "zod": "catalog:zod",
-        "zustand": "catalog:zustand",
-        "oxfmt": "catalog:formatter"
+        "zustand": "catalog:zustand"
     }
 }

@@ -52,6 +52,7 @@
         "@types/redux-thunk": "catalog:redux",
         "@vitest/coverage-v8": "catalog:test",
         "dnd-core": "catalog:react-dnd",
+        "oxfmt": "catalog:formatter",
         "oxlint": "catalog:oxlint",
         "react": "catalog:react",
         "react-dnd": "catalog:react-dnd",
@@ -63,7 +64,6 @@
         "redux-mock-store": "catalog:redux",
         "redux-thunk": "catalog:redux",
         "typescript": "catalog:typescript",
-        "vitest": "catalog:test",
-        "oxfmt": "catalog:formatter"
+        "vitest": "catalog:test"
     }
 }

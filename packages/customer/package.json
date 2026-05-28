@@ -87,6 +87,7 @@
         "moment": "catalog:moment",
         "msw": "catalog:test",
         "object-hash": "2.0.3",
+        "oxfmt": "catalog:formatter",
         "oxlint": "catalog:oxlint",
         "react": "catalog:react",
         "react-dnd": "catalog:react-dnd",
@@ -97,7 +98,6 @@
         "react-router-dom-v5-compat": "catalog:react-router",
         "typescript": "catalog:typescript",
         "vitest": "catalog:test",
-        "zod": "catalog:zod",
-        "oxfmt": "catalog:formatter"
+        "zod": "catalog:zod"
     }
 }

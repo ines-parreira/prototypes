@@ -27,9 +27,9 @@
         "@testing-library/user-event": "catalog:test",
         "@twilio/voice-sdk": "catalog:voice",
         "@vitest/coverage-v8": "catalog:test",
+        "oxfmt": "catalog:formatter",
         "oxlint": "catalog:oxlint",
         "typescript": "catalog:typescript",
-        "vitest": "catalog:test",
-        "oxfmt": "catalog:formatter"
+        "vitest": "catalog:test"
     }
 }

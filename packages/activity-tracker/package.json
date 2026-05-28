@@ -36,9 +36,9 @@
         "@repo/utils": "workspace:*",
         "@vitest/coverage-v8": "catalog:test",
         "axios": "catalog:rest-api-sdk",
+        "oxfmt": "catalog:formatter",
         "oxlint": "catalog:oxlint",
         "typescript": "catalog:typescript",
-        "vitest": "catalog:test",
-        "oxfmt": "catalog:formatter"
+        "vitest": "catalog:test"
     }
 }

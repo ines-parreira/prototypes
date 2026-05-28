@@ -108,6 +108,7 @@
         "lodash": "catalog:lodash",
         "lz-string": "1.4.4",
         "msw": "catalog:test",
+        "oxfmt": "catalog:formatter",
         "oxlint": "catalog:oxlint",
         "react": "catalog:react",
         "react-dom": "catalog:react",
@@ -119,7 +120,6 @@
         "typescript": "catalog:typescript",
         "vitest": "catalog:test",
         "zod": "catalog:zod",
-        "zustand": "catalog:zustand",
-        "oxfmt": "catalog:formatter"
+        "zustand": "catalog:zustand"
     }
 }
