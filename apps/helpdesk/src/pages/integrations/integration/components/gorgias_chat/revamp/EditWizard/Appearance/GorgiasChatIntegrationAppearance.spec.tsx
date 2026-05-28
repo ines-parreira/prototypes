@@ -99,10 +99,16 @@ type AvatarCardProps = {
     onAvatarChange: (avatar: GorgiasChatAvatarSettings) => void
 }
 
+type ChatbotCardProps = {
+    displayBotLabel: boolean
+    onDisplayBotLabelChange: (value: boolean) => void
+}
+
 const mockBrandCard = jest.fn<void, [BrandCardProps]>()
 const mockChatLauncherCard = jest.fn<void, [ChatLauncherCardProps]>()
 const mockLegalCard = jest.fn<void, [LegalCardProps]>()
 const mockAvatarCard = jest.fn<void, [AvatarCardProps]>()
+const mockChatbotCard = jest.fn<void, [ChatbotCardProps]>()
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/common/GorgiasChatRevampLayout',
@@ -183,6 +189,16 @@ jest.mock(
     () => ({
         AvatarCard: (props: AvatarCardProps) => {
             mockAvatarCard(props)
+            return null
+        },
+    }),
+)
+
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Appearance/components/ChatbotCard/ChatbotCard',
+    () => ({
+        ChatbotCard: (props: ChatbotCardProps) => {
+            mockChatbotCard(props)
             return null
         },
     }),
@@ -828,6 +844,98 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
             expect(mockAvatarCard).toHaveBeenLastCalledWith(
                 expect.objectContaining({ avatar: newAvatar }),
             )
+        })
+    })
+
+    describe('ChatbotCard', () => {
+        beforeEach(() => {
+            mockUseIsAiAgentEnabled.mockReturnValue({
+                isAiAgentEnabled: false,
+                isLoading: false,
+            })
+        })
+
+        it('should not render when AI agent is enabled', () => {
+            mockUseIsAiAgentEnabled.mockReturnValue({
+                isAiAgentEnabled: true,
+                isLoading: false,
+            })
+
+            renderComponent()
+
+            expect(mockChatbotCard).not.toHaveBeenCalled()
+        })
+
+        it('should not render while AI agent config is loading', () => {
+            mockUseIsAiAgentEnabled.mockReturnValue({
+                isAiAgentEnabled: false,
+                isLoading: true,
+            })
+
+            renderComponent()
+
+            expect(mockChatbotCard).not.toHaveBeenCalled()
+        })
+
+        it('should render when AI agent is disabled', () => {
+            renderComponent()
+
+            expect(mockChatbotCard).toHaveBeenCalled()
+        })
+
+        it('should default displayBotLabel to true when missing on integration', () => {
+            renderComponent()
+
+            expect(mockChatbotCard).toHaveBeenCalledWith(
+                expect.objectContaining({ displayBotLabel: true }),
+            )
+        })
+
+        it('should read displayBotLabel from integration decoration', () => {
+            const integration = fromJS({
+                ...mockIntegration.toJS(),
+                decoration: {
+                    ...mockIntegration.get('decoration').toJS(),
+                    display_bot_label: false,
+                },
+            })
+
+            renderComponent(integration)
+
+            expect(mockChatbotCard).toHaveBeenCalledWith(
+                expect.objectContaining({ displayBotLabel: false }),
+            )
+        })
+
+        it('should update displayBotLabel when onDisplayBotLabelChange is called', () => {
+            renderComponent()
+
+            act(() => {
+                const { onDisplayBotLabelChange } = mockChatbotCard.mock
+                    .calls[0][0] as ChatbotCardProps
+                onDisplayBotLabelChange(false)
+            })
+
+            expect(mockChatbotCard).toHaveBeenLastCalledWith(
+                expect.objectContaining({ displayBotLabel: false }),
+            )
+        })
+
+        it('should persist displayBotLabel under decoration.display_bot_label on save', async () => {
+            const user = userEvent.setup()
+            const { getByRole } = renderComponent()
+
+            act(() => {
+                const { onDisplayBotLabelChange } = mockChatbotCard.mock
+                    .calls[0][0] as ChatbotCardProps
+                onDisplayBotLabelChange(false)
+            })
+
+            await user.click(getByRole('button', { name: 'Save' }))
+
+            const calledWith =
+                mockUpdateOrCreateIntegration.mock.calls[0][0].toJS()
+            expect(calledWith.decoration.display_bot_label).toBe(false)
         })
     })
 

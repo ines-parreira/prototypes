@@ -8,6 +8,7 @@ import { useIsAiAgentEnabled } from 'pages/integrations/integration/components/g
 import SaveChangesPrompt from 'pages/integrations/integration/components/gorgias_chat/revamp/CreationWizard/components/SaveChangesPrompt'
 import { AvatarCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Appearance/components/AvatarCard/AvatarCard'
 import { BrandCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Appearance/components/BrandCard/BrandCard'
+import { ChatbotCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Appearance/components/ChatbotCard/ChatbotCard'
 import { ChatLauncherCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Appearance/components/ChatLauncherCard/ChatLauncherCard'
 import { LegalCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Appearance/components/LegalCard/LegalCard'
 import { useAppearanceForm } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Appearance/hooks/useAppearanceForm'
@@ -155,6 +156,14 @@ export const GorgiasChatIntegrationAppearanceRevamp = ({
                                 setValue('avatar', avatar)
                             }
                         />
+                        {isAiAgentDisabled && (
+                            <ChatbotCard
+                                displayBotLabel={values.displayBotLabel}
+                                onDisplayBotLabelChange={(value) =>
+                                    setValue('displayBotLabel', value)
+                                }
+                            />
+                        )}
                     </div>
                 </div>
             </GorgiasChatRevampLayout>

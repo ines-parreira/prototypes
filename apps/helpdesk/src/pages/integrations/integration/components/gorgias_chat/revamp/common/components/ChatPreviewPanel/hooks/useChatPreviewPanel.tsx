@@ -333,6 +333,17 @@ export const useChatPreviewPanel = ({
         [openChat, displayPage],
     )
 
+    const updateDisplayBotLabel = useCallback(
+        (displayBotLabel: boolean) => {
+            chatPreviewPanelRef.current?.updateSettings({
+                decoration: { displayBotLabel },
+            })
+            displayPage('conversation')
+            openChat()
+        },
+        [openChat, displayPage],
+    )
+
     const updateQuickReplies = useCallback(
         (quickReplies: { enabled: boolean; replies: string[] }) => {
             openChat()
@@ -386,6 +397,7 @@ export const useChatPreviewPanel = ({
         updateOrderManagementFlows,
         reloadPreview,
         updateAvatarSettings,
+        updateDisplayBotLabel,
         updateQuickReplies,
         updatePreviewOrders,
         setConversationMessages,

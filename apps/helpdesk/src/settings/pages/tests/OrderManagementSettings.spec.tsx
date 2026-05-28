@@ -98,6 +98,7 @@ const buildChatPreviewPanelMock = (
     updateOrderManagementFlows: jest.fn(),
     reloadPreview: jest.fn(),
     updateAvatarSettings: jest.fn(),
+    updateDisplayBotLabel: jest.fn(),
     updateQuickReplies: jest.fn(),
     updatePreviewOrders: jest.fn(),
     updateControlTicketVolume: jest.fn(),

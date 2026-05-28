@@ -47,6 +47,7 @@ export type AppearanceFormValues = {
     position: GorgiasChatPosition
     launcher: GorgiasChatLauncherSettings
     avatar: GorgiasChatAvatarSettings
+    displayBotLabel: boolean
     legalDisclaimerEnabled: boolean
 }
 
@@ -129,6 +130,10 @@ const buildFormValues = (integration: Map<any, any>): AppearanceFormValues => {
                 'company_logo_url',
             ]),
         },
+        displayBotLabel: integration.getIn(
+            ['decoration', 'display_bot_label'],
+            true,
+        ),
         legalDisclaimerEnabled: integration.getIn(
             ['meta', 'preferences', 'privacy_policy_disclaimer_enabled'],
             false,
@@ -241,6 +246,7 @@ export const useAppearanceForm = ({
                         company_logo_url: data.avatar.companyLogoUrl,
                     }),
                 },
+                display_bot_label: data.displayBotLabel,
             },
             meta: {
                 ...originalMeta,

@@ -150,6 +150,7 @@ export type GorgiasChatPreviewApplicationSettings = {
         avatarTeamPictureUrl?: string
         avatarType?: GorgiasChatAvatarType
         avatar?: GorgiasChatAvatarSettings | null
+        displayBotLabel?: boolean
     }
     preferences?: {
         privacyPolicyDisclaimerEnabled?: boolean

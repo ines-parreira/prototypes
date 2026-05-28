@@ -510,6 +510,37 @@ describe('useChatPreviewPanel', () => {
         })
     })
 
+    it('updateDisplayBotLabel does not throw when ref is unattached', () => {
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        expect(() => result.current.updateDisplayBotLabel(false)).not.toThrow()
+    })
+
+    it('updateDisplayBotLabel calls openChat, displayPage with conversation, and updateSettings on the ref when attached', () => {
+        const mockOpenChat = jest.fn()
+        const mockDisplayPage = jest.fn()
+        const mockUpdateSettings = jest.fn()
+
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        const panelArg = mockWarpToCollapsibleColumn.mock.calls.at(-1)?.[0]
+        if (panelArg?.ref) {
+            panelArg.ref.current = {
+                openChat: mockOpenChat,
+                displayPage: mockDisplayPage,
+                updateSettings: mockUpdateSettings,
+            }
+        }
+
+        result.current.updateDisplayBotLabel(false)
+
+        expect(mockOpenChat).toHaveBeenCalled()
+        expect(mockDisplayPage).toHaveBeenCalledWith('conversation', undefined)
+        expect(mockUpdateSettings).toHaveBeenCalledWith({
+            decoration: { displayBotLabel: false },
+        })
+    })
+
     it('updateQuickReplies does not throw when ref is unattached', () => {
         const { result } = renderHook(() => useChatPreviewPanel())
 
@@ -787,6 +818,7 @@ describe('useChatPreviewPanelContext', () => {
             updateOrderManagementFlows: jest.fn(),
             reloadPreview: jest.fn(),
             updateAvatarSettings: jest.fn(),
+            updateDisplayBotLabel: jest.fn(),
             updateQuickReplies: jest.fn(),
             updatePreviewOrders: jest.fn(),
             setConversationMessages: jest.fn(),
