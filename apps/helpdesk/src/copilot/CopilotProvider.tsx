@@ -38,6 +38,7 @@ export function CopilotProvider({ children }: Props) {
         <BaseCopilotProvider
             gorgias={gorgiasConfig}
             accountDomain={window.GORGIAS_STATE?.currentAccount?.domain}
+            showInternals={!!window.USER_IMPERSONATED}
             renderReference={renderReference}
         >
             <CopilotConversationStarters />
