@@ -150,6 +150,8 @@ describe('BrandCard', () => {
         onHeaderAlternativePictureUrlChange: jest.fn(),
         onIntroductionTextChange: jest.fn(),
         onOfflineIntroductionTextChange: jest.fn(),
+        mainFontFamily: '',
+        onMainFontFamilyChange: jest.fn(),
     }
 
     const renderComponent = (props = {}) => {

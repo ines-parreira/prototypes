@@ -9,6 +9,7 @@ import { toast } from '@gorgias/axiom'
 
 import {
     GORGIAS_CHAT_DEFAULT_COLOR,
+    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
 } from 'config/integrations/gorgias_chat'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -35,6 +36,7 @@ export type GorgiasChatLauncherSettings = {
 export type AppearanceFormValues = {
     name: string
     mainColor: string
+    mainFontFamily: string
     conversationColor: string
     useMainColorOutsideBusinessHours: boolean
     backgroundStyle: GorgiasChatBackgroundColorStyle
@@ -54,9 +56,15 @@ const buildFormValues = (integration: Map<any, any>): AppearanceFormValues => {
         GORGIAS_CHAT_DEFAULT_COLOR,
     )
 
+    const mainFontFamily = integration.getIn(
+        ['decoration', 'main_font_family'],
+        GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
+    )
+
     return {
         name: integration.get('name', ''),
         mainColor,
+        mainFontFamily,
         conversationColor: integration.getIn(
             ['decoration', 'conversation_color'],
             mainColor,
@@ -208,6 +216,7 @@ export const useAppearanceForm = ({
             decoration: {
                 ...originalDecoration,
                 main_color: mainColor,
+                main_font_family: data.mainFontFamily,
                 conversation_color: conversationColor,
                 use_main_color_outside_business_hours:
                     data.useMainColorOutsideBusinessHours,

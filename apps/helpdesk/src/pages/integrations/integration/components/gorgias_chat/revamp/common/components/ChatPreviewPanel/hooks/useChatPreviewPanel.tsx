@@ -224,6 +224,17 @@ export const useChatPreviewPanel = ({
         [displayPage, openChat],
     )
 
+    const updateMainFontFamily = useCallback(
+        (mainFontFamily: string) => {
+            chatPreviewPanelRef.current?.updateSettings({
+                decoration: { mainFontFamily },
+            })
+            displayPage('homepage')
+            openChat()
+        },
+        [displayPage, openChat],
+    )
+
     const updateIntroductionText = useCallback((introductionText: string) => {
         chatPreviewPanelRef.current?.updatePreviewTexts({
             introductionText,
@@ -379,5 +390,6 @@ export const useChatPreviewPanel = ({
         updatePreviewOrders,
         setConversationMessages,
         updateControlTicketVolume,
+        updateMainFontFamily,
     }
 }

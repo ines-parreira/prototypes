@@ -792,6 +792,7 @@ describe('useChatPreviewPanelContext', () => {
             setConversationMessages: jest.fn(),
             onChatPreviewLoaded: jest.fn(),
             updateControlTicketVolume: jest.fn(),
+            updateMainFontFamily: jest.fn(),
         }
 
         const wrapper = ({ children }: { children?: ReactNode }) => (

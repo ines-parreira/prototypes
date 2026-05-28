@@ -102,6 +102,7 @@ const buildChatPreviewPanelMock = (
     updatePreviewOrders: jest.fn(),
     updateControlTicketVolume: jest.fn(),
     setConversationMessages: jest.fn(),
+    updateMainFontFamily: jest.fn(),
     ...overrides,
 })
 

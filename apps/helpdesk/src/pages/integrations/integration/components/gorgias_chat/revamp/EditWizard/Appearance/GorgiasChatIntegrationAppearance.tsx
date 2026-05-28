@@ -42,8 +42,12 @@ export const GorgiasChatIntegrationAppearanceRevamp = ({
         useIsAiAgentEnabled(storeIntegration, chatId)
     const isAiAgentDisabled = !isAiAgentConfigLoading && !isAiAgentEnabled
 
-    const { reloadPreview, onChatPreviewLoaded, updateLegalDisclaimerEnabled } =
-        useChatPreviewPanelContext()
+    const {
+        reloadPreview,
+        onChatPreviewLoaded,
+        updateLegalDisclaimerEnabled,
+        updateMainFontFamily,
+    } = useChatPreviewPanelContext()
 
     useEffect(() => {
         return onChatPreviewLoaded(() => {
@@ -117,6 +121,11 @@ export const GorgiasChatIntegrationAppearanceRevamp = ({
                             onOfflineIntroductionTextChange={(value) =>
                                 setValue('offlineIntroductionText', value)
                             }
+                            mainFontFamily={values.mainFontFamily}
+                            onMainFontFamilyChange={(value: string): void => {
+                                setValue('mainFontFamily', value)
+                                updateMainFontFamily(value)
+                            }}
                         />
                         <ChatLauncherCard
                             launcher={values.launcher}

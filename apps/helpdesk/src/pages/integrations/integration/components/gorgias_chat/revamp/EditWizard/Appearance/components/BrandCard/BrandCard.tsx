@@ -25,10 +25,12 @@ import { ColorPicker } from 'pages/integrations/integration/components/gorgias_c
 import { LogoUpload } from 'pages/integrations/integration/components/gorgias_chat/legacy/components/LogoUpload'
 import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 
+import { FontSelector } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Appearance/components/BrandCard/FontSelector'
 import css from '../../GorgiasChatIntegrationAppearance.less'
 
 type Props = {
     mainColor: string
+    mainFontFamily: string
     conversationColor: string
     useMainColorOutsideBusinessHours: boolean
     backgroundStyle: GorgiasChatBackgroundColorStyle
@@ -39,6 +41,7 @@ type Props = {
     isAiAgentEnabled?: boolean
     isAiAgentDisabled?: boolean
     onMainColorChange: (value: string) => void
+    onMainFontFamilyChange: (value: string) => void
     onConversationColorChange: (value: string) => void
     onUseMainColorOutsideBusinessHoursChange: (value: boolean) => void
     onBackgroundStyleChange: (value: GorgiasChatBackgroundColorStyle) => void
@@ -50,6 +53,7 @@ type Props = {
 
 export const BrandCard = ({
     mainColor,
+    mainFontFamily,
     conversationColor,
     useMainColorOutsideBusinessHours,
     backgroundStyle,
@@ -60,6 +64,7 @@ export const BrandCard = ({
     isAiAgentEnabled = false,
     isAiAgentDisabled = false,
     onMainColorChange,
+    onMainFontFamilyChange,
     onConversationColorChange,
     onUseMainColorOutsideBusinessHoursChange,
     onBackgroundStyleChange,
@@ -211,6 +216,21 @@ export const BrandCard = ({
                         </div>
                     )}
 
+                    {!isAiAgentEnabled && (
+                        <div className={css.fieldSection}>
+                            <Text variant="bold" size="md">
+                                Font
+                            </Text>
+                            <div className={css.fontSelectorWrapper}>
+                                <FontSelector
+                                    mainFontFamily={mainFontFamily}
+                                    onMainFontFamilyChange={
+                                        onMainFontFamilyChange
+                                    }
+                                ></FontSelector>
+                            </div>
+                        </div>
+                    )}
                     <div className={css.fieldSection}>
                         <Text variant="bold" size="md">
                             Home page logo
