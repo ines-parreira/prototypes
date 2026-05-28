@@ -14,21 +14,22 @@ export const ChatAutomationCard = ({
     return (
         <Card className={css.card} elevation={Elevation.Mid}>
             <div className={css.cardContent}>
-                <div className={css.toggleHeader}>
-                    <div className={css.cardHeader}>
-                        <Heading size="md">
-                            Start conversations with automation
-                        </Heading>
-                        <Text size="md" className={css.cardDescription}>
-                            Let shoppers interact with automated flows before
-                            reaching your team.
-                        </Text>
-                    </div>
-                    <ToggleField
-                        value={controlTicketVolume}
-                        onChange={onControlTicketVolumeChange}
-                    />
+                <div className={css.cardHeader}>
+                    <Heading size="md">Require automated interaction</Heading>
+                    <Text size="md" className={css.cardDescription}>
+                        Hide &ldquo;Send us a message&rdquo; so customers must
+                        start with an automation button before they can send a
+                        message. Requiring automated interactions may lower the
+                        volume of live chat and offline capture tickets your
+                        team must answer manually.
+                    </Text>
                 </div>
+
+                <ToggleField
+                    label="Remove &ldquo;Send us a message&rdquo; button"
+                    value={controlTicketVolume}
+                    onChange={onControlTicketVolumeChange}
+                />
             </div>
         </Card>
     )

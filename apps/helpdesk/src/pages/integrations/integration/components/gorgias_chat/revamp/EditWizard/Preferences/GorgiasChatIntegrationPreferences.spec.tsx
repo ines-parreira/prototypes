@@ -14,9 +14,9 @@ import { submitSetting } from 'state/currentAccount/actions'
 const mockChatAvailabilityCard = jest.fn()
 const mockChatVisibilityCard = jest.fn()
 const mockChatWaitTimeCard = jest.fn()
-const mockChatAutomationCard = jest.fn()
 const mockChatEmailCaptureCard = jest.fn()
 const mockChatShopperExperienceCard = jest.fn()
+const mockChatAutomationCard = jest.fn()
 const mockDispatch = jest.fn()
 const mockUpdateControlTicketVolume = jest.fn()
 const mockOnChatPreviewLoaded = jest.fn()
@@ -94,16 +94,6 @@ jest.mock(
 )
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Preferences/components/ChatAutomationCard/ChatAutomationCard',
-    () => ({
-        ChatAutomationCard: (props: any) => {
-            mockChatAutomationCard(props)
-            return null
-        },
-    }),
-)
-
-jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Preferences/components/ChatEmailCaptureCard/ChatEmailCaptureCard',
     () => ({
         ChatEmailCaptureCard: (props: any) => {
@@ -118,6 +108,16 @@ jest.mock(
     () => ({
         ChatShopperExperienceCard: (props: any) => {
             mockChatShopperExperienceCard(props)
+            return null
+        },
+    }),
+)
+
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Preferences/components/ChatAutomationCard/ChatAutomationCard',
+    () => ({
+        ChatAutomationCard: (props: any) => {
+            mockChatAutomationCard(props)
             return null
         },
     }),
@@ -271,26 +271,6 @@ describe('GorgiasChatIntegrationPreferencesRevamp', () => {
         })
     })
 
-    describe('ChatAutomationCard', () => {
-        it('should pass controlTicketVolume from integration preferences', () => {
-            renderComponent()
-
-            expect(mockChatAutomationCard).toHaveBeenCalledWith(
-                expect.objectContaining({ controlTicketVolume: false }),
-            )
-        })
-
-        it('should call updateControlTicketVolume when onControlTicketVolumeChange is triggered', () => {
-            renderComponent()
-
-            const { onControlTicketVolumeChange } =
-                mockChatAutomationCard.mock.calls[0][0]
-            act(() => onControlTicketVolumeChange(true))
-
-            expect(mockUpdateControlTicketVolume).toHaveBeenCalledWith(true)
-        })
-    })
-
     describe('ChatEmailCaptureCard', () => {
         it('should pass emailCaptureEnabled from integration preferences', () => {
             renderComponent()
@@ -353,9 +333,6 @@ describe('GorgiasChatIntegrationPreferencesRevamp', () => {
                     showOnMobile: true,
                     displayCampaignsWhenHidden: false,
                 }),
-            )
-            expect(mockChatAutomationCard).toHaveBeenCalledWith(
-                expect.objectContaining({ controlTicketVolume: false }),
             )
             expect(mockChatEmailCaptureCard).toHaveBeenCalledWith(
                 expect.objectContaining({
@@ -642,7 +619,7 @@ describe('GorgiasChatIntegrationPreferencesRevamp', () => {
     })
 
     describe('AI Agent conditional rendering', () => {
-        it('should render availability card with isAiAgentEnabled prop and hide automation card when isAiAgentEnabled is true', () => {
+        it('should render availability card with isAiAgentEnabled prop and hide ChatAutomationCard when isAiAgentEnabled is true', () => {
             renderComponent({ isAiAgentEnabled: true })
 
             expect(mockChatAvailabilityCard).toHaveBeenCalledWith(
@@ -800,6 +777,56 @@ describe('GorgiasChatIntegrationPreferencesRevamp', () => {
             expect(
                 screen.getByRole('button', { name: 'Save' }),
             ).not.toBeDisabled()
+        })
+    })
+
+    describe('ChatAutomationCard', () => {
+        it('should render the card when AI agent is disabled', () => {
+            renderComponent({ isAiAgentEnabled: false })
+
+            expect(mockChatAutomationCard).toHaveBeenCalled()
+        })
+
+        it('should not render the card when AI agent is enabled', () => {
+            renderComponent({ isAiAgentEnabled: true })
+
+            expect(mockChatAutomationCard).not.toHaveBeenCalled()
+        })
+
+        it('should pass controlTicketVolume from integration meta.preferences', () => {
+            const integration = fromJS({
+                ...mockIntegration.toJS(),
+                meta: {
+                    ...mockIntegration.get('meta').toJS(),
+                    preferences: {
+                        ...mockIntegration
+                            .getIn(['meta', 'preferences'])
+                            .toJS(),
+                        control_ticket_volume: true,
+                    },
+                },
+            })
+
+            renderComponent({
+                isAiAgentEnabled: false,
+                integration,
+            })
+
+            expect(mockChatAutomationCard).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    controlTicketVolume: true,
+                }),
+            )
+        })
+
+        it('should sync the chat preview when toggled', () => {
+            renderComponent({ isAiAgentEnabled: false })
+
+            const { onControlTicketVolumeChange } =
+                mockChatAutomationCard.mock.calls[0][0]
+            act(() => onControlTicketVolumeChange(true))
+
+            expect(mockUpdateControlTicketVolume).toHaveBeenCalledWith(true)
         })
     })
 })

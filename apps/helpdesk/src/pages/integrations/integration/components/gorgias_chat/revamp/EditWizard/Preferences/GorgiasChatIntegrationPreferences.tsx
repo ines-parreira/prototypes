@@ -236,6 +236,15 @@ export const GorgiasChatIntegrationPreferencesRevamp = ({
                             }
                             isAiAgentEnabled={isAiAgentEnabled}
                         />
+                        {!isAiAgentEnabled && (
+                            <ChatAutomationCard
+                                controlTicketVolume={values.controlTicketVolume}
+                                onControlTicketVolumeChange={(value) => {
+                                    setFieldValue('controlTicketVolume', value)
+                                    updateControlTicketVolume(value)
+                                }}
+                            />
+                        )}
                         <ChatVisibilityCard
                             displayChat={values.displayChat}
                             showOutsideBusinessHours={
@@ -272,15 +281,6 @@ export const GorgiasChatIntegrationPreferencesRevamp = ({
                                 setFieldValue('autoResponderReply', value)
                             }
                         />
-                        {!isAiAgentEnabled && (
-                            <ChatAutomationCard
-                                controlTicketVolume={values.controlTicketVolume}
-                                onControlTicketVolumeChange={(value) => {
-                                    setFieldValue('controlTicketVolume', value)
-                                    updateControlTicketVolume(value)
-                                }}
-                            />
-                        )}
                         <ChatEmailCaptureCard
                             emailCaptureEnabled={values.emailCaptureEnabled}
                             emailCaptureEnforcement={
