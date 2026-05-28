@@ -106,6 +106,7 @@ describe('useNewTicketDraft', () => {
         })
 
         expect(result.current.restoredLocalState).toBeNull()
+        expect(result.current.shouldAutoFocusSubject).toBe(false)
     })
 
     it('fetches draft from localForage on mount', async () => {
@@ -310,6 +311,61 @@ describe('useNewTicketDraft', () => {
             })
 
             expect(useTicketFieldsStore.getState().fields).toEqual({})
+        })
+    })
+
+    describe('subject autofocus', () => {
+        it('enables subject autofocus when there is no stored draft', async () => {
+            mockGetItem.mockResolvedValue(null)
+
+            const { result } = renderHook(
+                () => useNewTicketDraft(defaultArgs),
+                { wrapper: createWrapper() },
+            )
+
+            await waitFor(() => {
+                expect(result.current.shouldAutoFocusSubject).toBe(true)
+            })
+        })
+
+        it('enables subject autofocus when the stored draft has no subject', async () => {
+            mockGetItem.mockResolvedValue(
+                createStoredDraft({
+                    assignee_user: { id: 1, name: 'John' },
+                    temporaryId: 'stored-temp-id',
+                }),
+            )
+
+            const { result } = renderHook(
+                () => useNewTicketDraft(defaultArgs),
+                { wrapper: createWrapper() },
+            )
+
+            await waitFor(() => {
+                expect(result.current.temporaryId).toBe('stored-temp-id')
+            })
+
+            expect(result.current.shouldAutoFocusSubject).toBe(true)
+        })
+
+        it('does not enable subject autofocus when the stored draft has a subject', async () => {
+            mockGetItem.mockResolvedValue(
+                createStoredDraft({
+                    subject: 'Stored subject',
+                    temporaryId: 'stored-temp-id',
+                }),
+            )
+
+            const { result } = renderHook(
+                () => useNewTicketDraft(defaultArgs),
+                { wrapper: createWrapper() },
+            )
+
+            await waitFor(() => {
+                expect(result.current.temporaryId).toBe('stored-temp-id')
+            })
+
+            expect(result.current.shouldAutoFocusSubject).toBe(false)
         })
     })
 

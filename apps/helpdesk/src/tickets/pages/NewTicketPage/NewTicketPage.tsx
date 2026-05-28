@@ -47,6 +47,7 @@ export function NewTicketPage() {
         handleCustomerChange,
         submit,
         temporaryId,
+        shouldAutoFocusSubject,
     } = useNewTicketPageForm({ isMessageDraftInitialized })
 
     useDraftTicketActivityTracking(temporaryId)
@@ -70,7 +71,7 @@ export function NewTicketPage() {
                             placeholder="New ticket"
                             value={ticketState.subject}
                             onChange={handleSubjectChange}
-                            autoFocus
+                            autoFocus={shouldAutoFocusSubject}
                         />
                     </TicketTitle>
                 </TicketHeaderLeft>

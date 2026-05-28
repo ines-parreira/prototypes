@@ -431,5 +431,6 @@ export function useNewTicketDraft({
     return {
         temporaryId: temporaryId.current,
         restoredLocalState,
+        shouldAutoFocusSubject: hasLoadedStoredDraft && !storedDraft?.subject,
     }
 }

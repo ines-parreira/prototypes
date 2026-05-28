@@ -95,6 +95,7 @@ describe('useNewTicketPageForm', () => {
         mockUseNewTicketDraft.mockReturnValue({
             temporaryId: 'test-temp-id',
             restoredLocalState: null,
+            shouldAutoFocusSubject: true,
         })
 
         mockUseNewTicketSubmit.mockReturnValue({
@@ -125,6 +126,7 @@ describe('useNewTicketPageForm', () => {
         })
         expect(result.current.temporaryId).toBe('test-temp-id')
         expect(result.current.submit).toBe(mockSubmit)
+        expect(result.current.shouldAutoFocusSubject).toBe(true)
     })
 
     describe('form handlers', () => {
@@ -588,6 +590,7 @@ describe('useNewTicketPageForm', () => {
             mockUseNewTicketDraft.mockReturnValue({
                 temporaryId: 'restored-temp-id',
                 restoredLocalState: restoredState,
+                shouldAutoFocusSubject: false,
             })
 
             const { result } = renderHook(() => useNewTicketPageForm(), {
@@ -628,6 +631,7 @@ describe('useNewTicketPageForm', () => {
             mockUseNewTicketDraft.mockReturnValue({
                 temporaryId: 'temp-id',
                 restoredLocalState: restoredState,
+                shouldAutoFocusSubject: false,
             })
 
             const { result } = renderHook(() => useNewTicketPageForm(), {

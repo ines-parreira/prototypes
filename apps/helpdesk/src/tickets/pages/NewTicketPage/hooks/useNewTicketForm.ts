@@ -140,14 +140,15 @@ export function useNewTicketPageForm({
         customer: null,
     })
 
-    const { temporaryId, restoredLocalState } = useNewTicketDraft({
-        subject: ticketState.subject,
-        priority: ticketState.priority,
-        assigneeUser: ticketState.assigneeUser,
-        assigneeTeam: ticketState.assigneeTeam,
-        tags: ticketState.tags,
-        customer: ticketState.customer,
-    })
+    const { temporaryId, restoredLocalState, shouldAutoFocusSubject } =
+        useNewTicketDraft({
+            subject: ticketState.subject,
+            priority: ticketState.priority,
+            assigneeUser: ticketState.assigneeUser,
+            assigneeTeam: ticketState.assigneeTeam,
+            tags: ticketState.tags,
+            customer: ticketState.customer,
+        })
 
     useEffect(() => {
         if (restoredLocalState) {
@@ -288,5 +289,6 @@ export function useNewTicketPageForm({
         handleCustomerChange,
         submit,
         temporaryId,
+        shouldAutoFocusSubject,
     }
 }

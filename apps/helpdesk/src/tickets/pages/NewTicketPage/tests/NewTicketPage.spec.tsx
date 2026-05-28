@@ -1,3 +1,4 @@
+import { localForageManager } from '@repo/browser-storage'
 import { Handle, Panel } from '@repo/layout'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { render } from '@repo/testing'
@@ -22,6 +23,7 @@ import {
     mockUser,
 } from '@gorgias/helpdesk-mocks'
 
+import { TicketMessageSourceType } from 'business/types/ticket'
 import { makeHasIntegrationOfTypes } from 'state/integrations/selectors'
 
 import { NewTicketPage } from '../NewTicketPage'
@@ -134,6 +136,12 @@ const mockedHandle = jest.mocked(Handle)
 const mockedTicketInfobarNavigation = jest.mocked(TicketInfobarNavigation)
 const mockMakeHasIntegrationOfTypes = jest.mocked(makeHasIntegrationOfTypes)
 const onChangeTab = jest.fn()
+const mockGetDraftItem = jest.fn()
+const mockSetDraftItem = jest.fn()
+const mockDraftStore = {
+    getItem: mockGetDraftItem,
+    setItem: mockSetDraftItem,
+} as unknown as LocalForage
 
 const team1 = mockTeam({ id: 1, name: 'Support', decoration: { emoji: '🛠️' } })
 const team2 = mockTeam({ id: 2, name: 'Sales', decoration: { emoji: '💰' } })
@@ -170,11 +178,34 @@ const mockListCustomFieldConditions = mockListCustomFieldConditionsHandler()
 
 const server = setupServer()
 
+const createStoredDraft = (overrides: Record<string, unknown> = {}) => ({
+    appliedMacro: null,
+    assignee_team: null,
+    assignee_user: null,
+    attachments: [],
+    custom_fields: {},
+    customer: null,
+    priority: undefined,
+    source: {
+        type: TicketMessageSourceType.Email,
+        to: [],
+    },
+    sourceType: TicketMessageSourceType.Email,
+    subject: '',
+    tags: [],
+    ticket: null,
+    temporaryId: '',
+    ...overrides,
+})
+
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
 })
 
 beforeEach(() => {
+    jest.spyOn(localForageManager, 'getTable').mockReturnValue(mockDraftStore)
+    mockGetDraftItem.mockResolvedValue(null)
+    mockSetDraftItem.mockResolvedValue(undefined)
     mockMakeHasIntegrationOfTypes.mockReturnValue(() => false)
     server.use(
         mockListTeams.handler,
@@ -257,6 +288,21 @@ const renderComponent = () => {
     return { ...result, user }
 }
 
+const getTitleInput = () => {
+    const titleInput = screen
+        .getAllByRole('textbox')
+        .find(
+            (element) =>
+                element.getAttribute('data-placeholder') === 'New ticket',
+        )
+
+    if (!titleInput) {
+        throw new Error('New ticket title input not found')
+    }
+
+    return titleInput
+}
+
 const waitForSelectsToLoad = async () => {
     await waitFor(() => {
         expect(
@@ -279,7 +325,7 @@ describe('NewTicketPage', () => {
         it('renders the header with title input', async () => {
             renderComponent()
 
-            const titleInput = screen.getByRole('textbox')
+            const titleInput = getTitleInput()
             expect(titleInput).toHaveAttribute('data-placeholder', 'New ticket')
             await waitForSelectsToLoad()
         })
@@ -287,7 +333,26 @@ describe('NewTicketPage', () => {
         it('focuses the title input by default', async () => {
             renderComponent()
 
-            expect(screen.getByRole('textbox')).toHaveFocus()
+            await waitFor(() => {
+                expect(getTitleInput()).toHaveFocus()
+            })
+            await waitForSelectsToLoad()
+        })
+
+        it('does not focus the title input when a saved draft subject exists', async () => {
+            mockGetDraftItem.mockResolvedValue(
+                createStoredDraft({
+                    subject: 'Saved draft subject',
+                    temporaryId: 'saved-draft-id',
+                }),
+            )
+
+            renderComponent()
+
+            await waitFor(() => {
+                expect(mockGetDraftItem).toHaveBeenCalledWith('new')
+            })
+            expect(getTitleInput()).not.toHaveFocus()
             await waitForSelectsToLoad()
         })
 
@@ -353,7 +418,7 @@ describe('NewTicketPage', () => {
         it('renders the header with title input', async () => {
             renderComponent()
 
-            const titleInput = screen.getByRole('textbox')
+            const titleInput = getTitleInput()
             expect(titleInput).toHaveAttribute('data-placeholder', 'New ticket')
             await waitForSelectsToLoad()
         })
