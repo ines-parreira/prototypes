@@ -1,6 +1,6 @@
 import { getReferenceVisual } from '../../icons'
 import { ReferenceCardError } from '../shared/ReferenceCardError'
-import { ReferenceCardSkeleton } from '../shared/ReferenceCardSkeleton'
+import { OpportunityReferenceCardSkeleton } from './OpportunityReferenceCardSkeleton'
 import { OpportunityReferenceCardView } from './OpportunityReferenceCardView'
 import { useOpportunityReferenceData } from './useOpportunityReferenceData'
 
@@ -24,12 +24,7 @@ export function OpportunityReferenceCard({
     })
 
     if (isLoading) {
-        return (
-            <ReferenceCardSkeleton
-                icon={VISUAL.icon}
-                typeLabel={VISUAL.label}
-            />
-        )
+        return <OpportunityReferenceCardSkeleton />
     }
 
     if (isError || !opportunity) {

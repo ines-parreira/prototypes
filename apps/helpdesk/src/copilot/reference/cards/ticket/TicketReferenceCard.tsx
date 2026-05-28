@@ -1,6 +1,6 @@
 import { getReferenceVisual } from '../../icons'
 import { ReferenceCardError } from '../shared/ReferenceCardError'
-import { ReferenceCardSkeleton } from '../shared/ReferenceCardSkeleton'
+import { TicketReferenceCardSkeleton } from './TicketReferenceCardSkeleton'
 import { TicketReferenceCardView } from './TicketReferenceCardView'
 import { useTicketReferenceData } from './useTicketReferenceData'
 
@@ -18,12 +18,7 @@ export function TicketReferenceCard({ ticketId, isOpen }: Props) {
     })
 
     if (isLoading) {
-        return (
-            <ReferenceCardSkeleton
-                icon={VISUAL.icon}
-                typeLabel={VISUAL.label}
-            />
-        )
+        return <TicketReferenceCardSkeleton />
     }
 
     if (isError || !ticket) {

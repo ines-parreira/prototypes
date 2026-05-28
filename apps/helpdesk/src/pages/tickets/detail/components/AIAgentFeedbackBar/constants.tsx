@@ -63,7 +63,7 @@ export const KNOWLEDGE_SOURCE_TYPE: Record<
     { icon: IconName; label: string; size?: IconSize }
 > = {
     action: { icon: 'webhook', label: 'Action' },
-    skill: { icon: 'ai-skill', label: 'Skill' },
+    skill: { icon: 'ai-alt-1', label: 'Skill' },
     guidance: { icon: 'nav-map', label: 'Guidance' },
     article: {
         icon: 'file-document',

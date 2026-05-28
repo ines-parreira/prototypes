@@ -13,7 +13,7 @@ const REFERENCE_VISUALS: Record<
 > = {
     ticket: { icon: 'mail', label: 'Ticket' },
     guidance: { icon: 'nav-map', label: 'Guidance' },
-    skill: { icon: 'ai-skill', label: 'Skill' },
+    skill: { icon: 'ai-alt-1', label: 'Skill' },
     opportunity: { icon: 'light-bulb', label: 'Opportunity' },
     'support-action': { icon: 'webhook', label: 'Action' },
 }

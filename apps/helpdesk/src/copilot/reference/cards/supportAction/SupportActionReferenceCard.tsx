@@ -1,6 +1,6 @@
 import { getReferenceVisual } from '../../icons'
 import { ReferenceCardError } from '../shared/ReferenceCardError'
-import { ReferenceCardSkeleton } from '../shared/ReferenceCardSkeleton'
+import { SupportActionReferenceCardSkeleton } from './SupportActionReferenceCardSkeleton'
 import { SupportActionReferenceCardView } from './SupportActionReferenceCardView'
 import { useSupportActionReferenceData } from './useSupportActionReferenceData'
 
@@ -20,12 +20,7 @@ export function SupportActionReferenceCard({ workflowId, isOpen }: Props) {
     )
 
     if (isLoading) {
-        return (
-            <ReferenceCardSkeleton
-                icon={VISUAL.icon}
-                typeLabel={VISUAL.label}
-            />
-        )
+        return <SupportActionReferenceCardSkeleton />
     }
 
     if (isError || !configuration) {

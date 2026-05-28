@@ -1,7 +1,7 @@
 import { getReferenceVisual } from '../../icons'
 import { useGuidanceReferenceData } from '../article/useGuidanceReferenceData'
 import { ReferenceCardError } from '../shared/ReferenceCardError'
-import { ReferenceCardSkeleton } from '../shared/ReferenceCardSkeleton'
+import { SkillReferenceCardSkeleton } from './SkillReferenceCardSkeleton'
 import { SkillReferenceCardView } from './SkillReferenceCardView'
 
 type Props = {
@@ -20,14 +20,7 @@ export function SkillReferenceCard({ articleId, shopName, isOpen }: Props) {
     })
 
     if (isLoading) {
-        return (
-            <ReferenceCardSkeleton
-                icon={VISUAL.icon}
-                typeLabel={VISUAL.label}
-                withBody={false}
-                footerRows={2}
-            />
-        )
+        return <SkillReferenceCardSkeleton />
     }
 
     if (isError || !article) {

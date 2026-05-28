@@ -18,3 +18,11 @@
     text-align: left;
     align-items: stretch;
 }
+
+// Axiom's TooltipTrigger wraps the trigger in `<div style="display: flex">`,
+// which is block-level and would force "ticket #1234" onto its own line —
+// breaking inline flow with the surrounding copilot text. Override to
+// inline-flex so the link sits alongside its sibling text.
+:global([data-name='tooltip-trigger']:has([data-reference-trigger])) {
+    display: inline-flex !important;
+}

@@ -22,7 +22,11 @@ export function ReferenceLink({ reference, children }: Props) {
     if (!to) return null
 
     const card = getCardForReference(reference)
-    const trigger = <Link to={to}>{children}</Link>
+    const trigger = (
+        <Link to={to} data-reference-trigger="true">
+            {children}
+        </Link>
+    )
 
     if (!card) {
         return trigger

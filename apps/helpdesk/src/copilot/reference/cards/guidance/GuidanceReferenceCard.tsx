@@ -8,7 +8,7 @@ import { getReferenceVisual } from '../../icons'
 import { renderGuidanceContent } from '../article/inline/renderGuidanceContent'
 import { useGuidanceReferenceData } from '../article/useGuidanceReferenceData'
 import { ReferenceCardError } from '../shared/ReferenceCardError'
-import { ReferenceCardSkeleton } from '../shared/ReferenceCardSkeleton'
+import { GuidanceReferenceCardSkeleton } from './GuidanceReferenceCardSkeleton'
 import { GuidanceReferenceCardView } from './GuidanceReferenceCardView'
 
 type Props = {
@@ -49,12 +49,7 @@ export function GuidanceReferenceCard({
     }, [article?.content, guidanceActions])
 
     if (isLoading) {
-        return (
-            <ReferenceCardSkeleton
-                icon={VISUAL.icon}
-                typeLabel={VISUAL.label}
-            />
-        )
+        return <GuidanceReferenceCardSkeleton />
     }
 
     if (isError || !article) {
