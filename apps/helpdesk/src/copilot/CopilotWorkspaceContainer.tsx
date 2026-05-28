@@ -3,14 +3,12 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { usePanels } from '@repo/layout'
 import cn from 'classnames'
 
-import { CopilotWorkspace, useCopilot } from '@gorgias/copilot'
-
-import { copilotAttachmentsConfig } from 'common/copilot/copilotAttachmentsConfig'
+import { CopilotPanel, useCopilotPanel } from '@gorgias/copilot'
 
 import css from './CopilotWorkspaceContainer.less'
 
 /**
- * Wraps CopilotWorkspace so the rendered width is reported to the enclosing
+ * Wraps CopilotPanel so the rendered width is reported to the enclosing
  * <Panels> resize system via subtractSize. Without this, sibling panels are
  * sized assuming the full viewport and the rightmost panel gets clipped by
  * PanelGroup's overflow:hidden once the copilot panel opens.
@@ -26,7 +24,7 @@ export function CopilotWorkspaceContainer() {
     const wrapperRef = useRef<HTMLDivElement>(null)
     const [reservedWidth, setReservedWidth] = useState(0)
     const { subtractSize } = usePanels()
-    const { open } = useCopilot()
+    const { isOpen } = useCopilotPanel()
 
     useLayoutEffect(() => {
         const element = wrapperRef.current
@@ -53,9 +51,9 @@ export function CopilotWorkspaceContainer() {
     return (
         <div
             ref={wrapperRef}
-            className={cn(css.wrapper, open && css.wrapperOpen)}
+            className={cn(css.wrapper, isOpen && css.wrapperOpen)}
         >
-            <CopilotWorkspace attachmentsConfig={copilotAttachmentsConfig} />
+            <CopilotPanel />
         </div>
     )
 }

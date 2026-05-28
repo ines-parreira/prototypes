@@ -12,8 +12,11 @@ import type {
 
 import '@gorgias/copilot/copilot.css'
 
+import { copilotAttachmentsConfig } from 'common/copilot/copilotAttachmentsConfig'
+
 import { CopilotConversationStarters } from './CopilotConversationStarters'
 import { ReferenceLink } from './reference/ReferenceLink'
+import { useCopilotCacheInvalidation } from './useCopilotCacheInvalidation'
 
 type Props = {
     children: ReactNode
@@ -40,11 +43,18 @@ export function CopilotProvider({ children }: Props) {
             accountDomain={window.GORGIAS_STATE?.currentAccount?.domain}
             showInternals={!!window.USER_IMPERSONATED}
             renderReference={renderReference}
+            attachmentsConfig={copilotAttachmentsConfig}
         >
+            <CopilotCacheInvalidator />
             <CopilotConversationStarters />
             {children}
         </BaseCopilotProvider>
     )
+}
+
+function CopilotCacheInvalidator() {
+    useCopilotCacheInvalidation()
+    return null
 }
 
 const renderReference: RenderCopilotReference = ({ reference, children }) => (

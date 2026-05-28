@@ -4,9 +4,8 @@ import { assumeMock, render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { CopilotWorkspace } from '@gorgias/copilot'
+import { CopilotPanel } from '@gorgias/copilot'
 
-import { copilotAttachmentsConfig } from 'common/copilot/copilotAttachmentsConfig'
 import { useCopilotEnabled } from 'hooks/useCopilotEnabled'
 
 import { AppLayout } from '../AppLayout'
@@ -37,7 +36,7 @@ const mockUseIsMobileResolution = useIsMobileResolution as jest.MockedFunction<
     typeof useIsMobileResolution
 >
 const mockUseCopilotEnabled = assumeMock(useCopilotEnabled)
-const mockCopilotWorkspace = assumeMock(CopilotWorkspace)
+const mockCopilotPanel = assumeMock(CopilotPanel)
 
 const routePanelConfig = {
     defaultSize: Infinity,
@@ -50,7 +49,7 @@ describe('AppLayout', () => {
         localStorage.clear()
         mockUseIsMobileResolution.mockReturnValue(false)
         mockUseCopilotEnabled.mockReturnValue(false)
-        mockCopilotWorkspace.mockClear()
+        mockCopilotPanel.mockClear()
     })
 
     it('should render sidebar and children when hasPanel is false', () => {
@@ -123,7 +122,7 @@ describe('AppLayout', () => {
         )
     })
 
-    it('passes image attachment settings to copilot workspace when copilot is enabled', () => {
+    it('mounts the copilot panel when copilot is enabled', () => {
         mockUseCopilotEnabled.mockReturnValue(true)
 
         render(
@@ -132,11 +131,7 @@ describe('AppLayout', () => {
             </AppLayout>,
         )
 
-        expect(mockCopilotWorkspace.mock.calls[0][0]).toEqual(
-            expect.objectContaining({
-                attachmentsConfig: copilotAttachmentsConfig,
-            }),
-        )
+        expect(mockCopilotPanel).toHaveBeenCalled()
     })
 
     describe('on mobile resolution', () => {

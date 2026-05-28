@@ -67,12 +67,29 @@ const useSyncEffects = (
     }, [store, config.skill])
 
     useEffect(() => {
-        const currentSkillId = store.getState().state.skill?.id
+        if (!config.skill) return
 
-        if (config.skill && config.skill.id !== currentSkillId) {
+        const currentState = store.getState().state
+        const currentSkillId = currentState.skill?.id
+
+        if (config.skill.id !== currentSkillId) {
             store.getState().dispatch({
                 type: 'SWITCH_SKILL',
                 payload: { article: config.skill, mode: 'edit' },
+            })
+            return
+        }
+
+        const editorSkill = currentState.skill
+        const hasLiveDelta =
+            editorSkill !== undefined &&
+            (config.skill.title !== editorSkill.title ||
+                config.skill.content !== editorSkill.content)
+
+        if (hasLiveDelta && !hasPendingChanges(currentState)) {
+            store.getState().dispatch({
+                type: 'SWITCH_SKILL',
+                payload: { article: config.skill, mode: currentState.mode },
             })
         }
     }, [store, config.skill])

@@ -3,7 +3,7 @@ import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { useCopilot } from '@gorgias/copilot'
+import { useCopilotPanel } from '@gorgias/copilot'
 
 import { useCopilotEnabled } from 'hooks/useCopilotEnabled'
 
@@ -14,26 +14,22 @@ jest.mock('hooks/useCopilotEnabled', () => ({
 }))
 
 const mockUseCopilotEnabled = assumeMock(useCopilotEnabled)
-const mockUseCopilot = assumeMock(useCopilot)
+const mockUseCopilotPanel = assumeMock(useCopilotPanel)
 
-const buildCopilotMockReturn = (
-    overrides: Partial<ReturnType<typeof useCopilot>> = {},
-) =>
-    ({
-        open: false,
-        setOpen: jest.fn(),
-        sendPrompt: jest.fn(),
-        resetThread: jest.fn(),
-        abort: jest.fn(),
-        agent: undefined,
-        runtimeUrl: '',
-        ...overrides,
-    }) as unknown as ReturnType<typeof useCopilot>
+const buildCopilotPanelMockReturn = (
+    overrides: Partial<ReturnType<typeof useCopilotPanel>> = {},
+): ReturnType<typeof useCopilotPanel> => ({
+    isOpen: false,
+    setIsOpen: jest.fn(),
+    width: 400,
+    setWidth: jest.fn(),
+    ...overrides,
+})
 
 describe('AskGaiaButton', () => {
     beforeEach(() => {
         mockUseCopilotEnabled.mockReturnValue(true)
-        mockUseCopilot.mockReturnValue(buildCopilotMockReturn())
+        mockUseCopilotPanel.mockReturnValue(buildCopilotPanelMockReturn())
     })
 
     it('renders nothing when copilot is disabled', () => {
@@ -75,8 +71,10 @@ describe('AskGaiaButton', () => {
     })
 
     it('opens copilot when the trigger is clicked', async () => {
-        const setOpen = jest.fn()
-        mockUseCopilot.mockReturnValue(buildCopilotMockReturn({ setOpen }))
+        const setIsOpen = jest.fn()
+        mockUseCopilotPanel.mockReturnValue(
+            buildCopilotPanelMockReturn({ setIsOpen }),
+        )
         const user = userEvent.setup()
 
         render(
@@ -87,13 +85,13 @@ describe('AskGaiaButton', () => {
 
         await user.click(screen.getByRole('button', { name: /ask gaia/i }))
 
-        expect(setOpen).toHaveBeenCalledWith(true)
+        expect(setIsOpen).toHaveBeenCalledWith(true)
     })
 
     it('closes copilot when the trigger is clicked while open', async () => {
-        const setOpen = jest.fn()
-        mockUseCopilot.mockReturnValue(
-            buildCopilotMockReturn({ open: true, setOpen }),
+        const setIsOpen = jest.fn()
+        mockUseCopilotPanel.mockReturnValue(
+            buildCopilotPanelMockReturn({ isOpen: true, setIsOpen }),
         )
         const user = userEvent.setup()
 
@@ -105,6 +103,6 @@ describe('AskGaiaButton', () => {
 
         await user.click(screen.getByRole('button', { name: /ask gaia/i }))
 
-        expect(setOpen).toHaveBeenCalledWith(false)
+        expect(setIsOpen).toHaveBeenCalledWith(false)
     })
 })

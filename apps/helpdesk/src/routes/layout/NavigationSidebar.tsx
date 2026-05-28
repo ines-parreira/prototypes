@@ -15,7 +15,7 @@ import { shortcutManager } from '@repo/utils'
 import { ViewCountDebugPanel } from '@repo/views'
 
 import { Box, Button, Separator, TooltipContent } from '@gorgias/axiom'
-import { useCopilot } from '@gorgias/copilot'
+import { useCopilotPanel } from '@gorgias/copilot'
 
 import { AskGaiaButton } from 'copilot'
 import { useCopilotEnabled } from 'hooks/useCopilotEnabled'
@@ -41,7 +41,8 @@ export function NavigationSidebar() {
     const isChatReady = useIsChatReady()
     const isMobileResolution = useIsMobileResolution()
     const isCopilotEnabled = useCopilotEnabled()
-    const { open: isCopilotOpen, setOpen: setCopilotOpen } = useCopilot()
+    const { isOpen: isCopilotOpen, setIsOpen: setCopilotOpen } =
+        useCopilotPanel()
 
     useSidebarShortcuts()
 

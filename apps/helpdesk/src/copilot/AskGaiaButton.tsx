@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react'
 import { useSidebar } from '@repo/navigation'
 
 import { ShortcutKey } from '@gorgias/axiom'
-import { useCopilot } from '@gorgias/copilot'
+import { useCopilotPanel } from '@gorgias/copilot'
 
 import { useCopilotEnabled } from 'hooks/useCopilotEnabled'
 
@@ -15,7 +15,8 @@ const GLOW_DURATION_MS = 3000
 export const AskGaiaButton = () => {
     const isCopilotEnabled = useCopilotEnabled()
     const { isCollapsed } = useSidebar()
-    const { open: isCopilotOpen, setOpen: setCopilotOpen } = useCopilot()
+    const { isOpen: isCopilotOpen, setIsOpen: setCopilotOpen } =
+        useCopilotPanel()
 
     const glowShapeClass = isCollapsed ? css.glowShapeCircle : css.glowShapePill
 

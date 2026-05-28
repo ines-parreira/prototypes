@@ -87,7 +87,7 @@ describe('Role', () => {
     it('should show a tooltip when `isSelf` and when `isViewingAccountOwner`', async () => {
         const { rerender } = render(<Role {...props} isSelf={true} />)
 
-        userEvent.hover(
+        await userEvent.hover(
             screen
                 .getByText(ORDERED_ROLES_META_BY_USER_ROLE[0][1].label)
                 .closest('div')!,
@@ -98,7 +98,7 @@ describe('Role', () => {
 
         rerender(<Role {...props} isViewingAccountOwner />)
 
-        userEvent.hover(
+        await userEvent.hover(
             screen
                 .getByText(ORDERED_ROLES_META_BY_USER_ROLE[0][1].label)
                 .closest('div')!,

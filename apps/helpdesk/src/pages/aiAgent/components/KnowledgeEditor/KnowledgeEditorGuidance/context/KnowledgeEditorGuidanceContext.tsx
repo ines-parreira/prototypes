@@ -69,15 +69,32 @@ const useSyncEffects = (
     }, [store, config.guidanceArticle])
 
     useEffect(() => {
-        const currentGuidanceId = store.getState().state.guidance?.id
+        if (!config.guidanceArticle) return
 
-        if (
-            config.guidanceArticle &&
-            config.guidanceArticle.id !== currentGuidanceId
-        ) {
+        const currentState = store.getState().state
+        const currentGuidanceId = currentState.guidance?.id
+
+        if (config.guidanceArticle.id !== currentGuidanceId) {
             store.getState().dispatch({
                 type: 'SWITCH_GUIDANCE',
                 payload: { article: config.guidanceArticle, mode: 'read' },
+            })
+            return
+        }
+
+        const editorGuidance = currentState.guidance
+        const hasLiveDelta =
+            editorGuidance !== undefined &&
+            (config.guidanceArticle.title !== editorGuidance.title ||
+                config.guidanceArticle.content !== editorGuidance.content)
+
+        if (hasLiveDelta && !hasPendingChanges(currentState)) {
+            store.getState().dispatch({
+                type: 'SWITCH_GUIDANCE',
+                payload: {
+                    article: config.guidanceArticle,
+                    mode: currentState.mode,
+                },
             })
         }
     }, [store, config.guidanceArticle])

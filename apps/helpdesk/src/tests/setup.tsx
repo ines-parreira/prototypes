@@ -183,18 +183,24 @@ jest.mock('@gorgias/copilot', () => ({
     CopilotProvider: jest.fn(
         ({ children }: { children: import('react').ReactNode }) => children,
     ),
-    CopilotWorkspace: jest.fn(() => null),
+    CopilotPanel: jest.fn(() => null),
     useCopilot: jest.fn(() => ({
-        open: false,
-        setOpen: () => undefined,
         sendPrompt: () => undefined,
         resetThread: () => undefined,
         abort: () => undefined,
         agent: undefined,
         runtimeUrl: '',
+        threadId: '',
+    })),
+    useCopilotPanel: jest.fn(() => ({
+        isOpen: false,
+        setIsOpen: () => undefined,
+        width: 400,
+        setWidth: () => undefined,
     })),
     useCopilotContext: jest.fn(),
     useConfigureSuggestions: jest.fn(),
+    useCopilotToolCallResult: jest.fn(),
 }))
 
 Object.defineProperty(window, 'requestAnimationFrame', { value: jest.fn() })
