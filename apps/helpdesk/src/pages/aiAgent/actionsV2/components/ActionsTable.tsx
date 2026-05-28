@@ -9,7 +9,7 @@ import { Box, Text } from '@gorgias/axiom'
 import { OrderDirection } from '@gorgias/helpdesk-types'
 
 import { ACTION_LIBRARY_APP_COLUMN_WIDTH } from '../constants'
-import type { ServiceConnectionsResult } from '../hooks/useServiceConnections'
+import type { ServiceConnectionStatuses } from '../hooks/useServiceConnectionStatuses'
 import ActionsTableRow from './ActionsTableRow'
 import ActionsTableSkeleton from './ActionsTableSkeleton'
 
@@ -25,7 +25,7 @@ type Props = {
     isLoading: boolean
     shopName: string
     shopType: 'shopify'
-    serviceConnections: ServiceConnectionsResult
+    serviceConnectionStatuses: ServiceConnectionStatuses
     sort: SortState
     onSortChange: (column: SortColumn) => void
     skeletonRows: number
@@ -44,7 +44,7 @@ const ActionsTable = ({
     isLoading,
     shopName,
     shopType,
-    serviceConnections,
+    serviceConnectionStatuses,
     sort,
     onSortChange,
     skeletonRows,
@@ -128,7 +128,9 @@ const ActionsTable = ({
                             action={action}
                             shopName={shopName}
                             shopType={shopType}
-                            serviceConnections={serviceConnections}
+                            serviceConnectionStatuses={
+                                serviceConnectionStatuses
+                            }
                         />
                     ))}
                 </TableBody>

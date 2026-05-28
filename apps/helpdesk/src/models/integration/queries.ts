@@ -327,6 +327,25 @@ export const useListServiceConnectionsByAppId = (
         cacheTime: CACHE_TIME_MS,
     })
 
+export const useListServiceConnectionsByAppIds = (applicationIds: string[]) =>
+    useQueries({
+        queries: applicationIds.map((applicationId) => ({
+            queryKey: serviceConnectionsQueryKey(applicationId),
+            queryFn: async () => {
+                const response = await client.get<
+                    ApiListResponse<ServiceConnectionApiDTO[], unknown>
+                >('/api/service-connections/', {
+                    params: { application_id: applicationId },
+                })
+                return response.data.data.filter(
+                    (connection) => connection.trashed_datetime === null,
+                )
+            },
+            staleTime: STALE_TIME_MS,
+            cacheTime: CACHE_TIME_MS,
+        })),
+    })
+
 export const useGetServiceConnection = (
     connectionId: string,
     overrides?: { enabled?: boolean },

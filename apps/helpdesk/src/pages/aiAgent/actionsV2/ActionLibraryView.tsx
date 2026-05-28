@@ -19,6 +19,7 @@ import ActionLibrarySearch from './components/ActionLibrarySearch'
 import ActionLibraryUpdatesBanner from './components/ActionLibraryUpdatesBanner/ActionLibraryUpdatesBanner'
 import ActionsTable from './components/ActionsTable'
 import type { SortColumn } from './components/ActionsTable'
+import ActivitySection from './components/ActivitySection'
 import {
     ACTION_LIBRARY_DESCRIPTION,
     ACTION_LIBRARY_PAGE_SIZE_OPTIONS,
@@ -28,7 +29,7 @@ import {
 import { compareActionStatus, useActionStatuses } from './hooks/useActionStatus'
 import { useFilteredActions } from './hooks/useFilteredActions'
 import { usePaginatedActions } from './hooks/usePaginatedActions'
-import { useServiceConnections } from './hooks/useServiceConnections'
+import { useServiceConnectionStatuses } from './hooks/useServiceConnectionStatuses'
 
 import css from './ActionLibraryView.less'
 
@@ -69,13 +70,10 @@ const ActionLibraryView = () => {
         }
     }, [error, isError])
 
-    const serviceConnections = useServiceConnections({
-        storeName: shopName,
-        storeType: shopType,
-    })
+    const serviceConnectionStatuses = useServiceConnectionStatuses(actions)
 
     const filtered = useFilteredActions(actions, search)
-    const statuses = useActionStatuses(filtered, serviceConnections)
+    const statuses = useActionStatuses(filtered, serviceConnectionStatuses)
 
     const sorted = useMemo(() => {
         const list = [...filtered]
@@ -164,6 +162,13 @@ const ActionLibraryView = () => {
                                 </Box>
                             ) : (
                                 <Box flexDirection="column" gap="md">
+                                    <ActivitySection
+                                        shopName={shopName}
+                                        actions={actions}
+                                        serviceConnectionStatuses={
+                                            serviceConnectionStatuses
+                                        }
+                                    />
                                     <Box px="lg" pt="lg">
                                         <ActionLibrarySearch
                                             value={search}
@@ -177,7 +182,9 @@ const ActionLibraryView = () => {
                                         isLoading={isInitialLoading}
                                         shopName={shopName}
                                         shopType={shopType}
-                                        serviceConnections={serviceConnections}
+                                        serviceConnectionStatuses={
+                                            serviceConnectionStatuses
+                                        }
                                         sort={sort}
                                         onSortChange={handleSortChange}
                                         skeletonRows={

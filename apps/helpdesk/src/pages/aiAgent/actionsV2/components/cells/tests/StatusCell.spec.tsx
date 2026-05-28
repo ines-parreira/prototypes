@@ -1,10 +1,9 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
-import { useListActionsApps } from 'models/workflows/queries'
 import type { StoreWorkflowsConfiguration } from 'pages/aiAgent/actions/types'
 
-import type { ServiceConnectionsResult } from '../../../hooks/useServiceConnections'
+import type { ServiceConnectionStatuses } from '../../../hooks/useServiceConnectionStatuses'
 import StatusCell from '../StatusCell'
 
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
@@ -15,11 +14,6 @@ jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
         },
     }),
 }))
-
-jest.mock('models/workflows/queries', () => ({
-    useListActionsApps: jest.fn(),
-}))
-const mockUseListActionsApps = jest.mocked(useListActionsApps)
 
 const makeAction = (
     overrides?: Partial<StoreWorkflowsConfiguration>,
@@ -38,27 +32,21 @@ const makeAction = (
         ...overrides,
     }) as unknown as StoreWorkflowsConfiguration
 
-const connections = (
-    overrides?: Partial<ServiceConnectionsResult>,
-): ServiceConnectionsResult => ({
-    byIntegration: {},
+const statuses = (
+    overrides?: Partial<ServiceConnectionStatuses>,
+): ServiceConnectionStatuses => ({
+    byAppId: {},
     isError: false,
     isLoading: false,
     ...overrides,
 })
 
 describe('StatusCell', () => {
-    beforeEach(() => {
-        mockUseListActionsApps.mockReturnValue({
-            data: [],
-        } as unknown as ReturnType<typeof useListActionsApps>)
-    })
-
     it('renders the Enabled tag when the entrypoint is active', () => {
         render(
             <StatusCell
                 action={makeAction()}
-                serviceConnections={connections()}
+                serviceConnectionStatuses={statuses()}
                 shopName="test"
             />,
         )
@@ -85,7 +73,7 @@ describe('StatusCell', () => {
         render(
             <StatusCell
                 action={action}
-                serviceConnections={connections()}
+                serviceConnectionStatuses={statuses()}
                 shopName="test"
             />,
         )
@@ -93,17 +81,7 @@ describe('StatusCell', () => {
         expect(screen.getByText('Disabled')).toBeInTheDocument()
     })
 
-    it('renders a Failed tag linking to the app detail when a trackstar connection has failed', () => {
-        mockUseListActionsApps.mockReturnValue({
-            data: [
-                {
-                    id: 'shipbob',
-                    auth_type: 'trackstar',
-                    auth_settings: { integration_name: 'shipbob' },
-                },
-            ],
-        } as unknown as ReturnType<typeof useListActionsApps>)
-
+    it('renders a Failed tag linking to the app detail when a service connection has failed', () => {
         const action = makeAction({
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             apps: [{ type: 'app', app_id: 'shipbob' }] as any,
@@ -112,13 +90,9 @@ describe('StatusCell', () => {
         render(
             <StatusCell
                 action={action}
-                serviceConnections={connections({
-                    byIntegration: {
-                        shipbob: {
-                            integrationName: 'shipbob',
-                            isFailed: true,
-                            connectionId: 'c1',
-                        },
+                serviceConnectionStatuses={statuses({
+                    byAppId: {
+                        shipbob: { isBroken: true, brokenConnectionId: 'c1' },
                     },
                 })}
                 shopName="test"

@@ -4,48 +4,34 @@ import { Link } from 'react-router-dom'
 
 import { Tag } from '@gorgias/axiom'
 
-import { useListActionsApps } from 'models/workflows/queries'
 import type { StoreWorkflowsConfiguration } from 'pages/aiAgent/actions/types'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
-import type { ServiceConnectionsResult } from '../../hooks/useServiceConnections'
+import type { ServiceConnectionStatuses } from '../../hooks/useServiceConnectionStatuses'
 
 type Props = {
     action: StoreWorkflowsConfiguration
-    serviceConnections: ServiceConnectionsResult
+    serviceConnectionStatuses: ServiceConnectionStatuses
     shopName: string
 }
 
-const StatusCell = ({ action, serviceConnections, shopName }: Props) => {
+const StatusCell = ({ action, serviceConnectionStatuses, shopName }: Props) => {
     const { routes } = useAiAgentNavigation({ shopName })
-    const { data: actionsApps = [] } = useListActionsApps()
 
-    const failure = useMemo(() => {
-        if (serviceConnections.isError) return null
+    const failedAppId = useMemo(() => {
+        if (serviceConnectionStatuses.isError) return null
         for (const templateApp of action.apps ?? []) {
             if (templateApp.type !== 'app') continue
-            const actionsApp = actionsApps.find(
-                (app) => app.id === templateApp.app_id,
-            )
-            if (!actionsApp || actionsApp.auth_type !== 'trackstar') continue
-            const status =
-                serviceConnections.byIntegration[
-                    actionsApp.auth_settings.integration_name
-                ]
-            if (status?.isFailed) {
-                return {
-                    appId: templateApp.app_id,
-                    integration: actionsApp.auth_settings.integration_name,
-                }
-            }
+            const status = serviceConnectionStatuses.byAppId[templateApp.app_id]
+            if (status?.isBroken) return templateApp.app_id
         }
         return null
-    }, [action.apps, actionsApps, serviceConnections])
+    }, [action.apps, serviceConnectionStatuses])
 
-    if (failure) {
+    if (failedAppId) {
         return (
             <Link
-                to={routes.appDetail(failure.appId)}
+                to={routes.appDetail(failedAppId)}
                 onClick={(event) => event.stopPropagation()}
                 style={{ textDecoration: 'none' }}
             >

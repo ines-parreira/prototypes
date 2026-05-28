@@ -80,8 +80,8 @@ const renderRow = () =>
                         action={action}
                         shopName="test"
                         shopType="shopify"
-                        serviceConnections={{
-                            byIntegration: {},
+                        serviceConnectionStatuses={{
+                            byAppId: {},
                             isError: false,
                             isLoading: false,
                         }}

@@ -85,12 +85,15 @@ jest.mock('pages/aiAgent/actions/hooks/errorHandler', () => ({
 jest.mock('models/workflows/queries', () => ({
     useGetStoreWorkflowsConfigurations: jest.fn(),
     useListActionsApps: jest.fn(),
-    useListTrackstarConnections: jest.fn(),
     useGetWorkflowConfigurationTemplates: jest.fn(),
+}))
+jest.mock('models/integration/queries', () => ({
+    useListServiceConnectionsByAppIds: jest.fn(),
+    useGetAppsByIds: jest.fn(),
 }))
 jest.mock('pages/automate/actionsPlatform/hooks/useApps', () => ({
     __esModule: true,
-    default: () => ({ apps: [] }),
+    default: () => ({ apps: [], actionsApps: [] }),
 }))
 jest.mock(
     'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp',
@@ -107,13 +110,18 @@ jest.mock('pages/aiAgent/actions/hooks/useDeleteAction', () => ({
 const {
     useGetStoreWorkflowsConfigurations,
     useListActionsApps,
-    useListTrackstarConnections,
     useGetWorkflowConfigurationTemplates,
 } = jest.requireMock('models/workflows/queries') as {
     useGetStoreWorkflowsConfigurations: jest.Mock
     useListActionsApps: jest.Mock
-    useListTrackstarConnections: jest.Mock
     useGetWorkflowConfigurationTemplates: jest.Mock
+}
+
+const { useListServiceConnectionsByAppIds, useGetAppsByIds } = jest.requireMock(
+    'models/integration/queries',
+) as {
+    useListServiceConnectionsByAppIds: jest.Mock
+    useGetAppsByIds: jest.Mock
 }
 
 const mockHandleError = jest.mocked(handleError)
@@ -160,12 +168,8 @@ describe('ActionLibraryView', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         useListActionsApps.mockReturnValue({ data: [] })
-        useListTrackstarConnections.mockReturnValue({
-            data: {},
-            isError: false,
-            isInitialLoading: false,
-            error: null,
-        })
+        useListServiceConnectionsByAppIds.mockReturnValue([])
+        useGetAppsByIds.mockReturnValue([])
         useGetWorkflowConfigurationTemplates.mockReturnValue({ data: [] })
         setStoreActions([])
     })
@@ -251,27 +255,21 @@ describe('ActionLibraryView', () => {
 
     it('sorts by status, putting failed before enabled', async () => {
         const user = userEvent.setup()
-        useListActionsApps.mockReturnValue({
-            data: [
-                {
-                    id: 'shipbob',
-                    auth_type: 'trackstar',
-                    auth_settings: { integration_name: 'shipbob' },
-                },
-            ],
-        })
-        useListTrackstarConnections.mockReturnValue({
-            data: {
-                shipbob: {
-                    integrationName: 'shipbob',
-                    isFailed: true,
-                    connectionId: 'c1',
-                },
+        useListServiceConnectionsByAppIds.mockReturnValue([
+            {
+                isSuccess: true,
+                isInitialLoading: false,
+                isError: false,
+                data: [
+                    {
+                        id: 'c1',
+                        status: 'invalid',
+                        trashed_datetime: null,
+                    },
+                ],
+                error: null,
             },
-            isError: false,
-            isInitialLoading: false,
-            error: null,
-        })
+        ])
 
         setStoreActions([
             makeAction({ id: 'ok', name: 'Healthy action' }),

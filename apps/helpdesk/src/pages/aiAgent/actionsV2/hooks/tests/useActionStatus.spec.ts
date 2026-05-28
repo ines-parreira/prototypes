@@ -1,15 +1,9 @@
 import { renderHook } from '@repo/testing'
 
-import { useListActionsApps } from 'models/workflows/queries'
 import type { StoreWorkflowsConfiguration } from 'pages/aiAgent/actions/types'
 
 import { compareActionStatus, useActionStatuses } from '../useActionStatus'
-import type { ServiceConnectionsResult } from '../useServiceConnections'
-
-jest.mock('models/workflows/queries', () => ({
-    useListActionsApps: jest.fn(),
-}))
-const mockUseListActionsApps = jest.mocked(useListActionsApps)
+import type { ServiceConnectionStatuses } from '../useServiceConnectionStatuses'
 
 type ActionInput = {
     id: string
@@ -37,36 +31,19 @@ const makeAction = ({
         ],
     }) as unknown as StoreWorkflowsConfiguration
 
-const trackstarApp = (id: string, integrationName: string) =>
-    ({
-        id,
-        auth_type: 'trackstar',
-        auth_settings: { integration_name: integrationName },
-    }) as unknown as ReturnType<typeof useListActionsApps>['data'] extends
-        | (infer T)[]
-        | undefined
-        ? T
-        : never
-
-const serviceConnections = (
-    overrides?: Partial<ServiceConnectionsResult>,
-): ServiceConnectionsResult => ({
-    byIntegration: {},
+const statuses = (
+    overrides?: Partial<ServiceConnectionStatuses>,
+): ServiceConnectionStatuses => ({
+    byAppId: {},
     isError: false,
     isLoading: false,
     ...overrides,
 })
 
 describe('useActionStatuses()', () => {
-    beforeEach(() => {
-        mockUseListActionsApps.mockReturnValue({
-            data: [],
-        } as unknown as ReturnType<typeof useListActionsApps>)
-    })
-
     it('returns "enabled" for an action with no deactivated entrypoint', () => {
         const { result } = renderHook(() =>
-            useActionStatuses([makeAction({ id: 'a' })], serviceConnections()),
+            useActionStatuses([makeAction({ id: 'a' })], statuses()),
         )
 
         expect(result.current.get('a')).toBe('enabled')
@@ -76,28 +53,20 @@ describe('useActionStatuses()', () => {
         const { result } = renderHook(() =>
             useActionStatuses(
                 [makeAction({ id: 'a', deactivated: true })],
-                serviceConnections(),
+                statuses(),
             ),
         )
 
         expect(result.current.get('a')).toBe('disabled')
     })
 
-    it('returns "failed" when a referenced trackstar app has a failed service connection', () => {
-        mockUseListActionsApps.mockReturnValue({
-            data: [trackstarApp('shipbob', 'shipbob')],
-        } as unknown as ReturnType<typeof useListActionsApps>)
-
+    it('returns "failed" when a referenced app has a broken service connection', () => {
         const { result } = renderHook(() =>
             useActionStatuses(
                 [makeAction({ id: 'a', appId: 'shipbob' })],
-                serviceConnections({
-                    byIntegration: {
-                        shipbob: {
-                            integrationName: 'shipbob',
-                            isFailed: true,
-                            connectionId: 'c1',
-                        },
+                statuses({
+                    byAppId: {
+                        shipbob: { isBroken: true, brokenConnectionId: 'c1' },
                     },
                 }),
             ),
@@ -106,22 +75,14 @@ describe('useActionStatuses()', () => {
         expect(result.current.get('a')).toBe('failed')
     })
 
-    it('ignores connection failures when serviceConnections has an error', () => {
-        mockUseListActionsApps.mockReturnValue({
-            data: [trackstarApp('shipbob', 'shipbob')],
-        } as unknown as ReturnType<typeof useListActionsApps>)
-
+    it('ignores connection failures when statuses has an error', () => {
         const { result } = renderHook(() =>
             useActionStatuses(
                 [makeAction({ id: 'a', appId: 'shipbob' })],
-                serviceConnections({
+                statuses({
                     isError: true,
-                    byIntegration: {
-                        shipbob: {
-                            integrationName: 'shipbob',
-                            isFailed: true,
-                            connectionId: 'c1',
-                        },
+                    byAppId: {
+                        shipbob: { isBroken: true, brokenConnectionId: 'c1' },
                     },
                 }),
             ),

@@ -7,7 +7,7 @@ import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 
 import { ACTION_LIBRARY_APP_COLUMN_WIDTH } from '../constants'
-import type { ServiceConnectionsResult } from '../hooks/useServiceConnections'
+import type { ServiceConnectionStatuses } from '../hooks/useServiceConnectionStatuses'
 import AutonomousCell from './cells/AutonomousCell'
 import NameCell from './cells/NameCell'
 import ProviderCell from './cells/ProviderCell'
@@ -21,14 +21,14 @@ type Props = {
     action: StoreWorkflowsConfiguration
     shopName: string
     shopType: 'shopify'
-    serviceConnections: ServiceConnectionsResult
+    serviceConnectionStatuses: ServiceConnectionStatuses
 }
 
 const ActionsTableRow = ({
     action,
     shopName,
     shopType,
-    serviceConnections,
+    serviceConnectionStatuses,
 }: Props) => {
     const history = useHistory()
     const { routes } = useAiAgentNavigation({ shopName })
@@ -67,7 +67,7 @@ const ActionsTableRow = ({
             <BodyCell width={100}>
                 <StatusCell
                     action={action}
-                    serviceConnections={serviceConnections}
+                    serviceConnectionStatuses={serviceConnectionStatuses}
                     shopName={shopName}
                 />
             </BodyCell>
