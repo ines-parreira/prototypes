@@ -9,7 +9,7 @@ import {
     Text,
 } from '@gorgias/axiom'
 
-import instagramLogo from 'assets/img/icons/social/instagram.svg'
+import instagramLogo from 'assets/img/icons/social/instagram-content-neutral.svg'
 
 import type { SocialsIntegration } from '../StoreConfigForm/types'
 
