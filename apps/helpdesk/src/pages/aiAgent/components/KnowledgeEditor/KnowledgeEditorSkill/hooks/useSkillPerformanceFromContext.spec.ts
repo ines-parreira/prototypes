@@ -338,4 +338,109 @@ describe('useSkillPerformanceFromContext', () => {
             expect(result.current.recentTickets).toBeUndefined()
         })
     })
+
+    describe('dateRangeOverride', () => {
+        const overrideRange = {
+            start_datetime: '2026-05-01T00:00:00Z',
+            end_datetime: '2026-05-27T23:59:59Z',
+        }
+
+        it('uses dateRangeOverride for the metrics query when supplied', () => {
+            renderHook(() =>
+                useSkillPerformanceFromContext({
+                    dateRangeOverride: overrideRange,
+                }),
+            )
+
+            expect(mockUseSkillsMetrics).toHaveBeenCalledWith(
+                999,
+                true,
+                overrideRange,
+            )
+        })
+
+        it('uses dateRangeOverride for the per-day metrics query when supplied', () => {
+            renderHook(() =>
+                useSkillPerformanceFromContext({
+                    dateRangeOverride: overrideRange,
+                }),
+            )
+
+            expect(mockUseSkillsMetricsByDay).toHaveBeenCalledWith(
+                999,
+                42,
+                10,
+                true,
+                overrideRange,
+            )
+        })
+
+        it('exposes the override on skillMetrics.dateRange so KPI cards see it', () => {
+            const { result } = renderHook(() =>
+                useSkillPerformanceFromContext({
+                    dateRangeOverride: overrideRange,
+                }),
+            )
+
+            expect(result.current.skillMetrics.dateRange).toBe(overrideRange)
+        })
+
+        it('takes precedence over historicalVersionDateRange', () => {
+            const historicalRange = {
+                start_datetime: '2026-01-01T00:00:00Z',
+                end_datetime: '2026-01-28T23:59:59Z',
+            }
+            mockUseSkillEditorStore.mockImplementation((selector) =>
+                selector({
+                    state: {
+                        skill: { id: 42 },
+                        historicalVersion: { impactDateRange: historicalRange },
+                    },
+                    config: {
+                        helpCenter: { id: 10, shop_integration_id: 999 },
+                    },
+                }),
+            )
+
+            const { result } = renderHook(() =>
+                useSkillPerformanceFromContext({
+                    dateRangeOverride: overrideRange,
+                }),
+            )
+
+            expect(result.current.skillMetrics.dateRange).toBe(overrideRange)
+        })
+
+        it('falls back to historicalVersionDateRange when no override is supplied', () => {
+            const historicalRange = {
+                start_datetime: '2026-01-01T00:00:00Z',
+                end_datetime: '2026-01-28T23:59:59Z',
+            }
+            mockUseSkillEditorStore.mockImplementation((selector) =>
+                selector({
+                    state: {
+                        skill: { id: 42 },
+                        historicalVersion: { impactDateRange: historicalRange },
+                    },
+                    config: {
+                        helpCenter: { id: 10, shop_integration_id: 999 },
+                    },
+                }),
+            )
+
+            const { result } = renderHook(() =>
+                useSkillPerformanceFromContext(),
+            )
+
+            expect(result.current.skillMetrics.dateRange).toBe(historicalRange)
+        })
+
+        it('falls back to getLast28DaysDateRange when neither override nor historical version is set', () => {
+            const { result } = renderHook(() =>
+                useSkillPerformanceFromContext(),
+            )
+
+            expect(result.current.skillMetrics.dateRange).toBe(mockDateRange)
+        })
+    })
 })

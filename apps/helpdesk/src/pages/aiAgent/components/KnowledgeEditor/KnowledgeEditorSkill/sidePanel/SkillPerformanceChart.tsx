@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 
 import type {
     ComposedMetricTimeSeriesDataItem,
@@ -25,8 +25,6 @@ import { useSkillEventMarkers } from 'pages/aiAgent/components/KnowledgeEditor/K
 import { useSkillPerformanceDataContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillPerformanceFromContext'
 import { useSkillPerformanceTrendFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillPerformanceTrendFromContext'
 import { formatCsat } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
-
-import css from './SkillPerformanceChart.less'
 
 const CHART_HEIGHT = 262
 const CHART_LEGEND_GAP = 36
@@ -62,6 +60,13 @@ const lineMetric: ComposedMetricTimeSeriesMetricConfig = {
     yAxisDomain: [0, CSAT_AXIS_MAX],
 }
 
+const CSAT_LINE_METRIC_ID = 'csat'
+
+const LINE_METRIC_OPTIONS = [
+    // Success rate option will be added in M4 once real cube data is wired.
+    { id: CSAT_LINE_METRIC_ID, label: lineMetric.label },
+]
+
 const AXIS_STEPS = [1, 2, 5, 10]
 
 const roundAxisUpperBound = (value: number): number => {
@@ -95,6 +100,11 @@ export const SkillPerformanceChart = () => {
     const { markers } = useSkillEventMarkers(skillMetrics.resourceSourceId, {
         dateRange: skillMetrics.dateRange,
     })
+    const [selectedLineMetricId, setSelectedLineMetricId] =
+        useState(CSAT_LINE_METRIC_ID)
+    const selectedLineMetricLabel =
+        LINE_METRIC_OPTIONS.find((m) => m.id === selectedLineMetricId)?.label ??
+        lineMetric.label
 
     const chartBarMetric = useMemo<ComposedMetricTimeSeriesMetricConfig>(
         () => ({
@@ -106,9 +116,11 @@ export const SkillPerformanceChart = () => {
     const hasNoChartData = !isLoading && chartData.length === 0
 
     return (
-        <Box className={css.chartContent}>
+        <Box>
             <ChartCard
-                title={lineMetric.label}
+                title={selectedLineMetricLabel}
+                metrics={LINE_METRIC_OPTIONS}
+                onMetricChange={setSelectedLineMetricId}
                 withTrend={false}
                 isLoading={isLoading}
             >

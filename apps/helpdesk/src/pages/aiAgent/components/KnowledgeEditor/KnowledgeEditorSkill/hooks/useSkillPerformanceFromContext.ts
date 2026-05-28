@@ -65,7 +65,18 @@ export const useSkillPerformanceDataContext = (): SkillPerformanceData => {
     return skillPerformanceData
 }
 
-export const useSkillPerformanceFromContext = (): SkillPerformanceData => {
+type UseSkillPerformanceFromContextParams = {
+    /**
+     * When supplied, overrides the date range used to fetch skill metrics and
+     * per-day data. Used by the trend modal so its date picker drives a
+     * separate query without mutating the side-panel's default 28-day range.
+     */
+    dateRangeOverride?: { start_datetime: string; end_datetime: string }
+}
+
+export const useSkillPerformanceFromContext = ({
+    dateRangeOverride,
+}: UseSkillPerformanceFromContextParams = {}): SkillPerformanceData => {
     const {
         skillArticleId,
         shopIntegrationId,
@@ -85,8 +96,11 @@ export const useSkillPerformanceFromContext = (): SkillPerformanceData => {
     )
 
     const dateRange = useMemo(
-        () => historicalVersionDateRange ?? getLast28DaysDateRange(),
-        [historicalVersionDateRange],
+        () =>
+            dateRangeOverride ??
+            historicalVersionDateRange ??
+            getLast28DaysDateRange(),
+        [dateRangeOverride, historicalVersionDateRange],
     )
 
     const { data: metricsData, isLoading } = useSkillsMetrics(

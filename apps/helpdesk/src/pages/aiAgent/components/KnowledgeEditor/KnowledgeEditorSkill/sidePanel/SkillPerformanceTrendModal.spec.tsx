@@ -1,6 +1,9 @@
 import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import moment from 'moment-timezone'
+
+import { useSkillPerformanceFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillPerformanceFromContext'
 
 import { SkillPerformanceTrendModal } from './SkillPerformanceTrendModal'
 
@@ -13,6 +16,29 @@ const mockSkillPerformanceChart = jest.fn(() => (
 jest.mock('./SkillPerformanceChart', () => ({
     SkillPerformanceChart: () => mockSkillPerformanceChart(),
 }))
+
+const mockSkillPerformanceKpiCards = jest.fn(() => (
+    <div data-testid="skill-performance-kpi-cards">kpi cards</div>
+))
+
+jest.mock('./SkillPerformanceKpiCards', () => ({
+    SkillPerformanceKpiCards: () => mockSkillPerformanceKpiCards(),
+}))
+
+jest.mock(
+    'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillPerformanceFromContext',
+    () => ({
+        useSkillPerformanceFromContext: jest.fn(() => ({
+            skillMetrics: {},
+            recentTickets: undefined,
+        })),
+        SkillPerformanceDataProvider: ({
+            children,
+        }: {
+            children: React.ReactNode
+        }) => <>{children}</>,
+    }),
+)
 
 describe('SkillPerformanceTrendModal', () => {
     beforeEach(() => {
@@ -63,5 +89,40 @@ describe('SkillPerformanceTrendModal', () => {
         })
 
         expect(onOpenChange).toHaveBeenCalledWith(false)
+    })
+
+    it('opens with the Last 28 days preset as the date picker label', () => {
+        render(
+            <SkillPerformanceTrendModal
+                isOpen={true}
+                onOpenChange={jest.fn()}
+            />,
+        )
+
+        expect(screen.getByText('Last 28 days')).toBeInTheDocument()
+    })
+
+    it('passes a 28-day local-tz dateRangeOverride to useSkillPerformanceFromContext', () => {
+        const mockUseSkillPerformanceFromContext =
+            useSkillPerformanceFromContext as jest.Mock
+
+        render(
+            <SkillPerformanceTrendModal
+                isOpen={true}
+                onOpenChange={jest.fn()}
+            />,
+        )
+
+        const call = mockUseSkillPerformanceFromContext.mock.calls.at(-1)
+        const override = call?.[0]?.dateRangeOverride
+        expect(override).toBeDefined()
+
+        const expectedStart = moment()
+            .subtract(28, 'days')
+            .startOf('day')
+            .format()
+        const expectedEnd = moment().endOf('day').format()
+        expect(override.start_datetime).toBe(expectedStart)
+        expect(override.end_datetime).toBe(expectedEnd)
     })
 })

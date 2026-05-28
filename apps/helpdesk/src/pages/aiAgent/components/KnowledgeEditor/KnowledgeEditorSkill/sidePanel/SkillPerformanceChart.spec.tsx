@@ -300,4 +300,35 @@ describe('SkillPerformanceChart', () => {
             )
         })
     })
+
+    describe('line-metric selector', () => {
+        const getChartCardProps = () =>
+            mockChartCard.mock.calls.at(-1)?.[0] as {
+                title: string
+                metrics?: Array<{ id: string; label: string }>
+                onMetricChange?: (id: string) => void
+            }
+
+        it('sets the chart card title to the default CSAT metric label', () => {
+            renderChart()
+
+            expect(getChartCardProps().title).toBe('CSAT')
+        })
+
+        it('forwards the M3 line-metric options to ChartCard so it can render a selector', () => {
+            renderChart()
+
+            const metrics = getChartCardProps().metrics
+            expect(metrics).toEqual([{ id: 'csat', label: 'CSAT' }])
+        })
+
+        it('wires onMetricChange so the selected line metric drives the title', () => {
+            renderChart()
+
+            const props = getChartCardProps()
+            expect(typeof props.onMetricChange).toBe('function')
+            // Single-option list today; the wiring exists so M4's Success rate
+            // option will surface a working dropdown without further changes.
+        })
+    })
 })

@@ -58,6 +58,7 @@ jest.mock('@repo/reporting', () => ({
     ComposedMetricTimeSeriesChart: (props: unknown) =>
         mockComposedMetricTimeSeriesChart(props),
     NoDataPlaceholder: () => <div>No data found</div>,
+    TrendBadge: () => null,
 }))
 
 jest.mock('./SkillEditorSidePanelRecentTicketsSection', () => ({
