@@ -1497,6 +1497,9 @@ export function extractVariablesFromNode(
                         ),
                     ),
                 ),
+                ...extractVariablesFromText(
+                    node.data.serviceConnectionSettings?.path ?? '',
+                ).map((variable) => variable.value),
             ]
             break
         case 'conditions': {

@@ -1,3 +1,5 @@
+import { produce } from 'immer'
+
 import { visualBuilderGraphLlmPromptTriggerFixture } from 'pages/automate/workflows/tests/visualBuilderGraph.fixtures'
 
 import { httpRequestReducer } from '../httpRequestReducer'
@@ -296,6 +298,75 @@ describe('httpRequestReducer', () => {
                 }),
             }),
         )
+    })
+
+    test('SET_HTTP_REQUEST_VARIABLE rewrites liquid syntax in downstream service connection path', () => {
+        const g = produce(
+            visualBuilderGraphLlmPromptTriggerFixture,
+            (draft) => {
+                const node = draft.nodes.find((n) => n.id === 'http_request1')
+                if (node?.type === 'http_request') {
+                    node.data.serviceConnectionSettings = {
+                        integration_id: '{{store.helpdesk_integration_id}}',
+                        path: '/admin/api/orders/{{steps_state.http_request1.content.variable1 | json}}.json',
+                    }
+                }
+            },
+        )
+
+        const nextG = httpRequestReducer(g, {
+            type: 'SET_HTTP_REQUEST_VARIABLE',
+            httpRequestNodeId: 'http_request1',
+            index: 0,
+            variable: {
+                id: 'variable1',
+                name: '',
+                jsonpath: '$',
+                data_type: 'date',
+            },
+        })
+
+        const node = nextG.nodes.find((n) => n.type === 'http_request')
+        expect(node).toBeDefined()
+        if (node && node.type === 'http_request') {
+            expect(node.data.serviceConnectionSettings?.path).toBe(
+                '/admin/api/orders/{{steps_state.http_request1.content.variable1 | date}}.json',
+            )
+        }
+    })
+
+    test('SET_HTTP_REQUEST_VARIABLE leaves service connection path untouched when it does not reference the variable', () => {
+        const originalPath = '/admin/api/orders/static.json'
+        const g = produce(
+            visualBuilderGraphLlmPromptTriggerFixture,
+            (draft) => {
+                const node = draft.nodes.find((n) => n.id === 'http_request1')
+                if (node?.type === 'http_request') {
+                    node.data.serviceConnectionSettings = {
+                        integration_id: '{{store.helpdesk_integration_id}}',
+                        path: originalPath,
+                    }
+                }
+            },
+        )
+
+        const nextG = httpRequestReducer(g, {
+            type: 'SET_HTTP_REQUEST_VARIABLE',
+            httpRequestNodeId: 'http_request1',
+            index: 0,
+            variable: {
+                id: 'variable1',
+                name: '',
+                jsonpath: '$',
+                data_type: 'date',
+            },
+        })
+
+        const node = nextG.nodes.find((n) => n.type === 'http_request')
+        expect(node).toBeDefined()
+        if (node && node.type === 'http_request') {
+            expect(node.data.serviceConnectionSettings?.path).toBe(originalPath)
+        }
     })
 
     test('RESET_HTTP_REQUEST_TEST_REQUEST_RESULT should only clear result, not inputs', () => {

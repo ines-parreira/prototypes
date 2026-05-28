@@ -646,6 +646,32 @@ function replaceVariablesInHttpRequestUrl(
     node.data.url = node.data.url.replace(oldLiquidSyntax, newLiquidSyntax)
 }
 
+function replaceVariablesInHttpRequestServiceConnectionPath(
+    currentNodeId: string,
+    newLiquidSyntax: string,
+    node: HttpRequestNodeType,
+    variable: HttpRequestNodeType['data']['variables'][number],
+) {
+    if (!node.data.serviceConnectionSettings) return
+    const variablesInPath = extractVariablesFromText(
+        node.data.serviceConnectionSettings.path,
+    )
+    const oldVariable = variablesInPath.find(
+        ({ value }) =>
+            `steps_state.${currentNodeId}.content.${variable.id}` === value,
+    )
+    if (!oldVariable) return
+    const oldLiquidSyntax = toLiquidSyntax({
+        value: oldVariable.value,
+        filter: oldVariable.filter,
+    })
+    node.data.serviceConnectionSettings.path =
+        node.data.serviceConnectionSettings.path.replace(
+            oldLiquidSyntax,
+            newLiquidSyntax,
+        )
+}
+
 function requestVaraiblesInHttpRequestUrlEncoded(
     currentNodeId: string,
     newLiquidSyntax: string,
@@ -705,6 +731,12 @@ function replaceVariablesInHttpNode(
         variable,
     )
     replaceVariablesInHttpRequestUrl(
+        currentNodeId,
+        newLiquidSyntax,
+        node,
+        variable,
+    )
+    replaceVariablesInHttpRequestServiceConnectionPath(
         currentNodeId,
         newLiquidSyntax,
         node,

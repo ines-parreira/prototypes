@@ -1159,4 +1159,57 @@ describe('extractVariablesFromNode()', () => {
             'objects.order.total',
         ])
     })
+
+    it('should extract variables from http_request node service connection path', () => {
+        expect(
+            extractVariablesFromNode({
+                type: 'http_request',
+                data: {
+                    name: '',
+                    url: '',
+                    method: 'GET',
+                    headers: [],
+                    json: null,
+                    formUrlencoded: null,
+                    bodyContentType: null,
+                    variables: [],
+                    oauth2TokenSettings: null,
+                    trackstar_integration_name: null,
+                    serviceConnectionSettings: {
+                        integration_id: '{{store.helpdesk_integration_id}}',
+                        path: '/admin/api/2025-01/orders/{{objects.order.id}}.json',
+                    },
+                },
+            }),
+        ).toEqual(['objects.order.id'])
+    })
+
+    it('should extract variables from all http_request node fields including service connection path', () => {
+        expect(
+            extractVariablesFromNode({
+                type: 'http_request',
+                data: {
+                    name: '',
+                    url: 'https://example.com/{{objects.customer.id}}',
+                    method: 'POST',
+                    headers: [{ name: 'Authorization', value: '{{token}}' }],
+                    json: '{"order": "{{objects.order.id}}"}',
+                    formUrlencoded: null,
+                    bodyContentType: 'application/json',
+                    variables: [],
+                    oauth2TokenSettings: null,
+                    trackstar_integration_name: null,
+                    serviceConnectionSettings: {
+                        integration_id: '{{store.helpdesk_integration_id}}',
+                        path: '/admin/api/2025-01/customers/{{objects.customer.email}}.json',
+                    },
+                },
+            }),
+        ).toEqual([
+            'objects.customer.id',
+            'token',
+            'objects.order.id',
+            'objects.customer.email',
+        ])
+    })
 })
