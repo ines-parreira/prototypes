@@ -14,7 +14,18 @@ vi.mock('@gorgias/axiom', async (importOriginal) => {
     const actual = (await importOriginal()) as Record<string, unknown>
     return {
         ...actual,
-        Tooltip: ({ children }: { children: ReactNode }) => <>{children}</>,
+        Tooltip: ({
+            children,
+            trigger,
+        }: {
+            children: ReactNode
+            trigger?: ReactNode
+        }) => (
+            <>
+                {trigger}
+                {children}
+            </>
+        ),
         TooltipTrigger: ({ children }: { children: ReactNode }) => (
             <>{children}</>
         ),
@@ -63,6 +74,7 @@ describe('TicketThreadAuditLogRuleExecutedEvent', () => {
     it('renders rule link and triggering event type when rule metadata exists', () => {
         renderItem(
             buildItem({
+                code: "if (ticket.tags.name == 'vip')",
                 id: 153054,
                 name: 'Divyam - Test auto-assignment',
                 triggering_event_type: 'ticket-updated',
@@ -74,6 +86,9 @@ describe('TicketThreadAuditLogRuleExecutedEvent', () => {
         })
         expect(ruleLink).toHaveAttribute('href', '/app/settings/rules/153054')
         expect(screen.getByText('on "ticket-updated"')).toBeInTheDocument()
+        expect(
+            screen.getByText("if (ticket.tags.name == 'vip')"),
+        ).toBeInTheDocument()
     })
 
     it('renders fallback wording when rule name is missing', () => {
@@ -98,6 +113,22 @@ describe('TicketThreadAuditLogRuleExecutedEvent', () => {
         expect(
             screen.getByText(
                 'Could not find the agent to assign this ticket to.',
+            ),
+        ).toBeInTheDocument()
+    })
+
+    it('truncates long rule preview code', () => {
+        renderItem(
+            buildItem({
+                code: 'a'.repeat(600),
+                id: 153054,
+                name: 'Long rule',
+            }),
+        )
+
+        expect(
+            screen.getByText(
+                `${'a'.repeat(454)}... [see the rest of the rule in the settings]`,
             ),
         ).toBeInTheDocument()
     })
