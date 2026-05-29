@@ -117,3 +117,7 @@ export {
     type LayoutReportConfig,
     type DashboardComponentType,
 } from './components/ManagedDashboards'
+export {
+    MetricOriginContext,
+    useMetricOriginContext,
+} from './contexts/MetricOriginContext'

@@ -5,6 +5,7 @@ import {
 import { STATS_ROUTE_PREFIX } from 'domains/reporting/pages/common/components/constants'
 import {
     getComponentConfig,
+    getMetricOriginPath,
     getReportConfig,
     getReportConfigFromPath,
 } from 'domains/reporting/pages/dashboards/config'
@@ -156,5 +157,58 @@ describe('getReportConfigFromPath', () => {
         const config = getReportConfigFromPath('/app/stats/unknown-path')
 
         expect(config).toBeNull()
+    })
+})
+
+describe('getMetricOriginPath', () => {
+    it('returns null for an unknown chart ID', () => {
+        const path = getMetricOriginPath('unknown_chart_id')
+
+        expect(path).toBeNull()
+    })
+
+    it('returns "AI Agent > All Agents" for revamped All Agents charts', () => {
+        const path = getMetricOriginPath(
+            AnalyticsAiAgentAllAgentsChart.AutomationRateCard,
+        )
+
+        expect(path).toEqual({ prefix: 'AI Agent', suffix: 'All Agents' })
+    })
+
+    it('returns "AI Agent > Shopping Assistant" for Shopping Assistant charts', () => {
+        const path = getMetricOriginPath(
+            AnalyticsAiAgentShoppingAssistantChart.OrdersInfluencedCard,
+        )
+
+        expect(path).toEqual({
+            prefix: 'AI Agent',
+            suffix: 'Shopping Assistant',
+        })
+    })
+
+    it('returns "category > reportName" for standard charts', () => {
+        const path = getMetricOriginPath(
+            SatisfactionChart.SatisfactionScoreTrendCard,
+        )
+
+        expect(path).toEqual({
+            prefix: 'Quality management',
+            suffix: 'Satisfaction',
+        })
+    })
+
+    it('returns null for a legacy chart when withLegacyReports is not set', () => {
+        const path = getMetricOriginPath(AutomateAiAgentsChart.AiAgentTable)
+
+        expect(path).toBeNull()
+    })
+
+    it('returns "AI Agent > AI Agents" for a legacy chart when withLegacyReports is true', () => {
+        const path = getMetricOriginPath(
+            AutomateAiAgentsChart.AiAgentTable,
+            true,
+        )
+
+        expect(path).toEqual({ prefix: 'AI Agent', suffix: 'AI Agents' })
     })
 })

@@ -83,7 +83,7 @@ export enum AnalyticsAiAgentAllAgentsChart {
 export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgentAllAgentsChart> =
     {
         id: ReportsIDs.AiAgentAnalyticsAllAgents,
-        reportName: 'AI Agent Analytics All Agents',
+        reportName: 'All Agents',
         reportPath: STATS_ROUTES.AI_AGENT,
         charts: {
             [AnalyticsAiAgentAllAgentsChart.AutomationRateCard]: {

@@ -21,6 +21,7 @@ export const DragAndResizeChart = ({
         effectiveChartId ?? '',
     )
     const restricted = useIsChartRestricted(effectiveChartId ?? '')
+
     if (
         effectiveChartId === null ||
         reportConfig === null ||

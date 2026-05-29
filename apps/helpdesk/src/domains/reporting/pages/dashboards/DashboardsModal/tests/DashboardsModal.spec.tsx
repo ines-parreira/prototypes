@@ -7,6 +7,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { useDashboardActions } from 'domains/reporting/hooks/dashboards/useDashboardActions'
+import { useRestrictedReportsConfig } from 'domains/reporting/hooks/dashboards/useRestrictedReportsConfig'
 import * as constants from 'domains/reporting/pages/dashboards/config'
 import { CHARTS_MODAL_ICONS } from 'domains/reporting/pages/dashboards/DashboardsModal/ChartIcon'
 import {
@@ -29,7 +30,6 @@ import {
 } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
 import {
     OverviewChart,
-    SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE,
     SupportPerformanceOverviewReportConfig,
 } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewReportConfig'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -50,6 +50,9 @@ const useQueryClientMock = assumeMock(useQueryClient)
 
 jest.mock('domains/reporting/hooks/dashboards/useDashboardActions')
 const useDashboardActionsMock = assumeMock(useDashboardActions)
+
+jest.mock('domains/reporting/hooks/dashboards/useRestrictedReportsConfig')
+const useRestrictedReportsConfigMock = assumeMock(useRestrictedReportsConfig)
 
 jest.mock(
     'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions',
@@ -122,6 +125,7 @@ describe('AddChartsModal', () => {
             isChartRestrictedToCurrentUser: () => false,
             isModuleRestrictedToCurrentUser: () => false,
         })
+        useRestrictedReportsConfigMock.mockReturnValue(mockConfig)
     })
 
     it('should render correctly', () => {
@@ -157,7 +161,7 @@ describe('AddChartsModal', () => {
             screen.queryByText(String(firstChartDescription)),
         ).not.toBeInTheDocument()
         fireEvent.click(
-            screen.getByText(SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE),
+            screen.getByText(SupportPerformanceOverviewReportConfig.reportName),
         )
         expect(
             screen.getByText(String(firstChartDescription)),
@@ -182,7 +186,7 @@ describe('AddChartsModal', () => {
         render(<DashboardsModal {...props} onSave={mockHandleSave} />, {})
 
         fireEvent.click(
-            screen.getByText(SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE),
+            screen.getByText(SupportPerformanceOverviewReportConfig.reportName),
         )
         userEvent.click(screen.getByText(String(firstChartDescription)))
 
@@ -202,7 +206,7 @@ describe('AddChartsModal', () => {
         render(<DashboardsModal {...props} charts={undefined} />, {})
 
         fireEvent.click(
-            screen.getByText(SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE),
+            screen.getByText(SupportPerformanceOverviewReportConfig.reportName),
         )
     })
 
@@ -214,7 +218,7 @@ describe('AddChartsModal', () => {
         render(<DashboardsModal {...props} />, {})
 
         fireEvent.click(
-            screen.getByText(SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE),
+            screen.getByText(SupportPerformanceOverviewReportConfig.reportName),
         )
         userEvent.click(screen.getByText(String(firstChartDescription)))
 
@@ -260,7 +264,9 @@ describe('AddChartsModal', () => {
         expect(screen.getByText(NO_SEARCH_RESULT)).toBeInTheDocument()
         expect(screen.getByText(READ_MORE_ABOUT_CHARTS)).toBeInTheDocument()
         expect(
-            screen.queryByText(SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE),
+            screen.queryByText(
+                SupportPerformanceOverviewReportConfig.reportName,
+            ),
         ).not.toBeInTheDocument()
     })
 

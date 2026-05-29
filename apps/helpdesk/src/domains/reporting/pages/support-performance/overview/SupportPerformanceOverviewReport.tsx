@@ -37,7 +37,7 @@ export default function SupportPerformanceOverviewReport() {
     return (
         <div className="full-width">
             <StatsPage
-                title={SupportPerformanceOverviewReportConfig.reportName}
+                title="Support performance overview"
                 titleExtra={<DownloadOverviewData />}
             >
                 <DashboardSection>

@@ -44,7 +44,7 @@ export enum AgentsChart {
 
 export const SupportPerformanceAgentsReportConfig: ReportConfig<AgentsChart> = {
     id: ReportsIDs.SupportPerformanceAgentsReportConfig,
-    reportName: SECTION_TITLES.AGENT_PERFORMANCE,
+    reportName: 'Agents',
     reportPath: STATS_ROUTES.SUPPORT_PERFORMANCE_AGENTS,
     charts: {
         [AgentsChart.Table]: {

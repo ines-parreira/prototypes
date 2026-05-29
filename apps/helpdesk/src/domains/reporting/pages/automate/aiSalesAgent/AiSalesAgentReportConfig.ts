@@ -26,7 +26,7 @@ export const AI_SALES_AGENTS_PERSISTENT_FILTERS: StaticFilter[] = [
 
 export const AiSalesAgentReportConfig: ReportConfig<AiSalesAgentChart> = {
     id: ReportsIDs.AiSalesAgentReportConfig,
-    reportName: 'AI Agents Sales',
+    reportName: 'Shopping Assistant',
     reportPath: STATS_ROUTES.AI_SALES_AGENT_OVERVIEW,
     reportFilters: {
         persistent: AI_SALES_AGENTS_PERSISTENT_FILTERS,

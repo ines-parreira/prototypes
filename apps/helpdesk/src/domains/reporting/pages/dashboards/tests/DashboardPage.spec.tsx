@@ -6,6 +6,7 @@ import {
     waitFor,
     waitForElementToBeRemoved,
 } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { useParams } from 'react-router-dom'
 
@@ -362,6 +363,39 @@ describe('DashboardPage', () => {
         render(<DashboardPage />, { storeState: defaultState })
 
         expect(AnalyticsCustomDashboardMock).toHaveBeenCalled()
+    })
+
+    describe('Metric Origin toggle', () => {
+        it('renders the "Show metric origin" toggle in the header', () => {
+            render(<DashboardPage />, { storeState: defaultState })
+
+            expect(screen.getByText('Show metric origin')).toBeInTheDocument()
+        })
+
+        it('toggle is off by default', () => {
+            render(<DashboardPage />, { storeState: defaultState })
+
+            expect(screen.getByRole('switch')).not.toBeChecked()
+        })
+
+        it('clicking the toggle turns it on', async () => {
+            const user = userEvent.setup()
+            render(<DashboardPage />, { storeState: defaultState })
+
+            await user.click(screen.getByRole('switch'))
+
+            expect(screen.getByRole('switch')).toBeChecked()
+        })
+
+        it('clicking the toggle twice returns it to off', async () => {
+            const user = userEvent.setup()
+            render(<DashboardPage />, { storeState: defaultState })
+
+            await user.click(screen.getByRole('switch'))
+            await user.click(screen.getByRole('switch'))
+
+            expect(screen.getByRole('switch')).not.toBeChecked()
+        })
     })
 
     describe('Pinned Filter functionality', () => {

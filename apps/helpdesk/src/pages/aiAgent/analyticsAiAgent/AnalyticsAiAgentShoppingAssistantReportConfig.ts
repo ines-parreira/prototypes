@@ -86,7 +86,7 @@ export enum AnalyticsAiAgentShoppingAssistantChart {
 export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<AnalyticsAiAgentShoppingAssistantChart> =
     {
         id: ReportsIDs.AiAgentAnalyticsShoppingAssistant,
-        reportName: 'AI Agent Analytics Shopping Assistant',
+        reportName: 'Shopping Assistant',
         reportPath: STATS_ROUTES.AI_AGENT,
         charts: {
             [AnalyticsAiAgentShoppingAssistantChart.TotalSalesCard]: {

@@ -202,7 +202,7 @@ export const REVAMPED_REPORTS_CONFIG: ReportsModalConfig = REPORTS_CONFIG.map(
             return section
         }
         return {
-            category: 'AI & automation',
+            category: 'AI Agent',
             children: [
                 {
                     type: AnalyticsOverviewChart,
@@ -260,27 +260,52 @@ export const getComponentConfig = (
 ): {
     reportConfig: ReportConfig<string> | null
     chartConfig: ChartConfig | null
+    category: string | null
 } => {
-    const availableReports = _flatten(
-        (withLegacyReports
-            ? [
-                  ...REPORTS_CONFIG,
-                  ...REVAMPED_REPORTS_CONFIG,
-                  ...LEGACY_REPORTS_CONFIG,
-              ]
-            : [...REPORTS_CONFIG, ...REVAMPED_REPORTS_CONFIG]
-        ).map((report) => report.children),
-    )
-    for (const report of availableReports) {
-        if (Object.values(report.type).includes(chartId)) {
-            return {
-                reportConfig: report.config,
-                chartConfig: report.config.charts[chartId],
+    const allSections = withLegacyReports
+        ? [
+              ...REPORTS_CONFIG,
+              ...REVAMPED_REPORTS_CONFIG,
+              ...LEGACY_REPORTS_CONFIG,
+          ]
+        : [...REPORTS_CONFIG, ...REVAMPED_REPORTS_CONFIG]
+
+    for (const section of allSections) {
+        for (const report of section.children) {
+            if (Object.values(report.type).includes(chartId)) {
+                return {
+                    reportConfig: report.config,
+                    chartConfig: report.config.charts[chartId],
+                    category: section.category,
+                }
             }
         }
     }
 
-    return { reportConfig: null, chartConfig: null }
+    return {
+        reportConfig: null,
+        chartConfig: null,
+        category: null,
+    }
+}
+
+type MetricOriginParts = {
+    prefix: string | null
+    suffix: string
+}
+
+export const getMetricOriginPath = (
+    chartId: string,
+    withLegacyReports?: boolean,
+): MetricOriginParts | null => {
+    const { reportConfig, category } = getComponentConfig(
+        chartId,
+        withLegacyReports,
+    )
+    if (!reportConfig) return null
+
+    if (!category) return { prefix: null, suffix: reportConfig.reportName }
+    return { prefix: category, suffix: reportConfig.reportName }
 }
 
 export const getReportConfig = (

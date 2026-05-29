@@ -19,7 +19,7 @@ describe('AnalyticsAiAgentSupportAgentReportConfig', () => {
 
     it('should have correct report name', () => {
         expect(AnalyticsAiAgentSupportAgentReportConfig.reportName).toBe(
-            'AI Agent Analytics Support Agent',
+            'Support Agent',
         )
     })
 

@@ -1,7 +1,7 @@
 import { getPreviousUrl } from '@repo/routing'
 import { render } from '@repo/testing'
 import { QueryClient } from '@tanstack/react-query'
-import { screen } from '@testing-library/react'
+import { screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { ThemeProvider } from 'core/theme'
@@ -235,7 +235,9 @@ describe('AnalyticsAiAgentLayout', () => {
         renderComponent('/app/stats/ai-agent?ai-agent-tab=shopping-assistant')
         expect(screen.getByTestId('dashboard-renderer')).toBeInTheDocument()
         expect(
-            screen.getByText('AI Agent Analytics Shopping Assistant'),
+            within(screen.getByTestId('dashboard-renderer')).getByText(
+                'Shopping Assistant',
+            ),
         ).toBeInTheDocument()
     })
 

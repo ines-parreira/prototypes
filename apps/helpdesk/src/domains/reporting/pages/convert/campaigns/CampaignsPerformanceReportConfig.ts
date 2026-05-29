@@ -50,7 +50,7 @@ const CAMPAIGNS_REPORT_OPTIONAL_FILTERS = [
 
 export const CampaignsPerformanceReportConfig: ReportConfig<CampaignsChart> = {
     id: ReportsIDs.CampaignsReportConfig,
-    reportName: `${CAMPAIGNS_REPORT_TITLE} Performance Report`,
+    reportName: 'Campaigns',
     reportPath: STATS_ROUTES.CONVERT_CAMPAIGNS,
     reportFilters: {
         persistent: CAMPAIGNS_REPORT_PERSISTENT_FILTERS,

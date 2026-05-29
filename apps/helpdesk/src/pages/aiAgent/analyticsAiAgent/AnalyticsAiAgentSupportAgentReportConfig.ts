@@ -58,7 +58,7 @@ export enum AnalyticsAiAgentSupportAgentChart {
 export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiAgentSupportAgentChart> =
     {
         id: ReportsIDs.AiAgentAnalyticsSupportAgent,
-        reportName: 'AI Agent Analytics Support Agent',
+        reportName: 'Support Agent',
         reportPath: STATS_ROUTES.AI_AGENT,
         charts: {
             [AnalyticsAiAgentSupportAgentChart.TimeSavedCard]: {

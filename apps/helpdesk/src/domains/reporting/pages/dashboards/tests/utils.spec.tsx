@@ -47,7 +47,6 @@ import {
     AgentsShoutOutsConfig,
     TopPerformersChart,
 } from 'domains/reporting/pages/support-performance/agents/AgentsShoutOutsConfig'
-import { SECTION_TITLES } from 'domains/reporting/pages/support-performance/agents/constants'
 import {
     AGENT_PERSISTENT_FILTERS,
     AGENTS_OPTIONAL_FILTERS,
@@ -523,7 +522,7 @@ describe('getSearchConfig', () => {
                                 persistent: AGENT_PERSISTENT_FILTERS,
                                 optional: AGENTS_OPTIONAL_FILTERS,
                             },
-                            reportName: SECTION_TITLES.AGENT_PERFORMANCE,
+                            reportName: 'Agents',
                             reportPath: STATS_ROUTES.SUPPORT_PERFORMANCE_AGENTS,
                         },
                         type: AgentsChart,

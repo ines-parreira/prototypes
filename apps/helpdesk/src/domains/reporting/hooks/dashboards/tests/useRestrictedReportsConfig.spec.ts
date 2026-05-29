@@ -189,7 +189,7 @@ describe('useRestrictedReportsConfig', () => {
         ).toBeTruthy()
     })
 
-    it('should return AI & automation category when AiAgentAnalyticsCustomDashboards flag is enabled', () => {
+    it('should return revamped AI Agent section when AiAgentAnalyticsCustomDashboards flag is enabled', () => {
         mockUseFlagWithLoading.mockImplementation((flag: string) => {
             if (flag === FeatureFlagKey.AiAgentAnalyticsCustomDashboards)
                 return { value: true, isLoading: false }
@@ -198,17 +198,14 @@ describe('useRestrictedReportsConfig', () => {
 
         const { result } = renderHook(() => useRestrictedReportsConfig())
 
-        const aiAutomationSection = result.current.find(
-            (section) => section.category === 'AI & automation',
+        const aiAgentSection = result.current.find(
+            (section) => section.category === 'AI Agent',
         )
-        expect(aiAutomationSection).toBeTruthy()
-        expect(aiAutomationSection?.children).toContainEqual(
+        expect(aiAgentSection).toBeTruthy()
+        expect(aiAgentSection?.children).toContainEqual(
             expect.objectContaining({
                 config: AnalyticsAiAgentAllAgentsReportConfig,
             }),
         )
-        expect(
-            result.current.find((s) => s.category === 'AI Agent'),
-        ).toBeUndefined()
     })
 })

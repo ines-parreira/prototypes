@@ -1,9 +1,15 @@
 import { useCallback, useMemo, useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { MetricOriginContext } from '@repo/reporting'
 import { useParams } from 'react-router-dom'
 
-import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
+import {
+    Box,
+    LegacyLoadingSpinner as LoadingSpinner,
+    Text,
+    ToggleField,
+} from '@gorgias/axiom'
 
 import { useDashboardActions } from 'domains/reporting/hooks/dashboards/useDashboardActions'
 import { useDashboardById } from 'domains/reporting/hooks/dashboards/useDashboardById'
@@ -114,6 +120,8 @@ const DashboardPageContent = ({
         })
     }, [dashboard, updateDashboardHandler])
 
+    const [showMetricOrigin, setShowMetricOrigin] = useState(false)
+
     const [details, setDetails] = useState({
         name: dashboard.name,
         emoji: dashboard.emoji || '',
@@ -139,42 +147,51 @@ const DashboardPageContent = ({
     }
 
     return (
-        <StatsPageWrapper>
-            <StatsPageHeader
-                left={
-                    <DashboardName
-                        value={details}
-                        onChange={setDetails}
-                        onBlur={handleUpdateName}
-                        error={error}
-                    />
-                }
-                right={
-                    isCurrentUserTeamLead && (
-                        <DashboardActionButton
-                            setOpenModal={handleActionButtonClick}
-                            dashboard={dashboard}
+        <MetricOriginContext.Provider value={{ showMetricOrigin }}>
+            <StatsPageWrapper>
+                <StatsPageHeader
+                    left={
+                        <DashboardName
+                            value={details}
+                            onChange={setDetails}
+                            onBlur={handleUpdateName}
+                            error={error}
                         />
-                    )
-                }
-            />
-            <StatsPageContent>
-                {dashboard.children.length ? (
-                    <AnalyticsCustomDashboard
-                        dashboard={dashboard}
-                        pinnedFilter={dashboardPinnedFilter}
-                    />
-                ) : (
-                    <CreateDashboard />
-                )}
-                <DashboardsModal
-                    isOpen={isOpen}
-                    onCancel={closeModal}
-                    onSave={handleUpdateCharts}
-                    charts={dashboard.children}
-                    isLoading={isUpdateMutationLoading}
+                    }
+                    right={
+                        <Box alignItems="center" gap="sm">
+                            <ToggleField
+                                value={showMetricOrigin}
+                                onChange={() => setShowMetricOrigin((v) => !v)}
+                            />
+                            <Text>Show metric origin</Text>
+                            {isCurrentUserTeamLead && (
+                                <DashboardActionButton
+                                    setOpenModal={handleActionButtonClick}
+                                    dashboard={dashboard}
+                                />
+                            )}
+                        </Box>
+                    }
                 />
-            </StatsPageContent>
-        </StatsPageWrapper>
+                <StatsPageContent>
+                    {dashboard.children.length ? (
+                        <AnalyticsCustomDashboard
+                            dashboard={dashboard}
+                            pinnedFilter={dashboardPinnedFilter}
+                        />
+                    ) : (
+                        <CreateDashboard />
+                    )}
+                    <DashboardsModal
+                        isOpen={isOpen}
+                        onCancel={closeModal}
+                        onSave={handleUpdateCharts}
+                        charts={dashboard.children}
+                        isLoading={isUpdateMutationLoading}
+                    />
+                </StatsPageContent>
+            </StatsPageWrapper>
+        </MetricOriginContext.Provider>
     )
 }

@@ -19,9 +19,7 @@ describe('AnalyticsOverviewReportConfig', () => {
     })
 
     it('should have correct report name', () => {
-        expect(AnalyticsOverviewReportConfig.reportName).toBe(
-            'AI Agent Analytics Overview',
-        )
+        expect(AnalyticsOverviewReportConfig.reportName).toBe('Overview')
     })
 
     it('should have correct report path', () => {

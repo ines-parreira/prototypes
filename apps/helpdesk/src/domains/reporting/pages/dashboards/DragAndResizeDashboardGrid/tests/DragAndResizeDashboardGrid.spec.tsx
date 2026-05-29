@@ -3,6 +3,9 @@ import React from 'react'
 import { assumeMock, render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 
+import { MetricOriginContext } from '@repo/reporting'
+
+import { AutomateAiAgentsChart } from 'domains/reporting/pages/automate/ai-agent/AutomateAiAgentsReportConfig'
 import { DragAndResizeChart } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/DragAndResizeChart'
 import { DragAndResizeDashboardGrid } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/DragAndResizeDashboardGrid'
 import {
@@ -123,6 +126,15 @@ describe('DragAndResizeDashboardGrid', () => {
         ))
     })
 
+    beforeEach(() => {
+        capturedOnLayoutChange = null
+        capturedOnDragStop = null
+        capturedOnResizeStop = null
+        capturedOnBreakpointChange = null
+        capturedResizeConfig = null
+        capturedDragConfig = null
+    })
+
     afterEach(() => {
         jest.clearAllMocks()
     })
@@ -200,13 +212,13 @@ describe('DragAndResizeDashboardGrid', () => {
             name: /chart chart-1/i,
         })
         expect(chart1Element).toBeInTheDocument()
-        expect(chart1Element.parentElement).toHaveAttribute('data-grid')
+        expect(chart1Element.closest('[data-grid]')).toBeInTheDocument()
 
         const chart2Element = screen.getByRole('img', {
             name: /chart chart-2/i,
         })
         expect(chart2Element).toBeInTheDocument()
-        expect(chart2Element.parentElement).toHaveAttribute('data-grid')
+        expect(chart2Element.closest('[data-grid]')).toBeInTheDocument()
 
         expect(DragAndResizeChartMock).toHaveBeenCalledWith(
             {
@@ -248,8 +260,6 @@ describe('DragAndResizeDashboardGrid', () => {
             expect(dataGrid).toBeTruthy()
         }
 
-        // The first 4 charts should be in the first row (x: 0-3, y: 0)
-        // The 5th chart should be in the second row (x: 0, y: 1)
         expect(
             screen.getByRole('img', { name: /chart chart-1/i }),
         ).toBeInTheDocument()
@@ -510,13 +520,6 @@ describe('DragAndResizeDashboardGrid', () => {
     })
 
     describe('handleLayoutChange', () => {
-        beforeEach(() => {
-            capturedOnLayoutChange = null
-            capturedOnDragStop = null
-            capturedOnResizeStop = null
-            capturedOnBreakpointChange = null
-        })
-
         it('should skip update on initial mount', () => {
             const mockUpdateDashboardHandler = jest.fn()
             const { useDashboardActions } = jest.requireMock(
@@ -884,13 +887,6 @@ describe('DragAndResizeDashboardGrid', () => {
     })
 
     describe('Responsive Breakpoint Behavior', () => {
-        beforeEach(() => {
-            capturedOnLayoutChange = null
-            capturedOnDragStop = null
-            capturedOnResizeStop = null
-            capturedOnBreakpointChange = null
-        })
-
         it('should track breakpoint changes', () => {
             const chart = createMockChart('chart-1')
             const dashboard = createMockDashboard([chart])
@@ -1131,7 +1127,9 @@ describe('DragAndResizeDashboardGrid', () => {
                 name: /chart chart-with-layout/i,
             })
             const chart1Grid = JSON.parse(
-                chart1Element.parentElement!.getAttribute('data-grid')!,
+                chart1Element
+                    .closest('[data-grid]')!
+                    .getAttribute('data-grid')!,
             )
 
             expect(chart1Grid).toMatchObject({ x: 0, y: 0, w: 3, h: 9 })
@@ -1140,7 +1138,9 @@ describe('DragAndResizeDashboardGrid', () => {
                 name: /chart chart-without-layout/i,
             })
             const chart2Grid = JSON.parse(
-                chart2Element.parentElement!.getAttribute('data-grid')!,
+                chart2Element
+                    .closest('[data-grid]')!
+                    .getAttribute('data-grid')!,
             )
 
             expect(chart2Grid.x).toBeGreaterThanOrEqual(3)
@@ -1183,7 +1183,9 @@ describe('DragAndResizeDashboardGrid', () => {
                 name: /chart chart-1/i,
             })
             const chart1Grid = JSON.parse(
-                chart1Element.parentElement!.getAttribute('data-grid')!,
+                chart1Element
+                    .closest('[data-grid]')!
+                    .getAttribute('data-grid')!,
             )
             expect(chart1Grid).toMatchObject({ x: 0, y: 0, w: 3, h: 4 })
 
@@ -1191,7 +1193,9 @@ describe('DragAndResizeDashboardGrid', () => {
                 name: /chart chart-2/i,
             })
             const chart2Grid = JSON.parse(
-                chart2Element.parentElement!.getAttribute('data-grid')!,
+                chart2Element
+                    .closest('[data-grid]')!
+                    .getAttribute('data-grid')!,
             )
             expect(chart2Grid).toMatchObject({ x: 3, y: 0, w: 3, h: 9 })
         })
@@ -1218,7 +1222,7 @@ describe('DragAndResizeDashboardGrid', () => {
                 name: /chart chart-1/i,
             })
             const chartGrid = JSON.parse(
-                chartElement.parentElement!.getAttribute('data-grid')!,
+                chartElement.closest('[data-grid]')!.getAttribute('data-grid')!,
             )
 
             expect(chartGrid.x).toBeLessThanOrEqual(12)
@@ -1252,10 +1256,6 @@ describe('DragAndResizeDashboardGrid', () => {
     })
 
     describe('Custom Resize Handle', () => {
-        beforeEach(() => {
-            capturedResizeConfig = null
-        })
-
         it('should configure resize handles as southeast only', () => {
             const chart = createMockChart('chart-1')
             const dashboard = createMockDashboard([chart])
@@ -1280,10 +1280,6 @@ describe('DragAndResizeDashboardGrid', () => {
     })
 
     describe('Drag Handle', () => {
-        beforeEach(() => {
-            capturedDragConfig = null
-        })
-
         it('should configure drag handle to restrict drag to .drag-handle elements', () => {
             const chart = createMockChart('chart-1')
             const dashboard = createMockDashboard([chart])
@@ -1322,6 +1318,79 @@ describe('DragAndResizeDashboardGrid', () => {
 
             const dragHandles = container.querySelectorAll('.drag-handle')
             expect(dragHandles).toHaveLength(2)
+        })
+    })
+
+    describe('Metric Origin', () => {
+        it('does not show path labels when MetricOriginContext is not provided', () => {
+            const chart = createMockChart('automation_rate_kpichart')
+            const dashboard = createMockDashboard([chart])
+
+            render(<DragAndResizeDashboardGrid dashboard={dashboard} />)
+
+            expect(screen.queryByText(/AI Agent/)).not.toBeInTheDocument()
+        })
+
+        it('does not show path labels when showMetricOrigin is false', () => {
+            const chart = createMockChart('automation_rate_kpichart')
+            const dashboard = createMockDashboard([chart])
+
+            render(
+                <MetricOriginContext.Provider
+                    value={{ showMetricOrigin: false }}
+                >
+                    <DragAndResizeDashboardGrid dashboard={dashboard} />
+                </MetricOriginContext.Provider>,
+            )
+
+            expect(screen.queryByText(/AI Agent/)).not.toBeInTheDocument()
+        })
+
+        it('shows path labels above charts when showMetricOrigin is true', () => {
+            const chart = createMockChart('automation_rate_kpichart')
+            const dashboard = createMockDashboard([chart])
+
+            render(
+                <MetricOriginContext.Provider
+                    value={{ showMetricOrigin: true }}
+                >
+                    <DragAndResizeDashboardGrid dashboard={dashboard} />
+                </MetricOriginContext.Provider>,
+            )
+
+            expect(screen.getByText('AI Agent')).toBeInTheDocument()
+            expect(screen.getByText('Overview')).toBeInTheDocument()
+        })
+
+        it('does not show a path label for unrecognised chart IDs', () => {
+            const chart = createMockChart('unknown_chart_id')
+            const dashboard = createMockDashboard([chart])
+
+            render(
+                <MetricOriginContext.Provider
+                    value={{ showMetricOrigin: true }}
+                >
+                    <DragAndResizeDashboardGrid dashboard={dashboard} />
+                </MetricOriginContext.Provider>,
+            )
+
+            expect(screen.queryByText(/AI Agent/)).not.toBeInTheDocument()
+        })
+
+        it('shows path labels for legacy-only chart IDs when legacy reports are not disabled', () => {
+            const chart = createMockChart(AutomateAiAgentsChart.AiAgentTable)
+            const dashboard = createMockDashboard([chart])
+
+            render(
+                <MetricOriginContext.Provider
+                    value={{ showMetricOrigin: true }}
+                >
+                    <DragAndResizeDashboardGrid dashboard={dashboard} />
+                </MetricOriginContext.Provider>,
+            )
+
+            expect(screen.getByText('AI Agent')).toBeInTheDocument()
+            expect(screen.getByText('AI Agents')).toBeInTheDocument()
         })
     })
 })

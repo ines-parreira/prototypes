@@ -90,7 +90,7 @@ export enum VoiceOverviewChart {
 
 export const VoiceOverviewReportConfig: ReportConfig<VoiceOverviewChart> = {
     id: ReportsIDs.VoiceOverviewReportConfig,
-    reportName: 'Voice Overview Report',
+    reportName: 'Overview',
     reportPath: STATS_ROUTES.VOICE_OVERVIEW,
     charts: {
         [VoiceOverviewChart.VoiceCallCallerExperienceAverageWaitTimeChart]: {

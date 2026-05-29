@@ -11,9 +11,15 @@ import type { Breakpoint, Layout } from 'react-grid-layout'
 import 'react-grid-layout/css/styles.css'
 
 import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
+import { useMetricOriginContext } from '@repo/reporting'
+
+import { Text } from '@gorgias/axiom'
 
 import { useDashboardActions } from 'domains/reporting/hooks/dashboards/useDashboardActions'
-import { getComponentConfig } from 'domains/reporting/pages/dashboards/config'
+import {
+    getComponentConfig,
+    getMetricOriginPath,
+} from 'domains/reporting/pages/dashboards/config'
 import { getChartConstraints } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/chartLayoutConstraints'
 import { calculateChartPositionsWithOccupied } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/chartPlacementUtils'
 import type { OccupiedGrid } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/chartPlacementUtils'
@@ -42,13 +48,56 @@ const COLS = 12
 const renderCharts = (
     charts: DashboardChartSchema[],
     dashboard: DashboardSchema,
+    showMetricOrigin: boolean,
+    isNewScreensEnabled: boolean | undefined,
+    isLegacyDisabled: boolean | undefined,
 ): React.ReactNode[] =>
-    charts.map((chart) => (
-        <div key={chart.config_id}>
-            <div className="drag-handle" aria-hidden="true" />
-            <DragAndResizeChart schema={chart} dashboard={dashboard} />
-        </div>
-    ))
+    charts.map((chart) => {
+        const effectiveId = applyChartMigration(
+            chart.config_id,
+            isNewScreensEnabled ?? false,
+            isLegacyDisabled ?? false,
+        )
+        const withLegacy = !(isLegacyDisabled ?? false)
+        const metricOrigin =
+            showMetricOrigin && effectiveId
+                ? getMetricOriginPath(effectiveId, withLegacy)
+                : null
+
+        return (
+            <div key={chart.config_id}>
+                <div className={css.chartItemContent}>
+                    {metricOrigin && (
+                        <Text
+                            size="sm"
+                            color="content-neutral-secondary"
+                            wrap="nowrap"
+                            className={css.metricOriginPath}
+                        >
+                            {metricOrigin.prefix && (
+                                <>
+                                    {metricOrigin.prefix}
+                                    <span className={css.metricOriginSeparator}>
+                                        {' > '}
+                                    </span>
+                                </>
+                            )}
+                            <span className={css.metricOriginSuffix}>
+                                {metricOrigin.suffix}
+                            </span>
+                        </Text>
+                    )}
+                    <div className={css.chartCardArea}>
+                        <div className="drag-handle" aria-hidden="true" />
+                        <DragAndResizeChart
+                            schema={chart}
+                            dashboard={dashboard}
+                        />
+                    </div>
+                </div>
+            </div>
+        )
+    })
 
 export const DragAndResizeDashboardGrid = ({
     dashboard,
@@ -66,6 +115,9 @@ export const DragAndResizeDashboardGrid = ({
     const { value: isLegacyDisabled } = useFlagWithLoading(
         FeatureFlagKey.AiAgentAnalyticsDisableLegacyReports,
     )
+    const { showMetricOrigin } = useMetricOriginContext() ?? {
+        showMetricOrigin: false,
+    }
 
     const visibleCharts = useMemo(
         () =>
@@ -255,8 +307,21 @@ export const DragAndResizeDashboardGrid = ({
     )
 
     const renderedChildren = useMemo(
-        () => renderCharts(visibleCharts, dashboard),
-        [visibleCharts, dashboard],
+        () =>
+            renderCharts(
+                visibleCharts,
+                dashboard,
+                showMetricOrigin,
+                isNewScreensEnabled,
+                isLegacyDisabled,
+            ),
+        [
+            visibleCharts,
+            dashboard,
+            showMetricOrigin,
+            isNewScreensEnabled,
+            isLegacyDisabled,
+        ],
     )
 
     if (!mounted) {

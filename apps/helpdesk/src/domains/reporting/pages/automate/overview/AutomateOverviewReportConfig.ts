@@ -37,10 +37,7 @@ import {
     ChartType,
     DataExportFormat,
 } from 'domains/reporting/pages/dashboards/types'
-import {
-    AUTOMATED_INTERACTIONS_BY_FEATURE_LABEL,
-    PAGE_TITLE_AUTOMATE_PAYWALL,
-} from 'domains/reporting/pages/self-service/constants'
+import { AUTOMATED_INTERACTIONS_BY_FEATURE_LABEL } from 'domains/reporting/pages/self-service/constants'
 import {
     fetchAutomatePerformanceReport,
     fetchPerformanceByFeatureReport,
@@ -85,7 +82,7 @@ export enum AutomateOverviewChart {
 export const AutomateOverviewReportConfig: ReportConfig<AutomateOverviewChart> =
     {
         id: ReportsIDs.AutomateOverviewReportConfig,
-        reportName: PAGE_TITLE_AUTOMATE_PAYWALL,
+        reportName: 'Overview',
         reportPath: STATS_ROUTES.AI_AGENT_OVERVIEW,
         charts: {
             [AutomateOverviewChart.AutomationRateKPIChart]: {

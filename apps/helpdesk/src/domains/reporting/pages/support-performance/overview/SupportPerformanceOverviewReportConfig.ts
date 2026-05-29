@@ -70,7 +70,7 @@ export enum OverviewChart {
 export const SupportPerformanceOverviewReportConfig: ReportConfig<OverviewChart> =
     {
         id: ReportsIDs.SupportPerformanceOverviewReportConfig,
-        reportName: SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE,
+        reportName: 'Overview',
         reportPath: STATS_ROUTES.SUPPORT_PERFORMANCE_OVERVIEW,
         charts: {
             [OverviewChart.CustomerSatisfactionTrendCard]: {
