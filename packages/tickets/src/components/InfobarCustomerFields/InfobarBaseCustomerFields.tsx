@@ -18,6 +18,8 @@ import {
 
 import css from './InfobarCustomerFields.less'
 
+const NOTE_VISIBLE_LINE_COUNT = 5
+
 interface InfobarBaseCustomerFieldsProps {
     customer: TicketCustomer
     ticketId?: string
@@ -58,6 +60,7 @@ export function InfobarBaseCustomerFields({
                         placeholder="+ Add"
                         ariaLabel="Note"
                         type="textarea"
+                        maxRows={NOTE_VISIBLE_LINE_COUNT}
                         showTooltip
                     />
                 </FieldRow>

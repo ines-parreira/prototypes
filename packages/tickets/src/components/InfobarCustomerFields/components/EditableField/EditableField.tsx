@@ -32,16 +32,19 @@ type EditableFieldProps<T extends string | number> = {
                 type?: 'text'
                 minValue?: never
                 maxValue?: never
+                maxRows?: never
             }
           | {
-                type?: 'textarea'
+                type: 'textarea'
                 minValue?: never
                 maxValue?: never
+                maxRows?: number
             }
     : {
           type: 'number'
           minValue?: number
           maxValue?: number
+          maxRows?: never
       })
 
 export function EditableField<T extends string | number = string | number>(
@@ -57,6 +60,7 @@ export function EditableField<T extends string | number = string | number>(
         type = 'text',
         minValue,
         maxValue,
+        maxRows = 3,
         autoFocus,
         onBlur,
         ariaLabel,
@@ -223,7 +227,7 @@ export function EditableField<T extends string | number = string | number>(
                         error={error}
                         isInvalid={isInvalid}
                         autoResize
-                        maxRows={3}
+                        maxRows={maxRows}
                     />
                 }
             >
