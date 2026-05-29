@@ -1,4 +1,6 @@
-import { Box, Card, Heading, Icon, Tag, TagColor, Text } from '@gorgias/axiom'
+import { Box, Card, Heading, Tag, TagColor, Text } from '@gorgias/axiom'
+
+import { SkillsVideo } from '../SkillsVideo/SkillsVideo'
 
 import css from './WizardSkillsBanner.less'
 
@@ -25,14 +27,6 @@ export const WizardSkillsBanner = () => (
                 everything skills don&apos;t cover.
             </Text>
         </Box>
-        <Box
-            width={288}
-            height={162}
-            alignItems="center"
-            justifyContent="center"
-            className={css.placeholder}
-        >
-            <Icon name="media-play-circle" size="lg" />
-        </Box>
+        <SkillsVideo />
     </Card>
 )

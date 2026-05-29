@@ -8,12 +8,13 @@ import {
     DisclosureHeader,
     DisclosurePanel,
     Heading,
-    Icon,
     OverlayContent,
     OverlayHeader,
     SidePanel,
     Text,
 } from '@gorgias/axiom'
+
+import { SkillsVideo } from '../SkillsVideo/SkillsVideo'
 
 import css from './HowSkillsWorkSidePanel.less'
 
@@ -98,9 +99,7 @@ export const HowSkillsWorkSidePanel = ({
                 }
             />
             <OverlayContent flexDirection="column" gap="lg">
-                <Box className={css.videoPlaceholder}>
-                    <Icon name="media-play-circle" size="lg" alt="" />
-                </Box>
+                <SkillsVideo inline />
                 <Box flexDirection="column" gap="xs" className={css.sections}>
                     {SECTIONS.map((section) => (
                         <Card key={section.id}>

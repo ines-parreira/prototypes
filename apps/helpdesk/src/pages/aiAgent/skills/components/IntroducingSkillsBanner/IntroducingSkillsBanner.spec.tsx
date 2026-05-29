@@ -41,14 +41,16 @@ describe('IntroducingSkillsBanner', () => {
     it('renders a close button', () => {
         render(<IntroducingSkillsBanner shopName={SHOP_NAME} />)
 
-        expect(screen.getByRole('button')).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: /dismiss/i }),
+        ).toBeInTheDocument()
     })
 
     it('hides the banner after clicking the close button', async () => {
         const user = userEvent.setup()
         render(<IntroducingSkillsBanner shopName={SHOP_NAME} />)
 
-        await user.click(screen.getByRole('button'))
+        await user.click(screen.getByRole('button', { name: /dismiss/i }))
 
         expect(
             screen.queryByRole('heading', { name: /introducing skills/i }),
@@ -59,7 +61,7 @@ describe('IntroducingSkillsBanner', () => {
         const user = userEvent.setup()
         render(<IntroducingSkillsBanner shopName={SHOP_NAME} />)
 
-        await user.click(screen.getByRole('button'))
+        await user.click(screen.getByRole('button', { name: /dismiss/i }))
 
         expect(localStorage.getItem(DISMISSED_KEY)).toBe('true')
     })

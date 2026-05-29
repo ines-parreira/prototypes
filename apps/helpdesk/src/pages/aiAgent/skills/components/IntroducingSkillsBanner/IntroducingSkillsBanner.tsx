@@ -2,6 +2,8 @@ import { useState } from 'react'
 
 import { Box, Button, Card, Heading, Tag, TagColor, Text } from '@gorgias/axiom'
 
+import { SkillsVideo } from '../SkillsVideo/SkillsVideo'
+
 import css from './IntroducingSkillsBanner.less'
 
 const getDismissedKey = (shopName: string) =>
@@ -38,6 +40,7 @@ export const IntroducingSkillsBanner: React.FC<Props> = ({ shopName }) => {
                     variant="tertiary"
                     size="sm"
                     icon="close"
+                    aria-label="Dismiss"
                 />
             </Box>
             <Box gap="80px" justifyContent="space-between">
@@ -57,12 +60,7 @@ export const IntroducingSkillsBanner: React.FC<Props> = ({ shopName }) => {
                         don&apos;t cover.
                     </Text>
                 </Box>
-                <Box
-                    width={288}
-                    height={162}
-                    flexShrink={0}
-                    className={css.placeholder}
-                />
+                <SkillsVideo />
             </Box>
         </Card>
     )
