@@ -94,6 +94,7 @@ export type OrderCardOrder = {
     financial_status: FinancialStatusValue
     fulfillment_status: FulfillmentStatusValue | null
     line_items: OrderCardLineItem[]
+    created_at?: string
     cancelled_at?: string | null
     status?: DraftStatusValue
     invoice_sent_at?: string | null

@@ -1,4 +1,4 @@
-export { OrderCard, OrderCardSkeleton } from './Order'
+export { OrderCard, OrderCardSkeleton, OrderDateLabel } from './Order'
 export { MetafieldValue } from './Metafield'
 export * from './Metafield/metafieldUtils'
 export * from './Metafield/types'

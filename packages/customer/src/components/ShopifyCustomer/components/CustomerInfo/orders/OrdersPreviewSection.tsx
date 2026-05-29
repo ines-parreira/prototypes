@@ -58,7 +58,7 @@ export function OrdersPreviewSection({
 
                 {actionsList}
 
-                <OrderCard order={placeholderOrder} displayedDate="Friday" />
+                <OrderCard order={placeholderOrder} />
             </Box>
         </div>
     )

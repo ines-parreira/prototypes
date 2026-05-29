@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef } from 'react'
 
-import { formatTicketTime, TicketListItem } from '@repo/tickets'
+import { TicketListItem } from '@repo/tickets'
 import type { EnrichedTicket } from '@repo/tickets'
 
 import { Box, Skeleton, Text } from '@gorgias/axiom'
@@ -126,9 +126,6 @@ export function TimelineList({
                                 <li key={`order-${item.order.id}`}>
                                     <TimelineOrderCard
                                         order={item.order}
-                                        displayedDate={formatTicketTime(
-                                            item.order.created_at,
-                                        )}
                                         productsMap={productsMap}
                                         onSelect={onSelectOrder}
                                     />

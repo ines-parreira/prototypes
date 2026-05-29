@@ -66,6 +66,12 @@ export function OrderDetailsSection({
 
                         if (!rendered) return null
 
+                        const rawCopy =
+                            field.copyValue?.(undefined, context) ?? undefined
+                        const canCopy = Boolean(
+                            field.copyable && rawCopy && rawCopy.length > 0,
+                        )
+
                         return (
                             <Box
                                 key={field.id}
@@ -78,7 +84,17 @@ export function OrderDetailsSection({
                                 <Text as="span" size="md" className={css.label}>
                                     {field.label}
                                 </Text>
-                                {rendered}
+                                {canCopy && rawCopy ? (
+                                    <CopyableField
+                                        value={rawCopy}
+                                        ariaLabel={`Copy ${field.label}`}
+                                        inline
+                                    >
+                                        {rendered}
+                                    </CopyableField>
+                                ) : (
+                                    rendered
+                                )}
                             </Box>
                         )
                     }

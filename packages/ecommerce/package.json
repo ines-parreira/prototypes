@@ -24,6 +24,7 @@
         "@gorgias/ecommerce-storage-queries": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-types": "catalog:rest-api-sdk",
         "@repo/hooks": "workspace:*",
+        "@repo/preferences": "workspace:*",
         "@repo/utils": "workspace:*",
         "pluralize": "^8.0.0"
     },
@@ -34,6 +35,7 @@
         "@gorgias/helpdesk-types": "catalog:rest-api-sdk",
         "@repo/config": "workspace:*",
         "@repo/hooks": "workspace:*",
+        "@repo/preferences": "workspace:*",
         "@repo/testing": "workspace:*",
         "@repo/utils": "workspace:*",
         "@tanstack/react-query": "catalog:rest-api-sdk",

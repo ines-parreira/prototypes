@@ -1,5 +1,7 @@
-import { CopyableField } from '@repo/ecommerce/shopify/components'
-import { formatOrderDate } from '@repo/ecommerce/shopify/utils'
+import {
+    CopyableField,
+    OrderDateLabel,
+} from '@repo/ecommerce/shopify/components'
 
 import { OrderNote } from '../orders/OrderNote'
 import { OrderTags } from '../orders/OrderTags'
@@ -72,20 +74,15 @@ export const FIELD_DEFINITIONS: Record<string, OrderFieldConfig> = {
     },
     created_at: {
         id: 'created_at',
-        type: 'readonly',
+        type: 'component',
         label: 'Created',
         copyable: true,
         getValue: (ctx) => ctx.order.created_at,
         copyValue: (_, ctx) => ctx.order.created_at,
-        formatValue: (_, ctx) =>
-            ctx.order.created_at
-                ? formatOrderDate(
-                      ctx.order.created_at,
-                      ctx.dateFormat,
-                      ctx.timeFormat,
-                      ctx.timezone,
-                  )
-                : '-',
+        render: (ctx) =>
+            ctx.order.created_at ? (
+                <OrderDateLabel createdAt={ctx.order.created_at} />
+            ) : null,
     },
     note: {
         id: 'note',

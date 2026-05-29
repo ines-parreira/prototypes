@@ -1,15 +1,17 @@
 import { Box, CardHeader, Icon, Text } from '@gorgias/axiom'
 
+import { OrderDateLabel } from './OrderDateLabel'
+
 import css from './OrderCard.less'
 
 type OrderCardHeaderProps = {
     orderName: string
-    displayedDate: string
+    createdAt?: string
 }
 
 export function OrderCardHeader({
     orderName,
-    displayedDate,
+    createdAt,
 }: OrderCardHeaderProps) {
     return (
         <CardHeader
@@ -32,11 +34,11 @@ export function OrderCardHeader({
                         </Text>
                     </Box>
 
-                    <Box flexShrink="0" className={css.noWrap}>
-                        <Text variant="regular" className={css.dateText}>
-                            {displayedDate}
-                        </Text>
-                    </Box>
+                    {createdAt && (
+                        <Box flexShrink="0" className={css.noWrap}>
+                            <OrderDateLabel createdAt={createdAt} />
+                        </Box>
+                    )}
                 </Box>
             }
         />

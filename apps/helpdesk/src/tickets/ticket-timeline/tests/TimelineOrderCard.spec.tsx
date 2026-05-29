@@ -12,6 +12,14 @@ jest.mock('@repo/feature-flags', () => ({
     useHelpdeskV2MS2Flag: jest.fn(),
 }))
 
+jest.mock('@repo/preferences', () => ({
+    useUserDateTimePreferences: () => ({
+        dateFormat: 'en_US',
+        timeFormat: '12h',
+        timezone: 'UTC',
+    }),
+}))
+
 const mockUseHelpdeskV2MS2Flag = jest.mocked(useHelpdeskV2MS2Flag)
 
 const createMockOrder = (overrides: Partial<Order>): Order =>
@@ -47,7 +55,6 @@ const renderOrderCard = (order: Order, onSelect?: (order: Order) => void) => {
         <TimelineOrderCard
             order={order}
             productsMap={productsMap}
-            displayedDate="Jan 1, 2024"
             onSelect={onSelect}
         />,
     )
@@ -211,13 +218,7 @@ describe('TimelineOrderCard - Image Display (getLineItemImageSrc)', () => {
         })
 
         const productsMap = new Map()
-        render(
-            <TimelineOrderCard
-                order={order}
-                productsMap={productsMap}
-                displayedDate="Jan 1, 2024"
-            />,
-        )
+        render(<TimelineOrderCard order={order} productsMap={productsMap} />)
 
         const images = screen.getAllByRole('img')
         const productImage = images.find(
@@ -278,13 +279,7 @@ describe('TimelineOrderCard - Image Display (getLineItemImageSrc)', () => {
         const productsMap = new Map()
         productsMap.set(100, product)
 
-        render(
-            <TimelineOrderCard
-                order={order}
-                productsMap={productsMap}
-                displayedDate="Jan 1, 2024"
-            />,
-        )
+        render(<TimelineOrderCard order={order} productsMap={productsMap} />)
 
         const images = screen.getAllByRole('img')
         const productImage = images.find(
@@ -339,13 +334,7 @@ describe('TimelineOrderCard - Image Display (getLineItemImageSrc)', () => {
         const productsMap = new Map()
         productsMap.set(100, product)
 
-        render(
-            <TimelineOrderCard
-                order={order}
-                productsMap={productsMap}
-                displayedDate="Jan 1, 2024"
-            />,
-        )
+        render(<TimelineOrderCard order={order} productsMap={productsMap} />)
 
         const images = screen.getAllByRole('img')
         const productImage = images.find((img) =>
@@ -388,13 +377,7 @@ describe('TimelineOrderCard - Image Display (getLineItemImageSrc)', () => {
         const productsMap = new Map()
         productsMap.set(100, product)
 
-        render(
-            <TimelineOrderCard
-                order={order}
-                productsMap={productsMap}
-                displayedDate="Jan 1, 2024"
-            />,
-        )
+        render(<TimelineOrderCard order={order} productsMap={productsMap} />)
 
         const images = screen.getAllByRole('img')
         const productImage = images.find(
@@ -472,13 +455,7 @@ describe('TimelineOrderCard - Image Display (getLineItemImageSrc)', () => {
         productsMap.set(100, product1)
         productsMap.set(200, product2)
 
-        render(
-            <TimelineOrderCard
-                order={order}
-                productsMap={productsMap}
-                displayedDate="Jan 1, 2024"
-            />,
-        )
+        render(<TimelineOrderCard order={order} productsMap={productsMap} />)
 
         const images = screen.getAllByRole('img')
         const product1Image = images.find(

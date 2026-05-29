@@ -2363,6 +2363,9 @@ importers:
       '@repo/hooks':
         specifier: workspace:*
         version: link:../hooks
+      '@repo/preferences':
+        specifier: workspace:*
+        version: link:../preferences
       '@repo/testing':
         specifier: workspace:*
         version: link:../testing

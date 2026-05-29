@@ -11,7 +11,6 @@ import css from './OrderCard.less'
 
 type OrderCardProps = {
     order: OrderCardOrder
-    displayedDate: string
     productsMap?: Map<number, OrderCardProduct>
     onClick?: () => void
     isDraftOrder?: boolean
@@ -19,7 +18,6 @@ type OrderCardProps = {
 
 export function OrderCard({
     order,
-    displayedDate,
     productsMap,
     onClick,
     isDraftOrder,
@@ -35,7 +33,7 @@ export function OrderCard({
             >
                 <OrderCardHeader
                     orderName={order.name}
-                    displayedDate={displayedDate}
+                    createdAt={order.created_at}
                 />
                 <OrderCardProducts
                     lineItems={order.line_items}

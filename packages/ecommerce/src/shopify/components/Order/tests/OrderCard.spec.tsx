@@ -1,9 +1,19 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
+import { DateFormatType, TimeFormatType } from '@repo/utils'
+
 import { FinancialStatus, FulfillmentStatus } from '../../../types'
 import type { OrderCardOrder, OrderCardProduct } from '../../../types'
 import { OrderCard } from '../OrderCard'
+
+vi.mock('@repo/preferences', () => ({
+    useUserDateTimePreferences: () => ({
+        dateFormat: DateFormatType.en_US,
+        timeFormat: TimeFormatType.AmPm,
+        timezone: 'UTC',
+    }),
+}))
 
 const mockOrder: OrderCardOrder = {
     name: '#1234',
@@ -11,6 +21,9 @@ const mockOrder: OrderCardOrder = {
     total_price: '99.99',
     financial_status: FinancialStatus.Paid,
     fulfillment_status: null,
+    // Fixed ISO date old enough (> 7 days) that formatOrderDate returns a
+    // compact date string rather than a relative label.
+    created_at: '2024-01-01T00:00:00Z',
     line_items: [
         {
             title: 'Product 1',
@@ -25,7 +38,6 @@ const mockOrder: OrderCardOrder = {
     ],
 }
 
-const mockDisplayedDate = 'Jan 1, 2024'
 const mockOnClick = vi.fn()
 
 describe('OrderCard', () => {
@@ -33,15 +45,9 @@ describe('OrderCard', () => {
         ['order name', '#1234'],
         ['item count', '2 items'],
         ['total price with currency symbol', '$99.99'],
-        ['displayed date', 'Jan 1, 2024'],
+        ['displayed date', '01/01/2024'],
     ])('should render %s', (_, expectedText) => {
-        render(
-            <OrderCard
-                order={mockOrder}
-                displayedDate={mockDisplayedDate}
-                onClick={mockOnClick}
-            />,
-        )
+        render(<OrderCard order={mockOrder} onClick={mockOnClick} />)
         expect(screen.getByText(expectedText)).toBeInTheDocument()
     })
 
@@ -67,25 +73,13 @@ describe('OrderCard', () => {
                 financial_status: financialStatus,
                 fulfillment_status: fulfillmentStatus,
             }
-            render(
-                <OrderCard
-                    order={order}
-                    displayedDate={mockDisplayedDate}
-                    onClick={mockOnClick}
-                />,
-            )
+            render(<OrderCard order={order} onClick={mockOnClick} />)
             expect(screen.getByText(expectedLabel)).toBeInTheDocument()
         },
     )
 
     it('should render product images with alt text', () => {
-        render(
-            <OrderCard
-                order={mockOrder}
-                displayedDate={mockDisplayedDate}
-                onClick={mockOnClick}
-            />,
-        )
+        render(<OrderCard order={mockOrder} onClick={mockOnClick} />)
         expect(screen.getByAltText('Product 1')).toBeInTheDocument()
         expect(screen.getByAltText('Product 2')).toBeInTheDocument()
     })
@@ -100,13 +94,7 @@ describe('OrderCard', () => {
                 { title: 'Product 5', product_id: 105, variant_id: 205 },
             ],
         }
-        render(
-            <OrderCard
-                order={orderWithManyItems}
-                displayedDate={mockDisplayedDate}
-                onClick={mockOnClick}
-            />,
-        )
+        render(<OrderCard order={orderWithManyItems} onClick={mockOnClick} />)
         expect(screen.getByText(/\+2/)).toBeInTheDocument()
     })
 
@@ -126,7 +114,6 @@ describe('OrderCard', () => {
         render(
             <OrderCard
                 order={mockOrder}
-                displayedDate={mockDisplayedDate}
                 productsMap={productsMap}
                 onClick={mockOnClick}
             />,
@@ -160,7 +147,6 @@ describe('OrderCard', () => {
         render(
             <OrderCard
                 order={orderWithManyItems}
-                displayedDate={mockDisplayedDate}
                 productsMap={productsMap}
                 onClick={mockOnClick}
             />,
@@ -191,7 +177,6 @@ describe('OrderCard', () => {
                             status,
                             invoice_sent_at: invoiceSentAt,
                         }}
-                        displayedDate={mockDisplayedDate}
                         isDraftOrder
                     />,
                 )
@@ -208,7 +193,6 @@ describe('OrderCard', () => {
                         name: '#D1002',
                         invoice_sent_at: '2024-01-15T10:00:00Z',
                     }}
-                    displayedDate={mockDisplayedDate}
                     isDraftOrder
                 />,
             )
@@ -224,7 +208,6 @@ describe('OrderCard', () => {
                         cancelled_at: '2024-01-15T10:00:00Z',
                         fulfillment_status: null,
                     }}
-                    displayedDate={mockDisplayedDate}
                     isDraftOrder
                 />,
             )
@@ -242,7 +225,6 @@ describe('OrderCard', () => {
                         status: 'open',
                         invoice_sent_at: null,
                     }}
-                    displayedDate={mockDisplayedDate}
                 />,
             )
             expect(screen.getByText('Paid')).toBeInTheDocument()
