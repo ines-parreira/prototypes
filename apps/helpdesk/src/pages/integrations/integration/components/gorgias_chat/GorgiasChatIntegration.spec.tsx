@@ -460,6 +460,7 @@ describe('<GorgiasChatIntegration />', () => {
                 shouldShowChatSettingsRevamp: true,
                 shouldShowNonAiAgentChatSettingsRevamp: true,
                 isNonAiAgentChat2RevampEnabled: true,
+                isLoading: false,
             })
 
             render(<GorgiasChatIntegration {...defaultProps} />)
@@ -477,6 +478,24 @@ describe('<GorgiasChatIntegration />', () => {
                 shouldShowChatSettingsRevamp: false,
                 shouldShowNonAiAgentChatSettingsRevamp: false,
                 isNonAiAgentChat2RevampEnabled: false,
+                isLoading: false,
+            })
+
+            render(<GorgiasChatIntegration {...defaultProps} />)
+
+            expect(mockUseChatPreviewPanel).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    shouldShowChatVersionSwitcher: false,
+                }),
+            )
+        })
+
+        it('passes shouldShowChatVersionSwitcher as false while the feature flags are loading', () => {
+            mockUseShouldShowChatSettingsRevamp.mockReturnValue({
+                shouldShowChatSettingsRevamp: true,
+                shouldShowNonAiAgentChatSettingsRevamp: true,
+                isNonAiAgentChat2RevampEnabled: true,
+                isLoading: true,
             })
 
             render(<GorgiasChatIntegration {...defaultProps} />)

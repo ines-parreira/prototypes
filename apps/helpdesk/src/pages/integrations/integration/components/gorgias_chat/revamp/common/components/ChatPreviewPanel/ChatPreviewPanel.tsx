@@ -8,57 +8,38 @@ import {
     useState,
 } from 'react'
 
-import {
-    Banner,
-    Box,
-    ButtonGroup,
-    ButtonGroupItem,
-    Icon,
-    Text,
-    TextVariant,
-} from '@gorgias/axiom'
+import { Banner, Box, ButtonGroup, ButtonGroupItem } from '@gorgias/axiom'
 
 import {
     GORGIAS_CHAT_SSP_TEXTS,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
 } from 'config/integrations/gorgias_chat'
 import type { LANGUAGE } from 'constants/languages'
-import type {
-    GorgiasChatPosition,
-    GorgiasChatPreviewApplicationSettings,
-} from 'models/integration/types'
-import type {
-    GorgiasChatPreviewOrdersOptions,
-    GorgiasChatPreviewSelfServiceFlows,
-    GorgiasChatWorkflowEntrypoint,
-} from 'models/integration/types/gorgiasChat'
 
+import type {
+    ChatDisplayVersion,
+    ChatPreviewBusinessHoursMode,
+    ChatPreviewPage,
+    ChatPreviewPanelHandle,
+} from './ChatPreviewPanel.types'
 import { ChatPreview } from './components/ChatPreview/ChatPreview'
 import type { ChatPreviewHandle } from './components/ChatPreview/ChatPreview'
 import { ChatPreviewDefault } from './components/ChatPreviewDefault/ChatPreviewDefault'
+import { ChatPreviewPanelHeader } from './components/ChatPreviewPanelHeader/ChatPreviewPanelHeader'
+import { useGorgiasChatApi } from './hooks/useGorgiasChatApi'
 
 import css from './ChatPreviewPanel.less'
 
-export type ChatDisplayVersion = 'current' | 'new'
-
-export type ChatPreviewPage =
-    | 'homepage'
-    | 'conversation'
-    | 'orders'
-    | 'track'
-    | 'report'
-    | 'reported-issue'
-
-export type ChatPreviewPageOptions = {
-    orderName?: string
-    reasonKey?: string
-    responseText?: string
-    showHelpfulPrompt?: boolean
+export type {
+    ChatPreviewPageOptions,
+    SimulateConversationMessage,
+} from './ChatPreviewPanel.types'
+export type {
+    ChatDisplayVersion,
+    ChatPreviewBusinessHoursMode,
+    ChatPreviewPage,
+    ChatPreviewPanelHandle,
 }
-
-export type ChatPreviewBusinessHoursMode =
-    | 'during-business-hours'
-    | 'outside-business-hours'
 
 const PREVIEW_BUSINESS_HOURS_INPUT: Record<
     ChatPreviewBusinessHoursMode,
@@ -91,47 +72,9 @@ const BUSINESS_HOURS_PREVIEW_OPTIONS: {
     id: ChatPreviewBusinessHoursMode
     label: string
 }[] = [
-    {
-        id: 'during-business-hours',
-        label: 'During Business Hours',
-    },
-    {
-        id: 'outside-business-hours',
-        label: 'Outside Business Hours',
-    },
+    { id: 'during-business-hours', label: 'During Business Hours' },
+    { id: 'outside-business-hours', label: 'Outside Business Hours' },
 ]
-
-export type SimulateConversationMessage = {
-    text: string
-    isHtml?: boolean
-    fromAgent: boolean
-    isBot: boolean
-}
-
-export type ChatPreviewPanelHandle = {
-    displayPage: (
-        page: ChatPreviewPage,
-        options?: ChatPreviewPageOptions,
-    ) => void
-    updatePosition: (position: GorgiasChatPosition) => void
-    updateSettings: (settings: GorgiasChatPreviewApplicationSettings) => void
-    updateTexts: (texts: Record<string, string>) => void
-    updatePreviewTexts: (texts: Record<string, string>) => void
-    updateSSPTexts: (texts: Record<string, string>) => void
-    closeChat: () => void
-    openChat: () => void
-    updateWorkflowEntryPoints: (
-        workflowEntrypoints: GorgiasChatWorkflowEntrypoint[],
-    ) => void
-    updateOrderManagementFlows: (
-        flows: GorgiasChatPreviewSelfServiceFlows,
-    ) => void
-    reloadPreview: () => void
-    updatePreviewOrders: (options: GorgiasChatPreviewOrdersOptions) => void
-    simulateConversation: (messages: SimulateConversationMessage[]) => void
-    setConversationMessages: (messages: SimulateConversationMessage[]) => void
-    isLoaded: boolean
-}
 
 type Props = {
     appId: string | null
@@ -195,6 +138,8 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
         const [businessHoursMode, setBusinessHoursMode] =
             useState<ChatPreviewBusinessHoursMode>('during-business-hours')
 
+        const chatApi = useGorgiasChatApi(chatPreviewRef)
+
         const shouldRenderBusinessHoursToggle =
             showBusinessHoursToggle &&
             Boolean(appId || supportDefaultChatPreview)
@@ -203,78 +148,14 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
             return `${reloadKey}${locale ? '-' + locale : ''}`
         }, [reloadKey, locale])
 
-        const withGorgiasChat = (
-            callback: (
-                gorgiasChat: NonNullable<Window['GorgiasChat']>,
-            ) => void | Promise<void>,
-        ): void | Promise<void> => {
-            const ref = chatPreviewRef.current
-            if (!ref?.isLoaded || ref?.hasError) return
-
-            const gorgiasChat =
-                ref.iframeRef.current?.contentWindow?.GorgiasChat
-            if (!gorgiasChat) return
-
-            try {
-                const result = callback(gorgiasChat)
-                if (result instanceof Promise) {
-                    return result.catch((error) => {
-                        if (process.env.NODE_ENV === 'development') {
-                            console.error(error)
-                        }
-                    })
+        const displayPage: ChatPreviewPanelHandle['displayPage'] = useCallback(
+            (page, options) => {
+                if (page === 'homepage' || page === 'conversation') {
+                    setSelectedPage(page)
                 }
-            } catch (error) {
-                if (process.env.NODE_ENV === 'development') {
-                    console.error(error)
-                }
-            }
-        }
-
-        const displayPage = useCallback(
-            (page: ChatPreviewPage, options?: ChatPreviewPageOptions) => {
-                withGorgiasChat((gorgiasChat) => {
-                    const isTabPage =
-                        page === 'homepage' || page === 'conversation'
-                    if (isTabPage) {
-                        setSelectedPage(page)
-                    }
-
-                    gorgiasChat.setPage(page, options)
-                })
+                chatApi.displayPage(page, options)
             },
-            [],
-        )
-
-        const closeChat = () => {
-            withGorgiasChat((gorgiasChat) => gorgiasChat.close())
-        }
-
-        const openChat = () => {
-            withGorgiasChat((gorgiasChat) => gorgiasChat.open())
-        }
-
-        const updatePosition = (position: GorgiasChatPosition) => {
-            withGorgiasChat((gorgiasChat) => gorgiasChat.setPosition(position))
-        }
-
-        const updateSettings = (
-            settings: GorgiasChatPreviewApplicationSettings,
-        ) => {
-            withGorgiasChat((gorgiasChat) =>
-                gorgiasChat.updateSettings?.(settings),
-            )
-        }
-
-        const applyBusinessHoursMode = useCallback(
-            (mode: ChatPreviewBusinessHoursMode) => {
-                withGorgiasChat((gorgiasChat) => {
-                    gorgiasChat.setCustomBusinessHours?.(
-                        PREVIEW_BUSINESS_HOURS_INPUT[mode],
-                    )
-                })
-            },
-            [],
+            [chatApi],
         )
 
         const handleBusinessHoursModeChange = useCallback(
@@ -284,123 +165,29 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
                     mode === 'outside-business-hours'
                 ) {
                     setBusinessHoursMode(mode)
-                    applyBusinessHoursMode(mode)
+                    chatApi.setCustomBusinessHours(
+                        PREVIEW_BUSINESS_HOURS_INPUT[mode],
+                    )
                 }
             },
-            [applyBusinessHoursMode],
+            [chatApi],
         )
-
-        /**
-         * The iframe runs in a separate JS realm, so plain objects created in this
-         * realm fail the `instanceof Object` check inside the chat widget. We build
-         * the target using the iframe's own Object constructor so it belongs to the
-         * correct realm. `Object` isn't declared on the typed Window surface exposed
-         * via `contentWindow`, so we narrow the cast to this helper.
-         */
-        const createIframeObject = useCallback(
-            <T extends Record<string, string>>(source: T): T | undefined => {
-                const iframeWindow = chatPreviewRef.current?.iframeRef.current
-                    ?.contentWindow as
-                    | (Window & { Object: ObjectConstructor })
-                    | null
-                    | undefined
-                if (!iframeWindow) return undefined
-                return Object.assign(new iframeWindow.Object(), source) as T
-            },
-            [],
-        )
-
-        const updateTexts = (texts: Record<string, string>) => {
-            withGorgiasChat((gorgiasChat) => {
-                const iframeTexts = createIframeObject(texts)
-                if (iframeTexts) gorgiasChat.updateTexts(iframeTexts)
-            })
-        }
-
-        const updatePreviewTexts = (texts: Record<string, string>) => {
-            withGorgiasChat((gorgiasChat) => {
-                const iframeTexts = createIframeObject(texts)
-                if (!iframeTexts) return
-
-                if (gorgiasChat.updatePreviewTexts) {
-                    gorgiasChat.updatePreviewTexts(iframeTexts)
-                    return
-                }
-
-                gorgiasChat.updateTexts(iframeTexts)
-            })
-        }
-
-        const updateSSPTexts = (texts: Record<string, string>) => {
-            withGorgiasChat((gorgiasChat) => {
-                const iframeTexts = createIframeObject(texts)
-                if (iframeTexts) gorgiasChat.updateSSPTexts(iframeTexts)
-            })
-        }
-
-        const updateWorkflowEntryPoints = (
-            workflowEntryPoints: GorgiasChatWorkflowEntrypoint[],
-        ) => {
-            withGorgiasChat((gorgiasChat) => {
-                gorgiasChat.updateSelfServiceConfiguration?.({
-                    workflowsEntrypoints: workflowEntryPoints,
-                })
-            })
-        }
-
-        const updateOrderManagementFlows = (
-            flows: GorgiasChatPreviewSelfServiceFlows,
-        ) => {
-            withGorgiasChat((gorgiasChat) => {
-                gorgiasChat.updateSelfServiceConfiguration?.({ flows })
-            })
-        }
 
         const handlePageChange = (page: string) => {
             if (page === 'conversation' || page === 'homepage') {
                 displayPage(page)
-                openChat()
+                chatApi.openChat()
             }
         }
 
-        const reloadPreview = () => {
-            setReloadKey(reloadKey + 1)
-        }
+        const reloadPreview = useCallback(() => {
+            setReloadKey((k) => k + 1)
+        }, [])
 
         const handleChatDisplayVersionChange = (key: string) => {
             setChatDisplayVersion(key as ChatDisplayVersion)
             reloadPreview()
         }
-
-        const updatePreviewOrders = (
-            options: GorgiasChatPreviewOrdersOptions,
-        ) => {
-            withGorgiasChat((gorgiasChat) => {
-                gorgiasChat.setOrders?.(options)
-            })
-        }
-
-        const simulateConversation = useCallback(
-            (messages: SimulateConversationMessage[]) => {
-                withGorgiasChat((gorgiasChat) => {
-                    gorgiasChat.simulateConversation?.(messages, 1500)
-                })
-            },
-            [],
-        )
-
-        const setConversationMessages = useCallback(
-            (messages: SimulateConversationMessage[]) => {
-                withGorgiasChat((gorgiasChat) => {
-                    if (gorgiasChat.setConversationMessages) {
-                        gorgiasChat.setConversationMessages(messages)
-                    } else {
-                        gorgiasChat.simulateConversation?.(messages, 0)
-                    }
-                })
-            },
-            [],
-        )
 
         const onLoaded = useCallback(
             (
@@ -448,7 +235,7 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
                     ] ??
                     GORGIAS_CHAT_SSP_TEXTS[GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT]
                 if (sspTexts) {
-                    const iframeTexts = createIframeObject(sspTexts)
+                    const iframeTexts = chatApi.createIframeObject(sspTexts)
                     if (iframeTexts) gorgiasChat?.updateSSPTexts(iframeTexts)
                 }
 
@@ -459,7 +246,7 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
                 selectedPage,
                 onPreviewLoaded,
                 locale,
-                createIframeObject,
+                chatApi,
                 forceChatRedesign,
                 showBusinessHoursToggle,
                 businessHoursMode,
@@ -504,88 +291,42 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
             )
         }
 
-        useImperativeHandle(ref, () => ({
-            displayPage,
-            updatePosition,
-            updateSettings,
-            updateTexts,
-            updatePreviewTexts,
-            updateSSPTexts,
-            closeChat,
-            openChat,
-            updateWorkflowEntryPoints,
-            updateOrderManagementFlows,
-            reloadPreview,
-            updatePreviewOrders,
-            simulateConversation,
-            setConversationMessages,
-            get isLoaded() {
-                return chatPreviewRef.current?.isLoaded ?? false
-            },
-        }))
+        useImperativeHandle(ref, () => {
+            const {
+                createIframeObject: __createIframeObject,
+                setCustomBusinessHours: __setCustomBusinessHours,
+                displayPage: __chatApiDisplayPage,
+                ...exposed
+            } = chatApi
+            return {
+                ...exposed,
+                displayPage,
+                reloadPreview,
+                get isLoaded() {
+                    return chatPreviewRef.current?.isLoaded ?? false
+                },
+            }
+        })
 
         return (
             <Box flexDirection="column" className={css.panel}>
                 {withHeader && (
-                    <Box
-                        alignItems="center"
-                        flexDirection="column"
-                        justifyContent="space-between"
-                        className={`${css.header} ${
+                    <ChatPreviewPanelHeader
+                        appId={appId}
+                        selectedPage={selectedPage}
+                        onPageChange={handlePageChange}
+                        headerActions={headerActions}
+                        shouldShowChatVersionSwitcher={
+                            shouldShowChatVersionSwitcher
+                        }
+                        chatDisplayVersion={chatDisplayVersion}
+                        onChatDisplayVersionChange={
+                            handleChatDisplayVersionChange
+                        }
+                        withBusinessHoursToggle={
                             shouldRenderBusinessHoursToggle
-                                ? css.headerWithBusinessHoursToggle
-                                : ''
-                        }`}
-                    >
-                        <Box
-                            justifyContent="space-between"
-                            alignItems="center"
-                            width={'100%'}
-                        >
-                            <Text variant={TextVariant.Medium}>
-                                Chat preview
-                            </Text>
-                            {headerActions ??
-                                (appId && (
-                                    <>
-                                        <ButtonGroup
-                                            selectedKey={selectedPage}
-                                            defaultSelectedKey="homepage"
-                                            onSelectionChange={handlePageChange}
-                                        >
-                                            <ButtonGroupItem
-                                                id="homepage"
-                                                icon={<Icon name="nav-home" />}
-                                            />
-                                            <ButtonGroupItem
-                                                id="conversation"
-                                                icon={
-                                                    <Icon name="chat-conversation-circle" />
-                                                }
-                                            />
-                                        </ButtonGroup>
-                                    </>
-                                ))}
-                        </Box>
-                        {shouldShowChatVersionSwitcher && (
-                            <Box width={'100%'}>
-                                <ButtonGroup
-                                    selectedKey={chatDisplayVersion}
-                                    defaultSelectedKey="current"
-                                    onSelectionChange={
-                                        handleChatDisplayVersionChange
-                                    }
-                                >
-                                    <ButtonGroupItem id="current">
-                                        Current
-                                    </ButtonGroupItem>
-                                    <ButtonGroupItem id="new">
-                                        New &#40;2.0&#41;
-                                    </ButtonGroupItem>
-                                </ButtonGroup>
-                            </Box>
-                        )}
-                    </Box>
+                        }
+                    />
                 )}
                 {withHeader && shouldRenderBusinessHoursToggle && (
                     <BusinessHoursToggle

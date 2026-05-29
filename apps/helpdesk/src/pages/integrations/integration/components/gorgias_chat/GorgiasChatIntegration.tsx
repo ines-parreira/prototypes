@@ -78,9 +78,9 @@ export const GorgiasChatIntegration = ({
     const { storeIntegration } = useStoreIntegration(integration)
 
     const {
-        isNonAiAgentChat2RevampEnabled,
         shouldShowChatSettingsRevamp,
         shouldShowNonAiAgentChatSettingsRevamp,
+        isLoading: isChatSettingsRevampLoading,
     } = useShouldShowChatSettingsRevamp(storeIntegration, integration.get('id'))
 
     const {
@@ -91,7 +91,9 @@ export const GorgiasChatIntegration = ({
     } = useChatPreviewPanel({
         locale: chatLanguage,
         showBusinessHoursToggle: shouldShowNonAiAgentChatSettingsRevamp,
-        shouldShowChatVersionSwitcher: isNonAiAgentChat2RevampEnabled,
+        shouldShowChatVersionSwitcher:
+            shouldShowNonAiAgentChatSettingsRevamp &&
+            !isChatSettingsRevampLoading,
     })
     const isQuickRepliesEnabled = useIsQuickRepliesEnabled()
     const { hasAccess } = useAiAgentAccess()
