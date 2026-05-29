@@ -65,16 +65,23 @@ export function MacrosCreateDropdown(): JSX.Element {
                     caret
                     color="primary"
                     disabled={!hasAgentPrivileges}
+                    aria-label="Open macro actions"
                 />
                 <DropdownMenu>
                     <DropdownItem onClick={() => setImportOpen(true)}>
-                        <i className="icon material-icons md-2 align-text-bottom">
+                        <i
+                            className="icon material-icons md-2 align-text-bottom"
+                            aria-hidden="true"
+                        >
                             cloud_upload
                         </i>
                         Import macros from CSV
                     </DropdownItem>
                     <DropdownItem onClick={_downloadMacros}>
-                        <i className="icon material-icons md-2 align-text-bottom">
+                        <i
+                            className="icon material-icons md-2 align-text-bottom"
+                            aria-hidden="true"
+                        >
                             download
                         </i>
                         Export macros as CSV
