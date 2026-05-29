@@ -759,6 +759,22 @@ describe('createTicketTableColumns', () => {
             expect(text?.querySelector('strong')).toBeInTheDocument()
         })
 
+        it('does not fall back to updated datetime for last message', () => {
+            const ticket = mockTicketCompact({
+                last_message_datetime: null,
+                updated_datetime: '2026-03-15T09:30:00Z',
+            })
+            const { container } = renderColumn('last_message_datetime', ticket)
+
+            expect(container.querySelector('tbody')?.textContent?.trim()).toBe(
+                '',
+            )
+            expect(screen.getByRole('link')).toHaveAttribute(
+                'href',
+                `/app/ticket/${ticket.id}`,
+            )
+        })
+
         it.each([
             {
                 id: 'last_message_datetime',

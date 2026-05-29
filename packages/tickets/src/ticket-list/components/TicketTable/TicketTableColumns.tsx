@@ -122,23 +122,20 @@ export function createTicketTableColumns({
                 )
             },
         }),
-        columnHelper.accessor(
-            (ticket) => ticket.last_message_datetime || ticket.updated_datetime,
-            {
-                id: 'last_message_datetime',
-                header: 'Last message',
-                enableSorting: true,
-                hug: true,
-                maxSize: 180,
-                cell: (cell) => (
-                    <DateTimeCell
-                        {...cell}
-                        preferences={dateTimePreferences}
-                        isUnread={cell.row.original.is_unread}
-                    />
-                ),
-            },
-        ),
+        columnHelper.accessor((ticket) => ticket.last_message_datetime, {
+            id: 'last_message_datetime',
+            header: 'Last message',
+            enableSorting: true,
+            hug: true,
+            maxSize: 180,
+            cell: (cell) => (
+                <DateTimeCell
+                    {...cell}
+                    preferences={dateTimePreferences}
+                    isUnread={cell.row.original.is_unread}
+                />
+            ),
+        }),
         columnHelper.display({
             id: 'tags',
             header: 'Tags',
