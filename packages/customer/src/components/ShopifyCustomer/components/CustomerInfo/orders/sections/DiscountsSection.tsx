@@ -4,6 +4,7 @@ import { Box, Text } from '@gorgias/axiom'
 
 import type { OrderDetailsData } from '../../types'
 import { useOrderFieldPreferences } from '../../widget/useOrderFieldPreferences'
+import { AutomaticDiscountRow } from './AutomaticDiscountRow'
 import { DiscountCodeRow } from './DiscountCodeRow'
 
 import css from '../sidePanel/OrderSidePanelPreview.less'
@@ -17,11 +18,14 @@ export function DiscountsSection({ order }: Props) {
 
     if (preferences.sections.discounts?.sectionVisible === false) return null
 
-    const { discount_codes, discount_applications, total_discounts } = order
+    const { discount_codes, discount_applications } = order
     const hasCodes = discount_codes && discount_codes.length > 0
-    const hasTotalDiscount = total_discounts && parseFloat(total_discounts) > 0
+    const automaticApplications = (discount_applications ?? []).filter(
+        (a): a is typeof a & { title: string } =>
+            a.type === 'automatic' && Boolean(a.title),
+    )
 
-    if (!hasCodes && !hasTotalDiscount) return null
+    if (!hasCodes && automaticApplications.length === 0) return null
 
     const moneySymbol = order.currency
         ? getMoneySymbol(order.currency, true)
@@ -34,16 +38,35 @@ export function DiscountsSection({ order }: Props) {
                     Discounts
                 </Text>
             </Box>
-            <Box mb="sm" flexDirection="column" gap="xxxs">
-                {discount_codes?.map((discountCode) => (
-                    <DiscountCodeRow
+            <Box flexDirection="column" gap="xxxs">
+                {discount_codes?.map((discountCode, index) => (
+                    <Box
                         key={discountCode.code}
-                        discountCode={discountCode}
-                        application={discount_applications?.find(
-                            (a) => a.code === discountCode.code,
-                        )}
-                        moneySymbol={moneySymbol}
-                    />
+                        className={index > 0 ? css.discountDivider : undefined}
+                    >
+                        <DiscountCodeRow
+                            discountCode={discountCode}
+                            application={discount_applications?.find(
+                                (a) => a.code === discountCode.code,
+                            )}
+                            moneySymbol={moneySymbol}
+                        />
+                    </Box>
+                ))}
+                {automaticApplications.map((application, index) => (
+                    <Box
+                        key={`${application.title}-${index}`}
+                        className={
+                            hasCodes || index > 0
+                                ? css.discountDivider
+                                : undefined
+                        }
+                    >
+                        <AutomaticDiscountRow
+                            application={application}
+                            moneySymbol={moneySymbol}
+                        />
+                    </Box>
                 ))}
             </Box>
         </Box>

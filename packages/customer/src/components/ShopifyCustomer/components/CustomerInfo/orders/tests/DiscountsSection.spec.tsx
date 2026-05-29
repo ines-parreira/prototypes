@@ -136,6 +136,85 @@ describe('DiscountsSection', () => {
         expect(screen.getByText('Free shipping')).toBeInTheDocument()
     })
 
+    it('renders both code-based and automatic discounts when both are present', () => {
+        render(
+            <DiscountsSection
+                order={makeOrder({
+                    currency: 'USD',
+                    discount_codes: [
+                        {
+                            code: 'SAVE10',
+                            amount: '10.00',
+                            type: 'fixed_amount',
+                        },
+                    ],
+                    discount_applications: [
+                        {
+                            code: 'SAVE10',
+                            value: '10',
+                            value_type: 'fixed_amount',
+                        },
+                        {
+                            type: 'automatic',
+                            title: 'free gift!',
+                            value: '100.0',
+                            value_type: 'percentage',
+                        },
+                    ],
+                })}
+            />,
+        )
+
+        expect(screen.getByText('SAVE10')).toBeInTheDocument()
+        expect(screen.getByText('free gift!')).toBeInTheDocument()
+    })
+
+    it('renders Title and Discount rows for automatic discount applications', () => {
+        render(
+            <DiscountsSection
+                order={makeOrder({
+                    currency: 'EUR',
+                    discount_codes: [],
+                    total_discounts: '49.40',
+                    discount_applications: [
+                        {
+                            type: 'automatic',
+                            title: 'free gift!',
+                            value: '100.0',
+                            value_type: 'percentage',
+                        },
+                        {
+                            type: 'automatic',
+                            title: '35% off!',
+                            value: '35.0',
+                            value_type: 'percentage',
+                        },
+                    ],
+                })}
+            />,
+        )
+
+        expect(screen.getByText('Discounts')).toBeInTheDocument()
+        expect(screen.getAllByText('Title')).toHaveLength(2)
+        expect(screen.getByText('free gift!')).toBeInTheDocument()
+        expect(screen.getByText('35% off!')).toBeInTheDocument()
+        expect(screen.getByText('100%')).toBeInTheDocument()
+        expect(screen.getByText('35%')).toBeInTheDocument()
+    })
+
+    it('renders nothing when discount_codes is empty and there are no automatic applications', () => {
+        const { container } = render(
+            <DiscountsSection
+                order={makeOrder({
+                    discount_codes: [],
+                    total_discounts: '10.00',
+                })}
+            />,
+        )
+
+        expect(container).toBeEmptyDOMElement()
+    })
+
     it('copies the discount code to the clipboard', async () => {
         const writeTextSpy = vi
             .spyOn(navigator.clipboard, 'writeText')

@@ -66,6 +66,8 @@ export type OrderDetailsData = {
     discount_codes?: Array<{ code: string; amount: string; type: string }>
     discount_applications?: Array<{
         code?: string
+        type?: string
+        title?: string
         value?: string
         value_type?: string
     }>
