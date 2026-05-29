@@ -62,7 +62,7 @@ export const HandoverCustomizationChatSettingsComponent = ({
                             any relevant knowledge to answer the shopper&apos;s
                             question. Further customize your{' '}
                             <a
-                                href="https://link.gorgias.com/edcd10"
+                                href="https://docs.gorgias.com/en-US/customize-how-ai-agent-hands-over-to-your-team-6008591"
                                 target="_blank"
                             >
                                 Chat&apos;s handover behavior

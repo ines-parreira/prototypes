@@ -458,7 +458,10 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
 
         const link = screen.getByText(/Chat's handover behavior/i)
         expect(link).toBeInTheDocument()
-        expect(link).toHaveAttribute('href', 'https://link.gorgias.com/edcd10')
+        expect(link).toHaveAttribute(
+            'href',
+            'https://docs.gorgias.com/en-US/customize-how-ai-agent-hands-over-to-your-team-6008591',
+        )
         expect(link).toHaveAttribute('target', '_blank')
     })
 })
