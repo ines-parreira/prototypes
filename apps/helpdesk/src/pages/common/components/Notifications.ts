@@ -3,8 +3,8 @@ import { STATUSES, wyboTheme } from 'reapop'
 
 const colors = {
     [STATUSES.info]: 'var(--border-accent-default)',
-    [STATUSES.success]: 'var(--border-success-primary)',
-    [STATUSES.error]: 'var(--border-error-primary)',
+    [STATUSES.success]: 'var(--border-success-default)',
+    [STATUSES.error]: 'var(--border-error-default)',
     [STATUSES.warning]: 'var(--border-warning-default)',
     [STATUSES.loading]: 'var(--border-neutral-tertiary)',
 }

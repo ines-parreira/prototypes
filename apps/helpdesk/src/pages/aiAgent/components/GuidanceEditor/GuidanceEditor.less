@@ -58,12 +58,12 @@
         border: 1px solid var(--border-neutral-default);
 
         &.hasError {
-            border-color: var(--border-error-primary);
+            border-color: var(--border-error-default);
         }
     }
 
     .error {
-        color: var(--content-error-primary);
+        color: var(--content-error-default);
     }
 }
 
@@ -87,14 +87,14 @@
     }
 
     .editorError :global(.rich-textarea-wrapper):global(:not(.display-only)) {
-        box-shadow: inset 0 0 0 1px var(--border-error-primary) !important;
+        box-shadow: inset 0 0 0 1px var(--border-error-default) !important;
 
         &:hover {
-            box-shadow: inset 0 0 0 1px var(--border-error-primary) !important;
+            box-shadow: inset 0 0 0 1px var(--border-error-default) !important;
         }
 
         &:focus-within {
-            box-shadow: inset 0 0 0 1px var(--border-error-primary) !important;
+            box-shadow: inset 0 0 0 1px var(--border-error-default) !important;
         }
     }
 }

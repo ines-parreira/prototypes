@@ -11,11 +11,11 @@ catalogs:
       version: 0.1.25
   axiom:
     '@gorgias/axiom':
-      specifier: 0.273.1
-      version: 0.273.1
+      specifier: 0.277.0
+      version: 0.277.0
     '@gorgias/design-tokens':
-      specifier: 0.11.4
-      version: 0.11.4
+      specifier: 0.11.9
+      version: 0.11.9
   browser-storage:
     '@types/zen-observable':
       specifier: ^0.8.7
@@ -624,7 +624,7 @@ importers:
         version: 0.1.25(classnames@2.2.6)(core-js@3.42.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.273.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.277.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/branding-assets':
         specifier: ^0.2.1
         version: 0.2.1
@@ -639,7 +639,7 @@ importers:
         version: 0.2.78(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@gorgias/copilot':
         specifier: catalog:copilot
-        version: 0.48.0(@emotion/is-prop-valid@1.3.1)(@gorgias/axiom@0.273.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)))(@gorgias/knowledge-service-client@0.3.44)(@gorgias/knowledge-service-queries@0.3.3(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(@types/mdast@4.0.4)(@types/react-dom@18.2.22)(@types/react@18.2.67)(axios@1.15.2)(encoding@0.1.13)(graphql@16.11.0)(jwt-decode@4.0.0)(micromark-util-types@2.0.2)(micromark@4.0.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rxjs@7.8.1)(zustand@5.0.9(@types/react@18.2.67)(immer@10.1.1)(react@18.2.0)(use-sync-external-store@1.5.0(react@18.2.0)))
+        version: 0.48.0(@emotion/is-prop-valid@1.3.1)(@gorgias/axiom@0.277.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)))(@gorgias/knowledge-service-client@0.3.44)(@gorgias/knowledge-service-queries@0.3.3(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(@types/mdast@4.0.4)(@types/react-dom@18.2.22)(@types/react@18.2.67)(axios@1.15.2)(encoding@0.1.13)(graphql@16.11.0)(jwt-decode@4.0.0)(micromark-util-types@2.0.2)(micromark@4.0.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rxjs@7.8.1)(zustand@5.0.9(@types/react@18.2.67)(immer@10.1.1)(react@18.2.0)(use-sync-external-store@1.5.0(react@18.2.0)))
       '@gorgias/customer-segmentation-client':
         specifier: catalog:rest-api-sdk
         version: 0.2.9
@@ -651,7 +651,7 @@ importers:
         version: 0.2.7
       '@gorgias/design-tokens':
         specifier: catalog:axiom
-        version: 0.11.4
+        version: 0.11.9
       '@gorgias/ecommerce-storage-client':
         specifier: catalog:rest-api-sdk
         version: 0.2.11
@@ -1757,10 +1757,10 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.273.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.277.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/design-tokens':
         specifier: catalog:axiom
-        version: 0.11.4
+        version: 0.11.9
       '@gorgias/helpdesk-mocks':
         specifier: catalog:rest-api-sdk
         version: 0.8.100(@types/node@24.12.2)(typescript@6.0.3)
@@ -1850,10 +1850,10 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.273.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.277.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/design-tokens':
         specifier: catalog:axiom
-        version: 0.11.4
+        version: 0.11.9
       '@gorgias/helpdesk-queries':
         specifier: catalog:rest-api-sdk
         version: 0.10.47(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
@@ -1919,7 +1919,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.273.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.277.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@repo/browser-storage':
         specifier: workspace:*
         version: link:../browser-storage
@@ -2143,7 +2143,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.273.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.277.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/ecommerce-storage-mocks':
         specifier: catalog:rest-api-sdk
         version: 0.2.11(@types/node@24.12.2)(typescript@6.0.3)
@@ -2293,7 +2293,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.273.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.277.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -2347,7 +2347,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.273.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.277.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/ecommerce-storage-mocks':
         specifier: catalog:rest-api-sdk
         version: 0.2.11(@types/node@24.12.2)(typescript@6.0.3)
@@ -2450,7 +2450,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.273.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.277.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@repo/browser-storage':
         specifier: workspace:*
         version: link:../browser-storage
@@ -2516,7 +2516,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.273.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.277.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/helpdesk-validators':
         specifier: catalog:rest-api-sdk
         version: 0.7.215
@@ -2807,7 +2807,7 @@ importers:
     dependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.273.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.277.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@repo/hooks':
         specifier: workspace:*
         version: link:../hooks
@@ -2896,7 +2896,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.273.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.277.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@knocklabs/client':
         specifier: ^0.16.3
         version: 0.16.3
@@ -3046,7 +3046,7 @@ importers:
     dependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.273.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.277.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       html2canvas:
         specifier: ^1.4.1
         version: 1.4.1
@@ -3071,7 +3071,7 @@ importers:
         version: 0.1.25(classnames@2.2.6)(core-js@3.47.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@gorgias/design-tokens':
         specifier: catalog:axiom
-        version: 0.11.4
+        version: 0.11.9
       '@gorgias/helpdesk-mocks':
         specifier: catalog:rest-api-sdk
         version: 0.8.100(@types/node@24.12.2)(typescript@6.0.3)
@@ -3234,7 +3234,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.273.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.277.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/helpdesk-client':
         specifier: catalog:rest-api-sdk
         version: 0.10.157
@@ -3387,7 +3387,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.273.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.277.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -3481,7 +3481,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.273.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.277.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/helpdesk-client':
         specifier: catalog:rest-api-sdk
         version: 0.10.157
@@ -3644,7 +3644,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.273.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.277.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/events':
         specifier: catalog:events
         version: 0.14.5
@@ -3827,7 +3827,7 @@ importers:
     dependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.273.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.277.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
     devDependencies:
       '@repo/config':
         specifier: workspace:*
@@ -3894,7 +3894,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.273.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.277.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/events':
         specifier: catalog:events
         version: 0.14.5
@@ -4111,7 +4111,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.273.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.277.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/helpdesk-mocks':
         specifier: catalog:rest-api-sdk
         version: 0.8.100(@types/node@24.12.2)(typescript@6.0.3)
@@ -5704,8 +5704,8 @@ packages:
       react: ^17
       react-dom: ^17
 
-  '@gorgias/axiom@0.273.1':
-    resolution: {integrity: sha512-GylfpKk6qpzM9grMC6tkiNFVq7Qe/lJH+TRu3wIxNh3JcSRzZPImg5Sf7Bi27bP/jxNlMw1nsE2/ncKhth8MXQ==, tarball: https://npm.pkg.github.com/download/@gorgias/axiom/0.273.1/532cfdde4464482462b4a408290c2d7988e28a77}
+  '@gorgias/axiom@0.277.0':
+    resolution: {integrity: sha512-MhPzPy40RCZlT3COSoKohBgH3myynGgiBmGtaoDv7u83t3E6PmiOtVDG8BgzrYDC2OenG3RHPg97CqLWwyojoQ==, tarball: https://npm.pkg.github.com/download/@gorgias/axiom/0.277.0/833f176c376b0a315403c9491464ac0f3c88b056}
     engines: {node: '>=22.22.0'}
     peerDependencies:
       react: ^18
@@ -5755,9 +5755,6 @@ packages:
       react-dom: ^18
       rxjs: ^7.8.0
       zustand: 5.0.9
-    peerDependenciesMeta:
-      rxjs:
-        optional: true
 
   '@gorgias/customer-segmentation-client@0.2.9':
     resolution: {integrity: sha512-VOS6eQA+J53lSWXYzAPexRGLrjA3RM0YzzxG4kdj+acxKtIEsoyJe8BRJvMzHO+nLgQWcs90vtWkrWZiyDdGEw==, tarball: https://npm.pkg.github.com/download/@gorgias/customer-segmentation-client/0.2.9/f504bf90c80bfe6d867fa0521f4eee735676f639}
@@ -5776,9 +5773,6 @@ packages:
 
   '@gorgias/customer-segmentation-types@0.2.8':
     resolution: {integrity: sha512-MrMhgkPwtNgVXYAOl7iDmOYBxeBGhnhXA4pBfLA1VmXs59fWgsUNqKTD+pIDlCUqRI5M+7r1hxg4SQhUkMMg1w==, tarball: https://npm.pkg.github.com/download/@gorgias/customer-segmentation-types/0.2.8/aa38790207fdedd74388c8b71311be9fb5e57bbf}
-
-  '@gorgias/design-tokens@0.11.4':
-    resolution: {integrity: sha512-zpJjYuwRU8kaYyug6pRHn4jGi0YCquiIzJS5e4/N2BJTJMTZcUrxmxUQKigDSZ/ppxqSyjLUWmyEZpcAxPf+Xw==, tarball: https://npm.pkg.github.com/download/@gorgias/design-tokens/0.11.4/44e8e159b3a75f452426c6b2a25758afc0e3f673}
 
   '@gorgias/design-tokens@0.11.9':
     resolution: {integrity: sha512-bdpfeS1YOzKk03m0tDoCk48qZZRFR6rXmKK+U+xjHT/SJjFkPf+YNdimj2bTNm5o1ITEr72UBTdkFOs26R20eQ==, tarball: https://npm.pkg.github.com/download/@gorgias/design-tokens/0.11.9/a773d0890a662813c3e2ae4bd9f111a870111a19}
@@ -19896,7 +19890,7 @@ snapshots:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
 
-  '@gorgias/axiom@0.273.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))':
+  '@gorgias/axiom@0.277.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))':
     dependencies:
       '@floating-ui/react': 0.25.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@gorgias/design-tokens': 0.11.9
@@ -19965,10 +19959,10 @@ snapshots:
 
   '@gorgias/convert-types@0.4.46': {}
 
-  '@gorgias/copilot@0.48.0(@emotion/is-prop-valid@1.3.1)(@gorgias/axiom@0.273.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)))(@gorgias/knowledge-service-client@0.3.44)(@gorgias/knowledge-service-queries@0.3.3(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(@types/mdast@4.0.4)(@types/react-dom@18.2.22)(@types/react@18.2.67)(axios@1.15.2)(encoding@0.1.13)(graphql@16.11.0)(jwt-decode@4.0.0)(micromark-util-types@2.0.2)(micromark@4.0.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rxjs@7.8.1)(zustand@5.0.9(@types/react@18.2.67)(immer@10.1.1)(react@18.2.0)(use-sync-external-store@1.5.0(react@18.2.0)))':
+  '@gorgias/copilot@0.48.0(@emotion/is-prop-valid@1.3.1)(@gorgias/axiom@0.277.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)))(@gorgias/knowledge-service-client@0.3.44)(@gorgias/knowledge-service-queries@0.3.3(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(@types/mdast@4.0.4)(@types/react-dom@18.2.22)(@types/react@18.2.67)(axios@1.15.2)(encoding@0.1.13)(graphql@16.11.0)(jwt-decode@4.0.0)(micromark-util-types@2.0.2)(micromark@4.0.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(rxjs@7.8.1)(zustand@5.0.9(@types/react@18.2.67)(immer@10.1.1)(react@18.2.0)(use-sync-external-store@1.5.0(react@18.2.0)))':
     dependencies:
       '@copilotkit/react-core': 1.57.1(@types/mdast@4.0.4)(@types/react-dom@18.2.22)(@types/react@18.2.67)(encoding@0.1.13)(graphql@16.11.0)(micromark-util-types@2.0.2)(micromark@4.0.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(zod@3.25.76)
-      '@gorgias/axiom': 0.273.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+      '@gorgias/axiom': 0.277.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/knowledge-service-client': 0.3.44
       '@gorgias/knowledge-service-queries': 0.3.3(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@tanstack/react-query': 4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
@@ -19980,11 +19974,10 @@ snapshots:
       react-dom: 18.2.0(react@18.2.0)
       react-markdown: 10.1.0(@types/react@18.2.67)(react@18.2.0)
       remark-gfm: 4.0.1
+      rxjs: 7.8.1
       use-stick-to-bottom: 1.1.4(react@18.2.0)
       zod: 3.25.76
       zustand: 5.0.9(@types/react@18.2.67)(immer@10.1.1)(react@18.2.0)(use-sync-external-store@1.5.0(react@18.2.0))
-    optionalDependencies:
-      rxjs: 7.8.1
     transitivePeerDependencies:
       - '@emotion/is-prop-valid'
       - '@types/mdast'
@@ -20032,8 +20025,6 @@ snapshots:
   '@gorgias/customer-segmentation-types@0.2.7': {}
 
   '@gorgias/customer-segmentation-types@0.2.8': {}
-
-  '@gorgias/design-tokens@0.11.4': {}
 
   '@gorgias/design-tokens@0.11.9': {}
 

@@ -261,11 +261,11 @@ describe('DiffReadOnlyEditor', () => {
         expect(styleMap).toHaveProperty('DIFF_REMOVED')
         expect(styleMap.DIFF_ADDED).toEqual({
             backgroundColor: 'var(--surface-success-default)',
-            color: 'var(--content-success-primary)',
+            color: 'var(--content-success-default)',
         })
         expect(styleMap.DIFF_REMOVED).toEqual({
             backgroundColor: 'var(--surface-error-secondary)',
-            color: 'var(--content-error-primary)',
+            color: 'var(--content-error-default)',
             textDecoration: 'line-through',
         })
     })

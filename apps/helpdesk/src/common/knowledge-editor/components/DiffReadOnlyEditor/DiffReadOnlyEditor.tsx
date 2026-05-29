@@ -32,11 +32,11 @@ import css from './DiffReadOnlyEditor.less'
 const DIFF_STYLE_MAP: Record<string, React.CSSProperties> = {
     DIFF_ADDED: {
         backgroundColor: 'var(--surface-success-default)',
-        color: 'var(--content-success-primary)',
+        color: 'var(--content-success-default)',
     },
     DIFF_REMOVED: {
         backgroundColor: 'var(--surface-error-secondary)',
-        color: 'var(--content-error-primary)',
+        color: 'var(--content-error-default)',
         textDecoration: 'line-through',
     },
 }

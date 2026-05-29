@@ -124,7 +124,7 @@ const urlLoader = {
         context: 'src/',
     },
 }
-const imageExtRegex = /\.(jpe?g|png|gif)$/i
+const imageExtRegex = /\.(jpe?g|png|gif|webp)$/i
 const fontExtRegex = /\.(ttf|eot|svg|woff(2)?)$/i
 
 /** @type {import('@rspack/cli').Configuration} */

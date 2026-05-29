@@ -10,7 +10,7 @@ type AssigneeLabelProps = {
 
 export function AssigneeLabel({ owner }: AssigneeLabelProps) {
     const label = owner || 'Unassigned'
-    const iconColor = owner ? undefined : 'var(--content-warning-primary)'
+    const iconColor = owner ? undefined : 'var(--content-warning-default)'
 
     return (
         <Box alignItems="center" gap="xxxs" minWidth={0}>

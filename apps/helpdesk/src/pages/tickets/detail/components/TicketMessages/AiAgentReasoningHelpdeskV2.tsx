@@ -198,7 +198,7 @@ export const AiAgentReasoningHelpdeskV2 = ({
         if (isError) {
             return (
                 <Box display="flex" alignItems="center" py="xs" pl="xxs">
-                    <Text color="content-error-primary" size="sm">
+                    <Text color="content-error-default" size="sm">
                         Couldn&apos;t load reasoning. Please try again.
                     </Text>
                 </Box>

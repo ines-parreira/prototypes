@@ -68,11 +68,11 @@ describe('createNotificationsTheme', () => {
             },
             {
                 status: STATUSES.success,
-                color: 'var(--border-success-primary)',
+                color: 'var(--border-success-default)',
             },
             {
                 status: STATUSES.error,
-                color: 'var(--border-error-primary)',
+                color: 'var(--border-error-default)',
             },
             {
                 status: STATUSES.warning,

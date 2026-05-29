@@ -103,15 +103,15 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 - `--content-neutral-secondary` - Secondary text
 - `--content-inverted-default` - Text on dark backgrounds
 - `--content-accent-default` - Accent/link color
-- `--content-error-primary` - Error text
-- `--content-warning-primary` - Warning text
+- `--content-error-default` - Error text
+- `--content-warning-default` - Warning text
 
 **Surface** (backgrounds):
 - `--surface-neutral-primary` - Primary background
 - `--surface-neutral-secondary` - Secondary background
 - `--surface-success-default` - Success background
 - `--surface-error-primary` - Error background
-- `--surface-warning-primary` - Warning background
+- `--surface-warning-default` - Warning background
 
 **Border**:
 - `--border-neutral-default` - Default border color

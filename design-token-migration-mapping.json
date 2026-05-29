@@ -167,12 +167,12 @@
             "--main-primary-2": "--surface-accent-default",
             "--purple": "--content-accent-default",
             "--feedback-error": [
-                "--content-error-primary",
+                "--content-error-default",
                 "--surface-error-primary"
             ],
             "--feedback-warning": [
                 "--content-warning-default",
-                "--surface-warning-primary"
+                "--surface-warning-default"
             ],
             "--feedback-warning-1": "--surface-warning-subtle",
             "--success-green": "--content-positive-default",
@@ -205,7 +205,7 @@
             "--main-latte": "--surface-brand-secondary",
             "--feedback-error": [
                 "--static-error",
-                "--content-error-primary",
+                "--content-error-default",
                 "--surface-error-primary"
             ],
             "--feedback-warning": "--elevation-status-warning-default",
@@ -709,7 +709,7 @@
             },
             {
                 "legacyToken": "--feedback-error",
-                "newToken": "--content-error-primary",
+                "newToken": "--content-error-default",
                 "context": "Error state colors",
                 "files": ["TicketAssignee.less"]
             }
@@ -856,7 +856,7 @@
             },
             {
                 "legacyToken": "--feedback-error",
-                "newToken": "--content-error-primary",
+                "newToken": "--content-error-default",
                 "context": "Error state text colors",
                 "files": [
                     "Error.less",
@@ -867,7 +867,7 @@
             },
             {
                 "legacyToken": "--feedback-warning",
-                "newToken": "--surface-warning-primary",
+                "newToken": "--surface-warning-default",
                 "context": "Warning background colors",
                 "files": ["SatisfactionSurvey.less"]
             },
@@ -969,8 +969,8 @@
                 "--content-neutral-secondary",
                 "--content-neutral-tertiary",
                 "--content-additional-blue",
-                "--content-error-primary",
-                "--content-success-primary"
+                "--content-error-default",
+                "--content-success-default"
             ]
         },
         "border": {
@@ -1050,7 +1050,7 @@
             {
                 "invalidToken": "--elevation-status-warning-subtle",
                 "issue": "Token does not exist in axiom design system; status tokens don't exist with elevation prefix",
-                "suggestedReplacement": "--surface-warning-primary",
+                "suggestedReplacement": "--surface-warning-default",
                 "usedInCommits": ["bcf919bfd1"],
                 "affectedFiles": "Warning state badges"
             },
@@ -1064,7 +1064,7 @@
             {
                 "invalidToken": "--elevation-status-warning-default",
                 "issue": "Token does not exist in axiom design system; status tokens don't exist with elevation prefix",
-                "suggestedReplacement": "--surface-warning-primary or --static-warning",
+                "suggestedReplacement": "--surface-warning-default or --static-warning",
                 "usedInCommits": ["e54f76fbf2"],
                 "affectedFiles": "Warning backgrounds"
             },
@@ -1237,7 +1237,7 @@
             },
             {
                 "legacyToken": "--feedback-error-2",
-                "newToken": "--content-error-primary",
+                "newToken": "--content-error-default",
                 "context": "Error state colors",
                 "files": ["BusinessHoursSelectField.less"]
             },
@@ -1378,7 +1378,7 @@
             },
             {
                 "legacyToken": "--feedback-error",
-                "newToken": "--content-error-primary",
+                "newToken": "--content-error-default",
                 "context": "Error state colors",
                 "files": ["MoreActions.less"]
             }
@@ -1398,14 +1398,14 @@
                 "--surface-additional-teal",
                 "--surface-additional-yellow",
                 "--surface-button-secondary",
-                "--surface-destructive-primary",
+                "--surface-error-primary",
                 "--surface-error-primary",
                 "--surface-inverted-default",
                 "--surface-neutral-primary",
                 "--surface-neutral-secondary",
                 "--surface-neutral-tertiary",
                 "--surface-success-default",
-                "--surface-warning-primary"
+                "--surface-warning-default"
             ],
             "content": [
                 "--content-accent-default",
@@ -1415,14 +1415,14 @@
                 "--content-additional-purple",
                 "--content-additional-teal",
                 "--content-additional-yellow",
-                "--content-error-primary",
+                "--content-error-default",
                 "--content-inverted-default",
                 "--content-neutral-default",
                 "--content-neutral-secondary",
                 "--content-neutral-tertiary",
                 "--content-selected-accent",
-                "--content-success-primary",
-                "--content-warning-primary"
+                "--content-success-default",
+                "--content-warning-default"
             ],
             "border": [
                 "--border-accent-default",
@@ -1431,12 +1431,12 @@
                 "--border-additional-purple",
                 "--border-additional-teal",
                 "--border-additional-yellow",
-                "--border-error-primary",
+                "--border-error-default",
                 "--border-neutral-default",
                 "--border-neutral-default",
                 "--border-neutral-default",
-                "--border-success-primary",
-                "--border-warning-primary"
+                "--border-success-default",
+                "--border-warning-default"
             ],
             "interaction": [
                 "--hover-default",

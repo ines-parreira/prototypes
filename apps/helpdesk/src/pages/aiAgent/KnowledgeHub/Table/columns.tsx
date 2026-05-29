@@ -498,7 +498,7 @@ export const getColumns = (
                                             <Icon
                                                 name="warning-triangle"
                                                 size="sm"
-                                                color="content-error-primary"
+                                                color="content-error-default"
                                             />
                                         </span>
                                     )}
@@ -541,7 +541,7 @@ export const getColumns = (
                             <Icon
                                 name="check"
                                 size="md"
-                                color="content-success-primary"
+                                color="content-success-default"
                             />
                         ) : (
                             <Icon
