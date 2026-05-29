@@ -1,6 +1,7 @@
 import { ReportingMetricBreakdownTable } from '@repo/reporting'
 
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
+import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
 import {
     PERFORMANCE_BREAKDOWN_COLUMNS,
     PERFORMANCE_BREAKDOWN_NAME_COLUMNS,
@@ -14,11 +15,13 @@ import { usePerformanceMetricsPerFeature } from 'pages/aiAgent/analyticsOverview
 type Props = {
     chartId?: string
     withChartMenu?: boolean
+    dashboard?: DashboardSchema
 }
 
 export const PerformanceBreakdownTable = ({
     chartId,
     withChartMenu,
+    dashboard,
 }: Props) => {
     const { data = [], loadingStates } = usePerformanceMetricsPerFeature()
     const exportCsvAction = useDownloadPerformanceBreakdownAction()
@@ -37,6 +40,7 @@ export const PerformanceBreakdownTable = ({
                     <ChartsActionMenu
                         chartId={chartId}
                         chartName="All features"
+                        dashboard={dashboard}
                         exportCsvAction={exportCsvAction}
                     />
                 ) : undefined

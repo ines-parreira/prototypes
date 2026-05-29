@@ -223,4 +223,31 @@ describe('OrderManagementTable', () => {
 
         expect(getLastCallProps().actionMenu).toBeUndefined()
     })
+
+    it('passes dashboard prop to ChartsActionMenu when provided', () => {
+        mockUseOrderManagementMetrics.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+        })
+        const dashboard = {
+            id: 1,
+            name: 'My Dashboard',
+            children: [],
+            emoji: null,
+            analytics_filter_id: null,
+        }
+
+        render(
+            <OrderManagementTable
+                chartId="order_management_table"
+                withChartMenu
+                dashboard={dashboard}
+            />,
+        )
+
+        expect(
+            (getLastCallProps().actionMenu as React.ReactElement).props
+                .dashboard,
+        ).toBe(dashboard)
+    })
 })

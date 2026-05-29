@@ -222,4 +222,30 @@ describe('ShoppingAssistantTopProductsTable', () => {
 
         expect(getLastCallProps().actionMenu).toBeUndefined()
     })
+
+    it('passes dashboard prop to ChartsActionMenu when provided', () => {
+        mockUseShoppingAssistantTopProductsMetrics.mockReturnValue(
+            defaultMockReturn,
+        )
+        const dashboard = {
+            id: 1,
+            name: 'My Dashboard',
+            children: [],
+            emoji: null,
+            analytics_filter_id: null,
+        }
+
+        render(
+            <ShoppingAssistantTopProductsTable
+                chartId="shopping_assistant_top_products_table"
+                withChartMenu
+                dashboard={dashboard}
+            />,
+        )
+
+        expect(
+            (getLastCallProps().actionMenu as React.ReactElement).props
+                .dashboard,
+        ).toBe(dashboard)
+    })
 })

@@ -4,6 +4,7 @@ import { ReportingMetricBreakdownTable } from '@repo/reporting'
 
 import { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
+import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
 import { useShoppingAssistantTopProductsMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantTopProductsMetrics'
 
 import { SHOPPING_ASSISTANT_TOP_PRODUCTS_COLUMNS } from './columns'
@@ -15,11 +16,13 @@ import {
 type Props = {
     chartId?: string
     withChartMenu?: boolean
+    dashboard?: DashboardSchema
 }
 
 export const ShoppingAssistantTopProductsTable = ({
     chartId,
     withChartMenu,
+    dashboard,
 }: Props) => {
     const {
         flatData,
@@ -68,6 +71,7 @@ export const ShoppingAssistantTopProductsTable = ({
                     <ChartsActionMenu
                         chartId={chartId}
                         chartName="Top products recommended"
+                        dashboard={dashboard}
                         exportCsvAction={exportCsvAction}
                     />
                 ) : undefined

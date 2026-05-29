@@ -179,4 +179,31 @@ describe('SupportAgentsPerformanceByChannelTable', () => {
 
         expect(getLastCallProps().actionMenu).toBeUndefined()
     })
+
+    it('passes dashboard prop to ChartsActionMenu when provided', () => {
+        mockUseSupportAgentsPerformanceByChannelMetrics.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+        })
+        const dashboard = {
+            id: 1,
+            name: 'My Dashboard',
+            children: [],
+            emoji: null,
+            analytics_filter_id: null,
+        }
+
+        render(
+            <SupportAgentsPerformanceByChannelTable
+                chartId="support_agents_performance_by_channel_table"
+                withChartMenu
+                dashboard={dashboard}
+            />,
+        )
+
+        expect(
+            (getLastCallProps().actionMenu as React.ReactElement).props
+                .dashboard,
+        ).toBe(dashboard)
+    })
 })

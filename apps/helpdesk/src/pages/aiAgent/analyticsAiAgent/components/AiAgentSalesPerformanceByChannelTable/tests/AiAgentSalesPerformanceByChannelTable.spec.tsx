@@ -182,4 +182,31 @@ describe('AiAgentSalesPerformanceByChannelTable', () => {
 
         expect(getLastCallProps().actionMenu).toBeUndefined()
     })
+
+    it('passes dashboard prop to ChartsActionMenu when provided', () => {
+        mockUseAiAgentSalesPerformanceByChannelMetrics.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+        })
+        const dashboard = {
+            id: 1,
+            name: 'My Dashboard',
+            children: [],
+            emoji: null,
+            analytics_filter_id: null,
+        }
+
+        render(
+            <AiAgentSalesPerformanceByChannelTable
+                chartId="ai_agent_sales_performance_by_channel_table"
+                withChartMenu
+                dashboard={dashboard}
+            />,
+        )
+
+        expect(
+            (getLastCallProps().actionMenu as React.ReactElement).props
+                .dashboard,
+        ).toBe(dashboard)
+    })
 })

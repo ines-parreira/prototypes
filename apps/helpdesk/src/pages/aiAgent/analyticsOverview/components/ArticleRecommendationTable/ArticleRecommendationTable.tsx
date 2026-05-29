@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import { ReportingMetricBreakdownTable } from '@repo/reporting'
 
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
+import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
 import { ARTICLE_RECOMMENDATION_COLUMNS } from 'pages/aiAgent/analyticsOverview/components/ArticleRecommendationTable/columns'
 import {
     DownloadArticleRecommendationButton,
@@ -13,11 +14,13 @@ import { useArticleRecommendationMetrics } from 'pages/aiAgent/analyticsOverview
 type Props = {
     chartId?: string
     withChartMenu?: boolean
+    dashboard?: DashboardSchema
 }
 
 export const ArticleRecommendationTable = ({
     chartId,
     withChartMenu,
+    dashboard,
 }: Props) => {
     const {
         data = [],
@@ -53,6 +56,7 @@ export const ArticleRecommendationTable = ({
                     <ChartsActionMenu
                         chartId={chartId}
                         chartName="Article Recommendation"
+                        dashboard={dashboard}
                         exportCsvAction={exportCsvAction}
                     />
                 ) : undefined

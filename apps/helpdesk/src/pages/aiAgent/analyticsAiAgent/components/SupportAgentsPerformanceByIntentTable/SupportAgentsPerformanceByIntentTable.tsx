@@ -1,6 +1,7 @@
 import { ReportingMetricBreakdownTable } from '@repo/reporting'
 
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
+import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
 import {
     SUPPORT_AGENTS_PERFORMANCE_BY_INTENT_COLUMNS,
     SUPPORT_AGENTS_PERFORMANCE_BY_INTENT_NAME_COLUMNS,
@@ -14,11 +15,13 @@ import { useSupportAgentsPerformanceByIntentMetrics } from 'pages/aiAgent/analyt
 type Props = {
     chartId?: string
     withChartMenu?: boolean
+    dashboard?: DashboardSchema
 }
 
 export const SupportAgentsPerformanceByIntentTable = ({
     chartId,
     withChartMenu,
+    dashboard,
 }: Props) => {
     const { data = [], loadingStates } =
         useSupportAgentsPerformanceByIntentMetrics()
@@ -41,6 +44,7 @@ export const SupportAgentsPerformanceByIntentTable = ({
                     <ChartsActionMenu
                         chartId={chartId}
                         chartName="Intent"
+                        dashboard={dashboard}
                         exportCsvAction={exportCsvAction}
                     />
                 ) : undefined

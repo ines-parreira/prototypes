@@ -208,4 +208,30 @@ describe('ShoppingAssistantPerformanceByEngagementFeatureTable', () => {
 
         expect(getLastCallProps().actionMenu).toBeUndefined()
     })
+
+    it('passes dashboard prop to ChartsActionMenu when provided', () => {
+        mockUseShoppingAssistantPerformanceByEngagementFeatureMetrics.mockReturnValue(
+            { data: defaultData, loadingStates: defaultLoadingStates },
+        )
+        const dashboard = {
+            id: 1,
+            name: 'My Dashboard',
+            children: [],
+            emoji: null,
+            analytics_filter_id: null,
+        }
+
+        render(
+            <ShoppingAssistantPerformanceByEngagementFeatureTable
+                chartId="shopping_assistant_performance_by_engagement_feature_table"
+                withChartMenu
+                dashboard={dashboard}
+            />,
+        )
+
+        expect(
+            (getLastCallProps().actionMenu as React.ReactElement).props
+                .dashboard,
+        ).toBe(dashboard)
+    })
 })

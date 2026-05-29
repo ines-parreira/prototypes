@@ -155,6 +155,34 @@ describe('FlowsTable', () => {
         expect(getLastCallProps().actionMenu).toBeUndefined()
     })
 
+    it('passes dashboard prop to ChartsActionMenu when provided', () => {
+        mockUseFlowsMetrics.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+            displayNames: defaultDisplayNames,
+        })
+        const dashboard = {
+            id: 1,
+            name: 'My Dashboard',
+            children: [],
+            emoji: null,
+            analytics_filter_id: null,
+        }
+
+        render(
+            <FlowsTable
+                chartId="flows_table"
+                withChartMenu
+                dashboard={dashboard}
+            />,
+        )
+
+        expect(
+            (getLastCallProps().actionMenu as React.ReactElement).props
+                .dashboard,
+        ).toBe(dashboard)
+    })
+
     it('renders DownloadFlowsButton as the DownloadButton', () => {
         renderComponent()
 

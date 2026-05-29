@@ -194,6 +194,36 @@ describe('ArticleRecommendationTable', () => {
         expect(getLastCallProps().actionMenu).toBeUndefined()
     })
 
+    it('passes dashboard prop to ChartsActionMenu when provided', () => {
+        mockUseArticleRecommendationMetrics.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+            displayNames: defaultDisplayNames,
+            isLoading: false,
+            isError: false,
+        })
+        const dashboard = {
+            id: 1,
+            name: 'My Dashboard',
+            children: [],
+            emoji: null,
+            analytics_filter_id: null,
+        }
+
+        render(
+            <ArticleRecommendationTable
+                chartId="article_recommendation_table"
+                withChartMenu
+                dashboard={dashboard}
+            />,
+        )
+
+        expect(
+            (getLastCallProps().actionMenu as React.ReactElement).props
+                .dashboard,
+        ).toBe(dashboard)
+    })
+
     it('renders DownloadArticleRecommendationButton as the DownloadButton', () => {
         renderComponent()
 

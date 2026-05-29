@@ -1,6 +1,7 @@
 import { ReportingMetricBreakdownTable } from '@repo/reporting'
 
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
+import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
 import {
     SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_COLUMNS,
     SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_NAME_COLUMNS,
@@ -14,11 +15,13 @@ import { useShoppingAssistantPerformanceByEngagementFeatureMetrics } from 'pages
 type Props = {
     chartId?: string
     withChartMenu?: boolean
+    dashboard?: DashboardSchema
 }
 
 export const ShoppingAssistantPerformanceByEngagementFeatureTable = ({
     chartId,
     withChartMenu,
+    dashboard,
 }: Props) => {
     const { data = [], loadingStates } =
         useShoppingAssistantPerformanceByEngagementFeatureMetrics()
@@ -46,6 +49,7 @@ export const ShoppingAssistantPerformanceByEngagementFeatureTable = ({
                     <ChartsActionMenu
                         chartId={chartId}
                         chartName="Engagement feature"
+                        dashboard={dashboard}
                         exportCsvAction={exportCsvAction}
                     />
                 ) : undefined

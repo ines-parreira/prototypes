@@ -1,6 +1,7 @@
 import { ReportingMetricBreakdownTable } from '@repo/reporting'
 
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
+import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
 import {
     SUPPORT_AGENTS_PERFORMANCE_BY_CHANNEL_COLUMNS,
     SUPPORT_AGENTS_PERFORMANCE_BY_CHANNEL_NAME_COLUMNS,
@@ -14,11 +15,13 @@ import { useSupportAgentsPerformanceByChannelMetrics } from 'pages/aiAgent/analy
 type Props = {
     chartId?: string
     withChartMenu?: boolean
+    dashboard?: DashboardSchema
 }
 
 export const SupportAgentsPerformanceByChannelTable = ({
     chartId,
     withChartMenu,
+    dashboard,
 }: Props) => {
     const { data = [], loadingStates } =
         useSupportAgentsPerformanceByChannelMetrics()
@@ -41,6 +44,7 @@ export const SupportAgentsPerformanceByChannelTable = ({
                     <ChartsActionMenu
                         chartId={chartId}
                         chartName="Channel"
+                        dashboard={dashboard}
                         exportCsvAction={exportCsvAction}
                     />
                 ) : undefined
