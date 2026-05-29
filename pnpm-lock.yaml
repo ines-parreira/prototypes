@@ -1770,6 +1770,9 @@ importers:
       '@gorgias/helpdesk-types':
         specifier: catalog:rest-api-sdk
         version: 0.9.131
+      '@repo/api-resources':
+        specifier: workspace:*
+        version: link:../api-resources
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -1782,6 +1785,9 @@ importers:
       '@repo/testing':
         specifier: workspace:*
         version: link:../testing
+      '@repo/users':
+        specifier: workspace:*
+        version: link:../users
       '@repo/utils':
         specifier: workspace:*
         version: link:../utils
@@ -5745,7 +5751,6 @@ packages:
       react: ^18
       react-dom: ^18
       rxjs: ^7.8.0
-      zustand: 5.0.9
 
   '@gorgias/customer-segmentation-client@0.2.9':
     resolution: {integrity: sha512-VOS6eQA+J53lSWXYzAPexRGLrjA3RM0YzzxG4kdj+acxKtIEsoyJe8BRJvMzHO+nLgQWcs90vtWkrWZiyDdGEw==, tarball: https://npm.pkg.github.com/download/@gorgias/customer-segmentation-client/0.2.9/f504bf90c80bfe6d867fa0521f4eee735676f639}
@@ -19971,7 +19976,6 @@ snapshots:
       rxjs: 7.8.1
       use-stick-to-bottom: 1.1.4(react@18.2.0)
       zod: 3.25.76
-      zustand: 5.0.9(@types/react@18.2.67)(immer@10.1.1)(react@18.2.0)(use-sync-external-store@1.5.0(react@18.2.0))
     transitivePeerDependencies:
       - '@emotion/is-prop-valid'
       - '@types/mdast'

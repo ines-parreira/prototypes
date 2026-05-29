@@ -8,7 +8,6 @@ import {
 } from '@gorgias/helpdesk-queries'
 
 import {
-    useAvailabilityStatusColor,
     useCustomUserUnavailabilityStatus,
     useUserAvailabilityExpirationTime,
 } from '../../hooks'
@@ -36,11 +35,6 @@ export function UserInfoHeaderContainer({
 
     const customUserStatus = useCustomUserUnavailabilityStatus(
         userAvailability?.custom_user_availability_status_id,
-    )
-
-    const indicatorColor = useAvailabilityStatusColor(
-        userAvailability?.user_status,
-        agentPhoneUnavailabilityStatus?.id,
     )
 
     const displayStatusText = useMemo(() => {
@@ -75,21 +69,17 @@ export function UserInfoHeaderContainer({
         return null
     }
 
-    const { firstname, lastname, meta, email } = currentUser.data
+    const { firstname, lastname, email } = currentUser.data
 
     const userName = [firstname?.trim(), lastname?.trim()]
         .filter(Boolean)
         .join(' ')
 
-    const avatarUrl = meta?.profile_picture_url
-
     return (
         <UserInfoHeader
+            user={currentUser.data}
             userName={userName || email || ''}
-            avatarUrl={avatarUrl ?? undefined}
             statusText={displayStatusText}
-            isOffline={false}
-            indicatorColor={indicatorColor}
         />
     )
 }

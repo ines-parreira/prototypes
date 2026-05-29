@@ -1,24 +1,21 @@
 import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
+import { UserAvatar } from '@repo/users'
 
-import type { AvatarStatusIndicatorColor } from '@gorgias/axiom'
-import { Avatar, AvatarStatusIndicator, Box, Text } from '@gorgias/axiom'
+import { Box, Text } from '@gorgias/axiom'
+import type { User } from '@gorgias/helpdesk-queries'
 
 import css from './UserInfoHeader.less'
 
 export type UserInfoHeaderProps = {
+    user: User
     userName: string
-    avatarUrl?: string
     statusText?: string
-    isOffline?: boolean
-    indicatorColor?: AvatarStatusIndicatorColor
 }
 
 export function UserInfoHeader({
+    user,
     userName,
-    avatarUrl,
     statusText,
-    isOffline,
-    indicatorColor,
 }: UserInfoHeaderProps) {
     const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
 
@@ -31,21 +28,7 @@ export function UserInfoHeader({
                 gap="xs"
             >
                 <Box>
-                    <Avatar
-                        name={userName}
-                        url={avatarUrl}
-                        status={
-                            indicatorColor && (
-                                <AvatarStatusIndicator
-                                    color={indicatorColor}
-                                    variant={
-                                        isOffline ? 'secondary' : 'primary'
-                                    }
-                                />
-                            )
-                        }
-                        size="sm"
-                    />
+                    <UserAvatar user={user} size="sm" />
                 </Box>
                 <Box flexDirection="column" gap="xxxxs" minWidth={0}>
                     <Text overflow="ellipsis">{userName}</Text>
@@ -82,19 +65,7 @@ export function UserInfoHeader({
             paddingRight="sm"
         >
             <Box>
-                <Avatar
-                    name={userName}
-                    url={avatarUrl}
-                    status={
-                        indicatorColor && (
-                            <AvatarStatusIndicator
-                                color={indicatorColor}
-                                variant={isOffline ? 'secondary' : 'primary'}
-                            />
-                        )
-                    }
-                    size="lg"
-                />
+                <UserAvatar user={user} size="lg" />
             </Box>
             <Box flexDirection="column" gap="xxxs">
                 <Text variant="bold">{userName}</Text>

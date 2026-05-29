@@ -1,5 +1,6 @@
 import { useCustomAgentUnavailableStatusesFlag } from '@repo/agent-status'
 import { assumeMock, render, userEvent } from '@repo/testing'
+import { useCurrentUser } from '@repo/users'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -22,15 +23,20 @@ const getIsAvailableMock = assumeMock(getIsAvailable)
 jest.mock('../UserMenu', () => () => <div>UserMenu</div>)
 
 jest.mock('@repo/agent-status', () => ({
-    AgentAvatar: ({ name }: { name: string }) => (
-        <div data-testid="agent-avatar">{name}</div>
-    ),
     useCustomAgentUnavailableStatusesFlag: jest.fn(),
+}))
+
+jest.mock('@repo/users', () => ({
+    UserAvatar: ({ user }: { user: { name?: string; email?: string } }) => (
+        <div data-testid="user-avatar">{user?.name || user?.email}</div>
+    ),
+    useCurrentUser: jest.fn(),
 }))
 
 const useCustomAgentUnavailableStatusesFlagMock = assumeMock(
     useCustomAgentUnavailableStatusesFlag,
 )
+const useCurrentUserMock = assumeMock(useCurrentUser)
 
 describe('UserItem', () => {
     beforeEach(() => {
@@ -39,6 +45,10 @@ describe('UserItem', () => {
         )
         getIsAvailableMock.mockReturnValue(true)
         useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(false)
+        useCurrentUserMock.mockReturnValue({
+            id: 123,
+            name: 'John Doe',
+        } as any)
     })
 
     describe('with feature flag disabled (legacy behavior)', () => {
@@ -83,44 +93,47 @@ describe('UserItem', () => {
         })
     })
 
-    describe('with feature flag enabled (AgentAvatar)', () => {
+    describe('with feature flag enabled (UserAvatar)', () => {
         beforeEach(() => {
             useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(true)
         })
 
-        it('should render AgentAvatar instead of legacy avatar', () => {
+        it('should render UserAvatar instead of legacy avatar', () => {
             render(<UserItem />)
-            expect(screen.getByTestId('agent-avatar')).toBeInTheDocument()
+            expect(screen.getByTestId('user-avatar')).toBeInTheDocument()
             expect(screen.queryByText('JD')).not.toBeInTheDocument()
         })
 
-        it('should pass correct props to AgentAvatar', () => {
-            getCurrentUserMock.mockReturnValue(
-                fromJS({
-                    id: 456,
-                    name: 'Jane Smith',
-                    meta: {
-                        profile_picture_url: 'https://example.com/pic.jpg',
-                    },
-                }),
-            )
+        it('should pass the current user to UserAvatar', () => {
+            useCurrentUserMock.mockReturnValue({
+                id: 456,
+                name: 'Jane Smith',
+                meta: {
+                    profile_picture_url: 'https://example.com/pic.jpg',
+                },
+            } as any)
             render(<UserItem />)
 
-            const agentAvatar = screen.getByTestId('agent-avatar')
-            expect(agentAvatar).toHaveTextContent('Jane Smith')
+            const userAvatar = screen.getByTestId('user-avatar')
+            expect(userAvatar).toHaveTextContent('Jane Smith')
         })
 
         it('should fall back to email when name is not provided', () => {
-            getCurrentUserMock.mockReturnValue(
-                fromJS({
-                    id: 123,
-                    email: 'test@example.com',
-                }),
-            )
+            useCurrentUserMock.mockReturnValue({
+                id: 123,
+                email: 'test@example.com',
+            } as any)
             render(<UserItem />)
 
-            const agentAvatar = screen.getByTestId('agent-avatar')
-            expect(agentAvatar).toHaveTextContent('test@example.com')
+            const userAvatar = screen.getByTestId('user-avatar')
+            expect(userAvatar).toHaveTextContent('test@example.com')
+        })
+
+        it('should fall back to the legacy avatar while the current user is loading', () => {
+            useCurrentUserMock.mockReturnValue(undefined)
+            render(<UserItem />)
+            expect(screen.queryByTestId('user-avatar')).not.toBeInTheDocument()
+            expect(screen.getByText('JD')).toBeInTheDocument()
         })
 
         it('should not render legacy badge', () => {

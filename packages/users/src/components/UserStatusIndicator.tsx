@@ -1,6 +1,7 @@
 import { AvatarStatusIndicator } from '@gorgias/axiom'
 import type { User } from '@gorgias/helpdesk-queries'
 
+import { useIndicatorProps } from '../hooks/useIndicatorProps'
 import { useUserStatus } from '../hooks/useUserStatus'
 
 export type UserStatusIndicatorProps = {
@@ -10,16 +11,13 @@ export type UserStatusIndicatorProps = {
 export function UserStatusIndicator({
     user,
 }: UserStatusIndicatorProps): JSX.Element | null {
-    const { status } = useUserStatus(user.id)
+    const { status, availability } = useUserStatus(user.id)
+    const indicatorProps = useIndicatorProps({
+        isOnline: status === 'online',
+        availabilityStatus: availability?.user_status,
+    })
 
     if (!user.id) return null
 
-    const isOnline = status === 'online'
-
-    return (
-        <AvatarStatusIndicator
-            color={isOnline ? 'green' : 'grey'}
-            aria-label={isOnline ? 'Online' : 'Offline'}
-        />
-    )
+    return <AvatarStatusIndicator {...indicatorProps} />
 }

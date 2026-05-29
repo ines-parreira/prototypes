@@ -55,7 +55,6 @@ export { useUpdateAgentStatus } from './hooks/useUpdateAgentStatus'
 export { useAgentPhoneStatus } from './hooks/useAgentPhoneStatus'
 export { useListUserPhoneStatuses } from './hooks/useListUserPhoneStatuses'
 export { usePhoneStatusBatchPollingInterval } from './hooks/usePhoneStatusBatchPollingInterval'
-export { AgentAvatar } from './components'
 export { LiveAgentsRealtimeListener } from './components'
 
 export { AVAILABLE_STATUS } from './constants'

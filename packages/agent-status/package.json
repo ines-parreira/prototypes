@@ -17,6 +17,7 @@
         "typecheck": "tsgo -p ./tsconfig.json --noEmit true"
     },
     "peerDependencies": {
+        "@repo/api-resources": "workspace:*",
         "@gorgias/axiom": "catalog:axiom",
         "@gorgias/design-tokens": "catalog:axiom",
         "@gorgias/events": "catalog:events",
@@ -25,6 +26,7 @@
         "@repo/feature-flags": "workspace:*",
         "@repo/forms": "workspace:*",
         "@repo/preferences": "workspace:*",
+        "@repo/users": "workspace:*",
         "@repo/utils": "workspace:*",
         "classnames": "catalog:styles",
         "moment": "catalog:moment",
@@ -32,6 +34,7 @@
         "react-dom": "catalog:react"
     },
     "devDependencies": {
+        "@repo/api-resources": "workspace:*",
         "@gorgias/axiom": "catalog:axiom",
         "@gorgias/design-tokens": "catalog:axiom",
         "@gorgias/helpdesk-mocks": "catalog:rest-api-sdk",
@@ -41,6 +44,7 @@
         "@repo/feature-flags": "workspace:*",
         "@repo/forms": "workspace:*",
         "@repo/testing": "workspace:*",
+        "@repo/users": "workspace:*",
         "@repo/utils": "workspace:*",
         "@tanstack/react-query": "catalog:rest-api-sdk",
         "@testing-library/dom": "catalog:test",

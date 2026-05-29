@@ -19,20 +19,18 @@ jest.mock('../userMenu/useNoticeableWidget', () => ({
 jest.mock('../userMenu/UserMenuTrigger', () => ({
     UserMenuTrigger: jest.fn(
         ({
-            userId,
-            userName,
-            profilePictureUrl,
+            user,
         }: {
-            userId: number
-            userName: string
-            profilePictureUrl?: string | null
-        }) => (
-            <Button
-                aria-label={`trigger:${userId}:${userName}:${String(profilePictureUrl)}`}
-            >
-                {`trigger:${userId}:${userName}:${String(profilePictureUrl)}`}
-            </Button>
-        ),
+            user: {
+                id: number
+                name?: string
+                email?: string
+                meta?: { profile_picture_url?: string }
+            }
+        }) => {
+            const label = `trigger:${user.id}:${user.name ?? user.email}:${String(user.meta?.profile_picture_url)}`
+            return <Button aria-label={label}>{label}</Button>
+        },
     ),
 }))
 
@@ -187,7 +185,7 @@ describe('UserMenu', () => {
         ).toBeInTheDocument()
     })
 
-    it('falls back to "Agent #{id}" when the user has neither name nor email', async () => {
+    it('forwards the user to the trigger even when name and email are missing', async () => {
         server.use(
             mockGetCurrentUserHandler(async () =>
                 HttpResponse.json({ id: 7 } as any),
@@ -197,7 +195,7 @@ describe('UserMenu', () => {
         renderUserMenu()
 
         expect(
-            await screen.findByText('trigger:7:Agent #7:undefined'),
+            await screen.findByText('trigger:7:undefined:undefined'),
         ).toBeInTheDocument()
     })
 })

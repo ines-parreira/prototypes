@@ -19,21 +19,13 @@ function UserMenuLoaded({
 }) {
     useNoticeableWidget()
 
-    const userName =
-        currentUser.name ?? currentUser.email ?? `Agent #${currentUser.id}`
     const userEmail = currentUser.email
     const userRole = currentUser.role?.name
 
     return (
         <Menu
             placement="right"
-            trigger={
-                <UserMenuTrigger
-                    userId={currentUser.id}
-                    userName={userName}
-                    profilePictureUrl={currentUser.meta?.profile_picture_url}
-                />
-            }
+            trigger={<UserMenuTrigger user={currentUser} />}
             maxWidth={240}
         >
             <UserMenuUserHeader

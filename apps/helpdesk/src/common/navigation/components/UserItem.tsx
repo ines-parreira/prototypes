@@ -1,9 +1,7 @@
 import { useCallback, useRef, useState } from 'react'
 
-import {
-    AgentAvatar,
-    useCustomAgentUnavailableStatusesFlag,
-} from '@repo/agent-status'
+import { useCustomAgentUnavailableStatusesFlag } from '@repo/agent-status'
+import { useCurrentUser, UserAvatar } from '@repo/users'
 
 import useAppSelector from 'hooks/useAppSelector'
 import LegacyAvatar from 'pages/common/components/Avatar/Avatar'
@@ -20,7 +18,7 @@ import css from './UserItem.less'
 export default function UserItem() {
     const currentUser = useAppSelector(getCurrentUser)
     const isAvailable = useAppSelector(getIsAvailable)
-
+    const user = useCurrentUser()
     const isAgentStatusEnabled = useCustomAgentUnavailableStatusesFlag()
 
     const buttonRef = useRef<HTMLButtonElement | null>(null)
@@ -38,14 +36,8 @@ export default function UserItem() {
                 type="button"
                 onClick={handleToggle}
             >
-                {isAgentStatusEnabled ? (
-                    <AgentAvatar
-                        userId={currentUser.get('id')}
-                        name={
-                            currentUser.get('name') || currentUser.get('email')
-                        }
-                        url={currentUser.getIn(['meta', 'profile_picture_url'])}
-                    />
+                {isAgentStatusEnabled && user ? (
+                    <UserAvatar user={user} />
                 ) : (
                     <LegacyAvatar
                         badgeClassName={css.badge}
