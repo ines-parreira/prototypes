@@ -4,10 +4,17 @@ import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 
+import { useSidebarCreateButtonsFlag } from '@repo/feature-flags'
+
 import { useCreateTicketButton } from 'pages/common/components/CreateTicket/useCreateTicketButton'
 
 import { TicketNavbarCreateMenu } from '../TicketNavbarCreateMenu'
 import { usePlaceCallButton } from '../usePlaceCallButton'
+
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useSidebarCreateButtonsFlag: jest.fn().mockReturnValue(false),
+}))
 
 jest.mock('pages/common/components/CreateTicket/useCreateTicketButton')
 jest.mock('../usePlaceCallButton')
@@ -52,6 +59,7 @@ jest.mock('business/twilio', () => ({
 
 const useCreateTicketButtonMock = assumeMock(useCreateTicketButton)
 const usePlaceCallButtonMock = assumeMock(usePlaceCallButton)
+const useSidebarCreateButtonsFlagMock = assumeMock(useSidebarCreateButtonsFlag)
 
 const defaultCreateTicketButton = {
     hasDraft: false,
@@ -90,6 +98,7 @@ describe('TicketNavbarCreateMenu', () => {
             >,
         )
         usePlaceCallButtonMock.mockReturnValue(defaultPlaceCallButton)
+        useSidebarCreateButtonsFlagMock.mockReturnValue(false)
         jest.requireMock('@repo/navigation').useSidebar.mockReturnValue({
             isCollapsed: false,
         })
@@ -443,5 +452,213 @@ describe('TicketNavbarCreateMenu', () => {
         expect(
             screen.getByText('Create ticket').closest('[aria-disabled]'),
         ).toHaveAttribute('aria-disabled', 'true')
+    })
+})
+
+describe('TicketNavbarCreateMenu with SidebarCreateButtons feature flag enabled', () => {
+    beforeEach(() => {
+        mockIsMacOs = false
+        useCreateTicketButtonMock.mockReturnValue(
+            defaultCreateTicketButton as unknown as ReturnType<
+                typeof useCreateTicketButton
+            >,
+        )
+        usePlaceCallButtonMock.mockReturnValue(defaultPlaceCallButton)
+        useSidebarCreateButtonsFlagMock.mockReturnValue(true)
+        jest.requireMock('@repo/navigation').useSidebar.mockReturnValue({
+            isCollapsed: false,
+        })
+    })
+
+    it('renders "New ticket" button with shortcut key when there is no draft and no phone', () => {
+        renderComponent()
+
+        expect(screen.getByText('New ticket')).toBeInTheDocument()
+        expect(screen.getByText('N')).toBeInTheDocument()
+    })
+
+    it('does not render a "Call" button when shouldDisplayButton is false', () => {
+        renderComponent()
+
+        expect(screen.queryByText('Call')).not.toBeInTheDocument()
+    })
+
+    it('renders "New ticket" and "Call" buttons when shouldDisplayPlaceCall is true', () => {
+        usePlaceCallButtonMock.mockReturnValue({
+            ...defaultPlaceCallButton,
+            shouldDisplayButton: true,
+        })
+
+        renderComponent()
+
+        expect(screen.getByText('New ticket')).toBeInTheDocument()
+        expect(screen.getByText('Call')).toBeInTheDocument()
+    })
+
+    it('renders "Resume draft" and discard button when hasDraft is true', () => {
+        useCreateTicketButtonMock.mockReturnValue({
+            ...defaultCreateTicketButton,
+            hasDraft: true,
+        } as unknown as ReturnType<typeof useCreateTicketButton>)
+
+        renderComponent()
+
+        expect(screen.getByText('Resume draft')).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: 'Discard draft' }),
+        ).toBeInTheDocument()
+    })
+
+    it('does not render "New ticket" when hasDraft is true', () => {
+        useCreateTicketButtonMock.mockReturnValue({
+            ...defaultCreateTicketButton,
+            hasDraft: true,
+        } as unknown as ReturnType<typeof useCreateTicketButton>)
+
+        renderComponent()
+
+        expect(screen.queryByText('New ticket')).not.toBeInTheDocument()
+    })
+
+    it('calls onResumeDraft when "Resume draft" button is clicked', async () => {
+        const onResumeDraft = jest.fn()
+        useCreateTicketButtonMock.mockReturnValue({
+            ...defaultCreateTicketButton,
+            hasDraft: true,
+            onResumeDraft,
+        } as unknown as ReturnType<typeof useCreateTicketButton>)
+
+        const { user } = renderComponent()
+
+        await user.click(screen.getByText('Resume draft'))
+
+        expect(onResumeDraft).toHaveBeenCalledTimes(1)
+    })
+
+    it('calls onDiscardDraft with createTicketPath when the discard button is clicked', async () => {
+        const onDiscardDraft = jest.fn()
+        useCreateTicketButtonMock.mockReturnValue({
+            ...defaultCreateTicketButton,
+            hasDraft: true,
+            onDiscardDraft,
+            createTicketPath: '/ticket/new',
+        } as unknown as ReturnType<typeof useCreateTicketButton>)
+
+        const { user } = renderComponent()
+
+        await user.click(screen.getByRole('button', { name: 'Discard draft' }))
+
+        expect(onDiscardDraft).toHaveBeenCalledWith('/ticket/new')
+    })
+
+    it('disables "New ticket" button when pathname includes /ticket/new', () => {
+        renderComponent(['/ticket/new'])
+
+        expect(
+            screen.getByText('New ticket').closest('[aria-disabled]'),
+        ).toHaveAttribute('aria-disabled', 'true')
+    })
+
+    it('disables "Resume draft" and discard buttons when pathname includes /ticket/new', () => {
+        useCreateTicketButtonMock.mockReturnValue({
+            ...defaultCreateTicketButton,
+            hasDraft: true,
+        } as unknown as ReturnType<typeof useCreateTicketButton>)
+
+        renderComponent(['/ticket/new'])
+
+        expect(
+            screen.getByText('Resume draft').closest('[aria-disabled]'),
+        ).toHaveAttribute('aria-disabled', 'true')
+        expect(
+            screen.getByRole('button', { name: 'Discard draft' }),
+        ).toHaveAttribute('aria-disabled', 'true')
+    })
+
+    it('renders icon-only button when sidebar is collapsed (not inline buttons)', () => {
+        jest.requireMock('@repo/navigation').useSidebar.mockReturnValue({
+            isCollapsed: true,
+        })
+        usePlaceCallButtonMock.mockReturnValue({
+            ...defaultPlaceCallButton,
+            hasPhone: true,
+            shouldDisplayButton: true,
+        })
+
+        renderComponent()
+
+        expect(screen.queryByText('New ticket')).not.toBeInTheDocument()
+        expect(screen.queryByText('Call')).not.toBeInTheDocument()
+    })
+
+    it('shows macOS shortcut keys on the Call button when enabled on macOS', () => {
+        mockIsMacOs = true
+        usePlaceCallButtonMock.mockReturnValue({
+            ...defaultPlaceCallButton,
+            shouldDisplayButton: true,
+            isButtonDisabled: false,
+        })
+
+        renderComponent()
+
+        expect(screen.getByText('⌘')).toBeInTheDocument()
+        expect(screen.getByText('E')).toBeInTheDocument()
+    })
+
+    it('shows ctrl shortcut key on the Call button when enabled on non-macOS', () => {
+        mockIsMacOs = false
+        usePlaceCallButtonMock.mockReturnValue({
+            ...defaultPlaceCallButton,
+            shouldDisplayButton: true,
+            isButtonDisabled: false,
+        })
+
+        renderComponent()
+
+        expect(screen.getByText('ctrl')).toBeInTheDocument()
+        expect(screen.getByText('E')).toBeInTheDocument()
+    })
+
+    it('shows error icon on the Call button when device is disabled', () => {
+        usePlaceCallButtonMock.mockReturnValue({
+            ...defaultPlaceCallButton,
+            shouldDisplayButton: true,
+            isButtonDisabled: true,
+            isDeviceActive: false,
+        })
+
+        renderComponent()
+
+        expect(screen.queryByText('E')).not.toBeInTheDocument()
+    })
+
+    it('calls setIsDeviceVisible when Call button is clicked', async () => {
+        const setIsDeviceVisible = jest.fn()
+        usePlaceCallButtonMock.mockReturnValue({
+            ...defaultPlaceCallButton,
+            shouldDisplayButton: true,
+            isButtonDisabled: false,
+            setIsDeviceVisible,
+        })
+
+        const { user } = renderComponent()
+
+        await user.click(screen.getByText('Call'))
+
+        expect(setIsDeviceVisible).toHaveBeenCalledWith(true)
+    })
+
+    it('calls history.push and logEvent when "New ticket" button is clicked', async () => {
+        const { history } = jest.requireMock('@repo/routing')
+        const { logEvent, SegmentEvent } = jest.requireMock('@repo/logging')
+
+        const { user } = renderComponent()
+
+        await user.click(screen.getByText('New ticket'))
+
+        expect(history.push).toHaveBeenCalledWith('/ticket/new')
+        expect(logEvent).toHaveBeenCalledWith(
+            SegmentEvent.CreateTicketButtonClicked,
+        )
     })
 })

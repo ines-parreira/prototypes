@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 
+import { useSidebarCreateButtonsFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import {
     NavigationSidebarTooltip,
@@ -17,7 +18,9 @@ import {
     Icon,
     Menu,
     MenuItem,
+    MultiButton,
     ShortcutKey,
+    Text,
     Tooltip,
     TooltipContent,
 } from '@gorgias/axiom'
@@ -30,6 +33,7 @@ import { useCreateTicketButton } from 'pages/common/components/CreateTicket/useC
 import PhoneDevice from 'pages/integrations/integration/components/phone/PhoneDevice'
 
 import { usePlaceCallButton } from './usePlaceCallButton'
+import css from './TicketNavbarCreateMenu.less'
 
 const BUTTON_CONTENT_WIDTH = 184
 
@@ -59,9 +63,118 @@ export function TicketNavbarCreateMenu() {
         hasPhone,
     } = usePlaceCallButton()
 
+    const hasSidebarCreateButtonsFlag = useSidebarCreateButtonsFlag()
+
     const handleCreateTicket = () => {
         history.push(createTicketPath)
         logEvent(SegmentEvent.CreateTicketButtonClicked)
+    }
+
+    if (hasSidebarCreateButtonsFlag && !isCollapsed) {
+        return (
+            <Box gap="xxxs">
+                {hasDraft ? (
+                    <Tooltip
+                        trigger={
+                            <Box>
+                                <MultiButton variant="secondary" size="sm">
+                                    <Button
+                                        isDisabled={isCreateTicketDisabled}
+                                        onClick={onResumeDraft}
+                                    >
+                                        Resume draft
+                                    </Button>
+                                    <Button
+                                        icon="close"
+                                        isDisabled={isCreateTicketDisabled}
+                                        aria-label="Discard draft"
+                                        onClick={() =>
+                                            onDiscardDraft(createTicketPath)
+                                        }
+                                    />
+                                </MultiButton>
+                            </Box>
+                        }
+                    >
+                        <TooltipContent>
+                            <Box
+                                flexDirection="column"
+                                gap="xxxs"
+                                className={css.draftTooltipContent}
+                            >
+                                <Box alignItems="center" gap="xxxs">
+                                    <Text>Resume draft</Text>
+                                    <ShortcutKey>N</ShortcutKey>
+                                </Box>
+                                <div>
+                                    Close button - Discard and create new ticket
+                                </div>
+                            </Box>
+                        </TooltipContent>
+                    </Tooltip>
+                ) : (
+                    <Button
+                        variant="secondary"
+                        size="sm"
+                        isDisabled={isCreateTicketDisabled}
+                        onClick={handleCreateTicket}
+                    >
+                        <Box alignItems="center" gap="xxxs">
+                            <Icon name="chat-add-circle" size="sm" />
+                            <Text>New ticket</Text>
+                            <ShortcutKey>N</ShortcutKey>
+                        </Box>
+                    </Button>
+                )}
+                {shouldDisplayPlaceCall && (
+                    <Tooltip
+                        trigger={
+                            <Button
+                                variant="secondary"
+                                size="sm"
+                                isDisabled={isPlaceCallButtonDisabled}
+                                onClick={() => setIsDeviceVisible(true)}
+                                ref={buttonRef}
+                            >
+                                <Box alignItems="center" gap="xxxs">
+                                    <Icon name="phone-outgoing" size="sm" />
+                                    <Text>Call</Text>
+                                    {isPlaceCallButtonDisabled ? (
+                                        <Icon
+                                            name="error-octagon"
+                                            size="sm"
+                                            color="red"
+                                        />
+                                    ) : (
+                                        <Box gap="xxxs">
+                                            <ShortcutKey>
+                                                {isMacOs ? '⌘' : 'ctrl'}
+                                            </ShortcutKey>
+                                            <ShortcutKey>E</ShortcutKey>
+                                        </Box>
+                                    )}
+                                </Box>
+                            </Button>
+                        }
+                    >
+                        {isPlaceCallButtonDisabled && (
+                            <TooltipContent
+                                title={
+                                    !isDeviceActive
+                                        ? DEFAULT_ERROR_MESSAGE
+                                        : MICROPHONE_PERMISSION_ERROR_MESSAGE
+                                }
+                            />
+                        )}
+                    </Tooltip>
+                )}
+                <PhoneDevice
+                    isOpen={isDeviceVisible}
+                    setIsOpen={setIsDeviceVisible}
+                    target={buttonRef}
+                />
+            </Box>
+        )
     }
 
     if (!hasPhone && !hasDraft) {
