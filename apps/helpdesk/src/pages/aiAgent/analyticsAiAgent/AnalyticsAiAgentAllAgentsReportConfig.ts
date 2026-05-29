@@ -48,6 +48,7 @@ import { fetchAiAgentTotalSalesTrend } from 'pages/aiAgent/analyticsAiAgent/hook
 import { fetchAiAgentZeroTouchTicketsTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentZeroTouchTicketsTrend'
 import { fetchAllAgentsPerformanceByChannelAsConfigurableTable } from 'pages/aiAgent/analyticsAiAgent/hooks/useAllAgentsPerformanceByChannelMetrics'
 import { fetchAllAgentsPerformanceByIntentAsConfigurableTable } from 'pages/aiAgent/analyticsAiAgent/hooks/useAllAgentsPerformanceByIntentMetrics'
+import { AI_AGENT_CHART_ID_PREFIX } from 'pages/aiAgent/constants'
 import {
     fetchConfigurableBarChartDownloadData,
     fetchConfigurableLineChartDownloadData,
@@ -57,28 +58,31 @@ import { STATS_ROUTES } from 'routes/constants'
 import { AnalyticsAiAgentConversionRateCard } from './charts/AnalyticsAiAgentConversionRateCard'
 import { fetchAiSalesAgentConversionRateTrend } from './charts/useAiSalesAgentConversionRateTrend'
 
-export enum AnalyticsAiAgentAllAgentsChart {
-    AutomationRateCard = 'revamp-ai_agent_all_agents-automation_rate_card',
-    AutomatedInteractionsCard = 'revamp-ai_agent_all_agents-automated_interactions_card',
-    ConversionRateCard = 'revamp-ai_agent_all_agents-conversion_rate_card',
-    TotalSalesCard = 'revamp-ai_agent_all_agents-total_sales_card',
-    TimeSavedCard = 'revamp-ai_agent_all_agents-time_saved_card',
-    ZeroTouchTicketsCard = 'revamp-ai_agent_all_agents-zero_touch_tickets_card',
-    AverageCsatCard = 'revamp-ai_agent_all_agents-csat_card',
-    CoverageRateCard = 'revamp-ai_agent_all_agents-coverage_rate_card',
-    ClosedTicketsCard = 'revamp-ai_agent_all_agents-closed_tickets_card',
-    HandoverInteractionsCard = 'revamp-ai_agent_all_agents-handover_interactions_card',
-    CostSavedCard = 'revamp-ai_agent_all_agents-cost_saved_card',
-    DecreaseInResolutionTimeCard = 'revamp-ai_agent_all_agents-decrease_in_resolution_time_card',
-    DecreaseInFRTCard = 'revamp-ai_agent_all_agents-decrease_in_frt_card',
-    SuccessRateCard = 'revamp-ai_agent_all_agents-success_rate_card',
-    FRTCard = 'revamp-ai_agent_all_agents-frt_card',
-    ResolutionTimeCard = 'revamp-ai_agent_all_agents-resolution_time_card',
-    ConfigurableBarGraph = 'revamp-ai_agent_all_agents-configurable_bar_graph',
-    ConfigurableLineGraph = 'revamp-ai_agent_all_agents-configurable_line_graph',
-    ChannelPerformanceTable = 'revamp-ai_agent_all_agents-channel_performance_table',
-    IntentPerformanceTable = 'revamp-ai_agent_all_agents-intent_performance_table',
-}
+export const AnalyticsAiAgentAllAgentsChart = {
+    AutomationRateCard: `${AI_AGENT_CHART_ID_PREFIX}all_agents-automation_rate_card`,
+    AutomatedInteractionsCard: `${AI_AGENT_CHART_ID_PREFIX}all_agents-automated_interactions_card`,
+    ConversionRateCard: `${AI_AGENT_CHART_ID_PREFIX}all_agents-conversion_rate_card`,
+    TotalSalesCard: `${AI_AGENT_CHART_ID_PREFIX}all_agents-total_sales_card`,
+    TimeSavedCard: `${AI_AGENT_CHART_ID_PREFIX}all_agents-time_saved_card`,
+    ZeroTouchTicketsCard: `${AI_AGENT_CHART_ID_PREFIX}all_agents-zero_touch_tickets_card`,
+    AverageCsatCard: `${AI_AGENT_CHART_ID_PREFIX}all_agents-csat_card`,
+    CoverageRateCard: `${AI_AGENT_CHART_ID_PREFIX}all_agents-coverage_rate_card`,
+    ClosedTicketsCard: `${AI_AGENT_CHART_ID_PREFIX}all_agents-closed_tickets_card`,
+    HandoverInteractionsCard: `${AI_AGENT_CHART_ID_PREFIX}all_agents-handover_interactions_card`,
+    CostSavedCard: `${AI_AGENT_CHART_ID_PREFIX}all_agents-cost_saved_card`,
+    DecreaseInResolutionTimeCard: `${AI_AGENT_CHART_ID_PREFIX}all_agents-decrease_in_resolution_time_card`,
+    DecreaseInFRTCard: `${AI_AGENT_CHART_ID_PREFIX}all_agents-decrease_in_frt_card`,
+    SuccessRateCard: `${AI_AGENT_CHART_ID_PREFIX}all_agents-success_rate_card`,
+    FRTCard: `${AI_AGENT_CHART_ID_PREFIX}all_agents-frt_card`,
+    ResolutionTimeCard: `${AI_AGENT_CHART_ID_PREFIX}all_agents-resolution_time_card`,
+    ConfigurableBarGraph: `${AI_AGENT_CHART_ID_PREFIX}all_agents-configurable_bar_graph`,
+    ConfigurableLineGraph: `${AI_AGENT_CHART_ID_PREFIX}all_agents-configurable_line_graph`,
+    ChannelPerformanceTable: `${AI_AGENT_CHART_ID_PREFIX}all_agents-channel_performance_table`,
+    IntentPerformanceTable: `${AI_AGENT_CHART_ID_PREFIX}all_agents-intent_performance_table`,
+} as const
+
+export type AnalyticsAiAgentAllAgentsChart =
+    (typeof AnalyticsAiAgentAllAgentsChart)[keyof typeof AnalyticsAiAgentAllAgentsChart]
 
 export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgentAllAgentsChart> =
     {

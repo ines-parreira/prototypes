@@ -280,3 +280,5 @@ export enum StoreConfigFormSection {
 export const REFRESH_AI_AGENT_PLAYGROUND_EVENT = 'refresh-ai-agent-playground'
 export const MESSAGE_SENT_AI_AGENT_PLAYGROUND_EVENT =
     'message-sent-ai-agent-playground'
+
+export const AI_AGENT_CHART_ID_PREFIX = 'revamp-ai_agent_'

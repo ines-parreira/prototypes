@@ -43,7 +43,9 @@ import {
     createTrendReport,
 } from 'domains/reporting/services/supportPerformanceReportingService'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
+import { AI_AGENT_CHART_ID_PREFIX } from 'pages/aiAgent/constants'
 import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
+import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 
 jest.mock('domains/reporting/hooks/dashboards/useSanitizedDashboard')
 const useSanitizedDashboardMock = assumeMock(useSanitizedDashboard)
@@ -69,6 +71,8 @@ jest.mock('domains/reporting/hooks/useAgentsTableConfigSetting')
 const useAgentsTableConfigSettingMock = assumeMock(useAgentsTableConfigSetting)
 jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
 const useAiAgentStatsFiltersMock = assumeMock(useAiAgentStatsFilters)
+jest.mock('pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate')
+const useMoneySavedMock = assumeMock(useMoneySavedPerInteractionWithAutomate)
 
 describe('useDownloadDashboardData', () => {
     const periodStart = formatReportingQueryDate(moment())
@@ -167,6 +171,7 @@ describe('useDownloadDashboardData', () => {
             files: {},
             isFetching: false,
         })
+        useMoneySavedMock.mockReturnValue(3.1)
     })
 
     it('should download for charts from dashboard', () => {
@@ -186,8 +191,10 @@ describe('useDownloadDashboardData', () => {
                     metricFormat:
                         OverviewMetricConfig[OverviewMetric.MessagesPerTicket]
                             .metricFormat,
+                    isAiAgentChart: false,
                 },
             ]),
+            statsFilters,
         )
         expect(useTimeSeriesReportDataMock).toHaveBeenCalledWith(
             statsFilters,
@@ -201,8 +208,10 @@ describe('useDownloadDashboardData', () => {
                     title: SupportPerformanceOverviewReportConfig.charts[
                         timeSeriesChartId
                     ].label,
+                    isAiAgentChart: false,
                 },
             ]),
+            statsFilters,
         )
         expect(result.current).toEqual({
             files: {
@@ -232,9 +241,7 @@ describe('useDownloadDashboardData', () => {
             },
         }
 
-        renderHook(() =>
-            useDashboardData(exampleDashboard, false, chartConfigs),
-        )
+        renderHook(() => useDashboardData(exampleDashboard, chartConfigs))
 
         expect(useTrendReportDataMock).toHaveBeenCalledWith(
             statsFilters,
@@ -242,16 +249,31 @@ describe('useDownloadDashboardData', () => {
             expect.arrayContaining([
                 expect.objectContaining({ fetchTrend: customFetchTrend }),
             ]),
+            statsFilters,
         )
     })
 
-    it('should use aiAgentStatsFilters when isAiAgentDashboard is true', () => {
-        const mockStores = { values: ['store-1'], operator: 'AND' }
-        const mockChannels = { values: ['email'], operator: 'AND' }
+    it('should tag AI Agent chart entries with isAiAgentChart: true and pass aiAgentFilters to hooks', () => {
+        const aiAgentChartId = `${AI_AGENT_CHART_ID_PREFIX}test_chart`
+        const customFetchTrend = jest.fn()
+        const aiAgentChartConfigs: Record<string, ChartConfig> = {
+            [aiAgentChartId]: {
+                chartComponent: null as any,
+                description: 'testing',
+                chartType: ChartType.Graph,
+                label: 'AI Agent Chart',
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: customFetchTrend,
+                        metricFormat: 'decimal' as const,
+                    },
+                ],
+            },
+        }
         const aiAgentFilters = {
             ...statsFilters,
-            stores: mockStores,
-            channels: mockChannels,
+            channels: { values: ['chat'], operator: 'AND' },
         } as unknown as StatsFilters
 
         useAiAgentStatsFiltersMock.mockReturnValue({
@@ -260,18 +282,91 @@ describe('useDownloadDashboardData', () => {
             granularity,
         })
 
-        renderHook(() => useDashboardData(exampleDashboard, true))
+        const aiAgentDashboard: DashboardSchema = {
+            ...exampleDashboard,
+            children: [
+                {
+                    type: DashboardChildType.Chart,
+                    config_id: aiAgentChartId,
+                },
+            ],
+        }
+
+        renderHook(() =>
+            useDashboardData(aiAgentDashboard, aiAgentChartConfigs),
+        )
 
         expect(useTrendReportDataMock).toHaveBeenCalledWith(
-            aiAgentFilters,
+            statsFilters,
             userTimezone,
-            expect.any(Array),
-        )
-        expect(useTimeSeriesReportDataMock).toHaveBeenCalledWith(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    isAiAgentChart: true,
+                    fetchTrend: customFetchTrend,
+                }),
+            ]),
             aiAgentFilters,
+        )
+    })
+
+    it('should tag entries by chart type in mixed dashboards so each hook can apply the correct filter', () => {
+        const aiAgentChartId = `${AI_AGENT_CHART_ID_PREFIX}test_chart`
+        const customAiFetchTrend = jest.fn()
+        const mixedChartConfigs: Record<string, ChartConfig> = {
+            [aiAgentChartId]: {
+                chartComponent: null as any,
+                description: 'testing',
+                chartType: ChartType.Graph,
+                label: 'AI Agent Chart',
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: customAiFetchTrend,
+                        metricFormat: 'decimal' as const,
+                    },
+                ],
+            },
+            [trendChartId]:
+                SupportPerformanceOverviewReportConfig.charts[trendChartId],
+        }
+        const aiAgentFilters = {
+            ...statsFilters,
+            channels: { values: ['email'], operator: 'AND' },
+        } as unknown as StatsFilters
+
+        useAiAgentStatsFiltersMock.mockReturnValue({
+            statsFilters: aiAgentFilters,
             userTimezone,
             granularity,
-            expect.any(Array),
+        })
+
+        const mixedDashboard: DashboardSchema = {
+            ...exampleDashboard,
+            children: [
+                {
+                    type: DashboardChildType.Chart,
+                    config_id: aiAgentChartId,
+                },
+                {
+                    type: DashboardChildType.Chart,
+                    config_id: trendChartId,
+                },
+            ],
+        }
+
+        renderHook(() => useDashboardData(mixedDashboard, mixedChartConfigs))
+
+        expect(useTrendReportDataMock).toHaveBeenCalledWith(
+            statsFilters,
+            userTimezone,
+            expect.arrayContaining([
+                expect.objectContaining({
+                    isAiAgentChart: true,
+                    fetchTrend: customAiFetchTrend,
+                }),
+                expect.objectContaining({ isAiAgentChart: false }),
+            ]),
+            aiAgentFilters,
         )
     })
 
@@ -307,7 +402,7 @@ describe('useDownloadDashboardData', () => {
             ],
         }
 
-        renderHook(() => useDashboardData(dashboard, false, chartConfigs))
+        renderHook(() => useDashboardData(dashboard, chartConfigs))
 
         expect(useConfigurableGraphsMock).toHaveBeenCalledWith(
             statsFilters,
@@ -321,7 +416,8 @@ describe('useDownloadDashboardData', () => {
                     chartId: configurableChartId,
                 }),
             ]),
-            undefined,
+            statsFilters,
+            expect.objectContaining({ costSavedPerInteraction: 3.1 }),
         )
     })
 
@@ -369,8 +465,10 @@ describe('useDownloadDashboardData', () => {
                     metricFormat:
                         OverviewMetricConfig[OverviewMetric.MessagesPerTicket]
                             .metricFormat,
+                    isAiAgentChart: false,
                 },
             ]),
+            statsFilters,
         )
         expect(useTimeSeriesReportDataMock).toHaveBeenCalledWith(
             statsFilters,
@@ -384,8 +482,10 @@ describe('useDownloadDashboardData', () => {
                     title: SupportPerformanceOverviewReportConfig.charts[
                         timeSeriesChartId
                     ].label,
+                    isAiAgentChart: false,
                 },
             ]),
+            statsFilters,
         )
         expect(result.current).toEqual({
             files: {

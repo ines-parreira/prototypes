@@ -570,6 +570,28 @@ describe('fetchSupportAgentsPerformanceByIntentAsConfigurableTable', () => {
         expect(result.files['intent-table-filename']).toBe('csv-content')
     })
 
+    it('passes costSavedPerInteraction from extra to the underlying metrics fetch', async () => {
+        const customCost = 42
+
+        await fetchSupportAgentsPerformanceByIntentAsConfigurableTable(
+            null,
+            null,
+            MOCK_STATS_FILTERS,
+            MOCK_TIMEZONE,
+            ReportingGranularity.Day,
+            { costSavedPerInteraction: customCost },
+        )
+
+        const [passedConfig] = mockFetchEntityMetrics.mock.calls[0]
+        await passedConfig.costSaved.fetch(MOCK_STATS_FILTERS, MOCK_TIMEZONE)
+
+        expect(mockFetchCostSavedPerSupportAgentIntent).toHaveBeenCalledWith(
+            MOCK_STATS_FILTERS,
+            MOCK_TIMEZONE,
+            customCost,
+        )
+    })
+
     it('returns empty file content when underlying fetch returns empty data', async () => {
         mockAssembleEntityRows.mockReturnValue([])
 

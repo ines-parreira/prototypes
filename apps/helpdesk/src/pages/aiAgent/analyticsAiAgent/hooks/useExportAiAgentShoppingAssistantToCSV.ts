@@ -31,7 +31,6 @@ export const useExportAiAgentShoppingAssistantToCSV = () => {
     const { files: dashboardDataFiles, isLoading: isDashboardDataLoading } =
         useDashboardData(
             shoppingAssistantDashboard,
-            true,
             AnalyticsAiAgentShoppingAssistantReportConfig.charts,
         )
 

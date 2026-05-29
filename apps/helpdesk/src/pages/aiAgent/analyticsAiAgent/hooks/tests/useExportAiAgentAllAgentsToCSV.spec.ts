@@ -7,7 +7,6 @@ import { AnalyticsAiAgentAllAgentsReportConfig } from 'pages/aiAgent/analyticsAi
 import { useExportAiAgentAllAgentsToCSV } from 'pages/aiAgent/analyticsAiAgent/hooks/useExportAiAgentAllAgentsToCSV'
 import { buildCustomDashboard } from 'pages/aiAgent/analyticsOverview/utils/buildCustomDashboard'
 import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
-import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 import * as fileUtils from 'utils/file'
 
 import { useGetManagedDashboardsLayoutConfig } from '@repo/reporting'
@@ -19,7 +18,6 @@ jest.mock('@repo/reporting', () => ({
     ...jest.requireActual('@repo/reporting'),
     useGetManagedDashboardsLayoutConfig: jest.fn(),
 }))
-jest.mock('pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate')
 jest.mock('utils/file', () => ({
     ...jest.requireActual('utils/file'),
     saveZippedFiles: jest.fn(),
@@ -31,9 +29,6 @@ const mockedUseGetManagedDashboardsLayoutConfig = jest.mocked(
     useGetManagedDashboardsLayoutConfig,
 )
 const mockedBuildKpiDashboard = jest.mocked(buildCustomDashboard)
-const mockedUseMoneySavedPerInteractionWithAutomate = jest.mocked(
-    useMoneySavedPerInteractionWithAutomate,
-)
 const mockedSaveZippedFiles = jest.mocked(fileUtils.saveZippedFiles)
 
 describe('useExportAiAgentAllAgentsToCSV', () => {
@@ -65,8 +60,6 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
             userTimezone: 'UTC',
             granularity: ReportingGranularity.Day,
         })
-
-        mockedUseMoneySavedPerInteractionWithAutomate.mockReturnValue(3.1)
 
         mockedUseDashboardData.mockReturnValue({
             files: {
@@ -143,29 +136,12 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
         )
     })
 
-    it('should call useDashboardData with the AllAgents report config charts and extraData', () => {
+    it('should call useDashboardData with the AllAgents report config charts', () => {
         renderHook(() => useExportAiAgentAllAgentsToCSV())
 
         expect(mockedUseDashboardData).toHaveBeenCalledWith(
             expect.any(Object),
-            true,
             AnalyticsAiAgentAllAgentsReportConfig.charts,
-            expect.objectContaining({
-                costSavedPerInteraction: expect.any(Number),
-            }),
-        )
-    })
-
-    it('should pass costSavedPerInteraction from useMoneySavedPerInteractionWithAutomate to useDashboardData', () => {
-        mockedUseMoneySavedPerInteractionWithAutomate.mockReturnValue(5.5)
-
-        renderHook(() => useExportAiAgentAllAgentsToCSV())
-
-        expect(mockedUseDashboardData).toHaveBeenCalledWith(
-            expect.any(Object),
-            true,
-            expect.any(Object),
-            expect.objectContaining({ costSavedPerInteraction: 5.5 }),
         )
     })
 

@@ -11,22 +11,12 @@ import {
 } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 import { buildCustomDashboard } from 'pages/aiAgent/analyticsOverview/utils/buildCustomDashboard'
 import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
-import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
-import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 import { saveZippedFiles } from 'utils/file'
 
 const REPORT_NAME = 'ai-agent-all-agents'
 
 export const useExportAiAgentAllAgentsToCSV = () => {
     const { statsFilters } = useAiAgentStatsFilters()
-    const costSavedPerInteraction = useMoneySavedPerInteractionWithAutomate(
-        AGENT_COST_PER_TICKET,
-    )
-
-    const extraData = useMemo(
-        () => ({ costSavedPerInteraction }),
-        [costSavedPerInteraction],
-    )
 
     const { layoutConfig } = useGetManagedDashboardsLayoutConfig({
         dashboardId: ManagedDashboardId.AiAgentAnalytics,
@@ -42,9 +32,7 @@ export const useExportAiAgentAllAgentsToCSV = () => {
     const { files: dashboardDataFiles, isLoading: isDashboardDataLoading } =
         useDashboardData(
             allAgentsDashboard,
-            true,
             AnalyticsAiAgentAllAgentsReportConfig.charts,
-            extraData,
         )
 
     const isLoading = isDashboardDataLoading

@@ -33,7 +33,9 @@ export const useDistributionTrendReportData = (
         fetchPreviousDistribution: MetricPerDimensionFetch
         labelPrefix: string
         metricFormat: MetricTrendFormat
+        isAiAgentChart?: boolean
     },
+    aiAgentFilters?: StatsFilters,
 ) => {
     const [perDimensionData, setPerDimensionData] = useState<{
         isFetching: boolean
@@ -49,13 +51,16 @@ export const useDistributionTrendReportData = (
 
     useEffect(() => {
         if (fetchDistributions) {
+            const filters = fetchDistributions.isAiAgentChart
+                ? (aiAgentFilters ?? cleanStatsFilters)
+                : cleanStatsFilters
             void Promise.all([
                 fetchDistributions.fetchCurrentDistribution(
-                    cleanStatsFilters,
+                    filters,
                     userTimezone,
                 ),
                 fetchDistributions.fetchPreviousDistribution(
-                    cleanStatsFilters,
+                    filters,
                     userTimezone,
                 ),
             ])
@@ -76,7 +81,7 @@ export const useDistributionTrendReportData = (
         } else {
             setPerDimensionData({ isFetching: false, data: [] })
         }
-    }, [cleanStatsFilters, fetchDistributions, userTimezone])
+    }, [aiAgentFilters, cleanStatsFilters, fetchDistributions, userTimezone])
 
     return perDimensionData
 }

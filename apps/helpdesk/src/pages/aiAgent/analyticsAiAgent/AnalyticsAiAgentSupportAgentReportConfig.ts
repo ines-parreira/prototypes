@@ -34,26 +34,30 @@ import { fetchAiAgentSupportAgentTimeSavedTrend } from 'pages/aiAgent/analyticsA
 import { fetchAiAgentSupportCostSaved } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportCostSaved'
 import { fetchSupportAgentsPerformanceByChannelAsConfigurableTable } from 'pages/aiAgent/analyticsAiAgent/hooks/useSupportAgentsPerformanceByChannelMetrics'
 import { fetchSupportAgentsPerformanceByIntentAsConfigurableTable } from 'pages/aiAgent/analyticsAiAgent/hooks/useSupportAgentsPerformanceByIntentMetrics'
+import { AI_AGENT_CHART_ID_PREFIX } from 'pages/aiAgent/constants'
 import {
     fetchConfigurableBarChartDownloadData,
     fetchConfigurableLineChartDownloadData,
 } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 import { STATS_ROUTES } from 'routes/constants'
 
-export enum AnalyticsAiAgentSupportAgentChart {
-    TimeSavedCard = 'revamp-ai_agent_support_agent-time_saved_card',
-    CostSavedCard = 'revamp-ai_agent_support_agent-cost_saved_card',
-    SupportInteractionsCard = 'revamp-ai_agent_support_agent-support_interactions_card',
-    DecreaseInFRTCard = 'revamp-ai_agent_support_agent-decrease_in_frt_card',
-    DecreaseInResolutionTimeCard = 'revamp-ai_agent_support_agent-decrease_in_resolution_time_card',
-    AverageCsatCard = 'revamp-ai_agent_support_agent-csat_card',
-    HandoverInteractionsCard = 'revamp-ai_agent_support_agent-handover_interactions_card',
-    SuccessRateCard = 'revamp-ai_agent_support_agent-success_rate_card',
-    ConfigurableBarGraph = 'revamp-ai_agent_support_agent-configurable_bar_graph',
-    ConfigurableLineGraph = 'revamp-ai_agent_support_agent-configurable_line_graph',
-    ChannelPerformanceTable = 'revamp-ai_agent_support_agent-channel_performance_table',
-    IntentPerformanceTable = 'revamp-ai_agent_support_agent-intent_performance_table',
-}
+export const AnalyticsAiAgentSupportAgentChart = {
+    TimeSavedCard: `${AI_AGENT_CHART_ID_PREFIX}support_agent-time_saved_card`,
+    CostSavedCard: `${AI_AGENT_CHART_ID_PREFIX}support_agent-cost_saved_card`,
+    SupportInteractionsCard: `${AI_AGENT_CHART_ID_PREFIX}support_agent-support_interactions_card`,
+    DecreaseInFRTCard: `${AI_AGENT_CHART_ID_PREFIX}support_agent-decrease_in_frt_card`,
+    DecreaseInResolutionTimeCard: `${AI_AGENT_CHART_ID_PREFIX}support_agent-decrease_in_resolution_time_card`,
+    AverageCsatCard: `${AI_AGENT_CHART_ID_PREFIX}support_agent-csat_card`,
+    HandoverInteractionsCard: `${AI_AGENT_CHART_ID_PREFIX}support_agent-handover_interactions_card`,
+    SuccessRateCard: `${AI_AGENT_CHART_ID_PREFIX}support_agent-success_rate_card`,
+    ConfigurableBarGraph: `${AI_AGENT_CHART_ID_PREFIX}support_agent-configurable_bar_graph`,
+    ConfigurableLineGraph: `${AI_AGENT_CHART_ID_PREFIX}support_agent-configurable_line_graph`,
+    ChannelPerformanceTable: `${AI_AGENT_CHART_ID_PREFIX}support_agent-channel_performance_table`,
+    IntentPerformanceTable: `${AI_AGENT_CHART_ID_PREFIX}support_agent-intent_performance_table`,
+} as const
+
+export type AnalyticsAiAgentSupportAgentChart =
+    (typeof AnalyticsAiAgentSupportAgentChart)[keyof typeof AnalyticsAiAgentSupportAgentChart]
 
 export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiAgentSupportAgentChart> =
     {

@@ -22,7 +22,9 @@ export const useTimeSeriesReportData = (
     timeSeriesReportSource: {
         fetchTimeSeries: TimeSeriesFetch
         title: string
+        isAiAgentChart?: boolean
     }[],
+    aiAgentFilters?: StatsFilters,
 ) => {
     const [timeSeriesData, setTimeSeriesData] = useState<{
         isFetching: boolean
@@ -34,7 +36,13 @@ export const useTimeSeriesReportData = (
 
     useEffect(() => {
         const timeSeriesPromises = timeSeriesReportSource.map((r) =>
-            r.fetchTimeSeries(cleanStatsFilters, userTimezone, granularity),
+            r.fetchTimeSeries(
+                r.isAiAgentChart
+                    ? (aiAgentFilters ?? cleanStatsFilters)
+                    : cleanStatsFilters,
+                userTimezone,
+                granularity,
+            ),
         )
 
         void Promise.all(timeSeriesPromises)
@@ -48,7 +56,13 @@ export const useTimeSeriesReportData = (
                 })
             })
             .catch(() => setTimeSeriesData({ isFetching: false, data: [] }))
-    }, [cleanStatsFilters, granularity, timeSeriesReportSource, userTimezone])
+    }, [
+        aiAgentFilters,
+        cleanStatsFilters,
+        granularity,
+        timeSeriesReportSource,
+        userTimezone,
+    ])
 
     return timeSeriesData
 }
@@ -87,7 +101,9 @@ export const useTimeSeriesPerDimensionReportData = (
         title: string
         headers: string[]
         dimensions: string[]
+        isAiAgentChart?: boolean
     }[],
+    aiAgentFilters?: StatsFilters,
 ) => {
     const [timeSeriesData, setTimeSeriesData] = useState<{
         isFetching: boolean
@@ -102,7 +118,13 @@ export const useTimeSeriesPerDimensionReportData = (
 
     useEffect(() => {
         const timeSeriesPromises = timeSeriesReportSource.map((r) =>
-            r.fetchTimeSeries(cleanStatsFilters, userTimezone, granularity),
+            r.fetchTimeSeries(
+                r.isAiAgentChart
+                    ? (aiAgentFilters ?? cleanStatsFilters)
+                    : cleanStatsFilters,
+                userTimezone,
+                granularity,
+            ),
         )
 
         void Promise.all(timeSeriesPromises)
@@ -122,7 +144,13 @@ export const useTimeSeriesPerDimensionReportData = (
                 })
             })
             .catch(() => setTimeSeriesData({ isFetching: false, data: [] }))
-    }, [cleanStatsFilters, granularity, timeSeriesReportSource, userTimezone])
+    }, [
+        aiAgentFilters,
+        cleanStatsFilters,
+        granularity,
+        timeSeriesReportSource,
+        userTimezone,
+    ])
 
     return timeSeriesData
 }

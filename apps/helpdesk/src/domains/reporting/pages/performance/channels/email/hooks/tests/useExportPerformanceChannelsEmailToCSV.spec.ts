@@ -82,7 +82,6 @@ describe('useExportPerformanceChannelsEmailToCSV', () => {
 
         expect(mockedUseDashboardData).toHaveBeenCalledWith(
             expect.any(Object),
-            false,
             ChannelsEmailReportConfig.charts,
         )
     })

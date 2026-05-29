@@ -8,7 +8,6 @@ import { AnalyticsAiAgentSupportAgentReportConfig } from 'pages/aiAgent/analytic
 import { useExportAiAgentSupportAgentToCSV } from 'pages/aiAgent/analyticsAiAgent/hooks/useExportAiAgentSupportAgentToCSV'
 import { buildCustomDashboard } from 'pages/aiAgent/analyticsOverview/utils/buildCustomDashboard'
 import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
-import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 import * as fileUtils from 'utils/file'
 
 jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
@@ -18,7 +17,6 @@ jest.mock('@repo/reporting', () => ({
     useGetManagedDashboardsLayoutConfig: jest.fn(),
 }))
 jest.mock('pages/aiAgent/analyticsOverview/utils/buildCustomDashboard')
-jest.mock('pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate')
 jest.mock('utils/file', () => ({
     ...jest.requireActual('utils/file'),
     saveZippedFiles: jest.fn(),
@@ -30,9 +28,6 @@ const mockedUseGetManagedDashboardsLayoutConfig = jest.mocked(
     useGetManagedDashboardsLayoutConfig,
 )
 const mockedBuildCustomDashboard = jest.mocked(buildCustomDashboard)
-const mockedUseMoneySavedPerInteractionWithAutomate = jest.mocked(
-    useMoneySavedPerInteractionWithAutomate,
-)
 const mockedSaveZippedFiles = jest.mocked(fileUtils.saveZippedFiles)
 
 const mockPeriod = {
@@ -65,8 +60,6 @@ describe('useExportAiAgentSupportAgentToCSV', () => {
             granularity: ReportingGranularity.Day,
         })
 
-        mockedUseMoneySavedPerInteractionWithAutomate.mockReturnValue(3.1)
-
         mockedUseDashboardData.mockReturnValue({
             files: {
                 'ai-agent-support-agent - trends.csv': 'trends content',
@@ -76,8 +69,6 @@ describe('useExportAiAgentSupportAgentToCSV', () => {
             fileName: 'ai-agent-support-agent - trends.csv',
             isLoading: false,
         })
-
-        mockedUseMoneySavedPerInteractionWithAutomate.mockReturnValue(1)
     })
 
     it('should return isLoading as false when all data is loaded', () => {
@@ -120,16 +111,12 @@ describe('useExportAiAgentSupportAgentToCSV', () => {
         )
     })
 
-    it('should call useDashboardData with the SupportAgent report config charts and extraData', () => {
+    it('should call useDashboardData with the SupportAgent report config charts', () => {
         renderHook(() => useExportAiAgentSupportAgentToCSV())
 
         expect(mockedUseDashboardData).toHaveBeenCalledWith(
             expect.any(Object),
-            true,
             AnalyticsAiAgentSupportAgentReportConfig.charts,
-            expect.objectContaining({
-                costSavedPerInteraction: expect.any(Number),
-            }),
         )
     })
 })

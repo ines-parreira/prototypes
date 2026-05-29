@@ -186,6 +186,92 @@ describe('useConfigurableGraphs', () => {
             )
         })
     })
+
+    describe('per-entry filter selection', () => {
+        const aiAgentFilters = { period: defaultPeriod }
+
+        it('should call fetch with aiAgentFilters when isAiAgentChart is true', async () => {
+            const fetchA = jest.fn().mockResolvedValue({ files: {} })
+
+            renderHook(() =>
+                useConfigurableGraphsReportData(
+                    defaultStatsFilters as any,
+                    'UTC',
+                    ReportingGranularity.Day,
+                    [
+                        {
+                            fetch: fetchA,
+                            savedMeasure: null,
+                            savedDimension: null,
+                            chartId: 'ai-chart',
+                            isAiAgentChart: true,
+                        },
+                    ],
+                    aiAgentFilters as any,
+                ),
+            )
+
+            await waitFor(() => {
+                expect(fetchA).toHaveBeenCalled()
+                // filters are the 3rd argument (index 2) after savedMeasure and savedDimension
+                expect(fetchA.mock.calls[0][2]).toEqual(aiAgentFilters)
+            })
+        })
+
+        it('should call fetch with cleanStatsFilters when isAiAgentChart is false', async () => {
+            const fetchA = jest.fn().mockResolvedValue({ files: {} })
+
+            renderHook(() =>
+                useConfigurableGraphsReportData(
+                    defaultStatsFilters as any,
+                    'UTC',
+                    ReportingGranularity.Day,
+                    [
+                        {
+                            fetch: fetchA,
+                            savedMeasure: null,
+                            savedDimension: null,
+                            chartId: 'standard-chart',
+                            isAiAgentChart: false,
+                        },
+                    ],
+                    aiAgentFilters as any,
+                ),
+            )
+
+            await waitFor(() => {
+                expect(fetchA).toHaveBeenCalled()
+                // filters are the 3rd argument (index 2) after savedMeasure and savedDimension
+                expect(fetchA.mock.calls[0][2]).toEqual(defaultStatsFilters)
+            })
+        })
+
+        it('should fall back to cleanStatsFilters when isAiAgentChart is true but aiAgentFilters is not provided', async () => {
+            const fetchA = jest.fn().mockResolvedValue({ files: {} })
+
+            renderHook(() =>
+                useConfigurableGraphsReportData(
+                    defaultStatsFilters as any,
+                    'UTC',
+                    ReportingGranularity.Day,
+                    [
+                        {
+                            fetch: fetchA,
+                            savedMeasure: null,
+                            savedDimension: null,
+                            chartId: 'ai-chart',
+                            isAiAgentChart: true,
+                        },
+                    ],
+                ),
+            )
+
+            await waitFor(() => {
+                expect(fetchA).toHaveBeenCalled()
+                expect(fetchA.mock.calls[0][2]).toEqual(defaultStatsFilters)
+            })
+        })
+    })
 })
 
 describe('buildBarCsvFiles', () => {

@@ -51,7 +51,12 @@ export const useTables = (
     cleanStatsFilters: StatsFilters,
     userTimezone: string,
     granularity: AggregationWindow,
-    fetchTables: { title: string; fetchTable: ReportFetch }[],
+    fetchTables: {
+        title: string
+        fetchTable: ReportFetch
+        isAiAgentChart?: boolean
+    }[],
+    aiAgentFilters?: StatsFilters,
 ) => {
     const isReportingFilteringAndCalculationsTagsReportEnabled = useFlag(
         FeatureFlagKey.ReportingFilteringAndCalculationsTagsReport,
@@ -169,7 +174,9 @@ export const useTables = (
     useEffect(() => {
         const promises = fetchTables.map((fetchTable) =>
             fetchTable.fetchTable(
-                cleanStatsFilters,
+                fetchTable.isAiAgentChart
+                    ? (aiAgentFilters ?? cleanStatsFilters)
+                    : cleanStatsFilters,
                 userTimezone,
                 granularity,
                 context,
@@ -183,7 +190,14 @@ export const useTables = (
                 })
             })
             .catch(() => setTableData({ isFetching: false, files: {} }))
-    }, [cleanStatsFilters, context, fetchTables, granularity, userTimezone])
+    }, [
+        aiAgentFilters,
+        cleanStatsFilters,
+        context,
+        fetchTables,
+        granularity,
+        userTimezone,
+    ])
 
     return tableData
 }

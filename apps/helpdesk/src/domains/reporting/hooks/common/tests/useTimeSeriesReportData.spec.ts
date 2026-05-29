@@ -169,6 +169,95 @@ describe('timeSeriesReportData', () => {
                 })
             })
         })
+
+        describe('per-entry filter selection', () => {
+            const aiAgentFilters: StatsFilters = {
+                period: defaultStatsFilters.period,
+            }
+
+            it('should call fetch with aiAgentFilters when isAiAgentChart is true', async () => {
+                const mockFetch = jest.fn().mockResolvedValue([])
+
+                renderHook(() =>
+                    useTimeSeriesReportData(
+                        defaultStatsFilters,
+                        'UTC',
+                        ReportingGranularity.Day,
+                        [
+                            {
+                                fetchTimeSeries: mockFetch,
+                                title: 'test',
+                                isAiAgentChart: true,
+                            },
+                        ],
+                        aiAgentFilters,
+                    ),
+                )
+
+                await waitFor(() => {
+                    expect(mockFetch).toHaveBeenCalledWith(
+                        aiAgentFilters,
+                        expect.anything(),
+                        expect.anything(),
+                    )
+                })
+            })
+
+            it('should call fetch with cleanStatsFilters when isAiAgentChart is false', async () => {
+                const mockFetch = jest.fn().mockResolvedValue([])
+
+                renderHook(() =>
+                    useTimeSeriesReportData(
+                        defaultStatsFilters,
+                        'UTC',
+                        ReportingGranularity.Day,
+                        [
+                            {
+                                fetchTimeSeries: mockFetch,
+                                title: 'test',
+                                isAiAgentChart: false,
+                            },
+                        ],
+                        aiAgentFilters,
+                    ),
+                )
+
+                await waitFor(() => {
+                    expect(mockFetch).toHaveBeenCalledWith(
+                        defaultStatsFilters,
+                        expect.anything(),
+                        expect.anything(),
+                    )
+                })
+            })
+
+            it('should fall back to cleanStatsFilters when isAiAgentChart is true but aiAgentFilters is not provided', async () => {
+                const mockFetch = jest.fn().mockResolvedValue([])
+
+                renderHook(() =>
+                    useTimeSeriesReportData(
+                        defaultStatsFilters,
+                        'UTC',
+                        ReportingGranularity.Day,
+                        [
+                            {
+                                fetchTimeSeries: mockFetch,
+                                title: 'test',
+                                isAiAgentChart: true,
+                            },
+                        ],
+                    ),
+                )
+
+                await waitFor(() => {
+                    expect(mockFetch).toHaveBeenCalledWith(
+                        defaultStatsFilters,
+                        expect.anything(),
+                        expect.anything(),
+                    )
+                })
+            })
+        })
     })
 
     describe('fetchTimeSeriesPerDimensionReportData', () => {
@@ -349,6 +438,101 @@ describe('timeSeriesReportData', () => {
                 expect(result.current).toEqual({
                     isFetching: false,
                     data: [],
+                })
+            })
+        })
+
+        describe('per-entry filter selection', () => {
+            const aiAgentFilters: StatsFilters = {
+                period: defaultStatsFilters.period,
+            }
+
+            it('should call fetch with aiAgentFilters when isAiAgentChart is true', async () => {
+                const mockFetch = jest.fn().mockResolvedValue({})
+
+                renderHook(() =>
+                    useTimeSeriesPerDimensionReportData(
+                        defaultStatsFilters,
+                        'UTC',
+                        ReportingGranularity.Day,
+                        [
+                            {
+                                fetchTimeSeries: mockFetch,
+                                title: 'test',
+                                headers: ['Date', 'Value'],
+                                dimensions: [],
+                                isAiAgentChart: true,
+                            },
+                        ],
+                        aiAgentFilters,
+                    ),
+                )
+
+                await waitFor(() => {
+                    expect(mockFetch).toHaveBeenCalledWith(
+                        aiAgentFilters,
+                        expect.anything(),
+                        expect.anything(),
+                    )
+                })
+            })
+
+            it('should call fetch with cleanStatsFilters when isAiAgentChart is false', async () => {
+                const mockFetch = jest.fn().mockResolvedValue({})
+
+                renderHook(() =>
+                    useTimeSeriesPerDimensionReportData(
+                        defaultStatsFilters,
+                        'UTC',
+                        ReportingGranularity.Day,
+                        [
+                            {
+                                fetchTimeSeries: mockFetch,
+                                title: 'test',
+                                headers: ['Date', 'Value'],
+                                dimensions: [],
+                                isAiAgentChart: false,
+                            },
+                        ],
+                        aiAgentFilters,
+                    ),
+                )
+
+                await waitFor(() => {
+                    expect(mockFetch).toHaveBeenCalledWith(
+                        defaultStatsFilters,
+                        expect.anything(),
+                        expect.anything(),
+                    )
+                })
+            })
+
+            it('should fall back to cleanStatsFilters when isAiAgentChart is true but aiAgentFilters is not provided', async () => {
+                const mockFetch = jest.fn().mockResolvedValue({})
+
+                renderHook(() =>
+                    useTimeSeriesPerDimensionReportData(
+                        defaultStatsFilters,
+                        'UTC',
+                        ReportingGranularity.Day,
+                        [
+                            {
+                                fetchTimeSeries: mockFetch,
+                                title: 'test',
+                                headers: ['Date', 'Value'],
+                                dimensions: [],
+                                isAiAgentChart: true,
+                            },
+                        ],
+                    ),
+                )
+
+                await waitFor(() => {
+                    expect(mockFetch).toHaveBeenCalledWith(
+                        defaultStatsFilters,
+                        expect.anything(),
+                        expect.anything(),
+                    )
                 })
             })
         })

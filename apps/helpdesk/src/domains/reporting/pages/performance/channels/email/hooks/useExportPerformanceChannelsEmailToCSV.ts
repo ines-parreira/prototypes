@@ -60,7 +60,6 @@ export const useExportPerformanceChannelsEmailToCSV = () => {
 
     const { files, isLoading } = useDashboardData(
         channelsEmailDashboard,
-        false,
         ChannelsEmailReportConfig.charts,
     )
 

@@ -123,7 +123,6 @@ describe('useExportAiAgentShoppingAssistantToCSV', () => {
 
         expect(mockedUseDashboardData).toHaveBeenCalledWith(
             expect.any(Object),
-            true,
             AnalyticsAiAgentShoppingAssistantReportConfig.charts,
         )
     })

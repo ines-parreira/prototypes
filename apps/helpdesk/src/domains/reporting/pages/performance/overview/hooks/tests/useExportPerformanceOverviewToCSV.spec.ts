@@ -78,7 +78,6 @@ describe('useExportPerformanceOverviewToCSV', () => {
 
         expect(mockedUseDashboardData).toHaveBeenCalledWith(
             expect.any(Object),
-            false,
             PerformanceOverviewReportConfig.charts,
         )
     })

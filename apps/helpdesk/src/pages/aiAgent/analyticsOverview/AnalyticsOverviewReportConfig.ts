@@ -40,27 +40,31 @@ import { fetchOverallAutomatedInteractionsTrend } from 'pages/aiAgent/analyticsO
 import { fetchOverallAutomationRateTrend } from 'pages/aiAgent/analyticsOverview/hooks/useOverallAutomationRateTrend'
 import { fetchOverallTimeSavedByAgentsTrend } from 'pages/aiAgent/analyticsOverview/hooks/useOverallTimeSavedByAgentsTrend'
 import { fetchPerformanceMetricsPerFeatureAsConfigurableTable } from 'pages/aiAgent/analyticsOverview/hooks/usePerformanceMetricsPerFeature'
+import { AI_AGENT_CHART_ID_PREFIX } from 'pages/aiAgent/constants'
 import {
     fetchConfigurableBarChartDownloadData,
     fetchConfigurableLineChartDownloadData,
 } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 import { STATS_ROUTES } from 'routes/constants'
 
-export enum AnalyticsOverviewChart {
-    AutomationRateCard = 'revamp-ai_agent_overview-automation_rate_card',
-    AutomatedInteractionsCard = 'revamp-ai_agent_overview-automated_interactions_card',
-    TimeSavedCard = 'revamp-ai_agent_overview-time_saved_card',
-    CostSavedCard = 'revamp-ai_agent_overview-cost_saved_card',
-    DecreaseInResolutionTimeCard = 'revamp-ai_agent_overview-decrease_in_resolution_time_card',
-    ConfigurableBarGraph = 'revamp-ai_agent_overview-configurable_bar_graph',
-    ConfigurableLineGraph = 'revamp-ai_agent_overview-configurable_line_graph',
-    PerformanceTable = 'revamp-ai_agent_overview-performance_table',
-    OrderManagementTable = 'revamp-ai_agent_overview-order_management_table',
-    FlowsTable = 'revamp-ai_agent_overview-flows_table',
-    ArticleRecommendationTable = 'revamp-ai_agent_overview-article_recommendation_table',
-    HandoverInteractionsCard = 'revamp-ai_agent_overview-handover_interactions_card',
-    DecreaseInFRTCard = 'revamp-ai_agent_overview-decrease_in_frt_card',
-}
+export const AnalyticsOverviewChart = {
+    AutomationRateCard: `${AI_AGENT_CHART_ID_PREFIX}overview-automation_rate_card`,
+    AutomatedInteractionsCard: `${AI_AGENT_CHART_ID_PREFIX}overview-automated_interactions_card`,
+    TimeSavedCard: `${AI_AGENT_CHART_ID_PREFIX}overview-time_saved_card`,
+    CostSavedCard: `${AI_AGENT_CHART_ID_PREFIX}overview-cost_saved_card`,
+    DecreaseInResolutionTimeCard: `${AI_AGENT_CHART_ID_PREFIX}overview-decrease_in_resolution_time_card`,
+    ConfigurableBarGraph: `${AI_AGENT_CHART_ID_PREFIX}overview-configurable_bar_graph`,
+    ConfigurableLineGraph: `${AI_AGENT_CHART_ID_PREFIX}overview-configurable_line_graph`,
+    PerformanceTable: `${AI_AGENT_CHART_ID_PREFIX}overview-performance_table`,
+    OrderManagementTable: `${AI_AGENT_CHART_ID_PREFIX}overview-order_management_table`,
+    FlowsTable: `${AI_AGENT_CHART_ID_PREFIX}overview-flows_table`,
+    ArticleRecommendationTable: `${AI_AGENT_CHART_ID_PREFIX}overview-article_recommendation_table`,
+    HandoverInteractionsCard: `${AI_AGENT_CHART_ID_PREFIX}overview-handover_interactions_card`,
+    DecreaseInFRTCard: `${AI_AGENT_CHART_ID_PREFIX}overview-decrease_in_frt_card`,
+} as const
+
+export type AnalyticsOverviewChart =
+    (typeof AnalyticsOverviewChart)[keyof typeof AnalyticsOverviewChart]
 
 export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart> =
     {

@@ -264,10 +264,18 @@ export const fetchSupportAgentsPerformanceByIntentMetrics = async (
 }
 
 export const fetchSupportAgentsPerformanceByIntentAsConfigurableTable: ConfigurableGraphFetch =
-    async (_savedMeasure, _savedDimension, filters, timezone) => {
+    async (
+        _savedMeasure,
+        _savedDimension,
+        filters,
+        timezone,
+        _granularity,
+        extra,
+    ) => {
         const { files } = await fetchSupportAgentsPerformanceByIntentMetrics(
             filters,
             timezone,
+            extra?.costSavedPerInteraction,
         )
 
         return { files }

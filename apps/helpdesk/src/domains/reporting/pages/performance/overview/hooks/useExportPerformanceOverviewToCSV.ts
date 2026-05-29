@@ -32,7 +32,6 @@ export const useExportPerformanceOverviewToCSV = () => {
 
     const { files, isLoading } = useDashboardData(
         performanceOverviewDashboard,
-        false,
         PerformanceOverviewReportConfig.charts,
     )
 

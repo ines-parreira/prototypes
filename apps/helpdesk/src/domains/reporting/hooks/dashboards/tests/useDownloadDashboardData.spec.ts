@@ -61,7 +61,7 @@ describe('useDownloadDashboardData', () => {
         expect(saveZippedFilesMock).toHaveBeenCalledWith(files, fileName)
     })
 
-    it('should call useDashboardData with empty report', async () => {
+    it('should call useDashboardData with empty report when no dashboard is provided', async () => {
         const { result } = renderHook(() => useDownloadDashboardData(undefined))
         await result.current.triggerDownload()
 

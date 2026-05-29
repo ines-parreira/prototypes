@@ -53,35 +53,39 @@ import { fetchAiAgentTotalSalesTrend } from 'pages/aiAgent/analyticsAiAgent/hook
 import { fetchRevenuePerInteractionMetric } from 'pages/aiAgent/analyticsAiAgent/hooks/useRevenuePerInteractionMetric'
 import { fetchShoppingAssistantPerformanceByEngagementFeatureAsConfigurableTable } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantPerformanceByEngagementFeatureMetrics'
 import { fetchShoppingAssistantTopProductsAsConfigurableTable } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantTopProductsMetrics'
+import { AI_AGENT_CHART_ID_PREFIX } from 'pages/aiAgent/constants'
 import {
     fetchConfigurableBarChartDownloadData,
     fetchConfigurableLineChartDownloadData,
 } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 import { STATS_ROUTES } from 'routes/constants'
 
-export enum AnalyticsAiAgentShoppingAssistantChart {
-    TotalSalesCard = 'revamp-ai_agent_shopping_assistant-total_sales_card',
-    OrdersInfluencedCard = 'revamp-ai_agent_shopping_assistant-orders_influenced_card',
-    AutomatedInteractionsCard = 'revamp-ai_agent_shopping_assistant-automated_interactions_card',
-    RevenuePerInteractionCard = 'revamp-ai_agent_shopping_assistant-revenue_per_interaction_card',
-    AverageDiscountAmountCard = 'revamp-ai_agent_shopping_assistant-average_discount_amount_card',
-    AverageOrderValueCard = 'revamp-ai_agent_shopping_assistant-average_order_value_card',
-    DiscountUsageCard = 'revamp-ai_agent_shopping_assistant-discount_usage_card',
-    DiscountCodesAppliedCard = 'revamp-ai_agent_shopping_assistant-discount_codes_applied_card',
-    DiscountsOfferedCard = 'revamp-ai_agent_shopping_assistant-discounts_offered_card',
-    MedianPurchaseTimeCard = 'revamp-ai_agent_shopping_assistant-median_purchase_time_card',
-    BuyThroughRateCard = 'revamp-ai_agent_shopping_assistant-buy_through_rate_card',
-    ConversionRateCard = 'revamp-ai_agent_shopping_assistant-conversion_rate_card',
-    ClickThroughRateCard = 'revamp-ai_agent_shopping_assistant-click_through_rate_card',
-    SuccessRateCard = 'revamp-ai_agent_shopping_assistant-success_rate_card',
-    ProductRecommendationsCard = 'revamp-ai_agent_shopping_assistant-product_recommendations_card',
-    HandoverInteractionsCard = 'revamp-ai_agent_shopping_assistant-handover_interactions_card',
-    ConfigurableBarGraph = 'revamp-ai_agent_shopping_assistant-configurable_bar_graph',
-    ConfigurableLineGraph = 'revamp-ai_agent_shopping_assistant-configurable_line_graph',
-    ChannelPerformanceTable = 'revamp-ai_agent_shopping_assistant-channel_performance_table',
-    EngagementFeaturePerformanceTable = 'revamp-ai_agent_shopping_assistant-engagement_feature_performance_table',
-    TopProductsPerformanceTable = 'revamp-ai_agent_shopping_assistant-top_products_performance_table',
-}
+export const AnalyticsAiAgentShoppingAssistantChart = {
+    TotalSalesCard: `${AI_AGENT_CHART_ID_PREFIX}shopping_assistant-total_sales_card`,
+    OrdersInfluencedCard: `${AI_AGENT_CHART_ID_PREFIX}shopping_assistant-orders_influenced_card`,
+    AutomatedInteractionsCard: `${AI_AGENT_CHART_ID_PREFIX}shopping_assistant-automated_interactions_card`,
+    RevenuePerInteractionCard: `${AI_AGENT_CHART_ID_PREFIX}shopping_assistant-revenue_per_interaction_card`,
+    AverageDiscountAmountCard: `${AI_AGENT_CHART_ID_PREFIX}shopping_assistant-average_discount_amount_card`,
+    AverageOrderValueCard: `${AI_AGENT_CHART_ID_PREFIX}shopping_assistant-average_order_value_card`,
+    DiscountUsageCard: `${AI_AGENT_CHART_ID_PREFIX}shopping_assistant-discount_usage_card`,
+    DiscountCodesAppliedCard: `${AI_AGENT_CHART_ID_PREFIX}shopping_assistant-discount_codes_applied_card`,
+    DiscountsOfferedCard: `${AI_AGENT_CHART_ID_PREFIX}shopping_assistant-discounts_offered_card`,
+    MedianPurchaseTimeCard: `${AI_AGENT_CHART_ID_PREFIX}shopping_assistant-median_purchase_time_card`,
+    BuyThroughRateCard: `${AI_AGENT_CHART_ID_PREFIX}shopping_assistant-buy_through_rate_card`,
+    ConversionRateCard: `${AI_AGENT_CHART_ID_PREFIX}shopping_assistant-conversion_rate_card`,
+    ClickThroughRateCard: `${AI_AGENT_CHART_ID_PREFIX}shopping_assistant-click_through_rate_card`,
+    SuccessRateCard: `${AI_AGENT_CHART_ID_PREFIX}shopping_assistant-success_rate_card`,
+    ProductRecommendationsCard: `${AI_AGENT_CHART_ID_PREFIX}shopping_assistant-product_recommendations_card`,
+    HandoverInteractionsCard: `${AI_AGENT_CHART_ID_PREFIX}shopping_assistant-handover_interactions_card`,
+    ConfigurableBarGraph: `${AI_AGENT_CHART_ID_PREFIX}shopping_assistant-configurable_bar_graph`,
+    ConfigurableLineGraph: `${AI_AGENT_CHART_ID_PREFIX}shopping_assistant-configurable_line_graph`,
+    ChannelPerformanceTable: `${AI_AGENT_CHART_ID_PREFIX}shopping_assistant-channel_performance_table`,
+    EngagementFeaturePerformanceTable: `${AI_AGENT_CHART_ID_PREFIX}shopping_assistant-engagement_feature_performance_table`,
+    TopProductsPerformanceTable: `${AI_AGENT_CHART_ID_PREFIX}shopping_assistant-top_products_performance_table`,
+} as const
+
+export type AnalyticsAiAgentShoppingAssistantChart =
+    (typeof AnalyticsAiAgentShoppingAssistantChart)[keyof typeof AnalyticsAiAgentShoppingAssistantChart]
 
 export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<AnalyticsAiAgentShoppingAssistantChart> =
     {

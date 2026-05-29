@@ -36,7 +36,9 @@ export const useConfigurableGraphsReportData = (
         savedMeasure: string | null | undefined
         savedDimension: string | null | undefined
         chartId: string
+        isAiAgentChart?: boolean
     }[],
+    aiAgentFilters?: StatsFilters,
     extra?: Record<string, number>,
 ) => {
     const [graphData, setGraphData] = useState<{
@@ -52,7 +54,9 @@ export const useConfigurableGraphsReportData = (
             configurableGraphConfig.fetch(
                 configurableGraphConfig.savedMeasure,
                 configurableGraphConfig.savedDimension,
-                cleanStatsFilters,
+                configurableGraphConfig.isAiAgentChart
+                    ? (aiAgentFilters ?? cleanStatsFilters)
+                    : cleanStatsFilters,
                 userTimezone,
                 granularity,
                 extra,
@@ -75,7 +79,14 @@ export const useConfigurableGraphsReportData = (
                 })
             })
             .catch(() => setGraphData({ isFetching: false, files: {} }))
-    }, [fetchGraphData, cleanStatsFilters, granularity, userTimezone, extra])
+    }, [
+        aiAgentFilters,
+        cleanStatsFilters,
+        extra,
+        fetchGraphData,
+        granularity,
+        userTimezone,
+    ])
 
     return graphData
 }

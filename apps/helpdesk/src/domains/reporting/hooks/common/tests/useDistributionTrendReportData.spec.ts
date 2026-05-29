@@ -168,4 +168,110 @@ describe('useDistributionTrendReportData', () => {
             })
         })
     })
+
+    describe('per-entry filter selection', () => {
+        const aiAgentFilters: StatsFilters = {
+            period: defaultStatsFilters.period,
+        }
+
+        it('should call fetch with aiAgentFilters when isAiAgentChart is true', async () => {
+            const fetchCurrent = jest
+                .fn()
+                .mockResolvedValue({ data: workloadData })
+            const fetchPrevious = jest
+                .fn()
+                .mockResolvedValue({ data: workloadPreviousData })
+
+            renderHook(() =>
+                useDistributionTrendReportData(
+                    defaultStatsFilters,
+                    'UTC',
+                    {
+                        fetchCurrentDistribution: fetchCurrent,
+                        fetchPreviousDistribution: fetchPrevious,
+                        labelPrefix,
+                        metricFormat: 'decimal' as const,
+                        isAiAgentChart: true,
+                    },
+                    aiAgentFilters,
+                ),
+            )
+
+            await waitFor(() => {
+                expect(fetchCurrent).toHaveBeenCalledWith(
+                    aiAgentFilters,
+                    expect.anything(),
+                )
+                expect(fetchPrevious).toHaveBeenCalledWith(
+                    aiAgentFilters,
+                    expect.anything(),
+                )
+            })
+        })
+
+        it('should call fetch with cleanStatsFilters when isAiAgentChart is false', async () => {
+            const fetchCurrent = jest
+                .fn()
+                .mockResolvedValue({ data: workloadData })
+            const fetchPrevious = jest
+                .fn()
+                .mockResolvedValue({ data: workloadPreviousData })
+
+            renderHook(() =>
+                useDistributionTrendReportData(
+                    defaultStatsFilters,
+                    'UTC',
+                    {
+                        fetchCurrentDistribution: fetchCurrent,
+                        fetchPreviousDistribution: fetchPrevious,
+                        labelPrefix,
+                        metricFormat: 'decimal' as const,
+                        isAiAgentChart: false,
+                    },
+                    aiAgentFilters,
+                ),
+            )
+
+            await waitFor(() => {
+                expect(fetchCurrent).toHaveBeenCalledWith(
+                    defaultStatsFilters,
+                    expect.anything(),
+                )
+                expect(fetchPrevious).toHaveBeenCalledWith(
+                    defaultStatsFilters,
+                    expect.anything(),
+                )
+            })
+        })
+
+        it('should fall back to cleanStatsFilters when isAiAgentChart is true but aiAgentFilters is not provided', async () => {
+            const fetchCurrent = jest
+                .fn()
+                .mockResolvedValue({ data: workloadData })
+            const fetchPrevious = jest
+                .fn()
+                .mockResolvedValue({ data: workloadPreviousData })
+
+            renderHook(() =>
+                useDistributionTrendReportData(defaultStatsFilters, 'UTC', {
+                    fetchCurrentDistribution: fetchCurrent,
+                    fetchPreviousDistribution: fetchPrevious,
+                    labelPrefix,
+                    metricFormat: 'decimal' as const,
+                    isAiAgentChart: true,
+                }),
+            )
+
+            await waitFor(() => {
+                expect(fetchCurrent).toHaveBeenCalledWith(
+                    defaultStatsFilters,
+                    expect.anything(),
+                )
+                expect(fetchPrevious).toHaveBeenCalledWith(
+                    defaultStatsFilters,
+                    expect.anything(),
+                )
+            })
+        })
+    })
 })

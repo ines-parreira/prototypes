@@ -309,4 +309,86 @@ describe('useTrendReport', () => {
             })
         })
     })
+
+    describe('per-entry filter selection', () => {
+        const aiAgentFilters: StatsFilters = {
+            period: defaultStatsFilters.period,
+        }
+
+        it('should call fetch with aiAgentFilters when isAiAgentChart is true', async () => {
+            const mockFetch = jest
+                .fn()
+                .mockResolvedValue({ data: { value: 1, prevValue: 0 } })
+
+            renderHook(() =>
+                useTrendReportData(
+                    defaultStatsFilters,
+                    'UTC',
+                    [
+                        {
+                            fetchTrend: mockFetch,
+                            metricFormat: 'decimal',
+                            title: 'test',
+                            isAiAgentChart: true,
+                        },
+                    ],
+                    aiAgentFilters,
+                ),
+            )
+
+            await waitFor(() => {
+                expect(mockFetch).toHaveBeenCalled()
+                expect(mockFetch.mock.calls[0][0]).toEqual(aiAgentFilters)
+            })
+        })
+
+        it('should call fetch with cleanStatsFilters when isAiAgentChart is false', async () => {
+            const mockFetch = jest
+                .fn()
+                .mockResolvedValue({ data: { value: 1, prevValue: 0 } })
+
+            renderHook(() =>
+                useTrendReportData(
+                    defaultStatsFilters,
+                    'UTC',
+                    [
+                        {
+                            fetchTrend: mockFetch,
+                            metricFormat: 'decimal',
+                            title: 'test',
+                            isAiAgentChart: false,
+                        },
+                    ],
+                    aiAgentFilters,
+                ),
+            )
+
+            await waitFor(() => {
+                expect(mockFetch).toHaveBeenCalled()
+                expect(mockFetch.mock.calls[0][0]).toEqual(defaultStatsFilters)
+            })
+        })
+
+        it('should fall back to cleanStatsFilters when isAiAgentChart is true but aiAgentFilters is not provided', async () => {
+            const mockFetch = jest
+                .fn()
+                .mockResolvedValue({ data: { value: 1, prevValue: 0 } })
+
+            renderHook(() =>
+                useTrendReportData(defaultStatsFilters, 'UTC', [
+                    {
+                        fetchTrend: mockFetch,
+                        metricFormat: 'decimal',
+                        title: 'test',
+                        isAiAgentChart: true,
+                    },
+                ]),
+            )
+
+            await waitFor(() => {
+                expect(mockFetch).toHaveBeenCalled()
+                expect(mockFetch.mock.calls[0][0]).toEqual(defaultStatsFilters)
+            })
+        })
+    })
 })

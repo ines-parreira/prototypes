@@ -16,7 +16,9 @@ export const useTrendReportData = (
         fetchTrend: MetricTrendFetch
         metricFormat: MetricValueFormat
         title: string
+        isAiAgentChart?: boolean
     }[],
+    aiAgentFilters?: StatsFilters,
 ) => {
     const aiAgentUserId = useAIAgentUserId()
     const costSavedPerInteraction = useMoneySavedPerInteractionWithAutomate(
@@ -33,7 +35,9 @@ export const useTrendReportData = (
     useEffect(() => {
         const workloadTrendPromises = trendsReportSource.map((r) =>
             r.fetchTrend(
-                cleanStatsFilters,
+                r.isAiAgentChart
+                    ? (aiAgentFilters ?? cleanStatsFilters)
+                    : cleanStatsFilters,
                 userTimezone,
                 aiAgentUserId,
                 costSavedPerInteraction,
@@ -58,6 +62,7 @@ export const useTrendReportData = (
             })
             .catch(() => setTrendData({ isFetching: false, data: [] }))
     }, [
+        aiAgentFilters,
         aiAgentUserId,
         cleanStatsFilters,
         costSavedPerInteraction,

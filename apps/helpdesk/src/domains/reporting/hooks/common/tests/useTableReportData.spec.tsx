@@ -195,6 +195,128 @@ describe('useTable hooks', () => {
                 })
             })
         })
+
+        describe('per-entry filter selection', () => {
+            const aiAgentFilters: StatsFiltersWithLogicalOperator = {
+                period: defaultStatsFilters.period,
+            }
+
+            it('should call fetchTable with aiAgentFilters when isAiAgentChart is true', async () => {
+                const mockFetchTable = jest
+                    .fn()
+                    .mockResolvedValue({ files: {} })
+
+                await waitFor(() =>
+                    renderHook(
+                        () =>
+                            useTables(
+                                defaultStatsFilters,
+                                userTimezone,
+                                granularity,
+                                [
+                                    {
+                                        title: 'ai-chart',
+                                        fetchTable: mockFetchTable,
+                                        isAiAgentChart: true,
+                                    },
+                                ],
+                                aiAgentFilters,
+                            ),
+                        {
+                            wrapper: ({ children }) => (
+                                <Provider store={mockStore(defaultState)}>
+                                    {children}
+                                </Provider>
+                            ),
+                        },
+                    ),
+                )
+
+                expect(mockFetchTable).toHaveBeenCalledWith(
+                    aiAgentFilters,
+                    expect.anything(),
+                    expect.anything(),
+                    expect.anything(),
+                )
+            })
+
+            it('should call fetchTable with cleanStatsFilters when isAiAgentChart is false', async () => {
+                const mockFetchTable = jest
+                    .fn()
+                    .mockResolvedValue({ files: {} })
+
+                await waitFor(() =>
+                    renderHook(
+                        () =>
+                            useTables(
+                                defaultStatsFilters,
+                                userTimezone,
+                                granularity,
+                                [
+                                    {
+                                        title: 'standard-chart',
+                                        fetchTable: mockFetchTable,
+                                        isAiAgentChart: false,
+                                    },
+                                ],
+                                aiAgentFilters,
+                            ),
+                        {
+                            wrapper: ({ children }) => (
+                                <Provider store={mockStore(defaultState)}>
+                                    {children}
+                                </Provider>
+                            ),
+                        },
+                    ),
+                )
+
+                expect(mockFetchTable).toHaveBeenCalledWith(
+                    defaultStatsFilters,
+                    expect.anything(),
+                    expect.anything(),
+                    expect.anything(),
+                )
+            })
+
+            it('should call fetchTable with cleanStatsFilters when isAiAgentChart is true but aiAgentFilters is not provided', async () => {
+                const mockFetchTable = jest
+                    .fn()
+                    .mockResolvedValue({ files: {} })
+
+                await waitFor(() =>
+                    renderHook(
+                        () =>
+                            useTables(
+                                defaultStatsFilters,
+                                userTimezone,
+                                granularity,
+                                [
+                                    {
+                                        title: 'ai-chart',
+                                        fetchTable: mockFetchTable,
+                                        isAiAgentChart: true,
+                                    },
+                                ],
+                            ),
+                        {
+                            wrapper: ({ children }) => (
+                                <Provider store={mockStore(defaultState)}>
+                                    {children}
+                                </Provider>
+                            ),
+                        },
+                    ),
+                )
+
+                expect(mockFetchTable).toHaveBeenCalledWith(
+                    defaultStatsFilters,
+                    expect.anything(),
+                    expect.anything(),
+                    expect.anything(),
+                )
+            })
+        })
     })
 
     describe('useTableReportData', () => {

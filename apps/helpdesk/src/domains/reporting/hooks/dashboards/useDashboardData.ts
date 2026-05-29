@@ -57,7 +57,10 @@ import { AnalyticsAiAgentAllAgentsReportConfig } from 'pages/aiAgent/analyticsAi
 import { AnalyticsAiAgentShoppingAssistantReportConfig } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentShoppingAssistantReportConfig'
 import { AnalyticsAiAgentSupportAgentReportConfig } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentSupportAgentReportConfig'
 import { AnalyticsOverviewReportConfig } from 'pages/aiAgent/analyticsOverview/AnalyticsOverviewReportConfig'
+import { AI_AGENT_CHART_ID_PREFIX } from 'pages/aiAgent/constants'
 import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
+import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
+import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 
 const chartsLookupTable: Record<string, ChartConfig | undefined> = {
     ...SupportPerformanceOverviewReportConfig.charts,
@@ -85,21 +88,27 @@ const chartsLookupTable: Record<string, ChartConfig | undefined> = {
 type Queries = {
     timeSeries: {
         fetchTimeSeries: TimeSeriesFetch
-
         title: string
+        isAiAgentChart: boolean
     }[]
     timeSeriesPerDimension: {
         fetchTimeSeries: TimeSeriesPerDimensionFetch
         title: string
         headers: string[]
         dimensions: string[]
+        isAiAgentChart: boolean
     }[]
     trends: {
         fetchTrend: MetricTrendFetch
         metricFormat: MetricValueFormat
         title: string
+        isAiAgentChart: boolean
     }[]
-    tables: { fetchTable: ReportFetch; title: string }[]
+    tables: {
+        fetchTable: ReportFetch
+        title: string
+        isAiAgentChart: boolean
+    }[]
     distributions:
         | {
               fetchCurrentDistribution: MetricPerDimensionFetch
@@ -107,6 +116,7 @@ type Queries = {
               labelPrefix: string
               metricFormat: MetricTrendFormat
               title: string
+              isAiAgentChart: boolean
           }
         | undefined
     configurableCharts: {
@@ -114,6 +124,7 @@ type Queries = {
         savedMeasure: string | null | undefined
         savedDimension: string | null | undefined
         chartId: string
+        isAiAgentChart: boolean
     }[]
 }
 
@@ -126,18 +137,24 @@ const makeReduceReport =
                 return acc
             }
 
+            const isAiAgentChart = child.config_id.startsWith(
+                AI_AGENT_CHART_ID_PREFIX,
+            )
+
             config.csvProducer.forEach((producer) => {
                 if (producer.type === DataExportFormat.Trend) {
                     acc.trends.push({
                         fetchTrend: producer.fetch,
                         metricFormat: producer.metricFormat,
                         title: producer.title ?? String(config.label),
+                        isAiAgentChart,
                     })
                 }
                 if (producer.type === DataExportFormat.TimeSeries) {
                     acc.timeSeries.push({
                         fetchTimeSeries: producer.fetch,
                         title: producer.title ?? String(config.label),
+                        isAiAgentChart,
                     })
                 }
                 if (producer.type === DataExportFormat.TimeSeriesPerDimension) {
@@ -146,6 +163,7 @@ const makeReduceReport =
                         title: producer.title,
                         headers: producer.headers,
                         dimensions: producer.dimensions,
+                        isAiAgentChart,
                     })
                 }
                 if (producer.type === DataExportFormat.Distribution) {
@@ -153,12 +171,14 @@ const makeReduceReport =
                         ...producer.fetch,
                         metricFormat: 'decimal',
                         title: String(config.label),
+                        isAiAgentChart,
                     }
                 }
                 if (producer.type === DataExportFormat.Table) {
                     acc.tables.push({
                         fetchTable: producer.fetch,
                         title: String(config.label),
+                        isAiAgentChart,
                     })
                 }
                 if (
@@ -171,6 +191,7 @@ const makeReduceReport =
                         savedMeasure: child.metadata?.savedMeasure,
                         savedDimension: child.metadata?.savedDimension,
                         chartId: child.config_id,
+                        isAiAgentChart,
                     })
                 }
             })
@@ -204,14 +225,17 @@ const DISTRIBUTIONS_FILE_SUFFIX = 'distributions'
 
 export const useDashboardData = (
     dashboard: DashboardSchema,
-    isAiAgentDashboard?: boolean,
     chartConfigs?: Record<string, ChartConfig | undefined>,
-    extra?: Record<string, number>,
 ) => {
     const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
     const { statsFilters: aiAgentFilters } = useAiAgentStatsFilters()
-
-    const statsFilters = isAiAgentDashboard ? aiAgentFilters : cleanStatsFilters
+    const costSavedPerInteraction = useMoneySavedPerInteractionWithAutomate(
+        AGENT_COST_PER_TICKET,
+    )
+    const extra = useMemo(
+        () => ({ costSavedPerInteraction }),
+        [costSavedPerInteraction],
+    )
 
     const sanitizedDashboard = useSanitizedDashboard(dashboard)
 
@@ -221,56 +245,62 @@ export const useDashboardData = (
     )
 
     const trends = useTrendReportData(
-        statsFilters,
+        cleanStatsFilters,
         userTimezone,
         queryGroups.trends,
+        aiAgentFilters,
     )
     const trendsReport = createTrendReport(
         trends.data,
-        `${getCsvFileNameWithDates(statsFilters.period, `${dashboard.name} - ${TRENDS_FILE_SUFFIX}`)}`,
+        `${getCsvFileNameWithDates(cleanStatsFilters.period, `${dashboard.name} - ${TRENDS_FILE_SUFFIX}`)}`,
     )
     const timeSeries = useTimeSeriesReportData(
-        statsFilters,
+        cleanStatsFilters,
         userTimezone,
         granularity,
         queryGroups.timeSeries,
+        aiAgentFilters,
     )
     const timeSeriesReport = createTimeSeriesReport(
         timeSeries.data,
-        `${getCsvFileNameWithDates(statsFilters.period, `${dashboard.name} - ${TIME_SERIES_FILE_SUFFIX}`)}`,
+        `${getCsvFileNameWithDates(cleanStatsFilters.period, `${dashboard.name} - ${TIME_SERIES_FILE_SUFFIX}`)}`,
     )
 
     const timeSeriesPerDimension = useTimeSeriesPerDimensionReportData(
-        statsFilters,
+        cleanStatsFilters,
         userTimezone,
         granularity,
         queryGroups.timeSeriesPerDimension,
+        aiAgentFilters,
     )
     const timeSeriesPerDimensionReports = createTimeSeriesPerDimensionReport(
         timeSeriesPerDimension.data,
-        statsFilters.period,
+        cleanStatsFilters.period,
     )
 
     const distributions = useDistributionTrendReportData(
-        statsFilters,
+        cleanStatsFilters,
         userTimezone,
         queryGroups.distributions,
+        aiAgentFilters,
     )
     const distributionsReport = createTrendReport(
         distributions.data,
-        `${getCsvFileNameWithDates(statsFilters.period, `${queryGroups.distributions?.title} - ${DISTRIBUTIONS_FILE_SUFFIX}`)}`,
+        `${getCsvFileNameWithDates(cleanStatsFilters.period, `${queryGroups.distributions?.title} - ${DISTRIBUTIONS_FILE_SUFFIX}`)}`,
     )
     const tables = useTables(
-        statsFilters,
+        cleanStatsFilters,
         userTimezone,
         granularity,
         queryGroups.tables,
+        aiAgentFilters,
     )
     const configurableGraphs = useConfigurableGraphsReportData(
-        statsFilters,
+        cleanStatsFilters,
         userTimezone,
         granularity,
         queryGroups.configurableCharts,
+        aiAgentFilters,
         extra,
     )
 
@@ -293,7 +323,7 @@ export const useDashboardData = (
     ])
 
     const fileName = getCsvFileNameWithDates(
-        statsFilters.period,
+        cleanStatsFilters.period,
         dashboard.name,
     )
 

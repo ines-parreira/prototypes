@@ -7,7 +7,6 @@ import { AnalyticsOverviewReportConfig } from 'pages/aiAgent/analyticsOverview/A
 import { useExportAnalyticsOverviewToCSV } from 'pages/aiAgent/analyticsOverview/hooks/useExportAnalyticsOverviewToCSV'
 import { buildCustomDashboard } from 'pages/aiAgent/analyticsOverview/utils/buildCustomDashboard'
 import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilters'
-import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 import * as fileUtils from 'utils/file'
 
 jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
@@ -17,7 +16,6 @@ jest.mock('@repo/reporting', () => ({
     useGetManagedDashboardsLayoutConfig: jest.fn(),
 }))
 jest.mock('pages/aiAgent/analyticsOverview/utils/buildCustomDashboard')
-jest.mock('pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate')
 jest.mock('utils/file', () => ({
     ...jest.requireActual('utils/file'),
     saveZippedFiles: jest.fn(),
@@ -29,9 +27,6 @@ const mockedUseGetManagedDashboardsLayoutConfig = jest.mocked(
     useGetManagedDashboardsLayoutConfig,
 )
 const mockedBuildCustomDashboard = jest.mocked(buildCustomDashboard)
-const mockedUseMoneySavedPerInteractionWithAutomate = jest.mocked(
-    useMoneySavedPerInteractionWithAutomate,
-)
 const mockedSaveZippedFiles = jest.mocked(fileUtils.saveZippedFiles)
 
 const mockPeriod = {
@@ -71,8 +66,6 @@ describe('useExportAnalyticsOverviewToCSV', () => {
             fileName: 'analytics-overview - trends.csv',
             isLoading: false,
         })
-
-        mockedUseMoneySavedPerInteractionWithAutomate.mockReturnValue(1)
     })
 
     it('should return isLoading as false when all data is loaded', () => {
@@ -131,9 +124,7 @@ describe('useExportAnalyticsOverviewToCSV', () => {
 
         expect(mockedUseDashboardData).toHaveBeenCalledWith(
             expect.any(Object),
-            true,
             AnalyticsOverviewReportConfig.charts,
-            { costSavedPerInteraction: expect.any(Number) },
         )
     })
 })
