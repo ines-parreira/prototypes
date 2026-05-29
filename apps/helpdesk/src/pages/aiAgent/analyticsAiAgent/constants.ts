@@ -16,3 +16,8 @@ export const DISMISSED_FILTERING_MESSAGE_BANNER =
     'ai-agent-analytics-data-delay-banner-dismissed'
 export const DATA_FILTERING_WARNING_MESSAGE =
     'Data for the past 72 hours is not included on this dashboard, as interactions are considered automated after 72 hours have passed without a customer reply.'
+
+export const DATA_PENDING_AUTOMATION_TOOLTIP_MESSAGE =
+    'Data not yet available. An interaction is counted as automated once 72 hours have passed without a customer reply.'
+export const DATA_NOT_YET_AVAILABLE_TOOLTIP_MESSAGE = 'Data not yet available.'
+export const DATA_NOT_AVAILABLE_TOOLTIP_MESSAGE = 'Data not available.'

@@ -19,6 +19,7 @@ import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import { useSearchParam } from 'hooks/useSearchParam'
 
 import { AiAgentDataDelayBanner } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentDataDelayBanner'
+import { getAiAgentDateTooltip } from 'pages/aiAgent/analyticsAiAgent/utils/getAiAgentDateTooltip'
 import { AiAgentDashboardLayoutRenderer } from 'pages/aiAgent/analyticsOverview/components/AiAgentDashboardLayoutRenderer'
 import {
     ManagedDashboardId,
@@ -255,6 +256,7 @@ export const AnalyticsAiAgentLayout = () => {
                                 warningMessage: isDataFilteringBannerDismissed
                                     ? DATA_FILTERING_WARNING_MESSAGE
                                     : undefined,
+                                getDateTooltip: getAiAgentDateTooltip,
                             },
                             ...(isStoresComingSoon && {
                                 [FilterKey.Stores]: {

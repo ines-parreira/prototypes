@@ -1,6 +1,7 @@
-import type { ComponentProps } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
 import React, { useCallback } from 'react'
 
+import type { DateValue } from '@internationalized/date'
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { DateAndTimeFormatting } from '@repo/utils'
@@ -37,6 +38,7 @@ type Props = {
     value: StatsFilters[FilterKey.Period]
     tooltipMessageForPreviousPeriod?: string
     warningMessage?: string
+    getDateTooltip?: (date: DateValue) => ReactNode
     initialV2Props?: {
         dateRanges?: { [label: string]: [Moment, Moment] }
     }
@@ -48,6 +50,7 @@ export function PeriodFilter({
     value,
     tooltipMessageForPreviousPeriod,
     warningMessage,
+    getDateTooltip,
     initialV2Props,
     compact = false,
 }: Props) {
@@ -133,6 +136,7 @@ export function PeriodFilter({
                 value={value}
                 initialSettings={initialSettings}
                 warningMessage={warningMessage}
+                getDateTooltip={getDateTooltip}
             />
         )
     }

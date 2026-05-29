@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import React, { useCallback, useMemo } from 'react'
 
 import type { DateValue, ZonedDateTime } from '@internationalized/date'
@@ -33,6 +34,7 @@ type CompactPeriodFilterProps = {
     value: StatsFilters[FilterKey.Period]
     initialSettings?: Omit<InitialSettings, 'maxSpan'> & { maxSpan?: number }
     warningMessage?: string
+    getDateTooltip?: (date: DateValue) => ReactNode
 }
 
 function toCalendarDate(
@@ -49,6 +51,7 @@ export function PeriodFilterCompact({
     value,
     initialSettings: initialSettingsProp,
     warningMessage,
+    getDateTooltip,
 }: CompactPeriodFilterProps) {
     const dispatch = useAppDispatch()
     const effectiveMaxSpan = initialSettingsProp?.maxSpan ?? MAX_SPAN
@@ -242,6 +245,7 @@ export function PeriodFilterCompact({
                 aria-label="Date range picker"
                 placement="bottom left"
                 isDateUnavailable={isDateUnavailable}
+                getDateTooltip={getDateTooltip}
                 trigger={(renderProps) => {
                     const button = (
                         <Button

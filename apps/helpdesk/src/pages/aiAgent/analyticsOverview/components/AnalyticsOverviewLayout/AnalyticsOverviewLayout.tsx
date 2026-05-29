@@ -18,6 +18,7 @@ import {
     DATA_FILTERING_WARNING_MESSAGE,
     DISMISSED_FILTERING_MESSAGE_BANNER,
 } from 'pages/aiAgent/analyticsAiAgent/constants'
+import { getAiAgentDateTooltip } from 'pages/aiAgent/analyticsAiAgent/utils/getAiAgentDateTooltip'
 import { AnalyticsOverviewReportConfig } from 'pages/aiAgent/analyticsOverview/AnalyticsOverviewReportConfig'
 import { AiAgentDashboardLayoutRenderer } from 'pages/aiAgent/analyticsOverview/components/AiAgentDashboardLayoutRenderer'
 import { DEFAULT_ANALYTICS_OVERVIEW_LAYOUT } from 'pages/aiAgent/analyticsOverview/config/defaultLayoutConfig'
@@ -94,6 +95,7 @@ export const AnalyticsOverviewLayout = () => {
                             warningMessage: isDataFilteringBannerDismissed
                                 ? DATA_FILTERING_WARNING_MESSAGE
                                 : undefined,
+                            getDateTooltip: getAiAgentDateTooltip,
                         },
                         ...(isStoresComingSoon && {
                             [FilterKey.Stores]: {

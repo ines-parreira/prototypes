@@ -1,5 +1,7 @@
+import type { ReactNode } from 'react'
 import React from 'react'
 
+import type { DateValue } from '@internationalized/date'
 import { render } from '@repo/testing'
 import { DateTimeFormatMapper, DateTimeFormatType } from '@repo/utils'
 import { screen, waitFor } from '@testing-library/react'
@@ -44,7 +46,10 @@ describe('PeriodFilterCompact', () => {
     const renderComponent = (
         value: { start_datetime: string; end_datetime: string },
         initialSettings?: { maxSpan?: number; minDate?: Date; maxDate?: Date },
-        extraProps?: { warningMessage?: string },
+        extraProps?: {
+            warningMessage?: string
+            getDateTooltip?: (date: DateValue) => ReactNode
+        },
     ) => {
         const user = userEvent.setup()
         const store = mockStore(defaultState)
@@ -54,6 +59,7 @@ describe('PeriodFilterCompact', () => {
                     value={value}
                     initialSettings={initialSettings}
                     warningMessage={extraProps?.warningMessage}
+                    getDateTooltip={extraProps?.getDateTooltip}
                 />
             </Provider>,
         )
@@ -519,6 +525,52 @@ describe('PeriodFilterCompact', () => {
             await waitFor(() => {
                 expect(screen.getByText(message)).toBeInTheDocument()
             })
+        })
+    })
+
+    describe('getDateTooltip', () => {
+        // Axiom wraps each day cell in a tooltip trigger only when getDateTooltip
+        // is supplied, so the wrapper's presence is what tells us the prop reached
+        // the DateRangePicker. Opening the cell tooltip on hover is not reliable in
+        // jsdom, and the tooltip content rendering is already covered by axiom.
+        const queryDayTooltipTriggers = () =>
+            document.querySelectorAll('[data-name="tooltip-trigger"]')
+
+        const openCalendarShowingJanuary2017 = async (
+            user: ReturnType<typeof userEvent.setup>,
+        ) => {
+            await user.click(screen.getByRole('button', { name: /calendar/i }))
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /January 15, 2017/ }),
+                ).toBeInTheDocument()
+            })
+        }
+
+        it('wraps day cells in a tooltip trigger when getDateTooltip is provided', async () => {
+            const { user } = renderComponent(
+                {
+                    start_datetime: '2017-01-01T00:00:00.000Z',
+                    end_datetime: '2017-01-30T00:00:00.000Z',
+                },
+                undefined,
+                { getDateTooltip: (date) => `Day ${date.day}` },
+            )
+
+            await openCalendarShowingJanuary2017(user)
+
+            expect(queryDayTooltipTriggers().length).toBeGreaterThan(0)
+        })
+
+        it('does not wrap day cells in a tooltip trigger when getDateTooltip is not provided', async () => {
+            const { user } = renderComponent({
+                start_datetime: '2017-01-01T00:00:00.000Z',
+                end_datetime: '2017-01-30T00:00:00.000Z',
+            })
+
+            await openCalendarShowingJanuary2017(user)
+
+            expect(queryDayTooltipTriggers()).toHaveLength(0)
         })
     })
 
