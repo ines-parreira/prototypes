@@ -266,7 +266,7 @@ export const AIJourneySettings: React.FC = () => {
         })
     }
 
-    const shouldRenderImageToggle = !isCampaign && !isWelcome
+    const shouldRenderImageToggle = !isCampaign && !isWelcome && !isWinBack
     const shouldRenderTestingProduct = !isWelcome && !isCampaign && !isWinBack
     const shouldRenderAudienceCard = isCampaign
         ? true

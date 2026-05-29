@@ -52,9 +52,9 @@ export const PreviewPanel = ({ onClose }: Props) => {
         | JourneyConfigurationApiDTO
         | undefined
 
-    const isCampaign = journeyData?.type === JOURNEY_TYPES.CAMPAIGN
-    const isWelcome = journeyData?.type === JOURNEY_TYPES.WELCOME
-    const isWinBack = journeyData?.type === JOURNEY_TYPES.WIN_BACK
+    const isCampaign = journeyType === JOURNEY_TYPES.CAMPAIGN
+    const isWelcome = journeyType === JOURNEY_TYPES.WELCOME
+    const isWinBack = journeyType === JOURNEY_TYPES.WIN_BACK
 
     const campaignParams = isCampaign
         ? (journeyParams as CampaignJourneyConfigurationApiDTO)

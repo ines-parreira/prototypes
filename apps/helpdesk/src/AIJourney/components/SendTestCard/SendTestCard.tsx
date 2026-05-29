@@ -14,10 +14,9 @@ import {
     TextField,
     ToggleField,
 } from '@gorgias/axiom'
-import { JourneyTypeEnum } from '@gorgias/convert-client'
-
 import { CountryCodeSelect } from 'AIJourney/components/CountryCodeSelect/CountryCodeSelect'
 import { ProductSelect } from 'AIJourney/components/ProductSelect/ProductSelect'
+import { JOURNEY_TYPES } from 'AIJourney/constants'
 import { useHandleSendTestSMS, useLastSelectedProduct } from 'AIJourney/hooks'
 import { useAIJourneyProductList } from 'AIJourney/hooks/useAIJourneyProductList/useAIJourneyProductList'
 import { useJourneyContext } from 'AIJourney/providers'
@@ -61,8 +60,9 @@ export const SendTestCard = ({
         integrationId: currentIntegration?.id,
     })
 
-    const isWelcome = journeyType === JourneyTypeEnum.Welcome
-    const isCampaign = journeyType === JourneyTypeEnum.Campaign
+    const isWelcome = journeyType === JOURNEY_TYPES.WELCOME
+    const isCampaign = journeyType === JOURNEY_TYPES.CAMPAIGN
+    const isWinBack = journeyType === JOURNEY_TYPES.WIN_BACK
 
     useEffect(() => {
         if (isWelcome) setSelectedFullProduct(null)
@@ -128,7 +128,7 @@ export const SendTestCard = ({
         }
     }
 
-    const shouldRenderProductSelect = !isWelcome && !isCampaign
+    const shouldRenderProductSelect = !isWelcome && !isCampaign && !isWinBack
 
     return (
         <Card minWidth={680}>

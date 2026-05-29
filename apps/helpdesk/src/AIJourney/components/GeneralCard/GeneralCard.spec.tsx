@@ -240,6 +240,18 @@ describe('<GeneralCard />', () => {
                     screen.queryByText('IncludeImage'),
                 ).not.toBeInTheDocument()
             })
+
+            it('should not render when journey type is WIN_BACK', () => {
+                mockUseJourneyContext.mockReturnValue({
+                    journeyType: JOURNEY_TYPES.WIN_BACK,
+                })
+
+                renderCard()
+
+                expect(
+                    screen.queryByText('IncludeImage'),
+                ).not.toBeInTheDocument()
+            })
         })
 
         describe('ImageUpload', () => {
@@ -411,6 +423,18 @@ describe('<GeneralCard />', () => {
             it('does not render for WELCOME', () => {
                 mockUseJourneyContext.mockReturnValue({
                     journeyType: JOURNEY_TYPES.WELCOME,
+                })
+
+                renderCard({ isV3Architecture: true })
+
+                expect(
+                    screen.queryByText('IncludeImage'),
+                ).not.toBeInTheDocument()
+            })
+
+            it('does not render for WIN_BACK', () => {
+                mockUseJourneyContext.mockReturnValue({
+                    journeyType: JOURNEY_TYPES.WIN_BACK,
                 })
 
                 renderCard({ isV3Architecture: true })

@@ -15,10 +15,9 @@ import {
     TextField,
     ToggleField,
 } from '@gorgias/axiom'
-import { JourneyTypeEnum } from '@gorgias/convert-client'
-
 import { CountryCodeSelect } from 'AIJourney/components/CountryCodeSelect/CountryCodeSelect'
 import { ProductSelect } from 'AIJourney/components/ProductSelect/ProductSelect'
+import { JOURNEY_TYPES } from 'AIJourney/constants'
 import { useHandleSendTestSMS, useLastSelectedProduct } from 'AIJourney/hooks'
 import { useAIJourneyProductList } from 'AIJourney/hooks/useAIJourneyProductList/useAIJourneyProductList'
 import { useJourneyContext } from 'AIJourney/providers'
@@ -57,9 +56,10 @@ export const SendTestSMSModal = ({ isOpen, onClose }: Props) => {
         integrationId: currentIntegration?.id,
     })
 
-    const isWelcome = journeyType === JourneyTypeEnum.Welcome
-    const isCampaign = journeyType === JourneyTypeEnum.Campaign
-    const shouldRenderProductSelect = !isWelcome && !isCampaign
+    const isWelcome = journeyType === JOURNEY_TYPES.WELCOME
+    const isCampaign = journeyType === JOURNEY_TYPES.CAMPAIGN
+    const isWinBack = journeyType === JOURNEY_TYPES.WIN_BACK
+    const shouldRenderProductSelect = !isWelcome && !isCampaign && !isWinBack
 
     useEffect(() => {
         if (isWelcome) setSelectedFullProduct(null)

@@ -233,6 +233,29 @@ describe('<SendTestCard />', () => {
         })
     })
 
+    describe('Win-back journey', () => {
+        beforeEach(() => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultJourneyContext,
+                journeyType: 'win-back',
+            })
+        })
+
+        it('should not render the product select', () => {
+            renderComponent()
+
+            expect(screen.queryByLabelText('Product')).not.toBeInTheDocument()
+        })
+
+        it('should not render the returning customer toggle', () => {
+            renderComponent()
+
+            expect(
+                screen.queryByText('Returning customer'),
+            ).not.toBeInTheDocument()
+        })
+    })
+
     describe('Product selection', () => {
         it('should auto-select the first product on load', async () => {
             renderComponent()

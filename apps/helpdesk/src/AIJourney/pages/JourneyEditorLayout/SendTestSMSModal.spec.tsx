@@ -8,6 +8,8 @@ import thunk from 'redux-thunk'
 
 import { JourneyTypeEnum } from '@gorgias/convert-client'
 
+import { JOURNEY_TYPES } from 'AIJourney/constants'
+
 import { SendTestSMSModal } from './SendTestSMSModal'
 
 const mockUseJourneyContext = jest.fn()
@@ -253,6 +255,19 @@ describe('<SendTestSMSModal />', () => {
 
             expect(
                 screen.queryByRole('switch', { name: /returning customer/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not show the product selector for Win-back journeys', () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyType: JOURNEY_TYPES.WIN_BACK,
+            })
+
+            renderComponent()
+
+            expect(
+                screen.queryByText('Product selector'),
             ).not.toBeInTheDocument()
         })
     })

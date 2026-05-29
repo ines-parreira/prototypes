@@ -1351,7 +1351,7 @@ describe('AIJourneySettings', () => {
                     screen.queryByText(
                         'Include product image in first message',
                     ),
-                ).toBeInTheDocument()
+                ).not.toBeInTheDocument()
                 expect(
                     screen.queryByText(
                         'In which message should the discount code be sent',

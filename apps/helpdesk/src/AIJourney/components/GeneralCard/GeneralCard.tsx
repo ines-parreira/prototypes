@@ -50,8 +50,9 @@ export const GeneralCard = ({
     const isCampaign = journeyType === JOURNEY_TYPES.CAMPAIGN
     const isCustom = journeyType === JOURNEY_TYPES.CUSTOM
     const isWelcome = journeyType === JOURNEY_TYPES.WELCOME
+    const isWinBack = journeyType === JOURNEY_TYPES.WIN_BACK
 
-    const shouldRenderIncludeImage = !isCampaign && !isWelcome
+    const shouldRenderIncludeImage = !isCampaign && !isWelcome && !isWinBack
     const hasFollowUps = (maxFollowUpMessages ?? 1) > 1
 
     const handleFollowUpsToggle = useCallback(
