@@ -25,7 +25,6 @@ import {
 } from 'common/notifications'
 import { CopilotProvider } from 'copilot'
 import { THEME_NAME, useApplyTheme, useTheme } from 'core/theme'
-import { useAxiomMigration } from 'hooks/useAxiomMigration'
 import useHasPhone from 'hooks/useHasPhone'
 import UIKitRootNodeProvider from 'main/app/components/UIKitRootNodeProvider'
 import { isAiAgentOnboarding } from 'main/app/utils/isAiAgentOnboarding'
@@ -60,7 +59,6 @@ type Props = {
 }
 
 export default function App({ children }: Props) {
-    const { isEnabled: isAxiomEnabled } = useAxiomMigration()
     const theme = useTheme()
     const history = useHistory()
     const hasGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
@@ -116,8 +114,7 @@ export default function App({ children }: Props) {
         <CopilotProvider>
             <AppNode
                 className={cn({
-                    axiom: isAxiomEnabled,
-                    legacy: !isAxiomEnabled,
+                    axiom: true,
                     classic: theme.resolvedName === THEME_NAME.Classic,
                     globalNav: hasGlobalNav,
                     uiVisionMilestone1: hasUIVisionMS1,

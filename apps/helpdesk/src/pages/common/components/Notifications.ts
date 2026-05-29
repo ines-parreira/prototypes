@@ -1,15 +1,7 @@
 import type { Theme } from 'reapop'
 import { STATUSES, wyboTheme } from 'reapop'
 
-const legacyColors = {
-    [STATUSES.info]: 'var(--main-primary)',
-    [STATUSES.success]: 'var(--feedback-success)',
-    [STATUSES.error]: 'var(--feedback-error)',
-    [STATUSES.warning]: 'var(--feedback-warning)',
-    [STATUSES.loading]: 'var(--neutral-grey-4)',
-}
-
-const axiomColors = {
+const colors = {
     [STATUSES.info]: 'var(--border-accent-default)',
     [STATUSES.success]: 'var(--border-success-primary)',
     [STATUSES.error]: 'var(--border-error-primary)',
@@ -17,9 +9,16 @@ const axiomColors = {
     [STATUSES.loading]: 'var(--border-neutral-tertiary)',
 }
 
-export const createNotificationsTheme = (isAxiom: boolean): Theme => {
-    const colors = isAxiom ? axiomColors : legacyColors
+const primaryStyles = {
+    background: 'var(--surface-button-secondary)',
+    border: '1px solid',
+    borderColor: 'var(--border-neutral-tertiary)',
+    borderRadius: 'var(--spacing-xs)',
+    color: 'var(--content-neutral-default)',
+    padding: '1px 8px',
+}
 
+export const createNotificationsTheme = (): Theme => {
     return {
         ...wyboTheme,
         container: (position, singleContainer) => ({
@@ -30,14 +29,12 @@ export const createNotificationsTheme = (isAxiom: boolean): Theme => {
         }),
         notification: (notification) => ({
             ...wyboTheme.notification(notification),
-            backgroundColor: isAxiom
-                ? 'var(--elevation-neutral-default)'
-                : 'var(--neutral-grey-0)',
+            backgroundColor: 'var(--elevation-neutral-default)',
             width: 'auto',
             minWidth: 320,
             maxWidth: 680,
             minHeight: 52,
-            borderRadius: isAxiom ? 'var(--spacing-xs)' : 4,
+            borderRadius: 'var(--spacing-xs)',
             display: 'inline-flex',
             alignItems: 'center',
             border: '1px solid',
@@ -54,9 +51,7 @@ export const createNotificationsTheme = (isAxiom: boolean): Theme => {
         }),
         notificationTitle: (notification) => ({
             ...wyboTheme.notificationTitle(notification),
-            color: isAxiom
-                ? 'var(--content-neutral-default)'
-                : 'var(--neutral-grey-6)',
+            color: 'var(--content-neutral-default)',
             marginBottom: 4,
             fontWeight: 600,
             lineHeight: '20px',
@@ -67,9 +62,7 @@ export const createNotificationsTheme = (isAxiom: boolean): Theme => {
         }),
         notificationMessage: (notification) => ({
             ...wyboTheme.notificationMessage(notification),
-            color: isAxiom
-                ? 'var(--content-neutral-default)'
-                : 'var(--neutral-grey-6)',
+            color: 'var(--content-neutral-default)',
             fontSize: 14,
             lineHeight: '20px',
             letterSpacing: '-0.01em',
@@ -79,44 +72,10 @@ export const createNotificationsTheme = (isAxiom: boolean): Theme => {
             padding: '4px 0',
             display: 'flex',
         }),
-        notificationButton: (notification, position, state) => {
+        notificationButton: (notification, position) => {
             const isButtonPrimary = notification.buttons[position].primary
 
-            const legacyPrimaryStyles = {
-                background: state.isHovered
-                    ? 'var(--main-primary-2)'
-                    : state.isActive
-                      ? 'var(--main-primary-3)'
-                      : 'var(--main-primary)',
-                border: '1px solid',
-                borderColor: state.isHovered
-                    ? 'var(--main-primary)'
-                    : state.isActive
-                      ? 'var(--main-primary-4)'
-                      : 'var(--main-primary-3)',
-                borderRadius: 4,
-                color: 'var(--neutral-grey-0)',
-                padding: '1px 8px',
-            }
-
-            const axiomPrimaryStyles = {
-                background: 'var(--surface-button-secondary)',
-                border: '1px solid',
-                borderColor: 'var(--border-neutral-tertiary)',
-                borderRadius: 'var(--spacing-xs)',
-                color: 'var(--content-neutral-default)',
-                padding: '1px 8px',
-            }
-
-            const primaryStyles = isAxiom
-                ? axiomPrimaryStyles
-                : legacyPrimaryStyles
-
-            const buttonColor = isAxiom
-                ? 'var(--content-neutral-default)'
-                : state.isHovered
-                  ? 'var(--main-primary-4)'
-                  : 'var(--main-primary)'
+            const buttonColor = 'var(--content-neutral-default)'
 
             return {
                 background: 'none',
@@ -129,7 +88,7 @@ export const createNotificationsTheme = (isAxiom: boolean): Theme => {
                 ...(isButtonPrimary && primaryStyles),
             }
         },
-        notificationButtonText: (__notification, __position, __state) => ({
+        notificationButtonText: () => ({
             fontSize: 12,
             fontWeight: 500,
             lineHeight: '20px',
@@ -141,14 +100,11 @@ export const createNotificationsTheme = (isAxiom: boolean): Theme => {
             margin: '0px 8px',
             height: 11,
             width: 11,
-            color: isAxiom
-                ? 'var(--content-neutral-secondary)'
-                : 'var(--neutral-grey-4)',
+            color: 'var(--content-neutral-secondary)',
         }),
     }
 }
 
-// Default legacy theme export for backward compatibility
-const theme: Theme = createNotificationsTheme(false)
+const theme: Theme = createNotificationsTheme()
 
 export default theme

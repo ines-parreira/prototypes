@@ -6,7 +6,6 @@ import type { Options } from 'daterangepicker'
 import moment from 'moment-timezone'
 
 import { THEME_NAME, useTheme } from 'core/theme'
-import { useAxiomMigration } from 'hooks/useAxiomMigration'
 import { DatePicker } from 'pages/common/forms/DatePicker'
 
 jest.mock('core/theme', () => ({
@@ -14,17 +13,10 @@ jest.mock('core/theme', () => ({
     useTheme: jest.fn(),
 }))
 
-jest.mock('hooks/useAxiomMigration', () => ({
-    useAxiomMigration: jest.fn(),
-}))
-
 describe('DatePicker', () => {
     let localStorageMock: { [key: string]: string }
     let matchMediaMock: jest.SpyInstance
     const useThemeMock = useTheme as jest.MockedFunction<typeof useTheme>
-    const useAxiomMigrationMock = useAxiomMigration as jest.MockedFunction<
-        typeof useAxiomMigration
-    >
 
     const datetime = moment('2021-05-12')
 
@@ -58,11 +50,6 @@ describe('DatePicker', () => {
             resolvedName: THEME_NAME.Classic,
             name: THEME_NAME.Classic,
         } as any)
-
-        useAxiomMigrationMock.mockReturnValue({
-            isEnabled: false,
-            onToggle: jest.fn(),
-        })
 
         localStorageMock = {
             theme: JSON.stringify(THEME_NAME.Classic),
@@ -379,13 +366,8 @@ describe('DatePicker', () => {
         expect(onClear).toHaveBeenCalled()
     })
 
-    describe('Axiom migration', () => {
-        it('should add axiom class to daterangepicker when axiom migration is enabled', async () => {
-            useAxiomMigrationMock.mockReturnValue({
-                isEnabled: true,
-                onToggle: jest.fn(),
-            })
-
+    describe('Axiom styles', () => {
+        it('should add axiom class to daterangepicker', async () => {
             render(
                 <DatePicker {...minProps} isOpen={true}>
                     <button>Select a date</button>
@@ -407,39 +389,7 @@ describe('DatePicker', () => {
             )
         })
 
-        it('should not add axiom class to daterangepicker when axiom migration is disabled', async () => {
-            useAxiomMigrationMock.mockReturnValue({
-                isEnabled: false,
-                onToggle: jest.fn(),
-            })
-
-            render(
-                <DatePicker {...minProps} isOpen={true}>
-                    <button>Select a date</button>
-                </DatePicker>,
-            )
-
-            await waitFor(() => {
-                const elements =
-                    document.getElementsByClassName('daterangepicker')
-                expect(elements.length).toBeGreaterThan(0)
-            })
-
-            const [dateRangePickerElement] = document.getElementsByClassName(
-                'daterangepicker',
-            ) as unknown as HTMLDivElement[]
-
-            expect(dateRangePickerElement.classList.contains('axiom')).toBe(
-                false,
-            )
-        })
-
-        it('should remove axiom class from daterangepicker when closed with axiom migration enabled', async () => {
-            useAxiomMigrationMock.mockReturnValue({
-                isEnabled: true,
-                onToggle: jest.fn(),
-            })
-
+        it('should remove axiom class from daterangepicker when closed', async () => {
             const onHideSpy = jest.fn()
             const { getByText } = render(
                 <DatePicker {...minProps} isOpen={true} onHide={onHideSpy}>

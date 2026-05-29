@@ -57,9 +57,6 @@ const { useHelpdeskV2BaselineFlag } = jest.requireMock('@repo/feature-flags')
 const useHelpdeskV2BaselineFlagMock = useHelpdeskV2BaselineFlag as jest.Mock
 
 jest.mock('../AvailabilityToggle', () => () => <div>AvailabilityToggle</div>)
-jest.mock('../AxiomMigrationToggle', () => ({
-    AxiomMigrationToggle: () => <div>AxiomMigrationToggle</div>,
-}))
 jest.mock('../HelpdeskV2BetaToggle', () => ({
     HelpdeskV2BetaToggle: () => <div>HelpdeskV2BetaToggle</div>,
 }))
@@ -146,7 +143,6 @@ describe('UserMenu', () => {
         })
 
         expect(screen.getByText('AvailabilityToggle')).toBeInTheDocument()
-        expect(screen.getByText('AxiomMigrationToggle')).toBeInTheDocument()
         expect(
             screen.queryByText(ignoreHTML('Status:None')),
         ).not.toBeInTheDocument()
@@ -168,16 +164,13 @@ describe('UserMenu', () => {
         )
     })
 
-    it('should not render the AxiomMigrationToggle when the baseline flag is enabled', () => {
+    it('should render the HelpdeskV2BetaToggle when the baseline flag is enabled', () => {
         useHelpdeskV2BaselineFlagMock.mockReturnValue({
             hasUIVisionBetaBaselineFlag: true,
             hasUIVisionBeta: true,
             onToggle: jest.fn(),
         })
         render(<UserMenu onClose={onClose} />, { wrapper })
-        expect(
-            screen.queryByText('AxiomMigrationToggle'),
-        ).not.toBeInTheDocument()
         expect(screen.getByText('HelpdeskV2BetaToggle')).toBeInTheDocument()
     })
 

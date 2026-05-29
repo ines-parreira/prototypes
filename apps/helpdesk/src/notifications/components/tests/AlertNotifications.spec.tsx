@@ -4,7 +4,6 @@ import { render } from '@repo/testing'
 import NotificationsSystem, { dismissNotification } from 'reapop'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import { useAxiomMigration } from 'hooks/useAxiomMigration'
 import { NotificationIcon } from 'pages/common/components/NotificationIcon'
 import { createNotificationsTheme } from 'pages/common/components/Notifications'
 
@@ -24,15 +23,11 @@ jest.mock('pages/common/components/Notifications', () => ({
     createNotificationsTheme: jest.fn(),
 }))
 jest.mock('../../hooks/useAlertNotifications', () => jest.fn())
-jest.mock('hooks/useAxiomMigration', () => ({
-    useAxiomMigration: jest.fn(),
-}))
 
 const dismissNotificationMock = dismissNotification as jest.Mock
 const NotificationsSystemMock = NotificationsSystem as jest.Mock
 const useAlertNotificationsMock = useAlertNotifications as jest.Mock
 const useAppDispatchMock = useAppDispatch as jest.Mock
-const useAxiomMigrationMock = useAxiomMigration as jest.Mock
 const createNotificationsThemeMock = createNotificationsTheme as jest.Mock
 
 describe('AlertNotifications', () => {
@@ -49,9 +44,6 @@ describe('AlertNotifications', () => {
 
         dispatch = jest.fn()
         useAppDispatchMock.mockReturnValue(dispatch)
-        useAxiomMigrationMock.mockReturnValue({
-            isEnabled: false,
-        })
         createNotificationsThemeMock.mockReturnValue({})
     })
 

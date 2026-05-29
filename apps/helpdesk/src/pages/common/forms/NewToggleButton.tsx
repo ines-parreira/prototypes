@@ -3,8 +3,6 @@ import { forwardRef, useCallback, useMemo } from 'react'
 
 import cn from 'classnames'
 
-import { useAxiomMigration } from 'hooks/useAxiomMigration'
-
 import css from './NewToggleButton.less'
 
 type Props = {
@@ -33,8 +31,6 @@ const InnerNewToggleButton = (
     }: Props,
     ref: ForwardedRef<HTMLDivElement>,
 ) => {
-    const { isEnabled } = useAxiomMigration()
-
     const handleClick = useCallback(
         (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
             if (stopPropagation) {
@@ -50,12 +46,9 @@ const InnerNewToggleButton = (
         () =>
             ({
                 '--new-toggle-button-color':
-                    color ??
-                    (isEnabled
-                        ? 'var(--surface-accent-primary)'
-                        : 'var(--main-primary)'),
+                    color ?? 'var(--surface-accent-primary)',
             }) as React.CSSProperties,
-        [color, isEnabled],
+        [color],
     )
 
     const memoClassName = useMemo(

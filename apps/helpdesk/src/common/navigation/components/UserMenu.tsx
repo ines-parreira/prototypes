@@ -29,7 +29,6 @@ import Screens from 'pages/common/components/screens/Screens'
 import { getCurrentUser, getCurrentUserId } from 'state/currentUser/selectors'
 
 import AvailabilityToggle from './AvailabilityToggle'
-import { AxiomMigrationToggle } from './AxiomMigrationToggle'
 import NavbarLink from './NavbarLink'
 import StatusMenu from './StatusMenu'
 import ThemeMenu from './ThemeMenu'
@@ -137,12 +136,6 @@ export default function UserMenu({ onClose }: Props) {
                                 <span className={css.value}>{statusText}</span>
                             </DropdownItemLabel>
                         </button>
-                    </>
-                )}
-                {!hasUIVisionBetaBaselineFlag && (
-                    <>
-                        <hr className={css.separator} />
-                        <AxiomMigrationToggle />
                     </>
                 )}
                 {hasUIVisionBetaBaselineFlag && (

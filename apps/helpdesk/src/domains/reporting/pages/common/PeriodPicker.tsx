@@ -18,7 +18,6 @@ import {
     periodPickerMaxSpanDays,
 } from 'domains/reporting/pages/common/utils'
 import { getDefaultSetOfRanges } from 'domains/reporting/pages/constants'
-import { useAxiomMigration } from 'hooks/useAxiomMigration'
 import { getTimezone } from 'state/currentUser/selectors'
 import type { RootState } from 'state/types'
 import type {
@@ -91,7 +90,6 @@ export const PeriodPickerContainer = ({
     const [isTooltipOpen, setIsTooltipOpen] = useState(false)
     const [tooltipTarget, setTooltipTarget] = useState<HTMLElement | null>(null)
     const theme = useTheme()
-    const { isEnabled: isAxiomMigrationEnabled } = useAxiomMigration()
 
     useEffect(() => {
         return endHandlingTooltipHover
@@ -268,9 +266,7 @@ export const PeriodPickerContainer = ({
                                 theme.resolvedName,
                                 'displayed',
                             ]
-                            if (isAxiomMigrationEnabled) {
-                                classesToAdd.unshift('axiom')
-                            }
+                            classesToAdd.unshift('axiom')
                             dateRangerPickerElement.current.classList.add(
                                 ...classesToAdd,
                             )
@@ -338,9 +334,7 @@ export const PeriodPickerContainer = ({
                                 theme.resolvedName,
                                 'displayed',
                             ]
-                            if (isAxiomMigrationEnabled) {
-                                classesToRemove.unshift('axiom')
-                            }
+                            classesToRemove.unshift('axiom')
                             dateRangerPickerElement.current?.classList.remove(
                                 ...classesToRemove,
                             )

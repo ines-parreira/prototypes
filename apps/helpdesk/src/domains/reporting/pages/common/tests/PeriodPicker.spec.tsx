@@ -4,10 +4,7 @@ import moment from 'moment-timezone'
 import { useTheme } from 'core/theme'
 import type { Props } from 'domains/reporting/pages/common/PeriodPicker'
 import { PeriodPickerContainer } from 'domains/reporting/pages/common/PeriodPicker'
-import { useAxiomMigration } from 'hooks/useAxiomMigration'
 import type { Props as MockDateRangePickerProps } from 'utils/wrappers/DateRangePicker'
-
-jest.mock('hooks/useAxiomMigration')
 
 const periodPickerClassListMockSpy = jest.fn()
 const periodPickerRangesClassListMockSpy = jest.fn()
@@ -81,11 +78,6 @@ describe('PeriodPicker', () => {
         }
 
         global.MutationObserver = MockMutationObserver as any
-
-        jest.mocked(useAxiomMigration).mockReturnValue({
-            isEnabled: false,
-            onToggle: jest.fn(),
-        })
     })
 
     const PickerWithDefaultProps = (additionalProps?: Partial<Props>) => {
@@ -176,6 +168,7 @@ describe('PeriodPicker', () => {
         getByTestId(mockDateRangePickerTestId).click()
 
         expect(periodPickerClassListMockSpy).toHaveBeenCalledWith(
+            'axiom',
             mockTheme.resolvedName,
             'displayed',
         )
@@ -315,12 +308,7 @@ describe('PeriodPicker', () => {
         )
     })
 
-    it('should add axiom class when axiom migration is enabled', () => {
-        jest.mocked(useAxiomMigration).mockReturnValue({
-            isEnabled: true,
-            onToggle: jest.fn(),
-        })
-
+    it('should add axiom class', () => {
         const { getByTestId } = render(<PickerWithDefaultProps />)
 
         getByTestId(mockDateRangePickerTestId).click()
@@ -331,28 +319,5 @@ describe('PeriodPicker', () => {
             mockTheme.resolvedName,
             'displayed',
         )
-    })
-
-    it('should not add axiom class when axiom migration is disabled', () => {
-        jest.mocked(useAxiomMigration).mockReturnValue({
-            isEnabled: false,
-            onToggle: jest.fn(),
-        })
-
-        const { getByTestId } = render(<PickerWithDefaultProps />)
-
-        getByTestId(mockDateRangePickerTestId).click()
-
-        expect(periodPickerClassListMockSpy).toHaveBeenNthCalledWith(
-            1,
-            mockTheme.resolvedName,
-            'displayed',
-        )
-
-        expect(
-            periodPickerClassListMockSpy.mock.calls.some((call: string[]) =>
-                call.includes('axiom'),
-            ),
-        ).toBe(false)
     })
 })

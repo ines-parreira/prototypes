@@ -2,15 +2,7 @@ import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
-import { useAxiomMigration } from 'hooks/useAxiomMigration'
-
 import ChatAvailabilitySelection from './ChatAvailabilitySelection'
-
-jest.mock('hooks/useAxiomMigration', () => ({
-    useAxiomMigration: jest.fn(),
-}))
-
-const useAxiomMigrationMock = useAxiomMigration as jest.Mock
 
 describe('ChatAvailabilitySelection', () => {
     const defaultProps = {
@@ -20,7 +12,6 @@ describe('ChatAvailabilitySelection', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        useAxiomMigrationMock.mockReturnValue({ isEnabled: false })
     })
 
     it('should render label and both radio buttons', () => {

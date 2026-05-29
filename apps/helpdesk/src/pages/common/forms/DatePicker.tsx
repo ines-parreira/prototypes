@@ -7,7 +7,6 @@ import moment from 'moment-timezone'
 import { Tooltip } from 'reactstrap'
 
 import { useTheme } from 'core/theme'
-import { useAxiomMigration } from 'hooks/useAxiomMigration'
 import type {
     BaseDateRangePicker,
     Props as DateRangeProps,
@@ -85,7 +84,6 @@ export const DatePicker = ({
     }, [startDate, userTimezone])
 
     const theme = useTheme()
-    const { isEnabled: isAxiomMigrationEnabled } = useAxiomMigration()
 
     useEffect(() => {
         isOpenRef.current = isOpen
@@ -223,9 +221,7 @@ export const DatePicker = ({
                 onShow={(event, target) => {
                     dateRangerPickerElement.current = target.container?.get(0)
                     const classesToAdd = [theme.resolvedName, 'displayed']
-                    if (isAxiomMigrationEnabled) {
-                        classesToAdd.push('axiom')
-                    }
+                    classesToAdd.push('axiom')
                     dateRangerPickerElement.current.classList.add(
                         ...classesToAdd,
                     )
@@ -298,9 +294,8 @@ export const DatePicker = ({
                 onHide={() => {
                     endHandlingTooltipHover()
                     const classesToRemove = [theme.resolvedName, 'displayed']
-                    if (isAxiomMigrationEnabled) {
-                        classesToRemove.push('axiom')
-                    }
+                    classesToRemove.push('axiom')
+
                     dateRangerPickerElement.current?.classList.remove(
                         ...classesToRemove,
                     )

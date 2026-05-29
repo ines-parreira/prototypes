@@ -3,7 +3,6 @@ import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { THEME_NAME, useTheme } from 'core/theme'
-import { useAxiomMigration } from 'hooks/useAxiomMigration'
 import { useRedirectDeprecatedTicketRoutes } from 'tickets/core/hooks'
 
 import { useSetBanners } from '../../hooks/useSetBanners'
@@ -74,12 +73,6 @@ jest.mock('AlertBanners', () => jest.fn(() => <div>AlertBanners</div>))
 jest.mock('../../../../AlertBanners/components/ImpersonationBanner', () =>
     jest.fn(() => <div>ImpersonatedBanner</div>),
 )
-jest.mock('hooks/useAxiomMigration', () => ({
-    useAxiomMigration: jest.fn().mockReturnValue({
-        isEnabled: true,
-        onToggle: jest.fn(),
-    }),
-}))
 jest.mock('core/theme', () => ({
     ...jest.requireActual('core/theme'),
     useApplyTheme: jest.fn(),
@@ -99,10 +92,6 @@ jest.mock('../../hooks/useViewCountScheduler', () => jest.fn(() => undefined))
 jest.mock('../../hooks/useSharedLogic', () => jest.fn(() => undefined))
 jest.mock('../../hooks/useActivityTracker', () => jest.fn(() => undefined))
 jest.mock('../../hooks/useApplyWayfindingMs1', () => jest.fn(() => undefined))
-
-const mockUseAxiomMigration = useAxiomMigration as jest.MockedFunction<
-    typeof useAxiomMigration
->
 
 describe('App component', () => {
     beforeEach(() => {
@@ -207,27 +196,11 @@ describe('App component', () => {
         expect(useRedirectDeprecatedTicketRoutes).toHaveBeenCalledWith()
     })
 
-    describe('Axiom migration', () => {
-        it('should not include the axiom class if the toggle is disabled', () => {
-            mockUseAxiomMigration.mockReturnValue({
-                isEnabled: false,
-                onToggle: jest.fn(),
-            })
-
+    describe('Axiom styles', () => {
+        it('should include the axiom class', () => {
             const { container } = render(<App>boop</App>)
             const child = container.firstChild as HTMLElement
-            expect(child.classList.contains('axiom')).toBe(false)
-            expect(child.classList.contains('legacy')).toBe(true)
-        })
 
-        it('should include the axiom class if the toggle is enabled', () => {
-            mockUseAxiomMigration.mockReturnValue({
-                isEnabled: true,
-                onToggle: jest.fn(),
-            })
-
-            const { container } = render(<App>boop</App>)
-            const child = container.firstChild as HTMLElement
             expect(child.classList.contains('axiom')).toBe(true)
             expect(child.classList.contains('legacy')).toBe(false)
         })
