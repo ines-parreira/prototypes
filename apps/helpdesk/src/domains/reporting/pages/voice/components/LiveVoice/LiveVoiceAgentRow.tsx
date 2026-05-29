@@ -1,5 +1,6 @@
 import { useState } from 'react'
 
+import { useCustomAgentUnavailableStatusesFlag } from '@repo/agent-status'
 import { useInterval } from '@repo/hooks'
 import classNames from 'classnames'
 
@@ -22,6 +23,8 @@ type Props = {
 
 export default function LiveVoiceAgentRow({ agent }: Props) {
     const cardProps = getCardProps(agent)
+    const isCustomUnavailabilityEnabled =
+        useCustomAgentUnavailableStatusesFlag()
     const forwardIconId = `tooltip-forward-${agent.id}`
     const shouldDisplayForwardIcon =
         !!agent.forward_calls && !!agent.forward_when_offline
@@ -46,6 +49,8 @@ export default function LiveVoiceAgentRow({ agent }: Props) {
                         ? timer
                         : cardProps.description
                 }
+                userId={agent.id}
+                useLegacyAvatar={!isCustomUnavailabilityEnabled}
             />
             {shouldDisplayForwardIcon && (
                 <BodyCell>

@@ -4,6 +4,7 @@ import moment from 'moment'
 import type {
     LiveCallQueueAgent,
     LiveCallQueueVoiceCall,
+    User,
 } from '@gorgias/helpdesk-queries'
 import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-types'
 
@@ -672,7 +673,7 @@ describe('utils', () => {
                 voice_queue_ids: [1],
             }
 
-            const result = isAgentAvailableComputed(agent)
+            const result = isAgentAvailableComputed(agent, false, new Set())
 
             expect(result).toBe(true)
         })
@@ -690,7 +691,7 @@ describe('utils', () => {
                 voice_queue_ids: [1],
             }
 
-            const result = isAgentAvailableComputed(agent)
+            const result = isAgentAvailableComputed(agent, false, new Set())
 
             expect(result).toBe(false)
         })
@@ -708,7 +709,7 @@ describe('utils', () => {
                 voice_queue_ids: [1],
             }
 
-            const result = isAgentAvailableComputed(agent)
+            const result = isAgentAvailableComputed(agent, false, new Set())
 
             expect(result).toBe(true)
         })
@@ -732,7 +733,7 @@ describe('utils', () => {
                 voice_queue_ids: [1],
             }
 
-            const result = isAgentAvailableComputed(agent)
+            const result = isAgentAvailableComputed(agent, false, new Set())
 
             expect(result).toBe(false)
         })
@@ -750,9 +751,103 @@ describe('utils', () => {
                 voice_queue_ids: [],
             }
 
-            const result = isAgentAvailableComputed(agent)
+            const result = isAgentAvailableComputed(agent, false, new Set())
 
             expect(result).toBe(false)
+        })
+
+        describe('when isCustomUnavailabilityEnabled is true', () => {
+            const baseAgent: LiveCallQueueAgent = {
+                id: 1,
+                name: 'Agent 1',
+                is_available_for_call: false,
+                online: true,
+                available: false,
+                forward_calls: false,
+                forward_when_offline: false,
+                call_statuses: [],
+                voice_queue_ids: [1],
+            }
+
+            it('uses the availability set instead of the available flag', () => {
+                const result = isAgentAvailableComputed(
+                    baseAgent,
+                    true,
+                    new Set([1]),
+                )
+
+                expect(result).toBe(true)
+            })
+
+            it('returns false when the agent is missing from the availability set even if available is true', () => {
+                const result = isAgentAvailableComputed(
+                    { ...baseAgent, available: true },
+                    true,
+                    new Set(),
+                )
+
+                expect(result).toBe(false)
+            })
+
+            it('returns false for an offline agent in the set without forwarding', () => {
+                const result = isAgentAvailableComputed(
+                    { ...baseAgent, online: false },
+                    true,
+                    new Set([1]),
+                )
+
+                expect(result).toBe(false)
+            })
+
+            it('returns true for an offline agent in the set with forwarding', () => {
+                const result = isAgentAvailableComputed(
+                    {
+                        ...baseAgent,
+                        online: false,
+                        forward_calls: true,
+                        forward_when_offline: true,
+                    },
+                    true,
+                    new Set([1]),
+                )
+
+                expect(result).toBe(true)
+            })
+
+            it('returns false for a busy agent in the set', () => {
+                const result = isAgentAvailableComputed(
+                    {
+                        ...baseAgent,
+                        call_statuses: [
+                            { created_datetime: '', status: 'in-progress' },
+                        ],
+                    },
+                    true,
+                    new Set([1]),
+                )
+
+                expect(result).toBe(false)
+            })
+
+            it('returns false for an agent in the set with no target queues', () => {
+                const result = isAgentAvailableComputed(
+                    { ...baseAgent, voice_queue_ids: [] },
+                    true,
+                    new Set([1]),
+                )
+
+                expect(result).toBe(false)
+            })
+
+            it('falls back to the available flag when the agent has no id', () => {
+                const result = isAgentAvailableComputed(
+                    { ...baseAgent, id: undefined, available: true },
+                    true,
+                    new Set(),
+                )
+
+                expect(result).toBe(true)
+            })
         })
     })
 
@@ -773,6 +868,8 @@ describe('utils', () => {
             const updatedAgents = recomputeAgentsWithOnlineStatusChange(
                 [agent],
                 {},
+                false,
+                new Set(),
             )
 
             const updatedAgent = updatedAgents[0]
@@ -796,10 +893,37 @@ describe('utils', () => {
             const updatedAgents = recomputeAgentsWithOnlineStatusChange(
                 [agent],
                 {},
+                false,
+                new Set(),
             )
 
             const updatedAgent = updatedAgents[0]
             expect(updatedAgent.online).toBe(false)
+            expect(updatedAgent.is_available_for_call).toBe(true)
+        })
+
+        it('uses the availability set to compute is_available_for_call when the flag is on', () => {
+            const agent: LiveCallQueueAgent = {
+                id: 1,
+                name: 'Agent 1',
+                is_available_for_call: false,
+                online: true,
+                available: false,
+                forward_calls: false,
+                forward_when_offline: false,
+                call_statuses: [],
+                voice_queue_ids: [1],
+            }
+
+            const updatedAgents = recomputeAgentsWithOnlineStatusChange(
+                [agent],
+                { 1: {} as User },
+                true,
+                new Set([1]),
+            )
+
+            const updatedAgent = updatedAgents[0]
+            expect(updatedAgent.online).toBe(true)
             expect(updatedAgent.is_available_for_call).toBe(true)
         })
     })

@@ -52,27 +52,42 @@ export const isAgentAvailable = (agent: LiveCallQueueAgent): boolean => {
 
 export const isAgentAvailableComputed = (
     agent: LiveCallQueueAgent,
+    isCustomUnavailabilityEnabled: boolean,
+    availableUserIds: Set<number>,
 ): boolean => {
+    const resolvedAgentAvailable =
+        isCustomUnavailabilityEnabled && agent.id
+            ? availableUserIds.has(agent.id)
+            : agent.available
+
+    const shouldForwardCalls =
+        !!agent.forward_calls && !!agent.forward_when_offline
+
     const available =
-        !!agent.available &&
-        (!!agent.online ||
-            (!!agent.forward_calls && !!agent.forward_when_offline))
+        !!resolvedAgentAvailable && (!!agent.online || shouldForwardCalls)
+
     return available && !isAgentBusy(agent) && !!agent.voice_queue_ids?.length
 }
 
 export const recomputeAgentsWithOnlineStatusChange = (
     agents: LiveCallQueueAgent[],
     onlineAgents: Record<number, User>,
+    isCustomUnavailabilityEnabled: boolean,
+    availableUserIds: Set<number>,
 ): LiveCallQueueAgent[] => {
     return agents.map((agent) => {
         const online = agent.id ? !!onlineAgents[agent.id] : !!agent.online
         return {
             ...agent,
             online,
-            is_available_for_call: isAgentAvailableComputed({
-                ...agent,
-                online,
-            }),
+            is_available_for_call: isAgentAvailableComputed(
+                {
+                    ...agent,
+                    online,
+                },
+                isCustomUnavailabilityEnabled,
+                availableUserIds,
+            ),
         }
     })
 }

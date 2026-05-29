@@ -3,6 +3,8 @@ import { useMemo } from 'react'
 import type { LiveCallQueueAgent } from '@gorgias/helpdesk-queries'
 import { useAgentsOnlineStatus } from '@gorgias/realtime'
 
+import { useCustomAgentUnavailableStatusesFlag } from '@repo/agent-status'
+import { useAllAvailableUserIds } from '@repo/users'
 import LiveVoiceAgentRow from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentRow'
 import css from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentsList.less'
 import {
@@ -22,12 +24,19 @@ type Props = {
 
 export default function LiveVoiceAgentsList({ agents }: Props) {
     const { onlineAgents } = useAgentsOnlineStatus()
+    const availableUserIds = useAllAvailableUserIds()
+
+    const isCustomUnavailabilityEnabled =
+        useCustomAgentUnavailableStatusesFlag()
 
     const data: WithChildren<Data>[] = useMemo(() => {
         const agentsWithOnlineStatus = recomputeAgentsWithOnlineStatusChange(
             agents,
             onlineAgents,
+            isCustomUnavailabilityEnabled,
+            availableUserIds,
         )
+
         const categories = groupAgentsByStatus(agentsWithOnlineStatus)
 
         return [
@@ -52,7 +61,7 @@ export default function LiveVoiceAgentsList({ agents }: Props) {
 
             return categoryRowData
         })
-    }, [agents, onlineAgents])
+    }, [agents, onlineAgents, availableUserIds, isCustomUnavailabilityEnabled])
 
     return (
         <TableWrapper>

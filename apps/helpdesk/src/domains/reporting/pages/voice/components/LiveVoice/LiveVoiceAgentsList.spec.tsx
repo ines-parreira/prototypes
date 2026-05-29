@@ -4,6 +4,8 @@ import { screen } from '@testing-library/react'
 import type { LiveCallQueueAgent } from '@gorgias/helpdesk-queries'
 import { useAgentsOnlineStatus } from '@gorgias/realtime'
 
+import { useCustomAgentUnavailableStatusesFlag } from '@repo/agent-status'
+import { useAllAvailableUserIds } from '@repo/users'
 import LiveVoiceAgentsList from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentsList'
 import {
     AgentStatusCategory,
@@ -11,6 +13,14 @@ import {
 } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
 
 jest.mock('@gorgias/realtime')
+jest.mock('@repo/agent-status', () => ({
+    ...jest.requireActual('@repo/agent-status'),
+    useCustomAgentUnavailableStatusesFlag: jest.fn(),
+}))
+jest.mock('@repo/users', () => ({
+    ...jest.requireActual('@repo/users'),
+    useAllAvailableUserIds: jest.fn(),
+}))
 jest.mock('domains/reporting/pages/voice/components/LiveVoice/utils', () => ({
     ...jest.requireActual(
         'domains/reporting/pages/voice/components/LiveVoice/utils',
@@ -23,12 +33,18 @@ jest.mock(
 )
 const useAgentsOnlineStatusMock = assumeMock(useAgentsOnlineStatus)
 const groupAgentsByStatusMock = assumeMock(groupAgentsByStatus)
+const useCustomAgentUnavailableStatusesFlagMock = assumeMock(
+    useCustomAgentUnavailableStatusesFlag,
+)
+const useAllAvailableUserIdsMock = assumeMock(useAllAvailableUserIds)
 
 describe('LiveVoiceAgentsList', () => {
     beforeEach(() => {
         useAgentsOnlineStatusMock.mockReturnValue({
             onlineAgents: {},
         })
+        useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(false)
+        useAllAvailableUserIdsMock.mockReturnValue(new Set())
     })
 
     const renderComponent = (agents?: LiveCallQueueAgent[]) =>

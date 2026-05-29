@@ -4,6 +4,7 @@ import { act, waitFor } from '@testing-library/react'
 
 import type { LiveCallQueueAgent } from '@gorgias/helpdesk-queries'
 
+import { useCustomAgentUnavailableStatusesFlag } from '@repo/agent-status'
 import LiveVoiceAgentRow from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentRow'
 import {
     isAgentAvailable,
@@ -16,6 +17,10 @@ import AgentCard from 'pages/common/components/AgentCard/AgentCard'
 jest.mock('@repo/hooks', () => ({
     ...jest.requireActual('@repo/hooks'),
     useInterval: jest.fn(),
+}))
+jest.mock('@repo/agent-status', () => ({
+    ...jest.requireActual('@repo/agent-status'),
+    useCustomAgentUnavailableStatusesFlag: jest.fn(),
 }))
 jest.mock('pages/common/components/AgentCard/AgentCard')
 jest.mock('domains/reporting/pages/voice/components/LiveVoice/utils.ts')
@@ -34,6 +39,9 @@ const getFormattedDurationOngoingCallMock = assumeMock(
 )
 const isAgentAvailableMock = assumeMock(isAgentAvailable)
 const mapBusyAgentStatusMock = assumeMock(mapBusyAgentStatus)
+const useCustomAgentUnavailableStatusesFlagMock = assumeMock(
+    useCustomAgentUnavailableStatusesFlag,
+)
 const successColor = 'var(--feedback-success)'
 const errorColor = 'var(--feedback-error)'
 const warningColor = 'var(--feedback-warning)'
@@ -49,6 +57,7 @@ describe('LiveVoiceAgentRow', () => {
             description: '2021-08-01T09:58:00Z',
             isDescriptionTimestamp: true,
         })
+        useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(false)
     })
 
     describe('busy agent', () => {
@@ -216,6 +225,38 @@ describe('LiveVoiceAgentRow', () => {
             expect(AgentCardMock).toHaveBeenLastCalledWith(
                 expect.objectContaining({
                     badgeColor: infoColor,
+                }),
+                {},
+            )
+        })
+    })
+
+    describe('when isCustomUnavailabilityEnabled flag is on', () => {
+        beforeEach(() => {
+            useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(true)
+        })
+
+        it('passes the agent id and opts out of the legacy avatar', () => {
+            renderComponent(defaultAgent)
+
+            expect(AgentCardMock).toHaveBeenLastCalledWith(
+                expect.objectContaining({
+                    userId: defaultAgent.id,
+                    useLegacyAvatar: false,
+                }),
+                {},
+            )
+        })
+    })
+
+    describe('when isCustomUnavailabilityEnabled flag is off', () => {
+        it('keeps the legacy avatar on AgentCard', () => {
+            renderComponent(defaultAgent)
+
+            expect(AgentCardMock).toHaveBeenLastCalledWith(
+                expect.objectContaining({
+                    userId: defaultAgent.id,
+                    useLegacyAvatar: true,
                 }),
                 {},
             )
