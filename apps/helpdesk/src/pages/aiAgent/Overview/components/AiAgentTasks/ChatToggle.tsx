@@ -108,6 +108,25 @@ export const ChatToggle = ({
         return warnings.visible
     }, [renderChatWarning])
 
+    const renderTrialOptInHint = useCallback(() => {
+        const visible = isReadOnly && !isChatChannelDisabled
+        const message = 'Start your trial to deploy AI Agent on chat'
+
+        const action = visible ? (
+            <div className={css.customToggleWarning}>
+                <Text
+                    size="sm"
+                    variant="regular"
+                    color="content-neutral-secondary"
+                >
+                    {message}
+                </Text>
+            </div>
+        ) : null
+
+        return { visible, hint: '', action }
+    }, [isReadOnly, isChatChannelDisabled])
+
     const handleChatToggle = () => {
         if (!storeConfiguration) return
 
@@ -131,7 +150,7 @@ export const ChatToggle = ({
                 checked={isChatChannelEnabled}
                 disabled={isChatChannelDisabled || isLoading || isReadOnly}
                 onChange={handleChatToggle}
-                warnings={[renderChatWarning()]}
+                warnings={[renderChatWarning(), renderTrialOptInHint()]}
                 tooltip={{
                     visible: false,
                     content: '',

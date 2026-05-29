@@ -32,6 +32,7 @@ const SHOP_NAME = 'my-shop'
 const baseTrialAccess = {
     canSeeTrialCTA: false,
     canSeeSubscribeNowCTA: false,
+    hasAiAgentStoreTrialStarted: false,
     isInAiAgentTrial: false,
 }
 
@@ -96,6 +97,20 @@ describe('useNeedsAiAgentTrialOptIn', () => {
             ...baseTrialAccess,
             canSeeTrialCTA: true,
             isInAiAgentTrial: true,
+        })
+
+        const { result } = renderHook(() =>
+            useNeedsAiAgentTrialOptIn(SHOP_NAME),
+        )
+
+        expect(result.current.needsOptIn).toBe(false)
+    })
+
+    it('does not need opt-in when an AI Agent store trial has already started', () => {
+        mockUseTrialAccess.mockReturnValue({
+            ...baseTrialAccess,
+            canSeeTrialCTA: true,
+            hasAiAgentStoreTrialStarted: true,
         })
 
         const { result } = renderHook(() =>

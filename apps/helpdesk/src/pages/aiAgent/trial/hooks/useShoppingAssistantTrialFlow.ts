@@ -281,7 +281,9 @@ export const useShoppingAssistantTrialFlow = ({
             onSuccess: async () => {
                 trialModal.closeModal(trialUpgradeModalName)
                 onUpgradeModalClose?.()
-                if (!isPostSetupSource) {
+                if (isPostSetupSource) {
+                    toast.success('Trial started')
+                } else {
                     openTrialFinishSetupModal()
                 }
             },

@@ -73,6 +73,30 @@ describe('EmailToggle', () => {
         expect(toggleButton).not.toBeDisabled()
         expect(screen.queryByAltText('warning')).not.toBeInTheDocument()
     })
+    it('shows trial-opt-in hint when isReadOnly and integration is connected', () => {
+        const storeConfig = {
+            ...defaultStoreConfig,
+            monitoredEmailIntegrations: [{ id: 1 }],
+        } as unknown as StoreConfiguration
+        render(
+            <EmailToggle
+                {...defaultProps}
+                storeConfiguration={storeConfig}
+                isReadOnly
+            />,
+            {},
+        )
+        expect(
+            screen.getByText('Start your trial to deploy AI Agent on email'),
+        ).toBeInTheDocument()
+    })
+    it('prefers connect-email warning over trial-opt-in hint when integration is missing', () => {
+        render(<EmailToggle {...defaultProps} isReadOnly />, {})
+        expect(screen.getByText(/email address/)).toBeInTheDocument()
+        expect(
+            screen.queryByText('Start your trial to deploy AI Agent on email'),
+        ).not.toBeInTheDocument()
+    })
     it('does not call onEmailToggle when storeConfiguration is undefined', async () => {
         const setIsEmailChannelEnabled = jest.fn()
         const onEmailToggle = jest.fn()

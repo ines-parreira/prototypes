@@ -51,7 +51,7 @@ export const TrialOptInBanner = ({
         <>
             <Banner
                 intent="ai"
-                icon="ai-sparkles"
+                icon="ai-agent-feedback"
                 title="AI Agent is ready"
                 description={
                     BANNER_DESCRIPTION_BY_TRIAL_TYPE[trialAccess.trialType]
@@ -62,6 +62,7 @@ export const TrialOptInBanner = ({
                     variant="secondary"
                     size="sm"
                     onClick={openTrialUpgradeModal}
+                    intent="ai"
                 >
                     Start trial
                 </Button>

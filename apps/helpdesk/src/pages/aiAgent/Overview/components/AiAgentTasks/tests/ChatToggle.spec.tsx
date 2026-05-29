@@ -88,6 +88,25 @@ describe('ChatToggle', () => {
         render(<ChatToggle {...defaultProps} />, {})
         expect(screen.getByText('Connect a chat')).toBeInTheDocument()
     })
+    it('shows trial-opt-in hint when isReadOnly and integration is connected', () => {
+        decideChatWarningMock.mockReturnValue({ visible: false })
+        render(<ChatToggle {...defaultProps} isReadOnly />, {})
+        expect(
+            screen.getByText('Start your trial to deploy AI Agent on chat'),
+        ).toBeInTheDocument()
+    })
+    it('prefers connect-chat warning over trial-opt-in hint when integration is missing', () => {
+        decideChatWarningMock.mockReturnValue({
+            visible: true,
+            label: 'Connect a chat',
+            to: '/mock/deploy-chat-route',
+        })
+        render(<ChatToggle {...defaultProps} isReadOnly />, {})
+        expect(screen.getByText('Connect a chat')).toBeInTheDocument()
+        expect(
+            screen.queryByText('Start your trial to deploy AI Agent on chat'),
+        ).not.toBeInTheDocument()
+    })
     it('does not call onChatToggle when storeConfiguration is undefined', async () => {
         const setIsChatChannelEnabled = jest.fn()
         const onChatToggle = jest.fn()

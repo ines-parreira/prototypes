@@ -7,6 +7,7 @@ export const createMockTrialAccess = (overrides = {}) => ({
     canSeeTrialCTA: false,
     canSeeSubscribeNowCTA: false,
     hasCurrentStoreTrialStarted: false,
+    hasAiAgentStoreTrialStarted: false,
     hasAnyTrialStarted: false,
     hasCurrentStoreTrialOptedOut: false,
     hasAnyTrialOptedOut: false,

@@ -60,6 +60,7 @@ const createRestrictedTrialAccess = (
     canSeeTrialCTA: false,
     canSeeSubscribeNowCTA: false,
     hasCurrentStoreTrialStarted: false,
+    hasAiAgentStoreTrialStarted: false,
     hasAnyTrialStarted: false,
     hasCurrentStoreTrialExpired: false,
     hasAnyTrialExpired: false,
@@ -91,6 +92,12 @@ export type TrialAccess = {
     canSeeSubscribeNowCTA: boolean
 
     hasCurrentStoreTrialStarted: boolean
+    /**
+     * True when an AI Agent trial exists for the current store, regardless of
+     * `trialType`. Use this to recognize a started AI Agent trial for Gen5+
+     * Automate users whose `trialType` resolves to `ShoppingAssistant`.
+     */
+    hasAiAgentStoreTrialStarted: boolean
     hasAnyTrialStarted: boolean
     hasCurrentStoreTrialOptedOut: boolean
     hasAnyTrialOptedOut: boolean
@@ -218,6 +225,8 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
     const hasCurrentStoreTrialStarted = currentStoreTrial
         ? hasTrialStarted(currentStoreTrial)
         : false
+    const hasAiAgentStoreTrialStarted =
+        aiAgentStoreTrials?.some((trial) => hasTrialStarted(trial)) || false
     const hasAnyTrialStarted =
         currentTrials?.some((trial) => hasTrialStarted(trial)) || false
 
@@ -308,6 +317,7 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
         canSeeSubscribeNowCTA,
 
         hasCurrentStoreTrialStarted,
+        hasAiAgentStoreTrialStarted,
         hasAnyTrialStarted,
         hasCurrentStoreTrialExpired,
         hasAnyTrialExpired,
