@@ -347,68 +347,12 @@ describe('MetricsConfigurator', () => {
             chartId: AUTOMATION_RATE_CARD,
             gridSize: 3,
             visibility: true,
-            requiresFeatureFlag: false,
         })
         expect(result.items[2]).toEqual({
             chartId: TIME_SAVED_CARD,
             gridSize: 3,
             visibility: false,
-            requiresFeatureFlag: false,
         })
-    })
-
-    it('should preserve requiresFeatureFlag from existing section items', () => {
-        const mockUpdateSection = vi.fn()
-        mockedUseUpdateManagedDashboard.mockReturnValue(
-            mockHookReturn(mockUpdateSection),
-        )
-
-        const layoutWithFeatureFlag = {
-            sections: [
-                {
-                    id: 'section_kpis',
-                    type: ChartType.Card,
-                    items: [
-                        {
-                            chartId: AUTOMATION_RATE_CARD,
-                            gridSize: 3 as const,
-                            visibility: true,
-                            requiresFeatureFlag: true,
-                        },
-                        {
-                            chartId: AUTOMATED_INTERACTIONS_CARD,
-                            gridSize: 3 as const,
-                            visibility: true,
-                        },
-                    ],
-                },
-            ],
-        }
-
-        render(
-            <MetricsConfigurator
-                metrics={mockMetrics.slice(0, 2)}
-                dashboardId="ai-agent-overview"
-                currentLayoutConfig={layoutWithFeatureFlag}
-                tabId={TAB_OVERVIEW}
-                tabName="Main"
-            />,
-        )
-
-        const onSave =
-            mockedConfigureMetricsModal.mock.calls[
-                mockedConfigureMetricsModal.mock.calls.length - 1
-            ][0].onSave
-
-        act(() => {
-            onSave(mockMetrics.slice(0, 2))
-        })
-
-        const sectionUpdater = mockUpdateSection.mock.calls[0][5]
-        const result = sectionUpdater(layoutWithFeatureFlag.sections[0])
-
-        expect(result.items[0].requiresFeatureFlag).toBe(true)
-        expect(result.items[1].requiresFeatureFlag).toBe(false)
     })
 
     it('should use default gridSize 3 for metrics not found in current section items', () => {
@@ -456,7 +400,6 @@ describe('MetricsConfigurator', () => {
             chartId: COST_SAVED_CARD,
             gridSize: 3,
             visibility: true,
-            requiresFeatureFlag: false,
         })
     })
 

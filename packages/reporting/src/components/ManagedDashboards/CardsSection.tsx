@@ -18,7 +18,6 @@ type CardsSectionProps<TChart extends string> = {
     tabId: string
     tabName: string
     DashboardComponent: DashboardComponentType<TChart>
-    enableTrendCards?: boolean
     enableCustomDashboards?: boolean
 }
 
@@ -30,13 +29,9 @@ export function CardsSection<TChart extends string>({
     tabId,
     tabName,
     DashboardComponent,
-    enableTrendCards = false,
     enableCustomDashboards = false,
 }: CardsSectionProps<TChart>) {
-    const visibleItems = section.items.filter(
-        (item) =>
-            item.visibility && (!item.requiresFeatureFlag || enableTrendCards),
-    )
+    const visibleItems = section.items.filter((item) => item.visibility)
 
     const keyKpisConfig: MetricConfigItem[] = section.items.map((item) => ({
         id: item.chartId,
@@ -44,7 +39,7 @@ export function CardsSection<TChart extends string>({
         visibility: item.visibility,
     }))
 
-    return enableTrendCards ? (
+    return (
         <Box display="flex" flexDirection="column" gap="xs">
             <MetricsConfigurator
                 metrics={keyKpisConfig}
@@ -70,22 +65,6 @@ export function CardsSection<TChart extends string>({
                     </Box>
                 ))}
             </ShowMoreList>
-        </Box>
-    ) : (
-        <Box display="flex" flexWrap="wrap" gap="md" width="100%">
-            {visibleItems.map((item) => (
-                <Box
-                    key={`${tabId}-${item.chartId}`}
-                    flex="1 1 calc(25% - 16px)"
-                    minWidth="240px"
-                >
-                    <DashboardComponent
-                        chart={item.chartId}
-                        config={reportConfig}
-                        withChartMenu={enableCustomDashboards}
-                    />
-                </Box>
-            ))}
         </Box>
     )
 }

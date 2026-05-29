@@ -1,4 +1,3 @@
-import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
@@ -13,7 +12,6 @@ import * as fileUtils from 'utils/file'
 
 import { useGetManagedDashboardsLayoutConfig } from '@repo/reporting'
 
-jest.mock('@repo/feature-flags')
 jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
 jest.mock('domains/reporting/hooks/dashboards/useDashboardData')
 jest.mock('pages/aiAgent/analyticsOverview/utils/buildCustomDashboard')
@@ -27,7 +25,6 @@ jest.mock('utils/file', () => ({
     saveZippedFiles: jest.fn(),
 }))
 
-const mockUseFlagWithLoading = jest.mocked(useFlagWithLoading)
 const mockedUseAiAgentStatsFilters = jest.mocked(useAiAgentStatsFilters)
 const mockedUseDashboardData = jest.mocked(useDashboardData)
 const mockedUseGetManagedDashboardsLayoutConfig = jest.mocked(
@@ -47,11 +44,6 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-
-        mockUseFlagWithLoading.mockReturnValue({
-            value: true,
-            isLoading: false,
-        })
 
         mockedBuildKpiDashboard.mockReturnValue({
             id: 0,
@@ -91,18 +83,6 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
         const { result } = renderHook(() => useExportAiAgentAllAgentsToCSV())
 
         expect(result.current.isLoading).toBe(false)
-    })
-
-    it('should return isLoading as true when trend cards flag is loading', () => {
-        mockUseFlagWithLoading.mockImplementation((key) => {
-            if (key === FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards)
-                return { value: true, isLoading: true }
-            return { value: true, isLoading: false }
-        })
-
-        const { result } = renderHook(() => useExportAiAgentAllAgentsToCSV())
-
-        expect(result.current.isLoading).toBe(true)
     })
 
     it('should return isLoading as true when KPI data is loading', () => {
@@ -155,16 +135,11 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
         ).toBe(true)
     })
 
-    it('should call buildCustomDashboard with the layout and feature flag values', () => {
-        mockUseFlagWithLoading.mockReturnValue({
-            value: true,
-            isLoading: false,
-        })
+    it('should call buildCustomDashboard with the name and layout', () => {
         renderHook(() => useExportAiAgentAllAgentsToCSV())
         expect(mockedBuildKpiDashboard).toHaveBeenCalledWith(
             'ai-agent-all-agents',
             expect.any(Object),
-            true,
         )
     })
 

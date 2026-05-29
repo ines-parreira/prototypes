@@ -41,34 +41,6 @@ describe('defaultLayoutConfig', () => {
             )
         })
 
-        it('should have HandoverInteractionsCard with requiresFeatureFlag', () => {
-            const kpisSection = DEFAULT_ANALYTICS_OVERVIEW_LAYOUT.sections[0]
-            const item = kpisSection.items.find(
-                (i) =>
-                    i.chartId ===
-                    AnalyticsOverviewChart.HandoverInteractionsCard,
-            )
-            expect(item?.requiresFeatureFlag).toBe(true)
-        })
-
-        it('should have DecreaseInResolutionTimeCard with requiresFeatureFlag', () => {
-            const kpisSection = DEFAULT_ANALYTICS_OVERVIEW_LAYOUT.sections[0]
-            const item = kpisSection.items.find(
-                (i) =>
-                    i.chartId ===
-                    AnalyticsOverviewChart.DecreaseInResolutionTimeCard,
-            )
-            expect(item?.requiresFeatureFlag).toBe(true)
-        })
-
-        it('should have DecreaseInFRTCard with requiresFeatureFlag', () => {
-            const kpisSection = DEFAULT_ANALYTICS_OVERVIEW_LAYOUT.sections[0]
-            const item = kpisSection.items.find(
-                (i) => i.chartId === AnalyticsOverviewChart.DecreaseInFRTCard,
-            )
-            expect(item?.requiresFeatureFlag).toBe(true)
-        })
-
         it('should have all KPI cards with gridSize 3', () => {
             const kpisSection = DEFAULT_ANALYTICS_OVERVIEW_LAYOUT.sections[0]
             kpisSection.items.forEach((item) => {

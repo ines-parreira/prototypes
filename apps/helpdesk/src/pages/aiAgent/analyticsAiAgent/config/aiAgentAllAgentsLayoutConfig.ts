@@ -37,60 +37,51 @@ export const ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT: DashboardLayoutConfig<Analyti
                             AnalyticsAiAgentAllAgentsChart.ZeroTouchTicketsCard,
                         gridSize: 3,
                         visibility: true,
-                        requiresFeatureFlag: true,
                     },
                     {
                         chartId: AnalyticsAiAgentAllAgentsChart.AverageCsatCard,
                         gridSize: 3,
                         visibility: true,
-                        requiresFeatureFlag: true,
                     },
                     {
                         chartId:
                             AnalyticsAiAgentAllAgentsChart.CoverageRateCard,
                         gridSize: 3,
                         visibility: true,
-                        requiresFeatureFlag: true,
                     },
                     {
                         chartId:
                             AnalyticsAiAgentAllAgentsChart.ClosedTicketsCard,
                         gridSize: 3,
                         visibility: true,
-                        requiresFeatureFlag: true,
                     },
                     {
                         chartId:
                             AnalyticsAiAgentAllAgentsChart.HandoverInteractionsCard,
                         gridSize: 3,
                         visibility: true,
-                        requiresFeatureFlag: true,
                     },
                     {
                         chartId: AnalyticsAiAgentAllAgentsChart.CostSavedCard,
                         gridSize: 3,
                         visibility: true,
-                        requiresFeatureFlag: true,
                     },
                     {
                         chartId:
                             AnalyticsAiAgentAllAgentsChart.DecreaseInResolutionTimeCard,
                         gridSize: 3,
                         visibility: true,
-                        requiresFeatureFlag: true,
                     },
                     {
                         chartId:
                             AnalyticsAiAgentAllAgentsChart.DecreaseInFRTCard,
                         gridSize: 3,
                         visibility: true,
-                        requiresFeatureFlag: true,
                     },
                     {
                         chartId: AnalyticsAiAgentAllAgentsChart.SuccessRateCard,
                         gridSize: 3,
                         visibility: true,
-                        requiresFeatureFlag: true,
                     },
                     {
                         chartId: AnalyticsAiAgentAllAgentsChart.TotalSalesCard,
@@ -101,14 +92,12 @@ export const ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT: DashboardLayoutConfig<Analyti
                         chartId: AnalyticsAiAgentAllAgentsChart.FRTCard,
                         gridSize: 3,
                         visibility: true,
-                        requiresFeatureFlag: true,
                     },
                     {
                         chartId:
                             AnalyticsAiAgentAllAgentsChart.ResolutionTimeCard,
                         gridSize: 3,
                         visibility: true,
-                        requiresFeatureFlag: true,
                     },
                 ],
             },

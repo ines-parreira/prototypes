@@ -96,12 +96,6 @@ export function backendConfigToLayoutConfig<TChart extends string>(
         return defaultConfig
     }
 
-    const defaultItemMap = new Map(
-        defaultConfig.sections.flatMap((s) =>
-            s.items.map((item) => [item.chartId, item]),
-        ),
-    )
-
     const sections: LayoutSection<TChart>[] = tab.sections.map(
         (backendSection: Section): LayoutSection<TChart> => {
             return {
@@ -117,9 +111,6 @@ export function backendConfigToLayoutConfig<TChart extends string>(
                         item.metadata?.columns
                             ?.filter((c) => c.visible)
                             .map((c) => c.column_id) ?? undefined,
-                    requiresFeatureFlag: defaultItemMap.get(
-                        item.chart_id as TChart,
-                    )?.requiresFeatureFlag,
                 })),
             }
         },
@@ -139,13 +130,9 @@ function mergeItemsPreservingSavedOrder<TChart extends string>(
     )
     const savedItemIds = new Set(savedItems.map((item) => item.chartId))
 
-    const mergedSavedItems = savedItems
-        .filter((item) => defaultItemMap.has(item.chartId))
-        .map((savedItem) => ({
-            ...savedItem,
-            requiresFeatureFlag: defaultItemMap.get(savedItem.chartId)
-                ?.requiresFeatureFlag,
-        }))
+    const mergedSavedItems = savedItems.filter((item) =>
+        defaultItemMap.has(item.chartId),
+    )
 
     const newDefaultItems = defaultItems.filter(
         (item) => !savedItemIds.has(item.chartId),
@@ -162,7 +149,6 @@ function mergeItemsPreservingDefaultOrder<TChart extends string>(
 
     return defaultItems.map((defaultItem) => ({
         ...(savedItemMap.get(defaultItem.chartId) ?? defaultItem),
-        requiresFeatureFlag: defaultItem.requiresFeatureFlag,
         visibleColumns:
             savedItemMap.get(defaultItem.chartId)?.visibleColumns ??
             defaultItem.visibleColumns,

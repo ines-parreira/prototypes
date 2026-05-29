@@ -111,7 +111,6 @@ const reportConfigMock: LayoutReportConfig = {
 const makeSection = (
     items: Array<{
         chartId: string
-        requiresFeatureFlag?: boolean
         visibility?: boolean
     }>,
     tableTitle?: string,
@@ -119,11 +118,10 @@ const makeSection = (
     id: 'tables',
     type: ChartType.Table,
     tableTitle,
-    items: items.map(({ chartId, requiresFeatureFlag, visibility }) => ({
+    items: items.map(({ chartId, visibility }) => ({
         chartId,
         gridSize: 12,
         visibility: visibility ?? true,
-        ...(requiresFeatureFlag !== undefined && { requiresFeatureFlag }),
     })),
 })
 
@@ -318,34 +316,6 @@ describe('TablesSection', () => {
             ).toBeInTheDocument()
         })
 
-        it('should fall back to the first eligible table when the saved visible table is hidden by feature flag', () => {
-            render(
-                <TablesSection
-                    section={makeSection([
-                        {
-                            chartId: 'table1',
-                            visibility: true,
-                            requiresFeatureFlag: true,
-                        },
-                        { chartId: 'table2', visibility: false },
-                        { chartId: 'table3', visibility: false },
-                    ])}
-                    reportConfig={reportConfigMock}
-                    DashboardComponent={DashboardComponentMock}
-                />,
-            )
-
-            expect(
-                screen.queryByText('DashboardComponent: table1'),
-            ).not.toBeInTheDocument()
-            expect(
-                screen.getByText('DashboardComponent: table2'),
-            ).toBeInTheDocument()
-            expect(
-                screen.queryByText('DashboardComponent: table3'),
-            ).not.toBeInTheDocument()
-        })
-
         it('should switch to the selected table locally when persistence is off', async () => {
             const user = userEvent.setup()
 
@@ -497,117 +467,6 @@ describe('TablesSection', () => {
         })
     })
 
-    describe('feature flag filtering', () => {
-        it('should always render tables without requiresFeatureFlag regardless of flag value', () => {
-            render(
-                <TablesSection
-                    section={makeSection([{ chartId: 'table1' }])}
-                    reportConfig={reportConfigMock}
-                    DashboardComponent={DashboardComponentMock}
-                />,
-            )
-
-            expect(
-                screen.getByText('DashboardComponent: table1'),
-            ).toBeInTheDocument()
-        })
-
-        it('should hide tables with requiresFeatureFlag when enableTablesPersistence is off', () => {
-            render(
-                <TablesSection
-                    section={makeSection([
-                        { chartId: 'table1', requiresFeatureFlag: true },
-                        { chartId: 'table2', requiresFeatureFlag: true },
-                    ])}
-                    reportConfig={reportConfigMock}
-                    DashboardComponent={DashboardComponentMock}
-                />,
-            )
-
-            expect(
-                screen.queryByText('DashboardComponent: table1'),
-            ).not.toBeInTheDocument()
-            expect(
-                screen.queryByText('DashboardComponent: table2'),
-            ).not.toBeInTheDocument()
-        })
-
-        it('should show tables with requiresFeatureFlag when enableTablesPersistence is on', () => {
-            render(
-                <TablesSection
-                    section={makeSection([
-                        { chartId: 'table1', requiresFeatureFlag: true },
-                    ])}
-                    reportConfig={reportConfigMock}
-                    DashboardComponent={DashboardComponentMock}
-                    enableTablesPersistence
-                />,
-            )
-
-            expect(
-                screen.getByText('DashboardComponent: table1'),
-            ).toBeInTheDocument()
-        })
-
-        it('should show only non-flagged tables when the flag is off and some tables are flagged', () => {
-            render(
-                <TablesSection
-                    section={makeSection([
-                        { chartId: 'table1' },
-                        { chartId: 'table2', requiresFeatureFlag: true },
-                    ])}
-                    reportConfig={reportConfigMock}
-                    DashboardComponent={DashboardComponentMock}
-                />,
-            )
-
-            expect(
-                screen.getByText('DashboardComponent: table1'),
-            ).toBeInTheDocument()
-            expect(
-                screen.queryByText('DashboardComponent: table2'),
-            ).not.toBeInTheDocument()
-        })
-
-        it('should show only the non-flagged table when mixed and flag is off', () => {
-            render(
-                <TablesSection
-                    section={makeSection([
-                        { chartId: 'table1' },
-                        { chartId: 'table2', requiresFeatureFlag: true },
-                        { chartId: 'table3', requiresFeatureFlag: true },
-                    ])}
-                    reportConfig={reportConfigMock}
-                    DashboardComponent={DashboardComponentMock}
-                />,
-            )
-
-            expect(
-                screen.getByText('DashboardComponent: table1'),
-            ).toBeInTheDocument()
-            expect(
-                screen.queryByText('DashboardComponent: table2'),
-            ).not.toBeInTheDocument()
-            expect(
-                screen.queryByText('DashboardComponent: table3'),
-            ).not.toBeInTheDocument()
-        })
-
-        it('should render nothing when all tables require the flag and it is off', () => {
-            const { container } = render(
-                <TablesSection
-                    section={makeSection([
-                        { chartId: 'table1', requiresFeatureFlag: true },
-                    ])}
-                    reportConfig={reportConfigMock}
-                    DashboardComponent={DashboardComponentMock}
-                />,
-            )
-
-            expect(container).toBeEmptyDOMElement()
-        })
-    })
-
     describe('isItemVisible predicate', () => {
         const hideArticleRecommendation = (item: LayoutItem<string>) =>
             item.chartId !== ARTICLE_RECOMMENDATION_TABLE_CHART_ID
@@ -618,7 +477,6 @@ describe('TablesSection', () => {
                     section={makeSection([
                         {
                             chartId: ARTICLE_RECOMMENDATION_TABLE_CHART_ID,
-                            requiresFeatureFlag: true,
                         },
                     ])}
                     reportConfig={reportConfigMock}
@@ -641,7 +499,6 @@ describe('TablesSection', () => {
                     section={makeSection([
                         {
                             chartId: ARTICLE_RECOMMENDATION_TABLE_CHART_ID,
-                            requiresFeatureFlag: true,
                         },
                     ])}
                     reportConfig={reportConfigMock}
@@ -661,7 +518,6 @@ describe('TablesSection', () => {
                         { chartId: 'table1' },
                         {
                             chartId: ARTICLE_RECOMMENDATION_TABLE_CHART_ID,
-                            requiresFeatureFlag: true,
                         },
                     ])}
                     reportConfig={reportConfigMock}

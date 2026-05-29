@@ -146,19 +146,16 @@ const DEFAULT_ANALYTICS_OVERVIEW_LAYOUT: DashboardLayoutConfig = {
                     chartId: HANDOVER_INTERACTIONS_CARD,
                     gridSize: 3,
                     visibility: true,
-                    requiresFeatureFlag: true,
                 },
                 {
                     chartId: DECREASE_IN_RESOLUTION_TIME_CARD,
                     gridSize: 3,
                     visibility: true,
-                    requiresFeatureFlag: true,
                 },
                 {
                     chartId: DECREASE_IN_FRT_CARD,
                     gridSize: 3,
                     visibility: true,
-                    requiresFeatureFlag: true,
                 },
             ],
         },
@@ -192,19 +189,16 @@ const DEFAULT_ANALYTICS_OVERVIEW_LAYOUT: DashboardLayoutConfig = {
                     chartId: ARTICLE_RECOMMENDATION_TABLE,
                     gridSize: 12,
                     visibility: false,
-                    requiresFeatureFlag: true,
                 },
                 {
                     chartId: FLOWS_TABLE,
                     gridSize: 12,
                     visibility: false,
-                    requiresFeatureFlag: true,
                 },
                 {
                     chartId: ORDER_MANAGEMENT_TABLE,
                     gridSize: 12,
                     visibility: false,
-                    requiresFeatureFlag: true,
                 },
             ],
         },
@@ -223,25 +217,6 @@ const createKpisLayoutConfig = (
                 gridSize: 3,
                 visibility: true,
             })),
-        },
-    ],
-})
-
-const createKpiConfigWithFeatureFlag = (
-    requiresFeatureFlag: boolean,
-): DashboardLayoutConfig => ({
-    sections: [
-        {
-            id: 'kpis',
-            type: ChartType.Card,
-            items: [
-                {
-                    chartId: 'kpi1',
-                    gridSize: 3,
-                    visibility: true,
-                    requiresFeatureFlag,
-                },
-            ],
         },
     ],
 })
@@ -477,7 +452,6 @@ describe('DashboardLayoutRenderer', () => {
                 <DashboardLayoutRenderer
                     {...baseRenderProps}
                     defaultLayoutConfig={createKpisLayoutConfig()}
-                    enableTrendCards
                 />,
             )
 
@@ -518,7 +492,6 @@ describe('DashboardLayoutRenderer', () => {
                 <DashboardLayoutRenderer
                     {...baseRenderProps}
                     defaultLayoutConfig={configWithHiddenItems}
-                    enableTrendCards
                 />,
             )
 
@@ -538,7 +511,6 @@ describe('DashboardLayoutRenderer', () => {
                 <DashboardLayoutRenderer
                     {...baseRenderProps}
                     defaultLayoutConfig={createKpisLayoutConfig()}
-                    enableTrendCards
                 />,
             )
 
@@ -555,7 +527,6 @@ describe('DashboardLayoutRenderer', () => {
                         'kpi1',
                         'kpi2',
                     ])}
-                    enableTrendCards
                 />,
             )
 
@@ -569,7 +540,6 @@ describe('DashboardLayoutRenderer', () => {
                 <DashboardLayoutRenderer
                     {...baseRenderProps}
                     defaultLayoutConfig={sixKpisConfig}
-                    enableTrendCards
                 />,
             )
 
@@ -583,7 +553,6 @@ describe('DashboardLayoutRenderer', () => {
                 <DashboardLayoutRenderer
                     {...baseRenderProps}
                     defaultLayoutConfig={sixKpisConfig}
-                    enableTrendCards
                 />,
             )
 
@@ -600,7 +569,6 @@ describe('DashboardLayoutRenderer', () => {
                 <DashboardLayoutRenderer
                     {...baseRenderProps}
                     defaultLayoutConfig={sixKpisConfig}
-                    enableTrendCards
                 />,
             )
 
@@ -622,7 +590,6 @@ describe('DashboardLayoutRenderer', () => {
                 <DashboardLayoutRenderer
                     {...baseRenderProps}
                     defaultLayoutConfig={sixKpisConfig}
-                    enableTrendCards
                 />,
             )
 
@@ -684,31 +651,17 @@ describe('DashboardLayoutRenderer', () => {
     })
 
     describe('MetricsConfigurator integration', () => {
-        it('should render MetricsConfigurator when enableTrendCards is true', () => {
+        it('should render MetricsConfigurator', () => {
             render(
                 <DashboardLayoutRenderer
                     {...baseRenderProps}
                     defaultLayoutConfig={createKpisLayoutConfig()}
-                    enableTrendCards
                 />,
             )
 
             expect(
                 screen.getByText(/MetricsConfigurator with \d+ metrics/),
             ).toBeInTheDocument()
-        })
-
-        it('should not render MetricsConfigurator when enableTrendCards is false', () => {
-            render(
-                <DashboardLayoutRenderer
-                    {...baseRenderProps}
-                    defaultLayoutConfig={createKpisLayoutConfig()}
-                />,
-            )
-
-            expect(
-                screen.queryByText(/MetricsConfigurator with \d+ metrics/),
-            ).not.toBeInTheDocument()
         })
 
         it('should pass correct metrics to MetricsConfigurator', () => {
@@ -720,7 +673,6 @@ describe('DashboardLayoutRenderer', () => {
                         'kpi2',
                         'kpi3',
                     ])}
-                    enableTrendCards
                 />,
             )
 
@@ -757,42 +709,6 @@ describe('DashboardLayoutRenderer', () => {
 
             expect(screen.getByText('Chart: table1')).toBeInTheDocument()
             expect(screen.queryByText('Chart: table2')).not.toBeInTheDocument()
-        })
-    })
-
-    describe('requiresFeatureFlag filtering', () => {
-        it('should show item when requiresFeatureFlag=true and enableTrendCards=true', () => {
-            render(
-                <DashboardLayoutRenderer
-                    {...baseRenderProps}
-                    defaultLayoutConfig={createKpiConfigWithFeatureFlag(true)}
-                    enableTrendCards
-                />,
-            )
-
-            expect(screen.getByText('Chart: kpi1')).toBeInTheDocument()
-        })
-
-        it('should show item when requiresFeatureFlag=false regardless of enableTrendCards', () => {
-            render(
-                <DashboardLayoutRenderer
-                    {...baseRenderProps}
-                    defaultLayoutConfig={createKpiConfigWithFeatureFlag(false)}
-                />,
-            )
-
-            expect(screen.getByText('Chart: kpi1')).toBeInTheDocument()
-        })
-
-        it('should hide item when requiresFeatureFlag=true and enableTrendCards=false', () => {
-            render(
-                <DashboardLayoutRenderer
-                    {...baseRenderProps}
-                    defaultLayoutConfig={createKpiConfigWithFeatureFlag(true)}
-                />,
-            )
-
-            expect(screen.queryByText('Chart: kpi1')).not.toBeInTheDocument()
         })
     })
 })

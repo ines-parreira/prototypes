@@ -36,9 +36,6 @@ export function AiAgentDashboardLayoutRenderer<
     tabName,
     onTableTabChange,
 }: Props<TChart>) {
-    const { value: enableTrendCards } = useFlagWithLoading(
-        FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards,
-    )
     const { value: enableCustomDashboards } = useFlagWithLoading(
         FeatureFlagKey.AiAgentAnalyticsCustomDashboards,
     )
@@ -63,7 +60,6 @@ export function AiAgentDashboardLayoutRenderer<
             tabName={tabName}
             DashboardComponent={DashboardComponent}
             onTableTabChange={onTableTabChange}
-            enableTrendCards={enableTrendCards}
             enableCustomDashboards={enableCustomDashboards}
             enableTablesPersistence
             isItemVisible={isItemVisible}

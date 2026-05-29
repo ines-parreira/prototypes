@@ -1,7 +1,5 @@
 import { useCallback, useMemo } from 'react'
 
-import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
-
 import { useGetManagedDashboardsLayoutConfig } from '@repo/reporting'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
@@ -18,9 +16,6 @@ import { saveZippedFiles } from 'utils/file'
 const REPORT_NAME = 'ai-agent-shopping-assistant'
 
 export const useExportAiAgentShoppingAssistantToCSV = () => {
-    const { value: isTrendCardsFFEnabled, isLoading: isTrendCardsFFLoading } =
-        useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards)
-
     const { statsFilters } = useAiAgentStatsFilters()
 
     const { layoutConfig } = useGetManagedDashboardsLayoutConfig({
@@ -29,13 +24,8 @@ export const useExportAiAgentShoppingAssistantToCSV = () => {
         tabId: ManagedDashboardsTabId.ShoppingAssistant,
     })
     const shoppingAssistantDashboard = useMemo(
-        () =>
-            buildCustomDashboard(
-                REPORT_NAME,
-                layoutConfig,
-                isTrendCardsFFEnabled,
-            ),
-        [isTrendCardsFFEnabled, layoutConfig],
+        () => buildCustomDashboard(REPORT_NAME, layoutConfig),
+        [layoutConfig],
     )
 
     const { files: dashboardDataFiles, isLoading: isDashboardDataLoading } =
@@ -45,7 +35,7 @@ export const useExportAiAgentShoppingAssistantToCSV = () => {
             AnalyticsAiAgentShoppingAssistantReportConfig.charts,
         )
 
-    const isLoading = isDashboardDataLoading || isTrendCardsFFLoading
+    const isLoading = isDashboardDataLoading
 
     const files = dashboardDataFiles
 

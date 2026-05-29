@@ -48,46 +48,6 @@ describe('aiAgentSupportAgentLayoutConfig', () => {
             )
         })
 
-        it('should have DecreaseInResolutionTimeCard with requiresFeatureFlag', () => {
-            const kpisSection =
-                ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT.sections[0]
-            const item = kpisSection.items.find(
-                (i) =>
-                    i.chartId ===
-                    AnalyticsAiAgentSupportAgentChart.DecreaseInResolutionTimeCard,
-            )
-            expect(item?.requiresFeatureFlag).toBe(true)
-        })
-
-        it('should have AverageCsatCard with requiresFeatureFlag', () => {
-            const kpisSection =
-                ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT.sections[0]
-            const csatCard = kpisSection.items[4]
-            expect(csatCard.requiresFeatureFlag).toBe(true)
-        })
-
-        it('should have HandoverInteractionsCard with requiresFeatureFlag', () => {
-            const kpisSection =
-                ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT.sections[0]
-            const handoverCard = kpisSection.items.find(
-                (item) =>
-                    item.chartId ===
-                    AnalyticsAiAgentSupportAgentChart.HandoverInteractionsCard,
-            )
-            expect(handoverCard?.requiresFeatureFlag).toBe(true)
-        })
-
-        it('should have SuccessRateCard with requiresFeatureFlag', () => {
-            const kpisSection =
-                ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT.sections[0]
-            const successRateCard = kpisSection.items.find(
-                (item) =>
-                    item.chartId ===
-                    AnalyticsAiAgentSupportAgentChart.SuccessRateCard,
-            )
-            expect(successRateCard?.requiresFeatureFlag).toBe(true)
-        })
-
         it('should have all KPI cards with gridSize 3', () => {
             const kpisSection =
                 ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT.sections[0]

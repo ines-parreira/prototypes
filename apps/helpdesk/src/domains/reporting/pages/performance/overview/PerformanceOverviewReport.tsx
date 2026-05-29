@@ -56,7 +56,6 @@ export const PerformanceOverviewReport = () => {
                 tabId={PerformanceOverviewTabs.Overview}
                 tabName={PERFORMANCE_OVERVIEW_TAB_NAME}
                 DashboardComponent={DashboardComponent}
-                enableTrendCards
             />
         </AnalyticsPage>
     )

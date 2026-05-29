@@ -1,4 +1,3 @@
-import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
@@ -11,7 +10,6 @@ import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilte
 import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 import * as fileUtils from 'utils/file'
 
-jest.mock('@repo/feature-flags')
 jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters')
 jest.mock('domains/reporting/hooks/dashboards/useDashboardData')
 jest.mock('@repo/reporting', () => ({
@@ -25,7 +23,6 @@ jest.mock('utils/file', () => ({
     saveZippedFiles: jest.fn(),
 }))
 
-const mockUseFlagWithLoading = jest.mocked(useFlagWithLoading)
 const mockedUseAiAgentStatsFilters = jest.mocked(useAiAgentStatsFilters)
 const mockedUseDashboardData = jest.mocked(useDashboardData)
 const mockedUseGetManagedDashboardsLayoutConfig = jest.mocked(
@@ -51,11 +48,6 @@ const dashboardFiles = {
 describe('useExportAnalyticsOverviewToCSV', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-
-        mockUseFlagWithLoading.mockReturnValue({
-            value: false,
-            isLoading: false,
-        })
 
         mockedUseGetManagedDashboardsLayoutConfig.mockReturnValue({
             layoutConfig: { sections: [] } as any,
@@ -87,18 +79,6 @@ describe('useExportAnalyticsOverviewToCSV', () => {
         const { result } = renderHook(() => useExportAnalyticsOverviewToCSV())
 
         expect(result.current.isLoading).toBe(false)
-    })
-
-    it('should return isLoading as true when trend cards flag is loading', () => {
-        mockUseFlagWithLoading.mockImplementation((key) => {
-            if (key === FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards)
-                return { value: false, isLoading: true }
-            return { value: false, isLoading: false }
-        })
-
-        const { result } = renderHook(() => useExportAnalyticsOverviewToCSV())
-
-        expect(result.current.isLoading).toBe(true)
     })
 
     it('should return isLoading as true when KPI data is loading', () => {
@@ -137,18 +117,12 @@ describe('useExportAnalyticsOverviewToCSV', () => {
         )
     })
 
-    it('should call buildCustomDashboard with the name, layout, and both feature flags', () => {
-        mockUseFlagWithLoading.mockReturnValue({
-            value: true,
-            isLoading: false,
-        })
-
+    it('should call buildCustomDashboard with the name and layout', () => {
         renderHook(() => useExportAnalyticsOverviewToCSV())
 
         expect(mockedBuildCustomDashboard).toHaveBeenCalledWith(
             'analytics-overview',
             expect.any(Object),
-            true,
         )
     })
 

@@ -1,7 +1,5 @@
 import { useCallback, useMemo } from 'react'
 
-import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
-
 import { useGetManagedDashboardsLayoutConfig } from '@repo/reporting'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
@@ -21,9 +19,6 @@ import { buildCustomDashboard } from '../utils/buildCustomDashboard'
 const REPORT_NAME = 'analytics-overview'
 
 export const useExportAnalyticsOverviewToCSV = () => {
-    const { value: isTrendCardsFFEnabled, isLoading: isTrendCardsFFLoading } =
-        useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards)
-
     const { statsFilters } = useAiAgentStatsFilters()
     const costSavedPerInteraction = useMoneySavedPerInteractionWithAutomate(
         AGENT_COST_PER_TICKET,
@@ -41,23 +36,16 @@ export const useExportAnalyticsOverviewToCSV = () => {
     })
 
     const analyticsOverviewDashboard = useMemo(
-        () =>
-            buildCustomDashboard(
-                REPORT_NAME,
-                layoutConfig,
-                isTrendCardsFFEnabled,
-            ),
-        [isTrendCardsFFEnabled, layoutConfig],
+        () => buildCustomDashboard(REPORT_NAME, layoutConfig),
+        [layoutConfig],
     )
 
-    const { files, isLoading: isDashboardDataLoading } = useDashboardData(
+    const { files, isLoading } = useDashboardData(
         analyticsOverviewDashboard,
         true,
         AnalyticsOverviewReportConfig.charts,
         extraData,
     )
-
-    const isLoading = isDashboardDataLoading || isTrendCardsFFLoading
 
     const triggerDownload = useCallback(async () => {
         const fileName = getCsvFileNameWithDates(

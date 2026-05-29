@@ -73,10 +73,8 @@ export function TablesSection<TChart extends string>({
     enableCustomDashboards = false,
     isItemVisible,
 }: TablesSectionProps<TChart>) {
-    const availableItems = section.items.filter(
-        (item) =>
-            (!item.requiresFeatureFlag || enableTablesPersistence) &&
-            (isItemVisible ? isItemVisible(item) : true),
+    const availableItems = section.items.filter((item) =>
+        isItemVisible ? isItemVisible(item) : true,
     )
 
     const selectedTableId = useMemo(

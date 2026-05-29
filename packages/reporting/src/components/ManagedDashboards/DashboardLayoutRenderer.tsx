@@ -21,7 +21,6 @@ type DashboardLayoutRendererProps<TChart extends string> = {
     tabName: string
     DashboardComponent: DashboardComponentType<TChart>
     onTableTabChange?: (key: string) => void
-    enableTrendCards?: boolean
     enableCustomDashboards?: boolean
     enableTablesPersistence?: boolean
     isItemVisible?: (item: LayoutItem<TChart>) => boolean
@@ -36,7 +35,6 @@ export function DashboardLayoutRenderer<TChart extends string>({
     tabName,
     DashboardComponent,
     onTableTabChange,
-    enableTrendCards,
     enableCustomDashboards,
     enableTablesPersistence,
     isItemVisible,
@@ -79,7 +77,6 @@ export function DashboardLayoutRenderer<TChart extends string>({
                         layoutConfig,
                         onTableTabChange,
                         DashboardComponent,
-                        enableTrendCards,
                         enableCustomDashboards,
                         enableTablesPersistence,
                         isItemVisible,
@@ -99,7 +96,6 @@ type RenderSectionParams<TChart extends string> = {
     layoutConfig: DashboardLayoutConfig<TChart>
     onTableTabChange: ((key: string) => void) | undefined
     DashboardComponent: DashboardComponentType<TChart>
-    enableTrendCards?: boolean
     enableCustomDashboards?: boolean
     enableTablesPersistence?: boolean
     isItemVisible?: (item: LayoutItem<TChart>) => boolean
@@ -114,7 +110,6 @@ function renderSection<TChart extends string>({
     layoutConfig,
     onTableTabChange,
     DashboardComponent,
-    enableTrendCards,
     enableCustomDashboards,
     enableTablesPersistence,
     isItemVisible,
@@ -155,7 +150,6 @@ function renderSection<TChart extends string>({
                 layoutConfig={layoutConfig}
                 tabName={tabName}
                 DashboardComponent={DashboardComponent}
-                enableTrendCards={enableTrendCards}
                 enableCustomDashboards={enableCustomDashboards}
             />
         )

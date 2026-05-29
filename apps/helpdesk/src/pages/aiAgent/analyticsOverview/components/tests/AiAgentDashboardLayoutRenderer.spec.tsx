@@ -103,22 +103,6 @@ describe('AiAgentDashboardLayoutRenderer', () => {
     })
 
     describe('feature flag wiring', () => {
-        it('passes enableTrendCards from AiAgentAnalyticsDashboardsTrendCards flag', () => {
-            mockedUseFlagWithLoading.mockImplementation((flag) => ({
-                value:
-                    flag ===
-                    FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards,
-                isLoading: false,
-            }))
-
-            render(<AiAgentDashboardLayoutRenderer {...baseProps} />)
-
-            const props = getLastProps()
-            expect(props.enableTrendCards).toBe(true)
-            expect(props.enableCustomDashboards).toBe(false)
-            expect(props.enableTablesPersistence).toBe(true)
-        })
-
         it('passes enableCustomDashboards from AiAgentAnalyticsCustomDashboards flag', () => {
             mockedUseFlagWithLoading.mockImplementation((flag) => ({
                 value: flag === FeatureFlagKey.AiAgentAnalyticsCustomDashboards,
@@ -128,7 +112,6 @@ describe('AiAgentDashboardLayoutRenderer', () => {
             render(<AiAgentDashboardLayoutRenderer {...baseProps} />)
 
             const props = getLastProps()
-            expect(props.enableTrendCards).toBe(false)
             expect(props.enableCustomDashboards).toBe(true)
             expect(props.enableTablesPersistence).toBe(true)
         })

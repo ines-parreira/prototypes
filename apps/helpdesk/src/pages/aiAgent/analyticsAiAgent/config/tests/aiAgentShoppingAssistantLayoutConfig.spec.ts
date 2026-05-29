@@ -45,20 +45,6 @@ describe('aiAgentShoppingAssistantLayoutConfig', () => {
             )
         })
 
-        it('should have discount cards with requiresFeatureFlag', () => {
-            const kpisSection =
-                ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT.sections[0]
-            const discountCards = kpisSection.items.slice(4)
-            discountCards.forEach((item) => {
-                expect(item.requiresFeatureFlag).toBe(
-                    item.chartId !==
-                        AnalyticsAiAgentShoppingAssistantChart.TotalSalesCard
-                        ? true
-                        : undefined,
-                )
-            })
-        })
-
         it('should have all KPI cards with gridSize 3', () => {
             const kpisSection =
                 ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT.sections[0]
@@ -105,7 +91,6 @@ describe('aiAgentShoppingAssistantLayoutConfig', () => {
             )
             expect(breakdownSection.items[0].gridSize).toBe(12)
             expect(breakdownSection.items[0].visibility).toBe(true)
-            expect(breakdownSection.items[0].requiresFeatureFlag).toBe(true)
             expect(breakdownSection.items[1].chartId).toBe(
                 AnalyticsAiAgentShoppingAssistantChart.ChannelPerformanceTable,
             )

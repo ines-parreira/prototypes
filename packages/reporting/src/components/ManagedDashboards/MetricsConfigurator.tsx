@@ -50,8 +50,6 @@ export function MetricsConfigurator<TChart extends string>({
                         chartId: metric.id as TChart,
                         gridSize: existingItem?.gridSize ?? 3,
                         visibility: metric.visibility,
-                        requiresFeatureFlag:
-                            !!existingItem?.requiresFeatureFlag,
                     }
                 }),
             }),

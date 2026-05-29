@@ -15,7 +15,6 @@ export type LayoutItem<TChart extends string = string> = {
     chartId: TChart
     gridSize: GridSize
     visibility: boolean
-    requiresFeatureFlag?: boolean
     dimensions?: string[] | null
     measures?: string[] | null
     visibleColumns?: string[] | null

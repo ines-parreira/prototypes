@@ -77,16 +77,14 @@ const makeSection = (
     items: Array<{
         chartId: string
         visibility: boolean
-        requiresFeatureFlag?: boolean
     }>,
 ): LayoutSection => ({
     id: 'kpis',
     type: ChartType.Card,
-    items: items.map(({ chartId, visibility, requiresFeatureFlag }) => ({
+    items: items.map(({ chartId, visibility }) => ({
         chartId,
         gridSize: 3,
         visibility,
-        ...(requiresFeatureFlag !== undefined ? { requiresFeatureFlag } : {}),
     })),
 })
 
@@ -96,7 +94,7 @@ describe('CardsSection', () => {
         DashboardComponentMock.mockReturnValue(null)
     })
 
-    describe('when enableTrendCards is true', () => {
+    describe('trend cards', () => {
         it('should render ShowMoreList', () => {
             render(
                 <CardsSection
@@ -109,7 +107,6 @@ describe('CardsSection', () => {
                     tabId={TAB_ALL_AGENTS}
                     tabName="Main"
                     DashboardComponent={DashboardComponentMock}
-                    enableTrendCards
                 />,
             )
 
@@ -130,7 +127,6 @@ describe('CardsSection', () => {
                     tabId={TAB_ALL_AGENTS}
                     tabName="Main"
                     DashboardComponent={DashboardComponentMock}
-                    enableTrendCards
                 />,
             )
 
@@ -153,7 +149,6 @@ describe('CardsSection', () => {
                     tabId={TAB_ALL_AGENTS}
                     tabName="Main"
                     DashboardComponent={DashboardComponentMock}
-                    enableTrendCards
                 />,
             )
 
@@ -176,7 +171,6 @@ describe('CardsSection', () => {
                     tabId={TAB_ALL_AGENTS}
                     tabName="Main"
                     DashboardComponent={DashboardComponentMock}
-                    enableTrendCards
                 />,
             )
 
@@ -194,58 +188,6 @@ describe('CardsSection', () => {
             )
         })
 
-        it('should show item when requiresFeatureFlag=true and enableTrendCards is on', () => {
-            render(
-                <CardsSection
-                    section={makeSection([
-                        {
-                            chartId: 'kpi1',
-                            visibility: true,
-                            requiresFeatureFlag: true,
-                        },
-                    ])}
-                    reportConfig={reportConfigMock}
-                    layoutConfig={defaultLayoutConfig}
-                    dashboardId="ai-agent-analytics"
-                    tabId={TAB_ALL_AGENTS}
-                    tabName="Main"
-                    DashboardComponent={DashboardComponentMock}
-                    enableTrendCards
-                />,
-            )
-
-            expect(DashboardComponentMock).toHaveBeenCalledWith(
-                expect.objectContaining({ chart: 'kpi1' }),
-                {},
-            )
-        })
-
-        it('should show item when requiresFeatureFlag=false and enableTrendCards is on', () => {
-            render(
-                <CardsSection
-                    section={makeSection([
-                        {
-                            chartId: 'kpi1',
-                            visibility: true,
-                            requiresFeatureFlag: false,
-                        },
-                    ])}
-                    reportConfig={reportConfigMock}
-                    layoutConfig={defaultLayoutConfig}
-                    dashboardId="ai-agent-analytics"
-                    tabId={TAB_ALL_AGENTS}
-                    tabName="Main"
-                    DashboardComponent={DashboardComponentMock}
-                    enableTrendCards
-                />,
-            )
-
-            expect(DashboardComponentMock).toHaveBeenCalledWith(
-                expect.objectContaining({ chart: 'kpi1' }),
-                {},
-            )
-        })
-
         it('should reset ShowMoreList expanded state when switching tabs', async () => {
             const user = userEvent.setup()
             const section = makeSection([{ chartId: 'kpi1', visibility: true }])
@@ -256,7 +198,6 @@ describe('CardsSection', () => {
                 dashboardId: 'ai-agent-analytics',
                 tabName: 'Test',
                 DashboardComponent: DashboardComponentMock,
-                enableTrendCards: true,
             }
 
             const { rerender } = render(
@@ -279,128 +220,6 @@ describe('CardsSection', () => {
         })
     })
 
-    describe('when enableTrendCards is false', () => {
-        it('should render plain div instead of ShowMoreList', () => {
-            render(
-                <CardsSection
-                    section={makeSection([
-                        { chartId: 'kpi1', visibility: true },
-                    ])}
-                    reportConfig={reportConfigMock}
-                    layoutConfig={defaultLayoutConfig}
-                    dashboardId="ai-agent-analytics"
-                    tabId={TAB_ALL_AGENTS}
-                    tabName="Main"
-                    DashboardComponent={DashboardComponentMock}
-                />,
-            )
-
-            expect(
-                screen.queryByRole('region', { name: 'show more list' }),
-            ).not.toBeInTheDocument()
-            expect(DashboardComponentMock).toHaveBeenCalledWith(
-                expect.objectContaining({ chart: 'kpi1' }),
-                {},
-            )
-        })
-
-        it('should not render MetricsConfigurator', () => {
-            render(
-                <CardsSection
-                    section={makeSection([
-                        { chartId: 'kpi1', visibility: true },
-                    ])}
-                    reportConfig={reportConfigMock}
-                    dashboardId="ai-agent-analytics"
-                    layoutConfig={defaultLayoutConfig}
-                    tabId={TAB_ALL_AGENTS}
-                    tabName="Main"
-                    DashboardComponent={DashboardComponentMock}
-                />,
-            )
-
-            expect(
-                screen.queryByText(/MetricsConfigurator with \d+ metrics/),
-            ).not.toBeInTheDocument()
-        })
-
-        it('should only render visible items', () => {
-            render(
-                <CardsSection
-                    section={makeSection([
-                        { chartId: 'kpi1', visibility: true },
-                        { chartId: 'kpi2', visibility: false },
-                    ])}
-                    reportConfig={reportConfigMock}
-                    layoutConfig={defaultLayoutConfig}
-                    dashboardId="ai-agent-analytics"
-                    tabId={TAB_ALL_AGENTS}
-                    tabName="Main"
-                    DashboardComponent={DashboardComponentMock}
-                />,
-            )
-
-            expect(DashboardComponentMock).toHaveBeenCalledWith(
-                expect.objectContaining({ chart: 'kpi1' }),
-                {},
-            )
-            expect(DashboardComponentMock).not.toHaveBeenCalledWith(
-                expect.objectContaining({ chart: 'kpi2' }),
-                {},
-            )
-        })
-
-        it('should hide item when requiresFeatureFlag=true and enableTrendCards is off', () => {
-            render(
-                <CardsSection
-                    section={makeSection([
-                        {
-                            chartId: 'kpi1',
-                            visibility: true,
-                            requiresFeatureFlag: true,
-                        },
-                    ])}
-                    reportConfig={reportConfigMock}
-                    layoutConfig={defaultLayoutConfig}
-                    dashboardId="ai-agent-analytics"
-                    tabId={TAB_ALL_AGENTS}
-                    tabName="Main"
-                    DashboardComponent={DashboardComponentMock}
-                />,
-            )
-
-            expect(DashboardComponentMock).not.toHaveBeenCalledWith(
-                expect.objectContaining({ chart: 'kpi1' }),
-                {},
-            )
-        })
-
-        it('should show item when requiresFeatureFlag=false and enableTrendCards is off', () => {
-            render(
-                <CardsSection
-                    section={makeSection([
-                        {
-                            chartId: 'kpi1',
-                            visibility: true,
-                            requiresFeatureFlag: false,
-                        },
-                    ])}
-                    reportConfig={reportConfigMock}
-                    layoutConfig={defaultLayoutConfig}
-                    dashboardId="ai-agent-analytics"
-                    tabId={TAB_ALL_AGENTS}
-                    tabName="Main"
-                    DashboardComponent={DashboardComponentMock}
-                />,
-            )
-
-            expect(DashboardComponentMock).toHaveBeenCalledWith(
-                expect.objectContaining({ chart: 'kpi1' }),
-                {},
-            )
-        })
-    })
-
     describe('enableCustomDashboards prop', () => {
         it('passes withChartMenu=true to DashboardComponent when enabled', () => {
             render(
@@ -414,7 +233,6 @@ describe('CardsSection', () => {
                     tabId={TAB_ALL_AGENTS}
                     tabName="Main"
                     DashboardComponent={DashboardComponentMock}
-                    enableTrendCards
                     enableCustomDashboards
                 />,
             )

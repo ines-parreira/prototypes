@@ -39,7 +39,6 @@ describe('buildCustomDashboard', () => {
         const result = buildCustomDashboard(
             'ai-agent-shopping-assistant',
             ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT,
-            false,
         )
         expect(result.name).toBe('ai-agent-shopping-assistant')
     })
@@ -48,7 +47,6 @@ describe('buildCustomDashboard', () => {
         const result = buildCustomDashboard(
             'ai-agent-shopping-assistant',
             ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT,
-            false,
         )
         expect(result.id).toBe(-1)
         expect(result.analytics_filter_id).toBeNull()
@@ -59,69 +57,14 @@ describe('buildCustomDashboard', () => {
         const result = buildCustomDashboard(
             'test',
             ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT,
-            true,
         )
         expect(result.children).toHaveLength(3)
-    })
-
-    it('should include only non-feature-flagged items when flag is disabled', () => {
-        const result = buildCustomDashboard(
-            'test',
-            ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT,
-            false,
-        )
-        const section = result.children[0] as {
-            children: { config_id: string }[]
-        }
-        const chartIds = section.children.map((c) => c.config_id)
-        expect(chartIds).toContain(
-            AnalyticsAiAgentShoppingAssistantChart.TotalSalesCard,
-        )
-        expect(chartIds).toContain(
-            AnalyticsAiAgentShoppingAssistantChart.OrdersInfluencedCard,
-        )
-        expect(chartIds).toContain(
-            AnalyticsAiAgentShoppingAssistantChart.AutomatedInteractionsCard,
-        )
-        expect(chartIds).toContain(
-            AnalyticsAiAgentShoppingAssistantChart.RevenuePerInteractionCard,
-        )
-        expect(chartIds).toHaveLength(4)
-    })
-
-    it('should include feature-flagged items when flag is enabled', () => {
-        const result = buildCustomDashboard(
-            'test',
-            ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT,
-            true,
-        )
-        const section = result.children[0] as {
-            children: { config_id: string }[]
-        }
-        expect(section.children.map((c) => c.config_id)).toContain(
-            AnalyticsAiAgentShoppingAssistantChart.AverageDiscountAmountCard,
-        )
-    })
-
-    it('should exclude feature-flagged items when flag is disabled', () => {
-        const result = buildCustomDashboard(
-            'test',
-            ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT,
-            false,
-        )
-        const section = result.children[0] as {
-            children: { config_id: string }[]
-        }
-        expect(section.children.map((c) => c.config_id)).not.toContain(
-            AnalyticsAiAgentShoppingAssistantChart.AverageDiscountAmountCard,
-        )
     })
 
     it('should map sections to DashboardChildType.Section', () => {
         const result = buildCustomDashboard(
             'test',
             ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT,
-            false,
         )
         expect((result.children[0] as { type: string }).type).toBe(
             DashboardChildType.Section,
@@ -132,7 +75,6 @@ describe('buildCustomDashboard', () => {
         const result = buildCustomDashboard(
             'test',
             ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT,
-            false,
         )
         const section = result.children[0] as {
             children: { type: string; config_id: string }[]
@@ -140,7 +82,7 @@ describe('buildCustomDashboard', () => {
         expect(section.children[0]).toEqual({
             type: DashboardChildType.Chart,
             config_id:
-                AnalyticsAiAgentShoppingAssistantChart.OrdersInfluencedCard,
+                AnalyticsAiAgentShoppingAssistantChart.ConversionRateCard,
             metadata: {
                 savedMeasure: undefined,
                 savedDimension: undefined,
@@ -148,12 +90,11 @@ describe('buildCustomDashboard', () => {
         })
     })
 
-    describe('table items with requiresFeatureFlag', () => {
-        it('should always include all table items regardless of the feature flag', () => {
+    describe('table items', () => {
+        it('should always include all table items', () => {
             const result = buildCustomDashboard(
                 'test',
                 DEFAULT_ANALYTICS_OVERVIEW_LAYOUT,
-                false,
             )
             const tableSection = result.children.find((s) =>
                 (s as any).children?.some(
@@ -174,20 +115,12 @@ describe('buildCustomDashboard', () => {
 
     describe('graph sections', () => {
         it('should include graph sections', () => {
-            const result = buildCustomDashboard(
-                'test',
-                LAYOUT_WITH_GRAPHS,
-                false,
-            )
+            const result = buildCustomDashboard('test', LAYOUT_WITH_GRAPHS)
             expect(result.children).toHaveLength(1)
         })
 
         it('should include only visible graph items', () => {
-            const result = buildCustomDashboard(
-                'test',
-                LAYOUT_WITH_GRAPHS,
-                false,
-            )
+            const result = buildCustomDashboard('test', LAYOUT_WITH_GRAPHS)
             const section = result.children[0] as {
                 children: { config_id: string }[]
             }
@@ -198,11 +131,7 @@ describe('buildCustomDashboard', () => {
         })
 
         it('should set savedMeasure and savedDimension from item measures and dimensions', () => {
-            const result = buildCustomDashboard(
-                'test',
-                LAYOUT_WITH_GRAPHS,
-                false,
-            )
+            const result = buildCustomDashboard('test', LAYOUT_WITH_GRAPHS)
             const section = result.children[0] as {
                 children: {
                     metadata: { savedMeasure: string; savedDimension: string }

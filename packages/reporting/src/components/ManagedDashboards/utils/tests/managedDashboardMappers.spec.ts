@@ -946,7 +946,6 @@ describe('managedDashboardMappers', () => {
                                 chartId: CHANNEL_PERFORMANCE_TABLE,
                                 gridSize: 12,
                                 visibility: false,
-                                requiresFeatureFlag: true,
                             },
                             {
                                 chartId: INTENT_PERFORMANCE_TABLE,
@@ -973,7 +972,6 @@ describe('managedDashboardMappers', () => {
                                 chartId: INTENT_PERFORMANCE_TABLE,
                                 gridSize: 12,
                                 visibility: true,
-                                requiresFeatureFlag: true,
                             },
                         ],
                     },
@@ -984,9 +982,7 @@ describe('managedDashboardMappers', () => {
 
             const [channel, intent] = result.sections[0].items
             expect(channel.visibility).toBe(false)
-            expect(channel.requiresFeatureFlag).toBeFalsy()
             expect(intent.gridSize).toBe(6)
-            expect(intent.requiresFeatureFlag).toBe(true)
         })
 
         it('should drop stale chart IDs from non-Card sections that no longer exist in default', () => {
@@ -1137,7 +1133,6 @@ describe('managedDashboardMappers', () => {
                                 chartId: AUTOMATION_RATE_CARD,
                                 gridSize: 3,
                                 visibility: true,
-                                requiresFeatureFlag: true,
                             },
                             {
                                 chartId: AUTOMATED_INTERACTIONS_CARD,
@@ -1158,11 +1153,8 @@ describe('managedDashboardMappers', () => {
 
             const [first, second, third] = result.sections[0].items
             expect(first.chartId).toBe(TIME_SAVED_CARD)
-            expect(first.requiresFeatureFlag).toBeFalsy()
             expect(second.chartId).toBe(AUTOMATION_RATE_CARD)
-            expect(second.requiresFeatureFlag).toBe(true)
             expect(third.chartId).toBe(AUTOMATED_INTERACTIONS_CARD)
-            expect(third.requiresFeatureFlag).toBeFalsy()
         })
 
         it('should append new default items at the end for Card sections', () => {
@@ -1269,57 +1261,6 @@ describe('managedDashboardMappers', () => {
             expect(result.sections[0].items[0].chartId).toBe(
                 AUTOMATION_RATE_CARD,
             )
-        })
-
-        it('should preserve requiresFeatureFlag from default items onto saved items', () => {
-            const defaultConfig: DashboardLayoutConfig = {
-                sections: [
-                    {
-                        id: 'breakdown',
-                        type: ChartType.Table,
-                        items: [
-                            {
-                                chartId: PERFORMANCE_TABLE,
-                                gridSize: 12,
-                                visibility: true,
-                            },
-                            {
-                                chartId: ARTICLE_RECOMMENDATION_TABLE,
-                                gridSize: 12,
-                                visibility: true,
-                                requiresFeatureFlag: true,
-                            },
-                        ],
-                    },
-                ],
-            }
-
-            const savedConfig: DashboardLayoutConfig = {
-                sections: [
-                    {
-                        id: 'breakdown',
-                        type: ChartType.Table,
-                        items: [
-                            {
-                                chartId: PERFORMANCE_TABLE,
-                                gridSize: 12,
-                                visibility: true,
-                            },
-                            {
-                                chartId: ARTICLE_RECOMMENDATION_TABLE,
-                                gridSize: 12,
-                                visibility: true,
-                            },
-                        ],
-                    },
-                ],
-            }
-
-            const result = mergeWithDefaults(savedConfig, defaultConfig)
-
-            const items = result.sections[0].items
-            expect(items[0].requiresFeatureFlag).toBeFalsy()
-            expect(items[1].requiresFeatureFlag).toBe(true)
         })
 
         it('should handle empty saved config', () => {

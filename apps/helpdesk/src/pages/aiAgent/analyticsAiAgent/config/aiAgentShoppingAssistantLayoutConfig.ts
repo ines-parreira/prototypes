@@ -14,7 +14,6 @@ export const ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT: DashboardLayoutConfig
                             AnalyticsAiAgentShoppingAssistantChart.ConversionRateCard,
                         gridSize: 3,
                         visibility: true,
-                        requiresFeatureFlag: true,
                     },
                     {
                         chartId:
@@ -39,42 +38,36 @@ export const ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT: DashboardLayoutConfig
                             AnalyticsAiAgentShoppingAssistantChart.AverageDiscountAmountCard,
                         gridSize: 3,
                         visibility: true,
-                        requiresFeatureFlag: true,
                     },
                     {
                         chartId:
                             AnalyticsAiAgentShoppingAssistantChart.AverageOrderValueCard,
                         gridSize: 3,
                         visibility: true,
-                        requiresFeatureFlag: true,
                     },
                     {
                         chartId:
                             AnalyticsAiAgentShoppingAssistantChart.DiscountUsageCard,
                         gridSize: 3,
                         visibility: true,
-                        requiresFeatureFlag: true,
                     },
                     {
                         chartId:
                             AnalyticsAiAgentShoppingAssistantChart.DiscountCodesAppliedCard,
                         gridSize: 3,
                         visibility: true,
-                        requiresFeatureFlag: true,
                     },
                     {
                         chartId:
                             AnalyticsAiAgentShoppingAssistantChart.DiscountsOfferedCard,
                         gridSize: 3,
                         visibility: true,
-                        requiresFeatureFlag: true,
                     },
                     {
                         chartId:
                             AnalyticsAiAgentShoppingAssistantChart.MedianPurchaseTimeCard,
                         gridSize: 3,
                         visibility: true,
-                        requiresFeatureFlag: true,
                     },
                     {
                         chartId:
@@ -87,35 +80,30 @@ export const ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT: DashboardLayoutConfig
                             AnalyticsAiAgentShoppingAssistantChart.BuyThroughRateCard,
                         gridSize: 3,
                         visibility: true,
-                        requiresFeatureFlag: true,
                     },
                     {
                         chartId:
                             AnalyticsAiAgentShoppingAssistantChart.ClickThroughRateCard,
                         gridSize: 3,
                         visibility: true,
-                        requiresFeatureFlag: true,
                     },
                     {
                         chartId:
                             AnalyticsAiAgentShoppingAssistantChart.SuccessRateCard,
                         gridSize: 3,
                         visibility: true,
-                        requiresFeatureFlag: true,
                     },
                     {
                         chartId:
                             AnalyticsAiAgentShoppingAssistantChart.ProductRecommendationsCard,
                         gridSize: 3,
                         visibility: true,
-                        requiresFeatureFlag: true,
                     },
                     {
                         chartId:
                             AnalyticsAiAgentShoppingAssistantChart.HandoverInteractionsCard,
                         gridSize: 3,
                         visibility: true,
-                        requiresFeatureFlag: true,
                     },
                 ],
             },
@@ -147,7 +135,6 @@ export const ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT: DashboardLayoutConfig
                             AnalyticsAiAgentShoppingAssistantChart.EngagementFeaturePerformanceTable,
                         gridSize: 12,
                         visibility: true,
-                        requiresFeatureFlag: true,
                         visibleColumns: [
                             'automatedInteractions',
                             'handoverInteractions',
