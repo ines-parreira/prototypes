@@ -118,12 +118,10 @@ export function TicketNavbarCreateMenu() {
                         size="sm"
                         isDisabled={isCreateTicketDisabled}
                         onClick={handleCreateTicket}
+                        leadingSlot="chat-add-circle"
+                        trailingSlot={<ShortcutKey>N</ShortcutKey>}
                     >
-                        <Box alignItems="center" gap="xxxs">
-                            <Icon name="chat-add-circle" size="sm" />
-                            <Text>New ticket</Text>
-                            <ShortcutKey>N</ShortcutKey>
-                        </Box>
+                        New ticket
                     </Button>
                 )}
                 {shouldDisplayPlaceCall && (
@@ -135,11 +133,9 @@ export function TicketNavbarCreateMenu() {
                                 isDisabled={isPlaceCallButtonDisabled}
                                 onClick={() => setIsDeviceVisible(true)}
                                 ref={buttonRef}
-                            >
-                                <Box alignItems="center" gap="xxxs">
-                                    <Icon name="phone-outgoing" size="sm" />
-                                    <Text>Call</Text>
-                                    {isPlaceCallButtonDisabled ? (
+                                leadingSlot="phone-outgoing"
+                                trailingSlot={
+                                    isPlaceCallButtonDisabled ? (
                                         <Icon
                                             name="error-octagon"
                                             size="sm"
@@ -152,8 +148,10 @@ export function TicketNavbarCreateMenu() {
                                             </ShortcutKey>
                                             <ShortcutKey>E</ShortcutKey>
                                         </Box>
-                                    )}
-                                </Box>
+                                    )
+                                }
+                            >
+                                Call
                             </Button>
                         }
                     >
