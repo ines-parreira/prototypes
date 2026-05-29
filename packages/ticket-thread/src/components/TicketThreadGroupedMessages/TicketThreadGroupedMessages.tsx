@@ -12,12 +12,16 @@ import type {
     TicketThreadSingleMessageItem,
     TicketThreadSocialMediaFacebookMessageItem,
     TicketThreadSocialMediaInstagramDirectMessageItem,
+    TicketThreadSocialMediaInstagramStoryMentionItem,
+    TicketThreadSocialMediaInstagramStoryReplyItem,
     TicketThreadSocialMediaWhatsAppMessageItem,
 } from '../../hooks/messages/types'
 import { TicketThreadItemTag } from '../../hooks/types'
+import { ViewOnInstagramLink } from '../InstagramMediaMessage/ViewOnInstagramLink'
 import { MessageAppliedActions } from '../MessageBubble/components/MessageAppliedActions'
 import { MessageBody } from '../MessageBubble/components/MessageBody'
 import { MessageErrors } from '../MessageBubble/components/MessageErrors'
+import type { MessageFooterItem } from '../MessageBubble/components/MessageFooter'
 import { MessageFooter } from '../MessageBubble/components/MessageFooter'
 import { getMessageChannelParticipants } from '../MessageBubble/components/MessageHeader/getMessageChannelParticipants'
 import { getMessageCurrentPageUrl } from '../MessageBubble/components/MessageHeader/getMessageCurrentPageUrl'
@@ -49,6 +53,8 @@ type SocialGroupedMessageItem =
     | TicketThreadSocialMediaFacebookMessageItem
     | TicketThreadSocialMediaInstagramDirectMessageItem
     | TicketThreadSocialMediaWhatsAppMessageItem
+    | TicketThreadSocialMediaInstagramStoryMentionItem
+    | TicketThreadSocialMediaInstagramStoryReplyItem
 
 function useTimestampWidth() {
     const ref = useRef<HTMLDivElement>(null)
@@ -120,6 +126,23 @@ function RegularGroupedMessage({
     )
 }
 
+function getStoryMentionHref(item: SocialGroupedMessageItem): string | null {
+    if (
+        item._tag !==
+            TicketThreadItemTag.Messages.SocialMediaInstagramStoryMention &&
+        item._tag !==
+            TicketThreadItemTag.Messages.SocialMediaInstagramStoryReply
+    ) {
+        return null
+    }
+
+    if (!item.data.message_id || !item.data.integration_id) {
+        return null
+    }
+
+    return `/integrations/facebook/redirect/instagramstory?message_id=${item.data.message_id}&integration_id=${item.data.integration_id}`
+}
+
 function SocialGroupedMessage({
     item,
     className,
@@ -132,6 +155,14 @@ function SocialGroupedMessage({
     const displayedItem = useDisplayedTicketMessage({ item })
     const isPendingMessage = isActivePendingMessageItem(item)
     const { ref: timestampRef, style } = useTimestampWidth()
+    const isStoryMention =
+        item._tag ===
+        TicketThreadItemTag.Messages.SocialMediaInstagramStoryMention
+    const isStoryItem =
+        isStoryMention ||
+        item._tag ===
+            TicketThreadItemTag.Messages.SocialMediaInstagramStoryReply
+    const storyHref = isStoryItem ? getStoryMentionHref(item) : undefined
 
     return (
         <Box
@@ -150,8 +181,20 @@ function SocialGroupedMessage({
                     createdDatetime={displayedItem.data.created_datetime}
                 />
             </div>
-            <MessageBody item={displayedItem} />
-            <MessageFooter item={displayedItem} />
+            {isStoryItem && (
+                <ViewOnInstagramLink
+                    mentionType="story"
+                    href={storyHref ?? undefined}
+                />
+            )}
+            {/* Story mentions have no meaningful body — body_text is the
+                generic "Mentioned you in their story" string, already conveyed
+                by ViewOnInstagramLink above. Story replies have real reply text,
+                so MessageBody is kept for them. */}
+            {!isStoryMention && <MessageBody item={displayedItem} />}
+            {!isStoryMention && (
+                <MessageFooter item={displayedItem as MessageFooterItem} />
+            )}
             {children}
             {isPendingMessage ? (
                 <PendingMessageBanner message={displayedItem.data} />
@@ -172,7 +215,11 @@ function GroupedMessage({ item, className, children }: GroupedMessageProps) {
         item._tag === TicketThreadItemTag.Messages.SocialMediaFacebookMessage ||
         item._tag ===
             TicketThreadItemTag.Messages.SocialMediaInstagramDirectMessage ||
-        item._tag === TicketThreadItemTag.Messages.SocialMediaWhatsAppMessage
+        item._tag === TicketThreadItemTag.Messages.SocialMediaWhatsAppMessage ||
+        item._tag ===
+            TicketThreadItemTag.Messages.SocialMediaInstagramStoryMention ||
+        item._tag ===
+            TicketThreadItemTag.Messages.SocialMediaInstagramStoryReply
     ) {
         return (
             <SocialGroupedMessage item={item} className={className}>
@@ -198,7 +245,11 @@ function isNotSocialMessage(
         item._tag !== TicketThreadItemTag.Messages.SocialMediaFacebookMessage &&
         item._tag !==
             TicketThreadItemTag.Messages.SocialMediaInstagramDirectMessage &&
-        item._tag !== TicketThreadItemTag.Messages.SocialMediaWhatsAppMessage
+        item._tag !== TicketThreadItemTag.Messages.SocialMediaWhatsAppMessage &&
+        item._tag !==
+            TicketThreadItemTag.Messages.SocialMediaInstagramStoryMention &&
+        item._tag !==
+            TicketThreadItemTag.Messages.SocialMediaInstagramStoryReply
     )
 }
 

@@ -1390,10 +1390,10 @@ describe('TicketThreadMessageItem', () => {
         expect(screen.getByText(HELLO_MESSAGE_TEXT)).toBeInTheDocument()
     })
 
-    it('renders Instagram story mention', () => {
+    it('renders Instagram story mention with "Mentioned you in a story" label', () => {
         renderItem(createInstagramStoryMentionItem())
 
-        expect(screen.getByText('Story mention')).toBeInTheDocument()
+        expect(screen.getByText('Mentioned you in a story')).toBeInTheDocument()
     })
 
     it('renders Instagram story reply', () => {
