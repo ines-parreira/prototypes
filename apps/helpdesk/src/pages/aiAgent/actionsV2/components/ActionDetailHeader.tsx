@@ -1,17 +1,25 @@
-import { Box, Button, Heading, Icon, Tag, ToggleField } from '@gorgias/axiom'
+import { Link as RouterLink } from 'react-router-dom'
 
-import useGetAppImageUrl from 'pages/aiAgent/actions/hooks/useGetAppImageUrl'
+import {
+    Box,
+    Button,
+    Heading,
+    ToggleField,
+    Tooltip,
+    TooltipContent,
+} from '@gorgias/axiom'
+
 import type { StoreWorkflowsConfiguration } from 'pages/aiAgent/actions/types'
 
 type Props = {
     configuration: StoreWorkflowsConfiguration
+    backHref: string
 }
 
-export const ActionDetailHeader = ({ configuration }: Props) => {
-    const appIconUrl = useGetAppImageUrl(configuration.apps?.[0])
-    const isActive = !configuration.is_draft
+const COMING_SOON_TOOLTIP = 'Coming soon'
 
-    const toggleLabel = isActive ? 'Disable action' : 'Enable action'
+export const ActionDetailHeader = ({ configuration, backHref }: Props) => {
+    const isActive = !configuration.is_draft
 
     return (
         <Box
@@ -22,36 +30,42 @@ export const ActionDetailHeader = ({ configuration }: Props) => {
             w="100%"
         >
             <Box flexDirection="row" alignItems="center" gap="sm">
-                {appIconUrl && (
-                    <img
-                        src={appIconUrl}
-                        alt=""
-                        width={24}
-                        height={24}
-                        aria-hidden="true"
-                    />
-                )}
+                <Button
+                    as={RouterLink}
+                    to={backHref}
+                    icon="arrow-left"
+                    size="sm"
+                    variant="secondary"
+                    aria-label="Back to Actions Library"
+                />
                 <Heading size="xl">{configuration.name}</Heading>
-                <Tag color={isActive ? 'green' : 'grey'}>
-                    {isActive ? 'Active' : 'Draft'}
-                </Tag>
             </Box>
             <Box flexDirection="row" alignItems="center" gap="sm">
-                <ToggleField
-                    label={toggleLabel}
-                    value={isActive}
-                    onChange={() => {
-                        // Wiring is a follow-up M2 ticket.
-                    }}
-                />
-                <Button
-                    variant="secondary"
-                    icon={<Icon name="trash-empty" aria-hidden />}
-                    aria-label="Delete action"
-                    onClick={() => {
-                        // Wiring is a follow-up M2 ticket.
-                    }}
-                />
+                <Tooltip
+                    trigger={
+                        <ToggleField
+                            label="Enabled"
+                            value={isActive}
+                            isDisabled
+                            onChange={() => {}}
+                        />
+                    }
+                >
+                    <TooltipContent title={COMING_SOON_TOOLTIP} />
+                </Tooltip>
+                <Tooltip
+                    trigger={
+                        <Button
+                            variant="secondary"
+                            isDisabled
+                            onClick={() => {}}
+                        >
+                            Test
+                        </Button>
+                    }
+                >
+                    <TooltipContent title={COMING_SOON_TOOLTIP} />
+                </Tooltip>
             </Box>
         </Box>
     )

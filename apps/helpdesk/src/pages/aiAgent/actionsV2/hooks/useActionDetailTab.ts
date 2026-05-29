@@ -2,12 +2,12 @@ import { useCallback } from 'react'
 
 import { useHistory, useLocation } from 'react-router-dom'
 
-export const ACTION_DETAIL_TAB_VALUES = ['usage', 'config'] as const
+export const ACTION_DETAIL_TAB_VALUES = ['config', 'usage'] as const
 
 export type ActionDetailTab = (typeof ACTION_DETAIL_TAB_VALUES)[number]
 
 const TAB_QUERY_PARAM = 'tab'
-const DEFAULT_TAB: ActionDetailTab = 'usage'
+const DEFAULT_TAB: ActionDetailTab = 'config'
 
 const isActionDetailTab = (value: string | null): value is ActionDetailTab =>
     value !== null &&

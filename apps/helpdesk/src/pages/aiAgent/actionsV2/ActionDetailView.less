@@ -1,0 +1,7 @@
+:local {
+    // bootstrap's .container-fluid sets `display: flex` with !important; override here to opt this page out of the legacy layout.
+    :global(.container-fluid).container {
+        display: block !important;
+        padding: 0;
+    }
+}

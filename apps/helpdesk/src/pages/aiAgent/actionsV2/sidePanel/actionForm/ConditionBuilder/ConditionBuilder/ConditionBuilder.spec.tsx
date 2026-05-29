@@ -143,8 +143,8 @@ describe('ConditionBuilder', () => {
                 logicOperator="all"
                 fields={fields}
                 getOperators={() => operators}
-                getValueOptions={(fieldId) =>
-                    fieldId === 'order_status'
+                getValueOptions={(condition) =>
+                    condition.field === 'order_status'
                         ? [
                               { value: 'paid', label: 'Paid' },
                               { value: 'pending', label: 'Pending' },

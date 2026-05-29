@@ -1,0 +1,84 @@
+:local {
+    .row {
+        box-sizing: border-box;
+
+        display: flex;
+        gap: var(--spacing-xs);
+        align-items: center;
+
+        padding: var(--spacing-xxs) var(--spacing-xs);
+
+        border: 1px solid var(--border-neutral-default);
+        border-radius: var(--spacing-sm);
+
+        background-color: var(--elevation-neutral-mid);
+
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.04);
+    }
+
+    .interactive {
+        cursor: pointer;
+
+        &:focus-visible {
+            outline: 2px solid var(--border-accent-default);
+            outline-offset: 2px;
+        }
+    }
+
+    .dragHandle {
+        display: inline-flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+
+        width: 20px;
+        height: 32px;
+        padding: 0;
+
+        border: 0;
+
+        background: transparent;
+
+        color: var(--content-neutral-secondary);
+        cursor: grab;
+
+        &:focus-visible {
+            outline: 2px solid var(--border-accent-default);
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+
+        &:active {
+            cursor: grabbing;
+        }
+    }
+
+    .field {
+        box-sizing: border-box;
+
+        display: flex;
+        flex: 1 1 0;
+        gap: var(--spacing-xxs);
+        align-items: center;
+        min-width: 0;
+        height: 32px;
+
+        padding: 0 var(--spacing-xxs);
+
+        border: 1px solid var(--border-neutral-default);
+        border-radius: 4px;
+
+        background-color: var(--elevation-neutral-mid);
+    }
+
+    .fieldIcon {
+        flex-shrink: 0;
+    }
+
+    .fieldText {
+        overflow: hidden;
+
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+}

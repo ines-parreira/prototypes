@@ -485,9 +485,9 @@ describe('<ActionsPlatformUseCaseTemplateFormView />', () => {
 
         act(() => {
             fireEvent.click(
-                screen.getByText(
-                    'Require customer confirmation to perform Action',
-                ),
+                screen.getByRole('switch', {
+                    name: /customer confirmation/i,
+                }),
             )
         })
 

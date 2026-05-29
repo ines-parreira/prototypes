@@ -5,8 +5,6 @@ import { useParams } from 'react-router-dom'
 
 import {
     Box,
-    Breadcrumb,
-    Breadcrumbs,
     Heading,
     Icon,
     Link,
@@ -22,9 +20,12 @@ import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLay
 import { SUPPORT_ACTIONS } from 'pages/aiAgent/constants'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
+import { ActionConfigTab } from './components/ActionConfigTab'
 import { ActionDetailHeader } from './components/ActionDetailHeader'
 import type { ActionDetailTab } from './hooks/useActionDetailTab'
 import { useActionDetailTab } from './hooks/useActionDetailTab'
+
+import css from './ActionDetailView.less'
 
 const getDocumentTitle = (actionName: string) => `Edit: ${actionName} — Actions`
 
@@ -65,23 +66,24 @@ const ActionDetailView = () => {
     if (isInitialLoading) {
         return (
             <AiAgentLayout
+                fullscreen
                 isLoading
                 shopName={shopName}
                 title={SUPPORT_ACTIONS}
+                className={css.container}
             />
         )
     }
 
     if (!configuration) {
         return (
-            <AiAgentLayout shopName={shopName} title={SUPPORT_ACTIONS}>
-                <Box
-                    role="alert"
-                    aria-live="assertive"
-                    p="lg"
-                    flexDirection="column"
-                    gap="sm"
-                >
+            <AiAgentLayout
+                fullscreen
+                shopName={shopName}
+                title={SUPPORT_ACTIONS}
+                className={css.container}
+            >
+                <Box role="alert" p="lg" flexDirection="column" gap="sm">
                     <Icon name="warning-triangle" color="red" />
                     <Heading size="md">Action not found</Heading>
                     <Text>
@@ -95,19 +97,19 @@ const ActionDetailView = () => {
     }
 
     return (
-        <AiAgentLayout shopName={shopName} title={SUPPORT_ACTIONS}>
-            <Box flexDirection="column" gap="md" p="md">
-                <nav aria-label="Breadcrumb">
-                    <Breadcrumbs>
-                        <Breadcrumb>
-                            <Link href={routes.actions}>Actions Library</Link>
-                        </Breadcrumb>
-                        <Breadcrumb aria-current="page">
-                            {configuration.name}
-                        </Breadcrumb>
-                    </Breadcrumbs>
-                </nav>
-                <ActionDetailHeader configuration={configuration} />
+        <AiAgentLayout
+            fullscreen
+            shopName={shopName}
+            title={SUPPORT_ACTIONS}
+            className={css.container}
+        >
+            <Box flexDirection="column" gap="md" w="100%">
+                <Box px="lg" pt="lg">
+                    <ActionDetailHeader
+                        configuration={configuration}
+                        backHref={routes.actions}
+                    />
+                </Box>
                 <Tabs
                     selectedItem={tab}
                     onSelectionChange={(key: Key) =>
@@ -115,22 +117,16 @@ const ActionDetailView = () => {
                     }
                 >
                     <TabList>
+                        <TabItem id="config" label="Configuration" />
                         <TabItem id="usage" label="Usage" />
-                        <TabItem id="config" label="Config" />
                     </TabList>
-                    <TabPanel id="usage">
-                        <Box p="lg">
-                            <Text color="var(--content-neutral-secondary)">
-                                Usage tab content coming soon.
-                            </Text>
-                        </Box>
-                    </TabPanel>
                     <TabPanel id="config">
-                        <Box p="lg">
-                            <Text color="var(--content-neutral-secondary)">
-                                Config tab content coming soon.
-                            </Text>
-                        </Box>
+                        <ActionConfigTab configuration={configuration} />
+                    </TabPanel>
+                    <TabPanel id="usage">
+                        <Text color="var(--content-neutral-secondary)">
+                            Usage tab content coming soon.
+                        </Text>
                     </TabPanel>
                 </Tabs>
             </Box>

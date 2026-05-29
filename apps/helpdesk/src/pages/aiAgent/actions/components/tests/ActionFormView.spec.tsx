@@ -449,9 +449,9 @@ describe('<ActionFormView />', () => {
 
         act(() => {
             fireEvent.click(
-                screen.getByText(
-                    'Require customer confirmation to perform Action',
-                ),
+                screen.getByRole('switch', {
+                    name: /customer confirmation/i,
+                }),
             )
         })
 
@@ -578,13 +578,12 @@ describe('<ActionFormView />', () => {
             </VisualBuilderContext.Provider>,
         )
 
-        const confirmationCheckbox: HTMLInputElement =
-            await screen.findByLabelText(
-                'Require customer confirmation to perform Action',
-            )
-        expect(confirmationCheckbox.checked).toBe(true)
+        const confirmationToggle = await screen.findByRole('switch', {
+            name: /customer confirmation/i,
+        })
+        expect(confirmationToggle).toBeChecked()
         act(() => {
-            user.click(confirmationCheckbox)
+            user.click(confirmationToggle)
         })
 
         let modalHeader = await screen.findByText(
@@ -597,11 +596,11 @@ describe('<ActionFormView />', () => {
             user.click(screen.getByText('Back To Editing'))
         })
         await waitFor(() => {
-            expect(confirmationCheckbox.checked).toBe(true)
+            expect(confirmationToggle).toBeChecked()
         })
 
         act(() => {
-            user.click(confirmationCheckbox)
+            user.click(confirmationToggle)
         })
 
         modalHeader = await screen.findByText(

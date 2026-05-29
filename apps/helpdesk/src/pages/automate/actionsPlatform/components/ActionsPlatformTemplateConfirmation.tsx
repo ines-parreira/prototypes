@@ -3,12 +3,9 @@ import { useCallback, useMemo, useState } from 'react'
 import _keyBy from 'lodash/keyBy'
 import _noop from 'lodash/noop'
 
-import {
-    LegacyBanner as Banner,
-    LegacyButton as Button,
-    LegacyCheckBoxField as CheckBoxField,
-} from '@gorgias/axiom'
+import { LegacyBanner as Banner, LegacyButton as Button } from '@gorgias/axiom'
 
+import { ConfirmationToggle } from 'pages/aiAgent/actionsV2/sidePanel/actionForm/ConfirmationToggle'
 import type { VisualBuilderNode } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import { isReusableLLMPromptCallNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import Modal from 'pages/common/components/modal/Modal'
@@ -71,12 +68,11 @@ const ActionsPlatformTemplateConfirmation = ({
 
     return (
         <>
-            <CheckBoxField
-                className={css.container}
-                value={value}
-                onChange={handleChange}
-                caption="Recommended for irreversible Actions"
-                label="Require customer confirmation to perform Action"
+            <ConfirmationToggle
+                isEnabled={value}
+                onToggle={handleChange}
+                label="Customer confirmation"
+                description="Require customer confirmation to perform this Action. Recommended for irreversible Actions."
             />
             <Modal
                 isOpen={isOpen}

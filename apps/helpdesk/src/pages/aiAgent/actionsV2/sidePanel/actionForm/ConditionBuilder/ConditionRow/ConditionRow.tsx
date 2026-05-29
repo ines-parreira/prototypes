@@ -64,6 +64,10 @@ export const ConditionRow = ({
         (option) => option.value === condition.value,
     )
 
+    const hasValueOptions = !!valueOptions && valueOptions.length > 0
+    const isValueless = !!valueOptions && valueOptions.length === 0
+    const isDateField = !valueOptions && selectedField?.type === 'date'
+
     return (
         <Box flexDirection="row" alignItems="center" gap="xs" flexWrap="wrap">
             <span className={css.fieldLabel} aria-label="Field">
@@ -98,7 +102,8 @@ export const ConditionRow = ({
                     />
                 )}
             </Select>
-            {valueOptions && valueOptions.length > 0 ? (
+            {isValueless && null}
+            {hasValueOptions && (
                 <Select
                     items={valueOptions}
                     keyName="value"
@@ -129,7 +134,8 @@ export const ConditionRow = ({
                         />
                     )}
                 </Select>
-            ) : selectedField?.type === 'date' ? (
+            )}
+            {isDateField && (
                 <span className={css.datePickerSlot}>
                     <DatePicker
                         aria-label="Value"
@@ -157,7 +163,8 @@ export const ConditionRow = ({
                         }}
                     />
                 </span>
-            ) : (
+            )}
+            {!isValueless && !hasValueOptions && !isDateField && (
                 <Box flexGrow={1}>
                     <TextField
                         aria-label="Value"

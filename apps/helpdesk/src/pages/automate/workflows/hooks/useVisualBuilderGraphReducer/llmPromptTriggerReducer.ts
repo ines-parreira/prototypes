@@ -45,6 +45,10 @@ export type VisualBuilderLLMPromptTriggerAction =
           condition: LLMPromptTriggerNodeType['data']['conditions'][number]
       }
     | {
+          type: 'SET_LLM_PROMPT_TRIGGER_CONDITIONS'
+          conditions: LLMPromptTriggerNodeType['data']['conditions']
+      }
+    | {
           type: 'SET_LLM_PROMPT_TRIGGER_DEACTIVATED_DATETIME'
           deactivated_datetime: string | null
       }
@@ -64,6 +68,7 @@ const visualBuilderLLMPromptTriggerActionTypes: ActionTypes = {
     DELETE_LLM_PROMPT_TRIGGER_CONDITION: true,
     ADD_LLM_PROMPT_TRIGGER_CONDITION: true,
     SET_LLM_PROMPT_TRIGGER_CONDITION: true,
+    SET_LLM_PROMPT_TRIGGER_CONDITIONS: true,
     SET_LLM_PROMPT_TRIGGER_DEACTIVATED_DATETIME: true,
 }
 
@@ -172,6 +177,14 @@ export function llmPromptTriggerReducer(
 
                 if (node) {
                     node.data.conditions[action.index] = action.condition
+                }
+            })
+        case 'SET_LLM_PROMPT_TRIGGER_CONDITIONS':
+            return produce(graph, (draft) => {
+                const node = draft.nodes.find(isLLMPromptTriggerNodeType)
+
+                if (node) {
+                    node.data.conditions = action.conditions
                 }
             })
         case 'SET_LLM_PROMPT_TRIGGER_DEACTIVATED_DATETIME':

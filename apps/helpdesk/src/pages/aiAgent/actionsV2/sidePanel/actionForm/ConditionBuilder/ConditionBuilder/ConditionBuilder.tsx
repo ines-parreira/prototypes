@@ -22,7 +22,9 @@ type Props = {
     fields: ConditionField[]
     categories?: ConditionFieldCategory[]
     getOperators: (fieldId: string) => ConditionOperator[]
-    getValueOptions?: (fieldId: string) => ConditionValueOption[] | undefined
+    getValueOptions?: (
+        condition: Condition,
+    ) => ConditionValueOption[] | undefined
     onConditionsChange: (next: Condition[]) => void
     onLogicChange: (next: LogicOperator) => void
     /** Used for `aria-live` announcement when conditions are added or removed. */
@@ -107,9 +109,7 @@ export const ConditionBuilder = ({
                                 condition={condition}
                                 fields={fields}
                                 operators={getOperators(condition.field)}
-                                valueOptions={getValueOptions?.(
-                                    condition.field,
-                                )}
+                                valueOptions={getValueOptions?.(condition)}
                                 onChange={updateCondition}
                                 onRemove={() => removeCondition(condition.id)}
                                 canRemove={conditions.length > 0}

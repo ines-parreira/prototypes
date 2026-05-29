@@ -26,17 +26,22 @@ jest.mock('pages/aiAgent/components/AiAgentLayout/AiAgentLayout', () => ({
     }: {
         children?: ReactNode
         isLoading?: boolean
-    }) => (
-        <div data-testing="ai-agent-layout">
-            {isLoading ? (
-                <span role="status" aria-label="Loading">
-                    Loading…
-                </span>
-            ) : (
-                children
-            )}
-        </div>
-    ),
+    }) =>
+        isLoading ? (
+            <span role="status" aria-label="Loading">
+                Loading…
+            </span>
+        ) : (
+            <>{children}</>
+        ),
+}))
+
+jest.mock('../components/ActionConfigTab', () => ({
+    ActionConfigTab: ({
+        configuration,
+    }: {
+        configuration: { id: string; name: string }
+    }) => <div>Config form for {configuration.name}</div>,
 }))
 
 const mockUseGetStoreWorkflowsConfigurations = jest.mocked(
@@ -126,22 +131,22 @@ describe('<ActionDetailView />', () => {
         )
     })
 
-    it('renders the action name, status badge and header controls', () => {
+    it('renders the action name and header controls', () => {
         renderView()
 
         expect(
             screen.getByRole('heading', { name: 'Get order info' }),
         ).toBeInTheDocument()
-        expect(screen.getByText('Active')).toBeInTheDocument()
         expect(
-            screen.getByRole('switch', { name: /disable action/i }),
-        ).toBeInTheDocument()
-        expect(
-            screen.getByRole('button', { name: /delete action/i }),
-        ).toBeInTheDocument()
+            screen.getByRole('link', { name: /back to actions library/i }),
+        ).toHaveAttribute('href', ACTIONS_LIBRARY_PATH)
+        const enabledToggle = screen.getByRole('switch', { name: /enabled/i })
+        expect(enabledToggle).toBeInTheDocument()
+        expect(enabledToggle).toBeChecked()
+        expect(screen.getByRole('button', { name: 'Test' })).toBeInTheDocument()
     })
 
-    it('shows the Draft badge and "Enable action" label when the configuration is a draft', () => {
+    it('shows the Enabled toggle in the off state when the configuration is a draft', () => {
         mockUseGetStoreWorkflowsConfigurations.mockReturnValue(
             mockHookReturn({
                 data: [{ ...baseConfiguration, is_draft: true }],
@@ -150,54 +155,60 @@ describe('<ActionDetailView />', () => {
 
         renderView()
 
-        expect(screen.getByText('Draft')).toBeInTheDocument()
+        const enabledToggle = screen.getByRole('switch', { name: /enabled/i })
+        expect(enabledToggle).toBeInTheDocument()
+        expect(enabledToggle).not.toBeChecked()
+    })
+
+    it('navigates away from the action detail when the back link is clicked', async () => {
+        const { user } = renderView()
+
         expect(
-            screen.getByRole('switch', { name: /enable action/i }),
+            screen.getByRole('heading', { name: 'Get order info' }),
+        ).toBeInTheDocument()
+
+        await user.click(
+            screen.getByRole('link', { name: /back to actions library/i }),
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.queryByRole('heading', { name: 'Get order info' }),
+            ).not.toBeInTheDocument()
+        })
+    })
+
+    it('defaults to the Configuration tab when no ?tab= param is present', () => {
+        renderView()
+
+        const configTab = screen.getByRole('tab', { name: 'Configuration' })
+        const usageTab = screen.getByRole('tab', { name: 'Usage' })
+        expect(configTab).toHaveAttribute('aria-selected', 'true')
+        expect(usageTab).toHaveAttribute('aria-selected', 'false')
+        expect(
+            screen.getByText('Config form for Get order info'),
         ).toBeInTheDocument()
     })
 
-    it('renders the breadcrumb back to the Actions Library', () => {
-        renderView()
-
-        const nav = screen.getByRole('navigation', { name: 'Breadcrumb' })
-        expect(nav).toBeInTheDocument()
-        const libraryLink = screen.getByRole('link', {
-            name: 'Actions Library',
-        })
-        expect(libraryLink).toHaveAttribute('href', ACTIONS_LIBRARY_PATH)
-    })
-
-    it('defaults to the Usage tab when no ?tab= param is present', () => {
-        renderView()
+    it('selects the Usage tab when the URL contains ?tab=usage', () => {
+        renderView(`${ROUTE_URL}?tab=usage`)
 
         const usageTab = screen.getByRole('tab', { name: 'Usage' })
-        const configTab = screen.getByRole('tab', { name: 'Config' })
         expect(usageTab).toHaveAttribute('aria-selected', 'true')
-        expect(configTab).toHaveAttribute('aria-selected', 'false')
         expect(
             screen.getByText('Usage tab content coming soon.'),
-        ).toBeInTheDocument()
-    })
-
-    it('selects the Config tab when the URL contains ?tab=config', () => {
-        renderView(`${ROUTE_URL}?tab=config`)
-
-        const configTab = screen.getByRole('tab', { name: 'Config' })
-        expect(configTab).toHaveAttribute('aria-selected', 'true')
-        expect(
-            screen.getByText('Config tab content coming soon.'),
         ).toBeInTheDocument()
     })
 
     it('updates the URL when the user switches tabs', async () => {
         const { user } = renderView()
 
-        await user.click(screen.getByRole('tab', { name: 'Config' }))
+        await user.click(screen.getByRole('tab', { name: 'Usage' }))
 
         await waitFor(() => {
-            expect(getLocationSearch()).toBe('?tab=config')
+            expect(getLocationSearch()).toBe('?tab=usage')
         })
-        expect(screen.getByRole('tab', { name: 'Config' })).toHaveAttribute(
+        expect(screen.getByRole('tab', { name: 'Usage' })).toHaveAttribute(
             'aria-selected',
             'true',
         )
@@ -230,8 +241,7 @@ describe('<ActionDetailView />', () => {
 
         renderView()
 
-        const alert = screen.getByRole('alert')
-        expect(alert).toHaveAttribute('aria-live', 'assertive')
+        expect(screen.getByRole('alert')).toBeInTheDocument()
         expect(
             screen.getByRole('heading', { name: 'Action not found' }),
         ).toBeInTheDocument()
