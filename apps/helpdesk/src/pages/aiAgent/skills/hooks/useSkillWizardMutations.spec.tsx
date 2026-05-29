@@ -281,6 +281,57 @@ describe('useSkillWizardMutations', () => {
         })
     })
 
+    describe('ensureSkillStatus', () => {
+        it('PATCHes the default status when the skill has no config yet', async () => {
+            const { result } = renderMutations(
+                seedWizard({ state: { skills_configuration: [] } }),
+            )
+
+            act(() => {
+                result.current.mutations.ensureSkillStatus({
+                    skillId: 5641448,
+                    status: SkillWizardSkillStatus.Approved,
+                })
+            })
+
+            await waitFor(() => {
+                expect(mockPatchWizard).toHaveBeenCalledWith(
+                    STUB_CLIENT,
+                    { help_center_id: HELP_CENTER_ID },
+                    {
+                        skills_configuration: [
+                            { id: 5641448, status: 'approved' },
+                        ],
+                    },
+                )
+            })
+        })
+
+        it('does not overwrite an existing config for the skill', () => {
+            const { result } = renderMutations(
+                seedWizard({
+                    state: {
+                        skills_configuration: [
+                            {
+                                id: 5641448,
+                                status: SkillWizardSkillStatus.Draft,
+                            },
+                        ],
+                    },
+                }),
+            )
+
+            act(() => {
+                result.current.mutations.ensureSkillStatus({
+                    skillId: 5641448,
+                    status: SkillWizardSkillStatus.Approved,
+                })
+            })
+
+            expect(mockPatchWizard).not.toHaveBeenCalled()
+        })
+    })
+
     describe('saveInstructions', () => {
         beforeEach(() => {
             jest.useFakeTimers()

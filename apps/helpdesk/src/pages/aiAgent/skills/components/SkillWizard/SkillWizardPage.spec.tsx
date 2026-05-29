@@ -7,7 +7,10 @@ import { ThemeProvider } from 'core/theme'
 import { useGetWizard } from 'models/helpCenter/queries'
 import { useEnrichedSkillWizard } from 'pages/aiAgent/skills/hooks/useEnrichedSkillWizard'
 import type { SkillWizardData } from 'pages/aiAgent/skills/types'
-import { SkillWizardStatus } from 'pages/aiAgent/skills/types'
+import {
+    SkillWizardSkillStatus,
+    SkillWizardStatus,
+} from 'pages/aiAgent/skills/types'
 
 import { SkillWizardPage } from './SkillWizardPage'
 
@@ -36,6 +39,7 @@ const mockNotStartedWizard: SkillWizardData = {
 const mockStart = jest.fn()
 const mockSetStepLocation = jest.fn()
 const mockSetSkillStatus = jest.fn()
+const mockEnsureSkillStatus = jest.fn()
 const mockSaveInstructions = jest.fn()
 
 jest.mock('pages/aiAgent/skills/hooks/useEnrichedSkillWizard')
@@ -48,6 +52,7 @@ jest.mock('pages/aiAgent/skills/hooks/useSkillWizardMutations', () => ({
         start: mockStart,
         setStepLocation: mockSetStepLocation,
         setSkillStatus: mockSetSkillStatus,
+        ensureSkillStatus: mockEnsureSkillStatus,
         saveInstructions: mockSaveInstructions,
         isSaving: false,
     }),
@@ -152,6 +157,7 @@ describe('SkillWizardPage', () => {
         mockStart.mockClear()
         mockSetStepLocation.mockClear()
         mockSetSkillStatus.mockClear()
+        mockEnsureSkillStatus.mockClear()
         mockSaveInstructions.mockClear()
         jest.useFakeTimers()
         mockUseGetWizard.mockReturnValue({
@@ -384,20 +390,11 @@ describe('SkillWizardPage', () => {
             )
         })
 
-        it('does not commit a status when the user leaves a skill — recap derives defaults instead', async () => {
+        it('commits the default approved status for the skill the user leaves', async () => {
             const user = userEvent.setup({
                 advanceTimers: jest.advanceTimersByTime,
             })
             const skillA = reviewableSkill(5641448)
-            skillA.article = {
-                id: 11,
-                translation: {
-                    title: 'Returns',
-                    content: '<p>Non-empty instructions</p>',
-                    locale: 'en',
-                    intents: [],
-                },
-            } as never
             const skillB = reviewableSkill(5641449)
             mockUseSkillWizard.mockReturnValue(
                 buildWizardReturn({
@@ -414,6 +411,10 @@ describe('SkillWizardPage', () => {
                 screen.getByRole('button', { name: 'Leave step 1' }),
             )
 
+            expect(mockEnsureSkillStatus).toHaveBeenCalledWith({
+                skillId: skillA.skill_id,
+                status: SkillWizardSkillStatus.Approved,
+            })
             expect(mockSetSkillStatus).not.toHaveBeenCalled()
         })
     })

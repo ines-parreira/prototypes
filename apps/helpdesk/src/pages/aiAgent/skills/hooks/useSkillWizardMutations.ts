@@ -185,6 +185,25 @@ export const useSkillWizardMutations = (helpCenterId: number) => {
         [patch, mergeWithCurrent],
     )
 
+    const ensureSkillStatus = useCallback(
+        ({ skillId, status }: SkillStatusArgs) => {
+            const current = queryClient.getQueryData<SkillWizardData | null>(
+                wizardQueryKey,
+            )
+            const alreadyConfigured =
+                current?.state.skills_configuration?.some(
+                    (c) => c.id === skillId,
+                ) ?? false
+            if (alreadyConfigured) return
+            patch({
+                skills_configuration: mergeWithCurrent([
+                    { id: skillId, status },
+                ]),
+            })
+        },
+        [patch, mergeWithCurrent, queryClient, wizardQueryKey],
+    )
+
     const complete = useCallback(
         () =>
             patchWizardMutateAsync([
@@ -254,6 +273,7 @@ export const useSkillWizardMutations = (helpCenterId: number) => {
         start,
         setStepLocation,
         setSkillStatus,
+        ensureSkillStatus,
         saveInstructions,
         complete,
         isSaving,

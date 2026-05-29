@@ -104,13 +104,21 @@ const SkillWizardPageContent = ({
     }, [history, onCloseRoute])
 
     const onStepChange = useCallback(
-        (step: number) => {
+        (step: number, prevStep: number) => {
             const params = new URLSearchParams(history.location.search)
             params.set(STEP_QUERY_PARAM, String(step))
             history.replace({ search: params.toString() })
             mutations.setStepLocation(computeStepLocation(step))
+
+            const leftSkill = reviewableSkills[prevStep - 1]
+            if (leftSkill) {
+                mutations.ensureSkillStatus({
+                    skillId: leftSkill.skill_id,
+                    status: SkillWizardSkillStatus.Approved,
+                })
+            }
         },
-        [history, mutations, computeStepLocation],
+        [history, mutations, computeStepLocation, reviewableSkills],
     )
 
     const draftKnowledge = useCallback(
