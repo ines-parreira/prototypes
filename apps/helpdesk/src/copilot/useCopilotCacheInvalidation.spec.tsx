@@ -139,6 +139,23 @@ describe('useCopilotCacheInvalidation', () => {
             })
         })
 
+        it('also invalidates the article list on update_draft_agent_skill', () => {
+            const { wrapper, invalidateSpy } = makeWrapper()
+            renderHook(() => useCopilotCacheInvalidation(), { wrapper })
+
+            copilotMock.__emit(
+                makeInfo({
+                    toolName: 'update_draft_agent_skill',
+                    args: { shop_name: 'shop', skill_id: 42 },
+                    result: { id: 42, helpCenterId: 7 },
+                }),
+            )
+
+            expect(invalidateSpy).toHaveBeenCalledWith({
+                queryKey: helpCenterKeys.articles(7),
+            })
+        })
+
         it('falls back to helpCenterKeys.details() when payload is malformed', () => {
             const { wrapper, invalidateSpy } = makeWrapper()
             renderHook(() => useCopilotCacheInvalidation(), { wrapper })
@@ -238,6 +255,23 @@ describe('useCopilotCacheInvalidation', () => {
 
             expect(invalidateSpy).toHaveBeenCalledWith({
                 queryKey: helpCenterKeys.article(3, 99),
+            })
+        })
+
+        it('also invalidates the article list on update_draft_guidance', () => {
+            const { wrapper, invalidateSpy } = makeWrapper()
+            renderHook(() => useCopilotCacheInvalidation(), { wrapper })
+
+            copilotMock.__emit(
+                makeInfo({
+                    toolName: 'update_draft_guidance',
+                    args: { shop_name: 'shop', article_id: 99 },
+                    result: { id: 99, helpCenterId: 3 },
+                }),
+            )
+
+            expect(invalidateSpy).toHaveBeenCalledWith({
+                queryKey: helpCenterKeys.articles(3),
             })
         })
 

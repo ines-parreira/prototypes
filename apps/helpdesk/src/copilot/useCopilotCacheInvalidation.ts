@@ -40,6 +40,9 @@ export function useCopilotCacheInvalidation(): void {
                     queryClient.invalidateQueries({
                         queryKey: helpCenterKeys.article(helpCenterId, id),
                     })
+                    queryClient.invalidateQueries({
+                        queryKey: helpCenterKeys.articles(helpCenterId),
+                    })
                 } else if (info.toolName === 'publish_agent_skill') {
                     queryClient.invalidateQueries({
                         queryKey: helpCenterKeys.article(helpCenterId, id),
@@ -74,6 +77,9 @@ export function useCopilotCacheInvalidation(): void {
                 if (info.toolName === 'update_draft_guidance') {
                     queryClient.invalidateQueries({
                         queryKey: helpCenterKeys.article(helpCenterId, id),
+                    })
+                    queryClient.invalidateQueries({
+                        queryKey: helpCenterKeys.articles(helpCenterId),
                     })
                 } else if (info.toolName === 'publish_guidance') {
                     queryClient.invalidateQueries({
