@@ -13,6 +13,7 @@ export enum AiAgentNotificationType {
     UrlSyncCompleted = 'url-sync-completed',
     UrlSyncFailed = 'url-sync-failed',
     SkillWizardReady = 'skill-wizard-ready',
+    SkillWizardNudge = 'skill-wizard-nudge',
 }
 
 type AiAgentNotificationPayloadBase = {
@@ -57,8 +58,10 @@ type SyncNotificationPayload = AiAgentNotificationPayloadBase & {
     source_type: 'domain' | 'url'
 }
 
-type SkillWizardReadyNotificationPayload = AiAgentNotificationPayloadBase & {
-    ai_agent_notification_type: AiAgentNotificationType.SkillWizardReady
+type SkillWizardNotificationPayload = AiAgentNotificationPayloadBase & {
+    ai_agent_notification_type:
+        | AiAgentNotificationType.SkillWizardReady
+        | AiAgentNotificationType.SkillWizardNudge
     help_center_id: number
     account_id: number
 }
@@ -69,7 +72,7 @@ export type AiAgentNotificationPayload =
     | TrialRequestNotificationPayload
     | NewOpportunityNotificationPayload
     | SyncNotificationPayload
-    | SkillWizardReadyNotificationPayload
+    | SkillWizardNotificationPayload
 
 export type WorkflowConfigurationUpdatedNotificationPayload = {
     store_name: string

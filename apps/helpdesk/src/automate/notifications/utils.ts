@@ -142,6 +142,13 @@ export const getNotificationParams = (
                 subtitle: 'Your recommended skills are ready for review.',
                 redirectTo: routes.skillsWizard,
             }
+        case AiAgentNotificationType.SkillWizardNudge:
+            return {
+                title: 'Finish setting up your skills',
+                subtitle:
+                    'You have skills ready to enable. Pick up where you left off.',
+                redirectTo: routes.skillsWizard,
+            }
         default:
             return null
     }

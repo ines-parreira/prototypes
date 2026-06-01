@@ -413,6 +413,54 @@ describe('AiAgentNotification', () => {
         expect(logEvent).not.toHaveBeenCalled()
     })
 
+    it('should render SkillWizardNudge notification and redirect to the backend store skills wizard when clicked', () => {
+        const backendShopName = 'backend-store.myshopify.com'
+        const notification: Notification<AiAgentNotificationPayload> = {
+            id: '1',
+            inserted_datetime: '2024-11-04T13:07:00',
+            read_datetime: null,
+            seen_datetime: null,
+            type: 'automate-setup-and-optimization',
+            payload: {
+                shop_name: backendShopName,
+                shop_type: 'shopify',
+                ai_agent_notification_type:
+                    AiAgentNotificationType.SkillWizardNudge,
+                help_center_id: 7,
+                account_id: 42,
+            },
+        }
+
+        const { getByRole, getByText } = render(
+            <AiAgentNotification notification={notification} />,
+        )
+
+        expect(getByText('Finish setting up your skills')).toBeInTheDocument()
+        expect(
+            getByText(
+                'You have skills ready to enable. Pick up where you left off.',
+            ),
+        ).toBeInTheDocument()
+
+        const linkElement = getByRole('link', {
+            name: /finish setting up your skills/i,
+        })
+        expect(linkElement).toHaveAttribute(
+            'href',
+            `/app/ai-agent/shopify/${backendShopName}/skills/wizard`,
+        )
+
+        fireEvent.click(linkElement)
+
+        expect(
+            defaultUseAiAgentOnboardingNotification.handleOnSave,
+        ).not.toHaveBeenCalled()
+        expect(logEvent).toHaveBeenCalledWith(
+            SegmentEvent.AiAgentOnboardingNotificationClicked,
+            { type: AiAgentNotificationType.SkillWizardNudge },
+        )
+    })
+
     it.each(notifications)(
         'should log event when $type notification is clicked',
         ({ type, payload, redirectTo }) => {

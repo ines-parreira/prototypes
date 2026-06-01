@@ -341,6 +341,25 @@ describe('getNotificationParams', () => {
         })
     })
 
+    it('should return correct params for SkillWizardNudge', () => {
+        const payload = {
+            ...basePayload,
+            ai_agent_notification_type:
+                AiAgentNotificationType.SkillWizardNudge,
+            help_center_id: 7,
+            account_id: 42,
+        } as const
+
+        const result = getNotificationParams(payload, null)
+
+        expect(result).toEqual({
+            title: 'Finish setting up your skills',
+            subtitle:
+                'You have skills ready to enable. Pick up where you left off.',
+            redirectTo: '/app/ai-agent/shopify/store_1/skills/wizard',
+        })
+    })
+
     it('should return null for unsupported notification series', () => {
         const payload = {
             ...basePayload,
