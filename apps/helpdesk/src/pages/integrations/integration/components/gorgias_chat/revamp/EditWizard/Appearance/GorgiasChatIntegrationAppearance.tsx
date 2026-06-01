@@ -138,11 +138,15 @@ export const GorgiasChatIntegrationAppearanceRevamp = ({
                             launcher={values.launcher}
                             mainColor={values.mainColor}
                             position={values.position}
+                            largeChatEnabled={values.largeChatEnabled}
                             onLauncherChange={(launcher) =>
                                 setValue('launcher', launcher)
                             }
                             onPositionChange={(position) =>
                                 setValue('position', position)
+                            }
+                            onLargeChatEnabledChange={(value) =>
+                                setValue('largeChatEnabled', value)
                             }
                         />
                         <LegalCard

@@ -178,6 +178,7 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
                 image_type: 'agent-picture',
                 name_type: 'agent-first-name',
             },
+            large_chat_enabled: true,
         })
         expect(form.meta).toEqual({
             language: 'en-US',

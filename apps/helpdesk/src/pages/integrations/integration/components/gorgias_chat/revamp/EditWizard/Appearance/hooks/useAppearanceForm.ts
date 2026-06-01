@@ -46,6 +46,7 @@ export type AppearanceFormValues = {
     offlineIntroductionText: string
     position: GorgiasChatPosition
     launcher: GorgiasChatLauncherSettings
+    largeChatEnabled: boolean
     avatar: GorgiasChatAvatarSettings
     displayBotLabel: boolean
     legalDisclaimerEnabled: boolean
@@ -115,6 +116,10 @@ const buildFormValues = (integration: Map<any, any>): AppearanceFormValues => {
             ),
             label: integration.getIn(['decoration', 'launcher', 'label'], ''),
         },
+        largeChatEnabled: integration.getIn(
+            ['decoration', 'large_chat_enabled'],
+            false,
+        ),
         avatar: {
             imageType: integration.getIn(
                 ['decoration', 'avatar', 'image_type'],
@@ -239,6 +244,7 @@ export const useAppearanceForm = ({
                         label: data.launcher.label,
                     }),
                 },
+                large_chat_enabled: data.largeChatEnabled,
                 avatar: {
                     image_type: data.avatar.imageType,
                     name_type: data.avatar.nameType,

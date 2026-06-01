@@ -122,8 +122,10 @@ describe('ChatLauncherCard', () => {
         launcher: defaultLauncher,
         mainColor: '#FF6B6B',
         position: defaultPosition,
+        largeChatEnabled: false,
         onLauncherChange: jest.fn(),
         onPositionChange: jest.fn(),
+        onLargeChatEnabledChange: jest.fn(),
     }
 
     const renderComponent = (props = {}) => {
@@ -137,11 +139,9 @@ describe('ChatLauncherCard', () => {
     it('should render the card heading and description', () => {
         renderComponent()
 
-        expect(screen.getByText('Chat launcher')).toBeInTheDocument()
+        expect(screen.getByText('Layout')).toBeInTheDocument()
         expect(
-            screen.getByText(
-                'Customize how the chat launcher appears on your website.',
-            ),
+            screen.getByText('Customize how chat shows up on your site.'),
         ).toBeInTheDocument()
     })
 

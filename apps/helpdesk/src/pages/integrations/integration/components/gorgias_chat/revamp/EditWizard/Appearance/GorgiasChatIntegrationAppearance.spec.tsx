@@ -84,8 +84,10 @@ type ChatLauncherCardProps = {
     launcher: { type: string; label: string }
     mainColor: string
     position: GorgiasChatPosition
+    largeChatEnabled: boolean
     onLauncherChange: (launcher: { type: string; label: string }) => void
     onPositionChange: (position: GorgiasChatPosition) => void
+    onLargeChatEnabledChange: (value: boolean) => void
 }
 
 type LegalCardProps = {

@@ -201,6 +201,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                         image_type: GorgiasChatAvatarImageType.AGENT_PICTURE,
                         name_type: GorgiasChatAvatarNameType.AGENT_FIRST_NAME,
                     },
+                    large_chat_enabled: true,
                 },
                 meta: {
                     language: values.language,
