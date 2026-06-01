@@ -1,3 +1,5 @@
+import { DurationInMs } from '@repo/utils'
+
 import { useListAllUserAvailabilities } from '@gorgias/helpdesk-queries'
 import type { UserAvailability } from '@gorgias/helpdesk-queries'
 
@@ -6,7 +8,7 @@ export const USER_AVAILABILITIES_PAGE_LIMIT = 100
 export function useAllUserAvailabilities(): UserAvailability[] {
     const { items } = useListAllUserAvailabilities(
         { limit: USER_AVAILABILITIES_PAGE_LIMIT },
-        { exhaustPages: true },
+        { exhaustPages: true, query: { staleTime: DurationInMs.OneHour } },
     )
     return items
 }
