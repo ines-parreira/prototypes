@@ -1,7 +1,8 @@
 /**
  * V3 entry tests focus on the V3-specific behavior — the JtbdPicker that
- * intercepts the canStartOnboarding setup CTA. V2-identical cohort/CTA
- * shape is covered by ../AIAgentWelcomePageView/paywallCohortParity.spec.tsx.
+ * intercepts every paywall→wizard CTA (setup and trial). V2-identical
+ * cohort/CTA shape is covered by
+ * ../AIAgentWelcomePageView/paywallCohortParity.spec.tsx.
  */
 
 import { useFlag } from '@repo/feature-flags'
@@ -259,6 +260,37 @@ describe('<AIAgentWelcomePageViewV3 />', () => {
             })
         },
     )
+
+    it('shows the JtbdPicker after clicking "Try for free" instead of navigating directly', async () => {
+        const user = userEvent.setup()
+        mockUseTrialAccess.mockReturnValue({
+            ...CAN_START_ONBOARDING_TRIAL_ACCESS,
+            currentAutomatePlan: undefined,
+            canSeeTrialCTA: true,
+            isOnboarded: false,
+        } as unknown as TrialAccess)
+        renderV3()
+
+        await user.click(screen.getByRole('button', { name: /Try for free/i }))
+
+        expect(
+            screen.getByRole('heading', {
+                name: /What do you want AI Agent to handle first/i,
+            }),
+        ).toBeInTheDocument()
+
+        await user.click(
+            screen.getByText(/Resolve support questions automatically/i),
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    `/app/ai-agent/${SHOP_TYPE}/${SHOP_NAME}/onboarding/tone of voice?${JTBD_QUERY_KEY}=support`,
+                ),
+            ).toBeInTheDocument()
+        })
+    })
 
     it('appends the wizard-update query param when continuing setup', async () => {
         const user = userEvent.setup()

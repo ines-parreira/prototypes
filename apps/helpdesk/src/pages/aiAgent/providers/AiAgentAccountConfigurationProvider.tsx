@@ -14,6 +14,10 @@ import { getHasAutomate } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getIntegrationsByType } from 'state/integrations/selectors'
 
+import {
+    OnboardingState,
+    useAiAgentOnboardingState,
+} from '../hooks/useAiAgentOnboardingState'
 import { useInitializePostOnboardingSteps } from '../Overview/hooks/useInitializePostOnboardingSteps'
 import { TrialPaywallMiddleware } from '../Overview/middlewares/TrialPaywallMiddleware'
 
@@ -52,10 +56,13 @@ export const AiAgentAccountConfigurationProvider = ({ children }: Props) => {
     const { storeIntegration, isCurrentStoreDuringTrial, isLoading, isError } =
         useCanUseAiAgent()
 
-    const isAiAgentExpandingTrialExperienceForAllEnabled = useFlag(
-        FeatureFlagKey.AiAgentExpandingTrialExperienceForAll,
-        'loading_state',
-    )
+    const isAiAgentExpandingTrialExperienceForAllEnabled = useFlag<
+        boolean | 'loading_state'
+    >(FeatureFlagKey.AiAgentExpandingTrialExperienceForAll, 'loading_state')
+
+    const onboardingState = useAiAgentOnboardingState(shopName)
+    const isOnboarded = onboardingState === OnboardingState.Onboarded
+    const isOnboardingStateLoading = onboardingState === OnboardingState.Loading
 
     const accountId = currentAccount.get('id')
     const accountDomain = currentAccount.get('domain')
@@ -96,7 +103,18 @@ export const AiAgentAccountConfigurationProvider = ({ children }: Props) => {
         return <>{children}</>
     }
 
-    if (!hasAutomate && isAiAgentExpandingTrialExperienceForAllEnabled) {
+    if (
+        !hasAutomate &&
+        isAiAgentExpandingTrialExperienceForAllEnabled === true
+    ) {
+        if (isOnboardingStateLoading) {
+            return <LoadingState />
+        }
+
+        if (isOnboarded && !isError) {
+            return <>{children}</>
+        }
+
         return (
             <TrialPaywallMiddleware
                 shopName={storeIntegration?.meta.shop_name}

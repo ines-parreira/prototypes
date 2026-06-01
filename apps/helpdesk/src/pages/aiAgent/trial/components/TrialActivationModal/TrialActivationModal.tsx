@@ -7,6 +7,7 @@ import {
     Heading,
     Icon,
     Link,
+    Modal,
     Text,
     Tooltip,
     TooltipContent,
@@ -16,10 +17,6 @@ import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetTrials } from 'models/aiAgent/queries'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
-import {
-    ModalBodyWrapper,
-    ModalWrapper,
-} from 'pages/aiAgent/trial/components/ModalWrapper'
 import type { PlanDetails } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 import {
     hasTrialExpired,
@@ -95,15 +92,20 @@ export const TrialActivationModal = ({
     if (isTrialsLoading) return null
 
     return (
-        <ModalWrapper isOpen={isOpen} size="lg" toggle={onClose} fade centered>
-            <ModalBodyWrapper>
+        <Modal
+            isOpen={isOpen}
+            onOpenChange={(nextOpen) => {
+                if (!nextOpen) onClose()
+            }}
+            size="xl"
+        >
+            <Box gap="lg" padding="md">
                 <Box
-                    flexDirection="row"
-                    gap="lg"
-                    alignItems="stretch"
-                    padding="lg"
+                    flexDirection="column"
+                    flex="1 1 0"
+                    justifyContent="space-between"
                 >
-                    <Box flex="1 1 0" flexDirection="column" gap="lg">
+                    <Box flexDirection="column" gap="lg">
                         <Box flexDirection="column" gap="md">
                             <Heading size="xxl">
                                 Your AI Agent is ready to go live
@@ -126,64 +128,64 @@ export const TrialActivationModal = ({
                                 free trial.
                             </Text>
                         )}
-                        <Box flexDirection="column" gap="xxxs">
-                            <Button
-                                variant="primary"
-                                onClick={handleConfirm}
-                                isDisabled={
-                                    isLoading ||
-                                    isConfirmDisabled ||
-                                    !hasUpgradePlan
-                                }
-                                isLoading={isLoading}
-                            >
-                                Start trial
-                            </Button>
-                            <Button
-                                variant="tertiary"
-                                onClick={onClose}
-                                isDisabled={isLoading}
-                            >
-                                Not now
-                            </Button>
-                        </Box>
                     </Box>
-                    <Box
-                        as="aside"
-                        aria-label="Trial timeline"
-                        flex="1 1 0"
-                        minWidth={0}
-                        flexDirection="column"
-                        padding="md"
-                        style={{
-                            borderRadius: 6,
-                            backgroundColor: 'var(--navigation-background)',
-                        }}
-                    >
-                        <TimelineStep
-                            icon="check"
-                            iconVariant="active"
-                            title="Today"
-                            description={TODAY_DETAIL}
-                            withConnector
-                        />
-                        <TimelineStep
-                            icon="bell"
-                            iconVariant="upcoming"
-                            title="Day 7"
-                            description="We'll remind you when you're halfway through your trial."
-                            withConnector
-                        />
-                        <TimelineStep
-                            icon="star"
-                            iconVariant="upcoming"
-                            title="Day 14"
-                            description="Your new AI Agent plan kicks in automatically after the trial so you can keep automating support and growing revenue, unless you cancel during your trial."
-                        />
+                    <Box gap="xxs">
+                        <Button
+                            variant="primary"
+                            onClick={handleConfirm}
+                            isDisabled={
+                                isLoading ||
+                                isConfirmDisabled ||
+                                !hasUpgradePlan
+                            }
+                            isLoading={isLoading}
+                        >
+                            Start trial
+                        </Button>
+                        <Button
+                            variant="tertiary"
+                            onClick={onClose}
+                            isDisabled={isLoading}
+                        >
+                            Not now
+                        </Button>
                     </Box>
                 </Box>
-            </ModalBodyWrapper>
-        </ModalWrapper>
+                <Box
+                    as="aside"
+                    aria-label="Trial timeline"
+                    flex="1 1 0"
+                    minWidth={0}
+                    flexDirection="column"
+                    padding="md"
+                    style={{
+                        borderRadius: 6,
+                        backgroundColor: 'var(--navigation-background)',
+                    }}
+                >
+                    <TimelineStep
+                        icon="check"
+                        iconVariant="active"
+                        title="Today"
+                        description={TODAY_DETAIL}
+                        withConnector
+                    />
+                    <TimelineStep
+                        icon="bell"
+                        iconVariant="upcoming"
+                        title="Day 7"
+                        description="We'll remind you when you're halfway through your trial."
+                        withConnector
+                    />
+                    <TimelineStep
+                        icon="star"
+                        iconVariant="upcoming"
+                        title="Day 14"
+                        description="Your new AI Agent plan kicks in automatically after the trial so you can keep automating support and growing revenue, unless you cancel during your trial."
+                    />
+                </Box>
+            </Box>
+        </Modal>
     )
 }
 
@@ -233,7 +235,7 @@ const TermsSection = ({
     isDisabled,
     hasError,
 }: TermsSectionProps) => (
-    <Box flexDirection="row" gap="xs" alignItems="flex-start">
+    <Box gap="xs" alignItems="flex-start">
         <CheckBoxField
             value={isChecked}
             onChange={onChange}
@@ -280,7 +282,7 @@ const TimelineStep = ({
     const isActive = iconVariant === 'active'
 
     return (
-        <Box flexDirection="row" gap="sm" alignItems="flex-start">
+        <Box gap="sm" alignItems="flex-start">
             <Box
                 flexDirection="column"
                 alignItems="center"

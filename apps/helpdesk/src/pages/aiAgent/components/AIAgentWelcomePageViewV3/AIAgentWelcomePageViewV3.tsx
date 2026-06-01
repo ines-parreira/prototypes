@@ -129,12 +129,8 @@ const AIAgentWelcomePageViewV3Body = (props: Props) => {
         : EXTERNAL_URLS.SHOPPING_ASSISTANT_TRIAL_LEARN_MORE_PAYWALL
 
     const onOpenWizard = useCallback(() => {
-        if (canStartOnboarding) {
-            setShowJtbdPicker(true)
-            return
-        }
-        onCtaTransition()
-    }, [canStartOnboarding, onCtaTransition])
+        setShowJtbdPicker(true)
+    }, [])
 
     const onJtbdSelect = useCallback(
         (jtbd: JtbdValue) => {

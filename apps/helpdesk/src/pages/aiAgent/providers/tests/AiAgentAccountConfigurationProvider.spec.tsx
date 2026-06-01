@@ -8,6 +8,10 @@ import { IntegrationType } from '@gorgias/helpdesk-types'
 import { useCanUseAiAgent } from 'hooks/aiAgent/useCanUseAiAgent'
 import { useGetOrCreateAccountConfiguration } from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
 import type { ShopifyIntegration } from 'models/integration/types'
+import {
+    OnboardingState,
+    useAiAgentOnboardingState,
+} from 'pages/aiAgent/hooks/useAiAgentOnboardingState'
 import { useInitializePostOnboardingSteps } from 'pages/aiAgent/Overview/hooks/useInitializePostOnboardingSteps'
 import { getHasAutomate } from 'state/billing/selectors'
 
@@ -15,6 +19,7 @@ import { AiAgentAccountConfigurationProvider } from '../AiAgentAccountConfigurat
 
 jest.mock('hooks/aiAgent/useGetOrCreateAccountConfiguration')
 jest.mock('hooks/aiAgent/useCanUseAiAgent')
+jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingState')
 jest.mock('pages/aiAgent/Overview/hooks/useInitializePostOnboardingSteps')
 jest.mock('pages/aiAgent/Overview/middlewares/TrialPaywallMiddleware', () => ({
     TrialPaywallMiddleware: ({ shopName }: { shopName?: string }) => (
@@ -68,6 +73,7 @@ const mockGetHasAutomate = jest.mocked(getHasAutomate)
 jest.mock('@repo/feature-flags')
 const mockUseFlag = jest.mocked(useFlag)
 const mockUseCanUseAiAgent = jest.mocked(useCanUseAiAgent)
+const mockUseAiAgentOnboardingState = jest.mocked(useAiAgentOnboardingState)
 const mockUseInitializePostOnboardingSteps = jest.mocked(
     useInitializePostOnboardingSteps,
 )
@@ -98,6 +104,9 @@ describe('AiAgentAccountConfigurationProvider', () => {
         mockUseGetOrCreateAccountConfiguration.mockReturnValue({
             status: 'success',
         } as any)
+        mockUseAiAgentOnboardingState.mockReturnValue(
+            OnboardingState.OnboardingWizard,
+        )
         mockUseInitializePostOnboardingSteps.mockReturnValue({
             isLoading: false,
         })
@@ -185,6 +194,109 @@ describe('AiAgentAccountConfigurationProvider', () => {
             screen.getByText('TrialPaywallMiddleware: Test Store'),
         ).toBeInTheDocument()
         expect(screen.queryByTestId('children')).not.toBeInTheDocument()
+    })
+    it('should render children when not automate and onboarded without a trial', () => {
+        mockGetHasAutomate.mockReturnValue(false)
+        mockUseFlag.mockImplementation(
+            (key) =>
+                key === FeatureFlagKey.AiAgentExpandingTrialExperienceForAll ||
+                false,
+        )
+        mockUseCanUseAiAgent.mockReturnValue({
+            storeIntegration: undefined,
+            isCurrentStoreDuringTrial: false,
+            hasAnyActiveTrial: false,
+            isLoading: false,
+            isError: false,
+        })
+        mockUseAiAgentOnboardingState.mockReturnValue(OnboardingState.Onboarded)
+        renderComponent()
+        expect(screen.getByTestId('children')).toBeInTheDocument()
+        expect(
+            screen.queryByTestId('trial-paywall-middleware'),
+        ).not.toBeInTheDocument()
+    })
+    it('falls back to the paywall for an onboarded store when the trial-access check errors', () => {
+        mockGetHasAutomate.mockReturnValue(false)
+        mockUseFlag.mockImplementation(
+            (key) =>
+                key === FeatureFlagKey.AiAgentExpandingTrialExperienceForAll ||
+                false,
+        )
+        mockUseCanUseAiAgent.mockReturnValue({
+            storeIntegration: undefined,
+            isCurrentStoreDuringTrial: false,
+            hasAnyActiveTrial: false,
+            isLoading: false,
+            isError: true,
+        })
+        mockUseAiAgentOnboardingState.mockReturnValue(OnboardingState.Onboarded)
+        renderComponent()
+        expect(screen.queryByTestId('children')).not.toBeInTheDocument()
+        expect(
+            screen.getByTestId('trial-paywall-middleware'),
+        ).toBeInTheDocument()
+    })
+    it('does not bypass for an onboarded store when the expanding-trial flag is off', () => {
+        mockGetHasAutomate.mockReturnValue(false)
+        mockUseFlag.mockReturnValue(false)
+        mockUseCanUseAiAgent.mockReturnValue({
+            storeIntegration: undefined,
+            isCurrentStoreDuringTrial: false,
+            hasAnyActiveTrial: false,
+            isLoading: false,
+            isError: false,
+        })
+        mockUseAiAgentOnboardingState.mockReturnValue(OnboardingState.Onboarded)
+        renderComponent()
+        expect(screen.queryByTestId('children')).not.toBeInTheDocument()
+        expect(
+            screen.queryByTestId('trial-paywall-middleware'),
+        ).not.toBeInTheDocument()
+    })
+    it('should render loader when not automate, no trial, and onboarding state is loading', () => {
+        mockGetHasAutomate.mockReturnValue(false)
+        mockUseFlag.mockImplementation(
+            (key) =>
+                key === FeatureFlagKey.AiAgentExpandingTrialExperienceForAll ||
+                false,
+        )
+        mockUseCanUseAiAgent.mockReturnValue({
+            storeIntegration: undefined,
+            isCurrentStoreDuringTrial: false,
+            hasAnyActiveTrial: false,
+            isLoading: false,
+            isError: false,
+        })
+        mockUseAiAgentOnboardingState.mockReturnValue(OnboardingState.Loading)
+        renderComponent()
+        expect(
+            screen.getByText('We’re preparing your space...'),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByTestId('trial-paywall-middleware'),
+        ).not.toBeInTheDocument()
+    })
+    it('does not bypass to children or paywall when the flag is still loading during a trial-check error', () => {
+        mockGetHasAutomate.mockReturnValue(false)
+        mockUseFlag.mockImplementation((key) =>
+            key === FeatureFlagKey.AiAgentExpandingTrialExperienceForAll
+                ? 'loading_state'
+                : false,
+        )
+        mockUseCanUseAiAgent.mockReturnValue({
+            storeIntegration: undefined,
+            isCurrentStoreDuringTrial: false,
+            hasAnyActiveTrial: false,
+            isLoading: false,
+            isError: true,
+        })
+        mockUseAiAgentOnboardingState.mockReturnValue(OnboardingState.Onboarded)
+        renderComponent()
+        expect(screen.queryByTestId('children')).not.toBeInTheDocument()
+        expect(
+            screen.queryByTestId('trial-paywall-middleware'),
+        ).not.toBeInTheDocument()
     })
     it('should render loader when feature flag is loading', () => {
         mockUseFlag.mockImplementation((key) =>
