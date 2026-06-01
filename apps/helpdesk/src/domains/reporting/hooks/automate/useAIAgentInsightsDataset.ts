@@ -1,5 +1,7 @@
 import { useMemo } from 'react'
 
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
+
 import {
     useAiAgentTicketCountFromTicketCustomFieldsPerIntent,
     useCustomerSatisfactionMetricPerIntentLevel,
@@ -21,6 +23,7 @@ import {
 import type { MetricWithDecile } from 'domains/reporting/hooks/types'
 import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import { useMultipleMetricsTrends } from 'domains/reporting/hooks/useMultipleMetricsTrend'
+import useStatsMetricTrend from 'domains/reporting/hooks/useStatsMetricTrend'
 import {
     TicketDimension,
     TicketMeasure,
@@ -40,11 +43,18 @@ import {
 } from 'domains/reporting/models/queryFactories/ai-agent-insights/metrics'
 import { AI_AGENT_TICKETS_CHANNELS } from 'domains/reporting/models/queryFactories/ai-agent-insights/utils'
 import { customerSatisfactionForAIAgentTicketsQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/customerSatisfaction'
+import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
+import { allAgentsAutomatedInteractionsValueQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
+import { coverageRateQueryV2Factory } from 'domains/reporting/models/scopes/aiAgentCoverageRate'
+import { averageAiAgentCsatQueryV2Factory } from 'domains/reporting/models/scopes/aiAgentCsat'
+import { aiAgentAllAgentsSuccessRateTrendQueryFactory } from 'domains/reporting/models/scopes/aiAgentSuccessRate'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import { getStatsStoreIntegrations } from 'domains/reporting/state/stats/selectors'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
+import useAppSelector from 'hooks/useAppSelector'
 import type { OrderDirection } from 'models/api/types'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import type { IntentMetrics } from 'pages/aiAgent/insights/IntentTableWidget/types'
@@ -57,10 +67,24 @@ export const useAIAgentMetrics = (
     shopName: string,
     aiAgentUserId: number,
 ): Record<any, MetricTrend> => {
+    const { value: isNewScreens, isLoading: isFlagLoading } =
+        useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsNewScreens)
+    const useV2 = !isFlagLoading && !!isNewScreens
+    const useV1 = !isFlagLoading && !isNewScreens
+
     const { intentCustomFieldId, outcomeCustomFieldId } =
         useGetCustomTicketsFieldsDefinitionData()
 
     const integrationIds = useGetTicketChannelsStoreIntegrations(shopName)
+
+    const storeIntegrations = useAppSelector(getStatsStoreIntegrations)
+    const numericStoreIds = storeIntegrations
+        .filter((s) => s.name === shopName)
+        .map((s) => s.id)
+    const storeFilter = numericStoreIds.length
+        ? { storeIntegrations: withLogicalOperator(numericStoreIds) }
+        : {}
+    const filtersWithStore = { ...filters, ...storeFilter }
 
     const statsFiltersWithAiAgent = useMemo(
         () => ({
@@ -77,10 +101,12 @@ export const useAIAgentMetrics = (
         [aiAgentUserId, filters],
     )
 
+    // V1 path
     const aiAgentNoHandoverData = useAiAgentTicketNoHandover(
         statsFiltersWithAiAgent,
         timezone,
         integrationIds,
+        useV1,
     )
     const aiAgentTicketsData = useMultipleMetricsTrends(
         aiAgentTouchedTicketTotalCountQueryFactory({
@@ -97,6 +123,9 @@ export const useAIAgentMetrics = (
             intentFieldId: intentCustomFieldId,
             integrationIds,
         }),
+        undefined,
+        undefined,
+        useV1,
     )
 
     const allCreatedTickets = useMultipleMetricsTrends(
@@ -114,6 +143,9 @@ export const useAIAgentMetrics = (
             outcomeFieldId: outcomeCustomFieldId,
             integrationIds,
         }),
+        undefined,
+        undefined,
+        useV1,
     )
 
     const customerSatisfactionAiAgentData = useMultipleMetricsTrends(
@@ -136,55 +168,144 @@ export const useAIAgentMetrics = (
             aiAgentUserId: aiAgentUserId,
             integrationIds,
         }),
+        undefined,
+        undefined,
+        useV1,
     )
 
-    const aiAgentTickets = aiAgentTicketsData.data?.[TicketMeasure.TicketCount]
+    // V2 path
+    const v2CoverageRate = useStatsMetricTrend(
+        coverageRateQueryV2Factory({ filters: filtersWithStore, timezone }),
+        coverageRateQueryV2Factory({
+            filters: {
+                ...filtersWithStore,
+                period: getPreviousPeriod(filters.period),
+            },
+            timezone,
+        }),
+        useV2,
+    )
 
+    const v2AutomatedInteractions = useStatsMetricTrend(
+        allAgentsAutomatedInteractionsValueQueryFactoryV2({
+            filters: filtersWithStore,
+            timezone,
+        }),
+        allAgentsAutomatedInteractionsValueQueryFactoryV2({
+            filters: {
+                ...filtersWithStore,
+                period: getPreviousPeriod(filters.period),
+            },
+            timezone,
+        }),
+        useV2,
+    )
+
+    const v2SuccessRate = useStatsMetricTrend(
+        aiAgentAllAgentsSuccessRateTrendQueryFactory({
+            filters: filtersWithStore,
+            timezone,
+        }),
+        aiAgentAllAgentsSuccessRateTrendQueryFactory({
+            filters: {
+                ...filtersWithStore,
+                period: getPreviousPeriod(filters.period),
+            },
+            timezone,
+        }),
+        useV2,
+    )
+
+    const v2Csat = useStatsMetricTrend(
+        averageAiAgentCsatQueryV2Factory({
+            filters: filtersWithStore,
+            timezone,
+        }),
+        averageAiAgentCsatQueryV2Factory({
+            filters: {
+                ...filtersWithStore,
+                period: getPreviousPeriod(filters.period),
+            },
+            timezone,
+        }),
+        useV2,
+    )
+
+    // V1 derived values
+    const aiAgentTickets = aiAgentTicketsData.data?.[TicketMeasure.TicketCount]
     const aiAgentAutomatedInteractions =
         aiAgentNoHandoverData.data?.[
             TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
         ]
-
     const aiAgentCustomerSatisfaction =
         customerSatisfactionAiAgentData.data?.[
             TicketSatisfactionSurveyMeasure.AvgSurveyScore
         ]
-
     const allTickets = allCreatedTickets.data?.[TicketMeasure.TicketCount]
-
     const isAiAgentAutomatedInteractionsFetching =
         aiAgentNoHandoverData.isFetching
-
     const isAiAgentAutomatedInteractionsError = aiAgentNoHandoverData.isError
 
     return {
-        coverageTrend: getAiAgentCoverageRate({
-            isFetching:
-                aiAgentTicketsData.isFetching || allCreatedTickets.isFetching,
-            isError: aiAgentTicketsData.isError || allCreatedTickets.isError,
-            aiAgentTickets,
-            allTickets,
-        }),
-        aiAgentAutomatedInteractionTrend: {
-            isFetching: isAiAgentAutomatedInteractionsFetching,
-            isError: isAiAgentAutomatedInteractionsError,
-            data: aiAgentAutomatedInteractions,
-        },
-        aiAgentSuccessRate: getAiAgentSuccessRate({
-            isFetching:
-                isAiAgentAutomatedInteractionsFetching ||
-                aiAgentTicketsData.isFetching,
-            isError:
-                isAiAgentAutomatedInteractionsError ||
-                aiAgentTicketsData.isError,
-            aiAgentAutomatedInteractions,
-            aiAgentTickets,
-        }),
-        aiAgentCSAT: {
-            isFetching: customerSatisfactionAiAgentData.isFetching,
-            isError: customerSatisfactionAiAgentData.isError,
-            data: aiAgentCustomerSatisfaction,
-        },
+        coverageTrend: useV2
+            ? {
+                  isFetching: isFlagLoading || v2CoverageRate.isFetching,
+                  isError: v2CoverageRate.isError,
+                  data: v2CoverageRate.data,
+              }
+            : getAiAgentCoverageRate({
+                  isFetching:
+                      isFlagLoading ||
+                      aiAgentTicketsData.isFetching ||
+                      allCreatedTickets.isFetching,
+                  isError:
+                      aiAgentTicketsData.isError || allCreatedTickets.isError,
+                  aiAgentTickets,
+                  allTickets,
+              }),
+        aiAgentAutomatedInteractionTrend: useV2
+            ? {
+                  isFetching:
+                      isFlagLoading || v2AutomatedInteractions.isFetching,
+                  isError: v2AutomatedInteractions.isError,
+                  data: v2AutomatedInteractions.data,
+              }
+            : {
+                  isFetching:
+                      isFlagLoading || isAiAgentAutomatedInteractionsFetching,
+                  isError: isAiAgentAutomatedInteractionsError,
+                  data: aiAgentAutomatedInteractions,
+              },
+        aiAgentSuccessRate: useV2
+            ? {
+                  isFetching: isFlagLoading || v2SuccessRate.isFetching,
+                  isError: v2SuccessRate.isError,
+                  data: v2SuccessRate.data,
+              }
+            : getAiAgentSuccessRate({
+                  isFetching:
+                      isFlagLoading ||
+                      isAiAgentAutomatedInteractionsFetching ||
+                      aiAgentTicketsData.isFetching,
+                  isError:
+                      isAiAgentAutomatedInteractionsError ||
+                      aiAgentTicketsData.isError,
+                  aiAgentAutomatedInteractions,
+                  aiAgentTickets,
+              }),
+        aiAgentCSAT: useV2
+            ? {
+                  isFetching: isFlagLoading || v2Csat.isFetching,
+                  isError: v2Csat.isError,
+                  data: v2Csat.data,
+              }
+            : {
+                  isFetching:
+                      isFlagLoading ||
+                      customerSatisfactionAiAgentData.isFetching,
+                  isError: customerSatisfactionAiAgentData.isError,
+                  data: aiAgentCustomerSatisfaction,
+              },
     }
 }
 

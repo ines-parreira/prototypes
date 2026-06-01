@@ -23,6 +23,7 @@ import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUse
 import { useMetric } from 'domains/reporting/hooks/useMetric'
 import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import { useMultipleMetricsTrends } from 'domains/reporting/hooks/useMultipleMetricsTrend'
+import useStatsMetricTrend from 'domains/reporting/hooks/useStatsMetricTrend'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
@@ -41,10 +42,16 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 const queryClient = mockQueryClient()
 const timezone = 'UTC'
 
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlagWithLoading: jest.fn(() => ({ value: false, isLoading: false })),
+}))
+
 jest.mock('domains/reporting/hooks/timeSeries')
 jest.mock('domains/reporting/hooks/useMetric')
 jest.mock('domains/reporting/hooks/useMetricPerDimension')
 jest.mock('domains/reporting/hooks/useMultipleMetricsTrend')
+jest.mock('domains/reporting/hooks/useStatsMetricTrend')
 
 jest.mock('domains/reporting/hooks/automate/useAIAgentUserId')
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
@@ -55,6 +62,7 @@ jest.mock('pages/aiAgent/Overview/hooks/kpis/useAiAgentTicketNoHandover')
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 const useAIAgentUserIdMock = assumeMock(useAIAgentUserId)
 const useMultipleMetricsTrendsMock = assumeMock(useMultipleMetricsTrends)
+const useStatsMetricTrendMock = assumeMock(useStatsMetricTrend)
 const useMetricMock = assumeMock(useMetric)
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
 const getTicketChannelsStoreIntegrationsMock = assumeMock(
@@ -78,6 +86,15 @@ describe('useAiAgentInsightsDataset', () => {
     const aiAgentUserId = 4000
 
     beforeEach(() => {
+        const { useFlagWithLoading } = jest.requireMock('@repo/feature-flags')
+        useFlagWithLoading.mockReturnValue({ value: false, isLoading: false })
+
+        useStatsMetricTrendMock.mockReturnValue({
+            isFetching: false,
+            isError: false,
+            data: undefined,
+        })
+
         useCustomFieldDefinitionsMock.mockReturnValue({
             data: { data: ticketFieldDefinitions },
             isLoading: false,
@@ -267,6 +284,179 @@ describe('useAiAgentInsightsDataset', () => {
             expect(result.current.aiAgentCSAT.data).toEqual({
                 prevValue: 4,
                 value: 5,
+            })
+        })
+
+        describe('flag ON (v2 path)', () => {
+            const renderMetrics = () =>
+                renderHook(
+                    () =>
+                        useAIAgentMetrics(
+                            statsFilters,
+                            timezone,
+                            shopName,
+                            aiAgentUserId,
+                        ),
+                    {
+                        wrapper: ({ children }) => (
+                            <QueryClientProvider client={queryClient}>
+                                {children}
+                            </QueryClientProvider>
+                        ),
+                    },
+                )
+
+            beforeEach(() => {
+                const { useFlagWithLoading } = jest.requireMock(
+                    '@repo/feature-flags',
+                )
+                useFlagWithLoading.mockReturnValue({
+                    value: true,
+                    isLoading: false,
+                })
+
+                // v1 hooks still called unconditionally — provide idle defaults
+                useAiAgentTicketNoHandoverMock.mockReturnValue({
+                    data: {},
+                    isFetching: false,
+                    isError: false,
+                } as any)
+                useMultipleMetricsTrendsMock.mockReturnValue({
+                    data: {},
+                    isFetching: false,
+                    isError: false,
+                } as any)
+            })
+
+            it('should return v2 coverage rate data', () => {
+                useStatsMetricTrendMock
+                    .mockReturnValueOnce({
+                        isFetching: false,
+                        isError: false,
+                        data: { value: 0.75, prevValue: 0.6 },
+                    })
+                    .mockReturnValue({
+                        isFetching: false,
+                        isError: false,
+                        data: undefined,
+                    })
+
+                const { result } = renderMetrics()
+
+                expect(result.current.coverageTrend.data).toEqual({
+                    value: 0.75,
+                    prevValue: 0.6,
+                })
+                expect(result.current.coverageTrend.isFetching).toBe(false)
+            })
+
+            it('should return v2 automated interactions data', () => {
+                useStatsMetricTrendMock
+                    .mockReturnValueOnce({
+                        isFetching: false,
+                        isError: false,
+                        data: undefined,
+                    })
+                    .mockReturnValueOnce({
+                        isFetching: false,
+                        isError: false,
+                        data: { value: 500, prevValue: 400 },
+                    })
+                    .mockReturnValue({
+                        isFetching: false,
+                        isError: false,
+                        data: undefined,
+                    })
+
+                const { result } = renderMetrics()
+
+                expect(
+                    result.current.aiAgentAutomatedInteractionTrend.data,
+                ).toEqual({
+                    value: 500,
+                    prevValue: 400,
+                })
+            })
+
+            it('should return v2 success rate data', () => {
+                useStatsMetricTrendMock
+                    .mockReturnValueOnce({
+                        isFetching: false,
+                        isError: false,
+                        data: undefined,
+                    })
+                    .mockReturnValueOnce({
+                        isFetching: false,
+                        isError: false,
+                        data: undefined,
+                    })
+                    .mockReturnValueOnce({
+                        isFetching: false,
+                        isError: false,
+                        data: { value: 0.88, prevValue: 0.82 },
+                    })
+                    .mockReturnValue({
+                        isFetching: false,
+                        isError: false,
+                        data: undefined,
+                    })
+
+                const { result } = renderMetrics()
+
+                expect(result.current.aiAgentSuccessRate.data).toEqual({
+                    value: 0.88,
+                    prevValue: 0.82,
+                })
+            })
+
+            it('should return v2 CSAT data', () => {
+                useStatsMetricTrendMock
+                    .mockReturnValueOnce({
+                        isFetching: false,
+                        isError: false,
+                        data: undefined,
+                    })
+                    .mockReturnValueOnce({
+                        isFetching: false,
+                        isError: false,
+                        data: undefined,
+                    })
+                    .mockReturnValueOnce({
+                        isFetching: false,
+                        isError: false,
+                        data: undefined,
+                    })
+                    .mockReturnValueOnce({
+                        isFetching: false,
+                        isError: false,
+                        data: { value: 4.3, prevValue: 4.1 },
+                    })
+
+                const { result } = renderMetrics()
+
+                expect(result.current.aiAgentCSAT.data).toEqual({
+                    value: 4.3,
+                    prevValue: 4.1,
+                })
+            })
+
+            it('should show loading when flag is still loading', () => {
+                const { useFlagWithLoading } = jest.requireMock(
+                    '@repo/feature-flags',
+                )
+                useFlagWithLoading.mockReturnValue({
+                    value: undefined,
+                    isLoading: true,
+                })
+
+                const { result } = renderMetrics()
+
+                expect(result.current.coverageTrend.isFetching).toBe(true)
+                expect(
+                    result.current.aiAgentAutomatedInteractionTrend.isFetching,
+                ).toBe(true)
+                expect(result.current.aiAgentSuccessRate.isFetching).toBe(true)
+                expect(result.current.aiAgentCSAT.isFetching).toBe(true)
             })
         })
     })
