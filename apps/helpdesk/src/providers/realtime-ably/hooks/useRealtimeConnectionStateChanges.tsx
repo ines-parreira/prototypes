@@ -13,9 +13,7 @@ export const REALTIME_DISCONNECTED_TOAST_DELAY_MS = 8000
 
 export const useRealtimeConnectionStateChanges = () => {
     const disconnectedToastTimeout = useRef<NodeJS.Timeout | null>(null)
-    const trackedRealtimeConnectionState = useRef<
-        RealtimeConnectionStateChange['current'] | null
-    >(null)
+    const hasLoggedSuspendedState = useRef(false)
 
     const clearDisconnectedToastTimeout = useCallback(() => {
         if (disconnectedToastTimeout.current) {
@@ -27,7 +25,7 @@ export const useRealtimeConnectionStateChanges = () => {
     useEffect(() => {
         return () => {
             clearDisconnectedToastTimeout()
-            trackedRealtimeConnectionState.current = null
+            hasLoggedSuspendedState.current = false
         }
     }, [clearDisconnectedToastTimeout])
 
@@ -36,13 +34,16 @@ export const useRealtimeConnectionStateChanges = () => {
             current: RealtimeConnectionStateChange['current'],
             previous: RealtimeConnectionStateChange['previous'],
         ) => {
-            if (trackedRealtimeConnectionState.current !== current) {
+            if (
+                current === 'failed' ||
+                (current === 'suspended' && !hasLoggedSuspendedState.current)
+            ) {
                 logEvent(SegmentEvent.RealtimeConnectivityBannerDisplayed, {
                     currentState: current,
                     previousState: previous,
                 })
 
-                trackedRealtimeConnectionState.current = current
+                hasLoggedSuspendedState.current = current !== 'failed'
             }
 
             toast.error(REALTIME_CONNECTION_TOAST_TITLE, {
@@ -50,8 +51,7 @@ export const useRealtimeConnectionStateChanges = () => {
                 id: REALTIME_CONNECTION_TOAST_ID,
                 duration: Infinity,
                 onDismiss: () => {
-                    // Manual dismiss logs hidden; auto-hide clears the tracked state first.
-                    if (trackedRealtimeConnectionState.current !== null) {
+                    if (hasLoggedSuspendedState.current) {
                         logEvent(
                             SegmentEvent.RealtimeConnectivityBannerHidden,
                             {
@@ -60,8 +60,6 @@ export const useRealtimeConnectionStateChanges = () => {
                             },
                         )
                     }
-
-                    trackedRealtimeConnectionState.current = null
                 },
                 actions: ({ id }) => (
                     <Button
@@ -130,10 +128,9 @@ export const useRealtimeConnectionStateChanges = () => {
                     )
                     break
                 }
-                case 'connected':
-                case 'closed': {
+                case 'connected': {
                     clearDisconnectedToastTimeout()
-                    if (trackedRealtimeConnectionState.current !== null) {
+                    if (hasLoggedSuspendedState.current) {
                         logEvent(
                             SegmentEvent.RealtimeConnectivityBannerAutoHidden,
                             {
@@ -142,7 +139,13 @@ export const useRealtimeConnectionStateChanges = () => {
                             },
                         )
                     }
-                    trackedRealtimeConnectionState.current = null
+                    hasLoggedSuspendedState.current = false
+                    toast.dismiss(REALTIME_CONNECTION_TOAST_ID)
+                    break
+                }
+                case 'closed': {
+                    clearDisconnectedToastTimeout()
+                    hasLoggedSuspendedState.current = false
                     toast.dismiss(REALTIME_CONNECTION_TOAST_ID)
                     break
                 }

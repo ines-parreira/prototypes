@@ -74,13 +74,7 @@ describe('useRealtimeConnectionStateChanges', () => {
             expect(queryRealtimeConnectionToast()).toBeInTheDocument()
         })
 
-        expect(mockLogEvent).toHaveBeenCalledWith(
-            SegmentEvent.RealtimeConnectivityBannerDisplayed,
-            {
-                currentState: 'disconnected',
-                previousState: 'connected',
-            },
-        )
+        expect(mockLogEvent).not.toHaveBeenCalled()
     })
 
     it('should cancel the delayed disconnected toast when realtime reconnects before 8 seconds', () => {
@@ -115,7 +109,7 @@ describe('useRealtimeConnectionStateChanges', () => {
     })
 
     it.each(['connected', 'closed'] as const)(
-        'should auto-hide the connection toast when realtime becomes %s',
+        'should hide the connection toast when realtime becomes %s',
         async (currentState) => {
             const { result } = renderHook(() =>
                 useRealtimeConnectionStateChanges(),
@@ -147,23 +141,29 @@ describe('useRealtimeConnectionStateChanges', () => {
                     previousState: 'connecting',
                 },
             )
-            expect(mockLogEvent).toHaveBeenNthCalledWith(
-                2,
-                SegmentEvent.RealtimeConnectivityBannerAutoHidden,
-                {
-                    currentState,
-                    previousState: 'disconnected',
-                },
+
+            if (currentState === 'connected') {
+                expect(mockLogEvent).toHaveBeenNthCalledWith(
+                    2,
+                    SegmentEvent.RealtimeConnectivityBannerAutoHidden,
+                    {
+                        currentState,
+                        previousState: 'disconnected',
+                    },
+                )
+            }
+
+            expect(mockLogEvent).toHaveBeenCalledTimes(
+                currentState === 'connected' ? 2 : 1,
             )
-            expect(mockLogEvent).toHaveBeenCalledTimes(2)
             expect(toastDismissSpy).toHaveBeenCalledWith(
                 'realtime-connection-error',
             )
         },
     )
 
-    it.each(['suspended', 'failed'])(
-        'should show the toast immediately when the connection is %s',
+    it.each(['suspended', 'failed'] as const)(
+        'should show the toast immediately and track when the connection is %s',
         async (currentState) => {
             const { result } = renderHook(() =>
                 useRealtimeConnectionStateChanges(),
@@ -225,13 +225,13 @@ describe('useRealtimeConnectionStateChanges', () => {
             expect(queryRealtimeConnectionToast()).toBeInTheDocument()
         })
 
-        expect(mockLogEvent).toHaveBeenCalledTimes(1)
-
-        act(() => {
-            jest.advanceTimersByTime(REALTIME_DISCONNECTED_TOAST_DELAY_MS)
-        })
-
-        expect(mockLogEvent).toHaveBeenCalledTimes(1)
+        expect(mockLogEvent).toHaveBeenCalledWith(
+            SegmentEvent.RealtimeConnectivityBannerDisplayed,
+            {
+                currentState: 'failed',
+                previousState: 'disconnected',
+            },
+        )
         expect(
             screen.getAllByRole('status', {
                 name: REALTIME_CONNECTION_TOAST_TITLE,
@@ -239,20 +239,16 @@ describe('useRealtimeConnectionStateChanges', () => {
         ).toHaveLength(1)
     })
 
-    it('should not log the toast display event again for the same banner state', async () => {
+    it('should not log the toast display event again for the same tracked state', async () => {
         jest.useFakeTimers()
 
         const { result } = renderHook(() => useRealtimeConnectionStateChanges())
 
         act(() => {
             result.current.onRealtimeConnectionStateChange({
-                current: 'disconnected',
-                previous: 'connected',
+                current: 'suspended',
+                previous: 'disconnected',
             } as RealtimeConnectionStateChangeArg)
-        })
-
-        act(() => {
-            jest.advanceTimersByTime(REALTIME_DISCONNECTED_TOAST_DELAY_MS)
         })
 
         await waitFor(() => {
@@ -268,32 +264,22 @@ describe('useRealtimeConnectionStateChanges', () => {
 
         act(() => {
             result.current.onRealtimeConnectionStateChange({
-                current: 'disconnected',
+                current: 'suspended',
                 previous: 'connecting',
             } as RealtimeConnectionStateChangeArg)
-        })
-
-        act(() => {
-            jest.advanceTimersByTime(REALTIME_DISCONNECTED_TOAST_DELAY_MS)
         })
 
         expect(mockLogEvent).toHaveBeenCalledTimes(1)
     })
 
-    it('should log the toast display event again when the banner state changes', async () => {
-        jest.useFakeTimers()
-
+    it('should log failed and allow suspended to log again after failed', async () => {
         const { result } = renderHook(() => useRealtimeConnectionStateChanges())
 
         act(() => {
             result.current.onRealtimeConnectionStateChange({
-                current: 'disconnected',
-                previous: 'connected',
+                current: 'suspended',
+                previous: 'disconnected',
             } as RealtimeConnectionStateChangeArg)
-        })
-
-        act(() => {
-            jest.advanceTimersByTime(REALTIME_DISCONNECTED_TOAST_DELAY_MS)
         })
 
         await waitFor(() => {
@@ -303,7 +289,14 @@ describe('useRealtimeConnectionStateChanges', () => {
         act(() => {
             result.current.onRealtimeConnectionStateChange({
                 current: 'failed',
-                previous: 'disconnected',
+                previous: 'suspended',
+            } as RealtimeConnectionStateChangeArg)
+        })
+
+        act(() => {
+            result.current.onRealtimeConnectionStateChange({
+                current: 'suspended',
+                previous: 'failed',
             } as RealtimeConnectionStateChangeArg)
         })
 
@@ -311,8 +304,8 @@ describe('useRealtimeConnectionStateChanges', () => {
             1,
             SegmentEvent.RealtimeConnectivityBannerDisplayed,
             {
-                currentState: 'disconnected',
-                previousState: 'connected',
+                currentState: 'suspended',
+                previousState: 'disconnected',
             },
         )
         expect(mockLogEvent).toHaveBeenNthCalledWith(
@@ -320,6 +313,65 @@ describe('useRealtimeConnectionStateChanges', () => {
             SegmentEvent.RealtimeConnectivityBannerDisplayed,
             {
                 currentState: 'failed',
+                previousState: 'suspended',
+            },
+        )
+        expect(mockLogEvent).toHaveBeenNthCalledWith(
+            3,
+            SegmentEvent.RealtimeConnectivityBannerDisplayed,
+            {
+                currentState: 'suspended',
+                previousState: 'failed',
+            },
+        )
+    })
+
+    it('should not track disconnected churn after suspended without reconnecting', async () => {
+        jest.useFakeTimers()
+
+        const { result } = renderHook(() => useRealtimeConnectionStateChanges())
+
+        act(() => {
+            result.current.onRealtimeConnectionStateChange({
+                current: 'suspended',
+                previous: 'disconnected',
+            } as RealtimeConnectionStateChangeArg)
+        })
+
+        await waitFor(() => {
+            expect(queryRealtimeConnectionToast()).toBeInTheDocument()
+        })
+
+        act(() => {
+            result.current.onRealtimeConnectionStateChange({
+                current: 'connecting',
+                previous: 'suspended',
+            } as RealtimeConnectionStateChangeArg)
+        })
+
+        act(() => {
+            result.current.onRealtimeConnectionStateChange({
+                current: 'disconnected',
+                previous: 'connecting',
+            } as RealtimeConnectionStateChangeArg)
+        })
+
+        act(() => {
+            jest.advanceTimersByTime(REALTIME_DISCONNECTED_TOAST_DELAY_MS)
+        })
+
+        act(() => {
+            result.current.onRealtimeConnectionStateChange({
+                current: 'suspended',
+                previous: 'disconnected',
+            } as RealtimeConnectionStateChangeArg)
+        })
+
+        expect(mockLogEvent).toHaveBeenCalledTimes(1)
+        expect(mockLogEvent).toHaveBeenCalledWith(
+            SegmentEvent.RealtimeConnectivityBannerDisplayed,
+            {
+                currentState: 'suspended',
                 previousState: 'disconnected',
             },
         )
