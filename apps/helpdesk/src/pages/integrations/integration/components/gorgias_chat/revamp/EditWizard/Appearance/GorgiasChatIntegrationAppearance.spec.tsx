@@ -150,6 +150,7 @@ jest.mock(
 
 const mockOnChatPreviewLoaded = jest.fn()
 const mockUpdateLegalDisclaimerEnabled = jest.fn()
+const mockUpdateConversationColor = jest.fn()
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
@@ -162,6 +163,9 @@ jest.mock(
             ) => mockOnChatPreviewLoaded(callback, fireIfAlreadyLoaded),
             updateLegalDisclaimerEnabled: (enabled: boolean) =>
                 mockUpdateLegalDisclaimerEnabled(enabled),
+            updateConversationColor: (color: string) =>
+                mockUpdateConversationColor(color),
+            updateMainFontFamily: jest.fn(),
         }),
     }),
 )
@@ -282,6 +286,7 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
         })
         mockGetApplicationTexts.mockResolvedValue(mockApplicationTextsResponse)
         mockUpdateApplicationTexts.mockResolvedValue(undefined)
+        mockUpdateConversationColor.mockReset()
         mockOnChatPreviewLoaded.mockImplementation(
             (callback: () => void, fireIfAlreadyLoaded?: boolean) => {
                 if (fireIfAlreadyLoaded) {
@@ -363,6 +368,41 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
                     conversationColor: '#123456',
                     useMainColorOutsideBusinessHours: true,
                 }),
+            )
+        })
+
+        it('should sync conversationColor to the chat preview when it loads', () => {
+            const integration = fromJS({
+                ...mockIntegration.toJS(),
+                decoration: {
+                    ...mockIntegration.get('decoration').toJS(),
+                    conversation_color: '#123456',
+                },
+            })
+
+            renderComponent(integration)
+
+            expect(mockUpdateConversationColor).toHaveBeenCalledWith('#123456')
+        })
+
+        it('should sync the default conversationColor (mainColor) to the chat preview when conversation_color is missing', () => {
+            renderComponent()
+
+            expect(mockUpdateConversationColor).toHaveBeenCalledWith('#FF0000')
+        })
+
+        it('should re-sync conversationColor to the chat preview when the color changes', () => {
+            renderComponent()
+
+            act(() => {
+                const { onConversationColorChange } = mockBrandCard.mock.calls[
+                    mockBrandCard.mock.calls.length - 1
+                ][0] as BrandCardProps
+                onConversationColorChange('#ABCDEF')
+            })
+
+            expect(mockUpdateConversationColor).toHaveBeenLastCalledWith(
+                '#ABCDEF',
             )
         })
 
