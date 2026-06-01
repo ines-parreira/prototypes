@@ -99,6 +99,32 @@ describe('queries', () => {
             )
         })
 
+        it('should include params in queryKey when params are provided', async () => {
+            fetchIntegrationProductsMock.mockResolvedValueOnce(
+                axiosSuccessResponse(
+                    apiListCursorPaginationResponse(productsResponse),
+                ),
+            )
+
+            renderHook(
+                () => useListProducts(1, true, { filter: 'bullet tee' }),
+                { wrapper },
+            )
+
+            expect(useInfiniteQuerySpy).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    queryKey: [
+                        'integration',
+                        'shopify',
+                        1,
+                        'products',
+                        'list',
+                        { filter: 'bullet tee' },
+                    ],
+                }),
+            )
+        })
+
         it('should reject an error on fail', async () => {
             fetchIntegrationProductsMock.mockRejectedValueOnce(
                 Error('test error'),

@@ -1,6 +1,7 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 
 import { useShopifyShopTags } from '@repo/customer'
+import { useDebouncedValue } from '@repo/hooks'
 
 import {
     Box,
@@ -10,6 +11,7 @@ import {
     MultiSelectField,
     MultiSelectItem,
     SelectField,
+    Skeleton,
     TextField,
     Tooltip,
     TooltipContent,
@@ -242,6 +244,12 @@ const TagsMultiSelect = ({
     )
 }
 
+const LOADING_ITEM_ID_PREFIX = '__loading__'
+const LOADING_ITEMS: TagItem[] = Array.from({ length: 3 }, (_, i) => ({
+    id: `${LOADING_ITEM_ID_PREFIX}${i}`,
+    label: '',
+}))
+
 const ProductVariantIdsMultiSelect = ({
     value,
     onChange,
@@ -250,9 +258,14 @@ const ProductVariantIdsMultiSelect = ({
     onChange: (val: ConditionValue) => void
 }) => {
     const { currentIntegration } = useJourneyContext()
-    const { data } = useListProducts(
+    const [searchValue, setSearchValue] = useState('')
+    const debouncedSearch = useDebouncedValue(searchValue, 300)
+    const isSearchPending = searchValue !== debouncedSearch
+
+    const { data, isFetching } = useListProducts(
         currentIntegration?.id ?? 0,
         !!currentIntegration?.id,
+        debouncedSearch ? { filter: debouncedSearch } : undefined,
     )
 
     const productItems: TagItem[] = useMemo(
@@ -273,6 +286,9 @@ const ProductVariantIdsMultiSelect = ({
         [data],
     )
 
+    const isLoading = isSearchPending || isFetching
+    const displayItems = isLoading ? LOADING_ITEMS : productItems
+
     const selectedItems = useMemo(() => {
         const selected = Array.isArray(value)
             ? value
@@ -288,9 +304,11 @@ const ProductVariantIdsMultiSelect = ({
                 aria-label="Value"
                 placement="bottom left"
                 placeholder="Select products"
-                items={productItems}
+                items={displayItems}
                 value={selectedItems}
                 isSearchable
+                searchValue={searchValue}
+                onSearchChange={setSearchValue}
                 onChange={(items) => {
                     onChange(
                         items.length > 0 ? items.map((item) => item.id) : null,
@@ -298,9 +316,17 @@ const ProductVariantIdsMultiSelect = ({
                 }}
                 maxHeight={300}
             >
-                {(item: TagItem) => (
-                    <MultiSelectItem id={item.id} label={item.label} />
-                )}
+                {(item: TagItem) =>
+                    item.id.startsWith(LOADING_ITEM_ID_PREFIX) ? (
+                        <MultiSelectItem
+                            id={item.id}
+                            label={<Skeleton width={180} />}
+                            isDisabled
+                        />
+                    ) : (
+                        <MultiSelectItem id={item.id} label={item.label} />
+                    )
+                }
             </MultiSelectField>
         </Box>
     )

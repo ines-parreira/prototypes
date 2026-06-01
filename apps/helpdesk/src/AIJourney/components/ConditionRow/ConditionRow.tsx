@@ -268,7 +268,7 @@ export const ConditionRow = ({
     }
 
     const renderWhereClause = (showCloseButton: boolean) => (
-        <Box alignItems="center" gap={Size.Xs} flexWrap="wrap">
+        <Box alignItems="center" gap={Size.Xs}>
             <Text color="content-neutral-secondary">where</Text>
             <ConditionInlineSelect
                 items={whereFieldOptions}

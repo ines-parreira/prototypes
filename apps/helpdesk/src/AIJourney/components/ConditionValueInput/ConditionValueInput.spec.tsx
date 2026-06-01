@@ -10,6 +10,7 @@ const capturedSelectField = {
 
 const capturedMultiSelectField = {
     onChange: undefined as ((items: any[]) => void) | undefined,
+    onSearchChange: undefined as ((value: string) => void) | undefined,
 }
 
 const capturedInlineSelect = {
@@ -33,6 +34,7 @@ jest.mock('@gorgias/axiom', () => ({
     },
     MultiSelectField: (props: any) => {
         capturedMultiSelectField.onChange = props.onChange
+        capturedMultiSelectField.onSearchChange = props.onSearchChange
         return (
             <div aria-label={props['aria-label']}>
                 {props.value?.length > 0 ? (
@@ -47,6 +49,7 @@ jest.mock('@gorgias/axiom', () => ({
         )
     },
     MultiSelectItem: ({ label, id }: any) => <span data-id={id}>{label}</span>,
+    Skeleton: () => <span data-testid="loading-skeleton" />,
     TextField: ({
         onChange,
         value,
@@ -163,6 +166,7 @@ jest.mock('models/integration/queries', () => ({
                 },
             ],
         },
+        isFetching: false,
     }),
 }))
 
@@ -177,6 +181,7 @@ describe('<ConditionValueInput />', () => {
         jest.clearAllMocks()
         capturedSelectField.onChange = undefined
         capturedMultiSelectField.onChange = undefined
+        capturedMultiSelectField.onSearchChange = undefined
         capturedInlineSelect.onSelect = undefined
     })
 
@@ -1349,7 +1354,7 @@ describe('<ConditionValueInput />', () => {
                 />,
             )
 
-            expect(useListProducts).toHaveBeenCalledWith(42, true)
+            expect(useListProducts).toHaveBeenCalledWith(42, true, undefined)
         })
 
         it('should pass enabled: false when currentIntegration is undefined', () => {
@@ -1374,7 +1379,124 @@ describe('<ConditionValueInput />', () => {
                 />,
             )
 
-            expect(useListProducts).toHaveBeenCalledWith(0, false)
+            expect(useListProducts).toHaveBeenCalledWith(0, false, undefined)
+        })
+
+        it('should show loading skeletons when products are fetching', () => {
+            const { useListProducts } = jest.requireMock(
+                'models/integration/queries',
+            )
+            useListProducts.mockReturnValueOnce({
+                data: undefined,
+                isFetching: true,
+            })
+
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="product_variant_ids"
+                    value={null}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="containsAny"
+                />,
+            )
+
+            expect(screen.getAllByTestId('loading-skeleton')).toHaveLength(3)
+            expect(
+                screen.queryByText('Classic T-Shirt'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should show loading skeletons while debounce is pending', () => {
+            jest.useFakeTimers()
+
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="product_variant_ids"
+                    value={null}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="containsAny"
+                />,
+            )
+
+            act(() => {
+                capturedMultiSelectField.onSearchChange!('bullet')
+            })
+
+            expect(screen.getAllByTestId('loading-skeleton')).toHaveLength(3)
+
+            jest.runOnlyPendingTimers()
+            jest.useRealTimers()
+        })
+
+        it('should pass the search term as filter to useListProducts after debounce fires', () => {
+            jest.useFakeTimers()
+            const { useListProducts } = jest.requireMock(
+                'models/integration/queries',
+            )
+
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="product_variant_ids"
+                    value={null}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="containsAny"
+                />,
+            )
+
+            act(() => {
+                capturedMultiSelectField.onSearchChange!('bullet tee')
+            })
+
+            act(() => {
+                jest.advanceTimersByTime(300)
+            })
+
+            expect(useListProducts).toHaveBeenCalledWith(42, true, {
+                filter: 'bullet tee',
+            })
+
+            jest.runOnlyPendingTimers()
+            jest.useRealTimers()
+        })
+
+        it('should pass undefined filter when search is empty', () => {
+            const { useListProducts } = jest.requireMock(
+                'models/integration/queries',
+            )
+
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="product_variant_ids"
+                    value={null}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="containsAny"
+                />,
+            )
+
+            expect(useListProducts).toHaveBeenCalledWith(42, true, undefined)
+        })
+
+        it('should pass onSearchChange to MultiSelectField', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="product_variant_ids"
+                    value={null}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="containsAny"
+                />,
+            )
+
+            expect(capturedMultiSelectField.onSearchChange).toBeDefined()
         })
     })
 })

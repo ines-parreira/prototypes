@@ -14,6 +14,7 @@ import type { Product } from 'constants/integrations/types/shopify'
 import { handleError } from 'hooks/agents/errorHandler'
 import useAppDispatch from 'hooks/useAppDispatch'
 import type { ApiListResponse } from 'models/api/types'
+import type { FetchIntegrationProductsParams } from 'models/integration/resources'
 import { fetchIntegrationProducts } from 'models/integration/resources'
 import GorgiasApi from 'services/gorgiasApi'
 import {
@@ -157,12 +158,19 @@ export const useGetProductsByIdsFromIntegration = (
 export const useListProducts = (
     integrationId: number,
     enabled = true,
-    params?: {},
+    params?: FetchIntegrationProductsParams,
     queryParams?: {},
 ) => {
     const dispatch = useAppDispatch()
     const response = useInfiniteQuery({
-        queryKey: ['integration', 'shopify', integrationId, 'products', 'list'],
+        queryKey: [
+            'integration',
+            'shopify',
+            integrationId,
+            'products',
+            'list',
+            ...(params ? [params] : []),
+        ],
         queryFn: async ({ pageParam }) =>
             fetchIntegrationProducts(integrationId, {
                 cursor: pageParam,
