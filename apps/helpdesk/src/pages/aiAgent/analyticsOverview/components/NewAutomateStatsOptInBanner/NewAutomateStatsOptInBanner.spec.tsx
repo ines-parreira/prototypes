@@ -97,7 +97,7 @@ describe('NewAutomateStatsOptInBanner', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('does not render when the new analytics dashboards flag is enabled', () => {
+    it('renders the discover banner and dashboard CTA when the flag is enabled', () => {
         useFlagWithLoadingMock.mockImplementation((flag) =>
             flag === FeatureFlagKey.AiAgentAnalyticsDashboardsNewScreens
                 ? { value: true, isLoading: false }
@@ -107,10 +107,55 @@ describe('NewAutomateStatsOptInBanner', () => {
         renderComponent()
 
         expect(
+            screen.getByText(
+                /Discover the new AI and Automation analytics experience\./,
+            ),
+        ).toBeInTheDocument()
+        expect(
             screen.queryByText(
                 /Opt in now for early access to the new AI Agent analytics experience\./,
             ),
         ).not.toBeInTheDocument()
+
+        const dashboardLink = screen.getByRole('link', {
+            name: /go to dashboard/i,
+        })
+        expect(dashboardLink).toHaveAttribute(
+            'href',
+            '/app/stats/analytics-overview',
+        )
+    })
+
+    it('renders the demo video link in the discover banner', () => {
+        useFlagWithLoadingMock.mockImplementation((flag) =>
+            flag === FeatureFlagKey.AiAgentAnalyticsDashboardsNewScreens
+                ? { value: true, isLoading: false }
+                : { value: false, isLoading: false },
+        )
+
+        renderComponent()
+
+        const demoLink = screen.getByRole('link', { name: /the demo/i })
+        expect(demoLink).toHaveAttribute(
+            'href',
+            'https://www.loom.com/share/81c4820e8d8c4e769d1a095701377da3',
+        )
+        expect(demoLink).toHaveAttribute('target', '_blank')
+        expect(demoLink).toHaveAttribute('rel', 'noopener noreferrer')
+    })
+
+    it('does not log a Segment event when the dashboard CTA is clicked', async () => {
+        useFlagWithLoadingMock.mockImplementation((flag) =>
+            flag === FeatureFlagKey.AiAgentAnalyticsDashboardsNewScreens
+                ? { value: true, isLoading: false }
+                : { value: false, isLoading: false },
+        )
+
+        const { user } = renderComponent()
+
+        await user.click(screen.getByRole('link', { name: /go to dashboard/i }))
+
+        expect(logEventMock).not.toHaveBeenCalled()
     })
 
     it('does not render while AI Agent access is loading', () => {
