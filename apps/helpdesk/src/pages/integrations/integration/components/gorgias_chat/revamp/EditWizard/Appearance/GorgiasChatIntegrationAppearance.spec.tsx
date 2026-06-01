@@ -153,6 +153,7 @@ jest.mock(
 const mockOnChatPreviewLoaded = jest.fn()
 const mockUpdateLegalDisclaimerEnabled = jest.fn()
 const mockUpdateConversationColor = jest.fn()
+const mockUpdateChatTitle = jest.fn()
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
@@ -167,6 +168,7 @@ jest.mock(
                 mockUpdateLegalDisclaimerEnabled(enabled),
             updateConversationColor: (color: string) =>
                 mockUpdateConversationColor(color),
+            updateChatTitle: (title: string) => mockUpdateChatTitle(title),
             updateMainFontFamily: jest.fn(),
         }),
     }),
@@ -877,6 +879,26 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
             unmount()
 
             expect(unsubscribe).toHaveBeenCalled()
+        })
+    })
+
+    describe('chat title preview sync', () => {
+        it('should sync the integration name to the chat preview when it loads', () => {
+            renderComponent()
+
+            expect(mockUpdateChatTitle).toHaveBeenCalledWith('Test Chat')
+        })
+
+        it('should re-sync the chat title to the preview when the name changes', () => {
+            renderComponent()
+
+            act(() => {
+                const { onNameChange } = mockBrandCard.mock
+                    .calls[0][0] as BrandCardProps
+                onNameChange('New Title')
+            })
+
+            expect(mockUpdateChatTitle).toHaveBeenLastCalledWith('New Title')
         })
     })
 
