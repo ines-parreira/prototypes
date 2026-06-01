@@ -84,6 +84,8 @@ const getLastCallProps = () =>
         getRowKey: (row: ShoppingAssistantTopProductRow) => string
         DownloadButton: React.ReactNode
         actionMenu?: React.ReactNode
+        isCustomDashboard?: boolean
+        name?: string
         nameColumns: {
             accessor: string
             label: string
@@ -247,5 +249,27 @@ describe('ShoppingAssistantTopProductsTable', () => {
             (getLastCallProps().actionMenu as React.ReactElement).props
                 .dashboard,
         ).toBe(dashboard)
+    })
+
+    it('passes isCustomDashboard to ReportingMetricBreakdownTable', () => {
+        mockUseShoppingAssistantTopProductsMetrics.mockReturnValue(
+            defaultMockReturn,
+        )
+        render(<ShoppingAssistantTopProductsTable isCustomDashboard />)
+
+        expect(getLastCallProps().isCustomDashboard).toBe(true)
+    })
+
+    it('passes name from chartConfig.label to ReportingMetricBreakdownTable', () => {
+        mockUseShoppingAssistantTopProductsMetrics.mockReturnValue(
+            defaultMockReturn,
+        )
+        render(
+            <ShoppingAssistantTopProductsTable
+                chartConfig={{ label: 'Top Products' }}
+            />,
+        )
+
+        expect(getLastCallProps().name).toBe('Top Products')
     })
 })

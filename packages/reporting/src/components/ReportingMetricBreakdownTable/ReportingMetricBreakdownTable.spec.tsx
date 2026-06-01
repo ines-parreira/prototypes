@@ -268,6 +268,97 @@ describe('ReportingMetricBreakdownTable', () => {
         })
     })
 
+    describe('isCustomDashboard', () => {
+        it('renders "Performance breakdown by {name}" label when isCustomDashboard and name are provided', () => {
+            render(
+                <ReportingMetricBreakdownTable
+                    data={sampleData}
+                    metricColumns={metricColumns}
+                    loadingStates={defaultLoadingStates}
+                    DownloadButton={null}
+                    nameColumns={nameColumns}
+                    isCustomDashboard
+                    name="Channel"
+                />,
+            )
+
+            expect(
+                screen.getByText('Performance breakdown by Channel'),
+            ).toBeInTheDocument()
+        })
+
+        it('does not render the label when isCustomDashboard is false', () => {
+            render(
+                <ReportingMetricBreakdownTable
+                    data={sampleData}
+                    metricColumns={metricColumns}
+                    loadingStates={defaultLoadingStates}
+                    DownloadButton={null}
+                    nameColumns={nameColumns}
+                    name="Channel"
+                />,
+            )
+
+            expect(
+                screen.queryByText(/Performance breakdown by/),
+            ).not.toBeInTheDocument()
+        })
+
+        it('does not render the label when name is not provided', () => {
+            render(
+                <ReportingMetricBreakdownTable
+                    data={sampleData}
+                    metricColumns={metricColumns}
+                    loadingStates={defaultLoadingStates}
+                    DownloadButton={null}
+                    nameColumns={nameColumns}
+                    isCustomDashboard
+                />,
+            )
+
+            expect(
+                screen.queryByText(/Performance breakdown by/),
+            ).not.toBeInTheDocument()
+        })
+
+        it('renders the actionMenu in the header when isCustomDashboard and name are provided', () => {
+            render(
+                <ReportingMetricBreakdownTable
+                    data={sampleData}
+                    metricColumns={metricColumns}
+                    loadingStates={defaultLoadingStates}
+                    DownloadButton={null}
+                    nameColumns={nameColumns}
+                    actionMenu={<button>Remove from dashboard</button>}
+                    isCustomDashboard
+                    name="Channel"
+                />,
+            )
+
+            expect(
+                screen.getByRole('button', { name: /remove from dashboard/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('renders actionMenu even when isCustomDashboard is true but name is absent', () => {
+            render(
+                <ReportingMetricBreakdownTable
+                    data={sampleData}
+                    metricColumns={metricColumns}
+                    loadingStates={defaultLoadingStates}
+                    DownloadButton={null}
+                    nameColumns={nameColumns}
+                    actionMenu={<button>Remove from dashboard</button>}
+                    isCustomDashboard
+                />,
+            )
+
+            expect(
+                screen.getByRole('button', { name: /remove from dashboard/i }),
+            ).toBeInTheDocument()
+        })
+    })
+
     describe('column visibility persistence', () => {
         it('saves visible columns with the chartId when Save is clicked', async () => {
             const user = userEvent.setup()

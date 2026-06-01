@@ -16,12 +16,16 @@ type Props = {
     chartId?: string
     withChartMenu?: boolean
     dashboard?: DashboardSchema
+    chartConfig?: { label: string }
+    isCustomDashboard?: boolean
 }
 
 export const AllAgentsPerformanceByIntentTable = ({
     chartId,
     withChartMenu,
     dashboard,
+    chartConfig,
+    isCustomDashboard,
 }: Props) => {
     const { data = [], loadingStates } =
         useAllAgentsPerformanceByIntentMetrics()
@@ -50,6 +54,8 @@ export const AllAgentsPerformanceByIntentTable = ({
                 ) : undefined
             }
             chartId={chartId}
+            isCustomDashboard={isCustomDashboard}
+            name={chartConfig?.label}
         />
     )
 }

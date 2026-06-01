@@ -17,12 +17,16 @@ type Props = {
     chartId?: string
     withChartMenu?: boolean
     dashboard?: DashboardSchema
+    chartConfig?: { label: string }
+    isCustomDashboard?: boolean
 }
 
 export const ShoppingAssistantTopProductsTable = ({
     chartId,
     withChartMenu,
     dashboard,
+    chartConfig,
+    isCustomDashboard,
 }: Props) => {
     const {
         flatData,
@@ -78,6 +82,8 @@ export const ShoppingAssistantTopProductsTable = ({
             }
             chartId={chartId}
             nameColumns={nameColumns}
+            isCustomDashboard={isCustomDashboard}
+            name={chartConfig?.label}
         />
     )
 }

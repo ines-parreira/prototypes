@@ -102,6 +102,8 @@ const getLastCallProps = () =>
         ) => string
         DownloadButton: React.ReactNode
         actionMenu?: React.ReactNode
+        isCustomDashboard?: boolean
+        name?: string
         nameColumns: {
             accessor: string
             label: string
@@ -233,5 +235,31 @@ describe('ShoppingAssistantPerformanceByEngagementFeatureTable', () => {
             (getLastCallProps().actionMenu as React.ReactElement).props
                 .dashboard,
         ).toBe(dashboard)
+    })
+
+    it('passes isCustomDashboard to ReportingMetricBreakdownTable', () => {
+        mockUseShoppingAssistantPerformanceByEngagementFeatureMetrics.mockReturnValue(
+            { data: defaultData, loadingStates: defaultLoadingStates },
+        )
+        render(
+            <ShoppingAssistantPerformanceByEngagementFeatureTable
+                isCustomDashboard
+            />,
+        )
+
+        expect(getLastCallProps().isCustomDashboard).toBe(true)
+    })
+
+    it('passes name from chartConfig.label to ReportingMetricBreakdownTable', () => {
+        mockUseShoppingAssistantPerformanceByEngagementFeatureMetrics.mockReturnValue(
+            { data: defaultData, loadingStates: defaultLoadingStates },
+        )
+        render(
+            <ShoppingAssistantPerformanceByEngagementFeatureTable
+                chartConfig={{ label: 'Engagement Feature' }}
+            />,
+        )
+
+        expect(getLastCallProps().name).toBe('Engagement Feature')
     })
 })

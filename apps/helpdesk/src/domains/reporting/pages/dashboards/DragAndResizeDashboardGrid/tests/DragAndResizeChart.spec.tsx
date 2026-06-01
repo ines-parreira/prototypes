@@ -89,6 +89,7 @@ describe('DragAndResizeChart', () => {
                 chart: schema.config_id,
                 config: SupportPerformanceOverviewReportConfig,
                 dashboard: undefined,
+                isCustomDashboard: true,
             },
             {},
         )
@@ -115,6 +116,7 @@ describe('DragAndResizeChart', () => {
                 chart: schema.config_id,
                 config: SupportPerformanceOverviewReportConfig,
                 dashboard: mockDashboard,
+                isCustomDashboard: true,
             },
             {},
         )
@@ -137,6 +139,7 @@ describe('DragAndResizeChart', () => {
                 chart: AnalyticsOverviewChart.AutomationRateCard,
                 config: AnalyticsOverviewReportConfig,
                 dashboard: undefined,
+                isCustomDashboard: true,
             },
             {},
         )

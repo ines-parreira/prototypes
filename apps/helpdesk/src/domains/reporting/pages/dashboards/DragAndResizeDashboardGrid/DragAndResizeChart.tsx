@@ -36,6 +36,7 @@ export const DragAndResizeChart = ({
             chart={effectiveChartId}
             config={reportConfig}
             dashboard={dashboard}
+            isCustomDashboard
         />
     )
 }

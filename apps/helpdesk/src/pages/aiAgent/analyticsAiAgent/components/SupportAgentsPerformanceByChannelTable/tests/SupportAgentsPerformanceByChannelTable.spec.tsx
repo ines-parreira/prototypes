@@ -91,6 +91,8 @@ const getLastCallProps = () =>
         ) => string
         DownloadButton: React.ReactNode
         actionMenu?: React.ReactNode
+        isCustomDashboard?: boolean
+        name?: string
         nameColumns: {
             accessor: string
             label: string
@@ -205,5 +207,29 @@ describe('SupportAgentsPerformanceByChannelTable', () => {
             (getLastCallProps().actionMenu as React.ReactElement).props
                 .dashboard,
         ).toBe(dashboard)
+    })
+
+    it('passes isCustomDashboard to ReportingMetricBreakdownTable', () => {
+        mockUseSupportAgentsPerformanceByChannelMetrics.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+        })
+        render(<SupportAgentsPerformanceByChannelTable isCustomDashboard />)
+
+        expect(getLastCallProps().isCustomDashboard).toBe(true)
+    })
+
+    it('passes name from chartConfig.label to ReportingMetricBreakdownTable', () => {
+        mockUseSupportAgentsPerformanceByChannelMetrics.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+        })
+        render(
+            <SupportAgentsPerformanceByChannelTable
+                chartConfig={{ label: 'Channel' }}
+            />,
+        )
+
+        expect(getLastCallProps().name).toBe('Channel')
     })
 })

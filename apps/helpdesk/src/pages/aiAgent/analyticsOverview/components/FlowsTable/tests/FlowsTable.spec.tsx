@@ -87,6 +87,8 @@ const getLastCallProps = () =>
         getRowKey: (row: FlowsEntityMetrics) => string
         DownloadButton: React.ReactNode
         actionMenu?: React.ReactNode
+        isCustomDashboard?: boolean
+        name?: string
         nameColumns: {
             accessor: string
             label: string
@@ -181,6 +183,28 @@ describe('FlowsTable', () => {
             (getLastCallProps().actionMenu as React.ReactElement).props
                 .dashboard,
         ).toBe(dashboard)
+    })
+
+    it('passes isCustomDashboard to ReportingMetricBreakdownTable', () => {
+        mockUseFlowsMetrics.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+            displayNames: defaultDisplayNames,
+        })
+        render(<FlowsTable isCustomDashboard />)
+
+        expect(getLastCallProps().isCustomDashboard).toBe(true)
+    })
+
+    it('passes name from chartConfig.label to ReportingMetricBreakdownTable', () => {
+        mockUseFlowsMetrics.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+            displayNames: defaultDisplayNames,
+        })
+        render(<FlowsTable chartConfig={{ label: 'Flow' }} />)
+
+        expect(getLastCallProps().name).toBe('Flow')
     })
 
     it('renders DownloadFlowsButton as the DownloadButton', () => {

@@ -91,6 +91,8 @@ const getLastCallProps = () =>
         getRowKey: (row: ArticleRecommendationRow) => string
         DownloadButton: React.ReactNode
         actionMenu?: React.ReactNode
+        isCustomDashboard?: boolean
+        name?: string
         nameColumns: {
             accessor: string
             label: string
@@ -222,6 +224,36 @@ describe('ArticleRecommendationTable', () => {
             (getLastCallProps().actionMenu as React.ReactElement).props
                 .dashboard,
         ).toBe(dashboard)
+    })
+
+    it('passes isCustomDashboard to ReportingMetricBreakdownTable', () => {
+        mockUseArticleRecommendationMetrics.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+            displayNames: defaultDisplayNames,
+            isLoading: false,
+            isError: false,
+        })
+        render(<ArticleRecommendationTable isCustomDashboard />)
+
+        expect(getLastCallProps().isCustomDashboard).toBe(true)
+    })
+
+    it('passes name from chartConfig.label to ReportingMetricBreakdownTable', () => {
+        mockUseArticleRecommendationMetrics.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+            displayNames: defaultDisplayNames,
+            isLoading: false,
+            isError: false,
+        })
+        render(
+            <ArticleRecommendationTable
+                chartConfig={{ label: 'Article name' }}
+            />,
+        )
+
+        expect(getLastCallProps().name).toBe('Article name')
     })
 
     it('renders DownloadArticleRecommendationButton as the DownloadButton', () => {

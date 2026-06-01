@@ -15,9 +15,17 @@ type Props = {
     chartId?: string
     withChartMenu?: boolean
     dashboard?: DashboardSchema
+    chartConfig?: { label: string }
+    isCustomDashboard?: boolean
 }
 
-export const FlowsTable = ({ chartId, withChartMenu, dashboard }: Props) => {
+export const FlowsTable = ({
+    chartId,
+    withChartMenu,
+    dashboard,
+    chartConfig,
+    isCustomDashboard,
+}: Props) => {
     const { data = [], loadingStates, displayNames } = useFlowsMetrics()
     const exportCsvAction = useDownloadFlowsAction()
     const withMenu = withChartMenu && chartId
@@ -45,6 +53,8 @@ export const FlowsTable = ({ chartId, withChartMenu, dashboard }: Props) => {
                 ) : undefined
             }
             chartId={chartId}
+            isCustomDashboard={isCustomDashboard}
+            name={chartConfig?.label}
         />
     )
 }

@@ -88,6 +88,8 @@ const getLastCallProps = () =>
         getRowKey: (row: FeatureMetrics) => string
         DownloadButton: React.ReactNode
         actionMenu?: React.ReactNode
+        isCustomDashboard?: boolean
+        name?: string
         nameColumns: { accessor: string; label: string }[]
     }
 
@@ -204,5 +206,25 @@ describe('PerformanceBreakdownTable', () => {
             (getLastCallProps().actionMenu as React.ReactElement).props
                 .dashboard,
         ).toBe(dashboard)
+    })
+
+    it('passes isCustomDashboard to ReportingMetricBreakdownTable', () => {
+        mockUsePerformanceMetricsPerFeature.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+        })
+        render(<PerformanceBreakdownTable isCustomDashboard />)
+
+        expect(getLastCallProps().isCustomDashboard).toBe(true)
+    })
+
+    it('passes name from chartConfig.label to ReportingMetricBreakdownTable', () => {
+        mockUsePerformanceMetricsPerFeature.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+        })
+        render(<PerformanceBreakdownTable chartConfig={{ label: 'Feature' }} />)
+
+        expect(getLastCallProps().name).toBe('Feature')
     })
 })

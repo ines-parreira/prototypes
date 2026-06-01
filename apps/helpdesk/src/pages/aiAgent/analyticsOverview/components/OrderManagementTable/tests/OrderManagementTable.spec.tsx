@@ -104,6 +104,8 @@ const getLastCallProps = () =>
         getRowKey: (row: OrderManagementEntityMetrics) => string
         DownloadButton: ReactNode
         actionMenu?: ReactNode
+        isCustomDashboard?: boolean
+        name?: string
         nameColumns: {
             accessor: string
             label: string
@@ -249,5 +251,25 @@ describe('OrderManagementTable', () => {
             (getLastCallProps().actionMenu as React.ReactElement).props
                 .dashboard,
         ).toBe(dashboard)
+    })
+
+    it('passes isCustomDashboard to ReportingMetricBreakdownTable', () => {
+        mockUseOrderManagementMetrics.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+        })
+        render(<OrderManagementTable isCustomDashboard />)
+
+        expect(getLastCallProps().isCustomDashboard).toBe(true)
+    })
+
+    it('passes name from chartConfig.label to ReportingMetricBreakdownTable', () => {
+        mockUseOrderManagementMetrics.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+        })
+        render(<OrderManagementTable chartConfig={{ label: 'Order type' }} />)
+
+        expect(getLastCallProps().name).toBe('Order type')
     })
 })

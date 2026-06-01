@@ -16,12 +16,16 @@ type Props = {
     chartId?: string
     withChartMenu?: boolean
     dashboard?: DashboardSchema
+    chartConfig?: { label: string }
+    isCustomDashboard?: boolean
 }
 
 export const PerformanceBreakdownTable = ({
     chartId,
     withChartMenu,
     dashboard,
+    chartConfig,
+    isCustomDashboard,
 }: Props) => {
     const { data = [], loadingStates } = usePerformanceMetricsPerFeature()
     const exportCsvAction = useDownloadPerformanceBreakdownAction()
@@ -47,6 +51,8 @@ export const PerformanceBreakdownTable = ({
             }
             chartId={chartId}
             nameColumns={PERFORMANCE_BREAKDOWN_NAME_COLUMNS}
+            isCustomDashboard={isCustomDashboard}
+            name={chartConfig?.label}
         />
     )
 }

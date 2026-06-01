@@ -7,7 +7,10 @@ import {
     DataTable,
     DataTableActions,
     DataTableColumnEditing,
+    Text,
 } from '@gorgias/axiom'
+
+import css from './ReportingMetricBreakdownTable.less'
 
 import { useDashboardContext } from '../../contexts/DashboardContext'
 import { useSaveTableColumnVisibility } from '../ManagedDashboards/hooks/useSaveTableColumnVisibility'
@@ -31,6 +34,8 @@ type Props<TData> = {
     DownloadButton?: ReactNode
     nameColumns: NameColumnConfig[]
     chartId?: string
+    isCustomDashboard?: boolean
+    name?: string
 }
 
 export function ReportingMetricBreakdownTable<TData>({
@@ -41,6 +46,8 @@ export function ReportingMetricBreakdownTable<TData>({
     DownloadButton,
     nameColumns,
     chartId,
+    isCustomDashboard,
+    name,
 }: Props<TData>) {
     const columns = useMemo(
         () => [
@@ -129,6 +136,19 @@ export function ReportingMetricBreakdownTable<TData>({
 
     return (
         <Box display="flex" flex={1} flexDirection="column">
+            {isCustomDashboard && name && (
+                <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    width="100%"
+                >
+                    <Text className={css.tableLabel}>
+                        Performance breakdown by {name}
+                    </Text>
+                    {actionMenu}
+                </Box>
+            )}
             <DataTable<TData>
                 key={tableKey}
                 data={data}
@@ -160,7 +180,7 @@ export function ReportingMetricBreakdownTable<TData>({
             >
                 <DataTableActions>
                     {DownloadButton}
-                    {actionMenu}
+                    {(!isCustomDashboard || !name) && actionMenu}
                 </DataTableActions>
                 <DataTableColumnEditing
                     label="Edit metrics"

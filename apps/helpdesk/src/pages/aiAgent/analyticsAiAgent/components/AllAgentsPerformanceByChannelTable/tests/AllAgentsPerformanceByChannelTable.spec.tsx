@@ -92,6 +92,8 @@ const getLastCallProps = () =>
         getRowKey: (row: AllAgentsPerformanceByChannelEntityMetrics) => string
         DownloadButton: React.ReactNode
         actionMenu?: React.ReactNode
+        isCustomDashboard?: boolean
+        name?: string
         nameColumns: {
             accessor: string
             label: string
@@ -135,6 +137,30 @@ describe('AllAgentsPerformanceByChannelTable', () => {
                 formatName: formatChannelName,
             }),
         ])
+    })
+
+    it('passes isCustomDashboard to ReportingMetricBreakdownTable', () => {
+        mockUseAllAgentsPerformanceByChannelMetrics.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+        })
+        render(<AllAgentsPerformanceByChannelTable isCustomDashboard />)
+
+        expect(getLastCallProps().isCustomDashboard).toBe(true)
+    })
+
+    it('passes name from chartConfig.label to ReportingMetricBreakdownTable', () => {
+        mockUseAllAgentsPerformanceByChannelMetrics.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+        })
+        render(
+            <AllAgentsPerformanceByChannelTable
+                chartConfig={{ label: 'Channel' }}
+            />,
+        )
+
+        expect(getLastCallProps().name).toBe('Channel')
     })
 
     it('renders DownloadAllAgentsPerformanceByChannelButton as the DownloadButton', () => {

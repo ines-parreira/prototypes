@@ -95,6 +95,8 @@ const getLastCallProps = () =>
         getRowKey: (row: AllAgentsPerformanceByIntentEntityMetrics) => string
         DownloadButton: React.ReactNode
         actionMenu?: React.ReactNode
+        isCustomDashboard?: boolean
+        name?: string
         nameColumns: { accessor: string; label: string }[]
     }
 
@@ -202,5 +204,29 @@ describe('AllAgentsPerformanceByIntentTable', () => {
             (getLastCallProps().actionMenu as React.ReactElement).props
                 .dashboard,
         ).toBe(dashboard)
+    })
+
+    it('passes isCustomDashboard to ReportingMetricBreakdownTable', () => {
+        mockUseAllAgentsPerformanceByIntentMetrics.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+        })
+        render(<AllAgentsPerformanceByIntentTable isCustomDashboard />)
+
+        expect(getLastCallProps().isCustomDashboard).toBe(true)
+    })
+
+    it('passes name from chartConfig.label to ReportingMetricBreakdownTable', () => {
+        mockUseAllAgentsPerformanceByIntentMetrics.mockReturnValue({
+            data: defaultData,
+            loadingStates: defaultLoadingStates,
+        })
+        render(
+            <AllAgentsPerformanceByIntentTable
+                chartConfig={{ label: 'Intent' }}
+            />,
+        )
+
+        expect(getLastCallProps().name).toBe('Intent')
     })
 })

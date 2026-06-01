@@ -97,6 +97,7 @@ describe('<DashboardComponent />', () => {
             {
                 chartConfig: { chartComponent: chartComponentMock },
                 chartId: chart,
+                isCustomDashboard: undefined,
                 withChartMenu: false,
             },
             {},
@@ -119,6 +120,7 @@ describe('<DashboardComponent />', () => {
             {
                 chartId: chart,
                 dashboard,
+                isCustomDashboard: undefined,
                 withChartMenu: true,
                 chartConfig: { chartComponent: chartComponentMock },
             },

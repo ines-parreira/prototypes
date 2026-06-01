@@ -11,6 +11,7 @@ type Props<T extends string> = {
     config: ReportConfig<T>
     dashboard?: DashboardSchema
     withChartMenu?: boolean
+    isCustomDashboard?: boolean
 }
 
 export const DashboardComponent = memo(
@@ -19,6 +20,7 @@ export const DashboardComponent = memo(
         dashboard,
         config,
         withChartMenu = true,
+        isCustomDashboard,
     }: Props<T>) => {
         const { isChartRestrictedToCurrentUser } = useReportChartRestrictions()
 
@@ -30,6 +32,7 @@ export const DashboardComponent = memo(
             chartConfig: config.charts[chart],
             chartId: chart,
             withChartMenu,
+            isCustomDashboard,
             ...(withChartMenu ? { dashboard } : {}),
         }
         return createElement(config.charts[chart].chartComponent, props)

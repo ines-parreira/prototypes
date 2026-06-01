@@ -16,12 +16,16 @@ type Props = {
     chartId?: string
     withChartMenu?: boolean
     dashboard?: DashboardSchema
+    chartConfig?: { label: string }
+    isCustomDashboard?: boolean
 }
 
 export const AiAgentSalesPerformanceByChannelTable = ({
     chartId,
     withChartMenu,
     dashboard,
+    chartConfig,
+    isCustomDashboard,
 }: Props) => {
     const { data = [], loadingStates } =
         useAiAgentSalesPerformanceByChannelMetrics()
@@ -50,6 +54,8 @@ export const AiAgentSalesPerformanceByChannelTable = ({
                 ) : undefined
             }
             chartId={chartId}
+            isCustomDashboard={isCustomDashboard}
+            name={chartConfig?.label}
         />
     )
 }

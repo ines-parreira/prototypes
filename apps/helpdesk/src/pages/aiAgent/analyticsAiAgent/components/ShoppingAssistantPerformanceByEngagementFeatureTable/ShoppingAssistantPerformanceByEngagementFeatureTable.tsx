@@ -16,12 +16,16 @@ type Props = {
     chartId?: string
     withChartMenu?: boolean
     dashboard?: DashboardSchema
+    chartConfig?: { label: string }
+    isCustomDashboard?: boolean
 }
 
 export const ShoppingAssistantPerformanceByEngagementFeatureTable = ({
     chartId,
     withChartMenu,
     dashboard,
+    chartConfig,
+    isCustomDashboard,
 }: Props) => {
     const { data = [], loadingStates } =
         useShoppingAssistantPerformanceByEngagementFeatureMetrics()
@@ -55,6 +59,8 @@ export const ShoppingAssistantPerformanceByEngagementFeatureTable = ({
                 ) : undefined
             }
             chartId={chartId}
+            isCustomDashboard={isCustomDashboard}
+            name={chartConfig?.label}
         />
     )
 }
