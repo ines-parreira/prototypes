@@ -1,11 +1,16 @@
 import { useMemo } from 'react'
 
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
+
 import { useMultipleMetricsTrends } from 'domains/reporting/hooks/useMultipleMetricsTrend'
+import useStatsMetricTrend from 'domains/reporting/hooks/useStatsMetricTrend'
 import { TicketSatisfactionSurveyMeasure } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
 import {
     customerSatisfactionForAIAgentTicketsQueryFactory,
     customerSatisfactionQueryFactory,
 } from 'domains/reporting/models/queryFactories/support-performance/customerSatisfaction'
+import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
+import { averageAiAgentCsatQueryV2Factory } from 'domains/reporting/models/scopes/aiAgentCsat'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
@@ -22,7 +27,13 @@ export const useCsat = (
     timezone: string,
     aiAgentUserId: number,
     integrationIds?: string[],
+    v2IntegrationIds?: number[],
 ): KpiMetric => {
+    const { value: isNewScreens, isLoading: isFlagLoading } =
+        useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsNewScreens)
+    const useV2 = !isFlagLoading && !!isNewScreens
+    const useV1 = !isFlagLoading && !isNewScreens
+
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
     const stores = useAppSelector(getStoreIntegrations)
@@ -48,7 +59,7 @@ export const useCsat = (
         [storeConfigurations],
     )
 
-    // Use AI Agent specific query with integrationIds when available for store-specific filtering
+    // V1 path
     const useIntegrationFilter = integrationIds && integrationIds.length > 0
 
     const currentPeriodQuery = useIntegrationFilter
@@ -94,20 +105,52 @@ export const useCsat = (
               timezone,
           )
 
-    const result = useMultipleMetricsTrends(
+    const v1Result = useMultipleMetricsTrends(
         currentPeriodQuery,
         previousPeriodQuery,
+        undefined,
+        undefined,
+        useV1,
     )
+
+    // V2 path
+    const storeFilter = v2IntegrationIds?.length
+        ? { storeIntegrations: withLogicalOperator(v2IntegrationIds) }
+        : {}
+    const v2Filters = { ...filters, ...storeFilter }
+
+    const v2 = useStatsMetricTrend(
+        averageAiAgentCsatQueryV2Factory({ filters: v2Filters, timezone }),
+        averageAiAgentCsatQueryV2Factory({
+            filters: {
+                ...v2Filters,
+                period: getPreviousPeriod(filters.period),
+            },
+            timezone,
+        }),
+        useV2,
+    )
+
+    const isFetching = useV2 ? v2.isFetching : v1Result.isFetching
+    const value = useV2
+        ? (v2.data?.value ?? null)
+        : (v1Result.data?.[TicketSatisfactionSurveyMeasure.AvgSurveyScore]
+              ?.value ?? null)
+    const prevValue = useV2
+        ? (v2.data?.prevValue ?? null)
+        : (v1Result.data?.[TicketSatisfactionSurveyMeasure.AvgSurveyScore]
+              ?.prevValue ?? null)
 
     return {
         hidden: !hasEmailAgentEnabled,
-        title: 'CSAT',
+        title: 'Average CSAT',
         hint: {
-            title: 'The average satisfaction rating for AI Agent interactions, based on surveys sent after ticket resolution',
+            title: 'Average satisfaction (CSAT) score for interactions handled during the selected period.',
         },
         metricFormat: 'decimal-precision-1',
-        isLoading: result.isFetching || storeConfigurationsLoading,
+        isLoading: isFlagLoading || isFetching || storeConfigurationsLoading,
         'data-candu-id': 'ai-agent-overview-kpi-csat',
-        ...result.data?.[TicketSatisfactionSurveyMeasure.AvgSurveyScore],
+        value,
+        prevValue,
     }
 }

@@ -10,6 +10,11 @@ import type { StoreState } from 'state/types'
 
 import { KpiSection } from '../KpiSection'
 
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlagWithLoading: jest.fn(() => ({ value: false, isLoading: false })),
+}))
+
 jest.mock('pages/aiAgent/Overview/hooks/useAiAgentType')
 const useAiAgentTypeMock = assumeMock(useAiAgentTypeForAccount)
 jest.mock('domains/reporting/hooks/automate/useAIAgentUserId')
@@ -118,14 +123,14 @@ describe('KpiSection', () => {
                 expect.objectContaining({
                     automationRateFilters: {
                         period: {
-                            start_datetime: '2024-03-02T00:00:00Z',
+                            start_datetime: '2024-02-27T00:00:00Z',
                             end_datetime: '2024-03-27T23:59:59Z',
                         },
                     },
                     filters: {
                         period: {
-                            start_datetime: '2024-03-02T00:00:00Z',
-                            end_datetime: '2024-03-30T23:59:59Z',
+                            start_datetime: '2024-02-27T00:00:00Z',
+                            end_datetime: '2024-03-27T23:59:59Z',
                         },
                     },
                 }),
@@ -178,5 +183,29 @@ describe('KpiSection', () => {
             const link = reportButton.closest('a')
             expect(link).toHaveAttribute('href', '/app/stats/ai-agent-overview')
         })
+        it.each(['support' as const, 'sales' as const, 'mixed' as const])(
+            'should redirect to All Agents tab when AiAgentAnalyticsDashboardsNewScreens flag is on (aiAgentType: %s)',
+            (aiAgentType) => {
+                const { useFlagWithLoading } = jest.requireMock(
+                    '@repo/feature-flags',
+                )
+                useFlagWithLoading.mockReturnValue({
+                    value: true,
+                    isLoading: false,
+                })
+                useAiAgentTypeMock.mockReturnValue({
+                    isLoading: false,
+                    aiAgentType,
+                })
+                const { getByRole } = renderComponent()
+                const reportButton = getByRole('button', {
+                    name: 'View Full Report',
+                })
+                expect(reportButton.closest('a')).toHaveAttribute(
+                    'href',
+                    '/app/stats/ai-agent',
+                )
+            },
+        )
     })
 })

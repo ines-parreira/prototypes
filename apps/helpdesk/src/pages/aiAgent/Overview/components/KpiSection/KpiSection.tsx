@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import moment from 'moment'
 import { NavLink } from 'react-router-dom'
 
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
@@ -78,27 +79,17 @@ const Kpis = ({
     shopName?: string
 }) => {
     const { automationRateFilters, filters } = useMemo(() => {
+        const end_datetime = moment().subtract(3, 'days').endOf('day').format()
         const start_datetime = moment()
-            .subtract(28, 'days')
+            .subtract(3, 'days')
+            .subtract(29, 'days')
             .startOf('day')
             .format()
 
+        const period = { start_datetime, end_datetime }
         return {
-            automationRateFilters: {
-                period: {
-                    start_datetime,
-                    end_datetime: moment()
-                        .subtract(3, 'days')
-                        .endOf('day')
-                        .format(),
-                },
-            },
-            filters: {
-                period: {
-                    start_datetime,
-                    end_datetime: moment().endOf('day').format(),
-                },
-            },
+            automationRateFilters: { period },
+            filters: { period },
         }
     }, [])
     const { userTimezone } = useAppSelector(getCleanStatsFiltersWithTimezone)
@@ -131,9 +122,16 @@ export const KpiSection = ({
 }: Props) => {
     const { isLoading, aiAgentType } = useAiAgentTypeForAccount()
     const aiAgentUserId = useAIAgentUserId()
+    const { value: isNewScreens } = useFlagWithLoading(
+        FeatureFlagKey.AiAgentAnalyticsDashboardsNewScreens,
+    )
     const analyticsLink = useMemo(() => {
         if (isLoading) {
             return ''
+        }
+
+        if (isNewScreens) {
+            return `/app/stats/${STATS_ROUTES.AI_AGENT}`
         }
 
         if (aiAgentType === 'mixed' || aiAgentType === 'sales') {
@@ -141,7 +139,7 @@ export const KpiSection = ({
         }
 
         return `/app/stats/${STATS_ROUTES.AI_AGENT_OVERVIEW}`
-    }, [aiAgentType, isLoading])
+    }, [aiAgentType, isLoading, isNewScreens])
 
     if (isLoading || !aiAgentUserId) {
         return (
@@ -151,7 +149,7 @@ export const KpiSection = ({
                         <CardTitle>AI Agent performance</CardTitle>
                     </div>
                     <div className={css.subtitle}>
-                        Data from last 28 days
+                        Data from last 30 days
                         <IconTooltip className={css.iconTooltip}>
                             Data for the past 72 hours is not included in these
                             metrics, as interactions are considered automated
@@ -182,7 +180,7 @@ export const KpiSection = ({
                     </NavLink>
                 </div>
                 <div className={css.subtitle}>
-                    Data from last 28 days
+                    Data from last 30 days
                     <IconTooltip className={css.iconTooltip}>
                         Data for the past 72 hours is not included in these
                         metrics, as interactions are considered automated after

@@ -15,6 +15,7 @@ export const useAiAgentTicketNoHandover = (
     filters: StatsFilters,
     timezone: string,
     integrationIds?: string[],
+    enabled = true,
 ) => {
     const { outcomeCustomFieldId } = useGetCustomTicketsFieldsDefinitionData()
     const additionalFilters = [
@@ -47,5 +48,8 @@ export const useAiAgentTicketNoHandover = (
             customFieldId: outcomeCustomFieldId,
             additionalFilters,
         }),
+        undefined,
+        undefined,
+        enabled,
     )
 }

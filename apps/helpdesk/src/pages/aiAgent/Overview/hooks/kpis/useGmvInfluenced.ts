@@ -1,9 +1,13 @@
 import { useMemo } from 'react'
 
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
+
 import { useMetricPerDimensionV2 } from 'domains/reporting/hooks/useMetricPerDimension'
+import useStatsMetricTrend from 'domains/reporting/hooks/useStatsMetricTrend'
 import { gmvInfluencedQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
 import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { AISalesAgentGMVInfluencedQueryFactoryV2 } from 'domains/reporting/models/scopes/AISalesAgentOrders'
+import { totalSalesAmountUsdQueryV2Factory } from 'domains/reporting/models/scopes/aiSalesAgentOrdersPerformance'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { formatGmvInfluencedData } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluencedTrend'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
@@ -29,8 +33,14 @@ export const useGmvInfluenced = ({
     showActivationModal: () => void
     integrationIds?: number[]
 }): KpiMetric => {
+    const { value: isNewScreens, isLoading: isFlagLoading } =
+        useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsNewScreens)
+    const useV2 = !isFlagLoading && !!isNewScreens
+    const useV1 = !isFlagLoading && !isNewScreens
+
     const { currency } = useCurrency()
 
+    // V1 path
     const currentPeriodQuery = gmvInfluencedQueryFactory(
         filters,
         timezone,
@@ -57,6 +67,8 @@ export const useGmvInfluenced = ({
                 },
                 timezone,
             }),
+            undefined,
+            useV1,
         )
 
     const { data: previousPeriodData, isFetching: isPreviousPeriodFetching } =
@@ -72,6 +84,8 @@ export const useGmvInfluenced = ({
                 },
                 timezone,
             }),
+            undefined,
+            useV1,
         )
 
     const formattedData = useMemo(
@@ -79,10 +93,32 @@ export const useGmvInfluenced = ({
         [currentPeriodData, previousPeriodData],
     )
 
-    const isFetching = isCurrentPeriodFetching || isPreviousPeriodFetching
+    const isV1Fetching = isCurrentPeriodFetching || isPreviousPeriodFetching
+
+    // V2 path
+    const storeFilter = integrationIds?.length
+        ? { storeIntegrations: withLogicalOperator(integrationIds) }
+        : {}
+    const v2Filters = { ...filters, ...storeFilter }
+
+    const v2 = useStatsMetricTrend(
+        totalSalesAmountUsdQueryV2Factory({ filters: v2Filters, timezone }),
+        totalSalesAmountUsdQueryV2Factory({
+            filters: {
+                ...v2Filters,
+                period: getPreviousPeriod(filters.period),
+            },
+            timezone,
+        }),
+        useV2,
+    )
+
+    const isFetching = isFlagLoading || (useV2 ? v2.isFetching : isV1Fetching)
+    const gmvValue = useV2 ? v2.data?.value : formattedData?.value
+    const gmvPrevValue = useV2 ? v2.data?.prevValue : formattedData?.prevValue
 
     const action = useGmvInfluencedCtaButton({
-        gmvInfluenced: formattedData?.value,
+        gmvInfluenced: gmvValue,
         gmvInfluencedLoading: isFetching,
         isOnNewPlan,
         showEarlyAccessModal,
@@ -92,16 +128,16 @@ export const useGmvInfluenced = ({
 
     return {
         hidden: false,
-        title: 'GMV Influenced',
+        title: 'Revenue influenced',
         hint: {
-            title: 'The total revenue generated from orders placed during or after a conversation with the AI Agent, without human intervention.',
+            title: 'Total revenue from orders placed within 3 days of a Shopping Assistant interaction.',
         },
         metricFormat: 'currency-precision-1',
         isLoading: isFetching,
         'data-candu-id': 'ai-agent-overview-kpi-gmv-influenced',
-        value: formattedData?.value,
-        prevValue: formattedData?.prevValue,
-        currency: formattedData?.currency ?? currency,
+        value: gmvValue,
+        prevValue: gmvPrevValue,
+        currency: useV2 ? undefined : (formattedData?.currency ?? currency),
         hideTrend: !!action,
         action,
     }
