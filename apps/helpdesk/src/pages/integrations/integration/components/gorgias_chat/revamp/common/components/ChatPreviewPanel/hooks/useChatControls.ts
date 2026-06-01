@@ -47,6 +47,10 @@ export const useChatControls = (
         [panelRef],
     )
 
+    const simulateEmailCapture = useCallback(() => {
+        panelRef.current?.simulateEmailCapture()
+    }, [panelRef])
+
     return {
         openChat,
         closeChat,
@@ -54,5 +58,6 @@ export const useChatControls = (
         reloadPreview,
         updatePosition,
         setConversationMessages,
+        simulateEmailCapture,
     }
 }

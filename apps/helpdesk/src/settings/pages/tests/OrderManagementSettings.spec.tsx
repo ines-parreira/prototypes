@@ -104,6 +104,9 @@ const buildChatPreviewPanelMock = (
     updatePreviewOrders: jest.fn(),
     updateControlTicketVolume: jest.fn(),
     setConversationMessages: jest.fn(),
+    simulateEmailCapture: jest.fn(),
+    updateEmailCaptureSettings: jest.fn(),
+    updateAutoResponderSettings: jest.fn(),
     updateMainFontFamily: jest.fn(),
     ...overrides,
 })

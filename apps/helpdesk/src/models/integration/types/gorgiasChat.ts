@@ -154,6 +154,12 @@ export type GorgiasChatPreviewApplicationSettings = {
     }
     preferences?: {
         privacyPolicyDisclaimerEnabled?: boolean
+        emailCaptureEnabled?: boolean
+        emailCaptureEnforcement?: GorgiasChatEmailCaptureType
+        autoResponder?: {
+            enabled?: boolean
+            reply?: GorgiasChatAutoResponderReply
+        }
         controlTicketVolume?: boolean
     }
     quickReplies?: {

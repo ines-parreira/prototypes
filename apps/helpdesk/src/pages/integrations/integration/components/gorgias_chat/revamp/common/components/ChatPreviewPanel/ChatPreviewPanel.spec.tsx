@@ -68,6 +68,7 @@ jest.mock(
             setOrders: jest.fn(),
             setConversationMessages: jest.fn(),
             simulateConversation: jest.fn(),
+            simulateEmailCapture: jest.fn(),
             setCustomBusinessHours: jest.fn(),
         }
 
@@ -512,6 +513,14 @@ describe('ChatPreviewPanel', () => {
             )
 
             mockGorgiasChat.setConversationMessages = savedFn
+        })
+
+        it('simulateEmailCapture calls gorgiasChat.simulateEmailCapture', () => {
+            const { ref } = renderComponent()
+
+            ref.current?.simulateEmailCapture()
+
+            expect(mockGorgiasChat.simulateEmailCapture).toHaveBeenCalled()
         })
     })
 

@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -18,6 +18,9 @@ import {
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import type { GorgiasChatIntegration } from 'models/integration/types'
+import type { GorgiasChatAutoResponderReply } from 'models/integration/types/gorgiasChat'
+import { GorgiasChatEmailCaptureType } from 'models/integration/types/gorgiasChat'
+import type { SimulateConversationMessage } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/ChatPreviewPanel'
 import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 import { GorgiasChatRevampLayout } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/GorgiasChatRevampLayout'
 import SaveChangesPrompt from 'pages/integrations/integration/components/gorgias_chat/revamp/CreationWizard/components/SaveChangesPrompt'
@@ -35,6 +38,19 @@ import type { updateOrCreateIntegration } from 'state/integrations/actions'
 import { errorToPlainText } from 'utils'
 
 import css from './GorgiasChatIntegrationPreferences.less'
+
+const DEFAULT_PREVIEW_CONVERSATION: SimulateConversationMessage[] = [
+    {
+        text: 'Hi! How can I help you today?',
+        fromAgent: true,
+        isBot: true,
+    },
+    {
+        text: 'I have a question about my order.',
+        fromAgent: false,
+        isBot: false,
+    },
+]
 
 type Props = {
     integration: Map<string, unknown>
@@ -102,8 +118,17 @@ export const GorgiasChatIntegrationPreferencesRevamp = ({
     isAiAgentEnabled = false,
 }: Props) => {
     const dispatch = useAppDispatch()
-    const { reloadPreview, onChatPreviewLoaded, updateControlTicketVolume } =
-        useChatPreviewPanelContext()
+    const {
+        reloadPreview,
+        updateEmailCaptureSettings,
+        updateAutoResponderSettings,
+        updateControlTicketVolume,
+        setConversationMessages,
+        simulateEmailCapture,
+        openChat,
+        onChatPreviewLoaded,
+    } = useChatPreviewPanelContext()
+
     const surveysSettings = useAppSelector(getSurveysSettingsJS)
     const sendCsatGlobal = surveysSettings?.data?.send_survey_for_chat ?? false
     const hasConvert = Boolean(useAppSelector(getCurrentConvertPlan))
@@ -138,6 +163,82 @@ export const GorgiasChatIntegrationPreferencesRevamp = ({
 
     const values = watch()
     const isSubmitting = loading.get('updateIntegration') === integration.id
+
+    // Drives the preview navigation for the current email-capture settings.
+    // We navigate explicitly from every branch rather than relying on chat-side
+    // route reactivity: only RequireEmailCaptureRoute (conversation →
+    // require-email-capture, when Required and the AI Agent is off) remains, so
+    // transitions off the require page must be driven from here.
+    const syncEmailCapturePreview = useCallback(
+        (
+            emailCaptureEnabled: boolean,
+            emailCaptureEnforcement: GorgiasChatEmailCaptureType,
+        ) => {
+            // Apply settings first so the chat-side route guard sees the right
+            // state when it evaluates the page.
+            updateEmailCaptureSettings({
+                emailCaptureEnabled,
+                emailCaptureEnforcement,
+            })
+
+            if (
+                emailCaptureEnabled &&
+                emailCaptureEnforcement === GorgiasChatEmailCaptureType.Optional
+            ) {
+                // Seeds the inline form message and navigates to the chat page.
+                simulateEmailCapture()
+            } else if (
+                emailCaptureEnabled &&
+                emailCaptureEnforcement ===
+                    GorgiasChatEmailCaptureType.AlwaysRequired
+            ) {
+                // Clear any previously-seeded transcript (e.g. the Optional
+                // inline form) and navigate to the chat page. When the AI Agent
+                // is off the chat-side RequireEmailCaptureRoute redirects to the
+                // dedicated require-email-capture page; when it is on it stays
+                // on the (now empty) conversation, which is correct production
+                // behavior since required email capture never gates the agent.
+                setConversationMessages([])
+            } else {
+                // setConversationMessages navigates to the chat page itself.
+                setConversationMessages(DEFAULT_PREVIEW_CONVERSATION)
+            }
+        },
+        [
+            updateEmailCaptureSettings,
+            simulateEmailCapture,
+            setConversationMessages,
+        ],
+    )
+
+    useEffect(() => {
+        return onChatPreviewLoaded(() => {
+            updateAutoResponderSettings({
+                enabled: values.autoResponderEnabled,
+                reply: values.autoResponderReply as GorgiasChatAutoResponderReply,
+            })
+            openChat()
+            syncEmailCapturePreview(
+                values.emailCaptureEnabled,
+                values.emailCaptureEnforcement as GorgiasChatEmailCaptureType,
+            )
+        }, true)
+    }, [
+        onChatPreviewLoaded,
+        openChat,
+        updateAutoResponderSettings,
+        syncEmailCapturePreview,
+        values.emailCaptureEnabled,
+        values.emailCaptureEnforcement,
+        values.autoResponderEnabled,
+        values.autoResponderReply,
+    ])
+
+    useEffect(() => {
+        return () => {
+            reloadPreview()
+        }
+    }, [reloadPreview])
 
     const onSubmit = async (data: PreferencesFormValues) => {
         const payload = fromJS({
@@ -274,24 +375,36 @@ export const GorgiasChatIntegrationPreferencesRevamp = ({
                         <ChatWaitTimeCard
                             autoResponderEnabled={values.autoResponderEnabled}
                             autoResponderReply={values.autoResponderReply}
-                            onAutoResponderEnabledChange={(value) =>
+                            onAutoResponderEnabledChange={(value) => {
                                 setFieldValue('autoResponderEnabled', value)
-                            }
-                            onAutoResponderReplyChange={(value) =>
+                                updateAutoResponderSettings({ enabled: value })
+                            }}
+                            onAutoResponderReplyChange={(value) => {
                                 setFieldValue('autoResponderReply', value)
-                            }
+                                updateAutoResponderSettings({
+                                    reply: value as GorgiasChatAutoResponderReply,
+                                })
+                            }}
                         />
                         <ChatEmailCaptureCard
                             emailCaptureEnabled={values.emailCaptureEnabled}
                             emailCaptureEnforcement={
                                 values.emailCaptureEnforcement
                             }
-                            onEmailCaptureEnabledChange={(value) =>
+                            onEmailCaptureEnabledChange={(value) => {
                                 setFieldValue('emailCaptureEnabled', value)
-                            }
-                            onEmailCaptureEnforcementChange={(value) =>
+                                syncEmailCapturePreview(
+                                    value,
+                                    values.emailCaptureEnforcement as GorgiasChatEmailCaptureType,
+                                )
+                            }}
+                            onEmailCaptureEnforcementChange={(value) => {
                                 setFieldValue('emailCaptureEnforcement', value)
-                            }
+                                syncEmailCapturePreview(
+                                    values.emailCaptureEnabled,
+                                    value as GorgiasChatEmailCaptureType,
+                                )
+                            }}
                             isAiAgentEnabled={isAiAgentEnabled}
                         />
                         <ChatShopperExperienceCard

@@ -4,8 +4,10 @@ import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import {
+    GorgiasChatAutoResponderReply,
     GorgiasChatAvatarType,
     GorgiasChatBackgroundColorStyle,
+    GorgiasChatEmailCaptureType,
     GorgiasChatLauncherType,
     GorgiasChatPositionAlignmentEnum,
 } from 'models/integration/types/gorgiasChat'
@@ -725,6 +727,95 @@ describe('useChatPreviewPanel', () => {
         expect(mockSetConversationMessages).toHaveBeenCalledWith(messages)
     })
 
+    it('simulateEmailCapture does not throw when ref is unattached', () => {
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        expect(() => result.current.simulateEmailCapture()).not.toThrow()
+    })
+
+    it('simulateEmailCapture calls simulateEmailCapture on the ref when attached', () => {
+        const mockSimulateEmailCapture = jest.fn()
+
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        const panelArg = mockWarpToCollapsibleColumn.mock.calls.at(-1)?.[0]
+        if (panelArg?.ref) {
+            panelArg.ref.current = {
+                simulateEmailCapture: mockSimulateEmailCapture,
+            }
+        }
+
+        result.current.simulateEmailCapture()
+
+        expect(mockSimulateEmailCapture).toHaveBeenCalled()
+    })
+
+    it('updateEmailCaptureSettings does not throw when ref is unattached', () => {
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        expect(() =>
+            result.current.updateEmailCaptureSettings({
+                emailCaptureEnabled: true,
+            }),
+        ).not.toThrow()
+    })
+
+    it('updateEmailCaptureSettings forwards a preferences payload to updateSettings on the ref', () => {
+        const mockUpdateSettings = jest.fn()
+
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        const panelArg = mockWarpToCollapsibleColumn.mock.calls.at(-1)?.[0]
+        if (panelArg?.ref) {
+            panelArg.ref.current = { updateSettings: mockUpdateSettings }
+        }
+
+        result.current.updateEmailCaptureSettings({
+            emailCaptureEnabled: true,
+            emailCaptureEnforcement: GorgiasChatEmailCaptureType.Optional,
+        })
+
+        expect(mockUpdateSettings).toHaveBeenCalledWith({
+            preferences: {
+                emailCaptureEnabled: true,
+                emailCaptureEnforcement: GorgiasChatEmailCaptureType.Optional,
+            },
+        })
+    })
+
+    it('updateAutoResponderSettings does not throw when ref is unattached', () => {
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        expect(() =>
+            result.current.updateAutoResponderSettings({ enabled: false }),
+        ).not.toThrow()
+    })
+
+    it('updateAutoResponderSettings nests the payload under preferences.autoResponder', () => {
+        const mockUpdateSettings = jest.fn()
+
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        const panelArg = mockWarpToCollapsibleColumn.mock.calls.at(-1)?.[0]
+        if (panelArg?.ref) {
+            panelArg.ref.current = { updateSettings: mockUpdateSettings }
+        }
+
+        result.current.updateAutoResponderSettings({
+            enabled: true,
+            reply: GorgiasChatAutoResponderReply.ReplyInMinutes,
+        })
+
+        expect(mockUpdateSettings).toHaveBeenCalledWith({
+            preferences: {
+                autoResponder: {
+                    enabled: true,
+                    reply: GorgiasChatAutoResponderReply.ReplyInMinutes,
+                },
+            },
+        })
+    })
+
     it('updateControlTicketVolume does not throw when ref is unattached', () => {
         const { result } = renderHook(() => useChatPreviewPanel())
 
@@ -848,6 +939,9 @@ describe('useChatPreviewPanelContext', () => {
             updateQuickReplies: jest.fn(),
             updatePreviewOrders: jest.fn(),
             setConversationMessages: jest.fn(),
+            simulateEmailCapture: jest.fn(),
+            updateEmailCaptureSettings: jest.fn(),
+            updateAutoResponderSettings: jest.fn(),
             onChatPreviewLoaded: jest.fn(),
             updateControlTicketVolume: jest.fn(),
             updateMainFontFamily: jest.fn(),

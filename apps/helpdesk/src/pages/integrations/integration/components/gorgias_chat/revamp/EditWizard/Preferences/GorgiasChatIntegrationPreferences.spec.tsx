@@ -18,8 +18,20 @@ const mockChatEmailCaptureCard = jest.fn()
 const mockChatShopperExperienceCard = jest.fn()
 const mockChatAutomationCard = jest.fn()
 const mockDispatch = jest.fn()
+const mockUpdateEmailCaptureSettings = jest.fn()
+const mockUpdateAutoResponderSettings = jest.fn()
 const mockUpdateControlTicketVolume = jest.fn()
-const mockOnChatPreviewLoaded = jest.fn()
+const mockSetConversationMessages = jest.fn()
+const mockSimulateEmailCapture = jest.fn()
+const mockDisplayPage = jest.fn()
+const mockOpenChat = jest.fn()
+const mockReloadPreview = jest.fn()
+const mockOnChatPreviewLoaded = jest.fn(
+    (callback: () => void, fireIfAlreadyLoaded?: boolean) => {
+        if (fireIfAlreadyLoaded) callback()
+        return jest.fn()
+    },
+)
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/common/GorgiasChatRevampLayout',
@@ -56,8 +68,14 @@ jest.mock(
     () => ({
         useChatPreviewPanel: jest.fn(),
         useChatPreviewPanelContext: () => ({
-            reloadPreview: jest.fn(),
+            reloadPreview: mockReloadPreview,
+            updateEmailCaptureSettings: mockUpdateEmailCaptureSettings,
+            updateAutoResponderSettings: mockUpdateAutoResponderSettings,
             updateControlTicketVolume: mockUpdateControlTicketVolume,
+            setConversationMessages: mockSetConversationMessages,
+            simulateEmailCapture: mockSimulateEmailCapture,
+            displayPage: mockDisplayPage,
+            openChat: mockOpenChat,
             onChatPreviewLoaded: mockOnChatPreviewLoaded,
         }),
     }),
@@ -200,7 +218,6 @@ describe('GorgiasChatIntegrationPreferencesRevamp', () => {
         jest.clearAllMocks()
         mockDispatch.mockResolvedValue(undefined)
         mockUpdateOrCreateIntegration.mockResolvedValue(undefined)
-        mockOnChatPreviewLoaded.mockReturnValue(() => {})
     })
 
     it('should render the save button', () => {
@@ -587,6 +604,127 @@ describe('GorgiasChatIntegrationPreferencesRevamp', () => {
             )
         })
 
+        const withEmailCapture = (
+            emailCaptureEnabled: boolean,
+            emailCaptureEnforcement: string,
+        ) =>
+            mockIntegration
+                .setIn(
+                    ['meta', 'preferences', 'email_capture_enabled'],
+                    emailCaptureEnabled,
+                )
+                .setIn(
+                    ['meta', 'preferences', 'email_capture_enforcement'],
+                    emailCaptureEnforcement,
+                )
+
+        it('should live-sync emailCaptureEnabled to the chat preview', () => {
+            renderComponent()
+
+            const { onEmailCaptureEnabledChange } =
+                mockChatEmailCaptureCard.mock.calls[0][0]
+            act(() => onEmailCaptureEnabledChange(false))
+
+            // Effective pair: disabled + the current (optional) enforcement.
+            expect(mockUpdateEmailCaptureSettings).toHaveBeenLastCalledWith({
+                emailCaptureEnabled: false,
+                emailCaptureEnforcement: 'optional',
+            })
+        })
+
+        it('should live-sync emailCaptureEnforcement to the chat preview', () => {
+            renderComponent()
+
+            const { onEmailCaptureEnforcementChange } =
+                mockChatEmailCaptureCard.mock.calls[0][0]
+            act(() => onEmailCaptureEnforcementChange('always-required'))
+
+            // Effective pair: still enabled + the new enforcement.
+            expect(mockUpdateEmailCaptureSettings).toHaveBeenLastCalledWith({
+                emailCaptureEnabled: true,
+                emailCaptureEnforcement: 'always-required',
+            })
+        })
+
+        it('navigates to the default conversation when disabling email capture from Required (transition the deleted chat guard used to handle)', () => {
+            renderComponent({
+                integration: withEmailCapture(true, 'always-required'),
+            })
+
+            mockSetConversationMessages.mockClear()
+            mockSimulateEmailCapture.mockClear()
+
+            const { onEmailCaptureEnabledChange } =
+                mockChatEmailCaptureCard.mock.calls[0][0]
+            act(() => onEmailCaptureEnabledChange(false))
+
+            expect(mockSetConversationMessages).toHaveBeenCalledWith([
+                expect.objectContaining({
+                    text: 'Hi! How can I help you today?',
+                }),
+                expect.objectContaining({
+                    text: 'I have a question about my order.',
+                }),
+            ])
+            expect(mockSimulateEmailCapture).not.toHaveBeenCalled()
+        })
+
+        it('seeds the optional inline form when switching enforcement Required → Optional', () => {
+            renderComponent({
+                integration: withEmailCapture(true, 'always-required'),
+            })
+
+            mockSimulateEmailCapture.mockClear()
+            mockSetConversationMessages.mockClear()
+
+            const { onEmailCaptureEnforcementChange } =
+                mockChatEmailCaptureCard.mock.calls[0][0]
+            act(() => onEmailCaptureEnforcementChange('optional'))
+
+            expect(mockSimulateEmailCapture).toHaveBeenCalled()
+            expect(mockSetConversationMessages).not.toHaveBeenCalled()
+        })
+
+        it('clears the transcript when switching enforcement Optional → Required (drops the leftover inline form)', () => {
+            renderComponent({
+                integration: withEmailCapture(true, 'optional'),
+            })
+
+            mockSetConversationMessages.mockClear()
+            mockSimulateEmailCapture.mockClear()
+
+            const { onEmailCaptureEnforcementChange } =
+                mockChatEmailCaptureCard.mock.calls[0][0]
+            act(() => onEmailCaptureEnforcementChange('always-required'))
+
+            expect(mockSetConversationMessages).toHaveBeenCalledWith([])
+            expect(mockSimulateEmailCapture).not.toHaveBeenCalled()
+        })
+
+        it('should live-sync autoResponderEnabled to the chat preview', () => {
+            renderComponent()
+
+            const { onAutoResponderEnabledChange } =
+                mockChatWaitTimeCard.mock.calls[0][0]
+            act(() => onAutoResponderEnabledChange(false))
+
+            expect(mockUpdateAutoResponderSettings).toHaveBeenCalledWith({
+                enabled: false,
+            })
+        })
+
+        it('should live-sync autoResponderReply to the chat preview', () => {
+            renderComponent()
+
+            const { onAutoResponderReplyChange } =
+                mockChatWaitTimeCard.mock.calls[0][0]
+            act(() => onAutoResponderReplyChange('reply-in-minutes'))
+
+            expect(mockUpdateAutoResponderSettings).toHaveBeenCalledWith({
+                reply: 'reply-in-minutes',
+            })
+        })
+
         it('should update linkedEmailIntegration via ChatShopperExperienceCard onLinkedEmailIntegrationChange', async () => {
             const user = userEvent.setup()
             renderComponent()
@@ -777,6 +915,96 @@ describe('GorgiasChatIntegrationPreferencesRevamp', () => {
             expect(
                 screen.getByRole('button', { name: 'Save' }),
             ).not.toBeDisabled()
+        })
+    })
+
+    describe('Preview live-sync on mount', () => {
+        const buildIntegration = (
+            preferenceOverrides: Record<string, unknown>,
+        ) =>
+            mockIntegration.setIn(
+                ['meta', 'preferences'],
+                fromJS({
+                    live_chat_availability: 'auto-based-on-agent-availability',
+                    hide_outside_business_hours: false,
+                    hide_on_mobile: false,
+                    display_campaigns_hidden_chat: false,
+                    auto_responder: {
+                        enabled: true,
+                        reply: 'reply-dynamic',
+                    },
+                    control_ticket_volume: false,
+                    email_capture_enabled: true,
+                    email_capture_enforcement: 'optional',
+                    linked_email_integration: null,
+                    send_chat_transcript: false,
+                    ...preferenceOverrides,
+                }),
+            )
+
+        it('opens the chat on load', () => {
+            renderComponent()
+
+            expect(mockOpenChat).toHaveBeenCalled()
+        })
+
+        it('pushes the current email-capture and auto-responder settings to the preview', () => {
+            renderComponent()
+
+            expect(mockUpdateEmailCaptureSettings).toHaveBeenCalledWith({
+                emailCaptureEnabled: true,
+                emailCaptureEnforcement: 'optional',
+            })
+            expect(mockUpdateAutoResponderSettings).toHaveBeenCalledWith({
+                enabled: true,
+                reply: 'reply-dynamic',
+            })
+        })
+
+        it('calls simulateEmailCapture without clearing the transcript when email-capture is enabled with Optional enforcement', () => {
+            renderComponent()
+
+            expect(mockSimulateEmailCapture).toHaveBeenCalled()
+            expect(mockSetConversationMessages).not.toHaveBeenCalled()
+        })
+
+        it('clears the transcript (route guard target) when email-capture is enabled with Required enforcement', () => {
+            renderComponent({
+                integration: buildIntegration({
+                    email_capture_enforcement: 'always-required',
+                }),
+            })
+
+            expect(mockSetConversationMessages).toHaveBeenCalledWith([])
+            expect(mockSimulateEmailCapture).not.toHaveBeenCalled()
+        })
+
+        it('seeds the default two-message conversation when email-capture is disabled', () => {
+            renderComponent({
+                integration: buildIntegration({
+                    email_capture_enabled: false,
+                }),
+            })
+
+            expect(mockSetConversationMessages).toHaveBeenCalledWith([
+                expect.objectContaining({
+                    text: 'Hi! How can I help you today?',
+                    fromAgent: true,
+                }),
+                expect.objectContaining({
+                    text: 'I have a question about my order.',
+                    fromAgent: false,
+                }),
+            ])
+            expect(mockSimulateEmailCapture).not.toHaveBeenCalled()
+        })
+
+        it('reloads the preview on unmount so the next tab gets a clean iframe', () => {
+            const { unmount } = renderComponent()
+
+            expect(mockReloadPreview).not.toHaveBeenCalled()
+            unmount()
+            expect(mockReloadPreview).toHaveBeenCalled()
         })
     })
 

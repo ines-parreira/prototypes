@@ -192,6 +192,12 @@ export const useGorgiasChatApi = (
         [withGorgiasChat],
     )
 
+    const simulateEmailCapture = useCallback(() => {
+        withGorgiasChat((gorgiasChat) => {
+            gorgiasChat.simulateEmailCapture?.()
+        })
+    }, [withGorgiasChat])
+
     const setCustomBusinessHours = useCallback(
         (
             input: Parameters<
@@ -220,6 +226,7 @@ export const useGorgiasChatApi = (
         updatePreviewOrders,
         simulateConversation,
         setConversationMessages,
+        simulateEmailCapture,
         setCustomBusinessHours,
     }
 }

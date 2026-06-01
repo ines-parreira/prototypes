@@ -2,6 +2,11 @@ import type { RefObject } from 'react'
 import { useCallback } from 'react'
 
 import type {
+    GorgiasChatAutoResponderReply,
+    GorgiasChatEmailCaptureType,
+} from 'models/integration/types/gorgiasChat'
+
+import type {
     ChatPreviewPage,
     ChatPreviewPageOptions,
     ChatPreviewPanelHandle,
@@ -48,9 +53,33 @@ export const usePreferenceActions = (
         [panelRef, openChat],
     )
 
+    const updateEmailCaptureSettings = useCallback(
+        (settings: {
+            emailCaptureEnabled?: boolean
+            emailCaptureEnforcement?: GorgiasChatEmailCaptureType
+        }) => {
+            panelRef.current?.updateSettings({ preferences: settings })
+        },
+        [panelRef],
+    )
+
+    const updateAutoResponderSettings = useCallback(
+        (settings: {
+            enabled?: boolean
+            reply?: GorgiasChatAutoResponderReply
+        }) => {
+            panelRef.current?.updateSettings({
+                preferences: { autoResponder: settings },
+            })
+        },
+        [panelRef],
+    )
+
     return {
         updateLegalDisclaimerEnabled,
         updateControlTicketVolume,
         updateQuickReplies,
+        updateEmailCaptureSettings,
+        updateAutoResponderSettings,
     }
 }

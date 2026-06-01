@@ -100,6 +100,7 @@ declare global {
                     fromAgent: boolean
                 }[],
             ) => void
+            simulateEmailCapture?: () => void
             on(event: string, callback: (data?: unknown) => void): void
             off(event: string, callback: (data?: unknown) => void): void
             init(): Promise<void>

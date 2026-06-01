@@ -58,5 +58,6 @@ export type ChatPreviewPanelHandle = {
     updatePreviewOrders: (options: GorgiasChatPreviewOrdersOptions) => void
     simulateConversation: (messages: SimulateConversationMessage[]) => void
     setConversationMessages: (messages: SimulateConversationMessage[]) => void
+    simulateEmailCapture: () => void
     isLoaded: boolean
 }
