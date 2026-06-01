@@ -54,6 +54,7 @@ export type TicketThreadAuditLogAttribution =
     | 'none'
     | 'via-rule'
     | 'via-team-auto-assignment'
+    | 'system'
     | 'author'
 
 export type TicketThreadSatisfactionSurveyRespondedEventItem = {

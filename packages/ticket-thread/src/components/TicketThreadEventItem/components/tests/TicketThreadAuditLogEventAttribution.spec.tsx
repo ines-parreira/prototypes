@@ -28,6 +28,18 @@ describe('TicketThreadAuditLogEventAttribution', () => {
         expect(screen.queryByText('via rule')).not.toBeInTheDocument()
     })
 
+    it('renders system attribution without author fallback', () => {
+        render(
+            <TicketThreadAuditLogEventAttribution
+                attribution="system"
+                authorId={42}
+            />,
+        )
+
+        expect(screen.getByText('by system')).toBeInTheDocument()
+        expect(screen.queryByText('author-42')).not.toBeInTheDocument()
+    })
+
     it('renders nothing for none attribution', () => {
         const { container } = render(
             <TicketThreadAuditLogEventAttribution attribution="none" />,

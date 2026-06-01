@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 
 import { useGetTicket } from '@repo/tickets/useGetTicket'
+import { useAllUsers } from '@repo/users'
 import {
     isAuditLogEvent,
     isNonRenderablePrivateReplyEvent,
@@ -10,12 +11,21 @@ import {
 import { shouldRenderTicketThreadEvent, toTaggedEvent } from './transforms'
 import type {
     TicketThreadAuditLogAttribution,
+    TicketThreadAuditLogEvent,
     TicketThreadEventSource,
     TicketThreadSingleEventItem,
 } from './types'
 import { useListAllTicketEvents } from './useListAllEvents'
 
 type EventIdentifier = number | string
+type AuditLogAttributionUser = {
+    id?: number
+    role?: {
+        name?: string | null
+    } | null
+}
+
+const BOT_USER_ROLE = 'bot'
 
 type TicketObjectEvent = {
     id?: EventIdentifier
@@ -40,6 +50,7 @@ type UseTicketThreadEventsResult = {
 function getAuditLogAttribution(
     event: unknown,
     allTicketEvents: readonly unknown[],
+    users: readonly AuditLogAttributionUser[],
 ): TicketThreadAuditLogAttribution {
     if (!isAuditLogEvent(event)) {
         return 'none'
@@ -57,6 +68,10 @@ function getAuditLogAttribution(
         return 'via-rule'
     }
 
+    if (isSystemAddedTagEvent(event, users)) {
+        return 'system'
+    }
+
     if (event.user_id != null) {
         return 'author'
     }
@@ -66,6 +81,27 @@ function getAuditLogAttribution(
     }
 
     return 'none'
+}
+
+function isSystemAddedTagEvent(
+    event: TicketThreadAuditLogEvent,
+    users: readonly AuditLogAttributionUser[],
+): boolean {
+    if (event.type !== 'ticket-tags-added') {
+        return false
+    }
+
+    if (event.data?.type === 'system') {
+        return true
+    }
+
+    if (event.user_id == null) {
+        return false
+    }
+
+    const eventUser = users.find((user) => user.id === event.user_id)
+
+    return eventUser?.role?.name === BOT_USER_ROLE
 }
 
 function getEventIdentifier(event: unknown): EventIdentifier | null {
@@ -129,6 +165,7 @@ export function useTicketThreadEvents({
 }: UseTicketThreadEventsParams): UseTicketThreadEventsResult {
     const { data: events } = useListAllTicketEvents(ticketId)
     const { data: ticket } = useGetTicket(ticketId)
+    const users = useAllUsers()
 
     return useMemo(() => {
         let hasSatisfactionSurveyRespondedEvent = false
@@ -153,11 +190,12 @@ export function useTicketThreadEvents({
                     auditLogAttribution: getAuditLogAttribution(
                         event,
                         rawTicketEvents,
+                        users,
                     ),
                 })
             })
             .filter((item): item is TicketThreadSingleEventItem => !!item)
 
         return { events: items, hasSatisfactionSurveyRespondedEvent }
-    }, [events, ticket])
+    }, [events, ticket, users])
 }

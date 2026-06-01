@@ -6,6 +6,9 @@ import {
     mockEvent,
     mockListEventsHandler,
     mockListEventsResponse,
+    mockListUsersHandler,
+    mockListUsersResponse,
+    mockUser,
 } from '@gorgias/helpdesk-mocks'
 
 import { renderHook } from '../../../tests/render.utils'
@@ -27,6 +30,7 @@ type AuditLogEventParams = {
         | 'rule-suggestion-suggested'
         | 'ticket-assigned'
         | 'ticket-closed'
+        | 'ticket-tags-added'
         | 'ticket-message-summary-created'
     created_datetime: string
     context?: string | null
@@ -67,6 +71,20 @@ function getEventsHandler(events: unknown[]) {
     )
 }
 
+function getUsersHandler(users: ReturnType<typeof mockUser>[]) {
+    return mockListUsersHandler(async () =>
+        HttpResponse.json(
+            mockListUsersResponse({
+                data: users,
+                meta: {
+                    prev_cursor: null,
+                    next_cursor: null,
+                },
+            }),
+        ),
+    )
+}
+
 function getAuditLogItemByType(
     items: ReturnType<typeof useTicketThreadEvents>['events'],
     type: string,
@@ -81,6 +99,7 @@ function getAuditLogItemByType(
 describe('useTicketThreadEvents', () => {
     beforeEach(() => {
         mockUseGetTicket.mockReturnValue({ data: undefined } as any)
+        server.use(getUsersHandler([]).handler)
     })
 
     it('applies strict action-executed filtering to renderable ticket events', async () => {
@@ -366,6 +385,77 @@ describe('useTicketThreadEvents', () => {
         )
 
         expect(assignedEvent?.meta.attribution).toBe('via-team-auto-assignment')
+    })
+
+    it('sets system attribution for system-added tags when a bot user is present', async () => {
+        const mockListEvents = getEventsHandler([
+            getAuditLogEvent({
+                id: 1,
+                type: 'ticket-tags-added',
+                created_datetime: '2024-03-21T11:00:00Z',
+                user_id: 12,
+                data: {
+                    tags_added: [1],
+                    type: 'system',
+                },
+            }),
+        ])
+
+        server.use(mockListEvents.handler)
+
+        const { result } = renderHook(() =>
+            useTicketThreadEvents({ ticketId: 7 }),
+        )
+
+        await waitFor(() => {
+            expect(result.current.events).toHaveLength(1)
+        })
+
+        const tagsAddedEvent = getAuditLogItemByType(
+            result.current.events,
+            'ticket-tags-added',
+        )
+
+        expect(tagsAddedEvent?.meta.attribution).toBe('system')
+    })
+
+    it('sets system attribution for tags added by a bot user without a system payload marker', async () => {
+        const mockListEvents = getEventsHandler([
+            getAuditLogEvent({
+                id: 9705479942,
+                type: 'ticket-tags-added',
+                context: '891a0229-5f27-4a0f-bc56-9b342ec97407',
+                created_datetime: '2026-05-18T15:24:05.096781+00:00',
+                user_id: 498781504,
+                data: {
+                    tags_added: [1490549],
+                },
+            }),
+        ])
+
+        server.use(
+            getUsersHandler([
+                mockUser({
+                    id: 498781504,
+                    name: 'Gorgias Bot',
+                    role: { name: 'bot' },
+                }),
+            ]).handler,
+            mockListEvents.handler,
+        )
+
+        const { result } = renderHook(() =>
+            useTicketThreadEvents({ ticketId: 7 }),
+        )
+
+        await waitFor(() => {
+            expect(
+                getAuditLogItemByType(
+                    result.current.events,
+                    'ticket-tags-added',
+                )?.meta.attribution,
+            ).toBe('system')
+        })
     })
 
     it('includes audit log events returned on the ticket object', async () => {

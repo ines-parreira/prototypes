@@ -1,3 +1,5 @@
+import { Text } from '@gorgias/axiom'
+
 import type { TicketThreadAuditLogAttribution } from '../../../hooks/events/types'
 import { TicketThreadEventAuthor } from './TicketThreadEventAuthor'
 import { TicketThreadEventMethod } from './TicketThreadEventMethod'
@@ -19,6 +21,10 @@ export function TicketThreadAuditLogEventAttribution({
 
     if (attribution === 'via-team-auto-assignment') {
         return <TicketThreadEventMethod method="Team auto-assignment" />
+    }
+
+    if (attribution === 'system') {
+        return <Text size="sm">by system</Text>
     }
 
     if (attribution === 'author' && allowAuthorFallback && authorId != null) {
