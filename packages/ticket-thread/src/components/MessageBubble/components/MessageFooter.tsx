@@ -96,6 +96,7 @@ export function MessageFooter({
     const { toggleMessage, isMessageExpanded } = useExpandedMessages()
     const { isStripped, messageId } = getMessageContent(item)
     const isExpanded = isMessageExpanded(messageId)
+    const messageIdForTranslations = isNumber(messageId) ? messageId : null
     const translationsState = useMessageTranslations({
         messageId,
         ticketId: item.data.ticket_id,
@@ -106,6 +107,17 @@ export function MessageFooter({
         showAttachments && canRenderAttachments(item)
     const hasAttachments =
         shouldRenderAttachments && Boolean(item.data.attachments?.length)
+    const translationsDropdown =
+        translationsState.shouldRender && messageIdForTranslations !== null ? (
+            <TranslationsDropdown
+                messageId={messageIdForTranslations}
+                ticketId={item.data.ticket_id}
+            />
+        ) : null
+    const shouldRenderEmailThreadActions =
+        isStripped &&
+        item.data.channel === 'email' &&
+        translationsDropdown !== null
 
     if (
         !isStripped &&
@@ -119,7 +131,13 @@ export function MessageFooter({
     return (
         <Box flexDirection="column" gap="xs">
             {isStripped && (
-                <Box>
+                <Box
+                    alignItems="center"
+                    gap="xxxs"
+                    data-email-thread-actions={
+                        shouldRenderEmailThreadActions ? true : undefined
+                    }
+                >
                     <Tag
                         color={TagColor.Grey}
                         onClick={() => {
@@ -130,17 +148,15 @@ export function MessageFooter({
                     >
                         <Icon name="dots-meatballs-horizontal" size="sm" />
                     </Tag>
+                    {shouldRenderEmailThreadActions
+                        ? translationsDropdown
+                        : null}
                 </Box>
             )}
             {showVideos && canRenderVideos(item) && (
                 <MessageVideos item={item} />
             )}
-            {translationsState.shouldRender && isNumber(messageId) ? (
-                <TranslationsDropdown
-                    messageId={messageId}
-                    ticketId={item.data.ticket_id}
-                />
-            ) : null}
+            {shouldRenderEmailThreadActions ? null : translationsDropdown}
             {shouldRenderAttachments && <MessageAttachments item={item} />}
         </Box>
     )

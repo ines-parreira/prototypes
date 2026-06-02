@@ -205,6 +205,47 @@ describe('MessageFooter', () => {
         expect(toggleMessage).toHaveBeenCalledWith(456)
     })
 
+    it('places translations next to the email thread expansion action', () => {
+        render(
+            <MessageFooter
+                item={makeItem({
+                    channel: 'email',
+                    body_text: 'Hello world with signature',
+                    stripped_text: 'Hello world',
+                })}
+            />,
+        )
+
+        const threadActions = screen
+            .getByText('translations:456:123')
+            .closest('[data-email-thread-actions]')
+
+        expect(threadActions).toBeInTheDocument()
+        expect(threadActions).toContainElement(
+            screen.getByRole('img', {
+                name: /dots-meatballs-horizontal/i,
+            }),
+        )
+    })
+
+    it('keeps translations separate from the expansion action for non-email messages', () => {
+        render(
+            <MessageFooter
+                item={makeItem({
+                    channel: 'chat',
+                    body_text: 'Hello world with signature',
+                    stripped_text: 'Hello world',
+                })}
+            />,
+        )
+
+        expect(
+            screen
+                .getByText('translations:456:123')
+                .closest('[data-email-thread-actions]'),
+        ).not.toBeInTheDocument()
+    })
+
     it('hides strip toggle when content is not stripped', () => {
         render(<MessageFooter item={makeItem()} />)
 
