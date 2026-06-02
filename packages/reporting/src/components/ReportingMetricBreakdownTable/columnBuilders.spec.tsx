@@ -43,16 +43,16 @@ const baseConfig: MetricColumnConfig = {
 
 const makeInfo = (value: number | null) => ({
     getValue: () => value,
-    row: { original: { feature: 'test-feature' } },
+    row: { original: { feature: 'test-feature', costSaved: value } },
 })
 
 describe('buildNameColDef', () => {
-    it('returns a column def with the correct accessorKey', () => {
+    it('returns a column def with the correct id', () => {
         const col = buildNameColDef({
             accessor: 'feature' as const,
             label: 'Feature',
         })
-        expect((col as any).accessorKey).toBe('feature')
+        expect(col.id).toBe('feature')
     })
 
     it('returns a column def with enableHiding false', () => {
@@ -76,7 +76,7 @@ describe('buildNameColDef', () => {
                 renderEmptyState={() =>
                     cellFn({
                         getValue: () => 'AI Agent',
-                        row: { original: {} },
+                        row: { original: { name: 'AI Agent' } },
                     })
                 }
             />,
@@ -97,8 +97,8 @@ describe('buildNameColDef', () => {
                 columns={[]}
                 renderEmptyState={() =>
                     cellFn({
-                        getValue: () => 'cancel_order',
-                        row: { original: {} },
+                        getValue: () => 'Cancel order',
+                        row: { original: { entity: 'cancel_order' } },
                     })
                 }
             />,
@@ -122,8 +122,12 @@ describe('buildNameColDef', () => {
                 columns={[]}
                 renderEmptyState={() =>
                     cellFn({
-                        getValue: () => 'https://example.com/article-1',
-                        row: { original: {} },
+                        getValue: () => 'How to return',
+                        row: {
+                            original: {
+                                entity: 'https://example.com/article-1',
+                            },
+                        },
                     })
                 }
             />,
@@ -150,7 +154,11 @@ describe('buildNameColDef', () => {
                 renderEmptyState={() =>
                     cellFn({
                         getValue: () => 'https://example.com/article-1',
-                        row: { original: {} },
+                        row: {
+                            original: {
+                                entity: 'https://example.com/article-1',
+                            },
+                        },
                     })
                 }
             />,
@@ -175,7 +183,7 @@ describe('buildNameColDef', () => {
                 renderEmptyState={() =>
                     cellFn({
                         getValue: () => 'skill_a',
-                        row: { original: {} },
+                        row: { original: { entity: 'skill_a' } },
                     })
                 }
             />,
@@ -252,7 +260,7 @@ describe('buildMetricColumnDefs', () => {
         expect(cols).toHaveLength(1)
     })
 
-    it('returns columns with the correct accessorKeys', () => {
+    it('returns columns with the correct ids', () => {
         const configs: MetricColumnConfig[] = [
             {
                 ...baseConfig,
@@ -266,7 +274,7 @@ describe('buildMetricColumnDefs', () => {
             },
         ]
         const cols = buildMetricColumnDefs(configs, defaultLoadingStates)
-        expect(cols.map((c) => (c as any).accessorKey)).toEqual([
+        expect(cols.map((c) => c.id)).toEqual([
             'automationRate',
             'handoverCount',
         ])

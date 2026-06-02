@@ -34,61 +34,68 @@ function resolveDisplayName(value: string, config: NameColumnConfig): string {
 export function buildNameColDef<TData>(
     config: NameColumnConfig,
 ): DataTableColumnDef<TData> {
-    return anyColumnHelper.accessor(config.accessor, {
-        id: config.accessor,
-        header: config.label,
-        enableHiding: false,
-        minSize: 200,
-        sortingFn: (rowA, rowB, columnId) => {
-            const valueA = rowA.getValue<string>(columnId)
-            const valueB = rowB.getValue<string>(columnId)
-            const displayNameA = resolveDisplayName(valueA, config)
-            const displayNameB = resolveDisplayName(valueB, config)
-            return displayNameA.localeCompare(displayNameB)
+    return anyColumnHelper.accessor(
+        (row) =>
+            resolveDisplayName(
+                row[config.accessor] as unknown as string,
+                config,
+            ),
+        {
+            id: config.accessor,
+            header: config.label,
+            enableHiding: false,
+            minSize: 200,
+            sortingFn: (rowA, rowB, columnId) => {
+                const displayNameA = rowA.getValue<string>(columnId)
+                const displayNameB = rowB.getValue<string>(columnId)
+                return displayNameA.localeCompare(displayNameB)
+            },
+            cell: (info) => {
+                const value = (info.row.original as Record<string, unknown>)[
+                    config.accessor
+                ] as string
+                const displayName = resolveDisplayName(value, config)
+                const href = config.getHref?.(value)
+
+                const avatarProps = config.getAvatarProps?.(value)
+
+                return (
+                    <DataTableBaseCell
+                        display="flex"
+                        alignItems="center"
+                        gap="xxxs"
+                        maxWidth={250}
+                        minWidth={180}
+                    >
+                        {avatarProps && (
+                            <Avatar
+                                name={avatarProps.name}
+                                url={avatarProps.url}
+                                size="sm"
+                            />
+                        )}
+                        <OverflowTooltip>
+                            <Text size="md" variant="bold" overflow="ellipsis">
+                                {displayName}
+                            </Text>
+                        </OverflowTooltip>
+                        {href && (
+                            <Link
+                                href={href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label={`Open ${displayName}`}
+                            >
+                                <Icon name="external-link" size="xs" />
+                            </Link>
+                        )}
+
+                        {config.renderDrilldown?.(value)}
+                    </DataTableBaseCell>
+                )
+            },
         },
-        cell: (info) => {
-            const value = info.getValue()
-            const displayName = resolveDisplayName(value, config)
-            const href = config.getHref?.(value)
-
-            const avatarProps = config.getAvatarProps?.(value)
-
-            return (
-                <DataTableBaseCell
-                    display="flex"
-                    alignItems="center"
-                    gap="xxxs"
-                    maxWidth={250}
-                    minWidth={180}
-                >
-                    {avatarProps && (
-                        <Avatar
-                            name={avatarProps.name}
-                            url={avatarProps.url}
-                            size="sm"
-                        />
-                    )}
-                    <OverflowTooltip>
-                        <Text size="md" variant="bold" overflow="ellipsis">
-                            {displayName}
-                        </Text>
-                    </OverflowTooltip>
-                    {href && (
-                        <Link
-                            href={href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label={`Open ${displayName}`}
-                        >
-                            <Icon name="external-link" size="xs" />
-                        </Link>
-                    )}
-
-                    {config.renderDrilldown?.(value)}
-                </DataTableBaseCell>
-            )
-        },
-    }) as DataTableColumnDef<TData>
+    ) as DataTableColumnDef<TData>
 }
 
 export function buildMetricColumnDefs<TData>(
@@ -97,120 +104,135 @@ export function buildMetricColumnDefs<TData>(
 ): DataTableColumnDef<TData>[] {
     return metricColumns.map(
         (config) =>
-            anyColumnHelper.accessor(config.accessorKey, {
-                id: config.accessorKey,
-                label: config.label,
-                enableHiding: true,
-                header: () => {
-                    const tooltipTitle =
-                        config.tooltipConfig?.title ??
-                        config.tooltipTitle ??
-                        config.label
-                    const tooltipCaption =
-                        config.tooltipConfig?.caption ?? config.tooltipCaption
-                    const tooltipHref =
-                        config.tooltipConfig?.link ?? config.tooltipLink
-                    const tooltipLink = tooltipHref ? (
-                        <a
-                            href={tooltipHref}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={css.tooltipLink}
-                        >
-                            {config.tooltipConfig?.linkText ??
-                                'How is it calculated?'}
-                        </a>
-                    ) : undefined
+            anyColumnHelper.accessor(
+                (row) => row[config.accessorKey] ?? undefined,
+                {
+                    id: config.accessorKey,
+                    label: config.label,
+                    enableHiding: true,
+                    sortUndefined: 'last',
+                    header: () => {
+                        const tooltipTitle =
+                            config.tooltipConfig?.title ??
+                            config.tooltipTitle ??
+                            config.label
+                        const tooltipCaption =
+                            config.tooltipConfig?.caption ??
+                            config.tooltipCaption
+                        const tooltipHref =
+                            config.tooltipConfig?.link ?? config.tooltipLink
+                        const tooltipLink = tooltipHref ? (
+                            <a
+                                href={tooltipHref}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={css.tooltipLink}
+                            >
+                                {config.tooltipConfig?.linkText ??
+                                    'How is it calculated?'}
+                            </a>
+                        ) : undefined
 
-                    // TooltipContent renders in its own portal so CSS
-                    // inheritance from an outer wrapper doesn't reach it.
-                    // Use custom children when caption has newlines so we can
-                    // apply white-space: pre-wrap directly inside the portal.
-                    const tooltipContent = tooltipCaption?.includes('\n') ? (
-                        <TooltipContent>
-                            {tooltipTitle && (
-                                <div className={css.tooltipTitle}>
-                                    <Text size="sm" variant="bold">
-                                        {tooltipTitle}
-                                    </Text>
-                                </div>
-                            )}
-                            {(tooltipCaption || tooltipLink) && (
-                                <div className={css.innerTooltip}>
-                                    {tooltipCaption && (
-                                        <Text size="sm">{tooltipCaption}</Text>
-                                    )}
-                                    {tooltipLink}
-                                </div>
-                            )}
-                        </TooltipContent>
-                    ) : (
-                        <TooltipContent
-                            title={tooltipTitle}
-                            caption={tooltipCaption}
-                            link={tooltipLink}
-                        />
-                    )
+                        // TooltipContent renders in its own portal so CSS
+                        // inheritance from an outer wrapper doesn't reach it.
+                        // Use custom children when caption has newlines so we can
+                        // apply white-space: pre-wrap directly inside the portal.
+                        const tooltipContent = tooltipCaption?.includes(
+                            '\n',
+                        ) ? (
+                            <TooltipContent>
+                                {tooltipTitle && (
+                                    <div className={css.tooltipTitle}>
+                                        <Text size="sm" variant="bold">
+                                            {tooltipTitle}
+                                        </Text>
+                                    </div>
+                                )}
+                                {(tooltipCaption || tooltipLink) && (
+                                    <div className={css.innerTooltip}>
+                                        {tooltipCaption && (
+                                            <Text size="sm">
+                                                {tooltipCaption}
+                                            </Text>
+                                        )}
+                                        {tooltipLink}
+                                    </div>
+                                )}
+                            </TooltipContent>
+                        ) : (
+                            <TooltipContent
+                                title={tooltipTitle}
+                                caption={tooltipCaption}
+                                link={tooltipLink}
+                            />
+                        )
 
-                    return (
-                        <Box display="flex" alignItems="center" gap="xxxs">
-                            <Text variant="bold" size="sm">
-                                {config.label}
-                            </Text>
-                            {(config.tooltipConfig || config.tooltipTitle) && (
-                                <Tooltip
-                                    delay={0}
-                                    trigger={<Icon name="info" size="xs" />}
-                                >
-                                    {tooltipContent}
-                                </Tooltip>
-                            )}
-                        </Box>
-                    )
-                },
-                cell: (info) => {
-                    const value = info.getValue()
-                    const isLoading = config.loadingStateKeys.some(
-                        (key) => loadingStates[key],
-                    )
-                    if (isLoading && value === null) {
                         return (
-                            <DataTableBaseCell>
-                                <Skeleton
-                                    width={config.skeletonWidth ?? '60px'}
-                                    height="20px"
-                                />
-                            </DataTableBaseCell>
+                            <Box display="flex" alignItems="center" gap="xxxs">
+                                <Text variant="bold" size="sm">
+                                    {config.label}
+                                </Text>
+                                {(config.tooltipConfig ||
+                                    config.tooltipTitle) && (
+                                    <Tooltip
+                                        delay={0}
+                                        trigger={<Icon name="info" size="xs" />}
+                                    >
+                                        {tooltipContent}
+                                    </Tooltip>
+                                )}
+                            </Box>
                         )
-                    }
-                    if (config.renderCell) {
-                        const customCell = config.renderCell(
-                            value,
-                            info.row.original as Record<string, unknown>,
+                    },
+                    cell: (info) => {
+                        const value = (
+                            info.row.original as Record<string, number | null>
+                        )[config.accessorKey]
+                        const isLoading = config.loadingStateKeys.some(
+                            (key) => loadingStates[key],
                         )
-                        if (customCell !== null && customCell !== undefined) {
+                        if (isLoading && value === null) {
                             return (
                                 <DataTableBaseCell>
-                                    {customCell}
+                                    <Skeleton
+                                        width={config.skeletonWidth ?? '60px'}
+                                        height="20px"
+                                    />
                                 </DataTableBaseCell>
                             )
                         }
-                    }
-                    return (
-                        <DataTableBaseCell>
-                            {config.showNotAvailable &&
-                            value !== null &&
-                            isNaN(value)
-                                ? NOT_AVAILABLE_PLACEHOLDER
-                                : formatMetricValue(
-                                      value,
-                                      config.metricFormat,
-                                      'USD',
-                                      true,
-                                  )}
-                        </DataTableBaseCell>
-                    )
+                        if (config.renderCell) {
+                            const customCell = config.renderCell(
+                                value,
+                                info.row.original as Record<string, unknown>,
+                            )
+                            if (
+                                customCell !== null &&
+                                customCell !== undefined
+                            ) {
+                                return (
+                                    <DataTableBaseCell>
+                                        {customCell}
+                                    </DataTableBaseCell>
+                                )
+                            }
+                        }
+                        return (
+                            <DataTableBaseCell>
+                                {config.showNotAvailable &&
+                                value !== null &&
+                                isNaN(value)
+                                    ? NOT_AVAILABLE_PLACEHOLDER
+                                    : formatMetricValue(
+                                          value,
+                                          config.metricFormat,
+                                          'USD',
+                                          true,
+                                      )}
+                            </DataTableBaseCell>
+                        )
+                    },
                 },
-            }) as DataTableColumnDef<TData>,
+            ) as DataTableColumnDef<TData>,
     )
 }

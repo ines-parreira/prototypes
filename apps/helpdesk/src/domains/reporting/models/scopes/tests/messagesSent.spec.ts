@@ -381,6 +381,7 @@ describe('messagesSentScope', () => {
                     time_dimensions: [
                         { dimension: 'sentDatetime', granularity: 'day' },
                     ],
+                    limit: 10000,
                 })
             })
 

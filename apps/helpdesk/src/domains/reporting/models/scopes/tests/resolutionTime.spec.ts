@@ -212,6 +212,7 @@ describe('resolutionTimeScope', () => {
                     time_dimensions: [
                         { dimension: 'createdDatetime', granularity: 'day' },
                     ],
+                    limit: 10000,
                 })
             })
 

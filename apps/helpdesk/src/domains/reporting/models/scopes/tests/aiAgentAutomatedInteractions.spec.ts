@@ -158,6 +158,7 @@ describe('aiAgentAutomatedInteractionsScope', () => {
                 dimensions: ['engagementType'],
                 timezone: 'utc',
                 filters: periodFilters,
+                limit: 10000,
             })
         })
 
@@ -288,6 +289,7 @@ describe('aiAgentAutomatedInteractionsScope', () => {
                 dimensions: ['aiIntentCustomField'],
                 timezone: 'utc',
                 filters: [...periodFilters, salesSkillFilter],
+                limit: 10000,
             })
         })
 
@@ -418,6 +420,7 @@ describe('aiAgentAutomatedInteractionsScope', () => {
                 dimensions: ['engagementType'],
                 timezone: 'utc',
                 filters: [...periodFilters, supportSkillFilter],
+                limit: 10000,
             })
         })
 

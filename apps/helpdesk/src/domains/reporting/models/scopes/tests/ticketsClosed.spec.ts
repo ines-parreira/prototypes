@@ -466,6 +466,7 @@ describe('ticketsClosedScope', () => {
                     time_dimensions: [
                         { dimension: 'closedDatetime', granularity: 'day' },
                     ],
+                    limit: 10000,
                 })
             })
 

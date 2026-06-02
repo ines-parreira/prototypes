@@ -491,6 +491,7 @@ describe('averageCsatScope', () => {
                     time_dimensions: [
                         { dimension: 'createdDatetime', granularity: 'day' },
                     ],
+                    limit: 10000,
                 })
             })
 

@@ -29,7 +29,7 @@ const baseConfig: MetricColumnConfig = {
 
 const makeInfo = (value: number | null) => ({
     getValue: () => value,
-    row: { original: { feature: 'test-feature' } },
+    row: { original: { feature: 'test-feature', costSaved: value } },
 })
 
 describe('STANDARD_METRIC_COLUMNS', () => {

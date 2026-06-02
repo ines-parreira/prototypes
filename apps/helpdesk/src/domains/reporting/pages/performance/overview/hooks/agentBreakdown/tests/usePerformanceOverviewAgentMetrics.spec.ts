@@ -1,5 +1,6 @@
 import { assumeMock, renderHook } from '@repo/testing'
 
+import type { User } from 'config/types/user'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import {
     fetchEntityMetrics,
@@ -7,10 +8,11 @@ import {
 } from 'domains/reporting/hooks/useStatsMetricPerDimension'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import {
-    fetchPerformanceOverviewChannelAsConfigurableTable,
-    fetchPerformanceOverviewChannelMetrics,
-    usePerformanceOverviewChannelMetrics,
-} from 'domains/reporting/pages/performance/overview/hooks/channelBreakdown/usePerformanceOverviewChannelMetrics'
+    fetchPerformanceOverviewAgentAsConfigurableTable,
+    fetchPerformanceOverviewAgentMetrics,
+    usePerformanceOverviewAgentMetrics,
+} from 'domains/reporting/pages/performance/overview/hooks/agentBreakdown/usePerformanceOverviewAgentMetrics'
+import { getFilteredAgents } from 'domains/reporting/state/ui/stats/agentPerformanceSlice'
 
 jest.mock(
     'domains/reporting/hooks/support-performance/useStatsFilters',
@@ -28,10 +30,17 @@ jest.mock('domains/reporting/hooks/common/utils', () => ({
         (_period, name) => `2024-01-01_2024-01-31-${name}.csv`,
     ),
 }))
+jest.mock('domains/reporting/state/ui/stats/agentPerformanceSlice', () => ({
+    ...jest.requireActual(
+        'domains/reporting/state/ui/stats/agentPerformanceSlice',
+    ),
+    getFilteredAgents: jest.fn(() => []),
+}))
 
 const mockUseStatsFilters = assumeMock(useStatsFilters)
 const mockUseEntityMetrics = assumeMock(useEntityMetrics)
 const mockFetchEntityMetrics = assumeMock(fetchEntityMetrics)
+const mockGetFilteredAgents = assumeMock(getFilteredAgents)
 
 const MOCK_STATS_FILTERS = {
     period: {
@@ -40,6 +49,15 @@ const MOCK_STATS_FILTERS = {
     },
 }
 const MOCK_TIMEZONE = 'UTC'
+
+const buildAgent = (id: number, name: string): User =>
+    ({ id, name }) as unknown as User
+
+const MOCK_AGENTS: User[] = [
+    buildAgent(1, 'Alice Anderson'),
+    buildAgent(2, 'Bob Brown'),
+    buildAgent(3, 'Charlie Clark'),
+]
 
 const emptyEntityMap = () => ({
     averageCsat: {},
@@ -65,7 +83,7 @@ const emptyLoadingStates = () => ({
     messagesSent: false,
 })
 
-describe('usePerformanceOverviewChannelMetrics', () => {
+describe('usePerformanceOverviewAgentMetrics', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         mockUseStatsFilters.mockReturnValue({
@@ -73,15 +91,15 @@ describe('usePerformanceOverviewChannelMetrics', () => {
             userTimezone: MOCK_TIMEZONE,
             granularity: ReportingGranularity.Day,
         })
+        mockGetFilteredAgents.mockReturnValue(MOCK_AGENTS)
     })
 
-    it('derives the channel set as the union of allValues keys across all 9 metrics', () => {
+    it('shows every agent from the filtered list, even those with no data, and ignores stats-only ids', () => {
         mockUseEntityMetrics.mockReturnValue({
             data: {
                 ...emptyEntityMap(),
-                averageCsat: { email: 4.5 },
-                createdTickets: { chat: 100 },
-                messagesSent: { 'help-center': 50 },
+                averageCsat: { '1': 4.5 },
+                createdTickets: { '999': 100 },
             },
             isLoading: false,
             isError: false,
@@ -89,50 +107,41 @@ describe('usePerformanceOverviewChannelMetrics', () => {
         })
 
         const { result } = renderHook(() =>
-            usePerformanceOverviewChannelMetrics(),
+            usePerformanceOverviewAgentMetrics(),
         )
 
+        // Rows come only from the filtered agents list; the stats-only '999' is dropped.
         expect(result.current.data.map((r) => r.entity).sort()).toEqual([
-            'chat',
-            'email',
-            'help-center',
+            '1',
+            '2',
+            '3',
         ])
     })
 
-    it('sorts rows by humanized channel display name', () => {
+    it('sorts rows by humanized agent display name', () => {
         mockUseEntityMetrics.mockReturnValue({
-            data: {
-                ...emptyEntityMap(),
-                createdTickets: {
-                    sms: 1,
-                    email: 1,
-                    chat: 1,
-                    'help-center': 1,
-                },
-            },
+            data: emptyEntityMap(),
             isLoading: false,
             isError: false,
             loadingStates: emptyLoadingStates(),
         })
 
         const { result } = renderHook(() =>
-            usePerformanceOverviewChannelMetrics(),
+            usePerformanceOverviewAgentMetrics(),
         )
 
         expect(result.current.data.map((r) => r.entity)).toEqual([
-            'chat',
-            'email',
-            'help-center',
-            'sms',
+            '1',
+            '2',
+            '3',
         ])
     })
 
-    it('drops channels whose metrics are all null', () => {
+    it('does not create rows for stats-only ids outside the filtered agents list', () => {
         mockUseEntityMetrics.mockReturnValue({
             data: {
                 ...emptyEntityMap(),
-                averageCsat: { email: 4.5, chat: null },
-                createdTickets: { email: 100, chat: null },
+                createdTickets: { '999': 1 },
             },
             isLoading: false,
             isError: false,
@@ -140,24 +149,46 @@ describe('usePerformanceOverviewChannelMetrics', () => {
         })
 
         const { result } = renderHook(() =>
-            usePerformanceOverviewChannelMetrics(),
+            usePerformanceOverviewAgentMetrics(),
         )
 
-        expect(result.current.data.map((r) => r.entity)).toEqual(['email'])
+        expect(result.current.data.map((r) => r.entity)).not.toContain('999')
+    })
+
+    it('keeps agents whose metrics are all null (no data filter)', () => {
+        mockUseEntityMetrics.mockReturnValue({
+            data: {
+                ...emptyEntityMap(),
+                averageCsat: { '1': 4.5, '2': null },
+                createdTickets: { '1': 100, '2': null },
+            },
+            isLoading: false,
+            isError: false,
+            loadingStates: emptyLoadingStates(),
+        })
+
+        const { result } = renderHook(() =>
+            usePerformanceOverviewAgentMetrics(),
+        )
+
+        // '2' has all-null metrics but is still in the agents list, so it stays.
+        const entities = result.current.data.map((r) => r.entity)
+        expect(entities).toContain('1')
+        expect(entities).toContain('2')
     })
 
     it('builds row values by reading each metric map by entity key', () => {
         mockUseEntityMetrics.mockReturnValue({
             data: {
-                averageCsat: { email: 4.5 },
-                resolutionTime: { email: 3600 },
-                messagesPerTicket: { email: 3.2 },
-                firstResponseTime: { email: 600 },
-                humanResponseTimeAfterAiHandoff: { email: 900 },
-                createdTickets: { email: 2700 },
-                closedTickets: { email: 2500 },
-                ticketsReplied: { email: 2200 },
-                messagesSent: { email: 8000 },
+                averageCsat: { '1': 4.5 },
+                resolutionTime: { '1': 3600 },
+                messagesPerTicket: { '1': 3.2 },
+                firstResponseTime: { '1': 600 },
+                humanResponseTimeAfterAiHandoff: { '1': 900 },
+                createdTickets: { '1': 2700 },
+                closedTickets: { '1': 2500 },
+                ticketsReplied: { '1': 2200 },
+                messagesSent: { '1': 8000 },
             },
             isLoading: false,
             isError: false,
@@ -165,45 +196,21 @@ describe('usePerformanceOverviewChannelMetrics', () => {
         })
 
         const { result } = renderHook(() =>
-            usePerformanceOverviewChannelMetrics(),
+            usePerformanceOverviewAgentMetrics(),
         )
 
-        expect(result.current.data).toEqual([
-            {
-                entity: 'email',
-                averageCsat: 4.5,
-                resolutionTime: 3600,
-                messagesPerTicket: 3.2,
-                firstResponseTime: 600,
-                humanResponseTimeAfterAiHandoff: 900,
-                createdTickets: 2700,
-                closedTickets: 2500,
-                ticketsReplied: 2200,
-                messagesSent: 8000,
-            },
-        ])
-    })
-
-    it('falls back to null when an entity is missing from a metric map', () => {
-        mockUseEntityMetrics.mockReturnValue({
-            data: {
-                ...emptyEntityMap(),
-                averageCsat: { email: 4.5 },
-            },
-            isLoading: false,
-            isError: false,
-            loadingStates: emptyLoadingStates(),
+        expect(result.current.data.find((row) => row.entity === '1')).toEqual({
+            entity: '1',
+            averageCsat: 4.5,
+            resolutionTime: 3600,
+            messagesPerTicket: 3.2,
+            firstResponseTime: 600,
+            humanResponseTimeAfterAiHandoff: 900,
+            createdTickets: 2700,
+            closedTickets: 2500,
+            ticketsReplied: 2200,
+            messagesSent: 8000,
         })
-
-        const { result } = renderHook(() =>
-            usePerformanceOverviewChannelMetrics(),
-        )
-
-        const row = result.current.data[0]
-        expect(row.entity).toBe('email')
-        expect(row.averageCsat).toBe(4.5)
-        expect(row.resolutionTime).toBeNull()
-        expect(row.messagesSent).toBeNull()
     })
 
     it('propagates isLoading, isError, and loadingStates from useEntityMetrics', () => {
@@ -219,7 +226,7 @@ describe('usePerformanceOverviewChannelMetrics', () => {
         })
 
         const { result } = renderHook(() =>
-            usePerformanceOverviewChannelMetrics(),
+            usePerformanceOverviewAgentMetrics(),
         )
 
         expect(result.current.isLoading).toBe(true)
@@ -228,12 +235,12 @@ describe('usePerformanceOverviewChannelMetrics', () => {
     })
 })
 
-describe('fetchPerformanceOverviewChannelMetrics', () => {
+describe('fetchPerformanceOverviewAgentMetrics', () => {
     beforeEach(() => {
         jest.clearAllMocks()
     })
 
-    it('returns an empty CSV when no channel has any metric value', async () => {
+    it('returns an empty CSV when there are no known agents and no stats data', async () => {
         mockFetchEntityMetrics.mockResolvedValue({
             data: emptyEntityMap(),
             isLoading: false,
@@ -241,36 +248,58 @@ describe('fetchPerformanceOverviewChannelMetrics', () => {
             loadingStates: emptyLoadingStates(),
         })
 
-        const { fileName, files } =
-            await fetchPerformanceOverviewChannelMetrics(
-                MOCK_STATS_FILTERS,
-                MOCK_TIMEZONE,
-            )
+        const { fileName, files } = await fetchPerformanceOverviewAgentMetrics(
+            MOCK_STATS_FILTERS,
+            MOCK_TIMEZONE,
+            [],
+        )
 
         expect(files[fileName]).toBe('')
     })
 
-    it('writes a header row with the channel label followed by every metric column label', async () => {
+    it('writes a row for every known agent even when stats data is empty', async () => {
+        mockFetchEntityMetrics.mockResolvedValue({
+            data: emptyEntityMap(),
+            isLoading: false,
+            isError: false,
+            loadingStates: emptyLoadingStates(),
+        })
+
+        const { fileName, files } = await fetchPerformanceOverviewAgentMetrics(
+            MOCK_STATS_FILTERS,
+            MOCK_TIMEZONE,
+            MOCK_AGENTS,
+        )
+
+        const dataLines = files[fileName].split('\r\n').slice(1)
+        expect(dataLines.map((line) => line.split(',')[0])).toEqual([
+            '"Alice Anderson"',
+            '"Bob Brown"',
+            '"Charlie Clark"',
+        ])
+    })
+
+    it('writes a header row with the agent label followed by every metric column label', async () => {
         mockFetchEntityMetrics.mockResolvedValue({
             data: {
                 ...emptyEntityMap(),
-                createdTickets: { email: 1 },
+                createdTickets: { '1': 1 },
             },
             isLoading: false,
             isError: false,
             loadingStates: emptyLoadingStates(),
         })
 
-        const { fileName, files } =
-            await fetchPerformanceOverviewChannelMetrics(
-                MOCK_STATS_FILTERS,
-                MOCK_TIMEZONE,
-            )
+        const { fileName, files } = await fetchPerformanceOverviewAgentMetrics(
+            MOCK_STATS_FILTERS,
+            MOCK_TIMEZONE,
+            MOCK_AGENTS,
+        )
 
         const [headerLine] = files[fileName].split('\r\n')
         expect(headerLine).toBe(
             [
-                '"Channel"',
+                '"Agent"',
                 '"Resolution time"',
                 '"First response time"',
                 '"Messages per ticket"',
@@ -284,35 +313,34 @@ describe('fetchPerformanceOverviewChannelMetrics', () => {
         )
     })
 
-    it('writes humanized channel names and metric-format-aware values into data rows', async () => {
+    it('writes humanized agent names and metric-format-aware values into data rows', async () => {
         mockFetchEntityMetrics.mockResolvedValue({
             data: {
-                ...emptyEntityMap(),
-                averageCsat: { email: 4.5 },
-                resolutionTime: { email: 3600 },
-                messagesPerTicket: { email: 3.2 },
-                firstResponseTime: { email: 600 },
-                humanResponseTimeAfterAiHandoff: { email: 900 },
-                createdTickets: { email: 2700 },
-                closedTickets: { email: 2500 },
-                ticketsReplied: { email: 2200 },
-                messagesSent: { email: 8000 },
+                averageCsat: { '1': 4.5 },
+                resolutionTime: { '1': 3600 },
+                messagesPerTicket: { '1': 3.2 },
+                firstResponseTime: { '1': 600 },
+                humanResponseTimeAfterAiHandoff: { '1': 900 },
+                createdTickets: { '1': 2700 },
+                closedTickets: { '1': 2500 },
+                ticketsReplied: { '1': 2200 },
+                messagesSent: { '1': 8000 },
             },
             isLoading: false,
             isError: false,
             loadingStates: emptyLoadingStates(),
         })
 
-        const { fileName, files } =
-            await fetchPerformanceOverviewChannelMetrics(
-                MOCK_STATS_FILTERS,
-                MOCK_TIMEZONE,
-            )
+        const { fileName, files } = await fetchPerformanceOverviewAgentMetrics(
+            MOCK_STATS_FILTERS,
+            MOCK_TIMEZONE,
+            MOCK_AGENTS,
+        )
 
         const [, dataLine] = files[fileName].split('\r\n')
         expect(dataLine).toBe(
             [
-                '"Email"',
+                '"Alice Anderson"',
                 '"1h"',
                 '"10m"',
                 '"3.2"',
@@ -326,60 +354,56 @@ describe('fetchPerformanceOverviewChannelMetrics', () => {
         )
     })
 
-    it('formats null metric values as the not-available text in the CSV', async () => {
+    it('omits stats-only ids that are not in the agents list', async () => {
         mockFetchEntityMetrics.mockResolvedValue({
             data: {
                 ...emptyEntityMap(),
-                averageCsat: { email: 4.5 },
+                createdTickets: { '999': 1 },
             },
             isLoading: false,
             isError: false,
             loadingStates: emptyLoadingStates(),
         })
 
-        const { fileName, files } =
-            await fetchPerformanceOverviewChannelMetrics(
-                MOCK_STATS_FILTERS,
-                MOCK_TIMEZONE,
-            )
+        const { fileName, files } = await fetchPerformanceOverviewAgentMetrics(
+            MOCK_STATS_FILTERS,
+            MOCK_TIMEZONE,
+            MOCK_AGENTS,
+        )
 
-        const [, dataLine] = files[fileName].split('\r\n')
-        expect(dataLine).toContain('"Email"')
-        // resolutionTime, firstResponseTime, etc. are all null → N/A
-        expect(
-            dataLine.split(',').filter((cell) => cell === '"N/A"').length,
-        ).toBe(8)
+        expect(files[fileName]).not.toContain('"999"')
     })
 
-    it('sorts CSV rows by humanized channel name', async () => {
+    it('sorts CSV rows by humanized agent name', async () => {
         mockFetchEntityMetrics.mockResolvedValue({
             data: {
                 ...emptyEntityMap(),
-                createdTickets: { sms: 10, email: 20, chat: 30 },
+                createdTickets: { '3': 10, '1': 20, '2': 30 },
             },
             isLoading: false,
             isError: false,
             loadingStates: emptyLoadingStates(),
         })
 
-        const { fileName, files } =
-            await fetchPerformanceOverviewChannelMetrics(
-                MOCK_STATS_FILTERS,
-                MOCK_TIMEZONE,
-            )
+        const { fileName, files } = await fetchPerformanceOverviewAgentMetrics(
+            MOCK_STATS_FILTERS,
+            MOCK_TIMEZONE,
+            MOCK_AGENTS,
+        )
 
         const dataLines = files[fileName].split('\r\n').slice(1)
         expect(dataLines.map((line) => line.split(',')[0])).toEqual([
-            '"Chat"',
-            '"Email"',
-            '"SMS"',
+            '"Alice Anderson"',
+            '"Bob Brown"',
+            '"Charlie Clark"',
         ])
     })
 })
 
-describe('fetchPerformanceOverviewChannelAsConfigurableTable', () => {
+describe('fetchPerformanceOverviewAgentAsConfigurableTable', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        mockGetFilteredAgents.mockReturnValue(MOCK_AGENTS)
         mockFetchEntityMetrics.mockResolvedValue({
             data: emptyEntityMap(),
             isLoading: false,
@@ -388,8 +412,8 @@ describe('fetchPerformanceOverviewChannelAsConfigurableTable', () => {
         })
     })
 
-    it('forwards filters and timezone to fetchEntityMetrics and returns files', async () => {
-        const result = await fetchPerformanceOverviewChannelAsConfigurableTable(
+    it('reads agents from the store, forwards filters and timezone, and returns files', async () => {
+        const result = await fetchPerformanceOverviewAgentAsConfigurableTable(
             null,
             null,
             MOCK_STATS_FILTERS,
@@ -397,6 +421,7 @@ describe('fetchPerformanceOverviewChannelAsConfigurableTable', () => {
             ReportingGranularity.Day,
         )
 
+        expect(mockGetFilteredAgents).toHaveBeenCalled()
         expect(mockFetchEntityMetrics).toHaveBeenCalledWith(
             expect.any(Object),
             MOCK_STATS_FILTERS,

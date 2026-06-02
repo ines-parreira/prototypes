@@ -36,6 +36,7 @@ type Props<TData> = {
     chartId?: string
     isCustomDashboard?: boolean
     name?: string
+    enableSearch?: boolean
 }
 
 export function ReportingMetricBreakdownTable<TData>({
@@ -48,6 +49,7 @@ export function ReportingMetricBreakdownTable<TData>({
     chartId,
     isCustomDashboard,
     name,
+    enableSearch,
 }: Props<TData>) {
     const columns = useMemo(
         () => [
@@ -135,7 +137,12 @@ export function ReportingMetricBreakdownTable<TData>({
     )
 
     return (
-        <Box display="flex" flex={1} flexDirection="column">
+        <Box
+            display="flex"
+            flex={1}
+            flexDirection="column"
+            paddingTop={enableSearch ? '42px' : 0}
+        >
             {isCustomDashboard && name && (
                 <Box
                     display="flex"
@@ -161,6 +168,15 @@ export function ReportingMetricBreakdownTable<TData>({
                     localStorage: true,
                 }}
                 sorting={{ enable: true, persist: true }}
+                search={
+                    enableSearch
+                        ? {
+                              enable: true,
+                              getColumnCanFilter: (col) =>
+                                  nameColumnLabels.includes(col.id),
+                          }
+                        : undefined
+                }
                 columnEditing={{
                     enable: true,
                     defaultVisibleColumns: savedColumns,

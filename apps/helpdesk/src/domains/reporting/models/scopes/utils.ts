@@ -564,6 +564,7 @@ export const getBreakdownQuery = <
 ) => {
     const buildBreakdown = (name: MetricName) =>
         scope.defineMetricName(name).defineQuery(({ ctx, config }) => ({
+            limit: 10000,
             ...baseQuery({ ctx, config }),
             dimensions: ctx.dimensions,
         }))

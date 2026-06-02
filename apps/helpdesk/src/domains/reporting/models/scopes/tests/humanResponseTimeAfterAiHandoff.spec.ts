@@ -269,6 +269,7 @@ describe('humanResponseTimeAfterAiHandoffScope', () => {
                             granularity: 'day',
                         },
                     ],
+                    limit: 10000,
                 })
             })
 

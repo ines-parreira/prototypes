@@ -17,6 +17,11 @@ import {
     DataExportFormat,
 } from 'domains/reporting/pages/dashboards/types'
 import {
+    fetchPerformanceOverviewAgentAsConfigurableTable,
+    PERFORMANCE_OVERVIEW_AGENT_TABLE,
+    PerformanceOverviewAgentTable,
+} from 'domains/reporting/pages/performance/overview/charts/breakdownTables/PerformanceOverviewAgentTable'
+import {
     fetchPerformanceOverviewChannelAsConfigurableTable,
     PERFORMANCE_OVERVIEW_CHANNEL_TABLE,
     PerformanceOverviewChannelTable,
@@ -43,6 +48,7 @@ export enum PerformanceOverviewChart {
     ClosedTicketsCard = 'performance-overview-closed-tickets-card',
     TicketsRepliedCard = 'performance-overview-tickets-replied-card',
     MessagesSentCard = 'performance-overview-messages-sent-card',
+    AgentTable = 'performance-overview-agent-table',
     ChannelTable = 'performance-overview-channel-table',
 }
 
@@ -202,6 +208,18 @@ export const PerformanceOverviewReportConfig: ReportConfig<PerformanceOverviewCh
                 chartType: ChartType.CardWithTimeseries,
                 metricFormat: 'decimal',
                 interpretAs: 'neutral',
+            },
+            [PerformanceOverviewChart.AgentTable]: {
+                chartComponent: PerformanceOverviewAgentTable,
+                label: PERFORMANCE_OVERVIEW_AGENT_TABLE.title,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.ConfigurableTable,
+                        fetch: fetchPerformanceOverviewAgentAsConfigurableTable,
+                    },
+                ],
+                description: PERFORMANCE_OVERVIEW_AGENT_TABLE.description,
+                chartType: ChartType.Table,
             },
             [PerformanceOverviewChart.ChannelTable]: {
                 chartComponent: PerformanceOverviewChannelTable,
