@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import { act, cleanup, screen, waitFor } from '@testing-library/react'
-import { HttpResponse } from 'msw'
+import { delay, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 import { VirtuosoMockContext } from 'react-virtuoso'
 
@@ -107,6 +107,27 @@ function createListViewItemsResponseHandler(tickets: TicketCompact[]) {
 
 function createListViewItemsErrorHandler(status: number, message: string) {
     return mockListViewItemsHandler(async () =>
+        HttpResponse.json(
+            {
+                error: {
+                    msg: message,
+                },
+            } as any,
+            { status },
+        ),
+    ).handler
+}
+
+function createPendingListViewItemsHandler() {
+    return mockListViewItemsHandler(async () => {
+        await delay('infinite')
+
+        return HttpResponse.json()
+    }).handler
+}
+
+function createGetViewErrorHandler(status: number, message: string) {
+    return mockGetViewHandler(async () =>
         HttpResponse.json(
             {
                 error: {
@@ -307,6 +328,34 @@ describe('TicketList', () => {
         expect(
             screen.queryByText('Request failed with status code 404'),
         ).not.toBeInTheDocument()
+    })
+
+    it('should render inaccessible state when the view request returns 404 while tickets are loading', async () => {
+        server.use(
+            createGetViewErrorHandler(
+                404,
+                `The view #${viewId} does not exist`,
+            ),
+            createPendingListViewItemsHandler(),
+        )
+
+        renderWithVirtuoso(<TicketList viewId={viewId} onCollapse={vi.fn()} />)
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('heading', { name: "Can't access view" }),
+            ).toBeInTheDocument()
+        })
+
+        expect(
+            screen.getByText(
+                'This view does not exist or you do not have the correct permissions',
+            ),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: 'Refresh' }),
+        ).not.toBeInTheDocument()
+        expect(screen.queryByLabelText('Loading')).not.toBeInTheDocument()
     })
 
     it('should not render a raw error message when the tickets request fails', async () => {

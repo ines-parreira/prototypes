@@ -50,6 +50,7 @@ import { useViewVisibleTickets } from '../../hooks/useViewVisibleTickets'
 import type { SearchTracking } from '../../types/searchTracking'
 import { getPlaceholderKind } from '../../utils/getPlaceholderKind'
 import { getTicketTableDisplayRow } from '../../utils/getTicketTableDisplayRow'
+import { isInaccessibleViewItemsError } from '../../utils/isInaccessibleViewItemsError'
 import { TicketListEmptyPlaceholder } from '../TicketListEmptyPlaceholder'
 import { parseSortOrder } from '../TicketListHeader/SortOrderDropdown'
 import { TicketTableBulkActions } from './components/TicketTableBulkActions'
@@ -138,11 +139,18 @@ function TicketTableComponent({
         }))
     }, [])
 
-    const { data: viewResponse } = useGetView(viewId, {
+    const {
+        data: viewResponse,
+        error: viewError,
+        refetch: refetchView,
+    } = useGetView(viewId, {
         query: {
             enabled: !isDraftView,
         },
     })
+    const handleRefreshView = () => {
+        void refetchView()
+    }
     const view = viewResponse?.data
     const shouldShowColumnEditingFooter =
         !isDraftView && view?.visibility !== ViewVisibility.Private
@@ -191,6 +199,12 @@ function TicketTableComponent({
         error,
         isEmpty: items.length === 0,
     })
+    const viewErrorPlaceholderKind =
+        !isSearchMode && !viewResponse && viewError
+            ? isInaccessibleViewItemsError(viewError)
+                ? EmptyViewsState.Inaccessible
+                : EmptyViewsState.Error
+            : null
     const errorMessage = getTicketTableErrorMessage(error)
     const { viewVisibleTickets } = useViewVisibleTickets()
     const displayedTicketIds = useMemo(
@@ -460,6 +474,23 @@ function TicketTableComponent({
     const shouldEnableVirtualization =
         (pagination?.pageSize ?? DEFAULT_PAGINATION.pageSize) >=
         VIRTUALIZATION_PAGE_SIZE_THRESHOLD
+
+    if (viewErrorPlaceholderKind) {
+        return (
+            <div className={css.container}>
+                <TicketListEmptyPlaceholder
+                    isLoading={false}
+                    emptyStateVariant={viewErrorPlaceholderKind}
+                    isInboxView={isInboxView}
+                    onRefresh={
+                        viewErrorPlaceholderKind === EmptyViewsState.Error
+                            ? handleRefreshView
+                            : undefined
+                    }
+                />
+            </div>
+        )
+    }
 
     if (shouldShowErrorPlaceholder) {
         return (

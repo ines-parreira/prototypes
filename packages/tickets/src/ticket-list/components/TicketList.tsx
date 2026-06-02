@@ -26,6 +26,7 @@ import { useTicketSelection } from '../hooks/useTicketSelection'
 import { PAGE_SIZE, useTicketsList } from '../hooks/useTicketsList'
 import { useViewVisibleTickets } from '../hooks/useViewVisibleTickets'
 import { getPlaceholderKind } from '../utils/getPlaceholderKind'
+import { isInaccessibleViewItemsError } from '../utils/isInaccessibleViewItemsError'
 import { TicketListActions } from './TicketListActions/TicketListActions'
 import { TicketListEmptyPlaceholder } from './TicketListEmptyPlaceholder'
 import { TicketListHeader } from './TicketListHeader/TicketListHeader'
@@ -154,7 +155,14 @@ export function TicketList({
 }: Props) {
     const [sortOrder] = useSortOrder(viewId)
 
-    const { data: viewResponse } = useGetView(viewId)
+    const {
+        data: viewResponse,
+        error: viewError,
+        refetch: refetchView,
+    } = useGetView(viewId)
+    const handleRefreshView = () => {
+        void refetchView()
+    }
     const view = viewResponse?.data
     const isInboxView = viewResponse ? getIsInboxView(view) : undefined
 
@@ -190,6 +198,12 @@ export function TicketList({
         error,
         isEmpty: tickets.length === 0,
     })
+    const viewErrorPlaceholderKind =
+        !viewResponse && viewError
+            ? isInaccessibleViewItemsError(viewError)
+                ? EmptyViewsState.Inaccessible
+                : EmptyViewsState.Error
+            : null
 
     const {
         hasSelectedAll,
@@ -322,6 +336,21 @@ export function TicketList({
 
     const shouldShowErrorPlaceholder =
         placeholderKind === EmptyViewsState.Error && tickets.length === 0
+
+    if (viewErrorPlaceholderKind) {
+        return (
+            <TicketListEmptyPlaceholder
+                isLoading={false}
+                emptyStateVariant={viewErrorPlaceholderKind}
+                isInboxView={isInboxView}
+                onRefresh={
+                    viewErrorPlaceholderKind === EmptyViewsState.Error
+                        ? handleRefreshView
+                        : undefined
+                }
+            />
+        )
+    }
 
     if (shouldShowErrorPlaceholder) {
         return (

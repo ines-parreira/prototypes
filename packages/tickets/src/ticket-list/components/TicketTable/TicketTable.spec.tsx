@@ -14,6 +14,7 @@ import {
     mockListViewItemsHandler,
     mockListViewItemsUpdatesHandler,
     mockListViewItemsUpdatesResponse,
+    mockSearchTicketsHandler,
     mockUser,
 } from '@gorgias/helpdesk-mocks'
 
@@ -54,6 +55,8 @@ const mockState = {
     viewFilters: '',
     tickets: [] as Array<{ id: number; subject: string; is_unread?: boolean }>,
     error: null as unknown,
+    isLoading: false,
+    isFetching: false,
     markAsRead: vi.fn(),
     refetchSpy: vi.fn(),
     setSortOrder: vi.fn(),
@@ -168,8 +171,9 @@ vi.mock('./TicketTableColumns', () => ({
 
 function renderTicketTable(
     props?: Partial<ComponentProps<typeof TicketTable>>,
+    options?: Parameters<typeof render>[1],
 ) {
-    return render(<TicketTable viewId={123} {...props} />)
+    return render(<TicketTable viewId={123} {...props} />, options)
 }
 
 async function waitForTicketTableToBeReady() {
@@ -199,6 +203,19 @@ const agentUser = mockUser({
 
 function createListViewItemsErrorHandler(status: number, message: string) {
     return mockListViewItemsHandler(async () =>
+        HttpResponse.json(
+            {
+                error: {
+                    msg: message,
+                },
+            } as any,
+            { status },
+        ),
+    ).handler
+}
+
+function createGetViewErrorHandler(status: number, message: string) {
+    return mockGetViewHandler(async () =>
         HttpResponse.json(
             {
                 error: {
@@ -263,6 +280,8 @@ describe('TicketTable', () => {
             { id: 2, subject: 'Second ticket' },
         ]
         mockState.error = null
+        mockState.isLoading = false
+        mockState.isFetching = false
         pushMock.mockReset()
         mockState.markAsRead.mockReset()
         mockState.refetchSpy.mockReset()
@@ -272,8 +291,8 @@ describe('TicketTable', () => {
                 tickets: mockState.tickets as any,
                 fetchNextPage: vi.fn(),
                 hasNextPage: false,
-                isLoading: false,
-                isFetching: false,
+                isLoading: mockState.isLoading,
+                isFetching: mockState.isFetching,
                 isFetchingNextPage: false,
                 error: mockState.error,
                 data: undefined,
@@ -607,6 +626,52 @@ describe('TicketTable', () => {
         ).not.toBeInTheDocument()
         expect(
             screen.queryByText('Request failed with status code 404'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('renders the inaccessible placeholder when loading the view returns 404', async () => {
+        mockState.tickets = []
+        mockState.isLoading = true
+        mockState.isFetching = true
+        server.use(
+            createGetViewErrorHandler(404, 'The view #123 does not exist'),
+        )
+
+        renderTicketTable()
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('heading', { name: "Can't access view" }),
+            ).toBeInTheDocument()
+        })
+
+        expect(
+            screen.getByText(
+                'This view does not exist or you do not have the correct permissions',
+            ),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: 'Refresh' }),
+        ).not.toBeInTheDocument()
+        expect(screen.queryByLabelText('Loading')).not.toBeInTheDocument()
+    })
+
+    it('keeps rendering search results when the view request returns 404 in search mode', async () => {
+        server.use(
+            createGetViewErrorHandler(404, 'The view #123 does not exist'),
+            mockSearchTicketsHandler().handler,
+        )
+
+        renderTicketTable(
+            { isSearchMode: true },
+            { initialEntries: ['/?q=first'] },
+        )
+
+        await waitForTicketTableToBeReady()
+
+        expect(screen.getByRole('table')).toBeInTheDocument()
+        expect(
+            screen.queryByRole('heading', { name: "Can't access view" }),
         ).not.toBeInTheDocument()
     })
 
