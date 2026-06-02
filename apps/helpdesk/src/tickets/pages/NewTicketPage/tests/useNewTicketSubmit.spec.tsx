@@ -7,6 +7,7 @@ import { MacroActionName, useTicketFieldsStore } from '@repo/tickets'
 import { act } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
+import { useLocation } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -33,10 +34,16 @@ jest.mock(
     }),
 )
 
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useLocation: jest.fn(),
+}))
+
 jest.mock('state/newMessage/actions', () => ({
     submitTicket: jest.fn(),
 }))
 
+const mockUseLocation = jest.mocked(useLocation)
 const submitTicket = jest.mocked(
     jest.requireMock<typeof import('state/newMessage/actions')>(
         'state/newMessage/actions',
@@ -141,6 +148,12 @@ async function submitNewTicket(
 describe('useNewTicketSubmit', () => {
     beforeEach(() => {
         submitTicket.mockReturnValue(async () => ({ error: undefined }))
+        mockUseLocation.mockReturnValue({
+            hash: '',
+            pathname: '/app/ticket/new',
+            search: '',
+            state: undefined,
+        })
         jest.spyOn(localForageManager, 'clearTable').mockReturnValue(
             undefined as never,
         )
@@ -189,6 +202,7 @@ describe('useNewTicketSubmit', () => {
             fromJS({ id: 123 }),
             true,
             'temporary-ticket-id',
+            undefined,
         )
         expect(localForageManager.clearTable).toHaveBeenCalledWith(
             'ticket-drafts',
@@ -343,5 +357,117 @@ describe('useNewTicketSubmit', () => {
 
         expect(submitTicket).toHaveBeenCalled()
         expect(localForageManager.clearTable).not.toHaveBeenCalled()
+    })
+
+    it('redirects to the previousURL after creating and closing a ticket', async () => {
+        mockUseLocation.mockReturnValue({
+            hash: '',
+            pathname: '/app/ticket/new',
+            search: new URLSearchParams({
+                previousURL: '/app/views/42?cursor=next#ticket-list',
+            }).toString(),
+            state: undefined,
+        })
+        const { result } = renderUseNewTicketSubmit()
+
+        await submitNewTicket(result, { status: 'closed' } as SubmitArgs)
+
+        expect(submitTicket).toHaveBeenCalledWith(
+            expect.anything(),
+            'closed',
+            fromJS([]),
+            fromJS({ id: 123 }),
+            true,
+            'temporary-ticket-id',
+            '/app/views/42?cursor=next#ticket-list',
+        )
+    })
+
+    it('keeps the created closed ticket open when there is no previousURL', async () => {
+        const { result } = renderUseNewTicketSubmit()
+
+        await submitNewTicket(result, { status: 'closed' } as SubmitArgs)
+
+        expect(submitTicket).toHaveBeenCalledWith(
+            expect.anything(),
+            'closed',
+            fromJS([]),
+            fromJS({ id: 123 }),
+            true,
+            'temporary-ticket-id',
+            undefined,
+        )
+    })
+
+    it('keeps the created closed ticket open when the previousURL is the new ticket page', async () => {
+        mockUseLocation.mockReturnValue({
+            hash: '',
+            pathname: '/app/ticket/new',
+            search: new URLSearchParams({
+                previousURL: '/app/ticket/new',
+            }).toString(),
+            state: undefined,
+        })
+        const { result } = renderUseNewTicketSubmit()
+
+        await submitNewTicket(result, { status: 'closed' } as SubmitArgs)
+
+        expect(submitTicket).toHaveBeenCalledWith(
+            expect.anything(),
+            'closed',
+            fromJS([]),
+            fromJS({ id: 123 }),
+            true,
+            'temporary-ticket-id',
+            undefined,
+        )
+    })
+
+    it('keeps the created closed ticket open when the previousURL is external', async () => {
+        mockUseLocation.mockReturnValue({
+            hash: '',
+            pathname: '/app/ticket/new',
+            search: new URLSearchParams({
+                previousURL: 'https://example.com/app/views/42',
+            }).toString(),
+            state: undefined,
+        })
+        const { result } = renderUseNewTicketSubmit()
+
+        await submitNewTicket(result, { status: 'closed' } as SubmitArgs)
+
+        expect(submitTicket).toHaveBeenCalledWith(
+            expect.anything(),
+            'closed',
+            fromJS([]),
+            fromJS({ id: 123 }),
+            true,
+            'temporary-ticket-id',
+            undefined,
+        )
+    })
+
+    it('does not redirect after creating an open ticket', async () => {
+        mockUseLocation.mockReturnValue({
+            hash: '',
+            pathname: '/app/ticket/new',
+            search: new URLSearchParams({
+                previousURL: '/app/views/42',
+            }).toString(),
+            state: undefined,
+        })
+        const { result } = renderUseNewTicketSubmit()
+
+        await submitNewTicket(result)
+
+        expect(submitTicket).toHaveBeenCalledWith(
+            expect.anything(),
+            'open',
+            fromJS([]),
+            fromJS({ id: 123 }),
+            true,
+            'temporary-ticket-id',
+            undefined,
+        )
     })
 })

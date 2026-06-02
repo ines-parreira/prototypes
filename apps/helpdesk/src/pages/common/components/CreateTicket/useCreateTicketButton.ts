@@ -1,14 +1,16 @@
 import { useMemo } from 'react'
 
+import { getCreateTicketPathWithPreviousURL } from '@repo/tickets/utils/routing'
 import { useHistory } from 'react-router-dom'
 
 import useHandleTicketDraft from './useHandleTicketDraft'
 
-const createTicketPath = '/app/ticket/new'
-
 export function useCreateTicketButton() {
     const history = useHistory()
     const { hasDraft, onResumeDraft, onDiscardDraft } = useHandleTicketDraft()
+    const createTicketPath = getCreateTicketPathWithPreviousURL(
+        history.location,
+    )
 
     const createTicketActions = useMemo(
         () => ({
@@ -19,7 +21,7 @@ export function useCreateTicketButton() {
                 },
             },
         }),
-        [history],
+        [createTicketPath, history],
     )
 
     return {

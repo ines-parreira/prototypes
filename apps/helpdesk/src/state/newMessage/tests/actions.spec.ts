@@ -3,6 +3,7 @@ import { ActivityEvents } from '@repo/activity-tracker'
 import client, { appQueryClient } from '@repo/api-resources'
 import { fetchFlag } from '@repo/feature-flags'
 import * as segmentTracker from '@repo/logging'
+import { history } from '@repo/routing'
 import MockAdapter from 'axios-mock-adapter'
 import { ContentState } from 'draft-js'
 import type { Map } from 'immutable'
@@ -101,12 +102,18 @@ jest.mock(
 )
 
 jest.mock('@repo/activity-tracker')
+jest.mock('@repo/routing', () => ({
+    history: {
+        push: jest.fn(),
+    },
+}))
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     fetchFlag: jest.fn(async () => ({ flag: true, error: null })),
 }))
 
 const mockFetchFlag = fetchFlag as jest.MockedFunction<typeof fetchFlag>
+const mockHistory = jest.mocked(history)
 
 describe('actions', () => {
     let mockServer: MockAdapter
@@ -114,6 +121,7 @@ describe('actions', () => {
 
     beforeEach(() => {
         mockServer = new MockAdapter(client)
+        mockHistory.push.mockClear()
         mockFetchFlag.mockResolvedValue({ flag: true, error: null })
         appQueryClient.setQueryData(mockChannelsQueryKeys.list(), {
             data: mockChannels,
@@ -2679,6 +2687,34 @@ describe('actions', () => {
                     entityId: 1,
                     temporaryId: '123',
                 },
+            )
+            expect(mockHistory.push).toHaveBeenCalledWith('/app/ticket/1')
+        })
+
+        it('should navigate to the provided redirect path after submitting a ticket', async () => {
+            store = mockStore({
+                ticket: fromJS({
+                    ...ticketInitialState.toJS(),
+                }),
+                newMessage: initialState,
+            })
+
+            mockServer.onPost('/api/tickets/').reply(200, { id: 1 })
+
+            await store.dispatch(
+                actions.submitTicket(
+                    ticketInitialState,
+                    TicketStatus.Closed,
+                    undefined,
+                    fromJS({}),
+                    true,
+                    '123',
+                    '/app/views/42?cursor=next#ticket-list',
+                ),
+            )
+
+            expect(mockHistory.push).toHaveBeenCalledWith(
+                '/app/views/42?cursor=next#ticket-list',
             )
         })
 

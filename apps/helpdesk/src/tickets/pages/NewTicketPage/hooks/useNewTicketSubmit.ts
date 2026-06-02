@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { localForageManager } from '@repo/browser-storage'
 import type { TicketFieldsState } from '@repo/tickets'
@@ -7,8 +7,10 @@ import {
     MacroActionName,
     useTicketFieldsStore,
 } from '@repo/tickets'
+import { CreateTicketSearchParamsKeys } from '@repo/tickets/utils/routing'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
+import { useLocation } from 'react-router-dom'
 
 import type {
     TicketPriority,
@@ -17,6 +19,7 @@ import type {
     TicketUser,
 } from '@gorgias/helpdesk-queries'
 
+import { TicketStatus } from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { DRAFT_TICKET_STORE } from 'hooks/useTicketDraft'
@@ -60,6 +63,9 @@ function mergeCustomFieldsWithMacroValues(
     )
 }
 
+const { key: previousURLKey, parse: parsePreviousURL } =
+    CreateTicketSearchParamsKeys.previousURL
+
 export function useNewTicketSubmit({
     subject,
     priority,
@@ -72,11 +78,18 @@ export function useNewTicketSubmit({
     const dispatch = useAppDispatch()
     const canSendMessage = useAppSelector(getCanSend)
     const fields = useTicketFieldsStore((state) => state.fields)
+    const { search } = useLocation()
+    const previousURL = useMemo(
+        () => parsePreviousURL(new URLSearchParams(search).get(previousURLKey)),
+        [search],
+    )
 
     const submit = useCallback(
         async ({ status, resetMessage = true }: SubmitArgs) => {
             const state = dispatch((_, getState) => getState())
             const newMessage = state.newMessage
+            const closedTicketRedirectPath =
+                status === TicketStatus.Closed ? previousURL : null
 
             if (newMessage.getIn(['_internal', 'loading', 'submitMessage'])) {
                 return
@@ -148,6 +161,7 @@ export function useNewTicketSubmit({
                     currentUser,
                     resetMessage,
                     temporaryId,
+                    closedTicketRedirectPath ?? undefined,
                 ),
             )) || {}) as { error?: unknown }
 
@@ -166,6 +180,7 @@ export function useNewTicketSubmit({
             priority,
             temporaryId,
             fields,
+            previousURL,
         ],
     )
 

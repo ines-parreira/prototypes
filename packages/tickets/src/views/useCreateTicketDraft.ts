@@ -6,9 +6,9 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { useHistory } from 'react-router-dom'
 
 import { useCurrentUserId } from '../hooks/useCurrentUserId'
+import { getCreateTicketPathWithPreviousURL } from '../utils/routing'
 
 const DRAFT_TICKET_STORE = 'ticket-drafts'
-const CREATE_TICKET_PATH = '/app/ticket/new'
 
 type RawBlock = { text: string }
 type TicketDraft = {
@@ -89,11 +89,11 @@ export function useCreateTicketDraft() {
     })
 
     const onCreateTicket = useCallback(() => {
-        history.push(CREATE_TICKET_PATH)
+        history.push(getCreateTicketPathWithPreviousURL(history.location))
     }, [history])
 
     const onResumeDraft = useCallback(() => {
-        history.push(CREATE_TICKET_PATH)
+        history.push(getCreateTicketPathWithPreviousURL(history.location))
         logEvent(SegmentEvent.DraftTicket, {
             type: 'resume',
             user_id: currentUserId,
@@ -102,7 +102,7 @@ export function useCreateTicketDraft() {
 
     const onDiscardDraft = useCallback(async () => {
         await localForage.clear()
-        history.push(CREATE_TICKET_PATH)
+        history.push(getCreateTicketPathWithPreviousURL(history.location))
         logEvent(SegmentEvent.DraftTicket, {
             type: 'discard',
             user_id: currentUserId,

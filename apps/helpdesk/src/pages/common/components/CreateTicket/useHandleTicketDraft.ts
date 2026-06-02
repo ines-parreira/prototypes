@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { localForageManager } from '@repo/browser-storage'
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { getCreateTicketPathWithPreviousURL } from '@repo/tickets/utils/routing'
 import type { LocationDescriptor } from 'history'
 import { useHistory } from 'react-router-dom'
 
@@ -48,7 +49,7 @@ export default function useHandleTicketDraft() {
     })
 
     const onResumeDraft = useCallback(() => {
-        history.push('/app/ticket/new')
+        history.push(getCreateTicketPathWithPreviousURL(history.location))
         logEvent(SegmentEvent.DraftTicket, {
             type: 'resume',
             user_id: currentUser.get('id'),

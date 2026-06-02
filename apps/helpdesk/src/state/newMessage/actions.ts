@@ -1560,6 +1560,7 @@ export function submitTicket(
     currentUser: CurrentUser,
     resetMessage = true,
     temporaryTicketId: string | null = null,
+    redirectPath?: string,
 ) {
     return async (
         dispatch: StoreDispatch,
@@ -1623,7 +1624,7 @@ export function submitTicket(
                 temporaryId: temporaryTicketId,
             })
 
-            history.push(`/app/ticket/${data.id}`)
+            history.push(redirectPath ?? `/app/ticket/${data.id}`)
 
             const state = getState()
             const { ticket } = state

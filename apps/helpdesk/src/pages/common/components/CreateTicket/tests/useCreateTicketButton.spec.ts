@@ -14,6 +14,8 @@ jest.mock('../useHandleTicketDraft')
 
 const mockUseHistory = useHistory as jest.Mock
 const mockUseHandleTicketDraft = useHandleTicketDraft as jest.Mock
+const createTicketPath =
+    '/app/ticket/new?previousURL=%2Fapp%2Fviews%2F42%3Fcursor%3Dnext%23ticket-list'
 
 describe('useCreateTicketButton', () => {
     const mockPush = jest.fn()
@@ -22,7 +24,14 @@ describe('useCreateTicketButton', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseHistory.mockReturnValue({ push: mockPush })
+        mockUseHistory.mockReturnValue({
+            location: {
+                pathname: '/app/views/42',
+                search: '?cursor=next',
+                hash: '#ticket-list',
+            },
+            push: mockPush,
+        })
         mockUseHandleTicketDraft.mockReturnValue({
             hasDraft: false,
             onResumeDraft: mockOnResumeDraft,
@@ -33,7 +42,7 @@ describe('useCreateTicketButton', () => {
     it('should return initial values correctly', () => {
         const { result } = renderHook(() => useCreateTicketButton())
 
-        expect(result.current.createTicketPath).toBe('/app/ticket/new')
+        expect(result.current.createTicketPath).toBe(createTicketPath)
         expect(result.current.hasDraft).toBe(false)
         expect(
             typeof result.current.createTicketActions.CREATE_TICKET.action,
@@ -51,7 +60,7 @@ describe('useCreateTicketButton', () => {
         })
 
         expect(mockEvent.preventDefault).toHaveBeenCalledTimes(1)
-        expect(mockPush).toHaveBeenCalledWith('/app/ticket/new')
+        expect(mockPush).toHaveBeenCalledWith(createTicketPath)
     })
 
     it('should return draft status and actions from useHandleTicketDraft', () => {

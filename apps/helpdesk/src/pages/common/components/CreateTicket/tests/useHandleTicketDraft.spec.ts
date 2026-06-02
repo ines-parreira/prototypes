@@ -23,6 +23,8 @@ const mockGetTableObject = {
 jest.spyOn(localForageManager, 'getTable').mockReturnValue(mockGetTableObject)
 
 const mockHistoryPush = jest.fn()
+const createTicketPath =
+    '/app/ticket/new?previousURL=%2Fapp%2Fviews%2F42%3Fcursor%3Dnext%23ticket-list'
 
 jest.mock(
     'react-router-dom',
@@ -30,6 +32,11 @@ jest.mock(
         ({
             ...jest.requireActual('react-router-dom'),
             useHistory: () => ({
+                location: {
+                    pathname: '/app/views/42',
+                    search: '?cursor=next',
+                    hash: '#ticket-list',
+                },
                 push: mockHistoryPush,
             }),
         }) as Record<string, unknown>,
@@ -65,7 +72,7 @@ describe('useHandleTicketDraft', () => {
         const { result } = renderHook(() => useHandleTicketDraft())
         result.current.onResumeDraft()
 
-        expect(mockHistoryPush).toHaveBeenCalledWith('/app/ticket/new')
+        expect(mockHistoryPush).toHaveBeenCalledWith(createTicketPath)
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.DraftTicket,
             expect.objectContaining({

@@ -20,6 +20,9 @@ const {
     observeTableMock: vi.fn(() => ({ unsubscribe: vi.fn() })),
 }))
 
+const createTicketPath =
+    '/app/ticket/new?previousURL=%2Fapp%2Fviews%2F42%3Fcursor%3Dnext%23ticket-list'
+
 vi.mock('../../hooks/useCurrentUserId', () => ({
     useCurrentUserId: () => ({ currentUserId: 123 }),
 }))
@@ -28,7 +31,14 @@ vi.mock('react-router-dom', async () => {
     const actual = await vi.importActual('react-router-dom')
     return {
         ...actual,
-        useHistory: () => ({ push: pushMock }),
+        useHistory: () => ({
+            location: {
+                pathname: '/app/views/42',
+                search: '?cursor=next',
+                hash: '#ticket-list',
+            },
+            push: pushMock,
+        }),
     }
 })
 
@@ -125,21 +135,24 @@ describe('useCreateTicketDraft', () => {
         it.each([
             { action: 'onCreateTicket' as const },
             { action: 'onResumeDraft' as const },
-        ])('$action navigates to /app/ticket/new', ({ action }) => {
-            const { result } = renderHook(() => useCreateTicketDraft())
-            act(() => {
-                result.current[action]()
-            })
-            expect(pushMock).toHaveBeenCalledWith('/app/ticket/new')
-        })
+        ])(
+            '$action navigates to the create ticket page with previousURL',
+            ({ action }) => {
+                const { result } = renderHook(() => useCreateTicketDraft())
+                act(() => {
+                    result.current[action]()
+                })
+                expect(pushMock).toHaveBeenCalledWith(createTicketPath)
+            },
+        )
 
-        it('onDiscardDraft clears storage then navigates to /app/ticket/new', async () => {
+        it('onDiscardDraft clears storage then navigates to the create ticket page with previousURL', async () => {
             const { result } = renderHook(() => useCreateTicketDraft())
             await act(async () => {
                 await result.current.onDiscardDraft()
             })
             expect(clearMock).toHaveBeenCalledTimes(1)
-            expect(pushMock).toHaveBeenCalledWith('/app/ticket/new')
+            expect(pushMock).toHaveBeenCalledWith(createTicketPath)
         })
     })
 
