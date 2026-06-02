@@ -46,6 +46,12 @@ export const SORT_FIELDS = [
         asc: ListViewItemsUpdatesOrderBy.PriorityAsc,
         desc: ListViewItemsUpdatesOrderBy.PriorityDesc,
     },
+    {
+        id: 'snooze',
+        label: 'Snooze',
+        asc: ListViewItemsUpdatesOrderBy.SnoozeDatetimeAsc,
+        desc: ListViewItemsUpdatesOrderBy.SnoozeDatetimeDesc,
+    },
 ] as const
 
 type SortField = (typeof SORT_FIELDS)[number]

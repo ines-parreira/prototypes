@@ -135,6 +135,9 @@ describe('createTicketTableColumns', () => {
         expect(
             columns.find((c) => c.id === 'last_received_message_datetime'),
         ).toEqual(expect.objectContaining({ enableSorting: true }))
+        expect(columns.find((c) => c.id === 'snooze')).toEqual(
+            expect.objectContaining({ enableSorting: true }),
+        )
     })
 
     it('keeps datetime columns hug-sized with a max width cap', () => {

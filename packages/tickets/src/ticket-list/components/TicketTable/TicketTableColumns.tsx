@@ -297,7 +297,7 @@ export function createTicketTableColumns({
         columnHelper.accessor((ticket) => ticket.snooze_datetime, {
             id: 'snooze',
             header: 'Snooze',
-            enableSorting: false,
+            enableSorting: true,
             hug: true,
             maxSize: 180,
             cell: (cell) => (

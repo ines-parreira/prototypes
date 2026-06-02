@@ -1378,6 +1378,22 @@ describe('useTicketTableData', () => {
         })
     })
 
+    it('maps snooze column sorting to snooze datetime order', () => {
+        const { result } = renderTicketTableDataHook({
+            viewId: 123,
+            enablePersistedUpdates: true,
+            pauseUpdates: false,
+        })
+
+        act(() => {
+            result.current.onSortChange([{ id: 'snooze', desc: true }])
+        })
+
+        expect(setSortOrderMock).toHaveBeenCalledWith(
+            ListViewItemsUpdatesOrderBy.SnoozeDatetimeDesc,
+        )
+    })
+
     it('resets the dirty cursor when the page size changes in dirty mode', () => {
         useSearchTicketsMock.mockReturnValue(
             makeDirtyQueryResult({

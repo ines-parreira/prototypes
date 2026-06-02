@@ -58,6 +58,9 @@ describe('SortOrderDropdown', () => {
             expect(
                 screen.getByRole('menuitemradio', { name: /priority/i }),
             ).toBeInTheDocument()
+            expect(
+                screen.getByRole('menuitemradio', { name: /snooze/i }),
+            ).toBeInTheDocument()
         })
 
         it('marks the current sort field as selected', async () => {
@@ -110,6 +113,42 @@ describe('SortOrderDropdown', () => {
 
             expect(setSortOrder).toHaveBeenCalledWith(
                 ListViewItemsUpdatesOrderBy.PriorityDesc,
+            )
+        })
+
+        it('calls setSortOrder with snooze desc when snooze is selected', async () => {
+            const setSortOrder = vi.fn()
+            useSortOrderMock.mockReturnValue([
+                ListViewItemsUpdatesOrderBy.LastMessageDatetimeDesc,
+                setSortOrder,
+            ])
+            const { user } = render(<SortOrderDropdown viewId={VIEW_ID} />)
+            await openMenu(user)
+
+            await user.click(
+                screen.getByRole('menuitemradio', { name: /snooze/i }),
+            )
+
+            expect(setSortOrder).toHaveBeenCalledWith(
+                ListViewItemsUpdatesOrderBy.SnoozeDatetimeDesc,
+            )
+        })
+
+        it('toggles snooze from desc to asc when snooze is active', async () => {
+            const setSortOrder = vi.fn()
+            useSortOrderMock.mockReturnValue([
+                ListViewItemsUpdatesOrderBy.SnoozeDatetimeDesc,
+                setSortOrder,
+            ])
+            const { user } = render(<SortOrderDropdown viewId={VIEW_ID} />)
+            await openMenu(user)
+
+            await user.click(
+                screen.getByRole('menuitemradio', { name: /snooze/i }),
+            )
+
+            expect(setSortOrder).toHaveBeenCalledWith(
+                ListViewItemsUpdatesOrderBy.SnoozeDatetimeAsc,
             )
         })
 
