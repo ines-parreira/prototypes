@@ -1,7 +1,9 @@
 import { useMemo } from 'react'
 
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { formatMetricValue } from '@repo/reporting'
 
+import { INSTAGRAM_DIRECT_MESSAGE_CUSTOMER_CHANNEL_TYPE } from 'constants/user'
 import type { ConfigurableGraphFetch } from 'domains/reporting/hooks/common/useConfigurableGraphsReportData'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import type { EntityMetricConfig } from 'domains/reporting/hooks/useStatsMetricPerDimension'
@@ -51,6 +53,7 @@ export type AllAgentsChannelName =
     | 'contact-form'
     | 'help-center'
     | 'voice'
+    | 'instagram-direct-message'
 
 export const ALL_AGENTS_CHANNEL_ENTITIES: AllAgentsChannelName[] = [
     'email',
@@ -142,7 +145,22 @@ const ALL_AGENTS_PERFORMANCE_BY_CHANNEL_METRICS_CONFIG: Record<
 
 export const useAllAgentsPerformanceByChannelMetrics =
     (): AllAgentsPerformanceByChannelMetricsData => {
+        const { value: isInstagramDmsEnabled } = useFlagWithLoading(
+            FeatureFlagKey.AiAgentInstagramDms,
+        )
         const { statsFilters, userTimezone } = useAiAgentStatsFilters()
+
+        const channelEntities = useMemo<AllAgentsChannelName[]>(
+            () => [
+                ...ALL_AGENTS_CHANNEL_ENTITIES,
+                ...(isInstagramDmsEnabled
+                    ? ([
+                          INSTAGRAM_DIRECT_MESSAGE_CUSTOMER_CHANNEL_TYPE,
+                      ] as const)
+                    : []),
+            ],
+            [isInstagramDmsEnabled],
+        )
 
         const {
             data: entityData,
@@ -158,10 +176,10 @@ export const useAllAgentsPerformanceByChannelMetrics =
         const data = useMemo(
             () =>
                 assembleEntityRows(
-                    ALL_AGENTS_CHANNEL_ENTITIES,
+                    channelEntities,
                     buildAllAgentsPerformanceByChannelRow(entityData),
                 ),
-            [entityData],
+            [channelEntities, entityData],
         )
 
         const loadingStates = useMemo(
@@ -203,7 +221,15 @@ export const fetchAllAgentsPerformanceByChannelMetrics = async (
     statsFilters: StatsFilters,
     timezone: string,
     costSavedPerInteraction: number = AGENT_COST_PER_TICKET,
+    isInstagramDmsEnabled: boolean = false,
 ): Promise<{ fileName: string; files: Record<string, string> }> => {
+    const channelEntities: AllAgentsChannelName[] = [
+        ...ALL_AGENTS_CHANNEL_ENTITIES,
+        ...(isInstagramDmsEnabled
+            ? ([INSTAGRAM_DIRECT_MESSAGE_CUSTOMER_CHANNEL_TYPE] as const)
+            : []),
+    ]
+
     const fileName = getCsvFileNameWithDates(
         statsFilters.period,
         ALL_AGENTS_PERFORMANCE_BY_CHANNEL_FILENAME,
@@ -216,7 +242,7 @@ export const fetchAllAgentsPerformanceByChannelMetrics = async (
     )
 
     const data = assembleEntityRows(
-        ALL_AGENTS_CHANNEL_ENTITIES,
+        channelEntities,
         buildAllAgentsPerformanceByChannelRow(metrics.data),
     )
 
@@ -256,6 +282,7 @@ export const fetchAllAgentsPerformanceByChannelAsConfigurableTable: Configurable
             filters,
             timezone,
             extra?.costSavedPerInteraction,
+            Boolean(extra?.isInstagramDmsEnabled),
         )
         return { files }
     }

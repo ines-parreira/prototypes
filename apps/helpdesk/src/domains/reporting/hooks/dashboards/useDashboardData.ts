@@ -1,5 +1,7 @@
 import { useMemo } from 'react'
 
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
+
 import type { ConfigurableGraphFetch } from 'domains/reporting/hooks/common/useConfigurableGraphsReportData'
 import { useConfigurableGraphsReportData } from 'domains/reporting/hooks/common/useConfigurableGraphsReportData'
 import { useDistributionTrendReportData } from 'domains/reporting/hooks/common/useDistributionTrendReportData'
@@ -229,12 +231,18 @@ export const useDashboardData = (
 ) => {
     const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
     const { statsFilters: aiAgentFilters } = useAiAgentStatsFilters()
+    const { value: isInstagramDmsEnabled } = useFlagWithLoading(
+        FeatureFlagKey.AiAgentInstagramDms,
+    )
     const costSavedPerInteraction = useMoneySavedPerInteractionWithAutomate(
         AGENT_COST_PER_TICKET,
     )
     const extra = useMemo(
-        () => ({ costSavedPerInteraction }),
-        [costSavedPerInteraction],
+        () => ({
+            costSavedPerInteraction,
+            isInstagramDmsEnabled: Number(isInstagramDmsEnabled),
+        }),
+        [costSavedPerInteraction, isInstagramDmsEnabled],
     )
 
     const sanitizedDashboard = useSanitizedDashboard(dashboard)

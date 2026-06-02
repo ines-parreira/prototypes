@@ -415,6 +415,57 @@ describe('useAutomationMetricPerChannel', () => {
             { name: 'Chat', value: 40 },
         ])
     })
+
+    it('should exclude instagram-direct-message when isInstagramDmsEnabled is false', () => {
+        useStatsMetricPerDimensionMock.mockReturnValue({
+            ...defaultDimensionResult,
+            data: {
+                allValues: [
+                    { dimension: 'email', value: 100 },
+                    { dimension: 'instagram-direct-message', value: 50 },
+                ],
+            },
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationMetricPerChannel(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+                undefined,
+                { isInstagramDmsEnabled: false },
+            ),
+        )
+
+        expect(result.current.data).toEqual([{ name: 'Email', value: 100 }])
+    })
+
+    it('should include instagram-direct-message when isInstagramDmsEnabled is true', () => {
+        useStatsMetricPerDimensionMock.mockReturnValue({
+            ...defaultDimensionResult,
+            data: {
+                allValues: [
+                    { dimension: 'email', value: 100 },
+                    { dimension: 'instagram-direct-message', value: 50 },
+                ],
+            },
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationMetricPerChannel(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+                undefined,
+                { isInstagramDmsEnabled: true },
+            ),
+        )
+
+        expect(result.current.data).toEqual([
+            { name: 'Email', value: 100 },
+            { name: 'Instagram DMs', value: 50 },
+        ])
+    })
 })
 
 describe('useAutomationMetricPerStoreIntegrationId', () => {
@@ -1873,6 +1924,62 @@ describe('useAutomationTimeSeriesPerChannel', () => {
             {
                 label: 'Email',
                 values: [{ date: 'Jan 1 at 12:00 am', value: 100 }],
+            },
+        ])
+    })
+
+    it('should exclude instagram-direct-message when isInstagramDmsEnabled is false', () => {
+        useStatsTimeSeriesPerDimensionMock.mockReturnValue({
+            data: {
+                email: [[{ dateTime: '2025-01-01', value: 100 }]],
+                'instagram-direct-message': [
+                    [{ dateTime: '2025-01-01', value: 50 }],
+                ],
+            },
+            isFetching: false,
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationTimeSeriesPerChannel(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+                defaultGranularity,
+                { isInstagramDmsEnabled: false },
+            ),
+        )
+
+        expect(result.current.data).toEqual([
+            { label: 'Email', values: [{ date: 'Jan 1', value: 100 }] },
+        ])
+    })
+
+    it('should include instagram-direct-message when isInstagramDmsEnabled is true', () => {
+        useStatsTimeSeriesPerDimensionMock.mockReturnValue({
+            data: {
+                email: [[{ dateTime: '2025-01-01', value: 100 }]],
+                'instagram-direct-message': [
+                    [{ dateTime: '2025-01-01', value: 50 }],
+                ],
+            },
+            isFetching: false,
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationTimeSeriesPerChannel(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+                defaultGranularity,
+                { isInstagramDmsEnabled: true },
+            ),
+        )
+
+        expect(result.current.data).toEqual([
+            { label: 'Email', values: [{ date: 'Jan 1', value: 100 }] },
+            {
+                label: 'Instagram DMs',
+                values: [{ date: 'Jan 1', value: 50 }],
             },
         ])
     })
@@ -3445,6 +3552,76 @@ describe('fetchConfigurableBarChartDownloadData', () => {
         expect(csvContent).toContain('30')
         expect(csvContent).not.toContain('"10"')
     })
+
+    it('excludes instagram-direct-message from channel CSV when isInstagramDmsEnabled is falsy in outerExtra', async () => {
+        fetchStatsMetricPerDimensionMock.mockResolvedValue({
+            isFetching: false,
+            isError: false,
+            data: {
+                value: null,
+                decile: null,
+                allData: [],
+                allValues: [
+                    { dimension: 'email', value: 10, decile: null },
+                    {
+                        dimension: 'instagram-direct-message',
+                        value: 5,
+                        decile: null,
+                    },
+                ],
+            },
+        })
+
+        const fetch = fetchConfigurableBarChartDownloadData([mockBarMetric])
+
+        const result = await fetch(
+            'automationRate',
+            'channel',
+            defaultFilters,
+            defaultTimezone,
+            ReportingGranularity.Day,
+            { isInstagramDmsEnabled: 0 },
+        )
+
+        const csvContent = Object.values(result.files)[0]
+        expect(csvContent).toContain('Email')
+        expect(csvContent).not.toContain('Instagram DMs')
+    })
+
+    it('includes instagram-direct-message in channel CSV when isInstagramDmsEnabled is truthy in outerExtra', async () => {
+        fetchStatsMetricPerDimensionMock.mockResolvedValue({
+            isFetching: false,
+            isError: false,
+            data: {
+                value: null,
+                decile: null,
+                allData: [],
+                allValues: [
+                    { dimension: 'email', value: 10, decile: null },
+                    {
+                        dimension: 'instagram-direct-message',
+                        value: 5,
+                        decile: null,
+                    },
+                ],
+            },
+        })
+
+        const fetch = fetchConfigurableBarChartDownloadData([mockBarMetric])
+
+        const result = await fetch(
+            'automationRate',
+            'channel',
+            defaultFilters,
+            defaultTimezone,
+            ReportingGranularity.Day,
+            { isInstagramDmsEnabled: 1 },
+        )
+
+        const csvContent = Object.values(result.files)[0]
+        expect(csvContent).toContain('Email')
+        expect(csvContent).toContain('Instagram DMs')
+    })
 })
 
 describe('fetchConfigurableLineChartDownloadData', () => {
@@ -3710,6 +3887,54 @@ describe('fetchConfigurableLineChartDownloadData', () => {
         const csvContent = Object.values(result.files)[0]
         expect(csvContent).toContain('my-store')
         expect(csvContent).not.toContain('Store 123')
+    })
+
+    it('excludes instagram-direct-message from channel CSV when isInstagramDmsEnabled is falsy in outerExtra', async () => {
+        fetchStatsTimeSeriesPerDimensionMock.mockResolvedValue({
+            email: [[{ dateTime: '2025-01-01T00:00:00', value: 10 }]],
+            'instagram-direct-message': [
+                [{ dateTime: '2025-01-01T00:00:00', value: 5 }],
+            ],
+        })
+
+        const fetch = fetchConfigurableLineChartDownloadData([mockLineMetric])
+
+        const result = await fetch(
+            'automationRate',
+            'channel',
+            defaultFilters,
+            defaultTimezone,
+            ReportingGranularity.Day,
+            { isInstagramDmsEnabled: 0 },
+        )
+
+        const csvContent = Object.values(result.files)[0]
+        expect(csvContent).toContain('Email')
+        expect(csvContent).not.toContain('Instagram DMs')
+    })
+
+    it('includes instagram-direct-message in channel CSV when isInstagramDmsEnabled is truthy in outerExtra', async () => {
+        fetchStatsTimeSeriesPerDimensionMock.mockResolvedValue({
+            email: [[{ dateTime: '2025-01-01T00:00:00', value: 10 }]],
+            'instagram-direct-message': [
+                [{ dateTime: '2025-01-01T00:00:00', value: 5 }],
+            ],
+        })
+
+        const fetch = fetchConfigurableLineChartDownloadData([mockLineMetric])
+
+        const result = await fetch(
+            'automationRate',
+            'channel',
+            defaultFilters,
+            defaultTimezone,
+            ReportingGranularity.Day,
+            { isInstagramDmsEnabled: 1 },
+        )
+
+        const csvContent = Object.values(result.files)[0]
+        expect(csvContent).toContain('Email')
+        expect(csvContent).toContain('Instagram DMs')
     })
 })
 

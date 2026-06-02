@@ -8,6 +8,10 @@ import {
     useAllAgentsPerformanceByChannelMetrics,
 } from '../useAllAgentsPerformanceByChannelMetrics'
 
+jest.mock('@repo/feature-flags', () => ({
+    FeatureFlagKey: { AiAgentInstagramDms: 'AiAgentInstagramDms' },
+    useFlagWithLoading: jest.fn(() => ({ value: false, isLoading: false })),
+}))
 jest.mock('pages/aiAgent/hooks/useAiAgentStatsFilters', () => ({
     useAiAgentStatsFilters: jest.fn(),
 }))
@@ -69,6 +73,9 @@ jest.mock(
         fetchConversionRatePerSalesAgentChannel: jest.fn(),
     }),
 )
+
+const mockUseFlagWithLoading = jest.requireMock('@repo/feature-flags')
+    .useFlagWithLoading as jest.Mock
 
 const mockUseAiAgentStatsFilters = jest.requireMock(
     'pages/aiAgent/hooks/useAiAgentStatsFilters',
@@ -235,6 +242,32 @@ describe('useAllAgentsPerformanceByChannelMetrics', () => {
         expect(result.current.loadingStates.successRate).toBe(false)
     })
 
+    describe('AiAgentInstagramDms flag', () => {
+        it('does not include instagram-direct-message when flag is disabled', () => {
+            mockUseFlagWithLoading.mockReturnValue({
+                value: false,
+                isLoading: false,
+            })
+
+            renderHook(() => useAllAgentsPerformanceByChannelMetrics())
+
+            const [entities] = mockAssembleEntityRows.mock.calls[0]
+            expect(entities).not.toContain('instagram-direct-message')
+        })
+
+        it('includes instagram-direct-message when flag is enabled', () => {
+            mockUseFlagWithLoading.mockReturnValue({
+                value: true,
+                isLoading: false,
+            })
+
+            renderHook(() => useAllAgentsPerformanceByChannelMetrics())
+
+            const [entities] = mockAssembleEntityRows.mock.calls[0]
+            expect(entities).toContain('instagram-direct-message')
+        })
+    })
+
     describe('buildAllAgentsPerformanceByChannelRow', () => {
         it('falls back to null when entity data values are missing', () => {
             mockUseEntityMetrics.mockReturnValue({
@@ -362,6 +395,30 @@ describe('fetchAllAgentsPerformanceByChannelMetrics', () => {
         expect(firstDataRow[0]).toBe('Email')
     })
 
+    it('includes instagram-direct-message in entities when isInstagramDmsEnabled is true', async () => {
+        await fetchAllAgentsPerformanceByChannelMetrics(
+            MOCK_STATS_FILTERS,
+            MOCK_TIMEZONE,
+            undefined,
+            true,
+        )
+
+        const [entities] = mockAssembleEntityRows.mock.calls[0]
+        expect(entities).toContain('instagram-direct-message')
+    })
+
+    it('excludes instagram-direct-message from entities when isInstagramDmsEnabled is false', async () => {
+        await fetchAllAgentsPerformanceByChannelMetrics(
+            MOCK_STATS_FILTERS,
+            MOCK_TIMEZONE,
+            undefined,
+            false,
+        )
+
+        const [entities] = mockAssembleEntityRows.mock.calls[0]
+        expect(entities).not.toContain('instagram-direct-message')
+    })
+
     it('returns fileName from getCsvFileNameWithDates', async () => {
         const result = await fetchAllAgentsPerformanceByChannelMetrics(
             MOCK_STATS_FILTERS,
@@ -399,6 +456,34 @@ describe('fetchAllAgentsPerformanceByChannelMetrics', () => {
 
             const [passedConfig] = mockFetchEntityMetrics.mock.calls[0]
             expect(typeof passedConfig.costSaved.fetch).toBe('function')
+        })
+
+        it('includes instagram-direct-message in entities when isInstagramDmsEnabled extra is truthy', async () => {
+            await fetchAllAgentsPerformanceByChannelAsConfigurableTable(
+                null,
+                null,
+                MOCK_STATS_FILTERS,
+                MOCK_TIMEZONE,
+                ReportingGranularity.Day,
+                { isInstagramDmsEnabled: 1 },
+            )
+
+            const [entities] = mockAssembleEntityRows.mock.calls[0]
+            expect(entities).toContain('instagram-direct-message')
+        })
+
+        it('excludes instagram-direct-message from entities when isInstagramDmsEnabled extra is falsy', async () => {
+            await fetchAllAgentsPerformanceByChannelAsConfigurableTable(
+                null,
+                null,
+                MOCK_STATS_FILTERS,
+                MOCK_TIMEZONE,
+                ReportingGranularity.Day,
+                { isInstagramDmsEnabled: 0 },
+            )
+
+            const [entities] = mockAssembleEntityRows.mock.calls[0]
+            expect(entities).not.toContain('instagram-direct-message')
         })
     })
 })

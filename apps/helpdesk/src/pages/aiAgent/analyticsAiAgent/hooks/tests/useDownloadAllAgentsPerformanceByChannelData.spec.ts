@@ -8,6 +8,10 @@ import { useAiAgentStatsFilters } from 'pages/aiAgent/hooks/useAiAgentStatsFilte
 import { useDownloadAllAgentsPerformanceByChannelData } from '../useDownloadAllAgentsPerformanceByChannelData'
 
 jest.mock('@repo/logging', () => ({ reportError: jest.fn() }))
+jest.mock('@repo/feature-flags', () => ({
+    FeatureFlagKey: { AiAgentInstagramDms: 'AiAgentInstagramDms' },
+    useFlagWithLoading: jest.fn(() => ({ value: false, isLoading: false })),
+}))
 
 jest.mock('../useAllAgentsPerformanceByChannelMetrics', () => ({
     fetchAllAgentsPerformanceByChannelMetrics: jest.fn(),
@@ -23,6 +27,8 @@ jest.mock(
 const mockFetch = jest.requireMock('../useAllAgentsPerformanceByChannelMetrics')
 const mockReportError = jest.requireMock('@repo/logging').reportError
 const mockUseAiAgentStatsFilters = assumeMock(useAiAgentStatsFilters)
+const mockUseFlagWithLoading = jest.requireMock('@repo/feature-flags')
+    .useFlagWithLoading as jest.Mock
 
 const MOCK_FILE_NAME =
     'all-agents-channel-performance-2024-01-01_2024-01-31.csv'
@@ -93,7 +99,7 @@ describe('useDownloadAllAgentsPerformanceByChannelData', () => {
         })
     })
 
-    it('calls fetchAllAgentsPerformanceByChannelMetrics with period-only filters, timezone, and costSavedPerInteraction', async () => {
+    it('calls fetchAllAgentsPerformanceByChannelMetrics with period-only filters, timezone, costSavedPerInteraction, and isInstagramDmsEnabled', async () => {
         renderHook(() => useDownloadAllAgentsPerformanceByChannelData())
 
         await waitFor(() =>
@@ -108,7 +114,23 @@ describe('useDownloadAllAgentsPerformanceByChannelData', () => {
                 },
                 'UTC',
                 3.1,
+                false,
             ),
+        )
+    })
+
+    it('passes isInstagramDmsEnabled as true when flag is enabled', async () => {
+        mockUseFlagWithLoading.mockReturnValue({
+            value: true,
+            isLoading: false,
+        })
+
+        renderHook(() => useDownloadAllAgentsPerformanceByChannelData())
+
+        await waitFor(() =>
+            expect(
+                mockFetch.fetchAllAgentsPerformanceByChannelMetrics,
+            ).toHaveBeenCalledWith(expect.any(Object), 'UTC', 3.1, true),
         )
     })
 })

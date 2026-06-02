@@ -189,6 +189,33 @@ describe('AnalyticsAiAgentAllAgentsConfigurableBar', () => {
         expect(screen.getAllByLabelText('Loading').length).toBeGreaterThan(0)
     })
 
+    it('should pass isInstagramDmsEnabled: true to getBarChartGraphConfig when flag is enabled', () => {
+        render(<AnalyticsAiAgentAllAgentsConfigurableBar />)
+
+        expect(getBarChartGraphConfigMock).toHaveBeenCalledWith(
+            expect.anything(),
+            expect.anything(),
+            expect.anything(),
+            expect.objectContaining({ isInstagramDmsEnabled: true }),
+        )
+    })
+
+    it('should pass isInstagramDmsEnabled: false to getBarChartGraphConfig when flag is disabled', () => {
+        useFlagWithLoadingMocked.mockReturnValue({
+            value: false,
+            isLoading: false,
+        })
+
+        render(<AnalyticsAiAgentAllAgentsConfigurableBar />)
+
+        expect(getBarChartGraphConfigMock).toHaveBeenCalledWith(
+            expect.anything(),
+            expect.anything(),
+            expect.anything(),
+            expect.objectContaining({ isInstagramDmsEnabled: false }),
+        )
+    })
+
     it('should render metric selector when multiple metrics are present', () => {
         const secondMetricConfig: ConfigurableGraphMetricConfig = {
             ...defaultMetricConfig,

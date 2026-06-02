@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { reportError } from '@repo/logging'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
@@ -10,6 +11,9 @@ import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/h
 
 export const useDownloadAllAgentsPerformanceByChannelData = () => {
     const { statsFilters, userTimezone } = useAiAgentStatsFilters()
+    const { value: isInstagramDmsEnabled } = useFlagWithLoading(
+        FeatureFlagKey.AiAgentInstagramDms,
+    )
     const costSavedPerInteraction = useMoneySavedPerInteractionWithAutomate(
         AGENT_COST_PER_TICKET,
     )
@@ -26,6 +30,7 @@ export const useDownloadAllAgentsPerformanceByChannelData = () => {
             statsFilters,
             userTimezone,
             costSavedPerInteraction,
+            isInstagramDmsEnabled,
         )
             .then(({ fileName, files }) => {
                 setResult({ fileName, files })
@@ -37,7 +42,12 @@ export const useDownloadAllAgentsPerformanceByChannelData = () => {
                 })
                 setIsLoading(false)
             })
-    }, [statsFilters, userTimezone, costSavedPerInteraction])
+    }, [
+        statsFilters,
+        userTimezone,
+        costSavedPerInteraction,
+        isInstagramDmsEnabled,
+    ])
 
     return {
         files: result?.files ?? {},

@@ -13,6 +13,8 @@ import { listStores } from '@gorgias/helpdesk-client'
 import type { StoreIntegration } from '@gorgias/helpdesk-queries'
 import { useListStores } from '@gorgias/helpdesk-queries'
 
+import { INSTAGRAM_DIRECT_MESSAGE_CUSTOMER_CHANNEL_TYPE } from 'constants/user'
+
 import {
     buildBarCsvFiles,
     buildMultipleTimeSeriesCsvFiles,
@@ -79,6 +81,7 @@ export type LineChartMetricConfig = {
 export type ExtraConfigProps = {
     stores?: StoreIntegration[]
     costSavedPerInteraction?: number
+    isInstagramDmsEnabled?: boolean
 }
 
 export const NO_ENGAGEMENT_FEATURE_LABEL = 'Default (no engagement feature)'
@@ -115,6 +118,7 @@ export const formatChannelName = (channel: string): string => {
         contact_form: 'Contact Form',
         'help-center': 'Help Center',
         voice: 'Voice',
+        [INSTAGRAM_DIRECT_MESSAGE_CUSTOMER_CHANNEL_TYPE]: 'Instagram DMs',
     }
     return channelNames[channel] || channel
 }
@@ -169,12 +173,19 @@ const formatBarChartData = (
         case 'channel':
             return {
                 data:
-                    data?.data?.allValues?.map((metricValue) => ({
-                        name: formatChannelName(
-                            metricValue.dimension.toString(),
-                        ),
-                        value: metricValue.value,
-                    })) ?? [],
+                    data?.data?.allValues
+                        ?.filter(
+                            (metricValue) =>
+                                extra?.isInstagramDmsEnabled ||
+                                metricValue.dimension !==
+                                    INSTAGRAM_DIRECT_MESSAGE_CUSTOMER_CHANNEL_TYPE,
+                        )
+                        .map((metricValue) => ({
+                            name: formatChannelName(
+                                metricValue.dimension.toString(),
+                            ),
+                            value: metricValue.value,
+                        })) ?? [],
                 isLoading: !!data?.isFetching,
             }
         case 'automationFeatureType':
@@ -327,6 +338,7 @@ export const useAutomationMetricPerChannel = (
             ? mapMetricValues(data, (v) => valueTransform(v, extra))
             : data,
         'channel',
+        extra,
     )
 }
 
@@ -603,13 +615,20 @@ const formatMultiTimeSeriesData = (
                     : []
             case 'channel':
                 return data
-                    ? Object.entries(data).map(([metricName, values]) => ({
-                          label: formatChannelName(metricName),
-                          values: formatTimeSeriesValues(
-                              values[0],
-                              granularity,
-                          ),
-                      }))
+                    ? Object.entries(data)
+                          .filter(
+                              ([metricName]) =>
+                                  extra?.isInstagramDmsEnabled ||
+                                  metricName !==
+                                      INSTAGRAM_DIRECT_MESSAGE_CUSTOMER_CHANNEL_TYPE,
+                          )
+                          .map(([metricName, values]) => ({
+                              label: formatChannelName(metricName),
+                              values: formatTimeSeriesValues(
+                                  values[0],
+                                  granularity,
+                              ),
+                          }))
                     : []
             case 'engagementType':
                 return data
@@ -728,6 +747,7 @@ export const useAutomationTimeSeriesPerChannel = (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
+    extra?: ExtraConfigProps,
 ) => {
     const data = useStatsTimeSeriesPerDimension(
         query({
@@ -742,7 +762,7 @@ export const useAutomationTimeSeriesPerChannel = (
         data: formatMultiTimeSeriesData(
             data.data,
             'channel',
-            undefined,
+            extra,
             granularity,
         ),
         isLoading: data.isFetching,
@@ -864,6 +884,7 @@ export const getLineChartDataHooks = (
                                 filters,
                                 timezone,
                                 granularity,
+                                extra,
                             ),
                     }
                 case 'automationFeatureType':
@@ -1013,6 +1034,7 @@ export const fetchConfigurableBarChartDownloadData =
 
         const extra = await fetchExtraConfig(dimension, {
             costSavedPerInteraction: outerExtra?.costSavedPerInteraction,
+            isInstagramDmsEnabled: Boolean(outerExtra?.isInstagramDmsEnabled),
         })
 
         const { valueTransform } = metric
@@ -1044,6 +1066,7 @@ export const fetchConfigurableLineChartDownloadData =
         filters: StatsFilters,
         timezone: string,
         granularity: ReportingGranularity,
+        outerExtra?: Record<string, number>,
     ) => {
         const metric =
             metrics.find((m) => m.measure === savedMeasure) ?? metrics[0]
@@ -1074,7 +1097,9 @@ export const fetchConfigurableLineChartDownloadData =
             dimensions: [dimension as DimensionName],
         })
         const data = await fetchStatsTimeSeriesPerDimension(query)
-        const extra = await fetchExtraConfig(dimension)
+        const extra = await fetchExtraConfig(dimension, {
+            isInstagramDmsEnabled: Boolean(outerExtra?.isInstagramDmsEnabled),
+        })
         const labeledData = formatMultiTimeSeriesData(
             data,
             dimension as AutomationDimension,

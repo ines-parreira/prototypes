@@ -1,5 +1,7 @@
 import { useMemo } from 'react'
 
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
+
 import { allAgentsAutomatedInteractionsTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
 import { dynamicConversionRateTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/aiSalesAgentConversionRate'
 import { dynamicTotalSalesAmountTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/aiSalesAgentOrdersPerformance'
@@ -78,6 +80,9 @@ export const AnalyticsAiAgentAllAgentsConfigurableLine = ({
 }: Props) => {
     const { statsFilters, userTimezone, granularity } = useAiAgentStatsFilters()
     const stores = useStoreIntegrations()
+    const { value: isInstagramDmsEnabled } = useFlagWithLoading(
+        FeatureFlagKey.AiAgentInstagramDms,
+    )
     const metrics = useMemo(
         () =>
             getLineChartGraphConfig(
@@ -85,9 +90,15 @@ export const AnalyticsAiAgentAllAgentsConfigurableLine = ({
                 statsFilters,
                 userTimezone,
                 granularity,
-                { stores },
+                { stores, isInstagramDmsEnabled },
             ),
-        [statsFilters, userTimezone, granularity, stores],
+        [
+            statsFilters,
+            userTimezone,
+            granularity,
+            stores,
+            isInstagramDmsEnabled,
+        ],
     )
 
     return (

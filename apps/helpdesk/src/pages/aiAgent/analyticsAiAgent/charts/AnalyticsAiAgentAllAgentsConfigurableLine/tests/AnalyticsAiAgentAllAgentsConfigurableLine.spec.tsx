@@ -86,7 +86,7 @@ describe('AnalyticsAiAgentAllAgentsConfigurableLine', () => {
         jest.clearAllMocks()
     })
 
-    it('should pass stores from useStoreIntegrations to getLineChartGraphConfig', () => {
+    it('should pass stores and isInstagramDmsEnabled to getLineChartGraphConfig', () => {
         const mockStores = [
             { store_integration_id: 1, name: 'My Store' },
         ] as any
@@ -99,7 +99,24 @@ describe('AnalyticsAiAgentAllAgentsConfigurableLine', () => {
             expect.anything(),
             expect.anything(),
             expect.anything(),
-            { stores: mockStores },
+            { stores: mockStores, isInstagramDmsEnabled: true },
+        )
+    })
+
+    it('should pass isInstagramDmsEnabled: false to getLineChartGraphConfig when flag is disabled', () => {
+        useFlagWithLoadingMocked.mockReturnValue({
+            value: false,
+            isLoading: false,
+        })
+
+        render(<AnalyticsAiAgentAllAgentsConfigurableLine />)
+
+        expect(getLineChartGraphConfigMock).toHaveBeenCalledWith(
+            expect.anything(),
+            expect.anything(),
+            expect.anything(),
+            expect.anything(),
+            expect.objectContaining({ isInstagramDmsEnabled: false }),
         )
     })
 

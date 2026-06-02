@@ -1,5 +1,7 @@
 import { useMemo } from 'react'
 
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
+
 import { allAgentsAutomatedInteractionsBreakdownQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
 import { dynamicAllAgentsTimeSavedQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentTimeSaved'
 import { dynamicConversionRateQueryFactoryV2 } from 'domains/reporting/models/scopes/aiSalesAgentConversionRate'
@@ -83,15 +85,18 @@ export const AnalyticsAiAgentAllAgentsConfigurableBar = ({
 }: Props) => {
     const { statsFilters, userTimezone } = useAiAgentStatsFilters()
     const stores = useStoreIntegrations()
+    const { value: isInstagramDmsEnabled } = useFlagWithLoading(
+        FeatureFlagKey.AiAgentInstagramDms,
+    )
     const metrics = useMemo(
         () =>
             getBarChartGraphConfig(
                 ALL_AGENTS_BAR_CHART_METRICS,
                 statsFilters,
                 userTimezone,
-                { stores },
+                { stores, isInstagramDmsEnabled },
             ),
-        [statsFilters, userTimezone, stores],
+        [statsFilters, userTimezone, stores, isInstagramDmsEnabled],
     )
 
     return (
