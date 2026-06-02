@@ -10,14 +10,17 @@ import {
     Box,
     Card,
     CardHeader,
+    Skeleton,
     Text,
     TextAreaField,
     ToggleField,
 } from '@gorgias/axiom'
 import { JourneyTypeEnum } from '@gorgias/convert-client'
 
+import { JOURNEY_TYPES } from 'AIJourney/constants'
 import { useJourneyContext } from 'AIJourney/providers'
 
+import { MessageGuidanceFieldEditor } from './MessageGuidanceFieldEditor'
 import { MessageGuidanceVariants } from './MessageGuidanceVariants'
 import type { MessageInstructionsVariant } from './types'
 
@@ -30,17 +33,23 @@ type MessageGuidanceCardProps = {
     onReturningCustomerChange?: (value: boolean) => void
     fullWidth?: boolean
     isV3Architecture?: boolean
+    isFormReady?: boolean
 }
 
 export const MessageGuidanceCard = ({
     onReturningCustomerChange,
     fullWidth = false,
     isV3Architecture = false,
+    isFormReady = true,
 }: MessageGuidanceCardProps) => {
     const [returningCustomer, setReturningCustomer] = useState(false)
 
-    const { journeyData } = useJourneyContext()
+    const { journeyData, journeyType, shopName } = useJourneyContext()
     const isWelcomeFlow = journeyData?.type === JourneyTypeEnum.Welcome
+    const isCampaign = journeyType === JOURNEY_TYPES.CAMPAIGN
+    const editorDescription = isCampaign
+        ? 'Describe campaign context, objective, and boundaries in clear, specific phrases.'
+        : 'Describe flow context, objective, and boundaries in clear, specific phrases.'
 
     const { value: isAbFlagOn, isLoading: isFlagLoading } = useFlagWithLoading(
         FeatureFlagKey.AiJourneyMessageInstructionsAbTesting,
@@ -48,6 +57,11 @@ export const MessageGuidanceCard = ({
     )
     const isAbTestVisible =
         isSessionImpersonated() || (!isFlagLoading && isAbFlagOn)
+
+    const { value: isStructuredEditorEnabled } = useFlagWithLoading(
+        FeatureFlagKey.AiJourneyStructuredMessageGuidanceEnabled,
+        false,
+    )
 
     const {
         field: { value: messageGuidance, onChange: setMessageGuidance },
@@ -83,6 +97,63 @@ export const MessageGuidanceCard = ({
         }
     }
 
+    const returningCustomerToggle = isWelcomeFlow && !isV3Architecture && (
+        <ToggleField
+            value={returningCustomer}
+            onChange={handleReturningCustomerChange}
+            label="Returning customer"
+        />
+    )
+
+    const abTestToggle = isAbTestVisible && (
+        <ToggleField
+            value={isAbTestEnabled}
+            onChange={handleAbTestToggle}
+            label="A/B test message guidance"
+        />
+    )
+
+    const useStructuredLayout = isStructuredEditorEnabled && isV3Architecture
+
+    if (useStructuredLayout) {
+        return (
+            <Box
+                flexDirection="column"
+                gap="md"
+                width={fullWidth ? '100%' : 680}
+            >
+                {returningCustomerToggle}
+                {abTestToggle}
+                {!isFormReady ? (
+                    <Skeleton width="100%" height={320} />
+                ) : isAbTestEnabled ? (
+                    <MessageGuidanceVariants
+                        isStructuredEditorEnabled={useStructuredLayout}
+                        shopName={shopName}
+                        editorLabel="Instructions"
+                        editorDescription={editorDescription}
+                    />
+                ) : (
+                    <Box flexDirection="column" gap="xxxs">
+                        <MessageGuidanceFieldEditor
+                            value={messageGuidance ?? ''}
+                            onChange={setMessageGuidance}
+                            shopName={shopName}
+                            charLimit={MESSAGE_GUIDANCE_MAX_LENGTH}
+                            label="Instructions"
+                            description={editorDescription}
+                        />
+                        {error?.message && (
+                            <Text className={css.errorText}>
+                                {error.message}
+                            </Text>
+                        )}
+                    </Box>
+                )}
+            </Box>
+        )
+    }
+
     return (
         <Card width={fullWidth ? '100%' : 680}>
             <Box flexDirection="column" gap="xxs">
@@ -91,22 +162,10 @@ export const MessageGuidanceCard = ({
                     Tell the AI how to write messages to your shoppers.
                 </Text>
             </Box>
-            {isWelcomeFlow && !isV3Architecture && (
-                <ToggleField
-                    value={returningCustomer}
-                    onChange={handleReturningCustomerChange}
-                    label="Returning customer"
-                />
-            )}
-            {isAbTestVisible && (
-                <ToggleField
-                    value={isAbTestEnabled}
-                    onChange={handleAbTestToggle}
-                    label="A/B test message guidance"
-                />
-            )}
+            {returningCustomerToggle}
+            {abTestToggle}
             {isAbTestEnabled ? (
-                <MessageGuidanceVariants />
+                <MessageGuidanceVariants shopName={shopName} />
             ) : (
                 <TextAreaField
                     placeholder="Describe tone, formatting, or what to include"

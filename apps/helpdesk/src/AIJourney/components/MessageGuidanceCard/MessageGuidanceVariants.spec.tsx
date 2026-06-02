@@ -8,12 +8,21 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { MessageGuidanceVariants } from './MessageGuidanceVariants'
 import type { MessageInstructionsVariant } from './types'
 
+jest.mock('./MessageGuidanceFieldEditor', () => ({
+    MessageGuidanceFieldEditor: ({ value }: { value: string }) => (
+        <div data-mock-message-guidance-field-editor>{value}</div>
+    ),
+}))
+
 type FormDefaults = {
     message_instructions?: string
     variants?: MessageInstructionsVariant[]
 }
 
-const renderVariants = (defaultValues: FormDefaults = {}) => {
+const renderVariants = (
+    defaultValues: FormDefaults = {},
+    options: { isStructuredEditorEnabled?: boolean } = {},
+) => {
     const FormWrapper = ({ children }: { children: ReactNode }) => {
         const methods = useForm<FormDefaults>({
             defaultValues: {
@@ -24,7 +33,15 @@ const renderVariants = (defaultValues: FormDefaults = {}) => {
         })
         return <FormProvider {...methods}>{children}</FormProvider>
     }
-    return render(<MessageGuidanceVariants />, { wrapper: FormWrapper })
+    return render(
+        <MessageGuidanceVariants
+            isStructuredEditorEnabled={
+                options.isStructuredEditorEnabled ?? false
+            }
+            shopName="test-shop"
+        />,
+        { wrapper: FormWrapper },
+    )
 }
 
 describe('<MessageGuidanceVariants />', () => {
@@ -102,6 +119,80 @@ describe('<MessageGuidanceVariants />', () => {
         // The remaining variant becomes Variant 1, with the surviving weight
         expect(screen.getByText(/Variant 1 · 30%/)).toBeInTheDocument()
         expect(screen.getByText(/Control · 70%/)).toBeInTheDocument()
+    })
+
+    describe('Structured guidance editor (FF on)', () => {
+        it('renders the structured editor on the control field and on each variant', () => {
+            const { container } = renderVariants(
+                {
+                    message_instructions: '<p>control</p>',
+                    variants: [
+                        {
+                            id: 'v1',
+                            message_instructions: '<p>variant</p>',
+                            weight: 30,
+                        },
+                    ],
+                },
+                { isStructuredEditorEnabled: true },
+            )
+
+            const editors = container.querySelectorAll(
+                '[data-mock-message-guidance-field-editor]',
+            )
+            expect(editors).toHaveLength(2)
+            expect(editors[0]).toHaveTextContent('<p>control</p>')
+            expect(editors[1]).toHaveTextContent('<p>variant</p>')
+            expect(
+                screen.queryByPlaceholderText(
+                    'Describe tone, formatting, or what to include',
+                ),
+            ).not.toBeInTheDocument()
+        })
+
+        it('keeps the legacy textareas when the structured editor flag is off', () => {
+            const { container } = renderVariants(
+                {
+                    variants: [
+                        { id: 'v1', message_instructions: '', weight: 30 },
+                    ],
+                },
+                { isStructuredEditorEnabled: false },
+            )
+
+            expect(
+                container.querySelector(
+                    '[data-mock-message-guidance-field-editor]',
+                ),
+            ).toBeNull()
+        })
+
+        it('preserves weight clamping when the structured editor is enabled', async () => {
+            const user = userEvent.setup()
+            renderVariants(
+                {
+                    variants: [
+                        { id: 'v1', message_instructions: '', weight: 50 },
+                        { id: 'v2', message_instructions: '', weight: 30 },
+                    ],
+                },
+                { isStructuredEditorEnabled: true },
+            )
+
+            const variant2Heading = screen.getByText(/Variant 2 · 30%/)
+            const variant2Container =
+                variant2Heading.closest('div')!.parentElement!
+            const weightInput = within(variant2Container).getByRole('textbox', {
+                name: /weight/i,
+            })
+
+            await user.clear(weightInput)
+            await user.type(weightInput, '90')
+            await user.tab()
+
+            expect(screen.getByText(/Variant 2 · 49%/)).toBeInTheDocument()
+            expect(screen.getByText(/Control · 1%/)).toBeInTheDocument()
+        })
     })
 
     it('clamps a variant weight so the control stays at least 1%', async () => {

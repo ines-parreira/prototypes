@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react'
+
 import type { ColumnDef, SortingState, TableV1ToolbarRow } from '@gorgias/axiom'
 import {
     Box,
@@ -30,6 +32,7 @@ type CampaignsTableProps<TData, TValue> = {
     onEditColumns?: () => void
     isLoading?: boolean
     initialSorting?: SortingState
+    emptyStateCta?: ReactNode
 }
 
 export default function CampaignsTable<TData, TValue>({
@@ -38,6 +41,7 @@ export default function CampaignsTable<TData, TValue>({
     onEditColumns,
     isLoading = false,
     initialSorting,
+    emptyStateCta,
 }: CampaignsTableProps<TData, TValue>) {
     const { shopName, currency, currentIntegration } = useJourneyContext()
     const { format: dateFormat, toggleFormat } = useDateFormatPreference()
@@ -150,7 +154,7 @@ export default function CampaignsTable<TData, TValue>({
                         table={table}
                         renderEmptyStateComponent={() => (
                             <Box alignItems="center" justifyContent="center">
-                                <EmptyCampaignsState />
+                                <EmptyCampaignsState cta={emptyStateCta} />
                             </Box>
                         )}
                     />

@@ -34,10 +34,6 @@ jest.mock('AIJourney/providers/JourneyProvider/JourneyProvider', () => ({
 
 jest.mock('AIJourney/hooks', () => ({
     ...jest.requireActual('AIJourney/hooks'),
-    useSetupFormInit: jest.fn(() => ({
-        isFormReady: true,
-        storeSettingsEnabled: false,
-    })),
     useAiJourneyStoreConfiguration: jest.fn(() => ({
         storeConfiguration: null,
         isLoading: false,
@@ -126,15 +122,15 @@ const Wrapper = ({
     )
 }
 
-const renderComponent = (defaultValues?: Record<string, unknown>) =>
-    render(<JourneyEditorSidePanel />, {
+const renderComponent = (
+    defaultValues?: Record<string, unknown>,
+    { isFormReady = true }: { isFormReady?: boolean } = {},
+) =>
+    render(<JourneyEditorSidePanel isFormReady={isFormReady} />, {
         wrapper: ({ children }) => (
             <Wrapper defaultValues={defaultValues}>{children}</Wrapper>
         ),
     })
-
-const mockUseSetupFormInit = require('AIJourney/hooks')
-    .useSetupFormInit as jest.Mock
 
 describe('<JourneyEditorSidePanel />', () => {
     beforeEach(() => {
@@ -146,10 +142,6 @@ describe('<JourneyEditorSidePanel />', () => {
             },
             journeyType: JOURNEY_TYPES.WELCOME,
             currentIntegration: { id: 1 },
-        })
-        mockUseSetupFormInit.mockReturnValue({
-            isFormReady: true,
-            storeSettingsEnabled: false,
         })
     })
 
@@ -172,14 +164,7 @@ describe('<JourneyEditorSidePanel />', () => {
     })
 
     it('should render a skeleton loading state when form is not ready', () => {
-        const mockUseSetupFormInit = require('AIJourney/hooks')
-            .useSetupFormInit as jest.Mock
-        mockUseSetupFormInit.mockReturnValue({
-            isFormReady: false,
-            storeSettingsEnabled: false,
-        })
-
-        renderComponent()
+        renderComponent(undefined, { isFormReady: false })
 
         expect(screen.queryByText('SenderPhoneNumber')).not.toBeInTheDocument()
     })

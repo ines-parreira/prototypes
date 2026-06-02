@@ -1,11 +1,12 @@
 import { useMemo, useState } from 'react'
 
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 import { ConfigureMetricsModal } from '@repo/reporting'
 import type { MetricConfigItem } from '@repo/reporting'
 import { useHistory } from 'react-router-dom'
 
-import { Box, Button, PanelHeader } from '@gorgias/axiom'
+import { Box, PanelHeader } from '@gorgias/axiom'
 import type { ColumnDef } from '@gorgias/axiom'
 import type { JourneyApiDTO } from '@gorgias/convert-client'
 
@@ -16,7 +17,10 @@ import {
     dateColumns,
     metricColumns,
 } from 'AIJourney/components/CampaignsTable/Columns'
+import { CampaignTemplatePicker } from 'AIJourney/components/CampaignTemplatePicker/CampaignTemplatePicker'
+import { CreateCampaignTrigger } from 'AIJourney/components/CreateCampaignTrigger/CreateCampaignTrigger'
 import { JOURNEY_TYPES, STEPS_NAMES } from 'AIJourney/constants'
+import type { CampaignTemplate } from 'AIJourney/data/CampaignTemplatesData'
 import {
     DEFAULT_TABLE_METRICS,
     LOADING_TABLE_METRICS,
@@ -80,7 +84,44 @@ export const Campaigns = () => {
         return currentIntegration?.id || 0
     }, [currentIntegration])
 
+    const { value: isStructuredEditorEnabled } = useFlagWithLoading(
+        FeatureFlagKey.AiJourneyStructuredMessageGuidanceEnabled,
+        false,
+    )
+    const { value: isAiJourneyV3ArchitectureEnabled } = useFlagWithLoading(
+        FeatureFlagKey.AiJourneyV3ArchitectureEnabled,
+        false,
+    )
+    const showTemplatePicker =
+        isStructuredEditorEnabled && isAiJourneyV3ArchitectureEnabled
+
     const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+    const [isTemplatePickerOpen, setIsTemplatePickerOpen] = useState(false)
+
+    const goToCampaignSetup = (prefill?: {
+        initialMessageInstructions?: string
+        initialCampaignTitle?: string
+    }) => {
+        const pathname = `/app/ai-journey/${shopName}/${JOURNEY_TYPES.CAMPAIGN}/${STEPS_NAMES.SETUP}`
+        if (prefill) {
+            history.push({ pathname, state: prefill })
+        } else {
+            history.push(pathname)
+        }
+    }
+
+    const handleStartFromScratch = () => {
+        setIsTemplatePickerOpen(false)
+        goToCampaignSetup(undefined)
+    }
+
+    const handleSelectTemplate = (template: CampaignTemplate) => {
+        setIsTemplatePickerOpen(false)
+        goToCampaignSetup({
+            initialMessageInstructions: template.content,
+            initialCampaignTitle: template.name,
+        })
+    }
 
     const [keyKpisConfig, setKeyKpisConfig] = useLocalStorage<
         MetricConfigItem[]
@@ -177,17 +218,22 @@ export const Campaigns = () => {
             <PanelHeader
                 title="Campaigns"
                 trailingSlot={
-                    <Button
-                        onClick={() =>
-                            history.push(
-                                `/app/ai-journey/${shopName}/${JOURNEY_TYPES.CAMPAIGN}/${STEPS_NAMES.SETUP}`,
-                            )
+                    <CreateCampaignTrigger
+                        showTemplatePicker={showTemplatePicker}
+                        onStartFromScratch={handleStartFromScratch}
+                        onStartFromTemplate={() =>
+                            setIsTemplatePickerOpen(true)
                         }
-                    >
-                        Create campaign
-                    </Button>
+                    />
                 }
             />
+            {showTemplatePicker && (
+                <CampaignTemplatePicker
+                    isOpen={isTemplatePickerOpen}
+                    onOpenChange={setIsTemplatePickerOpen}
+                    onSelectTemplate={handleSelectTemplate}
+                />
+            )}
 
             <Box className={css.filtersPanel}>
                 <FiltersPanelWrapper
@@ -218,6 +264,15 @@ export const Campaigns = () => {
                         { id: 'updated_datetime', desc: true },
                         { id: 'campaign.scheduled_datetime', desc: true },
                     ]}
+                    emptyStateCta={
+                        <CreateCampaignTrigger
+                            showTemplatePicker={showTemplatePicker}
+                            onStartFromScratch={handleStartFromScratch}
+                            onStartFromTemplate={() =>
+                                setIsTemplatePickerOpen(true)
+                            }
+                        />
+                    }
                 />
                 <DrillDownModal />
                 <ConfigureMetricsModal

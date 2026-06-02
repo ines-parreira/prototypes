@@ -18,10 +18,7 @@ import { StaticTimingContent } from 'AIJourney/components/StaticTimingContent/St
 import { JOURNEY_TYPES } from 'AIJourney/constants'
 import { MinutesDelay, TargetOrderStatus } from 'AIJourney/formFields'
 import { WaitingDays } from 'AIJourney/formFields/WaitingDays/WaitingDays'
-import {
-    useAiJourneyStoreConfiguration,
-    useSetupFormInit,
-} from 'AIJourney/hooks'
+import { useAiJourneyStoreConfiguration } from 'AIJourney/hooks'
 import { useJourneyContext } from 'AIJourney/providers'
 
 import { KlaviyoSetupCard } from 'AIJourney/components/KlaviyoSetupCard/KlaviyoSetupCard'
@@ -30,9 +27,12 @@ import css from './JourneyEditorSidePanel.module.less'
 
 type ActiveView = 'details' | 'webhook'
 
-export const JourneyEditorSidePanel = () => {
+type Props = {
+    isFormReady: boolean
+}
+
+export const JourneyEditorSidePanel = ({ isFormReady }: Props) => {
     const { journeyData, journeyType, currentIntegration } = useJourneyContext()
-    const { isFormReady } = useSetupFormInit()
     const { storeConfiguration, isLoading: isLoadingStoreConfig } =
         useAiJourneyStoreConfiguration(currentIntegration?.id)
     const storeFallbackMode = isLoadingStoreConfig

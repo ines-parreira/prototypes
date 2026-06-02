@@ -7,11 +7,14 @@ import thunk from 'redux-thunk'
 
 import { OrderStatusEnum } from '@gorgias/convert-client'
 
+import type { SetupFormValues } from 'AIJourney/pages/Setup/Setup'
+
 import { useSetupFormInit } from './useSetupFormInit'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(() => false),
+    useFlagWithLoading: jest.fn(() => ({ value: false, isLoading: false })),
 }))
 
 jest.mock('AIJourney/providers/JourneyProvider/JourneyProvider', () => ({
@@ -38,24 +41,27 @@ const mockUseJourneyContext =
 const mockStore = configureMockStore([thunk])()
 
 let capturedReset: jest.Mock
+let capturedSetValue: jest.Mock
 
 const InnerConsumer = () => {
-    const { isFormReady } = useSetupFormInit()
-    return <div data-testid="ready">{isFormReady ? 'ready' : 'not-ready'}</div>
-}
-
-const TestWrapper = ({ children }: { children: React.ReactNode }) => {
-    const methods = useForm()
+    const methods = useForm<SetupFormValues>()
     capturedReset = jest.spyOn(methods, 'reset') as unknown as jest.Mock
-    return <FormProvider {...methods}>{children}</FormProvider>
+    capturedSetValue = jest.spyOn(methods, 'setValue') as unknown as jest.Mock
+    const { isFormReady } = useSetupFormInit({
+        reset: methods.reset,
+        setValue: methods.setValue,
+    })
+    return (
+        <FormProvider {...methods}>
+            <div data-testid="ready">{isFormReady ? 'ready' : 'not-ready'}</div>
+        </FormProvider>
+    )
 }
 
 const renderComponent = () =>
     render(
         <Provider store={mockStore}>
-            <TestWrapper>
-                <InnerConsumer />
-            </TestWrapper>
+            <InnerConsumer />
         </Provider>,
     )
 
@@ -63,6 +69,7 @@ describe('useSetupFormInit', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         capturedReset = jest.fn()
+        capturedSetValue = jest.fn()
     })
 
     it('should return isFormReady=false initially while journey data is loading', () => {
@@ -148,7 +155,7 @@ describe('useSetupFormInit', () => {
         )
     })
 
-    it('should reset with store configuration when storeSettingsEnabled is true and no journeyParams', () => {
+    it('should setValue sms_sender_integration_id (preserving other defaults) when storeSettingsEnabled is true and no journeyParams', () => {
         const mockUseFlag = require('@repo/feature-flags').useFlag as jest.Mock
         mockUseFlag.mockReturnValue(true)
 
@@ -171,14 +178,11 @@ describe('useSetupFormInit', () => {
 
         renderComponent()
 
-        expect(capturedReset).toHaveBeenCalledWith(
-            expect.objectContaining({
-                sms_sender_integration_id: {
-                    id: 99,
-                    label: '+15550001111',
-                },
-            }),
+        expect(capturedSetValue).toHaveBeenCalledWith(
+            'sms_sender_integration_id',
+            { id: 99, label: '+15550001111' },
         )
+        expect(capturedReset).not.toHaveBeenCalled()
     })
 
     it('should not reset when store settings enabled but store config not yet loaded', () => {
@@ -203,6 +207,7 @@ describe('useSetupFormInit', () => {
 
         expect(screen.getByTestId('ready')).toHaveTextContent('not-ready')
         expect(capturedReset).not.toHaveBeenCalled()
+        expect(capturedSetValue).not.toHaveBeenCalled()
     })
 
     it('should set isFormReady when journeyParams has media_urls (hasCustomImage path)', () => {

@@ -8,9 +8,11 @@ import {
     Card,
     Heading,
     NumberField,
+    Text,
     TextAreaField,
 } from '@gorgias/axiom'
 
+import { MessageGuidanceFieldEditor } from './MessageGuidanceFieldEditor'
 import type { MessageInstructionsVariant } from './types'
 import {
     computeControlWeight,
@@ -23,7 +25,19 @@ import css from './MessageGuidance.less'
 const MESSAGE_GUIDANCE_MAX_LENGTH = 4000
 const ADDED_VARIANT_TARGET_WEIGHT = 10
 
-export const MessageGuidanceVariants = () => {
+type MessageGuidanceVariantsProps = {
+    isStructuredEditorEnabled?: boolean
+    shopName: string
+    editorLabel?: string
+    editorDescription?: string
+}
+
+export const MessageGuidanceVariants = ({
+    isStructuredEditorEnabled = false,
+    shopName,
+    editorLabel,
+    editorDescription,
+}: MessageGuidanceVariantsProps) => {
     const { control } = useFormContext()
 
     const {
@@ -60,17 +74,35 @@ export const MessageGuidanceVariants = () => {
             <Card className={css.variantCard}>
                 <Box flexDirection="column" gap="xs">
                     <Heading size="sm">{`Control · ${controlWeight}%`}</Heading>
-                    <TextAreaField
-                        placeholder="Describe tone, formatting, or what to include"
-                        maxLength={MESSAGE_GUIDANCE_MAX_LENGTH}
-                        caption={`${remainingChars} characters remaining`}
-                        error={error?.message}
-                        value={messageGuidance}
-                        onChange={setMessageGuidance}
-                        autoResize
-                        rows={8}
-                        maxRows={20}
-                    />
+                    {isStructuredEditorEnabled ? (
+                        <>
+                            <MessageGuidanceFieldEditor
+                                value={messageGuidance ?? ''}
+                                onChange={setMessageGuidance}
+                                shopName={shopName}
+                                charLimit={MESSAGE_GUIDANCE_MAX_LENGTH}
+                                label={editorLabel}
+                                description={editorDescription}
+                            />
+                            {error?.message && (
+                                <Text className={css.errorText}>
+                                    {error.message}
+                                </Text>
+                            )}
+                        </>
+                    ) : (
+                        <TextAreaField
+                            placeholder="Describe tone, formatting, or what to include"
+                            maxLength={MESSAGE_GUIDANCE_MAX_LENGTH}
+                            caption={`${remainingChars} characters remaining`}
+                            error={error?.message}
+                            value={messageGuidance}
+                            onChange={setMessageGuidance}
+                            autoResize
+                            rows={8}
+                            maxRows={20}
+                        />
+                    )}
                 </Box>
             </Card>
             {fields.map((field, index) => {
@@ -108,6 +140,38 @@ export const MessageGuidanceVariants = () => {
                                 }) => {
                                     const variantValue =
                                         variantField.value ?? ''
+                                    if (isStructuredEditorEnabled) {
+                                        return (
+                                            <Box
+                                                flexDirection="column"
+                                                gap="xxxs"
+                                            >
+                                                <MessageGuidanceFieldEditor
+                                                    value={variantValue}
+                                                    onChange={
+                                                        variantField.onChange
+                                                    }
+                                                    shopName={shopName}
+                                                    charLimit={
+                                                        MESSAGE_GUIDANCE_MAX_LENGTH
+                                                    }
+                                                    label={editorLabel}
+                                                    description={
+                                                        editorDescription
+                                                    }
+                                                />
+                                                {variantError?.message && (
+                                                    <Text
+                                                        className={
+                                                            css.errorText
+                                                        }
+                                                    >
+                                                        {variantError.message}
+                                                    </Text>
+                                                )}
+                                            </Box>
+                                        )
+                                    }
                                     return (
                                         <TextAreaField
                                             placeholder="Describe tone, formatting, or what to include"

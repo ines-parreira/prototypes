@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useFormContext } from 'react-hook-form'
+import type { UseFormReset, UseFormSetValue } from 'react-hook-form'
 
 import type {
     PostPurchaseJourneyConfigurationApiDTO,
@@ -15,14 +15,21 @@ import { useJourneyContext } from 'AIJourney/providers'
 
 import { useAiJourneyStoreConfiguration } from '../useAiJourneyStoreConfiguration/useAiJourneyStoreConfiguration'
 
-export const useSetupFormInit = () => {
+type UseSetupFormInitParams = {
+    reset: UseFormReset<SetupFormValues>
+    setValue: UseFormSetValue<SetupFormValues>
+}
+
+export const useSetupFormInit = ({
+    reset,
+    setValue,
+}: UseSetupFormInitParams) => {
     const {
         isLoading: isLoadingJourneyData,
         journeyData,
         currentIntegration,
     } = useJourneyContext()
     const { configuration: journeyParams } = journeyData || {}
-    const { reset } = useFormContext<SetupFormValues>()
     const [isFormReady, setIsFormReady] = useState(false)
 
     const storeSettingsEnabled = useFlag(
@@ -122,11 +129,9 @@ export const useSetupFormInit = () => {
                     variants: journeyData?.variants ?? [],
                 })
             } else if (storeSettingsEnabled && storeConfiguration) {
-                reset({
-                    sms_sender_integration_id: {
-                        id: storeConfiguration.sms_sender_integration_id,
-                        label: storeConfiguration.sms_sender_number,
-                    },
+                setValue('sms_sender_integration_id', {
+                    id: storeConfiguration.sms_sender_integration_id,
+                    label: storeConfiguration.sms_sender_number,
                 })
             }
             setIsFormReady(true)
@@ -140,6 +145,7 @@ export const useSetupFormInit = () => {
         journeyData,
         journeyParams,
         reset,
+        setValue,
     ])
 
     return { isFormReady, storeSettingsEnabled }

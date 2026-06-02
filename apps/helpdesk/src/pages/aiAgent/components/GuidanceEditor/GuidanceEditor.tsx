@@ -30,6 +30,7 @@ type GuidanceEditorProps = {
     editorContextName?: string
     description?: string
     showShortcutHint?: boolean
+    charLimit?: number
 }
 
 const defaultToolbarActions = [
@@ -59,6 +60,7 @@ export function GuidanceEditor({
     editorContextName = 'Guidance',
     description,
     showShortcutHint = true,
+    charLimit = textLimit,
 }: GuidanceEditorProps) {
     const hasSkillsAccess = useSkillsAccess()
     const defaultDescription = hasSkillsAccess
@@ -86,8 +88,8 @@ export function GuidanceEditor({
     }, [showActionsButton, showVariablesButton, showDefaultToolbarActions])
 
     const isOverLimit = useMemo(
-        () => getPlainTextLength(content) > textLimit,
-        [content],
+        () => getPlainTextLength(content) > charLimit,
+        [content, charLimit],
     )
 
     const richFieldValue = useMemo(
@@ -153,7 +155,7 @@ export function GuidanceEditor({
                 >
                     <RichField
                         minHeight={320}
-                        maxLength={textLimit}
+                        maxLength={charLimit}
                         value={richFieldValue}
                         allowExternalChanges
                         onChange={handleChange}

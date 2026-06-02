@@ -15,7 +15,37 @@ import { ReportingGranularity } from 'domains/reporting/models/types'
 import { getCleanStatsFiltersWithLogicalOperatorsWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
 import { account } from 'fixtures/account'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
+
+import { CampaignTemplatesList } from 'AIJourney/data/CampaignTemplatesData'
+
 import { Campaigns } from './Campaigns'
+
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(() => false),
+    useFlagWithLoading: jest.fn(),
+}))
+
+const mockUseFlagWithLoading = require('@repo/feature-flags')
+    .useFlagWithLoading as jest.Mock
+
+const setFlags = ({
+    structured = false,
+    v3 = false,
+}: { structured?: boolean; v3?: boolean } = {}) => {
+    mockUseFlagWithLoading.mockImplementation((flagKey: string) => {
+        if (
+            flagKey === FeatureFlagKey.AiJourneyStructuredMessageGuidanceEnabled
+        ) {
+            return { value: structured, isLoading: false }
+        }
+        if (flagKey === FeatureFlagKey.AiJourneyV3ArchitectureEnabled) {
+            return { value: v3, isLoading: false }
+        }
+        return { value: false, isLoading: false }
+    })
+}
 
 jest.mock('AIJourney/providers/JourneyProvider/JourneyProvider', () => ({
     ...jest.requireActual(
@@ -70,6 +100,8 @@ describe('<Campaigns />', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+
+        setFlags()
 
         mockUseJourneyContext.mockReturnValue({
             campaigns: [
@@ -418,5 +450,116 @@ describe('<Campaigns />', () => {
         expect(mockHistoryPush).toHaveBeenCalledWith(
             '/app/ai-journey/test-shop/campaign/setup',
         )
+    })
+
+    describe('template picker (FF on + V3)', () => {
+        beforeEach(() => {
+            setFlags({ structured: true, v3: true })
+            mockUseJourneyContext.mockReturnValue({
+                shopName: 'test-shop',
+                campaigns: [
+                    {
+                        id: '1',
+                        campaign: { title: 'Campaign 1', state: 'active' },
+                    },
+                ],
+                isLoadingJourneys: false,
+                isLoadingIntegrations: false,
+                currentIntegration: { id: 1, name: 'Test Integration' },
+            })
+        })
+
+        const renderCampaigns = () =>
+            render(
+                <Provider store={mockStore}>
+                    <JourneyProvider>
+                        <Campaigns />
+                    </JourneyProvider>
+                </Provider>,
+            )
+
+        it('opens a dropdown with From scratch / From template options', async () => {
+            const user = userEvent.setup()
+            renderCampaigns()
+
+            await act(() => user.click(screen.getByText('Create campaign')))
+
+            expect(
+                screen.getByRole('menuitem', { name: 'From scratch' }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('menuitem', { name: 'From template' }),
+            ).toBeInTheDocument()
+        })
+
+        it('navigates without prefill when From scratch is selected', async () => {
+            const user = userEvent.setup()
+            renderCampaigns()
+
+            await act(() => user.click(screen.getByText('Create campaign')))
+            await act(() =>
+                user.click(
+                    screen.getByRole('menuitem', { name: 'From scratch' }),
+                ),
+            )
+
+            expect(mockHistoryPush).toHaveBeenCalledWith(
+                '/app/ai-journey/test-shop/campaign/setup',
+            )
+        })
+
+        it('opens the picker modal when From template is selected', async () => {
+            const user = userEvent.setup()
+            renderCampaigns()
+
+            await act(() => user.click(screen.getByText('Create campaign')))
+            await act(() =>
+                user.click(
+                    screen.getByRole('menuitem', { name: 'From template' }),
+                ),
+            )
+
+            expect(
+                screen.getByRole('heading', { name: 'Templates' }),
+            ).toBeInTheDocument()
+        })
+
+        it('navigates with prefill (content + title) when a template card is clicked', async () => {
+            const user = userEvent.setup()
+            renderCampaigns()
+
+            await act(() => user.click(screen.getByText('Create campaign')))
+            await act(() =>
+                user.click(
+                    screen.getByRole('menuitem', { name: 'From template' }),
+                ),
+            )
+
+            const target = CampaignTemplatesList[0]
+            await act(() => user.click(screen.getByText(target.name)))
+
+            expect(mockHistoryPush).toHaveBeenCalledWith({
+                pathname: '/app/ai-journey/test-shop/campaign/setup',
+                state: {
+                    initialMessageInstructions: target.content,
+                    initialCampaignTitle: target.name,
+                },
+            })
+        })
+
+        it('falls back to the simple button when V3 architecture is off', async () => {
+            setFlags({ structured: true, v3: false })
+            const user = userEvent.setup()
+            renderCampaigns()
+
+            await act(() => user.click(screen.getByText('Create campaign')))
+
+            expect(
+                screen.queryByRole('menuitem', { name: 'From scratch' }),
+            ).not.toBeInTheDocument()
+            expect(mockHistoryPush).toHaveBeenCalledWith(
+                '/app/ai-journey/test-shop/campaign/setup',
+            )
+        })
     })
 })

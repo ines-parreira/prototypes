@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { useId } from '@repo/hooks'
 import type { SubmitHandler } from 'react-hook-form'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 
 import {
     Box,
@@ -21,6 +22,7 @@ import { JOURNEY_TYPES } from 'AIJourney/constants'
 import {
     useJourneyCreateHandler,
     useJourneyUpdateHandler,
+    useSetupFormInit,
 } from 'AIJourney/hooks'
 import type { SetupFormValues } from 'AIJourney/pages/Setup/Setup'
 import { useJourneyContext } from 'AIJourney/providers'
@@ -29,6 +31,8 @@ import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
 
 import { MessageGuidanceCard } from 'AIJourney/components'
+
+import { pickDefaultMessageInstructions } from 'AIJourney/utils/pickDefaultMessageInstructions'
 
 import { JourneyEditorSidePanel } from './JourneyEditorSidePanel'
 import { PreviewPanel } from './PreviewPanel'
@@ -65,19 +69,43 @@ export const JourneyEditorLayout = ({ step }: Props) => {
 
     const isPreviewStep = step === 'preview'
 
+    const { value: isStructuredEditorEnabled } = useFlagWithLoading(
+        FeatureFlagKey.AiJourneyStructuredMessageGuidanceEnabled,
+        false,
+    )
+    const location = useLocation<
+        | {
+              initialMessageInstructions?: string
+              initialCampaignTitle?: string
+          }
+        | undefined
+    >()
+    const initialMessageInstructionsFromState =
+        location.state?.initialMessageInstructions
+    const initialCampaignTitleFromState = location.state?.initialCampaignTitle
+
+    const defaultMessageInstructions = pickDefaultMessageInstructions({
+        journeyMessageInstructions: journeyData?.message_instructions,
+        isStructuredEditorEnabled,
+        initialMessageInstructionsFromState,
+        journeyType,
+    })
+
     const methods = useForm<SetupFormValues>({
         defaultValues: {
             max_follow_up_messages: 0,
             include_image: false,
             include_custom_image: false,
             offer_discount: false,
-            message_instructions: journeyData?.message_instructions ?? '',
+            message_instructions: defaultMessageInstructions,
             execution_mode_override: null,
             narrow_audience_enabled:
                 (journeyData?.included_audience_list_ids?.length ?? 0) > 0 ||
                 (journeyData?.excluded_audience_list_ids?.length ?? 0) > 0,
             ...(isCampaign && {
-                campaignTitle: journeyData?.campaign?.title,
+                campaignTitle:
+                    journeyData?.campaign?.title ??
+                    initialCampaignTitleFromState,
                 scheduleType: 'later' as const,
                 scheduledDate: null,
                 scheduledTime: null,
@@ -103,6 +131,11 @@ export const JourneyEditorLayout = ({ step }: Props) => {
         },
     })
     const { handleSubmit, control, formState } = methods
+
+    const { isFormReady } = useSetupFormInit({
+        reset: methods.reset,
+        setValue: methods.setValue,
+    })
 
     const unsavedChangesPromptRef = useRef<UnsavedChangesPromptTrigger>(null)
 
@@ -436,12 +469,15 @@ export const JourneyEditorLayout = ({ step }: Props) => {
                             gap="lg"
                             className={css.mainContentInner}
                         >
-                            {/* TODO: replace with GuidanceEditor (AIJOU-2016) */}
-                            <MessageGuidanceCard fullWidth isV3Architecture />
+                            <MessageGuidanceCard
+                                fullWidth
+                                isV3Architecture
+                                isFormReady={isFormReady}
+                            />
                         </Box>
                     </Box>
                 </Box>
-                <JourneyEditorSidePanel />
+                <JourneyEditorSidePanel isFormReady={isFormReady} />
                 {isCollapsibleColumnOpen && (
                     <PreviewPanel
                         onClose={() => setIsCollapsibleColumnOpen(false)}

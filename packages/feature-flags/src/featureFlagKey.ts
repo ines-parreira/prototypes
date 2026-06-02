@@ -63,6 +63,7 @@ export enum FeatureFlagKey {
     AiJourneyMultiInstanceFlows = 'ai-journey-multi-instance-flows',
     AiJourneySegmentsUiEnabled = 'ai-journey-segments-ui-enabled',
     AiJourneyStoreSettingsEnabled = 'ai-journey-store-settings-enabled',
+    AiJourneyStructuredMessageGuidanceEnabled = 'ai-journey-structured-message-guidance-enabled',
     AiJourneyToneOfVoice = 'ai-journey-tov',
     AiJourneyV3ArchitectureEnabled = 'ai-journey-v3-architecture-enabled',
     AiSalesAgentActivationEmailSettings = 'linear.project_ai-sales-agent-email-settings',
