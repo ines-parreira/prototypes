@@ -10,6 +10,7 @@ import * as customerSegmentation from '@gorgias/customer-segmentation-client'
 import * as ecommerceStorage from '@gorgias/ecommerce-storage-client'
 import * as helpdesk from '@gorgias/helpdesk-client'
 import * as knowledgeService from '@gorgias/knowledge-service-client'
+import * as workflows from '@gorgias/workflows-client'
 
 import { getStoresConfigurations } from 'models/aiAgent/resources/configuration'
 import { getGorgiasRevenueAddonApiBaseUrl } from 'rest_api/revenue_addon_api/client'
@@ -49,6 +50,16 @@ function getCopilotClientBaseUrl(): string {
         : base
 }
 
+function getWorkflowsApiBaseUrl(): string {
+    if (isProduction()) {
+        return 'https://api.gorgias.work'
+    }
+    if (isStaging()) {
+        return 'https://api-staging.gorgias.work'
+    }
+    return 'http://localhost:3100'
+}
+
 export function initSDKs() {
     const KNOWLEDGE_SERVICE_BASE_URL = isProduction()
         ? `https://knowledge-service.gorgias.help`
@@ -86,11 +97,19 @@ export function initSDKs() {
         },
     })
 
+    workflows.setDefaultConfig({
+        baseURL: getWorkflowsApiBaseUrl(),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+
     convert.useRequestInterceptor(gorgiasAppsAuthInterceptor)
     customerSegmentation.useRequestInterceptor(gorgiasAppsAuthInterceptor)
     ecommerceStorage.useRequestInterceptor(gorgiasAppsAuthInterceptor)
     knowledgeService.useRequestInterceptor(gorgiasAppsAuthInterceptor)
     copilot.useRequestInterceptor(copilotAppsAuthInterceptor)
+    workflows.useRequestInterceptor(gorgiasAppsAuthInterceptor)
 }
 
 export function createCopilotAgent(): GorgiasCopilotAgent {

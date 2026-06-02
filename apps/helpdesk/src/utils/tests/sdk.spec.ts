@@ -13,6 +13,8 @@ import { listTickets } from '@gorgias/helpdesk-client'
 import { mockListTicketsHandler } from '@gorgias/helpdesk-mocks'
 import { findFeedback } from '@gorgias/knowledge-service-client'
 import { mockFindFeedbackHandler } from '@gorgias/knowledge-service-mocks'
+import { checkHealth } from '@gorgias/workflows-client'
+import { mockCheckHealthHandler } from '@gorgias/workflows-mocks'
 
 import { getStoresConfigurations } from 'models/aiAgent/resources/configuration'
 import type { StoreConfiguration } from 'models/aiAgent/types'
@@ -54,6 +56,7 @@ describe('initSDKs()', () => {
         server.use(mockListTicketsHandler().handler)
         server.use(mockListEcommerceDataHandler().handler)
         server.use(mockGetAbTestHandler().handler)
+        server.use(mockCheckHealthHandler().handler)
     })
 
     afterEach(() => {
@@ -322,6 +325,57 @@ describe('initSDKs()', () => {
                 { name: 'shop-a', label: 'shop-a' },
                 { name: 'shop-b', label: 'shop-b' },
             ])
+        })
+    })
+
+    describe('workflows', () => {
+        describe('should set the base URL based on the environment', () => {
+            it('for production', async () => {
+                isProductionMock.mockReturnValue(true)
+                isStagingMock.mockReturnValue(false)
+
+                initSDKs()
+
+                const response = await checkHealth()
+
+                expect(response.config.baseURL).toBe('https://api.gorgias.work')
+            })
+
+            it('for staging', async () => {
+                isProductionMock.mockReturnValue(false)
+                isStagingMock.mockReturnValue(true)
+
+                initSDKs()
+
+                const response = await checkHealth()
+
+                expect(response.config.baseURL).toBe(
+                    'https://api-staging.gorgias.work',
+                )
+            })
+
+            it('for development', async () => {
+                isProductionMock.mockReturnValue(false)
+                isStagingMock.mockReturnValue(false)
+
+                initSDKs()
+
+                const response = await checkHealth()
+
+                expect(response.config.baseURL).toBe('http://localhost:3100')
+            })
+        })
+
+        it('should attach the request interceptor for Authorization handling', async () => {
+            initSDKs()
+
+            const response = await checkHealth()
+
+            expect(response.config.headers).toEqual(
+                expect.objectContaining({
+                    Authorization: 'Bearer mock-token',
+                }),
+            )
         })
     })
 })

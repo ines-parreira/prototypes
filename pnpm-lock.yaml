@@ -273,10 +273,10 @@ catalogs:
       version: 0.2.83
     '@gorgias/copilot-client':
       specifier: ^0.1.1
-      version: 0.1.1
+      version: 0.1.2
     '@gorgias/copilot-queries':
       specifier: ^0.1.1
-      version: 0.1.1
+      version: 0.1.2
     '@gorgias/customer-segmentation-client':
       specifier: ^0.2.9
       version: 0.2.9
@@ -343,6 +343,18 @@ catalogs:
     '@gorgias/knowledge-service-validators':
       specifier: ^0.2.58
       version: 0.2.58
+    '@gorgias/workflows-client':
+      specifier: ^0.3.29
+      version: 0.3.29
+    '@gorgias/workflows-mocks':
+      specifier: ^0.2.39
+      version: 0.2.39
+    '@gorgias/workflows-queries':
+      specifier: ^0.2.40
+      version: 0.2.40
+    '@gorgias/workflows-types':
+      specifier: ^0.4.16
+      version: 0.4.16
     '@tanstack/react-query-devtools':
       specifier: 4.22.4
       version: 4.22.4
@@ -645,13 +657,13 @@ importers:
         version: 0.2.83(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@gorgias/copilot':
         specifier: catalog:copilot
-        version: 0.55.0(9bc3b99d57edeacd190402322daae150)
+        version: 0.55.0(2f9f2fe1abff62ec74cd158c8c58c7e1)
       '@gorgias/copilot-client':
         specifier: catalog:rest-api-sdk
-        version: 0.1.1
+        version: 0.1.2
       '@gorgias/copilot-queries':
         specifier: catalog:rest-api-sdk
-        version: 0.1.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
+        version: 0.1.2(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@gorgias/customer-segmentation-client':
         specifier: catalog:rest-api-sdk
         version: 0.2.9
@@ -721,6 +733,15 @@ importers:
       '@gorgias/realtime':
         specifier: catalog:realtime
         version: 1.3.1(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)(zustand@5.0.9(@types/react@18.2.67)(immer@10.1.1)(react@18.2.0)(use-sync-external-store@1.5.0(react@18.2.0)))
+      '@gorgias/workflows-client':
+        specifier: catalog:rest-api-sdk
+        version: 0.3.29
+      '@gorgias/workflows-queries':
+        specifier: catalog:rest-api-sdk
+        version: 0.2.40(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
+      '@gorgias/workflows-types':
+        specifier: catalog:rest-api-sdk
+        version: 0.4.16
       '@hookform/resolvers':
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.52.1(react@18.2.0))
@@ -1247,6 +1268,9 @@ importers:
       '@gorgias/static-analysis':
         specifier: 0.3.0
         version: 0.3.0(@types/node@24.12.2)
+      '@gorgias/workflows-mocks':
+        specifier: catalog:rest-api-sdk
+        version: 0.2.39(@types/node@24.12.2)(typescript@6.0.3)
       '@jest/expect':
         specifier: catalog:test
         version: 29.7.0
@@ -5756,11 +5780,11 @@ packages:
   '@gorgias/convert-types@0.4.50':
     resolution: {integrity: sha512-tZcnajydN+Exmc5B6u0ubcSA6OwXkES7SdTqdQ6EXorDd0Lkxk+H6gA9cB+zXQgkeYEpwgDTqoo+ODxjDQ0Emw==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-types/0.4.50/2c686553b484f921d4cd982c30e75deea3b3bb76}
 
-  '@gorgias/copilot-client@0.1.1':
-    resolution: {integrity: sha512-5Y9DEmDDbfaZqBdXm+6BHiEMDD6OhUknxIulZcUZT233vrcm7UYfviUpP8LYmve/22TbLpv6BWL8KDyu1kRQng==, tarball: https://npm.pkg.github.com/download/@gorgias/copilot-client/0.1.1/4c986a3bb0e1dd2d2a6dcfdad469f8880c799f10}
+  '@gorgias/copilot-client@0.1.2':
+    resolution: {integrity: sha512-pdhH0QPSFO16RSiffITYVGi/09xOpJ79Aca9u3mCSNqF+FesPCm1Xo3TJaMxILGGGsNDkFFUWOvgRVjShg3Yjg==, tarball: https://npm.pkg.github.com/download/@gorgias/copilot-client/0.1.2/740d1cf68521981512184b48f0f92baf4dc2a5e2}
 
-  '@gorgias/copilot-queries@0.1.1':
-    resolution: {integrity: sha512-/Fxkx9+pZasIV0mnWeUZX6m7DlTBC5mjz+uva07Fh+WRsYbcIGipvdceDVZNpE+2QIBOrLbB6UGjn3QchyhZMw==, tarball: https://npm.pkg.github.com/download/@gorgias/copilot-queries/0.1.1/dc5a653564825d0d6989cef05e28641960c6f0bb}
+  '@gorgias/copilot-queries@0.1.2':
+    resolution: {integrity: sha512-zNMbKafhr7FNtMbvRpqy7A015HHipPnO4aqgzaEUvqFK1HR+b4FiN5JM5j4vafATYCej647OCtSnU43utQhsuA==, tarball: https://npm.pkg.github.com/download/@gorgias/copilot-queries/0.1.2/7e4bdc19b00b2b950fe6947aa5c44c9ecad19ef1}
 
   '@gorgias/copilot-types@0.1.1':
     resolution: {integrity: sha512-LPs8Hcwp2RfHVwuITbqAnmxSaM7FQovCyNMFWlZg8ctv7FCb7m4nQYHSjyQFYteuqhCHaIYKNwIgJDE5je2cfQ==, tarball: https://npm.pkg.github.com/download/@gorgias/copilot-types/0.1.1/c809d3c9e9e03ebccfeb6d319b89877d0f031b4a}
@@ -5781,9 +5805,6 @@ packages:
       react-dom: ^18
       rxjs: ^7.8.0
       zustand: 5.0.9
-    peerDependenciesMeta:
-      rxjs:
-        optional: true
 
   '@gorgias/customer-segmentation-client@0.2.9':
     resolution: {integrity: sha512-VOS6eQA+J53lSWXYzAPexRGLrjA3RM0YzzxG4kdj+acxKtIEsoyJe8BRJvMzHO+nLgQWcs90vtWkrWZiyDdGEw==, tarball: https://npm.pkg.github.com/download/@gorgias/customer-segmentation-client/0.2.9/f504bf90c80bfe6d867fa0521f4eee735676f639}
@@ -5909,9 +5930,6 @@ packages:
   '@gorgias/sdk-client@0.9.21':
     resolution: {integrity: sha512-YRS90lf1yneSu1SPWNtLiGQHbNEtc2aGJy7vQGi7K/zgLGygOKuYiR/4bnm0Q6G07f6VR9atVbF/wAUAtta/rg==, tarball: https://npm.pkg.github.com/download/@gorgias/sdk-client/0.9.21/da71d5d460c1272828c1f111809cf5793fb36828}
 
-  '@gorgias/sdk-client@0.9.23':
-    resolution: {integrity: sha512-pDmYWeVxyIM1ZUimw71CD/qBCF6Msh/EsDoMDraXeSBvGs7SR0thQ4BEnvrU7oyG5NF3WF26o/qEAY01gE/ocw==, tarball: https://npm.pkg.github.com/download/@gorgias/sdk-client/0.9.23/99cad72da2fc9e5951ad316a5ec215e97df6f0e1}
-
   '@gorgias/sdk-mocks@0.14.0':
     resolution: {integrity: sha512-IfzkQ9ydCgG36zCZcxDDhsPiwdewzsQ8iE0oEg6sPl+d8PyCG/W7K8QapzEbOmJeGaN6Hag/BwopGBobz6R7uQ==, tarball: https://npm.pkg.github.com/download/@gorgias/sdk-mocks/0.14.0/20d87b7a4f4e10eaadb988c5a75e93892950c157}
 
@@ -5950,6 +5968,21 @@ packages:
     resolution: {integrity: sha512-+Rq8pq6uy6VjL3cMZn0a5ZmAHJRFvQ340HIYe8uWWDpc6MQKfGnrC6Cdfk6+GSgb1+ekmgK+XRYchyMVaJTRNQ==, tarball: https://npm.pkg.github.com/download/@gorgias/static-analysis/0.5.0/6b468daaa0f1febb83c1e45ed24197d7a39d2fa2}
     engines: {node: '>=22'}
     hasBin: true
+
+  '@gorgias/workflows-client@0.3.29':
+    resolution: {integrity: sha512-M4qxifaByVO8Chu4OuwXOD6ljnLzmnaJVV2kMZ/7ogbHx6LW25k32G3w9WAzZdCD6NH1iALSHB0P8mZl5VvBfA==, tarball: https://npm.pkg.github.com/download/@gorgias/workflows-client/0.3.29/f93f688418408d8ba32b42d2605067f3e646276c}
+
+  '@gorgias/workflows-mocks@0.2.39':
+    resolution: {integrity: sha512-i6Qq56F34b40yPKk2Z8W7QBXgceP/Zkp5AmM76xvxsPBQtz3Lf+C1bOnC+F6Pcttq0FYIo6kQy/zcnt7nyytSQ==, tarball: https://npm.pkg.github.com/download/@gorgias/workflows-mocks/0.2.39/8b8700207d3aaf48f80e69d268b7b924c9d58548}
+
+  '@gorgias/workflows-queries@0.2.40':
+    resolution: {integrity: sha512-Xss4ar8VCM8OV2dceai/PFhh3mXbDM5Wtlb+xWp3Mo1QUc+J09A/bgphKFH7gWb0JonseiST77+9xRc8giE/FA==, tarball: https://npm.pkg.github.com/download/@gorgias/workflows-queries/0.2.40/cc2badeaafd39ba1e3fb3c8a88cc23422c7f5236}
+
+  '@gorgias/workflows-spec@0.3.4':
+    resolution: {integrity: sha512-5CKPAckYFqtNeX5zJvyGnL6inHdeUPyFAAhHgZ67rWhOOfpHXvu3nP4ELk67roZL+cZvTp0uhotbwUojWG6npQ==, tarball: https://npm.pkg.github.com/download/@gorgias/workflows-spec/0.3.4/bd00584fcbf81e24d6a72546ca4d1421370c95cf}
+
+  '@gorgias/workflows-types@0.4.16':
+    resolution: {integrity: sha512-Zw1EltYf5rjGlIwQBPfeAtxVDydTDDMtVlUuGriDO3XnvDaxUdlDmNO+fe1HpNYLRByArXiGX4bzFm1ttg2RXQ==, tarball: https://npm.pkg.github.com/download/@gorgias/workflows-types/0.4.16/8e427b05f80a3955440e4bd9ce05006a380c44ce}
 
   '@hono/node-server@1.19.11':
     resolution: {integrity: sha512-dr8/3zEaB+p0D2n/IUrlPF1HZm586qgJNXK1a9fhg/PzdtkK7Ksd5l312tJX2yBuALqDYBlG20QEbayqPyxn+g==}
@@ -20009,17 +20042,17 @@ snapshots:
 
   '@gorgias/convert-types@0.4.50': {}
 
-  '@gorgias/copilot-client@0.1.1':
+  '@gorgias/copilot-client@0.1.2':
     dependencies:
       '@gorgias/copilot-types': 0.1.1
-      '@gorgias/sdk-client': 0.9.23
+      '@gorgias/sdk-client': 0.10.0
       axios: 1.15.2(debug@4.4.3)
     transitivePeerDependencies:
       - debug
 
-  '@gorgias/copilot-queries@0.1.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)':
+  '@gorgias/copilot-queries@0.1.2(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)':
     dependencies:
-      '@gorgias/copilot-client': 0.1.1
+      '@gorgias/copilot-client': 0.1.2
       '@gorgias/copilot-types': 0.1.1
       '@tanstack/react-query': 4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
     transitivePeerDependencies:
@@ -20030,12 +20063,12 @@ snapshots:
 
   '@gorgias/copilot-types@0.1.1': {}
 
-  '@gorgias/copilot@0.55.0(9bc3b99d57edeacd190402322daae150)':
+  '@gorgias/copilot@0.55.0(2f9f2fe1abff62ec74cd158c8c58c7e1)':
     dependencies:
       '@copilotkit/react-core': 1.57.1(@types/mdast@4.0.4)(@types/react-dom@18.2.22)(@types/react@18.2.67)(encoding@0.1.13)(graphql@16.11.0)(micromark-util-types@2.0.2)(micromark@4.0.2)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(zod@3.25.76)
       '@gorgias/axiom': 0.277.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
-      '@gorgias/copilot-client': 0.1.1
-      '@gorgias/copilot-queries': 0.1.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
+      '@gorgias/copilot-client': 0.1.2
+      '@gorgias/copilot-queries': 0.1.2(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@gorgias/knowledge-service-client': 0.3.44
       '@gorgias/knowledge-service-queries': 0.3.3(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@tanstack/react-query': 4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
@@ -20048,11 +20081,10 @@ snapshots:
       react-markdown: 10.1.0(@types/react@18.2.67)(react@18.2.0)
       remark-gfm: 4.0.1
       remend: 1.3.0
+      rxjs: 7.8.1
       use-stick-to-bottom: 1.1.4(react@18.2.0)
       zod: 3.25.76
       zustand: 5.0.9(@types/react@18.2.67)(immer@10.1.1)(react@18.2.0)(use-sync-external-store@1.5.0(react@18.2.0))
-    optionalDependencies:
-      rxjs: 7.8.1
     transitivePeerDependencies:
       - '@emotion/is-prop-valid'
       - '@types/mdast'
@@ -20342,12 +20374,6 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@gorgias/sdk-client@0.9.23':
-    dependencies:
-      axios: 1.15.2(debug@4.4.3)
-    transitivePeerDependencies:
-      - debug
-
   '@gorgias/sdk-mocks@0.14.0(@types/node@24.12.2)(typescript@6.0.3)':
     dependencies:
       '@faker-js/faker': 9.8.0
@@ -20468,6 +20494,41 @@ snapshots:
       oxc-resolver: 11.13.2
       oxc-walker: 0.6.0(oxc-parser@0.98.0)
       ts-pattern: 5.9.0
+
+  '@gorgias/workflows-client@0.3.29':
+    dependencies:
+      '@gorgias/sdk-client': 0.9.21
+      '@gorgias/workflows-types': 0.4.16
+      axios: 1.15.2(debug@4.4.3)
+    transitivePeerDependencies:
+      - debug
+
+  '@gorgias/workflows-mocks@0.2.39(@types/node@24.12.2)(typescript@6.0.3)':
+    dependencies:
+      '@gorgias/sdk-mocks': 0.14.10(@types/node@24.12.2)(typescript@6.0.3)
+      '@gorgias/sdk-spec-utils': 0.11.1
+      '@gorgias/workflows-spec': 0.3.4
+      '@gorgias/workflows-types': 0.4.16
+      lodash-es: 4.18.1
+      msw: 2.9.0(@types/node@24.12.2)(typescript@6.0.3)
+    transitivePeerDependencies:
+      - '@types/node'
+      - typescript
+
+  '@gorgias/workflows-queries@0.2.40(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@gorgias/workflows-client': 0.3.29
+      '@gorgias/workflows-types': 0.4.16
+      '@tanstack/react-query': 4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
+    transitivePeerDependencies:
+      - debug
+      - react
+      - react-dom
+      - react-native
+
+  '@gorgias/workflows-spec@0.3.4': {}
+
+  '@gorgias/workflows-types@0.4.16': {}
 
   '@hono/node-server@1.19.11(hono@4.12.7)':
     dependencies:
@@ -35161,7 +35222,7 @@ snapshots:
       sockjs: 0.3.24
       spdy: 4.0.2
       webpack-dev-middleware: 7.4.2
-      ws: 8.18.0
+      ws: 8.20.0
     transitivePeerDependencies:
       - bufferutil
       - debug
