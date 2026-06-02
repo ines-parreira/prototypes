@@ -4,11 +4,23 @@ import type { TicketThreadItemType } from '@repo/ticket-thread'
 
 import { useTicketThreadMessageStats } from '../useTicketThreadMessageStats'
 
-const msg = (tag: string, datetime = '2024-01-01T10:00:00Z') =>
-    ({ _tag: tag, datetime, data: {} }) as unknown as TicketThreadItemType
+const msg = (
+    tag: string,
+    fromAgent: boolean,
+    datetime = '2024-01-01T10:00:00Z',
+) =>
+    ({
+        _tag: tag,
+        datetime,
+        data: { from_agent: fromAgent },
+    }) as unknown as TicketThreadItemType
 
 const grouped = (
-    msgs: Array<{ _tag: string; datetime: string }>,
+    msgs: Array<{
+        _tag: string
+        datetime: string
+        data: { from_agent: boolean }
+    }>,
     datetime = '2024-01-01T10:00:00Z',
 ) =>
     ({
@@ -29,11 +41,16 @@ describe('useTicketThreadMessageStats', () => {
         expect(result.current.latestMessageDatetime).toBeNull()
     })
 
-    it('counts regular and AI agent messages as external', () => {
+    it('counts messages from agents and bots as internal', () => {
         const items = [
-            msg(TicketThreadItemTag.Messages.Message, '2024-01-01T10:00:00Z'),
+            msg(
+                TicketThreadItemTag.Messages.Message,
+                true,
+                '2024-01-01T10:00:00Z',
+            ),
             msg(
                 TicketThreadItemTag.Messages.AiAgentMessage,
+                true,
                 '2024-01-01T11:00:00Z',
             ),
         ]
@@ -41,21 +58,24 @@ describe('useTicketThreadMessageStats', () => {
         const { result } = renderHook(() => useTicketThreadMessageStats(items))
 
         expect(result.current.messageCount).toBe(2)
-        expect(result.current.hasExternalMessages).toBe(true)
-        expect(result.current.hasInternalMessages).toBe(false)
+        expect(result.current.hasInternalMessages).toBe(true)
+        expect(result.current.hasExternalMessages).toBe(false)
     })
 
-    it('counts internal notes and AI agent internal notes as internal', () => {
+    it('counts messages from customers as external', () => {
         const items = [
-            msg(TicketThreadItemTag.Messages.InternalNote),
-            msg(TicketThreadItemTag.Messages.AiAgentInternalNote),
+            msg(
+                TicketThreadItemTag.Messages.Message,
+                false,
+                '2024-01-01T10:00:00Z',
+            ),
         ]
 
         const { result } = renderHook(() => useTicketThreadMessageStats(items))
 
-        expect(result.current.messageCount).toBe(2)
-        expect(result.current.hasInternalMessages).toBe(true)
-        expect(result.current.hasExternalMessages).toBe(false)
+        expect(result.current.messageCount).toBe(1)
+        expect(result.current.hasExternalMessages).toBe(true)
+        expect(result.current.hasInternalMessages).toBe(false)
     })
 
     it('ignores non-message items such as events and rule suggestions', () => {
@@ -82,10 +102,12 @@ describe('useTicketThreadMessageStats', () => {
                 {
                     _tag: TicketThreadItemTag.Messages.Message,
                     datetime: '2024-01-01T10:00:00Z',
+                    data: { from_agent: false },
                 },
                 {
-                    _tag: TicketThreadItemTag.Messages.InternalNote,
+                    _tag: TicketThreadItemTag.Messages.Message,
                     datetime: '2024-01-01T11:00:00Z',
+                    data: { from_agent: true },
                 },
             ]),
         ]
@@ -99,14 +121,24 @@ describe('useTicketThreadMessageStats', () => {
 
     it('detects the handover message and counts messages that come after it', () => {
         const items = [
-            msg(TicketThreadItemTag.Messages.Message, '2024-01-01T09:00:00Z'),
+            msg(
+                TicketThreadItemTag.Messages.Message,
+                false,
+                '2024-01-01T09:00:00Z',
+            ),
             msg(
                 TicketThreadItemTag.Messages.AiAgentHandoverMessage,
+                true,
                 '2024-01-01T10:00:00Z',
             ),
-            msg(TicketThreadItemTag.Messages.Message, '2024-01-01T11:00:00Z'),
             msg(
-                TicketThreadItemTag.Messages.InternalNote,
+                TicketThreadItemTag.Messages.Message,
+                false,
+                '2024-01-01T11:00:00Z',
+            ),
+            msg(
+                TicketThreadItemTag.Messages.Message,
+                true,
                 '2024-01-01T12:00:00Z',
             ),
         ]
@@ -120,10 +152,19 @@ describe('useTicketThreadMessageStats', () => {
 
     it('does not count messages before the handover in messagesAfterHandover', () => {
         const items = [
-            msg(TicketThreadItemTag.Messages.Message, '2024-01-01T08:00:00Z'),
-            msg(TicketThreadItemTag.Messages.Message, '2024-01-01T09:00:00Z'),
+            msg(
+                TicketThreadItemTag.Messages.Message,
+                false,
+                '2024-01-01T08:00:00Z',
+            ),
+            msg(
+                TicketThreadItemTag.Messages.Message,
+                false,
+                '2024-01-01T09:00:00Z',
+            ),
             msg(
                 TicketThreadItemTag.Messages.AiAgentHandoverMessage,
+                true,
                 '2024-01-01T10:00:00Z',
             ),
         ]
@@ -136,13 +177,19 @@ describe('useTicketThreadMessageStats', () => {
 
     it('tracks the latest message datetime across all message types', () => {
         const items = [
-            msg(TicketThreadItemTag.Messages.Message, '2024-01-01T08:00:00Z'),
             msg(
-                TicketThreadItemTag.Messages.InternalNote,
+                TicketThreadItemTag.Messages.Message,
+                false,
+                '2024-01-01T08:00:00Z',
+            ),
+            msg(
+                TicketThreadItemTag.Messages.Message,
+                true,
                 '2024-01-01T12:00:00Z',
             ),
             msg(
                 TicketThreadItemTag.Messages.AiAgentMessage,
+                true,
                 '2024-01-01T06:00:00Z',
             ),
         ]
@@ -156,9 +203,14 @@ describe('useTicketThreadMessageStats', () => {
 
     it('includes the handover message datetime in the latest datetime comparison', () => {
         const items = [
-            msg(TicketThreadItemTag.Messages.Message, '2024-01-01T10:00:00Z'),
+            msg(
+                TicketThreadItemTag.Messages.Message,
+                false,
+                '2024-01-01T10:00:00Z',
+            ),
             msg(
                 TicketThreadItemTag.Messages.AiAgentHandoverMessage,
+                true,
                 '2024-01-01T15:00:00Z',
             ),
         ]
@@ -176,10 +228,12 @@ describe('useTicketThreadMessageStats', () => {
                 {
                     _tag: TicketThreadItemTag.Messages.Message,
                     datetime: '2024-01-01T09:00:00Z',
+                    data: { from_agent: false },
                 },
                 {
-                    _tag: TicketThreadItemTag.Messages.InternalNote,
+                    _tag: TicketThreadItemTag.Messages.Message,
                     datetime: '2024-01-01T14:00:00Z',
+                    data: { from_agent: true },
                 },
             ]),
         ]

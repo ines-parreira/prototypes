@@ -3,11 +3,6 @@ import { useMemo } from 'react'
 import type { TicketThreadItemType } from '@repo/ticket-thread'
 import { TicketThreadItemTag } from '@repo/ticket-thread'
 
-const INTERNAL_MESSAGE_TAGS: ReadonlySet<string> = new Set([
-    TicketThreadItemTag.Messages.InternalNote,
-    TicketThreadItemTag.Messages.AiAgentInternalNote,
-])
-
 const MESSAGE_TAGS: Set<string> = new Set(
     Object.values(TicketThreadItemTag.Messages),
 )
@@ -15,6 +10,7 @@ const MESSAGE_TAGS: Set<string> = new Set(
 type MessageItemBase = {
     _tag: string
     datetime: string
+    data: { from_agent: boolean }
 }
 
 function isMessageItem(
@@ -58,7 +54,7 @@ export function useTicketThreadMessageStats(
                 for (const msg of item.data) {
                     total++
                     if (hasHandover) afterHandover++
-                    if (INTERNAL_MESSAGE_TAGS.has(msg._tag)) {
+                    if (msg.data.from_agent) {
                         hasInternal = true
                     } else {
                         hasExternal = true
@@ -71,7 +67,7 @@ export function useTicketThreadMessageStats(
             if (isMessageItem(item)) {
                 total++
                 if (hasHandover) afterHandover++
-                if (INTERNAL_MESSAGE_TAGS.has(item._tag)) {
+                if (item.data.from_agent) {
                     hasInternal = true
                 } else {
                     hasExternal = true
