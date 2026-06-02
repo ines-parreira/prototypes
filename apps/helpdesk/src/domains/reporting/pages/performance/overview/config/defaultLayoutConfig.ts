@@ -58,5 +58,23 @@ export const DEFAULT_PERFORMANCE_OVERVIEW_LAYOUT: DashboardLayoutConfig<Performa
                     },
                 ],
             },
+            {
+                id: 'breakdown',
+                type: ChartType.Table,
+                tableTitle: 'Performance breakdown',
+                items: [
+                    {
+                        chartId: PerformanceOverviewChart.ChannelTable,
+                        gridSize: 12,
+                        visibility: true,
+                        visibleColumns: [
+                            'resolutionTime',
+                            'firstResponseTime',
+                            'messagesPerTicket',
+                            'averageCsat',
+                        ],
+                    },
+                ],
+            },
         ],
     }

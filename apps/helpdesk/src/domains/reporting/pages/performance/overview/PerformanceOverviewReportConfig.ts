@@ -16,6 +16,11 @@ import {
     ChartType,
     DataExportFormat,
 } from 'domains/reporting/pages/dashboards/types'
+import {
+    fetchPerformanceOverviewChannelAsConfigurableTable,
+    PERFORMANCE_OVERVIEW_CHANNEL_TABLE,
+    PerformanceOverviewChannelTable,
+} from 'domains/reporting/pages/performance/overview/charts/breakdownTables/PerformanceOverviewChannelTable'
 import { OverviewAverageCSATCard } from 'domains/reporting/pages/performance/overview/charts/kpiCharts/OverviewAverageCSATCard'
 import { OverviewClosedTicketsCard } from 'domains/reporting/pages/performance/overview/charts/kpiCharts/OverviewClosedTicketsCard'
 import { OverviewCreatedTicketsCard } from 'domains/reporting/pages/performance/overview/charts/kpiCharts/OverviewCreatedTicketsCard'
@@ -38,6 +43,7 @@ export enum PerformanceOverviewChart {
     ClosedTicketsCard = 'performance-overview-closed-tickets-card',
     TicketsRepliedCard = 'performance-overview-tickets-replied-card',
     MessagesSentCard = 'performance-overview-messages-sent-card',
+    ChannelTable = 'performance-overview-channel-table',
 }
 
 export const PerformanceOverviewReportConfig: ReportConfig<PerformanceOverviewChart> =
@@ -196,6 +202,18 @@ export const PerformanceOverviewReportConfig: ReportConfig<PerformanceOverviewCh
                 chartType: ChartType.CardWithTimeseries,
                 metricFormat: 'decimal',
                 interpretAs: 'neutral',
+            },
+            [PerformanceOverviewChart.ChannelTable]: {
+                chartComponent: PerformanceOverviewChannelTable,
+                label: PERFORMANCE_OVERVIEW_CHANNEL_TABLE.title,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.ConfigurableTable,
+                        fetch: fetchPerformanceOverviewChannelAsConfigurableTable,
+                    },
+                ],
+                description: PERFORMANCE_OVERVIEW_CHANNEL_TABLE.description,
+                chartType: ChartType.Table,
             },
         },
         reportFilters: {

@@ -120,7 +120,7 @@ export function TablesSection<TChart extends string>({
         >
             {section.tableTitle && (
                 <Box className={css.header}>
-                    <Heading size="sm" className={css.title}>
+                    <Heading size="md" className={css.title}>
                         {section.tableTitle}
                     </Heading>
                 </Box>

@@ -476,7 +476,10 @@ type DimensionOf<TMeta extends ScopeMeta> =
             : never
         : never
 
-type BreakdownQueryHandle<TMeta extends ScopeMeta, TContext extends Context> = {
+export type BreakdownQueryHandle<
+    TMeta extends ScopeMeta,
+    TContext extends Context,
+> = {
     config: TMeta
     build: (ctx: TContext) => BuiltQuery<TMeta>
 }
