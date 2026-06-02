@@ -6,6 +6,7 @@ import {
 } from '@repo/utils'
 
 import type { MessageBodyItem } from '../MessageBody'
+import { normalizeTicketMessageHtml } from './normalizeTicketMessageHtml'
 
 function normalizeContent(content: string): string {
     return content.replace(/\s+/g, '')
@@ -61,7 +62,9 @@ export function getMessageContent(
     const linkifiedContent = isHtml
         ? linkifyHtml(parsedMedia)
         : linkifyString(parsedMedia)
-    const sanitizedHtml = sanitizeHtmlDefault(linkifiedContent)
+    const sanitizedHtml = normalizeTicketMessageHtml(
+        sanitizeHtmlDefault(linkifiedContent),
+    )
 
     const messageMeta = meta as {
         body_html_truncated?: boolean
