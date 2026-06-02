@@ -33,6 +33,10 @@ describe('segmentTracker', () => {
         window.USER_IMPERSONATED = null
     })
 
+    it('should not configure deprecated events', () => {
+        expect(deprecatedEvents).toEqual([])
+    })
+
     describe('logEvent', () => {
         it('should track a non-deprecated event', () => {
             logEvent(SegmentEvent.AiAgentCopiedToEditor, { prop: 'value' })
@@ -42,13 +46,6 @@ describe('segmentTracker', () => {
                 SegmentEvent.AiAgentCopiedToEditor,
                 { prop: 'value' },
             )
-        })
-
-        it('should not track a deprecated event', () => {
-            const deprecatedEvent = deprecatedEvents[0]
-            logEvent(deprecatedEvent, { prop: 'value' })
-
-            expect(window.analytics.track).not.toHaveBeenCalled()
         })
 
         it('should not track when the user is impersonated', () => {
@@ -213,13 +210,6 @@ describe('segmentTracker', () => {
                 SegmentEvent.AiAgentCopiedToEditor,
                 {},
             )
-        })
-
-        it('should not track a deprecated event even when sampled', () => {
-            const deprecatedEvent = deprecatedEvents[0]
-            logEventWithSampling(deprecatedEvent, {}, 1)
-
-            expect(window.analytics.track).not.toHaveBeenCalled()
         })
     })
 

@@ -32,9 +32,6 @@ const useTicketInfobarNavigationMock = useTicketInfobarNavigation as jest.Mock
 
 jest.mock('@repo/ai-agent', () => ({
     useCanAccessAIFeedback: jest.fn(),
-    useFeedbackTracking: jest.fn(() => ({
-        onFeedbackTabOpened: jest.fn(),
-    })),
 }))
 const useCanAccessAIFeedbackMock = assumeMock(useCanAccessAIFeedback)
 

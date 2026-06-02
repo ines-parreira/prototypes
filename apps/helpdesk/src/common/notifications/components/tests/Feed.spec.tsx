@@ -2,11 +2,6 @@ import type { ComponentProps } from 'react'
 
 import { useKnockFeed } from '@knocklabs/react'
 import type { NotificationFeed, RenderItemProps } from '@knocklabs/react'
-import {
-    logEvent,
-    NotificationCenterEventTypes,
-    SegmentEvent,
-} from '@repo/logging'
 import { assumeMock, render, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
@@ -44,14 +39,6 @@ jest.mock('@knocklabs/react', () => {
 })
 const useKnockFeedMock = assumeMock(useKnockFeed)
 
-jest.mock(
-    '@repo/logging',
-    () =>
-        ({
-            ...jest.requireActual('@repo/logging'),
-            logEvent: jest.fn(),
-        }) as typeof import('@repo/logging'),
-)
 jest.mock(
     '../FeedHeader',
     () =>
@@ -112,10 +99,6 @@ describe('Feed', () => {
     it('should mark as read an unread notification on toggle', () => {
         render(<Feed />)
         userEvent.click(screen.getByText('onToggleRead'))
-        expect(logEvent).toHaveBeenCalledWith(SegmentEvent.NotificationCenter, {
-            type: NotificationCenterEventTypes.StatusToggled,
-            status: 'read',
-        })
         expect(markAsRead).toHaveBeenCalledWith(defaultItem)
     })
 
@@ -125,10 +108,6 @@ describe('Feed', () => {
 
         render(<Feed />)
         userEvent.click(screen.getByText('onToggleRead'))
-        expect(logEvent).toHaveBeenCalledWith(SegmentEvent.NotificationCenter, {
-            type: NotificationCenterEventTypes.StatusToggled,
-            status: 'unread',
-        })
         expect(markAsUnread).toHaveBeenCalledWith(readItem)
     })
 
@@ -137,9 +116,6 @@ describe('Feed', () => {
 
         render(<Feed onClose={onClose} />)
         userEvent.click(screen.getByText('FeedItem'))
-        expect(logEvent).toHaveBeenCalledWith(SegmentEvent.NotificationCenter, {
-            type: NotificationCenterEventTypes.FeedItemClicked,
-        })
         expect(markAsRead).toHaveBeenCalledWith(defaultItem)
         expect(onClose).toHaveBeenCalledWith()
     })

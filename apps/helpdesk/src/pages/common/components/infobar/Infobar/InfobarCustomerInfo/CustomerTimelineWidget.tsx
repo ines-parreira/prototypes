@@ -19,7 +19,6 @@ import { WidgetEnvironment } from 'state/widgets/types'
 import { TIMELINE_SEARCH_PARAM } from 'timeline/constants'
 import { useTicketList } from 'timeline/hooks/useTicketList'
 import { useTimelinePanel } from 'timeline/hooks/useTimelinePanel'
-import { useTrackTimelineToggle } from 'timeline/hooks/useTrackTimelineToggle'
 
 import css from './CustomerTimelineWidget.less'
 
@@ -130,8 +129,6 @@ export function CustomerTimelineWidget({ isEditing, shopperId }: Props) {
     const { tickets, isLoading } = useTicketList(shopperId)
 
     let isAnotherTimelineOpen = isOpen && timelineShopperId !== shopperId
-
-    useTrackTimelineToggle()
 
     // We want to remove the timeline if the customer related to it
     // is not displayed anymore.

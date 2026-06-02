@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef } from 'react'
 
 import { useDebouncedValue } from '@repo/hooks'
-import { logEvent, SegmentEvent } from '@repo/logging'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import _flatten from 'lodash/flatten'
 import _isEqual from 'lodash/isEqual'
@@ -21,8 +20,6 @@ type Props = {
     params: Filters
     ticket?: Ticket
 }
-
-type FilterKey = keyof Filters
 
 export const STALE_TIME_MS = 15 * 60 * 1000 // 15 minutes
 
@@ -53,23 +50,6 @@ export default function useMacrosSearch({ params, ticket }: Props) {
     useEffect(() => {
         if (_isEqual(debouncedSearchOptions, previousSearchOptions.current)) {
             return
-        }
-        let changed: string[] = []
-        if (previousSearchOptions.current) {
-            changed = (Object.keys(debouncedSearchOptions) as FilterKey[])
-                .filter(
-                    (fieldName) =>
-                        debouncedSearchOptions[fieldName] !==
-                        previousSearchOptions.current![fieldName],
-                )
-                .map((fieldName) => fieldName)
-        }
-
-        if (!!changed.length) {
-            logEvent(SegmentEvent.TicketMacrosSearch, {
-                ...debouncedSearchOptions,
-                changed,
-            })
         }
         previousSearchOptions.current = debouncedSearchOptions
     }, [debouncedSearchOptions])

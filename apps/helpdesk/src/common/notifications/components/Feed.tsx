@@ -6,11 +6,6 @@ import type {
     RenderItemProps,
 } from '@knocklabs/react'
 import { NotificationFeed, useKnockFeed } from '@knocklabs/react'
-import {
-    logEvent,
-    NotificationCenterEventTypes,
-    SegmentEvent,
-} from '@repo/logging'
 
 import type { RawNotification } from '../types'
 import transformKnockNotification from '../utils/transformKnockNotification'
@@ -28,9 +23,6 @@ export default function Feed({ onClose }: Props) {
 
     const handleClickNotification = useCallback(
         (item: KnockFeedItem) => {
-            logEvent(SegmentEvent.NotificationCenter, {
-                type: NotificationCenterEventTypes.FeedItemClicked,
-            })
             void feedClient.markAsRead(item)
             onClose?.()
         },
@@ -41,10 +33,6 @@ export default function Feed({ onClose }: Props) {
         (item: KnockFeedItem) => {
             const isRead = !!item.read_at
 
-            logEvent(SegmentEvent.NotificationCenter, {
-                type: NotificationCenterEventTypes.StatusToggled,
-                status: isRead ? 'unread' : 'read',
-            })
             isRead
                 ? void feedClient.markAsUnread(item)
                 : void feedClient.markAsRead(item)

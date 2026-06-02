@@ -1,7 +1,5 @@
 import { useCallback, useEffect } from 'react'
 
-import { logEvent, SegmentEvent } from '@repo/logging'
-
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import Label from 'custom-fields/components/Label'
@@ -41,15 +39,6 @@ export default function DropdownField(props: Props) {
     const isValueEmpty = isCustomFieldValueEmpty(value)
     const hasError = props.fieldState?.hasError
     const inputId = createInputId(ticketId, id)
-
-    // Log an event in Semgent when the dropdown is focused
-    const handleFocus = () => {
-        logEvent(SegmentEvent.CustomFieldTicketValueDropdownFocused, {
-            ticketId,
-            id,
-            label: props.label,
-        })
-    }
 
     // Update the field in the back-end when the value changes
     const onError = useCallback(() => {
@@ -109,7 +98,6 @@ export default function DropdownField(props: Props) {
                 prediction={props.fieldState?.prediction}
                 inputId={inputId}
                 onChange={handleChange}
-                onFocus={handleFocus}
                 {...props}
                 choices={props.choices || []}
             />

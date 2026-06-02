@@ -191,7 +191,6 @@ jest.mock('@repo/ai-agent', () => ({
     ...jest.requireActual('@repo/ai-agent'),
     useCanAccessAIFeedback: jest.fn(),
     useFeedbackTracking: jest.fn(() => ({
-        onFeedbackTabOpened: jest.fn(),
         onKnowledgeResourceClick: jest.fn(),
     })),
     useReasoningTracking: jest.fn(() => ({

@@ -1,6 +1,5 @@
 import type { ComponentProps } from 'react'
 
-import { logEvent, SegmentEvent } from '@repo/logging'
 import { render, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
@@ -35,15 +34,6 @@ jest.mock(
                 data-height={height}
             />
         ),
-)
-
-jest.mock(
-    '@repo/logging',
-    () =>
-        ({
-            ...jest.requireActual('@repo/logging'),
-            logEvent: jest.fn(),
-        }) as typeof import('@repo/logging'),
 )
 
 const sharedProps: ComponentProps<typeof Content> = {
@@ -309,7 +299,6 @@ describe('Content', () => {
         )
 
         userEvent.click(getByText('…'))
-        expect(logEvent).toHaveBeenCalledWith(SegmentEvent.MessageThreadClicked)
         expect(toggleQuote).toHaveBeenCalledWith(1)
     })
 
@@ -328,9 +317,6 @@ describe('Content', () => {
         )
 
         userEvent.click(getByText('…'))
-        expect(logEvent).not.toHaveBeenCalledWith(
-            SegmentEvent.MessageThreadClicked,
-        )
         expect(toggleQuote).toHaveBeenCalledWith(1)
     })
 

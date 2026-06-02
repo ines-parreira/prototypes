@@ -51,7 +51,7 @@ export function TicketActions(ticket: TicketActionsProps) {
         isMergeTicketsModalOpen,
         handleMergeTicketsModalToggle,
         handleMergeTicketsModalClick,
-    } = useMergeTicketsWorflow(ticket.id)
+    } = useMergeTicketsWorflow()
 
     const {
         canTrashTicket,

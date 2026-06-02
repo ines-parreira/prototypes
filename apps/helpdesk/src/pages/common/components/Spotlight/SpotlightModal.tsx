@@ -169,7 +169,6 @@ const SpotlightModal = ({ isOpen, onCloseModal }: Props) => {
                 break
             case Tabs.Tickets:
                 setSearchItemsType(ViewType.TicketList)
-                logEvent(SegmentEvent.GlobalSearchTicketTabClick)
                 break
             case Tabs.All:
                 setSearchItemsType(ViewType.All)

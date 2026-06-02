@@ -1,6 +1,5 @@
 import type { ComponentProps } from 'react'
 
-import { logEvent } from '@repo/logging'
 import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -14,9 +13,6 @@ import { user } from 'fixtures/users'
 import type { RootState } from 'state/types'
 
 import MacroListContainer from '../MacroList'
-
-jest.mock('@repo/logging')
-const logEventMock = logEvent as jest.Mock
 
 const mockStore = configureMockStore([thunk])
 
@@ -75,28 +71,6 @@ describe('MacroList component', () => {
         expect(screen.getByText(macros[2].name!)).toHaveClass('disabled')
     })
 
-    it('should send event to segment on send', () => {
-        const { getAllByText } = render(
-            <Provider store={mockStore(defaultStore)}>
-                <MacroListContainer
-                    {...minProps}
-                    currentMacro={macros[1]}
-                    areExternalActionsDisabled
-                />
-            </Provider>,
-        )
-        fireEvent.click(getAllByText('Pizza Capricciosa')[0])
-        expect(logEventMock.mock.calls[0]).toEqual([
-            'macro-applied-searchbar',
-            {
-                is_recommended: false,
-                macro_id: 2,
-                rank: undefined,
-                user_id: 2,
-            },
-        ])
-    })
-
     it('should call onHoverItem when hovering over macro items', () => {
         const onHoverItemMock = jest.fn()
         render(
@@ -129,7 +103,6 @@ describe('MacroList component', () => {
 
         fireEvent.click(screen.getByText(macros[2].name!))
         expect(onClickItemMock).not.toHaveBeenCalled()
-        expect(logEventMock).not.toHaveBeenCalled()
     })
 
     it('should call onClickItem when clicking on enabled macro', () => {

@@ -1,4 +1,3 @@
-import { logEvent, SegmentEvent } from '@repo/logging'
 import { render } from '@repo/testing'
 import * as platform from '@repo/utils'
 import { waitFor } from '@testing-library/react'
@@ -76,9 +75,6 @@ describe('<SpotlightSearchButton />', () => {
 
         await user.click(getByRole('button', { name: /search/i }))
 
-        expect(logEvent).toHaveBeenCalledWith(
-            SegmentEvent.GlobalSearchOpenButtonClick,
-        )
         expect(mockSetIsOpen).toHaveBeenCalledWith(true)
     })
 

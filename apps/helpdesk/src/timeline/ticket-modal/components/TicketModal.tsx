@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { logEvent, SegmentEvent } from '@repo/logging'
 import cn from 'classnames'
 import { useHistory } from 'react-router-dom'
 
@@ -41,7 +40,6 @@ export function TicketModal({
 
     const handleExpandTicketClick = useCallback(
         (event: React.MouseEvent<HTMLAnchorElement>) => {
-            logEvent(SegmentEvent.CustomerTimelineModalViewTicketClicked)
             if (!event.metaKey) {
                 event.preventDefault()
                 history.push(`/app/ticket/${ticketId}`)

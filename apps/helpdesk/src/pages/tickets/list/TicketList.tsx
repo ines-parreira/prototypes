@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useTitle } from '@repo/hooks'
-import { logEvent, SearchRankSource, SegmentEvent } from '@repo/logging'
+import { SearchRankSource } from '@repo/logging'
 import {
     useCurrentUserLanguagePreferences,
     useTicketsTranslatedProperties,
@@ -83,10 +83,6 @@ const TicketList = () => {
     const onComplete = useCallback(
         (ids: List<any>) => {
             dispatch(updateSelectedItemsIds(ids))
-            logEvent(SegmentEvent.BulkAction, {
-                type: 'apply-macro',
-                location: 'full-width-mode',
-            })
         },
         [dispatch],
     )

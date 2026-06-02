@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { usePrevious } from '@repo/hooks'
-import { logEvent, SegmentEvent } from '@repo/logging'
 import { NavigationSectionItem, useSidebar } from '@repo/navigation'
 import { IconWithDot } from '@repo/tickets'
 import classnames from 'classnames'
@@ -31,7 +30,7 @@ type ItemProps = {
     position: number
 }
 
-const RecentChatsItem = ({ recentTicket, position }: ItemProps) => {
+const RecentChatsItem = ({ recentTicket }: ItemProps) => {
     const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
     const dispatch = useAppDispatch()
     const channel = recentTicket.get('channel')
@@ -48,10 +47,6 @@ const RecentChatsItem = ({ recentTicket, position }: ItemProps) => {
     const { isCollapsed } = useSidebar()
 
     const onClick = () => {
-        logEvent(SegmentEvent.RecentActivityClicked, {
-            position,
-            ticket: recentTicket.toJS(),
-        })
         dispatch(closePanels())
         dispatch(setViewActive(fromJS({})))
         dispatch(activeViewIdSet(null))
@@ -87,10 +82,6 @@ const RecentChatsItem = ({ recentTicket, position }: ItemProps) => {
                 label={customerName}
                 to={`/app/ticket/${recentTicket.get('id')}`}
                 onClick={() => {
-                    logEvent(SegmentEvent.RecentActivityClicked, {
-                        position,
-                        ticket: recentTicket.toJS(),
-                    })
                     onClick()
                 }}
                 leadingSlot={

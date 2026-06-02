@@ -1,4 +1,3 @@
-import { logEvent, SegmentEvent } from '@repo/logging'
 import { useConditionalShortcuts } from '@repo/utils'
 
 import { Button, Tooltip, TooltipContent } from '@gorgias/axiom'
@@ -24,9 +23,6 @@ export function TicketViewNavigator() {
                         return
                     }
 
-                    logEvent(
-                        SegmentEvent.TicketKeyboardShortcutsPreviousNavigation,
-                    )
                     void handleGoToPreviousViewTicket()
                 },
             },
@@ -36,7 +32,6 @@ export function TicketViewNavigator() {
                         return
                     }
 
-                    logEvent(SegmentEvent.TicketKeyboardShortcutsNextNavigation)
                     void handleGoToNextViewTicket()
                 },
             },

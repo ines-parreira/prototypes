@@ -1,7 +1,5 @@
 import { useCallback, useState } from 'react'
 
-import { logEvent, SegmentEvent } from '@repo/logging'
-
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import Label from 'custom-fields/components/Label'
@@ -105,14 +103,6 @@ export default function TextField({
                     isDisabled={isDisabled}
                     onFocus={() => {
                         setActive(true)
-                        logEvent(
-                            SegmentEvent.CustomFieldTicketValueInputFocused,
-                            {
-                                ticketId,
-                                id,
-                                label,
-                            },
-                        )
                     }}
                     onBlur={() => {
                         setActive(false)

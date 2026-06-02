@@ -1,4 +1,3 @@
-import { logEvent, SegmentEvent } from '@repo/logging'
 import { renderHook } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -9,14 +8,6 @@ import * as useCustomFieldDefinitionsModule from '../hooks/useCustomFieldDefinit
 import * as useCustomFieldsConditionsEvaluationResultsModule from '../hooks/useCustomFieldsConditionsEvaluationResults'
 import { useTicketFieldsValidation } from '../hooks/useTicketFieldsValidation'
 import { useTicketFieldsStore } from '../store/useTicketFieldsStore'
-
-vi.mock('@repo/logging', () => ({
-    logEvent: vi.fn(),
-    SegmentEvent: {
-        CustomFieldTicketValueRequiredMissingError:
-            'CustomFieldTicketValueRequiredMissingError',
-    },
-}))
 
 vi.mock('../hooks/useCustomFieldDefinitions')
 vi.mock('../hooks/useCustomFieldsConditionsEvaluationResults')
@@ -64,7 +55,6 @@ describe('useTicketFieldsValidation', () => {
 
         expect(validation.hasErrors).toBe(false)
         expect(validation.invalidFieldIds).toEqual([])
-        expect(logEvent).not.toHaveBeenCalled()
     })
 
     it('should return hasErrors: true when required fields are empty', () => {
@@ -330,11 +320,6 @@ describe('useTicketFieldsValidation', () => {
         const { result } = renderHook(() => useTicketFieldsValidation(ticketId))
 
         result.current.validateTicketFields()
-
-        expect(logEvent).toHaveBeenCalledWith(
-            SegmentEvent.CustomFieldTicketValueRequiredMissingError,
-            { ticketId },
-        )
     })
 
     it('should not validate when data is loading', () => {
@@ -360,7 +345,6 @@ describe('useTicketFieldsValidation', () => {
 
         expect(validation.hasErrors).toBe(false)
         expect(validation.invalidFieldIds).toEqual([])
-        expect(logEvent).not.toHaveBeenCalled()
     })
 
     it('should not validate when conditions are loading', () => {
@@ -432,7 +416,6 @@ describe('useTicketFieldsValidation', () => {
 
         expect(validation.hasErrors).toBe(false)
         expect(validation.invalidFieldIds).toEqual([])
-        expect(logEvent).not.toHaveBeenCalled()
     })
 
     it('should fail validation when macro values only fill some required fields', () => {

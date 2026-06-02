@@ -1,6 +1,5 @@
 import { Component, createRef } from 'react'
 
-import { logEvent, SegmentEvent } from '@repo/logging'
 import { shortcutManager } from '@repo/utils'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -52,9 +51,6 @@ class MergeTicketsContainer extends Component<Props, State> {
             shortcutManager.bind('TicketDetailContainer')
         } else if (!prevProps.isOpen && this.props.isOpen) {
             shortcutManager.unbind('TicketDetailContainer')
-            logEvent(SegmentEvent.TicketMergeClicked, {
-                sourceTicketId: this.props.sourceTicket.get('id'),
-            })
         }
     }
 

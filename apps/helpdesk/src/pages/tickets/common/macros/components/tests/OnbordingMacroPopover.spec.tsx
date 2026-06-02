@@ -1,8 +1,7 @@
 import { useRef } from 'react'
 
-import { logEvent } from '@repo/logging'
 import { render } from '@repo/testing'
-import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import type { UserSetting } from 'config/types/user'
@@ -12,8 +11,6 @@ import { user } from 'fixtures/users'
 import type { RootState } from 'state/types'
 
 import OnbordingMacroPopover from '../OnbordingMacroPopover'
-
-jest.mock('@repo/logging')
 
 jest.mock('hooks/useAppDispatch.ts', () => {
     return {
@@ -249,35 +246,6 @@ describe('<OnbordingMacroPopover />', () => {
 
         expect(screen.queryByText('Revert back')).toBeFalsy()
         expect(onClearMacro).toHaveBeenCalledTimes(1)
-    })
-
-    it('should log segment when user revert back', async () => {
-        const userSettings: UserSetting[] = [
-            {
-                data: {
-                    show_macros: true,
-                    macros_default_to_search_popover: true,
-                    available: true,
-                },
-                id: 3,
-                type: UserSettingType.Preferences,
-            },
-        ]
-
-        user.settings = userSettings
-
-        const defaultState: Partial<RootState> = {
-            currentUser: fromJS(user),
-            ticket: fromJS(ticket),
-        }
-
-        renderPopover(defaultState)
-
-        fireEvent.click(await screen.findByText('Got it'))
-        fireEvent.click(await screen.findByText('Revert back'))
-        await waitFor(() => expect(logEvent).toHaveBeenCalled())
-
-        expect(screen.queryByText('Revert back')).toBeFalsy()
     })
 
     it("should not render popover if 'macro search' is hidden", () => {

@@ -1,7 +1,6 @@
 import type { ComponentProps } from 'react'
 
 import { useFlag } from '@repo/feature-flags'
-import { logEvent } from '@repo/logging'
 import { render } from '@repo/testing'
 import { TicketsLegacyBridgeProvider } from '@repo/tickets'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -26,7 +25,6 @@ jest.mock('lodash/sample', () => (array: unknown[]) => array[0])
 jest.mock('pages/common/components/button/ConfirmButton')
 jest.mock('providers/OutboundTranslationProvider')
 jest.mock('providers/standalone-ai/StandaloneAiContext')
-jest.mock('@repo/logging')
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
@@ -385,7 +383,6 @@ describe('<TicketSubmitButtons />', () => {
                 expect(mockSubmit).toHaveBeenCalledWith({
                     status: TicketStatus.Closed,
                 })
-                expect(logEvent).toHaveBeenCalled()
             })
 
             it('should not call closeTicket in legacy mode', async () => {
@@ -447,7 +444,6 @@ describe('<TicketSubmitButtons />', () => {
                 expect(mockValidateTicketFields).toHaveBeenCalled()
                 expect(mockSubmit).not.toHaveBeenCalled()
                 expect(mockCloseTicket).not.toHaveBeenCalled()
-                expect(logEvent).not.toHaveBeenCalled()
             })
         })
     })

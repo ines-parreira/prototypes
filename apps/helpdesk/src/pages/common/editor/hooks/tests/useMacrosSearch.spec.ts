@@ -1,9 +1,6 @@
-import * as debounceHook from '@repo/hooks'
-import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, renderHook } from '@repo/testing'
 import type { InfiniteQueryObserverSuccessResult } from '@tanstack/react-query'
 import * as reactQuery from '@tanstack/react-query'
-import { waitFor } from '@testing-library/react'
 
 import { ticket as defaultTicket } from 'fixtures/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -14,12 +11,8 @@ jest.mock('models/macro/resources', () => ({
     fetchMacros: jest.fn(),
 }))
 
-jest.mock('@repo/logging')
-
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 const useAppDispatchMock = assumeMock(useAppDispatch)
-
-const logEventMock = logEvent as jest.Mock
 
 jest.mock('@tanstack/react-query', () => ({
     ...jest.requireActual('@tanstack/react-query'),
@@ -90,33 +83,6 @@ describe('useMacrosSearch', () => {
             data: mockMacrosData,
             nextCursor: mockMeta.next_cursor,
         })
-    })
-
-    it('should log an event if a search is executed due to changing parameters', async () => {
-        const useDebouncedValueSpy = jest
-            .spyOn(debounceHook, 'useDebouncedValue')
-            .mockImplementation((value) => value)
-
-        const { rerender } = renderHook((options) => useMacrosSearch(options), {
-            initialProps: defaultOptions,
-        })
-
-        rerender({
-            ...defaultOptions,
-            params: { ...defaultOptions.params, search: 'beep' },
-        })
-
-        await waitFor(() => {
-            expect(logEventMock).toHaveBeenCalledWith(
-                SegmentEvent.TicketMacrosSearch,
-                {
-                    changed: ['search'],
-                    search: 'beep',
-                },
-            )
-        })
-
-        useDebouncedValueSpy.mockRestore()
     })
 
     it('should update received macros data', () => {

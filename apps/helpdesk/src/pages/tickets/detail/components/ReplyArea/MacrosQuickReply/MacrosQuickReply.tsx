@@ -1,19 +1,7 @@
-import { useCallback, useMemo } from 'react'
-
-import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
-import _debounce from 'lodash/debounce'
 import { UncontrolledTooltip } from 'reactstrap'
 
 import type { Macro } from '@gorgias/helpdesk-queries'
-
-import useAppSelector from 'hooks/useAppSelector'
-import { getCurrentAccountState } from 'state/currentAccount/selectors'
-import type { CurrentAccountState } from 'state/currentAccount/types'
-import { getCurrentUser } from 'state/currentUser/selectors'
-import type { CurrentUserState } from 'state/currentUser/types'
-import { DEPRECATED_getTicket } from 'state/ticket/selectors'
-import type { TicketState } from 'state/ticket/types'
 
 import { useStandaloneAiContext } from '../../../../../../providers/standalone-ai/StandaloneAiContext'
 import { MacroButton } from './MacroButton'
@@ -26,30 +14,7 @@ type Props = {
 }
 
 export const MacrosQuickReply = ({ macros, applyMacro }: Props) => {
-    const ticket = useAppSelector<TicketState>(DEPRECATED_getTicket)
-    const account = useAppSelector<CurrentAccountState>(getCurrentAccountState)
-    const user = useAppSelector<CurrentUserState>(getCurrentUser)
     const { isStandaloneAiAgent } = useStandaloneAiContext()
-
-    const baseSegmentPayload = useMemo(
-        () => ({
-            account_domain: account.get('domain'),
-            user_id: user.get('id'),
-            ticket_id: ticket.get('id'),
-        }),
-        [account, user, ticket],
-    )
-
-    const buttonHandleHover = useCallback(
-        (macroId: number | undefined, macroRank: number) => {
-            logEvent(SegmentEvent.MacrosQuickReplyGetDetails, {
-                ...baseSegmentPayload,
-                macroId,
-                macroRank,
-            })
-        },
-        [baseSegmentPayload],
-    )
 
     if (isStandaloneAiAgent) {
         return null
@@ -67,12 +32,6 @@ export const MacrosQuickReply = ({ macros, applyMacro }: Props) => {
                 <i
                     className={classnames('material-icons', 'mr-2')}
                     id="macro-suggestion-info"
-                    onMouseEnter={() =>
-                        logEvent(
-                            SegmentEvent.MacrosQuickReplyTooltip,
-                            baseSegmentPayload,
-                        )
-                    }
                 >
                     info_outline
                 </i>
@@ -81,23 +40,13 @@ export const MacrosQuickReply = ({ macros, applyMacro }: Props) => {
             <div className={css.macros}>
                 {macros
                     .filter((macro) => macro?.id)
-                    .map((macro, macroRank: number) => (
+                    .map((macro) => (
                         <MacroButton
                             macro={macro}
                             applyMacro={() => {
                                 void applyMacro(macro)
-                                logEvent(SegmentEvent.MacrosQuickReplySent, {
-                                    ...baseSegmentPayload,
-                                    macro_id: macro.id,
-                                    macro_rank: macroRank + 1,
-                                })
                             }}
                             key={macro.id}
-                            onHover={_debounce(
-                                () =>
-                                    buttonHandleHover(macro.id, macroRank + 1),
-                                500,
-                            )}
                         />
                     ))}
             </div>

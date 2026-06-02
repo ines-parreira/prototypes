@@ -1,6 +1,5 @@
 import type { ComponentProps } from 'react'
 
-import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -14,9 +13,6 @@ import type AssignUser from '../AssignUser'
 import BulkActions from '../BulkActions'
 import type CloseTickets from '../CloseTickets'
 import type MoreActions from '../MoreActions'
-
-jest.mock('@repo/logging')
-const logEventMock = assumeMock(logEvent)
 
 jest.mock(
     '../AssignUser',
@@ -138,12 +134,6 @@ describe('<BulkActions />', () => {
         await waitFor(() =>
             expect(mockCreateJob).toHaveBeenCalledWith(mockJobType, undefined),
         )
-        await waitFor(() =>
-            expect(logEventMock).toHaveBeenCalledWith(SegmentEvent.BulkAction, {
-                type: 'delete',
-                location: 'split-view-mode',
-            }),
-        )
     })
 
     it('should handle priority updates through launchJob', async () => {
@@ -161,11 +151,6 @@ describe('<BulkActions />', () => {
         // This would be called by MoreActions when priority is selected
         const launchJob = (job: any, params?: any, action?: any) => {
             mockCreateJob(job.type!, params)
-            logEvent(SegmentEvent.BulkAction, {
-                type: job.event,
-                location: 'split-view-mode',
-                value: params?.updates?.priority,
-            })
             minProps.onComplete(action)
         }
 
@@ -175,11 +160,6 @@ describe('<BulkActions />', () => {
             JobType.UpdateTicket,
             priorityParams,
         )
-        expect(logEventMock).toHaveBeenCalledWith(SegmentEvent.BulkAction, {
-            type: 'priority',
-            location: 'split-view-mode',
-            value: 'high',
-        })
         expect(minProps.onComplete).toHaveBeenCalledWith('priority')
     })
 })

@@ -10,10 +10,9 @@ import css from './MacroButton.less'
 type Props = {
     macro: Macro
     applyMacro: () => void
-    onHover: () => void
 }
 
-export const MacroButton = ({ macro, applyMacro, onHover }: Props) => {
+export const MacroButton = ({ macro, applyMacro }: Props) => {
     const [isPreviewOpen, setPreviewOpen] = useState(false)
     const buttonId = `macro-quick-reply-${macro.id}`
     return (
@@ -28,7 +27,6 @@ export const MacroButton = ({ macro, applyMacro, onHover }: Props) => {
                 intent="secondary"
                 onClick={applyMacro}
                 onMouseEnter={() => {
-                    onHover()
                     setPreviewOpen(true)
                 }}
                 onMouseLeave={() => setPreviewOpen(false)}

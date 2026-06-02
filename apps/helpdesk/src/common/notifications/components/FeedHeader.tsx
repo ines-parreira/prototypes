@@ -2,11 +2,6 @@ import React, { useCallback, useRef, useState } from 'react'
 
 import type { NotificationFeedHeaderProps } from '@knocklabs/react'
 import { FilterStatus, useKnockFeed } from '@knocklabs/react'
-import {
-    logEvent,
-    NotificationCenterEventTypes,
-    SegmentEvent,
-} from '@repo/logging'
 import cn from 'classnames'
 import _capitalize from 'lodash/capitalize'
 import { Link } from 'react-router-dom'
@@ -44,10 +39,6 @@ export default function FeedHeader({
 
     const handleFilterStatusChange = useCallback(
         (status: FilterStatus) => {
-            logEvent(SegmentEvent.NotificationCenter, {
-                type: NotificationCenterEventTypes.Filter,
-                value: status,
-            })
             setFilterStatus(status)
             setIsFilterDropdownOpen(false)
         },
@@ -55,9 +46,6 @@ export default function FeedHeader({
     )
 
     const markAllAsRead = useCallback(() => {
-        logEvent(SegmentEvent.NotificationCenter, {
-            type: NotificationCenterEventTypes.MarkAllAsRead,
-        })
         void feedClient.markAllAsRead()
     }, [feedClient])
 
@@ -120,9 +108,6 @@ export default function FeedHeader({
                         fillStyle="ghost"
                         intent="secondary"
                         onClick={() => {
-                            logEvent(SegmentEvent.NotificationCenter, {
-                                type: NotificationCenterEventTypes.GoToSettings,
-                            })
                             onToggleVisibility()
                         }}
                     >

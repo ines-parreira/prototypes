@@ -1,9 +1,8 @@
 import type { ComponentProps } from 'react'
 
-import { logEventWithSampling, SegmentEvent } from '@repo/logging'
 import { assumeMock, render } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { screen, waitFor } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -12,14 +11,12 @@ import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTick
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
 import { view } from 'fixtures/views'
-import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants'
 import { shouldDisplayAuditLogEvents as getShouldDisplayAuditLogEvents } from 'state/ticket/selectors'
 import type { RootState, StoreDispatch } from 'state/types'
 import { getSelectedAIMessage } from 'state/ui/ticketAIAgentFeedback'
 
 import AIAgentDraftMessage from '../../AIAgentDraftMessage/AIAgentDraftMessage'
 import {
-    BANNER_TYPE,
     DRAFT_MESSAGE_TAG,
     TRIAL_MESSAGE_TAG,
 } from '../../AIAgentFeedbackBar/constants'
@@ -32,11 +29,6 @@ jest.mock('tickets/ticket-detail/components/withMessageTranslations', () => ({
 
 jest.mock('state/ui/ticketAIAgentFeedback')
 jest.mock('state/ticket/selectors')
-jest.mock('@repo/logging', () => ({
-    ...jest.requireActual('@repo/logging'),
-    logEventWithSampling: jest.fn(),
-    logEvent: jest.fn(),
-}))
 jest.mock('common/utils/useIsTicketAfterFeedbackCollectionPeriod')
 jest.mock('models/knowledgeService/queries', () => ({
     useGetEarliestExecution: jest.fn(() => ({
@@ -93,7 +85,6 @@ const getSelectedAIMessageMock = assumeMock(getSelectedAIMessage)
 const getShouldDisplayAuditLogEventsMock = assumeMock(
     getShouldDisplayAuditLogEvents,
 )
-const logEventMock = assumeMock(logEventWithSampling)
 const useTicketIsAfterFeedbackCollectionPeriodMock = assumeMock(
     useTicketIsAfterFeedbackCollectionPeriod,
 )
@@ -257,155 +248,6 @@ describe('TicketMessages', () => {
             }),
             expect.anything(),
         )
-    })
-
-    it('should log AiAgentTicketViewed event with bannerType qa_failed for Draft message', async () => {
-        const props = {
-            ...defaultProps,
-            messages: [
-                {
-                    ...defaultProps.messages[0],
-                    body_html: DRAFT_MESSAGE_TAG,
-                    sender: {
-                        ...defaultProps.messages[0].sender,
-                        email: AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS[0],
-                    },
-                },
-            ],
-        }
-
-        render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(defaultState)}>
-                    <TicketMessages {...props} />
-                </Provider>
-            </QueryClientProvider>,
-        )
-
-        await waitFor(() => {
-            expect(logEventMock).toHaveBeenCalledWith(
-                SegmentEvent.AiAgentTicketViewed,
-                {
-                    accountId: 1,
-                    banner: 'qa_failed',
-                    userType: 'admin',
-                    viewedFrom: 'new-&-open-tickets',
-                },
-                1,
-            )
-        })
-    })
-
-    it('should log AiAgentTicketViewed event with bannerType trial for Trial message', async () => {
-        const props = {
-            ...defaultProps,
-            messages: [
-                {
-                    ...defaultProps.messages[0],
-                    body_html: TRIAL_MESSAGE_TAG,
-                    sender: {
-                        ...defaultProps.messages[0].sender,
-                        email: AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS[0],
-                    },
-                },
-            ],
-        }
-
-        render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(defaultState)}>
-                    <TicketMessages {...props} />
-                </Provider>
-            </QueryClientProvider>,
-        )
-
-        await waitFor(() => {
-            expect(logEventMock).toHaveBeenCalledWith(
-                SegmentEvent.AiAgentTicketViewed,
-                {
-                    accountId: 1,
-                    banner: 'trial',
-                    userType: 'admin',
-                    viewedFrom: 'new-&-open-tickets',
-                },
-                1,
-            )
-        })
-    })
-
-    it('should log AiAgentTicketViewed event with bannerType thumbs_up_and_down for ai agent message', async () => {
-        const props = {
-            ...defaultProps,
-            messages: [
-                {
-                    ...defaultProps.messages[0],
-                    body_html: 'message',
-                    public: false,
-                    sender: {
-                        ...defaultProps.messages[0].sender,
-                        email: AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS[0],
-                    },
-                },
-            ],
-        }
-
-        render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(defaultState)}>
-                    <TicketMessages {...props} />
-                </Provider>
-            </QueryClientProvider>,
-        )
-
-        await waitFor(() => {
-            expect(logEventMock).toHaveBeenCalledWith(
-                SegmentEvent.AiAgentTicketViewed,
-                {
-                    accountId: 1,
-                    banner: BANNER_TYPE.THUMBS_UP_AND_DOWN,
-                    userType: 'admin',
-                    viewedFrom: 'new-&-open-tickets',
-                },
-                0.1,
-            )
-        })
-    })
-
-    it('should log AiAgentTicketViewed event with bannerType thumbs_up_improve_response for ai agent message', async () => {
-        const props = {
-            ...defaultProps,
-            messages: [
-                {
-                    ...defaultProps.messages[0],
-                    body_html: 'message',
-                    sender: {
-                        ...defaultProps.messages[0].sender,
-                        email: AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS[0],
-                    },
-                },
-            ],
-        }
-
-        render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(defaultState)}>
-                    <TicketMessages {...props} />
-                </Provider>
-            </QueryClientProvider>,
-        )
-
-        await waitFor(() => {
-            expect(logEventMock).toHaveBeenCalledWith(
-                SegmentEvent.AiAgentTicketViewed,
-                {
-                    accountId: 1,
-                    banner: BANNER_TYPE.THUMBS_UP_IMPROVE_RESPONSE,
-                    userType: 'admin',
-                    viewedFrom: 'new-&-open-tickets',
-                },
-                0.1,
-            )
-        })
     })
 
     it('should return null if no messages', () => {
@@ -717,35 +559,6 @@ describe('TicketMessages', () => {
         )
 
         expect(screen.getByText('Message')).toBeInTheDocument()
-    })
-
-    it('should not log events when banner type is empty', () => {
-        const props = {
-            ...defaultProps,
-            messages: [
-                {
-                    ...defaultProps.messages[0],
-                    body_html: 'regular message',
-                    sender: {
-                        id: 1,
-                        name: 'Regular User',
-                        firstname: 'Regular',
-                        lastname: 'User',
-                        email: 'regular@test.com',
-                    }, // Not AI agent
-                },
-            ],
-        }
-
-        render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(defaultState)}>
-                    <TicketMessages {...props} />
-                </Provider>
-            </QueryClientProvider>,
-        )
-
-        expect(logEventMock).not.toHaveBeenCalled()
     })
 
     it('should handle audit log events display setting', () => {

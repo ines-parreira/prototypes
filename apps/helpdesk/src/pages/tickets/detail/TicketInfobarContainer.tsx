@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { useCanAccessAIFeedback, useFeedbackTracking } from '@repo/ai-agent'
+import { useCanAccessAIFeedback } from '@repo/ai-agent'
 import type { EditShippingAddressModalRenderProps } from '@repo/customer'
 import { useHelpdeskV2MS2Flag } from '@repo/feature-flags'
 import { logEvent, logEventWithSampling, SegmentEvent } from '@repo/logging'
@@ -28,7 +28,6 @@ import useHasAIAgent from 'pages/tickets/detail/components/TicketFeedback/hooks/
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
-import { getCurrentUser } from 'state/currentUser/selectors'
 import { executeAction } from 'state/infobar/actions'
 import * as layoutSelectors from 'state/layout/selectors'
 import { getAIAgentMessages, getTicket } from 'state/ticket/selectors'
@@ -81,7 +80,6 @@ export const TicketInfobarContainer = ({
     const dispatch = useAppDispatch()
 
     const accountId = useAppSelector(getCurrentAccountId)
-    const currentUser = useAppSelector(getCurrentUser)
     const { isStandaloneAiAgent } = useStandaloneAiAccess()
     const canAccessAIFeedback = useCanAccessAIFeedback()
     const ticket = useAppSelector(getTicket)
@@ -102,12 +100,6 @@ export const TicketInfobarContainer = ({
         },
     })
     const shopperId = currentTicketData?.data?.customer?.id
-
-    const { onFeedbackTabOpened } = useFeedbackTracking({
-        ticketId,
-        accountId,
-        userId: currentUser.get('id'),
-    })
 
     useEffect(() => {
         dispatch(actions.selectContext())
@@ -246,7 +238,6 @@ export const TicketInfobarContainer = ({
     }, [dispatch, onSetEditingWidgetType])
 
     const handleAIAgentTabClick = useCallback(() => {
-        onFeedbackTabOpened('tab-clicked')
         logEventWithSampling(SegmentEvent.AiAgentFeedbackTabClicked, {
             accountId,
         })
@@ -254,7 +245,7 @@ export const TicketInfobarContainer = ({
             type: SIDE_PANEL_VIEWED_EVENT_TYPE,
             accountId,
         })
-    }, [accountId, onFeedbackTabOpened])
+    }, [accountId])
 
     const handleAutoQATabClick = useCallback(() => {
         logEventWithSampling(SegmentEvent.AutoQATabClicked, {

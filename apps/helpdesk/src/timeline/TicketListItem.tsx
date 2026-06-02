@@ -1,6 +1,5 @@
 import { useCallback } from 'react'
 
-import { logEvent, SegmentEvent } from '@repo/logging'
 import { Link } from 'react-router-dom'
 
 import type { TicketCompact } from '@gorgias/helpdesk-types'
@@ -28,7 +27,6 @@ export function TicketListItem({
 }: Props) {
     const handleClick = useCallback(
         (event: React.MouseEvent<HTMLAnchorElement>) => {
-            logEvent(SegmentEvent.CustomerTimelineTicketClicked)
             if (!event.metaKey) {
                 event.preventDefault()
                 onModalOpen(ticket.id)

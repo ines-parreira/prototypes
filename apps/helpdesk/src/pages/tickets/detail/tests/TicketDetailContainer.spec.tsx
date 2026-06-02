@@ -1559,12 +1559,7 @@ describe('TicketDetailContainer component', () => {
     })
 
     it.each<
-        [
-            string,
-            string,
-            () => { goToTicket: jest.Mock; isEnabled: boolean },
-            SegmentEvent,
-        ]
+        [string, string, () => { goToTicket: jest.Mock; isEnabled: boolean }]
     >([
         [
             'next',
@@ -1577,7 +1572,6 @@ describe('TicketDetailContainer component', () => {
                 mockUseGoToNextTicket.mockReturnValue(mock)
                 return mock
             },
-            SegmentEvent.TicketKeyboardShortcutsNextNavigation,
         ],
         [
             'next',
@@ -1590,7 +1584,6 @@ describe('TicketDetailContainer component', () => {
                 mockUseGoToNextTicket.mockReturnValue(mock)
                 return mock
             },
-            SegmentEvent.TicketKeyboardShortcutsNextNavigation,
         ],
         [
             'prev',
@@ -1603,7 +1596,6 @@ describe('TicketDetailContainer component', () => {
                 mockUseGoToPreviousTicket.mockReturnValue(mock)
                 return mock
             },
-            SegmentEvent.TicketKeyboardShortcutsPreviousNavigation,
         ],
         [
             'prev',
@@ -1616,11 +1608,10 @@ describe('TicketDetailContainer component', () => {
                 mockUseGoToPreviousTicket.mockReturnValue(mock)
                 return mock
             },
-            SegmentEvent.TicketKeyboardShortcutsPreviousNavigation,
         ],
     ])(
         'should debounce %s ticket calls while call is already pending',
-        (testName, actionName, testSetup, trackedEvent) => {
+        (testName, actionName, testSetup) => {
             const execKeyboardAction =
                 makeExecuteKeyboardAction(shortcutManagerMock)
 
@@ -1637,8 +1628,6 @@ describe('TicketDetailContainer component', () => {
             expect(callMock.goToTicket).toHaveBeenCalledTimes(
                 callMock.isEnabled ? 1 : 0,
             )
-
-            expect(logEvent).toHaveBeenCalledWith(trackedEvent)
         },
     )
 
@@ -1895,12 +1884,6 @@ describe('TicketDetailContainer component', () => {
 
             userEvent.click(getByTestId('TicketView-submit'))
 
-            expect(logEvent).toHaveBeenCalledWith(
-                SegmentEvent.CustomFieldTicketValueRequiredMissingError,
-                {
-                    ticketId: 2,
-                },
-            )
             expect(triggerTicketFieldsErrors).toHaveBeenCalledWith([
                 ticketInputFieldDefinition.id,
             ])

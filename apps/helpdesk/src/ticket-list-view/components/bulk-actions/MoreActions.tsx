@@ -1,7 +1,6 @@
 import type { ComponentProps } from 'react'
 import { useCallback, useMemo, useRef, useState } from 'react'
 
-import { logEvent, SegmentEvent } from '@repo/logging'
 import cn from 'classnames'
 
 import type { TicketPriority } from '@gorgias/helpdesk-types'
@@ -224,10 +223,6 @@ export default function MoreActions({
     )
 
     const onApplyMacro = useCallback(() => {
-        logEvent(SegmentEvent.BulkAction, {
-            type: 'apply-macro',
-            location: 'split-view-mode',
-        })
         onComplete()
     }, [onComplete])
 

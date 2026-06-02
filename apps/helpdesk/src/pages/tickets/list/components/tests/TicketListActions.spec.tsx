@@ -1189,7 +1189,7 @@ describe('TicketListActions component', () => {
             getTestProps,
             testActions,
             jobParams,
-            eventName,
+            __eventName,
         ) => {
             const suiteProps = getTestProps({
                 ...props,
@@ -1210,16 +1210,6 @@ describe('TicketListActions component', () => {
                     suiteProps.selectedItemsIds,
                     jobType,
                     jobParams,
-                )
-                expect(logEventMock).toHaveBeenCalledWith(
-                    SegmentEvent.BulkAction,
-                    {
-                        type: eventName,
-                        location: 'full-width-mode',
-                        ...('is_unread' === eventName || 'status' === eventName
-                            ? { value: jobParams.updates[eventName] }
-                            : {}),
-                    },
                 )
             })
 

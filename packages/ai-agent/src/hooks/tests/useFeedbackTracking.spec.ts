@@ -132,25 +132,6 @@ describe('useFeedbackTracking', () => {
         })
     })
 
-    describe('when onFeedbackTabOpened is called', () => {
-        it('logs the correct event with openedFrom', () => {
-            const { result } = renderHook(() =>
-                useFeedbackTracking(defaultProps),
-            )
-
-            const openedFrom = 'give-feedback-buton-from-reasoning'
-            result.current.onFeedbackTabOpened(openedFrom)
-
-            expect(mockLogEvent).toHaveBeenCalledWith(
-                SegmentEvent.AiAgentFeedbackTabOpened,
-                {
-                    ...expectedEventContext,
-                    openedFrom,
-                },
-            )
-        })
-    })
-
     describe('when onFeedbackGiven is called', () => {
         it('logs the correct event with type', () => {
             const { result } = renderHook(() =>

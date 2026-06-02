@@ -85,12 +85,11 @@ export const AiAgentReasoningHelpdeskV2 = ({
 
     const { openPreview } = useKnowledgeSourceSideBar()
 
-    const { onFeedbackTabOpened, onKnowledgeResourceClick } =
-        useFeedbackTracking({
-            ticketId,
-            accountId,
-            userId,
-        })
+    const { onKnowledgeResourceClick } = useFeedbackTracking({
+        ticketId,
+        accountId,
+        userId,
+    })
 
     const { onReasoningOpened } = useReasoningTracking({
         ticketId,
@@ -153,7 +152,6 @@ export const AiAgentReasoningHelpdeskV2 = ({
     const handleGiveFeedback = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation()
         e.preventDefault()
-        onFeedbackTabOpened('give-feedback-buton-from-reasoning')
         onChangeTab(TicketInfobarTab.AIFeedback)
     }
 

@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react'
 import React, { useContext, useMemo } from 'react'
 
-import { logEvent, SegmentEvent } from '@repo/logging'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import type { ConnectedProps } from 'react-redux'
@@ -9,14 +8,12 @@ import { connect } from 'react-redux'
 
 import logo from 'assets/img/infobar/shopify.svg'
 import { shopifyAdminBaseUrl } from 'config/integrations/shopify'
-import useAppSelector from 'hooks/useAppSelector'
 import type { ShopifyIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import type { InfobarAction } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
-import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import * as integrationsSelectors from 'state/integrations/selectors'
 import type { RootState } from 'state/types'
 import DraftOrderModal from 'Widgets/modules/Shopify/modules/DraftOrderModal'
@@ -155,7 +152,6 @@ type TitleWrapperProps = {
 }
 
 function TitleWrapper({ children, source, isEditing }: TitleWrapperProps) {
-    const currentAccount = useAppSelector(getCurrentAccountState)
     const { integration } = useContext(IntegrationContext)
     const shopName: string = integration.getIn(['meta', 'shop_name'])
     const href = `${shopifyAdminBaseUrl(shopName)}/customers/${(
@@ -169,16 +165,7 @@ function TitleWrapper({ children, source, isEditing }: TitleWrapperProps) {
                 <CardHeaderIcon src={logo} alt="Shopify" />
                 Shopify
                 <CardHeaderSubtitle>
-                    <a
-                        href={href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={() => {
-                            logEvent(SegmentEvent.ShopifyProfileClicked, {
-                                account_domain: currentAccount.get('domain'),
-                            })
-                        }}
-                    >
+                    <a href={href} target="_blank" rel="noopener noreferrer">
                         {children}
                     </a>
                 </CardHeaderSubtitle>

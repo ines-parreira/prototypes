@@ -1263,9 +1263,6 @@ describe('<SpotlightModal/>', () => {
         await act(async () => {
             ticketsTab?.focus()
         })
-        expect(logEvent).toHaveBeenCalledWith(
-            SegmentEvent.GlobalSearchTicketTabClick,
-        )
         await act(async () => {
             callsTab?.focus()
         })
@@ -1447,12 +1444,25 @@ describe('<SpotlightModal/>', () => {
                     await userEvent.click(screen.getByTestId(componentName))
                 })
 
-                await waitFor(() => {
-                    expect(logEventMock).toHaveBeenNthCalledWith(
-                        2,
-                        SegmentEvent.RecentItemAccessed,
-                        { type: segmentType, user_id: user.id },
+                const recentItemAccessedCalls = () =>
+                    logEventMock.mock.calls.filter(
+                        ([eventName, properties]) => {
+                            const recentItemAccessedProperties = properties as
+                                | { type?: string; user_id?: typeof user.id }
+                                | undefined
+
+                            return (
+                                eventName === SegmentEvent.RecentItemAccessed &&
+                                recentItemAccessedProperties?.type ===
+                                    segmentType &&
+                                recentItemAccessedProperties?.user_id ===
+                                    user.id
+                            )
+                        },
                     )
+
+                await waitFor(() => {
+                    expect(recentItemAccessedCalls()).toHaveLength(1)
                 })
 
                 await act(async () => {
@@ -1460,11 +1470,7 @@ describe('<SpotlightModal/>', () => {
                 })
 
                 await waitFor(() => {
-                    expect(logEventMock).toHaveBeenNthCalledWith(
-                        3,
-                        SegmentEvent.RecentItemAccessed,
-                        { type: segmentType, user_id: user.id },
-                    )
+                    expect(recentItemAccessedCalls()).toHaveLength(2)
                 })
             },
         )

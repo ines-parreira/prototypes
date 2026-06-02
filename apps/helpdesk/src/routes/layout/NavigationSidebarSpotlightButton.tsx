@@ -1,4 +1,3 @@
-import { logEvent, SegmentEvent } from '@repo/logging'
 import {
     NavigationSidebarTooltip,
     useSidebarButtonSize,
@@ -14,7 +13,6 @@ export function NavigationSidebarSpotlightButton() {
     const buttonSize = useSidebarButtonSize()
 
     const handleClick = () => {
-        logEvent(SegmentEvent.GlobalSearchOpenButtonClick)
         setIsOpen(!isOpen)
     }
 

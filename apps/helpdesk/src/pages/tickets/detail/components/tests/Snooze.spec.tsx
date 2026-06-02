@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { logEvent, SegmentEvent } from '@repo/logging'
+import { logEvent } from '@repo/logging'
 import { render } from '@repo/testing'
 import { useShortcuts } from '@repo/utils'
 import { act, screen } from '@testing-library/react'
@@ -91,10 +91,6 @@ describe('Snooze', () => {
         await act(async () => {
             await user.click(button)
         })
-        expect(logEvent).toHaveBeenCalledWith(
-            SegmentEvent.SnoozeButtonClicked,
-            { isSnoozed: false },
-        )
         expect(screen.getByText('TicketSnoozePicker open')).toBeInTheDocument()
     })
 
@@ -108,10 +104,6 @@ describe('Snooze', () => {
         await act(async () => {
             await user.click(button)
         })
-        expect(logEvent).toHaveBeenCalledWith(
-            SegmentEvent.SnoozeButtonClicked,
-            { isSnoozed: true },
-        )
 
         expect(screen.getByText('Change snooze time')).toBeInTheDocument()
 

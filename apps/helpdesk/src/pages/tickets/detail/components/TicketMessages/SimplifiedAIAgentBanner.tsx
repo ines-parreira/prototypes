@@ -1,13 +1,12 @@
 import { useMemo } from 'react'
 
 import { isSessionImpersonated } from '@repo/activity-tracker/utils'
-import { useCanAccessAIFeedback, useFeedbackTracking } from '@repo/ai-agent'
+import { useCanAccessAIFeedback } from '@repo/ai-agent'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import classNames from 'classnames'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import useAppSelector from 'hooks/useAppSelector'
 import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
 import type { TicketMessage } from 'models/ticket/types'
 import { isTrialMessageFromAIAgent } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
@@ -15,7 +14,6 @@ import FailedWorkflowMessage from 'pages/tickets/detail/components/TicketMessage
 import { getFailedWorkflowData } from 'pages/tickets/detail/components/TicketMessages/AiAgentFailedWorkflowMessage.util'
 import Body from 'pages/tickets/detail/components/TicketMessages/Body'
 import css from 'pages/tickets/detail/components/TicketMessages/SimplifiedAIAgentBanner.less'
-import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 export type SimplifiedAIAgentBannerProps = {
     message: TicketMessage
@@ -31,18 +29,6 @@ const SimplifiedAIAgentBanner = ({
     })
     const { activeTab, onChangeTab } = useTicketInfobarNavigation()
     const canAccessAIFeedback = useCanAccessAIFeedback()
-
-    const account = useAppSelector(getCurrentAccountState)
-    const currentUser = useAppSelector((state) => state.currentUser)
-
-    const accountId: number = account.get('id')
-    const userId: number = currentUser.get('id')
-
-    const { onFeedbackTabOpened } = useFeedbackTracking({
-        ticketId: message.ticket_id ?? 0,
-        accountId: accountId,
-        userId: userId,
-    })
 
     const ticketFeedback = data?.data
     const isImpersonated = useMemo(() => isSessionImpersonated(), [])
@@ -101,7 +87,6 @@ const SimplifiedAIAgentBanner = ({
     const failedWorkflowData = getFailedWorkflowData(message)
 
     const handleClick = () => {
-        onFeedbackTabOpened('give-feedback-button-from-banner')
         onChangeTab(TicketInfobarTab.AIFeedback)
     }
 

@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
 
-import { logEvent, SegmentEvent } from '@repo/logging'
 import {
     linkifyHtml,
     linkifyString,
@@ -38,7 +37,6 @@ const Content = ({
     text,
     strippedHtml,
     strippedText,
-    messagePosition,
     toggleQuote,
     isMessageExpanded,
     translations,
@@ -126,9 +124,6 @@ const Content = ({
     )
 
     const handleShowFullContent = () => {
-        if (messagePosition > 1) {
-            logEvent(SegmentEvent.MessageThreadClicked)
-        }
         toggleQuote(messageId)
     }
 

@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useUnmount } from '@repo/hooks'
 
 import { logEvent } from '../segment'
-import { SegmentEvent } from '../segment/types'
+import type { SegmentEvent } from '../segment/types'
 
 export enum SearchRankSource {
     CustomerProfile = 'customer_profile',
@@ -85,7 +85,7 @@ export function useSearchRankScenario(
 ): SearchRank {
     const {
         scenarioTimeout = DEFAULT_SCENARIO_TIMEOUT,
-        searchQueryRankedEvent = SegmentEvent.SearchQueryRanked,
+        searchQueryRankedEvent,
     } = options
     const request = useRef<SearchRankRequest | undefined>()
     const response = useRef<SearchRankResponse | undefined>()
@@ -98,22 +98,26 @@ export function useSearchRankScenario(
             const { query, requestTime } = request.current
             const { responseTime, numberOfResults, searchEngine } =
                 response.current
-            logEvent(searchQueryRankedEvent, {
-                search_query: query,
-                datetime: new Date(requestTime).toISOString(),
-                query_source: detailedSource(
-                    source,
-                    selectedItem?.current?.type,
-                ),
-                response_time: responseTime - requestTime,
-                account_domain: window.GORGIAS_STATE?.currentAccount?.domain,
-                number_of_results: numberOfResults,
-                rank: selectedItem.current
-                    ? selectedItem.current.index + 1
-                    : -1,
-                result_object_id: selectedItem?.current?.id,
-                database_type: DATABASE_TYPE[searchEngine || SearchEngine.PG],
-            })
+            if (searchQueryRankedEvent) {
+                logEvent(searchQueryRankedEvent, {
+                    search_query: query,
+                    datetime: new Date(requestTime).toISOString(),
+                    query_source: detailedSource(
+                        source,
+                        selectedItem?.current?.type,
+                    ),
+                    response_time: responseTime - requestTime,
+                    account_domain:
+                        window.GORGIAS_STATE?.currentAccount?.domain,
+                    number_of_results: numberOfResults,
+                    rank: selectedItem.current
+                        ? selectedItem.current.index + 1
+                        : -1,
+                    result_object_id: selectedItem?.current?.id,
+                    database_type:
+                        DATABASE_TYPE[searchEngine || SearchEngine.PG],
+                })
+            }
             request.current = undefined
             response.current = undefined
         }

@@ -185,7 +185,6 @@ const EVOLI_STATIC_MESSAGE =
 
 const refetch = jest.fn()
 const onReasoningOpened = jest.fn()
-const onFeedbackTabOpened = jest.fn()
 const onKnowledgeResourceClick = jest.fn()
 const onChangeTab = jest.fn()
 const openPreview = jest.fn()
@@ -252,7 +251,6 @@ describe('AiAgentReasoningHelpdeskV2', () => {
         })
         mockUseCanAccessAIFeedback.mockReturnValue(true)
         mockUseFeedbackTracking.mockReturnValue({
-            onFeedbackTabOpened,
             onKnowledgeResourceClick,
         })
         mockUseReasoningTracking.mockReturnValue({
@@ -474,9 +472,6 @@ describe('AiAgentReasoningHelpdeskV2', () => {
 
         await user.click(screen.getByRole('button', { name: /give feedback/i }))
 
-        expect(onFeedbackTabOpened).toHaveBeenCalledWith(
-            'give-feedback-buton-from-reasoning',
-        )
         expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.AIFeedback)
     })
 

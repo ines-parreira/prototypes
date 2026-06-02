@@ -1,7 +1,5 @@
 import { useCallback } from 'react'
 
-import { logEvent, SegmentEvent } from '@repo/logging'
-
 import type { Macro } from '@gorgias/helpdesk-queries'
 
 import { OBJECT_TYPES } from 'custom-fields/constants'
@@ -23,7 +21,7 @@ import {
     mergeFieldsStateWithMacroValues,
 } from 'utils/customFields'
 
-export function useTicketFieldsCheck(ticketId?: number) {
+export function useTicketFieldsCheck(__ticketId?: number) {
     const dispatch = useAppDispatch()
     const fieldsState = useAppSelector(getTicketFieldState)
     const appliedMacro = useAppSelector(getAppliedMacro)
@@ -65,12 +63,6 @@ export function useTicketFieldsCheck(ticketId?: number) {
                 !ticketFieldConditionsLoading &&
                 invalidFields.length
             ) {
-                logEvent(
-                    SegmentEvent.CustomFieldTicketValueRequiredMissingError,
-                    {
-                        ticketId,
-                    },
-                )
                 dispatch(triggerTicketFieldsErrors(invalidFields))
                 dispatch(setHasAttemptedToCloseTicket(true))
                 return true
@@ -79,7 +71,6 @@ export function useTicketFieldsCheck(ticketId?: number) {
             return false
         },
         [
-            ticketId,
             fieldsState,
             fieldDefinitions,
             ticketFieldConditionsEvaluationResults,

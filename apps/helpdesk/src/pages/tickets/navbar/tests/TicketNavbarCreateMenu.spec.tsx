@@ -39,11 +39,6 @@ jest.mock('@repo/routing', () => ({
     history: { push: jest.fn() },
 }))
 
-jest.mock('@repo/logging', () => ({
-    logEvent: jest.fn(),
-    SegmentEvent: { CreateTicketButtonClicked: 'create_ticket_button_clicked' },
-}))
-
 jest.mock(
     'pages/integrations/integration/components/phone/PhoneDevice',
     () => ({
@@ -251,9 +246,8 @@ describe('TicketNavbarCreateMenu', () => {
         expect(setIsDeviceVisible).toHaveBeenCalledWith(true)
     })
 
-    it('calls history.push and logEvent when "Create ticket" menu item is clicked', async () => {
+    it('calls history.push when "Create ticket" menu item is clicked', async () => {
         const { history } = jest.requireMock('@repo/routing')
-        const { logEvent, SegmentEvent } = jest.requireMock('@repo/logging')
 
         usePlaceCallButtonMock.mockReturnValue({
             ...defaultPlaceCallButton,
@@ -271,9 +265,6 @@ describe('TicketNavbarCreateMenu', () => {
         await user.click(screen.getByText('Create ticket'))
 
         expect(history.push).toHaveBeenCalledWith('/ticket/new')
-        expect(logEvent).toHaveBeenCalledWith(
-            SegmentEvent.CreateTicketButtonClicked,
-        )
     })
 
     it('calls onResumeDraft when "Resume draft" is clicked', async () => {
@@ -432,18 +423,14 @@ describe('TicketNavbarCreateMenu', () => {
         expect(screen.getByText('E')).toBeInTheDocument()
     })
 
-    it('calls history.push and logEvent when "Create ticket" button is clicked directly (no phone, no draft)', async () => {
+    it('calls history.push when "Create ticket" button is clicked directly (no phone, no draft)', async () => {
         const { history } = jest.requireMock('@repo/routing')
-        const { logEvent, SegmentEvent } = jest.requireMock('@repo/logging')
 
         const { user } = renderComponent()
 
         await user.click(screen.getByText('Create ticket'))
 
         expect(history.push).toHaveBeenCalledWith('/ticket/new')
-        expect(logEvent).toHaveBeenCalledWith(
-            SegmentEvent.CreateTicketButtonClicked,
-        )
     })
 
     it('disables "Create ticket" button when pathname includes /ticket/new (no phone, no draft)', () => {
@@ -648,17 +635,13 @@ describe('TicketNavbarCreateMenu with SidebarCreateButtons feature flag enabled'
         expect(setIsDeviceVisible).toHaveBeenCalledWith(true)
     })
 
-    it('calls history.push and logEvent when "New ticket" button is clicked', async () => {
+    it('calls history.push when "New ticket" button is clicked', async () => {
         const { history } = jest.requireMock('@repo/routing')
-        const { logEvent, SegmentEvent } = jest.requireMock('@repo/logging')
 
         const { user } = renderComponent()
 
         await user.click(screen.getByText('New ticket'))
 
         expect(history.push).toHaveBeenCalledWith('/ticket/new')
-        expect(logEvent).toHaveBeenCalledWith(
-            SegmentEvent.CreateTicketButtonClicked,
-        )
     })
 })

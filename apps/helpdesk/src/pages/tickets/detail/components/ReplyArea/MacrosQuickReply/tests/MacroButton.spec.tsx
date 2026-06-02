@@ -18,12 +18,10 @@ jest.mock('pages/tickets/common/macros/Preview/Preview', () => ({
 }))
 
 const applyMacro = jest.fn()
-const onHover = jest.fn()
 
 const minProps: ComponentProps<typeof MacroButton> = {
     macro: macroFixture,
     applyMacro,
-    onHover: onHover,
 }
 
 describe('<MacroButton />', () => {
@@ -66,6 +64,5 @@ describe('<MacroButton />', () => {
         )
         fireEvent.mouseEnter(getByRole('button'))
         expect(baseElement.children[1]).toMatchSnapshot()
-        expect(onHover).toHaveBeenCalled()
     })
 })

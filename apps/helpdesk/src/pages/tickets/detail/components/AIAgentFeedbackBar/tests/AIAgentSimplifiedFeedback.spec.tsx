@@ -238,7 +238,6 @@ describe('AIAgentSimplifiedFeedback', () => {
             onKnowledgeResourceEditClick: jest.fn(),
             onKnowledgeResourceCreateClick: jest.fn(),
             onKnowledgeResourceSaved: jest.fn(),
-            onFeedbackTabOpened: jest.fn(),
             onFeedbackGiven: jest.fn(),
         })
 

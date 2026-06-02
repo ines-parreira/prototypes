@@ -1,11 +1,6 @@
 import { useState } from 'react'
 
-import {
-    logEvent,
-    SearchRankSource,
-    SegmentEvent,
-    useSearchRankScenario,
-} from '@repo/logging'
+import { SearchRankSource, useSearchRankScenario } from '@repo/logging'
 import type { AxiosError, AxiosResponse, CancelToken } from 'axios'
 import { fromJS } from 'immutable'
 
@@ -59,11 +54,6 @@ export const useCustomerSearch = () => {
     }
 
     const onSearchSubmit = async (query: string) => {
-        logEvent(SegmentEvent.InfobarSearchUsed, {
-            account_domain: window.GORGIAS_STATE.currentAccount.domain,
-            user_id: window.GORGIAS_STATE.currentAccount.user_id,
-            timestamp: Date.now(),
-        })
         searchRank.endScenario()
 
         searchRank.registerResultsRequest({

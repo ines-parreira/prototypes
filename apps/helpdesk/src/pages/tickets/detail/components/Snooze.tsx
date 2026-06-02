@@ -1,6 +1,5 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
 
-import { logEvent, SegmentEvent } from '@repo/logging'
 import { useShortcuts } from '@repo/utils'
 import cn from 'classnames'
 import type { Moment } from 'moment'
@@ -32,7 +31,6 @@ export default function Snooze({ disabled = false, until, onUpdate }: Props) {
 
     const isSnoozed = !!until
     const handleClick = useCallback(() => {
-        logEvent(SegmentEvent.SnoozeButtonClicked, { isSnoozed })
         if (!isSnoozed) {
             setShowPicker((s) => !s)
             return

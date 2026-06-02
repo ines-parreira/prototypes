@@ -12,7 +12,6 @@ import { WidgetEnvironment } from 'state/widgets/types'
 import { TIMELINE_SEARCH_PARAM } from 'timeline/constants'
 import { useTicketList } from 'timeline/hooks/useTicketList'
 import { useTimelinePanel } from 'timeline/hooks/useTimelinePanel'
-import { useTrackTimelineToggle } from 'timeline/hooks/useTrackTimelineToggle'
 
 import { CustomerTimelineWidget } from '../CustomerTimelineWidget'
 
@@ -43,8 +42,6 @@ jest.mock('timeline/hooks/useTicketList', () => ({
 jest.mock('timeline/hooks/useTimelinePanel', () => ({
     useTimelinePanel: jest.fn(),
 }))
-jest.mock('timeline/hooks/useTrackTimelineToggle')
-
 const useAppDispatchMock = assumeMock(useAppDispatch)
 const getContextMock = assumeMock(getContext)
 const useTicketListDataMock = assumeMock(useTicketList)
@@ -111,11 +108,6 @@ describe('CustomerTimelineButton', () => {
         render(<CustomerTimelineWidget {...defaultProps} />)
 
         expect(screen.getByRole('status')).toBeInTheDocument()
-    })
-
-    it('should call the useTrackTimelineToggle hook', () => {
-        render(<CustomerTimelineWidget {...defaultProps} />)
-        expect(useTrackTimelineToggle).toHaveBeenCalled()
     })
 
     it('should call useTimelineData with shopperId', () => {

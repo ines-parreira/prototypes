@@ -2,7 +2,6 @@ import type { FunctionComponent, ReactNode } from 'react'
 import { createContext, useContext, useMemo } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { logEvent, SegmentEvent } from '@repo/logging'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 
@@ -13,7 +12,6 @@ import type {
     FulfillmentStatus,
 } from 'constants/integrations/types/shopify'
 import { useFetchInfluencedOrdersForCurrentTicket } from 'hooks/aiAgent/useFetchInfluencedOrdersForCurrentTicket'
-import useAppSelector from 'hooks/useAppSelector'
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import type { InfobarAction } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
@@ -21,7 +19,6 @@ import OrderStatus from 'pages/common/components/OrderStatus/OrderStatus'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import { EditionContext } from 'providers/infobar/EditionContext'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
-import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import DraftOrderModal from 'Widgets/modules/Shopify/modules/DraftOrderModal'
 import { OrderMetafields } from 'Widgets/modules/Shopify/modules/Order'
 import CancelOrderModal from 'Widgets/modules/Shopify/modules/Order/modules/CancelOrderModal'
@@ -258,7 +255,6 @@ type TitleWrapperProps = {
 }
 function TitleWrapper({ children, source }: TitleWrapperProps) {
     const { isEditing } = useContext(EditionContext)
-    const currentAccount = useAppSelector(getCurrentAccountState)
     const { integration } = useContext(IntegrationContext)
     const { isOrderCancelled } = useContext(OrderContext)
     const shopName: string = integration.getIn(['meta', 'shop_name']) as string
@@ -282,11 +278,6 @@ function TitleWrapper({ children, source }: TitleWrapperProps) {
                     ).toString()}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    onClick={() => {
-                        logEvent(SegmentEvent.ShopifyOrderClicked, {
-                            account_domain: currentAccount.get('domain'),
-                        })
-                    }}
                     className={css.orderTitle}
                 >
                     <>{children}</>

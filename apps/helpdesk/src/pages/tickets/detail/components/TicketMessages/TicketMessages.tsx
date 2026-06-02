@@ -1,7 +1,6 @@
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 
 import { isSessionImpersonated } from '@repo/activity-tracker/utils'
-import { logEventWithSampling, SegmentEvent } from '@repo/logging'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import type { Moment } from 'moment'
@@ -16,18 +15,12 @@ import {
 import type { TicketMessage as TicketMessage_DEPRECATED } from 'models/ticket/types'
 import type { HighlightedElements } from 'pages/tickets/detail/components/AuditLogEvent'
 import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants'
-import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { shouldDisplayAuditLogEvents as getShouldDisplayAuditLogEvents } from 'state/ticket/selectors'
 import { buildFirstTicketMessage } from 'state/ticket/utils'
 import { getSelectedAIMessage } from 'state/ui/ticketAIAgentFeedback'
-import { getActiveView } from 'state/views/selectors'
 
 import AIAgentDraftMessage from '../AIAgentDraftMessage/AIAgentDraftMessage'
-import {
-    BANNER_TYPE,
-    DRAFT_MESSAGE_TAG,
-    SAMPLE_RATE,
-} from '../AIAgentFeedbackBar/constants'
+import { DRAFT_MESSAGE_TAG } from '../AIAgentFeedbackBar/constants'
 import { isTrialMessageFromAIAgent } from '../AIAgentFeedbackBar/utils'
 import { getShouldTicketHaveReasoning } from './aiAgentReasoningDisplay'
 import Container from './Container'
@@ -74,13 +67,6 @@ export default function TicketMessages({
     const isImpersonated = useMemo(() => isSessionImpersonated(), [])
 
     const selectedAIMessage = useAppSelector(getSelectedAIMessage)
-    const currentAccount = useAppSelector(getCurrentAccountState)
-    const currentUser = useAppSelector((state) => state.currentUser)
-    const activeView = useAppSelector(getActiveView)
-
-    const accountId: number = currentAccount.get('id')
-    const userType: string = currentUser.get('role').get('name')
-    const viewType: string = activeView.get('slug')
 
     const message = buildFirstTicketMessage(
         messages[0],
@@ -101,51 +87,16 @@ export default function TicketMessages({
         getShouldDisplayAuditLogEvents,
     )
 
-    const isAIAgentMessage = AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS.includes(
-        message.sender.email,
-    )
-
-    const isAIAgentInternalNote = isAIAgentMessage && !message.public
-
     const isAIAgentDraftMessage = !!(
         message?.body_html &&
         message?.body_html.indexOf(DRAFT_MESSAGE_TAG) !== -1
     )
 
     const isAIAgentTrialMessage = isTrialMessageFromAIAgent(message)
-
-    useEffect(() => {
-        let bannerType = ''
-        let sampleRate = SAMPLE_RATE
-
-        if (isAIAgentMessage) {
-            if (isAIAgentDraftMessage) {
-                bannerType = BANNER_TYPE.QA_FAILED
-                sampleRate = 1
-            } else if (isAIAgentTrialMessage) {
-                bannerType = BANNER_TYPE.TRIAL
-                sampleRate = 1
-            } else {
-                bannerType = isAIAgentInternalNote
-                    ? BANNER_TYPE.THUMBS_UP_AND_DOWN
-                    : BANNER_TYPE.THUMBS_UP_IMPROVE_RESPONSE
-            }
-        }
-
-        if (bannerType !== '') {
-            logEventWithSampling(
-                SegmentEvent.AiAgentTicketViewed,
-                {
-                    accountId,
-                    banner: bannerType,
-                    viewedFrom: viewType,
-                    userType,
-                },
-                sampleRate,
-            )
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    const isAIAgentMessage = AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS.includes(
+        message.sender.email,
+    )
+    const isAIAgentInternalNote = isAIAgentMessage && !message.public
 
     if (!messages.length) {
         return null

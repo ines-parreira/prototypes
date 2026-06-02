@@ -1,7 +1,6 @@
 import { useRef } from 'react'
 
 import { useSidebarCreateButtonsFlag } from '@repo/feature-flags'
-import { logEvent, SegmentEvent } from '@repo/logging'
 import {
     NavigationSidebarTooltip,
     useSidebar,
@@ -67,7 +66,6 @@ export function TicketNavbarCreateMenu() {
 
     const handleCreateTicket = () => {
         history.push(createTicketPath)
-        logEvent(SegmentEvent.CreateTicketButtonClicked)
     }
 
     if (hasSidebarCreateButtonsFlag && !isCollapsed) {

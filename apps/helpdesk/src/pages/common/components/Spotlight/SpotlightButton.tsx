@@ -1,5 +1,4 @@
 import { useId } from '@repo/hooks'
-import { logEvent, SegmentEvent } from '@repo/logging'
 import { isMacOs } from '@repo/utils'
 
 import {
@@ -18,7 +17,6 @@ const SpotlightButton = () => {
     const buttonId = 'spotlight-button-' + id
 
     const handleClick = () => {
-        logEvent(SegmentEvent.GlobalSearchOpenButtonClick)
         setIsOpen(!isOpen)
     }
 

@@ -1,4 +1,4 @@
-import { logEvent, SegmentEvent } from '@repo/logging'
+import { logEvent } from '@repo/logging'
 import { shortcutManager } from '@repo/utils'
 import type { InfiniteData } from '@tanstack/react-query'
 import { act, screen, waitFor } from '@testing-library/react'
@@ -21,12 +21,6 @@ import { TicketViewNavigator } from './TicketViewNavigator'
 
 vi.mock('@repo/logging', () => ({
     logEvent: vi.fn(),
-    SegmentEvent: {
-        TicketKeyboardShortcutsPreviousNavigation:
-            'TicketKeyboardShortcutsPreviousNavigation',
-        TicketKeyboardShortcutsNextNavigation:
-            'TicketKeyboardShortcutsNextNavigation',
-    },
 }))
 
 const mockTicketViewNavigation: LegacyBridgeContextType['ticketViewNavigation'] =
@@ -297,9 +291,6 @@ describe('TicketViewNavigator', () => {
                 shortcutManager.triggerAction('TicketViewNavigator', 'GO_BACK')
             })
 
-            expect(logEvent).toHaveBeenCalledWith(
-                SegmentEvent.TicketKeyboardShortcutsPreviousNavigation,
-            )
             expect(
                 screen.getByRole('status', { name: /current location/i }),
             ).toHaveTextContent('/app/views/1/100')
@@ -325,9 +316,6 @@ describe('TicketViewNavigator', () => {
                 )
             })
 
-            expect(logEvent).toHaveBeenCalledWith(
-                SegmentEvent.TicketKeyboardShortcutsNextNavigation,
-            )
             expect(
                 screen.getByRole('status', { name: /current location/i }),
             ).toHaveTextContent('/app/views/1/102')

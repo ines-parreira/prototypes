@@ -3,7 +3,6 @@ import React, { useCallback } from 'react'
 
 import type { DateValue } from '@internationalized/date'
 import { useEffectOnce } from '@repo/hooks'
-import { logEvent, SegmentEvent } from '@repo/logging'
 import { DateAndTimeFormatting } from '@repo/utils'
 import type { Options as InitialSettings } from 'daterangepicker'
 import moment from 'moment-timezone'
@@ -158,13 +157,6 @@ export function PeriodFilter({
                         seconds: -1,
                     })
                 }
-                onOpen={() => {
-                    logEvent(SegmentEvent.AnalyticsStatsDatepickerOpen, {
-                        eventDate: moment().format(),
-                        startDate: value.start_datetime,
-                        endDate: value.end_datetime,
-                    })
-                }}
                 {...pickerV2Props}
                 labelDateFormat={shortDateBasedOnUserPreferences}
                 tooltipMessageForPreviousPeriod={

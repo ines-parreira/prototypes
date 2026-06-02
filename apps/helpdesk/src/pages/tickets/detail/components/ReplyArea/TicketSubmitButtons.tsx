@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react'
 import { useCallback, useMemo } from 'react'
 
-import { logEvent, SegmentEvent } from '@repo/logging'
 import {
     getMacroTicketFieldValues,
     useTicketFieldsValidation,
@@ -104,12 +103,6 @@ export function TicketSubmitButtons({ submit }: Props) {
 
     const tip = useMemo(() => _sample(TIPS), [])
 
-    const trackSendAndClosedClicked = useCallback(() => {
-        logEvent(SegmentEvent.TicketSendAndCloseButtonClicked, {
-            ticketId: validationTicketId,
-        })
-    }, [validationTicketId])
-
     const handleClickHideTips = useCallback(() => {
         const newPreferences = currentUserPreferences.setIn(
             ['data', 'hide_tips'],
@@ -120,7 +113,6 @@ export function TicketSubmitButtons({ submit }: Props) {
 
     const handleSendAndCloseTicket = useCallback(() => {
         if (!hasUIVisionMS1) {
-            trackSendAndClosedClicked()
             submit({ status: TicketStatus.Closed })
         } else {
             const { hasErrors } = validateTicketFields(
@@ -134,17 +126,9 @@ export function TicketSubmitButtons({ submit }: Props) {
                 return
             }
 
-            trackSendAndClosedClicked()
             submit({ status: TicketStatus.Closed })
         }
-    }, [
-        trackSendAndClosedClicked,
-        hasUIVisionMS1,
-        ticket,
-        submit,
-        validateTicketFields,
-        appliedMacro,
-    ])
+    }, [hasUIVisionMS1, ticket, submit, validateTicketFields, appliedMacro])
 
     const isLoading = newMessage.getIn([
         '_internal',

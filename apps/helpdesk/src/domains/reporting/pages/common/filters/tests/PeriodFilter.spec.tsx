@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { logEvent, SegmentEvent } from '@repo/logging'
 import { render } from '@repo/testing'
 import {
     DateTimeFormatMapper,
@@ -125,15 +124,6 @@ describe('PeriodStatsFilter', () => {
                     exact: false,
                 },
             ),
-        )
-
-        expect(logEvent).toHaveBeenCalledWith(
-            SegmentEvent.AnalyticsStatsDatepickerOpen,
-            {
-                eventDate: moment().format(),
-                startDate: value.start_datetime,
-                endDate: value.end_datetime,
-            },
         )
     })
 

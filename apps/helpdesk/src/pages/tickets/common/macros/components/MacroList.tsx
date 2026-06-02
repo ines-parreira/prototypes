@@ -1,14 +1,11 @@
 import { useId } from '@repo/hooks'
-import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import type { Macro } from '@gorgias/helpdesk-queries'
 
-import useAppSelector from 'hooks/useAppSelector'
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
-import { getCurrentUser } from 'state/currentUser/selectors'
 
 import { isMacroDisabled } from '../utils'
 
@@ -70,7 +67,6 @@ function MacroListItem({
     onHoverItem?: (item: Macro) => void
     onClickItem: (item: Macro) => void
 }) {
-    const currentUser = useAppSelector(getCurrentUser)
     const isSuggestion = (rank: number) => rank !== 0 && rank !== 100000
     const isDisabled = isMacroDisabled(macro, areExternalActionsDisabled)
     const isActive = macro.id === currentMacro?.id
@@ -85,12 +81,6 @@ function MacroListItem({
             onClick={() => {
                 if (isDisabled) return
 
-                logEvent(SegmentEvent.MacroAppliedSearchbar, {
-                    is_recommended: isSuggestion(macro.relevance_rank ?? 0),
-                    macro_id: macro.id,
-                    rank: macro.relevance_rank,
-                    user_id: currentUser.get('id'),
-                })
                 onClickItem(macro)
             }}
             onMouseEnter={() => onHoverItem?.(macro)}

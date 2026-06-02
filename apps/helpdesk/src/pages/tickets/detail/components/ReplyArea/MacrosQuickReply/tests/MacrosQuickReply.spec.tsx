@@ -1,6 +1,5 @@
-import { logEvent } from '@repo/logging'
 import { render } from '@repo/testing'
-import { fireEvent, waitFor } from '@testing-library/react'
+import { fireEvent } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -22,7 +21,6 @@ import type { RootState, StoreDispatch } from 'state/types'
 
 import { MacrosQuickReply } from '../MacrosQuickReply'
 
-jest.mock('@repo/logging')
 jest.mock('lodash/debounce', () => {
     const _identity: <T>(v: T) => T = jest.requireActual('lodash/identity')
     return _identity
@@ -34,7 +32,6 @@ jest.mock('providers/standalone-ai/StandaloneAiContext', () => ({
     useStandaloneAiContext: jest.fn(() => createMockStandaloneAiAccess()),
 }))
 
-const logEventMock = logEvent as jest.Mock
 const applyMacro = jest.fn()
 const mockUseStandaloneAiAccess = useStandaloneAiAccess as jest.Mock
 
@@ -65,7 +62,6 @@ describe('<MacrosQuickReply />', () => {
         mockUseStandaloneAiAccess.mockReturnValue(
             createMockStandaloneAiAccess(),
         )
-        logEventMock.mockClear()
         applyMacro.mockClear()
     })
 
@@ -121,96 +117,6 @@ describe('<MacrosQuickReply />', () => {
         expect(tooltip).toHaveTextContent(
             'Use macros to save time answering tickets.',
         )
-    })
-
-    it('should send an event to segment when applying a macro', async () => {
-        const { getAllByRole } = render(
-            <Provider store={store}>
-                <MacrosQuickReply {...minProps} />
-            </Provider>,
-        )
-        getAllByRole('button').map((button) => fireEvent.click(button))
-        await waitFor(() => {
-            expect(logEventMock).toHaveBeenCalledTimes(3)
-
-            expect(logEventMock).toHaveBeenNthCalledWith(
-                1,
-                'macros-quick-reply-sent',
-                {
-                    account_domain: 'acme',
-                    user_id: 2,
-                    ticket_id: 152,
-                    macro_id: 1,
-                    macro_rank: 1,
-                },
-            )
-
-            expect(logEventMock).toHaveBeenNthCalledWith(
-                2,
-                'macros-quick-reply-sent',
-                {
-                    account_domain: 'acme',
-                    user_id: 2,
-                    ticket_id: 152,
-                    macro_id: 2,
-                    macro_rank: 2,
-                },
-            )
-
-            expect(logEventMock).toHaveBeenNthCalledWith(
-                3,
-                'macros-quick-reply-sent',
-                {
-                    account_domain: 'acme',
-                    user_id: 2,
-                    ticket_id: 152,
-                    macro_id: 3,
-                    macro_rank: 3,
-                },
-            )
-        })
-    })
-
-    it('should send an event to segment when hovering the info icon', async () => {
-        const { getByText } = render(
-            <Provider store={store}>
-                <MacrosQuickReply {...minProps} />
-            </Provider>,
-        )
-        fireEvent.mouseOver(getByText('info_outline'))
-        await waitFor(() => {
-            expect(logEventMock).toHaveBeenCalledTimes(1)
-            expect(logEventMock).toHaveBeenCalledWith(
-                'macros-quick-reply-tooltip',
-                {
-                    account_domain: 'acme',
-                    user_id: 2,
-                    ticket_id: 152,
-                },
-            )
-        })
-    })
-
-    it('should send an event to segment when hovering over a macro', async () => {
-        const { getAllByRole } = render(
-            <Provider store={store}>
-                <MacrosQuickReply {...minProps} />
-            </Provider>,
-        )
-        fireEvent.mouseOver(getAllByRole('button')[0])
-        await waitFor(() => {
-            expect(logEventMock).toHaveBeenCalledTimes(1)
-            expect(logEventMock).toHaveBeenCalledWith(
-                'macros-quick-reply-get-details',
-                {
-                    account_domain: 'acme',
-                    user_id: 2,
-                    ticket_id: 152,
-                    macroId: 1,
-                    macroRank: 1,
-                },
-            )
-        })
     })
 
     it('should filter out macros without an ID', () => {

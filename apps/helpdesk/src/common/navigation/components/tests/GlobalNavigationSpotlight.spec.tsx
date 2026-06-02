@@ -1,4 +1,3 @@
-import { logEvent, SegmentEvent } from '@repo/logging'
 import { render } from '@repo/testing'
 import * as platform from '@repo/utils'
 import { fireEvent, waitFor } from '@testing-library/react'
@@ -44,9 +43,5 @@ describe('<GlobalNavigationSpotlight />', () => {
     it('should log an event when the button is clicked', () => {
         const { getByRole } = render(<GlobalNavigationSpotlight />, { wrapper })
         fireEvent.click(getByRole('button'))
-
-        expect(logEvent).toHaveBeenCalledWith(
-            SegmentEvent.GlobalSearchOpenButtonClick,
-        )
     })
 })

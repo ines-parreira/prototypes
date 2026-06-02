@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { logEvent, SegmentEvent } from '@repo/logging'
 import { render } from '@repo/testing'
 import {
     DateTimeFormatMapper,
@@ -8,7 +7,6 @@ import {
     formatDatetime,
 } from '@repo/utils'
 import { fireEvent, screen } from '@testing-library/react'
-import moment from 'moment-timezone'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -106,15 +104,6 @@ describe('DEPRECATED_PeriodStatsFilter', () => {
                     exact: false,
                 },
             ),
-        )
-
-        expect(logEvent).toHaveBeenCalledWith(
-            SegmentEvent.AnalyticsStatsDatepickerOpen,
-            {
-                eventDate: moment().format(),
-                startDate: value.start_datetime,
-                endDate: value.end_datetime,
-            },
         )
     })
 

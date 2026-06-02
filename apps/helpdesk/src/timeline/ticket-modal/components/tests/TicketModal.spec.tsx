@@ -2,7 +2,6 @@ import type { ReactNode } from 'react'
 import React from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { useHistory } from 'react-router-dom'
@@ -11,11 +10,6 @@ import { TicketDetail } from 'tickets/ticket-detail'
 
 import { TicketModal } from '../TicketModal'
 import { TicketModalProvider } from '../TicketModalProvider'
-
-jest.mock('@repo/logging', () => ({
-    ...jest.requireActual('@repo/logging'),
-    logEvent: jest.fn(),
-}))
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -116,10 +110,6 @@ describe('TicketModal', () => {
         expect(el.closest('a')).toHaveAttribute('href', '/app/ticket/1')
 
         fireEvent.click(el)
-
-        expect(logEvent).toHaveBeenCalledWith(
-            SegmentEvent.CustomerTimelineModalViewTicketClicked,
-        )
     })
 
     it('should disable the navigation if no onNext / onPrevious handlers are passed', () => {
@@ -215,10 +205,6 @@ describe('TicketModal', () => {
             )
 
             fireEvent.click(expandTicketEl)
-
-            expect(logEvent).toHaveBeenCalledWith(
-                SegmentEvent.CustomerTimelineModalViewTicketClicked,
-            )
         })
     })
 

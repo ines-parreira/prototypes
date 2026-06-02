@@ -1,7 +1,5 @@
 import { useCallback, useMemo } from 'react'
 
-import { logEvent, SegmentEvent } from '@repo/logging'
-
 import { JobType } from '@gorgias/helpdesk-types'
 
 import type { Update } from 'jobs'
@@ -53,19 +51,7 @@ export default function BulkActions({
             action?: Action,
         ) => {
             createJob(job.type!, params)
-            const [entry] = Object.entries(params?.updates ?? {})
 
-            logEvent(SegmentEvent.BulkAction, {
-                type: job.event,
-                location: 'split-view-mode',
-                ...(['is_unread', 'status'].includes(entry?.[0])
-                    ? {
-                          value: entry?.[1] as
-                              | Update['status']
-                              | Update['is_unread'],
-                      }
-                    : {}),
-            })
             onComplete(action)
         },
         [createJob, onComplete],

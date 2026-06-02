@@ -1,10 +1,5 @@
 import { useCallback, useRef, useState } from 'react'
 
-import {
-    logEvent,
-    NotificationCenterEventTypes,
-    SegmentEvent,
-} from '@repo/logging'
 import cn from 'classnames'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -25,11 +20,6 @@ export default function NotificationsButton() {
     const [isVisible, setIsVisible] = useState(false)
 
     const handleClick = useCallback(() => {
-        if (!isVisible) {
-            logEvent(SegmentEvent.NotificationCenter, {
-                type: NotificationCenterEventTypes.Opened,
-            })
-        }
         setIsVisible(!isVisible)
     }, [isVisible])
 

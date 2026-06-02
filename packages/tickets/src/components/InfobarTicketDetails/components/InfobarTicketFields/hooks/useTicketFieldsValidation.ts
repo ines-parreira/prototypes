@@ -1,7 +1,5 @@
 import { useCallback } from 'react'
 
-import { logEvent, SegmentEvent } from '@repo/logging'
-
 import { ObjectType } from '@gorgias/helpdesk-types'
 
 import { useTicketFieldsStore } from '../store/useTicketFieldsStore'
@@ -11,7 +9,7 @@ import { mergeTicketFieldsValues } from '../utils/mergeTicketFieldsValues'
 import { useCustomFieldDefinitions } from './useCustomFieldDefinitions'
 import { useCustomFieldsConditionsEvaluationResults } from './useCustomFieldsConditionsEvaluationResults'
 
-export function useTicketFieldsValidation(ticketId?: number) {
+export function useTicketFieldsValidation(__ticketId?: number) {
     const fields = useTicketFieldsStore((state) => state.fields)
     const updateFieldError = useTicketFieldsStore(
         (state) => state.updateFieldError,
@@ -51,13 +49,6 @@ export function useTicketFieldsValidation(ticketId?: number) {
             })
 
             if (invalidFieldIds.length > 0) {
-                logEvent(
-                    SegmentEvent.CustomFieldTicketValueRequiredMissingError,
-                    {
-                        ticketId,
-                    },
-                )
-
                 invalidFieldIds.forEach((fieldId) => {
                     updateFieldError(fieldId, true)
                 })
@@ -70,7 +61,6 @@ export function useTicketFieldsValidation(ticketId?: number) {
             return { hasErrors: false, invalidFieldIds: [] }
         },
         [
-            ticketId,
             fields,
             fieldDefinitions,
             evaluationResults,

@@ -2,7 +2,6 @@ import type { ComponentProps } from 'react'
 import React, { useCallback } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
-import { logEvent, SegmentEvent } from '@repo/logging'
 import { DateAndTimeFormatting } from '@repo/utils'
 import type { Options as InitialSettings } from 'daterangepicker'
 import moment from 'moment-timezone'
@@ -114,13 +113,6 @@ export default function DEPRECATED_PeriodStatsFilter({
                     seconds: -1, // counting days start at 0 because for our needs 1 day selected is 23H59m59s
                 })
             }
-            onOpen={() => {
-                logEvent(SegmentEvent.AnalyticsStatsDatepickerOpen, {
-                    eventDate: moment().format(),
-                    startDate: value.start_datetime,
-                    endDate: value.end_datetime,
-                })
-            }}
             dateRanges={getNewSetOfRanges({ excludeOptions })}
             labelDateFormat={shortDateBasedOnUserPreferences}
             tooltipMessageForPreviousPeriod={tooltipMessageForPreviousPeriod}

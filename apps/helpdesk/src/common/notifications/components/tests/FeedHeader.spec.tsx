@@ -1,9 +1,4 @@
 import { FilterStatus } from '@knocklabs/react'
-import {
-    logEvent,
-    NotificationCenterEventTypes,
-    SegmentEvent,
-} from '@repo/logging'
 import { assumeMock, render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
@@ -26,18 +21,6 @@ jest.mock(
             }),
         }) as Record<string, unknown>,
 )
-
-jest.mock('@repo/logging', () => ({
-    logEvent: jest.fn(),
-    SegmentEvent: {
-        NotificationCenter: 'notification-center',
-    },
-    NotificationCenterEventTypes: {
-        Filter: 'filter',
-        GoToSettings: 'go-to-settings',
-        MarkAllAsRead: 'mark-all-as-read',
-    },
-}))
 
 jest.mock('../../hooks/useCount', () => jest.fn())
 const useCountMock = assumeMock(useCount)
@@ -75,9 +58,6 @@ describe('<FeedHeader />', () => {
 
         screen.getByText('Mark all as read').click()
 
-        expect(logEvent).toHaveBeenCalledWith(SegmentEvent.NotificationCenter, {
-            type: NotificationCenterEventTypes.MarkAllAsRead,
-        })
         expect(mockMarkAllAsRead).toHaveBeenCalled()
     })
 
@@ -97,13 +77,6 @@ describe('<FeedHeader />', () => {
         screen.getByText(new RegExp(newStatus, 'i')).click()
 
         await waitFor(() => {
-            expect(logEvent).toHaveBeenCalledWith(
-                SegmentEvent.NotificationCenter,
-                {
-                    type: NotificationCenterEventTypes.Filter,
-                    value: newStatus,
-                },
-            )
             expect(props.setFilterStatus).toHaveBeenCalledWith(newStatus)
         })
     })
@@ -117,9 +90,6 @@ describe('<FeedHeader />', () => {
 
         screen.getByText('settings').click()
 
-        expect(logEvent).toHaveBeenCalledWith(SegmentEvent.NotificationCenter, {
-            type: NotificationCenterEventTypes.GoToSettings,
-        })
         expect(props.onToggleVisibility).toHaveBeenCalled()
     })
 })

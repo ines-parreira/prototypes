@@ -1,4 +1,3 @@
-import * as segmentTracker from '@repo/logging'
 import { renderHook } from '@repo/testing'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -8,7 +7,6 @@ import usePrevNextTicketNavigation from '../usePrevNextTicketNavigation'
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 const useAppDispatchMock = useAppDispatch as jest.Mock
-const logEventMock = jest.spyOn(segmentTracker, 'logEvent')
 const clearTicketMock = jest.spyOn(ticketActions, 'clearTicket')
 const goToNextOrPrevTicketMock = jest.spyOn(
     ticketActions,
@@ -37,10 +35,6 @@ describe('usePrevNextTicketNavigation', () => {
 
         await result.current()
 
-        expect(logEventMock).toHaveBeenCalledTimes(1)
-        expect(logEventMock).toHaveBeenCalledWith(
-            segmentTracker.SegmentEvent.TicketPreviousNavigation,
-        )
         expect(useAppDispatchMock).toHaveBeenCalledTimes(1)
         expect(clearTicketMock).toHaveBeenCalledTimes(1)
         expect(goToNextOrPrevTicketMock).toHaveBeenCalledTimes(1)
@@ -59,10 +53,6 @@ describe('usePrevNextTicketNavigation', () => {
 
         await result.current()
 
-        expect(logEventMock).toHaveBeenCalledTimes(1)
-        expect(logEventMock).toHaveBeenCalledWith(
-            segmentTracker.SegmentEvent.TicketNextNavigation,
-        )
         expect(useAppDispatchMock).toHaveBeenCalledTimes(1)
         expect(clearTicketMock).toHaveBeenCalledTimes(1)
         expect(goToNextOrPrevTicketMock).toHaveBeenCalledTimes(1)

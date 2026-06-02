@@ -620,9 +620,6 @@ export const TicketDetailContainer = ({
                       GO_BACK: {
                           action: () => {
                               if (!isGoToPrevOrNextTicketPending) {
-                                  logEvent(
-                                      SegmentEvent.TicketKeyboardShortcutsPreviousNavigation,
-                                  )
                                   void goToPrevOrNextTicket('prev')
                               }
                           },
@@ -630,9 +627,6 @@ export const TicketDetailContainer = ({
                       GO_FORWARD: {
                           action: () => {
                               if (!isGoToPrevOrNextTicketPending) {
-                                  logEvent(
-                                      SegmentEvent.TicketKeyboardShortcutsNextNavigation,
-                                  )
                                   void goToPrevOrNextTicket('next')
                               }
                           },
@@ -834,9 +828,6 @@ export const TicketDetailContainer = ({
     const handleStatusChange = (status: string) => {
         if (status === TicketStatus.Closed) {
             if (checkTicketFieldErrors()) return
-            logEvent(SegmentEvent.TicketCloseAction, {
-                ticketId,
-            })
         }
 
         return setStatus(status, () => {

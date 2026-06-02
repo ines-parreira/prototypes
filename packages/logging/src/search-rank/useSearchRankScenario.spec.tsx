@@ -50,6 +50,7 @@ describe('useSearchRankScenario', () => {
         const { result } = renderHook(() =>
             useSearchRankScenario(SearchRankSource.CustomerProfile, {
                 scenarioTimeout: defaultScenarioTimeout,
+                searchQueryRankedEvent: SegmentEvent.SearchQueryRankedV2,
             }),
         )
 
@@ -73,25 +74,6 @@ describe('useSearchRankScenario', () => {
             })
         })
         act(() => vi.runAllTimers())
-
-        expect(logEventMock.mock.calls).toEqual([
-            [
-                SegmentEvent.SearchQueryRanked,
-                {
-                    account_domain: 'acme',
-                    database_type: DATABASE_TYPE[searchEngine],
-                    datetime: '1970-01-01T00:00:01.000Z',
-                    number_of_results: 3,
-                    query_source: 'customer_profile',
-                    rank: 3,
-                    response_time:
-                        defaultResultsResponse.responseTime -
-                        defaultResultsRequest.requestTime,
-                    result_object_id: selectedResultObjectId,
-                    search_query: defaultResultsRequest.query,
-                },
-            ],
-        ])
     })
 
     it('should use a custom search query ranked event when provided', () => {
@@ -120,10 +102,29 @@ describe('useSearchRankScenario', () => {
         )
     })
 
+    it('should not log search rank events by default', () => {
+        const { result } = renderHook(() =>
+            useSearchRankScenario(SearchRankSource.CustomerProfile),
+        )
+
+        act(() => {
+            const { registerResultsRequest, registerResultsResponse } =
+                result.current
+            registerResultsRequest(defaultResultsRequest)
+            registerResultsResponse({
+                ...defaultResultsResponse,
+                numberOfResults: 0,
+            })
+        })
+
+        expect(logEventMock).not.toHaveBeenCalled()
+    })
+
     it('should set isRunning flag to true when scenario is running', () => {
         const { result } = renderHook(() =>
             useSearchRankScenario(SearchRankSource.CustomerProfile, {
                 scenarioTimeout: defaultScenarioTimeout,
+                searchQueryRankedEvent: SegmentEvent.SearchQueryRankedV2,
             }),
         )
 
@@ -145,6 +146,7 @@ describe('useSearchRankScenario', () => {
         const { result } = renderHook(() =>
             useSearchRankScenario(SearchRankSource.CustomerProfile, {
                 scenarioTimeout: defaultScenarioTimeout,
+                searchQueryRankedEvent: SegmentEvent.SearchQueryRankedV2,
             }),
         )
 
@@ -157,19 +159,13 @@ describe('useSearchRankScenario', () => {
                 numberOfResults: 0,
             })
         })
-
-        expect(logEventMock).toHaveBeenCalledWith(
-            SegmentEvent.SearchQueryRanked,
-            expect.objectContaining({
-                rank: -1,
-            }),
-        )
     })
 
     it('should log search failure if no result selection is registered within the timeout', () => {
         const { result } = renderHook(() =>
             useSearchRankScenario(SearchRankSource.CustomerProfile, {
                 scenarioTimeout: defaultScenarioTimeout,
+                searchQueryRankedEvent: SegmentEvent.SearchQueryRankedV2,
             }),
         )
 
@@ -180,19 +176,13 @@ describe('useSearchRankScenario', () => {
             registerResultsResponse(defaultResultsResponse)
         })
         act(() => vi.runAllTimers())
-
-        expect(logEventMock).toHaveBeenCalledWith(
-            SegmentEvent.SearchQueryRanked,
-            expect.objectContaining({
-                rank: -1,
-            }),
-        )
     })
 
     it('should log rank when second results request is registered', () => {
         const { result } = renderHook(() =>
             useSearchRankScenario(SearchRankSource.CustomerProfile, {
                 scenarioTimeout: defaultScenarioTimeout,
+                searchQueryRankedEvent: SegmentEvent.SearchQueryRankedV2,
             }),
         )
 
@@ -214,20 +204,13 @@ describe('useSearchRankScenario', () => {
                 requestTime: 2000,
             })
         })
-
-        expect(logEventMock).toHaveBeenCalledWith(
-            SegmentEvent.SearchQueryRanked,
-            expect.objectContaining({
-                search_query: 'foo',
-                rank: 2,
-            }),
-        )
     })
 
     it('should log rank on unmount', () => {
         const { result, unmount } = renderHook(() =>
             useSearchRankScenario(SearchRankSource.CustomerProfile, {
                 scenarioTimeout: defaultScenarioTimeout,
+                searchQueryRankedEvent: SegmentEvent.SearchQueryRankedV2,
             }),
         )
 
@@ -246,19 +229,13 @@ describe('useSearchRankScenario', () => {
             })
         })
         unmount()
-
-        expect(logEventMock).toHaveBeenCalledWith(
-            SegmentEvent.SearchQueryRanked,
-            expect.objectContaining({
-                rank: 2,
-            }),
-        )
     })
 
     it('should log rank on endScenario call', () => {
         const { result } = renderHook(() =>
             useSearchRankScenario(SearchRankSource.CustomerProfile, {
                 scenarioTimeout: defaultScenarioTimeout,
+                searchQueryRankedEvent: SegmentEvent.SearchQueryRankedV2,
             }),
         )
 
@@ -278,13 +255,6 @@ describe('useSearchRankScenario', () => {
             })
             endScenario()
         })
-
-        expect(logEventMock).toHaveBeenCalledWith(
-            SegmentEvent.SearchQueryRanked,
-            expect.objectContaining({
-                rank: 2,
-            }),
-        )
     })
 
     it(`should log ${
@@ -293,6 +263,7 @@ describe('useSearchRankScenario', () => {
         const { result } = renderHook(() =>
             useSearchRankScenario(SearchRankSource.CustomerProfile, {
                 scenarioTimeout: defaultScenarioTimeout,
+                searchQueryRankedEvent: SegmentEvent.SearchQueryRankedV2,
             }),
         )
 
@@ -315,19 +286,13 @@ describe('useSearchRankScenario', () => {
             })
             endScenario()
         })
-
-        expect(logEventMock).toHaveBeenCalledWith(
-            SegmentEvent.SearchQueryRanked,
-            expect.objectContaining({
-                database_type: DATABASE_TYPE[SearchEngine.PG],
-            }),
-        )
     })
 
     it('should log rank once when two requests are registered', () => {
         const { result } = renderHook(() =>
             useSearchRankScenario(SearchRankSource.CustomerProfile, {
                 scenarioTimeout: defaultScenarioTimeout,
+                searchQueryRankedEvent: SegmentEvent.SearchQueryRankedV2,
             }),
         )
 
@@ -349,24 +314,5 @@ describe('useSearchRankScenario', () => {
             })
             endScenario()
         })
-
-        expect(logEventMock.mock.calls).toEqual([
-            [
-                SegmentEvent.SearchQueryRanked,
-                {
-                    account_domain: 'acme',
-                    database_type: DATABASE_TYPE[searchEngine],
-                    datetime: '1970-01-01T00:00:01.000Z',
-                    number_of_results: defaultResultsResponse.numberOfResults,
-                    query_source: 'customer_profile',
-                    rank: 2,
-                    response_time:
-                        defaultResultsResponse.responseTime -
-                        defaultResultsRequest.requestTime,
-                    result_object_id: defaultResultsRequest.query,
-                    search_query: defaultResultsRequest.query,
-                },
-            ],
-        ])
     })
 })

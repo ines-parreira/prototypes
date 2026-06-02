@@ -1,22 +1,8 @@
-import {
-    logEvent,
-    NotificationCenterEventTypes,
-    SegmentEvent,
-} from '@repo/logging'
 import { assumeMock, render, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import useCount from '../../hooks/useCount'
 import Button from '../Button'
-
-jest.mock(
-    '@repo/logging',
-    () =>
-        ({
-            ...jest.requireActual('@repo/logging'),
-            logEvent: jest.fn(),
-        }) as typeof import('@repo/logging'),
-)
 
 jest.mock('../../hooks/useCount', () => jest.fn())
 const useCountMock = assumeMock(useCount)
@@ -42,9 +28,6 @@ describe('Button', () => {
     it('should render the feed when the button is clicked', () => {
         render(<Button />)
         userEvent.click(screen.getByText('Notifications'))
-        expect(logEvent).toHaveBeenCalledWith(SegmentEvent.NotificationCenter, {
-            type: NotificationCenterEventTypes.Opened,
-        })
         expect(screen.getByText('Feed')).toBeInTheDocument()
     })
 

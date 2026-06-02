@@ -1,7 +1,6 @@
 import type { ComponentProps } from 'react'
 
 import { useFlag } from '@repo/feature-flags'
-import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -16,9 +15,6 @@ import type ApplyMacro from '../ApplyMacro'
 import MoreActions from '../MoreActions'
 import type PriorityDropdownMenu from '../PriorityDropdownMenu'
 import type TeamAssigneeDropdownMenu from '../TeamAssigneeDropdownMenu'
-
-jest.mock('@repo/logging')
-const logEventMock = assumeMock(logEvent)
 
 jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
@@ -223,10 +219,6 @@ describe('<MoreActions />', () => {
         await userEvent.click(screen.getByText('ApplyMacroMock'))
 
         expect(minProps.onComplete).toHaveBeenCalledWith()
-        expect(logEventMock).toHaveBeenCalledWith(SegmentEvent.BulkAction, {
-            type: 'apply-macro',
-            location: 'split-view-mode',
-        })
 
         expect(screen.queryByText('ApplyMacroMock')).not.toBeInTheDocument
         expect(screen.queryByText('Apply macro')).not.toBeInTheDocument

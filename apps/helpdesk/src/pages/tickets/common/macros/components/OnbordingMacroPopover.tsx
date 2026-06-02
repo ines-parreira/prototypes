@@ -1,7 +1,6 @@
 import type { MutableRefObject, ReactElement } from 'react'
 import React, { useEffect, useRef, useState } from 'react'
 
-import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 import { Popover, PopoverBody } from 'reactstrap'
@@ -70,10 +69,6 @@ export default function OnbordingMacroPopover({
                 hasShownPopover.current = true
                 return true
             })
-            logEvent(SegmentEvent.MacroDefaultMacroToSearch, {
-                action: 'show popover',
-                user_id: currentUser.get('id'),
-            })
         }
     }, [macrosVisible, currentUserPreferences, ticket, currentUser])
 
@@ -97,19 +92,11 @@ export default function OnbordingMacroPopover({
 
     const handleKeepSearch = async () => {
         await setShowMacroByDefault()
-        logEvent(SegmentEvent.MacroDefaultMacroToSearch, {
-            action: 'keep search',
-            user_id: currentUser.get('id'),
-        })
     }
 
     const handleRevertBack = async () => {
         onClearMacro()
         await setShowMacroByDefault(false)
-        logEvent(SegmentEvent.MacroDefaultMacroToSearch, {
-            action: 'revert back',
-            user_id: currentUser.get('id'),
-        })
     }
 
     const popoverData: Record<Stages, StageProp> = {

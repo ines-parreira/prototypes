@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react'
 
-import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, render, userEvent } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -33,15 +32,6 @@ const mockUseSidebar = jest.requireMock('@repo/navigation')
 jest.mock('@repo/routing', () => ({
     history: { push: jest.fn() },
 }))
-
-jest.mock(
-    '@repo/logging',
-    () =>
-        ({
-            ...jest.requireActual('@repo/logging'),
-            logEvent: jest.fn(),
-        }) as typeof import('@repo/logging'),
-)
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 const useAppDispatchMock = assumeMock(useAppDispatch)
@@ -102,13 +92,6 @@ describe('RecentChats', () => {
         it('should log an event and dispatch some actions on click', () => {
             render(<RecentChats />, { wrapper })
             userEvent.click(screen.getByText('John Doe'))
-            expect(logEvent).toHaveBeenCalledWith(
-                SegmentEvent.RecentActivityClicked,
-                {
-                    position: 1,
-                    ticket: recentTicket,
-                },
-            )
             expect(dispatch).toHaveBeenCalledWith({ type: 'close-panels' })
             expect(dispatch).toHaveBeenCalledWith(dispatch)
             expect(dispatch).toHaveBeenCalledWith({
@@ -174,13 +157,6 @@ describe('RecentChats', () => {
 
             await user.click(screen.getByText('John Doe'))
 
-            expect(logEvent).toHaveBeenCalledWith(
-                SegmentEvent.RecentActivityClicked,
-                {
-                    position: 1,
-                    ticket: recentTicket,
-                },
-            )
             expect(dispatch).toHaveBeenCalledWith({ type: 'close-panels' })
             expect(dispatch).toHaveBeenCalledWith(dispatch)
             expect(dispatch).toHaveBeenCalledWith({

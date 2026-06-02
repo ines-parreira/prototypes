@@ -31,7 +31,6 @@ interface FeedbackTrackingCallbacks {
         resourceSetId: string,
         isNew: boolean,
     ) => void
-    onFeedbackTabOpened: (openedFrom: string) => void
     onFeedbackGiven: (type: string) => void
 }
 
@@ -100,16 +99,6 @@ export const useFeedbackTracking = ({
         })
     }
 
-    const onFeedbackTabOpened = useCallback(
-        (openedFrom: string) => {
-            logEvent(SegmentEvent.AiAgentFeedbackTabOpened, {
-                ...eventContext,
-                openedFrom,
-            })
-        },
-        [eventContext],
-    )
-
     const onFeedbackGiven = useCallback(
         (type: string) => {
             logEvent(SegmentEvent.AiAgentFeedbackGiven, {
@@ -125,7 +114,6 @@ export const useFeedbackTracking = ({
         onKnowledgeResourceEditClick,
         onKnowledgeResourceCreateClick,
         onKnowledgeResourceSaved,
-        onFeedbackTabOpened,
         onFeedbackGiven,
     }
 }
