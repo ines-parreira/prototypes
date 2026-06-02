@@ -51,8 +51,10 @@ catalogs:
   analytics-ui-kit:
     '@gorgias/analytics-ui-kit': '0.1.25'
   copilot:
-    '@gorgias/copilot': '0.48.0'
+    '@gorgias/copilot': '0.55.0'
   rest-api-sdk:
+    '@gorgias/copilot-client': '^0.1.1'
+    '@gorgias/copilot-queries': '^0.1.1'
     '@gorgias/convert-client': '^0.3.60'
     '@gorgias/convert-mocks': '^0.2.77'
     '@gorgias/convert-queries': '^0.2.78'

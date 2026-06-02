@@ -183,6 +183,7 @@ jest.mock('@gorgias/copilot', () => ({
     CopilotProvider: jest.fn(
         ({ children }: { children: import('react').ReactNode }) => children,
     ),
+    GorgiasCopilotAgent: jest.fn(),
     CopilotPanel: jest.fn(() => null),
     useCopilot: jest.fn(() => ({
         sendPrompt: () => undefined,
