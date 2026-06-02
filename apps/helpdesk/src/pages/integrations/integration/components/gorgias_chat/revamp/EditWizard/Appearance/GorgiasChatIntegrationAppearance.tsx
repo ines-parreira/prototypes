@@ -50,6 +50,9 @@ export const GorgiasChatIntegrationAppearanceRevamp = ({
         updateMainFontFamily,
         updateConversationColor,
         updateChatTitle,
+        updateBackgroundStyle,
+        updateIntroductionText,
+        updateOfflineIntroductionText,
     } = useChatPreviewPanelContext()
 
     useEffect(() => {
@@ -57,15 +60,27 @@ export const GorgiasChatIntegrationAppearanceRevamp = ({
             updateConversationColor(values.conversationColor)
             updateLegalDisclaimerEnabled(values.legalDisclaimerEnabled)
             updateChatTitle(values.name)
+            updateMainFontFamily(values.mainFontFamily)
+            updateBackgroundStyle(values.backgroundStyle)
+            updateIntroductionText(values.introductionText)
+            updateOfflineIntroductionText(values.offlineIntroductionText)
         }, true)
     }, [
         updateConversationColor,
         onChatPreviewLoaded,
         updateLegalDisclaimerEnabled,
         updateChatTitle,
+        updateMainFontFamily,
+        updateBackgroundStyle,
+        updateIntroductionText,
+        updateOfflineIntroductionText,
         values.legalDisclaimerEnabled,
         values.conversationColor,
+        values.mainFontFamily,
+        values.backgroundStyle,
         values.name,
+        values.introductionText,
+        values.offlineIntroductionText,
     ])
 
     const onSave = handleSubmit(onSubmit)

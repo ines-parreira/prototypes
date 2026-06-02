@@ -69,6 +69,7 @@ type BrandCardProps = {
     offlineIntroductionText: string
     isAiAgentEnabled?: boolean
     isAiAgentDisabled?: boolean
+    mainFontFamily: string
     onNameChange: (value: string) => void
     onMainColorChange: (value: string) => void
     onConversationColorChange: (value: string) => void
@@ -78,6 +79,7 @@ type BrandCardProps = {
     onHeaderAlternativePictureUrlChange: (url?: string) => void
     onIntroductionTextChange: (value: string) => void
     onOfflineIntroductionTextChange: (value: string) => void
+    onMainFontFamilyChange: (value: string) => void
 }
 
 type ChatLauncherCardProps = {
@@ -154,6 +156,10 @@ const mockOnChatPreviewLoaded = jest.fn()
 const mockUpdateLegalDisclaimerEnabled = jest.fn()
 const mockUpdateConversationColor = jest.fn()
 const mockUpdateChatTitle = jest.fn()
+const mockUpdateMainFontFamily = jest.fn()
+const mockUpdateBackgroundStyle = jest.fn()
+const mockUpdateIntroductionText = jest.fn()
+const mockUpdateOfflineIntroductionText = jest.fn()
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
@@ -169,7 +175,14 @@ jest.mock(
             updateConversationColor: (color: string) =>
                 mockUpdateConversationColor(color),
             updateChatTitle: (title: string) => mockUpdateChatTitle(title),
-            updateMainFontFamily: jest.fn(),
+            updateMainFontFamily: (font: string) =>
+                mockUpdateMainFontFamily(font),
+            updateBackgroundStyle: (style: string) =>
+                mockUpdateBackgroundStyle(style),
+            updateIntroductionText: (text: string) =>
+                mockUpdateIntroductionText(text),
+            updateOfflineIntroductionText: (text: string) =>
+                mockUpdateOfflineIntroductionText(text),
         }),
     }),
 )
@@ -291,6 +304,10 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
         mockGetApplicationTexts.mockResolvedValue(mockApplicationTextsResponse)
         mockUpdateApplicationTexts.mockResolvedValue(undefined)
         mockUpdateConversationColor.mockReset()
+        mockUpdateMainFontFamily.mockReset()
+        mockUpdateBackgroundStyle.mockReset()
+        mockUpdateIntroductionText.mockReset()
+        mockUpdateOfflineIntroductionText.mockReset()
         mockOnChatPreviewLoaded.mockImplementation(
             (callback: () => void, fireIfAlreadyLoaded?: boolean) => {
                 if (fireIfAlreadyLoaded) {
@@ -514,6 +531,126 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
             expect(calledWith.decoration).toMatchObject({
                 background_color_style: GorgiasChatBackgroundColorStyle.Solid,
             })
+        })
+
+        it('should sync the default backgroundStyle (Gradient) to the chat preview when background_color_style is missing', () => {
+            renderComponent()
+
+            expect(mockUpdateBackgroundStyle).toHaveBeenCalledWith(
+                GorgiasChatBackgroundColorStyle.Gradient,
+            )
+        })
+
+        it('should sync backgroundStyle to the chat preview when it loads', () => {
+            const integration = fromJS({
+                ...mockIntegration.toJS(),
+                decoration: {
+                    ...mockIntegration.get('decoration').toJS(),
+                    background_color_style:
+                        GorgiasChatBackgroundColorStyle.Solid,
+                },
+            })
+
+            renderComponent(integration)
+
+            expect(mockUpdateBackgroundStyle).toHaveBeenCalledWith(
+                GorgiasChatBackgroundColorStyle.Solid,
+            )
+        })
+
+        it('should re-sync backgroundStyle to the chat preview when it changes', () => {
+            renderComponent()
+
+            act(() => {
+                const { onBackgroundStyleChange } = mockBrandCard.mock.calls[
+                    mockBrandCard.mock.calls.length - 1
+                ][0] as BrandCardProps
+                onBackgroundStyleChange(GorgiasChatBackgroundColorStyle.Solid)
+            })
+
+            expect(mockUpdateBackgroundStyle).toHaveBeenLastCalledWith(
+                GorgiasChatBackgroundColorStyle.Solid,
+            )
+        })
+
+        it('should sync the default mainFontFamily (Inter) to the chat preview when main_font_family is missing', () => {
+            renderComponent()
+
+            expect(mockUpdateMainFontFamily).toHaveBeenCalledWith('Inter')
+        })
+
+        it('should sync mainFontFamily to the chat preview when it loads', () => {
+            const integration = fromJS({
+                ...mockIntegration.toJS(),
+                decoration: {
+                    ...mockIntegration.get('decoration').toJS(),
+                    main_font_family: 'Roboto',
+                },
+            })
+
+            renderComponent(integration)
+
+            expect(mockUpdateMainFontFamily).toHaveBeenCalledWith('Roboto')
+        })
+
+        it('should re-sync mainFontFamily to the chat preview when it changes', () => {
+            renderComponent()
+
+            act(() => {
+                const { onMainFontFamilyChange } = mockBrandCard.mock.calls[
+                    mockBrandCard.mock.calls.length - 1
+                ][0] as BrandCardProps
+                onMainFontFamilyChange('Lato')
+            })
+
+            expect(mockUpdateMainFontFamily).toHaveBeenLastCalledWith('Lato')
+        })
+
+        it('should sync introductionText to the chat preview when it loads', () => {
+            renderComponent()
+
+            expect(mockUpdateIntroductionText).toHaveBeenCalledWith(
+                'How can we help?',
+            )
+        })
+
+        it('should re-sync introductionText to the chat preview when it changes', () => {
+            renderComponent()
+
+            act(() => {
+                const { onIntroductionTextChange } = mockBrandCard.mock.calls[
+                    mockBrandCard.mock.calls.length - 1
+                ][0] as BrandCardProps
+                onIntroductionTextChange('Hello!')
+            })
+
+            expect(mockUpdateIntroductionText).toHaveBeenLastCalledWith(
+                'Hello!',
+            )
+        })
+
+        it('should sync offlineIntroductionText to the chat preview when it loads', () => {
+            renderComponent()
+
+            expect(mockUpdateOfflineIntroductionText).toHaveBeenCalledWith(
+                "We'll be back soon",
+            )
+        })
+
+        it('should re-sync offlineIntroductionText to the chat preview when it changes', () => {
+            renderComponent()
+
+            act(() => {
+                const { onOfflineIntroductionTextChange } = mockBrandCard.mock
+                    .calls[
+                    mockBrandCard.mock.calls.length - 1
+                ][0] as BrandCardProps
+                onOfflineIntroductionTextChange('Back tomorrow')
+            })
+
+            expect(mockUpdateOfflineIntroductionText).toHaveBeenLastCalledWith(
+                'Back tomorrow',
+            )
         })
     })
 
