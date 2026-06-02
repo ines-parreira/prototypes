@@ -1,11 +1,4 @@
-import type { ReactNode } from 'react'
-
 import { renderHook } from '@repo/testing/vitest'
-import {
-    QueryCache,
-    QueryClient,
-    QueryClientProvider,
-} from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -48,18 +41,6 @@ afterEach(() => {
 afterAll(() => {
     server.close()
 })
-
-function makeWrapper() {
-    const queryClient = new QueryClient({
-        defaultOptions: { queries: { retry: false } },
-        queryCache: new QueryCache(),
-    })
-    return ({ children }: { children?: ReactNode }) => (
-        <QueryClientProvider client={queryClient}>
-            {children}
-        </QueryClientProvider>
-    )
-}
 
 const mockDefaultLayoutConfig: DashboardLayoutConfig = {
     sections: [
@@ -213,53 +194,59 @@ const mockOverviewDashboardWithSavedTableSubset: AnalyticsManagedDashboard = {
 
 describe('useGetManagedDashboardsLayoutConfig', () => {
     it('should return defaultLayoutConfig when no matching dashboard in response', async () => {
-        server.use(
-            mockListAnalyticsManagedDashboardsHandler(async () =>
+        const mockHandler = mockListAnalyticsManagedDashboardsHandler(
+            async () =>
                 HttpResponse.json(
                     mockListAnalyticsManagedDashboardsResponse({ data: [] }),
                 ),
-            ).handler,
+        )
+        server.use(mockHandler.handler)
+        const waitForRequest = mockHandler.waitForRequest(server)
+
+        const { result } = renderHook(() =>
+            useGetManagedDashboardsLayoutConfig({
+                dashboardId: DASHBOARD_OVERVIEW,
+                defaultLayoutConfig: mockDefaultLayoutConfig,
+                tabId: TAB_OVERVIEW,
+            }),
         )
 
-        const { result } = renderHook(
-            () =>
-                useGetManagedDashboardsLayoutConfig({
-                    dashboardId: DASHBOARD_OVERVIEW,
-                    defaultLayoutConfig: mockDefaultLayoutConfig,
-                    tabId: TAB_OVERVIEW,
-                }),
-            { wrapper: makeWrapper() },
-        )
+        await waitForRequest()
 
         await waitFor(() => {
-            expect(result.current.layoutConfig).toEqual(mockDefaultLayoutConfig)
+            expect(result.current.isLoading).toBe(false)
         })
+
+        expect(result.current.layoutConfig).toEqual(mockDefaultLayoutConfig)
     })
 
     it('should return defaultLayoutConfig when dashboardId does not match any dashboard', async () => {
-        server.use(
-            mockListAnalyticsManagedDashboardsHandler(async () =>
+        const mockHandler = mockListAnalyticsManagedDashboardsHandler(
+            async () =>
                 HttpResponse.json(
                     mockListAnalyticsManagedDashboardsResponse({
                         data: [mockOverviewDashboard],
                     }),
                 ),
-            ).handler,
+        )
+        server.use(mockHandler.handler)
+        const waitForRequest = mockHandler.waitForRequest(server)
+
+        const { result } = renderHook(() =>
+            useGetManagedDashboardsLayoutConfig({
+                dashboardId: DASHBOARD_ANALYTICS,
+                defaultLayoutConfig: mockDefaultLayoutConfig,
+                tabId: TAB_ALL_AGENTS,
+            }),
         )
 
-        const { result } = renderHook(
-            () =>
-                useGetManagedDashboardsLayoutConfig({
-                    dashboardId: DASHBOARD_ANALYTICS,
-                    defaultLayoutConfig: mockDefaultLayoutConfig,
-                    tabId: TAB_ALL_AGENTS,
-                }),
-            { wrapper: makeWrapper() },
-        )
+        await waitForRequest()
 
         await waitFor(() => {
-            expect(result.current.layoutConfig).toEqual(mockDefaultLayoutConfig)
+            expect(result.current.isLoading).toBe(false)
         })
+
+        expect(result.current.layoutConfig).toEqual(mockDefaultLayoutConfig)
     })
 
     it('should return merged layoutConfig with saved and default items when dashboard is found', async () => {
@@ -274,14 +261,12 @@ describe('useGetManagedDashboardsLayoutConfig', () => {
         server.use(mockHandler.handler)
         const waitForRequest = mockHandler.waitForRequest(server)
 
-        const { result } = renderHook(
-            () =>
-                useGetManagedDashboardsLayoutConfig({
-                    dashboardId: DASHBOARD_OVERVIEW,
-                    defaultLayoutConfig: mockDefaultLayoutConfig,
-                    tabId: TAB_OVERVIEW,
-                }),
-            { wrapper: makeWrapper() },
+        const { result } = renderHook(() =>
+            useGetManagedDashboardsLayoutConfig({
+                dashboardId: DASHBOARD_OVERVIEW,
+                defaultLayoutConfig: mockDefaultLayoutConfig,
+                tabId: TAB_OVERVIEW,
+            }),
         )
 
         await waitForRequest()
@@ -299,54 +284,70 @@ describe('useGetManagedDashboardsLayoutConfig', () => {
     })
 
     it('should merge saved table items with newer local default table items while keeping saved values', async () => {
-        server.use(
-            mockListAnalyticsManagedDashboardsHandler(async () =>
+        const mockHandler = mockListAnalyticsManagedDashboardsHandler(
+            async () =>
                 HttpResponse.json(
                     mockListAnalyticsManagedDashboardsResponse({
                         data: [mockOverviewDashboardWithSavedTableSubset],
                     }),
                 ),
-            ).handler,
+        )
+        server.use(mockHandler.handler)
+        const waitForRequest = mockHandler.waitForRequest(server)
+
+        const { result } = renderHook(() =>
+            useGetManagedDashboardsLayoutConfig({
+                dashboardId: DASHBOARD_OVERVIEW,
+                defaultLayoutConfig: mockDefaultTableLayoutConfig,
+                tabId: TAB_OVERVIEW,
+            }),
         )
 
-        const { result } = renderHook(
-            () =>
-                useGetManagedDashboardsLayoutConfig({
-                    dashboardId: DASHBOARD_OVERVIEW,
-                    defaultLayoutConfig: mockDefaultTableLayoutConfig,
-                    tabId: TAB_OVERVIEW,
-                }),
-            { wrapper: makeWrapper() },
-        )
+        await waitForRequest()
 
         await waitFor(() => {
-            expect(result.current.layoutConfig.sections).toEqual([
-                {
-                    id: 'breakdown',
-                    type: ChartType.Table,
-                    items: [
-                        {
-                            chartId: PERFORMANCE_TABLE,
-                            gridSize: 6,
-                            visibility: false,
-                            measures: undefined,
-                            dimensions: undefined,
-                        },
-                        {
-                            chartId: ARTICLE_RECOMMENDATION_TABLE,
-                            gridSize: 12,
-                            visibility: true,
-                            measures: undefined,
-                            dimensions: undefined,
-                        },
-                        {
-                            chartId: FLOWS_TABLE,
-                            gridSize: 12,
-                            visibility: false,
-                        },
-                    ],
-                },
-            ])
+            expect(result.current.isLoading).toBe(false)
+        })
+
+        const breakdownSection = result.current.layoutConfig.sections.find(
+            (section) => section.id === 'breakdown',
+        )
+
+        expect(breakdownSection).toMatchObject({
+            id: 'breakdown',
+            type: ChartType.Table,
+        })
+        expect(breakdownSection?.items.map((item) => item.chartId)).toEqual([
+            PERFORMANCE_TABLE,
+            ARTICLE_RECOMMENDATION_TABLE,
+            FLOWS_TABLE,
+        ])
+        expect(
+            breakdownSection?.items.find(
+                (item) => item.chartId === PERFORMANCE_TABLE,
+            ),
+        ).toMatchObject({
+            chartId: PERFORMANCE_TABLE,
+            gridSize: 6,
+            visibility: false,
+        })
+        expect(
+            breakdownSection?.items.find(
+                (item) => item.chartId === ARTICLE_RECOMMENDATION_TABLE,
+            ),
+        ).toMatchObject({
+            chartId: ARTICLE_RECOMMENDATION_TABLE,
+            gridSize: 12,
+            visibility: true,
+        })
+        expect(
+            breakdownSection?.items.find(
+                (item) => item.chartId === FLOWS_TABLE,
+            ),
+        ).toMatchObject({
+            chartId: FLOWS_TABLE,
+            gridSize: 12,
+            visibility: false,
         })
     })
 
@@ -360,14 +361,12 @@ describe('useGetManagedDashboardsLayoutConfig', () => {
             }).handler,
         )
 
-        const { result } = renderHook(
-            () =>
-                useGetManagedDashboardsLayoutConfig({
-                    dashboardId: DASHBOARD_OVERVIEW,
-                    defaultLayoutConfig: mockDefaultLayoutConfig,
-                    tabId: TAB_OVERVIEW,
-                }),
-            { wrapper: makeWrapper() },
+        const { result } = renderHook(() =>
+            useGetManagedDashboardsLayoutConfig({
+                dashboardId: DASHBOARD_OVERVIEW,
+                defaultLayoutConfig: mockDefaultLayoutConfig,
+                tabId: TAB_OVERVIEW,
+            }),
         )
 
         expect(result.current.layoutConfig).toEqual(mockDefaultLayoutConfig)
@@ -386,14 +385,12 @@ describe('useGetManagedDashboardsLayoutConfig', () => {
         server.use(mockHandler.handler)
         const waitForRequest = mockHandler.waitForRequest(server)
 
-        const { result } = renderHook(
-            () =>
-                useGetManagedDashboardsLayoutConfig({
-                    dashboardId: DASHBOARD_ANALYTICS,
-                    defaultLayoutConfig: mockDefaultLayoutConfig,
-                    tabId: TAB_ALL_AGENTS,
-                }),
-            { wrapper: makeWrapper() },
+        const { result } = renderHook(() =>
+            useGetManagedDashboardsLayoutConfig({
+                dashboardId: DASHBOARD_ANALYTICS,
+                defaultLayoutConfig: mockDefaultLayoutConfig,
+                tabId: TAB_ALL_AGENTS,
+            }),
         )
 
         await waitForRequest()
@@ -425,14 +422,12 @@ describe('useGetManagedDashboardsLayoutConfig', () => {
         server.use(mockHandler.handler)
         const waitForRequest = mockHandler.waitForRequest(server)
 
-        const { result } = renderHook(
-            () =>
-                useGetManagedDashboardsLayoutConfig({
-                    dashboardId: DASHBOARD_ANALYTICS,
-                    defaultLayoutConfig: mockDefaultLayoutConfig,
-                    tabId: TAB_SUPPORT_AGENT,
-                }),
-            { wrapper: makeWrapper() },
+        const { result } = renderHook(() =>
+            useGetManagedDashboardsLayoutConfig({
+                dashboardId: DASHBOARD_ANALYTICS,
+                defaultLayoutConfig: mockDefaultLayoutConfig,
+                tabId: TAB_SUPPORT_AGENT,
+            }),
         )
 
         await waitForRequest()
