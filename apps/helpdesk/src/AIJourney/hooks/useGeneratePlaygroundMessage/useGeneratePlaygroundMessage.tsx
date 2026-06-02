@@ -148,6 +148,7 @@ export const useGeneratePlaygroundMessage = ({
                 storeName: currentIntegration.name,
                 storeType: 'shopify',
                 journeyId: journey.id,
+                journeyName: journey.campaign?.title ?? null,
                 journeyMessageInstructions: journeyMessageInstructions,
                 journeyType:
                     journey.type === JourneyTypeEnum.Custom

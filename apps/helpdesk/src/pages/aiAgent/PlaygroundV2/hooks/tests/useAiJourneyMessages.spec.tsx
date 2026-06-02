@@ -211,9 +211,38 @@ describe('useAiJourneyMessages', () => {
                 storeName: 'test-shop',
                 storeType: 'shopify',
                 journeyId: 'journey-1',
+                journeyName: null,
                 journeyType: 'cart_abandoned',
                 testModeSessionId: 'test-session-id',
                 followUpAttempt: 0,
+            }),
+        ])
+    })
+
+    it('should source journeyName from campaign title for campaign journeys', async () => {
+        mockUseJourneys.mockReturnValue({
+            data: [
+                {
+                    id: 'journey-1',
+                    type: 'campaign',
+                    state: 'active',
+                    campaign: { title: 'Black Friday Sale' },
+                },
+            ],
+            isLoading: false,
+        })
+
+        const { result } = renderHook(() => useAiJourneyMessages(), {
+            wrapper: createWrapper(),
+        })
+
+        await act(async () => {
+            await result.current.triggerMessage()
+        })
+
+        expect(mockMutateAsync).toHaveBeenCalledWith([
+            expect.objectContaining({
+                journeyName: 'Black Friday Sale',
             }),
         ])
     })

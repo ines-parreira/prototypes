@@ -18,6 +18,7 @@ type CreateAIJourneyPayloadParams = {
     storeIntegrationId: number
     storeName: string
     journeyId: string
+    journeyName: string | null
     journeyType: JourneyTypeEnum
     sessionId: string
     followUpMessagesSent: number
@@ -36,6 +37,7 @@ const createAIJourneyPayload: (
     storeIntegrationId,
     storeName,
     journeyId,
+    journeyName,
     journeyType,
     sessionId,
     followUpMessagesSent,
@@ -52,6 +54,7 @@ const createAIJourneyPayload: (
         storeName,
         storeType: 'shopify' as const,
         journeyId,
+        journeyName,
         journeyMessageInstructions:
             aiJourneySettings.outboundMessageInstructions,
         journeyType,
@@ -184,6 +187,7 @@ export const useAiJourneyMessages = () => {
             storeIntegrationId: shopifyIntegration.id,
             storeName: shopName,
             journeyId: currentJourney.id,
+            journeyName: currentJourney.campaign?.title ?? null,
             journeyType: currentJourney.type,
             sessionId,
             followUpMessagesSent,

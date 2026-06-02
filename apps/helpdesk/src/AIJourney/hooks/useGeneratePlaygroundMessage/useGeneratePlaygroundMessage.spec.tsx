@@ -599,6 +599,7 @@ describe('useGeneratePlaygroundMessage', () => {
             expect.objectContaining({
                 accountId: hookParameters.journey.account_id,
                 journeyId: hookParameters.journey.id,
+                journeyName: null,
                 followUpAttempt: 0,
                 testModeSessionId: 'test-session-id',
                 page: expect.objectContaining({
@@ -644,6 +645,9 @@ describe('useGeneratePlaygroundMessage', () => {
             smsSenderIntegrationId?: number | null
             brandName?: string | null
             journeyParamsOverride?: Partial<typeof hookParameters.journeyParams>
+            journeyOverride?: Partial<typeof hookParameters.journey> & {
+                campaign?: { title: string }
+            }
         }) => {
             jest.useFakeTimers()
             mockUseFlag.mockReturnValue(props.storeSettingsEnabled)
@@ -689,6 +693,12 @@ describe('useGeneratePlaygroundMessage', () => {
                         smsSenderNumber: props.smsSenderNumber,
                         smsSenderIntegrationId: props.smsSenderIntegrationId,
                         brandName: props.brandName,
+                        journey: props.journeyOverride
+                            ? ({
+                                  ...hookParameters.journey,
+                                  ...props.journeyOverride,
+                              } as typeof hookParameters.journey)
+                            : hookParameters.journey,
                         journeyParams: props.journeyParamsOverride
                             ? {
                                   ...hookParameters.journeyParams,
@@ -824,6 +834,21 @@ describe('useGeneratePlaygroundMessage', () => {
                         smsSenderNumber: null,
                         smsSenderIntegrationId: null,
                     }),
+                }),
+            ])
+        })
+
+        it('sources journeyName from campaign title for campaign journeys', async () => {
+            await setupAndTrigger({
+                storeSettingsEnabled: false,
+                journeyOverride: {
+                    campaign: { title: 'Black Friday Sale' },
+                },
+            })
+
+            expect(mockTriggerAIJourney).toHaveBeenCalledWith([
+                expect.objectContaining({
+                    journeyName: 'Black Friday Sale',
                 }),
             ])
         })

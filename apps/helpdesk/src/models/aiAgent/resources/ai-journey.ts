@@ -16,6 +16,7 @@ export type CreateAIJourneyPlaygroundOptions = {
 
     // Optional fields with defaults
     journeyId?: string | null
+    journeyName?: string | null
     journeyMessageInstructions?: string | null
     followUpAttempt?: number
     testModeSessionId?: string
@@ -113,6 +114,7 @@ const createAIJourneyPlaygroundPayload = (
     return {
         accountId: options.accountId,
         journeyId: options.journeyId ?? null,
+        journeyName: options.journeyName ?? null,
         journeyParticipationId: null,
         storeIntegrationId: options.storeIntegrationId,
         followUpAttempt: options.followUpAttempt ?? 0,

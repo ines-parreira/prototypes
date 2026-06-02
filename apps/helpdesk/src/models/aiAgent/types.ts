@@ -417,6 +417,7 @@ export type GetTestSessionLogsResponse = {
 export type TriggerAIJourneyPayload = {
     accountId: number
     journeyId?: string | null
+    journeyName?: string | null
     journeyParticipationId?: string | null
     storeIntegrationId: number
     followUpAttempt: number

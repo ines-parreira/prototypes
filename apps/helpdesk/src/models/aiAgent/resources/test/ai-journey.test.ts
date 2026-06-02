@@ -370,5 +370,45 @@ describe('AI Journey Resource', () => {
                 expect(result).toEqual(mockResponse)
             },
         )
+
+        it('should forward journeyName when provided and default to null when omitted', async () => {
+            const baseOptions = {
+                accountId: 6069,
+                storeIntegrationId: 33858,
+                storeName: 'artemisathletix',
+                journeyType: JourneyTypeEnum.Campaign,
+                settings: {
+                    maxFollowUpMessages: null,
+                    smsSenderNumber: null,
+                    smsSenderIntegrationId: null,
+                    offerDiscount: false,
+                    maxDiscountPercent: null,
+                },
+            }
+
+            ;(apiClient.post as jest.Mock).mockResolvedValue({
+                data: {
+                    message: 'ok',
+                    data: { ticketId: '1', executionId: '1' },
+                },
+            })
+
+            await createContextAndTriggerAIJourney({
+                ...baseOptions,
+                journeyName: 'My Summer Campaign',
+            })
+            expect(apiClient.post).toHaveBeenLastCalledWith(
+                '/api/interaction/ai-journey/trigger',
+                expect.objectContaining({ journeyName: 'My Summer Campaign' }),
+                { signal: undefined },
+            )
+
+            await createContextAndTriggerAIJourney(baseOptions)
+            expect(apiClient.post).toHaveBeenLastCalledWith(
+                '/api/interaction/ai-journey/trigger',
+                expect.objectContaining({ journeyName: null }),
+                { signal: undefined },
+            )
+        })
     })
 })
