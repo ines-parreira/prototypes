@@ -229,4 +229,24 @@ describe('AnalyticsOverviewLayout', () => {
             expect.anything(),
         )
     })
+
+    it('passes maxDate of 3 days ago and maxSpan of 365 in period initialSettings', () => {
+        const fixedNow = new Date('2025-06-01T12:00:00.000Z')
+        jest.spyOn(Date, 'now').mockReturnValue(fixedNow.getTime())
+
+        renderComponent()
+
+        const [[calledProps]] = mockFiltersPanelWrapper.mock.calls
+        const periodSettings =
+            calledProps.filterSettingsOverrides[FilterKey.Period]
+                .initialSettings
+
+        expect(periodSettings.maxSpan).toBe(365)
+
+        const expectedMaxDate = new Date('2025-05-29T12:00:00.000Z')
+        expect(periodSettings.maxDate.getTime()).toBeCloseTo(
+            expectedMaxDate.getTime(),
+            -4,
+        )
+    })
 })

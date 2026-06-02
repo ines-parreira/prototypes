@@ -65,7 +65,7 @@ export function PeriodFilterCompact({
     )
 
     useEffectOnce(() => {
-        const start = moment.tz(value.start_datetime, timeZone)
+        let start = moment.tz(value.start_datetime, timeZone)
         const end = moment.tz(value.end_datetime, timeZone)
         const exceedsMaxSpan = end.diff(start, 'days') > effectiveMaxSpan
         const exceedsMaxDate = !!maxDateMoment && end.isAfter(maxDateMoment)
@@ -80,10 +80,13 @@ export function PeriodFilterCompact({
                 maxDateMoment && spanClampedEnd.isAfter(maxDateMoment)
                     ? maxDateMoment.clone().endOf('day')
                     : spanClampedEnd
+            if (maxDateMoment && start.isAfter(maxDateMoment)) {
+                start = maxDateMoment.clone().startOf('day')
+            }
             dispatch(
                 mergeStatsFilters({
                     period: {
-                        start_datetime: start.clone().startOf('day').format(),
+                        start_datetime: start.startOf('day').format(),
                         end_datetime: clampedEnd.format(),
                     },
                 }),
@@ -127,6 +130,10 @@ export function PeriodFilterCompact({
                         .startOf('day')
                 } else {
                     end = maxDateMoment.clone().endOf('day')
+                    /* istanbul ignore next */
+                    if (start.isAfter(maxDateMoment)) {
+                        start = maxDateMoment.clone().startOf('day')
+                    }
                 }
             }
 

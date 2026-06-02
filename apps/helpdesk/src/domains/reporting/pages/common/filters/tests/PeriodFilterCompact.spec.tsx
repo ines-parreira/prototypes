@@ -200,6 +200,65 @@ describe('PeriodFilterCompact', () => {
             )
         })
 
+        it('clamps both start and end to maxDate when the entire period is in the blocked zone', () => {
+            // today = Feb 14 2017 (mocked), maxDate = Feb 11 2017
+            // start = Feb 13 (yesterday, blocked), end = Feb 14 (today, blocked)
+            // both should land on maxDate
+            const start = '2017-02-13T00:00:00.000Z'
+            const end = '2017-02-14T00:00:00.000Z'
+            const maxDate = new Date('2017-02-11')
+
+            const { store } = renderComponent(
+                { start_datetime: start, end_datetime: end },
+                { maxSpan: 90, maxDate },
+            )
+
+            const tz = moment.tz.guess()
+            expect(store.getActions()).toContainEqual(
+                mergeStatsFilters({
+                    period: {
+                        start_datetime: moment
+                            .tz(maxDate, tz)
+                            .startOf('day')
+                            .format(),
+                        end_datetime: moment
+                            .tz(maxDate, tz)
+                            .endOf('day')
+                            .format(),
+                    },
+                }),
+            )
+        })
+
+        it('clamps end to maxDate and leaves start unchanged when start equals maxDate', () => {
+            // start = Feb 11 (= maxDate, allowed), end = Feb 13 (blocked)
+            // end should be clamped to maxDate, start stays → single day at maxDate
+            const start = '2017-02-11T00:00:00.000Z'
+            const end = '2017-02-13T00:00:00.000Z'
+            const maxDate = new Date('2017-02-11')
+
+            const { store } = renderComponent(
+                { start_datetime: start, end_datetime: end },
+                { maxSpan: 90, maxDate },
+            )
+
+            const tz = moment.tz.guess()
+            expect(store.getActions()).toContainEqual(
+                mergeStatsFilters({
+                    period: {
+                        start_datetime: moment
+                            .tz(start, tz)
+                            .startOf('day')
+                            .format(),
+                        end_datetime: moment
+                            .tz(maxDate, tz)
+                            .endOf('day')
+                            .format(),
+                    },
+                }),
+            )
+        })
+
         it('does not dispatch when end is before maxDate and within maxSpan', () => {
             const start = '2017-01-01T00:00:00.000Z'
             const end = '2017-01-10T00:00:00.000Z'
