@@ -5,6 +5,8 @@ import { FormProvider, useForm } from 'react-hook-form'
 
 import { TimingOffset } from './TimingOffset'
 
+const MINUTES_PER_HOUR = 60
+
 const renderComponent = (defaultValues: Record<string, unknown> = {}) => {
     const Wrapper = () => {
         const methods = useForm({ defaultValues })
@@ -20,6 +22,27 @@ const renderComponent = (defaultValues: Record<string, unknown> = {}) => {
     return render(<Wrapper />)
 }
 
+const renderWithSubmit = (defaultValues: Record<string, unknown> = {}) => {
+    let submittedValues: Record<string, unknown> = {}
+    const Wrapper = () => {
+        const methods = useForm({ defaultValues })
+        return (
+            <FormProvider {...methods}>
+                <form
+                    onSubmit={methods.handleSubmit((data) => {
+                        submittedValues = data
+                    })}
+                >
+                    <TimingOffset />
+                    <button type="submit">Submit</button>
+                </form>
+            </FormProvider>
+        )
+    }
+    render(<Wrapper />)
+    return { getSubmittedValues: () => submittedValues }
+}
+
 describe('<TimingOffset />', () => {
     it('should render the trigger delay selector', () => {
         renderComponent()
@@ -29,32 +52,32 @@ describe('<TimingOffset />', () => {
         ).toBeInTheDocument()
     })
 
-    it('should show "0 days" when no value is set', () => {
+    it('should show "0 hours" when no value is set', () => {
         renderComponent()
 
-        expect(screen.getByText('0 days')).toBeInTheDocument()
+        expect(screen.getByText('0 hours')).toBeInTheDocument()
     })
 
-    it('should show the correct preset label when value is 7', () => {
-        renderComponent({ timing_offset: 7 })
+    it('should show the correct preset label when value is 12 hours (720 minutes)', () => {
+        renderComponent({ timing_offset: 12 * MINUTES_PER_HOUR })
 
-        expect(screen.getByText('7 days')).toBeInTheDocument()
+        expect(screen.getByText('12 hours')).toBeInTheDocument()
     })
 
-    it('should show the correct preset label when value is 14', () => {
-        renderComponent({ timing_offset: 14 })
+    it('should show the correct preset label when value is 24 hours (1440 minutes)', () => {
+        renderComponent({ timing_offset: 24 * MINUTES_PER_HOUR })
 
-        expect(screen.getByText('14 days')).toBeInTheDocument()
+        expect(screen.getByText('24 hours')).toBeInTheDocument()
     })
 
-    it('should show the correct preset label when value is 30', () => {
-        renderComponent({ timing_offset: 30 })
+    it('should show the correct preset label when value is 48 hours (2880 minutes)', () => {
+        renderComponent({ timing_offset: 48 * MINUTES_PER_HOUR })
 
-        expect(screen.getByText('30 days')).toBeInTheDocument()
+        expect(screen.getByText('48 hours')).toBeInTheDocument()
     })
 
     it('should not render the custom NumberField when value is a preset', () => {
-        renderComponent({ timing_offset: 7 })
+        renderComponent({ timing_offset: 24 * MINUTES_PER_HOUR })
 
         expect(
             screen.queryByRole('textbox', { name: /custom delay/i }),
@@ -62,7 +85,7 @@ describe('<TimingOffset />', () => {
     })
 
     it('should show "Custom" and render the NumberField when value is not a preset', () => {
-        renderComponent({ timing_offset: 21 })
+        renderComponent({ timing_offset: 36 * MINUTES_PER_HOUR })
 
         expect(screen.getByText('Custom')).toBeInTheDocument()
         expect(
@@ -70,12 +93,12 @@ describe('<TimingOffset />', () => {
         ).toBeInTheDocument()
     })
 
-    it('should pre-fill the NumberField with the custom value', () => {
-        renderComponent({ timing_offset: 21 })
+    it('should pre-fill the NumberField with the hour equivalent of the stored minutes', () => {
+        renderComponent({ timing_offset: 36 * MINUTES_PER_HOUR })
 
         expect(
             screen.getByRole('textbox', { name: /custom delay/i }),
-        ).toHaveValue('21')
+        ).toHaveValue('36')
     })
 
     it('should open the dropdown and show all preset options and Custom', async () => {
@@ -85,16 +108,16 @@ describe('<TimingOffset />', () => {
         await user.click(screen.getByRole('button', { name: /trigger delay/i }))
 
         expect(
-            screen.getByRole('option', { name: '0 days' }),
+            screen.getByRole('option', { name: '0 hours' }),
         ).toBeInTheDocument()
         expect(
-            screen.getByRole('option', { name: '7 days' }),
+            screen.getByRole('option', { name: '12 hours' }),
         ).toBeInTheDocument()
         expect(
-            screen.getByRole('option', { name: '14 days' }),
+            screen.getByRole('option', { name: '24 hours' }),
         ).toBeInTheDocument()
         expect(
-            screen.getByRole('option', { name: '30 days' }),
+            screen.getByRole('option', { name: '48 hours' }),
         ).toBeInTheDocument()
         expect(
             screen.getByRole('option', { name: 'Custom' }),
@@ -106,9 +129,9 @@ describe('<TimingOffset />', () => {
         renderComponent({ timing_offset: 0 })
 
         await user.click(screen.getByRole('button', { name: /trigger delay/i }))
-        await user.click(screen.getByRole('option', { name: '30 days' }))
+        await user.click(screen.getByRole('option', { name: '48 hours' }))
 
-        expect(screen.getByText('30 days')).toBeInTheDocument()
+        expect(screen.getByText('48 hours')).toBeInTheDocument()
         expect(
             screen.queryByRole('spinbutton', { name: /custom delay/i }),
         ).not.toBeInTheDocument()
@@ -124,5 +147,43 @@ describe('<TimingOffset />', () => {
         expect(
             screen.getByRole('textbox', { name: /custom delay/i }),
         ).toBeInTheDocument()
+    })
+
+    it('should store minutes when user selects a preset', async () => {
+        const user = userEvent.setup()
+        const { getSubmittedValues } = renderWithSubmit({ timing_offset: 0 })
+
+        await user.click(screen.getByRole('button', { name: /trigger delay/i }))
+        await user.click(screen.getByRole('option', { name: '24 hours' }))
+        await user.click(screen.getByRole('button', { name: /submit/i }))
+
+        expect(getSubmittedValues().timing_offset).toBe(24 * MINUTES_PER_HOUR)
+    })
+
+    it('should store 1 hour in minutes when switching from preset to Custom', async () => {
+        const user = userEvent.setup()
+        const { getSubmittedValues } = renderWithSubmit({ timing_offset: 0 })
+
+        await user.click(screen.getByRole('button', { name: /trigger delay/i }))
+        await user.click(screen.getByRole('option', { name: 'Custom' }))
+        await user.click(screen.getByRole('button', { name: /submit/i }))
+
+        expect(getSubmittedValues().timing_offset).toBe(MINUTES_PER_HOUR)
+    })
+
+    it('should store typed hours as minutes when custom value is entered', async () => {
+        const user = userEvent.setup()
+        const { getSubmittedValues } = renderWithSubmit({
+            timing_offset: 36 * MINUTES_PER_HOUR,
+        })
+
+        const numberField = screen.getByRole('textbox', {
+            name: /custom delay/i,
+        })
+        await user.clear(numberField)
+        await user.type(numberField, '5')
+        await user.click(screen.getByRole('button', { name: /submit/i }))
+
+        expect(getSubmittedValues().timing_offset).toBe(5 * MINUTES_PER_HOUR)
     })
 })

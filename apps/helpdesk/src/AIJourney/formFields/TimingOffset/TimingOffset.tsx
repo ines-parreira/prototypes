@@ -2,18 +2,18 @@ import { Controller, useFormContext } from 'react-hook-form'
 
 import { Box, ListItem, NumberField, SelectField } from '@gorgias/axiom'
 
-const PRESET_DAYS = [0, 7, 14, 30]
+const MINUTES_PER_HOUR = 60
+const PRESET_HOURS = [0, 12, 24, 48]
 const CUSTOM_ID = 'custom'
 
-type DayOption = { id: string; label: string }
+type HourOption = { id: string; label: string }
 
-const PRESET_OPTIONS: DayOption[] = [
-    ...PRESET_DAYS.map((d) => ({ id: String(d), label: `${d} days` })),
+const PRESET_OPTIONS: HourOption[] = [
+    ...PRESET_HOURS.map((h) => ({ id: String(h), label: `${h} hours` })),
     { id: CUSTOM_ID, label: 'Custom' },
 ]
 
-const isPreset = (value: number | undefined): boolean =>
-    value != null && PRESET_DAYS.includes(value)
+const isPreset = (hours: number): boolean => PRESET_HOURS.includes(hours)
 
 export const TimingOffset = () => {
     const { control } = useFormContext()
@@ -23,9 +23,10 @@ export const TimingOffset = () => {
             name="timing_offset"
             control={control}
             render={({ field }) => {
-                const value = (field.value as number | undefined) ?? 0
-                const isCustom = !isPreset(value)
-                const selectedId = isCustom ? CUSTOM_ID : String(value)
+                const minutes = (field.value as number | undefined) ?? 0
+                const hours = minutes / MINUTES_PER_HOUR
+                const isCustom = !isPreset(hours)
+                const selectedId = isCustom ? CUSTOM_ID : String(hours)
                 const selectedOption =
                     PRESET_OPTIONS.find((o) => o.id === selectedId) ??
                     PRESET_OPTIONS[0]
@@ -39,10 +40,12 @@ export const TimingOffset = () => {
                             onChange={(option) => {
                                 if (option.id === CUSTOM_ID) {
                                     if (!isCustom) {
-                                        field.onChange(1)
+                                        field.onChange(MINUTES_PER_HOUR)
                                     }
                                 } else {
-                                    field.onChange(Number(option.id))
+                                    field.onChange(
+                                        Number(option.id) * MINUTES_PER_HOUR,
+                                    )
                                 }
                             }}
                         >
@@ -50,9 +53,11 @@ export const TimingOffset = () => {
                         </SelectField>
                         {isCustom && (
                             <NumberField
-                                label="Custom delay (days)"
-                                value={value}
-                                onChange={(v) => field.onChange(v ?? 0)}
+                                label="Custom delay (hours)"
+                                value={hours}
+                                onChange={(v) =>
+                                    field.onChange((v ?? 0) * MINUTES_PER_HOUR)
+                                }
                                 minValue={0}
                                 formatOptions={{
                                     style: 'decimal',
