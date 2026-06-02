@@ -90,7 +90,16 @@ export function OrderTags({
         (selectedOptions: { id: string; label: string }[]) => {
             if (!integrationId || orderId === undefined || isLoading) return
 
-            const uniqueTags = deduplicateTagIds(selectedOptions)
+            const visibleOptionIds = new Set(
+                shopTagOptions.map((opt) => opt.id),
+            )
+            const hiddenSelected = selectedTags.filter(
+                (tag) => !visibleOptionIds.has(tag.id),
+            )
+            const uniqueTags = deduplicateTagIds([
+                ...hiddenSelected,
+                ...selectedOptions,
+            ])
             const tagsList = tagsToString(uniqueTags)
 
             setLocalTagsString(tagsList)
@@ -101,7 +110,15 @@ export function OrderTags({
                 ticketId,
             })
         },
-        [integrationId, orderId, isLoading, debouncedUpdateTags, ticketId],
+        [
+            integrationId,
+            orderId,
+            isLoading,
+            debouncedUpdateTags,
+            ticketId,
+            selectedTags,
+            shopTagOptions,
+        ],
     )
 
     const handleCreateTag = useCallback(() => {

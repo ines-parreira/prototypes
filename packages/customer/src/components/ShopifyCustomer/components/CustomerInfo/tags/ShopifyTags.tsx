@@ -153,10 +153,19 @@ export function ShopifyTags({
 
     const handleSelectChange = useCallback(
         (selectedOptions: { id: string; label: string }[]) => {
-            const uniqueTags = deduplicateTagIds(selectedOptions)
+            const visibleOptionIds = new Set(
+                shopTagOptions.map((opt) => opt.id),
+            )
+            const hiddenSelected = selectedTags.filter(
+                (tag) => !visibleOptionIds.has(tag.id),
+            )
+            const uniqueTags = deduplicateTagIds([
+                ...hiddenSelected,
+                ...selectedOptions,
+            ])
             submit(tagsToString(uniqueTags))
         },
-        [submit],
+        [submit, selectedTags, shopTagOptions],
     )
 
     const handleCreateTag = useCallback(() => {

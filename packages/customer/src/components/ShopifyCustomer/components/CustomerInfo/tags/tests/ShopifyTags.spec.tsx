@@ -302,6 +302,42 @@ describe('ShopifyTags', () => {
         })
     })
 
+    it('preserves existing tags when selecting a filtered tag from dropdown', async () => {
+        const executeActionMock = mockExecuteActionHandler()
+        server.use(executeActionMock.handler)
+
+        const waitForExecuteActionRequest =
+            executeActionMock.waitForRequest(server)
+
+        const { user } = render(
+            <ShopifyTags
+                tags="VIP"
+                integrationId={1}
+                externalId="123"
+                customerId={789}
+                ticketId="456"
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('VIP')).toBeInTheDocument()
+        })
+
+        await user.click(screen.getByRole('button', { name: /add-plus/ }))
+
+        const searchbox = screen.getByRole('searchbox')
+        await user.type(searchbox, 'Wholesale')
+
+        const option = await screen.findByRole('option', { name: 'Wholesale' })
+        await user.click(option)
+
+        await waitForExecuteActionRequest(async (request) => {
+            const body = await request.json()
+            expect(body.action_name).toBe('shopifyUpdateCustomerTags')
+            expect(body.payload.tags_list).toBe('VIP, Wholesale')
+        })
+    })
+
     it('sends correct payload when creating a new tag', async () => {
         const executeActionMock = mockExecuteActionHandler()
         server.use(executeActionMock.handler)
