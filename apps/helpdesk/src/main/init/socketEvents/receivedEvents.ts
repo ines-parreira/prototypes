@@ -126,6 +126,12 @@ const receivedEvents: ReceivedEvent[] = [
             if (customerId) {
                 throttledUpdateCustomerCache(customerId as number)
 
+                void appQueryClient.invalidateQueries({
+                    queryKey: queryKeys.integrations.listInstagramProfiles({
+                        customer_id: customerId as number,
+                    }),
+                })
+
                 window.dispatchEvent(
                     new CustomEvent('customer-updated', {
                         detail: { customerId },

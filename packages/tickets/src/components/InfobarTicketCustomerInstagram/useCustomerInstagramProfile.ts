@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 
 import { useExhaustEndpoint } from '@repo/hooks'
+import { DurationInMs } from '@repo/utils'
 
 import { listIntegrations } from '@gorgias/helpdesk-client'
 import { queryKeys, useListInstagramProfiles } from '@gorgias/helpdesk-queries'
@@ -11,6 +12,11 @@ type UseCustomerInstagramProfileParams = {
     messages: TicketMessage[]
 }
 
+const instagramQueryCacheOptions = {
+    staleTime: DurationInMs.OneDay,
+    cacheTime: DurationInMs.OneDay,
+} as const
+
 export const useCustomerInstagramProfile = ({
     customer,
     messages,
@@ -20,8 +26,7 @@ export const useCustomerInstagramProfile = ({
         queryKeys.integrations.listIntegrations(queryParams),
         (cursor) => listIntegrations({ cursor, ...queryParams }),
         {
-            staleTime: Infinity,
-            cacheTime: Infinity,
+            ...instagramQueryCacheOptions,
             refetchOnWindowFocus: false,
         },
     )
@@ -63,8 +68,7 @@ export const useCustomerInstagramProfile = ({
             queryKey: queryKeys.integrations.listInstagramProfiles(
                 instagramProfilesParams,
             ),
-            staleTime: Infinity,
-            cacheTime: Infinity,
+            ...instagramQueryCacheOptions,
             select: (resp) => resp?.data?.data?.at(0),
         },
     })

@@ -1277,6 +1277,9 @@ describe('receivedEvents', () => {
         }) as ReceivedEvent
 
         it('should dispatch mergeCustomer action and call throttledUpdateCustomerCache with customer id', () => {
+            const invalidateQueriesSpy = jest
+                .spyOn(appQueryClient, 'invalidateQueries')
+                .mockResolvedValue()
             const customer = {
                 id: 456,
                 name: 'John Doe',
@@ -1292,6 +1295,11 @@ describe('receivedEvents', () => {
             expect(throttledUpdateCustomerCache).toHaveBeenCalledWith(
                 customer.id,
             )
+            expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+                queryKey: queryKeys.integrations.listInstagramProfiles({
+                    customer_id: customer.id,
+                }),
+            })
         })
 
         it('should not call throttledUpdateCustomerCache when customer has no id', () => {
