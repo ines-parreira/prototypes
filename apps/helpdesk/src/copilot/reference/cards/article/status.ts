@@ -1,22 +1,27 @@
-import { TagColor } from '@gorgias/axiom'
-
 import type { GuidanceArticle } from 'pages/aiAgent/types'
 
-import type { ReferenceCardStatus } from '../shared/ReferenceCardShell'
+export type ArticleReferenceStatus = {
+    label: string
+    /** Status dot color. Omitted for draft states, which render without a dot. */
+    dotColor?: 'green' | 'grey'
+}
 
 /**
  * Mirrors `getToolbarState` in
  * KnowledgeEditorTopBar/KnowledgeEditorTopBarSkillControls.tsx:
- *   isCurrent === true       -> Published (no pending draft)
- *   has published version    -> Draft changes
- *   otherwise                -> Draft
+ *   isCurrent === true + PUBLIC   -> Enabled
+ *   isCurrent === true + UNLISTED -> Disabled
+ *   has published version         -> Draft changes
+ *   otherwise                     -> Draft
  */
-export function getStatusTag(article: GuidanceArticle): ReferenceCardStatus {
+export function getStatusTag(article: GuidanceArticle): ArticleReferenceStatus {
     if (article.isCurrent === true) {
-        return { label: 'Published', color: TagColor.Green }
+        return article.visibility === 'PUBLIC'
+            ? { label: 'Enabled', dotColor: 'green' }
+            : { label: 'Disabled', dotColor: 'grey' }
     }
     if (article.publishedVersionId !== null) {
-        return { label: 'Draft changes', color: TagColor.Orange }
+        return { label: 'Draft changes' }
     }
-    return { label: 'Draft', color: TagColor.Grey }
+    return { label: 'Draft' }
 }

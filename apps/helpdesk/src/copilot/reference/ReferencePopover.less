@@ -5,10 +5,10 @@
 //
 // Note: axiom's tooltip container is `display: flex; align-items: center`,
 // which shrinks children to content width. Override with `stretch` so the
-// inner card always fills the 320px popover (otherwise the skeleton popover
+// inner card always fills the 368px popover (otherwise the skeleton popover
 // collapses to its content width while the loaded card looks full-width).
 :global([data-name='tooltip-content']:has([data-reference-card])) {
-    width: 320px;
+    width: 368px;
     max-width: none;
     padding: 0;
     background: transparent;

@@ -51,7 +51,7 @@ const baseArticleApi = {
         is_current: true,
         draft_version_id: null,
         published_version_id: 21,
-        intents: [{ name: 'refund' }, { name: 'cancellation' }],
+        intents: ['return::request', 'return::status'],
         use_supporting_content: null,
     },
 } as unknown as ArticleWithLocalTranslationAndRating
@@ -86,7 +86,7 @@ describe('SkillReferenceCard', () => {
         jest.clearAllMocks()
     })
 
-    it('renders title, Published status, and intent count', () => {
+    it('renders the title, an Enabled status, and intent chips', () => {
         setHelpCenter()
         setArticle(baseArticleApi)
 
@@ -95,11 +95,29 @@ describe('SkillReferenceCard', () => {
         )
 
         expect(screen.getByText('Refund handler')).toBeInTheDocument()
-        expect(screen.getByText('Published')).toBeInTheDocument()
-        expect(screen.getByText('2 linked intents')).toBeInTheDocument()
+        expect(screen.getByText('Enabled')).toBeInTheDocument()
+        expect(screen.getByText('Return / Request')).toBeInTheDocument()
+        expect(screen.getByText('Return / Status')).toBeInTheDocument()
     })
 
-    it('shows "No linked intents" when none are attached', () => {
+    it('renders a Disabled status for unlisted skills', () => {
+        setHelpCenter()
+        setArticle({
+            ...baseArticleApi,
+            translation: {
+                ...baseArticleApi.translation,
+                visibility_status: 'UNLISTED',
+            },
+        } as typeof baseArticleApi)
+
+        render(
+            <SkillReferenceCard articleId={12} shopName="acme" isOpen={true} />,
+        )
+
+        expect(screen.getByText('Disabled')).toBeInTheDocument()
+    })
+
+    it('hides the intents section when none are linked', () => {
         setHelpCenter()
         setArticle({
             ...baseArticleApi,
@@ -110,7 +128,7 @@ describe('SkillReferenceCard', () => {
             <SkillReferenceCard articleId={12} shopName="acme" isOpen={true} />,
         )
 
-        expect(screen.getByText('No linked intents')).toBeInTheDocument()
+        expect(screen.queryByText('Intents')).not.toBeInTheDocument()
     })
 
     it('always renders the skill layout regardless of article origin', () => {

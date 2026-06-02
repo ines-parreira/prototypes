@@ -1,12 +1,7 @@
 import type { GuidanceArticle } from 'pages/aiAgent/types'
-import RelativeTime from 'pages/common/components/RelativeTime'
 
 import { getReferenceVisual } from '../../icons'
-import { getStatusTag } from '../article/status'
-import {
-    ReferenceCardRow,
-    ReferenceCardShell,
-} from '../shared/ReferenceCardShell'
+import { ArticleReferenceCard } from '../article/ArticleReferenceCard'
 
 const VISUAL = getReferenceVisual('skill')
 
@@ -15,27 +10,12 @@ export function SkillReferenceCardView({
 }: {
     article: GuidanceArticle
 }) {
-    const intentCount = article.intents?.length ?? 0
     return (
-        <ReferenceCardShell
+        <ArticleReferenceCard
+            article={article}
             icon={VISUAL.icon}
             typeLabel={VISUAL.label}
-            title={article.title}
-            statusTag={getStatusTag(article)}
-            rows={
-                <>
-                    <ReferenceCardRow icon="chat">
-                        {intentCount === 0
-                            ? 'No linked intents'
-                            : `${intentCount} linked ${
-                                  intentCount === 1 ? 'intent' : 'intents'
-                              }`}
-                    </ReferenceCardRow>
-                    <ReferenceCardRow icon="clock">
-                        Updated <RelativeTime datetime={article.lastUpdated} />
-                    </ReferenceCardRow>
-                </>
-            }
+            typeColor="accent"
         />
     )
 }

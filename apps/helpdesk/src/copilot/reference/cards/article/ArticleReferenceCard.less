@@ -1,0 +1,13 @@
+:local {
+    // Axiom Text has no multi-line truncation, only single-line ellipsis, so the
+    // 2-line clamp is the one thing it can't express. Everything else (size,
+    // color) comes from Text props.
+    .bodyClamp {
+        display: -webkit-box !important; // overrides Text's own display
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        word-break: break-word;
+    }
+}

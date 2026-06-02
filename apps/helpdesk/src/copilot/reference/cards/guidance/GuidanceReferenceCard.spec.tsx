@@ -216,7 +216,7 @@ describe('GuidanceReferenceCard', () => {
         expect(container.textContent).toMatch(/guidance/i)
     })
 
-    it('renders the title, published status, body, and relative timestamp', () => {
+    it('renders the title, an Enabled status, body, and relative timestamp', () => {
         setHelpCenter(true)
         setArticle(baseArticleApi)
 
@@ -230,7 +230,7 @@ describe('GuidanceReferenceCard', () => {
         )
 
         expect(screen.getByText('Refund policy guidance')).toBeInTheDocument()
-        expect(screen.getByText('Published')).toBeInTheDocument()
+        expect(screen.getByText('Enabled')).toBeInTheDocument()
         expect(
             screen.getByText(/refund window is 30 days/i),
         ).toBeInTheDocument()
@@ -246,7 +246,7 @@ describe('GuidanceReferenceCard', () => {
             origin: 'skill',
             translation: {
                 ...baseArticleApi.translation,
-                intents: [{ name: 'foo' }, { name: 'bar' }],
+                intents: ['order::status', 'order::cancel'],
             },
         } as unknown as typeof baseArticleApi)
 
@@ -261,8 +261,9 @@ describe('GuidanceReferenceCard', () => {
 
         expect(screen.getByText('Guidance')).toBeInTheDocument()
         expect(screen.queryByText('Skill')).not.toBeInTheDocument()
-        // Intent count still surfaces as a secondary row when present.
-        expect(screen.getByText('2 linked intents')).toBeInTheDocument()
+        // Linked intents surface as formatted chips when present.
+        expect(screen.getByText('Order / Status')).toBeInTheDocument()
+        expect(screen.getByText('Order / Cancel')).toBeInTheDocument()
     })
 
     it('shows a "Draft changes" tag when isCurrent is false and a published version exists', () => {
@@ -289,7 +290,7 @@ describe('GuidanceReferenceCard', () => {
         expect(screen.getByText('Draft changes')).toBeInTheDocument()
     })
 
-    it('shows "Published" when isCurrent is true even if draftVersionId is set', () => {
+    it('shows "Enabled" when isCurrent is true even if draftVersionId is set', () => {
         setHelpCenter(true)
         setArticle({
             ...baseArticleApi,
@@ -310,7 +311,7 @@ describe('GuidanceReferenceCard', () => {
             />,
         )
 
-        expect(screen.getByText('Published')).toBeInTheDocument()
+        expect(screen.getByText('Enabled')).toBeInTheDocument()
         expect(screen.queryByText('Draft changes')).not.toBeInTheDocument()
     })
 
