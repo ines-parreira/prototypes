@@ -35,7 +35,7 @@ on:
 jobs:
   lint:
     name: Lint
-    runs-on: gh-actions-4cpu4gb-runner-set
+    runs-on: gh-actions-2cpu4gb-runner-set
     if: inputs.helpdesk-affected == 'true' || inputs.has-other-affected-packages == 'true'
     steps:
       - name: Start Resource Monitoring
@@ -68,7 +68,7 @@ jobs:
 
   format:
     name: Format
-    runs-on: gh-actions-4cpu4gb-runner-set
+    runs-on: gh-actions-2cpu4gb-runner-set
     if: inputs.helpdesk-affected == 'true' || inputs.has-other-affected-packages == 'true'
     steps:
       - name: Start Resource Monitoring
@@ -101,7 +101,7 @@ jobs:
 
   architecture-boundaries:
     name: Architecture boundaries
-    runs-on: gh-actions-4cpu4gb-runner-set
+    runs-on: gh-actions-2cpu4gb-runner-set
     if: inputs.helpdesk-affected == 'true' || inputs.has-other-affected-packages == 'true'
     steps:
       - name: Start Resource Monitoring
