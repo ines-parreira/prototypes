@@ -59,6 +59,7 @@ jest.mock('AIJourney/formFields', () => ({
     MessageWithDiscountCode: () => <div>MessageWithDiscountCode</div>,
     MinutesDelay: () => <div>MinutesDelay</div>,
     NumberOfMessages: () => <div>NumberOfMessages</div>,
+    NumberOfFollowUps: () => <div>NumberOfFollowUps</div>,
     SenderPhoneNumber: () => <div>SenderPhoneNumber</div>,
     TargetOrderStatus: () => <div>TargetOrderStatus</div>,
 }))
@@ -111,7 +112,7 @@ const Wrapper = ({
 }) => {
     const methods = useForm({
         defaultValues: {
-            max_follow_up_messages: 1,
+            max_follow_up_messages: 0,
             offer_discount: false,
             include_image: false,
             uploaded_image_attachment: undefined,
@@ -200,14 +201,14 @@ describe('<JourneyEditorSidePanel />', () => {
     it('should show follow-up sub-fields when follow-ups are enabled', async () => {
         renderComponent({ max_follow_up_messages: 2 })
 
-        expect(screen.getByText('NumberOfMessages')).toBeInTheDocument()
+        expect(screen.getByText('NumberOfFollowUps')).toBeInTheDocument()
         expect(screen.getByText('FollowUpWaitHours')).toBeInTheDocument()
     })
 
     it('should hide follow-up sub-fields when follow-ups are disabled', () => {
-        renderComponent({ max_follow_up_messages: 1 })
+        renderComponent({ max_follow_up_messages: 0 })
 
-        expect(screen.queryByText('NumberOfMessages')).not.toBeInTheDocument()
+        expect(screen.queryByText('NumberOfFollowUps')).not.toBeInTheDocument()
         expect(screen.queryByText('FollowUpWaitHours')).not.toBeInTheDocument()
     })
 
@@ -221,7 +222,7 @@ describe('<JourneyEditorSidePanel />', () => {
             )
         })
 
-        expect(screen.getByText('NumberOfMessages')).toBeInTheDocument()
+        expect(screen.getByText('NumberOfFollowUps')).toBeInTheDocument()
     })
 
     it('should render the DiscountCodeCard toggle', () => {

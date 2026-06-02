@@ -67,7 +67,7 @@ export const JourneyEditorLayout = ({ step }: Props) => {
 
     const methods = useForm<SetupFormValues>({
         defaultValues: {
-            max_follow_up_messages: 1,
+            max_follow_up_messages: 0,
             include_image: false,
             include_custom_image: false,
             offer_discount: false,
@@ -148,7 +148,7 @@ export const JourneyEditorLayout = ({ step }: Props) => {
         const commonFields = {
             phoneNumberIntegrationId: data.sms_sender_integration_id?.id,
             phoneNumber: data.sms_sender_integration_id?.label,
-            followUpValue: data.max_follow_up_messages - 1,
+            followUpValue: data.max_follow_up_messages,
             followUpWaitMinutes: data.follow_up_wait_minutes,
             includeImage: data.include_image,
             uploadedImageAttachment: shouldClearCustomImage

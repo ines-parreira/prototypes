@@ -35,7 +35,8 @@ export const FollowUpWaitHours = ({
         name: 'max_follow_up_messages',
     })
 
-    if (!maxFollowUpMessages || maxFollowUpMessages <= 1) {
+    const minFollowUpsToShow = isV3Architecture ? 1 : 2
+    if (!maxFollowUpMessages || maxFollowUpMessages < minFollowUpsToShow) {
         return null
     }
 
@@ -45,7 +46,7 @@ export const FollowUpWaitHours = ({
                 <ValueWithUnitField
                     fieldName="follow_up_wait_minutes"
                     label="Delay between follow-up messages"
-                    caption="Hours to wait between each follow-up message."
+                    caption="Time to wait between each follow-up message."
                     units={FOLLOW_UP_UNITS}
                     minBaseValue={MIN_WAIT_MINUTES}
                     maxBaseValue={MAX_WAIT_TIME}

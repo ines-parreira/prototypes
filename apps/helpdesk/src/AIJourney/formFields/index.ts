@@ -9,6 +9,7 @@ export { MessageWithDiscountCode } from './MessageWithDiscountCode/MessageWithDi
 export { MinutesDelay } from './MinutesDelay/MinutesDelay'
 export { FollowUpWaitHours } from './FollowUpWaitHours/FollowUpWaitHours'
 export { NumberOfMessages } from './NumberOfMessages/NumberOfMessages'
+export { NumberOfFollowUps } from './NumberOfFollowUps/NumberOfFollowUps'
 export { SenderPhoneNumber } from './SenderPhoneNumber/SenderPhoneNumber'
 export { TargetOrderStatus } from './TargetOrderStatus/TargetOrderStatus'
 export { SmsSenderSelect } from './SmsSenderSelect/SmsSenderSelect'

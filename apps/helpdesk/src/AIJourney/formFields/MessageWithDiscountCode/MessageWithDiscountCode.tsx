@@ -55,7 +55,7 @@ export const MessageWithDiscountCode = ({
 
     if (isV3Architecture) {
         const options = Array.from({
-            length: maxFollowUpMessages || 0,
+            length: (maxFollowUpMessages || 0) + 1,
         }).map((_, index) => {
             const value = index + 1
             return { id: value, label: `${getOrdinalSuffix(value)} message` }

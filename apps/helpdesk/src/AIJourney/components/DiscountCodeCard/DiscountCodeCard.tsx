@@ -36,7 +36,9 @@ export const DiscountCodeCard = ({
         name: 'max_follow_up_messages',
     })
 
-    const shouldRenderMessageWithDiscountCode = (maxFollowUpMessages ?? 1) !== 1
+    const shouldRenderMessageWithDiscountCode = isV3Architecture
+        ? (maxFollowUpMessages ?? 0) > 0
+        : (maxFollowUpMessages ?? 1) !== 1
 
     useEffect(() => {
         if (!shouldRenderMessageWithDiscountCode) {

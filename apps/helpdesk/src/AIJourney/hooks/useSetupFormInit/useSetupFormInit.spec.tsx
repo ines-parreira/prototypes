@@ -116,10 +116,34 @@ describe('useSetupFormInit', () => {
 
         expect(capturedReset).toHaveBeenCalledWith(
             expect.objectContaining({
-                max_follow_up_messages: 3,
+                max_follow_up_messages: 2,
                 follow_up_wait_minutes: 120,
                 include_image: true,
                 offer_discount: false,
+            }),
+        )
+    })
+
+    it('should load max_follow_up_messages 1:1 without shifting when there are no follow-ups', () => {
+        mockUseJourneyContext.mockReturnValue({
+            isLoading: false,
+            journeyData: {
+                id: 'j-1',
+                configuration: {
+                    sms_sender_integration_id: 42,
+                    max_follow_up_messages: 0,
+                    follow_up_wait_minutes: 1440,
+                },
+                message_instructions: 'instructions',
+            },
+            currentIntegration: { id: 1 },
+        })
+
+        renderComponent()
+
+        expect(capturedReset).toHaveBeenCalledWith(
+            expect.objectContaining({
+                max_follow_up_messages: 0,
             }),
         )
     })

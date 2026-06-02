@@ -209,25 +209,36 @@ describe('<FollowUpWaitHours /> with isV3Architecture', () => {
             selector: 'input',
         })
 
-    it('renders nothing when max_follow_up_messages is 1', () => {
-        renderV3Component({ max_follow_up_messages: 1 })
+    it('renders nothing when there are no follow-ups', () => {
+        renderV3Component({ max_follow_up_messages: 0 })
 
         expect(
             screen.queryByText('Delay between follow-up messages'),
         ).not.toBeInTheDocument()
     })
 
-    it('renders the field with hr/days units when max_follow_up_messages > 1', () => {
+    it('renders the field as soon as there is at least one follow-up', () => {
         renderV3Component({
-            max_follow_up_messages: 2,
+            max_follow_up_messages: 1,
             follow_up_wait_minutes: 1440,
         })
 
         expect(
             screen.getByText('Delay between follow-up messages'),
         ).toBeInTheDocument()
+    })
+
+    it('renders the field with hr/days units when max_follow_up_messages > 1', () => {
+        renderV3Component({
+            max_follow_up_messages: 2,
+            follow_up_wait_minutes: 60 * 3,
+        })
+
         expect(
-            screen.getByText('Hours to wait between each follow-up message.'),
+            screen.getByText('Delay between follow-up messages'),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText('Time to wait between each follow-up message.'),
         ).toBeInTheDocument()
     })
 

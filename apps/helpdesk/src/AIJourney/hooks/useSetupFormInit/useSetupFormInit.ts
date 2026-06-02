@@ -57,7 +57,7 @@ export const useSetupFormInit = () => {
                                 : undefined),
                     },
                     max_follow_up_messages:
-                        (journeyParams.max_follow_up_messages ?? 0) + 1,
+                        journeyParams.max_follow_up_messages ?? 0,
                     follow_up_wait_minutes:
                         journeyParams.follow_up_wait_minutes ?? 24 * 60,
                     include_image: journeyParams.include_image ?? false,

@@ -20,6 +20,7 @@ import {
     FollowUpWaitHours,
     ImageUpload,
     IncludeImage,
+    NumberOfFollowUps,
     NumberOfMessages,
     SenderPhoneNumber,
 } from 'AIJourney/formFields'
@@ -53,11 +54,11 @@ export const GeneralCard = ({
     const isWinBack = journeyType === JOURNEY_TYPES.WIN_BACK
 
     const shouldRenderIncludeImage = !isCampaign && !isWelcome && !isWinBack
-    const hasFollowUps = (maxFollowUpMessages ?? 1) > 1
+    const hasFollowUps = (maxFollowUpMessages ?? 0) > 0
 
     const handleFollowUpsToggle = useCallback(
         (enabled: boolean) => {
-            setValue('max_follow_up_messages', enabled ? 2 : 1, {
+            setValue('max_follow_up_messages', enabled ? 1 : 0, {
                 shouldDirty: true,
             })
         },
@@ -104,7 +105,7 @@ export const GeneralCard = ({
                     </Box>
                     {hasFollowUps && (
                         <Box flexDirection="column" gap="sm" width="100%">
-                            <NumberOfMessages isV3Architecture />
+                            <NumberOfFollowUps />
                             <FollowUpWaitHours fullWidth isV3Architecture />
                         </Box>
                     )}

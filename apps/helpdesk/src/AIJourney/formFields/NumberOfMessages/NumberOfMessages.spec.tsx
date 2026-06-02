@@ -5,10 +5,8 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { NumberOfMessages } from './NumberOfMessages'
 
 const renderComponent = ({
-    isV3Architecture,
     defaultValue,
 }: {
-    isV3Architecture?: boolean
     defaultValue?: number
 } = {}) => {
     const Wrapper = () => {
@@ -17,7 +15,7 @@ const renderComponent = ({
         })
         return (
             <FormProvider {...methods}>
-                <NumberOfMessages isV3Architecture={isV3Architecture} />
+                <NumberOfMessages />
             </FormProvider>
         )
     }
@@ -60,22 +58,6 @@ describe('<NumberOfMessages />', () => {
             expect(
                 screen.getByRole('radio', { name: '1 message' }),
             ).toBeChecked()
-        })
-    })
-
-    describe('V3 architecture', () => {
-        it('renders a SelectField labeled "Messages in this flow"', () => {
-            renderComponent({ isV3Architecture: true })
-
-            expect(
-                screen.getByRole('button', { name: /messages in this flow/i }),
-            ).toBeInTheDocument()
-        })
-
-        it('displays the selected option label from the form value', () => {
-            renderComponent({ isV3Architecture: true, defaultValue: 3 })
-
-            expect(screen.getByText('3 messages')).toBeInTheDocument()
         })
     })
 })

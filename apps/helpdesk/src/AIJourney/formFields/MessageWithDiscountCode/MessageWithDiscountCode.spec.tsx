@@ -1,5 +1,6 @@
 import { render } from '@repo/testing'
-import { screen } from '@testing-library/react'
+import { screen, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import { MessageWithDiscountCode } from './MessageWithDiscountCode'
@@ -93,6 +94,27 @@ describe('<MessageWithDiscountCode />', () => {
             })
 
             expect(screen.getByText('2nd message')).toBeInTheDocument()
+        })
+
+        it('offers one option per total message (follow-ups + 1)', async () => {
+            const user = userEvent.setup()
+            renderComponent({ isV3Architecture: true, maxFollowUpMessages: 2 })
+
+            await user.click(
+                screen.getByRole('button', {
+                    name: /message that includes the discount code/i,
+                }),
+            )
+
+            const listbox = await screen.findByRole('listbox')
+
+            expect(within(listbox).getAllByRole('option')).toHaveLength(3)
+            expect(
+                within(listbox).getByRole('option', { name: '1st message' }),
+            ).toBeInTheDocument()
+            expect(
+                within(listbox).getByRole('option', { name: '3rd message' }),
+            ).toBeInTheDocument()
         })
     })
 })

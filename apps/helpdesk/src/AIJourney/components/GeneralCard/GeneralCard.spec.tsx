@@ -44,6 +44,7 @@ jest.mock('AIJourney/formFields', () => ({
     FlowName: () => <div>FlowName</div>,
     SenderPhoneNumber: () => <div>SenderPhoneNumber</div>,
     NumberOfMessages: () => <div>NumberOfMessages</div>,
+    NumberOfFollowUps: () => <div>NumberOfFollowUps</div>,
     FollowUpWaitHours: () => <div>FollowUpWaitHours</div>,
     IncludeImage: () => <div>IncludeImage</div>,
     ImageUpload: () => <div>ImageUpload</div>,
@@ -314,14 +315,14 @@ describe('<GeneralCard />', () => {
                     screen.getByRole('switch', { name: 'Allow follow-ups' }),
                 ).not.toBeChecked()
                 expect(
-                    screen.queryByText('NumberOfMessages'),
+                    screen.queryByText('NumberOfFollowUps'),
                 ).not.toBeInTheDocument()
                 expect(
                     screen.queryByText('FollowUpWaitHours'),
                 ).not.toBeInTheDocument()
             })
 
-            it('starts on and shows follow-up fields when max_follow_up_messages is greater than 1', () => {
+            it('starts on and shows follow-up fields when max_follow_up_messages is greater than 0', () => {
                 renderCard({
                     isV3Architecture: true,
                     defaultValues: { max_follow_up_messages: 2 },
@@ -330,13 +331,15 @@ describe('<GeneralCard />', () => {
                 expect(
                     screen.getByRole('switch', { name: 'Allow follow-ups' }),
                 ).toBeChecked()
-                expect(screen.getByText('NumberOfMessages')).toBeInTheDocument()
+                expect(
+                    screen.getByText('NumberOfFollowUps'),
+                ).toBeInTheDocument()
                 expect(
                     screen.getByText('FollowUpWaitHours'),
                 ).toBeInTheDocument()
             })
 
-            it('shows follow-up fields after toggling on and sets max_follow_up_messages to 2', async () => {
+            it('shows follow-up fields after toggling on and sets max_follow_up_messages to 1', async () => {
                 const user = userEvent.setup()
                 const { getValues } = renderCard({ isV3Architecture: true })
 
@@ -344,14 +347,16 @@ describe('<GeneralCard />', () => {
                     screen.getByRole('switch', { name: 'Allow follow-ups' }),
                 )
 
-                expect(screen.getByText('NumberOfMessages')).toBeInTheDocument()
+                expect(
+                    screen.getByText('NumberOfFollowUps'),
+                ).toBeInTheDocument()
                 expect(
                     screen.getByText('FollowUpWaitHours'),
                 ).toBeInTheDocument()
-                expect(getValues().max_follow_up_messages).toBe(2)
+                expect(getValues().max_follow_up_messages).toBe(1)
             })
 
-            it('hides follow-up fields after toggling off and sets max_follow_up_messages to 1', async () => {
+            it('hides follow-up fields after toggling off and sets max_follow_up_messages to 0', async () => {
                 const user = userEvent.setup()
                 const { getValues } = renderCard({
                     isV3Architecture: true,
@@ -363,12 +368,12 @@ describe('<GeneralCard />', () => {
                 )
 
                 expect(
-                    screen.queryByText('NumberOfMessages'),
+                    screen.queryByText('NumberOfFollowUps'),
                 ).not.toBeInTheDocument()
                 expect(
                     screen.queryByText('FollowUpWaitHours'),
                 ).not.toBeInTheDocument()
-                expect(getValues().max_follow_up_messages).toBe(1)
+                expect(getValues().max_follow_up_messages).toBe(0)
             })
 
             it('marks the form as dirty when toggling on', async () => {

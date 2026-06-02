@@ -156,7 +156,9 @@ describe('<JourneyEditorLayout /> — Campaign mode (isCampaign = true)', () => 
         )
         await user.click(screen.getByRole('button', { name: /save changes/i }))
 
-        expect(mockHandleCreate).toHaveBeenCalled()
+        expect(mockHandleCreate).toHaveBeenCalledWith(
+            expect.objectContaining({ followUpValue: 0 }),
+        )
     })
 
     it('should call handleUpdate when clicking "Save changes" with journeyData.id', async () => {
@@ -184,7 +186,9 @@ describe('<JourneyEditorLayout /> — Campaign mode (isCampaign = true)', () => 
 
         await user.click(screen.getByRole('button', { name: /save changes/i }))
 
-        expect(mockHandleUpdate).toHaveBeenCalled()
+        expect(mockHandleUpdate).toHaveBeenCalledWith(
+            expect.objectContaining({ followUpValue: 0 }),
+        )
     })
 
     it('should show a success toast after the save completes', async () => {

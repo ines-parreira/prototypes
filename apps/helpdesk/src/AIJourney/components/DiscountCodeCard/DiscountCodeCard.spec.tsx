@@ -157,18 +157,50 @@ describe('<DiscountCodeCard />', () => {
             expect(screen.getByText('EnableDiscountCode')).toBeInTheDocument()
         })
 
-        it('resets discount_code_message_threshold to 1 when max_follow_up_messages is 1', () => {
+        it('resets discount_code_message_threshold to 1 when there are no follow-ups', () => {
             const { getValues } = renderComponent(
                 true,
                 {
                     offer_discount: true,
-                    max_follow_up_messages: 1,
+                    max_follow_up_messages: 0,
                     discount_code_message_threshold: 3,
                 },
                 { isV3Architecture: true },
             )
 
             expect(getValues().discount_code_message_threshold).toBe(1)
+        })
+
+        it('does not render MessageWithDiscountCode when there are no follow-ups', () => {
+            renderComponent(
+                true,
+                {
+                    offer_discount: true,
+                    max_follow_up_messages: 0,
+                },
+                { isV3Architecture: true },
+            )
+
+            expect(
+                screen.queryByText('MessageWithDiscountCode'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('renders MessageWithDiscountCode and keeps the threshold once there is at least one follow-up', () => {
+            const { getValues } = renderComponent(
+                true,
+                {
+                    offer_discount: true,
+                    max_follow_up_messages: 1,
+                    discount_code_message_threshold: 2,
+                },
+                { isV3Architecture: true },
+            )
+
+            expect(
+                screen.getByText('MessageWithDiscountCode'),
+            ).toBeInTheDocument()
+            expect(getValues().discount_code_message_threshold).toBe(2)
         })
 
         it('renders the info tooltip beside the "Offer discount" toggle', () => {
