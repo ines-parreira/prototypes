@@ -62,6 +62,31 @@ export const buildSkillPerformanceChartData = (
     })
 }
 
+// Maps the static mock array onto the currently-selected date range so the
+// chart and CSV export respond to the date picker. Cycles through the mock
+// values when the range is longer than the mock array. Stays here (rather
+// than in SkillPerformanceTrendMockData.ts) because it depends on
+// enumerateDays + the data-key constants this file already owns.
+const buildMockChartDataForRange = (
+    dateRange: DateRange,
+): ComposedMetricTimeSeriesDataItem[] => {
+    if (mockSkillPerformanceChartData.length === 0) return []
+
+    return enumerateDays(dateRange).map((date, index) => {
+        const sample =
+            mockSkillPerformanceChartData[
+                index % mockSkillPerformanceChartData.length
+            ]
+        return {
+            date,
+            [SKILL_PERFORMANCE_TREND_TICKET_VOLUME_DATA_KEY]:
+                sample[SKILL_PERFORMANCE_TREND_TICKET_VOLUME_DATA_KEY],
+            [SKILL_PERFORMANCE_TREND_CSAT_DATA_KEY]:
+                sample[SKILL_PERFORMANCE_TREND_CSAT_DATA_KEY],
+        }
+    })
+}
+
 export const useSkillPerformanceTrendFromContext = ({
     useMockData = USE_MOCK_SKILL_PERFORMANCE_CHART_DATA,
 }: UseSkillPerformanceTrendFromContextParams = {}): SkillPerformanceTrendData => {
@@ -71,7 +96,7 @@ export const useSkillPerformanceTrendFromContext = ({
     return useMemo(() => {
         if (shouldUseMockData) {
             return {
-                chartData: mockSkillPerformanceChartData,
+                chartData: buildMockChartDataForRange(skillMetrics.dateRange),
                 dateRange: skillMetrics.dateRange,
                 isLoading: false,
             }

@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event'
 import moment from 'moment-timezone'
 
 import { useSkillPerformanceFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillPerformanceFromContext'
+import { useSkillPerformanceTrendExport } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillPerformanceTrendExport'
 
 import { SkillPerformanceTrendModal } from './SkillPerformanceTrendModal'
 
@@ -39,6 +40,24 @@ jest.mock(
         }) => <>{children}</>,
     }),
 )
+
+type MockDashboardExportButtonProps = {
+    useCsvExport: unknown
+    pdfFileName?: string
+    contentRef: { current: HTMLElement | null }
+    size?: string
+}
+
+const mockDashboardExportButton = jest.fn(
+    (__props: MockDashboardExportButtonProps) => (
+        <div data-testid="dashboard-export-button">Export</div>
+    ),
+)
+
+jest.mock('@repo/reporting', () => ({
+    DashboardExportButton: (props: MockDashboardExportButtonProps) =>
+        mockDashboardExportButton(props),
+}))
 
 describe('SkillPerformanceTrendModal', () => {
     beforeEach(() => {
@@ -124,5 +143,20 @@ describe('SkillPerformanceTrendModal', () => {
         const expectedEnd = moment().endOf('day').format()
         expect(override.start_datetime).toBe(expectedStart)
         expect(override.end_datetime).toBe(expectedEnd)
+    })
+
+    it('wires the DashboardExportButton with the trend CSV hook and a PDF filename', () => {
+        render(
+            <SkillPerformanceTrendModal
+                isOpen={true}
+                onOpenChange={jest.fn()}
+            />,
+        )
+
+        const props = mockDashboardExportButton.mock.calls.at(-1)?.[0]
+        expect(props).toBeDefined()
+        expect(props?.useCsvExport).toBe(useSkillPerformanceTrendExport)
+        expect(props?.pdfFileName).toBe('skill-performance-trend')
+        expect(props?.contentRef).toBeDefined()
     })
 })

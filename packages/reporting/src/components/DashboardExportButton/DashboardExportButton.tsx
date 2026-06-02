@@ -22,6 +22,12 @@ type DashboardExportButtonProps = {
     useCsvExport: () => CsvExportHook
     pdfFileName?: string
     onExport?: (format: DashboardExportFormat) => void
+    /**
+     * Trigger button size. Matches Axiom Button's `sm` / `md`. Defaults to
+     * `md` for the original dashboard call sites; modal toolbars can opt
+     * into `sm` to align with the surrounding controls.
+     */
+    size?: typeof ButtonSize.Sm | typeof ButtonSize.Md
 }
 
 type LazyCsvExporterProps = {
@@ -54,6 +60,7 @@ export function DashboardExportButton({
     useCsvExport,
     pdfFileName,
     onExport,
+    size = ButtonSize.Md,
 }: DashboardExportButtonProps) {
     const [isOpen, setIsOpen] = useState(false)
     const [isCsvExporting, setIsCsvExporting] = useState(false)
@@ -97,7 +104,7 @@ export function DashboardExportButton({
                     trigger={
                         <Button
                             variant="primary"
-                            size={ButtonSize.Md}
+                            size={size}
                             isDisabled={isExportInProgress}
                             leadingSlot="download"
                         >

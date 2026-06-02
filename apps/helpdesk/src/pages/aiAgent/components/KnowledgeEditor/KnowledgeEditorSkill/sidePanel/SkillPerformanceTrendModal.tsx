@@ -1,6 +1,7 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 
 import type { ZonedDateTime } from '@internationalized/date'
+import { DashboardExportButton } from '@repo/reporting'
 import {
     DateTimeFormatMapper,
     DateTimeFormatType,
@@ -23,6 +24,7 @@ import {
     SkillPerformanceDataProvider,
     useSkillPerformanceFromContext,
 } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillPerformanceFromContext'
+import { useSkillPerformanceTrendExport } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSkill/hooks/useSkillPerformanceTrendExport'
 import {
     createRangeValueFromMoments,
     extractMomentsFromRange,
@@ -83,8 +85,11 @@ const getDateRangeLabel = (
     return `${formatDatetime(start, SHORT_DATE_FORMAT)} – ${formatDatetime(end, SHORT_DATE_FORMAT)}`
 }
 
+const PDF_EXPORT_FILE_NAME = 'skill-performance-trend'
+
 export const SkillPerformanceTrendModal = ({ isOpen, onOpenChange }: Props) => {
     const [dateRange, setDateRange] = useState(getDefaultDateRange)
+    const contentRef = useRef<HTMLDivElement>(null)
 
     const dateRangeLabel = useMemo(
         () => getDateRangeLabel(dateRange),
@@ -136,17 +141,18 @@ export const SkillPerformanceTrendModal = ({ isOpen, onOpenChange }: Props) => {
                                     </Button>
                                 }
                             />
-                            <Button
-                                variant="primary"
+                            <DashboardExportButton
+                                contentRef={contentRef}
+                                useCsvExport={useSkillPerformanceTrendExport}
+                                pdfFileName={PDF_EXPORT_FILE_NAME}
                                 size="sm"
-                                leadingSlot="download"
-                                isDisabled
-                            >
-                                Export
-                            </Button>
+                            />
                         </Box>
-                        <SkillPerformanceKpiCards />
-                        <SkillPerformanceChart />
+                        {/* The ref-bound region is what gets snapshotted to PDF. */}
+                        <Box ref={contentRef} flexDirection="column" gap="md">
+                            <SkillPerformanceKpiCards />
+                            <SkillPerformanceChart />
+                        </Box>
                     </Box>
                 </SkillPerformanceDataProvider>
             </OverlayContent>

@@ -54,12 +54,32 @@ const renderSkillPerformanceTrendHook = (
     })
 
 describe('useSkillPerformanceTrendFromContext', () => {
-    it('returns temporary mock chart data when mock data is enabled', () => {
+    it('maps temporary mock values onto the active date range when mock data is enabled', () => {
         const { result } = renderSkillPerformanceTrendHook({
             useMockData: true,
         })
 
-        expect(result.current.chartData).toBe(mockSkillPerformanceChartData)
+        // mockDateRange spans 3 days (2024-01-01 → 2024-01-03), so we expect 3
+        // points; the values come from the first 3 entries of the mock array,
+        // re-dated to the range. This is what guarantees the chart and CSV
+        // export both follow the date picker.
+        expect(result.current.chartData).toEqual([
+            {
+                date: '2024-01-01',
+                ticketVolume: mockSkillPerformanceChartData[0].ticketVolume,
+                csat: mockSkillPerformanceChartData[0].csat,
+            },
+            {
+                date: '2024-01-02',
+                ticketVolume: mockSkillPerformanceChartData[1].ticketVolume,
+                csat: mockSkillPerformanceChartData[1].csat,
+            },
+            {
+                date: '2024-01-03',
+                ticketVolume: mockSkillPerformanceChartData[2].ticketVolume,
+                csat: mockSkillPerformanceChartData[2].csat,
+            },
+        ])
         expect(result.current.isLoading).toBe(false)
     })
 
