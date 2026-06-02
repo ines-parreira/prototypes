@@ -88,9 +88,9 @@ catalogs:
     '@tanstack/react-query-devtools': '4.22.4'
     axios: '^1.15.2'
   realtime:
-    '@gorgias/realtime': '^1.2.11'
+    '@gorgias/realtime': '^1.3.1'
   events:
-    '@gorgias/events': '^0.14.5'
+    '@gorgias/events': '^0.14.10'
   event-tracker:
     '@gorgias/event-tracker-api': '1.2.0'
     '@gorgias/event-tracker-browser': '2.0.4'
