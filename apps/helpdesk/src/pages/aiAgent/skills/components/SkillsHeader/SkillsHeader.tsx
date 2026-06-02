@@ -8,8 +8,11 @@ import css from './SkillsHeader.less'
 
 export type SkillsHeaderProps = {
     onViewIntents?: () => void
+    onTest?: () => void
     onCreateSkillFromScratch?: () => void
     onCreateSkillFromTemplate?: () => void
+    isTestButtonDisabled?: boolean
+    isPlaygroundOpen?: boolean
     showActions?: boolean
 }
 
@@ -17,6 +20,9 @@ export const SkillsHeader = ({
     onViewIntents,
     onCreateSkillFromScratch,
     onCreateSkillFromTemplate,
+    onTest,
+    isTestButtonDisabled,
+    isPlaygroundOpen,
     showActions = true,
 }: SkillsHeaderProps) => {
     const [isHowSkillsWorkOpen, setIsHowSkillsWorkOpen] = useState(false)
@@ -46,10 +52,20 @@ export const SkillsHeader = ({
                     <Button
                         onClick={onViewIntents}
                         aria-label="View intents"
-                        variant="secondary"
+                        variant="tertiary"
                     >
                         View intents
                     </Button>
+                    {!isPlaygroundOpen && (
+                        <Button
+                            onClick={onTest}
+                            isDisabled={isTestButtonDisabled}
+                            aria-label="Test knowledge"
+                            variant="secondary"
+                        >
+                            Test
+                        </Button>
+                    )}
                     <Menu
                         trigger={
                             <Button

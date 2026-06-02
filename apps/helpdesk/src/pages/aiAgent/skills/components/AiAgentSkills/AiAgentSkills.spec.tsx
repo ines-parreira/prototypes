@@ -8,6 +8,7 @@ import thunk from 'redux-thunk'
 import { ThemeProvider } from 'core/theme'
 import { useGetWizard } from 'models/helpCenter/queries'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { usePlaygroundPanel } from 'pages/aiAgent/hooks/usePlaygroundPanel'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { useEnrichedSkillWizard } from 'pages/aiAgent/skills/hooks/useEnrichedSkillWizard'
 import type { EnrichedSkillWizard } from 'pages/aiAgent/skills/hooks/useEnrichedSkillWizard'
@@ -35,6 +36,7 @@ jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
 }))
+jest.mock('pages/aiAgent/hooks/usePlaygroundPanel')
 const mockUseAiAgentNavigation = useAiAgentNavigation as jest.MockedFunction<
     typeof useAiAgentNavigation
 >
@@ -142,6 +144,9 @@ const mockUseGetWizard = useGetWizard as jest.MockedFunction<
     typeof useGetWizard
 >
 const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
+const mockUsePlaygroundPanel = usePlaygroundPanel as jest.MockedFunction<
+    typeof usePlaygroundPanel
+>
 
 const baseEnrichedWizard: EnrichedSkillWizard = {
     id: 1,
@@ -223,6 +228,12 @@ describe('AiAgentSkills', () => {
             isError: false,
         })
         mockUseFlag.mockReturnValue(false)
+        mockUsePlaygroundPanel.mockReturnValue({
+            openPlayground: jest.fn().mockResolvedValue(undefined),
+            closePlayground: jest.fn(),
+            togglePlayground: jest.fn(),
+            isPlaygroundOpen: false,
+        })
         mockUseSkillWizard.mockReturnValue({
             wizard: baseEnrichedWizard,
             guidanceActions: [],
@@ -309,6 +320,42 @@ describe('AiAgentSkills', () => {
             )
         })
     })
+    describe('Playground panel', () => {
+        it('should show the Test button by default', () => {
+            renderComponent()
+            expect(
+                screen.getByRole('button', { name: /Test/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('should hide the Test button when the playground is already open', () => {
+            mockUsePlaygroundPanel.mockReturnValue({
+                openPlayground: jest.fn().mockResolvedValue(undefined),
+                closePlayground: jest.fn(),
+                togglePlayground: jest.fn(),
+                isPlaygroundOpen: true,
+            })
+            renderComponent()
+            expect(
+                screen.queryByRole('button', { name: /Test/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should call openPlayground when the Test button is clicked', async () => {
+            const user = userEvent.setup()
+            const openPlayground = jest.fn().mockResolvedValue(undefined)
+            mockUsePlaygroundPanel.mockReturnValue({
+                openPlayground,
+                closePlayground: jest.fn(),
+                togglePlayground: jest.fn(),
+                isPlaygroundOpen: false,
+            })
+            renderComponent()
+            await user.click(screen.getByRole('button', { name: /Test/i }))
+            expect(openPlayground).toHaveBeenCalledTimes(1)
+        })
+    })
+
     describe('Intents Table', () => {
         beforeEach(() => {
             mockUseHasLinkedSkills.mockReturnValue({
@@ -515,12 +562,15 @@ describe('AiAgentSkills', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('hides the header CTAs (View intents, Create skill) in wizard mode', () => {
+        it('hides the header CTAs (View intents, Test, Create skill) in wizard mode', () => {
             enableWizardMode({ status: SkillWizardStatus.InProgress })
             renderComponent()
 
             expect(
                 screen.queryByRole('button', { name: /view intents/i }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', { name: /Test/i }),
             ).not.toBeInTheDocument()
             expect(
                 screen.queryByRole('button', { name: /create skill/i }),
@@ -569,6 +619,9 @@ describe('AiAgentSkills', () => {
             ).not.toBeInTheDocument()
             expect(
                 screen.queryByRole('button', { name: /view intents/i }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', { name: /Test/i }),
             ).not.toBeInTheDocument()
             expect(
                 screen.queryByRole('button', { name: /create skill/i }),

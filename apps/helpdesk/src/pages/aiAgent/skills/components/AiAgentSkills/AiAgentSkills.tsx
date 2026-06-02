@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useHistory } from 'react-router-dom'
@@ -25,6 +25,7 @@ import { SkillsEmptyState } from '../SkillsEmptyState/SkillsEmptyState'
 import { SkillsHeader } from '../SkillsHeader/SkillsHeader'
 import { SkillsTable } from '../SkillsTable/SkillsTable'
 
+import { usePlaygroundPanel } from 'pages/aiAgent/hooks/usePlaygroundPanel'
 import css from './AiAgentSkills.less'
 
 const SkillsLoading = () => {
@@ -66,6 +67,12 @@ export const AiAgentSkills = () => {
             ),
         )
     }
+
+    const { openPlayground, isPlaygroundOpen } = usePlaygroundPanel()
+
+    const handleOpenPlayground = useCallback(() => {
+        void openPlayground()
+    }, [openPlayground])
 
     const handleCreateSkillsFromTemplate = (templateId?: string) => {
         if (templateId) {
@@ -149,8 +156,10 @@ export const AiAgentSkills = () => {
                     skillsView === 'no-wizard'
                 }
                 onViewIntents={handleViewIntents}
+                onTest={handleOpenPlayground}
                 onCreateSkillFromScratch={handleCreateSkillFromScratch}
                 onCreateSkillFromTemplate={handleOpenTemplateModal}
+                isPlaygroundOpen={isPlaygroundOpen}
             />
 
             {renderContent()}

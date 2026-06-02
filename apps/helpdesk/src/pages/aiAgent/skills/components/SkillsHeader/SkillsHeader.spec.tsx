@@ -24,6 +24,9 @@ describe('SkillsHeader', () => {
             screen.getByRole('button', { name: /View intents/i }),
         ).toBeInTheDocument()
         expect(
+            screen.getByRole('button', { name: /Test/i }),
+        ).toBeInTheDocument()
+        expect(
             screen.getByRole('button', { name: /Create skill/i }),
         ).toBeInTheDocument()
     })
@@ -31,6 +34,7 @@ describe('SkillsHeader', () => {
     it('should call callbacks when buttons are clicked', async () => {
         const user = userEvent.setup()
         const onViewIntents = jest.fn()
+        const onTest = jest.fn()
         const onCreateSkillFromScratch = jest.fn()
         const onCreateSkillFromTemplate = jest.fn()
 
@@ -38,6 +42,7 @@ describe('SkillsHeader', () => {
             <ThemeProvider>
                 <SkillsHeader
                     onViewIntents={onViewIntents}
+                    onTest={onTest}
                     onCreateSkillFromScratch={onCreateSkillFromScratch}
                     onCreateSkillFromTemplate={onCreateSkillFromTemplate}
                 />
@@ -46,6 +51,9 @@ describe('SkillsHeader', () => {
 
         await user.click(screen.getByRole('button', { name: /View intents/i }))
         expect(onViewIntents).toHaveBeenCalledTimes(1)
+
+        await user.click(screen.getByRole('button', { name: /Test/i }))
+        expect(onTest).toHaveBeenCalledTimes(1)
 
         await user.click(screen.getByRole('button', { name: /Create skill/i }))
         await user.click(
@@ -58,6 +66,24 @@ describe('SkillsHeader', () => {
             screen.getByRole('menuitem', { name: /From template/i }),
         )
         expect(onCreateSkillFromTemplate).toHaveBeenCalledTimes(1)
+    })
+
+    it('should hide the Test button when isPlaygroundOpen is true', () => {
+        render(
+            <ThemeProvider>
+                <SkillsHeader isPlaygroundOpen />
+            </ThemeProvider>,
+        )
+
+        expect(
+            screen.getByRole('button', { name: /View intents/i }),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: /Test/i }),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: /Create skill/i }),
+        ).toBeInTheDocument()
     })
 
     it('should hide the action buttons when showActions is false', () => {
