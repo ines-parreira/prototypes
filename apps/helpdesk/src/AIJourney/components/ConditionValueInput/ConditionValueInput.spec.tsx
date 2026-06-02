@@ -11,6 +11,7 @@ const capturedSelectField = {
 const capturedMultiSelectField = {
     onChange: undefined as ((items: any[]) => void) | undefined,
     onSearchChange: undefined as ((value: string) => void) | undefined,
+    onOpenChange: undefined as ((isOpen: boolean) => void) | undefined,
 }
 
 const capturedInlineSelect = {
@@ -35,6 +36,7 @@ jest.mock('@gorgias/axiom', () => ({
     MultiSelectField: (props: any) => {
         capturedMultiSelectField.onChange = props.onChange
         capturedMultiSelectField.onSearchChange = props.onSearchChange
+        capturedMultiSelectField.onOpenChange = props.onOpenChange
         return (
             <div aria-label={props['aria-label']}>
                 {props.value?.length > 0 ? (
@@ -182,6 +184,7 @@ describe('<ConditionValueInput />', () => {
         capturedSelectField.onChange = undefined
         capturedMultiSelectField.onChange = undefined
         capturedMultiSelectField.onSearchChange = undefined
+        capturedMultiSelectField.onOpenChange = undefined
         capturedInlineSelect.onSelect = undefined
     })
 
@@ -965,7 +968,7 @@ describe('<ConditionValueInput />', () => {
             expect(useGetEcommerceLookupValues).toHaveBeenCalledWith(
                 'product_tag',
                 42,
-                {},
+                { value: undefined },
                 { enabled: true },
             )
         })
@@ -995,9 +998,96 @@ describe('<ConditionValueInput />', () => {
             expect(useGetEcommerceLookupValues).toHaveBeenCalledWith(
                 'product_tag',
                 0,
-                {},
+                { value: undefined },
                 { enabled: false },
             )
+        })
+
+        it('should pass the search term as value to useGetEcommerceLookupValues after debounce fires', () => {
+            jest.useFakeTimers()
+            const { useGetEcommerceLookupValues } = jest.requireMock(
+                'models/ecommerce/queries',
+            )
+
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="product_tags"
+                    value={null}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="containsAny"
+                />,
+            )
+
+            act(() => {
+                capturedMultiSelectField.onSearchChange!('sale')
+            })
+
+            act(() => {
+                jest.advanceTimersByTime(300)
+            })
+
+            expect(useGetEcommerceLookupValues).toHaveBeenLastCalledWith(
+                'product_tag',
+                42,
+                { value: 'sale' },
+                { enabled: true },
+            )
+
+            jest.runOnlyPendingTimers()
+            jest.useRealTimers()
+        })
+
+        it('should reset the search value to undefined when the dropdown closes', () => {
+            jest.useFakeTimers()
+            const { useGetEcommerceLookupValues } = jest.requireMock(
+                'models/ecommerce/queries',
+            )
+
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="product_tags"
+                    value={null}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="containsAny"
+                />,
+            )
+
+            act(() => {
+                capturedMultiSelectField.onSearchChange!('sale')
+            })
+
+            act(() => {
+                jest.advanceTimersByTime(300)
+            })
+
+            expect(useGetEcommerceLookupValues).toHaveBeenLastCalledWith(
+                'product_tag',
+                42,
+                { value: 'sale' },
+                { enabled: true },
+            )
+
+            act(() => {
+                capturedMultiSelectField.onOpenChange!(false)
+            })
+
+            act(() => {
+                jest.advanceTimersByTime(300)
+            })
+
+            expect(useGetEcommerceLookupValues).toHaveBeenLastCalledWith(
+                'product_tag',
+                42,
+                { value: undefined },
+                { enabled: true },
+            )
+
+            jest.runOnlyPendingTimers()
+            jest.useRealTimers()
         })
     })
 

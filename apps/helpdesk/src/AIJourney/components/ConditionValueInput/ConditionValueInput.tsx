@@ -396,10 +396,19 @@ const ProductTagsMultiSelect = ({
     onChange: (val: ConditionValue) => void
 }) => {
     const { currentIntegration } = useJourneyContext()
+    const [searchValue, setSearchValue] = useState('')
+    const debouncedSearch = useDebouncedValue(searchValue, 300)
+
+    const handleOpenChange = (isOpen: boolean) => {
+        if (!isOpen) {
+            setSearchValue('')
+        }
+    }
+
     const { data } = useGetEcommerceLookupValues(
         'product_tag',
         currentIntegration?.id ?? 0,
-        {},
+        { value: debouncedSearch || undefined },
         { enabled: !!currentIntegration?.id },
     )
 
@@ -430,6 +439,9 @@ const ProductTagsMultiSelect = ({
                 items={tagItems}
                 value={selectedItems}
                 isSearchable
+                searchValue={searchValue}
+                onSearchChange={setSearchValue}
+                onOpenChange={handleOpenChange}
                 onChange={(items) => {
                     onChange(
                         items.length > 0 ? items.map((item) => item.id) : null,

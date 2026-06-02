@@ -111,6 +111,30 @@ describe('Ecommerce Resources', () => {
             })
         })
 
+        it('should forward the value param when searching product tags', async () => {
+            const integrationId = 123
+
+            mockedServer
+                .onGet(
+                    `/api/ecommerce/lookup_values/product_tag/shopify/${integrationId}`,
+                )
+                .reply(200, {
+                    data: mockEcommerceProductTags,
+                    metadata: {
+                        next_cursor: null,
+                        prev_cursor: null,
+                    },
+                })
+
+            await fetchEcommerceLookupValues('product_tag', integrationId, {
+                value: 'sale',
+            })
+
+            expect(mockedServer.history.get[0].params).toEqual({
+                value: 'sale',
+            })
+        })
+
         it('should handle error when fetching product tags', async () => {
             const integrationId = 123
 
