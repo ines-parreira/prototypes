@@ -211,7 +211,8 @@ export class ShortcutManager {
     }
 
     trigger(key: string) {
-        return mousetrap.trigger(key)
+        mousetrap.trigger(key)
+        return mousetrap.trigger(key, 'keydown')
     }
 
     parseKeyPart(keyPart: string) {

@@ -1,8 +1,9 @@
 import type { ComponentProps } from 'react'
 
 import { UserRole } from '@repo/permissions'
+import { shortcutManager } from '@repo/utils'
 import { clearViewsCount, setViewsCount } from '@repo/views'
-import { screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -180,6 +181,12 @@ async function waitForTicketTableToBeReady() {
 
 function getRowSelectionCheckbox() {
     return screen.getAllByRole('checkbox').at(1)!
+}
+
+async function triggerShortcut(shortcut: string) {
+    await act(async () => {
+        shortcutManager.trigger(shortcut)
+    })
 }
 
 const agentUser = mockUser({
@@ -401,6 +408,89 @@ describe('TicketTable', () => {
                 }),
             )
         })
+    })
+
+    it('moves to the next page when the right arrow shortcut is triggered', async () => {
+        setViewsCount({ 123: 40 })
+        mockState.tickets = Array.from({ length: 40 }, (_, index) => ({
+            id: index + 1,
+            subject: `Ticket ${index + 1}`,
+        }))
+
+        renderTicketTable()
+        await waitForTicketTableToBeReady()
+
+        expect(screen.getByText('Ticket 1')).toBeInTheDocument()
+        expect(screen.queryByText('Ticket 21')).not.toBeInTheDocument()
+
+        await triggerShortcut('right')
+
+        await waitFor(() => {
+            expect(screen.getByText('Ticket 21')).toBeInTheDocument()
+        })
+        expect(screen.queryByText('Ticket 1')).not.toBeInTheDocument()
+    })
+
+    it('moves to the previous page when the left arrow shortcut is triggered', async () => {
+        setViewsCount({ 123: 40 })
+        mockState.tickets = Array.from({ length: 40 }, (_, index) => ({
+            id: index + 1,
+            subject: `Ticket ${index + 1}`,
+        }))
+
+        renderTicketTable()
+        await waitForTicketTableToBeReady()
+
+        await triggerShortcut('right')
+
+        await waitFor(() => {
+            expect(screen.getByText('Ticket 21')).toBeInTheDocument()
+        })
+
+        await triggerShortcut('left')
+
+        await waitFor(() => {
+            expect(screen.getByText('Ticket 1')).toBeInTheDocument()
+        })
+        expect(screen.queryByText('Ticket 21')).not.toBeInTheDocument()
+    })
+
+    it('does not move to the previous page when the left arrow shortcut is triggered on the first page', async () => {
+        setViewsCount({ 123: 40 })
+        mockState.tickets = Array.from({ length: 40 }, (_, index) => ({
+            id: index + 1,
+            subject: `Ticket ${index + 1}`,
+        }))
+
+        renderTicketTable()
+        await waitForTicketTableToBeReady()
+
+        await triggerShortcut('left')
+
+        expect(screen.getByText('Ticket 1')).toBeInTheDocument()
+        expect(screen.queryByText('Ticket 21')).not.toBeInTheDocument()
+    })
+
+    it('does not move to the next page when the right arrow shortcut is triggered on the last page', async () => {
+        setViewsCount({ 123: 40 })
+        mockState.tickets = Array.from({ length: 40 }, (_, index) => ({
+            id: index + 1,
+            subject: `Ticket ${index + 1}`,
+        }))
+
+        renderTicketTable()
+        await waitForTicketTableToBeReady()
+
+        await triggerShortcut('right')
+
+        await waitFor(() => {
+            expect(screen.getByText('Ticket 21')).toBeInTheDocument()
+        })
+
+        await triggerShortcut('right')
+
+        expect(screen.getByText('Ticket 21')).toBeInTheDocument()
+        expect(screen.queryByText('Ticket 1')).not.toBeInTheDocument()
     })
 
     it('renders all rows when page size is below 50', async () => {

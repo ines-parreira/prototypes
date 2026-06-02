@@ -23,6 +23,19 @@ describe('shortcutManager', () => {
         expect(counter).toBe(1)
     })
 
+    it('triggers special keys bound through keydown', () => {
+        const actions = {
+            ACTION_NAME: {
+                key: 'right',
+                action: bump,
+            },
+        }
+        sm.bind('pizza', actions)
+        sm.trigger('right')
+
+        expect(counter).toBe(1)
+    })
+
     it('unbind component', () => {
         const actions = {
             ACTION_NAME: {

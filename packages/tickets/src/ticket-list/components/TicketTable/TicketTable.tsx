@@ -56,6 +56,7 @@ import { TicketTableBulkActions } from './components/TicketTableBulkActions'
 import { TicketTableColumnEditingFooter } from './components/TicketTableColumnEditingFooter'
 import { createTicketTableColumns } from './TicketTableColumns'
 import type { TicketTableRow } from './TicketTableColumns'
+import { TicketTablePaginationShortcuts } from './TicketTablePaginationShortcuts'
 
 import css from './TicketTable.module.less'
 
@@ -565,14 +566,26 @@ function TicketTableComponent({
                         if (itemCountIsAllSelected || isAllSelected) {
                             const viewLabel = view?.name?.trim() || 'the view'
                             return (
-                                <Text size="sm">
-                                    {viewCount != null
-                                        ? `All ${viewCount} tickets in ${viewLabel} selected`
-                                        : `All tickets in ${viewLabel} selected`}
-                                </Text>
+                                <>
+                                    <TicketTablePaginationShortcuts
+                                        isLoading={isLoading}
+                                    />
+                                    <Text size="sm">
+                                        {viewCount != null
+                                            ? `All ${viewCount} tickets in ${viewLabel} selected`
+                                            : `All tickets in ${viewLabel} selected`}
+                                    </Text>
+                                </>
                             )
                         }
-                        return <Text size="sm">{text}</Text>
+                        return (
+                            <>
+                                <TicketTablePaginationShortcuts
+                                    isLoading={isLoading}
+                                />
+                                <Text size="sm">{text}</Text>
+                            </>
+                        )
                     }}
                 </DataTableItemCount>
                 <DataTableBulkActions<TicketTableRow>
