@@ -6,11 +6,16 @@ import { fromJS } from 'immutable'
 import { billingState } from 'fixtures/billing'
 import { IntegrationType } from 'models/integration/constants'
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
+import useGetIsActionStepEnabled from 'pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled'
 import AppActionsTab from 'pages/integrations/integration/components/app/AppActionsTab'
 
 jest.mock('models/workflows/queries', () => ({
     useGetWorkflowConfigurationTemplates: jest.fn(),
 }))
+
+jest.mock('pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled')
+
+const mockUseGetIsActionStepEnabled = jest.mocked(useGetIsActionStepEnabled)
 
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
     useGetWorkflowConfigurationTemplates,
@@ -59,6 +64,7 @@ const buildTemplates = () =>
 describe('AppActionsTab', () => {
     beforeEach(() => {
         jest.resetAllMocks()
+        mockUseGetIsActionStepEnabled.mockReturnValue(() => true)
     })
 
     it('renders the banner with the app-specific title and links to per-store actions when a Shopify store is connected', () => {
@@ -178,6 +184,25 @@ describe('AppActionsTab', () => {
 
         expect(screen.getByText('Get Shopify order')).toBeInTheDocument()
         expect(screen.queryByText('Send Klaviyo email')).not.toBeInTheDocument()
+    })
+
+    it('filters out templates whose internal_id is not enabled by useGetIsActionStepEnabled', () => {
+        mockUseGetWorkflowConfigurationTemplates.mockReturnValue({
+            data: buildTemplates(),
+            isInitialLoading: false,
+        } as unknown as ReturnType<typeof useGetWorkflowConfigurationTemplates>)
+        mockUseGetIsActionStepEnabled.mockReturnValue(
+            (internalId: string) => internalId !== 'template-internal-klaviyo',
+        )
+
+        render(<AppActionsTab appId={APP_ID} appName={APP_NAME} />, {
+            storeState: shopifyState,
+        })
+
+        expect(screen.queryByText('Send Klaviyo email')).not.toBeInTheDocument()
+        expect(
+            screen.getByRole('heading', { name: 'No actions for this app' }),
+        ).toBeInTheDocument()
     })
 
     it('hides the banner when the dismiss button is clicked', async () => {

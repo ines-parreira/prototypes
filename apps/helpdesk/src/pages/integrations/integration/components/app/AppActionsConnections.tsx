@@ -243,7 +243,7 @@ function ConnectionRow({
     onAssignStoreSuccess,
 }: RowProps) {
     const history = useHistory()
-    const editUrl = `/app/settings/integrations/app/${appId}/connections/${connection.id}`
+    const editUrl = `/app/settings/integrations/app/${appId}/credentials/${connection.id}`
     const { mutateAsync: assignStore, isLoading: isAssigning } =
         useAssignServiceConnectionStore()
     const { mutateAsync: trashConnection, isLoading: isTrashing } =
@@ -319,9 +319,26 @@ function ConnectionRow({
                 </Box>
             </TableCell>
             <TableCell>
-                <Tag size="sm" color={healthy ? 'green' : 'red'}>
-                    {healthy ? 'Healthy' : 'Unhealthy'}
-                </Tag>
+                <Box alignItems="center" gap="xs">
+                    <Tag size="sm" color={healthy ? 'green' : 'red'}>
+                        {healthy ? 'Active' : 'Action needed'}
+                    </Tag>
+                    {!healthy && (
+                        <Tooltip
+                            delay={0}
+                            trigger={
+                                <Icon
+                                    name="warning-triangle"
+                                    size="sm"
+                                    color="content-warning-default"
+                                    alt="Update credentials to reconnect."
+                                />
+                            }
+                        >
+                            <TooltipContent title="Update credentials to reconnect." />
+                        </Tooltip>
+                    )}
+                </Box>
             </TableCell>
             <TableCell>
                 {isAssignedStoresLoading ? (

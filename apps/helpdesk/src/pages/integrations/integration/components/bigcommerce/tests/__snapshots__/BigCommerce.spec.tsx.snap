@@ -174,116 +174,120 @@ exports[`<BigCommerce/> Detail should render a detail view 1`] = `
       </ul>
     </section>
     <div
-      class="infoCard card"
+      class="rightRail"
     >
       <div
-        class="card-body"
+        class="infoCard card"
       >
         <div
-          class="actionWrapper"
+          class="card-body"
         >
-          <a
-            class="connectButtonWrapper"
-            href="https://store-pk360c6roo.mybigcommerce.com/manage/marketplace/apps/my-apps"
-            rel="noopener noreferrer"
-            target="_blank"
+          <div
+            class="actionWrapper"
           >
-            <button
-              aria-disabled="false"
-              class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-primary-a432"
-              data-name="button"
-              data-rac=""
-              data-react-aria-pressable="true"
-              id="react-aria-:r0:"
-              tabindex="0"
-              type="button"
+            <a
+              class="connectButtonWrapper"
+              href="https://store-pk360c6roo.mybigcommerce.com/manage/marketplace/apps/my-apps"
+              rel="noopener noreferrer"
+              target="_blank"
             >
-              <div
-                class="ui-button-surface-a432"
+              <button
+                aria-disabled="false"
+                class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-primary-a432"
+                data-name="button"
+                data-rac=""
+                data-react-aria-pressable="true"
+                id="react-aria-:r0:"
+                tabindex="0"
+                type="button"
               >
-                <span
-                  class="ui-button-content-a432"
+                <div
+                  class="ui-button-surface-a432"
                 >
                   <span
-                    class="typography-bold-md ui-text-text-d239"
-                    data-name="text"
-                    style="text-align: left; text-wrap: nowrap;"
+                    class="ui-button-content-a432"
                   >
-                    <strong>
-                      Connect BigCommerce
-                    </strong>
+                    <span
+                      class="typography-bold-md ui-text-text-d239"
+                      data-name="text"
+                      style="text-align: left; text-wrap: nowrap;"
+                    >
+                      <strong>
+                        Connect BigCommerce
+                      </strong>
+                    </span>
                   </span>
-                </span>
-              </div>
-            </button>
-          </a>
+                </div>
+              </button>
+            </a>
+          </div>
+          <h2
+            class="categoryTitle cardTitle"
+          >
+            Pricing
+          </h2>
+          <ul
+            class="cardList"
+          >
+            <li>
+              Contact BigCommerce for pricing details.
+            </li>
+            <li>
+              <a
+                class="actionLink"
+                href="https://www.bigcommerce.com/essentials/pricing/"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <i
+                  class="material-icons-outlined actionIcon actionIconBigger"
+                >
+                  attach_money
+                </i>
+                See pricing details
+              </a>
+            </li>
+          </ul>
+          <h2
+            class="categoryTitle cardTitle"
+          >
+            Resources
+          </h2>
+          <ul
+            class="cardList"
+          >
+            <li>
+              <a
+                class="actionLink"
+                href="https://docs.gorgias.com/bigcommerce-105241"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <i
+                  class="material-icons-outlined actionIcon actionIconBigger"
+                >
+                  description
+                </i>
+                Documentation
+              </a>
+            </li>
+            <li>
+              <a
+                class="actionLink"
+                href="https://www.bigcommerce.com/privacy/"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <i
+                  class="material-icons-outlined actionIcon actionIconBigger"
+                >
+                  privacy_tip
+                </i>
+                Privacy Policy
+              </a>
+            </li>
+          </ul>
         </div>
-        <h2
-          class="categoryTitle cardTitle"
-        >
-          Pricing
-        </h2>
-        <ul
-          class="cardList"
-        >
-          <li>
-            Contact BigCommerce for pricing details.
-          </li>
-          <li>
-            <a
-              class="actionLink"
-              href="https://www.bigcommerce.com/essentials/pricing/"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <i
-                class="material-icons-outlined actionIcon actionIconBigger"
-              >
-                attach_money
-              </i>
-              See pricing details
-            </a>
-          </li>
-        </ul>
-        <h2
-          class="categoryTitle cardTitle"
-        >
-          Resources
-        </h2>
-        <ul
-          class="cardList"
-        >
-          <li>
-            <a
-              class="actionLink"
-              href="https://docs.gorgias.com/bigcommerce-105241"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <i
-                class="material-icons-outlined actionIcon actionIconBigger"
-              >
-                description
-              </i>
-              Documentation
-            </a>
-          </li>
-          <li>
-            <a
-              class="actionLink"
-              href="https://www.bigcommerce.com/privacy/"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <i
-                class="material-icons-outlined actionIcon actionIconBigger"
-              >
-                privacy_tip
-              </i>
-              Privacy Policy
-            </a>
-          </li>
-        </ul>
       </div>
     </div>
   </main>

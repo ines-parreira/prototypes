@@ -58,7 +58,7 @@ describe('Integration', () => {
         [
             {
                 callOrder: 2,
-                path: basePath + '/app/:appId/connections/:connectionId',
+                path: basePath + '/app/:appId/credentials/:connectionId',
                 roleParams: [ADMIN_ROLE],
                 component: AppConnectionEdit,
             },

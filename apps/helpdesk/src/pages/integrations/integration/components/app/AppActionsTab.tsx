@@ -9,6 +9,7 @@ import {
     aiAgentRoutes,
     getAiAgentNavigationRoutes,
 } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import useGetIsActionStepEnabled from 'pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import Loader from 'pages/common/components/Loader/Loader'
 
@@ -40,10 +41,13 @@ export default function AppActionsTab({ appId, appName, appIcon }: Props) {
             triggers: ['reusable-llm-prompt'],
         })
 
+    const getIsActionStepEnabled = useGetIsActionStepEnabled()
+
     const appActionSteps = useMemo(() => {
         const matchedById = new Map<string, (typeof templates)[number]>()
         for (const template of templates) {
             if (matchedById.has(template.id)) continue
+            if (!getIsActionStepEnabled(template.internal_id)) continue
             const isMatch = template.apps.some(
                 (app) =>
                     (app.type === 'app' && app.app_id === appId) ||
@@ -52,7 +56,7 @@ export default function AppActionsTab({ appId, appName, appIcon }: Props) {
             if (isMatch) matchedById.set(template.id, template)
         }
         return Array.from(matchedById.values())
-    }, [templates, appId])
+    }, [templates, appId, getIsActionStepEnabled])
 
     return (
         <Box flexDirection="column" gap="md" padding="lg">

@@ -27,7 +27,7 @@ export function Integrations() {
                 })}
             </Route>
 
-            <Route path={`${path}/app/:appId/connections/:connectionId`} exact>
+            <Route path={`${path}/app/:appId/credentials/:connectionId`} exact>
                 {renderAppSettings(AppConnectionEdit, {
                     roleParams: [ADMIN_ROLE],
                 })}

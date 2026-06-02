@@ -29,4 +29,15 @@ describe(`Detail`, () => {
         expect(screen.getByText(dummyProduct.title))
         expect(screen.queryByText(infoCardBannerText)).toBe(null)
     })
+
+    it('renders the setupCards slot in the right rail when provided', () => {
+        render(
+            <Detail
+                {...dummyProduct}
+                setupCards={<div>setup-cards-content</div>}
+            />,
+        )
+
+        expect(screen.getByText('setup-cards-content')).toBeInTheDocument()
+    })
 })

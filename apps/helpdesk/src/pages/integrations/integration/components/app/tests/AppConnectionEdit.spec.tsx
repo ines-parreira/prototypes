@@ -12,8 +12,8 @@ import AppConnectionEdit from 'pages/integrations/integration/components/app/App
 const APP_ID = '1234'
 const CONNECTION_ID = '01970000-0000-7000-8000-000000000001'
 const APP_BASE_URL = `/app/settings/integrations/app/${APP_ID}`
-const CONNECTIONS_URL = `${APP_BASE_URL}/connections`
-const EDIT_URL = `${CONNECTIONS_URL}/${CONNECTION_ID}`
+const CREDENTIALS_URL = `${APP_BASE_URL}/credentials`
+const EDIT_URL = `${CREDENTIALS_URL}/${CONNECTION_ID}`
 
 const mockHistoryPush = jest.fn()
 jest.mock('react-router-dom', () => ({
@@ -117,7 +117,7 @@ afterAll(() => {
 
 const renderComponent = () =>
     render(<AppConnectionEdit />, {
-        path: '/app/settings/integrations/app/:appId/connections/:connectionId',
+        path: '/app/settings/integrations/app/:appId/credentials/:connectionId',
         initialEntries: [EDIT_URL],
     })
 
@@ -139,8 +139,8 @@ describe('AppConnectionEdit', () => {
             await screen.findByRole('link', { name: 'ShipMonk' }),
         ).toHaveAttribute('href', APP_BASE_URL)
         expect(
-            screen.getByRole('link', { name: 'Connections' }),
-        ).toHaveAttribute('href', CONNECTIONS_URL)
+            screen.getByRole('link', { name: 'Credentials' }),
+        ).toHaveAttribute('href', CREDENTIALS_URL)
     })
 
     it('renders basic-auth fields and omits OAuth2-specific fields', async () => {
@@ -256,7 +256,7 @@ describe('AppConnectionEdit', () => {
         expect(
             await screen.findByRole('status', { name: 'Credentials updated' }),
         ).toBeInTheDocument()
-        expect(mockHistoryPush).toHaveBeenCalledWith(CONNECTIONS_URL)
+        expect(mockHistoryPush).toHaveBeenCalledWith(CREDENTIALS_URL)
     })
 
     it('saves the OAuth2 payload with the fields that were changed', async () => {
@@ -320,14 +320,14 @@ describe('AppConnectionEdit', () => {
         ).toBeInTheDocument()
     })
 
-    it('navigates back to the connections list when the back button is clicked', async () => {
+    it('navigates back to the credentials list when the back button is clicked', async () => {
         const { user } = renderComponent()
 
         await user.click(
-            await screen.findByRole('button', { name: 'Back to connections' }),
+            await screen.findByRole('button', { name: 'Back to credentials' }),
         )
 
-        expect(mockHistoryPush).toHaveBeenCalledWith(CONNECTIONS_URL)
+        expect(mockHistoryPush).toHaveBeenCalledWith(CREDENTIALS_URL)
     })
 
     it('updates the heading to reflect the typed name', async () => {

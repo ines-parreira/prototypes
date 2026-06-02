@@ -8,7 +8,13 @@ import type { ProductDetail } from './types'
 import css from './Detail.less'
 
 export default function Detail(props: ProductDetail) {
-    const { screenshots = [], longDescription, benefits, infocard } = props
+    const {
+        screenshots = [],
+        longDescription,
+        benefits,
+        infocard,
+        setupCards,
+    } = props
 
     return (
         <>
@@ -44,7 +50,10 @@ export default function Detail(props: ProductDetail) {
                         <Slides screenshots={screenshots} />
                     )}
                 </section>
-                {!infocard?.isHidden && <InfoCard {...props.infocard} />}
+                <div className={css.rightRail}>
+                    {setupCards}
+                    {!infocard?.isHidden && <InfoCard {...props.infocard} />}
+                </div>
             </main>
         </>
     )

@@ -212,141 +212,145 @@ exports[`App should render 2`] = `
       </ul>
     </section>
     <div
-      class="infoCard card"
+      class="rightRail"
     >
       <div
-        class="card-body"
+        class="infoCard card"
       >
         <div
-          class="actionWrapper"
+          class="card-body"
         >
-          <a
-            class="connectButtonWrapper"
-            href="https://ok.com/?account=20-1+rpz"
-            rel="noopener noreferrer"
-            target="_blank"
+          <div
+            class="actionWrapper"
           >
-            <button
-              aria-disabled="false"
-              class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
-              type="button"
+            <a
+              class="connectButtonWrapper"
+              href="https://ok.com/?account=20-1+rpz"
+              rel="noopener noreferrer"
+              target="_blank"
             >
-              <span
-                class="ui-button-content-cef1"
+              <button
+                aria-disabled="false"
+                class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
+                type="button"
               >
-                Connect App
-              </span>
-            </button>
-          </a>
+                <span
+                  class="ui-button-content-cef1"
+                >
+                  Connect App
+                </span>
+              </button>
+            </a>
+          </div>
+          <h2
+            class="categoryTitle cardTitle"
+          >
+            Pricing
+          </h2>
+          <ul
+            class="cardList"
+          >
+            <li>
+              <p>
+                They are several options: 
+              </p>
+              
+
+              <ul>
+                
+
+                <li>
+                  Pay once
+                </li>
+                
+
+                <li>
+                  Pay on ticket
+                </li>
+                
+
+              </ul>
+            </li>
+            <li>
+              <a
+                class="actionLink"
+                href="https://google.com"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <i
+                  class="material-icons-outlined actionIcon actionIconBigger"
+                >
+                  attach_money
+                </i>
+                See pricing details
+              </a>
+            </li>
+          </ul>
+          <h2
+            class="categoryTitle cardTitle"
+          >
+            Resources
+          </h2>
+          <ul
+            class="cardList"
+          >
+            <li>
+              <a
+                class="actionLink"
+                href="https://www.mycompany.com/privacy-policy"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <i
+                  class="material-icons-outlined actionIcon actionIconBigger"
+                >
+                  privacy_tip
+                </i>
+                Privacy Policy
+              </a>
+            </li>
+          </ul>
+          <h2
+            class="categoryTitle cardTitle"
+          >
+            Support
+          </h2>
+          <ul
+            class="cardList"
+          >
+            <li>
+              <a
+                class="actionLink"
+                href="mailto:support@gotolstoy.com"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <i
+                  class="material-icons actionIcon"
+                >
+                  mail
+                </i>
+                support@gotolstoy.com
+              </a>
+            </li>
+            <li>
+              <a
+                class="actionLink"
+                href="tel:+33620033659"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <i
+                  class="material-icons actionIcon"
+                >
+                  phone
+                </i>
+                +33620033659
+              </a>
+            </li>
+          </ul>
         </div>
-        <h2
-          class="categoryTitle cardTitle"
-        >
-          Pricing
-        </h2>
-        <ul
-          class="cardList"
-        >
-          <li>
-            <p>
-              They are several options: 
-            </p>
-            
-
-            <ul>
-              
-
-              <li>
-                Pay once
-              </li>
-              
-
-              <li>
-                Pay on ticket
-              </li>
-              
-
-            </ul>
-          </li>
-          <li>
-            <a
-              class="actionLink"
-              href="https://google.com"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <i
-                class="material-icons-outlined actionIcon actionIconBigger"
-              >
-                attach_money
-              </i>
-              See pricing details
-            </a>
-          </li>
-        </ul>
-        <h2
-          class="categoryTitle cardTitle"
-        >
-          Resources
-        </h2>
-        <ul
-          class="cardList"
-        >
-          <li>
-            <a
-              class="actionLink"
-              href="https://www.mycompany.com/privacy-policy"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <i
-                class="material-icons-outlined actionIcon actionIconBigger"
-              >
-                privacy_tip
-              </i>
-              Privacy Policy
-            </a>
-          </li>
-        </ul>
-        <h2
-          class="categoryTitle cardTitle"
-        >
-          Support
-        </h2>
-        <ul
-          class="cardList"
-        >
-          <li>
-            <a
-              class="actionLink"
-              href="mailto:support@gotolstoy.com"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <i
-                class="material-icons actionIcon"
-              >
-                mail
-              </i>
-              support@gotolstoy.com
-            </a>
-          </li>
-          <li>
-            <a
-              class="actionLink"
-              href="tel:+33620033659"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <i
-                class="material-icons actionIcon"
-              >
-                phone
-              </i>
-              +33620033659
-            </a>
-          </li>
-        </ul>
       </div>
     </div>
   </main>

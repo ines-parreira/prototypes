@@ -11,6 +11,7 @@ import type { TrackstarConnection } from '../../../pages/automate/workflows/type
 import {
     fetchWorkflowConfigurations,
     useCreateTrackstarLink,
+    useCreateTrackstarServiceConnection,
     useCreateTrackstarToken,
     useDeleteWorkflowConfigurationTemplate,
     useGetActionsApp,
@@ -382,6 +383,32 @@ describe('queries', () => {
 
             await waitFor(() => expect(result.current.isSuccess).toEqual(true))
             expect(result.current.data?.data).toEqual(linkResponse)
+        })
+    })
+
+    describe('useCreateTrackstarServiceConnection()', () => {
+        it('should create trackstar service connection on success', async () => {
+            const serviceConnectionResponse: Paths.TrackstarControllerServiceConnection.Responses.$201 =
+                {
+                    id: '01970000-0000-7000-8000-000000000099',
+                } as Paths.TrackstarControllerServiceConnection.Responses.$201
+
+            mockedServer
+                .onPost(/auth/)
+                .reply(200, {})
+                .onPost(/trackstar\/service-connection/)
+                .reply(200, serviceConnectionResponse)
+
+            const { result } = renderHook(() =>
+                useCreateTrackstarServiceConnection(),
+            )
+
+            act(() => {
+                result.current.mutate([null, { auth_code: 'auth-code-123' }])
+            })
+
+            await waitFor(() => expect(result.current.isSuccess).toEqual(true))
+            expect(result.current.data?.data).toEqual(serviceConnectionResponse)
         })
     })
 

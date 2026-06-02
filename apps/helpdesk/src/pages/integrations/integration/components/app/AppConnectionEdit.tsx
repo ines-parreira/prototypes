@@ -75,7 +75,7 @@ export default function AppConnectionEdit() {
     const history = useHistory()
 
     const appBaseURL = `/app/settings/integrations/app/${appId}`
-    const connectionsURL = `${appBaseURL}/connections`
+    const credentialsURL = `${appBaseURL}/credentials`
 
     const { data: connection, isLoading: isLoadingConnection } =
         useGetServiceConnection(connectionId)
@@ -167,7 +167,7 @@ export default function AppConnectionEdit() {
             })
             setIsDirty(false)
             toast.success('Credentials updated')
-            history.push(connectionsURL)
+            history.push(credentialsURL)
         } catch {
             toast.error(
                 "Couldn't update credentials. Check that they're correct and try again.",
@@ -209,7 +209,7 @@ export default function AppConnectionEdit() {
                         <Link to={appBaseURL}>{breadcrumbAppLabel}</Link>
                     </Breadcrumb>
                     <Breadcrumb>
-                        <Link to={connectionsURL}>Connections</Link>
+                        <Link to={credentialsURL}>Credentials</Link>
                     </Breadcrumb>
                 </Breadcrumbs>
 
@@ -222,9 +222,9 @@ export default function AppConnectionEdit() {
                         <Button
                             size="sm"
                             variant="secondary"
-                            aria-label="Back to connections"
+                            aria-label="Back to credentials"
                             icon={<Icon name="arrow-left" />}
-                            onClick={() => history.push(connectionsURL)}
+                            onClick={() => history.push(credentialsURL)}
                         />
                         <Heading size="lg">
                             {form.name || connection.name}

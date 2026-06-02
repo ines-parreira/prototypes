@@ -46,7 +46,7 @@ function getUrl(item: Item) {
     if (isAppListItem(item)) {
         const application = getApplicationById(item.appId)
         if (application?.supports_multiple_connections && item.count > 0) {
-            return `/app/settings/integrations/app/${item.appId}/connections`
+            return `/app/settings/integrations/app/${item.appId}/credentials`
         }
         return `/app/settings/integrations/app/${item.appId}`
     }

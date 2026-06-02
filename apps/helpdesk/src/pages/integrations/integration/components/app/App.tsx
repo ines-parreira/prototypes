@@ -2,6 +2,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { useEffectOnce, useTitle } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { useQueryClient } from '@tanstack/react-query'
+import { useTrackstarLink } from '@trackstar/react-trackstar-link'
 import { isEmpty, kebabCase } from 'lodash'
 import { Link, NavLink, useHistory, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
@@ -20,6 +22,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { useSearch } from 'hooks/useSearch'
 import { IntegrationType } from 'models/integration/constants'
 import {
+    serviceConnectionsQueryKey,
     useAssignServiceConnectionStore,
     useCreateServiceConnection,
     useListServiceConnectionsByAppId,
@@ -36,12 +39,14 @@ import type {
     CreateServiceConnectionRequest,
     ServiceConnectionAuthType,
 } from 'models/integration/types/serviceConnection'
-import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
+import {
+    useCreateTrackstarLink,
+    useCreateTrackstarServiceConnection,
+} from 'models/workflows/queries'
 import type { ConnectAppAuthCredentials } from 'pages/aiAgent/actionsV2/apps/components'
 import {
     ConnectAppAuthModal,
     ConnectAppModal,
-    InstallSuccessModal,
 } from 'pages/aiAgent/actionsV2/apps/components'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -65,15 +70,16 @@ import { getIntegrationsByAppId } from 'state/integrations/selectors'
 import AppActionsConnections from './AppActionsConnections'
 import AppActionsTab from './AppActionsTab'
 import IntegrationsList from './IntegrationsList'
+import InboundConnectionCard from './SetupCards/InboundConnectionCard'
+import OutboundConnectionCard from './SetupCards/OutboundConnectionCard'
+import SetupCards from './SetupCards/SetupCards'
 
 export enum Tab {
     Details = 'details',
     Advanced = 'advanced',
-    Connections = 'connections',
+    Credentials = 'credentials',
     Actions = 'actions',
 }
-
-const EXTERNAL_CONNECT_AWAIT_TIMEOUT_MS = 5 * 60 * 1000
 
 function queryStringToBool(flag?: string): boolean {
     return flag === '' || flag === '1' || flag?.toLowerCase() === 'true'
@@ -95,6 +101,7 @@ function authValueFromCredentials(
 export default function AppDetail() {
     const dispatch = useAppDispatch()
     const history = useHistory()
+    const queryClient = useQueryClient()
     const { appId, extra: extraParam } = useParams<{
         appId: string
         extra?: string
@@ -108,13 +115,9 @@ export default function AppDetail() {
     const [isLoading, setLoading] = useState(false)
     const [isAuthModalOpen, setAuthModalOpen] = useState(false)
     const [isConnectModalOpen, setConnectModalOpen] = useState(false)
-    const [isInstallSuccessOpen, setInstallSuccessOpen] = useState(false)
     const [createdConnectionId, setCreatedConnectionId] = useState<
         string | null
     >(null)
-    const [primaryStore, setPrimaryStore] = useState<StoreIntegration | null>(
-        null,
-    )
     // Keep in sync with `SUPPORTED_STORE_TYPES` in `ConnectAppModal`.
     const storeIntegrations = useStoreIntegrations([IntegrationType.Shopify])
 
@@ -134,10 +137,12 @@ export default function AppDetail() {
     const supportsMultipleConnections = () =>
         getApplicationById(appId)?.supports_multiple_connections || false
 
-    const { data: existingConnections, refetch: refetchServiceConnections } =
-        useListServiceConnectionsByAppId(appId, {
+    const { data: existingConnections } = useListServiceConnectionsByAppId(
+        appId,
+        {
             enabled: isActionLibraryEnabled,
-        })
+        },
+    )
 
     const hasServiceConnections = !isEmpty(existingConnections)
 
@@ -164,6 +169,10 @@ export default function AppDetail() {
     } = useCreateServiceConnection(appId)
     const { mutateAsync: assignStore, isLoading: isAssigningStore } =
         useAssignServiceConnectionStore()
+    const {
+        mutateAsync: createTrackstarServiceConnection,
+        isLoading: isCreatingTrackstarConnection,
+    } = useCreateTrackstarServiceConnection()
 
     const refetchAppItem = useCallback(async () => {
         try {
@@ -174,88 +183,6 @@ export default function AppDetail() {
         }
     }, [appId, preview])
 
-    const awaitingStorageKey = `app-awaiting-connect-${appId}`
-    const awaitingConnectionRef = useRef(false)
-    const connectionsSnapshotRef = useRef<Set<string>>(new Set())
-    const awaitingTimeoutRef = useRef<number | null>(null)
-
-    useEffectOnce(() => {
-        try {
-            const raw = sessionStorage.getItem(awaitingStorageKey)
-            if (!raw) return
-            const parsed = JSON.parse(raw) as {
-                snapshotIds?: string[]
-                expiresAt?: number
-            }
-            if (parsed.expiresAt && parsed.expiresAt < Date.now()) {
-                sessionStorage.removeItem(awaitingStorageKey)
-                return
-            }
-            connectionsSnapshotRef.current = new Set(parsed.snapshotIds ?? [])
-            awaitingConnectionRef.current = true
-        } catch {
-            sessionStorage.removeItem(awaitingStorageKey)
-        }
-    })
-
-    const clearAwaitingState = useCallback(() => {
-        awaitingConnectionRef.current = false
-        if (awaitingTimeoutRef.current !== null) {
-            window.clearTimeout(awaitingTimeoutRef.current)
-            awaitingTimeoutRef.current = null
-        }
-        sessionStorage.removeItem(awaitingStorageKey)
-    }, [awaitingStorageKey])
-
-    const handleExternalConnectClick = useCallback(() => {
-        const snapshotIds = (existingConnections ?? []).map(
-            (connection) => connection.id,
-        )
-        connectionsSnapshotRef.current = new Set(snapshotIds)
-        awaitingConnectionRef.current = true
-        sessionStorage.setItem(
-            awaitingStorageKey,
-            JSON.stringify({
-                snapshotIds,
-                expiresAt: Date.now() + EXTERNAL_CONNECT_AWAIT_TIMEOUT_MS,
-            }),
-        )
-        if (awaitingTimeoutRef.current !== null) {
-            window.clearTimeout(awaitingTimeoutRef.current)
-        }
-        awaitingTimeoutRef.current = window.setTimeout(() => {
-            awaitingConnectionRef.current = false
-            awaitingTimeoutRef.current = null
-            sessionStorage.removeItem(awaitingStorageKey)
-        }, EXTERNAL_CONNECT_AWAIT_TIMEOUT_MS)
-    }, [existingConnections, awaitingStorageKey])
-
-    const openPostConnectFlow = useCallback(
-        async (connectionId: string) => {
-            const title = appItem?.title ?? ''
-            if (storeIntegrations.length === 1) {
-                const onlyStore = storeIntegrations[0]
-                try {
-                    await assignStore({
-                        connectionId,
-                        storeId: onlyStore.id,
-                    })
-                    setPrimaryStore(onlyStore)
-                    setInstallSuccessOpen(true)
-                } catch {
-                    toast.error(
-                        `Connected ${title}, but failed to link your store. You can link it from the Connections tab.`,
-                    )
-                }
-            } else if (storeIntegrations.length > 1) {
-                setConnectModalOpen(true)
-            } else {
-                setInstallSuccessOpen(true)
-            }
-        },
-        [appItem, storeIntegrations, assignStore],
-    )
-
     const hasAttemptedAutoRedirectRef = useRef(false)
     useEffect(() => {
         if (hasAttemptedAutoRedirectRef.current) return
@@ -263,7 +190,7 @@ export default function AppDetail() {
         if (!existingConnections) return
         hasAttemptedAutoRedirectRef.current = true
         if (!extraParam && existingConnections.length > 0) {
-            history.replace(`${baseURL}/connections`)
+            history.replace(`${baseURL}/credentials`)
         }
     }, [
         extraParam,
@@ -275,74 +202,24 @@ export default function AppDetail() {
 
     useEffect(() => {
         let cancelled = false
-        async function loadAppDetails(showLoader: boolean) {
-            if (showLoader) setLoading(true)
+        async function loadAppDetails() {
+            setLoading(true)
             try {
                 const res = await fetchApp(appId, preview)
                 if (!cancelled) setAppDetail(res)
             } catch (error) {
                 console.error(error)
             } finally {
-                if (!cancelled && showLoader) setLoading(false)
+                if (!cancelled) setLoading(false)
             }
         }
 
-        void loadAppDetails(true)
+        void loadAppDetails()
 
-        const refetchAwaited = () => {
-            if (awaitingConnectionRef.current) {
-                void loadAppDetails(false)
-                void refetchServiceConnections()
-            }
-        }
-        const onVisibilityChange = () => {
-            if (document.visibilityState === 'visible') {
-                void loadAppDetails(false)
-                refetchAwaited()
-            }
-        }
-        const onWindowFocus = () => {
-            refetchAwaited()
-        }
-        document.addEventListener('visibilitychange', onVisibilityChange)
-        window.addEventListener('focus', onWindowFocus)
         return () => {
             cancelled = true
-            document.removeEventListener('visibilitychange', onVisibilityChange)
-            window.removeEventListener('focus', onWindowFocus)
         }
-    }, [appId, preview, refetchServiceConnections])
-
-    useEffect(() => {
-        if (!awaitingConnectionRef.current || !existingConnections) return
-        const newConnection = existingConnections.find(
-            (connection) => !connectionsSnapshotRef.current.has(connection.id),
-        )
-        if (!newConnection) return
-        clearAwaitingState()
-        setCreatedConnectionId(newConnection.id)
-        void openPostConnectFlow(newConnection.id)
-    }, [existingConnections, clearAwaitingState, openPostConnectFlow])
-
-    const hasAutoOpenedAuthModalRef = useRef(false)
-    const hasObservedConnectionsRef = useRef(false)
-    useEffect(() => {
-        if (existingConnections && existingConnections.length > 0) {
-            hasObservedConnectionsRef.current = true
-        }
-    }, [existingConnections])
-
-    useEffect(() => {
-        if (hasAutoOpenedAuthModalRef.current) return
-        if (hasObservedConnectionsRef.current) return
-        if (!isActionLibraryEnabled) return
-        if (!appItem?.outboundAuth || !appItem.isConnected) return
-        if (!existingConnections || existingConnections.length > 0) return
-        hasAutoOpenedAuthModalRef.current = true
-        setAuthModalOpen(true)
-    }, [appItem, existingConnections, isActionLibraryEnabled])
-
-    useEffect(() => clearAwaitingState, [clearAwaitingState])
+    }, [appId, preview])
 
     useTitle(appItem?.title)
 
@@ -389,15 +266,29 @@ export default function AppDetail() {
         )
     }
     const hasOutboundAuth = !!appItem.outboundAuth
-    const useModalConnect = isActionLibraryEnabled && hasOutboundAuth
+    const isTrackstarConnect =
+        appItem.outboundAuth?.vendor === 'trackstar' &&
+        !!appItem.outboundAuth.trackstar_integration_name
+    const useModalConnect =
+        isActionLibraryEnabled && hasOutboundAuth && !isTrackstarConnect
 
-    detailProps.infocard.CTA = (
-        <AppCTA
-            {...appItem}
-            onConnectClick={handleExternalConnectClick}
-            onDisconnected={refetchAppItem}
-        />
-    )
+    const openPostConnectFlow = async (connectionId: string) => {
+        if (storeIntegrations.length === 1) {
+            const onlyStore = storeIntegrations[0]
+            try {
+                await assignStore({
+                    connectionId,
+                    storeId: onlyStore.id,
+                })
+            } catch {
+                toast.error(
+                    `Connected ${appItem.title}, but failed to link your store. You can link it from the Credentials tab.`,
+                )
+            }
+        } else if (storeIntegrations.length > 1) {
+            setConnectModalOpen(true)
+        }
+    }
 
     const handleAuthSubmit = async (credentials: ConnectAppAuthCredentials) => {
         if (!appItem.outboundAuth) return
@@ -426,11 +317,29 @@ export default function AppDetail() {
             setCreatedConnectionId(connection.id)
             await refetchAppItem()
             setAuthModalOpen(false)
-
             await openPostConnectFlow(connection.id)
         } catch {
             toast.error(
                 `Sorry, we couldn't connect ${appItem.title}. Please check your credentials and try again.`,
+            )
+        }
+    }
+
+    const handleTrackstarAuthCode = async (authCode: string) => {
+        try {
+            const { data } = await createTrackstarServiceConnection([
+                null,
+                { auth_code: authCode },
+            ])
+            setCreatedConnectionId(data.id)
+            await queryClient.invalidateQueries({
+                queryKey: serviceConnectionsQueryKey(appId),
+            })
+            await refetchAppItem()
+            await openPostConnectFlow(data.id)
+        } catch {
+            toast.error(
+                `Sorry, we couldn't connect ${appItem.title}. Please try again.`,
             )
         }
     }
@@ -449,14 +358,53 @@ export default function AppDetail() {
                     }),
                 ),
             )
-            setPrimaryStore(stores[0])
             setConnectModalOpen(false)
-            setInstallSuccessOpen(true)
         } catch {
             toast.error(
                 `Failed to link the selected store${stores.length > 1 ? 's' : ''} to ${appItem.title}.`,
             )
         }
+    }
+
+    if (isActionLibraryEnabled) {
+        detailProps.setupCards = (
+            <SetupCards
+                outbound={
+                    appItem.outboundAuth ? (
+                        <OutboundConnectionCard
+                            appTitle={appItem.title}
+                            outboundAuth={appItem.outboundAuth}
+                            isSubmitting={
+                                isCreatingTrackstarConnection ||
+                                isAssigningStore
+                            }
+                            onOpenAuthModal={() => setAuthModalOpen(true)}
+                            onTrackstarAuthCode={handleTrackstarAuthCode}
+                        />
+                    ) : null
+                }
+                inbound={
+                    (appItem.connectUrl || appItem.alloyIntegrationId) &&
+                    !isTrackstarConnect ? (
+                        <InboundConnectionCard
+                            appId={appItem.appId}
+                            appTitle={appItem.title}
+                            connectUrl={appItem.connectUrl}
+                            isConnected={appItem.isConnected}
+                            isDisconnectDisabled={
+                                supportsMultipleConnections() && hasConnections
+                            }
+                            alloyIntegrationId={appItem.alloyIntegrationId}
+                            onDisconnected={refetchAppItem}
+                        />
+                    ) : null
+                }
+            />
+        )
+    } else {
+        detailProps.infocard.CTA = (
+            <AppCTA {...appItem} onDisconnected={refetchAppItem} />
+        )
     }
 
     return (
@@ -473,22 +421,32 @@ export default function AppDetail() {
                     </Breadcrumb>
                 }
             >
-                {(extra === Tab.Connections &&
+                {(extra === Tab.Credentials &&
                     (isActionLibraryEnabled ||
                         supportsMultipleConnections())) ||
                 (extra === Tab.Actions && isActionLibraryEnabled) ? (
-                    useModalConnect ? (
+                    isTrackstarConnect && appItem.outboundAuth ? (
+                        <TrackstarConnectButton
+                            integrationName={
+                                appItem.outboundAuth.trackstar_integration_name!
+                            }
+                            isSubmitting={
+                                isCreatingTrackstarConnection ||
+                                isAssigningStore
+                            }
+                            onAuthCode={handleTrackstarAuthCode}
+                        />
+                    ) : useModalConnect ? (
                         <Button onClick={() => setAuthModalOpen(true)}>
-                            Add connection
+                            Add credentials
                         </Button>
                     ) : (
                         <ConnectLink
                             connectUrl={appItem.connectUrl}
                             isApp
                             integrationTitle={appItem.title}
-                            onClick={handleExternalConnectClick}
                         >
-                            <Button>Add connection</Button>
+                            <Button>Add credentials</Button>
                         </ConnectLink>
                     )
                 ) : null}
@@ -505,8 +463,8 @@ export default function AppDetail() {
                     {(isActionLibraryEnabled
                         ? appItem.isConnected || hasServiceConnections
                         : hasConnections) && (
-                        <NavLink to={`${baseURL}/connections`} exact>
-                            Connections
+                        <NavLink to={`${baseURL}/credentials`} exact>
+                            Credentials
                         </NavLink>
                     )}
                     {isActionLibraryEnabled && (
@@ -518,7 +476,7 @@ export default function AppDetail() {
             )}
             {extra === Tab.Advanced && <AppAdvanced {...appItem} />}
             {extra === Tab.Details && <Detail {...detailProps} />}
-            {extra === Tab.Connections &&
+            {extra === Tab.Credentials &&
                 (isActionLibraryEnabled ? (
                     <AppActionsConnections
                         appId={appItem.appId}
@@ -537,14 +495,16 @@ export default function AppDetail() {
                     appIcon={appItem.image}
                 />
             )}
-            <ConnectAppAuthModal
-                isOpen={isAuthModalOpen}
-                onOpenChange={setAuthModalOpen}
-                app={{ name: appItem.title, iconUrl: appItem.image }}
-                outboundAuth={appItem.outboundAuth}
-                isSubmitting={isCreatingConnection || isAssigningStore}
-                onSubmit={handleAuthSubmit}
-            />
+            {!isTrackstarConnect && (
+                <ConnectAppAuthModal
+                    isOpen={isAuthModalOpen}
+                    onOpenChange={setAuthModalOpen}
+                    app={{ name: appItem.title, iconUrl: appItem.image }}
+                    outboundAuth={appItem.outboundAuth}
+                    isSubmitting={isCreatingConnection || isAssigningStore}
+                    onSubmit={handleAuthSubmit}
+                />
+            )}
             <ConnectAppModal
                 isOpen={isConnectModalOpen}
                 onOpenChange={setConnectModalOpen}
@@ -553,28 +513,44 @@ export default function AppDetail() {
                 onSubmit={handleStorePickerSubmit}
                 disabledStoreIds={disabledStoreIdsForConnectModal}
             />
-            <InstallSuccessModal
-                isOpen={isInstallSuccessOpen}
-                onOpenChange={setInstallSuccessOpen}
-                onViewActions={() => {
-                    setInstallSuccessOpen(false)
-                    if (primaryStore) {
-                        const shopName =
-                            getShopNameFromStoreIntegration(primaryStore)
-                        history.push(
-                            `/app/ai-agent/${primaryStore.type}/${shopName}/actions`,
-                        )
-                    } else {
-                        history.push('/app/ai-agent')
-                    }
-                }}
-            />
         </div>
     )
 }
 
+type TrackstarConnectButtonProps = {
+    integrationName: string
+    isSubmitting: boolean
+    onAuthCode: (authCode: string) => void | Promise<void>
+}
+
+function TrackstarConnectButton({
+    integrationName,
+    isSubmitting,
+    onAuthCode,
+}: TrackstarConnectButtonProps) {
+    const { mutateAsync: createLink } = useCreateTrackstarLink()
+    const { open } = useTrackstarLink({
+        integrationAllowList: [integrationName],
+        onSuccess: async (authCode: string) => {
+            await onAuthCode(authCode)
+        },
+        getLinkToken: async () => {
+            const res = await createLink([{ connection_id: '' }])
+            return res.data.link_token
+        },
+    })
+    return (
+        <Button
+            onClick={() => open({})}
+            isDisabled={isSubmitting}
+            isLoading={isSubmitting}
+        >
+            Add credentials
+        </Button>
+    )
+}
+
 type AppCTAProps = AppDetailType & {
-    onConnectClick?: () => void
     onDisconnected?: () => void | Promise<void>
 }
 
@@ -585,7 +561,6 @@ function AppCTA({
     isConnected,
     title,
     connectUrl,
-    onConnectClick,
     onDisconnected,
 }: AppCTAProps) {
     const domain = useAppSelector(getCurrentAccountState).get('domain')
@@ -657,7 +632,6 @@ function AppCTA({
                     connectUrl={connectUrl}
                     isApp
                     integrationTitle={title}
-                    onClick={onConnectClick}
                 >
                     <Button>
                         {isUnapproved

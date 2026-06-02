@@ -42,4 +42,5 @@ export type ProductDetail = {
     screenshots?: string[]
     alertBanner?: AlertBannerProps
     infocard: Infocard
+    setupCards?: ReactNode
 }

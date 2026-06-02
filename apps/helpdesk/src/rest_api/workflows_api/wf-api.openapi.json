@@ -1194,26 +1194,6 @@
                 "tags": ["StoreAppMapping"]
             }
         },
-        "/helpdesk-app-integrations": {
-            "get": {
-                "operationId": "HelpdeskAppIntegrationController_list",
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ListHelpdeskAppIntegrationResponseDto"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [{ "bearer": [] }],
-                "tags": ["HelpdeskAppIntegration"]
-            }
-        },
         "/apps": {
             "get": {
                 "operationId": "AppController_list",
@@ -1368,6 +1348,36 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/CreateTokenResponseDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [{ "bearer": [] }],
+                "tags": ["Trackstar"]
+            }
+        },
+        "/trackstar/service-connection": {
+            "post": {
+                "operationId": "TrackstarController_serviceConnection",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateServiceConnectionBodyDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreateServiceConnectionResponseDto"
                                 }
                             }
                         }
@@ -79434,27 +79444,6 @@
                     ]
                 }
             },
-            "ListHelpdeskAppIntegrationResponseDto": {
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "properties": {
-                        "account_id": { "type": "number" },
-                        "integration_id": { "type": "number" },
-                        "app_id": { "type": "string" },
-                        "service_connection_id": {
-                            "type": "string",
-                            "nullable": true
-                        }
-                    },
-                    "required": [
-                        "account_id",
-                        "integration_id",
-                        "app_id",
-                        "service_connection_id"
-                    ]
-                }
-            },
             "ListAppResponseDto": {
                 "type": "array",
                 "items": {
@@ -79861,6 +79850,19 @@
                     "error": { "type": "boolean" }
                 },
                 "required": ["connection_id", "error"]
+            },
+            "CreateServiceConnectionBodyDto": {
+                "type": "object",
+                "properties": { "auth_code": { "type": "string" } },
+                "required": ["auth_code"]
+            },
+            "CreateServiceConnectionResponseDto": {
+                "type": "object",
+                "properties": {
+                    "id": { "type": "string", "format": "uuid" },
+                    "external_id": { "type": "string" }
+                },
+                "required": ["id", "external_id"]
             },
             "ListTrackstarConnectionsResponseDto": {
                 "type": "array",

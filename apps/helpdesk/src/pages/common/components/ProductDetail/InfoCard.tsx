@@ -15,13 +15,14 @@ export default function InfoCard(props: Infocard) {
         <Card className={css.infoCard}>
             {banner && <div className={css.rounderWrapper}>{banner}</div>}
             <CardBody>
-                <div className={css.actionWrapper}>{CTA}</div>
+                {CTA && <div className={css.actionWrapper}>{CTA}</div>}
                 {(pricing?.detail || pricing?.link) && (
                     <>
                         <h2
                             className={classNames(
                                 css.categoryTitle,
                                 css.cardTitle,
+                                CTA ? null : css.cardTitleFirst,
                             )}
                         >
                             Pricing

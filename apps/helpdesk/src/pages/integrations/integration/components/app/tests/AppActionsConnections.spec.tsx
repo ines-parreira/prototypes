@@ -141,7 +141,7 @@ afterAll(() => {
 const renderComponent = () =>
     render(<AppActionsConnections appId={APP_ID} connectUrl={CONNECT_URL} />, {
         initialEntries: [
-            `/app/settings/integrations/app/${APP_ID}/connections`,
+            `/app/settings/integrations/app/${APP_ID}/credentials`,
         ],
     })
 
@@ -175,13 +175,18 @@ describe('AppActionsConnections', () => {
         ).toBeInTheDocument()
     })
 
-    it('renders Healthy/Unhealthy status based on the connection status', async () => {
+    it('renders Active/Action needed status based on the connection status', async () => {
         renderComponent()
 
         const rows = await screen.findAllByRole('row')
-        expect(within(rows[1]!).getByText('Healthy')).toBeInTheDocument()
-        expect(within(rows[2]!).getByText('Unhealthy')).toBeInTheDocument()
-        expect(within(rows[3]!).getByText('Healthy')).toBeInTheDocument()
+        expect(within(rows[1]!).getByText('Active')).toBeInTheDocument()
+        expect(within(rows[2]!).getByText('Action needed')).toBeInTheDocument()
+        expect(within(rows[3]!).getByText('Active')).toBeInTheDocument()
+        expect(
+            within(rows[2]!).getByRole('img', {
+                name: 'Update credentials to reconnect.',
+            }),
+        ).toBeInTheDocument()
     })
 
     it('shows a "Connect store" button on the connection that has no linked stores', async () => {
@@ -384,7 +389,7 @@ describe('AppActionsConnections', () => {
         )
 
         expect(mockHistoryPush).toHaveBeenCalledWith(
-            `/app/settings/integrations/app/${APP_ID}/connections/${CONNECTION_1_ID}`,
+            `/app/settings/integrations/app/${APP_ID}/credentials/${CONNECTION_1_ID}`,
         )
     })
 

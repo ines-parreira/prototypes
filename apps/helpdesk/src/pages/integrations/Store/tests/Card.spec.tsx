@@ -68,7 +68,7 @@ describe('<Card />', () => {
         )
         expect(container.firstChild).toMatchSnapshot()
     })
-    it('should render a link to connections tab directly', () => {
+    it('should render a link to credentials tab directly', () => {
         const mockedGetApplicationById =
             getApplicationById as jest.Mock<Application>
         const application = mockApplications[0]
@@ -89,7 +89,7 @@ describe('<Card />', () => {
         )
         expect(getByTestId('card-link')).toHaveAttribute(
             'href',
-            `/app/settings/integrations/app/${application.id}/connections`,
+            `/app/settings/integrations/app/${application.id}/credentials`,
         )
     })
     it('should render a link to app if no integrations yet', () => {

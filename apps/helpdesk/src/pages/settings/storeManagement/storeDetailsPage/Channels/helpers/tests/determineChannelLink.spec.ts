@@ -38,7 +38,7 @@ describe('determineChannelLink', () => {
             },
         } as Integration
         expect(determineChannelLink(tiktokChannel)).toBe(
-            '/app/settings/integrations/app/653a626236234a4ec85eca67/connections',
+            '/app/settings/integrations/app/653a626236234a4ec85eca67/credentials',
         )
     })
 

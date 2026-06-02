@@ -770,6 +770,20 @@ export const useCreateTrackstarToken = (
     })
 }
 
+export const useCreateTrackstarServiceConnection = (
+    overrides?: MutationOverrides<
+        OperationMethods['TrackstarController_serviceConnection']
+    >,
+) => {
+    return useMutation({
+        mutationFn: async (params) => {
+            const client = await getGorgiasWfApiClient()
+            return await client.TrackstarController_serviceConnection(...params)
+        },
+        ...overrides,
+    })
+}
+
 export const useListTrackstarConnections = <T>(
     {
         storeName,

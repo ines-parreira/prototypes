@@ -32,6 +32,13 @@ declare namespace Components {
                 | 'deposco'
                 | 'bluebox'
         }
+        export interface CreateServiceConnectionBodyDto {
+            auth_code: string
+        }
+        export interface CreateServiceConnectionResponseDto {
+            id: string // uuid
+            external_id: string
+        }
         export interface CreateTokenBodyDto {
             auth_code: string
             store_name: string
@@ -5686,12 +5693,6 @@ declare namespace Components {
                   }
               }
         )[]
-        export type ListHelpdeskAppIntegrationResponseDto = {
-            account_id: number
-            integration_id: number
-            app_id: string
-            service_connection_id: string | null
-        }[]
         export type ListLlmConversationEntrypointsResponseDto = {
             requires_confirmation: boolean
             is_standalone: boolean
@@ -21806,12 +21807,6 @@ declare namespace Paths {
             }
         }
     }
-    namespace HelpdeskAppIntegrationControllerList {
-        namespace Responses {
-            export type $200 =
-                Components.Schemas.ListHelpdeskAppIntegrationResponseDto
-        }
-    }
     namespace LiquidTemplateStepValidationControllerValidateStep {
         export type RequestBody =
             Components.Schemas.LiquidTemplateStepValidationRequestDto
@@ -21965,6 +21960,14 @@ declare namespace Paths {
         namespace Responses {
             export type $200 =
                 Components.Schemas.ListTrackstarConnectionsResponseDto
+        }
+    }
+    namespace TrackstarControllerServiceConnection {
+        export type RequestBody =
+            Components.Schemas.CreateServiceConnectionBodyDto
+        namespace Responses {
+            export type $201 =
+                Components.Schemas.CreateServiceConnectionResponseDto
         }
     }
     namespace TrackstarControllerToken {
@@ -22598,14 +22601,6 @@ export interface OperationMethods {
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.StoreAppMappingControllerList.Responses.$200>
     /**
-     * HelpdeskAppIntegrationController_list
-     */
-    'HelpdeskAppIntegrationController_list'(
-        parameters?: Parameters<UnknownParamsObject> | null,
-        data?: any,
-        config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.HelpdeskAppIntegrationControllerList.Responses.$200>
-    /**
      * AppController_list
      */
     'AppController_list'(
@@ -22653,6 +22648,14 @@ export interface OperationMethods {
         data?: Paths.TrackstarControllerToken.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.TrackstarControllerToken.Responses.$201>
+    /**
+     * TrackstarController_serviceConnection
+     */
+    'TrackstarController_serviceConnection'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: Paths.TrackstarControllerServiceConnection.RequestBody,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.TrackstarControllerServiceConnection.Responses.$201>
     /**
      * TrackstarController_list
      */
@@ -23000,16 +23003,6 @@ export interface PathsDictionary {
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.StoreAppMappingControllerList.Responses.$200>
     }
-    ['/helpdesk-app-integrations']: {
-        /**
-         * HelpdeskAppIntegrationController_list
-         */
-        'get'(
-            parameters?: Parameters<UnknownParamsObject> | null,
-            data?: any,
-            config?: AxiosRequestConfig,
-        ): OperationResponse<Paths.HelpdeskAppIntegrationControllerList.Responses.$200>
-    }
     ['/apps']: {
         /**
          * AppController_list
@@ -23065,6 +23058,16 @@ export interface PathsDictionary {
             data?: Paths.TrackstarControllerToken.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.TrackstarControllerToken.Responses.$201>
+    }
+    ['/trackstar/service-connection']: {
+        /**
+         * TrackstarController_serviceConnection
+         */
+        'post'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: Paths.TrackstarControllerServiceConnection.RequestBody,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.TrackstarControllerServiceConnection.Responses.$201>
     }
     ['/trackstar/stores/{store_type}/{store_name}/connections']: {
         /**

@@ -113,7 +113,6 @@ export const ConnectAppAuthModal = ({
                     />
                     <TextField
                         label="Password"
-                        type="password"
                         value={password}
                         onChange={setPassword}
                         isRequired
@@ -130,7 +129,6 @@ export const ConnectAppAuthModal = ({
         return (
             <TextField
                 label={label}
-                type="password"
                 value={value}
                 onChange={setValue}
                 isRequired

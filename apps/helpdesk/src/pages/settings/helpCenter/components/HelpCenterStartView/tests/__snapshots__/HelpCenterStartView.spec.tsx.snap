@@ -121,110 +121,114 @@ exports[`<HelpCenterStartView /> should render the About component 1`] = `
         </ul>
       </section>
       <div
-        class="infoCard card"
+        class="rightRail"
       >
         <div
-          class="card-body"
+          class="infoCard card"
         >
           <div
-            class="actionWrapper"
+            class="card-body"
           >
-            <a
-              href="/app/settings/help-center/new"
+            <div
+              class="actionWrapper"
             >
-              <button
-                aria-disabled="false"
-                class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-primary-a432"
-                data-name="button"
-                data-rac=""
-                data-react-aria-pressable="true"
-                id="react-aria-:r0:"
-                tabindex="0"
-                type="button"
+              <a
+                href="/app/settings/help-center/new"
               >
-                <div
-                  class="ui-button-surface-a432"
+                <button
+                  aria-disabled="false"
+                  class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-primary-a432"
+                  data-name="button"
+                  data-rac=""
+                  data-react-aria-pressable="true"
+                  id="react-aria-:r0:"
+                  tabindex="0"
+                  type="button"
                 >
-                  <span
-                    class="ui-button-content-a432"
+                  <div
+                    class="ui-button-surface-a432"
                   >
                     <span
-                      class="typography-bold-md ui-text-text-d239"
-                      data-name="text"
-                      style="text-align: left; text-wrap: nowrap;"
+                      class="ui-button-content-a432"
                     >
-                      <strong>
-                        Create Help Center
-                      </strong>
+                      <span
+                        class="typography-bold-md ui-text-text-d239"
+                        data-name="text"
+                        style="text-align: left; text-wrap: nowrap;"
+                      >
+                        <strong>
+                          Create Help Center
+                        </strong>
+                      </span>
                     </span>
-                  </span>
-                </div>
-              </button>
-            </a>
+                  </div>
+                </button>
+              </a>
+            </div>
+            <h2
+              class="categoryTitle cardTitle"
+            >
+              Resources
+            </h2>
+            <ul
+              class="cardList"
+            >
+              <li>
+                <a
+                  class="actionLink"
+                  href="https://docs.gorgias.com/en-US/articles/help-center-18396"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <i
+                    class="material-icons-outlined actionIcon actionIconBigger"
+                  >
+                    description
+                  </i>
+                  Documentation
+                </a>
+              </li>
+              <li>
+                <a
+                  class="actionLink"
+                  href="https://link.gorgias.com/helpcenter-webinar"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <i
+                    class="material-icons actionIcon"
+                  >
+                    ondemand_video
+                  </i>
+                  live webinar
+                </a>
+              </li>
+            </ul>
+            <h2
+              class="categoryTitle cardTitle"
+            >
+              Support
+            </h2>
+            <ul
+              class="cardList"
+            >
+              <li>
+                <a
+                  class="actionLink"
+                  href="mailto:support@gorgias.com"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <i
+                    class="material-icons actionIcon"
+                  >
+                    mail
+                  </i>
+                  support@gorgias.com
+                </a>
+              </li>
+            </ul>
           </div>
-          <h2
-            class="categoryTitle cardTitle"
-          >
-            Resources
-          </h2>
-          <ul
-            class="cardList"
-          >
-            <li>
-              <a
-                class="actionLink"
-                href="https://docs.gorgias.com/en-US/articles/help-center-18396"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <i
-                  class="material-icons-outlined actionIcon actionIconBigger"
-                >
-                  description
-                </i>
-                Documentation
-              </a>
-            </li>
-            <li>
-              <a
-                class="actionLink"
-                href="https://link.gorgias.com/helpcenter-webinar"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <i
-                  class="material-icons actionIcon"
-                >
-                  ondemand_video
-                </i>
-                live webinar
-              </a>
-            </li>
-          </ul>
-          <h2
-            class="categoryTitle cardTitle"
-          >
-            Support
-          </h2>
-          <ul
-            class="cardList"
-          >
-            <li>
-              <a
-                class="actionLink"
-                href="mailto:support@gorgias.com"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <i
-                  class="material-icons actionIcon"
-                >
-                  mail
-                </i>
-                support@gorgias.com
-              </a>
-            </li>
-          </ul>
         </div>
       </div>
     </main>

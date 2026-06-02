@@ -135,164 +135,168 @@ exports[`Detail should render 1`] = `
       </ul>
     </section>
     <div
-      class="infoCard card"
+      class="rightRail"
     >
       <div
-        class="rounderWrapper"
-      >
-        <p>
-          I am a banner, trust me.
-        </p>
-      </div>
-      <div
-        class="card-body"
+        class="infoCard card"
       >
         <div
-          class="actionWrapper"
+          class="rounderWrapper"
         >
-          <a
-            href="https://dummy.com"
-          >
-            click me
-          </a>
+          <p>
+            I am a banner, trust me.
+          </p>
         </div>
-        <h2
-          class="categoryTitle cardTitle"
+        <div
+          class="card-body"
         >
-          Pricing
-        </h2>
-        <ul
-          class="cardList"
-        >
-          <li>
-            <p>
-              Some description with HTML markup
-            </p>
-          </li>
-          <li>
+          <div
+            class="actionWrapper"
+          >
             <a
-              class="actionLink"
               href="https://dummy.com"
-              rel="noopener noreferrer"
-              target="_blank"
             >
-              <i
-                class="material-icons-outlined actionIcon actionIconBigger"
-              >
-                attach_money
-              </i>
-              See pricing details
+              click me
             </a>
-          </li>
-        </ul>
-        <h2
-          class="categoryTitle cardTitle"
-        >
-          Resources
-        </h2>
-        <ul
-          class="cardList"
-        >
-          <li>
-            <a
-              class="actionLink"
-              href="https://dummydoc.com"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <i
-                class="material-icons-outlined actionIcon actionIconBigger"
+          </div>
+          <h2
+            class="categoryTitle cardTitle"
+          >
+            Pricing
+          </h2>
+          <ul
+            class="cardList"
+          >
+            <li>
+              <p>
+                Some description with HTML markup
+              </p>
+            </li>
+            <li>
+              <a
+                class="actionLink"
+                href="https://dummy.com"
+                rel="noopener noreferrer"
+                target="_blank"
               >
-                description
-              </i>
-              Documentation
-            </a>
-          </li>
-          <li>
-            <a
-              class="actionLink"
-              href="https://youtube.com"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <i
-                class="material-icons actionIcon"
+                <i
+                  class="material-icons-outlined actionIcon actionIconBigger"
+                >
+                  attach_money
+                </i>
+                See pricing details
+              </a>
+            </li>
+          </ul>
+          <h2
+            class="categoryTitle cardTitle"
+          >
+            Resources
+          </h2>
+          <ul
+            class="cardList"
+          >
+            <li>
+              <a
+                class="actionLink"
+                href="https://dummydoc.com"
+                rel="noopener noreferrer"
+                target="_blank"
               >
-                ondemand_video
-              </i>
-              Monthly Webinar 1
-            </a>
-          </li>
-          <li>
-            <a
-              class="actionLink"
-              href="https://youtube.com"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <i
-                class="material-icons actionIcon"
+                <i
+                  class="material-icons-outlined actionIcon actionIconBigger"
+                >
+                  description
+                </i>
+                Documentation
+              </a>
+            </li>
+            <li>
+              <a
+                class="actionLink"
+                href="https://youtube.com"
+                rel="noopener noreferrer"
+                target="_blank"
               >
-                ondemand_video
-              </i>
-              Monthly Webinar 2
-            </a>
-          </li>
-          <li>
-            <a
-              class="actionLink"
-              href="https://dummyprivacy.com"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <i
-                class="material-icons-outlined actionIcon actionIconBigger"
+                <i
+                  class="material-icons actionIcon"
+                >
+                  ondemand_video
+                </i>
+                Monthly Webinar 1
+              </a>
+            </li>
+            <li>
+              <a
+                class="actionLink"
+                href="https://youtube.com"
+                rel="noopener noreferrer"
+                target="_blank"
               >
-                privacy_tip
-              </i>
-              Privacy Policy
-            </a>
-          </li>
-        </ul>
-        <h2
-          class="categoryTitle cardTitle"
-        >
-          Support
-        </h2>
-        <ul
-          class="cardList"
-        >
-          <li>
-            <a
-              class="actionLink"
-              href="mailto:support@gorgias.com"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <i
-                class="material-icons actionIcon"
+                <i
+                  class="material-icons actionIcon"
+                >
+                  ondemand_video
+                </i>
+                Monthly Webinar 2
+              </a>
+            </li>
+            <li>
+              <a
+                class="actionLink"
+                href="https://dummyprivacy.com"
+                rel="noopener noreferrer"
+                target="_blank"
               >
-                mail
-              </i>
-              support@gorgias.com
-            </a>
-          </li>
-          <li>
-            <a
-              class="actionLink"
-              href="tel:+33620033669"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <i
-                class="material-icons actionIcon"
+                <i
+                  class="material-icons-outlined actionIcon actionIconBigger"
+                >
+                  privacy_tip
+                </i>
+                Privacy Policy
+              </a>
+            </li>
+          </ul>
+          <h2
+            class="categoryTitle cardTitle"
+          >
+            Support
+          </h2>
+          <ul
+            class="cardList"
+          >
+            <li>
+              <a
+                class="actionLink"
+                href="mailto:support@gorgias.com"
+                rel="noopener noreferrer"
+                target="_blank"
               >
-                phone
-              </i>
-              +33620033669
-            </a>
-          </li>
-        </ul>
+                <i
+                  class="material-icons actionIcon"
+                >
+                  mail
+                </i>
+                support@gorgias.com
+              </a>
+            </li>
+            <li>
+              <a
+                class="actionLink"
+                href="tel:+33620033669"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <i
+                  class="material-icons actionIcon"
+                >
+                  phone
+                </i>
+                +33620033669
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </main>

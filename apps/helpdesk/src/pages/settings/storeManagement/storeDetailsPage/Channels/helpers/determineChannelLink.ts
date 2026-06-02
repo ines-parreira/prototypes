@@ -14,7 +14,7 @@ export default function determineChannelLink(channel: Integration): string {
         return `/app/settings/channels/gorgias_chat/${channel.id}`
     }
     if (isTikTokChannel(channel)) {
-        return '/app/settings/integrations/app/653a626236234a4ec85eca67/connections'
+        return '/app/settings/integrations/app/653a626236234a4ec85eca67/credentials'
     }
 
     switch (channel.type) {
