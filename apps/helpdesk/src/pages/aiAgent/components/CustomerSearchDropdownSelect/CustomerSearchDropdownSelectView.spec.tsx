@@ -10,6 +10,7 @@ jest.mock('models/aiAgent/queries', () => ({
     useSearchCustomer: jest.fn(),
 }))
 const mockUseSearchCustomer = jest.mocked(useSearchCustomer)
+const CUSTOMER_SEARCH_DEBOUNCE_MS = 1000
 
 const customer = {
     id: 0,
@@ -18,6 +19,15 @@ const customer = {
         name: 'test',
         id: 0,
     },
+}
+
+const userWithFakeTimers = () =>
+    userEvent.setup({ advanceTimers: jest.advanceTimersByTime })
+
+const advanceCustomerSearchDebounce = async () => {
+    await act(async () => {
+        jest.advanceTimersByTime(CUSTOMER_SEARCH_DEBOUNCE_MS)
+    })
 }
 
 describe('CustomerSearchDropdownSelectView', () => {
@@ -33,6 +43,7 @@ describe('CustomerSearchDropdownSelectView', () => {
     })
 
     afterEach(() => {
+        jest.useRealTimers()
         jest.clearAllMocks()
     })
 
@@ -61,6 +72,8 @@ describe('CustomerSearchDropdownSelectView', () => {
     })
 
     it('search functionality works', async () => {
+        jest.useFakeTimers()
+        const user = userWithFakeTimers()
         const refetchMock = jest.fn()
         mockUseSearchCustomer.mockReturnValue({
             isLoading: false,
@@ -82,12 +95,11 @@ describe('CustomerSearchDropdownSelectView', () => {
         const input = screen.getByRole('textbox')
 
         await act(async () => {
-            await userEvent.type(input, 'test@example.com')
+            await user.type(input, 'test@example.com')
         })
+        await advanceCustomerSearchDebounce()
 
-        await waitFor(() => expect(refetchMock).toHaveBeenCalled(), {
-            timeout: 2000,
-        })
+        expect(refetchMock).toHaveBeenCalled()
     })
 
     it('dropdown visibility based on state', async () => {
@@ -122,6 +134,8 @@ describe('CustomerSearchDropdownSelectView', () => {
     })
 
     it('selection functionality works', async () => {
+        jest.useFakeTimers()
+        const user = userWithFakeTimers()
         const onSelectMock = jest.fn()
         mockUseSearchCustomer.mockReturnValue({
             isLoading: false,
@@ -145,25 +159,20 @@ describe('CustomerSearchDropdownSelectView', () => {
         const input = screen.getByRole('textbox')
 
         await act(async () => {
-            await userEvent.type(input, 'test@example.com')
+            await user.type(input, 'test@example.com')
         })
+        await advanceCustomerSearchDebounce()
 
-        const option = await screen.findByText(
-            'test@example.com',
-            {},
-            { timeout: 2000 },
-        )
+        const option = screen.getByText('test@example.com')
 
         await act(async () => {
-            await userEvent.click(option)
+            await user.click(option)
         })
 
-        await waitFor(() =>
-            expect(onSelectMock).toHaveBeenCalledWith({
-                email: customer.address,
-                name: customer.user.name,
-                id: customer.user.id,
-            }),
-        )
+        expect(onSelectMock).toHaveBeenCalledWith({
+            email: customer.address,
+            name: customer.user.name,
+            id: customer.user.id,
+        })
     })
 })
