@@ -3,14 +3,14 @@ import {
     UserRealtimeAvailabilityUpdates,
 } from '@repo/agent-status'
 import { assumeMock, render } from '@repo/testing'
-import { useUserAvailabilityRealtimeUpdates } from '@repo/users'
+import { useUsersRealtimeUpdates } from '@repo/users'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import { UserAvailabilityRealtimeUpdates } from './UserAvailabilityRealtimeUpdates'
+import { UsersRealtimeUpdates } from './UsersRealtimeUpdates'
 
 jest.mock('@repo/users', () => ({
-    useUserAvailabilityRealtimeUpdates: jest.fn(),
+    useUsersRealtimeUpdates: jest.fn(),
 }))
 
 jest.mock('@repo/agent-status', () => ({
@@ -20,9 +20,7 @@ jest.mock('@repo/agent-status', () => ({
     )),
 }))
 
-const useUserAvailabilityRealtimeUpdatesMock = assumeMock(
-    useUserAvailabilityRealtimeUpdates,
-)
+const useUsersRealtimeUpdatesMock = assumeMock(useUsersRealtimeUpdates)
 const useCustomAgentUnavailableStatusesFlagMock = assumeMock(
     useCustomAgentUnavailableStatusesFlag,
 )
@@ -34,21 +32,21 @@ beforeEach(() => {
     jest.clearAllMocks()
 })
 
-describe('UserAvailabilityRealtimeUpdates', () => {
+describe('UsersRealtimeUpdates', () => {
     it('always mounts the account-channel realtime updates hook', () => {
         useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(false)
 
-        render(<UserAvailabilityRealtimeUpdates />, {
+        render(<UsersRealtimeUpdates />, {
             storeState: { currentUser: fromJS({ id: 20 }) },
         })
 
-        expect(useUserAvailabilityRealtimeUpdatesMock).toHaveBeenCalled()
+        expect(useUsersRealtimeUpdatesMock).toHaveBeenCalled()
     })
 
     it('also mounts the legacy per-user subscription for the current user when the FF is on', () => {
         useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(true)
 
-        render(<UserAvailabilityRealtimeUpdates />, {
+        render(<UsersRealtimeUpdates />, {
             storeState: { currentUser: fromJS({ id: 20 }) },
         })
 
@@ -64,7 +62,7 @@ describe('UserAvailabilityRealtimeUpdates', () => {
     it('skips the legacy subscription when the FF is off', () => {
         useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(false)
 
-        render(<UserAvailabilityRealtimeUpdates />, {
+        render(<UsersRealtimeUpdates />, {
             storeState: { currentUser: fromJS({ id: 20 }) },
         })
 
@@ -76,7 +74,7 @@ describe('UserAvailabilityRealtimeUpdates', () => {
     it('skips the legacy subscription when there is no current user', () => {
         useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(true)
 
-        render(<UserAvailabilityRealtimeUpdates />)
+        render(<UsersRealtimeUpdates />)
 
         expect(
             screen.queryByText('UserRealtimeAvailabilityUpdates'),

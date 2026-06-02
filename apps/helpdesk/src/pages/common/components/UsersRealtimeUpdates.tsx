@@ -2,15 +2,16 @@ import {
     UserRealtimeAvailabilityUpdates as LegacyCurrentUserRealtimeAvailabilityUpdates,
     useCustomAgentUnavailableStatusesFlag,
 } from '@repo/agent-status'
-import { useUserAvailabilityRealtimeUpdates } from '@repo/users'
+import { useUsersRealtimeUpdates } from '@repo/users'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 
 /**
- * Mount-once subscriber that keeps the user availability list cache in sync
- * with realtime events on the account-level channel. Consumers read the cache
- * via `useUserStatus` (or `useListAllUserAvailabilities` directly).
+ * Mount-once subscriber that keeps the account-wide user caches in sync with
+ * realtime events on the account-level channel: user availability
+ * (`useUserStatus` / `useListAllUserAvailabilities`) and the users list
+ * (`useAllUsers`).
  *
  * Also still mounts the legacy per-user subscription from `@repo/agent-status`
  * for the current user so consumers reading the legacy cache keep receiving
@@ -21,11 +22,11 @@ import { getCurrentUserId } from 'state/currentUser/selectors'
  *
  * @example
  * ```tsx
- * <UserAvailabilityRealtimeUpdates />
+ * <UsersRealtimeUpdates />
  * ```
  */
-export function UserAvailabilityRealtimeUpdates(): JSX.Element | null {
-    useUserAvailabilityRealtimeUpdates()
+export function UsersRealtimeUpdates(): JSX.Element | null {
+    useUsersRealtimeUpdates()
 
     const isLegacyFeatureEnabled = useCustomAgentUnavailableStatusesFlag()
     const currentUserId = useAppSelector(getCurrentUserId)

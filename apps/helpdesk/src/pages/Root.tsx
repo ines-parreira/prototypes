@@ -15,7 +15,7 @@ import { CompatRouter } from 'react-router-dom-v5-compat'
 import type { Store } from 'redux'
 
 import { Main } from 'main/app'
-import { UserAvailabilityRealtimeUpdates } from 'pages/common/components/UserAvailabilityRealtimeUpdates'
+import { UsersRealtimeUpdates } from 'pages/common/components/UsersRealtimeUpdates'
 import { RevenueAddonApiClientProvider } from 'pages/convert/common/hooks/useConvertApi'
 import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import RoutesWrapper from 'routes'
@@ -58,7 +58,7 @@ const Root = ({ store }: Props) => {
                                 <Router history={history}>
                                     <CompatRouter>
                                         <Main>
-                                            <UserAvailabilityRealtimeUpdates />
+                                            <UsersRealtimeUpdates />
                                             <RoutesWrapper />
                                         </Main>
                                     </CompatRouter>
