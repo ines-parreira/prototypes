@@ -65,6 +65,14 @@ const prefilledOauth2Auth: ServiceConnectionAuthApiDTO = {
     value: 'existing-oauth-secret',
 }
 
+const customSchemeAuth: ServiceConnectionAuthApiDTO = {
+    type: 'custom-scheme',
+    location: 'header',
+    key: 'Authorization',
+    value: '',
+    scheme: 'Klaviyo-API-Key',
+}
+
 function buildHandlers(options?: {
     auth?: ServiceConnectionAuthApiDTO
     connection?: ServiceConnectionApiDTO
@@ -436,6 +444,47 @@ describe('AppConnectionEdit', () => {
                 key: 'Authorization',
                 token_url: 'https://api.example.com/token',
                 client_secret: 'existing-oauth-secret',
+            })
+        })
+    })
+
+    it('labels the value field with the scheme for custom-scheme auth', async () => {
+        server.use(...buildHandlers({ auth: customSchemeAuth }))
+
+        renderComponent()
+
+        expect(
+            await screen.findByLabelText(/^Klaviyo-API-Key/),
+        ).toBeInTheDocument()
+    })
+
+    it('forwards the scheme on update for custom-scheme auth', async () => {
+        let receivedBody: Record<string, unknown> | undefined
+        server.use(
+            ...buildHandlers({
+                auth: customSchemeAuth,
+                onUpdate: (body) => {
+                    receivedBody = body
+                    return HttpResponse.json({ ...baseConnection })
+                },
+            }),
+        )
+
+        const { user } = renderComponent()
+
+        await user.type(
+            await screen.findByLabelText(/^Klaviyo-API-Key/),
+            'new-secret',
+        )
+        await user.click(screen.getByRole('button', { name: 'Save' }))
+
+        await waitFor(() => {
+            expect(receivedBody?.auth).toEqual({
+                type: 'custom-scheme',
+                location: 'header',
+                key: 'Authorization',
+                value: 'new-secret',
+                scheme: 'Klaviyo-API-Key',
             })
         })
     })

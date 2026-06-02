@@ -48,10 +48,15 @@ type FormState = {
 function getValueLabel(
     authType: ServiceConnectionAuthType | undefined,
     key: string,
+    scheme?: string | null,
 ): string {
     if (authType === 'oauth2') return 'Client secret'
-    if (authType === 'api-key' || authType === 'bearer-token') {
-        return deriveSingleValueLabel(authType, key)
+    if (
+        authType === 'api-key' ||
+        authType === 'bearer-token' ||
+        authType === 'custom-scheme'
+    ) {
+        return deriveSingleValueLabel(authType, key, scheme)
     }
     return 'Token value'
 }
@@ -119,7 +124,7 @@ export default function AppConnectionEdit() {
 
     const isLoading = isLoadingConnection || isLoadingAuth
     const isOAuth2 = auth?.type === 'oauth2'
-    const valueLabel = getValueLabel(auth?.type, auth?.key ?? '')
+    const valueLabel = getValueLabel(auth?.type, auth?.key ?? '', auth?.scheme)
 
     async function handleSave() {
         if (!auth || !connection) return
@@ -155,6 +160,10 @@ export default function AppConnectionEdit() {
                 if (form.scopes) authPayload.scopes = form.scopes
             } else if (form.clientSecret) {
                 authPayload.value = form.clientSecret
+            }
+
+            if (auth.type === 'custom-scheme' && auth.scheme) {
+                authPayload.scheme = auth.scheme
             }
 
             payload.auth = authPayload

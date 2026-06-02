@@ -307,6 +307,9 @@ export default function AppDetail() {
                 location: outboundAuth.location,
                 key: outboundAuth.key,
                 value: authValueFromCredentials(outboundAuth, credentials),
+                ...(outboundAuth.type === 'custom-scheme' && outboundAuth.scheme
+                    ? { scheme: outboundAuth.scheme }
+                    : {}),
             },
             application_id: appId,
             vendor: outboundAuth.vendor ?? null,

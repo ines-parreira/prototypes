@@ -730,6 +730,95 @@ describe(`App`, () => {
             })
         })
 
+        it('forwards the openchannel-provided scheme in the POST payload for custom-scheme auth', async () => {
+            const user = userEvent.setup()
+            const connectionId = '01970000-0000-7000-8000-000000000077'
+            const outboundAuth = {
+                type: 'custom-scheme' as const,
+                url: 'https://a.klaviyo.com',
+                setup_description: '',
+                location: 'header' as const,
+                key: 'Authorization',
+                vendor: null,
+                scheme: 'Klaviyo-API-Key',
+            }
+            mockServer.onGet(`/api/apps/${appId}`).reply(200, {
+                ...dummyAppData,
+                id: appId,
+                is_installed: true,
+                outbound_auth: outboundAuth,
+            })
+            mockServer
+                .onGet('/api/service-connections/')
+                .reply(200, { data: [], meta: {} })
+            mockServer.onGet(`/api/async/errors`).reply(200, { data: [] })
+
+            let capturedPayload: unknown = null
+            mockServer.onPost('/api/service-connections/').reply((config) => {
+                capturedPayload = JSON.parse(config.data)
+                return [
+                    200,
+                    {
+                        id: connectionId,
+                        name: dummyAppData.name,
+                        service: 'my-test-app',
+                        url: outboundAuth.url,
+                        status: 'active',
+                        created_datetime: '2026-05-01T00:00:00',
+                        updated_datetime: null,
+                        trashed_datetime: null,
+                        created_by: 1,
+                        updated_by: null,
+                        trashed_by: null,
+                        external_id: null,
+                        vendor: null,
+                    },
+                ]
+            })
+
+            featureFlagsClientMock.allFlags.mockReturnValue({
+                'action-centralized-library': 'MILESTONE-1',
+            })
+
+            render(<App />, {
+                path: '/integrations/app/:appId',
+                initialEntries: [`/integrations/app/${appId}`],
+                storeState: store.getState() as object,
+            })
+
+            await user.click(
+                await screen.findByRole('button', { name: 'Connect' }),
+            )
+
+            const dialog = await screen.findByRole('dialog', {
+                name: new RegExp(`Connect ${dummyAppData.name}`),
+            })
+            await user.type(
+                within(dialog).getByLabelText('Klaviyo-API-Key'),
+                'klaviyo-secret',
+            )
+            await user.click(
+                within(dialog).getByRole('button', { name: 'Connect' }),
+            )
+
+            await waitFor(() => expect(capturedPayload).not.toBeNull())
+
+            expect(capturedPayload).toEqual({
+                name: dummyAppData.name,
+                service: 'my-test-app',
+                url: outboundAuth.url,
+                auth: {
+                    type: 'custom-scheme',
+                    location: 'header',
+                    key: 'Authorization',
+                    value: 'klaviyo-secret',
+                    scheme: 'Klaviyo-API-Key',
+                },
+                application_id: appId,
+                vendor: null,
+            })
+        })
+
         it('encodes basic-auth credentials as username:password in the POST payload', async () => {
             const user = userEvent.setup()
             const connectionId = '01970000-0000-7000-8000-000000000088'

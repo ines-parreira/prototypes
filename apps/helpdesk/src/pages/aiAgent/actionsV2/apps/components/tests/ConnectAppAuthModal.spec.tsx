@@ -224,6 +224,43 @@ describe('ConnectAppAuthModal', () => {
         expect(within(dialog).getByLabelText(/api key/i)).toBeInTheDocument()
     })
 
+    it('labels the field with the scheme for custom-scheme auth using the Authorization header', async () => {
+        const user = userEvent.setup()
+        const onSubmit = jest.fn()
+        renderComponent({
+            outboundAuth: {
+                ...apiKeyOutboundAuth,
+                type: 'custom-scheme',
+                key: 'Authorization',
+                scheme: 'Klaviyo-API-Key',
+            },
+            onSubmit,
+        })
+
+        const dialog = screen.getByRole('dialog')
+        const field = within(dialog).getByLabelText('Klaviyo-API-Key')
+        await user.type(field, 'klaviyo-secret')
+
+        await user.click(
+            within(dialog).getByRole('button', { name: 'Connect' }),
+        )
+
+        expect(onSubmit).toHaveBeenCalledWith({ value: 'klaviyo-secret' })
+    })
+
+    it('falls back to "Secret" for custom-scheme when neither key nor scheme is meaningful', () => {
+        renderComponent({
+            outboundAuth: {
+                ...apiKeyOutboundAuth,
+                type: 'custom-scheme',
+                key: 'Authorization',
+            },
+        })
+
+        const dialog = screen.getByRole('dialog')
+        expect(within(dialog).getByLabelText('Secret')).toBeInTheDocument()
+    })
+
     it('renders the raw key as the label when it is neither x-api-key nor Authorization', () => {
         renderComponent({
             outboundAuth: {

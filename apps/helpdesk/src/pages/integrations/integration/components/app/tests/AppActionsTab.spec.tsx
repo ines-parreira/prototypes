@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 
 import { billingState } from 'fixtures/billing'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { IntegrationType } from 'models/integration/constants'
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import useGetIsActionStepEnabled from 'pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled'
@@ -15,11 +16,17 @@ jest.mock('models/workflows/queries', () => ({
 
 jest.mock('pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled')
 
+jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
+    useAiAgentAccess: jest.fn(),
+}))
+
 const mockUseGetIsActionStepEnabled = jest.mocked(useGetIsActionStepEnabled)
 
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
     useGetWorkflowConfigurationTemplates,
 )
+
+const mockUseAiAgentAccess = jest.mocked(useAiAgentAccess)
 
 const APP_ID = 'klaviyo'
 const APP_NAME = 'Klaviyo'
@@ -65,6 +72,10 @@ describe('AppActionsTab', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         mockUseGetIsActionStepEnabled.mockReturnValue(() => true)
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
     })
 
     it('renders the banner with the app-specific title and links to per-store actions when a Shopify store is connected', () => {
@@ -229,5 +240,116 @@ describe('AppActionsTab', () => {
                 name: `Gorgias <> ${APP_NAME} actions`,
             }),
         ).not.toBeInTheDocument()
+    })
+
+    describe('AI Agent upsell banner', () => {
+        beforeEach(() => {
+            mockUseGetWorkflowConfigurationTemplates.mockReturnValue({
+                data: [],
+                isInitialLoading: false,
+            } as unknown as ReturnType<
+                typeof useGetWorkflowConfigurationTemplates
+            >)
+        })
+
+        it('renders the upsell instead of the info card when the merchant has no AI Agent access', () => {
+            mockUseAiAgentAccess.mockReturnValue({
+                hasAccess: false,
+                isLoading: false,
+            })
+
+            render(<AppActionsTab appId={APP_ID} appName={APP_NAME} />, {
+                storeState: shopifyState,
+            })
+
+            expect(
+                screen.getByRole('heading', { name: /Unlock AI Agent/i }),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByRole('heading', {
+                    name: `Gorgias <> ${APP_NAME} actions`,
+                }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('points "Try for free" at the AI Agent overview', () => {
+            mockUseAiAgentAccess.mockReturnValue({
+                hasAccess: false,
+                isLoading: false,
+            })
+
+            render(<AppActionsTab appId={APP_ID} appName={APP_NAME} />, {
+                storeState: shopifyState,
+            })
+
+            expect(
+                screen.getByRole('link', { name: /Try for free/i }),
+            ).toHaveAttribute('href', '/app/ai-agent/overview')
+        })
+
+        it('opens the docs in a new tab from "Learn more"', () => {
+            mockUseAiAgentAccess.mockReturnValue({
+                hasAccess: false,
+                isLoading: false,
+            })
+
+            render(<AppActionsTab appId={APP_ID} appName={APP_NAME} />, {
+                storeState: shopifyState,
+            })
+
+            const learnMore = screen.getByRole('link', { name: /Learn more/i })
+            expect(learnMore).toHaveAttribute(
+                'href',
+                'https://docs.gorgias.com/en-US/articles/connect-ai-agent-with-other-apps-184201',
+            )
+            expect(learnMore).toHaveAttribute('target', '_blank')
+            expect(learnMore).toHaveAttribute(
+                'rel',
+                expect.stringContaining('noopener'),
+            )
+        })
+
+        it('dismisses without falling back to the info card', async () => {
+            const user = userEvent.setup()
+            mockUseAiAgentAccess.mockReturnValue({
+                hasAccess: false,
+                isLoading: false,
+            })
+
+            render(<AppActionsTab appId={APP_ID} appName={APP_NAME} />, {
+                storeState: shopifyState,
+            })
+
+            await user.click(screen.getByRole('button', { name: 'Dismiss' }))
+
+            expect(
+                screen.queryByRole('heading', { name: /Unlock AI Agent/i }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('heading', {
+                    name: `Gorgias <> ${APP_NAME} actions`,
+                }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('renders neither card while access is loading', () => {
+            mockUseAiAgentAccess.mockReturnValue({
+                hasAccess: false,
+                isLoading: true,
+            })
+
+            render(<AppActionsTab appId={APP_ID} appName={APP_NAME} />, {
+                storeState: shopifyState,
+            })
+
+            expect(
+                screen.queryByRole('heading', { name: /Unlock AI Agent/i }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('heading', {
+                    name: `Gorgias <> ${APP_NAME} actions`,
+                }),
+            ).not.toBeInTheDocument()
+        })
     })
 })

@@ -9,7 +9,11 @@ import type {
     ServiceConnectionVendor,
 } from './serviceConnection'
 
-export type OutboundAuthType = 'api-key' | 'bearer-token' | 'basic'
+export type OutboundAuthType =
+    | 'api-key'
+    | 'bearer-token'
+    | 'basic'
+    | 'custom-scheme'
 
 export type OutboundAuth = {
     type: OutboundAuthType
@@ -19,6 +23,7 @@ export type OutboundAuth = {
     key: string
     vendor: ServiceConnectionVendor | null
     trackstar_integration_name?: string | null
+    scheme?: string | null
 }
 
 export type AppIntegration = IntegrationBase & {

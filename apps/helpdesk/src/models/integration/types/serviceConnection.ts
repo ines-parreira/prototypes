@@ -5,6 +5,7 @@ export type ServiceConnectionAuthType =
     | 'bearer-token'
     | 'oauth2'
     | 'api-key'
+    | 'custom-scheme'
 
 export type ServiceConnectionAuthLocation = 'header' | 'query'
 
@@ -31,6 +32,7 @@ export type ServiceConnectionAuthApiDTO = {
     location: ServiceConnectionAuthLocation
     key: string
     value: string
+    scheme?: string | null
     expiration_datetime?: string | null
 }
 
@@ -48,6 +50,7 @@ export type UpdateServiceConnectionAuthRequest = {
     location: ServiceConnectionAuthLocation
     key: string
     value?: string | null
+    scheme?: string | null
     client_secret?: string | null
     token_url?: string | null
     client_id?: string | null
@@ -65,6 +68,7 @@ export type CreateServiceConnectionAuthRequest = {
     location: ServiceConnectionAuthLocation
     key: string
     value: string
+    scheme?: string | null
 }
 
 export type CreateServiceConnectionRequest = {

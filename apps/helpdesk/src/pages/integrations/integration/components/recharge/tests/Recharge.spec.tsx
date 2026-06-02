@@ -8,6 +8,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { billingState } from 'fixtures/billing'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 
 import Recharge from '../Recharge'
@@ -16,9 +17,20 @@ jest.mock('models/workflows/queries', () => ({
     useGetWorkflowConfigurationTemplates: jest.fn(),
 }))
 
+jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
+    useAiAgentAccess: jest.fn(),
+}))
+
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
     useGetWorkflowConfigurationTemplates,
 )
+
+const mockUseAiAgentAccess = jest.mocked(useAiAgentAccess)
+
+mockUseAiAgentAccess.mockReturnValue({
+    hasAccess: true,
+    isLoading: false,
+})
 
 const mockStore = configureMockStore([thunk])
 const store = mockStore({

@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 
 import { Box, Button, Card, Heading, Text } from '@gorgias/axiom'
 
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { IntegrationType } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
@@ -13,6 +14,7 @@ import useGetIsActionStepEnabled from 'pages/automate/actionsPlatform/hooks/useG
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import Loader from 'pages/common/components/Loader/Loader'
 
+import AiAgentUpsellBanner from './AiAgentUpsellBanner'
 import AppActionsStepsTable from './AppActionsStepsTable'
 
 const LEARN_MORE_URL =
@@ -35,6 +37,13 @@ export default function AppActionsTab({ appId, appName, appIcon }: Props) {
         : aiAgentRoutes.actionsPlatform
 
     const [isBannerDismissed, setIsBannerDismissed] = useState(false)
+    const [isUpsellDismissed, setIsUpsellDismissed] = useState(false)
+
+    const { hasAccess, isLoading: isAccessLoading } = useAiAgentAccess()
+    const shouldShowUpsell =
+        !isAccessLoading && !hasAccess && !isUpsellDismissed
+    const shouldShowInfoCard =
+        !isAccessLoading && hasAccess && !isBannerDismissed
 
     const { data: templates = [], isInitialLoading } =
         useGetWorkflowConfigurationTemplates({
@@ -60,7 +69,14 @@ export default function AppActionsTab({ appId, appName, appIcon }: Props) {
 
     return (
         <Box flexDirection="column" gap="md" padding="lg">
-            {!isBannerDismissed && (
+            {shouldShowUpsell && (
+                <AiAgentUpsellBanner
+                    ctaHref={aiAgentRoutes.overview}
+                    learnMoreHref={LEARN_MORE_URL}
+                    onDismiss={() => setIsUpsellDismissed(true)}
+                />
+            )}
+            {shouldShowInfoCard && (
                 <Card
                     elevation="mid"
                     flexDirection="column"

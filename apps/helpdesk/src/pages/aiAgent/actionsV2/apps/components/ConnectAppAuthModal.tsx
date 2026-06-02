@@ -26,6 +26,8 @@ export type ConnectAppAuthCredentials =
     | { value: string }
     | { username: string; password: string }
 
+type SingleValueAuthType = 'api-key' | 'bearer-token' | 'custom-scheme'
+
 interface ConnectAppAuthModalProps {
     isOpen: boolean
     onOpenChange: (open: boolean) => void
@@ -35,20 +37,21 @@ interface ConnectAppAuthModalProps {
     isSubmitting?: boolean
 }
 
-const SINGLE_VALUE_FALLBACK_LABEL: Record<'api-key' | 'bearer-token', string> =
-    {
-        'api-key': 'API key',
-        'bearer-token': 'Bearer token',
-    }
+const SINGLE_VALUE_FALLBACK_LABEL: Record<SingleValueAuthType, string> = {
+    'api-key': 'API key',
+    'bearer-token': 'Bearer token',
+    'custom-scheme': 'Secret',
+}
 
 export const deriveSingleValueLabel = (
-    authType: 'api-key' | 'bearer-token',
+    authType: SingleValueAuthType,
     key: string,
+    scheme?: string | null,
 ) => {
-    if (!key) return SINGLE_VALUE_FALLBACK_LABEL[authType]
+    if (!key) return scheme || SINGLE_VALUE_FALLBACK_LABEL[authType]
     if (/^x-api-key$/i.test(key)) return 'API key'
     if (/^authorization$/i.test(key))
-        return SINGLE_VALUE_FALLBACK_LABEL[authType]
+        return scheme || SINGLE_VALUE_FALLBACK_LABEL[authType]
     return key
 }
 
@@ -123,8 +126,12 @@ export const ConnectAppAuthModal = ({
             )
         }
 
-        const singleValueType = authType as 'api-key' | 'bearer-token'
-        const label = deriveSingleValueLabel(singleValueType, outboundAuth.key)
+        const singleValueType = authType as SingleValueAuthType
+        const label = deriveSingleValueLabel(
+            singleValueType,
+            outboundAuth.key,
+            outboundAuth.scheme,
+        )
 
         return (
             <TextField
