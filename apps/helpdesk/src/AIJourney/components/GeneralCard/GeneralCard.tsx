@@ -1,5 +1,7 @@
 import { useCallback } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+
 import { useFormContext, useWatch } from 'react-hook-form'
 
 import {
@@ -20,9 +22,11 @@ import {
     FollowUpWaitHours,
     ImageUpload,
     IncludeImage,
+    JourneyName,
     NumberOfFollowUps,
     NumberOfMessages,
     SenderPhoneNumber,
+    TimingOffset,
 } from 'AIJourney/formFields'
 import type { SetupFormValues } from 'AIJourney/pages/Setup/Setup'
 import { useJourneyContext } from 'AIJourney/providers'
@@ -48,10 +52,15 @@ export const GeneralCard = ({
     const isCustomImageEnabled =
         useWatch({ control, name: 'include_custom_image' }) ?? false
 
+    const isMultiInstanceEnabled =
+        useFlag(FeatureFlagKey.AiJourneyMultiInstanceFlows) &&
+        !!window.USER_IMPERSONATED
+
     const isCampaign = journeyType === JOURNEY_TYPES.CAMPAIGN
     const isCustom = journeyType === JOURNEY_TYPES.CUSTOM
     const isWelcome = journeyType === JOURNEY_TYPES.WELCOME
     const isWinBack = journeyType === JOURNEY_TYPES.WIN_BACK
+    const isStandard = !isCampaign && !isCustom
 
     const shouldRenderIncludeImage = !isCampaign && !isWelcome && !isWinBack
     const hasFollowUps = (maxFollowUpMessages ?? 0) > 0
@@ -86,6 +95,16 @@ export const GeneralCard = ({
     if (isV3Architecture) {
         return (
             <>
+                {isStandard && isMultiInstanceEnabled && (
+                    <div className={css.section}>
+                        <JourneyName />
+                    </div>
+                )}
+                {isMultiInstanceEnabled && !isCampaign && (
+                    <div className={css.section}>
+                        <TimingOffset />
+                    </div>
+                )}
                 <div className={css.section}>
                     <SenderPhoneNumber />
                 </div>
@@ -153,6 +172,8 @@ export const GeneralCard = ({
             <Box flexDirection="column" gap="md">
                 {isCampaign && <CampaignName />}
                 {isCustom && <FlowName />}
+                {isStandard && isMultiInstanceEnabled && <JourneyName />}
+                {isMultiInstanceEnabled && !isCampaign && <TimingOffset />}
                 <SenderPhoneNumber />
                 <NumberOfMessages />
                 <FollowUpWaitHours />

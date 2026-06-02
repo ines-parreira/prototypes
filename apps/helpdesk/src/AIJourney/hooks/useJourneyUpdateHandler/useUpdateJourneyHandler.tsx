@@ -33,6 +33,8 @@ type HandleUpdateParams = {
     discountValue?: number | null | undefined
     excludedAudienceListIds?: string[]
     flowName?: string
+    journeyName?: string
+    timingOffset?: number
     followUpValue?: number
     id?: string
     includeImage?: boolean
@@ -154,6 +156,12 @@ export const useJourneyUpdateHandler = ({
                                 : undefined,
                         ...(updateParams.flowName !== undefined && {
                             name: updateParams.flowName,
+                        }),
+                        ...(updateParams.journeyName !== undefined && {
+                            name: updateParams.journeyName,
+                        }),
+                        ...(updateParams.timingOffset !== undefined && {
+                            timing_offset: updateParams.timingOffset,
                         }),
                         ...(updateParams.executionModeOverride !==
                             undefined && {

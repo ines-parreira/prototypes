@@ -709,6 +709,98 @@ describe('useJourneyCreateHandler', () => {
             expect(call.params).not.toHaveProperty('execution_mode_override')
         })
 
+        it('includes name from journeyName when journeyName is provided', async () => {
+            mockMutateAsync.mockResolvedValue({ id: 'journey-123' })
+            const { result } = renderHook(
+                () => useJourneyCreateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleCreate({
+                    journeyName: 'My Post-purchase',
+                })
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    params: expect.objectContaining({
+                        name: 'My Post-purchase',
+                    }),
+                }),
+            )
+        })
+
+        it('omits name from journeyName when journeyName is undefined', async () => {
+            mockMutateAsync.mockResolvedValue({ id: 'journey-123' })
+            const { result } = renderHook(
+                () => useJourneyCreateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleCreate({})
+            })
+
+            const call = mockMutateAsync.mock.calls[0][0]
+            expect(call.params).not.toHaveProperty('name')
+        })
+
+        it('includes timing_offset when timingOffset is provided', async () => {
+            mockMutateAsync.mockResolvedValue({ id: 'journey-123' })
+            const { result } = renderHook(
+                () => useJourneyCreateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleCreate({ timingOffset: 7 })
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    params: expect.objectContaining({
+                        timing_offset: 7,
+                    }),
+                }),
+            )
+        })
+
+        it('includes timing_offset of 0 when timingOffset is 0', async () => {
+            mockMutateAsync.mockResolvedValue({ id: 'journey-123' })
+            const { result } = renderHook(
+                () => useJourneyCreateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleCreate({ timingOffset: 0 })
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    params: expect.objectContaining({
+                        timing_offset: 0,
+                    }),
+                }),
+            )
+        })
+
+        it('omits timing_offset when timingOffset is undefined', async () => {
+            mockMutateAsync.mockResolvedValue({ id: 'journey-123' })
+            const { result } = renderHook(
+                () => useJourneyCreateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleCreate({})
+            })
+
+            const call = mockMutateAsync.mock.calls[0][0]
+            expect(call.params).not.toHaveProperty('timing_offset')
+        })
+
         it('passes uploadedImageAttachment as media_urls', async () => {
             mockMutateAsync.mockResolvedValue({ id: 'journey-123' })
             const { result } = renderHook(

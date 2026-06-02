@@ -55,9 +55,9 @@ catalogs:
   rest-api-sdk:
     '@gorgias/copilot-client': '^0.1.1'
     '@gorgias/copilot-queries': '^0.1.1'
-    '@gorgias/convert-client': '^0.3.60'
+    '@gorgias/convert-client': '^0.3.64'
     '@gorgias/convert-mocks': '^0.2.77'
-    '@gorgias/convert-queries': '^0.2.78'
+    '@gorgias/convert-queries': '^0.2.82'
     '@gorgias/convert-types': '^0.4.46'
     '@gorgias/customer-segmentation-client': '^0.2.9'
     '@gorgias/customer-segmentation-mocks': '^0.2.13'

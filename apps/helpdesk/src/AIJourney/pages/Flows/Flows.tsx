@@ -11,7 +11,7 @@ import { Box, Pagination, PanelHeader, Text } from '@gorgias/axiom'
 import type { JourneyApiDTO } from '@gorgias/convert-client'
 import { JourneyStatusEnum, JourneyTypeEnum } from '@gorgias/convert-client'
 
-import { JourneysTable } from 'AIJourney/components'
+import { CreateFlowButton, JourneysTable } from 'AIJourney/components'
 import { journeyTableDataMetrics } from 'AIJourney/components/JourneysTable/constants'
 import {
     actionColumns,
@@ -80,7 +80,6 @@ export const Flows = () => {
     const isAiJourneyCustomFlowEnabled = useFlag(
         FeatureFlagKey.AiJourneyCustomFlowEnabled,
     )
-
     const { cleanStatsFilters: statsFilters } = useStatsFilters()
 
     const { journeys, currentIntegration, isLoadingJourneys, shopName } =
@@ -227,7 +226,7 @@ export const Flows = () => {
 
     return (
         <Box width="100%" flexDirection="column">
-            <PanelHeader title="Flows" />
+            <PanelHeader title="Flows" trailingSlot={<CreateFlowButton />} />
             <Box className={css.filtersPanel}>
                 <FiltersPanelWrapper
                     persistentFilters={[FilterKey.Period]}

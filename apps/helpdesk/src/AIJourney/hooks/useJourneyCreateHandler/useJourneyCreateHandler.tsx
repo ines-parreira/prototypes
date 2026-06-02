@@ -23,6 +23,8 @@ type HandleCreateParams = {
     discountValue?: number | null
     excludedAudienceListIds?: string[]
     flowName?: string
+    journeyName?: string
+    timingOffset?: number
     followUpValue?: number | null
     includedAudienceListIds?: string[]
     includeImage?: boolean
@@ -57,6 +59,8 @@ export const useJourneyCreateHandler = ({
             discountValue,
             excludedAudienceListIds,
             flowName,
+            journeyName,
+            timingOffset,
             followUpValue,
             includedAudienceListIds,
             includeImage,
@@ -141,6 +145,12 @@ export const useJourneyCreateHandler = ({
                             execution_mode_override: executionModeOverride,
                         }),
                         ...(flowName !== undefined && { name: flowName }),
+                        ...(journeyName !== undefined && {
+                            name: journeyName,
+                        }),
+                        ...(timingOffset !== undefined && {
+                            timing_offset: timingOffset,
+                        }),
                     },
                     journeyConfigs: {
                         ...baseJourneyConfigs,

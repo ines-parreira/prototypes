@@ -60,6 +60,7 @@ export enum FeatureFlagKey {
     AiJourneyCustomFlowEnabled = 'ai-journey-custom-flow-enabled',
     AiJourneyCampaignSendingEnabled = 'campaign-sending-enabled',
     AiJourneyMessageInstructionsAbTesting = 'ai-journey-message-instructions-ab-testing',
+    AiJourneyMultiInstanceFlows = 'ai-journey-multi-instance-flows',
     AiJourneySegmentsUiEnabled = 'ai-journey-segments-ui-enabled',
     AiJourneyStoreSettingsEnabled = 'ai-journey-store-settings-enabled',
     AiJourneyToneOfVoice = 'ai-journey-tov',

@@ -62,6 +62,8 @@ export type SetupFormValues = {
     scheduledDate?: ZonedDateTime | null
     scheduledTime?: Time | CalendarDateTime | ZonedDateTime | null
     flowName?: string
+    journeyName?: string
+    timing_offset?: number
 }
 
 export const Setup = () => {
@@ -175,6 +177,13 @@ export const Setup = () => {
                     execution_mode_override:
                         journeyData?.execution_mode_override ?? null,
                     flowName: journeyData?.name ?? undefined,
+                    journeyName: journeyData?.name ?? undefined,
+                    timing_offset:
+                        (
+                            journeyData as unknown as {
+                                timing_offset?: number
+                            }
+                        )?.timing_offset ?? 0,
                 })
             } else if (storeSettingsEnabled && storeConfiguration) {
                 reset({

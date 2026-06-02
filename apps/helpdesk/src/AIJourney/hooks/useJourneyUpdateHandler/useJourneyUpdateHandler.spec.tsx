@@ -658,6 +658,93 @@ describe('useJourneyUpdateHandler', () => {
             )
         })
 
+        it('should include name from journeyName when provided', async () => {
+            const { result } = renderHook(
+                () => useJourneyUpdateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleUpdate({
+                    journeyName: 'My Post-purchase',
+                })
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    params: expect.objectContaining({
+                        name: 'My Post-purchase',
+                    }),
+                }),
+            )
+        })
+
+        it('should not include name from journeyName when journeyName is undefined', async () => {
+            const { result } = renderHook(
+                () => useJourneyUpdateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleUpdate({ followUpValue: 1 })
+            })
+
+            const requestBody = mockMutateAsync.mock.calls[0][0]
+            expect(requestBody.params).not.toHaveProperty('name')
+        })
+
+        it('should include timing_offset when timingOffset is provided', async () => {
+            const { result } = renderHook(
+                () => useJourneyUpdateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleUpdate({ timingOffset: 7 })
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    params: expect.objectContaining({
+                        timing_offset: 7,
+                    }),
+                }),
+            )
+        })
+
+        it('should include timing_offset of 0 when timingOffset is 0', async () => {
+            const { result } = renderHook(
+                () => useJourneyUpdateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleUpdate({ timingOffset: 0 })
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    params: expect.objectContaining({
+                        timing_offset: 0,
+                    }),
+                }),
+            )
+        })
+
+        it('should not include timing_offset when timingOffset is undefined', async () => {
+            const { result } = renderHook(
+                () => useJourneyUpdateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleUpdate({ followUpValue: 1 })
+            })
+
+            const requestBody = mockMutateAsync.mock.calls[0][0]
+            expect(requestBody.params).not.toHaveProperty('timing_offset')
+        })
+
         it('should not include rcs_enabled when rcsEnabled is undefined', async () => {
             const { result } = renderHook(
                 () => useJourneyUpdateHandler(defaultHookParams),

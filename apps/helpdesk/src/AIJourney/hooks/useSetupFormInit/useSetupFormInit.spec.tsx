@@ -352,4 +352,82 @@ describe('useSetupFormInit', () => {
 
         expect(screen.getByTestId('ready')).toHaveTextContent('ready')
     })
+
+    it('should reset journeyName from journeyData.name', () => {
+        mockUseJourneyContext.mockReturnValue({
+            isLoading: false,
+            journeyData: {
+                id: 'j-1',
+                configuration: { sms_sender_integration_id: 1 },
+                name: 'Post-purchase VIP',
+            },
+            currentIntegration: { id: 1 },
+        })
+
+        renderComponent()
+
+        expect(capturedReset).toHaveBeenCalledWith(
+            expect.objectContaining({
+                journeyName: 'Post-purchase VIP',
+            }),
+        )
+    })
+
+    it('should reset journeyName to undefined when journeyData.name is absent', () => {
+        mockUseJourneyContext.mockReturnValue({
+            isLoading: false,
+            journeyData: {
+                id: 'j-1',
+                configuration: { sms_sender_integration_id: 1 },
+            },
+            currentIntegration: { id: 1 },
+        })
+
+        renderComponent()
+
+        expect(capturedReset).toHaveBeenCalledWith(
+            expect.objectContaining({
+                journeyName: undefined,
+            }),
+        )
+    })
+
+    it('should reset timing_offset to 0 when journeyData has no timing_offset', () => {
+        mockUseJourneyContext.mockReturnValue({
+            isLoading: false,
+            journeyData: {
+                id: 'j-1',
+                configuration: { sms_sender_integration_id: 1 },
+            },
+            currentIntegration: { id: 1 },
+        })
+
+        renderComponent()
+
+        expect(capturedReset).toHaveBeenCalledWith(
+            expect.objectContaining({
+                timing_offset: 0,
+            }),
+        )
+    })
+
+    it('should reset timing_offset from journeyData.timing_offset when present', () => {
+        mockUseJourneyContext.mockReturnValue({
+            isLoading: false,
+            journeyData: {
+                id: 'j-1',
+                configuration: { sms_sender_integration_id: 1 },
+                timing_offset: 14,
+            },
+            currentIntegration: { id: 1 },
+        })
+
+        renderComponent()
+
+        expect(capturedReset).toHaveBeenCalledWith(
+            expect.objectContaining({
+                timing_offset: 14,
+            }),
+        )
+    })
 })

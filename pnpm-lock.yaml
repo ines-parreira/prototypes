@@ -263,14 +263,14 @@ catalogs:
       version: 2.3.0
   rest-api-sdk:
     '@gorgias/convert-client':
-      specifier: ^0.3.60
-      version: 0.3.60
+      specifier: ^0.3.64
+      version: 0.3.65
     '@gorgias/convert-mocks':
       specifier: ^0.2.77
       version: 0.2.77
     '@gorgias/convert-queries':
-      specifier: ^0.2.78
-      version: 0.2.78
+      specifier: ^0.2.82
+      version: 0.2.83
     '@gorgias/copilot-client':
       specifier: ^0.1.1
       version: 0.1.1
@@ -636,13 +636,13 @@ importers:
         version: 0.2.1
       '@gorgias/convert-client':
         specifier: catalog:rest-api-sdk
-        version: 0.3.60
+        version: 0.3.65
       '@gorgias/convert-mocks':
         specifier: catalog:rest-api-sdk
         version: 0.2.77(@types/node@24.12.2)(typescript@6.0.3)
       '@gorgias/convert-queries':
         specifier: catalog:rest-api-sdk
-        version: 0.2.78(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
+        version: 0.2.83(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@gorgias/copilot':
         specifier: catalog:copilot
         version: 0.55.0(9bc3b99d57edeacd190402322daae150)
@@ -5738,20 +5738,23 @@ packages:
       eslint-plugin-react-hooks: ^4.6.2
       oxlint: ^1
 
-  '@gorgias/convert-client@0.3.60':
-    resolution: {integrity: sha512-VL+YLQmbm5E03LzgPaL7XXtJwB6jTI+Kx+YRor+EyW0iKNi+VcATBjzPJgB68CAhkTYgNd6xN7k2KnFZNO+hXg==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-client/0.3.60/f502ab87d576df76dd9b6dc637a22747755b346a}
+  '@gorgias/convert-client@0.3.65':
+    resolution: {integrity: sha512-VM3BhtvH2vpaNOoJrud8Jv/AgUEdCF0BeziZQ9ndmvy5L3Ft8y2yoxL9Mm4eX9FlvaGMca+E3/iRk6aMMPxoxw==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-client/0.3.65/c6024f490b646bbe13a6ffa47ff1ee4d1fffb0e9}
 
   '@gorgias/convert-mocks@0.2.77':
     resolution: {integrity: sha512-H2lzet/JQtkNYw20N0V8kHepeDlQGxRH+tXjaqrTCXshYnKfVDec07AL/o1vikGKesIwjM+po7+QMwmz4jz2xA==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-mocks/0.2.77/5ecc1ef11961b0a5c8d7f5fb6db83d9875c7f4c5}
 
-  '@gorgias/convert-queries@0.2.78':
-    resolution: {integrity: sha512-Hyms7YeluFvaNNyczirlyaVDCNWpzOHEjntT0VtB+TOCWO3EmFZvpfc3mEbDH+3Gt6jKmaZkJGUSCdhmMEMf/w==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-queries/0.2.78/f5354992c05f96ba3af27099214a819c9457c5b4}
+  '@gorgias/convert-queries@0.2.83':
+    resolution: {integrity: sha512-XDVMFhE35Gbdk3CgIizoAbuuLU4/cscuDxNQHFJ6zduJTxE0XHikyG5/qEXTC+5CngPhCU2JApnNjgiuWAigfA==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-queries/0.2.83/86da6ac06d19439ea27ae449c96322639db7e2f9}
 
   '@gorgias/convert-spec@0.5.10':
     resolution: {integrity: sha512-MAZRe0mZYN3xdbouEpp72/Rc0/X2IGSDrfR8Hu/o4o0tVfjLU+92Eyn3u5cgL/2wzIy90f0Ibsp9KM5AaRCiow==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-spec/0.5.10/45c284cedfe2d7c7be2b8d4a1b28eaeeb754efe8}
 
   '@gorgias/convert-types@0.4.46':
     resolution: {integrity: sha512-/Mmiy6sCL5GFtoLdahB4L0sfEsMiAcf5eIzKGyp6I/dJqr40e/+HTzgzZbHU3c9X8z65DdZJ6Piwxhq1XNFJgQ==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-types/0.4.46/a79842243d8b77ca075b89b7c6921857a1621b51}
+
+  '@gorgias/convert-types@0.4.50':
+    resolution: {integrity: sha512-tZcnajydN+Exmc5B6u0ubcSA6OwXkES7SdTqdQ6EXorDd0Lkxk+H6gA9cB+zXQgkeYEpwgDTqoo+ODxjDQ0Emw==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-types/0.4.50/2c686553b484f921d4cd982c30e75deea3b3bb76}
 
   '@gorgias/copilot-client@0.1.1':
     resolution: {integrity: sha512-5Y9DEmDDbfaZqBdXm+6BHiEMDD6OhUknxIulZcUZT233vrcm7UYfviUpP8LYmve/22TbLpv6BWL8KDyu1kRQng==, tarball: https://npm.pkg.github.com/download/@gorgias/copilot-client/0.1.1/4c986a3bb0e1dd2d2a6dcfdad469f8880c799f10}
@@ -5893,6 +5896,9 @@ packages:
       react: ^18
       react-dom: ^18
       zustand: 5.0.9
+
+  '@gorgias/sdk-client@0.10.0':
+    resolution: {integrity: sha512-r9+ZpFK2wfUX7LyCkAHq++80+voBPU2QRlQ50xY7mi9XLRduJcYpj0hPm2Cg1iJ+5fXxki5Odb1lroct9z4Xug==, tarball: https://npm.pkg.github.com/download/@gorgias/sdk-client/0.10.0/08c530a1ad8b74d010cb41cc13e5eda809cc90af}
 
   '@gorgias/sdk-client@0.9.12':
     resolution: {integrity: sha512-MBOoJN4vqpXsj1QbPFRUfK0nKuR0wZ3e6xtd8R4CZO1Sr00SFF5MpYDnl9Jli+0nAgRiYf4J6Ndv9Y51zidkLQ==, tarball: https://npm.pkg.github.com/download/@gorgias/sdk-client/0.9.12/d2b09942d1f8efef49dcc014354ecf9b08b4f341}
@@ -19956,10 +19962,10 @@ snapshots:
       eslint-plugin-react-hooks: 7.0.1(eslint@8.1.0)
       oxlint: 1.51.0
 
-  '@gorgias/convert-client@0.3.60':
+  '@gorgias/convert-client@0.3.65':
     dependencies:
-      '@gorgias/convert-types': 0.4.46
-      '@gorgias/sdk-client': 0.9.22
+      '@gorgias/convert-types': 0.4.50
+      '@gorgias/sdk-client': 0.10.0
       axios: 1.15.2(debug@4.4.3)
     transitivePeerDependencies:
       - debug
@@ -19976,10 +19982,10 @@ snapshots:
       - '@types/node'
       - typescript
 
-  '@gorgias/convert-queries@0.2.78(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)':
+  '@gorgias/convert-queries@0.2.83(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)':
     dependencies:
-      '@gorgias/convert-client': 0.3.60
-      '@gorgias/convert-types': 0.4.46
+      '@gorgias/convert-client': 0.3.65
+      '@gorgias/convert-types': 0.4.50
       '@tanstack/react-query': 4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
     transitivePeerDependencies:
       - debug
@@ -19990,6 +19996,8 @@ snapshots:
   '@gorgias/convert-spec@0.5.10': {}
 
   '@gorgias/convert-types@0.4.46': {}
+
+  '@gorgias/convert-types@0.4.50': {}
 
   '@gorgias/copilot-client@0.1.1':
     dependencies:
@@ -20299,6 +20307,12 @@ snapshots:
       - debug
       - react-native
       - utf-8-validate
+
+  '@gorgias/sdk-client@0.10.0':
+    dependencies:
+      axios: 1.15.2(debug@4.4.3)
+    transitivePeerDependencies:
+      - debug
 
   '@gorgias/sdk-client@0.9.12':
     dependencies:

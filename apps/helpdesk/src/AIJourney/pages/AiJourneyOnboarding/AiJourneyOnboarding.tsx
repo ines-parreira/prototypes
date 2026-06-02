@@ -287,6 +287,8 @@ export const AiJourneyOnboarding = ({
                     executionModeOverride: data.execution_mode_override,
                 }),
                 flowName: data.flowName,
+                journeyName: data.journeyName,
+                timingOffset: data.timing_offset,
             }).then(() =>
                 history.push(
                     `/app/ai-journey/${shopName}/${journeyType}/${nextStep}/${journeyData.id}`,
@@ -317,6 +319,8 @@ export const AiJourneyOnboarding = ({
                     executionModeOverride: data.execution_mode_override,
                 }),
                 flowName: data.flowName,
+                journeyName: data.journeyName,
+                timingOffset: data.timing_offset,
             }).then((res) =>
                 history.push(
                     `/app/ai-journey/${shopName}/${journeyType}/${nextStep}/${res.id}`,

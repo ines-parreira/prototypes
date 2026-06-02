@@ -86,6 +86,16 @@ export const JourneyEditorLayout = ({ step }: Props) => {
                 flowName: journeyData?.name ?? undefined,
             }),
             ...(!isCampaign &&
+                !isCustomFlow && {
+                    journeyName: journeyData?.name ?? undefined,
+                    timing_offset:
+                        (
+                            journeyData as unknown as {
+                                timing_offset?: number
+                            }
+                        )?.timing_offset ?? 0,
+                }),
+            ...(!isCampaign &&
                 journeyType === JOURNEY_TYPES.WIN_BACK && {
                     cooldown_days: 30,
                     inactive_days: 30,
@@ -195,6 +205,8 @@ export const JourneyEditorLayout = ({ step }: Props) => {
                     cooldownDays: data.cooldown_days,
                     inactiveDays: data.inactive_days,
                     flowName: data.flowName,
+                    journeyName: data.journeyName,
+                    timingOffset: data.timing_offset,
                 }
                 if (journeyData?.id) {
                     await handleUpdate(params)

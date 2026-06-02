@@ -110,6 +110,13 @@ export const useSetupFormInit = () => {
                     execution_mode_override:
                         journeyData?.execution_mode_override ?? null,
                     flowName: journeyData?.name ?? undefined,
+                    journeyName: journeyData?.name ?? undefined,
+                    timing_offset:
+                        (
+                            journeyData as unknown as {
+                                timing_offset?: number
+                            }
+                        )?.timing_offset ?? 0,
                     message_instructions:
                         journeyData?.message_instructions ?? '',
                     variants: journeyData?.variants ?? [],

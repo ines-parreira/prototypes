@@ -33,6 +33,7 @@ jest.mock('@repo/feature-flags', () => ({
     FeatureFlagKey: {
         AiJourneyCampaignImageEnabled: 'ai_journey_campaign_image_enabled',
         AiJourneyStoreSettingsEnabled: 'ai-journey-store-settings-enabled',
+        AiJourneyMultiInstanceFlows: 'ai-journey-multi-instance-flows',
     },
     useFlag: jest.fn(() => false),
 }))
@@ -42,6 +43,8 @@ jest.mock('AIJourney/providers', () => ({
 jest.mock('AIJourney/formFields', () => ({
     CampaignName: () => <div>CampaignName</div>,
     FlowName: () => <div>FlowName</div>,
+    JourneyName: () => <div>JourneyName</div>,
+    TimingOffset: () => <div>TimingOffset</div>,
     SenderPhoneNumber: () => <div>SenderPhoneNumber</div>,
     NumberOfMessages: () => <div>NumberOfMessages</div>,
     NumberOfFollowUps: () => <div>NumberOfFollowUps</div>,
@@ -99,6 +102,7 @@ describe('<GeneralCard />', () => {
     beforeEach(() => {
         mockUseFlag.mockReset()
         mockUseFlag.mockReturnValue(false)
+        delete (window as any).USER_IMPERSONATED
         mockUseJourneyContext.mockReturnValue({
             journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
         })
@@ -193,6 +197,114 @@ describe('<GeneralCard />', () => {
             })
         })
 
+        describe('JourneyName', () => {
+            beforeEach(() => {
+                mockUseFlag.mockImplementation(
+                    (key: string) => key === 'ai-journey-multi-instance-flows',
+                )
+                window.USER_IMPERSONATED = true
+            })
+
+            it('renders for a standard journey type when FF is on and user is impersonated', () => {
+                renderCard()
+
+                expect(screen.getByText('JourneyName')).toBeInTheDocument()
+            })
+
+            it('does not render when FF is off', () => {
+                mockUseFlag.mockReturnValue(false)
+                renderCard()
+
+                expect(
+                    screen.queryByText('JourneyName'),
+                ).not.toBeInTheDocument()
+            })
+
+            it('does not render when user is not impersonated even with FF on', () => {
+                delete (window as any).USER_IMPERSONATED
+                renderCard()
+
+                expect(
+                    screen.queryByText('JourneyName'),
+                ).not.toBeInTheDocument()
+            })
+
+            it('does not render when journey type is CAMPAIGN even with FF on', () => {
+                mockUseJourneyContext.mockReturnValue({
+                    journeyType: JOURNEY_TYPES.CAMPAIGN,
+                })
+                renderCard()
+
+                expect(
+                    screen.queryByText('JourneyName'),
+                ).not.toBeInTheDocument()
+            })
+
+            it('does not render when journey type is CUSTOM even with FF on', () => {
+                mockUseJourneyContext.mockReturnValue({
+                    journeyType: JOURNEY_TYPES.CUSTOM,
+                })
+                renderCard()
+
+                expect(
+                    screen.queryByText('JourneyName'),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        describe('TimingOffset', () => {
+            beforeEach(() => {
+                mockUseFlag.mockImplementation(
+                    (key: string) => key === 'ai-journey-multi-instance-flows',
+                )
+                window.USER_IMPERSONATED = true
+            })
+
+            it('renders for a standard journey type when FF is on and user is impersonated', () => {
+                renderCard()
+
+                expect(screen.getByText('TimingOffset')).toBeInTheDocument()
+            })
+
+            it('renders for CUSTOM journey type when FF is on and user is impersonated', () => {
+                mockUseJourneyContext.mockReturnValue({
+                    journeyType: JOURNEY_TYPES.CUSTOM,
+                })
+                renderCard()
+
+                expect(screen.getByText('TimingOffset')).toBeInTheDocument()
+            })
+
+            it('does not render when FF is off', () => {
+                mockUseFlag.mockReturnValue(false)
+                renderCard()
+
+                expect(
+                    screen.queryByText('TimingOffset'),
+                ).not.toBeInTheDocument()
+            })
+
+            it('does not render when user is not impersonated even with FF on', () => {
+                delete (window as any).USER_IMPERSONATED
+                renderCard()
+
+                expect(
+                    screen.queryByText('TimingOffset'),
+                ).not.toBeInTheDocument()
+            })
+
+            it('does not render when journey type is CAMPAIGN even with FF on', () => {
+                mockUseJourneyContext.mockReturnValue({
+                    journeyType: JOURNEY_TYPES.CAMPAIGN,
+                })
+                renderCard()
+
+                expect(
+                    screen.queryByText('TimingOffset'),
+                ).not.toBeInTheDocument()
+            })
+        })
+
         describe('NumberOfMessages', () => {
             it('renders when journey type is not CAMPAIGN', () => {
                 renderCard()
@@ -284,6 +396,105 @@ describe('<GeneralCard />', () => {
             expect(screen.queryByText('General')).not.toBeInTheDocument()
             expect(screen.getByText('SenderPhoneNumber')).toBeInTheDocument()
             expect(screen.getByText('Allow follow-ups')).toBeInTheDocument()
+        })
+
+        describe('JourneyName (v3)', () => {
+            beforeEach(() => {
+                mockUseFlag.mockImplementation(
+                    (key: string) => key === 'ai-journey-multi-instance-flows',
+                )
+                window.USER_IMPERSONATED = true
+            })
+
+            it('renders for a standard journey type when FF is on and user is impersonated', () => {
+                renderCard({ isV3Architecture: true })
+
+                expect(screen.getByText('JourneyName')).toBeInTheDocument()
+            })
+
+            it('does not render when FF is off', () => {
+                mockUseFlag.mockReturnValue(false)
+                renderCard({ isV3Architecture: true })
+
+                expect(
+                    screen.queryByText('JourneyName'),
+                ).not.toBeInTheDocument()
+            })
+
+            it('does not render when user is not impersonated even with FF on', () => {
+                delete (window as any).USER_IMPERSONATED
+                renderCard({ isV3Architecture: true })
+
+                expect(
+                    screen.queryByText('JourneyName'),
+                ).not.toBeInTheDocument()
+            })
+
+            it('does not render for CAMPAIGN even with FF on', () => {
+                mockUseJourneyContext.mockReturnValue({
+                    journeyType: JOURNEY_TYPES.CAMPAIGN,
+                })
+                renderCard({ isV3Architecture: true })
+
+                expect(
+                    screen.queryByText('JourneyName'),
+                ).not.toBeInTheDocument()
+            })
+
+            it('does not render for CUSTOM even with FF on', () => {
+                mockUseJourneyContext.mockReturnValue({
+                    journeyType: JOURNEY_TYPES.CUSTOM,
+                })
+                renderCard({ isV3Architecture: true })
+
+                expect(
+                    screen.queryByText('JourneyName'),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        describe('TimingOffset (v3)', () => {
+            beforeEach(() => {
+                mockUseFlag.mockImplementation(
+                    (key: string) => key === 'ai-journey-multi-instance-flows',
+                )
+                window.USER_IMPERSONATED = true
+            })
+
+            it('renders for a standard journey type when FF is on and user is impersonated', () => {
+                renderCard({ isV3Architecture: true })
+
+                expect(screen.getByText('TimingOffset')).toBeInTheDocument()
+            })
+
+            it('does not render when FF is off', () => {
+                mockUseFlag.mockReturnValue(false)
+                renderCard({ isV3Architecture: true })
+
+                expect(
+                    screen.queryByText('TimingOffset'),
+                ).not.toBeInTheDocument()
+            })
+
+            it('does not render when user is not impersonated even with FF on', () => {
+                delete (window as any).USER_IMPERSONATED
+                renderCard({ isV3Architecture: true })
+
+                expect(
+                    screen.queryByText('TimingOffset'),
+                ).not.toBeInTheDocument()
+            })
+
+            it('does not render for CAMPAIGN even with FF on', () => {
+                mockUseJourneyContext.mockReturnValue({
+                    journeyType: JOURNEY_TYPES.CAMPAIGN,
+                })
+                renderCard({ isV3Architecture: true })
+
+                expect(
+                    screen.queryByText('TimingOffset'),
+                ).not.toBeInTheDocument()
+            })
         })
 
         it('does not render CampaignName/FlowName (they are in the header for V3)', () => {
