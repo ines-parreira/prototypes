@@ -26,6 +26,7 @@ import { DashboardName } from 'domains/reporting/pages/dashboards/DashboardName'
 import { DashboardsModal } from 'domains/reporting/pages/dashboards/DashboardsModal/DashboardsModal'
 import { PinnedFilterSyncProvider } from 'domains/reporting/pages/dashboards/PinnedFilterSyncProvider'
 import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
+import { useShowMetricOrigin } from 'domains/reporting/pages/dashboards/useShowMetricOrigin'
 import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isTeamLead } from 'utils'
@@ -120,7 +121,9 @@ const DashboardPageContent = ({
         })
     }, [dashboard, updateDashboardHandler])
 
-    const [showMetricOrigin, setShowMetricOrigin] = useState(false)
+    const [showMetricOrigin, setShowMetricOrigin] = useShowMetricOrigin(
+        dashboard.id,
+    )
 
     const [details, setDetails] = useState({
         name: dashboard.name,

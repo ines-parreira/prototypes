@@ -366,6 +366,10 @@ describe('DashboardPage', () => {
     })
 
     describe('Metric Origin toggle', () => {
+        beforeEach(() => {
+            localStorage.clear()
+        })
+
         it('renders the "Show metric origin" toggle in the header', () => {
             render(<DashboardPage />, { storeState: defaultState })
 
@@ -393,6 +397,40 @@ describe('DashboardPage', () => {
 
             await user.click(screen.getByRole('switch'))
             await user.click(screen.getByRole('switch'))
+
+            expect(screen.getByRole('switch')).not.toBeChecked()
+        })
+
+        it('persists toggle state across re-renders for the same dashboard', async () => {
+            const user = userEvent.setup()
+            const { unmount } = render(<DashboardPage />, {
+                storeState: defaultState,
+            })
+
+            await user.click(screen.getByRole('switch'))
+            unmount()
+
+            render(<DashboardPage />, { storeState: defaultState })
+
+            expect(screen.getByRole('switch')).toBeChecked()
+        })
+
+        it('toggle state is independent per dashboard', async () => {
+            const user = userEvent.setup()
+            const { unmount } = render(<DashboardPage />, {
+                storeState: defaultState,
+            })
+
+            await user.click(screen.getByRole('switch'))
+            unmount()
+
+            mockUseParams.mockReturnValue({ id: '999' })
+            useDashboardByIdMock.mockReturnValue({
+                data: { ...dashboard, id: 999 },
+                isLoading: false,
+            } as any)
+
+            render(<DashboardPage />, { storeState: defaultState })
 
             expect(screen.getByRole('switch')).not.toBeChecked()
         })
