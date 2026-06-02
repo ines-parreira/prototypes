@@ -46,7 +46,7 @@ import css from './NewTicketPageInfobar.module.less'
 type NewTicketPageInfobarProps = {
     tags: TicketTag[]
     onTagsChange: (tags: TicketTag[]) => void
-    onCustomerChange: (customer: TicketCustomer) => void
+    onCustomerChange: (customer: TicketCustomer) => void | Promise<void>
     customer: TicketCustomer | null
 }
 
@@ -131,8 +131,8 @@ export function NewTicketPageInfobar({
     const widgets = useAppSelector(getWidgetsState)
 
     const handleSetCustomer = useCallback(
-        (selectedCustomer: Customer) => {
-            onCustomerChange(selectedCustomer as TicketCustomer)
+        async (selectedCustomer: Customer) => {
+            await onCustomerChange(selectedCustomer as TicketCustomer)
             setIsSearchAndPreviewPanelOpen(false)
         },
         [onCustomerChange],

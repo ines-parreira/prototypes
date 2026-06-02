@@ -6,7 +6,7 @@ import {
     NewTicketInfobarTicketCustomerHeader,
     SearchAndPreviewCustomersPanel,
 } from '@repo/tickets'
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 
 import type { TicketCustomer } from '@gorgias/helpdesk-queries'
 import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
@@ -444,13 +444,15 @@ describe('NewTicketPageInfobar', () => {
             screen.getByRole('button', { name: 'Select searched customer' }),
         )
 
-        expect(handleCustomerChange).toHaveBeenCalledWith(
-            expect.objectContaining({
-                id: 456,
-                email: 'grace@example.com',
-                name: 'Grace Hopper',
-            }),
-        )
+        await waitFor(() => {
+            expect(handleCustomerChange).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    id: 456,
+                    email: 'grace@example.com',
+                    name: 'Grace Hopper',
+                }),
+            )
+        })
     })
 
     it('closes the customer search panel after a customer is selected', async () => {
@@ -476,9 +478,11 @@ describe('NewTicketPageInfobar', () => {
             screen.getByRole('button', { name: 'Select searched customer' }),
         )
 
-        expect(mockSearchAndPreviewCustomersPanel).toHaveBeenLastCalledWith(
-            expect.objectContaining({ isOpen: false }),
-            {},
-        )
+        await waitFor(() => {
+            expect(mockSearchAndPreviewCustomersPanel).toHaveBeenLastCalledWith(
+                expect.objectContaining({ isOpen: false }),
+                {},
+            )
+        })
     })
 })

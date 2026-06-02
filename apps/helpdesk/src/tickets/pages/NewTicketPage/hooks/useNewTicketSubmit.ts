@@ -66,6 +66,74 @@ function mergeCustomFieldsWithMacroValues(
 const { key: previousURLKey, parse: parsePreviousURL } =
     CreateTicketSearchParamsKeys.previousURL
 
+function getNonEmptyMap(value: Map<any, any> | undefined) {
+    return value && !value.isEmpty() ? value : undefined
+}
+
+function doesReceiverBelongToCustomer(
+    receiver: Map<any, any> | undefined,
+    customer: Map<any, any> | undefined,
+) {
+    if (!receiver || !customer) {
+        return false
+    }
+
+    const receiverId = receiver.get('id')
+    const customerId = customer.get('id')
+
+    if (receiverId != null && customerId != null) {
+        return Number(receiverId) === Number(customerId)
+    }
+
+    const receiverAddress = receiver.get('address')
+
+    if (!receiverAddress) {
+        return false
+    }
+
+    if (receiverAddress === customer.get('email')) {
+        return true
+    }
+
+    const channels = customer.get('channels') as List<Map<any, any>> | undefined
+
+    return (
+        channels?.some(
+            (channel) => channel?.get('address') === receiverAddress,
+        ) ?? false
+    )
+}
+
+function getSubmittedTicketCustomer(
+    newMessage: Map<any, any>,
+    submittedTicket: Map<any, any>,
+) {
+    const selectedCustomer = getNonEmptyMap(
+        submittedTicket.get('customer') as Map<any, any> | undefined,
+    )
+    const legacyReceiver = getNonEmptyMap(
+        newMessage.getIn(['newMessage', 'receiver']) as
+            | Map<any, any>
+            | undefined,
+    )
+    const firstSourceRecipient = getNonEmptyMap(
+        newMessage.getIn(['newMessage', 'source', 'to', 0]) as
+            | Map<any, any>
+            | undefined,
+    )
+    const receiver = legacyReceiver ?? firstSourceRecipient
+
+    if (!receiver) {
+        return selectedCustomer
+    }
+
+    if (doesReceiverBelongToCustomer(receiver, selectedCustomer)) {
+        return selectedCustomer
+    }
+
+    return receiver
+}
+
 export function useNewTicketSubmit({
     subject,
     priority,
@@ -145,8 +213,10 @@ export function useNewTicketSubmit({
             )
 
             if (sourceType !== 'internal-note' && !hasInternalNoteAction) {
-                const receiver = newMessage.getIn(['newMessage', 'receiver'])
-                submittedTicket = submittedTicket.set('customer', receiver)
+                submittedTicket = submittedTicket.set(
+                    'customer',
+                    getSubmittedTicketCustomer(newMessage, submittedTicket),
+                )
             }
 
             if (priority !== undefined) {

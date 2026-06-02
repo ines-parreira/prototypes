@@ -3,6 +3,8 @@ import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
+import { toast } from '@gorgias/axiom'
+
 import { TicketStatus } from 'business/types/ticket'
 import type { OutboundTranslationContextValue } from 'providers/OutboundTranslationProvider'
 import type { RootState } from 'state/types'
@@ -159,6 +161,7 @@ const renderComponent = (
 
 describe('NewTicketSubmitButtons', () => {
     afterEach(() => {
+        toast.dismiss()
         jest.clearAllMocks()
         mockValidateTicketFields.mockReturnValue({
             hasErrors: false,
@@ -311,7 +314,7 @@ describe('NewTicketSubmitButtons', () => {
             })
         })
 
-        it('does not submit the new ticket when closed status validation fails', async () => {
+        it('shows an error toast and does not submit the new ticket when closed status validation fails', async () => {
             mockValidateTicketFields.mockReturnValue({
                 hasErrors: true,
                 invalidFieldIds: [1],
@@ -326,6 +329,10 @@ describe('NewTicketSubmitButtons', () => {
             )
 
             expect(submit).not.toHaveBeenCalled()
+            const toastEl = await screen.findByRole('status', {
+                name: 'This ticket cannot be closed. Please fill the required fields.',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
 
         it('submits the new ticket with a closed status after no-subject confirmation', async () => {

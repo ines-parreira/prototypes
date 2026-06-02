@@ -4,11 +4,10 @@ import {
 } from '@repo/tickets'
 import { shortcutManager, shortcuts } from '@repo/utils'
 
-import { Box, Button, Tooltip, TooltipContent } from '@gorgias/axiom'
+import { Box, Button, toast, Tooltip, TooltipContent } from '@gorgias/axiom'
 import type { Macro } from '@gorgias/helpdesk-types'
 
 import { TicketStatus } from 'business/types/ticket'
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import css from 'pages/tickets/detail/components/ReplyArea/TicketSubmitButtons.less'
@@ -18,8 +17,6 @@ import {
     canSend as getCanSend,
     hasContent as getHasContent,
 } from 'state/newMessage/selectors'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import {
     getAppliedMacro,
     hasAppliedMacroSetSubjectAction as getHasAppliedMacroSetSubjectAction,
@@ -32,7 +29,6 @@ type Props = {
 }
 
 export function NewTicketSubmitButtons({ subject, submit }: Props) {
-    const dispatch = useAppDispatch()
     const { isTranslationPending } = useOutboundTranslationContext()
     const appliedMacro = useAppSelector(getAppliedMacro)
 
@@ -63,12 +59,8 @@ export function NewTicketSubmitButtons({ subject, submit }: Props) {
         )
 
         if (hasErrors) {
-            dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message:
-                        'This ticket cannot be closed. Please fill the required fields.',
-                }),
+            toast.error(
+                'This ticket cannot be closed. Please fill the required fields.',
             )
             return
         }

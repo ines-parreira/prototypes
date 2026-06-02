@@ -6,6 +6,7 @@ import { fromJS } from 'immutable'
 import { useLocation } from 'react-router-dom'
 import { z } from 'zod'
 
+import { toast } from '@gorgias/axiom'
 import { getCustomer } from '@gorgias/helpdesk-client'
 import type {
     Team,
@@ -20,8 +21,6 @@ import type {
 import useAppDispatch from 'hooks/useAppDispatch'
 import type { Ticket } from 'models/ticket/types'
 import { setReceivers } from 'state/newMessage/actions'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
 import { setCustomer } from 'state/ticket/actions'
 import type { Receiver } from 'state/ticket/utils'
 import { useNewTicketDraft } from 'tickets/pages/NewTicketPage/hooks/useNewTicketDraft'
@@ -257,12 +256,7 @@ export function useNewTicketPageForm({
                         customer: data as unknown as Ticket['customer'],
                     }))
                 } catch {
-                    dispatch(
-                        notify({
-                            message: 'Failed to fetch customer',
-                            status: NotificationStatus.Error,
-                        }),
-                    )
+                    toast.error('Failed to fetch customer')
                 }
             } else if (prop === 'to' && recipients.length === 0) {
                 hasUserSelectedCustomerRef.current = true
@@ -273,10 +267,25 @@ export function useNewTicketPageForm({
         [dispatch],
     )
 
-    const handleCustomerChange = (customer: TicketCustomer) => {
-        hasUserSelectedCustomerRef.current = true
-        applyCustomer(customer)
-    }
+    const handleCustomerChange = useCallback(
+        async (customer: TicketCustomer) => {
+            hasUserSelectedCustomerRef.current = true
+
+            if (!customer.id) {
+                applyCustomer(customer)
+                return
+            }
+
+            try {
+                const { data } = await getCustomer(customer.id)
+                applyCustomer(data as TicketCustomer)
+            } catch {
+                toast.error('Failed to fetch customer')
+                applyCustomer(customer)
+            }
+        },
+        [applyCustomer],
+    )
 
     return {
         ticketState,

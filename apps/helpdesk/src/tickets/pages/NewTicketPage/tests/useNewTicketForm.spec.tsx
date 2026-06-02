@@ -3,7 +3,7 @@ import type React from 'react'
 
 import { useGetCustomer } from '@repo/customer/hooks'
 import { renderHook } from '@repo/testing'
-import { act, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import type { LocationDescriptor } from 'history'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -11,6 +11,7 @@ import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { toast } from '@gorgias/axiom'
 import { getCustomer } from '@gorgias/helpdesk-client'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
@@ -108,6 +109,7 @@ describe('useNewTicketPageForm', () => {
     })
 
     afterEach(() => {
+        toast.dismiss()
         jest.clearAllMocks()
     })
 
@@ -260,6 +262,25 @@ describe('useNewTicketPageForm', () => {
 
             expect(getCustomer).toHaveBeenCalledWith(42)
             expect(result.current.ticketState.customer).toEqual(customer)
+        })
+
+        it('shows an error toast when the recipient customer cannot be fetched', async () => {
+            jest.mocked(getCustomer).mockRejectedValue(new Error('Failed'))
+
+            const { result } = renderHook(() => useNewTicketPageForm(), {
+                wrapper: createWrapper(),
+            })
+
+            await act(async () => {
+                await result.current.handleRecipientsChange('to', [
+                    { id: 42, address: 'customer@example.com' },
+                ] as any)
+            })
+
+            const toastEl = await screen.findByRole('status', {
+                name: 'Failed to fetch customer',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
 
         it('clears customer when "to" recipients are emptied', () => {
@@ -498,7 +519,7 @@ describe('useNewTicketPageForm', () => {
     })
 
     describe('handleCustomerChange', () => {
-        it('sets the selected customer as the "to" recipient', () => {
+        it('fetches the full selected customer and sets it as the "to" recipient', async () => {
             const store = mockStore(defaultState)
             const customer = {
                 id: 42,
@@ -506,15 +527,27 @@ describe('useNewTicketPageForm', () => {
                 email: 'jane@example.com',
                 channels: [],
             }
+            const fullCustomer = {
+                ...customer,
+                integrations: {
+                    1: {
+                        __integration_type__: 'shopify',
+                    },
+                },
+            }
+            jest.mocked(getCustomer).mockResolvedValue({
+                data: fullCustomer,
+            } as any)
             const { result } = renderHook(() => useNewTicketPageForm(), {
                 wrapper: createWrapperWithStore(store),
             })
 
-            act(() => {
-                result.current.handleCustomerChange(customer as any)
+            await act(async () => {
+                await result.current.handleCustomerChange(customer as any)
             })
 
-            expect(result.current.ticketState.customer).toEqual(customer)
+            expect(getCustomer).toHaveBeenCalledWith(42)
+            expect(result.current.ticketState.customer).toEqual(fullCustomer)
             expect(store.getActions()).toEqual(
                 expect.arrayContaining([
                     expect.objectContaining({
@@ -533,7 +566,7 @@ describe('useNewTicketPageForm', () => {
             )
         })
 
-        it('falls back to the preferred customer channel when the customer has no email', () => {
+        it('falls back to the preferred customer channel when the customer has no email', async () => {
             const store = mockStore(defaultState)
             const customer = {
                 id: 43,
@@ -548,12 +581,15 @@ describe('useNewTicketPageForm', () => {
                     },
                 ],
             }
+            jest.mocked(getCustomer).mockResolvedValue({
+                data: customer,
+            } as any)
             const { result } = renderHook(() => useNewTicketPageForm(), {
                 wrapper: createWrapperWithStore(store),
             })
 
-            act(() => {
-                result.current.handleCustomerChange(customer as any)
+            await act(async () => {
+                await result.current.handleCustomerChange(customer as any)
             })
 
             expect(store.getActions()).toEqual(
@@ -572,6 +608,47 @@ describe('useNewTicketPageForm', () => {
                     }),
                 ]),
             )
+        })
+
+        it('sets a selected customer without fetching when it has no id', async () => {
+            const customer = {
+                name: 'Unsaved Customer',
+                email: 'unsaved@example.com',
+                channels: [],
+            }
+            const { result } = renderHook(() => useNewTicketPageForm(), {
+                wrapper: createWrapper(),
+            })
+
+            await act(async () => {
+                await result.current.handleCustomerChange(customer as any)
+            })
+
+            expect(getCustomer).not.toHaveBeenCalled()
+            expect(result.current.ticketState.customer).toEqual(customer)
+        })
+
+        it('shows an error toast and falls back to the selected customer when the full customer cannot be fetched', async () => {
+            const customer = {
+                id: 42,
+                name: 'Jane Doe',
+                email: 'jane@example.com',
+                channels: [],
+            }
+            jest.mocked(getCustomer).mockRejectedValue(new Error('Failed'))
+            const { result } = renderHook(() => useNewTicketPageForm(), {
+                wrapper: createWrapper(),
+            })
+
+            await act(async () => {
+                await result.current.handleCustomerChange(customer as any)
+            })
+
+            expect(result.current.ticketState.customer).toEqual(customer)
+            const toastEl = await screen.findByRole('status', {
+                name: 'Failed to fetch customer',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
     })
 

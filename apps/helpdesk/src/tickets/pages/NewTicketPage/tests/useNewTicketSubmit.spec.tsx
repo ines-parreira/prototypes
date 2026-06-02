@@ -68,6 +68,7 @@ const buildState = ({
     customer = { id: 1, name: 'Original customer' },
     isLoading = false,
     receiver = { id: 2, name: 'Receiver customer' },
+    sourceRecipients,
     sourceType = TicketMessageSourceType.Email,
 }: {
     appliedMacroActions?: Array<{
@@ -77,7 +78,8 @@ const buildState = ({
     bodyText?: string
     customer?: Record<string, unknown> | null
     isLoading?: boolean
-    receiver?: Record<string, unknown>
+    receiver?: Record<string, unknown> | null
+    sourceRecipients?: Array<Record<string, unknown>>
     sourceType?: TicketMessageSourceType
 } = {}) =>
     ({
@@ -98,12 +100,14 @@ const buildState = ({
                 body_html: bodyText ? `<p>${bodyText}</p>` : '',
                 body_text: bodyText,
                 public: sourceType !== TicketMessageSourceType.InternalNote,
-                receiver,
+                ...(receiver !== null ? { receiver } : {}),
                 source: {
                     type: sourceType,
                     to:
                         sourceType === TicketMessageSourceType.Email
-                            ? [{ address: 'customer@example.com' }]
+                            ? (sourceRecipients ?? [
+                                  { address: 'customer@example.com' },
+                              ])
                             : [],
                 },
             },
@@ -206,6 +210,169 @@ describe('useNewTicketSubmit', () => {
         )
         expect(localForageManager.clearTable).toHaveBeenCalledWith(
             'ticket-drafts',
+        )
+    })
+
+    it('preserves selected customer integration data when the recipient matches the customer', async () => {
+        const customer = {
+            id: 2,
+            name: 'Receiver customer',
+            email: 'customer@example.com',
+            channels: [
+                {
+                    id: 1,
+                    type: 'email',
+                    address: 'customer@example.com',
+                    preferred: true,
+                },
+            ],
+            integrations: {
+                1: {
+                    __integration_type__: 'shopify',
+                    orders: [{ id: 123 }],
+                },
+            },
+        } as unknown as NonNullable<TicketModel['customer']>
+
+        const { result } = renderUseNewTicketSubmit(
+            {
+                ...defaultArgs,
+                customer,
+            },
+            buildState({ customer, receiver: null }),
+        )
+
+        await submitNewTicket(result)
+
+        expect(submitTicket.mock.calls[0][0].get('customer')).toEqual(
+            fromJS(customer),
+        )
+    })
+
+    it('preserves selected customer integration data when the recipient matches a customer channel', async () => {
+        const customer = {
+            id: 2,
+            name: 'Receiver customer',
+            email: 'other@example.com',
+            channels: [
+                {
+                    id: 1,
+                    type: 'email',
+                    address: 'customer@example.com',
+                    preferred: true,
+                },
+            ],
+            integrations: {
+                1: {
+                    __integration_type__: 'shopify',
+                    orders: [{ id: 123 }],
+                },
+            },
+        } as unknown as NonNullable<TicketModel['customer']>
+
+        const { result } = renderUseNewTicketSubmit(
+            {
+                ...defaultArgs,
+                customer,
+            },
+            buildState({ customer, receiver: null }),
+        )
+
+        await submitNewTicket(result)
+
+        expect(submitTicket.mock.calls[0][0].get('customer')).toEqual(
+            fromJS(customer),
+        )
+    })
+
+    it('uses the current receiver when it has no address to match against the selected customer', async () => {
+        const customer = {
+            id: 2,
+            name: 'Receiver customer',
+            integrations: {
+                1: {
+                    __integration_type__: 'shopify',
+                    orders: [{ id: 123 }],
+                },
+            },
+        } as unknown as NonNullable<TicketModel['customer']>
+
+        const receiver = {
+            name: 'Receiver without address',
+        }
+
+        const { result } = renderUseNewTicketSubmit(
+            {
+                ...defaultArgs,
+                customer,
+            },
+            buildState({ customer, receiver }),
+        )
+
+        await submitNewTicket(result)
+
+        expect(submitTicket.mock.calls[0][0].get('customer')).toEqual(
+            fromJS(receiver),
+        )
+    })
+
+    it('uses the current receiver when its id no longer matches the selected customer', async () => {
+        const customer = {
+            id: 2,
+            name: 'Receiver customer',
+            integrations: {
+                1: {
+                    __integration_type__: 'shopify',
+                    orders: [{ id: 123 }],
+                },
+            },
+        } as unknown as NonNullable<TicketModel['customer']>
+
+        const receiver = {
+            id: 3,
+            name: 'Other customer',
+        }
+
+        const { result } = renderUseNewTicketSubmit(
+            {
+                ...defaultArgs,
+                customer,
+            },
+            buildState({ customer, receiver }),
+        )
+
+        await submitNewTicket(result)
+
+        expect(submitTicket.mock.calls[0][0].get('customer')).toEqual(
+            fromJS(receiver),
+        )
+    })
+
+    it('uses the current recipient instead of stale selected customer data when they no longer match', async () => {
+        const customer = {
+            id: 2,
+            name: 'Receiver customer',
+            email: 'other@example.com',
+            integrations: {
+                1: {
+                    __integration_type__: 'shopify',
+                    orders: [{ id: 123 }],
+                },
+            },
+        } as unknown as NonNullable<TicketModel['customer']>
+
+        const { result } = renderUseNewTicketSubmit(
+            {
+                ...defaultArgs,
+                customer,
+            },
+            buildState({ customer, receiver: null }),
+        )
+
+        await submitNewTicket(result)
+
+        expect(submitTicket.mock.calls[0][0].get('customer')).toEqual(
+            fromJS({ address: 'customer@example.com' }),
         )
     })
 
