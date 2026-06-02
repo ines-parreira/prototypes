@@ -24,7 +24,6 @@ export {
     useDeleteCustomUserAvailabilityStatus,
     useCustomUserUnavailabilityModal,
     useSelectableAgentAvailabilityStatuses,
-    useUpdateUserAvailabilityStatus,
     useListUserAvailabilities,
     useAvailabilityStatusColor,
     useUserAvailabilityRealtimeHandler,

@@ -5,10 +5,13 @@ import {
     useAgentPhoneStatus,
     useCustomAgentUnavailableStatusesFlag,
     useSelectableAgentAvailabilityStatuses,
-    useUpdateUserAvailabilityStatus,
-    useUserAvailability,
 } from '@repo/agent-status'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import {
+    getActiveStatusId,
+    useUpdateUserAvailability,
+    useUserAvailability,
+} from '@repo/users'
 
 import { Dot, MenuItem, SubMenu, Text, toast } from '@gorgias/axiom'
 
@@ -25,18 +28,21 @@ export function UserMenuStatusSubMenu({ userId }: UserMenuStatusSubMenuProps) {
         userId,
         refetchOnMount: 'always',
     })
-    const { activeStatusId, isLoading: isLoadingAvailability } =
-        useUserAvailability({ userId })
+    const availability = useUserAvailability(userId)
     const { allStatuses, isLoading: isLoadingStatuses } =
         useSelectableAgentAvailabilityStatuses()
-    const { updateStatusAsync } = useUpdateUserAvailabilityStatus()
+    const { update } = useUpdateUserAvailability(userId)
+
+    const activeStatusId = getActiveStatusId(availability)
 
     const canChangeStatus = isAgentUnavailabilityEnabled && !isOnActiveCall
 
     const handleStatusUpdate = useCallback(
         async (statusId: string) => {
             try {
-                await updateStatusAsync(userId, statusId)
+                await (statusId === 'available' || statusId === 'unavailable'
+                    ? update(statusId)
+                    : update('custom', statusId))
                 logEvent(SegmentEvent.MenuUserLinkClicked, {
                     link: 'status-update',
                     status_id: statusId,
@@ -49,7 +55,7 @@ export function UserMenuStatusSubMenu({ userId }: UserMenuStatusSubMenuProps) {
                 )
             }
         },
-        [updateStatusAsync, userId],
+        [update],
     )
 
     if (!isAgentUnavailabilityEnabled) {
@@ -68,7 +74,7 @@ export function UserMenuStatusSubMenu({ userId }: UserMenuStatusSubMenuProps) {
             selectedKeys={activeStatusId ? [activeStatusId] : []}
             selectionMode="single"
         >
-            {isLoadingStatuses || isLoadingAvailability ? (
+            {isLoadingStatuses ? (
                 <MenuItem id="loading" label="Loading..." isDisabled />
             ) : (
                 allStatuses.map((statusItem) => (

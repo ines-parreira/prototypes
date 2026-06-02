@@ -1,12 +1,9 @@
 import React from 'react'
 
-import {
-    useSelectableAgentAvailabilityStatuses,
-    useUpdateUserAvailabilityStatus,
-    useUserAvailability,
-} from '@repo/agent-status'
+import { useSelectableAgentAvailabilityStatuses } from '@repo/agent-status'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, render } from '@repo/testing'
+import { useUpdateUserAvailability, useUserAvailability } from '@repo/users'
 import { act, screen, waitFor, within } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
@@ -22,18 +19,20 @@ jest.mock('@repo/logging', () => ({
 
 jest.mock('@repo/agent-status', () => ({
     ...jest.requireActual('@repo/agent-status'),
-    useUserAvailability: jest.fn(),
     useSelectableAgentAvailabilityStatuses: jest.fn(),
-    useUpdateUserAvailabilityStatus: jest.fn(),
+}))
+
+jest.mock('@repo/users', () => ({
+    ...jest.requireActual('@repo/users'),
+    useUpdateUserAvailability: jest.fn(),
+    useUserAvailability: jest.fn(),
 }))
 
 const useUserAvailabilityMock = assumeMock(useUserAvailability)
 const useSelectableAgentAvailabilityStatusesMock = assumeMock(
     useSelectableAgentAvailabilityStatuses,
 )
-const useUpdateUserAvailabilityStatusMock = assumeMock(
-    useUpdateUserAvailabilityStatus,
-)
+const useUpdateUserAvailabilityMock = assumeMock(useUpdateUserAvailability)
 const useAppDispatchMock = assumeMock(useAppDispatch)
 const isGorgiasApiErrorMock = assumeMock(isGorgiasApiError)
 
@@ -93,20 +92,20 @@ const mockStatuses = [
 ]
 
 describe('StatusMenu', () => {
-    let updateStatusAsync: jest.Mock
+    let update: jest.Mock
     let dispatch: jest.Mock
     let onUpdateStatusStart: jest.Mock
 
     beforeEach(() => {
-        updateStatusAsync = jest.fn().mockResolvedValue(undefined)
+        update = jest.fn().mockResolvedValue(undefined)
         dispatch = jest.fn()
         onUpdateStatusStart = jest.fn()
 
         useAppDispatchMock.mockReturnValue(dispatch)
         isGorgiasApiErrorMock.mockReturnValue(false)
 
-        useUpdateUserAvailabilityStatusMock.mockReturnValue({
-            updateStatusAsync,
+        useUpdateUserAvailabilityMock.mockReturnValue({
+            update,
         } as any)
 
         useSelectableAgentAvailabilityStatusesMock.mockReturnValue({
@@ -115,22 +114,15 @@ describe('StatusMenu', () => {
         } as any)
 
         useUserAvailabilityMock.mockReturnValue({
-            status: {
-                user_status: 'available' as const,
-            },
-            activeStatusId: 'available',
-            isLoading: false,
+            user_id: 123,
+            user_status: 'available',
         } as any)
     })
 
     it('should pass userId to useUserAvailability', () => {
         render(<StatusMenu onUpdateStatusStart={onUpdateStatusStart} />)
 
-        expect(useUserAvailabilityMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                userId: 123,
-            }),
-        )
+        expect(useUserAvailabilityMock).toHaveBeenCalledWith(123)
     })
 
     it.each(mockStatuses)('should render the $name status', ({ name }) => {
@@ -164,16 +156,13 @@ describe('StatusMenu', () => {
         },
     ])(
         'should mark the current $name status with checkmark',
-        ({ displayName, userStatus, activeStatusId, customId }) => {
+        ({ displayName, userStatus, customId }) => {
             useUserAvailabilityMock.mockReturnValue({
-                status: {
-                    user_status: userStatus,
-                    ...(customId && {
-                        custom_user_availability_status_id: customId,
-                    }),
-                },
-                activeStatusId,
-                isLoading: false,
+                user_id: 123,
+                user_status: userStatus,
+                ...(customId && {
+                    custom_user_availability_status_id: customId,
+                }),
             } as any)
 
             const { getByText } = render(
@@ -190,19 +179,19 @@ describe('StatusMenu', () => {
             name: 'available',
             displayName: 'Available',
             statusId: 'available',
-            expectedArgs: [123, 'available'],
+            expectedArgs: ['available'],
         },
         {
             name: 'unavailable',
             displayName: 'Unavailable',
             statusId: 'unavailable',
-            expectedArgs: [123, 'unavailable'],
+            expectedArgs: ['unavailable'],
         },
         {
             name: 'custom',
             displayName: 'Lunch break',
             statusId: 'custom-1',
-            expectedArgs: [123, 'custom-1'],
+            expectedArgs: ['custom', 'custom-1'],
         },
     ])(
         'should update to $name status and log event',
@@ -213,7 +202,7 @@ describe('StatusMenu', () => {
 
             await act(() => userEvent.click(getByText(displayName)))
 
-            expect(updateStatusAsync).toHaveBeenCalledWith(...expectedArgs)
+            expect(update).toHaveBeenCalledWith(...expectedArgs)
             expect(logEvent).toHaveBeenCalledWith(
                 SegmentEvent.MenuUserLinkClicked,
                 {
@@ -224,32 +213,12 @@ describe('StatusMenu', () => {
         },
     )
 
-    it.each([
-        {
-            scenario: 'statuses are loading',
-            setupMocks: () => {
-                useSelectableAgentAvailabilityStatusesMock.mockReturnValue({
-                    allStatuses: [],
-                    isLoading: true,
-                    isError: false,
-                })
-            },
-        },
-        {
-            scenario: 'availability is loading',
-            setupMocks: () => {
-                useUserAvailabilityMock.mockReturnValue({
-                    availability: undefined,
-                    activeStatusId: undefined,
-                    isLoading: true,
-                    isError: false,
-                    error: null,
-                    isFetching: false,
-                } as ReturnType<typeof useUserAvailability>)
-            },
-        },
-    ])('should show loading state when $scenario', ({ setupMocks }) => {
-        setupMocks()
+    it('should show loading state when statuses are loading', () => {
+        useSelectableAgentAvailabilityStatusesMock.mockReturnValue({
+            allStatuses: [],
+            isLoading: true,
+            isError: false,
+        })
 
         const { getByText } = render(
             <StatusMenu onUpdateStatusStart={onUpdateStatusStart} />,
@@ -258,11 +227,7 @@ describe('StatusMenu', () => {
     })
 
     it('should not show checkmark when no status is selected', () => {
-        useUserAvailabilityMock.mockReturnValue({
-            status: undefined,
-            activeStatusId: undefined,
-            isLoading: false,
-        } as any)
+        useUserAvailabilityMock.mockReturnValue(undefined as any)
 
         const { queryByText } = render(
             <StatusMenu onUpdateStatusStart={onUpdateStatusStart} />,
@@ -287,7 +252,7 @@ describe('StatusMenu', () => {
             callOrder.push('callback')
         })
 
-        updateStatusAsync.mockImplementation(() => {
+        update.mockImplementation(() => {
             callOrder.push('update')
             return Promise.resolve()
         })
@@ -343,7 +308,7 @@ describe('StatusMenu', () => {
         ])(
             'should show error notification when update fails with $scenario',
             async ({ displayName, error, isApiError, expectedTitle }) => {
-                updateStatusAsync.mockRejectedValueOnce(error)
+                update.mockRejectedValueOnce(error)
                 isGorgiasApiErrorMock.mockReturnValueOnce(isApiError)
 
                 const { getByText } = render(

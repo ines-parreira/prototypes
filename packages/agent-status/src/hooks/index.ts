@@ -8,7 +8,6 @@ export { useAgentStatusFormDefaults } from './useAgentStatusFormDefaults'
 
 export { useUserAvailability } from './useUserAvailability'
 export { useSelectableAgentAvailabilityStatuses } from './useSelectableAgentAvailabilityStatuses'
-export { useUpdateUserAvailabilityStatus } from './useUpdateUserAvailabilityStatus'
 export { useUserAvailabilityStatus } from './useUserAvailabilityStatus'
 export { useAgentStatusTable } from './useAgentStatusTable'
 export type {

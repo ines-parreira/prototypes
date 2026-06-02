@@ -1,11 +1,9 @@
 import { useCallback } from 'react'
 
 import type { AgentStatusWithSystem } from '@repo/agent-status'
-import {
-    AgentAvailabilityStatusSelect,
-    useUpdateUserAvailabilityStatus,
-} from '@repo/agent-status'
+import { AgentAvailabilityStatusSelect } from '@repo/agent-status'
 import { isAdmin, isTeamLead } from '@repo/permissions'
+import { useUpdateUserAvailability } from '@repo/users'
 
 import {
     Box,
@@ -25,7 +23,7 @@ type Props = {
 }
 
 export function AgentAvailabilityCell({ userId }: Props) {
-    const { updateStatusAsync } = useUpdateUserAvailabilityStatus()
+    const { update } = useUpdateUserAvailability(userId)
     const currentUser = useAppSelector((state) => state.currentUser)
 
     const {
@@ -43,12 +41,14 @@ export function AgentAvailabilityCell({ userId }: Props) {
     const handleSelectStatus = useCallback(
         async (status: AgentStatusWithSystem) => {
             try {
-                await updateStatusAsync(userId, status.id)
+                await (status.id === 'available' || status.id === 'unavailable'
+                    ? update(status.id)
+                    : update('custom', status.id))
             } catch {
                 toast.error('Failed to update status. Please try again.')
             }
         },
-        [userId, updateStatusAsync],
+        [update],
     )
 
     if (isLoading && hasNoData) {

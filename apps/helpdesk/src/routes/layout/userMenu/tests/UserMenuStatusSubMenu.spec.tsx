@@ -11,7 +11,11 @@ jest.mock('@repo/agent-status', () => ({
     useAgentPhoneStatus: jest.fn(),
     useCustomAgentUnavailableStatusesFlag: jest.fn(),
     useSelectableAgentAvailabilityStatuses: jest.fn(),
-    useUpdateUserAvailabilityStatus: jest.fn(),
+}))
+
+jest.mock('@repo/users', () => ({
+    ...jest.requireActual('@repo/users'),
+    useUpdateUserAvailability: jest.fn(),
     useUserAvailability: jest.fn(),
 }))
 
@@ -29,17 +33,17 @@ const {
     useAgentPhoneStatus,
     useCustomAgentUnavailableStatusesFlag,
     useSelectableAgentAvailabilityStatuses,
-    useUpdateUserAvailabilityStatus,
-    useUserAvailability,
 } = jest.requireMock('@repo/agent-status')
+
+const { useUpdateUserAvailability, useUserAvailability } =
+    jest.requireMock('@repo/users')
 
 const useAgentPhoneStatusMock = useAgentPhoneStatus as jest.Mock
 const useCustomAgentUnavailableStatusesFlagMock =
     useCustomAgentUnavailableStatusesFlag as jest.Mock
 const useSelectableAgentAvailabilityStatusesMock =
     useSelectableAgentAvailabilityStatuses as jest.Mock
-const useUpdateUserAvailabilityStatusMock =
-    useUpdateUserAvailabilityStatus as jest.Mock
+const useUpdateUserAvailabilityMock = useUpdateUserAvailability as jest.Mock
 const useUserAvailabilityMock = useUserAvailability as jest.Mock
 
 const logEventMock = assumeMock(logEvent)
@@ -68,7 +72,7 @@ const customStatus = {
 
 const allStatuses = [availableStatus, awayStatus, customStatus]
 
-const updateStatusAsyncSpy = jest.fn()
+const updateSpy = jest.fn()
 
 const renderInMenu = (userId = 1) =>
     render(
@@ -93,16 +97,16 @@ describe('UserMenuStatusSubMenu', () => {
         useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(true)
         useAgentPhoneStatusMock.mockReturnValue({ isOnActiveCall: false })
         useUserAvailabilityMock.mockReturnValue({
-            activeStatusId: 'available',
-            isLoading: false,
+            user_id: 1,
+            user_status: 'available',
         })
         useSelectableAgentAvailabilityStatusesMock.mockReturnValue({
             allStatuses,
             isLoading: false,
         })
-        updateStatusAsyncSpy.mockResolvedValue(undefined)
-        useUpdateUserAvailabilityStatusMock.mockReturnValue({
-            updateStatusAsync: updateStatusAsyncSpy,
+        updateSpy.mockResolvedValue(undefined)
+        useUpdateUserAvailabilityMock.mockReturnValue({
+            update: updateSpy,
         })
     })
 
@@ -123,18 +127,6 @@ describe('UserMenuStatusSubMenu', () => {
         expect(
             screen.queryByRole('menuitem', { name: /Status/ }),
         ).not.toBeInTheDocument()
-    })
-
-    it('renders a disabled Loading item while availability is loading', async () => {
-        useUserAvailabilityMock.mockReturnValue({
-            activeStatusId: undefined,
-            isLoading: true,
-        })
-
-        renderInMenu()
-        const { submenu } = await openStatusSubMenu()
-
-        expect(within(submenu).getByText('Loading...')).toBeInTheDocument()
     })
 
     it('renders a disabled Loading item while statuses are loading', async () => {
@@ -168,8 +160,9 @@ describe('UserMenuStatusSubMenu', () => {
 
     it('marks the active status as checked', async () => {
         useUserAvailabilityMock.mockReturnValue({
-            activeStatusId: 'away',
-            isLoading: false,
+            user_id: 1,
+            user_status: 'custom',
+            custom_user_availability_status_id: 'away',
         })
 
         renderInMenu()
@@ -193,7 +186,7 @@ describe('UserMenuStatusSubMenu', () => {
         ).toHaveAttribute('aria-disabled', 'true')
     })
 
-    it('calls updateStatusAsync and logs the status update on selection', async () => {
+    it('calls update and logs the status update on selection', async () => {
         renderInMenu(42)
         const { user, submenu } = await openStatusSubMenu()
 
@@ -202,7 +195,7 @@ describe('UserMenuStatusSubMenu', () => {
         )
 
         await waitFor(() => {
-            expect(updateStatusAsyncSpy).toHaveBeenCalledWith(42, 'away')
+            expect(updateSpy).toHaveBeenCalledWith('custom', 'away')
         })
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.MenuUserLinkClicked,
@@ -215,7 +208,7 @@ describe('UserMenuStatusSubMenu', () => {
             isAxiosError: true,
             response: { data: { error: { msg: 'Only admins can do that' } } },
         })
-        updateStatusAsyncSpy.mockRejectedValueOnce(apiError)
+        updateSpy.mockRejectedValueOnce(apiError)
 
         renderInMenu()
         const { user, submenu } = await openStatusSubMenu()
@@ -231,7 +224,7 @@ describe('UserMenuStatusSubMenu', () => {
     })
 
     it('shows a fallback error message when the update fails with a generic error', async () => {
-        updateStatusAsyncSpy.mockRejectedValueOnce(new Error('boom'))
+        updateSpy.mockRejectedValueOnce(new Error('boom'))
 
         renderInMenu()
         const { user, submenu } = await openStatusSubMenu()

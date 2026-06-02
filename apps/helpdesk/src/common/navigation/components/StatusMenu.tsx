@@ -1,11 +1,12 @@
 import React, { useCallback } from 'react'
 
-import {
-    useSelectableAgentAvailabilityStatuses,
-    useUpdateUserAvailabilityStatus,
-    useUserAvailability,
-} from '@repo/agent-status'
+import { useSelectableAgentAvailabilityStatuses } from '@repo/agent-status'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import {
+    getActiveStatusId,
+    useUpdateUserAvailability,
+    useUserAvailability,
+} from '@repo/users'
 import cn from 'classnames'
 
 import { toast } from '@gorgias/axiom'
@@ -22,18 +23,21 @@ export default function StatusMenu({
     onUpdateStatusStart: () => void
 }) {
     const currentUserId = useAppSelector(getCurrentUserId)
-    const { activeStatusId, isLoading: isLoadingAvailability } =
-        useUserAvailability({ userId: currentUserId })
+    const availability = useUserAvailability(currentUserId)
     const { allStatuses, isLoading: isLoadingStatuses } =
         useSelectableAgentAvailabilityStatuses()
 
-    const { updateStatusAsync } = useUpdateUserAvailabilityStatus()
+    const { update } = useUpdateUserAvailability(currentUserId)
+
+    const activeStatusId = getActiveStatusId(availability)
 
     const handleStatusUpdate = useCallback(
         async (statusId: string) => {
             try {
                 onUpdateStatusStart()
-                await updateStatusAsync(currentUserId, statusId)
+                await (statusId === 'available' || statusId === 'unavailable'
+                    ? update(statusId)
+                    : update('custom', statusId))
                 logEvent(SegmentEvent.MenuUserLinkClicked, {
                     link: 'status-update',
                     status_id: statusId,
@@ -46,10 +50,10 @@ export default function StatusMenu({
                 )
             }
         },
-        [updateStatusAsync, currentUserId, onUpdateStatusStart],
+        [update, onUpdateStatusStart],
     )
 
-    if (isLoadingStatuses || isLoadingAvailability) {
+    if (isLoadingStatuses) {
         return <div className={css['dropdown-item-user-menu']}>Loading...</div>
     }
 
