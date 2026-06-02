@@ -2,7 +2,10 @@ import { useMemo } from 'react'
 import type { ReactNode } from 'react'
 
 import { CopilotProvider as BaseCopilotProvider } from '@gorgias/copilot'
-import type { RenderCopilotReference } from '@gorgias/copilot'
+import type {
+    RenderConfirmationPreview,
+    RenderCopilotReference,
+} from '@gorgias/copilot'
 
 import '@gorgias/copilot/copilot.css'
 
@@ -10,6 +13,7 @@ import { copilotAttachmentsConfig } from 'common/copilot/copilotAttachmentsConfi
 
 import { createCopilotAgent, fetchCopilotShops } from 'utils/sdk'
 
+import { GuidanceConfirmationPreview } from './confirmation/GuidanceConfirmationPreview'
 import { CopilotConversationStarters } from './CopilotConversationStarters'
 import { ReferenceLink } from './reference/ReferenceLink'
 import { useCopilotCacheInvalidation } from './useCopilotCacheInvalidation'
@@ -27,6 +31,7 @@ export function CopilotProvider({ children }: Props) {
             accountDomain={window.GORGIAS_STATE?.currentAccount?.domain}
             showInternals={!!window.USER_IMPERSONATED}
             renderReference={renderReference}
+            renderConfirmationPreview={renderConfirmationPreview}
             attachmentsConfig={copilotAttachmentsConfig}
             fetchShops={fetchCopilotShops}
         >
@@ -45,3 +50,17 @@ function CopilotCacheInvalidator() {
 const renderReference: RenderCopilotReference = ({ reference, children }) => (
     <ReferenceLink reference={reference}>{children}</ReferenceLink>
 )
+
+const renderConfirmationPreview: RenderConfirmationPreview = ({
+    payload,
+    ...actions
+}) => {
+    switch (payload.type) {
+        case 'guidance':
+            return (
+                <GuidanceConfirmationPreview payload={payload} {...actions} />
+            )
+        default:
+            return null
+    }
+}

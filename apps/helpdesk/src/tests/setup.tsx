@@ -185,6 +185,39 @@ jest.mock('@gorgias/copilot', () => ({
     ),
     GorgiasCopilotAgent: jest.fn(),
     CopilotPanel: jest.fn(() => null),
+    ArtifactCard: jest.fn(
+        (props: {
+            title?: string
+            actionLabel?: string
+            onAction?: () => void
+            actions?: { label: string; onClick?: () => void }[]
+        }) => {
+            const React = require('react')
+            return React.createElement(
+                'div',
+                null,
+                React.createElement('span', null, props.title),
+                props.actionLabel
+                    ? React.createElement(
+                          'button',
+                          { type: 'button', onClick: props.onAction },
+                          props.actionLabel,
+                      )
+                    : null,
+                ...(props.actions ?? []).map((action, index: number) =>
+                    React.createElement(
+                        'button',
+                        {
+                            key: index,
+                            type: 'button',
+                            onClick: action.onClick,
+                        },
+                        action.label,
+                    ),
+                ),
+            )
+        },
+    ),
     useCopilot: jest.fn(() => ({
         sendPrompt: () => undefined,
         resetThread: () => undefined,

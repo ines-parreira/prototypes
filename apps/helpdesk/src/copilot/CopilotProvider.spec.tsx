@@ -1,3 +1,5 @@
+import { isValidElement } from 'react'
+import type { ReactElement } from 'react'
 import { screen } from '@testing-library/react'
 
 import { assumeMock, render } from '@repo/testing'
@@ -6,6 +8,7 @@ import { CopilotProvider as BaseCopilotProvider } from '@gorgias/copilot'
 
 import { createCopilotAgent, fetchCopilotShops } from 'utils/sdk'
 
+import { GuidanceConfirmationPreview } from './confirmation/GuidanceConfirmationPreview'
 import { CopilotProvider } from './CopilotProvider'
 
 jest.mock('utils/sdk', () => ({
@@ -83,5 +86,42 @@ describe('CopilotProvider', () => {
             'href',
             '/app/ticket/42',
         )
+    })
+
+    it('routes guidance confirmations to the preview and falls back to null otherwise', () => {
+        render(
+            <CopilotProvider>
+                <div>Helpdesk</div>
+            </CopilotProvider>,
+        )
+        const props = baseCopilotProviderMock.mock.calls[0][0]
+        const renderConfirmationPreview = props.renderConfirmationPreview
+        expect(typeof renderConfirmationPreview).toBe('function')
+
+        const handlers = {
+            onApprove: jest.fn(),
+            onReject: jest.fn(),
+            approveLabel: 'Publish',
+        }
+
+        const guidanceElement = renderConfirmationPreview!({
+            ...handlers,
+            payload: {
+                type: 'guidance',
+                id: 7,
+                shopName: 'acme',
+                shopType: 'shopify',
+            },
+        })
+        expect(isValidElement(guidanceElement)).toBe(true)
+        expect((guidanceElement as ReactElement).type).toBe(
+            GuidanceConfirmationPreview,
+        )
+
+        const unknownElement = renderConfirmationPreview!({
+            ...handlers,
+            payload: { type: 'unknown' } as never,
+        })
+        expect(unknownElement).toBeNull()
     })
 })
