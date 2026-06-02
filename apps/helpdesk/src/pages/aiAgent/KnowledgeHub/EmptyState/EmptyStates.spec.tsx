@@ -1,7 +1,9 @@
 import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { useHistory } from 'react-router'
 
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useSkillsAccess } from 'pages/aiAgent/hooks/useSkillsAccess'
 
 import { EMPTY_HELP_CENTER_ID } from '../../../automate/common/components/HelpCenterSelect'
@@ -24,6 +26,13 @@ import { openSyncUrlModal } from './SyncUrlModal'
 import { useFaqHelpCenter } from './useFaqHelpCenter'
 import { dispatchDocumentEvent, openSyncStoreWebsiteModal } from './utils'
 
+jest.mock('react-router', () => ({
+    ...jest.requireActual('react-router'),
+    useHistory: jest.fn(),
+}))
+jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
+    useAiAgentNavigation: jest.fn(),
+}))
 jest.mock('./useFaqHelpCenter')
 jest.mock('./utils', () => ({
     dispatchDocumentEvent: jest.fn(),
@@ -38,6 +47,9 @@ jest.mock('pages/aiAgent/hooks/useSkillsAccess', () => ({
 }))
 
 const mockUseSkillsAccess = jest.mocked(useSkillsAccess)
+const mockUseHistory = useHistory as jest.Mock
+const mockUseAiAgentNavigation = useAiAgentNavigation as jest.Mock
+const mockPush = jest.fn()
 
 const mockUseFaqHelpCenter = useFaqHelpCenter as jest.MockedFunction<
     typeof useFaqHelpCenter
@@ -70,12 +82,17 @@ beforeEach(() => {
     jest.clearAllMocks()
     mockUseFaqHelpCenter.mockReturnValue(defaultMockValues)
     mockUseSkillsAccess.mockReturnValue(false)
+    mockUseHistory.mockReturnValue({ push: mockPush })
+    mockUseAiAgentNavigation.mockReturnValue({
+        routes: { skills: '/ai-agent/test-shop/skills' },
+        navigationItems: [],
+    })
 })
 
 describe('EmptyStates', () => {
     describe('EmptyStates (main component)', () => {
         it('renders create something new section', () => {
-            render(<EmptyStates helpCenterId={null} />)
+            render(<EmptyStates shopName="test-shop" helpCenterId={null} />)
 
             expect(
                 screen.getByRole('heading', { name: 'Create something new' }),
@@ -83,7 +100,7 @@ describe('EmptyStates', () => {
         })
 
         it('renders bring in existing content section', () => {
-            render(<EmptyStates helpCenterId={null} />)
+            render(<EmptyStates shopName="test-shop" helpCenterId={null} />)
 
             expect(
                 screen.getByRole('heading', {
@@ -93,7 +110,7 @@ describe('EmptyStates', () => {
         })
 
         it('displays Guidance card in create section', () => {
-            render(<EmptyStates helpCenterId={null} />)
+            render(<EmptyStates shopName="test-shop" helpCenterId={null} />)
 
             expect(screen.getByText('Guidance')).toBeInTheDocument()
             expect(
@@ -105,17 +122,17 @@ describe('EmptyStates', () => {
 
         it('shows skills-flavored Guidance description when useSkillsAccess returns true', () => {
             mockUseSkillsAccess.mockReturnValue(true)
-            render(<EmptyStates helpCenterId={null} />)
+            render(<EmptyStates shopName="test-shop" helpCenterId={null} />)
 
             expect(
                 screen.getByText(
-                    'Add reference knowledge AI Agent can draw on to answer general questions.',
+                    'Create internal knowledge for AI Agent to answer general questions.',
                 ),
             ).toBeInTheDocument()
         })
 
         it('displays FAQ card in create section', () => {
-            render(<EmptyStates helpCenterId={null} />)
+            render(<EmptyStates shopName="test-shop" helpCenterId={null} />)
 
             expect(screen.getByText('Help Center articles')).toBeInTheDocument()
             expect(
@@ -126,7 +143,13 @@ describe('EmptyStates', () => {
         })
 
         it('displays Website card when hasWebsiteSync is false', () => {
-            render(<EmptyStates hasWebsiteSync={false} helpCenterId={null} />)
+            render(
+                <EmptyStates
+                    shopName="test-shop"
+                    hasWebsiteSync={false}
+                    helpCenterId={null}
+                />,
+            )
 
             expect(screen.getByText('Store website')).toBeInTheDocument()
             expect(
@@ -135,13 +158,19 @@ describe('EmptyStates', () => {
         })
 
         it('does not display Website card when hasWebsiteSync is true', () => {
-            render(<EmptyStates hasWebsiteSync={true} helpCenterId={null} />)
+            render(
+                <EmptyStates
+                    shopName="test-shop"
+                    hasWebsiteSync={true}
+                    helpCenterId={null}
+                />,
+            )
 
             expect(screen.queryByText('Store website')).not.toBeInTheDocument()
         })
 
         it('displays URL card', () => {
-            render(<EmptyStates helpCenterId={null} />)
+            render(<EmptyStates shopName="test-shop" helpCenterId={null} />)
 
             expect(screen.getByText('URLs')).toBeInTheDocument()
             expect(
@@ -150,7 +179,7 @@ describe('EmptyStates', () => {
         })
 
         it('displays Documents card', () => {
-            render(<EmptyStates helpCenterId={null} />)
+            render(<EmptyStates shopName="test-shop" helpCenterId={null} />)
 
             expect(screen.getByText('Documents')).toBeInTheDocument()
             expect(
@@ -159,7 +188,7 @@ describe('EmptyStates', () => {
         })
 
         it('applies center alignment by default', () => {
-            render(<EmptyStates helpCenterId={null} />)
+            render(<EmptyStates shopName="test-shop" helpCenterId={null} />)
 
             const headings = screen.getAllByRole('heading')
             expect(headings.length).toBeGreaterThan(0)
@@ -167,11 +196,63 @@ describe('EmptyStates', () => {
 
         it('applies custom alignment when provided', () => {
             render(
-                <EmptyStates titleAlignment="flex-start" helpCenterId={null} />,
+                <EmptyStates
+                    shopName="test-shop"
+                    titleAlignment="flex-start"
+                    helpCenterId={null}
+                />,
             )
 
             const headings = screen.getAllByRole('heading')
             expect(headings.length).toBeGreaterThan(0)
+        })
+
+        it('shows skills banner instead of "Create something new" heading when useSkillsAccess returns true', () => {
+            mockUseSkillsAccess.mockReturnValue(true)
+            render(<EmptyStates shopName="test-shop" helpCenterId={null} />)
+
+            expect(
+                screen.queryByRole('heading', { name: 'Create something new' }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    'Use skills to instruct AI Agent to handle specific requests like returns.',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('shows "Go to skills" button in banner when useSkillsAccess returns true', () => {
+            mockUseSkillsAccess.mockReturnValue(true)
+            render(<EmptyStates shopName="test-shop" helpCenterId={null} />)
+
+            expect(
+                screen.getByRole('button', { name: 'Go to skills' }),
+            ).toBeInTheDocument()
+        })
+
+        it('navigates to skills route when "Go to skills" button is clicked', async () => {
+            const user = userEvent.setup()
+            mockUseSkillsAccess.mockReturnValue(true)
+            render(<EmptyStates shopName="test-shop" helpCenterId={null} />)
+
+            await act(() =>
+                user.click(
+                    screen.getByRole('button', { name: 'Go to skills' }),
+                ),
+            )
+
+            expect(mockPush).toHaveBeenCalledWith('/ai-agent/test-shop/skills')
+        })
+
+        it('still shows "Bring in existing content" section when useSkillsAccess returns true', () => {
+            mockUseSkillsAccess.mockReturnValue(true)
+            render(<EmptyStates shopName="test-shop" helpCenterId={null} />)
+
+            expect(
+                screen.getByRole('heading', {
+                    name: 'Bring in existing content',
+                }),
+            ).toBeInTheDocument()
         })
     })
 
@@ -382,6 +463,7 @@ describe('EmptyStates', () => {
         it('renders EmptyStates when no filter is selected', () => {
             render(
                 <EmptyStateWrapper
+                    shopName="test-shop"
                     documentFilter={null}
                     helpCenterId={null}
                     articles={mockArticles}
@@ -396,6 +478,7 @@ describe('EmptyStates', () => {
         it('renders EmptyStateDocument when Document filter is selected', () => {
             render(
                 <EmptyStateWrapper
+                    shopName="test-shop"
                     documentFilter={KnowledgeType.Document}
                     helpCenterId={null}
                     articles={mockArticles}
@@ -410,6 +493,7 @@ describe('EmptyStates', () => {
         it('renders EmptyStateDomain when Domain filter is selected', () => {
             render(
                 <EmptyStateWrapper
+                    shopName="test-shop"
                     documentFilter={KnowledgeType.Domain}
                     helpCenterId={null}
                     articles={mockArticles}
@@ -426,6 +510,7 @@ describe('EmptyStates', () => {
         it('renders EmptyStateFAQ when FAQ filter is selected', () => {
             render(
                 <EmptyStateWrapper
+                    shopName="test-shop"
                     documentFilter={KnowledgeType.FAQ}
                     helpCenterId={null}
                     articles={mockArticles}
@@ -442,6 +527,7 @@ describe('EmptyStates', () => {
         it('renders EmptyStateGuidance when Guidance filter is selected', () => {
             render(
                 <EmptyStateWrapper
+                    shopName="test-shop"
                     documentFilter={KnowledgeType.Guidance}
                     helpCenterId={null}
                     articles={mockArticles}
@@ -458,6 +544,7 @@ describe('EmptyStates', () => {
         it('renders EmptyStateURL when URL filter is selected', () => {
             render(
                 <EmptyStateWrapper
+                    shopName="test-shop"
                     documentFilter={KnowledgeType.URL}
                     helpCenterId={null}
                     articles={mockArticles}
@@ -472,6 +559,7 @@ describe('EmptyStates', () => {
         it('passes helpCenterId to EmptyStateFAQ', () => {
             render(
                 <EmptyStateWrapper
+                    shopName="test-shop"
                     documentFilter={KnowledgeType.FAQ}
                     helpCenterId={123}
                     articles={mockArticles}
@@ -498,6 +586,7 @@ describe('EmptyStates', () => {
 
             render(
                 <EmptyStateWrapper
+                    shopName="test-shop"
                     documentFilter={KnowledgeType.FAQ}
                     helpCenterId={123}
                     articles={articles}
@@ -516,7 +605,7 @@ describe('EmptyStates', () => {
         describe('EmptyStates main component', () => {
             it('dispatches OPEN_CREATE_GUIDANCE_ARTICLE_MODAL when Guidance card is clicked', async () => {
                 const user = userEvent.setup()
-                render(<EmptyStates helpCenterId={null} />)
+                render(<EmptyStates shopName="test-shop" helpCenterId={null} />)
 
                 const guidanceCard = screen.getByText('Guidance').closest('div')
                 await act(() => user.click(guidanceCard!))
@@ -528,7 +617,7 @@ describe('EmptyStates', () => {
 
             it('dispatches HELP_CENTER_SELECT_MODAL_OPEN when FAQ card is clicked and no helpCenterId', async () => {
                 const user = userEvent.setup()
-                render(<EmptyStates helpCenterId={null} />)
+                render(<EmptyStates shopName="test-shop" helpCenterId={null} />)
 
                 const faqCard = screen
                     .getByText('Help Center articles')
@@ -542,7 +631,7 @@ describe('EmptyStates', () => {
 
             it('does not dispatch event when FAQ card is clicked with helpCenterId', async () => {
                 const user = userEvent.setup()
-                render(<EmptyStates helpCenterId={123} />)
+                render(<EmptyStates shopName="test-shop" helpCenterId={123} />)
 
                 const faqCard = screen
                     .getByText('Help Center articles')
@@ -555,7 +644,11 @@ describe('EmptyStates', () => {
             it('opens sync store website modal when Website card is clicked', async () => {
                 const user = userEvent.setup()
                 render(
-                    <EmptyStates hasWebsiteSync={false} helpCenterId={null} />,
+                    <EmptyStates
+                        shopName="test-shop"
+                        hasWebsiteSync={false}
+                        helpCenterId={null}
+                    />,
                 )
 
                 const websiteCard = screen
@@ -568,7 +661,7 @@ describe('EmptyStates', () => {
 
             it('opens sync URL modal when URL card is clicked', async () => {
                 const user = userEvent.setup()
-                render(<EmptyStates helpCenterId={null} />)
+                render(<EmptyStates shopName="test-shop" helpCenterId={null} />)
 
                 const urlCard = screen.getByText('URLs').closest('div')
                 await act(() => user.click(urlCard!))
@@ -578,7 +671,7 @@ describe('EmptyStates', () => {
 
             it('dispatches OPEN_UPLOAD_DOCUMENT_MODAL when Documents card is clicked', async () => {
                 const user = userEvent.setup()
-                render(<EmptyStates helpCenterId={null} />)
+                render(<EmptyStates shopName="test-shop" helpCenterId={null} />)
 
                 const documentsCard = screen
                     .getByText('Documents')
@@ -746,7 +839,7 @@ describe('EmptyStates', () => {
         })
 
         it('EmptyStates renders without crashing when hasWebsiteSync is undefined', () => {
-            render(<EmptyStates helpCenterId={null} />)
+            render(<EmptyStates shopName="test-shop" helpCenterId={null} />)
 
             expect(screen.getByText('Store website')).toBeInTheDocument()
         })
@@ -754,6 +847,7 @@ describe('EmptyStates', () => {
         it('EmptyStateWrapper handles undefined helpCenterId', () => {
             render(
                 <EmptyStateWrapper
+                    shopName="test-shop"
                     documentFilter={null}
                     helpCenterId={undefined}
                     articles={[]}

@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import { Box, Button, Card, Heading, Icon, Text } from '@gorgias/axiom'
+import { Banner, Box, Button, Card, Heading, Icon, Text } from '@gorgias/axiom'
 import type { SizeValue } from '@gorgias/axiom'
 
 import { useSkillsAccess } from 'pages/aiAgent/hooks/useSkillsAccess'
@@ -20,9 +20,12 @@ import { KnowledgeType, typeConfig } from 'pages/aiAgent/KnowledgeHub/types'
 import { ClearSearchButton } from '../Table/BulkActions/ClearSearchButton'
 import { openUploadDocumentModal } from './UploadDocumentModal'
 
+import { useHistory } from 'react-router'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import css from './EmptyState.less'
 
 export const EmptyStates = ({
+    shopName,
     hasWebsiteSync = false,
     titleAlignment = 'center',
     helpCenterId,
@@ -30,6 +33,7 @@ export const EmptyStates = ({
     sectionsGap = 'xxl',
     isSyncDisabled = false,
 }: {
+    shopName: string
     hasWebsiteSync?: boolean
     titleAlignment?: string
     helpCenterId?: number | null
@@ -37,9 +41,11 @@ export const EmptyStates = ({
     sectionsGap?: SizeValue
     isSyncDisabled?: boolean
 }) => {
+    const history = useHistory()
+    const { routes } = useAiAgentNavigation({ shopName })
     const hasSkillsAccess = useSkillsAccess()
     const guidanceDescription = hasSkillsAccess
-        ? 'Add reference knowledge AI Agent can draw on to answer general questions.'
+        ? 'Create internal knowledge for AI Agent to answer general questions.'
         : 'Instruct AI Agent to handle customer requests and follow internal processes.'
 
     return (
@@ -51,8 +57,40 @@ export const EmptyStates = ({
                 alignItems={titleAlignment}
                 width="100%"
             >
-                <Heading size="md">Create something new</Heading>
-                <Box gap="sm" className={css.responsiveContainer}>
+                {hasSkillsAccess ? (
+                    <Banner
+                        intent="info"
+                        variant="inline"
+                        icon="ai-skill"
+                        size="sm"
+                        description={
+                            <Box
+                                width="506px"
+                                justifyContent="space-between"
+                                alignItems="center"
+                                flexDirection="row"
+                                gap="xs"
+                            >
+                                <Text size="sm">
+                                    Use skills to instruct AI Agent to handle
+                                    specific requests like returns.
+                                </Text>
+                                <Button
+                                    size="sm"
+                                    onClick={() => history.push(routes.skills)}
+                                    aria-label="Go to skills"
+                                    variant="primary"
+                                >
+                                    Go to skills
+                                </Button>
+                            </Box>
+                        }
+                        isClosable={false}
+                    />
+                ) : (
+                    <Heading size="sm">Create something new</Heading>
+                )}
+                <Box gap="md" className={css.responsiveContainer}>
                     <Card
                         elevation="default"
                         onClick={() => {
@@ -119,7 +157,7 @@ export const EmptyStates = ({
                 alignItems={titleAlignment}
                 width="100%"
             >
-                <Heading size="md">Bring in existing content</Heading>
+                <Heading size="sm">Bring in existing content</Heading>
                 <Box className={css.responsiveContainer} gap="md" width="100%">
                     {!hasWebsiteSync && (
                         <Card
@@ -409,11 +447,13 @@ export const EmptyStateDocument = () => {
 }
 
 export const EmptyStateWrapper = ({
+    shopName,
     documentFilter,
     helpCenterId,
     articles,
     onFaqEditorOpen,
 }: {
+    shopName: string
     documentFilter: KnowledgeType | null
     helpCenterId?: number | null
     articles: GroupedKnowledgeItem[]
@@ -440,6 +480,7 @@ export const EmptyStateWrapper = ({
             return (
                 <Box className={css.emptyStateContainer}>
                     <EmptyStates
+                        shopName={shopName}
                         helpCenterId={helpCenterId}
                         onFaqEditorOpen={onFaqEditorOpen}
                     />

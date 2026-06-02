@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useEffectOnce } from '@repo/hooks'
 import { useHistory, useParams } from 'react-router-dom'
 
-import { Box, Modal, OverlayHeader } from '@gorgias/axiom'
+import { Box, Heading, Modal, OverlayHeader } from '@gorgias/axiom'
 
 import {
     getLast28DaysDateRange,
@@ -743,8 +743,11 @@ export const KnowledgeHubContainer = () => {
                 isOpen={isAddKnowledgeModalOpen}
                 onOpenChange={onKnowledgeModalOpenChange}
             >
-                <OverlayHeader title="Create content" />
+                <OverlayHeader
+                    title={<Heading size="lg">Create content</Heading>}
+                />
                 <EmptyStates
+                    shopName={shopName}
                     hasWebsiteSync={hasWebsiteSync}
                     titleAlignment="flex-start"
                     helpCenterId={faqHelpCenterId}

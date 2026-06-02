@@ -543,6 +543,7 @@ export const KnowledgeHubTable = ({
         return (
             <div className={css.emptyTable}>
                 <EmptyStateWrapper
+                    shopName={shopName}
                     documentFilter={selectedTypeFilter}
                     articles={displayData}
                     helpCenterId={faqHelpCenterId}
