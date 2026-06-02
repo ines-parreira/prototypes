@@ -39,34 +39,14 @@ export const ChatPreviewPanelHeader = ({
 }: Props) => (
     <Box
         alignItems="center"
-        flexDirection="column"
         justifyContent="space-between"
         className={`${css.header} ${
             withBusinessHoursToggle ? css.headerWithBusinessHoursToggle : ''
         }`}
     >
-        <Box justifyContent="space-between" alignItems="center" width={'100%'}>
+        <Box alignItems="center" gap="xs">
             <Text variant={TextVariant.Medium}>Chat preview</Text>
-            {headerActions ??
-                (appId && (
-                    <ButtonGroup
-                        selectedKey={selectedPage}
-                        defaultSelectedKey="homepage"
-                        onSelectionChange={onPageChange}
-                    >
-                        <ButtonGroupItem
-                            id="homepage"
-                            icon={<Icon name="nav-home" />}
-                        />
-                        <ButtonGroupItem
-                            id="conversation"
-                            icon={<Icon name="chat-conversation-circle" />}
-                        />
-                    </ButtonGroup>
-                ))}
-        </Box>
-        {shouldShowChatVersionSwitcher && (
-            <Box width={'100%'}>
+            {shouldShowChatVersionSwitcher && (
                 <ButtonGroup
                     selectedKey={chatDisplayVersion}
                     defaultSelectedKey="current"
@@ -77,7 +57,24 @@ export const ChatPreviewPanelHeader = ({
                         New &#40;2.0&#41;
                     </ButtonGroupItem>
                 </ButtonGroup>
-            </Box>
-        )}
+            )}
+        </Box>
+        {headerActions ??
+            (appId && (
+                <ButtonGroup
+                    selectedKey={selectedPage}
+                    defaultSelectedKey="homepage"
+                    onSelectionChange={onPageChange}
+                >
+                    <ButtonGroupItem
+                        id="homepage"
+                        icon={<Icon name="nav-home" />}
+                    />
+                    <ButtonGroupItem
+                        id="conversation"
+                        icon={<Icon name="chat-conversation-circle" />}
+                    />
+                </ButtonGroup>
+            ))}
     </Box>
 )
