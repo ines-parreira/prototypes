@@ -14,11 +14,13 @@ import css from './InfobarCustomerFields.less'
 export interface InfobarCustomerFieldsProps {
     customer?: TicketCustomer
     ticketId?: string
+    isReadOnly?: boolean
 }
 
 export function InfobarCustomerFields({
     customer,
     ticketId,
+    isReadOnly = false,
 }: InfobarCustomerFieldsProps) {
     if (!customer || !customer.id) {
         return null
@@ -31,10 +33,14 @@ export function InfobarCustomerFields({
             key={customer.id}
             gap="xxxs"
         >
-            <InfobarCustomCustomerFields customer={customer} />
+            <InfobarCustomCustomerFields
+                customer={customer}
+                isReadOnly={isReadOnly}
+            />
             <InfobarBaseCustomerFields
                 customer={customer}
                 ticketId={ticketId}
+                isReadOnly={isReadOnly}
             />
             <Box className={css.overflowListToggle}>
                 <OverflowListShowMore

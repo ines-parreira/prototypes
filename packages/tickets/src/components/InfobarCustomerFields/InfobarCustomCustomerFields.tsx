@@ -11,10 +11,12 @@ import css from './InfobarCustomerFields.less'
 
 interface InfobarCustomCustomerFieldsProps {
     customer: TicketCustomer
+    isReadOnly?: boolean
 }
 
 export function InfobarCustomCustomerFields({
     customer,
+    isReadOnly = false,
 }: InfobarCustomCustomerFieldsProps) {
     const {
         data: definitionsData,
@@ -57,6 +59,7 @@ export function InfobarCustomCustomerFields({
                             )?.value as CustomFieldValue
                         }
                         customerId={customer.id}
+                        isReadOnly={isReadOnly}
                     />
                 </OverflowListItem>
             ))}

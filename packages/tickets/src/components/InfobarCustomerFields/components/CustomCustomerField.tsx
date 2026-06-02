@@ -13,12 +13,14 @@ interface CustomCustomerFieldProps {
     field: CustomField
     value: CustomFieldValue | undefined
     customerId: number
+    isReadOnly?: boolean
 }
 
 export function CustomCustomerField({
     field,
     value: queryValue,
     customerId,
+    isReadOnly = false,
 }: CustomCustomerFieldProps) {
     const [currentValue, setCurrentValue] = useState<
         CustomFieldValue | undefined
@@ -49,6 +51,10 @@ export function CustomCustomerField({
 
     const handleChange = useCallback(
         (newValue: CustomFieldValue | undefined) => {
+            if (isReadOnly) {
+                return
+            }
+
             /**
              * We only save text input values on the text input blur event to avoid
              * unnecessary API calls when the user is typing.
@@ -72,11 +78,15 @@ export function CustomCustomerField({
             setCurrentValue(newValue)
             mutate(newValue)
         },
-        [field, mutate],
+        [field, isReadOnly, mutate],
     )
 
     const handleBlur = useCallback(
         (newValue: CustomFieldValue | undefined) => {
+            if (isReadOnly) {
+                return
+            }
+
             if (isTextInput(field)) {
                 const textValue = newValue?.toString()?.trim()
                 currentValueRef.current = textValue
@@ -84,7 +94,7 @@ export function CustomCustomerField({
                 return mutate(textValue)
             }
         },
-        [field, mutate],
+        [field, isReadOnly, mutate],
     )
 
     return (
@@ -95,6 +105,7 @@ export function CustomCustomerField({
                 value={currentValue}
                 onChange={handleChange}
                 onBlur={handleBlur}
+                isReadOnly={isReadOnly}
             />
         </FieldRow>
     )

@@ -20,6 +20,7 @@ interface CustomCustomerFieldInputProps {
     onBlur?: (nextValue: CustomFieldValue | undefined) => void
     className?: string
     isInvalid?: boolean
+    isReadOnly?: boolean
 }
 
 export function CustomCustomerFieldInput({
@@ -30,6 +31,7 @@ export function CustomCustomerFieldInput({
     onBlur,
     className,
     isInvalid,
+    isReadOnly = false,
 }: CustomCustomerFieldInputProps) {
     if (isTextInput(field)) {
         return (
@@ -45,6 +47,7 @@ export function CustomCustomerFieldInput({
                 className={className}
                 ariaLabel={field.label}
                 isInvalid={isInvalid}
+                isReadOnly={isReadOnly}
                 showTooltip
             />
         )
@@ -68,6 +71,7 @@ export function CustomCustomerFieldInput({
                 className={className}
                 ariaLabel={field.label}
                 isInvalid={isInvalid}
+                isReadOnly={isReadOnly}
                 showTooltip
             />
         )
@@ -92,6 +96,7 @@ export function CustomCustomerFieldInput({
                     placeholder="+ Add"
                     ariaLabel={field.label}
                     isInvalid={isInvalid}
+                    isDisabled={isReadOnly}
                     showTooltip
                 />
             </div>

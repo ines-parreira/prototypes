@@ -25,6 +25,7 @@ type EditableFieldProps<T extends string | number> = {
     autoFocus?: boolean
     ariaLabel?: string
     isInvalid?: boolean
+    isReadOnly?: boolean
     showTooltip?: boolean
 } & (T extends string
     ?
@@ -65,6 +66,7 @@ export function EditableField<T extends string | number = string | number>(
         onBlur,
         ariaLabel,
         isInvalid,
+        isReadOnly = false,
         showTooltip = false,
     } = props
 
@@ -73,12 +75,16 @@ export function EditableField<T extends string | number = string | number>(
 
     const handleChange = useCallback(
         (value: T) => {
+            if (isReadOnly) {
+                return
+            }
+
             onValueChange(value)
             if (error) {
                 setError(undefined)
             }
         },
-        [error, onValueChange],
+        [error, isReadOnly, onValueChange],
     )
 
     const handleValue = useCallback(() => {
@@ -113,14 +119,22 @@ export function EditableField<T extends string | number = string | number>(
     const handleFieldBlur = useCallback(() => {
         setIsFocused(false)
 
+        if (isReadOnly) {
+            return
+        }
+
         const [isValid, value] = handleValue()
         if (isValid) {
             onBlur?.(value as T)
         }
-    }, [handleValue, onBlur, value])
+    }, [handleValue, isReadOnly, onBlur, value])
 
     const handleKeyDown = useCallback(
         (event: KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+            if (isReadOnly) {
+                return
+            }
+
             const isEnterKey = event.key === 'Enter'
             const hasModifier = isMacOs ? event.metaKey : event.ctrlKey
 
@@ -135,7 +149,7 @@ export function EditableField<T extends string | number = string | number>(
                 }
             }
         },
-        [type, handleValue],
+        [type, isReadOnly, handleValue],
     )
 
     const handleNumberPaste = useCallback(
@@ -197,6 +211,7 @@ export function EditableField<T extends string | number = string | number>(
                         minValue={minValue}
                         maxValue={maxValue}
                         isInvalid={isInvalid}
+                        isReadOnly={isReadOnly}
                     />
                 }
             >
@@ -226,6 +241,7 @@ export function EditableField<T extends string | number = string | number>(
                         autoFocus={autoFocus}
                         error={error}
                         isInvalid={isInvalid}
+                        isReadOnly={isReadOnly}
                         autoResize
                         maxRows={maxRows}
                     />
@@ -261,6 +277,7 @@ export function EditableField<T extends string | number = string | number>(
                     autoFocus={autoFocus}
                     error={error}
                     isInvalid={isInvalid}
+                    isReadOnly={isReadOnly}
                 />
             }
         >

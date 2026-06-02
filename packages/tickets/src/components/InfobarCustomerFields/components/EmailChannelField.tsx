@@ -22,6 +22,7 @@ type EmailChannelFieldProps = {
     onChannelChange: (value: string) => void
     onChannelBlur: (value: string) => void
     onChannelDelete: () => void
+    isReadOnly?: boolean
 }
 export function EmailChannelField({
     index,
@@ -30,6 +31,7 @@ export function EmailChannelField({
     onChannelChange,
     onChannelBlur,
     onChannelDelete,
+    isReadOnly = false,
 }: EmailChannelFieldProps) {
     const history = useHistory()
     const { handleTicketDraft } = useTicketsLegacyBridge()
@@ -69,6 +71,7 @@ export function EmailChannelField({
                     onValueChange={onChannelChange}
                     onBlur={onChannelBlur}
                     onDelete={onChannelDelete}
+                    isReadOnly={isReadOnly}
                 >
                     {hasDraft ? (
                         <SubMenu label="Send email" leadingSlot="mail">

@@ -28,6 +28,7 @@ type EditableMenuFieldProps = {
     onDelete?: () => void
     children?: ReactNode
     ariaLabel?: string
+    isReadOnly?: boolean
 }
 
 export function EditableMenuField(props: EditableMenuFieldProps) {
@@ -44,6 +45,7 @@ export function EditableMenuField(props: EditableMenuFieldProps) {
         onDelete,
         children,
         ariaLabel,
+        isReadOnly = false,
     } = props
 
     const [isEditing, setIsEditing] = useState(false)
@@ -51,22 +53,35 @@ export function EditableMenuField(props: EditableMenuFieldProps) {
     const fieldRef = useRef<HTMLDivElement>(null)
 
     const handleEditClick = useCallback(() => {
+        if (isReadOnly) {
+            return
+        }
+
         setIsEditing(true)
-    }, [])
+    }, [isReadOnly])
 
     const handleValueChange = useCallback(
         (newValue: string) => {
+            if (isReadOnly) {
+                return
+            }
+
             onValueChange(newValue)
         },
-        [onValueChange],
+        [isReadOnly, onValueChange],
     )
 
     const handleBlur = useCallback(
         (value: string) => {
+            if (isReadOnly) {
+                setIsEditing(false)
+                return
+            }
+
             onBlur(value)
             setIsEditing(false)
         },
-        [onBlur],
+        [isReadOnly, onBlur],
     )
 
     if (isEditing || !value) {
@@ -82,6 +97,7 @@ export function EditableMenuField(props: EditableMenuFieldProps) {
                     autoFocus={isEditing}
                     onBlur={handleBlur}
                     ariaLabel={ariaLabel}
+                    isReadOnly={isReadOnly}
                 />
             </div>
         )
@@ -113,18 +129,22 @@ export function EditableMenuField(props: EditableMenuFieldProps) {
                 placement="bottom right"
             >
                 {children}
-                <MenuItem
-                    label={`Edit ${name}`}
-                    leadingSlot="edit-pencil"
-                    onAction={handleEditClick}
-                />
-                {onDelete && (
-                    <MenuItem
-                        label={`Delete ${name}`}
-                        intent={Intent.Destructive}
-                        leadingSlot="trash-empty"
-                        onAction={onDelete}
-                    />
+                {!isReadOnly && (
+                    <>
+                        <MenuItem
+                            label={`Edit ${name}`}
+                            leadingSlot="edit-pencil"
+                            onAction={handleEditClick}
+                        />
+                        {onDelete && (
+                            <MenuItem
+                                label={`Delete ${name}`}
+                                intent={Intent.Destructive}
+                                leadingSlot="trash-empty"
+                                onAction={onDelete}
+                            />
+                        )}
+                    </>
                 )}
             </Menu>
         </div>

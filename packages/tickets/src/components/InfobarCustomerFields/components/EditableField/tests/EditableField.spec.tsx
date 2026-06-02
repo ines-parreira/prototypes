@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { act, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 
 import { render } from '../../../../../tests/render.utils'
 import { EditableField } from '../EditableField'
@@ -215,6 +215,36 @@ describe('EditableField', () => {
         )
 
         expect(getByDisplayValue('Updated value')).toBeInTheDocument()
+    })
+
+    describe('Read-only state', () => {
+        it('should not call change or blur handlers for read-only text fields', async () => {
+            const onValueChange = vi.fn()
+            const onBlur = vi.fn()
+
+            const { user } = render(
+                <EditableField
+                    value="Locked value"
+                    onValueChange={onValueChange}
+                    onBlur={onBlur}
+                    placeholder="+ Add"
+                    isReadOnly
+                />,
+            )
+
+            const input = screen.getByRole('textbox', { name: '+ Add' })
+
+            expect(input).toHaveAttribute('readonly')
+
+            await user.click(input)
+            await user.type(input, ' change')
+            await user.keyboard('{Enter}')
+            await user.tab()
+
+            expect(input).toHaveValue('Locked value')
+            expect(onValueChange).not.toHaveBeenCalled()
+            expect(onBlur).not.toHaveBeenCalled()
+        })
     })
 
     describe('Keyboard shortcuts', () => {

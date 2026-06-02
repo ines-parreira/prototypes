@@ -168,4 +168,14 @@ describe('CustomerPreview', () => {
             screen.queryByRole('button', { name: 'Switch customer' }),
         ).not.toBeInTheDocument()
     })
+
+    it('should render customer fields as read-only', async () => {
+        render(<CustomerPreview {...defaultProps} />)
+
+        const noteField = await screen.findByRole('textbox', {
+            name: 'Note',
+        })
+
+        expect(noteField).toHaveAttribute('readonly')
+    })
 })

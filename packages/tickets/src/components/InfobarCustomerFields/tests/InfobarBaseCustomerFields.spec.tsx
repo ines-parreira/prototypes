@@ -108,12 +108,19 @@ const setupMocks = (userSettings = [{}]) => {
     )
 }
 
-const TestComponent = ({ customer }: { customer: TicketCustomer }) => {
+const TestComponent = ({
+    customer,
+    isReadOnly = false,
+}: {
+    customer: TicketCustomer
+    isReadOnly?: boolean
+}) => {
     return (
         <OverflowList nonExpandedLineCount={7}>
             <InfobarBaseCustomerFields
                 ticketId={ticketId}
                 customer={customer}
+                isReadOnly={isReadOnly}
             />
         </OverflowList>
     )
@@ -250,6 +257,23 @@ describe('InfobarBaseCustomerFields', () => {
         expect(screen.getByText('+16666666666')).toBeInTheDocument()
         expect(screen.getByText('foo-address')).toBeInTheDocument()
         expect(screen.getByText('Foo Bar')).toBeInTheDocument()
+    })
+
+    it('should not expose edit or delete channel actions when read-only', async () => {
+        const customer = createMockCustomer()
+        setupMocks()
+
+        const { user } = render(
+            <TestComponent customer={customer} isReadOnly />,
+        )
+
+        await screen.findByText('Note')
+
+        await user.click(screen.getByText('test@example.com'))
+
+        expect(await screen.findByText('Send email')).toBeInTheDocument()
+        expect(screen.queryByText('Edit email')).not.toBeInTheDocument()
+        expect(screen.queryByText('Delete email')).not.toBeInTheDocument()
     })
 
     describe('Draft ticket functionality', () => {

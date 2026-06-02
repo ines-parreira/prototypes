@@ -24,6 +24,7 @@ type PhoneChannelFieldProps = {
     onChannelChange: (value: string) => void
     onChannelBlur: (value: string) => void
     onChannelDelete: () => void
+    isReadOnly?: boolean
 }
 
 export function PhoneChannelField({
@@ -33,6 +34,7 @@ export function PhoneChannelField({
     onChannelChange,
     onChannelBlur,
     onChannelDelete,
+    isReadOnly = false,
 }: PhoneChannelFieldProps) {
     const { phoneIntegrations, smsIntegrations, phoneNumbers, isLoading } =
         usePhoneAndSMSIntegrations()
@@ -56,6 +58,7 @@ export function PhoneChannelField({
                     onValueChange={onChannelChange}
                     onBlur={onChannelBlur}
                     onDelete={onChannelDelete}
+                    isReadOnly={isReadOnly}
                 >
                     <VoiceFieldMenuItems
                         phoneAddress={channel.address || ''}

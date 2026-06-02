@@ -92,6 +92,7 @@ export function CustomerPreview({
                 <Card alignSelf="flex-start">
                     <InfobarCustomerFields
                         customer={customer as TicketCustomer}
+                        isReadOnly
                     />
                 </Card>
             </OverlayContent>

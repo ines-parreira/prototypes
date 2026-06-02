@@ -23,11 +23,13 @@ const NOTE_VISIBLE_LINE_COUNT = 5
 interface InfobarBaseCustomerFieldsProps {
     customer: TicketCustomer
     ticketId?: string
+    isReadOnly?: boolean
 }
 
 export function InfobarBaseCustomerFields({
     customer,
     ticketId,
+    isReadOnly = false,
 }: InfobarBaseCustomerFieldsProps) {
     const {
         emailChannels,
@@ -62,6 +64,7 @@ export function InfobarBaseCustomerFields({
                         type="textarea"
                         maxRows={NOTE_VISIBLE_LINE_COUNT}
                         showTooltip
+                        isReadOnly={isReadOnly}
                     />
                 </FieldRow>
             </OverflowListItem>
@@ -79,6 +82,7 @@ export function InfobarBaseCustomerFields({
                             updateChannel(channel.id, value)
                         }
                         onChannelDelete={() => deleteChannel(channel.id)}
+                        isReadOnly={isReadOnly}
                     />
                 ))
             ) : (
@@ -99,6 +103,7 @@ export function InfobarBaseCustomerFields({
                                 validateChannelField('email', value)
                             }
                             ariaLabel="Email"
+                            isReadOnly={isReadOnly}
                         />
                     </FieldRow>
                 </OverflowListItem>
@@ -117,6 +122,7 @@ export function InfobarBaseCustomerFields({
                             updateChannel(channel.id, value)
                         }
                         onChannelDelete={() => deleteChannel(channel.id)}
+                        isReadOnly={isReadOnly}
                     />
                 ))
             ) : (
@@ -137,6 +143,7 @@ export function InfobarBaseCustomerFields({
                                 validateChannelField('phone', value)
                             }
                             ariaLabel="Phone"
+                            isReadOnly={isReadOnly}
                         />
                     </FieldRow>
                 </OverflowListItem>
