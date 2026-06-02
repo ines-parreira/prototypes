@@ -13,6 +13,7 @@ import type { RealtimeConnectionStateChange } from '@gorgias/realtime'
 
 import { EmailIntegrationMigrationRealtimeHandler } from './EmailIntegrationMigrationRealtimeHandler'
 import { useRealtimeConnectionStateChanges } from './hooks/useRealtimeConnectionStateChanges'
+import { UserChannelRealtimeHandler } from './UserChannelRealtimeHandler'
 
 type Props = {
     children: ReactNode
@@ -39,7 +40,6 @@ const AblyRealtimeProviders = ({ children }: Props) => {
     const isEmailIntegrationMigrationToAblyEnabled = useFlag(
         FeatureFlagKey.EmailIntegrationMigrationToAbly,
     )
-
     const isErrorReportingEnabled = useRef(isAblyRealtimeErrorReportingEnabled)
     const isFailedStateReportingEnabled = useRef(
         isAblyFailedStateReportingEnabled,
@@ -100,6 +100,7 @@ const AblyRealtimeProviders = ({ children }: Props) => {
                 {isEmailIntegrationMigrationToAblyEnabled && (
                     <EmailIntegrationMigrationRealtimeHandler />
                 )}
+                <UserChannelRealtimeHandler />
                 {children}
             </AgentActivityProvider>
         </RealtimeProvider>

@@ -1191,12 +1191,16 @@ describe('receivedEvents', () => {
             name: 'ticket-message-action-failed',
         }) as ReceivedEvent
 
-        it('should invalidate the ticket thread queries for the failed ticket', () => {
+        beforeEach(() => {
+            mockFetchFlag.mockResolvedValue({ flag: false, error: null })
+        })
+
+        it('should invalidate the ticket thread queries for the failed ticket', async () => {
             const invalidateQueriesSpy = jest
                 .spyOn(appQueryClient, 'invalidateQueries')
                 .mockResolvedValue()
 
-            handler.onReceive({
+            await handler.onReceive({
                 event: { type: 'ticket-message-action-failed' },
                 ticket_id: 42,
             } as any)
@@ -1214,14 +1218,36 @@ describe('receivedEvents', () => {
             })
         })
 
-        it('should dispatch the action failure handler with the failed ticket id', () => {
-            handler.onReceive({
+        it('should dispatch the action failure handler with the failed ticket id', async () => {
+            await handler.onReceive({
                 event: { type: 'ticket-message-action-failed' },
                 ticket_id: 42,
             } as any)
 
             expect(ticketActions.handleMessageActionError).toHaveBeenCalledWith(
                 42,
+            )
+        })
+
+        it('should not dispatch when the Ably migration feature flag is enabled', async () => {
+            mockFetchFlag.mockResolvedValueOnce({ flag: true, error: null })
+            const invalidateQueriesSpy = jest.spyOn(
+                appQueryClient,
+                'invalidateQueries',
+            )
+
+            await handler.onReceive({
+                event: { type: 'ticket-message-action-failed' },
+                ticket_id: 42,
+            } as any)
+
+            expect(invalidateQueriesSpy).not.toHaveBeenCalled()
+            expect(
+                ticketActions.handleMessageActionError,
+            ).not.toHaveBeenCalled()
+            expect(mockFetchFlag).toHaveBeenCalledWith(
+                FeatureFlagKey.TicketMessageActionFailedToAbly,
+                false,
             )
         })
     })

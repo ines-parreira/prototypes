@@ -29,6 +29,12 @@ jest.mock('../hooks/useRealtimeConnectionStateChanges', () => ({
     }),
 }))
 
+jest.mock('../UserChannelRealtimeHandler', () => ({
+    UserChannelRealtimeHandler: () => (
+        <div data-testid="user-channel-realtime-handler" />
+    ),
+}))
+
 jest.mock('../EmailIntegrationMigrationRealtimeHandler', () => ({
     EmailIntegrationMigrationRealtimeHandler: () => (
         <div data-testid="email-migration-realtime-handler" />
@@ -99,6 +105,14 @@ describe('AblyRealtimeProviders', () => {
         expect(getByTestId('agent-activity-provider')).toBeInTheDocument()
         expect(getByText('foo')).toBeInTheDocument()
         expect(mockUseRealtimeAccountSubscription).toHaveBeenCalled()
+    })
+
+    it('should render the user channel realtime handler', () => {
+        const { getByTestId } = render(
+            <AblyRealtimeProviders>foo</AblyRealtimeProviders>,
+        )
+
+        expect(getByTestId('user-channel-realtime-handler')).toBeInTheDocument()
     })
 
     it('should render the email migration realtime handler when the migration feature flag is enabled', () => {

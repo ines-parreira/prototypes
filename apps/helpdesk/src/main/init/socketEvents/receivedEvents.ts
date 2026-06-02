@@ -103,6 +103,15 @@ async function isEmailIntegrationMigrationToAblyEnabled() {
     return flag
 }
 
+async function isTicketMessageActionFailedToAblyEnabled() {
+    const { flag } = await fetchFlag(
+        FeatureFlagKey.TicketMessageActionFailedToAbly,
+        false,
+    )
+
+    return flag
+}
+
 const receivedEvents: ReceivedEvent[] = [
     {
         name: 'customer-updated',
@@ -210,7 +219,9 @@ const receivedEvents: ReceivedEvent[] = [
     },
     {
         name: 'ticket-message-action-failed',
-        onReceive: function (json) {
+        onReceive: async function (json) {
+            if (await isTicketMessageActionFailedToAblyEnabled()) return
+
             const ticketId = Number(
                 (json as TicketMessageActionFailedEvent).ticket_id,
             )

@@ -221,6 +221,7 @@ export enum FeatureFlagKey {
     SurfaceOpportunities = 'linear.project_proactively-surface-opportunities.enable-new-opportunities',
     SwitchToShopifyThemeAppExtension = 'switch-to-shopify-theme-app-extension',
     TicketDemoSuggestion = 'ticket-demo-suggestion',
+    TicketMessageActionFailedToAbly = 'linear.task_HELP-5485.migrate-ticket-message-action-failed-to-ably',
     TicketMessagesAssignedToWrongTicketDebugging = 'linear-HELP-6492-ticket-messages-assigned-to-wrong-ticket-debugging',
     TicketThreadLoadingState = 'linear-HELP-6428-ticket-thread-loading-state',
     TicketThreadRevamp = 'linear.project_ticket-thread-revamp.access',
