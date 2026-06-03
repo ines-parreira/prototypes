@@ -67,25 +67,6 @@ export const EmailToggle = ({
         return { visible: decision.visible, hint: '', action }
     }, [routes.deployEmail, isEmailChannelDisabled])
 
-    const renderTrialOptInHint = useCallback(() => {
-        const visible = isReadOnly && !isEmailChannelDisabled
-        const message = 'Start your trial to deploy AI Agent on email'
-
-        const action = visible ? (
-            <div className={css.customToggleWarning}>
-                <Text
-                    size="sm"
-                    variant="regular"
-                    color="content-neutral-secondary"
-                >
-                    {message}
-                </Text>
-            </div>
-        ) : null
-
-        return { visible, hint: '', action }
-    }, [isReadOnly, isEmailChannelDisabled])
-
     return (
         <div className={css.toggleContainer}>
             <ChannelToggle
@@ -99,7 +80,7 @@ export const EmailToggle = ({
                 checked={isEmailChannelEnabled}
                 disabled={isEmailChannelDisabled || isLoading || isReadOnly}
                 onChange={handleEmailToggle}
-                warnings={[renderEmailWarning(), renderTrialOptInHint()]}
+                warnings={[renderEmailWarning()]}
                 tooltip={{
                     visible: false,
                     content: '',
