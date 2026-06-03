@@ -1,9 +1,6 @@
 import { useCallback, useMemo } from 'react'
 
-import {
-    LiveAgentsRealtimeListener,
-    useCustomAgentUnavailableStatusesFlag,
-} from '@repo/agent-status'
+import { useCustomAgentUnavailableStatusesFlag } from '@repo/agent-status'
 import { produce } from 'immer'
 import moment from 'moment-timezone'
 
@@ -27,7 +24,6 @@ import TableStat from 'domains/reporting/pages/common/components/charts/TableSta
 import StatCurrentDate from 'domains/reporting/pages/common/components/StatCurrentDate'
 import StatsPage from 'domains/reporting/pages/common/layout/StatsPage'
 import StatWrapper from 'domains/reporting/pages/common/layout/StatWrapper'
-import { usePerformancePageAgentAvailabilities } from 'domains/reporting/pages/live/agents/hooks/usePerformancePageAgentAvailabilities'
 import css from 'domains/reporting/pages/live/agents/LiveAgents.less'
 import { LiveAgentsFilters } from 'domains/reporting/pages/live/agents/LiveAgentsFilters'
 import StatsFiltersContext from 'domains/reporting/pages/StatsFiltersContext'
@@ -36,7 +32,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
 import { AccountFeature } from 'state/currentAccount/types'
-import { getUserIdsFromLiveAgentsPerformance } from 'state/entities/stats/selectors'
 
 import { usePerformancePageAgentPhoneStatuses } from './hooks/usePerformancePageAgentPhoneStatuses'
 
@@ -94,21 +89,12 @@ function LiveAgents() {
         )
     }, [userPerformance, isAgentAvailabilityEnabled])
 
-    const userIds = useAppSelector(getUserIdsFromLiveAgentsPerformance)
-
-    usePerformancePageAgentAvailabilities({
-        enabled: isAgentAvailabilityEnabled,
-    })
-
     usePerformancePageAgentPhoneStatuses({
         enabled: isAgentAvailabilityEnabled,
     })
 
     return (
         <StatsFiltersContext.Provider value={pageStatsFilters}>
-            {isAgentAvailabilityEnabled && (
-                <LiveAgentsRealtimeListener userIds={userIds} />
-            )}
             <StatsPage
                 title="Live agents"
                 description="Live Agents will show you the work agents have accomplished over the day."

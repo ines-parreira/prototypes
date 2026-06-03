@@ -1,17 +1,20 @@
 import { useMemo } from 'react'
 
+import { useUserAvailability } from '@repo/users'
+
+import type { UserAvailability } from '@gorgias/helpdesk-queries'
+
 import type { AgentStatusWithSystem } from '../types'
 import { resolveActiveStatus } from '../utils/resolveActiveStatus'
 import { useSelectableAgentAvailabilityStatuses } from './useSelectableAgentAvailabilityStatuses'
-import { useUserAvailability } from './useUserAvailability'
 
 type UseUserAvailabilityStatusParams = {
     userId: number
-    /**
-     * When true, only reads from cache and never makes a network request.
-     * Useful when using with useBatchAvailability which pre-populates the cache.
-     */
-    cacheOnly?: boolean
+}
+
+type UseUserAvailabilityStatusReturn = {
+    status: AgentStatusWithSystem | undefined
+    availability: UserAvailability | undefined
 }
 
 /**
@@ -19,20 +22,15 @@ type UseUserAvailabilityStatusParams = {
  * Combines user availability status and selectable statuses to determine the current active status.
  *
  * @param userId - The user ID to get the active status for
- * @returns The active agent status or undefined if not found
+ * @returns The active agent status (or undefined) and the raw availability payload
  *
  * @example
  * const { status, availability } = useUserAvailabilityStatus({ userId: 123 })
  */
 export const useUserAvailabilityStatus = ({
     userId,
-    cacheOnly = false,
-}: UseUserAvailabilityStatusParams) => {
-    const { availability, isLoading, isFetching, isError, error } =
-        useUserAvailability({
-            userId,
-            cacheOnly,
-        })
+}: UseUserAvailabilityStatusParams): UseUserAvailabilityStatusReturn => {
+    const availability = useUserAvailability(userId)
 
     const { allStatuses } = useSelectableAgentAvailabilityStatuses()
 
@@ -44,9 +42,5 @@ export const useUserAvailabilityStatus = ({
     return {
         status,
         availability,
-        isLoading,
-        isFetching,
-        isError,
-        error,
     }
 }

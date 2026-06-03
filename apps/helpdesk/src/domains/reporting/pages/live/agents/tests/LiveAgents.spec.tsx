@@ -14,7 +14,6 @@ import { TicketChannel } from 'business/types/ticket'
 import useStatResource from 'domains/reporting/hooks/useStatResource'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import type DEPRECATED_TagsStatsFilter from 'domains/reporting/pages/common/filters/DEPRECATED_TagsStatsFilter'
-import { usePerformancePageAgentAvailabilities } from 'domains/reporting/pages/live/agents/hooks/usePerformancePageAgentAvailabilities'
 import { usePerformancePageAgentPhoneStatuses } from 'domains/reporting/pages/live/agents/hooks/usePerformancePageAgentPhoneStatuses'
 import LiveAgents from 'domains/reporting/pages/live/agents/LiveAgents'
 import { initialState as uiFiltersInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
@@ -67,30 +66,13 @@ jest.mock('@repo/feature-flags', () => ({
 }))
 jest.mock('@repo/agent-status', () => ({
     ...jest.requireActual('@repo/agent-status'),
-    useListUserAvailabilities: jest.fn(() => ({
-        data: undefined,
-        isLoading: false,
-        isError: false,
-        error: null,
-    })),
     useListUserPhoneStatuses: jest.fn(() => ({
         data: undefined,
         isLoading: false,
         isError: false,
         error: null,
     })),
-    LiveAgentsRealtimeListener: ({ userIds }: { userIds: number[] }) => (
-        <div data-testid="live-agents-realtime-listener">
-            LiveAgentsRealtimeListener: {userIds.join(',')}
-        </div>
-    ),
 }))
-jest.mock(
-    'domains/reporting/pages/live/agents/hooks/usePerformancePageAgentAvailabilities',
-    () => ({
-        usePerformancePageAgentAvailabilities: jest.fn(),
-    }),
-)
 jest.mock(
     'domains/reporting/pages/live/agents/hooks/usePerformancePageAgentPhoneStatuses',
     () => ({
@@ -108,9 +90,6 @@ const useStatResourceMock = useStatResource as jest.MockedFunction<
     typeof useStatResource
 >
 const useFlagMock = assumeMock(useFlag)
-const usePerformancePageAgentAvailabilitiesMock = assumeMock(
-    usePerformancePageAgentAvailabilities,
-)
 const usePerformancePageAgentPhoneStatusesMock = assumeMock(
     usePerformancePageAgentPhoneStatuses,
 )
@@ -149,12 +128,6 @@ describe('LiveAgents', () => {
     beforeEach(() => {
         useStatResourceMock.mockReturnValue([null, true, _noop])
         useFlagMock.mockReturnValue(false)
-        usePerformancePageAgentAvailabilitiesMock.mockReturnValue({
-            data: undefined,
-            isLoading: false,
-            isError: false,
-            error: null,
-        } as any)
         usePerformancePageAgentPhoneStatusesMock.mockReturnValue({
             data: undefined,
             isLoading: false,
@@ -264,70 +237,6 @@ describe('LiveAgents', () => {
         render(<LiveAgents />, { storeState: defaultState })
 
         expect(screen.getByText('AVAILABILITY')).toBeInTheDocument()
-    })
-
-    it('should call usePerformancePageAgentAvailabilities with enabled=true when feature flag is enabled', () => {
-        useFlagMock.mockReturnValue(true)
-        useStatResourceMock.mockImplementation(() => {
-            return [userPerformanceOverview, false, _noop]
-        })
-
-        render(<LiveAgents />, { storeState: defaultState })
-
-        expect(usePerformancePageAgentAvailabilitiesMock).toHaveBeenCalledWith({
-            enabled: true,
-        })
-    })
-
-    it('should call usePerformancePageAgentAvailabilities with enabled=false when feature flag is disabled', () => {
-        useFlagMock.mockReturnValue(false)
-        useStatResourceMock.mockImplementation(() => {
-            return [userPerformanceOverview, false, _noop]
-        })
-
-        render(<LiveAgents />, { storeState: defaultState })
-
-        expect(usePerformancePageAgentAvailabilitiesMock).toHaveBeenCalledWith({
-            enabled: false,
-        })
-    })
-
-    it('should render LiveAgentsRealtimeListener when feature flag is enabled', () => {
-        useFlagMock.mockReturnValue(true)
-        useStatResourceMock.mockImplementation(() => {
-            return [userPerformanceOverview, false, _noop]
-        })
-
-        render(<LiveAgents />, { storeState: defaultState })
-
-        expect(
-            screen.getByTestId('live-agents-realtime-listener'),
-        ).toBeInTheDocument()
-    })
-
-    it('should not render LiveAgentsRealtimeListener when feature flag is disabled', () => {
-        useFlagMock.mockReturnValue(false)
-        useStatResourceMock.mockImplementation(() => {
-            return [userPerformanceOverview, false, _noop]
-        })
-
-        render(<LiveAgents />, { storeState: defaultState })
-
-        expect(
-            screen.queryByTestId('live-agents-realtime-listener'),
-        ).not.toBeInTheDocument()
-    })
-
-    it('should pass correct userIds to LiveAgentsRealtimeListener', () => {
-        useFlagMock.mockReturnValue(true)
-        useStatResourceMock.mockImplementation(() => {
-            return [userPerformanceOverview, false, _noop]
-        })
-
-        render(<LiveAgents />, { storeState: defaultState })
-
-        const listener = screen.getByTestId('live-agents-realtime-listener')
-        expect(listener).toHaveTextContent('LiveAgentsRealtimeListener: 1')
     })
 
     it('should call usePerformancePageAgentPhoneStatuses with enabled=true when feature flag is enabled', () => {

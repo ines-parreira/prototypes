@@ -1,32 +1,34 @@
 import { renderHook } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
-import { fromJS } from 'immutable'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import {
     mockCustomUserAvailabilityStatus,
     mockListCustomUserAvailabilityStatusesHandler,
     mockListUserAvailabilitiesHandler,
-    mockUserAvailabilityDetail,
+    mockListUserAvailabilitiesResponse,
+    mockUserAvailability,
 } from '@gorgias/helpdesk-mocks'
-import type { UserAvailability } from '@gorgias/helpdesk-queries'
-import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { useAvailabilityCellAvailabilityData } from 'domains/reporting/pages/common/components/charts/TableStat/cells/hooks/useAvailabilityCellAvailabilityData'
-import { user } from 'fixtures/users'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-const mockStore = configureMockStore([thunk])
 const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'warn' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('useAvailabilityCellAvailabilityData', () => {
     const userId = 123
-    let queryClient: ReturnType<typeof mockQueryClient>
 
     const customStatus = mockCustomUserAvailabilityStatus({
         id: 'custom-123',
@@ -35,143 +37,71 @@ describe('useAvailabilityCellAvailabilityData', () => {
         duration_value: 30,
     })
 
-    const defaultState = {
-        currentUser: fromJS(user),
-        entities: {
-            stats: {
-                'live-agents-stat': fromJS({
-                    data: {
-                        lines: [
-                            [{ value: { id: 123, name: 'Agent 1' } }],
-                            [{ value: { id: 456, name: 'Agent 2' } }],
-                            [{ value: { id: 789, name: 'Agent 3' } }],
-                        ],
+    const availabilityListHandler = (
+        availability: ReturnType<typeof mockUserAvailability>,
+    ) =>
+        mockListUserAvailabilitiesHandler(async () =>
+            HttpResponse.json(
+                mockListUserAvailabilitiesResponse({
+                    data: [availability],
+                    meta: {
+                        prev_cursor: null,
+                        next_cursor: null,
+                        total_resources: 1,
                     },
                 }),
-            },
-        },
-    }
-
-    const renderHookWithProviders = (state = defaultState) =>
-        renderHook(() => useAvailabilityCellAvailabilityData({ userId }), {
-            wrapper: ({ children }) => (
-                <Provider store={mockStore(state)}>
-                    <QueryClientProvider client={queryClient}>
-                        {children}
-                    </QueryClientProvider>
-                </Provider>
             ),
-        })
+        ).handler
 
-    beforeAll(() => {
-        server.listen({ onUnhandledRequest: 'warn' })
-    })
-
-    beforeEach(() => {
-        queryClient = mockQueryClient()
-    })
-
-    afterEach(() => {
-        server.resetHandlers()
-        queryClient.clear()
-    })
-
-    afterAll(() => {
-        server.close()
-    })
+    const customStatusesHandler = (
+        data: ReturnType<typeof mockCustomUserAvailabilityStatus>[],
+    ) =>
+        mockListCustomUserAvailabilityStatusesHandler(async ({ data: body }) =>
+            HttpResponse.json({ ...body, data }),
+        ).handler
 
     describe('Standard status resolution', () => {
-        it('should resolve standard status from cache', async () => {
-            const mockListAvailabilities = mockListUserAvailabilitiesHandler(
-                async ({ data }) =>
-                    HttpResponse.json({
-                        ...data,
-                        data: [
-                            mockUserAvailabilityDetail({
-                                user_id: userId,
-                                user_status: 'available',
-                            }) as UserAvailability,
-                        ],
-                    }),
-            )
-
-            const mockListStatuses =
-                mockListCustomUserAvailabilityStatusesHandler(
-                    async ({ data }) =>
-                        HttpResponse.json({ ...data, data: [] }),
-                )
-
-            server.use(mockListAvailabilities.handler, mockListStatuses.handler)
-
-            const { result } = renderHookWithProviders()
-
-            expect(result.current.isLoading).toBe(true)
-            expect(result.current.status).toBeUndefined()
-
-            queryClient.setQueryData(
-                queryKeys.userAvailability.getUserAvailability(userId),
-                {
-                    data: mockUserAvailabilityDetail({
+        it('should resolve a standard status from the availability list', async () => {
+            server.use(
+                availabilityListHandler(
+                    mockUserAvailability({
                         user_id: userId,
                         user_status: 'available',
-                    }) as UserAvailability,
-                },
+                    }),
+                ),
+                customStatusesHandler([]),
+            )
+
+            const { result } = renderHook(() =>
+                useAvailabilityCellAvailabilityData({ userId }),
             )
 
             await waitFor(() => {
-                expect(result.current.isLoading).toBe(false)
+                expect(result.current.status?.id).toBe('available')
             })
-
-            expect(result.current.status?.id).toBe('available')
         })
     })
 
     describe('Custom status resolution', () => {
-        it('should resolve custom status from custom status list', async () => {
-            const mockListAvailabilities = mockListUserAvailabilitiesHandler(
-                async ({ data }) =>
-                    HttpResponse.json({
-                        ...data,
-                        data: [
-                            mockUserAvailabilityDetail({
-                                user_id: userId,
-                                user_status: 'custom',
-                                custom_user_availability_status_id:
-                                    customStatus.id,
-                            }) as UserAvailability,
-                        ],
-                    }),
-            )
-
-            const mockListStatuses =
-                mockListCustomUserAvailabilityStatusesHandler(
-                    async ({ data }) =>
-                        HttpResponse.json({
-                            ...data,
-                            data: [customStatus],
-                        }),
-                )
-
-            server.use(mockListAvailabilities.handler, mockListStatuses.handler)
-
-            queryClient.setQueryData(
-                queryKeys.userAvailability.getUserAvailability(userId),
-                {
-                    data: mockUserAvailabilityDetail({
+        it('should resolve a custom status from the custom status list', async () => {
+            server.use(
+                availabilityListHandler(
+                    mockUserAvailability({
                         user_id: userId,
                         user_status: 'custom',
                         custom_user_availability_status_id: customStatus.id,
-                    }) as UserAvailability,
-                },
+                    }),
+                ),
+                customStatusesHandler([customStatus]),
             )
 
-            const { result } = renderHookWithProviders()
+            const { result } = renderHook(() =>
+                useAvailabilityCellAvailabilityData({ userId }),
+            )
 
             await waitFor(() => {
-                expect(result.current.status).toBeDefined()
+                expect(result.current.status?.id).toBe(customStatus.id)
             })
-
-            expect(result.current.status?.id).toBe(customStatus.id)
             expect(result.current.status?.name).toBe('Lunch Break')
         })
     })

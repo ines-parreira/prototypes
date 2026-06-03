@@ -4,7 +4,10 @@ export { UserStatusIndicator } from './components/UserStatusIndicator'
 export type { UserStatusIndicatorProps } from './components/UserStatusIndicator'
 export { useAccountOwner } from './hooks/useAccountOwner'
 export { useAllAvailableUserIds } from './hooks/useAllAvailableUserIds'
-export { useAllUserAvailabilities } from './hooks/useAllUserAvailabilities'
+export {
+    USER_AVAILABILITIES_PAGE_LIMIT,
+    useAllUserAvailabilities,
+} from './hooks/useAllUserAvailabilities'
 export { useAllUsers } from './hooks/useAllUsers'
 export { useAllUsersLoadingState } from './hooks/useAllUsersLoadingState'
 export { useCreateUser } from './hooks/useCreateUser'

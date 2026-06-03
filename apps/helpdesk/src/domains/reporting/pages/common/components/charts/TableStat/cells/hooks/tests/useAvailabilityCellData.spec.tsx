@@ -13,12 +13,13 @@ import {
     mockGetUserPhoneStatusHandler,
     mockListCustomUserAvailabilityStatusesHandler,
     mockListUserAvailabilitiesHandler,
+    mockListUserAvailabilitiesResponse,
     mockListUserPhoneStatusHandler,
+    mockUserAvailability,
     mockUserAvailabilityDetail,
     mockUserPhoneStatus,
 } from '@gorgias/helpdesk-mocks'
 import type { UserAvailability } from '@gorgias/helpdesk-queries'
-import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import * as useAvailabilityCellAvailabilityDataModule from 'domains/reporting/pages/common/components/charts/TableStat/cells/hooks/useAvailabilityCellAvailabilityData'
 import { useAvailabilityCellData } from 'domains/reporting/pages/common/components/charts/TableStat/cells/hooks/useAvailabilityCellData'
@@ -130,8 +131,6 @@ describe('useAvailabilityCellData', () => {
             ).mockReturnValue({
                 availability: undefined,
                 status: undefined,
-                isLoading: true,
-                isError: false,
             })
 
             jest.spyOn(
@@ -156,8 +155,6 @@ describe('useAvailabilityCellData', () => {
             ).mockReturnValue({
                 availability: mockAvailability,
                 status: { id: 'available', name: 'Available' } as any,
-                isLoading: false,
-                isError: false,
             })
 
             jest.spyOn(
@@ -177,12 +174,23 @@ describe('useAvailabilityCellData', () => {
             expect(result.current.errorMessage).toBeNull()
         })
 
-        it('should show cached availability status even when batch query fails', async () => {
+        it('should resolve availability status from the shared availability list', async () => {
             const mockListAvailabilities = mockListUserAvailabilitiesHandler(
                 async () =>
                     HttpResponse.json(
-                        { error: { msg: 'Failed to fetch' } } as any,
-                        { status: 500 },
+                        mockListUserAvailabilitiesResponse({
+                            data: [
+                                mockUserAvailability({
+                                    user_id: userId,
+                                    user_status: 'available',
+                                }),
+                            ],
+                            meta: {
+                                prev_cursor: null,
+                                next_cursor: null,
+                                total_resources: 1,
+                            },
+                        }),
                     ),
             )
 
@@ -196,16 +204,6 @@ describe('useAvailabilityCellData', () => {
                 )
 
             server.use(mockListAvailabilities.handler, mockListStatuses.handler)
-
-            queryClient.setQueryData(
-                queryKeys.userAvailability.getUserAvailability(userId),
-                {
-                    data: mockUserAvailabilityDetail({
-                        user_id: userId,
-                        user_status: 'available',
-                    }) as UserAvailability,
-                },
-            )
 
             const { result } = renderHookWithProviders()
 
@@ -232,8 +230,6 @@ describe('useAvailabilityCellData', () => {
             ).mockReturnValue({
                 availability: mockAvailability,
                 status: { id: 'available', name: 'Available' } as any,
-                isLoading: false,
-                isError: false,
             })
 
             // Mock phone status hook as failed
@@ -257,72 +253,6 @@ describe('useAvailabilityCellData', () => {
             ).toBeUndefined()
             expect(result.current.errorMessage).toBe(
                 'Failed to load phone status',
-            )
-            expect(result.current.isLoading).toBe(false)
-        })
-
-        it('should return error message when availability fails but phone status succeeds', () => {
-            // Mock availability hook as failed
-            jest.spyOn(
-                useAvailabilityCellAvailabilityDataModule,
-                'useAvailabilityCellAvailabilityData',
-            ).mockReturnValue({
-                availability: undefined,
-                status: undefined,
-                isLoading: false,
-                isError: true,
-            })
-
-            // Mock phone status hook as successful
-            jest.spyOn(
-                useAvailabilityCellPhoneStatusDataModule,
-                'useAvailabilityCellPhoneStatusData',
-            ).mockReturnValue({
-                agentPhoneUnavailabilityStatus: undefined,
-                isOnActiveCall: false,
-                isLoading: false,
-                isError: false,
-            })
-
-            const { result } = renderHookWithProviders()
-
-            expect(result.current.status).toBeUndefined()
-            expect(result.current.errorMessage).toBe(
-                'Failed to load availability status',
-            )
-            expect(result.current.isLoading).toBe(false)
-        })
-
-        it('should return combined error message when both availability and phone status fail', () => {
-            // Mock both hooks as failed
-            jest.spyOn(
-                useAvailabilityCellAvailabilityDataModule,
-                'useAvailabilityCellAvailabilityData',
-            ).mockReturnValue({
-                availability: undefined,
-                status: undefined,
-                isLoading: false,
-                isError: true,
-            })
-
-            jest.spyOn(
-                useAvailabilityCellPhoneStatusDataModule,
-                'useAvailabilityCellPhoneStatusData',
-            ).mockReturnValue({
-                agentPhoneUnavailabilityStatus: undefined,
-                isOnActiveCall: false,
-                isLoading: false,
-                isError: true,
-            })
-
-            const { result } = renderHookWithProviders()
-
-            expect(result.current.status).toBeUndefined()
-            expect(
-                result.current.agentPhoneUnavailabilityStatus,
-            ).toBeUndefined()
-            expect(result.current.errorMessage).toBe(
-                'Failed to load availability and phone status',
             )
             expect(result.current.isLoading).toBe(false)
         })

@@ -23,29 +23,22 @@ type UseAvailabilityCellDataReturn = {
 }
 
 /**
- * Hook that manages data fetching and state coordination for agent availability cell.
+ * Coordinates the data for an agent availability cell.
  *
- * Coordinates between:
- * - Batch queries & corresponding individual cache reads
- * - Child hooks that implement the "eternal loading" solution
+ * Availability + derived status are read from the shared, account-wide
+ * availability list cache (no per-cell loading/error). Phone status is fetched
+ * per page, so its loading/error drive the cell's `isLoading` and
+ * `errorMessage`.
  *
- * Loading/Error behavior:
- * - isLoading: true when either child hook reports loading (child hooks check batch loading && no cached data)
  * - hasNoData: true when we have neither availability nor phone status data
- * - errorMessage: describes which query failed (availability, phone status, or both)
- *
- * Solves the "eternal loading" problem by having child hooks observe batch query state
- * while reading individual data from cache.
+ * - errorMessage: set when the phone status query fails
  */
 export function useAvailabilityCellData({
     userId,
 }: UseAvailabilityCellDataParams): UseAvailabilityCellDataReturn {
-    const {
-        availability,
-        status,
-        isLoading: isLoadingAvailability,
-        isError: isErrorAvailability,
-    } = useAvailabilityCellAvailabilityData({ userId })
+    const { availability, status } = useAvailabilityCellAvailabilityData({
+        userId,
+    })
 
     const {
         agentPhoneUnavailabilityStatus,
@@ -54,35 +47,22 @@ export function useAvailabilityCellData({
         isError: isErrorPhoneStatus,
     } = useAvailabilityCellPhoneStatusData({ userId })
 
-    const isLoadingAny = useMemo(() => {
-        return isLoadingAvailability || isLoadingPhoneStatus
-    }, [isLoadingAvailability, isLoadingPhoneStatus])
-
     const hasNoData = useMemo(() => {
         return !availability && !agentPhoneUnavailabilityStatus
     }, [availability, agentPhoneUnavailabilityStatus])
 
     const errorMessage = useMemo(() => {
-        if (isErrorAvailability && isErrorPhoneStatus) {
-            return 'Failed to load availability and phone status'
-        }
-        if (isErrorAvailability) {
-            return 'Failed to load availability status'
-        }
-        if (isErrorPhoneStatus) {
-            return 'Failed to load phone status'
-        }
-        return null
-    }, [isErrorAvailability, isErrorPhoneStatus])
+        return isErrorPhoneStatus ? 'Failed to load phone status' : null
+    }, [isErrorPhoneStatus])
 
     return {
         availability,
         status,
         agentPhoneUnavailabilityStatus,
         isOnActiveCall,
-        isLoading: isLoadingAvailability || isLoadingPhoneStatus,
+        isLoading: isLoadingPhoneStatus,
         hasNoData,
-        isLoadingAny,
+        isLoadingAny: isLoadingPhoneStatus,
         errorMessage,
     }
 }

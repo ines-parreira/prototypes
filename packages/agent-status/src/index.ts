@@ -1,7 +1,6 @@
 // @repo/agent-status
 
 export { AgentStatusesTable } from './components'
-export { UserRealtimeAvailabilityUpdates } from './components'
 export { DeleteStatusConfirmationModal } from './components/DeleteStatusModal'
 export { UserInfoHeader, UserInfoHeaderContainer } from './components'
 export type { UserInfoHeaderProps } from './components/UserInfoHeader'
@@ -20,13 +19,10 @@ export {
 export {
     useUserAvailabilityStatus,
     useAgentStatuses,
-    useUserAvailability,
     useDeleteCustomUserAvailabilityStatus,
     useCustomUserUnavailabilityModal,
     useSelectableAgentAvailabilityStatuses,
-    useListUserAvailabilities,
     useAvailabilityStatusColor,
-    useUserAvailabilityRealtimeHandler,
     useCustomAgentUnavailableStatusesFlag,
 } from './hooks'
 
@@ -54,7 +50,6 @@ export { useUpdateAgentStatus } from './hooks/useUpdateAgentStatus'
 export { useAgentPhoneStatus } from './hooks/useAgentPhoneStatus'
 export { useListUserPhoneStatuses } from './hooks/useListUserPhoneStatuses'
 export { usePhoneStatusBatchPollingInterval } from './hooks/usePhoneStatusBatchPollingInterval'
-export { LiveAgentsRealtimeListener } from './components'
 
 export { AVAILABLE_STATUS } from './constants'
 
