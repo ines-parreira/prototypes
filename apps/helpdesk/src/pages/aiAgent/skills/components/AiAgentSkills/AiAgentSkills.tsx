@@ -1,6 +1,5 @@
 import { useCallback, useState } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useHistory } from 'react-router-dom'
 
 import { Box, Skeleton } from '@gorgias/axiom'
@@ -8,6 +7,7 @@ import { Box, Skeleton } from '@gorgias/axiom'
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 import { useGetWizard } from 'models/helpCenter/queries'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useSkillsAccess } from 'pages/aiAgent/hooks/useSkillsAccess'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { IntroducingSkillsBanner } from 'pages/aiAgent/skills/components/IntroducingSkillsBanner/IntroducingSkillsBanner'
 import { RecommendedSkillsSection } from 'pages/aiAgent/skills/components/RecommendedSkillsSection/RecommendedSkillsSection'
@@ -43,18 +43,18 @@ export const AiAgentSkills = () => {
     const shopName = storeConfiguration?.storeName || ''
     const helpCenterId = storeConfiguration?.guidanceHelpCenterId ?? 0
     const { routes } = useAiAgentNavigation({ shopName })
-    const isSkillWizardEnabled = useFlag(FeatureFlagKey.SkillWizard)
+    const isSkillsAccessEnabled = useSkillsAccess()
 
     const { data: wizard, isInitialLoading: isWizardQueryLoading } =
         useGetWizard(helpCenterId, {
-            enabled: isSkillWizardEnabled && !!helpCenterId,
+            enabled: isSkillsAccessEnabled && !!helpCenterId,
         })
 
     const { wizard: enrichedWizard, isLoading: isWizardLoading } =
         useEnrichedSkillWizard(wizard)
 
     const skillsView = getSkillsView({
-        isSkillWizardEnabled,
+        isSkillWizardEnabled: isSkillsAccessEnabled,
         isWizardQueryLoading,
         wizardStatus: wizard?.status,
     })

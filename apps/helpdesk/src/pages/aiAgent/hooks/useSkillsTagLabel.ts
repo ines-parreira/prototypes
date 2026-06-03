@@ -1,8 +1,8 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useLocation } from 'react-router-dom'
 
 import { useGetWizard } from 'models/helpCenter/queries'
 import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useSkillsAccess } from 'pages/aiAgent/hooks/useSkillsAccess'
 import { SkillWizardStatus } from 'pages/aiAgent/skills/types'
 
 type Params = {
@@ -14,12 +14,12 @@ export const useSkillsTagLabel = ({
     selectedStore,
     guidanceHelpCenterId,
 }: Params): 'New' | 'Resume' => {
-    const isSkillWizardEnabled = useFlag(FeatureFlagKey.SkillWizard)
+    const isSkillsAccessEnabled = useSkillsAccess()
     const { pathname } = useLocation()
 
     const helpCenterId = guidanceHelpCenterId ?? 0
     const { data: wizard } = useGetWizard(helpCenterId, {
-        enabled: isSkillWizardEnabled && !!helpCenterId,
+        enabled: isSkillsAccessEnabled && !!helpCenterId,
     })
 
     const skillsWizardPath = selectedStore

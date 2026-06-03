@@ -364,8 +364,6 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
 
     const isKnowledgeIntentManagementSystemEnabled = useSkillsAccess()
 
-    const isSkillWizardEnabled = useFlag(FeatureFlagKey.SkillWizard)
-
     const {
         milestone: actionCentralizedLibraryMilestone,
         isLoading: isActionCentralizedLibraryFlagLoading,
@@ -655,12 +653,10 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                             team={SentryTeam.CONVAI_KNOWLEDGE}
                         >
                             <Switch>
-                                {isSkillWizardEnabled && (
-                                    <Route
-                                        path={`${path}/skills/wizard`}
-                                        component={SkillWizardPage}
-                                    />
-                                )}
+                                <Route
+                                    path={`${path}/skills/wizard`}
+                                    component={SkillWizardPage}
+                                />
                                 <Route
                                     path={`${path}/skills/new`}
                                     component={SkillEditorPage}
