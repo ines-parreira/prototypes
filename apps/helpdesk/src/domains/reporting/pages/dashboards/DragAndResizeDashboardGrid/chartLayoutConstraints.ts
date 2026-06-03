@@ -15,6 +15,8 @@ export type ChartLayoutConstraints = {
     }
 }
 
+const PATH_HEIGHT_OFFSET = 1
+
 const baseConstraints: Record<ChartType, ChartLayoutConstraints> = {
     [ChartType.Card]: {
         default: { width: 3, height: 4 },
@@ -40,14 +42,34 @@ const baseConstraints: Record<ChartType, ChartLayoutConstraints> = {
 
 export const getChartConstraints = (
     chartType: ChartType,
+    showMetricOrigin = false,
 ): ChartLayoutConstraints => {
-    return baseConstraints[chartType]
+    const constraints = baseConstraints[chartType]
+    if (!showMetricOrigin) return constraints
+    return {
+        default: {
+            width: constraints.default.width,
+            height: constraints.default.height + PATH_HEIGHT_OFFSET,
+        },
+        min: {
+            width: constraints.min.width,
+            height: constraints.min.height + PATH_HEIGHT_OFFSET,
+        },
+        max: {
+            width: constraints.max.width,
+            height: constraints.max.height + PATH_HEIGHT_OFFSET,
+        },
+    }
 }
 
 export const getMaxChartHeight = (): number => {
-    return Math.max(
-        ...Object.values(baseConstraints).map(
-            (constraint) => constraint.max.height,
-        ),
+    // Always return the largest possible max height (with metric origin path shown)
+    // so placement search bounds are always sufficient
+    return (
+        Math.max(
+            ...Object.values(baseConstraints).map(
+                (constraint) => constraint.max.height,
+            ),
+        ) + PATH_HEIGHT_OFFSET
     )
 }

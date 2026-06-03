@@ -11,7 +11,6 @@ import type { Breakpoint, Layout } from 'react-grid-layout'
 import 'react-grid-layout/css/styles.css'
 
 import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
-import { useMetricOriginContext } from '@repo/reporting'
 
 import { Text } from '@gorgias/axiom'
 
@@ -41,6 +40,7 @@ import {
     ChartType,
     DashboardChildType,
 } from 'domains/reporting/pages/dashboards/types'
+import { useShowMetricOrigin } from 'domains/reporting/pages/dashboards/useShowMetricOrigin'
 import { flattenCharts } from 'domains/reporting/pages/dashboards/utils'
 
 const COLS = 12
@@ -115,9 +115,7 @@ export const DragAndResizeDashboardGrid = ({
     const { value: isLegacyDisabled } = useFlagWithLoading(
         FeatureFlagKey.AiAgentAnalyticsDisableLegacyReports,
     )
-    const { showMetricOrigin } = useMetricOriginContext() ?? {
-        showMetricOrigin: false,
-    }
+    const [showMetricOrigin] = useShowMetricOrigin(dashboard.id)
 
     const visibleCharts = useMemo(
         () =>
@@ -154,7 +152,7 @@ export const DragAndResizeDashboardGrid = ({
                 const { chartConfig } = getComponentConfig(effectiveId)
                 const chartType = chartConfig?.chartType ?? ChartType.Card
                 chartsWithoutLayoutsConstraints.push(
-                    getChartConstraints(chartType),
+                    getChartConstraints(chartType, showMetricOrigin),
                 )
             }
         })
@@ -193,7 +191,7 @@ export const DragAndResizeDashboardGrid = ({
             )!
             const { chartConfig } = getComponentConfig(effectiveId)
             const chartType = chartConfig?.chartType ?? ChartType.Card
-            const constraints = getChartConstraints(chartType)
+            const constraints = getChartConstraints(chartType, showMetricOrigin)
 
             const position = layoutMap.get(chart.config_id)!
             const clampedPosition = clampLayoutToConstraints(
@@ -214,7 +212,7 @@ export const DragAndResizeDashboardGrid = ({
                 maxH: constraints.max.height,
             }
         })
-    }, [visibleCharts, isNewScreensEnabled, isLegacyDisabled])
+    }, [visibleCharts, isNewScreensEnabled, isLegacyDisabled, showMetricOrigin])
 
     const saveDashboardLayout = useCallback(
         (layout: Layout) => {

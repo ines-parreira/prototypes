@@ -32,6 +32,8 @@
         overflow: hidden;
         box-sizing: border-box;
         position: relative;
+        box-shadow: 0 0 0 1px var(--border-neutral-default);
+        border-radius: var(--spacing-sm);
 
         > * {
             width: 100%;
@@ -54,7 +56,6 @@
         &.react-dragging :local(.chartCardArea),
         &.react-resizing :local(.chartCardArea) {
             box-shadow: 0 0 0 2px var(--border-accent-default);
-            border-radius: var(--spacing-sm);
         }
 
         &:hover:not(.react-resizing),

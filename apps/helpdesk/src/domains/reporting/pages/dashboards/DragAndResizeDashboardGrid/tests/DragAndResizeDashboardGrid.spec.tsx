@@ -3,8 +3,6 @@ import React from 'react'
 import { assumeMock, render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 
-import { MetricOriginContext } from '@repo/reporting'
-
 import { AutomateAiAgentsChart } from 'domains/reporting/pages/automate/ai-agent/AutomateAiAgentsReportConfig'
 import { DragAndResizeChart } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/DragAndResizeChart'
 import { DragAndResizeDashboardGrid } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/DragAndResizeDashboardGrid'
@@ -1322,7 +1320,13 @@ describe('DragAndResizeDashboardGrid', () => {
     })
 
     describe('Metric Origin', () => {
-        it('does not show path labels when MetricOriginContext is not provided', () => {
+        const SHOW_METRIC_ORIGIN_KEY = 'show-metric-origin-dashboard-1'
+
+        afterEach(() => {
+            localStorage.removeItem(SHOW_METRIC_ORIGIN_KEY)
+        })
+
+        it('does not show path labels when showMetricOrigin is not set in storage', () => {
             const chart = createMockChart('automation_rate_kpichart')
             const dashboard = createMockDashboard([chart])
 
@@ -1331,63 +1335,43 @@ describe('DragAndResizeDashboardGrid', () => {
             expect(screen.queryByText(/AI Agent/)).not.toBeInTheDocument()
         })
 
-        it('does not show path labels when showMetricOrigin is false', () => {
+        it('does not show path labels when showMetricOrigin is false in storage', () => {
+            localStorage.setItem(SHOW_METRIC_ORIGIN_KEY, 'false')
             const chart = createMockChart('automation_rate_kpichart')
             const dashboard = createMockDashboard([chart])
 
-            render(
-                <MetricOriginContext.Provider
-                    value={{ showMetricOrigin: false }}
-                >
-                    <DragAndResizeDashboardGrid dashboard={dashboard} />
-                </MetricOriginContext.Provider>,
-            )
+            render(<DragAndResizeDashboardGrid dashboard={dashboard} />)
 
             expect(screen.queryByText(/AI Agent/)).not.toBeInTheDocument()
         })
 
-        it('shows path labels above charts when showMetricOrigin is true', () => {
+        it('shows path labels above charts when showMetricOrigin is true in storage', () => {
+            localStorage.setItem(SHOW_METRIC_ORIGIN_KEY, 'true')
             const chart = createMockChart('automation_rate_kpichart')
             const dashboard = createMockDashboard([chart])
 
-            render(
-                <MetricOriginContext.Provider
-                    value={{ showMetricOrigin: true }}
-                >
-                    <DragAndResizeDashboardGrid dashboard={dashboard} />
-                </MetricOriginContext.Provider>,
-            )
+            render(<DragAndResizeDashboardGrid dashboard={dashboard} />)
 
             expect(screen.getByText('AI Agent')).toBeInTheDocument()
             expect(screen.getByText('Overview')).toBeInTheDocument()
         })
 
         it('does not show a path label for unrecognised chart IDs', () => {
+            localStorage.setItem(SHOW_METRIC_ORIGIN_KEY, 'true')
             const chart = createMockChart('unknown_chart_id')
             const dashboard = createMockDashboard([chart])
 
-            render(
-                <MetricOriginContext.Provider
-                    value={{ showMetricOrigin: true }}
-                >
-                    <DragAndResizeDashboardGrid dashboard={dashboard} />
-                </MetricOriginContext.Provider>,
-            )
+            render(<DragAndResizeDashboardGrid dashboard={dashboard} />)
 
             expect(screen.queryByText(/AI Agent/)).not.toBeInTheDocument()
         })
 
         it('shows path labels for legacy-only chart IDs when legacy reports are not disabled', () => {
+            localStorage.setItem(SHOW_METRIC_ORIGIN_KEY, 'true')
             const chart = createMockChart(AutomateAiAgentsChart.AiAgentTable)
             const dashboard = createMockDashboard([chart])
 
-            render(
-                <MetricOriginContext.Provider
-                    value={{ showMetricOrigin: true }}
-                >
-                    <DragAndResizeDashboardGrid dashboard={dashboard} />
-                </MetricOriginContext.Provider>,
-            )
+            render(<DragAndResizeDashboardGrid dashboard={dashboard} />)
 
             expect(screen.getByText('AI Agent')).toBeInTheDocument()
             expect(screen.getByText('AI Agents')).toBeInTheDocument()

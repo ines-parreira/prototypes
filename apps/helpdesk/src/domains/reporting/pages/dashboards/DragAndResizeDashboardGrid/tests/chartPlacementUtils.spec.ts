@@ -1,3 +1,5 @@
+import { MAX_CHECKED_CHARTS } from 'domains/reporting/pages/dashboards/config'
+import { getMaxChartHeight } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/chartLayoutConstraints'
 import type { ChartLayoutConstraints } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/chartLayoutConstraints'
 import {
     calculateChartPositions,
@@ -187,7 +189,10 @@ describe('chartPlacementUtils', () => {
 
             const positions = calculateChartPositions(constraints, 12)
 
-            expect(positions).toEqual([{ x: 0, y: 960, w: 15, h: 2 }])
+            const maxRowsToSearch = MAX_CHECKED_CHARTS * getMaxChartHeight()
+            expect(positions).toEqual([
+                { x: 0, y: maxRowsToSearch, w: 15, h: 2 },
+            ])
         })
     })
 

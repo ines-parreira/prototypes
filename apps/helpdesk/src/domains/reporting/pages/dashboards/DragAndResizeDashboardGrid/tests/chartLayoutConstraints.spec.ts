@@ -35,13 +35,31 @@ describe('chartLayoutConstraints', () => {
                 max: { width: 12, height: 48 },
             })
         })
+
+        it('adds 1 to all heights when showMetricOrigin is true', () => {
+            expect(getChartConstraints(ChartType.Card, true)).toEqual({
+                default: { width: 3, height: 5 },
+                min: { width: 3, height: 5 },
+                max: { width: 6, height: 17 },
+            })
+            expect(getChartConstraints(ChartType.Graph, true)).toEqual({
+                default: { width: 6, height: 15 },
+                min: { width: 3, height: 9 },
+                max: { width: 12, height: 25 },
+            })
+            expect(getChartConstraints(ChartType.Table, true)).toEqual({
+                default: { width: 12, height: 23 },
+                min: { width: 6, height: 15 },
+                max: { width: 12, height: 49 },
+            })
+        })
     })
 
     describe('getMaxChartHeight', () => {
-        it('returns the maximum height across all chart types', () => {
+        it('returns the maximum height across all chart types including path offset', () => {
             const maxHeight = getMaxChartHeight()
 
-            expect(maxHeight).toBe(48)
+            expect(maxHeight).toBe(49)
         })
     })
 })
