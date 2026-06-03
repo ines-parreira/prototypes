@@ -1,6 +1,8 @@
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
+import { AiAgentScopes } from 'pages/aiAgent/Onboarding_V2/types'
+
 import { useTrackStepCompleted } from '../useTrackStepCompleted'
 
 jest.mock('@repo/logging', () => ({
@@ -27,6 +29,8 @@ describe('useTrackStepCompleted', () => {
         currentStep: 1,
         stepName: 'tone-of-voice',
         shopName: 'test-shop',
+        jtbd: AiAgentScopes.SALES,
+        onboardingVersion: 'v3' as const,
     }
 
     it('should return a function to track step completion', () => {
@@ -58,6 +62,8 @@ describe('useTrackStepCompleted', () => {
                 stepNumber: 1,
                 timeSpentSeconds: 30,
                 shopName: 'test-shop',
+                jtbd: 'sales',
+                onboardingVersion: 'v3',
             }),
         )
     })

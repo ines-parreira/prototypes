@@ -1,5 +1,8 @@
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
+
+import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 
 import { useOnboardingStepTracking } from '../useOnboardingStepTracking'
 
@@ -22,14 +25,24 @@ const renderTracking = (
     {
         step = 'tone of voice',
         shopName = 'test-shop',
-    }: { step?: string; shopName?: string } = {},
-) =>
-    renderHook(() => useOnboardingStepTracking(params), {
+        jtbd,
+        isV3 = false,
+    }: {
+        step?: string
+        shopName?: string
+        jtbd?: 'sales' | 'support' | string
+        isV3?: boolean
+    } = {},
+) => {
+    mockFeatureFlags({ [FeatureFlagKey.AiAgentOnboardingV3]: isV3 })
+    const search = jtbd ? `?jtbd=${jtbd}` : ''
+    return renderHook(() => useOnboardingStepTracking(params), {
         initialEntries: [
-            `/app/ai-agent/shopify/${shopName}/onboarding/${step}`,
+            `/app/ai-agent/shopify/${shopName}/onboarding/${step}${search}`,
         ],
         path: ROUTE_PATH,
     })
+}
 
 describe('useOnboardingStepTracking', () => {
     beforeEach(() => {
@@ -54,6 +67,8 @@ describe('useOnboardingStepTracking', () => {
                 stepName: 'tone of voice',
                 stepNumber: 1,
                 shopName: 'test-shop',
+                jtbd: 'unknown',
+                onboardingVersion: 'v2',
             },
         )
     })
@@ -161,7 +176,25 @@ describe('useOnboardingStepTracking', () => {
         )
     })
 
+    it('does not stamp stepName on the Closed event', () => {
+        const { result } = renderTracking({
+            currentStep: 2,
+            totalSteps: 4,
+            onNextClick: jest.fn(),
+            onBackClick: jest.fn(),
+            onCloseClick: jest.fn(),
+        })
+
+        act(() => result.current.onCloseAction?.())
+
+        const closedCall = mockLogEvent.mock.calls.find(
+            ([eventName]) => eventName === 'ai-agent-onboarding-closed',
+        )
+        expect(closedCall?.[1]).not.toHaveProperty('stepName')
+    })
+
     it('falls back to "unknown" for step and shop when route params are missing', () => {
+        mockFeatureFlags({ [FeatureFlagKey.AiAgentOnboardingV3]: false })
         renderHook(
             () =>
                 useOnboardingStepTracking({
@@ -180,5 +213,135 @@ describe('useOnboardingStepTracking', () => {
                 shopName: 'unknown',
             }),
         )
+    })
+
+    it('does not log StepViewed while the onboarding version flag is loading', () => {
+        ;(useFlagWithLoading as jest.Mock).mockReturnValueOnce({
+            value: false,
+            isLoading: true,
+        })
+
+        renderHook(
+            () =>
+                useOnboardingStepTracking({
+                    currentStep: 1,
+                    totalSteps: 4,
+                    onNextClick: jest.fn(),
+                    onBackClick: jest.fn(),
+                }),
+            {
+                initialEntries: [
+                    '/app/ai-agent/shopify/test-shop/onboarding/tone-of-voice',
+                ],
+                path: ROUTE_PATH,
+            },
+        )
+
+        expect(mockLogEvent).not.toHaveBeenCalled()
+    })
+
+    describe('jtbd + onboardingVersion stamping', () => {
+        it.each([
+            {
+                label: 'V2 flag-off, no jtbd param',
+                isV3: false,
+                jtbd: undefined,
+                expectedJtbd: 'unknown',
+                expectedVersion: 'v2',
+            },
+            {
+                label: 'V3 sales',
+                isV3: true,
+                jtbd: 'sales',
+                expectedJtbd: 'sales',
+                expectedVersion: 'v3',
+            },
+            {
+                label: 'V3 support',
+                isV3: true,
+                jtbd: 'support',
+                expectedJtbd: 'support',
+                expectedVersion: 'v3',
+            },
+            {
+                label: 'V3 with no jtbd param',
+                isV3: true,
+                jtbd: undefined,
+                expectedJtbd: 'unknown',
+                expectedVersion: 'v3',
+            },
+        ])(
+            'stamps jtbd + onboardingVersion on all four events: $label',
+            ({ isV3, jtbd, expectedJtbd, expectedVersion }) => {
+                const { result } = renderTracking(
+                    {
+                        currentStep: 2,
+                        totalSteps: 4,
+                        onNextClick: jest.fn(),
+                        onBackClick: jest.fn(),
+                        onCloseClick: jest.fn(),
+                    },
+                    { isV3, jtbd },
+                )
+
+                act(() => result.current.onNextAction())
+                act(() => result.current.onBackAction())
+                act(() => result.current.onCloseAction?.())
+
+                const expectedProps = expect.objectContaining({
+                    jtbd: expectedJtbd,
+                    onboardingVersion: expectedVersion,
+                })
+
+                expect(mockLogEvent).toHaveBeenCalledWith(
+                    'ai-agent-onboarding-step-viewed',
+                    expectedProps,
+                )
+                expect(mockLogEvent).toHaveBeenCalledWith(
+                    'ai-agent-onboarding-step-completed',
+                    expect.objectContaining({
+                        jtbd: expectedJtbd,
+                        onboardingVersion: expectedVersion,
+                    }),
+                )
+                expect(mockLogEvent).toHaveBeenCalledWith(
+                    'ai-agent-onboarding-button-clicked',
+                    expect.objectContaining({
+                        buttonType: 'next',
+                        jtbd: expectedJtbd,
+                        onboardingVersion: expectedVersion,
+                    }),
+                )
+                expect(mockLogEvent).toHaveBeenCalledWith(
+                    'ai-agent-onboarding-button-clicked',
+                    expect.objectContaining({
+                        buttonType: 'back',
+                        jtbd: expectedJtbd,
+                        onboardingVersion: expectedVersion,
+                    }),
+                )
+                expect(mockLogEvent).toHaveBeenCalledWith(
+                    'ai-agent-onboarding-closed',
+                    expectedProps,
+                )
+            },
+        )
+
+        it('treats unrecognized jtbd values as "unknown"', () => {
+            renderTracking(
+                {
+                    currentStep: 1,
+                    totalSteps: 4,
+                    onNextClick: jest.fn(),
+                    onBackClick: jest.fn(),
+                },
+                { isV3: true, jtbd: 'bogus' },
+            )
+
+            expect(mockLogEvent).toHaveBeenCalledWith(
+                'ai-agent-onboarding-step-viewed',
+                expect.objectContaining({ jtbd: 'unknown' }),
+            )
+        })
     })
 })

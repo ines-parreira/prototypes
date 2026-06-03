@@ -2,7 +2,14 @@ import { useEffect, useRef } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 
-interface UseTrackStepCompletedParams {
+import type { JtbdValue } from 'pages/aiAgent/utils/jtbd'
+
+export interface OnboardingTrackingProps {
+    jtbd: JtbdValue | 'unknown'
+    onboardingVersion: 'v2' | 'v3'
+}
+
+interface UseTrackStepCompletedParams extends OnboardingTrackingProps {
     currentStep: number
     stepName: string
     shopName: string
@@ -21,6 +28,8 @@ export function useTrackStepCompleted({
     currentStep,
     stepName,
     shopName,
+    jtbd,
+    onboardingVersion,
 }: UseTrackStepCompletedParams) {
     const stepEntryTimeRef = useRef<number>(Date.now())
 
@@ -39,6 +48,8 @@ export function useTrackStepCompleted({
             stepNumber: currentStep,
             timeSpentSeconds,
             shopName,
+            jtbd,
+            onboardingVersion,
         })
     }
 
