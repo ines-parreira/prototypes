@@ -1,16 +1,18 @@
 import client from '@repo/api-resources'
 import { featureFlagsClientMock } from '@repo/feature-flags/testing'
 import { render } from '@repo/testing'
-import { fireEvent, screen, waitFor, within } from '@testing-library/react'
+import { act, fireEvent, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
+import { Route, useLocation } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { applications as mockApplications } from 'fixtures/applications'
 import { dummyAppData } from 'fixtures/apps'
 import type { Integration } from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import { TrialPeriod } from 'models/integration/types/app'
 import App, { Tab } from 'pages/integrations/integration/components/app/App'
 import { DEFAULT_VALUES } from 'pages/integrations/mappers/mapDefaults'
@@ -47,6 +49,20 @@ jest.mock('models/integration/resources', () => {
 })
 
 const mockCreateTrackstarServiceConnection = jest.fn()
+const mockCreateTrackstarLink = jest.fn()
+type WorkflowConfigurationTemplate = {
+    id: string
+    internal_id: string
+    name: string
+    apps: { type: string; app_id?: string }[]
+}
+const mockUseGetWorkflowConfigurationTemplates = jest.fn<
+    { data: WorkflowConfigurationTemplate[]; isInitialLoading: boolean },
+    unknown[]
+>(() => ({
+    data: [],
+    isInitialLoading: false,
+}))
 jest.mock('models/workflows/queries', () => {
     const actual = jest.requireActual('models/workflows/queries')
     return {
@@ -55,6 +71,14 @@ jest.mock('models/workflows/queries', () => {
             mutateAsync: mockCreateTrackstarServiceConnection,
             isLoading: false,
         }),
+        useCreateTrackstarLink: () => ({
+            mutateAsync: mockCreateTrackstarLink,
+            isLoading: false,
+        }),
+        useGetWorkflowConfigurationTemplates: (
+            ...args: unknown[]
+        ): ReturnType<typeof mockUseGetWorkflowConfigurationTemplates> =>
+            mockUseGetWorkflowConfigurationTemplates(...args),
     }
 })
 
@@ -79,6 +103,11 @@ describe(`App`, () => {
         mockServer.reset()
         mockTrackstarOpen.mockClear()
         mockCreateTrackstarServiceConnection.mockReset()
+        mockCreateTrackstarLink.mockReset()
+        mockUseGetWorkflowConfigurationTemplates.mockReturnValue({
+            data: [],
+            isInitialLoading: false,
+        })
         trackstarLinkCallbacks = {}
     })
     it('should render', async () => {
@@ -378,7 +407,37 @@ describe(`App`, () => {
             expect(screen.queryByRole('link', { name: 'Actions' })).toBeNull()
         })
 
-        it('renders the Actions link in the SecondaryNavbar when the FF is on', async () => {
+        it('renders the Actions link in the SecondaryNavbar when the FF is on and actions exist', async () => {
+            mockServer
+                .onGet(`/api/apps/${appId}`)
+                .reply(200, { ...dummyAppData, is_installed: true })
+            mockServer.onGet(`/api/async/errors`).reply(200, { data: [] })
+            featureFlagsClientMock.allFlags.mockReturnValue({
+                'action-centralized-library': 'MILESTONE-1',
+            })
+            mockUseGetWorkflowConfigurationTemplates.mockReturnValue({
+                data: [
+                    {
+                        id: 'template-1',
+                        internal_id: 'template-internal-1',
+                        name: 'Send email',
+                        apps: [{ type: 'app', app_id: appId }],
+                    },
+                ],
+                isInitialLoading: false,
+            })
+            render(<App />, {
+                path: '/integrations/app/:appId/:extra?',
+                initialEntries: [`/integrations/app/${appId}`],
+                storeState: store.getState() as object,
+            })
+            await screen.findAllByText(new RegExp(dummyAppData.name))
+            expect(
+                await screen.findByRole('link', { name: 'Actions' }),
+            ).toBeInTheDocument()
+        })
+
+        it('does not render the Actions link when no actions exist for the app', async () => {
             mockServer
                 .onGet(`/api/apps/${appId}`)
                 .reply(200, { ...dummyAppData, is_installed: true })
@@ -392,9 +451,7 @@ describe(`App`, () => {
                 storeState: store.getState() as object,
             })
             await screen.findAllByText(new RegExp(dummyAppData.name))
-            expect(
-                await screen.findByRole('link', { name: 'Actions' }),
-            ).toBeInTheDocument()
+            expect(screen.queryByRole('link', { name: 'Actions' })).toBeNull()
         })
 
         it('shows the Credentials link when the FF is on and the app has service connections', async () => {
@@ -445,7 +502,7 @@ describe(`App`, () => {
             ).toBeInTheDocument()
         })
 
-        it('shows the Credentials link when the FF is on and the app is connected even without service connections', async () => {
+        it('does not show the Credentials link when the app is connected but has no service connections', async () => {
             mockServer
                 .onGet(`/api/apps/${appId}`)
                 .reply(200, { ...dummyAppData, id: appId, is_installed: true })
@@ -472,7 +529,7 @@ describe(`App`, () => {
             await waitFor(() => {
                 expect(
                     screen.queryByRole('link', { name: 'Credentials' }),
-                ).toBeInTheDocument()
+                ).toBeNull()
             })
         })
 
@@ -740,7 +797,7 @@ describe(`App`, () => {
                 location: 'header' as const,
                 key: 'Authorization',
                 vendor: null,
-                scheme: 'Klaviyo-API-Key',
+                custom_scheme: 'Klaviyo-API-Key',
             }
             mockServer.onGet(`/api/apps/${appId}`).reply(200, {
                 ...dummyAppData,
@@ -1058,6 +1115,661 @@ describe(`App`, () => {
             expect(
                 screen.getByRole('link', { name: /Authorize/ }),
             ).toBeInTheDocument()
+        })
+    })
+
+    describe('Service connection store linking (ActionCentralizedLibrary FF on)', () => {
+        const apiKeyOutboundAuth = {
+            type: 'api-key' as const,
+            url: 'https://api.shipmonk.com',
+            setup_description: '',
+            location: 'header' as const,
+            key: 'X-Api-Key',
+            vendor: null,
+        }
+        const createdConnectionId = '01970000-0000-7000-8000-000000000222'
+
+        const buildConnection = (
+            overrides: Partial<{
+                id: string
+                name: string
+                service: string
+                url: string
+            }> = {},
+        ) => ({
+            id: createdConnectionId,
+            name: dummyAppData.name,
+            service: 'my-test-app',
+            url: apiKeyOutboundAuth.url,
+            status: 'active',
+            created_datetime: '2026-05-01T00:00:00',
+            updated_datetime: null,
+            trashed_datetime: null,
+            created_by: 1,
+            updated_by: null,
+            trashed_by: null,
+            external_id: null,
+            vendor: null,
+            ...overrides,
+        })
+
+        const buildAssignedStore = (storeId: number, storeName: string) => ({
+            service_connection_id: createdConnectionId,
+            store_id: storeId,
+            store_type: 'shopify',
+            store_name: storeName,
+            created_datetime: '2026-05-01T00:00:00',
+            updated_datetime: '2026-05-01T00:00:00',
+        })
+
+        const setupAppEndpoints = (
+            config: {
+                existingServiceConnections?: ReturnType<
+                    typeof buildConnection
+                >[]
+                existingStoresByConnection?: Record<
+                    string,
+                    ReturnType<typeof buildAssignedStore>[]
+                >
+            } = {},
+        ) => {
+            const {
+                existingServiceConnections = [],
+                existingStoresByConnection = {},
+            } = config
+
+            mockServer.onGet(`/api/apps/${appId}`).reply(200, {
+                ...dummyAppData,
+                id: appId,
+                outbound_auth: apiKeyOutboundAuth,
+            })
+            mockServer.onGet(`/api/async/errors`).reply(200, { data: [] })
+            mockServer.onGet('/api/service-connections/').reply(200, {
+                data: existingServiceConnections,
+                meta: {},
+            })
+            for (const [connId, stores] of Object.entries(
+                existingStoresByConnection,
+            )) {
+                mockServer
+                    .onGet(`/api/service-connections/${connId}/stores/`)
+                    .reply(200, { data: stores, meta: {} })
+            }
+            mockServer
+                .onPost('/api/service-connections/')
+                .reply(200, buildConnection())
+        }
+
+        const renderAppWithIntegrations = (integrations: unknown[]) => {
+            featureFlagsClientMock.allFlags.mockReturnValue({
+                'action-centralized-library': 'MILESTONE-1',
+            })
+            const integrationsStore = mockStore({
+                integrations: fromJS({ integrations }),
+            } as unknown as RootState)
+            return render(<App />, {
+                path: '/integrations/app/:appId',
+                initialEntries: [`/integrations/app/${appId}`],
+                storeState: integrationsStore.getState() as object,
+            })
+        }
+
+        const submitAuthModal = async (
+            user: ReturnType<typeof userEvent.setup>,
+        ) => {
+            await user.click(
+                await screen.findByRole('button', { name: 'Connect' }),
+            )
+            const dialog = await screen.findByRole('dialog', {
+                name: new RegExp(`Connect ${dummyAppData.name}`),
+            })
+            await user.type(
+                within(dialog).getByLabelText(/api key/i),
+                'secret-token',
+            )
+            await user.click(
+                within(dialog).getByRole('button', { name: 'Connect' }),
+            )
+        }
+
+        afterEach(() => {
+            featureFlagsClientMock.allFlags.mockReturnValue({})
+        })
+
+        it('auto-links the store when there is exactly one store integration', async () => {
+            const user = userEvent.setup()
+            setupAppEndpoints()
+
+            let storePayload: unknown = null
+            mockServer
+                .onPost(
+                    `/api/service-connections/${createdConnectionId}/stores/`,
+                )
+                .reply((config) => {
+                    storePayload = JSON.parse(config.data)
+                    return [200, buildAssignedStore(42, 'happy-pup')]
+                })
+
+            renderAppWithIntegrations([
+                {
+                    id: 42,
+                    type: IntegrationType.Shopify,
+                    name: 'happy-pup',
+                    meta: { shop_name: 'happy-pup' },
+                },
+            ])
+
+            await submitAuthModal(user)
+            await waitFor(() => expect(storePayload).toEqual({ store_id: 42 }))
+        })
+
+        it('shows an error toast when auto-linking the single store fails', async () => {
+            const user = userEvent.setup()
+            setupAppEndpoints()
+            mockServer
+                .onPost(
+                    `/api/service-connections/${createdConnectionId}/stores/`,
+                )
+                .reply(500)
+
+            renderAppWithIntegrations([
+                {
+                    id: 42,
+                    type: IntegrationType.Shopify,
+                    name: 'happy-pup',
+                    meta: { shop_name: 'happy-pup' },
+                },
+            ])
+
+            await submitAuthModal(user)
+
+            const toast = await screen.findByRole('status', {
+                name: new RegExp(
+                    `Connected ${dummyAppData.name}, but failed to link your store`,
+                ),
+            })
+            expect(toast).toHaveAttribute('data-intent', 'destructive')
+        })
+
+        it('opens the store picker modal when there are multiple store integrations', async () => {
+            const user = userEvent.setup()
+            setupAppEndpoints()
+
+            renderAppWithIntegrations([
+                {
+                    id: 1,
+                    type: IntegrationType.Shopify,
+                    name: 'store-a',
+                    meta: { shop_name: 'store-a' },
+                },
+                {
+                    id: 2,
+                    type: IntegrationType.Shopify,
+                    name: 'store-b',
+                    meta: { shop_name: 'store-b' },
+                },
+            ])
+
+            await submitAuthModal(user)
+
+            expect(
+                await screen.findByRole('heading', {
+                    name: 'Almost there! Connect your store',
+                }),
+            ).toBeInTheDocument()
+        })
+
+        it('disables store ids that are already linked to an existing service connection in the picker', async () => {
+            const user = userEvent.setup()
+            const existingConnectionId = '01970000-0000-7000-8000-000000000333'
+            setupAppEndpoints({
+                existingServiceConnections: [
+                    buildConnection({
+                        id: existingConnectionId,
+                        name: 'Other connection',
+                    }),
+                ],
+                existingStoresByConnection: {
+                    [existingConnectionId]: [
+                        {
+                            service_connection_id: existingConnectionId,
+                            store_id: 1,
+                            store_type: 'shopify',
+                            store_name: 'store-a',
+                            created_datetime: '2026-05-01T00:00:00',
+                            updated_datetime: '2026-05-01T00:00:00',
+                        },
+                    ],
+                },
+            })
+
+            renderAppWithIntegrations([
+                {
+                    id: 1,
+                    type: IntegrationType.Shopify,
+                    name: 'store-a',
+                    meta: { shop_name: 'store-a' },
+                },
+                {
+                    id: 2,
+                    type: IntegrationType.Shopify,
+                    name: 'store-b',
+                    meta: { shop_name: 'store-b' },
+                },
+            ])
+
+            await submitAuthModal(user)
+
+            const pickerDialog = await screen.findByRole('dialog', {
+                name: /Almost there! Connect your store/,
+            })
+            await user.click(
+                within(pickerDialog).getByRole('button', {
+                    name: /select stores/i,
+                }),
+            )
+            const listbox = await screen.findByRole('listbox')
+            expect(
+                within(listbox).getByRole('option', { name: /store-a/ }),
+            ).toHaveAttribute('aria-disabled', 'true')
+            expect(
+                within(listbox).getByRole('option', { name: /store-b/ }),
+            ).not.toHaveAttribute('aria-disabled', 'true')
+        })
+
+        it('assigns each selected store and closes the picker on submit', async () => {
+            const user = userEvent.setup()
+            setupAppEndpoints()
+
+            const storePayloads: unknown[] = []
+            mockServer
+                .onPost(
+                    `/api/service-connections/${createdConnectionId}/stores/`,
+                )
+                .reply((config) => {
+                    const payload = JSON.parse(config.data)
+                    storePayloads.push(payload)
+                    return [
+                        200,
+                        buildAssignedStore(
+                            payload.store_id as number,
+                            `store-${payload.store_id}`,
+                        ),
+                    ]
+                })
+
+            renderAppWithIntegrations([
+                {
+                    id: 1,
+                    type: IntegrationType.Shopify,
+                    name: 'store-a',
+                    meta: { shop_name: 'store-a' },
+                },
+                {
+                    id: 2,
+                    type: IntegrationType.Shopify,
+                    name: 'store-b',
+                    meta: { shop_name: 'store-b' },
+                },
+            ])
+
+            await submitAuthModal(user)
+
+            const pickerDialog = await screen.findByRole('dialog', {
+                name: /Almost there! Connect your store/,
+            })
+            await user.click(
+                within(pickerDialog).getByRole('button', {
+                    name: /select stores/i,
+                }),
+            )
+            const listbox = await screen.findByRole('listbox')
+            await user.click(
+                within(listbox).getByRole('option', { name: 'store-a' }),
+            )
+            await user.click(
+                within(listbox).getByRole('option', { name: 'store-b' }),
+            )
+            await user.keyboard('{Escape}')
+            await user.click(
+                screen.getByRole('button', { name: /connect store/i }),
+            )
+
+            await waitFor(() => expect(storePayloads).toHaveLength(2))
+            expect(storePayloads).toEqual(
+                expect.arrayContaining([{ store_id: 1 }, { store_id: 2 }]),
+            )
+            await waitFor(() =>
+                expect(
+                    screen.queryByRole('heading', {
+                        name: 'Almost there! Connect your store',
+                    }),
+                ).not.toBeInTheDocument(),
+            )
+        })
+
+        it('shows an error toast when the store picker submit fails', async () => {
+            const user = userEvent.setup()
+            setupAppEndpoints()
+            mockServer
+                .onPost(
+                    `/api/service-connections/${createdConnectionId}/stores/`,
+                )
+                .reply(500)
+
+            renderAppWithIntegrations([
+                {
+                    id: 1,
+                    type: IntegrationType.Shopify,
+                    name: 'store-a',
+                    meta: { shop_name: 'store-a' },
+                },
+                {
+                    id: 2,
+                    type: IntegrationType.Shopify,
+                    name: 'store-b',
+                    meta: { shop_name: 'store-b' },
+                },
+            ])
+
+            await submitAuthModal(user)
+
+            const pickerDialog = await screen.findByRole('dialog', {
+                name: /Almost there! Connect your store/,
+            })
+            await user.click(
+                within(pickerDialog).getByRole('button', {
+                    name: /select stores/i,
+                }),
+            )
+            const listbox = await screen.findByRole('listbox')
+            await user.click(
+                within(listbox).getByRole('option', { name: 'store-a' }),
+            )
+            await user.keyboard('{Escape}')
+            await user.click(
+                screen.getByRole('button', { name: /connect store/i }),
+            )
+
+            const toast = await screen.findByRole('status', {
+                name: new RegExp(
+                    `Failed to link the selected store to ${dummyAppData.name}`,
+                ),
+            })
+            expect(toast).toHaveAttribute('data-intent', 'destructive')
+        })
+    })
+
+    describe('Install success modal navigation (ActionCentralizedLibrary FF on)', () => {
+        const LocationDisplay = () => {
+            const location = useLocation()
+            return (
+                <div aria-label="current-path-display">{location.pathname}</div>
+            )
+        }
+        const AppWithLocationDisplay = ({
+            children,
+        }: {
+            children: React.ReactNode
+        }) => (
+            <>
+                <Route path="/integrations/app/:appId">{children}</Route>
+                <LocationDisplay />
+            </>
+        )
+
+        const apiKeyOutboundAuth = {
+            type: 'api-key' as const,
+            url: 'https://api.shipmonk.com',
+            setup_description: '',
+            location: 'header' as const,
+            key: 'X-Api-Key',
+            vendor: null,
+        }
+        const newConnectionId = '01970000-0000-7000-8000-000000000444'
+
+        const installSuccessUser = () =>
+            userEvent.setup({ advanceTimers: jest.advanceTimersByTime })
+
+        const setupHappyPath = (shopName: string | undefined) => {
+            mockServer.onGet(`/api/apps/${appId}`).reply(200, {
+                ...dummyAppData,
+                id: appId,
+                outbound_auth: apiKeyOutboundAuth,
+            })
+            mockServer.onGet(`/api/async/errors`).reply(200, { data: [] })
+            mockServer
+                .onGet('/api/service-connections/')
+                .reply(200, { data: [], meta: {} })
+            mockServer.onPost('/api/service-connections/').reply(200, {
+                id: newConnectionId,
+                name: dummyAppData.name,
+                service: 'my-test-app',
+                url: apiKeyOutboundAuth.url,
+                status: 'active',
+                created_datetime: '2026-05-01T00:00:00',
+                updated_datetime: null,
+                trashed_datetime: null,
+                created_by: 1,
+                updated_by: null,
+                trashed_by: null,
+                external_id: null,
+                vendor: null,
+            })
+            mockServer
+                .onPost(`/api/service-connections/${newConnectionId}/stores/`)
+                .reply(200, {
+                    service_connection_id: newConnectionId,
+                    store_id: 99,
+                    store_type: 'shopify',
+                    store_name: shopName ?? 'unknown',
+                    created_datetime: '2026-05-01T00:00:00',
+                    updated_datetime: '2026-05-01T00:00:00',
+                })
+
+            featureFlagsClientMock.allFlags.mockReturnValue({
+                'action-centralized-library': 'MILESTONE-1',
+            })
+
+            return mockStore({
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            id: 99,
+                            type: IntegrationType.Shopify,
+                            name: shopName ?? 'unnamed',
+                            meta: shopName ? { shop_name: shopName } : {},
+                        },
+                    ],
+                }),
+            } as unknown as RootState)
+        }
+
+        beforeEach(() => {
+            jest.useFakeTimers()
+        })
+
+        afterEach(() => {
+            jest.runOnlyPendingTimers()
+            jest.useRealTimers()
+            featureFlagsClientMock.allFlags.mockReturnValue({})
+        })
+
+        it('navigates to the store-specific actions page from the install success modal', async () => {
+            const user = installSuccessUser()
+            const integrationsStore = setupHappyPath('happy-pup')
+
+            render(<App />, {
+                initialEntries: [`/integrations/app/${appId}`],
+                storeState: integrationsStore.getState() as object,
+                wrapper: AppWithLocationDisplay,
+            })
+
+            await user.click(
+                await screen.findByRole('button', { name: 'Connect' }),
+            )
+            const authDialog = await screen.findByRole('dialog', {
+                name: new RegExp(`Connect ${dummyAppData.name}`),
+            })
+            await user.type(
+                within(authDialog).getByLabelText(/api key/i),
+                'token',
+            )
+            await user.click(
+                within(authDialog).getByRole('button', { name: 'Connect' }),
+            )
+
+            await waitFor(() =>
+                expect(
+                    mockServer.history.post.some((req) =>
+                        req.url?.endsWith(
+                            `/api/service-connections/${newConnectionId}/stores/`,
+                        ),
+                    ),
+                ).toBe(true),
+            )
+
+            await act(async () => {
+                jest.advanceTimersByTime(3000)
+            })
+
+            await user.click(
+                await screen.findByRole('button', { name: 'View actions' }),
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByLabelText('current-path-display'),
+                ).toHaveTextContent('/app/ai-agent/shopify/happy-pup/actions')
+            })
+        })
+
+        it('navigates to the AI agent overview when the store has no shop name', async () => {
+            const user = installSuccessUser()
+            const integrationsStore = setupHappyPath(undefined)
+
+            render(<App />, {
+                initialEntries: [`/integrations/app/${appId}`],
+                storeState: integrationsStore.getState() as object,
+                wrapper: AppWithLocationDisplay,
+            })
+
+            await user.click(
+                await screen.findByRole('button', { name: 'Connect' }),
+            )
+            const authDialog = await screen.findByRole('dialog', {
+                name: new RegExp(`Connect ${dummyAppData.name}`),
+            })
+            await user.type(
+                within(authDialog).getByLabelText(/api key/i),
+                'token',
+            )
+            await user.click(
+                within(authDialog).getByRole('button', { name: 'Connect' }),
+            )
+
+            await waitFor(() =>
+                expect(
+                    mockServer.history.post.some((req) =>
+                        req.url?.endsWith(
+                            `/api/service-connections/${newConnectionId}/stores/`,
+                        ),
+                    ),
+                ).toBe(true),
+            )
+
+            await act(async () => {
+                jest.advanceTimersByTime(3000)
+            })
+
+            await user.click(
+                await screen.findByRole('button', { name: 'View actions' }),
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByLabelText('current-path-display'),
+                ).toHaveTextContent('/app/ai-agent')
+            })
+        })
+    })
+
+    describe('Trackstar connect button in PageHeader (ActionCentralizedLibrary FF on)', () => {
+        const trackstarOutboundAuth = {
+            type: 'api-key' as const,
+            url: 'https://api.shipmonk.com',
+            setup_description: '',
+            location: 'header' as const,
+            key: 'X-Api-Key',
+            vendor: 'trackstar' as const,
+            trackstar_integration_name: 'shipmonk',
+        }
+
+        afterEach(() => {
+            featureFlagsClientMock.allFlags.mockReturnValue({})
+        })
+
+        it('opens the trackstar link picker and fetches a fresh link token from the PageHeader CTA', async () => {
+            const user = userEvent.setup()
+            mockCreateTrackstarLink.mockResolvedValue({
+                data: { link_token: 'fresh-token' },
+            })
+
+            mockServer.onGet(`/api/apps/${appId}`).reply(200, {
+                ...dummyAppData,
+                id: appId,
+                is_installed: true,
+                outbound_auth: trackstarOutboundAuth,
+            })
+            mockServer.onGet(`/api/async/errors`).reply(200, { data: [] })
+            mockServer.onGet('/api/service-connections/').reply(200, {
+                data: [
+                    {
+                        id: '01970000-0000-7000-8000-000000000555',
+                        name: 'existing trackstar conn',
+                        service: 'shipmonk',
+                        url: trackstarOutboundAuth.url,
+                        status: 'active',
+                        created_datetime: '2026-05-01T00:00:00',
+                        updated_datetime: null,
+                        trashed_datetime: null,
+                        created_by: 1,
+                        updated_by: null,
+                        trashed_by: null,
+                        external_id: null,
+                        vendor: 'trackstar',
+                    },
+                ],
+                meta: {},
+            })
+            mockServer
+                .onGet(
+                    '/api/service-connections/01970000-0000-7000-8000-000000000555/stores/',
+                )
+                .reply(200, { data: [], meta: {} })
+
+            featureFlagsClientMock.allFlags.mockReturnValue({
+                'action-centralized-library': 'MILESTONE-1',
+            })
+
+            render(<App />, {
+                path: '/integrations/app/:appId/:extra?',
+                initialEntries: [
+                    `/integrations/app/${appId}/${Tab.Credentials}`,
+                ],
+                storeState: store.getState() as object,
+            })
+
+            await user.click(
+                await screen.findByRole('button', { name: 'Add credentials' }),
+            )
+            expect(mockTrackstarOpen).toHaveBeenCalledTimes(1)
+
+            const token = await trackstarLinkCallbacks.getLinkToken?.()
+            expect(mockCreateTrackstarLink).toHaveBeenCalledWith([
+                { connection_id: '' },
+            ])
+            expect(token).toBe('fresh-token')
         })
     })
 })

@@ -39,6 +39,7 @@ import type {
     CreateServiceConnectionRequest,
     ServiceConnectionAuthType,
 } from 'models/integration/types/serviceConnection'
+import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import {
     useCreateTrackstarLink,
     useCreateTrackstarServiceConnection,
@@ -47,6 +48,7 @@ import type { ConnectAppAuthCredentials } from 'pages/aiAgent/actionsV2/apps/com
 import {
     ConnectAppAuthModal,
     ConnectAppModal,
+    InstallSuccessModal,
 } from 'pages/aiAgent/actionsV2/apps/components'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -69,6 +71,7 @@ import { getIntegrationsByAppId } from 'state/integrations/selectors'
 
 import AppActionsConnections from './AppActionsConnections'
 import AppActionsTab from './AppActionsTab'
+import { useAppActionSteps } from './hooks/useAppActionSteps'
 import IntegrationsList from './IntegrationsList'
 import InboundConnectionCard from './SetupCards/InboundConnectionCard'
 import OutboundConnectionCard from './SetupCards/OutboundConnectionCard'
@@ -118,6 +121,32 @@ export default function AppDetail() {
     const [createdConnectionId, setCreatedConnectionId] = useState<
         string | null
     >(null)
+    const [installSuccessStore, setInstallSuccessStore] = useState<{
+        type: string
+        shopName: string | undefined
+    } | null>(null)
+    const installSuccessTimeoutRef = useRef<ReturnType<
+        typeof setTimeout
+    > | null>(null)
+    const scheduleInstallSuccess = useCallback(
+        (target: { type: string; shopName: string | undefined }) => {
+            if (installSuccessTimeoutRef.current) {
+                clearTimeout(installSuccessTimeoutRef.current)
+            }
+            installSuccessTimeoutRef.current = setTimeout(() => {
+                setInstallSuccessStore(target)
+                installSuccessTimeoutRef.current = null
+            }, 3000)
+        },
+        [],
+    )
+    useEffect(() => {
+        return () => {
+            if (installSuccessTimeoutRef.current) {
+                clearTimeout(installSuccessTimeoutRef.current)
+            }
+        }
+    }, [])
     // Keep in sync with `SUPPORTED_STORE_TYPES` in `ConnectAppModal`.
     const storeIntegrations = useStoreIntegrations([IntegrationType.Shopify])
 
@@ -129,6 +158,9 @@ export default function AppDetail() {
     const hasConnections = !isEmpty(
         useAppSelector(getIntegrationsByAppId(appId)),
     )
+
+    const { appActionSteps } = useAppActionSteps(appId)
+    const hasAppActions = appActionSteps.length > 0
 
     useEffectOnce(() => {
         void dispatch(fetchIntegrations())
@@ -183,22 +215,14 @@ export default function AppDetail() {
         }
     }, [appId, preview])
 
-    const hasAttemptedAutoRedirectRef = useRef(false)
     useEffect(() => {
-        if (hasAttemptedAutoRedirectRef.current) return
+        if (extra !== Tab.Credentials) return
         if (!isActionLibraryEnabled) return
         if (!existingConnections) return
-        hasAttemptedAutoRedirectRef.current = true
-        if (!extraParam && existingConnections.length > 0) {
-            history.replace(`${baseURL}/credentials`)
+        if (existingConnections.length === 0) {
+            history.replace(baseURL)
         }
-    }, [
-        extraParam,
-        isActionLibraryEnabled,
-        existingConnections,
-        history,
-        baseURL,
-    ])
+    }, [extra, isActionLibraryEnabled, existingConnections, history, baseURL])
 
     useEffect(() => {
         let cancelled = false
@@ -280,6 +304,10 @@ export default function AppDetail() {
                     connectionId,
                     storeId: onlyStore.id,
                 })
+                scheduleInstallSuccess({
+                    type: onlyStore.type,
+                    shopName: getShopNameFromStoreIntegration(onlyStore),
+                })
             } catch {
                 toast.error(
                     `Connected ${appItem.title}, but failed to link your store. You can link it from the Credentials tab.`,
@@ -307,8 +335,8 @@ export default function AppDetail() {
                 location: outboundAuth.location,
                 key: outboundAuth.key,
                 value: authValueFromCredentials(outboundAuth, credentials),
-                ...(outboundAuth.type === 'custom-scheme' && outboundAuth.scheme
-                    ? { scheme: outboundAuth.scheme }
+                ...(outboundAuth.type === 'custom-scheme'
+                    ? { scheme: outboundAuth.custom_scheme ?? null }
                     : {}),
             },
             application_id: appId,
@@ -362,10 +390,27 @@ export default function AppDetail() {
                 ),
             )
             setConnectModalOpen(false)
+            const firstStore = stores[0]
+            scheduleInstallSuccess({
+                type: firstStore.type,
+                shopName: getShopNameFromStoreIntegration(firstStore),
+            })
         } catch {
             toast.error(
                 `Failed to link the selected store${stores.length > 1 ? 's' : ''} to ${appItem.title}.`,
             )
+        }
+    }
+
+    const handleViewActions = () => {
+        const target = installSuccessStore
+        setInstallSuccessStore(null)
+        if (target && target.type && target.shopName) {
+            history.push(
+                `/app/ai-agent/${target.type}/${target.shopName}/actions`,
+            )
+        } else {
+            history.push('/app/ai-agent')
         }
     }
 
@@ -399,6 +444,7 @@ export default function AppDetail() {
                             }
                             alloyIntegrationId={appItem.alloyIntegrationId}
                             onDisconnected={refetchAppItem}
+                            onAuthorizeReturn={refetchAppItem}
                         />
                     ) : null
                 }
@@ -455,24 +501,26 @@ export default function AppDetail() {
                 ) : null}
             </PageHeader>
 
-            {isAppConnected && (
+            {(isAppConnected || (isActionLibraryEnabled && hasAppActions)) && (
                 <SecondaryNavbar>
                     <NavLink to={baseURL} exact>
                         App Details
                     </NavLink>
-                    <NavLink to={`${baseURL}/advanced`} exact>
-                        Advanced
-                    </NavLink>
+                    {isActionLibraryEnabled && hasAppActions && (
+                        <NavLink to={`${baseURL}/actions`} exact>
+                            Actions
+                        </NavLink>
+                    )}
                     {(isActionLibraryEnabled
-                        ? appItem.isConnected || hasServiceConnections
+                        ? hasServiceConnections
                         : hasConnections) && (
                         <NavLink to={`${baseURL}/credentials`} exact>
                             Credentials
                         </NavLink>
                     )}
-                    {isActionLibraryEnabled && (
-                        <NavLink to={`${baseURL}/actions`} exact>
-                            Actions
+                    {isAppConnected && (
+                        <NavLink to={`${baseURL}/advanced`} exact>
+                            Advanced
                         </NavLink>
                     )}
                 </SecondaryNavbar>
@@ -515,6 +563,13 @@ export default function AppDetail() {
                 isSubmitting={isAssigningStore}
                 onSubmit={handleStorePickerSubmit}
                 disabledStoreIds={disabledStoreIdsForConnectModal}
+            />
+            <InstallSuccessModal
+                isOpen={installSuccessStore !== null}
+                onOpenChange={(open) => {
+                    if (!open) setInstallSuccessStore(null)
+                }}
+                onViewActions={handleViewActions}
             />
         </div>
     )

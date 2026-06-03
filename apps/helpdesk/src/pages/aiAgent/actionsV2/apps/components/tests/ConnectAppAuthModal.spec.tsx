@@ -232,7 +232,7 @@ describe('ConnectAppAuthModal', () => {
                 ...apiKeyOutboundAuth,
                 type: 'custom-scheme',
                 key: 'Authorization',
-                scheme: 'Klaviyo-API-Key',
+                custom_scheme: 'Klaviyo-API-Key',
             },
             onSubmit,
         })

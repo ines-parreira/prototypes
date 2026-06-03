@@ -67,15 +67,13 @@ describe('InstallSuccessModal', () => {
         expect(onViewActions).toHaveBeenCalledTimes(1)
     })
 
-    it('calls onOpenChange(false) when "Dismiss" is clicked', async () => {
+    it('calls onOpenChange(false) when the close button is clicked', async () => {
         const user = userEvent.setup()
         const onOpenChange = jest.fn()
         renderComponent({ onOpenChange })
 
         const dialog = screen.getByRole('dialog')
-        await user.click(
-            within(dialog).getByRole('button', { name: /dismiss/i }),
-        )
+        await user.click(within(dialog).getByRole('button', { name: /close/i }))
 
         expect(onOpenChange).toHaveBeenCalledWith(false)
     })

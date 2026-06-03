@@ -23,7 +23,7 @@ export type OutboundAuth = {
     key: string
     vendor: ServiceConnectionVendor | null
     trackstar_integration_name?: string | null
-    scheme?: string | null
+    custom_scheme?: string | null
 }
 
 export type AppIntegration = IntegrationBase & {

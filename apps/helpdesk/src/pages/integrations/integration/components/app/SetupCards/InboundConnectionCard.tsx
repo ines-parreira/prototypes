@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 
@@ -27,6 +27,7 @@ type InboundConnectionCardProps = {
     isDisconnectDisabled: boolean
     alloyIntegrationId?: string
     onDisconnected?: () => void | Promise<void>
+    onAuthorizeReturn?: () => void | Promise<void>
 }
 
 export default function InboundConnectionCard({
@@ -37,6 +38,7 @@ export default function InboundConnectionCard({
     isDisconnectDisabled,
     alloyIntegrationId,
     onDisconnected,
+    onAuthorizeReturn,
 }: InboundConnectionCardProps) {
     return (
         <SetupCard
@@ -51,11 +53,15 @@ export default function InboundConnectionCard({
                     isDisconnectDisabled={isDisconnectDisabled}
                     alloyIntegrationId={alloyIntegrationId}
                     onDisconnected={onDisconnected}
+                    onAuthorizeReturn={onAuthorizeReturn}
                 />
             }
         />
     )
 }
+
+const AUTHORIZE_POLL_INTERVAL_MS = 3000
+const AUTHORIZE_POLL_MAX_DURATION_MS = 5 * 60 * 1000
 
 function InboundAction({
     appId,
@@ -65,7 +71,31 @@ function InboundAction({
     isDisconnectDisabled,
     alloyIntegrationId,
     onDisconnected,
+    onAuthorizeReturn,
 }: InboundConnectionCardProps) {
+    const [isPollingForAuth, setIsPollingForAuth] = useState(false)
+
+    useEffect(() => {
+        if (isConnected && isPollingForAuth) {
+            setIsPollingForAuth(false)
+        }
+    }, [isConnected, isPollingForAuth])
+
+    useEffect(() => {
+        if (!isPollingForAuth || !onAuthorizeReturn) return
+        const intervalId = setInterval(() => {
+            void onAuthorizeReturn()
+        }, AUTHORIZE_POLL_INTERVAL_MS)
+        const timeoutId = setTimeout(() => {
+            clearInterval(intervalId)
+            setIsPollingForAuth(false)
+        }, AUTHORIZE_POLL_MAX_DURATION_MS)
+        return () => {
+            clearInterval(intervalId)
+            clearTimeout(timeoutId)
+        }
+    }, [isPollingForAuth, onAuthorizeReturn])
+
     if (alloyIntegrationId) {
         return (
             <AlloyConnectButton
@@ -88,8 +118,17 @@ function InboundAction({
     }
 
     return (
-        <ConnectLink connectUrl={connectUrl} isApp integrationTitle={appTitle}>
-            <Button size="sm" variant="secondary">
+        <ConnectLink
+            connectUrl={connectUrl}
+            isApp
+            integrationTitle={appTitle}
+            onClick={() => setIsPollingForAuth(true)}
+        >
+            <Button
+                size="sm"
+                variant="secondary"
+                onClick={() => setIsPollingForAuth(true)}
+            >
                 Authorize
             </Button>
         </ConnectLink>
@@ -123,11 +162,11 @@ function DisconnectAction({
             if (!isUninstalled) {
                 throw new Error(`Not disconnected`)
             }
-            toast.success(`${appTitle} has been disconnected.`)
+            toast.success(`Access to ${appTitle} has been revoked.`)
             await onDisconnected?.()
         } catch {
             toast.error(
-                `Sorry, something went wrong. ${appTitle} is still connected.`,
+                `Sorry, something went wrong. Access to ${appTitle} was not revoked.`,
             )
         } finally {
             setModalOpen(false)
@@ -143,7 +182,7 @@ function DisconnectAction({
             isDisabled={isDisconnectDisabled}
             onClick={() => setModalOpen(true)}
         >
-            Disconnect
+            Revoke
         </Button>
     )
 
@@ -151,17 +190,17 @@ function DisconnectAction({
         <>
             {isDisconnectDisabled ? (
                 <Tooltip placement="top" trigger={disconnectButton}>
-                    <TooltipContent title="App cannot be disconnected while accounts are still integrated with Gorgias. Please disconnect all integrated accounts before disconnecting the app." />
+                    <TooltipContent title="Access cannot be revoked while accounts are still integrated with Gorgias. Please disconnect all integrated accounts first." />
                 </Tooltip>
             ) : (
                 disconnectButton
             )}
             <Modal isOpen={isModalOpen} onOpenChange={setModalOpen} size="sm">
                 <Box flexDirection="column" gap="md">
-                    <OverlayHeader title={`Disconnect ${appTitle}?`} />
+                    <OverlayHeader title={`Revoke access for ${appTitle}?`} />
                     <Text>
-                        Disconnecting the app revokes its permission to send or
-                        receive your Gorgias data.
+                        Revoking access removes {appTitle}&apos;s permission to
+                        send or receive your Gorgias data.
                     </Text>
                     <Box justifyContent="flex-end" gap="sm">
                         <Button
@@ -176,7 +215,7 @@ function DisconnectAction({
                             isLoading={isLoading}
                             onClick={handleAppDisconnection}
                         >
-                            {isLoading ? 'Disconnecting' : 'Disconnect'}
+                            {isLoading ? 'Revoking' : 'Revoke'}
                         </Button>
                     </Box>
                 </Box>

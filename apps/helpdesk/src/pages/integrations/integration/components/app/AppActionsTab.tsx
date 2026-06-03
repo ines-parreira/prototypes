@@ -1,21 +1,20 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 
 import { Box, Button, Card, Heading, Text } from '@gorgias/axiom'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { IntegrationType } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
-import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import {
     aiAgentRoutes,
     getAiAgentNavigationRoutes,
 } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import useGetIsActionStepEnabled from 'pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import Loader from 'pages/common/components/Loader/Loader'
 
 import AiAgentUpsellBanner from './AiAgentUpsellBanner'
 import AppActionsStepsTable from './AppActionsStepsTable'
+import { useAppActionSteps } from './hooks/useAppActionSteps'
 
 const LEARN_MORE_URL =
     'https://docs.gorgias.com/en-US/articles/connect-ai-agent-with-other-apps-184201'
@@ -45,27 +44,7 @@ export default function AppActionsTab({ appId, appName, appIcon }: Props) {
     const shouldShowInfoCard =
         !isAccessLoading && hasAccess && !isBannerDismissed
 
-    const { data: templates = [], isInitialLoading } =
-        useGetWorkflowConfigurationTemplates({
-            triggers: ['reusable-llm-prompt'],
-        })
-
-    const getIsActionStepEnabled = useGetIsActionStepEnabled()
-
-    const appActionSteps = useMemo(() => {
-        const matchedById = new Map<string, (typeof templates)[number]>()
-        for (const template of templates) {
-            if (matchedById.has(template.id)) continue
-            if (!getIsActionStepEnabled(template.internal_id)) continue
-            const isMatch = template.apps.some(
-                (app) =>
-                    (app.type === 'app' && app.app_id === appId) ||
-                    app.type === appId,
-            )
-            if (isMatch) matchedById.set(template.id, template)
-        }
-        return Array.from(matchedById.values())
-    }, [templates, appId, getIsActionStepEnabled])
+    const { appActionSteps, isInitialLoading } = useAppActionSteps(appId)
 
     return (
         <Box flexDirection="column" gap="md" padding="lg">

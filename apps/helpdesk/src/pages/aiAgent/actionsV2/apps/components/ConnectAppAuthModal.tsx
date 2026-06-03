@@ -130,7 +130,7 @@ export const ConnectAppAuthModal = ({
         const label = deriveSingleValueLabel(
             singleValueType,
             outboundAuth.key,
-            outboundAuth.scheme,
+            outboundAuth.custom_scheme,
         )
 
         return (
@@ -173,10 +173,6 @@ export const ConnectAppAuthModal = ({
                     aria-label={`Connect ${app.name}`}
                 >
                     <Box flexDirection="column" gap="md">
-                        <Text>
-                            Provide your credentials to connect {app.name} to
-                            your account.
-                        </Text>
                         {outboundAuth?.setup_description && (
                             <Text color="content-neutral-secondary">
                                 <div

@@ -254,7 +254,13 @@ export default function AppConnectionEdit() {
                 </Box>
             </Box>
 
-            <Box flexDirection="column" gap="lg" padding="lg">
+            <Box
+                flexDirection="column"
+                gap="lg"
+                paddingLeft="lg"
+                paddingRight="lg"
+                paddingBottom="lg"
+            >
                 <Text>
                     Manage your credentials to sync data and run actions.
                 </Text>

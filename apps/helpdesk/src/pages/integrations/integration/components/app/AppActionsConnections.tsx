@@ -61,8 +61,8 @@ export default function AppActionsConnections({ appId }: Props) {
         isLoading,
         isError,
     } = useListServiceConnectionsByAppId(appId)
-    const [connectionSortDirection, setConnectionSortDirection] =
-        useState<SortDirection>('asc')
+    const [nameSortDirection, setNameSortDirection] =
+        useState<SortDirection | null>(null)
     const [installSuccessStore, setInstallSuccessStore] = useState<{
         type: string
         shopName: string | undefined
@@ -78,9 +78,14 @@ export default function AppActionsConnections({ appId }: Props) {
 
     const sortedConnections = useMemo(() => {
         const list = connections ?? []
+        if (nameSortDirection === null) {
+            return [...list].sort((a, b) =>
+                b.created_datetime.localeCompare(a.created_datetime),
+            )
+        }
         const sorted = [...list].sort((a, b) => a.name.localeCompare(b.name))
-        return connectionSortDirection === 'asc' ? sorted : sorted.reverse()
-    }, [connections, connectionSortDirection])
+        return nameSortDirection === 'asc' ? sorted : sorted.reverse()
+    }, [connections, nameSortDirection])
 
     const connectionStoreQueries =
         useListServiceConnectionStoresByConnectionIds(
@@ -172,8 +177,8 @@ export default function AppActionsConnections({ appId }: Props) {
                 <TableHeader>
                     <TableRow>
                         <TableHeaderCell
-                            sortDirection={connectionSortDirection}
-                            onSortChange={setConnectionSortDirection}
+                            sortDirection={nameSortDirection ?? undefined}
+                            onSortChange={setNameSortDirection}
                         >
                             Connection
                         </TableHeaderCell>
@@ -297,7 +302,11 @@ function ConnectionRow({
     )
 
     return (
-        <TableRow>
+        <TableRow
+            onClick={() => history.push(editUrl)}
+            tabIndex={0}
+            aria-label={`Open ${connection.name}`}
+        >
             <TableCell>
                 <Box alignItems="center" gap="xs">
                     <Text variant="bold">{connection.name}</Text>
@@ -390,6 +399,7 @@ function ConnectionRow({
                                         }
                                     />
                                 }
+                                onClick={(e) => e.stopPropagation()}
                             >
                                 Connect store
                             </Button>
@@ -436,6 +446,7 @@ function ConnectionRow({
                                 variant="tertiary"
                                 aria-label={`Delete ${connection.name}`}
                                 icon={<Icon name="trash-empty" />}
+                                onClick={(e) => e.stopPropagation()}
                             />
                         }
                     >
@@ -486,13 +497,7 @@ function ConnectionRow({
                             </Box>
                         </Box>
                     </Popover>
-                    <Button
-                        size="sm"
-                        variant="tertiary"
-                        aria-label={`Open ${connection.name}`}
-                        icon={<Icon name="arrow-chevron-right" />}
-                        onClick={() => history.push(editUrl)}
-                    />
+                    <Icon name="arrow-chevron-right" />
                 </Box>
             </TableCell>
         </TableRow>
@@ -548,6 +553,7 @@ function AssignedStoresList({
                             size="sm"
                             variant="tertiary"
                             aria-label={`Show ${overflowStores.length} more stores`}
+                            onClick={(e) => e.stopPropagation()}
                         >
                             +{overflowStores.length}
                         </Button>

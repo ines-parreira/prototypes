@@ -33,7 +33,6 @@ const CONNECTION_3_ID = '01970000-0000-7000-8000-000000000003'
 const baseConnection = {
     service: 'shipmonk',
     url: 'https://api.shipmonk.com',
-    created_datetime: '2026-05-01T00:00:00',
     updated_datetime: null,
     trashed_datetime: null,
     created_by: 1,
@@ -41,7 +40,10 @@ const baseConnection = {
     trashed_by: null,
     external_id: null,
     vendor: null,
-} satisfies Omit<ServiceConnectionApiDTO, 'id' | 'name' | 'status'>
+} satisfies Omit<
+    ServiceConnectionApiDTO,
+    'id' | 'name' | 'status' | 'created_datetime'
+>
 
 const connections: ServiceConnectionApiDTO[] = [
     {
@@ -49,18 +51,21 @@ const connections: ServiceConnectionApiDTO[] = [
         id: CONNECTION_1_ID,
         name: 'ShipMonk connection 1',
         status: 'active',
+        created_datetime: '2026-05-01T00:00:00',
     },
     {
         ...baseConnection,
         id: CONNECTION_2_ID,
         name: 'ShipMonk connection 2',
         status: 'invalid',
+        created_datetime: '2026-05-02T00:00:00',
     },
     {
         ...baseConnection,
         id: CONNECTION_3_ID,
         name: 'ShipMonk connection 3',
         status: 'active',
+        created_datetime: '2026-05-03T00:00:00',
     },
 ]
 
@@ -157,7 +162,7 @@ describe('AppActionsConnections', () => {
         expect(screen.getByText('Showing 3 of 3 items')).toBeInTheDocument()
     })
 
-    it('renders all three connections sorted ascending', async () => {
+    it('renders all three connections sorted by created_datetime descending', async () => {
         renderComponent()
 
         const rows = await screen.findAllByRole('row')
@@ -165,13 +170,13 @@ describe('AppActionsConnections', () => {
         expect(rows).toHaveLength(4)
 
         expect(
-            within(rows[1]!).getByText('ShipMonk connection 1'),
+            within(rows[1]!).getByText('ShipMonk connection 3'),
         ).toBeInTheDocument()
         expect(
             within(rows[2]!).getByText('ShipMonk connection 2'),
         ).toBeInTheDocument()
         expect(
-            within(rows[3]!).getByText('ShipMonk connection 3'),
+            within(rows[3]!).getByText('ShipMonk connection 1'),
         ).toBeInTheDocument()
     })
 
@@ -192,9 +197,9 @@ describe('AppActionsConnections', () => {
     it('shows a "Connect store" button on the connection that has no linked stores', async () => {
         renderComponent()
 
-        await screen.findByText('ShipMonk connection 1')
-        const rows = screen.getAllByRole('row')
-        const connectionWithoutStore = rows[1]!
+        const connectionWithoutStore = (
+            await screen.findByText('ShipMonk connection 1')
+        ).closest('tr')!
 
         expect(
             within(connectionWithoutStore).getByRole('button', {
@@ -211,7 +216,7 @@ describe('AppActionsConnections', () => {
         expect(screen.getByText('steve-madden-eu')).toBeInTheDocument()
     })
 
-    it('exposes Delete and Open buttons with the connection name in the aria-label', async () => {
+    it('exposes a Delete button and a clickable row with the connection name in the aria-label', async () => {
         renderComponent()
 
         await screen.findByText('ShipMonk connection 1')
@@ -222,7 +227,7 @@ describe('AppActionsConnections', () => {
             }),
         ).toBeInTheDocument()
         expect(
-            screen.getByRole('button', { name: 'Open ShipMonk connection 1' }),
+            screen.getByRole('row', { name: 'Open ShipMonk connection 1' }),
         ).toBeInTheDocument()
     })
 
@@ -264,7 +269,7 @@ describe('AppActionsConnections', () => {
         expect(screen.queryByText('Delete connection?')).not.toBeInTheDocument()
     })
 
-    it('toggles the sort direction when the Connection header is clicked', async () => {
+    it('switches to name sort when the Connection header is clicked', async () => {
         const { user } = renderComponent()
 
         const connectionHeader = await screen.findByRole('columnheader', {
@@ -272,6 +277,18 @@ describe('AppActionsConnections', () => {
         })
 
         let rows = screen.getAllByRole('row')
+        // Default sort: created_datetime desc (newest first)
+        expect(
+            within(rows[1]!).getByText('ShipMonk connection 3'),
+        ).toBeInTheDocument()
+        expect(
+            within(rows[3]!).getByText('ShipMonk connection 1'),
+        ).toBeInTheDocument()
+
+        await user.click(connectionHeader)
+
+        rows = screen.getAllByRole('row')
+        // First click: name asc
         expect(
             within(rows[1]!).getByText('ShipMonk connection 1'),
         ).toBeInTheDocument()
@@ -282,6 +299,7 @@ describe('AppActionsConnections', () => {
         await user.click(connectionHeader)
 
         rows = screen.getAllByRole('row')
+        // Second click: name desc
         expect(
             within(rows[1]!).getByText('ShipMonk connection 3'),
         ).toBeInTheDocument()
@@ -379,11 +397,11 @@ describe('AppActionsConnections', () => {
         ).toBeInTheDocument()
     })
 
-    it('navigates to the connection edit page when the Open button is clicked', async () => {
+    it('navigates to the connection edit page when the row is clicked', async () => {
         const { user } = renderComponent()
 
         await user.click(
-            await screen.findByRole('button', {
+            await screen.findByRole('row', {
                 name: 'Open ShipMonk connection 1',
             }),
         )
@@ -391,6 +409,44 @@ describe('AppActionsConnections', () => {
         expect(mockHistoryPush).toHaveBeenCalledWith(
             `/app/settings/integrations/app/${APP_ID}/credentials/${CONNECTION_1_ID}`,
         )
+    })
+
+    it('shows an error toast when linking the store fails', async () => {
+        server.use(
+            http.get('*/api/reporting/stores', () =>
+                HttpResponse.json({
+                    data: [
+                        {
+                            id: 99,
+                            store_integration_id: 99,
+                            name: 'my-store',
+                        },
+                    ],
+                    meta: {},
+                }),
+            ),
+            http.post(
+                `*/api/service-connections/${CONNECTION_1_ID}/stores/`,
+                () => new HttpResponse(null, { status: 500 }),
+            ),
+        )
+
+        const { user } = renderComponent()
+
+        await user.click(
+            await screen.findByRole('button', { name: /connect store/i }),
+        )
+        const listbox = await screen.findByRole('listbox')
+        await user.click(
+            within(listbox).getByRole('option', { name: /my-store/ }),
+        )
+        await user.click(screen.getByRole('button', { name: 'Save' }))
+
+        expect(
+            await screen.findByRole('status', {
+                name: 'Failed to link stores to ShipMonk connection 1.',
+            }),
+        ).toBeInTheDocument()
     })
 
     it('opens the install-success modal after linking a store and routes "View actions" to the store actions URL', async () => {
