@@ -1,4 +1,8 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import {
+    FeatureFlagKey,
+    useFlag,
+    useFlagWithLoading,
+} from '@repo/feature-flags'
 import { MockSidebarProvider } from '@repo/navigation/fixtures'
 import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
@@ -15,12 +19,32 @@ import { ActionDrivenNavigation } from '../ActionDrivenNavigation'
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(() => ({})),
+    useFlagWithLoading: jest.fn(() => ({ value: false, isLoading: false })),
     useHelpdeskV2WayfindingMS1Flag: jest.fn(() => false),
 }))
 const mockUseFlag = jest.mocked(useFlag)
+const mockUseFlagWithLoading = jest.mocked(useFlagWithLoading)
 const mockUseHelpdeskV2WayfindingMS1Flag = jest.requireMock(
     '@repo/feature-flags',
 ).useHelpdeskV2WayfindingMS1Flag as jest.Mock
+
+const setFeatureFlags = ({
+    expandingTrial = false,
+    onboardingV3 = false,
+}: {
+    expandingTrial?: boolean
+    onboardingV3?: boolean
+} = {}) => {
+    mockUseFlagWithLoading.mockImplementation((key: unknown) => {
+        if (key === FeatureFlagKey.AiAgentExpandingTrialExperienceForAll) {
+            return { value: expandingTrial, isLoading: false }
+        }
+        if (key === FeatureFlagKey.AiAgentOnboardingV3) {
+            return { value: onboardingV3, isLoading: false }
+        }
+        return { value: false, isLoading: false }
+    })
+}
 
 jest.mock('../useActionDrivenNavbarSections', () => ({
     useActionDrivenNavbarSections: jest.fn(),
@@ -229,6 +253,7 @@ describe('ActionDrivenNavigation', () => {
         jest.clearAllMocks()
 
         mockUseHelpdeskV2WayfindingMS1Flag.mockReturnValue(false)
+        setFeatureFlags()
 
         mockedOnboardingHook.mockReturnValue('onboarded')
         mockedTrialAccessHook.mockReturnValue({
@@ -716,12 +741,40 @@ describe('ActionDrivenNavigation', () => {
                 expect(screen.queryByText('Analyze')).not.toBeInTheDocument()
             })
 
-            it('renders collapsed item when onboarded but not active', () => {
+            it('renders navigation items when onboarded even without access (pre-trial, V3 on)', () => {
+                setFeatureFlags({ expandingTrial: true, onboardingV3: true })
                 mockedOnboardingHook.mockReturnValue('onboarded')
                 mockGetStoreActivationStatus.mockReturnValue(false)
 
                 renderComponent()
 
+                expect(screen.getByText('Overview')).toBeInTheDocument()
+                expect(screen.getByText('Analyze')).toBeInTheDocument()
+                expect(
+                    screen.queryByText('Try for free'),
+                ).not.toBeInTheDocument()
+            })
+
+            it('keeps the collapsed item for an onboarded store without access when V3 is off (even if the expanding-trial flag is on)', () => {
+                setFeatureFlags({ expandingTrial: true, onboardingV3: false })
+                mockedOnboardingHook.mockReturnValue('onboarded')
+                mockGetStoreActivationStatus.mockReturnValue(false)
+
+                renderComponent()
+
+                expect(screen.getByText('Try for free')).toBeInTheDocument()
+                expect(screen.queryByText('Overview')).not.toBeInTheDocument()
+                expect(screen.queryByText('Analyze')).not.toBeInTheDocument()
+            })
+
+            it('keeps the collapsed item for an onboarded store without access when both flags are off', () => {
+                setFeatureFlags({ expandingTrial: false, onboardingV3: false })
+                mockedOnboardingHook.mockReturnValue('onboarded')
+                mockGetStoreActivationStatus.mockReturnValue(false)
+
+                renderComponent()
+
+                expect(screen.getByText('Try for free')).toBeInTheDocument()
                 expect(screen.queryByText('Overview')).not.toBeInTheDocument()
                 expect(screen.queryByText('Analyze')).not.toBeInTheDocument()
             })

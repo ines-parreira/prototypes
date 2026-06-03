@@ -61,6 +61,10 @@ jest.mock('@repo/feature-flags', () => ({
         MidCycleUpgradeBillingLogic: 'MidCycleUpgradeBillingLogic',
     },
     useFlag: (...args: unknown[]) => mockUseFlag(...args),
+    useFlagWithLoading: (...args: unknown[]) => ({
+        value: mockUseFlag(...args),
+        isLoading: false,
+    }),
 }))
 
 jest.mock('@repo/billing', () => ({

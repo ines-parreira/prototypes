@@ -38,6 +38,7 @@ jest.mock('react-router-dom', () => ({
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(() => true),
+    useFlagWithLoading: jest.fn(() => ({ value: true, isLoading: false })),
 }))
 const defaultState = {
     billing: fromJS(billingState),

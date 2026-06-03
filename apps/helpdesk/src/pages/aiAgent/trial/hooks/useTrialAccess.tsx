@@ -1,6 +1,10 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import {
+    FeatureFlagKey,
+    useFlag,
+    useFlagWithLoading,
+} from '@repo/feature-flags'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetTrials } from 'models/aiAgent/queries'
@@ -160,6 +164,22 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
         FeatureFlagKey.AiShoppingAssistantTrialMerchants,
     )
 
+    // Gates the no-automate AI Agent trial experience for helpdesk-trialing
+    // merchants. While off, this cohort keeps the legacy restricted behavior.
+    const { value: expandingTrialForAll } = useFlagWithLoading<
+        boolean | 'loading_state'
+    >(FeatureFlagKey.AiAgentExpandingTrialExperienceForAll, false)
+    const isExpandingTrialForAllEnabled = expandingTrialForAll === true
+    const { value: isV3OnboardingEnabled } = useFlagWithLoading(
+        FeatureFlagKey.AiAgentOnboardingV3,
+        false,
+    )
+    // The wizard-first, pre-trial cohort only exists under V3. Require V3 here so
+    // V2 behavior stays on the legacy restricted path even though the expanding
+    // flag is GA; the expanding flag remains a global kill-switch.
+    const isWizardFirstTrialEnabled =
+        isExpandingTrialForAllEnabled && isV3OnboardingEnabled === true
+
     const isOnStarterOrBasicPlan =
         currentHelpdeskPlan?.tier === HelpdeskPlanTier.STARTER ||
         currentHelpdeskPlan?.tier === HelpdeskPlanTier.BASIC
@@ -197,7 +217,28 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
     const currentTrials =
         trialType === TrialType.AiAgent ? aiAgentTrials : salesTrials
 
-    if (isTrialingSubscription) {
+    // Keeps an already-started AI Agent trial alive if V3 is rolled back, so the
+    // early return below can't re-lock access mid-trial. Shop vs no-shop mirrors
+    // useAiAgentAccess (hasCurrentStoreTrialActive vs hasAnyTrialActive). V2
+    // never starts this trial, so it stays false there.
+    const hasActiveAiAgentTrial =
+        trialType === TrialType.AiAgent &&
+        (currentStoreName
+            ? !!currentStoreTrial && hasTrialActive(currentStoreTrial)
+            : aiAgentTrials?.some((trial) => hasTrialActive(trial)) === true)
+
+    // Early return suppresses a Shopping Assistant trial offer while the helpdesk
+    // subscription is still trialing. Skip it for the no-automate AI Agent path:
+    // under V3 those merchants trial AI Agent now, and canned-false state would
+    // hide the CTA and blind the started trial. Gated on V3 (not the GA expanding
+    // flag) so V2 surfaces stay legacy; hasActiveAiAgentTrial covers V3 rollback.
+    if (
+        isTrialingSubscription &&
+        !(
+            trialType === TrialType.AiAgent &&
+            (isWizardFirstTrialEnabled || hasActiveAiAgentTrial)
+        )
+    ) {
         return createRestrictedTrialAccess(
             trialType,
             currentAutomatePlan,

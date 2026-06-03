@@ -1,6 +1,7 @@
 import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { useCurrentUserRole } from '@repo/users'
 
+import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import { isAiAgentEnabledForStore } from 'pages/aiAgent/utils/store-configuration.utils'
@@ -18,6 +19,10 @@ export const useNeedsAiAgentTrialOptIn = (
         FeatureFlagKey.AiAgentOnboardingV3,
         false,
     )
+    const { value: isExpandingTrialForAllEnabled } = useFlagWithLoading(
+        FeatureFlagKey.AiAgentExpandingTrialExperienceForAll,
+        false,
+    )
 
     const trialAccess = useTrialAccess(shopName)
 
@@ -28,6 +33,19 @@ export const useNeedsAiAgentTrialOptIn = (
         ? isAiAgentEnabledForStore(storeConfiguration)
         : false
 
+    // `canSeeTrialCTA` needs a self-serve GMV band, but V2 offered the trial to
+    // any helpdesk-trialing merchant via `canStartOnboarding`. Re-offer it here,
+    // scoped to the no-automate AI Agent type and the expanding kill-switch:
+    // `useTrialAccess` exposes `isTrialingSubscription`/`trialType` even when
+    // restricted, and a has-automate account resolves to ShoppingAssistant (stays
+    // suppressed).
+    const isEligibleForTrialOptIn = Boolean(
+        trialAccess.canSeeTrialCTA ||
+        (isExpandingTrialForAllEnabled === true &&
+            trialAccess.isTrialingSubscription &&
+            trialAccess.trialType === TrialType.AiAgent),
+    )
+
     const needsOptIn =
         isV3FlagOn &&
         isAdmin &&
@@ -35,7 +53,7 @@ export const useNeedsAiAgentTrialOptIn = (
         !isAiAgentAlreadyLive &&
         !trialAccess.isInAiAgentTrial &&
         !trialAccess.hasAiAgentStoreTrialStarted &&
-        trialAccess.canSeeTrialCTA
+        isEligibleForTrialOptIn
 
     return { needsOptIn }
 }

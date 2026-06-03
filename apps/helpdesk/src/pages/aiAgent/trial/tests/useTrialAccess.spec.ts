@@ -1,6 +1,10 @@
 import React from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import {
+    FeatureFlagKey,
+    useFlag,
+    useFlagWithLoading,
+} from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { fromJS } from 'immutable'
@@ -50,8 +54,28 @@ jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingState')
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
+    useFlagWithLoading: jest.fn(),
 }))
 const mockUseFlag = jest.mocked(useFlag)
+const mockUseFlagWithLoading = jest.mocked(useFlagWithLoading)
+
+const setFeatureFlags = ({
+    expandingTrial = false,
+    onboardingV3 = false,
+}: {
+    expandingTrial?: boolean
+    onboardingV3?: boolean
+} = {}) => {
+    mockUseFlagWithLoading.mockImplementation((key: unknown) => {
+        if (key === FeatureFlagKey.AiAgentExpandingTrialExperienceForAll) {
+            return { value: expandingTrial, isLoading: false }
+        }
+        if (key === FeatureFlagKey.AiAgentOnboardingV3) {
+            return { value: onboardingV3, isLoading: false }
+        }
+        return { value: false, isLoading: false }
+    })
+}
 
 // Mock utility functions
 jest.mock('utils', () => ({
@@ -227,6 +251,7 @@ describe('useTrialAccess', () => {
         mockUseAiAgentOnboardingState.mockReturnValue(
             OnboardingState.OnboardingWizard,
         )
+        setFeatureFlags()
     })
 
     describe('gmv segmentation', () => {
@@ -878,6 +903,211 @@ describe('useTrialAccess', () => {
                 isTrialingSubscription: true,
                 isError: undefined,
             })
+        })
+
+        it('should still compute AI Agent trial state for a no-automate (USD-4) account when V3 is on', () => {
+            setFeatureFlags({ expandingTrial: true, onboardingV3: true })
+            mockUseAppSelector.mockImplementation((selector) => {
+                if (selector === isTrialing) {
+                    return true
+                }
+                if (selector === getCurrentAutomatePlan) {
+                    return undefined
+                }
+                return defaulUseAppSelectorMockImplementation(selector)
+            })
+
+            const { result } = renderUseTrialAccess()
+
+            expect(result.current.trialType).toBe(TrialType.AiAgent)
+            expect(result.current.isTrialingSubscription).toBe(true)
+            // Early return skipped: real CTA eligibility is computed, not canned false
+            expect(result.current.canSeeTrialCTA).toBe(true)
+        })
+
+        it('should return restricted access for a no-automate (USD-4) account when V3 is off even if the expanding-trial flag is on', () => {
+            setFeatureFlags({ expandingTrial: true, onboardingV3: false })
+            mockUseAppSelector.mockImplementation((selector) => {
+                if (selector === isTrialing) {
+                    return true
+                }
+                if (selector === getCurrentAutomatePlan) {
+                    return undefined
+                }
+                return defaulUseAppSelectorMockImplementation(selector)
+            })
+
+            const { result } = renderUseTrialAccess()
+
+            expect(result.current.trialType).toBe(TrialType.AiAgent)
+            expect(result.current.isTrialingSubscription).toBe(true)
+            // V2 (V3 off) keeps the legacy early return even though expanding is GA
+            expect(result.current.canSeeTrialCTA).toBe(false)
+            expect(result.current.canSeeSystemBanner).toBe(false)
+            expect(result.current.isInAiAgentTrial).toBe(false)
+        })
+
+        it('should return restricted access for a no-automate (USD-4) account when both flags are off', () => {
+            setFeatureFlags({ expandingTrial: false, onboardingV3: false })
+            mockUseAppSelector.mockImplementation((selector) => {
+                if (selector === isTrialing) {
+                    return true
+                }
+                if (selector === getCurrentAutomatePlan) {
+                    return undefined
+                }
+                return defaulUseAppSelectorMockImplementation(selector)
+            })
+
+            const { result } = renderUseTrialAccess()
+
+            expect(result.current.trialType).toBe(TrialType.AiAgent)
+            expect(result.current.isTrialingSubscription).toBe(true)
+            expect(result.current.canSeeTrialCTA).toBe(false)
+            expect(result.current.canSeeSystemBanner).toBe(false)
+            expect(result.current.isInAiAgentTrial).toBe(false)
+        })
+
+        it('should keep computing AI Agent trial state for a started trial even when V3 is rolled back (both flags off)', () => {
+            const activeAiAgentTrial = createMockTrial({
+                shopName: 'Test Store',
+                type: TrialType.AiAgent,
+                trial: {
+                    startDatetime: '2024-01-01T00:00:00.000Z',
+                    endDatetime: '2099-01-01T00:00:00.000Z',
+                    account: {
+                        plannedUpgradeDatetime: null,
+                        optInDatetime: '2024-01-01T00:00:00.000Z',
+                        optOutDatetime: null,
+                        actualUpgradeDatetime: null,
+                        actualTerminationDatetime: null,
+                    },
+                },
+            })
+
+            setFeatureFlags({ expandingTrial: false, onboardingV3: false })
+            mockUseGetTrials.mockReturnValue({
+                data: [activeAiAgentTrial],
+                isLoading: false,
+                error: null,
+                isError: false,
+                isSuccess: true,
+                status: 'success',
+            } as any)
+            mockUseAppSelector.mockImplementation((selector) => {
+                if (selector === isTrialing) {
+                    return true
+                }
+                if (selector === getCurrentAutomatePlan) {
+                    return undefined
+                }
+                return defaulUseAppSelectorMockImplementation(selector)
+            })
+
+            const { result } = renderUseTrialAccess('Test Store')
+
+            // Early return must be skipped so the already-started trial is not
+            // blinded on rollback: access and trial state stay computed.
+            expect(result.current.trialType).toBe(TrialType.AiAgent)
+            expect(result.current.isTrialingSubscription).toBe(true)
+            expect(result.current.hasCurrentStoreTrialStarted).toBe(true)
+            expect(result.current.hasCurrentStoreTrialActive).toBe(true)
+            expect(result.current.isInAiAgentTrial).toBe(true)
+        })
+
+        it('should keep account-wide trial state for a started trial on rollback when called without a shop (no-shop consumers)', () => {
+            const activeAiAgentTrial = createMockTrial({
+                shopName: 'Test Store',
+                type: TrialType.AiAgent,
+                trial: {
+                    startDatetime: '2024-01-01T00:00:00.000Z',
+                    endDatetime: '2099-01-01T00:00:00.000Z',
+                    account: {
+                        plannedUpgradeDatetime: null,
+                        optInDatetime: '2024-01-01T00:00:00.000Z',
+                        optOutDatetime: null,
+                        actualUpgradeDatetime: null,
+                        actualTerminationDatetime: null,
+                    },
+                },
+            })
+
+            setFeatureFlags({ expandingTrial: false, onboardingV3: false })
+            mockUseGetTrials.mockReturnValue({
+                data: [activeAiAgentTrial],
+                isLoading: false,
+                error: null,
+                isError: false,
+                isSuccess: true,
+                status: 'success',
+            } as any)
+            mockUseAppSelector.mockImplementation((selector) => {
+                if (selector === isTrialing) {
+                    return true
+                }
+                if (selector === getCurrentAutomatePlan) {
+                    return undefined
+                }
+                return defaulUseAppSelectorMockImplementation(selector)
+            })
+
+            // No shop name: account-wide consumers like useAiAgentAccess() read
+            // hasAnyTrialActive, not the current store. The early return must
+            // still be skipped so their access survives the V3 rollback.
+            const { result } = renderUseTrialAccess()
+
+            expect(result.current.trialType).toBe(TrialType.AiAgent)
+            expect(result.current.isTrialingSubscription).toBe(true)
+            expect(result.current.hasAnyTrialStarted).toBe(true)
+            expect(result.current.hasAnyTrialActive).toBe(true)
+            // No current store is resolved, so store-scoped state stays false.
+            expect(result.current.hasCurrentStoreTrialActive).toBe(false)
+        })
+
+        it('should stay restricted when V3 is off and the AI Agent trial has expired', () => {
+            const expiredAiAgentTrial = createMockTrial({
+                shopName: 'Test Store',
+                type: TrialType.AiAgent,
+                trial: {
+                    startDatetime: '2023-11-01T00:00:00.000Z',
+                    endDatetime: '2023-12-01T00:00:00.000Z',
+                    account: {
+                        plannedUpgradeDatetime: null,
+                        optInDatetime: '2023-11-01T00:00:00.000Z',
+                        optOutDatetime: null,
+                        actualUpgradeDatetime: null,
+                        actualTerminationDatetime: '2023-12-01T00:00:00.000Z',
+                    },
+                },
+            })
+
+            setFeatureFlags({ expandingTrial: false, onboardingV3: false })
+            mockUseGetTrials.mockReturnValue({
+                data: [expiredAiAgentTrial],
+                isLoading: false,
+                error: null,
+                isError: false,
+                isSuccess: true,
+                status: 'success',
+            } as any)
+            mockUseAppSelector.mockImplementation((selector) => {
+                if (selector === isTrialing) {
+                    return true
+                }
+                if (selector === getCurrentAutomatePlan) {
+                    return undefined
+                }
+                return defaulUseAppSelectorMockImplementation(selector)
+            })
+
+            const { result } = renderUseTrialAccess('Test Store')
+
+            // An expired trial is not active, so the early return still fires.
+            expect(result.current.trialType).toBe(TrialType.AiAgent)
+            expect(result.current.isTrialingSubscription).toBe(true)
+            expect(result.current.isInAiAgentTrial).toBe(false)
+            expect(result.current.hasCurrentStoreTrialStarted).toBe(false)
+            expect(result.current.canSeeTrialCTA).toBe(false)
         })
     })
 })

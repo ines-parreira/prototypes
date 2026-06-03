@@ -11,6 +11,7 @@ import {
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
+    useFlagWithLoading: jest.fn(() => ({ value: false, isLoading: false })),
 }))
 
 const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>

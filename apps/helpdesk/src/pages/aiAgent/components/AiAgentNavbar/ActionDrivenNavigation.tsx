@@ -1,6 +1,7 @@
 import {
     FeatureFlagKey,
     useFlag,
+    useFlagWithLoading,
     useHelpdeskV2WayfindingMS1Flag,
 } from '@repo/feature-flags'
 import {
@@ -65,6 +66,18 @@ export const ActionDrivenNavigation = () => {
     const isActionsInternalPlatformEnabled = useFlag(
         FeatureFlagKey.ActionsInternalPlatform,
     )
+    const { value: expandingTrialForAll } = useFlagWithLoading<
+        boolean | 'loading_state'
+    >(FeatureFlagKey.AiAgentExpandingTrialExperienceForAll, false)
+    const isExpandingTrialForAllEnabled = expandingTrialForAll === true
+    const { value: isV3OnboardingEnabled } = useFlagWithLoading(
+        FeatureFlagKey.AiAgentOnboardingV3,
+        false,
+    )
+    // Wizard-first cohort (onboarded, pre-trial) only exists under V3; gate on it
+    // to keep V2 unchanged. Expanding-trial flag (GA) stays AND-ed as kill-switch.
+    const isWizardFirstNavEnabled =
+        isExpandingTrialForAllEnabled && isV3OnboardingEnabled === true
     const isActive =
         !!selectedStore &&
         !!getStoreActivationStatus &&
@@ -77,6 +90,7 @@ export const ActionDrivenNavigation = () => {
 
     const shouldRenderCollapsedItem =
         !!selectedStore &&
+        !(isWizardFirstNavEnabled && isOnboarded) &&
         (!hasAccess ||
             (onboardingState === OnboardingState.OnboardingWizard && !isActive))
 
@@ -85,8 +99,12 @@ export const ActionDrivenNavigation = () => {
         currentAutomatePlan,
     )
 
+    // Onboarded stores reach the Overview pre-trial (no-automate wizard-first
+    // flow) with no `hasAccess`, so also render the nav on `isWizardFirstNavEnabled`.
     const shouldRenderAIAgentItems =
-        !!selectedStore && hasAccess && (isActive || isOnboarded)
+        !!selectedStore &&
+        ((hasAccess && (isActive || isOnboarded)) ||
+            (isWizardFirstNavEnabled && isOnboarded))
 
     if (
         hasWayfindingMS1Flag &&

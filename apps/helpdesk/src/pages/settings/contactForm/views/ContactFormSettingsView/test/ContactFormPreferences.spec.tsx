@@ -5,6 +5,8 @@ import { fromJS } from 'immutable'
 
 import { toast } from '@gorgias/axiom'
 
+import { useFlagWithLoading } from '@repo/feature-flags'
+
 import {
     AUTOMATION_PRODUCT_ID,
     basicMonthlyAutomationPlan,
@@ -85,6 +87,14 @@ const renderView = ({
 describe('<ContactFormPreferences />', () => {
     beforeEach(() => {
         jest.resetAllMocks()
+        // `resetAllMocks` strips the implementation off the global
+        // `@repo/feature-flags` mock, so `useFlagWithLoading` (read by
+        // `useTrialAccess` via `useAiAgentAccess`) would otherwise return
+        // `undefined` and break destructuring.
+        jest.mocked(useFlagWithLoading).mockReturnValue({
+            value: false,
+            isLoading: false,
+        })
         jest.mocked(useSupportedLocales).mockReturnValue(
             getLocalesResponseFixture,
         )

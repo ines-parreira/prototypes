@@ -1,7 +1,8 @@
-import { useFlagWithLoading } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 import { useCurrentUserRole } from '@repo/users'
 
+import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { useNeedsAiAgentTrialOptIn } from 'pages/aiAgent/hooks/useNeedsAiAgentTrialOptIn'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
@@ -29,11 +30,30 @@ const mockUseStoreConfigContext =
 
 const SHOP_NAME = 'my-shop'
 
+const setFeatureFlags = ({
+    onboardingV3 = true,
+    expandingTrial = true,
+}: {
+    onboardingV3?: boolean
+    expandingTrial?: boolean
+} = {}) => {
+    mockUseFlagWithLoading.mockImplementation((key: unknown) => {
+        if (key === FeatureFlagKey.AiAgentOnboardingV3) {
+            return { value: onboardingV3, isLoading: false }
+        }
+        if (key === FeatureFlagKey.AiAgentExpandingTrialExperienceForAll) {
+            return { value: expandingTrial, isLoading: false }
+        }
+        return { value: false, isLoading: false }
+    })
+}
+
 const baseTrialAccess = {
     canSeeTrialCTA: false,
     canSeeSubscribeNowCTA: false,
     hasAiAgentStoreTrialStarted: false,
     isInAiAgentTrial: false,
+    trialType: TrialType.AiAgent,
 }
 
 const inactiveStoreConfig = {
@@ -49,10 +69,7 @@ const liveStoreConfig = {
 describe('useNeedsAiAgentTrialOptIn', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseFlagWithLoading.mockReturnValue({
-            value: true,
-            isLoading: false,
-        })
+        setFeatureFlags()
         mockUseCurrentUserRole.mockReturnValue({ isAdmin: true })
         mockUseTrialAccess.mockReturnValue(baseTrialAccess)
         mockUseStoreConfigContext.mockReturnValue({
@@ -62,10 +79,7 @@ describe('useNeedsAiAgentTrialOptIn', () => {
     })
 
     it('does not need opt-in when V3 flag is off', () => {
-        mockUseFlagWithLoading.mockReturnValue({
-            value: false,
-            isLoading: false,
-        })
+        setFeatureFlags({ onboardingV3: false })
         mockUseTrialAccess.mockReturnValue({
             ...baseTrialAccess,
             canSeeTrialCTA: true,
@@ -181,6 +195,65 @@ describe('useNeedsAiAgentTrialOptIn', () => {
         mockUseTrialAccess.mockReturnValue({
             ...baseTrialAccess,
             canSeeSubscribeNowCTA: true,
+        })
+
+        const { result } = renderHook(() =>
+            useNeedsAiAgentTrialOptIn(SHOP_NAME),
+        )
+
+        expect(result.current.needsOptIn).toBe(false)
+    })
+
+    it('needs opt-in for a helpdesk-trialing admin even when the trial CTA is suppressed', () => {
+        mockUseTrialAccess.mockReturnValue({
+            ...baseTrialAccess,
+            canSeeTrialCTA: false,
+            isTrialingSubscription: true,
+        })
+
+        const { result } = renderHook(() =>
+            useNeedsAiAgentTrialOptIn(SHOP_NAME),
+        )
+
+        expect(result.current.needsOptIn).toBe(true)
+    })
+
+    it('does not need opt-in for a helpdesk-trialing admin when the expanding-trial kill-switch is off (V3 on)', () => {
+        setFeatureFlags({ onboardingV3: true, expandingTrial: false })
+        mockUseTrialAccess.mockReturnValue({
+            ...baseTrialAccess,
+            canSeeTrialCTA: false,
+            isTrialingSubscription: true,
+        })
+
+        const { result } = renderHook(() =>
+            useNeedsAiAgentTrialOptIn(SHOP_NAME),
+        )
+
+        expect(result.current.needsOptIn).toBe(false)
+    })
+
+    it('does not need opt-in for a helpdesk-trialing admin on an Automate plan (Shopping Assistant)', () => {
+        mockUseTrialAccess.mockReturnValue({
+            ...baseTrialAccess,
+            canSeeTrialCTA: false,
+            isTrialingSubscription: true,
+            trialType: TrialType.ShoppingAssistant,
+        })
+
+        const { result } = renderHook(() =>
+            useNeedsAiAgentTrialOptIn(SHOP_NAME),
+        )
+
+        expect(result.current.needsOptIn).toBe(false)
+    })
+
+    it('does not need opt-in for a helpdesk-trialing admin once an AI Agent trial has started', () => {
+        mockUseTrialAccess.mockReturnValue({
+            ...baseTrialAccess,
+            canSeeTrialCTA: false,
+            isTrialingSubscription: true,
+            hasAiAgentStoreTrialStarted: true,
         })
 
         const { result } = renderHook(() =>
