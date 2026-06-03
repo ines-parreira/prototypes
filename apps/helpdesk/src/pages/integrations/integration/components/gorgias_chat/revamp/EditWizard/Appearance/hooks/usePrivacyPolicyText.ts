@@ -104,10 +104,15 @@ export const usePrivacyPolicyText = ({
                 savedPrivacyPolicyTextRef.current,
             )
 
+    const resetPrivacyPolicyText = useCallback(() => {
+        setPrivacyPolicyText(savedPrivacyPolicyTextRef.current)
+    }, [])
+
     return {
         privacyPolicyText,
         setPrivacyPolicyText,
         savePrivacyPolicyText,
         isPrivacyPolicyTextDirty,
+        resetPrivacyPolicyText,
     }
 }

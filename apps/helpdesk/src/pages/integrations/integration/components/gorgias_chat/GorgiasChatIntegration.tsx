@@ -15,6 +15,7 @@ import {
     ChatPreviewPanelContext,
     useChatPreviewPanel,
 } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
+import { useChatRedesignOptIn } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useChatRedesignOptIn'
 import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp'
 import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
 import type * as IntegrationsActions from 'state/integrations/actions'
@@ -83,6 +84,8 @@ export const GorgiasChatIntegration = ({
         isLoading: isChatSettingsRevampLoading,
     } = useShouldShowChatSettingsRevamp(storeIntegration, integration.get('id'))
 
+    const { isOptedIn } = useChatRedesignOptIn(integration.get('id'))
+
     const {
         showPreviewPanel,
         hidePreviewPanel,
@@ -91,9 +94,10 @@ export const GorgiasChatIntegration = ({
     } = useChatPreviewPanel({
         locale: chatLanguage,
         showBusinessHoursToggle: shouldShowNonAiAgentChatSettingsRevamp,
-        shouldShowChatVersionSwitcher:
+        forceChatRedesign:
             shouldShowNonAiAgentChatSettingsRevamp &&
-            !isChatSettingsRevampLoading,
+            !isChatSettingsRevampLoading &&
+            isOptedIn,
     })
     const isQuickRepliesEnabled = useIsQuickRepliesEnabled()
     const { hasAccess } = useAiAgentAccess()

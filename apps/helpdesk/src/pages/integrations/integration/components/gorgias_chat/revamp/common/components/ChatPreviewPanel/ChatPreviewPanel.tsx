@@ -17,7 +17,6 @@ import {
 import type { LANGUAGE } from 'constants/languages'
 
 import type {
-    ChatDisplayVersion,
     ChatPreviewBusinessHoursMode,
     ChatPreviewPage,
     ChatPreviewPanelHandle,
@@ -35,7 +34,6 @@ export type {
     SimulateConversationMessage,
 } from './ChatPreviewPanel.types'
 export type {
-    ChatDisplayVersion,
     ChatPreviewBusinessHoursMode,
     ChatPreviewPage,
     ChatPreviewPanelHandle,
@@ -85,7 +83,6 @@ type Props = {
     supportDefaultChatPreview?: boolean
     forceChatRedesign?: boolean
     showBusinessHoursToggle?: boolean
-    shouldShowChatVersionSwitcher?: boolean
 }
 
 type BusinessHoursToggleProps = {
@@ -122,17 +119,12 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
             supportDefaultChatPreview = false,
             forceChatRedesign = false,
             showBusinessHoursToggle = false,
-            shouldShowChatVersionSwitcher = false,
         }: Props,
         ref,
     ) => {
         const chatPreviewRef = useRef<ChatPreviewHandle>(null)
         const [selectedPage, setSelectedPage] =
             useState<ChatPreviewPage>('homepage')
-
-        const [chatDisplayVersion, setChatDisplayVersion] = useState<
-            ChatDisplayVersion | undefined
-        >(undefined)
 
         const [reloadKey, setReloadKey] = useState(0)
         const [businessHoursMode, setBusinessHoursMode] =
@@ -145,8 +137,10 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
             Boolean(appId || supportDefaultChatPreview)
 
         const chatPreviewKey = useMemo(() => {
-            return `${reloadKey}${locale ? '-' + locale : ''}`
-        }, [reloadKey, locale])
+            return `${reloadKey}${locale ? '-' + locale : ''}-${
+                forceChatRedesign ? 'redesign' : 'default'
+            }`
+        }, [reloadKey, locale, forceChatRedesign])
 
         const displayPage: ChatPreviewPanelHandle['displayPage'] = useCallback(
             (page, options) => {
@@ -184,42 +178,16 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
             setReloadKey((k) => k + 1)
         }, [])
 
-        const handleChatDisplayVersionChange = (key: string) => {
-            setChatDisplayVersion(key as ChatDisplayVersion)
-            reloadPreview()
-        }
-
         const onLoaded = useCallback(
             (
                 gorgiasChat: Window['GorgiasChat'],
                 gorgiasChatConfiguration: Window['gorgiasChatConfiguration'],
             ) => {
-                if (gorgiasChatConfiguration) {
-                    let resolvedChatDisplayVersion = chatDisplayVersion
-
-                    if (shouldShowChatVersionSwitcher) {
-                        if (chatDisplayVersion === undefined) {
-                            resolvedChatDisplayVersion = 'current'
-                            setChatDisplayVersion(resolvedChatDisplayVersion)
-                        }
-
-                        const featureFlagValue =
-                            resolvedChatDisplayVersion === 'current'
-                                ? false
-                                : true
-
-                        gorgiasChatConfiguration.featureFlags = {
-                            ...gorgiasChatConfiguration.featureFlags,
-                            'chat-client-ui-redesign-project': featureFlagValue,
-                            'linear.AIEXP-8485.enforce-chat-2-0-without-ai-agent':
-                                featureFlagValue,
-                        }
-                    } else if (forceChatRedesign) {
-                        gorgiasChatConfiguration.featureFlags = {
-                            ...gorgiasChatConfiguration.featureFlags,
-                            'linear.AIEXP-8485.enforce-chat-2-0-without-ai-agent':
-                                forceChatRedesign,
-                        }
+                if (gorgiasChatConfiguration && forceChatRedesign) {
+                    gorgiasChatConfiguration.featureFlags = {
+                        ...gorgiasChatConfiguration.featureFlags,
+                        'chat-client-ui-redesign-project': true,
+                        'linear.AIEXP-8485.enforce-chat-2-0-without-ai-agent': true,
                     }
                 }
 
@@ -250,8 +218,6 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
                 forceChatRedesign,
                 showBusinessHoursToggle,
                 businessHoursMode,
-                chatDisplayVersion,
-                shouldShowChatVersionSwitcher,
             ],
         )
 
@@ -316,13 +282,6 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
                         selectedPage={selectedPage}
                         onPageChange={handlePageChange}
                         headerActions={headerActions}
-                        shouldShowChatVersionSwitcher={
-                            shouldShowChatVersionSwitcher
-                        }
-                        chatDisplayVersion={chatDisplayVersion}
-                        onChatDisplayVersionChange={
-                            handleChatDisplayVersionChange
-                        }
                         withBusinessHoursToggle={
                             shouldRenderBusinessHoursToggle
                         }

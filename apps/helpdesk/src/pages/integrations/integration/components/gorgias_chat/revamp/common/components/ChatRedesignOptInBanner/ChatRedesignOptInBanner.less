@@ -1,0 +1,30 @@
+:local {
+    .banner {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+        // Right margin matches CollapsibleColumn's padding-right
+        // (--layout-spacing-xs) so the banner's right edge aligns with the
+        // chat-preview column's outer edge.
+        margin: var(--layout-spacing-xs) var(--layout-spacing-xs) 0 0;
+        padding: var(--spacing-sm) var(--spacing-md);
+        border-radius: 12px;
+        border: 1px solid #e2d6ff;
+        background: #f1ecff;
+    }
+
+    .content {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+        flex: 1;
+        min-width: 0;
+    }
+
+    .text {
+        display: flex;
+        align-items: baseline;
+        gap: var(--spacing-xs);
+        flex-wrap: wrap;
+    }
+}

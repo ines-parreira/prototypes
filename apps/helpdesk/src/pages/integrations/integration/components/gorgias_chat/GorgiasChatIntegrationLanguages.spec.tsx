@@ -78,6 +78,7 @@ describe('<GorgiasChatIntegrationLanguages />', () => {
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
             shouldShowNonAiAgentRevamp: false,
+            shouldShowLegacyChatCustomization: false,
         })
     })
 
@@ -93,6 +94,7 @@ describe('<GorgiasChatIntegrationLanguages />', () => {
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: true,
             shouldShowNonAiAgentRevamp: false,
+            shouldShowLegacyChatCustomization: false,
         })
 
         render(<GorgiasChatIntegrationLanguages {...minProps} />)
@@ -134,6 +136,7 @@ describe('<GorgiasChatIntegrationLanguages />', () => {
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
             shouldShowNonAiAgentRevamp: false,
+            shouldShowLegacyChatCustomization: false,
         })
 
         render(<GorgiasChatIntegrationLanguages {...minProps} />)

@@ -3,17 +3,22 @@ import { renderHook } from '@repo/testing'
 
 import type { StoreIntegration } from 'models/integration/types'
 
+import { useChatRedesignOptIn } from './useChatRedesignOptIn'
 import { useIsAiAgentEnabled } from './useIsAiAgentEnabled'
 import { useShouldShowChatSettingsRevamp } from './useShouldShowChatSettingsRevamp'
 
 jest.mock('@repo/feature-flags')
 jest.mock('./useIsAiAgentEnabled')
+jest.mock('./useChatRedesignOptIn')
 
 const mockUseFlagWithLoading = useFlagWithLoading as jest.MockedFunction<
     typeof useFlagWithLoading
 >
 const mockUseIsAiAgentEnabled = useIsAiAgentEnabled as jest.MockedFunction<
     typeof useIsAiAgentEnabled
+>
+const mockUseChatRedesignOptIn = useChatRedesignOptIn as jest.MockedFunction<
+    typeof useChatRedesignOptIn
 >
 
 const mockStoreIntegration = {} as StoreIntegration
@@ -29,6 +34,10 @@ beforeEach(() => {
     mockUseIsAiAgentEnabled.mockReturnValue({
         isAiAgentEnabled: true,
         isLoading: false,
+    })
+    mockUseChatRedesignOptIn.mockReturnValue({
+        isOptedIn: false,
+        optInDatetime: undefined,
     })
 })
 
@@ -210,6 +219,68 @@ describe('useShouldShowChatSettingsRevamp', () => {
             )
 
             expect(result.current.shouldShowNonAiAgentRevamp).toBe(false)
+        })
+    })
+
+    describe('shouldShowLegacyChatCustomization', () => {
+        it('is true when AI agent is disabled and the customer has not opted in', () => {
+            mockUseIsAiAgentEnabled.mockReturnValue({
+                isAiAgentEnabled: false,
+                isLoading: false,
+            })
+            mockUseChatRedesignOptIn.mockReturnValue({
+                isOptedIn: false,
+                optInDatetime: undefined,
+            })
+
+            const { result } = renderHook(() =>
+                useShouldShowChatSettingsRevamp(mockStoreIntegration, 1),
+            )
+
+            expect(result.current.shouldShowLegacyChatCustomization).toBe(true)
+        })
+
+        it('is false when AI agent is disabled but the customer has opted in', () => {
+            mockUseIsAiAgentEnabled.mockReturnValue({
+                isAiAgentEnabled: false,
+                isLoading: false,
+            })
+            mockUseChatRedesignOptIn.mockReturnValue({
+                isOptedIn: true,
+                optInDatetime: '2026-05-01T00:00:00Z',
+            })
+
+            const { result } = renderHook(() =>
+                useShouldShowChatSettingsRevamp(mockStoreIntegration, 1),
+            )
+
+            expect(result.current.shouldShowLegacyChatCustomization).toBe(false)
+        })
+
+        it('is false when AI agent is enabled', () => {
+            mockUseIsAiAgentEnabled.mockReturnValue({
+                isAiAgentEnabled: true,
+                isLoading: false,
+            })
+
+            const { result } = renderHook(() =>
+                useShouldShowChatSettingsRevamp(mockStoreIntegration, 1),
+            )
+
+            expect(result.current.shouldShowLegacyChatCustomization).toBe(false)
+        })
+
+        it('is false while the AI agent config is loading', () => {
+            mockUseIsAiAgentEnabled.mockReturnValue({
+                isAiAgentEnabled: false,
+                isLoading: true,
+            })
+
+            const { result } = renderHook(() =>
+                useShouldShowChatSettingsRevamp(mockStoreIntegration, 1),
+            )
+
+            expect(result.current.shouldShowLegacyChatCustomization).toBe(false)
         })
     })
 

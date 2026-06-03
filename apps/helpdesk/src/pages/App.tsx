@@ -22,6 +22,7 @@ import { CollapsibleColumn } from 'pages/CollapsibleColumn'
 import IconButton from 'pages/common/components/button/IconButton'
 import FullPage from 'pages/common/components/FullPage'
 import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
+import { usePageTopBanner } from 'pages/common/hooks/usePageTopBanner'
 import { ErrorBoundary } from 'pages/ErrorBoundary'
 import { closePanels, openPanel } from 'state/layout/actions'
 import { getCurrentOpenedPanel } from 'state/layout/selectors'
@@ -79,6 +80,7 @@ const App = ({
     }
 
     const { isCollapsibleColumnOpen } = useCollapsibleColumn()
+    const { pageTopBannerRef } = usePageTopBanner()
 
     return (
         <div
@@ -108,6 +110,7 @@ const App = ({
                     [css.withCollapsibleColumn]: isCollapsibleColumnOpen,
                 })}
             >
+                {!hasWayfindingMS1Flag && <div ref={pageTopBannerRef} />}
                 <div
                     className={cn('d-flex flex-grow-1', css.contentInfobar)}
                     style={{

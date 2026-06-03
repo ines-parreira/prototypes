@@ -70,6 +70,7 @@ describe('<GorgiasAutomateChatIntegration />', () => {
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: true,
             shouldShowNonAiAgentRevamp: false,
+            shouldShowLegacyChatCustomization: false,
         })
 
         render(<GorgiasAutomateChatIntegration {...minProps} />)
@@ -95,6 +96,7 @@ describe('<GorgiasAutomateChatIntegration />', () => {
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
             shouldShowNonAiAgentRevamp: false,
+            shouldShowLegacyChatCustomization: false,
         })
 
         render(
@@ -125,6 +127,7 @@ describe('<GorgiasAutomateChatIntegration />', () => {
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
             shouldShowNonAiAgentRevamp: false,
+            shouldShowLegacyChatCustomization: false,
         })
 
         render(<GorgiasAutomateChatIntegration {...minProps} />)
@@ -147,6 +150,7 @@ describe('<GorgiasAutomateChatIntegration />', () => {
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
             shouldShowNonAiAgentRevamp: false,
+            shouldShowLegacyChatCustomization: false,
         })
 
         render(<GorgiasAutomateChatIntegration {...minProps} />)

@@ -2,6 +2,7 @@ import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 
 import type { StoreIntegration } from 'models/integration/types'
 
+import { useChatRedesignOptIn } from './useChatRedesignOptIn'
 import { useIsAiAgentEnabled } from './useIsAiAgentEnabled'
 
 export const useShouldShowChatSettingsRevamp = (
@@ -32,6 +33,12 @@ export const useShouldShowChatSettingsRevamp = (
 
     const { isAiAgentEnabled, isLoading: isAiAgentLoading } =
         useIsAiAgentEnabled(storeIntegration, chatId)
+
+    const { isOptedIn } = useChatRedesignOptIn(chatId)
+
+    const isAiAgentDisabled = !isAiAgentLoading && !isAiAgentEnabled
+
+    const shouldShowLegacyChatCustomization = isAiAgentDisabled && !isOptedIn
 
     // Shows the chat settings revamp UI for non-AI-agent customers
     // gated behind the NonAiAgentChat2Revamp flag (Chat 2.0 migration).
@@ -64,6 +71,7 @@ export const useShouldShowChatSettingsRevamp = (
         isNonAiAgentChat2RevampEnabled,
         shouldShowChatSettingsRevamp,
         shouldShowNonAiAgentChatSettingsRevamp,
+        shouldShowLegacyChatCustomization,
         shouldShowFlowsScreensRevamp,
         shouldShowOrderManagementScreensRevamp,
         shouldShowNonAiAgentRevamp,

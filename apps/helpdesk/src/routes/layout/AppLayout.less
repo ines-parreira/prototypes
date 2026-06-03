@@ -11,6 +11,26 @@
         flex-shrink: 1;
         overflow: hidden;
     }
+
+    // Column wrapper that sits inside <Panels>, to the right of the sidebar
+    // and resize handle, so a portal-mounted banner (e.g. the chat-redesign
+    // opt-in banner) can sit above the main panel and the collapsible column
+    // without spanning the sidebar.
+    .mainColumn {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        min-width: 0;
+        min-height: 0;
+    }
+
+    .mainRow {
+        display: flex;
+        flex: 1;
+        min-width: 0;
+        min-height: 0;
+        overflow: hidden;
+    }
 }
 
 @media print {

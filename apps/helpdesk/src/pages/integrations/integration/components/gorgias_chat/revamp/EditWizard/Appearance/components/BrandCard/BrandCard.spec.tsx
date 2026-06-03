@@ -196,9 +196,9 @@ describe('BrandCard', () => {
     })
 
     describe('Advanced colors (AI agent disabled)', () => {
-        it('should render both main and conversation color pickers when isAiAgentDisabled is true', () => {
+        it('should render both main and conversation color pickers when shouldShowLegacyChatCustomization is true', () => {
             renderComponent({
-                isAiAgentDisabled: true,
+                shouldShowLegacyChatCustomization: true,
                 mainColor: '#111111',
                 conversationColor: '#222222',
             })
@@ -212,7 +212,7 @@ describe('BrandCard', () => {
         })
 
         it('should call onMainColorChange without mirroring to conversation color', () => {
-            renderComponent({ isAiAgentDisabled: true })
+            renderComponent({ shouldShowLegacyChatCustomization: true })
 
             const mainCall = mockColorPicker.mock.calls.find(
                 ([props]: [ColorPickerProps]) => props.value === '#FF0000',
@@ -231,7 +231,7 @@ describe('BrandCard', () => {
 
         it('should call onConversationColorChange and sync the chat preview when the conversation color changes', () => {
             renderComponent({
-                isAiAgentDisabled: true,
+                shouldShowLegacyChatCustomization: true,
                 conversationColor: '#AAAAAA',
             })
 
@@ -250,7 +250,7 @@ describe('BrandCard', () => {
 
         it('should render the outside-business-hours checkbox with the current value', () => {
             renderComponent({
-                isAiAgentDisabled: true,
+                shouldShowLegacyChatCustomization: true,
                 useMainColorOutsideBusinessHours: true,
             })
 
@@ -263,7 +263,7 @@ describe('BrandCard', () => {
         })
 
         it('should call onUseMainColorOutsideBusinessHoursChange when the checkbox toggles', () => {
-            renderComponent({ isAiAgentDisabled: true })
+            renderComponent({ shouldShowLegacyChatCustomization: true })
 
             const { onChange } = mockCheckBoxField.mock
                 .calls[0][0] as CheckBoxFieldProps
@@ -325,7 +325,7 @@ describe('BrandCard', () => {
 
         it('should render the background style radio group with the current value', () => {
             renderComponent({
-                isAiAgentDisabled: true,
+                shouldShowLegacyChatCustomization: true,
                 backgroundStyle: GorgiasChatBackgroundColorStyle.Solid,
             })
 
@@ -337,7 +337,7 @@ describe('BrandCard', () => {
         })
 
         it('should call onBackgroundStyleChange and sync the preview when the background style changes', () => {
-            renderComponent({ isAiAgentDisabled: true })
+            renderComponent({ shouldShowLegacyChatCustomization: true })
 
             const { onChange } = mockRadioGroup.mock
                 .calls[0][0] as RadioGroupProps

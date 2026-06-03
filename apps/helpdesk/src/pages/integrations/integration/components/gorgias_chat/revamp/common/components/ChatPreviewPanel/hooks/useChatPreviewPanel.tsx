@@ -32,7 +32,7 @@ type UseChatPreviewPanelOptions = {
     headerActions?: ReactNode
     showBusinessHoursToggle?: boolean
     locale?: LANGUAGE
-    shouldShowChatVersionSwitcher?: boolean
+    forceChatRedesign?: boolean
 }
 
 export const useChatPreviewPanel = (
@@ -44,6 +44,8 @@ export const useChatPreviewPanel = (
         showPreviewPanel,
         hidePreviewPanel,
         onChatPreviewLoaded,
+        isPreviewingNewChat,
+        setIsPreviewingNewChat,
     } = useChatPreviewLifecycle(options)
 
     const controls = useChatControls(panelRef)
@@ -57,6 +59,8 @@ export const useChatPreviewPanel = (
         showPreviewPanel,
         hidePreviewPanel,
         onChatPreviewLoaded,
+        isPreviewingNewChat,
+        setIsPreviewingNewChat,
         ...controls,
         ...decoration,
         ...texts,

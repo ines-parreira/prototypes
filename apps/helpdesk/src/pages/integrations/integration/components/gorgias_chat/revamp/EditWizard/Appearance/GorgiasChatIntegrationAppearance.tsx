@@ -5,6 +5,7 @@ import type { Map } from 'immutable'
 import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 import { GorgiasChatRevampLayout } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/GorgiasChatRevampLayout'
 import { useIsAiAgentEnabled } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useIsAiAgentEnabled'
+import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp'
 import SaveChangesPrompt from 'pages/integrations/integration/components/gorgias_chat/revamp/CreationWizard/components/SaveChangesPrompt'
 import { AvatarCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Appearance/components/AvatarCard/AvatarCard'
 import { BrandCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/EditWizard/Appearance/components/BrandCard/BrandCard'
@@ -34,14 +35,19 @@ export const GorgiasChatIntegrationAppearanceRevamp = ({
         privacyPolicyText,
         setPrivacyPolicyText,
         onSubmit,
+        discardChanges,
     } = useAppearanceForm({ integration, loading })
 
     const { storeIntegration } = useStoreIntegration(integration)
     const rawChatId: unknown = integration.get('id')
     const chatId = typeof rawChatId === 'number' ? rawChatId : undefined
+
     const { isAiAgentEnabled, isLoading: isAiAgentConfigLoading } =
         useIsAiAgentEnabled(storeIntegration, chatId)
     const isAiAgentDisabled = !isAiAgentConfigLoading && !isAiAgentEnabled
+
+    const { shouldShowLegacyChatCustomization } =
+        useShouldShowChatSettingsRevamp(storeIntegration, chatId)
 
     const {
         reloadPreview,
@@ -53,7 +59,11 @@ export const GorgiasChatIntegrationAppearanceRevamp = ({
         updateBackgroundStyle,
         updateIntroductionText,
         updateOfflineIntroductionText,
+        isPreviewingNewChat,
     } = useChatPreviewPanelContext()
+
+    const showLegacyChatCustomization =
+        shouldShowLegacyChatCustomization && !isPreviewingNewChat
 
     useEffect(() => {
         return onChatPreviewLoaded(() => {
@@ -85,6 +95,11 @@ export const GorgiasChatIntegrationAppearanceRevamp = ({
 
     const onSave = handleSubmit(onSubmit)
 
+    const onDiscardChanges = () => {
+        discardChanges()
+        reloadPreview()
+    }
+
     return (
         <>
             <SaveChangesPrompt
@@ -98,6 +113,9 @@ export const GorgiasChatIntegrationAppearanceRevamp = ({
                 onSave={onSave}
                 isSaving={isSubmitting}
                 isSaveDisabled={!isDirty}
+                isDirty={isDirty}
+                onSaveChanges={onSave}
+                onDiscardChanges={onDiscardChanges}
             >
                 <div className={css.appearanceTab}>
                     <div className={css.cardsWrapper}>
@@ -119,6 +137,9 @@ export const GorgiasChatIntegrationAppearanceRevamp = ({
                             }
                             isAiAgentEnabled={isAiAgentEnabled}
                             isAiAgentDisabled={isAiAgentDisabled}
+                            shouldShowLegacyChatCustomization={
+                                showLegacyChatCustomization
+                            }
                             onNameChange={(value) => setValue('name', value)}
                             onMainColorChange={(value) =>
                                 setValue('mainColor', value)

@@ -32,6 +32,7 @@ const mockOnChatPreviewLoaded = jest.fn(
         return jest.fn()
     },
 )
+let mockIsPreviewingNewChat = false
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/common/GorgiasChatRevampLayout',
@@ -77,6 +78,8 @@ jest.mock(
             displayPage: mockDisplayPage,
             openChat: mockOpenChat,
             onChatPreviewLoaded: mockOnChatPreviewLoaded,
+            isPreviewingNewChat: mockIsPreviewingNewChat,
+            setIsPreviewingNewChat: jest.fn(),
         }),
     }),
 )
@@ -218,6 +221,7 @@ describe('GorgiasChatIntegrationPreferencesRevamp', () => {
         jest.clearAllMocks()
         mockDispatch.mockResolvedValue(undefined)
         mockUpdateOrCreateIntegration.mockResolvedValue(undefined)
+        mockIsPreviewingNewChat = false
     })
 
     it('should render the save button', () => {
@@ -559,7 +563,7 @@ describe('GorgiasChatIntegrationPreferencesRevamp', () => {
 
         it('should update controlTicketVolume via ChatAutomationCard onControlTicketVolumeChange', async () => {
             const user = userEvent.setup()
-            renderComponent()
+            renderComponent({ shouldShowLegacyChatCustomization: true })
 
             const { onControlTicketVolumeChange } =
                 mockChatAutomationCard.mock.calls[0][0]
@@ -766,8 +770,11 @@ describe('GorgiasChatIntegrationPreferencesRevamp', () => {
             expect(mockChatAutomationCard).not.toHaveBeenCalled()
         })
 
-        it('should render availability, wait time, and automation cards when isAiAgentEnabled is false', () => {
-            renderComponent({ isAiAgentEnabled: false })
+        it('should render availability, wait time, and automation cards when isAiAgentEnabled is false and legacy customization is shown', () => {
+            renderComponent({
+                isAiAgentEnabled: false,
+                shouldShowLegacyChatCustomization: true,
+            })
 
             expect(mockChatAvailabilityCard).toHaveBeenCalled()
             expect(mockChatWaitTimeCard).toHaveBeenCalled()
@@ -884,7 +891,7 @@ describe('GorgiasChatIntegrationPreferencesRevamp', () => {
         })
 
         it('should call updateControlTicketVolume with the updated value when the callback fires after controlTicketVolume changes', () => {
-            renderComponent()
+            renderComponent({ shouldShowLegacyChatCustomization: true })
 
             const { onControlTicketVolumeChange } =
                 mockChatAutomationCard.mock.calls[0][0]
@@ -1009,14 +1016,22 @@ describe('GorgiasChatIntegrationPreferencesRevamp', () => {
     })
 
     describe('ChatAutomationCard', () => {
-        it('should render the card when AI agent is disabled', () => {
-            renderComponent({ isAiAgentEnabled: false })
+        it('should render the card when legacy chat customization is shown', () => {
+            renderComponent({ shouldShowLegacyChatCustomization: true })
 
             expect(mockChatAutomationCard).toHaveBeenCalled()
         })
 
-        it('should not render the card when AI agent is enabled', () => {
-            renderComponent({ isAiAgentEnabled: true })
+        it('should not render the card when legacy chat customization is hidden (AI agent or opted in to Chat 2.0)', () => {
+            renderComponent({ shouldShowLegacyChatCustomization: false })
+
+            expect(mockChatAutomationCard).not.toHaveBeenCalled()
+        })
+
+        it('should not render the card while previewing Chat 2.0 from the banner', () => {
+            mockIsPreviewingNewChat = true
+
+            renderComponent({ shouldShowLegacyChatCustomization: true })
 
             expect(mockChatAutomationCard).not.toHaveBeenCalled()
         })
@@ -1036,7 +1051,7 @@ describe('GorgiasChatIntegrationPreferencesRevamp', () => {
             })
 
             renderComponent({
-                isAiAgentEnabled: false,
+                shouldShowLegacyChatCustomization: true,
                 integration,
             })
 
@@ -1048,7 +1063,7 @@ describe('GorgiasChatIntegrationPreferencesRevamp', () => {
         })
 
         it('should sync the chat preview when toggled', () => {
-            renderComponent({ isAiAgentEnabled: false })
+            renderComponent({ shouldShowLegacyChatCustomization: true })
 
             const { onControlTicketVolumeChange } =
                 mockChatAutomationCard.mock.calls[0][0]

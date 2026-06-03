@@ -10,6 +10,7 @@ import { Box, Button, SidePanel } from '@gorgias/axiom'
 import { CopilotWorkspaceContainer } from 'copilot/CopilotWorkspaceContainer'
 import { useCopilotEnabled } from 'hooks/useCopilotEnabled'
 import { CollapsibleColumn } from 'pages/CollapsibleColumn'
+import { usePageTopBanner } from 'pages/common/hooks/usePageTopBanner'
 import { NavigationSidebar } from 'routes/layout/NavigationSidebar'
 
 import { mainPanelConfig } from './panelConfigs'
@@ -24,6 +25,7 @@ export function MobileAppLayout({ children, width }: MobileAppLayoutProps) {
     const [isSidePanelOpen, setIsSidePanelOpen] = useState(false)
     const isCopilotEnabled = useCopilotEnabled()
     const { pathname } = useLocation()
+    const { pageTopBannerRef } = usePageTopBanner()
 
     useEffect(() => {
         setIsSidePanelOpen(false)
@@ -39,6 +41,7 @@ export function MobileAppLayout({ children, width }: MobileAppLayoutProps) {
                     onClick={() => setIsSidePanelOpen(true)}
                 />
             </Box>
+            <div ref={pageTopBannerRef} />
             <Panels size={width}>
                 <SidebarProvider>
                     <SidePanel

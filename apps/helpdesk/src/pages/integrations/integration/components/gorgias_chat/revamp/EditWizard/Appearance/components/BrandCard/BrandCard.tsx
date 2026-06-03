@@ -42,6 +42,7 @@ type Props = {
     offlineIntroductionText: string
     isAiAgentEnabled?: boolean
     isAiAgentDisabled?: boolean
+    shouldShowLegacyChatCustomization?: boolean
     onNameChange: (value: string) => void
     onMainColorChange: (value: string) => void
     onMainFontFamilyChange: (value: string) => void
@@ -67,6 +68,7 @@ export const BrandCard = ({
     offlineIntroductionText,
     isAiAgentEnabled = false,
     isAiAgentDisabled = false,
+    shouldShowLegacyChatCustomization = false,
     onNameChange,
     onMainColorChange,
     onMainFontFamilyChange,
@@ -121,7 +123,7 @@ export const BrandCard = ({
                             />
                         </div>
                     )}
-                    {isAiAgentDisabled ? (
+                    {shouldShowLegacyChatCustomization ? (
                         <div className={css.fieldSection}>
                             <div className={css.colorPickersWrapper}>
                                 <div className={css.colorPickerField}>
@@ -204,7 +206,7 @@ export const BrandCard = ({
                         </div>
                     )}
 
-                    {isAiAgentDisabled && (
+                    {shouldShowLegacyChatCustomization && (
                         <div className={css.fieldSection}>
                             <Text variant="bold" size="md">
                                 Background style
@@ -236,7 +238,7 @@ export const BrandCard = ({
                         </div>
                     )}
 
-                    {!isAiAgentEnabled && (
+                    {shouldShowLegacyChatCustomization && (
                         <div className={css.fieldSection}>
                             <Text variant="bold" size="md">
                                 Font

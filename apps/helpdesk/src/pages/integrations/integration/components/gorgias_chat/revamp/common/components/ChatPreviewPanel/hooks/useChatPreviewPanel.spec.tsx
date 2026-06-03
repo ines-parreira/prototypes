@@ -56,20 +56,33 @@ describe('useChatPreviewPanel', () => {
         )
     })
 
-    it('forwards shouldShowChatVersionSwitcher=true to ChatPreviewPanel', () => {
-        renderHook(() =>
-            useChatPreviewPanel({ shouldShowChatVersionSwitcher: true }),
-        )
+    it('forwards forceChatRedesign to ChatPreviewPanel when not previewing', () => {
+        renderHook(() => useChatPreviewPanel({ forceChatRedesign: true }))
 
         const lastElement = mockWarpToCollapsibleColumn.mock.calls.at(-1)[0]
-        expect(lastElement.props.shouldShowChatVersionSwitcher).toBe(true)
+        expect(lastElement.props.forceChatRedesign).toBe(true)
     })
 
-    it('forwards shouldShowChatVersionSwitcher=false to ChatPreviewPanel by default', () => {
-        renderHook(() => useChatPreviewPanel())
+    it('forces the redesign preview once setIsPreviewingNewChat is called', () => {
+        const { result } = renderHook(() => useChatPreviewPanel())
 
-        const lastElement = mockWarpToCollapsibleColumn.mock.calls.at(-1)[0]
-        expect(lastElement.props.shouldShowChatVersionSwitcher).toBe(false)
+        let lastElement = mockWarpToCollapsibleColumn.mock.calls.at(-1)[0]
+        expect(lastElement.props.forceChatRedesign).toBe(false)
+        expect(result.current.isPreviewingNewChat).toBe(false)
+
+        act(() => {
+            result.current.setIsPreviewingNewChat(true)
+        })
+
+        lastElement = mockWarpToCollapsibleColumn.mock.calls.at(-1)[0]
+        expect(lastElement.props.forceChatRedesign).toBe(true)
+        expect(result.current.isPreviewingNewChat).toBe(true)
+
+        act(() => {
+            result.current.setIsPreviewingNewChat(false)
+        })
+
+        expect(result.current.isPreviewingNewChat).toBe(false)
     })
 
     it('closes the collapsible column on unmount', () => {
@@ -945,6 +958,8 @@ describe('useChatPreviewPanelContext', () => {
             onChatPreviewLoaded: jest.fn(),
             updateControlTicketVolume: jest.fn(),
             updateMainFontFamily: jest.fn(),
+            isPreviewingNewChat: false,
+            setIsPreviewingNewChat: jest.fn(),
         }
 
         const wrapper = ({ children }: { children?: ReactNode }) => (

@@ -45,6 +45,7 @@ describe('CancelOrderFlowViewContainer', () => {
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
             shouldShowNonAiAgentRevamp: false,
+            shouldShowLegacyChatCustomization: false,
         })
     })
 
@@ -60,6 +61,7 @@ describe('CancelOrderFlowViewContainer', () => {
             shouldShowOrderManagementScreensRevamp: true,
             isLoading: false,
             shouldShowNonAiAgentRevamp: false,
+            shouldShowLegacyChatCustomization: false,
         })
 
         render(<CancelOrderFlowViewContainer />)

@@ -9,10 +9,7 @@ import {
     TextVariant,
 } from '@gorgias/axiom'
 
-import type {
-    ChatDisplayVersion,
-    ChatPreviewPage,
-} from '../../ChatPreviewPanel.types'
+import type { ChatPreviewPage } from '../../ChatPreviewPanel.types'
 
 import css from '../../ChatPreviewPanel.less'
 
@@ -21,9 +18,6 @@ type Props = {
     selectedPage: ChatPreviewPage
     onPageChange: (page: string) => void
     headerActions?: ReactNode
-    shouldShowChatVersionSwitcher: boolean
-    chatDisplayVersion: ChatDisplayVersion | undefined
-    onChatDisplayVersionChange: (key: string) => void
     withBusinessHoursToggle: boolean
 }
 
@@ -32,9 +26,6 @@ export const ChatPreviewPanelHeader = ({
     selectedPage,
     onPageChange,
     headerActions,
-    shouldShowChatVersionSwitcher,
-    chatDisplayVersion,
-    onChatDisplayVersionChange,
     withBusinessHoursToggle,
 }: Props) => (
     <Box
@@ -44,21 +35,7 @@ export const ChatPreviewPanelHeader = ({
             withBusinessHoursToggle ? css.headerWithBusinessHoursToggle : ''
         }`}
     >
-        <Box alignItems="center" gap="xs">
-            <Text variant={TextVariant.Medium}>Chat preview</Text>
-            {shouldShowChatVersionSwitcher && (
-                <ButtonGroup
-                    selectedKey={chatDisplayVersion}
-                    defaultSelectedKey="current"
-                    onSelectionChange={onChatDisplayVersionChange}
-                >
-                    <ButtonGroupItem id="current">Current</ButtonGroupItem>
-                    <ButtonGroupItem id="new">
-                        New &#40;2.0&#41;
-                    </ButtonGroupItem>
-                </ButtonGroup>
-            )}
-        </Box>
+        <Text variant={TextVariant.Medium}>Chat preview</Text>
         {headerActions ??
             (appId && (
                 <ButtonGroup

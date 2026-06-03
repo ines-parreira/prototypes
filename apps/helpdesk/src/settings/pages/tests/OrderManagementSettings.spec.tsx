@@ -108,6 +108,8 @@ const buildChatPreviewPanelMock = (
     updateEmailCaptureSettings: jest.fn(),
     updateAutoResponderSettings: jest.fn(),
     updateMainFontFamily: jest.fn(),
+    isPreviewingNewChat: false,
+    setIsPreviewingNewChat: jest.fn(),
     ...overrides,
 })
 
@@ -189,6 +191,7 @@ describe('OrderManagementSettings', () => {
             isNonAiAgentChat2RevampEnabled: false,
             shouldShowNonAiAgentChatSettingsRevamp: false,
             shouldShowNonAiAgentRevamp: false,
+            shouldShowLegacyChatCustomization: false,
         })
         mockUseChatPreviewPanel.mockReturnValue(buildChatPreviewPanelMock())
     })
@@ -256,6 +259,7 @@ describe('OrderManagementSettings', () => {
                 isNonAiAgentChat2RevampEnabled: false,
                 shouldShowNonAiAgentChatSettingsRevamp: false,
                 shouldShowNonAiAgentRevamp: false,
+                shouldShowLegacyChatCustomization: false,
             })
         })
 

@@ -758,132 +758,6 @@ describe('ChatPreviewPanel', () => {
         })
     })
 
-    describe('shouldShowChatVersionSwitcher prop', () => {
-        it('does not render version switcher buttons by default', () => {
-            renderComponent('test-app-id')
-
-            expect(
-                screen.queryByTestId('button-group-item-current'),
-            ).not.toBeInTheDocument()
-            expect(
-                screen.queryByTestId('button-group-item-new'),
-            ).not.toBeInTheDocument()
-        })
-
-        it('renders version switcher buttons when shouldShowChatVersionSwitcher is true', () => {
-            renderComponent('test-app-id', {
-                shouldShowChatVersionSwitcher: true,
-            })
-
-            expect(
-                screen.getByTestId('button-group-item-current'),
-            ).toBeInTheDocument()
-            expect(
-                screen.getByTestId('button-group-item-new'),
-            ).toBeInTheDocument()
-        })
-
-        it('remounts ChatPreview when Current version is selected', async () => {
-            const user = userEvent.setup()
-            renderComponent('test-app-id', {
-                shouldShowChatVersionSwitcher: true,
-            })
-
-            expect(mockMountCount).toBe(1)
-
-            await user.click(screen.getByTestId('button-group-item-current'))
-
-            expect(mockMountCount).toBe(2)
-        })
-
-        it('remounts ChatPreview when New version is selected', async () => {
-            const user = userEvent.setup()
-            renderComponent('test-app-id', {
-                shouldShowChatVersionSwitcher: true,
-            })
-
-            expect(mockMountCount).toBe(1)
-
-            await user.click(screen.getByTestId('button-group-item-new'))
-
-            expect(mockMountCount).toBe(2)
-        })
-
-        it('sets chat-client-ui-redesign-project to false when chatDisplayVersion is current', async () => {
-            const user = userEvent.setup()
-            renderComponent('test-app-id', {
-                shouldShowChatVersionSwitcher: true,
-            })
-
-            act(() => {
-                triggerOnLoaded()
-            })
-
-            await user.click(screen.getByTestId('button-group-item-current'))
-            mockGorgiasChatConfiguration.featureFlags = {}
-
-            act(() => {
-                triggerOnLoaded()
-            })
-
-            expect(
-                mockGorgiasChatConfiguration.featureFlags[
-                    'chat-client-ui-redesign-project'
-                ],
-            ).toBe(false)
-        })
-
-        it('sets enforce flag to false when chatDisplayVersion is current and forceChatRedesign is false', async () => {
-            const user = userEvent.setup()
-            renderComponent('test-app-id', {
-                shouldShowChatVersionSwitcher: true,
-                forceChatRedesign: false,
-            })
-
-            act(() => {
-                triggerOnLoaded()
-            })
-
-            await user.click(screen.getByTestId('button-group-item-current'))
-            mockGorgiasChatConfiguration.featureFlags = {}
-
-            act(() => {
-                triggerOnLoaded()
-            })
-
-            expect(
-                mockGorgiasChatConfiguration.featureFlags[
-                    'linear.AIEXP-8485.enforce-chat-2-0-without-ai-agent'
-                ],
-            ).toBe(false)
-        })
-
-        it('does not let forceChatRedesign override enforce flag when shouldShowChatVersionSwitcher is true', async () => {
-            const user = userEvent.setup()
-            renderComponent('test-app-id', {
-                shouldShowChatVersionSwitcher: true,
-                forceChatRedesign: true,
-            })
-
-            act(() => {
-                triggerOnLoaded()
-            })
-
-            await user.click(screen.getByTestId('button-group-item-current'))
-            mockGorgiasChatConfiguration.featureFlags = {}
-
-            act(() => {
-                triggerOnLoaded()
-            })
-
-            expect(
-                mockGorgiasChatConfiguration.featureFlags[
-                    'linear.AIEXP-8485.enforce-chat-2-0-without-ai-agent'
-                ],
-            ).toBe(false)
-        })
-    })
-
     describe('displayPage with orders', () => {
         it('calls GorgiasChat.setPage with "orders"', () => {
             const { ref } = renderComponent()
@@ -944,7 +818,21 @@ describe('ChatPreviewPanel', () => {
             ).toBe(true)
         })
 
-        it('does not set enforce flag when neither shouldShowChatVersionSwitcher nor forceChatRedesign is enabled', () => {
+        it('sets chat-client-ui-redesign-project flag when forceChatRedesign is true', () => {
+            renderComponent('test-app-id', { forceChatRedesign: true })
+
+            act(() => {
+                triggerOnLoaded()
+            })
+
+            expect(
+                mockGorgiasChatConfiguration.featureFlags[
+                    'chat-client-ui-redesign-project'
+                ],
+            ).toBe(true)
+        })
+
+        it('does not set enforce flag when forceChatRedesign is disabled', () => {
             renderComponent('test-app-id', { forceChatRedesign: false })
 
             act(() => {
@@ -958,7 +846,7 @@ describe('ChatPreviewPanel', () => {
             ).toBeUndefined()
         })
 
-        it('does not set chat-client-ui-redesign-project flag when shouldShowChatVersionSwitcher is false', () => {
+        it('does not set chat-client-ui-redesign-project flag when forceChatRedesign is disabled', () => {
             renderComponent('test-app-id')
 
             act(() => {
@@ -1013,35 +901,6 @@ describe('ChatPreviewPanel', () => {
 
             expect(mockGorgiasChat.setPage).not.toHaveBeenCalled()
             expect(mockGorgiasChat.updateSSPTexts).not.toHaveBeenCalled()
-        })
-
-        it('sets feature flags to true when the New chat version is selected', async () => {
-            const user = userEvent.setup()
-            renderComponent('test-app-id', {
-                shouldShowChatVersionSwitcher: true,
-            })
-
-            act(() => {
-                triggerOnLoaded()
-            })
-
-            await user.click(screen.getByTestId('button-group-item-new'))
-            mockGorgiasChatConfiguration.featureFlags = {}
-
-            act(() => {
-                triggerOnLoaded()
-            })
-
-            expect(
-                mockGorgiasChatConfiguration.featureFlags[
-                    'chat-client-ui-redesign-project'
-                ],
-            ).toBe(true)
-            expect(
-                mockGorgiasChatConfiguration.featureFlags[
-                    'linear.AIEXP-8485.enforce-chat-2-0-without-ai-agent'
-                ],
-            ).toBe(true)
         })
     })
 })

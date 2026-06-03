@@ -59,6 +59,7 @@ type Props = {
     }
     loading?: Map<string, unknown>
     isAiAgentEnabled?: boolean
+    shouldShowLegacyChatCustomization?: boolean
 }
 
 type PreferencesFormValues = {
@@ -116,6 +117,7 @@ export const GorgiasChatIntegrationPreferencesRevamp = ({
     actions,
     loading = fromJS({}),
     isAiAgentEnabled = false,
+    shouldShowLegacyChatCustomization = false,
 }: Props) => {
     const dispatch = useAppDispatch()
     const {
@@ -127,7 +129,11 @@ export const GorgiasChatIntegrationPreferencesRevamp = ({
         simulateEmailCapture,
         openChat,
         onChatPreviewLoaded,
+        isPreviewingNewChat,
     } = useChatPreviewPanelContext()
+
+    const showLegacyChatCustomization =
+        shouldShowLegacyChatCustomization && !isPreviewingNewChat
 
     const surveysSettings = useAppSelector(getSurveysSettingsJS)
     const sendCsatGlobal = surveysSettings?.data?.send_survey_for_chat ?? false
@@ -304,6 +310,11 @@ export const GorgiasChatIntegrationPreferencesRevamp = ({
 
     const onSave = handleSubmit(onSubmit)
 
+    const onDiscardChanges = () => {
+        reset(buildFormValues(integration, sendCsatGlobal))
+        reloadPreview()
+    }
+
     useEffect(() => {
         return onChatPreviewLoaded(() => {
             updateControlTicketVolume(values.controlTicketVolume)
@@ -327,6 +338,9 @@ export const GorgiasChatIntegrationPreferencesRevamp = ({
                 onSave={onSave}
                 isSaving={isSubmitting}
                 isSaveDisabled={!isDirty}
+                isDirty={isDirty}
+                onSaveChanges={onSave}
+                onDiscardChanges={onDiscardChanges}
             >
                 <div className={css.preferencesTab}>
                     <div className={css.cardsWrapper}>
@@ -337,7 +351,7 @@ export const GorgiasChatIntegrationPreferencesRevamp = ({
                             }
                             isAiAgentEnabled={isAiAgentEnabled}
                         />
-                        {!isAiAgentEnabled && (
+                        {showLegacyChatCustomization && (
                             <ChatAutomationCard
                                 controlTicketVolume={values.controlTicketVolume}
                                 onControlTicketVolumeChange={(value) => {

@@ -11,19 +11,20 @@ type Options = {
     headerActions?: ReactNode
     showBusinessHoursToggle?: boolean
     locale?: LANGUAGE
-    shouldShowChatVersionSwitcher?: boolean
+    forceChatRedesign?: boolean
 }
 
 export const useChatPreviewLifecycle = ({
     headerActions,
     showBusinessHoursToggle,
     locale,
-    shouldShowChatVersionSwitcher = false,
+    forceChatRedesign = false,
 }: Options) => {
     const { setIsCollapsibleColumnOpen, warpToCollapsibleColumn } =
         useCollapsibleColumn()
 
     const [appId, setAppId] = useState<string | null>(null)
+    const [isPreviewingNewChat, setIsPreviewingNewChat] = useState(false)
     const panelRef = useRef<ChatPreviewPanelHandle>(null)
     const loadSubscribersRef = useRef<Set<() => void>>(new Set())
 
@@ -60,7 +61,7 @@ export const useChatPreviewLifecycle = ({
             showBusinessHoursToggle={showBusinessHoursToggle}
             locale={locale}
             onPreviewLoaded={handlePreviewLoaded}
-            shouldShowChatVersionSwitcher={shouldShowChatVersionSwitcher}
+            forceChatRedesign={forceChatRedesign || isPreviewingNewChat}
         />,
     )
 
@@ -88,5 +89,7 @@ export const useChatPreviewLifecycle = ({
         showPreviewPanel,
         hidePreviewPanel,
         onChatPreviewLoaded,
+        isPreviewingNewChat,
+        setIsPreviewingNewChat,
     }
 }

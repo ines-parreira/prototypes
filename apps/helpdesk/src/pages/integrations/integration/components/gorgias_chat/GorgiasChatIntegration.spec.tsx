@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import { useChatPreviewPanel } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
+import { useChatRedesignOptIn } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useChatRedesignOptIn'
 import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp'
 import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
 
@@ -36,6 +37,9 @@ jest.mock(
 )
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp',
+)
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useChatRedesignOptIn',
 )
 jest.mock('pages/integrations/integration/hooks/useStoreIntegration')
 jest.mock(
@@ -103,6 +107,7 @@ const mockUseApplicationsAutomationSettings =
 const mockUseChatPreviewPanel = useChatPreviewPanel as jest.Mock
 const mockUseShouldShowChatSettingsRevamp =
     useShouldShowChatSettingsRevamp as jest.Mock
+const mockUseChatRedesignOptIn = useChatRedesignOptIn as jest.Mock
 const mockUseStoreIntegration = useStoreIntegration as jest.Mock
 const mockUseIsQuickRepliesEnabled = useIsQuickRepliesEnabled as jest.Mock
 const mockUseSelfServiceConfiguration = useSelfServiceConfiguration as jest.Mock
@@ -144,6 +149,10 @@ beforeEach(() => {
         shouldShowChatSettingsRevamp: false,
         shouldShowNonAiAgentChatSettingsRevamp: false,
         isNonAiAgentChat2RevampEnabled: false,
+    })
+    mockUseChatRedesignOptIn.mockReturnValue({
+        isOptedIn: false,
+        optInDatetime: undefined,
     })
     mockUseStoreIntegration.mockReturnValue({ storeIntegration: undefined })
     mockUseIsQuickRepliesEnabled.mockReturnValue(false)
@@ -455,7 +464,7 @@ describe('<GorgiasChatIntegration />', () => {
             )
         })
 
-        it('passes showBusinessHoursToggle and shouldShowChatVersionSwitcher when non-AI-agent chat settings revamp is enabled', () => {
+        it('passes showBusinessHoursToggle when non-AI-agent chat settings revamp is enabled', () => {
             mockUseShouldShowChatSettingsRevamp.mockReturnValue({
                 shouldShowChatSettingsRevamp: true,
                 shouldShowNonAiAgentChatSettingsRevamp: true,
@@ -468,12 +477,12 @@ describe('<GorgiasChatIntegration />', () => {
             expect(mockUseChatPreviewPanel).toHaveBeenCalledWith(
                 expect.objectContaining({
                     showBusinessHoursToggle: true,
-                    shouldShowChatVersionSwitcher: true,
+                    forceChatRedesign: false,
                 }),
             )
         })
 
-        it('passes shouldShowChatVersionSwitcher as false when non-AI-agent chat settings revamp is disabled', () => {
+        it('does not force Chat 2.0 when non-AI-agent chat settings revamp is disabled', () => {
             mockUseShouldShowChatSettingsRevamp.mockReturnValue({
                 shouldShowChatSettingsRevamp: false,
                 shouldShowNonAiAgentChatSettingsRevamp: false,
@@ -485,12 +494,12 @@ describe('<GorgiasChatIntegration />', () => {
 
             expect(mockUseChatPreviewPanel).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    shouldShowChatVersionSwitcher: false,
+                    forceChatRedesign: false,
                 }),
             )
         })
 
-        it('passes shouldShowChatVersionSwitcher as false while the feature flags are loading', () => {
+        it('does not force Chat 2.0 while the feature flags are loading', () => {
             mockUseShouldShowChatSettingsRevamp.mockReturnValue({
                 shouldShowChatSettingsRevamp: true,
                 shouldShowNonAiAgentChatSettingsRevamp: true,
@@ -502,7 +511,28 @@ describe('<GorgiasChatIntegration />', () => {
 
             expect(mockUseChatPreviewPanel).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    shouldShowChatVersionSwitcher: false,
+                    forceChatRedesign: false,
+                }),
+            )
+        })
+
+        it('forces Chat 2.0 once the customer has opted in', () => {
+            mockUseShouldShowChatSettingsRevamp.mockReturnValue({
+                shouldShowChatSettingsRevamp: true,
+                shouldShowNonAiAgentChatSettingsRevamp: true,
+                isNonAiAgentChat2RevampEnabled: true,
+                isLoading: false,
+            })
+            mockUseChatRedesignOptIn.mockReturnValue({
+                isOptedIn: true,
+                optInDatetime: '2026-05-01T00:00:00Z',
+            })
+
+            render(<GorgiasChatIntegration {...defaultProps} />)
+
+            expect(mockUseChatPreviewPanel).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    forceChatRedesign: true,
                 }),
             )
         })

@@ -195,6 +195,7 @@ export const useAppearanceForm = ({
         setPrivacyPolicyText,
         savePrivacyPolicyText,
         isPrivacyPolicyTextDirty,
+        resetPrivacyPolicyText,
     } = usePrivacyPolicyText({ chatApplicationId, integrationMeta })
 
     // RHF v7 setValue defaults shouldDirty to false — always opt in to dirty tracking
@@ -285,6 +286,11 @@ export const useAppearanceForm = ({
         }
     }
 
+    const discardChanges = () => {
+        reset(buildFormValues(integration))
+        resetPrivacyPolicyText()
+    }
+
     return {
         handleSubmit,
         setValue,
@@ -294,5 +300,6 @@ export const useAppearanceForm = ({
         privacyPolicyText,
         setPrivacyPolicyText,
         onSubmit,
+        discardChanges,
     }
 }

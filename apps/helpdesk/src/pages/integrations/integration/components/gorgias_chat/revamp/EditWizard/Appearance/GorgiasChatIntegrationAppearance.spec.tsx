@@ -35,11 +35,20 @@ jest.mock('state/integrations/actions', () => ({
 }))
 
 const mockUseIsAiAgentEnabled = jest.fn()
+const mockUseShouldShowChatSettingsRevamp = jest.fn()
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useIsAiAgentEnabled',
     () => ({
         useIsAiAgentEnabled: () => mockUseIsAiAgentEnabled(),
+    }),
+)
+
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp',
+    () => ({
+        useShouldShowChatSettingsRevamp: () =>
+            mockUseShouldShowChatSettingsRevamp(),
     }),
 )
 
@@ -161,6 +170,8 @@ const mockUpdateBackgroundStyle = jest.fn()
 const mockUpdateIntroductionText = jest.fn()
 const mockUpdateOfflineIntroductionText = jest.fn()
 
+let mockIsPreviewingNewChat = false
+
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
     () => ({
@@ -183,6 +194,8 @@ jest.mock(
                 mockUpdateIntroductionText(text),
             updateOfflineIntroductionText: (text: string) =>
                 mockUpdateOfflineIntroductionText(text),
+            isPreviewingNewChat: mockIsPreviewingNewChat,
+            setIsPreviewingNewChat: jest.fn(),
         }),
     }),
 )
@@ -301,6 +314,10 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
             isAiAgentEnabled: false,
             isLoading: false,
         })
+        mockUseShouldShowChatSettingsRevamp.mockReturnValue({
+            shouldShowLegacyChatCustomization: true,
+        })
+        mockIsPreviewingNewChat = false
         mockGetApplicationTexts.mockResolvedValue(mockApplicationTextsResponse)
         mockUpdateApplicationTexts.mockResolvedValue(undefined)
         mockUpdateConversationColor.mockReset()
@@ -358,6 +375,66 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
 
             expect(mockBrandCard).toHaveBeenCalledWith(
                 expect.objectContaining({ isAiAgentDisabled: false }),
+            )
+        })
+
+        it('should hide the legacy color, background and font controls when the customer has opted in to Chat 2.0', () => {
+            mockUseIsAiAgentEnabled.mockReturnValue({
+                isAiAgentEnabled: false,
+                isLoading: false,
+            })
+            mockUseShouldShowChatSettingsRevamp.mockReturnValue({
+                shouldShowLegacyChatCustomization: false,
+            })
+
+            renderComponent()
+
+            // The raw AI-agent flags are unchanged for the other fields...
+            expect(mockBrandCard).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    isAiAgentDisabled: true,
+                    isAiAgentEnabled: false,
+                    // ...but the legacy color/background/font block is hidden.
+                    shouldShowLegacyChatCustomization: false,
+                }),
+            )
+        })
+
+        it('should hide the legacy controls while previewing Chat 2.0 from the banner, even before opting in', () => {
+            mockUseIsAiAgentEnabled.mockReturnValue({
+                isAiAgentEnabled: false,
+                isLoading: false,
+            })
+            mockUseShouldShowChatSettingsRevamp.mockReturnValue({
+                shouldShowLegacyChatCustomization: true,
+            })
+            mockIsPreviewingNewChat = true
+
+            renderComponent()
+
+            expect(mockBrandCard).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    shouldShowLegacyChatCustomization: false,
+                }),
+            )
+        })
+
+        it('should show the legacy controls when not previewing Chat 2.0', () => {
+            mockUseIsAiAgentEnabled.mockReturnValue({
+                isAiAgentEnabled: false,
+                isLoading: false,
+            })
+            mockUseShouldShowChatSettingsRevamp.mockReturnValue({
+                shouldShowLegacyChatCustomization: true,
+            })
+            mockIsPreviewingNewChat = false
+
+            renderComponent()
+
+            expect(mockBrandCard).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    shouldShowLegacyChatCustomization: true,
+                }),
             )
         })
 

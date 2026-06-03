@@ -8,8 +8,6 @@ import type {
     GorgiasChatWorkflowEntrypoint,
 } from 'models/integration/types/gorgiasChat'
 
-export type ChatDisplayVersion = 'current' | 'new'
-
 export type ChatPreviewPage =
     | 'homepage'
     | 'conversation'

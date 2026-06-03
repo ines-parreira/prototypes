@@ -93,6 +93,7 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
             isNonAiAgentChat2RevampEnabled: false,
             shouldShowNonAiAgentChatSettingsRevamp: false,
             shouldShowNonAiAgentRevamp: false,
+            shouldShowLegacyChatCustomization: false,
         })
 
         render(<GorgiasChatIntegrationPreferences {...minProps} />)
@@ -118,6 +119,7 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
             shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
             shouldShowNonAiAgentRevamp: false,
+            shouldShowLegacyChatCustomization: false,
         })
 
         render(
@@ -148,6 +150,7 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
             isNonAiAgentChat2RevampEnabled: false,
             shouldShowNonAiAgentChatSettingsRevamp: false,
             shouldShowNonAiAgentRevamp: false,
+            shouldShowLegacyChatCustomization: false,
         })
 
         render(<GorgiasChatIntegrationPreferences {...minProps} />)
@@ -170,6 +173,7 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
             isNonAiAgentChat2RevampEnabled: false,
             shouldShowNonAiAgentChatSettingsRevamp: false,
             shouldShowNonAiAgentRevamp: false,
+            shouldShowLegacyChatCustomization: false,
         })
 
         render(<GorgiasChatIntegrationPreferences {...minProps} />)
@@ -194,6 +198,7 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
             isNonAiAgentChat2RevampEnabled: false,
             shouldShowNonAiAgentChatSettingsRevamp: false,
             shouldShowNonAiAgentRevamp: false,
+            shouldShowLegacyChatCustomization: false,
         })
 
         render(<GorgiasChatIntegrationPreferences {...minProps} />)
@@ -219,6 +224,7 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
             isNonAiAgentChat2RevampEnabled: false,
             shouldShowNonAiAgentChatSettingsRevamp: false,
             shouldShowNonAiAgentRevamp: false,
+            shouldShowLegacyChatCustomization: false,
         })
 
         render(<GorgiasChatIntegrationPreferences {...minProps} />)
