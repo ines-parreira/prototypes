@@ -8,7 +8,9 @@ import { ToneOfVoice } from 'pages/aiAgent/constants'
 import { ToneOfVoicePreviewSection } from './ToneOfVoicePreviewSection'
 
 const mockSimulateConversation = jest.fn()
+const mockUpdateSettings = jest.fn()
 let capturedOnPreviewLoaded: (() => void) | undefined
+let provideImperativeHandle = true
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/ChatPreviewPanel',
@@ -27,20 +29,24 @@ jest.mock(
             ) => {
                 capturedOnPreviewLoaded = props.onPreviewLoaded
 
-                React.useImperativeHandle(ref, () => ({
-                    simulateConversation: mockSimulateConversation,
-                    displayPage: jest.fn(),
-                    updatePosition: jest.fn(),
-                    updateSettings: jest.fn(),
-                    updateTexts: jest.fn(),
-                    closeChat: jest.fn(),
-                    openChat: jest.fn(),
-                    updateWorkflowEntryPoints: jest.fn(),
-                    reloadPreview: jest.fn(),
-                    updatePreviewOrders: jest.fn(),
-                    setConversationMessages: jest.fn(),
-                    isLoaded: false,
-                }))
+                React.useImperativeHandle(ref, () =>
+                    provideImperativeHandle
+                        ? {
+                              simulateConversation: mockSimulateConversation,
+                              displayPage: jest.fn(),
+                              updatePosition: jest.fn(),
+                              updateSettings: mockUpdateSettings,
+                              updateTexts: jest.fn(),
+                              closeChat: jest.fn(),
+                              openChat: jest.fn(),
+                              updateWorkflowEntryPoints: jest.fn(),
+                              reloadPreview: jest.fn(),
+                              updatePreviewOrders: jest.fn(),
+                              setConversationMessages: jest.fn(),
+                              isLoaded: false,
+                          }
+                        : null,
+                )
 
                 return (
                     <div
@@ -95,6 +101,7 @@ describe('ToneOfVoicePreviewSection', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         capturedOnPreviewLoaded = undefined
+        provideImperativeHandle = true
     })
 
     const defaultProps = {
@@ -144,6 +151,44 @@ describe('ToneOfVoicePreviewSection', () => {
                 isBot: true,
             },
         ])
+    })
+
+    it('applies the Gorgias logo branding on preview loaded', () => {
+        render(<ToneOfVoicePreviewSection {...defaultProps} />)
+
+        act(() => {
+            capturedOnPreviewLoaded?.()
+        })
+
+        expect(mockUpdateSettings).toHaveBeenCalledWith({
+            decoration: expect.objectContaining({
+                headerPictureUrl: expect.anything(),
+                avatarType: 'team-picture',
+                avatarTeamPictureUrl: expect.anything(),
+                avatar: {
+                    imageType: 'company-logo',
+                    nameType: 'agent-first-name',
+                    companyLogoUrl: expect.anything(),
+                },
+            }),
+        })
+    })
+
+    it('applies the Gorgias logo branding even when custom preview is loading', () => {
+        render(
+            <ToneOfVoicePreviewSection
+                {...defaultProps}
+                toneOfVoice={ToneOfVoice.Custom}
+                isCustomToneOfVoicePreviewLoading={true}
+            />,
+        )
+
+        act(() => {
+            capturedOnPreviewLoaded?.()
+        })
+
+        expect(mockUpdateSettings).toHaveBeenCalled()
+        expect(mockSimulateConversation).not.toHaveBeenCalled()
     })
 
     it('does not call simulateConversation when custom preview is loading', () => {
@@ -217,6 +262,18 @@ describe('ToneOfVoicePreviewSection', () => {
                 isBot: true,
             },
         ])
+    })
+
+    it('does not throw and skips branding when the preview panel ref is unavailable', () => {
+        provideImperativeHandle = false
+        render(<ToneOfVoicePreviewSection {...defaultProps} />)
+
+        act(() => {
+            capturedOnPreviewLoaded?.()
+        })
+
+        expect(mockUpdateSettings).not.toHaveBeenCalled()
+        expect(mockSimulateConversation).not.toHaveBeenCalled()
     })
 
     it('does not simulate on initial render before preview loaded', () => {

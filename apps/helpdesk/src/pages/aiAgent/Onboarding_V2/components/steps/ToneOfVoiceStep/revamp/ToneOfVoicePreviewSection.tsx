@@ -1,5 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import gorgiasLogo from 'assets/img/icons/logo.png'
+import {
+    GorgiasChatAvatarImageType,
+    GorgiasChatAvatarNameType,
+    GorgiasChatAvatarType,
+} from 'models/integration/types/gorgiasChat'
 import { ToneOfVoice } from 'pages/aiAgent/constants'
 import { toneOfVoiceConversations } from 'pages/aiAgent/Onboarding_V2/constants/conversationExamples'
 import type { ChatPreviewPanelHandle } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/ChatPreviewPanel'
@@ -57,6 +63,22 @@ export const ToneOfVoicePreviewSection = ({
 
     const runSimulation = useCallback(() => {
         setIsLoaded(true)
+        // The default chat preview (no connected app) loads a generic widget
+        // configuration without any branding, so the header and conversation
+        // avatar are missing. Inject the Gorgias logo as the company logo so
+        // the tone-of-voice preview shows branding in the header and bubbles.
+        panelRef.current?.updateSettings({
+            decoration: {
+                headerPictureUrl: gorgiasLogo,
+                avatarType: GorgiasChatAvatarType.TEAM_PICTURE,
+                avatarTeamPictureUrl: gorgiasLogo,
+                avatar: {
+                    imageType: GorgiasChatAvatarImageType.COMPANY_LOGO,
+                    nameType: GorgiasChatAvatarNameType.AGENT_FIRST_NAME,
+                    companyLogoUrl: gorgiasLogo,
+                },
+            },
+        })
         if (isCustomToneOfVoicePreviewLoading) return
         panelRef.current?.simulateConversation(previewMessages)
     }, [previewMessages, isCustomToneOfVoicePreviewLoading])
