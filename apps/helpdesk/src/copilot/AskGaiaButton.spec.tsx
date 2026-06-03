@@ -3,7 +3,7 @@ import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { useCopilotPanel } from '@gorgias/copilot'
+import { useCopilotPanel, useRunLifecycle } from '@gorgias/copilot'
 
 import { useCopilotEnabled } from 'hooks/useCopilotEnabled'
 
@@ -15,6 +15,7 @@ jest.mock('hooks/useCopilotEnabled', () => ({
 
 const mockUseCopilotEnabled = assumeMock(useCopilotEnabled)
 const mockUseCopilotPanel = assumeMock(useCopilotPanel)
+const mockUseRunLifecycle = assumeMock(useRunLifecycle)
 
 const buildCopilotPanelMockReturn = (
     overrides: Partial<ReturnType<typeof useCopilotPanel>> = {},
@@ -30,6 +31,7 @@ describe('AskGaiaButton', () => {
     beforeEach(() => {
         mockUseCopilotEnabled.mockReturnValue(true)
         mockUseCopilotPanel.mockReturnValue(buildCopilotPanelMockReturn())
+        mockUseRunLifecycle.mockReturnValue({ isRunning: false })
     })
 
     it('renders nothing when copilot is disabled', () => {
@@ -54,7 +56,8 @@ describe('AskGaiaButton', () => {
         expect(
             screen.getByRole('button', { name: /ask gaia/i }),
         ).toBeInTheDocument()
-        expect(screen.getByText('⌘ + G')).toBeInTheDocument()
+        expect(screen.getByText('⌘')).toBeInTheDocument()
+        expect(screen.getByText('G')).toBeInTheDocument()
     })
 
     it('shows only the icon trigger when the sidebar is collapsed', () => {
@@ -67,7 +70,7 @@ describe('AskGaiaButton', () => {
         expect(
             screen.getByRole('button', { name: /ask gaia/i }),
         ).toBeInTheDocument()
-        expect(screen.queryByText('⌘ + G')).not.toBeInTheDocument()
+        expect(screen.queryByText('⌘')).not.toBeInTheDocument()
     })
 
     it('opens copilot when the trigger is clicked', async () => {

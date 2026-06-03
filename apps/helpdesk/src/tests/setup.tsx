@@ -235,6 +235,7 @@ jest.mock('@gorgias/copilot', () => ({
     useCopilotContext: jest.fn(),
     useConfigureSuggestions: jest.fn(),
     useCopilotToolCallResult: jest.fn(),
+    useRunLifecycle: jest.fn(() => ({ isRunning: false })),
 }))
 
 Object.defineProperty(window, 'requestAnimationFrame', { value: jest.fn() })

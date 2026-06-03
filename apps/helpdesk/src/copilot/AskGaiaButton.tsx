@@ -2,8 +2,8 @@ import { useEffect, useRef } from 'react'
 
 import { useSidebar } from '@repo/navigation'
 
-import { ShortcutKey } from '@gorgias/axiom'
-import { useCopilotPanel } from '@gorgias/copilot'
+import { Box, ShortcutKey } from '@gorgias/axiom'
+import { useCopilot, useCopilotPanel, useRunLifecycle } from '@gorgias/copilot'
 
 import { useCopilotEnabled } from 'hooks/useCopilotEnabled'
 
@@ -17,6 +17,8 @@ export const AskGaiaButton = () => {
     const { isCollapsed } = useSidebar()
     const { isOpen: isCopilotOpen, setIsOpen: setCopilotOpen } =
         useCopilotPanel()
+    const { threadId } = useCopilot()
+    const { isRunning } = useRunLifecycle({}, threadId)
 
     const glowShapeClass = isCollapsed ? css.glowShapeCircle : css.glowShapePill
 
@@ -30,11 +32,14 @@ export const AskGaiaButton = () => {
     const spinnerRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
+        // The glow only orbits while the agent is actively working.
+        if (!isRunning) return
+
         const el = spinnerRef.current
         if (!el) return
 
-        // Respect prefers-reduced-motion at mount time. Doesn't need
-        // to react to runtime changes — this is purely decorative.
+        // Respect prefers-reduced-motion. Doesn't need to react to
+        // runtime changes — this is purely decorative.
         if (
             typeof window !== 'undefined' &&
             window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -52,7 +57,7 @@ export const AskGaiaButton = () => {
         )
 
         return () => animation.cancel()
-    }, [])
+    }, [isRunning])
 
     if (!isCopilotEnabled) return null
 
@@ -65,12 +70,14 @@ export const AskGaiaButton = () => {
             }`}
         >
             <div className={css.entry}>
-                <div
-                    aria-hidden
-                    className={`${css.glowRoot} ${glowShapeClass}`}
-                >
-                    <div ref={spinnerRef} className={css.glowSpinner} />
-                </div>
+                {isRunning && (
+                    <div
+                        aria-hidden
+                        className={`${css.glowRoot} ${glowShapeClass}`}
+                    >
+                        <div ref={spinnerRef} className={css.glowSpinner} />
+                    </div>
+                )}
                 {isCollapsed ? (
                     <button
                         type="button"
@@ -88,7 +95,10 @@ export const AskGaiaButton = () => {
                     >
                         <GaiaAvatar size={20} />
                         <span className={css.expandedLabel}>Ask Gaia</span>
-                        <ShortcutKey>⌘ + G</ShortcutKey>
+                        <Box alignItems="center" gap="xxxxs">
+                            <ShortcutKey>⌘</ShortcutKey>
+                            <ShortcutKey>G</ShortcutKey>
+                        </Box>
                     </button>
                 )}
             </div>
