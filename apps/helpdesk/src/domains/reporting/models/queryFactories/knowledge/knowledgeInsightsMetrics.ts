@@ -170,12 +170,28 @@ export const createV1Query = <TCube extends Cubes = Cubes>(
     // Build base filters
     const baseFilters: ReportingFilter[] = []
 
+    const resourceSourceIdFilter = filters[APIOnlyFilterKey.ResourceSourceId]
+    const resourceSourceSetIdFilter =
+        filters[APIOnlyFilterKey.ResourceSourceSetId]
+
     // Add resource filters
     if (resourceSourceId !== null) {
         baseFilters.push({
             member: TicketInsightsTaskDimension.ResourceSourceId,
             operator: ReportingFilterOperator.Equals,
             values: [String(resourceSourceId)],
+        })
+    } else if (
+        resourceSourceIdFilter &&
+        resourceSourceIdFilter.values.length > 0
+    ) {
+        baseFilters.push({
+            member: TicketInsightsTaskDimension.ResourceSourceId,
+            operator:
+                resourceSourceIdFilter.operator === LogicalOperatorEnum.ONE_OF
+                    ? ReportingFilterOperator.Equals
+                    : ReportingFilterOperator.NotEquals,
+            values: resourceSourceIdFilter.values.map(String),
         })
     } else {
         baseFilters.push({
@@ -190,6 +206,19 @@ export const createV1Query = <TCube extends Cubes = Cubes>(
             member: TicketInsightsTaskDimension.ResourceSourceSetId,
             operator: ReportingFilterOperator.Equals,
             values: [String(resourceSourceSetId)],
+        })
+    } else if (
+        resourceSourceSetIdFilter &&
+        resourceSourceSetIdFilter.values.length > 0
+    ) {
+        baseFilters.push({
+            member: TicketInsightsTaskDimension.ResourceSourceSetId,
+            operator:
+                resourceSourceSetIdFilter.operator ===
+                LogicalOperatorEnum.ONE_OF
+                    ? ReportingFilterOperator.Equals
+                    : ReportingFilterOperator.NotEquals,
+            values: resourceSourceSetIdFilter.values.map(String),
         })
     } else {
         baseFilters.push({

@@ -16,12 +16,14 @@ import {
 } from '@gorgias/axiom'
 
 import { useGetStoreWorkflowsConfigurations } from 'models/workflows/queries'
+import GuidanceReferenceProvider from 'pages/aiAgent/actions/providers/GuidanceReferenceProvider'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import { SUPPORT_ACTIONS } from 'pages/aiAgent/constants'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
 import { ActionConfigTab } from './components/ActionConfigTab'
 import { ActionDetailHeader } from './components/ActionDetailHeader'
+import { ActionUsageTab } from './components/ActionUsageTab'
 import type { ActionDetailTab } from './hooks/useActionDetailTab'
 import { useActionDetailTab } from './hooks/useActionDetailTab'
 
@@ -124,9 +126,9 @@ const ActionDetailView = () => {
                         <ActionConfigTab configuration={configuration} />
                     </TabPanel>
                     <TabPanel id="usage">
-                        <Text color="var(--content-neutral-secondary)">
-                            Usage tab content coming soon.
-                        </Text>
+                        <GuidanceReferenceProvider actions={[configuration]}>
+                            <ActionUsageTab configuration={configuration} />
+                        </GuidanceReferenceProvider>
                     </TabPanel>
                 </Tabs>
             </Box>

@@ -3093,6 +3093,162 @@ describe('createV1Query edge cases', () => {
 
         expect(shopIntegrationFilters).toHaveLength(0)
     })
+
+    it('should fall back to API-only resourceSourceId filter when direct param is null', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.clone().add(7, 'days')
+        const guidanceSourceIds = ['11', '22', '33']
+        const filters: ApiStatsFilters = {
+            [FilterKey.Period]: {
+                start_datetime: periodStart.toISOString(),
+                end_datetime: periodEnd.toISOString(),
+            },
+            [APIOnlyFilterKey.ResourceSourceId]: {
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: guidanceSourceIds,
+            },
+        }
+
+        const query = createV1Query(
+            METRIC_NAMES.KNOWLEDGE_TICKETS,
+            null,
+            resourceSourceSetId,
+            filters,
+            timezone,
+            'TicketInsightsTask.ticketCount',
+        )
+
+        expect(query.filters).toContainEqual({
+            member: 'TicketInsightsTask.resourceSourceId',
+            operator: 'equals',
+            values: guidanceSourceIds,
+        })
+    })
+
+    it('should fall back to API-only resourceSourceSetId filter when direct param is null', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.clone().add(7, 'days')
+        const setId = '789'
+        const filters: ApiStatsFilters = {
+            [FilterKey.Period]: {
+                start_datetime: periodStart.toISOString(),
+                end_datetime: periodEnd.toISOString(),
+            },
+            [APIOnlyFilterKey.ResourceSourceSetId]: {
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [setId],
+            },
+        }
+
+        const query = createV1Query(
+            METRIC_NAMES.KNOWLEDGE_TICKETS,
+            resourceSourceId,
+            null,
+            filters,
+            timezone,
+            'TicketInsightsTask.ticketCount',
+        )
+
+        expect(query.filters).toContainEqual({
+            member: 'TicketInsightsTask.resourceSourceSetId',
+            operator: 'equals',
+            values: [setId],
+        })
+    })
+
+    it('should use notEquals when API-only resource filter operator is NOT_ONE_OF', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.clone().add(7, 'days')
+        const filters: ApiStatsFilters = {
+            [FilterKey.Period]: {
+                start_datetime: periodStart.toISOString(),
+                end_datetime: periodEnd.toISOString(),
+            },
+            [APIOnlyFilterKey.ResourceSourceId]: {
+                operator: LogicalOperatorEnum.NOT_ONE_OF,
+                values: ['42'],
+            },
+        }
+
+        const query = createV1Query(
+            METRIC_NAMES.KNOWLEDGE_TICKETS,
+            null,
+            resourceSourceSetId,
+            filters,
+            timezone,
+            'TicketInsightsTask.ticketCount',
+        )
+
+        expect(query.filters).toContainEqual({
+            member: 'TicketInsightsTask.resourceSourceId',
+            operator: 'notEquals',
+            values: ['42'],
+        })
+    })
+
+    it('should keep Set fallback when direct param is null and API-only filter is empty', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.clone().add(7, 'days')
+        const filters: ApiStatsFilters = {
+            [FilterKey.Period]: {
+                start_datetime: periodStart.toISOString(),
+                end_datetime: periodEnd.toISOString(),
+            },
+            [APIOnlyFilterKey.ResourceSourceId]: {
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [],
+            },
+        }
+
+        const query = createV1Query(
+            METRIC_NAMES.KNOWLEDGE_TICKETS,
+            null,
+            resourceSourceSetId,
+            filters,
+            timezone,
+            'TicketInsightsTask.ticketCount',
+        )
+
+        expect(query.filters).toContainEqual({
+            member: 'TicketInsightsTask.resourceSourceId',
+            operator: 'set',
+            values: [],
+        })
+    })
+
+    it('should prefer the direct resourceSourceId param over the API-only filter', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.clone().add(7, 'days')
+        const filters: ApiStatsFilters = {
+            [FilterKey.Period]: {
+                start_datetime: periodStart.toISOString(),
+                end_datetime: periodEnd.toISOString(),
+            },
+            [APIOnlyFilterKey.ResourceSourceId]: {
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: ['11', '22'],
+            },
+        }
+
+        const query = createV1Query(
+            METRIC_NAMES.KNOWLEDGE_TICKETS,
+            resourceSourceId,
+            resourceSourceSetId,
+            filters,
+            timezone,
+            'TicketInsightsTask.ticketCount',
+        )
+
+        expect(query.filters).toContainEqual({
+            member: 'TicketInsightsTask.resourceSourceId',
+            operator: 'equals',
+            values: [String(resourceSourceId)],
+        })
+        const resourceSourceIdFilters = query.filters.filter(
+            (f: any) => f.member === 'TicketInsightsTask.resourceSourceId',
+        )
+        expect(resourceSourceIdFilters).toHaveLength(1)
+    })
 })
 
 describe('createV1DrillDownQuery', () => {

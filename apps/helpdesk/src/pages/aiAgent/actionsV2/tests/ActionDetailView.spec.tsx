@@ -44,6 +44,19 @@ jest.mock('../components/ActionConfigTab', () => ({
     }) => <div>Config form for {configuration.name}</div>,
 }))
 
+jest.mock('../components/ActionUsageTab', () => ({
+    ActionUsageTab: ({
+        configuration,
+    }: {
+        configuration: { id: string; name: string }
+    }) => <div>Usage panel for {configuration.name}</div>,
+}))
+
+jest.mock('pages/aiAgent/actions/providers/GuidanceReferenceProvider', () => ({
+    __esModule: true,
+    default: ({ children }: { children: ReactNode }) => <>{children}</>,
+}))
+
 const mockUseGetStoreWorkflowsConfigurations = jest.mocked(
     useGetStoreWorkflowsConfigurations,
 )
@@ -196,7 +209,7 @@ describe('<ActionDetailView />', () => {
         const usageTab = screen.getByRole('tab', { name: 'Usage' })
         expect(usageTab).toHaveAttribute('aria-selected', 'true')
         expect(
-            screen.getByText('Usage tab content coming soon.'),
+            screen.getByText('Usage panel for Get order info'),
         ).toBeInTheDocument()
     })
 
