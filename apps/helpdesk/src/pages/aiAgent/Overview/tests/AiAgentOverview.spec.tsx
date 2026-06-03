@@ -1085,4 +1085,46 @@ describe('AiAgentOverview', () => {
             )
         })
     })
+
+    describe('Setup complete toast', () => {
+        beforeEach(() => {
+            useParamsMock.mockReturnValue({
+                shopName: 'test-shop',
+                shopType: 'shopify',
+            })
+            act(() => {
+                toast.dismiss()
+            })
+        })
+
+        afterEach(() => {
+            act(() => {
+                toast.dismiss()
+            })
+            useLocationMock.mockReturnValue(defaultLocation)
+        })
+
+        it('shows the setup complete toast when arriving from the wizard', async () => {
+            useLocationMock.mockReturnValue({
+                ...defaultLocation,
+                state: { aiAgentSetupComplete: true },
+            })
+
+            renderComponent()
+
+            const toastEl = await screen.findByRole('status', { hidden: true })
+            expect(toastEl).toHaveTextContent('AI Agent setup complete')
+            expect(toastEl).toHaveAttribute('data-intent', 'success')
+        })
+
+        it('does not show the setup complete toast on a normal visit', () => {
+            useLocationMock.mockReturnValue(defaultLocation)
+
+            renderComponent()
+
+            expect(
+                screen.queryByRole('status', { hidden: true }),
+            ).not.toBeInTheDocument()
+        })
+    })
 })

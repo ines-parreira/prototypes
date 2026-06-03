@@ -106,9 +106,18 @@ const defaultProps: StepProps = {
     goToStep: jest.fn(),
 }
 const LocationPath = () => {
-    const location = useLocation()
+    const location = useLocation<
+        { aiAgentSetupComplete?: boolean } | undefined
+    >()
 
-    return <div>{`${location.pathname}${location.search}`}</div>
+    return (
+        <div>
+            <div>{`${location.pathname}${location.search}`}</div>
+            {location.state?.aiAgentSetupComplete ? (
+                <div>setup-complete-state</div>
+            ) : null}
+        </div>
+    )
 }
 const renderWithProvider = (props = defaultProps) => {
     return render(
@@ -332,6 +341,31 @@ describe('KnowledgeStep', () => {
                 ),
             ).toBeInTheDocument()
         })
+    })
+    it('routes to overview with setup-complete state (no go-live modal) when V3 onboarding flag is enabled', async () => {
+        mockUseFlagWithLoading.mockImplementation((key) => ({
+            value: key === FeatureFlagKey.AiAgentOnboardingV3,
+            isLoading: false,
+        }))
+        useGetHelpCentersByShopNameMock.mockReturnValue({
+            isHelpCenterLoading: false,
+            helpCenters: getHelpCentersResponseFixture.data,
+        })
+        renderWithProvider()
+        jest.runAllTimers()
+        const nextButton = screen.getByRole('button', { name: /finish/i })
+        act(() => {
+            fireEvent.click(nextButton)
+        })
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    `/app/ai-agent/overview?shopName=${encodeURIComponent(shopifyIntegration.meta.shop_name)}`,
+                ),
+            ).toBeInTheDocument()
+        })
+        expect(screen.getByText('setup-complete-state')).toBeInTheDocument()
+        expect(screen.queryByText(/from=onboarding/)).not.toBeInTheDocument()
     })
     describe('Shopping Assistant trial functionality', () => {
         beforeEach(() => {

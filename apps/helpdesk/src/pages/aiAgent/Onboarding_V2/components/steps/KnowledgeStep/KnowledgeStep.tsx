@@ -135,10 +135,22 @@ export const KnowledgeStep: React.FC<StepProps> = ({
                             shopName,
                         })
 
-                        history.push({
-                            pathname: nextPath,
-                            search: `?shopName=${encodeURIComponent(shopName)}&from=onboarding`,
-                        })
+                        // V3 is setup-only: land on the overview with a
+                        // success toast. V2 keeps the post-wizard "go live"
+                        // ThankYouModal, opened via the `from=onboarding` query
+                        // param, so a V3 rollback restores the old flow.
+                        if (isAiAgentOnboardingV3Enabled) {
+                            history.push({
+                                pathname: nextPath,
+                                search: `?shopName=${encodeURIComponent(shopName)}`,
+                                state: { aiAgentSetupComplete: true },
+                            })
+                        } else {
+                            history.push({
+                                pathname: nextPath,
+                                search: `?shopName=${encodeURIComponent(shopName)}&from=onboarding`,
+                            })
+                        }
                     },
                 },
             )

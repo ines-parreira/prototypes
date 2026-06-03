@@ -7,7 +7,7 @@ import {
 } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { useParams } from 'react-router-dom'
+import { useHistory, useLocation, useParams } from 'react-router-dom'
 
 import { Button, toast } from '@gorgias/axiom'
 
@@ -55,6 +55,21 @@ export const AiAgentOverview = () => {
     }>()
 
     const [isAiAgentPostLive, setIsAiAgentPostLive] = useState(false)
+
+    const location = useLocation<
+        { aiAgentSetupComplete?: boolean } | undefined
+    >()
+    const history = useHistory()
+
+    useEffect(() => {
+        if (!location.state?.aiAgentSetupComplete) return
+
+        toast.success('AI Agent setup complete')
+        history.replace({
+            pathname: location.pathname,
+            search: location.search,
+        })
+    }, [location.state, location.pathname, location.search, history])
 
     const currentAccount = useAppSelector(getCurrentAccountState)
     const getRedirectUri = useAppSelector(makeGetRedirectUri)
@@ -135,8 +150,18 @@ export const AiAgentOverview = () => {
 
     const accountDomain = currentAccount.get('domain')
 
-    const { isOpen, isLoading, handleModalAction, modalContent } =
-        useThankYouModal()
+    // V2 post-wizard "go live" modal, opened via the `from=onboarding` query
+    // param. V3 replaces it with the setup-complete toast above; keeping the
+    // modal gated behind that param means a V3 rollback restores the V2 flow.
+    const {
+        isOpen: isThankYouModalOpen,
+        isLoading: isThankYouModalLoading,
+        handleModalAction,
+        modalContent,
+    } = useThankYouModal()
+
+    const onConfirmModal = () => handleModalAction('confirm')
+    const onCloseModal = () => handleModalAction('close')
 
     const { canSeeTrialCTA, canBookDemo, hasAnyTrialStarted, trialType } =
         useTrialAccess(shopName)
@@ -188,9 +213,6 @@ export const AiAgentOverview = () => {
         isAiAgentOnboardingV3Enabled,
         trialType,
     ])
-
-    const onConfirmModal = () => handleModalAction('confirm')
-    const onCloseModal = () => handleModalAction('close')
 
     const trialModalProps = useTrialModalProps({ onConfirmTrial })
 
@@ -322,7 +344,7 @@ export const AiAgentOverview = () => {
             <ResourcesSection />
 
             <ThankYouModal
-                isOpen={isOpen}
+                isOpen={isThankYouModalOpen}
                 title={modalContent.title}
                 description={modalContent.description}
                 image={<img src={modalImage} alt="Thank you" />}
@@ -330,7 +352,7 @@ export const AiAgentOverview = () => {
                 closeLabel={modalContent.closeLabel}
                 onClick={onConfirmModal}
                 onClose={onCloseModal}
-                isLoading={isLoading}
+                isLoading={isThankYouModalLoading}
                 isActionLoading={modalContent.actionLoading}
             />
             {activationModal}
