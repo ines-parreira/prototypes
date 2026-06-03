@@ -442,12 +442,14 @@ exports[`ticket actions fetchTicket() existing instagram ticket 1`] = `
   },
   {
     "appliedMacro": null,
-    "args": Immutable.Map {},
+    "args": Immutable.Map {
+      "forceUpdate": true,
+    },
     "currentUser": Immutable.Map {
       "id": 1,
     },
     "forceFocus": false,
-    "forceUpdate": false,
+    "forceUpdate": true,
     "fromMacro": false,
     "signature": Immutable.Map {},
     "ticket": Immutable.Map {
@@ -571,12 +573,14 @@ exports[`ticket actions fetchTicket() existing ticket 1`] = `
   },
   {
     "appliedMacro": null,
-    "args": Immutable.Map {},
+    "args": Immutable.Map {
+      "forceUpdate": true,
+    },
     "currentUser": Immutable.Map {
       "id": 1,
     },
     "forceFocus": false,
-    "forceUpdate": false,
+    "forceUpdate": true,
     "fromMacro": false,
     "signature": Immutable.Map {},
     "ticket": Immutable.Map {
@@ -650,10 +654,12 @@ exports[`ticket actions fetchTicket() new ticket 1`] = `
   },
   {
     "appliedMacro": null,
-    "args": Immutable.Map {},
+    "args": Immutable.Map {
+      "forceUpdate": true,
+    },
     "currentUser": undefined,
     "forceFocus": false,
-    "forceUpdate": false,
+    "forceUpdate": true,
     "fromMacro": false,
     "signature": Immutable.Map {},
     "ticket": Immutable.Map {
@@ -739,12 +745,14 @@ exports[`ticket actions fetchTicket() should send ticket-viewed event when ticke
   },
   {
     "appliedMacro": null,
-    "args": Immutable.Map {},
+    "args": Immutable.Map {
+      "forceUpdate": true,
+    },
     "currentUser": Immutable.Map {
       "id": 1,
     },
     "forceFocus": false,
-    "forceUpdate": false,
+    "forceUpdate": true,
     "fromMacro": false,
     "signature": Immutable.Map {},
     "ticket": Immutable.Map {
@@ -882,10 +890,12 @@ exports[`ticket actions goToNextTicket() should fetch next ticket and go to this
   },
   {
     "appliedMacro": null,
-    "args": Immutable.Map {},
+    "args": Immutable.Map {
+      "forceUpdate": true,
+    },
     "currentUser": undefined,
     "forceFocus": false,
-    "forceUpdate": false,
+    "forceUpdate": true,
     "fromMacro": false,
     "signature": Immutable.Map {},
     "ticket": Immutable.Map {
@@ -997,10 +1007,12 @@ exports[`ticket actions goToNextTicket() should fetch next ticket and go to this
   },
   {
     "appliedMacro": null,
-    "args": Immutable.Map {},
+    "args": Immutable.Map {
+      "forceUpdate": true,
+    },
     "currentUser": undefined,
     "forceFocus": false,
-    "forceUpdate": false,
+    "forceUpdate": true,
     "fromMacro": false,
     "signature": Immutable.Map {},
     "ticket": Immutable.Map {
@@ -1124,10 +1136,12 @@ exports[`ticket actions goToNextTicket() should fetch next ticket and wait for p
   },
   {
     "appliedMacro": null,
-    "args": Immutable.Map {},
+    "args": Immutable.Map {
+      "forceUpdate": true,
+    },
     "currentUser": undefined,
     "forceFocus": false,
-    "forceUpdate": false,
+    "forceUpdate": true,
     "fromMacro": false,
     "signature": Immutable.Map {},
     "ticket": Immutable.Map {
@@ -1259,10 +1273,12 @@ exports[`ticket actions goToPrevTicket() should fetch previous ticket and go to 
   },
   {
     "appliedMacro": null,
-    "args": Immutable.Map {},
+    "args": Immutable.Map {
+      "forceUpdate": true,
+    },
     "currentUser": undefined,
     "forceFocus": false,
-    "forceUpdate": false,
+    "forceUpdate": true,
     "fromMacro": false,
     "signature": Immutable.Map {},
     "ticket": Immutable.Map {
@@ -1374,10 +1390,12 @@ exports[`ticket actions goToPrevTicket() should fetch previous ticket and go to 
   },
   {
     "appliedMacro": null,
-    "args": Immutable.Map {},
+    "args": Immutable.Map {
+      "forceUpdate": true,
+    },
     "currentUser": undefined,
     "forceFocus": false,
-    "forceUpdate": false,
+    "forceUpdate": true,
     "fromMacro": false,
     "signature": Immutable.Map {},
     "ticket": Immutable.Map {
@@ -1501,10 +1519,12 @@ exports[`ticket actions goToPrevTicket() should fetch previous ticket and wait f
   },
   {
     "appliedMacro": null,
-    "args": Immutable.Map {},
+    "args": Immutable.Map {
+      "forceUpdate": true,
+    },
     "currentUser": undefined,
     "forceFocus": false,
-    "forceUpdate": false,
+    "forceUpdate": true,
     "fromMacro": false,
     "signature": Immutable.Map {},
     "ticket": Immutable.Map {
@@ -1608,10 +1628,12 @@ exports[`ticket actions handleMessageActionError() should fetch the ticket becau
   },
   {
     "appliedMacro": null,
-    "args": Immutable.Map {},
+    "args": Immutable.Map {
+      "forceUpdate": true,
+    },
     "currentUser": undefined,
     "forceFocus": false,
-    "forceUpdate": false,
+    "forceUpdate": true,
     "fromMacro": false,
     "signature": Immutable.Map {},
     "ticket": Immutable.Map {

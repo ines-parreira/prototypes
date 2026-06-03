@@ -955,7 +955,7 @@ describe('actions', () => {
                 expect(store.getActions()).toMatchSnapshot()
             })
 
-            it('should key the draft cache with the route ticket id when it exists', () => {
+            it('should ignore a stale route ticket id when keying the draft cache', () => {
                 window.location.pathname = '/app/views/1/456'
                 store = mockStore({
                     ticket: emailTicket.set('id', 123),
@@ -970,7 +970,29 @@ describe('actions', () => {
                 expect(store.getActions()).toContainEqual(
                     expect.objectContaining({
                         type: types.SET_RESPONSE_TEXT,
-                        ticketId: '456',
+                        ticketId: 123,
+                    }),
+                )
+            })
+
+            it('should keep explicit ticket id overrides for callers that provide one', () => {
+                window.location.pathname = '/app/views/1/456'
+                store = mockStore({
+                    ticket: emailTicket.set('id', 123),
+                    newMessage: initialState,
+                })
+
+                const contentState = ContentState.createFromText('foo')
+                store.dispatch(
+                    actions.setResponseText(
+                        fromJS({ contentState, ticketId: 789 }),
+                    ),
+                )
+
+                expect(store.getActions()).toContainEqual(
+                    expect.objectContaining({
+                        type: types.SET_RESPONSE_TEXT,
+                        ticketId: 789,
                     }),
                 )
             })
@@ -1061,11 +1083,15 @@ describe('actions', () => {
             })
 
             it('should not add email extra to the message when source type is not email', () => {
+                const storeNewMessage = storeState.newMessage as Map<
+                    string,
+                    unknown
+                >
                 const { dispatch, getState } = mockStore({
                     ...storeState,
-                    newMessage: storeState.newMessage?.mergeIn(['newMessage'], {
+                    newMessage: storeNewMessage.mergeIn(['newMessage'], {
                         ...(
-                            storeState.newMessage?.get('newMessage') as Map<
+                            storeNewMessage.get('newMessage') as Map<
                                 string,
                                 unknown
                             >

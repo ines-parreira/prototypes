@@ -19,7 +19,10 @@ import { useOutboundTranslationContext } from 'providers/OutboundTranslationProv
 import * as channelsService from 'services/channels'
 import { convertToHTML, createDraftJSKeyGeneratorMock } from 'utils/editor'
 
-import { TicketReplyEditorContainer } from '../TicketReplyEditor'
+import {
+    TicketReplyEditorContainer,
+    updateMessageText,
+} from '../TicketReplyEditor'
 
 jest.mock('providers/OutboundTranslationProvider')
 
@@ -54,6 +57,11 @@ describe('TicketReplyEditor component', () => {
             getCurrentDraftId: jest.fn(),
             isTranslationPending: false,
         })
+    })
+
+    afterEach(() => {
+        updateMessageText.cancel()
+        window.history.pushState({}, '', '/')
     })
 
     const minProps: ComponentProps<typeof TicketReplyEditorContainer> = {

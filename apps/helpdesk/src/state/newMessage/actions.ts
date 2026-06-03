@@ -81,7 +81,6 @@ import type { CurrentUser, RootState, StoreDispatch } from 'state/types'
 import {
     castGorgiasVideosForUnsupportedSources,
     getActionTemplate,
-    getCurrentTicketIdFromLocation,
     toJS,
 } from 'utils'
 import { getMomentNow } from 'utils/date'
@@ -282,7 +281,6 @@ export const setResponseText =
         const { ticket, currentUser } = state
         const ticketId =
             (args.get('ticketId') as Maybe<string | number>) ??
-            getCurrentTicketIdFromLocation() ??
             (ticket.get('id') as string)
         const signature = selectors.getNewMessageSignature(state)
 
@@ -723,7 +721,13 @@ export const initializeMessageDraft = () => (dispatch: StoreDispatch) => {
     // get cached macro
     dispatch(fetchTicketReplyMacro())
     // get cached ticket reply message
-    dispatch(setResponseText())
+    dispatch(
+        setResponseText(
+            fromJS({
+                forceUpdate: true,
+            }),
+        ),
+    )
 }
 
 /**
