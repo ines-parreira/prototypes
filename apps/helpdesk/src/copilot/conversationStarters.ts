@@ -28,8 +28,8 @@ const KNOWLEDGE_MIGRATE_STARTER: ConversationStarter = {
 }
 
 const ACTIONS_DISCOVER_STARTER: ConversationStarter = {
-    title: 'What actions can I use or create to improve automation',
-    message: 'What actions can I use or create to improve automation',
+    title: 'How can I do more with actions?',
+    message: 'How can I do more with actions?',
 }
 
 const AI_AGENT_PATH_REGEX = /^\/app\/ai-agent\/[^/]+\/[^/]+(?:\/(.*))?$/

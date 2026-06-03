@@ -92,7 +92,7 @@ describe('getCopilotConversationStarters', () => {
         ])('shows the actions starter and universal on %s', (pathname) => {
             const starters = getCopilotConversationStarters(pathname)
             expect(starters.map((s) => s.message)).toEqual([
-                'What actions can I use or create to improve automation',
+                'How can I do more with actions?',
                 'Optimize my AI Agent setup',
             ])
         })
