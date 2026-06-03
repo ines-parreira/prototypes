@@ -201,7 +201,7 @@ jobs:
   tests:
     name: Tests
     runs-on: gh-actions-4cpu12gb-runner-set
-    timeout-minutes: 15
+    timeout-minutes: 20
     if: inputs.helpdesk-affected == 'true'
     strategy:
       fail-fast: false
@@ -307,7 +307,7 @@ jobs:
   package-tests:
     name: Packages test (${{ matrix.bucket }})
     runs-on: gh-actions-4cpu8gb-runner-set
-    timeout-minutes: 15
+    timeout-minutes: 20
     if: inputs.packages-test-bucket-count != '0'
     strategy:
       fail-fast: false

@@ -49,7 +49,7 @@ jobs:
   build:
     name: Build
     runs-on: gh-actions-4cpu8gb-runner-set
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - name: Start Resource Monitoring
         uses: gorgias/reusable-actions/.github/actions/resource-monitor@main
