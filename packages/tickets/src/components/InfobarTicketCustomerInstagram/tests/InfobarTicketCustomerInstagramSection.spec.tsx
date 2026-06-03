@@ -267,6 +267,36 @@ describe('InfobarTicketCustomerInstagramSection', () => {
             expect(igLink).toHaveAttribute('rel', 'noopener noreferrer')
         })
 
+        it('should use the Instagram profile username when it differs from the customer channel address', async () => {
+            const mockInstagramProfiles = createInstagramProfilesHandler({
+                username: 'profile_user',
+            })
+            server.use(mockInstagramProfiles.handler)
+
+            renderComponent(
+                createMockCustomer({
+                    channels: [
+                        mockTicketCustomerChannel({
+                            type: 'instagram',
+                            address: 'channel_user',
+                        }),
+                    ],
+                }),
+            )
+
+            const igLink = await screen.findByRole('link', {
+                name: /@profile_user/,
+            })
+
+            expect(igLink).toHaveAttribute(
+                'href',
+                'https://www.instagram.com/profile_user',
+            )
+            expect(
+                screen.queryByRole('link', { name: /@channel_user/ }),
+            ).not.toBeInTheDocument()
+        })
+
         it('should log event when clicked', async () => {
             const mockInstagramProfiles = createInstagramProfilesHandler()
             server.use(mockInstagramProfiles.handler)
