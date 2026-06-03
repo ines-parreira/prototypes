@@ -122,7 +122,7 @@ describe('RefundOrderModal', () => {
     it('should render Refund Order - OK', async () => {
         apiMock.onAny().reply(200, getBigCommerceOrderRefundDataOkResponse)
 
-        const { baseElement } = render(
+        render(
             <>
                 <Provider store={store}>
                     <RefundOrderModal {...refundOrderProps} />
@@ -130,15 +130,13 @@ describe('RefundOrderModal', () => {
             </>,
         )
 
-        await screen.findByText('Refund €0.00')
-
-        expect(baseElement).toMatchSnapshot()
+        expect(await screen.findByText('Refund €0.00')).toBeInTheDocument()
     })
 
     it('should render Refund Order - ERROR popup', async () => {
         apiMock.onAny().reply(400, getBigCommerceOrderRefundDataErrorResponse)
 
-        const { baseElement } = render(
+        render(
             <>
                 <Provider store={store}>
                     <RefundOrderModal {...refundOrderProps} />
@@ -146,15 +144,17 @@ describe('RefundOrderModal', () => {
             </>,
         )
 
-        await screen.findByText(BigCommerceGeneralErrorMessage.defaultError)
-
-        expect(baseElement).toMatchSnapshot()
+        expect(
+            await screen.findByText(
+                BigCommerceGeneralErrorMessage.defaultError,
+            ),
+        ).toBeInTheDocument()
     })
 
     it('should render Refund Order - Too Many Requests ERROR popup', async () => {
         apiMock.onAny().reply(429, getBigCommerceOrderRefundDataErrorResponse)
 
-        const { baseElement } = render(
+        render(
             <>
                 <Provider store={store}>
                     <RefundOrderModal {...refundOrderProps} />
@@ -162,11 +162,11 @@ describe('RefundOrderModal', () => {
             </>,
         )
 
-        await screen.findByText(
-            BigCommerceGeneralErrorMessage.rateLimitingError,
-        )
-
-        expect(baseElement).toMatchSnapshot()
+        expect(
+            await screen.findByText(
+                BigCommerceGeneralErrorMessage.rateLimitingError,
+            ),
+        ).toBeInTheDocument()
     })
 })
 

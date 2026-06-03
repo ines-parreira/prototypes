@@ -239,6 +239,7 @@ export enum FeatureFlagKey {
     ViewCountSchedulerV3Config = 'view-count-scheduler-v3-config',
     VoiceCallDuringBusinessHours = 'voice-call-during-business-hours',
     VoiceSLA = 'voice-sla',
+    WayfindingMobileResolution = 'linear-HELP-6564-re-enable-wayfinding-for-mobile-resolution',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
     EnableShopifyMetafieldsIngestionUI = 'linear.project_shopify-metafields_enable_ingestion-ui',
     EnableShopifyMetafieldsIngestionUIinMacros = 'linear.project_shopify-metafields_enable_ingestion-ui-macros',

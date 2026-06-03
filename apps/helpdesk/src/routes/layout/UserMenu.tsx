@@ -1,3 +1,5 @@
+import { useIsMobileResolution } from '@repo/hooks'
+
 import { Menu, MenuSection } from '@gorgias/axiom'
 import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
 import type { User } from '@gorgias/helpdesk-types'
@@ -21,10 +23,11 @@ function UserMenuLoaded({
 
     const userEmail = currentUser.email
     const userRole = currentUser.role?.name
+    const isMobileResolution = useIsMobileResolution()
 
     return (
         <Menu
-            placement="right"
+            placement={isMobileResolution ? 'top' : 'right'}
             trigger={<UserMenuTrigger user={currentUser} />}
             maxWidth={240}
         >

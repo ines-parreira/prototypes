@@ -105,7 +105,7 @@ describe('<Modal />', () => {
         modalContainer.setAttribute('id', 'modal-container')
         document.body.appendChild(modalContainer)
 
-        const { baseElement } = render(
+        render(
             <Modal {...minProps} isOpen={true} container={modalContainer}>
                 <ModalHeader title="Did you know?" />
                 <ModalBody>
@@ -115,7 +115,16 @@ describe('<Modal />', () => {
             </Modal>,
         )
 
-        expect(baseElement).toMatchSnapshot()
+        expect(
+            modalContainer.querySelector('[data-react-aria-top-layer="true"]'),
+        ).toBeInTheDocument()
+        expect(
+            modalContainer.querySelector('[role="dialog"]'),
+        ).toBeInTheDocument()
+        expect(screen.getByText('Did you know?')).toBeInTheDocument()
+        expect(
+            screen.getByText(/Ares is the Greek god of courage and war/),
+        ).toBeInTheDocument()
     })
 
     it('should not close the modal if the click started inside the modal but finished outside the modal', () => {

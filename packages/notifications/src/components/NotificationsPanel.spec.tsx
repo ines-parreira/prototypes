@@ -1,3 +1,4 @@
+import { useIsMobileResolution } from '@repo/hooks'
 import { render } from '@repo/testing/vitest'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -5,6 +6,12 @@ import userEvent from '@testing-library/user-event'
 import type { NotificationItem } from '../hooks/useNotificationItems'
 import { NotificationsPanel } from './NotificationsPanel'
 import { NotificationTile } from './NotificationTile'
+
+vi.mock('@repo/hooks', () => ({
+    useIsMobileResolution: vi.fn(() => false),
+}))
+
+const mockUseIsMobileResolution = vi.mocked(useIsMobileResolution)
 
 const makeItem = (
     overrides: Partial<NotificationItem> = {},
@@ -36,6 +43,10 @@ const renderPanel = (
     )
 
 describe('NotificationsPanel', () => {
+    beforeEach(() => {
+        mockUseIsMobileResolution.mockReturnValue(false)
+    })
+
     it('renders the title and toolbar', () => {
         renderPanel()
         expect(screen.getByText('Notifications')).toBeInTheDocument()
@@ -92,5 +103,17 @@ describe('NotificationsPanel', () => {
         expect(
             screen.queryByRole('button', { name: 'Close' }),
         ).not.toBeInTheDocument()
+    })
+
+    it('renders all panel content correctly on mobile resolution', () => {
+        mockUseIsMobileResolution.mockReturnValue(true)
+
+        renderPanel({
+            items: [makeItem({ title: 'Mobile notification' })],
+        })
+
+        expect(screen.getByText('Notifications')).toBeInTheDocument()
+        expect(screen.getByText('Filter toolbar')).toBeInTheDocument()
+        expect(screen.getByText('Mobile notification')).toBeInTheDocument()
     })
 })

@@ -1,3 +1,4 @@
+import { useIsMobileResolution } from '@repo/hooks'
 import { render } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
@@ -11,6 +12,11 @@ import { mockGetCurrentUserHandler } from '@gorgias/helpdesk-mocks'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { UserMenu } from '../UserMenu'
+
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useIsMobileResolution: jest.fn(() => false),
+}))
 
 jest.mock('../userMenu/useNoticeableWidget', () => ({
     useNoticeableWidget: jest.fn(),
@@ -82,11 +88,18 @@ const { useNoticeableWidget } = jest.requireMock(
     '../userMenu/useNoticeableWidget',
 )
 const useNoticeableWidgetMock = useNoticeableWidget as jest.Mock
+const mockUseIsMobileResolution = useIsMobileResolution as jest.MockedFunction<
+    typeof useIsMobileResolution
+>
 
 const server = setupServer()
 
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
+})
+
+beforeEach(() => {
+    mockUseIsMobileResolution.mockReturnValue(false)
 })
 
 afterEach(() => {
@@ -197,5 +210,32 @@ describe('UserMenu', () => {
         expect(
             await screen.findByText('trigger:7:undefined:undefined'),
         ).toBeInTheDocument()
+    })
+
+    it('renders the full menu on mobile resolution', async () => {
+        mockUseIsMobileResolution.mockReturnValue(true)
+        const user = userEvent.setup()
+        server.use(
+            mockGetCurrentUserHandler(async () =>
+                HttpResponse.json({
+                    id: 123,
+                    name: 'Jane',
+                    email: 'jane@example.com',
+                    role: { name: 'admin' },
+                    meta: {
+                        profile_picture_url: 'https://img.example/jane.png',
+                    },
+                } as any),
+            ).handler,
+        )
+
+        renderUserMenu()
+
+        const trigger = await screen.findByRole('button', {
+            name: 'trigger:123:Jane:https://img.example/jane.png',
+        })
+        await user.click(trigger)
+
+        expect(await screen.findByText('header-section')).toBeInTheDocument()
     })
 })

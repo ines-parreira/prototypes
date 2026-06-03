@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 
 import { render } from '@repo/testing'
-import { fireEvent, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import _noop from 'lodash/noop'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -27,12 +27,14 @@ describe('<LinkPopover />', () => {
     } as unknown as ComponentProps<typeof LinkPopover>
 
     it('should render a link', () => {
-        const { baseElement } = render(
+        render(
             <Provider store={store}>
                 <LinkPopover {...minProps}>I am a link</LinkPopover>
             </Provider>,
         )
-        expect(baseElement).toMatchSnapshot()
+        const link = screen.getByRole('link', { name: 'I am a link' })
+        expect(link).toBeInTheDocument()
+        expect(link).toHaveAttribute('href', 'http://gorgias.com')
     })
 
     it('should render a popover on link hover', () => {
@@ -88,7 +90,7 @@ describe('<LinkPopover />', () => {
     it('should render the popover on a specified modal', () => {
         const label = 'hover me'
 
-        const { baseElement, getByText } = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <Modal isOpen onClose={_noop}>
                     <LinkPopover {...minProps}>{label}</LinkPopover>
@@ -98,7 +100,9 @@ describe('<LinkPopover />', () => {
 
         fireEvent.mouseOver(getByText(label))
 
-        expect(baseElement).toMatchSnapshot()
+        expect(screen.getByRole('dialog')).toBeInTheDocument()
+        expect(screen.getByRole('link', { name: label })).toBeInTheDocument()
+        expect(screen.getByText(minProps.url)).toBeInTheDocument()
     })
 
     it('should hide the popover when hovering out of the link', async () => {

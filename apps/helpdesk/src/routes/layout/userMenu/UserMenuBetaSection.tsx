@@ -24,7 +24,14 @@ export function UserMenuBetaSection() {
                 label="New UI"
                 onAction={onToggleHelpdeskV2Beta}
                 trailingSlot={
-                    <Tooltip trigger={<ToggleField value={hasUIVisionBeta} />}>
+                    <Tooltip
+                        trigger={
+                            <ToggleField
+                                value={hasUIVisionBeta}
+                                onChange={onToggleHelpdeskV2Beta}
+                            />
+                        }
+                    >
                         <TooltipContent>
                             Gorgias has a refreshed look! If anything isn&apos;t
                             working as expected, you can switch back temporarily

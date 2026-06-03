@@ -69,9 +69,9 @@ const renderComponent = (element: React.ReactElement) =>
     })
 
 describe('<ImportArticlesModal />', () => {
-    describe('snapshots', () => {
+    describe('renders correctly for each state', () => {
         test('migration feature disabled', () => {
-            const { baseElement } = renderComponent(
+            renderComponent(
                 <ImportArticlesModal
                     isOpen
                     onClose={noop}
@@ -90,10 +90,14 @@ describe('<ImportArticlesModal />', () => {
                     onMigrationDropAreaClick={noop}
                 />,
             )
-            expect(baseElement).toMatchSnapshot()
+            expect(screen.getByRole('dialog')).toBeInTheDocument()
+            expect(screen.getByText('Import articles')).toBeInTheDocument()
+            expect(
+                screen.queryByText('Import from another provider'),
+            ).not.toBeInTheDocument()
         })
         test('no file selected', () => {
-            const { baseElement } = renderComponent(
+            renderComponent(
                 <ImportArticlesModal
                     isOpen
                     onClose={noop}
@@ -108,10 +112,14 @@ describe('<ImportArticlesModal />', () => {
                     onMigrationDropAreaClick={noop}
                 />,
             )
-            expect(baseElement).toMatchSnapshot()
+            expect(screen.getByRole('dialog')).toBeInTheDocument()
+            expect(screen.getByText('Import articles')).toBeInTheDocument()
+            expect(
+                screen.getByText('Import from another provider'),
+            ).toBeInTheDocument()
         })
         test('file selected', () => {
-            const { baseElement } = renderComponent(
+            renderComponent(
                 <ImportArticlesModal
                     isOpen
                     onClose={noop}
@@ -127,10 +135,14 @@ describe('<ImportArticlesModal />', () => {
                     onMigrationDropAreaClick={noop}
                 />,
             )
-            expect(baseElement).toMatchSnapshot()
+            expect(screen.getByRole('dialog')).toBeInTheDocument()
+            expect(
+                screen.getByText('Imported Articles.csv'),
+            ).toBeInTheDocument()
+            expect(screen.getByText('Import File')).toBeInTheDocument()
         })
         test('import in progress', () => {
-            const { baseElement } = renderComponent(
+            renderComponent(
                 <ImportArticlesModal
                     isOpen
                     onClose={noop}
@@ -145,10 +157,12 @@ describe('<ImportArticlesModal />', () => {
                     onMigrationDropAreaClick={noop}
                 />,
             )
-            expect(baseElement).toMatchSnapshot()
+            expect(screen.getByRole('dialog')).toBeInTheDocument()
+            expect(screen.getByText('Import articles')).toBeInTheDocument()
+            expect(screen.queryByText('Import File')).not.toBeInTheDocument()
         })
         test('loading providers', () => {
-            const { baseElement } = renderComponent(
+            renderComponent(
                 <ImportArticlesModal
                     isOpen
                     onClose={noop}
@@ -167,10 +181,12 @@ describe('<ImportArticlesModal />', () => {
                     onMigrationDropAreaClick={noop}
                 />,
             )
-            expect(baseElement).toMatchSnapshot()
+            expect(screen.getByRole('dialog')).toBeInTheDocument()
+            expect(screen.getByText('Import articles')).toBeInTheDocument()
+            expect(screen.getByRole('status')).toBeInTheDocument()
         })
         test('providers fetching error', () => {
-            const { baseElement } = renderComponent(
+            renderComponent(
                 <ImportArticlesModal
                     isOpen
                     onClose={noop}
@@ -189,7 +205,11 @@ describe('<ImportArticlesModal />', () => {
                     onMigrationDropAreaClick={noop}
                 />,
             )
-            expect(baseElement).toMatchSnapshot()
+            expect(screen.getByRole('dialog')).toBeInTheDocument()
+            expect(screen.getByText('Import articles')).toBeInTheDocument()
+            expect(
+                screen.queryByText('Import from another provider'),
+            ).not.toBeInTheDocument()
         })
     })
     describe('callbacks are handled properly', () => {

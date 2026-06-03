@@ -1,3 +1,4 @@
+import { useIsMobileResolution } from '@repo/hooks'
 import { assumeMock, render } from '@repo/testing'
 import {
     DefaultViewsMenu,
@@ -13,6 +14,11 @@ import { activeViewIdSet } from 'state/ui/views/actions'
 
 import { DefaultViews } from '../DefaultViews'
 import { TicketNavbarViewLinkItem } from '../TicketNavbarViewLinkItem'
+
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useIsMobileResolution: jest.fn(() => false),
+}))
 
 jest.mock('@repo/tickets', () => ({
     ...jest.requireActual('@repo/tickets'),
@@ -32,6 +38,9 @@ jest.mock('state/ui/views/actions', () => ({ activeViewIdSet: jest.fn() }))
 const activeViewIdSetMock = assumeMock(activeViewIdSet)
 
 const mockUseCurrentUserRole = assumeMock(useCurrentUserRole)
+const mockUseIsMobileResolution = useIsMobileResolution as jest.MockedFunction<
+    typeof useIsMobileResolution
+>
 
 jest.mock('../TicketNavbarViewLinkItem', () => ({
     TicketNavbarViewLinkItem: jest.fn(),
@@ -98,6 +107,7 @@ describe('DefaultViews', () => {
             isExpanded: false,
             toggleExpanded,
         } as ExpandableDefaultViewsContext)
+        mockUseIsMobileResolution.mockReturnValue(false)
     })
 
     it('should render the "Default views" heading', () => {
@@ -247,5 +257,13 @@ describe('DefaultViews', () => {
         expect(
             screen.getByText(SYSTEM_VIEW_DEFINITIONS['All'].label),
         ).toBeInTheDocument()
+    })
+
+    it('should render correctly on mobile resolution', () => {
+        mockUseIsMobileResolution.mockReturnValue(true)
+
+        renderComponent()
+
+        expect(screen.getByText('Default views')).toBeInTheDocument()
     })
 })

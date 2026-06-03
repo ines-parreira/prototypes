@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react'
 
+import { useIsMobileResolution } from '@repo/hooks'
+
 import {
     Box,
     Button,
@@ -31,8 +33,16 @@ export function NotificationsPanel({
     onLoadMore,
     children,
 }: NotificationsPanelProps) {
+    const isMobileResolution = useIsMobileResolution()
+
     return (
-        <Panel w={382} height="97vh" overflow="auto" withoutBorder>
+        <Panel
+            w={isMobileResolution ? '100%' : 382}
+            margin={isMobileResolution ? 'auto' : undefined}
+            height="97vh"
+            overflow="auto"
+            withoutBorder
+        >
             <PanelHeader
                 title={title}
                 trailingSlot={

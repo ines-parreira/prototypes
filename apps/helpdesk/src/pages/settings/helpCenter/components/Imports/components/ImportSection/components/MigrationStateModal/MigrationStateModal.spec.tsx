@@ -39,9 +39,9 @@ const parsedStatsWithoutFailures = parseSessionStats({
 })
 
 describe('<MigrationStateModal />', () => {
-    describe('snapshots', () => {
+    describe('renders correctly for each state', () => {
         test('Connected', () => {
-            const { baseElement } = render(
+            render(
                 <MigrationStateModal
                     isOpen
                     onClose={noop}
@@ -54,10 +54,14 @@ describe('<MigrationStateModal />', () => {
                     stats={emptyParsedStats}
                 />,
             )
-            expect(baseElement).toMatchSnapshot()
+            expect(screen.getByRole('dialog')).toBeInTheDocument()
+            expect(
+                screen.getByText('Migrate data from HelpDocs to Gorgias'),
+            ).toBeInTheDocument()
+            expect(screen.getByText('Start migrating')).toBeInTheDocument()
         })
         test('Migration start loading', () => {
-            const { baseElement } = render(
+            render(
                 <MigrationStateModal
                     isOpen
                     onClose={noop}
@@ -70,10 +74,16 @@ describe('<MigrationStateModal />', () => {
                     stats={emptyParsedStats}
                 />,
             )
-            expect(baseElement).toMatchSnapshot()
+            expect(screen.getByRole('dialog')).toBeInTheDocument()
+            expect(
+                screen.getByText('Migrate data from HelpDocs to Gorgias'),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /Start migrating/i }),
+            ).toBeDisabled()
         })
         test('In progress without failures', () => {
-            const { baseElement } = render(
+            render(
                 <MigrationStateModal
                     isOpen
                     onClose={noop}
@@ -85,10 +95,20 @@ describe('<MigrationStateModal />', () => {
                     stats={parsedStatsWithoutFailures}
                 />,
             )
-            expect(baseElement).toMatchSnapshot()
+            expect(screen.getByRole('dialog')).toBeInTheDocument()
+            expect(
+                screen.getByText('Migrating from HelpDocs to Gorgias'),
+            ).toBeInTheDocument()
+            expect(screen.getByRole('progressbar')).toHaveAttribute(
+                'aria-valuenow',
+                '25',
+            )
+            expect(
+                screen.queryByText('See what failed to import'),
+            ).not.toBeInTheDocument()
         })
         test('In progress with failures', () => {
-            const { baseElement } = render(
+            render(
                 <MigrationStateModal
                     isOpen
                     onClose={noop}
@@ -100,10 +120,20 @@ describe('<MigrationStateModal />', () => {
                     stats={parsedStatsWithFailures}
                 />,
             )
-            expect(baseElement).toMatchSnapshot()
+            expect(screen.getByRole('dialog')).toBeInTheDocument()
+            expect(
+                screen.getByText('Migrating from HelpDocs to Gorgias'),
+            ).toBeInTheDocument()
+            expect(screen.getByRole('progressbar')).toHaveAttribute(
+                'aria-valuenow',
+                '25',
+            )
+            expect(
+                screen.getByText('See what failed to import'),
+            ).toBeInTheDocument()
         })
         test('Succeeded', () => {
-            const { baseElement } = render(
+            render(
                 <MigrationStateModal
                     isOpen
                     onClose={noop}
@@ -115,10 +145,17 @@ describe('<MigrationStateModal />', () => {
                     stats={succeededMigrationParsedStats}
                 />,
             )
-            expect(baseElement).toMatchSnapshot()
+            expect(screen.getByRole('dialog')).toBeInTheDocument()
+            expect(screen.getByText('Migration end')).toBeInTheDocument()
+            expect(screen.getByText('100% Complete')).toBeInTheDocument()
+            expect(screen.getByRole('progressbar')).toHaveAttribute(
+                'aria-valuenow',
+                '100',
+            )
+            expect(screen.getByText('Finish')).toBeInTheDocument()
         })
         test('Partially succeeded', () => {
-            const { baseElement } = render(
+            render(
                 <MigrationStateModal
                     isOpen
                     onClose={noop}
@@ -134,10 +171,18 @@ describe('<MigrationStateModal />', () => {
                     stats={partiallySucceededMigrationParsedStats}
                 />,
             )
-            expect(baseElement).toMatchSnapshot()
+            expect(screen.getByRole('dialog')).toBeInTheDocument()
+            expect(screen.getByText('Migration end')).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    'The migration did not fully succeed, you can:',
+                ),
+            ).toBeInTheDocument()
+            expect(screen.getByText('Retry')).toBeInTheDocument()
+            expect(screen.getByText('Revert')).toBeInTheDocument()
         })
         test('Completely failed', () => {
-            const { baseElement } = render(
+            render(
                 <MigrationStateModal
                     isOpen
                     onClose={noop}
@@ -151,7 +196,13 @@ describe('<MigrationStateModal />', () => {
                     stats={failedMigrationParsedStats}
                 />,
             )
-            expect(baseElement).toMatchSnapshot()
+            expect(screen.getByRole('dialog')).toBeInTheDocument()
+            expect(screen.getByText('Migration end')).toBeInTheDocument()
+            expect(
+                screen.getByText('The migration completely failed'),
+            ).toBeInTheDocument()
+            expect(screen.getByText('Retry')).toBeInTheDocument()
+            expect(screen.getByText('Close')).toBeInTheDocument()
         })
     })
     describe('callbacks handling', () => {

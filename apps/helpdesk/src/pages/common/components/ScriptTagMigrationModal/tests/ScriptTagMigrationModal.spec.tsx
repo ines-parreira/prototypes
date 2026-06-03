@@ -1,6 +1,7 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { history } from '@repo/routing'
 import { render } from '@repo/testing'
+import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
@@ -62,7 +63,11 @@ describe('<ScriptTagMigrationModal />', () => {
             </Router>,
         )
 
-        expect(document.body.children).toMatchSnapshot()
+        expect(screen.getByRole('dialog')).toBeInTheDocument()
+        expect(
+            screen.getByText('Update Shopify store permissions'),
+        ).toBeInTheDocument()
+        expect(screen.getByText('Update permissions')).toBeInTheDocument()
     })
 
     it('should hide modal if period is over but no stores require permission updates', () => {
@@ -102,7 +107,7 @@ describe('<ScriptTagMigrationModal />', () => {
             </Router>,
         )
 
-        expect(document.body.children).toMatchSnapshot()
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     })
 
     it('should hide modal if period is not over yet', () => {
@@ -142,6 +147,6 @@ describe('<ScriptTagMigrationModal />', () => {
             </Router>,
         )
 
-        expect(document.body.children).toMatchSnapshot()
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     })
 })

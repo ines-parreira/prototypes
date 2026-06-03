@@ -151,4 +151,21 @@ describe('<Modal />', () => {
         )
         expect(getReturnFocusTarget).toHaveBeenCalled()
     })
+
+    it('wraps the portal content in a div with data-react-aria-top-layer to prevent React Aria from making it inert', () => {
+        const { container } = render(
+            <Modal isOpen onClose={jest.fn()} forceFocus>
+                <div>Content</div>
+            </Modal>,
+        )
+
+        expect(
+            container.querySelector('[data-react-aria-top-layer="true"]'),
+        ).toBeInTheDocument()
+        expect(
+            container.querySelector(
+                '[data-react-aria-top-layer="true"] [role="dialog"]',
+            ),
+        ).toBeInTheDocument()
+    })
 })

@@ -1,9 +1,11 @@
+import { useIsMobileResolution } from '@repo/hooks'
 import {
     DefaultViewsMenu,
     SYSTEM_VIEW_DEFINITIONS,
     useExpandableDefaultViews,
 } from '@repo/tickets'
 import { useCurrentUserRole } from '@repo/users'
+import classnames from 'classnames'
 
 import { Box, Button, Text } from '@gorgias/axiom'
 
@@ -19,11 +21,14 @@ export function DefaultViews() {
     const { displayedViews, showToggle, isExpanded, toggleExpanded } =
         useExpandableDefaultViews()
     const dispatch = useAppDispatch()
+    const isMobileResolution = useIsMobileResolution()
 
     return (
         <Box flexDirection="column" gap="xxxxs">
             <Box
-                className={css.header}
+                className={classnames(css.header, {
+                    [css.headerMobile]: isMobileResolution,
+                })}
                 alignItems="center"
                 justifyContent="space-between"
                 width="100%"

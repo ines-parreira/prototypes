@@ -53,24 +53,25 @@ describe('<TeamCreationModal />', () => {
 
     it('should not render anything when the modal is closed', () => {
         const store = mockStore({})
-        const { baseElement } = render(
+        render(
             <Provider store={store}>
                 <TeamCreationModal {...minProps} />
             </Provider>,
         )
 
-        expect(baseElement.firstChild).toMatchSnapshot()
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     })
 
     it('should render the opened modal', () => {
         const store = mockStore({})
-        const { baseElement } = render(
+        render(
             <Provider store={store}>
                 <TeamCreationModal {...minProps} isOpen />
             </Provider>,
         )
 
-        expect(baseElement).toMatchSnapshot()
+        expect(screen.getByRole('dialog')).toBeInTheDocument()
+        expect(screen.getByLabelText(/team name/i)).toBeInTheDocument()
     })
 
     it('should disable submit button when filling conditions are not met', () => {

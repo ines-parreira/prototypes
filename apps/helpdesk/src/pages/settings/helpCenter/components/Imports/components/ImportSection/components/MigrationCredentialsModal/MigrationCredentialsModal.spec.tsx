@@ -15,9 +15,9 @@ const credentials = {
 }
 
 describe('<MigrationCredentialsModal />', () => {
-    describe('snapshots', () => {
+    describe('renders correctly for each state', () => {
         test('basic', () => {
-            const { baseElement } = render(
+            render(
                 <MigrationCredentialsModal
                     isOpen
                     onClose={noop}
@@ -27,10 +27,16 @@ describe('<MigrationCredentialsModal />', () => {
                 />,
             )
 
-            expect(baseElement).toMatchSnapshot()
+            expect(screen.getByRole('dialog')).toBeInTheDocument()
+            expect(screen.getByText('Setup migration')).toBeInTheDocument()
+            expect(screen.getByLabelText(/Email/)).toBeInTheDocument()
+            expect(screen.getByLabelText(/API Key/)).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /Connect/ }),
+            ).not.toBeDisabled()
         })
         test('loading', () => {
-            const { baseElement } = render(
+            render(
                 <MigrationCredentialsModal
                     isOpen
                     onClose={noop}
@@ -40,10 +46,11 @@ describe('<MigrationCredentialsModal />', () => {
                 />,
             )
 
-            expect(baseElement).toMatchSnapshot()
+            expect(screen.getByRole('dialog')).toBeInTheDocument()
+            expect(screen.getByText('Connecting')).toBeInTheDocument()
         })
         test('errors on fields', () => {
-            const { baseElement } = render(
+            render(
                 <MigrationCredentialsModal
                     isOpen
                     onClose={noop}
@@ -57,7 +64,13 @@ describe('<MigrationCredentialsModal />', () => {
                 />,
             )
 
-            expect(baseElement).toMatchSnapshot()
+            expect(screen.getByRole('dialog')).toBeInTheDocument()
+            expect(
+                screen.getByText('This is not a valid email'),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText('The provided API key is outdated'),
+            ).toBeInTheDocument()
         })
     })
     describe('submit handling', () => {

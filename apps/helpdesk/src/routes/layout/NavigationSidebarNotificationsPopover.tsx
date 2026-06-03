@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react'
 
+import { useIsMobileResolution } from '@repo/hooks'
 import { useSidebar } from '@repo/navigation'
 import type { Notification, NotificationTileProps } from '@repo/notifications'
 import { NotificationsFeedPanel } from '@repo/notifications'
@@ -13,6 +14,7 @@ import { NavigationSidebarNotificationsButton } from './NavigationSidebarNotific
 export function NavigationSidebarNotificationsPopover() {
     const [isOpen, setIsOpen] = useState(false)
     const { isCollapsed } = useSidebar()
+    const isMobileResolution = useIsMobileResolution()
 
     const handleClose = useCallback(() => setIsOpen(false), [])
 
@@ -39,7 +41,7 @@ export function NavigationSidebarNotificationsPopover() {
             trigger={<NavigationSidebarNotificationsButton />}
             placement="right"
             padding={0}
-            offset={isCollapsed ? 8 : 70}
+            offset={isMobileResolution ? -70 : isCollapsed ? 8 : 70}
         >
             <NotificationsFeedPanel
                 onClose={handleClose}

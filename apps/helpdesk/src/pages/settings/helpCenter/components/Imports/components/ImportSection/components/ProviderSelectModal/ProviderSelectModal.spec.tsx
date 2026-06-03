@@ -10,8 +10,8 @@ import ProviderSelectModal from './ProviderSelectModal'
 const providerToSelect = migrationProviders[0]
 
 describe('<ProviderSelectModal />', () => {
-    it('should match snapshot', () => {
-        const { baseElement } = render(
+    it('should render providers list', () => {
+        render(
             <ProviderSelectModal
                 providers={migrationProviders}
                 isOpen
@@ -20,7 +20,14 @@ describe('<ProviderSelectModal />', () => {
             />,
         )
 
-        expect(baseElement).toMatchSnapshot()
+        expect(screen.getByRole('dialog')).toBeInTheDocument()
+        expect(
+            screen.getByText('Select your current product'),
+        ).toBeInTheDocument()
+        expect(screen.getByText('HelpDocs')).toBeInTheDocument()
+        expect(screen.getByText('Zendesk')).toBeInTheDocument()
+        expect(screen.getByText('Intercom')).toBeInTheDocument()
+        expect(screen.getByText('Re:amaze')).toBeInTheDocument()
     })
 
     it('should handle provider select', () => {

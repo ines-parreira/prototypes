@@ -23,9 +23,13 @@ jest.mock('@repo/hooks', () => ({
 
 jest.mock('@gorgias/axiom', () => ({
     ...jest.requireActual('@gorgias/axiom'),
-    SidePanel: ({ children }: { children?: React.ReactNode }) => (
-        <div>{children}</div>
-    ),
+    SidePanel: ({
+        children,
+        isOpen,
+    }: {
+        children?: React.ReactNode
+        isOpen?: boolean
+    }) => (isOpen ? <div>{children}</div> : null),
 }))
 
 jest.mock('hooks/useCopilotEnabled', () => ({
@@ -139,14 +143,14 @@ describe('AppLayout', () => {
             mockUseIsMobileResolution.mockReturnValue(true)
         })
 
-        it('should render main content and sidebar in mobile layout', () => {
+        it('should render main content without showing the navigation sidebar initially', () => {
             render(
                 <AppLayout hasPanel={false}>
                     <div>main content</div>
                 </AppLayout>,
             )
             expect(screen.getByText('main content')).toBeInTheDocument()
-            expect(screen.getByText('Sidebar')).toBeInTheDocument()
+            expect(screen.queryByText('Sidebar')).not.toBeInTheDocument()
         })
 
         it('should open the sidebar side panel when the menu button is clicked', async () => {

@@ -155,55 +155,59 @@ const Modal = (
         >
             <>
                 {createPortal(
-                    <ModalContext.Provider value={contextValue}>
-                        <FocusTrap
-                            active={isFocusTrapActive}
-                            focusTrapOptions={{
-                                returnFocusOnDeactivate: restoreFocusOnClose,
-                                setReturnFocus: getReturnFocusTarget
-                                    ? (nodeFocusedBeforeActivation) =>
-                                          getReturnFocusTarget() ??
-                                          nodeFocusedBeforeActivation
-                                    : undefined,
-                            }}
-                        >
-                            <div
-                                className={classnames(className, css.modal)}
-                                role="dialog"
-                                aria-modal="true"
-                                aria-labelledby={labelId}
-                                aria-describedby={bodyId}
-                                onClick={handleClose}
-                                onMouseDown={handleMouseDown}
+                    // Prevents React Aria from making this portal inert when an axiom modal (e.g. SidePanel) is also open.
+                    <div data-react-aria-top-layer="true">
+                        <ModalContext.Provider value={contextValue}>
+                            <FocusTrap
+                                active={isFocusTrapActive}
+                                focusTrapOptions={{
+                                    returnFocusOnDeactivate:
+                                        restoreFocusOnClose,
+                                    setReturnFocus: getReturnFocusTarget
+                                        ? (nodeFocusedBeforeActivation) =>
+                                              getReturnFocusTarget() ??
+                                              nodeFocusedBeforeActivation
+                                        : undefined,
+                                }}
                             >
                                 <div
-                                    className={classnames(
-                                        css.dialog,
-                                        {
-                                            [css[size!]]: !!size,
-                                            [css.scrollableDialog]:
-                                                isScrollable,
-                                        },
-                                        classNameDialog,
-                                    )}
+                                    className={classnames(className, css.modal)}
+                                    role="dialog"
+                                    aria-modal="true"
+                                    aria-labelledby={labelId}
+                                    aria-describedby={bodyId}
+                                    onClick={handleClose}
+                                    onMouseDown={handleMouseDown}
                                 >
                                     <div
-                                        ref={ref}
                                         className={classnames(
-                                            css.modalContent,
+                                            css.dialog,
                                             {
-                                                [css.scrollableContent]:
+                                                [css[size!]]: !!size,
+                                                [css.scrollableDialog]:
                                                     isScrollable,
                                             },
-                                            classNameContent,
+                                            classNameDialog,
                                         )}
                                     >
-                                        {children}
+                                        <div
+                                            ref={ref}
+                                            className={classnames(
+                                                css.modalContent,
+                                                {
+                                                    [css.scrollableContent]:
+                                                        isScrollable,
+                                                },
+                                                classNameContent,
+                                            )}
+                                        >
+                                            {children}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </FocusTrap>
-                    </ModalContext.Provider>,
+                            </FocusTrap>
+                        </ModalContext.Provider>
+                    </div>,
                     containerNodeRef.current,
                 )}
             </>

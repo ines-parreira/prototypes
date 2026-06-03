@@ -1,6 +1,5 @@
 import { assumeMock, render } from '@repo/testing'
-import { act, screen, waitFor } from '@testing-library/react'
-import fireEvent from '@testing-library/user-event'
+import { screen, waitFor } from '@testing-library/react'
 
 import { createVoiceQueues } from '@gorgias/helpdesk-client'
 
@@ -63,11 +62,9 @@ describe('CreateNewQueueModal', () => {
             data: { name: 'Test Queue', id: 123 },
         } as any)
 
-        renderComponent()
+        const { user } = renderComponent()
 
-        act(() => {
-            fireEvent.click(screen.getByText('Create queue'))
-        })
+        await user.click(screen.getByText('Create queue'))
 
         const toastEl = await screen.findByRole('status', {
             name: "'Test Queue' queue was successfully created.",
@@ -82,11 +79,9 @@ describe('CreateNewQueueModal', () => {
     it('handles form submission error correctly', async () => {
         createVoiceQueuesMock.mockRejectedValue(new Error('Test error'))
 
-        renderComponent()
+        const { user } = renderComponent()
 
-        act(() => {
-            fireEvent.click(screen.getByText('Create queue'))
-        })
+        await user.click(screen.getByText('Create queue'))
 
         const toastEl = await screen.findByRole('status', {
             name: "We couldn't save your preferences. Please try again.",
@@ -95,11 +90,9 @@ describe('CreateNewQueueModal', () => {
     })
 
     it('calls onClose when cancel button is clicked', async () => {
-        renderComponent()
+        const { user } = renderComponent()
 
-        act(() => {
-            fireEvent.click(screen.getByText('Cancel'))
-        })
+        await user.click(screen.getByText('Cancel'))
 
         await waitFor(() => {
             expect(mockOnClose).toHaveBeenCalled()
