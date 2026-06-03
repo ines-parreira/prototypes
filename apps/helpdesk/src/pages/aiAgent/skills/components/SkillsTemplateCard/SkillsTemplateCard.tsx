@@ -79,6 +79,7 @@ export const SkillsTemplateCard: React.FC<Props> = ({
             gap="xl"
             color="content-neutral-default"
             className={css.card}
+            elevation="mid"
         >
             <CardHeader
                 width="412px"
