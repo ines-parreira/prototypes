@@ -704,7 +704,7 @@ describe('managedDashboardMappers', () => {
     })
 
     describe('mergeWithDefaults', () => {
-        it('should append missing default sections after saved sections', () => {
+        it('should add missing default sections following the default order', () => {
             const savedConfig: DashboardLayoutConfig = {
                 sections: [
                     {
@@ -755,6 +755,81 @@ describe('managedDashboardMappers', () => {
             expect(result.sections[1].id).toBe('new_section')
         })
 
+        it('should insert a new default section at its default position between saved sections', () => {
+            const savedConfig: DashboardLayoutConfig = {
+                sections: [
+                    {
+                        id: 'kpis',
+                        type: ChartType.Card,
+                        items: [
+                            {
+                                chartId: AUTOMATION_RATE_CARD,
+                                gridSize: 3,
+                                visibility: true,
+                            },
+                        ],
+                    },
+                    {
+                        id: 'breakdown',
+                        type: ChartType.Table,
+                        items: [
+                            {
+                                chartId: CHANNEL_PERFORMANCE_TABLE,
+                                gridSize: 12,
+                                visibility: true,
+                            },
+                        ],
+                    },
+                ],
+            }
+
+            const defaultConfig: DashboardLayoutConfig = {
+                sections: [
+                    {
+                        id: 'kpis',
+                        type: ChartType.Card,
+                        items: [
+                            {
+                                chartId: AUTOMATION_RATE_CARD,
+                                gridSize: 3,
+                                visibility: true,
+                            },
+                        ],
+                    },
+                    {
+                        id: 'visualizations',
+                        type: ChartType.Graph,
+                        items: [
+                            {
+                                chartId: AUTOMATED_INTERACTIONS_CARD,
+                                gridSize: 12,
+                                visibility: true,
+                            },
+                        ],
+                    },
+                    {
+                        id: 'breakdown',
+                        type: ChartType.Table,
+                        items: [
+                            {
+                                chartId: CHANNEL_PERFORMANCE_TABLE,
+                                gridSize: 12,
+                                visibility: true,
+                            },
+                        ],
+                    },
+                ],
+            }
+
+            const result = mergeWithDefaults(savedConfig, defaultConfig)
+
+            expect(result.sections.map((section) => section.id)).toEqual([
+                'kpis',
+                'visualizations',
+                'breakdown',
+            ])
+        })
+
         it('should not duplicate sections present in both saved and default', () => {
             const savedConfig: DashboardLayoutConfig = {
                 sections: [
@@ -791,7 +866,7 @@ describe('managedDashboardMappers', () => {
             expect(result.sections).toHaveLength(2)
         })
 
-        it('should keep a saved section with no matching default as-is and still append the default section', () => {
+        it('should drop a saved section with no matching default', () => {
             const savedConfig: DashboardLayoutConfig = {
                 sections: [
                     {
@@ -826,9 +901,8 @@ describe('managedDashboardMappers', () => {
 
             const result = mergeWithDefaults(savedConfig, defaultConfig)
 
-            expect(result.sections).toHaveLength(2)
-            expect(result.sections[0]).toEqual(savedConfig.sections[0])
-            expect(result.sections[1]).toEqual(defaultConfig.sections[0])
+            expect(result.sections).toHaveLength(1)
+            expect(result.sections[0]).toEqual(defaultConfig.sections[0])
         })
 
         it('should use default item order for Table sections', () => {

@@ -159,14 +159,15 @@ export function mergeWithDefaults<TChart extends string>(
     savedConfig: DashboardLayoutConfig<TChart>,
     defaultConfig: DashboardLayoutConfig<TChart>,
 ): DashboardLayoutConfig<TChart> {
-    const savedSectionIds = new Set(savedConfig.sections.map((s) => s.id))
-    const defaultSectionMap = new Map(
-        defaultConfig.sections.map((s) => [s.id, s]),
-    )
+    const savedSectionMap = new Map(savedConfig.sections.map((s) => [s.id, s]))
 
-    const mergedSections = savedConfig.sections.map((savedSection) => {
-        const defaultSection = defaultSectionMap.get(savedSection.id)
-        if (!defaultSection) return savedSection
+    // Follow the default section order so that sections introduced in a later
+    // release land at their intended position for users who already have a
+    // persisted layout, instead of being appended after their saved sections.
+    // Saved sections that no longer exist in the defaults are dropped.
+    const orderedSections = defaultConfig.sections.map((defaultSection) => {
+        const savedSection = savedSectionMap.get(defaultSection.id)
+        if (!savedSection) return defaultSection
 
         const mergeItems =
             savedSection.type === ChartType.Card
@@ -180,11 +181,7 @@ export function mergeWithDefaults<TChart extends string>(
         }
     })
 
-    const missingSections = defaultConfig.sections.filter(
-        (defaultSection) => !savedSectionIds.has(defaultSection.id),
-    )
-
     return {
-        sections: [...mergedSections, ...missingSections],
+        sections: orderedSections,
     }
 }

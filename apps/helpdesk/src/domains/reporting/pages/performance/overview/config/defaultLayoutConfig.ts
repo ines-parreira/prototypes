@@ -59,6 +59,17 @@ export const DEFAULT_PERFORMANCE_OVERVIEW_LAYOUT: DashboardLayoutConfig<Performa
                 ],
             },
             {
+                id: 'visualizations',
+                type: ChartType.Graph,
+                items: [
+                    {
+                        chartId: PerformanceOverviewChart.ChannelBarGraph,
+                        gridSize: 12,
+                        visibility: true,
+                    },
+                ],
+            },
+            {
                 id: 'breakdown',
                 type: ChartType.Table,
                 tableTitle: 'Performance breakdown',

@@ -1,37 +1,20 @@
+import type { DimensionBreakdownFactory } from 'domains/reporting/hooks/useStatsMetricBreakdownPerDimension'
 import {
-    fetchStatsMetricPerDimension,
-    useStatsMetricPerDimension,
-} from 'domains/reporting/hooks/useStatsMetricPerDimension'
-import type {
-    BuiltQuery,
-    ScopeMeta,
-} from 'domains/reporting/models/scopes/scope'
+    fetchStatsMetricBreakdownPerDimension,
+    useStatsMetricBreakdownPerDimension,
+} from 'domains/reporting/hooks/useStatsMetricBreakdownPerDimension'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 
-const CHANNEL_DIMENSION = 'channel'
-
-export type ChannelBreakdownFactory = (ctx: {
-    filters: StatsFilters
-    timezone: string
-    dimensions: [typeof CHANNEL_DIMENSION]
-}) => BuiltQuery<ScopeMeta>
+export type ChannelBreakdownFactory = DimensionBreakdownFactory<'channel'>
 
 export const useMetricPerChannel = (
     query: ChannelBreakdownFactory,
     filters: StatsFilters,
     timezone: string,
-) =>
-    useStatsMetricPerDimension(
-        query({ filters, timezone, dimensions: [CHANNEL_DIMENSION] }),
-        CHANNEL_DIMENSION,
-    )
+) => useStatsMetricBreakdownPerDimension(query, filters, timezone, 'channel')
 
-export const fetchMetricPerChannel = async (
+export const fetchMetricPerChannel = (
     query: ChannelBreakdownFactory,
     filters: StatsFilters,
     timezone: string,
-) =>
-    fetchStatsMetricPerDimension(
-        query({ filters, timezone, dimensions: [CHANNEL_DIMENSION] }),
-        CHANNEL_DIMENSION,
-    )
+) => fetchStatsMetricBreakdownPerDimension(query, filters, timezone, 'channel')
