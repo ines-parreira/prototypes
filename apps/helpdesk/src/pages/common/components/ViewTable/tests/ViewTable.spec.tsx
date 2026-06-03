@@ -37,9 +37,16 @@ jest.mock('state/ui/views/actions')
 jest.mock('pages/common/components/ViewTable/Header', () => () => (
     <div>Header mock</div>
 ))
-jest.mock('pages/common/components/ViewTable/Table', () => () => (
-    <div>Table mock</div>
-))
+const mockGetItemUrl = jest.fn()
+const mockTable = jest.fn(
+    ({ getItemUrl }: { getItemUrl: typeof mockGetItemUrl }) => {
+        mockGetItemUrl.mockImplementation(getItemUrl)
+        return <div>Table mock</div>
+    },
+)
+jest.mock('pages/common/components/ViewTable/Table', () =>
+    jest.fn((props) => mockTable(props)),
+)
 jest.mock('pages/common/components/ViewTable/FilterTopbar', () => () => (
     <div>FilterTopbar mock</div>
 ))
@@ -87,6 +94,8 @@ const minProps = {
 
 beforeEach(() => {
     history.push = jest.fn()
+    mockTable.mockClear()
+    mockGetItemUrl.mockReset()
     ;(
         minProps.getViewIdToDisplay as jest.MockedFunction<
             typeof minProps.getViewIdToDisplay
@@ -760,6 +769,12 @@ describe('<ViewTable />', () => {
     })
 
     describe('render', () => {
+        it('passes the default item URL builder to the table', () => {
+            render(<ViewTableContainer {...minProps} />)
+
+            expect(mockGetItemUrl(fromJS({ id: 123 }))).toBe('/app/ticket/123')
+        })
+
         it('empty view', () => {
             const { container } = render(
                 <ViewTableContainer

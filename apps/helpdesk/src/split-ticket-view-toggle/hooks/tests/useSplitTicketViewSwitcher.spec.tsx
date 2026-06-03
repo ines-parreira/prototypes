@@ -1,17 +1,10 @@
-import { useFlag } from '@repo/feature-flags'
-import { assumeMock, renderHook } from '@repo/testing'
+import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 import { useLocation } from 'react-router-dom'
 
 import { SplitTicketViewProvider } from 'split-ticket-view-toggle'
 
 import useSplitTicketViewSwitcher from '../useSplitTicketViewSwitcher'
-
-jest.mock('@repo/feature-flags', () => ({
-    ...jest.requireActual('@repo/feature-flags'),
-    useFlag: jest.fn(),
-}))
-const useFlagMock = assumeMock(useFlag)
 
 function useSwitcherLocation() {
     useSplitTicketViewSwitcher()
@@ -28,18 +21,8 @@ function renderSwitcherHook(route: string) {
 }
 
 describe('useSplitTicketViewSwitcher', () => {
-    beforeEach(() => {
-        useFlagMock.mockReturnValue(false)
-    })
-
     afterAll(() => {
         localStorage.removeItem('split-ticket-view-enabled')
-    })
-
-    it('should do nothing is the deprecated ticket routes flag is active', () => {
-        useFlagMock.mockReturnValue(true)
-        const { result } = renderSwitcherHook('/app')
-        expect(result.current.pathname).toBe('/app')
     })
 
     describe('Split view enabled', () => {

@@ -2,8 +2,6 @@ import type { ComponentType, ContextType, ReactNode } from 'react'
 import { Component } from 'react'
 
 import { tryLocalStorage } from '@repo/browser-storage'
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import type { FeatureFlagsMap } from '@repo/feature-flags'
 import { history } from '@repo/routing'
 import classnames from 'classnames'
 import type { List, Map } from 'immutable'
@@ -73,7 +71,7 @@ type Props = OwnProps &
         'fetchViewItemsCancellable',
         'cancelFetchViewItemsCancellable',
         typeof fetchViewItems
-    > & { flags?: FeatureFlagsMap }
+    >
 
 /**
  * @deprecated This component is outdated and not used anymore. Do not add any new usage of this component.
@@ -322,19 +320,9 @@ export class ViewTableContainer extends Component<Props> {
     }
 
     _getItemUrl = (item: Map<any, any>): string => {
-        const { activeView, config, flags } = this.props
+        const { config } = this.props
         if (!config) {
             return ''
-        }
-
-        if (
-            flags?.[FeatureFlagKey.RedirectDeprecatedTicketRoutes] &&
-            config.get('routeItem') === 'ticket'
-        ) {
-            const activeViewId = activeView.get('id') as number | undefined
-            const viewId = activeViewId || 0
-            const ticketId = item.get('id') as number
-            return `/app/tickets/${viewId}/${ticketId}`
         }
 
         return `/app/${config.get('routeItem') as string}/${
@@ -430,27 +418,6 @@ export class ViewTableContainer extends Component<Props> {
     }
 }
 
-function withViewTableFlags<P extends { flags?: FeatureFlagsMap }>(
-    WrappedComponent: ComponentType<P>,
-) {
-    return (props: P) => {
-        const redirectDeprecatedTicketRoutesEnabled = useFlag(
-            FeatureFlagKey.RedirectDeprecatedTicketRoutes,
-        )
-
-        const evaluatedFlags: FeatureFlagsMap = {
-            [FeatureFlagKey.RedirectDeprecatedTicketRoutes]:
-                redirectDeprecatedTicketRoutesEnabled,
-        }
-        const flags: FeatureFlagsMap = {
-            ...evaluatedFlags,
-            ...props.flags,
-        }
-
-        return <WrappedComponent {...props} flags={flags} />
-    }
-}
-
 const connector = connect(
     (state: RootState, ownProps: OwnProps) => {
         const config = getConfigByName(ownProps.type)
@@ -483,5 +450,5 @@ export default withRouter(
     >(
         'fetchViewItemsCancellable',
         fetchViewItems,
-    )(connector(withViewSearchUrlSync(withViewTableFlags(ViewTableContainer)))),
+    )(connector(withViewSearchUrlSync(ViewTableContainer))),
 )

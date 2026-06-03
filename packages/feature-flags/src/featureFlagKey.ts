@@ -185,7 +185,6 @@ export enum FeatureFlagKey {
     PhrasePredictionDebounce = 'phrase-prediction-debounce',
     PlaygroundV3BetaRollout = 'playground-v3-beta-rollout',
     ProductCardDiscountedPrice = 'product-card-discounted-price',
-    RedirectDeprecatedTicketRoutes = 'redirect-deprecated-ticket-routes',
     ReportingAgentsTableAverageAndTotal = 'reporting-agents-table-average-and-total',
     ReportingFilteringAndCalculationsTagsReport = 'reporting-filtering-and-calculations-tags-report',
     ReportingHrtAi = 'linear.project_reporting-hrt-ai.hrt-ai',

@@ -1,4 +1,4 @@
-import { useFlag, useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
+import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
@@ -13,9 +13,7 @@ import TicketNavbarViewLink from '../TicketNavbarViewLink'
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useHelpdeskV2WayfindingMS1Flag: jest.fn().mockReturnValue(false),
-    useFlag: jest.fn(),
 }))
-const useFlagMock = assumeMock(useFlag)
 const useHelpdeskV2WayfindingMS1FlagMock = assumeMock(
     useHelpdeskV2WayfindingMS1Flag,
 )
@@ -49,7 +47,6 @@ describe('TicketNavbarViewLink', () => {
     beforeEach(() => {
         dispatch = jest.fn()
         useAppDispatchMock.mockReturnValue(dispatch)
-        useFlagMock.mockReturnValue(false)
         useSplitTicketViewMock.mockReturnValue({
             isEnabled: false,
         } as SplitTicketViewContext)
@@ -75,14 +72,26 @@ describe('TicketNavbarViewLink', () => {
         expect(el).toHaveAttribute('href', '/app/views/123')
     })
 
-    it('should render the new ticket link format with the feature flag', () => {
-        useFlagMock.mockReturnValue(true)
-        render(<TicketNavbarViewLink view={defaultView} />, {
-            initialEntries: ['/app'],
-        })
-        const el = screen.getByText('Inbox').closest('a')
-        expect(el).toHaveAttribute('href', '/app/tickets/123')
-    })
+    it.each([
+        [false, '/app/tickets/123/inbox'],
+        [true, '/app/views/123'],
+    ])(
+        'should choose the view link from split ticket view state when enabled is %s',
+        (isEnabled, expectedHref) => {
+            useSplitTicketViewMock.mockReturnValue({
+                isEnabled,
+            } as SplitTicketViewContext)
+
+            render(<TicketNavbarViewLink view={defaultView} />, {
+                initialEntries: ['/app'],
+            })
+
+            expect(screen.getByText('Inbox').closest('a')).toHaveAttribute(
+                'href',
+                expectedHref,
+            )
+        },
+    )
 
     it('renders the candu link with the correct data-candu-id attribute', () => {
         // Create a minimal view object for testing

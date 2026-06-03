@@ -1,7 +1,5 @@
 import {
-    FeatureFlagKey,
     useAreFlagsLoading,
-    useFlag,
     useHelpdeskV2WayfindingMS1Flag,
 } from '@repo/feature-flags'
 import { useIsMobileResolution, useWindowSize } from '@repo/hooks'
@@ -19,7 +17,6 @@ import { ContentPanels } from 'core/ui'
 import { useTicketLegacyBridgeFunctions } from 'tickets/core/hooks/legacyBridge/useTicketLegacyBridgeFunctions'
 import { useOnToggleUnread } from 'tickets/dtp'
 import { TicketsNavbarPanel } from 'tickets/navigation'
-import { TicketsPage } from 'tickets/pages'
 import { NewTicketPage } from 'tickets/pages/NewTicketPage/NewTicketPage'
 import { TicketDetailWithInfobar } from 'tickets/pages/TicketDetailWithInfobar'
 import { TicketEmptyPanel } from 'tickets/ticket-empty'
@@ -38,9 +35,6 @@ export const panelRoutesRegexps = [
 ]
 
 export default function PanelRoutes() {
-    const hasRedirectDeprecatedTicketRoutes = useFlag(
-        FeatureFlagKey.RedirectDeprecatedTicketRoutes,
-    )
     const areFlagsLoading = useAreFlagsLoading()
     const hasUIVisionMS1 = useHelpdeskV2MS1Flag()
     const hasUIVisionMS1Dot5 = useHelpdeskV2MS1Dot5Flag()
@@ -77,29 +71,6 @@ export default function PanelRoutes() {
                 onToggleUnread={onToggleUnread}
             >
                 <MobileRoutes />
-            </TicketsLegacyBridgeProvider>
-        )
-    }
-
-    if (hasRedirectDeprecatedTicketRoutes) {
-        return (
-            <TicketsLegacyBridgeProvider
-                {...ticketLegacyBridgeFunctions}
-                onToggleUnread={onToggleUnread}
-            >
-                <Panels size={width}>
-                    {!hasWayfindingMS1Flag && <GlobalNavigationPanel />}
-                    <Switch>
-                        <Route path="/app/tickets">
-                            <TicketsPage />
-                        </Route>
-                        <Route exact path="/app/ticket/:ticketId">
-                            <TicketsNavbarPanel key="navbar" />
-                            <Handle />
-                            <TicketDetailWithInfobar />
-                        </Route>
-                    </Switch>
-                </Panels>
             </TicketsLegacyBridgeProvider>
         )
     }

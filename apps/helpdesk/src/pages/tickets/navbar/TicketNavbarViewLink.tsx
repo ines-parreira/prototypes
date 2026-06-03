@@ -1,11 +1,7 @@
 import type { ForwardedRef, RefObject } from 'react'
 import { forwardRef, useImperativeHandle, useMemo, useRef } from 'react'
 
-import {
-    FeatureFlagKey,
-    useFlag,
-    useHelpdeskV2WayfindingMS1Flag,
-} from '@repo/feature-flags'
+import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { addCanduLinkForValidViewOrSection } from '@repo/tickets/utils/views'
 import { useViewCount } from '@repo/views'
 import classnames from 'classnames'
@@ -37,10 +33,6 @@ const TicketNavbarViewLink = (
     { className, icon, view, isNested }: Props,
     forwardedRef: ForwardedRef<HTMLDivElement>,
 ) => {
-    const shouldRedirectDeprecatedTicketRoutes = useFlag<boolean>(
-        FeatureFlagKey.RedirectDeprecatedTicketRoutes,
-        false,
-    )
     const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
     const viewCount = useViewCount(view.id)
 
@@ -63,12 +55,10 @@ const TicketNavbarViewLink = (
 
     const linkTo = useMemo(
         () =>
-            shouldRedirectDeprecatedTicketRoutes
-                ? `/app/tickets/${view.id}`
-                : splitTicketViewEnabled
-                  ? `/app/views/${view.id}`
-                  : `/app/tickets/${view.id}/${encodeURIComponent(view.slug)}`,
-        [shouldRedirectDeprecatedTicketRoutes, splitTicketViewEnabled, view],
+            splitTicketViewEnabled
+                ? `/app/views/${view.id}`
+                : `/app/tickets/${view.id}/${encodeURIComponent(view.slug)}`,
+        [splitTicketViewEnabled, view],
     )
 
     if (hasWayfindingMS1Flag) {

@@ -1,5 +1,4 @@
-import { useFlag } from '@repo/feature-flags'
-import { assumeMock, render } from '@repo/testing'
+import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
@@ -11,12 +10,6 @@ import useIsTicketViewed from 'ticket-list-view/hooks/useIsTicketViewed'
 import type { TicketCompact } from 'ticket-list-view/types'
 
 import Ticket from '../Ticket'
-
-jest.mock('@repo/feature-flags', () => ({
-    ...jest.requireActual('@repo/feature-flags'),
-    useFlag: jest.fn(),
-}))
-const useFlagMock = assumeMock(useFlag)
 
 jest.mock('ticket-list-view/hooks/useIsTicketViewed', () => jest.fn())
 const useIsTicketViewedMock = useIsTicketViewed as jest.Mock
@@ -55,7 +48,6 @@ describe('Ticket', () => {
     beforeEach(() => {
         defaultProps.onSelect = jest.fn()
 
-        useFlagMock.mockReturnValue(false)
         useIsTicketViewedMock.mockReturnValue({
             agentViewingMessage: '',
             isTicketViewed: false,
@@ -82,13 +74,6 @@ describe('Ticket', () => {
         render(<Ticket {...defaultProps} />)
         const el = screen.getByText(defaultProps.ticket.subject).closest('a')
         expect(el).toHaveAttribute('href', '/app/views/1/1')
-    })
-
-    it('should link to a ticket view url if the flag is enabled', () => {
-        useFlagMock.mockReturnValue(true)
-        render(<Ticket {...defaultProps} />)
-        const el = screen.getByText(defaultProps.ticket.subject).closest('a')
-        expect(el).toHaveAttribute('href', '/app/tickets/1/1')
     })
 
     it('should render customer email', () => {

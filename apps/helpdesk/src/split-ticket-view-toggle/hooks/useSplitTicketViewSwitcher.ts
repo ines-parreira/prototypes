@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useIsMobileResolution, usePrevious } from '@repo/hooks'
 import { matchPath, useHistory, useLocation } from 'react-router-dom'
 
@@ -20,11 +19,6 @@ const excludedTicketSubPathRegexp =
     /^\/app\/ticket\/\d+\/(?:edit-widgets|print)$/
 
 export default function useSplitTicketViewSwitcher() {
-    const shouldRedirectDeprecatedTicketRoutes = useFlag<boolean>(
-        FeatureFlagKey.RedirectDeprecatedTicketRoutes,
-        false,
-    )
-
     const history = useHistory()
     const {
         pathname: path,
@@ -77,8 +71,6 @@ export default function useSplitTicketViewSwitcher() {
     }, [path])
 
     useEffect(() => {
-        if (shouldRedirectDeprecatedTicketRoutes) return
-
         if (
             isSplitTicketViewEnabled ===
                 previousIsSplitTicketViewEnabled.current &&
@@ -152,7 +144,6 @@ export default function useSplitTicketViewSwitcher() {
         ticketId,
         viewId,
         previousPath,
-        shouldRedirectDeprecatedTicketRoutes,
         shouldRedirectToSplitView,
         params,
         shouldSkipRedirect,

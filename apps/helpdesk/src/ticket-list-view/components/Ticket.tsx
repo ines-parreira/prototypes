@@ -1,7 +1,6 @@
 import type { ComponentProps, MouseEvent } from 'react'
 import { useCallback, useMemo, useRef } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import cn from 'classnames'
 import { Link } from 'react-router-dom'
 import { CSSTransition } from 'react-transition-group'
@@ -67,11 +66,6 @@ export default function Ticket({
     shouldShowTranslatedContent,
     ...transitionProps
 }: MergedProps) {
-    const shouldRedirectDeprecatedTicketRoutes = useFlag<boolean>(
-        FeatureFlagKey.RedirectDeprecatedTicketRoutes,
-        false,
-    )
-
     const { isTicketViewed, agentViewingMessage } = useIsTicketViewed(ticket.id)
     const datetime = useMemo(
         () =>
@@ -137,11 +131,7 @@ export default function Ticket({
                     className={cn(css.inner, {
                         [css.active]: isActive,
                     })}
-                    to={
-                        shouldRedirectDeprecatedTicketRoutes
-                            ? `/app/tickets/${viewId}/${ticket.id}`
-                            : `/app/views/${viewId}/${ticket.id}`
-                    }
+                    to={`/app/views/${viewId}/${ticket.id}`}
                     onClick={handleClickLink}
                 >
                     {!('channel' in ticket) ? (

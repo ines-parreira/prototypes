@@ -25,7 +25,6 @@ import PanelRoutes from '../PanelRoutes'
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useHelpdeskV2WayfindingMS1Flag: jest.fn().mockReturnValue(false),
-    useFlag: jest.fn().mockReturnValue(false),
     useAreFlagsLoading: jest.fn().mockReturnValue(false),
 }))
 

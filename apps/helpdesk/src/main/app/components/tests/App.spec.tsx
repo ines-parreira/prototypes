@@ -3,7 +3,6 @@ import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { THEME_NAME, useTheme } from 'core/theme'
-import { useRedirectDeprecatedTicketRoutes } from 'tickets/core/hooks'
 
 import { useSetBanners } from '../../hooks/useSetBanners'
 import App from '../App'
@@ -65,10 +64,6 @@ jest.mock(
     'pages/settings/yourProfile/twoFactorAuthentication/OutOfRecoveryCodesModal',
     () => jest.fn(() => <div>OutOfRecoveryCodesModal</div>),
 )
-jest.mock('tickets/core/hooks', () => ({
-    useRedirectDeprecatedTicketRoutes: jest.fn(),
-}))
-
 jest.mock('AlertBanners', () => jest.fn(() => <div>AlertBanners</div>))
 jest.mock('../../../../AlertBanners/components/ImpersonationBanner', () =>
     jest.fn(() => <div>ImpersonatedBanner</div>),
@@ -189,11 +184,6 @@ describe('App component', () => {
         expect(
             screen.queryByText('EmailMigrationBanner'),
         ).not.toBeInTheDocument()
-    })
-
-    it('should call the `useRedirectDeprecatedTicketRoutes` hook', () => {
-        render(<App>boop</App>)
-        expect(useRedirectDeprecatedTicketRoutes).toHaveBeenCalledWith()
     })
 
     describe('Axiom styles', () => {
