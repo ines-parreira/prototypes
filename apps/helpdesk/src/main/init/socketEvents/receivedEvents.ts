@@ -112,6 +112,15 @@ async function isTicketMessageActionFailedToAblyEnabled() {
     return flag
 }
 
+async function isTicketTypingActivityShopperStartedAblyMigrationEnabled() {
+    const { flag } = await fetchFlag(
+        FeatureFlagKey.TicketTypingActivityShopperStartedAblyMigration,
+        false,
+    )
+
+    return flag
+}
+
 const receivedEvents: ReceivedEvent[] = [
     {
         name: 'customer-updated',
@@ -667,7 +676,13 @@ const receivedEvents: ReceivedEvent[] = [
     },
     {
         name: SocketEventType.TicketTypingActivityShopperStarted,
-        onReceive: function (json) {
+        onReceive: async function (json) {
+            if (
+                await isTicketTypingActivityShopperStartedAblyMigrationEnabled()
+            ) {
+                return
+            }
+
             const { ticket } =
                 json as unknown as TicketTypingActivityShopperStartedEvent
 

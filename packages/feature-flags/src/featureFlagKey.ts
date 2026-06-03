@@ -223,6 +223,7 @@ export enum FeatureFlagKey {
     TicketMessagesAssignedToWrongTicketDebugging = 'linear-HELP-6492-ticket-messages-assigned-to-wrong-ticket-debugging',
     TicketThreadLoadingState = 'linear-HELP-6428-ticket-thread-loading-state',
     TicketThreadRevamp = 'linear.project_ticket-thread-revamp.access',
+    TicketTypingActivityShopperStartedAblyMigration = 'linear.task_HELP-5717.migrate-ticket-typing-activity-shopper-started-to-ably',
     UIVisionBetaBaseline = 'linear.initiative_helpdesk-v2',
     UIVisionMilestone1 = 'linear.project_ui-vision.milestone-1',
     UIVisionMilestone1Dot5 = 'linear.project_ui-vision.milestone-1-5',

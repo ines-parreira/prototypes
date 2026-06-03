@@ -1368,8 +1368,12 @@ describe('receivedEvents', () => {
             name: SocketEventType.TicketTypingActivityShopperStarted,
         }) as ReceivedEvent
 
-        it('should dispatch a shopper typing activity update', () => {
-            handler.onReceive({
+        beforeEach(() => {
+            mockFetchFlag.mockResolvedValue({ flag: false, error: null })
+        })
+
+        it('should dispatch a shopper typing activity update', async () => {
+            await handler.onReceive({
                 event: {
                     type: SocketEventType.TicketTypingActivityShopperStarted,
                 },
@@ -1379,6 +1383,25 @@ describe('receivedEvents', () => {
             expect(ticketActions.setTypingActivityShopper).toHaveBeenCalledWith(
                 100,
             )
+            expect(mockFetchFlag).toHaveBeenCalledWith(
+                FeatureFlagKey.TicketTypingActivityShopperStartedAblyMigration,
+                false,
+            )
+        })
+
+        it('should not dispatch a shopper typing activity update when the Ably migration feature flag is enabled', async () => {
+            mockFetchFlag.mockResolvedValueOnce({ flag: true, error: null })
+
+            await handler.onReceive({
+                event: {
+                    type: SocketEventType.TicketTypingActivityShopperStarted,
+                },
+                ticket: { id: 100 },
+            })
+
+            expect(
+                ticketActions.setTypingActivityShopper,
+            ).not.toHaveBeenCalled()
         })
     })
 

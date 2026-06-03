@@ -104,6 +104,7 @@ import TicketView from './components/TicketView'
 import useDraftTicketActivityTracking from './hooks/useDraftTicketActivityTracking'
 import useTicketActivityTracking from './hooks/useTicketActivityTracking'
 import { useTicketFieldsCheck } from './hooks/useTicketFieldsCheck'
+import { useTicketShopperTypingActivityMessageHandler } from './hooks/useTicketShopperTypingActivityMessageHandler'
 
 import css from './TicketDetail.less'
 
@@ -858,12 +859,29 @@ export const TicketDetailContainer = ({
         handleAblyEventRef.current = handleAblyEvent
     }, [handleAblyEvent])
 
+    const { handleMessage: handleTicketShopperTypingActivityMessage } =
+        useTicketShopperTypingActivityMessageHandler({
+            ticketId: Number(ticketIdParam),
+        })
+
+    const handleTicketShopperTypingActivityMessageRef = useRef(
+        handleTicketShopperTypingActivityMessage,
+    )
+
+    useEffect(() => {
+        handleTicketShopperTypingActivityMessageRef.current =
+            handleTicketShopperTypingActivityMessage
+    }, [handleTicketShopperTypingActivityMessage])
+
     const { joinTicket, leaveTicket } = useAgentActivity()
 
     useEffect(() => {
         joinTicket(Number(ticketIdParam), {
             onEvent: (event: DomainEvent) => {
                 handleAblyEventRef.current(event)
+            },
+            onMessage: (message) => {
+                handleTicketShopperTypingActivityMessageRef.current(message)
             },
         })
 

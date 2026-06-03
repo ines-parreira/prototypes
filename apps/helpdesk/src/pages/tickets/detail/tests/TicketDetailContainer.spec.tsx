@@ -2174,6 +2174,7 @@ describe('TicketDetailContainer component', () => {
 
         expect(mockJoinTicket).toHaveBeenCalledWith(1, {
             onEvent: expect.any(Function),
+            onMessage: expect.any(Function),
         })
 
         unmount()
