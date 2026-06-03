@@ -97,7 +97,7 @@
         "import/no-named-as-default-member": "error",
         "import/no-default-export": "warn",
         "import/no-named-as-default": "warn",
-        "oxc/no-barrel-file": "error",
+        "oxc/no-barrel-file": ["error", { "threshold": 300 }],
         "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
         "sort-imports": [
             "error",

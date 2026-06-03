@@ -1,4 +1,3 @@
-import { render, userEvent } from '@repo/testing/vitest'
 import { screen, waitFor } from '@testing-library/react'
 import type { AxiosResponse } from 'axios'
 import { AxiosHeaders } from 'axios'
@@ -80,12 +79,21 @@ describe('client resources', () => {
     describe('new release handling', () => {
         let handleNewRelease: typeof import('../client').handleNewRelease
         let timeoutTime: typeof import('../client').timeoutTime
+        let render: typeof import('@repo/testing/vitest').render
+        let userEvent: typeof import('@repo/testing/vitest').userEvent
 
         beforeEach(async () => {
             vi.resetModules()
             const mod = await import('../client')
             handleNewRelease = mod.handleNewRelease
             timeoutTime = mod.timeoutTime
+
+            // Re-import the render helper after resetModules so its <Toaster />
+            // and the freshly re-imported client share the same axiom instance.
+            // Without this, toast.warning() writes to a store no Toaster observes.
+            const testing = await import('@repo/testing/vitest')
+            render = testing.render
+            userEvent = testing.userEvent
         })
 
         it('shows a warning toast and reloads on a new release', async () => {

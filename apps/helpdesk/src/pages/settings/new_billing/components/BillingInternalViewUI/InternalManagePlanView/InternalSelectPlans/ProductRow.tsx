@@ -7,7 +7,7 @@ import {
     Box,
     Button,
     Color,
-    Icon,
+    IconBox,
     ListItem,
     Select,
     Tag,
@@ -90,10 +90,9 @@ export function ProductRow({
         <Box flexDirection="column" gap="xs">
             <Box alignItems="center" justifyContent="space-between">
                 <Box alignItems="center" gap="sm">
-                    <Icon
-                        name={PRODUCT_TYPE_TO_ICON[productType]}
+                    <IconBox
+                        icon={PRODUCT_TYPE_TO_ICON[productType]}
                         color="blue"
-                        withBackground
                     />
                     <Text variant="bold">{productInfo.title}</Text>
                     {isProductActive && getStatusBadge(resolvedPlan)}

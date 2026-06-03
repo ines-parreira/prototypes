@@ -10,6 +10,7 @@
         }
     ],
     "rules": {
+        "oxc/no-barrel-file": ["error", { "threshold": 300 }],
         "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
         "sort-imports": [
             "error",

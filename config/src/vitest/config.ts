@@ -12,6 +12,11 @@ export function createConfig(overrides?: Config): Config {
                 globals: true,
                 setupFiles: ['@repo/config/vitest/setup.ts'],
                 environment: 'happy-dom',
+                server: {
+                    deps: {
+                        inline: [/@gorgias\/axiom/],
+                    },
+                },
 
                 // Required for the Codecov tests results to be uploaded
                 // These are needed for the Codecov tests analytics like flakiness reports for example
