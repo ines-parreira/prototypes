@@ -21,11 +21,27 @@
         position: relative;
     }
 
+    // Panel pages (Page, layout="panel") hand height + scrolling to the
+    // content's axiom Panel. The app-level scroll must be disabled so axiom's
+    // StickyStack doesn't latch onto a non-scrolling ancestor instead of the
+    // Panel's own scroll viewport (which would break its sticky header/footer).
+    // Higher specificity + later source order so it wins over `.app.legacy`.
+    .app.appPanel {
+        overflow: hidden;
+    }
+
     .container {
         max-height: 100%;
         // keep the line below otherwise long words / links will break layout
         // https://css-tricks.com/flexbox-truncated-text/
         min-width: 0;
+    }
+
+    // Container for panel routes: clip (no nested app scrollbar) and allow the
+    // flex child to shrink so the Panel can own the scroll.
+    .containerPanel {
+        overflow: hidden;
+        min-height: 0;
     }
 
     .content {

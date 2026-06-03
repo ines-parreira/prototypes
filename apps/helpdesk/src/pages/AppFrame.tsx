@@ -1,57 +1,53 @@
 import type { ComponentType, ReactNode } from 'react'
-import { memo } from 'react'
 
 import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import cn from 'classnames'
-import _isEqual from 'lodash/isEqual'
-import { Container } from 'reactstrap'
-
-import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useFetchManagedDashboards } from '@repo/reporting'
 import { GlobalNavigation } from 'common/navigation'
 import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
 import { CopilotWorkspaceContainer } from 'copilot/CopilotWorkspaceContainer'
-
 import { CollapsibleNavBarWrapper } from 'core/navigation/components/CollapsibleNavBarWrapper'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useCopilotEnabled } from 'hooks/useCopilotEnabled'
 import { CollapsibleColumn } from 'pages/CollapsibleColumn'
-import IconButton from 'pages/common/components/button/IconButton'
-import FullPage from 'pages/common/components/FullPage'
 import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
 import { usePageTopBanner } from 'pages/common/hooks/usePageTopBanner'
-import { ErrorBoundary } from 'pages/ErrorBoundary'
-import { closePanels, openPanel } from 'state/layout/actions'
+import { closePanels } from 'state/layout/actions'
 import { getCurrentOpenedPanel } from 'state/layout/selectors'
 import { changeTicketMessage } from 'state/ui/ticketAIAgentFeedback'
 
-import css from './App.less'
+import css from './pageLayout.less'
 
 type Props = {
-    infobarOnMobile?: boolean
-    isEditingWidgets?: boolean
-    containerPadding?: boolean
-    noContainerWidthLimit?: boolean
-    children?: ReactNode
-    // Navbar and Infobar containers can be changed depending on the route. See `routes.js`
+    // Navbar container can be changed depending on the route. See `routes.js`
     navbar?: ComponentType<any>
-    infobar?: ComponentType<any>
-    content?: ComponentType<any>
+    /**
+     * `'default'` keeps the app-level scroll (legacy chrome owns scrolling).
+     * `'panel'` hands height + scrolling to the content (an axiom Panel that
+     * owns its own sticky header/footer), so every app-level scroll container
+     * is disabled to avoid a nested scrollbar and a stolen sticky scroll root.
+     */
+    layout?: 'default' | 'panel'
+    children: ReactNode
 }
 
-const App = ({
-    infobarOnMobile,
-    isEditingWidgets,
-    noContainerWidthLimit,
-    containerPadding,
-    content: Content,
+/**
+ * The shared (legacy) application frame: app root, navigation (global nav +
+ * route navbar), collapsible column, copilot workspace and the mobile backdrop.
+ * Its chrome is gated behind `!hasWayfindingMS1Flag` — under wayfinding the new
+ * `AppLayout` provides the shell and this collapses to the app-root + container.
+ *
+ * The inner content region is provided by the caller — `LegacyPage` renders the
+ * old card chrome, `Page` renders a full-bleed axiom `Panel`.
+ */
+export function AppFrame({
     navbar: Navbar,
-    infobar: Infobar,
+    layout = 'default',
     children,
-}: Props) => {
+}: Props) {
     const showGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
     const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
     const isCopilotEnabled = useCopilotEnabled()
@@ -62,16 +58,12 @@ const App = ({
     useFetchManagedDashboards()
 
     const openedPanel = useAppSelector(getCurrentOpenedPanel)
-
     const { onChangeTab } = useTicketInfobarNavigation()
-
-    const Wrapper = containerPadding ? FullPage : Container
-    const wrapperProps = containerPadding
-        ? { noContainerWidthLimit }
-        : { fluid: true, className: cn(css['main-content']) }
-    const content = !!Content ? <Content /> : children
+    const { isCollapsibleColumnOpen } = useCollapsibleColumn()
+    const { pageTopBannerRef } = usePageTopBanner()
 
     const hasOpenedPanel = !!openedPanel
+    const isPanelLayout = layout === 'panel'
 
     const handleClosePanels = () => {
         dispatch(closePanels())
@@ -79,13 +71,13 @@ const App = ({
         dispatch(changeTicketMessage({ message: undefined }))
     }
 
-    const { isCollapsibleColumnOpen } = useCollapsibleColumn()
-    const { pageTopBannerRef } = usePageTopBanner()
-
     return (
         <div
             id="app-root"
-            className={cn(css.app, { [css.legacy]: !hasWayfindingMS1Flag })}
+            className={cn(css.app, {
+                [css.legacy]: !hasWayfindingMS1Flag,
+                [css.appPanel]: isPanelLayout,
+            })}
         >
             {!hasWayfindingMS1Flag && (
                 <>
@@ -108,52 +100,11 @@ const App = ({
             <div
                 className={cn('d-flex flex-grow-1 flex-column', css.container, {
                     [css.withCollapsibleColumn]: isCollapsibleColumnOpen,
+                    [css.containerPanel]: isPanelLayout,
                 })}
             >
                 {!hasWayfindingMS1Flag && <div ref={pageTopBannerRef} />}
-                <div
-                    className={cn('d-flex flex-grow-1', css.contentInfobar)}
-                    style={{
-                        overflow: 'hidden',
-                    }}
-                >
-                    <div className={cn('app-content', css.content)}>
-                        {!hasWayfindingMS1Flag && (
-                            <div className="mobile-nav">
-                                <IconButton
-                                    className="mr-3"
-                                    fillStyle="ghost"
-                                    intent="secondary"
-                                    onClick={() =>
-                                        dispatch(openPanel('navbar'))
-                                    }
-                                >
-                                    menu
-                                </IconButton>
-                                {infobarOnMobile && (
-                                    <Button
-                                        className="ml-3"
-                                        fillStyle="ghost"
-                                        intent="secondary"
-                                        onClick={() =>
-                                            dispatch(openPanel('infobar'))
-                                        }
-                                    >
-                                        More info
-                                    </Button>
-                                )}
-                            </div>
-                        )}
-
-                        <Wrapper {...wrapperProps}>
-                            <ErrorBoundary>{content || null}</ErrorBoundary>
-                        </Wrapper>
-                    </div>
-
-                    {!!Infobar && (
-                        <Infobar isEditingWidgets={!!isEditingWidgets} />
-                    )}
-                </div>
+                {children}
             </div>
 
             {!hasWayfindingMS1Flag && <CollapsibleColumn />}
@@ -170,5 +121,3 @@ const App = ({
         </div>
     )
 }
-
-export default memo(App, _isEqual)

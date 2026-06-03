@@ -14,7 +14,7 @@ import { store } from 'common/store'
 import { useCopilotEnabled } from 'hooks/useCopilotEnabled'
 import { openPanel } from 'state/layout/actions'
 
-import App from '../App'
+import LegacyPage from '../LegacyPage'
 
 jest.mock('@gorgias/copilot')
 
@@ -57,7 +57,7 @@ const mockUseIsMobileResolution = useIsMobileResolution as jest.MockedFunction<
     typeof useIsMobileResolution
 >
 
-describe('App Navbar rendering', () => {
+describe('LegacyPage Navbar rendering', () => {
     const MockNavbar = () => <div data-testid="navbar">Navbar Content</div>
 
     const renderWithContext = (component: React.ReactNode) => {
@@ -85,7 +85,7 @@ describe('App Navbar rendering', () => {
         mockUseIsMobileResolution.mockReturnValue(false)
 
         const { getByTestId, container } = renderWithContext(
-            <App navbar={MockNavbar} />,
+            <LegacyPage navbar={MockNavbar} />,
         )
 
         expect(getByTestId('global-navigation')).toBeInTheDocument()
@@ -101,7 +101,7 @@ describe('App Navbar rendering', () => {
         mockUseIsMobileResolution.mockReturnValue(true)
 
         const { queryByTestId, getByTestId, container } = renderWithContext(
-            <App navbar={MockNavbar} />,
+            <LegacyPage navbar={MockNavbar} />,
         )
 
         expect(queryByTestId('global-navigation')).not.toBeInTheDocument()
@@ -116,7 +116,7 @@ describe('App Navbar rendering', () => {
     it('does not render Navbar when no navbar prop is provided', () => {
         mockUseIsMobileResolution.mockReturnValue(false)
 
-        const { container } = renderWithContext(<App />)
+        const { container } = renderWithContext(<LegacyPage />)
 
         expect(
             container.querySelector('[data-name="navbar-container"]'),
@@ -132,7 +132,7 @@ describe('App Navbar rendering', () => {
             mockUseIsMobileResolution.mockReturnValue(false)
 
             const { queryByTestId } = renderWithContext(
-                <App navbar={MockNavbar} />,
+                <LegacyPage navbar={MockNavbar} />,
             )
 
             expect(queryByTestId('global-navigation')).not.toBeInTheDocument()
@@ -143,7 +143,7 @@ describe('App Navbar rendering', () => {
             mockUseIsMobileResolution.mockReturnValue(true)
 
             const { queryByTestId } = renderWithContext(
-                <App navbar={MockNavbar} />,
+                <LegacyPage navbar={MockNavbar} />,
             )
 
             expect(queryByTestId('global-navigation')).not.toBeInTheDocument()
@@ -155,13 +155,13 @@ describe('App Navbar rendering', () => {
         mockUseIsMobileResolution.mockReturnValue(false)
         mockUseCopilotEnabled.mockReturnValue(true)
 
-        renderWithContext(<App />)
+        renderWithContext(<LegacyPage />)
 
         expect(mockCopilotPanel).toHaveBeenCalled()
     })
 })
 
-describe('App mobile-nav rendering', () => {
+describe('LegacyPage mobile-nav rendering', () => {
     let dispatchSpy: jest.SpyInstance
 
     const renderWithContext = (component: React.ReactNode) => {
@@ -186,7 +186,7 @@ describe('App mobile-nav rendering', () => {
     })
 
     it('should render mobile-nav menu button when wayfinding flag is disabled', () => {
-        const { getByRole } = renderWithContext(<App />)
+        const { getByRole } = renderWithContext(<LegacyPage />)
 
         expect(getByRole('button', { name: /menu/i })).toBeInTheDocument()
     })
@@ -194,19 +194,19 @@ describe('App mobile-nav rendering', () => {
     it('should not render mobile-nav menu button when wayfinding flag is enabled', () => {
         useHelpdeskV2WayfindingMS1FlagMock.mockReturnValue(true)
 
-        const { queryByRole } = renderWithContext(<App />)
+        const { queryByRole } = renderWithContext(<LegacyPage />)
 
         expect(queryByRole('button', { name: /menu/i })).not.toBeInTheDocument()
     })
 
     it('should show "More info" button when infobarOnMobile is true', () => {
-        const { getByRole } = renderWithContext(<App infobarOnMobile />)
+        const { getByRole } = renderWithContext(<LegacyPage infobarOnMobile />)
 
         expect(getByRole('button', { name: /more info/i })).toBeInTheDocument()
     })
 
     it('should not show "More info" button when infobarOnMobile is not set', () => {
-        const { queryByRole } = renderWithContext(<App />)
+        const { queryByRole } = renderWithContext(<LegacyPage />)
 
         expect(
             queryByRole('button', { name: /more info/i }),
@@ -216,7 +216,9 @@ describe('App mobile-nav rendering', () => {
     it('should not show "More info" button when wayfinding flag is enabled even if infobarOnMobile is true', () => {
         useHelpdeskV2WayfindingMS1FlagMock.mockReturnValue(true)
 
-        const { queryByRole } = renderWithContext(<App infobarOnMobile />)
+        const { queryByRole } = renderWithContext(
+            <LegacyPage infobarOnMobile />,
+        )
 
         expect(
             queryByRole('button', { name: /more info/i }),
@@ -227,7 +229,7 @@ describe('App mobile-nav rendering', () => {
         const user = userEvent.setup()
         dispatchSpy = jest.spyOn(store, 'dispatch')
 
-        const { getByRole } = renderWithContext(<App />)
+        const { getByRole } = renderWithContext(<LegacyPage />)
 
         await user.click(getByRole('button', { name: /menu/i }))
 
@@ -238,7 +240,7 @@ describe('App mobile-nav rendering', () => {
         const user = userEvent.setup()
         dispatchSpy = jest.spyOn(store, 'dispatch')
 
-        const { getByRole } = renderWithContext(<App infobarOnMobile />)
+        const { getByRole } = renderWithContext(<LegacyPage infobarOnMobile />)
 
         await user.click(getByRole('button', { name: /more info/i }))
 

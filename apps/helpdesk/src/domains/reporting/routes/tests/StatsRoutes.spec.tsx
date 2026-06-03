@@ -60,7 +60,7 @@ jest.mock('@repo/logging')
 const logPageMock = assumeMock(logPageChange)
 
 jest.mock(
-    'pages/App',
+    'pages/LegacyPage',
     () =>
         ({
             content: Content,

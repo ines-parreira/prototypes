@@ -21,7 +21,7 @@ jest.mock('AIJourney/providers', () => ({
     ),
 }))
 
-jest.mock('pages/App', () => ({
+jest.mock('pages/LegacyPage', () => ({
     __esModule: true,
     default: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }))

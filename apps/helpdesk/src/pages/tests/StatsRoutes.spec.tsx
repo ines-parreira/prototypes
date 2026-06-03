@@ -25,7 +25,7 @@ jest.mock('hooks/aiAgent/useAiAgentAccess')
 const mockUseAiAgentAccess = assumeMock(useAiAgentAccess)
 
 jest.mock(
-    'pages/App',
+    'pages/LegacyPage',
     () =>
         ({
             content: Content,

@@ -13,7 +13,7 @@ import DefaultStatsFilters from 'domains/reporting/pages/DefaultStatsFilters'
 import { ProtectedRoute } from 'domains/reporting/pages/report-chart-restrictions/ProtectedRoute'
 import { VoiceOfCustomerNavbarContainer } from 'domains/reporting/pages/voice-of-customer/components/VoiceOfCustomerNavbarContainer/VoiceOfCustomerNavbarContainer'
 import { ProductInsightsPage } from 'domains/reporting/pages/voice-of-customer/product-insights/ProductInsightsPage'
-import App from 'pages/App'
+import LegacyPage from 'pages/LegacyPage'
 import { VOICE_OF_CUSTOMER_ROUTES } from 'routes/constants'
 
 export const VoiceOfCustomerRoutes = () => {
@@ -27,9 +27,9 @@ export const VoiceOfCustomerRoutes = () => {
             notReadyFallback={
                 <Route
                     render={() => (
-                        <App navbar={VoiceOfCustomerNavbarContainer}>
+                        <LegacyPage navbar={VoiceOfCustomerNavbarContainer}>
                             {null}
-                        </App>
+                        </LegacyPage>
                     )}
                 />
             }
@@ -48,7 +48,7 @@ export const VoiceOfCustomerRoutes = () => {
                         exact
                         path={`${path}/${VOICE_OF_CUSTOMER_ROUTES.PRODUCT_INSIGHTS}`}
                         render={() => (
-                            <App
+                            <LegacyPage
                                 content={ProductInsightsPage}
                                 navbar={VoiceOfCustomerNavbarContainer}
                             />

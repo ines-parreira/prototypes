@@ -5,18 +5,18 @@ import { screen } from '@testing-library/react'
 
 import { PageSection } from 'config/pages'
 import { UserRole } from 'config/types/user'
-import App from 'pages/App'
 import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
 import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
+import LegacyPage from 'pages/LegacyPage'
 import SettingsNavbar from 'pages/settings/common/SettingsNavbar/SettingsNavbar'
 import { AccountFeature } from 'state/currentAccount/types'
 
 import { renderAppSettings } from '../settingsRenderer'
 
-jest.mock('pages/App', () =>
+jest.mock('pages/LegacyPage', () =>
     jest.fn(({ children }) => (
         <>
-            <div>App</div>
+            <div>LegacyPage</div>
             <div>{children}</div>
         </>
     )),
@@ -31,14 +31,14 @@ jest.mock('pages/common/utils/withFeaturePaywall', () =>
     jest.fn(() => mockedInBetweenFeaturePaywall),
 )
 
-const mockedApp = assumeMock(App)
+const mockedApp = assumeMock(LegacyPage)
 const mockedWithUserRoleRequired = assumeMock(withUserRoleRequired)
 const mockedwithFeaturePaywall = assumeMock(withFeaturePaywall)
 
 const PageComponent = () => <div>PageComponent</div>
 
 describe('renderAppSettings', () => {
-    it("should call HOCs and App without additional settings if they're not defined", () => {
+    it("should call HOCs and LegacyPage without additional settings if they're not defined", () => {
         render(renderAppSettings(PageComponent))
 
         expect(mockedWithUserRoleRequired).toHaveBeenCalledWith(PageComponent)
@@ -81,14 +81,14 @@ describe('renderAppSettings', () => {
         expect(screen.getByText('paywalledContent')).toBeInTheDocument()
     })
 
-    it('should render App with passed props and enforced SettingsNavbar', () => {
+    it('should render LegacyPage with passed props and enforced SettingsNavbar', () => {
         render(
             renderAppSettings(() => null, {
                 appProps: { containerPadding: false },
             }),
         )
 
-        expect(screen.getByText('App')).toBeInTheDocument()
+        expect(screen.getByText('LegacyPage')).toBeInTheDocument()
         expect(screen.getByText('roleContent')).toBeInTheDocument()
         expect(mockedApp).toHaveBeenCalledWith(
             {

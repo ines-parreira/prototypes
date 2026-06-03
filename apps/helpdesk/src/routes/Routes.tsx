@@ -78,7 +78,6 @@ import AiAgentStoreConfigurationProvider from 'pages/aiAgent/providers/AiAgentSt
 import { AiAgentSkills } from 'pages/aiAgent/skills/components/AiAgentSkills/AiAgentSkills'
 import { SkillEditorPage } from 'pages/aiAgent/skills/components/SkillEditor/SkillEditorPage'
 import { SkillWizardPage } from 'pages/aiAgent/skills/components/SkillWizard/SkillWizardPage'
-import App from 'pages/App'
 import ActionsPlatformAppsView from 'pages/automate/actionsPlatform/ActionsPlatformAppsView'
 import ActionsPlatformCreateAppFormView from 'pages/automate/actionsPlatform/ActionsPlatformCreateAppFormView'
 import ActionsPlatformCreateStepView from 'pages/automate/actionsPlatform/ActionsPlatformCreateStepView'
@@ -120,6 +119,7 @@ import CustomerDetailContainer from 'pages/customers/detail/CustomerDetailContai
 import CustomerInfobarContainer from 'pages/customers/detail/CustomerInfobarContainer'
 import CustomerSourceContainer from 'pages/customers/detail/CustomerSourceContainer'
 import CustomerListContainer from 'pages/customers/list/CustomerListContainer'
+import LegacyPage from 'pages/LegacyPage'
 import CanduContent from 'pages/onboarding/CanduContent'
 import ReferralContent from 'pages/referral/ReferralContent'
 import SettingsNavbar from 'pages/settings/common/SettingsNavbar/SettingsNavbar'
@@ -212,7 +212,10 @@ export function AppRoutes() {
                 path={`${path}/referral-program`}
                 exact
                 render={() => (
-                    <App content={ReferralContent} navbar={TicketNavbar} />
+                    <LegacyPage
+                        content={ReferralContent}
+                        navbar={TicketNavbar}
+                    />
                 )}
             />
             <Route>
@@ -229,7 +232,7 @@ export function CustomersRoutes({ match: { path } }: RouteComponentProps) {
                 path={`${path}/`}
                 exact
                 render={() => (
-                    <App
+                    <LegacyPage
                         content={CustomerListContainer}
                         navbar={CustomerNavbarContainer}
                     />
@@ -239,7 +242,7 @@ export function CustomersRoutes({ match: { path } }: RouteComponentProps) {
                 path={`${path}/new`}
                 exact
                 render={() => (
-                    <App
+                    <LegacyPage
                         content={CustomerListContainer}
                         navbar={CustomerNavbarContainer}
                     />
@@ -249,7 +252,7 @@ export function CustomersRoutes({ match: { path } }: RouteComponentProps) {
                 path={`${path}/search`}
                 exact
                 render={() => (
-                    <App
+                    <LegacyPage
                         content={CustomerListContainer}
                         navbar={CustomerNavbarContainer}
                     />
@@ -259,7 +262,7 @@ export function CustomersRoutes({ match: { path } }: RouteComponentProps) {
                 path={`${path}/:viewId/:viewSlug?`}
                 exact
                 render={() => (
-                    <App
+                    <LegacyPage
                         content={CustomerListContainer}
                         navbar={CustomerNavbarContainer}
                     />
@@ -276,7 +279,7 @@ export function CustomerRoutes({ match: { path } }: RouteComponentProps) {
                 path={`${path}/:customerId`}
                 exact
                 render={() => (
-                    <App
+                    <LegacyPage
                         content={CustomerDetailContainer}
                         navbar={CustomerNavbarContainer}
                         infobar={CustomerInfobarContainer}
@@ -288,7 +291,7 @@ export function CustomerRoutes({ match: { path } }: RouteComponentProps) {
                 path={`${path}/:customerId/edit-widgets`}
                 exact
                 render={() => (
-                    <App
+                    <LegacyPage
                         content={withUserRoleRequired(
                             CustomerSourceContainer,
                             ADMIN_ROLE,
@@ -317,7 +320,7 @@ export function TicketRoutes({
                 path={`${path}/:ticketId/edit-widgets`}
                 exact
                 render={() => (
-                    <App
+                    <LegacyPage
                         content={withUserRoleRequired(
                             TicketSourceContainer,
                             ADMIN_ROLE,
@@ -335,7 +338,7 @@ export function TicketRoutes({
             <Route
                 path={`${path}/:ticketId/print`}
                 exact
-                render={() => <App content={TicketPrintContainer} />}
+                render={() => <LegacyPage content={TicketPrintContainer} />}
             />
         </Switch>
     )
@@ -818,7 +821,7 @@ export function RedirectToAiAgentRoutes() {
 
             <Route
                 render={() => (
-                    <App
+                    <LegacyPage
                         content={() => <AiAgentRedirect />}
                         navbar={AiAgentNavbar}
                     />
@@ -876,7 +879,7 @@ export function AiAgentBaseRoutes({ match: { path } }: RouteComponentProps) {
 
                     <Route
                         render={() => (
-                            <App
+                            <LegacyPage
                                 content={AiAgentContent}
                                 navbar={AiAgentNavbar}
                             />
@@ -972,7 +975,10 @@ export function ConvertRoutes() {
             <Switch>
                 <Route
                     render={() => (
-                        <App content={ConvertContent} navbar={ConvertNavbar} />
+                        <LegacyPage
+                            content={ConvertContent}
+                            navbar={ConvertNavbar}
+                        />
                     )}
                 />
             </Switch>
@@ -1074,7 +1080,9 @@ export function ConvertContent() {
                     notReadyFallback={
                         <Route
                             render={() => (
-                                <App navbar={ConvertNavbar}>{null}</App>
+                                <LegacyPage navbar={ConvertNavbar}>
+                                    {null}
+                                </LegacyPage>
                             )}
                         />
                     }
@@ -1157,7 +1165,7 @@ export function AdminTasksRoutes({ match: { path } }: RouteComponentProps) {
                 path={`${path}/import-phone-number`}
                 exact
                 render={() => (
-                    <App
+                    <LegacyPage
                         content={withUserRoleRequired(
                             ImportPhoneNumber,
                             ADMIN_ROLE,
@@ -1171,7 +1179,7 @@ export function AdminTasksRoutes({ match: { path } }: RouteComponentProps) {
                 path={`${path}/twilio-subaccount-status`}
                 exact
                 render={() => (
-                    <App
+                    <LegacyPage
                         content={withUserRoleRequired(
                             TwilioSubaccountStatusForm,
                             ADMIN_ROLE,
@@ -1186,7 +1194,7 @@ export function AdminTasksRoutes({ match: { path } }: RouteComponentProps) {
                     path={`${path}/credit-shopify-billing-integration`}
                     exact
                     render={() => (
-                        <App
+                        <LegacyPage
                             content={withUserRoleRequired(
                                 CreditShopifyBillingIntegration,
                                 ADMIN_ROLE,
@@ -1202,7 +1210,7 @@ export function AdminTasksRoutes({ match: { path } }: RouteComponentProps) {
                     path={`${path}/create-shopify-charge`}
                     exact
                     render={() => (
-                        <App
+                        <LegacyPage
                             content={withUserRoleRequired(
                                 CreateShopifyCharge,
                                 ADMIN_ROLE,
@@ -1218,7 +1226,7 @@ export function AdminTasksRoutes({ match: { path } }: RouteComponentProps) {
                     path={`${path}/remove-shopify-billing`}
                     exact
                     render={() => (
-                        <App
+                        <LegacyPage
                             content={withUserRoleRequired(
                                 RemoveShopifyBilling,
                                 ADMIN_ROLE,
@@ -1234,7 +1242,7 @@ export function AdminTasksRoutes({ match: { path } }: RouteComponentProps) {
                     path={`${path}/update-payment-terms`}
                     exact
                     render={() => (
-                        <App
+                        <LegacyPage
                             content={withUserRoleRequired(
                                 UpdatePaymentTerms,
                                 ADMIN_ROLE,
@@ -1256,9 +1264,9 @@ export function HomepageRoutes({ match: { path } }: RouteComponentProps) {
                 path={`${path}/`}
                 exact
                 render={() => (
-                    <App navbar={TicketNavbar}>
+                    <LegacyPage navbar={TicketNavbar}>
                         <CanduContent containerId="candu-home" title="Home" />
-                    </App>
+                    </LegacyPage>
                 )}
             />
         </Switch>

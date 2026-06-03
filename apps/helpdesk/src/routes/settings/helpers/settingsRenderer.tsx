@@ -1,9 +1,9 @@
 import type { ComponentProps, ComponentType } from 'react'
 import React from 'react'
 
-import App from 'pages/App'
 import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
 import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
+import LegacyPage from 'pages/LegacyPage'
 import SettingsNavbar from 'pages/settings/common/SettingsNavbar/SettingsNavbar'
 
 type NarrowedWithUserRoleParams =
@@ -18,7 +18,7 @@ type SettingsType<C extends ComponentType<any>> = {
     componentProps?: ComponentProps<C> extends Record<string, unknown>
         ? ComponentProps<C>
         : never
-    appProps?: ComponentProps<typeof App>
+    appProps?: ComponentProps<typeof LegacyPage>
     roleParams?: NarrowedWithUserRoleParams
     paywallParams?: Parameters<typeof withFeaturePaywall>
 }
@@ -43,18 +43,18 @@ export function renderApp<C extends ComponentType<any>>(
         )(UserRestrictedComponent)
 
         return (
-            <App {...settings.appProps}>
+            <LegacyPage {...settings.appProps}>
                 <PaywallRestrictedComponent
                     {...(settings.componentProps || {})}
                 />
-            </App>
+            </LegacyPage>
         )
     }
 
     return (
-        <App {...settings.appProps}>
+        <LegacyPage {...settings.appProps}>
             <UserRestrictedComponent {...(settings.componentProps || {})} />
-        </App>
+        </LegacyPage>
     )
 }
 

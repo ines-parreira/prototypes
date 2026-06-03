@@ -21,7 +21,7 @@ import {
 import type { StepComponentProps } from 'AIJourney/pages/AiJourneyOnboarding/AiJourneyOnboarding'
 import { Campaigns } from 'AIJourney/pages/Campaigns/Campaigns'
 import { JourneyProvider } from 'AIJourney/providers'
-import App from 'pages/App'
+import LegacyPage from 'pages/LegacyPage'
 
 import DefaultStatsFilters from '../../domains/reporting/pages/DefaultStatsFilters'
 import { RedirectToShop } from './RedirectToShop'
@@ -54,7 +54,7 @@ function AiJourneyBaseRoutes() {
             />
             <Route path={`${path}/:shopName`}>
                 <JourneyProvider>
-                    <App navbar={AiJourneyNavbar}>
+                    <LegacyPage navbar={AiJourneyNavbar}>
                         <Switch>
                             <Route
                                 path={`${path}/:shopName`}
@@ -162,7 +162,7 @@ function AiJourneyBaseRoutes() {
                                 )}
                             />
                         </Switch>
-                    </App>
+                    </LegacyPage>
                 </JourneyProvider>
             </Route>
         </Switch>

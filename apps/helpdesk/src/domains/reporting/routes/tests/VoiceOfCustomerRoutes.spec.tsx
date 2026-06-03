@@ -28,7 +28,7 @@ const ProtectedRouteMock = assumeMock(ProtectedRoute)
 jest.mock('domains/reporting/pages/DefaultStatsFilters')
 const DefaultStatsFiltersMock = assumeMock(DefaultStatsFilters)
 jest.mock(
-    'pages/App',
+    'pages/LegacyPage',
     () =>
         ({
             content: Content,

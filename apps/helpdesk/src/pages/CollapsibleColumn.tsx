@@ -6,10 +6,10 @@ import cn from 'classnames'
 
 import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
 
-import appCss from './App.less'
 import css from './CollapsibleColumn.less'
+import appCss from './pageLayout.less'
 
-// `App.less` has a `:global(.globalNav) :local .container` rule that adds
+// `pageLayout.less` has a `:global(.globalNav) :local .container` rule that adds
 // `padding: xs` to anything with `appCss.container`. That outranks our
 // `-closed` padding-reset, so we only opt in to `.container` while open;
 // the open variant already supplies its own padding.

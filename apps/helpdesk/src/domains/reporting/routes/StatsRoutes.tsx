@@ -54,9 +54,9 @@ import useAppSelector from 'hooks/useAppSelector'
 import AnalyticsAiAgentStatsPaywall from 'pages/aiAgent/analyticsAiAgent/components/AnalyticsAiAgentStatsPaywall'
 import { AnalyticsOverviewStatsPaywall } from 'pages/aiAgent/analyticsOverview/components/AnalyticsOverviewStatsPaywall/AnalyticsOverviewStatsPaywall'
 import { SalesPaywallMiddlewareRouter } from 'pages/aiAgent/Overview/middlewares/SalesPaywallMiddlewareRouter'
-import App from 'pages/App'
 import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
 import { RevenueAddonApiClientProvider } from 'pages/convert/common/hooks/useConvertApi'
+import LegacyPage from 'pages/LegacyPage'
 import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import { STATS_ROUTES } from 'routes/constants'
@@ -72,7 +72,7 @@ function HelpCenterStatsRoutes({ match: { path } }: RouteComponentProps) {
                         path={`${path}`}
                         exact
                         render={() => (
-                            <App
+                            <LegacyPage
                                 content={HelpCenterStats}
                                 navbar={StatsNavbarContainer}
                             />
@@ -103,7 +103,9 @@ export const StatsRoutes = () => {
             notReadyFallback={
                 <Route
                     render={() => (
-                        <App navbar={StatsNavbarContainer}>{null}</App>
+                        <LegacyPage navbar={StatsNavbarContainer}>
+                            {null}
+                        </LegacyPage>
                     )}
                 />
             }
@@ -124,7 +126,7 @@ export const StatsRoutes = () => {
                         exact
                         path={`${path}/${STATS_ROUTES.LIVE_OVERVIEW}`}
                         render={() => (
-                            <App
+                            <LegacyPage
                                 content={LiveOverview}
                                 navbar={StatsNavbarContainer}
                             />
@@ -136,7 +138,7 @@ export const StatsRoutes = () => {
                         exact
                         path={`${path}/${STATS_ROUTES.LIVE_AGENTS}`}
                         render={() => (
-                            <App
+                            <LegacyPage
                                 content={LiveAgents}
                                 navbar={StatsNavbarContainer}
                             />
@@ -148,7 +150,7 @@ export const StatsRoutes = () => {
                         exact
                         path={`${path}/${STATS_ROUTES.LIVE_VOICE}`}
                         render={() => (
-                            <App
+                            <LegacyPage
                                 content={LiveVoice}
                                 navbar={StatsNavbarContainer}
                             />
@@ -162,7 +164,7 @@ export const StatsRoutes = () => {
                         exact
                         path={`${path}/${STATS_ROUTES.SUPPORT_PERFORMANCE_OVERVIEW}`}
                         render={() => (
-                            <App
+                            <LegacyPage
                                 content={SupportPerformanceOverviewReport}
                                 navbar={StatsNavbarContainer}
                             />
@@ -178,7 +180,7 @@ export const StatsRoutes = () => {
                             exact
                             path={`${path}/${STATS_ROUTES.PERFORMANCE_OVERVIEW}`}
                             render={() => (
-                                <App
+                                <LegacyPage
                                     content={PerformanceOverviewReport}
                                     navbar={StatsNavbarContainer}
                                 />
@@ -194,7 +196,7 @@ export const StatsRoutes = () => {
                             exact
                             path={`${path}/${STATS_ROUTES.PERFORMANCE_CHANNELS}`}
                             render={() => (
-                                <App
+                                <LegacyPage
                                     content={PerformanceChannelsReport}
                                     navbar={StatsNavbarContainer}
                                 />
@@ -211,7 +213,7 @@ export const StatsRoutes = () => {
                                 <SupportedLocalesProvider>
                                     <RevenueAddonApiClientProvider>
                                         <CampaignStatsFilters>
-                                            <App
+                                            <LegacyPage
                                                 content={Dashboards}
                                                 navbar={StatsNavbarContainer}
                                             />
@@ -233,7 +235,7 @@ export const StatsRoutes = () => {
                                 <SupportedLocalesProvider>
                                     <RevenueAddonApiClientProvider>
                                         <CampaignStatsFilters>
-                                            <App
+                                            <LegacyPage
                                                 content={DashboardPage}
                                                 navbar={StatsNavbarContainer}
                                             />
@@ -252,7 +254,7 @@ export const StatsRoutes = () => {
                         exact
                         path={`${path}/${STATS_ROUTES.SUPPORT_PERFORMANCE_BUSIEST_TIMES}`}
                         render={() => (
-                            <App
+                            <LegacyPage
                                 content={BusiestTimesOfDays}
                                 navbar={StatsNavbarContainer}
                             />
@@ -266,7 +268,7 @@ export const StatsRoutes = () => {
                         exact
                         path={`${path}/${STATS_ROUTES.TICKET_INSIGHTS_TICKET_FIELDS}`}
                         render={() => (
-                            <App
+                            <LegacyPage
                                 content={SupportPerformanceTicketInsights}
                                 navbar={StatsNavbarContainer}
                             />
@@ -280,7 +282,10 @@ export const StatsRoutes = () => {
                         exact
                         path={`${path}/${STATS_ROUTES.TICKET_INSIGHTS_TAGS}`}
                         render={() => (
-                            <App content={Tags} navbar={StatsNavbarContainer} />
+                            <LegacyPage
+                                content={Tags}
+                                navbar={StatsNavbarContainer}
+                            />
                         )}
                     />
                 </ProtectedRoute>
@@ -291,7 +296,7 @@ export const StatsRoutes = () => {
                         exact
                         path={`${path}/${STATS_ROUTES.QUALITY_MANAGEMENT_SATISFACTION}`}
                         render={() => (
-                            <App
+                            <LegacyPage
                                 content={SatisfactionReport}
                                 navbar={StatsNavbarContainer}
                             />
@@ -305,7 +310,7 @@ export const StatsRoutes = () => {
                         exact
                         path={`${path}/${STATS_ROUTES.SUPPORT_PERFORMANCE_CHANNELS}`}
                         render={() => (
-                            <App
+                            <LegacyPage
                                 content={ChannelsReport}
                                 navbar={StatsNavbarContainer}
                             />
@@ -318,7 +323,7 @@ export const StatsRoutes = () => {
                     <Route
                         path={`${path}/${STATS_ROUTES.SUPPORT_PERFORMANCE_SERVICE_LEVEL_AGREEMENT}`}
                         render={() => (
-                            <App
+                            <LegacyPage
                                 content={ServiceLevelAgreementsPage}
                                 navbar={StatsNavbarContainer}
                             />
@@ -334,7 +339,7 @@ export const StatsRoutes = () => {
                             exact
                             path={`${path}/${STATS_ROUTES.QUALITY_MANAGEMENT_AUTO_QA}`}
                             render={() => (
-                                <App
+                                <LegacyPage
                                     content={withUserRoleRequired(
                                         AutoQA,
                                         AGENT_ROLE,
@@ -352,7 +357,7 @@ export const StatsRoutes = () => {
                     <Route
                         path={`${path}/${STATS_ROUTES.SUPPORT_PERFORMANCE_AGENTS}`}
                         render={() => (
-                            <App
+                            <LegacyPage
                                 content={SupportPerformanceAgentsReport}
                                 navbar={StatsNavbarContainer}
                             />
@@ -366,7 +371,7 @@ export const StatsRoutes = () => {
                         exact
                         path={`${path}/${STATS_ROUTES.SUPPORT_PERFORMANCE_SATISFACTION}`}
                         render={() => (
-                            <App
+                            <LegacyPage
                                 content={SupportPerformanceSatisfaction}
                                 navbar={StatsNavbarContainer}
                             />
@@ -381,7 +386,7 @@ export const StatsRoutes = () => {
                         path={`${path}/${STATS_ROUTES.SUPPORT_PERFORMANCE_REVENUE}`}
                         render={() => (
                             <RevenueAddonApiClientProvider>
-                                <App
+                                <LegacyPage
                                     content={SupportPerformanceRevenue}
                                     navbar={StatsNavbarContainer}
                                 />
@@ -401,7 +406,7 @@ export const StatsRoutes = () => {
                         path={`${path}/convert/campaigns/subscribe`}
                         exact
                         render={() => (
-                            <App
+                            <LegacyPage
                                 content={CampaignStatsPaywallView}
                                 navbar={StatsNavbarContainer}
                             />
@@ -416,7 +421,7 @@ export const StatsRoutes = () => {
                         path={`${path}/${STATS_ROUTES.CONVERT_CAMPAIGNS}`}
                         render={() => (
                             <RevenueAddonApiClientProvider>
-                                <App
+                                <LegacyPage
                                     content={RevenueCampaignsStats}
                                     navbar={StatsNavbarContainer}
                                 />
@@ -431,7 +436,7 @@ export const StatsRoutes = () => {
                         exact
                         path={`${path}/${STATS_ROUTES.TICKET_INSIGHTS_MACROS}`}
                         render={() => (
-                            <App
+                            <LegacyPage
                                 content={AutomateMacros}
                                 navbar={StatsNavbarContainer}
                             />
@@ -445,7 +450,7 @@ export const StatsRoutes = () => {
                         exact
                         path={`${path}/${STATS_ROUTES.TICKET_INSIGHTS_INTENTS}`}
                         render={() => (
-                            <App
+                            <LegacyPage
                                 content={AutomateIntents}
                                 navbar={StatsNavbarContainer}
                             />
@@ -466,7 +471,7 @@ export const StatsRoutes = () => {
                         exact
                         path={`${path}/${STATS_ROUTES.AI_AGENT_OVERVIEW}`}
                         render={() => (
-                            <App
+                            <LegacyPage
                                 content={AutomateStatsPaywall}
                                 navbar={StatsNavbarContainer}
                             />
@@ -480,7 +485,7 @@ export const StatsRoutes = () => {
                         exact
                         path={`${path}/${STATS_ROUTES.AUTOMATE_AI_AGENTS}`}
                         render={() => (
-                            <App
+                            <LegacyPage
                                 navbar={StatsNavbarContainer}
                                 content={AutomateAiAgentStatsReport}
                             />
@@ -492,7 +497,7 @@ export const StatsRoutes = () => {
                         exact
                         path={`${path}/${STATS_ROUTES.AI_AGENT}`}
                         render={() => (
-                            <App
+                            <LegacyPage
                                 navbar={StatsNavbarContainer}
                                 content={AnalyticsAiAgentStatsPaywall}
                             />
@@ -506,7 +511,7 @@ export const StatsRoutes = () => {
                         exact
                         path={`${path}/${STATS_ROUTES.ANALYTICS_OVERVIEW}`}
                         render={() => (
-                            <App
+                            <LegacyPage
                                 navbar={StatsNavbarContainer}
                                 content={AnalyticsOverviewStatsPaywall}
                             />
@@ -520,7 +525,7 @@ export const StatsRoutes = () => {
                         exact
                         path={`${path}/${STATS_ROUTES.ANALYTICS_AI_AGENT}`}
                         render={() => (
-                            <App
+                            <LegacyPage
                                 navbar={StatsNavbarContainer}
                                 content={AnalyticsAiAgentStatsPaywall}
                             />
@@ -547,7 +552,7 @@ export const StatsRoutes = () => {
                         path={`${path}/${ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES}`}
                         render={() => (
                             <HelpCenterApiClientProvider>
-                                <App
+                                <LegacyPage
                                     content={SelfServiceStatsPage}
                                     navbar={StatsNavbarContainer}
                                 />
@@ -569,7 +574,7 @@ export const StatsRoutes = () => {
                         exact
                         path={`${path}/${STATS_ROUTES.VOICE_OVERVIEW}`}
                         render={() => (
-                            <App
+                            <LegacyPage
                                 content={VoiceOverview}
                                 navbar={StatsNavbarContainer}
                             />
@@ -581,7 +586,7 @@ export const StatsRoutes = () => {
                         exact
                         path={`${path}/${STATS_ROUTES.VOICE_AGENTS}`}
                         render={() => (
-                            <App
+                            <LegacyPage
                                 content={VoiceAgents}
                                 navbar={StatsNavbarContainer}
                             />
@@ -595,7 +600,7 @@ export const StatsRoutes = () => {
                         exact
                         path={`${path}/${STATS_ROUTES.AI_SALES_AGENT_OVERVIEW}/:shopName?`}
                         render={() => (
-                            <App
+                            <LegacyPage
                                 content={SalesPaywallMiddlewareRouter(
                                     AiSalesAgentSalesOverview,
                                 )}

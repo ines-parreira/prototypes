@@ -63,7 +63,7 @@ jest.mock('hooks/useIsAccountDeactivated', () => ({
 jest.mock('hooks/integrations/phone/useVoiceDevice')
 
 jest.mock(
-    'pages/App',
+    'pages/LegacyPage',
     () =>
         ({
             content: Content,

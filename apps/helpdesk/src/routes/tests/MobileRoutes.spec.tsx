@@ -4,7 +4,7 @@ import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { StaticRouter } from 'react-router-dom'
 
-import App from 'pages/App'
+import LegacyPage from 'pages/LegacyPage'
 import TicketInfobarContainer from 'pages/tickets/detail/TicketInfobarContainer'
 import TicketList from 'pages/tickets/list/TicketList'
 import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
@@ -12,7 +12,7 @@ import TicketWrapper from 'split-ticket-view/components/TicketWrapper'
 
 import { MobileRoutes } from '../MobileRoutes'
 
-jest.mock('pages/App', () => jest.fn(() => <div>App</div>))
+jest.mock('pages/LegacyPage', () => jest.fn(() => <div>LegacyPage</div>))
 
 describe('MobileRoutes', () => {
     it.each([
@@ -72,8 +72,8 @@ describe('MobileRoutes', () => {
                 </StaticRouter>,
             )
 
-            expect(screen.getByText('App')).toBeInTheDocument()
-            expect(App).toHaveBeenCalledWith(props, {})
+            expect(screen.getByText('LegacyPage')).toBeInTheDocument()
+            expect(LegacyPage).toHaveBeenCalledWith(props, {})
         },
     )
 })
