@@ -171,7 +171,7 @@ describe('SkillEditorSidePanelPerformanceMetricCards', () => {
         expect(fieldOf(getCardByLabel('CSAT')!, 'prev-value')).toBe('4.3')
     })
 
-    it('coerces null prev values to 0 once the request has settled (analytics-overview pattern)', () => {
+    it('coerces null prev values to 0 once the request has settled', () => {
         render(
             <SkillEditorSidePanelPerformanceMetricCards
                 {...baseProps}

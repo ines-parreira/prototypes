@@ -101,7 +101,6 @@ const KnowledgeTrendCard = ({
     return (
         <TrendCard
             trend={trend}
-            isLoading={isLoading}
             metricFormat={metricFormat}
             interpretAs="more-is-better"
             withBorder
@@ -138,7 +137,6 @@ const PlainTrendCard = ({
     return (
         <TrendCard
             trend={trend}
-            isLoading={isLoading}
             metricFormat={metricFormat}
             interpretAs="more-is-better"
             withBorder
@@ -179,7 +177,6 @@ const SuccessRateCard = ({ skillId, dateRange }: SuccessRateCardProps) => {
     return (
         <TrendCard
             trend={trend}
-            isLoading={isLoading}
             metricFormat="decimal-to-percent"
             interpretAs="more-is-better"
             hint={SUCCESS_RATE_HINT}

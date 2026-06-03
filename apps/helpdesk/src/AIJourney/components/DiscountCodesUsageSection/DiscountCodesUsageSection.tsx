@@ -65,7 +65,6 @@ export const DiscountCodesUsageSection = ({
                     <TrendCard
                         key={`key-metric-${metric.trend.data?.label}`}
                         withFixedWidth={false}
-                        isLoading={metric.trend.isFetching}
                         hint={metric.hint}
                         metricFormat={metric.metricFormat}
                         interpretAs={metric.interpretAs}

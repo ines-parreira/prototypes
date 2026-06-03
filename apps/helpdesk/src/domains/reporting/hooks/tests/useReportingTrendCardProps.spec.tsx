@@ -147,7 +147,6 @@ describe('useReportingTrendCardProps', () => {
                 prevValue: 70,
             },
         })
-        expect(result.current.isLoading).toBe(false)
         expect(result.current.metricFormat).toBe('percent')
         expect(result.current.interpretAs).toBe('more-is-better')
         expect(result.current.trendBadgeTooltipData.period).toBe(
@@ -187,11 +186,10 @@ describe('useReportingTrendCardProps', () => {
             isError: false,
             data: {
                 label: 'Test Metric',
-                value: 0,
-                prevValue: 0,
+                value: null,
+                prevValue: null,
             },
         })
-        expect(result.current.isLoading).toBe(true)
     })
 
     it('should return error state when trend has error', () => {
@@ -219,11 +217,10 @@ describe('useReportingTrendCardProps', () => {
             isError: true,
             data: {
                 label: 'Test Metric',
-                value: 0,
-                prevValue: 0,
+                value: null,
+                prevValue: null,
             },
         })
-        expect(result.current.isLoading).toBe(false)
     })
 
     it('should include actionMenu when chartId is provided', () => {
@@ -346,8 +343,8 @@ describe('useReportingTrendCardProps', () => {
 
         expect(result.current.trend.data).toEqual({
             label: 'Test Metric',
-            value: 0,
-            prevValue: 0,
+            value: null,
+            prevValue: null,
         })
     })
 

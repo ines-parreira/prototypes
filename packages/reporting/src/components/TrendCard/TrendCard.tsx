@@ -27,7 +27,6 @@ export type TrendCardProps = {
     currency?: string
     hint?: TooltipData
     interpretAs: TrendDirection
-    isLoading?: boolean
     metricFormat?: MetricTrendFormat
     trend: MetricTrend
     withBorder?: boolean
@@ -44,7 +43,6 @@ export const TrendCard = memo<TrendCardProps>(
         currency,
         hint,
         interpretAs,
-        isLoading = false,
         metricFormat,
         trend,
         withBorder,
@@ -54,9 +52,9 @@ export const TrendCard = memo<TrendCardProps>(
         drillDown,
         timeSeriesView,
     }) => {
-        const { data } = trend
+        const { data, isError, isFetching: isLoading } = trend
 
-        const hasData = !isLoading && data?.value != null
+        const hasData = !isLoading && !isError && data?.value != null
         const dataNotEqualToZero = data?.value !== 0
 
         const formattedMetricValue = hasData
@@ -85,7 +83,7 @@ export const TrendCard = memo<TrendCardProps>(
                 <div className={css.dataContent}>
                     <div className={css.trendData}>
                         <span className={css.metricData}>
-                            {!hasData ? (
+                            {isLoading ? (
                                 <Skeleton
                                     height={36}
                                     width={
@@ -106,7 +104,7 @@ export const TrendCard = memo<TrendCardProps>(
                                 formattedMetricValue
                             )}
                         </span>
-                        {!hasData && (
+                        {isLoading && (
                             <Box
                                 display="flex"
                                 alignItems="center"

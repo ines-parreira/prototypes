@@ -30,7 +30,12 @@ describe('TrendCard', () => {
     })
 
     it('should render loading state', () => {
-        render(<TrendCard {...defaultProps} isLoading />)
+        render(
+            <TrendCard
+                {...defaultProps}
+                trend={{ ...mockTrend, isFetching: true }}
+            />,
+        )
 
         const loadingElements = screen.getAllByLabelText('Loading')
         expect(loadingElements.length).toBeGreaterThan(0)
@@ -107,6 +112,19 @@ describe('TrendCard', () => {
         expect(screen.getByText('Test Metric')).toBeInTheDocument()
     })
 
+    it('should render "-" when isError is true', () => {
+        const errorTrend: MetricTrend = {
+            isFetching: false,
+            isError: true,
+            data: undefined,
+        }
+
+        render(<TrendCard {...defaultProps} trend={errorTrend} />)
+
+        expect(screen.getByText('-')).toBeInTheDocument()
+        expect(screen.queryAllByLabelText('Loading')).toHaveLength(0)
+    })
+
     it('should render metric value and label together', () => {
         render(<TrendCard {...defaultProps} />)
 
@@ -119,7 +137,13 @@ describe('TrendCard', () => {
             title: 'Test hint',
         }
 
-        render(<TrendCard {...defaultProps} isLoading hint={hint} />)
+        render(
+            <TrendCard
+                {...defaultProps}
+                trend={{ ...mockTrend, isFetching: true }}
+                hint={hint}
+            />,
+        )
 
         const loadingElements = screen.getAllByLabelText('Loading')
         expect(loadingElements.length).toBeGreaterThan(0)
@@ -256,7 +280,7 @@ describe('TrendCard', () => {
             expect(openDrillDownModal).not.toHaveBeenCalled()
         })
 
-        it('should not render DrillDownModalTrigger when data value is null', () => {
+        it('should render "-" and not DrillDownModalTrigger when data value is null', () => {
             const openDrillDownModal = vi.fn()
             const drillDown = {
                 tooltipText: 'Click to view details',
@@ -282,8 +306,8 @@ describe('TrendCard', () => {
             )
 
             expect(screen.getByText('Test Metric')).toBeInTheDocument()
-            const loadingElements = screen.getAllByLabelText('Loading')
-            expect(loadingElements.length).toBeGreaterThan(0)
+            expect(screen.getByText('-')).toBeInTheDocument()
+            expect(screen.queryAllByLabelText('Loading')).toHaveLength(0)
         })
 
         it('should render DrillDownModalTrigger with formatted metric value', () => {

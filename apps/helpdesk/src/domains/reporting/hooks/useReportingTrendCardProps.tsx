@@ -64,8 +64,8 @@ export const useReportingTrendCardProps = ({
             isError: trendData.isError,
             data: {
                 label: chartConfig.label,
-                value: trendData.data?.value || 0,
-                prevValue: trendData.data?.prevValue || 0,
+                value: trendData.data?.value ?? null,
+                prevValue: trendData.data?.prevValue ?? null,
             },
         }),
         [trendData, chartConfig.label],
@@ -110,7 +110,6 @@ export const useReportingTrendCardProps = ({
 
     return {
         trend,
-        isLoading: trendData.isFetching,
         metricFormat: chartConfig.metricFormat,
         interpretAs: chartConfig.interpretAs || 'more-is-better',
         trendBadgeTooltipData: { period: formatPreviousPeriod(filters.period) },

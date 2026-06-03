@@ -592,7 +592,6 @@ export const Analytics = () => {
                                     hint={{
                                         title: hint,
                                     }}
-                                    isLoading={isLoading}
                                     metricFormat={metricFormat}
                                     interpretAs={interpretAs}
                                     drillDown={
