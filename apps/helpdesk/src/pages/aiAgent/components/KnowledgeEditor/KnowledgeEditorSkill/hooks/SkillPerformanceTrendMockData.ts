@@ -56,4 +56,11 @@ export const mockSkillPerformanceChartMarkers: ComposedMetricTimeSeriesMarker[] 
             actionHref:
                 '/app/ai-agent/shopify/acme/skills/1?versionId=mock-intent-routing-2026-05-09',
         },
+        {
+            id: 'mock-no-description-2026-05-15',
+            date: '2026-05-15',
+            label: 'Changes published',
+            actionHref:
+                '/app/ai-agent/shopify/acme/skills/1?versionId=mock-no-description-2026-05-15',
+        },
     ]

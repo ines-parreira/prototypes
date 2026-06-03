@@ -23,10 +23,10 @@ import css from '../ComposedMetricTimeSeriesChart.less'
 
 const TooltipMetricRow = ({ metric }: TooltipMetricRowProps) => (
     <Box justifyContent="space-between" gap="lg" width="100%">
-        <Text size="xs" variant="regular" className={css.tooltipText}>
+        <Text size="sm" variant="regular" className={css.tooltipText}>
             {metric.label}
         </Text>
-        <Text size="xs" variant="bold" className={css.tooltipValue}>
+        <Text size="sm" variant="bold" className={css.tooltipValue}>
             {metric.formattedValue}
         </Text>
     </Box>
@@ -40,12 +40,12 @@ const TooltipMarker = ({ marker, markerColor }: TooltipMarkerProps) => (
                 className={css.tooltipMarkerGlyph}
                 style={{ backgroundColor: markerColor }}
             />
-            <Text size="xs" variant="regular" className={css.tooltipText}>
+            <Text size="sm" variant="regular" className={css.tooltipText}>
                 {marker.label}
             </Text>
         </Box>
         {marker.description && (
-            <Text size="xs" variant="regular" className={css.tooltipMutedText}>
+            <Text size="sm" variant="regular" className={css.tooltipMutedText}>
                 {marker.description}
             </Text>
         )}
@@ -69,7 +69,7 @@ export const ComposedMetricTimeSeriesTooltip = ({
     markers,
 }: ComposedMetricTimeSeriesTooltipProps) => (
     <Box className={css.tooltip} flexDirection="column" gap="xxxs">
-        <Text size="xs" variant="regular" className={css.tooltipMutedText}>
+        <Text size="sm" variant="regular" className={css.tooltipMutedText}>
             {date}
         </Text>
         <TooltipMetricRow metric={lineMetric} />

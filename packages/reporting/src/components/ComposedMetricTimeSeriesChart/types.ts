@@ -9,6 +9,10 @@ export type AxisTickPayload = {
     value: AxisTickValue
 }
 
+export type HoverCursorProps = {
+    points?: Array<{ x: number; y: number }>
+}
+
 export type HorizontalGridLineProps = {
     offset?: { top: number; height: number }
     stroke?: string

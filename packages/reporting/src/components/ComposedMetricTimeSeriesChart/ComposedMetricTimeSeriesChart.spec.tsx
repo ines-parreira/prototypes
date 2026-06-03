@@ -1,7 +1,46 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { beforeAll, describe, expect, it, vi } from 'vitest'
 
 import { getColorValue } from '@gorgias/axiom'
+
+import type * as Recharts from 'recharts'
+
+vi.mock('recharts', async (importOriginal) => {
+    const original = await importOriginal<typeof Recharts>()
+    const OriginalComposedChart = original.ComposedChart
+    return {
+        ...original,
+        // Wrap ComposedChart with a div that forwards mouse events directly to
+        // props handlers. In jsdom recharts never fires these callbacks itself
+        // (no layout → no active data), so we bypass it entirely.
+        // OriginalComposedChart is still rendered so all structural tests pass.
+        ComposedChart: (props: any) => (
+            <div
+                role="img"
+                data-testid="recharts-chart"
+                onClick={() =>
+                    props.onClick?.({
+                        activeTooltipIndex: 0,
+                        activeCoordinate: { x: 100, y: 100 },
+                    })
+                }
+                onMouseMove={() =>
+                    props.onMouseMove?.({
+                        activeCoordinate: { x: 100, y: 100 },
+                    })
+                }
+                onMouseLeave={() => props.onMouseLeave?.()}
+            >
+                <OriginalComposedChart
+                    {...props}
+                    onClick={undefined}
+                    onMouseMove={undefined}
+                    onMouseLeave={undefined}
+                />
+            </div>
+        ),
+    }
+})
 
 import {
     ComposedMetricTimeSeriesChart,
@@ -480,6 +519,232 @@ describe('ComposedMetricTimeSeriesChart', () => {
                 markerColor: expect.any(String),
                 markers: mockMarkers,
             })
+        })
+    })
+
+    describe('hover cursor', () => {
+        it('renders the HoverCursorLayer inside the chart via the Customized component', () => {
+            const { container } = render(
+                <ComposedMetricTimeSeriesChart
+                    {...defaultProps}
+                    containerWidth={600}
+                />,
+            )
+
+            expect(
+                container.querySelector('.recharts-customized-wrapper'),
+            ).toBeInTheDocument()
+        })
+
+        it('does not render a built-in recharts cursor line on the chart', () => {
+            const { container } = render(
+                <ComposedMetricTimeSeriesChart
+                    {...defaultProps}
+                    containerWidth={600}
+                />,
+            )
+
+            expect(
+                container.querySelector('.recharts-tooltip-cursor'),
+            ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('cursorX state', () => {
+        it('sets cursorX to the active x-coordinate when the mouse moves over the chart', () => {
+            const { container } = render(
+                <ComposedMetricTimeSeriesChart
+                    {...defaultProps}
+                    containerWidth={600}
+                />,
+            )
+
+            fireEvent.mouseMove(
+                container.querySelector('[data-testid="recharts-chart"]')!,
+            )
+
+            // cursorX is now 100 — the HoverCursorLayer wrapper is still mounted
+            expect(
+                container.querySelector('.recharts-customized-wrapper'),
+            ).toBeInTheDocument()
+        })
+
+        it('resets cursorX to null when the mouse leaves the chart', () => {
+            const { container } = render(
+                <ComposedMetricTimeSeriesChart
+                    {...defaultProps}
+                    containerWidth={600}
+                />,
+            )
+
+            fireEvent.mouseMove(
+                container.querySelector('[data-testid="recharts-chart"]')!,
+            )
+            fireEvent.mouseLeave(
+                container.querySelector('[data-testid="recharts-chart"]')!,
+            )
+
+            // cursorX is back to null — chart is still rendered correctly
+            expect(
+                container.querySelector('.recharts-customized-wrapper'),
+            ).toBeInTheDocument()
+        })
+
+        it('does not reset cursorX on mouse leave when a tooltip is pinned', () => {
+            const { container } = render(
+                <ComposedMetricTimeSeriesChart
+                    {...defaultProps}
+                    containerWidth={600}
+                />,
+            )
+
+            fireEvent.click(
+                container.querySelector('[data-testid="recharts-chart"]')!,
+            )
+            expect(screen.getByText('120 tickets')).toBeInTheDocument()
+
+            fireEvent.mouseLeave(
+                container.querySelector('[data-testid="recharts-chart"]')!,
+            )
+
+            // pinnedTooltip is still shown — cursorX was not cleared
+            expect(screen.getByText('120 tickets')).toBeInTheDocument()
+        })
+    })
+
+    describe('pinned tooltip', () => {
+        // Clicking the mocked ComposedChart element fires props.onClick with
+        // activeTooltipIndex: 0 and activeCoordinate: { x: 100, y: 100 }.
+        // The component uses these coordinates directly to position the pinned
+        // tooltip, so no fake tooltip wrapper or CSS transform parsing is needed.
+        const pinTooltip = (container: HTMLElement) => {
+            fireEvent.click(
+                container.querySelector('[data-testid="recharts-chart"]')!,
+            )
+        }
+
+        it('is null initially — no tooltip content or backdrop is rendered', () => {
+            const { container } = render(
+                <ComposedMetricTimeSeriesChart
+                    {...defaultProps}
+                    containerWidth={600}
+                />,
+            )
+
+            expect(screen.queryByText('120 tickets')).not.toBeInTheDocument()
+            expect(
+                container.querySelector('[role="presentation"]'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('is reset to null when the backdrop is clicked — removes tooltip content and backdrop', () => {
+            const { container } = render(
+                <ComposedMetricTimeSeriesChart
+                    {...defaultProps}
+                    containerWidth={600}
+                />,
+            )
+
+            pinTooltip(container)
+            expect(screen.getByText('120 tickets')).toBeInTheDocument()
+
+            fireEvent.click(container.querySelector('[role="presentation"]')!)
+
+            expect(screen.queryByText('120 tickets')).not.toBeInTheDocument()
+            expect(
+                container.querySelector('[role="presentation"]'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('does not render the pinned tooltip initially', () => {
+            render(
+                <ComposedMetricTimeSeriesChart
+                    {...defaultProps}
+                    containerWidth={600}
+                />,
+            )
+
+            expect(screen.queryByText('120 tickets')).not.toBeInTheDocument()
+        })
+
+        it('pins the tooltip and shows its content after clicking the chart', () => {
+            const { container } = render(
+                <ComposedMetricTimeSeriesChart
+                    {...defaultProps}
+                    containerWidth={600}
+                />,
+            )
+
+            expect(screen.queryByText('120 tickets')).not.toBeInTheDocument()
+
+            pinTooltip(container)
+
+            expect(screen.getByText('120 tickets')).toBeInTheDocument()
+        })
+
+        it('renders a backdrop when the tooltip is pinned', () => {
+            const { container } = render(
+                <ComposedMetricTimeSeriesChart
+                    {...defaultProps}
+                    containerWidth={600}
+                />,
+            )
+
+            expect(
+                container.querySelector('[role="presentation"]'),
+            ).not.toBeInTheDocument()
+
+            pinTooltip(container)
+
+            expect(
+                container.querySelector('[role="presentation"]'),
+            ).toBeInTheDocument()
+        })
+
+        it('dismisses the pinned tooltip when clicking the backdrop', () => {
+            const { container } = render(
+                <ComposedMetricTimeSeriesChart
+                    {...defaultProps}
+                    containerWidth={600}
+                />,
+            )
+
+            pinTooltip(container)
+            expect(screen.getByText('120 tickets')).toBeInTheDocument()
+
+            fireEvent.click(container.querySelector('[role="presentation"]')!)
+
+            expect(screen.queryByText('120 tickets')).not.toBeInTheDocument()
+        })
+
+        it('dismisses the pinned tooltip when clicking the chart again', () => {
+            const { container } = render(
+                <ComposedMetricTimeSeriesChart
+                    {...defaultProps}
+                    containerWidth={600}
+                />,
+            )
+
+            pinTooltip(container)
+            expect(screen.getByText('120 tickets')).toBeInTheDocument()
+
+            fireEvent.click(
+                container.querySelector('[data-testid="recharts-chart"]')!,
+            )
+
+            expect(screen.queryByText('120 tickets')).not.toBeInTheDocument()
+        })
+    })
+
+    describe('tooltip content suppression when pinned', () => {
+        it('returns null from the tooltip content renderer when payload is empty', () => {
+            const renderer = renderComposedMetricTimeSeriesTooltipContent({
+                barMetric: defaultProps.barMetric,
+                lineMetric: defaultProps.lineMetric,
+            })
+
+            expect(renderer({ payload: [] })).toBeNull()
+            expect(renderer({ payload: undefined })).toBeNull()
         })
     })
 })

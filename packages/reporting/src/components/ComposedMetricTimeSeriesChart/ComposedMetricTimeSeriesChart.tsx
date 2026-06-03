@@ -1,8 +1,9 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import {
     Bar,
     CartesianGrid,
     ComposedChart,
+    Customized,
     Line,
     ReferenceDot,
     ResponsiveContainer,
@@ -22,6 +23,7 @@ import {
     X_AXIS_HEIGHT,
 } from './components/ComposedMetricTimeSeriesXAxisTick'
 import { HorizontalGridLine } from './components/HorizontalGridLine'
+import { HoverCursorLayer } from './components/HoverCursor'
 import {
     AXIS_COLOR,
     BASELINE_STROKE_WIDTH,
@@ -78,6 +80,12 @@ export const ComposedMetricTimeSeriesChart = ({
 }: ComposedMetricTimeSeriesChartProps) => {
     const { chartWrapperRef, chartWrapperWidth } =
         useChartWrapperWidth(isLoading)
+    const [cursorX, setCursorX] = useState<number | null>(null)
+    const [pinnedTooltip, setPinnedTooltip] = useState<{
+        left: number
+        top: number
+        payload: any[]
+    } | null>(null)
 
     const xAxisAvailableWidth =
         typeof containerWidth === 'number' ? containerWidth : chartWrapperWidth
@@ -156,6 +164,50 @@ export const ComposedMetricTimeSeriesChart = ({
                     <ComposedChart
                         data={data}
                         margin={{ top: 10, right: 0, left: 0, bottom: 0 }}
+                        onMouseMove={(state) => {
+                            if (pinnedTooltip) return
+                            if (state.activeCoordinate) {
+                                setCursorX(state.activeCoordinate.x)
+                            }
+                        }}
+                        onMouseLeave={() => {
+                            if (pinnedTooltip) return
+                            setCursorX(null)
+                        }}
+                        onClick={(state) => {
+                            if (
+                                state.activeTooltipIndex == null ||
+                                !state.activeCoordinate
+                            ) {
+                                setPinnedTooltip(null)
+                                return
+                            }
+                            if (pinnedTooltip) {
+                                setPinnedTooltip(null)
+                                return
+                            }
+                            const dataItem =
+                                data[state.activeTooltipIndex as number]
+                            if (!dataItem) return
+                            const tooltipEl =
+                                chartWrapperRef.current?.querySelector<HTMLElement>(
+                                    '.recharts-tooltip-wrapper',
+                                )
+                            const transform = tooltipEl?.style.transform ?? ''
+                            const match = transform.match(
+                                /translate3?d?\((-?[\d.]+)px,\s*(-?[\d.]+)px/,
+                            )
+                            setCursorX(state.activeCoordinate.x)
+                            setPinnedTooltip({
+                                left: match
+                                    ? parseFloat(match[1])
+                                    : state.activeCoordinate.x,
+                                top: match
+                                    ? parseFloat(match[2])
+                                    : state.activeCoordinate.y,
+                                payload: [{ payload: dataItem }],
+                            })
+                        }}
                     >
                         <CartesianGrid
                             horizontal={HorizontalGridLine}
@@ -212,20 +264,27 @@ export const ComposedMetricTimeSeriesChart = ({
                             width={Y_AXIS_WIDTH}
                         />
                         <Tooltip
-                            content={renderComposedMetricTimeSeriesTooltipContent(
-                                {
-                                    barMetric,
-                                    lineMetric,
-                                    dateKey,
-                                    dateFormatter,
-                                    markers,
-                                    renderTooltip,
-                                    barColor: resolvedBarMetric.color,
-                                    lineColor: resolvedLineMetric.color,
-                                    markerColor: resolvedMarkerColor,
-                                },
-                            )}
+                            content={(props: any) => {
+                                if (pinnedTooltip) return null
+                                return renderComposedMetricTimeSeriesTooltipContent(
+                                    {
+                                        barMetric,
+                                        lineMetric,
+                                        dateKey,
+                                        dateFormatter,
+                                        markers,
+                                        renderTooltip,
+                                        barColor: resolvedBarMetric.color,
+                                        lineColor: resolvedLineMetric.color,
+                                        markerColor: resolvedMarkerColor,
+                                    },
+                                )(props)
+                            }}
                             cursor={false}
+                        />
+                        <Customized
+                            component={HoverCursorLayer}
+                            cursorX={cursorX}
                         />
                         <Bar
                             yAxisId="barMetric"
@@ -265,6 +324,34 @@ export const ComposedMetricTimeSeriesChart = ({
                         ))}
                     </ComposedChart>
                 </ResponsiveContainer>
+                {pinnedTooltip && (
+                    <>
+                        <div
+                            role="presentation"
+                            className={css.pinnedTooltipBackdrop}
+                            onClick={() => setPinnedTooltip(null)}
+                        />
+                        <div
+                            className={css.pinnedTooltip}
+                            style={{
+                                left: pinnedTooltip.left,
+                                top: pinnedTooltip.top,
+                            }}
+                        >
+                            {renderComposedMetricTimeSeriesTooltipContent({
+                                barMetric,
+                                lineMetric,
+                                dateKey,
+                                dateFormatter,
+                                markers,
+                                renderTooltip,
+                                barColor: resolvedBarMetric.color,
+                                lineColor: resolvedLineMetric.color,
+                                markerColor: resolvedMarkerColor,
+                            })({ payload: pinnedTooltip.payload })}
+                        </div>
+                    </>
+                )}
             </div>
             {withLegend && (
                 <ComposedMetricTimeSeriesChartLegend
