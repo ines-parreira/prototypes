@@ -9,7 +9,7 @@ import { Box, Button, Heading, Modal, Text, TextField } from '@gorgias/axiom'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { ContentType, HttpMethod } from 'models/api/types'
-import { EventType } from 'models/event/types'
+import { HttpIntegrationTriggerType } from 'models/integration/types'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
 import { getAreIntegrationsLoading } from 'state/integrations/selectors'
 
@@ -59,9 +59,9 @@ export const LoopReturnsIntegrationCreateModal = ({
                 request_content_type: ContentType.Json,
                 response_content_type: ContentType.Json,
                 triggers: {
-                    [EventType.TicketCreated]: true,
-                    [EventType.TicketUpdated]: true,
-                    [EventType.TicketMessageCreated]: true,
+                    [HttpIntegrationTriggerType.TicketCreated]: true,
+                    [HttpIntegrationTriggerType.TicketUpdated]: true,
+                    [HttpIntegrationTriggerType.TicketMessageCreated]: true,
                 },
             },
         }

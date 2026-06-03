@@ -9,7 +9,7 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { ContentType, HttpMethod } from 'models/api/types'
-import { EventType } from 'models/event/types'
+import { HttpIntegrationTriggerType } from 'models/integration/types'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
@@ -66,9 +66,9 @@ const LoopReturnsIntegrationCreateModal = ({
                 request_content_type: ContentType.Json,
                 response_content_type: ContentType.Json,
                 triggers: {
-                    [EventType.TicketCreated]: true,
-                    [EventType.TicketUpdated]: true,
-                    [EventType.TicketMessageCreated]: true,
+                    [HttpIntegrationTriggerType.TicketCreated]: true,
+                    [HttpIntegrationTriggerType.TicketUpdated]: true,
+                    [HttpIntegrationTriggerType.TicketMessageCreated]: true,
                 },
             },
         }

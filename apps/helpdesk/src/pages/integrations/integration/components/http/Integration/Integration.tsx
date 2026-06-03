@@ -22,7 +22,6 @@ import {
 } from '@gorgias/axiom'
 
 import { ContentType, HttpMethod } from 'models/api/types'
-import { EventType } from 'models/event/types'
 import type {
     HTTPForm,
     HttpIntegration,
@@ -30,6 +29,7 @@ import type {
     OAuth2Config,
 } from 'models/integration/types'
 import {
+    HttpIntegrationTriggerType,
     IntegrationType,
     OAUTH2_SECRET_SENTINEL,
     OAuth2TokenLocation,
@@ -309,17 +309,19 @@ export class Integration extends Component<Props, State> {
                 request_content_type: this.state.requestContentType,
                 response_content_type: this.state.responseContentType,
                 triggers: {
-                    [EventType.TicketCreated]: this.state.ticketCreated,
-                    [EventType.TicketUpdated]: this.state.ticketUpdated,
-                    [EventType.TicketSelfUnsnoozed]:
+                    [HttpIntegrationTriggerType.TicketCreated]:
+                        this.state.ticketCreated,
+                    [HttpIntegrationTriggerType.TicketUpdated]:
+                        this.state.ticketUpdated,
+                    [HttpIntegrationTriggerType.TicketSelfUnsnoozed]:
                         this.state.ticketSelfUnsnoozed,
-                    [EventType.TicketMessageCreated]:
+                    [HttpIntegrationTriggerType.TicketMessageCreated]:
                         this.state.ticketMessageCreated,
-                    [EventType.TicketMessageFailed]:
+                    [HttpIntegrationTriggerType.TicketMessageFailed]:
                         this.state.ticketMessageFailed,
-                    [EventType.TicketAssignmentUpdated]:
+                    [HttpIntegrationTriggerType.TicketAssigneeUpdated]:
                         this.state.ticketAssignmentUpdated,
-                    [EventType.TicketStatusUpdated]:
+                    [HttpIntegrationTriggerType.TicketStatusUpdated]:
                         this.state.ticketStatusUpdated,
                 },
                 form,

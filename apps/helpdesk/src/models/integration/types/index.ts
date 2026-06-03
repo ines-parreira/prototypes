@@ -112,6 +112,7 @@ export type {
     FacebookIntegrationSettings,
 } from './facebook'
 export {
+    HttpIntegrationTriggerType,
     isHttpIntegration,
     OAuth2TokenLocation,
     OAUTH2_SECRET_SENTINEL,

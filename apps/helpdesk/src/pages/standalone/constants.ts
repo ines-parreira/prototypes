@@ -1,9 +1,11 @@
+import { HttpIntegrationTriggerType } from 'models/integration/types'
 import intercomSchema from 'pages/standalone/assets/httpSchemas/ticket-intercom.json'
 import zendeskSchema from 'pages/standalone/assets/httpSchemas/ticket-zendesk.json'
 
 import type { HelpdeskIntegration } from './types'
 
-export const TICKET_HANDOVER_TRIGGER = 'ticket-handed-over'
+export const TICKET_HANDOVER_TRIGGER =
+    HttpIntegrationTriggerType.TicketHandedOver
 export const HANDOVER_DEFAULT_METHOD = 'POST'
 export const HANDOVER_DEFAULT_CONTENT_TYPE = 'application/json'
 export const HANDOVER_INTEGRATION_NAME_PREFIX = 'AIAgentHandoverWebhook::'

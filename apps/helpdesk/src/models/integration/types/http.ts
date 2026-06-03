@@ -1,10 +1,20 @@
 import type { ContentType, HttpMethod } from 'models/api/types'
-import type { EventType } from 'models/event/types'
 import type { Field } from 'pages/integrations/integration/components/http/Integration/ObjectListField'
 
 import { IntegrationType } from '../constants'
 import type { Integration } from './'
 import type { IntegrationBase } from './base'
+
+export enum HttpIntegrationTriggerType {
+    TicketCreated = 'ticket-created',
+    TicketUpdated = 'ticket-updated',
+    TicketMessageCreated = 'ticket-message-created',
+    TicketSelfUnsnoozed = 'ticket-self-unsnoozed',
+    TicketMessageFailed = 'ticket-message-failed',
+    TicketAssigneeUpdated = 'ticket-assignment-updated',
+    TicketStatusUpdated = 'ticket-status-updated',
+    TicketHandedOver = 'ticket-handed-over',
+}
 
 export type HttpIntegration = IntegrationBase & {
     type: IntegrationType.Http
@@ -42,7 +52,7 @@ export type HttpIntegrationMeta = {
     request_content_type: ContentType
     response_content_type: ContentType
     triggers: {
-        [key in (typeof EventType)[keyof typeof EventType]]?: boolean
+        [key in HttpIntegrationTriggerType]?: boolean
     }
     url: string
 }
