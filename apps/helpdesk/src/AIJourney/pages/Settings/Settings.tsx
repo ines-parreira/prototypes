@@ -119,6 +119,7 @@ export const Settings = () => {
     })
 
     const { formState, handleSubmit, reset, setError } = methods
+    const { dirtyFields } = formState
 
     useEffect(() => {
         if (storeConfiguration) {
@@ -152,9 +153,11 @@ export const Settings = () => {
                     sms_sender_number: values.sms_sender.sms_sender_number,
                     brand_name: values.brand_name,
                     texas_exclusion_enabled: values.texas_exclusion_enabled,
-                    klaviyo_api_key: values.klaviyo_api_key,
                     quiet_hours_start: values.quiet_hours_start,
                     quiet_hours_end: values.quiet_hours_end,
+                    ...(dirtyFields.klaviyo_api_key && {
+                        klaviyo_api_key: values.klaviyo_api_key,
+                    }),
                     ...(isToneOfVoiceEnabled && {
                         tone_of_voice_guidance: values.tone_of_voice_guidance,
                     }),
@@ -178,23 +181,21 @@ export const Settings = () => {
                 )?.response
                 const detail = response?.data?.detail
 
-                if (Array.isArray(detail)) {
-                    for (const fieldError of detail) {
-                        if ('klaviyo_api_key' in fieldError) {
-                            setError('klaviyo_api_key', {
-                                message: fieldError.klaviyo_api_key,
-                            })
-                            throw error
-                        }
-                    }
-                }
+                const klaviyoFieldError = Array.isArray(detail)
+                    ? detail.find(
+                          (fieldError) => 'klaviyo_api_key' in fieldError,
+                      )
+                    : undefined
 
-                if (response?.status === 422) {
+                if (klaviyoFieldError) {
+                    setError('klaviyo_api_key', {
+                        message: klaviyoFieldError.klaviyo_api_key,
+                    })
+                } else if (response?.status === 422) {
                     setError('klaviyo_api_key', {
                         message:
                             'Invalid Klaviyo API key. Please check your key and try again.',
                     })
-                    throw error
                 }
 
                 toast.error('Error saving settings. Please try again.')
@@ -207,6 +208,7 @@ export const Settings = () => {
             setError,
             isImpersonated,
             isToneOfVoiceEnabled,
+            dirtyFields.klaviyo_api_key,
         ],
     )
 

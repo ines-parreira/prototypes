@@ -381,10 +381,65 @@ describe('<Settings />', () => {
                     sms_sender_number: null,
                     brand_name: 'My Store',
                     texas_exclusion_enabled: false,
-                    klaviyo_api_key: null,
                     quiet_hours_start: null,
                     quiet_hours_end: null,
                 })
+            })
+        })
+
+        it('should omit klaviyo_api_key from the payload when the field is untouched', async () => {
+            mockSaveConfiguration.mockResolvedValue(undefined)
+            mockUseAiJourneyStoreConfiguration.mockReturnValue({
+                storeConfiguration: {
+                    brand_name: '',
+                    sms_sender_integration_id: null,
+                    sms_sender_number: null,
+                    texas_exclusion_enabled: false,
+                    klaviyo_api_key: 'pk_realkey1234',
+                },
+                isLoading: false,
+                error: null,
+                isFetched: true,
+                saveConfiguration: mockSaveConfiguration,
+            })
+
+            const user = userEvent.setup()
+            renderComponent()
+
+            await user.type(screen.getByLabelText('Brand name'), 'My Store')
+
+            await act(async () => {
+                await user.click(screen.getByRole('button', { name: 'Save' }))
+            })
+
+            await waitFor(() => {
+                expect(mockSaveConfiguration).toHaveBeenCalled()
+            })
+            const payload = mockSaveConfiguration.mock.calls[0][0]
+            expect(payload).not.toHaveProperty('klaviyo_api_key')
+        })
+
+        it('should send klaviyo_api_key in the payload when the field is edited', async () => {
+            mockSaveConfiguration.mockResolvedValue(undefined)
+            const user = userEvent.setup()
+            renderComponent()
+
+            await user.click(screen.getByRole('tab', { name: 'Integrations' }))
+            await user.type(
+                screen.getByLabelText('Klaviyo API key'),
+                'pk_newkey5678',
+            )
+
+            await act(async () => {
+                await user.click(screen.getByRole('button', { name: 'Save' }))
+            })
+
+            await waitFor(() => {
+                expect(mockSaveConfiguration).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        klaviyo_api_key: 'pk_newkey5678',
+                    }),
+                )
             })
         })
 
@@ -466,6 +521,11 @@ describe('<Settings />', () => {
                     screen.getByText('This API key is not valid.'),
                 ).toBeInTheDocument()
             })
+
+            const toastEl = await screen.findByRole('status', {
+                name: 'Error saving settings. Please try again.',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
 
         it('should set a klaviyo_api_key field error when save fails with a 422 status', async () => {
@@ -489,6 +549,11 @@ describe('<Settings />', () => {
                     ),
                 ).toBeInTheDocument()
             })
+
+            const toastEl = await screen.findByRole('status', {
+                name: 'Error saving settings. Please try again.',
+            })
+            expect(toastEl).toHaveAttribute('data-intent', 'destructive')
         })
     })
 
