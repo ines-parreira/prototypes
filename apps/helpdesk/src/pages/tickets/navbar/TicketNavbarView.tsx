@@ -9,6 +9,8 @@ import useAppSelector from 'hooks/useAppSelector'
 import type { View } from 'models/view/types'
 import { ViewVisibility } from 'models/view/types'
 import TicketNavbarDropTarget from 'pages/tickets/navbar/TicketNavbarDropTarget'
+import type { SectionsState } from 'state/entities/sections/types'
+import type { ViewsState } from 'state/entities/views/types'
 import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
 import { hasRole } from 'utils'
 
@@ -19,14 +21,24 @@ import css from './TicketNavbarView.less'
 type Props = {
     className?: string
     isNested?: boolean
+    sections?: SectionsState
     view: View
+    views?: ViewsState
 }
 
-export const TicketNavbarView = ({ className, isNested, view }: Props) => {
+export const TicketNavbarView = ({
+    className,
+    isNested,
+    sections,
+    view,
+    views,
+}: Props) => {
     const wrapperRef = useRef<HTMLDivElement>(null)
     const currentUser = useAppSelector((state) => state.currentUser)
-    const sections = useAppSelector((state) => state.entities.sections)
-    const views = useAppSelector((state) => state.entities.views)
+    const reduxSections = useAppSelector((state) => state.entities.sections)
+    const reduxViews = useAppSelector((state) => state.entities.views)
+    const availableSections = sections ?? reduxSections
+    const availableViews = views ?? reduxViews
 
     const canDrag = useMemo(
         () =>
@@ -61,12 +73,25 @@ export const TicketNavbarView = ({ className, isNested, view }: Props) => {
                 ) {
                     return false
                 }
-                const dragTargetVisibility =
-                    item.type === TicketNavbarElementType.View
-                        ? views[item.id].visibility
-                        : sections[item.id].private
-                          ? ViewVisibility.Private
-                          : ViewVisibility.Public
+                const dragTargetVisibility = (() => {
+                    if (item.type === TicketNavbarElementType.View) {
+                        return availableViews[item.id]?.visibility
+                    }
+
+                    const section = availableSections[item.id]
+
+                    if (!section) {
+                        return undefined
+                    }
+
+                    return section.private
+                        ? ViewVisibility.Private
+                        : ViewVisibility.Public
+                })()
+
+                if (!dragTargetVisibility) {
+                    return false
+                }
 
                 return view.visibility !== ViewVisibility.Private
                     ? dragTargetVisibility !== ViewVisibility.Private

@@ -19,6 +19,7 @@ import { isSpecificTicketPath } from 'common/utils'
 import { MAX_RECENT_CHATS } from 'config/recentChats'
 import { isMigrationInProgress } from 'hooks/useWhatsAppMigration'
 import { throttledUpdateCustomFieldsCache } from 'main/init/socketEvents/helpers'
+import { syncTicketNavViewSourceSdkEvent } from 'main/init/socketEvents/ticketNavViewSourceSdkSocketSync'
 import { fetchNewPhoneNumbers } from 'models/phoneNumber/resources'
 import { isTicketMessage } from 'models/ticket/predicates'
 import type { UseListVoiceCalls } from 'models/voiceCall/queries'
@@ -128,6 +129,12 @@ async function isTicketTypingActivityShopperStartedAblyMigrationEnabled() {
     )
 
     return flag
+}
+
+function invalidateAllViewsQuery() {
+    void appQueryClient.invalidateQueries({
+        queryKey: queryKeys.views.listAllViews(),
+    })
 }
 
 const receivedEvents: ReceivedEvent[] = [
@@ -285,18 +292,35 @@ const receivedEvents: ReceivedEvent[] = [
     {
         name: 'view-created',
         onReceive: function (json) {
+            const state = reduxStore.getState()
+            const currentUser = currentUserSelectors.getCurrentUser(state)
+            const teams = getTeams(state)
+            const { view } = json as ViewCreatedEvent
+            const isViewVisibleToCurrentUser = isViewSharedWithUser(
+                view as any,
+                currentUser,
+                teams,
+            )
+
+            if (!isViewVisibleToCurrentUser) {
+                return
+            }
+
             reduxStore.dispatch({
                 type: viewsConstants.CREATE_VIEW_SUCCESS,
-                resp: (json as ViewCreatedEvent).view,
+                resp: view,
             })
             Sentry.addBreadcrumb({
                 message: 'View created from socket event',
                 data: json,
                 level: 'log',
             })
-            reduxStore.dispatch(viewCreated((json as ViewCreatedEvent).view))
-            void appQueryClient.invalidateQueries({
-                queryKey: queryKeys.views.listAllViews(),
+            reduxStore.dispatch(viewCreated(view))
+            invalidateAllViewsQuery()
+            syncTicketNavViewSourceSdkEvent({
+                type: 'view-created',
+                view,
+                isViewVisibleToCurrentUser,
             })
         },
     },
@@ -307,8 +331,13 @@ const receivedEvents: ReceivedEvent[] = [
             const currentUser = currentUserSelectors.getCurrentUser(state)
             const teams = getTeams(state)
             const { view } = json as ViewUpdatedEvent
+            const isViewVisibleToCurrentUser = isViewSharedWithUser(
+                view as any,
+                currentUser,
+                teams,
+            )
 
-            if (isViewSharedWithUser(view as any, currentUser, teams)) {
+            if (isViewVisibleToCurrentUser) {
                 reduxStore.dispatch({
                     type: viewsConstants.UPDATE_VIEW_SUCCESS,
                     resp: view,
@@ -320,8 +349,11 @@ const receivedEvents: ReceivedEvent[] = [
                 )
                 reduxStore.dispatch(viewDeleted(view.id))
             }
-            void appQueryClient.invalidateQueries({
-                queryKey: queryKeys.views.listAllViews(),
+            invalidateAllViewsQuery()
+            syncTicketNavViewSourceSdkEvent({
+                type: 'view-updated',
+                view,
+                isViewVisibleToCurrentUser,
             })
         },
     },
@@ -331,35 +363,47 @@ const receivedEvents: ReceivedEvent[] = [
             const { view } = json as ViewDeletedEvent
             reduxStore.dispatch(viewsActions.deleteViewSuccess(view.id) as any)
             reduxStore.dispatch(viewDeleted(view.id))
-            void appQueryClient.invalidateQueries({
-                queryKey: queryKeys.views.listAllViews(),
+            invalidateAllViewsQuery()
+            syncTicketNavViewSourceSdkEvent({
+                type: 'view-deleted',
+                viewId: view.id,
             })
         },
     },
     {
         name: SocketEventType.ViewSectionCreated,
         onReceive: function (json) {
-            reduxStore.dispatch(
-                sectionCreated((json as ViewSectionCreatedEvent).view_section),
-            )
+            const { view_section: viewSection } =
+                json as ViewSectionCreatedEvent
+            reduxStore.dispatch(sectionCreated(viewSection))
+            syncTicketNavViewSourceSdkEvent({
+                type: 'view-section-created',
+                section: viewSection,
+            })
         },
     },
     {
         name: SocketEventType.ViewSectionUpdated,
         onReceive: function (json) {
-            reduxStore.dispatch(
-                sectionUpdated((json as ViewSectionUpdatedEvent).view_section),
-            )
+            const { view_section: viewSection } =
+                json as ViewSectionUpdatedEvent
+            reduxStore.dispatch(sectionUpdated(viewSection))
+            syncTicketNavViewSourceSdkEvent({
+                type: 'view-section-updated',
+                section: viewSection,
+            })
         },
     },
     {
         name: SocketEventType.ViewSectionDeleted,
         onReceive: function (json) {
-            reduxStore.dispatch(
-                sectionDeleted(
-                    (json as ViewSectionDeletedEvent).view_section.id,
-                ),
-            )
+            const { view_section: viewSection } =
+                json as ViewSectionDeletedEvent
+            reduxStore.dispatch(sectionDeleted(viewSection.id))
+            syncTicketNavViewSourceSdkEvent({
+                type: 'view-section-deleted',
+                sectionId: viewSection.id,
+            })
         },
     },
     {

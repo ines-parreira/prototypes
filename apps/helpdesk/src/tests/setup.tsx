@@ -453,6 +453,18 @@ jest.mock('@repo/feature-flags', () => {
         return hasUIVisionBeta
     })
 
+    const useTicketNavViewSourceSdkFlag = jest.fn(() =>
+        getMockedFlagValue(actual.FeatureFlagKey.TicketNavViewSourceSdk, false),
+    )
+
+    const useTicketNavViewSourceSdkFlagWithLoading = jest.fn(() => ({
+        isLoading: false,
+        value: getMockedFlagValue(
+            actual.FeatureFlagKey.TicketNavViewSourceSdk,
+            false,
+        ),
+    }))
+
     const useHelpdeskV2MS4Dash6Flag = jest.fn(() => {
         const { hasUIVisionBeta } = useHelpdeskV2BaselineFlag()
 
@@ -472,6 +484,8 @@ jest.mock('@repo/feature-flags', () => {
         useHelpdeskV2MS2Flag,
         useHelpdeskV2MS4Dash6Flag,
         useHelpdeskV2WayfindingMS1Flag,
+        useTicketNavViewSourceSdkFlag,
+        useTicketNavViewSourceSdkFlagWithLoading,
     }
 })
 

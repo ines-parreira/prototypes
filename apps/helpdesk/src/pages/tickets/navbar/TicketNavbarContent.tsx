@@ -58,6 +58,7 @@ type OwnProps = {
     ) => void
 }
 
+// Redux-backed legacy path used when the ticket nav SDK source flag is disabled.
 export function TicketNavbarContentContainer({
     elements,
     isMovingItem,

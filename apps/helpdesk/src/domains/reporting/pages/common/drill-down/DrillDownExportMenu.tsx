@@ -9,7 +9,8 @@ import {
     TooltipContent,
 } from '@gorgias/axiom'
 
-import { UserRole } from 'config/types/user'
+import { hasRole, UserRole } from '@repo/permissions'
+
 import { useDrillDownQueryWithoutLimit } from 'domains/reporting/hooks/useDrillDownData'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import {
@@ -37,7 +38,6 @@ import { useRunningJobs } from 'jobs'
 import type { JobContext } from 'models/job/types'
 import { JobType } from 'models/job/types'
 import { getCurrentUser } from 'state/currentUser/selectors'
-import { hasRole } from 'utils'
 
 export {
     DOWNLOAD_LOADING_LABEL,
@@ -79,10 +79,13 @@ export const DrillDownExportMenu = ({
     const { isLoading, isError, isRequested } =
         useAppSelector(getDrillDownExport)
     const currentUser = useAppSelector(getCurrentUser)
+    const currentUserRole = currentUser.getIn(['role', 'name']) as
+        | UserRole
+        | undefined
     const { running } = useRunningJobs()
     const hasNoPermissions = !(
-        hasRole(currentUser, UserRole.Admin) ||
-        hasRole(currentUser, UserRole.Agent)
+        hasRole({ role: { name: currentUserRole } }, UserRole.Admin) ||
+        hasRole({ role: { name: currentUserRole } }, UserRole.Agent)
     )
     const isDisabled =
         hasNoPermissions || isLoading || running !== false || isFetching

@@ -31,6 +31,7 @@ type CollapsibleSectionProps = BaseSectionProps & {
     to?: never
     actionsSlot?: ReactNode
     trailingSlot?: IconName | ReactNode
+    showDisclosureIndicator?: boolean
     isDisabled?: boolean
     defaultExpanded?: boolean
     onExpandedChange?: (isExpanded: boolean) => void
@@ -109,6 +110,7 @@ export function NavigationSection(props: NavigationSectionProps) {
         children,
         actionsSlot,
         trailingSlot,
+        showDisclosureIndicator = true,
         isDisabled,
         defaultExpanded,
         onExpandedChange,
@@ -151,7 +153,9 @@ export function NavigationSection(props: NavigationSectionProps) {
                 leadingSlot={leadingSlot}
                 trailingSlot={({ isExpanded }) => (
                     <Box alignItems="center" gap="xs">
-                        <DropdownIcon isOpen={isExpanded} />
+                        {showDisclosureIndicator && (
+                            <DropdownIcon isOpen={isExpanded} />
+                        )}
                         {trailingSlot && isIconName(trailingSlot) ? (
                             <Icon name={trailingSlot} size="sm" />
                         ) : (

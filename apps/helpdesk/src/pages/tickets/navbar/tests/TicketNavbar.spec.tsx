@@ -1,7 +1,17 @@
 import type { ComponentProps, ReactNode } from 'react'
 
 import client from '@repo/api-resources'
+import { ticketViewNavigationOrderingStore } from '@repo/navigation'
 import { render } from '@repo/testing'
+import {
+    syncViewRealtimeEvent,
+    usePrivateViews,
+    usePrivateViewSections,
+    usePrivateViewsOrdering,
+    usePublicViews,
+    usePublicViewSections,
+    usePublicViewsOrdering,
+} from '@repo/views'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
@@ -16,10 +26,6 @@ import type { View } from 'models/view/types'
 import { ViewType, ViewVisibility } from 'models/view/types'
 import { useSplitTicketViewSwitcher } from 'split-ticket-view-toggle'
 import { submitSettingSuccess } from 'state/currentUser/actions'
-import {
-    optimisticAccountSettingsReset,
-    optimisticUserSettingsReset,
-} from 'state/ui/ticketNavbar/actions'
 import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
 
 import type DeleteSectionModal from '../DeleteSectionModal'
@@ -27,6 +33,7 @@ import type SectionFormModal from '../SectionFormModal'
 import { TicketNavbarContainer } from '../TicketNavbar'
 import type { TicketNavbarBlock } from '../TicketNavbarBlock'
 import type TicketNavbarContent from '../TicketNavbarContent'
+import type TicketNavbarContentBridge from '../TicketNavbarContentBridge'
 
 jest.mock('@repo/navigation', () => ({
     ...jest.requireActual('@repo/navigation'),
@@ -41,10 +48,17 @@ const mockUseSidebar = jest.requireMock('@repo/navigation')
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useHelpdeskV2WayfindingMS1Flag: jest.fn(() => false),
+    useTicketNavViewSourceSdkFlagWithLoading: jest.fn(() => ({
+        isLoading: false,
+        value: false,
+    })),
 }))
 const mockUseHelpdeskV2WayfindingMS1Flag = jest.requireMock(
     '@repo/feature-flags',
 ).useHelpdeskV2WayfindingMS1Flag as jest.Mock
+const mockUseTicketNavViewSourceSdkFlagWithLoading = jest.requireMock(
+    '@repo/feature-flags',
+).useTicketNavViewSourceSdkFlagWithLoading as jest.Mock
 
 jest.mock('common/navigation', () => ({
     ActiveContent: { Tickets: 'tickets' },
@@ -90,6 +104,23 @@ jest.mock('@repo/tickets', () => ({
     ...jest.requireActual('@repo/tickets'),
     CollapsedDefaultViews: () => <div>CollapsedDefaultViews</div>,
 }))
+jest.mock('@repo/views', () => ({
+    ...jest.requireActual('@repo/views'),
+    usePrivateViews: jest.fn(),
+    usePrivateViewsOrdering: jest.fn(),
+    usePrivateViewSections: jest.fn(),
+    usePublicViews: jest.fn(),
+    usePublicViewsOrdering: jest.fn(),
+    usePublicViewSections: jest.fn(),
+    syncViewRealtimeEvent: jest.fn(),
+}))
+const mockUsePublicViews = usePublicViews as jest.Mock
+const mockUsePrivateViews = usePrivateViews as jest.Mock
+const mockUsePublicViewSections = usePublicViewSections as jest.Mock
+const mockUsePrivateViewSections = usePrivateViewSections as jest.Mock
+const mockUsePublicViewsOrdering = usePublicViewsOrdering as jest.Mock
+const mockUsePrivateViewsOrdering = usePrivateViewsOrdering as jest.Mock
+const mockSyncViewRealtimeEvent = syncViewRealtimeEvent as jest.Mock
 jest.mock('../DefaultViews', () => ({
     DefaultViews: () => <div>DefaultViews</div>,
 }))
@@ -151,10 +182,22 @@ jest.mock(
             onSectionDeleteClick,
             onSectionRenameClick,
         }: ComponentProps<typeof TicketNavbarContent>) => {
+            const firstSectionId =
+                elements.find(
+                    (element) =>
+                        element.type === TicketNavbarElementType.Section,
+                )?.data.id ?? 1
+
             if (isPrivate) {
                 privateOnSubmitMoveItem = onSubmitMoveItem
+                privateTicketNavbarContentProps = {
+                    elements,
+                }
             } else {
                 publicOnSubmitMoveItem = onSubmitMoveItem
+                publicTicketNavbarContentProps = {
+                    elements,
+                }
             }
 
             return (
@@ -170,13 +213,73 @@ jest.mock(
                     {onSectionDeleteClick && (
                         <div
                             data-testid="TicketNavbarContent-delete"
-                            onClick={() => onSectionDeleteClick(1)}
+                            onClick={() => onSectionDeleteClick(firstSectionId)}
                         />
                     )}
                     {onSectionRenameClick && (
                         <div
                             data-testid="TicketNavbarContent-rename"
-                            onClick={() => onSectionRenameClick(1)}
+                            onClick={() => onSectionRenameClick(firstSectionId)}
+                        />
+                    )}
+                </div>
+            )
+        },
+)
+jest.mock(
+    '../TicketNavbarContentBridge',
+    () =>
+        ({
+            elements,
+            isPrivate,
+            onSubmitMoveItem,
+            onSectionDeleteClick,
+            onSectionRenameClick,
+            sections,
+            views,
+        }: ComponentProps<typeof TicketNavbarContentBridge>) => {
+            const firstSectionId =
+                elements.find(
+                    (element) =>
+                        element.type === TicketNavbarElementType.Section,
+                )?.data.id ?? 1
+
+            if (isPrivate) {
+                privateOnSubmitMoveItem = onSubmitMoveItem
+                privateTicketNavbarContentProps = {
+                    elements,
+                    sections,
+                    views,
+                }
+            } else {
+                publicOnSubmitMoveItem = onSubmitMoveItem
+                publicTicketNavbarContentProps = {
+                    elements,
+                    sections,
+                    views,
+                }
+            }
+
+            return (
+                <div
+                    data-testid="TicketNavbarContent"
+                    data-scope={isPrivate ? 'private' : 'public'}
+                >
+                    {elements.map((element) => (
+                        <div key={element.data.id}>
+                            element: {JSON.stringify(element)}
+                        </div>
+                    ))}
+                    {onSectionDeleteClick && (
+                        <div
+                            data-testid="TicketNavbarContent-delete"
+                            onClick={() => onSectionDeleteClick(firstSectionId)}
+                        />
+                    )}
+                    {onSectionRenameClick && (
+                        <div
+                            data-testid="TicketNavbarContent-rename"
+                            onClick={() => onSectionRenameClick(firstSectionId)}
                         />
                     )}
                 </div>
@@ -189,6 +292,24 @@ let publicOnSubmitMoveItem:
     | undefined
 let privateOnSubmitMoveItem:
     | ComponentProps<typeof TicketNavbarContent>['onSubmitMoveItem']
+    | undefined
+let publicTicketNavbarContentProps:
+    | (Pick<ComponentProps<typeof TicketNavbarContent>, 'elements'> &
+          Partial<
+              Pick<
+                  ComponentProps<typeof TicketNavbarContentBridge>,
+                  'sections' | 'views'
+              >
+          >)
+    | undefined
+let privateTicketNavbarContentProps:
+    | (Pick<ComponentProps<typeof TicketNavbarContent>, 'elements'> &
+          Partial<
+              Pick<
+                  ComponentProps<typeof TicketNavbarContentBridge>,
+                  'sections' | 'views'
+              >
+          >)
     | undefined
 
 type RenderNavbarParams = {
@@ -217,6 +338,8 @@ describe('<TicketNavbar/>', () => {
         }),
         fetchViewsSuccess: jest.fn(),
         isLoading: false,
+        optimisticAccountSettingsReset: jest.fn(),
+        optimisticUserSettingsReset: jest.fn(),
         sections: { [section.id]: section },
         sectionsFetched: jest.fn(),
         sectionCreated: jest.fn(),
@@ -282,8 +405,82 @@ describe('<TicketNavbar/>', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         mockedServer.reset()
+        mockUseTicketNavViewSourceSdkFlagWithLoading.mockReturnValue({
+            isLoading: false,
+            value: false,
+        })
         publicOnSubmitMoveItem = undefined
         privateOnSubmitMoveItem = undefined
+        publicTicketNavbarContentProps = undefined
+        privateTicketNavbarContentProps = undefined
+        mockUsePublicViews.mockReturnValue([
+            makeTestView({
+                id: 21,
+                name: 'Shared Root',
+                section_id: null,
+                type: ViewType.TicketList,
+                visibility: ViewVisibility.Public,
+            }),
+            makeTestView({
+                id: 22,
+                name: 'Shared Nested',
+                section_id: 10,
+                type: ViewType.TicketList,
+                visibility: ViewVisibility.Public,
+            }),
+            makeTestView({
+                id: 23,
+                name: 'Shared Missing Section',
+                section_id: 999,
+                type: ViewType.TicketList,
+                visibility: ViewVisibility.Public,
+            }),
+        ])
+        mockUsePrivateViews.mockReturnValue([
+            makeTestView({
+                id: 31,
+                name: 'Private Root',
+                section_id: null,
+                type: ViewType.TicketList,
+                visibility: ViewVisibility.Private,
+            }),
+        ])
+        mockUsePublicViewSections.mockReturnValue([
+            {
+                ...section,
+                id: 10,
+                name: 'Shared Section',
+                private: false,
+            },
+        ])
+        mockUsePrivateViewSections.mockReturnValue([
+            {
+                ...section,
+                id: 11,
+                name: 'Private Section',
+                private: true,
+            },
+        ])
+        mockUsePublicViewsOrdering.mockReturnValue({
+            views: {
+                21: { display_order: 2 },
+                22: { display_order: 3 },
+                23: { display_order: 1 },
+            },
+            view_sections: {
+                10: { display_order: 0 },
+            },
+            views_top: {},
+            views_bottom: {},
+        })
+        mockUsePrivateViewsOrdering.mockReturnValue({
+            views: {
+                31: { display_order: 0 },
+            },
+            view_sections: {
+                11: { display_order: 1 },
+            },
+        })
         mockedServer.onGet(/\/api\/views\/.*/).reply(200, {
             data: [view],
             meta: {},
@@ -301,43 +498,43 @@ describe('<TicketNavbar/>', () => {
             isCollapsed: false,
             toggleCollapse: jest.fn(),
         })
+        ticketViewNavigationOrderingStore
+            .getState()
+            .resetOptimisticTicketViewNavigationOrdering()
     })
 
-    it('should fetch the views and dispatch the views actions (legacy views + views entity)', (done) => {
+    it('should fetch the views and dispatch the views actions (legacy views + views entity)', async () => {
         renderNavbar()
 
-        setImmediate(() => {
+        await waitFor(() => {
             expect(minProps.fetchViewsSuccess).toHaveBeenNthCalledWith(
                 1,
                 { data: [view] },
                 '1',
             )
             expect(minProps.viewsFetched).toHaveBeenNthCalledWith(1, [view])
-            done()
         })
     })
 
-    it('should fetch the sections and dispatch the result', (done) => {
+    it('should fetch the sections and dispatch the result', async () => {
         renderNavbar()
 
-        setImmediate(() => {
+        await waitFor(() => {
             expect(minProps.sectionsFetched).toHaveBeenNthCalledWith(1, [
                 section,
             ])
-            done()
         })
     })
 
-    it('should fallback to location view id when view id is missing from the params', (done) => {
+    it('should fallback to location view id when view id is missing from the params', async () => {
         renderNavbar(minProps, { route: '/foo?viewId=2' })
 
-        setImmediate(() => {
+        await waitFor(() => {
             expect(minProps.fetchViewsSuccess).toHaveBeenNthCalledWith(
                 1,
                 { data: [view] },
                 '2',
             )
-            done()
         })
     })
 
@@ -380,7 +577,6 @@ describe('<TicketNavbar/>', () => {
         renderNavbar({
             ...minProps,
             accountSetting: {} as any,
-            optimisticAccountSettingsReset,
         })
 
         expect(publicOnSubmitMoveItem).toBeDefined()
@@ -435,7 +631,6 @@ describe('<TicketNavbar/>', () => {
         renderNavbar({
             ...minProps,
             accountSetting: {} as any,
-            optimisticUserSettingsReset,
             submitSettingSuccess,
         })
 
@@ -469,39 +664,36 @@ describe('<TicketNavbar/>', () => {
         })
     })
 
-    it('should create a new section', (done) => {
+    it('should create a new section', async () => {
         const { getByTestId } = renderNavbar()
 
         fireEvent.click(getByTestId('NavbarBlock-Create section'))
         fireEvent.click(getByTestId('SectionModal-submit'))
 
-        setImmediate(() => {
+        await waitFor(() => {
             expect(minProps.sectionCreated).toHaveBeenNthCalledWith(1, section)
-            done()
         })
     })
 
-    it('should update a section', (done) => {
+    it('should update a section', async () => {
         const { getByTestId } = renderNavbar()
 
         fireEvent.click(getByTestId('TicketNavbarContent-rename'))
         fireEvent.click(getByTestId('SectionModal-submit'))
 
-        setImmediate(() => {
+        await waitFor(() => {
             expect(minProps.sectionUpdated).toHaveBeenNthCalledWith(1, section)
-            done()
         })
     })
 
-    it('should delete a section', (done) => {
+    it('should delete a section', async () => {
         const { getByTestId } = renderNavbar()
 
         fireEvent.click(getByTestId('TicketNavbarContent-delete'))
         fireEvent.click(getByTestId('DeleteModal-submit'))
 
-        setImmediate(() => {
+        await waitFor(() => {
             expect(minProps.sectionDeleted).toHaveBeenNthCalledWith(1, 1)
-            done()
         })
     })
 
@@ -589,9 +781,127 @@ describe('<TicketNavbar/>', () => {
         expect(queryByTestId('new-system-views')).not.toBeInTheDocument()
     })
 
-    describe('with wayfinding flag enabled', () => {
+    it('does not mount legacy or SDK source while the SDK view source flag is loading', async () => {
+        mockUseHelpdeskV2WayfindingMS1Flag.mockReturnValue(true)
+        mockUseTicketNavViewSourceSdkFlagWithLoading.mockReturnValue({
+            isLoading: true,
+            value: true,
+        })
+
+        const { queryByText } = renderNavbar()
+
+        expect(queryByText('TicketNavbarCreateMenu')).not.toBeInTheDocument()
+        expect(mockUsePublicViews).not.toHaveBeenCalled()
+        expect(minProps.fetchViewsSuccess).not.toHaveBeenCalled()
+        expect(minProps.viewsFetched).not.toHaveBeenCalled()
+        expect(minProps.sectionsFetched).not.toHaveBeenCalled()
+    })
+
+    describe('with wayfinding flag and SDK view source flag enabled', () => {
         beforeEach(() => {
             mockUseHelpdeskV2WayfindingMS1Flag.mockReturnValue(true)
+            mockUseTicketNavViewSourceSdkFlagWithLoading.mockReturnValue({
+                isLoading: false,
+                value: true,
+            })
+        })
+
+        it('renders shared and private elements from views hooks instead of Redux props', () => {
+            renderNavbar({
+                ...minProps,
+                sharedElements: [
+                    {
+                        data: makeTestView({
+                            id: 900,
+                            name: 'Redux Shared View',
+                        }),
+                        type: TicketNavbarElementType.View,
+                    },
+                ],
+                privateElements: [
+                    {
+                        data: makeTestView({
+                            id: 901,
+                            name: 'Redux Private View',
+                        }),
+                        type: TicketNavbarElementType.View,
+                    },
+                ],
+            })
+
+            expect(
+                publicTicketNavbarContentProps?.elements.map(
+                    (element) => element.data.id,
+                ),
+            ).toEqual([10, 23, 21])
+            expect(publicTicketNavbarContentProps?.elements[0].type).toEqual(
+                TicketNavbarElementType.Section,
+            )
+            expect(
+                publicTicketNavbarContentProps?.elements[0].type ===
+                    TicketNavbarElementType.Section
+                    ? publicTicketNavbarContentProps.elements[0].children.map(
+                          (child) => child.id,
+                      )
+                    : [],
+            ).toEqual([22])
+            expect(publicTicketNavbarContentProps?.views?.[21].name).toBe(
+                'Shared Root',
+            )
+            expect(publicTicketNavbarContentProps?.views?.[900]).toBeUndefined()
+            expect(publicTicketNavbarContentProps?.sections?.[10].name).toBe(
+                'Shared Section',
+            )
+
+            expect(
+                privateTicketNavbarContentProps?.elements.map(
+                    (element) => element.data.id,
+                ),
+            ).toEqual([31, 11])
+            expect(privateTicketNavbarContentProps?.views?.[31].name).toBe(
+                'Private Root',
+            )
+            expect(
+                privateTicketNavbarContentProps?.views?.[901],
+            ).toBeUndefined()
+            expect(privateTicketNavbarContentProps?.sections?.[11].name).toBe(
+                'Private Section',
+            )
+        })
+
+        it('uses optimistic ordering before query ordering for wayfinding elements', () => {
+            ticketViewNavigationOrderingStore
+                .getState()
+                .setOptimisticSharedOrdering({
+                    views: {
+                        21: { display_order: 0 },
+                        23: { display_order: 1 },
+                    },
+                    view_sections: {
+                        10: { display_order: 2 },
+                    },
+                })
+
+            renderNavbar(minProps)
+
+            expect(
+                publicTicketNavbarContentProps?.elements.map(
+                    (element) => element.data.id,
+                ),
+            ).toEqual([21, 23, 10])
+        })
+
+        it('does not run the legacy views and sections fetch bridge', async () => {
+            renderNavbar()
+
+            await waitFor(() => {
+                expect(publicTicketNavbarContentProps).toBeDefined()
+            })
+
+            expect(minProps.fetchViewsSuccess).not.toHaveBeenCalled()
+            expect(minProps.viewsFetched).not.toHaveBeenCalled()
+            expect(minProps.sectionsFetched).not.toHaveBeenCalled()
+            expect(mockedServer.history.get).toEqual([])
         })
 
         it('should create a new section', async () => {
@@ -612,6 +922,10 @@ describe('<TicketNavbar/>', () => {
                     section,
                 )
             })
+            expect(mockSyncViewRealtimeEvent).toHaveBeenNthCalledWith(1, {
+                type: 'view-section-created',
+                section,
+            })
         })
 
         it('should update a section', async () => {
@@ -627,6 +941,13 @@ describe('<TicketNavbar/>', () => {
                     section,
                 )
             })
+            expect(mockedServer.history.put[0].url).toBe(
+                '/api/view-sections/11/',
+            )
+            expect(mockSyncViewRealtimeEvent).toHaveBeenNthCalledWith(1, {
+                type: 'view-section-updated',
+                section,
+            })
         })
 
         it('should delete a section', async () => {
@@ -637,8 +958,68 @@ describe('<TicketNavbar/>', () => {
             await user.click(getByTestId('DeleteModal-submit'))
 
             await waitFor(() => {
-                expect(minProps.sectionDeleted).toHaveBeenNthCalledWith(1, 1)
+                expect(minProps.sectionDeleted).toHaveBeenNthCalledWith(1, 11)
             })
+            expect(mockSyncViewRealtimeEvent).toHaveBeenNthCalledWith(1, {
+                type: 'view-section-deleted',
+                sectionId: 11,
+            })
+        })
+    })
+
+    describe('with wayfinding flag enabled and SDK view source flag disabled', () => {
+        beforeEach(() => {
+            mockUseHelpdeskV2WayfindingMS1Flag.mockReturnValue(true)
+            mockUseTicketNavViewSourceSdkFlagWithLoading.mockReturnValue({
+                isLoading: false,
+                value: false,
+            })
+        })
+
+        it('uses the legacy Redux source and fetch bridge', async () => {
+            renderNavbar()
+
+            await waitFor(() => {
+                expect(publicTicketNavbarContentProps).toBeDefined()
+            })
+
+            expect(mockUsePublicViews).not.toHaveBeenCalled()
+            expect(mockUsePrivateViews).not.toHaveBeenCalled()
+            expect(minProps.fetchViewsSuccess).toHaveBeenNthCalledWith(
+                1,
+                { data: [view] },
+                '1',
+            )
+            expect(minProps.viewsFetched).toHaveBeenNthCalledWith(1, [view])
+            expect(minProps.sectionsFetched).toHaveBeenNthCalledWith(1, [
+                section,
+            ])
+            expect(
+                publicTicketNavbarContentProps?.elements.map(
+                    (element) => element.data.id,
+                ),
+            ).toEqual([4, section.id])
+        })
+
+        it('does not sync section mutations into the SDK section cache', async () => {
+            const user = userEvent.setup()
+            const { getByRole, getByTestId, getByText } = renderNavbar()
+
+            await user.click(getByRole('button', { name: 'add-plus-circle' }))
+
+            await waitFor(() => {
+                expect(getByText('Create section')).toBeInTheDocument()
+            })
+            await user.click(getByText('Create section'))
+            await user.click(getByTestId('SectionModal-submit'))
+
+            await waitFor(() => {
+                expect(minProps.sectionCreated).toHaveBeenNthCalledWith(
+                    1,
+                    section,
+                )
+            })
+            expect(mockSyncViewRealtimeEvent).not.toHaveBeenCalled()
         })
     })
 
@@ -676,6 +1057,25 @@ describe('<TicketNavbar/>', () => {
     describe('without wayfinding flag', () => {
         beforeEach(() => {
             mockUseHelpdeskV2WayfindingMS1Flag.mockReturnValue(false)
+        })
+
+        it('uses Redux-provided legacy elements', () => {
+            renderNavbar()
+
+            expect(
+                publicTicketNavbarContentProps?.elements.map(
+                    (element) => element.data.id,
+                ),
+            ).toEqual([4, section.id])
+            expect(
+                publicTicketNavbarContentProps?.elements[1].type ===
+                    TicketNavbarElementType.Section
+                    ? publicTicketNavbarContentProps.elements[1].children.map(
+                          (child) => child.id,
+                      )
+                    : [],
+            ).toEqual([1])
+            expect(mockUsePublicViews).not.toHaveBeenCalled()
         })
 
         it('should render regardless of sidebar collapsed state', () => {

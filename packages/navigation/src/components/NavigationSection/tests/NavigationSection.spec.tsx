@@ -144,6 +144,19 @@ describe('NavigationSection', () => {
             ).toBeInTheDocument()
         })
 
+        it('can hide the disclosure indicator', () => {
+            const { container } = renderInRouter(
+                <NavigationSection
+                    label="Tools"
+                    showDisclosureIndicator={false}
+                >
+                    <div>Child</div>
+                </NavigationSection>,
+            )
+
+            expect(container.querySelector('svg')).not.toBeInTheDocument()
+        })
+
         it('renders with data-candu-id attribute when canduId is provided', () => {
             const { container } = renderInRouter(
                 <NavigationSection label="Tools" canduId="my-candu-id">

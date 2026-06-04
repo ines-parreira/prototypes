@@ -36,6 +36,8 @@ export {
 } from './predicates'
 export { getViewIdFromUrl, isViewUrl } from './utils/url'
 export { getView, getAllViews } from './store/viewStore'
+export { syncViewRealtimeEvent } from './store/viewRealtimeEventStore'
+export type { ViewRealtimeEvent } from './store/viewRealtimeEventStore'
 export { logViewEvent, viewEventLogStore } from './store/viewEventLog'
 export type { ViewEvent } from './store/viewEventLog'
 export { useAllViews } from './hooks/useAllViews'
@@ -61,6 +63,8 @@ export { useSectionViews } from './hooks/useSectionViews'
 export { useSystemViews, getSystemViews } from './hooks/useSystemViews'
 export { useUpdatePrivateViewsOrdering } from './hooks/useUpdatePrivateViewsOrdering'
 export { useUpdatePublicViewsOrdering } from './hooks/useUpdatePublicViewsOrdering'
+export { useViewsOrderingCacheSync } from './hooks/useViewsOrderingCacheSync'
+export type { ViewSectionMoveCacheItem } from './hooks/useViewsOrderingCacheSync'
 export { useHasNewViewCountScheduler } from './hooks/useHasNewViewCountScheduler'
 export {
     useViewCountSchedulerVersion,

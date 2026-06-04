@@ -1,50 +1,59 @@
 import type { ComponentProps } from 'react'
 
-import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
-import { assumeMock, render } from '@repo/testing'
-import { screen, waitFor, within } from '@testing-library/react'
+import { render } from '@repo/testing'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 
-import { Navigation } from 'components/Navigation/Navigation'
 import { section } from 'fixtures/section'
 import { user } from 'fixtures/users'
 import { view } from 'fixtures/views'
+import { ViewVisibility } from 'models/view/types'
 import { SplitTicketViewProvider } from 'split-ticket-view-toggle'
 import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
 
-import { TicketNavbarSectionContainer } from '../TicketNavbarSection'
-
-import css from '../TicketNavbarSection.less'
-
-jest.mock('@repo/feature-flags', () => ({
-    ...jest.requireActual('@repo/feature-flags'),
-    useHelpdeskV2WayfindingMS1Flag: jest.fn().mockReturnValue(false),
-    useFlag: jest.fn().mockReturnValue(false),
-}))
-const useHelpdeskV2WayfindingMS1FlagMock = assumeMock(
-    useHelpdeskV2WayfindingMS1Flag,
-)
+import { TicketNavbarSectionBridgeContainer } from '../TicketNavbarSectionBridge'
 
 // Captures the onDrop prop from the inner section-level View DropTarget (identified by
 // accept='view' + bottomIndicatorClassName) so we can call it directly in tests.
 let capturedSectionViewOnDrop:
     | ((item: any, monitor: any, direction: any) => any)
     | null = null
+let capturedSectionCanDrop: ((item: any) => boolean) | null = null
+let capturedSectionViewCanDrop: ((item: any) => boolean) | null = null
+let capturedNestedViewCanDrop: ((item: any) => boolean) | null = null
 
 // Mock TicketNavbarDropTarget for this test
 jest.mock('../TicketNavbarDropTarget', () => ({
     __esModule: true,
-    default: ({ children, className, onDrop, accept, ...props }: any) => {
-        if (accept === 'view' && props.bottomIndicatorClassName) {
-            capturedSectionViewOnDrop = onDrop
+    default: ({
+        accept,
+        bottomIndicatorClassName,
+        canDrop,
+        children,
+        className,
+        onDrop,
+    }: any) => {
+        if (accept === 'section') {
+            capturedSectionCanDrop = canDrop
         }
+        if (accept === 'view' && bottomIndicatorClassName) {
+            capturedSectionViewOnDrop = onDrop
+            capturedSectionViewCanDrop = canDrop
+        }
+        if (Array.isArray(accept)) {
+            capturedNestedViewCanDrop = canDrop
+        }
+        const dndAttributes = {
+            accept,
+            bottomindicatorclassname: bottomIndicatorClassName,
+        }
+
         return (
             <div
                 className={className}
                 data-testid="ticket-navbar-drop-target"
-                accept={accept}
-                {...props}
+                {...dndAttributes}
             >
                 {children}
             </div>
@@ -63,53 +72,55 @@ const minProps = {
         children: [view],
     },
     viewUpdated: jest.fn(),
+    sections: {
+        [section.id]: section,
+    },
     views: {
         [view.id]: view,
     },
-} as unknown as ComponentProps<typeof TicketNavbarSectionContainer>
+} as unknown as ComponentProps<typeof TicketNavbarSectionBridgeContainer>
 
-describe('<TicketNavbarSection/>', () => {
-    it.each([
-        ['views expanded', { value: [1] }],
-        ['views collapsed', { value: [] }],
-    ])('should render a section (%s)', (_, props) => {
-        const { container } = render(
+describe('<TicketNavbarSectionBridge/>', () => {
+    const renderSection = (
+        props: Partial<
+            ComponentProps<typeof TicketNavbarSectionBridgeContainer>
+        > = {},
+    ) =>
+        render(
             <SplitTicketViewProvider>
-                <Navigation.Root value={props.value}>
-                    <TicketNavbarSectionContainer {...minProps} />
-                </Navigation.Root>
+                <TicketNavbarSectionBridgeContainer {...minProps} {...props} />
             </SplitTicketViewProvider>,
             {
                 storeState: {
-                    entities: fromJS({}),
+                    entities: fromJS({
+                        sections: minProps.sections,
+                        views: minProps.views,
+                    }),
                     currentUser: fromJS(user),
                 },
             },
         )
 
+    beforeEach(() => {
+        capturedSectionViewOnDrop = null
+        capturedSectionCanDrop = null
+        capturedSectionViewCanDrop = null
+        capturedNestedViewCanDrop = null
+    })
+
+    it('renders section name and child views via NavigationSection', () => {
+        renderSection()
+
         expect(
             screen.getByText(minProps.sectionElement.data.name),
         ).toBeInTheDocument()
-
-        const { value } = props
-
-        if (value.length > 0) {
-            expect(
-                within(container).getByText(
-                    minProps.sectionElement.children[0].name,
-                ),
-            ).toBeInTheDocument()
-        } else {
-            expect(
-                within(container).queryByText(
-                    minProps.sectionElement.children[0].name,
-                ),
-            ).not.toBeInTheDocument()
-        }
+        expect(
+            screen.getByText(minProps.sectionElement.children[0].name),
+        ).toBeInTheDocument()
     })
 
-    it('should display the candu link for AI Agent', () => {
-        const section = {
+    it('displays the candu link for AI Agent', () => {
+        const aiAgentSection = {
             ...minProps.sectionElement.data,
             decoration: {
                 emoji: '✨',
@@ -117,349 +128,258 @@ describe('<TicketNavbarSection/>', () => {
             name: 'AI Agent',
         }
 
-        const { container } = render(
-            <Navigation.Root>
-                <TicketNavbarSectionContainer
-                    {...minProps}
-                    sectionElement={{
-                        ...minProps.sectionElement,
-                        data: section,
-                    }}
-                />
-            </Navigation.Root>,
-        )
+        const { container } = renderSection({
+            sectionElement: {
+                ...minProps.sectionElement,
+                data: aiAgentSection,
+            },
+        })
 
-        const element = container.querySelector('[data-candu-id]')
-
-        // Assert that the element exists and has the correct value
-        expect(element).toBeInTheDocument()
-        expect(element).toHaveAttribute(
+        expect(container.querySelector('[data-candu-id]')).toHaveAttribute(
             'data-candu-id',
             'ticket-navbar-ai-agent-section-link-ai-agent',
         )
     })
 
-    it('should have the correct component structure', () => {
-        const { container } = render(
-            <SplitTicketViewProvider>
-                <Navigation.Root>
-                    <TicketNavbarSectionContainer {...minProps} />
-                </Navigation.Root>
-            </SplitTicketViewProvider>,
-            {
-                storeState: {
-                    entities: fromJS({}),
-                    currentUser: fromJS(user),
+    it('renders emoji decoration', () => {
+        renderSection({
+            sectionElement: {
+                ...minProps.sectionElement,
+                data: {
+                    ...minProps.sectionElement.data,
+                    decoration: {
+                        emoji: '🚀',
+                    },
                 },
             },
-        )
+        })
 
-        // Verify the outer DnD target structure
-        const outerDndTarget = container.firstChild as HTMLElement
-        expect(outerDndTarget).toHaveClass('root')
-        expect(outerDndTarget.firstChild).toHaveAttribute(
-            'data-testid',
-            'ticket-navbar-drop-target',
-        )
-
-        // Verify the Navigation.Section structure
-        const navigationSection = outerDndTarget.firstChild as HTMLElement
-        expect(navigationSection).toHaveClass('section section')
-
-        // Verify the inner DnD target for views
-        const innerDndTarget = navigationSection.firstChild as HTMLElement
-        expect(innerDndTarget).toHaveAttribute(
-            'data-testid',
-            'ticket-navbar-drop-target',
-        )
-        expect(innerDndTarget).toHaveAttribute('accept', 'view')
-        expect(innerDndTarget).toHaveAttribute(
-            'bottomindicatorclassname',
-            'viewIntoSectionIndicator',
-        )
-
-        // Verify the section trigger container
-        const triggerContainer = innerDndTarget.firstChild as HTMLElement
-        expect(triggerContainer).toHaveClass('navbarSectionTriggerContainer')
-        expect(triggerContainer).toHaveAttribute('draggable', 'true')
+        expect(screen.getByText('🚀')).toBeInTheDocument()
     })
 
-    it('should handle dropdown menu interactions', async () => {
-        const onSectionDeleteClick = jest.fn()
-        const onSectionRenameClick = jest.fn()
-        const user = userEvent.setup()
-
-        render(
-            <SplitTicketViewProvider>
-                <Navigation.Root>
-                    <TicketNavbarSectionContainer
-                        {...minProps}
-                        onSectionDeleteClick={onSectionDeleteClick}
-                        onSectionRenameClick={onSectionRenameClick}
-                    />
-                </Navigation.Root>
-            </SplitTicketViewProvider>,
-            {
-                storeState: {
-                    entities: fromJS({}),
-                    currentUser: fromJS(user),
-                },
+    it('does not render a disclosure indicator for empty sections', () => {
+        const { container } = renderSection({
+            onSectionDeleteClick: undefined,
+            onSectionRenameClick: undefined,
+            sectionElement: {
+                ...minProps.sectionElement,
+                children: [],
             },
+        })
+
+        expect(container.querySelector('svg')).not.toBeInTheDocument()
+    })
+
+    it('renders Rename and Delete menu items when actions are provided', async () => {
+        const sectionUser = userEvent.setup()
+        const onSectionRenameClick = jest.fn()
+        const onSectionDeleteClick = jest.fn()
+
+        renderSection({ onSectionRenameClick, onSectionDeleteClick })
+
+        await sectionUser.click(
+            screen.getByRole('button', {
+                name: 'dots-meatballs-horizontal',
+            }),
         )
 
-        // Open dropdown
-        const dropdownToggle = screen.getByText('...')
-        await user.click(dropdownToggle)
+        await waitFor(() => {
+            expect(screen.getByText('Rename')).toBeInTheDocument()
+            expect(screen.getByText('Delete')).toBeInTheDocument()
+        })
+    })
 
-        // Test rename action
-        const renameButton = screen.getByText('Rename')
-        await user.click(renameButton)
+    it('calls onSectionRenameClick when Rename is selected', async () => {
+        const sectionUser = userEvent.setup()
+        const onSectionRenameClick = jest.fn()
+
+        renderSection({
+            onSectionRenameClick,
+            onSectionDeleteClick: jest.fn(),
+        })
+
+        await sectionUser.click(
+            screen.getByRole('button', {
+                name: 'dots-meatballs-horizontal',
+            }),
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('Rename')).toBeInTheDocument()
+        })
+
+        await sectionUser.click(screen.getByText('Rename'))
+
         expect(onSectionRenameClick).toHaveBeenCalledWith(
             minProps.sectionElement.data.id,
         )
+    })
 
-        // Test delete action
-        const deleteButton = screen.getByText('Delete')
-        await user.click(deleteButton)
+    it('calls onSectionDeleteClick when Delete is selected', async () => {
+        const sectionUser = userEvent.setup()
+        const onSectionDeleteClick = jest.fn()
+
+        renderSection({
+            onSectionRenameClick: jest.fn(),
+            onSectionDeleteClick,
+        })
+
+        await sectionUser.click(
+            screen.getByRole('button', {
+                name: 'dots-meatballs-horizontal',
+            }),
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('Delete')).toBeInTheDocument()
+        })
+
+        await sectionUser.click(screen.getByText('Delete'))
+
         expect(onSectionDeleteClick).toHaveBeenCalledWith(
             minProps.sectionElement.data.id,
         )
     })
 
-    it('should handle section with emoji decoration', () => {
-        const sectionWithEmoji = {
-            ...minProps.sectionElement.data,
-            decoration: {
-                emoji: '🚀',
-            },
+    it('uses provided view and section maps for drop eligibility', () => {
+        const injectedSection = {
+            ...section,
+            id: 50,
+            private: true,
+        }
+        const draggedSection = {
+            ...section,
+            id: 70,
+            private: true,
+        }
+        const privateView = {
+            ...view,
+            id: 60,
+            visibility: ViewVisibility.Private,
+        }
+        const publicView = {
+            ...view,
+            id: 61,
+            visibility: ViewVisibility.Public,
         }
 
-        const { container } = render(
-            <SplitTicketViewProvider>
-                <Navigation.Root>
-                    <TicketNavbarSectionContainer
-                        {...minProps}
-                        sectionElement={{
-                            ...minProps.sectionElement,
-                            data: sectionWithEmoji,
-                        }}
-                    />
-                </Navigation.Root>
-            </SplitTicketViewProvider>,
-            {
-                storeState: {
-                    entities: fromJS({}),
-                    currentUser: fromJS(user),
-                },
+        renderSection({
+            sectionElement: {
+                children: [],
+                data: injectedSection,
+                type: TicketNavbarElementType.Section,
             },
-        )
+            sections: {
+                [draggedSection.id]: draggedSection,
+            },
+            views: {
+                [privateView.id]: privateView,
+                [publicView.id]: publicView,
+            },
+        })
 
-        const emojiElement = container.querySelector(`.${css.emoji}`)
-        expect(emojiElement).toBeInTheDocument()
-        expect(emojiElement).toHaveTextContent('🚀')
+        expect(
+            capturedSectionCanDrop?.({
+                id: draggedSection.id,
+                type: TicketNavbarElementType.Section,
+            }),
+        ).toBe(true)
+        expect(
+            capturedSectionViewCanDrop?.({
+                id: privateView.id,
+                type: TicketNavbarElementType.View,
+            }),
+        ).toBe(true)
+        expect(
+            capturedSectionViewCanDrop?.({
+                id: publicView.id,
+                type: TicketNavbarElementType.View,
+            }),
+        ).toBe(false)
     })
 
-    it('should handle section without dropdown menu when no actions provided', () => {
-        const { container } = render(
-            <SplitTicketViewProvider>
-                <Navigation.Root>
-                    <TicketNavbarSectionContainer
-                        {...minProps}
-                        onSectionDeleteClick={undefined}
-                        onSectionRenameClick={undefined}
-                    />
-                </Navigation.Root>
-            </SplitTicketViewProvider>,
-            {
-                storeState: {
-                    entities: fromJS({}),
-                    currentUser: fromJS(user),
-                },
-            },
-        )
-
-        const dropdownToggle = container.querySelector(
-            `.${css.navbarSectiondropdown}`,
-        )
-        expect(dropdownToggle).not.toBeInTheDocument()
-    })
-
-    it('should handle section with no children', () => {
-        const sectionWithoutChildren = {
-            ...minProps.sectionElement,
-            children: [],
+    it('uses provided view and section maps for nested view drop eligibility', () => {
+        const targetView = {
+            ...view,
+            id: 80,
+            section_id: section.id,
+            visibility: ViewVisibility.Private,
+        }
+        const draggedView = {
+            ...view,
+            id: 81,
+            section_id: null,
+            visibility: ViewVisibility.Private,
         }
 
-        const { container } = render(
-            <SplitTicketViewProvider>
-                <Navigation.Root>
-                    <TicketNavbarSectionContainer
-                        {...minProps}
-                        sectionElement={sectionWithoutChildren}
-                    />
-                </Navigation.Root>
-            </SplitTicketViewProvider>,
-            {
-                storeState: {
-                    entities: fromJS({}),
-                    currentUser: fromJS(user),
+        renderSection({
+            sectionElement: {
+                children: [targetView],
+                data: {
+                    ...section,
+                    private: true,
                 },
+                type: TicketNavbarElementType.Section,
             },
-        )
+            sections: {
+                [section.id]: section,
+            },
+            views: {
+                [draggedView.id]: draggedView,
+                [targetView.id]: targetView,
+            },
+        })
 
-        const sectionIndicator = container.querySelector('.sectionIndicator')
-        expect(sectionIndicator).not.toBeInTheDocument()
+        expect(
+            capturedNestedViewCanDrop?.({
+                id: draggedView.id,
+                type: TicketNavbarElementType.View,
+            }),
+        ).toBe(true)
     })
 
-    describe('with wayfinding MS1 flag enabled', () => {
-        const renderSection = (
-            props: Partial<
-                ComponentProps<typeof TicketNavbarSectionContainer>
-            > = {},
-        ) =>
-            render(
-                <SplitTicketViewProvider>
-                    <TicketNavbarSectionContainer {...minProps} {...props} />
-                </SplitTicketViewProvider>,
-                {
-                    storeState: {
-                        entities: fromJS({}),
-                        currentUser: fromJS(user),
-                    },
-                },
-            )
-
-        beforeEach(() => {
-            capturedSectionViewOnDrop = null
-            useHelpdeskV2WayfindingMS1FlagMock.mockReturnValue(true)
-        })
-
-        afterEach(() => {
-            useHelpdeskV2WayfindingMS1FlagMock.mockReturnValue(false)
-        })
-
-        it('should render section name via NavigationSection', () => {
+    describe('handleViewDrop', () => {
+        it('does not override the result when a child drop target already handled the drop', () => {
             renderSection()
 
-            expect(
-                screen.getByText(minProps.sectionElement.data.name),
-            ).toBeInTheDocument()
+            const result = capturedSectionViewOnDrop?.(
+                { id: view.id, type: 'view' },
+                { didDrop: () => true },
+                'down',
+            )
+
+            expect(result).toBeUndefined()
         })
 
-        it('should render Rename and Delete menu items when actions are provided', async () => {
-            const sectionUser = userEvent.setup()
-            const onSectionRenameClick = jest.fn()
-            const onSectionDeleteClick = jest.fn()
+        it('returns the section drop result when no child target has handled the drop', () => {
+            renderSection()
 
-            renderSection({ onSectionRenameClick, onSectionDeleteClick })
-
-            await sectionUser.click(
-                screen.getByRole('button', {
-                    name: 'dots-meatballs-horizontal',
-                }),
+            const result = capturedSectionViewOnDrop?.(
+                { id: view.id, type: 'view' },
+                { didDrop: () => false },
+                'down',
             )
 
-            await waitFor(() => {
-                expect(screen.getByText('Rename')).toBeInTheDocument()
-                expect(screen.getByText('Delete')).toBeInTheDocument()
+            expect(result).toEqual({
+                viewId: null,
+                sectionId: section.id,
+                direction: 'down',
             })
         })
 
-        it('should call onSectionRenameClick when Rename is selected', async () => {
-            const sectionUser = userEvent.setup()
-            const onSectionRenameClick = jest.fn()
+        it('preserves the drop direction when returning section drop result', () => {
+            renderSection()
 
-            renderSection({
-                onSectionRenameClick,
-                onSectionDeleteClick: jest.fn(),
-            })
-
-            await sectionUser.click(
-                screen.getByRole('button', {
-                    name: 'dots-meatballs-horizontal',
-                }),
+            const result = capturedSectionViewOnDrop?.(
+                { id: view.id, type: 'view' },
+                { didDrop: () => false },
+                'up',
             )
 
-            await waitFor(() => {
-                expect(screen.getByText('Rename')).toBeInTheDocument()
-            })
-
-            await sectionUser.click(screen.getByText('Rename'))
-
-            expect(onSectionRenameClick).toHaveBeenCalledWith(
-                minProps.sectionElement.data.id,
-            )
-        })
-
-        it('should call onSectionDeleteClick when Delete is selected', async () => {
-            const sectionUser = userEvent.setup()
-            const onSectionDeleteClick = jest.fn()
-
-            renderSection({
-                onSectionRenameClick: jest.fn(),
-                onSectionDeleteClick,
-            })
-
-            await sectionUser.click(
-                screen.getByRole('button', {
-                    name: 'dots-meatballs-horizontal',
-                }),
-            )
-
-            await waitFor(() => {
-                expect(screen.getByText('Delete')).toBeInTheDocument()
-            })
-
-            await sectionUser.click(screen.getByText('Delete'))
-
-            expect(onSectionDeleteClick).toHaveBeenCalledWith(
-                minProps.sectionElement.data.id,
-            )
-        })
-
-        describe('handleViewDrop', () => {
-            it('should not override the result when a child drop target already handled the drop', () => {
-                renderSection()
-
-                const result = capturedSectionViewOnDrop?.(
-                    { id: view.id, type: 'view' },
-                    { didDrop: () => true },
-                    'down',
-                )
-
-                expect(result).toBeUndefined()
-            })
-
-            it('should return the section drop result when no child target has handled the drop', () => {
-                renderSection()
-
-                const result = capturedSectionViewOnDrop?.(
-                    { id: view.id, type: 'view' },
-                    { didDrop: () => false },
-                    'down',
-                )
-
-                expect(result).toEqual({
-                    viewId: null,
-                    sectionId: section.id,
-                    direction: 'down',
-                })
-            })
-
-            it('should preserve the drop direction when returning section drop result', () => {
-                renderSection()
-
-                const result = capturedSectionViewOnDrop?.(
-                    { id: view.id, type: 'view' },
-                    { didDrop: () => false },
-                    'up',
-                )
-
-                expect(result).toEqual({
-                    viewId: null,
-                    sectionId: section.id,
-                    direction: 'up',
-                })
+            expect(result).toEqual({
+                viewId: null,
+                sectionId: section.id,
+                direction: 'up',
             })
         })
     })

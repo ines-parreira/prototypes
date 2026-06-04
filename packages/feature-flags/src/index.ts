@@ -16,3 +16,7 @@ export { useHelpdeskV2WayfindingMS1Flag } from './shared-flags/useHelpdeskV2Wayf
 export { useHelpdeskV2BaselineFlag } from './shared-flags/useHelpdeskV2BaselineFlag'
 export { useHelpdeskV2MS4Dash6Flag } from './shared-flags/useHelpdeskV2MS4Dash6Flag'
 export { useSidebarCreateButtonsFlag } from './shared-flags/useSidebarCreateButtonsFlag'
+export {
+    useTicketNavViewSourceSdkFlag,
+    useTicketNavViewSourceSdkFlagWithLoading,
+} from './shared-flags/useTicketNavViewSourceSdkFlag'

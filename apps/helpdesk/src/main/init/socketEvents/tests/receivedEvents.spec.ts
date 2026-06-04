@@ -15,6 +15,7 @@ import { ActivityEvents } from '@repo/activity-tracker'
 import { appQueryClient } from '@repo/api-resources'
 import { FeatureFlagKey, fetchFlag } from '@repo/feature-flags'
 import { history } from '@repo/routing'
+import { waitFor } from '@testing-library/react'
 import { toast } from '@gorgias/axiom'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 import { shouldTicketBeDisplayedInRecentChats } from 'business/recentChats'
@@ -82,6 +83,22 @@ import receivedEvents from '../receivedEvents'
 
 //$TsFixMe remove once init.js is migrated
 const typeSafeReduxStore = reduxStore as EnhancedStore
+const viewsQueryKey = queryKeys.views.listAllViews({ limit: 100 })
+
+const createViewsQueryData = (views: (typeof view)[]) => ({
+    pages: [
+        {
+            data: {
+                data: views,
+            },
+        },
+    ],
+    pageParams: [undefined],
+})
+
+function enableTicketNavViewSourceSdkSocketSync() {
+    mockFetchFlag.mockResolvedValueOnce({ flag: true, error: null })
+}
 
 jest.mock('hooks/useWhatsAppMigration', () => ({
     isMigrationInProgress: jest.fn(),
@@ -199,6 +216,7 @@ describe('receivedEvents', () => {
     afterEach(() => {
         window.location.pathname = ''
         window.CLIENT_ID = ''
+        appQueryClient.clear()
         jest.useRealTimers()
         jest.resetAllMocks()
     })
@@ -761,6 +779,18 @@ describe('receivedEvents', () => {
 
             expect(spy).toHaveBeenCalledWith('View "Foo" has been deactivated.')
         })
+
+        it('should not invalidate views queries', () => {
+            const invalidateQueriesSpy = jest
+                .spyOn(appQueryClient, 'invalidateQueries')
+                .mockResolvedValue()
+
+            if (handler) {
+                handler.onReceive({ event: { name: 'Foo' } } as any)
+            }
+
+            expect(invalidateQueriesSpy).not.toHaveBeenCalled()
+        })
     })
 
     describe('WhatsAppOnboardingSucceeded handler', () => {
@@ -1025,11 +1055,15 @@ describe('receivedEvents', () => {
     })
 
     describe('View section events', () => {
-        it('should dispatch redux store action for `view-section-created` event', () => {
+        it('should dispatch redux store action for `view-section-created` event', async () => {
+            await enableTicketNavViewSourceSdkSocketSync()
+            const invalidateQueriesSpy = jest
+                .spyOn(appQueryClient, 'invalidateQueries')
+                .mockResolvedValue()
             const handler = _find(receivedEvents, {
                 name: SocketEventType.ViewSectionCreated,
             }) as ReceivedEvent
-            handler.onReceive({
+            await handler.onReceive({
                 event: {
                     type: SocketEventType.ViewSectionCreated,
                 },
@@ -1039,13 +1073,22 @@ describe('receivedEvents', () => {
             expect(typeSafeReduxStore.dispatch).toHaveBeenCalledWith(
                 sectionCreated(section),
             )
+            await waitFor(() => {
+                expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+                    queryKey: queryKeys.views.listAllViewSections(),
+                })
+            })
         })
 
-        it('should dispatch redux store action for `view-section-updated` event', () => {
+        it('should dispatch redux store action for `view-section-updated` event', async () => {
+            await enableTicketNavViewSourceSdkSocketSync()
+            const invalidateQueriesSpy = jest
+                .spyOn(appQueryClient, 'invalidateQueries')
+                .mockResolvedValue()
             const handler = _find(receivedEvents, {
                 name: SocketEventType.ViewSectionUpdated,
             }) as ReceivedEvent
-            handler.onReceive({
+            await handler.onReceive({
                 event: {
                     type: SocketEventType.ViewSectionUpdated,
                 },
@@ -1055,13 +1098,22 @@ describe('receivedEvents', () => {
             expect(typeSafeReduxStore.dispatch).toHaveBeenCalledWith(
                 sectionUpdated(section),
             )
+            await waitFor(() => {
+                expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+                    queryKey: queryKeys.views.listAllViewSections(),
+                })
+            })
         })
 
-        it('should dispatch redux store action for `view-section-deleted` event', () => {
+        it('should dispatch redux store action for `view-section-deleted` event', async () => {
+            await enableTicketNavViewSourceSdkSocketSync()
+            const invalidateQueriesSpy = jest
+                .spyOn(appQueryClient, 'invalidateQueries')
+                .mockResolvedValue()
             const handler = _find(receivedEvents, {
                 name: SocketEventType.ViewSectionDeleted,
             }) as ReceivedEvent
-            handler.onReceive({
+            await handler.onReceive({
                 event: {
                     type: SocketEventType.ViewSectionDeleted,
                 },
@@ -1071,6 +1123,34 @@ describe('receivedEvents', () => {
             expect(typeSafeReduxStore.dispatch).toHaveBeenCalledWith(
                 sectionDeleted(section.id),
             )
+            await waitFor(() => {
+                expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+                    queryKey: queryKeys.views.listAllViewSections(),
+                })
+            })
+        })
+
+        it('should not update React Query section cache when the SDK source flag is disabled', async () => {
+            const invalidateQueriesSpy = jest
+                .spyOn(appQueryClient, 'invalidateQueries')
+                .mockResolvedValue()
+            const handler = _find(receivedEvents, {
+                name: SocketEventType.ViewSectionCreated,
+            }) as ReceivedEvent
+
+            await handler.onReceive({
+                event: {
+                    type: SocketEventType.ViewSectionCreated,
+                },
+                view_section: section,
+            })
+
+            expect(typeSafeReduxStore.dispatch).toHaveBeenCalledWith(
+                sectionCreated(section),
+            )
+            expect(invalidateQueriesSpy).not.toHaveBeenCalledWith({
+                queryKey: queryKeys.views.listAllViewSections(),
+            })
         })
     })
 
@@ -1080,8 +1160,72 @@ describe('receivedEvents', () => {
         }) as ReceivedEvent
 
         it('should dispatch the new view', () => {
+            ;(
+                isViewSharedWithUser as jest.MockedFunction<
+                    typeof isViewSharedWithUser
+                >
+            ).mockImplementationOnce(() => true)
             handler.onReceive({ view } as any)
             expect(viewCreated).toHaveBeenNthCalledWith(1, view)
+        })
+
+        it('should add the new view to the React Query views cache when the SDK source flag is enabled', async () => {
+            await enableTicketNavViewSourceSdkSocketSync()
+            appQueryClient.setQueryData(viewsQueryKey, createViewsQueryData([]))
+            ;(
+                isViewSharedWithUser as jest.MockedFunction<
+                    typeof isViewSharedWithUser
+                >
+            ).mockImplementationOnce(() => true)
+
+            await handler.onReceive({ view } as any)
+
+            await waitFor(() => {
+                expect(
+                    appQueryClient.getQueryData<any>(viewsQueryKey).pages[0]
+                        .data.data,
+                ).toEqual([view])
+            })
+        })
+
+        it('should not add the new view to the React Query views cache when the SDK source flag is disabled', async () => {
+            const invalidateQueriesSpy = jest
+                .spyOn(appQueryClient, 'invalidateQueries')
+                .mockResolvedValue()
+            appQueryClient.setQueryData(viewsQueryKey, createViewsQueryData([]))
+            ;(
+                isViewSharedWithUser as jest.MockedFunction<
+                    typeof isViewSharedWithUser
+                >
+            ).mockImplementationOnce(() => true)
+
+            await handler.onReceive({ view } as any)
+
+            expect(viewCreated).toHaveBeenNthCalledWith(1, view)
+            expect(
+                appQueryClient.getQueryData<any>(viewsQueryKey).pages[0].data
+                    .data,
+            ).toEqual([])
+            expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+                queryKey: queryKeys.views.listAllViews(),
+            })
+        })
+
+        it('should ignore views that are not shared with the current user', () => {
+            appQueryClient.setQueryData(viewsQueryKey, createViewsQueryData([]))
+            ;(
+                isViewSharedWithUser as jest.MockedFunction<
+                    typeof isViewSharedWithUser
+                >
+            ).mockImplementationOnce(() => false)
+
+            handler.onReceive({ view } as any)
+
+            expect(viewCreated).not.toHaveBeenCalled()
+            expect(
+                appQueryClient.getQueryData<any>(viewsQueryKey).pages[0].data
+                    .data,
+            ).toEqual([])
         })
     })
 
@@ -1100,6 +1244,36 @@ describe('receivedEvents', () => {
             expect(viewUpdated).toHaveBeenNthCalledWith(1, view)
         })
 
+        it('should update the React Query views cache when the SDK source flag is enabled', async () => {
+            await enableTicketNavViewSourceSdkSocketSync()
+            const oldView = {
+                ...view,
+                name: 'Old name',
+            }
+            const updatedView = {
+                ...view,
+                name: 'Updated name',
+            }
+            appQueryClient.setQueryData(
+                viewsQueryKey,
+                createViewsQueryData([oldView]),
+            )
+            ;(
+                isViewSharedWithUser as jest.MockedFunction<
+                    typeof isViewSharedWithUser
+                >
+            ).mockImplementationOnce(() => true)
+
+            await handler.onReceive({ view: updatedView } as any)
+
+            await waitFor(() => {
+                expect(
+                    appQueryClient.getQueryData<any>(viewsQueryKey).pages[0]
+                        .data.data,
+                ).toEqual([updatedView])
+            })
+        })
+
         it('should dispatch the hidden view', () => {
             ;(
                 isViewSharedWithUser as jest.MockedFunction<
@@ -1108,6 +1282,28 @@ describe('receivedEvents', () => {
             ).mockImplementationOnce(() => false)
             handler.onReceive({ view } as any)
             expect(viewDeleted).toHaveBeenNthCalledWith(1, view.id)
+        })
+
+        it('should remove hidden views from the React Query views cache when the SDK source flag is enabled', async () => {
+            await enableTicketNavViewSourceSdkSocketSync()
+            appQueryClient.setQueryData(
+                viewsQueryKey,
+                createViewsQueryData([view]),
+            )
+            ;(
+                isViewSharedWithUser as jest.MockedFunction<
+                    typeof isViewSharedWithUser
+                >
+            ).mockImplementationOnce(() => false)
+
+            await handler.onReceive({ view } as any)
+
+            await waitFor(() => {
+                expect(
+                    appQueryClient.getQueryData<any>(viewsQueryKey).pages[0]
+                        .data.data,
+                ).toEqual([])
+            })
         })
     })
 
@@ -1119,6 +1315,23 @@ describe('receivedEvents', () => {
         it('should dispatch the deleted view', () => {
             handler.onReceive({ view } as any)
             expect(viewDeleted).toHaveBeenNthCalledWith(1, view.id)
+        })
+
+        it('should remove the deleted view from the React Query views cache when the SDK source flag is enabled', async () => {
+            await enableTicketNavViewSourceSdkSocketSync()
+            appQueryClient.setQueryData(
+                viewsQueryKey,
+                createViewsQueryData([view]),
+            )
+
+            await handler.onReceive({ view } as any)
+
+            await waitFor(() => {
+                expect(
+                    appQueryClient.getQueryData<any>(viewsQueryKey).pages[0]
+                        .data.data,
+                ).toEqual([])
+            })
         })
     })
 
@@ -1139,12 +1352,16 @@ describe('receivedEvents', () => {
             expect(chatActions.markChatAsUnread).toHaveBeenNthCalledWith(1, 1)
         })
 
-        it('should refetch query when ticket is updated', () => {
-            const refetchSpy = jest.spyOn(appQueryClient, 'refetchQueries')
+        it('should invalidate query when ticket is updated', () => {
+            const invalidateQueriesSpy = jest
+                .spyOn(appQueryClient, 'invalidateQueries')
+                .mockResolvedValue()
 
             handler.onReceive({ ticket: { id: 1 } } as any)
 
-            expect(refetchSpy).toHaveBeenCalled()
+            expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+                queryKey: queryKeys.tickets.getTicket(1),
+            })
         })
 
         it('should call try to invalidate customer query cache', () => {

@@ -42,6 +42,7 @@ type OwnProps = {
     sectionElement: TicketNavbarSectionElement
 }
 
+// Redux-backed legacy path used when the ticket nav SDK source flag is disabled.
 export function TicketNavbarSectionContainer({
     currentUser,
     onSectionDeleteClick,
@@ -141,6 +142,7 @@ export function TicketNavbarSectionContainer({
                                     {section.name}
                                 </>
                             }
+                            showDisclosureIndicator={children.length > 0}
                             actionsSlot={
                                 onSectionRenameClick || onSectionDeleteClick ? (
                                     <TicketSectionActionsMenu

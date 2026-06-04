@@ -27,7 +27,8 @@
         "react-dom": "catalog:react",
         "react-router-dom": "catalog:react-router",
         "react-router-dom-v5-compat": "catalog:react-router",
-        "reactstrap": "8.9.0"
+        "reactstrap": "8.9.0",
+        "zustand": "catalog:zustand"
     },
     "devDependencies": {
         "@repo/config": "workspace:*",
@@ -48,6 +49,7 @@
         "react-dom": "catalog:react",
         "reactstrap": "8.9.0",
         "typescript": "catalog:typescript",
-        "vitest": "catalog:test"
+        "vitest": "catalog:test",
+        "zustand": "catalog:zustand"
     }
 }

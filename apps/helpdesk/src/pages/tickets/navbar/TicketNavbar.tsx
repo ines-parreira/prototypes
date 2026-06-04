@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { tryLocalStorage } from '@repo/browser-storage'
-import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
+import {
+    useHelpdeskV2WayfindingMS1Flag,
+    useTicketNavViewSourceSdkFlagWithLoading,
+} from '@repo/feature-flags'
 import { useAsyncFn } from '@repo/hooks'
 import { NavigationSectionGroup, useSidebar } from '@repo/navigation'
 import { CollapsedDefaultViews } from '@repo/tickets'
@@ -87,6 +90,7 @@ import { PlaceCallNavbarButton } from './PlaceCallNavbarButton'
 import { RecentChats } from './RecentChats'
 import SectionFormModal from './SectionFormModal'
 import { TicketNavbarBlock } from './TicketNavbarBlock'
+import { TicketNavbarBridgeContainer } from './TicketNavbarBridgeContainer'
 import type { TicketNavbarElement } from './TicketNavbarContent'
 import TicketNavbarContent from './TicketNavbarContent'
 import type {
@@ -104,11 +108,36 @@ import css from './TicketNavbar.less'
 
 type OwnProps = {
     disableResize?: boolean
+    privateElements?: TicketNavbarElement[]
+    sharedElements?: TicketNavbarElement[]
 }
 
 type Props = OwnProps & ConnectedProps<typeof connector>
 
-export function TicketNavbarContainer({
+export function TicketNavbarContainer(props: Props) {
+    const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
+    const {
+        isLoading: isTicketNavViewSourceSdkFlagLoading,
+        value: hasTicketNavViewSourceSdkFlag,
+    } = useTicketNavViewSourceSdkFlagWithLoading()
+
+    if (hasWayfindingMS1Flag && isTicketNavViewSourceSdkFlagLoading) {
+        return null
+    }
+
+    if (!hasWayfindingMS1Flag || !hasTicketNavViewSourceSdkFlag) {
+        return (
+            <TicketNavbarLegacySource
+                {...props}
+                hasWayfindingMS1Flag={hasWayfindingMS1Flag}
+            />
+        )
+    }
+
+    return <TicketNavbarBridgeContainer {...props} />
+}
+
+function TicketNavbarLegacySource({
     activeViewId,
     activeViewIdSet,
     currentUser,
@@ -121,17 +150,17 @@ export function TicketNavbarContainer({
     sections,
     sectionsFetched,
     viewsFetched,
-    privateElements,
-    sharedElements,
+    privateElements = [],
+    sharedElements = [],
     viewUpdated,
     accountSetting,
     userSetting,
     submitSettingSuccess,
     disableResize = false,
-}: Props) {
+    hasWayfindingMS1Flag,
+}: Props & { hasWayfindingMS1Flag: boolean }) {
     const history = useHistory()
     const { isCollapsed } = useSidebar()
-    const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
     const showGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
     const params = useParams<{ viewId?: string }>()
     const { viewId } = useSearch<{ viewId?: string }>()
@@ -151,7 +180,6 @@ export function TicketNavbarContainer({
         [currentUser],
     )
     const systemTopElements = useAppSelector(getTopSystemTicketNavbarElements)
-
     const systemBottomElements = useAppSelector(
         getBottomSystemTicketNavbarElements,
     )
@@ -237,6 +265,7 @@ export function TicketNavbarContainer({
         _debounce((viewUrl: string) => history.push(viewUrl)),
         [],
     )
+
     useEffect(() => {
         shortcutManager.bind('ViewNavbar', {
             GO_NEXT_VIEW: {
@@ -712,8 +741,8 @@ const connector = connect(
     (state: RootState) => ({
         activeViewId: state.ui.views.activeViewId,
         currentUser: state.currentUser,
-        sections: state.entities.sections,
         privateElements: getPrivateTicketNavbarElements(state),
+        sections: state.entities.sections,
         sharedElements: getPublicTicketNavbarElements(state),
         userSetting: getViewsOrderingUserSetting(state),
         accountSetting: getViewsOrderingSetting(state),
