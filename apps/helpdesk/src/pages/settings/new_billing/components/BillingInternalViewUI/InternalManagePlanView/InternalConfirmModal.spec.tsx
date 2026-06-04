@@ -20,6 +20,7 @@ import type { ResolvedPlan } from './useInternalPlanEditor'
 
 const ESTIMATE_URL = '*/api/billing/internal/estimates/subscription'
 const BILLING_STATE_URL = '*/billing/state'
+const ESTIMATE_RENDER_TIMEOUT_MS = 5000
 
 const server = setupServer()
 
@@ -649,11 +650,19 @@ describe('InternalConfirmModal', () => {
             )
             renderComponent({ billingState: canceledBillingState })
 
-            expect(
-                await screen.findByText(
-                    /A new term for the subscription will start:/i,
-                ),
-            ).toBeInTheDocument()
+            await waitFor(
+                () => {
+                    expect(
+                        screen.getByText('$25.50 due today'),
+                    ).toBeInTheDocument()
+                    expect(
+                        screen.getByText(
+                            /A new term for the subscription will start:/i,
+                        ),
+                    ).toBeInTheDocument()
+                },
+                { timeout: ESTIMATE_RENDER_TIMEOUT_MS },
+            )
         })
 
         it('shows invoices to pay when estimate returns current_invoices_to_pay', async () => {
