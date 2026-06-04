@@ -124,9 +124,9 @@ const SkillWizardPageContent = ({
     const draftKnowledge = useCallback(
         (skill: (typeof reviewableSkills)[number]) => ({
             sourceId: skill.article?.id ?? skill.skill_id,
-            sourceSetId: 1,
+            sourceSetId: helpCenterId,
         }),
-        [],
+        [helpCenterId],
     )
 
     if (isIntroVisible) {

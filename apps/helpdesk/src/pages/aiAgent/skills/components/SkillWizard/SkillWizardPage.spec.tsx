@@ -58,6 +58,14 @@ jest.mock('pages/aiAgent/skills/hooks/useSkillWizardMutations', () => ({
     }),
 }))
 
+const GUIDANCE_HELP_CENTER_ID = 21
+
+jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext', () => ({
+    useAiAgentStoreConfigurationContext: () => ({
+        storeConfiguration: { guidanceHelpCenterId: GUIDANCE_HELP_CENTER_ID },
+    }),
+}))
+
 const mockUseSkillWizard = useEnrichedSkillWizard as jest.MockedFunction<
     typeof useEnrichedSkillWizard
 >
@@ -346,11 +354,11 @@ describe('SkillWizardPage', () => {
         expect(typeof draftKnowledge).toBe('function')
         expect(draftKnowledge(skillWithArticle, 0)).toEqual({
             sourceId: 999,
-            sourceSetId: 1,
+            sourceSetId: GUIDANCE_HELP_CENTER_ID,
         })
         expect(draftKnowledge(skillWithoutArticle, 1)).toEqual({
             sourceId: 7,
-            sourceSetId: 1,
+            sourceSetId: GUIDANCE_HELP_CENTER_ID,
         })
     })
 
