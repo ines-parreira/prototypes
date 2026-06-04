@@ -240,6 +240,7 @@ export enum FeatureFlagKey {
     VoiceSLA = 'voice-sla',
     WayfindingMobileResolution = 'linear-HELP-6564-re-enable-wayfinding-for-mobile-resolution',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
+    WhatsAppOnboardingToAbly = 'linear-task_HELP-5497-migrate-whatsapp-onboarding-to-ably',
     EnableShopifyMetafieldsIngestionUI = 'linear.project_shopify-metafields_enable_ingestion-ui',
     EnableShopifyMetafieldsIngestionUIinMacros = 'linear.project_shopify-metafields_enable_ingestion-ui-macros',
     EnableShopifyMetafieldsIngestionUIinRules = 'linear.project_shopify-metafields_enable_ingestion-ui-rules',

@@ -22,6 +22,7 @@ import { TicketStatuses } from 'business/ticket'
 import { store as reduxStore } from 'common/store'
 import { section } from 'fixtures/section'
 import { view } from 'fixtures/views'
+import { isMigrationInProgress } from 'hooks/useWhatsAppMigration'
 import type { HelpdeskPlan, PlanId } from 'models/billing/types'
 import { ProductType } from 'models/billing/types'
 import {
@@ -30,6 +31,7 @@ import {
     shopperFixture,
     shopperOrderFixture,
 } from 'models/customerEcommerceData/fixtures'
+import { fetchNewPhoneNumbers } from 'models/phoneNumber/resources'
 import { voiceCallsKeys } from 'models/voiceCall/queries'
 import * as voiceCallTypes from 'models/voiceCall/types'
 import browserNotification from 'services/browserNotification'
@@ -47,6 +49,7 @@ import * as chatActions from 'state/chats/actions'
 import * as currentAccountConstants from 'state/currentAccount/constants'
 import * as currentAccountSelectors from 'state/currentAccount/selectors'
 import * as currentUserActions from 'state/currentUser/actions'
+import { newPhoneNumbersFetched } from 'state/entities/phoneNumbers/actions'
 import {
     sectionCreated,
     sectionDeleted,
@@ -81,11 +84,18 @@ import receivedEvents from '../receivedEvents'
 const typeSafeReduxStore = reduxStore as EnhancedStore
 
 jest.mock('hooks/useWhatsAppMigration', () => ({
-    isMigrationInProgress: jest.fn(() => false),
+    isMigrationInProgress: jest.fn(),
 }))
 
 jest.mock('models/phoneNumber/resources', () => ({
-    fetchNewPhoneNumbers: jest.fn(() => Promise.resolve({ data: [] })),
+    fetchNewPhoneNumbers: jest.fn(),
+}))
+
+jest.mock('state/entities/phoneNumbers/actions', () => ({
+    newPhoneNumbersFetched: jest.fn((payload) => ({
+        type: 'newPhoneNumbersFetched',
+        payload,
+    })),
 }))
 
 jest.mock('services/browserNotification', () => ({ newMessage: jest.fn() }))
@@ -162,13 +172,30 @@ jest.mock('state/views/utils')
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
-    fetchFlag: jest.fn(async () => ({ flag: false, error: null })),
+    fetchFlag: jest.fn(async (_flag, defaultValue = false) => ({
+        flag: defaultValue,
+        error: null,
+    })),
     useFlag: jest.fn((flag, defaultValue) => defaultValue),
 }))
 
 const mockFetchFlag = fetchFlag as jest.MockedFunction<typeof fetchFlag>
+const mockIsMigrationInProgress = isMigrationInProgress as jest.Mock
+const mockFetchNewPhoneNumbers = fetchNewPhoneNumbers as jest.Mock
+const mockNewPhoneNumbersFetched =
+    newPhoneNumbersFetched as unknown as jest.Mock
 
 describe('receivedEvents', () => {
+    beforeEach(() => {
+        mockFetchFlag.mockResolvedValue({ flag: false, error: null })
+        mockIsMigrationInProgress.mockReturnValue(false)
+        mockFetchNewPhoneNumbers.mockResolvedValue({ data: [] })
+        mockNewPhoneNumbersFetched.mockImplementation((payload) => ({
+            type: 'newPhoneNumbersFetched',
+            payload,
+        }))
+    })
+
     afterEach(() => {
         window.location.pathname = ''
         window.CLIENT_ID = ''
@@ -776,10 +803,10 @@ describe('receivedEvents', () => {
             name: SocketEventType.WhatsAppOnboardingFailed,
         })
 
-        it('should show an error toast with the API message', () => {
+        it('should show an error toast with the API message', async () => {
             const spy = jest.spyOn(toast, 'error')
 
-            handler?.onReceive({
+            await handler?.onReceive({
                 phone_number: '+1555',
                 error: { message: 'Something broke' },
             } as any)
@@ -790,15 +817,126 @@ describe('receivedEvents', () => {
             )
         })
 
-        it('should fall back to a generic error toast when no message', () => {
+        it('should fall back to a generic error toast when no message', async () => {
             const spy = jest.spyOn(toast, 'error')
 
-            handler?.onReceive({ phone_number: '+1555' } as any)
+            await handler?.onReceive({ phone_number: '+1555' } as any)
 
             expect(spy).toHaveBeenCalledWith(
                 expect.stringContaining('Failed to connect WhatsApp'),
                 { duration: 10000 },
             )
+        })
+    })
+
+    describe('WhatsApp onboarding handlers', () => {
+        const successHandler = _find(receivedEvents, {
+            name: SocketEventType.WhatsAppOnboardingSucceeded,
+        })
+        const failedHandler = _find(receivedEvents, {
+            name: SocketEventType.WhatsAppOnboardingFailed,
+        })
+
+        beforeEach(() => {
+            window.history.pushState({}, '', '/app/settings/integrations')
+            mockFetchFlag.mockResolvedValue({ flag: false, error: null })
+            mockIsMigrationInProgress.mockReturnValue(false)
+            mockFetchNewPhoneNumbers.mockResolvedValue({
+                data: [{ id: 1, phone_number: '+123' }],
+            })
+            mockNewPhoneNumbersFetched.mockImplementation((payload) => ({
+                type: 'newPhoneNumbersFetched',
+                payload,
+            }))
+        })
+
+        it('handles successful onboarding from SocketIO when the Ably migration flag is disabled', async () => {
+            const toastSpy = jest.spyOn(toast, 'info')
+            const fetchIntegrationsSpy = jest.spyOn(
+                integrationActions,
+                'fetchIntegrations',
+            )
+
+            await successHandler?.onReceive({
+                phone_number: '+123',
+            } as any)
+
+            expect(mockFetchFlag).toHaveBeenCalledWith(
+                FeatureFlagKey.WhatsAppOnboardingToAbly,
+                false,
+            )
+            expect(mockIsMigrationInProgress).toHaveBeenCalled()
+            expect(toastSpy).toHaveBeenCalledWith(
+                'WhatsApp successfully connected for number +123.',
+                { duration: 10000 },
+            )
+            expect(fetchIntegrationsSpy).toHaveBeenCalled()
+            expect(mockFetchNewPhoneNumbers).toHaveBeenCalled()
+            expect(mockNewPhoneNumbersFetched).toHaveBeenCalledWith([
+                { id: 1, phone_number: '+123' },
+            ])
+        })
+
+        it('ignores successful onboarding from SocketIO when the Ably migration flag is enabled', async () => {
+            const toastSpy = jest.spyOn(toast, 'info')
+            const fetchIntegrationsSpy = jest.spyOn(
+                integrationActions,
+                'fetchIntegrations',
+            )
+            mockFetchFlag.mockResolvedValue({ flag: true, error: null })
+
+            await successHandler?.onReceive({
+                phone_number: '+123',
+            } as any)
+
+            expect(mockFetchFlag).toHaveBeenCalledWith(
+                FeatureFlagKey.WhatsAppOnboardingToAbly,
+                false,
+            )
+            expect(mockIsMigrationInProgress).not.toHaveBeenCalled()
+            expect(toastSpy).not.toHaveBeenCalled()
+            expect(fetchIntegrationsSpy).not.toHaveBeenCalled()
+            expect(mockFetchNewPhoneNumbers).not.toHaveBeenCalled()
+            expect(reduxStore.dispatch).not.toHaveBeenCalled()
+        })
+
+        it('handles failed onboarding from SocketIO when the Ably migration flag is disabled', async () => {
+            const toastSpy = jest.spyOn(toast, 'error')
+
+            await failedHandler?.onReceive({
+                phone_number: '+123',
+                error: {
+                    message: 'OAuth failed',
+                },
+            } as any)
+
+            expect(mockFetchFlag).toHaveBeenCalledWith(
+                FeatureFlagKey.WhatsAppOnboardingToAbly,
+                false,
+            )
+            expect(toastSpy).toHaveBeenCalledWith(
+                'OAuth failed (number: +123)',
+                { duration: 10000 },
+            )
+        })
+
+        it('ignores failed onboarding from SocketIO when the Ably migration flag is enabled', async () => {
+            const toastSpy = jest.spyOn(toast, 'error')
+            mockFetchFlag.mockResolvedValue({ flag: true, error: null })
+
+            await failedHandler?.onReceive({
+                phone_number: '+123',
+                error: {
+                    message: 'OAuth failed',
+                },
+            } as any)
+
+            expect(mockFetchFlag).toHaveBeenCalledWith(
+                FeatureFlagKey.WhatsAppOnboardingToAbly,
+                false,
+            )
+            expect(toastSpy).not.toHaveBeenCalled()
+            expect(reduxStore.dispatch).not.toHaveBeenCalled()
         })
     })
 

@@ -285,7 +285,7 @@ export type ViewDeactivated = {
 
 export type WhatsAppOnboardingSucceededEvent = {
     event: {
-        type: SocketEventType.WhatsAppOnboardingFailed
+        type: SocketEventType.WhatsAppOnboardingSucceeded
     }
     integration_id: Maybe<number>
     phone_number: Maybe<string>
@@ -293,7 +293,7 @@ export type WhatsAppOnboardingSucceededEvent = {
 
 export type WhatsAppOnboardingFailedEvent = {
     event: {
-        type: SocketEventType.WhatsAppOnboardingSucceeded
+        type: SocketEventType.WhatsAppOnboardingFailed
     }
     error: Maybe<{
         code: Maybe<number>

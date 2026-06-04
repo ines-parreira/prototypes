@@ -91,6 +91,15 @@ import * as viewsConstants from 'state/views/constants'
 import { isViewSharedWithUser } from 'state/views/utils'
 import { isCurrentlyOnTicket } from 'utils'
 
+async function isWhatsAppOnboardingToAblyEnabled() {
+    const { flag } = await fetchFlag(
+        FeatureFlagKey.WhatsAppOnboardingToAbly,
+        false,
+    )
+
+    return flag
+}
+
 /**
  * Events that can be received from server via socket
  */
@@ -701,6 +710,10 @@ const receivedEvents: ReceivedEvent[] = [
     {
         name: SocketEventType.WhatsAppOnboardingSucceeded,
         onReceive: async (data) => {
+            if (await isWhatsAppOnboardingToAblyEnabled()) {
+                return
+            }
+
             const { phone_number } = data as WhatsAppOnboardingSucceededEvent
             const isMigrating = isMigrationInProgress()
             if (isMigrating) {
@@ -723,7 +736,11 @@ const receivedEvents: ReceivedEvent[] = [
     },
     {
         name: SocketEventType.WhatsAppOnboardingFailed,
-        onReceive: (data) => {
+        onReceive: async (data) => {
+            if (await isWhatsAppOnboardingToAblyEnabled()) {
+                return
+            }
+
             const { phone_number, error } =
                 data as WhatsAppOnboardingFailedEvent
             const listPath = '/app/settings/integrations/whatsapp/integrations'

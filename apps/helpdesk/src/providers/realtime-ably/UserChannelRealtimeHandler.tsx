@@ -13,6 +13,11 @@ import {
     TICKET_MESSAGE_ACTION_FAILED_EVENT,
     useTicketMessageActionFailedRealtimeMessageHandler,
 } from './useTicketMessageActionFailedRealtimeMessageHandler'
+import {
+    useWhatsAppOnboardingRealtimeMessageHandler,
+    WHATSAPP_ONBOARDING_FAILED_EVENT,
+    WHATSAPP_ONBOARDING_SUCCESS_EVENT,
+} from './useWhatsAppOnboardingRealtimeMessageHandler'
 
 // we should export the Message type from realtime
 type AblyMessage = Parameters<NonNullable<UseChannelProps['onMessage']>>[0]
@@ -23,8 +28,15 @@ export function UserChannelRealtimeHandler() {
     const isTicketMessageActionFailedToAblyEnabled = useFlag(
         FeatureFlagKey.TicketMessageActionFailedToAbly,
     )
+    const isWhatsAppOnboardingToAblyEnabled = useFlag(
+        FeatureFlagKey.WhatsAppOnboardingToAbly,
+    )
     const { handleTicketMessageActionFailedRealtimeMessage } =
         useTicketMessageActionFailedRealtimeMessageHandler()
+    const {
+        handleWhatsAppOnboardingFailedRealtimeMessage,
+        handleWhatsAppOnboardingSuccessRealtimeMessage,
+    } = useWhatsAppOnboardingRealtimeMessageHandler()
 
     const handleMessage = useCallback(
         (message: AblyMessage) => {
@@ -35,13 +47,28 @@ export function UserChannelRealtimeHandler() {
                     handleTicketMessageActionFailedRealtimeMessage(message)
                     return
                 }
+                case WHATSAPP_ONBOARDING_SUCCESS_EVENT: {
+                    if (!isWhatsAppOnboardingToAblyEnabled) return
+
+                    void handleWhatsAppOnboardingSuccessRealtimeMessage(message)
+                    return
+                }
+                case WHATSAPP_ONBOARDING_FAILED_EVENT: {
+                    if (!isWhatsAppOnboardingToAblyEnabled) return
+
+                    handleWhatsAppOnboardingFailedRealtimeMessage(message)
+                    return
+                }
                 default:
                     return
             }
         },
         [
             handleTicketMessageActionFailedRealtimeMessage,
+            handleWhatsAppOnboardingFailedRealtimeMessage,
+            handleWhatsAppOnboardingSuccessRealtimeMessage,
             isTicketMessageActionFailedToAblyEnabled,
+            isWhatsAppOnboardingToAblyEnabled,
         ],
     )
 
