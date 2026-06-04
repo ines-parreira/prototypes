@@ -8,11 +8,13 @@ import { Button, Quantity, TooltipContent } from '@gorgias/axiom'
 
 import css from './NavigationSidebarNotificationsButton.less'
 
+const MAX_COUNT = 9
+
 export function NavigationSidebarNotificationsButton() {
     const count = useUnreadCount()
     const buttonSize = useSidebarButtonSize()
 
-    const rightOffset = count > 99 ? 'l' : count > 9 ? 'm' : 's'
+    const rightOffset = count > MAX_COUNT ? 'm' : 's'
 
     return (
         <NavigationSidebarTooltip
@@ -32,7 +34,7 @@ export function NavigationSidebarNotificationsButton() {
                         >
                             <Quantity
                                 quantity={count}
-                                maxQuantity={99}
+                                maxQuantity={MAX_COUNT}
                                 color="red"
                                 size="sm"
                             />

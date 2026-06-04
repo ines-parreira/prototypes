@@ -49,14 +49,14 @@ describe('NavigationSidebarNotificationsButton', () => {
         expect(screen.getByText('5')).toBeInTheDocument()
     })
 
-    it('should render 99+ badge when count is greater than 99', () => {
-        useUnreadCountMock.mockReturnValue(150)
+    it('should render 9+ badge when count is greater than 9', () => {
+        useUnreadCountMock.mockReturnValue(15)
         render(
             <MockSidebarProvider>
                 <NavigationSidebarNotificationsButton />
             </MockSidebarProvider>,
         )
 
-        expect(screen.getByText('99+')).toBeInTheDocument()
+        expect(screen.getByText('9+')).toBeInTheDocument()
     })
 })
