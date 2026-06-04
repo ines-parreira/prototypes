@@ -1,0 +1,30 @@
+:local {
+    .card {
+        display: flex;
+        flex-direction: column;
+        padding: var(--layout-spacing-m);
+        background-color: var(--surface-neutral-primary);
+        border: 1px solid var(--border-neutral-default);
+        border-radius: var(--border-radius-md, 8px);
+    }
+
+    .cardTitle {
+        margin: 0;
+        font-size: var(--font-size-body-lg, 16px);
+        font-weight: 600;
+        color: var(--content-neutral-default);
+    }
+
+    .cardDescription {
+        margin: var(--layout-spacing-xxs) 0 0;
+        color: var(--content-neutral-secondary);
+        font-size: var(--font-size-body-sm, 14px);
+    }
+
+    .cardBody {
+        display: flex;
+        flex-direction: column;
+        gap: var(--layout-spacing-s);
+        margin-top: var(--layout-spacing-s);
+    }
+}

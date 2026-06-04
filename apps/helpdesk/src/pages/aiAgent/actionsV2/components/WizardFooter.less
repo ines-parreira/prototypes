@@ -1,0 +1,48 @@
+:local {
+    .footer {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: var(--layout-spacing-xs);
+        padding: var(--layout-spacing-m) 0;
+    }
+
+    .menu {
+        display: flex;
+        flex-direction: column;
+        padding: var(--layout-spacing-xxs);
+    }
+
+    .menuItem {
+        display: flex;
+        align-items: center;
+        padding: var(--layout-spacing-xxs) var(--layout-spacing-xs);
+        background: transparent;
+        border: 0;
+        border-radius: var(--border-radius-sm, 4px);
+        text-align: left;
+        cursor: pointer;
+
+        &:hover:not(:disabled),
+        &:focus-visible:not(:disabled) {
+            background-color: var(--surface-neutral-secondary);
+        }
+
+        &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    }
+
+    .srOnly {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
+}

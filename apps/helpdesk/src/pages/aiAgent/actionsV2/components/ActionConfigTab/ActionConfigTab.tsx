@@ -52,19 +52,11 @@ import { transformWorkflowConfigurationIntoVisualBuilderGraph } from 'pages/auto
 import type { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 import { mapServerErrorsToGraph } from 'pages/automate/workflows/utils/serverValidationErrors'
 
+import { useTriggerConditionBuilder } from '../../hooks/useTriggerConditionBuilder'
 import { ActionNameField } from '../../sidePanel/actionForm/ActionNameField'
 import { PanelFooter } from '../../sidePanel/shell'
 
 import { ActionStepList } from './ActionStepList'
-import {
-    buildFieldsFromVariables,
-    conditionsTypeFromLogicOperator,
-    legacyToV2Conditions,
-    logicOperatorFromConditionsType,
-    makeGetOperators,
-    makeGetValueOptions,
-    v2ToLegacyCondition,
-} from './conditionAdapters'
 
 import css from './ActionConfigTab.less'
 
@@ -283,60 +275,16 @@ const ActionConfigTabInner = ({ configuration }: Props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isEditingSteps])
 
-    const triggerNodeData = visualBuilderGraphDirty.nodes[0].data
     const triggerNodeId = visualBuilderGraphDirty.nodes[0].id
-    const triggerVariables = getVariableListForNode(triggerNodeId)
-
-    const {
-        fields: conditionFields,
-        categories: conditionCategories,
-        variableById,
-    } = useMemo(
-        () => buildFieldsFromVariables(triggerVariables),
-        [triggerVariables],
+    const triggerVariables = useMemo(
+        () => getVariableListForNode(triggerNodeId),
+        [getVariableListForNode, triggerNodeId],
     )
-
-    const v2Conditions = useMemo(
-        () => legacyToV2Conditions(triggerNodeData.conditions),
-        [triggerNodeData.conditions],
-    )
-
-    const logicOperator = useMemo(
-        () => logicOperatorFromConditionsType(triggerNodeData.conditionsType),
-        [triggerNodeData.conditionsType],
-    )
-
-    const getOperators = useMemo(
-        () => makeGetOperators(variableById),
-        [variableById],
-    )
-
-    const getValueOptions = useMemo(
-        () => makeGetValueOptions(variableById),
-        [variableById],
-    )
-
-    const handleConditionsChange = useCallback(
-        (next: typeof v2Conditions) => {
-            dispatch({
-                type: 'SET_LLM_PROMPT_TRIGGER_CONDITIONS',
-                conditions: next.map((condition) =>
-                    v2ToLegacyCondition(condition, variableById),
-                ),
-            })
-        },
-        [dispatch, variableById],
-    )
-
-    const handleLogicChange = useCallback(
-        (next: ReturnType<typeof logicOperatorFromConditionsType>) => {
-            dispatch({
-                type: 'SET_LLM_PROMPT_TRIGGER_CONDITIONS_TYPE',
-                conditionsType: conditionsTypeFromLogicOperator(next),
-            })
-        },
-        [dispatch],
-    )
+    const conditionBuilderProps = useTriggerConditionBuilder({
+        graph: visualBuilderGraphDirty,
+        dispatch,
+        triggerVariables,
+    })
 
     if (isEditingSteps) {
         return (
@@ -457,16 +405,7 @@ const ActionConfigTabInner = ({ configuration }: Props) => {
                         </SettingsCardHeader>
                         <SettingsCardContent>
                             <Box flexDirection="column" gap="md">
-                                <ConditionBuilder
-                                    conditions={v2Conditions}
-                                    logicOperator={logicOperator}
-                                    fields={conditionFields}
-                                    categories={conditionCategories}
-                                    getOperators={getOperators}
-                                    getValueOptions={getValueOptions}
-                                    onConditionsChange={handleConditionsChange}
-                                    onLogicChange={handleLogicChange}
-                                />
+                                <ConditionBuilder {...conditionBuilderProps} />
                                 <ActionsPlatformTemplateConfirmation
                                     steps={steps}
                                     nodes={visualBuilderGraphDirty.nodes}

@@ -27,9 +27,15 @@ type Props = {
     graph: VisualBuilderGraph
     dispatch: Dispatch<VisualBuilderGraphAction>
     steps: ActionTemplate[]
+    onBuildAdvanced?: () => void
 }
 
-export const ActionStepList = ({ graph, dispatch, steps }: Props) => {
+export const ActionStepList = ({
+    graph,
+    dispatch,
+    steps,
+    onBuildAdvanced,
+}: Props) => {
     const [isAddStepOpen, setIsAddStepOpen] = useState(false)
     const [dirtyNodes, setDirtyNodes] = useState<
         ReusableLLMPromptCallNodeType[]
@@ -175,6 +181,7 @@ export const ActionStepList = ({ graph, dispatch, steps }: Props) => {
                     isOpen={isAddStepOpen}
                     onToggle={setIsAddStepOpen}
                     placement="bottom-start"
+                    onBuildAdvanced={onBuildAdvanced}
                 />
                 {!!graph.errors?.nodes && (
                     <Caption error={graph.errors.nodes} />

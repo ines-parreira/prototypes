@@ -78,24 +78,26 @@ export const AdvancedActionConfirmModal = ({
                     advanced features.
                 </Banner>
             </OverlayContent>
-            <OverlayFooter>
-                <Button
-                    variant="secondary"
-                    intent="regular"
-                    onClick={() => onOpenChange(false)}
-                >
-                    Back To Editing
-                </Button>
-                <Button
-                    variant="primary"
-                    intent="destructive"
-                    onClick={() => {
-                        onConfirm()
-                        onOpenChange(false)
-                    }}
-                >
-                    Convert To Advanced View
-                </Button>
+            <OverlayFooter hideCancelButton>
+                <Box gap="xs" justifyContent="flex-end" width="100%">
+                    <Button
+                        variant="secondary"
+                        intent="regular"
+                        onClick={() => onOpenChange(false)}
+                    >
+                        Back To Editing
+                    </Button>
+                    <Button
+                        variant="primary"
+                        intent="destructive"
+                        onClick={() => {
+                            onConfirm()
+                            onOpenChange(false)
+                        }}
+                    >
+                        Convert To Advanced View
+                    </Button>
+                </Box>
             </OverlayFooter>
         </Modal>
     )

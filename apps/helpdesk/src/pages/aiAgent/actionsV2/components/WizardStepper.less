@@ -1,0 +1,49 @@
+:local {
+    .stepper {
+        display: flex;
+        align-items: center;
+        gap: var(--layout-spacing-xs, 8px);
+        padding-left: 0;
+    }
+
+    .stepPill {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: var(--layout-spacing-xxxs, 4px);
+        padding-right: var(--layout-spacing-xs, 8px);
+        background-color: var(--surface-neutral-primary);
+        border-radius: var(--border-radius-xl, 32px);
+    }
+
+    .stepBadge {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background-color: var(--surface-neutral-secondary);
+        color: var(--content-neutral-secondary);
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 20px;
+    }
+
+    .stepBadgeCurrent {
+        background-color: var(--content-accent-default);
+        color: var(--content-inverted-default);
+    }
+
+    .stepLabel {
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 16px;
+        letter-spacing: 0.12px;
+        color: var(--content-neutral-secondary);
+    }
+
+    .stepLabelCurrent {
+        color: var(--content-neutral-default);
+    }
+}

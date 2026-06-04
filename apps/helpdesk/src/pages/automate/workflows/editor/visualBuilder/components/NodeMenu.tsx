@@ -11,6 +11,8 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import _isNil from 'lodash/isNil'
 import { DropdownItem } from 'reactstrap'
 
+import { Icon } from '@gorgias/axiom'
+
 import AppIcon from 'pages/automate/actionsPlatform/components/AppIcon'
 import useEnabledActionStepsByApp from 'pages/automate/actionsPlatform/hooks/useEnabledActionStepsByApp'
 import { useSelfServiceStoreIntegrationContext } from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
@@ -1004,12 +1006,13 @@ const AppCategoryItem = ({
     setMenuItems,
     nodeId,
 }: {
-    app: App
+    app: App | undefined
     steps: Components.Schemas.ListWfConfigurationTemplatesResponseDto
     setMenuItems: Dispatch<SetStateAction<ReactNode>>
     nodeId: string
 }) => {
     const handleClick = useCallback(() => {
+        if (!app) return
         setMenuItems((prevState) => (
             <>
                 <DropdownHeader
@@ -1044,11 +1047,13 @@ const AppCategoryItem = ({
         ))
     }, [app, nodeId, setMenuItems, steps])
 
+    if (!app) return null
+
     return (
         <MenuCategoryItem
-            key={app?.id}
-            icon={<AppIcon icon={app?.icon} name={app?.name} />}
-            label={app?.name}
+            key={app.id}
+            icon={<AppIcon icon={app.icon} name={app.name} />}
+            label={app.name}
             onClick={handleClick}
         />
     )
@@ -1100,13 +1105,35 @@ const AppMenuCategoryItems = ({
     )
 }
 
+const BuildAdvancedActionMenuItem = ({
+    onBuildAdvanced,
+    floatingRef,
+}: {
+    onBuildAdvanced: () => void
+    floatingRef?: HTMLElement | null
+}) => {
+    return (
+        <MenuItem
+            label="Build advanced action"
+            description="Use HTTP requests, conditions, and custom logic"
+            icon={<Icon name="settings-ai" size="sm" />}
+            onClick={onBuildAdvanced}
+            floatingRef={floatingRef}
+        />
+    )
+}
+
 type LiquidTemplateStepFlag = {
     actions: boolean
     actionsPlatform: boolean
     flows: boolean
 }
 
-function useMenuItems(nodeId: string, floatingRef?: HTMLElement | null) {
+function useMenuItems(
+    nodeId: string,
+    floatingRef?: HTMLElement | null,
+    onBuildAdvanced?: () => void,
+) {
     const { visualBuilderGraph } = useVisualBuilderContext()
 
     const triggerNode = visualBuilderGraph.nodes[0]
@@ -1206,6 +1233,13 @@ function useMenuItems(nodeId: string, floatingRef?: HTMLElement | null) {
             case 'llm_prompt_trigger':
                 return (
                     <DropdownBody>
+                        {!visualBuilderGraph.advanced_datetime &&
+                            onBuildAdvanced && (
+                                <BuildAdvancedActionMenuItem
+                                    onBuildAdvanced={onBuildAdvanced}
+                                    floatingRef={floatingRef}
+                                />
+                            )}
                         {!!visualBuilderGraph.advanced_datetime && (
                             <>
                                 <DropdownItem header className="text-uppercase">
@@ -1258,6 +1292,7 @@ function useMenuItems(nodeId: string, floatingRef?: HTMLElement | null) {
         liquidTemplateStepFlag?.flows,
         liquidTemplateStepFlag?.actionsPlatform,
         liquidTemplateStepFlag?.actions,
+        onBuildAdvanced,
     ])
 
     useEffect(() => {
@@ -1281,13 +1316,22 @@ type Props = {
     target: RefObject<HTMLElement | null>
     floatingRef?: HTMLElement | null
     placement: 'right-start' | 'bottom-start'
+    onBuildAdvanced?: () => void
 }
 
 const NodeMenu = (
-    { nodeId, isOpen, onToggle, target, floatingRef, placement }: Props,
+    {
+        nodeId,
+        isOpen,
+        onToggle,
+        target,
+        floatingRef,
+        placement,
+        onBuildAdvanced,
+    }: Props,
     ref: Ref<HTMLElement> | null | undefined,
 ) => {
-    const menuItems = useMenuItems(nodeId, floatingRef)
+    const menuItems = useMenuItems(nodeId, floatingRef, onBuildAdvanced)
 
     return (
         <Dropdown
