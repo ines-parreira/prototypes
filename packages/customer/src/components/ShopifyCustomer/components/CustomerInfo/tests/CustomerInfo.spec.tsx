@@ -33,6 +33,15 @@ vi.mock('../../../hooks/useListShopifyOrders', () => ({
     useListShopifyOrders: vi.fn(),
 }))
 
+const mockUseFlag = vi.fn().mockReturnValue(false)
+
+vi.mock('@repo/feature-flags', () => ({
+    FeatureFlagKey: {
+        NewOrdersSidebar: 'linear-HELP-6616-new-orders-sidebar',
+    },
+    useFlag: (...args: unknown[]) => mockUseFlag(...args),
+}))
+
 const mockUseTicketInfobarNavigation = vi.fn().mockReturnValue({
     activeTab: undefined,
     isExpanded: true,
@@ -184,6 +193,8 @@ async function waitForSelectedStore(name = mockShopifyIntegration.name) {
 }
 
 beforeEach(() => {
+    mockUseFlag.mockReturnValue(false)
+
     mockUseTicketInfobarNavigation.mockReturnValue({
         activeTab: undefined,
         isExpanded: true,
@@ -620,6 +631,40 @@ describe('CustomerInfo', () => {
                     screen.getByRole('heading', { name: /order #1001/i }),
                 ).toBeInTheDocument()
             })
+        })
+
+        it('renders empty placeholder instead of orders when NewOrdersSidebar flag is on', async () => {
+            mockUseFlag.mockReturnValue(true)
+
+            vi.mocked(useListShopifyOrders).mockImplementation(
+                ({ objectType }) => {
+                    if (objectType === ObjectType.Order) {
+                        return {
+                            orders: [mockOrder],
+                            isLoadingOrders: false,
+                            refetchOrders: vi.fn(),
+                        }
+                    }
+                    return {
+                        orders: undefined,
+                        isLoadingOrders: false,
+                        refetchOrders: vi.fn(),
+                    }
+                },
+            )
+
+            render(
+                <CustomerInfo
+                    associatedShopifyCustomerIds={associatedShopifyCustomerIds}
+                    externalIdMap={externalIdMap}
+                    ticketId="123"
+                    renderOrderSidePanel={mockRenderOrderSidePanel}
+                />,
+            )
+
+            await waitForSelectedStore()
+
+            expect(screen.queryByText('#1001')).not.toBeInTheDocument()
         })
 
         it('renders customer metafields above the orders list', async () => {

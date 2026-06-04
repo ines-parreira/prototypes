@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 
 import type { OrderCardProduct } from '@repo/ecommerce/shopify/types'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { EditFieldsType, useTicketInfobarNavigation } from '@repo/navigation'
 
 import { Box } from '@gorgias/axiom'
@@ -99,6 +100,7 @@ export function CustomerInfo({
         customerId,
     })
 
+    const hasNewOrdersSidebar = useFlag(FeatureFlagKey.NewOrdersSidebar)
     const { customerFields, sections, preferences, savePreferences } =
         useCustomerFieldPreferences()
 
@@ -192,15 +194,19 @@ export function CustomerInfo({
                 ticketId={ticketId}
                 shopper={shopper}
             >
-                <OrdersList
-                    orders={orders}
-                    isLoadingOrders={isLoadingOrders}
-                    productsMap={productsMap}
-                    draftOrders={draftOrders}
-                    isLoadingDraftOrders={isLoadingDraftOrders}
-                    onSelectOrder={handleSelectOrder}
-                    onCreateOrder={handleCreateOrder}
-                />
+                {hasNewOrdersSidebar ? (
+                    <div />
+                ) : (
+                    <OrdersList
+                        orders={orders}
+                        isLoadingOrders={isLoadingOrders}
+                        productsMap={productsMap}
+                        draftOrders={draftOrders}
+                        isLoadingDraftOrders={isLoadingDraftOrders}
+                        onSelectOrder={handleSelectOrder}
+                        onCreateOrder={handleCreateOrder}
+                    />
+                )}
             </CustomerDetailsPanel>
 
             {renderOrderSidePanel({

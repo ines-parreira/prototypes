@@ -40,6 +40,13 @@ vi.mock('@repo/preferences', () => ({
     }),
 }))
 
+vi.mock('@repo/feature-flags', () => ({
+    FeatureFlagKey: {
+        NewOrdersSidebar: 'linear-HELP-6616-new-orders-sidebar',
+    },
+    useFlag: vi.fn().mockReturnValue(false),
+}))
+
 const mockShopifyIntegration = {
     id: 1,
     name: 'Test Shopify Store',
