@@ -795,17 +795,20 @@ describe('utils', () => {
 
         it('should transform a flow with customer lookup correctly', () => {
             const playMessageStep = mockPlayMessageStep({
+                id: 'play_message',
                 next_step_id: null,
             })
             const customerLookupNode = mockCustomerFieldsConditionalStep({
+                id: 'customer_lookup',
                 branch_options: [
                     mockCustomerFieldBranchOption({
+                        field_value: '1',
                         next_step_id: playMessageStep.id,
                     }),
                 ],
                 default_next_step_id: playMessageStep.id,
             })
-            const flow = {
+            const flow: CallRoutingFlow = {
                 steps: {
                     [customerLookupNode.id]: customerLookupNode,
                     [playMessageStep.id]: playMessageStep,
@@ -815,61 +818,76 @@ describe('utils', () => {
 
             const nodes = transformToReactFlowNodes(flow)
 
-            expect(nodes).toEqual([
-                expect.objectContaining({
-                    ...INCOMING_CALL_NODE,
-                    data: { next_step_id: customerLookupNode.id },
-                }),
-                expect.objectContaining({
-                    id: customerLookupNode.id,
-                    data: {
-                        ...customerLookupNode,
-                        default_next_step_id: expect.not.stringMatching(
-                            playMessageStep.id,
-                        ),
-                        branch_options: [
-                            expect.objectContaining({
-                                ...customerLookupNode.branch_options[0],
-                                next_step_id: expect.not.stringMatching(
-                                    playMessageStep.id,
-                                ),
-                            }),
-                        ],
+            expect(nodes).toEqual(
+                expect.arrayContaining([
+                    expect.objectContaining({
+                        ...INCOMING_CALL_NODE,
+                        data: { next_step_id: customerLookupNode.id },
+                    }),
+                    expect.objectContaining({
+                        id: playMessageStep.id,
+                        type: VoiceFlowNodeType.PlayMessage,
+                        data: {
+                            ...playMessageStep,
+                            next_step_id: END_CALL_NODE.id,
+                        },
+                    }),
+                    expect.objectContaining({ ...END_CALL_NODE }),
+                ]),
+            )
+
+            const transformedCustomerLookupNode = nodes.find(
+                (node): node is CustomerLookupNode =>
+                    node.type === VoiceFlowNodeType.CustomerLookup &&
+                    node.id === customerLookupNode.id,
+            )
+            const customerLookupOptionNodes = nodes.filter(
+                (node): node is CustomerLookupOptionNode =>
+                    node.type === VoiceFlowNodeType.CustomerLookupOption &&
+                    node.data.parentId === customerLookupNode.id,
+            )
+            const intermediaryNodes = nodes.filter(
+                (node): node is IntermediaryNode =>
+                    node.type === VoiceFlowNodeType.Intermediary,
+            )
+
+            expect(transformedCustomerLookupNode).toBeDefined()
+            expect(customerLookupOptionNodes).toHaveLength(2)
+            expect(intermediaryNodes).toHaveLength(1)
+
+            const defaultOptionNode = customerLookupOptionNodes.find(
+                (node) => node.data.isDefaultOption,
+            )
+            const branchOptionNode = customerLookupOptionNodes.find(
+                (node) => !node.data.isDefaultOption,
+            )
+            const intermediaryNode = intermediaryNodes[0]
+
+            expect(defaultOptionNode).toBeDefined()
+            expect(branchOptionNode).toBeDefined()
+            expect(transformedCustomerLookupNode!.data).toEqual({
+                ...customerLookupNode,
+                default_next_step_id: defaultOptionNode!.id,
+                branch_options: [
+                    {
+                        ...customerLookupNode.branch_options[0],
+                        next_step_id: branchOptionNode!.id,
                     },
-                }),
-                expect.objectContaining({
-                    type: VoiceFlowNodeType.CustomerLookupOption,
-                    data: expect.objectContaining({
-                        isDefaultOption: true,
-                        next_step_id: expect.not.stringMatching(
-                            playMessageStep.id,
-                        ),
-                    }),
-                }),
-                expect.objectContaining({
-                    type: VoiceFlowNodeType.CustomerLookupOption,
-                    data: expect.objectContaining({
-                        isDefaultOption: false,
-                        next_step_id: expect.not.stringMatching(
-                            playMessageStep.id,
-                        ),
-                    }),
-                }),
-                expect.objectContaining({
-                    id: playMessageStep.id,
-                    data: expect.objectContaining({
-                        ...playMessageStep,
-                        next_step_id: END_CALL_NODE.id,
-                    }),
-                }),
-                expect.objectContaining({ ...END_CALL_NODE }),
-                expect.objectContaining({
-                    type: VoiceFlowNodeType.Intermediary,
-                    data: expect.objectContaining({
-                        next_step_id: playMessageStep.id,
-                    }),
-                }),
-            ])
+                ],
+            })
+            expect(defaultOptionNode!.data).toEqual({
+                parentId: customerLookupNode.id,
+                isDefaultOption: true,
+                optionIndex: null,
+                next_step_id: intermediaryNode.id,
+            })
+            expect(branchOptionNode!.data).toEqual({
+                parentId: customerLookupNode.id,
+                isDefaultOption: false,
+                optionIndex: 0,
+                next_step_id: intermediaryNode.id,
+            })
+            expect(intermediaryNode.data.next_step_id).toBe(playMessageStep.id)
         })
 
         it('should transform a simple enqueue node with conditional routing', () => {
