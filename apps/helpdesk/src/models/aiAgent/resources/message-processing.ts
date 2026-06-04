@@ -37,7 +37,7 @@ export function createBaseUrl(
 
 const baseURL = createBaseUrl()
 
-// eslint-disable-next-line no-restricted-properties
+// eslint-disable-next-line no-restricted-properties, import/no-named-as-default-member
 export const apiClient = axios.create({
     baseURL,
     headers: {
@@ -48,7 +48,7 @@ export const apiClient = axios.create({
 apiClient.interceptors.request.use(gorgiasAppsAuthInterceptor)
 
 export const createApiClient = (baseUrl: string) => {
-    // eslint-disable-next-line no-restricted-properties
+    // eslint-disable-next-line no-restricted-properties, import/no-named-as-default-member
     const client = axios.create({
         baseURL: baseUrl,
         headers: {

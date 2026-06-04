@@ -26,7 +26,7 @@ const domain = isProduction()
 
 const baseURL = `${domain}/api`
 
-// eslint-disable-next-line no-restricted-properties
+// eslint-disable-next-line no-restricted-properties, import/no-named-as-default-member
 export const apiClient = axios.create({
     baseURL,
     headers: {

@@ -44,6 +44,7 @@ describe('HelpCenterPreferencesSettings', () => {
     const deleteHelpCenterTranslationMock = jest.fn().mockResolvedValue({})
     const createHelpCenterTranslationMock = jest.fn().mockResolvedValue({})
     const mockClient: HelpCenterClient = {
+        // eslint-disable-next-line import/no-named-as-default-member
         ...axios.create(),
         deleteHelpCenterTranslation: deleteHelpCenterTranslationMock,
         createHelpCenterTranslation: createHelpCenterTranslationMock,
