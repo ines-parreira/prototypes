@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { useFormContext } from 'react-hook-form'
 
@@ -22,11 +22,12 @@ import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
 
 type Props = {
     onClose: () => void
+    promptUnsavedChanges?: (callbacks?: { onClose?: () => void }) => void
 }
 
 const COLLAPSIBLE_COLUMN_WIDTH = '380px'
 
-export const PreviewPanel = ({ onClose }: Props) => {
+export const PreviewPanel = ({ onClose, promptUnsavedChanges }: Props) => {
     const { journeyData, journeyType, currentIntegration } = useJourneyContext()
     const { warpToCollapsibleColumn, setCollapsibleColumnWidthConfig } =
         useCollapsibleColumn()
@@ -35,8 +36,9 @@ export const PreviewPanel = ({ onClose }: Props) => {
         setCollapsibleColumnWidthConfig({ width: COLLAPSIBLE_COLUMN_WIDTH })
         return () => setCollapsibleColumnWidthConfig(undefined)
     }, [setCollapsibleColumnWidthConfig])
-    const { watch } = useFormContext<SetupFormValues>()
+    const { watch, formState } = useFormContext<SetupFormValues>()
     const journeyMessageInstructions = watch('message_instructions')
+    const isFormDirty = formState.isDirty
 
     const { storeConfiguration } = useAiJourneyStoreConfiguration(
         currentIntegration?.id,
@@ -94,10 +96,33 @@ export const PreviewPanel = ({ onClose }: Props) => {
         [setLastSelectedProductId],
     )
 
-    const handleGenerateMessagesClick = useCallback(async () => {
+    const generateMessages = useCallback(async () => {
         setCurrentProductImage(selectedProduct?.image ?? null)
         await handleGenerateMessages()
     }, [handleGenerateMessages, selectedProduct?.image])
+
+    const isPreviewPendingSaveRef = useRef(false)
+
+    const handleGenerateMessagesClick = useCallback(() => {
+        if (!promptUnsavedChanges || !isFormDirty) {
+            void generateMessages()
+            return
+        }
+        if (isPreviewPendingSaveRef.current) return
+        isPreviewPendingSaveRef.current = true
+        promptUnsavedChanges({
+            onClose: () => {
+                isPreviewPendingSaveRef.current = false
+            },
+        })
+    }, [promptUnsavedChanges, isFormDirty, generateMessages])
+
+    useEffect(() => {
+        if (isPreviewPendingSaveRef.current && !isFormDirty) {
+            isPreviewPendingSaveRef.current = false
+            void generateMessages()
+        }
+    }, [isFormDirty, generateMessages])
 
     const shouldRenderTestingProductCard =
         !isWelcome && !isCampaign && !isWinBack

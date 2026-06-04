@@ -1,7 +1,7 @@
 import { render } from '@repo/testing'
-import { act, screen } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { FormProvider, useForm } from 'react-hook-form'
+import { FormProvider, useForm, useFormContext } from 'react-hook-form'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -376,6 +376,178 @@ describe('<PreviewPanel />', () => {
             expect(mockSetLastSelectedProductId).toHaveBeenCalledWith(
                 'product-1',
             )
+        })
+    })
+
+    describe('unsaved changes before preview', () => {
+        const FormControls = () => {
+            const { setValue, reset } = useFormContext()
+            return (
+                <>
+                    <button
+                        onClick={() =>
+                            setValue('message_instructions', 'changed', {
+                                shouldDirty: true,
+                            })
+                        }
+                    >
+                        Make dirty
+                    </button>
+                    <button
+                        onClick={() =>
+                            reset({ message_instructions: 'changed' })
+                        }
+                    >
+                        Save form
+                    </button>
+                </>
+            )
+        }
+
+        const renderWithFormControls = (
+            promptUnsavedChanges: (callbacks?: {
+                onClose?: () => void
+            }) => void,
+        ) => {
+            const WrapperWithControls = ({
+                children,
+            }: {
+                children: React.ReactNode
+            }) => {
+                const methods = useForm({
+                    defaultValues: { message_instructions: '' },
+                })
+                return (
+                    <Provider store={mockStore}>
+                        <FormProvider {...methods}>
+                            <FormControls />
+                            {children}
+                        </FormProvider>
+                    </Provider>
+                )
+            }
+
+            return render(
+                <PreviewPanel
+                    onClose={jest.fn()}
+                    promptUnsavedChanges={promptUnsavedChanges}
+                />,
+                { wrapper: WrapperWithControls },
+            )
+        }
+
+        let mockHandleGenerateMessages: jest.Mock
+
+        beforeEach(() => {
+            mockUseJourneyContext.mockReturnValue({
+                journeyData: {
+                    id: 'j-1',
+                    type: JOURNEY_TYPES.CAMPAIGN,
+                    configuration: {},
+                },
+                journeyType: JOURNEY_TYPES.CAMPAIGN,
+                currentIntegration: { id: 1 },
+            })
+
+            mockHandleGenerateMessages = jest.fn().mockResolvedValue(undefined)
+            const mockUseGeneratePlaygroundMessage = require('AIJourney/hooks')
+                .useGeneratePlaygroundMessage as jest.Mock
+            mockUseGeneratePlaygroundMessage.mockReturnValue({
+                handleGenerateMessages: mockHandleGenerateMessages,
+                playgroundMessages: [],
+                isGeneratingMessages: false,
+            })
+        })
+
+        it('should generate immediately when the form has no unsaved changes', async () => {
+            const promptUnsavedChanges = jest.fn()
+            const user = userEvent.setup()
+            renderWithFormControls(promptUnsavedChanges)
+
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /generate messages/i }),
+                )
+            })
+
+            expect(mockHandleGenerateMessages).toHaveBeenCalled()
+            expect(promptUnsavedChanges).not.toHaveBeenCalled()
+        })
+
+        it('should prompt for unsaved changes instead of generating when the form is dirty', async () => {
+            const promptUnsavedChanges = jest.fn()
+            const user = userEvent.setup()
+            renderWithFormControls(promptUnsavedChanges)
+
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /make dirty/i }),
+                )
+            })
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /generate messages/i }),
+                )
+            })
+
+            expect(promptUnsavedChanges).toHaveBeenCalled()
+            expect(mockHandleGenerateMessages).not.toHaveBeenCalled()
+        })
+
+        it('should generate after the form is saved when a preview was pending', async () => {
+            const promptUnsavedChanges = jest.fn()
+            const user = userEvent.setup()
+            renderWithFormControls(promptUnsavedChanges)
+
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /make dirty/i }),
+                )
+            })
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /generate messages/i }),
+                )
+            })
+
+            expect(mockHandleGenerateMessages).not.toHaveBeenCalled()
+
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /save form/i }),
+                )
+            })
+
+            await waitFor(() => {
+                expect(mockHandleGenerateMessages).toHaveBeenCalled()
+            })
+        })
+
+        it('should not generate after save when the unsaved changes prompt was dismissed', async () => {
+            const promptUnsavedChanges = jest.fn(
+                (callbacks?: { onClose?: () => void }) =>
+                    callbacks?.onClose?.(),
+            )
+            const user = userEvent.setup()
+            renderWithFormControls(promptUnsavedChanges)
+
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /make dirty/i }),
+                )
+            })
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /generate messages/i }),
+                )
+            })
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /save form/i }),
+                )
+            })
+
+            expect(mockHandleGenerateMessages).not.toHaveBeenCalled()
         })
     })
 })

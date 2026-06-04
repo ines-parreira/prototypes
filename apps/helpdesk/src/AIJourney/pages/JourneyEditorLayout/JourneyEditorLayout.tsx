@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { useId } from '@repo/hooks'
@@ -149,6 +149,13 @@ export const JourneyEditorLayout = ({ step }: Props) => {
             onDiscard: action,
         })
     }
+
+    const promptUnsavedChanges = useCallback(
+        (callbacks?: { onClose?: () => void }) => {
+            unsavedChangesPromptRef.current?.onLeaveContext(callbacks)
+        },
+        [],
+    )
 
     const { handleCreate, isLoading: isLoadingCreate } =
         useJourneyCreateHandler({
@@ -450,7 +457,7 @@ export const JourneyEditorLayout = ({ step }: Props) => {
                                 </Menu>
                                 <Button
                                     onClick={handleSubmit(handleSave)}
-                                    isDisabled={isLoading}
+                                    isDisabled={isLoading || !formState.isDirty}
                                     isLoading={formState.isSubmitting}
                                 >
                                     Save changes
@@ -481,6 +488,7 @@ export const JourneyEditorLayout = ({ step }: Props) => {
                 {isCollapsibleColumnOpen && (
                     <PreviewPanel
                         onClose={() => setIsCollapsibleColumnOpen(false)}
+                        promptUnsavedChanges={promptUnsavedChanges}
                     />
                 )}
             </form>

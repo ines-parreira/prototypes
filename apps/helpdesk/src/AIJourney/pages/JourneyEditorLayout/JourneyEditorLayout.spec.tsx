@@ -134,6 +134,32 @@ describe('<JourneyEditorLayout /> — Campaign mode (isCampaign = true)', () => 
         ).toBeInTheDocument()
     })
 
+    it('should disable the "Save changes" button when there are no unsaved changes', () => {
+        renderComponent()
+
+        expect(
+            screen.getByRole('button', { name: /save changes/i }),
+        ).toBeDisabled()
+    })
+
+    it('should enable the "Save changes" button once the form has unsaved changes', async () => {
+        const user = userEvent.setup()
+        renderComponent()
+
+        expect(
+            screen.getByRole('button', { name: /save changes/i }),
+        ).toBeDisabled()
+
+        await user.type(
+            screen.getByPlaceholderText(/describe tone/i),
+            'Some instructions',
+        )
+
+        expect(
+            screen.getByRole('button', { name: /save changes/i }),
+        ).toBeEnabled()
+    })
+
     it('should call handleCreate when clicking "Save changes" with no journeyData.id', async () => {
         const mockHandleCreate = jest.fn().mockResolvedValue({ id: 'new-123' })
         const mockUseJourneyCreateHandler = require('AIJourney/hooks')
@@ -184,6 +210,10 @@ describe('<JourneyEditorLayout /> — Campaign mode (isCampaign = true)', () => 
         const user = userEvent.setup()
         renderComponent()
 
+        await user.type(
+            screen.getByPlaceholderText(/describe tone/i),
+            'Updated instructions',
+        )
         await user.click(screen.getByRole('button', { name: /save changes/i }))
 
         expect(mockHandleUpdate).toHaveBeenCalledWith(
@@ -218,6 +248,10 @@ describe('<JourneyEditorLayout /> — Campaign mode (isCampaign = true)', () => 
         const user = userEvent.setup()
         renderComponent()
 
+        await user.type(
+            screen.getByPlaceholderText(/describe tone/i),
+            'Updated instructions',
+        )
         await user.click(screen.getByRole('button', { name: /save changes/i }))
 
         await waitFor(() => {
@@ -252,6 +286,10 @@ describe('<JourneyEditorLayout /> — Campaign mode (isCampaign = true)', () => 
         const user = userEvent.setup()
         renderComponent()
 
+        await user.type(
+            screen.getByPlaceholderText(/describe tone/i),
+            'Updated instructions',
+        )
         await user.click(screen.getByRole('button', { name: /save changes/i }))
 
         await waitFor(() => {
@@ -291,6 +329,10 @@ describe('<JourneyEditorLayout /> — Campaign mode (isCampaign = true)', () => 
         const user = userEvent.setup()
         renderComponent()
 
+        await user.type(
+            screen.getByPlaceholderText(/describe tone/i),
+            'Updated instructions',
+        )
         await user.click(screen.getByRole('button', { name: /save changes/i }))
 
         await waitFor(() => {
@@ -629,6 +671,10 @@ describe('<JourneyEditorLayout /> — Non-campaign flow save', () => {
         const user = userEvent.setup()
         renderComponent()
 
+        await user.type(
+            screen.getByPlaceholderText(/describe tone/i),
+            'Updated instructions',
+        )
         await user.click(screen.getByRole('button', { name: /save changes/i }))
 
         expect(mockHandleUpdate).toHaveBeenCalled()
@@ -657,6 +703,10 @@ describe('<JourneyEditorLayout /> — Non-campaign flow save', () => {
         const user = userEvent.setup()
         renderComponent()
 
+        await user.type(
+            screen.getByPlaceholderText(/describe tone/i),
+            'Updated instructions',
+        )
         await user.click(screen.getByRole('button', { name: /save changes/i }))
 
         expect(mockHandleUpdate).toHaveBeenCalledWith(
@@ -750,6 +800,10 @@ describe('<JourneyEditorLayout /> — Non-campaign flow save', () => {
         const user = userEvent.setup()
         renderComponent()
 
+        await user.type(
+            screen.getByPlaceholderText(/describe tone/i),
+            'Updated instructions',
+        )
         await user.click(screen.getByRole('button', { name: /save changes/i }))
 
         await waitFor(() => {
