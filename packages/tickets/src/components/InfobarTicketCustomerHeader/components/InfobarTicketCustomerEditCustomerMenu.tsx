@@ -14,18 +14,14 @@ export interface InfobarTicketCustomerEditCustomerMenuProps {
     customer?: TicketCustomer
     onEditCustomer: (customer: TicketCustomer) => void
     onSyncToShopify: (customer: TicketCustomer) => void
-    onOpenMergePanel?: () => void
     hasShopifyIntegration?: boolean
-    mergeMenuItemLabel?: string
 }
 
 export function InfobarTicketCustomerEditCustomerMenu({
     customer,
     onEditCustomer,
     onSyncToShopify,
-    onOpenMergePanel,
     hasShopifyIntegration = false,
-    mergeMenuItemLabel = 'Merge or switch customer',
 }: InfobarTicketCustomerEditCustomerMenuProps) {
     const handleActionSelect = useCallback(
         (action: 'edit' | 'sync') => {
@@ -49,7 +45,7 @@ export function InfobarTicketCustomerEditCustomerMenu({
             trigger={
                 <Button
                     variant={ButtonVariant.Tertiary}
-                    size={ButtonSize.Sm}
+                    size={ButtonSize.Md}
                     aria-label="Customer menu"
                     icon="dots-meatballs-horizontal"
                 />
@@ -74,15 +70,6 @@ export function InfobarTicketCustomerEditCustomerMenu({
                     />
                 )}
             </MenuSection>
-            {onOpenMergePanel && (
-                <MenuSection id="customer-actions">
-                    <MenuItem
-                        label={mergeMenuItemLabel}
-                        leadingSlot="user-arrow"
-                        onAction={onOpenMergePanel}
-                    />
-                </MenuSection>
-            )}
         </Menu>
     )
 }

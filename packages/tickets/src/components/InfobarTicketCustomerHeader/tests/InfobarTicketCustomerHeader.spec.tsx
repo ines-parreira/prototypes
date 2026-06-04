@@ -130,7 +130,7 @@ describe('InfobarTicketCustomerHeader', () => {
         expect(screen.getByText('Sync profile to Shopify')).toBeInTheDocument()
     })
 
-    it('should show merge or switch customer option in dropdown and call onOpenMergePanel when clicked', async () => {
+    it('should call onOpenMergePanel when the search customers button is clicked', async () => {
         const mockOnOpenMergePanel = vi.fn()
         const { user } = render(
             <InfobarTicketCustomerHeader
@@ -145,12 +145,33 @@ describe('InfobarTicketCustomerHeader', () => {
 
         await waitUntilLoaded()
 
-        const menuButton = screen.getByLabelText('Customer menu')
-        await act(() => user.click(menuButton))
+        const searchButton = screen.getByRole('button', {
+            name: 'Search for customers to merge or switch',
+        })
 
-        const mergeOptions = screen.getAllByText('Merge or switch customer')
-        await act(() => user.click(mergeOptions[mergeOptions.length - 1]))
+        await act(() => user.click(searchButton))
         expect(mockOnOpenMergePanel).toHaveBeenCalledTimes(1)
+    })
+
+    it('should not render the search customers button when onOpenMergePanel is not provided', async () => {
+        render(
+            <InfobarTicketCustomerHeader
+                {...defaultProps}
+                onOpenMergePanel={undefined}
+            />,
+            {
+                path: '/ticket/:ticketId',
+                initialEntries: [`/ticket/${ticketId}`],
+            },
+        )
+
+        await waitUntilLoaded()
+
+        expect(
+            screen.queryByRole('button', {
+                name: 'Search for customers to merge or switch',
+            }),
+        ).not.toBeInTheDocument()
     })
 
     it('should call onEditCustomer and onSyncToShopify', async () => {
