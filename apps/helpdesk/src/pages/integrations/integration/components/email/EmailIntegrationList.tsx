@@ -105,6 +105,7 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
     const integrationToItemDisplay = (integration: Map<any, any>) => {
         return (
             <EmailIntegrationListItem
+                key={integration.get('id')}
                 integration={integration.toJS?.()}
                 verifiedDomains={verifiedDomains}
                 storeMappings={storeMappings}

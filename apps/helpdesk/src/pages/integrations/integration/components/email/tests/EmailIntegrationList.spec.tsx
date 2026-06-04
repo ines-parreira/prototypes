@@ -5,8 +5,10 @@ import { fromJS } from 'immutable'
 import { useLocation } from 'react-router-dom'
 
 import { basicMonthlyHelpdeskPlan, customHelpdeskPlan } from 'fixtures/plans'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { EmailProvider, IntegrationType } from 'models/integration/constants'
+import { useListStoreMappings } from 'models/storeMapping/queries'
 import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 
 import EmailIntegrationList from '../EmailIntegrationList'
@@ -47,7 +49,9 @@ jest.mock('../helpers')
 jest.mock('../resources')
 jest.mock('../hooks/useEmailOnboarding')
 jest.mock('@repo/feature-flags')
+jest.mock('hooks/useAppDispatch')
 jest.mock('hooks/useAppSelector')
+jest.mock('models/storeMapping/queries')
 const fetchEmailDomainsMock = assumeMock(fetchEmailDomains)
 const EmailIntegrationListVerificationStatusMock = assumeMock(
     EmailIntegrationListVerificationStatus,
@@ -61,7 +65,9 @@ const useEmailOnboardingCompleteCheckMock = assumeMock(
     useEmailOnboardingCompleteCheck,
 )
 const useFlagMock = assumeMock(useFlag)
+const useAppDispatchMock = assumeMock(useAppDispatch)
 const useAppSelectorMock = assumeMock(useAppSelector)
+const useListStoreMappingsMock = assumeMock(useListStoreMappings)
 describe('<EmailIntegrationList/>', () => {
     function getEmailIntegration(
         id: number,
@@ -138,6 +144,11 @@ describe('<EmailIntegrationList/>', () => {
         useEmailOnboardingCompleteCheckMock.mockReturnValue({
             isOnboardingComplete: true,
         } as any)
+        useAppDispatchMock.mockReturnValue(jest.fn())
+        useListStoreMappingsMock.mockReturnValue({
+            data: {},
+            isFetching: false,
+        } as any)
         useAppSelectorMock.mockImplementation((selector: any) => {
             const selectorString = selector.toString()
             if (
@@ -195,7 +206,7 @@ describe('<EmailIntegrationList/>', () => {
                 true,
             )
             // Render with specific integration data
-            const { container } = render(
+            render(
                 <EmailIntegrationList
                     {...commonProps}
                     loading={fromJS({})} // explicitly set loading to false
@@ -205,20 +216,30 @@ describe('<EmailIntegrationList/>', () => {
             )
             // Wait for the API call to complete
             await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
-            // Wait for the integration to render
-            await waitFor(() => {
-                // The EmailIntegrationListVerificationStatus component should now be mocked
-                // Instead of checking if the mock was called, let's verify the component renders successfully
-                // Look for the text in the verification status component or check for the email address
-                expect(container.textContent).toContain(
-                    'email@gorgias-test.com',
-                )
-                // Check if EmailIntegrationListVerificationStatus is rendered by looking for
-                // the mocked component output
-                expect(container.textContent).toContain(
-                    'EmailIntegrationListVerificationStatus',
-                )
-            })
+
+            expect(
+                await screen.findByText('email@gorgias-test.com'),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText('EmailIntegrationListVerificationStatus'),
+            ).toBeInTheDocument()
+            expect(
+                EmailIntegrationListVerificationStatusMock.mock.calls.map(
+                    ([props]) => props,
+                ),
+            ).toEqual(
+                expect.arrayContaining([
+                    expect.objectContaining({
+                        integration: expect.objectContaining({
+                            id: emailIntegration.id,
+                            meta: expect.objectContaining({
+                                address: 'email@gorgias-test.com',
+                            }),
+                        }),
+                        isDomainVerificationWarningVisible: true,
+                    }),
+                ]),
+            )
         })
         it('should render the page with an alert when there are unverified integrations', async () => {
             window.GORGIAS_STATE = {
@@ -744,7 +765,7 @@ describe('<EmailIntegrationList/>', () => {
                 },
             )
         })
-        it('should not display verification status for base email integrations', () => {
+        it('should not display a domain verification warning for base email integrations', async () => {
             fetchEmailDomainsMock.mockResolvedValueOnce([])
             isBaseEmailIntegrationMock.mockReturnValue(true)
             const integration = getEmailIntegration(
@@ -759,9 +780,22 @@ describe('<EmailIntegrationList/>', () => {
                 />,
                 {},
             )
+            await screen.findByText(integration.meta.address)
+
             expect(
-                screen.queryByText('EmailIntegrationListVerificationStatus'),
-            ).not.toBeInTheDocument()
+                EmailIntegrationListVerificationStatusMock.mock.calls.map(
+                    ([props]) => props,
+                ),
+            ).toEqual(
+                expect.arrayContaining([
+                    expect.objectContaining({
+                        integration: expect.objectContaining({
+                            id: integration.id,
+                        }),
+                        isDomainVerificationWarningVisible: false,
+                    }),
+                ]),
+            )
         })
         it('should navigate to new email integration page when Add New Email button is clicked', async () => {
             fetchEmailDomainsMock.mockResolvedValueOnce([])
