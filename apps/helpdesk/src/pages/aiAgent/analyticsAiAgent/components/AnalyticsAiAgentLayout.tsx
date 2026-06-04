@@ -237,7 +237,6 @@ export const AnalyticsAiAgentLayout = () => {
                             activeTabConfig.reportConfig.reportFilters
                                 .persistent
                         }
-                        withSavedFilters={false}
                         optionalFilters={
                             activeTabConfig.reportConfig.reportFilters.optional
                         }

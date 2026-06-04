@@ -139,6 +139,17 @@ describe('AnalyticsOverviewLayout', () => {
         expect(screen.getByText('Overview')).toBeInTheDocument()
     })
 
+    it('enables saved filters on FiltersPanelWrapper', () => {
+        renderComponent()
+
+        expect(mockFiltersPanelWrapper).toHaveBeenCalledWith(
+            expect.not.objectContaining({
+                withSavedFilters: false,
+            }),
+            expect.anything(),
+        )
+    })
+
     it('always passes optional filters to FiltersPanelWrapper', () => {
         renderComponent()
 

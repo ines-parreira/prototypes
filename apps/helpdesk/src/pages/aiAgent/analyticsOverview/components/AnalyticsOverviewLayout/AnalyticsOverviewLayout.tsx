@@ -82,7 +82,6 @@ export const AnalyticsOverviewLayout = () => {
                     persistentFilters={
                         AnalyticsOverviewReportConfig.reportFilters.persistent
                     }
-                    withSavedFilters={false}
                     optionalFilters={
                         AnalyticsOverviewReportConfig.reportFilters.optional
                     }
