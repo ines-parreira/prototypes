@@ -137,7 +137,7 @@ const firstResponseTimeBaseQuery = () => ({
 
 export const {
     valueQueryFactory: firstResponseTimeValueQueryFactoryV2,
-    breakdownQuery: firstResponseTimeBreakdownQueryFactoryV2,
+    breakdownQueryFactory: firstResponseTimeBreakdownQueryFactoryV2,
     timeseriesQueryFactory: firstResponseTimeTimeseriesQueryFactoryV2,
 } = getGenericQueries(firstResponseTimeScope, firstResponseTimeBaseQuery, {
     valueMetricName:

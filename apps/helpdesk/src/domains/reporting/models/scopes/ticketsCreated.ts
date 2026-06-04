@@ -103,7 +103,7 @@ const createdTicketsBaseQuery = () => ({
 
 export const {
     valueQueryFactory: createdTicketsValueQueryFactoryV2,
-    breakdownQuery: createdTicketsBreakdownQueryFactoryV2,
+    breakdownQueryFactory: createdTicketsBreakdownQueryFactoryV2,
     timeseriesQueryFactory: createdTicketsTimeseriesQueryFactoryV2,
 } = getGenericQueries(ticketsCreatedScope, createdTicketsBaseQuery, {
     valueMetricName: METRIC_NAMES.PERFORMANCE_OVERVIEW_CREATED_TICKETS_VALUE,

@@ -123,7 +123,8 @@ const humanResponseTimeAfterAiHandoffBaseQuery = () => ({
 
 export const {
     valueQueryFactory: humanResponseTimeAfterAiHandoffValueQueryFactoryV2,
-    breakdownQuery: humanResponseTimeAfterAiHandoffBreakdownQueryFactoryV2,
+    breakdownQueryFactory:
+        humanResponseTimeAfterAiHandoffBreakdownQueryFactoryV2,
     timeseriesQueryFactory:
         humanResponseTimeAfterAiHandoffTimeseriesQueryFactoryV2,
 } = getGenericQueries(

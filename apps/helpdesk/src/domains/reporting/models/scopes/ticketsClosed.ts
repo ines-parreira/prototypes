@@ -126,7 +126,7 @@ const closedTicketsBaseQuery = () => ({
 
 export const {
     valueQueryFactory: closedTicketsValueQueryFactoryV2,
-    breakdownQuery: closedTicketsBreakdownQueryFactoryV2,
+    breakdownQueryFactory: closedTicketsBreakdownQueryFactoryV2,
     timeseriesQueryFactory: closedTicketsTimeseriesQueryFactoryV2,
 } = getGenericQueries(ticketsClosedScope, closedTicketsBaseQuery, {
     valueMetricName: METRIC_NAMES.PERFORMANCE_OVERVIEW_CLOSED_TICKETS_VALUE,

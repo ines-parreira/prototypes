@@ -322,7 +322,7 @@ describe('ticketsRepliedScope', () => {
 
             it('breakdown forwards ctx.dimensions and uses the default metric name for unmapped dims', () => {
                 expect(
-                    ticketsRepliedBreakdownQueryFactoryV2.build({
+                    ticketsRepliedBreakdownQueryFactoryV2({
                         ...context,
                         dimensions: ['integrationId'],
                     }),
@@ -354,7 +354,7 @@ describe('ticketsRepliedScope', () => {
                 'breakdown uses the per-dimension metric name when ctx.dimensions=[%s]',
                 (dimension, expectedMetricName) => {
                     expect(
-                        ticketsRepliedBreakdownQueryFactoryV2.build({
+                        ticketsRepliedBreakdownQueryFactoryV2({
                             ...context,
                             dimensions: [dimension],
                         }).metricName,
@@ -364,7 +364,7 @@ describe('ticketsRepliedScope', () => {
 
             it('breakdown falls back to the default metric name for multi-dim breakdowns', () => {
                 expect(
-                    ticketsRepliedBreakdownQueryFactoryV2.build({
+                    ticketsRepliedBreakdownQueryFactoryV2({
                         ...context,
                         dimensions: ['channel', 'agentId'],
                     }).metricName,

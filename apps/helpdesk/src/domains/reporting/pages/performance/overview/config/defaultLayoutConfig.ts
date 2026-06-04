@@ -63,8 +63,13 @@ export const DEFAULT_PERFORMANCE_OVERVIEW_LAYOUT: DashboardLayoutConfig<Performa
                 type: ChartType.Graph,
                 items: [
                     {
-                        chartId: PerformanceOverviewChart.ChannelBarGraph,
-                        gridSize: 12,
+                        chartId: PerformanceOverviewChart.ConfigurableBarGraph,
+                        gridSize: 6,
+                        visibility: true,
+                    },
+                    {
+                        chartId: PerformanceOverviewChart.ConfigurableLineGraph,
+                        gridSize: 6,
                         visibility: true,
                     },
                 ],

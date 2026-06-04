@@ -197,7 +197,7 @@ describe('resolutionTimeScope', () => {
 
             it('breakdown forwards ctx.dimensions and uses the default metric name for unmapped dims', () => {
                 expect(
-                    resolutionTimeBreakdownQueryFactoryV2.build({
+                    resolutionTimeBreakdownQueryFactoryV2({
                         ...granularContext,
                         dimensions: ['integrationId'],
                     }),
@@ -229,7 +229,7 @@ describe('resolutionTimeScope', () => {
                 'breakdown uses the per-dimension metric name when ctx.dimensions=[%s]',
                 (dimension, expectedMetricName) => {
                     expect(
-                        resolutionTimeBreakdownQueryFactoryV2.build({
+                        resolutionTimeBreakdownQueryFactoryV2({
                             ...granularContext,
                             dimensions: [dimension],
                         }).metricName,
@@ -239,7 +239,7 @@ describe('resolutionTimeScope', () => {
 
             it('breakdown falls back to the default metric name for multi-dim breakdowns', () => {
                 expect(
-                    resolutionTimeBreakdownQueryFactoryV2.build({
+                    resolutionTimeBreakdownQueryFactoryV2({
                         ...granularContext,
                         dimensions: ['channel', 'agentId'],
                     }).metricName,

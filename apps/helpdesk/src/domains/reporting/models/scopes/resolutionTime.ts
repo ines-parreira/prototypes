@@ -94,7 +94,7 @@ const resolutionTimeBaseQuery = () => ({
 
 export const {
     valueQueryFactory: resolutionTimeValueQueryFactoryV2,
-    breakdownQuery: resolutionTimeBreakdownQueryFactoryV2,
+    breakdownQueryFactory: resolutionTimeBreakdownQueryFactoryV2,
     timeseriesQueryFactory: resolutionTimeTimeseriesQueryFactoryV2,
 } = getGenericQueries(resolutionTimeScope, resolutionTimeBaseQuery, {
     valueMetricName: METRIC_NAMES.PERFORMANCE_OVERVIEW_RESOLUTION_TIME_VALUE,

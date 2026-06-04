@@ -184,7 +184,7 @@ const averageCsatBaseQuery = () => ({
 
 export const {
     valueQueryFactory: averageCsatValueQueryFactoryV2,
-    breakdownQuery: averageCsatBreakdownQueryFactoryV2,
+    breakdownQueryFactory: averageCsatBreakdownQueryFactoryV2,
     timeseriesQueryFactory: averageCsatTimeseriesQueryFactoryV2,
 } = getGenericQueries(satisfactionSurveysScope, averageCsatBaseQuery, {
     valueMetricName: METRIC_NAMES.PERFORMANCE_OVERVIEW_AVERAGE_CSAT_VALUE,

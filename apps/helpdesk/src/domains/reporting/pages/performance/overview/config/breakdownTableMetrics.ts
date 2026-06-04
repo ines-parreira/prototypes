@@ -24,16 +24,16 @@ export type PerformanceOverviewMetricKey =
     | 'messagesSent'
 
 export const PERFORMANCE_OVERVIEW_METRIC_FACTORIES = {
-    averageCsat: averageCsatBreakdownQueryFactoryV2.build,
-    resolutionTime: resolutionTimeBreakdownQueryFactoryV2.build,
-    messagesPerTicket: messagesPerTicketBreakdownQueryFactoryV2.build,
-    firstResponseTime: firstResponseTimeBreakdownQueryFactoryV2.build,
+    averageCsat: averageCsatBreakdownQueryFactoryV2,
+    resolutionTime: resolutionTimeBreakdownQueryFactoryV2,
+    messagesPerTicket: messagesPerTicketBreakdownQueryFactoryV2,
+    firstResponseTime: firstResponseTimeBreakdownQueryFactoryV2,
     humanResponseTimeAfterAiHandoff:
-        humanResponseTimeAfterAiHandoffBreakdownQueryFactoryV2.build,
-    createdTickets: createdTicketsBreakdownQueryFactoryV2.build,
-    closedTickets: closedTicketsBreakdownQueryFactoryV2.build,
-    ticketsReplied: ticketsRepliedBreakdownQueryFactoryV2.build,
-    messagesSent: sentMessagesBreakdownQueryFactoryV2.build,
+        humanResponseTimeAfterAiHandoffBreakdownQueryFactoryV2,
+    createdTickets: createdTicketsBreakdownQueryFactoryV2,
+    closedTickets: closedTicketsBreakdownQueryFactoryV2,
+    ticketsReplied: ticketsRepliedBreakdownQueryFactoryV2,
+    messagesSent: sentMessagesBreakdownQueryFactoryV2,
 } satisfies Record<PerformanceOverviewMetricKey, ChannelBreakdownFactory>
 
 export type PerformanceOverviewEntityMetrics = {

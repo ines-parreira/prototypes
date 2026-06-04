@@ -115,7 +115,7 @@ const ticketsRepliedBaseQuery = () => ({
 
 export const {
     valueQueryFactory: ticketsRepliedValueQueryFactoryV2,
-    breakdownQuery: ticketsRepliedBreakdownQueryFactoryV2,
+    breakdownQueryFactory: ticketsRepliedBreakdownQueryFactoryV2,
     timeseriesQueryFactory: ticketsRepliedTimeseriesQueryFactoryV2,
 } = getGenericQueries(ticketsRepliedScope, ticketsRepliedBaseQuery, {
     valueMetricName: METRIC_NAMES.PERFORMANCE_OVERVIEW_TICKETS_REPLIED_VALUE,

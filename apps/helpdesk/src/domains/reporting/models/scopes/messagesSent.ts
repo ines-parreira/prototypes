@@ -112,7 +112,7 @@ const sentMessagesBaseQuery = () => ({
 
 export const {
     valueQueryFactory: sentMessagesValueQueryFactoryV2,
-    breakdownQuery: sentMessagesBreakdownQueryFactoryV2,
+    breakdownQueryFactory: sentMessagesBreakdownQueryFactoryV2,
     timeseriesQueryFactory: sentMessagesTimeseriesQueryFactoryV2,
 } = getGenericQueries(messagesSentScope, sentMessagesBaseQuery, {
     valueMetricName: METRIC_NAMES.PERFORMANCE_OVERVIEW_MESSAGES_SENT_VALUE,

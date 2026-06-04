@@ -30,6 +30,10 @@ import {
     PERFORMANCE_OVERVIEW_CHANNEL_BAR_METRICS,
     PerformanceOverviewConfigurableBarGraph,
 } from 'domains/reporting/pages/performance/overview/charts/configurableGraphs/PerformanceOverviewConfigurableBarGraph/PerformanceOverviewConfigurableBarGraph'
+import {
+    PERFORMANCE_OVERVIEW_CHANNEL_LINE_METRICS,
+    PerformanceOverviewConfigurableLineGraph,
+} from 'domains/reporting/pages/performance/overview/charts/configurableGraphs/PerformanceOverviewConfigurableLineGraph/PerformanceOverviewConfigurableLineGraph'
 import { OverviewAverageCSATCard } from 'domains/reporting/pages/performance/overview/charts/kpiCharts/OverviewAverageCSATCard'
 import { OverviewClosedTicketsCard } from 'domains/reporting/pages/performance/overview/charts/kpiCharts/OverviewClosedTicketsCard'
 import { OverviewCreatedTicketsCard } from 'domains/reporting/pages/performance/overview/charts/kpiCharts/OverviewCreatedTicketsCard'
@@ -39,8 +43,12 @@ import { OverviewMessagesPerTicketCard } from 'domains/reporting/pages/performan
 import { OverviewMessagesSentCard } from 'domains/reporting/pages/performance/overview/charts/kpiCharts/OverviewMessagesSentCard'
 import { OverviewResolutionTimeCard } from 'domains/reporting/pages/performance/overview/charts/kpiCharts/OverviewResolutionTimeCard'
 import { OverviewTicketsRepliedCard } from 'domains/reporting/pages/performance/overview/charts/kpiCharts/OverviewTicketsRepliedCard'
-import { PERFORMANCE_BAR_CHART_DESCRIPTION } from 'domains/reporting/pages/performance/overview/constants'
+import {
+    PERFORMANCE_BAR_CHART_DESCRIPTION,
+    PERFORMANCE_LINE_CHART_DESCRIPTION,
+} from 'domains/reporting/pages/performance/overview/constants'
 import { createPerformanceBarChartFetch } from 'domains/reporting/pages/performance/utils/getPerformanceConfigurableBarGraphConfig'
+import { createPerformanceLineChartFetch } from 'domains/reporting/pages/performance/utils/getPerformanceConfigurableLineGraphConfig'
 import { PERFORMANCE_OVERVIEW_OPTIONAL_FILTERS } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
 import { STATS_ROUTES } from 'routes/constants'
 
@@ -54,7 +62,8 @@ export enum PerformanceOverviewChart {
     ClosedTicketsCard = 'performance-overview-closed-tickets-card',
     TicketsRepliedCard = 'performance-overview-tickets-replied-card',
     MessagesSentCard = 'performance-overview-messages-sent-card',
-    ChannelBarGraph = 'performance-overview-channel-bar-graph',
+    ConfigurableLineGraph = 'performance-overview-configurable-line-graph',
+    ConfigurableBarGraph = 'performance-overview-configurable-bar-graph',
     AgentTable = 'performance-overview-agent-table',
     ChannelTable = 'performance-overview-channel-table',
 }
@@ -216,7 +225,7 @@ export const PerformanceOverviewReportConfig: ReportConfig<PerformanceOverviewCh
                 metricFormat: 'decimal',
                 interpretAs: 'neutral',
             },
-            [PerformanceOverviewChart.ChannelBarGraph]: {
+            [PerformanceOverviewChart.ConfigurableBarGraph]: {
                 chartComponent: PerformanceOverviewConfigurableBarGraph,
                 label: 'Configurable bar chart for performance metrics',
                 csvProducer: [
@@ -229,6 +238,20 @@ export const PerformanceOverviewReportConfig: ReportConfig<PerformanceOverviewCh
                 ],
                 chartType: ChartType.Graph,
                 description: PERFORMANCE_BAR_CHART_DESCRIPTION,
+            },
+            [PerformanceOverviewChart.ConfigurableLineGraph]: {
+                chartComponent: PerformanceOverviewConfigurableLineGraph,
+                label: 'Configurable line chart for performance metrics over time',
+                csvProducer: [
+                    {
+                        type: DataExportFormat.ConfigurableLineGraph,
+                        fetch: createPerformanceLineChartFetch(
+                            PERFORMANCE_OVERVIEW_CHANNEL_LINE_METRICS,
+                        ),
+                    },
+                ],
+                chartType: ChartType.Graph,
+                description: PERFORMANCE_LINE_CHART_DESCRIPTION,
             },
             [PerformanceOverviewChart.AgentTable]: {
                 chartComponent: PerformanceOverviewAgentTable,

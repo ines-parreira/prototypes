@@ -2,22 +2,27 @@ import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { useStatsMetricBreakdownPerDimension } from 'domains/reporting/hooks/useStatsMetricBreakdownPerDimension'
-import { PerformanceOverviewConfigurableBarGraph } from 'domains/reporting/pages/performance/overview/charts/configurableGraphs/PerformanceOverviewConfigurableBarGraph/PerformanceOverviewConfigurableBarGraph'
+import {
+    useStatsMetricTimeSeries,
+    useStatsMetricTimeSeriesPerDimension,
+} from 'domains/reporting/hooks/useStatsMetricTimeSeries'
+import { ReportingGranularity } from 'domains/reporting/models/types'
+import { PerformanceOverviewConfigurableLineGraph } from 'domains/reporting/pages/performance/overview/charts/configurableGraphs/PerformanceOverviewConfigurableLineGraph/PerformanceOverviewConfigurableLineGraph'
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
-jest.mock('domains/reporting/hooks/useStatsMetricBreakdownPerDimension')
+jest.mock('domains/reporting/hooks/useStatsMetricTimeSeries')
 jest.mock('@repo/reporting', () => ({
     ...jest.requireActual('@repo/reporting'),
     useDashboardContext: jest.fn().mockReturnValue(null),
 }))
 
 const useStatsFiltersMock = assumeMock(useStatsFilters)
-const useStatsMetricBreakdownPerDimensionMock = assumeMock(
-    useStatsMetricBreakdownPerDimension,
+const useStatsMetricTimeSeriesMock = assumeMock(useStatsMetricTimeSeries)
+const useStatsMetricTimeSeriesPerDimensionMock = assumeMock(
+    useStatsMetricTimeSeriesPerDimension,
 )
 
-describe('PerformanceOverviewConfigurableBarGraph', () => {
+describe('PerformanceOverviewConfigurableLineGraph', () => {
     beforeAll(() => {
         global.ResizeObserver = class ResizeObserver {
             observe() {}
@@ -38,22 +43,18 @@ describe('PerformanceOverviewConfigurableBarGraph', () => {
                 },
             },
             userTimezone: 'UTC',
-            granularity: undefined,
+            granularity: ReportingGranularity.Day,
         } as any)
 
-        useStatsMetricBreakdownPerDimensionMock.mockReturnValue({
-            data: {
-                value: null,
-                decile: null,
-                allData: [],
-                allValues: [
-                    { dimension: 'email', value: 4.5, decile: null },
-                    { dimension: 'chat', value: 4.7, decile: null },
-                ],
-            },
+        useStatsMetricTimeSeriesMock.mockReturnValue({
+            data: [[{ dateTime: '2024-01-01', value: 4.5 }]],
             isFetching: false,
-            isError: false,
-        })
+        } as any)
+
+        useStatsMetricTimeSeriesPerDimensionMock.mockReturnValue({
+            data: { email: [[{ dateTime: '2024-01-01', value: 4.5 }]] },
+            isFetching: false,
+        } as any)
     })
 
     afterEach(() => {
@@ -62,7 +63,7 @@ describe('PerformanceOverviewConfigurableBarGraph', () => {
 
     it('renders the first metric title', () => {
         render(
-            <PerformanceOverviewConfigurableBarGraph chartId="performance-overview-configurable-bar-graph" />,
+            <PerformanceOverviewConfigurableLineGraph chartId="performance-overview-configurable-line-graph" />,
         )
 
         expect(screen.getAllByText('Resolution time').length).toBeGreaterThan(0)
@@ -70,7 +71,7 @@ describe('PerformanceOverviewConfigurableBarGraph', () => {
 
     it('renders the metric selector with all four measures available', () => {
         render(
-            <PerformanceOverviewConfigurableBarGraph chartId="performance-overview-configurable-bar-graph" />,
+            <PerformanceOverviewConfigurableLineGraph chartId="performance-overview-configurable-line-graph" />,
         )
 
         expect(
@@ -85,18 +86,18 @@ describe('PerformanceOverviewConfigurableBarGraph', () => {
         expect(screen.getAllByText('Average CSAT').length).toBeGreaterThan(0)
     })
 
-    it('renders humanized channel labels from the per-channel data', () => {
+    it('renders the dimension selector with overall and channel options', () => {
         render(
-            <PerformanceOverviewConfigurableBarGraph chartId="performance-overview-configurable-bar-graph" />,
+            <PerformanceOverviewConfigurableLineGraph chartId="performance-overview-configurable-line-graph" />,
         )
 
-        expect(screen.getByText('Email')).toBeInTheDocument()
-        expect(screen.getByText('Chat')).toBeInTheDocument()
+        expect(screen.getAllByText('Overall').length).toBeGreaterThan(0)
+        expect(screen.getAllByText('Channel').length).toBeGreaterThan(0)
     })
 
     it('renders the responsive chart container', () => {
         const { container } = render(
-            <PerformanceOverviewConfigurableBarGraph chartId="performance-overview-configurable-bar-graph" />,
+            <PerformanceOverviewConfigurableLineGraph chartId="performance-overview-configurable-line-graph" />,
         )
 
         expect(

@@ -451,7 +451,7 @@ describe('firstResponseTimeScope', () => {
 
             it('breakdown forwards ctx.dimensions and uses the default metric name for unmapped dims', () => {
                 expect(
-                    firstResponseTimeBreakdownQueryFactoryV2.build({
+                    firstResponseTimeBreakdownQueryFactoryV2({
                         ...context,
                         dimensions: ['integrationId'],
                     }),
@@ -483,7 +483,7 @@ describe('firstResponseTimeScope', () => {
                 'breakdown uses the per-dimension metric name when ctx.dimensions=[%s]',
                 (dimension, expectedMetricName) => {
                     expect(
-                        firstResponseTimeBreakdownQueryFactoryV2.build({
+                        firstResponseTimeBreakdownQueryFactoryV2({
                             ...context,
                             dimensions: [dimension],
                         }).metricName,
@@ -493,7 +493,7 @@ describe('firstResponseTimeScope', () => {
 
             it('breakdown falls back to the default metric name for multi-dim breakdowns', () => {
                 expect(
-                    firstResponseTimeBreakdownQueryFactoryV2.build({
+                    firstResponseTimeBreakdownQueryFactoryV2({
                         ...context,
                         dimensions: ['channel', 'agentId'],
                     }).metricName,

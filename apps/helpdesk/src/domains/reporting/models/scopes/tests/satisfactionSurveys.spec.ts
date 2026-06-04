@@ -477,7 +477,7 @@ describe('averageCsatScope', () => {
 
             it('breakdown forwards ctx.dimensions and uses the default metric name for unmapped dims', () => {
                 expect(
-                    averageCsatBreakdownQueryFactoryV2.build({
+                    averageCsatBreakdownQueryFactoryV2({
                         ...context,
                         dimensions: ['integrationId'],
                     }),
@@ -508,7 +508,7 @@ describe('averageCsatScope', () => {
                 'breakdown uses the per-dimension metric name when ctx.dimensions=[%s]',
                 (dimension, expectedMetricName) => {
                     expect(
-                        averageCsatBreakdownQueryFactoryV2.build({
+                        averageCsatBreakdownQueryFactoryV2({
                             ...context,
                             dimensions: [dimension],
                         }).metricName,
@@ -518,7 +518,7 @@ describe('averageCsatScope', () => {
 
             it('breakdown falls back to the default metric name for multi-dim breakdowns', () => {
                 expect(
-                    averageCsatBreakdownQueryFactoryV2.build({
+                    averageCsatBreakdownQueryFactoryV2({
                         ...context,
                         dimensions: ['channel', 'agentId'],
                     }).metricName,

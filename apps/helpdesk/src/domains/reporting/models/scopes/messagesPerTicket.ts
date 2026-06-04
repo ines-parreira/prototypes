@@ -59,7 +59,7 @@ const messagesPerTicketBaseQuery = () => ({
 
 export const {
     valueQueryFactory: messagesPerTicketValueQueryFactoryV2,
-    breakdownQuery: messagesPerTicketBreakdownQueryFactoryV2,
+    breakdownQueryFactory: messagesPerTicketBreakdownQueryFactoryV2,
     timeseriesQueryFactory: messagesPerTicketTimeseriesQueryFactoryV2,
 } = getGenericQueries(messagesPerTicketScope, messagesPerTicketBaseQuery, {
     valueMetricName:

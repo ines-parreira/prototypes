@@ -249,12 +249,10 @@ describe('humanResponseTimeAfterAiHandoffScope', () => {
 
             it('breakdown forwards ctx.dimensions and uses the default metric name for unmapped dims', () => {
                 expect(
-                    humanResponseTimeAfterAiHandoffBreakdownQueryFactoryV2.build(
-                        {
-                            ...context,
-                            dimensions: ['integrationId'],
-                        },
-                    ),
+                    humanResponseTimeAfterAiHandoffBreakdownQueryFactoryV2({
+                        ...context,
+                        dimensions: ['integrationId'],
+                    }),
                 ).toEqual({
                     metricName:
                         'performance-overview-human-response-time-after-ai-handoff-breakdown',
@@ -286,24 +284,20 @@ describe('humanResponseTimeAfterAiHandoffScope', () => {
                 'breakdown uses the per-dimension metric name when ctx.dimensions=[%s]',
                 (dimension, expectedMetricName) => {
                     expect(
-                        humanResponseTimeAfterAiHandoffBreakdownQueryFactoryV2.build(
-                            {
-                                ...context,
-                                dimensions: [dimension],
-                            },
-                        ).metricName,
+                        humanResponseTimeAfterAiHandoffBreakdownQueryFactoryV2({
+                            ...context,
+                            dimensions: [dimension],
+                        }).metricName,
                     ).toBe(expectedMetricName)
                 },
             )
 
             it('breakdown falls back to the default metric name for multi-dim breakdowns', () => {
                 expect(
-                    humanResponseTimeAfterAiHandoffBreakdownQueryFactoryV2.build(
-                        {
-                            ...context,
-                            dimensions: ['channel', 'agentId'],
-                        },
-                    ).metricName,
+                    humanResponseTimeAfterAiHandoffBreakdownQueryFactoryV2({
+                        ...context,
+                        dimensions: ['channel', 'agentId'],
+                    }).metricName,
                 ).toBe(
                     'performance-overview-human-response-time-after-ai-handoff-breakdown',
                 )
