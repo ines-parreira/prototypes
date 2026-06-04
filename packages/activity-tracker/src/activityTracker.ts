@@ -1,6 +1,5 @@
 import { GorgiasAppAuthService } from '@repo/api-resources/gorgiasAppsAuth'
 import { reportError } from '@repo/logging'
-import { isDevelopment } from '@repo/utils'
 import type { AxiosError } from 'axios'
 
 import BrowserEventTracker from '@gorgias/event-tracker-browser'
@@ -9,21 +8,10 @@ import {
     ActivityEvents,
     AGENT_ACTIVITY_HEALTHCHECK_INTERVAL,
 } from './constants'
+import { getBrowserActivityTrackerIngestionEndpoint } from './ingestionEndpoint'
 import { checkIfTrackerIsEnabled } from './utils'
 
-const previewNamespace = /^(pr-\d+)\.preview\.gorgias\./.exec(
-    location.hostname,
-)?.[1]
-
-export const ingestionEndpoint = isDevelopment()
-    ? 'http://localhost:8076/private/track'
-    : previewNamespace
-      ? `https://${previewNamespace}-events-ingestion.preview.gorgias.xyz/private/track`
-      : `https://${
-            window.GORGIAS_CLUSTER
-        }.events-ingestion-helpdesk.services.gorgias.${location.hostname
-            .split('.')
-            .pop()!}/private/track`
+export const ingestionEndpoint = getBrowserActivityTrackerIngestionEndpoint()
 
 export const reportSentryError = (error: unknown, event: unknown) => {
     // remove cast when types are corrected in the library
