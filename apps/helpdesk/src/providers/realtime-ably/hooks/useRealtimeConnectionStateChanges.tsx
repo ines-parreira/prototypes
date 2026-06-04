@@ -146,7 +146,6 @@ export const useRealtimeConnectionStateChanges = () => {
                 case 'closed': {
                     clearDisconnectedToastTimeout()
                     hasLoggedSuspendedState.current = false
-                    toast.dismiss(REALTIME_CONNECTION_TOAST_ID)
                     break
                 }
                 default: {
