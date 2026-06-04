@@ -6,11 +6,12 @@ import {
     Icon,
     Menu,
     MenuItem,
-    Popover,
     Tooltip,
     TooltipContent,
 } from '@gorgias/axiom'
 import type { IconName } from '@gorgias/axiom'
+
+import css from './AnalyticsActionMenu.less'
 
 export type AnalyticsActionItem = {
     icon: string
@@ -18,7 +19,11 @@ export type AnalyticsActionItem = {
     tooltip?: string
     onClick?: () => void
     isDisabled?: boolean
-    dropdownContent?: (close: () => void) => ReactNode
+    dropdownContent?: (
+        close: () => void,
+        goBack: () => void,
+        defaultOpen: boolean,
+    ) => ReactNode
 }
 
 type Props = {
@@ -35,40 +40,38 @@ export const AnalyticsActionMenu = ({ actions }: Props) => {
     if (actions.length === 0) return null
 
     const closeDropdown = () => setOpenDropdownLabel(null)
+    const goBack = () => {
+        setOpenDropdownLabel(null)
+        setIsMenuOpen(true)
+    }
 
     if (actions.length === 1) {
         const [action] = actions
 
         if (action.dropdownContent) {
-            const popover = (
-                <Popover
-                    padding={0}
-                    isOpen={openDropdownLabel === action.label}
-                    onOpenChange={(open) =>
-                        setOpenDropdownLabel(open ? action.label : null)
-                    }
-                    trigger={
-                        <Button
-                            variant="tertiary"
-                            icon={action.icon as IconName}
-                            aria-label={action.label}
-                            isDisabled={action.isDisabled}
-                        />
-                    }
-                >
-                    {action.dropdownContent(closeDropdown)}
-                </Popover>
+            const element = (
+                <div className={css.singleActionDropdown}>
+                    <Button
+                        variant="tertiary"
+                        icon={action.icon as IconName}
+                        aria-label={action.label}
+                        isDisabled={action.isDisabled}
+                        aria-hidden="true"
+                        tabIndex={-1}
+                    />
+                    {action.dropdownContent(closeDropdown, goBack, false)}
+                </div>
             )
 
             if (action.tooltip) {
                 return (
-                    <Tooltip trigger={popover}>
+                    <Tooltip trigger={element}>
                         <TooltipContent title={action.tooltip} />
                     </Tooltip>
                 )
             }
 
-            return popover
+            return element
         }
 
         const button = (
@@ -115,6 +118,11 @@ export const AnalyticsActionMenu = ({ actions }: Props) => {
                         key={action.label}
                         label={action.label}
                         leadingSlot={action.icon as IconName}
+                        trailingSlot={
+                            action.dropdownContent ? (
+                                <Icon name="arrow-chevron-right" size="sm" />
+                            ) : undefined
+                        }
                         onAction={() => {
                             if (action.dropdownContent) {
                                 setIsMenuOpen(false)
@@ -128,22 +136,13 @@ export const AnalyticsActionMenu = ({ actions }: Props) => {
                 ))}
             </Menu>
             {activeDropdownAction?.dropdownContent && (
-                <Popover
-                    padding={0}
-                    triggerRef={containerRef}
-                    isOpen={true}
-                    onOpenChange={(open) => {
-                        if (!open) closeDropdown()
-                    }}
-                    trigger={
-                        <div
-                            aria-hidden="true"
-                            style={{ width: 0, height: 0 }}
-                        />
-                    }
-                >
-                    {activeDropdownAction.dropdownContent(closeDropdown)}
-                </Popover>
+                <div className={css.multiActionPicker}>
+                    {activeDropdownAction.dropdownContent(
+                        closeDropdown,
+                        goBack,
+                        true,
+                    )}
+                </div>
             )}
         </div>
     )

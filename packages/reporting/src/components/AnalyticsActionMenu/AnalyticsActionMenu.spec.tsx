@@ -114,7 +114,7 @@ describe('AnalyticsActionMenu', () => {
         })
 
         describe('with dropdownContent', () => {
-            it('renders the action button', () => {
+            it('renders the icon button as the visible trigger', () => {
                 render(
                     <AnalyticsActionMenu
                         actions={[
@@ -133,8 +133,8 @@ describe('AnalyticsActionMenu', () => {
                 ).toBeInTheDocument()
             })
 
-            it('opens dropdown content when button is clicked', async () => {
-                const { user } = render(
+            it('renders dropdown content immediately', () => {
+                render(
                     <AnalyticsActionMenu
                         actions={[
                             {
@@ -147,39 +147,25 @@ describe('AnalyticsActionMenu', () => {
                     />,
                 )
 
-                await user.click(
-                    screen.getByRole('button', { name: 'Export as CSV' }),
-                )
-
-                expect(
-                    await screen.findByText('Dropdown content'),
-                ).toBeInTheDocument()
+                expect(screen.getByText('Dropdown content')).toBeInTheDocument()
             })
 
-            it('closes dropdown when close callback is called', async () => {
-                const { user } = render(
+            it('passes defaultOpen=false to dropdownContent', () => {
+                const dropdownContent = vi
+                    .fn()
+                    .mockReturnValue(<div>Content</div>)
+
+                render(
                     <AnalyticsActionMenu
-                        actions={[
-                            {
-                                ...downloadAction,
-                                dropdownContent: (close) => (
-                                    <button onClick={close}>Close me</button>
-                                ),
-                            },
-                        ]}
+                        actions={[{ ...downloadAction, dropdownContent }]}
                     />,
                 )
 
-                await user.click(
-                    screen.getByRole('button', { name: 'Export as CSV' }),
+                expect(dropdownContent).toHaveBeenCalledWith(
+                    expect.any(Function),
+                    expect.any(Function),
+                    false,
                 )
-                await user.click(
-                    await screen.findByRole('button', { name: 'Close me' }),
-                )
-
-                expect(
-                    screen.queryByRole('button', { name: 'Close me' }),
-                ).not.toBeInTheDocument()
             })
         })
     })
@@ -317,6 +303,78 @@ describe('AnalyticsActionMenu', () => {
                 expect(
                     screen.queryByRole('button', { name: 'Close me' }),
                 ).not.toBeInTheDocument()
+            })
+
+            it('reopens the menu when goBack callback is called', async () => {
+                const { user } = render(
+                    <AnalyticsActionMenu
+                        actions={[
+                            {
+                                ...downloadAction,
+                                dropdownContent: (_close, goBack) => (
+                                    <button onClick={goBack}>Go back</button>
+                                ),
+                            },
+                            addAction,
+                        ]}
+                    />,
+                )
+
+                await user.click(
+                    screen.getByRole('button', { name: 'Chart actions' }),
+                )
+                await user.click(
+                    await screen.findByRole('menuitem', {
+                        name: /Export as CSV/,
+                    }),
+                )
+
+                const goBackButton = await screen.findByRole('button', {
+                    name: 'Go back',
+                })
+                expect(
+                    screen.queryByRole('menuitem', { name: /Export as CSV/ }),
+                ).not.toBeInTheDocument()
+
+                await user.click(goBackButton)
+
+                expect(
+                    screen.queryByRole('button', { name: 'Go back' }),
+                ).not.toBeInTheDocument()
+                expect(
+                    await screen.findByRole('menuitem', {
+                        name: /Export as CSV/,
+                    }),
+                ).toBeInTheDocument()
+            })
+
+            it('passes defaultOpen=true to dropdownContent when menu item is clicked', async () => {
+                const dropdownContent = vi
+                    .fn()
+                    .mockReturnValue(<div>Content</div>)
+                const { user } = render(
+                    <AnalyticsActionMenu
+                        actions={[
+                            { ...downloadAction, dropdownContent },
+                            addAction,
+                        ]}
+                    />,
+                )
+
+                await user.click(
+                    screen.getByRole('button', { name: 'Chart actions' }),
+                )
+                await user.click(
+                    await screen.findByRole('menuitem', {
+                        name: /Export as CSV/,
+                    }),
+                )
+
+                expect(dropdownContent).toHaveBeenCalledWith(
+                    expect.any(Function),
+                    expect.any(Function),
+                    true,
+                )
             })
         })
     })

@@ -1,94 +1,45 @@
-@import (reference) '~css/typography';
-
 :local {
-    .dropdownItem {
+    .pickerBackButton {
         display: flex;
         align-items: center;
-        gap: var(--layout-spacing-xs);
+        gap: var(--spacing-xs);
         width: 100%;
-        min-height: 36px;
-        padding: 0 var(--layout-spacing-xs);
-        text-align: left;
-        color: var(--neutral-grey-6); // legacy
+        padding: var(--spacing-xs) var(--spacing-sm);
         background: none;
         border: none;
-        border-radius: 4px;
         cursor: pointer;
-        .body-regular();
+        font-size: var(--typography-body-regular-sm-font-size);
+        font-weight: 500;
+        color: var(--content-neutral-default);
+        text-align: left;
 
-        &:hover:not(:disabled) {
-            background: var(--neutral-grey-1); // legacy
+        &:hover {
+            background: var(--hover-default);
         }
     }
 
     .addToDashboardAction {
-        position: sticky;
-        inset: 0;
-        border-top: 1px solid var(--neutral-grey-3); // legacy
-    }
-
-    .disableAddToDashboardAction {
-        color: var(--neutral-grey-3); // legacy
-        cursor: not-allowed;
-        &:hover:not(:disabled) {
-            background: var(--neutral-grey-2); // legacy
-        }
-        i {
-            color: var(--neutral-grey-3); // legacy
-        }
-    }
-
-    .dashboardName {
-        .body-semibold();
-    }
-
-    .dashboardName:after {
-        content: ' *';
-        color: var(--feedback-error); // legacy
-    }
-
-    .itemsWrapper {
-        padding: var(--layout-spacing-xs);
-    }
-
-    .noDashboards {
-        .body-regular();
-        color: var(--neutral-grey-4); // legacy
-        padding: var(--layout-spacing-xs);
-    }
-}
-
-.axiom :local {
-    .addToDashboardAction {
-        border-top-color: var(--border-neutral-default);
-    }
-
-    .disableAddToDashboardAction {
-        color: var(--content-neutral-tertiary);
-        cursor: not-allowed;
-
-        &:hover:not(:disabled) {
-            background: var(--surface-neutral-tertiary);
-        }
-
-        i {
-            color: var(--content-neutral-tertiary);
-        }
-    }
-
-    .dropdownItem {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+        width: 100%;
+        min-height: 36px;
+        padding: 0 var(--spacing-sm);
+        text-align: left;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: var(--typography-body-regular-sm-font-size);
+        font-weight: 600;
         color: var(--content-neutral-default);
 
         &:hover:not(:disabled) {
             background: var(--hover-default);
         }
-    }
 
-    .dashboardName:after {
-        color: var(--content-error-default);
-    }
-
-    .noDashboards {
-        color: var(--content-neutral-secondary);
+        &:disabled {
+            color: var(--content-neutral-tertiary);
+            cursor: not-allowed;
+        }
     }
 }

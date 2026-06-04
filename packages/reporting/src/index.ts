@@ -121,3 +121,8 @@ export {
     MetricOriginContext,
     useMetricOriginContext,
 } from './contexts/MetricOriginContext'
+export {
+    SearchableItemPicker,
+    type SearchableItemPickerItem,
+    type SearchableItemPickerSection,
+} from './components/SearchableItemPicker/SearchableItemPicker'

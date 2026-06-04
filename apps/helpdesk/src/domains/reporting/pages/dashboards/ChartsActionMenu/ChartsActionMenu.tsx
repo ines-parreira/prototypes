@@ -14,7 +14,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isTeamLead } from 'utils'
 
-export const ADD_TO_DASHBOARD = 'Add To Dashboard'
+export const ADD_TO_DASHBOARD = 'Add to dashboard'
 export const REMOVE_FROM_DASHBOARD = 'Remove chart from dashboard'
 export const EXPORT_AS_CSV_LABEL = 'Export as CSV'
 export {
@@ -55,6 +55,8 @@ export const ChartsActionMenu = ({
         return null
     }
 
+    const hasMultipleActions = Boolean(exportCsvAction) || Boolean(dashboard)
+
     const actions: AnalyticsActionItem[] = [
         ...(exportCsvAction
             ? [
@@ -70,11 +72,13 @@ export const ChartsActionMenu = ({
             icon: 'add-plus',
             label: ADD_TO_DASHBOARD,
             tooltip: 'Add to dashboard',
-            dropdownContent: (close) => (
+            dropdownContent: (close, goBack, defaultOpen) => (
                 <AddToDashboardPicker
                     chartId={chartId}
                     close={close}
+                    goBack={hasMultipleActions ? goBack : undefined}
                     openModal={() => setIsModalOpen(true)}
+                    defaultOpen={defaultOpen}
                 />
             ),
         },

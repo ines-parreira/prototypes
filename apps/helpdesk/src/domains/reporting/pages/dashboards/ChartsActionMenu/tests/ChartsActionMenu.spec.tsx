@@ -21,6 +21,43 @@ import { OverviewChart } from 'domains/reporting/pages/support-performance/overv
 import { user } from 'fixtures/users'
 
 jest.mock('@repo/reporting', () => ({
+    SearchableItemPicker: ({
+        sections,
+        onSelect,
+        header,
+        footer,
+    }: {
+        sections: Array<{
+            id: string
+            items: Array<{
+                id: string
+                label: string
+                leadingSlot?: React.ReactNode
+                trailingSlot?: React.ReactNode
+            }>
+        }>
+        onSelect: (id: string) => void
+        header?: React.ReactNode
+        footer?: React.ReactNode
+    }) => (
+        <>
+            {header}
+            {sections
+                .flatMap((s) => s.items)
+                .map((item) => (
+                    <button
+                        key={item.id}
+                        type="button"
+                        onClick={() => onSelect(item.id)}
+                    >
+                        {item.leadingSlot}
+                        {item.label}
+                        {item.trailingSlot}
+                    </button>
+                ))}
+            {footer}
+        </>
+    ),
     AnalyticsActionMenu: ({
         actions,
     }: {
@@ -28,7 +65,11 @@ jest.mock('@repo/reporting', () => ({
             label: string
             onClick?: () => void
             isDisabled?: boolean
-            dropdownContent?: (close: () => void) => React.ReactNode
+            dropdownContent?: (
+                close: () => void,
+                goBack: () => void,
+                defaultOpen: boolean,
+            ) => React.ReactNode
         }[]
     }) => {
         const [isOpen, setIsOpen] = React.useState(false)
@@ -36,6 +77,10 @@ jest.mock('@repo/reporting', () => ({
             null,
         )
         const closeDropdown = () => setDropdownLabel(null)
+        const goBack = () => {
+            setDropdownLabel(null)
+            setIsOpen(true)
+        }
         const activeAction = actions.find((a) => a.label === dropdownLabel)
 
         if (actions.length === 1) {
@@ -53,7 +98,11 @@ jest.mock('@repo/reporting', () => ({
                         }}
                         disabled={action.isDisabled}
                     />
-                    {activeAction?.dropdownContent?.(closeDropdown)}
+                    {activeAction?.dropdownContent?.(
+                        closeDropdown,
+                        goBack,
+                        false,
+                    )}
                 </>
             )
         }
@@ -81,7 +130,7 @@ jest.mock('@repo/reporting', () => ({
                             {a.label}
                         </button>
                     ))}
-                {activeAction?.dropdownContent?.(closeDropdown)}
+                {activeAction?.dropdownContent?.(closeDropdown, goBack, true)}
             </>
         )
     },
@@ -349,5 +398,84 @@ describe('<ChartsActionMenu />', () => {
 
         userEvent.click(button)
         expect(onExportClick).toHaveBeenCalledTimes(1)
+    })
+
+    it('should show a back button in the picker when exportCsvAction is provided', () => {
+        const onExportClick = jest.fn()
+
+        render(
+            <ChartsActionMenu
+                chartId={chartId}
+                chartName={chartName}
+                exportCsvAction={{ onClick: onExportClick }}
+            />,
+            { storeState: defaultState },
+        )
+
+        act(() => {
+            userEvent.click(
+                screen.getByRole('button', { name: 'Chart actions' }),
+            )
+        })
+        act(() => {
+            userEvent.click(screen.getByText(ADD_TO_DASHBOARD))
+        })
+
+        expect(
+            screen.getByRole('button', { name: /arrow-chevron-left/ }),
+        ).toBeInTheDocument()
+    })
+
+    it('should not show a back button in the picker when hasMultipleActions is false', () => {
+        render(<ChartsActionMenu chartId={chartId} chartName={chartName} />, {
+            storeState: defaultState,
+        })
+
+        userEvent.click(screen.getByRole('button', { name: ADD_TO_DASHBOARD }))
+
+        expect(
+            screen.queryByRole('button', { name: /arrow-chevron-left/ }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should reopen the action menu when the back button in the picker is clicked', () => {
+        render(
+            <ChartsActionMenu
+                chartId={chartId}
+                chartName={chartName}
+                dashboard={dashboard}
+                exportCsvAction={{ onClick: jest.fn() }}
+            />,
+            { storeState: defaultState },
+        )
+
+        act(() => {
+            userEvent.click(
+                screen.getByRole('button', { name: 'Chart actions' }),
+            )
+        })
+
+        act(() => {
+            userEvent.click(screen.getByText(ADD_TO_DASHBOARD))
+        })
+
+        // Picker is open — back button and dashboard list are visible
+        const backButton = screen.getByRole('button', {
+            name: /arrow-chevron-left/,
+        })
+        expect(backButton).toBeInTheDocument()
+        expect(screen.getByText(mockData[0].name)).toBeInTheDocument()
+
+        act(() => {
+            userEvent.click(backButton)
+        })
+
+        // Picker is gone — back button and dashboard list are no longer rendered
+        expect(
+            screen.queryByRole('button', { name: /arrow-chevron-left/ }),
+        ).not.toBeInTheDocument()
+        expect(screen.queryByText(mockData[0].name)).not.toBeInTheDocument()
+        // Action menu is visible again
+        expect(screen.getByText(ADD_TO_DASHBOARD)).toBeInTheDocument()
     })
 })
