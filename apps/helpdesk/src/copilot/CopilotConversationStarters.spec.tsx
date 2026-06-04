@@ -40,6 +40,7 @@ describe('CopilotConversationStarters', () => {
 
         expect(getLastRegisteredSuggestions().map((s) => s.message)).toEqual([
             'Audit my skills and tell me which ones to improve',
+            "What's the difference between a skill and guidance?",
             'Optimize my AI Agent setup',
         ])
     })
@@ -52,6 +53,7 @@ describe('CopilotConversationStarters', () => {
         expect(getLastRegisteredSuggestions().map((s) => s.message)).toEqual([
             'Improve this skill based on recent handovers',
             "Find gaps in this skill's instructions",
+            "What's the difference between a skill and guidance?",
             'Optimize my AI Agent setup',
         ])
     })
@@ -63,6 +65,7 @@ describe('CopilotConversationStarters', () => {
 
         expect(getLastRegisteredSuggestions().map((s) => s.message)).toEqual([
             'Help me migrate my guidance to skills',
+            "What's the difference between a skill and guidance?",
             'Optimize my AI Agent setup',
         ])
     })

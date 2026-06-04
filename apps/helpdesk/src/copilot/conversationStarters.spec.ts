@@ -36,21 +36,23 @@ describe('getCopilotConversationStarters', () => {
     })
 
     describe('Skills section', () => {
-        it('shows the audit starter and universal on the Skills list view', () => {
+        it('shows the audit, difference, and universal starters on the Skills list view', () => {
             const starters = getCopilotConversationStarters(
                 `${SHOP_PREFIX}/skills`,
             )
             expect(starters.map((s) => s.message)).toEqual([
                 'Audit my skills and tell me which ones to improve',
+                "What's the difference between a skill and guidance?",
                 'Optimize my AI Agent setup',
             ])
         })
 
         it.each([`${SHOP_PREFIX}/skills/new`, `${SHOP_PREFIX}/skills/wizard`])(
-            'shows only the universal starter on %s',
+            'shows the difference and universal starters on %s',
             (pathname) => {
                 const starters = getCopilotConversationStarters(pathname)
                 expect(starters.map((s) => s.message)).toEqual([
+                    "What's the difference between a skill and guidance?",
                     'Optimize my AI Agent setup',
                 ])
             },
@@ -63,6 +65,7 @@ describe('getCopilotConversationStarters', () => {
             expect(starters.map((s) => s.message)).toEqual([
                 'Improve this skill based on recent handovers',
                 "Find gaps in this skill's instructions",
+                "What's the difference between a skill and guidance?",
                 'Optimize my AI Agent setup',
             ])
         })
@@ -74,13 +77,17 @@ describe('getCopilotConversationStarters', () => {
             `${SHOP_PREFIX}/knowledge/sources`,
             `${SHOP_PREFIX}/knowledge/guidance/7`,
             `${SHOP_PREFIX}/knowledge/sources/questions-content`,
-        ])('shows the migration starter and universal on %s', (pathname) => {
-            const starters = getCopilotConversationStarters(pathname)
-            expect(starters.map((s) => s.message)).toEqual([
-                'Help me migrate my guidance to skills',
-                'Optimize my AI Agent setup',
-            ])
-        })
+        ])(
+            'shows the migration, difference, and universal starters on %s',
+            (pathname) => {
+                const starters = getCopilotConversationStarters(pathname)
+                expect(starters.map((s) => s.message)).toEqual([
+                    'Help me migrate my guidance to skills',
+                    "What's the difference between a skill and guidance?",
+                    'Optimize my AI Agent setup',
+                ])
+            },
+        )
     })
 
     describe('Support Actions section', () => {
@@ -92,7 +99,7 @@ describe('getCopilotConversationStarters', () => {
         ])('shows the actions starter and universal on %s', (pathname) => {
             const starters = getCopilotConversationStarters(pathname)
             expect(starters.map((s) => s.message)).toEqual([
-                'How can I do more with actions?',
+                'Improve my action setup',
                 'Optimize my AI Agent setup',
             ])
         })
@@ -130,6 +137,7 @@ describe('getCopilotConversationStarters', () => {
         )
         expect(starters.map((s) => s.message)).toEqual([
             'Audit my skills and tell me which ones to improve',
+            "What's the difference between a skill and guidance?",
             'Optimize my AI Agent setup',
         ])
     })

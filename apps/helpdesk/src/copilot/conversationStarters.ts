@@ -27,9 +27,14 @@ const KNOWLEDGE_MIGRATE_STARTER: ConversationStarter = {
     message: 'Help me migrate my guidance to skills',
 }
 
+const SKILL_GUIDANCE_DIFFERENCE_STARTER: ConversationStarter = {
+    title: "What's the difference between a skill and guidance?",
+    message: "What's the difference between a skill and guidance?",
+}
+
 const ACTIONS_DISCOVER_STARTER: ConversationStarter = {
-    title: 'How can I do more with actions?',
-    message: 'How can I do more with actions?',
+    title: 'Improve my action setup',
+    message: 'Improve my action setup',
 }
 
 const AI_AGENT_PATH_REGEX = /^\/app\/ai-agent\/[^/]+\/[^/]+(?:\/(.*))?$/
@@ -55,20 +60,31 @@ export function getCopilotConversationStarters(
     if (subPath === 'test') return []
     if (subPath === 'tone-of-voice') return []
 
-    if (subPath === 'skills') return [SKILLS_LIST_STARTER, UNIVERSAL_STARTER]
+    if (subPath === 'skills') {
+        return [
+            SKILLS_LIST_STARTER,
+            SKILL_GUIDANCE_DIFFERENCE_STARTER,
+            UNIVERSAL_STARTER,
+        ]
+    }
     if (subPath === 'skills/new' || subPath === 'skills/wizard') {
-        return [UNIVERSAL_STARTER]
+        return [SKILL_GUIDANCE_DIFFERENCE_STARTER, UNIVERSAL_STARTER]
     }
     if (subPath.startsWith('skills/')) {
         return [
             SKILL_DETAIL_IMPROVE_STARTER,
             SKILL_DETAIL_GAPS_STARTER,
+            SKILL_GUIDANCE_DIFFERENCE_STARTER,
             UNIVERSAL_STARTER,
         ]
     }
 
     if (isInSection(subPath, 'knowledge')) {
-        return [KNOWLEDGE_MIGRATE_STARTER, UNIVERSAL_STARTER]
+        return [
+            KNOWLEDGE_MIGRATE_STARTER,
+            SKILL_GUIDANCE_DIFFERENCE_STARTER,
+            UNIVERSAL_STARTER,
+        ]
     }
 
     if (isInSection(subPath, 'actions')) {
