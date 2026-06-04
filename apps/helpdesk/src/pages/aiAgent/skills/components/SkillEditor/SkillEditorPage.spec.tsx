@@ -121,4 +121,26 @@ describe('SkillEditorPage', () => {
         })
         expect(mockInvalidateQueries).not.toHaveBeenCalled()
     })
+    it('passes undefined initialVersionId when versionId is absent from the URL', () => {
+        renderWithProviders(<SkillEditorPage />)
+        expect(capturedProps.initialVersionId).toBeUndefined()
+    })
+    it('parses versionId from the URL and passes it as initialVersionId', () => {
+        mockUseLocation.mockReturnValue({
+            pathname: '/app/ai-agent/shopify/test-shop/skills/123',
+            search: '?versionId=17',
+            state: undefined,
+        })
+        renderWithProviders(<SkillEditorPage />)
+        expect(capturedProps.initialVersionId).toBe(17)
+    })
+    it('passes undefined initialVersionId when versionId is non-numeric', () => {
+        mockUseLocation.mockReturnValue({
+            pathname: '/app/ai-agent/shopify/test-shop/skills/123',
+            search: '?versionId=mock-version-abc',
+            state: undefined,
+        })
+        renderWithProviders(<SkillEditorPage />)
+        expect(capturedProps.initialVersionId).toBeUndefined()
+    })
 })

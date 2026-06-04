@@ -21,6 +21,11 @@ export const SkillEditorPage = () => {
 
     const queryParams = new URLSearchParams(location.search)
     const templateId = queryParams.get('template') ?? undefined
+    const versionIdParam = queryParams.get('versionId')
+    const initialVersionId =
+        versionIdParam !== null && !isNaN(Number(versionIdParam))
+            ? Number(versionIdParam)
+            : undefined
 
     const onClose = useCallback(() => {
         history.push(routes.skills)
@@ -44,6 +49,7 @@ export const SkillEditorPage = () => {
             shopType={shopType}
             skillId={skillId}
             templateId={templateId}
+            initialVersionId={initialVersionId}
             routeState={location.state}
             onClose={onClose}
             onUpdate={invalidateIntents}

@@ -8,6 +8,11 @@ const mockDispatch = jest.fn()
 const mockSwitchVersion = jest.fn()
 const mockOnGoToLatest = jest.fn()
 const mockFetchQuery = jest.fn()
+const mockRemoveVersionIdParam = jest.fn()
+
+jest.mock('./hooks/useRemoveVersionIdParam', () => ({
+    useRemoveVersionIdParam: () => mockRemoveVersionIdParam,
+}))
 
 jest.mock('@repo/api-resources', () => ({
     appQueryClient: {
@@ -36,6 +41,7 @@ jest.mock('../shared/VersionBanner', () => ({
         isViewingHistoricalVersion?: boolean
         isDiffMode?: boolean
         onToggleDiff?: () => void
+        onGoToLatest?: () => void
         isFromConversation?: boolean
     }) => (
         <div data-testid="version-banner">
@@ -44,6 +50,9 @@ jest.mock('../shared/VersionBanner', () => ({
             {props.isDiffMode && <span>diff-mode</span>}
             {props.onToggleDiff && (
                 <button onClick={props.onToggleDiff}>Toggle diff</button>
+            )}
+            {props.onGoToLatest && (
+                <button onClick={props.onGoToLatest}>Go to latest</button>
             )}
             {props.isFromConversation && <span>from-conversation</span>}
         </div>
@@ -185,5 +194,33 @@ describe('KnowledgeEditorSkillVersionBanner', () => {
         render(<KnowledgeEditorSkillVersionBanner />)
 
         expect(screen.getByText('from-conversation')).toBeInTheDocument()
+    })
+
+    it('removes versionId param when Back to latest is clicked', async () => {
+        mockVersionBannerState.isViewingDraft = false
+        mockVersionHistoryState.isViewingHistoricalVersion = true
+        setupStore({
+            historicalVersion: { publishedDatetime: '2024-01-01' },
+        })
+        const user = userEvent.setup()
+        render(<KnowledgeEditorSkillVersionBanner />)
+
+        await user.click(screen.getByRole('button', { name: /go to latest/i }))
+
+        expect(mockRemoveVersionIdParam).toHaveBeenCalled()
+    })
+
+    it('calls onGoToLatest when Back to latest is clicked', async () => {
+        mockVersionBannerState.isViewingDraft = false
+        mockVersionHistoryState.isViewingHistoricalVersion = true
+        setupStore({
+            historicalVersion: { publishedDatetime: '2024-01-01' },
+        })
+        const user = userEvent.setup()
+        render(<KnowledgeEditorSkillVersionBanner />)
+
+        await user.click(screen.getByRole('button', { name: /go to latest/i }))
+
+        expect(mockOnGoToLatest).toHaveBeenCalled()
     })
 })

@@ -2,6 +2,8 @@ import { useCallback } from 'react'
 
 import { useShallow } from 'zustand/react/shallow'
 
+import { useRemoveVersionIdParam } from '../hooks/useRemoveVersionIdParam'
+
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 
 import { fromArticleTranslationResponse } from '../../KnowledgeEditorGuidance/context/utils'
@@ -52,6 +54,8 @@ export const useSkillRestoreVersionModal = () => {
         guidanceHelpCenterId: helpCenterId,
     })
 
+    const removeVersionIdParam = useRemoveVersionIdParam()
+
     const onRestore = useCallback(async () => {
         if (!skillId || !helpCenterLocale || !historicalVersion) {
             return
@@ -88,6 +92,7 @@ export const useSkillRestoreVersionModal = () => {
                 })
                 dispatch({ type: 'CLEAR_HISTORICAL_VERSION' })
                 dispatch({ type: 'SET_MODE', payload: 'edit' })
+                removeVersionIdParam()
                 notifySuccess('Version restored as draft.')
                 onVersionRestored({
                     versionId: historicalVersion.versionId,
@@ -113,6 +118,7 @@ export const useSkillRestoreVersionModal = () => {
         notifyError,
         onVersionRestored,
         onUpdateFn,
+        removeVersionIdParam,
     ])
 
     return {

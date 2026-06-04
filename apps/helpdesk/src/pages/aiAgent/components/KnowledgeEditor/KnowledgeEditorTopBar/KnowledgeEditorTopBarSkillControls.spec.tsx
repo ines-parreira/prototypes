@@ -56,22 +56,36 @@ jest.mock('./KnowledgeEditorTopBarCommonControls', () => ({
     ),
 }))
 
-jest.mock('../shared/VersionHistoryButton', () => ({
-    VersionHistoryButton: () => <div data-testid="version-history" />,
+const mockOnSelectVersion = jest.fn()
+const mockRemoveVersionIdParam = jest.fn()
+
+jest.mock('../KnowledgeEditorSkill/hooks/useRemoveVersionIdParam', () => ({
+    useRemoveVersionIdParam: () => mockRemoveVersionIdParam,
 }))
 
+jest.mock('../shared/VersionHistoryButton', () => ({
+    VersionHistoryButton: ({
+        onSelectVersion,
+        versions,
+    }: {
+        onSelectVersion: (v: unknown) => void
+        versions: unknown[]
+    }) => (
+        <div data-testid="version-history">
+            {versions.length > 0 && (
+                <button
+                    aria-label="Select version"
+                    onClick={() => onSelectVersion(versions[0])}
+                />
+            )}
+        </div>
+    ),
+}))
+
+const mockUseSkillVersionHistory = jest.fn()
+
 jest.mock('../KnowledgeEditorSkill/hooks/useSkillVersionHistory', () => ({
-    useSkillVersionHistory: () => ({
-        versions: [],
-        isLoading: false,
-        currentVersionId: null,
-        selectedVersionId: null,
-        onSelectVersion: jest.fn(),
-        isDisabled: false,
-        isFetchingNextPage: false,
-        onLoadMore: jest.fn(),
-        shouldLoadMore: false,
-    }),
+    useSkillVersionHistory: () => mockUseSkillVersionHistory(),
 }))
 
 const mockRequestEnable = jest.fn()
@@ -215,6 +229,17 @@ describe('SkillToolbarControls', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         setStoreData()
+        mockUseSkillVersionHistory.mockReturnValue({
+            versions: [],
+            isLoading: false,
+            currentVersionId: null,
+            selectedVersionId: null,
+            onSelectVersion: mockOnSelectVersion,
+            isDisabled: false,
+            isFetchingNextPage: false,
+            onLoadMore: jest.fn(),
+            shouldLoadMore: false,
+        })
     })
 
     describe('new-skill state', () => {
@@ -719,6 +744,59 @@ describe('SkillToolbarControls', () => {
             render(<SkillToolbarControls />)
 
             expect(screen.getByRole('button', { name: /test/i })).toBeDisabled()
+        })
+    })
+
+    describe('version picker — versionId param cleanup', () => {
+        beforeEach(() => {
+            setStoreData({
+                state: {
+                    mode: 'read',
+                    historicalVersion: {
+                        publishedDatetime: '2024-01-01',
+                        versionId: 5,
+                    },
+                },
+            })
+            mockUseSkillVersionHistory.mockReturnValue({
+                versions: [
+                    {
+                        id: 5,
+                        version: 1,
+                        published_datetime: '2024-01-01T00:00:00Z',
+                    },
+                ],
+                isLoading: false,
+                currentVersionId: 5,
+                selectedVersionId: null,
+                onSelectVersion: mockOnSelectVersion,
+                isDisabled: false,
+                isFetchingNextPage: false,
+                onLoadMore: jest.fn(),
+                shouldLoadMore: false,
+            })
+        })
+
+        it('removes versionId param when a version is selected', async () => {
+            const user = userEvent.setup()
+            render(<SkillToolbarControls />)
+
+            await user.click(
+                screen.getByRole('button', { name: /select version/i }),
+            )
+
+            expect(mockRemoveVersionIdParam).toHaveBeenCalled()
+        })
+
+        it('still calls the underlying onSelectVersion when a version is selected', async () => {
+            const user = userEvent.setup()
+            render(<SkillToolbarControls />)
+
+            await user.click(
+                screen.getByRole('button', { name: /select version/i }),
+            )
+
+            expect(mockOnSelectVersion).toHaveBeenCalled()
         })
     })
 })

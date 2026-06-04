@@ -1,5 +1,7 @@
 import { useCallback, useEffect } from 'react'
 
+import { useRemoveVersionIdParam } from './hooks/useRemoveVersionIdParam'
+
 import { appQueryClient } from '@repo/api-resources'
 import { useShallow } from 'zustand/react/shallow'
 
@@ -26,6 +28,12 @@ export function KnowledgeEditorSkillVersionBanner() {
 
     const { isViewingHistoricalVersion, onGoToLatest } =
         useSkillVersionHistory()
+
+    const removeVersionIdParam = useRemoveVersionIdParam()
+    const handleGoToLatest = useCallback(() => {
+        onGoToLatest()
+        removeVersionIdParam()
+    }, [onGoToLatest, removeVersionIdParam])
 
     const dispatch = useSkillEditorStore((storeState) => storeState.dispatch)
     const {
@@ -138,7 +146,7 @@ export function KnowledgeEditorSkillVersionBanner() {
             isDisabled={isDisabled}
             switchVersion={switchVersion}
             isViewingHistoricalVersion={isViewingHistoricalVersion}
-            onGoToLatest={onGoToLatest}
+            onGoToLatest={handleGoToLatest}
             historicalVersion={historicalVersion}
             isDiffMode={isDiffMode}
             onToggleDiff={shouldShowDiffToggle ? onToggleDiff : undefined}

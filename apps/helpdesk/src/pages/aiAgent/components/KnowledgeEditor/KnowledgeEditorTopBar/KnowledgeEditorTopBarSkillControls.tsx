@@ -9,6 +9,7 @@ import {
     useSkillEditorStore,
 } from '../KnowledgeEditorSkill/context'
 import type { SkillModeType } from '../KnowledgeEditorSkill/context/types'
+import { useRemoveVersionIdParam } from '../KnowledgeEditorSkill/hooks/useRemoveVersionIdParam'
 import { useSkillVersionHistory } from '../KnowledgeEditorSkill/hooks/useSkillVersionHistory'
 import { useSkillEnableModal } from '../KnowledgeEditorSkill/modals/useSkillEnableModal'
 import { VersionHistoryButton } from '../shared/VersionHistoryButton'
@@ -118,6 +119,14 @@ export const SkillToolbarControls = () => {
     )
 
     const versionHistory = useSkillVersionHistory()
+    const removeVersionIdParam = useRemoveVersionIdParam()
+    const onSelectVersion = useCallback(
+        (version: Parameters<typeof versionHistory.onSelectVersion>[0]) => {
+            versionHistory.onSelectVersion(version)
+            removeVersionIdParam()
+        },
+        [versionHistory, removeVersionIdParam],
+    )
 
     const isViewingHistoricalVersion =
         historicalPublishedDatetime !== null &&
@@ -205,7 +214,7 @@ export const SkillToolbarControls = () => {
             isLoading={versionHistory.isLoading}
             currentVersionId={versionHistory.currentVersionId}
             selectedVersionId={versionHistory.selectedVersionId}
-            onSelectVersion={versionHistory.onSelectVersion}
+            onSelectVersion={onSelectVersion}
             isDisabled={versionHistory.isDisabled}
             isFetchingNextPage={versionHistory.isFetchingNextPage}
             onLoadMore={versionHistory.onLoadMore}

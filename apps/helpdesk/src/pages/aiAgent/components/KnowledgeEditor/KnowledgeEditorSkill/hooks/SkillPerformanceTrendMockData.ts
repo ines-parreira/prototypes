@@ -46,7 +46,7 @@ export const mockSkillPerformanceChartMarkers: ComposedMetricTimeSeriesMarker[] 
             description:
                 'Updated conditions to handover unfulfilled orders older than 3 days',
             actionHref:
-                '/app/ai-agent/shopify/acme/skills/1?versionId=mock-version-published-2026-04-30',
+                '/app/ai-agent/shopify/artemisathletix/skills/6192387?versionId=10868655',
         },
         {
             id: 'mock-intent-routing-2026-05-09',
@@ -54,13 +54,13 @@ export const mockSkillPerformanceChartMarkers: ComposedMetricTimeSeriesMarker[] 
             label: 'Changes published',
             description: 'Updated handover intent routing conditions',
             actionHref:
-                '/app/ai-agent/shopify/acme/skills/1?versionId=mock-intent-routing-2026-05-09',
+                '/app/ai-agent/shopify/artemisathletix/skills/6192387?versionId=10868658',
         },
         {
             id: 'mock-no-description-2026-05-15',
             date: '2026-05-15',
             label: 'Changes published',
             actionHref:
-                '/app/ai-agent/shopify/acme/skills/1?versionId=mock-no-description-2026-05-15',
+                '/app/ai-agent/shopify/artemisathletix/skills/6192387?versionId=10868663',
         },
     ]

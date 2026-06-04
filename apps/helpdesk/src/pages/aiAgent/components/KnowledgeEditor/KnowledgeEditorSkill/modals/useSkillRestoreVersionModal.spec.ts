@@ -9,6 +9,11 @@ const mockNotifySuccess = jest.fn()
 const mockNotifyError = jest.fn()
 const mockOnUpdateFn = jest.fn()
 const mockOnVersionRestored = jest.fn()
+const mockRemoveVersionIdParam = jest.fn()
+
+jest.mock('../hooks/useRemoveVersionIdParam', () => ({
+    useRemoveVersionIdParam: () => mockRemoveVersionIdParam,
+}))
 
 jest.mock('../context', () => ({
     useSkillEditorStore: jest.fn((selector: Function) =>
@@ -275,5 +280,32 @@ describe('useSkillRestoreVersionModal', () => {
         result.current.onClose()
 
         expect(mockDispatch).toHaveBeenCalledWith({ type: 'CLOSE_MODAL' })
+    })
+
+    it('removes versionId param after successful restore', async () => {
+        mockUpdateGuidanceArticle.mockResolvedValue({
+            title: 'Historical Title',
+            content: '<p>historical content</p>',
+        })
+
+        const { result } = renderHook(() => useSkillRestoreVersionModal())
+
+        await act(async () => {
+            await result.current.onRestore()
+        })
+
+        expect(mockRemoveVersionIdParam).toHaveBeenCalled()
+    })
+
+    it('does not remove versionId param when restore fails', async () => {
+        mockUpdateGuidanceArticle.mockRejectedValue(new Error('Network error'))
+
+        const { result } = renderHook(() => useSkillRestoreVersionModal())
+
+        await act(async () => {
+            await result.current.onRestore()
+        })
+
+        expect(mockRemoveVersionIdParam).not.toHaveBeenCalled()
     })
 })
