@@ -1,9 +1,17 @@
 import { render } from '@repo/testing'
-import * as platform from '@repo/utils'
-import { fireEvent, waitFor } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 
 import { GlobalNavigationSpotlight } from 'common/navigation/components/GlobalNavigationSpotlight'
 import { SpotlightContext } from 'providers/ui/SpotlightContext'
+
+let mockIsMacOs = false
+
+jest.mock('@repo/utils', () => ({
+    ...jest.requireActual('@repo/utils'),
+    get isMacOs() {
+        return mockIsMacOs
+    },
+}))
 
 jest.mock('@repo/logging')
 
@@ -14,30 +22,29 @@ const wrapper = ({ children }: { children?: React.ReactNode }) => (
 )
 
 describe('<GlobalNavigationSpotlight />', () => {
-    it('should render a tooltip on button hover on mac', async () => {
-        Object.defineProperty(platform, 'isMacOs', {
-            value: true,
-            writable: true,
-        })
-        const { getByRole } = render(<GlobalNavigationSpotlight />, { wrapper })
-        fireEvent.mouseOver(getByRole('button'))
+    beforeEach(() => {
+        mockIsMacOs = false
+    })
 
-        await waitFor(() => {
-            expect(getByRole('tooltip')).toHaveTextContent('Global search⌘k')
-        })
+    it('should render a tooltip on button hover on mac', async () => {
+        mockIsMacOs = true
+        const { user } = render(<GlobalNavigationSpotlight />, { wrapper })
+
+        await user.hover(screen.getByRole('button', { name: 'Global search' }))
+
+        expect(
+            await screen.findByRole('tooltip', undefined, { timeout: 2000 }),
+        ).toHaveTextContent('Global search⌘k')
     })
 
     it('should render a tooltip on button hover on other systems', async () => {
-        Object.defineProperty(platform, 'isMacOs', {
-            value: false,
-            writable: true,
-        })
-        const { getByRole } = render(<GlobalNavigationSpotlight />, { wrapper })
-        fireEvent.mouseOver(getByRole('button'))
+        const { user } = render(<GlobalNavigationSpotlight />, { wrapper })
 
-        await waitFor(() => {
-            expect(getByRole('tooltip')).toHaveTextContent('Global searchctrlk')
-        })
+        await user.hover(screen.getByRole('button', { name: 'Global search' }))
+
+        expect(
+            await screen.findByRole('tooltip', undefined, { timeout: 2000 }),
+        ).toHaveTextContent('Global searchctrlk')
     })
 
     it('should log an event when the button is clicked', () => {
