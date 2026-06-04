@@ -66,6 +66,7 @@ export type ToolbarContextType = {
     contactFormButtonEnabled?: boolean
     shopName?: string
     guidanceActionEditorName?: string
+    disabledActionsAppearance?: 'warning' | 'neutral'
 }
 
 export const ToolbarContext = createContext<ToolbarContextType>({

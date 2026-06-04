@@ -89,6 +89,67 @@ describe('GuidanceActionTag', () => {
         expect(container).toHaveClass('invalid')
     })
 
+    describe('setup-required actions', () => {
+        const disabledAction = {
+            name: 'Disabled action',
+            value: '00BBBBB7BBB0BBB1B50BBBB00B',
+            enabled: false,
+        }
+
+        it('shows the warning styling by default', () => {
+            ;(useToolbarContext as jest.Mock).mockReturnValue({
+                guidanceActions: [disabledAction],
+                shopName: 'test-shop',
+            })
+
+            render(
+                <GuidanceActionTag value={encodeAction(disabledAction)}>
+                    Action Content
+                </GuidanceActionTag>,
+            )
+
+            const container = screen.getByText('Disabled action').parentElement
+            expect(container).toHaveClass('disabled')
+            expect(screen.queryByAltText('action logo')).not.toBeInTheDocument()
+        })
+
+        it('shows the regular grey styling and keeps the action icon when appearance is neutral', () => {
+            ;(useToolbarContext as jest.Mock).mockReturnValue({
+                guidanceActions: [disabledAction],
+                shopName: 'test-shop',
+                disabledActionsAppearance: 'neutral',
+            })
+
+            render(
+                <GuidanceActionTag value={encodeAction(disabledAction)}>
+                    Action Content
+                </GuidanceActionTag>,
+            )
+
+            const container = screen.getByText('Disabled action').parentElement
+            expect(container).not.toHaveClass('disabled')
+            expect(screen.getByAltText('action logo')).toBeInTheDocument()
+        })
+
+        it('surfaces the skill review tooltip in neutral mode', () => {
+            ;(useToolbarContext as jest.Mock).mockReturnValue({
+                guidanceActions: [disabledAction],
+                shopName: 'test-shop',
+                disabledActionsAppearance: 'neutral',
+            })
+
+            render(
+                <GuidanceActionTag value={encodeAction(disabledAction)}>
+                    Action Content
+                </GuidanceActionTag>,
+            )
+
+            expect(screen.getByTestId('tooltip-content')).toHaveTextContent(
+                'This action is currently disabled and will be enabled with this skill once you complete your review.',
+            )
+        })
+    })
+
     it('shows tooltip when text overflows', () => {
         Object.defineProperty(HTMLSpanElement.prototype, 'offsetWidth', {
             configurable: true,

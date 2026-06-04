@@ -29,7 +29,11 @@ export default function GuidanceActionTag({
     value,
     children,
 }: GuidanceActionTagProps) {
-    const { guidanceActions, shopName } = useToolbarContext()
+    const {
+        guidanceActions,
+        shopName,
+        disabledActionsAppearance = 'warning',
+    } = useToolbarContext()
 
     const routes = getAiAgentNavigationRoutes(shopName || '')
 
@@ -52,7 +56,10 @@ export default function GuidanceActionTag({
     )
 
     const isDisabled = !!action && action.enabled === false
-    const hasWarning = !!action && isActionSetupRequired(action)
+    const setupRequired = !!action && isActionSetupRequired(action)
+    const useNeutralAppearance =
+        setupRequired && disabledActionsAppearance === 'neutral'
+    const hasWarning = setupRequired && !useNeutralAppearance
 
     const actionLink = useMemo(() => {
         if (action) {
@@ -68,13 +75,15 @@ export default function GuidanceActionTag({
 
     const actionName = action?.name ?? 'Invalid action'
 
-    const shouldShowTooltip = hasWarning || isTextOverflow
+    const shouldShowTooltip = setupRequired || isTextOverflow
 
-    const tooltipTitle = isDisabled
-        ? 'This action is disabled. Click to continue to enable it in action settings.'
-        : hasWarning
-          ? 'This action requires further set up. Click to complete set up and enable it.'
-          : actionName
+    const tooltipTitle = useNeutralAppearance
+        ? 'This action is currently disabled and will be enabled with this skill once you complete your review.'
+        : isDisabled
+          ? 'This action is disabled. Click to continue to enable it in action settings.'
+          : setupRequired
+            ? 'This action requires further set up. Click to complete set up and enable it.'
+            : actionName
 
     const tagContent = (
         <span className={css.wrapper} data-guidance-entity>

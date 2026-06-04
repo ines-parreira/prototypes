@@ -147,6 +147,7 @@ export const SkillReviewCardBody = ({
                 handleUpdateContent={onInstructionsChange}
                 description=""
                 showShortcutHint={false}
+                disabledActionsAppearance="neutral"
             />
         </Box>
     </Box>

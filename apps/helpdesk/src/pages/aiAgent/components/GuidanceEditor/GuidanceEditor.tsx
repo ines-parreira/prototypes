@@ -31,6 +31,7 @@ type GuidanceEditorProps = {
     description?: string
     showShortcutHint?: boolean
     charLimit?: number
+    disabledActionsAppearance?: 'warning' | 'neutral'
 }
 
 const defaultToolbarActions = [
@@ -61,6 +62,7 @@ export function GuidanceEditor({
     description,
     showShortcutHint = true,
     charLimit = textLimit,
+    disabledActionsAppearance = 'warning',
 }: GuidanceEditorProps) {
     const hasSkillsAccess = useSkillsAccess()
     const defaultDescription = hasSkillsAccess
@@ -152,6 +154,7 @@ export function GuidanceEditor({
                     guidanceActions={availableActions}
                     shopName={shopName}
                     guidanceActionEditorName={editorContextName}
+                    disabledActionsAppearance={disabledActionsAppearance}
                 >
                     <RichField
                         minHeight={320}

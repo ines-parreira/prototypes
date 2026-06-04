@@ -43,6 +43,7 @@ const ToolbarProvider = ({
     placementType = undefined,
     shopName,
     guidanceActionEditorName,
+    disabledActionsAppearance = 'warning',
 }: Props) => {
     const toolbarContext: ToolbarContextType = useMemo(
         () => ({
@@ -76,6 +77,7 @@ const ToolbarProvider = ({
             placementType,
             shopName,
             guidanceActionEditorName,
+            disabledActionsAppearance,
         }),
         [
             canAddVideoPlayer,
@@ -108,6 +110,7 @@ const ToolbarProvider = ({
             placementType,
             shopName,
             guidanceActionEditorName,
+            disabledActionsAppearance,
         ],
     )
 
