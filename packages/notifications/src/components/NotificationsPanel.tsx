@@ -39,7 +39,7 @@ export function NotificationsPanel({
         <Panel
             w={isMobileResolution ? '100%' : 382}
             margin={isMobileResolution ? 'auto' : undefined}
-            height="97vh"
+            height="calc(100dvh - var(--spacing-xs) * 2)"
             overflow="auto"
             withoutBorder
         >
