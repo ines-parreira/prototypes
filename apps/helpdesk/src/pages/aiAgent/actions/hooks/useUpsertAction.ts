@@ -21,58 +21,60 @@ export default function useUpsertAction(
 ) {
     const queryClient = useQueryClient()
 
-    const storeWorkflowsConfigurationQueryKey =
+    const storeWorkflowsConfigurationsListPrefix =
         storeWorkflowsConfigurationDefinitionKeys.list({
             storeName,
             storeType,
         })
 
     return useUpsertStoreWorkflowsConfiguration<{
-        previousStoreWorkflowConfiguration?: StoresWorkflowConfiguration
-        previousWorkflowConfiguration?: StoreWorkflowsConfiguration
+        previousStoreWorkflowConfigurations: Array<
+            [readonly unknown[], StoresWorkflowConfiguration | undefined]
+        >
     }>({
         onMutate: async ([, data]) => {
             await queryClient.cancelQueries({
-                queryKey: storeWorkflowsConfigurationQueryKey,
+                queryKey: storeWorkflowsConfigurationsListPrefix,
             })
 
-            const previousStoreWorkflowConfiguration =
-                queryClient.getQueryData<StoresWorkflowConfiguration>(
-                    storeWorkflowsConfigurationQueryKey,
-                ) ?? []
+            const previousStoreWorkflowConfigurations =
+                queryClient.getQueriesData<StoresWorkflowConfiguration>({
+                    queryKey: storeWorkflowsConfigurationsListPrefix,
+                })
 
-            // Optimistically update the cache
-            if (actionType === 'update') {
-                queryClient.setQueryData(
-                    storeWorkflowsConfigurationQueryKey,
-                    previousStoreWorkflowConfiguration.map((action) => {
-                        if (action.id === data?.id) {
-                            return data
-                        }
-                        return action
-                    }),
+            if (actionType === 'update' && data) {
+                const requestAsListItem = data as StoreWorkflowsConfiguration
+                queryClient.setQueriesData<StoresWorkflowConfiguration>(
+                    { queryKey: storeWorkflowsConfigurationsListPrefix },
+                    (prev) =>
+                        prev?.map((action) =>
+                            action.id === data.id ? requestAsListItem : action,
+                        ),
                 )
             }
 
-            return {
-                previousStoreWorkflowConfiguration,
-            }
+            return { previousStoreWorkflowConfigurations }
         },
         onSuccess: ({ data }) => {
-            const previousStoreWorkflowConfiguration =
-                queryClient.getQueryData<StoresWorkflowConfiguration>(
-                    storeWorkflowsConfigurationQueryKey,
-                ) ?? []
-
             const workflowConfigurationQueryKey =
                 workflowsConfigurationDefinitionKeys.get(data.id)
             queryClient.setQueryData(workflowConfigurationQueryKey, data)
 
+            const responseAsListItem = data as StoreWorkflowsConfiguration
+
             if (actionType === 'create') {
-                queryClient.setQueryData(storeWorkflowsConfigurationQueryKey, [
-                    ...previousStoreWorkflowConfiguration,
-                    data,
-                ])
+                queryClient.setQueriesData<StoresWorkflowConfiguration>(
+                    { queryKey: storeWorkflowsConfigurationsListPrefix },
+                    (prev) => (prev ? [...prev, responseAsListItem] : prev),
+                )
+            } else {
+                queryClient.setQueriesData<StoresWorkflowConfiguration>(
+                    { queryKey: storeWorkflowsConfigurationsListPrefix },
+                    (prev) =>
+                        prev?.map((action) =>
+                            action.id === data.id ? responseAsListItem : action,
+                        ),
+                )
             }
 
             toast.success(
@@ -87,10 +89,14 @@ export default function useUpsertAction(
                     ? `Fail to create Action. Please try again later.`
                     : `Fail to update Action. Please try again later.`
             handleError(error, errorMessage)
-            queryClient.setQueryData(
-                storeWorkflowsConfigurationQueryKey,
-                context?.previousStoreWorkflowConfiguration,
-            )
+            if (context?.previousStoreWorkflowConfigurations) {
+                for (const [
+                    key,
+                    previous,
+                ] of context.previousStoreWorkflowConfigurations) {
+                    queryClient.setQueryData(key, previous)
+                }
+            }
         },
     })
 }

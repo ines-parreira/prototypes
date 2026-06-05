@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 
 import { useHistory, useLocation } from 'react-router-dom'
 
-export const ACTION_DETAIL_TAB_VALUES = ['config', 'usage'] as const
+export const ACTION_DETAIL_TAB_VALUES = ['config', 'usage', 'logs'] as const
 
 export type ActionDetailTab = (typeof ACTION_DETAIL_TAB_VALUES)[number]
 

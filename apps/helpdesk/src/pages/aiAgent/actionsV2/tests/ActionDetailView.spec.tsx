@@ -5,7 +5,9 @@ import { screen, waitFor } from '@testing-library/react'
 import { useLocation } from 'react-router-dom'
 
 import { useGetStoreWorkflowsConfigurations } from 'models/workflows/queries'
+import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { usePlaygroundPanel } from 'pages/aiAgent/hooks/usePlaygroundPanel'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 
 import ActionDetailView from '../ActionDetailView'
@@ -19,6 +21,11 @@ const LocationProbe = () => {
 jest.mock('models/workflows/queries')
 jest.mock('pages/automate/actionsPlatform/hooks/useApps')
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
+jest.mock('pages/aiAgent/hooks/usePlaygroundPanel')
+jest.mock('pages/aiAgent/actions/hooks/useUpsertAction', () => ({
+    __esModule: true,
+    default: jest.fn(),
+}))
 jest.mock('pages/aiAgent/components/AiAgentLayout/AiAgentLayout', () => ({
     AiAgentLayout: ({
         children,
@@ -62,6 +69,8 @@ const mockUseGetStoreWorkflowsConfigurations = jest.mocked(
 )
 const mockUseApps = jest.mocked(useApps)
 const mockUseAiAgentNavigation = jest.mocked(useAiAgentNavigation)
+const mockUseUpsertAction = jest.mocked(useUpsertAction)
+const mockUsePlaygroundPanel = jest.mocked(usePlaygroundPanel)
 
 const ROUTE_PATH = '/app/ai-agent/:shopType/:shopName/actions/edit/:id'
 const ROUTE_URL = '/app/ai-agent/shopify/my-shop/actions/edit/cfg-1'
@@ -69,12 +78,19 @@ const ACTIONS_LIBRARY_PATH = '/app/ai-agent/shopify/my-shop/actions'
 
 const baseConfiguration = {
     id: 'cfg-1',
+    internal_id: 'cfg-1-internal',
     name: 'Get order info',
     description: 'Fetch order details from Shopify',
     is_draft: false,
     apps: [{ type: 'shopify' }],
     steps: [],
     triggers: [],
+    entrypoints: [
+        {
+            kind: 'llm-conversation',
+            deactivated_datetime: null,
+        },
+    ],
 }
 
 const mockHookReturn = (
@@ -124,6 +140,16 @@ describe('<ActionDetailView />', () => {
             routes: { actions: ACTIONS_LIBRARY_PATH },
             navigationItems: [],
         } as unknown as ReturnType<typeof useAiAgentNavigation>)
+        mockUseUpsertAction.mockReturnValue({
+            mutate: jest.fn(),
+            isLoading: false,
+        } as unknown as ReturnType<typeof useUpsertAction>)
+        mockUsePlaygroundPanel.mockReturnValue({
+            openPlayground: jest.fn(),
+            closePlayground: jest.fn(),
+            togglePlayground: jest.fn(),
+            isPlaygroundOpen: false,
+        })
     })
 
     afterEach(() => {
@@ -151,18 +177,29 @@ describe('<ActionDetailView />', () => {
             screen.getByRole('heading', { name: 'Get order info' }),
         ).toBeInTheDocument()
         expect(
-            screen.getByRole('link', { name: /back to actions library/i }),
-        ).toHaveAttribute('href', ACTIONS_LIBRARY_PATH)
+            screen.queryByRole('link', { name: /back to actions library/i }),
+        ).not.toBeInTheDocument()
         const enabledToggle = screen.getByRole('switch', { name: /enabled/i })
         expect(enabledToggle).toBeInTheDocument()
         expect(enabledToggle).toBeChecked()
         expect(screen.getByRole('button', { name: 'Test' })).toBeInTheDocument()
     })
 
-    it('shows the Enabled toggle in the off state when the configuration is a draft', () => {
+    it('shows the Enabled toggle in the off state when the action is deactivated', () => {
         mockUseGetStoreWorkflowsConfigurations.mockReturnValue(
             mockHookReturn({
-                data: [{ ...baseConfiguration, is_draft: true }],
+                data: [
+                    {
+                        ...baseConfiguration,
+                        entrypoints: [
+                            {
+                                kind: 'llm-conversation',
+                                deactivated_datetime:
+                                    '2024-04-29T13:32:57.190Z',
+                            },
+                        ],
+                    },
+                ],
             }),
         )
 
@@ -171,24 +208,6 @@ describe('<ActionDetailView />', () => {
         const enabledToggle = screen.getByRole('switch', { name: /enabled/i })
         expect(enabledToggle).toBeInTheDocument()
         expect(enabledToggle).not.toBeChecked()
-    })
-
-    it('navigates away from the action detail when the back link is clicked', async () => {
-        const { user } = renderView()
-
-        expect(
-            screen.getByRole('heading', { name: 'Get order info' }),
-        ).toBeInTheDocument()
-
-        await user.click(
-            screen.getByRole('link', { name: /back to actions library/i }),
-        )
-
-        await waitFor(() => {
-            expect(
-                screen.queryByRole('heading', { name: 'Get order info' }),
-            ).not.toBeInTheDocument()
-        })
     })
 
     it('defaults to the Configuration tab when no ?tab= param is present', () => {

@@ -21,6 +21,8 @@ import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLay
 import { SUPPORT_ACTIONS } from 'pages/aiAgent/constants'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
+import ActionEventsContent from 'pages/aiAgent/actions/ActionEventsContent'
+
 import { ActionConfigTab } from './components/ActionConfigTab'
 import { ActionDetailHeader } from './components/ActionDetailHeader'
 import { ActionUsageTab } from './components/ActionUsageTab'
@@ -105,33 +107,34 @@ const ActionDetailView = () => {
             title={SUPPORT_ACTIONS}
             className={css.container}
         >
-            <Box flexDirection="column" gap="md" w="100%">
-                <Box px="lg" pt="lg">
-                    <ActionDetailHeader
-                        configuration={configuration}
-                        backHref={routes.actions}
-                    />
-                </Box>
-                <Tabs
-                    selectedItem={tab}
-                    onSelectionChange={(key: Key) =>
-                        setTab(key as ActionDetailTab)
-                    }
-                >
-                    <TabList>
-                        <TabItem id="config" label="Configuration" />
-                        <TabItem id="usage" label="Usage" />
-                    </TabList>
-                    <TabPanel id="config">
-                        <ActionConfigTab configuration={configuration} />
-                    </TabPanel>
-                    <TabPanel id="usage">
-                        <GuidanceReferenceProvider actions={[configuration]}>
+            <GuidanceReferenceProvider actions={[configuration]}>
+                <Box flexDirection="column" gap="md" w="100%">
+                    <Box px="lg" pt="lg">
+                        <ActionDetailHeader configuration={configuration} />
+                    </Box>
+                    <Tabs
+                        selectedItem={tab}
+                        onSelectionChange={(key: Key) =>
+                            setTab(key as ActionDetailTab)
+                        }
+                    >
+                        <TabList>
+                            <TabItem id="config" label="Configuration" />
+                            <TabItem id="usage" label="Usage" />
+                            <TabItem id="logs" label="Event logs" />
+                        </TabList>
+                        <TabPanel id="config">
+                            <ActionConfigTab configuration={configuration} />
+                        </TabPanel>
+                        <TabPanel id="usage">
                             <ActionUsageTab configuration={configuration} />
-                        </GuidanceReferenceProvider>
-                    </TabPanel>
-                </Tabs>
-            </Box>
+                        </TabPanel>
+                        <TabPanel id="logs">
+                            <ActionEventsContent hideBackButton />
+                        </TabPanel>
+                    </Tabs>
+                </Box>
+            </GuidanceReferenceProvider>
         </AiAgentLayout>
     )
 }

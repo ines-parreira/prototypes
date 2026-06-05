@@ -20,6 +20,7 @@ type Props = {
     initialStartDate: Date
     initialEndDate: Date
     initialUserJourneyId?: number
+    hideBackButton?: boolean
     onChange: (filter: {
         from: Date
         to: Date
@@ -47,6 +48,7 @@ export default function ActionEventsHeader({
     initialEndDate,
     initialStartDate,
     initialUserJourneyId,
+    hideBackButton = false,
 }: Props) {
     const dispatch = useAppDispatch()
     const pageStatsFilters = useAppSelector(getPageStatsFilters)
@@ -127,7 +129,7 @@ export default function ActionEventsHeader({
 
     return (
         <div className={css.container}>
-            <BackToActionFormButton />
+            {!hideBackButton && <BackToActionFormButton />}
             <p>
                 View all events when this Action has been performed, and select
                 an event to view details which can help with troubleshooting

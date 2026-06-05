@@ -1,4 +1,6 @@
-import { Link as RouterLink } from 'react-router-dom'
+import { useCallback } from 'react'
+
+import { useParams } from 'react-router-dom'
 
 import {
     Box,
@@ -9,17 +11,57 @@ import {
     TooltipContent,
 } from '@gorgias/axiom'
 
+import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
+import { useGuidanceReferenceContext } from 'pages/aiAgent/actions/providers/GuidanceReferenceContext'
 import type { StoreWorkflowsConfiguration } from 'pages/aiAgent/actions/types'
+import { usePlaygroundPanel } from 'pages/aiAgent/hooks/usePlaygroundPanel'
 
 type Props = {
     configuration: StoreWorkflowsConfiguration
-    backHref: string
 }
 
-const COMING_SOON_TOOLTIP = 'Coming soon'
+export const ActionDetailHeader = ({ configuration }: Props) => {
+    const { shopName, shopType } = useParams<{
+        shopName: string
+        shopType: 'shopify'
+    }>()
 
-export const ActionDetailHeader = ({ configuration, backHref }: Props) => {
-    const isActive = !configuration.is_draft
+    const { mutate: updateAction, isLoading: isEditActionLoading } =
+        useUpsertAction('update', shopName, shopType)
+
+    const { canBeDeleted } = useGuidanceReferenceContext()
+
+    const { openPlayground } = usePlaygroundPanel()
+
+    const isEnabled = !configuration.entrypoints[0]?.deactivated_datetime
+    const isReferencedInGuidance = !canBeDeleted(configuration.id)
+    const isEnableToggleDisabled = isReferencedInGuidance && isEnabled
+
+    const handleToggle = useCallback(
+        (nextValue: boolean) => {
+            updateAction([
+                {
+                    internal_id: configuration.internal_id,
+                    store_name: shopName,
+                    store_type: shopType,
+                },
+                {
+                    ...configuration,
+                    entrypoints: configuration.entrypoints.map((entrypoint) =>
+                        entrypoint.kind === 'llm-conversation'
+                            ? {
+                                  ...entrypoint,
+                                  deactivated_datetime: nextValue
+                                      ? null
+                                      : new Date().toISOString(),
+                              }
+                            : entrypoint,
+                    ),
+                },
+            ])
+        },
+        [configuration, shopName, shopType, updateAction],
+    )
 
     return (
         <Box
@@ -30,42 +72,50 @@ export const ActionDetailHeader = ({ configuration, backHref }: Props) => {
             w="100%"
         >
             <Box flexDirection="row" alignItems="center" gap="sm">
-                <Button
-                    as={RouterLink}
-                    to={backHref}
-                    icon="arrow-left"
-                    size="sm"
-                    variant="secondary"
-                    aria-label="Back to Actions Library"
-                />
                 <Heading size="xl">{configuration.name}</Heading>
             </Box>
             <Box flexDirection="row" alignItems="center" gap="sm">
-                <Tooltip
-                    trigger={
-                        <ToggleField
-                            label="Enabled"
-                            value={isActive}
-                            isDisabled
-                            onChange={() => {}}
-                        />
-                    }
-                >
-                    <TooltipContent title={COMING_SOON_TOOLTIP} />
-                </Tooltip>
-                <Tooltip
-                    trigger={
-                        <Button
-                            variant="secondary"
-                            isDisabled
-                            onClick={() => {}}
-                        >
-                            Test
-                        </Button>
-                    }
-                >
-                    <TooltipContent title={COMING_SOON_TOOLTIP} />
-                </Tooltip>
+                {isEnableToggleDisabled ? (
+                    <Tooltip
+                        trigger={
+                            <ToggleField
+                                label="Enabled"
+                                value={isEnabled}
+                                isDisabled
+                                onChange={handleToggle}
+                            />
+                        }
+                    >
+                        <TooltipContent title="This Action is currently being used in Guidance. Remove the Action from all Guidance in order to disable." />
+                    </Tooltip>
+                ) : (
+                    <ToggleField
+                        label="Enabled"
+                        value={isEnabled}
+                        isDisabled={isEditActionLoading}
+                        onChange={handleToggle}
+                    />
+                )}
+                {isEnabled ? (
+                    <Button
+                        variant="secondary"
+                        onClick={() => {
+                            void openPlayground()
+                        }}
+                    >
+                        Test
+                    </Button>
+                ) : (
+                    <Tooltip
+                        trigger={
+                            <Button variant="secondary" isDisabled>
+                                Test
+                            </Button>
+                        }
+                    >
+                        <TooltipContent title="Action must be enabled to test." />
+                    </Tooltip>
+                )}
             </Box>
         </Box>
     )
