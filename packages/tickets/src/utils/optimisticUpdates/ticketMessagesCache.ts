@@ -63,21 +63,7 @@ function upsertTicketMessageInListAllMessagesCache<
             }
 
             if (!cache?.pages.length) {
-                return {
-                    pageParams: [undefined],
-                    pages: [
-                        {
-                            data: {
-                                data: [message],
-                                meta: {
-                                    next_cursor: null,
-                                    prev_cursor: null,
-                                    total_resources: 1,
-                                },
-                            },
-                        },
-                    ],
-                }
+                return cache
             }
 
             const [firstPage, ...remainingPages] = cache.pages
