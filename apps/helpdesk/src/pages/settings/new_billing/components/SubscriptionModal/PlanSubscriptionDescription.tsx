@@ -37,7 +37,7 @@ export type PlanSubscriptionDescriptionProps = {
     setSelectedPlan: React.Dispatch<React.SetStateAction<Plan | undefined>>
     setIsSubscriptionEnabled: React.Dispatch<React.SetStateAction<boolean>>
     trackingSource: string
-    isYearlyPlan: boolean
+    hasSeparateInvoiceCadencePlan: boolean
     isSelectionBlocked?: boolean
     blockedTooltip?: React.ReactNode
 }
@@ -53,7 +53,7 @@ const PlanSubscriptionDescription = ({
     setSelectedPlan,
     setIsSubscriptionEnabled,
     trackingSource,
-    isYearlyPlan,
+    hasSeparateInvoiceCadencePlan,
     isSelectionBlocked = false,
     blockedTooltip,
 }: PlanSubscriptionDescriptionProps) => {
@@ -122,10 +122,15 @@ const PlanSubscriptionDescription = ({
         return (
             !isEnterprisePlan &&
             !isTrialing &&
-            !isYearlyPlan &&
+            !hasSeparateInvoiceCadencePlan &&
             isPaymentEnabled
         )
-    }, [isEnterprisePlan, isTrialing, isPaymentEnabled, isYearlyPlan])
+    }, [
+        isEnterprisePlan,
+        isTrialing,
+        isPaymentEnabled,
+        hasSeparateInvoiceCadencePlan,
+    ])
 
     return (
         <div className={css.container}>
@@ -166,7 +171,7 @@ const PlanSubscriptionDescription = ({
                         </a>
                     )}
                 </div>
-                {isYearlyPlan ? (
+                {hasSeparateInvoiceCadencePlan ? (
                     <div className={css.enterpriseDescription}>
                         Contact our team to subscribe to a custom plan.
                     </div>
@@ -236,7 +241,7 @@ const PlanSubscriptionDescription = ({
                         </div>
                     </div>
                 )}
-                {isEnterprisePlan && !isYearlyPlan && (
+                {isEnterprisePlan && !hasSeparateInvoiceCadencePlan && (
                     <div className={css.enterpriseDescription}>
                         Contact our team to subscribe to an Enterprise plan.
                     </div>

@@ -30,7 +30,7 @@ describe('PlanSubscriptionDescription', () => {
         setSelectedPlan: setSelectedPlanMock,
         setIsSubscriptionEnabled: setIsSubscriptionEnabledMock,
         trackingSource: 'test',
-        isYearlyPlan: false,
+        hasSeparateInvoiceCadencePlan: false,
     } as PlanSubscriptionDescriptionProps
 
     it('should render correctly', () => {
@@ -116,8 +116,13 @@ describe('PlanSubscriptionDescription', () => {
         },
     )
 
-    it('should render correctly for yearly plan', () => {
-        render(<PlanSubscriptionDescription {...props} isYearlyPlan={true} />)
+    it('should render correctly for separate invoice cadence plan', () => {
+        render(
+            <PlanSubscriptionDescription
+                {...props}
+                hasSeparateInvoiceCadencePlan={true}
+            />,
+        )
 
         expect(
             screen.getByText('Contact our team to subscribe to a custom plan.'),

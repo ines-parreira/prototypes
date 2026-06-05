@@ -7,7 +7,7 @@ import { Cadence } from 'models/billing/types'
 import {
     getCadenceName,
     getInvoiceCadenceName,
-    isYearlyContractPlan,
+    hasSeparateInvoiceCadence,
 } from 'models/billing/utils'
 import { ShopifyBillingInactiveBanner } from 'pages/settings/new_billing/components/ShopifyBillingInactiveBanner'
 import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
@@ -42,7 +42,8 @@ const PaymentInformationView = ({
     const productCancellationsQuery = useProductCancellations()
     const cancellationsByPlanId = productCancellationsQuery.data ?? new Map()
     const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
-    const isYearlyPlan = isYearlyContractPlan(currentHelpdeskPlan)
+    const hasSeparateInvoiceCadencePlan =
+        hasSeparateInvoiceCadence(currentHelpdeskPlan)
     const invoice_cadence = currentHelpdeskPlan?.invoice_cadence ?? cadence
 
     useEffectOnce(() => {
@@ -54,7 +55,7 @@ const PaymentInformationView = ({
     return (
         <div className={css.container}>
             <ShopifyBillingInactiveBanner />
-            {isYearlyPlan && (
+            {hasSeparateInvoiceCadencePlan && (
                 <CustomPlanBanner
                     contactUsCallback={() =>
                         contactBilling(TicketPurpose.CONTACT_US)
@@ -69,7 +70,7 @@ const PaymentInformationView = ({
             </Section>
             <Section icon="history" title="Billing frequency">
                 <Description>
-                    {isYearlyPlan ? (
+                    {hasSeparateInvoiceCadencePlan ? (
                         <>
                             Annual plan (billed{' '}
                             <strong>

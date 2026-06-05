@@ -1576,22 +1576,25 @@ describe('BillingProcessView', () => {
         })
     })
 
-    describe('Yearly contract plan redirect', () => {
-        it('should redirect to billing homepage when current helpdesk plan is a yearly contract plan', async () => {
+    describe('Separate invoice cadence plan redirect', () => {
+        it('should redirect to billing homepage when current helpdesk plan has a separate invoice cadence', async () => {
             mockedServer
                 .onGet('/billing/state')
                 .reply(200, payingWithCreditCard)
 
-            const yearlyContractProduct = {
+            const separateInvoiceCadenceProduct = {
                 type: ProductType.Helpdesk,
                 prices: [basicYearlyInvoicedMonthlyHelpdeskPlan],
             }
 
-            const storeWithYearlyContract = {
+            const storeWithSeparateInvoiceCadence = {
                 ...storeInitialState,
                 billing: fromJS({
                     invoices: [],
-                    products: [yearlyContractProduct, ...products.slice(1)],
+                    products: [
+                        separateInvoiceCadenceProduct,
+                        ...products.slice(1),
+                    ],
                     currentProductsUsage: {
                         helpdesk: {
                             data: {
@@ -1633,7 +1636,7 @@ describe('BillingProcessView', () => {
                     isTrialing={false}
                     isCurrentSubscriptionCanceled={false}
                 />,
-                { storeState: storeWithYearlyContract },
+                { storeState: storeWithSeparateInvoiceCadence },
             )
 
             await waitFor(() => {
@@ -1643,7 +1646,7 @@ describe('BillingProcessView', () => {
             })
         })
 
-        it('should not redirect when current helpdesk plan is not a yearly contract plan', async () => {
+        it('should not redirect when current helpdesk plan does not have a separate invoice cadence', async () => {
             mockedServer
                 .onGet('/billing/state')
                 .reply(200, payingWithCreditCard)

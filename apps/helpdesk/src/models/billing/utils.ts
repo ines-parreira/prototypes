@@ -156,7 +156,7 @@ export function getProductName(product: ProductType): string {
 /**
  * @description
  *    Returns the plan amount per invoice cadence, e.g. "$300/quarter".
- *    Useful when cadence and invoice_cadence differ (e.g. yearly contract billed quarterly).
+ *    Useful when cadence and invoice_cadence differ (e.g. annual contract billed quarterly).
  *
  * @param plan Plan
  * @returns string
@@ -343,7 +343,7 @@ export function getProductInfo<T extends ProductType>(
 export function generatePaymentPlanLabel(
     currentHelpdeskPlan: HelpdeskPlan | undefined,
 ): string {
-    if (isYearlyContractPlan(currentHelpdeskPlan)) {
+    if (hasSeparateInvoiceCadence(currentHelpdeskPlan)) {
         return `Annual plan (billed ${getInvoiceCadenceName(
             currentHelpdeskPlan?.invoice_cadence ?? InvoiceCadence.Month,
         ).toLowerCase()})`
@@ -365,13 +365,13 @@ export function generatePaymentPlanLabel(
  *
  * @example
  * // Annual plan billed quarterly
- * isYearlyContractPlan({ cadence: Cadence.Year, invoice_cadence: InvoiceCadence.Quarter }) // true
+ * hasSeparateInvoiceCadence({ cadence: Cadence.Year, invoice_cadence: InvoiceCadence.Quarter }) // true
  *
  * @example
  * // Standard monthly plan
- * isYearlyContractPlan({ cadence: Cadence.Month, invoice_cadence: InvoiceCadence.Month }) // false
+ * hasSeparateInvoiceCadence({ cadence: Cadence.Month, invoice_cadence: InvoiceCadence.Month }) // false
  */
-export function isYearlyContractPlan(plan: Plan | undefined) {
+export function hasSeparateInvoiceCadence(plan: Plan | undefined) {
     return (plan?.cadence as string) !== (plan?.invoice_cadence as string)
 }
 

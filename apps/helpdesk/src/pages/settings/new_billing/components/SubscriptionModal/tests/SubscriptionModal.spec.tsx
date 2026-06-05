@@ -81,9 +81,9 @@ describe('SubscriptionModal', () => {
         fireEvent.click(closeButton)
         expect(onClose).toHaveBeenCalled()
     })
-    it('should show custom plan message and Contact Us button for yearly contract plans', async () => {
+    it('should show custom plan message and Contact Us button for separate invoice cadence plans', async () => {
         const confirmEnterpriseLabel = 'Contact Us'
-        const yearlyPlanState: Partial<RootState> = {
+        const separateInvoiceCadencePlanState: Partial<RootState> = {
             ...defaultState,
             currentAccount: fromJS({
                 ...account,
@@ -118,7 +118,7 @@ describe('SubscriptionModal', () => {
                 isOpen={true}
                 confirmEnterpriseLabel={confirmEnterpriseLabel}
             />,
-            { storeState: yearlyPlanState },
+            { storeState: separateInvoiceCadencePlanState },
         )
         await waitFor(() => {
             expect(

@@ -5,7 +5,7 @@ import { Cadence, ProductType } from './types'
 import {
     generatePaymentPlanLabel,
     getProductTrackingName,
-    isYearlyContractPlan,
+    hasSeparateInvoiceCadence,
 } from './utils'
 
 describe('getProductTrackingName', () => {
@@ -30,32 +30,32 @@ describe('getProductTrackingName', () => {
     })
 })
 
-describe('isYearlyContractPlan', () => {
-    it('should return true when cadence differs from invoice_cadence (yearly, biannually)', () => {
+describe('hasSeparateInvoiceCadence', () => {
+    it('should return true when cadence differs from invoice_cadence (annual contract, biannual invoice)', () => {
         const plan = {
             cadence: Cadence.Year,
             invoice_cadence: InvoiceCadence.Biannual,
         } as HelpdeskPlan
 
-        expect(isYearlyContractPlan(plan)).toBe(true)
+        expect(hasSeparateInvoiceCadence(plan)).toBe(true)
     })
 
-    it('should return true when cadence differs from invoice_cadence (yearly, quarterly)', () => {
+    it('should return true when cadence differs from invoice_cadence (annual contract, quarterly invoice)', () => {
         const plan = {
             cadence: Cadence.Year,
             invoice_cadence: InvoiceCadence.Quarter,
         } as HelpdeskPlan
 
-        expect(isYearlyContractPlan(plan)).toBe(true)
+        expect(hasSeparateInvoiceCadence(plan)).toBe(true)
     })
 
-    it('should return true when cadence differs from invoice_cadence (yearly, monthly)', () => {
+    it('should return true when cadence differs from invoice_cadence (annual contract, monthly invoice)', () => {
         const plan = {
             cadence: Cadence.Year,
             invoice_cadence: InvoiceCadence.Month,
         } as HelpdeskPlan
 
-        expect(isYearlyContractPlan(plan)).toBe(true)
+        expect(hasSeparateInvoiceCadence(plan)).toBe(true)
     })
 
     it('should return false when cadence equals invoice_cadence (yearly)', () => {
@@ -64,7 +64,7 @@ describe('isYearlyContractPlan', () => {
             invoice_cadence: InvoiceCadence.Year,
         } as HelpdeskPlan
 
-        expect(isYearlyContractPlan(plan)).toBe(false)
+        expect(hasSeparateInvoiceCadence(plan)).toBe(false)
     })
 
     it('should return false when cadence equals invoice_cadence (monthly)', () => {
@@ -73,11 +73,11 @@ describe('isYearlyContractPlan', () => {
             invoice_cadence: InvoiceCadence.Month,
         } as HelpdeskPlan
 
-        expect(isYearlyContractPlan(plan)).toBe(false)
+        expect(hasSeparateInvoiceCadence(plan)).toBe(false)
     })
 
     it('should return false when plan is undefined', () => {
-        expect(isYearlyContractPlan(undefined)).toBe(false)
+        expect(hasSeparateInvoiceCadence(undefined)).toBe(false)
     })
 })
 

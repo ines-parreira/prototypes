@@ -25,11 +25,11 @@ import {
     getOverageUnitPriceFormatted,
     getPlanPriceFormatted,
     getProductInfo,
+    hasSeparateInvoiceCadence,
     isConvert,
     isEnterprise,
     isLegacyAutomate,
     isTrial,
-    isYearlyContractPlan,
 } from 'models/billing/utils'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import {
@@ -95,7 +95,8 @@ const ProductCard = ({
     const history = useHistory()
     const productInfo = getProductInfo(type, plan)
     const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
-    const isYearlyPlan = isYearlyContractPlan(currentHelpdeskPlan)
+    const hasSeparateInvoiceCadencePlan =
+        hasSeparateInvoiceCadence(currentHelpdeskPlan)
 
     const { className, canduOverageStatus } = useMemo(() => {
         if (
@@ -147,7 +148,7 @@ const ProductCard = ({
     const subscribeContainer = useMemo(() => {
         return (
             <div className={css.subscribeContainer}>
-                {cadence && !isYearlyPlan && (
+                {cadence && !hasSeparateInvoiceCadencePlan && (
                     <div>
                         Starting at{' '}
                         <b>
@@ -165,7 +166,7 @@ const ProductCard = ({
                     </Tooltip>
                 )}
 
-                {isYearlyPlan && (
+                {hasSeparateInvoiceCadencePlan && (
                     <ContactUsTooltip
                         type={type}
                         tooltipDisabledCTACallback={tooltipDisabledCTACallback}
@@ -174,7 +175,7 @@ const ProductCard = ({
 
                 <Button
                     intent="primary"
-                    isDisabled={isDisabled || isYearlyPlan}
+                    isDisabled={isDisabled || hasSeparateInvoiceCadencePlan}
                     onClick={() => {
                         const url = `${BILLING_PROCESS_PATH}/${type}`
                         logEvent(
@@ -207,7 +208,7 @@ const ProductCard = ({
         isDisabled,
         disabledTooltip,
         tooltipDisabledCTACallback,
-        isYearlyPlan,
+        hasSeparateInvoiceCadencePlan,
     ])
 
     const updateContainer = useMemo(
@@ -221,7 +222,7 @@ const ProductCard = ({
                         {disabledTooltip}
                     </Tooltip>
                 )}
-                {isYearlyPlan && (
+                {hasSeparateInvoiceCadencePlan && (
                     <ContactUsTooltip
                         type={type}
                         tooltipDisabledCTACallback={tooltipDisabledCTACallback}
@@ -229,7 +230,7 @@ const ProductCard = ({
                 )}
                 <Button
                     intent="secondary"
-                    isDisabled={isYearlyPlan || isDisabled}
+                    isDisabled={hasSeparateInvoiceCadencePlan || isDisabled}
                     onClick={() => {
                         const url = `${BILLING_PROCESS_PATH}/${type}`
                         logEvent(
@@ -248,7 +249,7 @@ const ProductCard = ({
             history,
             type,
             tooltipDisabledCTACallback,
-            isYearlyPlan,
+            hasSeparateInvoiceCadencePlan,
             isDisabled,
             disabledTooltip,
         ],

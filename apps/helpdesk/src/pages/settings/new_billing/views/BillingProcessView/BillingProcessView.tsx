@@ -19,7 +19,7 @@ import type { CustomerSummary } from '@gorgias/helpdesk-types'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { getProductInfo, isYearlyContractPlan } from 'models/billing/utils'
+import { getProductInfo, hasSeparateInvoiceCadence } from 'models/billing/utils'
 import Loader from 'pages/common/components/Loader/Loader'
 import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal/PendingChangesModal'
 import { useIsPaymentEnabled } from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
@@ -138,7 +138,7 @@ export const BillingProcessView = ({
 
     const history = useHistory()
     useEffect(() => {
-        if (isYearlyContractPlan(currentHelpdeskPlan) || isBillingPaused) {
+        if (hasSeparateInvoiceCadence(currentHelpdeskPlan) || isBillingPaused) {
             history.push(BILLING_BASE_PATH)
         }
     }, [currentHelpdeskPlan, isBillingPaused, history])

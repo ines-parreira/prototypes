@@ -313,8 +313,8 @@ describe('<AutomateSubscriptionModal />', () => {
         })
     })
 
-    it('shows the custom plan message and Contact Us button for yearly contract plans', async () => {
-        const yearlyPlanState: Partial<RootState> = {
+    it('shows the custom plan message and Contact Us button for separate invoice cadence plans', async () => {
+        const separateInvoiceCadencePlanState: Partial<RootState> = {
             ...defaultState,
             currentAccount: fromJS({
                 ...account,
@@ -344,7 +344,7 @@ describe('<AutomateSubscriptionModal />', () => {
         }
 
         render(<AutomateSubscriptionModal {...minProps} isOpen />, {
-            storeState: yearlyPlanState,
+            storeState: separateInvoiceCadencePlanState,
         })
 
         await waitFor(() => {
@@ -362,7 +362,7 @@ describe('<AutomateSubscriptionModal />', () => {
 
     it('keeps the Contact Us modal open after closing the subscription modal', async () => {
         const user = userEvent.setup()
-        const yearlyPlanState: Partial<RootState> = {
+        const separateInvoiceCadencePlanState: Partial<RootState> = {
             ...defaultState,
             currentAccount: fromJS({
                 ...account,
@@ -403,7 +403,9 @@ describe('<AutomateSubscriptionModal />', () => {
             )
         }
 
-        render(<ContactSupportHarness />, { storeState: yearlyPlanState })
+        render(<ContactSupportHarness />, {
+            storeState: separateInvoiceCadencePlanState,
+        })
 
         await user.click(
             await screen.findByRole('button', { name: /contact us/i }),

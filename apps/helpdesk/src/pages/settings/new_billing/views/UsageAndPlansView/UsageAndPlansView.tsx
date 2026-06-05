@@ -23,7 +23,7 @@ import { ProductType } from 'models/billing/types'
 import {
     generatePaymentPlanLabel,
     getProductInfo,
-    isYearlyContractPlan,
+    hasSeparateInvoiceCadence,
 } from 'models/billing/utils'
 import useMeetAiAgentNotifications from 'pages/aiAgent/hooks/useMeetAiAgentNotification'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
@@ -240,7 +240,8 @@ const UsageAndPlansView = ({
         logEvent(SegmentEvent.BillingUsageAndPlansVisited, { url: pathname })
     })
 
-    const isYearlyPlan = isYearlyContractPlan(currentHelpdeskPlan)
+    const hasSeparateInvoiceCadencePlan =
+        hasSeparateInvoiceCadence(currentHelpdeskPlan)
 
     return (
         <div className={css.container}>
@@ -294,7 +295,7 @@ const UsageAndPlansView = ({
                 ) : null}
             </div>
             {isCurrentSubscriptionCanceled ? null : <BillingScheduledUpdates />}
-            {hasSubscription && isYearlyPlan && (
+            {hasSubscription && hasSeparateInvoiceCadencePlan && (
                 <CustomPlanBanner
                     contactUsCallback={() =>
                         contactBilling(TicketPurpose.CONTACT_US)

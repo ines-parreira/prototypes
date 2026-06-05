@@ -156,8 +156,8 @@ describe('ProductCard', () => {
             expect(link).toHaveAttribute('href', productInfo.tooltipLink)
         },
     )
-    describe('Yearly contract plan behavior', () => {
-        const yearlyProducts = products.map((product) => {
+    describe('Separate invoice cadence plan behavior', () => {
+        const separateInvoiceCadenceProducts = products.map((product) => {
             if (product.type === ProductType.Helpdesk) {
                 return {
                     ...product,
@@ -169,7 +169,7 @@ describe('ProductCard', () => {
             }
             return product
         })
-        it('should disable Manage button for yearly contract plans', () => {
+        it('should disable Manage button for separate invoice cadence plans', () => {
             render(
                 <ProductCard
                     type={ProductType.Automation}
@@ -181,7 +181,7 @@ describe('ProductCard', () => {
                     storeState: {
                         billing: fromJS({
                             ...billingState,
-                            products: yearlyProducts,
+                            products: separateInvoiceCadenceProducts,
                         }),
                         currentAccount: fromJS({
                             ...account,
@@ -202,7 +202,7 @@ describe('ProductCard', () => {
                 screen.getByRole('button', { name: /manage/i }),
             ).toBeAriaDisabled()
         })
-        it('should disable Subscribe button for yearly contract plans without active plan', () => {
+        it('should disable Subscribe button for separate invoice cadence plans without active plan', () => {
             render(
                 <ProductCard
                     type={ProductType.Automation}
@@ -214,7 +214,7 @@ describe('ProductCard', () => {
                     storeState: {
                         billing: fromJS({
                             ...billingState,
-                            products: yearlyProducts,
+                            products: separateInvoiceCadenceProducts,
                         }),
                         currentAccount: fromJS({
                             ...account,
@@ -233,7 +233,7 @@ describe('ProductCard', () => {
                 screen.getByRole('button', { name: /subscribe/i }),
             ).toBeAriaDisabled()
         })
-        it('should hide "Starting at" pricing for yearly contract plans when product is inactive', () => {
+        it('should hide "Starting at" pricing for separate invoice cadence plans when product is inactive', () => {
             render(
                 <ProductCard
                     type={ProductType.Automation}
@@ -245,7 +245,7 @@ describe('ProductCard', () => {
                     storeState: {
                         billing: fromJS({
                             ...billingState,
-                            products: yearlyProducts,
+                            products: separateInvoiceCadenceProducts,
                         }),
                         currentAccount: fromJS({
                             ...account,
@@ -298,8 +298,8 @@ describe('ProductCard', () => {
                 screen.getByRole('button', { name: /manage/i }),
             ).not.toBeAriaDisabled()
         })
-        it('should show contact us tooltip for yearly contract plans', async () => {
-            const yearlyProducts = products.map((product) => {
+        it('should show contact us tooltip for separate invoice cadence plans', async () => {
+            const separateInvoiceCadenceProducts = products.map((product) => {
                 if (product.type === ProductType.Helpdesk) {
                     return {
                         ...product,
@@ -322,7 +322,7 @@ describe('ProductCard', () => {
                     storeState: {
                         billing: fromJS({
                             ...billingState,
-                            products: yearlyProducts,
+                            products: separateInvoiceCadenceProducts,
                         }),
                         currentAccount: fromJS({
                             ...account,

@@ -29,7 +29,7 @@ type Props = {
     setShowROICalculatorStep?: (value: boolean) => void
     onConfirm: () => void
     confirmLabel: string
-    isYearlyPlan: boolean
+    hasSeparateInvoiceCadencePlan: boolean
     isSubscribeDisabled?: boolean
     isUpdateDisabled?: boolean
     isSelectionBlocked?: boolean
@@ -56,7 +56,7 @@ const AutomateModalStep = ({
     setShowROICalculatorStep,
     onConfirm,
     confirmLabel,
-    isYearlyPlan,
+    hasSeparateInvoiceCadencePlan,
     isSubscribeDisabled = false,
     isUpdateDisabled = false,
     isSelectionBlocked = false,
@@ -82,7 +82,7 @@ const AutomateModalStep = ({
                 setSelectedPlan={setSelectedPlan}
                 setIsSubscriptionEnabled={setIsSubscriptionEnabled}
                 trackingSource="subscription_modal_ai_agent"
-                isYearlyPlan={isYearlyPlan}
+                hasSeparateInvoiceCadencePlan={hasSeparateInvoiceCadencePlan}
                 isSelectionBlocked={isSelectionBlocked}
                 blockedTooltip={disabledTooltip}
             />
@@ -120,7 +120,7 @@ const AutomateModalStep = ({
                     OK
                 </Button>
             </ModalFooter>
-        ) : isEnterprisePlan || isYearlyPlan ? (
+        ) : isEnterprisePlan || hasSeparateInvoiceCadencePlan ? (
             <Footer
                 confirmLabel="Contact Us"
                 isUpdating={isSubscriptionUpdating}

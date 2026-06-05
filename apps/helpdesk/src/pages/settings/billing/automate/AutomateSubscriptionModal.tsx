@@ -35,7 +35,7 @@ import { isGorgiasApiError } from 'models/api/types'
 import { getSubscriptionQuery } from 'models/billing/queries'
 import type { AutomatePlan, Plan } from 'models/billing/types'
 import { ProductType } from 'models/billing/types'
-import { isEnterprise, isYearlyContractPlan } from 'models/billing/utils'
+import { hasSeparateInvoiceCadence, isEnterprise } from 'models/billing/utils'
 import { ConfirmChangesModal } from 'pages/settings/new_billing/components/ConfirmChangesModal'
 import ContactSupportModal from 'pages/settings/new_billing/components/ContactSupportModal/ContactSupportModal'
 import type { ContactSupportModalProps } from 'pages/settings/new_billing/components/ContactSupportModal/ContactSupportModal'
@@ -210,7 +210,8 @@ const AutomateSubscriptionModalContent = ({
     const helpdeskAvailablePlansIds = helpdeskAvailablePlans
         .filter((plan) => plan.cadence === cadence)
         .map((plan) => plan.plan_id)
-    const isYearlyPlan = isYearlyContractPlan(currentHelpdeskPlan)
+    const hasSeparateInvoiceCadencePlan =
+        hasSeparateInvoiceCadence(currentHelpdeskPlan)
 
     const currentAccount = useAppSelector(getCurrentAccountState)
     const currentUser = useAppSelector(getCurrentUser)
@@ -577,7 +578,9 @@ const AutomateSubscriptionModalContent = ({
                         setShowROICalculatorStep={setShowROICalculatorStep}
                         onConfirm={onConfirm}
                         confirmLabel={confirmLabel}
-                        isYearlyPlan={isYearlyPlan}
+                        hasSeparateInvoiceCadencePlan={
+                            hasSeparateInvoiceCadencePlan
+                        }
                         isSubscribeDisabled={isSubscribeDisabled}
                         isUpdateDisabled={isUpdateDisabled}
                         isSelectionBlocked={scheduledChangesBlocking}

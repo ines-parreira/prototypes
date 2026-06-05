@@ -279,7 +279,7 @@ describe('PaymentInformationView', () => {
             )
         },
     )
-    it('should display "Annual plan (billed monthly)" for yearly contract plan with monthly invoice cadence', () => {
+    it('should display "Annual plan (billed monthly)" for annual plan with separate monthly invoice cadence', () => {
         const helpdeskProductIndex = billingState.products.findIndex(
             (product) => product.type === HELPDESK_PRODUCT_ID,
         )
@@ -312,7 +312,7 @@ describe('PaymentInformationView', () => {
         expect(screen.getByText(/Annual plan \(billed/))
         expect(screen.getByText(/monthly/))
     })
-    it('should display "Annual plan (billed quarterly)" for yearly contract plan with quarterly invoice cadence', () => {
+    it('should display "Annual plan (billed quarterly)" for annual plan with separate quarterly invoice cadence', () => {
         const helpdeskProductIndex = billingState.products.findIndex(
             (product) => product.type === HELPDESK_PRODUCT_ID,
         )
@@ -345,7 +345,7 @@ describe('PaymentInformationView', () => {
         expect(screen.getByText(/Annual plan \(billed/))
         expect(screen.getByText(/quarterly/))
     })
-    it('should display "Annual plan (billed biannually)" for yearly contract plan with biannually invoice cadence', () => {
+    it('should display "Annual plan (billed biannually)" for annual plan with separate biannual invoice cadence', () => {
         const helpdeskProductIndex = billingState.products.findIndex(
             (product) => product.type === HELPDESK_PRODUCT_ID,
         )

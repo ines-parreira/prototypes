@@ -14,9 +14,9 @@ import useAppSelector from 'hooks/useAppSelector'
 import { Cadence } from 'models/billing/types'
 import type { PlanId } from 'models/billing/types'
 import {
+    hasSeparateInvoiceCadence,
     isLegacyAutomate,
     isOtherCadenceUpgrade,
-    isYearlyContractPlan,
 } from 'models/billing/utils'
 import {
     getCurrentAutomatePlan,
@@ -129,7 +129,7 @@ export default function NavigateToChangeBillingFrequency({
                 with our team.
             </>
         )
-    } else if (isYearlyContractPlan(currentHelpdeskPlan)) {
+    } else if (hasSeparateInvoiceCadence(currentHelpdeskPlan)) {
         toolTipContent = (
             <>
                 Because you&apos;re on a custom plan, please{' '}

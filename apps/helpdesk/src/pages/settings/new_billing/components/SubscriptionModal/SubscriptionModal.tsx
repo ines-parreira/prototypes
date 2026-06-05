@@ -8,7 +8,7 @@ import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 import { useAppNode } from 'appNode'
 import useAppSelector from 'hooks/useAppSelector'
 import type { Plan, ProductType } from 'models/billing/types'
-import { isEnterprise, isYearlyContractPlan } from 'models/billing/utils'
+import { hasSeparateInvoiceCadence, isEnterprise } from 'models/billing/utils'
 import ContactSupportModal from 'pages/settings/new_billing/components/ContactSupportModal'
 import PlanSubscriptionDescription from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
 import SubscriptionModalFooter from 'pages/settings/new_billing/components/SubscriptionModal/SubscriptionModalFooter'
@@ -71,7 +71,8 @@ const SubscriptionModal = ({
     const currentUser = useAppSelector(getCurrentUser)
     const cadence = useAppSelector(getCurrentHelpdeskCadence)
     const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
-    const isYearlyPlan = isYearlyContractPlan(currentHelpdeskPlan)
+    const hasSeparateInvoiceCadencePlan =
+        hasSeparateInvoiceCadence(currentHelpdeskPlan)
     const appNode = useAppNode()
 
     const from: string = currentUser.get('email')
@@ -105,10 +106,15 @@ const SubscriptionModal = ({
 
     const confirmButtonLabel = useMemo(
         () =>
-            isEnterprisePlan || isYearlyPlan
+            isEnterprisePlan || hasSeparateInvoiceCadencePlan
                 ? confirmEnterpriseLabel
                 : confirmLabel,
-        [isEnterprisePlan, isYearlyPlan, confirmEnterpriseLabel, confirmLabel],
+        [
+            isEnterprisePlan,
+            hasSeparateInvoiceCadencePlan,
+            confirmEnterpriseLabel,
+            confirmLabel,
+        ],
     )
 
     const onConfirmEnterprise = useCallback(() => {
@@ -122,13 +128,24 @@ const SubscriptionModal = ({
 
     const onConfirmCallback = useMemo(
         () =>
-            isEnterprisePlan || isYearlyPlan ? onConfirmEnterprise : onConfirm,
-        [isEnterprisePlan, isYearlyPlan, onConfirmEnterprise, onConfirm],
+            isEnterprisePlan || hasSeparateInvoiceCadencePlan
+                ? onConfirmEnterprise
+                : onConfirm,
+        [
+            isEnterprisePlan,
+            hasSeparateInvoiceCadencePlan,
+            onConfirmEnterprise,
+            onConfirm,
+        ],
     )
 
     const isDisabled = useMemo(() => {
-        return !isEnterprisePlan && !isSubscriptionEnabled && !isYearlyPlan
-    }, [isEnterprisePlan, isSubscriptionEnabled, isYearlyPlan])
+        return (
+            !isEnterprisePlan &&
+            !isSubscriptionEnabled &&
+            !hasSeparateInvoiceCadencePlan
+        )
+    }, [isEnterprisePlan, isSubscriptionEnabled, hasSeparateInvoiceCadencePlan])
 
     return (
         <>
@@ -154,7 +171,9 @@ const SubscriptionModal = ({
                         setSelectedPlan={setSelectedPlan}
                         setIsSubscriptionEnabled={setIsSubscriptionEnabled}
                         trackingSource={trackingSource}
-                        isYearlyPlan={isYearlyPlan}
+                        hasSeparateInvoiceCadencePlan={
+                            hasSeparateInvoiceCadencePlan
+                        }
                     />
                 </ModalBody>
                 <SubscriptionModalFooter
@@ -165,7 +184,7 @@ const SubscriptionModal = ({
                     onConfirm={onConfirmCallback}
                 />
             </Modal>
-            {(isEnterprisePlan || isYearlyPlan) && (
+            {(isEnterprisePlan || hasSeparateInvoiceCadencePlan) && (
                 <ContactSupportModal
                     isOpen={showContactSupportModal}
                     handleOnClose={onCloseEnterprise}
