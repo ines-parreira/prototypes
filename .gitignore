@@ -75,22 +75,9 @@ yalc.lock
 .nx/workspace-data
 
 .diagnostics
-.agents/
-.codex/
 .playwright-mcp/
 
-# Generated AI tooling
-AGENTS.md
-CLAUDE.md
-.claude/commands/
-.claude/skills/
-.claude/settings.local.json
-.codex/
-.cursor/
-.opencode/
 .rulesync/skills/.curated/
-
-.agents/
 
 .worktrees/
 
