@@ -1,11 +1,8 @@
 import { useTrackstarLink } from '@trackstar/react-trackstar-link'
 
 import { Button } from '@gorgias/axiom'
+import { useLinkTrackstar, useTokenTrackstar } from '@gorgias/workflows-queries'
 
-import {
-    useCreateTrackstarLink,
-    useCreateTrackstarToken,
-} from 'models/workflows/queries'
 import { useStoreTrackstarContext } from 'pages/aiAgent/actions/providers/StoreTrackstarContext'
 import type { Paths } from 'rest_api/workflows_api/client.generated'
 
@@ -24,8 +21,8 @@ type Props = {
 export default function TrackstarConnectButton({ app, actionApp }: Props) {
     const { storeName, storeType, connections, invalidate } =
         useStoreTrackstarContext()
-    const { mutateAsync: createLink } = useCreateTrackstarLink()
-    const { mutateAsync: createToken } = useCreateTrackstarToken()
+    const { mutateAsync: linkTrackstar } = useLinkTrackstar()
+    const { mutateAsync: tokenTrackstar } = useTokenTrackstar()
     const connectionId =
         connections[actionApp.auth_settings.integration_name]?.connection_id
 
@@ -34,22 +31,19 @@ export default function TrackstarConnectButton({ app, actionApp }: Props) {
             ? undefined
             : [actionApp.auth_settings.integration_name],
         onSuccess: async (auth_code: string) => {
-            await createToken([
-                null,
-                {
+            await tokenTrackstar({
+                data: {
                     auth_code,
                     store_name: storeName,
                     store_type: storeType,
                 },
-            ])
+            })
             invalidate?.()
         },
         getLinkToken: async () => {
-            const res = await createLink([
-                {
-                    connection_id: connectionId ?? '',
-                },
-            ])
+            const res = await linkTrackstar({
+                connectionId: connectionId ?? '',
+            })
             return res.data.link_token
         },
     })

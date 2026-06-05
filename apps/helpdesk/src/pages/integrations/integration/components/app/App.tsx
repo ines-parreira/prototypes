@@ -13,6 +13,10 @@ import {
     toast,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
+import {
+    useLinkTrackstar,
+    useServiceConnectionTrackstar,
+} from '@gorgias/workflows-queries'
 
 import { AlertBannerTypes } from 'AlertBanners'
 import { AlertBanner } from 'AlertBanners/components/AlertBanner'
@@ -40,10 +44,6 @@ import type {
     ServiceConnectionAuthType,
 } from 'models/integration/types/serviceConnection'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
-import {
-    useCreateTrackstarLink,
-    useCreateTrackstarServiceConnection,
-} from 'models/workflows/queries'
 import type { ConnectAppAuthCredentials } from 'pages/aiAgent/actionsV2/apps/components'
 import {
     ConnectAppAuthModal,
@@ -204,7 +204,7 @@ export default function AppDetail() {
     const {
         mutateAsync: createTrackstarServiceConnection,
         isLoading: isCreatingTrackstarConnection,
-    } = useCreateTrackstarServiceConnection()
+    } = useServiceConnectionTrackstar()
 
     const refetchAppItem = useCallback(async () => {
         try {
@@ -358,10 +358,9 @@ export default function AppDetail() {
 
     const handleTrackstarAuthCode = async (authCode: string) => {
         try {
-            const { data } = await createTrackstarServiceConnection([
-                null,
-                { auth_code: authCode },
-            ])
+            const { data } = await createTrackstarServiceConnection({
+                data: { auth_code: authCode },
+            })
             setCreatedConnectionId(data.id)
             await queryClient.invalidateQueries({
                 queryKey: serviceConnectionsQueryKey(appId),
@@ -586,14 +585,14 @@ function TrackstarConnectButton({
     isSubmitting,
     onAuthCode,
 }: TrackstarConnectButtonProps) {
-    const { mutateAsync: createLink } = useCreateTrackstarLink()
+    const { mutateAsync: createLink } = useLinkTrackstar()
     const { open } = useTrackstarLink({
         integrationAllowList: [integrationName],
         onSuccess: async (authCode: string) => {
             await onAuthCode(authCode)
         },
         getLinkToken: async () => {
-            const res = await createLink([{ connection_id: '' }])
+            const res = await createLink({ connectionId: '' })
             return res.data.link_token
         },
     })

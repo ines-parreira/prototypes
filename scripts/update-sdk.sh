@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-services=("helpdesk" "help-center" "knowledge-service" "convert" "ecommerce-storage" "workflows")
+services=("helpdesk" "help-center" "knowledge-service" "convert" "ecommerce-storage" "workflows" "customer-segmentation")
 
 if [[ ${services[@]} =~ $1 ]]
 then

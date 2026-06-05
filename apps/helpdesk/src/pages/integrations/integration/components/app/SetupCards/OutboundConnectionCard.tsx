@@ -1,9 +1,9 @@
 import { useTrackstarLink } from '@trackstar/react-trackstar-link'
 
 import { Button } from '@gorgias/axiom'
+import { useLinkTrackstar } from '@gorgias/workflows-queries'
 
 import type { OutboundAuth } from 'models/integration/types/app'
-import { useCreateTrackstarLink } from 'models/workflows/queries'
 
 import SetupCard from './SetupCard'
 
@@ -58,14 +58,14 @@ function TrackstarConnectButton({
     isSubmitting,
     onAuthCode,
 }: TrackstarConnectButtonProps) {
-    const { mutateAsync: createLink } = useCreateTrackstarLink()
+    const { mutateAsync: createLink } = useLinkTrackstar()
     const { open } = useTrackstarLink({
         integrationAllowList: [integrationName],
         onSuccess: async (authCode: string) => {
             await onAuthCode(authCode)
         },
         getLinkToken: async () => {
-            const res = await createLink([{ connection_id: '' }])
+            const res = await createLink({ connectionId: '' })
             return res.data.link_token
         },
     })

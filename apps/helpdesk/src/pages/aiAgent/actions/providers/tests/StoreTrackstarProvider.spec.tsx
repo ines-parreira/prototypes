@@ -1,43 +1,59 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { useListTrackstarConnections } from 'models/workflows/queries'
+import { mockListTrackstarHandler } from '@gorgias/workflows-mocks'
+import type { ListTrackstarConnectionsResponseItem } from '@gorgias/workflows-types'
 
 import StoreTrackstarContext from '../StoreTrackstarContext'
 import StoreTrackstarProvider from '../StoreTrackstarProvider'
 
-jest.mock('models/workflows/queries')
-const mockUseListTrackstarConnections = jest.mocked(useListTrackstarConnections)
-mockUseListTrackstarConnections.mockReturnValue({
-    data: [],
-    isInitialLoading: false,
-} as unknown as ReturnType<typeof useListTrackstarConnections>)
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
+const sandboxConnection: ListTrackstarConnectionsResponseItem = {
+    account_id: 1,
+    connection_id: 'sandbox_connection_id',
+    error: false,
+    integration_name: 'sandbox',
+    store_name: 'acme',
+    store_type: 'shopify',
+}
+
 describe('<StoreTrackstarProvider />', () => {
-    it('should use trackstar integration id from store app', () => {
-        mockUseListTrackstarConnections.mockReturnValue({
-            data: {
-                sandbox: {
-                    connection_id: 'sandbox_connection_id',
-                    store_name: 'acme',
-                    store_type: 'shopify',
-                    account_id: 1,
-                    integration_name: 'sandbox',
-                    error: false,
-                },
-            },
-            isInitialLoading: false,
-        } as unknown as ReturnType<typeof useListTrackstarConnections>)
+    it('should expose trackstar connections keyed by integration name', async () => {
+        server.use(
+            mockListTrackstarHandler(async () =>
+                HttpResponse.json([sandboxConnection]),
+            ).handler,
+        )
+
         render(
             <StoreTrackstarProvider storeName="acme" storeType="shopify">
                 <StoreTrackstarContext.Consumer>
-                    {(contextValue) => {
-                        return `Trackstar integration: ${contextValue.connections.sandbox?.connection_id}`
-                    }}
+                    {(contextValue) =>
+                        `Trackstar integration: ${contextValue.connections.sandbox?.connection_id ?? 'none'}`
+                    }
                 </StoreTrackstarContext.Consumer>
             </StoreTrackstarProvider>,
         )
+
         expect(
-            screen.getByText('Trackstar integration: sandbox_connection_id'),
+            await screen.findByText(
+                'Trackstar integration: sandbox_connection_id',
+            ),
         ).toBeInTheDocument()
     })
 })

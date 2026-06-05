@@ -6,8 +6,12 @@ import 'pages/aiAgent/test/mock-activation-hooks.utils'
 import { useFlag } from '@repo/feature-flags'
 import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import { useLocation } from 'react-router-dom'
 import { ulid } from 'ulidx'
+
+import { mockListTrackstarHandler } from '@gorgias/workflows-mocks'
 
 import { integrationsState } from 'fixtures/integrations'
 import { useFindAllGuidancesKnowledgeResources } from 'models/knowledgeService/queries'
@@ -17,7 +21,6 @@ import {
     useGetWorkflowConfigurationTemplate,
     useGetWorkflowConfigurationTemplates,
     useListActionsApps,
-    useListTrackstarConnections,
 } from 'models/workflows/queries'
 import useAddStoreApp from 'pages/aiAgent/actions/hooks/useAddStoreApp'
 import useDeleteAction from 'pages/aiAgent/actions/hooks/useDeleteAction'
@@ -58,7 +61,6 @@ const mockUseGetStoreWorkflowsConfigurations = jest.mocked(
     useGetStoreWorkflowsConfigurations,
 )
 const mockUseListActionsApps = jest.mocked(useListActionsApps)
-const mockUseListTrackstarConnections = jest.mocked(useListTrackstarConnections)
 const mockUseGetStoreApps = jest.mocked(useGetStoreApps)
 const mockUseFindAllGuidancesKnowledgeResources = jest.mocked(
     useFindAllGuidancesKnowledgeResources,
@@ -231,13 +233,28 @@ const renderConfigTab = (
     }
 }
 
+const server = setupServer()
+
 describe('<ActionConfigTab />', () => {
     beforeAll(() => {
         Element.prototype.getAnimations = () => []
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
+    afterAll(() => {
+        server.close()
+    })
+
+    afterEach(() => {
+        server.resetHandlers()
     })
 
     beforeEach(() => {
         jest.clearAllMocks()
+
+        server.use(
+            mockListTrackstarHandler(async () => HttpResponse.json([])).handler,
+        )
 
         mockUseGetWorkflowConfigurationTemplates.mockReturnValue({
             data: [],
@@ -251,9 +268,6 @@ describe('<ActionConfigTab />', () => {
         mockUseListActionsApps.mockReturnValue({
             data: [],
         } as unknown as ReturnType<typeof useListActionsApps>)
-        mockUseListTrackstarConnections.mockReturnValue({
-            data: [],
-        } as unknown as ReturnType<typeof useListTrackstarConnections>)
         mockUseGetStoreApps.mockReturnValue({
             data: [],
             isInitialLoading: false,

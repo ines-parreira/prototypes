@@ -2,7 +2,6 @@ import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 
 import { IntegrationType } from 'models/integration/constants'
-import { useListTrackstarConnections } from 'models/workflows/queries'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import {
     buildEdgeCommonProperties,
@@ -12,19 +11,13 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import useValidateActionGraph from '../useValidateActionGraph'
 
-jest.mock('models/workflows/queries')
 jest.mock('pages/automate/actionsPlatform/hooks/useApps')
 
 const queryClient = mockQueryClient()
 const mockUseApps = jest.mocked(useApps)
-const mockUseListTrackstarConnections = jest.mocked(useListTrackstarConnections)
 
 describe('useValidateActionGraph()', () => {
     beforeEach(() => {
-        mockUseListTrackstarConnections.mockReturnValue({
-            data: { sandbox: { integration_name: 'sandbox', error: true } },
-            isLoading: false,
-        } as unknown as ReturnType<typeof useListTrackstarConnections>)
         mockUseApps.mockReturnValue({
             apps: [
                 {

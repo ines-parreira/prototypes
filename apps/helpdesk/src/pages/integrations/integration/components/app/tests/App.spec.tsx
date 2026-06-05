@@ -63,18 +63,24 @@ const mockUseGetWorkflowConfigurationTemplates = jest.fn<
     data: [],
     isInitialLoading: false,
 }))
+jest.mock('@gorgias/workflows-queries', () => {
+    const actual = jest.requireActual('@gorgias/workflows-queries')
+    return {
+        ...actual,
+        useServiceConnectionTrackstar: () => ({
+            mutateAsync: mockCreateTrackstarServiceConnection,
+            isLoading: false,
+        }),
+        useLinkTrackstar: () => ({
+            mutateAsync: mockCreateTrackstarLink,
+            isLoading: false,
+        }),
+    }
+})
 jest.mock('models/workflows/queries', () => {
     const actual = jest.requireActual('models/workflows/queries')
     return {
         ...actual,
-        useCreateTrackstarServiceConnection: () => ({
-            mutateAsync: mockCreateTrackstarServiceConnection,
-            isLoading: false,
-        }),
-        useCreateTrackstarLink: () => ({
-            mutateAsync: mockCreateTrackstarLink,
-            isLoading: false,
-        }),
         useGetWorkflowConfigurationTemplates: (
             ...args: unknown[]
         ): ReturnType<typeof mockUseGetWorkflowConfigurationTemplates> =>
@@ -232,7 +238,11 @@ describe(`App`, () => {
                 is_installed: true,
             })
             .onGet(`/api/apps/${appId}`)
-            .reply(200, { ...dummyAppData, id: 'success', is_installed: false })
+            .reply(200, {
+                ...dummyAppData,
+                id: 'success',
+                is_installed: false,
+            })
         render(<App />, {
             path: '/integrations/app/:appId',
             initialEntries: [`/integrations/app/${appId}`],
@@ -350,7 +360,9 @@ describe(`App`, () => {
             storeState: integrationsStore.getState() as object,
         })
         await screen.findAllByText(new RegExp(dummyAppData.name))
-        const disconnectButton = getByRole('button', { name: 'Disconnect App' })
+        const disconnectButton = getByRole('button', {
+            name: 'Disconnect App',
+        })
         expect(disconnectButton).toBeAriaDisabled()
     })
     it('Shows error banner if supports multilple connections and no connections found', async () => {
@@ -1043,10 +1055,9 @@ describe(`App`, () => {
             await waitFor(() => {
                 expect(
                     mockCreateTrackstarServiceConnection,
-                ).toHaveBeenCalledWith([
-                    null,
-                    { auth_code: 'trackstar-auth-xyz' },
-                ])
+                ).toHaveBeenCalledWith({
+                    data: { auth_code: 'trackstar-auth-xyz' },
+                })
             })
         })
 
@@ -1766,9 +1777,9 @@ describe(`App`, () => {
             expect(mockTrackstarOpen).toHaveBeenCalledTimes(1)
 
             const token = await trackstarLinkCallbacks.getLinkToken?.()
-            expect(mockCreateTrackstarLink).toHaveBeenCalledWith([
-                { connection_id: '' },
-            ])
+            expect(mockCreateTrackstarLink).toHaveBeenCalledWith({
+                connectionId: '',
+            })
             expect(token).toBe('fresh-token')
         })
     })

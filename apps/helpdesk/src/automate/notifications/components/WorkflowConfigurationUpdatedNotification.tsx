@@ -3,12 +3,12 @@ import { NotificationFeedItem } from '@repo/notifications'
 import { useQueryClient } from '@tanstack/react-query'
 
 import { Icon } from '@gorgias/axiom'
+import { queryKeys as workflowsQueryKeys } from '@gorgias/workflows-queries'
 
 import { Content, Subtitle } from 'common/notifications'
 import type { ContentProps, Notification } from 'common/notifications'
 import { WARNING_ICON } from 'pages/common/components/SourceIcon'
 
-import { trackstarDefinitionKeys } from '../../../models/workflows/queries'
 import { getAiAgentNavigationRoutes } from '../../../pages/aiAgent/hooks/useAiAgentNavigation'
 import type { WorkflowConfigurationUpdatedNotificationPayload } from '../types'
 
@@ -27,7 +27,7 @@ export default function WorkflowConfigurationUpdatedNotification({
 
     const handleOnClick = () => {
         queryClient.invalidateQueries({
-            queryKey: trackstarDefinitionKeys.all(),
+            queryKey: workflowsQueryKeys.trackstar.all(),
         })
     }
 

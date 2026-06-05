@@ -7,9 +7,10 @@ import type { QueryClient } from '@tanstack/react-query'
 import { useQueryClient } from '@tanstack/react-query'
 import { act } from '@testing-library/react'
 
+import { queryKeys as workflowsQueryKeys } from '@gorgias/workflows-queries'
+
 import type { WorkflowConfigurationUpdatedNotificationPayload } from 'automate/notifications/types'
 import type { Notification } from 'common/notifications'
-import { trackstarDefinitionKeys } from 'models/workflows/queries'
 
 import WorkflowConfigurationUpdatedNotification from '../WorkflowConfigurationUpdatedNotification'
 
@@ -92,7 +93,7 @@ describe('WorkflowConfigurationUpdatedNotification', () => {
                 linkElement?.click()
             })
             expect(invalidateQueriesMock).toHaveBeenCalledWith({
-                queryKey: trackstarDefinitionKeys.all(),
+                queryKey: workflowsQueryKeys.trackstar.all(),
             })
         })
     })
@@ -145,7 +146,7 @@ describe('WorkflowConfigurationUpdatedNotification', () => {
             })
 
             expect(invalidateQueriesMock).toHaveBeenCalledWith({
-                queryKey: trackstarDefinitionKeys.all(),
+                queryKey: workflowsQueryKeys.trackstar.all(),
             })
         })
 

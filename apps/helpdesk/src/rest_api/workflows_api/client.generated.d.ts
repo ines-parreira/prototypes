@@ -8,46 +8,6 @@ import type {
 
 declare namespace Components {
     namespace Schemas {
-        export interface ConnectionErrorWebhookBodyDto {
-            connection_id: string
-            data: {
-                created_date: string // date-time
-                error_message: string
-                failed_url: string
-                integration_name: string
-                last_seen: string // date-time
-                updated_date: string // date-time
-                affected_endpoints?: {
-                    endpoint: string
-                    preventing_sync: boolean
-                }[]
-            }
-            event_type: 'connection-error.created'
-            integration_name:
-                | 'sandbox'
-                | 'shiphero'
-                | 'shipstation'
-                | 'shipbob'
-                | 'dear-systems'
-                | 'deposco'
-                | 'bluebox'
-        }
-        export interface CreateServiceConnectionBodyDto {
-            auth_code: string
-        }
-        export interface CreateServiceConnectionResponseDto {
-            id: string // uuid
-            external_id: string
-        }
-        export interface CreateTokenBodyDto {
-            auth_code: string
-            store_name: string
-            store_type: 'shopify' | 'bigcommerce' | 'magento2'
-        }
-        export interface CreateTokenResponseDto {
-            connection_id: string
-            error: boolean
-        }
         export interface DuplicateWfConfigurationRequestDto {
             integration_id: number
         }
@@ -1460,9 +1420,6 @@ declare namespace Components {
                 needs_auth?: boolean | null
                 status?: 'success' | 'error' | 'partial_success'
             }[]
-        }
-        export interface GetLinkResponseDto {
-            link_token: string
         }
         export interface GetWfConfigurationResponseDto {
             internal_id: string
@@ -6809,21 +6766,6 @@ declare namespace Components {
                     }
                 }
             }
-        }[]
-        export type ListTrackstarConnectionsResponseDto = {
-            connection_id: string
-            store_name: string
-            store_type: 'shopify' | 'bigcommerce' | 'magento2'
-            account_id: number
-            integration_name:
-                | 'sandbox'
-                | 'shiphero'
-                | 'shipstation'
-                | 'shipbob'
-                | 'dear-systems'
-                | 'deposco'
-                | 'bluebox'
-            error: boolean
         }[]
         export type ListWfConfigurationTemplatesResponseDto = {
             internal_id: string
@@ -21937,52 +21879,6 @@ declare namespace Paths {
                 Components.Schemas.ListStoreWfEntrypointsResponseDto
         }
     }
-    namespace TrackstarControllerLink {
-        namespace Parameters {
-            export type ConnectionId = string
-        }
-        export interface PathParameters {
-            connection_id?: Parameters.ConnectionId
-        }
-        namespace Responses {
-            export type $200 = Components.Schemas.GetLinkResponseDto
-        }
-    }
-    namespace TrackstarControllerList {
-        namespace Parameters {
-            export type StoreName = string
-            export type StoreType = 'shopify' | 'bigcommerce' | 'magento2'
-        }
-        export interface PathParameters {
-            store_type: Parameters.StoreType
-            store_name: Parameters.StoreName
-        }
-        namespace Responses {
-            export type $200 =
-                Components.Schemas.ListTrackstarConnectionsResponseDto
-        }
-    }
-    namespace TrackstarControllerServiceConnection {
-        export type RequestBody =
-            Components.Schemas.CreateServiceConnectionBodyDto
-        namespace Responses {
-            export type $201 =
-                Components.Schemas.CreateServiceConnectionResponseDto
-        }
-    }
-    namespace TrackstarControllerToken {
-        export type RequestBody = Components.Schemas.CreateTokenBodyDto
-        namespace Responses {
-            export type $201 = Components.Schemas.CreateTokenResponseDto
-        }
-    }
-    namespace TrackstarControllerWebhook {
-        export type RequestBody =
-            Components.Schemas.ConnectionErrorWebhookBodyDto
-        namespace Responses {
-            export interface $201 {}
-        }
-    }
     namespace WfConfigurationControllerDelete {
         namespace Parameters {
             export type InternalId = string
@@ -22633,46 +22529,6 @@ export interface OperationMethods {
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.AppControllerDelete.Responses.$204>
     /**
-     * TrackstarController_link
-     */
-    'TrackstarController_link'(
-        parameters: Parameters<Paths.TrackstarControllerLink.PathParameters>,
-        data?: any,
-        config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.TrackstarControllerLink.Responses.$200>
-    /**
-     * TrackstarController_token
-     */
-    'TrackstarController_token'(
-        parameters?: Parameters<UnknownParamsObject> | null,
-        data?: Paths.TrackstarControllerToken.RequestBody,
-        config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.TrackstarControllerToken.Responses.$201>
-    /**
-     * TrackstarController_serviceConnection
-     */
-    'TrackstarController_serviceConnection'(
-        parameters?: Parameters<UnknownParamsObject> | null,
-        data?: Paths.TrackstarControllerServiceConnection.RequestBody,
-        config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.TrackstarControllerServiceConnection.Responses.$201>
-    /**
-     * TrackstarController_list
-     */
-    'TrackstarController_list'(
-        parameters: Parameters<Paths.TrackstarControllerList.PathParameters>,
-        data?: any,
-        config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.TrackstarControllerList.Responses.$200>
-    /**
-     * TrackstarController_webhook
-     */
-    'TrackstarController_webhook'(
-        parameters?: Parameters<UnknownParamsObject> | null,
-        data?: Paths.TrackstarControllerWebhook.RequestBody,
-        config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.TrackstarControllerWebhook.Responses.$201>
-    /**
      * LiquidTemplateStepValidationController_validateStep
      */
     'LiquidTemplateStepValidationController_validateStep'(
@@ -23038,56 +22894,6 @@ export interface PathsDictionary {
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.AppControllerDelete.Responses.$204>
-    }
-    ['/trackstar/link/{connection_id}']: {
-        /**
-         * TrackstarController_link
-         */
-        'post'(
-            parameters: Parameters<Paths.TrackstarControllerLink.PathParameters>,
-            data?: any,
-            config?: AxiosRequestConfig,
-        ): OperationResponse<Paths.TrackstarControllerLink.Responses.$200>
-    }
-    ['/trackstar/token']: {
-        /**
-         * TrackstarController_token
-         */
-        'post'(
-            parameters?: Parameters<UnknownParamsObject> | null,
-            data?: Paths.TrackstarControllerToken.RequestBody,
-            config?: AxiosRequestConfig,
-        ): OperationResponse<Paths.TrackstarControllerToken.Responses.$201>
-    }
-    ['/trackstar/service-connection']: {
-        /**
-         * TrackstarController_serviceConnection
-         */
-        'post'(
-            parameters?: Parameters<UnknownParamsObject> | null,
-            data?: Paths.TrackstarControllerServiceConnection.RequestBody,
-            config?: AxiosRequestConfig,
-        ): OperationResponse<Paths.TrackstarControllerServiceConnection.Responses.$201>
-    }
-    ['/trackstar/stores/{store_type}/{store_name}/connections']: {
-        /**
-         * TrackstarController_list
-         */
-        'get'(
-            parameters: Parameters<Paths.TrackstarControllerList.PathParameters>,
-            data?: any,
-            config?: AxiosRequestConfig,
-        ): OperationResponse<Paths.TrackstarControllerList.Responses.$200>
-    }
-    ['/trackstar/webhook']: {
-        /**
-         * TrackstarController_webhook
-         */
-        'post'(
-            parameters?: Parameters<UnknownParamsObject> | null,
-            data?: Paths.TrackstarControllerWebhook.RequestBody,
-            config?: AxiosRequestConfig,
-        ): OperationResponse<Paths.TrackstarControllerWebhook.Responses.$201>
     }
     ['/liquid-template-step/validate']: {
         /**

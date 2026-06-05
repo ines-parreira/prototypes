@@ -6,13 +6,16 @@ import {
 import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+
+import { mockListTrackstarHandler } from '@gorgias/workflows-mocks'
 
 import { IntegrationType } from 'models/integration/constants'
 import { useFindAllGuidancesKnowledgeResources } from 'models/knowledgeService/queries'
 import {
     useGetStoreApps,
     useGetWorkflowConfigurationTemplates,
-    useListTrackstarConnections,
 } from 'models/workflows/queries'
 import useAddStoreApp from 'pages/aiAgent/actions/hooks/useAddStoreApp'
 import useDeleteAction from 'pages/aiAgent/actions/hooks/useDeleteAction'
@@ -44,10 +47,24 @@ const mockUseDeleteAction = jest.mocked(useDeleteAction)
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
     useGetWorkflowConfigurationTemplates,
 )
-const mockUseListTrackstarConnections = jest.mocked(useListTrackstarConnections)
 const mockUseFindAllGuidancesKnowledgeResources = jest.mocked(
     useFindAllGuidancesKnowledgeResources,
 )
+
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
 const mockActions: StoresWorkflowConfiguration = [
     {
         id: '1',
@@ -134,9 +151,9 @@ describe('ActionsList', () => {
         mockUseGetWorkflowConfigurationTemplates.mockReturnValue({
             data: [],
         } as unknown as ReturnType<typeof useGetWorkflowConfigurationTemplates>)
-        mockUseListTrackstarConnections.mockReturnValue({
-            data: [],
-        } as unknown as ReturnType<typeof useListTrackstarConnections>)
+        server.use(
+            mockListTrackstarHandler(async () => HttpResponse.json([])).handler,
+        )
         mockUseFindAllGuidancesKnowledgeResources.mockReturnValue({
             data: {},
         } as unknown as ReturnType<

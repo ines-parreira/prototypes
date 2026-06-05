@@ -19,7 +19,6 @@ import {
     useGetStoreWorkflowsConfigurations,
     useGetWorkflowConfigurationTemplates,
     useListActionsApps,
-    useListTrackstarConnections,
 } from 'models/workflows/queries'
 import useAddStoreApp from 'pages/aiAgent/actions/hooks/useAddStoreApp'
 import useThreeplIntegrations from 'pages/aiAgent/actions/hooks/useThreeplIntegrations'
@@ -71,7 +70,6 @@ const mockUseListActionsApps = jest.mocked(useListActionsApps)
 const mockUseAiAgentOnboardingNotification = jest.mocked(
     useAiAgentOnboardingNotification,
 )
-const mockUseListTrackstarConnections = jest.mocked(useListTrackstarConnections)
 const mockUseFindAllGuidancesKnowledgeResources = jest.mocked(
     useFindAllGuidancesKnowledgeResources,
 )
@@ -205,9 +203,6 @@ describe('<CreateActionView />', () => {
         mockUseAiAgentOnboardingNotification.mockReturnValue(
             defaultUseAiAgentOnboardingNotification,
         )
-        mockUseListTrackstarConnections.mockReturnValue({
-            data: [],
-        } as unknown as ReturnType<typeof useListTrackstarConnections>)
         mockUseFindAllGuidancesKnowledgeResources.mockReturnValue({
             data: {},
         } as unknown as ReturnType<

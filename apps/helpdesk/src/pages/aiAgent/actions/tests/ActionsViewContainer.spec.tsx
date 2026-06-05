@@ -2,13 +2,16 @@ import { useFlag, useFlagWithLoading } from '@repo/feature-flags'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+
+import { mockListTrackstarHandler } from '@gorgias/workflows-mocks'
 
 import { billingState } from 'fixtures/billing'
 import { IntegrationType } from 'models/integration/constants'
 import {
     useGetStoreWorkflowsConfigurations,
     useGetWorkflowConfigurationTemplates,
-    useListTrackstarConnections,
 } from 'models/workflows/queries'
 import { SUPPORT_ACTIONS } from 'pages/aiAgent/constants'
 
@@ -23,7 +26,6 @@ jest.mock('pages/aiAgent/hooks/usePlaygroundPanel')
 jest.mock('models/workflows/queries', () => ({
     useGetStoreWorkflowsConfigurations: jest.fn(),
     useGetWorkflowConfigurationTemplates: jest.fn(),
-    useListTrackstarConnections: jest.fn(),
 }))
 const mockUseGetStoreWorkflowsConfigurations = jest.mocked(
     useGetStoreWorkflowsConfigurations,
@@ -31,8 +33,21 @@ const mockUseGetStoreWorkflowsConfigurations = jest.mocked(
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
     useGetWorkflowConfigurationTemplates,
 )
-const mockUseListTrackstarConnections = jest.mocked(useListTrackstarConnections)
 jest.mock('@repo/feature-flags')
+
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
 const mockUseFlag = jest.mocked(useFlag)
 const mockUseFlagWithLoading = jest.mocked(useFlagWithLoading)
 const { useAppContext } = require('pages/AppContext')
@@ -89,10 +104,9 @@ describe('ActionsViewContainer', () => {
             data: [],
             isInitialLoading: false,
         } as unknown as ReturnType<typeof useGetWorkflowConfigurationTemplates>)
-        mockUseListTrackstarConnections.mockReturnValue({
-            data: [],
-            isLoading: false,
-        } as unknown as ReturnType<typeof useListTrackstarConnections>)
+        server.use(
+            mockListTrackstarHandler(async () => HttpResponse.json([])).handler,
+        )
         mockUseAppContext.mockReturnValue({
             setCollapsibleColumnChildren: jest.fn(),
             collapsibleColumnChildren: null,

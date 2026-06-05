@@ -7,12 +7,8 @@ import MockAdapter from 'axios-mock-adapter'
 import { getGorgiasWfApiClient } from 'rest_api/workflows_api/client'
 import type { Paths } from 'rest_api/workflows_api/client.generated'
 
-import type { TrackstarConnection } from '../../../pages/automate/workflows/types'
 import {
     fetchWorkflowConfigurations,
-    useCreateTrackstarLink,
-    useCreateTrackstarServiceConnection,
-    useCreateTrackstarToken,
     useDeleteWorkflowConfigurationTemplate,
     useGetActionsApp,
     useGetConfigurationExecution,
@@ -21,7 +17,6 @@ import {
     useGetStoreWorkflowsConfigurations,
     useGetWorkflowConfigurationTemplates,
     useListActionsApps,
-    useListTrackstarConnections,
     useUpsertActionsApp,
 } from '../queries'
 
@@ -325,121 +320,6 @@ describe('queries', () => {
                 })
 
             await fetchWorkflowConfigurations(true)
-        })
-    })
-
-    describe('useListTrackstarConnections()', () => {
-        it('should return trackstar connections on success', async () => {
-            const trackstarConnections: TrackstarConnection[] = [
-                {
-                    connection_id: 'trackstar-id',
-                    store_name: 'test-store',
-                    store_type: 'shopify',
-                    account_id: 1,
-                    integration_name: 'sandbox',
-                    error: false,
-                },
-            ]
-
-            mockedServer
-                .onPost(/auth/)
-                .reply(200, {})
-                .onGet(/trackstar/)
-                .reply(200, trackstarConnections)
-
-            const { result } = renderHook(() =>
-                useListTrackstarConnections({
-                    storeName: 'test-store',
-                    storeType: 'shopify',
-                }),
-            )
-
-            await waitFor(() => expect(result.current.isSuccess).toEqual(true))
-            expect(result.current.data).toEqual(trackstarConnections)
-        })
-    })
-
-    describe('useCreateTrackstarLink()', () => {
-        it('should create trackstar link on success', async () => {
-            const linkResponse: Paths.TrackstarControllerLink.Responses.$200 = {
-                link_token: 'link_token',
-            }
-
-            mockedServer
-                .onPost(/auth/)
-                .reply(200, {})
-                .onPost(/trackstar\/link/)
-                .reply(200, linkResponse)
-
-            const { result } = renderHook(() => useCreateTrackstarLink())
-
-            act(() => {
-                result.current.mutate([
-                    {
-                        connection_id: 'trackstar-id',
-                    },
-                ])
-            })
-
-            await waitFor(() => expect(result.current.isSuccess).toEqual(true))
-            expect(result.current.data?.data).toEqual(linkResponse)
-        })
-    })
-
-    describe('useCreateTrackstarServiceConnection()', () => {
-        it('should create trackstar service connection on success', async () => {
-            const serviceConnectionResponse: Paths.TrackstarControllerServiceConnection.Responses.$201 =
-                {
-                    id: '01970000-0000-7000-8000-000000000099',
-                } as Paths.TrackstarControllerServiceConnection.Responses.$201
-
-            mockedServer
-                .onPost(/auth/)
-                .reply(200, {})
-                .onPost(/trackstar\/service-connection/)
-                .reply(200, serviceConnectionResponse)
-
-            const { result } = renderHook(() =>
-                useCreateTrackstarServiceConnection(),
-            )
-
-            act(() => {
-                result.current.mutate([null, { auth_code: 'auth-code-123' }])
-            })
-
-            await waitFor(() => expect(result.current.isSuccess).toEqual(true))
-            expect(result.current.data?.data).toEqual(serviceConnectionResponse)
-        })
-    })
-
-    describe('useCreateTrackstarToken()', () => {
-        it('should create trackstar token on success', async () => {
-            const tokenResponse: Paths.TrackstarControllerToken.Responses.$201 =
-                {
-                    connection_id: 'connection_id',
-                    error: false,
-                }
-
-            mockedServer
-                .onPost(/auth/)
-                .reply(200, {})
-                .onPost(/trackstar\/token/)
-                .reply(200, tokenResponse)
-
-            const { result } = renderHook(() => useCreateTrackstarToken())
-
-            act(() => {
-                result.current.mutate([
-                    {
-                        store_name: 'test-store',
-                        store_type: 'shopify',
-                        token: 'authorization-code',
-                    },
-                ])
-            })
-
-            await waitFor(() => expect(result.current.isSuccess).toEqual(true))
-            expect(result.current.data?.data).toEqual(tokenResponse)
         })
     })
 

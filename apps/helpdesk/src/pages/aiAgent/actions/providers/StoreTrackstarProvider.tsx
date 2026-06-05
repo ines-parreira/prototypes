@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { useListTrackstarConnections } from 'models/workflows/queries'
+import { useListTrackstar } from '@gorgias/workflows-queries'
 
 import type { StoreTrackstarContextType } from './StoreTrackstarContext'
 import StoreTrackstarContext from './StoreTrackstarContext'
@@ -16,11 +16,10 @@ const StoreTrackstarProvider = ({ storeName, storeType, children }: Props) => {
         data: connections = {},
         remove,
         refetch,
-    } = useListTrackstarConnections(
-        { storeName, storeType },
-        {
-            select: (data) =>
-                data.reduce<StoreTrackstarContextType['connections']>(
+    } = useListTrackstar(storeType, storeName, {
+        query: {
+            select: (response) =>
+                response.data.reduce<StoreTrackstarContextType['connections']>(
                     (acc, connection) => {
                         acc[connection.integration_name] = connection
                         return acc
@@ -28,7 +27,7 @@ const StoreTrackstarProvider = ({ storeName, storeType, children }: Props) => {
                     {},
                 ),
         },
-    )
+    })
 
     return (
         <StoreTrackstarContext.Provider

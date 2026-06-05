@@ -1,14 +1,16 @@
 import { render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import { useLocation } from 'react-router-dom'
 import { ulid } from 'ulidx'
 
+import { mockListTrackstarHandler } from '@gorgias/workflows-mocks'
+import type { ListTrackstarConnectionsResponseItem } from '@gorgias/workflows-types'
+
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import { IntegrationType } from 'models/integration/constants'
-import {
-    useGetWorkflowConfigurationTemplates,
-    useListTrackstarConnections,
-} from 'models/workflows/queries'
+import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import useDeleteAction from 'pages/aiAgent/actions/hooks/useDeleteAction'
 import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
 import type { StoreWorkflowsConfiguration } from 'pages/aiAgent/actions/types'
@@ -40,7 +42,28 @@ const mockUseGetDateAndTimeFormat = jest.mocked(useGetDateAndTimeFormat)
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
     useGetWorkflowConfigurationTemplates,
 )
-const mockUseListTrackstarConnections = jest.mocked(useListTrackstarConnections)
+const sandboxConnection: ListTrackstarConnectionsResponseItem = {
+    account_id: 1,
+    connection_id: 'sandbox_connection_id',
+    error: true,
+    integration_name: 'sandbox',
+    store_name: 'acme',
+    store_type: 'shopify',
+}
+
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
 const b = new WorkflowConfigurationBuilder({
     id: ulid(),
     name: 'Action name',
@@ -215,10 +238,11 @@ describe('<ActionsRow />', () => {
                 },
             ],
         } as unknown as ReturnType<typeof useGetWorkflowConfigurationTemplates>)
-        mockUseListTrackstarConnections.mockReturnValue({
-            data: { sandbox: { integration_name: 'sandbox', error: true } },
-            isLoading: false,
-        } as unknown as ReturnType<typeof useListTrackstarConnections>)
+        server.use(
+            mockListTrackstarHandler(async () =>
+                HttpResponse.json([sandboxConnection]),
+            ).handler,
+        )
     })
     it('should render component', () => {
         render(<ActionsRow action={configuration} />, {})
@@ -352,8 +376,9 @@ describe('<ActionsRow />', () => {
             </StoreTrackstarProvider>,
             {},
         )
+        const errorTrigger = await screen.findByText('error')
         act(() => {
-            fireEvent.mouseEnter(screen.getByText('error'))
+            fireEvent.mouseEnter(errorTrigger)
         })
         await waitFor(() => {
             expect(

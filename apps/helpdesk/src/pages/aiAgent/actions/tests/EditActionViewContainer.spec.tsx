@@ -4,10 +4,7 @@ import { useLocation } from 'react-router-dom'
 import { ulid } from 'ulidx'
 
 import { IntegrationType } from 'models/integration/constants'
-import {
-    useGetWorkflowConfiguration,
-    useListTrackstarConnections,
-} from 'models/workflows/queries'
+import { useGetWorkflowConfiguration } from 'models/workflows/queries'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import { WorkflowConfigurationBuilder } from 'pages/automate/workflows/models/workflowConfiguration.model'
 
@@ -30,14 +27,9 @@ jest.mock('pages/aiAgent/components/AiAgentLayout/AiAgentLayout', () => {
 jest.mock('models/workflows/queries')
 jest.mock('pages/automate/actionsPlatform/hooks/useApps')
 const mockUseApps = jest.mocked(useApps)
-const mockUseListTrackstarConnections = jest.mocked(useListTrackstarConnections)
 const mockUseGetWorkflowConfiguration = jest.mocked(useGetWorkflowConfiguration)
 describe('<EditActionViewContainer />', () => {
     it("should redirect to actions page if configuration doesn't exist", () => {
-        mockUseListTrackstarConnections.mockReturnValue({
-            data: { sandbox: { integration_name: 'sandbox', error: true } },
-            isLoading: false,
-        } as unknown as ReturnType<typeof useListTrackstarConnections>)
         mockUseApps.mockReturnValue({
             apps: [
                 {

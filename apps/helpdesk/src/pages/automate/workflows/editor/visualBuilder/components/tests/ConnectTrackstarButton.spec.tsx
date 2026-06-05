@@ -1,206 +1,197 @@
-import React from 'react'
-
 import { render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { useTrackstarLink } from '@trackstar/react-trackstar-link'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
 import {
-    useCreateTrackstarLink,
-    useCreateTrackstarToken,
-    useListTrackstarConnections,
-} from 'models/workflows/queries'
+    mockLinkTrackstarHandler,
+    mockListTrackstarHandler,
+    mockTokenTrackstarHandler,
+} from '@gorgias/workflows-mocks'
+import type { ListTrackstarConnectionsResponseItem } from '@gorgias/workflows-types'
 
 import StoreTrackstarProvider from '../../../../../../aiAgent/actions/providers/StoreTrackstarProvider'
 import ConnectTrackstarButton from '../ConnectTrackstarButton'
 
-jest.mock('models/workflows/queries')
 jest.mock('@trackstar/react-trackstar-link')
 
-const mockUseCreateTrackstarLink = jest.mocked(useCreateTrackstarLink)
-const mockUseCreateTrackstarToken = jest.mocked(useCreateTrackstarToken)
-const mockUseListTrackstarConnections = jest.mocked(useListTrackstarConnections)
 const mockUseTrackstarLink = jest.mocked(useTrackstarLink)
 
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    jest.clearAllMocks()
+})
+
+afterAll(() => {
+    server.close()
+})
+
+const mockApp = {
+    id: 'app-id',
+    name: 'Test App',
+}
+
+const mockActionApp = {
+    id: 'action-app-id',
+    auth_type: 'trackstar',
+    auth_settings: {
+        integration_name: 'sandbox',
+    },
+} as const
+
+const sandboxConnection: ListTrackstarConnectionsResponseItem = {
+    account_id: 1,
+    connection_id: 'sandbox_connection_id',
+    error: false,
+    integration_name: 'sandbox',
+    store_name: 'acme',
+    store_type: 'shopify',
+}
+
+const renderComponent = () =>
+    render(
+        <StoreTrackstarProvider storeName="test-store" storeType="shopify">
+            <ConnectTrackstarButton
+                app={mockApp as never}
+                actionApp={mockActionApp}
+            />
+        </StoreTrackstarProvider>,
+    )
+
 describe('<ConnectTrackstarButton />', () => {
-    const mockApp = {
-        id: 'app-id',
-        name: 'Test App',
-    }
-
-    const mockTrackstarLink = {
-        open: jest.fn(),
-        error: null,
-    }
-
-    const mockActionApp = {
-        id: 'action-app-id',
-        auth_type: 'trackstar',
-        auth_settings: {
-            integration_name: 'sandbox',
-        },
-    } as const
-
-    const mockCreateLink = jest.fn().mockResolvedValue({
-        data: { link_token: 'test-link-token' },
-    })
-
-    const mockCreateToken = jest.fn().mockResolvedValue({})
-
     beforeEach(() => {
-        jest.clearAllMocks()
-        mockUseListTrackstarConnections.mockReturnValue({
-            data: {},
-            remove: jest.fn(),
-            refetch: jest.fn(),
-            isInitialLoading: false,
-        } as unknown as ReturnType<typeof useListTrackstarConnections>)
-        mockUseCreateTrackstarLink.mockReturnValue({
-            mutateAsync: mockCreateLink,
-        } as any)
-        mockUseCreateTrackstarToken.mockReturnValue({
-            mutateAsync: mockCreateToken,
-        } as any)
-        mockUseTrackstarLink.mockReturnValue(mockTrackstarLink)
+        mockUseTrackstarLink.mockReturnValue({
+            open: jest.fn(),
+            error: null,
+        } as unknown as ReturnType<typeof useTrackstarLink>)
     })
 
-    it('renders connect button when no connection exists', () => {
-        render(
-            <StoreTrackstarProvider storeName="test-store" storeType="shopify">
-                <ConnectTrackstarButton
-                    app={mockApp as any}
-                    actionApp={mockActionApp}
-                />
-            </StoreTrackstarProvider>,
+    it('renders connect button when no connection exists', async () => {
+        server.use(
+            mockListTrackstarHandler(async () => HttpResponse.json([])).handler,
         )
 
-        expect(screen.getByText(`Connect ${mockApp.name}`)).toBeInTheDocument()
+        renderComponent()
+
+        expect(
+            await screen.findByText(`Connect ${mockApp.name}`),
+        ).toBeInTheDocument()
         expect(
             screen.getByText(/This step requires an active/),
         ).toBeInTheDocument()
-        expect(mockUseTrackstarLink).toHaveBeenCalledWith(
-            expect.objectContaining({
-                integrationAllowList: [
-                    mockActionApp.auth_settings.integration_name,
-                ],
-            }),
-        )
+
+        await waitFor(() => {
+            expect(mockUseTrackstarLink).toHaveBeenLastCalledWith(
+                expect.objectContaining({
+                    integrationAllowList: [
+                        mockActionApp.auth_settings.integration_name,
+                    ],
+                }),
+            )
+        })
     })
 
-    it('renders reconnect button when connection exists', () => {
-        mockUseListTrackstarConnections.mockReturnValue({
-            data: {
-                sandbox: {
-                    connection_id: 'sandbox_connection_id',
-                    store_name: 'acme',
-                    store_type: 'shopify',
-                    account_id: 1,
-                    integration_name: 'sandbox',
-                    error: false,
-                },
-            },
-            isInitialLoading: false,
-        } as unknown as ReturnType<typeof useListTrackstarConnections>)
-
-        render(
-            <StoreTrackstarProvider storeName="test-store" storeType="shopify">
-                <ConnectTrackstarButton
-                    app={mockApp as any}
-                    actionApp={mockActionApp}
-                />
-            </StoreTrackstarProvider>,
+    it('renders reconnect button when connection exists', async () => {
+        server.use(
+            mockListTrackstarHandler(async () =>
+                HttpResponse.json([sandboxConnection]),
+            ).handler,
         )
 
-        expect(
-            screen.getByText(`Reconnect ${mockApp.name}`),
-        ).toBeInTheDocument()
+        renderComponent()
 
+        expect(
+            await screen.findByText(`Reconnect ${mockApp.name}`),
+        ).toBeInTheDocument()
         expect(
             screen.getByText(
                 `Your ${mockApp.name} account is already connected. Click the button below to reconnect your account.`,
             ),
         ).toBeInTheDocument()
 
-        expect(mockUseTrackstarLink).toHaveBeenCalledWith(
-            expect.objectContaining({
-                integrationAllowList: undefined,
-            }),
-        )
+        await waitFor(() => {
+            expect(mockUseTrackstarLink).toHaveBeenLastCalledWith(
+                expect.objectContaining({
+                    integrationAllowList: undefined,
+                }),
+            )
+        })
     })
 
     it('opens Trackstar link on button click', async () => {
-        render(
-            <StoreTrackstarProvider storeName="test-store" storeType="shopify">
-                <ConnectTrackstarButton
-                    app={mockApp as any}
-                    actionApp={mockActionApp}
-                />
-            </StoreTrackstarProvider>,
+        const open = jest.fn()
+        mockUseTrackstarLink.mockReturnValue({
+            open,
+            error: null,
+        } as unknown as ReturnType<typeof useTrackstarLink>)
+        server.use(
+            mockListTrackstarHandler(async () => HttpResponse.json([])).handler,
         )
 
-        fireEvent.click(screen.getByText(`Connect ${mockApp.name}`))
+        renderComponent()
+
+        fireEvent.click(await screen.findByText(`Connect ${mockApp.name}`))
 
         await waitFor(() => {
-            expect(mockTrackstarLink.open).toHaveBeenCalled()
+            expect(open).toHaveBeenCalled()
         })
     })
 
     it('creates token on successful authentication', async () => {
-        render(
-            <StoreTrackstarProvider storeName="test-store" storeType="shopify">
-                <ConnectTrackstarButton
-                    app={mockApp as any}
-                    actionApp={mockActionApp}
-                />
-            </StoreTrackstarProvider>,
+        const mockToken = mockTokenTrackstarHandler()
+        server.use(
+            mockListTrackstarHandler(async () => HttpResponse.json([])).handler,
+            mockToken.handler,
         )
+        const waitForTokenRequest = mockToken.waitForRequest(server)
 
-        // Extract onSuccess callback
-        const onSuccess = mockUseTrackstarLink.mock.calls[0][0].onSuccess
-        onSuccess('test-auth-code', 'sandbox')
+        renderComponent()
 
-        expect(mockCreateToken).toHaveBeenCalledWith([
-            null,
-            {
+        await screen.findByText(`Connect ${mockApp.name}`)
+
+        const onSuccess = mockUseTrackstarLink.mock.calls.at(-1)![0].onSuccess
+        await onSuccess('test-auth-code', 'sandbox')
+
+        await waitForTokenRequest(async (request) => {
+            const body = await request.json()
+            expect(body).toEqual({
                 auth_code: 'test-auth-code',
                 store_name: 'test-store',
                 store_type: 'shopify',
-            },
-        ])
+            })
+        })
     })
 
     it('fetches link token when getLinkToken is called', async () => {
-        mockUseListTrackstarConnections.mockReturnValue({
-            data: {
-                sandbox: {
-                    connection_id: 'sandbox_connection_id',
-                    store_name: 'acme',
-                    store_type: 'shopify',
-                    account_id: 1,
-                    integration_name: 'sandbox',
-                    error: false,
-                },
-            },
-            isInitialLoading: false,
-        } as unknown as ReturnType<typeof useListTrackstarConnections>)
-
-        render(
-            <StoreTrackstarProvider storeName="test-store" storeType="shopify">
-                <ConnectTrackstarButton
-                    app={mockApp as any}
-                    actionApp={mockActionApp}
-                />
-            </StoreTrackstarProvider>,
+        const mockLink = mockLinkTrackstarHandler(async () =>
+            HttpResponse.json({ link_token: 'test-link-token' }),
         )
+        server.use(
+            mockListTrackstarHandler(async () =>
+                HttpResponse.json([sandboxConnection]),
+            ).handler,
+            mockLink.handler,
+        )
+        const waitForLinkRequest = mockLink.waitForRequest(server)
 
-        // Extract getLinkToken function
-        const getLinkToken = mockUseTrackstarLink.mock.calls[0][0].getLinkToken
+        renderComponent()
+
+        await screen.findByText(`Reconnect ${mockApp.name}`)
+
+        const getLinkToken =
+            mockUseTrackstarLink.mock.calls.at(-1)![0].getLinkToken
         const result = await getLinkToken()
 
-        expect(mockCreateLink).toHaveBeenCalledWith([
-            {
-                connection_id: 'sandbox_connection_id',
-            },
-        ])
+        await waitForLinkRequest(async (request) => {
+            expect(request.url).toContain('sandbox_connection_id')
+        })
         expect(result).toBe('test-link-token')
     })
 })

@@ -1,13 +1,10 @@
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
+import { http, HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
 import type { OutboundAuth } from 'models/integration/types/app'
-import { useCreateTrackstarLink } from 'models/workflows/queries'
 import OutboundConnectionCard from 'pages/integrations/integration/components/app/SetupCards/OutboundConnectionCard'
-
-jest.mock('models/workflows/queries', () => ({
-    useCreateTrackstarLink: jest.fn(),
-}))
 
 const mockTrackstarOpen = jest.fn()
 let trackstarCallbacks: {
@@ -27,7 +24,20 @@ jest.mock('@trackstar/react-trackstar-link', () => ({
     ),
 }))
 
-const mockUseCreateTrackstarLink = jest.mocked(useCreateTrackstarLink)
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    jest.clearAllMocks()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 const apiKeyAuth: OutboundAuth = {
     type: 'api-key',
@@ -52,11 +62,6 @@ describe('<OutboundConnectionCard />', () => {
     beforeEach(() => {
         mockTrackstarOpen.mockClear()
         trackstarCallbacks = {}
-        mockUseCreateTrackstarLink.mockReturnValue({
-            mutateAsync: jest.fn().mockResolvedValue({
-                data: { link_token: 'fake-link-token' },
-            }),
-        } as unknown as ReturnType<typeof useCreateTrackstarLink>)
     })
 
     it('renders the default Connect button when the vendor is not trackstar', async () => {
@@ -105,13 +110,12 @@ describe('<OutboundConnectionCard />', () => {
         expect(onTrackstarAuthCode).toHaveBeenCalledWith('auth-code-123')
     })
 
-    it('fetches a link token through useCreateTrackstarLink when getLinkToken is invoked', async () => {
-        const mutateAsync = jest
-            .fn()
-            .mockResolvedValue({ data: { link_token: 'fresh-token' } })
-        mockUseCreateTrackstarLink.mockReturnValue({
-            mutateAsync,
-        } as unknown as ReturnType<typeof useCreateTrackstarLink>)
+    it('fetches a link token through the link endpoint when getLinkToken is invoked', async () => {
+        server.use(
+            http.post('*/trackstar/link/*', () =>
+                HttpResponse.json({ link_token: 'fresh-token' }),
+            ),
+        )
 
         render(
             <OutboundConnectionCard
@@ -124,7 +128,7 @@ describe('<OutboundConnectionCard />', () => {
         )
 
         const token = await trackstarCallbacks.getLinkToken?.()
-        expect(mutateAsync).toHaveBeenCalledWith([{ connection_id: '' }])
+
         expect(token).toBe('fresh-token')
     })
 
