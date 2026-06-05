@@ -1,4 +1,5 @@
 export { Handle } from './components/Handle'
+export { FullHeightPanel } from './components/FullHeightPanel'
 export { Panel } from './components/Panel'
 export { PanelGroup } from './components/PanelGroup'
 export { Panels } from './components/Panels'

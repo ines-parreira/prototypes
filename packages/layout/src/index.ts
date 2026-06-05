@@ -1,4 +1,5 @@
 export {
+    FullHeightPanel,
     Handle,
     Panel,
     PanelGroup,

@@ -17,12 +17,14 @@
         "typecheck": "tsgo -p ./tsconfig.json --noEmit true"
     },
     "peerDependencies": {
+        "@gorgias/axiom": "catalog:axiom",
         "@repo/hooks": "workspace:*",
         "react": "catalog:react",
         "react-dom": "catalog:react",
         "classnames": "catalog:styles"
     },
     "devDependencies": {
+        "@gorgias/axiom": "catalog:axiom",
         "@repo/config": "workspace:*",
         "@repo/hooks": "workspace:*",
         "@testing-library/dom": "catalog:test",

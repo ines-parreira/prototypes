@@ -1,5 +1,7 @@
 export { UserAvatar } from './components/UserAvatar'
 export type { UserAvatarProps } from './components/UserAvatar'
+export { UserRoleTag } from './components/UserRoleTag'
+export { UsersListPage } from './components/UsersListPage'
 export { UserStatusIndicator } from './components/UserStatusIndicator'
 export type { UserStatusIndicatorProps } from './components/UserStatusIndicator'
 export { useAccountOwner } from './hooks/useAccountOwner'

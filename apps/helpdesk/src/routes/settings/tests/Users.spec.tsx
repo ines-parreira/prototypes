@@ -6,10 +6,9 @@ import { Route, useRouteMatch } from 'react-router-dom'
 import { PageSection } from 'config/pages'
 import { ADMIN_ROLE } from 'config/user'
 import AgentDetail from 'pages/settings/users/Detail'
-import AgentList from 'pages/settings/users/List'
 
 import { renderAppSettings } from '../helpers/settingsRenderer'
-import { Users } from '../Users'
+import { Users, UsersListRoute } from '../Users'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -36,40 +35,30 @@ describe('Users', () => {
         } as ReturnType<typeof useRouteMatch>)
     })
 
+    it('should render the list route through UsersListRoute', () => {
+        render(<Users />)
+
+        const [props] = mockedRoute.mock.calls[0]
+        expect(props.path).toBe(basePath + '/')
+        expect(props.exact).toBe(true)
+        expect((props.children as React.ReactElement).type).toBe(UsersListRoute)
+    })
+
     it.each([
-        [
-            {
-                callOrder: 0,
-                path: basePath + '/',
-                component: AgentList,
-            },
-        ],
-        [
-            {
-                callOrder: 1,
-                path: basePath + '/add',
-                component: AgentDetail,
-            },
-        ],
-        [
-            {
-                callOrder: 2,
-                path: basePath + '/:id',
-                component: AgentDetail,
-            },
-        ],
+        [{ callOrder: 0, routeIndex: 1, path: basePath + '/add' }],
+        [{ callOrder: 1, routeIndex: 2, path: basePath + '/:id' }],
     ])(
-        'should call renderer and Route with correct props',
-        ({ callOrder, path, component }) => {
+        'should render the detail route at $path through renderAppSettings',
+        ({ callOrder, routeIndex, path }) => {
             render(<Users />)
 
             expect(mockedRenderAppSettings.mock.calls[callOrder]).toEqual([
-                component,
+                AgentDetail,
                 {
                     roleParams: [ADMIN_ROLE, PageSection.Users],
                 },
             ])
-            expect(mockedRoute.mock.calls[callOrder]).toEqual([
+            expect(mockedRoute.mock.calls[routeIndex]).toEqual([
                 {
                     path,
                     exact: true,

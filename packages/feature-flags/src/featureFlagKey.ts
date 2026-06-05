@@ -172,6 +172,7 @@ export enum FeatureFlagKey {
     MLFeaturesKillswitch = 'ml-features-killswitch',
     NewDomainVerification = 'new-domain-verification',
     NewSatisfactionReport = 'new-satisfaction-report',
+    NewUsersListPage = 'new-users-list-page',
     NonAiAgentChat2Revamp = 'non_ai_agent_chat_2_revamp',
     ObservabilityAIArticles = 'observability-ai-articles',
     ObservabilityArticleTemplates = 'observability-article-templates',
