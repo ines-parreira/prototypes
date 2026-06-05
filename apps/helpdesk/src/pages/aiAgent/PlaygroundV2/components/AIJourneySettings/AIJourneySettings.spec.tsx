@@ -7,7 +7,11 @@ import { userEvent } from '@testing-library/user-event'
 import type { JourneyApiDTO } from '@gorgias/convert-client'
 import { JourneyTypeEnum } from '@gorgias/convert-client'
 
-import { useFlag } from '@repo/feature-flags'
+import {
+    FeatureFlagKey,
+    useFlag,
+    useFlagWithLoading,
+} from '@repo/feature-flags'
 import { useAIJourneyProductList } from 'AIJourney/hooks'
 import type { Product } from 'constants/integrations/types/shopify'
 import { shopifyProductResult } from 'fixtures/shopify'
@@ -23,7 +27,26 @@ import { AIJourneySettings } from './AIJourneySettings'
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
+    useFlagWithLoading: jest.fn(),
 }))
+
+const mockMessageGuidanceFieldEditor = jest.fn()
+jest.mock(
+    'AIJourney/components/MessageGuidanceCard/MessageGuidanceFieldEditor',
+    () => ({
+        MessageGuidanceFieldEditor: (props: any) => {
+            mockMessageGuidanceFieldEditor(props)
+            const { label, value, onChange } = props
+            return (
+                <textarea
+                    aria-label={`${label} editor`}
+                    value={value}
+                    onChange={(e) => onChange(e.target.value)}
+                />
+            )
+        },
+    }),
+)
 
 jest.mock('lodash/debounce', () =>
     jest.fn((fn: (...args: unknown[]) => unknown) => fn),
@@ -48,6 +71,19 @@ jest.mock('AIJourney/hooks', () => ({
 }))
 
 const mockUseFlag = assumeMock(useFlag)
+const mockUseFlagWithLoading = assumeMock(useFlagWithLoading)
+
+const enableStructuredMessageGuidanceFlags = () => {
+    mockUseFlagWithLoading.mockImplementation((flagKey: FeatureFlagKey) => {
+        if (
+            flagKey === FeatureFlagKey.AiJourneyV3ArchitectureEnabled ||
+            flagKey === FeatureFlagKey.AiJourneyStructuredMessageGuidanceEnabled
+        ) {
+            return { value: true, isLoading: false }
+        }
+        return { value: false, isLoading: false }
+    })
+}
 
 jest.mock(
     'AIJourney/components/KlaviyoPermissionBanner/KlaviyoPermissionBanner',
@@ -215,6 +251,10 @@ describe('AIJourneySettings', () => {
         mockEmit = jest.fn()
 
         mockUseFlag.mockReturnValue(false)
+        mockUseFlagWithLoading.mockReturnValue({
+            value: false,
+            isLoading: false,
+        })
 
         mockUseEvents.mockReturnValue({
             emit: mockEmit,
@@ -893,29 +933,180 @@ describe('AIJourneySettings', () => {
     })
 
     describe('Message instructions', () => {
-        it('should render message instructions textarea', () => {
+        it('should render a skeleton while the feature flags are still loading', () => {
+            mockUseFlagWithLoading.mockReturnValue({
+                value: false,
+                isLoading: true,
+            })
+
             renderComponent()
 
+            expect(mockMessageGuidanceFieldEditor).not.toHaveBeenCalled()
             expect(
-                screen.getByRole('textbox', { name: /message instructions/i }),
-            ).toBeInTheDocument()
+                screen.queryByRole('textbox', {
+                    name: /message instructions/i,
+                }),
+            ).not.toBeInTheDocument()
+            expect(screen.getByLabelText('Loading')).toBeInTheDocument()
         })
 
-        it('should allow entering message instructions', async () => {
-            renderComponent()
+        describe('when the structured message guidance flags are off', () => {
+            it('should render the legacy message instructions textarea', () => {
+                renderComponent()
 
-            const textarea = screen.getByRole('textbox', {
-                name: /message instructions/i,
+                expect(
+                    screen.getByRole('textbox', {
+                        name: /message instructions/i,
+                    }),
+                ).toBeInTheDocument()
+                expect(mockMessageGuidanceFieldEditor).not.toHaveBeenCalled()
             })
 
-            fireEvent.change(textarea, {
-                target: { value: 'Custom message instructions' },
-            })
+            it('should allow entering message instructions', async () => {
+                renderComponent()
 
-            await waitFor(() => {
-                expect(mockSetAIJourneySettings).toHaveBeenCalledWith({
-                    outboundMessageInstructions: 'Custom message instructions',
+                const textarea = screen.getByRole('textbox', {
+                    name: /message instructions/i,
                 })
+
+                fireEvent.change(textarea, {
+                    target: { value: 'Custom message instructions' },
+                })
+
+                await waitFor(() => {
+                    expect(mockSetAIJourneySettings).toHaveBeenCalledWith({
+                        outboundMessageInstructions:
+                            'Custom message instructions',
+                    })
+                })
+            })
+
+            it('should keep the legacy textarea when only the v3 architecture flag is on', () => {
+                mockUseFlagWithLoading.mockImplementation(
+                    (flagKey: FeatureFlagKey) => ({
+                        value:
+                            flagKey ===
+                            FeatureFlagKey.AiJourneyV3ArchitectureEnabled,
+                        isLoading: false,
+                    }),
+                )
+
+                renderComponent()
+
+                expect(
+                    screen.getByRole('textbox', {
+                        name: /message instructions/i,
+                    }),
+                ).toBeInTheDocument()
+                expect(mockMessageGuidanceFieldEditor).not.toHaveBeenCalled()
+            })
+        })
+
+        describe('when both structured message guidance flags are on', () => {
+            beforeEach(() => {
+                enableStructuredMessageGuidanceFlags()
+                mockUseAIJourneyContext.mockReturnValue(
+                    createMockAIJourneyContextValue({
+                        currentJourney: mockFlows[0],
+                        isLoadingJourneyData: false,
+                        setAIJourneySettings: mockSetAIJourneySettings,
+                    }),
+                )
+            })
+
+            it('should render the GuidanceEditor instead of the legacy textarea', () => {
+                renderComponent()
+
+                expect(
+                    screen.getByRole('textbox', {
+                        name: /message instructions editor/i,
+                    }),
+                ).toBeInTheDocument()
+                expect(mockMessageGuidanceFieldEditor).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        label: 'Message instructions',
+                        charLimit: 4000,
+                        shopName: 'test-shop',
+                    }),
+                )
+            })
+
+            it('should pass the loaded message instructions value to the editor', () => {
+                mockUseAIJourneyContext.mockReturnValue(
+                    createMockAIJourneyContextValue({
+                        currentJourney: mockFlows[0],
+                        isLoadingJourneyData: false,
+                        setAIJourneySettings: mockSetAIJourneySettings,
+                        aiJourneySettings: {
+                            ...AI_JOURNEY_DEFAULT_STATE,
+                            outboundMessageInstructions:
+                                '<p>Welcome aboard</p>',
+                        },
+                    }),
+                )
+
+                renderComponent()
+
+                expect(mockMessageGuidanceFieldEditor).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        value: '<p>Welcome aboard</p>',
+                    }),
+                )
+            })
+
+            it('should write edits back to outboundMessageInstructions', async () => {
+                renderComponent()
+
+                const editor = screen.getByRole('textbox', {
+                    name: /message instructions editor/i,
+                })
+
+                fireEvent.change(editor, {
+                    target: { value: '<p>Updated guidance</p>' },
+                })
+
+                await waitFor(() => {
+                    expect(mockSetAIJourneySettings).toHaveBeenCalledWith({
+                        outboundMessageInstructions: '<p>Updated guidance</p>',
+                    })
+                })
+            })
+
+            it('should render a skeleton instead of the editor while the journey data loads', () => {
+                mockUseAIJourneyContext.mockReturnValue(
+                    createMockAIJourneyContextValue({
+                        currentJourney: mockFlows[0],
+                        isLoadingJourneyData: true,
+                        setAIJourneySettings: mockSetAIJourneySettings,
+                    }),
+                )
+
+                renderComponent()
+
+                expect(mockMessageGuidanceFieldEditor).not.toHaveBeenCalled()
+                expect(
+                    screen.queryByRole('textbox', {
+                        name: /message instructions editor/i,
+                    }),
+                ).not.toBeInTheDocument()
+                expect(screen.getByLabelText('Loading')).toBeInTheDocument()
+            })
+
+            it('should render neither the editor nor a skeleton before a journey is selected', () => {
+                mockUseAIJourneyContext.mockReturnValue(
+                    createMockAIJourneyContextValue({
+                        currentJourney: undefined,
+                        isLoadingJourneyData: false,
+                        setAIJourneySettings: mockSetAIJourneySettings,
+                    }),
+                )
+
+                renderComponent()
+
+                expect(mockMessageGuidanceFieldEditor).not.toHaveBeenCalled()
+                expect(
+                    screen.queryByLabelText('Loading'),
+                ).not.toBeInTheDocument()
             })
         })
     })

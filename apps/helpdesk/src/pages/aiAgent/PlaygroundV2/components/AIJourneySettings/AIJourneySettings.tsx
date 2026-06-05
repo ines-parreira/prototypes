@@ -13,12 +13,14 @@ import {
     Select,
     SelectField,
     SelectTrigger,
+    Skeleton,
     TextField,
     ToggleField,
 } from '@gorgias/axiom'
 import { JourneyTypeEnum } from '@gorgias/convert-client'
 
 import { KlaviyoPermissionBanner } from 'AIJourney/components/KlaviyoPermissionBanner/KlaviyoPermissionBanner'
+import { MessageGuidanceFieldEditor } from 'AIJourney/components/MessageGuidanceCard/MessageGuidanceFieldEditor'
 import { MAX_WAIT_TIME } from 'AIJourney/constants'
 import { useAIJourneyProductList } from 'AIJourney/hooks'
 import { AudienceSelect } from 'AIJourney/pages/Setup/fields/AudienceSelect/AudienceSelect'
@@ -31,7 +33,11 @@ import { useEvents } from 'pages/aiAgent/PlaygroundV2/contexts/EventsContext'
 import { PlaygroundEvent } from 'pages/aiAgent/PlaygroundV2/types'
 import TextArea from 'pages/common/forms/TextArea'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import {
+    FeatureFlagKey,
+    useFlag,
+    useFlagWithLoading,
+} from '@repo/feature-flags'
 import css from './AIJourneySettings.less'
 
 type Entry = { id: string; label: string }
@@ -59,6 +65,8 @@ const getJourneyLabel = (journeyType: JourneyTypeEnum): string => {
 }
 
 const MAX_DISCOUNT_VALUE = 100
+
+const MESSAGE_INSTRUCTIONS_MAX_LENGTH = 4000
 
 const FOLLOW_UP_OPTIONS: { id: number; label: string }[] = [1, 2, 3, 4].map(
     (num) => ({
@@ -88,6 +96,7 @@ export const AIJourneySettings: React.FC = () => {
         currentJourney,
         flows,
         isLoadingJourneys,
+        isLoadingJourneyData,
         setAIJourneySettings,
         shopName,
         productList,
@@ -155,6 +164,22 @@ export const AIJourneySettings: React.FC = () => {
     const isAiJourneySegmentsEnabled = useFlag(
         FeatureFlagKey.AiJourneySegmentsUiEnabled,
     )
+
+    const {
+        value: isAiJourneyV3ArchitectureEnabled,
+        isLoading: isLoadingV3ArchitectureFlag,
+    } = useFlagWithLoading(FeatureFlagKey.AiJourneyV3ArchitectureEnabled, false)
+    const {
+        value: isStructuredMessageGuidanceEnabled,
+        isLoading: isLoadingStructuredMessageGuidanceFlag,
+    } = useFlagWithLoading(
+        FeatureFlagKey.AiJourneyStructuredMessageGuidanceEnabled,
+        false,
+    )
+    const areMessageGuidanceFlagsLoading =
+        isLoadingV3ArchitectureFlag || isLoadingStructuredMessageGuidanceFlag
+    const useStructuredMessageGuidance =
+        isAiJourneyV3ArchitectureEnabled && isStructuredMessageGuidanceEnabled
 
     const flowsOptions = flows.map((journey) => ({
         id: journey.id,
@@ -296,6 +321,49 @@ export const AIJourneySettings: React.FC = () => {
                 at least one flow or campaign before you can test outbound
                 messages.
             </Banner>
+        )
+    }
+
+    const renderMessageInstructions = () => {
+        if (areMessageGuidanceFlagsLoading) {
+            return <Skeleton width="100%" height={320} />
+        }
+
+        if (!useStructuredMessageGuidance) {
+            return (
+                <TextArea
+                    className={css.messageInstructions}
+                    label="Message instructions"
+                    value={outboundMessageInstructions}
+                    onChange={(value) => {
+                        setAIJourneySettings({
+                            outboundMessageInstructions: value,
+                        })
+                    }}
+                />
+            )
+        }
+        if (isLoadingJourneyData) {
+            return <Skeleton width="100%" height={320} />
+        }
+
+        if (!currentJourney) {
+            return null
+        }
+
+        return (
+            <MessageGuidanceFieldEditor
+                label="Message instructions"
+                value={outboundMessageInstructions}
+                onChange={(value) => {
+                    setAIJourneySettings({
+                        outboundMessageInstructions: value,
+                    })
+                }}
+                shopName={shopName}
+                charLimit={MESSAGE_INSTRUCTIONS_MAX_LENGTH}
+                description=""
+            />
         )
     }
 
@@ -659,16 +727,7 @@ export const AIJourneySettings: React.FC = () => {
                 />
             )}
 
-            <TextArea
-                className={css.messageInstructions}
-                label="Message instructions"
-                value={outboundMessageInstructions}
-                onChange={(value) => {
-                    setAIJourneySettings({
-                        outboundMessageInstructions: value,
-                    })
-                }}
-            />
+            {renderMessageInstructions()}
         </>
     )
 }
