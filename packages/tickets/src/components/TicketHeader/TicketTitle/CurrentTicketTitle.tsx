@@ -39,6 +39,7 @@ export function CurrentTicketTitle({ ticket }: CurrentTicketTitleProps) {
             />
             <TicketTitleSubject
                 value={subject}
+                placeholder="No ticket name"
                 onChange={handleSubjectChange}
             />
         </TicketTitle>

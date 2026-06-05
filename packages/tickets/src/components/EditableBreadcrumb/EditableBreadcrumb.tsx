@@ -1,6 +1,6 @@
 import cn from 'classnames'
 
-import { Icon } from '@gorgias/axiom'
+import { Icon, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import { useEditableBreadcrumb } from './useEditableBreadcrumb'
 
@@ -21,6 +21,8 @@ export function EditableBreadcrumb({
 }: Props) {
     const {
         subjectRef,
+        isTruncated,
+        handleMouseEnter,
         handleMouseDown,
         handleFocus,
         handleBlur,
@@ -31,25 +33,36 @@ export function EditableBreadcrumb({
     } = useEditableBreadcrumb({ value, onChange, autoFocus })
 
     return (
-        <div className={css.container} onMouseDown={handleMouseDown}>
-            <span
-                contentEditable
-                className={cn(css.content, 'typography-medium-md')}
-                ref={subjectRef}
-                data-placeholder={placeholder}
-                onFocus={handleFocus}
-                onBlur={handleBlur}
-                onPaste={handlePaste}
-                onKeyDown={handleKeyDown}
-                onInput={handleInput}
-                suppressContentEditableWarning={true}
-                role="textbox"
-            >
-                {value}
-            </span>
-            <span className={css.editPencil} onClick={handleEditClick}>
-                <Icon name="edit-pencil" size="sm" />
-            </span>
-        </div>
+        <Tooltip
+            isDisabled={!isTruncated}
+            trigger={
+                <div
+                    className={css.container}
+                    onMouseDown={handleMouseDown}
+                    onMouseEnter={handleMouseEnter}
+                >
+                    <span
+                        contentEditable
+                        className={cn(css.content, 'typography-medium-md')}
+                        ref={subjectRef}
+                        data-placeholder={placeholder}
+                        onFocus={handleFocus}
+                        onBlur={handleBlur}
+                        onPaste={handlePaste}
+                        onKeyDown={handleKeyDown}
+                        onInput={handleInput}
+                        suppressContentEditableWarning={true}
+                        role="textbox"
+                    >
+                        {value}
+                    </span>
+                    <span className={css.editPencil} onClick={handleEditClick}>
+                        <Icon name="edit-pencil" size="sm" />
+                    </span>
+                </div>
+            }
+        >
+            <TooltipContent title={value ?? ''} />
+        </Tooltip>
     )
 }

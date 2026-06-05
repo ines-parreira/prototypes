@@ -61,7 +61,7 @@
             text-overflow: ellipsis;
         }
 
-        &:empty::before {
+        &:empty:not(:focus)::before {
             content: attr(data-placeholder);
             color: var(--content-neutral-tertiary);
             pointer-events: none;

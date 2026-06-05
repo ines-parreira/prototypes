@@ -41,4 +41,47 @@ describe('EditableBreadcrumb', () => {
 
         expect(screen.getByRole('textbox')).toHaveFocus()
     })
+
+    it('should not show tooltip when text is not truncated', async () => {
+        const { user } = render(<EditableBreadcrumb value="Test Ticket" />)
+
+        const container = screen.getByRole('textbox').parentElement!
+        await user.hover(container)
+
+        expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
+    })
+
+    it('should enable tooltip when text is truncated', async () => {
+        const { user } = render(<EditableBreadcrumb value="Test Ticket" />)
+
+        const textElement = screen.getByRole('textbox')
+        Object.defineProperty(textElement, 'scrollWidth', { value: 200 })
+        Object.defineProperty(textElement, 'clientWidth', { value: 100 })
+
+        const container = textElement.parentElement!
+        await user.hover(container)
+        await user.unhover(container)
+        await user.hover(container)
+
+        await waitFor(() => {
+            expect(screen.getByRole('tooltip')).toBeInTheDocument()
+        })
+    })
+
+    it('should show an empty tooltip when value is null and text is truncated', async () => {
+        const { user } = render(<EditableBreadcrumb value={null} />)
+
+        const textElement = screen.getByRole('textbox')
+        Object.defineProperty(textElement, 'scrollWidth', { value: 200 })
+        Object.defineProperty(textElement, 'clientWidth', { value: 100 })
+
+        const container = textElement.parentElement!
+        await user.hover(container)
+        await user.unhover(container)
+        await user.hover(container)
+
+        await waitFor(() => {
+            expect(screen.getByRole('tooltip')).toBeInTheDocument()
+        })
+    })
 })

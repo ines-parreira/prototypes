@@ -1,6 +1,12 @@
 :local {
+    [data-name='breadcrumbs'] [data-name='breadcrumb'] {
+        min-width: 0;
+    }
+
     [data-name='breadcrumbs'] [data-name='breadcrumb'] .customerLink {
         color: var(--content-neutral-secondary);
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     [data-name='breadcrumbs'] [data-name='breadcrumb'] .viewLink {

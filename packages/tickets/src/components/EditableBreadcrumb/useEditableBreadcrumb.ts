@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 type UseEditableBreadcrumbProps = {
     value: string | null
@@ -13,12 +13,21 @@ export function useEditableBreadcrumb({
 }: UseEditableBreadcrumbProps) {
     const subjectRef = useRef<HTMLSpanElement>(null)
     const wasMouseDownRef = useRef(false)
+    const [isTruncated, setIsTruncated] = useState(false)
 
     useEffect(() => {
         if (autoFocus) {
             subjectRef.current?.focus()
         }
     }, [autoFocus])
+
+    const handleMouseEnter = () => {
+        const el = subjectRef.current
+
+        if (el) {
+            setIsTruncated(el.scrollWidth > el.clientWidth)
+        }
+    }
 
     const handleMouseDown = () => {
         wasMouseDownRef.current = true
@@ -117,6 +126,8 @@ export function useEditableBreadcrumb({
 
     return {
         subjectRef,
+        isTruncated,
+        handleMouseEnter,
         handleMouseDown,
         handleFocus,
         handleBlur,

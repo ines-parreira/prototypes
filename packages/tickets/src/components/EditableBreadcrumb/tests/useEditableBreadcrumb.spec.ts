@@ -460,6 +460,117 @@ describe('useEditableBreadcrumb', () => {
         })
     })
 
+    describe('handleMouseEnter', () => {
+        it('should not update isTruncated when the element ref is not set', () => {
+            const { result } = renderHook(() =>
+                useEditableBreadcrumb({ value: 'test', onChange: vi.fn() }),
+            )
+
+            act(() => {
+                result.current.handleMouseEnter()
+            })
+
+            expect(result.current.isTruncated).toBe(false)
+        })
+
+        it('should set isTruncated to true when the element ref is set and scrollWidth exceeds clientWidth', () => {
+            const { result } = renderHook(() =>
+                useEditableBreadcrumb({ value: 'test', onChange: vi.fn() }),
+            )
+
+            // @ts-expect-error
+            result.current.subjectRef.current = mockElement
+            Object.defineProperty(mockElement, 'scrollWidth', {
+                value: 200,
+                configurable: true,
+            })
+            Object.defineProperty(mockElement, 'clientWidth', {
+                value: 100,
+                configurable: true,
+            })
+
+            act(() => {
+                result.current.handleMouseEnter()
+            })
+
+            expect(result.current.isTruncated).toBe(true)
+        })
+
+        it('should set isTruncated to false when the element ref is set and scrollWidth is lower than clientWidth', () => {
+            const { result } = renderHook(() =>
+                useEditableBreadcrumb({ value: 'test', onChange: vi.fn() }),
+            )
+
+            // @ts-expect-error
+            result.current.subjectRef.current = mockElement
+            Object.defineProperty(mockElement, 'scrollWidth', {
+                value: 200,
+                configurable: true,
+            })
+            Object.defineProperty(mockElement, 'clientWidth', {
+                value: 100,
+                configurable: true,
+            })
+
+            act(() => {
+                result.current.handleMouseEnter()
+            })
+            expect(result.current.isTruncated).toBe(true)
+
+            Object.defineProperty(mockElement, 'scrollWidth', {
+                value: 100,
+                configurable: true,
+            })
+            Object.defineProperty(mockElement, 'clientWidth', {
+                value: 200,
+                configurable: true,
+            })
+
+            act(() => {
+                result.current.handleMouseEnter()
+            })
+
+            expect(result.current.isTruncated).toBe(false)
+        })
+
+        it('should set isTruncated to false when the element ref is set and scrollWidth equals clientWidth', () => {
+            const { result } = renderHook(() =>
+                useEditableBreadcrumb({ value: 'test', onChange: vi.fn() }),
+            )
+
+            // @ts-expect-error
+            result.current.subjectRef.current = mockElement
+            Object.defineProperty(mockElement, 'scrollWidth', {
+                value: 200,
+                configurable: true,
+            })
+            Object.defineProperty(mockElement, 'clientWidth', {
+                value: 100,
+                configurable: true,
+            })
+
+            act(() => {
+                result.current.handleMouseEnter()
+            })
+            expect(result.current.isTruncated).toBe(true)
+
+            Object.defineProperty(mockElement, 'scrollWidth', {
+                value: 100,
+                configurable: true,
+            })
+            Object.defineProperty(mockElement, 'clientWidth', {
+                value: 100,
+                configurable: true,
+            })
+
+            act(() => {
+                result.current.handleMouseEnter()
+            })
+
+            expect(result.current.isTruncated).toBe(false)
+        })
+    })
+
     describe('value handling', () => {
         it('should handle null value', () => {
             const onChange = vi.fn()
