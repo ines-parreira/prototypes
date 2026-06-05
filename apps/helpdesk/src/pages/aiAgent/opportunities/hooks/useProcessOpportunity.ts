@@ -9,20 +9,12 @@ import {
 } from '@gorgias/knowledge-service-queries'
 import type {
     ProcessOpportunity,
-    ProcessOpportunityOneOfFourDismissReason,
-    ProcessOpportunityOneOfSevenResolutionsItemOneOf,
-    ProcessOpportunityOneOfSevenResolutionsItemOneOfOnetwo,
-    ProcessOpportunityOneOfSevenResolutionsItemOneOfSeven,
+    ProcessOpportunityOneOfFiveResolutionsItemOneOf,
+    ProcessOpportunityOneOfFiveResolutionsItemOneOfOnezero,
+    ProcessOpportunityOneOfFiveResolutionsItemOneOfSix,
+    ProcessOpportunityOneOfThreeDismissReason,
 } from '@gorgias/knowledge-service-types'
-import {
-    ProcessOpportunityOneOfAction,
-    ProcessOpportunityOneOfFourAction,
-    ProcessOpportunityOneOfSevenAction,
-    ProcessOpportunityOneOfSevenResolutionsItemOneOfAction,
-    ProcessOpportunityOneOfSevenResolutionsItemOneOfOnetwoAction,
-    ProcessOpportunityOneOfSevenResolutionsItemOneOfSevenAction,
-    ProcessOpportunityOneOfVisibilityStatus,
-} from '@gorgias/knowledge-service-types'
+import { ProcessOpportunityOneOfVisibilityStatus } from '@gorgias/knowledge-service-types'
 
 import type { Opportunity, ResourceFormFields } from '../types'
 import { ResourceType } from '../types'
@@ -69,7 +61,7 @@ export const buildApprovePayload = ({
     content?: string
     isVisible: boolean
 }): ProcessOpportunity => ({
-    action: ProcessOpportunityOneOfAction.Approve,
+    action: 'APPROVE',
     visibilityStatus: isVisible
         ? ProcessOpportunityOneOfVisibilityStatus.Public
         : ProcessOpportunityOneOfVisibilityStatus.Unlisted,
@@ -78,9 +70,9 @@ export const buildApprovePayload = ({
 })
 
 export const buildDismissPayload = (
-    dismissReason?: ProcessOpportunityOneOfFourDismissReason,
+    dismissReason?: ProcessOpportunityOneOfThreeDismissReason,
 ): ProcessOpportunity => ({
-    action: ProcessOpportunityOneOfFourAction.Dismiss,
+    action: 'DISMISS',
     dismissReason,
 })
 
@@ -97,9 +89,9 @@ export const buildResolveConflictPayload = ({
                 resource,
                 index,
             ):
-                | ProcessOpportunityOneOfSevenResolutionsItemOneOf
-                | ProcessOpportunityOneOfSevenResolutionsItemOneOfSeven
-                | ProcessOpportunityOneOfSevenResolutionsItemOneOfOnetwo
+                | ProcessOpportunityOneOfFiveResolutionsItemOneOf
+                | ProcessOpportunityOneOfFiveResolutionsItemOneOfSix
+                | ProcessOpportunityOneOfFiveResolutionsItemOneOfOnezero
                 | null => {
                 const update = resourceUpdates[index]
 
@@ -107,7 +99,7 @@ export const buildResolveConflictPayload = ({
 
                 if (update.isDeleted) {
                     return {
-                        action: ProcessOpportunityOneOfSevenResolutionsItemOneOfSevenAction.Delete,
+                        action: 'DELETE',
                         resourceIdentifier: resource.identifiers,
                     }
                 }
@@ -117,7 +109,7 @@ export const buildResolveConflictPayload = ({
                     resource.type === ResourceType.EXTERNAL_SNIPPET
                 ) {
                     return {
-                        action: ProcessOpportunityOneOfSevenResolutionsItemOneOfOnetwoAction.Disable,
+                        action: 'DISABLE',
                         resourceIdentifier: resource.identifiers,
                     }
                 }
@@ -131,7 +123,7 @@ export const buildResolveConflictPayload = ({
 
                 if (titleChanged || contentChanged || visibilityChanged) {
                     return {
-                        action: ProcessOpportunityOneOfSevenResolutionsItemOneOfAction.Edit,
+                        action: 'EDIT',
                         title: update.title,
                         content: update.content,
                         visibilityStatus: update.isVisible
@@ -148,9 +140,9 @@ export const buildResolveConflictPayload = ({
             (
                 resolution,
             ): resolution is
-                | ProcessOpportunityOneOfSevenResolutionsItemOneOf
-                | ProcessOpportunityOneOfSevenResolutionsItemOneOfSeven
-                | ProcessOpportunityOneOfSevenResolutionsItemOneOfOnetwo =>
+                | ProcessOpportunityOneOfFiveResolutionsItemOneOf
+                | ProcessOpportunityOneOfFiveResolutionsItemOneOfSix
+                | ProcessOpportunityOneOfFiveResolutionsItemOneOfOnezero =>
                 resolution !== null,
         )
 
@@ -159,7 +151,7 @@ export const buildResolveConflictPayload = ({
     }
 
     return {
-        action: ProcessOpportunityOneOfSevenAction.ResolveConflict,
+        action: 'RESOLVE_CONFLICT',
         resolutions,
     }
 }

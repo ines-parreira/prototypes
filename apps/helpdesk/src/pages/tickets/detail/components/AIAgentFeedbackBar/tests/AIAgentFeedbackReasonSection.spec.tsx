@@ -4,7 +4,7 @@ import { userEvent } from '@testing-library/user-event'
 
 import type {
     FeedbackExecutionsItem,
-    FeedbackExecutionsItemFeedbackItemOneOfSix,
+    FeedbackExecutionsItemFeedbackItemOneOfThree,
 } from '@gorgias/knowledge-service-types'
 
 import { AIAgentFeedbackReasonSection } from '../AIAgentTicketLevelFeedback/AIAgentFeedbackReasonSection'
@@ -476,7 +476,7 @@ describe('AIAgentFeedbackReasonSection', () => {
                 ...badInteractionReasons[0],
                 feedbackValue: AiAgentBadInteractionReason.OVERPROMISE,
                 feedbackType: 'TICKET_FREEFORM',
-            } as FeedbackExecutionsItemFeedbackItemOneOfSix,
+            } as FeedbackExecutionsItemFeedbackItemOneOfThree,
         ]
 
         act(() => {

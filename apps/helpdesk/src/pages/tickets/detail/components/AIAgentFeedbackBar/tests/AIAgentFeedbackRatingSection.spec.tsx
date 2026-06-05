@@ -5,7 +5,7 @@ import { fireEvent, screen } from '@testing-library/react'
 
 import type {
     FeedbackExecutionsItem,
-    FeedbackExecutionsItemFeedbackItemOneOfOnesix,
+    FeedbackExecutionsItemFeedbackItemOneOfSeven,
 } from '@gorgias/knowledge-service-types'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -228,7 +228,7 @@ describe('AIAgentFeedbackRatingSection', () => {
                 createdDatetime: '2023-10-01T00:00:00Z',
                 updatedDatetime: '2023-10-01T00:00:00Z',
                 executionId: 'test-execution',
-            } as unknown as FeedbackExecutionsItemFeedbackItemOneOfOnesix,
+            } as unknown as FeedbackExecutionsItemFeedbackItemOneOfSeven,
             {
                 id: 3,
                 feedbackValue: AiAgentBadInteractionReason.OVERPROMISE,
@@ -241,7 +241,7 @@ describe('AIAgentFeedbackRatingSection', () => {
                 createdDatetime: '2023-10-01T00:00:00Z',
                 updatedDatetime: '2023-10-01T00:00:00Z',
                 executionId: 'test-execution',
-            } as unknown as FeedbackExecutionsItemFeedbackItemOneOfOnesix,
+            } as unknown as FeedbackExecutionsItemFeedbackItemOneOfSeven,
         ]
 
         render(
@@ -289,7 +289,7 @@ describe('AIAgentFeedbackRatingSection', () => {
                 createdDatetime: '2023-10-01T00:00:00Z',
                 updatedDatetime: '2023-10-01T00:00:00Z',
                 executionId: 'test-execution',
-            } as unknown as FeedbackExecutionsItemFeedbackItemOneOfOnesix,
+            } as unknown as FeedbackExecutionsItemFeedbackItemOneOfSeven,
         ]
 
         render(

@@ -4,16 +4,8 @@ import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 
-import type { ProcessOpportunityOneOfSeven } from '@gorgias/knowledge-service-types'
-import {
-    ProcessOpportunityOneOfAction,
-    ProcessOpportunityOneOfFourAction,
-    ProcessOpportunityOneOfSevenAction,
-    ProcessOpportunityOneOfSevenResolutionsItemOneOfAction,
-    ProcessOpportunityOneOfSevenResolutionsItemOneOfOnetwoAction,
-    ProcessOpportunityOneOfSevenResolutionsItemOneOfSevenAction,
-    ProcessOpportunityOneOfVisibilityStatus,
-} from '@gorgias/knowledge-service-types'
+import type { ProcessOpportunityOneOfFive } from '@gorgias/knowledge-service-types'
+import { ProcessOpportunityOneOfVisibilityStatus } from '@gorgias/knowledge-service-types'
 
 import { OpportunityType } from '../enums'
 import { ResourceType } from '../types'
@@ -53,7 +45,7 @@ describe('useProcessOpportunity', () => {
             })
 
             expect(result).toEqual({
-                action: ProcessOpportunityOneOfAction.Approve,
+                action: 'APPROVE',
                 visibilityStatus:
                     ProcessOpportunityOneOfVisibilityStatus.Public,
                 title: 'Test Title',
@@ -69,7 +61,7 @@ describe('useProcessOpportunity', () => {
             })
 
             expect(result).toEqual({
-                action: ProcessOpportunityOneOfAction.Approve,
+                action: 'APPROVE',
                 visibilityStatus:
                     ProcessOpportunityOneOfVisibilityStatus.Unlisted,
                 title: 'Test Title',
@@ -83,7 +75,7 @@ describe('useProcessOpportunity', () => {
             const result = buildDismissPayload()
 
             expect(result).toEqual({
-                action: ProcessOpportunityOneOfFourAction.Dismiss,
+                action: 'DISMISS',
                 dismissReason: undefined,
             })
         })
@@ -94,7 +86,7 @@ describe('useProcessOpportunity', () => {
             const result = buildDismissPayload(dismissReason)
 
             expect(result).toEqual({
-                action: ProcessOpportunityOneOfFourAction.Dismiss,
+                action: 'DISMISS',
                 dismissReason: 'NOT_APPLICABLE',
             })
         })
@@ -147,13 +139,13 @@ describe('useProcessOpportunity', () => {
                 const result = buildResolveConflictPayload({
                     selectedOpportunity: opportunity,
                     resourceUpdates,
-                }) as ProcessOpportunityOneOfSeven
+                }) as ProcessOpportunityOneOfFive
 
                 expect(result).toEqual({
-                    action: ProcessOpportunityOneOfSevenAction.ResolveConflict,
+                    action: 'RESOLVE_CONFLICT',
                     resolutions: [
                         {
-                            action: ProcessOpportunityOneOfSevenResolutionsItemOneOfSevenAction.Delete,
+                            action: 'DELETE',
                             resourceIdentifier: {
                                 resourceId: 'resource-1',
                                 resourceSetId: 'resource-set-1',
@@ -195,13 +187,13 @@ describe('useProcessOpportunity', () => {
                 const result = buildResolveConflictPayload({
                     selectedOpportunity: opportunity,
                     resourceUpdates,
-                }) as ProcessOpportunityOneOfSeven
+                }) as ProcessOpportunityOneOfFive
 
                 expect(result).toEqual({
-                    action: ProcessOpportunityOneOfSevenAction.ResolveConflict,
+                    action: 'RESOLVE_CONFLICT',
                     resolutions: [
                         {
-                            action: ProcessOpportunityOneOfSevenResolutionsItemOneOfOnetwoAction.Disable,
+                            action: 'DISABLE',
                             resourceIdentifier: {
                                 resourceId: 'resource-2',
                                 resourceSetId: 'resource-set-2',
@@ -243,13 +235,13 @@ describe('useProcessOpportunity', () => {
                 const result = buildResolveConflictPayload({
                     selectedOpportunity: opportunity,
                     resourceUpdates,
-                }) as ProcessOpportunityOneOfSeven
+                }) as ProcessOpportunityOneOfFive
 
                 expect(result).toEqual({
-                    action: ProcessOpportunityOneOfSevenAction.ResolveConflict,
+                    action: 'RESOLVE_CONFLICT',
                     resolutions: [
                         {
-                            action: ProcessOpportunityOneOfSevenResolutionsItemOneOfAction.Edit,
+                            action: 'EDIT',
                             title: 'Updated Title',
                             content: '<p>Updated Content</p>',
                             visibilityStatus:
@@ -330,11 +322,11 @@ describe('useProcessOpportunity', () => {
                 const result = buildResolveConflictPayload({
                     selectedOpportunity: opportunity,
                     resourceUpdates,
-                }) as ProcessOpportunityOneOfSeven
+                }) as ProcessOpportunityOneOfFive
 
                 expect(result.resolutions).toHaveLength(1)
                 expect(result.resolutions[0]).toMatchObject({
-                    action: ProcessOpportunityOneOfSevenResolutionsItemOneOfAction.Edit,
+                    action: 'EDIT',
                     content: '<div>Actually different text</div>',
                 })
             })
