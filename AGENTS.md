@@ -18,9 +18,11 @@
 
 ### Testing
 
-Always prefer running the tests on specific files rather than an entire package.
+Never run the entire repository test suite. Always run the tests on specific files rather than an entire package.
 
-- Run tests with `pnpm --filter @repo/<package> test` for a specific package (e.g., `pnpm --filter @repo/tickets test`)
+Only if explicitly asked to:
+
+- Run each package tests with `pnpm --filter @repo/<package> test` for a specific package (e.g., `pnpm --filter @repo/tickets test`) but avoid this for `@repo/helpdesk` which is too big.
 - Run tests for specific files with `pnpm --filter @repo/<package> test -- <path-to-test or test-file-name>` (e.g., `pnpm --filter @repo/tickets test -- TicketHeader.spec.tsx`)
 - Run tests with `pnpm test:all` for all packages
 - Run tests with `pnpm test:affected` for all affected packages
@@ -361,18 +363,18 @@ All UI components should use `@gorgias/axiom` - our internal design system - ins
 
 ## Common Components
 
-| Component  | Import                                                                     | Use For                                         |
-| ---------- | -------------------------------------------------------------------------- | ----------------------------------------------- |
-| `Button`   | `import { Button } from '@gorgias/axiom'`                                  | All button actions                              |
-| `Box`      | `import { Box } from '@gorgias/axiom'`                                     | Layout containers with flexbox                  |
-| `Heading`  | `import { Heading } from '@gorgias/axiom'`                                 | Page titles, section headers (uses `size` prop) |
-| `Text`     | `import { Text } from '@gorgias/axiom'`                                    | Regular body text, paragraphs                   |
-| `Skeleton` | `import { Skeleton } from '@gorgias/axiom'`                                | Loading states                                  |
-| `Dialog`   | `import { Dialog } from '@gorgias/axiom'`                                  | Modal dialogs                                   |
-| `Icon`     | `import { Icon } from '@gorgias/axiom'`                                    | Icons                                           |
-| `Tooltip`  | `import { Tooltip, TooltipContent } from '@gorgias/axiom'`                 | Tooltips                                        |
-| `Input`    | `import { Input } from '@gorgias/axiom'`                                   | Text inputs                                     |
-| `Select`   | `import { Select } from '@gorgias/axiom'`                                  | Dropdowns                                       |
+| Component  | Import                                                     | Use For                                         |
+| ---------- | ---------------------------------------------------------- | ----------------------------------------------- |
+| `Button`   | `import { Button } from '@gorgias/axiom'`                  | All button actions                              |
+| `Box`      | `import { Box } from '@gorgias/axiom'`                     | Layout containers with flexbox                  |
+| `Heading`  | `import { Heading } from '@gorgias/axiom'`                 | Page titles, section headers (uses `size` prop) |
+| `Text`     | `import { Text } from '@gorgias/axiom'`                    | Regular body text, paragraphs                   |
+| `Skeleton` | `import { Skeleton } from '@gorgias/axiom'`                | Loading states                                  |
+| `Dialog`   | `import { Dialog } from '@gorgias/axiom'`                  | Modal dialogs                                   |
+| `Icon`     | `import { Icon } from '@gorgias/axiom'`                    | Icons                                           |
+| `Tooltip`  | `import { Tooltip, TooltipContent } from '@gorgias/axiom'` | Tooltips                                        |
+| `Input`    | `import { Input } from '@gorgias/axiom'`                   | Text inputs                                     |
+| `Select`   | `import { Select } from '@gorgias/axiom'`                  | Dropdowns                                       |
 
 ## Implementation Patterns
 
@@ -400,7 +402,6 @@ function TicketCard({ ticket, isLoading }) {
 import { Box } from '@gorgias/axiom'
 
 // Use Box for flexbox layouts with design token spacing
-
 ;<Box
     flexDirection="row"
     justifyContent="space-between"
@@ -470,13 +471,13 @@ Use semantic design tokens for colors and spacing:
 
 ```tsx
 // ❌ Avoid - Custom button implementation
-<div className={styles.button} onClick={onClick}>
+;<div className={styles.button} onClick={onClick}>
     Click me
 </div>
 
 // ✅ Prefer - Use axiom Button
 import { Button } from '@gorgias/axiom'
-<Button onClick={onClick}>Click me</Button>
+;<Button onClick={onClick}>Click me</Button>
 ```
 
 ### Don't use Legacy components in new code
