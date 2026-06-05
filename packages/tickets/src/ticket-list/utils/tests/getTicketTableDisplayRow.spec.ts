@@ -84,4 +84,17 @@ describe('getTicketTableDisplayRow', () => {
             highlightedHtml: null,
         })
     })
+
+    it('strips HTML from subject and excerpt text when there are no search highlights', () => {
+        const ticket = mockTicketCompact({
+            id: 1,
+            subject: '<b>Urgent</b> request',
+            excerpt: '<div>Please <em>help</em> me</div>',
+        })
+
+        const displayRow = getTicketTableDisplayRow({ ticket })
+
+        expect(displayRow.subject.text).toBe('Urgent request')
+        expect(displayRow.excerpt.text).toBe('Please help me')
+    })
 })

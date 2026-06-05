@@ -82,6 +82,18 @@ describe('useTicketDisplayData', () => {
                 }),
             ).toBe('No subject')
         })
+
+        it('strips HTML tags from the subject', () => {
+            expect(
+                getTicketDisplaySubject({
+                    ticket: mockTicketCompact({
+                        subject: '<b>Order</b> not <em>received</em>',
+                    }),
+                    showTranslatedContent: false,
+                    translation: undefined,
+                }),
+            ).toBe('Order not received')
+        })
     })
 
     describe('getTicketDisplayExcerpt', () => {
@@ -111,6 +123,30 @@ describe('useTicketDisplayData', () => {
                     }),
                 }),
             ).toBe('I need help with my order')
+        })
+
+        it('strips HTML tags from the ticket excerpt', () => {
+            expect(
+                getTicketDisplayExcerpt({
+                    ticket: mockTicketCompact({
+                        excerpt: '<div>I need help with my <b>order</b></div>',
+                    }),
+                    showTranslatedContent: false,
+                    translation: undefined,
+                }),
+            ).toBe('I need help with my order')
+        })
+
+        it('strips HTML tags from the translated excerpt', () => {
+            expect(
+                getTicketDisplayExcerpt({
+                    ticket: mockTicketCompact({ excerpt: '' }),
+                    showTranslatedContent: true,
+                    translation: mockTicketTranslationCompact({
+                        excerpt: '<p>Besoin <em>aide</em></p>',
+                    }),
+                }),
+            ).toBe('Besoin aide')
         })
     })
 

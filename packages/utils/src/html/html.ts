@@ -284,6 +284,16 @@ export function unescapeQuoteEntities(html: string): string {
     return html.replace(rex, (matched) => quoteEntities[matched])
 }
 
+export function stripHtml(html: string): string {
+    if (!html) return ''
+    try {
+        /* v8 ignore next -- codecov incorrectly reporting partial coverage */
+        return parseHtml(html).body.textContent || ''
+    } catch {
+        return html
+    }
+}
+
 export function trimHTML(html: string): string {
     const { body } = parseHtml(html.trim())
 

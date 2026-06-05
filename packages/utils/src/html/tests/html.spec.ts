@@ -8,6 +8,7 @@ import {
     sanitizeHtmlDefault,
     sanitizeHtmlForFacebookMessenger,
     sanitizeHtmlMinimal,
+    stripHtml,
     trimHTML,
     unescapeAmpAndDollarEntities,
     unescapeQuoteEntities,
@@ -624,5 +625,45 @@ describe('extractGorgiasVideoDivFromHtmlContent', () => {
                 },
             )
         }
+    })
+})
+
+describe('stripHtml', () => {
+    it('returns an empty string for empty input', () => {
+        expect(stripHtml('')).toBe('')
+    })
+
+    it('returns plain text unchanged', () => {
+        expect(stripHtml('Hello world')).toBe('Hello world')
+    })
+
+    it('strips inline tags and returns text content', () => {
+        expect(stripHtml('<b>Order</b> not <em>received</em>')).toBe(
+            'Order not received',
+        )
+    })
+
+    it('strips block-level tags and returns text content', () => {
+        expect(stripHtml('<div>I need help with my <b>order</b></div>')).toBe(
+            'I need help with my order',
+        )
+    })
+
+    it('strips nested tags', () => {
+        expect(stripHtml('<p>Hello <span><b>world</b></span></p>')).toBe(
+            'Hello world',
+        )
+    })
+
+    it('returns an empty string for tags with no text content', () => {
+        expect(stripHtml('<div></div>')).toBe('')
+    })
+
+    it('returns the raw string when the DOM parser is unavailable', () => {
+        const OriginalDOMParser = window.DOMParser
+        // @ts-expect-error simulating environment without DOMParser
+        window.DOMParser = undefined
+        expect(stripHtml('<b>Hello</b>')).toBe('<b>Hello</b>')
+        window.DOMParser = OriginalDOMParser
     })
 })

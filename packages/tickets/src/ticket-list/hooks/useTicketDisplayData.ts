@@ -7,6 +7,8 @@ import type {
 import type { useAgentActivity } from '@gorgias/realtime'
 import { useAgentActivity as useAgentActivityHook } from '@gorgias/realtime'
 
+import { stripHtml } from '@repo/utils'
+
 type AgentActivity = ReturnType<
     ReturnType<typeof useAgentActivity>['getTicketActivity']
 >
@@ -39,7 +41,8 @@ export function getTicketDisplaySubject({
             ? translation.subject
             : ticket.subject
 
-    return subject?.trim() ? subject : 'No subject'
+    const text = subject?.trim() ? subject : 'No subject'
+    return stripHtml(text)
 }
 
 export function getTicketDisplayExcerpt({
@@ -48,10 +51,10 @@ export function getTicketDisplayExcerpt({
     translation,
 }: Pick<Params, 'ticket' | 'showTranslatedContent' | 'translation'>) {
     if (showTranslatedContent && translation?.excerpt) {
-        return translation.excerpt
+        return stripHtml(translation.excerpt)
     }
 
-    return ticket.excerpt || ''
+    return stripHtml(ticket.excerpt || '')
 }
 
 export function useTicketOtherAgentsViewing(
