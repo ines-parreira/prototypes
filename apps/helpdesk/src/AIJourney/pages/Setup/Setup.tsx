@@ -78,9 +78,6 @@ export const Setup = () => {
     const { reset } = useFormContext<SetupFormValues>()
     const [isFormReady, setIsFormReady] = useState(false)
 
-    const storeSettingsEnabled = useFlag(
-        FeatureFlagKey.AiJourneyStoreSettingsEnabled,
-    )
     const { storeConfiguration, isLoading: isLoadingStoreConfig } =
         useAiJourneyStoreConfiguration(currentIntegration?.id)
 
@@ -105,9 +102,7 @@ export const Setup = () => {
         : isAiJourneySegmentsEnabled
 
     useEffect(() => {
-        const isReadyToInit =
-            !isLoadingJourneyData &&
-            (!storeSettingsEnabled || !isLoadingStoreConfig)
+        const isReadyToInit = !isLoadingJourneyData && !isLoadingStoreConfig
 
         if (isReadyToInit && !isFormReady) {
             if (journeyParams) {
@@ -120,14 +115,10 @@ export const Setup = () => {
                     sms_sender_integration_id: {
                         id:
                             journeyParams.sms_sender_integration_id ??
-                            (storeSettingsEnabled
-                                ? storeConfiguration?.sms_sender_integration_id
-                                : undefined),
+                            storeConfiguration?.sms_sender_integration_id,
                         label:
                             journeyParams.sms_sender_number ??
-                            (storeSettingsEnabled
-                                ? storeConfiguration?.sms_sender_number
-                                : undefined),
+                            storeConfiguration?.sms_sender_number,
                     },
                     max_follow_up_messages:
                         (journeyParams.max_follow_up_messages ?? 0) + 1,
@@ -185,7 +176,7 @@ export const Setup = () => {
                             }
                         )?.timing_offset ?? 0,
                 })
-            } else if (storeSettingsEnabled && storeConfiguration) {
+            } else if (storeConfiguration) {
                 reset({
                     sms_sender_integration_id: {
                         id: storeConfiguration.sms_sender_integration_id,
@@ -199,7 +190,6 @@ export const Setup = () => {
         isLoadingJourneyData,
         isLoadingStoreConfig,
         isFormReady,
-        storeSettingsEnabled,
         storeConfiguration,
         journeyData,
         journeyParams,

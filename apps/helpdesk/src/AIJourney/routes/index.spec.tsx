@@ -107,4 +107,10 @@ describe('<AiJourneyRoutes />', () => {
             screen.getByText('JourneyEditorLayout-setup'),
         ).toBeInTheDocument()
     })
+
+    it('should render Settings at the settings route', () => {
+        renderRoutes('/app/ai-journey/test-store/settings')
+
+        expect(screen.getByText('Settings')).toBeInTheDocument()
+    })
 })

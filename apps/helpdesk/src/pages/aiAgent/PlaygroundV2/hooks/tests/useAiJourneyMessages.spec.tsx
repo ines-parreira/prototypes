@@ -54,11 +54,6 @@ jest.mock('pages/aiAgent/PlaygroundV2/contexts/EventsContext', () => ({
     EventsProvider: ({ children }: { children?: ReactNode }) => <>{children}</>,
 }))
 
-jest.mock('@repo/feature-flags', () => ({
-    ...jest.requireActual('@repo/feature-flags'),
-    useFlag: jest.fn(),
-}))
-
 jest.mock('models/aiAgent/queries', () => ({
     useCreateTestSessionMutation: jest.fn(() => ({
         mutateAsync: jest.fn(),
@@ -576,16 +571,12 @@ describe('useAiJourneyMessages', () => {
         ])
     })
 
-    describe('SMS sender sourcing with AiJourneyStoreSettingsEnabled flag', () => {
-        const mockUseFlag = jest.requireMock('@repo/feature-flags')
-            .useFlag as jest.Mock
+    describe('SMS sender sourcing', () => {
         const mockUseAiJourneyStoreConfiguration = jest.requireMock(
             'AIJourney/hooks',
         ).useAiJourneyStoreConfiguration as jest.Mock
 
-        it('uses journey sender when flag is ON (journey-first for all users)', async () => {
-            mockUseFlag.mockReturnValue(true)
-
+        it('uses journey sender first (journey-first for all users)', async () => {
             const { result } = renderHook(() => useAiJourneyMessages(), {
                 wrapper: createWrapper(),
             })
@@ -604,8 +595,7 @@ describe('useAiJourneyMessages', () => {
             ])
         })
 
-        it('falls back to store config when flag is ON and journey has no sender', async () => {
-            mockUseFlag.mockReturnValue(true)
+        it('falls back to store config when journey has no sender', async () => {
             mockUseJourneyData.mockReturnValue({
                 data: {
                     ...mockJourneyData,
@@ -636,8 +626,11 @@ describe('useAiJourneyMessages', () => {
             ])
         })
 
-        it('uses journey sender values when flag is OFF', async () => {
-            mockUseFlag.mockReturnValue(false)
+        it('falls back to store config when journey has no configuration', async () => {
+            mockUseJourneyData.mockReturnValue({
+                data: { ...mockJourneyData, configuration: undefined },
+                isLoading: false,
+            })
 
             const { result } = renderHook(() => useAiJourneyMessages(), {
                 wrapper: createWrapper(),
@@ -650,16 +643,14 @@ describe('useAiJourneyMessages', () => {
             expect(mockMutateAsync).toHaveBeenCalledWith([
                 expect.objectContaining({
                     settings: expect.objectContaining({
-                        smsSenderNumber: '+1234567890',
-                        smsSenderIntegrationId: 456,
+                        smsSenderNumber: '+19999999999',
+                        smsSenderIntegrationId: 789,
                     }),
                 }),
             ])
         })
 
         it('does not call useAiJourneyStoreConfiguration with undefined when shopifyIntegration is present', async () => {
-            mockUseFlag.mockReturnValue(true)
-
             renderHook(() => useAiJourneyMessages(), {
                 wrapper: createWrapper(),
             })
@@ -667,8 +658,7 @@ describe('useAiJourneyMessages', () => {
             expect(mockUseAiJourneyStoreConfiguration).toHaveBeenCalledWith(123)
         })
 
-        it('uses journey sender when flag is ON even when store config has no sms sender', async () => {
-            mockUseFlag.mockReturnValue(true)
+        it('uses journey sender even when store config has no sms sender', async () => {
             mockUseAiJourneyStoreConfiguration.mockReturnValue({
                 storeConfiguration: null,
                 isLoading: false,
@@ -692,8 +682,7 @@ describe('useAiJourneyMessages', () => {
             ])
         })
 
-        it('uses null when flag is ON and both journey and store config have no sms sender', async () => {
-            mockUseFlag.mockReturnValue(true)
+        it('uses null when both journey and store config have no sms sender', async () => {
             mockUseJourneyData.mockReturnValue({
                 data: {
                     ...mockJourneyData,
@@ -707,38 +696,6 @@ describe('useAiJourneyMessages', () => {
             })
             mockUseAiJourneyStoreConfiguration.mockReturnValue({
                 storeConfiguration: null,
-                isLoading: false,
-            })
-
-            const { result } = renderHook(() => useAiJourneyMessages(), {
-                wrapper: createWrapper(),
-            })
-
-            await act(async () => {
-                await result.current.triggerMessage()
-            })
-
-            expect(mockMutateAsync).toHaveBeenCalledWith([
-                expect.objectContaining({
-                    settings: expect.objectContaining({
-                        smsSenderNumber: null,
-                        smsSenderIntegrationId: null,
-                    }),
-                }),
-            ])
-        })
-
-        it('uses null when flag is OFF and journey has no sms sender', async () => {
-            mockUseFlag.mockReturnValue(false)
-            mockUseJourneyData.mockReturnValue({
-                data: {
-                    ...mockJourneyData,
-                    configuration: {
-                        ...mockJourneyData.configuration,
-                        sms_sender_number: null,
-                        sms_sender_integration_id: null,
-                    },
-                },
                 isLoading: false,
             })
 
@@ -761,30 +718,12 @@ describe('useAiJourneyMessages', () => {
         })
     })
 
-    describe('brandName sourcing with AiJourneyStoreSettingsEnabled flag', () => {
-        const mockUseFlag = jest.requireMock('@repo/feature-flags')
-            .useFlag as jest.Mock
+    describe('brandName sourcing', () => {
         const mockUseAiJourneyStoreConfiguration = jest.requireMock(
             'AIJourney/hooks',
         ).useAiJourneyStoreConfiguration as jest.Mock
 
-        it('sends undefined brandName when flag is OFF (ISO prod)', async () => {
-            mockUseFlag.mockReturnValue(false)
-
-            const { result } = renderHook(() => useAiJourneyMessages(), {
-                wrapper: createWrapper(),
-            })
-
-            await act(async () => {
-                await result.current.triggerMessage()
-            })
-
-            const calledWith = mockMutateAsync.mock.calls[0][0][0]
-            expect(calledWith.settings.brandName).toBeUndefined()
-        })
-
-        it('sends store config brand_name when flag is ON', async () => {
-            mockUseFlag.mockReturnValue(true)
+        it('sends store config brand_name', async () => {
             mockUseAiJourneyStoreConfiguration.mockReturnValue({
                 storeConfiguration: {
                     sms_sender_number: '+19999999999',
@@ -811,8 +750,7 @@ describe('useAiJourneyMessages', () => {
             ])
         })
 
-        it('sends undefined brandName when flag is ON but store config has no brand_name', async () => {
-            mockUseFlag.mockReturnValue(true)
+        it('sends undefined brandName when store config has no brand_name', async () => {
             mockUseAiJourneyStoreConfiguration.mockReturnValue({
                 storeConfiguration: {
                     sms_sender_number: '+19999999999',
@@ -833,8 +771,7 @@ describe('useAiJourneyMessages', () => {
             expect(calledWith.settings.brandName).toBeUndefined()
         })
 
-        it('sends undefined brandName when flag is ON but storeConfiguration is null', async () => {
-            mockUseFlag.mockReturnValue(true)
+        it('sends undefined brandName when storeConfiguration is null', async () => {
             mockUseAiJourneyStoreConfiguration.mockReturnValue({
                 storeConfiguration: null,
                 isLoading: false,

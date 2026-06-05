@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { UseFormReset, UseFormSetValue } from 'react-hook-form'
 
 import type {
@@ -32,16 +31,11 @@ export const useSetupFormInit = ({
     const { configuration: journeyParams } = journeyData || {}
     const [isFormReady, setIsFormReady] = useState(false)
 
-    const storeSettingsEnabled = useFlag(
-        FeatureFlagKey.AiJourneyStoreSettingsEnabled,
-    )
     const { storeConfiguration, isLoading: isLoadingStoreConfig } =
         useAiJourneyStoreConfiguration(currentIntegration?.id)
 
     useEffect(() => {
-        const isReadyToInit =
-            !isLoadingJourneyData &&
-            (!storeSettingsEnabled || !isLoadingStoreConfig)
+        const isReadyToInit = !isLoadingJourneyData && !isLoadingStoreConfig
 
         if (isReadyToInit && !isFormReady) {
             if (journeyParams) {
@@ -54,14 +48,10 @@ export const useSetupFormInit = ({
                     sms_sender_integration_id: {
                         id:
                             journeyParams.sms_sender_integration_id ??
-                            (storeSettingsEnabled
-                                ? storeConfiguration?.sms_sender_integration_id
-                                : undefined),
+                            storeConfiguration?.sms_sender_integration_id,
                         label:
                             journeyParams.sms_sender_number ??
-                            (storeSettingsEnabled
-                                ? storeConfiguration?.sms_sender_number
-                                : undefined),
+                            storeConfiguration?.sms_sender_number,
                     },
                     max_follow_up_messages:
                         journeyParams.max_follow_up_messages ?? 0,
@@ -128,7 +118,7 @@ export const useSetupFormInit = ({
                         journeyData?.message_instructions ?? '',
                     variants: journeyData?.variants ?? [],
                 })
-            } else if (storeSettingsEnabled && storeConfiguration) {
+            } else if (storeConfiguration) {
                 setValue('sms_sender_integration_id', {
                     id: storeConfiguration.sms_sender_integration_id,
                     label: storeConfiguration.sms_sender_number,
@@ -140,7 +130,6 @@ export const useSetupFormInit = ({
         isLoadingJourneyData,
         isLoadingStoreConfig,
         isFormReady,
-        storeSettingsEnabled,
         storeConfiguration,
         journeyData,
         journeyParams,
@@ -148,5 +137,5 @@ export const useSetupFormInit = ({
         setValue,
     ])
 
-    return { isFormReady, storeSettingsEnabled }
+    return { isFormReady }
 }

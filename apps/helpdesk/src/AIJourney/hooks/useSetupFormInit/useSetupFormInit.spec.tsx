@@ -11,12 +11,6 @@ import type { SetupFormValues } from 'AIJourney/pages/Setup/Setup'
 
 import { useSetupFormInit } from './useSetupFormInit'
 
-jest.mock('@repo/feature-flags', () => ({
-    ...jest.requireActual('@repo/feature-flags'),
-    useFlag: jest.fn(() => false),
-    useFlagWithLoading: jest.fn(() => ({ value: false, isLoading: false })),
-}))
-
 jest.mock('AIJourney/providers/JourneyProvider/JourneyProvider', () => ({
     ...jest.requireActual(
         'AIJourney/providers/JourneyProvider/JourneyProvider',
@@ -155,10 +149,7 @@ describe('useSetupFormInit', () => {
         )
     })
 
-    it('should setValue sms_sender_integration_id (preserving other defaults) when storeSettingsEnabled is true and no journeyParams', () => {
-        const mockUseFlag = require('@repo/feature-flags').useFlag as jest.Mock
-        mockUseFlag.mockReturnValue(true)
-
+    it('should setValue sms_sender_integration_id (preserving other defaults) when store config is loaded and no journeyParams', () => {
         const mockUseAiJourneyStoreConfiguration =
             require('AIJourney/hooks/useAiJourneyStoreConfiguration/useAiJourneyStoreConfiguration')
                 .useAiJourneyStoreConfiguration as jest.Mock
@@ -185,10 +176,7 @@ describe('useSetupFormInit', () => {
         expect(capturedReset).not.toHaveBeenCalled()
     })
 
-    it('should not reset when store settings enabled but store config not yet loaded', () => {
-        const mockUseFlag = require('@repo/feature-flags').useFlag as jest.Mock
-        mockUseFlag.mockReturnValue(true)
-
+    it('should not reset when store config not yet loaded', () => {
         const mockUseAiJourneyStoreConfiguration =
             require('AIJourney/hooks/useAiJourneyStoreConfiguration/useAiJourneyStoreConfiguration')
                 .useAiJourneyStoreConfiguration as jest.Mock
@@ -290,10 +278,7 @@ describe('useSetupFormInit', () => {
         expect(screen.getByTestId('ready')).toHaveTextContent('ready')
     })
 
-    it('should use storeConfiguration as sms_sender fallback when storeSettingsEnabled and journeyParams has no sender', () => {
-        const mockUseFlag = require('@repo/feature-flags').useFlag as jest.Mock
-        mockUseFlag.mockReturnValue(true)
-
+    it('should use storeConfiguration as sms_sender fallback when journeyParams has no sender', () => {
         const mockUseAiJourneyStoreConfiguration =
             require('AIJourney/hooks/useAiJourneyStoreConfiguration/useAiJourneyStoreConfiguration')
                 .useAiJourneyStoreConfiguration as jest.Mock
@@ -322,6 +307,41 @@ describe('useSetupFormInit', () => {
         renderComponent()
 
         expect(screen.getByTestId('ready')).toHaveTextContent('ready')
+    })
+
+    it('should set undefined sms_sender when journeyParams has no sender and no store config', () => {
+        const mockUseAiJourneyStoreConfiguration =
+            require('AIJourney/hooks/useAiJourneyStoreConfiguration/useAiJourneyStoreConfiguration')
+                .useAiJourneyStoreConfiguration as jest.Mock
+        mockUseAiJourneyStoreConfiguration.mockReturnValue({
+            storeConfiguration: null,
+            isLoading: false,
+        })
+
+        mockUseJourneyContext.mockReturnValue({
+            isLoading: false,
+            journeyData: {
+                id: 'j-1',
+                configuration: {
+                    max_follow_up_messages: 1,
+                    follow_up_wait_minutes: 60,
+                    include_image: false,
+                    offer_discount: false,
+                },
+            },
+            currentIntegration: { id: 1 },
+        })
+
+        renderComponent()
+
+        expect(capturedReset).toHaveBeenCalledWith(
+            expect.objectContaining({
+                sms_sender_integration_id: {
+                    id: undefined,
+                    label: undefined,
+                },
+            }),
+        )
     })
 
     it('should handle all optional journey config fields when set to actual values', () => {

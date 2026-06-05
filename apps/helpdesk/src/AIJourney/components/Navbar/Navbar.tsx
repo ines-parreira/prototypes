@@ -43,10 +43,6 @@ export const AiJourneyNavbar = () => {
         FeatureFlagKey.AiJourneySegmentsUiEnabled,
     )
 
-    const isAiJourneyStoreSettingsEnabled = useFlag(
-        FeatureFlagKey.AiJourneyStoreSettingsEnabled,
-    )
-
     const storeIntegrations = useAppSelector(getShopifyIntegrationsSortedByName)
 
     const { setLastSelectedStore, resolveStore } = useLastSelectedStore()
@@ -137,17 +133,15 @@ export const AiJourneyNavbar = () => {
             })
         }
 
-        if (isAiJourneyStoreSettingsEnabled) {
-            items.push({
-                icon: 'slider-filter',
-                to: `/app/ai-journey/${shopName}/settings`,
-                label: 'Settings',
-                exact: false,
-            })
-        }
+        items.push({
+            icon: 'slider-filter',
+            to: `/app/ai-journey/${shopName}/settings`,
+            label: 'Settings',
+            exact: false,
+        })
 
         return items
-    }, [shopName, isAiJourneySegmentsEnabled, isAiJourneyStoreSettingsEnabled])
+    }, [shopName, isAiJourneySegmentsEnabled])
 
     if (hasWayfindingMS1Flag) {
         return isCollapsed && navigationItems.length > 0 ? (
@@ -235,14 +229,12 @@ export const AiJourneyNavbar = () => {
                             Segments
                         </Navigation.SectionItem>
                     )}
-                    {isAiJourneyStoreSettingsEnabled && (
-                        <Navigation.SectionItem
-                            as={NavLink}
-                            to={`/app/ai-journey/${shopName}/settings`}
-                        >
-                            Settings
-                        </Navigation.SectionItem>
-                    )}
+                    <Navigation.SectionItem
+                        as={NavLink}
+                        to={`/app/ai-journey/${shopName}/settings`}
+                    >
+                        Settings
+                    </Navigation.SectionItem>
                 </div>
             </Navigation.Root>
         </Navbar>

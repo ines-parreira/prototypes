@@ -1,7 +1,5 @@
 import { useCallback } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-
 import type { JourneyTypeEnum } from '@gorgias/convert-client'
 
 import { useAiJourneyStoreConfiguration } from 'AIJourney/hooks'
@@ -150,27 +148,20 @@ export const useAiJourneyMessages = () => {
     const { createTestSession, testSessionId, startPolling } = useCoreContext()
     const { mutateAsync, isLoading } = useTriggerAIJourney()
 
-    const storeSettingsEnabled = useFlag(
-        FeatureFlagKey.AiJourneyStoreSettingsEnabled,
-    )
     const { storeConfiguration: aiJourneyStoreConfig } =
         useAiJourneyStoreConfiguration(shopifyIntegration?.id)
 
-    const smsSenderNumber = storeSettingsEnabled
-        ? (journeyConfiguration?.sms_sender_number ??
-          aiJourneyStoreConfig?.sms_sender_number ??
-          null)
-        : (journeyConfiguration?.sms_sender_number ?? null)
+    const smsSenderNumber =
+        journeyConfiguration?.sms_sender_number ??
+        aiJourneyStoreConfig?.sms_sender_number ??
+        null
 
-    const smsSenderIntegrationId = storeSettingsEnabled
-        ? (journeyConfiguration?.sms_sender_integration_id ??
-          aiJourneyStoreConfig?.sms_sender_integration_id ??
-          null)
-        : (journeyConfiguration?.sms_sender_integration_id ?? null)
+    const smsSenderIntegrationId =
+        journeyConfiguration?.sms_sender_integration_id ??
+        aiJourneyStoreConfig?.sms_sender_integration_id ??
+        null
 
-    const brandName = storeSettingsEnabled
-        ? aiJourneyStoreConfig?.brand_name
-        : undefined
+    const brandName = aiJourneyStoreConfig?.brand_name
 
     const triggerMessage = useCallback(async () => {
         if (!currentJourney || !shopifyIntegration) {

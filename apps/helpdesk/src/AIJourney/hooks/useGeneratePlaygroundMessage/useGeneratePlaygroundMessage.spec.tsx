@@ -20,15 +20,6 @@ import { usePlaygroundPolling } from 'pages/aiAgent/PlaygroundV2/hooks/usePlaygr
 
 import { useGeneratePlaygroundMessage } from './useGeneratePlaygroundMessage'
 
-jest.mock('@repo/feature-flags', () => ({
-    FeatureFlagKey: {
-        AiJourneyStoreSettingsEnabled: 'ai-journey-store-settings-enabled',
-    },
-    useFlag: jest.fn(),
-}))
-
-const mockUseFlag = jest.requireMock('@repo/feature-flags').useFlag as jest.Mock
-
 jest.mock('models/aiAgent/queries', () => ({
     useCreateTestSessionMutation: jest.fn(),
     useTriggerAIJourney: jest.fn(),
@@ -142,8 +133,6 @@ describe('useGeneratePlaygroundMessage', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-
-        mockUseFlag.mockReturnValue(false)
 
         mockedUseCreateTestSessionMutation.mockReturnValue({
             mutateAsync: mockCreateTestSession,
@@ -413,8 +402,6 @@ describe('useGeneratePlaygroundMessage', () => {
             jest.clearAllMocks()
             jest.resetAllMocks()
 
-            mockUseFlag.mockReturnValue(false)
-
             mockedUsePlaygroundPolling.mockReturnValue({
                 testSessionLogs: { logs: [], status: 'idle', id: '1' },
                 startPolling: mockStartPolling,
@@ -640,7 +627,6 @@ describe('useGeneratePlaygroundMessage', () => {
 
     describe('settings - smsSender and brandName sourcing', () => {
         const setupAndTrigger = async (props: {
-            storeSettingsEnabled: boolean
             smsSenderNumber?: string | null
             smsSenderIntegrationId?: number | null
             brandName?: string | null
@@ -650,7 +636,6 @@ describe('useGeneratePlaygroundMessage', () => {
             }
         }) => {
             jest.useFakeTimers()
-            mockUseFlag.mockReturnValue(props.storeSettingsEnabled)
 
             mockCreateTestSession.mockResolvedValue({
                 testModeSession: { id: 'test-session-id' },
@@ -742,8 +727,8 @@ describe('useGeneratePlaygroundMessage', () => {
             jest.useRealTimers()
         }
 
-        it('uses journeyParams sender values when flag is OFF', async () => {
-            await setupAndTrigger({ storeSettingsEnabled: false })
+        it('uses journeyParams sender values when set', async () => {
+            await setupAndTrigger({})
 
             expect(mockTriggerAIJourney).toHaveBeenCalledWith([
                 expect.objectContaining({
@@ -759,9 +744,8 @@ describe('useGeneratePlaygroundMessage', () => {
             ])
         })
 
-        it('uses journey sender first when flag is ON (journey-first for all users)', async () => {
+        it('uses journey sender first (journey-first for all users)', async () => {
             await setupAndTrigger({
-                storeSettingsEnabled: true,
                 smsSenderNumber: '+10000000000',
                 smsSenderIntegrationId: 999,
                 brandName: 'My Brand',
@@ -781,9 +765,8 @@ describe('useGeneratePlaygroundMessage', () => {
             ])
         })
 
-        it('falls back to integration name when FF is ON but brandName is not set', async () => {
+        it('falls back to integration name when brandName is not set', async () => {
             await setupAndTrigger({
-                storeSettingsEnabled: true,
                 smsSenderNumber: '+10000000000',
                 smsSenderIntegrationId: 999,
                 brandName: null,
@@ -798,9 +781,8 @@ describe('useGeneratePlaygroundMessage', () => {
             ])
         })
 
-        it('sends null sender values when FF is ON but both journey and store config have none', async () => {
+        it('sends null sender values when neither journey nor props have a sender', async () => {
             await setupAndTrigger({
-                storeSettingsEnabled: true,
                 smsSenderNumber: null,
                 smsSenderIntegrationId: null,
                 journeyParamsOverride: {
@@ -819,28 +801,8 @@ describe('useGeneratePlaygroundMessage', () => {
             ])
         })
 
-        it('uses null when flag is OFF and journeyParams has no sms sender', async () => {
-            await setupAndTrigger({
-                storeSettingsEnabled: false,
-                journeyParamsOverride: {
-                    sms_sender_number: null as unknown as string,
-                    sms_sender_integration_id: null as unknown as number,
-                },
-            })
-
-            expect(mockTriggerAIJourney).toHaveBeenCalledWith([
-                expect.objectContaining({
-                    settings: expect.objectContaining({
-                        smsSenderNumber: null,
-                        smsSenderIntegrationId: null,
-                    }),
-                }),
-            ])
-        })
-
         it('sources journeyName from campaign title for campaign journeys', async () => {
             await setupAndTrigger({
-                storeSettingsEnabled: false,
                 journeyOverride: {
                     campaign: { title: 'Black Friday Sale' },
                 },
@@ -853,9 +815,8 @@ describe('useGeneratePlaygroundMessage', () => {
             ])
         })
 
-        it('falls back to store sender values when flag is ON and journeyParams has no sender', async () => {
+        it('falls back to prop sender values when journeyParams has no sender', async () => {
             jest.useFakeTimers()
-            mockUseFlag.mockReturnValue(true)
 
             mockCreateTestSession.mockResolvedValue({
                 testModeSession: { id: 'test-session-id' },

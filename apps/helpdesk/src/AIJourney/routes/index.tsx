@@ -28,9 +28,6 @@ import { RedirectToShop } from './RedirectToShop'
 
 function AiJourneyBaseRoutes() {
     const { path } = useRouteMatch()
-    const isAiJourneyStoreSettingsEnabled = useFlag(
-        FeatureFlagKey.AiJourneyStoreSettingsEnabled,
-    )
     const isAiJourneyCustomFlowEnabled = useFlag(
         FeatureFlagKey.AiJourneyCustomFlowEnabled,
     )
@@ -133,12 +130,10 @@ function AiJourneyBaseRoutes() {
                                     </DefaultStatsFilters>
                                 )}
                             />
-                            {isAiJourneyStoreSettingsEnabled && (
-                                <Route
-                                    path={`${path}/:shopName/settings`}
-                                    render={() => <Settings />}
-                                />
-                            )}
+                            <Route
+                                path={`${path}/:shopName/settings`}
+                                render={() => <Settings />}
+                            />
                             {isAiJourneyCustomFlowEnabled && (
                                 <Route
                                     path={`${path}/:shopName/custom/webhook-setup/:journeyId`}

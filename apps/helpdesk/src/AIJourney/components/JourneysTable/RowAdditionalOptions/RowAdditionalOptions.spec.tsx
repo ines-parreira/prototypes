@@ -14,7 +14,6 @@ import { RowAdditionalOptions } from './RowAdditionalOptions'
 
 jest.mock('@repo/feature-flags', () => ({
     FeatureFlagKey: {
-        AiJourneyStoreSettingsEnabled: 'ai-journey-store-settings-enabled',
         AiJourneyCustomFlowEnabled: 'ai-journey-custom-flow-enabled',
     },
     useFlag: jest.fn(),

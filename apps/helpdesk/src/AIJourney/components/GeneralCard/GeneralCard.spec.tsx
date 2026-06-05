@@ -32,7 +32,6 @@ jest.mock('@gorgias/axiom', () => ({
 jest.mock('@repo/feature-flags', () => ({
     FeatureFlagKey: {
         AiJourneyCampaignImageEnabled: 'ai_journey_campaign_image_enabled',
-        AiJourneyStoreSettingsEnabled: 'ai-journey-store-settings-enabled',
         AiJourneyMultiInstanceFlows: 'ai-journey-multi-instance-flows',
     },
     useFlag: jest.fn(() => false),
@@ -127,20 +126,7 @@ describe('<GeneralCard />', () => {
         })
 
         describe('SenderPhoneNumber', () => {
-            it('renders when AiJourneyStoreSettingsEnabled flag is off', () => {
-                renderCard()
-
-                expect(
-                    screen.getByText('SenderPhoneNumber'),
-                ).toBeInTheDocument()
-            })
-
-            it('renders when AiJourneyStoreSettingsEnabled flag is on', () => {
-                mockUseFlag.mockImplementation(
-                    (key: string) =>
-                        key === 'ai-journey-store-settings-enabled',
-                )
-
+            it('renders SenderPhoneNumber', () => {
                 renderCard()
 
                 expect(

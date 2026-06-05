@@ -340,9 +340,6 @@ describe('<AiJourneyNavbar />', () => {
     describe('Settings section', () => {
         beforeEach(() => {
             mockUseFlag.mockImplementation((key) => {
-                if (key === FeatureFlagKey.AiJourneyStoreSettingsEnabled) {
-                    return true
-                }
                 if (key === FeatureFlagKey.AiJourneyEnabled) {
                     return true
                 }
@@ -350,26 +347,10 @@ describe('<AiJourneyNavbar />', () => {
             })
         })
 
-        it('should render settings section when feature flag is enabled', () => {
+        it('should render settings section', () => {
             renderNavbar()
 
             expect(screen.getByText('Settings')).toBeInTheDocument()
-        })
-
-        it('should not render settings section when feature flag is disabled', () => {
-            mockUseFlag.mockImplementation((key) => {
-                if (key === FeatureFlagKey.AiJourneyStoreSettingsEnabled) {
-                    return false
-                }
-                if (key === FeatureFlagKey.AiJourneyEnabled) {
-                    return true
-                }
-                return false
-            })
-
-            renderNavbar()
-
-            expect(screen.queryByText('Settings')).not.toBeInTheDocument()
         })
 
         it('should render Settings link pointing to the settings route', () => {
