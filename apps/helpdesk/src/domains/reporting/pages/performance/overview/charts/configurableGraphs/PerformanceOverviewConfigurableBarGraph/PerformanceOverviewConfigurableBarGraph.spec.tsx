@@ -3,6 +3,12 @@ import { screen } from '@testing-library/react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useStatsMetricBreakdownPerDimension } from 'domains/reporting/hooks/useStatsMetricBreakdownPerDimension'
+import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
+import type {
+    ChartConfig,
+    DashboardSchema,
+} from 'domains/reporting/pages/dashboards/types'
+import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { PerformanceOverviewConfigurableBarGraph } from 'domains/reporting/pages/performance/overview/charts/configurableGraphs/PerformanceOverviewConfigurableBarGraph/PerformanceOverviewConfigurableBarGraph'
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
@@ -11,11 +17,30 @@ jest.mock('@repo/reporting', () => ({
     ...jest.requireActual('@repo/reporting'),
     useDashboardContext: jest.fn().mockReturnValue(null),
 }))
+jest.mock(
+    'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu',
+)
 
 const useStatsFiltersMock = assumeMock(useStatsFilters)
 const useStatsMetricBreakdownPerDimensionMock = assumeMock(
     useStatsMetricBreakdownPerDimension,
 )
+const ChartsActionMenuMock = assumeMock(ChartsActionMenu)
+
+const chartConfig: ChartConfig = {
+    chartComponent: () => <div />,
+    label: 'Configurable bar graph',
+    csvProducer: null,
+    chartType: ChartType.Graph,
+}
+
+const dashboard: DashboardSchema = {
+    id: 1,
+    name: 'My dashboard',
+    analytics_filter_id: null,
+    children: [],
+    emoji: null,
+}
 
 describe('PerformanceOverviewConfigurableBarGraph', () => {
     beforeAll(() => {
@@ -79,6 +104,8 @@ describe('PerformanceOverviewConfigurableBarGraph', () => {
             isFetching: false,
             isError: false,
         })
+
+        ChartsActionMenuMock.mockReturnValue(<div>ChartsActionMenu</div>)
     })
 
     afterEach(() => {
@@ -127,5 +154,53 @@ describe('PerformanceOverviewConfigurableBarGraph', () => {
         expect(
             container.querySelector('.recharts-responsive-container'),
         ).toBeInTheDocument()
+    })
+
+    describe('action menu', () => {
+        it('renders the action menu when both chartId and chartConfig are provided', () => {
+            render(
+                <PerformanceOverviewConfigurableBarGraph
+                    chartId="performance-overview-configurable-bar-graph"
+                    dashboard={dashboard}
+                    chartConfig={chartConfig}
+                />,
+            )
+
+            expect(screen.getByText('ChartsActionMenu')).toBeInTheDocument()
+            expect(ChartsActionMenuMock.mock.calls[0][0]).toEqual(
+                expect.objectContaining({
+                    chartId: 'performance-overview-configurable-bar-graph',
+                    dashboard,
+                    chartName: chartConfig.label,
+                }),
+            )
+        })
+
+        it('does not render the action menu when chartConfig is missing', () => {
+            render(
+                <PerformanceOverviewConfigurableBarGraph
+                    chartId="performance-overview-configurable-bar-graph"
+                    dashboard={dashboard}
+                />,
+            )
+
+            expect(
+                screen.queryByText('ChartsActionMenu'),
+            ).not.toBeInTheDocument()
+            expect(ChartsActionMenuMock).not.toHaveBeenCalled()
+        })
+
+        it('does not render the action menu when chartId is missing', () => {
+            render(
+                <PerformanceOverviewConfigurableBarGraph
+                    chartConfig={chartConfig}
+                />,
+            )
+
+            expect(
+                screen.queryByText('ChartsActionMenu'),
+            ).not.toBeInTheDocument()
+            expect(ChartsActionMenuMock).not.toHaveBeenCalled()
+        })
     })
 })

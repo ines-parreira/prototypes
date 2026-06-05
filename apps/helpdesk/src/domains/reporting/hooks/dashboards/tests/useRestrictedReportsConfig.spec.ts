@@ -3,6 +3,8 @@ import { assumeMock, renderHook } from '@repo/testing'
 
 import { useRestrictedReportsConfig } from 'domains/reporting/hooks/dashboards/useRestrictedReportsConfig'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
+import { ChannelsEmailReportConfig } from 'domains/reporting/pages/performance/channels/email/ChannelsEmailReportConfig'
+import { PerformanceOverviewReportConfig } from 'domains/reporting/pages/performance/overview/PerformanceOverviewReportConfig'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 import { VoiceServiceLevelAgreementsChart } from 'domains/reporting/pages/sla/voice/VoiceServiceLevelAgreementsReportConfig'
 import { SupportPerformanceAgentsReportConfig } from 'domains/reporting/pages/support-performance/agents/SupportPerformanceAgentsReportConfig'
@@ -187,6 +189,47 @@ describe('useRestrictedReportsConfig', () => {
         expect(
             result.current.find((s) => s.category === 'Support Performance'),
         ).toBeTruthy()
+    })
+
+    it('should not include the Performance category when RevampOverallPerformanceNewScreens flag is disabled', () => {
+        const { result } = renderHook(() => useRestrictedReportsConfig())
+
+        expect(
+            result.current.find(
+                (section) => section.category === 'Performance',
+            ),
+        ).toBeUndefined()
+    })
+
+    it('should include a Performance category with the revamp reports when RevampOverallPerformanceNewScreens flag is enabled', () => {
+        mockUseFlagWithLoading.mockImplementation((flag: string) => {
+            if (flag === FeatureFlagKey.RevampOverallPerformanceNewScreens)
+                return { value: true, isLoading: false }
+            if (flag === FeatureFlagKey.VoiceSLA)
+                return { value: true, isLoading: false }
+            return { value: false, isLoading: false }
+        })
+
+        const { result } = renderHook(() => useRestrictedReportsConfig())
+
+        const performanceSection = result.current.find(
+            (section) => section.category === 'Performance',
+        )
+        expect(performanceSection).toBeTruthy()
+        expect(performanceSection?.children).toContainEqual(
+            expect.objectContaining({
+                config: expect.objectContaining({
+                    id: PerformanceOverviewReportConfig.id,
+                }),
+            }),
+        )
+        expect(performanceSection?.children).toContainEqual(
+            expect.objectContaining({
+                config: expect.objectContaining({
+                    id: ChannelsEmailReportConfig.id,
+                }),
+            }),
+        )
     })
 
     it('should return revamped AI Agent section when AiAgentAnalyticsCustomDashboards flag is enabled', () => {

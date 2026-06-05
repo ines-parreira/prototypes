@@ -17,8 +17,21 @@ jest.mock(
 jest.mock(
     'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu',
     () => ({
-        ChartsActionMenu: ({ chartName }: { chartName: string }) => (
-            <button type="button">{`${chartName} chart actions`}</button>
+        ChartsActionMenu: ({
+            chartName,
+            exportCsvAction,
+        }: {
+            chartName: string
+            exportCsvAction?: { onClick: () => void }
+        }) => (
+            <div>
+                <button type="button">{`${chartName} chart actions`}</button>
+                {exportCsvAction ? (
+                    <button type="button" onClick={exportCsvAction.onClick}>
+                        {`${chartName} export csv`}
+                    </button>
+                ) : null}
+            </div>
         ),
     }),
 )
@@ -153,6 +166,18 @@ describe('PerformanceOverviewChannelTable', () => {
         ).toBeInTheDocument()
     })
 
+    it('disables the download button while the breakdown data is loading', () => {
+        mockUseDownloadPerformanceOverviewChannelData.mockReturnValue({
+            files: {},
+            fileName: '',
+            isLoading: true,
+        })
+
+        renderTable()
+
+        expect(screen.getByRole('button', { name: /download/i })).toBeDisabled()
+    })
+
     it('renders the chart action menu when chartId and withChartMenu are provided', () => {
         renderTable({
             chartId: 'performance-overview-channel-table',
@@ -180,6 +205,20 @@ describe('PerformanceOverviewChannelTable', () => {
 
         expect(
             screen.queryByRole('button', { name: /channel chart actions/i }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('exposes CSV export from the chart action menu instead of the standalone download button', () => {
+        renderTable({
+            chartId: 'performance-overview-channel-table',
+            withChartMenu: true,
+        })
+
+        expect(
+            screen.getByRole('button', { name: /channel export csv/i }),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: /download/i }),
         ).not.toBeInTheDocument()
     })
 })

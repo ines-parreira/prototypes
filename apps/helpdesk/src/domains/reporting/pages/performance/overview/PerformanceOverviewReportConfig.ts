@@ -71,7 +71,7 @@ export enum PerformanceOverviewChart {
 export const PerformanceOverviewReportConfig: ReportConfig<PerformanceOverviewChart> =
     {
         id: ReportsIDs.PerformanceOverviewReportConfig,
-        reportName: 'Performance',
+        reportName: 'Overview',
         reportPath: STATS_ROUTES.PERFORMANCE_OVERVIEW,
         charts: {
             [PerformanceOverviewChart.AverageCSATCard]: {

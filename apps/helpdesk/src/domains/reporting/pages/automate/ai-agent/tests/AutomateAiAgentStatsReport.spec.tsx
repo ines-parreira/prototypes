@@ -40,7 +40,12 @@ jest.mock('domains/reporting/state/stats/selectors')
 jest.mock('state/currentUser/selectors')
 const getCurrentUserMock = assumeMock(getCurrentUser)
 
-jest.mock('domains/reporting/state/ui/stats/ticketInsightsSlice')
+jest.mock('domains/reporting/state/ui/stats/ticketInsightsSlice', () => ({
+    ...jest.requireActual(
+        'domains/reporting/state/ui/stats/ticketInsightsSlice',
+    ),
+    getSelectedCustomField: jest.fn(),
+}))
 const getSelectedCustomFieldMock =
     getSelectedCustomField as unknown as jest.Mock
 

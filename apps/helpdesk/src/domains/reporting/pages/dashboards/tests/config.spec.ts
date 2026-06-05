@@ -11,6 +11,14 @@ import {
 } from 'domains/reporting/pages/dashboards/config'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
 import {
+    ChannelsEmailReportConfig,
+    PerformanceChannelsEmailChart,
+} from 'domains/reporting/pages/performance/channels/email/ChannelsEmailReportConfig'
+import {
+    PerformanceOverviewChart,
+    PerformanceOverviewReportConfig,
+} from 'domains/reporting/pages/performance/overview/PerformanceOverviewReportConfig'
+import {
     SatisfactionChart,
     SatisfactionReportConfig,
 } from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionReportConfig'
@@ -64,6 +72,26 @@ describe('getComponentConfig', () => {
         expect(chartConfig).toBeDefined()
     })
 
+    it('finds an overview chart from PERFORMANCE_REPORTS_CONFIG', () => {
+        const { reportConfig, chartConfig, category } = getComponentConfig(
+            PerformanceOverviewChart.ConfigurableBarGraph,
+        )
+
+        expect(reportConfig).toBe(PerformanceOverviewReportConfig)
+        expect(chartConfig).toBeDefined()
+        expect(category).toBe('Performance')
+    })
+
+    it('finds a channels chart from PERFORMANCE_REPORTS_CONFIG', () => {
+        const { reportConfig, chartConfig, category } = getComponentConfig(
+            PerformanceChannelsEmailChart.AverageCSATCard,
+        )
+
+        expect(reportConfig).toBe(ChannelsEmailReportConfig)
+        expect(chartConfig).toBeDefined()
+        expect(category).toBe('Performance')
+    })
+
     it('finds a legacy chart when withLegacyReports is true', () => {
         const { reportConfig } = getComponentConfig(
             AutomateAiAgentsChart.AiAgentTable,
@@ -115,6 +143,22 @@ describe('getReportConfig', () => {
         })
     })
 
+    it('finds the overview report from PERFORMANCE_REPORTS_CONFIG by ID', () => {
+        const config = getReportConfig(
+            ReportsIDs.PerformanceOverviewReportConfig,
+        )
+
+        expect(config).toBe(PerformanceOverviewReportConfig)
+    })
+
+    it('finds the channels report from PERFORMANCE_REPORTS_CONFIG by ID', () => {
+        const config = getReportConfig(
+            ReportsIDs.PerformanceChannelsEmailReportConfig,
+        )
+
+        expect(config).toBe(ChannelsEmailReportConfig)
+    })
+
     it('finds a legacy report when withLegacyReports is true', () => {
         const config = getReportConfig(
             ReportsIDs.AutomateAiAgentsReportConfig,
@@ -144,6 +188,20 @@ describe('getReportConfigFromPath', () => {
         const config = getReportConfigFromPath(path)
 
         expect(config).not.toBeNull()
+    })
+
+    it('finds the overview report from PERFORMANCE_REPORTS_CONFIG by path', () => {
+        const path = `${STATS_ROUTE_PREFIX}${PerformanceOverviewReportConfig.reportPath}`
+        const config = getReportConfigFromPath(path)
+
+        expect(config).toBe(PerformanceOverviewReportConfig)
+    })
+
+    it('finds the channels report from PERFORMANCE_REPORTS_CONFIG by path', () => {
+        const path = `${STATS_ROUTE_PREFIX}${ChannelsEmailReportConfig.reportPath}`
+        const config = getReportConfigFromPath(path)
+
+        expect(config).toBe(ChannelsEmailReportConfig)
     })
 
     it('finds a legacy report by path', () => {
@@ -183,6 +241,28 @@ describe('getMetricOriginPath', () => {
         expect(path).toEqual({
             prefix: 'AI Agent',
             suffix: 'Shopping Assistant',
+        })
+    })
+
+    it('returns the Performance category for overview charts', () => {
+        const path = getMetricOriginPath(
+            PerformanceOverviewChart.ConfigurableBarGraph,
+        )
+
+        expect(path).toEqual({
+            prefix: 'Performance',
+            suffix: PerformanceOverviewReportConfig.reportName,
+        })
+    })
+
+    it('returns the Performance category for channels charts', () => {
+        const path = getMetricOriginPath(
+            PerformanceChannelsEmailChart.AverageCSATCard,
+        )
+
+        expect(path).toEqual({
+            prefix: 'Performance',
+            suffix: ChannelsEmailReportConfig.reportName,
         })
     })
 

@@ -8,6 +8,7 @@ import { firstResponseTimeTimeseriesQueryFactoryV2 } from 'domains/reporting/mod
 import { messagesPerTicketTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/messagesPerTicket'
 import { resolutionTimeTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/resolutionTime'
 import { averageCsatTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/satisfactionSurveys'
+import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import type { PerformanceLineChartMetricConfig } from 'domains/reporting/pages/performance/utils/getPerformanceConfigurableLineGraphConfig'
 import { getPerformanceConfigurableLineGraphConfig } from 'domains/reporting/pages/performance/utils/getPerformanceConfigurableLineGraphConfig'
@@ -46,6 +47,8 @@ export const PERFORMANCE_OVERVIEW_CHANNEL_LINE_METRICS: PerformanceLineChartMetr
 
 export const PerformanceOverviewConfigurableLineGraph = ({
     chartId,
+    dashboard,
+    chartConfig,
 }: DashboardChartProps) => {
     const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
 
@@ -60,7 +63,20 @@ export const PerformanceOverviewConfigurableLineGraph = ({
         [cleanStatsFilters, userTimezone, granularity],
     )
 
+    const actionMenu =
+        chartId && chartConfig ? (
+            <ChartsActionMenu
+                chartId={chartId}
+                dashboard={dashboard}
+                chartName={chartConfig.label}
+            />
+        ) : undefined
+
     return (
-        <ConfigurableGraph metrics={metrics} analyticsChartId={chartId ?? ''} />
+        <ConfigurableGraph
+            metrics={metrics}
+            analyticsChartId={chartId ?? ''}
+            actionMenu={actionMenu}
+        />
     )
 }

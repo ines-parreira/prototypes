@@ -141,7 +141,7 @@ export function ReportingMetricBreakdownTable<TData>({
             display="flex"
             flex={1}
             flexDirection="column"
-            paddingTop={enableSearch ? '42px' : 0}
+            paddingTop={enableSearch && !isCustomDashboard ? '42px' : 0}
         >
             {isCustomDashboard && name && (
                 <Box

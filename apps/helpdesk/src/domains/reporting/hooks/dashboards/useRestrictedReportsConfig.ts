@@ -1,6 +1,7 @@
 import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 
 import {
+    PERFORMANCE_REPORTS_CONFIG,
     REPORTS_CONFIG,
     REVAMPED_REPORTS_CONFIG,
 } from 'domains/reporting/pages/dashboards/config'
@@ -23,14 +24,22 @@ export const useRestrictedReportsConfig = () => {
     const { value: isLegacyDisabled } = useFlagWithLoading(
         FeatureFlagKey.AiAgentAnalyticsDisableLegacyReports,
     )
+    const { value: isRevampOverallPerformanceNewScreensEnabled } =
+        useFlagWithLoading(FeatureFlagKey.RevampOverallPerformanceNewScreens)
     const baseConfig = isCustomDashboardsEnabled
         ? REVAMPED_REPORTS_CONFIG
         : REPORTS_CONFIG
 
+    const configWithPerformance = isRevampOverallPerformanceNewScreensEnabled
+        ? [...PERFORMANCE_REPORTS_CONFIG, ...baseConfig]
+        : baseConfig
+
     const visibleConfig =
         !isCustomDashboardsEnabled && isNewScreensEnabled && isLegacyDisabled
-            ? baseConfig.filter((section) => section.category !== 'AI Agent')
-            : baseConfig
+            ? configWithPerformance.filter(
+                  (section) => section.category !== 'AI Agent',
+              )
+            : configWithPerformance
 
     return visibleConfig.map((section) => ({
         ...section,

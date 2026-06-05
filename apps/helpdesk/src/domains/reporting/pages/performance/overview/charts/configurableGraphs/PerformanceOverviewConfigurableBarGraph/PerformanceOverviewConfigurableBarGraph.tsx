@@ -4,6 +4,7 @@ import { ConfigurableGraph } from '@repo/reporting'
 
 import { METRIC_TOOLTIPS } from 'domains/reporting/config/metricTooltipDefinitions'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { PERFORMANCE_OVERVIEW_METRIC_FACTORIES } from 'domains/reporting/pages/performance/overview/config/breakdownTableMetrics'
 import type { PerformanceBarChartMetricConfig } from 'domains/reporting/pages/performance/utils/getPerformanceConfigurableBarGraphConfig'
@@ -45,6 +46,8 @@ export const PERFORMANCE_OVERVIEW_CHANNEL_BAR_METRICS: PerformanceBarChartMetric
 
 export const PerformanceOverviewConfigurableBarGraph = ({
     chartId,
+    dashboard,
+    chartConfig,
 }: DashboardChartProps) => {
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
 
@@ -58,7 +61,20 @@ export const PerformanceOverviewConfigurableBarGraph = ({
         [cleanStatsFilters, userTimezone],
     )
 
+    const actionMenu =
+        chartId && chartConfig ? (
+            <ChartsActionMenu
+                chartId={chartId}
+                dashboard={dashboard}
+                chartName={chartConfig.label}
+            />
+        ) : undefined
+
     return (
-        <ConfigurableGraph metrics={metrics} analyticsChartId={chartId ?? ''} />
+        <ConfigurableGraph
+            metrics={metrics}
+            analyticsChartId={chartId ?? ''}
+            actionMenu={actionMenu}
+        />
     )
 }

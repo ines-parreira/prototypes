@@ -23,7 +23,7 @@ export const PerformanceOverviewReport = () => {
     return (
         <AnalyticsPage
             ref={contentRef}
-            title={PerformanceOverviewReportConfig.reportName}
+            title="Performance"
             titleExtra={
                 <DashboardExportButton
                     contentRef={contentRef}
@@ -56,6 +56,8 @@ export const PerformanceOverviewReport = () => {
                 tabId={PerformanceOverviewTabs.Overview}
                 tabName={PERFORMANCE_OVERVIEW_TAB_NAME}
                 DashboardComponent={DashboardComponent}
+                enableCustomDashboards
+                enableTablesPersistence
             />
         </AnalyticsPage>
     )

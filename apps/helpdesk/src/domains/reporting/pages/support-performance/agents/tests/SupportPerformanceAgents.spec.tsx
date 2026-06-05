@@ -41,7 +41,12 @@ import type { RootState } from 'state/types'
 
 jest.unmock('react-router-dom')
 
-jest.mock('domains/reporting/state/ui/stats/agentPerformanceSlice')
+jest.mock('domains/reporting/state/ui/stats/agentPerformanceSlice', () => ({
+    ...jest.requireActual(
+        'domains/reporting/state/ui/stats/agentPerformanceSlice',
+    ),
+    getFilteredAgents: jest.fn(() => []),
+}))
 jest.mock('domains/reporting/pages/support-performance/agents/AgentsTable.tsx')
 const AgentTableWithDefaultStateMock = assumeMock(AgentsTableWithDefaultState)
 jest.mock(

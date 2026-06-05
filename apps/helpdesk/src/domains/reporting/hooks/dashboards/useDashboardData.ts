@@ -38,6 +38,8 @@ import {
     DashboardChildType,
     DataExportFormat,
 } from 'domains/reporting/pages/dashboards/types'
+import { ChannelsEmailReportConfig } from 'domains/reporting/pages/performance/channels/email/ChannelsEmailReportConfig'
+import { PerformanceOverviewReportConfig } from 'domains/reporting/pages/performance/overview/PerformanceOverviewReportConfig'
 import { SatisfactionReportConfig } from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionReportConfig'
 import { ServiceLevelAgreementsReportConfig } from 'domains/reporting/pages/sla/ServiceLevelAgreementsReportConfig'
 import { VoiceServiceLevelAgreementsReportConfig } from 'domains/reporting/pages/sla/voice/VoiceServiceLevelAgreementsReportConfig'
@@ -85,6 +87,8 @@ const chartsLookupTable: Record<string, ChartConfig | undefined> = {
     ...AnalyticsAiAgentAllAgentsReportConfig.charts,
     ...AnalyticsAiAgentShoppingAssistantReportConfig.charts,
     ...AnalyticsAiAgentSupportAgentReportConfig.charts,
+    ...PerformanceOverviewReportConfig.charts,
+    ...ChannelsEmailReportConfig.charts,
 }
 
 type Queries = {

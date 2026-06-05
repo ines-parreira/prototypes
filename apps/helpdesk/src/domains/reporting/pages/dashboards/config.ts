@@ -25,6 +25,14 @@ import {
     HelpCenterReportConfig,
 } from 'domains/reporting/pages/help-center/components/HelpCenterReport/HelpCenterReportConfig'
 import {
+    ChannelsEmailReportConfig,
+    PerformanceChannelsEmailChart,
+} from 'domains/reporting/pages/performance/channels/email/ChannelsEmailReportConfig'
+import {
+    PerformanceOverviewChart,
+    PerformanceOverviewReportConfig,
+} from 'domains/reporting/pages/performance/overview/PerformanceOverviewReportConfig'
+import {
     SatisfactionChart,
     SatisfactionReportConfig,
 } from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionReportConfig'
@@ -225,6 +233,22 @@ export const REVAMPED_REPORTS_CONFIG: ReportsModalConfig = REPORTS_CONFIG.map(
     },
 )
 
+export const PERFORMANCE_REPORTS_CONFIG: ReportsModalConfig = [
+    {
+        category: 'Performance',
+        children: [
+            {
+                type: PerformanceOverviewChart,
+                config: PerformanceOverviewReportConfig,
+            },
+            {
+                type: PerformanceChannelsEmailChart,
+                config: ChannelsEmailReportConfig,
+            },
+        ],
+    },
+]
+
 export const LEGACY_REPORTS_CONFIG: ReportsModalConfig = [
     {
         category: 'Support Performance',
@@ -266,9 +290,14 @@ export const getComponentConfig = (
         ? [
               ...REPORTS_CONFIG,
               ...REVAMPED_REPORTS_CONFIG,
+              ...PERFORMANCE_REPORTS_CONFIG,
               ...LEGACY_REPORTS_CONFIG,
           ]
-        : [...REPORTS_CONFIG, ...REVAMPED_REPORTS_CONFIG]
+        : [
+              ...REPORTS_CONFIG,
+              ...REVAMPED_REPORTS_CONFIG,
+              ...PERFORMANCE_REPORTS_CONFIG,
+          ]
 
     for (const section of allSections) {
         for (const report of section.children) {
@@ -317,9 +346,14 @@ export const getReportConfig = (
             ? [
                   ...REPORTS_CONFIG,
                   ...REVAMPED_REPORTS_CONFIG,
+                  ...PERFORMANCE_REPORTS_CONFIG,
                   ...LEGACY_REPORTS_CONFIG,
               ]
-            : [...REPORTS_CONFIG, ...REVAMPED_REPORTS_CONFIG]
+            : [
+                  ...REPORTS_CONFIG,
+                  ...REVAMPED_REPORTS_CONFIG,
+                  ...PERFORMANCE_REPORTS_CONFIG,
+              ]
         ).map((report) => report.children),
     )
 
@@ -337,6 +371,7 @@ export const getReportConfigFromPath = (
         [
             ...REPORTS_CONFIG,
             ...REVAMPED_REPORTS_CONFIG,
+            ...PERFORMANCE_REPORTS_CONFIG,
             ...LEGACY_REPORTS_CONFIG,
         ].map((report) => report.children),
     )

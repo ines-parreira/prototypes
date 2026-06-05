@@ -19,7 +19,7 @@ export enum PerformanceChannelsEmailChart {
 export const ChannelsEmailReportConfig: ReportConfig<PerformanceChannelsEmailChart> =
     {
         id: ReportsIDs.PerformanceChannelsEmailReportConfig,
-        reportName: 'Channels',
+        reportName: 'Channels > Email',
         reportPath: STATS_ROUTES.PERFORMANCE_CHANNELS,
         charts: {
             [PerformanceChannelsEmailChart.AverageCSATCard]: {
