@@ -7,6 +7,9 @@ import _isEqual from 'lodash/isEqual'
 
 import 'draft-js/dist/Draft.css'
 
+import { attachGuidanceVariableEntities } from 'pages/common/draftjs/plugins/guidance-variables/utils'
+import { attachGuidanceActionEntities } from 'pages/common/draftjs/plugins/guidanceActions/utils'
+import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
 import { attachEntitiesToVariables } from 'pages/common/draftjs/plugins/variables/utils'
 import {
     contentStateFromTextOrHTML,
@@ -158,6 +161,20 @@ export default class RichField extends Component<Props, State> {
 
         // immutable variables on first load
         editorState = attachEntitiesToVariables(editorState, true)
+
+        // Guidance variables and actions are decorated by plugins that attach
+        // their entities on each editor change. Content set externally (e.g. a
+        // cache-driven refetch) bypasses that pipeline, so attach them here too
+        // — otherwise they render as raw placeholders until the editor is
+        // focused.
+        if (
+            this.props.displayedActions?.includes(ActionName.GuidanceVariable)
+        ) {
+            editorState = attachGuidanceVariableEntities(editorState)
+        }
+        if (this.props.displayedActions?.includes(ActionName.GuidanceAction)) {
+            editorState = attachGuidanceActionEntities(editorState)
+        }
 
         // Restore the preserved selection to maintain cursor position
         // Only if the selection is still valid (block keys exist in new content)

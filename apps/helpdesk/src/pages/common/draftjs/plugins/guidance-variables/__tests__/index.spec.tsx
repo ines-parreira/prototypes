@@ -2,11 +2,10 @@ import React from 'react'
 
 import { render } from '@repo/testing'
 import { fireEvent } from '@testing-library/react'
-import type { ContentBlock, ContentState } from 'draft-js'
-import { EditorState } from 'draft-js'
+import type { ContentBlock, ContentState, EditorState } from 'draft-js'
 
 import createGuidanceVariablesPlugin from '../index'
-import { addGuidanceVariableEntity } from '../utils'
+import { attachGuidanceVariableEntities } from '../utils'
 
 // Mock the GuidanceVariableTag component
 jest.mock('../GuidanceVariableTag', () => {
@@ -27,40 +26,14 @@ jest.mock('../GuidanceVariableTag', () => {
     }
 })
 
-// Mock findWithRegex
-jest.mock('find-with-regex', () => {
-    return jest.fn().mockImplementation((regex, block, callback) => {
-        callback(6, 22) // Mock finding a variable at positions 6-22
-    })
-})
-
-// Mock the utils
+// onChange delegates to this helper; its behaviour is covered in utils.spec.ts.
 jest.mock('../utils', () => ({
-    addGuidanceVariableEntity: jest.fn((block, contentState) => contentState),
+    attachGuidanceVariableEntities: jest.fn(),
 }))
 
 describe('createGuidanceVariablesPlugin', () => {
-    let mockEditorStatePush: jest.SpyInstance
-    let mockEditorStateForceSelection: jest.SpyInstance
-    let mockEditorStateAcceptSelection: jest.SpyInstance
-
     beforeEach(() => {
         jest.clearAllMocks()
-        mockEditorStatePush = jest
-            .spyOn(EditorState, 'push')
-            .mockImplementation(() => ({}) as EditorState)
-        mockEditorStateForceSelection = jest
-            .spyOn(EditorState, 'forceSelection')
-            .mockImplementation(() => ({}) as EditorState)
-        mockEditorStateAcceptSelection = jest
-            .spyOn(EditorState, 'acceptSelection')
-            .mockImplementation(() => ({}) as EditorState)
-    })
-
-    afterEach(() => {
-        mockEditorStatePush.mockRestore()
-        mockEditorStateForceSelection.mockRestore()
-        mockEditorStateAcceptSelection.mockRestore()
     })
 
     it('creates a plugin with decorators', () => {
@@ -170,154 +143,17 @@ describe('createGuidanceVariablesPlugin', () => {
         expect(callback).toHaveBeenCalledWith(5, 10)
     })
 
-    it('onChange processes blocks and adds entities to guidance variables', () => {
+    it('onChange delegates entity attachment to attachGuidanceVariableEntities', () => {
         const plugin = createGuidanceVariablesPlugin()
-
-        // Mock editor state and content
-        const mockBlock = {
-            getKey: jest.fn().mockReturnValue('block-1'),
-            getText: jest.fn().mockReturnValue('Hello &&&customer.name&&&'),
-        }
-
-        const mockBlockMap = {
-            forEach: jest.fn((callback) => {
-                callback(mockBlock)
-            }),
-        }
-
-        const mockContentState = {
-            getBlockMap: jest.fn().mockReturnValue(mockBlockMap),
-            equals: jest.fn().mockReturnValue(false),
-            createEntity: jest.fn().mockReturnThis(),
-            getLastCreatedEntityKey: jest.fn().mockReturnValue('entity-1'),
-        }
-
-        const mockSelection = {
-            getHasFocus: jest.fn().mockReturnValue(true),
-            merge: jest.fn().mockReturnThis(),
-        }
-
-        const mockEditorState = {
-            getCurrentContent: jest.fn().mockReturnValue(mockContentState),
-            getSelection: jest.fn().mockReturnValue(mockSelection),
-        } as unknown as EditorState
-
-        const mockNewEditorState = {
-            getSelection: jest.fn().mockReturnValue(mockSelection),
-        } as unknown as EditorState
-
-        mockEditorStatePush.mockReturnValue(mockNewEditorState)
-        mockEditorStateForceSelection.mockReturnValue(mockNewEditorState)
-
-        // Call the onChange function
-        const result = plugin.onChange(mockEditorState)
-
-        // Verify the result
-        expect(result).toBe(mockNewEditorState)
-        expect(addGuidanceVariableEntity).toHaveBeenCalledWith(
-            mockBlock,
-            mockContentState,
-            6,
-            22,
+        const editorState = {} as EditorState
+        const decoratedEditorState = {} as EditorState
+        ;(attachGuidanceVariableEntities as jest.Mock).mockReturnValue(
+            decoratedEditorState,
         )
-        expect(mockEditorStatePush).toHaveBeenCalledWith(
-            mockEditorState,
-            mockContentState,
-            'apply-entity',
-        )
-        // Verify focus is preserved
-        expect(mockSelection.merge).toHaveBeenCalledWith({ hasFocus: true })
-        expect(mockEditorStateForceSelection).toHaveBeenCalledWith(
-            mockNewEditorState,
-            mockSelection,
-        )
-    })
 
-    it('onChange returns original state when content has not changed', () => {
-        const plugin = createGuidanceVariablesPlugin()
+        const result = plugin.onChange(editorState)
 
-        // Mock editor state and content
-        const mockBlock = {
-            getKey: jest.fn().mockReturnValue('block-1'),
-            getText: jest.fn().mockReturnValue('Hello &&&customer.name&&&'),
-        }
-
-        const mockBlockMap = {
-            forEach: jest.fn((callback) => {
-                callback(mockBlock)
-            }),
-        }
-
-        const mockContentState = {
-            getBlockMap: jest.fn().mockReturnValue(mockBlockMap),
-            equals: jest.fn().mockReturnValue(true), // Content has not changed
-        }
-
-        const mockEditorState = {
-            getCurrentContent: jest.fn().mockReturnValue(mockContentState),
-        } as unknown as EditorState
-
-        // Call the onChange function
-        const result = plugin.onChange(mockEditorState)
-
-        // Verify the result
-        expect(result).toBe(mockEditorState)
-    })
-
-    it('onChange preserves unfocused state when editor is not focused', () => {
-        const plugin = createGuidanceVariablesPlugin()
-
-        // Mock editor state and content
-        const mockBlock = {
-            getKey: jest.fn().mockReturnValue('block-1'),
-            getText: jest.fn().mockReturnValue('Hello &&&customer.name&&&'),
-        }
-
-        const mockBlockMap = {
-            forEach: jest.fn((callback) => {
-                callback(mockBlock)
-            }),
-        }
-
-        const mockContentState = {
-            getBlockMap: jest.fn().mockReturnValue(mockBlockMap),
-            equals: jest.fn().mockReturnValue(false),
-        }
-
-        const mockSelection = {
-            getHasFocus: jest.fn().mockReturnValue(false), // Editor is not focused
-            merge: jest.fn().mockReturnThis(),
-        }
-
-        const mockEditorState = {
-            getCurrentContent: jest.fn().mockReturnValue(mockContentState),
-            getSelection: jest.fn().mockReturnValue(mockSelection),
-        } as unknown as EditorState
-
-        const mockNewEditorState = {
-            getSelection: jest.fn().mockReturnValue(mockSelection),
-        } as unknown as EditorState
-
-        mockEditorStatePush.mockReturnValue(mockNewEditorState)
-        mockEditorStateAcceptSelection.mockReturnValue(mockNewEditorState)
-
-        // Call the onChange function
-        const result = plugin.onChange(mockEditorState)
-
-        // Verify the result
-        expect(result).toBe(mockNewEditorState)
-        expect(mockEditorStatePush).toHaveBeenCalledWith(
-            mockEditorState,
-            mockContentState,
-            'apply-entity',
-        )
-        // Verify unfocused state is preserved via acceptSelection (forceSelection
-        // would override hasFocus to true and steal focus on initial mount).
-        expect(mockSelection.merge).toHaveBeenCalledWith({ hasFocus: false })
-        expect(mockEditorStateAcceptSelection).toHaveBeenCalledWith(
-            mockNewEditorState,
-            mockSelection,
-        )
-        expect(mockEditorStateForceSelection).not.toHaveBeenCalled()
+        expect(attachGuidanceVariableEntities).toHaveBeenCalledWith(editorState)
+        expect(result).toBe(decoratedEditorState)
     })
 })

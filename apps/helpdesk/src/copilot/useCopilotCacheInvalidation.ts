@@ -10,6 +10,13 @@ import {
     workflowsConfigurationDefinitionKeys,
 } from 'models/workflows/queries'
 
+// The Knowledge Hub list renders guidance and skill articles, so it must be
+// invalidated whenever Copilot creates or changes one of them.
+const knowledgeHubArticlesKey = [
+    ...helpCenterKeys.all(),
+    'knowledge-hub-articles',
+]
+
 /**
  * Mounts under <CopilotProvider> and listens for mutating Copilot tool calls.
  * On each one, invalidates the React Query keys for the affected entity so
@@ -33,6 +40,9 @@ export function useCopilotCacheInvalidation(): void {
                     queryClient.invalidateQueries({
                         queryKey: helpCenterKeys.details(),
                     })
+                    queryClient.invalidateQueries({
+                        queryKey: knowledgeHubArticlesKey,
+                    })
                     return
                 }
                 const { helpCenterId, id } = info.result
@@ -51,6 +61,9 @@ export function useCopilotCacheInvalidation(): void {
                 queryClient.invalidateQueries({
                     queryKey: helpCenterKeys.intents(helpCenterId),
                 })
+                queryClient.invalidateQueries({
+                    queryKey: knowledgeHubArticlesKey,
+                })
                 return
             }
 
@@ -63,6 +76,9 @@ export function useCopilotCacheInvalidation(): void {
                     })
                     queryClient.invalidateQueries({
                         queryKey: aiGeneratedGuidanceKeys.all(),
+                    })
+                    queryClient.invalidateQueries({
+                        queryKey: knowledgeHubArticlesKey,
                     })
                     return
                 }
@@ -81,6 +97,9 @@ export function useCopilotCacheInvalidation(): void {
                 }
                 queryClient.invalidateQueries({
                     queryKey: aiGeneratedGuidanceKeys.all(),
+                })
+                queryClient.invalidateQueries({
+                    queryKey: knowledgeHubArticlesKey,
                 })
                 return
             }

@@ -14,6 +14,11 @@ import {
 
 import { useCopilotCacheInvalidation } from './useCopilotCacheInvalidation'
 
+const knowledgeHubArticlesKey = [
+    ...helpCenterKeys.all(),
+    'knowledge-hub-articles',
+]
+
 jest.mock('@gorgias/copilot', () => {
     const listeners: Array<(info: CopilotToolCallResultInfo) => void> = []
     return {
@@ -116,6 +121,9 @@ describe('useCopilotCacheInvalidation', () => {
                 expect(invalidateSpy).toHaveBeenCalledWith({
                     queryKey: helpCenterKeys.intents(7),
                 })
+                expect(invalidateSpy).toHaveBeenCalledWith({
+                    queryKey: knowledgeHubArticlesKey,
+                })
                 expect(invalidateSpy).not.toHaveBeenCalledWith({
                     queryKey: helpCenterKeys.details(),
                 })
@@ -175,6 +183,9 @@ describe('useCopilotCacheInvalidation', () => {
 
             expect(invalidateSpy).toHaveBeenCalledWith({
                 queryKey: helpCenterKeys.details(),
+            })
+            expect(invalidateSpy).toHaveBeenCalledWith({
+                queryKey: knowledgeHubArticlesKey,
             })
         })
 
@@ -243,6 +254,9 @@ describe('useCopilotCacheInvalidation', () => {
                 expect(invalidateSpy).toHaveBeenCalledWith({
                     queryKey: aiGeneratedGuidanceKeys.all(),
                 })
+                expect(invalidateSpy).toHaveBeenCalledWith({
+                    queryKey: knowledgeHubArticlesKey,
+                })
                 expect(invalidateSpy).not.toHaveBeenCalledWith({
                     queryKey: helpCenterKeys.details(),
                 })
@@ -305,6 +319,9 @@ describe('useCopilotCacheInvalidation', () => {
             })
             expect(invalidateSpy).toHaveBeenCalledWith({
                 queryKey: aiGeneratedGuidanceKeys.all(),
+            })
+            expect(invalidateSpy).toHaveBeenCalledWith({
+                queryKey: knowledgeHubArticlesKey,
             })
         })
     })

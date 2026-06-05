@@ -1,6 +1,4 @@
-import type { ContentBlock, ContentState } from 'draft-js'
-import { EditorState } from 'draft-js'
-import findWithRegex from 'find-with-regex'
+import type { ContentBlock, ContentState, EditorState } from 'draft-js'
 
 import type { GuidanceVariableList } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
 import type {
@@ -8,10 +6,9 @@ import type {
     DecoratorStrategyCallback,
 } from 'pages/common/draftjs/plugins/types'
 
-import { guidanceVariableRegex } from './constants'
 import type { GuidanceVariableTagProps } from './GuidanceVariableTag'
 import GuidanceVariableTag from './GuidanceVariableTag'
-import { addGuidanceVariableEntity } from './utils'
+import { attachGuidanceVariableEntities } from './utils'
 
 type Options = {
     size?: GuidanceVariableTagProps['size']
@@ -59,47 +56,7 @@ export default function createGuidanceVariablesPlugin(options: Options = {}) {
             },
         ],
         // reference https://github.com/draft-js-plugins/draft-js-plugins/blob/master/packages/emoji/src/modifiers/attachImmutableEntitiesToEmojis.ts
-        onChange: (editorState: EditorState) => {
-            const contentState = editorState.getCurrentContent()
-            const blocks = contentState.getBlockMap()
-            let newContentState = contentState
-
-            blocks.forEach((block) => {
-                if (block) {
-                    findWithRegex(
-                        guidanceVariableRegex,
-                        block,
-                        (start, end) => {
-                            newContentState = addGuidanceVariableEntity(
-                                block,
-                                newContentState,
-                                start,
-                                end,
-                            )
-                        },
-                    )
-                }
-            })
-
-            if (!newContentState.equals(contentState)) {
-                const newEditorState = EditorState.push(
-                    editorState,
-                    newContentState,
-                    'apply-entity',
-                )
-                // Preserve selection to prevent cursor jumping. Use forceSelection
-                // only when the editor was focused — it always sets hasFocus to
-                // true, which would otherwise steal focus on initial mount.
-                const hadFocus = editorState.getSelection().getHasFocus()
-                const selection = newEditorState
-                    .getSelection()
-                    .merge({ hasFocus: hadFocus })
-                return hadFocus
-                    ? EditorState.forceSelection(newEditorState, selection)
-                    : EditorState.acceptSelection(newEditorState, selection)
-            }
-
-            return editorState
-        },
+        onChange: (editorState: EditorState) =>
+            attachGuidanceVariableEntities(editorState),
     }
 }

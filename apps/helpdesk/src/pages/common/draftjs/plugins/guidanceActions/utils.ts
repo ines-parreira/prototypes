@@ -1,5 +1,6 @@
 import type { ContentBlock, ContentState } from 'draft-js'
-import { Modifier, SelectionState } from 'draft-js'
+import { EditorState, Modifier, SelectionState } from 'draft-js'
+import findWithRegex from 'find-with-regex'
 
 import type { GuidanceAction } from './types'
 
@@ -50,6 +51,56 @@ export const addGuidanceActionEntity = (
         entityKey,
     )
     return newContentState
+}
+
+/**
+ * Scan every block for guidance action placeholders (`$$$...$$$`) and attach
+ * `guidance_action` entities so the decorator can render them as tags.
+ *
+ * The guidance actions plugin runs this on each editor change, but content set
+ * externally (e.g. a cache-driven refetch) bypasses the plugin's onChange, so
+ * callers that sync external content must run it explicitly — otherwise the
+ * placeholders render as raw text until the editor is focused.
+ */
+export const attachGuidanceActionEntities = (
+    editorState: EditorState,
+): EditorState => {
+    const contentState = editorState.getCurrentContent()
+    const blocks = contentState.getBlockMap()
+    let newContentState = contentState
+
+    blocks.forEach((block) => {
+        if (block) {
+            findWithRegex(guidanceActionRegex, block, (start, end) => {
+                newContentState = addGuidanceActionEntity(
+                    block,
+                    newContentState,
+                    start,
+                    end,
+                )
+            })
+        }
+    })
+
+    if (newContentState.equals(contentState)) {
+        return editorState
+    }
+
+    const newEditorState = EditorState.push(
+        editorState,
+        newContentState,
+        'apply-entity',
+    )
+    // Preserve selection to prevent cursor jumping. Use forceSelection only
+    // when the editor was focused — it always sets hasFocus to true, which
+    // would otherwise steal focus when syncing content into an unfocused editor.
+    const hadFocus = editorState.getSelection().getHasFocus()
+    const selection = newEditorState
+        .getSelection()
+        .merge({ hasFocus: hadFocus })
+    return hadFocus
+        ? EditorState.forceSelection(newEditorState, selection)
+        : EditorState.acceptSelection(newEditorState, selection)
 }
 
 export const replaceActionPlaceholdersWithLabels = (

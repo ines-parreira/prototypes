@@ -1,4 +1,46 @@
-import { replaceActionPlaceholdersWithLabels } from '../utils'
+import { ContentState, EditorState } from 'draft-js'
+
+import {
+    attachGuidanceActionEntities,
+    replaceActionPlaceholdersWithLabels,
+} from '../utils'
+
+describe('attachGuidanceActionEntities', () => {
+    const buildUnfocusedState = (text: string) =>
+        EditorState.createWithContent(ContentState.createFromText(text))
+
+    it('attaches guidance_action entities to externally-set content without stealing focus', () => {
+        const state = buildUnfocusedState('Do $$$01JW674XH7CW5SP7VMHK9KJ3WZ$$$')
+
+        const result = attachGuidanceActionEntities(state)
+
+        const contentState = result.getCurrentContent()
+        const block = contentState.getFirstBlock()
+        const entityKey = block.getEntityAt(6)
+        expect(entityKey).not.toBeNull()
+        expect(contentState.getEntity(entityKey).getType()).toBe(
+            'guidance_action',
+        )
+        // Syncing external content must not focus the editor, otherwise it would
+        // steal focus from wherever the user actually is.
+        expect(result.getSelection().getHasFocus()).toBe(false)
+    })
+
+    it('returns the same editor state when there are no guidance actions', () => {
+        const state = buildUnfocusedState('No actions here')
+
+        expect(attachGuidanceActionEntities(state)).toBe(state)
+    })
+
+    it('is idempotent when entities are already attached', () => {
+        const state = buildUnfocusedState('Do $$$01JW674XH7CW5SP7VMHK9KJ3WZ$$$')
+
+        const once = attachGuidanceActionEntities(state)
+        const twice = attachGuidanceActionEntities(once)
+
+        expect(twice).toBe(once)
+    })
+})
 
 describe('replaceActionPlaceholdersWithLabels', () => {
     it('should replace action placeholders with labels', () => {
