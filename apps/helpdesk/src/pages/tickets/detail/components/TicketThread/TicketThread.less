@@ -7,9 +7,13 @@
         overflow: auto;
         overscroll-behavior: contain;
         height: 100%;
-        background-color: var(--elevation-neutral-mid);
+        background-color: var(--elevation-neutral-low);
         scrollbar-width: thin;
         scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+
+        :global(.dark) & {
+            background-color: var(--elevation-neutral-mid);
+        }
 
         &::-webkit-scrollbar-thumb {
             background: var(--scrollbar-thumb);

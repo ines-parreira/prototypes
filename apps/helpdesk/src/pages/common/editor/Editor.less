@@ -42,7 +42,11 @@
 
 .axiom :local {
     .container {
-        background-color: var(--elevation-neutral-bg);
+        background-color: var(--elevation-neutral-low);
+
+        :global(.dark) & {
+            background-color: var(--elevation-neutral-mid);
+        }
 
         form {
             border: 1px solid var(--border-neutral-default);
