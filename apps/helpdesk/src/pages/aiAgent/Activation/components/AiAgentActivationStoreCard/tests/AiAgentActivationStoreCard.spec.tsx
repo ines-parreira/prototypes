@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 
 import { render, userEvent } from '@repo/testing'
-import { screen, waitFor } from '@testing-library/react'
+import { act, screen, within } from '@testing-library/react'
 
 import { storeActivationFixture } from 'pages/aiAgent/Activation/hooks/storeActivation.fixture'
 import type { StoreActivation } from 'pages/aiAgent/Activation/hooks/storeActivationReducer'
@@ -117,9 +117,16 @@ const storeWithAlert: StoreActivation = {
 
 const ui = {
     chatToggle: () => screen.getByText('Chat'),
-    chatTooltip: () => screen.getAllByText('info')[0],
     emailToggle: () => screen.getByText('Email'),
-    emailTooltip: () => screen.getAllByText('info')[1],
+    channelTooltip: (label: 'Chat' | 'Email') => {
+        const channel = screen.getByText(label).closest('.channel')
+
+        if (!(channel instanceof HTMLElement)) {
+            throw new Error(`Could not find the ${label} channel`)
+        }
+
+        return within(channel).getByText('info')
+    },
 }
 
 describe('<AiAgentActivationStoreCard />', () => {
@@ -235,21 +242,15 @@ describe('<AiAgentActivationStoreCard />', () => {
             closeModal,
         })
 
-        userEvent.hover(ui.emailTooltip())
-        await waitFor(() => {
-            expect(screen.getByRole('tooltip')).toHaveTextContent(
-                'integrated emails:',
-            )
-            expect(screen.getByRole('tooltip')).toHaveTextContent(
-                'foo@example.com',
-            )
-            expect(screen.getByRole('tooltip')).not.toHaveTextContent(
-                'another@example.com',
-            )
-            expect(screen.getByRole('tooltip')).not.toHaveTextContent(
-                'test@example.com',
-            )
+        await act(async () => {
+            await userEvent.hover(ui.channelTooltip('Email'))
         })
+
+        const tooltip = await screen.findByRole('tooltip')
+        expect(tooltip).toHaveTextContent('integrated emails:')
+        expect(tooltip).toHaveTextContent('foo@example.com')
+        expect(tooltip).not.toHaveTextContent('another@example.com')
+        expect(tooltip).not.toHaveTextContent('test@example.com')
     })
 
     it('should display tooltips for integrated chats when hovering', async () => {
@@ -260,18 +261,13 @@ describe('<AiAgentActivationStoreCard />', () => {
             closeModal,
         })
 
-        userEvent.hover(ui.chatTooltip())
-
-        await waitFor(() => {
-            expect(screen.getByRole('tooltip')).toHaveTextContent(
-                'integrated chats:',
-            )
-            expect(screen.getByRole('tooltip')).toHaveTextContent(
-                'Chat Channel 1',
-            )
-            expect(screen.getByRole('tooltip')).not.toHaveTextContent(
-                'Chat Channel 2',
-            )
+        await act(async () => {
+            await userEvent.hover(ui.channelTooltip('Chat'))
         })
+
+        const tooltip = await screen.findByRole('tooltip')
+        expect(tooltip).toHaveTextContent('integrated chats:')
+        expect(tooltip).toHaveTextContent('Chat Channel 1')
+        expect(tooltip).not.toHaveTextContent('Chat Channel 2')
     })
 })
