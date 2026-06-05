@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import type { RefObject } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { tryLocalStorage } from '@repo/browser-storage'
 import { useAsyncFn } from '@repo/hooks'
@@ -10,7 +11,11 @@ import {
 import { hasRole, UserRole } from '@repo/permissions'
 import { CollapsedDefaultViews } from '@repo/tickets'
 import { shortcutManager } from '@repo/utils'
-import { syncViewRealtimeEvent, useViewsOrderingCacheSync } from '@repo/views'
+import {
+    syncViewRealtimeEvent,
+    useViewsOrderingCacheSync,
+    useVisibleNavigationViewIds,
+} from '@repo/views'
 import _debounce from 'lodash/debounce'
 import type { DropTargetMonitor } from 'react-dnd'
 import { useHistory } from 'react-router-dom'
@@ -84,6 +89,16 @@ type TicketNavbarBridgeContainerProps = {
     viewUpdated: typeof viewUpdatedAction
 }
 
+function VisibleViewIdsObserver({
+    rootRef,
+}: {
+    rootRef: RefObject<HTMLElement | null>
+}) {
+    useVisibleNavigationViewIds(rootRef)
+
+    return null
+}
+
 export function TicketNavbarBridgeContainer({
     activeViewId,
     activeViewIdSet,
@@ -99,6 +114,7 @@ export function TicketNavbarBridgeContainer({
 }: TicketNavbarBridgeContainerProps) {
     const history = useHistory()
     const { isCollapsed } = useSidebar()
+    const visibleViewIdsRootRef = useRef<HTMLDivElement>(null)
     const [isSectionFormModalOpened, setSectionFormModalOpened] =
         useState(false)
     const [isDeleteSectionModalOpened, setDeleteSectionModalOpened] =
@@ -383,30 +399,33 @@ export function TicketNavbarBridgeContainer({
 
     return (
         <>
-            <TicketNavbarCreateMenu />
-            <Box flexDirection="column" gap="xs">
-                <RecentChats />
-                <DefaultViews />
-            </Box>
-            <NavigationSectionGroup
-                storageKey="inbox-navigation"
-                defaultExpandedKeys={Object.keys(ViewCategories)}
-            >
-                <WayfindingTicketNavbarSections
-                    activeViewId={activeViewId}
-                    activeViewIdSet={activeViewIdSet}
-                    categories={categories}
-                    handleCategoryDrop={handleCategoryDrop}
-                    handleCreateSectionClick={handleCreateSectionClick}
-                    handleSectionDeleteClick={handleSectionDeleteClick}
-                    handleSectionRenameClick={handleSectionRenameClick}
-                    handleSubmitMoveItem={handleSubmitMoveItem}
-                    history={history}
-                    isAgent={isAgent}
-                    isMovingItem={isMovingItem}
-                    viewUpdated={viewUpdated}
-                />
-            </NavigationSectionGroup>
+            <div ref={visibleViewIdsRootRef} style={{ display: 'contents' }}>
+                <VisibleViewIdsObserver rootRef={visibleViewIdsRootRef} />
+                <TicketNavbarCreateMenu />
+                <Box flexDirection="column" gap="xs">
+                    <RecentChats />
+                    <DefaultViews />
+                </Box>
+                <NavigationSectionGroup
+                    storageKey="inbox-navigation"
+                    defaultExpandedKeys={Object.keys(ViewCategories)}
+                >
+                    <WayfindingTicketNavbarSections
+                        activeViewId={activeViewId}
+                        activeViewIdSet={activeViewIdSet}
+                        categories={categories}
+                        handleCategoryDrop={handleCategoryDrop}
+                        handleCreateSectionClick={handleCreateSectionClick}
+                        handleSectionDeleteClick={handleSectionDeleteClick}
+                        handleSectionRenameClick={handleSectionRenameClick}
+                        handleSubmitMoveItem={handleSubmitMoveItem}
+                        history={history}
+                        isAgent={isAgent}
+                        isMovingItem={isMovingItem}
+                        viewUpdated={viewUpdated}
+                    />
+                </NavigationSectionGroup>
+            </div>
             {sectionModals}
         </>
     )

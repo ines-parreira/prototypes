@@ -65,6 +65,7 @@ export { useUpdatePrivateViewsOrdering } from './hooks/useUpdatePrivateViewsOrde
 export { useUpdatePublicViewsOrdering } from './hooks/useUpdatePublicViewsOrdering'
 export { useViewsOrderingCacheSync } from './hooks/useViewsOrderingCacheSync'
 export type { ViewSectionMoveCacheItem } from './hooks/useViewsOrderingCacheSync'
+export { useVisibleNavigationViewIds } from './hooks/useVisibleNavigationViewIds'
 export { useHasNewViewCountScheduler } from './hooks/useHasNewViewCountScheduler'
 export {
     useViewCountSchedulerVersion,

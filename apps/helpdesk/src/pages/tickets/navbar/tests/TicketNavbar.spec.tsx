@@ -11,6 +11,7 @@ import {
     usePublicViews,
     usePublicViewSections,
     usePublicViewsOrdering,
+    useVisibleNavigationViewIds,
 } from '@repo/views'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -113,6 +114,7 @@ jest.mock('@repo/views', () => ({
     usePublicViewsOrdering: jest.fn(),
     usePublicViewSections: jest.fn(),
     syncViewRealtimeEvent: jest.fn(),
+    useVisibleNavigationViewIds: jest.fn(() => []),
 }))
 const mockUsePublicViews = usePublicViews as jest.Mock
 const mockUsePrivateViews = usePrivateViews as jest.Mock
@@ -121,6 +123,7 @@ const mockUsePrivateViewSections = usePrivateViewSections as jest.Mock
 const mockUsePublicViewsOrdering = usePublicViewsOrdering as jest.Mock
 const mockUsePrivateViewsOrdering = usePrivateViewsOrdering as jest.Mock
 const mockSyncViewRealtimeEvent = syncViewRealtimeEvent as jest.Mock
+const mockUseVisibleNavigationViewIds = useVisibleNavigationViewIds as jest.Mock
 jest.mock('../DefaultViews', () => ({
     DefaultViews: () => <div>DefaultViews</div>,
 }))
@@ -494,6 +497,7 @@ describe('<TicketNavbar/>', () => {
 
         useSplitTicketViewSwitcherMock.mockImplementation(_noop)
         mockUseHelpdeskV2WayfindingMS1Flag.mockReturnValue(false)
+        mockUseVisibleNavigationViewIds.mockReturnValue([])
         mockUseSidebar.mockReturnValue({
             isCollapsed: false,
             toggleCollapse: jest.fn(),
@@ -869,6 +873,12 @@ describe('<TicketNavbar/>', () => {
             )
         })
 
+        it('observes visible view IDs from the SDK-backed wayfinding navbar', () => {
+            renderNavbar(minProps)
+
+            expect(mockUseVisibleNavigationViewIds).toHaveBeenCalledTimes(1)
+        })
+
         it('uses optimistic ordering before query ordering for wayfinding elements', () => {
             ticketViewNavigationOrderingStore
                 .getState()
@@ -974,6 +984,12 @@ describe('<TicketNavbar/>', () => {
                 isLoading: false,
                 value: false,
             })
+        })
+
+        it('does not observe visible view IDs on the legacy source navbar', () => {
+            renderNavbar(minProps)
+
+            expect(mockUseVisibleNavigationViewIds).not.toHaveBeenCalled()
         })
 
         it('uses the legacy Redux source and fetch bridge', async () => {
