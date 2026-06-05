@@ -128,7 +128,7 @@ type MenuItemProps = {
 
 // With custom trigger
 <Menu
-  trigger={<Button variant="tertiary" leadingSlot="more-horizontal" />}
+  trigger={<Button variant="tertiary" leadingSlot="dots-meatballs-horizontal" />}
   aria-label="Actions"
 >
   <MenuItem label="Edit" />
@@ -141,9 +141,9 @@ type MenuItemProps = {
 
 ```typescript
 <Menu aria-label="Actions">
-  <MenuItem leadingSlot="edit" label="Edit" />
+  <MenuItem leadingSlot="edit-pencil" label="Edit" />
   <MenuItem leadingSlot="copy" label="Duplicate" />
-  <MenuItem leadingSlot="trash" label="Delete" />
+  <MenuItem leadingSlot="trash-empty" label="Delete" />
 </Menu>
 ```
 
@@ -154,7 +154,7 @@ type MenuItemProps = {
   <MenuItem
     label="Edit"
     caption="Ctrl+E"
-    leadingSlot="edit"
+    leadingSlot="edit-pencil"
   />
   <MenuItem
     label="Copy"
@@ -164,7 +164,7 @@ type MenuItemProps = {
   <MenuItem
     label="Paste"
     caption="Ctrl+V"
-    leadingSlot="clipboard"
+    leadingSlot="copy"
   />
 </Menu>
 ```
@@ -219,7 +219,7 @@ function ActionsMenu() {
 <Menu aria-label="Actions">
   <MenuItem label="Edit" />
   <MenuItem label="Duplicate" />
-  <SubMenu label="More Actions" leadingSlot="more-horizontal">
+  <SubMenu label="More Actions" leadingSlot="dots-meatballs-horizontal">
     <MenuItem label="Archive" />
     <MenuItem label="Export" />
     <MenuItem label="Share" />
@@ -244,7 +244,7 @@ function ActionsMenu() {
   <MenuItem
     label="Regular Action"
     intent="regular"
-    leadingSlot="edit"
+    leadingSlot="edit-pencil"
   />
   <MenuItem
     label="AI Action"
@@ -254,7 +254,7 @@ function ActionsMenu() {
   <MenuItem
     label="Delete"
     intent="destructive"
-    leadingSlot="trash"
+    leadingSlot="trash-empty"
   />
 </Menu>
 ```
@@ -310,9 +310,9 @@ const items = [
 
 ```typescript
 <Menu aria-label="Commands" isSearchable>
-    <MenuItem label="Edit" leadingSlot="edit" />
+    <MenuItem label="Edit" leadingSlot="edit-pencil" />
     <MenuItem label="Copy" leadingSlot="copy" />
-    <MenuItem label="Delete" leadingSlot="trash" />
+    <MenuItem label="Delete" leadingSlot="trash-empty" />
 </Menu>
 ```
 
@@ -403,7 +403,7 @@ function ContextMenu({ item, onEdit, onDelete }) {
         <Button
           variant="tertiary"
           size="sm"
-          leadingSlot="more-vertical"
+          leadingSlot="dots-kebab-vertical"
           aria-label="Actions"
         />
       }
@@ -413,11 +413,11 @@ function ContextMenu({ item, onEdit, onDelete }) {
         if (key === 'delete') onDelete(item)
       }}
     >
-      <MenuItem id="edit" leadingSlot="edit" label="Edit" />
+      <MenuItem id="edit" leadingSlot="edit-pencil" label="Edit" />
       <MenuItem id="duplicate" leadingSlot="copy" label="Duplicate" />
       <MenuItem
         id="delete"
-        leadingSlot="trash"
+        leadingSlot="trash-empty"
         label="Delete"
         intent="destructive"
       />
@@ -463,7 +463,7 @@ function TicketActions({ ticket }) {
       />
       <MenuItem
         id="delete"
-        leadingSlot="trash"
+        leadingSlot="trash-empty"
         label="Delete ticket"
         intent="destructive"
       />

@@ -109,7 +109,7 @@ const [email, setEmail] = useState('')
 // Icon slots
 <TextField
   label="Search"
-  leadingSlot="search"
+  leadingSlot="magnifying-glass"
   trailingSlot="close"
 />
 

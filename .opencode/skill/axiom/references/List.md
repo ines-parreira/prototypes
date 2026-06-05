@@ -33,6 +33,9 @@ type ListProps<T extends object> = {
     maxWidth?: number | string // Maximum width (default: 500)
     maxHeight?: number | string // Maximum height (enables scrolling)
 
+    // Virtualization
+    isVirtualized?: boolean // Render only visible items for large lists. Requires maxHeight (defaults to 400 if unset)
+
     // Search
     isSearchable?: boolean // Enable search field
     searchValue?: string // Controlled search value
@@ -59,7 +62,7 @@ type ListProps<T extends object> = {
 type ListSize = 'sm' | 'md'
 
 // Elevation options
-type ListElevation = 'high' | 'mid'
+type ListElevation = 'background' | 'low' | 'default' | 'mid' | 'high'
 
 // Selection mode
 type ListSelectionMode = 'single' | 'multiple'

@@ -19,6 +19,7 @@ type QuantityProps = {
     maxQuantity?: number // Maximum value to display. Shows "max+" when exceeded
     size?: QuantitySize // Size variant (default: 'md')
     compact?: boolean // Format numbers ≥ 1000 as "1k", "1.5k", "5k+", etc.
+    icon?: IconName // Leading icon shown before the value, at 'sm' size, inheriting the text color
 }
 ```
 

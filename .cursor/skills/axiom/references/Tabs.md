@@ -86,7 +86,7 @@ type TabPanelProps = {
     <TabItem id="sent" leadingSlot="send">
       Sent
     </TabItem>
-    <TabItem id="drafts" leadingSlot="file-text">
+    <TabItem id="drafts" leadingSlot="file-document">
       Drafts
     </TabItem>
   </TabList>
@@ -117,7 +117,7 @@ type TabPanelProps = {
     </TabItem>
     <TabItem
       id="flagged"
-      leadingSlot="flag"
+      leadingSlot="nav-flag"
       trailingSlot={<Quantity quantity={3} />}
     >
       Flagged
@@ -262,7 +262,7 @@ function PageTabs() {
         <TabItem id="customers" leadingSlot="users">
           Customers
         </TabItem>
-        <TabItem id="analytics" leadingSlot="bar-chart">
+        <TabItem id="analytics" leadingSlot="chart-bar-vertical">
           Analytics
         </TabItem>
       </TabList>
@@ -307,7 +307,7 @@ function MessageTabs({ unreadCount, flaggedCount }) {
         </TabItem>
         <TabItem
           id="flagged"
-          leadingSlot="flag"
+          leadingSlot="nav-flag"
           trailingSlot={
             flaggedCount > 0 && (
               <Quantity quantity={flaggedCount} />
@@ -345,7 +345,7 @@ function SettingsTabs() {
         <TabItem id="notifications" leadingSlot="bell">
           Notifications
         </TabItem>
-        <TabItem id="security" leadingSlot="shield">
+        <TabItem id="security" leadingSlot="check-shield">
           Security
         </TabItem>
         <TabItem id="billing" leadingSlot="credit-card">

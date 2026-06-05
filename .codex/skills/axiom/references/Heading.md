@@ -87,7 +87,7 @@ Heading sizes map to semantic HTML heading elements:
 ## Related Components
 
 - **Text**: For body text and non-heading content
-- **PageHeader**: Uses Heading size="xl" for page titles
+- **PanelHeader**: Uses Heading for panel/page titles
 
 ## Testing Queries
 

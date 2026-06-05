@@ -230,7 +230,7 @@ function PageBreadcrumbs({ path }) {
   <Breadcrumb>
     <Link href="/">
       <Box flexDirection="row" gap="xs" alignItems="center">
-        <Icon name="home" size="sm" />
+        <Icon name="nav-home" size="sm" />
         <Text>Home</Text>
       </Box>
     </Link>

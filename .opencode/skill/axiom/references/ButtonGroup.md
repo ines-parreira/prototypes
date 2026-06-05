@@ -77,10 +77,10 @@ const [selectedKey, setSelectedKey] = useState('button-1')
 ```typescript
 // Leading icons
 <ButtonGroup>
-  <ButtonGroupItem id="list" leadingSlot="list">
+  <ButtonGroupItem id="list" leadingSlot="list-unordered">
     List View
   </ButtonGroupItem>
-  <ButtonGroupItem id="grid" leadingSlot="grid">
+  <ButtonGroupItem id="grid" leadingSlot="menu-more-grid">
     Grid View
   </ButtonGroupItem>
 </ButtonGroup>

@@ -31,8 +31,8 @@ type IconBoxVariant = 'primary' | 'secondary'
 // Available color schemes (each maps to a surface + border + icon color pair)
 type IconBoxColor = 'grey' | 'accent' | 'blue' | 'coral' | 'purple' | 'teal' | 'yellow'
 
-// 'sm' | 'md'
-type IconBoxSize = 'sm' | 'md'
+// 'xs' | 'sm' | 'md'
+type IconBoxSize = 'xs' | 'sm' | 'md'
 ```
 
 ## Usage

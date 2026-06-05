@@ -91,14 +91,14 @@ type ButtonProps = {
 
 ```typescript
 // Icon slots with text
-<Button leadingSlot="plus">Add Item</Button>
+<Button leadingSlot="add-plus">Add Item</Button>
 <Button trailingSlot="arrow-right">Next</Button>
 
 // Icon-only button
 <Button icon={<Icon name="settings" />} />
 
 // Custom icon content
-<Button leadingSlot={<Icon name="search" size="sm" />}>
+<Button leadingSlot={<Icon name="magnifying-glass" size="sm" />}>
   Search
 </Button>
 ```

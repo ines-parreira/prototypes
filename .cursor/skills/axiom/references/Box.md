@@ -267,7 +267,7 @@ expect(box).toHaveStyle('flexDirection: column')
 ## Related Components
 
 - **Card**: Box with elevation styling for grouped content
-- **PageHeader**: Specialized layout for page headers
+- **Panel**: Scrollable container with sticky PanelHeader/PanelFooter
 - **All form fields**: Use Box for custom form layouts
 
 ## Best Practices

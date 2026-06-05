@@ -107,7 +107,7 @@ Use `layout="stack"` + `type="bottom-border"` tiles. `Panel.module.less` removes
     <TileList items={items} aria-label="Items" layout="stack">
         {(item) => (
             <TileListItem id={item.id} textValue={item.name} type="bottom-border">
-                <TileHeader title={item.name} leadingSlot="comm-chat" />
+                <TileHeader title={item.name} leadingSlot="chat" />
             </TileListItem>
         )}
     </TileList>

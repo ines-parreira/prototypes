@@ -48,6 +48,7 @@ type SelectProps<T extends object, S extends object = T> = {
     placement?: SelectPlacement // Dropdown position. Default: 'Bottom'
     shouldFlip?: boolean // Flip when insufficient space. Default: true
     maxHeight?: number | string // Max height of dropdown
+    isVirtualized?: boolean // Render only visible options for large lists (defaults maxHeight to 400 if unset)
     minWidth?: number | string // Min width of dropdown
     maxWidth?: number | string // Max width of dropdown
     size?: 'sm' | 'md' // List item size. Default: 'md'

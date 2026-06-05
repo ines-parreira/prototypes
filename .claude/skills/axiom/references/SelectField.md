@@ -48,6 +48,7 @@ type SelectFieldProps<T extends object> = {
     placement?: 'top' | 'bottom' | 'left' | 'right' // Dropdown placement. Default: 'bottom'
     shouldFlip?: boolean // Auto-flip when insufficient space. Default: true
     maxHeight?: number // Maximum dropdown height in pixels
+    isVirtualized?: boolean // Render only visible options for large lists (defaults maxHeight to 400 if unset)
     header?: ReactNode // Header content at top of dropdown
     footer?: ReactNode // Footer content at bottom of dropdown
 
@@ -137,7 +138,7 @@ const [selectedAnimal, setSelectedAnimal] = useState<Animal | undefined>()
 <SelectField
   label="Priority"
   items={priorities}
-  leadingSlot="flag"
+  leadingSlot="nav-flag"
 >
   {(priority) => <ListItem label={priority.label} />}
 </SelectField>

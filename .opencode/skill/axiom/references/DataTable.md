@@ -265,7 +265,7 @@ const columns = [
     columnHelper.actions({
         cell: () => (
             <DataTableActionsCell>
-                <Button variant="tertiary" size="sm" leadingSlot="pencil">Edit</Button>
+                <Button variant="tertiary" size="sm" leadingSlot="edit-pencil">Edit</Button>
             </DataTableActionsCell>
         ),
     }),

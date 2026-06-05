@@ -85,9 +85,9 @@ These tokens automatically adapt to light/dark mode themes.
 - content-inverted-default - Inverted text color (light text)
 - content-inverted-accent - Inverted accent text
 - content-selected-accent - Selected accent text
-- content-success-default, content-success-primary - Success text
-- content-error-default, content-error-primary - Error text
-- content-warning-default, content-warning-primary - Warning text
+- content-success-default - Success text
+- content-error-default - Error text
+- content-warning-default - Warning text
 - content-additional-blue, content-additional-purple, content-additional-fuchsia, content-additional-teal, content-additional-coral, content-additional-yellow
 
 **Border:**
@@ -96,9 +96,9 @@ These tokens automatically adapt to light/dark mode themes.
 - border-neutral-secondary - Secondary border
 - border-neutral-tertiary - Tertiary border
 - border-accent-default - Accent border
-- border-success-default, border-success-primary - Success borders
-- border-error-default, border-error-primary - Error borders
-- border-warning-default, border-warning-primary - Warning borders
+- border-success-default - Success borders
+- border-error-default - Error borders
+- border-warning-default - Warning borders
 - border-additional-blue, border-additional-purple, border-additional-fuchsia, border-additional-teal, border-additional-coral, border-additional-yellow
 
 **Surface (Backgrounds):**
@@ -111,16 +111,16 @@ These tokens automatically adapt to light/dark mode themes.
 - surface-button-secondary - Secondary button background
 - surface-success-default, surface-success-primary - Success backgrounds
 - surface-error-default, surface-error-primary - Error backgrounds
-- surface-warning-default, surface-warning-primary - Warning backgrounds
-- surface-destructive-primary - Destructive action background
+- surface-warning-default - Warning background
 - surface-additional-blue, surface-additional-purple, surface-additional-fuchsia, surface-additional-teal, surface-additional-coral, surface-additional-yellow
 
 **Elevation:**
 
+- elevation-neutral-bg - Background elevation (lowest)
+- elevation-neutral-low - Subtle elevation just above the background
 - elevation-neutral-default - Base elevation
 - elevation-neutral-mid - Medium elevation
 - elevation-neutral-high - High elevation
-- elevation-neutral-bg - Background elevation
 
 **Interactive States:**
 

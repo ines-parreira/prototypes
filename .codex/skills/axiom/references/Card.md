@@ -16,7 +16,7 @@ Extends `BoxProps` with elevation and interaction support.
 
 ```typescript
 type CardProps = BoxProps & {
-    elevation?: 'none' | 'low' | 'mid' | 'high' // Default: undefined
+    elevation?: 'background' | 'low' | 'default' | 'mid' | 'high' // Default: undefined (no elevation)
     onClick?: () => void // Makes card interactive (renders as anchor)
 
     // Inherits all BoxProps:
@@ -108,8 +108,10 @@ type CardFooterProps = {
 ### Elevation Levels
 
 ```typescript
-<Card elevation="none">No elevation</Card>
+<Card>No elevation (omit the prop)</Card>
+<Card elevation="background">Background elevation</Card>
 <Card elevation="low">Low elevation</Card>
+<Card elevation="default">Default elevation</Card>
 <Card elevation="mid">Mid elevation</Card>
 <Card elevation="high">High elevation</Card>
 ```

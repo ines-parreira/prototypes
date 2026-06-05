@@ -117,7 +117,7 @@ function PlatformShortcut({ mac, windows }) {
     </Box>
   }
 >
-  <Button leadingSlot="search">Search</Button>
+  <Button leadingSlot="magnifying-glass">Search</Button>
 </Tooltip>
 ```
 

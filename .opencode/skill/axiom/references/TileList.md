@@ -108,7 +108,7 @@ Use `layout="stack"` + `type="bottom-border"` for a list where items are separat
         <TileListItem id={item.id} textValue={item.name} type="bottom-border">
             <TileHeader
                 title={item.name}
-                leadingSlot="comm-chat"
+                leadingSlot="chat"
                 trailingSlot={
                     <Button icon={<Icon name="trash-empty" />} variant="tertiary" size="sm" />
                 }

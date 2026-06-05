@@ -82,7 +82,7 @@ type StatusButtonColor =
   Verified
 </StatusButton>
 
-<StatusButton leadingSlot="alert-triangle" color="orange">
+<StatusButton leadingSlot="warning-triangle" color="orange">
   Pending
 </StatusButton>
 

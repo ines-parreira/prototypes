@@ -182,8 +182,8 @@ Position of supplementary content slots within a component.
 
 ```typescript
 <TextField
-  leadingSlot={<Icon name="search" />}
-  trailingSlot={<Icon name="clear" />}
+  leadingSlot={<Icon name="magnifying-glass" />}
+  trailingSlot={<Icon name="close" />}
 />
 ```
 
@@ -203,7 +203,7 @@ When `P` is `never` (default), only `IconName | ReactNode` is accepted. When a c
 
 ```typescript
 // Icon name string - preferred
-<Button leadingSlot="plus">Add</Button>
+<Button leadingSlot="add-plus">Add</Button>
 
 // Render function with component state
 <Button leadingSlot={({ isLoading }) => isLoading ? <Loader /> : 'plus'}>

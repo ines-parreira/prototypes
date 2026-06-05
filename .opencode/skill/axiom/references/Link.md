@@ -42,7 +42,7 @@ type LinkSize = 'sm' | 'md'
 
 ```typescript
 <Link href="https://example.com" trailingSlot="external-link">External link</Link>
-<Link href="/tickets" leadingSlot="tickets">View tickets</Link>
+<Link href="/tickets" leadingSlot="ticket-voucher">View tickets</Link>
 ```
 
 ### Inline in Text

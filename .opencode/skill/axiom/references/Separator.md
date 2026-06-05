@@ -114,12 +114,12 @@ function Toolbar() {
 
       <Separator direction="vertical" />
 
-      <Button variant="tertiary" leadingSlot="align-left">Left</Button>
-      <Button variant="tertiary" leadingSlot="align-center">Center</Button>
+      <Button variant="tertiary" leadingSlot="text-align-left">Left</Button>
+      <Button variant="tertiary" leadingSlot="text-align-center">Center</Button>
 
       <Separator direction="vertical" />
 
-      <Button variant="tertiary" leadingSlot="link">Link</Button>
+      <Button variant="tertiary" leadingSlot="external-link">Link</Button>
     </Box>
   )
 }

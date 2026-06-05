@@ -31,8 +31,8 @@ import { Button, Modal, TextField } from '@gorgias/axiom'
 - **Date Selection**: DatePicker, DateRangePicker, Calendar, RangeCalendar
 - **Overlays**: Modal, SidePanel, Overlay, Popover, Tooltip
 - **Navigation**: Tabs, Breadcrumbs, Stepper, Link
-- **Layout**: Box, Card (with CardHeader, CardContent, CardFooter), Panel (with PanelHeader, PanelFooter), StickyStack (with StickyLayer), Tile (with TileHeader, TileContent), TileList (with TileListItem)
-- **Miscellaneous**: Avatar, AvatarGroup, Banner, Dot, IconBox, Image, Loader, Tag, Icon, FlagIcon, Skeleton, ShortcutKey, Separator, Quantity, ProgressBar, Toast, OverflowTooltip, Disclosure
+- **Layout**: Box, Card (with CardHeader, CardContent, CardFooter), Panel (with PanelHeader, PanelFooter), StickyStack (with StickyLayer), ScrollFollow (with ScrollFollowButton), Tile (with TileHeader, TileContent), TileList (with TileListItem)
+- **Miscellaneous**: Avatar, AvatarGroup, Banner, Dot, IconBox, Image, Loader, Tag, Icon, GaiaIcon, FlagIcon, Skeleton, ShortcutKey, Separator, Quantity, ProgressBar, Toast, OverflowTooltip, Disclosure
 
 ## Finding Component Documentation
 
@@ -103,7 +103,7 @@ Box is the fundamental layout primitive with flexbox capabilities and utility pr
 
 Card extends Box with elevation styling. Accepts all Box props plus:
 
-- `elevation` - `'default'` | `'mid'` | `'high'` - visual depth
+- `elevation` - `'background'` | `'low'` | `'default'` | `'mid'` | `'high'` - visual depth (omit for no elevation)
 - `onClick` - makes card interactive (renders as anchor)
 
 **Defaults:** `flexDirection="column"`, `gap="lg"`, `padding: md lg` (via CSS), `border-radius: sm`, `border: 1px solid`. Don't pass these props explicitly when using the default values.
@@ -147,6 +147,32 @@ Available hooks for advanced cases:
 - `useStickyScroll` / `useStickyScrollState` — observe scroll position and `hasScrollAbove` / `hasScrollBelow`
 - `useStickyScrollContainer` — explicitly register the scroll container (needed for OverlayScrollbars' deferred viewport)
 
+### ScrollFollow
+
+`ScrollFollow` keeps its children pinned to the bottom of the surrounding scroll container as the content grows — chat threads, logs, streamed output. Drop it inside the scroll area and pass the content as children; it auto-detects the scroll container (the nearest `StickyStack` container such as a `Panel`, else the nearest scrollable ancestor), so there's nothing to wire up.
+
+- `ScrollFollowButton` — a self-managing "scroll to bottom" button that appears when the user scrolls away from the bottom (render it alongside `ScrollFollow`).
+- Hooks for advanced cases: `useScrollFollow` (the pinning behavior) and `useScrollController` (imperative scroll control, e.g. `toBottom`). Types: `ScrollFollowProps`, `ScrollFollowButtonProps`, `ScrollableTarget`, `ScrollController`, `UseScrollFollowOptions`, `UseScrollFollowResult`.
+
+```typescript
+<Panel overflow="auto">
+  <PanelHeader title="Chat" />
+  <ScrollFollow>
+    {messages.map((m) => <Message key={m.id} {...m} />)}
+  </ScrollFollow>
+  <ScrollFollowButton />
+</Panel>
+```
+
+### GaiaIcon
+
+`GaiaIcon` renders the Gaia brand icon inside a circular bordered container. Sizes: `'sm'` (16px), `'md'` (24px, default), `'lg'` (40px). It takes no `name` — it's a fixed brand mark. Use it for AI/Gaia entry points (e.g. as a Button `leadingSlot`).
+
+```typescript
+<GaiaIcon size="sm" />
+<Button leadingSlot={<GaiaIcon size="sm" />}>Ask Gaia</Button>
+```
+
 ### When to Use Each
 
 - **Box**: General-purpose layout container, flexbox layouts, spacing control
@@ -165,7 +191,7 @@ Axiom components share a set of common types for consistency. For detailed infor
 - **Intent**: `Regular`, `Destructive`, `Ai` - Semantic meaning of actions
 - **Size**: `Xxxxs` through `Xxxl` - Predefined size scale (most components use subset like `Sm`, `Md`)
 - **Color**: `Ai`, `Blue`, `Coral`, `Fuchsia`, `Green`, `Grey`, `Red`, `Orange`, `Purple`, `Teal`, `Yellow`
-- **Elevation**: `Default`, `Mid`, `High` - Visual depth for containers
+- **Elevation**: `Background`, `Low`, `Default`, `Mid`, `High` - Visual depth for containers
 - **Placement**: `Bottom`, `Top`, `Left`, `Right` (with left/right modifiers) - Positioning for floating elements
 - **Orientation**: `Horizontal`, `Vertical` - Layout direction
 
@@ -469,16 +495,16 @@ type SlotProp<P = never> = [P] extends [never]
 
 ```typescript
 // ✅ Best - icon name string (component manages size/color)
-<Button leadingSlot="plus">Add Item</Button>
+<Button leadingSlot="add-plus">Add Item</Button>
 <ListItem leadingSlot="check" label="Completed" />
 
 // ✅ OK - Render function for dynamic slots
-<Button leadingSlot={({ isLoading }) => isLoading ? <Loader /> : 'plus'}>
+<Button leadingSlot={({ isLoading }) => isLoading ? <Loader /> : 'add-plus'}>
   Save
 </Button>
 
 // ❌ Avoid - Don't use <Icon /> in slots (component handles size/intent)
-<Button leadingSlot={<Icon name="plus" />}>Add Item</Button>
+<Button leadingSlot={<Icon name="add-plus" />}>Add Item</Button>
 ```
 
 Each component exports its own render props type (e.g., `ButtonRenderProps`, `TabRenderProps`, `ListItemRenderProps`). Check the component source or reference file for the available render props.
@@ -494,7 +520,7 @@ Each component exports its own render props type (e.g., `ButtonRenderProps`, `Ta
 
 ```typescript
 // ✅ Good - Standalone icon usage
-<Icon name="warning" size="lg" color="red" />
+<Icon name="warning-triangle" size="lg" color="red" />
 
 // ✅ Good - Icon in custom layout
 <Box flexDirection="row" gap="sm" alignItems="center">
