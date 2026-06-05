@@ -1431,6 +1431,73 @@ describe('ViewPanelEntrypoint', () => {
         )
     })
 
+    it('re-seeds the draft when re-entering a new view route with different route state', async () => {
+        // Regression: clicking a stat view-link, going back, then clicking a
+        // second link used to keep the first link's filters because the draft
+        // was already open in edit mode and the effect bailed out before
+        // noticing the route state had changed.
+        useHelpdeskV2MS4Dot5FlagMock.mockReturnValue(true)
+
+        let currentState: { viewName?: string; filters?: string } | undefined =
+            {
+                viewName: 'Open tickets assigned to: Agent 1',
+                filters: 'eq(ticket.assignee_user.id, 1)',
+            }
+        useLocationMock.mockImplementation(
+            () =>
+                ({
+                    pathname: '/app/tickets/new/public',
+                    state: currentState,
+                }) as ReturnType<typeof useLocation>,
+        )
+
+        let currentActiveView = fromJS({ id: 999, type: 'ticket-list' })
+        getActiveView.mockImplementation(() => currentActiveView)
+        getIsEditMode.mockImplementation(() =>
+            dispatchMock.mock.calls.some(
+                ([action]) => action === setViewEditModeAction,
+            ),
+        )
+        useAppSelectorMock.mockImplementation((selector) =>
+            selector({} as StoreState),
+        )
+
+        const { rerender } = render(
+            <Panels size={1000}>
+                <ViewPanelEntrypoint />
+            </Panels>,
+        )
+
+        await waitFor(() => {
+            expect(setViewEditModeMock).toHaveBeenCalledTimes(1)
+        })
+
+        // The first link left the BASE_VIEW draft open in edit mode — the state
+        // that previously suppressed re-initialization for the next link.
+        currentActiveView = fromJS({
+            id: BASE_VIEW_ID,
+            type: 'ticket-list',
+            visibility: ViewVisibility.Public,
+        })
+        currentState = {
+            viewName: 'Open tickets assigned to: Agent 2',
+            filters: 'eq(ticket.assignee_user.id, 2)',
+        }
+
+        rerender(
+            <Panels size={1000}>
+                <ViewPanelEntrypoint />
+            </Panels>,
+        )
+
+        // Without the fresh-route-state guard the effect bailed out here and the
+        // draft kept Agent 1's filters; it must re-seed instead.
+        await waitFor(() => {
+            expect(setViewEditModeMock).toHaveBeenCalledTimes(2)
+        })
+        expect(getLastSetViewEditModeDraftView().get('id')).toBe(BASE_VIEW_ID)
+    })
+
     it('should keep the new view table preview on the stable baseline when a draft filter is incomplete', () => {
         useHelpdeskV2MS4Dot5FlagMock.mockReturnValue(true)
         useLocationMock.mockReturnValue({

@@ -165,6 +165,7 @@ export enum FeatureFlagKey {
     IntentBasedKnowledgeMilestone3NewReportingLayer = 'linear-project_intent-based-knowledge-milstone-3-new-reporting-layer',
     KnowledgeIntentManagementSystem = 'linear.project_knowledge-intent-management-system.enable-feature',
     LiquidTemplateStep = 'liquid-template-step',
+    LiveAgentsDataTable = 'live-agents-data-table',
     MacroArchives = 'macro-archives',
     MacroResponseTextCcBcc = 'macro-response-text-cc-bcc',
     MessagesTranslations = 'linear.introduce-native-translations-for-inbound-and-outbound-messages.fe-implementation',

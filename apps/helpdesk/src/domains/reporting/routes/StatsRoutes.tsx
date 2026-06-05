@@ -23,6 +23,7 @@ import { DashboardPage } from 'domains/reporting/pages/dashboards/DashboardPage'
 import { Dashboards } from 'domains/reporting/pages/dashboards/Dashboards'
 import DefaultStatsFilters from 'domains/reporting/pages/DefaultStatsFilters'
 import HelpCenterStats from 'domains/reporting/pages/help-center/pages/HelpCenterStats'
+import LiveAgentsDataTablePage from 'domains/reporting/pages/live/agents/dataTable/LiveAgentsDataTable'
 import LiveAgents from 'domains/reporting/pages/live/agents/LiveAgents'
 import LiveOverview from 'domains/reporting/pages/live/overview/LiveOverview'
 import { PerformanceChannelsReport } from 'domains/reporting/pages/performance/channels/PerformanceChannelsReport'
@@ -57,6 +58,7 @@ import { SalesPaywallMiddlewareRouter } from 'pages/aiAgent/Overview/middlewares
 import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
 import { RevenueAddonApiClientProvider } from 'pages/convert/common/hooks/useConvertApi'
 import LegacyPage from 'pages/LegacyPage'
+import Page from 'pages/Page'
 import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import { STATS_ROUTES } from 'routes/constants'
@@ -95,6 +97,11 @@ export const StatsRoutes = () => {
 
     const { value: isRevampOverallPerformanceNewScreensEnabled } =
         useFlagWithLoading(FeatureFlagKey.RevampOverallPerformanceNewScreens)
+
+    const {
+        value: isLiveAgentsDataTableEnabled,
+        isLoading: isLiveAgentsDataTableFlagLoading,
+    } = useFlagWithLoading(FeatureFlagKey.LiveAgentsDataTable)
 
     useEffect(logPageChange, [location.pathname])
 
@@ -137,12 +144,30 @@ export const StatsRoutes = () => {
                     <Route
                         exact
                         path={`${path}/${STATS_ROUTES.LIVE_AGENTS}`}
-                        render={() => (
-                            <LegacyPage
-                                content={LiveAgents}
-                                navbar={StatsNavbarContainer}
-                            />
-                        )}
+                        render={() => {
+                            if (isLiveAgentsDataTableFlagLoading) {
+                                return (
+                                    <LegacyPage navbar={StatsNavbarContainer}>
+                                        {null}
+                                    </LegacyPage>
+                                )
+                            }
+
+                            // The new DataTable page renders inside an axiom
+                            // Panel that owns its height/scroll/sticky chrome,
+                            // so it uses the full-bleed panel `Page` layout; the
+                            // legacy report keeps the standard card chrome.
+                            return isLiveAgentsDataTableEnabled ? (
+                                <Page navbar={StatsNavbarContainer}>
+                                    <LiveAgentsDataTablePage />
+                                </Page>
+                            ) : (
+                                <LegacyPage
+                                    content={LiveAgents}
+                                    navbar={StatsNavbarContainer}
+                                />
+                            )
+                        }}
                     />
                 </ProtectedRoute>
                 <ProtectedRoute path={`${path}/${STATS_ROUTES.LIVE_VOICE}`}>

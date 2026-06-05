@@ -20,6 +20,29 @@ function buildRawCallExpression(filter: ViewFilter) {
     return `${filter.operator}(${filter.left}, ${filter.right})`
 }
 
+type ViewLinkTo = {
+    pathname: string
+    state: { viewName: string; filters: string }
+}
+
+/**
+ * Builds the react-router `to` target for a filtered tickets view. Exported so
+ * non-anchor triggers (e.g. an axiom `Button as={Link}`) can navigate to the
+ * same view without re-implementing the filter-expression serialization.
+ */
+export function buildViewLinkTo(
+    viewName: string,
+    filters: ViewFilter[],
+): ViewLinkTo {
+    return {
+        pathname: '/app/tickets/new/public',
+        state: {
+            viewName,
+            filters: filters.map(buildRawCallExpression).join(' && '),
+        },
+    }
+}
+
 export default function ViewLink({
     viewName,
     filters,
@@ -27,19 +50,11 @@ export default function ViewLink({
     className,
     ...anchorProps
 }: Props) {
-    const expression = filters.map(buildRawCallExpression).join(' && ')
-
     return (
         <Link
             {...anchorProps}
             className={classNames(css.viewLink, className)}
-            to={{
-                pathname: '/app/tickets/new/public',
-                state: {
-                    viewName,
-                    filters: expression,
-                },
-            }}
+            to={buildViewLinkTo(viewName, filters)}
         >
             {children}
         </Link>

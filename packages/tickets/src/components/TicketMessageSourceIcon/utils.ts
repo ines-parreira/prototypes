@@ -7,7 +7,10 @@ import {
 export type TicketMessageSource = TicketMessageSourceType | LegacyChannelSlug
 
 export const ticketMessageSourceToIconName = (
-    ticketMessageSource: TicketMessageSource,
+    // Accept any string (e.g. a raw channel slug) in addition to the known
+    // sources; unmatched values fall through to the `default` icon. `string & {}`
+    // keeps autocomplete for the enum members.
+    ticketMessageSource: TicketMessageSource | (string & {}),
 ): IconName => {
     switch (ticketMessageSource) {
         case TicketMessageSourceType.InternalNote:

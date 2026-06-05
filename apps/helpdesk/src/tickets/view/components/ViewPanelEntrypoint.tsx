@@ -246,7 +246,14 @@ export function ViewPanelEntrypoint() {
             (currentDraftVisibility !== null &&
                 currentDraftVisibility !== newRouteVisibility)
 
-        if (!shouldInitializeDraft) {
+        // A fresh navigation carrying different route state (e.g. clicking a
+        // second stat view-link) must re-seed the draft even when one is
+        // already open in edit mode — otherwise the previous link's filters
+        // stick. `shouldInitializeDraft` only covers the no-draft-yet case.
+        const hasFreshRouteState =
+            initializedDraftKeyRef.current !== nextDraftKey
+
+        if (!shouldInitializeDraft && !hasFreshRouteState) {
             return
         }
 

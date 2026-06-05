@@ -277,16 +277,12 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
         <span
           class="date"
         >
-          Today, 
-          February 14th
+          Today, February 14th
         </span>
         <span
           class="businessHours"
         >
-          Business hours 
-          12:00 am - 01:00 am
-           
-          US/Pacific
+          Business hours 12:00 am - 01:00 am US/Pacific
         </span>
       </div>
     </div>

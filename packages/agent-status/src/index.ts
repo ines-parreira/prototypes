@@ -54,3 +54,5 @@ export { usePhoneStatusBatchPollingInterval } from './hooks/usePhoneStatusBatchP
 export { AVAILABLE_STATUS } from './constants'
 
 export { formatDuration } from './utils'
+
+export { resolveActiveStatus } from './utils/resolveActiveStatus'
