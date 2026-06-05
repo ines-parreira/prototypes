@@ -28,7 +28,6 @@ export function useCopilotCacheInvalidation(): void {
         switch (info.toolName) {
             case 'create_draft_agent_skill':
             case 'update_draft_agent_skill':
-            case 'publish_agent_skill':
             case 'set_agent_skill_status': {
                 if (!info.result) {
                     queryClient.invalidateQueries({
@@ -37,27 +36,14 @@ export function useCopilotCacheInvalidation(): void {
                     return
                 }
                 const { helpCenterId, id } = info.result
-                // `set_agent_skill_status` is the renamed `publish_agent_skill`
-                // tool; both names are handled during the expand-contract
-                // rename so either backend deploy order is safe.
-                if (info.toolName === 'update_draft_agent_skill') {
-                    queryClient.invalidateQueries({
-                        queryKey: helpCenterKeys.article(helpCenterId, id),
-                    })
-                    queryClient.invalidateQueries({
-                        queryKey: helpCenterKeys.articles(helpCenterId),
-                    })
-                } else if (
-                    info.toolName === 'publish_agent_skill' ||
-                    info.toolName === 'set_agent_skill_status'
-                ) {
-                    queryClient.invalidateQueries({
-                        queryKey: helpCenterKeys.article(helpCenterId, id),
-                    })
+                if (info.toolName === 'create_draft_agent_skill') {
                     queryClient.invalidateQueries({
                         queryKey: helpCenterKeys.articles(helpCenterId),
                     })
                 } else {
+                    queryClient.invalidateQueries({
+                        queryKey: helpCenterKeys.article(helpCenterId, id),
+                    })
                     queryClient.invalidateQueries({
                         queryKey: helpCenterKeys.articles(helpCenterId),
                     })
@@ -70,7 +56,6 @@ export function useCopilotCacheInvalidation(): void {
 
             case 'create_draft_guidance':
             case 'update_draft_guidance':
-            case 'publish_guidance':
             case 'set_guidance_status': {
                 if (!info.result) {
                     queryClient.invalidateQueries({
@@ -82,27 +67,14 @@ export function useCopilotCacheInvalidation(): void {
                     return
                 }
                 const { helpCenterId, id } = info.result
-                // `set_guidance_status` is the renamed `publish_guidance` tool;
-                // both names are handled during the expand-contract rename so
-                // either backend deploy order is safe.
-                if (info.toolName === 'update_draft_guidance') {
-                    queryClient.invalidateQueries({
-                        queryKey: helpCenterKeys.article(helpCenterId, id),
-                    })
-                    queryClient.invalidateQueries({
-                        queryKey: helpCenterKeys.articles(helpCenterId),
-                    })
-                } else if (
-                    info.toolName === 'publish_guidance' ||
-                    info.toolName === 'set_guidance_status'
-                ) {
-                    queryClient.invalidateQueries({
-                        queryKey: helpCenterKeys.article(helpCenterId, id),
-                    })
+                if (info.toolName === 'create_draft_guidance') {
                     queryClient.invalidateQueries({
                         queryKey: helpCenterKeys.articles(helpCenterId),
                     })
                 } else {
+                    queryClient.invalidateQueries({
+                        queryKey: helpCenterKeys.article(helpCenterId, id),
+                    })
                     queryClient.invalidateQueries({
                         queryKey: helpCenterKeys.articles(helpCenterId),
                     })

@@ -88,14 +88,9 @@ describe('useCopilotCacheInvalidation', () => {
                 expected: helpCenterKeys.articles(7),
             },
             {
-                toolName: 'publish_agent_skill' as const,
-                args: { shop_name: 'shop', skill_id: 42 },
-                expected: helpCenterKeys.articles(7),
-            },
-            {
                 toolName: 'set_agent_skill_status' as const,
                 args: { shop_name: 'shop', skill_id: 42, status: 'published' },
-                expected: helpCenterKeys.articles(7),
+                expected: helpCenterKeys.article(7, 42),
             },
         ])(
             'invalidates precise key on $toolName',
@@ -126,23 +121,6 @@ describe('useCopilotCacheInvalidation', () => {
                 })
             },
         )
-
-        it('also invalidates the specific article on publish_agent_skill', () => {
-            const { wrapper, invalidateSpy } = makeWrapper()
-            renderHook(() => useCopilotCacheInvalidation(), { wrapper })
-
-            copilotMock.__emit(
-                makeInfo({
-                    toolName: 'publish_agent_skill',
-                    args: { shop_name: 'shop', skill_id: 42 },
-                    result: { id: 42, helpCenterId: 7 },
-                }),
-            )
-
-            expect(invalidateSpy).toHaveBeenCalledWith({
-                queryKey: helpCenterKeys.article(7, 42),
-            })
-        })
 
         it('also invalidates the specific article on set_agent_skill_status', () => {
             const { wrapper, invalidateSpy } = makeWrapper()
@@ -206,7 +184,7 @@ describe('useCopilotCacheInvalidation', () => {
 
             copilotMock.__emit(
                 makeInfo({
-                    toolName: 'publish_agent_skill',
+                    toolName: 'set_agent_skill_status',
                     args: { shop_name: 'shop', skill_id: 42 },
                     result: null,
                     rawResult: JSON.stringify({
@@ -237,18 +215,13 @@ describe('useCopilotCacheInvalidation', () => {
                 expected: helpCenterKeys.articles(3),
             },
             {
-                toolName: 'publish_guidance' as const,
-                args: { shop_name: 'shop', article_id: 99 },
-                expected: helpCenterKeys.articles(3),
-            },
-            {
                 toolName: 'set_guidance_status' as const,
                 args: {
                     shop_name: 'shop',
                     article_id: 99,
                     status: 'published',
                 },
-                expected: helpCenterKeys.articles(3),
+                expected: helpCenterKeys.article(3, 99),
             },
         ])(
             'invalidates precise key on $toolName',
@@ -275,23 +248,6 @@ describe('useCopilotCacheInvalidation', () => {
                 })
             },
         )
-
-        it('also invalidates the specific article on publish_guidance', () => {
-            const { wrapper, invalidateSpy } = makeWrapper()
-            renderHook(() => useCopilotCacheInvalidation(), { wrapper })
-
-            copilotMock.__emit(
-                makeInfo({
-                    toolName: 'publish_guidance',
-                    args: { shop_name: 'shop', article_id: 99 },
-                    result: { id: 99, helpCenterId: 3 },
-                }),
-            )
-
-            expect(invalidateSpy).toHaveBeenCalledWith({
-                queryKey: helpCenterKeys.article(3, 99),
-            })
-        })
 
         it('also invalidates the specific article on set_guidance_status', () => {
             const { wrapper, invalidateSpy } = makeWrapper()
