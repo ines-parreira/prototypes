@@ -165,6 +165,7 @@ export default function CustomerSyncForm({
 
     useEffect(() => {
         if (isUpdateCustomerSuccess || isCreateCustomerSuccess) {
+            toast.dismiss(CUSTOMER_SYNC_TOAST_ID)
             handleSyncModalClose()
         }
     }, [isUpdateCustomerSuccess, isCreateCustomerSuccess, handleSyncModalClose])

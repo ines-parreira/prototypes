@@ -438,6 +438,51 @@ describe('CustomerSyncForm', () => {
         })
     })
 
+    it('dismisses the loading notification when sync succeeds', async () => {
+        const dismissSpy = jest.spyOn(toast, 'dismiss')
+
+        const { rerender } = renderCustomerSyncForm()
+
+        ;(
+            useScheduleShopifyCreateNewCustomerAction as jest.Mock
+        ).mockReturnValue(createMockMutation({ isLoading: true }))
+        ;(useScheduleShopifyUpdateCustomerAction as jest.Mock).mockReturnValue(
+            createMockMutation(),
+        )
+        rerender(
+            <CustomerSyncForm
+                activeCustomer={activeCustomer}
+                isCustomerSyncFormOpen
+                setIsCustomerSyncFormOpen={jest.fn()}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Syncing profile to Shopify...',
+                }),
+            ).toHaveAttribute('data-intent', 'info')
+        })
+
+        ;(
+            useScheduleShopifyCreateNewCustomerAction as jest.Mock
+        ).mockReturnValue(createMockMutation({ isSuccess: true }))
+        rerender(
+            <CustomerSyncForm
+                activeCustomer={activeCustomer}
+                isCustomerSyncFormOpen
+                setIsCustomerSyncFormOpen={jest.fn()}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(dismissSpy).toHaveBeenCalledWith('customer-sync-to-shopify')
+        })
+
+        dismissSpy.mockRestore()
+    })
+
     it('closes form when the message success on create customer action', async () => {
         ;(
             useScheduleShopifyCreateNewCustomerAction as jest.Mock
