@@ -20,7 +20,27 @@ const useStatsMetricBreakdownPerDimensionMock = assumeMock(
 describe('PerformanceOverviewConfigurableBarGraph', () => {
     beforeAll(() => {
         global.ResizeObserver = class ResizeObserver {
-            observe() {}
+            callback: ResizeObserverCallback
+            constructor(callback: ResizeObserverCallback) {
+                this.callback = callback
+            }
+            observe(target: Element) {
+                this.callback(
+                    [
+                        {
+                            target,
+                            contentRect: {
+                                width: 500,
+                                height: 300,
+                            } as DOMRectReadOnly,
+                            borderBoxSize: [],
+                            contentBoxSize: [],
+                            devicePixelContentBoxSize: [],
+                        },
+                    ],
+                    this,
+                )
+            }
             unobserve() {}
             disconnect() {}
         }
@@ -28,6 +48,11 @@ describe('PerformanceOverviewConfigurableBarGraph', () => {
             return []
         }
     })
+
+    const findSvgTextByContent = (container: HTMLElement, text: string) =>
+        Array.from(container.querySelectorAll('svg text')).find((el) =>
+            el.textContent?.includes(text),
+        )
 
     beforeEach(() => {
         useStatsFiltersMock.mockReturnValue({
@@ -86,12 +111,12 @@ describe('PerformanceOverviewConfigurableBarGraph', () => {
     })
 
     it('renders humanized channel labels from the per-channel data', () => {
-        render(
+        const { container } = render(
             <PerformanceOverviewConfigurableBarGraph chartId="performance-overview-configurable-bar-graph" />,
         )
 
-        expect(screen.getByText('Email')).toBeInTheDocument()
-        expect(screen.getByText('Chat')).toBeInTheDocument()
+        expect(findSvgTextByContent(container, 'Email')).toBeTruthy()
+        expect(findSvgTextByContent(container, 'Chat')).toBeTruthy()
     })
 
     it('renders the responsive chart container', () => {

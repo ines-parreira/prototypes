@@ -26,7 +26,7 @@ const PERFORMANCE_BAR_DIMENSIONS: Record<
 > = {
     channel: {
         label: 'Channel',
-        graphType: ConfigurableGraphType.Bar,
+        graphType: ConfigurableGraphType.HorizontalBar,
         formatName: (value) => humanizeChannel(value),
     },
 }

@@ -41,7 +41,7 @@ afterEach(() => {
 })
 
 describe('getPerformanceConfigurableBarGraphConfig', () => {
-    it('returns one config per metric, each with a single channel bar dimension', () => {
+    it('returns one config per metric, each with a single channel horizontal bar dimension', () => {
         useStatsMetricBreakdownPerDimensionMock.mockReturnValue({
             data: null,
             isFetching: false,
@@ -64,7 +64,7 @@ describe('getPerformanceConfigurableBarGraphConfig', () => {
         expect(config[0].dimensions[0]).toMatchObject({
             id: 'channel',
             name: 'Channel',
-            configurableGraphType: ConfigurableGraphType.Bar,
+            configurableGraphType: ConfigurableGraphType.HorizontalBar,
         })
     })
 

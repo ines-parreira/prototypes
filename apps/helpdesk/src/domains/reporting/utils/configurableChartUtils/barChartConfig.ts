@@ -32,7 +32,10 @@ export type BarChartMetricConfig<TDimension extends DimensionName> = {
 
 export type BarChartDimensionDefinition = {
     label: string
-    graphType: ConfigurableGraphType.Bar | ConfigurableGraphType.Donut
+    graphType:
+        | ConfigurableGraphType.Bar
+        | ConfigurableGraphType.Donut
+        | ConfigurableGraphType.HorizontalBar
     formatName: (value: string) => string
 }
 
