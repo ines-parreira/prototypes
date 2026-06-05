@@ -14,7 +14,8 @@ import * as integrationsActions from 'state/integrations/actions'
 
 import { parseMessageData } from './parseMessageData'
 
-export const WHATSAPP_ONBOARDING_SUCCESS_EVENT = 'whatsapp-onboarding.success'
+export const WHATSAPP_ONBOARDING_SUCCEEDED_EVENT =
+    'whatsapp-onboarding.succeeded'
 export const WHATSAPP_ONBOARDING_FAILED_EVENT = 'whatsapp-onboarding.failed'
 
 const WHATSAPP_INTEGRATIONS_PATH =

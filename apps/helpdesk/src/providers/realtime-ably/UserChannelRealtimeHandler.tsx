@@ -16,7 +16,7 @@ import {
 import {
     useWhatsAppOnboardingRealtimeMessageHandler,
     WHATSAPP_ONBOARDING_FAILED_EVENT,
-    WHATSAPP_ONBOARDING_SUCCESS_EVENT,
+    WHATSAPP_ONBOARDING_SUCCEEDED_EVENT,
 } from './useWhatsAppOnboardingRealtimeMessageHandler'
 
 // we should export the Message type from realtime
@@ -47,7 +47,7 @@ export function UserChannelRealtimeHandler() {
                     handleTicketMessageActionFailedRealtimeMessage(message)
                     return
                 }
-                case WHATSAPP_ONBOARDING_SUCCESS_EVENT: {
+                case WHATSAPP_ONBOARDING_SUCCEEDED_EVENT: {
                     if (!isWhatsAppOnboardingToAblyEnabled) return
 
                     void handleWhatsAppOnboardingSuccessRealtimeMessage(message)

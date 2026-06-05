@@ -20,7 +20,7 @@ jest.mock('../useTicketMessageActionFailedRealtimeMessageHandler', () => ({
 }))
 jest.mock('../useWhatsAppOnboardingRealtimeMessageHandler', () => ({
     WHATSAPP_ONBOARDING_FAILED_EVENT: 'whatsapp-onboarding.failed',
-    WHATSAPP_ONBOARDING_SUCCESS_EVENT: 'whatsapp-onboarding.success',
+    WHATSAPP_ONBOARDING_SUCCEEDED_EVENT: 'whatsapp-onboarding.succeeded',
     useWhatsAppOnboardingRealtimeMessageHandler: jest.fn(),
 }))
 
@@ -134,7 +134,7 @@ describe('UserChannelRealtimeHandler', () => {
 
         const [{ onMessage }] = mockUseChannel.mock.calls[0]
         const message = {
-            name: 'whatsapp-onboarding.success',
+            name: 'whatsapp-onboarding.succeeded',
             data: {
                 phone_number: '+123',
             },
@@ -172,7 +172,7 @@ describe('UserChannelRealtimeHandler', () => {
         const [{ onMessage }] = mockUseChannel.mock.calls[0]
 
         onMessage({
-            name: 'whatsapp-onboarding.success',
+            name: 'whatsapp-onboarding.succeeded',
             data: {
                 phone_number: '+123',
             },

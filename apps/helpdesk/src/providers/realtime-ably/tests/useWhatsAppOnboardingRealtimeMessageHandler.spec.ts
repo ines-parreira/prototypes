@@ -9,7 +9,11 @@ import { fetchNewPhoneNumbers } from 'models/phoneNumber/resources'
 import { newPhoneNumbersFetched } from 'state/entities/phoneNumbers/actions'
 import * as integrationsActions from 'state/integrations/actions'
 
-import { useWhatsAppOnboardingRealtimeMessageHandler } from '../useWhatsAppOnboardingRealtimeMessageHandler'
+import {
+    useWhatsAppOnboardingRealtimeMessageHandler,
+    WHATSAPP_ONBOARDING_FAILED_EVENT,
+    WHATSAPP_ONBOARDING_SUCCEEDED_EVENT,
+} from '../useWhatsAppOnboardingRealtimeMessageHandler'
 
 jest.mock('@repo/routing', () => ({
     history: {
@@ -72,7 +76,7 @@ describe('useWhatsAppOnboardingRealtimeMessageHandler', () => {
         )
 
         await result.current.handleWhatsAppOnboardingSuccessRealtimeMessage({
-            name: 'whatsapp-onboarding.success',
+            name: WHATSAPP_ONBOARDING_SUCCEEDED_EVENT,
             data: JSON.stringify({
                 integration_id: 123,
                 phone_number: '+123',
@@ -104,7 +108,7 @@ describe('useWhatsAppOnboardingRealtimeMessageHandler', () => {
         )
 
         await result.current.handleWhatsAppOnboardingSuccessRealtimeMessage({
-            name: 'whatsapp-onboarding.success',
+            name: WHATSAPP_ONBOARDING_SUCCEEDED_EVENT,
             data: JSON.stringify({
                 integration_id: 123,
                 phone_number: '+123',
@@ -124,7 +128,7 @@ describe('useWhatsAppOnboardingRealtimeMessageHandler', () => {
         )
 
         result.current.handleWhatsAppOnboardingFailedRealtimeMessage({
-            name: 'whatsapp-onboarding.failed',
+            name: WHATSAPP_ONBOARDING_FAILED_EVENT,
             data: JSON.stringify({
                 phone_number: '+123',
                 error: {
@@ -151,7 +155,7 @@ describe('useWhatsAppOnboardingRealtimeMessageHandler', () => {
         )
 
         result.current.handleWhatsAppOnboardingFailedRealtimeMessage({
-            name: 'whatsapp-onboarding.failed',
+            name: WHATSAPP_ONBOARDING_FAILED_EVENT,
             data: JSON.stringify({
                 phone_number: '+123',
                 error: {
@@ -172,17 +176,17 @@ describe('useWhatsAppOnboardingRealtimeMessageHandler', () => {
         )
 
         await result.current.handleWhatsAppOnboardingSuccessRealtimeMessage({
-            name: 'whatsapp-onboarding.success',
+            name: WHATSAPP_ONBOARDING_SUCCEEDED_EVENT,
             data: '{',
         } as WhatsAppOnboardingRealtimeMessage)
         await result.current.handleWhatsAppOnboardingSuccessRealtimeMessage({
-            name: 'whatsapp-onboarding.success',
+            name: WHATSAPP_ONBOARDING_SUCCEEDED_EVENT,
             data: JSON.stringify({
                 integration_id: 123,
             }),
         } as WhatsAppOnboardingRealtimeMessage)
         result.current.handleWhatsAppOnboardingFailedRealtimeMessage({
-            name: 'whatsapp-onboarding.failed',
+            name: WHATSAPP_ONBOARDING_FAILED_EVENT,
             data: JSON.stringify({
                 error: {
                     message: 'OAuth failed',
