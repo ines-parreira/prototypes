@@ -14,24 +14,15 @@ import type { TicketMessage } from '@gorgias/helpdesk-queries'
 
 import { TicketThreadEventContainer } from '../../TicketThreadEventItem/components/TicketThreadEventContainer'
 import { TicketThreadEventDateTime } from '../../TicketThreadEventItem/components/TicketThreadEventDateTime'
+import { getActionName, getDisplayedActionTitle } from './appliedActionDisplay'
 import { AppliedTag } from './AppliedTag'
 
 import css from './MessageAppliedActions.less'
 
 type Action = NonNullable<TicketMessage['actions']>[number]
 
-function getActionName(action: Action): string {
-    return typeof action.name === 'string' ? action.name : ''
-}
-
 function getStatus(action: Action): string | null {
     return typeof action.status === 'string' ? action.status : null
-}
-
-function getActionTitle(action: Action): string {
-    const name = getActionName(action)
-    if (name === 'applyExternalTemplate') return 'WhatsApp template applied'
-    return typeof action.title === 'string' ? action.title : name
 }
 
 function getSourceIconName(name: string): IconName {
@@ -53,6 +44,7 @@ function getTagNames(action: Action): string[] {
 export type AppliedActionProps = {
     action: Action
     isPending: boolean
+    isMacroApplied: boolean
     ticketId: number
     createdDatetime: string | null | undefined
 }
@@ -60,6 +52,7 @@ export type AppliedActionProps = {
 export function AppliedAction({
     action,
     isPending,
+    isMacroApplied,
     ticketId,
     createdDatetime,
 }: AppliedActionProps) {
@@ -92,10 +85,16 @@ export function AppliedAction({
                             : undefined
                     }
                 >
-                    {tags.length === 1 ? 'was' : 'were'} added via{' '}
-                    <Text size="sm" variant="medium">
-                        macro
-                    </Text>
+                    {tags.length === 1 ? 'was' : 'were'} added
+                    {isMacroApplied && (
+                        <>
+                            {' '}
+                            via{' '}
+                            <Text size="sm" variant="medium">
+                                macro
+                            </Text>
+                        </>
+                    )}
                 </Text>
                 {createdDatetime && (
                     <Box className={cn({ [css.dimmed]: isLoading })}>
@@ -123,10 +122,16 @@ export function AppliedAction({
                           : undefined
                 }
             >
-                {getActionTitle(action)} via{' '}
-                <Text size="sm" variant="medium">
-                    macro
-                </Text>
+                {getDisplayedActionTitle(action)}
+                {isMacroApplied && (
+                    <>
+                        {' '}
+                        via{' '}
+                        <Text size="sm" variant="medium">
+                            macro
+                        </Text>
+                    </>
+                )}
             </Text>
             {(status === 'error' || status === 'cancelled') && (
                 <Tooltip

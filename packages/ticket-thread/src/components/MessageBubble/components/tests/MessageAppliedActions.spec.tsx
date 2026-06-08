@@ -59,9 +59,15 @@ function makeAction(
 function makeMessage(actions: Record<string, unknown>[]): {
     actions: Record<string, unknown>[]
     created_datetime: string
+    macros: Array<{ id: number }>
     ticket_id: number
 } {
-    return { actions, created_datetime: DATETIME, ticket_id: 123 }
+    return {
+        actions,
+        created_datetime: DATETIME,
+        macros: [{ id: 1 }],
+        ticket_id: 123,
+    }
 }
 
 function expectInlineColor(element: HTMLElement, color: string) {
@@ -75,6 +81,7 @@ describe('MessageAppliedActions', () => {
                 message={{
                     actions: null,
                     created_datetime: DATETIME,
+                    macros: [{ id: 1 }],
                     ticket_id: 123,
                 }}
             />,
@@ -86,6 +93,7 @@ describe('MessageAppliedActions', () => {
                 message={{
                     actions: [],
                     created_datetime: DATETIME,
+                    macros: [{ id: 1 }],
                     ticket_id: 123,
                 }}
             />,
@@ -93,11 +101,66 @@ describe('MessageAppliedActions', () => {
         expect(container).toBeEmptyDOMElement()
     })
 
-    it.each([
-        { name: 'setResponseText' },
-        { name: 'addAttachments' },
-        { name: 'forwardByEmail' },
-    ])(
+    it('renders actions without macro attribution when no macros were applied', () => {
+        const messageWithoutMacros = {
+            actions: [
+                makeAction({
+                    name: 'setStatus',
+                    title: 'Set status',
+                    arguments: { status: 'closed' },
+                }),
+            ],
+            created_datetime: DATETIME,
+            ticket_id: 123,
+        }
+
+        const { container, rerender } = render(
+            <MessageAppliedActions
+                message={{
+                    ...messageWithoutMacros,
+                    macros: [],
+                }}
+            />,
+        )
+
+        expect(container).not.toBeEmptyDOMElement()
+        expect(screen.getByText('Set status: closed')).toBeInTheDocument()
+        expect(screen.queryByText('macro')).not.toBeInTheDocument()
+
+        rerender(
+            <MessageAppliedActions
+                message={{
+                    ...messageWithoutMacros,
+                    macros: null,
+                }}
+            />,
+        )
+        expect(screen.getByText('Set status: closed')).toBeInTheDocument()
+        expect(screen.queryByText('macro')).not.toBeInTheDocument()
+
+        rerender(<MessageAppliedActions message={messageWithoutMacros} />)
+        expect(screen.getByText('Set status: closed')).toBeInTheDocument()
+        expect(screen.queryByText('macro')).not.toBeInTheDocument()
+    })
+
+    it('renders legacy-formatted action text with macro attribution', () => {
+        render(
+            <MessageAppliedActions
+                message={makeMessage([
+                    makeAction({
+                        name: 'setStatus',
+                        title: 'Set status',
+                        arguments: { status: 'closed' },
+                    }),
+                ])}
+            />,
+        )
+
+        expect(screen.getByText(/Set status: closed/)).toBeInTheDocument()
+        expect(screen.getByText('macro')).toBeInTheDocument()
+    })
+
+    it.each([{ name: 'setResponseText' }, { name: 'addAttachments' }])(
         'renders nothing when all actions are front-execution actions ($name)',
         ({ name }) => {
             const { container } = render(
@@ -126,6 +189,91 @@ describe('MessageAppliedActions', () => {
         expect(screen.getByText(/HTTP hook/)).toBeInTheDocument()
     })
 
+    it('renders forwardByEmail as a backend action without arguments', () => {
+        render(
+            <MessageAppliedActions
+                message={makeMessage([
+                    makeAction({
+                        name: 'forwardByEmail',
+                        title: 'Forward email',
+                        arguments: { body_text: 'Forwarded text' },
+                    }),
+                ])}
+            />,
+        )
+
+        expect(screen.getByText(/Forward email/)).toBeInTheDocument()
+        expect(screen.queryByText(/Forwarded text/)).not.toBeInTheDocument()
+    })
+
+    it('formats legacy action arguments', () => {
+        render(
+            <MessageAppliedActions
+                message={makeMessage([
+                    makeAction({
+                        name: 'setAssignee',
+                        title: 'Assign an agent',
+                        arguments: { assignee_user: { name: 'Agent Smith' } },
+                    }),
+                    makeAction({
+                        name: 'setAssignee',
+                        title: 'Assign an agent',
+                        arguments: { assignee_user: { id: 123 } },
+                    }),
+                    makeAction({
+                        name: 'setPriority',
+                        title: 'Set priority',
+                        arguments: { priority: '' },
+                    }),
+                ])}
+            />,
+        )
+
+        expect(
+            screen.getByText(/Assign an agent: Agent Smith/),
+        ).toBeInTheDocument()
+        expect(screen.getByText(/Assign an agent: None/)).toBeInTheDocument()
+        expect(screen.getByText(/Set priority: None/)).toBeInTheDocument()
+    })
+
+    it('renders legacy title-only actions without arguments', () => {
+        render(
+            <MessageAppliedActions
+                message={makeMessage([
+                    makeAction({
+                        name: 'http',
+                        title: 'HTTP hook',
+                        arguments: { url: 'https://example.test' },
+                    }),
+                    makeAction({
+                        name: 'shopifyFullRefundLastOrder',
+                        title: 'Refund last order',
+                        arguments: { restock: true },
+                    }),
+                    makeAction({
+                        name: 'excludeFromAutoMerge',
+                        title: 'Exclude ticket from Auto-Merge',
+                    }),
+                    makeAction({
+                        name: 'excludeFromCSAT',
+                        title: 'Exclude ticket from CSAT',
+                    }),
+                ])}
+            />,
+        )
+
+        expect(screen.getByText(/HTTP hook/)).toBeInTheDocument()
+        expect(screen.getByText(/Refund last order/)).toBeInTheDocument()
+        expect(
+            screen.getByText(/Exclude ticket from Auto-Merge/),
+        ).toBeInTheDocument()
+        expect(screen.getByText(/Exclude ticket from CSAT/)).toBeInTheDocument()
+        expect(screen.queryByText(/example.test/)).not.toBeInTheDocument()
+        expect(screen.queryByText(/restock/)).not.toBeInTheDocument()
+        expect(screen.queryByText(/Auto-Merge: None/)).not.toBeInTheDocument()
+        expect(screen.queryByText(/CSAT: None/)).not.toBeInTheDocument()
+    })
+
     it('renders addTags action as inline tag chips with "were added via macro"', () => {
         render(
             <MessageAppliedActions
@@ -144,6 +292,29 @@ describe('MessageAppliedActions', () => {
         expect(screen.getByText('vip')).toBeInTheDocument()
         expect(screen.getByText(/were added via/)).toBeInTheDocument()
         expect(screen.getByText('macro')).toBeInTheDocument()
+    })
+
+    it('renders addTags without macro attribution when no macros were applied', () => {
+        render(
+            <MessageAppliedActions
+                message={{
+                    ...makeMessage([
+                        makeAction({
+                            name: 'addTags',
+                            title: 'Add tags',
+                            arguments: { tags: 'urgent,vip' },
+                        }),
+                    ]),
+                    macros: [],
+                }}
+            />,
+        )
+
+        expect(screen.getByText('urgent')).toBeInTheDocument()
+        expect(screen.getByText('vip')).toBeInTheDocument()
+        expect(screen.getByText(/were added/)).toBeInTheDocument()
+        expect(screen.queryByText(/were added via/)).not.toBeInTheDocument()
+        expect(screen.queryByText('macro')).not.toBeInTheDocument()
     })
 
     it('uses "was added" for a single tag', () => {
