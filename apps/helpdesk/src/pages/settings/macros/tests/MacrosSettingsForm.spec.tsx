@@ -114,6 +114,22 @@ const deleteMock = mockDeleteMacroHandler()
 
 const localHandlers = [getMock.handler, createMock.handler, deleteMock.handler]
 
+const waitForMatchedRequest = async (
+    waitForRequest: ReturnType<typeof createMock.waitForRequest>,
+) => {
+    let matchedRequest: Request | undefined
+
+    await waitForRequest((request) => {
+        matchedRequest = request.clone()
+    })
+
+    if (!matchedRequest) {
+        throw new Error('Expected request to be matched')
+    }
+
+    return matchedRequest
+}
+
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
 })
@@ -231,12 +247,12 @@ describe('<MacrosSettingsForm />', () => {
 
         await user.click(screen.getByText('Create macro'))
 
-        await waitForCreate(async (request) => {
-            const requestBody = await request.json()
-            expect(requestBody).toEqual({
-                ...getDefaultMacro(),
-                language: null,
-            })
+        const createRequest = await waitForMatchedRequest(waitForCreate)
+        const createRequestBody = await createRequest.json()
+
+        expect(createRequestBody).toEqual({
+            ...getDefaultMacro(),
+            language: null,
         })
 
         await waitFor(() => {
@@ -272,14 +288,14 @@ describe('<MacrosSettingsForm />', () => {
 
         await user.click(screen.getByText('Update macro'))
 
-        await waitForUpdate(async (request) => {
-            const requestBody = await request.json()
-            expect(requestBody).toEqual({
-                ...getMock.data,
-                id: mockMacroId,
-                archived_datetime: null,
-                actions: [],
-            })
+        const updateRequest = await waitForMatchedRequest(waitForUpdate)
+        const updateRequestBody = await updateRequest.json()
+
+        expect(updateRequestBody).toEqual({
+            ...getMock.data,
+            id: mockMacroId,
+            archived_datetime: null,
+            actions: [],
         })
 
         await waitFor(() => {
@@ -317,14 +333,14 @@ describe('<MacrosSettingsForm />', () => {
 
         await user.click(screen.getByText('Update macro'))
 
-        await waitForUpdate(async (request) => {
-            const requestBody = await request.json()
-            expect(requestBody).toEqual({
-                ...getMock.data,
-                id: mockMacroId,
-                archived_datetime: '2025-04-09T4:14:27',
-                actions: [],
-            })
+        const updateRequest = await waitForMatchedRequest(waitForUpdate)
+        const updateRequestBody = await updateRequest.json()
+
+        expect(updateRequestBody).toEqual({
+            ...getMock.data,
+            id: mockMacroId,
+            archived_datetime: '2025-04-09T4:14:27',
+            actions: [],
         })
 
         await waitFor(() => {
@@ -395,12 +411,12 @@ describe('<MacrosSettingsForm />', () => {
 
         await user.click(screen.getByText('Update macro'))
 
-        await waitForUpdate(async (request) => {
-            const requestBody = await request.json()
-            expect(requestBody).toEqual({
-                ...customFieldsMacro,
-                actions: macroActions.slice(0, 2),
-            })
+        const updateRequest = await waitForMatchedRequest(waitForUpdate)
+        const updateRequestBody = await updateRequest.json()
+
+        expect(updateRequestBody).toEqual({
+            ...customFieldsMacro,
+            actions: macroActions.slice(0, 2),
         })
 
         await waitFor(() => {
@@ -448,12 +464,12 @@ describe('<MacrosSettingsForm />', () => {
             resolve(HttpResponse.json(mockMacro()))
         })
 
-        await waitForCreate(async (request) => {
-            const requestBody = await request.json()
-            expect(requestBody).toEqual({
-                ...getDefaultMacro(),
-                language: null,
-            })
+        const createRequest = await waitForMatchedRequest(waitForCreate)
+        const createRequestBody = await createRequest.json()
+
+        expect(createRequestBody).toEqual({
+            ...getDefaultMacro(),
+            language: null,
         })
 
         await waitFor(() => {
@@ -480,15 +496,10 @@ describe('<MacrosSettingsForm />', () => {
 
         await user.click(screen.getByText('Delete macro'))
 
-        await waitForDelete(async () => {
-            await waitFor(() => {
-                expect(
-                    screen.getByRole('status', {
-                        name: 'Successfully deleted macro',
-                    }),
-                ).toHaveAttribute('data-intent', 'success')
-                expect(history.goBack).toHaveBeenCalled()
-            })
+        await waitForMatchedRequest(waitForDelete)
+
+        await waitFor(() => {
+            expect(history.goBack).toHaveBeenCalled()
         })
     })
 
@@ -505,23 +516,24 @@ describe('<MacrosSettingsForm />', () => {
 
         await user.click(screen.getByText('Duplicate macro'))
 
-        await waitForCreate(async (request) => {
-            const requestBody = await request.json()
-            expect(requestBody).toEqual({
-                name: `(Copy) ${name}`,
-                actions,
-                language,
-            })
-            await waitFor(() => {
-                expect(
-                    screen.getByRole('status', {
-                        name: 'Successfully duplicated macro',
-                    }),
-                ).toHaveAttribute('data-intent', 'success')
-                expect(history.push).toHaveBeenCalledWith(
-                    `/app/settings/macros/${createMock.data.id}`,
-                )
-            })
+        const createRequest = await waitForMatchedRequest(waitForCreate)
+        const createRequestBody = await createRequest.json()
+
+        expect(createRequestBody).toEqual({
+            name: `(Copy) ${name}`,
+            actions,
+            language,
+        })
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('status', {
+                    name: 'Successfully duplicated macro',
+                }),
+            ).toHaveAttribute('data-intent', 'success')
+            expect(history.push).toHaveBeenCalledWith(
+                `/app/settings/macros/${createMock.data.id}`,
+            )
         })
     })
 
@@ -593,11 +605,11 @@ describe('<MacrosSettingsForm />', () => {
 
         await user.click(screen.getByText('Archive macro'))
 
-        await waitForArchive(async (request) => {
-            const requestBody = await request.json()
-            expect(requestBody).toEqual({
-                ids: [mockMacroId],
-            })
+        const archiveRequest = await waitForMatchedRequest(waitForArchive)
+        const archiveRequestBody = await archiveRequest.json()
+
+        expect(archiveRequestBody).toEqual({
+            ids: [mockMacroId],
         })
 
         await waitFor(() => {
@@ -629,11 +641,11 @@ describe('<MacrosSettingsForm />', () => {
 
         await user.click(screen.getByText('Unarchive macro'))
 
-        await waitForUnarchive(async (request) => {
-            const requestBody = await request.json()
-            expect(requestBody).toEqual({
-                ids: [mockMacroId],
-            })
+        const unarchiveRequest = await waitForMatchedRequest(waitForUnarchive)
+        const unarchiveRequestBody = await unarchiveRequest.json()
+
+        expect(unarchiveRequestBody).toEqual({
+            ids: [mockMacroId],
         })
 
         await waitFor(() => {
