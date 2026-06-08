@@ -7,6 +7,18 @@ import { useLocation } from 'react-router-dom'
 
 import { toast } from '@gorgias/axiom'
 
+jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    LegacyTooltip: ({
+        children,
+        innerProps,
+    }: {
+        children: any
+        innerProps?: { onMouseEnter?: () => void }
+    }) => <div onMouseEnter={innerProps?.onMouseEnter}>{children}</div>,
+}))
+
 import { emptyManagedRule, emptyRule as ruleFixture } from 'fixtures/rule'
 import { user } from 'fixtures/users'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
@@ -270,5 +282,64 @@ describe('<RuleRow />', () => {
                 }),
             ).toHaveAttribute('data-intent', 'destructive')
         })
+    })
+    it('should show a deprecated sentiment warning icon when the rule uses a deprecated sentiment', () => {
+        const ruleWithDeprecatedSentiment = {
+            ...ruleFixture,
+            code: `if (containsAny(message.sentiments.name, ["threatening"])) { Action("addTags", { tags: "test" }) }`,
+        }
+        render(<RuleRow {...minProps} rule={ruleWithDeprecatedSentiment} />, {})
+        expect(screen.getByText('warning')).not.toBeNull()
+    })
+    it('should not show a deprecated sentiment warning icon when the rule has no deprecated sentiments', () => {
+        const ruleWithoutDeprecatedSentiment = {
+            ...ruleFixture,
+            code: `if (containsAny(message.sentiments.name, ["negative"])) { Action("addTags", { tags: "test" }) }`,
+        }
+        render(
+            <RuleRow {...minProps} rule={ruleWithoutDeprecatedSentiment} />,
+            {},
+        )
+        expect(screen.queryByText('warning')).toBeNull()
+    })
+    it('should not show a deprecated sentiment warning icon when rule code is empty', () => {
+        const ruleWithEmptyCode = {
+            ...ruleFixture,
+            code: '',
+        }
+        render(<RuleRow {...minProps} rule={ruleWithEmptyCode} />, {})
+        expect(screen.queryByText('warning')).toBeNull()
+    })
+    it('should fire onMouseEnter on the deprecated sentiment warning icon', () => {
+        const ruleWithDeprecatedSentiment = {
+            ...ruleFixture,
+            code: `if (containsAny(message.sentiments.name, ["urgent"])) { Action("addTags", { tags: "test" }) }`,
+        }
+        render(<RuleRow {...minProps} rule={ruleWithDeprecatedSentiment} />, {})
+        const icon = screen.getByText('warning')
+        fireEvent.mouseEnter(icon)
+        expect(icon).not.toBeNull()
+    })
+    it('should fire onMouseEnter on the deprecated sentiment tooltip inner container', () => {
+        const ruleWithDeprecatedSentiment = {
+            ...ruleFixture,
+            code: `if (containsAny(message.sentiments.name, ["urgent"])) { Action("addTags", { tags: "test" }) }`,
+        }
+        render(<RuleRow {...minProps} rule={ruleWithDeprecatedSentiment} />, {})
+        const link = screen.getByText('See more here.')
+        fireEvent.mouseEnter(link.parentElement!)
+        expect(link).not.toBeNull()
+    })
+    it('should stop propagation when clicking the "See more here." link in the deprecated sentiment tooltip', () => {
+        const ruleWithDeprecatedSentiment = {
+            ...ruleFixture,
+            code: `if (containsAny(message.sentiments.name, ["urgent"])) { Action("addTags", { tags: "test" }) }`,
+        }
+        render(<RuleRow {...minProps} rule={ruleWithDeprecatedSentiment} />, {})
+        const link = screen.getByText('See more here.')
+        const clickEvent = new MouseEvent('click', { bubbles: true })
+        const stopPropagationSpy = jest.spyOn(clickEvent, 'stopPropagation')
+        link.dispatchEvent(clickEvent)
+        expect(stopPropagationSpy).toHaveBeenCalled()
     })
 })

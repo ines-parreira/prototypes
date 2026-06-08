@@ -40,6 +40,9 @@ import { getRuleActions } from './ruleEditors/utils'
 
 import css from './RuleRow.less'
 
+const DEPRECATED_SENTIMENTS_REGEX =
+    /message\.sentiments\.name[^)]*["'](urgent|promoter|threatening|offensive)["']/
+
 type Props = {
     rule: Rule | ManagedRule<AnyManagedRuleSettings>
     canDuplicate: boolean
@@ -298,6 +301,47 @@ export function RuleRow({
                                         >
                                             Learn about auto-reply rules best
                                             practices.
+                                        </a>
+                                    </Tooltip>
+                                </div>
+                            )}
+                            {DEPRECATED_SENTIMENTS_REGEX.test(
+                                rule.code ?? '',
+                            ) && (
+                                <div>
+                                    <i
+                                        className={classnames(
+                                            'material-icons',
+                                            css.infoIcon,
+                                        )}
+                                        id={`sentiment-icon-${rule.id}`}
+                                        onMouseEnter={() =>
+                                            setDescriptionOpen(false)
+                                        }
+                                    >
+                                        warning
+                                    </i>
+                                    <Tooltip
+                                        placement="top"
+                                        target={`sentiment-icon-${rule.id}`}
+                                        delay={{
+                                            show: 0,
+                                            hide: 1500,
+                                        }}
+                                        autohide={false}
+                                        innerProps={{
+                                            onMouseEnter: () =>
+                                                setDescriptionOpen(false),
+                                        }}
+                                    >
+                                        {`This rule uses deprecated sentiment values (urgent, promoter, threatening, or offensive). Update the sentiment conditions to positive, negative, or neutral to keep it working. `}
+                                        <a
+                                            href="https://community.gorgias.com/c/tips-tricks-874d4d/simplify-your-sentiment-rules-for-better-ticket-management"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            onClick={(e) => e.stopPropagation()}
+                                        >
+                                            See more here.
                                         </a>
                                     </Tooltip>
                                 </div>
