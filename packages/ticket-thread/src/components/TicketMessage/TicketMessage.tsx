@@ -12,6 +12,7 @@ import { MessageErrors } from '../MessageBubble/components/MessageErrors'
 import { MessageFooter } from '../MessageBubble/components/MessageFooter'
 import { getMessageChannelParticipants } from '../MessageBubble/components/MessageHeader/getMessageChannelParticipants'
 import { getMessageCurrentPageUrl } from '../MessageBubble/components/MessageHeader/getMessageCurrentPageUrl'
+import { getMessageViaLabel } from '../MessageBubble/components/MessageHeader/getMessageViaLabel'
 import { isForwardedMessageSource } from '../MessageBubble/components/MessageHeader/isForwardedMessageSource'
 import { MessageHeaderContainer } from '../MessageBubble/components/MessageHeader/Layout'
 import { MessageAvatar } from '../MessageBubble/components/MessageHeader/MessageAvatar'
@@ -84,6 +85,7 @@ export function TicketMessage({ item }: TicketMessageProps) {
                             bcc={bcc}
                             currentPageUrl={currentPageUrl}
                             channelIcon={channelIcon}
+                            via={getMessageViaLabel(item.data.source?.type)}
                         />
                         <MessageDeliveryIcon item={item} />
                         <MessageTimestamp

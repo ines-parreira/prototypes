@@ -137,6 +137,19 @@ describe('MessageChannel', () => {
         ).toBeInTheDocument()
     })
 
+    it('renders the via label in the tooltip when provided', () => {
+        render(<MessageChannel channel="chat" via="offline capture" />)
+
+        expect(screen.getByText('Via:')).toBeInTheDocument()
+        expect(screen.getByText('offline capture')).toBeInTheDocument()
+    })
+
+    it('does not render the via label when not provided', () => {
+        render(<MessageChannel channel="chat" />)
+
+        expect(screen.queryByText('Via:')).not.toBeInTheDocument()
+    })
+
     it('renders the current page URL in the tooltip content', () => {
         const currentPageUrl =
             'https://example.com/products/sneakers?customerFormRef=really-long-unbroken-contact-form-url-token'

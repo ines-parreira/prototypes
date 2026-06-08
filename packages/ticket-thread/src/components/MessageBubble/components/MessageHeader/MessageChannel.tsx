@@ -3,7 +3,6 @@ import { formatDatetime } from '@repo/utils'
 
 import type { IconName } from '@gorgias/axiom'
 import { Box, Icon, Text, Tooltip, TooltipContent } from '@gorgias/axiom'
-
 import type { TicketMessageChannel } from '../../../../hooks/messages/schemas'
 import { useTicketThreadDateTimeFormat } from '../../../../hooks/shared/useTicketThreadDateTimeFormat'
 import css from './MessageChannel.less'
@@ -19,6 +18,7 @@ export type MessageChannelProps = {
     cc?: string | null
     bcc?: string | null
     currentPageUrl?: string | null
+    via?: string | null
 }
 
 export function MessageChannel({
@@ -32,6 +32,7 @@ export function MessageChannel({
     cc,
     bcc,
     currentPageUrl,
+    via,
 }: MessageChannelProps) {
     const { format, timezone } = useTicketThreadDateTimeFormat()
     const resolvedChannelIcon =
@@ -108,6 +109,14 @@ export function MessageChannel({
                             {resolvedChannelName}
                         </Text>
                     </Text>
+                    {via && (
+                        <Text size="xs">
+                            Via:{' '}
+                            <Text size="xs" variant="bold">
+                                {via}
+                            </Text>
+                        </Text>
+                    )}
 
                     {createdDatetime && (
                         <Text size="xs">
