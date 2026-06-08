@@ -36,6 +36,7 @@ import { GorgiasChatCreationWizardStep } from 'pages/integrations/integration/co
 import { updateOrCreateIntegration } from 'state/integrations/actions'
 import { makeGetRedirectUri } from 'state/integrations/selectors'
 
+import { CHAT_REDESIGN_FULL_MIGRATION_DATE } from '../../../common/hooks/useChatRedesignOptIn'
 import { GorgiasChatCreationWizardFooter } from '../../components/GorgiasChatCreationWizardFooter'
 import SaveChangesPrompt from '../../components/SaveChangesPrompt'
 import useLogWizardEvent from '../../hooks/useLogWizardEvent'
@@ -188,6 +189,11 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                 }
             }
 
+            const chatRedesignOptInDateTime =
+                new Date() >= CHAT_REDESIGN_FULL_MIGRATION_DATE
+                    ? new Date()
+                    : undefined
+
             return {
                 ...baseForm,
                 decoration: {
@@ -227,6 +233,8 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                         installation_method: values.installationMethod,
                     },
                     ...storeMetaFields,
+                    chat_redesign_opt_in_datetime:
+                        chatRedesignOptInDateTime?.toISOString(),
                 },
             }
         },

@@ -138,6 +138,9 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
     })
 
     it('submits form with default values when creating chat', () => {
+        jest.useFakeTimers()
+        jest.setSystemTime(new Date('2026-07-01T00:00:00.000Z'))
+
         const { getByRole, getByLabelText } = render(
             <MemoryRouter>
                 <Provider store={mockStore(mockStoreState)}>
@@ -199,10 +202,14 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
             shop_name: null,
             shop_type: null,
             shop_integration_id: null,
+            chat_redesign_opt_in_datetime: '2026-07-01T00:00:00.000Z',
         })
         expect(silentUpdate).toBe(true)
         expect(goToNextStep).toBe(true)
         expect(successMessage).toBe('Changes saved')
+
+        jest.runOnlyPendingTimers()
+        jest.useRealTimers()
     })
 
     it('submits form when updating chat', () => {
@@ -671,6 +678,127 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
         })
 
         expect(history.replace).not.toHaveBeenCalled()
+    })
+
+    describe('chat_redesign_opt_in_datetime', () => {
+        afterEach(() => {
+            jest.runOnlyPendingTimers()
+            jest.useRealTimers()
+        })
+
+        it('should set chat_redesign_opt_in_datetime when creating chat on or after full migration date', () => {
+            jest.useFakeTimers()
+            jest.setSystemTime(new Date('2026-07-01T00:00:00.000Z'))
+
+            const { getByRole, getByLabelText } = render(
+                <MemoryRouter>
+                    <Provider store={mockStore(mockStoreState)}>
+                        <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
+                            <GorgiasChatCreationWizardStepBasics
+                                {...minProps}
+                            />
+                        </Wizard>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            fireEvent.change(
+                getByLabelText('Chat title*', { selector: 'input' }),
+                { target: { value: 'Test Chat' } },
+            )
+            fireEvent.click(
+                getByLabelText('Any other website', { selector: 'input' }),
+            )
+
+            const spy = jest.spyOn(actions, 'updateOrCreateIntegration')
+            fireEvent.click(getByRole('button', { name: 'Continue' }))
+
+            const [formData] = spy.mock.calls[0]
+            const form = (formData as Map<string, unknown>).toJS()
+
+            expect(form.meta.chat_redesign_opt_in_datetime).toBe(
+                '2026-07-01T00:00:00.000Z',
+            )
+        })
+
+        it('should not set chat_redesign_opt_in_datetime when creating chat before full migration date', () => {
+            jest.useFakeTimers()
+            jest.setSystemTime(new Date('2026-05-01T00:00:00.000Z'))
+
+            const { getByRole, getByLabelText } = render(
+                <MemoryRouter>
+                    <Provider store={mockStore(mockStoreState)}>
+                        <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
+                            <GorgiasChatCreationWizardStepBasics
+                                {...minProps}
+                            />
+                        </Wizard>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            fireEvent.change(
+                getByLabelText('Chat title*', { selector: 'input' }),
+                { target: { value: 'Test Chat' } },
+            )
+            fireEvent.click(
+                getByLabelText('Any other website', { selector: 'input' }),
+            )
+
+            const spy = jest.spyOn(actions, 'updateOrCreateIntegration')
+            fireEvent.click(getByRole('button', { name: 'Continue' }))
+
+            const [formData] = spy.mock.calls[0]
+            const form = (formData as Map<string, unknown>).toJS()
+
+            expect(form.meta.chat_redesign_opt_in_datetime).toBeUndefined()
+        })
+
+        it('should not set chat_redesign_opt_in_datetime when updating an existing chat', () => {
+            jest.useFakeTimers()
+            jest.setSystemTime(new Date('2026-07-01T00:00:00.000Z'))
+
+            const integrationWithName = fromJS({
+                id: 1,
+                name: 'Existing Chat',
+                meta: {
+                    shop_integration_id: null,
+                    language: 'en-US',
+                    preferences: {
+                        live_chat_availability:
+                            'auto-based-on-agent-availability',
+                    },
+                    wizard: {
+                        installation_method:
+                            GorgiasChatCreationWizardInstallationMethod.Manual,
+                    },
+                },
+                decoration: {},
+                type: IntegrationType.GorgiasChat,
+            })
+
+            const { getByRole } = render(
+                <MemoryRouter>
+                    <Provider store={mockStore(mockStoreState)}>
+                        <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
+                            <GorgiasChatCreationWizardStepBasics
+                                {...minProps}
+                                integration={integrationWithName}
+                                isUpdate
+                            />
+                        </Wizard>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            const spy = jest.spyOn(actions, 'updateOrCreateIntegration')
+            fireEvent.click(getByRole('button', { name: 'Continue' }))
+
+            const [formData] = spy.mock.calls[0]
+            const form = (formData as Map<string, unknown>).toJS()
+
+            expect(form.meta.chat_redesign_opt_in_datetime).toBeUndefined()
+        })
     })
 
     describe('store integration fields', () => {
