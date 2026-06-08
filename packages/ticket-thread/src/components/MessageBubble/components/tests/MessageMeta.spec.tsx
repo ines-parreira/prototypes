@@ -1,6 +1,13 @@
 import { screen } from '@testing-library/react'
+import { HttpResponse } from 'msw'
 
+import {
+    mockGetRuleHandler,
+    mockGetRuleResponse,
+} from '@gorgias/helpdesk-mocks'
+import type { Rule } from '@gorgias/helpdesk-types'
 import { render } from '../../../../tests/render.utils'
+import { server } from '../../../../tests/server'
 import { MessageCampaignLink } from '../MessageHeader/MessageCampaignLink'
 import { MessageMeta } from '../MessageHeader/MessageMeta'
 import { MessageMetaLabel } from '../MessageHeader/MessageMetaLabel'
@@ -10,6 +17,17 @@ import { MessageSearchQuery } from '../MessageHeader/MessageSearchQuery'
 vi.mock('react-rating-stars-component', () => ({
     default: ({ value }: { value: number }) => <div>{`Rating: ${value}`}</div>,
 }))
+
+function getRuleHandler(rule: Partial<Rule>) {
+    return mockGetRuleHandler(async ({ params }) =>
+        HttpResponse.json(
+            mockGetRuleResponse({
+                ...rule,
+                id: Number(params?.id ?? rule.id),
+            }),
+        ),
+    )
+}
 
 describe('MessageMetaLabel', () => {
     it('renders children text', () => {
@@ -60,6 +78,74 @@ describe('MessageMeta', () => {
         render(<MessageMeta meta={null} isForwarded />)
 
         expect(screen.getByText('forwarded this email')).toBeInTheDocument()
+    })
+
+    it('renders the rule link when a rule triggered the message', async () => {
+        const mockGetRule = getRuleHandler({ name: 'Send bot response' })
+        const waitForGetRuleRequest = mockGetRule.waitForRequest(server)
+        server.use(mockGetRule.handler)
+
+        render(<MessageMeta meta={null} ruleId={42} />)
+
+        await waitForGetRuleRequest(async (request) => {
+            expect(new URL(request.url).pathname).toBe('/api/rules/42')
+        })
+        expect(screen.getByText(/sent via/)).toBeInTheDocument()
+        expect(
+            await screen.findByRole('link', { name: /Send bot response/ }),
+        ).toHaveAttribute('href', '/app/settings/rules/42')
+    })
+
+    it('renders managed rule display names', async () => {
+        server.use(
+            getRuleHandler({
+                name: 'Managed rule',
+                settings: { slug: 'auto-reply-wismo' },
+                type: 'managed',
+            }).handler,
+        )
+
+        render(<MessageMeta meta={null} ruleId={42} />)
+
+        expect(
+            await screen.findByRole('link', {
+                name: /\[Auto Reply\] Send tracking information email/,
+            }),
+        ).toHaveAttribute('href', '/app/settings/rules/42')
+    })
+
+    it('falls back to the managed rule name when the slug is unknown', async () => {
+        server.use(
+            getRuleHandler({
+                name: 'Managed rule',
+                settings: { slug: 'unknown-managed-rule' },
+                type: 'managed',
+            }).handler,
+        )
+
+        render(<MessageMeta meta={null} ruleId={42} />)
+
+        expect(
+            await screen.findByRole('link', { name: /Managed rule/ }),
+        ).toHaveAttribute('href', '/app/settings/rules/42')
+    })
+
+    it('falls back to the rule label when the rule has no name', async () => {
+        const mockGetRule = getRuleHandler({
+            name: undefined,
+            settings: null,
+            type: 'user',
+        })
+        const waitForGetRuleRequest = mockGetRule.waitForRequest(server)
+        server.use(mockGetRule.handler)
+
+        render(<MessageMeta meta={null} ruleId={42} />)
+
+        await waitForGetRuleRequest(() => undefined)
+        expect(screen.getByRole('link', { name: /Rule/ })).toHaveAttribute(
+            'href',
+            '/app/settings/rules/42',
+        )
     })
 })
 

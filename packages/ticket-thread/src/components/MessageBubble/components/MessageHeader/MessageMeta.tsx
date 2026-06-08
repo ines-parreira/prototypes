@@ -5,6 +5,7 @@ import { getMessageCampaignId } from './getMessageCampaignId'
 import { getMessageSearchQuery } from './getMessageSearchQuery'
 import { MessageCampaignLink } from './MessageCampaignLink'
 import { MessageReviewMeta } from './MessageReviewMeta'
+import { MessageRuleLink } from './MessageRuleLink'
 import { MessageSearchQuery } from './MessageSearchQuery'
 
 type MessageMetaProps = {
@@ -13,6 +14,7 @@ type MessageMetaProps = {
     source?: TicketMessage['source'] | null
     integrationId?: string | number | null
     isForwarded?: boolean
+    ruleId?: number | string | null
 }
 
 export function MessageMeta({
@@ -21,6 +23,7 @@ export function MessageMeta({
     source,
     integrationId,
     isForwarded = false,
+    ruleId,
 }: MessageMetaProps) {
     const searchQuery = getMessageSearchQuery(meta)
     const campaignId = getMessageCampaignId(meta)
@@ -35,6 +38,7 @@ export function MessageMeta({
                     campaignId={campaignId}
                 />
             )}
+            {ruleId ? <MessageRuleLink ruleId={ruleId} /> : null}
             <MessageReviewMeta messageId={messageId} source={source} />
         </>
     )

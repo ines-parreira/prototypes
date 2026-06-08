@@ -76,6 +76,7 @@ export function AiAgentTicketThreadMessage({
                     messageId={item.data.message_id}
                     source={item.data.source}
                     integrationId={item.data.integration_id}
+                    ruleId={item.data.via === 'rule' ? item.data.rule_id : null}
                 />
                 {shouldRenderMessageContent && (
                     <MessageBody item={displayedItem} />
