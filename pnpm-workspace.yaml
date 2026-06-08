@@ -52,7 +52,7 @@ catalogs:
   analytics-ui-kit:
     '@gorgias/analytics-ui-kit': '0.1.25'
   copilot:
-    '@gorgias/copilot': '0.62.0'
+    '@gorgias/copilot': '0.63.6'
   rest-api-sdk:
     '@gorgias/copilot-client': '^0.1.1'
     '@gorgias/copilot-queries': '^0.1.1'
