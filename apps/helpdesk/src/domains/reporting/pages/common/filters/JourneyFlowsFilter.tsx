@@ -52,7 +52,7 @@ export const JourneyFlowsFilter = ({
         () =>
             journeys.map((j) => ({
                 id: j.id,
-                label: JOURNEY_TYPE_MAP_TO_STRING[j.type],
+                label: j.name || JOURNEY_TYPE_MAP_TO_STRING[j.type],
             })),
         [journeys],
     )

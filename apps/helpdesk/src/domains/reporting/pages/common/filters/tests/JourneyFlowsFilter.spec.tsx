@@ -227,6 +227,120 @@ describe('JourneyFlowsFilter', () => {
         })
     })
 
+    describe('flow name labels', () => {
+        const namedJourneys: JourneyApiDTO[] = [
+            {
+                ...mockJourneys[0],
+                id: 'flow-1',
+                name: 'Customer win-back flow 1',
+            },
+            {
+                ...mockJourneys[1],
+                id: 'flow-2',
+                name: 'Customer win-back flow 2',
+            },
+        ]
+
+        it('should render the flow name as the option label instead of the type label', async () => {
+            const user = userEvent.setup()
+            renderComponent(
+                withLogicalOperator(namedJourneys.map((j) => j.id)),
+                namedJourneys,
+            )
+
+            await act(async () => {
+                await user.click(screen.getByText('All Flows'))
+            })
+
+            expect(
+                screen.getByRole('option', {
+                    name: 'Customer win-back flow 1',
+                }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('option', {
+                    name: 'Customer win-back flow 2',
+                }),
+            ).toBeInTheDocument()
+        })
+
+        it('should render distinct names for multiple flows that share the same type', async () => {
+            const user = userEvent.setup()
+            const sameTypeJourneys: JourneyApiDTO[] = [
+                {
+                    ...mockJourneys[0],
+                    id: 'flow-1',
+                    type: JourneyTypeEnum.CartAbandoned,
+                    name: 'Cart flow A',
+                },
+                {
+                    ...mockJourneys[0],
+                    id: 'flow-2',
+                    type: JourneyTypeEnum.CartAbandoned,
+                    name: 'Cart flow B',
+                },
+            ]
+
+            renderComponent(
+                withLogicalOperator(sameTypeJourneys.map((j) => j.id)),
+                sameTypeJourneys,
+            )
+
+            await act(async () => {
+                await user.click(screen.getByText('All Flows'))
+            })
+
+            expect(
+                screen.getByRole('option', { name: 'Cart flow A' }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('option', { name: 'Cart flow B' }),
+            ).toBeInTheDocument()
+        })
+
+        it('should use the flow name as the trigger preview when a single named flow is selected', () => {
+            renderComponent(withLogicalOperator(['flow-1']), namedJourneys)
+
+            expect(
+                screen.getByRole('button', {
+                    name: /Customer win-back flow 1/,
+                }),
+            ).toBeInTheDocument()
+        })
+
+        it('should fall back to the type label when the flow has no name', async () => {
+            const user = userEvent.setup()
+            const unnamedJourneys: JourneyApiDTO[] = [
+                { ...mockJourneys[0], id: 'flow-1', name: '' },
+                { ...mockJourneys[1], id: 'flow-2' },
+            ]
+
+            renderComponent(
+                withLogicalOperator(unnamedJourneys.map((j) => j.id)),
+                unnamedJourneys,
+            )
+
+            await act(async () => {
+                await user.click(screen.getByText('All Flows'))
+            })
+
+            expect(
+                screen.getByRole('option', {
+                    name: JOURNEY_TYPE_MAP_TO_STRING[
+                        JourneyTypeEnum.CartAbandoned
+                    ],
+                }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('option', {
+                    name: JOURNEY_TYPE_MAP_TO_STRING[
+                        JourneyTypeEnum.PostPurchase
+                    ],
+                }),
+            ).toBeInTheDocument()
+        })
+    })
+
     describe('selection changes', () => {
         it('should dispatch update when deselecting a flow', async () => {
             const user = userEvent.setup()
