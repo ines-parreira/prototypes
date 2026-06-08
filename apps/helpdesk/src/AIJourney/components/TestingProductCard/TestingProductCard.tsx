@@ -1,4 +1,13 @@
-import { Box, Card, CardHeader, Text } from '@gorgias/axiom'
+import {
+    Box,
+    Card,
+    CardHeader,
+    Heading,
+    Icon,
+    Text,
+    Tooltip,
+    TooltipContent,
+} from '@gorgias/axiom'
 
 import { ProductSelect } from 'AIJourney/components/ProductSelect/ProductSelect'
 import type { Product } from 'constants/integrations/types/shopify'
@@ -19,9 +28,22 @@ export const TestingProductCard = ({
     if (isV3Architecture) {
         return (
             <Box flexDirection="column" gap="xs">
-                <Text className={css.caption}>
-                    Select a product to be used in testing messages.
-                </Text>
+                <Box flexDirection="row" alignItems="center" gap="xxs">
+                    <Heading size="sm">Testing product</Heading>
+                    <span>
+                        <Tooltip
+                            delay={0}
+                            trigger={
+                                <Icon
+                                    name="info"
+                                    alt="Testing product information"
+                                />
+                            }
+                        >
+                            <TooltipContent title="Select a product to be used in testing messages." />
+                        </Tooltip>
+                    </span>
+                </Box>
                 <ProductSelect
                     selectedProduct={selectedProduct}
                     setSelectedProduct={(product: Product) =>

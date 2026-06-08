@@ -109,22 +109,26 @@ describe('<TestingProductCard isV3Architecture />', () => {
     })
 
     describe('rendering', () => {
-        it('should not render the card title', () => {
+        it('should render the section title', () => {
             render(<TestingProductCard isV3Architecture />)
 
-            expect(
-                screen.queryByText('Testing product'),
-            ).not.toBeInTheDocument()
+            expect(screen.getByText('Testing product')).toBeInTheDocument()
         })
 
-        it('should render the v3 caption text', () => {
+        it('should reveal the v3 caption in an info tooltip on hover', async () => {
+            const user = userEvent.setup()
             render(<TestingProductCard isV3Architecture />)
 
-            expect(
-                screen.getByText(
-                    'Select a product to be used in testing messages.',
-                ),
-            ).toBeInTheDocument()
+            await user.hover(
+                screen.getByRole('img', {
+                    name: /testing product information/i,
+                }),
+            )
+
+            const tooltip = await screen.findByRole('tooltip')
+            expect(tooltip).toHaveTextContent(
+                'Select a product to be used in testing messages.',
+            )
         })
 
         it('should render the ProductSelect component', () => {
@@ -189,11 +193,7 @@ describe('<TestingProductCard isV3Architecture />', () => {
                 )
             })
 
-            expect(
-                screen.getByText(
-                    'Select a product to be used in testing messages.',
-                ),
-            ).toBeInTheDocument()
+            expect(screen.getByText('Testing product')).toBeInTheDocument()
         })
     })
 })

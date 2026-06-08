@@ -8,7 +8,17 @@ import type {
     JourneyConfigurationApiDTO,
 } from '@gorgias/convert-client'
 
-import { PlaygroundPreview, TestingProductCard } from 'AIJourney/components'
+import {
+    PlaygroundPreview,
+    TestGuidanceVariantSelect,
+    TestingProductCard,
+} from 'AIJourney/components'
+import type { MessageInstructionsVariant } from 'AIJourney/components/MessageGuidanceCard/types'
+import {
+    CONTROL_SELECTION,
+    getGuidanceInstructionsForSelection,
+    resolveGuidanceSelection,
+} from 'AIJourney/components/TestGuidanceVariantSelect/TestGuidanceVariantSelect'
 import { JOURNEY_TYPES } from 'AIJourney/constants'
 import {
     useAiJourneyStoreConfiguration,
@@ -39,6 +49,23 @@ export const PreviewPanel = ({ onClose, promptUnsavedChanges }: Props) => {
     const { watch, formState } = useFormContext<SetupFormValues>()
     const journeyMessageInstructions = watch('message_instructions')
     const isFormDirty = formState.isDirty
+
+    const variants = (watch('variants') ?? []) as MessageInstructionsVariant[]
+    const isAbTestEnabled = variants.length > 0
+    const [guidanceSelection, setGuidanceSelection] =
+        useState(CONTROL_SELECTION)
+    const effectiveGuidanceSelection = resolveGuidanceSelection(
+        guidanceSelection,
+        variants,
+        false,
+    )
+    const resolvedMessageInstructions = isAbTestEnabled
+        ? getGuidanceInstructionsForSelection(
+              effectiveGuidanceSelection,
+              journeyMessageInstructions ?? '',
+              variants,
+          )
+        : (journeyMessageInstructions ?? '')
 
     const { storeConfiguration } = useAiJourneyStoreConfiguration(
         currentIntegration?.id,
@@ -80,7 +107,7 @@ export const PreviewPanel = ({ onClose, promptUnsavedChanges }: Props) => {
             journeyType,
             selectedProduct,
             totalMessagesToBeGenerated,
-            journeyMessageInstructions: journeyMessageInstructions ?? '',
+            journeyMessageInstructions: resolvedMessageInstructions,
             returningCustomer,
             smsSenderIntegrationId:
                 storeConfiguration?.sms_sender_integration_id,
@@ -127,18 +154,14 @@ export const PreviewPanel = ({ onClose, promptUnsavedChanges }: Props) => {
     const shouldRenderTestingProductCard =
         !isWelcome && !isCampaign && !isWinBack
     const shouldRenderTestConfiguration =
-        shouldRenderTestingProductCard || isWelcome
+        shouldRenderTestingProductCard || isWelcome || isAbTestEnabled
 
     return warpToCollapsibleColumn(
         <>
             {shouldRenderTestConfiguration && (
                 <Box flexDirection="column" gap="sm" padding="md">
                     <Box alignItems="center" justifyContent="space-between">
-                        <Heading size="lg">
-                            {shouldRenderTestingProductCard
-                                ? 'Testing product'
-                                : 'Test configuration'}
-                        </Heading>
+                        <Heading size="lg">Test configuration</Heading>
                         <Button
                             variant="tertiary"
                             icon="close"
@@ -159,6 +182,14 @@ export const PreviewPanel = ({ onClose, promptUnsavedChanges }: Props) => {
                             onChange={setReturningCustomer}
                             label="Returning customer"
                             aria-label="Returning customer"
+                        />
+                    )}
+                    {isAbTestEnabled && (
+                        <TestGuidanceVariantSelect
+                            variants={variants}
+                            value={effectiveGuidanceSelection}
+                            onChange={setGuidanceSelection}
+                            infoTooltip="Choose which guidance variant to preview."
                         />
                     )}
                 </Box>

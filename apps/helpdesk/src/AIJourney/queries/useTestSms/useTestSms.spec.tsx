@@ -139,4 +139,53 @@ describe('useTestSms', () => {
             },
         )
     })
+
+    it('should omit test_variant_id when none is provided (weighted)', async () => {
+        mockTestJourney.mockResolvedValue({ success: true })
+
+        const { result } = renderHook(() => useTestSms(), {
+            wrapper: createWrapper(),
+        })
+
+        await result.current.mutateAsync({
+            journeyId: 'journey-123',
+            phoneNumber: '+1415111111',
+            products: [],
+        })
+
+        await waitFor(() => {
+            expect(result.current.isSuccess).toBe(true)
+        })
+
+        expect(mockTestJourney).toHaveBeenCalledWith(
+            'journey-123',
+            expect.not.objectContaining({ test_variant_id: expect.anything() }),
+            { baseURL: expect.any(String) },
+        )
+    })
+
+    it('should forward test_variant_id when a forced selection is provided', async () => {
+        mockTestJourney.mockResolvedValue({ success: true })
+
+        const { result } = renderHook(() => useTestSms(), {
+            wrapper: createWrapper(),
+        })
+
+        await result.current.mutateAsync({
+            journeyId: 'journey-123',
+            phoneNumber: '+1415111111',
+            products: [],
+            testVariantId: 'variant-uuid-1',
+        })
+
+        await waitFor(() => {
+            expect(result.current.isSuccess).toBe(true)
+        })
+
+        expect(mockTestJourney).toHaveBeenCalledWith(
+            'journey-123',
+            expect.objectContaining({ test_variant_id: 'variant-uuid-1' }),
+            { baseURL: expect.any(String) },
+        )
+    })
 })

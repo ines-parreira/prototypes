@@ -1,5 +1,5 @@
 import { render } from '@repo/testing'
-import { act, screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { FormProvider, useForm, useFormContext } from 'react-hook-form'
 import { Provider } from 'react-redux'
@@ -205,18 +205,10 @@ describe('<PreviewPanel />', () => {
             })
         })
 
-        it('should render the "Testing product" heading', () => {
+        it('should render the "Test configuration" heading', () => {
             renderComponent()
 
-            expect(screen.getByText('Testing product')).toBeInTheDocument()
-        })
-
-        it('should not render "Test configuration" heading', () => {
-            renderComponent()
-
-            expect(
-                screen.queryByText('Test configuration'),
-            ).not.toBeInTheDocument()
+            expect(screen.getByText('Test configuration')).toBeInTheDocument()
         })
 
         it('should render TestingProductCard', () => {
@@ -548,6 +540,110 @@ describe('<PreviewPanel />', () => {
             })
 
             expect(mockHandleGenerateMessages).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('message guidance variant selector', () => {
+        const variants = [
+            {
+                id: 'uuid-1',
+                message_instructions: 'Variant one guidance',
+                weight: 30,
+            },
+            {
+                id: 'uuid-2',
+                message_instructions: 'Variant two guidance',
+                weight: 20,
+            },
+        ]
+
+        const renderWithDefaults = (defaultValues: Record<string, unknown>) => {
+            const WrapperWithDefaults = ({
+                children,
+            }: {
+                children: React.ReactNode
+            }) => {
+                const methods = useForm({ defaultValues })
+                return (
+                    <Provider store={mockStore}>
+                        <FormProvider {...methods}>{children}</FormProvider>
+                    </Provider>
+                )
+            }
+            return render(<PreviewPanel onClose={jest.fn()} />, {
+                wrapper: WrapperWithDefaults,
+            })
+        }
+
+        const getGeneratePlaygroundMessageMock = () =>
+            require('AIJourney/hooks').useGeneratePlaygroundMessage as jest.Mock
+
+        beforeEach(() => {
+            mockUseJourneyContext.mockReturnValue({
+                journeyData: {
+                    id: 'j-1',
+                    type: JOURNEY_TYPES.CART_ABANDONMENT,
+                    configuration: {},
+                },
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+                currentIntegration: { id: 1 },
+            })
+        })
+
+        it('should not render the selector when A/B testing is disabled', () => {
+            renderWithDefaults({
+                message_instructions: 'control',
+                variants: [],
+            })
+
+            expect(
+                screen.queryByRole('heading', { name: /message guidance/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should render the selector when A/B testing is enabled', () => {
+            renderWithDefaults({
+                message_instructions: 'control guidance',
+                variants,
+            })
+
+            expect(
+                screen.getByRole('heading', { name: /message guidance/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('should pass the control instructions by default', () => {
+            renderWithDefaults({
+                message_instructions: 'control guidance',
+                variants,
+            })
+
+            const lastCall =
+                getGeneratePlaygroundMessageMock().mock.calls.at(-1)?.[0]
+            expect(lastCall.journeyMessageInstructions).toBe('control guidance')
+        })
+
+        it('should pass the selected variant instructions when a variant is chosen', async () => {
+            const user = userEvent.setup()
+            renderWithDefaults({
+                message_instructions: 'control guidance',
+                variants,
+            })
+
+            await user.click(screen.getByRole('button', { name: /control/i }))
+
+            const listbox = await screen.findByRole('listbox')
+            await user.click(
+                within(listbox).getByRole('option', { name: 'Variant 2' }),
+            )
+
+            await waitFor(() => {
+                const lastCall =
+                    getGeneratePlaygroundMessageMock().mock.calls.at(-1)?.[0]
+                expect(lastCall.journeyMessageInstructions).toBe(
+                    'Variant two guidance',
+                )
+            })
         })
     })
 })

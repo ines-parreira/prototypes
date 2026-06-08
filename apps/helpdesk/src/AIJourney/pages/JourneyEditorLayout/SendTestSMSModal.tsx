@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useLocalStorage } from '@repo/hooks'
 import type { CountryCode } from 'libphonenumber-js'
 import { AsYouType } from 'libphonenumber-js'
+import { useFormContext } from 'react-hook-form'
 
 import {
     Box,
@@ -16,10 +17,17 @@ import {
     ToggleField,
 } from '@gorgias/axiom'
 import { CountryCodeSelect } from 'AIJourney/components/CountryCodeSelect/CountryCodeSelect'
+import type { MessageInstructionsVariant } from 'AIJourney/components/MessageGuidanceCard/types'
 import { ProductSelect } from 'AIJourney/components/ProductSelect/ProductSelect'
+import {
+    resolveGuidanceSelection,
+    TestGuidanceVariantSelect,
+    WEIGHTED_SELECTION,
+} from 'AIJourney/components/TestGuidanceVariantSelect/TestGuidanceVariantSelect'
 import { JOURNEY_TYPES } from 'AIJourney/constants'
 import { useHandleSendTestSMS, useLastSelectedProduct } from 'AIJourney/hooks'
 import { useAIJourneyProductList } from 'AIJourney/hooks/useAIJourneyProductList/useAIJourneyProductList'
+import type { SetupFormValues } from 'AIJourney/pages/Setup/Setup'
 import { useJourneyContext } from 'AIJourney/providers'
 import type { Product } from 'constants/integrations/types/shopify'
 import { getCountryCallingCodeFixed } from 'pages/settings/helpCenter/utils/phoneCodeSelectOptions'
@@ -55,6 +63,21 @@ export const SendTestSMSModal = ({ isOpen, onClose }: Props) => {
     const { productList } = useAIJourneyProductList({
         integrationId: currentIntegration?.id,
     })
+
+    const { watch } = useFormContext<SetupFormValues>()
+    const variants = (watch('variants') ?? []) as MessageInstructionsVariant[]
+    const isAbTestEnabled = variants.length > 0
+    const [guidanceSelection, setGuidanceSelection] =
+        useState(WEIGHTED_SELECTION)
+    const effectiveGuidanceSelection = resolveGuidanceSelection(
+        guidanceSelection,
+        variants,
+        true,
+    )
+    const testVariantId =
+        effectiveGuidanceSelection === WEIGHTED_SELECTION
+            ? undefined
+            : effectiveGuidanceSelection
 
     const isWelcome = journeyType === JOURNEY_TYPES.WELCOME
     const isCampaign = journeyType === JOURNEY_TYPES.CAMPAIGN
@@ -108,6 +131,7 @@ export const SendTestSMSModal = ({ isOpen, onClose }: Props) => {
         testSmsNumber,
         currentIntegration,
         returningCustomer,
+        testVariantId,
     })
 
     const handleSend = async () => {
@@ -146,6 +170,15 @@ export const SendTestSMSModal = ({ isOpen, onClose }: Props) => {
                         <ProductSelect
                             selectedProduct={selectedProduct}
                             setSelectedProduct={handleProductSelect}
+                        />
+                    )}
+                    {isAbTestEnabled && (
+                        <TestGuidanceVariantSelect
+                            variants={variants}
+                            value={effectiveGuidanceSelection}
+                            onChange={setGuidanceSelection}
+                            includeWeighted
+                            infoTooltip="Choose which guidance variant to send. Weighted sends a random variant following your A/B split, like live shoppers."
                         />
                     )}
                     <TextField

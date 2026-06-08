@@ -1,5 +1,5 @@
 import { render } from '@repo/testing'
-import { act, screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { FormProvider, useForm } from 'react-hook-form'
 import { Provider } from 'react-redux'
@@ -33,6 +33,10 @@ jest.mock('AIJourney/hooks', () => ({
         setLastSelectedProductId: jest.fn(),
     })),
 }))
+
+const { useHandleSendTestSMS: mockUseHandleSendTestSMS } = jest.requireMock(
+    'AIJourney/hooks',
+) as { useHandleSendTestSMS: jest.Mock }
 
 jest.mock(
     'AIJourney/hooks/useAIJourneyProductList/useAIJourneyProductList',
@@ -424,6 +428,99 @@ describe('<SendTestSMSModal />', () => {
             ).toBeDisabled()
 
             resolveSend!()
+        })
+    })
+
+    describe('message guidance variant selector', () => {
+        const variants = [
+            {
+                id: 'uuid-1',
+                message_instructions: 'Variant one guidance',
+                weight: 30,
+            },
+            {
+                id: 'uuid-2',
+                message_instructions: 'Variant two guidance',
+                weight: 20,
+            },
+        ]
+
+        const renderWithVariants = () => {
+            const WrapperWithVariants = ({
+                children,
+            }: {
+                children: React.ReactNode
+            }) => {
+                const methods = useForm({ defaultValues: { variants } })
+                return (
+                    <Provider store={mockStore}>
+                        <FormProvider {...methods}>{children}</FormProvider>
+                    </Provider>
+                )
+            }
+            return render(<SendTestSMSModal isOpen onClose={jest.fn()} />, {
+                wrapper: WrapperWithVariants,
+            })
+        }
+
+        it('should not render the selector when A/B testing is disabled', () => {
+            renderComponent()
+
+            expect(
+                screen.queryByRole('heading', { name: /message guidance/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should render the selector when A/B testing is enabled', () => {
+            renderWithVariants()
+
+            expect(
+                screen.getByRole('heading', { name: /message guidance/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('should default to Weighted (no forced selection sent)', () => {
+            renderWithVariants()
+
+            expect(mockUseHandleSendTestSMS).toHaveBeenLastCalledWith(
+                expect.objectContaining({ testVariantId: undefined }),
+            )
+        })
+
+        it('should send the control sentinel when Control is selected', async () => {
+            const user = userEvent.setup()
+            renderWithVariants()
+
+            await user.click(screen.getByRole('button', { name: /weighted/i }))
+
+            const listbox = await screen.findByRole('listbox')
+            await user.click(
+                within(listbox).getByRole('option', { name: 'Control' }),
+            )
+
+            await waitFor(() => {
+                expect(mockUseHandleSendTestSMS).toHaveBeenLastCalledWith(
+                    expect.objectContaining({ testVariantId: 'control' }),
+                )
+            })
+        })
+
+        it('should send the variant id when a variant is selected', async () => {
+            const user = userEvent.setup()
+            renderWithVariants()
+
+            await user.click(screen.getByRole('button', { name: /weighted/i }))
+
+            const listbox = await screen.findByRole('listbox')
+            await user.click(
+                within(listbox).getByRole('option', { name: 'Variant 2' }),
+            )
+
+            await waitFor(() => {
+                expect(mockUseHandleSendTestSMS).toHaveBeenLastCalledWith(
+                    expect.objectContaining({ testVariantId: 'uuid-2' }),
+                )
+            })
         })
     })
 })

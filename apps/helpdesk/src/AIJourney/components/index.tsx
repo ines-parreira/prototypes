@@ -20,6 +20,7 @@ export { PlaygroundPreviewAttachedImage } from '../components/PlaygroundPreviewA
 export { PlaygroundPreviewMessagePlaceholder } from '../components/PlaygroundPreviewMessagePlaceholder/PlaygroundPreviewMessagePlaceholder'
 export { SendTestCard } from './SendTestCard/SendTestCard'
 export { CountryCodeSelect } from './CountryCodeSelect/CountryCodeSelect'
+export { TestGuidanceVariantSelect } from './TestGuidanceVariantSelect/TestGuidanceVariantSelect'
 export { OnboardingStepper } from './OnboardingStepper/OnboardingStepper'
 export { ImageDropzone } from './ImageDropzone/ImageDropzone'
 export { AudienceHealthSection } from './AudienceHealthSection/AudienceHealthSection'

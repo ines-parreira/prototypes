@@ -461,5 +461,31 @@ describe('useHandleSendTestSMS', () => {
                 returningCustomer: false,
             })
         })
+
+        it('should forward testVariantId to the mutation', async () => {
+            mockTestSms.mockResolvedValue(undefined)
+
+            const { result } = renderHook(
+                () =>
+                    useHandleSendTestSMS({
+                        ...hookParameters,
+                        selectedProduct: null,
+                        testVariantId: 'variant-uuid-1',
+                    }),
+                {
+                    wrapper: ({ children }) => (
+                        <Provider store={mockStore}>{children}</Provider>
+                    ),
+                },
+            )
+
+            await act(async () => {
+                await result.current.handleTestSms()
+            })
+
+            expect(mockTestSms).toHaveBeenCalledWith(
+                expect.objectContaining({ testVariantId: 'variant-uuid-1' }),
+            )
+        })
     })
 })

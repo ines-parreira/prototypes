@@ -17,6 +17,7 @@ type useHandleSendTestSMSProps = {
     currentIntegration?: Integration
     delaySendingSMSms?: number
     returningCustomer?: boolean
+    testVariantId?: string
 }
 
 export const useHandleSendTestSMS = ({
@@ -26,6 +27,7 @@ export const useHandleSendTestSMS = ({
     currentIntegration,
     delaySendingSMSms = Duration.seconds(10),
     returningCustomer,
+    testVariantId,
 }: useHandleSendTestSMSProps) => {
     const testSms = useTestSms()
 
@@ -66,6 +68,7 @@ export const useHandleSendTestSMS = ({
                 journeyId: journeyData.id,
                 products,
                 returningCustomer,
+                testVariantId,
             })
             // Add a delay to allow the SMS to be sent
             await new Promise((resolve) =>
@@ -86,6 +89,7 @@ export const useHandleSendTestSMS = ({
         testSmsNumber,
         selectedProduct,
         returningCustomer,
+        testVariantId,
     ])
 
     return {
