@@ -19,6 +19,12 @@ const ProtectedUsersListPage = withUserRoleRequired(
     PageSection.Users,
 )
 
+const ProtectedAgentDetail = withUserRoleRequired(
+    AgentDetail,
+    ADMIN_ROLE,
+    PageSection.Users,
+)
+
 export function UsersListRoute() {
     const { value: isNewListEnabled, isLoading } = useFlagWithLoading(
         FeatureFlagKey.NewUsersListPage,
@@ -44,6 +50,31 @@ export function UsersListRoute() {
     })
 }
 
+// The new user form renders inside an axiom Panel that owns its
+// height/scroll/sticky chrome, so it uses the full-bleed panel `Page`
+// layout; the legacy form keeps the standard settings card chrome.
+export function UserDetailRoute() {
+    const { value: isNewListEnabled, isLoading } = useFlagWithLoading(
+        FeatureFlagKey.NewUsersListPage,
+    )
+
+    if (isLoading) {
+        return <Page navbar={SettingsNavbar}>{null}</Page>
+    }
+
+    if (isNewListEnabled) {
+        return (
+            <Page navbar={SettingsNavbar}>
+                <ProtectedAgentDetail />
+            </Page>
+        )
+    }
+
+    return renderAppSettings(AgentDetail, {
+        roleParams: [ADMIN_ROLE, PageSection.Users],
+    })
+}
+
 export function Users() {
     const { path } = useRouteMatch()
 
@@ -54,15 +85,11 @@ export function Users() {
             </Route>
 
             <Route path={`${path}/add`} exact>
-                {renderAppSettings(AgentDetail, {
-                    roleParams: [ADMIN_ROLE, PageSection.Users],
-                })}
+                <UserDetailRoute />
             </Route>
 
             <Route path={`${path}/:id`} exact>
-                {renderAppSettings(AgentDetail, {
-                    roleParams: [ADMIN_ROLE, PageSection.Users],
-                })}
+                <UserDetailRoute />
             </Route>
         </Switch>
     )

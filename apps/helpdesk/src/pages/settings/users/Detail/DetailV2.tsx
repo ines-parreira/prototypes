@@ -5,7 +5,9 @@ import { useCreateUser, useUpdateUser } from '@repo/users'
 import classnames from 'classnames'
 import { useParams } from 'react-router-dom'
 
-import { toast } from '@gorgias/axiom'
+import { BackButton } from '@repo/routing'
+
+import { Panel, PanelFooter, PanelHeader, toast } from '@gorgias/axiom'
 import type { CreateUserBody } from '@gorgias/helpdesk-queries'
 
 import { normalizeUserName } from 'common/utils'
@@ -19,14 +21,15 @@ import { getAccountOwnerId } from 'state/currentAccount/selectors'
 import { getCurrentUserId } from 'state/currentUser/selectors'
 import { errorToChildren } from 'utils'
 
-import { navigateBackToUserList } from './constants'
+import { navigateBackToUserList, USERS_LIST_PATH } from './constants'
 import { Footer } from './Footer'
-import { Header } from './Header'
 import { useGetAgentWithEffects } from './hooks/useGetAgentWithEffect'
 import { Info } from './Info'
 import { Role } from './Role'
 import { Statuses } from './Statuses'
 import type { AgentState } from './types'
+
+const USER_FORM_ID = 'user-detail-form'
 
 function toApiRoleName(role: UserRole): CreateUserBody['role']['name'] | null {
     switch (role) {
@@ -81,7 +84,11 @@ export const DetailV2 = () => {
     const isInternal = role === UserRole.Bot || role === UserRole.GorgiasAgent
 
     if (isEdit && isLoading) {
-        return <Loader />
+        return (
+            <Panel key="loading" h="100%" w="100%" overflow="auto">
+                <Loader />
+            </Panel>
+        )
     }
 
     if (isEdit && !isLoading && !rawData) {
@@ -148,20 +155,28 @@ export const DetailV2 = () => {
     }
 
     return (
-        <div className="full-width">
-            <Header isEdit={isEdit} name={name} />
-            <div className={classnames(settingsCss.newPageContainer)}>
-                {isEdit && !isInternal && (
-                    <Statuses
-                        agentId={agentId}
-                        rawData={rawData}
-                        has2FA={has2FA}
-                        set2FA={set2FA}
-                        isAccountOwner={isAccountOwner}
-                        isViewingAccountOwner={isViewingAccountOwner}
+        <Panel key="form" h="100%" w="100%" overflow="auto">
+            <PanelHeader
+                leadingSlot={
+                    <BackButton
+                        fallbackUrl={USERS_LIST_PATH}
+                        aria-label="Back to users"
                     />
-                )}
-                <form onSubmit={onSubmit}>
+                }
+                title={isEdit ? name : 'New user'}
+            />
+            <form id={USER_FORM_ID} onSubmit={onSubmit}>
+                <div className={classnames(settingsCss.newPageContainer)}>
+                    {isEdit && !isInternal && (
+                        <Statuses
+                            agentId={agentId}
+                            rawData={rawData}
+                            has2FA={has2FA}
+                            set2FA={set2FA}
+                            isAccountOwner={isAccountOwner}
+                            isViewingAccountOwner={isViewingAccountOwner}
+                        />
+                    )}
                     <Info
                         name={name}
                         email={email}
@@ -172,27 +187,28 @@ export const DetailV2 = () => {
                         isInternal={isInternal}
                         isViewingAccountOwner={isViewingAccountOwner}
                     />
-                    {
-                        <Role
-                            role={role}
-                            setAgentState={setAgentState}
-                            isSelf={isSelf}
-                            isInternal={isInternal}
-                            isViewingAccountOwner={isViewingAccountOwner}
-                        />
-                    }
-                    <Footer
-                        rawData={rawData}
-                        isEdit={isEdit}
-                        agentId={agentId}
-                        agentState={agentState}
-                        isSaving={isCreating || isUpdating}
-                        isViewingAccountOwner={isViewingAccountOwner}
+                    <Role
+                        role={role}
+                        setAgentState={setAgentState}
                         isSelf={isSelf}
                         isInternal={isInternal}
+                        isViewingAccountOwner={isViewingAccountOwner}
                     />
-                </form>
-            </div>
-        </div>
+                </div>
+            </form>
+            <PanelFooter>
+                <Footer
+                    rawData={rawData}
+                    isEdit={isEdit}
+                    agentId={agentId}
+                    agentState={agentState}
+                    isSaving={isCreating || isUpdating}
+                    isViewingAccountOwner={isViewingAccountOwner}
+                    isSelf={isSelf}
+                    isInternal={isInternal}
+                    formId={USER_FORM_ID}
+                />
+            </PanelFooter>
+        </Panel>
     )
 }

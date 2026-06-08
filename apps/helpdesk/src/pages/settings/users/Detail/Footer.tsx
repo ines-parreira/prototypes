@@ -22,6 +22,11 @@ type Props = {
     isViewingAccountOwner?: boolean
     isSelf?: boolean
     isInternal?: boolean
+    /**
+     * Associates the submit button with a form by id, so the footer can live
+     * outside the `<form>` (e.g. in a sticky PanelFooter) and still submit it.
+     */
+    formId?: string
 }
 
 export const Footer = ({
@@ -33,6 +38,7 @@ export const Footer = ({
     isSelf = false,
     isViewingAccountOwner = false,
     isInternal = false,
+    formId,
 }: Props) => {
     const saveId = 'detail-footer-save-agent-button'
     const deleteId = 'detail-footer-delete-agent-button'
@@ -51,6 +57,7 @@ export const Footer = ({
             <div>
                 <Button
                     type="submit"
+                    form={formId}
                     id={saveId}
                     className="mr-2"
                     isLoading={isSaving}

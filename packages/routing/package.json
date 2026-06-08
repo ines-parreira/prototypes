@@ -18,6 +18,7 @@
         "typecheck": "tsgo -p ./tsconfig.json --noEmit true"
     },
     "peerDependencies": {
+        "@gorgias/axiom": "catalog:axiom",
         "history": "catalog:react-router",
         "lodash": "catalog:lodash",
         "react": "catalog:react",
@@ -26,6 +27,7 @@
         "react-router-dom": "catalog:react-router"
     },
     "devDependencies": {
+        "@gorgias/axiom": "catalog:axiom",
         "@repo/config": "workspace:*",
         "@repo/testing": "workspace:*",
         "@testing-library/dom": "catalog:test",

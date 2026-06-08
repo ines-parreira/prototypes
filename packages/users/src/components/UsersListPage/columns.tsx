@@ -84,7 +84,11 @@ export const usersListPageColumns = [
                     </DataTableBaseCell>
                 )
             },
-            filter: <DataTableBooleanFilter />,
+            filter: (
+                <DataTableBooleanFilter>
+                    {(enabled) => (enabled ? 'Enabled' : 'Disabled')}
+                </DataTableBooleanFilter>
+            ),
         },
     ),
 ]

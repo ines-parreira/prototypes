@@ -12,7 +12,6 @@ import { getCurrentUserId } from 'state/currentUser/selectors'
 
 import { DetailV2 } from '../DetailV2'
 import { Footer } from '../Footer'
-import { Header } from '../Header'
 import { useGetAgentWithEffects } from '../hooks/useGetAgentWithEffect'
 import { Info } from '../Info'
 import { Role } from '../Role'
@@ -38,7 +37,6 @@ jest.mock('pages/common/components/Loader/Loader', () => ({
     default: jest.fn(() => <div>loader</div>),
 }))
 jest.mock('../hooks/useGetAgentWithEffect')
-jest.mock('../Header')
 jest.mock('../Statuses')
 jest.mock('../Info')
 jest.mock('../Role')
@@ -50,7 +48,6 @@ const CURRENT_USER_ID = 2
 const useParamsMock = assumeMock(useParams)
 const useGetAgentWithEffectsMock = assumeMock(useGetAgentWithEffects)
 const mockedUseAppSelector = assumeMock(useAppSelector)
-const mockedHeader = assumeMock(Header)
 const mockedStatuses = assumeMock(Statuses)
 const mockedInfo = assumeMock(Info)
 const mockedRole = assumeMock(Role)
@@ -72,11 +69,17 @@ beforeEach(() => {
         if (selector === getCurrentUserId) return CURRENT_USER_ID
         return undefined
     })
-    mockedHeader.mockReturnValue(<div />)
     mockedStatuses.mockReturnValue(<div />)
     mockedInfo.mockReturnValue(<div />)
     mockedRole.mockReturnValue(<div />)
-    mockedFooter.mockReturnValue(<button>Save</button>)
+    // The real Footer renders in a sticky PanelFooter outside the <form> and
+    // associates its submit button via the `form` attribute; mirror that so a
+    // click still submits the form.
+    mockedFooter.mockImplementation(({ formId }) => (
+        <button type="submit" form={formId}>
+            Save
+        </button>
+    ))
     useGetAgentWithEffectsMock.mockReturnValue({
         rawData: agents[0],
         isLoading: false,

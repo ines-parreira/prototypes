@@ -1,3 +1,5 @@
 export { history } from './history'
+export { BackButton } from './components/BackButton'
+export { useBackNavigation } from './hooks/useBackNavigation'
 export { useSearchParams } from './hooks/useSearchParams'
 export { getPreviousUrl, getCurrentUrl } from './urlTracking'

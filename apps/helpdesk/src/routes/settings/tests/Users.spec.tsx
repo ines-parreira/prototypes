@@ -3,12 +3,7 @@ import React from 'react'
 import { assumeMock, render } from '@repo/testing'
 import { Route, useRouteMatch } from 'react-router-dom'
 
-import { PageSection } from 'config/pages'
-import { ADMIN_ROLE } from 'config/user'
-import AgentDetail from 'pages/settings/users/Detail'
-
-import { renderAppSettings } from '../helpers/settingsRenderer'
-import { Users, UsersListRoute } from '../Users'
+import { UserDetailRoute, Users, UsersListRoute } from '../Users'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -23,7 +18,6 @@ jest.mock('../helpers/settingsRenderer', () => ({
 }))
 
 const mockedRoute = Route as jest.Mock
-const mockedRenderAppSettings = assumeMock(renderAppSettings)
 const mockedUseRouteMatch = assumeMock(useRouteMatch)
 
 const basePath = 'users'
@@ -45,27 +39,19 @@ describe('Users', () => {
     })
 
     it.each([
-        [{ callOrder: 0, routeIndex: 1, path: basePath + '/add' }],
-        [{ callOrder: 1, routeIndex: 2, path: basePath + '/:id' }],
+        [{ routeIndex: 1, path: basePath + '/add' }],
+        [{ routeIndex: 2, path: basePath + '/:id' }],
     ])(
-        'should render the detail route at $path through renderAppSettings',
-        ({ callOrder, routeIndex, path }) => {
+        'should render the detail route at $path through UserDetailRoute',
+        ({ routeIndex, path }) => {
             render(<Users />)
 
-            expect(mockedRenderAppSettings.mock.calls[callOrder]).toEqual([
-                AgentDetail,
-                {
-                    roleParams: [ADMIN_ROLE, PageSection.Users],
-                },
-            ])
-            expect(mockedRoute.mock.calls[routeIndex]).toEqual([
-                {
-                    path,
-                    exact: true,
-                    children: ComponentToRender,
-                },
-                {},
-            ])
+            const [props] = mockedRoute.mock.calls[routeIndex]
+            expect(props.path).toBe(path)
+            expect(props.exact).toBe(true)
+            expect((props.children as React.ReactElement).type).toBe(
+                UserDetailRoute,
+            )
         },
     )
 })

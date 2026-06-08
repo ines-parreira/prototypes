@@ -26,6 +26,13 @@
     .footer {
         display: flex;
         justify-content: space-between;
+        width: 100%;
+    }
+
+    // The legacy form renders the footer inline as the form's last child, so it
+    // needs separation from the fields above. DetailV2 renders the footer
+    // outside the form, in a sticky PanelFooter that provides its own.
+    form .footer {
         margin-top: var(--layout-spacing-xl);
     }
 }
