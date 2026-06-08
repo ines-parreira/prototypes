@@ -66,15 +66,18 @@ export const TrialActivationModal = ({
 
     const [isTermsManuallyChecked, setTermsManuallyChecked] = useState(false)
     const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false)
+    const [isSubmitting, setIsSubmitting] = useState(false)
 
     const isTermsChecked = hasAnyOptedInTrial || isTermsManuallyChecked
     const isTermsDisabled = hasAnyOptedInTrial
     const hasCheckboxError = !isTermsChecked && hasAttemptedSubmit
+    const isStartTrialPending = isLoading || isSubmitting
 
     useEffect(() => {
         if (!isOpen) {
             setTermsManuallyChecked(false)
             setHasAttemptedSubmit(false)
+            setIsSubmitting(false)
         }
     }, [isOpen])
 
@@ -86,8 +89,10 @@ export const TrialActivationModal = ({
             setHasAttemptedSubmit(true)
             return
         }
+        if (isSubmitting) return
+        setIsSubmitting(true)
         onConfirm(isTermsChecked)
-    }, [isTermsChecked, onConfirm])
+    }, [isTermsChecked, isSubmitting, onConfirm])
 
     if (isTrialsLoading) return null
 
@@ -134,18 +139,18 @@ export const TrialActivationModal = ({
                             variant="primary"
                             onClick={handleConfirm}
                             isDisabled={
-                                isLoading ||
+                                isStartTrialPending ||
                                 isConfirmDisabled ||
                                 !hasUpgradePlan
                             }
-                            isLoading={isLoading}
+                            isLoading={isStartTrialPending}
                         >
                             Start trial
                         </Button>
                         <Button
                             variant="tertiary"
                             onClick={onClose}
-                            isDisabled={isLoading}
+                            isDisabled={isStartTrialPending}
                         >
                             Not now
                         </Button>

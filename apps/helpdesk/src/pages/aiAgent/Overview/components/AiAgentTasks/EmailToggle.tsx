@@ -1,8 +1,12 @@
 import React, { useCallback, useMemo } from 'react'
 
-import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
-import { LegacyLoadingSpinner as LoadingSpinner, Text } from '@gorgias/axiom'
+import {
+    Link as AxiomLink,
+    LegacyLoadingSpinner as LoadingSpinner,
+    Text,
+} from '@gorgias/axiom'
 
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import { ChannelToggle } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/ChannelToggle'
@@ -14,25 +18,30 @@ type EmailToggleProps = {
     isEmailChannelEnabled: boolean
     isLoading: boolean
     isReadOnly?: boolean
+    showTrialGateWarning?: boolean
     storeConfiguration?: StoreConfiguration
     shopName: string
     label?: string
 
     setIsEmailChannelEnabled: (value: boolean) => void
     onEmailToggle: (storeConfiguration: StoreConfiguration) => void
+    onStartTrial?: () => void
 }
 
 export const EmailToggle = ({
     isEmailChannelEnabled,
     isLoading,
     isReadOnly = false,
+    showTrialGateWarning = false,
     storeConfiguration,
     shopName,
     setIsEmailChannelEnabled,
     onEmailToggle,
+    onStartTrial,
     label = 'Email',
 }: EmailToggleProps) => {
     const { routes } = useAiAgentNavigation({ shopName })
+    const history = useHistory()
 
     const isEmailChannelDisabled = useMemo(() => {
         const monitoredEmailIntegrations =
@@ -52,20 +61,42 @@ export const EmailToggle = ({
     }
 
     const renderEmailWarning = useCallback(() => {
-        const decision = { visible: isEmailChannelDisabled }
-
-        const action = decision.visible ? (
-            <Link to={routes.deployEmail} className={css.customToggleWarning}>
+        const action = isEmailChannelDisabled ? (
+            <div className={css.customToggleWarning}>
                 <Text size="sm" variant="regular">
-                    Connect an{' '}
-                    <span className={css.emailAddress}>email address</span> to
-                    enable the AI Agent
+                    <AxiomLink
+                        size="sm"
+                        onClick={() => history.push(routes.deployEmail)}
+                    >
+                        Connect an email address
+                    </AxiomLink>{' '}
+                    to enable the AI Agent
                 </Text>
-            </Link>
+            </div>
+        ) : showTrialGateWarning ? (
+            <div className={css.customToggleWarning}>
+                <Text size="sm" variant="regular">
+                    Your email is connected, but you need to{' '}
+                    <AxiomLink size="sm" onClick={onStartTrial}>
+                        start a trial
+                    </AxiomLink>{' '}
+                    before you can deploy
+                </Text>
+            </div>
         ) : null
 
-        return { visible: decision.visible, hint: '', action }
-    }, [routes.deployEmail, isEmailChannelDisabled])
+        return {
+            visible: isEmailChannelDisabled || showTrialGateWarning,
+            hint: '',
+            action,
+        }
+    }, [
+        history,
+        routes.deployEmail,
+        isEmailChannelDisabled,
+        showTrialGateWarning,
+        onStartTrial,
+    ])
 
     return (
         <div className={css.toggleContainer}>

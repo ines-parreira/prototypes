@@ -130,6 +130,10 @@ export const useShoppingAssistantTrialFlow = ({
         FeatureFlagKey.AiAgentExpandingTrialExperienceMilestone2,
         false,
     )
+    const isAiAgentOnboardingV3Enabled = useFlag(
+        FeatureFlagKey.AiAgentOnboardingV3,
+        false,
+    )
     const {
         trialUpgradeModalName,
         upgradeModalName,
@@ -281,7 +285,7 @@ export const useShoppingAssistantTrialFlow = ({
             onSuccess: async () => {
                 trialModal.closeModal(trialUpgradeModalName)
                 onUpgradeModalClose?.()
-                if (isPostSetupSource) {
+                if (isPostSetupSource || isAiAgentOnboardingV3Enabled) {
                     toast.success('Trial started')
                 } else {
                     openTrialFinishSetupModal()

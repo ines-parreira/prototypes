@@ -40,6 +40,25 @@ jest.mock('hooks/useAppDispatch', () => ({
     __esModule: true,
     default: () => jest.fn(),
 }))
+jest.mock('hooks/useAppSelector', () => ({
+    __esModule: true,
+    default: () => ({ get: () => 'test-domain' }),
+}))
+jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations', () => ({
+    useStoreActivations: () => ({
+        storeActivations: {},
+        isFetchLoading: false,
+    }),
+}))
+jest.mock('pages/aiAgent/trial/hooks/useTrialAccess', () => ({
+    useTrialAccess: () => ({ trialType: 'aiAgent' }),
+}))
+const mockOpenTrialUpgradeModal = jest.fn()
+jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow', () => ({
+    useShoppingAssistantTrialFlow: () => ({
+        openTrialUpgradeModal: mockOpenTrialUpgradeModal,
+    }),
+}))
 jest.mock('../../AiAgentTasks/EmailToggle', () => ({
     EmailToggle: (props: any) => (
         <div data-testid="email-toggle">
@@ -51,6 +70,12 @@ jest.mock('../../AiAgentTasks/EmailToggle', () => ({
                 onClick={() => props.onEmailToggle(props.storeConfiguration)}
             >
                 Toggle Email
+            </button>
+            <button
+                data-testid="email-start-trial-button"
+                onClick={props.onStartTrial}
+            >
+                Email Start Trial
             </button>
         </div>
     ),
@@ -66,6 +91,12 @@ jest.mock('../../AiAgentTasks/ChatToggle', () => ({
                 onClick={() => props.onChatToggle(props.storeConfiguration)}
             >
                 Toggle Chat
+            </button>
+            <button
+                data-testid="chat-start-trial-button"
+                onClick={props.onStartTrial}
+            >
+                Chat Start Trial
             </button>
         </div>
     ),
@@ -224,6 +255,16 @@ describe('DeploySection', () => {
         renderDeploySection()
         expect(screen.getByText('email-readonly:false')).toBeInTheDocument()
         expect(screen.getByText('chat-readonly:false')).toBeInTheDocument()
+    })
+
+    it('opens the trial upgrade modal when a toggle requests starting the trial', async () => {
+        renderDeploySection({ needsTrialOptIn: true })
+
+        await userEvent.click(screen.getByTestId('email-start-trial-button'))
+        expect(mockOpenTrialUpgradeModal).toHaveBeenCalledTimes(1)
+
+        await userEvent.click(screen.getByTestId('chat-start-trial-button'))
+        expect(mockOpenTrialUpgradeModal).toHaveBeenCalledTimes(2)
     })
 
     describe('when AiAgentOnboardingV3 is enabled', () => {

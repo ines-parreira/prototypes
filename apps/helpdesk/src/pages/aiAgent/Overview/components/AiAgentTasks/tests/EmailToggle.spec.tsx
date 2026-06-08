@@ -58,7 +58,9 @@ describe('EmailToggle', () => {
     })
     it('shows warning when email is disabled due to missing integrations', () => {
         render(<EmailToggle {...defaultProps} />, {})
-        expect(screen.getByText(/email address/)).toBeInTheDocument()
+        expect(
+            screen.getByRole('link', { name: 'Connect an email address' }),
+        ).toBeInTheDocument()
     })
     it('enables toggle when email integrations are available', () => {
         const storeConfig = {
@@ -72,6 +74,67 @@ describe('EmailToggle', () => {
         const toggleButton = screen.getByRole('switch')
         expect(toggleButton).not.toBeDisabled()
         expect(screen.queryByAltText('warning')).not.toBeInTheDocument()
+    })
+    it('shows the start-trial caption and calls onStartTrial when channel is connected and trial-gated', async () => {
+        const onStartTrial = jest.fn()
+        const storeConfig = {
+            ...defaultStoreConfig,
+            monitoredEmailIntegrations: [{ id: 1 }],
+        } as unknown as StoreConfiguration
+        render(
+            <EmailToggle
+                {...defaultProps}
+                storeConfiguration={storeConfig}
+                showTrialGateWarning
+                onStartTrial={onStartTrial}
+            />,
+            {},
+        )
+
+        expect(
+            screen.getByText(/you need to/, { exact: false }),
+        ).toBeInTheDocument()
+        await userEvent.click(
+            screen.getByRole('link', { name: 'start a trial' }),
+        )
+        expect(onStartTrial).toHaveBeenCalledTimes(1)
+    })
+    it('does not show the start-trial caption when not trial-gated', () => {
+        const storeConfig = {
+            ...defaultStoreConfig,
+            monitoredEmailIntegrations: [{ id: 1 }],
+        } as unknown as StoreConfiguration
+        render(
+            <EmailToggle
+                {...defaultProps}
+                storeConfiguration={storeConfig}
+                onStartTrial={jest.fn()}
+            />,
+            {},
+        )
+        expect(
+            screen.queryByRole('link', { name: 'start a trial' }),
+        ).not.toBeInTheDocument()
+    })
+    it('does not show the start-trial caption for a read-only (completed) toggle that is not trial-gated', () => {
+        const storeConfig = {
+            ...defaultStoreConfig,
+            monitoredEmailIntegrations: [{ id: 1 }],
+        } as unknown as StoreConfiguration
+        render(
+            <EmailToggle
+                {...defaultProps}
+                storeConfiguration={storeConfig}
+                isReadOnly
+            />,
+            {},
+        )
+        expect(
+            screen.queryByRole('link', { name: 'start a trial' }),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByText(/you need to/, { exact: false }),
+        ).not.toBeInTheDocument()
     })
     it('does not call onEmailToggle when storeConfiguration is undefined', async () => {
         const setIsEmailChannelEnabled = jest.fn()

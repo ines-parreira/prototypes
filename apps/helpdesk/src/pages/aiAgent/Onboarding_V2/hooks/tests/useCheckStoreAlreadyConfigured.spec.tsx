@@ -1,3 +1,4 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { useHistory, useParams } from 'react-router-dom'
@@ -5,6 +6,7 @@ import { useHistory, useParams } from 'react-router-dom'
 import useAppSelector from 'hooks/useAppSelector'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { useFetchAiAgentStoreConfigurationData } from 'pages/aiAgent/Overview/hooks/pendingTasks/useFetchAiAgentStoreConfigurationData'
+import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 
 import { useCheckStoreAlreadyConfigured } from '../useCheckStoreAlreadyConfigured'
 
@@ -34,6 +36,7 @@ describe('useCheckStoreAlreadyConfigured', () => {
         mockHistoryPush = jest.fn()
         mockUseHistory.mockReturnValue({ push: mockHistoryPush })
         mockUseAppSelector.mockReturnValue('test-account') // Mocking accountDomain
+        mockFeatureFlags({ [FeatureFlagKey.AiAgentOnboardingV3]: false })
     })
 
     it('should not redirect when isFetchingStoreConfiguration is true', () => {
@@ -106,5 +109,29 @@ describe('useCheckStoreAlreadyConfigured', () => {
         expect(mockHistoryPush).toHaveBeenCalledWith(
             `/app/ai-agent/shopify/configured-store/settings`,
         )
+    })
+
+    it('does not redirect or notify when AiAgentOnboardingV3 is enabled', async () => {
+        mockFeatureFlags({ [FeatureFlagKey.AiAgentOnboardingV3]: true })
+        mockUseParams.mockReturnValue({
+            shopName: 'configured-store',
+            shopType: 'shopify',
+        })
+        mockUseFetchAiAgentStoreConfigurationData.mockReturnValue({
+            data: mockData,
+            isLoading: false,
+            isFetched: true,
+            error: false,
+        })
+
+        const { result } = renderHook(() => useCheckStoreAlreadyConfigured())
+
+        await waitFor(() => {
+            expect(result.current).toBeNull()
+        })
+        expect(mockHistoryPush).not.toHaveBeenCalled()
+        expect(
+            screen.queryByRole('status', { hidden: true }),
+        ).not.toBeInTheDocument()
     })
 })

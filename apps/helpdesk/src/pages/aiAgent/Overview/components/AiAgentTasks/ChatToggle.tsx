@@ -1,8 +1,12 @@
 import React, { useCallback, useMemo } from 'react'
 
-import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
-import { LegacyLoadingSpinner as LoadingSpinner, Text } from '@gorgias/axiom'
+import {
+    Link as AxiomLink,
+    LegacyLoadingSpinner as LoadingSpinner,
+    Text,
+} from '@gorgias/axiom'
 
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import { ChannelToggle } from 'pages/aiAgent/Activation/components/AiAgentActivationStoreCard/ChannelToggle'
@@ -19,6 +23,7 @@ type ChatToggleProps = {
     isChatChannelEnabled: boolean
     isLoading: boolean
     isReadOnly?: boolean
+    showTrialGateWarning?: boolean
     storeConfiguration?: StoreConfiguration
     shopName: string
     shopType: string
@@ -26,20 +31,24 @@ type ChatToggleProps = {
 
     setIsChatChannelEnabled: (value: boolean) => void
     onChatToggle: (storeConfiguration: StoreConfiguration) => void
+    onStartTrial?: () => void
 }
 
 export const ChatToggle = ({
     isChatChannelEnabled,
     isLoading,
     isReadOnly = false,
+    showTrialGateWarning = false,
     shopName,
     shopType,
     storeConfiguration,
     setIsChatChannelEnabled,
     onChatToggle,
+    onStartTrial,
     label = 'Chat',
 }: ChatToggleProps) => {
     const { routes } = useAiAgentNavigation({ shopName })
+    const history = useHistory()
     const chatChannels: InstallationStatusInjectedChatItem[] =
         useSelfServiceChatChannels(shopType, shopName)
 
@@ -78,35 +87,55 @@ export const ChatToggle = ({
         return [...chatChannels]
     }, [chatChannels, chatIntegrationStatus, isChatIntegrationsStatusLoading])
 
-    const renderChatWarning = useCallback(() => {
-        const decision = decideChatWarning(
-            chatChannelsWithAvailableFlag,
-            storeConfiguration?.monitoredChatIntegrations?.map((id) =>
-                id.toString(),
+    const chatWarningDecision = useMemo(
+        () =>
+            decideChatWarning(
+                chatChannelsWithAvailableFlag,
+                storeConfiguration?.monitoredChatIntegrations?.map((id) =>
+                    id.toString(),
+                ),
+                { deployChat: routes.deployChat },
             ),
-            { deployChat: routes.deployChat },
-        )
+        [
+            chatChannelsWithAvailableFlag,
+            routes.deployChat,
+            storeConfiguration?.monitoredChatIntegrations,
+        ],
+    )
 
-        const action = decision.visible ? (
-            <Link to={decision.to} className={css.customToggleWarning}>
+    const renderChatWarning = useCallback(() => {
+        const action = chatWarningDecision.visible ? (
+            <div className={css.customToggleWarning}>
                 <Text size="sm" variant="regular">
-                    <span className={css.chatAddress}>{decision.label}</span> to
-                    enable the AI Agent
+                    <AxiomLink
+                        size="sm"
+                        onClick={() => history.push(chatWarningDecision.to)}
+                    >
+                        {chatWarningDecision.label}
+                    </AxiomLink>{' '}
+                    to enable the AI Agent
                 </Text>
-            </Link>
+            </div>
+        ) : showTrialGateWarning ? (
+            <div className={css.customToggleWarning}>
+                <Text size="sm" variant="regular">
+                    Your chat is connected, but you need to{' '}
+                    <AxiomLink size="sm" onClick={onStartTrial}>
+                        start a trial
+                    </AxiomLink>{' '}
+                    before you can deploy
+                </Text>
+            </div>
         ) : null
 
-        return { visible: decision.visible, hint: '', action }
-    }, [
-        chatChannelsWithAvailableFlag,
-        routes.deployChat,
-        storeConfiguration?.monitoredChatIntegrations,
-    ])
+        return {
+            visible: chatWarningDecision.visible || showTrialGateWarning,
+            hint: '',
+            action,
+        }
+    }, [history, chatWarningDecision, showTrialGateWarning, onStartTrial])
 
-    const isChatChannelDisabled = useMemo(() => {
-        const warnings = renderChatWarning()
-        return warnings.visible
-    }, [renderChatWarning])
+    const isChatChannelDisabled = chatWarningDecision.visible
 
     const handleChatToggle = () => {
         if (!storeConfiguration) return

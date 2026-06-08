@@ -1,3 +1,4 @@
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { useHistory, useParams } from 'react-router-dom'
 
 import { toast } from '@gorgias/axiom'
@@ -13,6 +14,11 @@ export const useCheckStoreAlreadyConfigured = (): null => {
     }>()
     const accountDomain = useAppSelector(getCurrentDomain)
 
+    const {
+        value: isAiAgentOnboardingV3Enabled,
+        isLoading: isAiAgentOnboardingV3FlagLoading,
+    } = useFlagWithLoading(FeatureFlagKey.AiAgentOnboardingV3, false)
+
     const { data: storeConfig, isLoading: isFetchingStoreConfiguration } =
         useFetchAiAgentStoreConfigurationData({
             accountDomain,
@@ -22,7 +28,13 @@ export const useCheckStoreAlreadyConfigured = (): null => {
     const history = useHistory()
 
     // Return early if still loading
-    if (isFetchingStoreConfiguration) {
+    if (isFetchingStoreConfiguration || isAiAgentOnboardingV3FlagLoading) {
+        return null
+    }
+
+    // In V3 the wizard is intentionally reused for already-configured stores,
+    // so skip the redirect-to-settings guard that V2 relies on.
+    if (isAiAgentOnboardingV3Enabled) {
         return null
     }
 

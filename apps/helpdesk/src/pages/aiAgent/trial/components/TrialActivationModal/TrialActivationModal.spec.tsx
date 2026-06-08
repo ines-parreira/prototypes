@@ -233,6 +233,32 @@ describe('<TrialActivationModal />', () => {
         expect(onConfirm).toHaveBeenCalledWith(true)
     })
 
+    it('disables Start trial immediately after confirming, before the parent reports loading', async () => {
+        const user = userEvent.setup()
+        const onConfirm = jest.fn()
+        renderModal({ onConfirm, isLoading: false })
+
+        await user.click(screen.getByRole('checkbox'))
+        const startTrial = screen.getByRole('button', { name: /Start trial/i })
+        await user.click(startTrial)
+
+        expect(onConfirm).toHaveBeenCalledTimes(1)
+        expect(startTrial).toHaveAttribute('aria-disabled', 'true')
+    })
+
+    it('does not call onConfirm more than once on rapid double-click', async () => {
+        const user = userEvent.setup()
+        const onConfirm = jest.fn()
+        renderModal({ onConfirm, isLoading: false })
+
+        await user.click(screen.getByRole('checkbox'))
+        const startTrial = screen.getByRole('button', { name: /Start trial/i })
+        await user.click(startTrial)
+        await user.click(startTrial)
+
+        expect(onConfirm).toHaveBeenCalledTimes(1)
+    })
+
     it('pre-checks and disables the terms checkbox when an active opted-in trial exists', () => {
         renderModal({}, { trials: [createMockTrial(true, false)] })
 

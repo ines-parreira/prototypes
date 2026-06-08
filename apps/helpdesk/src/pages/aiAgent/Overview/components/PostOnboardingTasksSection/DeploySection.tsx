@@ -6,11 +6,16 @@ import { useParams } from 'react-router-dom'
 
 import { Text, toast } from '@gorgias/axiom'
 
+import useAppSelector from 'hooks/useAppSelector'
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import type { StepConfiguration } from 'models/aiAgentPostStoreInstallationSteps/types'
 import { PostStoreInstallationStepStatus } from 'models/aiAgentPostStoreInstallationSteps/types'
+import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
+import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import { useIsAiAgentDuringDeployment } from '../../hooks/useIsAiAgentDuringDeployment'
 import { ChatToggle } from '../AiAgentTasks/ChatToggle'
@@ -46,6 +51,17 @@ export const DeploySection = ({
         FeatureFlagKey.AiAgentOnboardingV3,
         false,
     )
+
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const accountDomain = currentAccount.get('domain')
+    const trialAccess = useTrialAccess(shopName)
+    const { storeActivations } = useStoreActivations({ storeName: shopName })
+    const { openTrialUpgradeModal } = useShoppingAssistantTrialFlow({
+        accountDomain,
+        storeActivations,
+        trialType: trialAccess.trialType,
+        source: 'overview_post_setup',
+    })
 
     const [isEmailChannelEnabled, setIsEmailChannelEnabled] = useState(false)
     const [isChatChannelEnabled, setIsChatChannelEnabled] = useState(false)
@@ -135,10 +151,12 @@ export const DeploySection = ({
                     isEmailChannelEnabled={isEmailChannelEnabled}
                     isLoading={isAiAgentDuringDeployment && !isAiAgentDeployed}
                     isReadOnly={needsTrialOptIn}
+                    showTrialGateWarning={needsTrialOptIn}
                     setIsEmailChannelEnabled={setIsEmailChannelEnabled}
                     onEmailToggle={(storeConfig) =>
                         updateAiAgentChannels(storeConfig, 'email')
                     }
+                    onStartTrial={openTrialUpgradeModal}
                     storeConfiguration={storeConfiguration}
                     shopName={shopName}
                 />
@@ -146,10 +164,12 @@ export const DeploySection = ({
                     isChatChannelEnabled={isChatChannelEnabled}
                     isLoading={isAiAgentDuringDeployment && !isAiAgentDeployed}
                     isReadOnly={needsTrialOptIn}
+                    showTrialGateWarning={needsTrialOptIn}
                     setIsChatChannelEnabled={setIsChatChannelEnabled}
                     onChatToggle={(storeConfig) =>
                         updateAiAgentChannels(storeConfig, 'chat')
                     }
+                    onStartTrial={openTrialUpgradeModal}
                     storeConfiguration={storeConfiguration}
                     shopName={shopName}
                     shopType={shopType}

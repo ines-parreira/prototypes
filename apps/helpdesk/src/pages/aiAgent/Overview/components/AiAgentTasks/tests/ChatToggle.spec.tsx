@@ -86,7 +86,43 @@ describe('ChatToggle', () => {
             to: '/mock/deploy-chat-route',
         })
         render(<ChatToggle {...defaultProps} />, {})
-        expect(screen.getByText('Connect a chat')).toBeInTheDocument()
+        expect(
+            screen.getByRole('link', { name: 'Connect a chat' }),
+        ).toBeInTheDocument()
+    })
+    it('shows the start-trial caption and calls onStartTrial when channel is connected and trial-gated', async () => {
+        const onStartTrial = jest.fn()
+        render(
+            <ChatToggle
+                {...defaultProps}
+                showTrialGateWarning
+                onStartTrial={onStartTrial}
+            />,
+            {},
+        )
+
+        expect(
+            screen.getByText(/you need to/, { exact: false }),
+        ).toBeInTheDocument()
+        await userEvent.click(
+            screen.getByRole('link', { name: 'start a trial' }),
+        )
+        expect(onStartTrial).toHaveBeenCalledTimes(1)
+    })
+    it('does not show the start-trial caption when not trial-gated', () => {
+        render(<ChatToggle {...defaultProps} onStartTrial={jest.fn()} />, {})
+        expect(
+            screen.queryByRole('link', { name: 'start a trial' }),
+        ).not.toBeInTheDocument()
+    })
+    it('does not show the start-trial caption for a read-only (completed) toggle that is not trial-gated', () => {
+        render(<ChatToggle {...defaultProps} isReadOnly />, {})
+        expect(
+            screen.queryByRole('link', { name: 'start a trial' }),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByText(/you need to/, { exact: false }),
+        ).not.toBeInTheDocument()
     })
     it('does not call onChatToggle when storeConfiguration is undefined', async () => {
         const setIsChatChannelEnabled = jest.fn()
