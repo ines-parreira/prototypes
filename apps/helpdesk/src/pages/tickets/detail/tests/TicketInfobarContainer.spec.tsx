@@ -85,6 +85,15 @@ jest.mock('@repo/customer', () => ({
 }))
 
 jest.mock(
+    'Widgets/modules/Shopify/modules/Order/components/OrderActionsProvider',
+    () => ({
+        OrderActionsProvider: ({ children }: { children?: ReactNode }) => (
+            <>{children}</>
+        ),
+    }),
+)
+
+jest.mock(
     'Widgets/modules/Shopify/modules/Order/components/EditOrderShippingAddressModal',
     () => ({
         __esModule: true,

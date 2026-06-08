@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useDebouncedCallback } from '@repo/hooks'
 
 import {
@@ -47,6 +48,7 @@ export function OrderTags({
     ticketId,
     readOnly = false,
 }: OrderTagsProps) {
+    const hasNewOrdersSidebar = useFlag(FeatureFlagKey.NewOrdersSidebar)
     const [search, setSearch] = useState('')
     const [isOpen, setIsOpen] = useState(false)
     const [localTagsString, setLocalTagsString] = useState<string | undefined>(
@@ -184,6 +186,10 @@ export function OrderTags({
         return null
     }
 
+    if (readOnly && parsedTags.length === 0) {
+        return null
+    }
+
     return (
         <div className={css.container}>
             <OverflowList gap="xxxs" nonExpandedLineCount={2}>
@@ -262,6 +268,7 @@ export function OrderTags({
                 {parsedTags.map((tag) => (
                     <OverflowListItem key={tag}>
                         <Tag
+                            color={hasNewOrdersSidebar ? 'grey' : undefined}
                             onClose={
                                 readOnly ? undefined : () => handleCloseTag(tag)
                             }

@@ -9,3 +9,8 @@ export { ShopifyCustomerProvider } from './components/ShopifyCustomer/ShopifyCus
 export type { ShopifyCustomerContextType } from './components/ShopifyCustomer/ShopifyCustomerContext'
 export type { ShopperData } from './components/ShopifyCustomer/types'
 export { useShopifyShopTags } from './components/ShopifyCustomer/hooks/useShopifyShopTags'
+export {
+    OrderActionsContext,
+    useOrderActions,
+} from './components/ShopifyCustomer/components/CustomerInfo/ordersV2/OrderActionsContext'
+export type { OrderActionHandlers } from './components/ShopifyCustomer/components/CustomerInfo/ordersV2/OrderActionsContext'

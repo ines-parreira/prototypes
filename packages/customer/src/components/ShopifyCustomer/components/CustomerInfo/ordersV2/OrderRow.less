@@ -1,0 +1,26 @@
+:local {
+    .row {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+
+        background: var(--elevation-neutral-default);
+        border: 1px solid var(--border-neutral-default);
+        border-radius: var(--radius-md, 8px);
+        box-shadow: var(--effects-shadow-container);
+        box-sizing: border-box;
+        margin: 0 var(--spacing-xs) var(--spacing-xs);
+    }
+
+    .clickable {
+        cursor: pointer;
+
+        &:hover {
+            background-color: var(--hover-default);
+        }
+    }
+
+    .summaryBody {
+        padding: 0 var(--spacing-sm) var(--spacing-sm);
+    }
+}

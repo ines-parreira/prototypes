@@ -1,10 +1,11 @@
 import type { ReactNode } from 'react'
 
 import type { OrderCardProduct } from '@repo/ecommerce/shopify/types'
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { EditFieldsType, useTicketInfobarNavigation } from '@repo/navigation'
 
 import { Box } from '@gorgias/axiom'
+
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import type { OrderEcommerceData } from '../../types'
 import { TemplateResolverProvider } from './CustomActions'
@@ -14,6 +15,7 @@ import { NoShopifyProfile } from './NoShopifyProfile'
 import { OrdersList } from './orders/OrdersList'
 import type { EditShippingAddressModalRenderProps } from './orders/sidePanel/OrderSidePanelPreview'
 import { useOrderNavigation } from './orders/useOrderNavigation'
+import { OrdersSidebarV2 } from './ordersV2'
 import { useCustomerInfoData } from './useCustomerInfoData'
 import { useCustomerFieldPreferences } from './widget/useCustomerFieldPreferences'
 import { useOrderFieldPreferences } from './widget/useOrderFieldPreferences'
@@ -119,9 +121,9 @@ export function CustomerInfo({
         selectedOrder,
         isDraftOrder,
         ordersListIndex,
-        handleSelectOrder,
         handleNavigatePrevious,
         handleNavigateNext,
+        handleSelectOrder,
         handleCreateOrder,
         hasPrevious,
         hasNext,
@@ -195,7 +197,22 @@ export function CustomerInfo({
                 shopper={shopper}
             >
                 {hasNewOrdersSidebar ? (
-                    <div />
+                    <OrdersSidebarV2
+                        orders={orders}
+                        draftOrders={draftOrders}
+                        isLoadingOrders={isLoadingOrders}
+                        isLoadingDraftOrders={isLoadingDraftOrders}
+                        productsMap={productsMap}
+                        storeName={selectedIntegration?.name}
+                        integrationId={selectedIntegration?.id}
+                        ticketId={ticketId}
+                        customerId={customerId}
+                        selectedExternalId={selectedExternalId}
+                        onCreateOrder={handleCreateOrder}
+                        renderEditShippingAddressModal={
+                            renderEditShippingAddressModal
+                        }
+                    />
                 ) : (
                     <OrdersList
                         orders={orders}

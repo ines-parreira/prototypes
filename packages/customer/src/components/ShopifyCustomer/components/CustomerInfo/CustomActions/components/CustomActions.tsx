@@ -19,6 +19,7 @@ type CustomActionsProps = {
     customerId?: number
     ticketId?: string
     widgetPath?: WidgetPath
+    compact?: boolean
 }
 
 export function CustomActions({
@@ -26,6 +27,7 @@ export function CustomActions({
     customerId,
     ticketId,
     widgetPath = 'customer',
+    compact = false,
 }: CustomActionsProps) {
     const { links, buttons } = useCustomActions({ widgetPath })
     const resolve = useTemplateResolver()
@@ -35,7 +37,11 @@ export function CustomActions({
     }
 
     return (
-        <Box flexWrap="wrap" gap="sm" pb="md">
+        <Box
+            flexWrap="wrap"
+            gap={compact ? 'xxs' : 'sm'}
+            pb={compact ? undefined : 'md'}
+        >
             <Box gap="xs" flexWrap="wrap">
                 {buttons.map((button, index) => (
                     <Box

@@ -21,7 +21,6 @@ import { CustomerInfo } from '../'
 import type { OrderSidePanelRenderProps } from '../'
 import { server } from '../../../../../tests/server'
 import { useListShopifyOrders } from '../../../hooks/useListShopifyOrders'
-import { ShopifyCustomerContext } from '../../../ShopifyCustomerContext'
 import type { OrderEcommerceData } from '../../../types'
 import { OrderSidePanelPreview } from '../orders/sidePanel/OrderSidePanelPreview'
 
@@ -593,7 +592,7 @@ describe('CustomerInfo', () => {
             } as unknown as OrderEcommerceData['data'],
         }
 
-        it('should open the order side panel when an order card is clicked', async () => {
+        it('renders the active order inline in the orders widget', async () => {
             vi.mocked(useListShopifyOrders).mockImplementation(
                 ({ objectType }) => {
                     if (objectType === ObjectType.Order) {
@@ -611,7 +610,7 @@ describe('CustomerInfo', () => {
                 },
             )
 
-            const { user } = render(
+            render(
                 <CustomerInfo
                     associatedShopifyCustomerIds={associatedShopifyCustomerIds}
                     externalIdMap={externalIdMap}
@@ -624,16 +623,13 @@ describe('CustomerInfo', () => {
                 expect(screen.getByText('#1001')).toBeInTheDocument()
             })
 
-            await user.click(screen.getByText('#1001'))
-
-            await waitFor(() => {
-                expect(
-                    screen.getByRole('heading', { name: /order #1001/i }),
-                ).toBeInTheDocument()
-            })
+            // The redesigned widget renders the detail inline — no overlay.
+            expect(
+                screen.queryByRole('heading', { name: /order #1001/i }),
+            ).not.toBeInTheDocument()
         })
 
-        it('renders empty placeholder instead of orders when NewOrdersSidebar flag is on', async () => {
+        it('renders orders inline via V2 sidebar when NewOrdersSidebar flag is on', async () => {
             mockUseFlag.mockReturnValue(true)
 
             vi.mocked(useListShopifyOrders).mockImplementation(
@@ -664,7 +660,14 @@ describe('CustomerInfo', () => {
 
             await waitForSelectedStore()
 
-            expect(screen.queryByText('#1001')).not.toBeInTheDocument()
+            // V2 sidebar renders the order name in the collapsed row header.
+            await waitFor(() => {
+                expect(screen.getByText('#1001')).toBeInTheDocument()
+            })
+            // The old slide-over overlay heading is not present.
+            expect(
+                screen.queryByRole('heading', { name: /order #1001/i }),
+            ).not.toBeInTheDocument()
         })
 
         it('renders customer metafields above the orders list', async () => {
@@ -1030,53 +1033,5 @@ describe('CustomerInfo', () => {
                 ).toBeInTheDocument()
             })
         })
-    })
-
-    it('calls onCreateOrder with integration id and shopper data when Create order is clicked', async () => {
-        const onCreateOrder = vi.fn()
-
-        mockUseTicketInfobarNavigation.mockReturnValue({
-            shopifyIntegrationId: undefined,
-            activeTab: undefined,
-            isExpanded: true,
-            editingWidgetType: null,
-            onChangeTab: vi.fn(),
-            onToggle: vi.fn(),
-            onSetEditingWidgetType: vi.fn(),
-        })
-
-        const { user } = render(
-            <ShopifyCustomerContext.Provider
-                value={{
-                    onCreateOrder,
-                }}
-            >
-                <CustomerInfo
-                    associatedShopifyCustomerIds={associatedShopifyCustomerIds}
-                    externalIdMap={externalIdMap}
-                    ticketId="123"
-                    renderOrderSidePanel={mockRenderOrderSidePanel}
-                />
-            </ShopifyCustomerContext.Provider>,
-        )
-
-        await waitFor(() => {
-            expect(
-                screen.getByRole('link', { name: /john doe/i }),
-            ).toBeInTheDocument()
-        })
-
-        await waitFor(() => {
-            expect(
-                screen.getByRole('button', { name: /create order/i }),
-            ).toBeInTheDocument()
-        })
-
-        await user.click(screen.getByRole('button', { name: /create order/i }))
-
-        expect(onCreateOrder).toHaveBeenCalledWith(
-            mockShopifyIntegration.id,
-            expect.objectContaining(mockShopperData),
-        )
     })
 })

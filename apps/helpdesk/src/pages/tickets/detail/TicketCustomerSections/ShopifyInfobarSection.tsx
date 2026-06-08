@@ -9,6 +9,7 @@ import CustomerSyncForm from 'pages/common/components/infobar/Infobar/InfobarCus
 import { CustomerContext } from 'providers/infobar/CustomerContext'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import DraftOrderModal from 'Widgets/modules/Shopify/modules/DraftOrderModal'
+import { OrderActionsProvider } from 'Widgets/modules/Shopify/modules/Order/components/OrderActionsProvider'
 import { OrderSidePanelWithActions } from 'Widgets/modules/Shopify/modules/Order/components/OrderSidePanelWithActions'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
@@ -47,16 +48,18 @@ export function ShopifyInfobarSection({
     return (
         <>
             <ShopifyCustomerProvider onCreateOrder={createOrder.open}>
-                <ShopifyCustomer
-                    onSyncProfile={handleSyncProfile}
-                    renderEditShippingAddressModal={
-                        renderEditShippingAddressModal
-                    }
-                    renderOrderSidePanel={(props) => (
-                        <OrderSidePanelWithActions {...props} />
-                    )}
-                    currentUser={currentUser}
-                />
+                <OrderActionsProvider ticketCustomerId={customerId}>
+                    <ShopifyCustomer
+                        onSyncProfile={handleSyncProfile}
+                        renderEditShippingAddressModal={
+                            renderEditShippingAddressModal
+                        }
+                        renderOrderSidePanel={(props) => (
+                            <OrderSidePanelWithActions {...props} />
+                        )}
+                        currentUser={currentUser}
+                    />
+                </OrderActionsProvider>
             </ShopifyCustomerProvider>
             <CustomerSyncForm
                 isCustomerSyncFormOpen={isCustomerSyncFormOpen}

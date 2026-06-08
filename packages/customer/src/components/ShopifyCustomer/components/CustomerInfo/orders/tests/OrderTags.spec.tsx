@@ -2,6 +2,11 @@ import { render } from '@repo/testing/vitest'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 
+vi.mock('@repo/feature-flags', () => ({
+    FeatureFlagKey: { NewOrdersSidebar: 'linear-HELP-6616-new-orders-sidebar' },
+    useFlag: () => false,
+}))
+
 import { mockExecuteActionHandler } from '@gorgias/helpdesk-mocks'
 
 import { server } from '../../../../../../tests/server'

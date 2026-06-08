@@ -1,0 +1,14 @@
+:local {
+    .header {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-sm);
+        padding: var(--spacing-md) calc(var(--spacing-md) + var(--spacing-xxxs));
+        background-color: var(--elevation-neutral-default);
+        /*
+         * No bottom divider — the first order card's top hairline + radius
+         * already closes off the section, and the two lines together read
+         * as a clash.
+         */
+    }
+}
