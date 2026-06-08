@@ -92,10 +92,10 @@ describe('EmailToggle', () => {
         )
 
         expect(
-            screen.getByText(/you need to/, { exact: false }),
+            screen.getByText(/to deploy/, { exact: false }),
         ).toBeInTheDocument()
         await userEvent.click(
-            screen.getByRole('link', { name: 'start a trial' }),
+            screen.getByRole('link', { name: 'Start AI Agent trial' }),
         )
         expect(onStartTrial).toHaveBeenCalledTimes(1)
     })
@@ -113,7 +113,7 @@ describe('EmailToggle', () => {
             {},
         )
         expect(
-            screen.queryByRole('link', { name: 'start a trial' }),
+            screen.queryByRole('link', { name: 'Start AI Agent trial' }),
         ).not.toBeInTheDocument()
     })
     it('does not show the start-trial caption for a read-only (completed) toggle that is not trial-gated', () => {
@@ -130,10 +130,10 @@ describe('EmailToggle', () => {
             {},
         )
         expect(
-            screen.queryByRole('link', { name: 'start a trial' }),
+            screen.queryByRole('link', { name: 'Start AI Agent trial' }),
         ).not.toBeInTheDocument()
         expect(
-            screen.queryByText(/you need to/, { exact: false }),
+            screen.queryByText(/to deploy/, { exact: false }),
         ).not.toBeInTheDocument()
     })
     it('does not call onEmailToggle when storeConfiguration is undefined', async () => {

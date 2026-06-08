@@ -119,11 +119,11 @@ export const ChatToggle = ({
         ) : showTrialGateWarning ? (
             <div className={css.customToggleWarning}>
                 <Text size="sm" variant="regular">
-                    Your chat is connected, but you need to{' '}
+                    Configured.{' '}
                     <AxiomLink size="sm" onClick={onStartTrial}>
-                        start a trial
+                        Start AI Agent trial
                     </AxiomLink>{' '}
-                    before you can deploy
+                    to deploy
                 </Text>
             </div>
         ) : null

@@ -1,4 +1,4 @@
-import { useFlag } from '@repo/feature-flags'
+import { useFlag, useFlagWithLoading } from '@repo/feature-flags'
 import { render } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
@@ -52,6 +52,9 @@ const mockUseTrialEnding = useTrialEnding as jest.MockedFunction<
 >
 
 const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
+const mockUseFlagWithLoading = useFlagWithLoading as jest.MockedFunction<
+    typeof useFlagWithLoading
+>
 const mockUseAppSelector = useAppSelector as jest.MockedFunction<
     typeof useAppSelector
 >
@@ -132,6 +135,11 @@ describe('ShoppingAssistantPromoCard', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         localStorage.clear()
+
+        mockUseFlagWithLoading.mockReturnValue({
+            value: false,
+            isLoading: false,
+        })
 
         mockUseIsAccountDeactivated.mockImplementation(() => true)
 
@@ -567,6 +575,82 @@ describe('ShoppingAssistantPromoCard', () => {
             expect(
                 screen.getByRole('button', { name: /notify admin/i }),
             ).toBeInTheDocument()
+        })
+    })
+
+    describe('V3 onboarding', () => {
+        it('hides the AdminTrial start-trial CTA when V3 is enabled', () => {
+            mockUseFlagWithLoading.mockReturnValue({
+                value: true,
+                isLoading: false,
+            })
+            mockTrialPromoCard({
+                promoCardContent: {
+                    ...basePromoContent,
+                    variant: PromoCardVariant.AdminTrial,
+                },
+            })
+
+            renderComponent()
+
+            expect(
+                screen.queryByText('Unlock new AI Agent skills'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', {
+                    name: new RegExp(basePromoContent.primaryButton.label, 'i'),
+                }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('hides the AdminTrial start-trial CTA while the V3 flag is loading', () => {
+            mockUseFlagWithLoading.mockReturnValue({
+                value: false,
+                isLoading: true,
+            })
+            mockTrialPromoCard({
+                promoCardContent: {
+                    ...basePromoContent,
+                    variant: PromoCardVariant.AdminTrial,
+                },
+            })
+
+            renderComponent()
+
+            expect(
+                screen.queryByText('Unlock new AI Agent skills'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('still renders the trial-progress card when V3 is enabled', () => {
+            mockUseFlagWithLoading.mockReturnValue({
+                value: true,
+                isLoading: false,
+            })
+            mockTrialPromoCard({
+                promoCardContent: {
+                    variant: PromoCardVariant.AdminTrialProgress,
+                    title: 'Shopping Assistant Trial',
+                    description: '$1250 GMV influenced',
+                    shouldShowDescriptionIcon: true,
+                    showVideo: false,
+                    shouldShowNotificationIcon: false,
+                    primaryButton: {
+                        label: 'Upgrade now',
+                        onClick: mockOnClick,
+                    },
+                    showProgressBar: true,
+                    progressPercentage: 100,
+                    progressText: '14 days left',
+                },
+            })
+
+            renderComponent()
+
+            expect(
+                screen.getByText('Shopping Assistant Trial'),
+            ).toBeInTheDocument()
+            expect(screen.getByText('14 days left')).toBeInTheDocument()
         })
     })
 

@@ -1,6 +1,10 @@
 import type React from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import {
+    FeatureFlagKey,
+    useFlag,
+    useFlagWithLoading,
+} from '@repo/feature-flags'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useIsAccountDeactivated } from 'hooks/useIsAccountDeactivated'
@@ -44,6 +48,10 @@ export const ShoppingAssistantPromoCard: React.FC<
         FeatureFlagKey.ShoppingAssistantEnforceDeactivation,
         false,
     )
+    const {
+        value: isAiAgentOnboardingV3Enabled,
+        isLoading: isAiAgentOnboardingV3FlagLoading,
+    } = useFlagWithLoading(FeatureFlagKey.AiAgentOnboardingV3, false)
 
     const trialModalProps = useTrialModalProps({
         storeName: shopName,
@@ -109,6 +117,17 @@ export const ShoppingAssistantPromoCard: React.FC<
             break
 
         case PromoCardVariant.AdminTrial:
+            // In V3 the start-trial CTA is already offered by the deploy
+            // toggle and the trial opt-in banner, so this promo card is a
+            // redundant third CTA — hide it. Trial-progress and other variants
+            // are unaffected. Hide while the flag resolves to avoid flashing it.
+            if (
+                isAiAgentOnboardingV3FlagLoading ||
+                isAiAgentOnboardingV3Enabled
+            ) {
+                return sharedContent
+            }
+
             variantComponent = (
                 <>
                     <TrialTryModal
