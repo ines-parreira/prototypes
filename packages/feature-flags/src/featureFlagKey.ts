@@ -120,6 +120,7 @@ export enum FeatureFlagKey {
     ConvertChatInstallSnippet = 'convert-chat-install-snippet',
     ConvertContactForm = 'convert-contact-form',
     ConvertPerformanceView = 'convert-performance-view',
+    CopilotOnboarding = 'copilot-onboarding',
     SidebarCreateButtons = 'linear-HELP-6527-create-ticket-and-call-buttons',
     CustomAgentUnavailableStatuses = 'linear.task_SUPXP-4819.custom-agent-unavailable-status',
     CustomBusinessHours = 'business-hours-by-integration',

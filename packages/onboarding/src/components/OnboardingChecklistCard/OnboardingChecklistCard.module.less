@@ -1,0 +1,25 @@
+:local {
+    /* Strip native button chrome; layout lives in Box props. */
+    .titleBar {
+        appearance: none;
+        padding: 0;
+        border: none;
+        background: none;
+        font: inherit;
+        color: inherit;
+        text-align: inherit;
+        cursor: pointer;
+    }
+
+    /* Collapsed pill chip; layout via Box props. */
+    .pill {
+        background-color: var(--content-inverted-default);
+        border: 1px solid var(--border-neutral-default);
+        border-radius: 1000px;
+        box-shadow: var(--effects-shadow-component);
+    }
+
+    .taskLabelCompleted {
+        text-decoration: line-through;
+    }
+}

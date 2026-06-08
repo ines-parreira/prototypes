@@ -130,6 +130,7 @@ apps/helpdesk/src/services/channels.ts @gorgias/cplt-messaging
 apps/helpdesk/src/services/applications.ts @gorgias/cplt-realtime-communication
 
 # CRM Growth @gorgias/growth-billing
+packages/onboarding @gorgias/growth-billing
 apps/helpdesk/src/models/billing @gorgias/growth-billing
 apps/helpdesk/src/pages/settings/billing @gorgias/growth-billing
 apps/helpdesk/src/pages/settings/new_billing @gorgias/growth-billing
