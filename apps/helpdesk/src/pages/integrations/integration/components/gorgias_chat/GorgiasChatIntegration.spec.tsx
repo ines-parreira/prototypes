@@ -47,6 +47,16 @@ jest.mock(
 )
 jest.mock('./legacy/hooks/useSelfServiceConfiguration')
 
+const mockLogBannerViewed = jest.fn()
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useLogMigrationEvent',
+    () => ({
+        useLogMigrationEvent: () => ({
+            logBannerViewed: mockLogBannerViewed,
+        }),
+    }),
+)
+
 jest.mock('pages/ErrorBoundary', () => ({
     ErrorBoundary: ({ children }: { children?: React.ReactNode }) => (
         <>{children}</>
@@ -163,6 +173,42 @@ beforeEach(() => {
 })
 
 describe('<GorgiasChatIntegration />', () => {
+    describe('migration banner telemetry', () => {
+        it('logs the banner viewed event once when the migration banner is shown', () => {
+            mockUseShouldShowChatSettingsRevamp.mockReturnValue({
+                shouldShowChatSettingsRevamp: false,
+                shouldShowNonAiAgentChatSettingsRevamp: true,
+                isNonAiAgentChat2RevampEnabled: true,
+            })
+
+            render(<GorgiasChatIntegration {...defaultProps} />)
+
+            expect(mockLogBannerViewed).toHaveBeenCalledTimes(1)
+        })
+
+        it('does not log the banner viewed event when the banner is not shown', () => {
+            render(<GorgiasChatIntegration {...defaultProps} />)
+
+            expect(mockLogBannerViewed).not.toHaveBeenCalled()
+        })
+
+        it('does not log the banner viewed event once the customer is opted in', () => {
+            mockUseShouldShowChatSettingsRevamp.mockReturnValue({
+                shouldShowChatSettingsRevamp: false,
+                shouldShowNonAiAgentChatSettingsRevamp: true,
+                isNonAiAgentChat2RevampEnabled: true,
+            })
+            mockUseChatRedesignOptIn.mockReturnValue({
+                isOptedIn: true,
+                optInDatetime: '2026-05-01T00:00:00Z',
+            })
+
+            render(<GorgiasChatIntegration {...defaultProps} />)
+
+            expect(mockLogBannerViewed).not.toHaveBeenCalled()
+        })
+    })
+
     it('renders the integration list when integrationId is not set', () => {
         mockUseParams.mockReturnValue({
             integrationId: undefined,

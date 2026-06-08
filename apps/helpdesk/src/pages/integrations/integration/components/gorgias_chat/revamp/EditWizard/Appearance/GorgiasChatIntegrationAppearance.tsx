@@ -42,9 +42,7 @@ export const GorgiasChatIntegrationAppearanceRevamp = ({
     const rawChatId: unknown = integration.get('id')
     const chatId = typeof rawChatId === 'number' ? rawChatId : undefined
 
-    const { isAiAgentEnabled, isLoading: isAiAgentConfigLoading } =
-        useIsAiAgentEnabled(storeIntegration, chatId)
-    const isAiAgentDisabled = !isAiAgentConfigLoading && !isAiAgentEnabled
+    const { isAiAgentEnabled } = useIsAiAgentEnabled(storeIntegration, chatId)
 
     const { shouldShowLegacyChatCustomization } =
         useShouldShowChatSettingsRevamp(storeIntegration, chatId)
@@ -136,7 +134,6 @@ export const GorgiasChatIntegrationAppearanceRevamp = ({
                                 values.offlineIntroductionText
                             }
                             isAiAgentEnabled={isAiAgentEnabled}
-                            isAiAgentDisabled={isAiAgentDisabled}
                             shouldShowLegacyChatCustomization={
                                 showLegacyChatCustomization
                             }
@@ -206,7 +203,7 @@ export const GorgiasChatIntegrationAppearanceRevamp = ({
                                 setValue('avatar', avatar)
                             }
                         />
-                        {isAiAgentDisabled && (
+                        {showLegacyChatCustomization && (
                             <ChatbotCard
                                 displayBotLabel={values.displayBotLabel}
                                 onDisplayBotLabelChange={(value) =>

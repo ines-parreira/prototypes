@@ -1,6 +1,5 @@
 import { useCallback, useState } from 'react'
 
-import { fromJS } from 'immutable'
 import type { Map } from 'immutable'
 
 import {
@@ -9,22 +8,22 @@ import {
     ButtonIntent,
     ButtonSize,
     ButtonVariant,
-    Icon,
     Modal,
     ModalSize,
     OverlayContent,
     OverlayFooter,
     OverlayHeader,
     Text,
+    toast,
 } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import { usePageTopBanner } from 'pages/common/hooks/usePageTopBanner'
 import { useChatPreviewPanelContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
+import { ChatRedesignSwitchConfirmModal } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatRedesignSwitchConfirmModal/ChatRedesignSwitchConfirmModal'
 import { useChatRedesignOptIn } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useChatRedesignOptIn'
+import { useLogMigrationEvent } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useLogMigrationEvent'
+import { useSetChatRedesignOptIn } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useSetChatRedesignOptIn'
 import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp'
 import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
-import { updateOrCreateIntegration } from 'state/integrations/actions'
 
 import css from './ChatRedesignOptInBanner.less'
 
@@ -41,9 +40,7 @@ export const ChatRedesignOptInBanner = ({
     onSaveChanges,
     onDiscardChanges,
 }: Props) => {
-    const dispatch = useAppDispatch()
     const { storeIntegration } = useStoreIntegration(integration)
-    const { warpToPageTopBanner } = usePageTopBanner()
 
     const { shouldShowNonAiAgentChatSettingsRevamp } =
         useShouldShowChatSettingsRevamp(storeIntegration, integration.get('id'))
@@ -51,9 +48,11 @@ export const ChatRedesignOptInBanner = ({
     const { isOptedIn } = useChatRedesignOptIn(integration.get('id'))
     const { isPreviewingNewChat, setIsPreviewingNewChat } =
         useChatPreviewPanelContext()
+    const { setOptIn } = useSetChatRedesignOptIn(integration)
+    const { logPreviewModeSwitched, logOptInConfirmed } = useLogMigrationEvent()
 
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const [isSubmitting, setIsSubmitting] = useState(false)
+    const [isSwitching, setIsSwitching] = useState(false)
 
     const [isUnsavedChangesModalOpen, setIsUnsavedChangesModalOpen] =
         useState(false)
@@ -100,149 +99,126 @@ export const ChatRedesignOptInBanner = ({
         setPendingAction(null)
     }, [onDiscardChanges, pendingAction])
 
-    const onConfirm = useCallback(async () => {
-        setIsSubmitting(true)
-        const originalMeta = integration.get('meta')?.toJS() ?? {}
-        const nextOptInDatetime = isOptedIn ? null : new Date().toISOString()
-        const form = {
-            id: integration.get('id'),
-            type: integration.get('type'),
-            meta: {
-                ...originalMeta,
-                chat_redesign_opt_in_datetime: nextOptInDatetime,
-            },
-        }
+    const onConfirmSwitch = useCallback(async () => {
+        setIsSwitching(true)
         try {
-            await dispatch(updateOrCreateIntegration(fromJS(form)))
-            if (!isOptedIn) {
-                setIsPreviewingNewChat(false)
+            // Persist any in-progress edits, then commit the opt-in. No
+            // separate "save your changes?" step — switching saves directly.
+            if (isDirty) {
+                await onSaveChanges?.()
             }
+            await setOptIn(true)
+            logOptInConfirmed()
+            setIsPreviewingNewChat(false)
             setIsModalOpen(false)
+            toast.success("You're on the updated chat")
+        } catch {
+            // Keep the modal open so the user can retry.
+            toast.error("Couldn't switch to the new chat. Please try again.")
         } finally {
-            setIsSubmitting(false)
+            setIsSwitching(false)
         }
-    }, [dispatch, integration, isOptedIn, setIsPreviewingNewChat])
+    }, [
+        isDirty,
+        onSaveChanges,
+        setOptIn,
+        setIsPreviewingNewChat,
+        logOptInConfirmed,
+    ])
+
+    const openSwitchModal = useCallback(() => setIsModalOpen(true), [])
+
+    const handleUnsavedModalOpenChange = useCallback(
+        (isOpen: boolean) => {
+            if (!isSavingChanges && !isOpen) closeUnsavedChangesModal()
+        },
+        [isSavingChanges, closeUnsavedChangesModal],
+    )
+
+    const handlePreviewNewChat = useCallback(
+        () =>
+            runGuarded(() => {
+                setIsPreviewingNewChat(true)
+                logPreviewModeSwitched({ from: 'old-chat', to: 'new-chat' })
+            }),
+        [runGuarded, setIsPreviewingNewChat, logPreviewModeSwitched],
+    )
+
+    const handleLeavePreview = useCallback(() => {
+        onDiscardChanges?.()
+        setIsPreviewingNewChat(false)
+        logPreviewModeSwitched({ from: 'new-chat', to: 'old-chat' })
+    }, [onDiscardChanges, setIsPreviewingNewChat, logPreviewModeSwitched])
 
     if (!shouldShowNonAiAgentChatSettingsRevamp) {
         return null
     }
 
-    const title = isOptedIn
-        ? "You're on the updated chat"
-        : isPreviewing
-          ? "You're previewing the new chat"
-          : 'A fresh look for chat'
+    // Once opted in, the persistent control ("Switch to old chat") lives in the
+    // settings header, so there is no inline banner.
+    if (isOptedIn) {
+        return null
+    }
 
-    const description = isOptedIn
-        ? 'Switch back to the old chat anytime before July 27.'
-        : isPreviewing
-          ? 'Publish to make it live for your customers, or revert to keep the current chat.'
-          : "Preview the new chat experience, then publish when you're ready."
-
-    return warpToPageTopBanner(
+    return (
         <>
-            <div className={css.banner}>
-                <div className={css.content}>
-                    <Icon
-                        name={isOptedIn ? 'check-circle' : 'chat-circle'}
-                        color="#6e3ad3"
-                    />
-                    <div className={css.text}>
-                        <Text variant="bold">{title}</Text>
-                        <Text>{description}</Text>
-                    </div>
+            <div
+                className={`${css.banner} ${
+                    isPreviewing ? css.bannerPreviewing : css.bannerDefault
+                }`}
+            >
+                <div className={css.text}>
+                    <Text variant="bold">
+                        {isPreviewing
+                            ? "You're previewing the new chat. Switch now?"
+                            : 'A fresh look for chat'}
+                    </Text>
+                    <Text>
+                        {isPreviewing
+                            ? 'Customers still see your current chat. Switch to the new chat below, and switch back anytime before July 27th.'
+                            : 'Preview and edit the refreshed settings and design before updating. Update now and switch back anytime before July 27th.'}
+                    </Text>
                 </div>
-                {isOptedIn ? (
-                    <Button
-                        size={ButtonSize.Sm}
-                        variant={ButtonVariant.Secondary}
-                        onClick={() => runGuarded(() => setIsModalOpen(true))}
-                    >
-                        Switch back
-                    </Button>
-                ) : isPreviewing ? (
+                {isPreviewing ? (
                     <Box gap="xs">
                         <Button
                             size={ButtonSize.Sm}
-                            variant={ButtonVariant.Secondary}
-                            onClick={() =>
-                                runGuarded(() => setIsPreviewingNewChat(false))
-                            }
+                            variant={ButtonVariant.Primary}
+                            onClick={openSwitchModal}
                         >
-                            Revert
+                            Switch to new chat
                         </Button>
                         <Button
                             size={ButtonSize.Sm}
-                            variant={ButtonVariant.Primary}
-                            onClick={() =>
-                                runGuarded(() => setIsModalOpen(true))
-                            }
+                            variant={ButtonVariant.Secondary}
+                            onClick={handleLeavePreview}
                         >
-                            Publish
+                            Leave preview
                         </Button>
                     </Box>
                 ) : (
-                    <Button
-                        size={ButtonSize.Sm}
-                        variant={ButtonVariant.Primary}
-                        onClick={() =>
-                            runGuarded(() => setIsPreviewingNewChat(true))
-                        }
-                    >
-                        Preview
-                    </Button>
-                )}
-            </div>
-            <Modal
-                size={ModalSize.Md}
-                isOpen={isModalOpen}
-                onOpenChange={(isOpen) => {
-                    if (!isSubmitting) setIsModalOpen(isOpen)
-                }}
-            >
-                <OverlayHeader
-                    title={
-                        isOptedIn
-                            ? 'Switch back to the old chat?'
-                            : 'Publish the new chat?'
-                    }
-                />
-                <OverlayContent>
-                    <Text>
-                        {isOptedIn
-                            ? 'Switch anytime before July 27. Changes can take up to 30 minutes to appear across your store.'
-                            : 'This makes the new chat live for your customers. Changes can take up to 30 minutes to appear across your store.'}
-                    </Text>
-                </OverlayContent>
-                <OverlayFooter hideCancelButton>
-                    <Box gap="xs" justifyContent="flex-end">
+                    <Box>
                         <Button
-                            intent={ButtonIntent.Regular}
-                            size={ButtonSize.Md}
-                            variant={ButtonVariant.Secondary}
-                            isDisabled={isSubmitting}
-                            onClick={() => setIsModalOpen(false)}
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            intent={ButtonIntent.Regular}
-                            size={ButtonSize.Md}
+                            size={ButtonSize.Sm}
                             variant={ButtonVariant.Primary}
-                            isLoading={isSubmitting}
-                            onClick={onConfirm}
+                            onClick={handlePreviewNewChat}
                         >
-                            {isOptedIn ? 'Switch back' : 'Publish'}
+                            Preview new chat
                         </Button>
                     </Box>
-                </OverlayFooter>
-            </Modal>
+                )}
+            </div>
+            <ChatRedesignSwitchConfirmModal
+                isOpen={isModalOpen}
+                isOptedIn={false}
+                isSubmitting={isSwitching}
+                onConfirm={onConfirmSwitch}
+                onOpenChange={setIsModalOpen}
+            />
             <Modal
                 size={ModalSize.Md}
                 isOpen={isUnsavedChangesModalOpen}
-                onOpenChange={(isOpen) => {
-                    if (!isSavingChanges && !isOpen) closeUnsavedChangesModal()
-                }}
+                onOpenChange={handleUnsavedModalOpenChange}
             >
                 <OverlayHeader title="Save your changes?" />
                 <OverlayContent>
@@ -274,6 +250,6 @@ export const ChatRedesignOptInBanner = ({
                     </Box>
                 </OverlayFooter>
             </Modal>
-        </>,
+        </>
     )
 }

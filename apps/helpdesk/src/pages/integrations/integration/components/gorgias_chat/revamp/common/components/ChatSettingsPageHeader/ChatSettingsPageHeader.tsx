@@ -3,9 +3,11 @@ import { useMemo } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 
 import {
+    Box,
     Breadcrumb,
     Breadcrumbs,
     Button,
+    ButtonVariant,
     PanelHeader,
     Text,
 } from '@gorgias/axiom'
@@ -26,6 +28,8 @@ type Props = {
     onSave?: () => void
     isSaveDisabled?: boolean
     isSaveLoading?: boolean
+    onSwitchToOldChat?: () => void
+    isSwitchingToOldChat?: boolean
 }
 
 export const ChatSettingsPageHeader = ({
@@ -35,6 +39,8 @@ export const ChatSettingsPageHeader = ({
     onSave,
     isSaveDisabled,
     isSaveLoading,
+    onSwitchToOldChat,
+    isSwitchingToOldChat,
     title,
 }: Props) => {
     const history = useHistory()
@@ -52,6 +58,41 @@ export const ChatSettingsPageHeader = ({
 
         return null
     }, [breadcrumbItems, backButtonLink])
+
+    const backButton =
+        showBackButton && _backButtonlink ? (
+            <Button
+                icon="arrow-left"
+                size="sm"
+                variant="secondary"
+                aria-label="Go back"
+                onClick={() => history.push(_backButtonlink)}
+            />
+        ) : undefined
+
+    const headerActions =
+        onSave || onSwitchToOldChat ? (
+            <Box gap="xs" alignItems="center">
+                {onSwitchToOldChat ? (
+                    <Button
+                        variant={ButtonVariant.Tertiary}
+                        onClick={onSwitchToOldChat}
+                        isLoading={isSwitchingToOldChat}
+                    >
+                        Switch to old chat
+                    </Button>
+                ) : null}
+                {onSave ? (
+                    <Button
+                        onClick={onSave}
+                        isDisabled={isSaveDisabled}
+                        isLoading={isSaveLoading}
+                    >
+                        Save
+                    </Button>
+                ) : null}
+            </Box>
+        ) : undefined
 
     return (
         <div className={css.pageHeader}>
@@ -76,30 +117,10 @@ export const ChatSettingsPageHeader = ({
                 )}
             </Breadcrumbs>
             <PanelHeader
-                leadingSlot={
-                    showBackButton && _backButtonlink ? (
-                        <Button
-                            icon="arrow-left"
-                            size="sm"
-                            variant="secondary"
-                            aria-label="Go back"
-                            onClick={() => history.push(_backButtonlink)}
-                        />
-                    ) : undefined
-                }
+                leadingSlot={backButton}
                 title={title}
                 p={0}
-                trailingSlot={
-                    onSave ? (
-                        <Button
-                            onClick={onSave}
-                            isDisabled={isSaveDisabled}
-                            isLoading={isSaveLoading}
-                        >
-                            Save
-                        </Button>
-                    ) : undefined
-                }
+                trailingSlot={headerActions}
             />
         </div>
     )

@@ -16,6 +16,16 @@ let mockIsLoaded = true
 let mockHasError = false
 let mockHasGorgiasChat = true
 
+const mockLogBusinessHoursToggled = jest.fn()
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useLogMigrationEvent',
+    () => ({
+        useLogMigrationEvent: () => ({
+            logBusinessHoursToggled: mockLogBusinessHoursToggled,
+        }),
+    }),
+)
+
 jest.mock('@gorgias/axiom', () => {
     const React = jest.requireActual<typeof import('react')>('react')
     const actualAxiom =
@@ -742,6 +752,9 @@ describe('ChatPreviewPanel', () => {
                     businessHours: [],
                 },
             )
+            expect(mockLogBusinessHoursToggled).toHaveBeenCalledWith({
+                to: 'outside',
+            })
         })
 
         it('keeps the page navigation buttons wired when the business hours toggle is visible', async () => {

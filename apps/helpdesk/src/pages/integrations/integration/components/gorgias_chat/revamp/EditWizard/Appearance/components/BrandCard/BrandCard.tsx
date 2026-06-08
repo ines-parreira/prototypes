@@ -41,7 +41,6 @@ type Props = {
     introductionText: string
     offlineIntroductionText: string
     isAiAgentEnabled?: boolean
-    isAiAgentDisabled?: boolean
     shouldShowLegacyChatCustomization?: boolean
     onNameChange: (value: string) => void
     onMainColorChange: (value: string) => void
@@ -67,7 +66,6 @@ export const BrandCard = ({
     introductionText,
     offlineIntroductionText,
     isAiAgentEnabled = false,
-    isAiAgentDisabled = false,
     shouldShowLegacyChatCustomization = false,
     onNameChange,
     onMainColorChange,
@@ -109,7 +107,7 @@ export const BrandCard = ({
                     </Text>
                 </div>
                 <div className={css.mainContent}>
-                    {isAiAgentDisabled && (
+                    {shouldShowLegacyChatCustomization && (
                         <div className={css.fieldSection}>
                             <TextField
                                 label="Chat title"

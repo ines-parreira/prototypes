@@ -14,7 +14,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import { useCopilotEnabled } from 'hooks/useCopilotEnabled'
 import { CollapsibleColumn } from 'pages/CollapsibleColumn'
 import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
-import { usePageTopBanner } from 'pages/common/hooks/usePageTopBanner'
 import { closePanels } from 'state/layout/actions'
 import { getCurrentOpenedPanel } from 'state/layout/selectors'
 import { changeTicketMessage } from 'state/ui/ticketAIAgentFeedback'
@@ -60,7 +59,6 @@ export function AppFrame({
     const openedPanel = useAppSelector(getCurrentOpenedPanel)
     const { onChangeTab } = useTicketInfobarNavigation()
     const { isCollapsibleColumnOpen } = useCollapsibleColumn()
-    const { pageTopBannerRef } = usePageTopBanner()
 
     const hasOpenedPanel = !!openedPanel
     const isPanelLayout = layout === 'panel'
@@ -103,7 +101,6 @@ export function AppFrame({
                     [css.containerPanel]: isPanelLayout,
                 })}
             >
-                {!hasWayfindingMS1Flag && <div ref={pageTopBannerRef} />}
                 {children}
             </div>
 

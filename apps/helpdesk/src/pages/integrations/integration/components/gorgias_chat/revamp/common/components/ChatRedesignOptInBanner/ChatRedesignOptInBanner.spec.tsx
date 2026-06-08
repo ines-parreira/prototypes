@@ -1,5 +1,3 @@
-import type React from 'react'
-
 import { render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -7,7 +5,6 @@ import { fromJS } from 'immutable'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { IntegrationType } from 'models/integration/types'
-import { usePageTopBanner } from 'pages/common/hooks/usePageTopBanner'
 import { useChatRedesignOptIn } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useChatRedesignOptIn'
 import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp'
 import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
@@ -19,7 +16,6 @@ const mockSetIsPreviewingNewChat = jest.fn()
 let mockIsPreviewingNewChat = false
 
 jest.mock('hooks/useAppDispatch')
-jest.mock('pages/common/hooks/usePageTopBanner')
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useChatRedesignOptIn',
 )
@@ -37,6 +33,18 @@ jest.mock(
     }),
 )
 
+const mockLogPreviewModeSwitched = jest.fn()
+const mockLogOptInConfirmed = jest.fn()
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useLogMigrationEvent',
+    () => ({
+        useLogMigrationEvent: () => ({
+            logPreviewModeSwitched: mockLogPreviewModeSwitched,
+            logOptInConfirmed: mockLogOptInConfirmed,
+        }),
+    }),
+)
+
 jest.mock('state/integrations/actions', () => ({
     ...jest.requireActual('state/integrations/actions'),
     updateOrCreateIntegration: jest.fn(() => () => Promise.resolve()),
@@ -44,9 +52,6 @@ jest.mock('state/integrations/actions', () => ({
 
 const mockUseAppDispatch = useAppDispatch as jest.MockedFunction<
     typeof useAppDispatch
->
-const mockUsePageTopBanner = usePageTopBanner as jest.MockedFunction<
-    typeof usePageTopBanner
 >
 const mockUseChatRedesignOptIn = useChatRedesignOptIn as jest.MockedFunction<
     typeof useChatRedesignOptIn
@@ -86,11 +91,6 @@ beforeEach(() => {
     jest.clearAllMocks()
     mockIsPreviewingNewChat = false
     mockUseAppDispatch.mockReturnValue(mockDispatch as any)
-    mockUsePageTopBanner.mockReturnValue({
-        pageTopBannerRef: { current: null },
-        warpToPageTopBanner: (node: React.ReactNode) =>
-            node as unknown as React.ReactPortal,
-    })
     mockUseStoreIntegration.mockReturnValue({
         storeIntegration: undefined,
         isConnected: false,
@@ -117,25 +117,44 @@ describe('<ChatRedesignOptInBanner />', () => {
         expect(container).toBeEmptyDOMElement()
     })
 
+    it('renders nothing once the customer is already opted in', () => {
+        mockUseChatRedesignOptIn.mockReturnValue({
+            isOptedIn: true,
+            optInDatetime: '2026-05-01T00:00:00Z',
+        })
+
+        const { container } = render(
+            <ChatRedesignOptInBanner integration={integration} />,
+        )
+
+        expect(container).toBeEmptyDOMElement()
+    })
+
     describe('default state (not opted in, not previewing)', () => {
-        it('renders the preview copy with a Preview button', () => {
+        it('renders the preview copy with a Preview new chat button', () => {
             render(<ChatRedesignOptInBanner integration={integration} />)
 
             expect(
                 screen.getByText('A fresh look for chat'),
             ).toBeInTheDocument()
             expect(
-                screen.getByRole('button', { name: 'Preview' }),
+                screen.getByRole('button', { name: 'Preview new chat' }),
             ).toBeInTheDocument()
         })
 
-        it('starts the Chat 2.0 preview when Preview is clicked', async () => {
+        it('starts the preview when Preview new chat is clicked', async () => {
             const user = userEvent.setup()
             render(<ChatRedesignOptInBanner integration={integration} />)
 
-            await user.click(screen.getByRole('button', { name: 'Preview' }))
+            await user.click(
+                screen.getByRole('button', { name: 'Preview new chat' }),
+            )
 
             expect(mockSetIsPreviewingNewChat).toHaveBeenCalledWith(true)
+            expect(mockLogPreviewModeSwitched).toHaveBeenCalledWith({
+                from: 'old-chat',
+                to: 'new-chat',
+            })
             expect(mockUpdateOrCreateIntegration).not.toHaveBeenCalled()
         })
     })
@@ -145,40 +164,55 @@ describe('<ChatRedesignOptInBanner />', () => {
             mockIsPreviewingNewChat = true
         })
 
-        it('renders Publish and Revert buttons', () => {
+        it('renders Switch to new chat and Leave preview buttons', () => {
             render(<ChatRedesignOptInBanner integration={integration} />)
 
             expect(
-                screen.getByText("You're previewing the new chat"),
+                screen.getByText("You're previewing the new chat. Switch now?"),
             ).toBeInTheDocument()
             expect(
-                screen.getByRole('button', { name: 'Revert' }),
+                screen.getByRole('button', { name: 'Switch to new chat' }),
             ).toBeInTheDocument()
             expect(
-                screen.getByRole('button', { name: 'Publish' }),
+                screen.getByRole('button', { name: 'Leave preview' }),
             ).toBeInTheDocument()
         })
 
-        it('exits the preview when Revert is clicked, without persisting', async () => {
+        it('discards changes and exits the preview when Leave preview is clicked, without persisting', async () => {
+            const onDiscardChanges = jest.fn()
             const user = userEvent.setup()
-            render(<ChatRedesignOptInBanner integration={integration} />)
+            render(
+                <ChatRedesignOptInBanner
+                    integration={integration}
+                    isDirty
+                    onDiscardChanges={onDiscardChanges}
+                />,
+            )
 
-            await user.click(screen.getByRole('button', { name: 'Revert' }))
+            await user.click(
+                screen.getByRole('button', { name: 'Leave preview' }),
+            )
 
+            expect(onDiscardChanges).toHaveBeenCalledTimes(1)
             expect(mockSetIsPreviewingNewChat).toHaveBeenCalledWith(false)
+            expect(mockLogPreviewModeSwitched).toHaveBeenCalledWith({
+                from: 'new-chat',
+                to: 'old-chat',
+            })
             expect(mockUpdateOrCreateIntegration).not.toHaveBeenCalled()
+            expect(
+                screen.queryByText('Save your changes?'),
+            ).not.toBeInTheDocument()
         })
 
-        it('persists the opt-in and exits preview when Publish is confirmed', async () => {
+        it('persists the opt-in and exits preview when switching is confirmed', async () => {
             const user = userEvent.setup()
             render(<ChatRedesignOptInBanner integration={integration} />)
 
-            await user.click(screen.getByRole('button', { name: 'Publish' }))
-
-            const publishButtons = screen.getAllByRole('button', {
-                name: 'Publish',
-            })
-            await user.click(publishButtons[publishButtons.length - 1])
+            await user.click(
+                screen.getByRole('button', { name: 'Switch to new chat' }),
+            )
+            await user.click(screen.getByRole('button', { name: 'Switch' }))
 
             expect(mockUpdateOrCreateIntegration).toHaveBeenCalledTimes(1)
             const form = mockUpdateOrCreateIntegration.mock.calls[0][0] as any
@@ -190,46 +224,38 @@ describe('<ChatRedesignOptInBanner />', () => {
             await waitFor(() =>
                 expect(mockSetIsPreviewingNewChat).toHaveBeenCalledWith(false),
             )
-        })
-    })
-
-    describe('published state (opted in)', () => {
-        beforeEach(() => {
-            mockUseChatRedesignOptIn.mockReturnValue({
-                isOptedIn: true,
-                optInDatetime: '2026-05-01T00:00:00Z',
-            })
+            expect(mockLogOptInConfirmed).toHaveBeenCalledTimes(1)
         })
 
-        it('renders the opted-in copy with a Switch back button', () => {
-            render(<ChatRedesignOptInBanner integration={integration} />)
-
-            expect(
-                screen.getByText("You're on the updated chat"),
-            ).toBeInTheDocument()
-            expect(
-                screen.getByRole('button', { name: 'Switch back' }),
-            ).toBeInTheDocument()
-        })
-
-        it('dispatches an opt-out (null datetime) when switching back', async () => {
+        it('skips the save prompt and saves directly when switching with unsaved changes', async () => {
+            const onSaveChanges = jest.fn().mockResolvedValue(undefined)
             const user = userEvent.setup()
-            render(<ChatRedesignOptInBanner integration={integration} />)
-
-            await user.click(
-                screen.getByRole('button', { name: 'Switch back' }),
+            render(
+                <ChatRedesignOptInBanner
+                    integration={integration}
+                    isDirty
+                    onSaveChanges={onSaveChanges}
+                />,
             )
 
-            const switchBackButtons = screen.getAllByRole('button', {
-                name: 'Switch back',
-            })
-            await user.click(switchBackButtons[switchBackButtons.length - 1])
+            await user.click(
+                screen.getByRole('button', { name: 'Switch to new chat' }),
+            )
 
-            expect(mockUpdateOrCreateIntegration).toHaveBeenCalledTimes(1)
-            const form = mockUpdateOrCreateIntegration.mock.calls[0][0] as any
+            // No "Save your changes?" prompt — goes straight to the confirm.
             expect(
-                form.getIn(['meta', 'chat_redesign_opt_in_datetime']),
-            ).toBeNull()
+                screen.queryByText('Save your changes?'),
+            ).not.toBeInTheDocument()
+
+            await user.click(screen.getByRole('button', { name: 'Switch' }))
+
+            expect(onSaveChanges).toHaveBeenCalledTimes(1)
+            await waitFor(() =>
+                expect(mockUpdateOrCreateIntegration).toHaveBeenCalledTimes(1),
+            )
+            await waitFor(() =>
+                expect(mockSetIsPreviewingNewChat).toHaveBeenCalledWith(false),
+            )
         })
     })
 
@@ -256,7 +282,9 @@ describe('<ChatRedesignOptInBanner />', () => {
             const user = userEvent.setup()
             renderWithGuard(false)
 
-            await user.click(screen.getByRole('button', { name: 'Preview' }))
+            await user.click(
+                screen.getByRole('button', { name: 'Preview new chat' }),
+            )
 
             expect(mockSetIsPreviewingNewChat).toHaveBeenCalledWith(true)
             expect(
@@ -268,7 +296,9 @@ describe('<ChatRedesignOptInBanner />', () => {
             const user = userEvent.setup()
             renderWithGuard(true)
 
-            await user.click(screen.getByRole('button', { name: 'Preview' }))
+            await user.click(
+                screen.getByRole('button', { name: 'Preview new chat' }),
+            )
 
             expect(screen.getByText('Save your changes?')).toBeInTheDocument()
             expect(mockSetIsPreviewingNewChat).not.toHaveBeenCalled()
@@ -278,7 +308,9 @@ describe('<ChatRedesignOptInBanner />', () => {
             const user = userEvent.setup()
             renderWithGuard(true)
 
-            await user.click(screen.getByRole('button', { name: 'Preview' }))
+            await user.click(
+                screen.getByRole('button', { name: 'Preview new chat' }),
+            )
             await user.click(
                 screen.getByRole('button', { name: 'Save & continue' }),
             )
@@ -293,7 +325,9 @@ describe('<ChatRedesignOptInBanner />', () => {
             const user = userEvent.setup()
             renderWithGuard(true)
 
-            await user.click(screen.getByRole('button', { name: 'Preview' }))
+            await user.click(
+                screen.getByRole('button', { name: 'Preview new chat' }),
+            )
             await user.click(
                 screen.getByRole('button', { name: 'Discard changes' }),
             )
@@ -301,31 +335,6 @@ describe('<ChatRedesignOptInBanner />', () => {
             expect(mockOnDiscardChanges).toHaveBeenCalledTimes(1)
             expect(mockSetIsPreviewingNewChat).toHaveBeenCalledWith(true)
             expect(mockOnSaveChanges).not.toHaveBeenCalled()
-        })
-
-        it('guards Publish too: opens the publish modal only after saving', async () => {
-            const user = userEvent.setup()
-            mockIsPreviewingNewChat = true
-            renderWithGuard(true)
-
-            await user.click(screen.getByRole('button', { name: 'Publish' }))
-
-            // Unsaved-changes prompt first; publish confirm not shown yet.
-            expect(screen.getByText('Save your changes?')).toBeInTheDocument()
-            expect(
-                screen.queryByText('Publish the new chat?'),
-            ).not.toBeInTheDocument()
-
-            await user.click(
-                screen.getByRole('button', { name: 'Save & continue' }),
-            )
-
-            expect(mockOnSaveChanges).toHaveBeenCalledTimes(1)
-            await waitFor(() =>
-                expect(
-                    screen.getByText('Publish the new chat?'),
-                ).toBeInTheDocument(),
-            )
         })
     })
 })

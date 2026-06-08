@@ -1,10 +1,10 @@
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { Map } from 'immutable'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
-import { Text } from '@gorgias/axiom'
+import { Text, toast } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -12,6 +12,11 @@ import {
     IntegrationType,
 } from 'models/integration/types'
 import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
+import { ChatRedesignSwitchConfirmModal } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatRedesignSwitchConfirmModal/ChatRedesignSwitchConfirmModal'
+import { useChatRedesignOptIn } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useChatRedesignOptIn'
+import { useSetChatRedesignOptIn } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useSetChatRedesignOptIn'
+import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp'
+import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
 import { Tab } from 'pages/integrations/integration/types'
 import { makeGetRedirectUri } from 'state/integrations/selectors'
 
@@ -27,10 +32,48 @@ export const ActionsCell = ({ chat, storeIntegration }: ActionsCellProps) => {
         FeatureFlagKey.ChatScopeUpdateChatList,
     )
 
+    const history = useHistory()
     const getRedirectUri = useAppSelector(makeGetRedirectUri)
 
+    const chatIntegrationId = chat.get('id') as number
+
+    // The opt-in action is gated by the same rules as the opt-in banner: the
+    // chat must be eligible for the non-AI-agent chat revamp and not yet opted in.
+    const { storeIntegration: connectedStoreIntegration } =
+        useStoreIntegration(chat)
+    const { shouldShowNonAiAgentChatSettingsRevamp } =
+        useShouldShowChatSettingsRevamp(
+            connectedStoreIntegration,
+            chatIntegrationId,
+        )
+    const { isOptedIn } = useChatRedesignOptIn(chatIntegrationId)
+    const { setOptIn, isSubmitting } = useSetChatRedesignOptIn(chat)
+
+    const [isConfirmOpen, setIsConfirmOpen] = useState(false)
+
+    const appearanceLink = `/app/settings/channels/${IntegrationType.GorgiasChat}/${chatIntegrationId}/${Tab.Appearance}`
+
+    const openConfirm = useCallback((ev: React.MouseEvent) => {
+        ev.preventDefault()
+        ev.stopPropagation()
+        setIsConfirmOpen(true)
+    }, [])
+
+    const handleConfirmSwitch = useCallback(async () => {
+        try {
+            // Opt in first so the Appearance tab renders the opted-in state
+            // immediately on arrival.
+            await setOptIn(true)
+            setIsConfirmOpen(false)
+            toast.success("You're on the updated chat")
+            history.push(appearanceLink)
+        } catch {
+            // Keep the modal open so the user can retry.
+            toast.error("Couldn't switch to the new chat. Please try again.")
+        }
+    }, [setOptIn, history, appearanceLink])
+
     const renderAction = useCallback(() => {
-        const chatIntegrationId = chat.get('id') as number
         const wizardStatus: GorgiasChatCreationWizardStatus = chat.getIn([
             'meta',
             'wizard',
@@ -79,6 +122,16 @@ export const ActionsCell = ({ chat, storeIntegration }: ActionsCellProps) => {
             )
         }
 
+        if (shouldShowNonAiAgentChatSettingsRevamp && !isOptedIn) {
+            return (
+                <Text size="md" variant="medium" align="right">
+                    <Link to={appearanceLink} onClick={openConfirm}>
+                        Update to new chat
+                    </Link>
+                </Text>
+            )
+        }
+
         if (
             showUpdatePermissions &&
             isOneClickInstallation &&
@@ -96,7 +149,28 @@ export const ActionsCell = ({ chat, storeIntegration }: ActionsCellProps) => {
         return (
             <ForwardIcon href={editLink} onClick={(e) => e.stopPropagation()} />
         )
-    }, [chat, storeIntegration, showUpdatePermissions, getRedirectUri])
+    }, [
+        chat,
+        chatIntegrationId,
+        storeIntegration,
+        showUpdatePermissions,
+        getRedirectUri,
+        shouldShowNonAiAgentChatSettingsRevamp,
+        isOptedIn,
+        appearanceLink,
+        openConfirm,
+    ])
 
-    return <div className={css.actionsCell}>{renderAction()}</div>
+    return (
+        <div className={css.actionsCell}>
+            {renderAction()}
+            <ChatRedesignSwitchConfirmModal
+                isOpen={isConfirmOpen}
+                isOptedIn={false}
+                isSubmitting={isSubmitting}
+                onConfirm={handleConfirmSwitch}
+                onOpenChange={setIsConfirmOpen}
+            />
+        </div>
+    )
 }

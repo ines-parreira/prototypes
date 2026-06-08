@@ -5,7 +5,6 @@ import { SidebarProvider } from '@repo/navigation'
 import { CopilotWorkspaceContainer } from 'copilot/CopilotWorkspaceContainer'
 import { useCopilotEnabled } from 'hooks/useCopilotEnabled'
 import { CollapsibleColumn } from 'pages/CollapsibleColumn'
-import { usePageTopBanner } from 'pages/common/hooks/usePageTopBanner'
 import { NavigationSidebar } from 'routes/layout/NavigationSidebar'
 
 import { MobileAppLayout } from './MobileAppLayout'
@@ -25,7 +24,6 @@ export function AppLayout({ children, hasPanel }: AppLayoutProps) {
     const { width } = useWindowSize()
     const isMobileResolution = useIsMobileResolution()
     const isCopilotEnabled = useCopilotEnabled()
-    const { pageTopBannerRef } = usePageTopBanner()
 
     if (isMobileResolution) {
         return <MobileAppLayout width={width}>{children}</MobileAppLayout>
@@ -50,27 +48,22 @@ export function AppLayout({ children, hasPanel }: AppLayoutProps) {
                             <NavigationSidebar />
                         </Panel>
                         <Handle className={css.handle} />
-                        <div className={css.mainColumn}>
-                            <div ref={pageTopBannerRef} />
-                            <div className={css.mainRow}>
-                                <PanelGroup
-                                    subtractSize={10}
-                                    className={css.panelGroup}
+                        <PanelGroup
+                            subtractSize={10}
+                            className={css.panelGroup}
+                        >
+                            {hasPanel ? (
+                                children
+                            ) : (
+                                <Panel
+                                    name="main-panel"
+                                    config={mainPanelConfig}
                                 >
-                                    {hasPanel ? (
-                                        children
-                                    ) : (
-                                        <Panel
-                                            name="main-panel"
-                                            config={mainPanelConfig}
-                                        >
-                                            {children}
-                                        </Panel>
-                                    )}
-                                </PanelGroup>
-                                <CollapsibleColumn />
-                            </div>
-                        </div>
+                                    {children}
+                                </Panel>
+                            )}
+                        </PanelGroup>
+                        <CollapsibleColumn />
                         {isCopilotEnabled && <CopilotWorkspaceContainer />}
                     </>
                 )}

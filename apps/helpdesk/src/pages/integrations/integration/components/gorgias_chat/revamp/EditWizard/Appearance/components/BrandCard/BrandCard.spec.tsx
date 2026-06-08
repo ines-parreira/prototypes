@@ -178,7 +178,7 @@ describe('BrandCard', () => {
             )
         })
 
-        it('should call onMainColorChange and mirror to conversation color when isAiAgentDisabled is false', () => {
+        it('should call onMainColorChange and mirror to conversation color when legacy chat customization is hidden', () => {
             renderComponent()
 
             const { onChange } = mockColorPicker.mock
@@ -274,7 +274,7 @@ describe('BrandCard', () => {
             ).toHaveBeenCalledWith(true)
         })
 
-        it('should not render the checkbox when isAiAgentDisabled is false', () => {
+        it('should not render the checkbox when legacy chat customization is hidden', () => {
             renderComponent()
 
             expect(mockCheckBoxField).not.toHaveBeenCalled()
@@ -282,7 +282,7 @@ describe('BrandCard', () => {
 
         it('should render the Chat title field with the current name', () => {
             renderComponent({
-                isAiAgentDisabled: true,
+                shouldShowLegacyChatCustomization: true,
                 name: 'Brand chat',
             })
 
@@ -292,7 +292,7 @@ describe('BrandCard', () => {
         })
 
         it('should call onNameChange and sync the chat preview when the Chat title changes', () => {
-            renderComponent({ isAiAgentDisabled: true })
+            renderComponent({ shouldShowLegacyChatCustomization: true })
 
             const input = screen.getByRole('textbox', { name: 'Chat title' })
             fireEvent.change(input, { target: { value: 'Updated title' } })
@@ -305,7 +305,7 @@ describe('BrandCard', () => {
 
         it('should open the chat preview on the homepage when the Chat title field is focused', async () => {
             const user = userEvent.setup()
-            renderComponent({ isAiAgentDisabled: true })
+            renderComponent({ shouldShowLegacyChatCustomization: true })
 
             await user.click(
                 screen.getByRole('textbox', { name: 'Chat title' }),
@@ -315,7 +315,7 @@ describe('BrandCard', () => {
             expect(mockDisplayPage).toHaveBeenCalledWith('homepage')
         })
 
-        it('should not render the Chat title field when isAiAgentDisabled is false', () => {
+        it('should not render the Chat title field when shouldShowLegacyChatCustomization is false', () => {
             renderComponent()
 
             expect(
@@ -351,7 +351,7 @@ describe('BrandCard', () => {
             )
         })
 
-        it('should not render the background style radio group when isAiAgentDisabled is false', () => {
+        it('should not render the background style radio group when legacy chat customization is hidden', () => {
             renderComponent()
 
             expect(mockRadioGroup).not.toHaveBeenCalled()

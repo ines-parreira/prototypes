@@ -16,6 +16,7 @@ import {
 } from 'config/integrations/gorgias_chat'
 import type { LANGUAGE } from 'constants/languages'
 
+import { useLogMigrationEvent } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useLogMigrationEvent'
 import type {
     ChatPreviewBusinessHoursMode,
     ChatPreviewPage,
@@ -25,6 +26,7 @@ import { ChatPreview } from './components/ChatPreview/ChatPreview'
 import type { ChatPreviewHandle } from './components/ChatPreview/ChatPreview'
 import { ChatPreviewDefault } from './components/ChatPreviewDefault/ChatPreviewDefault'
 import { ChatPreviewPanelHeader } from './components/ChatPreviewPanelHeader/ChatPreviewPanelHeader'
+
 import { useGorgiasChatApi } from './hooks/useGorgiasChatApi'
 
 import css from './ChatPreviewPanel.less'
@@ -131,6 +133,7 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
             useState<ChatPreviewBusinessHoursMode>('during-business-hours')
 
         const chatApi = useGorgiasChatApi(chatPreviewRef)
+        const { logBusinessHoursToggled } = useLogMigrationEvent()
 
         const shouldRenderBusinessHoursToggle =
             showBusinessHoursToggle &&
@@ -162,9 +165,15 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
                     chatApi.setCustomBusinessHours(
                         PREVIEW_BUSINESS_HOURS_INPUT[mode],
                     )
+                    logBusinessHoursToggled({
+                        to:
+                            mode === 'during-business-hours'
+                                ? 'within'
+                                : 'outside',
+                    })
                 }
             },
-            [chatApi],
+            [chatApi, logBusinessHoursToggled],
         )
 
         const handlePageChange = (page: string) => {

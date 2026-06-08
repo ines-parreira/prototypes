@@ -77,7 +77,6 @@ type BrandCardProps = {
     introductionText: string
     offlineIntroductionText: string
     isAiAgentEnabled?: boolean
-    isAiAgentDisabled?: boolean
     mainFontFamily: string
     onNameChange: (value: string) => void
     onMainColorChange: (value: string) => void
@@ -339,45 +338,6 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
     })
 
     describe('BrandCard advanced colors visibility', () => {
-        it('should not show advanced colors when AI agent is enabled', () => {
-            mockUseIsAiAgentEnabled.mockReturnValue({
-                isAiAgentEnabled: true,
-                isLoading: false,
-            })
-
-            renderComponent()
-
-            expect(mockBrandCard).toHaveBeenCalledWith(
-                expect.objectContaining({ isAiAgentDisabled: false }),
-            )
-        })
-
-        it('should show advanced colors when AI agent is disabled', () => {
-            mockUseIsAiAgentEnabled.mockReturnValue({
-                isAiAgentEnabled: false,
-                isLoading: false,
-            })
-
-            renderComponent()
-
-            expect(mockBrandCard).toHaveBeenCalledWith(
-                expect.objectContaining({ isAiAgentDisabled: true }),
-            )
-        })
-
-        it('should not show advanced colors while AI agent config is loading', () => {
-            mockUseIsAiAgentEnabled.mockReturnValue({
-                isAiAgentEnabled: false,
-                isLoading: true,
-            })
-
-            renderComponent()
-
-            expect(mockBrandCard).toHaveBeenCalledWith(
-                expect.objectContaining({ isAiAgentDisabled: false }),
-            )
-        })
-
         it('should hide the legacy color, background and font controls when the customer has opted in to Chat 2.0', () => {
             mockUseIsAiAgentEnabled.mockReturnValue({
                 isAiAgentEnabled: false,
@@ -389,10 +349,9 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
 
             renderComponent()
 
-            // The raw AI-agent flags are unchanged for the other fields...
+            // The raw AI-agent flag is unchanged for the other fields...
             expect(mockBrandCard).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    isAiAgentDisabled: true,
                     isAiAgentEnabled: false,
                     // ...but the legacy color/background/font block is hidden.
                     shouldShowLegacyChatCustomization: false,
@@ -1169,10 +1128,9 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
             })
         })
 
-        it('should not render when AI agent is enabled', () => {
-            mockUseIsAiAgentEnabled.mockReturnValue({
-                isAiAgentEnabled: true,
-                isLoading: false,
+        it('should not render when legacy chat customization is hidden', () => {
+            mockUseShouldShowChatSettingsRevamp.mockReturnValue({
+                shouldShowLegacyChatCustomization: false,
             })
 
             renderComponent()
@@ -1180,18 +1138,15 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
             expect(mockChatbotCard).not.toHaveBeenCalled()
         })
 
-        it('should not render while AI agent config is loading', () => {
-            mockUseIsAiAgentEnabled.mockReturnValue({
-                isAiAgentEnabled: false,
-                isLoading: true,
-            })
+        it('should not render while previewing Chat 2.0 from the banner', () => {
+            mockIsPreviewingNewChat = true
 
             renderComponent()
 
             expect(mockChatbotCard).not.toHaveBeenCalled()
         })
 
-        it('should render when AI agent is disabled', () => {
+        it('should render when legacy chat customization is shown', () => {
             renderComponent()
 
             expect(mockChatbotCard).toHaveBeenCalled()

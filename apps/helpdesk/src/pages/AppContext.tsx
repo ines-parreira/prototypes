@@ -21,8 +21,6 @@ interface AppContextType {
     ) => void
     collapsibleColumnRef: React.RefObject<HTMLDivElement>
     warpToCollapsibleColumn: (component: ReactNode) => React.ReactPortal | null
-    pageTopBannerRef: React.RefObject<HTMLDivElement>
-    warpToPageTopBanner: (component: ReactNode) => React.ReactPortal | null
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined)
@@ -62,20 +60,6 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
         [collapsibleColumnRef],
     )
 
-    // used to portal page-level banners above the content row (including the
-    // collapsible column on the right)
-    const pageTopBannerRef = useRef<HTMLDivElement>(null)
-
-    const warpToPageTopBanner = useCallback(
-        (component: ReactNode) => {
-            if (!pageTopBannerRef.current) {
-                return null
-            }
-            return createPortal(component, pageTopBannerRef.current)
-        },
-        [pageTopBannerRef],
-    )
-
     const value: AppContextType = {
         collapsibleColumnChildren,
         setCollapsibleColumnChildren,
@@ -85,8 +69,6 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
         setCollapsibleColumnWidthConfig,
         collapsibleColumnRef,
         warpToCollapsibleColumn,
-        pageTopBannerRef,
-        warpToPageTopBanner,
     }
 
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>

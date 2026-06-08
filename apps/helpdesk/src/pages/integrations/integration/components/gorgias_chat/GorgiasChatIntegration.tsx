@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 
 import { history } from '@repo/routing'
 import type { List, Map } from 'immutable'
@@ -16,6 +16,7 @@ import {
     useChatPreviewPanel,
 } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 import { useChatRedesignOptIn } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useChatRedesignOptIn'
+import { useLogMigrationEvent } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useLogMigrationEvent'
 import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/common/hooks/useShouldShowChatSettingsRevamp'
 import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
 import type * as IntegrationsActions from 'state/integrations/actions'
@@ -85,6 +86,23 @@ export const GorgiasChatIntegration = ({
     } = useShouldShowChatSettingsRevamp(storeIntegration, integration.get('id'))
 
     const { isOptedIn } = useChatRedesignOptIn(integration.get('id'))
+
+    const { logBannerViewed } = useLogMigrationEvent()
+
+    // Logged here (above the tabs) rather than from the banner itself, which
+    // re-mounts on every tab change. The ref keeps it to one event per visit
+    // to the chat settings page while the migration banner is visible.
+    const hasLoggedBannerViewRef = useRef(false)
+    useEffect(() => {
+        if (
+            shouldShowNonAiAgentChatSettingsRevamp &&
+            !isOptedIn &&
+            !hasLoggedBannerViewRef.current
+        ) {
+            hasLoggedBannerViewRef.current = true
+            logBannerViewed()
+        }
+    }, [shouldShowNonAiAgentChatSettingsRevamp, isOptedIn, logBannerViewed])
 
     const {
         showPreviewPanel,
