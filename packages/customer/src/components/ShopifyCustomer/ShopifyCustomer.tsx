@@ -4,21 +4,16 @@ import { useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { Box } from '@gorgias/axiom'
+import type { TicketCustomer } from '@gorgias/helpdesk-queries'
 import { useGetTicket } from '@gorgias/helpdesk-queries'
-import { IntegrationType } from '@gorgias/helpdesk-types'
 
+import { useGetCustomer } from '../../hooks/useGetCustomer'
 import type {
     EditShippingAddressModalRenderProps,
     OrderSidePanelRenderProps,
 } from './components/CustomerInfo'
 import { CustomerInfo } from './components/CustomerInfo'
-
-type CustomerIntegrationData = {
-    __integration_type__?: string
-    customer?: {
-        id?: number
-    }
-}
+import { getShopifyCustomerAssociations } from './utils/getShopifyCustomerAssociations'
 
 type Props = {
     onSyncProfile?: () => void
@@ -49,31 +44,26 @@ export function ShopifyCustomer({
 
     const customerId = ticket?.data?.customer?.id
 
-    const { associatedShopifyCustomerIds, externalIdMap } = useMemo(() => {
-        const integrations = (ticket?.data?.customer?.integrations ??
-            {}) as Record<string, CustomerIntegrationData>
-        const ids = new Set<number>()
-        const map = new Map<number, string>()
+    const { data: customer, isLoading: isLoadingCustomer } = useGetCustomer(
+        customerId ?? 0,
+        undefined,
+        { query: { enabled: !!customerId } },
+    )
 
-        Object.entries(integrations).forEach(([id, integration]) => {
-            if (integration.__integration_type__ === IntegrationType.Shopify) {
-                const integrationId = Number(id)
-                ids.add(integrationId)
-                if (integration.customer?.id) {
-                    map.set(integrationId, String(integration.customer.id))
-                }
-            }
-        })
-
-        return { associatedShopifyCustomerIds: ids, externalIdMap: map }
-    }, [ticket?.data?.customer?.integrations])
+    const { associatedShopifyCustomerIds, externalIdMap } = useMemo(
+        () =>
+            getShopifyCustomerAssociations(
+                (customer?.data as TicketCustomer | undefined) ?? null,
+            ),
+        [customer?.data],
+    )
 
     return (
         <Box flexDirection="column" flexGrow={1} minHeight={0}>
             <CustomerInfo
                 associatedShopifyCustomerIds={associatedShopifyCustomerIds}
                 externalIdMap={externalIdMap}
-                isLoadingTicket={isLoadingTicket}
+                isLoadingTicket={isLoadingTicket || isLoadingCustomer}
                 onSyncProfile={onSyncProfile}
                 ticketId={ticketId}
                 customerId={customerId}

@@ -5,6 +5,8 @@ import { HttpResponse } from 'msw'
 
 import { mockGetEcommerceDataByExternalIdHandler } from '@gorgias/ecommerce-storage-mocks'
 import {
+    mockGetCustomerHandler,
+    mockGetCustomerResponse,
     mockGetTicketHandler,
     mockListIntegrationsHandler,
     mockListWidgetsHandler,
@@ -55,18 +57,23 @@ const mockShopifyIntegration = {
     meta: {},
 } as Integration
 
-const ticketWithShopifyCustomer = mockTicket({
+const CUSTOMER_ID = 789
+
+const ticketWithCustomer = mockTicket({
     id: 123,
-    customer: mockTicketCustomer({
-        integrations: {
-            '1': {
-                __integration_type__: 'shopify',
-                customer: {
-                    id: 456,
-                },
+    customer: mockTicketCustomer({ id: CUSTOMER_ID, integrations: {} }),
+})
+
+const customerWithShopifyIntegration = mockGetCustomerResponse({
+    id: CUSTOMER_ID,
+    integrations: {
+        '1': {
+            __integration_type__: 'shopify',
+            customer: {
+                id: 456,
             },
         },
-    }),
+    },
 })
 
 const mockListIntegrations = mockListIntegrationsHandler(async () =>
@@ -82,7 +89,11 @@ const mockListIntegrations = mockListIntegrationsHandler(async () =>
 )
 
 const mockGetTicket = mockGetTicketHandler(async () =>
-    HttpResponse.json(ticketWithShopifyCustomer),
+    HttpResponse.json(ticketWithCustomer),
+)
+
+const mockGetCustomer = mockGetCustomerHandler(async () =>
+    HttpResponse.json(customerWithShopifyIntegration),
 )
 
 const mockGetEcommerceData = mockGetEcommerceDataByExternalIdHandler()
@@ -92,13 +103,17 @@ beforeEach(() => {
     server.use(
         mockListIntegrations.handler,
         mockGetTicket.handler,
+        mockGetCustomer.handler,
         mockGetEcommerceData.handler,
         mockListWidgets.handler,
     )
 })
 
 describe('ShopifyCustomer', () => {
-    it('renders the store picker with integrations from the ticket', async () => {
+    // The ticket payload carries no Shopify integration; the store only appears
+    // because the picker now reads `customer.integrations` from the GET /customer
+    // response, which is invalidated in real time when a new integration is linked.
+    it('renders the store picker with integrations from the customer', async () => {
         render(
             <ShopifyCustomer renderOrderSidePanel={mockRenderOrderSidePanel} />,
             {

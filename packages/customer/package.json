@@ -5,7 +5,8 @@
     "private": true,
     "exports": {
         ".": "./src/index.ts",
-        "./hooks": "./src/hooks/index.ts"
+        "./hooks": "./src/hooks/index.ts",
+        "./utils": "./src/components/ShopifyCustomer/utils/index.ts"
     },
     "scripts": {
         "format:check": "oxfmt --check .",

@@ -1,9 +1,8 @@
 import { useMemo } from 'react'
 
 import { useGetCustomer } from '@repo/customer/hooks'
+import { getShopifyCustomerAssociations } from '@repo/customer/utils'
 import type { TicketCustomer } from '@gorgias/helpdesk-queries'
-
-import { getShopifyCustomerAssociations } from './getShopifyCustomerAssociations'
 
 export function useNewTicketPageShopifyCustomerData(
     customer: TicketCustomer | null,
