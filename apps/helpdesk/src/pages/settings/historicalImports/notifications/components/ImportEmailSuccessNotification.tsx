@@ -2,7 +2,7 @@ import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { NotificationFeedItem, Subject } from '@repo/notifications'
 
-import { IconBox, Text } from '@gorgias/axiom'
+import { IconBox } from '@gorgias/axiom'
 
 import type { ContentProps, Notification } from 'common/notifications'
 import { Content, Subtitle } from 'common/notifications'
@@ -47,7 +47,7 @@ const ImportEmailSuccessNotification = ({
                 href="#"
                 onClick={handleOnClick}
             >
-                <Text>
+                <>
                     We&apos;ve successfully imported emails from{' '}
                     <Subject>{importNotification.provider_identifier}</Subject>{' '}
                     between{' '}
@@ -55,7 +55,7 @@ const ImportEmailSuccessNotification = ({
                         {startDate} and {endDate}
                     </Subject>{' '}
                     to your tickets.
-                </Text>
+                </>
             </NotificationFeedItem>
         )
     }

@@ -2,7 +2,7 @@ import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { NotificationFeedItem, Subject } from '@repo/notifications'
 
-import { Icon, Text } from '@gorgias/axiom'
+import { Icon } from '@gorgias/axiom'
 
 import type { ContentProps, Notification } from 'common/notifications'
 import { Content, Subtitle } from 'common/notifications'
@@ -38,12 +38,12 @@ const MessageFailedNotification = ({
                 onClick={handleOnClick}
             >
                 {customer?.name ? (
-                    <Text>
+                    <>
                         Message to <Subject>{customer.name}</Subject>{' '}
                         didn&apos;t deliver. Please try again.
-                    </Text>
+                    </>
                 ) : (
-                    <Text>Message didn&apos;t deliver. Please try again.</Text>
+                    <>Message didn&apos;t deliver. Please try again.</>
                 )}
             </NotificationFeedItem>
         )

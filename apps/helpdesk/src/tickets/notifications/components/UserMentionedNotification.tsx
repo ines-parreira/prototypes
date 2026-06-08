@@ -1,7 +1,7 @@
 import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { Excerpt, NotificationFeedItem, Subject } from '@repo/notifications'
 
-import { IconBox, Text } from '@gorgias/axiom'
+import { Box, IconBox, Text } from '@gorgias/axiom'
 
 import {
     Content,
@@ -39,18 +39,20 @@ export default function UserMentionedNotification({
                 href={`/app/ticket/${ticket.id}`}
                 onClick={props.onClick}
             >
-                {sender ? (
-                    <Text>
-                        <Subject>{sender.name}</Subject> mentioned you in{' '}
-                        <Subject>{ticket.subject}</Subject>
-                    </Text>
-                ) : (
-                    <Text>
-                        You were mentioned in{' '}
-                        <Subject>{ticket.subject}</Subject>
-                    </Text>
-                )}
-                {!!ticket.excerpt && <Excerpt>{ticket.excerpt}</Excerpt>}
+                <Box gap="xxs" flexDirection="column">
+                    {sender ? (
+                        <Text size="sm">
+                            <Subject>{sender.name}</Subject> mentioned you in{' '}
+                            <Subject>{ticket.subject}</Subject>
+                        </Text>
+                    ) : (
+                        <Text size="sm">
+                            You were mentioned in{' '}
+                            <Subject>{ticket.subject}</Subject>
+                        </Text>
+                    )}
+                    {!!ticket.excerpt && <Excerpt>{ticket.excerpt}</Excerpt>}
+                </Box>
             </NotificationFeedItem>
         )
     }

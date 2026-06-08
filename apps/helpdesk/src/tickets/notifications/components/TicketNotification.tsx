@@ -52,7 +52,7 @@ export default function TicketNotification({ notification, ...props }: Props) {
                 onClick={props.onClick}
             >
                 <Box gap="xxs" flexDirection="column">
-                    <Text>
+                    <Text size="sm">
                         <Subject>{ticket.subject}</Subject>
                         {sender?.name && (
                             <>
