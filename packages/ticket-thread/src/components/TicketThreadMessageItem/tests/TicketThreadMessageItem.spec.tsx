@@ -302,6 +302,8 @@ function createMessageData(
             stripped_html: null,
             stripped_text: HELLO_MESSAGE_TEXT,
             body_text: HELLO_MESSAGE_TEXT,
+            failed_datetime: null,
+            last_sending_error: null,
             ...overrides,
         }),
         id: overrides.id ?? 1,
@@ -311,6 +313,8 @@ function createMessageData(
         body_text: overrides.body_text ?? HELLO_MESSAGE_TEXT,
         channel: overrides.channel ?? 'email',
         from_agent: overrides.from_agent ?? false,
+        failed_datetime: overrides.failed_datetime ?? null,
+        last_sending_error: overrides.last_sending_error ?? null,
         via: overrides.via ?? 'email',
     }
 }
