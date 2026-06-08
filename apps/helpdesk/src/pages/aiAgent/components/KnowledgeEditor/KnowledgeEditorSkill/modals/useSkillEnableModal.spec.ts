@@ -62,6 +62,7 @@ let mockStoreState: Record<string, unknown>
 const createStoreState = (overrides: Record<string, unknown> = {}) => ({
     state: {
         skill: { id: 42 },
+        title: 'My skill',
         activeModal: null as string | null,
         isUpdating: false,
         ...overrides,
@@ -202,6 +203,34 @@ describe('useSkillEnableModal', () => {
         })
 
         expect(mockNotifyError).toHaveBeenCalledWith('Order/cancel conflict')
+    })
+
+    it('calls notifyError with a skill-specific message on duplicate title error', async () => {
+        const { isGorgiasApiError } = jest.requireMock('models/api/types')
+        isGorgiasApiError.mockReturnValue(true)
+        mockStoreState = createStoreState({ title: 'Damaged item' })
+
+        const duplicateError = {
+            response: {
+                status: 400,
+                data: {
+                    error: {
+                        msg: 'An article with the title "Damaged item" already exists in this help center',
+                    },
+                },
+            },
+        }
+        mockUpdateGuidanceArticle.mockRejectedValue(duplicateError)
+
+        const { result } = renderHook(() => useSkillEnableModal())
+
+        await act(async () => {
+            await result.current.onEnable()
+        })
+
+        expect(mockNotifyError).toHaveBeenCalledWith(
+            'Another resource with name "Damaged item" already exists',
+        )
     })
 
     it('dispatches SET_UPDATING false and CLOSE_MODAL in finally block', async () => {

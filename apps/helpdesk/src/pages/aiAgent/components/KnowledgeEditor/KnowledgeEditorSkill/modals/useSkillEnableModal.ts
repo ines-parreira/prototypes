@@ -2,7 +2,6 @@ import { useCallback } from 'react'
 
 import { useShallow } from 'zustand/react/shallow'
 
-import { isGorgiasApiError } from 'models/api/types'
 import { VisibilityStatusEnum } from 'models/helpCenter/types'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 
@@ -10,10 +9,12 @@ import { fromArticleTranslationResponse } from '../../KnowledgeEditorGuidance/co
 import { useSkillEditorStore } from '../context'
 import { useSkillNotify } from '../hooks/useSkillNotify'
 import { useSkillConflicts } from './useSkillConflicts'
+import { getSkillEnableErrorMessage } from './useSkillEnableModal.utils'
 
 export const useSkillEnableModal = () => {
     const {
         skillId,
+        skillTitle,
         isFirstTimeEnable,
         activeModal,
         isUpdating,
@@ -24,6 +25,7 @@ export const useSkillEnableModal = () => {
     } = useSkillEditorStore(
         useShallow((storeState) => ({
             skillId: storeState.state.skill?.id,
+            skillTitle: storeState.state.title,
             isFirstTimeEnable:
                 storeState.state.skill?.publishedVersionId == null,
             activeModal: storeState.state.activeModal,
@@ -89,22 +91,14 @@ export const useSkillEnableModal = () => {
             handleVisibilityUpdate?.(VisibilityStatusEnum.PUBLIC)
             invalidateAffectedCaches()
         } catch (error) {
-            if (isGorgiasApiError(error) && error.response.status === 409) {
-                const message = error.response.data.error.msg.replace(
-                    /(\w+)::(\w+)/g,
-                    (_: string, group: string, name: string) =>
-                        `${group.charAt(0).toUpperCase() + group.slice(1)}/${name}`,
-                )
-                notifyError(message)
-            } else {
-                notifyError('An error occurred while enabling the skill.')
-            }
+            notifyError(getSkillEnableErrorMessage(error, skillTitle))
         } finally {
             dispatch({ type: 'SET_UPDATING', payload: false })
             dispatch({ type: 'CLOSE_MODAL' })
         }
     }, [
         skillId,
+        skillTitle,
         helpCenterLocale,
         updateGuidanceArticle,
         resolveAllConflicts,
