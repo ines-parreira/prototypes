@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import type { HighlightedElements } from 'pages/tickets/detail/components/AuditLogEvent'
 
@@ -11,7 +12,7 @@ export default function useHighlightedElements() {
 
         const timeoutId = setTimeout(() => {
             setElements(null)
-        }, 1000)
+        }, Duration.seconds(1))
 
         return () => {
             clearTimeout(timeoutId)

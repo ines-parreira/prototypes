@@ -1,5 +1,6 @@
 import type { MouseEvent } from 'react'
 import React, { Component } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import classNames from 'classnames'
 import type { Map } from 'immutable'
@@ -99,7 +100,7 @@ export class YotpoIntegrationDetailComponent extends Component<Props, State> {
                             ) as IntegrationType,
                             true,
                         )
-                    }, 3000)
+                    }, Duration.seconds(3))
                 } else {
                     this.props.actions.triggerCreateSuccess(
                         this.props.integration.toJS(),

@@ -19,6 +19,7 @@
     "peerDependencies": {
         "@gorgias/axiom": "catalog:axiom",
         "@gorgias/helpdesk-queries": "catalog:rest-api-sdk",
+        "@gorgias/toolkit": "catalog:toolkit",
         "@repo/api-resources": "workspace:*",
         "@tanstack/react-query": "catalog:rest-api-sdk",
         "@repo/browser-storage": "workspace:*",
@@ -63,9 +64,6 @@
         "vitest": "catalog:test",
         "zod": "catalog:zod",
         "zustand": "catalog:zustand",
-        "@gorgias/toolkit": "catalog:toolkit"
-    },
-    "dependencies": {
         "@gorgias/toolkit": "catalog:toolkit"
     }
 }

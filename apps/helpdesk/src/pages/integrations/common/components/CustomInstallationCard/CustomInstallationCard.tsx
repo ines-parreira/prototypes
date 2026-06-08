@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import React, { Component } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import classnames from 'classnames'
 import Clipboard from 'clipboard'
@@ -43,7 +44,7 @@ export default class CustomInstallationCard extends Component<Props, State> {
             this.clearIsCopiedTimeout = window.setTimeout(() => {
                 this.setState({ isCopied: false })
                 this.clearIsCopiedTimeout = null
-            }, 1500)
+            }, Duration.millis(1500))
         })
     }
 

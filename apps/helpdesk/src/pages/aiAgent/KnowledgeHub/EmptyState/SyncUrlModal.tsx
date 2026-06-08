@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useQueryClient } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
@@ -141,7 +142,7 @@ export const SyncUrlModal = ({
         debounceTimerRef.current = setTimeout(() => {
             const validationError = validateUrl(url)
             setError(validationError)
-        }, 500)
+        }, Duration.millis(500))
 
         return () => {
             if (debounceTimerRef.current) {

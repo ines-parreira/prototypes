@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useCopyToClipboard, useId } from '@repo/hooks'
 import _uniqueId from 'lodash/uniqueId'
@@ -124,7 +125,7 @@ export const KnowledgeEditorSidePanelFieldURL = ({ url }: { url?: string }) => {
             setShowCheckmark(true)
             const timer = setTimeout(() => {
                 setShowCheckmark(false)
-            }, 3000)
+            }, Duration.seconds(3))
 
             return () => clearTimeout(timer)
         }

@@ -23,16 +23,13 @@ export type {
     ChannelIdentifier,
 } from 'models/channel/types'
 
-const STALE_TIME = Duration.hours(1)
-const CACHE_TIME = STALE_TIME + Duration.minutes(1)
-
 const INITIAL_DATA = window?.GORGIAS_STATE?.channels ?? []
 
 export const useChannels: () => Channel[] = () => {
     return (
         useListChannels({
-            staleTime: STALE_TIME,
-            cacheTime: CACHE_TIME,
+            staleTime: Duration.hours(1),
+            cacheTime: Duration.hours(1) + Duration.minutes(1),
             initialData: mockPaginatedChannelsList(INITIAL_DATA),
         })?.data?.data ?? []
     )

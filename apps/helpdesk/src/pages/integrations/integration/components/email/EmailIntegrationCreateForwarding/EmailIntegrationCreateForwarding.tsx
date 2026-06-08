@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { history } from '@repo/routing'
 import classnames from 'classnames'
@@ -84,7 +85,7 @@ export class EmailIntegrationCreateForwarding extends Component<Props, State> {
                 this.setState({ isCopied: true })
                 setTimeout(() => {
                     this.setState({ isCopied: false })
-                }, 1500)
+                }, Duration.millis(1500))
             })
         }
     }

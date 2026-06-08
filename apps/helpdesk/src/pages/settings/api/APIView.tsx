@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
@@ -106,7 +107,7 @@ export class APIViewContainer extends Component<Props, State> {
                     ...this.state,
                     [stateProp]: false,
                 })
-            }, 1500)
+            }, Duration.millis(1500))
         }
     }
 

@@ -7,6 +7,7 @@ import {
     useRef,
     useState,
 } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import {
     useAsyncFn,
@@ -359,7 +360,7 @@ export const FilterTopbar = ({
                 setShowNoChangeFeedback(true)
                 timeoutChangeFeedbackRef.current = window.setTimeout(
                     () => setShowNoChangeFeedback(false),
-                    2000,
+                    Duration.seconds(2),
                 )
                 e.stopPropagation()
             }

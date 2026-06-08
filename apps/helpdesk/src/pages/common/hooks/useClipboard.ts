@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import Clipboard from 'clipboard'
 
@@ -13,7 +14,7 @@ export default function useClipboard(selector: string) {
 
             setTimeout(() => {
                 setIsCopied(false)
-            }, 1500)
+            }, Duration.millis(1500))
         })
 
         return () => {

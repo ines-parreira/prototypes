@@ -1,3 +1,4 @@
+import { Duration } from '@gorgias/toolkit'
 // TODO: remove component entirely after Virtualization is tested out
 import { Component } from 'react'
 
@@ -69,7 +70,7 @@ export class TicketBodyNonVirtualized extends Component<Props, State> {
         this.setState({ highlightedElements: value })
         setTimeout(() => {
             this.setState({ highlightedElements: null })
-        }, 1000)
+        }, Duration.seconds(1))
     }
 
     componentDidMount() {

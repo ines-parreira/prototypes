@@ -1,4 +1,5 @@
 import colorTokens from '@gorgias/design-tokens/tokens/colors'
+import { Duration } from '@gorgias/toolkit'
 
 const CAMPAIGN_PERFORMANCE_ROWS = [
     {
@@ -10,7 +11,7 @@ const CAMPAIGN_PERFORMANCE_ROWS = [
                 text: 'SECOND Vestibulum ante ex, malesuada non erat ut, mattis tincidunt ipsum. Nam tristique porta ligula eu sodales. Nullam id tempus est, a maximus purus. 👩‍🌾',
             },
             meta: {
-                delay: 5000,
+                delay: Duration.seconds(5),
             },
             name: 'Welcome visitors',
             triggers: [
@@ -34,7 +35,7 @@ const CAMPAIGN_PERFORMANCE_ROWS = [
                             text: 'SECOND Vestibulum ante ex, malesuada non erat ut, mattis tincidunt ipsum. Nam tristique porta ligula eu sodales. Nullam id tempus est, a maximus purus. 👩‍🌾',
                         },
                         meta: {
-                            delay: 5000,
+                            delay: Duration.seconds(5),
                         },
                         name: 'Welcome visitors',
                         triggers: [
@@ -92,7 +93,7 @@ const CAMPAIGN_PERFORMANCE_ROWS = [
                             text: 'THIRD Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dictum fringilla velit!',
                         },
                         meta: {
-                            delay: 15000,
+                            delay: Duration.seconds(15),
                         },
                         name: 'Campaign with products',
                         triggers: [
@@ -359,7 +360,7 @@ const CAMPAIGN_PERFORMANCE_ROWS = [
                 text: 'THIRD Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dictum fringilla velit!',
             },
             meta: {
-                delay: 15000,
+                delay: Duration.seconds(15),
             },
             name: 'Campaign with products',
             triggers: [
@@ -383,7 +384,7 @@ const CAMPAIGN_PERFORMANCE_ROWS = [
                             text: 'SECOND Vestibulum ante ex, malesuada non erat ut, mattis tincidunt ipsum. Nam tristique porta ligula eu sodales. Nullam id tempus est, a maximus purus. 👩‍🌾',
                         },
                         meta: {
-                            delay: 5000,
+                            delay: Duration.seconds(5),
                         },
                         name: 'Welcome visitors',
                         triggers: [
@@ -441,7 +442,7 @@ const CAMPAIGN_PERFORMANCE_ROWS = [
                             text: 'THIRD Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dictum fringilla velit!',
                         },
                         meta: {
-                            delay: 15000,
+                            delay: Duration.seconds(15),
                         },
                         name: 'Campaign with products',
                         triggers: [
@@ -691,7 +692,7 @@ const CAMPAIGN_PERFORMANCE_ROWS = [
                             text: 'SECOND Vestibulum ante ex, malesuada non erat ut, mattis tincidunt ipsum. Nam tristique porta ligula eu sodales. Nullam id tempus est, a maximus purus. 👩‍🌾',
                         },
                         meta: {
-                            delay: 5000,
+                            delay: Duration.seconds(5),
                         },
                         name: 'Welcome visitors',
                         triggers: [
@@ -749,7 +750,7 @@ const CAMPAIGN_PERFORMANCE_ROWS = [
                             text: 'THIRD Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dictum fringilla velit!',
                         },
                         meta: {
-                            delay: 15000,
+                            delay: Duration.seconds(15),
                         },
                         name: 'Campaign with products',
                         triggers: [
@@ -994,7 +995,7 @@ const CAMPAIGN_PERFORMANCE_ROWS = [
                             text: 'SECOND Vestibulum ante ex, malesuada non erat ut, mattis tincidunt ipsum. Nam tristique porta ligula eu sodales. Nullam id tempus est, a maximus purus. 👩‍🌾',
                         },
                         meta: {
-                            delay: 5000,
+                            delay: Duration.seconds(5),
                         },
                         name: 'Welcome visitors',
                         triggers: [
@@ -1052,7 +1053,7 @@ const CAMPAIGN_PERFORMANCE_ROWS = [
                             text: 'THIRD Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dictum fringilla velit!',
                         },
                         meta: {
-                            delay: 15000,
+                            delay: Duration.seconds(15),
                         },
                         name: 'Campaign with products',
                         triggers: [
@@ -1305,7 +1306,7 @@ const CAMPAIGN_PERFORMANCE_ROWS = [
                             text: 'SECOND Vestibulum ante ex, malesuada non erat ut, mattis tincidunt ipsum. Nam tristique porta ligula eu sodales. Nullam id tempus est, a maximus purus. 👩‍🌾',
                         },
                         meta: {
-                            delay: 5000,
+                            delay: Duration.seconds(5),
                         },
                         name: 'Welcome visitors',
                         triggers: [
@@ -1363,7 +1364,7 @@ const CAMPAIGN_PERFORMANCE_ROWS = [
                             text: 'THIRD Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dictum fringilla velit!',
                         },
                         meta: {
-                            delay: 15000,
+                            delay: Duration.seconds(15),
                         },
                         name: 'Campaign with products',
                         triggers: [
@@ -1623,7 +1624,7 @@ const CAMPAIGN_PERFORMANCE_ROWS = [
                             text: 'SECOND Vestibulum ante ex, malesuada non erat ut, mattis tincidunt ipsum. Nam tristique porta ligula eu sodales. Nullam id tempus est, a maximus purus. 👩‍🌾',
                         },
                         meta: {
-                            delay: 5000,
+                            delay: Duration.seconds(5),
                         },
                         name: 'Welcome visitors',
                         triggers: [
@@ -1681,7 +1682,7 @@ const CAMPAIGN_PERFORMANCE_ROWS = [
                             text: 'THIRD Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dictum fringilla velit!',
                         },
                         meta: {
-                            delay: 15000,
+                            delay: Duration.seconds(15),
                         },
                         name: 'Campaign with products',
                         triggers: [
@@ -1924,7 +1925,7 @@ const CAMPAIGN_PERFORMANCE_ROWS = [
                             text: 'SECOND Vestibulum ante ex, malesuada non erat ut, mattis tincidunt ipsum. Nam tristique porta ligula eu sodales. Nullam id tempus est, a maximus purus. 👩‍🌾',
                         },
                         meta: {
-                            delay: 5000,
+                            delay: Duration.seconds(5),
                         },
                         name: 'Welcome visitors',
                         triggers: [
@@ -1982,7 +1983,7 @@ const CAMPAIGN_PERFORMANCE_ROWS = [
                             text: 'THIRD Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dictum fringilla velit!',
                         },
                         meta: {
-                            delay: 15000,
+                            delay: Duration.seconds(15),
                         },
                         name: 'Campaign with products',
                         triggers: [

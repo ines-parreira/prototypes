@@ -1,5 +1,6 @@
 import type { SyntheticEvent } from 'react'
 import React, { Component } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -73,7 +74,7 @@ export class SmileIntegrationDetailComponent extends Component<Props, State> {
                             this.props.integration.get('type'),
                             true,
                         )
-                    }, 3000)
+                    }, Duration.seconds(3))
                 }
             }
         }

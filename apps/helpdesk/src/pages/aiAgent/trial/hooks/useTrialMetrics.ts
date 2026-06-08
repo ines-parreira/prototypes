@@ -43,8 +43,6 @@ export type TrialMetrics = {
     }
 }
 
-const REFETCH_INTERVAL_MS = Duration.minutes(5)
-
 export const useTrialMetrics = (
     trialType: TrialType,
     shopName?: string,
@@ -103,9 +101,9 @@ export const useTrialMetrics = (
                 )
             },
             enabled: hasStores,
-            refetchInterval: REFETCH_INTERVAL_MS,
-            staleTime: REFETCH_INTERVAL_MS,
-            cacheTime: REFETCH_INTERVAL_MS,
+            refetchInterval: Duration.minutes(5),
+            staleTime: Duration.minutes(5),
+            cacheTime: Duration.minutes(5),
             refetchOnWindowFocus: false,
             refetchOnMount: false,
             refetchOnReconnect: false,
@@ -127,9 +125,9 @@ export const useTrialMetrics = (
             )
         },
         enabled: hasStores,
-        refetchInterval: REFETCH_INTERVAL_MS,
-        staleTime: REFETCH_INTERVAL_MS,
-        cacheTime: REFETCH_INTERVAL_MS,
+        refetchInterval: Duration.minutes(5),
+        staleTime: Duration.minutes(5),
+        cacheTime: Duration.minutes(5),
         refetchOnWindowFocus: false,
         refetchOnMount: false,
         refetchOnReconnect: false,

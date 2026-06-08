@@ -23,7 +23,6 @@ type Props = {
 }
 
 const LIMIT_ITEMS_SEARCH = 30
-const STALE_TIME = Duration.minutes(5)
 
 const TeamAssigneeDropdownMenu = ({ onClick }: Props) => {
     const wrapperRef = useRef<HTMLDivElement>(null)
@@ -44,7 +43,7 @@ const TeamAssigneeDropdownMenu = ({ onClick }: Props) => {
         },
         {
             refetchOnWindowFocus: false,
-            staleTime: STALE_TIME,
+            staleTime: Duration.minutes(5),
             enabled: !debouncedSearch,
         },
     )
@@ -71,7 +70,7 @@ const TeamAssigneeDropdownMenu = ({ onClick }: Props) => {
         },
         {
             refetchOnWindowFocus: false,
-            staleTime: STALE_TIME,
+            staleTime: Duration.minutes(5),
             enabled: !!debouncedSearch,
         },
     )

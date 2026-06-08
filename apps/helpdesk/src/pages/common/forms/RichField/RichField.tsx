@@ -1,5 +1,6 @@
 import type { ComponentProps } from 'react'
 import React, { Component } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import type { ContentState } from 'draft-js'
 import { EditorState } from 'draft-js'
@@ -199,7 +200,7 @@ export default class RichField extends Component<Props, State> {
             }
             this._sentHTMLCleanupTimer = setTimeout(() => {
                 this._sentHTMLSet.clear()
-            }, 3000)
+            }, Duration.seconds(3))
 
             this.props.onChange(editorState)
         })

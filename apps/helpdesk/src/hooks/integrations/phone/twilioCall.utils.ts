@@ -5,6 +5,7 @@ import { reportError } from '@repo/logging'
 import type { TwilioError } from '@twilio/voice-sdk'
 import { Call } from '@twilio/voice-sdk'
 import { pick } from 'lodash'
+import { Duration } from '@gorgias/toolkit'
 
 import type { TwilioSocketEvent } from 'business/twilio'
 import { TwilioSocketEventType } from 'business/twilio'
@@ -48,7 +49,7 @@ export function handleCallEvents(
 
         setTimeout(
             () => twilioCallUtils.handleAcceptedCallEvent(call, dispatch),
-            1000,
+            Duration.seconds(1),
         )
     })
 

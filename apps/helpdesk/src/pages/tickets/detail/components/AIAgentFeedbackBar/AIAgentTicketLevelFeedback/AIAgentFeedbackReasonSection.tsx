@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useDebouncedCallback } from '@repo/hooks'
 
@@ -50,7 +51,7 @@ export const AIAgentFeedbackReasonSection = ({
             handleFeedbackChange(finalChoices)
             pendingChoicesRef.current = null
         },
-        700,
+        Duration.millis(700),
     )
 
     const handleBadInteractionReasonChange = useCallback(

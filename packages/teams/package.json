@@ -19,6 +19,7 @@
     "peerDependencies": {
         "@gorgias/helpdesk-client": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-queries": "catalog:rest-api-sdk",
+        "@gorgias/toolkit": "catalog:toolkit",
         "@repo/hooks": "workspace:*",
         "@repo/utils": "workspace:*",
         "react": "catalog:react"
@@ -44,9 +45,6 @@
         "react": "catalog:react",
         "typescript": "catalog:typescript",
         "vitest": "catalog:test",
-        "@gorgias/toolkit": "catalog:toolkit"
-    },
-    "dependencies": {
         "@gorgias/toolkit": "catalog:toolkit"
     }
 }

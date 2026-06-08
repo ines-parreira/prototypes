@@ -67,9 +67,6 @@ import {
 } from './resources'
 import type { KnowledgeHubArticlesQueryParams } from './types'
 
-const STALE_TIME = Duration.minutes(10)
-const CACHE_TIME = Duration.minutes(10)
-
 export const helpCenterKeys = {
     all: () => ['help-centers'] as const,
     details: () => ['help-center'] as const,
@@ -273,7 +270,7 @@ export const getHelpCenterArticleQuery = ({
             },
             { throwOn404 },
         ),
-    staleTime: STALE_TIME,
+    staleTime: Duration.minutes(10),
 })
 
 export const useGetHelpCenterArticleList = (
@@ -315,7 +312,7 @@ export const useGetHelpCenterStatistics = (
                 { help_center_id: helpCenterId },
                 queryParams,
             ),
-        staleTime: STALE_TIME,
+        staleTime: Duration.minutes(10),
         ...overrides,
         enabled: !!client && (overrides === undefined || overrides.enabled),
     })
@@ -532,7 +529,7 @@ export const useGetHelpCenterCategoryTree = (
                 },
                 queryParams,
             ),
-        staleTime: STALE_TIME,
+        staleTime: Duration.minutes(10),
         ...overrides,
         enabled: !!client && (overrides === undefined || overrides.enabled),
     })
@@ -584,7 +581,7 @@ export const useGetHelpCenter = (
                 { help_center_id: helpCenterId },
                 queryParameters,
             ),
-        staleTime: STALE_TIME,
+        staleTime: Duration.minutes(10),
         ...overrides,
         enabled: !!client && (overrides === undefined || overrides.enabled),
     })
@@ -889,7 +886,7 @@ export const useGetIngestionLogs = (
     return useQuery({
         queryFn: async () => getIngestionLogs(helpCenterClient, pathParams),
         queryKey: helpCenterKeys.ingestionLogs(pathParams.help_center_id),
-        staleTime: STALE_TIME,
+        staleTime: Duration.minutes(10),
         ...overrides,
         enabled:
             Boolean(helpCenterClient) &&
@@ -929,7 +926,7 @@ export const useGetIngestionLogsList = (
                 }),
             ),
         ),
-        staleTime: STALE_TIME,
+        staleTime: Duration.minutes(10),
         ...overrides,
         enabled:
             Boolean(helpCenterClient) &&
@@ -1215,7 +1212,7 @@ export const useGetKnowledgeStatus = (
     return useQuery({
         queryFn: async () => getKnowledgeStatus(helpCenterClient),
         queryKey: helpCenterKeys.knowledgeStatus(),
-        staleTime: STALE_TIME,
+        staleTime: Duration.minutes(10),
         ...overrides,
         enabled:
             Boolean(helpCenterClient) &&
@@ -1234,7 +1231,7 @@ export const useGetKnowledgeHubArticles = (
         queryFn: async () =>
             getKnowledgeHubArticles(helpCenterClient, queryParams),
         queryKey: helpCenterKeys.knowledgeHubArticles(queryParams),
-        staleTime: STALE_TIME,
+        staleTime: Duration.minutes(10),
         ...overrides,
         enabled:
             Boolean(helpCenterClient) &&
@@ -1266,8 +1263,8 @@ export const useGetArticleTranslations = (
             })
             return response.data
         },
-        staleTime: STALE_TIME,
-        cacheTime: CACHE_TIME,
+        staleTime: Duration.minutes(10),
+        cacheTime: Duration.minutes(10),
         ...overrides,
         enabled:
             !!client &&
@@ -1352,8 +1349,8 @@ export const useGetArticleTranslationVersions = (
         ),
         queryFn: async () =>
             listArticleTranslationVersions(client, pathParams, queryParams),
-        staleTime: STALE_TIME,
-        cacheTime: CACHE_TIME,
+        staleTime: Duration.minutes(10),
+        cacheTime: Duration.minutes(10),
         ...overrides,
         enabled:
             !!client &&
@@ -1396,8 +1393,8 @@ export const useInfiniteGetArticleTranslationVersions = (
             const { page, nb_pages } = lastPage.meta
             return page < nb_pages ? page + 1 : undefined
         },
-        staleTime: STALE_TIME,
-        cacheTime: CACHE_TIME,
+        staleTime: Duration.minutes(10),
+        cacheTime: Duration.minutes(10),
         ...overrides,
         enabled:
             !!client &&
@@ -1424,8 +1421,8 @@ export const useGetArticleTranslationVersion = (
             pathParams.version_id,
         ),
         queryFn: async () => getArticleTranslationVersion(client, pathParams),
-        staleTime: STALE_TIME,
-        cacheTime: CACHE_TIME,
+        staleTime: Duration.minutes(10),
+        cacheTime: Duration.minutes(10),
         ...overrides,
         enabled:
             !!client &&
@@ -1452,8 +1449,8 @@ export const useGetArticleTranslationIntents = (
             pathParams.locale,
         ),
         queryFn: async () => getArticleTranslationIntents(client, pathParams),
-        staleTime: STALE_TIME,
-        cacheTime: CACHE_TIME,
+        staleTime: Duration.minutes(10),
+        cacheTime: Duration.minutes(10),
         ...overrides,
         enabled:
             !!client &&
@@ -1474,8 +1471,8 @@ export const useListIntents = (
         queryKey: helpCenterKeys.intents(helpCenterId),
         queryFn: async () =>
             listIntents(client, { help_center_id: helpCenterId }),
-        staleTime: STALE_TIME,
-        cacheTime: CACHE_TIME,
+        staleTime: Duration.minutes(10),
+        cacheTime: Duration.minutes(10),
         ...overrides,
         enabled:
             !!client &&
@@ -1506,7 +1503,7 @@ export const useGetWizard = (
         queryKey: helpCenterKeys.wizard(helpCenterId),
         queryFn: async () =>
             getWizard(client, { help_center_id: helpCenterId }),
-        staleTime: STALE_TIME,
+        staleTime: Duration.minutes(10),
         ...overrides,
         enabled:
             !!client &&

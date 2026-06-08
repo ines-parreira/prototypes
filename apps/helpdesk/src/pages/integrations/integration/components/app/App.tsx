@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useEffectOnce, useTitle } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -136,7 +137,7 @@ export default function AppDetail() {
             installSuccessTimeoutRef.current = setTimeout(() => {
                 setInstallSuccessStore(target)
                 installSuccessTimeoutRef.current = null
-            }, 3000)
+            }, Duration.seconds(3))
         },
         [],
     )

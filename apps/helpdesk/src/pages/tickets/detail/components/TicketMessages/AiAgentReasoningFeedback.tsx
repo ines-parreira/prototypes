@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useFeedbackTracking } from '@repo/ai-agent'
 import { useDebouncedCallback, useDebouncedEffect } from '@repo/hooks'
@@ -192,7 +193,7 @@ export const AiAgentReasoningFeedback = ({
             pendingChangesRef.current = null
             await processFeedbackChanges(changes)
         },
-        700,
+        Duration.millis(700),
     )
 
     const handleReasoningFeedback = useCallback(

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 export type SaveState = 'idle' | 'saving' | 'saved'
 
@@ -24,7 +25,7 @@ export default function useSaveState(isSaving: boolean) {
 
         const timeoutId = setTimeout(() => {
             setSaveState('idle')
-        }, 3000)
+        }, Duration.seconds(3))
 
         return () => {
             clearTimeout(timeoutId)

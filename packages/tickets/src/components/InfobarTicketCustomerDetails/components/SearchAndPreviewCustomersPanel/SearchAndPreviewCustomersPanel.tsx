@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import {
     Box,
@@ -84,10 +85,10 @@ export function SearchAndPreviewCustomersPanel({
         // where the whole screen is not clickable.
         // This is most likely due to the panel width changing depending on the mode
         // which triggers a layout glitch within the SidePanel or underlying components,
-        // so we wait for the transition to finish (200ms + 50ms buffer)
+        // so we wait for the transition to finish before resetting state.
         const resetTimeoutId = window.setTimeout(() => {
             resetPanelState()
-        }, 250)
+        }, Duration.millis(250))
 
         return () => {
             window.clearTimeout(resetTimeoutId)

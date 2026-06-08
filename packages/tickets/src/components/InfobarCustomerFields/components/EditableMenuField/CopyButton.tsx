@@ -1,5 +1,6 @@
 import type { MouseEvent } from 'react'
 import { useCallback, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useCopyToClipboard } from '@repo/hooks'
 import classnames from 'classnames'
@@ -31,7 +32,7 @@ export function CopyButton({ value, isVisible }: CopyButtonProps) {
 
             timeoutRef.current = setTimeout(() => {
                 setIsTooltipOpen(false)
-            }, 2000)
+            }, Duration.seconds(2))
         },
         [value, copyToClipboard],
     )

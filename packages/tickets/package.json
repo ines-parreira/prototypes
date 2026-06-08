@@ -33,6 +33,7 @@
         "@gorgias/helpdesk-types": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-validators": "catalog:rest-api-sdk",
         "@gorgias/realtime": "catalog:realtime",
+        "@gorgias/toolkit": "catalog:toolkit",
         "@internationalized/date": "catalog:axiom",
         "@repo/browser-storage": "workspace:*",
         "@repo/config": "workspace:*",
@@ -123,9 +124,6 @@
         "vitest": "catalog:test",
         "zod": "catalog:zod",
         "zustand": "catalog:zustand",
-        "@gorgias/toolkit": "catalog:toolkit"
-    },
-    "dependencies": {
         "@gorgias/toolkit": "catalog:toolkit"
     }
 }

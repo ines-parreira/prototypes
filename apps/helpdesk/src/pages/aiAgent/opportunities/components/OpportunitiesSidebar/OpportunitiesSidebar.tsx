@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { motion } from 'framer-motion'
 import { Virtuoso } from 'react-virtuoso'
@@ -85,7 +86,7 @@ export const OpportunitiesSidebar = ({
                     isFetchingNextPage,
                     onEndReachedRef.current,
                 )
-            }, 100)
+            }, Duration.millis(100))
             return () => clearTimeout(timeoutId)
         }
     }, [

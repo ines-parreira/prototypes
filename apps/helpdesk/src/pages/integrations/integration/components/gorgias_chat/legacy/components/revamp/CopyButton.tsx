@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import copy from 'copy-to-clipboard'
 
@@ -39,7 +40,7 @@ const CopyButton = ({
         copyTimerRef.current = setTimeout(() => {
             setIsCopied(false)
             copyTimerRef.current = null
-        }, 5000) as unknown as number
+        }, Duration.seconds(5)) as unknown as number
     }
 
     return (

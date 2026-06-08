@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useCopyToClipboard } from '@repo/hooks'
 
@@ -33,7 +34,7 @@ export const CopyableTextField = (props: CopyableTextFieldProps) => {
 
         const timeout = setTimeout(() => {
             setIsCopied(false)
-        }, 2000)
+        }, Duration.seconds(2))
 
         return () => {
             setIsCopied(false)

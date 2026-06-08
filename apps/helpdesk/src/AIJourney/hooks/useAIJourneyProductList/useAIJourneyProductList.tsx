@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import type { Product } from 'constants/integrations/types/shopify'
 import { ProductStatus } from 'constants/integrations/types/shopify'
@@ -40,7 +41,7 @@ export const useAIJourneyProductList = ({
             refetchOnMount: false,
             keepPreviousData: isSearching,
             retry: 3,
-            retryDelay: 1000,
+            retryDelay: Duration.seconds(1),
             queryKey: [
                 'integration',
                 'shopify',

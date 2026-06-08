@@ -1,4 +1,5 @@
 import { useDebouncedValue } from '@repo/hooks'
+import { Duration } from '@gorgias/toolkit'
 
 import {
     LegacyButton as Button,
@@ -34,7 +35,10 @@ export const Info = ({
     setAgentState,
 }: Props) => {
     const { mutate: inviteAgent, isLoading: isInviting } = useInviteAgent(email)
-    const isDebouncedInviting = useDebouncedValue(isInviting, 500)
+    const isDebouncedInviting = useDebouncedValue(
+        isInviting,
+        Duration.millis(500),
+    )
     const isDisabled = isEdit && isViewingAccountOwner && !isAccountOwner
 
     const nameId = 'detail-info-name-input'

@@ -39,7 +39,7 @@ export const useStartSubscription = () => {
 
                 setTimeout(() => {
                     history.push(payment!.get('confirmation_url'))
-                }, 4500)
+                }, Duration.millis(4500))
             } else if (payment!.get('error')) {
                 toast.error(
                     `${

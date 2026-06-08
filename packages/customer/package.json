@@ -26,6 +26,7 @@
         "@gorgias/helpdesk-queries": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-types": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-validators": "catalog:rest-api-sdk",
+        "@gorgias/toolkit": "catalog:toolkit",
         "@repo/config": "workspace:*",
         "@repo/ecommerce": "workspace:*",
         "@repo/feature-flags": "workspace:*",
@@ -100,9 +101,6 @@
         "typescript": "catalog:typescript",
         "vitest": "catalog:test",
         "zod": "catalog:zod",
-        "@gorgias/toolkit": "catalog:toolkit"
-    },
-    "dependencies": {
         "@gorgias/toolkit": "catalog:toolkit"
     }
 }

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import Clipboard from 'clipboard'
 import type { ConnectedProps } from 'react-redux'
@@ -44,7 +45,7 @@ export class AircallIntegrationCreate extends Component<Props, State> {
             this.setState({ isCopied: true })
             setTimeout(() => {
                 this.setState({ isCopied: false })
-            }, 1500)
+            }, Duration.millis(1500))
         })
 
         const clipboardNew = new Clipboard('#copyWebhookUrlNew')
@@ -53,7 +54,7 @@ export class AircallIntegrationCreate extends Component<Props, State> {
             this.setState({ isCopiedNew: true })
             setTimeout(() => {
                 this.setState({ isCopiedNew: false })
-            }, 1500)
+            }, Duration.millis(1500))
         })
     }
 

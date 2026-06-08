@@ -101,6 +101,7 @@
         "@gorgias/knowledge-service-types": "catalog:rest-api-sdk",
         "@gorgias/knowledge-service-validators": "catalog:rest-api-sdk",
         "@gorgias/realtime": "catalog:realtime",
+        "@gorgias/toolkit": "catalog:toolkit",
         "@gorgias/workflows-client": "catalog:rest-api-sdk",
         "@gorgias/workflows-queries": "catalog:rest-api-sdk",
         "@gorgias/workflows-types": "catalog:rest-api-sdk",
@@ -273,8 +274,7 @@
         "vaul": "^1.1.2",
         "zen-observable": "catalog:browser-storage",
         "zod": "catalog:zod",
-        "zustand": "catalog:zustand",
-        "@gorgias/toolkit": "catalog:toolkit"
+        "zustand": "catalog:zustand"
     },
     "devDependencies": {
         "@gorgias/config": "0.7.0",
@@ -282,6 +282,7 @@
         "@gorgias/help-center-mocks": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-mocks": "catalog:rest-api-sdk",
         "@gorgias/knowledge-service-mocks": "catalog:rest-api-sdk",
+        "@gorgias/oxlint-custom-rules": "0.3.0",
         "@gorgias/static-analysis": "0.3.0",
         "@gorgias/workflows-mocks": "catalog:rest-api-sdk",
         "@jest/expect": "catalog:test",

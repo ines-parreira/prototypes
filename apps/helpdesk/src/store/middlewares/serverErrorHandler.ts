@@ -1,6 +1,7 @@
 import _get from 'lodash/get'
 import _some from 'lodash/some'
 import type { Middleware } from 'redux'
+import { Duration } from '@gorgias/toolkit'
 
 import type {
     GorgiasApiError,
@@ -59,7 +60,7 @@ const serverErrorHandler: Middleware<
             const loginUrl = `${window.location.origin}/login?next=${encodeURIComponent(nextPath)}`
 
             window.location.href = loginUrl
-        }, 3000)
+        }, Duration.seconds(3))
 
         return next(action)
     }

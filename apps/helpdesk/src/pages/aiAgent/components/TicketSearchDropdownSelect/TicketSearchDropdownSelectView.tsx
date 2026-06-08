@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { reportError } from '@repo/logging'
 
@@ -101,7 +102,7 @@ export const TicketSearchDropdownSelectView = ({
             const handler = setTimeout(async () => {
                 setIsTyping(false)
                 await ticketSearchRefetch()
-            }, 1000)
+            }, Duration.seconds(1))
 
             return () => {
                 clearTimeout(handler)

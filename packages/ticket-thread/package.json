@@ -23,6 +23,7 @@
         "@gorgias/helpdesk-queries": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-types": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-validators": "catalog:rest-api-sdk",
+        "@gorgias/toolkit": "catalog:toolkit",
         "libphonenumber-js": "catalog:libphonenumber",
         "lodash": "catalog:lodash",
         "@repo/config": "workspace:*",
@@ -96,9 +97,6 @@
         "vitest": "catalog:test",
         "yet-another-react-lightbox": "catalog:images",
         "zod": "catalog:zod",
-        "@gorgias/toolkit": "catalog:toolkit"
-    },
-    "dependencies": {
         "@gorgias/toolkit": "catalog:toolkit"
     }
 }

@@ -8,6 +8,7 @@ import {
     useRef,
     useState,
 } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useDebouncedValue, useThrottledValue } from '@repo/hooks'
 import { useQueryClient } from '@tanstack/react-query'
@@ -292,12 +293,12 @@ export function useWorkflowEditor(
                 MAX_CONFIGURATION_SIZE_IN_BYTES,
             ),
         [visualBuilderGraphDirty],
-        500,
+        Duration.millis(500),
     )
     const currentTranslationSizeToLimitRate = useThrottledValue(
         (graph) => computeCurrentTranslationSizeToLimitRate(graph),
         [visualBuilderGraphDirty],
-        500,
+        Duration.millis(500),
     )
 
     const getVariableListForNode = useCallback(

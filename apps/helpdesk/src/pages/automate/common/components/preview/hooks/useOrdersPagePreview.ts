@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useHistory } from 'react-router-dom'
 
@@ -25,24 +26,24 @@ const useOrdersPagePreview = () => {
                     case 'trackOrderPolicy':
                         timeout.current = window.setTimeout(() => {
                             setPreviewStep(PreviewStep.TRACK_HOVER)
-                        }, 800)
+                        }, Duration.millis(800))
                 }
 
                 break
             case PreviewStep.TRACK_HOVER:
                 timeout.current = window.setTimeout(() => {
                     setPreviewStep(PreviewStep.TRACK_HOVERING)
-                }, 1000)
+                }, Duration.seconds(1))
                 break
             case PreviewStep.TRACK_HOVERING:
                 timeout.current = window.setTimeout(() => {
                     setPreviewStep(PreviewStep.TRACK_CLICK)
-                }, 200)
+                }, Duration.millis(200))
                 break
             case PreviewStep.TRACK_CLICK:
                 timeout.current = window.setTimeout(() => {
                     history.push(SELF_SERVICE_PREVIEW_ROUTES.TRACK)
-                }, 200)
+                }, Duration.millis(200))
         }
 
         return () => {

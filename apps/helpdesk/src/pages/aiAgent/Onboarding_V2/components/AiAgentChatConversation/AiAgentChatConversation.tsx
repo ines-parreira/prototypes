@@ -1,5 +1,6 @@
 import type { FC, Ref } from 'react'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import classnames from 'classnames'
 import type { Map } from 'immutable'
@@ -109,7 +110,7 @@ const AiAgentChatConversation: FC<Props> = ({
 
                     return prev
                 })
-            }, 600)
+            }, Duration.millis(600))
         },
         [groupedMessages, addMessage],
     )

@@ -1,5 +1,6 @@
 import type { ChangeEvent } from 'react'
 import { useCallback, useMemo, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import client from '@repo/api-resources'
 import { useAsyncFn, useDebouncedEffect } from '@repo/hooks'
@@ -93,7 +94,7 @@ export default function DiscountCodeResults({
     const handleCloseModal = useCallback(() => {
         setTimeout(() => {
             discountModal.closeModal(DISCOUNT_MODAL_NAME)
-        }, 100)
+        }, Duration.millis(100))
     }, [discountModal])
 
     const handleOpenModal = useCallback(() => {

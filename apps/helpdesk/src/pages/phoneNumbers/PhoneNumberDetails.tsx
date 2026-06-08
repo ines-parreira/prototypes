@@ -1,5 +1,6 @@
 import type React from 'react'
 import { useEffect, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useAsyncFn } from '@repo/hooks'
@@ -115,7 +116,7 @@ export function PhoneNumberDetails({ phoneNumber }: Props) {
 
             setTimeout(() => {
                 setIsPhoneNumberCopied(false)
-            }, 1500)
+            }, Duration.millis(1500))
         })
 
         return () => {

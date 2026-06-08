@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useHistory } from 'react-router-dom'
 
@@ -62,7 +63,7 @@ const SelfServiceChatIntegrationReportIssuePage = ({ integration }: Props) => {
         if (hasResponseMessageText) {
             timeout.current = window.setTimeout(() => {
                 setPreviewStep(PreviewStep.RESPONSE)
-            }, 500)
+            }, Duration.millis(500))
         }
 
         return () => {

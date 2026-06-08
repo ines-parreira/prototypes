@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useEffectOnce } from '@repo/hooks'
 import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
@@ -364,7 +365,7 @@ function WorkflowEditorViewWrapped({
         } else {
             const t = setTimeout(() => {
                 inputRef.current?.focus()
-            }, 300)
+            }, Duration.millis(300))
             return () => clearTimeout(t)
         }
     })

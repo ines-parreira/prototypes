@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { useCallback, useMemo, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useFeedbackTracking } from '@repo/ai-agent'
 
@@ -132,7 +133,7 @@ export function KnowledgeSourceSideBarProvider({
             setSideBarMode(null)
             setIsClosing(false)
             onClose()
-        }, 300)
+        }, Duration.millis(300))
     }, [onClose])
 
     const value = useMemo(

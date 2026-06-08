@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { useContext, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -71,7 +72,7 @@ async function generateDraftOrderUrl({
     setIsRefreshCooldown(true)
     setTimeout(() => {
         setIsRefreshCooldown(false)
-    }, 2000)
+    }, Duration.seconds(2))
 }
 
 type WidgetIconProps = {

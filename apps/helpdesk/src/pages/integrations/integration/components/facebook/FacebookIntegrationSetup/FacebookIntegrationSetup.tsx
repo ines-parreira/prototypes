@@ -1,5 +1,6 @@
 import type { FormEvent } from 'react'
 import { Component } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { history } from '@repo/routing'
 import classnames from 'classnames'
@@ -78,7 +79,7 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
 
         this.fetchInterval = window.setInterval(
             () => this._fetchPage(this.props.pagination.get('page') || 1),
-            3000,
+            Duration.seconds(3),
         )
     }
 

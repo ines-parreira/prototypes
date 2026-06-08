@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useHistory } from 'react-router-dom'
 
@@ -27,12 +28,12 @@ const useTrackPagePreview = () => {
                     }
 
                     setPreviewStep(PreviewStep.SCROLL)
-                }, 2000)
+                }, Duration.seconds(2))
                 break
             case PreviewStep.SCROLL:
                 timeout.current = window.setTimeout(() => {
                     history.push(SELF_SERVICE_PREVIEW_ROUTES.ORDERS)
-                }, 2500)
+                }, Duration.millis(2500))
         }
 
         return () => {

@@ -1,6 +1,7 @@
 import type { MouseEvent } from 'react'
 import type React from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { Popover } from 'reactstrap'
 
@@ -64,7 +65,7 @@ export default function LinkPopover({
         e.preventDefault()
         timeout.current = setTimeout(() => {
             setIsOpen(false)
-        }, 250)
+        }, Duration.millis(250))
     }, [])
 
     const handleClickEdit = useCallback(

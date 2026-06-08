@@ -1,5 +1,6 @@
 import type { LegacyRef } from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import bytes from 'bytes'
 import classnames from 'classnames'
@@ -233,7 +234,7 @@ const HelpCenterEditor = ({
                                             editor.image.get(),
                                             res,
                                         )
-                                    }, 500)
+                                    }, Duration.millis(500))
                                 })
                                 .catch(() => {
                                     void dispatch(
@@ -305,7 +306,7 @@ const HelpCenterEditor = ({
                                         editor.popups
                                             .get(popupId)
                                             .removeAttr('inert')
-                                    }, 50)
+                                    }, Duration.millis(50))
                                 }
                             } catch (error) {
                                 console.error(error)

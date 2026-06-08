@@ -22,6 +22,7 @@
         "@gorgias/helpdesk-client": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-queries": "catalog:rest-api-sdk",
         "@gorgias/realtime": "catalog:realtime",
+        "@gorgias/toolkit": "catalog:toolkit",
         "@repo/api-resources": "workspace:*",
         "@repo/hooks": "workspace:*",
         "@repo/layout": "workspace:*",
@@ -58,9 +59,6 @@
         "react": "catalog:react",
         "typescript": "catalog:typescript",
         "vitest": "catalog:test",
-        "@gorgias/toolkit": "catalog:toolkit"
-    },
-    "dependencies": {
         "@gorgias/toolkit": "catalog:toolkit"
     }
 }

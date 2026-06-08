@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import React, { Component } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import styles from './RichFieldEditor.less'
 
@@ -33,7 +34,7 @@ export class DraftJsErrorBoundary extends Component<Props, State> {
             // Auto-recover after a very brief delay (just long enough to prevent infinite loop)
             setTimeout(() => {
                 this.setState({ hasError: false })
-            }, 50)
+            }, Duration.millis(50))
 
             this.props.onError?.(error)
         } else {

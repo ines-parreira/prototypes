@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useDebouncedValue, useElementSize, usePrevious } from '@repo/hooks'
 
@@ -52,8 +53,8 @@ export default function useTickets(
     const [element, setElement] = useState<HTMLElement | null>(null)
     const [, height] = useElementSize(element)
     const [offset] = useScrollOffset(element)
-    const debouncedHeight = useDebouncedValue(height, 75)
-    const debouncedOffset = useDebouncedValue(offset, 75)
+    const debouncedHeight = useDebouncedValue(height, Duration.millis(75))
+    const debouncedOffset = useDebouncedValue(offset, Duration.millis(75))
 
     const startIndex = useMemo(
         () => Math.floor(debouncedOffset / TICKET_HEIGHT),

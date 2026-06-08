@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useDebouncedValue } from '@repo/hooks'
 
@@ -10,7 +11,7 @@ import { getMergeTicketsSearchFilters } from './utils'
 
 export function useMergeTicketSearch(ticket: Ticket) {
     const [searchQuery, setSearchQuery] = useState('')
-    const search = useDebouncedValue(searchQuery, 300)
+    const search = useDebouncedValue(searchQuery, Duration.millis(300))
 
     const { data: tickets, isFetching } = useSearchTickets(
         {

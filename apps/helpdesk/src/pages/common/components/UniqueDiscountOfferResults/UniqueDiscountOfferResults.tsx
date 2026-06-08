@@ -1,5 +1,6 @@
 import type { ChangeEvent, MouseEvent } from 'react'
 import React, { useCallback, useMemo, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import classnames from 'classnames'
 import type { List, Map } from 'immutable'
@@ -97,13 +98,13 @@ export default function UniqueDiscountCodeResults({
     const handleCloseCreateModal = useCallback(() => {
         setTimeout(() => {
             createDiscountModal.closeModal(UNIQUE_DISCOUNT_MODAL_NAME)
-        }, 100)
+        }, Duration.millis(100))
     }, [createDiscountModal])
 
     const handleCloseDeleteModal = useCallback(() => {
         setTimeout(() => {
             deleteDiscountModal.closeModal(DELETE_DISCOUNT_MODAL_NAME)
-        }, 100)
+        }, Duration.millis(100))
     }, [deleteDiscountModal])
 
     const handleOpenModal = useCallback(() => {

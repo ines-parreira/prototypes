@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { Collapse } from 'reactstrap'
 
@@ -85,7 +86,7 @@ export default function ContactReasonSuggestion({ ticket }: Props) {
         if (!isConfirmed) return
         const timer = setTimeout(() => {
             setCollapse(true)
-        }, 1500)
+        }, Duration.millis(1500))
         return () => clearTimeout(timer)
     }, [isConfirmed])
 

@@ -7,6 +7,7 @@ import { fromJS } from 'immutable'
 import _capitalize from 'lodash/capitalize'
 import _sortBy from 'lodash/sortBy'
 import moment from 'moment'
+import { Duration } from '@gorgias/toolkit'
 
 import { isChannel } from 'config'
 import type {
@@ -324,7 +325,7 @@ export function fetchIntegration(
                                         true,
                                     ),
                                 )
-                            }, 3000)
+                            }, Duration.seconds(3))
                         } else {
                             onCreateSuccess(dispatch, resp)
                         }
