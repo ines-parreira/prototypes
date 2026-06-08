@@ -7,8 +7,7 @@
     "license": "UNLICENSED",
     "private": true,
     "scripts": {
-        "ai:rulesync": "rulesync install --frozen && rulesync generate",
-        "ai:rulesync:update": "rulesync install --update && rulesync generate",
+        "ai:rulesync:update": "node scripts/rulesync/run-rulesync.mjs",
         "build": "pnpm --filter @repo/helpdesk build",
         "dev:proxy": "pnpm --filter @repo/helpdesk dev:proxy",
         "dev:local": "pnpm --filter @repo/helpdesk dev:local",
@@ -45,8 +44,7 @@
         "platform:check-node-engines": "tsx scripts/dependencies-management/dependencies-engines.ts",
         "platform:architecture:boundaries": "fallow dead-code --boundary-violations",
         "platform:update:sdk": "scripts/update-sdk.sh",
-        "platform:test:memory-analysis": "tsx scripts/test-memory-analysis/analyze.ts",
-        "postinstall": "pnpm ai:rulesync"
+        "platform:test:memory-analysis": "tsx scripts/test-memory-analysis/analyze.ts"
     },
     "devDependencies": {
         "@gorgias/config": "0.7.0",

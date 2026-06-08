@@ -3,28 +3,28 @@
   "sources": {
     "gorgias/frontend:packages/axiom/.agents/skills": {
       "requestedRef": "main",
-      "resolvedRef": "4d4fe98e70004965734efb2f191e7fbd4061a43a",
-      "resolvedAt": "2026-06-08T09:42:11.459Z",
+      "resolvedRef": "67a6aa69483e756428a3fe9e46081239f8b8ea07",
+      "resolvedAt": "2026-06-08T12:32:16.890Z",
       "skills": {
         "axiom": {
-          "integrity": "sha256-f6bdf83f2a3837145453da54128f88a8b131ee0203fa2961e96dba05ec0e17ec"
+          "integrity": "sha256-a42f8b3b78f40d408173f3e9847a66500fab963bbec5ecf08aab9ea456bad37e"
         }
       }
     },
     "gorgias/frontend:packages/toolkit/.agents/skills": {
       "requestedRef": "main",
-      "resolvedRef": "4d4fe98e70004965734efb2f191e7fbd4061a43a",
-      "resolvedAt": "2026-06-08T09:42:13.849Z",
+      "resolvedRef": "67a6aa69483e756428a3fe9e46081239f8b8ea07",
+      "resolvedAt": "2026-06-08T12:32:19.389Z",
       "skills": {
         "toolkit": {
-          "integrity": "sha256-0fde20d74f0d3bf1b78cb89bc16cd9499b0c9f466fb1e5039ffe2b9ea6267604"
+          "integrity": "sha256-5f4818f08fcc1c418626e7921ccd47a8e632c8af3a62da10a1b3f59d1cd67035"
         }
       }
     },
     "gorgias/rest-api-sdk:.agents/skills": {
       "requestedRef": "main",
       "resolvedRef": "52f414cb8db98f64162322a6474df7b63b7815a5",
-      "resolvedAt": "2026-06-08T09:42:16.234Z",
+      "resolvedAt": "2026-06-08T12:32:21.742Z",
       "skills": {
         "rest-api-sdk": {
           "integrity": "sha256-2479e831b8297ce4c877bd10c128f1c0f7b2ccbd008b07be49cb934611c6f6c2"

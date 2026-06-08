@@ -46,6 +46,9 @@ type MultiSelectFieldProps<T extends object> = {
     searchValue?: string // Current search value (controlled)
     onSearchChange?: (value: string) => void // Search change callback
 
+    // Trigger
+    trigger?: ReactElement<MultiSelectTriggerProps<T>> // Custom trigger element
+
     // Render function
     children: (option: T) => ReactNode // Render function for each option
 }
@@ -207,6 +210,37 @@ const filteredCountries = countries.filter(country =>
       trailingSlot={user.isActive ? <Dot color="success" /> : null}
     />
   )}
+</MultiSelectField>
+```
+
+### Customizing the selected Tag
+
+Pass a `<MultiSelectTrigger>` element with a render function as children to control how each selected item renders as a Tag. The render function receives `{ item, onRemove, isDisabled }`.
+
+```typescript
+import { MultiSelectField, MultiSelectTrigger, Tag } from '@gorgias/axiom'
+
+type Channel = {
+  id: string
+  name: string
+  icon: 'channel-instagram' | 'channel-facebook'
+  color: 'fuchsia' | 'blue'
+}
+
+<MultiSelectField
+  label="Channels"
+  items={channels}
+  trigger={
+    <MultiSelectTrigger<Channel>>
+      {({ item, onRemove }) => (
+        <Tag color={item.color} leadingSlot={item.icon} onClose={onRemove}>
+          {item.name}
+        </Tag>
+      )}
+    </MultiSelectTrigger>
+  }
+>
+  {(channel) => <MultiSelectItem leadingSlot={channel.icon} label={channel.name} />}
 </MultiSelectField>
 ```
 

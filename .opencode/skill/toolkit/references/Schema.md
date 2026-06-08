@@ -75,14 +75,26 @@ Avoid `Schema.is` with transforming/defaulting schemas when the transformed valu
 
 Use `Schema.match(value)` for ordered schema dispatch.
 
-The first matching schema wins. Each `.with()` callback receives the parsed output of that schema.
+The first matching schema wins. By default, each `.with()` callback receives the original value narrowed by the schema output, like `Schema.is`.
+
+Use the default mode for subset proof schemas where the original typed value has useful fields that are not part of the proof schema:
 
 ```ts
-return Schema.match(value)
+return Schema.match(ticket)
     .with(ChatTicketSchema, (ticket) => handleChat(ticket))
     .with(EmailTicketSchema, (ticket) => handleEmail(ticket))
     .otherwise(() => handleUnknown())
 ```
+
+Use `Schema.match(value, { strict: true })` when handlers need the parsed schema output. This is the right mode for transforms, defaults, coercions, or intentionally stripped output:
+
+```ts
+return Schema.match(ticket, { strict: true })
+    .with(NormalizedTicketSchema, (ticket) => handleNormalized(ticket))
+    .otherwise(() => handleUnknown())
+```
+
+Avoid default matching with transforming/defaulting schemas when the transformed value matters. Default matching validates the schema, but the callback receives the original value.
 
 The return type is the union of the `.with()` callback return types and the `.otherwise()` callback return type.
 
@@ -97,4 +109,6 @@ Use runtime tests for:
 - Invalid validation errors
 - Curried and data-first `Schema.is`
 - First-match and later-match `Schema.match` branches
+- Default `Schema.match` preserving original value shape
+- Strict `Schema.match` passing parsed output
 - Async schema rejection
