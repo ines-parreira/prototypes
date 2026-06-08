@@ -1,6 +1,17 @@
 :local {
     .customerDetailsPanel {
-        overflow: auto;
         min-height: 0;
+    }
+
+    .header {
+        background-color: var(--elevation-neutral-default);
+        padding: var(--spacing-xs) var(--spacing-md);
+        border-bottom: 1px solid var(--border-neutral-default);
+    }
+
+    .headerSticky {
+        position: sticky;
+        top: var(--sticky-stack-offset, 0px);
+        z-index: var(--sticky-stack-z-index, 4);
     }
 }

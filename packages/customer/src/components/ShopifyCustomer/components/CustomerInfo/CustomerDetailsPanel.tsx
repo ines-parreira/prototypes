@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 
 import { normalizeMetafields } from '@repo/ecommerce/shopify/components'
 
-import { Box, Icon, Text } from '@gorgias/axiom'
+import { Box, Icon, StickyLayer, StickyStack, Text } from '@gorgias/axiom'
 import type { Integration } from '@gorgias/helpdesk-types'
 
 import type { ShopperEcommerceData } from '../../types'
@@ -35,6 +35,7 @@ type Props = {
     customerId?: number
     ticketId?: string
     shopper: ShopperEcommerceData | undefined
+    hasNewOrdersSidebar?: boolean
     children?: ReactNode
 }
 
@@ -54,6 +55,7 @@ export function CustomerDetailsPanel({
     customerId,
     ticketId,
     shopper,
+    hasNewOrdersSidebar,
     children,
 }: Props) {
     const isLoadingDetails =
@@ -63,37 +65,54 @@ export function CustomerDetailsPanel({
             isLoadingIntegrations ||
             !!isLoadingTicket)
 
-    return (
+    const headerContent = (
+        <Box
+            flexDirection="row"
+            alignItems="center"
+            justifyContent="space-between"
+            gap="xs"
+        >
+            <Box flexDirection="row" gap="xs">
+                <Icon name="app-shopify" size="md" />
+                <Text size="md" variant="bold">
+                    Shopify
+                </Text>
+            </Box>
+
+            <StorePicker
+                integrations={filteredIntegrations}
+                selectedIntegrationId={selectedIntegration?.id}
+                onChange={onStoreChange}
+                isLoading={isLoadingIntegrations || isLoadingTicket}
+                onSyncProfile={onSyncProfile}
+            />
+        </Box>
+    )
+
+    const body = (
         <Box
             flex={1}
             minHeight={0}
             flexDirection="column"
             className={css.customerDetailsPanel}
         >
+            {hasNewOrdersSidebar ? (
+                <StickyLayer group="shopify-header">
+                    {({ ref, stickyProps }) => (
+                        <div
+                            ref={ref}
+                            {...stickyProps}
+                            className={`${css.header} ${css.headerSticky}`}
+                        >
+                            {headerContent}
+                        </div>
+                    )}
+                </StickyLayer>
+            ) : (
+                <div className={css.header}>{headerContent}</div>
+            )}
+
             <Box flexDirection="column" gap="sm" padding="md">
-                <Box
-                    marginTop="-8px"
-                    flexDirection="row"
-                    alignItems="center"
-                    justifyContent="space-between"
-                    gap="xs"
-                >
-                    <Box flexDirection="row" gap="xs">
-                        <Icon name="app-shopify" size="md" />
-                        <Text size="md" variant="bold">
-                            Shopify
-                        </Text>
-                    </Box>
-
-                    <StorePicker
-                        integrations={filteredIntegrations}
-                        selectedIntegrationId={selectedIntegration?.id}
-                        onChange={onStoreChange}
-                        isLoading={isLoadingIntegrations || isLoadingTicket}
-                        onSyncProfile={onSyncProfile}
-                    />
-                </Box>
-
                 <CustomerLink
                     selectedIntegration={selectedIntegration}
                     shopper={shopper}
@@ -143,4 +162,6 @@ export function CustomerDetailsPanel({
             {children}
         </Box>
     )
+
+    return hasNewOrdersSidebar ? <StickyStack>{body}</StickyStack> : body
 }

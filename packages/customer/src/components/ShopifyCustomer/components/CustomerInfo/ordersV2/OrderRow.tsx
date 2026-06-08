@@ -50,6 +50,10 @@ export function OrderRow({
     const dateLabel = data.created_at
         ? formatOrderDate(data.created_at, dateFormat, timeFormat, timezone)
         : '—'
+    const shopifyUrl = storeName
+        ? `https://admin.shopify.com/store/${storeName}/orders/${data.id}`
+        : undefined
+
     return (
         <div
             className={isExpanded ? css.row : `${css.row} ${css.clickable}`}
@@ -62,6 +66,7 @@ export function OrderRow({
                 total={formatTotal(data.currency, data.total_price)}
                 isExpanded={isExpanded}
                 onToggle={onToggle}
+                shopifyUrl={shopifyUrl}
             />
 
             <Box flexDirection="column" gap="xs" className={css.summaryBody}>

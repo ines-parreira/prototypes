@@ -76,4 +76,34 @@ describe('OrderRow', () => {
             screen.getByRole('button', { name: /collapse order/i }),
         ).toBeInTheDocument()
     })
+
+    it('shows an open-in-Shopify link with the correct URL when storeName is provided', () => {
+        const order = toV2Order(makeOrder({ id: 1001, name: '#1001' }))
+
+        render(
+            <OrderRow
+                order={order}
+                isExpanded
+                onToggle={vi.fn()}
+                storeName="my-store"
+            />,
+        )
+
+        expect(
+            screen.getByRole('link', { name: /open in shopify/i }),
+        ).toHaveAttribute(
+            'href',
+            'https://admin.shopify.com/store/my-store/orders/1001',
+        )
+    })
+
+    it('hides the open-in-Shopify link when storeName is absent', () => {
+        const order = toV2Order(makeOrder({ id: 1001, name: '#1001' }))
+
+        render(<OrderRow order={order} isExpanded onToggle={vi.fn()} />)
+
+        expect(
+            screen.queryByRole('link', { name: /open in shopify/i }),
+        ).not.toBeInTheDocument()
+    })
 })

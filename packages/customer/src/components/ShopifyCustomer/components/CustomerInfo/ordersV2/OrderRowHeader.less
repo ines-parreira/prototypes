@@ -4,7 +4,35 @@
         flex-direction: column;
         gap: var(--spacing-xxxxs);
         padding: var(--spacing-xs) var(--spacing-sm);
-        scroll-margin-top: 56px;
+    }
+
+    .sticky {
+        position: sticky;
+        top: var(--sticky-stack-offset, 0px);
+        z-index: var(--sticky-stack-z-index, 1);
+        background-color: var(--elevation-neutral-default);
+        border-top-left-radius: var(--radius-md, 8px);
+        border-top-right-radius: var(--radius-md, 8px);
+        cursor: pointer;
+
+        &:hover {
+            box-shadow: inset 0 0 0 100px var(--hover-default);
+        }
+    }
+
+    .sticky[data-sticky-state='stuck'] {
+        border-bottom: 1px solid var(--border-neutral-default);
+        border-left: 1px solid var(--border-neutral-default);
+        border-right: 1px solid var(--border-neutral-default);
+        box-shadow: var(--effects-shadow-container);
+        margin-left: -1px;
+        margin-right: -1px;
+
+        &:hover {
+            box-shadow:
+                inset 0 0 0 100px var(--hover-default),
+                var(--effects-shadow-container);
+        }
     }
 
     .orderNumber {

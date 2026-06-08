@@ -1,11 +1,10 @@
 import type { ReactNode } from 'react'
 
 import type { OrderCardProduct } from '@repo/ecommerce/shopify/types'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { EditFieldsType, useTicketInfobarNavigation } from '@repo/navigation'
 
 import { Box } from '@gorgias/axiom'
-
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import type { OrderEcommerceData } from '../../types'
 import { TemplateResolverProvider } from './CustomActions'
@@ -195,6 +194,7 @@ export function CustomerInfo({
                 customerId={customerId}
                 ticketId={ticketId}
                 shopper={shopper}
+                hasNewOrdersSidebar={hasNewOrdersSidebar}
             >
                 {hasNewOrdersSidebar ? (
                     <OrdersSidebarV2
