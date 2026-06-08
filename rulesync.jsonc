@@ -4,21 +4,15 @@
     "features": ["commands", "rules", "skills"],
     "sources": [
         {
-            "source": "git@github.com:gorgias/frontend.git",
-            "transport": "git",
-            "path": "packages/axiom/.agents/skills",
+            "source": "gorgias/frontend:packages/axiom/.agents/skills",
             "skills": ["axiom"],
         },
         {
-            "source": "git@github.com:gorgias/frontend.git",
-            "transport": "git",
-            "path": "packages/toolkit/.agents/skills",
+            "source": "gorgias/frontend:packages/toolkit/.agents/skills",
             "skills": ["toolkit"],
         },
         {
-            "source": "git@github.com:gorgias/rest-api-sdk.git",
-            "transport": "git",
-            "path": ".agents/skills",
+            "source": "gorgias/rest-api-sdk:.agents/skills",
             "skills": ["rest-api-sdk"],
         },
     ],

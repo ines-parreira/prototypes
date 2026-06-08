@@ -20,6 +20,17 @@ All components are imported from `@gorgias/axiom` :
 import { Button, Modal, TextField } from '@gorgias/axiom'
 ```
 
+## Design reference docs (read these for the "why")
+
+This skill pairs **technical** per-component references (`references/<Component>.md` — props, types, examples, testing queries) with **design** references that carry the rules behind the API:
+
+- **`references/patterns.md`** — **start here when choosing components or composing a UI.** A component picker by intent, wireframe→component extraction, decision shortcuts ("Toast vs Banner vs Modal", "Button vs Link"…), and canonical compositions (page header, form field, table cell, side panel, dense detail list…).
+- **`references/foundations.md`** — color, typography, density, spacing, elevation, shape, and color modes resolved to tokens. The hard rules: never hex, never raw px, accent purple is chirurgical, product surfaces are dense by default.
+- **`references/iconography.md`** — icon name validation (avoid the silent Material-Icons fallback), the three icon styles (outlined / multicolor / mono-filled), and the top naming traps.
+- **`references/motion.md`** — the three motion tokens and when to use each.
+
+The **code is always the source of truth** for prop facts (`packages/axiom/src/<Component>`, `tokens/tokens.json`, `Icon/icons.ts`); the design docs carry usage rules (when / why / placement).
+
 ## Component Categories
 
 - **Typography**: Text, Heading
@@ -215,7 +226,15 @@ import { ButtonVariant, ButtonSize, Intent } from '@gorgias/axiom'
 
 ## Design Tokens
 
-Design tokens are the visual design atoms of the axiom system. They define colors, spacing, typography, and effects. For comprehensive token documentation, see `references/Tokens.md`.
+Design tokens are the visual design atoms of the axiom system. They define colors, spacing, typography, and effects. For the full token catalog see `references/Tokens.md`; for the **design rules** on how to choose between them (and when each is wrong) see `references/foundations.md`.
+
+**The hard rules from `foundations.md` — apply these whenever you pick a value:**
+
+- **Never hex, never raw px.** Colors are always tokens (`var(--token)` in CSS, or the bare token name in a component `color` prop); spacing/sizing always rounds to the nearest of the 8 spacing tokens (`xxxs`…`xxxl`). Don't invent a 9th spacing value.
+- **Accent purple is chirurgical.** `surface-accent-primary` is the *only* purple — primary actions, selected/checked state, links, focus rings, AI surfaces. In a complete page, **no more than 3 distinct elements** should use accent tokens. A Gorgias page is ~92% neutral.
+- **Product surfaces are dense by default.** The user is an agent on their 200th ticket — favor density over whitespace. Reserve `lg`/`xl` gaps for marketing/onboarding/empty-state surfaces, not the helpdesk, settings, dashboards, or detail panes.
+- **Max 2 text-style sizes per section**; page title = `heading-lg`, step down one tier per nesting level.
+- **Depth comes from surface tone, not heavy shadows** — use a component's `elevation` prop (`<Card elevation="…">`, `<Panel elevation="…">`), never plain white + manual border + manual radius. **When Cards/Panels are nested or stacked, bump elevation one tier per level** (`bg` → `default` → `mid` → `high`) so the inner surface reads as raised; siblings on the same surface share a tier. See `references/foundations.md`.
 
 ### Token Categories
 
@@ -417,6 +436,16 @@ If you find yourself needing custom styles frequently, consider:
 2. Using Box component with layout props
 3. Suggesting a design system enhancement
 
+## Motion & Animation
+
+**Axiom has no motion tokens yet** — there is no `motionTokens` export and no `--motion-*` CSS variable. Until they ship:
+
+- Where a component already animates (Modal, SidePanel, Toast, Disclosure, Tooltip, Tabs), **don't override its timings** — it owns its motion contract.
+- When you must add a transition, match the curve components already use: `cubic-bezier(0.9, 0, 0, 1)` at 250–300ms. Don't introduce new curves; never `transition: all … ease`.
+- Animate only `transform` / `opacity`, and guard with `@media (prefers-reduced-motion: reduce)` in the component's own `.module.less` (there is no global handler).
+
+The target design model (two curves: an 800ms `layout` curve for page-shape shifts, a ~300ms `micro` curve for component state) and the rationale live in `references/motion.md`.
+
 ## Custom Trigger Pattern
 
 Many popover-based components (Select, MultiSelect, Menu, DatePicker, DateRangePicker, and their filter variants) accept a `trigger` prop to replace the default trigger element. The trigger can be a `ReactNode` or a render function receiving component-specific state:
@@ -528,6 +557,12 @@ Each component exports its own render props type (e.g., `ButtonRenderProps`, `Ta
   <Text>Information message</Text>
 </Box>
 ```
+
+### Validate every icon name
+
+A string passed to `name` / `leadingSlot` / `trailingSlot` / `icon` that *looks* like an icon name but isn't in the catalog silently falls through to the Material Icons fallback — wrong glyph or empty space with phantom padding. **The bug is invisible in code review.** Every icon string must appear **verbatim** in `packages/axiom/src/Icon/icons.ts`; grep it when unsure (`grep '"<name>"' packages/axiom/src/Icon/icons.ts`). Empty result = the icon does not exist; pick a related canonical name or tell the user — never improvise.
+
+Top naming traps: `add-plus` (not `plus`/`add`), `close` (not `x`/`cancel`), `magnifying-glass` (not `search`), `edit-pencil` (not `edit`/`pencil`), `trash-empty` (not `trash`/`delete`), `arrow-chevron-down` (not `chevron-down`), `dots-meatballs-horizontal` (not `more-horizontal`). See `references/iconography.md` for the full list, the three icon styles (outlined / multicolor / mono-filled), and color rules.
 
 ## Testing Guidelines
 

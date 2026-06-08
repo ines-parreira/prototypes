@@ -1,20 +1,30 @@
 {
   "lockfileVersion": 1,
   "sources": {
-    "git@github.com:gorgias/frontend": {
+    "gorgias/frontend:packages/axiom/.agents/skills": {
       "requestedRef": "main",
-      "resolvedRef": "f7df4732feedd12fb96f93c037e8538e3b712479",
-      "resolvedAt": "2026-06-05T16:44:51.704Z",
+      "resolvedRef": "4d4fe98e70004965734efb2f191e7fbd4061a43a",
+      "resolvedAt": "2026-06-08T09:42:11.459Z",
+      "skills": {
+        "axiom": {
+          "integrity": "sha256-f6bdf83f2a3837145453da54128f88a8b131ee0203fa2961e96dba05ec0e17ec"
+        }
+      }
+    },
+    "gorgias/frontend:packages/toolkit/.agents/skills": {
+      "requestedRef": "main",
+      "resolvedRef": "4d4fe98e70004965734efb2f191e7fbd4061a43a",
+      "resolvedAt": "2026-06-08T09:42:13.849Z",
       "skills": {
         "toolkit": {
           "integrity": "sha256-0fde20d74f0d3bf1b78cb89bc16cd9499b0c9f466fb1e5039ffe2b9ea6267604"
         }
       }
     },
-    "git@github.com:gorgias/rest-api-sdk": {
+    "gorgias/rest-api-sdk:.agents/skills": {
       "requestedRef": "main",
       "resolvedRef": "52f414cb8db98f64162322a6474df7b63b7815a5",
-      "resolvedAt": "2026-06-05T16:44:57.319Z",
+      "resolvedAt": "2026-06-08T09:42:16.234Z",
       "skills": {
         "rest-api-sdk": {
           "integrity": "sha256-2479e831b8297ce4c877bd10c128f1c0f7b2ccbd008b07be49cb934611c6f6c2"
