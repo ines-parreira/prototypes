@@ -272,7 +272,8 @@
         "vaul": "^1.1.2",
         "zen-observable": "catalog:browser-storage",
         "zod": "catalog:zod",
-        "zustand": "catalog:zustand"
+        "zustand": "catalog:zustand",
+        "@gorgias/toolkit": "catalog:toolkit"
     },
     "devDependencies": {
         "@gorgias/config": "0.7.0",

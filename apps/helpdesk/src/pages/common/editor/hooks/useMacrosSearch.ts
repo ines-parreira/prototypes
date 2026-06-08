@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useDebouncedValue } from '@repo/hooks'
 import { useInfiniteQuery } from '@tanstack/react-query'
@@ -14,14 +15,14 @@ import type { Filters } from 'models/macro/types'
 import type { Ticket } from 'models/ticket/types'
 import { NotificationStatus } from 'state/notifications/types'
 
-export const SEARCH_DEBOUNCE_DELAY = 350
+export const SEARCH_DEBOUNCE_DELAY = Duration.millis(350)
 
 type Props = {
     params: Filters
     ticket?: Ticket
 }
 
-export const STALE_TIME_MS = 15 * 60 * 1000 // 15 minutes
+export const STALE_TIME_MS = Duration.minutes(15)
 
 const queryKey = queryKeys.macros.listMacros() as string[]
 queryKey.pop()

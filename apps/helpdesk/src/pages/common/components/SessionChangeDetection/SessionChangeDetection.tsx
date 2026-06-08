@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { clearPersistedQueryCache } from '@repo/api-resources'
 
@@ -35,7 +36,7 @@ export default function SessionChangeDetection() {
                 timeout = window.setTimeout(async () => {
                     await clearPersistedQueryCache()
                     window.location.reload()
-                }, AUTO_LOGOUT_SECONDS * 1000)
+                }, Duration.seconds(AUTO_LOGOUT_SECONDS))
             }
         }
 

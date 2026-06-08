@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { debounce } from 'lodash'
 import _flatten from 'lodash/flatten'
@@ -8,7 +9,7 @@ import { toast } from '@gorgias/axiom'
 import { useInfiniteListVoiceQueues } from 'domains/reporting/hooks/common/useInfiniteListVoiceQueues'
 
 export const VOICE_QUEUES_LIMIT = 20
-export const VOICE_QUEUE_SEARCH_DEBOUNCE_TIME = 300
+export const VOICE_QUEUE_SEARCH_DEBOUNCE_TIME = Duration.millis(300)
 export const VOICE_QUEUE_FETCH_ERROR_MESSAGE = 'Failed to fetch queues'
 
 export const useVoiceQueueSearch = () => {
@@ -20,7 +21,7 @@ export const useVoiceQueueSearch = () => {
             limit: VOICE_QUEUES_LIMIT,
         },
         {
-            staleTime: 60_000,
+            staleTime: Duration.minutes(1),
             refetchOnWindowFocus: false,
         },
     )

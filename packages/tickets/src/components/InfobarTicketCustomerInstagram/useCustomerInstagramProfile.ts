@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useExhaustEndpoint } from '@repo/hooks'
-import { DurationInMs } from '@repo/utils'
 
 import { listIntegrations } from '@gorgias/helpdesk-client'
 import { queryKeys, useListInstagramProfiles } from '@gorgias/helpdesk-queries'
@@ -13,8 +13,8 @@ type UseCustomerInstagramProfileParams = {
 }
 
 const instagramQueryCacheOptions = {
-    staleTime: DurationInMs.OneDay,
-    cacheTime: DurationInMs.OneDay,
+    staleTime: Duration.days(1),
+    cacheTime: Duration.days(1),
 } as const
 
 export const useCustomerInstagramProfile = ({

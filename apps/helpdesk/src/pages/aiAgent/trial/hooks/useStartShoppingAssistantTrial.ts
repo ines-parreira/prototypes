@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useHistory } from 'react-router'
+import { Duration } from '@gorgias/toolkit'
 
 import { toast } from '@gorgias/axiom'
 
@@ -20,8 +21,6 @@ type Params = {
     accountDomain: string
     storeActivations: Record<string, StoreActivation>
 }
-
-const TRIAL_DURATION = 14 * 24 * 60 * 60 * 1000
 
 class InvalidChatError extends Error {
     public readonly name = 'InvalidChatError'
@@ -69,7 +68,7 @@ export const useStartShoppingAssistantTrial = ({
                     ...store.configuration,
                     scopes: [AiAgentScope.Support, AiAgentScope.Sales],
                     salesDeactivatedDatetime: new Date(
-                        Date.now() + TRIAL_DURATION,
+                        Date.now() + Duration.days(14),
                     ).toISOString(),
                     salesPersuasionLevel: PersuasionLevel.Educational,
                     salesDiscountStrategyLevel: DiscountStrategy.NoDiscount,

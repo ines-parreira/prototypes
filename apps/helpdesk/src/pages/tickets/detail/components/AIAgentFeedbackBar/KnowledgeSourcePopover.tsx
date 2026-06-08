@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { memo, useCallback, useMemo, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useTimeout } from '@repo/hooks'
 
@@ -87,12 +88,12 @@ const KnowledgeSourcePopover = ({
 
     const openPopover = useCallback(() => {
         clearTimeout()
-        setTimeout(() => setIsOpen(true), 100)
+        setTimeout(() => setIsOpen(true), Duration.millis(100))
     }, [setTimeout, clearTimeout])
 
     const closePopover = useCallback(() => {
         clearTimeout()
-        setTimeout(() => setIsOpen(false), 100)
+        setTimeout(() => setIsOpen(false), Duration.millis(100))
     }, [setTimeout, clearTimeout])
 
     const eventHandlers = useMemo(

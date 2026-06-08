@@ -28,7 +28,8 @@
         "react-router-dom": "catalog:react-router",
         "react-router-dom-v5-compat": "catalog:react-router",
         "reactstrap": "8.9.0",
-        "zustand": "catalog:zustand"
+        "zustand": "catalog:zustand",
+        "@gorgias/toolkit": "catalog:toolkit"
     },
     "devDependencies": {
         "@repo/config": "workspace:*",
@@ -50,6 +51,7 @@
         "reactstrap": "8.9.0",
         "typescript": "catalog:typescript",
         "vitest": "catalog:test",
-        "zustand": "catalog:zustand"
+        "zustand": "catalog:zustand",
+        "@gorgias/toolkit": "catalog:toolkit"
     }
 }

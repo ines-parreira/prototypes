@@ -1,6 +1,7 @@
 import type { HTMLAttributes } from 'react'
 import type React from 'react'
 import { useEffect, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useKey } from '@repo/hooks'
 import classNames from 'classnames'
@@ -101,7 +102,7 @@ const Drawer = ({
     portalRootId,
     isLoading,
     onBackdropClick,
-    transitionDurationMs = 300,
+    transitionDurationMs = Duration.millis(300),
     containerZIndices = [20, -1],
     className,
     rootClassName,

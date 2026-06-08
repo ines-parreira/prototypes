@@ -24,7 +24,8 @@
         "lodash": "catalog:lodash",
         "react": "catalog:react",
         "react-dom": "catalog:react",
-        "push.js": "catalog:notifications"
+        "push.js": "catalog:notifications",
+        "@gorgias/toolkit": "catalog:toolkit"
     },
     "devDependencies": {
         "@datadog/browser-logs": "^5.17.1",
@@ -52,6 +53,7 @@
         "react": "catalog:react",
         "react-dom": "catalog:react",
         "typescript": "catalog:typescript",
-        "vitest": "catalog:test"
+        "vitest": "catalog:test",
+        "@gorgias/toolkit": "catalog:toolkit"
     }
 }

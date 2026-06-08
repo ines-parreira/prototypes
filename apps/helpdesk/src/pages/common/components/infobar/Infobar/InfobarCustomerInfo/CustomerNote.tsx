@@ -1,5 +1,6 @@
 import type { ChangeEvent } from 'react'
 import { useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { countLines } from '@repo/utils'
@@ -45,7 +46,7 @@ export default function CustomerNote({
             )
         } catch {
             setIsError(true)
-            setTimeout(() => setIsError(false), 2000)
+            setTimeout(() => setIsError(false), Duration.seconds(2))
         } finally {
             setIsLoading(false)
             setDirty(false)

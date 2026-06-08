@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import React, { useMemo, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { usePrevious } from '@repo/hooks'
 import classnames from 'classnames'
@@ -84,7 +85,7 @@ const Collapse = ({
             onExit={handleExit}
             onExiting={handleExiting}
             onExited={handleExited}
-            timeout={350}
+            timeout={Duration.millis(350)}
         >
             {(status) => (
                 <div

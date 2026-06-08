@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useGetCurrentUser, UserSettingType } from '@gorgias/helpdesk-queries'
 import type {
@@ -17,7 +18,7 @@ export type CurrentUser = GetCurrentUserResult & {
 export function useCurrentUserLanguagePreferences() {
     const { data: currentUser, isFetching } = useGetCurrentUser<CurrentUser>({
         query: {
-            staleTime: 60000 * 5,
+            staleTime: Duration.minutes(5),
         },
     })
 

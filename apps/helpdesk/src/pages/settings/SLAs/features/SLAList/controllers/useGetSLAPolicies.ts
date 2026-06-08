@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import type {
     HttpResponse,
@@ -9,8 +10,8 @@ import { useListSlaPolicies } from '@gorgias/helpdesk-queries'
 import type { UISLAPolicy } from '../types'
 import makeUISLAPolicy from './makeUISLAPolicy'
 
-export const STALE_TIME_MS = 5 * 60 * 1000 // 5 minutes
-export const CACHE_TIME_MS = 20 * 60 * 1000 // 20 minutes
+export const STALE_TIME_MS = Duration.minutes(5)
+export const CACHE_TIME_MS = Duration.minutes(20)
 
 export default function useGetSLAPolicies() {
     const transformData = useCallback(

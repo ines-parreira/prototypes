@@ -1,5 +1,6 @@
 import client from '@repo/api-resources'
 import type { AxiosRequestConfig } from 'axios'
+import { Duration } from '@gorgias/toolkit'
 
 import type {
     LegacyStatsFilters,
@@ -9,7 +10,7 @@ import type {
 export async function fetchStat(
     name: string,
     data: { filters: LegacyStatsFilters; cursor?: string },
-    { timeout = 180000, ...config }: AxiosRequestConfig = {},
+    { timeout = Duration.minutes(3), ...config }: AxiosRequestConfig = {},
 ) {
     const resp = await client.post<Stat>(`/api/stats/${name}/`, data, {
         timeout,
@@ -22,7 +23,7 @@ export async function fetchStat(
 export async function downloadStat(
     name: string,
     filters: { filters: LegacyStatsFilters },
-    { timeout = 180000, ...config }: AxiosRequestConfig = {},
+    { timeout = Duration.minutes(3), ...config }: AxiosRequestConfig = {},
 ) {
     const resp = await client.post<
         string,

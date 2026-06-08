@@ -2,8 +2,9 @@ import { createClient } from '@repo/api-resources'
 import { reportError } from '@repo/logging'
 import type { AxiosInstance, CancelTokenSource } from 'axios'
 import axios, { AxiosError, isAxiosError, isCancel } from 'axios'
+import { Duration } from '@gorgias/toolkit'
 
-export const PREDICTION_REQUEST_TIMEOUT = 2000
+export const PREDICTION_REQUEST_TIMEOUT = Duration.seconds(2)
 export const PHRASE_PREDICTION_ERROR_TAG_NAME = 'phrase_prediction'
 export const REQUEST_PREDICTION_ERROR_TAG_VALUE = 'request_prediction'
 export const SEND_FEEDBACK_ERROR_TAG_VALUE = 'send_feedback'

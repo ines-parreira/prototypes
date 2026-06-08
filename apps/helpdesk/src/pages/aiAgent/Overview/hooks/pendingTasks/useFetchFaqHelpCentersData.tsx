@@ -1,3 +1,4 @@
+import { Duration } from '@gorgias/toolkit'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
 
@@ -13,7 +14,7 @@ export const useFetchFaqHelpCentersData = ({
     const { isLoading, isFetched, data } = useGetHelpCenterList(
         { type: 'faq', per_page: HELP_CENTER_MAX_CREATION },
         {
-            staleTime: 1000 * 60 * 5,
+            staleTime: Duration.minutes(5),
             refetchOnWindowFocus: false,
             enabled,
             ...(!retries && { retry: 0 }),

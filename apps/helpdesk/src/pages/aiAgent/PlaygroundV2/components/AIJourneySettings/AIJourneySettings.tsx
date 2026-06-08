@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import classNames from 'classnames'
 import _debounce from 'lodash/debounce'
@@ -87,8 +88,6 @@ const ORDER_STATUS_OPTIONS: OrderStatusOption[] = [
     { value: 'order_fulfilled', label: 'Order Fulfilled' },
 ]
 
-const SEARCH_DEBOUNCE_MS = 250
-
 export const AIJourneySettings: React.FC = () => {
     const {
         aiJourneySettings,
@@ -120,7 +119,7 @@ export const AIJourneySettings: React.FC = () => {
     const debouncedSetSearch = useCallback(
         _debounce((value: string) => {
             setDebouncedSearch(value)
-        }, SEARCH_DEBOUNCE_MS),
+        }, Duration.millis(250)),
         [],
     )
 

@@ -1,6 +1,6 @@
-const ONE_MINUTE = 1000 * 60
+import { Duration } from '@gorgias/toolkit'
 
 export const TICKET_QUERIES_DEFAULT_CONFIG = {
-    staleTime: ONE_MINUTE,
+    staleTime: Duration.minutes(1),
     refetchOnWindowFocus: false,
 }

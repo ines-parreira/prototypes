@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import React, { Fragment, useMemo, useRef } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import classNames from 'classnames'
 import isNil from 'lodash/isNil'
@@ -105,7 +106,10 @@ export default function Shoutout({
                                     target={tooltipRef}
                                     autohide={false}
                                     placement="top-start"
-                                    delay={{ show: 0, hide: 500 }}
+                                    delay={{
+                                        show: 0,
+                                        hide: Duration.millis(500),
+                                    }}
                                 >
                                     {tooltipPersons.map(
                                         (person, idx, source) => (

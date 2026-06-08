@@ -1,6 +1,6 @@
-import { DurationInMs } from '@repo/utils'
+import { Duration } from '@gorgias/toolkit'
 
 export const USER_QUERY_OPTIONS = {
-    staleTime: DurationInMs.OneDay,
+    staleTime: Duration.days(1),
     refetchOnWindowFocus: false,
 } as const

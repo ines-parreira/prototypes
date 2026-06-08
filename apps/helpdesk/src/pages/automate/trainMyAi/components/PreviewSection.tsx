@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import classNames from 'classnames'
 
@@ -61,7 +62,10 @@ export default function TrainMyAiPreview({
 
     useEffect(() => {
         if (isFeedbackProvided) {
-            const timeout = window.setTimeout(onConfirmFeedback, 1500)
+            const timeout = window.setTimeout(
+                onConfirmFeedback,
+                Duration.millis(1500),
+            )
             return () => window.clearTimeout(timeout)
         }
     }, [isFeedbackProvided, onConfirmFeedback])

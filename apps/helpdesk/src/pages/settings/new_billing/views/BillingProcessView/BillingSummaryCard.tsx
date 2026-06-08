@@ -1,5 +1,6 @@
 import type React from 'react'
 import { useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import type {
     CancellationDates,
@@ -137,7 +138,7 @@ export function BillingSummaryCard({
             }
 
             toast.success('Your subscription has successfully been updated.', {
-                duration: 5000,
+                duration: Duration.seconds(5),
             })
 
             setSessionSelectedPlans?.(selectedPlans)
@@ -166,7 +167,7 @@ export function BillingSummaryCard({
                 toast.error(
                     "Sorry, we couldn't update your subscription. Please try again.",
                     {
-                        duration: 5000,
+                        duration: Duration.seconds(5),
                     },
                 )
                 reportError(error as Error)

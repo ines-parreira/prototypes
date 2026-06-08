@@ -1,5 +1,5 @@
-import { DurationInMs } from '@repo/utils'
 import moment from 'moment'
+import { Duration } from '@gorgias/toolkit'
 
 import type { Order } from 'constants/integrations/types/shopify'
 
@@ -12,7 +12,7 @@ import type {
 
 export const TIMELINE_SEARCH_PARAM = 'timelineShopperId'
 
-export const TICKET_FETCH_STALE_TIME = 2 * DurationInMs.FiveMinutes
+export const TICKET_FETCH_STALE_TIME = Duration.minutes(10)
 export const TICKET_FETCHED_LIMIT = 100
 
 export const MIN_RANGE_DATE = moment(new Date('2015-01-01'))

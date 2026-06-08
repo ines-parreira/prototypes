@@ -1,5 +1,6 @@
 import type { ComponentProps } from 'react'
 import { useEffect, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useTimeout } from '@repo/hooks'
 import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
@@ -14,8 +15,6 @@ import {
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback.less'
 import { AutoSaveState } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
-
-const STALE_TIMEOUT = 3000
 
 type AutoSaveBadgeProps = {
     state: AutoSaveState
@@ -49,7 +48,7 @@ const AutoSaveBadge = ({
         }
         if (state === AutoSaveState.SAVED) {
             setIsStaleSaved(false)
-            setTimeout(() => setIsStaleSaved(true), STALE_TIMEOUT)
+            setTimeout(() => setIsStaleSaved(true), Duration.seconds(3))
             return () => clearTimeout()
         }
 

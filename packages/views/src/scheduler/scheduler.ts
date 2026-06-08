@@ -1,3 +1,4 @@
+import { Duration } from '@gorgias/toolkit'
 import { getAllViewsOrdered } from '../hooks/useAllViewsOrdered'
 import { isViewDeactivated } from '../predicates/isViewDeactivated'
 import { logViewEvent } from '../store/viewEventLog'
@@ -84,13 +85,14 @@ export function createScheduler(options: SchedulerOptions): Scheduler {
         isActiveView: boolean,
     ): boolean {
         if (!lastFetchedAt) return true
-        const ttlMs =
-            getTtlSecondsForView({ count, isActiveView, config }) * 1000
+        const ttlMs = Duration.seconds(
+            getTtlSecondsForView({ count, isActiveView, config }),
+        )
         return now - Date.parse(lastFetchedAt) >= ttlMs
     }
 
     function tick(): void {
-        setNextTickAt(Date.now() + config.tickIntervalSeconds * 1000)
+        setNextTickAt(Date.now() + Duration.seconds(config.tickIntervalSeconds))
 
         if (options.shouldRefresh && !options.shouldRefresh()) return
 
@@ -134,7 +136,7 @@ export function createScheduler(options: SchedulerOptions): Scheduler {
 
         const { counts } = viewsCountStore.getState()
         const now = Date.now()
-        const staleThresholdMs = config.initialFetchTtlSeconds * 1000
+        const staleThresholdMs = Duration.seconds(config.initialFetchTtlSeconds)
         const stale: number[] = []
         for (const view of allViews) {
             // Deactivated views don't render a count badge in the sidebar
@@ -184,7 +186,10 @@ export function createScheduler(options: SchedulerOptions): Scheduler {
         viewsCountStore.setState({ isLeader: true })
         refreshStaleViews()
         tick()
-        activeIntervalId = setInterval(tick, config.tickIntervalSeconds * 1000)
+        activeIntervalId = setInterval(
+            tick,
+            Duration.seconds(config.tickIntervalSeconds),
+        )
     }
 
     function hasWebLocks(): boolean {

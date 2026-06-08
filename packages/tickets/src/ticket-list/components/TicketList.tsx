@@ -1,4 +1,5 @@
 import { forwardRef, useCallback, useEffect, useMemo, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useDebouncedValue, usePrevious } from '@repo/hooks'
 import { Virtuoso } from 'react-virtuoso'
@@ -110,8 +111,6 @@ const virtuosoComponents = {
     Item,
 } as unknown as Components<TicketCompact, ListContext>
 
-const TRANSLATION_VISIBLE_TICKETS_DEBOUNCE_MS = 200
-
 function itemContent(
     _index: number,
     ticket: TicketCompact,
@@ -170,7 +169,7 @@ export function TicketList({
     const [visibleTicketIds, setVisibleTicketIds] = useState<number[]>([])
     const debouncedVisibleTicketIds = useDebouncedValue(
         visibleTicketIds,
-        TRANSLATION_VISIBLE_TICKETS_DEBOUNCE_MS,
+        Duration.millis(200),
     )
 
     const ticketsListParams = useMemo(

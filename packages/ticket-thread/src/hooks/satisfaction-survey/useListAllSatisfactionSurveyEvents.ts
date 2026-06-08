@@ -1,5 +1,5 @@
 import { useExhaustEndpoint } from '@repo/hooks'
-import { DurationInMs } from '@repo/utils'
+import { Duration } from '@gorgias/toolkit'
 
 import { listEvents, ListEventsObjectType } from '@gorgias/helpdesk-client'
 import { queryKeys } from '@gorgias/helpdesk-queries'
@@ -27,7 +27,7 @@ export function useListAllSatisfactionSurveyEvents(
             }),
         {
             enabled: !!objectId,
-            staleTime: DurationInMs.OneDay,
+            staleTime: Duration.days(1),
             refetchOnWindowFocus: false,
         },
     )

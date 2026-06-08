@@ -1,4 +1,5 @@
 import type { UseQueryResult } from '@tanstack/react-query'
+import { Duration } from '@gorgias/toolkit'
 
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import type { AiSalesAgentOrdersCube } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
@@ -13,8 +14,8 @@ import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 
 import { useCanUseAiSalesAgent } from './useCanUseAiSalesAgent'
 
-export const STALE_TIME_MS = 10 * 60 * 1000 // 10 minutes
-export const CACHE_TIME_MS = 20 * 60 * 1000 // 20 minutes
+export const STALE_TIME_MS = Duration.minutes(10)
+export const CACHE_TIME_MS = Duration.minutes(20)
 
 export type InfluencedOrdersParams = {
     accountId: number | string

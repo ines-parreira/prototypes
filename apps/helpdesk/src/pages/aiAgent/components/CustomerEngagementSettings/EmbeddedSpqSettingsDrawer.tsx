@@ -1,4 +1,5 @@
 import { useCallback, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useCopyToClipboard } from '@repo/hooks'
 
@@ -122,7 +123,7 @@ const ManualInstallationContent = ({ shopName }: { shopName: string }) => {
     const handleCopyCode = useCallback(() => {
         copyToClipboard(spqScript.current)
 
-        toast.success('Code copied!', { duration: 3000 })
+        toast.success('Code copied!', { duration: Duration.seconds(3) })
     }, [copyToClipboard])
 
     return (

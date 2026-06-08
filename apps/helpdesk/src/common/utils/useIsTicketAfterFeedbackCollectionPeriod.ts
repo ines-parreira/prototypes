@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
@@ -15,9 +16,6 @@ export const FIRST_CONSUMED_ORCH_EVENT_DATETIME = new Date(
 )
 
 export const NUMBER_OF_MONTHS_TO_SKIP_NEW_FEEDBACK_COLLECTION = 3
-const CACHE_TIME = 1000 * 60 * 60 * 1 // 1 hour
-const STALE_TIME = 1000 * 60 * 60 * 1 // 1 hour
-
 export const useTicketIsAfterFeedbackCollectionPeriod = () => {
     const ticket = useAppSelector(getTicketState)
     const createdDatetime = ticket.get('created_datetime')
@@ -27,14 +25,14 @@ export const useTicketIsAfterFeedbackCollectionPeriod = () => {
 
     const { data: aiAgentFeedback } = useGetAiAgentFeedback({
         refetchOnWindowFocus: false,
-        cacheTime: CACHE_TIME,
-        staleTime: STALE_TIME,
+        cacheTime: Duration.hours(1),
+        staleTime: Duration.hours(1),
         enabled: isNewAgenticArchitectureEnabled,
     })
 
     const { data: earliestExecution } = useGetEarliestExecution({
         refetchOnWindowFocus: false,
-        cacheTime: CACHE_TIME,
+        cacheTime: Duration.hours(1),
         staleTime: Infinity, // The earliest execution is not updated so getting it once is enough.
         enabled:
             isNewAgenticArchitectureEnabled &&

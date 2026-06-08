@@ -43,6 +43,10 @@
         "oxlint": "catalog:oxlint",
         "react": "catalog:react",
         "typescript": "catalog:typescript",
-        "vitest": "catalog:test"
+        "vitest": "catalog:test",
+        "@gorgias/toolkit": "catalog:toolkit"
+    },
+    "dependencies": {
+        "@gorgias/toolkit": "catalog:toolkit"
     }
 }

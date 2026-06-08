@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { isSessionImpersonated } from '@repo/activity-tracker/utils'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
@@ -14,8 +15,6 @@ import {
 import { AiAgentReasoningHelpdeskV2 } from 'pages/tickets/detail/components/TicketMessages/AiAgentReasoningHelpdeskV2'
 import SimplifiedAIAgentBanner from 'pages/tickets/detail/components/TicketMessages/SimplifiedAIAgentBanner'
 
-const CACHE_TIME = 1000 * 60 * 60 * 1 // 1 hour
-
 export function TicketThreadAiAgentReasoning({
     message,
 }: TicketThreadAiAgentReasoningParams) {
@@ -27,7 +26,7 @@ export function TicketThreadAiAgentReasoning({
         useTicketIsAfterFeedbackCollectionPeriod()
     const { data: earliestExecution } = useGetEarliestExecution({
         refetchOnWindowFocus: false,
-        cacheTime: CACHE_TIME,
+        cacheTime: Duration.hours(1),
         staleTime: Infinity,
     })
 

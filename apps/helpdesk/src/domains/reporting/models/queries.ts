@@ -6,6 +6,7 @@ import {
 import type { Query, UseQueryOptions } from '@tanstack/react-query'
 import { useQuery } from '@tanstack/react-query'
 import type { AxiosResponse } from 'axios'
+import { Duration } from '@gorgias/toolkit'
 
 import {
     postEnrichedReporting,
@@ -29,8 +30,8 @@ const stopOnError = (query: Pick<Query, 'state'>) =>
     query.state.status !== 'error'
 
 export const defaultQueryOptions = {
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    cacheTime: 10 * 60 * 1000, // 10 minutes
+    staleTime: Duration.minutes(5),
+    cacheTime: Duration.minutes(10),
     retry: reportingRetryHandler,
     retryDelay: reportingRetryDelayHandler,
     refetchOnWindowFocus: stopOnError,

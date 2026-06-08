@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useDebouncedValue, useUpdateEffect } from '@repo/hooks'
 import type { SearchEngine } from '@repo/logging'
@@ -18,7 +19,10 @@ const SEARCH_ENGINE_HEADER = 'x-gorgias-search-engine'
 export function useCustomerSearch() {
     const [searchTerm, setSearchTerm] = useState('')
     const trimmedSearchTerm = searchTerm.trim()
-    const debouncedSearchTerm = useDebouncedValue(searchTerm, 300)
+    const debouncedSearchTerm = useDebouncedValue(
+        searchTerm,
+        Duration.millis(300),
+    )
     const isSearchMode = debouncedSearchTerm.length > 0
     const {
         endScenario,
@@ -46,7 +50,7 @@ export function useCustomerSearch() {
         {
             query: {
                 enabled: isSearchMode,
-                staleTime: 60000 * 5,
+                staleTime: Duration.minutes(5),
             },
         },
     )

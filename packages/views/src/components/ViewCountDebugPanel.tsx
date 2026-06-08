@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useStore } from 'zustand'
 
@@ -169,7 +170,7 @@ function formatAge(iso: string, now: number): string {
 function useNow(): number {
     const [now, setNow] = useState(Date.now)
     useEffect(() => {
-        const id = setInterval(() => setNow(Date.now()), 1000)
+        const id = setInterval(() => setNow(Date.now()), Duration.seconds(1))
         return () => clearInterval(id)
     }, [])
     return now
@@ -242,7 +243,7 @@ function NextTickCard() {
 
 function MessagesCard({ events }: { events: ViewEvent[] }) {
     const now = useNow()
-    const fiveMinAgo = now - 5 * 60 * 1000
+    const fiveMinAgo = now - Duration.minutes(5)
     const count = events.filter((e) => e.timestamp >= fiveMinAgo).length
     return (
         <Tooltip
@@ -303,7 +304,7 @@ function StaleViewsCard({ config }: { config: RefreshConfig }) {
     )
 
     const staleCount = useMemo(() => {
-        const thresholdMs = config.initialFetchTtlSeconds * 1000
+        const thresholdMs = Duration.seconds(config.initialFetchTtlSeconds)
         let stale = 0
         for (const view of activeViews) {
             const entry = counts[view.id]
@@ -359,7 +360,7 @@ function RecentViewsCard({ config }: { config: RefreshConfig }) {
 
 function ViewsLast5MinCard({ events }: { events: ViewEvent[] }) {
     const now = useNow()
-    const fiveMinAgo = now - 5 * 60 * 1000
+    const fiveMinAgo = now - Duration.minutes(5)
     const distinct = new Set<number>()
     for (const e of events) {
         if (e.timestamp < fiveMinAgo) continue

@@ -8,6 +8,7 @@ import type {
 import { ConfigurableGraphType } from '@repo/reporting'
 import { DateTimeFormatMapper, DateTimeFormatType } from '@repo/utils'
 import moment from 'moment/moment'
+import { Duration } from '@gorgias/toolkit'
 
 import { listStores } from '@gorgias/helpdesk-client'
 import type { StoreIntegration } from '@gorgias/helpdesk-queries'
@@ -271,7 +272,7 @@ export const useStoreIntegrations = (): StoreIntegration[] => {
     const { data: stores } = useListStores(undefined, {
         query: {
             select: (data) => data?.data?.data ?? [],
-            cacheTime: 1000 * 60 * 60, // 1H
+            cacheTime: Duration.hours(1),
         },
     })
 

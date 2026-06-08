@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import type {
     UseInfiniteQueryOptions,
@@ -66,8 +67,8 @@ import {
 } from './resources'
 import type { KnowledgeHubArticlesQueryParams } from './types'
 
-const STALE_TIME = 10 * 60 * 1000
-const CACHE_TIME = 10 * 60 * 1000 // 10 minutes
+const STALE_TIME = Duration.minutes(10)
+const CACHE_TIME = Duration.minutes(10)
 
 export const helpCenterKeys = {
     all: () => ['help-centers'] as const,

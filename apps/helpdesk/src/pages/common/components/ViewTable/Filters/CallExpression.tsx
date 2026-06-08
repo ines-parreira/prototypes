@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import type {
     CallExpression as ESCallExpression,
@@ -162,7 +163,7 @@ export const CallExpression = ({
         }
     }>({
         query: {
-            staleTime: 60_000, // 1 minute
+            staleTime: Duration.minutes(1),
         },
     })
 

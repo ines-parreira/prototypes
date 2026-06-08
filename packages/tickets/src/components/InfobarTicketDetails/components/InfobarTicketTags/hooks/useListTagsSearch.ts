@@ -1,7 +1,7 @@
 import { useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useDebouncedValue } from '@repo/hooks'
-import { DurationInMs } from '@repo/utils'
 
 import { ListTagsOrderBy } from '@gorgias/helpdesk-types'
 
@@ -13,7 +13,7 @@ type Params = {
 
 export const useListTagsSearch = ({ enabled = true }: Params = {}) => {
     const [search, setSearch] = useState('')
-    const debouncedSearch = useDebouncedValue(search, 250)
+    const debouncedSearch = useDebouncedValue(search, Duration.millis(250))
     const queryResult = useInfiniteListTags(
         {
             search: debouncedSearch,
@@ -21,7 +21,7 @@ export const useListTagsSearch = ({ enabled = true }: Params = {}) => {
         },
         {
             enabled,
-            staleTime: DurationInMs.FiveMinutes,
+            staleTime: Duration.minutes(5),
             keepPreviousData: true,
         },
     )

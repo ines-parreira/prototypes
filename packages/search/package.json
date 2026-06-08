@@ -29,7 +29,8 @@
         "lodash": "catalog:lodash",
         "react": "catalog:react",
         "react-dom": "catalog:react",
-        "react-router-dom": "catalog:react-router"
+        "react-router-dom": "catalog:react-router",
+        "@gorgias/toolkit": "catalog:toolkit"
     },
     "devDependencies": {
         "@gorgias/axiom": "catalog:axiom",
@@ -60,6 +61,7 @@
         "react-dom": "catalog:react",
         "react-router-dom": "catalog:react-router",
         "typescript": "catalog:typescript",
-        "vitest": "catalog:test"
+        "vitest": "catalog:test",
+        "@gorgias/toolkit": "catalog:toolkit"
     }
 }

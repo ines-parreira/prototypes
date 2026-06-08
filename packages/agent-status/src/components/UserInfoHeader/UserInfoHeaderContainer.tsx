@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
-
-import { DurationInMs } from '@repo/utils'
+import { Duration } from '@gorgias/toolkit'
 
 import {
     useGetCurrentUser,
@@ -23,7 +22,7 @@ export function UserInfoHeaderContainer({
     const { data } = useGetUserAvailability(currentUser?.data.id!, {
         query: {
             enabled: !!currentUser?.data.id,
-            staleTime: DurationInMs.FiveMinutes,
+            staleTime: Duration.minutes(5),
         },
     })
 

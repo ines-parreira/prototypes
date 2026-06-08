@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
-import { DateFormatType, DurationInMs, TimeFormatType } from '@repo/utils'
+import { DateFormatType, TimeFormatType } from '@repo/utils'
 
 import type {
     GetCurrentUserResult,
@@ -32,8 +33,8 @@ export type QueryOptions = {
 }
 
 export function useUserDateTimePreferences({
-    staleTime = DurationInMs.OneDay,
-    cacheTime = DurationInMs.OneDay,
+    staleTime = Duration.days(1),
+    cacheTime = Duration.days(1),
     enabled = true,
 }: QueryOptions = {}): UserDateTimePreferences {
     const { data: currentUser } = useGetCurrentUser<CurrentUser>({

@@ -122,6 +122,10 @@
         "typescript": "catalog:typescript",
         "vitest": "catalog:test",
         "zod": "catalog:zod",
-        "zustand": "catalog:zustand"
+        "zustand": "catalog:zustand",
+        "@gorgias/toolkit": "catalog:toolkit"
+    },
+    "dependencies": {
+        "@gorgias/toolkit": "catalog:toolkit"
     }
 }

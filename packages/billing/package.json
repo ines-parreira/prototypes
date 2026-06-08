@@ -28,7 +28,8 @@
         "react": "catalog:react",
         "react-dom": "catalog:react",
         "react-router-dom": "catalog:react-router",
-        "reactstrap": "8.9.0"
+        "reactstrap": "8.9.0",
+        "@gorgias/toolkit": "catalog:toolkit"
     },
     "devDependencies": {
         "@gorgias/helpdesk-mocks": "catalog:rest-api-sdk",
@@ -59,6 +60,7 @@
         "react-router-dom": "catalog:react-router",
         "reactstrap": "8.9.0",
         "typescript": "catalog:typescript",
-        "vitest": "catalog:test"
+        "vitest": "catalog:test",
+        "@gorgias/toolkit": "catalog:toolkit"
     }
 }

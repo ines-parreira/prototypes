@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import type { SelectedPlans } from '@repo/billing'
 import {
@@ -323,7 +324,7 @@ const BillingFrequencyView = ({
             resetModalErrors()
             await updateSubscription()
             toast.success('Your subscription has successfully been updated.', {
-                duration: 5000,
+                duration: Duration.seconds(5),
             })
             history.push(
                 isTrialing ? BILLING_PAYMENT_CARD_PATH : BILLING_BASE_PATH,

@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import {
     useGetArticleTranslationVersion,
@@ -86,7 +87,7 @@ export const useKnowledgeEditorGuidanceData = ({
                 !!initialVersionId &&
                 !!guidanceHelpCenter?.id &&
                 !!guidanceArticle,
-            staleTime: 10 * 60 * 1000,
+            staleTime: Duration.minutes(10),
             refetchOnWindowFocus: false,
         },
     )

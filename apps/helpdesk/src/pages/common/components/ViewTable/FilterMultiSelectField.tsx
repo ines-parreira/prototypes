@@ -1,5 +1,6 @@
 import type { ComponentType } from 'react'
 import React, { useCallback, useMemo } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useEffectOnce } from '@repo/hooks'
 import type { Map } from 'immutable'
@@ -69,7 +70,7 @@ export function FilterMultiSelectField(props: Props) {
 
     // handleSearch must be a stable function for debounce to work
     const handleInputChange = useMemo(
-        () => _debounce(handleSearch, 1000),
+        () => _debounce(handleSearch, Duration.seconds(1)),
         [handleSearch],
     )
 

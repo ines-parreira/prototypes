@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useSidebar } from '@repo/navigation'
 
@@ -9,9 +10,7 @@ import { useCopilotEnabled } from 'hooks/useCopilotEnabled'
 
 import css from './AskGaiaButton.less'
 
-// Orbiting light on the AskGaia button's border. One full orbit in ms.
-const GLOW_DURATION_MS = 3000
-
+// Orbiting light on the AskGaia button's border.
 export const AskGaiaButton = () => {
     const isCopilotEnabled = useCopilotEnabled()
     const { isCollapsed } = useSidebar()
@@ -50,7 +49,7 @@ export const AskGaiaButton = () => {
         const animation = el.animate(
             [{ transform: 'rotate(0deg)' }, { transform: 'rotate(360deg)' }],
             {
-                duration: GLOW_DURATION_MS,
+                duration: Duration.seconds(3),
                 iterations: Infinity,
                 easing: 'linear',
             },

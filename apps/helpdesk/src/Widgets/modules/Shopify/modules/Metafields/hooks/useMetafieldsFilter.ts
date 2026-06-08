@@ -1,4 +1,5 @@
 import { useContext, useMemo } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useListMetafieldDefinitions } from '@gorgias/helpdesk-queries'
 
@@ -13,8 +14,8 @@ export function useMetafieldsFilter() {
         {
             query: {
                 enabled: integrationId !== null,
-                staleTime: 60000,
-                cacheTime: 60000,
+                staleTime: Duration.minutes(1),
+                cacheTime: Duration.minutes(1),
             },
         },
     )

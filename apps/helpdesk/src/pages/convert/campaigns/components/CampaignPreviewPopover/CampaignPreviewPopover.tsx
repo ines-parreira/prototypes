@@ -6,6 +6,7 @@ import React, {
     useRef,
     useState,
 } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import _uniqBy from 'lodash/uniqBy'
 import { Popover } from 'reactstrap'
@@ -54,7 +55,10 @@ export const CampaignPreviewPopover = ({
         const handleEvent = (event: Event): void => {
             if (node) {
                 if (node.contains(event.target as Node)) {
-                    timeout = setTimeout(() => setOpen(true), 800)
+                    timeout = setTimeout(
+                        () => setOpen(true),
+                        Duration.millis(800),
+                    )
                 } else {
                     setOpen(false)
                 }

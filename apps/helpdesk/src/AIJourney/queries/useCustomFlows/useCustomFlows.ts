@@ -1,5 +1,6 @@
 import type { UseQueryOptions } from '@tanstack/react-query'
 import { useQuery } from '@tanstack/react-query'
+import { Duration } from '@gorgias/toolkit'
 
 import type { JourneyApiDTO } from '@gorgias/convert-client'
 import { getAllJourneysPublic, JourneyTypeEnum } from '@gorgias/convert-client'
@@ -58,7 +59,7 @@ export const useFlowsList = (
         queryFn: () => fetchFlowsList(integrationId!),
         enabled: !!integrationId && options.enabled !== false,
         refetchOnWindowFocus: false,
-        staleTime: 60_000,
+        staleTime: Duration.minutes(1),
         ...options,
     })
 }

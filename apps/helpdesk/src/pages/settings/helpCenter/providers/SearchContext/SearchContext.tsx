@@ -1,6 +1,7 @@
 import type { Dispatch, SetStateAction } from 'react'
 import type React from 'react'
 import { createContext, useContext, useEffect, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import _debounce from 'lodash/debounce'
 
@@ -14,8 +15,6 @@ import type {
     EntitiesArticleRecord,
     EntitiesCategoryRecord,
 } from '../../types/algolia'
-
-const SEARCH_DEBOUNCE_DELAY_MS = 1000
 
 export type SearchStateLoading = {
     state: 'loading'
@@ -112,7 +111,7 @@ export const SearchContextProvider = ({
                     )
                     setSearchResults({ state: 'error', error })
                 })
-        }, SEARCH_DEBOUNCE_DELAY_MS)
+        }, Duration.seconds(1))
 
         if (atLeast3Characters(searchInput)) {
             queryCall(searchInput)

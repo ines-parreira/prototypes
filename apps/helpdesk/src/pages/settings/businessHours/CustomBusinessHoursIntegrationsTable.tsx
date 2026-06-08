@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { FormField, useFormContext } from '@repo/forms'
 import { useDebouncedValue } from '@repo/hooks'
@@ -68,7 +69,10 @@ export default function CustomBusinessHoursIntegrationsTable({
     const [channels, setChannels] = useState<string[] | null>(null)
     const [storeId, setStoreId] = useState<number | null>(null)
 
-    const debouncedNameSearch = useDebouncedValue(nameSearch, 300)
+    const debouncedNameSearch = useDebouncedValue(
+        nameSearch,
+        Duration.millis(300),
+    )
 
     const {
         businessHoursId,

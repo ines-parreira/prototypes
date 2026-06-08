@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import css from './DynamicSoundWaveIcon.less'
 
@@ -19,7 +20,7 @@ export const DynamicSoundWaveIcon = ({
     audioLevel,
     maxBarHeight = 22,
     sensitivity = 5,
-    delay = 100,
+    delay = Duration.millis(100),
     hide = false,
 }: DynamicSoundWaveIconProps) => {
     const barsRef = useRef<(HTMLDivElement | null)[]>([])

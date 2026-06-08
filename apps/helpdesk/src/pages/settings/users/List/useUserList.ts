@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 
@@ -18,7 +19,7 @@ import type { OrderDirection } from 'models/api/types'
 import type { UserSortableProperties } from 'models/user/types'
 import { AI_AGENT_CLIENT_ID } from 'state/agents/constants'
 
-export const STALE_TIME_MS = 5 * 60 * 1000 // 5 minutes (in ms)
+export const STALE_TIME_MS = Duration.minutes(5)
 export const USERS_PER_PAGE = 15
 
 type UseUserListResult = {

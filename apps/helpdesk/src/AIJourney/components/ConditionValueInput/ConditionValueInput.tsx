@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useShopifyShopTags } from '@repo/customer'
 import { useDebouncedValue } from '@repo/hooks'
@@ -259,7 +260,7 @@ const ProductVariantIdsMultiSelect = ({
 }) => {
     const { currentIntegration } = useJourneyContext()
     const [searchValue, setSearchValue] = useState('')
-    const debouncedSearch = useDebouncedValue(searchValue, 300)
+    const debouncedSearch = useDebouncedValue(searchValue, Duration.millis(300))
     const isSearchPending = searchValue !== debouncedSearch
 
     const { data, isFetching } = useListProducts(
@@ -397,7 +398,7 @@ const ProductTagsMultiSelect = ({
 }) => {
     const { currentIntegration } = useJourneyContext()
     const [searchValue, setSearchValue] = useState('')
-    const debouncedSearch = useDebouncedValue(searchValue, 300)
+    const debouncedSearch = useDebouncedValue(searchValue, Duration.millis(300))
 
     const handleOpenChange = (isOpen: boolean) => {
         if (!isOpen) {

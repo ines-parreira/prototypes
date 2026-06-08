@@ -1,7 +1,6 @@
+import { Duration } from '@gorgias/toolkit'
 // Migrated from: apps/helpdesk/src/custom-fields/hooks/queries/useCustomerFieldValues.ts
 import { useListCustomerCustomFieldsValues } from '@gorgias/helpdesk-queries'
-
-const STALE_TIME_MS = 60 * 60 * 1000 // 1 hour
 
 export const useCustomerCustomFieldValues = (
     ...args: Parameters<typeof useListCustomerCustomFieldsValues>
@@ -10,7 +9,7 @@ export const useCustomerCustomFieldValues = (
         ...args[1],
         query: {
             ...args[1]?.query,
-            staleTime: STALE_TIME_MS,
+            staleTime: Duration.hours(1),
             select: (data) => data.data,
             meta: {
                 errorMessage: 'Failed to fetch custom field values',

@@ -2,6 +2,7 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { UseQueryOptions } from '@tanstack/react-query'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
+import { Duration } from '@gorgias/toolkit'
 
 import { toast } from '@gorgias/axiom'
 
@@ -64,8 +65,8 @@ import type {
     Trial,
 } from './types'
 
-export const STALE_TIME_MS = 10 * 60 * 1000 // 10 minutes
-export const CACHE_TIME_MS = 20 * 60 * 1000 // 20 minutes
+export const STALE_TIME_MS = Duration.minutes(10)
+export const CACHE_TIME_MS = Duration.minutes(20)
 
 const transformResponseTrialToTrial = (
     responseTrial: ResponseTrial,

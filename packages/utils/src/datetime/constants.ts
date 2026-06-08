@@ -1,20 +1,3 @@
-export const DurationInMs = {
-    OneSecond: 1 * 1000,
-    FiveSeconds: 5 * 1000,
-    TenSeconds: 10 * 1000,
-    FifteenSeconds: 15 * 1000,
-    ThirtySeconds: 30 * 1000,
-    OneMinute: 60 * 1000,
-    FiveMinutes: 5 * 60 * 1000,
-    FifteenMinutes: 15 * 60 * 1000,
-    ThirtyMinutes: 30 * 60 * 1000,
-    OneHour: 60 * 60 * 1000,
-    OneDay: 24 * 60 * 60 * 1000,
-    OneWeek: 7 * 24 * 60 * 60 * 1000,
-    OneMonth: 30 * 24 * 60 * 60 * 1000,
-    OneYear: 365 * 24 * 60 * 60 * 1000,
-} as const
-
 export enum DateFormatType {
     en_GB = 'en_GB',
     en_US = 'en_US',

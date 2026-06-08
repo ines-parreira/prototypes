@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
-
-import { DurationInMs } from '@repo/utils'
+import { Duration } from '@gorgias/toolkit'
 
 import { useGetTicket } from '@gorgias/helpdesk-queries'
 
@@ -8,7 +7,7 @@ export function useTicketMessageAddresses(ticketId?: number) {
     const { data: ticketData } = useGetTicket(ticketId || 0, undefined, {
         query: {
             enabled: !!ticketId,
-            staleTime: DurationInMs.FiveMinutes,
+            staleTime: Duration.minutes(5),
         },
     })
 

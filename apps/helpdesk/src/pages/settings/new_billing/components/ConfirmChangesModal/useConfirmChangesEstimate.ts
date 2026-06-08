@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import type { PlansByProduct, SelectedPlans } from '@repo/billing'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
@@ -8,7 +9,7 @@ import type { GetBillingEstimatesSubscriptionParams } from '@gorgias/helpdesk-ty
 
 import { ProductType } from 'models/billing/types'
 
-const ESTIMATE_FRESHNESS_MS = 5 * 60 * 1000
+const ESTIMATE_FRESHNESS_MS = Duration.minutes(5)
 
 function getEffectivePlanId(
     productType: ProductType,

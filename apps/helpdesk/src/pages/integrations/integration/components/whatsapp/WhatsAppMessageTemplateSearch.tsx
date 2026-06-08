@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useDebouncedEffect } from '@repo/hooks'
 import classNames from 'classnames'
@@ -12,8 +13,6 @@ import { TemplateTypeFilterOption } from 'pages/tickets/detail/components/ReplyA
 import useWhatsAppEditor from './useWhatsAppEditor'
 
 import css from './WhatsAppMessageTemplateSearch.less'
-
-const SEARCH_DEBOUNCE_DELAY = 350
 
 export type WhatsAppMessageTemplateSearchFilters = {
     language: string[]
@@ -41,7 +40,7 @@ export default function WhatsAppMessageTemplateSearch() {
             setSearchFilter(filters)
         },
         [filters],
-        SEARCH_DEBOUNCE_DELAY,
+        Duration.millis(350),
     )
 
     const handleInputFocus = () => {

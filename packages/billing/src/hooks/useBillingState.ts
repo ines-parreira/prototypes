@@ -1,10 +1,8 @@
 import type { UseQueryOptions, UseQueryResult } from '@tanstack/react-query'
+import { Duration } from '@gorgias/toolkit'
 
 import type { BillingState, HttpResponse } from '@gorgias/helpdesk-queries'
 import { useGetBillingState } from '@gorgias/helpdesk-queries'
-
-const STALE_TIME = 1000 * 60 * 60 // 1h
-const CACHE_TIME = 1000 * 60 * 65 // 1h5m
 
 export type ResponseBillingState = Omit<
     UseQueryResult<HttpResponse<BillingState>>,
@@ -18,8 +16,8 @@ export function useBillingState(
 ): ResponseBillingState {
     const { data, ...rest } = useGetBillingState({
         query: {
-            staleTime: STALE_TIME,
-            cacheTime: CACHE_TIME,
+            staleTime: Duration.hours(1),
+            cacheTime: Duration.minutes(65),
             refetchOnWindowFocus: false,
             ...overrides,
         },

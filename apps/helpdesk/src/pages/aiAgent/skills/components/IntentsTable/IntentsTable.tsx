@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { SCREEN_SIZE, useScreenSize } from '@repo/hooks'
 import { useQueryClient } from '@tanstack/react-query'
@@ -58,7 +59,10 @@ const SearchInput = ({ onChange }: SearchInputProps) => {
     const [inputValue, setInputValue] = useState('')
 
     useEffect(() => {
-        const timer = setTimeout(() => onChange(inputValue), 300)
+        const timer = setTimeout(
+            () => onChange(inputValue),
+            Duration.millis(300),
+        )
         return () => clearTimeout(timer)
     }, [inputValue, onChange])
 

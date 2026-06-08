@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useGetArticleTranslationVersion } from 'models/helpCenter/queries'
 import { useAiAgentHelpCenterState } from 'pages/aiAgent/hooks/useAiAgentHelpCenter'
@@ -57,7 +58,7 @@ export const useKnowledgeEditorSkillData = ({
             },
             {
                 enabled: !!initialVersionId && !!helpCenter?.id && !!article,
-                staleTime: 10 * 60 * 1000,
+                staleTime: Duration.minutes(10),
                 refetchOnWindowFocus: false,
             },
         )

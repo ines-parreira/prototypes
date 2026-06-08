@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useDebouncedCallback } from '@repo/hooks'
@@ -86,7 +87,10 @@ export function OrderTags({
 
     const showCreateTag = canCreateTag(search, shopTags, parsedTags)
 
-    const debouncedUpdateTags = useDebouncedCallback(updateTags, 300)
+    const debouncedUpdateTags = useDebouncedCallback(
+        updateTags,
+        Duration.millis(300),
+    )
 
     const handleSelectChange = useCallback(
         (selectedOptions: { id: string; label: string }[]) => {

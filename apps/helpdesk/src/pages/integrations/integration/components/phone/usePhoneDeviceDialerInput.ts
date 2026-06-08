@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { isValidNumber } from 'libphonenumber-js'
 import { debounce } from 'lodash'
@@ -7,8 +8,6 @@ import type { UserSearchResult } from 'models/search/types'
 import type { PhoneNumberInputHandle } from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 
 import usePhoneDeviceDialerCustomerSuggestions from './usePhoneDeviceDialerCustomerSuggestions'
-
-const VALIDATE_DEBOUNCE_VALUE = 500
 
 type UsePhoneDeviceDialerInputArgs = {
     value?: { phoneNumber: string; customer?: UserSearchResult }
@@ -75,7 +74,7 @@ export default function usePhoneDeviceDialerInput({
     )
 
     const debouncedValidate = useMemo(
-        () => debounce(validate, VALIDATE_DEBOUNCE_VALUE),
+        () => debounce(validate, Duration.millis(500)),
         [validate],
     )
 

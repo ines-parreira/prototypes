@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { localForageManager } from '@repo/browser-storage'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
@@ -365,8 +366,7 @@ export const TicketDetailContainer = ({
     const hideTicket = useCallback(() => {
         return new Promise<void>((resolve) => {
             setIsTicketHidden(true)
-            // 100ms to let the animation goes
-            return setTimeout(resolve, 100)
+            return setTimeout(resolve, Duration.millis(100))
         })
     }, [])
 

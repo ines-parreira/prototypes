@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useQuery } from '@tanstack/react-query'
 import moment from 'moment'
@@ -42,7 +43,7 @@ export type TrialMetrics = {
     }
 }
 
-const REFETCH_INTERVAL_MS = 5 * 60 * 1000 // 5 minutes
+const REFETCH_INTERVAL_MS = Duration.minutes(5)
 
 export const useTrialMetrics = (
     trialType: TrialType,

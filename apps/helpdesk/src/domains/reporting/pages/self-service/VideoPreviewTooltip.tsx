@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { useCallback, useMemo, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import {
     Box,
@@ -58,7 +59,7 @@ export function VideoPreviewTooltip({
                 <Tooltip
                     key={String(isModalOpen)}
                     placement="right"
-                    delay={600}
+                    delay={Duration.millis(600)}
                     closeDelay={250}
                     trigger={<div className={css.trigger}>{children}</div>}
                 >

@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useDebouncedValue } from '@repo/hooks'
@@ -43,7 +44,7 @@ export function useClientSideFilterSearch(
         useIsClientSideFilterSearchDisabled()
 
     const [query, setQuery] = useState(initialValue)
-    const debouncedQuery = useDebouncedValue(query, 250)
+    const debouncedQuery = useDebouncedValue(query, Duration.millis(250))
 
     const filteredGroups = filterOptionsByQuery(
         filterOptionGroups,

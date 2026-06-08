@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { toast } from '@gorgias/axiom'
 import type { CustomFieldCondition } from '@gorgias/helpdesk-queries'
@@ -9,7 +10,7 @@ import {
 
 import type { CustomFieldObjectTypes } from 'custom-fields/types'
 
-export const STALE_TIME_MS = 60 * 60 * 1000 // 1 hour
+export const STALE_TIME_MS = Duration.hours(1)
 export const MAX_CONDITIONS = 100 // The limit of conditions is 70, so we get the maximum of what API returns by default
 
 type Params = {

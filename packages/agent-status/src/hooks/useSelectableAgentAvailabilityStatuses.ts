@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
-
-import { DurationInMs } from '@repo/utils'
+import { Duration } from '@gorgias/toolkit'
 
 import { useListCustomUserAvailabilityStatuses } from '@gorgias/helpdesk-queries'
 
@@ -10,8 +9,8 @@ import type { AgentStatusWithSystem } from '../types'
 export const useSelectableAgentAvailabilityStatuses = () => {
     const queryResult = useListCustomUserAvailabilityStatuses({
         query: {
-            cacheTime: DurationInMs.OneDay,
-            staleTime: DurationInMs.FiveMinutes,
+            cacheTime: Duration.days(1),
+            staleTime: Duration.minutes(5),
         },
     })
     const { data, isLoading, isError } = queryResult

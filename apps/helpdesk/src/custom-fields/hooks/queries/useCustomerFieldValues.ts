@@ -1,6 +1,7 @@
 import { useListCustomerCustomFieldsValues } from '@gorgias/helpdesk-queries'
+import { Duration } from '@gorgias/toolkit'
 
-export const STALE_TIME_MS = 60 * 60 * 1000 // 1 hour
+export const STALE_TIME_MS = Duration.hours(1)
 
 export const useCustomerFieldValues = (
     ...args: Parameters<typeof useListCustomerCustomFieldsValues>

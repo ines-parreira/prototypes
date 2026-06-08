@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import type { User } from '@gorgias/helpdesk-queries'
 import { ListUsersRolesItem } from '@gorgias/helpdesk-types'
@@ -27,7 +28,7 @@ export function useListUsersSearch() {
             roles: ASSIGNABLE_USER_ROLES,
         },
         {
-            staleTime: 60000 * 5,
+            staleTime: Duration.minutes(5),
         },
     )
 

@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useFeedbackTracking } from '@repo/ai-agent'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
@@ -43,8 +44,6 @@ import { useGetAllRelatedResourceData } from './useEnrichKnowledgeFeedbackData/u
 import { knowledgeResourceOrder } from './useEnrichKnowledgeFeedbackData/utils'
 
 // If there are no executions from knowledge-service after this time since last AI message, we show only the Ticket Rating
-const TIME_UNTIL_SHOWING_TICKET_LEVEL_FEEDBACK = 2 * 60 * 60 * 1000 // 2 hours
-
 const AIAgentSimplifiedFeedback = () => {
     const [loadingMutations, setLoadingMutations] = useState<string[]>()
     const viewsState = useAppSelector(getViewsState)
@@ -75,8 +74,7 @@ const AIAgentSimplifiedFeedback = () => {
         if (!latestAIMessage) return false
 
         return (
-            new Date(latestAIMessage) <
-            new Date(Date.now() - TIME_UNTIL_SHOWING_TICKET_LEVEL_FEEDBACK)
+            new Date(latestAIMessage) < new Date(Date.now() - Duration.hours(2))
         )
     }, [aiMessages, ticket])
 

@@ -1,4 +1,5 @@
-import { DurationInMs, slidingWindow } from '@repo/utils'
+import { slidingWindow } from '@repo/utils'
+import { Duration } from '@gorgias/toolkit'
 
 import { TicketThreadItemTag } from '../types'
 import {
@@ -265,7 +266,7 @@ function shouldGroupConsecutiveMessages(
     const msg1Created = new Date(msg1Data.created_datetime).getTime()
     const msg2Created = new Date(msg2Data.created_datetime).getTime()
 
-    return msg2Created < msg1Created + DurationInMs.FiveMinutes
+    return msg2Created < msg1Created + Duration.minutes(5)
 }
 
 export function markLastCustomerMessage(

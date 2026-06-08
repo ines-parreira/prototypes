@@ -1,4 +1,4 @@
-import { DurationInMs } from '@repo/utils'
+import { Duration } from '@gorgias/toolkit'
 
 import { useQuery } from '@tanstack/react-query'
 
@@ -27,8 +27,8 @@ export function useGetSimilarCustomer(customerId?: number) {
             return getSimilarCustomer({ customerId }, signal)
         },
         enabled: !!customerId,
-        staleTime: DurationInMs.FiveMinutes,
-        cacheTime: DurationInMs.FiveMinutes,
+        staleTime: Duration.minutes(5),
+        cacheTime: Duration.minutes(5),
         refetchOnWindowFocus: false,
     })
 }

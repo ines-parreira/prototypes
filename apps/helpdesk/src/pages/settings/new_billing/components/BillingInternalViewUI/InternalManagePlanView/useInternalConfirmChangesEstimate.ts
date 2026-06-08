@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useGetBillingInternalEstimatesSubscription } from '@gorgias/helpdesk-queries'
 import type {
@@ -11,7 +12,7 @@ import type { Invoice } from 'state/billing/types'
 
 import type { ResolvedPlan } from './useInternalPlanEditor'
 
-const ESTIMATE_FRESHNESS_MS = 5 * 60 * 1000
+const ESTIMATE_FRESHNESS_MS = Duration.minutes(5)
 
 function getEffectivePlanId(
     resolvedPlan: ResolvedPlan | undefined,

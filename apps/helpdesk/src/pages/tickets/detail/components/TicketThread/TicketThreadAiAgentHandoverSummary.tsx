@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useCopyToClipboard } from '@repo/hooks'
 import {
@@ -12,7 +13,6 @@ import {
 import type { BubbleActionItem } from '@repo/ticket-thread'
 import type { TicketThreadAiAgentHandoverSummaryParams } from '@repo/ticket-thread/legacy-bridge'
 
-import { DurationInMs } from '@repo/utils'
 import { useParams } from 'react-router-dom'
 import { AIThinking, Box, Button, Icon, Text } from '@gorgias/axiom'
 import { useGetTicket } from '@gorgias/helpdesk-queries'
@@ -43,7 +43,7 @@ export function TicketThreadAiAgentHandoverSummary({ message }: Props) {
         {
             query: {
                 select: (data) => data?.data,
-                staleTime: DurationInMs.FiveMinutes,
+                staleTime: Duration.minutes(5),
             },
         },
     )

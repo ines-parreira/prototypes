@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useMemo } from 'react'
 import type { ReactNode } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
-import { DurationInMs } from '@repo/utils'
 import _debounce from 'lodash/debounce'
 
 import { useAgentActivity } from '@gorgias/realtime'
@@ -14,7 +14,7 @@ type Props = {
     children?: ReactNode
 }
 
-export const TICKETS_VIEWING_DEBOUNCE_TIME = DurationInMs.OneSecond
+export const TICKETS_VIEWING_DEBOUNCE_TIME = Duration.seconds(1)
 
 const ViewedTicketsContext = createContext<ViewedTicketsContextValue | null>(
     null,

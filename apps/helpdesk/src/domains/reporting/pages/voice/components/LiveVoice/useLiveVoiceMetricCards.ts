@@ -1,4 +1,5 @@
 import type { ComponentProps } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
@@ -53,7 +54,7 @@ export default function useLiveVoiceMetricCards(
             timezone: getAccountBusinessHoursTimezone(),
         }),
         true,
-        30 * 1000,
+        Duration.seconds(30),
     )
 
     return isVoiceSLAEnabled

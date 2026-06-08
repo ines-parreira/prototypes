@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import client from '@repo/api-resources'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
@@ -121,7 +122,7 @@ export function OngoingPhoneCall({
             setIsOnHold(false)
 
             toast.info(eventData.event.data.error.message, {
-                duration: 5000,
+                duration: Duration.seconds(5),
             })
         },
         [setIsTransferring],

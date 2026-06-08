@@ -1,4 +1,5 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { Duration } from '@gorgias/toolkit'
 
 import type { TicketLanguage } from '@gorgias/helpdesk-queries'
 import { useListTicketMessageTranslations } from '@gorgias/helpdesk-queries'
@@ -25,7 +26,7 @@ export function useTicketTranslations({
         },
         {
             query: {
-                staleTime: 60000 * 5,
+                staleTime: Duration.minutes(5),
                 enabled:
                     enabled &&
                     Boolean(primary) &&

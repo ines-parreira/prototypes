@@ -1,4 +1,4 @@
-import { DurationInMs } from '@repo/utils'
+import { Duration } from '@gorgias/toolkit'
 
 import type { CustomFieldCondition } from '@gorgias/helpdesk-queries'
 import { useListCustomFieldConditions } from '@gorgias/helpdesk-queries'
@@ -36,7 +36,7 @@ export const useCustomFieldConditions = ({
         },
         {
             query: {
-                staleTime: invalidate ? 0 : DurationInMs.OneDay,
+                staleTime: invalidate ? 0 : Duration.days(1),
                 refetchOnWindowFocus: false,
                 enabled: enabled,
             },

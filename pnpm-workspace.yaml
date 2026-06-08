@@ -51,6 +51,8 @@ catalogs:
     '@internationalized/date': '3.10.0'
   analytics-ui-kit:
     '@gorgias/analytics-ui-kit': '0.1.25'
+  toolkit:
+    '@gorgias/toolkit': '0.2.0'
   copilot:
     '@gorgias/copilot': '0.63.6'
   rest-api-sdk:

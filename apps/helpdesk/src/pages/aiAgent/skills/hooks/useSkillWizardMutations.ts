@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useDebouncedCallback } from '@repo/hooks'
 import {
@@ -16,8 +17,6 @@ import type {
 } from 'pages/aiAgent/skills/types'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import type { Components } from 'rest_api/help_center_api/client.generated'
-
-const INSTRUCTIONS_SAVE_DEBOUNCE_MS = 500
 
 export const SKILL_WIZARD_SAVING_MUTATION_KEY = ['skill-wizard-saving'] as const
 
@@ -254,7 +253,7 @@ export const useSkillWizardMutations = (helpCenterId: number) => {
                 setHasPendingInstructionsSave(false)
             }
         },
-        INSTRUCTIONS_SAVE_DEBOUNCE_MS,
+        Duration.millis(500),
     )
 
     const saveInstructions = useCallback(

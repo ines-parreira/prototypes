@@ -1,5 +1,6 @@
 import type { KeyboardEvent } from 'react'
 import React, { useCallback, useMemo, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useDebouncedEffect } from '@repo/hooks'
 import type { QueryKey } from '@tanstack/react-query'
@@ -31,7 +32,6 @@ type Props = {
 }
 
 const LIMIT_ITEMS_SEARCH = 30
-const STALE_TIME = 5 * 60 * 1000 // 5 minutes
 const queryKeysTags = queryKeys.tags.listTags()
 
 const removeMatchingQueries = (newTag: string, queryKey: QueryKey) => {
@@ -80,7 +80,7 @@ const TagDropdownMenu = ({
         },
         {
             refetchOnWindowFocus: false,
-            staleTime: STALE_TIME,
+            staleTime: Duration.minutes(5),
         },
     )
 

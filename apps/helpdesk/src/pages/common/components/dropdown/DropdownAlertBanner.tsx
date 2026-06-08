@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useTimeout } from '@repo/hooks'
 
@@ -6,8 +7,6 @@ import type { LegacyBannerType as BannerType } from '@gorgias/axiom'
 import { LegacyBanner as Banner } from '@gorgias/axiom'
 
 import css from './DropdownAlertBanner.less'
-
-const DEFAULT_DISMISS_DURATION = 5000
 
 export type AlertBannerData = {
     message: string
@@ -31,7 +30,7 @@ export const DropdownAlertBanner = ({
     data,
     onClear,
     autoDismiss = false,
-    autoDismissDuration = DEFAULT_DISMISS_DURATION,
+    autoDismissDuration = Duration.seconds(5),
 }: Props) => {
     const [setTimeout, clearTimeout] = useTimeout()
 

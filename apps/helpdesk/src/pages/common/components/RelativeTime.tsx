@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useNow } from '@repo/hooks'
 import moment from 'moment'
@@ -10,7 +11,7 @@ type Props = {
 }
 
 export default function RelativeTime({ datetime }: Props) {
-    useNow(10000)
+    useNow(Duration.seconds(10))
     const m = useMemo(() => moment(new Date(datetime)), [datetime])
 
     return <>{shortenRelativeDurationLabel(m.fromNow())}</>

@@ -1,6 +1,5 @@
 import { renderHook } from '@testing-library/react'
-
-import { DurationInMs } from '@repo/utils'
+import { Duration } from '@gorgias/toolkit'
 
 import { useGetCustomer as useGeneratedGetCustomer } from '@gorgias/helpdesk-queries'
 
@@ -24,16 +23,16 @@ describe('useGetCustomer', () => {
             useGetCustomer(1, undefined, {
                 query: {
                     enabled: true,
-                    staleTime: DurationInMs.FiveMinutes,
+                    staleTime: Duration.minutes(5),
                 },
             }),
         )
 
-        expect(GET_CUSTOMER_STALE_TIME_MS).toBe(DurationInMs.OneHour)
+        expect(GET_CUSTOMER_STALE_TIME_MS).toBe(Duration.hours(1))
         expect(mockUseGeneratedGetCustomer).toHaveBeenCalledWith(1, undefined, {
             query: {
                 enabled: true,
-                staleTime: DurationInMs.OneHour,
+                staleTime: Duration.hours(1),
             },
         })
     })
@@ -55,7 +54,7 @@ describe('useGetCustomer', () => {
             http,
             query: {
                 retry: false,
-                staleTime: DurationInMs.OneHour,
+                staleTime: Duration.hours(1),
             },
         })
     })

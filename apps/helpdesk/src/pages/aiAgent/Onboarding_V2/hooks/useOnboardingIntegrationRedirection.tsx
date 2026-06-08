@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import {
     useEffectOnce,
@@ -11,8 +12,6 @@ import type { IntegrationType } from 'models/integration/types'
 export const LOCAL_STORAGE_KEY = 'aiagent_onboarding_integration_redirection'
 export const LOCAL_STORAGE_ID_KEY = 'aiagent_onboarding_integration_id'
 export const LOCAL_STORAGE_TYPE_KEY = 'aiagent_onboarding_integration_type'
-const REDIRECT_TTL = 1000 * 60 * 60 * 1 // 1 hour
-
 export const useOnboardingIntegrationRedirection = (
     isOnboardPage: boolean = true,
 ) => {
@@ -22,7 +21,7 @@ export const useOnboardingIntegrationRedirection = (
         remove: removeOnboardingStorageKey,
     } = useLocalStorageWithExpiry<string | null>(
         LOCAL_STORAGE_KEY,
-        REDIRECT_TTL,
+        Duration.hours(1),
         null,
     )
 

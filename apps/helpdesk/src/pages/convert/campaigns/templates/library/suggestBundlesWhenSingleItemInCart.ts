@@ -1,3 +1,4 @@
+import { Duration } from '@gorgias/toolkit'
 // Suggest bundles when a single item is in cart
 import { ulid } from 'ulidx'
 
@@ -94,7 +95,7 @@ export const SUGGEST_BUNDLES_WHEN_SINGLE_PRODUCT_IN_CARD: CampaignTemplate = {
                 triggers: triggers,
                 trigger_rule: createTriggerRule(triggers),
                 meta: {
-                    delay: 5000,
+                    delay: Duration.seconds(5),
                     noReply: true,
                 },
             },

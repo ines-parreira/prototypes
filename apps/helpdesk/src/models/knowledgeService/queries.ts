@@ -1,5 +1,6 @@
 import type { QueryKey, UseQueryOptions } from '@tanstack/react-query'
 import { useQueryClient } from '@tanstack/react-query'
+import { Duration } from '@gorgias/toolkit'
 
 import type {
     FindAiReasoningAiReasoningResult,
@@ -19,8 +20,8 @@ import {
     useGetRulesProductRecommendation as useGetRulesProductRecommendationQuery,
 } from '@gorgias/knowledge-service-queries'
 
-export const STALE_TIME_MS = 1 * 60 * 1000 // 1 minutes
-export const CACHE_TIME_MS = 2 * 60 * 1000 // 2 minutes
+export const STALE_TIME_MS = Duration.minutes(1)
+export const CACHE_TIME_MS = Duration.minutes(2)
 export enum ReasoningResponseType {
     OUTCOME = 'OUTCOME',
     RESPONSE = 'RESPONSE',

@@ -1,7 +1,8 @@
 import { doNotRetry40XErrorsHandler } from '@repo/api-resources'
+import { Duration } from '@gorgias/toolkit'
 
-export const CONVERT_STALE_TIME_MS = 5 * 60 * 1000 // 5 minutes
-export const CONVERT_CACHE_TIME_MS = 10 * 60 * 1000 // 10 minutes
+export const CONVERT_STALE_TIME_MS = Duration.minutes(5)
+export const CONVERT_CACHE_TIME_MS = Duration.minutes(10)
 
 export const CONVERT_DEFAULT_OPTIONS = {
     staleTime: CONVERT_STALE_TIME_MS,

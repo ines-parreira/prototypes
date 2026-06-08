@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import {
     Box,
@@ -47,8 +48,6 @@ type ShopifyTagsProps = {
 // edits accumulate into the refused set so a slow server returning any
 // intermediate value still gets refused. Anything else — server catching
 // up to the latest value, or a third-party Shopify edit — passes through.
-const STALE_TAGS_REFUSAL_MS = 90 * 1000
-
 type StaleRefusal = {
     refused: Set<string>
     show: string
@@ -91,7 +90,7 @@ export function ShopifyTags({
 
     useEffect(() => {
         if (!refusal) return
-        const timer = setTimeout(() => setRefusal(null), STALE_TAGS_REFUSAL_MS)
+        const timer = setTimeout(() => setRefusal(null), Duration.seconds(90))
         return () => clearTimeout(timer)
     }, [refusal])
 

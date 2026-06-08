@@ -1,5 +1,6 @@
 import type { RefObject } from 'react'
 import { useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import html2canvas from 'html2canvas'
 import { jsPDF } from 'jspdf'
@@ -162,7 +163,9 @@ export function useExportDashboardToPDF() {
             const originalScrollPosition = window.scrollY
             element.scrollIntoView({ behavior: 'instant', block: 'start' })
 
-            await new Promise((resolve) => setTimeout(resolve, 100))
+            await new Promise((resolve) =>
+                setTimeout(resolve, Duration.millis(100)),
+            )
 
             const captureWidth = Math.max(
                 element.scrollWidth,
@@ -239,13 +242,13 @@ export function useExportDashboardToPDF() {
             pdf.save(filename || defaultFilename)
 
             setStatus('success')
-            setTimeout(() => setStatus('idle'), 3000)
+            setTimeout(() => setStatus('idle'), Duration.seconds(3))
         } catch (err) {
             const errorObj =
                 err instanceof Error ? err : new Error('Failed to export PDF')
             setError(errorObj)
             setStatus('error')
-            setTimeout(() => setStatus('idle'), 3000)
+            setTimeout(() => setStatus('idle'), Duration.seconds(3))
         }
     }
 

@@ -1,4 +1,5 @@
 import type { AnyAction } from 'redux'
+import { Duration } from '@gorgias/toolkit'
 
 import { store as reduxStore } from 'common/store'
 import { isFullWidthViewPath } from 'common/utils'
@@ -16,8 +17,8 @@ class PollingManager {
     intervals = {} as Intervals
     store = reduxStore
 
-    activeViewInterval = 10000
-    recentViewsCountsInterval = 5000
+    activeViewInterval = Duration.seconds(10)
+    recentViewsCountsInterval = Duration.seconds(5)
 
     start = () => {
         if (window.DISABLE_ACTIVITY_POLLING === 'True') {

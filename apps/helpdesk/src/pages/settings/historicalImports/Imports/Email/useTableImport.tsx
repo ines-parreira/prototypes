@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { queryKeys, useListImports } from '@gorgias/helpdesk-queries'
 import { ListImportsOrderBy } from '@gorgias/helpdesk-types'
@@ -8,8 +9,6 @@ import { OrderDirection } from 'models/api/types'
 import type { ImportItem } from '../types'
 
 const PAGE_SIZE = 8
-const REFETCH_INTERVAL = 60000 // 1 minute
-
 export const useTableImport = () => {
     const [sortOrder, setSortOrder] = useState<OrderDirection>(
         OrderDirection.Asc,
@@ -42,7 +41,7 @@ export const useTableImport = () => {
                 staleTime: 0,
                 queryKey: importListingQueryKey,
                 enabled: true,
-                refetchInterval: REFETCH_INTERVAL,
+                refetchInterval: Duration.minutes(1),
                 select: (data) => ({
                     importList: data?.data?.data || [],
                     meta: data?.data?.meta,

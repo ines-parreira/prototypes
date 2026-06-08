@@ -1,4 +1,5 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { Duration } from '@gorgias/toolkit'
 
 const DEFAULT_POLLING_INTERVAL_SECONDS = 30
 
@@ -8,5 +9,5 @@ export const usePhoneStatusBatchPollingInterval = (): number => {
         DEFAULT_POLLING_INTERVAL_SECONDS,
     )
 
-    return refetchIntervalSeconds * 1000
+    return Duration.seconds(refetchIntervalSeconds)
 }

@@ -1,5 +1,6 @@
 import type { ComponentType, ReactElement, ReactNode, ReactText } from 'react'
 import React from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { formatDuration } from '@repo/reporting'
 import type { ChartType, Scale, TooltipItem } from 'chart.js'
@@ -161,7 +162,7 @@ _merge(defaults, {
         intersect: false,
     },
     animation: {
-        duration: 300,
+        duration: Duration.millis(300),
     },
     elements: {
         point: {

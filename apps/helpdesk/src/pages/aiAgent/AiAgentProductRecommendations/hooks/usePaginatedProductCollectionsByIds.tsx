@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useDebouncedValue } from '@repo/hooks'
 import { useQuery } from '@tanstack/react-query'
@@ -45,7 +46,10 @@ const usePaginatedProductCollectionsByIds = ({
     const [currentPage, setCurrentPage] = useState(1)
     const [searchTerm, setSearchTerm] = useState('')
 
-    const debouncedSearchTerm = useDebouncedValue(searchTerm, 200)
+    const debouncedSearchTerm = useDebouncedValue(
+        searchTerm,
+        Duration.millis(200),
+    )
 
     const queryKey = [
         'integration',

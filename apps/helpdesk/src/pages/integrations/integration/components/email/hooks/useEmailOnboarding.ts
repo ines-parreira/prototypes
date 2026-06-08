@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import type { FormErrors } from '@repo/forms'
 import { useInterval, useLocalStorage } from '@repo/hooks'
@@ -348,7 +349,7 @@ function useVerificationRequestStatus(
 
     useInterval(() => {
         setCurrentTime(new Date())
-    }, FORWARDING_VERIFICATION_TIMEOUT_IN_SECONDS * 1000)
+    }, Duration.seconds(FORWARDING_VERIFICATION_TIMEOUT_IN_SECONDS))
 
     return { isPending, isRequested, setRequestedAt }
 }

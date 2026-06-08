@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useAsyncFn } from '@repo/hooks'
 import type { AxiosError } from 'axios'
@@ -41,7 +42,7 @@ export default function VerificationEmailSent({
         if (verification.status !== VerificationStatus.Verified) {
             pollingTimer.current = setTimeout(
                 refetchVerification,
-                5000,
+                Duration.seconds(5),
             ) as unknown as number
         } else {
             onVerificationUpdate()

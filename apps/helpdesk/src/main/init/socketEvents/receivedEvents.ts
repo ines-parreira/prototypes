@@ -9,6 +9,7 @@ import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 import { cloneDeep } from 'lodash'
 import _find from 'lodash/find'
+import { Duration } from '@gorgias/toolkit'
 
 import { toast } from '@gorgias/axiom'
 import { queryKeys } from '@gorgias/helpdesk-queries'
@@ -514,7 +515,7 @@ const receivedEvents: ReceivedEvent[] = [
                 )
                 setTimeout(() => {
                     window.location.reload()
-                }, 5000)
+                }, Duration.seconds(5))
             }
 
             reduxStore.dispatch({
@@ -769,7 +770,7 @@ const receivedEvents: ReceivedEvent[] = [
             }
             toast.info(
                 `WhatsApp successfully connected for number ${phone_number!}.`,
-                { duration: 10000 },
+                { duration: Duration.seconds(10) },
             )
             reduxStore.dispatch(integrationsActions.fetchIntegrations() as any)
             const phoneNumbers = await fetchNewPhoneNumbers()
@@ -794,7 +795,7 @@ const receivedEvents: ReceivedEvent[] = [
             const message = error?.message
                 ? `${error.message} (number: ${phone_number!})`
                 : `Failed to connect WhatsApp for number ${phone_number!}. Please try again or contact support.`
-            toast.error(message, { duration: 10000 })
+            toast.error(message, { duration: Duration.seconds(10) })
         },
     },
     {

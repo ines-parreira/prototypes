@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { BILLING_BASE_PATH } from '@repo/billing'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -79,7 +80,7 @@ const ContactSupportModal = ({
 
             toast.success(
                 `Your request has been submitted. We'll get back to you by email at ${from} within 24 business hours`,
-                { duration: 5000 },
+                { duration: Duration.seconds(5) },
             )
         } catch {
             toast.error(

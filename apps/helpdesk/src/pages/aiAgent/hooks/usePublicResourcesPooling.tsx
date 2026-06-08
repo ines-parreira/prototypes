@@ -1,4 +1,5 @@
 import { useEffect, useMemo } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { reportError } from '@repo/logging'
 import { history } from '@repo/routing'
@@ -21,8 +22,6 @@ import { updateArticleIngestionLogs } from '../components/PublicSourcesSection/u
 import type { ArticleIngestionLogsStatus } from '../constants'
 import { WIZARD_POST_COMPLETION_QUERY_KEY } from '../constants'
 import { useAiAgentNavigation } from './useAiAgentNavigation'
-
-const UPDATE_STATUS_INTERVAL = 5000
 
 type UsePublicResourcesPoolingReturn = {
     articleIngestionLogsStatus: ArticleIngestionLogsStatus[]
@@ -75,7 +74,7 @@ export const usePublicResourcesPooling = ({
             ids: processingArticleIngestionIds,
         },
         {
-            refetchInterval: UPDATE_STATUS_INTERVAL,
+            refetchInterval: Duration.seconds(5),
             enabled: !!(
                 processingArticleIngestionIds &&
                 processingArticleIngestionIds.length > 0

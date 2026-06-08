@@ -1,4 +1,5 @@
 import type { GetArticleVersionStatus } from '@gorgias/help-center-types'
+import { Duration } from '@gorgias/toolkit'
 
 import {
     useGetArticleTranslationVersion,
@@ -63,7 +64,7 @@ export const useKnowledgeEditorArticleData = ({
         },
         {
             enabled: !!initialVersionId && !!helpCenter?.id && !!article,
-            staleTime: 10 * 60 * 1000,
+            staleTime: Duration.minutes(10),
             refetchOnWindowFocus: false,
         },
     )

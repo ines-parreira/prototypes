@@ -1,5 +1,5 @@
 import { useExhaustEndpoint } from '@repo/hooks'
-import { DurationInMs } from '@repo/utils'
+import { Duration } from '@gorgias/toolkit'
 
 import { queryKeys, useListInstagramProfiles } from '@gorgias/helpdesk-queries'
 import type { TicketCustomer, TicketMessage } from '@gorgias/helpdesk-types'
@@ -58,8 +58,8 @@ describe('useCustomerInstagramProfile', () => {
             queryKeys.integrations.listIntegrations({ limit: 100 }),
             expect.any(Function),
             {
-                staleTime: DurationInMs.OneDay,
-                cacheTime: DurationInMs.OneDay,
+                staleTime: Duration.days(1),
+                cacheTime: Duration.days(1),
                 refetchOnWindowFocus: false,
             },
         )
@@ -79,8 +79,8 @@ describe('useCustomerInstagramProfile', () => {
                         limit: 1,
                         order_by: 'updated_at:desc',
                     }),
-                    staleTime: DurationInMs.OneDay,
-                    cacheTime: DurationInMs.OneDay,
+                    staleTime: Duration.days(1),
+                    cacheTime: Duration.days(1),
                     select: expect.any(Function),
                 },
             },

@@ -1,4 +1,5 @@
 import type { KeyboardEvent } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { EditorState } from 'draft-js'
 import type { Map } from 'immutable'
@@ -151,7 +152,9 @@ const predictionPlugin = (config: {
     let lastQuery: string | null = null
     const debouncedRequestPrediction = debounce(
         requestPrediction,
-        typeof config.debounce === 'number' ? config.debounce : 200,
+        typeof config.debounce === 'number'
+            ? config.debounce
+            : Duration.millis(200),
         {
             leading: true,
             trailing: true,

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { Redirect, useHistory, useParams } from 'react-router-dom'
 
@@ -27,8 +28,6 @@ import { SkillWizard } from './SkillWizard'
 import { SkillWizardIntro } from './SkillWizardIntro'
 
 const STEP_QUERY_PARAM = 'step'
-const INTRO_DURATION_MS = 2500
-
 type SkillWizardPageContentProps = {
     wizard: EnrichedSkillWizard
     helpCenterId: number
@@ -58,7 +57,7 @@ const SkillWizardPageContent = ({
         if (!isIntroVisible) return
         const timeoutId = window.setTimeout(
             () => setIsIntroVisible(false),
-            INTRO_DURATION_MS,
+            Duration.millis(2500),
         )
         return () => window.clearTimeout(timeoutId)
     }, [isIntroVisible])

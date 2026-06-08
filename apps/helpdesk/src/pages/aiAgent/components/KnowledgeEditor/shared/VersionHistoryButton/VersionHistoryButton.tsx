@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useRef } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
 
@@ -105,7 +106,7 @@ function VersionCaption({
 
     return (
         <Tooltip
-            delay={300}
+            delay={Duration.millis(300)}
             placement="bottom left"
             isDisabled={!isTruncated}
             trigger={

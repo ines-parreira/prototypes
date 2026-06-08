@@ -1,5 +1,6 @@
 import type React from 'react'
 import { useCallback, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { debounce, isArray } from 'lodash'
 
@@ -8,8 +9,6 @@ import { SearchType } from '@gorgias/helpdesk-types'
 
 import type { UserSearchResult } from 'models/search/types'
 import { isUserSearchResult } from 'models/search/types'
-
-const SEARCH_DEBOUNCE_VALUE = 500
 
 type UseCustomerSuggestionsArgs = {
     onEnter: () => void
@@ -32,7 +31,7 @@ export default function usePhoneDeviceDialerCustomerSuggestions({
         {
             query: {
                 enabled: query.length >= minSearchInputLength,
-                staleTime: 30 * 1000,
+                staleTime: Duration.seconds(30),
             },
         },
     )
@@ -78,7 +77,7 @@ export default function usePhoneDeviceDialerCustomerSuggestions({
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const debouncedSearchCustomers = useCallback(
-        debounce(setQuery, SEARCH_DEBOUNCE_VALUE),
+        debounce(setQuery, Duration.millis(500)),
         [setQuery],
     )
 

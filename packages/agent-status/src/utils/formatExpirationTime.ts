@@ -1,10 +1,10 @@
 import type { DateFormatType, TimeFormatType } from '@repo/utils'
 import {
     DateFormatType as DateFormat,
-    DurationInMs,
     TimeFormatType as TimeFormat,
 } from '@repo/utils'
 import moment from 'moment'
+import { Duration } from '@gorgias/toolkit'
 
 const { en_US, en_GB } = DateFormat
 const { TwentyFourHour, AmPm } = TimeFormat
@@ -69,13 +69,13 @@ export function formatExpirationTime(
 
     const timeFormatString = TIME_FORMAT_DICT[timeFormat]
 
-    const isWithinOneDay = diffMs < DurationInMs.OneDay
+    const isWithinOneDay = diffMs < Duration.days(1)
 
     if (isWithinOneDay) {
         return localExpiry.format(timeFormatString)
     }
 
-    const isWithinOneWeek = diffMs < DurationInMs.OneWeek
+    const isWithinOneWeek = diffMs < Duration.weeks(1)
 
     if (isWithinOneWeek) {
         return localExpiry.format(`dddd, ${timeFormatString}`)

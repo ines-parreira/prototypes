@@ -1,5 +1,6 @@
 import type React from 'react'
 import { useMemo } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import classNames from 'classnames'
 import _keyBy from 'lodash/keyBy'
@@ -153,7 +154,7 @@ export const ArticleRow = ({
                 </div>
                 {article.rating && (
                     <Tooltip
-                        delay={100}
+                        delay={Duration.millis(100)}
                         target={`rating-${article.id}`}
                         placement="top"
                         innerProps={{
@@ -212,7 +213,7 @@ export const ArticleRow = ({
             <BodyCell style={{ width: 105, minWidth: 105 }}>
                 <div id={`last-update-${article.id}`}>{lastUpdate}</div>
                 <Tooltip
-                    delay={100}
+                    delay={Duration.millis(100)}
                     target={`last-update-${article.id}`}
                     placement="top"
                     innerProps={{

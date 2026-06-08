@@ -1,3 +1,4 @@
+import { Duration } from '@gorgias/toolkit'
 /* eslint-disable no-console */
 import type { ComponentType } from 'react'
 import { Component } from 'react'
@@ -1147,7 +1148,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends Component<
                                             </span>
                                             <Tooltip
                                                 autohide={false}
-                                                delay={100}
+                                                delay={Duration.millis(100)}
                                                 target="hide-chat-help"
                                                 placement="top-start"
                                                 innerProps={{

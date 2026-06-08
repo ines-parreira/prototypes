@@ -27,7 +27,8 @@
         "axios": "catalog:rest-api-sdk",
         "axios-rate-limit": "^1.4.0",
         "react": "catalog:react",
-        "react-dom": "catalog:react"
+        "react-dom": "catalog:react",
+        "@gorgias/toolkit": "catalog:toolkit"
     },
     "devDependencies": {
         "@gorgias/axiom": "catalog:axiom",
@@ -53,6 +54,7 @@
         "react-dom": "catalog:react",
         "tsx": "catalog:typescript",
         "typescript": "catalog:typescript",
-        "vitest": "catalog:test"
+        "vitest": "catalog:test",
+        "@gorgias/toolkit": "catalog:toolkit"
     }
 }

@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-
-import { DurationInMs } from '@repo/utils'
+import { Duration } from '@gorgias/toolkit'
 
 import type { searchTickets } from '@gorgias/helpdesk-client'
 import { useSearchTickets } from '@gorgias/helpdesk-queries'
@@ -172,7 +171,7 @@ export function useTicketTableData({
                     (isDraftView || isDirtyMode) &&
                     (dirtyView?.areFiltersValid ?? false),
                 refetchOnWindowFocus: false,
-                staleTime: DurationInMs.FiveSeconds,
+                staleTime: Duration.seconds(5),
                 select: (response) => ({
                     data: (response.data.data ?? []) as TicketCompact[],
                     meta: response.data.meta,
@@ -199,7 +198,7 @@ export function useTicketTableData({
             query: {
                 enabled: enabled && isSearchMode,
                 refetchOnWindowFocus: false,
-                staleTime: DurationInMs.FiveSeconds,
+                staleTime: Duration.seconds(5),
             },
         },
     )

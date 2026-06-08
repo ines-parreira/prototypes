@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
+import { Duration } from '@gorgias/toolkit'
 
 type TagsType = 'customers' | 'orders'
 
@@ -51,6 +52,6 @@ export function useShopifyShopTags({
         queryKey: ['shopify', 'shopTags', tagsType, integrationId],
         queryFn: () => fetchShopifyShopTags(integrationId!, tagsType),
         enabled: !!integrationId,
-        staleTime: 5 * 60 * 1000,
+        staleTime: Duration.minutes(5),
     })
 }

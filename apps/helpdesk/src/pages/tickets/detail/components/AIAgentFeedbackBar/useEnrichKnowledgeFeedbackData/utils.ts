@@ -1,4 +1,5 @@
 import { useMemo, useRef } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import type {
     FeedbackExecutionsItem,
@@ -28,8 +29,8 @@ import {
     suggestedResourceValueSchema,
 } from '../types'
 
-export const DEFAULT_STALE_TIME = 10 * 60 * 1000
-export const DEFAULT_CACHE_TIME = 10 * 60 * 1000
+export const DEFAULT_STALE_TIME = Duration.minutes(10)
+export const DEFAULT_CACHE_TIME = Duration.minutes(10)
 
 export const knowledgeResourceOrder = [
     AiAgentKnowledgeResourceTypeEnum.GUIDANCE,

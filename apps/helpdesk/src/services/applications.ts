@@ -1,4 +1,5 @@
 import { appQueryClient } from '@repo/api-resources'
+import { Duration } from '@gorgias/toolkit'
 
 import type { ApiListResponseCursorPagination } from 'models/api/types'
 import {
@@ -21,8 +22,8 @@ export type {
     ApplicationAttachmentsMessagingConfig,
 } from 'models/application/types'
 
-const STALE_TIME = 1 * 60 * 60 * 1000
-const CACHE_TIME = STALE_TIME + 60 * 1000
+const STALE_TIME = Duration.hours(1)
+const CACHE_TIME = STALE_TIME + Duration.minutes(1)
 
 const INITIAL_DATA = window?.GORGIAS_STATE?.applications ?? []
 

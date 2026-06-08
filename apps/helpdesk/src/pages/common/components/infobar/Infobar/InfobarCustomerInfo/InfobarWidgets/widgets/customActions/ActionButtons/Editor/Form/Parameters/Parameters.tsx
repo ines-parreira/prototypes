@@ -1,4 +1,5 @@
 import React, { memo, useCallback, useMemo } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import debounce from 'lodash/debounce'
 import { ulid } from 'ulidx'
@@ -23,8 +24,6 @@ type Props = {
     onChange: OnChangeAction
 }
 
-const DEBOUNCE_DURATION = 200
-
 function Parameters({ addLabel = 'Parameter', value, path, onChange }: Props) {
     // NOTE: Not every values comes with an ID
     // so we need to generate the missing ones
@@ -39,7 +38,7 @@ function Parameters({ addLabel = 'Parameter', value, path, onChange }: Props) {
     }
 
     const debouncedOnChange = useMemo(
-        () => debounce(onChange, DEBOUNCE_DURATION),
+        () => debounce(onChange, Duration.millis(200)),
         [onChange],
     )
 

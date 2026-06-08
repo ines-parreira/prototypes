@@ -1,17 +1,16 @@
 import { useCallback, useMemo } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { hasRole, isAdmin } from '@repo/permissions'
 import type { UserRole } from '@repo/permissions'
 
 import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
 
-const CURRENT_USER_STALE_TIME = 5 * 60 * 1000
-
 export function useCurrentUserRole() {
     const { data: currentUser } = useGetCurrentUser({
         query: {
             select: (data) => data.data,
-            staleTime: CURRENT_USER_STALE_TIME,
+            staleTime: Duration.minutes(5),
         },
     })
 

@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { useCallback, useMemo, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import type {
     ActiveElement,
@@ -103,7 +104,7 @@ const DonutChart = ({
     )
 
     const debouncedOnMouseLeave = useMemo(
-        () => _debounce(() => setHoveredIndex(null), 100),
+        () => _debounce(() => setHoveredIndex(null), Duration.millis(100)),
         [],
     )
 

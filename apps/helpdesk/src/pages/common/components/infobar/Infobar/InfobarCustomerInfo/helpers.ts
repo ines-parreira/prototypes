@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { appQueryClient } from '@repo/api-resources'
 import { useGetCustomer } from '@repo/customer/hooks'
@@ -8,7 +9,6 @@ import { memoize, throttle } from 'lodash'
 
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
-import { DurationInMs } from '@repo/utils'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
 import { makeHasIntegrationOfTypes } from 'state/integrations/selectors'
@@ -127,7 +127,7 @@ export const getThrottledUpdateForCustomer = memoize((id: number) =>
                 queryKey: queryKeys.customers.getCustomer(id),
             })
         },
-        DurationInMs.FifteenSeconds,
+        Duration.seconds(15),
         { leading: true, trailing: true },
     ),
 )

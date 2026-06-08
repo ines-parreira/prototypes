@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
-import { DurationInMs } from '@repo/utils'
 import { useQueryClient } from '@tanstack/react-query'
 import type { InfiniteData } from '@tanstack/react-query'
 
@@ -138,10 +138,10 @@ export function useRefreshStaleTickets({
         {
             query: {
                 enabled,
-                refetchInterval: DurationInMs.FiveSeconds,
+                refetchInterval: Duration.seconds(5),
                 refetchIntervalInBackground: false,
                 refetchOnWindowFocus: false,
-                staleTime: DurationInMs.FiveSeconds,
+                staleTime: Duration.seconds(5),
                 select: (response) => response.data.data,
             },
         },

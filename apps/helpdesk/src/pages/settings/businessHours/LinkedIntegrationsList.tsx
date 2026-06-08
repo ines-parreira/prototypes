@@ -1,4 +1,5 @@
 import { useEffect, useMemo } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import _flatten from 'lodash/flatten'
 
@@ -17,7 +18,7 @@ type Props = {
 export default function LinkedIntegrationsList({ businessHoursId }: Props) {
     const { data, isError, fetchNextPage, hasNextPage, isFetchingNextPage } =
         useInfiniteListBusinessHoursIntegrations(businessHoursId, undefined, {
-            staleTime: 15_000,
+            staleTime: Duration.seconds(15),
         })
 
     const integrations = useMemo(

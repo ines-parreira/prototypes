@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 
@@ -60,9 +61,6 @@ export default function InboundConnectionCard({
     )
 }
 
-const AUTHORIZE_POLL_INTERVAL_MS = 3000
-const AUTHORIZE_POLL_MAX_DURATION_MS = 5 * 60 * 1000
-
 function InboundAction({
     appId,
     appTitle,
@@ -85,11 +83,11 @@ function InboundAction({
         if (!isPollingForAuth || !onAuthorizeReturn) return
         const intervalId = setInterval(() => {
             void onAuthorizeReturn()
-        }, AUTHORIZE_POLL_INTERVAL_MS)
+        }, Duration.seconds(3))
         const timeoutId = setTimeout(() => {
             clearInterval(intervalId)
             setIsPollingForAuth(false)
-        }, AUTHORIZE_POLL_MAX_DURATION_MS)
+        }, Duration.minutes(5))
         return () => {
             clearInterval(intervalId)
             clearTimeout(timeoutId)

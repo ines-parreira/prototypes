@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useStore } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -33,7 +34,7 @@ export const useStartSubscription = () => {
                 toast.info(
                     'In order to activate your subscription, we need you to confirm this payment to your bank. ' +
                         'You will be redirected in a few seconds to a secure page.',
-                    { duration: 5000 },
+                    { duration: Duration.seconds(5) },
                 )
 
                 setTimeout(() => {

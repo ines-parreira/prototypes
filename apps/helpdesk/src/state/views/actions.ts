@@ -10,6 +10,7 @@ import _chunk from 'lodash/chunk'
 import type { Moment } from 'moment'
 import { notify as updateNotification } from 'reapop'
 import type { UpsertNotificationAction } from 'reapop/dist/reducers/notifications/actions'
+import { Duration } from '@gorgias/toolkit'
 
 import type { JobType } from '@gorgias/helpdesk-queries'
 import type { OrderDirection } from '@gorgias/helpdesk-types'
@@ -635,7 +636,7 @@ export function createJob(
         const notification = dispatch(
             notify({
                 status: NotificationStatus.Loading,
-                dismissAfter: 10000,
+                dismissAfter: Duration.seconds(10),
                 closeOnNext: true,
                 message: buildJobMessage(
                     jobType,
@@ -782,7 +783,7 @@ export const fetchVisibleViewsCounts =
                 all: true,
             })
             if (chunks.length) {
-                setTimeout(() => sendNextChunk(chunks), 500)
+                setTimeout(() => sendNextChunk(chunks), Duration.millis(500))
             }
         }
 

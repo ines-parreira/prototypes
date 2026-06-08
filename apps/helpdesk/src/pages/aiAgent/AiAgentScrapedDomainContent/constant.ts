@@ -1,3 +1,4 @@
+import { Duration } from '@gorgias/toolkit'
 export const SCRAPPING_CONTENT = {
     QUESTIONS: 'Questions',
     PRODUCTS: 'Products',
@@ -26,7 +27,7 @@ export const PAGE_NAME = {
 }
 
 export const PAGINATED_ITEMS_PER_PAGE = 15
-export const MODAL_TRANSITION_DURATION_MS = 300
+export const MODAL_TRANSITION_DURATION_MS = Duration.millis(300)
 
 export enum IngestionLogStatus {
     Disabled = 'DISABLED',
@@ -45,7 +46,7 @@ export enum IngestedResourceStatus {
     Enabled = 'enabled',
 }
 
-export const POLLING_INTERVAL = 60000
+export const POLLING_INTERVAL = Duration.minutes(1)
 
 export const ECOMMERCE_TYPE = 'product'
 

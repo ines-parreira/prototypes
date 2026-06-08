@@ -142,6 +142,9 @@ window.GORGIAS_RELEASE = '1'
 // react query callbacks
 jest.mock('@repo/api-resources', () => {
     const axiosModule = jest.requireActual('axios') as typeof import('axios')
+    const { Duration } = jest.requireActual(
+        '@gorgias/toolkit',
+    ) as typeof import('@gorgias/toolkit')
     const axios = axiosModule.default
     const gorgiasAppsAuthInterceptor = jest.fn()
 
@@ -156,7 +159,7 @@ jest.mock('@repo/api-resources', () => {
         gorgiasAppsAuthInterceptor,
         handleNewRelease: jest.fn(),
         initializeNewReleaseHandler: jest.fn(),
-        timeoutTime: 10800000,
+        timeoutTime: Duration.hours(3),
     }
 })
 

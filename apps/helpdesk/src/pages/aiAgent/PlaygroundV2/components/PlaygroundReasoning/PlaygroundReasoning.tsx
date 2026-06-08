@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { isSessionImpersonated } from '@repo/activity-tracker/utils'
 import { useReasoningTracking } from '@repo/ai-agent'
@@ -236,7 +237,8 @@ export const PlaygroundReasoning = ({
         objectType: 'TEST_MODE_SESSION',
         messageId: messageId,
         enabled: !!messageId,
-        refetchInterval: loadingState === 'loading' ? 2000 : false,
+        refetchInterval:
+            loadingState === 'loading' ? Duration.seconds(2) : false,
     })
 
     useEffect(() => {
@@ -250,7 +252,7 @@ export const PlaygroundReasoning = ({
 
             const timeout = setTimeout(() => {
                 setLoadingState('timeout')
-            }, 30000)
+            }, Duration.seconds(30))
 
             return () => clearTimeout(timeout)
         }

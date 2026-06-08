@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useDebouncedCallback } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -14,9 +15,6 @@ import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { SEARCH_URL_PARAM } from './constants'
 
 import css from './Search.less'
-
-const DEBOUNCE_DURATION = 200 //ms
-const DEBOUNCE_TRACKING_DURATION = 800 //ms
 
 function getSearchUrl(searchValue: string) {
     return searchValue === ''
@@ -46,11 +44,11 @@ export default function Search() {
     )
     const debouncedSetSearch = useDebouncedCallback(
         replaceSearch,
-        DEBOUNCE_DURATION,
+        Duration.millis(200),
     )
     const debouncedTrackSearch = useDebouncedCallback(
         trackSearch,
-        DEBOUNCE_TRACKING_DURATION,
+        Duration.millis(800),
     )
 
     useEffect(() => {

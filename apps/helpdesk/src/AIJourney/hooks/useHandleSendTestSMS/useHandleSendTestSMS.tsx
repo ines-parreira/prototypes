@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { parsePhoneNumberWithError } from 'libphonenumber-js'
 
@@ -23,7 +24,7 @@ export const useHandleSendTestSMS = ({
     selectedProduct,
     testSmsNumber,
     currentIntegration,
-    delaySendingSMSms = 10_000,
+    delaySendingSMSms = Duration.seconds(10),
     returningCustomer,
 }: useHandleSendTestSMSProps) => {
     const testSms = useTestSms()

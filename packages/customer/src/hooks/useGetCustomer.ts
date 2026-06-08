@@ -1,5 +1,5 @@
-import { DurationInMs } from '@repo/utils'
 import type { UseQueryOptions } from '@tanstack/react-query'
+import { Duration } from '@gorgias/toolkit'
 
 import type { getCustomer } from '@gorgias/helpdesk-client'
 import type {
@@ -9,7 +9,7 @@ import type {
 } from '@gorgias/helpdesk-queries'
 import { useGetCustomer as useGeneratedGetCustomer } from '@gorgias/helpdesk-queries'
 
-export const GET_CUSTOMER_STALE_TIME_MS = DurationInMs.OneHour
+export const GET_CUSTOMER_STALE_TIME_MS = Duration.hours(1)
 
 export function useGetCustomer<
     TData = Awaited<ReturnType<typeof getCustomer>>,

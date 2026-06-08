@@ -1,4 +1,5 @@
 import type { MouseEvent } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { history } from '@repo/routing'
 import type { Map } from 'immutable'
@@ -73,7 +74,7 @@ export const StoreIntegrationCell = ({
                 </Text>
                 {isStoreDisconnected && (
                     <Tooltip
-                        delay={100}
+                        delay={Duration.millis(100)}
                         placement="top"
                         trigger={
                             <span role="img">

@@ -1,5 +1,6 @@
 import client from '@repo/api-resources'
 import _throttle from 'lodash/throttle'
+import { Duration } from '@gorgias/toolkit'
 
 import type { RecentChatTicket } from '../../business/types/recentChats'
 import type { Ticket } from '../../models/ticket/types'
@@ -12,7 +13,7 @@ export const fetchChats =
     (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         return client
             .get<{ tickets: Ticket[] }>('/api/activity/chats/', {
-                timeout: 10000,
+                timeout: Duration.seconds(10),
             })
             .then((json) => json?.data)
             .then(
@@ -30,7 +31,7 @@ export const fetchChats =
 
 export const fetchChatsThrottled = _throttle((dispatch: StoreDispatch) => {
     void dispatch(fetchChats())
-}, 10000)
+}, Duration.seconds(10))
 
 export const addChat =
     (ticket: RecentChatTicket, notify = true, playSoundNotification = true) =>

@@ -1,5 +1,6 @@
 import cn from 'classnames'
 import { CSSTransition } from 'react-transition-group'
+import { Duration } from '@gorgias/toolkit'
 
 import useNotificationsOverlay from '../hooks/useNotificationsOverlay'
 import Feed from './Feed'
@@ -27,7 +28,7 @@ export default function Overlay() {
                 unmountOnExit
                 classNames={transitionClassNames}
                 in={isVisible}
-                timeout={200}
+                timeout={Duration.millis(200)}
             >
                 <div className={cn(css.container)}>
                     <Feed onClose={onToggle} />

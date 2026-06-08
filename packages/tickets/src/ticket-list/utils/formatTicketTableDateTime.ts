@@ -1,6 +1,7 @@
 import type { UserDateTimePreferences } from '@repo/preferences'
-import { DateFormatType, DurationInMs, TimeFormatType } from '@repo/utils'
+import { DateFormatType, TimeFormatType } from '@repo/utils'
 import moment from 'moment'
+import { Duration } from '@gorgias/toolkit'
 
 type FormattedTicketTableDateTime = {
     cellLabel: string
@@ -56,7 +57,7 @@ export function formatTicketTableDateTime(
         cellLabel = `Yesterday at ${localDatetime.format(timeFormatString)}`
     } else if (localDatetime.isSame(localNow.clone().add(1, 'day'), 'day')) {
         cellLabel = `Tomorrow at ${localDatetime.format(timeFormatString)}`
-    } else if (Math.abs(localNow.diff(localDatetime)) < DurationInMs.OneWeek) {
+    } else if (Math.abs(localNow.diff(localDatetime)) < Duration.weeks(1)) {
         cellLabel = localDatetime.format('dddd')
     }
 

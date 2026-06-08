@@ -1,8 +1,8 @@
 import type React from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useFlag } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
-import { DurationInMs } from '@repo/utils'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { useFindOpportunitiesByTicketIdOpportunity } from '@gorgias/knowledge-service-queries'
@@ -366,7 +366,7 @@ describe('useFindTopOpportunityByTicketId', () => {
                 '12345',
                 expect.objectContaining({
                     query: expect.objectContaining({
-                        staleTime: DurationInMs.FifteenMinutes,
+                        staleTime: Duration.minutes(15),
                     }),
                 }),
             )

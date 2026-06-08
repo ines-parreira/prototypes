@@ -1,6 +1,7 @@
 import type { FC } from 'react'
 import type React from 'react'
 import { useCallback, useMemo } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { sanitizeHtmlDefault } from '@repo/utils'
 import _keyBy from 'lodash/keyBy'
@@ -154,7 +155,7 @@ export const SearchResultsArticleRow: FC<Props> = ({
                 </div>
                 {entity?.rating && (
                     <Tooltip
-                        delay={100}
+                        delay={Duration.millis(100)}
                         target={`rating-${article.id}`}
                         placement="top"
                         innerProps={{

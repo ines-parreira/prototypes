@@ -1,5 +1,5 @@
-import { DurationInMs } from '@repo/utils'
+import { Duration } from '@gorgias/toolkit'
 
 export const customerGetQueryOptions = {
-    cacheTime: DurationInMs.OneDay,
+    cacheTime: Duration.days(1),
 } as const

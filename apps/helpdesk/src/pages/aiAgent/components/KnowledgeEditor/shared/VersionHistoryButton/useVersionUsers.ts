@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useQueries } from '@tanstack/react-query'
 
@@ -6,8 +7,6 @@ import { getUser } from '@gorgias/helpdesk-client'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import type { VersionItem } from './types'
-
-const STALE_TIME = 5 * 60 * 1000
 
 type UserData = {
     data: {
@@ -39,7 +38,7 @@ export function useVersionUsers(
         queries: userIds.map((id) => ({
             queryKey: queryKeys.users.getUser(id),
             queryFn: () => getUser(id),
-            staleTime: STALE_TIME,
+            staleTime: Duration.minutes(5),
             enabled: id > 0,
         })),
     })

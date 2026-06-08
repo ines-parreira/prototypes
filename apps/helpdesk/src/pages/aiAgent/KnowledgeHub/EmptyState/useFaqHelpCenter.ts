@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useParams } from 'react-router-dom'
 
@@ -27,7 +28,7 @@ export function useFaqHelpCenter() {
     const { data: helpCenterListData } = useGetHelpCenterList(
         { type: 'faq', per_page: HELP_CENTER_MAX_CREATION },
         {
-            staleTime: 1000 * 60 * 5,
+            staleTime: Duration.minutes(5),
             refetchOnWindowFocus: false,
         },
     )

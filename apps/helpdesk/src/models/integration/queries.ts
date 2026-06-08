@@ -8,6 +8,7 @@ import {
     useQuery,
     useQueryClient,
 } from '@tanstack/react-query'
+import { Duration } from '@gorgias/toolkit'
 
 import { INTEGRATION_DATA_ITEM_TYPE_PRODUCT } from 'constants/integration'
 import type { Product } from 'constants/integrations/types/shopify'
@@ -44,8 +45,8 @@ import type {
     UpdateServiceConnectionRequest,
 } from './types/serviceConnection'
 
-export const STALE_TIME_MS = 10 * 60 * 1000 // 10 minutes
-export const CACHE_TIME_MS = 20 * 60 * 1000 // 20 minutes
+export const STALE_TIME_MS = Duration.minutes(10)
+export const CACHE_TIME_MS = Duration.minutes(20)
 
 export const getInstallationSnippetQueryKey = (
     params: GetInstallationSnippetParams,

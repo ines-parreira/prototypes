@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
+import { Duration } from '@gorgias/toolkit'
 
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 import { useConvertApi } from 'pages/convert/common/hooks/useConvertApi'
@@ -16,8 +17,8 @@ export enum UsageStatus {
 }
 
 const defaultOptions = {
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    cacheTime: 10 * 60 * 1000, // 10 minutes
+    staleTime: Duration.minutes(5),
+    cacheTime: Duration.minutes(10),
 }
 
 export const convertStatusKeys = {

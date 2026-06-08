@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { localForageManager } from '@repo/browser-storage'
 import _debounce from 'lodash/debounce'
@@ -9,8 +10,6 @@ type RecentItem = {
 }
 
 const MAX_RECENT_ITEMS = 30
-const DEBOUNCE_TIME = 300
-
 export function useRecentItems<T extends RecentItem>(
     tableName: string,
     maxItems: number = MAX_RECENT_ITEMS,
@@ -106,7 +105,7 @@ export function useRecentItems<T extends RecentItem>(
                 await localForage.setItem(Date.now().toString(), item)
                 previousItemRef.current = item
                 await readItems()
-            }, DEBOUNCE_TIME),
+            }, Duration.millis(300)),
         [localForage, maxItems, readItems],
     )
 

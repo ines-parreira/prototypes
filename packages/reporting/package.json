@@ -32,7 +32,8 @@
         "react-dnd-html5-backend": "catalog:react-dnd",
         "react-dom": "catalog:react",
         "react-is": "catalog:react",
-        "reactstrap": "8.9.0"
+        "reactstrap": "8.9.0",
+        "@gorgias/toolkit": "catalog:toolkit"
     },
     "devDependencies": {
         "@gorgias/analytics-ui-kit": "catalog:analytics-ui-kit",
@@ -64,7 +65,8 @@
         "react-dom": "catalog:react",
         "reactstrap": "8.9.0",
         "typescript": "catalog:typescript",
-        "vitest": "catalog:test"
+        "vitest": "catalog:test",
+        "@gorgias/toolkit": "catalog:toolkit"
     },
     "dependencies": {
         "html2canvas": "^1.4.1",

@@ -1,3 +1,4 @@
+import { Duration } from '@gorgias/toolkit'
 // Offer 10% discount for visitors with high-value carts
 import type { Map } from 'immutable'
 import { ulid } from 'ulidx'
@@ -115,7 +116,7 @@ export const DISCOUNT_HIGH_VALUE_CARTS: CampaignTemplate = {
                 triggers: triggers,
                 trigger_rule: createTriggerRule(triggers),
                 meta: {
-                    delay: 15000,
+                    delay: Duration.seconds(15),
                     noReply: true,
                 },
             },

@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { FormField, useWatch } from '@repo/forms'
 import type { NodeProps } from '@xyflow/react'
@@ -55,7 +56,7 @@ export function RouteToNode(
         {
             query: {
                 enabled: isGetVoiceQueueEnabled,
-                staleTime: 60_000,
+                staleTime: Duration.minutes(1),
             },
         },
     )
@@ -65,7 +66,7 @@ export function RouteToNode(
         {
             query: {
                 enabled: isGetIntegrationEnabled,
-                staleTime: 60_000,
+                staleTime: Duration.minutes(1),
             },
         },
     )

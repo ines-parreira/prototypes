@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { useCallback, useMemo, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useLocalStorage, useTimeout } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -7,8 +8,6 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { NavBarContext, NavBarDisplayMode } from '../hooks/useNavBar/context'
 
 export const NAVBAR_DISPLAY_KEY = 'navbar-display'
-
-const FREEZE_TIMEOUT = 750
 
 export function NavBarProvider({ children }: { children: ReactNode }) {
     const [isNavHovered, setIsNavHovered] = useState(false)
@@ -44,7 +43,7 @@ export function NavBarProvider({ children }: { children: ReactNode }) {
             clearTimeout()
             setTimeout(() => {
                 isFrozenRef.current = false
-            }, FREEZE_TIMEOUT)
+            }, Duration.millis(750))
             logSegmentToggleEvent(false)
         } else {
             setNavBarDisplay(NavBarDisplayMode.Open)

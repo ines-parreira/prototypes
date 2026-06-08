@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useId } from '@repo/hooks'
 
@@ -67,7 +68,7 @@ export default function VoiceQueueSelectField({
         {
             query: {
                 enabled: !selectedOption && !!value,
-                staleTime: 60_000,
+                staleTime: Duration.minutes(1),
             },
         },
     )

@@ -1,5 +1,6 @@
 import type { UseInfiniteQueryOptions } from '@tanstack/react-query'
 import { useInfiniteQuery } from '@tanstack/react-query'
+import { Duration } from '@gorgias/toolkit'
 
 import { fetchMacros } from './resources'
 
@@ -47,7 +48,7 @@ export const useGetAICompatibleMacros = <
         getNextPageParam: (lastPage) => {
             return lastPage.data.meta.next_cursor
         },
-        staleTime: 1000 * 60 * 5,
+        staleTime: Duration.minutes(5),
         ...overrides,
     })
 }

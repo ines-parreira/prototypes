@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { Component } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { FeatureFlagsMap } from '@repo/feature-flags'
@@ -322,7 +323,7 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
                 </label>
                 <Tooltip
                     autohide={false}
-                    delay={100}
+                    delay={Duration.millis(100)}
                     target="attachment"
                     placement="bottom"
                 >

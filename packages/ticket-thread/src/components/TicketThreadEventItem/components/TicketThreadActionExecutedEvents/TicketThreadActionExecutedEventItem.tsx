@@ -1,4 +1,4 @@
-import { DurationInMs } from '@repo/utils'
+import { Duration } from '@gorgias/toolkit'
 
 import { useGetIntegration } from '@gorgias/helpdesk-queries'
 
@@ -38,7 +38,7 @@ export function TicketThreadActionExecutedEventItem({
         {
             query: {
                 enabled: integrationId != null,
-                staleTime: DurationInMs.OneDay,
+                staleTime: Duration.days(1),
                 refetchOnWindowFocus: false,
             },
         },

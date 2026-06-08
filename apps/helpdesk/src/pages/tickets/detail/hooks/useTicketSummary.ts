@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useTimeout } from '@repo/hooks'
 
@@ -8,8 +9,6 @@ import { useGenerateTicketSummary } from '@gorgias/helpdesk-queries'
 import { isGorgiasApiError } from 'models/api/types'
 import socketManager from 'services/socketManager/socketManager'
 import { JoinEventType } from 'services/socketManager/types'
-
-const CLEAR_ERROR_TIMEOUT = 5000
 
 export const useTicketSummary = ({
     ticketId,
@@ -50,7 +49,7 @@ export const useTicketSummary = ({
                     if (summary?.content) {
                         setTimeout(
                             () => setErrorMessage(''),
-                            CLEAR_ERROR_TIMEOUT,
+                            Duration.seconds(5),
                         )
                     }
                     setIsLoading(false)

@@ -1,5 +1,6 @@
 import type { ComponentProps, MouseEvent } from 'react'
 import { useCallback, useMemo, useRef } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import cn from 'classnames'
 import { Link } from 'react-router-dom'
@@ -115,7 +116,7 @@ export default function Ticket({
     return (
         <CSSTransition
             classNames={classNames}
-            timeout={650}
+            timeout={Duration.millis(650)}
             {...transitionProps}
             enter={isNewTicket}
         >
@@ -168,7 +169,7 @@ export default function Ticket({
                                             type={ticket.channel}
                                         />
                                         <Tooltip
-                                            delay={100}
+                                            delay={Duration.millis(100)}
                                             placement="bottom"
                                             target={sourceRef}
                                         >
@@ -225,7 +226,7 @@ export default function Ticket({
 
                                 {ticket.excerpt !== '' && (
                                     <Tooltip
-                                        delay={450}
+                                        delay={Duration.millis(450)}
                                         placement="top"
                                         target={excerptRef}
                                     >

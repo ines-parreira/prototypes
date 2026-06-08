@@ -2,6 +2,7 @@ import { FeatureFlagKey, fetchFlag } from '@repo/feature-flags'
 import { reportError } from '@repo/logging'
 import { isProduction } from '@repo/utils'
 import { Call, Device, TwilioError } from '@twilio/voice-sdk'
+import { Duration } from '@gorgias/toolkit'
 
 import {
     DEFAULT_ERROR_MESSAGE,
@@ -45,7 +46,7 @@ export async function connectDevice(
     actions: VoiceDeviceActions,
 ) {
     actions.setIsConnecting(true)
-    await utils.sleep(reconnectAttempts * 5000)
+    await utils.sleep(reconnectAttempts * Duration.seconds(5))
     actions.incrementReconnectAttempts()
 
     const isHttps = window.location.protocol.startsWith('https')
@@ -96,7 +97,7 @@ export const createDevice = (token: string): Device => {
     return new Device(token, {
         closeProtection: true,
         codecPreferences: [Call.Codec.Opus, Call.Codec.PCMU],
-        tokenRefreshMs: 30 * 1000,
+        tokenRefreshMs: Duration.seconds(30),
         logLevel: 'error',
         allowIncomingWhileBusy: true,
     })

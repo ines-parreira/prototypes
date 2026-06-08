@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { history } from '@repo/routing'
 import { isRecord } from '@repo/utils'
@@ -100,7 +101,7 @@ export function useWhatsAppOnboardingRealtimeMessageHandler() {
 
             toast.info(
                 `WhatsApp successfully connected for number ${payload.phone_number}.`,
-                { duration: 10000 },
+                { duration: Duration.seconds(10) },
             )
             dispatch(integrationsActions.fetchIntegrations() as any)
 
@@ -126,7 +127,7 @@ export function useWhatsAppOnboardingRealtimeMessageHandler() {
                 ? `${payload.error.message} (number: ${payload.phone_number})`
                 : `Failed to connect WhatsApp for number ${payload.phone_number}. Please try again or contact support.`
 
-            toast.error(toastMessage, { duration: 10000 })
+            toast.error(toastMessage, { duration: Duration.seconds(10) })
         },
         [navigateToWhatsAppIntegrations],
     )

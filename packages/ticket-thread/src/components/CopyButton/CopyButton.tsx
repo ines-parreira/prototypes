@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useCopyToClipboard, useTimeout } from '@repo/hooks'
 
@@ -19,7 +20,7 @@ export function CopyButton({ text }: CopyButtonProps) {
     const handleCopy = () => {
         copyToClipboard(text)
         setIsCopied(true)
-        setTimeout(() => setIsCopied(false), 2000)
+        setTimeout(() => setIsCopied(false), Duration.seconds(2))
     }
 
     return (

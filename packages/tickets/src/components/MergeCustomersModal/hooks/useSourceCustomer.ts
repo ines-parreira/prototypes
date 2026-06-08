@@ -1,4 +1,4 @@
-import { DurationInMs } from '@repo/utils'
+import { Duration } from '@gorgias/toolkit'
 
 import { useGetCustomer } from '@gorgias/helpdesk-queries'
 import type { Customer } from '@gorgias/helpdesk-types'
@@ -10,7 +10,7 @@ export function useSourceCustomer(sourceCustomer: Customer | null) {
         {
             query: {
                 enabled: !!sourceCustomer?.id,
-                staleTime: DurationInMs.OneHour,
+                staleTime: Duration.hours(1),
             },
         },
     )

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useCallbackRef, useDebouncedValue, useTitle } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -76,7 +77,7 @@ export default function CustomFields({
     useInjectStyleToCandu(landingNode)
 
     const [search, setSearch] = useState('')
-    const debouncedSearch = useDebouncedValue(search, 300)
+    const debouncedSearch = useDebouncedValue(search, Duration.millis(300))
 
     const activeParams: ListCustomFieldsParams = {
         archived: false,

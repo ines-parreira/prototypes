@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useQueryClient } from '@tanstack/react-query'
 
@@ -9,8 +10,6 @@ import {
     useGetFileIngestion,
 } from 'models/helpCenter/queries'
 import type { Components } from 'rest_api/help_center_api/client.generated'
-
-const UPDATE_STATUS_INTERVAL_MS = 5000
 
 export const useFileIngestion = ({
     helpCenterId,
@@ -62,7 +61,7 @@ export const useFileIngestion = ({
             refetchInterval:
                 ingestingFilesId === null || ingestingFilesId.length === 0
                     ? false
-                    : UPDATE_STATUS_INTERVAL_MS,
+                    : Duration.seconds(5),
         },
     )
 

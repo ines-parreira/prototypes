@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
-import { DurationInMs } from '@repo/utils'
 import { useInfiniteQuery } from '@tanstack/react-query'
 
 import { listViewItems } from '@gorgias/helpdesk-client'
@@ -27,8 +27,6 @@ export type UseTicketsListOptions = {
 }
 
 export const PAGE_SIZE = 25
-const STALE_TIME_MS = DurationInMs.ThirtySeconds
-
 export function getTicketsListQueryKey(
     viewId: number,
     params?: UseTicketsListParams,
@@ -70,7 +68,7 @@ export function useTicketsList(
         getNextPageParam: (lastPage) => {
             return getNextCursorFromMeta(lastPage.meta)
         },
-        staleTime: STALE_TIME_MS,
+        staleTime: Duration.seconds(30),
         refetchOnWindowFocus: true,
     })
 

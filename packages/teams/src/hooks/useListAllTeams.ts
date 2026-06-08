@@ -1,5 +1,5 @@
 import { useExhaustEndpoint } from '@repo/hooks'
-import { DurationInMs } from '@repo/utils'
+import { Duration } from '@gorgias/toolkit'
 
 import { listTeams } from '@gorgias/helpdesk-client'
 import { queryKeys } from '@gorgias/helpdesk-queries'
@@ -16,7 +16,7 @@ export function useListAllTeams({
         (cursor) => listTeams({ cursor, limit: 100 }),
         {
             enabled,
-            staleTime: DurationInMs.OneDay,
+            staleTime: Duration.days(1),
             refetchOnWindowFocus: false,
         },
     )

@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useQueries } from '@tanstack/react-query'
 
@@ -93,7 +94,7 @@ export const useEnrichedOpportunity = (
                 !!client &&
                 !!opportunityQuery.data &&
                 (options?.query?.enabled ?? true),
-            staleTime: 5 * 60 * 1000,
+            staleTime: Duration.minutes(5),
         })),
     })
 

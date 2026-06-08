@@ -23,7 +23,8 @@
         "lodash": "catalog:lodash",
         "qs": "catalog:qs",
         "react": "catalog:react",
-        "react-dom": "catalog:react"
+        "react-dom": "catalog:react",
+        "@gorgias/toolkit": "catalog:toolkit"
     },
     "devDependencies": {
         "@gorgias/helpdesk-client": "catalog:rest-api-sdk",
@@ -47,6 +48,7 @@
         "react": "catalog:react",
         "react-dom": "catalog:react",
         "typescript": "catalog:typescript",
-        "vitest": "catalog:test"
+        "vitest": "catalog:test",
+        "@gorgias/toolkit": "catalog:toolkit"
     }
 }

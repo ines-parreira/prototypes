@@ -1,3 +1,4 @@
+import { Duration } from '@gorgias/toolkit'
 /* istanbul ignore file */
 import { appQueryClient } from '@repo/api-resources'
 
@@ -13,8 +14,6 @@ export type Listener = (tickets: TicketPartial[], cursor: string | null) => void
 export type Unsubscribe = () => void
 
 const PAGE_LIMIT = 25
-const POLLING_INTERVAL = 5000
-
 export default class TicketUpdatesManager {
     private isPaused: boolean = false
     private latestIndex = 0
@@ -168,7 +167,7 @@ export default class TicketUpdatesManager {
     private start() {
         const next = () => {
             void this.poll()
-            this.pollTimeout = setTimeout(next, POLLING_INTERVAL)
+            this.pollTimeout = setTimeout(next, Duration.seconds(5))
         }
 
         next()

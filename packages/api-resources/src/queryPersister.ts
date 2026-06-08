@@ -1,7 +1,7 @@
 import { localForageManager } from '@repo/browser-storage'
-import { DurationInMs } from '@repo/utils'
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister'
 import type { Query } from '@tanstack/react-query'
+import { Duration } from '@gorgias/toolkit'
 
 const STORE_NAME = 'query-cache'
 
@@ -13,7 +13,7 @@ function getStorageKey(): string {
     return [accountId, userId].join('-')
 }
 
-export const PERSIST_MAX_AGE = DurationInMs.OneDay
+export const PERSIST_MAX_AGE = Duration.days(1)
 
 export function createLocalForageStorage() {
     return {
@@ -45,7 +45,7 @@ export function createLocalForageStorage() {
 export const asyncStoragePersister = createAsyncStoragePersister({
     storage: createLocalForageStorage(),
     key: getStorageKey(),
-    throttleTime: DurationInMs.TenSeconds,
+    throttleTime: Duration.seconds(10),
 })
 
 const WHITELISTED_QUERY_KEY_PREFIXES = ['views', 'account', 'users']

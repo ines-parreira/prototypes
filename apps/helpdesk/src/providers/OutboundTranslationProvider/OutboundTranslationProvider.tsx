@@ -7,6 +7,7 @@ import {
     useRef,
     useState,
 } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import type { ContentState } from 'draft-js'
 import { convertToRaw, EditorState } from 'draft-js'
@@ -62,8 +63,6 @@ type OutboundTranslationProviderProps = {
     children: React.ReactNode
     ticketId?: string | number
 }
-
-const PENDING_TRANSLATION_TIMEOUT = 60_000
 
 export const OutboundTranslationProvider = ({
     children,
@@ -124,7 +123,7 @@ export const OutboundTranslationProvider = ({
                         ? `Translation on ticket ${ticketId} timed out. Please retry.`
                         : 'Translation timed out. Please retry.',
                 )
-            }, PENDING_TRANSLATION_TIMEOUT)
+            }, Duration.minutes(1))
 
             timeoutRefs.current.set(ticketId, timeout)
         },

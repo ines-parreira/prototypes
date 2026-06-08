@@ -1,5 +1,5 @@
 import { useExhaustEndpoint } from '@repo/hooks'
-import { DurationInMs } from '@repo/utils'
+import { Duration } from '@gorgias/toolkit'
 
 import { listEvents, ObjectType } from '@gorgias/helpdesk-client'
 import { queryKeys } from '@gorgias/helpdesk-queries'
@@ -18,7 +18,7 @@ export function useListAllTicketEvents(ticketId: number) {
                 limit: 100,
             }),
         {
-            staleTime: DurationInMs.OneDay,
+            staleTime: Duration.days(1),
             refetchOnWindowFocus: false,
         },
     )

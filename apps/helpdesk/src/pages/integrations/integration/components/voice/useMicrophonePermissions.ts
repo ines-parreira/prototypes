@@ -1,11 +1,10 @@
 import { useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useQuery } from '@tanstack/react-query'
 
-const DEFAULT_CHECK_INTERVAL = 5000
-
 export default function useMicrophonePermissions(
-    refetchInterval = DEFAULT_CHECK_INTERVAL,
+    refetchInterval = Duration.seconds(5),
 ) {
     const [permissionState, setPermissionState] =
         useState<PermissionState | null>()

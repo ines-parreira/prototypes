@@ -1,5 +1,6 @@
 import type React from 'react'
 import { useMemo, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { isSessionImpersonated } from '@repo/activity-tracker'
 import type { SelectedPlans } from '@repo/billing'
@@ -98,7 +99,7 @@ const SummaryFooter = ({
                 await startSubscription?.()
             }
             toast.success('Your subscription has successfully been updated.', {
-                duration: 5000,
+                duration: Duration.seconds(5),
             })
 
             if (selectedPlans && setSessionSelectedPlans) {

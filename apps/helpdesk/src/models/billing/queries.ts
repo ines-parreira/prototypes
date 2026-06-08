@@ -1,5 +1,6 @@
 import type { UseQueryOptions } from '@tanstack/react-query'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { Duration } from '@gorgias/toolkit'
 
 import type { MutationOverrides } from '../../types/query'
 import {
@@ -42,7 +43,7 @@ export const useBillingState = (
     return useQuery({
         ...getBillingStateQuery,
         ...overrides,
-        staleTime: 1 * 60 * 60 * 1000, // cache for 1 hour
+        staleTime: Duration.hours(1),
         refetchOnWindowFocus: true,
     })
 }
@@ -214,7 +215,7 @@ export const useInternalProductCatalogPlans = (
 ) => {
     return useQuery({
         ...getInternalProductCatalogPlansQuery,
-        staleTime: 10 * 60 * 1000,
+        staleTime: Duration.minutes(10),
         ...overrides,
     })
 }

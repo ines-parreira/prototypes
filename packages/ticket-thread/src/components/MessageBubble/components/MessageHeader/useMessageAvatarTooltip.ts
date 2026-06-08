@@ -1,6 +1,7 @@
 import { useGetCustomer } from '@repo/customer/hooks'
 import type { DateTimeResultFormatType } from '@repo/utils'
-import { DurationInMs, formatDatetime } from '@repo/utils'
+import { formatDatetime } from '@repo/utils'
+import { Duration } from '@gorgias/toolkit'
 
 import type { UserAvailability } from '@gorgias/helpdesk-queries'
 import { useGetUserAvailability } from '@gorgias/helpdesk-queries'
@@ -70,8 +71,8 @@ export function useMessageAvatarTooltip({
     const { data: availabilityData } = useGetUserAvailability(sender.id, {
         query: {
             enabled: fromAgent && !!sender.id,
-            staleTime: 2 * DurationInMs.FiveMinutes,
-            cacheTime: 2 * DurationInMs.FiveMinutes,
+            staleTime: Duration.minutes(10),
+            cacheTime: Duration.minutes(10),
         },
     })
 

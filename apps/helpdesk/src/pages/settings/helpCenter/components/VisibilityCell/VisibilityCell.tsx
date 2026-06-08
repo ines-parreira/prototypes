@@ -1,4 +1,5 @@
 import React, { useRef } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import classnames from 'classnames'
 
@@ -74,7 +75,7 @@ const VisibilityCell = ({
             </div>
             {isPublicUnlisted && (
                 <Tooltip
-                    delay={100}
+                    delay={Duration.millis(100)}
                     target={ref}
                     placement="top"
                     boundariesElement="body"

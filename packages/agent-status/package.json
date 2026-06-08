@@ -31,7 +31,8 @@
         "classnames": "catalog:styles",
         "moment": "catalog:moment",
         "react": "catalog:react",
-        "react-dom": "catalog:react"
+        "react-dom": "catalog:react",
+        "@gorgias/toolkit": "catalog:toolkit"
     },
     "devDependencies": {
         "@gorgias/axiom": "catalog:axiom",
@@ -63,6 +64,7 @@
         "react": "catalog:react",
         "react-dom": "catalog:react",
         "typescript": "catalog:typescript",
-        "vitest": "catalog:test"
+        "vitest": "catalog:test",
+        "@gorgias/toolkit": "catalog:toolkit"
     }
 }

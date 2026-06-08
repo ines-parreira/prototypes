@@ -6,6 +6,7 @@ import {
     useTableV1,
 } from '@gorgias/axiom'
 import { useListIntegrations } from '@gorgias/helpdesk-queries'
+import { Duration } from '@gorgias/toolkit'
 
 import { EmptyState } from '../EmptyState'
 import { columns } from './columns'
@@ -22,8 +23,8 @@ export const ZendeskImportTable = ({
         },
         {
             query: {
-                staleTime: 60 * 60 * 1000,
-                cacheTime: 60 * 60 * 1000,
+                staleTime: Duration.hours(1),
+                cacheTime: Duration.hours(1),
                 select: (resp) => resp?.data?.data,
             },
         },

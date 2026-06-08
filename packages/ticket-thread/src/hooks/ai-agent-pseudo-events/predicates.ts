@@ -1,4 +1,4 @@
-import { DurationInMs } from '@repo/utils'
+import { Duration } from '@gorgias/toolkit'
 
 import type {
     TicketThreadAiAgentInternalNoteItem,
@@ -44,6 +44,6 @@ export function shouldGroupLegacyAiAgentMessages(
                 nextMessage.data.from_agent,
             ].join(':') &&
         LEGACY_AI_GROUPING_CHANNELS.has(String(firstInGroup.data.channel)) &&
-        nextCreated < firstCreated + DurationInMs.FiveMinutes
+        nextCreated < firstCreated + Duration.minutes(5)
     )
 }

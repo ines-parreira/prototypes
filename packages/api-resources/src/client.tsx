@@ -2,6 +2,7 @@ import { isCallActive } from '@repo/utils'
 import type { AxiosResponse } from 'axios'
 import axios from 'axios'
 import rateLimit from 'axios-rate-limit'
+import { Duration } from '@gorgias/toolkit'
 
 import { Button, toast } from '@gorgias/axiom'
 
@@ -10,11 +11,11 @@ const client = createClient()
 const newReleaseToastId = 'new-release-notification'
 const newReleaseTitle = 'An update is available for Gorgias'
 const newReleaseCaption = 'The app will reload automatically.'
-const reloadDelay = 60000
+const reloadDelay = Duration.minutes(1)
 
 export default client
 
-export const timeoutTime = 10800000
+export const timeoutTime = Duration.hours(3)
 
 let reloadTimeout: ReturnType<typeof setTimeout> | null = null
 let autoReloadTimeout: ReturnType<typeof setTimeout> | null = null
@@ -30,7 +31,7 @@ export function createClient() {
         }),
         {
             maxRequests: 10,
-            perMilliseconds: 1000,
+            perMilliseconds: Duration.seconds(1),
         },
     )
 }

@@ -1,3 +1,4 @@
+import { Duration } from '@gorgias/toolkit'
 // Highlight free shipping benefit for customers near the threshold & offer accessories
 import type { Map } from 'immutable'
 import { ulid } from 'ulidx'
@@ -88,7 +89,7 @@ export const FREE_SHIPPING_BENEFITS: CampaignTemplate = {
                 triggers: triggers,
                 trigger_rule: createTriggerRule(triggers),
                 meta: {
-                    delay: 15000,
+                    delay: Duration.seconds(15),
                     noReply: true,
                 },
             },

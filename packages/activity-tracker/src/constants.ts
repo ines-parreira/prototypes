@@ -1,6 +1,7 @@
 import type { EventTrigger } from '@gorgias/event-tracker-api'
+import { Duration } from '@gorgias/toolkit'
 
-export const AGENT_ACTIVITY_HEALTHCHECK_INTERVAL = 1000 * 60 * 5 // 5 minutes
+export const AGENT_ACTIVITY_HEALTHCHECK_INTERVAL = Duration.minutes(5)
 
 export const ActivityEvents: Record<string, EventTrigger> = {
     UserOpenedApp: {

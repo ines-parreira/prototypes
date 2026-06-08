@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import _debounce from 'lodash/debounce'
 
@@ -18,8 +19,6 @@ type ContactFormNameInputSectionProps = {
     isNameCheckEnabled?: boolean
     setIsNameInvalid?: (isValid: boolean) => void
 }
-
-const NAME_CHECK_DEBOUNCE_TIMEOUT = 500
 
 const ContactFormNameInputSection = ({
     onChange,
@@ -59,7 +58,7 @@ const ContactFormNameInputSection = ({
             )
 
             setIsFormNameAvailable(!error && !!result)
-        }, NAME_CHECK_DEBOUNCE_TIMEOUT),
+        }, Duration.millis(500)),
         [isApiReady, checkContactFormName, isNameCheckEnabled],
     )
 

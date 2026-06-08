@@ -1,4 +1,5 @@
 import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
+import { Duration } from '@gorgias/toolkit'
 
 import { Banner, Box, Button, Text, ToggleField } from '@gorgias/axiom'
 import { useGetUser } from '@gorgias/helpdesk-queries'
@@ -33,8 +34,6 @@ type VersionBannerProps = {
     hasUpdatedPolicy?: boolean
 }
 
-const USER_STALE_TIME = 5 * 60 * 1000
-
 export function VersionBanner({
     isViewingDraft,
     hasDraftVersion,
@@ -59,7 +58,7 @@ export function VersionBanner({
         {
             query: {
                 enabled: !!publisherUserId,
-                staleTime: USER_STALE_TIME,
+                staleTime: Duration.minutes(5),
                 refetchOnWindowFocus: false,
             },
         },

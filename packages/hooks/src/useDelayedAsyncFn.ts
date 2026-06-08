@@ -1,5 +1,6 @@
 import type { DependencyList } from 'react'
 import { useEffect, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import type { Maybe } from '@repo/types'
 
@@ -11,7 +12,7 @@ type FunctionReturningPromise = (...args: any[]) => Promise<any>
 export const useDelayedAsyncFn = <T extends any[], Y>(
     fn: FunctionReturningPromise,
     deps: DependencyList = [],
-    delay = 100,
+    delay = Duration.millis(100),
 ): [AsyncFnState<Y>, (...args: T) => Promise<Y>] => {
     const timeoutRef = useRef<Maybe<number>>(null)
     const [isDelayed, setDelayed] = useState(false)

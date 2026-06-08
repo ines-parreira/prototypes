@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { notificationSounds } from 'services'
@@ -35,7 +36,7 @@ export default function useToasts() {
         (notificationId: string) => {
             const timeout = setTimeout(() => {
                 dismiss(notificationId)
-            }, 5000)
+            }, Duration.seconds(5))
 
             timeoutsRef.current = [...timeoutsRef.current, timeout]
         },

@@ -1,6 +1,7 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useDebouncedValue, useElementSize } from '@repo/hooks'
 import cn from 'classnames'
+import { Duration } from '@gorgias/toolkit'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -63,7 +64,7 @@ export default function SourceActionsHeader({ message, containerRef }: Props) {
     } = message
 
     const [width] = useElementSize(containerRef?.current || null)
-    const debouncedWidth = useDebouncedValue(width, 300)
+    const debouncedWidth = useDebouncedValue(width, Duration.millis(300))
     const collapseActions =
         Boolean(width) && debouncedWidth < 400 && !hasMessagesTranslation
     const collapseIntents =

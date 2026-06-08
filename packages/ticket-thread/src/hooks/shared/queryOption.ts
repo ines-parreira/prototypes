@@ -1,6 +1,6 @@
-import { DurationInMs } from '@repo/utils'
+import { Duration } from '@gorgias/toolkit'
 
 export const getQueryOptions = (ticketId: number) => ({
     enabled: !!ticketId,
-    staleTime: DurationInMs.FiveMinutes,
+    staleTime: Duration.minutes(5),
 })

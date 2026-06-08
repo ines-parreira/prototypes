@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import type { SelectedPlans } from '@repo/billing'
 import {
@@ -499,7 +500,7 @@ export const useBillingPlans = ({
                 status: NotificationStatus.Success,
                 style: NotificationStyle.Alert,
                 showDismissButton: true,
-                dismissAfter: 5000,
+                dismissAfter: Duration.seconds(5),
             })
         }
 
@@ -720,7 +721,7 @@ export const useBillingPlans = ({
                 toast.info(
                     'In order to activate your subscription, we need you to confirm this payment to your bank. ' +
                         'You will be redirected in a few seconds to a secure page.',
-                    { duration: 5000 },
+                    { duration: Duration.seconds(5) },
                 )
 
                 setTimeout(() => {

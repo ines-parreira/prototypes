@@ -1,4 +1,5 @@
 import { useCallback, useRef } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useDebouncedCallback } from '@repo/hooks'
 
@@ -18,8 +19,6 @@ import { slugify } from 'pages/settings/helpCenter/utils/helpCenter.utils'
 
 import { useArticleContext } from '../context/ArticleContext'
 import type { ArticleState } from '../context/types'
-
-const DEFAULT_AUTOSAVE_DELAY_MS = 2000
 
 type AutoSaveParams = {
     title: string
@@ -236,7 +235,7 @@ export const useArticleAutoSave = () => {
 
     const debouncedAutoSave = useDebouncedCallback(
         performAutoSave,
-        DEFAULT_AUTOSAVE_DELAY_MS,
+        Duration.seconds(2),
     )
 
     const triggerAutoSave = useCallback(

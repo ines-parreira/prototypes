@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import {
     createScheduler,
@@ -15,8 +16,6 @@ import { SocketEventType } from 'services/socketManager/types'
 import { useIsSocketConnected } from 'services/socketManager/useIsSocketConnected'
 
 const FETCH_ALL_CHUNK_SIZE = 10
-const FETCH_ALL_CHUNK_INTERVAL_MS = 500
-
 export default function useViewCountScheduler(): void {
     const { version } = useViewCountSchedulerVersion()
     const isEnabled = version === ViewCountSchedulerVersion.V3
@@ -84,7 +83,7 @@ function sendFetchAllChunks(viewIds: number[]): void {
         })
         logViewEvent('outbound', 'views-count-fetch-all-chunk', next)
         if (chunks.length > 0) {
-            setTimeout(sendNext, FETCH_ALL_CHUNK_INTERVAL_MS)
+            setTimeout(sendNext, Duration.millis(500))
         }
     }
     sendNext()

@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useInterval, useLocalStorage } from '@repo/hooks'
 
@@ -26,8 +27,6 @@ type Props = {
 }
 
 const DOMAIN_VERIFICATION_TIMEOUT_IN_SECONDS = 60
-const DOMAIN_REFETCH_INTERVAL = 5000
-
 export const domainVerificationStorageKey = (domainName: string) =>
     `email-domain-verification-requested-at-${domainName}`
 
@@ -48,7 +47,7 @@ export default function DomainVerificationProvider({
         refetch: refetchDomain,
     } = useGetEmailIntegrationDomain(domainName, {
         query: {
-            refetchInterval: DOMAIN_REFETCH_INTERVAL,
+            refetchInterval: Duration.seconds(5),
         },
     })
 
@@ -172,7 +171,7 @@ function useRequestStatus(domainName: string) {
 
     useInterval(() => {
         setCurrentTime(new Date())
-    }, DOMAIN_VERIFICATION_TIMEOUT_IN_SECONDS * 1000)
+    }, Duration.seconds(DOMAIN_VERIFICATION_TIMEOUT_IN_SECONDS))
 
     return { isPending, isRequested, setRequestedAt }
 }

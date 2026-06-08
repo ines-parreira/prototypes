@@ -2,6 +2,7 @@ import _find from 'lodash/find'
 import _noop from 'lodash/noop'
 import _throttle from 'lodash/throttle'
 import { dismissNotification } from 'reapop'
+import { Duration } from '@gorgias/toolkit'
 
 import { AlertBannerTypes } from 'AlertBanners'
 import { store } from 'common/store'
@@ -73,7 +74,7 @@ export class SocketManager {
             if (!this.isConnected) {
                 this.onDisconnect()
             }
-        }, CONNECTION_TIMEOUT * 1000)
+        }, Duration.seconds(CONNECTION_TIMEOUT))
 
         this.scopedBroadcastChannel.addEventListener(
             'message',
@@ -258,7 +259,7 @@ export class SocketManager {
      */
     dispatchReduxAction = _throttle((data) => {
         return store.dispatch(data) as ReturnType<StoreDispatch>
-    }, 100)
+    }, Duration.millis(100))
 
     /**
      * Send data to server via socket
@@ -373,7 +374,7 @@ export class SocketManager {
                 type: BroadcastChannelEvent.ReloadAllTabs,
             })
             this.onReload()
-        }, RELOAD_TAB_DELAY * 1000)
+        }, Duration.seconds(RELOAD_TAB_DELAY))
     }
 }
 

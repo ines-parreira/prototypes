@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useShallow } from 'zustand/react/shallow'
 
@@ -26,8 +27,6 @@ type SkillExtra = {
     visibility: boolean
     intents: string[]
 }
-
-const DEFAULT_AUTOSAVE_DELAY_MS = 1000
 
 export const useSkillAutoSave = () => {
     const store = useSkillEditorStoreApi()
@@ -138,7 +137,7 @@ export const useSkillAutoSave = () => {
     )
 
     return useEditorAutoSave<SkillExtra, GuidanceArticle>({
-        debounceDelay: DEFAULT_AUTOSAVE_DELAY_MS,
+        debounceDelay: Duration.seconds(1),
         getCurrentState,
         isHelpCenterReady,
         validateContent: (content) => getPlainTextLength(content) <= textLimit,

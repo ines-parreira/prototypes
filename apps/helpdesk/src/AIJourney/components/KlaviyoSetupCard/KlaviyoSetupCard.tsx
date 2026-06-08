@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import {
     Box,
@@ -44,8 +45,6 @@ const PAYLOAD_TEMPLATE = JSON.stringify(
     2,
 )
 
-const COPY_FEEDBACK_DURATION_MS = 1500
-
 const KlavyioCardContent = ({
     isV3Architecture,
     webhookUrl,
@@ -61,7 +60,7 @@ const KlavyioCardContent = ({
         const succeeded = await copyToClipboard(text)
         if (!succeeded) return
         setCopiedField(field)
-        setTimeout(() => setCopiedField(null), COPY_FEEDBACK_DURATION_MS)
+        setTimeout(() => setCopiedField(null), Duration.millis(1500))
     }
 
     return (

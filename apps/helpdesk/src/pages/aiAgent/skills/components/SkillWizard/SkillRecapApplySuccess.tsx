@@ -1,12 +1,11 @@
 import { useEffect } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useHistory, useParams } from 'react-router-dom'
 
 import { Box, Heading, Text } from '@gorgias/axiom'
 
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-
-const REDIRECT_DELAY_MS = 3000
 
 type Props = {
     liveSkillsCount: number
@@ -20,7 +19,7 @@ export const SkillRecapApplySuccess = ({ liveSkillsCount }: Props) => {
     useEffect(() => {
         const timeoutId = window.setTimeout(() => {
             history.push(routes.skills)
-        }, REDIRECT_DELAY_MS)
+        }, Duration.seconds(3))
         return () => window.clearTimeout(timeoutId)
     }, [history, routes.skills])
 

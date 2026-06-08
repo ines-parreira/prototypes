@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useDebouncedValue } from '@repo/hooks'
 import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form'
@@ -164,7 +165,10 @@ export const SegmentsSidePanel = ({
         () => buildFullQuery(conditions, schema),
         [conditions, schema],
     )
-    const debouncedConditionsQuery = useDebouncedValue(conditionsQuery, 500)
+    const debouncedConditionsQuery = useDebouncedValue(
+        conditionsQuery,
+        Duration.millis(500),
+    )
 
     const { data: audienceCountData, isFetching: isAudienceCountFetching } =
         useAudienceCount(

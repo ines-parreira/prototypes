@@ -1,4 +1,5 @@
 import { isAxiosError } from 'axios'
+import { Duration } from '@gorgias/toolkit'
 
 const HTTP_STATUS_TOO_MANY_REQUESTS = 429
 const QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS = 202
@@ -42,14 +43,20 @@ export const reportingRetryDelayHandler = (
 
         // For 202: exponential backoff up to 16s
         if (statusCode === QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS) {
-            return Math.min(1000 * 2 ** retryIndex, 16000)
+            return Math.min(
+                Duration.seconds(1) * 2 ** retryIndex,
+                Duration.seconds(16),
+            )
         }
         // For other errors: exponential backoff up to 8s
         // 1s → 2s → 4s → 8s (total ~7s over 3 retries)
-        return Math.min(1000 * 2 ** retryIndex, 8000)
+        return Math.min(
+            Duration.seconds(1) * 2 ** retryIndex,
+            Duration.seconds(8),
+        )
     }
 
-    return 1000
+    return Duration.seconds(1)
 }
 
 export const doNotRetry40XErrorsHandler = (

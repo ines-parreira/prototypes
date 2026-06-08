@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { isSessionImpersonated } from '@repo/activity-tracker/utils'
 import type { Map } from 'immutable'
@@ -40,8 +41,6 @@ type Props = {
     messagePosition: number
 }
 
-const CACHE_TIME = 1000 * 60 * 60 * 1 // 1 hour
-
 export default function TicketMessages({
     messages,
     ticketId,
@@ -60,7 +59,7 @@ export default function TicketMessages({
 
     const { data: earliestExecution } = useGetEarliestExecution({
         refetchOnWindowFocus: false,
-        cacheTime: CACHE_TIME,
+        cacheTime: Duration.hours(1),
         staleTime: Infinity, // The earliest execution is not updated so getting it once is enough.
     })
 

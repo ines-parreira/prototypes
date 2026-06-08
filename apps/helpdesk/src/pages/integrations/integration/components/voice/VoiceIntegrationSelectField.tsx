@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useId } from '@repo/hooks'
 import flatten from 'lodash/flatten'
@@ -75,7 +76,7 @@ export default function VoiceIntegrationSelectField({
     const { data: integration } = useGetIntegration(value ?? 0, {
         query: {
             enabled: !selectedOption && !!value,
-            staleTime: 60_000,
+            staleTime: Duration.minutes(1),
         },
     })
 

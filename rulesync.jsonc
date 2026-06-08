@@ -7,13 +7,19 @@
             "source": "git@github.com:gorgias/frontend.git",
             "transport": "git",
             "path": "packages/axiom/.agents/skills",
-            "skills": ["axiom"]
+            "skills": ["axiom"],
+        },
+        {
+            "source": "git@github.com:gorgias/frontend.git",
+            "transport": "git",
+            "path": "packages/toolkit/.agents/skills",
+            "skills": ["toolkit"],
         },
         {
             "source": "git@github.com:gorgias/rest-api-sdk.git",
             "transport": "git",
             "path": ".agents/skills",
-            "skills": ["rest-api-sdk"]
-        }
-    ]
+            "skills": ["rest-api-sdk"],
+        },
+    ],
 }

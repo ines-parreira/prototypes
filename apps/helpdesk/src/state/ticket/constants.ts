@@ -1,3 +1,4 @@
+import { Duration } from '@gorgias/toolkit'
 // Update a message (retry failed actions or sending, or force sending)
 import { TicketChannel } from '../../business/types/ticket'
 
@@ -108,7 +109,7 @@ export const EMPTY_SENDER = { name: '', address: '' }
 
 // Chat-related
 export const SET_TYPING_ACTIVITY_SHOPPER = 'SET_TYPING_ACTIVITY_SHOPPER'
-export const TYPING_ACTIVITY_SHOPPER_TIMEOUT_MS = 4000
+export const TYPING_ACTIVITY_SHOPPER_TIMEOUT = Duration.seconds(4)
 
 // Custom fields related
 export const UPDATE_CUSTOM_FIELD_STATE = 'UPDATE_CUSTOM_FIELD_STATE'

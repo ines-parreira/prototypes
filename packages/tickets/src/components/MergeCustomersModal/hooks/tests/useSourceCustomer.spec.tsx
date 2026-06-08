@@ -1,5 +1,5 @@
-import { DurationInMs } from '@repo/utils'
 import { renderHook } from '@testing-library/react'
+import { Duration } from '@gorgias/toolkit'
 
 import { mockCustomer } from '@gorgias/helpdesk-mocks'
 import { useGetCustomer } from '@gorgias/helpdesk-queries'
@@ -36,7 +36,7 @@ describe('useSourceCustomer', () => {
         expect(mockedUseGetCustomer).toHaveBeenCalledWith(0, undefined, {
             query: {
                 enabled: false,
-                staleTime: DurationInMs.OneHour,
+                staleTime: Duration.hours(1),
             },
         })
 
@@ -61,7 +61,7 @@ describe('useSourceCustomer', () => {
         expect(mockedUseGetCustomer).toHaveBeenCalledWith(2, undefined, {
             query: {
                 enabled: true,
-                staleTime: DurationInMs.OneHour,
+                staleTime: Duration.hours(1),
             },
         })
 

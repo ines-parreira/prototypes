@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react'
-
-import { DurationInMs } from '@repo/utils'
+import { Duration } from '@gorgias/toolkit'
 
 import { useListUserPhoneStatus } from '@gorgias/helpdesk-queries'
 
@@ -40,8 +39,8 @@ export const useListUserPhoneStatuses = ({
             {
                 query: {
                     enabled: shouldFetch,
-                    staleTime: DurationInMs.OneMinute,
-                    cacheTime: DurationInMs.OneHour,
+                    staleTime: Duration.minutes(1),
+                    cacheTime: Duration.hours(1),
                     refetchInterval,
                 },
             },

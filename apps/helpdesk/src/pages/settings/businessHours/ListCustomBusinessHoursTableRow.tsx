@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { Link } from 'react-router-dom'
 
@@ -90,7 +91,7 @@ export default function ListCustomBusinessHoursTableRow({
                             {businessHours.integration_count} integrations
                         </Badge>
                         <Tooltip
-                            delay={300}
+                            delay={Duration.millis(300)}
                             autohide={false}
                             target={`integrations-badge-${businessHours.id}`}
                         >

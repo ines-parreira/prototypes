@@ -1,10 +1,9 @@
 import { reportError } from '@repo/logging'
+import { Duration } from '@gorgias/toolkit'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import type { HelpCenter } from 'models/helpCenter/types'
-
-const FIVE_MINUTES = 1000 * 60 * 5
 
 type HelpCenterType = 'guidance' | 'snippet' | 'faq'
 
@@ -27,7 +26,7 @@ export const useAiAgentHelpCenterState = ({
         { type: helpCenterType, per_page: 1, shop_name: shopName },
         {
             // Guidance Help Center is not expected to change frequently
-            staleTime: FIVE_MINUTES,
+            staleTime: Duration.minutes(5),
             enabled,
             onSuccess: (data) => {
                 const helpCenter = data?.data.data[0]

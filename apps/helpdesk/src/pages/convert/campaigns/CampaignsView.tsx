@@ -1,5 +1,6 @@
 import type { MouseEvent } from 'react'
 import React, { useCallback, useMemo } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { history } from '@repo/routing'
 import classnames from 'classnames'
@@ -114,7 +115,7 @@ export const CampaignsView = () => {
                                         message:
                                             'Your campaign won’t be displayed on your <br> store anymore, regardless of the set schedule.',
                                         allowHTML: true,
-                                        dismissAfter: 30000,
+                                        dismissAfter: Duration.seconds(30),
                                         dismissible: true,
                                         showDismissButton: true,
                                     }),

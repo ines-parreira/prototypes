@@ -95,6 +95,10 @@
         "typescript": "catalog:typescript",
         "vitest": "catalog:test",
         "yet-another-react-lightbox": "catalog:images",
-        "zod": "catalog:zod"
+        "zod": "catalog:zod",
+        "@gorgias/toolkit": "catalog:toolkit"
+    },
+    "dependencies": {
+        "@gorgias/toolkit": "catalog:toolkit"
     }
 }

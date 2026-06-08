@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { Redirect } from 'react-router-dom'
 
@@ -50,7 +51,7 @@ export const AiAgentConfigurationView = ({
     } = useGetHelpCenterList(
         { type: 'faq', per_page: HELP_CENTER_MAX_CREATION },
         {
-            staleTime: 1000 * 60 * 5,
+            staleTime: Duration.minutes(5),
             refetchOnWindowFocus: false,
         },
     )

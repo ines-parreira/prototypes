@@ -1,12 +1,10 @@
 import { useCallback, useEffect, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { reportError } from '@repo/logging'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useGetFeedback } from 'models/knowledgeService/queries'
-
-const POLLING_INTERVAL = 5000 // 5 seconds
-const POLLING_TIMEOUT = 2 * 60 * 1000 // 2 minutes in milliseconds
 
 export const useFeedbackPolling = ({
     executionId,
@@ -22,7 +20,7 @@ export const useFeedbackPolling = ({
         },
         {
             enabled: !!isPolling,
-            refetchInterval: POLLING_INTERVAL,
+            refetchInterval: Duration.seconds(5),
         },
     )
 
@@ -38,7 +36,7 @@ export const useFeedbackPolling = ({
 
         const timeoutId = setTimeout(() => {
             setIsPolling(false)
-        }, POLLING_TIMEOUT)
+        }, Duration.minutes(2))
 
         // Clean up timeout if polling stops for other reasons
         return () => clearTimeout(timeoutId)

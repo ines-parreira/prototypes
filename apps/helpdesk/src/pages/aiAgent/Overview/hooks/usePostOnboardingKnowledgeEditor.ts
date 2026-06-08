@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 
@@ -89,7 +90,7 @@ export const usePostOnboardingKnowledgeEditor = ({
 
         toast.success(
             'Guidance saved! You can update or edit it anytime in Knowledge.',
-            { duration: 3000 },
+            { duration: Duration.seconds(3) },
         )
     }, [shopName, shopType])
 
@@ -100,7 +101,7 @@ export const usePostOnboardingKnowledgeEditor = ({
     const handleUpdate = useCallback(() => {
         toast.success(
             'Guidance saved! You can update or edit it anytime in Knowledge.',
-            { duration: 3000 },
+            { duration: Duration.seconds(3) },
         )
     }, [])
 
@@ -110,7 +111,9 @@ export const usePostOnboardingKnowledgeEditor = ({
      */
     const handleDelete = useCallback(() => {
         closeEditor()
-        toast.success('Guidance successfully deleted.', { duration: 3000 })
+        toast.success('Guidance successfully deleted.', {
+            duration: Duration.seconds(3),
+        })
     }, [closeEditor])
 
     /**
@@ -118,7 +121,9 @@ export const usePostOnboardingKnowledgeEditor = ({
      * Shows success notification.
      */
     const handleCopy = useCallback(() => {
-        toast.success('Guidance successfully duplicated.', { duration: 3000 })
+        toast.success('Guidance successfully duplicated.', {
+            duration: Duration.seconds(3),
+        })
     }, [])
 
     // -------------------------

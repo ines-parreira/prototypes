@@ -454,6 +454,10 @@ catalogs:
     vitest:
       specifier: ^4.1.5
       version: 4.1.5
+  toolkit:
+    '@gorgias/toolkit':
+      specifier: 0.2.0
+      version: 0.2.0
   typescript:
     '@typescript/native-preview':
       specifier: 7.0.0-dev.20260421.2
@@ -731,6 +735,9 @@ importers:
       '@gorgias/realtime':
         specifier: catalog:realtime
         version: 1.3.2(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)(zustand@5.0.9(@types/react@18.2.67)(immer@10.1.1)(react@18.2.0)(use-sync-external-store@1.6.0(react@18.2.0)))
+      '@gorgias/toolkit':
+        specifier: catalog:toolkit
+        version: 0.2.0
       '@gorgias/workflows-client':
         specifier: catalog:rest-api-sdk
         version: 0.3.35
@@ -1743,6 +1750,9 @@ importers:
       '@gorgias/event-tracker-browser':
         specifier: catalog:event-tracker
         version: 2.0.4
+      '@gorgias/toolkit':
+        specifier: catalog:toolkit
+        version: 0.2.0
       '@repo/api-resources':
         specifier: workspace:*
         version: link:../api-resources
@@ -1804,6 +1814,9 @@ importers:
       '@gorgias/helpdesk-types':
         specifier: catalog:rest-api-sdk
         version: 0.9.135
+      '@gorgias/toolkit':
+        specifier: catalog:toolkit
+        version: 0.2.0
       '@repo/api-resources':
         specifier: workspace:*
         version: link:../api-resources
@@ -1954,6 +1967,9 @@ importers:
       '@gorgias/axiom':
         specifier: catalog:axiom
         version: 0.287.2(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+      '@gorgias/toolkit':
+        specifier: catalog:toolkit
+        version: 0.2.0
       '@repo/browser-storage':
         specifier: workspace:*
         version: link:../browser-storage
@@ -2035,6 +2051,9 @@ importers:
       '@gorgias/helpdesk-types':
         specifier: catalog:rest-api-sdk
         version: 0.9.135
+      '@gorgias/toolkit':
+        specifier: catalog:toolkit
+        version: 0.2.0
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -2171,6 +2190,9 @@ importers:
       '@gorgias/helpdesk-validators':
         specifier: catalog:rest-api-sdk
         version: 0.7.219
+      '@gorgias/toolkit':
+        specifier: catalog:toolkit
+        version: 0.2.0
       pluralize:
         specifier: ^8.0.0
         version: 8.0.0
@@ -2636,6 +2658,9 @@ importers:
       '@gorgias/helpdesk-client':
         specifier: catalog:rest-api-sdk
         version: 0.10.162
+      '@gorgias/toolkit':
+        specifier: catalog:toolkit
+        version: 0.2.0
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -2773,6 +2798,9 @@ importers:
       '@gorgias/helpdesk-types':
         specifier: catalog:rest-api-sdk
         version: 0.9.135
+      '@gorgias/toolkit':
+        specifier: catalog:toolkit
+        version: 0.2.0
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -2864,6 +2892,9 @@ importers:
         specifier: catalog:react-router
         version: 6.30.3(react-dom@18.2.0(react@18.2.0))(react-router-dom@5.2.0(react@18.2.0))(react@18.2.0)
     devDependencies:
+      '@gorgias/toolkit':
+        specifier: catalog:toolkit
+        version: 0.2.0
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -3033,6 +3064,9 @@ importers:
       '@gorgias/helpdesk-types':
         specifier: catalog:rest-api-sdk
         version: 0.9.135
+      '@gorgias/toolkit':
+        specifier: catalog:toolkit
+        version: 0.2.0
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -3121,6 +3155,9 @@ importers:
       '@gorgias/helpdesk-types':
         specifier: catalog:rest-api-sdk
         version: 0.9.135
+      '@gorgias/toolkit':
+        specifier: catalog:toolkit
+        version: 0.2.0
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -3284,6 +3321,9 @@ importers:
       '@gorgias/helpdesk-queries':
         specifier: catalog:rest-api-sdk
         version: 0.10.52(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
+      '@gorgias/toolkit':
+        specifier: catalog:toolkit
+        version: 0.2.0
       '@repo/browser-storage':
         specifier: workspace:*
         version: link:../browser-storage
@@ -3361,6 +3401,10 @@ importers:
         version: 4.1.5(@types/node@24.12.2)(@vitest/coverage-v8@4.1.5)(happy-dom@20.9.0)(jsdom@21.0.0)(msw@2.9.0(@types/node@24.12.2)(typescript@6.0.3))(vite@7.1.2(@types/node@24.12.2)(jiti@2.6.1)(less@4.1.3)(terser@5.44.1)(tsx@4.20.3)(yaml@2.8.0))
 
   packages/teams:
+    dependencies:
+      '@gorgias/toolkit':
+        specifier: catalog:toolkit
+        version: 0.2.0
     devDependencies:
       '@gorgias/helpdesk-client':
         specifier: catalog:rest-api-sdk
@@ -3518,6 +3562,9 @@ importers:
       '@gorgias/helpdesk-validators':
         specifier: catalog:rest-api-sdk
         version: 0.7.219
+      '@gorgias/toolkit':
+        specifier: catalog:toolkit
+        version: 0.2.0
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
@@ -3666,6 +3713,9 @@ importers:
       '@gorgias/helpdesk-validators':
         specifier: catalog:rest-api-sdk
         version: 0.7.219
+      '@gorgias/toolkit':
+        specifier: catalog:toolkit
+        version: 0.2.0
       '@internationalized/date':
         specifier: 3.10.0
         version: 3.10.0
@@ -3931,6 +3981,10 @@ importers:
         version: 4.1.5(@types/node@24.12.2)(@vitest/coverage-v8@4.1.5)(happy-dom@20.9.0)(jsdom@21.0.0)(msw@2.9.0(@types/node@24.12.2)(typescript@6.0.3))(vite@7.1.2(@types/node@24.12.2)(jiti@2.6.1)(less@4.1.3)(terser@5.44.1)(tsx@4.20.3)(yaml@2.8.0))
 
   packages/users:
+    dependencies:
+      '@gorgias/toolkit':
+        specifier: catalog:toolkit
+        version: 0.2.0
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
@@ -4151,6 +4205,10 @@ importers:
         version: 4.1.5(@types/node@24.12.2)(@vitest/coverage-v8@4.1.5)(happy-dom@20.9.0)(jsdom@21.0.0)(msw@2.9.0(@types/node@24.12.2)(typescript@6.0.3))(vite@7.1.2(@types/node@24.12.2)(jiti@2.6.1)(less@4.1.3)(terser@5.44.1)(tsx@4.20.3)(yaml@2.8.0))
 
   packages/views:
+    dependencies:
+      '@gorgias/toolkit':
+        specifier: catalog:toolkit
+        version: 0.2.0
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
@@ -5988,6 +6046,10 @@ packages:
     resolution: {integrity: sha512-+Rq8pq6uy6VjL3cMZn0a5ZmAHJRFvQ340HIYe8uWWDpc6MQKfGnrC6Cdfk6+GSgb1+ekmgK+XRYchyMVaJTRNQ==, tarball: https://npm.pkg.github.com/download/@gorgias/static-analysis/0.5.0/6b468daaa0f1febb83c1e45ed24197d7a39d2fa2}
     engines: {node: '>=22'}
     hasBin: true
+
+  '@gorgias/toolkit@0.2.0':
+    resolution: {integrity: sha512-8+lXp9ZhEbMCuXu6b7ftr/+6OUFOjjY+oA4hulseOhKk1ggCsNcmwJf/FkOIBELx9sv1yQEFu2w2jxm4H1/VGQ==, tarball: https://npm.pkg.github.com/download/@gorgias/toolkit/0.2.0/93702e7d227f2df31223941f1e37b18f52d5034f}
+    engines: {node: '>=22.22.0'}
 
   '@gorgias/workflows-client@0.3.35':
     resolution: {integrity: sha512-/jw+Bf4Yog1H1KAeRgtUue0Y1vImWrjGzSsqlrv/ufJYrmBU33/lhlrCIduah97jOqddO7FBc36zdqN4ydN7kw==, tarball: https://npm.pkg.github.com/download/@gorgias/workflows-client/0.3.35/c5087416c76f59110bad27987b3e47cb88accd0a}
@@ -20583,6 +20645,8 @@ snapshots:
       oxc-resolver: 11.13.2
       oxc-walker: 0.6.0(oxc-parser@0.98.0)
       ts-pattern: 5.9.0
+
+  '@gorgias/toolkit@0.2.0': {}
 
   '@gorgias/workflows-client@0.3.35':
     dependencies:

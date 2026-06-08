@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -106,7 +107,7 @@ export const useAiAgentOnboardingWizard = ({
         useGetHelpCenterList(
             { type: 'faq', per_page: HELP_CENTER_MAX_CREATION },
             {
-                staleTime: 1000 * 60 * 5,
+                staleTime: Duration.minutes(5),
             },
         )
 

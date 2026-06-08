@@ -1,5 +1,6 @@
 import type React from 'react'
 import { useEffect, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { SCREEN_SIZE, useKey, useScreenSize } from '@repo/hooks'
 import classnames from 'classnames'
@@ -26,7 +27,7 @@ export const ScrapedDomainSelectedModal = ({
     portalRootId,
     onBackdropClick,
     isLoading,
-    transitionDurationMs = 300,
+    transitionDurationMs = Duration.millis(300),
     containerZIndices = [5, -1],
     isOpened,
     allowClickThrough = false,

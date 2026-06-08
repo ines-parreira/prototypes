@@ -99,6 +99,10 @@
         "react-router-dom-v5-compat": "catalog:react-router",
         "typescript": "catalog:typescript",
         "vitest": "catalog:test",
-        "zod": "catalog:zod"
+        "zod": "catalog:zod",
+        "@gorgias/toolkit": "catalog:toolkit"
+    },
+    "dependencies": {
+        "@gorgias/toolkit": "catalog:toolkit"
     }
 }

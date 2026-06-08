@@ -1,6 +1,7 @@
 import type { FC } from 'react'
 import type React from 'react'
 import { useEffect, useMemo, useRef } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
@@ -181,7 +182,7 @@ export const HandoverStep: FC<StepProps> = ({
         fieldName: 'email',
         fieldType: 'input',
         fieldValue: email,
-        debounceMs: 1000,
+        debounceMs: Duration.seconds(1),
     })
 
     useTrackFieldValue({

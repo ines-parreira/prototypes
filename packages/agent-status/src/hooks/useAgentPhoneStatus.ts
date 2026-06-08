@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
-
-import { DurationInMs } from '@repo/utils'
+import { Duration } from '@gorgias/toolkit'
 
 import { useGetUserPhoneStatus } from '@gorgias/helpdesk-queries'
 
@@ -31,8 +30,8 @@ type UseAgentPhoneStatusParams = {
 
 export function useAgentPhoneStatus({
     userId,
-    staleTime = DurationInMs.OneMinute,
-    cacheTime = DurationInMs.OneHour,
+    staleTime = Duration.minutes(1),
+    cacheTime = Duration.hours(1),
     enabled = true,
     cacheOnly = false,
     refetchOnMount = false,

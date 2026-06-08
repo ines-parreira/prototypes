@@ -1,5 +1,6 @@
 import type { UseQueryOptions } from '@tanstack/react-query'
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { Duration } from '@gorgias/toolkit'
 
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import type { MutationOverrides } from 'types/query'
@@ -11,8 +12,8 @@ import {
 import type { SelfServiceConfiguration } from './types'
 import { getShopNameFromStoreIntegration } from './utils'
 
-export const STALE_TIME_MS = 10 * 60 * 1000 // 10 minutes
-export const CACHE_TIME_MS = 20 * 60 * 1000 // 20 minutes
+export const STALE_TIME_MS = Duration.minutes(10)
+export const CACHE_TIME_MS = Duration.minutes(20)
 
 export const selfServiceConfigurationKeys = {
     all: () => ['selfServiceConfigurations'] as const,

@@ -1,5 +1,6 @@
 import type React from 'react'
 import { useRef } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import {
     Button,
@@ -44,7 +45,10 @@ const errorByUrlValidationResult: Record<
     unsupported: (
         <span className={css.unsupportedError}>
             That URL is not supported.
-            <Tooltip delay={100} trigger={<Icon name="help-circle" />}>
+            <Tooltip
+                delay={Duration.millis(100)}
+                trigger={<Icon name="help-circle" />}
+            >
                 <TooltipContent>
                     Hash mark separators (e.g. &quot;#example&quot;) in URLs are
                     notsupported.
@@ -117,7 +121,7 @@ const VisibilityCondition: React.FC<Props> = ({
             <Tooltip
                 placement="top"
                 isDisabled={isDeletable}
-                delay={100}
+                delay={Duration.millis(100)}
                 trigger={
                     <Button
                         isDisabled={!isDeletable}

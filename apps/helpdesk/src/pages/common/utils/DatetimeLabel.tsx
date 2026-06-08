@@ -2,6 +2,7 @@ import { useId } from '@repo/hooks'
 import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
 import classNames from 'classnames'
 import type { UncontrolledTooltipProps } from 'reactstrap'
+import { Duration } from '@gorgias/toolkit'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
@@ -67,7 +68,7 @@ const DatetimeLabel = ({
                 <Tooltip
                     placement={placement}
                     target={id}
-                    delay={{ show: 200, hide: 0 }}
+                    delay={{ show: Duration.millis(200), hide: 0 }}
                     className={classNames(css.datetimeTooltip)}
                 >
                     {tooltipDatetime.toString()}

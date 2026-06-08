@@ -19,7 +19,8 @@
     "peerDependencies": {
         "@gorgias/helpdesk-queries": "catalog:rest-api-sdk",
         "@repo/utils": "workspace:*",
-        "react": "catalog:react"
+        "react": "catalog:react",
+        "@gorgias/toolkit": "catalog:toolkit"
     },
     "devDependencies": {
         "@gorgias/helpdesk-mocks": "catalog:rest-api-sdk",
@@ -40,6 +41,7 @@
         "oxlint": "catalog:oxlint",
         "react": "catalog:react",
         "typescript": "catalog:typescript",
-        "vitest": "catalog:test"
+        "vitest": "catalog:test",
+        "@gorgias/toolkit": "catalog:toolkit"
     }
 }

@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { Link } from 'react-router-dom'
 import {
@@ -82,7 +83,7 @@ export const GorgiasChatIntegrationLanguagesTableRowActions = ({
                             </IconButton>
                             <Tooltip
                                 autohide={false}
-                                delay={100}
+                                delay={Duration.millis(100)}
                                 disabled={!language.primary}
                                 target={`more-actions-${language.language}-help`}
                                 placement="bottom-end"

@@ -1,4 +1,5 @@
 import { useCallback, useRef } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { buildJobMessage } from '@repo/utils'
 import _uniqueId from 'lodash/uniqueId'
@@ -59,7 +60,7 @@ const useNotificationPayload = ({ level, objectType, ticketIds }: Props) => {
                 buttons: [],
                 allowHTML: false,
                 closeOnNext: true,
-                dismissAfter: 10000,
+                dismissAfter: Duration.seconds(10),
                 dismissible: true,
                 message: message ?? notification.current?.message,
                 position: POSITIONS.topCenter,

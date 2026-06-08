@@ -21,11 +21,11 @@ import {
     HELPDESK_GROUP_IDS,
     INCIDENT_IMPACT_LABEL,
     INCIDENTS_NOTIFICATION_ID,
-    INCIDENTS_POLLING_INTERVAL_SECONDS,
+    INCIDENTS_POLLING_INTERVAL,
     INTEGRATION_COMPONENTS_TYPES,
     MAINTENANCE_NOTIFICATION_BEFORE_MINUTES,
     MAINTENANCE_NOTIFICATION_ID,
-    MAINTENANCE_POLLING_INTERVAL_SECONDS,
+    MAINTENANCE_POLLING_INTERVAL,
     PAGE_ID,
 } from './constants'
 import type {
@@ -81,12 +81,12 @@ export class StatusPageManager {
         // since the status can change we need to poll them continuously to give updates to users.
         this.fetchUnresolvedIncidentsInterval = window.setInterval(
             this.fetchUnresolvedIncidents,
-            INCIDENTS_POLLING_INTERVAL_SECONDS * 1000,
+            INCIDENTS_POLLING_INTERVAL,
         )
 
         this.fetchScheduledMaintenancesInterval = window.setInterval(
             this.fetchScheduledMaintenances,
-            MAINTENANCE_POLLING_INTERVAL_SECONDS * 1000,
+            MAINTENANCE_POLLING_INTERVAL,
         )
     }
 

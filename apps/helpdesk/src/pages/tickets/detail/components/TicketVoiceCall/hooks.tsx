@@ -1,4 +1,5 @@
 import { useGetCustomer } from '@repo/customer/hooks'
+import { Duration } from '@gorgias/toolkit'
 
 import type { getCustomer } from '@gorgias/helpdesk-client'
 
@@ -58,7 +59,7 @@ export function useAgentDetails(agentId: number) {
 
     const agentResponse = useGetAgent(agentId, {
         retry: false,
-        staleTime: 30 * 60 * 1000, // 30 minutes
+        staleTime: Duration.minutes(30),
         initialData: initialAgentData,
     })
 

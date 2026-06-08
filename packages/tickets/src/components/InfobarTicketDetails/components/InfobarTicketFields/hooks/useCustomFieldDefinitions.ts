@@ -1,4 +1,4 @@
-import { DurationInMs } from '@repo/utils'
+import { Duration } from '@gorgias/toolkit'
 
 import { useListCustomFields } from '@gorgias/helpdesk-queries'
 
@@ -8,7 +8,7 @@ export const useCustomFieldDefinitions = (
     return useListCustomFields(args[0], {
         ...args[1],
         query: {
-            staleTime: DurationInMs.OneDay,
+            staleTime: Duration.days(1),
             refetchOnWindowFocus: false,
             ...args[1]?.query,
             select: (data) => data.data,

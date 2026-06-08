@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import type { LegacyColorType as ColorType } from '@gorgias/axiom'
 import { LegacyBadge as Badge } from '@gorgias/axiom'
@@ -16,15 +17,13 @@ type Props = {
     resourceSection: ResourceSection
 }
 
-const DISAPPEAR_TIME = 5000
-
 const FeedbackStatusBadge = ({ status, resourceSection }: Props) => {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
         const timer: NodeJS.Timeout = setTimeout(() => {
             dispatch(setAgentFeedbackMessageStatus(null, resourceSection))
-        }, DISAPPEAR_TIME) // Hide after 5 seconds
+        }, Duration.seconds(5))
         return () => {
             if (timer) clearTimeout(timer)
         }

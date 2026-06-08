@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useUnmount } from '@repo/hooks'
 
@@ -59,8 +60,6 @@ export type SearchRankScenarioOptions = {
     searchQueryRankedEvent?: SegmentEvent
 }
 
-const DEFAULT_SCENARIO_TIMEOUT = 60000
-
 export const DATABASE_TYPE: Record<SearchEngine, string> = {
     [SearchEngine.ES]: 'elasticsearch',
     [SearchEngine.GCP_ES]: 'elasticsearch-gcp', // fixme(@Illia): deprecate this search engine after migration is done
@@ -83,10 +82,8 @@ export function useSearchRankScenario(
     source: SearchRankSource,
     options: SearchRankScenarioOptions = {},
 ): SearchRank {
-    const {
-        scenarioTimeout = DEFAULT_SCENARIO_TIMEOUT,
-        searchQueryRankedEvent,
-    } = options
+    const { scenarioTimeout = Duration.minutes(1), searchQueryRankedEvent } =
+        options
     const request = useRef<SearchRankRequest | undefined>()
     const response = useRef<SearchRankResponse | undefined>()
     const selectedItem = useRef<SearchRankSelectedItem | undefined>()

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useDebouncedEffect } from '@repo/hooks'
 
@@ -25,8 +26,6 @@ import { getCategoriesById } from 'state/entities/helpCenter/categories'
 import { useArticleContext } from '../context/ArticleContext'
 import type { SettingsChanges } from '../context/types'
 
-const DEFAULT_SETTINGS_AUTOSAVE_DELAY_MS = 1000
-
 const getCategoryTitlesById = (
     categories: { id: number; translation?: { title?: string } | null }[],
 ) => {
@@ -51,8 +50,6 @@ const getLocalesOptions = (
             canBeDeleted: articleLocales.length > 1,
         }),
     )
-
-const SAVED_STATE_DURATION_MS = 4000
 
 export const useSettingsAutoSave = () => {
     const { state, dispatch, config, hasPendingContentChanges } =
@@ -258,7 +255,7 @@ export const useSettingsAutoSave = () => {
                     }
                     savedTimeoutRef.current = setTimeout(() => {
                         setShowSavedState(false)
-                    }, SAVED_STATE_DURATION_MS)
+                    }, Duration.seconds(4))
                 }
             } catch {
                 toast.error('An error occurred while saving the settings.')
@@ -286,7 +283,7 @@ export const useSettingsAutoSave = () => {
             }
         },
         [state.pendingSettingsChanges],
-        DEFAULT_SETTINGS_AUTOSAVE_DELAY_MS,
+        Duration.seconds(1),
     )
 
     const settingsProps = useMemo(

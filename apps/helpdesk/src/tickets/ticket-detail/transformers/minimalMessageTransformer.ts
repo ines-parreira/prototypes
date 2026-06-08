@@ -1,3 +1,5 @@
+import { Duration } from '@gorgias/toolkit'
+
 import { TicketChannel } from 'business/types/ticket'
 
 import { isSignalMessage } from '../helpers/isSignalMessage'
@@ -10,7 +12,7 @@ const groupingChannels: Partial<Record<TicketChannel, true>> = {
     [TicketChannel.FacebookMessenger]: true,
 }
 
-const groupingDuration = 1000 * 60 * 5
+const groupingDuration = Duration.minutes(5)
 
 export function minimalMessageTransformer(elements: TicketElement[]) {
     let firstOfGroup: TicketMessageElement | null = null

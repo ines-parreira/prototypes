@@ -1,4 +1,5 @@
 import { useExhaustEndpoint } from '@repo/hooks'
+import { Duration } from '@gorgias/toolkit'
 
 import type { IntegrationType } from '@gorgias/helpdesk-client'
 import { listIntegrations } from '@gorgias/helpdesk-client'
@@ -13,7 +14,7 @@ export function useAllIntegrations(type?: IntegrationType) {
     const { data, isLoading } = useExhaustEndpoint(
         queryKeys.integrations.listIntegrations(queryParams),
         (cursor) => listIntegrations({ cursor, ...queryParams }),
-        { staleTime: 60_000, refetchOnWindowFocus: false },
+        { staleTime: Duration.minutes(1), refetchOnWindowFocus: false },
     )
 
     return {

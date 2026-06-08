@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { Skeleton } from '@gorgias/axiom'
 
@@ -21,8 +22,6 @@ import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'
 import { compactInteger } from 'utils'
 
 import css from './KnowledgePreview.less'
-
-const ANIMATION_DURATION = 60000
 
 type KnowledgePreviewProps = {
     shopName: string
@@ -159,7 +158,7 @@ export const KnowledgePreview = ({ shopName }: KnowledgePreviewProps) => {
                       ]
 
             const options = {
-                duration: ANIMATION_DURATION,
+                duration: Duration.minutes(1),
                 iterations: Infinity,
             }
 

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { NavigationSection, NavigationSectionItem } from '@repo/navigation'
@@ -71,7 +72,7 @@ export const ActionDrivenNavigationItems = ({
         { accountDomain },
         {
             enabled: !!selectedStore && !!accountDomain,
-            staleTime: 5 * 60 * 1000,
+            staleTime: Duration.minutes(5),
         },
     )
 

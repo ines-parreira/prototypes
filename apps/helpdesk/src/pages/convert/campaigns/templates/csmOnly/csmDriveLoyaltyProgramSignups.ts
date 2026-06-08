@@ -1,4 +1,5 @@
 import { ulid } from 'ulidx'
+import { Duration } from '@gorgias/toolkit'
 
 import { CampaignConfigurationBuilder } from 'pages/convert/campaigns/templates/constructor'
 import type {
@@ -59,7 +60,7 @@ export const CSM_DRIVE_LOYALTY_PROGRAM_SIGNUPS: CampaignTemplate = {
 
 Already a member? Sign in`,
                 message_html: `<div>Welcome back! <strong>Don&#x27;t forget you can save up to 15%</strong> on your orders by becoming a <a href="http://test.com/?utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=%5BTarget%20Return%20Customers%5D-%20Drive%20Loyalty%20program%20signups?utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=%5BTarget%20Return%20Customers%5D-%20Drive%20Loyalty%20program%20signups" target="_blank">loyalty member</a>. </div><div><br></div><div>Already a member? <a href="http://test.com/" target="_blank">Sign in</a></div>`,
-                meta: { delay: 5000 },
+                meta: { delay: Duration.seconds(5) },
                 status: CampaignStatus.Inactive,
                 triggers: triggers,
                 trigger_rule: createTriggerRule(triggers),

@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react'
+import { Duration } from '@gorgias/toolkit'
 
-import { DurationInMs } from '@repo/utils'
 import { useGetTicket as useGetTicketPrimitive } from '@gorgias/helpdesk-queries'
 
 import { useGetTicket } from '../useGetTicket'
@@ -25,7 +25,7 @@ describe('useGetTicket', () => {
 
         expect(useGetTicketPrimitiveMock).toHaveBeenCalledWith(1, undefined, {
             query: {
-                staleTime: DurationInMs.FiveMinutes,
+                staleTime: Duration.minutes(5),
             },
         })
     })

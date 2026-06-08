@@ -1,4 +1,5 @@
 import { ulid } from 'ulidx'
+import { Duration } from '@gorgias/toolkit'
 
 import { CampaignConfigurationBuilder } from 'pages/convert/campaigns/templates/constructor'
 import type {
@@ -51,7 +52,7 @@ export const CSM_CROSS_SELL_COMPLIMENTARY_ITEM: CampaignTemplate = {
                 template_id: CSM_CROSS_SELL_COMPLIMENTARY_ITEM.slug,
                 message_text: `Great choice! One of our favorites to go with: Complimentary product`,
                 message_html: `<div><strong>Great choice!</strong> One of our favorites to go with: Complimentary product</div>`,
-                meta: { delay: 5000 },
+                meta: { delay: Duration.seconds(5) },
                 status: CampaignStatus.Inactive,
                 triggers: triggers,
                 trigger_rule: createTriggerRule(triggers),

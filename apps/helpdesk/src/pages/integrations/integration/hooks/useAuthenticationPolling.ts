@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import type { Map } from 'immutable'
 import { useHistory } from 'react-router-dom'
@@ -10,8 +11,6 @@ import {
     fetchIntegration,
     triggerCreateSuccess,
 } from 'state/integrations/actions'
-
-const REFRESH_DELAY = 3000
 
 // Ping the integration until the authentication process is done
 export default function useAuthenticationPolling(
@@ -41,7 +40,7 @@ export default function useAuthenticationPolling(
                         true,
                     ),
                 )
-            }, REFRESH_DELAY)
+            }, Duration.seconds(3))
         } else {
             // make sure to delete the action search param to stop the effect
             search.delete('action')

@@ -1,3 +1,5 @@
+import { Duration } from '@gorgias/toolkit'
+
 import audioBeyondDoubt from 'assets/audio/beyond-doubt.mp3'
 import audioClassic from 'assets/audio/classic.mp3'
 import audioDefinite from 'assets/audio/definite.mp3'
@@ -47,7 +49,7 @@ export default class NotificationSounds {
         queuedAt: number
     } | null = null
 
-    private static readonly TOAST_DURATION_MS = 5000
+    private static readonly TOAST_DURATION_MS = Duration.seconds(5)
 
     constructor() {
         const audioCtx = new AudioContext()

@@ -1,4 +1,5 @@
 import { isAxiosError } from 'axios'
+import { Duration } from '@gorgias/toolkit'
 
 import type {
     AlertNotification,
@@ -70,7 +71,7 @@ export const getSessionCreateData = (
 })
 
 export const longNotificationOptions: AlertNotification = {
-    dismissAfter: 20 * 1000,
+    dismissAfter: Duration.seconds(20),
     dismissible: true,
     showDismissButton: true,
 }

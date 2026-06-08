@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useShallow } from 'zustand/react/shallow'
 
@@ -23,8 +24,6 @@ import { fromArticleTranslation, fromArticleTranslationResponse } from './utils'
 type GuidanceExtra = {
     visibility: boolean
 }
-
-const DEFAULT_AUTOSAVE_DELAY_MS = 1000
 
 export const useGuidanceAutoSave = () => {
     const store = useGuidanceStoreApi()
@@ -129,7 +128,7 @@ export const useGuidanceAutoSave = () => {
     )
 
     return useEditorAutoSave<GuidanceExtra, GuidanceArticle>({
-        debounceDelay: DEFAULT_AUTOSAVE_DELAY_MS,
+        debounceDelay: Duration.seconds(1),
         getCurrentState,
         isHelpCenterReady,
         validateContent: (content) => getPlainTextLength(content) <= textLimit,

@@ -1,6 +1,6 @@
-import { DurationInMs } from '@repo/utils'
+import { Duration } from '@gorgias/toolkit'
 
-export const VIEWS_STALE_TIME = DurationInMs.OneDay * 2
+export const VIEWS_STALE_TIME = Duration.days(2)
 
 export const INBOX_SYSTEM_VIEW_NAME = 'Inbox'
 

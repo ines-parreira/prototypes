@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
@@ -87,8 +88,8 @@ export const InstagramSection = ({
                 queryKey: queryKeys.integrations.listInstagramProfiles(
                     instagramProfilesParams,
                 ),
-                staleTime: 60 * 60 * 1000,
-                cacheTime: 60 * 60 * 1000,
+                staleTime: Duration.hours(1),
+                cacheTime: Duration.hours(1),
                 select: (resp) => resp?.data?.data?.at(0),
             },
         },

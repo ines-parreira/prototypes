@@ -1,5 +1,6 @@
 import type { UseQueryOptions } from '@tanstack/react-query'
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { Duration } from '@gorgias/toolkit'
 
 import type { MutationOverrides } from 'types/query'
 
@@ -11,9 +12,6 @@ import {
     updateStepNotifications,
 } from './configuration'
 import type { GetPostStoreInstallationStepsParams } from './types'
-
-const STALE_TIME_MS = 5 * 60 * 1000 // 5 minutes
-const CACHE_TIME_MS = 10 * 60 * 1000 // 10 minutes
 
 // Post-Store Installation Steps
 export const postStoreInstallationStepsKeys = {
@@ -45,8 +43,8 @@ export const useGetPostStoreInstallationStepsPure = (
             shopName: params.shopName,
         }),
         queryFn: () => getPostStoreInstallationSteps(params),
-        staleTime: STALE_TIME_MS,
-        cacheTime: CACHE_TIME_MS,
+        staleTime: Duration.minutes(5),
+        cacheTime: Duration.minutes(10),
         ...overrides,
         enabled:
             !!params.accountId &&

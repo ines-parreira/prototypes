@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { toast } from '@gorgias/axiom'
 import type {
@@ -17,8 +18,6 @@ import {
 } from 'models/aiAgent/queries'
 import { usePlaygroundPolling } from 'pages/aiAgent/PlaygroundV2/hooks/usePlaygroundPolling'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
-
-const POLLING_INTERVAL = 5 * 1000
 
 type useGeneratePlaygroundMessageProps = {
     journey?: JourneyApiDTO
@@ -226,7 +225,7 @@ export const useGeneratePlaygroundMessage = ({
                 // Wait for polling to complete
                 while (isPollingRef.current) {
                     await new Promise((resolve) =>
-                        setTimeout(resolve, POLLING_INTERVAL),
+                        setTimeout(resolve, Duration.seconds(5)),
                     )
                 }
             }

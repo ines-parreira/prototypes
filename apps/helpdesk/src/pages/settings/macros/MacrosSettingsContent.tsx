@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { history } from '@repo/routing'
 import classnames from 'classnames'
@@ -25,7 +26,7 @@ import MacrosSettingsTable from './MacrosSettingsTable'
 
 import css from './MacrosSettingsContent.less'
 
-export const STALE_TIME_MS = 15 * 60 * 1000 // 15 minutes
+export const STALE_TIME_MS = Duration.minutes(15)
 
 export function MacrosSettingsContent() {
     const isArchiveTab = !!useRouteMatch('/app/settings/macros/archived')

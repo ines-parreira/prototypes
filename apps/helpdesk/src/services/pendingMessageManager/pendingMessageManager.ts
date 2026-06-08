@@ -3,6 +3,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import { fromJS } from 'immutable'
 import { dismissNotification } from 'reapop'
+import { Duration } from '@gorgias/toolkit'
 
 import { store as reduxStore } from 'common/store'
 import {
@@ -27,7 +28,7 @@ import { applyMacro, messageDeleted } from 'state/ticket/actions'
 //$TsFixMe remove once init.js is migrated
 const typeSafeReduxStore = reduxStore as EnhancedStore
 
-const pendingMessageDelay = 5000
+const pendingMessageDelay = Duration.seconds(5)
 
 export type SendMessageArgs = {
     messageId: number

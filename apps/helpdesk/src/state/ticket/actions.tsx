@@ -1444,7 +1444,7 @@ export function setTypingActivityShopper(ticketId: number) {
                         isShopperTyping: false,
                     },
                 })
-            }, types.TYPING_ACTIVITY_SHOPPER_TIMEOUT_MS)
+            }, types.TYPING_ACTIVITY_SHOPPER_TIMEOUT)
 
             void dispatch({
                 type: types.SET_TYPING_ACTIVITY_SHOPPER,

@@ -1,11 +1,12 @@
 import type { ValueOf } from '@repo/types'
+import { Duration } from '@gorgias/toolkit'
 
 import { ManagedTicketFieldType } from '@gorgias/helpdesk-types'
 
 import type { CustomFieldValue } from '../../../../InfobarCustomerFields/types'
 import type { VisibleTicketField } from '../hooks/useFilteredTicketFields'
 
-export const STALE_TIME_MS = 60 * 60 * 1000 // 1 hour
+export const STALE_TIME_MS = Duration.hours(1)
 
 export const AITicketManagedTypes = {
     AiIntent: ManagedTicketFieldType.AiIntent,

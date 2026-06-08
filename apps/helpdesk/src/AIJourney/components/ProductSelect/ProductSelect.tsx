@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import _debounce from 'lodash/debounce'
 
@@ -19,8 +20,6 @@ import { useJourneyContext } from 'AIJourney/providers'
 import type { Product } from 'constants/integrations/types/shopify'
 
 import css from './ProductSelect.less'
-
-const SEARCH_DEBOUNCE_MS = 250
 
 const ProductSelectTrigger = ({
     isOpen,
@@ -69,7 +68,7 @@ export const ProductSelect = ({
     const debouncedSetSearch = useCallback(
         _debounce((value: string) => {
             setDebouncedSearch(value)
-        }, SEARCH_DEBOUNCE_MS),
+        }, Duration.millis(250)),
         [],
     )
 

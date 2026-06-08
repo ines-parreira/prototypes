@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { Tooltip } from '@gorgias/axiom'
 import type { TooltipProps } from '@gorgias/axiom'
@@ -22,7 +23,7 @@ export function NavigationSidebarTooltip({
         <Tooltip
             trigger={trigger}
             placement={isCollapsed ? 'right' : placement}
-            delay={isCollapsed ? 300 : undefined}
+            delay={isCollapsed ? Duration.millis(300) : undefined}
         >
             {children}
         </Tooltip>

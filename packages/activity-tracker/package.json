@@ -24,7 +24,8 @@
         "@repo/feature-flags": "workspace:*",
         "@repo/logging": "workspace:*",
         "@repo/utils": "workspace:*",
-        "axios": "catalog:rest-api-sdk"
+        "axios": "catalog:rest-api-sdk",
+        "@gorgias/toolkit": "catalog:toolkit"
     },
     "devDependencies": {
         "@gorgias/event-tracker-api": "catalog:event-tracker",
@@ -39,6 +40,7 @@
         "oxfmt": "catalog:formatter",
         "oxlint": "catalog:oxlint",
         "typescript": "catalog:typescript",
-        "vitest": "catalog:test"
+        "vitest": "catalog:test",
+        "@gorgias/toolkit": "catalog:toolkit"
     }
 }

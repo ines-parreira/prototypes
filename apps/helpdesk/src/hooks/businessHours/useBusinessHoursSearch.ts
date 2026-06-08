@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { debounce } from 'lodash'
 import _flatten from 'lodash/flatten'
@@ -9,7 +10,7 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
 export const BUSINESS_HOURS_LIMIT = 20
-export const BUSINESS_HOURS_SEARCH_DEBOUNCE_TIME = 300
+export const BUSINESS_HOURS_SEARCH_DEBOUNCE_TIME = Duration.millis(300)
 export const BUSINESS_HOURS_FETCH_ERROR_MESSAGE =
     'Failed to fetch business hours'
 
@@ -24,7 +25,7 @@ export const useBusinessHoursSearch = () => {
             limit: BUSINESS_HOURS_LIMIT,
         },
         {
-            staleTime: 60_000,
+            staleTime: Duration.minutes(1),
             refetchOnWindowFocus: false,
         },
     )

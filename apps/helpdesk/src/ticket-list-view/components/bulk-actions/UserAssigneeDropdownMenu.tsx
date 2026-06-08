@@ -1,5 +1,6 @@
 import type { KeyboardEvent } from 'react'
 import { useCallback, useMemo, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useDebouncedEffect } from '@repo/hooks'
 
@@ -21,7 +22,7 @@ type Props = {
 }
 
 const LIMIT_ITEMS_SEARCH = 30
-const STALE_TIME = 5 * 60 * 1000 // 5 minutes
+const STALE_TIME = Duration.minutes(5)
 
 const UserAssigneeDropdownMenu = ({ onClick }: Props) => {
     const wrapperRef = useRef<HTMLDivElement>(null)

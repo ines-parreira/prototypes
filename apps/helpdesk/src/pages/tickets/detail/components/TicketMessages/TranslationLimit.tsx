@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { Icon } from '@gorgias/axiom'
 
@@ -10,7 +11,7 @@ export function TranslationLimit() {
 
     useEffect(() => {
         const elapsed = Date.now() - mountTimeRef.current
-        const remaining = Math.max(0, 5000 - elapsed)
+        const remaining = Math.max(0, Duration.seconds(5) - elapsed)
 
         const timer = setTimeout(() => {
             setIsVisible(false)

@@ -1,5 +1,6 @@
 import type React from 'react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { GorgiasAppAuthService } from '@repo/api-resources/gorgiasAppsAuth'
 import { useAsyncFn } from '@repo/hooks'
@@ -55,7 +56,7 @@ type Props = {
     buttonLabel?: string
 }
 
-export const ACTIVE_MIGRATION_UPDATE_TIMEOUT = 3 * 1000
+export const ACTIVE_MIGRATION_UPDATE_TIMEOUT = Duration.seconds(3)
 
 const refreshButton = (
     <Button
@@ -328,7 +329,7 @@ export const ImportSection: React.FC<Props> = ({
                     isFirstTimeLoading: false,
                     data: null,
                 })
-                toast.error(message, { duration: 20000 })
+                toast.error(message, { duration: Duration.seconds(20) })
             }
         })()
     }, [
@@ -386,7 +387,10 @@ export const ImportSection: React.FC<Props> = ({
         if (migrationFailed) {
             toast.error(
                 'The migration failed to finish importing all articles, some of them might be missing, to see the results refresh the page',
-                { inlineActions: refreshButton, duration: 20000 },
+                {
+                    inlineActions: refreshButton,
+                    duration: Duration.seconds(20),
+                },
             )
             setCurrentMigrationSession({
                 data: null,
@@ -552,7 +556,7 @@ export const ImportSection: React.FC<Props> = ({
                     isLoading: false,
                     isError: true,
                 })
-                toast.error(message, { duration: 20000 })
+                toast.error(message, { duration: Duration.seconds(20) })
             }
         })()
     }, [

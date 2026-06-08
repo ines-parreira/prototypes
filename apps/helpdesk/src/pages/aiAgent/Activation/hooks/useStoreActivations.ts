@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -268,7 +269,7 @@ export const useStoreActivations = ({
         useGetHelpCenterList(
             { type: 'faq', per_page: HELP_CENTER_MAX_CREATION },
             {
-                staleTime: 1000 * 60 * 5,
+                staleTime: Duration.minutes(5),
                 refetchOnWindowFocus: false,
             },
         )

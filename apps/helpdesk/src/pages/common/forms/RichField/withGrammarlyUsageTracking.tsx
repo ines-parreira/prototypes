@@ -1,5 +1,6 @@
 import type { ComponentType } from 'react'
 import React, { Component } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { tryLocalStorage } from '@repo/browser-storage'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -15,8 +16,6 @@ type State = {
 const GRAMMARLY_EXTENSION_TAG = 'grammarly-extension'
 export const GRAMMARLY_FOUND_LOCAL_STORAGE_TAG =
     'grammarly-extension-last-found'
-const SEGMENT_LOG_THROTTLE_TIME = 24 * 3600 * 1000 // 24h in milliseconds.
-
 function findGrammarlyOnPage(): boolean {
     return document.getElementsByTagName(GRAMMARLY_EXTENSION_TAG).length > 0
 }
@@ -38,7 +37,7 @@ export default function withGrammarlyUsageTracking<Props>(
                         +localStorage.getItem(
                             GRAMMARLY_FOUND_LOCAL_STORAGE_TAG,
                         )! <
-                        SEGMENT_LOG_THROTTLE_TIME)
+                        Duration.days(1))
 
             // Grammarly extension is activated (and its elements created) only after the editor is focused
             // for the first time. And DOM changes happen asynchronously. So we need to wrap this with a

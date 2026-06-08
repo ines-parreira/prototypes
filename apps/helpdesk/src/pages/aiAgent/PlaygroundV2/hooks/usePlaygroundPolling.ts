@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { reportError } from '@repo/logging'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useGetTestSessionLogs } from 'models/aiAgent/queries'
 
-const POLLING_INTERVAL = 5000
-const POLLING_TIMEOUT = 5 * 60 * 1000 // 5 minutes in milliseconds
+const POLLING_TIMEOUT = Duration.minutes(5)
 
 export const usePlaygroundPolling = ({
     testSessionId,
@@ -25,7 +25,7 @@ export const usePlaygroundPolling = ({
         useV3,
         {
             enabled: !!isPolling,
-            refetchInterval: POLLING_INTERVAL,
+            refetchInterval: Duration.seconds(5),
             baseUrl,
         },
     )

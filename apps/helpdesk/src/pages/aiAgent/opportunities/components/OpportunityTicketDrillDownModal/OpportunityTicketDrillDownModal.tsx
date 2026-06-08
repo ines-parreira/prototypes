@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import classNames from 'classnames'
 
@@ -80,7 +81,7 @@ export const OpportunityTicketDrillDownModal = ({
         {
             query: {
                 enabled: isOpen && numericTicketIds.length > 0,
-                staleTime: 60000,
+                staleTime: Duration.minutes(1),
             },
         },
     )

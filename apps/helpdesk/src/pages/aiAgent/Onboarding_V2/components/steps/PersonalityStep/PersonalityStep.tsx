@@ -1,5 +1,6 @@
 import type { FC } from 'react'
 import { useMemo } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -140,7 +141,7 @@ export const PersonalityStep: FC<StepProps> = ({
         fieldName: 'salesPersuasionLevel',
         fieldType: 'slider',
         fieldValue: salesPersuasionLevel,
-        debounceMs: 1000,
+        debounceMs: Duration.seconds(1),
     })
 
     useTrackFieldValue({
@@ -150,7 +151,7 @@ export const PersonalityStep: FC<StepProps> = ({
         fieldName: 'salesDiscountStrategyLevel',
         fieldType: 'slider',
         fieldValue: salesDiscountStrategyLevel,
-        debounceMs: 1000,
+        debounceMs: Duration.seconds(1),
     })
 
     useTrackFieldValue({
@@ -160,7 +161,7 @@ export const PersonalityStep: FC<StepProps> = ({
         fieldName: 'salesDiscountMax',
         fieldType: 'input',
         fieldValue: salesDiscountMax,
-        debounceMs: 1000,
+        debounceMs: Duration.seconds(1),
     })
 
     const { previewConversation, isPreviewLoading } =

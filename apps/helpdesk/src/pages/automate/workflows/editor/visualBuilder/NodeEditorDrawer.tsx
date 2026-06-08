@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useKey, usePrevious } from '@repo/hooks'
 import classNames from 'classnames'
@@ -84,7 +85,7 @@ const NodeEditorDrawer = ({ nodeInEdition, onClose }: Props) => {
             fullscreen={false}
             isLoading={false}
             portalRootId="app-root"
-            transitionDurationMs={300}
+            transitionDurationMs={Duration.millis(300)}
             containerZIndices={[10, 10]}
             showBackdrop={false}
         >

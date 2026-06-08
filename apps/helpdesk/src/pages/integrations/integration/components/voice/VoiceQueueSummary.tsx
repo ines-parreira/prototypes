@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 import { useGetTeam, useGetVoiceQueue } from '@gorgias/helpdesk-queries'
@@ -28,7 +29,7 @@ function VoiceQueueSummary({ queue_id }: VoiceQueueSummaryProps) {
         },
         {
             query: {
-                staleTime: 60_000,
+                staleTime: Duration.minutes(1),
             },
         },
     )

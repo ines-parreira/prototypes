@@ -3,6 +3,7 @@ import _isString from 'lodash/isString'
 import _throttle from 'lodash/throttle'
 import type { PushNotification } from 'push.js'
 import notification from 'push.js'
+import { Duration } from '@gorgias/toolkit'
 
 import { store } from 'common/store'
 import { notificationSounds } from 'services'
@@ -26,7 +27,7 @@ export class BrowserNotification {
 
             notificationSounds.play(settings.sound, settings.volume)
         },
-        10000,
+        Duration.seconds(10),
         { trailing: false },
     )
 
@@ -56,7 +57,7 @@ export class BrowserNotification {
             {
                 body: _isString(body) && body ? body : 'You received an answer',
                 icon,
-                timeout: requireInteraction ? undefined : 5000,
+                timeout: requireInteraction ? undefined : Duration.seconds(5),
                 onClick: function () {
                     // go to the ticket
                     if (ticketId) {
@@ -71,7 +72,9 @@ export class BrowserNotification {
     }
 
     // FIXME: remove once PLTCO-2134 is done
-    newMessageThrottled = _throttle(this.newMessage, 10000, { trailing: false })
+    newMessageThrottled = _throttle(this.newMessage, Duration.seconds(10), {
+        trailing: false,
+    })
 }
 
 const browserNotification = new BrowserNotification()

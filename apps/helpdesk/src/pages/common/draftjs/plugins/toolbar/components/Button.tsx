@@ -1,5 +1,6 @@
 import type { ForwardedRef, MouseEvent } from 'react'
 import React, { forwardRef } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useId } from '@repo/hooks'
 import classnames from 'classnames'
@@ -44,7 +45,7 @@ const Button = (props: Props, ref: ForwardedRef<HTMLButtonElement>) => {
 
             <Tooltip
                 autohide={false}
-                delay={100}
+                delay={Duration.millis(100)}
                 target={id}
                 placement="bottom"
             >

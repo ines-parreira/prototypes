@@ -1,4 +1,5 @@
 import { isLocalDev, isProduction, isStaging } from '@repo/utils'
+import { Duration } from '@gorgias/toolkit'
 
 import { LANGUAGE } from 'constants/languages'
 import InstallationStep from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationInstall/GorgiasChatIntegrationManualInstallationTabs/components/InstallationStep'
@@ -135,7 +136,7 @@ export const CATEGORY_ROW_ACTIONS = [
 export type CategoryRowActionTypes =
     (typeof CATEGORY_ROW_ACTIONS)[number]['name']
 
-export const DRAWER_TRANSITION_DURATION_MS = 300
+export const DRAWER_TRANSITION_DURATION_MS = Duration.millis(300)
 
 export const EDITOR_MODAL_CONTAINER_ID = 'editor-modal-container-id'
 

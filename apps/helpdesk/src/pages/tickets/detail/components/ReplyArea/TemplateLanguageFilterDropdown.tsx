@@ -1,3 +1,4 @@
+import { Duration } from '@gorgias/toolkit'
 import SelectFilter from 'domains/reporting/pages/common/SelectFilter'
 import useAppSelector from 'hooks/useAppSelector'
 import type { SourceAddress } from 'models/ticket/types'
@@ -32,7 +33,7 @@ export default function TemplateLanguageFilterDropdown({
             status: WhatsAppMessageTemplateStatus.Approved,
         },
         {
-            staleTime: 30 * 60 * 1000, // 30 minutes
+            staleTime: Duration.minutes(30),
         },
     )
 

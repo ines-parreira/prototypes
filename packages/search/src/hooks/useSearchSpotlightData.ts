@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useDebouncedValue } from '@repo/hooks'
 
@@ -85,7 +86,7 @@ export function useSearchSpotlightData({
     isOpen,
     showCalls,
 }: UseSearchSpotlightDataOptions) {
-    const debouncedQuery = useDebouncedValue(query.trim(), 1000)
+    const debouncedQuery = useDebouncedValue(query.trim(), Duration.seconds(1))
     const isSearchMode = isOpen && debouncedQuery.length > 0
     const queryLimit = isSearchMode ? SEARCH_RESULT_LIMIT : 1
 

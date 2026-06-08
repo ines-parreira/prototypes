@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useAsyncFn, useEffectOnce } from '@repo/hooks'
 import type { AxiosError } from 'axios'
@@ -20,8 +21,6 @@ import css from './MigrationOutboundVerification.less'
 type Props = {
     onBackClick: () => void
 }
-
-const REFRESH_TIME = 2 * 60 * 1000 // 5 mins
 
 export default function MigrationOutboundVerification({ onBackClick }: Props) {
     const history = useHistory()
@@ -76,7 +75,7 @@ export default function MigrationOutboundVerification({ onBackClick }: Props) {
 
         lastCheckedInterval.current = setInterval(() => {
             void fetchAllDomains()
-        }, REFRESH_TIME)
+        }, Duration.minutes(2))
     }
 
     return (

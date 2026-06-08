@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import type { DraftKnowledge } from '../types'
-
-const KNOWLEDGE_LOADING_MOCK_TIME = 5000
 
 export const useDraftKnowledgeSync = (draftKnowledge?: DraftKnowledge) => {
     const [knowledgeReady, setKnowledgeReady] = useState(false)
@@ -18,7 +17,7 @@ export const useDraftKnowledgeSync = (draftKnowledge?: DraftKnowledge) => {
             setKnowledgeReady(true)
             // Simulate knowledge loading delay, as we don't
             // have real API for this yet
-        }, KNOWLEDGE_LOADING_MOCK_TIME)
+        }, Duration.seconds(5))
 
         return () => clearTimeout(timer)
     }, [draftKnowledge])

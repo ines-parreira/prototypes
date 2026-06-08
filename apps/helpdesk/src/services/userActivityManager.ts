@@ -1,5 +1,6 @@
 import _throttle from 'lodash/throttle'
 import type { AnyAction } from 'redux'
+import { Duration } from '@gorgias/toolkit'
 
 import { store as reduxStore } from 'common/store'
 import { toggleActiveStatus } from 'state/currentUser/actions'
@@ -9,9 +10,9 @@ import socketManager from './socketManager/socketManager'
 import { SocketEventType } from './socketManager/types'
 
 class UserActivityManager {
-    unavailabilityTimeout = 600000 // 10 minutes
-    inactivityTimeout = 60000 // 1 min
-    watchThrottling = 15000 // 15 secs
+    unavailabilityTimeout = Duration.minutes(10)
+    inactivityTimeout = Duration.minutes(1)
+    watchThrottling = Duration.seconds(15)
     userActivityFn: ReturnType<typeof setTimeout> | null = null
     userAvailabilityFn: ReturnType<typeof setTimeout> | null = null
     store = reduxStore

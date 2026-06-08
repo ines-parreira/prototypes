@@ -1,6 +1,6 @@
-import { DurationInMs } from '@repo/utils'
 import { useGetTicket as useGetTicketPrimitive } from '@gorgias/helpdesk-queries'
 import type { GetTicketResult, HttpError } from '@gorgias/helpdesk-types'
+import { Duration } from '@gorgias/toolkit'
 
 type UseGetTicketPrimitiveParams<TData, TError> = Parameters<
     typeof useGetTicketPrimitive<TData, TError>
@@ -17,7 +17,7 @@ export function useGetTicket<
     const mergedOptions = {
         ...options,
         query: {
-            staleTime: DurationInMs.FiveMinutes,
+            staleTime: Duration.minutes(5),
             ...options?.query,
         },
     }

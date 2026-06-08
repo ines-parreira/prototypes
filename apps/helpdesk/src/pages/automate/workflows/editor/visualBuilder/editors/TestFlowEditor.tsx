@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useEffectOnce, useKey } from '@repo/hooks'
 import classNames from 'classnames'
@@ -29,8 +30,6 @@ import EditorDrawerHeader from '../EditorDrawerHeader'
 
 import nodeEditorCss from '../NodeEditorDrawer.less'
 import css from './TestFlowEditor.less'
-
-const TIMEOUT_FLOW_INTERPRETER_STARTED = 40_000
 
 type Props = {
     isTesting: boolean
@@ -173,7 +172,7 @@ export const TestFlowEditor = ({
             if (!isFlowInterpreterStarted) {
                 setIsFlowInterpreterStartedTimeout(true)
             }
-        }, TIMEOUT_FLOW_INTERPRETER_STARTED)
+        }, Duration.seconds(40))
         return window.clearTimeout(timeoutId)
     })
 
@@ -209,7 +208,7 @@ export const TestFlowEditor = ({
             fullscreen={false}
             isLoading={false}
             portalRootId="app-root"
-            transitionDurationMs={300}
+            transitionDurationMs={Duration.millis(300)}
             onBackdropClick={() => onClose()}
         >
             <EditorDrawerHeader
@@ -413,7 +412,7 @@ export const TestFlowEditor = ({
                                     if (loaded) return
                                     loaded = true
                                     writeIframe()
-                                }, 3000)
+                                }, Duration.seconds(3))
 
                                 chatIFrameElement.current = iframe
                             }}

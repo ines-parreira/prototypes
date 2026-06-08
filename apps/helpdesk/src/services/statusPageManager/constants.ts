@@ -1,4 +1,5 @@
 import { envVars, NodeEnv } from '@repo/utils'
+import { Duration } from '@gorgias/toolkit'
 
 import { AlertBannerTypes } from 'AlertBanners'
 import { IntegrationType } from 'models/integration/types'
@@ -129,10 +130,10 @@ export const MAINTENANCE_NOTIFICATION_ID = 'status-page-maintenance'
 export const MAINTENANCE_NOTIFICATION_BEFORE_MINUTES = 10080
 
 // polling incidents more often
-export const INCIDENTS_POLLING_INTERVAL_SECONDS = 30
+export const INCIDENTS_POLLING_INTERVAL = Duration.seconds(30)
 
 // polling scheduled maintenance cycles less often since they are usually scheduled in advance
-export const MAINTENANCE_POLLING_INTERVAL_SECONDS = 300
+export const MAINTENANCE_POLLING_INTERVAL = Duration.minutes(5)
 
 export const DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY =
     'gorgias-statuspage-closed-banners'

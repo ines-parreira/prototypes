@@ -1,4 +1,5 @@
 import type { FC } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
@@ -132,7 +133,7 @@ export const ToneOfVoiceStep: FC<StepProps> = ({
         fieldName: 'customToneOfVoiceGuidance',
         fieldType: 'textarea',
         fieldValue: customToneOfVoiceGuidance,
-        debounceMs: 1000,
+        debounceMs: Duration.seconds(1),
     })
 
     const {

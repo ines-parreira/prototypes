@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
+import { Duration } from '@gorgias/toolkit'
 
 import { upsertStoreConfiguration } from 'models/aiAgent/resources/configuration'
 import { AiAgentScope } from 'models/aiAgent/types'
@@ -10,8 +11,6 @@ type Params = {
     accountDomain: string
     storeActivations: Record<string, StoreActivation>
 }
-
-const TRIAL_DURATION = 14 * 24 * 60 * 60 * 1000
 
 /**
  * @deprecated Use {@link useStartShoppingAssistantTrial} instead
@@ -32,7 +31,7 @@ export const useStartAiSalesAgentTrialForMultipleStores = () => {
                         ...storeActivation.configuration,
                         scopes: [AiAgentScope.Support, AiAgentScope.Sales],
                         salesDeactivatedDatetime: new Date(
-                            Date.now() + TRIAL_DURATION,
+                            Date.now() + Duration.days(14),
                         ).toISOString(),
                         salesPersuasionLevel: PersuasionLevel.Educational,
                         salesDiscountStrategyLevel: DiscountStrategy.NoDiscount,

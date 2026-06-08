@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import {
     Box,
@@ -42,8 +43,6 @@ Once you have enough context, draft the tone of voice with these sections:
 Important: Write this as clear instructions an AI can follow, not as a brand manifesto. "We're bold and fearless" means nothing to an AI. "Use short punchy sentences. Never apologize. Lead with the offer, not the greeting." — that's what works.
 Keep the total output under 2,000 characters, as plain text, with no rich formatting.`
 
-const COPY_FEEDBACK_DURATION_MS = 1500
-
 type StarterPromptModalProps = {
     isOpen: boolean
     onClose: () => void
@@ -59,7 +58,7 @@ export const StarterPromptModal = ({
         if (!hasCopied) return
         const timeoutId = window.setTimeout(
             () => setHasCopied(false),
-            COPY_FEEDBACK_DURATION_MS,
+            Duration.millis(1500),
         )
         return () => window.clearTimeout(timeoutId)
     }, [hasCopied])

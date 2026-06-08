@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import type { Map } from 'immutable'
 import { NavLink } from 'react-router-dom'
@@ -169,7 +170,7 @@ export const StatusCell = ({ chat, loading }: StatusCellProps) => {
         <div id={`chat-status-${chatIntegrationId}`} ref={wrapperRef}>
             <Tooltip
                 placement="top"
-                delay={100}
+                delay={Duration.millis(100)}
                 isDisabled={
                     !(
                         chatIsHiddenOutsideBusinessHours ||

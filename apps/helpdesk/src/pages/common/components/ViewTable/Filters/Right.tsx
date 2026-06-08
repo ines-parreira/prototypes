@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { Component } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import {
     DateAndTimeFormatting,
@@ -175,7 +176,10 @@ export class RightContainer extends Component<Props, State> {
         }))
     }
 
-    _debouncedUpdateFieldFilter = _debounce(this.props.updateFieldFilter, 300)
+    _debouncedUpdateFieldFilter = _debounce(
+        this.props.updateFieldFilter,
+        Duration.millis(300),
+    )
 
     _handleCustomFieldChange = (
         value: CustomFieldValue | CustomFieldValue[] | undefined,

@@ -8,6 +8,7 @@ import React, {
     useRef,
     useState,
 } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useId, useKey } from '@repo/hooks'
 import classnames from 'classnames'
@@ -143,7 +144,7 @@ const Modal = (
     return (
         <CSSTransition
             in={isOpen}
-            timeout={200}
+            timeout={Duration.millis(200)}
             classNames={{
                 enter: css.modalEnter,
                 enterActive: css.modalEnterActive,

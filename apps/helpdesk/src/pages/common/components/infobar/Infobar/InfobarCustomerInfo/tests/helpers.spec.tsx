@@ -1,4 +1,5 @@
 import React from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { appQueryClient } from '@repo/api-resources'
 import { renderHook } from '@repo/testing'
@@ -19,7 +20,6 @@ import {
 import { IntegrationType } from 'models/integration/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import { DurationInMs } from '@repo/utils'
 import {
     getDefaultAddressInfoFromActiveCustomer,
     getPhoneNumberFromActiveCustomer,
@@ -555,7 +555,7 @@ describe('throttledUpdateCustomerCache()', () => {
         throttledUpdateCustomerCache(1)
         expect(appQueryClient.invalidateQueries).toHaveBeenCalledTimes(1)
 
-        jest.advanceTimersByTime(DurationInMs.FifteenSeconds)
+        jest.advanceTimersByTime(Duration.seconds(15))
         expect(appQueryClient.invalidateQueries).toHaveBeenCalledTimes(2)
 
         throttledUpdateCustomerCache(1)

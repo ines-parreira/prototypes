@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import { useId } from '@repo/hooks'
 import type { Map } from 'immutable'
@@ -68,7 +69,7 @@ function Create({ integration, loading, redirectUri }: Props) {
                         />
                         <Tooltip
                             autohide
-                            delay={{ show: 200, hide: 0 }}
+                            delay={{ show: Duration.millis(200), hide: 0 }}
                             placement="bottom"
                             target={tooltipTargetId}
                             innerProps={{

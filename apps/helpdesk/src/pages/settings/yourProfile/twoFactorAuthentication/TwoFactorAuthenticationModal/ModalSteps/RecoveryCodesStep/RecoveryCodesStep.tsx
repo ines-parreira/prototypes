@@ -1,5 +1,6 @@
 import type { Dispatch, SetStateAction } from 'react'
 import React, { useCallback, useEffect, useState } from 'react'
+import { Duration } from '@gorgias/toolkit'
 
 import classnames from 'classnames'
 import Clipboard from 'clipboard'
@@ -54,7 +55,7 @@ export default function RecoveryCodesStep({
 
             setTimeout(() => {
                 setIsRecoveryCodesCopied(false)
-            }, 5000)
+            }, Duration.seconds(5))
         })
 
         return () => {

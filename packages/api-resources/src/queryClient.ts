@@ -1,3 +1,4 @@
+import { Duration } from '@gorgias/toolkit'
 /* istanbul ignore file */
 import { QueryCache, QueryClient } from '@tanstack/react-query'
 import { isAxiosError } from 'axios'
@@ -44,8 +45,12 @@ export const appQueryClient = new QueryClient({
              * 4th failure: 16000ms (16 seconds)
              * 5th failure: 32000ms (32 seconds)
              */
-            retryDelay: (retryIndex) => Math.min(1000 * 2 ** retryIndex, 30000),
-            cacheTime: 1000 * 60 * 60 * 24,
+            retryDelay: (retryIndex) =>
+                Math.min(
+                    Duration.seconds(1) * 2 ** retryIndex,
+                    Duration.seconds(30),
+                ),
+            cacheTime: Duration.days(1),
         },
     },
 })
