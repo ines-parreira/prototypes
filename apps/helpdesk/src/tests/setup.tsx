@@ -236,6 +236,12 @@ jest.mock('@gorgias/copilot', () => ({
         setWidth: () => undefined,
     })),
     useCopilotContext: jest.fn(),
+    useMessageContextAttachments: jest.fn(() => ({
+        messageAttachment: undefined,
+        canAttach: true,
+        setMessageAttachment: jest.fn(),
+        clearMessageAttachment: jest.fn(),
+    })),
     useConfigureSuggestions: jest.fn(),
     useCopilotToolCallResult: jest.fn(),
     useRunLifecycle: jest.fn(() => ({ isRunning: false })),

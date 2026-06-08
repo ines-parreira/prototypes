@@ -37,21 +37,13 @@ describe('AskGaiaButton', () => {
     it('renders nothing when copilot is disabled', () => {
         mockUseCopilotEnabled.mockReturnValue(false)
 
-        render(
-            <MockSidebarProvider>
-                <AskGaiaButton />
-            </MockSidebarProvider>,
-        )
+        render(renderComponent())
 
         expect(screen.queryByText(/ask gaia/i)).not.toBeInTheDocument()
     })
 
     it('shows the expanded label and shortcut when the sidebar is expanded', () => {
-        render(
-            <MockSidebarProvider isCollapsed={false}>
-                <AskGaiaButton />
-            </MockSidebarProvider>,
-        )
+        render(renderComponent({ isCollapsed: false }))
 
         expect(
             screen.getByRole('button', { name: /ask gaia/i }),
@@ -61,11 +53,7 @@ describe('AskGaiaButton', () => {
     })
 
     it('shows only the icon trigger when the sidebar is collapsed', () => {
-        render(
-            <MockSidebarProvider isCollapsed={true}>
-                <AskGaiaButton />
-            </MockSidebarProvider>,
-        )
+        render(renderComponent({ isCollapsed: true }))
 
         expect(
             screen.getByRole('button', { name: /ask gaia/i }),
@@ -80,11 +68,7 @@ describe('AskGaiaButton', () => {
         )
         const user = userEvent.setup()
 
-        render(
-            <MockSidebarProvider>
-                <AskGaiaButton />
-            </MockSidebarProvider>,
-        )
+        render(renderComponent())
 
         await user.click(screen.getByRole('button', { name: /ask gaia/i }))
 
@@ -98,14 +82,22 @@ describe('AskGaiaButton', () => {
         )
         const user = userEvent.setup()
 
-        render(
-            <MockSidebarProvider>
-                <AskGaiaButton />
-            </MockSidebarProvider>,
-        )
+        render(renderComponent())
 
         await user.click(screen.getByRole('button', { name: /ask gaia/i }))
 
         expect(setIsOpen).toHaveBeenCalledWith(false)
     })
 })
+
+function renderComponent({
+    isCollapsed,
+}: {
+    isCollapsed?: boolean
+} = {}) {
+    return (
+        <MockSidebarProvider isCollapsed={isCollapsed}>
+            <AskGaiaButton />
+        </MockSidebarProvider>
+    )
+}

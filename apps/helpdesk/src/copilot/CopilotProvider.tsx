@@ -14,6 +14,8 @@ import { copilotAttachmentsConfig } from 'common/copilot/copilotAttachmentsConfi
 import { createCopilotAgent, fetchCopilotShops } from 'utils/sdk'
 
 import { GuidanceConfirmationPreview } from './confirmation/GuidanceConfirmationPreview'
+import { CopilotContextAttachmentProvider } from './contextAttachments/CopilotContextAttachmentProvider'
+import { useCopilotContextAttachmentSync } from './contextAttachments/useCopilotContextAttachmentSync'
 import { CopilotConversationStarters } from './CopilotConversationStarters'
 import { ReferenceLink } from './reference/ReferenceLink'
 import { useCopilotCacheInvalidation } from './useCopilotCacheInvalidation'
@@ -35,15 +37,23 @@ export function CopilotProvider({ children }: Props) {
             attachmentsConfig={copilotAttachmentsConfig}
             fetchShops={fetchCopilotShops}
         >
-            <CopilotCacheInvalidator />
-            <CopilotConversationStarters />
-            {children}
+            <CopilotContextAttachmentProvider>
+                <CopilotCacheInvalidator />
+                <CopilotContextAttachmentSynchronizer />
+                <CopilotConversationStarters />
+                {children}
+            </CopilotContextAttachmentProvider>
         </BaseCopilotProvider>
     )
 }
 
 function CopilotCacheInvalidator() {
     useCopilotCacheInvalidation()
+    return null
+}
+
+function CopilotContextAttachmentSynchronizer() {
+    useCopilotContextAttachmentSync()
     return null
 }
 

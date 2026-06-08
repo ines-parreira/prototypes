@@ -5,6 +5,8 @@ import { useShallow } from 'zustand/react/shallow'
 import { Card, toast } from '@gorgias/axiom'
 
 import { EditorWithPlayground } from 'common/knowledge-editor/components'
+import { useRegisterCopilotContextAttachment } from 'copilot'
+import { buildGuidanceContextAttachment } from 'copilot/contextAttachments/contextAttachmentBuilders'
 import { getLast28DaysDateRange } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
 import { isGorgiasApiError } from 'models/api/types'
 import type { GuidanceTemplate } from 'pages/aiAgent/types'
@@ -156,6 +158,17 @@ export const KnowledgeEditorGuidance = ({
         initialVersionId,
         guidanceHelpCenterId,
     })
+    const copilotContextAttachment = useMemo(
+        () =>
+            isOpen && guidanceMode !== 'create'
+                ? buildGuidanceContextAttachment({
+                      id: guidanceArticle?.id,
+                      title: guidanceArticle?.title,
+                      helpCenterId: guidanceHelpCenter?.id,
+                  })
+                : undefined,
+        [guidanceArticle, guidanceHelpCenter, guidanceMode, isOpen],
+    )
 
     const computedInitialVersionData = useMemo<
         HistoricalVersionState | undefined
@@ -188,6 +201,9 @@ export const KnowledgeEditorGuidance = ({
             onClose()
         }
     }, [isError, guidanceArticleId, error, isOpen, onClose])
+
+    useRegisterCopilotContextAttachment(copilotContextAttachment)
+
     const memoizedConfig = useMemo<GuidanceContextConfig | null>(() => {
         if (!guidanceHelpCenter) {
             return null

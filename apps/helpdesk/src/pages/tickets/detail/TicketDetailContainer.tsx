@@ -39,6 +39,8 @@ import {
     TicketMessageSourceType,
     TicketStatus,
 } from 'business/types/ticket'
+import { useRegisterCopilotContextAttachment } from 'copilot'
+import { buildTicketContextAttachment } from 'copilot/contextAttachments/contextAttachmentBuilders'
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 import useAppSelector from 'hooks/useAppSelector'
 import { RecentItems } from 'hooks/useRecentItems/constants'
@@ -197,7 +199,18 @@ export const TicketDetailContainer = ({
         const parsedTicketId = Number(ticketIdParam)
         return Number.isNaN(parsedTicketId) ? undefined : parsedTicketId
     }, [ticketIdParam])
+    const copilotContextAttachment = useMemo(
+        () =>
+            buildTicketContextAttachment({
+                id: ticket.get('id') as number | undefined,
+                routeTicketId,
+                subject: ticket.get('subject') as string | undefined,
+            }),
+        [routeTicketId, ticket],
+    )
     const ticketStatus = useMemo(() => ticket.get('status') as string, [ticket])
+
+    useRegisterCopilotContextAttachment(copilotContextAttachment)
 
     useTicketActivityTracking(
         ticketIdParam &&

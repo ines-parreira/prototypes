@@ -5,6 +5,8 @@ import { useShallow } from 'zustand/react/shallow'
 import { Card } from '@gorgias/axiom'
 
 import { EditorWithPlayground } from 'common/knowledge-editor/components'
+import { useRegisterCopilotContextAttachment } from 'copilot'
+import { buildSkillContextAttachment } from 'copilot/contextAttachments/contextAttachmentBuilders'
 import { isGorgiasApiError } from 'models/api/types'
 import { getVersionImpactDateRange } from 'pages/aiAgent/components/KnowledgeEditor/shared/useVersionHistoryBase/useVersionHistoryBase'
 
@@ -131,6 +133,18 @@ export const KnowledgeEditorSkill = ({
     })
 
     const { error: notifyError } = useSkillNotify()
+    const skillIdNumber = skillId && skillId !== 'new' ? Number(skillId) : NaN
+    const copilotContextAttachment = useMemo(
+        () =>
+            Number.isInteger(skillIdNumber) && article?.id === skillIdNumber
+                ? buildSkillContextAttachment({
+                      id: article.id,
+                      title: article.title,
+                      helpCenterId: helpCenter?.id,
+                  })
+                : undefined,
+        [article, helpCenter, skillIdNumber],
+    )
 
     useEffect(() => {
         if (isError && skillId && error) {
@@ -145,6 +159,8 @@ export const KnowledgeEditorSkill = ({
             onClose()
         }
     }, [isError, skillId, error, notifyError, onClose])
+
+    useRegisterCopilotContextAttachment(copilotContextAttachment)
 
     const onCreateFn = useCallback(
         (createdArticle: { id: number; locale: string }) => {
