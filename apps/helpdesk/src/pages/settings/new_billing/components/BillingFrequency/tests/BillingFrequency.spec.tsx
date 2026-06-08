@@ -5,6 +5,7 @@ import { userEvent } from '@testing-library/user-event'
 
 import { Cadence } from 'models/billing/types'
 import { getCadenceName, isOtherCadenceDowngrade } from 'models/billing/utils'
+import { TicketPurpose } from 'state/billing/types'
 
 import type { BillingFrequencyProps } from '../BillingFrequency'
 import BillingFrequency from '../BillingFrequency'
@@ -28,6 +29,7 @@ const getRadioButton = (cadence: Cadence) => {
 
 describe('BillingFrequency', () => {
     const mockOnFrequencySelect = jest.fn()
+    const mockContactBilling = jest.fn()
 
     const setup = (props?: Partial<BillingFrequencyProps>) => {
         const defaultProps: BillingFrequencyProps = {
@@ -35,6 +37,7 @@ describe('BillingFrequency', () => {
             selectedCadence: Cadence.Month,
             allowDowngrades: false,
             onCadenceSelect: mockOnFrequencySelect,
+            contactBilling: mockContactBilling,
             ...props,
         }
 
@@ -220,5 +223,34 @@ describe('BillingFrequency', () => {
             await act(() => userEvent.click(radioButton))
             expect(mockOnFrequencySelect).toHaveBeenCalledWith(cadence)
         }
+    })
+
+    it('should call contactBilling when contact us is clicked in the disabled message', async () => {
+        setup({
+            disabledCadences: new Set([Cadence.Year]),
+        })
+
+        await act(() =>
+            userEvent.click(screen.getByRole('link', { name: 'contact us' })),
+        )
+
+        expect(mockContactBilling).toHaveBeenCalledWith(
+            TicketPurpose.CONTACT_US,
+        )
+    })
+
+    it('should call contactBilling when contact us is activated with the Enter key', async () => {
+        setup({
+            disabledCadences: new Set([Cadence.Year]),
+        })
+
+        const contactUs = screen.getByRole('link', { name: 'contact us' })
+        contactUs.focus()
+
+        await act(() => userEvent.keyboard('{Enter}'))
+
+        expect(mockContactBilling).toHaveBeenCalledWith(
+            TicketPurpose.CONTACT_US,
+        )
     })
 })

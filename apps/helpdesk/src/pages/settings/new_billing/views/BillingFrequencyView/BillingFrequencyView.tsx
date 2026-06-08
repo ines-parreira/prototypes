@@ -56,6 +56,7 @@ export type PlansByProductType = { [key in ProductType]: Plan[] }
 export type PlanByProductTypeByCadence = { [key in Cadence]: PlanByProductType }
 
 const BillingFrequencyView = ({
+    contactBilling,
     dispatchBillingError,
     periodEnd,
     isTrialing,
@@ -414,6 +415,7 @@ const BillingFrequencyView = ({
                         allowDowngrades={false}
                         onCadenceSelect={onFrequencySelect}
                         disabledCadences={disabledCadences}
+                        contactBilling={contactBilling}
                     />
                 </Card>
                 <Card title="Summary">

@@ -1,8 +1,11 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
+import { Link } from '@gorgias/axiom'
+
 import { Cadence } from 'models/billing/types'
 import { getCadenceName, isOtherCadenceDowngrade } from 'models/billing/utils'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
+import { TicketPurpose } from 'state/billing/types'
 
 import css from './BillingFrequency.less'
 
@@ -12,6 +15,7 @@ export type BillingFrequencyProps = {
     allowDowngrades: boolean
     disabledCadences?: Set<Cadence>
     onCadenceSelect: (cadence: Cadence) => void
+    contactBilling: (ticketPurpose: TicketPurpose) => void
 }
 
 const BillingFrequency = ({
@@ -20,6 +24,7 @@ const BillingFrequency = ({
     allowDowngrades,
     disabledCadences = new Set(),
     onCadenceSelect,
+    contactBilling,
 }: BillingFrequencyProps) => {
     const canUseQuarterlyBilling =
         useFlag(FeatureFlagKey.BillingQuarterlyFrequency) ||
@@ -66,11 +71,14 @@ const BillingFrequency = ({
                     <i className="material-icons">info</i>
                     <span>
                         {disabledCadenceNames} billing is not available for your
-                        current plan configuration. Please contact our billing
-                        team via chat or at{' '}
-                        <a href="mailto:support@gorgias.com">
-                            support@gorgias.com
-                        </a>{' '}
+                        current plan configuration. Please{' '}
+                        <Link
+                            onClick={() =>
+                                contactBilling(TicketPurpose.CONTACT_US)
+                            }
+                        >
+                            contact us
+                        </Link>{' '}
                         to change your billing frequency.
                     </span>
                 </div>
