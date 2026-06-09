@@ -18,7 +18,7 @@ type EmailToggleProps = {
     isEmailChannelEnabled: boolean
     isLoading: boolean
     isReadOnly?: boolean
-    showTrialGateWarning?: boolean
+    isTrialGated?: boolean
     storeConfiguration?: StoreConfiguration
     shopName: string
     label?: string
@@ -32,7 +32,7 @@ export const EmailToggle = ({
     isEmailChannelEnabled,
     isLoading,
     isReadOnly = false,
-    showTrialGateWarning = false,
+    isTrialGated = false,
     storeConfiguration,
     shopName,
     setIsEmailChannelEnabled,
@@ -52,6 +52,11 @@ export const EmailToggle = ({
 
     const handleEmailToggle = () => {
         if (!storeConfiguration) return
+
+        if (isTrialGated) {
+            onStartTrial?.()
+            return
+        }
 
         setIsEmailChannelEnabled(true)
         onEmailToggle({
@@ -73,30 +78,14 @@ export const EmailToggle = ({
                     to enable the AI Agent
                 </Text>
             </div>
-        ) : showTrialGateWarning ? (
-            <div className={css.customToggleWarning}>
-                <Text size="sm" variant="regular">
-                    Configured.{' '}
-                    <AxiomLink size="sm" onClick={onStartTrial}>
-                        Start AI Agent trial
-                    </AxiomLink>{' '}
-                    to deploy
-                </Text>
-            </div>
         ) : null
 
         return {
-            visible: isEmailChannelDisabled || showTrialGateWarning,
+            visible: isEmailChannelDisabled,
             hint: '',
             action,
         }
-    }, [
-        history,
-        routes.deployEmail,
-        isEmailChannelDisabled,
-        showTrialGateWarning,
-        onStartTrial,
-    ])
+    }, [history, routes.deployEmail, isEmailChannelDisabled])
 
     return (
         <div className={css.toggleContainer}>

@@ -90,36 +90,35 @@ describe('ChatToggle', () => {
             screen.getByRole('link', { name: 'Connect a chat' }),
         ).toBeInTheDocument()
     })
-    it('shows the start-trial caption and calls onStartTrial when channel is connected and trial-gated', async () => {
+    it('opens the trial instead of deploying when a connected channel is clicked while trial-gated', async () => {
         const onStartTrial = jest.fn()
+        const onChatToggle = jest.fn()
         render(
             <ChatToggle
                 {...defaultProps}
-                showTrialGateWarning
+                isTrialGated
                 onStartTrial={onStartTrial}
+                onChatToggle={onChatToggle}
             />,
             {},
         )
 
-        expect(
-            screen.getByText(/to deploy/, { exact: false }),
-        ).toBeInTheDocument()
-        await userEvent.click(
-            screen.getByRole('link', { name: 'Start AI Agent trial' }),
-        )
+        const toggleButton = screen.getByRole('switch')
+        expect(toggleButton).not.toBeDisabled()
+        await userEvent.click(toggleButton)
+
         expect(onStartTrial).toHaveBeenCalledTimes(1)
+        expect(onChatToggle).not.toHaveBeenCalled()
     })
-    it('does not show the start-trial caption when not trial-gated', () => {
-        render(<ChatToggle {...defaultProps} onStartTrial={jest.fn()} />, {})
-        expect(
-            screen.queryByRole('link', { name: 'Start AI Agent trial' }),
-        ).not.toBeInTheDocument()
-    })
-    it('does not show the start-trial caption for a read-only (completed) toggle that is not trial-gated', () => {
-        render(<ChatToggle {...defaultProps} isReadOnly />, {})
-        expect(
-            screen.queryByRole('link', { name: 'Start AI Agent trial' }),
-        ).not.toBeInTheDocument()
+    it('does not render a trial-gate caption when connected and trial-gated', () => {
+        render(
+            <ChatToggle
+                {...defaultProps}
+                isTrialGated
+                onStartTrial={jest.fn()}
+            />,
+            {},
+        )
         expect(
             screen.queryByText(/to deploy/, { exact: false }),
         ).not.toBeInTheDocument()

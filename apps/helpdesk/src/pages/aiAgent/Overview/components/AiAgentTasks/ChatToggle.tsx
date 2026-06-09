@@ -23,7 +23,7 @@ type ChatToggleProps = {
     isChatChannelEnabled: boolean
     isLoading: boolean
     isReadOnly?: boolean
-    showTrialGateWarning?: boolean
+    isTrialGated?: boolean
     storeConfiguration?: StoreConfiguration
     shopName: string
     shopType: string
@@ -38,7 +38,7 @@ export const ChatToggle = ({
     isChatChannelEnabled,
     isLoading,
     isReadOnly = false,
-    showTrialGateWarning = false,
+    isTrialGated = false,
     shopName,
     shopType,
     storeConfiguration,
@@ -116,29 +116,24 @@ export const ChatToggle = ({
                     to enable the AI Agent
                 </Text>
             </div>
-        ) : showTrialGateWarning ? (
-            <div className={css.customToggleWarning}>
-                <Text size="sm" variant="regular">
-                    Configured.{' '}
-                    <AxiomLink size="sm" onClick={onStartTrial}>
-                        Start AI Agent trial
-                    </AxiomLink>{' '}
-                    to deploy
-                </Text>
-            </div>
         ) : null
 
         return {
-            visible: chatWarningDecision.visible || showTrialGateWarning,
+            visible: chatWarningDecision.visible,
             hint: '',
             action,
         }
-    }, [history, chatWarningDecision, showTrialGateWarning, onStartTrial])
+    }, [history, chatWarningDecision])
 
     const isChatChannelDisabled = chatWarningDecision.visible
 
     const handleChatToggle = () => {
         if (!storeConfiguration) return
+
+        if (isTrialGated) {
+            onStartTrial?.()
+            return
+        }
 
         setIsChatChannelEnabled(true)
         onChatToggle({

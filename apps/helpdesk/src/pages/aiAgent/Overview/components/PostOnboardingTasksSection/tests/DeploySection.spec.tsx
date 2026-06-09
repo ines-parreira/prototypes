@@ -1,9 +1,8 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { logEvent } from '@repo/logging'
 import { render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import { toast } from '@gorgias/axiom'
 
@@ -13,8 +12,6 @@ import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 
 import { DeploySection } from '../DeploySection'
 import type { PostOnboardingStepMetadata } from '../types'
-
-const mockStore = configureMockStore([thunk])
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -50,13 +47,28 @@ jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations', () => ({
         isFetchLoading: false,
     }),
 }))
+let mockTrialAccess: {
+    trialType: string
+    isInAiAgentTrial: boolean
+    hasAiAgentStoreTrialStarted: boolean
+} = {
+    trialType: 'aiAgent',
+    isInAiAgentTrial: false,
+    hasAiAgentStoreTrialStarted: false,
+}
 jest.mock('pages/aiAgent/trial/hooks/useTrialAccess', () => ({
-    useTrialAccess: () => ({ trialType: 'aiAgent' }),
+    useTrialAccess: () => mockTrialAccess,
+}))
+jest.mock('@repo/logging', () => ({
+    ...jest.requireActual('@repo/logging'),
+    logEvent: jest.fn(),
 }))
 const mockOpenTrialUpgradeModal = jest.fn()
+let mockIsTrialModalOpen = false
 jest.mock('pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow', () => ({
     useShoppingAssistantTrialFlow: () => ({
         openTrialUpgradeModal: mockOpenTrialUpgradeModal,
+        isTrialModalOpen: mockIsTrialModalOpen,
     }),
 }))
 jest.mock('../../AiAgentTasks/EmailToggle', () => ({
@@ -64,7 +76,9 @@ jest.mock('../../AiAgentTasks/EmailToggle', () => ({
         <div data-testid="email-toggle">
             <span>Email Toggle</span>
             <span>{props.isEmailChannelEnabled ? 'enabled' : 'disabled'}</span>
-            <span>email-readonly:{props.isReadOnly ? 'true' : 'false'}</span>
+            <span>
+                email-trial-gated:{props.isTrialGated ? 'true' : 'false'}
+            </span>
             <button
                 data-testid="email-toggle-button"
                 onClick={() => props.onEmailToggle(props.storeConfiguration)}
@@ -85,7 +99,9 @@ jest.mock('../../AiAgentTasks/ChatToggle', () => ({
         <div data-testid="chat-toggle">
             <span>Chat Toggle</span>
             <span>{props.isChatChannelEnabled ? 'enabled' : 'disabled'}</span>
-            <span>chat-readonly:{props.isReadOnly ? 'true' : 'false'}</span>
+            <span>
+                chat-trial-gated:{props.isTrialGated ? 'true' : 'false'}
+            </span>
             <button
                 data-testid="chat-toggle-button"
                 onClick={() => props.onChatToggle(props.storeConfiguration)}
@@ -142,8 +158,7 @@ describe('DeploySection', () => {
     const renderDeploySection = ({
         needsTrialOptIn = false,
     }: { needsTrialOptIn?: boolean } = {}) => {
-        const __store = mockStore({})
-        return render(
+        const element = (
             <DeploySection
                 stepMetadata={mockStepMetadata}
                 step={mockStep}
@@ -152,11 +167,18 @@ describe('DeploySection', () => {
                     mockMarkPostStoreInstallationAsCompleted
                 }
                 needsTrialOptIn={needsTrialOptIn}
-            />,
+            />
         )
+        return { ...render(element), element }
     }
     beforeEach(() => {
         jest.clearAllMocks()
+        mockIsTrialModalOpen = false
+        mockTrialAccess = {
+            trialType: 'aiAgent',
+            isInAiAgentTrial: false,
+            hasAiAgentStoreTrialStarted: false,
+        }
         mockFeatureFlags({ [FeatureFlagKey.AiAgentOnboardingV3]: false })
         const mockUseAiAgentStoreConfigurationContext =
             useAiAgentStoreConfigurationContext as jest.MockedFunction<
@@ -246,25 +268,126 @@ describe('DeploySection', () => {
         })
         expect(mockMarkPostStoreInstallationAsCompleted).toHaveBeenCalled()
     })
-    it('passes isReadOnly to both toggles when needsTrialOptIn is true', () => {
+    it('passes isTrialGated to both toggles when needsTrialOptIn is true', () => {
         renderDeploySection({ needsTrialOptIn: true })
-        expect(screen.getByText('email-readonly:true')).toBeInTheDocument()
-        expect(screen.getByText('chat-readonly:true')).toBeInTheDocument()
+        expect(screen.getByText('email-trial-gated:true')).toBeInTheDocument()
+        expect(screen.getByText('chat-trial-gated:true')).toBeInTheDocument()
     })
-    it('passes isReadOnly=false to both toggles when needsTrialOptIn is false', () => {
+    it('passes isTrialGated=false to both toggles when needsTrialOptIn is false', () => {
         renderDeploySection()
-        expect(screen.getByText('email-readonly:false')).toBeInTheDocument()
-        expect(screen.getByText('chat-readonly:false')).toBeInTheDocument()
+        expect(screen.getByText('email-trial-gated:false')).toBeInTheDocument()
+        expect(screen.getByText('chat-trial-gated:false')).toBeInTheDocument()
     })
 
     it('opens the trial upgrade modal when a toggle requests starting the trial', async () => {
         renderDeploySection({ needsTrialOptIn: true })
 
-        await userEvent.click(screen.getByTestId('email-start-trial-button'))
+        await act(async () => {
+            await userEvent.click(
+                screen.getByTestId('email-start-trial-button'),
+            )
+        })
         expect(mockOpenTrialUpgradeModal).toHaveBeenCalledTimes(1)
 
-        await userEvent.click(screen.getByTestId('chat-start-trial-button'))
+        await act(async () => {
+            await userEvent.click(screen.getByTestId('chat-start-trial-button'))
+        })
         expect(mockOpenTrialUpgradeModal).toHaveBeenCalledTimes(2)
+    })
+
+    it('does not deploy any channel while the trial is not yet started', async () => {
+        renderDeploySection({ needsTrialOptIn: true })
+
+        await act(async () => {
+            await userEvent.click(
+                screen.getByTestId('email-start-trial-button'),
+            )
+        })
+
+        expect(mockUpdateStoreConfiguration).not.toHaveBeenCalled()
+    })
+
+    it('auto-deploys only the clicked channel once the trial has started', async () => {
+        mockTrialAccess = {
+            trialType: 'aiAgent',
+            isInAiAgentTrial: false,
+            hasAiAgentStoreTrialStarted: true,
+        }
+        renderDeploySection({ needsTrialOptIn: true })
+
+        await act(async () => {
+            await userEvent.click(
+                screen.getByTestId('email-start-trial-button'),
+            )
+        })
+
+        expect(mockUpdateStoreConfiguration).toHaveBeenCalledTimes(1)
+        expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith(
+            expect.objectContaining({ emailChannelDeactivatedDatetime: null }),
+        )
+        expect(mockUpdateStoreConfiguration).not.toHaveBeenCalledWith(
+            expect.objectContaining({ chatChannelDeactivatedDatetime: null }),
+        )
+    })
+
+    it('logs the deployed channel as chat when the chat channel is deployed', async () => {
+        renderDeploySection()
+
+        await act(async () => {
+            await userEvent.click(screen.getByTestId('chat-toggle-button'))
+        })
+
+        expect(logEvent).toHaveBeenCalledWith(
+            expect.anything(),
+            expect.objectContaining({ action: 'deployed_chat' }),
+        )
+        expect(logEvent).not.toHaveBeenCalledWith(
+            expect.anything(),
+            expect.objectContaining({ action: 'deployed_email' }),
+        )
+    })
+
+    it('drops a stale deploy intent when the trial modal is reopened by another CTA after dismissal', async () => {
+        const { rerender, element } = renderDeploySection({
+            needsTrialOptIn: true,
+        })
+
+        await act(async () => {
+            await userEvent.click(
+                screen.getByTestId('email-start-trial-button'),
+            )
+        })
+
+        // The toggle-triggered modal opens, consuming the arming.
+        mockIsTrialModalOpen = true
+        await act(async () => {
+            rerender(element)
+        })
+
+        // The user dismisses the modal without starting the trial.
+        mockIsTrialModalOpen = false
+        await act(async () => {
+            rerender(element)
+        })
+
+        // Another CTA (e.g. the overview trial banner) reopens the modal.
+        mockIsTrialModalOpen = true
+        await act(async () => {
+            rerender(element)
+        })
+
+        // The trial finally starts from that other CTA.
+        mockTrialAccess = {
+            trialType: 'aiAgent',
+            isInAiAgentTrial: false,
+            hasAiAgentStoreTrialStarted: true,
+        }
+        mockIsTrialModalOpen = false
+        await act(async () => {
+            rerender(element)
+        })
+
+        expect(mockUpdateStoreConfiguration).not.toHaveBeenCalled()
     })
 
     describe('when AiAgentOnboardingV3 is enabled', () => {
