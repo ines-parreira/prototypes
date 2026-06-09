@@ -15,16 +15,19 @@ import { initialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { billingState } from 'fixtures/billing'
 import { integrationsState } from 'fixtures/integrations'
 import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
+import { StepName } from 'models/aiAgentPostStoreInstallationSteps/types'
 import { useBillingState } from 'models/billing/queries'
 import { IntegrationType } from 'models/integration/constants'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from 'pages/aiAgent/components/ShoppingAssistant/constants/shoppingAssistant'
+import { useNeedsAiAgentTrialOptIn } from 'pages/aiAgent/hooks/useNeedsAiAgentTrialOptIn'
 import { useShopIntegrationId } from 'pages/aiAgent/hooks/useShopIntegrationId'
 import { useSkillsAccess } from 'pages/aiAgent/hooks/useSkillsAccess'
 import { useHasAccessToOpportunities } from 'pages/aiAgent/opportunities/hooks/useHasAccessToOpportunities'
 import { useKnowledgeServiceOpportunities } from 'pages/aiAgent/opportunities/hooks/useKnowledgeServiceOpportunities'
 import { useAiAgentOverviewModeEnabled } from 'pages/aiAgent/Overview/hooks/useAiAgentOverviewModeEnabled'
 import { useHasNoOnboardedStores } from 'pages/aiAgent/Overview/hooks/useHasNoOnboardedStores'
+import { usePostOnboardingTasksSection } from 'pages/aiAgent/Overview/hooks/usePostOnboardingTasksSection'
 import { useThankYouModal } from 'pages/aiAgent/Overview/hooks/useThankYouModal'
 import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
@@ -63,17 +66,22 @@ jest.mock('pages/aiAgent/trial/hooks/useTrialAccess')
 jest.mock(
     'pages/aiAgent/Overview/components/TrialOptInBanner/TrialOptInBanner',
     () => ({
-        TrialOptInBanner: () => null,
+        TrialOptInBanner: () => <div>Trial Opt In Banner</div>,
     }),
 )
 jest.mock(
     'pages/aiAgent/Overview/components/SetupModeBanner/SetupModeBanner',
     () => ({
-        SetupModeBanner: () => null,
+        SetupModeBanner: () => <div>Setup Mode Banner</div>,
     }),
 )
 jest.mock('pages/aiAgent/hooks/useNeedsAiAgentTrialOptIn', () => ({
-    useNeedsAiAgentTrialOptIn: () => ({ needsOptIn: false }),
+    useNeedsAiAgentTrialOptIn: jest.fn(() => ({ needsOptIn: false })),
+}))
+jest.mock('pages/aiAgent/Overview/hooks/usePostOnboardingTasksSection', () => ({
+    usePostOnboardingTasksSection: jest.fn(() => ({
+        isStepCompleted: () => false,
+    })),
 }))
 jest.mock('pages/aiAgent/hooks/useSkillsAccess', () => ({
     useSkillsAccess: jest.fn(),
@@ -138,6 +146,15 @@ const mockUseKnowledgeServiceOpportunities = assumeMock(
     useKnowledgeServiceOpportunities,
 )
 const mockUseShopIntegrationId = assumeMock(useShopIntegrationId)
+const mockUseNeedsAiAgentTrialOptIn = jest.mocked(useNeedsAiAgentTrialOptIn)
+const mockUsePostOnboardingTasksSection = jest.mocked(
+    usePostOnboardingTasksSection,
+)
+const mockIsStepCompleted = (completedSteps: StepName[]) =>
+    mockUsePostOnboardingTasksSection.mockReturnValue({
+        isStepCompleted: (stepName: StepName) =>
+            completedSteps.includes(stepName),
+    } as unknown as ReturnType<typeof usePostOnboardingTasksSection>)
 const useLocationMock = assumeMock(useLocation)
 const useParamsMock = assumeMock(useParams)
 useLocationMock.mockReturnValue(defaultLocation)
@@ -197,6 +214,9 @@ describe('AiAgentOverview', () => {
         } as any)
 
         mockUseShopIntegrationId.mockReturnValue(123)
+
+        mockUseNeedsAiAgentTrialOptIn.mockReturnValue({ needsOptIn: false })
+        mockIsStepCompleted([])
 
         // Default mock for useAiAgentOverviewModeEnabled
         jest.mocked(useAiAgentOverviewModeEnabled).mockReturnValue({
@@ -267,6 +287,55 @@ describe('AiAgentOverview', () => {
                 shopType: undefined,
             },
         )
+    })
+
+    describe('Overview banner state (V3)', () => {
+        beforeEach(() => {
+            useParamsMock.mockReturnValue({
+                shopName: 'test-shop',
+                shopType: 'shopify',
+            })
+        })
+
+        it('shows the setup mode banner when AI Agent is not yet configured', () => {
+            mockUseNeedsAiAgentTrialOptIn.mockReturnValue({ needsOptIn: true })
+            mockIsStepCompleted([])
+
+            const { getByText, queryByText } = renderComponent()
+
+            expect(getByText('Setup Mode Banner')).toBeInTheDocument()
+            expect(queryByText('Trial Opt In Banner')).not.toBeInTheDocument()
+        })
+
+        it('keeps the setup mode banner until both Train and Test are complete', () => {
+            mockUseNeedsAiAgentTrialOptIn.mockReturnValue({ needsOptIn: true })
+            mockIsStepCompleted([StepName.TRAIN])
+
+            const { getByText, queryByText } = renderComponent()
+
+            expect(getByText('Setup Mode Banner')).toBeInTheDocument()
+            expect(queryByText('Trial Opt In Banner')).not.toBeInTheDocument()
+        })
+
+        it('shows the trial opt-in banner once Train and Test are complete', () => {
+            mockUseNeedsAiAgentTrialOptIn.mockReturnValue({ needsOptIn: true })
+            mockIsStepCompleted([StepName.TRAIN, StepName.TEST])
+
+            const { getByText, queryByText } = renderComponent()
+
+            expect(getByText('Trial Opt In Banner')).toBeInTheDocument()
+            expect(queryByText('Setup Mode Banner')).not.toBeInTheDocument()
+        })
+
+        it('shows the setup mode banner when no trial opt-in is needed, even if configured', () => {
+            mockUseNeedsAiAgentTrialOptIn.mockReturnValue({ needsOptIn: false })
+            mockIsStepCompleted([StepName.TRAIN, StepName.TEST])
+
+            const { getByText, queryByText } = renderComponent()
+
+            expect(getByText('Setup Mode Banner')).toBeInTheDocument()
+            expect(queryByText('Trial Opt In Banner')).not.toBeInTheDocument()
+        })
     })
 
     describe('Skills banner', () => {

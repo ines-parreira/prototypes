@@ -13,6 +13,7 @@ import { Button, toast } from '@gorgias/axiom'
 
 import modalImage from 'assets/img/ai-agent/ai_agent_onboarding_thankyou.png'
 import useAppSelector from 'hooks/useAppSelector'
+import { StepName } from 'models/aiAgentPostStoreInstallationSteps/types'
 import { IntegrationType } from 'models/integration/constants'
 import { useActivation } from 'pages/aiAgent//Activation/hooks/useActivation'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
@@ -28,6 +29,7 @@ import { KpiSection } from 'pages/aiAgent/Overview/components/KpiSection/KpiSect
 import { ResourcesSection } from 'pages/aiAgent/Overview/components/ResourcesSection/ResourcesSection'
 import { SetupModeBanner } from 'pages/aiAgent/Overview/components/SetupModeBanner/SetupModeBanner'
 import { TrialOptInBanner } from 'pages/aiAgent/Overview/components/TrialOptInBanner/TrialOptInBanner'
+import { usePostOnboardingTasksSection } from 'pages/aiAgent/Overview/hooks/usePostOnboardingTasksSection'
 import { useThankYouModal } from 'pages/aiAgent/Overview/hooks/useThankYouModal'
 import { AiAgentOverviewLayout } from 'pages/aiAgent/Overview/layout/AiAgentOverviewLayout'
 import {
@@ -169,6 +171,20 @@ export const AiAgentOverview = () => {
     const { needsOptIn } = useNeedsAiAgentTrialOptIn(shopName)
     const hasSkillsAccess = useSkillsAccess()
 
+    const { isStepCompleted } = usePostOnboardingTasksSection({
+        shopName,
+        shopType,
+    })
+
+    // In V3 the trial opt-in is offered only once AI Agent has been configured:
+    // Train (5 guidances) and Test (a playground execution) both complete. Until
+    // then we keep the user in setup mode rather than inviting them to start the
+    // trial prematurely.
+    const isAiAgentConfigured =
+        isStepCompleted(StepName.TRAIN) && isStepCompleted(StepName.TEST)
+
+    const showTrialOptInBanner = needsOptIn && isAiAgentConfigured
+
     const { storeActivations, isFetchLoading } = useStoreActivations({
         storeName: shopName,
         withChatIntegrationsStatus: needsOptIn,
@@ -264,7 +280,7 @@ export const AiAgentOverview = () => {
 
     return (
         <AiAgentOverviewLayout shopName={shopName}>
-            {needsOptIn ? (
+            {showTrialOptInBanner ? (
                 <TrialOptInBanner
                     shopName={shopName}
                     storeActivations={storeActivations}
