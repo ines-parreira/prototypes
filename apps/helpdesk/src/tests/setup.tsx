@@ -223,10 +223,11 @@ jest.mock('@gorgias/copilot', () => ({
     ),
     useCopilot: jest.fn(() => ({
         sendPrompt: () => undefined,
-        resetThread: () => undefined,
+        newThread: () => undefined,
+        switchThread: () => undefined,
         abort: () => undefined,
         agent: undefined,
-        runtimeUrl: '',
+        agentKey: '',
         threadId: '',
     })),
     useCopilotPanel: jest.fn(() => ({

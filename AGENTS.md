@@ -69,6 +69,19 @@ Only if explicitly asked to:
 - When troubleshooting installation issues, use pnpm-specific debugging commands
 - Prefer pnpm's lockfile (pnpm-lock.yaml) over package-lock.json or yarn.lock
 
+# Prefer existing repo abstractions
+
+Before adding new infrastructure-style logic, search for existing repo/package helpers for that domain and follow nearby usage patterns.
+
+Examples:
+
+- Routing and URL params: check `@repo/routing` before using raw `react-router` APIs
+- Tests: use shared/package render helpers
+- Server data: use `rest-api-sdk`
+- UI: use Axiom components
+
+If no abstraction exists, follow the closest neighboring implementation.
+
 # Use accessible selectors in tests and avoid data-testid html attribute
 
 The preferred way to target elements in tests is to use other queries from React Testing Library:

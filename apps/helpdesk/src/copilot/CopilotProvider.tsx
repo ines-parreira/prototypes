@@ -1,7 +1,11 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import type { ReactNode } from 'react'
 
-import { CopilotProvider as BaseCopilotProvider } from '@gorgias/copilot'
+import {
+    CopilotProvider as BaseCopilotProvider,
+    useCopilot,
+    useCopilotPanel,
+} from '@gorgias/copilot'
 import type {
     RenderConfirmationPreview,
     RenderCopilotReference,
@@ -10,6 +14,8 @@ import type {
 import '@gorgias/copilot/copilot.css'
 
 import { copilotAttachmentsConfig } from 'common/copilot/copilotAttachmentsConfig'
+
+import { useSearchParam } from 'hooks/useSearchParam'
 
 import { createCopilotAgent, fetchCopilotShops } from 'utils/sdk'
 
@@ -23,6 +29,8 @@ import { useCopilotCacheInvalidation } from './useCopilotCacheInvalidation'
 type Props = {
     children: ReactNode
 }
+
+export const COPILOT_CONVERSATION_ID_QUERY_PARAM = 'copilotConversationId'
 
 export function CopilotProvider({ children }: Props) {
     const agent = useMemo(() => createCopilotAgent(), [])
@@ -40,6 +48,7 @@ export function CopilotProvider({ children }: Props) {
             <CopilotContextAttachmentProvider>
                 <CopilotCacheInvalidator />
                 <CopilotContextAttachmentSynchronizer />
+                <ForcedCopilotConversationSynchronizer />
                 <CopilotConversationStarters />
                 {children}
             </CopilotContextAttachmentProvider>
@@ -54,6 +63,34 @@ function CopilotCacheInvalidator() {
 
 function CopilotContextAttachmentSynchronizer() {
     useCopilotContextAttachmentSync()
+    return null
+}
+
+function ForcedCopilotConversationSynchronizer() {
+    const [forcedConversationIdParam, setForcedConversationIdParam] =
+        useSearchParam(COPILOT_CONVERSATION_ID_QUERY_PARAM)
+    const forcedConversationId = forcedConversationIdParam?.trim() || undefined
+    const { threadId, switchThread } = useCopilot()
+    const { setIsOpen } = useCopilotPanel()
+
+    useEffect(() => {
+        if (!forcedConversationId) return
+
+        if (forcedConversationId !== threadId) {
+            switchThread(forcedConversationId)
+        }
+
+        setIsOpen(true)
+
+        setForcedConversationIdParam(null)
+    }, [
+        forcedConversationId,
+        setForcedConversationIdParam,
+        setIsOpen,
+        switchThread,
+        threadId,
+    ])
+
     return null
 }
 
