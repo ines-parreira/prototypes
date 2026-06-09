@@ -170,6 +170,60 @@ describe('KnowledgeHub Table Utils', () => {
 
             expect(result).toEqual([])
         })
+
+        it('groups documents by ingestion id even when they share a source', () => {
+            const items = [
+                {
+                    type: KnowledgeType.Document,
+                    title: 'Snippet A1',
+                    lastUpdatedAt: '2024-01-01T00:00:00Z',
+                    source: 'report.pdf',
+                    ingestionId: 10,
+                    groupTitle: 'report.pdf',
+                    id: '1',
+                },
+                {
+                    type: KnowledgeType.Document,
+                    title: 'Snippet A2',
+                    lastUpdatedAt: '2024-01-01T00:00:00Z',
+                    source: 'report.pdf',
+                    ingestionId: 10,
+                    groupTitle: 'report.pdf',
+                    id: '2',
+                },
+                {
+                    type: KnowledgeType.Document,
+                    title: 'Snippet B1',
+                    lastUpdatedAt: '2024-01-02T00:00:00Z',
+                    source: 'report.pdf',
+                    ingestionId: 20,
+                    groupTitle: 'report (2).pdf',
+                    id: '3',
+                },
+            ]
+
+            const result = groupKnowledgeItemsBySource(items, true)
+
+            expect(result).toHaveLength(2)
+
+            const firstIngestion = result.find(
+                (item) => item.ingestionId === 10,
+            )
+            const secondIngestion = result.find(
+                (item) => item.ingestionId === 20,
+            )
+
+            expect(firstIngestion).toMatchObject({
+                title: 'report.pdf',
+                itemCount: 2,
+                isGrouped: true,
+            })
+            expect(secondIngestion).toMatchObject({
+                title: 'report (2).pdf',
+                itemCount: 1,
+                isGrouped: true,
+            })
+        })
     })
 
     describe('filterKnowledgeItemsBySource', () => {
@@ -206,16 +260,49 @@ describe('KnowledgeHub Table Utils', () => {
         })
 
         it('filters items by source', () => {
-            const result = filterKnowledgeItemsBySource(items, 'source1')
+            const result = filterKnowledgeItemsBySource(items, {
+                source: 'source1',
+            })
 
             expect(result).toHaveLength(1)
             expect(result[0].title).toBe('Item 1')
         })
 
         it('returns empty array when no items match source', () => {
-            const result = filterKnowledgeItemsBySource(items, 'nonexistent')
+            const result = filterKnowledgeItemsBySource(items, {
+                source: 'nonexistent',
+            })
 
             expect(result).toEqual([])
+        })
+
+        it('filters by ingestion id when the folder has one', () => {
+            const ingestionItems = [
+                {
+                    type: KnowledgeType.Document,
+                    title: 'Snippet A1',
+                    lastUpdatedAt: '2024-01-01T00:00:00Z',
+                    source: 'report.pdf',
+                    ingestionId: 10,
+                    id: '1',
+                },
+                {
+                    type: KnowledgeType.Document,
+                    title: 'Snippet B1',
+                    lastUpdatedAt: '2024-01-02T00:00:00Z',
+                    source: 'report.pdf',
+                    ingestionId: 20,
+                    id: '2',
+                },
+            ]
+
+            const result = filterKnowledgeItemsBySource(ingestionItems, {
+                source: 'report.pdf',
+                ingestionId: 20,
+            })
+
+            expect(result).toHaveLength(1)
+            expect(result[0].title).toBe('Snippet B1')
         })
     })
 

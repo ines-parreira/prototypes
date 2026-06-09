@@ -257,7 +257,7 @@ export const KnowledgeHubTable = ({
 
         const filteredGroupedDataBySource = filterKnowledgeItemsBySource(
             groupedData,
-            selectedFolder?.source,
+            selectedFolder ?? undefined,
         )
 
         const filteredBySearchTerm = filterKnowledgeItemsBySearchTerm(

@@ -51,12 +51,16 @@ export function useKnowledgeHubUrlParams(
             // Initialize from URL on mount (before tableData is loaded)
             const params = new URLSearchParams(location.search)
             const folderParam = params.get('folder')
+            const ingestionParam = params.get('ingestion')
             if (folderParam) {
                 // Create minimal folder object with source and title
                 // Will be upgraded to full object by useEffect once tableData loads
                 return {
                     source: folderParam,
                     title: folderParam,
+                    ...(ingestionParam
+                        ? { ingestionId: Number(ingestionParam) }
+                        : {}),
                 } as GroupedKnowledgeItem
             }
             return null
@@ -111,6 +115,9 @@ export function useKnowledgeHubUrlParams(
             if (selectedFolder?.source) {
                 params.set('folder', selectedFolder.source)
             }
+            if (selectedFolder?.ingestionId !== undefined) {
+                params.set('ingestion', String(selectedFolder.ingestionId))
+            }
             if (searchTerm) {
                 params.set('search', searchTerm)
             }
@@ -144,6 +151,7 @@ export function useKnowledgeHubUrlParams(
         // Remove folder parameter from URL
         const params = new URLSearchParams(location.search)
         params.delete('folder')
+        params.delete('ingestion')
 
         // Remove filter params from URL that don't apply outside of folder views
         params.delete('startDate')
@@ -162,13 +170,19 @@ export function useKnowledgeHubUrlParams(
     const folderObjectFromUrl = useMemo(() => {
         const params = new URLSearchParams(location.search)
         const folderParam = params.get('folder')
+        const ingestionParam = params.get('ingestion')
 
         if (!folderParam) {
             return null
         }
 
-        const matchingItems = tableData.filter(
-            (item) => item.source === folderParam,
+        const ingestionId =
+            ingestionParam !== null ? Number(ingestionParam) : undefined
+
+        const matchingItems = tableData.filter((item) =>
+            ingestionId !== undefined
+                ? item.ingestionId === ingestionId
+                : item.source === folderParam,
         )
 
         if (matchingItems.length === 0) {
@@ -195,6 +209,7 @@ export function useKnowledgeHubUrlParams(
             return {
                 source: folderParam,
                 title: folderParam,
+                ...(ingestionId !== undefined ? { ingestionId } : {}),
             } as GroupedKnowledgeItem
         }
 
@@ -208,8 +223,8 @@ export function useKnowledgeHubUrlParams(
         return {
             ...mostRecentItem,
             title: mostRecentItem.isGrouped
-                ? mostRecentItem.title
-                : folderParam,
+                ? (mostRecentItem.groupTitle ?? mostRecentItem.title)
+                : (mostRecentItem.groupTitle ?? folderParam),
             isGrouped: true,
             itemCount: matchingItems.length,
         } as GroupedKnowledgeItem
@@ -291,12 +306,15 @@ export function useKnowledgeHubUrlParams(
         // Case 3: Set or upgrade folder if URL has folder param and we have a valid folder object
         if (folderObjectFromUrl && currentFolderParam) {
             const folderSource = folderObjectFromUrl.source
+            const isSameFolder =
+                !!selectedFolder &&
+                selectedFolder.source === folderSource &&
+                selectedFolder.ingestionId === folderObjectFromUrl.ingestionId
 
             // When viewing an article, only upgrade if selectedFolder is missing required properties
             if (isViewingArticle) {
                 if (
-                    selectedFolder &&
-                    selectedFolder.source === folderSource &&
+                    isSameFolder &&
                     selectedFolder.type &&
                     selectedFolder.lastUpdatedAt
                 ) {
@@ -307,8 +325,7 @@ export function useKnowledgeHubUrlParams(
 
             // Upgrade to full folder object only if necessary
             const shouldUpgrade =
-                !selectedFolder ||
-                selectedFolder.source !== folderSource ||
+                !isSameFolder ||
                 (!selectedFolder.type && folderObjectFromUrl.type)
 
             if (shouldUpgrade) {
@@ -378,6 +395,7 @@ export function useKnowledgeHubUrlParams(
             }
             if (shouldClearFolder) {
                 params.delete('folder')
+                params.delete('ingestion')
             }
             const newSearch = params.toString()
             const newUrl = newSearch
@@ -406,6 +424,11 @@ export function useKnowledgeHubUrlParams(
 
             if (data.source) {
                 params.set('folder', data.source)
+            }
+            if (data.ingestionId !== undefined) {
+                params.set('ingestion', String(data.ingestionId))
+            } else {
+                params.delete('ingestion')
             }
 
             const newSearch = params.toString()

@@ -10,6 +10,18 @@ import {
     KnowledgeVisibility,
 } from 'pages/aiAgent/KnowledgeHub/types'
 
+/**
+ * Folders are normally identified by their source (filename). Document
+ * ingestions are identified by their ingestion id instead, so that several
+ * ingestions sharing the same filename are grouped into separate folders.
+ */
+const getGroupKey = (item: KnowledgeItem): string | undefined => {
+    if (item.ingestionId !== undefined) {
+        return `ingestion:${item.ingestionId}`
+    }
+    return item.source
+}
+
 export const groupKnowledgeItemsBySource = (
     items: KnowledgeItem[],
     shouldGroup: boolean = true,
@@ -22,9 +34,10 @@ export const groupKnowledgeItemsBySource = (
     const ungroupedItems: GroupedKnowledgeItem[] = []
 
     items.forEach((item) => {
-        if (item.source) {
-            const existing = sourceGroups.get(item.source) || []
-            sourceGroups.set(item.source, [...existing, item])
+        const groupKey = getGroupKey(item)
+        if (groupKey) {
+            const existing = sourceGroups.get(groupKey) || []
+            sourceGroups.set(groupKey, [...existing, item])
         } else {
             ungroupedItems.push(item)
         }
@@ -32,7 +45,7 @@ export const groupKnowledgeItemsBySource = (
 
     const groupedItems: GroupedKnowledgeItem[] = []
 
-    sourceGroups.forEach((groupItems, source) => {
+    sourceGroups.forEach((groupItems) => {
         const mostRecentItem = groupItems.reduce((latest, current) =>
             new Date(current.lastUpdatedAt) > new Date(latest.lastUpdatedAt)
                 ? current
@@ -41,7 +54,7 @@ export const groupKnowledgeItemsBySource = (
 
         groupedItems.push({
             ...mostRecentItem,
-            title: source,
+            title: mostRecentItem.groupTitle ?? mostRecentItem.source ?? '',
             isGrouped: true,
             itemCount: groupItems.length,
         })
@@ -52,12 +65,15 @@ export const groupKnowledgeItemsBySource = (
 
 export const filterKnowledgeItemsBySource = (
     items: GroupedKnowledgeItem[],
-    source: string | undefined,
+    folder: Pick<GroupedKnowledgeItem, 'source' | 'ingestionId'> | undefined,
 ) => {
-    if (!source) {
+    if (folder?.ingestionId !== undefined) {
+        return items.filter((item) => item.ingestionId === folder.ingestionId)
+    }
+    if (!folder?.source) {
         return items
     }
-    return items.filter((item) => item.source === source)
+    return items.filter((item) => item.source === folder.source)
 }
 
 export const filterKnowledgeItemsBySearchTerm = (

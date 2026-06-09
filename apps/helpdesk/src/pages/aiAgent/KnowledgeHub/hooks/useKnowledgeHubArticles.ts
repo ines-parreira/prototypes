@@ -1,8 +1,12 @@
 import { useMemo } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { useGetKnowledgeHubArticles } from 'models/helpCenter/queries'
+import {
+    useGetFileIngestion,
+    useGetKnowledgeHubArticles,
+} from 'models/helpCenter/queries'
 import { KnowledgeType } from 'pages/aiAgent/KnowledgeHub/types'
+import { enrichDocumentItemsWithIngestion } from 'pages/aiAgent/KnowledgeHub/utils/enrichDocumentsWithIngestion'
 import { transformKnowledgeHubArticlesToKnowledgeItems } from 'pages/aiAgent/KnowledgeHub/utils/transformKnowledgeHubArticles'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
@@ -37,13 +41,26 @@ export const useKnowledgeHubArticles = () => {
         },
     )
 
-    const tableData = useMemo(
-        () =>
-            data?.articles
-                ? transformKnowledgeHubArticlesToKnowledgeItems(data.articles)
-                : [],
-        [data],
+    const { data: fileIngestionResponse } = useGetFileIngestion(
+        {
+            help_center_id: snippetHelpCenterId ?? 0,
+        },
+        {
+            enabled: !!snippetHelpCenterId,
+            refetchOnWindowFocus: false,
+        },
     )
+
+    const tableData = useMemo(() => {
+        const items = data?.articles
+            ? transformKnowledgeHubArticlesToKnowledgeItems(data.articles)
+            : []
+
+        return enrichDocumentItemsWithIngestion(
+            items,
+            fileIngestionResponse?.data ?? [],
+        )
+    }, [data, fileIngestionResponse?.data])
 
     const hasWebsiteSync = !!tableData.find(
         (item) => item.type === KnowledgeType.Domain,

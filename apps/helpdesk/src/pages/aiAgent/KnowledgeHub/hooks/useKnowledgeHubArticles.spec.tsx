@@ -15,6 +15,8 @@ jest.mock('pages/aiAgent/KnowledgeHub/utils/transformKnowledgeHubArticles')
 const mockUseGetKnowledgeHubArticles = jest.requireMock(
     'models/helpCenter/queries',
 ).useGetKnowledgeHubArticles as jest.Mock
+const mockUseGetFileIngestion = jest.requireMock('models/helpCenter/queries')
+    .useGetFileIngestion as jest.Mock
 const mockUseAiAgentStoreConfigurationContext = jest.requireMock(
     'pages/aiAgent/providers/AiAgentStoreConfigurationContext',
 ).useAiAgentStoreConfigurationContext as jest.Mock
@@ -45,6 +47,10 @@ describe('useKnowledgeHubArticles', () => {
             data: { articles: [] },
             isInitialLoading: false,
             refetch: mockRefetch,
+        })
+
+        mockUseGetFileIngestion.mockReturnValue({
+            data: undefined,
         })
 
         mockTransformKnowledgeHubArticlesToKnowledgeItems.mockReturnValue([])

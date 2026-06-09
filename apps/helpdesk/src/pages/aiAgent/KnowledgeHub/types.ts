@@ -31,6 +31,8 @@ export type KnowledgeItem = {
     draftVersionId?: number | null
     publishedVersionId?: number | null
     isSyncing?: boolean
+    ingestionId?: number
+    groupTitle?: string
 }
 
 export type KnowledgeMetrics = {

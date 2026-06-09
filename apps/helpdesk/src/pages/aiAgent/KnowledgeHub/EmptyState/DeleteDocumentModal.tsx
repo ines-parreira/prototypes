@@ -52,9 +52,13 @@ export const DeleteDocumentModal = ({
             return
         }
 
-        // Find the file ingestion log that matches the selected document
-        const fileIngestionLog = fileIngestionLogs?.find(
-            (log) => log.filename === selectedFolder.source,
+        // Find the file ingestion log that matches the selected document.
+        // Prefer the ingestion id so same-named files target the right ingestion;
+        // fall back to filename when the id isn't available.
+        const fileIngestionLog = fileIngestionLogs?.find((log) =>
+            selectedFolder.ingestionId !== undefined
+                ? log.id === selectedFolder.ingestionId
+                : log.filename === selectedFolder.source,
         )
 
         if (!fileIngestionLog) {
