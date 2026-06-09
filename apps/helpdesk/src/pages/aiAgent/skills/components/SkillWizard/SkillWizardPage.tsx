@@ -4,6 +4,7 @@ import { Duration } from '@gorgias/toolkit'
 import { Redirect, useHistory, useParams } from 'react-router-dom'
 
 import { Box, Loader } from '@gorgias/axiom'
+import { useCopilotPanel, useMessageContextAttachments } from '@gorgias/copilot'
 
 import { useGetWizard } from 'models/helpCenter/queries'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
@@ -63,6 +64,7 @@ const SkillWizardPageContent = ({
     }, [isIntroVisible])
 
     const initialStep = wizard.ui_wizard_state.current_step
+    const [currentStep, setCurrentStep] = useState(initialStep)
 
     useEffect(() => {
         if (wizard.status === SkillWizardStatus.NotStarted) {
@@ -73,6 +75,36 @@ const SkillWizardPageContent = ({
         // time, causing duplicate `start` PATCHes before `wizard.status` flips.
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [wizard.status, mutations.start])
+
+    const currentSkill = reviewableSkills[currentStep - 1]
+    const currentArticleId = currentSkill?.article?.id
+    const currentArticleTitle = currentSkill?.article?.translation?.title
+
+    const { setMessageAttachment, clearMessageAttachment } =
+        useMessageContextAttachments()
+
+    useEffect(() => {
+        if (
+            currentArticleId === undefined ||
+            currentArticleTitle === undefined
+        ) {
+            clearMessageAttachment()
+            return
+        }
+        setMessageAttachment({
+            kind: 'skill',
+            id: String(currentArticleId),
+            title: currentArticleTitle,
+            helpCenterId: String(helpCenterId),
+        })
+        return () => clearMessageAttachment()
+    }, [
+        currentArticleId,
+        currentArticleTitle,
+        helpCenterId,
+        setMessageAttachment,
+        clearMessageAttachment,
+    ])
 
     const computeStepLocation = useCallback(
         (step: number) => {
@@ -104,6 +136,7 @@ const SkillWizardPageContent = ({
 
     const onStepChange = useCallback(
         (step: number, prevStep: number) => {
+            setCurrentStep(step)
             const params = new URLSearchParams(history.location.search)
             params.set(STEP_QUERY_PARAM, String(step))
             history.replace({ search: params.toString() })
@@ -194,6 +227,12 @@ const SkillWizardPageContent = ({
 export const SkillWizardPage = () => {
     const { shopName } = useParams<{ shopName: string }>()
     const { routes } = useAiAgentNavigation({ shopName })
+
+    const { setIsOpen: setCopilotOpen } = useCopilotPanel()
+    useEffect(() => {
+        setCopilotOpen(true)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     const { storeConfiguration } = useAiAgentStoreConfigurationContext()
     const helpCenterId = storeConfiguration?.guidanceHelpCenterId ?? 0

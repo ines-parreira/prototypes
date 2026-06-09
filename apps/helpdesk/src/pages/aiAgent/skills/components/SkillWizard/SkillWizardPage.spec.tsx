@@ -1,7 +1,9 @@
-import { render } from '@repo/testing'
+import { assumeMock, render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Route, Switch, useLocation } from 'react-router-dom'
+
+import { useCopilotPanel, useMessageContextAttachments } from '@gorgias/copilot'
 
 import { ThemeProvider } from 'core/theme'
 import { useGetWizard } from 'models/helpCenter/queries'
@@ -72,6 +74,14 @@ const mockUseSkillWizard = useEnrichedSkillWizard as jest.MockedFunction<
 const mockUseGetWizard = useGetWizard as jest.MockedFunction<
     typeof useGetWizard
 >
+
+const mockUseCopilotPanel = assumeMock(useCopilotPanel)
+const mockUseMessageContextAttachments = assumeMock(
+    useMessageContextAttachments,
+)
+const mockSetCopilotOpen = jest.fn()
+const mockSetMessageAttachment = jest.fn()
+const mockClearMessageAttachment = jest.fn()
 
 const wizardProps: { current: any } = { current: undefined }
 
@@ -153,6 +163,18 @@ const reviewableSkill = (skill_id: number) => ({
     action_configuration_ids: [],
 })
 
+const reviewableSkillWithArticle = (
+    skill_id: number,
+    articleId: number,
+    title: string,
+) => ({
+    ...reviewableSkill(skill_id),
+    article: {
+        id: articleId,
+        translation: { title },
+    } as any,
+})
+
 const skipIntro = () => {
     act(() => {
         jest.advanceTimersByTime(4000)
@@ -167,6 +189,21 @@ describe('SkillWizardPage', () => {
         mockSetSkillStatus.mockClear()
         mockEnsureSkillStatus.mockClear()
         mockSaveInstructions.mockClear()
+        mockSetCopilotOpen.mockClear()
+        mockSetMessageAttachment.mockClear()
+        mockClearMessageAttachment.mockClear()
+        mockUseCopilotPanel.mockReturnValue({
+            isOpen: false,
+            setIsOpen: mockSetCopilotOpen,
+            width: 400,
+            setWidth: jest.fn(),
+        })
+        mockUseMessageContextAttachments.mockReturnValue({
+            messageAttachment: undefined,
+            canAttach: true,
+            setMessageAttachment: mockSetMessageAttachment,
+            clearMessageAttachment: mockClearMessageAttachment,
+        })
         jest.useFakeTimers()
         mockUseGetWizard.mockReturnValue({
             data: mockNotStartedWizard,
@@ -424,6 +461,129 @@ describe('SkillWizardPage', () => {
                 status: SkillWizardSkillStatus.Approved,
             })
             expect(mockSetSkillStatus).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('copilot integration', () => {
+        it('opens the copilot panel on mount', () => {
+            renderAt(WIZARD_PATH)
+
+            expect(mockSetCopilotOpen).toHaveBeenCalledWith(true)
+        })
+
+        it('pins the first reviewable skill as a context attachment on mount', () => {
+            const skillA = reviewableSkillWithArticle(
+                1,
+                6192387,
+                'WHEN: The customer asks about order edits',
+            )
+            const skillB = reviewableSkillWithArticle(2, 6192388, 'Skill B')
+            mockUseSkillWizard.mockReturnValue(
+                buildWizardReturn({
+                    status: SkillWizardStatus.InProgress,
+                    all_skills: [skillA, skillB],
+                    reviewable_skills: [skillA, skillB],
+                }),
+            )
+
+            renderAt(WIZARD_PATH)
+
+            expect(mockSetMessageAttachment).toHaveBeenCalledWith({
+                kind: 'skill',
+                id: '6192387',
+                title: 'WHEN: The customer asks about order edits',
+                helpCenterId: String(GUIDANCE_HELP_CENTER_ID),
+            })
+        })
+
+        it('re-pins the attachment when the user advances to the next skill', async () => {
+            const user = userEvent.setup({
+                advanceTimers: jest.advanceTimersByTime,
+            })
+            const skillA = reviewableSkillWithArticle(1, 100, 'Skill A')
+            const skillB = reviewableSkillWithArticle(2, 200, 'Skill B')
+            mockUseSkillWizard.mockReturnValue(
+                buildWizardReturn({
+                    status: SkillWizardStatus.InProgress,
+                    all_skills: [skillA, skillB],
+                    reviewable_skills: [skillA, skillB],
+                }),
+            )
+
+            renderAt(WIZARD_PATH)
+            mockSetMessageAttachment.mockClear()
+
+            await user.click(
+                screen.getByRole('button', { name: 'Leave step 1' }),
+            )
+
+            expect(mockSetMessageAttachment).toHaveBeenCalledWith({
+                kind: 'skill',
+                id: '200',
+                title: 'Skill B',
+                helpCenterId: String(GUIDANCE_HELP_CENTER_ID),
+            })
+        })
+
+        it('clears the attachment when the user moves to the recap step', async () => {
+            const user = userEvent.setup({
+                advanceTimers: jest.advanceTimersByTime,
+            })
+            const skillA = reviewableSkillWithArticle(1, 100, 'Skill A')
+            mockUseSkillWizard.mockReturnValue(
+                buildWizardReturn({
+                    status: SkillWizardStatus.InProgress,
+                    all_skills: [skillA],
+                    reviewable_skills: [skillA],
+                }),
+            )
+
+            renderAt(WIZARD_PATH)
+            mockClearMessageAttachment.mockClear()
+
+            await user.click(
+                screen.getByRole('button', { name: 'Move to step 7' }),
+            )
+
+            expect(mockClearMessageAttachment).toHaveBeenCalled()
+        })
+
+        it('clears the attachment when the wizard unmounts', async () => {
+            const user = userEvent.setup({
+                advanceTimers: jest.advanceTimersByTime,
+            })
+            const skillA = reviewableSkillWithArticle(1, 100, 'Skill A')
+            mockUseSkillWizard.mockReturnValue(
+                buildWizardReturn({
+                    status: SkillWizardStatus.InProgress,
+                    all_skills: [skillA],
+                    reviewable_skills: [skillA],
+                }),
+            )
+
+            renderAt(WIZARD_PATH)
+            mockClearMessageAttachment.mockClear()
+
+            await user.click(
+                screen.getByRole('button', { name: 'Close from wizard' }),
+            )
+
+            expect(mockClearMessageAttachment).toHaveBeenCalled()
+        })
+
+        it('clears the attachment when the active skill has no article', () => {
+            mockUseSkillWizard.mockReturnValue(
+                buildWizardReturn({
+                    status: SkillWizardStatus.InProgress,
+                    all_skills: [reviewableSkill(1)],
+                    reviewable_skills: [reviewableSkill(1)],
+                }),
+            )
+
+            renderAt(WIZARD_PATH)
+
+            expect(mockSetMessageAttachment).not.toHaveBeenCalled()
+            expect(mockClearMessageAttachment).toHaveBeenCalled()
         })
     })
 })
