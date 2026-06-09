@@ -93,8 +93,7 @@
     "globals": {
         "$": "off",
         "FB": "off",
-        "Stripe": "off",
-        "amplitude": "off"
+        "Stripe": "off"
     },
     "plugins": ["typescript", "import", "react", "react-hooks", "jsx-a11y"],
     "ignorePatterns": [
