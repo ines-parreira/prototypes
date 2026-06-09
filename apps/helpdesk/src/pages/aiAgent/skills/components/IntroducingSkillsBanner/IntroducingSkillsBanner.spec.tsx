@@ -17,7 +17,7 @@ describe('IntroducingSkillsBanner', () => {
 
         expect(
             screen.getByRole('heading', {
-                name: /introducing skills: the source of truth for your most common conversations/i,
+                name: /introducing skills - precise control over your most common conversations/i,
             }),
         ).toBeInTheDocument()
     })
@@ -33,7 +33,7 @@ describe('IntroducingSkillsBanner', () => {
 
         expect(
             screen.getByText(
-                /Skills give you control over how AI Agent handles each conversation type/i,
+                /Skills give you control over how AI Agent handles each type of conversation/i,
             ),
         ).toBeInTheDocument()
     })
