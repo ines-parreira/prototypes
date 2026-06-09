@@ -1,0 +1,20 @@
+:local {
+    .tooltipContent {
+        overflow-wrap: break-word;
+        word-break: break-word;
+    }
+
+    .tooltipLinkWrapper {
+        overflow: hidden;
+        cursor: pointer;
+
+        a {
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: var(--spacing-sm);
+            line-height: var(--spacing-md);
+        }
+    }
+}

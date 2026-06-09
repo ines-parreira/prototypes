@@ -3,6 +3,7 @@ import { useCallback, useMemo, useState } from 'react'
 import { Banner, Box, Button, Card } from '@gorgias/axiom'
 
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
+import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import type { WizardSkill } from 'pages/aiAgent/skills/hooks/useEnrichedSkillWizard'
 import { SkillWizardSkillStatus } from 'pages/aiAgent/skills/types'
@@ -17,6 +18,7 @@ import {
     isInstructionsEmpty,
 } from './skillReviewValidation.utils'
 import { useSkillWizardContext } from './SkillWizardContext'
+import { useRecapGuidances } from './useRecapGuidances'
 import { WhyWeCreatedThisSkillCard } from './WhyWeCreatedThisSkillCard'
 
 import css from './SkillReviewStep.less'
@@ -37,6 +39,23 @@ export const SkillReviewStep = ({
     const { storeConfiguration } = useAiAgentStoreConfigurationContext()
     const shopName = storeConfiguration?.storeName ?? ''
     const shopType = storeConfiguration?.shopType ?? ''
+
+    const routes = useMemo(
+        () => getAiAgentNavigationRoutes(shopName),
+        [shopName],
+    )
+
+    const { guidanceById } = useRecapGuidances(skill.guidance_ids)
+
+    const guidanceSources = useMemo(
+        () =>
+            skill.guidance_ids.map((id) => ({
+                id,
+                title: guidanceById.get(id)?.title ?? `Guidance ${id}`,
+                url: routes.knowledgeArticle('guidance', id),
+            })),
+        [skill.guidance_ids, guidanceById, routes],
+    )
 
     const { guidanceActions, rawActions } = useGetGuidancesAvailableActions(
         shopName,
@@ -101,7 +120,7 @@ export const SkillReviewStep = ({
             <WhyWeCreatedThisSkillCard
                 recommendation={skill.recommendation}
                 estimatedImpact={skill.estimated_automation_rate_impact}
-                guidanceCount={skill.guidance_ids.length}
+                guidanceSources={guidanceSources}
             />
             {bannerTitle && (
                 <Banner

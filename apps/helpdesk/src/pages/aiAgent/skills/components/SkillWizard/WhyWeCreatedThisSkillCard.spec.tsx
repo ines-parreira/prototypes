@@ -12,7 +12,13 @@ describe('WhyWeCreatedThisSkillCard', () => {
                 <WhyWeCreatedThisSkillCard
                     recommendation="Automate refund requests."
                     estimatedImpact="+6%"
-                    guidanceCount={1}
+                    guidanceSources={[
+                        {
+                            id: 1,
+                            title: 'Return Policy',
+                            url: '/app/ai-agent/shopify/test/knowledge/guidance/1',
+                        },
+                    ]}
                 />
             </ThemeProvider>,
         )
@@ -37,7 +43,11 @@ describe('WhyWeCreatedThisSkillCard', () => {
                 <WhyWeCreatedThisSkillCard
                     recommendation="Automate refund requests."
                     estimatedImpact="+6%"
-                    guidanceCount={5}
+                    guidanceSources={[1, 2, 3, 4, 5].map((id) => ({
+                        id,
+                        title: `Guidance ${id}`,
+                        url: `/app/ai-agent/shopify/test/knowledge/guidance/${id}`,
+                    }))}
                 />
             </ThemeProvider>,
         )
@@ -53,7 +63,7 @@ describe('WhyWeCreatedThisSkillCard', () => {
                 <WhyWeCreatedThisSkillCard
                     recommendation="Automate refund requests."
                     estimatedImpact="+6%"
-                    guidanceCount={0}
+                    guidanceSources={[]}
                 />
             </ThemeProvider>,
         )
