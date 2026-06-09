@@ -16,6 +16,10 @@ import { BulkUserAssignSelect } from './BulkMoreActionsMenu/components/BulkUserA
 type Props = {
     viewId: number
     isDisabled: boolean
+    isAllSelected: boolean
+    selectedTicketCount: number
+    totalTicketCount?: number
+    viewName: string
     isAssignUserOpen: boolean
     onAssignUserOpenChange: (open: boolean) => void
     isAddTagOpen: boolean
@@ -42,6 +46,10 @@ type Props = {
 export function TicketTableBulkActions({
     viewId,
     isDisabled,
+    isAllSelected,
+    selectedTicketCount,
+    totalTicketCount,
+    viewName,
     isAssignUserOpen,
     onAssignUserOpenChange,
     isAddTagOpen,
@@ -81,6 +89,10 @@ export function TicketTableBulkActions({
             <BulkMoreActionsMenu
                 viewId={viewId}
                 isDisabled={isDisabled}
+                isAllSelected={isAllSelected}
+                selectedTicketCount={selectedTicketCount}
+                totalTicketCount={totalTicketCount}
+                viewName={viewName}
                 onMarkAsUnread={onMarkAsUnread}
                 onMarkAsRead={onMarkAsRead}
                 onChangePriority={onChangePriority}

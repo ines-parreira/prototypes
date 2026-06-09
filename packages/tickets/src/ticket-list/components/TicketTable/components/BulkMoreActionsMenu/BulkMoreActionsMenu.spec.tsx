@@ -21,6 +21,10 @@ vi.mock('../../../../hooks/useIsTrashLikeView', () => ({
 const defaultProps = {
     viewId: 123,
     isDisabled: false,
+    isAllSelected: false,
+    selectedTicketCount: 2,
+    totalTicketCount: 42,
+    viewName: 'Open tickets',
     onMarkAsUnread: vi.fn(),
     onMarkAsRead: vi.fn(),
     onChangePriority: vi.fn(),
@@ -107,7 +111,7 @@ describe('BulkMoreActionsMenu', () => {
         expect(onApplyMacro).toHaveBeenCalledTimes(1)
     })
 
-    it('calls onMoveToTrash when delete is selected in a normal view', async () => {
+    it('confirms before moving tickets to trash in a normal view', async () => {
         const onMoveToTrash = vi.fn()
         const { user } = render(
             <BulkMoreActionsMenu
@@ -118,7 +122,46 @@ describe('BulkMoreActionsMenu', () => {
         await openMenu(user)
         await user.click(screen.getByRole('menuitem', { name: /^delete$/i }))
 
+        expect(onMoveToTrash).not.toHaveBeenCalled()
+        expect(await screen.findByText('Are you sure?')).toBeInTheDocument()
+        expect(
+            screen.getByText('Are you sure you want to delete 2 tickets?'),
+        ).toBeInTheDocument()
+
+        await user.click(screen.getByRole('button', { name: /^yes$/i }))
+
         expect(onMoveToTrash).toHaveBeenCalledTimes(1)
+    })
+
+    it('does not move tickets to trash when delete confirmation is canceled', async () => {
+        const onMoveToTrash = vi.fn()
+        const { user } = render(
+            <BulkMoreActionsMenu
+                {...defaultProps}
+                onMoveToTrash={onMoveToTrash}
+            />,
+        )
+        await openMenu(user)
+        await user.click(screen.getByRole('menuitem', { name: /^delete$/i }))
+        await screen.findByText('Are you sure?')
+        await user.click(screen.getByRole('button', { name: /^no$/i }))
+
+        expect(onMoveToTrash).not.toHaveBeenCalled()
+        expect(screen.queryByText('Are you sure?')).not.toBeInTheDocument()
+    })
+
+    it('shows all-in-view delete copy when every ticket in the view is selected', async () => {
+        const { user } = render(
+            <BulkMoreActionsMenu {...defaultProps} isAllSelected />,
+        )
+        await openMenu(user)
+        await user.click(screen.getByRole('menuitem', { name: /^delete$/i }))
+
+        expect(
+            await screen.findByText(
+                'Are you sure you want to delete all 42 tickets in Open tickets?',
+            ),
+        ).toBeInTheDocument()
     })
 
     it('hides restricted actions in a normal view for users below agent', async () => {
@@ -165,7 +208,7 @@ describe('BulkMoreActionsMenu', () => {
         expect(onUndelete).toHaveBeenCalledTimes(1)
     })
 
-    it('calls onDeleteForever when selected in a trash-like view', async () => {
+    it('confirms before deleting forever in a trash-like view', async () => {
         mockMenuState.isTrashLikeView = true
         const onDeleteForever = vi.fn()
 
@@ -179,6 +222,15 @@ describe('BulkMoreActionsMenu', () => {
         await user.click(
             screen.getByRole('menuitem', { name: /delete forever/i }),
         )
+
+        expect(onDeleteForever).not.toHaveBeenCalled()
+        expect(
+            await screen.findByText(
+                'Are you sure you want to delete 2 tickets forever?',
+            ),
+        ).toBeInTheDocument()
+
+        await user.click(screen.getByRole('button', { name: /^yes$/i }))
 
         expect(onDeleteForever).toHaveBeenCalledTimes(1)
     })

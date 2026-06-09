@@ -801,7 +801,7 @@ describe('ViewPanelFiltersBridge', () => {
 
         renderComponent()
         await user.click(screen.getByRole('button', { name: /update view/i }))
-        await user.click(screen.getByRole('button', { name: /confirm/i }))
+        await user.click(screen.getByRole('button', { name: /^yes$/i }))
 
         expect(submitViewMock).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -1340,7 +1340,7 @@ describe('ViewPanelFiltersBridge', () => {
         expect(setSplitTicketViewEnabledMock).toHaveBeenCalledWith(false)
     })
 
-    it('shows the confirmation modal before updating a public view', async () => {
+    it('shows the confirmation popover before updating a public view', async () => {
         const user = userEvent.setup()
         const publicView = fromJS({
             id: 42,
@@ -1375,7 +1375,7 @@ describe('ViewPanelFiltersBridge', () => {
         expect(submitViewMock).not.toHaveBeenCalled()
     })
 
-    it('does not submit a public view update when the modal is canceled', async () => {
+    it('does not submit a public view update when the popover is canceled', async () => {
         const user = userEvent.setup()
         const publicView = fromJS({
             id: 42,
@@ -1402,7 +1402,7 @@ describe('ViewPanelFiltersBridge', () => {
 
         renderComponent()
         await user.click(screen.getByRole('button', { name: /update view/i }))
-        await user.click(screen.getByRole('button', { name: /^cancel$/i }))
+        await user.click(screen.getByRole('button', { name: /^no$/i }))
 
         expect(submitViewMock).not.toHaveBeenCalled()
         expect(screen.queryByText('Are you sure?')).not.toBeInTheDocument()
@@ -1435,14 +1435,14 @@ describe('ViewPanelFiltersBridge', () => {
 
         renderComponent()
         await user.click(screen.getByRole('button', { name: /update view/i }))
-        await user.click(screen.getByRole('button', { name: /confirm/i }))
+        await user.click(screen.getByRole('button', { name: /^yes$/i }))
 
         await waitFor(() => {
             expect(submitViewMock).toHaveBeenCalled()
         })
     })
 
-    it('updates private views without showing the confirmation modal', async () => {
+    it('updates private views without showing the confirmation popover', async () => {
         const user = userEvent.setup()
 
         renderComponent()

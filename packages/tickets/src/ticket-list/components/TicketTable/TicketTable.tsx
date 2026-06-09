@@ -350,6 +350,7 @@ function TicketTableComponent({
             ),
         [items, rowSelection],
     )
+    const viewLabel = view?.name?.trim() || 'the view'
 
     const {
         isLoading: isBulkActionLoading,
@@ -643,6 +644,10 @@ function TicketTableComponent({
                     {() => (
                         <TicketTableBulkActions
                             viewId={viewId}
+                            isAllSelected={isAllSelected}
+                            selectedTicketCount={selectedTicketIds.size}
+                            totalTicketCount={viewCount}
+                            viewName={viewLabel}
                             isAssignUserOpen={isAssignUserOpen}
                             isAddTagOpen={isAddTagOpen}
                             isDisabled={isBulkActionLoading}

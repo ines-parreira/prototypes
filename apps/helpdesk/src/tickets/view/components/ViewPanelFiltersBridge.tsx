@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { ComponentProps } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -20,6 +20,7 @@ import {
     OverlayContent,
     OverlayFooter,
     OverlayHeader,
+    Popover,
     Text,
     TextField,
     Tooltip,
@@ -166,6 +167,7 @@ export function ViewPanelFiltersBridge({
     const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false)
     const [isSharedUpdateConfirmOpen, setIsSharedUpdateConfirmOpen] =
         useState(false)
+    const saveActionsRef = useRef<HTMLDivElement>(null)
     const activeViewName = activeView.get('name', '') as string
     const activeViewEmoji = activeView.getIn(
         ['decoration', 'emoji'],
@@ -608,7 +610,10 @@ export function ViewPanelFiltersBridge({
                                         !isSaveDisabled || areFiltersValid
                                     }
                                     trigger={
-                                        <div className={css.saveActions}>
+                                        <div
+                                            className={css.saveActions}
+                                            ref={saveActionsRef}
+                                        >
                                             {isExistingView ? (
                                                 <MultiButton>
                                                     <Button
@@ -643,6 +648,74 @@ export function ViewPanelFiltersBridge({
                                                     Create view
                                                 </Button>
                                             )}
+                                            <Popover
+                                                isOpen={
+                                                    isSharedUpdateConfirmOpen
+                                                }
+                                                onOpenChange={
+                                                    setIsSharedUpdateConfirmOpen
+                                                }
+                                                triggerRef={saveActionsRef}
+                                                placement="top"
+                                                padding="sm"
+                                                trigger={
+                                                    // Axiom Popover currently requires a trigger even when triggerRef is the real anchor.
+                                                    // Remove this shim once Axiom supports externally anchored controlled popovers.
+                                                    <button
+                                                        type="button"
+                                                        tabIndex={-1}
+                                                        aria-hidden="true"
+                                                        style={{
+                                                            width: 0,
+                                                            height: 0,
+                                                            overflow: 'hidden',
+                                                        }}
+                                                    />
+                                                }
+                                            >
+                                                <Box
+                                                    flexDirection="column"
+                                                    gap="sm"
+                                                    width={260}
+                                                >
+                                                    <Text>
+                                                        <strong>
+                                                            Are you sure?
+                                                        </strong>
+                                                    </Text>
+                                                    <Text size="sm">
+                                                        You are about to edit
+                                                        this view for all users.
+                                                    </Text>
+                                                    <Box
+                                                        gap="xs"
+                                                        justifyContent="flex-end"
+                                                    >
+                                                        <Button
+                                                            variant="tertiary"
+                                                            size="sm"
+                                                            onClick={() =>
+                                                                setIsSharedUpdateConfirmOpen(
+                                                                    false,
+                                                                )
+                                                            }
+                                                        >
+                                                            No
+                                                        </Button>
+                                                        <Button
+                                                            size="sm"
+                                                            onClick={() => {
+                                                                void handleSave()
+                                                            }}
+                                                            isLoading={
+                                                                isSubmitting
+                                                            }
+                                                        >
+                                                            Yes
+                                                        </Button>
+                                                    </Box>
+                                                </Box>
+                                            </Popover>
                                         </div>
                                     }
                                 >
@@ -700,34 +773,6 @@ export function ViewPanelFiltersBridge({
                     </Box>
                 </Box>
             )}
-            <Modal
-                size={ModalSize.Sm}
-                isOpen={isSharedUpdateConfirmOpen}
-                onOpenChange={setIsSharedUpdateConfirmOpen}
-            >
-                <OverlayHeader title="Are you sure?" />
-                <OverlayContent>
-                    <Text>You are about to edit this view for all users.</Text>
-                </OverlayContent>
-                <OverlayFooter hideCancelButton>
-                    <Box gap="xs" width="100%" justifyContent="flex-end">
-                        <Button
-                            variant="tertiary"
-                            onClick={() => setIsSharedUpdateConfirmOpen(false)}
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            onClick={() => {
-                                void handleSave()
-                            }}
-                            isLoading={isSubmitting}
-                        >
-                            Confirm
-                        </Button>
-                    </Box>
-                </OverlayFooter>
-            </Modal>
             <Modal
                 size={ModalSize.Sm}
                 isOpen={isDeleteConfirmOpen}

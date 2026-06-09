@@ -1,12 +1,15 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 
 import {
+    Box,
     Button,
     Intent,
     Menu,
     MenuItem,
     MenuPlacement,
     MenuSize,
+    Popover,
+    Text,
     Tooltip,
     TooltipContent,
 } from '@gorgias/axiom'
@@ -19,6 +22,10 @@ import { PrioritySubMenu } from '../../../TicketListActions/PrioritySubMenu'
 type BulkMoreActionsMenuProps = {
     viewId: number
     isDisabled: boolean
+    isAllSelected: boolean
+    selectedTicketCount: number
+    totalTicketCount?: number
+    viewName: string
     onMarkAsUnread: () => void | Promise<void>
     onMarkAsRead: () => void | Promise<void>
     onChangePriority: (priority: TicketPriority) => void | Promise<void>
@@ -32,6 +39,10 @@ type BulkMoreActionsMenuProps = {
 export function BulkMoreActionsMenu({
     viewId,
     isDisabled,
+    isAllSelected,
+    selectedTicketCount,
+    totalTicketCount,
+    viewName,
     onMarkAsUnread,
     onMarkAsRead,
     onChangePriority,
@@ -41,7 +52,9 @@ export function BulkMoreActionsMenu({
     onUndelete,
     onDeleteForever,
 }: BulkMoreActionsMenuProps) {
+    const containerRef = useRef<HTMLDivElement>(null)
     const [isMenuOpen, setIsMenuOpen] = useState(false)
+    const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false)
     const { canUseRestrictedBulkActions } = useBulkActionMenuState()
     const isTrashLikeView = useIsTrashLikeView(viewId)
 
@@ -49,75 +62,140 @@ export function BulkMoreActionsMenu({
         setIsMenuOpen(open)
     }, [])
 
+    const handleDeleteAction = useCallback(() => {
+        setIsMenuOpen(false)
+        setIsDeleteConfirmOpen(true)
+    }, [])
+
+    const handleConfirmDelete = useCallback(async () => {
+        if (isTrashLikeView) {
+            await onDeleteForever()
+        } else {
+            await onMoveToTrash()
+        }
+        setIsDeleteConfirmOpen(false)
+    }, [isTrashLikeView, onDeleteForever, onMoveToTrash])
+
+    const deleteTargetLabel =
+        totalTicketCount != null ? `${totalTicketCount} tickets` : 'tickets'
+    const deleteConfirmationMessage = isAllSelected
+        ? `Are you sure you want to delete all ${deleteTargetLabel} in ${viewName}${isTrashLikeView ? ' forever' : ''}?`
+        : `Are you sure you want to delete ${selectedTicketCount} ticket${selectedTicketCount === 1 ? '' : 's'}${isTrashLikeView ? ' forever' : ''}?`
+
     return (
-        <Menu
-            placement={MenuPlacement.BottomLeft}
-            size={MenuSize.Sm}
-            aria-label="More bulk actions"
-            isOpen={isMenuOpen}
-            onOpenChange={handleOpenChange}
-            trigger={
-                <Tooltip
-                    trigger={
-                        <Button
-                            variant="secondary"
-                            size="sm"
-                            icon="dots-meatballs-horizontal"
-                            aria-label="More actions"
-                            isDisabled={isDisabled}
-                        />
-                    }
-                >
-                    <TooltipContent title="More actions" />
-                </Tooltip>
-            }
-        >
-            <MenuItem
-                id="mark-as-unread"
-                label="Mark as unread"
-                onAction={onMarkAsUnread}
-            />
-            <MenuItem
-                id="mark-as-read"
-                label="Mark as read"
-                onAction={onMarkAsRead}
-            />
-            <PrioritySubMenu onChangePriority={onChangePriority} />
-            <MenuItem
-                id="apply-macro"
-                label="Apply macro"
-                onAction={onApplyMacro}
-            />
-            {canUseRestrictedBulkActions && (
+        <div ref={containerRef}>
+            <Menu
+                placement={MenuPlacement.BottomLeft}
+                size={MenuSize.Sm}
+                aria-label="More bulk actions"
+                isOpen={isMenuOpen}
+                onOpenChange={handleOpenChange}
+                trigger={
+                    <Tooltip
+                        trigger={
+                            <Button
+                                variant="secondary"
+                                size="sm"
+                                icon="dots-meatballs-horizontal"
+                                aria-label="More actions"
+                                isDisabled={isDisabled}
+                            />
+                        }
+                    >
+                        <TooltipContent title="More actions" />
+                    </Tooltip>
+                }
+            >
                 <MenuItem
-                    id="export-tickets"
-                    label="Export tickets"
-                    onAction={onExportTickets}
+                    id="mark-as-unread"
+                    label="Mark as unread"
+                    onAction={onMarkAsUnread}
                 />
-            )}
-            {canUseRestrictedBulkActions &&
-                (isTrashLikeView ? (
-                    <>
-                        <MenuItem
-                            id="undelete"
-                            label="Undelete"
-                            onAction={onUndelete}
-                        />
-                        <MenuItem
-                            id="delete-forever"
-                            label="Delete forever"
-                            intent={Intent.Destructive}
-                            onAction={onDeleteForever}
-                        />
-                    </>
-                ) : (
+                <MenuItem
+                    id="mark-as-read"
+                    label="Mark as read"
+                    onAction={onMarkAsRead}
+                />
+                <PrioritySubMenu onChangePriority={onChangePriority} />
+                <MenuItem
+                    id="apply-macro"
+                    label="Apply macro"
+                    onAction={onApplyMacro}
+                />
+                {canUseRestrictedBulkActions && (
                     <MenuItem
-                        id="delete"
-                        label="Delete"
-                        intent={Intent.Destructive}
-                        onAction={onMoveToTrash}
+                        id="export-tickets"
+                        label="Export tickets"
+                        onAction={onExportTickets}
                     />
-                ))}
-        </Menu>
+                )}
+                {canUseRestrictedBulkActions &&
+                    (isTrashLikeView ? (
+                        <>
+                            <MenuItem
+                                id="undelete"
+                                label="Undelete"
+                                onAction={onUndelete}
+                            />
+                            <MenuItem
+                                id="delete-forever"
+                                label="Delete forever"
+                                intent={Intent.Destructive}
+                                onAction={handleDeleteAction}
+                            />
+                        </>
+                    ) : (
+                        <MenuItem
+                            id="delete"
+                            label="Delete"
+                            intent={Intent.Destructive}
+                            onAction={handleDeleteAction}
+                        />
+                    ))}
+            </Menu>
+            <Popover
+                isOpen={isDeleteConfirmOpen}
+                onOpenChange={setIsDeleteConfirmOpen}
+                triggerRef={containerRef}
+                placement="bottom"
+                padding="sm"
+                trigger={
+                    // Axiom Popover currently requires a trigger even when triggerRef is the real anchor.
+                    // Remove this shim once Axiom supports externally anchored controlled popovers.
+                    <button
+                        type="button"
+                        tabIndex={-1}
+                        aria-hidden="true"
+                        style={{ width: 0, height: 0, overflow: 'hidden' }}
+                    />
+                }
+            >
+                <Box flexDirection="column" gap="sm" width={260}>
+                    <Text>
+                        <strong>Are you sure?</strong>
+                    </Text>
+                    <Text size="sm">{deleteConfirmationMessage}</Text>
+                    <Box justifyContent="flex-end" gap="xs">
+                        <Button
+                            variant="tertiary"
+                            size="sm"
+                            onClick={() => setIsDeleteConfirmOpen(false)}
+                        >
+                            No
+                        </Button>
+                        <Button
+                            intent="destructive"
+                            size="sm"
+                            onClick={() => {
+                                void handleConfirmDelete()
+                            }}
+                            isLoading={isDisabled}
+                        >
+                            Yes
+                        </Button>
+                    </Box>
+                </Box>
+            </Popover>
+        </div>
     )
 }
