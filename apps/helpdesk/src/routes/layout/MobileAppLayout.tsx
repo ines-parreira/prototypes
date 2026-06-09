@@ -2,15 +2,22 @@ import { useEffect, useState } from 'react'
 
 import { useLocation } from 'react-router-dom'
 
-import { Handle, Panel, PanelGroup, Panels } from '@repo/layout'
+import {
+    Handle,
+    PanelGroup,
+    Panels,
+    Panel as ResizablePanel,
+} from '@repo/layout'
 import { SidebarProvider } from '@repo/navigation'
 
-import { Box, Button, SidePanel } from '@gorgias/axiom'
+import { Box, Button, Panel, PanelHeader, SidePanel } from '@gorgias/axiom'
 
 import { CopilotWorkspaceContainer } from 'copilot/CopilotWorkspaceContainer'
 import { useCopilotEnabled } from 'hooks/useCopilotEnabled'
 import { CollapsibleColumn } from 'pages/CollapsibleColumn'
 import { NavigationSidebar } from 'routes/layout/NavigationSidebar'
+
+import { MobileHeaderActions } from './MobileHeaderActions'
 
 import { mainPanelConfig } from './panelConfigs'
 import css from './AppLayout.less'
@@ -30,15 +37,29 @@ export function MobileAppLayout({ children, width }: MobileAppLayoutProps) {
     }, [pathname])
 
     return (
-        <Box flexDirection="column">
-            <Box w="100%" p="xs">
-                <Button
-                    icon="menu-burger"
-                    size="sm"
-                    variant="tertiary"
-                    onClick={() => setIsSidePanelOpen(true)}
-                />
-            </Box>
+        <Panel elevation="background" height="100dvh">
+            <PanelHeader
+                px="xs"
+                pt={0}
+                pb={0}
+                title={
+                    <Box
+                        alignItems="center"
+                        gap="xs"
+                        w="100%"
+                        justifyContent="space-between"
+                    >
+                        <Button
+                            icon="menu-burger"
+                            size="sm"
+                            variant="tertiary"
+                            onClick={() => setIsSidePanelOpen(true)}
+                        />
+                        <MobileHeaderActions />
+                    </Box>
+                }
+                isSticky
+            />
             <Panels size={width}>
                 <SidebarProvider>
                     <SidePanel
@@ -53,14 +74,14 @@ export function MobileAppLayout({ children, width }: MobileAppLayoutProps) {
                     </SidePanel>
                 </SidebarProvider>
                 <Handle className={css.handle} />
-                <PanelGroup subtractSize={10} className={css.panelGroup}>
-                    <Panel name="main-panel" config={mainPanelConfig}>
+                <PanelGroup className={css.panelGroup}>
+                    <ResizablePanel name="main-panel" config={mainPanelConfig}>
                         {children}
-                    </Panel>
+                    </ResizablePanel>
                 </PanelGroup>
                 <CollapsibleColumn />
                 {isCopilotEnabled && <CopilotWorkspaceContainer />}
             </Panels>
-        </Box>
+        </Panel>
     )
 }

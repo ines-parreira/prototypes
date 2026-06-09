@@ -9,6 +9,10 @@ jest.mock('routes/layout/NavigationSidebar', () => ({
     NavigationSidebar: () => <div>Sidebar</div>,
 }))
 
+jest.mock('routes/layout/MobileHeaderActions', () => ({
+    MobileHeaderActions: () => <div>Header Actions</div>,
+}))
+
 jest.mock('@gorgias/axiom', () => ({
     ...jest.requireActual('@gorgias/axiom'),
     SidePanel: ({
@@ -38,6 +42,16 @@ function NavigateButton({ to }: { to: string }) {
 }
 
 describe('MobileAppLayout', () => {
+    it('renders header actions in the header', () => {
+        render(
+            <MobileAppLayout width={400}>
+                <div>main content</div>
+            </MobileAppLayout>,
+        )
+
+        expect(screen.getByText('Header Actions')).toBeInTheDocument()
+    })
+
     it('does not show the navigation sidebar initially', () => {
         render(
             <MobileAppLayout width={400}>
