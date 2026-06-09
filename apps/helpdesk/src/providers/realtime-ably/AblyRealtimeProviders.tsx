@@ -4,14 +4,11 @@ import type { ReactNode } from 'react'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { reportError } from '@repo/logging'
 
-import {
-    AgentActivityProvider,
-    RealtimeProvider,
-    useRealtimeAccountSubscription,
-} from '@gorgias/realtime'
+import { AgentActivityProvider, RealtimeProvider } from '@gorgias/realtime'
 import type { RealtimeConnectionStateChange } from '@gorgias/realtime'
 
 import { EmailIntegrationMigrationRealtimeHandler } from './EmailIntegrationMigrationRealtimeHandler'
+import { useRealtimeAccountPresenceSubscription } from './hooks/useRealtimeAccountPresenceSubscription'
 import { useRealtimeConnectionStateChanges } from './hooks/useRealtimeConnectionStateChanges'
 import { UserChannelRealtimeHandler } from './UserChannelRealtimeHandler'
 
@@ -19,10 +16,10 @@ type Props = {
     children: ReactNode
 }
 
-// this subscription hook depends on ably client context, so it must be rendered
-// from within `RealtimeProvider`
-const AgentsOnlineStatusInitializer = () => {
-    useRealtimeAccountSubscription()
+// this subscription hook depends on Ably client context, so it must be
+// rendered from within `RealtimeProvider`.
+const RealtimeSubscriptionsInitializer = () => {
+    useRealtimeAccountPresenceSubscription()
 
     return null
 }
@@ -95,7 +92,7 @@ const AblyRealtimeProviders = ({ children }: Props) => {
             logHandler={logHandler}
             onConnectionStateChange={onConnectionStateChange}
         >
-            <AgentsOnlineStatusInitializer />
+            <RealtimeSubscriptionsInitializer />
             <AgentActivityProvider>
                 {isEmailIntegrationMigrationToAblyEnabled && (
                     <EmailIntegrationMigrationRealtimeHandler />

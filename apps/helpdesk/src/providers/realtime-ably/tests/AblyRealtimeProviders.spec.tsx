@@ -1,9 +1,9 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { reportError } from '@repo/logging'
 import { render } from '@repo/testing'
-import { useRealtimeAccountSubscription } from '@gorgias/realtime'
 
 import AblyRealtimeProviders from '../AblyRealtimeProviders'
+import { useRealtimeAccountPresenceSubscription } from '../hooks/useRealtimeAccountPresenceSubscription'
 
 let mockLogHandler: ((message: string) => void) | undefined
 let mockOnConnectionStateChange:
@@ -19,8 +19,12 @@ let mockOnConnectionStateChange:
     | undefined
 
 const mockHookOnRealtimeConnectionStateChange = jest.fn()
-const mockUseRealtimeAccountSubscription =
-    useRealtimeAccountSubscription as jest.Mock
+const mockUseRealtimeAccountPresenceSubscription =
+    useRealtimeAccountPresenceSubscription as jest.Mock
+
+jest.mock('../hooks/useRealtimeAccountPresenceSubscription', () => ({
+    useRealtimeAccountPresenceSubscription: jest.fn(),
+}))
 
 jest.mock('../hooks/useRealtimeConnectionStateChanges', () => ({
     useRealtimeConnectionStateChanges: () => ({
@@ -73,7 +77,6 @@ jest.mock('@gorgias/realtime', () => ({
     AgentActivityProvider: ({ children }: { children?: React.ReactNode }) => (
         <div data-testid="agent-activity-provider">{children}</div>
     ),
-    useRealtimeAccountSubscription: jest.fn(),
 }))
 
 jest.mock('@repo/feature-flags')
@@ -88,7 +91,7 @@ describe('AblyRealtimeProviders', () => {
         mockLogHandler = undefined
         mockOnConnectionStateChange = undefined
         mockHookOnRealtimeConnectionStateChange.mockClear()
-        mockUseRealtimeAccountSubscription.mockClear()
+        mockUseRealtimeAccountPresenceSubscription.mockClear()
         mockReportError.mockClear()
     })
 
@@ -104,7 +107,7 @@ describe('AblyRealtimeProviders', () => {
         expect(getByTestId('realtime-provider')).toBeInTheDocument()
         expect(getByTestId('agent-activity-provider')).toBeInTheDocument()
         expect(getByText('foo')).toBeInTheDocument()
-        expect(mockUseRealtimeAccountSubscription).toHaveBeenCalled()
+        expect(mockUseRealtimeAccountPresenceSubscription).toHaveBeenCalled()
     })
 
     it('should render the user channel realtime handler', () => {
