@@ -3,26 +3,27 @@ import { TrendCard } from '@repo/reporting'
 import { useReportingTrendCardProps } from 'domains/reporting/hooks/useReportingTrendCardProps'
 import { getStatsTrendHook } from 'domains/reporting/hooks/useStatsMetricTrend'
 import {
-    channelsEmailAverageCsatTimeseriesQueryFactoryV2,
-    channelsEmailAverageCsatValueQueryFactoryV2,
-} from 'domains/reporting/models/scopes/satisfactionSurveys'
+    channelsEmailMessagesPerTicketTimeseriesQueryFactoryV2,
+    channelsEmailMessagesPerTicketValueQueryFactoryV2,
+} from 'domains/reporting/models/scopes/messagesPerTicket'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 
-export const ChannelsEmailAverageCSATCard = ({
+export const ChannelsEmailMessagesPerTicketCard = ({
     chartId,
     dashboard,
     chartConfig,
 }: DashboardChartProps) => {
     const trendCardProps = useReportingTrendCardProps({
         useTrend: getStatsTrendHook(
-            channelsEmailAverageCsatValueQueryFactoryV2,
+            channelsEmailMessagesPerTicketValueQueryFactoryV2,
         ),
         chartConfig: chartConfig!,
         isAiAgentTrendCard: false,
         chartId,
         dashboard,
         timeSeriesView: {
-            queryFactory: channelsEmailAverageCsatTimeseriesQueryFactoryV2,
+            queryFactory:
+                channelsEmailMessagesPerTicketTimeseriesQueryFactoryV2,
         },
     })
 

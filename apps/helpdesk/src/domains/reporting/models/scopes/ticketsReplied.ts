@@ -1,4 +1,5 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
+import { getEmailChannelScopeFilters } from 'domains/reporting/models/scopes/channelFilter'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
 import { getGenericQueries } from 'domains/reporting/models/scopes/utils'
@@ -135,3 +136,42 @@ export const {
     },
     timeDimension: 'sentDatetime',
 })
+
+const channelsEmailTicketsRepliedBaseQuery = ({
+    ctx,
+    config,
+}: {
+    ctx: TicketsRepliedContext
+    config: typeof ticketsRepliedScope.config
+}) => ({
+    measures: ['ticketCount'] as const,
+    filters: getEmailChannelScopeFilters(ctx, config),
+})
+
+export const {
+    valueQueryFactory: channelsEmailTicketsRepliedValueQueryFactoryV2,
+    breakdownQueryFactory: channelsEmailTicketsRepliedBreakdownQueryFactoryV2,
+    timeseriesQueryFactory: channelsEmailTicketsRepliedTimeseriesQueryFactoryV2,
+} = getGenericQueries(
+    ticketsRepliedScope,
+    channelsEmailTicketsRepliedBaseQuery,
+    {
+        valueMetricName:
+            METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_TICKETS_REPLIED_VALUE,
+        breakdownMetricName:
+            METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_TICKETS_REPLIED_BREAKDOWN,
+        breakdownDimensionMetricNames: {
+            channel:
+                METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_TICKETS_REPLIED_BREAKDOWN_PER_CHANNEL,
+            agentId:
+                METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_TICKETS_REPLIED_BREAKDOWN_PER_AGENT,
+        },
+        timeseriesMetricName:
+            METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_TICKETS_REPLIED_TIMESERIES,
+        timeseriesDimensionMetricNames: {
+            channel:
+                METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_TICKETS_REPLIED_TIMESERIES_PER_CHANNEL,
+        },
+        timeDimension: 'sentDatetime',
+    },
+)

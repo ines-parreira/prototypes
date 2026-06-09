@@ -1,4 +1,5 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
+import { getEmailChannelScopeFilters } from 'domains/reporting/models/scopes/channelFilter'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
 import { getGenericQueries } from 'domains/reporting/models/scopes/utils'
@@ -80,3 +81,44 @@ export const {
     },
     timeDimension: 'createdDatetime',
 })
+
+const channelsEmailMessagesPerTicketBaseQuery = ({
+    ctx,
+    config,
+}: {
+    ctx: MessagesPerTicketContext
+    config: typeof messagesPerTicketScope.config
+}) => ({
+    measures: ['averageMessagesCount'] as const,
+    filters: getEmailChannelScopeFilters(ctx, config),
+})
+
+export const {
+    valueQueryFactory: channelsEmailMessagesPerTicketValueQueryFactoryV2,
+    breakdownQueryFactory:
+        channelsEmailMessagesPerTicketBreakdownQueryFactoryV2,
+    timeseriesQueryFactory:
+        channelsEmailMessagesPerTicketTimeseriesQueryFactoryV2,
+} = getGenericQueries(
+    messagesPerTicketScope,
+    channelsEmailMessagesPerTicketBaseQuery,
+    {
+        valueMetricName:
+            METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_MESSAGES_PER_TICKET_VALUE,
+        breakdownMetricName:
+            METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_MESSAGES_PER_TICKET_BREAKDOWN,
+        breakdownDimensionMetricNames: {
+            channel:
+                METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_MESSAGES_PER_TICKET_BREAKDOWN_PER_CHANNEL,
+            agentId:
+                METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_MESSAGES_PER_TICKET_BREAKDOWN_PER_AGENT,
+        },
+        timeseriesMetricName:
+            METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_MESSAGES_PER_TICKET_TIMESERIES,
+        timeseriesDimensionMetricNames: {
+            channel:
+                METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_MESSAGES_PER_TICKET_TIMESERIES_PER_CHANNEL,
+        },
+        timeDimension: 'createdDatetime',
+    },
+)

@@ -1,6 +1,7 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketMessagesDimension } from 'domains/reporting/models/cubes/TicketMessagesCube'
+import { getEmailChannelScopeFilters } from 'domains/reporting/models/scopes/channelFilter'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
 import { getGenericQueries } from 'domains/reporting/models/scopes/utils'
@@ -204,3 +205,42 @@ export const {
     },
     timeDimension: 'createdDatetime',
 })
+
+const channelsEmailAverageCsatBaseQuery = ({
+    ctx,
+    config,
+}: {
+    ctx: Context<typeof satisfactionSurveysScope.config>
+    config: typeof satisfactionSurveysScope.config
+}) => ({
+    measures: ['averageSurveyScore'] as const,
+    filters: getEmailChannelScopeFilters(ctx, config),
+})
+
+export const {
+    valueQueryFactory: channelsEmailAverageCsatValueQueryFactoryV2,
+    breakdownQueryFactory: channelsEmailAverageCsatBreakdownQueryFactoryV2,
+    timeseriesQueryFactory: channelsEmailAverageCsatTimeseriesQueryFactoryV2,
+} = getGenericQueries(
+    satisfactionSurveysScope,
+    channelsEmailAverageCsatBaseQuery,
+    {
+        valueMetricName:
+            METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_AVERAGE_CSAT_VALUE,
+        breakdownMetricName:
+            METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_AVERAGE_CSAT_BREAKDOWN,
+        breakdownDimensionMetricNames: {
+            channel:
+                METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_AVERAGE_CSAT_BREAKDOWN_PER_CHANNEL,
+            agentId:
+                METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_AVERAGE_CSAT_BREAKDOWN_PER_AGENT,
+        },
+        timeseriesMetricName:
+            METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_AVERAGE_CSAT_TIMESERIES,
+        timeseriesDimensionMetricNames: {
+            channel:
+                METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_AVERAGE_CSAT_TIMESERIES_PER_CHANNEL,
+        },
+        timeDimension: 'createdDatetime',
+    },
+)

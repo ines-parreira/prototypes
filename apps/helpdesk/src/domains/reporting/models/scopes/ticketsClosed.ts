@@ -1,4 +1,5 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
+import { getEmailChannelScopeFilters } from 'domains/reporting/models/scopes/channelFilter'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
 import { getGenericQueries } from 'domains/reporting/models/scopes/utils'
@@ -143,6 +144,41 @@ export const {
     timeseriesDimensionMetricNames: {
         channel:
             METRIC_NAMES.PERFORMANCE_OVERVIEW_CLOSED_TICKETS_TIMESERIES_PER_CHANNEL,
+    },
+    timeDimension: 'closedDatetime',
+})
+
+const channelsEmailClosedTicketsBaseQuery = ({
+    ctx,
+    config,
+}: {
+    ctx: TicketsClosedContext
+    config: typeof ticketsClosedScope.config
+}) => ({
+    measures: ['ticketCount'] as const,
+    filters: getEmailChannelScopeFilters(ctx, config),
+})
+
+export const {
+    valueQueryFactory: channelsEmailClosedTicketsValueQueryFactoryV2,
+    breakdownQueryFactory: channelsEmailClosedTicketsBreakdownQueryFactoryV2,
+    timeseriesQueryFactory: channelsEmailClosedTicketsTimeseriesQueryFactoryV2,
+} = getGenericQueries(ticketsClosedScope, channelsEmailClosedTicketsBaseQuery, {
+    valueMetricName:
+        METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_CLOSED_TICKETS_VALUE,
+    breakdownMetricName:
+        METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_CLOSED_TICKETS_BREAKDOWN,
+    breakdownDimensionMetricNames: {
+        channel:
+            METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_CLOSED_TICKETS_BREAKDOWN_PER_CHANNEL,
+        agentId:
+            METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_CLOSED_TICKETS_BREAKDOWN_PER_AGENT,
+    },
+    timeseriesMetricName:
+        METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_CLOSED_TICKETS_TIMESERIES,
+    timeseriesDimensionMetricNames: {
+        channel:
+            METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_CLOSED_TICKETS_TIMESERIES_PER_CHANNEL,
     },
     timeDimension: 'closedDatetime',
 })

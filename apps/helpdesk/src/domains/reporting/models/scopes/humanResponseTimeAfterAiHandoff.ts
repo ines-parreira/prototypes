@@ -1,4 +1,5 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
+import { getEmailChannelScopeFilters } from 'domains/reporting/models/scopes/channelFilter'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
 import { getGenericQueries } from 'domains/reporting/models/scopes/utils'
@@ -143,6 +144,44 @@ export const {
         },
         timeseriesMetricName:
             METRIC_NAMES.PERFORMANCE_OVERVIEW_HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF_TIMESERIES,
+        timeDimension: 'createdDatetime',
+    },
+)
+
+const channelsEmailHumanResponseTimeAfterAiHandoffBaseQuery = ({
+    ctx,
+    config,
+}: {
+    ctx: HumanResponseTimeAfterAiHandoffContext
+    config: typeof humanResponseTimeAfterAiHandoffScope.config
+}) => ({
+    measures: ['medianFirstResponseTime'] as const,
+    filters: getEmailChannelScopeFilters(ctx, config),
+})
+
+export const {
+    valueQueryFactory:
+        channelsEmailHumanResponseTimeAfterAiHandoffValueQueryFactoryV2,
+    breakdownQueryFactory:
+        channelsEmailHumanResponseTimeAfterAiHandoffBreakdownQueryFactoryV2,
+    timeseriesQueryFactory:
+        channelsEmailHumanResponseTimeAfterAiHandoffTimeseriesQueryFactoryV2,
+} = getGenericQueries(
+    humanResponseTimeAfterAiHandoffScope,
+    channelsEmailHumanResponseTimeAfterAiHandoffBaseQuery,
+    {
+        valueMetricName:
+            METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF_VALUE,
+        breakdownMetricName:
+            METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF_BREAKDOWN,
+        breakdownDimensionMetricNames: {
+            channel:
+                METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF_BREAKDOWN_PER_CHANNEL,
+            agentId:
+                METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF_BREAKDOWN_PER_AGENT,
+        },
+        timeseriesMetricName:
+            METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF_TIMESERIES,
         timeDimension: 'createdDatetime',
     },
 )

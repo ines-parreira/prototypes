@@ -1,4 +1,5 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
+import { getEmailChannelScopeFilters } from 'domains/reporting/models/scopes/channelFilter'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
 import { getGenericQueries } from 'domains/reporting/models/scopes/utils'
@@ -114,3 +115,42 @@ export const {
     },
     timeDimension: 'createdDatetime',
 })
+
+const channelsEmailResolutionTimeBaseQuery = ({
+    ctx,
+    config,
+}: {
+    ctx: Context<typeof resolutionTimeScope.config>
+    config: typeof resolutionTimeScope.config
+}) => ({
+    measures: ['medianResolutionTime'] as const,
+    filters: getEmailChannelScopeFilters(ctx, config),
+})
+
+export const {
+    valueQueryFactory: channelsEmailResolutionTimeValueQueryFactoryV2,
+    breakdownQueryFactory: channelsEmailResolutionTimeBreakdownQueryFactoryV2,
+    timeseriesQueryFactory: channelsEmailResolutionTimeTimeseriesQueryFactoryV2,
+} = getGenericQueries(
+    resolutionTimeScope,
+    channelsEmailResolutionTimeBaseQuery,
+    {
+        valueMetricName:
+            METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_RESOLUTION_TIME_VALUE,
+        breakdownMetricName:
+            METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_RESOLUTION_TIME_BREAKDOWN,
+        breakdownDimensionMetricNames: {
+            channel:
+                METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_RESOLUTION_TIME_BREAKDOWN_PER_CHANNEL,
+            agentId:
+                METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_RESOLUTION_TIME_BREAKDOWN_PER_AGENT,
+        },
+        timeseriesMetricName:
+            METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_RESOLUTION_TIME_TIMESERIES,
+        timeseriesDimensionMetricNames: {
+            channel:
+                METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_RESOLUTION_TIME_TIMESERIES_PER_CHANNEL,
+        },
+        timeDimension: 'createdDatetime',
+    },
+)

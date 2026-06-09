@@ -953,6 +953,131 @@ export const METRIC_NAMES = {
         'performance-overview-messages-sent-timeseries',
     PERFORMANCE_OVERVIEW_MESSAGES_SENT_TIMESERIES_PER_CHANNEL:
         'performance-overview-messages-sent-timeseries-per-channel',
+
+    // --- Performance channels email - No FF ---
+    // Satisfaction Surveys
+    PERFORMANCE_CHANNELS_EMAIL_AVERAGE_CSAT_VALUE:
+        'performance-channels-email-average-csat-value',
+    PERFORMANCE_CHANNELS_EMAIL_AVERAGE_CSAT_BREAKDOWN:
+        'performance-channels-email-average-csat-breakdown',
+    PERFORMANCE_CHANNELS_EMAIL_AVERAGE_CSAT_BREAKDOWN_PER_CHANNEL:
+        'performance-channels-email-average-csat-breakdown-per-channel',
+    PERFORMANCE_CHANNELS_EMAIL_AVERAGE_CSAT_BREAKDOWN_PER_AGENT:
+        'performance-channels-email-average-csat-breakdown-per-agent',
+    PERFORMANCE_CHANNELS_EMAIL_AVERAGE_CSAT_TIMESERIES:
+        'performance-channels-email-average-csat-timeseries',
+    PERFORMANCE_CHANNELS_EMAIL_AVERAGE_CSAT_TIMESERIES_PER_CHANNEL:
+        'performance-channels-email-average-csat-timeseries-per-channel',
+
+    // Resolution Time
+    PERFORMANCE_CHANNELS_EMAIL_RESOLUTION_TIME_VALUE:
+        'performance-channels-email-resolution-time-value',
+    PERFORMANCE_CHANNELS_EMAIL_RESOLUTION_TIME_BREAKDOWN:
+        'performance-channels-email-resolution-time-breakdown',
+    PERFORMANCE_CHANNELS_EMAIL_RESOLUTION_TIME_BREAKDOWN_PER_CHANNEL:
+        'performance-channels-email-resolution-time-breakdown-per-channel',
+    PERFORMANCE_CHANNELS_EMAIL_RESOLUTION_TIME_BREAKDOWN_PER_AGENT:
+        'performance-channels-email-resolution-time-breakdown-per-agent',
+    PERFORMANCE_CHANNELS_EMAIL_RESOLUTION_TIME_TIMESERIES:
+        'performance-channels-email-resolution-time-timeseries',
+    PERFORMANCE_CHANNELS_EMAIL_RESOLUTION_TIME_TIMESERIES_PER_CHANNEL:
+        'performance-channels-email-resolution-time-timeseries-per-channel',
+
+    // Messages Per Ticket
+    PERFORMANCE_CHANNELS_EMAIL_MESSAGES_PER_TICKET_VALUE:
+        'performance-channels-email-messages-per-ticket-value',
+    PERFORMANCE_CHANNELS_EMAIL_MESSAGES_PER_TICKET_BREAKDOWN:
+        'performance-channels-email-messages-per-ticket-breakdown',
+    PERFORMANCE_CHANNELS_EMAIL_MESSAGES_PER_TICKET_BREAKDOWN_PER_CHANNEL:
+        'performance-channels-email-messages-per-ticket-breakdown-per-channel',
+    PERFORMANCE_CHANNELS_EMAIL_MESSAGES_PER_TICKET_BREAKDOWN_PER_AGENT:
+        'performance-channels-email-messages-per-ticket-breakdown-per-agent',
+    PERFORMANCE_CHANNELS_EMAIL_MESSAGES_PER_TICKET_TIMESERIES:
+        'performance-channels-email-messages-per-ticket-timeseries',
+    PERFORMANCE_CHANNELS_EMAIL_MESSAGES_PER_TICKET_TIMESERIES_PER_CHANNEL:
+        'performance-channels-email-messages-per-ticket-timeseries-per-channel',
+
+    // First Response Time
+    PERFORMANCE_CHANNELS_EMAIL_FIRST_RESPONSE_TIME_VALUE:
+        'performance-channels-email-first-response-time-value',
+    PERFORMANCE_CHANNELS_EMAIL_FIRST_RESPONSE_TIME_BREAKDOWN:
+        'performance-channels-email-first-response-time-breakdown',
+    PERFORMANCE_CHANNELS_EMAIL_FIRST_RESPONSE_TIME_BREAKDOWN_PER_CHANNEL:
+        'performance-channels-email-first-response-time-breakdown-per-channel',
+    PERFORMANCE_CHANNELS_EMAIL_FIRST_RESPONSE_TIME_BREAKDOWN_PER_AGENT:
+        'performance-channels-email-first-response-time-breakdown-per-agent',
+    PERFORMANCE_CHANNELS_EMAIL_FIRST_RESPONSE_TIME_TIMESERIES:
+        'performance-channels-email-first-response-time-timeseries',
+    PERFORMANCE_CHANNELS_EMAIL_FIRST_RESPONSE_TIME_TIMESERIES_PER_CHANNEL:
+        'performance-channels-email-first-response-time-timeseries-per-channel',
+
+    // Human Response Time After AI Handoff
+    PERFORMANCE_CHANNELS_EMAIL_HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF_VALUE:
+        'performance-channels-email-human-response-time-after-ai-handoff-value',
+    PERFORMANCE_CHANNELS_EMAIL_HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF_BREAKDOWN:
+        'performance-channels-email-human-response-time-after-ai-handoff-breakdown',
+    PERFORMANCE_CHANNELS_EMAIL_HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF_BREAKDOWN_PER_CHANNEL:
+        'performance-channels-email-human-response-time-after-ai-handoff-breakdown-per-channel',
+    PERFORMANCE_CHANNELS_EMAIL_HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF_BREAKDOWN_PER_AGENT:
+        'performance-channels-email-human-response-time-after-ai-handoff-breakdown-per-agent',
+    PERFORMANCE_CHANNELS_EMAIL_HUMAN_RESPONSE_TIME_AFTER_AI_HANDOFF_TIMESERIES:
+        'performance-channels-email-human-response-time-after-ai-handoff-timeseries',
+
+    // Created Tickets
+    PERFORMANCE_CHANNELS_EMAIL_CREATED_TICKETS_VALUE:
+        'performance-channels-email-created-tickets-value',
+    PERFORMANCE_CHANNELS_EMAIL_CREATED_TICKETS_BREAKDOWN:
+        'performance-channels-email-created-tickets-breakdown',
+    PERFORMANCE_CHANNELS_EMAIL_CREATED_TICKETS_BREAKDOWN_PER_CHANNEL:
+        'performance-channels-email-created-tickets-breakdown-per-channel',
+    PERFORMANCE_CHANNELS_EMAIL_CREATED_TICKETS_BREAKDOWN_PER_AGENT:
+        'performance-channels-email-created-tickets-breakdown-per-agent',
+    PERFORMANCE_CHANNELS_EMAIL_CREATED_TICKETS_TIMESERIES:
+        'performance-channels-email-created-tickets-timeseries',
+    PERFORMANCE_CHANNELS_EMAIL_CREATED_TICKETS_TIMESERIES_PER_CHANNEL:
+        'performance-channels-email-created-tickets-timeseries-per-channel',
+
+    // Closed Tickets
+    PERFORMANCE_CHANNELS_EMAIL_CLOSED_TICKETS_VALUE:
+        'performance-channels-email-closed-tickets-value',
+    PERFORMANCE_CHANNELS_EMAIL_CLOSED_TICKETS_BREAKDOWN:
+        'performance-channels-email-closed-tickets-breakdown',
+    PERFORMANCE_CHANNELS_EMAIL_CLOSED_TICKETS_BREAKDOWN_PER_CHANNEL:
+        'performance-channels-email-closed-tickets-breakdown-per-channel',
+    PERFORMANCE_CHANNELS_EMAIL_CLOSED_TICKETS_BREAKDOWN_PER_AGENT:
+        'performance-channels-email-closed-tickets-breakdown-per-agent',
+    PERFORMANCE_CHANNELS_EMAIL_CLOSED_TICKETS_TIMESERIES:
+        'performance-channels-email-closed-tickets-timeseries',
+    PERFORMANCE_CHANNELS_EMAIL_CLOSED_TICKETS_TIMESERIES_PER_CHANNEL:
+        'performance-channels-email-closed-tickets-timeseries-per-channel',
+
+    // Tickets Replied
+    PERFORMANCE_CHANNELS_EMAIL_TICKETS_REPLIED_VALUE:
+        'performance-channels-email-tickets-replied-value',
+    PERFORMANCE_CHANNELS_EMAIL_TICKETS_REPLIED_BREAKDOWN:
+        'performance-channels-email-tickets-replied-breakdown',
+    PERFORMANCE_CHANNELS_EMAIL_TICKETS_REPLIED_BREAKDOWN_PER_CHANNEL:
+        'performance-channels-email-tickets-replied-breakdown-per-channel',
+    PERFORMANCE_CHANNELS_EMAIL_TICKETS_REPLIED_BREAKDOWN_PER_AGENT:
+        'performance-channels-email-tickets-replied-breakdown-per-agent',
+    PERFORMANCE_CHANNELS_EMAIL_TICKETS_REPLIED_TIMESERIES:
+        'performance-channels-email-tickets-replied-timeseries',
+    PERFORMANCE_CHANNELS_EMAIL_TICKETS_REPLIED_TIMESERIES_PER_CHANNEL:
+        'performance-channels-email-tickets-replied-timeseries-per-channel',
+
+    // Messages Sent
+    PERFORMANCE_CHANNELS_EMAIL_MESSAGES_SENT_VALUE:
+        'performance-channels-email-messages-sent-value',
+    PERFORMANCE_CHANNELS_EMAIL_MESSAGES_SENT_BREAKDOWN:
+        'performance-channels-email-messages-sent-breakdown',
+    PERFORMANCE_CHANNELS_EMAIL_MESSAGES_SENT_BREAKDOWN_PER_CHANNEL:
+        'performance-channels-email-messages-sent-breakdown-per-channel',
+    PERFORMANCE_CHANNELS_EMAIL_MESSAGES_SENT_BREAKDOWN_PER_AGENT:
+        'performance-channels-email-messages-sent-breakdown-per-agent',
+    PERFORMANCE_CHANNELS_EMAIL_MESSAGES_SENT_TIMESERIES:
+        'performance-channels-email-messages-sent-timeseries',
+    PERFORMANCE_CHANNELS_EMAIL_MESSAGES_SENT_TIMESERIES_PER_CHANNEL:
+        'performance-channels-email-messages-sent-timeseries-per-channel',
 } as const
 
 export enum MetricScope {

@@ -1,4 +1,5 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
+import { getEmailChannelScopeFilters } from 'domains/reporting/models/scopes/channelFilter'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
 import { getGenericQueries } from 'domains/reporting/models/scopes/utils'
@@ -129,6 +130,41 @@ export const {
     timeseriesDimensionMetricNames: {
         channel:
             METRIC_NAMES.PERFORMANCE_OVERVIEW_MESSAGES_SENT_TIMESERIES_PER_CHANNEL,
+    },
+    timeDimension: 'sentDatetime',
+})
+
+const channelsEmailMessagesSentBaseQuery = ({
+    ctx,
+    config,
+}: {
+    ctx: MessagesSentContext
+    config: typeof messagesSentScope.config
+}) => ({
+    measures: ['messagesCount'] as const,
+    filters: getEmailChannelScopeFilters(ctx, config),
+})
+
+export const {
+    valueQueryFactory: channelsEmailMessagesSentValueQueryFactoryV2,
+    breakdownQueryFactory: channelsEmailMessagesSentBreakdownQueryFactoryV2,
+    timeseriesQueryFactory: channelsEmailMessagesSentTimeseriesQueryFactoryV2,
+} = getGenericQueries(messagesSentScope, channelsEmailMessagesSentBaseQuery, {
+    valueMetricName:
+        METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_MESSAGES_SENT_VALUE,
+    breakdownMetricName:
+        METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_MESSAGES_SENT_BREAKDOWN,
+    breakdownDimensionMetricNames: {
+        channel:
+            METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_MESSAGES_SENT_BREAKDOWN_PER_CHANNEL,
+        agentId:
+            METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_MESSAGES_SENT_BREAKDOWN_PER_AGENT,
+    },
+    timeseriesMetricName:
+        METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_MESSAGES_SENT_TIMESERIES,
+    timeseriesDimensionMetricNames: {
+        channel:
+            METRIC_NAMES.PERFORMANCE_CHANNELS_EMAIL_MESSAGES_SENT_TIMESERIES_PER_CHANNEL,
     },
     timeDimension: 'sentDatetime',
 })
