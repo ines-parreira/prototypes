@@ -1,9 +1,9 @@
 import type { RefObject } from 'react'
 import React, { useCallback, useRef, useState } from 'react'
 
-import { useId } from '@repo/hooks'
 import cn from 'classnames'
 import { Input, Popover, PopoverBody } from 'reactstrap'
+import { useId } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 

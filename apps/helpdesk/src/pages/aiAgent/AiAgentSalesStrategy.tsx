@@ -1,5 +1,5 @@
-import { useEffectOnce } from '@repo/hooks'
 import { useParams } from 'react-router-dom'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import css from 'pages/aiAgent/AiAgentSales.less'
 import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'

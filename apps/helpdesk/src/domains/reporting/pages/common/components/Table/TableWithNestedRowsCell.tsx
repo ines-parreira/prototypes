@@ -1,8 +1,8 @@
 import type { MouseEvent, PropsWithChildren } from 'react'
 import type React from 'react'
 
-import { SCREEN_SIZE, useScreenSize } from '@repo/hooks'
 import classNames from 'classnames'
+import { SCREEN_SIZE, useScreenSize } from '@gorgias/toolkit-react'
 
 import css from 'domains/reporting/pages/common/components/Table/BreakdownTable.less'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'

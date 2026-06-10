@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from 'react'
 
-import { useEffectOnce } from '@repo/hooks'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { Button, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 

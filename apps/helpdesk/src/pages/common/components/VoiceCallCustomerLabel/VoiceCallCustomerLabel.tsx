@@ -1,6 +1,6 @@
-import { useId } from '@repo/hooks'
 import classNames from 'classnames'
 import { isEmpty } from 'lodash'
+import { useId } from '@gorgias/toolkit-react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 

@@ -1,8 +1,8 @@
 import type React from 'react'
 import { useEffect, useMemo, useState } from 'react'
 
-import { useDebouncedEffect } from '@repo/hooks'
 import { history } from '@repo/routing'
+import { useDebouncedEffect } from '@gorgias/toolkit-react'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
 

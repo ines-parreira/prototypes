@@ -4,7 +4,7 @@ import { screen } from '@testing-library/react'
 import { useOrderFieldPreferences } from '../../widget/useOrderFieldPreferences'
 import { OrderDetailsSection } from './OrderDetailsSection'
 
-vi.mock('@repo/hooks', async (importOriginal) => ({
+vi.mock('@gorgias/toolkit-react', async (importOriginal) => ({
     ...((await importOriginal()) as Record<string, unknown>),
     useCopyToClipboard: () => [
         {},

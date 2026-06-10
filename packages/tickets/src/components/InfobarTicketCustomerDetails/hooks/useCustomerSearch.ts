@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useDebouncedValue, useUpdateEffect } from '@repo/hooks'
 import type { SearchEngine } from '@repo/logging'
 import {
     EntityType,
@@ -10,6 +9,7 @@ import {
     SegmentEvent,
     useSearchRankScenario,
 } from '@repo/logging'
+import { useDebouncedValue, useUpdateEffect } from '@gorgias/toolkit-react'
 
 import { useSearchCustomers } from '@gorgias/helpdesk-queries'
 import type { CustomerHighlightDataItem } from '@gorgias/helpdesk-types'

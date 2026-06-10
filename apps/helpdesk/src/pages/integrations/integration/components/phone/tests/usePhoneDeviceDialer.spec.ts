@@ -1,7 +1,7 @@
-import { useLocalStorage } from '@repo/hooks'
 import { assumeMock, renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 import type { CountryCode } from 'libphonenumber-js'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import type { PhoneIntegration } from 'models/integration/types/phone'
@@ -16,8 +16,8 @@ jest.mock('hooks/useAppSelector')
 jest.mock('../useDialerOutboundCall')
 jest.mock('../usePhoneNumbers')
 jest.mock('pages/phoneNumbers/utils')
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useLocalStorage: jest.fn(),
 }))
 

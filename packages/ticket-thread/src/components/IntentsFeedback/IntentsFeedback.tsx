@@ -7,9 +7,9 @@ import {
     useState,
 } from 'react'
 
-import { useTimeout } from '@repo/hooks'
 import { humanize } from '@repo/utils'
 import { createPortal } from 'react-dom'
+import { useTimeout } from '@gorgias/toolkit-react'
 
 import { Icon, Tooltip, TooltipContent } from '@gorgias/axiom'
 import type { IconName } from '@gorgias/axiom'

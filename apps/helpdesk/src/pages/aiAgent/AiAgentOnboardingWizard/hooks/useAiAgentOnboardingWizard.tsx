@@ -1,10 +1,10 @@
 import { useCallback, useMemo, useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import { useParams } from 'react-router-dom'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useSearchParam } from 'hooks/useSearchParam'

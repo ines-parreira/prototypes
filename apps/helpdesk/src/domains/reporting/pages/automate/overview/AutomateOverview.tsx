@@ -1,6 +1,6 @@
-import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { getPreviousUrl } from '@repo/routing'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import type { PaywallConfig } from 'config/paywalls'
 import { paywallConfigs as defaultPaywallConfigs } from 'config/paywalls'

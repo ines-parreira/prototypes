@@ -1,5 +1,5 @@
-import { useAsyncFn } from '@repo/hooks'
 import { reportError } from '@repo/logging'
+import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import type { UpdateHelpCenterDto } from 'models/helpCenter/types'

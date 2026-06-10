@@ -1,8 +1,8 @@
-import * as dismissHook from '@repo/hooks'
 import { render } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+import * as dismissHook from '@gorgias/toolkit-react'
 
 import * as revenueBetaHook from 'pages/common/hooks/useIsConvertSubscriber'
 import * as integrationsHelpers from 'state/integrations/helpers'
@@ -10,8 +10,8 @@ import type { RootState, StoreDispatch } from 'state/types'
 
 import { CampaignChatHiddenWarning } from '../CampaignChatHiddenWarning'
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useDismissFlag: jest.fn(),
 }))
 jest.mock('state/integrations/helpers')

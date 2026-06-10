@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react'
 
-import { useDismissFlag } from '@repo/hooks'
 import type { Map } from 'immutable'
 import { Link } from 'react-router-dom'
+import { useDismissFlag } from '@gorgias/toolkit-react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'

@@ -3,12 +3,12 @@ import { useCallback, useMemo, useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
 import client from '@repo/api-resources'
-import { useAsyncFn, useDebouncedEffect } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
 import type { List, Map } from 'immutable'
 import { Link } from 'react-router-dom'
 import { Input, ListGroup, ListGroupItem, Modal } from 'reactstrap'
+import { useAsyncFn, useDebouncedEffect } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button, toast } from '@gorgias/axiom'
 

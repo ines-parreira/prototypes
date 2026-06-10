@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import { memo, useCallback, useMemo, useRef, useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useTimeout } from '@repo/hooks'
+import { useTimeout } from '@gorgias/toolkit-react'
 
 import { Tag } from '@gorgias/axiom'
 

@@ -2,7 +2,6 @@ import type { ReactNode } from 'react'
 import { useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 import {
     Dropdown,
@@ -10,6 +9,7 @@ import {
     DropdownMenu,
     DropdownToggle,
 } from 'reactstrap'
+import { useId } from '@gorgias/toolkit-react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 

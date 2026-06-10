@@ -19,7 +19,7 @@
     "peerDependencies": {
         "@gorgias/axiom": "catalog:axiom",
         "@gorgias/helpdesk-validators": "catalog:rest-api-sdk",
-        "@repo/hooks": "workspace:*",
+        "@gorgias/toolkit-react": "catalog:toolkit",
         "classnames": "catalog:styles",
         "lodash": "catalog:lodash",
         "react": "catalog:react",
@@ -30,7 +30,7 @@
         "@gorgias/axiom": "catalog:axiom",
         "@gorgias/helpdesk-validators": "catalog:rest-api-sdk",
         "@repo/config": "workspace:*",
-        "@repo/hooks": "workspace:*",
+        "@gorgias/toolkit-react": "catalog:toolkit",
         "@repo/testing": "workspace:*",
         "@testing-library/dom": "catalog:test",
         "@testing-library/jest-dom": "catalog:test",

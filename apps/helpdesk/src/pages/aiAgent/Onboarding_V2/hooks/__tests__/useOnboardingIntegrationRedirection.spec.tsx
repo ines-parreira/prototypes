@@ -1,6 +1,6 @@
-import { useLocalStorageWithExpiry } from '@repo/hooks'
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
+import { useLocalStorageWithExpiry } from '@gorgias/toolkit-react'
 
 import { IntegrationType } from 'models/integration/types'
 

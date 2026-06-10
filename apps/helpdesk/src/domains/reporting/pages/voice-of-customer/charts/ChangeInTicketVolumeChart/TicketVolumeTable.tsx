@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 
-import { useWidthBasedOnScreen } from '@repo/hooks'
 import { TrendIcon } from '@repo/reporting'
+import { useWidthBasedOnScreen } from '@gorgias/toolkit-react'
 
 import { useTicketsPerProductDistribution } from 'domains/reporting/hooks/voice-of-customer/useTicketsDistributionPerProduct'
 import { NoDataAvailable } from 'domains/reporting/pages/common/components/NoDataAvailable'

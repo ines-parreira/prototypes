@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 
-import { useBeforeUnload } from '@repo/hooks'
 import { useConditionalShortcuts } from '@repo/utils'
+import { useBeforeUnload } from '@gorgias/toolkit-react'
 
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import MonitoringPhoneCall from 'pages/common/components/PhoneIntegrationBar/MonitoringPhoneCall/MonitoringPhoneCall'

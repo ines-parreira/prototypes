@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react'
 
-import { useToggle } from '@repo/hooks'
 import { hasRole, UserRole } from '@repo/permissions'
+import { useToggle } from '@gorgias/toolkit-react'
 
 import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
 

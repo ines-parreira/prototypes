@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 
 import { DebugMenu, DebugMenuItem } from '@repo/debug'
-import { useIsMobileResolution } from '@repo/hooks'
 import {
     NavigationSidebarTooltip,
     SidebarContent,
@@ -13,6 +12,7 @@ import {
 } from '@repo/navigation'
 import { shortcutManager } from '@repo/utils'
 import { ViewCountDebugPanel } from '@repo/views'
+import { useIsMobileResolution } from '@gorgias/toolkit-react'
 
 import { Box, Button, Separator, TooltipContent } from '@gorgias/axiom'
 import { useCopilotPanel } from '@gorgias/copilot'

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
-import { useId } from '@repo/hooks'
 import classNames from 'classnames'
+import { useId } from '@gorgias/toolkit-react'
 
 import {
     Icon,

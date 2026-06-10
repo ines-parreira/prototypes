@@ -8,11 +8,11 @@ import {
     useState,
 } from 'react'
 
-import { useAsyncFn, usePrevious } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import type { BaseEmoji, EmojiData } from 'emoji-mart'
 import { emojiIndex } from 'emoji-mart'
 import type { Map } from 'immutable'
+import { useAsyncFn, usePrevious } from '@gorgias/toolkit-react'
 
 import {
     LegacyButton as Button,

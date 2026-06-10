@@ -8,8 +8,8 @@ import { isGorgiasApiError } from 'models/api/types'
 import { useTicketSummary } from '../useTicketSummary'
 
 const mockSetTimeout = jest.fn()
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useTimeout: () => [mockSetTimeout],
 }))
 

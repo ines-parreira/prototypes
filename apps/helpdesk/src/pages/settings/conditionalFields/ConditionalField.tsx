@@ -1,6 +1,6 @@
-import { useTitle } from '@repo/hooks'
 import { Link, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
+import { useTitle } from '@gorgias/toolkit-react'
 
 import { useGetCustomFieldCondition } from '@gorgias/helpdesk-queries'
 

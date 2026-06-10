@@ -1,11 +1,11 @@
 import type React from 'react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
-import { usePrevious } from '@repo/hooks'
 import { logEvent, reportError, SegmentEvent } from '@repo/logging'
 import copy from 'copy-to-clipboard'
 import _isEqual from 'lodash/isEqual'
 import { useLocation } from 'react-router-dom'
+import { usePrevious } from '@gorgias/toolkit-react'
 
 import { useLimitations } from 'hooks/helpCenter/useLimitations'
 import useAppDispatch from 'hooks/useAppDispatch'

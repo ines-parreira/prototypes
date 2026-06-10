@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { SCREEN_SIZE, useScreenSize } from '@repo/hooks'
 import { useQueryClient } from '@tanstack/react-query'
 import { useHistory } from 'react-router-dom'
+import { SCREEN_SIZE, useScreenSize } from '@gorgias/toolkit-react'
 
 import type { Row } from '@gorgias/axiom'
 import {

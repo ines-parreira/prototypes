@@ -1,8 +1,8 @@
 import type { MouseEvent as ReactMouseEvent } from 'react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { usePrevious, useUpdateEffect } from '@repo/hooks'
 import _isEqual from 'lodash/isEqual'
+import { usePrevious, useUpdateEffect } from '@gorgias/toolkit-react'
 
 import type { Config } from '../types'
 import { computeDefaultWidths, createConfig, mutatePanels } from '../utils'

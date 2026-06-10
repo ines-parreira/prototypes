@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState } from 'react'
 
-import { useToggle } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { useToggle } from '@gorgias/toolkit-react'
 
 import {
     LegacyButton as Button,

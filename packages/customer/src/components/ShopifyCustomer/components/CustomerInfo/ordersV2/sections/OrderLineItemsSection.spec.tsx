@@ -4,7 +4,7 @@ import { screen } from '@testing-library/react'
 import type { OrderRefund, OrderReturn } from '../../../../types'
 import { OrderLineItemsSection } from './OrderLineItemsSection'
 
-vi.mock('@repo/hooks', async (importOriginal) => ({
+vi.mock('@gorgias/toolkit-react', async (importOriginal) => ({
     ...((await importOriginal()) as Record<string, unknown>),
     useCopyToClipboard: () => [
         {},

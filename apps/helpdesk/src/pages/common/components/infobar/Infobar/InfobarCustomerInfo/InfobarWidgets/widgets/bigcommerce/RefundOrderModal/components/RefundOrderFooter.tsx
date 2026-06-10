@@ -1,8 +1,8 @@
 import type { Dispatch } from 'react'
 import React, { useRef, useState } from 'react'
 
-import { useDebouncedEffect } from '@repo/hooks'
 import classNames from 'classnames'
+import { useDebouncedEffect } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 

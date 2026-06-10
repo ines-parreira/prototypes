@@ -1,9 +1,9 @@
 import { useMemo } from 'react'
 
 import { useAreFlagsLoading } from '@repo/feature-flags'
-import { useGridSize } from '@repo/hooks'
 import classNames from 'classnames'
 import { Redirect, useParams } from 'react-router-dom'
+import { useGridSize } from '@gorgias/toolkit-react'
 
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'

@@ -2,7 +2,6 @@ import type { ComponentProps, ReactElement, ReactNode } from 'react'
 
 import { localForageManager } from '@repo/browser-storage'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useIsMobileResolution } from '@repo/hooks'
 import { logEvent, reportError, SegmentEvent } from '@repo/logging'
 import { assumeMock, flushPromises, render, userEvent } from '@repo/testing'
 import { useRealtimeTicketUpdates } from '@repo/ticket-thread'
@@ -15,6 +14,7 @@ import moment from 'moment'
 import { useHistory } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import { useIsMobileResolution } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
 import { useAgentActivity } from '@gorgias/realtime'
@@ -192,8 +192,8 @@ const spiedMergeFieldsStateWithMacroValues = assumeMock(
 jest.mock('split-ticket-view-toggle/hooks/useSplitTicketView')
 const useSplitTicketViewMock = useSplitTicketView as jest.Mock
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useIsMobileResolution: jest.fn(() => false),
 }))
 const mockUseIsMobileResolution = useIsMobileResolution as jest.Mock

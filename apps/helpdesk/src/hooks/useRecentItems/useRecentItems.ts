@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { localForageManager } from '@repo/browser-storage'
-import { useAsyncFn, useEffectOnce } from '@repo/hooks'
 import _debounce from 'lodash/debounce'
 import _isEmpty from 'lodash/isEmpty'
 import _isEqual from 'lodash/isEqual'
+import { useAsyncFn, useEffectOnce } from '@gorgias/toolkit-react'
 
 import type { RecentItems } from 'hooks/useRecentItems/constants'
 import { DEBOUNCE_TIME } from 'hooks/useRecentItems/constants'

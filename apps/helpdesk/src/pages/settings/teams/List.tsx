@@ -1,11 +1,11 @@
 import { useState } from 'react'
 
-import { useAsyncFn, useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import type { AxiosError } from 'axios'
 import classnames from 'classnames'
 import { Emoji } from 'emoji-mart'
 import { Link } from 'react-router-dom'
+import { useAsyncFn, useEffectOnce } from '@gorgias/toolkit-react'
 
 import { Button, toast } from '@gorgias/axiom'
 import type { CursorPaginationMeta } from '@gorgias/helpdesk-queries'

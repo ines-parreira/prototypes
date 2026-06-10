@@ -1,10 +1,10 @@
 import { useMemo, useState } from 'react'
 
 import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
-import { useLocalStorage } from '@repo/hooks'
 import { ConfigureMetricsModal } from '@repo/reporting'
 import type { MetricConfigItem } from '@repo/reporting'
 import { useHistory } from 'react-router-dom'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import { Box, PanelHeader } from '@gorgias/axiom'
 import type { ColumnDef } from '@gorgias/axiom'

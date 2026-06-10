@@ -1,7 +1,10 @@
 import { useCallback, useMemo, useState } from 'react'
 
-import { useEffectOnce, useLocalStorageWithExpiry } from '@repo/hooks'
 import { useLocation } from 'react-router'
+import {
+    useEffectOnce,
+    useLocalStorageWithExpiry,
+} from '@gorgias/toolkit-react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import type { IntegrationType } from 'models/integration/constants'

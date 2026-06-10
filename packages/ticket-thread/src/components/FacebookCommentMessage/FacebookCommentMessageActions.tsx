@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 
-import { useCopyToClipboard } from '@repo/hooks'
+import { useCopyToClipboard } from '@gorgias/toolkit-react'
 
 import type { TicketMessage } from '@gorgias/helpdesk-queries'
 

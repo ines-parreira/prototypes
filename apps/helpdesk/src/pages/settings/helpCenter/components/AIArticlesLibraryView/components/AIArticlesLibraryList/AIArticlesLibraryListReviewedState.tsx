@@ -1,5 +1,5 @@
-import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import css from './AIArticlesLibraryList.less'
 

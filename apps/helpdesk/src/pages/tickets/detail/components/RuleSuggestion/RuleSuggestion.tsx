@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { fromJS } from 'immutable'
 import _pick from 'lodash/pick'
 import { Tooltip } from 'reactstrap'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import {
     LegacyButton as Button,

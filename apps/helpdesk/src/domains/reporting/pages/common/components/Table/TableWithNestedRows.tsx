@@ -1,8 +1,8 @@
 import type { FC, UIEventHandler } from 'react'
 import React, { useCallback, useMemo, useState } from 'react'
 
-import { useMeasure } from '@repo/hooks'
 import classNames from 'classnames'
+import { useMeasure } from '@gorgias/toolkit-react'
 
 import css from 'domains/reporting/pages/common/components/Table/TableWithNestedRows.less'
 import { HintTooltipContent } from 'domains/reporting/pages/common/HintTooltip'

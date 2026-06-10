@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { useLocalStorage } from '@repo/hooks'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import type { TicketIds } from '../Context'
 

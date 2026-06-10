@@ -1,9 +1,9 @@
 import { useCallback } from 'react'
 
-import { useId } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
 import cn from 'classnames'
+import { useId } from '@gorgias/toolkit-react'
 
 import { Button, Tooltip, TooltipContent } from '@gorgias/axiom'
 

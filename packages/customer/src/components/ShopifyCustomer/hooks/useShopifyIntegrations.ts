@@ -1,4 +1,4 @@
-import { useExhaustEndpoint } from '@repo/hooks'
+import { useExhaustEndpoint } from '@gorgias/toolkit-react'
 
 import { listIntegrations } from '@gorgias/helpdesk-client'
 import { queryKeys } from '@gorgias/helpdesk-queries'

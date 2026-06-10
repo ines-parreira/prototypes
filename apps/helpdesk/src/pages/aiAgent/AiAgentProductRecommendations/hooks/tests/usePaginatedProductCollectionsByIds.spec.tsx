@@ -12,7 +12,7 @@ jest.mock('models/ecommerce/resources', () => ({
     fetchEcommerceProductCollections: jest.fn(),
 }))
 
-jest.mock('@repo/hooks', () => ({
+jest.mock('@gorgias/toolkit-react', () => ({
     useDebouncedValue: jest.fn((value) => value),
 }))
 
@@ -457,7 +457,7 @@ describe('usePaginatedProductCollectionsByIds', () => {
     })
 
     it('should use debounced search term for filtering', async () => {
-        const { useDebouncedValue } = jest.requireMock('@repo/hooks')
+        const { useDebouncedValue } = jest.requireMock('@gorgias/toolkit-react')
         useDebouncedValue.mockImplementation((value: string) => {
             return value === 'Blue' ? 'Blue' : ''
         })

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 
-import { useAsyncFn } from '@repo/hooks'
 import { fromJS } from 'immutable'
 import { Link } from 'react-router-dom'
+import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { Box, Button, Heading, Modal, Text, TextField } from '@gorgias/axiom'
 

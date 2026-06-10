@@ -1,5 +1,5 @@
-import { useExhaustEndpoint } from '@repo/hooks'
 import { Duration } from '@gorgias/toolkit'
+import { useExhaustEndpoint } from '@gorgias/toolkit-react'
 
 import { listEvents, ListEventsObjectType } from '@gorgias/helpdesk-client'
 import { queryKeys } from '@gorgias/helpdesk-queries'

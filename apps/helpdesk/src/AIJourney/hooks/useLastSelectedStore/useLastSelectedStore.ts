@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-import { useLocalStorage } from '@repo/hooks'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 const AI_JOURNEY_LAST_SELECTED_STORE_KEY = 'ai-journey-last-selected-store'
 

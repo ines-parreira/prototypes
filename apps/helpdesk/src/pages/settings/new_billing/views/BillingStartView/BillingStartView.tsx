@@ -17,11 +17,11 @@ import {
     ZAPIER_BILLING_HOOK,
 } from '@repo/billing'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useSessionStorage } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
 import moment from 'moment'
 import { NavLink, Redirect, Route, Switch } from 'react-router-dom'
+import { useSessionStorage } from '@gorgias/toolkit-react'
 
 import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'
 import useAppSelector from 'hooks/useAppSelector'

@@ -1,5 +1,9 @@
-import { useEffectOnce, useTitle, useUpdateEffect } from '@repo/hooks'
 import { useParams } from 'react-router-dom'
+import {
+    useEffectOnce,
+    useTitle,
+    useUpdateEffect,
+} from '@gorgias/toolkit-react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

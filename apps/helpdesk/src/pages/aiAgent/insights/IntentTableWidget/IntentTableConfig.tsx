@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { usePrevious } from '@repo/hooks'
+import { usePrevious } from '@gorgias/toolkit-react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'

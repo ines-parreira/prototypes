@@ -12,7 +12,7 @@ jest.mock('state/integrations/helpers', () => ({
     fetchIntegrationProducts: jest.fn(),
 }))
 
-jest.mock('@repo/hooks', () => ({
+jest.mock('@gorgias/toolkit-react', () => ({
     useDebouncedValue: jest.fn((value) => value),
 }))
 
@@ -529,7 +529,9 @@ describe('usePaginatedProductsByIds', () => {
         })
 
         it('should use debounced search term for filtering', async () => {
-            const { useDebouncedValue } = jest.requireMock('@repo/hooks')
+            const { useDebouncedValue } = jest.requireMock(
+                '@gorgias/toolkit-react',
+            )
             useDebouncedValue.mockImplementation((value: string) => {
                 // Simulate debounce by returning the value after a delay
                 return value === 'Blue' ? 'Blue' : ''

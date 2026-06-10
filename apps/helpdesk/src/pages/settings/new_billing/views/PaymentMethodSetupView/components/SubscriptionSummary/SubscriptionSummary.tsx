@@ -1,8 +1,8 @@
 import type { SelectedPlans } from '@repo/billing'
 import { SELECTED_PRODUCTS_SESSION_STORAGE_KEY } from '@repo/billing'
-import { useSessionStorage } from '@repo/hooks'
 import type { FieldValues, SubmitHandler } from 'react-hook-form'
 import { useFormContext, useFormState } from 'react-hook-form'
+import { useSessionStorage } from '@gorgias/toolkit-react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { ProductType } from 'models/billing/types'

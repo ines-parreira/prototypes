@@ -6,7 +6,7 @@ import { Text } from '@gorgias/axiom'
 import { useOrderFieldPreferences } from '../../widget/useOrderFieldPreferences'
 import { OrderDetailsSection } from '../sections/OrderDetailsSection'
 
-vi.mock('@repo/hooks', async (importOriginal) => ({
+vi.mock('@gorgias/toolkit-react', async (importOriginal) => ({
     ...((await importOriginal()) as Record<string, unknown>),
     useCopyToClipboard: () => [
         {},

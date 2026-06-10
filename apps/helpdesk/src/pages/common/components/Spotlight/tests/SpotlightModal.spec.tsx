@@ -3,7 +3,6 @@ import mockedVirtuoso from 'tests/mockedVirtuoso'
 import type { ComponentProps, ReactPortal } from 'react'
 import type React from 'react'
 
-import { useSelectedIndex } from '@repo/hooks'
 import { assumeMock, flushPromises, render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -14,6 +13,7 @@ import { Provider } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import { useSelectedIndex } from '@gorgias/toolkit-react'
 
 import { logEvent, SegmentEvent, useSearchRankScenario } from '@repo/logging'
 import { history } from '@repo/routing'
@@ -162,8 +162,8 @@ jest.mock(
             focusTrapMock(props),
 )
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useSelectedIndex: jest.fn(),
     useLocalStorageWithExpiry: jest.fn().mockImplementation(() => {
         const {

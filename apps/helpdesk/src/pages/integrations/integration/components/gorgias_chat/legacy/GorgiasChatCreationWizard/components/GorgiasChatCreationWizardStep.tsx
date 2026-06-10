@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 
-import { useEffectOnce } from '@repo/hooks'
 import { SegmentEvent } from '@repo/logging'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { GorgiasChatCreationWizardSteps } from 'models/integration/types/gorgiasChat'
 import WizardProgressHeader from 'pages/common/components/wizard/WizardProgressHeader'

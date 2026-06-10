@@ -1,10 +1,10 @@
 import type { ChangeEvent } from 'react'
 import React, { memo, useCallback, useState } from 'react'
 
-import { useDebouncedEffect } from '@repo/hooks'
 import classnames from 'classnames'
 import type { Map } from 'immutable'
 import { Input, InputGroup, InputGroupAddon } from 'reactstrap'
+import { useDebouncedEffect } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 

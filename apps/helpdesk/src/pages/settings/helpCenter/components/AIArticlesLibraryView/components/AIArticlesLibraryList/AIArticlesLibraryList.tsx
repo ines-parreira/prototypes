@@ -1,7 +1,7 @@
 import type { Dispatch, SetStateAction } from 'react'
 import { useMemo, useRef } from 'react'
 
-import { useEffectOnce, useKey } from '@repo/hooks'
+import { useEffectOnce, useKey } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 

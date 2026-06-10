@@ -9,7 +9,6 @@ import {
     useState,
 } from 'react'
 
-import { useAsyncFn } from '@repo/hooks'
 import { history } from '@repo/routing'
 import classnames from 'classnames'
 import type esprima from 'esprima'
@@ -17,6 +16,7 @@ import type { List, Map } from 'immutable'
 import _getIn from 'lodash/get'
 import moment from 'moment'
 import { FormGroup, Label } from 'reactstrap'
+import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { toast, LegacyToggleField as ToggleField } from '@gorgias/axiom'
 

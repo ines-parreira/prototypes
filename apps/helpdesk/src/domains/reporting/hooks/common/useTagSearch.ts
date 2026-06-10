@@ -1,9 +1,9 @@
 import { useCallback, useState } from 'react'
 
-import { useAsyncFn, useDebouncedEffect } from '@repo/hooks'
 import { notUndefined } from '@repo/utils'
 import type { CancelToken } from 'axios'
 import { filter } from 'lodash'
+import { useAsyncFn, useDebouncedEffect } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
 import type { ListTagsParams, Tag } from '@gorgias/helpdesk-types'

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useCopyToClipboard, useTimeout } from '@repo/hooks'
+import { useCopyToClipboard, useTimeout } from '@gorgias/toolkit-react'
 
 import { Icon } from '@gorgias/axiom'
 import type { IconName } from '@gorgias/axiom'

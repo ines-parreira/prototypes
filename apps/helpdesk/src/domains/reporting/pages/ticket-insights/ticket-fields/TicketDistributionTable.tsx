@@ -1,5 +1,5 @@
-import { useWidthBasedOnScreen } from '@repo/hooks'
 import Skeleton from 'react-loading-skeleton'
+import { useWidthBasedOnScreen } from '@gorgias/toolkit-react'
 
 import colors from '@gorgias/design-tokens/tokens/colors'
 

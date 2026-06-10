@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { usePrevious } from '@repo/hooks'
+import { usePrevious } from '@gorgias/toolkit-react'
 
 import { useTicketCustomFieldsValues } from '../hooks/useTicketCustomFieldsValues'
 import type {

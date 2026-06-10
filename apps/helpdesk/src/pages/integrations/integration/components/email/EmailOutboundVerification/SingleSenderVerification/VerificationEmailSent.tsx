@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useAsyncFn } from '@repo/hooks'
 import type { AxiosError } from 'axios'
 import classNames from 'classnames'
 import { useHistory } from 'react-router-dom'
+import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button, toast } from '@gorgias/axiom'
 

@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react'
 
 import client from '@repo/api-resources'
-import { useAsyncFn } from '@repo/hooks'
 import classnames from 'classnames'
+import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 

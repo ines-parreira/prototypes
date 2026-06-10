@@ -2,8 +2,8 @@ import type { ForwardedRef, MouseEvent } from 'react'
 import React, { forwardRef } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useId } from '@repo/hooks'
 import classnames from 'classnames'
+import { useId } from '@gorgias/toolkit-react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 

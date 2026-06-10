@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
-import { useAsyncFn } from '@repo/hooks'
 import { fromJS } from 'immutable'
+import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { LegacyToggleField as ToggleField } from '@gorgias/axiom'
 

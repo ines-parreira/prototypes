@@ -1,6 +1,6 @@
 import type React from 'react'
 
-import { useSessionStorage } from '@repo/hooks'
+import { useSessionStorage } from '@gorgias/toolkit-react'
 
 import {
     Box,

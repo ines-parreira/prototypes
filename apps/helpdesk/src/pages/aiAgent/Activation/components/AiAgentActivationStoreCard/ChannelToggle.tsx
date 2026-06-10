@@ -1,8 +1,8 @@
 import type React from 'react'
 import { useMemo } from 'react'
 
-import { useId } from '@repo/hooks'
 import classNames from 'classnames'
+import { useId } from '@gorgias/toolkit-react'
 
 import { LegacyLabel as Label, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 

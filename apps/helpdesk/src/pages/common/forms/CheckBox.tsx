@@ -6,8 +6,8 @@ import React, {
     useRef,
 } from 'react'
 
-import { useId } from '@repo/hooks'
 import classnames from 'classnames'
+import { useId } from '@gorgias/toolkit-react'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
 

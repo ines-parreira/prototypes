@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
-import { useDeepEffect } from '@repo/hooks'
 import type { MetricTrend } from '@repo/reporting'
+import { useDeepEffect } from '@gorgias/toolkit-react'
 
 import { getAIAgentAutomationRateUnfilteredDenominatorTrend } from 'domains/reporting/hooks/automate/automateStatsCalculatedTrends'
 import {

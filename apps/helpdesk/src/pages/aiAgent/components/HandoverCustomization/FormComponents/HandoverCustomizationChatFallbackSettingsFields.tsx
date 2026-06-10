@@ -1,8 +1,8 @@
 import type React from 'react'
 import { useCallback, useMemo, useState } from 'react'
 
-import { useUpdateEffect } from '@repo/hooks'
 import cn from 'classnames'
+import { useUpdateEffect } from '@gorgias/toolkit-react'
 
 import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 

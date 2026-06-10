@@ -1,5 +1,5 @@
-import { useSessionStorage } from '@repo/hooks'
 import type { MetricTrendFormat } from '@repo/reporting'
+import { useSessionStorage } from '@gorgias/toolkit-react'
 
 import { useAchievedExposuresVoiceCallsTrend } from 'domains/reporting/hooks/voice/useVoiceCallsTrends'
 import { TableValueModeSwitch } from 'domains/reporting/pages/common/components/Table/TableValueModeSwitch'

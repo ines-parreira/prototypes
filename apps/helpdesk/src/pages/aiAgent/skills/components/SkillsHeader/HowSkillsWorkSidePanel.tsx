@@ -1,4 +1,4 @@
-import { SCREEN_SIZE, useScreenSize } from '@repo/hooks'
+import { SCREEN_SIZE, useScreenSize } from '@gorgias/toolkit-react'
 
 import {
     Box,

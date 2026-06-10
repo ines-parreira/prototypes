@@ -1,7 +1,7 @@
 import type { ReactNode, RefObject } from 'react'
 
-import { useId } from '@repo/hooks'
 import classnames from 'classnames'
+import { useId } from '@gorgias/toolkit-react'
 
 import {
     LegacyToggleField as ToggleField,

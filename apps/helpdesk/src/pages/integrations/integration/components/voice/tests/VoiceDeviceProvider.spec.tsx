@@ -1,12 +1,12 @@
 import type React from 'react'
 
-import { useLocalStorage } from '@repo/hooks'
 import { assumeMock, render, renderHook } from '@repo/testing'
 import { isDesktopDevice } from '@repo/utils'
 import { act, waitFor } from '@testing-library/react'
 import { Device } from '@twilio/voice-sdk'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import { connectDevice, disconnectDevice } from 'hooks/integrations/phone/utils'
@@ -17,8 +17,8 @@ import VoiceDeviceProvider from '../VoiceDeviceProvider'
 
 jest.mock('hooks/integrations/phone/utils')
 jest.mock('hooks/useHasPhone')
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useLocalStorage: jest.fn(),
 }))
 jest.mock('@repo/utils', () => ({

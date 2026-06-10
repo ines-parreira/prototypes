@@ -9,12 +9,6 @@ import {
 } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import {
-    useAsyncFn,
-    usePrevious,
-    useUnmount,
-    useUpdateEffect,
-} from '@repo/hooks'
 import { logEvent, reportError, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import * as Sentry from '@sentry/react'
@@ -31,6 +25,12 @@ import {
     DropdownMenu,
     DropdownToggle,
 } from 'reactstrap'
+import {
+    useAsyncFn,
+    usePrevious,
+    useUnmount,
+    useUpdateEffect,
+} from '@gorgias/toolkit-react'
 
 import {
     LegacyButton as Button,

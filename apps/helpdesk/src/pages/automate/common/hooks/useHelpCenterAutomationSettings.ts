@@ -1,8 +1,8 @@
 import { useEffect, useMemo } from 'react'
 
-import { useAsyncFn } from '@repo/hooks'
 import { reportError } from '@repo/logging'
 import { isAxiosError } from 'axios'
+import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

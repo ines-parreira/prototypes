@@ -1,4 +1,4 @@
-import { useToggle } from '@repo/hooks'
+import { useToggle } from '@gorgias/toolkit-react'
 
 import {
     Box,

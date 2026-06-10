@@ -9,11 +9,11 @@ import {
     useState,
 } from 'react'
 
-import { useMeasure } from '@repo/hooks'
 import classnames from 'classnames'
 import _isEqual from 'lodash/isEqual'
 import moment from 'moment'
 import { Label } from 'reactstrap'
+import { useMeasure } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
 

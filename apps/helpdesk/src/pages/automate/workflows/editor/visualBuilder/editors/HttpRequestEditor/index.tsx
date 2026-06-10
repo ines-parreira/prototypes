@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { useId } from '@repo/hooks'
 import { produce } from 'immer'
 import _uniq from 'lodash/uniq'
+import { useId } from '@gorgias/toolkit-react'
 
 import {
     LegacyButton as Button,

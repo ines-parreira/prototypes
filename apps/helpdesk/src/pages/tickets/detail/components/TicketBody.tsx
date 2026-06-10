@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 
-import { useSelectedIndex } from '@repo/hooks'
 import classnames from 'classnames'
 import type { List } from 'immutable'
 import type { Components, VirtuosoHandle } from 'react-virtuoso'
 import { Virtuoso } from 'react-virtuoso'
+import { useSelectedIndex } from '@gorgias/toolkit-react'
 
 import { useSearch } from 'hooks/useSearch'
 import type { TicketElement, TicketMessage } from 'models/ticket/types'

@@ -8,6 +8,11 @@ import {
 } from '../../../constants'
 import { ThemeSwitch } from '../ThemeSwitch'
 
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
+    useId: jest.fn(() => require('lodash/uniqueId')()),
+}))
+
 describe('<ThemeSwitch>', () => {
     it('matches snapshot', () => {
         const { container } = render(

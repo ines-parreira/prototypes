@@ -18,8 +18,8 @@ const mockUseEditionManager = jest.fn()
 const mockUseCurrentHelpCenter = jest.fn()
 const mockUseSupportedLocales = jest.fn()
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useScreenSize: () => mockUseScreenSize(),
     SCREEN_SIZE: { SMALL: 'small' },
 }))

@@ -1,11 +1,15 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useCallbackRef, useDebouncedValue, useTitle } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 import { Container } from 'reactstrap'
+import {
+    useCallbackRef,
+    useDebouncedValue,
+    useTitle,
+} from '@gorgias/toolkit-react'
 
 import { Button } from '@gorgias/axiom'
 import type { CustomFieldCondition } from '@gorgias/helpdesk-queries'

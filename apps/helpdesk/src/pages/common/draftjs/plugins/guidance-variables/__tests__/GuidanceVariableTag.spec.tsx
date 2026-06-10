@@ -24,8 +24,8 @@ jest.mock('@gorgias/axiom', () => ({
     )),
 }))
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useId: jest.fn().mockImplementation(() => 'mock-id'),
 }))
 

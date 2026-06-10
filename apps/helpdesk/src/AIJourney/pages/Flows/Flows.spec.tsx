@@ -1,12 +1,12 @@
 import { appQueryClient } from '@repo/api-resources'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useLocalStorage } from '@repo/hooks'
 import { assumeMock, render } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import { JourneyStatusEnum, JourneyTypeEnum } from '@gorgias/convert-client'
 
@@ -48,8 +48,8 @@ const useAIJourneyTableKpisMock = assumeMock(useAIJourneyTableKpis)
 jest.mock('@repo/feature-flags')
 const mockUseFlag = assumeMock(useFlag)
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useLocalStorage: jest.fn(),
 }))
 const mockUseLocalStorage = assumeMock(useLocalStorage)

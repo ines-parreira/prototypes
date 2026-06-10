@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { localForageManager } from '@repo/browser-storage'
-import { useEffectOnce, usePrevious } from '@repo/hooks'
 import type { RawDraftContentState, SelectionState } from 'draft-js'
 import { convertFromRaw } from 'draft-js'
 import type { Map } from 'immutable'
 import { fromJS, List } from 'immutable'
 import _isEmpty from 'lodash/isEmpty'
 import { v4 as uuidv4 } from 'uuid'
+import { useEffectOnce, usePrevious } from '@gorgias/toolkit-react'
 
 import type { Macro, TicketPriority } from '@gorgias/helpdesk-queries'
 

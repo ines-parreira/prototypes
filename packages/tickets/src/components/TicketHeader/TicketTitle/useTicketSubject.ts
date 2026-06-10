@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { useTitle } from '@repo/hooks'
+import { useTitle } from '@gorgias/toolkit-react'
 
 import type { Ticket } from '@gorgias/helpdesk-types'
 

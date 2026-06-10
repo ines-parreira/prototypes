@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -8,6 +7,7 @@ import { get, isEqual } from 'lodash'
 import type { Path } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
 import { useHistory, useLocation } from 'react-router-dom'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
 

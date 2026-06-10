@@ -1,6 +1,6 @@
-import { useId } from '@repo/hooks'
 import { TrendIcon } from '@repo/reporting'
 import classnames from 'classnames'
+import { useId } from '@gorgias/toolkit-react'
 
 import { Skeleton, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 

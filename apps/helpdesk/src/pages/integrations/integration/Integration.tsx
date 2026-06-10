@@ -1,7 +1,6 @@
 import { useEffect, useMemo } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useAsyncFn, useEffectOnce, useUpdateEffect } from '@repo/hooks'
 import classNames from 'classnames'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -10,6 +9,11 @@ import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { Container } from 'reactstrap'
 import { bindActionCreators } from 'redux'
+import {
+    useAsyncFn,
+    useEffectOnce,
+    useUpdateEffect,
+} from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
 

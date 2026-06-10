@@ -1,4 +1,3 @@
-import { useIsMobileResolution } from '@repo/hooks'
 import { assumeMock, render } from '@repo/testing'
 import {
     DefaultViewsMenu,
@@ -8,6 +7,7 @@ import {
 import { useCurrentUserRole } from '@repo/users'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { useIsMobileResolution } from '@gorgias/toolkit-react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { activeViewIdSet } from 'state/ui/views/actions'
@@ -15,8 +15,8 @@ import { activeViewIdSet } from 'state/ui/views/actions'
 import { DefaultViews } from '../DefaultViews'
 import { TicketNavbarViewLinkItem } from '../TicketNavbarViewLinkItem'
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useIsMobileResolution: jest.fn(() => false),
 }))
 

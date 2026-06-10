@@ -9,7 +9,7 @@ jest.mock('@repo/agent-status', () => ({
     useCustomAgentUnavailableStatusesFlag: jest.fn(),
 }))
 
-jest.mock('@repo/hooks', () => ({
+jest.mock('@gorgias/toolkit-react', () => ({
     useLocalStorage: jest.fn(() => [[], jest.fn()]),
 }))
 

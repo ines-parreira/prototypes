@@ -1,4 +1,4 @@
-import { useUpdateEffect } from '@repo/hooks'
+import { useUpdateEffect } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
 

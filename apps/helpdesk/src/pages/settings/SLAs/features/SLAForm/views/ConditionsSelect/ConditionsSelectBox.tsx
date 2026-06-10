@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { useController } from '@repo/forms'
-import { useDebouncedEffect } from '@repo/hooks'
+import { useDebouncedEffect } from '@gorgias/toolkit-react'
 
 import {
     Box,

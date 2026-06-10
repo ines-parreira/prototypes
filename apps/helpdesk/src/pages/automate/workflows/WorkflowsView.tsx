@@ -1,7 +1,6 @@
 import { createElement, useMemo } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import {
@@ -13,6 +12,7 @@ import {
     useRouteMatch,
 } from 'react-router-dom'
 import { Container } from 'reactstrap'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import {
     LegacyButton as Button,

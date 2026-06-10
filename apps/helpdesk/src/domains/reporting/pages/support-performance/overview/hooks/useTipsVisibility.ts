@@ -1,4 +1,4 @@
-import { useLocalStorage } from '@repo/hooks'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import { STATS_TIPS_VISIBILITY_KEY } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
 

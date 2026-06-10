@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useRef } from 'react'
 
-import { useLocalStorage } from '@repo/hooks'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import type { Sizes } from '../types'
 

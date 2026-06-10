@@ -1,10 +1,10 @@
 import type { ComponentProps, ReactNode, SyntheticEvent } from 'react'
 import { useCallback, useMemo, useState } from 'react'
 
-import { useId, useIsMounted } from '@repo/hooks'
 import classnames from 'classnames'
 import _get from 'lodash/get'
 import { Popover, PopoverBody, PopoverHeader } from 'reactstrap'
+import { useId, useIsMounted } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 import type { LegacyButtonComponentProps as ButtonComponentProps } from '@gorgias/axiom'

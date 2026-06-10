@@ -1,10 +1,10 @@
-import { useIsMobileResolution } from '@repo/hooks'
 import { render } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
+import { useIsMobileResolution } from '@gorgias/toolkit-react'
 
 import { Button, MenuItem, MenuSection } from '@gorgias/axiom'
 import { mockGetCurrentUserHandler } from '@gorgias/helpdesk-mocks'
@@ -13,8 +13,8 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { UserMenu } from '../UserMenu'
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useIsMobileResolution: jest.fn(() => false),
 }))
 

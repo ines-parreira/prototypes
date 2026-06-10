@@ -17,8 +17,8 @@ const mockStore = configureMockStore([thunk])
 
 jest.mock('common/utils/getWrappedElementCount', () => jest.fn())
 jest.mock('lodash/uniqueId', () => () => '42')
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useElementSize: jest.fn().mockImplementation(() => [160, 100]),
     useId: jest.fn().mockImplementation(() => '42'),
 }))

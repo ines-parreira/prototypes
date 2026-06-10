@@ -1,6 +1,6 @@
 import { useCallback, useRef } from 'react'
 
-import { useDebouncedCallback } from '@repo/hooks'
+import { useDebouncedCallback } from '@gorgias/toolkit-react'
 
 import type { EditorMode } from 'common/knowledge-editor/types'
 import { areTrimmedStringsEqual } from 'common/knowledge-editor/utils'

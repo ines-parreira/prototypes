@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useAsyncFn } from '@repo/hooks'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
+import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import type { LanguageItem } from 'config/integrations/gorgias_chat'
 import {

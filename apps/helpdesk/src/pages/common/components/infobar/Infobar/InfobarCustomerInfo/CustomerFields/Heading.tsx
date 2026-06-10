@@ -1,6 +1,6 @@
-import { useId } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
+import { useId } from '@gorgias/toolkit-react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 

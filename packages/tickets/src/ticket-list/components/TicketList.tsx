@@ -1,9 +1,9 @@
 import { forwardRef, useCallback, useEffect, useMemo, useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useDebouncedValue, usePrevious } from '@repo/hooks'
 import { Virtuoso } from 'react-virtuoso'
 import type { Components } from 'react-virtuoso'
+import { useDebouncedValue, usePrevious } from '@gorgias/toolkit-react'
 
 import { Box } from '@gorgias/axiom'
 import { useGetView } from '@gorgias/helpdesk-queries'

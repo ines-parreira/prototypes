@@ -8,8 +8,9 @@ import TextInput from '../TextInput'
 jest.mock('lodash/uniqueId', () => () => '42')
 
 // Mock the useTextWidth hook to provide predictable values for testing
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
+    useId: jest.fn(() => require('lodash/uniqueId')()),
     useTextWidth: jest.fn((text: string) => {
         // Simple mock: return 10px per character + base width
         return text ? text.length * 10 + 20 : 20

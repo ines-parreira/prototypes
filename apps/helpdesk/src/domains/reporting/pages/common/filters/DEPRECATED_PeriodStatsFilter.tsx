@@ -1,10 +1,10 @@
 import type { ComponentProps } from 'react'
 import React, { useCallback } from 'react'
 
-import { useEffectOnce } from '@repo/hooks'
 import { DateAndTimeFormatting } from '@repo/utils'
 import type { Options as InitialSettings } from 'daterangepicker'
 import moment from 'moment-timezone'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import type { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
 import PeriodPicker from 'domains/reporting/pages/common/PeriodPicker'

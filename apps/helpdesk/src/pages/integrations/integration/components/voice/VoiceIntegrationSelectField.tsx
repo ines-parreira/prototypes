@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useId } from '@repo/hooks'
 import flatten from 'lodash/flatten'
+import { useId } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button, Skeleton, toast } from '@gorgias/axiom'
 import { useGetIntegration } from '@gorgias/helpdesk-queries'

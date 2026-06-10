@@ -2,7 +2,6 @@ import {
     useAreFlagsLoading,
     useHelpdeskV2WayfindingMS1Flag,
 } from '@repo/feature-flags'
-import { useIsMobileResolution, useWindowSize } from '@repo/hooks'
 import { Handle, PanelGroup, Panels } from '@repo/layout'
 import { TicketsLegacyBridgeProvider } from '@repo/tickets'
 import {
@@ -11,6 +10,7 @@ import {
     useHelpdeskV2MS4Dot5Flag,
 } from '@repo/tickets/feature-flags'
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
+import { useIsMobileResolution, useWindowSize } from '@gorgias/toolkit-react'
 
 import { GlobalNavigationPanel } from 'core/navigation'
 import { ContentPanels } from 'core/ui'

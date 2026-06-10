@@ -1,7 +1,6 @@
 import type { ComponentType } from 'react'
 import { useMemo } from 'react'
 
-import { useUpdateEffect } from '@repo/hooks'
 import { history } from '@repo/routing'
 import type { Map } from 'immutable'
 import {
@@ -12,6 +11,7 @@ import { stringify } from 'qs'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import { useLocation } from 'react-router-dom'
+import { useUpdateEffect } from '@gorgias/toolkit-react'
 
 import { getConfigByName } from 'config/views'
 import { useSearch } from 'hooks/useSearch'

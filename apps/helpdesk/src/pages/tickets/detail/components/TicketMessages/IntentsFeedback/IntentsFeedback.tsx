@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 import client from '@repo/api-resources'
-import { useAsyncFn } from '@repo/hooks'
 import type { AxiosError } from 'axios'
 import _difference from 'lodash/difference'
 import _isEqual from 'lodash/isEqual'
+import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
 

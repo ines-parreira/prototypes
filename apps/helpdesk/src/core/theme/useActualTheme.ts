@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 
 import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
-import { useLocalStorage } from '@repo/hooks'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import { THEME_NAME } from '@gorgias/design-tokens'
 

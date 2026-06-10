@@ -1,4 +1,3 @@
-import * as hooksImports from '@repo/hooks'
 import { assumeMock, render, userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, waitFor } from '@testing-library/react'
@@ -7,6 +6,7 @@ import { Provider } from 'react-redux'
 import { Router, useLocation } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import * as hooksImports from '@gorgias/toolkit-react'
 
 import { abGroup, campaignWithABGroup } from 'fixtures/abGroup'
 import { useStartABGroup } from 'pages/convert/abVariants/hooks/useStartABGroup'
@@ -16,8 +16,8 @@ import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import ABGroupContainer from '../ABGroupContainer'
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useDismissFlag: jest.fn(),
 }))
 

@@ -53,7 +53,7 @@ jest.mock('hooks/useAppSelector', () => ({
     default: (selector: any) => mockUseAppSelector(selector),
 }))
 
-jest.mock('@repo/hooks', () => ({
+jest.mock('@gorgias/toolkit-react', () => ({
     useAsyncFn: (fn: any) => mockUseAsyncFn(fn),
 }))
 

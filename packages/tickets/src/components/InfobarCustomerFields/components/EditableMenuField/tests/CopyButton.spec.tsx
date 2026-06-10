@@ -8,7 +8,7 @@ const { useCopyToClipboard } = vi.hoisted(() => ({
     useCopyToClipboard: vi.fn(),
 }))
 
-vi.mock('@repo/hooks', () => ({
+vi.mock('@gorgias/toolkit-react', () => ({
     useCopyToClipboard,
 }))
 

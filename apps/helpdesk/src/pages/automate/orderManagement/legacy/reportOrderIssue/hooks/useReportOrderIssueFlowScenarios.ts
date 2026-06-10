@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react'
 
-import { useAsyncFn } from '@repo/hooks'
 import { useHistory } from 'react-router-dom'
+import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { IntegrationType } from 'models/integration/constants'
 import type { SelfServiceReportIssueCase } from 'models/selfServiceConfiguration/types'

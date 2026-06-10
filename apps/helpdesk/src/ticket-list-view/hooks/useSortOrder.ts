@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react'
 
-import { useLocalStorage } from '@repo/hooks'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import type { ListViewItemsUpdatesOrderBy } from '@gorgias/helpdesk-types'
 

@@ -1,6 +1,6 @@
-import { useTitle } from '@repo/hooks'
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
+import { useTitle } from '@gorgias/toolkit-react'
 
 import { OBJECT_TYPE_SETTINGS } from 'custom-fields/constants'
 import type { CustomFieldObjectTypes } from 'custom-fields/types'

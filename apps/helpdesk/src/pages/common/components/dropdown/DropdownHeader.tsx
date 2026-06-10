@@ -7,8 +7,8 @@ import React, {
     useRef,
 } from 'react'
 
-import { useKey } from '@repo/hooks'
 import classnames from 'classnames'
+import { useKey } from '@gorgias/toolkit-react'
 
 import css from './DropdownHeader.less'
 

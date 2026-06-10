@@ -1,13 +1,15 @@
-import * as hooksImports from '@repo/hooks'
 import { render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import ConvertCampaignsNewHomeInfobar from '../ConvertCampaignsNewHomeInfobar'
 
-const useLocalStorageSpy = jest.spyOn(
-    hooksImports,
-    'useLocalStorage',
-) as jest.Mock
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
+    useLocalStorage: jest.fn(),
+}))
+
+const useLocalStorageSpy = useLocalStorage as jest.Mock
 
 describe('<ConvertCampaignsNewHomeInfobar/>', () => {
     const integrationId = '123'

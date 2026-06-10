@@ -7,10 +7,10 @@ import {
     useState,
 } from 'react'
 
-import { useLocalStorageWithExpiry, usePrevious } from '@repo/hooks'
 import { history } from '@repo/routing'
 import { shortcutManager } from '@repo/utils'
 import { useLocation } from 'react-router-dom'
+import { useLocalStorageWithExpiry, usePrevious } from '@gorgias/toolkit-react'
 
 import { Box, Heading, Modal, ModalSize, Skeleton } from '@gorgias/axiom'
 

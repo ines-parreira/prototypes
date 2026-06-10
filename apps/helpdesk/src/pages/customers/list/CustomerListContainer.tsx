@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 
-import { useTitle } from '@repo/hooks'
 import { fromJS } from 'immutable'
 import { useRouteMatch } from 'react-router-dom'
+import { useTitle } from '@gorgias/toolkit-react'
 
 import { Button } from '@gorgias/axiom'
 

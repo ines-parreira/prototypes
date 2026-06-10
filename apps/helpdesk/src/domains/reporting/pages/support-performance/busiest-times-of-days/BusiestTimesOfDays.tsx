@@ -1,4 +1,4 @@
-import { useGridSize } from '@repo/hooks'
+import { useGridSize } from '@gorgias/toolkit-react'
 
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import {

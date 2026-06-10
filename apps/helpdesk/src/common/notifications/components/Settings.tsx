@@ -1,8 +1,8 @@
 import type { ChangeEvent, FormEvent } from 'react'
 import React, { useCallback, useEffect, useRef } from 'react'
 
-import { useMouseRelease } from '@repo/hooks'
 import cn from 'classnames'
+import { useMouseRelease } from '@gorgias/toolkit-react'
 
 import {
     LegacyButton as Button,

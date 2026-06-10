@@ -1,6 +1,6 @@
-import { useLocalStorage } from '@repo/hooks'
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import type { TicketCompact, TicketStatus } from '@gorgias/helpdesk-queries'
 
@@ -13,7 +13,7 @@ import type { ActiveFilters } from '../useTimelineFilters'
 import { useTimelineFilters } from '../useTimelineFilters'
 
 jest.mock('@repo/logging')
-jest.mock('@repo/hooks', () => ({
+jest.mock('@gorgias/toolkit-react', () => ({
     useLocalStorage: jest.fn(),
 }))
 

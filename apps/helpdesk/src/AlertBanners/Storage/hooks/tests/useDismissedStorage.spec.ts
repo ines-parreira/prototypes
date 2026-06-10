@@ -1,7 +1,7 @@
 import type { Dispatch } from 'react'
 
-import { useLocalStorage } from '@repo/hooks'
 import { assumeMock, renderHook } from '@repo/testing'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import { BannerCategories } from '../../../types'
 import { DISMISSED_BANNER_STORAGE_KEY } from '../../constants'
@@ -10,8 +10,8 @@ import { useDismissedStorage } from '../useDismissedStorage'
 import { useStorageCleanup } from '../useStorageCleanup'
 import { useStorageSync } from '../useStorageSync'
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useLocalStorage: jest.fn(),
 }))
 jest.mock('../../helpers/isBannerDismissed', () => ({

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { useEffectOnce } from '@repo/hooks'
 import { useHistory, useParams } from 'react-router-dom'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { Box, Heading, Modal, OverlayHeader } from '@gorgias/axiom'
 

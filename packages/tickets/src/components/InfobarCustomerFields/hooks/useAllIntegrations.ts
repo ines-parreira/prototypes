@@ -1,5 +1,5 @@
-import { useExhaustEndpoint } from '@repo/hooks'
 import { Duration } from '@gorgias/toolkit'
+import { useExhaustEndpoint } from '@gorgias/toolkit-react'
 
 import type { IntegrationType } from '@gorgias/helpdesk-client'
 import { listIntegrations } from '@gorgias/helpdesk-client'

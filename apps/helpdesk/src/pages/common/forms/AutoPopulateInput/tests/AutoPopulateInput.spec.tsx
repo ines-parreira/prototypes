@@ -5,6 +5,11 @@ import { fireEvent } from '@testing-library/react'
 
 import AutoPopulateInput from '../AutoPopulateInput'
 
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
+    useId: jest.fn(() => require('lodash/uniqueId')()),
+}))
+
 describe('<AutoPopulateInput />', () => {
     let onChange: jest.MockedFunction<any>
 

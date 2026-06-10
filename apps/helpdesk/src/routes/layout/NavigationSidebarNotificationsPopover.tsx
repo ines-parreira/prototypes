@@ -1,9 +1,9 @@
 import { useCallback, useState } from 'react'
 
-import { useIsMobileResolution } from '@repo/hooks'
 import { useSidebar } from '@repo/navigation'
 import type { Notification, NotificationTileProps } from '@repo/notifications'
 import { NotificationsFeedPanel } from '@repo/notifications'
+import { useIsMobileResolution } from '@gorgias/toolkit-react'
 
 import { Popover } from '@gorgias/axiom'
 

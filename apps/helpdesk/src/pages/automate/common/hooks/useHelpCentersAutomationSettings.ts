@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { useAsyncFn } from '@repo/hooks'
+import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

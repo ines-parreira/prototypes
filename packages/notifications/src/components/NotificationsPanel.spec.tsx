@@ -1,13 +1,13 @@
-import { useIsMobileResolution } from '@repo/hooks'
 import { render } from '@repo/testing/vitest'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { useIsMobileResolution } from '@gorgias/toolkit-react'
 
 import type { NotificationItem } from '../hooks/useNotificationItems'
 import { NotificationsPanel } from './NotificationsPanel'
 import { NotificationTile } from './NotificationTile'
 
-vi.mock('@repo/hooks', () => ({
+vi.mock('@gorgias/toolkit-react', () => ({
     useIsMobileResolution: vi.fn(() => false),
 }))
 

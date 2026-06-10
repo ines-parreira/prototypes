@@ -8,7 +8,7 @@ import React, {
     useState,
 } from 'react'
 
-import { useEffectOnce } from '@repo/hooks'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
 

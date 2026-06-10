@@ -13,8 +13,8 @@ const mockStorage: Record<string, any> = {}
 let mockSetCollapsedFirstLevelView = jest.fn()
 let mockSetCollapsedSections = jest.fn()
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useLocalStorage: jest
         .fn()
         .mockImplementation((key: string, initialValue: any) => {
@@ -70,7 +70,7 @@ describe('useStoredNavigationSections', () => {
         expect(result.current.navigationValues).toEqual(
             initialViewCategoryValues,
         )
-        const { useLocalStorage } = jest.requireMock('@repo/hooks')
+        const { useLocalStorage } = jest.requireMock('@gorgias/toolkit-react')
         expect(useLocalStorage).toHaveBeenCalledWith(
             'collapsed-first-level-view',
             initialViewCategoryValues,

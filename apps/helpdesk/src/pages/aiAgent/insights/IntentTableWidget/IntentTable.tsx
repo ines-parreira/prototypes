@@ -1,12 +1,12 @@
 import type { UIEventHandler } from 'react'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { useEffectOnce, useMeasure } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { sanitizeHtmlDefault } from '@repo/utils'
 import classNames from 'classnames'
 import { isEqual } from 'lodash'
 import { useParams } from 'react-router-dom'
+import { useEffectOnce, useMeasure } from '@gorgias/toolkit-react'
 
 import { useAIAgentInsightsDataset } from 'domains/reporting/hooks/automate/useAIAgentInsightsDataset'
 import { INTENT_LEVEL } from 'domains/reporting/hooks/automate/utils'

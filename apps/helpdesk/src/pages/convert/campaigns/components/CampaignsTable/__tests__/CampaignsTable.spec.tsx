@@ -1,7 +1,7 @@
-import * as hooksImports from '@repo/hooks'
 import { render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
+import * as hooksImports from '@gorgias/toolkit-react'
 
 import { campaignWithABGroup } from 'fixtures/abGroup'
 import { campaign } from 'fixtures/campaign'

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 
-import { useAsyncFn } from '@repo/hooks'
 import { reportError } from '@repo/logging'
 import classNames from 'classnames'
+import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 

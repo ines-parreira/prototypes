@@ -2,8 +2,8 @@ import type { ReactNode } from 'react'
 import { useCallback, useMemo, useRef, useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useLocalStorage, useTimeout } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { useLocalStorage, useTimeout } from '@gorgias/toolkit-react'
 
 import { NavBarContext, NavBarDisplayMode } from '../hooks/useNavBar/context'
 

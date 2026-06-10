@@ -1,5 +1,4 @@
 import { isSessionImpersonated } from '@repo/activity-tracker/utils'
-import { useMeasure } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { NavigationProvider } from '@repo/navigation'
 import { assumeMock, render } from '@repo/testing'
@@ -9,6 +8,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import scrollIntoView from 'scroll-into-view-if-needed'
+import { useMeasure } from '@gorgias/toolkit-react'
 
 import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
 import { message } from 'models/ticket/tests/mocks'
@@ -43,8 +43,8 @@ jest.mock('state/ui/ticketAIAgentFeedback', () => ({
 }))
 
 jest.mock('pages/tickets/detail/hooks/useAIAgentSendFeedback')
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useMeasure: jest.fn(),
 }))
 

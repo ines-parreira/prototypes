@@ -1,7 +1,7 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useDebouncedValue, useElementSize } from '@repo/hooks'
 import cn from 'classnames'
 import { Duration } from '@gorgias/toolkit'
+import { useDebouncedValue, useElementSize } from '@gorgias/toolkit-react'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'

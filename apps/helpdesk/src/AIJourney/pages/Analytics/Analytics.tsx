@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
-import { useEffectOnce, useLocalStorage } from '@repo/hooks'
 import { ConfigureMetricsModal, LineChart, TrendCard } from '@repo/reporting'
 import type { MetricConfigItem, MetricTrendFormat } from '@repo/reporting'
 import { motion } from 'framer-motion'
 import moment from 'moment/moment'
+import { useEffectOnce, useLocalStorage } from '@gorgias/toolkit-react'
 
 import {
     Box,

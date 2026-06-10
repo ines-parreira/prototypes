@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { useTitle } from '@repo/hooks'
 import { SearchRankSource } from '@repo/logging'
 import {
     useCurrentUserLanguagePreferences,
@@ -11,6 +10,7 @@ import classnames from 'classnames'
 import type { List } from 'immutable'
 import { fromJS } from 'immutable'
 import { useLocation, useParams } from 'react-router-dom'
+import { useTitle } from '@gorgias/toolkit-react'
 
 import type { Ticket } from '@gorgias/helpdesk-queries'
 

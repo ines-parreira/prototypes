@@ -2,10 +2,10 @@ import type { KeyboardEvent } from 'react'
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useDebouncedEffect } from '@repo/hooks'
 import type { QueryKey } from '@tanstack/react-query'
 import { useQueryClient } from '@tanstack/react-query'
 import cn from 'classnames'
+import { useDebouncedEffect } from '@gorgias/toolkit-react'
 
 import { queryKeys } from '@gorgias/helpdesk-queries'
 import type { ListTagsParams, Tag } from '@gorgias/helpdesk-types'

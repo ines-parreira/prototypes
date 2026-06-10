@@ -20,7 +20,7 @@
     "peerDependencies": {
         "@gorgias/axiom": "catalog:axiom",
         "@repo/browser-storage": "workspace:*",
-        "@repo/hooks": "workspace:*",
+        "@gorgias/toolkit-react": "catalog:toolkit",
         "@repo/logging": "workspace:*",
         "@repo/utils": "workspace:*",
         "@splitsoftware/splitio-browserjs": "catalog:feature-flags",
@@ -31,7 +31,7 @@
         "@gorgias/axiom": "catalog:axiom",
         "@repo/browser-storage": "workspace:*",
         "@repo/config": "workspace:*",
-        "@repo/hooks": "workspace:*",
+        "@gorgias/toolkit-react": "catalog:toolkit",
         "@repo/logging": "workspace:*",
         "@repo/utils": "workspace:*",
         "@splitsoftware/splitio-browserjs": "catalog:feature-flags",

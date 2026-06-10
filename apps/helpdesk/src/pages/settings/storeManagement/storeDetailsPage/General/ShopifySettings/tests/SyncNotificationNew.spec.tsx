@@ -4,8 +4,8 @@ import { BrowserRouter } from 'react-router-dom'
 
 import SyncNotification from '../SyncNotificationNew'
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useLocalStorage: jest.fn().mockImplementation(() => {
         return [false, jest.fn()]
     }),
@@ -59,7 +59,7 @@ describe('<SyncNotification />', () => {
 
     it('should call setBannerClosed when close button is clicked', () => {
         const mockSetBannerClosed = jest.fn()
-        const { useLocalStorage } = jest.requireMock('@repo/hooks')
+        const { useLocalStorage } = jest.requireMock('@gorgias/toolkit-react')
         useLocalStorage.mockImplementation(() => [false, mockSetBannerClosed])
 
         renderComponent(
@@ -73,7 +73,7 @@ describe('<SyncNotification />', () => {
     })
 
     it('should not render anything when banner is closed', () => {
-        const { useLocalStorage } = jest.requireMock('@repo/hooks')
+        const { useLocalStorage } = jest.requireMock('@gorgias/toolkit-react')
         useLocalStorage.mockImplementation(() => [true, jest.fn()])
 
         renderComponent(

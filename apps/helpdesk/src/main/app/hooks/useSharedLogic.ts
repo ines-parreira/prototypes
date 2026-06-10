@@ -1,5 +1,5 @@
-import { useEffectOnce } from '@repo/hooks'
 import { identifyUser } from '@repo/logging'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

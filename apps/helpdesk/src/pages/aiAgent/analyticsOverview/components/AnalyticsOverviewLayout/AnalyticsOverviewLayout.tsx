@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 
-import { useEffectOnce, useLocalStorage } from '@repo/hooks'
 import { getPreviousUrl } from '@repo/routing'
+import { useEffectOnce, useLocalStorage } from '@gorgias/toolkit-react'
 
 import { DashboardExportButton } from '@repo/reporting'
 import moment from 'moment'

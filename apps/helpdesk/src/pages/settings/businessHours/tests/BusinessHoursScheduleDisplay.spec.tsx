@@ -9,8 +9,8 @@ import { useTextOverflow } from 'pages/common/hooks/useTextOverflow'
 
 import BusinessHoursScheduleDisplay from '../BusinessHoursScheduleDisplay'
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useId: jest.fn().mockImplementation(() => 'test-id'),
 }))
 jest.mock('pages/common/hooks/useTextOverflow')

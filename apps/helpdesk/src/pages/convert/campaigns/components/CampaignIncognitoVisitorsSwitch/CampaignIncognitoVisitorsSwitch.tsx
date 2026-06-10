@@ -1,9 +1,9 @@
 import type { FC } from 'react'
 import { createRef, useMemo, useState } from 'react'
 
-import { useUpdateEffect } from '@repo/hooks'
 import cn from 'classnames'
 import _intersection from 'lodash/intersection'
+import { useUpdateEffect } from '@gorgias/toolkit-react'
 
 import { LegacyToggleField as ToggleField } from '@gorgias/axiom'
 

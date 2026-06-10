@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 
-import { useLocalStorage } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 export enum TagSelection {
     includeTags = 'include_tags',

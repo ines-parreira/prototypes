@@ -1,10 +1,10 @@
 import type React from 'react'
 import { useMemo } from 'react'
 
-import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import { Container } from 'reactstrap'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button, Skeleton } from '@gorgias/axiom'
 

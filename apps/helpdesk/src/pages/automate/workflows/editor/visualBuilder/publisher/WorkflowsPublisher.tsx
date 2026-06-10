@@ -1,6 +1,6 @@
-import { useKey } from '@repo/hooks'
 import { useParams } from 'react-router-dom'
 import { Duration } from '@gorgias/toolkit'
+import { useKey } from '@gorgias/toolkit-react'
 
 import { TicketChannel } from 'business/types/ticket'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'

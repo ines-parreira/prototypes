@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react'
 
-import { useId } from '@repo/hooks'
 import { useParams } from 'react-router-dom'
+import { useId } from '@gorgias/toolkit-react'
 
 import {
     Box,

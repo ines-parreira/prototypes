@@ -1,5 +1,5 @@
-import { useDebouncedValue } from '@repo/hooks'
 import { Duration } from '@gorgias/toolkit'
+import { useDebouncedValue } from '@gorgias/toolkit-react'
 
 import {
     LegacyButton as Button,

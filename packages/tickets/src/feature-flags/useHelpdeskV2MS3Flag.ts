@@ -1,6 +1,6 @@
 import { useHelpdeskV2BaselineFlag } from '@repo/feature-flags'
-import { useIsMobileResolution } from '@repo/hooks'
 import { useLocation, useParams } from 'react-router-dom'
+import { useIsMobileResolution } from '@gorgias/toolkit-react'
 
 export function useHelpdeskV2MS3Flag() {
     const { hasUIVisionBeta } = useHelpdeskV2BaselineFlag()

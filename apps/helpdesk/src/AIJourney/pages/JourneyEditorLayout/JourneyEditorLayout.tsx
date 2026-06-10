@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
-import { useId } from '@repo/hooks'
 import type { SubmitHandler } from 'react-hook-form'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import { useHistory, useLocation } from 'react-router-dom'
+import { useId } from '@gorgias/toolkit-react'
 
 import {
     Box,

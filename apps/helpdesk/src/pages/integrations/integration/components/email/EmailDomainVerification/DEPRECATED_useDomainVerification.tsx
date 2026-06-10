@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useInterval, useLocalStorage } from '@repo/hooks'
+import { useInterval, useLocalStorage } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
 import type { EmailDomain } from '@gorgias/helpdesk-queries'

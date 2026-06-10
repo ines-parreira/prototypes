@@ -1,8 +1,8 @@
 import { useEffect, useMemo } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useEffectOnce } from '@repo/hooks'
 import { useHistory, useLocation } from 'react-router-dom'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { BannerCategories, useBanners } from 'AlertBanners'
 import useAppSelector from 'hooks/useAppSelector'

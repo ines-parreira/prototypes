@@ -19,8 +19,8 @@ jest.mock('state/integrations/selectors', () => ({
     getIntegrationChannel: () => () => mockChannels[0],
 }))
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useId: jest.fn().mockImplementation(() => 'mocked'),
 }))
 

@@ -2,9 +2,9 @@ import { useCallback, useMemo, useState } from 'react'
 
 import type { PreferenceSet } from '@knocklabs/client'
 import { useKnockClient } from '@knocklabs/react'
-import { useAsyncFn, useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import _merge from 'lodash/merge'
+import { useAsyncFn, useEffectOnce } from '@gorgias/toolkit-react'
 
 import { AI_AGENT_SET_AND_OPTIMIZED_TYPE } from 'automate/notifications/constants'
 import { UserSettingType } from 'config/types/user'

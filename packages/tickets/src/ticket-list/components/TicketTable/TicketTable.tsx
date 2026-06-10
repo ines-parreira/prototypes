@@ -1,9 +1,9 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 
-import { usePrevious } from '@repo/hooks'
 import { useUserDateTimePreferences } from '@repo/preferences'
 import { useViewCount } from '@repo/views'
 import { useHistory } from 'react-router-dom'
+import { usePrevious } from '@gorgias/toolkit-react'
 
 import {
     Button,

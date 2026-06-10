@@ -2,10 +2,10 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
 import type { FormErrors } from '@repo/forms'
-import { useInterval, useLocalStorage } from '@repo/hooks'
 import isObject from 'lodash/isObject'
 import kebabCase from 'lodash/kebabCase'
 import { useHistory, useRouteMatch } from 'react-router-dom'
+import { useInterval, useLocalStorage } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
 import type {

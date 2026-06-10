@@ -1,10 +1,14 @@
 import type { FormEvent } from 'react'
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 
-import { useAsyncFn, usePrevious, useUpdateEffect } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
 import pluralize from 'pluralize'
+import {
+    useAsyncFn,
+    usePrevious,
+    useUpdateEffect,
+} from '@gorgias/toolkit-react'
 
 import {
     LegacyButton as Button,

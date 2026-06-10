@@ -1,8 +1,8 @@
 import { useCallback, useMemo, useRef } from 'react'
 
-import { useEffectOnce, useLocalStorage } from '@repo/hooks'
 import { getPreviousUrl } from '@repo/routing'
 import moment from 'moment/moment'
+import { useEffectOnce, useLocalStorage } from '@gorgias/toolkit-react'
 
 import { Box } from '@gorgias/axiom'
 

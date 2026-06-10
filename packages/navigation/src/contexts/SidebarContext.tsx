@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useMemo } from 'react'
 
-import { useIsMobileResolution, useLocalStorage } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { useIsMobileResolution, useLocalStorage } from '@gorgias/toolkit-react'
 
 export type SidebarContextValue = {
     isCollapsed: boolean

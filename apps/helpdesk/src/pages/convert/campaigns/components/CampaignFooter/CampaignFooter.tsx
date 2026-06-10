@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from 'react'
 
-import { useDismissFlag, useLocalStorage } from '@repo/hooks'
 import classnames from 'classnames'
+import { useDismissFlag, useLocalStorage } from '@gorgias/toolkit-react'
 
 import {
     LegacyButton as Button,

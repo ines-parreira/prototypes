@@ -1,7 +1,6 @@
 import type { ReactElement } from 'react'
 
 import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
-import { useIsMobileResolution, useWindowSize } from '@repo/hooks'
 import { Panels } from '@repo/layout'
 import { NavigationProvider } from '@repo/navigation'
 import { assumeMock, render } from '@repo/testing'
@@ -10,6 +9,7 @@ import { act, screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
 import { Router } from 'react-router-dom'
+import { useIsMobileResolution, useWindowSize } from '@gorgias/toolkit-react'
 
 import { NavBarDisplayMode } from 'common/navigation/hooks/useNavBar/context'
 import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
@@ -46,8 +46,8 @@ jest.mock('core/navigation', () => ({
 jest.mock('hooks/integrations/phone/useVoiceDevice')
 const useVoiceDeviceMock = assumeMock(useVoiceDevice)
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useWindowSize: jest.fn(),
     useIsMobileResolution: jest.fn(),
 }))

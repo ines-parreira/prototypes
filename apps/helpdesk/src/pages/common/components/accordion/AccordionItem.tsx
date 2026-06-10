@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react'
 import React, { useMemo } from 'react'
 
-import { useId } from '@repo/hooks'
 import classnames from 'classnames'
+import { useId } from '@gorgias/toolkit-react'
 
 import { useAccordionContext } from './AccordionContext'
 import type { AccordionItemContextType } from './AccordionItemContext'

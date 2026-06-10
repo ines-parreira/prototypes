@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 
-import { useLocalStorage } from '@repo/hooks'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import { SORT_OPTIONS_WITH_ORDERS } from '../../constants'
 import type {

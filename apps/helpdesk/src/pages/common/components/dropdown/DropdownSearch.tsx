@@ -7,13 +7,13 @@ import {
     useState,
 } from 'react'
 
+import classnames from 'classnames'
 import {
     useEffectOnce,
     usePrevious,
     useUnmount,
     useUpdateEffect,
-} from '@repo/hooks'
-import classnames from 'classnames'
+} from '@gorgias/toolkit-react'
 
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'

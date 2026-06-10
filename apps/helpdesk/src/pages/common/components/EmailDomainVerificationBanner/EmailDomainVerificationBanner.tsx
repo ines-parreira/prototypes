@@ -1,6 +1,6 @@
-import { useLocalStorage } from '@repo/hooks'
 import type { Map } from 'immutable'
 import { Link } from 'react-router-dom'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import { AlertBannerTypes } from 'AlertBanners'
 import { AlertBanner } from 'AlertBanners/components/AlertBanner'

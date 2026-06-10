@@ -403,9 +403,6 @@ catalogs:
     '@types/jest':
       specifier: ^29.5.12
       version: 29.5.13
-    '@types/jsdom':
-      specifier: 16.2.15
-      version: 16.2.15
     '@types/testing-library__jest-dom':
       specifier: 5.14.1
       version: 5.14.1
@@ -458,6 +455,9 @@ catalogs:
     '@gorgias/toolkit':
       specifier: 0.2.0
       version: 0.2.0
+    '@gorgias/toolkit-react':
+      specifier: 0.3.0
+      version: 0.3.0
   typescript:
     '@typescript/native-preview':
       specifier: 7.0.0-dev.20260421.2
@@ -1279,6 +1279,9 @@ importers:
       '@gorgias/static-analysis':
         specifier: 0.3.0
         version: 0.3.0(@types/node@24.12.2)
+      '@gorgias/toolkit-react':
+        specifier: catalog:toolkit
+        version: 0.3.0(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@gorgias/workflows-mocks':
         specifier: catalog:rest-api-sdk
         version: 0.2.45(@types/node@24.12.2)(typescript@6.0.3)
@@ -1294,9 +1297,6 @@ importers:
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
-      '@repo/hooks':
-        specifier: workspace:*
-        version: link:../../packages/hooks
       '@repo/testing':
         specifier: workspace:*
         version: link:../../packages/testing
@@ -2227,6 +2227,9 @@ importers:
       '@gorgias/toolkit':
         specifier: catalog:toolkit
         version: 0.2.0
+      '@gorgias/toolkit-react':
+        specifier: catalog:toolkit
+        version: 0.3.0(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -2239,9 +2242,6 @@ importers:
       '@repo/forms':
         specifier: workspace:*
         version: link:../forms
-      '@repo/hooks':
-        specifier: workspace:*
-        version: link:../hooks
       '@repo/logging':
         specifier: workspace:*
         version: link:../logging
@@ -2425,12 +2425,12 @@ importers:
       '@gorgias/toolkit':
         specifier: catalog:toolkit
         version: 0.2.0
+      '@gorgias/toolkit-react':
+        specifier: catalog:toolkit
+        version: 0.3.0(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
-      '@repo/hooks':
-        specifier: workspace:*
-        version: link:../hooks
       '@repo/preferences':
         specifier: workspace:*
         version: link:../preferences
@@ -2519,15 +2519,15 @@ importers:
       '@gorgias/axiom':
         specifier: catalog:axiom
         version: 0.295.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+      '@gorgias/toolkit-react':
+        specifier: catalog:toolkit
+        version: 0.3.0(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@repo/browser-storage':
         specifier: workspace:*
         version: link:../browser-storage
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
-      '@repo/hooks':
-        specifier: workspace:*
-        version: link:../hooks
       '@repo/logging':
         specifier: workspace:*
         version: link:../logging
@@ -2588,12 +2588,12 @@ importers:
       '@gorgias/helpdesk-validators':
         specifier: catalog:rest-api-sdk
         version: 0.7.219
+      '@gorgias/toolkit-react':
+        specifier: catalog:toolkit
+        version: 0.3.0(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
-      '@repo/hooks':
-        specifier: workspace:*
-        version: link:../hooks
       '@repo/testing':
         specifier: workspace:*
         version: link:../testing
@@ -2658,85 +2658,6 @@ importers:
         specifier: catalog:test
         version: 4.1.5(@types/node@24.12.2)(@vitest/coverage-v8@4.1.5)(happy-dom@20.9.0)(jsdom@21.0.0)(msw@2.9.0(@types/node@24.12.2)(typescript@6.0.3))(vite@7.1.2(@types/node@24.12.2)(jiti@2.6.1)(less@4.1.3)(terser@5.44.1)(tsx@4.20.3)(yaml@2.8.0))
 
-  packages/hooks:
-    dependencies:
-      copy-to-clipboard:
-        specifier: catalog:copy-to-clipboard
-        version: 3.3.1
-      qs:
-        specifier: catalog:qs
-        version: 6.14.1
-    devDependencies:
-      '@gorgias/helpdesk-client':
-        specifier: catalog:rest-api-sdk
-        version: 0.10.162
-      '@gorgias/toolkit':
-        specifier: catalog:toolkit
-        version: 0.2.0
-      '@repo/config':
-        specifier: workspace:*
-        version: link:../../config
-      '@repo/testing':
-        specifier: workspace:*
-        version: link:../testing
-      '@repo/types':
-        specifier: workspace:*
-        version: link:../types
-      '@tanstack/react-query':
-        specifier: 4.36.1
-        version: 4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
-      '@testing-library/dom':
-        specifier: catalog:test
-        version: 10.4.0
-      '@testing-library/jest-dom':
-        specifier: catalog:test
-        version: 6.9.1
-      '@testing-library/react':
-        specifier: catalog:test
-        version: 14.0.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      '@testing-library/user-event':
-        specifier: catalog:test
-        version: 14.5.2(@testing-library/dom@10.4.0)
-      '@types/jsdom':
-        specifier: catalog:test
-        version: 16.2.15
-      '@types/lodash':
-        specifier: catalog:lodash
-        version: 4.14.158
-      '@types/qs':
-        specifier: catalog:qs
-        version: 6.14.0
-      '@types/react':
-        specifier: catalog:react
-        version: 18.2.67
-      '@types/react-dom':
-        specifier: catalog:react
-        version: 18.2.22
-      '@vitest/coverage-v8':
-        specifier: catalog:test
-        version: 4.1.5(vitest@4.1.5)
-      lodash:
-        specifier: 4.18.1
-        version: 4.18.1
-      oxfmt:
-        specifier: catalog:formatter
-        version: 0.48.0
-      oxlint:
-        specifier: catalog:oxlint
-        version: 1.51.0
-      react:
-        specifier: catalog:react
-        version: 18.2.0
-      react-dom:
-        specifier: catalog:react
-        version: 18.2.0(react@18.2.0)
-      typescript:
-        specifier: catalog:typescript
-        version: 6.0.3
-      vitest:
-        specifier: catalog:test
-        version: 4.1.5(@types/node@24.12.2)(@vitest/coverage-v8@4.1.5)(happy-dom@20.9.0)(jsdom@21.0.0)(msw@2.9.0(@types/node@24.12.2)(typescript@6.0.3))(vite@7.1.2(@types/node@24.12.2)(jiti@2.6.1)(less@4.1.3)(terser@5.44.1)(tsx@4.20.3)(yaml@2.8.0))
-
   packages/layout:
     dependencies:
       classnames:
@@ -2746,12 +2667,12 @@ importers:
       '@gorgias/axiom':
         specifier: catalog:axiom
         version: 0.295.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+      '@gorgias/toolkit-react':
+        specifier: catalog:toolkit
+        version: 0.3.0(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
-      '@repo/hooks':
-        specifier: workspace:*
-        version: link:../hooks
       '@testing-library/dom':
         specifier: catalog:test
         version: 10.4.0
@@ -2813,12 +2734,12 @@ importers:
       '@gorgias/toolkit':
         specifier: catalog:toolkit
         version: 0.2.0
+      '@gorgias/toolkit-react':
+        specifier: catalog:toolkit
+        version: 0.3.0(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
-      '@repo/hooks':
-        specifier: workspace:*
-        version: link:../hooks
       '@repo/utils':
         specifier: workspace:*
         version: link:../utils
@@ -2885,9 +2806,9 @@ importers:
       '@gorgias/axiom':
         specifier: catalog:axiom
         version: 0.295.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
-      '@repo/hooks':
-        specifier: workspace:*
-        version: link:../hooks
+      '@gorgias/toolkit-react':
+        specifier: catalog:toolkit
+        version: 0.3.0(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@repo/logging':
         specifier: workspace:*
         version: link:../logging
@@ -2970,9 +2891,9 @@ importers:
 
   packages/notifications:
     dependencies:
-      '@repo/hooks':
-        specifier: workspace:*
-        version: link:../hooks
+      '@gorgias/toolkit-react':
+        specifier: catalog:toolkit
+        version: 0.3.0(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       react-router-dom:
         specifier: catalog:react-router
         version: 5.2.0(react@18.2.0)
@@ -3218,12 +3139,12 @@ importers:
       '@gorgias/toolkit':
         specifier: catalog:toolkit
         version: 0.2.0
+      '@gorgias/toolkit-react':
+        specifier: catalog:toolkit
+        version: 0.3.0(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
-      '@repo/hooks':
-        specifier: workspace:*
-        version: link:../hooks
       '@repo/logging':
         specifier: workspace:*
         version: link:../logging
@@ -3387,15 +3308,15 @@ importers:
       '@gorgias/toolkit':
         specifier: catalog:toolkit
         version: 0.2.0
+      '@gorgias/toolkit-react':
+        specifier: catalog:toolkit
+        version: 0.3.0(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@repo/browser-storage':
         specifier: workspace:*
         version: link:../browser-storage
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
-      '@repo/hooks':
-        specifier: workspace:*
-        version: link:../hooks
       '@repo/routing':
         specifier: workspace:*
         version: link:../routing
@@ -3477,12 +3398,12 @@ importers:
       '@gorgias/toolkit':
         specifier: catalog:toolkit
         version: 0.2.0
+      '@gorgias/toolkit-react':
+        specifier: catalog:toolkit
+        version: 0.3.0(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
-      '@repo/hooks':
-        specifier: workspace:*
-        version: link:../hooks
       '@repo/testing':
         specifier: workspace:*
         version: link:../testing
@@ -3643,6 +3564,9 @@ importers:
       '@gorgias/toolkit':
         specifier: catalog:toolkit
         version: 0.2.0
+      '@gorgias/toolkit-react':
+        specifier: catalog:toolkit
+        version: 0.3.0(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -3652,9 +3576,6 @@ importers:
       '@repo/feature-flags':
         specifier: workspace:*
         version: link:../feature-flags
-      '@repo/hooks':
-        specifier: workspace:*
-        version: link:../hooks
       '@repo/preferences':
         specifier: workspace:*
         version: link:../preferences
@@ -3815,6 +3736,9 @@ importers:
       '@gorgias/toolkit':
         specifier: catalog:toolkit
         version: 0.2.0
+      '@gorgias/toolkit-react':
+        specifier: catalog:toolkit
+        version: 0.3.0(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@repo/browser-storage':
         specifier: workspace:*
         version: link:../browser-storage
@@ -3827,9 +3751,6 @@ importers:
       '@repo/feature-flags':
         specifier: workspace:*
         version: link:../feature-flags
-      '@repo/hooks':
-        specifier: workspace:*
-        version: link:../hooks
       '@repo/layout':
         specifier: workspace:*
         version: link:../layout
@@ -4068,15 +3989,15 @@ importers:
       '@gorgias/toolkit':
         specifier: catalog:toolkit
         version: 0.2.0
+      '@gorgias/toolkit-react':
+        specifier: catalog:toolkit
+        version: 0.3.0(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@repo/api-resources':
         specifier: workspace:*
         version: link:../api-resources
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
-      '@repo/hooks':
-        specifier: workspace:*
-        version: link:../hooks
       '@repo/layout':
         specifier: workspace:*
         version: link:../layout
@@ -6121,6 +6042,14 @@ packages:
     resolution: {integrity: sha512-+Rq8pq6uy6VjL3cMZn0a5ZmAHJRFvQ340HIYe8uWWDpc6MQKfGnrC6Cdfk6+GSgb1+ekmgK+XRYchyMVaJTRNQ==, tarball: https://npm.pkg.github.com/download/@gorgias/static-analysis/0.5.0/6b468daaa0f1febb83c1e45ed24197d7a39d2fa2}
     engines: {node: '>=22'}
     hasBin: true
+
+  '@gorgias/toolkit-react@0.3.0':
+    resolution: {integrity: sha512-HaaK6GnUqOr4SyLV21LYoJB8t3a+hfxR58jgzN0uv14o65Qq3n5gMySqgfWdBSZ14gstJOLfnJdrqIDlMcX8BQ==, tarball: https://npm.pkg.github.com/download/@gorgias/toolkit-react/0.3.0/c329793382e4b98d3ad6cd7d90160af6ee4bc282}
+    engines: {node: '>=22.22.0'}
+    peerDependencies:
+      '@tanstack/react-query': 4.36.1
+      react: ^18
+      react-dom: ^18
 
   '@gorgias/toolkit@0.2.0':
     resolution: {integrity: sha512-8+lXp9ZhEbMCuXu6b7ftr/+6OUFOjjY+oA4hulseOhKk1ggCsNcmwJf/FkOIBELx9sv1yQEFu2w2jxm4H1/VGQ==, tarball: https://npm.pkg.github.com/download/@gorgias/toolkit/0.2.0/93702e7d227f2df31223941f1e37b18f52d5034f}
@@ -12417,6 +12346,9 @@ packages:
   eventemitter3@5.0.1:
     resolution: {integrity: sha512-GWkBvjiSZK87ELrYOSESUYeVIc9mvLLf/nXalMOS5dYrgZq9o5OVkbZAVM06CVxYsCwH9BDZFPlQTlPA1j4ahA==}
 
+  eventemitter3@5.0.4:
+    resolution: {integrity: sha512-mlsTRyGaPBjPedk6Bvw+aqbsXDtoAyAzm5MO7JgU+yVRyMQ5O8bD4Kcci7BS85f93veegeCPkL8R4GLClnjLFw==}
+
   events@3.3.0:
     resolution: {integrity: sha512-mQw+2fkQbALzQ7V0MY0IqdnXNOeTtP4r0lN9z7AAawCXgqea7bDii20AYrIBrFd/Hx0M2Ocz6S111CaFkUcb0Q==}
     engines: {node: '>=0.8.x'}
@@ -15343,9 +15275,17 @@ packages:
     resolution: {integrity: sha512-y3b8Kpd8OAN444hxfBbFfj1FY/RjtTd8tzYwhUqNYXx0fXx2iX4maP4Qr6qhIKbQXI02wTLAda4fYUbDagTUFw==}
     engines: {node: '>=6'}
 
+  p-queue@9.3.0:
+    resolution: {integrity: sha512-7NED7xhQ74Ngp4JP/2e0VZHp7vSWfJfqeiR92jPgxsz6m0Se4P03YoTKa9dDXyZ3r6P616gUXttrB6nnHYKang==}
+    engines: {node: '>=20'}
+
   p-retry@6.2.1:
     resolution: {integrity: sha512-hEt02O4hUct5wtwg4H4KcWgDdm+l1bOaEy/hWzd8xtXB9BqxTWBBhb+2ImAtH4Cv4rPjV76xN3Zumqk3k3AhhQ==}
     engines: {node: '>=16.17'}
+
+  p-timeout@7.0.1:
+    resolution: {integrity: sha512-AxTM2wDGORHGEkPCt8yqxOTMgpfbEHqF51f/5fJCmwFC3C/zNcGT63SymH2ttOAaiIws2zVg4+izQCjrakcwHg==}
+    engines: {node: '>=20'}
 
   p-try@1.0.0:
     resolution: {integrity: sha512-U1etNYuMJoIz3ZXSrrySFjsXQTWOx2/jdi86L+2pRvph/qMKL6sbcCYdH23fqsbm8TH2Gn0OybpT4eSFlCVHww==}
@@ -20742,6 +20682,15 @@ snapshots:
       oxc-resolver: 11.13.2
       oxc-walker: 0.6.0(oxc-parser@0.98.0)
       ts-pattern: 5.9.0
+
+  '@gorgias/toolkit-react@0.3.0(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@tanstack/react-query': 4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
+      copy-to-clipboard: 3.3.1
+      lodash-es: 4.18.1
+      p-queue: 9.3.0
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
 
   '@gorgias/toolkit@0.2.0': {}
 
@@ -28041,6 +27990,8 @@ snapshots:
 
   eventemitter3@5.0.1: {}
 
+  eventemitter3@5.0.4: {}
+
   events@3.3.0: {}
 
   eventsource-parser@3.0.6: {}
@@ -32226,11 +32177,18 @@ snapshots:
 
   p-map@2.1.0: {}
 
+  p-queue@9.3.0:
+    dependencies:
+      eventemitter3: 5.0.4
+      p-timeout: 7.0.1
+
   p-retry@6.2.1:
     dependencies:
       '@types/retry': 0.12.2
       is-network-error: 1.1.0
       retry: 0.13.1
+
+  p-timeout@7.0.1: {}
 
   p-try@1.0.0: {}
 

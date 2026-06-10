@@ -1,6 +1,6 @@
 import { useCallback, useRef } from 'react'
 
-import { useId } from '@repo/hooks'
+import { useId } from '@gorgias/toolkit-react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import type { Language } from '@gorgias/helpdesk-types'

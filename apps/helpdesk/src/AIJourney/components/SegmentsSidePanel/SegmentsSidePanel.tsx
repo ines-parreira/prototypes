@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useDebouncedValue } from '@repo/hooks'
 import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form'
+import { useDebouncedValue } from '@gorgias/toolkit-react'
 
 import {
     Box,

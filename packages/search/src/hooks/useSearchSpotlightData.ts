@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useDebouncedValue } from '@repo/hooks'
+import { useDebouncedValue } from '@gorgias/toolkit-react'
 
 import {
     useSearchAllCustomers,

@@ -1,7 +1,6 @@
 import type { FormEvent } from 'react'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 
-import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { shortcutManager } from '@repo/utils'
 import { useViewCount } from '@repo/views'
@@ -10,6 +9,7 @@ import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 import _uniqWith from 'lodash/uniqWith'
 import { Col, Container, Row } from 'reactstrap'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 import type { Language, Macro, MacroAction } from '@gorgias/helpdesk-queries'

@@ -1,9 +1,9 @@
 import type { RefObject } from 'react'
 import React from 'react'
 
-import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 import { useHistory, useLocation } from 'react-router-dom'
+import { useId } from '@gorgias/toolkit-react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 

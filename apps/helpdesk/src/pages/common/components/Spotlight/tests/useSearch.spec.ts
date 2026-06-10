@@ -1,9 +1,9 @@
 import type { KeyboardEvent } from 'react'
 
-import { useLocalStorageWithExpiry } from '@repo/hooks'
 import { useSearchRankScenario } from '@repo/logging'
 import { assumeMock, renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
+import { useLocalStorageWithExpiry } from '@gorgias/toolkit-react'
 
 import { customer } from 'fixtures/customer'
 import { ticket } from 'fixtures/ticket'
@@ -31,8 +31,8 @@ jest.mock('@repo/logging', () => ({
 }))
 const mockUseSearchRankScenario = assumeMock(useSearchRankScenario)
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useLocalStorageWithExpiry: jest.fn(),
 }))
 jest.mock('hooks/useAppSelector', () => jest.fn())

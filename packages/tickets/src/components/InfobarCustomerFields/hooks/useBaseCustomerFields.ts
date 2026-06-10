@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 
-import { useUpdateEffect } from '@repo/hooks'
+import { useUpdateEffect } from '@gorgias/toolkit-react'
 
 import type {
     TicketCustomer,

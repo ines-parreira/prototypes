@@ -2,11 +2,11 @@ import type React from 'react'
 import { createRef, useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useAsyncFn } from '@repo/hooks'
 import { reportError } from '@repo/logging'
 import { isAxiosError } from 'axios'
 import { FormGroup, FormText } from 'reactstrap'
 import isHexColor from 'validator/lib/isHexColor'
+import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 

@@ -1,7 +1,7 @@
-import { useLocalStorage } from '@repo/hooks'
 import { assumeMock, renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
@@ -21,7 +21,7 @@ const mockUseParams = assumeMock(useParams)
 const mockUseHistory = assumeMock(useHistory)
 const mockUseLocation = assumeMock(useLocation)
 
-jest.mock('@repo/hooks', () => ({
+jest.mock('@gorgias/toolkit-react', () => ({
     useLocalStorage: jest.fn(),
 }))
 const mockUseLocalStorage = assumeMock(useLocalStorage)

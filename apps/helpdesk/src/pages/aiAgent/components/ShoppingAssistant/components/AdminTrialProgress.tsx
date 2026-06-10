@@ -1,7 +1,7 @@
 import type React from 'react'
 
-import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { PromoCard } from 'pages/common/components/PromoCard'
 

@@ -2,7 +2,6 @@ import type React from 'react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { produce } from 'immer'
 import type { Map } from 'immutable'
@@ -19,6 +18,7 @@ import {
     Form,
     Row,
 } from 'reactstrap'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { LegacyLoadingSpinner as LoadingSpinner, toast } from '@gorgias/axiom'
 

@@ -1,7 +1,7 @@
-import { useLocalStorage } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import {
     TagSelection,
@@ -11,8 +11,8 @@ import {
 jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useLocalStorage: jest.fn(),
 }))
 const useLocalStorageMock = assumeMock(useLocalStorage)

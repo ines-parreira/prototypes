@@ -23,6 +23,22 @@ jest.mock('lodash/uniqueId', () => {
         return value.toString()
     }
 })
+jest.mock('@gorgias/toolkit-react', () => {
+    const React = jest.requireActual('react') as typeof import('react')
+
+    return {
+        ...jest.requireActual('@gorgias/toolkit-react'),
+        useId: jest.fn(function useIdMock() {
+            const id = React.useRef<string | undefined>(undefined)
+
+            if (id.current === undefined) {
+                id.current = require('lodash/uniqueId')()
+            }
+
+            return id.current
+        }),
+    }
+})
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
     getSingleHelpCenterResponseFixture,

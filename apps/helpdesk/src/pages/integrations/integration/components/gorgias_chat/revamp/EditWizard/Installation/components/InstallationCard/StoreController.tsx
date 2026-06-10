@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { useAsyncFn } from '@repo/hooks'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
+import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import {
     Button,

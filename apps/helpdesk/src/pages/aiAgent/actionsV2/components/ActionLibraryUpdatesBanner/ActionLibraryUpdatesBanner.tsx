@@ -1,6 +1,6 @@
 import { useHistory } from 'react-router-dom'
 
-import { useDismissFlag } from '@repo/hooks'
+import { useDismissFlag } from '@gorgias/toolkit-react'
 
 import {
     Box,

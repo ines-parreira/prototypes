@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
-import { useAsyncFn } from '@repo/hooks'
 import { history } from '@repo/routing'
+import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button, toast } from '@gorgias/axiom'
 

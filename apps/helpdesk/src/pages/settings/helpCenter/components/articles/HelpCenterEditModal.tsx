@@ -2,9 +2,9 @@ import type React from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { SCREEN_SIZE, useScreenSize } from '@repo/hooks'
 import classnames from 'classnames'
 import ReactDOM from 'react-dom'
+import { SCREEN_SIZE, useScreenSize } from '@gorgias/toolkit-react'
 
 import Loader from 'pages/common/components/Loader/Loader'
 import { useEditionManager } from 'pages/settings/helpCenter/providers/EditionManagerContext'

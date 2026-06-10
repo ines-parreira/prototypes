@@ -1,4 +1,4 @@
-import { useCopyToClipboard } from '@repo/hooks'
+import { useCopyToClipboard } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 

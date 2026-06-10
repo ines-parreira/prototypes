@@ -1,16 +1,18 @@
-import * as hooksImports from '@repo/hooks'
 import { render, userEvent } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
 
 import { CampaignToolsCell } from '../CampaignToolsCell'
 
-const useLocalStorageSpy = jest.spyOn(
-    hooksImports,
-    'useLocalStorage',
-) as jest.Mock
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
+    useLocalStorage: jest.fn(),
+}))
+
+const useLocalStorageSpy = useLocalStorage as jest.Mock
 
 describe('<CampaignToolsCell />', () => {
     const onClickDelete = jest.fn()

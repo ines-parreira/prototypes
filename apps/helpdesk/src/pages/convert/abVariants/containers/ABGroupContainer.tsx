@@ -2,10 +2,10 @@ import type { ReactNode } from 'react'
 import type React from 'react'
 import { useCallback, useMemo } from 'react'
 
-import { useDismissFlag } from '@repo/hooks'
 import { history } from '@repo/routing'
 import { Link, NavLink, useLocation, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
+import { useDismissFlag } from '@gorgias/toolkit-react'
 
 import {
     LegacyButton as Button,

@@ -3939,7 +3939,7 @@
     {
       "nodeType": "ExportNamedDeclaration",
       "nodeName": "useExhaustEndpoint",
-      "comment": "*\n * @deprecated Use useExhaustEndpoint from @repo/hooks package instead\n * @date 2025-12-23\n * @type migration\n ",
+      "comment": "*\n * @deprecated Use useExhaustEndpoint from @gorgias/toolkit-react package instead\n * @date 2025-12-23\n * @type migration\n ",
       "count": 6,
       "filePath": "apps/helpdesk/src/hooks/useExhaustEndpoint.ts",
       "usages": [

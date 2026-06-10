@@ -4,7 +4,7 @@ import { screen } from '@testing-library/react'
 import type { AutomaticDiscountRowProps } from '../sections/AutomaticDiscountRow'
 import { AutomaticDiscountRow } from '../sections/AutomaticDiscountRow'
 
-vi.mock('@repo/hooks', async (importOriginal) => ({
+vi.mock('@gorgias/toolkit-react', async (importOriginal) => ({
     ...((await importOriginal()) as Record<string, unknown>),
     useCopyToClipboard: () => [
         {},

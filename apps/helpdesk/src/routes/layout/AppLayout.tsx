@@ -1,6 +1,6 @@
-import { useIsMobileResolution, useWindowSize } from '@repo/hooks'
 import { Handle, Panel, PanelGroup, Panels } from '@repo/layout'
 import { SidebarProvider } from '@repo/navigation'
+import { useIsMobileResolution, useWindowSize } from '@gorgias/toolkit-react'
 
 import { CopilotWorkspaceContainer } from 'copilot/CopilotWorkspaceContainer'
 import { useCopilotEnabled } from 'hooks/useCopilotEnabled'

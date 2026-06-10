@@ -3,8 +3,8 @@ import { fireEvent, screen } from '@testing-library/react'
 
 import SortOrderDropdown from '../SortOrderDropdown'
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useId: jest.fn().mockImplementation(() => 'mocked'),
 }))
 

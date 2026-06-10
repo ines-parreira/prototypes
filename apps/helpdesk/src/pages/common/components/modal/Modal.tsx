@@ -10,11 +10,11 @@ import React, {
 } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useId, useKey } from '@repo/hooks'
 import classnames from 'classnames'
 import FocusTrap from 'focus-trap-react'
 import { createPortal } from 'react-dom'
 import { CSSTransition } from 'react-transition-group'
+import { useId, useKey } from '@gorgias/toolkit-react'
 
 import { useAppNode } from 'appNode'
 

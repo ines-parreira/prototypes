@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 
-import { useEffectOnce } from '@repo/hooks'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 export type BannerElement = HTMLElement & { originalDisplay?: string }
 

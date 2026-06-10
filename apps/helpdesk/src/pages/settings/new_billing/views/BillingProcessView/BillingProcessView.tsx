@@ -9,10 +9,10 @@ import {
     useBillingState,
 } from '@repo/billing'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
 import { dismissNotification } from 'reapop'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { Button, Separator, toast } from '@gorgias/axiom'
 import type { CustomerSummary } from '@gorgias/helpdesk-types'

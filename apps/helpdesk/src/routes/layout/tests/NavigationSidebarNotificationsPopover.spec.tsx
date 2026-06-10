@@ -1,15 +1,15 @@
 import type { ReactNode } from 'react'
 
-import { useIsMobileResolution } from '@repo/hooks'
 import { useSidebar } from '@repo/navigation'
 import { assumeMock, render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { useIsMobileResolution } from '@gorgias/toolkit-react'
 
 import { NavigationSidebarNotificationsPopover } from '../NavigationSidebarNotificationsPopover'
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useIsMobileResolution: jest.fn(() => false),
 }))
 

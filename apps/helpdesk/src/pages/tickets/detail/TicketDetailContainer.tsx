@@ -3,13 +3,6 @@ import { Duration } from '@gorgias/toolkit'
 
 import { localForageManager } from '@repo/browser-storage'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import {
-    useAsyncFn,
-    useEffectOnce,
-    useIsMobileResolution,
-    useKey,
-    usePrevious,
-} from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { useRealtimeTicketUpdates } from '@repo/ticket-thread'
 import {
@@ -28,6 +21,13 @@ import _pick from 'lodash/pick'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import { useLocation, useParams } from 'react-router-dom'
+import {
+    useAsyncFn,
+    useEffectOnce,
+    useIsMobileResolution,
+    useKey,
+    usePrevious,
+} from '@gorgias/toolkit-react'
 
 import { Button, Text, toast } from '@gorgias/axiom'
 import type { DomainEvent } from '@gorgias/events'

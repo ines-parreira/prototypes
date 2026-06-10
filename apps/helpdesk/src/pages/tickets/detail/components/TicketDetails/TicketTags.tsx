@@ -1,9 +1,9 @@
 import type { ComponentProps } from 'react'
 import { Fragment, useEffect, useMemo, useState } from 'react'
 
-import { useCallbackRef, useElementSize } from '@repo/hooks'
 import classnames from 'classnames'
 import _uniqueId from 'lodash/uniqueId'
+import { useCallbackRef, useElementSize } from '@gorgias/toolkit-react'
 
 import {
     LegacyBadge as Badge,

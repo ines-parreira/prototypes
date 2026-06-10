@@ -1,7 +1,6 @@
 import type { FormEvent, MouseEvent } from 'react'
 import { useCallback, useContext, useMemo, useState } from 'react'
 
-import { usePrevious, useUpdateEffect } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { shortcutManager } from '@repo/utils'
 import classnames from 'classnames'
@@ -19,6 +18,7 @@ import {
     FormGroup,
     Label,
 } from 'reactstrap'
+import { usePrevious, useUpdateEffect } from '@gorgias/toolkit-react'
 
 import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 

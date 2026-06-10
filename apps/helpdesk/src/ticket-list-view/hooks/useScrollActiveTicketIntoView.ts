@@ -1,8 +1,8 @@
 import type { MutableRefObject } from 'react'
 import { useCallback, useEffect, useMemo } from 'react'
 
-import { usePrevious, useUpdateEffect } from '@repo/hooks'
 import type { VirtuosoHandle } from 'react-virtuoso'
+import { usePrevious, useUpdateEffect } from '@gorgias/toolkit-react'
 
 import type { TicketCompact } from '../types'
 

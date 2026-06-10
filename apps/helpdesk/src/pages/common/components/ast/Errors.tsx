@@ -9,8 +9,8 @@ import {
     useState,
 } from 'react'
 
-import { useId } from '@repo/hooks'
 import classnames from 'classnames'
+import { useId } from '@gorgias/toolkit-react'
 
 export const ErrorsCollector: React.FC<{ children: React.ReactNode }> = ({
     children,

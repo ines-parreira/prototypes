@@ -94,7 +94,7 @@ jest.mock('@repo/feature-flags', () => ({
     useFlag: (key: any) => mockUseFlag(key),
 }))
 
-jest.mock('@repo/hooks', () => ({
+jest.mock('@gorgias/toolkit-react', () => ({
     useAsyncFn: (fn: any) => mockUseAsyncFn(fn),
 }))
 

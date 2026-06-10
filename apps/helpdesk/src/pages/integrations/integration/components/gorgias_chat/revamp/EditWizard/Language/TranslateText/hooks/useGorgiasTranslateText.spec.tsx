@@ -25,7 +25,7 @@ jest.mock('@repo/logging', () => ({
     },
 }))
 
-jest.mock('@repo/hooks', () => ({
+jest.mock('@gorgias/toolkit-react', () => ({
     useEffectOnce: (fn: () => void) => require('react').useEffect(fn, []),
 }))
 

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
-import { useLocalStorage } from '@repo/hooks'
 import type { CountryCode } from 'libphonenumber-js'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import type { PhoneIntegration } from 'models/integration/types/phone'

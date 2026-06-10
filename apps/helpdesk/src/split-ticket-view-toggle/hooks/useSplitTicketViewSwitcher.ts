@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef } from 'react'
 
-import { useIsMobileResolution, usePrevious } from '@repo/hooks'
 import { matchPath, useHistory, useLocation } from 'react-router-dom'
+import { useIsMobileResolution, usePrevious } from '@gorgias/toolkit-react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { ViewType } from 'models/view/types'

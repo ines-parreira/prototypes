@@ -2,8 +2,8 @@ import type { FormEvent } from 'react'
 import React, { useEffect, useState } from 'react'
 
 import client from '@repo/api-resources'
-import { useAsyncFn } from '@repo/hooks'
 import { Container, Form, FormGroup, Input, Label } from 'reactstrap'
+import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button, toast } from '@gorgias/axiom'
 

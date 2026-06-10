@@ -1,6 +1,6 @@
 import { Children, useState } from 'react'
 
-import { useId } from '@repo/hooks'
+import { useId } from '@gorgias/toolkit-react'
 
 import { Box, Button } from '@gorgias/axiom'
 

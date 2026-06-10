@@ -1,4 +1,4 @@
-import { useLocalStorage } from '@repo/hooks'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 const getStorageKey = (dashboardId: number) =>
     `show-metric-origin-dashboard-${dashboardId}`

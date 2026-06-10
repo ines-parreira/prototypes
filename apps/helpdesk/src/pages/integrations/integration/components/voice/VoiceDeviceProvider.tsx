@@ -3,9 +3,9 @@ import { useEffect, useMemo, useReducer } from 'react'
 
 import type { Dispatch } from '@reduxjs/toolkit'
 import { bindActionCreators } from '@reduxjs/toolkit'
-import { useLocalStorage } from '@repo/hooks'
 import { isDesktopDevice, registerCallStateCallback } from '@repo/utils'
 import { Device } from '@twilio/voice-sdk'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import { useErrorHandling } from 'hooks/integrations/phone/useErrorHandling'
 import {

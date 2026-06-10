@@ -2,9 +2,9 @@ import type { ComponentProps } from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useTimeout } from '@repo/hooks'
 import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
 import cn from 'classnames'
+import { useTimeout } from '@gorgias/toolkit-react'
 
 import {
     LegacyBadge as Badge,

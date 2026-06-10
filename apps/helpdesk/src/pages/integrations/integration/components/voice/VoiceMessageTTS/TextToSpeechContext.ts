@@ -1,6 +1,6 @@
 import { createContext } from 'react'
 
-import { useSafeContext } from '@repo/hooks'
+import { useSafeContext } from '@gorgias/toolkit-react'
 
 import type { VoiceGender, VoiceLanguage } from '@gorgias/helpdesk-types'
 

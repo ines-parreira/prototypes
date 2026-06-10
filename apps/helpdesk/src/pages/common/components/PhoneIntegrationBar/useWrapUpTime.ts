@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 
-import { useInterval } from '@repo/hooks'
 import moment from 'moment'
+import { useInterval } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
 import {

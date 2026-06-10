@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useReducer, useState } from 'react'
 
-import { useKey } from '@repo/hooks'
 import moment from 'moment'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
+import { useKey } from '@gorgias/toolkit-react'
 
 import {
     useGetConfigurationExecution,

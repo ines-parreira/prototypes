@@ -1,4 +1,4 @@
-import { useId } from '@repo/hooks'
+import { useId } from '@gorgias/toolkit-react'
 
 import type { LegacyColorType as ColorType } from '@gorgias/axiom'
 import { LegacyBadge as Badge, LegacyTooltip as Tooltip } from '@gorgias/axiom'

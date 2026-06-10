@@ -28,9 +28,14 @@ import {
     size,
     useFloating,
 } from '@floating-ui/react'
-import { useEvent, useKey, usePrevious, useUpdateEffect } from '@repo/hooks'
 import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
+import {
+    useEvent,
+    useKey,
+    usePrevious,
+    useUpdateEffect,
+} from '@gorgias/toolkit-react'
 
 import { useAppNode } from 'appNode'
 

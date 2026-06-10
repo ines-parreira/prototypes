@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { FeatureFlagKey } from '@repo/feature-flags'
-import { useLocalStorage } from '@repo/hooks'
 import { history } from '@repo/routing'
 import { assumeMock, render } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -11,6 +10,7 @@ import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import type { EmailIntegration } from '@gorgias/helpdesk-queries'
 
@@ -54,8 +54,8 @@ jest.mock(
 jest.mock(
     'pages/integrations/integration/components/email/CustomerOnboarding/EmailIntegrationOnboardingDomainVerification',
 )
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useLocalStorage: jest.fn(),
 }))
 

@@ -1,13 +1,13 @@
 import type { KeyboardEvent } from 'react'
 import { useCallback, useEffect, useRef } from 'react'
 
-import { useUnmount, useUpdateEffect } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import { isMacOs, shortcutManager } from '@repo/utils'
 import classnames from 'classnames'
 import { stringify } from 'qs'
 import { useLocation } from 'react-router-dom'
+import { useUnmount, useUpdateEffect } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 

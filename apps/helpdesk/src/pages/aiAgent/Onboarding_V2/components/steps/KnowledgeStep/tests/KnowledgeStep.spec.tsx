@@ -1,10 +1,10 @@
 import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
-import { useLocalStorage } from '@repo/hooks'
 import { assumeMock, render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Route } from 'react-router'
 import { useLocation } from 'react-router-dom'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import { shopifyIntegration } from 'fixtures/integrations'
 import * as hooks from 'hooks/useAppSelector'
@@ -77,7 +77,7 @@ jest.mock(
     }),
 )
 jest.mock('pages/aiAgent/trial/hooks/useTrialAccess')
-jest.mock('@repo/hooks')
+jest.mock('@gorgias/toolkit-react')
 jest.mock('models/aiAgent/queries', () => ({
     ...jest.requireActual('models/aiAgent/queries'),
     useStartSalesTrialMutation: jest.fn(),

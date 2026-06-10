@@ -1,7 +1,7 @@
 import { useCallback, useRef, useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useCopyToClipboard } from '@repo/hooks'
+import { useCopyToClipboard } from '@gorgias/toolkit-react'
 
 import {
     Banner,

@@ -1,9 +1,9 @@
 import type { ComponentProps, ReactNode, SyntheticEvent } from 'react'
 import React, { useState } from 'react'
 
-import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 import { Popover, PopoverBody } from 'reactstrap'
+import { useId } from '@gorgias/toolkit-react'
 
 import { useAppNode } from 'appNode'
 import {

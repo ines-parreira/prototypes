@@ -1,11 +1,11 @@
 import type React from 'react'
 
 import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
-import { useIsMobileResolution } from '@repo/hooks'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { assumeMock, render } from '@repo/testing'
 import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
+import { useIsMobileResolution } from '@gorgias/toolkit-react'
 
 import { CopilotPanel } from '@gorgias/copilot'
 
@@ -34,8 +34,8 @@ jest.mock('@repo/navigation', () => ({
 }))
 const useTicketInfobarNavigationMock = useTicketInfobarNavigation as jest.Mock
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useIsMobileResolution: jest.fn(),
 }))
 jest.mock('common/navigation', () => ({

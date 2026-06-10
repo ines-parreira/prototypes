@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-import { useToggle } from '@repo/hooks'
+import { useToggle } from '@gorgias/toolkit-react'
 
 export function useMergeTicketsWorflow() {
     const {

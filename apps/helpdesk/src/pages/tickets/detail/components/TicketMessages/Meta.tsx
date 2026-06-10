@@ -1,9 +1,9 @@
 import { useEffect, useMemo } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useAsyncFn } from '@repo/hooks'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
+import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'

@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useExhaustEndpoint } from '@repo/hooks'
+import { useExhaustEndpoint } from '@gorgias/toolkit-react'
 
 import { listIntegrations } from '@gorgias/helpdesk-client'
 import { queryKeys, useListInstagramProfiles } from '@gorgias/helpdesk-queries'

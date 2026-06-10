@@ -12,6 +12,11 @@ import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 
 import { AfterTitle, BeforeContent, TitleWrapper, Wrapper } from '../Order'
 
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
+    useId: jest.fn(() => require('lodash/uniqueId')()),
+}))
+
 const mockStore = configureMockStore([thunk])
 const integrationContextData = { integration: fromJS({}), integrationId: 1 }
 

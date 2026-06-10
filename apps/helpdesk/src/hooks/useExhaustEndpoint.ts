@@ -13,7 +13,7 @@ type ListResponse<ListItemType> = {
 type Response<ListItemType> = HttpResponse<ListResponse<ListItemType>>
 
 /**
- * @deprecated Use useExhaustEndpoint from @repo/hooks package instead
+ * @deprecated Use useExhaustEndpoint from @gorgias/toolkit-react package instead
  * @date 2025-12-23
  * @type migration
  */

@@ -7,7 +7,7 @@ import {
     FormSubmitButton,
     toFormErrors,
 } from '@repo/forms'
-import { useIsMounted } from '@repo/hooks'
+import { useIsMounted } from '@gorgias/toolkit-react'
 
 import {
     LegacyButton as Button,

@@ -22,6 +22,11 @@ import { getHelpCenterTranslationsResponseFixture } from '../../fixtures/getHelp
 import { HelpCenterTranslationProvider } from '../../providers/HelpCenterTranslation/HelpCenterTranslation'
 import { HelpCenterAppearanceView } from '../HelpCenterAppearanceView/HelpCenterAppearanceView'
 
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
+    useId: jest.fn(() => require('lodash/uniqueId')()),
+}))
+
 jest.mock('hooks/aiAgent/useAiAgentAccess')
 const mockUseAiAgentAccess = jest.mocked(useAiAgentAccess)
 mockUseAiAgentAccess.mockReturnValue({ hasAccess: false, isLoading: false })

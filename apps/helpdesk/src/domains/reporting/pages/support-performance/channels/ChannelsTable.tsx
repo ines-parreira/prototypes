@@ -1,8 +1,8 @@
 import type { UIEventHandler } from 'react'
 import React, { useState } from 'react'
 
-import { useMeasure } from '@repo/hooks'
 import classNames from 'classnames'
+import { useMeasure } from '@gorgias/toolkit-react'
 
 import { useSortedChannelsWithData } from 'domains/reporting/hooks/support-performance/useSortedChannelsWithData'
 import { useChannelsTableSetting } from 'domains/reporting/hooks/useChannelsTableConfigSetting'

@@ -10,7 +10,7 @@ import { GorgiasChatLauncherType } from 'models/integration/types/gorgiasChat'
 
 import { useLanguagesTable } from './useLanguagesTable'
 
-jest.mock('@repo/hooks', () => ({
+jest.mock('@gorgias/toolkit-react', () => ({
     useAsyncFn: (fn: (...args: any[]) => Promise<any>) => {
         const callback = jest.fn((...args: any[]) => fn(...args))
         return [{ loading: false }, callback]

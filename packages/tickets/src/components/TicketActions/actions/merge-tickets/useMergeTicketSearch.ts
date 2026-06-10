@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useDebouncedValue } from '@repo/hooks'
+import { useDebouncedValue } from '@gorgias/toolkit-react'
 
 import type { Ticket } from '@gorgias/helpdesk-queries'
 import { OrderDirection, useSearchTickets } from '@gorgias/helpdesk-queries'

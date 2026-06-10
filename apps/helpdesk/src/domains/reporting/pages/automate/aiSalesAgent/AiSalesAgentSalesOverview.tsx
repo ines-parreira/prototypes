@@ -1,5 +1,5 @@
-import { useEffectOnce } from '@repo/hooks'
 import { getPreviousUrl } from '@repo/routing'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import AiSalesAgentOverviewDownloadButton from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentOverviewDownloadButton'

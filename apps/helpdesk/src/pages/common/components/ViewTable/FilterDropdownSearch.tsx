@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react'
 
-import { useEffectOnce } from '@repo/hooks'
 import type { CancelToken } from 'axios'
 import type { List, Map } from 'immutable'
 import { DropdownItem } from 'reactstrap'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import Search from 'pages/common/components/Search'

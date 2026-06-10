@@ -1,5 +1,5 @@
 // Thresholds are container widths (not viewport). 768px aligns with
-// MOBILE_BREAKPOINT in @repo/hooks. drag/resize disabled below this (mobile only).
+// MOBILE_BREAKPOINT in @gorgias/toolkit-react. drag/resize disabled below this (mobile only).
 export const GRID_BREAKPOINTS = {
     lg: 768,
     sm: 0,

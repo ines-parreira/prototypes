@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 
-import { useMeasure } from '@repo/hooks'
+import { useMeasure } from '@gorgias/toolkit-react'
 
 import { Skeleton } from '@gorgias/axiom'
 

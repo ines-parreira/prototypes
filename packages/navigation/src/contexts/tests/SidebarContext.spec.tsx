@@ -1,11 +1,11 @@
-import { useIsMobileResolution } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { act, renderHook } from '@testing-library/react'
+import { useIsMobileResolution } from '@gorgias/toolkit-react'
 
 import { SidebarProvider, useSidebar } from '../SidebarContext'
 
-vi.mock('@repo/hooks', async () => ({
-    ...(await vi.importActual('@repo/hooks')),
+vi.mock('@gorgias/toolkit-react', async () => ({
+    ...(await vi.importActual('@gorgias/toolkit-react')),
     useIsMobileResolution: vi.fn(),
 }))
 

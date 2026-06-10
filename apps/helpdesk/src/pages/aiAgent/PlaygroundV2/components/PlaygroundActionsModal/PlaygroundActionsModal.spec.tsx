@@ -8,7 +8,7 @@ import { ThemeProvider } from 'core/theme'
 
 import PlaygroundActionsModal from './PlaygroundActionsModal'
 
-jest.mock('@repo/hooks', () => ({
+jest.mock('@gorgias/toolkit-react', () => ({
     useSessionStorage: jest.fn((key, defaultValue) => {
         const [value, setValue] = React.useState(defaultValue)
         return [value, setValue]

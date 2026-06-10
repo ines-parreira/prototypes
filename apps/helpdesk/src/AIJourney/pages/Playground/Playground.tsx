@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { useEffectOnce } from '@repo/hooks'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { Button, LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 

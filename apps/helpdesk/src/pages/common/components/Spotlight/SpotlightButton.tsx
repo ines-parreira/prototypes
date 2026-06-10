@@ -1,5 +1,5 @@
-import { useId } from '@repo/hooks'
 import { isMacOs } from '@repo/utils'
+import { useId } from '@gorgias/toolkit-react'
 
 import {
     LegacyButton as Button,

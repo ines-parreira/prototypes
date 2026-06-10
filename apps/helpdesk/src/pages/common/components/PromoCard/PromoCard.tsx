@@ -7,10 +7,10 @@ import {
     useState,
 } from 'react'
 
-import { useLocalStorage } from '@repo/hooks'
 import cn from 'classnames'
 import { createPortal } from 'react-dom'
 import { Link } from 'react-router-dom'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import {
     LegacyButton as Button,

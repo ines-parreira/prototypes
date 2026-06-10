@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { localForageManager } from '@repo/browser-storage'
-import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { getCreateTicketPathWithPreviousURL } from '@repo/tickets/utils/routing'
 import type { LocationDescriptor } from 'history'
 import { useHistory } from 'react-router-dom'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import type { TicketDraft } from 'hooks/useTicketDraft'

@@ -5,7 +5,6 @@ import {
     useHelpdeskV2WayfindingMS1Flag,
     useTicketNavViewSourceSdkFlagWithLoading,
 } from '@repo/feature-flags'
-import { useAsyncFn } from '@repo/hooks'
 import { NavigationSectionGroup, useSidebar } from '@repo/navigation'
 import { CollapsedDefaultViews } from '@repo/tickets'
 import { systemViewIcons } from '@repo/tickets/utils/views'
@@ -15,6 +14,7 @@ import type { DropTargetMonitor } from 'react-dnd'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
+import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { Box, Separator, toast } from '@gorgias/axiom'
 

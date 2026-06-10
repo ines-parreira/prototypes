@@ -1,8 +1,8 @@
 import type { MouseEvent } from 'react'
 import React, { useCallback, useMemo, useState } from 'react'
 
-import { useLocalStorage } from '@repo/hooks'
 import type { Map } from 'immutable'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'

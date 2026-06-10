@@ -16,8 +16,8 @@ import React, {
     useState,
 } from 'react'
 
-import { useEffectOnce, useUpdateEffect } from '@repo/hooks'
 import classnames from 'classnames'
+import { useEffectOnce, useUpdateEffect } from '@gorgias/toolkit-react'
 
 import {
     GroupContext,

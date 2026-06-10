@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react'
 
-import { useLocalStorage } from '@repo/hooks'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import type { AccordionValues } from 'components/Accordion/utils/types'
 import type { ViewCategoryNavbar } from 'models/view/types'

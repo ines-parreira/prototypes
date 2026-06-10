@@ -1,11 +1,11 @@
 import { useCallback, useMemo } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffectOnce } from '@repo/hooks'
 import { get } from 'lodash'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 import { z } from 'zod'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button, toast } from '@gorgias/axiom'
 

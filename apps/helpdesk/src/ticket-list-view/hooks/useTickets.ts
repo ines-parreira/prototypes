@@ -1,7 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useDebouncedValue, useElementSize, usePrevious } from '@repo/hooks'
+import {
+    useDebouncedValue,
+    useElementSize,
+    usePrevious,
+} from '@gorgias/toolkit-react'
 
 import type { SearchTicketsOrderBy } from '@gorgias/helpdesk-types'
 

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useEffectOnce } from '@repo/hooks'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import {
     LegacyBanner as Banner,

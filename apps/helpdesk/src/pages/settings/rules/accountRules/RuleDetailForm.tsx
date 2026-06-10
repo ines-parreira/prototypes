@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 
-import { useAsyncFn } from '@repo/hooks'
 import { history } from '@repo/routing'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
 

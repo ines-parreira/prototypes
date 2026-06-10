@@ -2,8 +2,11 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
 import { useFeedbackTracking } from '@repo/ai-agent'
-import { useDebouncedCallback, useDebouncedEffect } from '@repo/hooks'
 import classNames from 'classnames'
+import {
+    useDebouncedCallback,
+    useDebouncedEffect,
+} from '@gorgias/toolkit-react'
 
 import {
     LegacyCheckBoxField as CheckBoxField,

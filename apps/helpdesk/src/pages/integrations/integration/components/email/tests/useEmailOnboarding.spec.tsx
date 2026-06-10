@@ -1,5 +1,5 @@
+import { useState } from 'react'
 import { FeatureFlagKey } from '@repo/feature-flags'
-import * as hooksImports from '@repo/hooks'
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
@@ -7,6 +7,7 @@ import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import type { EmailIntegration } from '@gorgias/helpdesk-client'
 import {
@@ -50,6 +51,10 @@ jest.mock('@gorgias/helpdesk-client')
 jest.mock('state/integrations/actions')
 jest.mock('services/socketManager')
 jest.mock('hooks/useAppDispatch')
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
+    useLocalStorage: jest.fn(),
+}))
 
 jest.mock(
     'react-router-dom',
@@ -70,6 +75,13 @@ const deleteIntegrationMock = assumeMock(deleteIntegration)
 const sendVerificationEmailMock = assumeMock(sendVerificationEmail)
 const onSuccessMock = assumeMock(onCreateSuccess)
 assumeMock(useAppDispatch).mockReturnValue(mockDispatch)
+const useLocalStorageMock = useLocalStorage as jest.Mock
+
+const useLocalStorageStateMock = (_key: string, initialValue: unknown) => {
+    const [value, setValue] = useState(initialValue)
+
+    return [value, setValue, jest.fn()]
+}
 
 const render = (options?: UseEmailOnboardingHookOptions, path?: string) => {
     return renderHook(() => useEmailOnboarding(options), {
@@ -86,7 +98,7 @@ const render = (options?: UseEmailOnboardingHookOptions, path?: string) => {
 }
 
 const mockIsRequested = (isRequested: boolean) => {
-    jest.spyOn(hooksImports, 'useLocalStorage').mockReturnValueOnce([
+    useLocalStorageMock.mockReturnValueOnce([
         isRequested ? new Date() : undefined,
         jest.fn(),
         jest.fn(),
@@ -98,6 +110,7 @@ describe('useEmailOnboarding()', () => {
         mockFeatureFlags({
             [FeatureFlagKey.NewDomainVerification]: true,
         })
+        useLocalStorageMock.mockImplementation(useLocalStorageStateMock)
     })
     it('should have an initial state', () => {
         const { result } = render()
@@ -867,14 +880,17 @@ describe('useEmailOnboarding()', () => {
             } as EmailIntegration
 
             const setValue = jest.fn()
-            const localStorageSpy = jest.spyOn(hooksImports, 'useLocalStorage')
-            localStorageSpy.mockReturnValueOnce([false, setValue, jest.fn()])
+            useLocalStorageMock.mockReturnValueOnce([
+                false,
+                setValue,
+                jest.fn(),
+            ])
 
             const { result } = renderHook(() =>
                 useEmailOnboardingCompleteCheck(integration),
             )
 
-            expect(localStorageSpy).toHaveBeenCalledWith(
+            expect(useLocalStorageMock).toHaveBeenCalledWith(
                 'email-onboarding-completed-1',
                 false,
             )

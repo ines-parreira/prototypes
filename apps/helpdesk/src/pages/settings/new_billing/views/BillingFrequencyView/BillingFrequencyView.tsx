@@ -12,9 +12,9 @@ import {
     useBillingState,
 } from '@repo/billing'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useEffectOnce } from '@repo/hooks'
 import { logEvent, reportError, SegmentEvent } from '@repo/logging'
 import { useHistory, useLocation } from 'react-router-dom'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
 

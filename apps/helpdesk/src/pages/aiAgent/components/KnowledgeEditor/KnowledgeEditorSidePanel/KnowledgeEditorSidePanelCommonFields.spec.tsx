@@ -1,6 +1,6 @@
-import * as hooks from '@repo/hooks'
 import { render } from '@repo/testing'
 import { act, fireEvent, screen } from '@testing-library/react'
+import * as hooks from '@gorgias/toolkit-react'
 
 import {
     KnowledgeEditorSidePanelFieldAIAgentStatus,
@@ -13,8 +13,8 @@ import {
     KnowledgeEditorSidePanelFieldURL,
 } from './KnowledgeEditorSidePanelCommonFields'
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useCopyToClipboard: jest.fn(),
 }))
 

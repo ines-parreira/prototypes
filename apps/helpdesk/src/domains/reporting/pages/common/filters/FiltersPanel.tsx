@@ -2,9 +2,9 @@ import type { ComponentProps, ComponentType } from 'react'
 import { createElement, useCallback, useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { usePrevious } from '@repo/hooks'
 import _isEqual from 'lodash/isEqual'
 import { connect } from 'react-redux'
+import { usePrevious } from '@gorgias/toolkit-react'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import type {

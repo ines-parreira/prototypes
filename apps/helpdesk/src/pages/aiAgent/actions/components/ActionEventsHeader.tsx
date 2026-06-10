@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 
-import { useEffectOnce } from '@repo/hooks'
 import _noop from 'lodash/noop'
 import moment from 'moment'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import Filter from 'domains/reporting/pages/common/components/Filter'
 import { PeriodFilter } from 'domains/reporting/pages/common/filters/PeriodFilter'

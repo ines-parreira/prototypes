@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useLocalStorage } from '@repo/hooks'
 import { history } from '@repo/routing'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 import type { EmailIntegration } from '@gorgias/helpdesk-queries'

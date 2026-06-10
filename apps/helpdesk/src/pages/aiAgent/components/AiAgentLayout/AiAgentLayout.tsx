@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react'
 import { useMemo } from 'react'
 
-import { useEffectOnce } from '@repo/hooks'
 import classnames from 'classnames'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { Button } from '@gorgias/axiom'
 

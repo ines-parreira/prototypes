@@ -1,9 +1,9 @@
 import React, { useContext, useMemo, useState } from 'react'
 
-import { useId } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
+import { useId } from '@gorgias/toolkit-react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 

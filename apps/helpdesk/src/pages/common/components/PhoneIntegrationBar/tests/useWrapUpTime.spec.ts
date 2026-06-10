@@ -1,7 +1,7 @@
-import { useInterval } from '@repo/hooks'
 import { assumeMock, renderHook } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
+import { useInterval } from '@gorgias/toolkit-react'
 
 import {
     endWrapUpTime,
@@ -21,8 +21,8 @@ jest.mock('services/socketManager', () => ({
     registerReceivedEvents: jest.fn(),
     unregisterReceivedEvents: jest.fn(),
 }))
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useInterval: jest.fn(),
 }))
 

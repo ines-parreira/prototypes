@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useDebouncedCallback } from '@repo/hooks'
+import { useDebouncedCallback } from '@gorgias/toolkit-react'
 
 import {
     Button,

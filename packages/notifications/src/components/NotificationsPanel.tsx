@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { useIsMobileResolution } from '@repo/hooks'
+import { useIsMobileResolution } from '@gorgias/toolkit-react'
 
 import {
     Box,

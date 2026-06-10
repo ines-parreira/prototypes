@@ -1,6 +1,6 @@
-import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { useLocation } from 'react-router'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { Cadence } from 'models/billing/types'

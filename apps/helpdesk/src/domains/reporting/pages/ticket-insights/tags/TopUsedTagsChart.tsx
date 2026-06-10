@@ -1,5 +1,5 @@
-import { useWidthBasedOnScreen } from '@repo/hooks'
 import { TrendIcon } from '@repo/reporting'
+import { useWidthBasedOnScreen } from '@gorgias/toolkit-react'
 
 import { Skeleton } from '@gorgias/axiom'
 

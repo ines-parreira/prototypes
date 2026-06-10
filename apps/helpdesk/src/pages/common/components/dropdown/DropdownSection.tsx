@@ -9,8 +9,8 @@ import {
     useState,
 } from 'react'
 
-import { useEffectOnce, usePrevious } from '@repo/hooks'
 import classnames from 'classnames'
+import { useEffectOnce, usePrevious } from '@gorgias/toolkit-react'
 
 import { DropdownContext } from './Dropdown'
 

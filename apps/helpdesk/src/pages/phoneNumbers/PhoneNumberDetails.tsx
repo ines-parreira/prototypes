@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useAsyncFn } from '@repo/hooks'
 import { history } from '@repo/routing'
 import classnames from 'classnames'
 import Clipboard from 'clipboard'
@@ -18,6 +17,7 @@ import {
     Label,
     Row,
 } from 'reactstrap'
+import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button, toast } from '@gorgias/axiom'
 

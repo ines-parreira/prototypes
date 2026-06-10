@@ -36,8 +36,8 @@ jest.mock('../../../utils', () => ({
     useCanViewBigCommerceCreateOrderModifiers: jest.fn(() => true),
 }))
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useId: jest.fn().mockImplementation(() => 'mocked'),
 }))
 

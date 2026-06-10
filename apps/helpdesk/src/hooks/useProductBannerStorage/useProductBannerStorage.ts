@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-import { useLocalStorage } from '@repo/hooks'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import type { PRODUCT_BANNER_KEY } from './constants'
 import type { ProductBannerItem } from './types/ProductBannerItem'

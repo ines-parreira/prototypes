@@ -1,5 +1,5 @@
-import { useExhaustEndpoint } from '@repo/hooks'
 import { Duration } from '@gorgias/toolkit'
+import { useExhaustEndpoint } from '@gorgias/toolkit-react'
 
 import { queryKeys, useListInstagramProfiles } from '@gorgias/helpdesk-queries'
 import type { TicketCustomer, TicketMessage } from '@gorgias/helpdesk-types'
@@ -7,7 +7,7 @@ import type { TicketCustomer, TicketMessage } from '@gorgias/helpdesk-types'
 import { renderHook } from '../../../tests/render.utils'
 import { useCustomerInstagramProfile } from '../useCustomerInstagramProfile'
 
-vi.mock('@repo/hooks', () => ({
+vi.mock('@gorgias/toolkit-react', () => ({
     useExhaustEndpoint: vi.fn(),
 }))
 

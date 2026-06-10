@@ -1,6 +1,6 @@
-import { useDebouncedCallback } from '@repo/hooks'
 import { renderHook } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
+import { useDebouncedCallback } from '@gorgias/toolkit-react'
 
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 import type { GuidanceArticle } from 'pages/aiAgent/types'
@@ -17,7 +17,7 @@ import {
     fromArticleTranslationResponse,
 } from '../utils'
 
-jest.mock('@repo/hooks', () => ({
+jest.mock('@gorgias/toolkit-react', () => ({
     useDebouncedCallback: jest.fn((fn) => fn),
 }))
 

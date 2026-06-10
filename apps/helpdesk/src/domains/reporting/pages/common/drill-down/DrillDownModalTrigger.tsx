@@ -1,10 +1,10 @@
 import type { PropsWithChildren } from 'react'
 import { useCallback } from 'react'
 
-import { useId } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { HINT_TOOLTIP_DELAY } from '@repo/reporting'
 import classNames from 'classnames'
+import { useId } from '@gorgias/toolkit-react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 

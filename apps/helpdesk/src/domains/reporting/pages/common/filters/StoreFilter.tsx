@@ -1,8 +1,8 @@
 import React, { useCallback, useMemo } from 'react'
 
-import { useEffectOnce } from '@repo/hooks'
 import _noop from 'lodash/noop'
 import { connect } from 'react-redux'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import {
     withDefaultLogicalOperator,

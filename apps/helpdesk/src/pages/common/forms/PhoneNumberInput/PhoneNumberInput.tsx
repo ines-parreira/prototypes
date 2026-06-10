@@ -10,7 +10,6 @@ import {
     useState,
 } from 'react'
 
-import { useUpdateEffect } from '@repo/hooks'
 import { reportError } from '@repo/logging'
 import classnames from 'classnames'
 import type { CountryCode } from 'libphonenumber-js'
@@ -20,6 +19,7 @@ import {
     parsePhoneNumber,
 } from 'libphonenumber-js'
 import { ReactCountryFlag as CountryFlag } from 'react-country-flag'
+import { useUpdateEffect } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 

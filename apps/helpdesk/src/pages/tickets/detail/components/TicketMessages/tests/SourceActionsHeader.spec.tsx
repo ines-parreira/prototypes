@@ -2,12 +2,12 @@ import type { ReactElement } from 'react'
 
 import { appQueryClient } from '@repo/api-resources'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useDebouncedValue, useElementSize } from '@repo/hooks'
 import { render } from '@repo/testing'
 import { useTicketMessageTranslation } from '@repo/tickets'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen } from '@testing-library/react'
 import { setupServer } from 'msw/node'
+import { useDebouncedValue, useElementSize } from '@gorgias/toolkit-react'
 
 import {
     mockGetCurrentUserHandler,
@@ -25,8 +25,8 @@ import SourceActionsHeader from '../SourceActionsHeader'
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 jest.mock('hooks/useAppSelector', () => jest.fn())
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useDebouncedValue: jest.fn(),
     useElementSize: jest.fn(),
 }))

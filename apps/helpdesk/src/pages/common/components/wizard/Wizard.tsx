@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { createContext, useEffect, useMemo, useState } from 'react'
 
-import { useEffectOnce, useUpdateEffect } from '@repo/hooks'
+import { useEffectOnce, useUpdateEffect } from '@gorgias/toolkit-react'
 
 type Props = {
     children: ReactNode

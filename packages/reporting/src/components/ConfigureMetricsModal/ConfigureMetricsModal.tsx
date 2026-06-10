@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { useDeepEffect } from '@repo/hooks'
 import { DndProvider, useDrag, useDrop } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
+import { useDeepEffect } from '@gorgias/toolkit-react'
 
 import {
     Button,

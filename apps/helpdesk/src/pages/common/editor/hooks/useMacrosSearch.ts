@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useDebouncedValue } from '@repo/hooks'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import _flatten from 'lodash/flatten'
 import _isEqual from 'lodash/isEqual'
 import { notify } from 'reapop'
+import { useDebouncedValue } from '@gorgias/toolkit-react'
 
 import { queryKeys } from '@gorgias/helpdesk-queries'
 

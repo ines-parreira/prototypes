@@ -1,7 +1,7 @@
 import type { ComponentProps, ReactNode } from 'react'
 import { createContext, forwardRef } from 'react'
 
-import { useId } from '@repo/hooks'
+import { useId } from '@gorgias/toolkit-react'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
 

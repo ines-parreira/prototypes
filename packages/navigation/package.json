@@ -18,7 +18,7 @@
         "typecheck": "tsgo -p ./tsconfig.json --noEmit true"
     },
     "peerDependencies": {
-        "@repo/hooks": "workspace:*",
+        "@gorgias/toolkit-react": "catalog:toolkit",
         "@repo/logging": "workspace:*",
         "@repo/utils": "workspace:*",
         "@gorgias/axiom": "catalog:axiom",

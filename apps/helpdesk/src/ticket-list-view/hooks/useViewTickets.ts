@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
-import { useDeepEffect } from '@repo/hooks'
 import { useViewedTickets } from '@repo/tickets/ticket-list'
+import { useDeepEffect } from '@gorgias/toolkit-react'
 
 import type { TicketPartial } from 'ticket-list-view/types'
 

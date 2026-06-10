@@ -1,7 +1,7 @@
 import type React from 'react'
 import { useCallback, useMemo } from 'react'
 
-import { SCREEN_SIZE, useScreenSize } from '@repo/hooks'
+import { SCREEN_SIZE, useScreenSize } from '@gorgias/toolkit-react'
 
 import { Button, Tooltip, TooltipContent } from '@gorgias/axiom'
 

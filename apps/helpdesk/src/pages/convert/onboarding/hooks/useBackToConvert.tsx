@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-import { useSessionStorage } from '@repo/hooks'
+import { useSessionStorage } from '@gorgias/toolkit-react'
 
 export const BACK_TO_CONVERT_ONBOARDING_KEY = 'convert:onboarding:backToConvert'
 export const BACK_TO_CONVERT_HOME = 'home'

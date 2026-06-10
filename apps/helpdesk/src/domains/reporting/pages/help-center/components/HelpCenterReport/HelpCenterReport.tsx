@@ -1,5 +1,5 @@
-import { useGridSize } from '@repo/hooks'
 import moment from 'moment/moment'
+import { useGridSize } from '@gorgias/toolkit-react'
 
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { AnalyticsFooter } from 'domains/reporting/pages/common/AnalyticsFooter'

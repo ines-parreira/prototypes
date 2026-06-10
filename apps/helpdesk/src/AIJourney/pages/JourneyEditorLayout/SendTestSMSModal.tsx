@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 
-import { useLocalStorage } from '@repo/hooks'
 import type { CountryCode } from 'libphonenumber-js'
 import { AsYouType } from 'libphonenumber-js'
 import { useFormContext } from 'react-hook-form'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import {
     Box,

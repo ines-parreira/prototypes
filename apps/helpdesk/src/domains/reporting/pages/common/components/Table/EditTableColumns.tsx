@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useDeepEffect } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap'
 import type { Selector } from 'reselect'
 import { v4 as uuidv4 } from 'uuid'
+import { useDeepEffect } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 

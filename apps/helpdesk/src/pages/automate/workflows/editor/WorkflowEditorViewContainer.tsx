@@ -1,10 +1,10 @@
 /* istanbul ignore file */
 import React, { useCallback, useMemo } from 'react'
 
-import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { Redirect, useHistory, useLocation, useParams } from 'react-router-dom'
 import { ulid } from 'ulidx'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
 

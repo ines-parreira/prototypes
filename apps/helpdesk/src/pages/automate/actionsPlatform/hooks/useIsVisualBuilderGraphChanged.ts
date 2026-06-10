@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { useDebouncedValue, usePrevious } from '@repo/hooks'
+import { useDebouncedValue, usePrevious } from '@gorgias/toolkit-react'
 
 import { areGraphsEqual } from 'pages/automate/workflows/models/visualBuilderGraph.model'
 import type { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 
-import { useEffectOnce } from '@repo/hooks'
 import { render } from '@repo/testing'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import Wizard, { WizardContext } from '../Wizard'
 

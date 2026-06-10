@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { useLocalStorage } from '@repo/hooks'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import type { AccordionValues } from 'components/Accordion/utils/types'
 import useAppSelector from 'hooks/useAppSelector'

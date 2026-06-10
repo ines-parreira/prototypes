@@ -26,8 +26,8 @@ jest.mock('custom-fields/hooks/queries/useCustomFieldDefinition')
 const useCustomFieldDefinitionMock = jest.mocked(useCustomFieldDefinition)
 
 // Mock useTextWidth to avoid Canvas API issues in tests
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useTextWidth: (text: string, options: any = {}) => {
         // Simple mock that returns a basic width calculation
         const baseWidth = text ? text.length * 8 : 0

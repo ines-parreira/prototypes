@@ -10,8 +10,8 @@ import type {
 import { AIAgentFeedbackReasonSection } from '../AIAgentTicketLevelFeedback/AIAgentFeedbackReasonSection'
 import { AiAgentBadInteractionReason } from '../types'
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useDebouncedCallback: jest.fn((callback) => {
         return callback
     }),

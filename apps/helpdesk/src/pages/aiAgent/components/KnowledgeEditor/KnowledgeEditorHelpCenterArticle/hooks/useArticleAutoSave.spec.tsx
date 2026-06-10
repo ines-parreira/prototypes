@@ -1,6 +1,6 @@
-import { useDebouncedCallback } from '@repo/hooks'
 import { renderHook } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
+import { useDebouncedCallback } from '@gorgias/toolkit-react'
 
 import {
     useCreateArticle,
@@ -14,7 +14,7 @@ import { useArticleContext } from '../context/ArticleContext'
 import type { ArticleContextValue, SettingsChanges } from '../context/types'
 import { useArticleAutoSave } from './useArticleAutoSave'
 
-jest.mock('@repo/hooks', () => ({
+jest.mock('@gorgias/toolkit-react', () => ({
     useDebouncedCallback: jest.fn(),
 }))
 

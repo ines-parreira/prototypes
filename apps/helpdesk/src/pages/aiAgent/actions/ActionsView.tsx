@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useEffectOnce } from '@repo/hooks'
 import { Link, useParams } from 'react-router-dom'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import emptyStateTemplate from 'assets/img/actions/empty-state-template.png'
 import {

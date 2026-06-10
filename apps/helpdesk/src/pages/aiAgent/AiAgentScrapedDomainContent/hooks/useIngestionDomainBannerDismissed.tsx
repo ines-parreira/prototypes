@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-import { useLocalStorage } from '@repo/hooks'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import { PAGE_NAME } from '../constant'
 

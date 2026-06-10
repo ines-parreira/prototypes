@@ -36,8 +36,8 @@ jest.mock('pages/common/hooks/useReorderDnD', () => {
         DragItemRequired: {},
     }
 })
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useId: jest.fn().mockImplementation(() => 'mocked'),
 }))
 

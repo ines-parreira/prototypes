@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { useHistory } from 'react-router-dom'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
 import type { OnboardingNotificationState } from 'models/aiAgent/types'

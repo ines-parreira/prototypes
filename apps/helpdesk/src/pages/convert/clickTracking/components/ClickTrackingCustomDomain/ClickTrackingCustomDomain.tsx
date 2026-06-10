@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 
-import { useAsyncFn } from '@repo/hooks'
 import type { AxiosError } from 'axios'
 import classNames from 'classnames'
+import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { Button } from '@gorgias/axiom'
 

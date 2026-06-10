@@ -2,8 +2,8 @@ import { useMemo, useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
 import { FormField, useFormContext } from '@repo/forms'
-import { useDebouncedValue } from '@repo/hooks'
 import cn from 'classnames'
+import { useDebouncedValue } from '@gorgias/toolkit-react'
 
 import {
     LegacyBadge as Badge,

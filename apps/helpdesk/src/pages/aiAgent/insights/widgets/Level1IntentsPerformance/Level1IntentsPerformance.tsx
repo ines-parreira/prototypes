@@ -1,6 +1,6 @@
-import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { useParams } from 'react-router-dom'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { useAIAgentMetrics } from 'domains/reporting/hooks/automate/useAIAgentInsightsDataset'
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'

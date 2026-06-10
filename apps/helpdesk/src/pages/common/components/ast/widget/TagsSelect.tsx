@@ -1,9 +1,9 @@
 import type React from 'react'
 import { useMemo, useState } from 'react'
 
-import { useDebouncedEffect } from '@repo/hooks'
 import type { CancelToken } from 'axios'
 import _isString from 'lodash/isString'
+import { useDebouncedEffect } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
 

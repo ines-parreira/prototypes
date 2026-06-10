@@ -1,6 +1,5 @@
 import { useState } from 'react'
 
-import { useCopyToClipboard } from '@repo/hooks'
 import {
     BubbleActions,
     CopyButton,
@@ -9,6 +8,7 @@ import {
     MessageTimestamp,
 } from '@repo/ticket-thread'
 import type { BubbleActionItem } from '@repo/ticket-thread'
+import { useCopyToClipboard } from '@gorgias/toolkit-react'
 
 import { Box, Button, Icon, Skeleton, Text } from '@gorgias/axiom'
 import type { TicketSummary } from '@gorgias/helpdesk-types'

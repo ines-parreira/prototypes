@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { useInterval } from '@repo/hooks'
+import { useInterval } from '@gorgias/toolkit-react'
 
 import { Text } from '@gorgias/axiom'
 import type { VoiceCall } from '@gorgias/helpdesk-queries'

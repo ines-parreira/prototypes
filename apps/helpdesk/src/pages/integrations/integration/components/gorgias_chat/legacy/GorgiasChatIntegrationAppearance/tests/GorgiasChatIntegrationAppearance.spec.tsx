@@ -10,6 +10,7 @@ import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
+import { useId } from '@gorgias/toolkit-react'
 
 import {
     GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_MEMBERS,
@@ -50,6 +51,11 @@ jest.mock('@repo/feature-flags')
 const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 
 jest.mock('lodash/uniqueId', () => (id?: string) => `${id || ''}42`)
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
+    useId: jest.fn(() => require('lodash/uniqueId')()),
+}))
+const mockUseId = useId as jest.MockedFunction<typeof useId>
 
 jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
     useAiAgentAccess: jest.fn(),
@@ -127,6 +133,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
+        mockUseId.mockImplementation(() => require('lodash/uniqueId')())
 
         const fixedDate = new Date('2019-06-24')
         jest.spyOn(Date, 'now').mockImplementation(() => fixedDate.getTime())

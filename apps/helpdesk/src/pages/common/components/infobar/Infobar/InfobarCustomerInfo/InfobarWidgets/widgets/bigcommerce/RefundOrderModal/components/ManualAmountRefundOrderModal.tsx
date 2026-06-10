@@ -2,9 +2,9 @@ import type { Dispatch } from 'react'
 import type React from 'react'
 import { useEffect, useState } from 'react'
 
-import { useDebouncedEffect } from '@repo/hooks'
 import { getMoneySymbol } from '@repo/utils'
 import classnames from 'classnames'
+import { useDebouncedEffect } from '@gorgias/toolkit-react'
 
 import type {
     BigCommerceRefundItemsPayload,

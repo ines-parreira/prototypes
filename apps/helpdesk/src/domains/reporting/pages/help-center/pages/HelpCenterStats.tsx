@@ -1,5 +1,5 @@
-import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { HelpCenterReport } from 'domains/reporting/pages/help-center/components/HelpCenterReport/HelpCenterReport'
 import { HelpCenterReportConfig } from 'domains/reporting/pages/help-center/components/HelpCenterReport/HelpCenterReportConfig'

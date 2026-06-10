@@ -1,8 +1,8 @@
 import type { ComponentProps } from 'react'
 
-import * as hooksImports from '@repo/hooks'
 import { render } from '@repo/testing'
 import { cleanup, fireEvent, screen, within } from '@testing-library/react'
+import * as hooksImports from '@gorgias/toolkit-react'
 
 import {
     migrationOutboundVerificationNotStarted,

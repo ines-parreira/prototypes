@@ -6,7 +6,7 @@ import type { OrderDetailsData } from '../../types'
 import { useOrderFieldPreferences } from '../../widget/useOrderFieldPreferences'
 import { OrderShipmentSection } from '../sections/OrderShipmentSection'
 
-vi.mock('@repo/hooks', async (importOriginal) => ({
+vi.mock('@gorgias/toolkit-react', async (importOriginal) => ({
     ...((await importOriginal()) as Record<string, unknown>),
     useCopyToClipboard: () => [
         {},

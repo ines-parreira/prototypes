@@ -1,7 +1,6 @@
 import type { ChangeEvent } from 'react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
-import { SCREEN_SIZE, useAsyncFn, useScreenSize } from '@repo/hooks'
 import classNames from 'classnames'
 import copy from 'copy-to-clipboard'
 import {
@@ -12,6 +11,7 @@ import {
     InputGroupAddon,
     Label,
 } from 'reactstrap'
+import { SCREEN_SIZE, useAsyncFn, useScreenSize } from '@gorgias/toolkit-react'
 
 import {
     Label as AxiomLabel,

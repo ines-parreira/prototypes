@@ -1,11 +1,11 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useMeasure } from '@repo/hooks'
 import { render } from '@repo/testing'
 import { act, fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import { useMeasure } from '@gorgias/toolkit-react'
 
 import { UserRole } from 'config/types/user'
 import { account, automationSubscriptionProductPrices } from 'fixtures/account'
@@ -23,8 +23,8 @@ import RuleSuggestion, {
     isSuggestionEmpty,
 } from '../RuleSuggestion'
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useElementSize: jest.fn().mockImplementation(() => [0, 160]),
     useMeasure: jest.fn().mockImplementation(() => [undefined, 0]),
 }))

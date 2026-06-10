@@ -1,13 +1,13 @@
 import type React from 'react'
 import { useState } from 'react'
 
-import { useId } from '@repo/hooks'
 import {
     DropdownItem,
     DropdownMenu,
     DropdownToggle,
     UncontrolledDropdown,
 } from 'reactstrap'
+import { useId } from '@gorgias/toolkit-react'
 
 import {
     LegacyButton as Button,

@@ -4,8 +4,8 @@ import userEvent from '@testing-library/user-event'
 
 import { SeoMetaTitle } from './SeoMetaTitle'
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useTextWidth: jest.fn((text: string) => {
         return text ? text.length * 10 + 20 : 20
     }),

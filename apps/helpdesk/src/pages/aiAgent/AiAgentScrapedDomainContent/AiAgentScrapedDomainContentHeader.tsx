@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { useId } from '@repo/hooks'
+import { useId } from '@gorgias/toolkit-react'
 
 import {
     LegacyButton as Button,

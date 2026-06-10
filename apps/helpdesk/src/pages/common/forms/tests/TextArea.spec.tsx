@@ -5,6 +5,10 @@ import { render } from '@repo/testing'
 import TextArea from '../TextArea'
 
 jest.mock('lodash/uniqueId', () => () => '42')
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
+    useId: jest.fn(() => require('lodash/uniqueId')()),
+}))
 
 describe('TextArea', () => {
     const minProps = {

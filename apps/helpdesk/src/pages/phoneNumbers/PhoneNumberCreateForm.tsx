@@ -1,10 +1,10 @@
 import type React from 'react'
 import { useCallback, useEffect, useState } from 'react'
 
-import { useAsyncFn } from '@repo/hooks'
 import { history } from '@repo/routing'
 import classnames from 'classnames'
 import { Col, Form, FormGroup, Row } from 'reactstrap'
+import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { LegacyBanner as Banner, Button, toast } from '@gorgias/axiom'
 

@@ -10,12 +10,12 @@ import {
     ZAPIER_BILLING_HOOK,
 } from '@repo/billing'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useAsyncFn, useEffectOnce } from '@repo/hooks'
 import { logEvent, reportError, SegmentEvent } from '@repo/logging'
 import { useQueryClient } from '@tanstack/react-query'
 import classnames from 'classnames'
 import { useHistory } from 'react-router-dom'
 import { Modal, ModalFooter } from 'reactstrap'
+import { useAsyncFn, useEffectOnce } from '@gorgias/toolkit-react'
 
 import {
     LegacyButton as Button,

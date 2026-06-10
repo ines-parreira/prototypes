@@ -35,8 +35,8 @@ jest.mock(
 const useCustomFieldDefinitionMock = jest.mocked(useCustomFieldDefinition)
 
 // Mock useTextWidth to avoid Canvas API issues in tests
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useTextWidth: (text: string, options: any = {}) => {
         const baseWidth = text ? text.length * 8 : 0
         return baseWidth + (options.padding || 0)

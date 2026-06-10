@@ -2,8 +2,8 @@ import type { CSSProperties } from 'react'
 import type React from 'react'
 import { useLayoutEffect, useRef, useState } from 'react'
 
-import { useId } from '@repo/hooks'
 import classNames from 'classnames'
+import { useId } from '@gorgias/toolkit-react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 

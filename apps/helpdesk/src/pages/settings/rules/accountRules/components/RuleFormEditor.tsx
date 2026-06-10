@@ -1,10 +1,10 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 
-import { useAsyncFn } from '@repo/hooks'
 import { history } from '@repo/routing'
 import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Nav, Navbar } from 'reactstrap'
+import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { Button, toast } from '@gorgias/axiom'
 

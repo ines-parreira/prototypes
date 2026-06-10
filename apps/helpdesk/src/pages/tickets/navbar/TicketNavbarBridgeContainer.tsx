@@ -2,7 +2,6 @@ import type { RefObject } from 'react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { tryLocalStorage } from '@repo/browser-storage'
-import { useAsyncFn } from '@repo/hooks'
 import {
     NavigationSectionGroup,
     useSidebar,
@@ -19,6 +18,7 @@ import {
 import _debounce from 'lodash/debounce'
 import type { DropTargetMonitor } from 'react-dnd'
 import { useHistory } from 'react-router-dom'
+import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { Box, Separator, toast } from '@gorgias/axiom'
 

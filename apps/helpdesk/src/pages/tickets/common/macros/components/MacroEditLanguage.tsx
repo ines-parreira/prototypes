@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { useDebouncedEffect } from '@repo/hooks'
+import { useDebouncedEffect } from '@gorgias/toolkit-react'
 
 import { ISO639English } from 'constants/languages'
 import { detectLanguage } from 'models/language/resources'

@@ -1,5 +1,5 @@
-import { useLocalStorage } from '@repo/hooks'
 import { Link } from 'react-router-dom'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'

@@ -1,5 +1,5 @@
-import { useDebouncedValue } from '@repo/hooks'
 import { renderHook } from '@repo/testing/vitest'
+import { useDebouncedValue } from '@gorgias/toolkit-react'
 
 import {
     mockCustomerSearchResponse,
@@ -15,7 +15,7 @@ import {
 import { useInfiniteVoiceCallSearch } from '../useInfiniteVoiceCallSearch'
 import { useSearchSpotlightData } from '../useSearchSpotlightData'
 
-vi.mock('@repo/hooks', () => ({
+vi.mock('@gorgias/toolkit-react', () => ({
     useDebouncedValue: vi.fn(),
 }))
 

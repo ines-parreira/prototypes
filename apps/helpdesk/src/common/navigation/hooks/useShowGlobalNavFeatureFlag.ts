@@ -1,4 +1,4 @@
-import { useIsMobileResolution } from '@repo/hooks'
+import { useIsMobileResolution } from '@gorgias/toolkit-react'
 
 export function useDesktopOnlyShowGlobalNavFeatureFlag() {
     const isMobileResolution = useIsMobileResolution()

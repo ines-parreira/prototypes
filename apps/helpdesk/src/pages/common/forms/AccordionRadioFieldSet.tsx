@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { useId } from '@repo/hooks'
+import { useId } from '@gorgias/toolkit-react'
 
 import Accordion from '../components/accordion/Accordion'
 import AccordionBody from '../components/accordion/AccordionBody'

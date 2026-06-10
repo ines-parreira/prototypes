@@ -1,10 +1,10 @@
 import type React from 'react'
 
-import { useDebouncedValue } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, getLastMockCall, render, userEvent } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import { Link, useParams } from 'react-router-dom'
+import { useDebouncedValue } from '@gorgias/toolkit-react'
 
 import {
     AI_MANAGED_TYPES,
@@ -43,8 +43,8 @@ jest.mock(
 )
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 jest.mock('custom-fields/hooks/queries/useUpdateCustomFieldDefinitions')
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useDebouncedValue: jest.fn(),
 }))
 jest.mock('../components/List', () =>

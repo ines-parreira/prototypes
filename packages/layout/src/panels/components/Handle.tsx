@@ -1,5 +1,5 @@
-import { useId } from '@repo/hooks'
 import cn from 'classnames'
+import { useId } from '@gorgias/toolkit-react'
 
 import { useHandle } from '../hooks/useHandle'
 

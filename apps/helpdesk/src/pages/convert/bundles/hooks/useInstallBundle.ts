@@ -1,6 +1,6 @@
 import client from '@repo/api-resources'
-import { useAsyncFn } from '@repo/hooks'
 import { useQueryClient } from '@tanstack/react-query'
+import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { bundleKeys } from 'models/convert/bundle/queries'

@@ -1,8 +1,8 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useId } from '@repo/hooks'
 import { DateAndTimeFormatting } from '@repo/utils'
 import classnames from 'classnames'
 import _isArray from 'lodash/isArray'
+import { useId } from '@gorgias/toolkit-react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 

@@ -1,4 +1,4 @@
-import { useGridSize } from '@repo/hooks'
+import { useGridSize } from '@gorgias/toolkit-react'
 
 import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
 import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSection'

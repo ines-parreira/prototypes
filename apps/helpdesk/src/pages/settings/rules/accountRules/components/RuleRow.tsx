@@ -1,11 +1,11 @@
 import type { MouseEvent } from 'react'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { useAsyncFn } from '@repo/hooks'
 import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
 import classnames from 'classnames'
 import { Link, useHistory } from 'react-router-dom'
 import { Popover, PopoverBody } from 'reactstrap'
+import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { toast, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 

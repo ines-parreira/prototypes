@@ -3,10 +3,10 @@ import type React from 'react'
 import { useEffect, useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useKey } from '@repo/hooks'
 import classNames from 'classnames'
 import ReactDOM from 'react-dom'
 import { Container } from 'reactstrap'
+import { useKey } from '@gorgias/toolkit-react'
 
 import {
     LegacyIconButton as IconButton,

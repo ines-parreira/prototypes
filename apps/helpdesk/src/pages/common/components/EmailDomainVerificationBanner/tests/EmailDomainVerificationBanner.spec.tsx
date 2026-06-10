@@ -1,7 +1,7 @@
-import { useLocalStorage } from '@repo/hooks'
 import { assumeMock, render } from '@repo/testing'
 import { cleanup, fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import { UserRole } from 'config/types/user'
 import { IntegrationType } from 'models/integration/constants'
@@ -9,8 +9,8 @@ import { OutboundVerificationStatusValue } from 'models/integration/types'
 
 import EmailDomainVerificationBanner from '../EmailDomainVerificationBanner'
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useLocalStorage: jest.fn(),
 }))
 const useLocalStorageMock = assumeMock(useLocalStorage)

@@ -1,8 +1,8 @@
 import { useState } from 'react'
 
 import { useCustomAgentUnavailableStatusesFlag } from '@repo/agent-status'
-import { useInterval } from '@repo/hooks'
 import classNames from 'classnames'
+import { useInterval } from '@gorgias/toolkit-react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import type { LiveCallQueueAgent } from '@gorgias/helpdesk-queries'

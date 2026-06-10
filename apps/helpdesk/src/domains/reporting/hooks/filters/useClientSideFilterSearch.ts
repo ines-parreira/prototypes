@@ -2,8 +2,8 @@ import { useCallback, useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useDebouncedValue } from '@repo/hooks'
 import noop from 'lodash/noop'
+import { useDebouncedValue } from '@gorgias/toolkit-react'
 
 import type { FilterOptionGroup } from 'domains/reporting/pages/types'
 

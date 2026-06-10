@@ -1,5 +1,5 @@
-import { useLocalStorage } from '@repo/hooks'
 import { reportError } from '@repo/logging'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import useAppSelector from 'hooks/useAppSelector'

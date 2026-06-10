@@ -1,7 +1,7 @@
-import { useLocalStorageWithExpiry } from '@repo/hooks'
 import { render } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
+import { useLocalStorageWithExpiry } from '@gorgias/toolkit-react'
 
 import { account } from 'fixtures/account'
 import { integrationsStateWithShopify } from 'fixtures/integrations'
@@ -12,8 +12,8 @@ import type { RootState } from 'state/types'
 
 import { PendingTasksSectionConnected } from '../PendingTasksSectionConnected'
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useLocalStorageWithExpiry: jest.fn(),
 }))
 jest.mock(

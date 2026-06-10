@@ -1,8 +1,8 @@
 import type { ComponentProps, FC } from 'react'
 import React, { useState } from 'react'
 
-import { SCREEN_SIZE, useScreenSize } from '@repo/hooks'
 import classnames from 'classnames'
+import { SCREEN_SIZE, useScreenSize } from '@gorgias/toolkit-react'
 
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'

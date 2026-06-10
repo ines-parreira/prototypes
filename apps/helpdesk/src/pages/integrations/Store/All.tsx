@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import { useEffect, useState } from 'react'
 
 import { getCheapestPlanNameForFeature } from '@repo/billing'
-import { useTitle } from '@repo/hooks'
+import { useTitle } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
 

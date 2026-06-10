@@ -1,6 +1,6 @@
-import { useId } from '@repo/hooks'
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
+import { useId } from '@gorgias/toolkit-react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import type { Macro } from '@gorgias/helpdesk-queries'

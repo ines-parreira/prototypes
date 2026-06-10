@@ -2,8 +2,8 @@ import type { MouseEvent } from 'react'
 import { useCallback, useRef, useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useCopyToClipboard } from '@repo/hooks'
 import classnames from 'classnames'
+import { useCopyToClipboard } from '@gorgias/toolkit-react'
 
 import { Icon, Tooltip, TooltipContent } from '@gorgias/axiom'
 

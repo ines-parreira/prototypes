@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 
-import { useGridSize } from '@repo/hooks'
 import { SegmentEvent } from '@repo/logging'
+import { useGridSize } from '@gorgias/toolkit-react'
 
 import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import type { Period } from 'domains/reporting/models/stat/types'

@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useNow } from '@repo/hooks'
 import moment from 'moment'
+import { useNow } from '@gorgias/toolkit-react'
 
 import { shortenRelativeDurationLabel } from 'utils/date'
 

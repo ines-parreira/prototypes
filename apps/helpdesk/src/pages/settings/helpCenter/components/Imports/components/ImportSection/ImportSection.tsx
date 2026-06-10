@@ -3,12 +3,12 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
 import { GorgiasAppAuthService } from '@repo/api-resources/gorgiasAppsAuth'
-import { useAsyncFn } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
 import type { Map } from 'immutable'
 import { ParamType } from 'openapi-client-axios'
 import { useHistory } from 'react-router-dom'
+import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import {
     Button,

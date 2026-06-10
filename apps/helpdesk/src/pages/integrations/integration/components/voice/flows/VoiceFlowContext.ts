@@ -1,7 +1,7 @@
 import { createContext } from 'react'
 
-import { useSafeContext } from '@repo/hooks'
 import _noop from 'lodash/noop'
+import { useSafeContext } from '@gorgias/toolkit-react'
 
 export type SelectedNodeContext = {
     selectedNode: string | null

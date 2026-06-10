@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-import { useLocalStorage } from '@repo/hooks'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 const AI_AGENT_LAST_SELECTED_SHOP_KEY = `ai-agent:last-selected-shop:${window.location.hostname}`
 

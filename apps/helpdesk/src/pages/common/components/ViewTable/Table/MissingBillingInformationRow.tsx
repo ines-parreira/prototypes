@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 
-import { useDimensions, useWindowSize } from '@repo/hooks'
+import { useDimensions, useWindowSize } from '@gorgias/toolkit-react'
 
 import { useAppNode } from 'appNode'
 import { UserRole } from 'config/types/user'

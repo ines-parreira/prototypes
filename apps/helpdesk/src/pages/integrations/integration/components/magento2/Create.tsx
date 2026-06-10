@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useId } from '@repo/hooks'
 import type { Map } from 'immutable'
 import { Col, Container, Row } from 'reactstrap'
+import { useId } from '@gorgias/toolkit-react'
 
 import { LegacyLabel as Label, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 

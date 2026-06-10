@@ -1,8 +1,8 @@
 import type { UIEventHandler } from 'react'
 import { useEffect, useMemo, useState } from 'react'
 
-import { useMeasure } from '@repo/hooks'
 import classNames from 'classnames'
+import { useMeasure } from '@gorgias/toolkit-react'
 
 import type { Tag } from '@gorgias/helpdesk-queries'
 

@@ -2,9 +2,9 @@ import type { CSSProperties } from 'react'
 import type React from 'react'
 import { useEffect, useMemo } from 'react'
 
-import { useMeasure } from '@repo/hooks'
 import { fromJS } from 'immutable'
 import { Collapse } from 'reactstrap'
+import { useMeasure } from '@gorgias/toolkit-react'
 
 import type { MacroAction } from 'models/macroAction/types'
 import type { TicketMessage } from 'models/ticket/types'

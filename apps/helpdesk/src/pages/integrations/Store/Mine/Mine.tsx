@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
-import { useLocalStorage, useTitle } from '@repo/hooks'
 import { Link } from 'react-router-dom'
+import { useLocalStorage, useTitle } from '@gorgias/toolkit-react'
 
 import { Button, toast } from '@gorgias/axiom'
 

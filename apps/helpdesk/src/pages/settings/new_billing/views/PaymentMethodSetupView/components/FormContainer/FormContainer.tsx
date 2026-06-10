@@ -9,13 +9,13 @@ import {
     useStripeElementPaymentState,
 } from '@repo/billing'
 import { Form } from '@repo/forms'
-import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import type { StripeAddressElementChangeEvent } from '@stripe/stripe-js'
 import mapValues from 'lodash/mapValues'
 import type { SubmitHandler } from 'react-hook-form'
 import { useStore } from 'react-redux'
 import { useHistory, useLocation } from 'react-router-dom'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import type { StripePaymentMethodType } from 'models/billing/types'

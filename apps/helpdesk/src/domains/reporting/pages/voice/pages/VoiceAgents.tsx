@@ -1,5 +1,5 @@
-import { useGridSize } from '@repo/hooks'
 import moment from 'moment'
+import { useGridSize } from '@gorgias/toolkit-react'
 
 import type { PaywallConfig } from 'config/paywalls'
 import { paywallConfigs } from 'config/paywalls'

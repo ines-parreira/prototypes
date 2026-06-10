@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { localForageManager } from '@repo/browser-storage'
-import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { useHistory } from 'react-router-dom'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { useCurrentUserId } from '../hooks/useCurrentUserId'
 import { getCreateTicketPathWithPreviousURL } from '../utils/routing'

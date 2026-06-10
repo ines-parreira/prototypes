@@ -1,8 +1,8 @@
 import type { UIEventHandler } from 'react'
 import React, { useCallback, useMemo, useState } from 'react'
 
-import { useMeasure } from '@repo/hooks'
 import { Link } from 'react-router-dom'
+import { useMeasure } from '@gorgias/toolkit-react'
 
 import css from 'domains/reporting/pages/convert/components/CampaignTableStats/CampaignTableStats.less'
 import { CampaignTableCell } from 'domains/reporting/pages/convert/components/CampaignTableStats/components/CampaignTableCell'

@@ -1,6 +1,5 @@
 import { useCallback, useMemo } from 'react'
 
-import { useCallbackRef } from '@repo/hooks'
 import { useSearchParams } from '@repo/routing'
 import type { TicketThreadItemType } from '@repo/ticket-thread'
 import {
@@ -13,6 +12,7 @@ import {
 } from '@repo/ticket-thread'
 import { TicketSearchParamsKeys } from '@repo/tickets/utils/routing'
 import { useParams } from 'react-router-dom'
+import { useCallbackRef } from '@gorgias/toolkit-react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

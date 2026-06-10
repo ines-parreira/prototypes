@@ -1,7 +1,6 @@
 import type { MouseEvent, SyntheticEvent } from 'react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { useAsyncFn } from '@repo/hooks'
 import { history } from '@repo/routing'
 import classnames from 'classnames'
 import type { List, Map } from 'immutable'
@@ -9,6 +8,7 @@ import { fromJS } from 'immutable'
 import _uniqWith from 'lodash/uniqWith'
 import { Link, useLocation, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Form } from 'reactstrap'
+import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button, toast } from '@gorgias/axiom'
 import type {

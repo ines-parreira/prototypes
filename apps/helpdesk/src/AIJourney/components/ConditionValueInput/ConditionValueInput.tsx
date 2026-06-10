@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
 import { useShopifyShopTags } from '@repo/customer'
-import { useDebouncedValue } from '@repo/hooks'
+import { useDebouncedValue } from '@gorgias/toolkit-react'
 
 import {
     Box,

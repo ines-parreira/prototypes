@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useTimeout } from '@repo/hooks'
+import { useTimeout } from '@gorgias/toolkit-react'
 
 import type { LegacyBannerType as BannerType } from '@gorgias/axiom'
 import { LegacyBanner as Banner } from '@gorgias/axiom'

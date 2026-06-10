@@ -1,8 +1,8 @@
-import { useIsMobileResolution } from '@repo/hooks'
 import { Panel } from '@repo/layout'
 import { assumeMock, render } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { useIsMobileResolution } from '@gorgias/toolkit-react'
 
 import { CopilotPanel } from '@gorgias/copilot'
 
@@ -16,8 +16,8 @@ jest.mock('routes/layout/NavigationSidebar', () => ({
     NavigationSidebar: () => <div>Sidebar</div>,
 }))
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useIsMobileResolution: jest.fn(),
 }))
 

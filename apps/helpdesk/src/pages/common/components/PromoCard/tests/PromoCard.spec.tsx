@@ -8,11 +8,13 @@ import { MemoryRouter } from 'react-router-dom'
 import { PromoCard } from '../PromoCard'
 
 // Mock the useLocalStorage hook
-jest.mock('@repo/hooks', () => ({
+jest.mock('@gorgias/toolkit-react', () => ({
     useLocalStorage: jest.fn(),
 }))
 
-const mockUseLocalStorage = jest.mocked(require('@repo/hooks').useLocalStorage)
+const mockUseLocalStorage = jest.mocked(
+    require('@gorgias/toolkit-react').useLocalStorage,
+)
 
 // Mock assets for testing
 const mockPoster = '/test-poster.jpg'

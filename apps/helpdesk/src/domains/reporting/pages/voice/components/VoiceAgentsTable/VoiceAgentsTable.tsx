@@ -1,8 +1,8 @@
 import type { UIEventHandler } from 'react'
 import React, { useState } from 'react'
 
-import { useMeasure } from '@repo/hooks'
 import classNames from 'classnames'
+import { useMeasure } from '@gorgias/toolkit-react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useAgentsSortingQuery } from 'domains/reporting/hooks/useAgentsSortingQuery'

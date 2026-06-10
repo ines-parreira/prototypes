@@ -41,8 +41,8 @@ import type Snooze from '../Snooze'
 import TicketHeader from '../TicketHeader'
 import useIsTicketNavigationAvailable from '../TicketNavigation/hooks/useIsTicketNavigationAvailable'
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useElementSize: jest.fn().mockImplementation(() => [0, 160]),
 }))
 

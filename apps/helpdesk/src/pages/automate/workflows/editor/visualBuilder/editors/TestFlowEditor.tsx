@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useEffectOnce, useKey } from '@repo/hooks'
 import classNames from 'classnames'
 import _throttle from 'lodash/throttle'
 import { useParams } from 'react-router-dom'
+import { useEffectOnce, useKey } from '@gorgias/toolkit-react'
 
 import {
     LegacyButton as Button,

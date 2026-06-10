@@ -1,8 +1,8 @@
 import type { UIEventHandler } from 'react'
 import React, { useState } from 'react'
 
-import { useMeasure } from '@repo/hooks'
 import classNames from 'classnames'
+import { useMeasure } from '@gorgias/toolkit-react'
 
 import { calculateDecile } from 'domains/reporting/hooks/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
 import type { TimeSeriesHook } from 'domains/reporting/hooks/useTimeSeries'

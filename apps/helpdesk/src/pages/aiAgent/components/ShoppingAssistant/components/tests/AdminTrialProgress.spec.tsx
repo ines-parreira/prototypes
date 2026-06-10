@@ -12,7 +12,7 @@ jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
 }))
 
-jest.mock('@repo/hooks', () => ({
+jest.mock('@gorgias/toolkit-react', () => ({
     useEffectOnce: jest.fn((callback) => callback()),
     useLocalStorage: jest.fn(() => [false, jest.fn(), jest.fn()]),
 }))

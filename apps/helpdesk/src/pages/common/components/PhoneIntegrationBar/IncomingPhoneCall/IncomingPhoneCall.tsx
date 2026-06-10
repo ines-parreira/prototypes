@@ -2,10 +2,10 @@ import type { SyntheticEvent } from 'react'
 import React, { useCallback, useRef } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useNow } from '@repo/hooks'
 import type { Call } from '@twilio/voice-sdk'
 import moment from 'moment'
 import { useHistory, useLocation } from 'react-router-dom'
+import { useNow } from '@gorgias/toolkit-react'
 
 import { Box, Button, Icon, LegacyButton, Tag, Text } from '@gorgias/axiom'
 

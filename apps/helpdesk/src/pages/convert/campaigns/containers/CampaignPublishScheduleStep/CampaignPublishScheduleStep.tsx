@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access */
 import React, { useMemo, useState } from 'react'
 
-import { useUpdateEffect } from '@repo/hooks'
 import { produce } from 'immer'
 import type { Moment } from 'moment-timezone'
 import moment from 'moment-timezone'
+import { useUpdateEffect } from '@gorgias/toolkit-react'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
 

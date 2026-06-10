@@ -1,9 +1,9 @@
 import { useReducer, useState } from 'react'
 
-import { useLocalStorage } from '@repo/hooks'
 import type { CountryCode } from 'libphonenumber-js'
 import { AsYouType } from 'libphonenumber-js'
 import { useParams } from 'react-router-dom'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 import { useAiJourneyPhoneList } from 'AIJourney/hooks/useAiJourneyPhoneList/useAiJourneyPhoneList'
 import { useJourneyContext } from 'AIJourney/providers'
 import { useRcsTestSend } from 'AIJourney/queries/useRcsTestSend/useRcsTestSend'

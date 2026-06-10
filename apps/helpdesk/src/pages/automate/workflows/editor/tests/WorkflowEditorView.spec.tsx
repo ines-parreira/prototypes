@@ -1,8 +1,8 @@
-import { useEffectOnce } from '@repo/hooks'
 import { render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { Router } from 'react-router-dom'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { DEFAULT_TIMEZONE } from 'domains/reporting/pages/convert/constants/components'
 import useAppSelector from 'hooks/useAppSelector'
@@ -30,8 +30,8 @@ import {
 import WorkflowEditorView from '../WorkflowEditorView'
 
 jest.mock('hooks/useAppSelector')
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useEffectOnce: jest.fn(),
 }))
 jest.mock('hooks/useSearch')

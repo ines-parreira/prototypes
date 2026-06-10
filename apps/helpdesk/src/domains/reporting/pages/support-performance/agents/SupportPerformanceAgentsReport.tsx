@@ -1,6 +1,6 @@
 import { useCustomAgentUnavailableStatusesFlag } from '@repo/agent-status'
-import { useGridSize } from '@repo/hooks'
 import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom'
+import { useGridSize } from '@gorgias/toolkit-react'
 
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'

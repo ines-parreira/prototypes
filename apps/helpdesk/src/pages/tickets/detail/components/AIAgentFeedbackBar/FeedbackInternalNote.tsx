@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 
 import { useFeedbackTracking } from '@repo/ai-agent'
-import { useDebouncedEffect } from '@repo/hooks'
+import { useDebouncedEffect } from '@gorgias/toolkit-react'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
 

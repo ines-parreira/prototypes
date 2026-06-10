@@ -1,13 +1,13 @@
 import type React from 'react'
 import { useEffect, useState } from 'react'
 
-import { useAsyncFn } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
 import _truncate from 'lodash/truncate'
 import _uniqueId from 'lodash/uniqueId'
 import { Link } from 'react-router-dom'
 import { Table } from 'reactstrap'
+import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
 import type { CursorPaginationMeta } from '@gorgias/helpdesk-queries'

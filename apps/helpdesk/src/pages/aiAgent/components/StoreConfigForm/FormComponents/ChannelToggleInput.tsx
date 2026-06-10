@@ -1,9 +1,9 @@
 import { useMemo, useRef } from 'react'
 
-import { useLocalStorage } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import _upperFirst from 'lodash/upperFirst'
 import { Link } from 'react-router-dom'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import {
     LegacyBanner as Banner,

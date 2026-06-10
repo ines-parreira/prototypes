@@ -2,7 +2,6 @@ import React from 'react'
 
 import type { FeatureFlagKey } from '@repo/feature-flags'
 import { useFlag } from '@repo/feature-flags'
-import { useIsMobileResolution } from '@repo/hooks'
 import { render } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import type { UserEvent } from '@testing-library/user-event'
@@ -13,6 +12,7 @@ import { useHistory } from 'react-router-dom'
 import type { AnyAction, Middleware } from 'redux'
 import { applyMiddleware, createStore } from 'redux'
 import thunk from 'redux-thunk'
+import { useIsMobileResolution } from '@gorgias/toolkit-react'
 
 import {
     mockCursorPaginationMeta,
@@ -45,8 +45,8 @@ jest.mock('@repo/feature-flags', () => ({
     useFlag: jest.fn(),
 }))
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useIsMobileResolution: jest.fn(() => false),
 }))
 

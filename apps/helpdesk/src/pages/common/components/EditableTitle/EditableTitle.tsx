@@ -6,8 +6,8 @@ import type {
 } from 'react'
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 
-import { useEffectOnce } from '@repo/hooks'
 import classnames from 'classnames'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import css from 'pages/common/components/EditableTitle/EditableTitle.less'
 import TextInput from 'pages/common/forms/input/TextInput'

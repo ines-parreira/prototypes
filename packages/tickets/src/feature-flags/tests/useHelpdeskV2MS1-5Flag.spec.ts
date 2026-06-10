@@ -1,6 +1,6 @@
 import { useHelpdeskV2BaselineFlag } from '@repo/feature-flags'
-import { useIsMobileResolution } from '@repo/hooks'
 import { useLocation } from 'react-router-dom'
+import { useIsMobileResolution } from '@gorgias/toolkit-react'
 
 import { renderHook } from '../../tests/render.utils'
 import { useHelpdeskV2MS1Dot5Flag } from '../useHelpdeskV2MS1-5Flag'
@@ -9,7 +9,7 @@ vi.mock('@repo/feature-flags', () => ({
     useHelpdeskV2BaselineFlag: vi.fn(),
 }))
 
-vi.mock('@repo/hooks', () => ({
+vi.mock('@gorgias/toolkit-react', () => ({
     useIsMobileResolution: vi.fn(),
 }))
 

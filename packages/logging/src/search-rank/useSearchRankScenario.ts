@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useUnmount } from '@repo/hooks'
+import { useUnmount } from '@gorgias/toolkit-react'
 
 import { logEvent } from '../segment'
 import type { SegmentEvent } from '../segment/types'

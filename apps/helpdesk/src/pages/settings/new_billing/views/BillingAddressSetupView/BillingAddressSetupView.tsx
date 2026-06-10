@@ -1,6 +1,6 @@
-import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { useLocation } from 'react-router'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { useBillingContact } from 'models/billing/queries'
 import Loader from 'pages/common/components/Loader/Loader'

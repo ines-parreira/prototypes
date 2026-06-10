@@ -2,9 +2,9 @@ import type { ComponentType } from 'react'
 import React, { useCallback, useMemo } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useEffectOnce } from '@repo/hooks'
 import type { Map } from 'immutable'
 import _debounce from 'lodash/debounce'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import type { DropdownMenuProps } from 'pages/common/forms/MultiSelectOptionsField/dropdownMenuTypes'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'

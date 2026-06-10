@@ -1,10 +1,10 @@
 import type React from 'react'
 import { useMemo } from 'react'
 
-import { useId } from '@repo/hooks'
 import { SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
 import { useHistory, useParams } from 'react-router-dom'
+import { useId } from '@gorgias/toolkit-react'
 
 import { Skeleton, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 

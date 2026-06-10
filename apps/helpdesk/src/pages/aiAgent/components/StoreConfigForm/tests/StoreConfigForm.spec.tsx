@@ -1,7 +1,6 @@
 import type { ComponentProps } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import * as hooksImports from '@repo/hooks'
 import { logEvent, reportError } from '@repo/logging'
 import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen, waitFor, within } from '@testing-library/react'
@@ -10,6 +9,7 @@ import { fromJS } from 'immutable'
 import { keyBy } from 'lodash'
 import moment from 'moment'
 import { useLocation, useParams } from 'react-router-dom'
+import * as hooksImports from '@gorgias/toolkit-react'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
@@ -157,8 +157,8 @@ jest.mock('state/billing/selectors', () => ({
         generation: 5,
     })),
 }))
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useTextWidth: jest.fn(() => 0),
 }))
 jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels', () => ({

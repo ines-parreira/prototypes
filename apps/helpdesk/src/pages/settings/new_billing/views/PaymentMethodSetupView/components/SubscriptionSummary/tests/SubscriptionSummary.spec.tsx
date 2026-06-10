@@ -2,9 +2,9 @@
 import type { SelectedPlans } from '@repo/billing'
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { Form } from '@repo/forms'
-import { useSessionStorage } from '@repo/hooks'
 import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { useSessionStorage } from '@gorgias/toolkit-react'
 
 import { basicMonthlyHelpdeskPlan } from 'fixtures/plans'
 import { Cadence, ProductType } from 'models/billing/types'
@@ -16,8 +16,8 @@ import type { ISubscriptionSummaryProps } from '../SubscriptionSummary'
 import { SubscriptionSummary } from '../SubscriptionSummary'
 
 jest.mock('hooks/useAppSelector', () => (selector: () => any) => selector())
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useSessionStorage: jest.fn(),
 }))
 jest.mock('pages/settings/new_billing/hooks/useBillingPlan')

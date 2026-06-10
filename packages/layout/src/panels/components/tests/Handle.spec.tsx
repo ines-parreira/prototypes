@@ -4,8 +4,8 @@ import { vi } from 'vitest'
 import { useHandle } from '../../hooks/useHandle'
 import { Handle } from '../Handle'
 
-vi.mock('@repo/hooks', async () => ({
-    ...(await vi.importActual('@repo/hooks')),
+vi.mock('@gorgias/toolkit-react', async () => ({
+    ...(await vi.importActual('@gorgias/toolkit-react')),
     useId: vi.fn().mockImplementation(() => '123'),
 }))
 

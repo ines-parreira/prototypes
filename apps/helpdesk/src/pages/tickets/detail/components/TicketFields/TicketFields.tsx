@@ -1,7 +1,7 @@
 import { memo, useEffect, useMemo, useState } from 'react'
 
-import { useCallbackRef, useElementSize } from '@repo/hooks'
 import classNames from 'classnames'
+import { useCallbackRef, useElementSize } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 

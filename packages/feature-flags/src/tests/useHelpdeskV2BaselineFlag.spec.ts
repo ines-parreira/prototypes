@@ -1,6 +1,6 @@
-import { useLocalStorage } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { act, renderHook } from '@testing-library/react'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import { FeatureFlagKey } from '../featureFlagKey'
 import { useHelpdeskV2BaselineFlag } from '../shared-flags/useHelpdeskV2BaselineFlag'
@@ -12,7 +12,7 @@ vi.mock('../useFlag', () => ({
     useFlag: vi.fn(),
 }))
 
-vi.mock('@repo/hooks', () => ({
+vi.mock('@gorgias/toolkit-react', () => ({
     useLocalStorage: vi.fn(),
 }))
 

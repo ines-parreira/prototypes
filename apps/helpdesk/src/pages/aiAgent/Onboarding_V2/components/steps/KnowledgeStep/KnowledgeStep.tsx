@@ -1,9 +1,9 @@
 import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
-import { useLocalStorage } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { getMomentUtcISOString } from '@repo/utils'
 import { useQueryClient } from '@tanstack/react-query'
 import { useHistory, useParams } from 'react-router-dom'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import {
     Box,

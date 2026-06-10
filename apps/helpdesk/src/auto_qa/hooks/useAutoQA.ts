@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
 
-import { useDebouncedEffect } from '@repo/hooks'
+import { useDebouncedEffect } from '@gorgias/toolkit-react'
 
 import type { TicketQAScoreDimension } from '@gorgias/helpdesk-queries'
 import {

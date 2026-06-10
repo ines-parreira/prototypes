@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
-import { useLocalStorage } from '@repo/hooks'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import closeIcon from 'assets/img/icons/close.svg'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'

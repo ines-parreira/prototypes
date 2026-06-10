@@ -1,5 +1,5 @@
-import { useLocalStorage } from '@repo/hooks'
 import { assumeMock, renderHook } from '@repo/testing'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
@@ -14,7 +14,7 @@ const useCanUseAiSalesAgentMock = assumeMock(useCanUseAiSalesAgent)
 jest.mock('pages/aiAgent/trial/hooks/useTrialAccess')
 const useTrialAccessMock = assumeMock(useTrialAccess)
 
-jest.mock('@repo/hooks')
+jest.mock('@gorgias/toolkit-react')
 const useLocalStorageMock = assumeMock(useLocalStorage)
 
 describe('useAiAgentScopesForAutomationPlan', () => {

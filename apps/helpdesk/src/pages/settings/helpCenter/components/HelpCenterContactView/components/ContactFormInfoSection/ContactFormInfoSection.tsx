@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useLocalStorage } from '@repo/hooks'
 import classnames from 'classnames'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 

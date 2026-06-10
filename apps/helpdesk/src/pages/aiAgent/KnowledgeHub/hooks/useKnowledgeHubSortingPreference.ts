@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { useLocalStorage } from '@repo/hooks'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import type { SortingState } from '@gorgias/axiom'
 
@@ -29,7 +29,7 @@ const isMetricsColumn = (columnId: string): boolean => {
 /**
  * Manages persistent sorting preferences for the Knowledge Hub table.
  *
- * Uses @repo/hooks/useLocalStorage for automatic persistence and multi-tab sync.
+ * Uses @gorgias/toolkit-react/useLocalStorage for automatic persistence and multi-tab sync.
  * Validates sort state against available columns and handles metrics columns specially.
  *
  * @param availableColumnIds - List of valid column IDs for validation.

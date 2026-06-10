@@ -2,10 +2,10 @@ import type { ComponentProps } from 'react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useLocalStorage } from '@repo/hooks'
 import { reportError } from '@repo/logging'
 import { List } from 'immutable'
 import { useHistory, useParams } from 'react-router-dom'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import { Button, toast } from '@gorgias/axiom'
 

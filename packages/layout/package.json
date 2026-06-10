@@ -18,7 +18,7 @@
     },
     "peerDependencies": {
         "@gorgias/axiom": "catalog:axiom",
-        "@repo/hooks": "workspace:*",
+        "@gorgias/toolkit-react": "catalog:toolkit",
         "react": "catalog:react",
         "react-dom": "catalog:react",
         "classnames": "catalog:styles"
@@ -26,7 +26,7 @@
     "devDependencies": {
         "@gorgias/axiom": "catalog:axiom",
         "@repo/config": "workspace:*",
-        "@repo/hooks": "workspace:*",
+        "@gorgias/toolkit-react": "catalog:toolkit",
         "@testing-library/dom": "catalog:test",
         "@testing-library/jest-dom": "catalog:test",
         "@testing-library/react": "catalog:test",

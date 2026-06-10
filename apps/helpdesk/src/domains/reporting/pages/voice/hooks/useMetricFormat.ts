@@ -1,4 +1,4 @@
-import { useSessionStorage } from '@repo/hooks'
+import { useSessionStorage } from '@gorgias/toolkit-react'
 
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'

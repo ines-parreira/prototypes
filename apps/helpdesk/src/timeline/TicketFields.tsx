@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 
-import { useCallbackRef, useElementSize, useId } from '@repo/hooks'
 import cn from 'classnames'
+import { useCallbackRef, useElementSize, useId } from '@gorgias/toolkit-react'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import type {

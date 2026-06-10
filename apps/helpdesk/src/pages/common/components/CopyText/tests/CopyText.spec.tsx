@@ -9,8 +9,8 @@ jest.mock('../utils', () => ({
 }))
 
 const mockedCopyToClipboard = jest.fn()
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useCopyToClipboard: jest.fn(() => [null, mockedCopyToClipboard]),
 }))
 

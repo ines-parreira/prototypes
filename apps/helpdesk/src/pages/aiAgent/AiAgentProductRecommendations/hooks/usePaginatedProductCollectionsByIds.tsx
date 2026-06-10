@@ -1,8 +1,8 @@
 import { useCallback, useMemo, useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useDebouncedValue } from '@repo/hooks'
 import { useQuery } from '@tanstack/react-query'
+import { useDebouncedValue } from '@gorgias/toolkit-react'
 
 import { fetchEcommerceProductCollections } from 'models/ecommerce/resources'
 import type { ProductCollection } from 'models/ecommerce/types'

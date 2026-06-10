@@ -1,6 +1,6 @@
-import { useInterval } from '@repo/hooks'
 import { assumeMock, render } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
+import { useInterval } from '@gorgias/toolkit-react'
 
 import type { LiveCallQueueAgent } from '@gorgias/helpdesk-queries'
 
@@ -14,8 +14,8 @@ import {
 import { getFormattedDurationOngoingCall } from 'models/voiceCall/utils'
 import AgentCard from 'pages/common/components/AgentCard/AgentCard'
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useInterval: jest.fn(),
 }))
 jest.mock('@repo/agent-status', () => ({

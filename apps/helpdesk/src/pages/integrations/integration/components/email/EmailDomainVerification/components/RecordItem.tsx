@@ -1,5 +1,5 @@
-import { useId } from '@repo/hooks'
 import classnames from 'classnames'
+import { useId } from '@gorgias/toolkit-react'
 
 import type { EmailDNSRecord } from '@gorgias/helpdesk-queries'
 

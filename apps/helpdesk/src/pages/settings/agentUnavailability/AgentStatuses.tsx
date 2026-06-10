@@ -14,8 +14,8 @@ import type {
     CreateAgentStatusModalProps,
     EditAgentStatusModalProps,
 } from '@repo/agent-status'
-import { useToggle } from '@repo/hooks'
 import { Link } from 'react-router-dom'
+import { useToggle } from '@gorgias/toolkit-react'
 
 import { Banner, Box, Button, toast } from '@gorgias/axiom'
 

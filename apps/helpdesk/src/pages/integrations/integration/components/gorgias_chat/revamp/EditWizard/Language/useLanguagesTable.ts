@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 
-import { useAsyncFn } from '@repo/hooks'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
+import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
 

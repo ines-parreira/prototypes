@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useCopyToClipboard, useId } from '@repo/hooks'
 import _uniqueId from 'lodash/uniqueId'
+import { useCopyToClipboard, useId } from '@gorgias/toolkit-react'
 
 import {
     Button,

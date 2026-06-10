@@ -5,7 +5,7 @@ import {
     useEffectOnce,
     useLocalStorage,
     useLocalStorageWithExpiry,
-} from '@repo/hooks'
+} from '@gorgias/toolkit-react'
 
 import type { IntegrationType } from 'models/integration/types'
 

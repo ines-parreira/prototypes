@@ -1,8 +1,8 @@
-import { useIsMobileResolution } from '@repo/hooks'
 import { MockSidebarProvider } from '@repo/navigation/fixtures'
 import { assumeMock, render } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { useIsMobileResolution } from '@gorgias/toolkit-react'
 
 import { useIsChatReady } from 'hooks/useIsChatReady'
 import { Product, productConfig } from 'routes/layout/productConfig'
@@ -23,8 +23,8 @@ jest.mock('routes/layout/UserMenu', () => ({
     UserMenu: () => <div>UserMenu</div>,
 }))
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useIsMobileResolution: jest.fn(),
 }))
 const mockUseIsMobileResolution = assumeMock(useIsMobileResolution)

@@ -1,4 +1,3 @@
-import { useIsMobileResolution } from '@repo/hooks'
 import {
     DefaultViewsMenu,
     SYSTEM_VIEW_DEFINITIONS,
@@ -6,6 +5,7 @@ import {
 } from '@repo/tickets'
 import { useCurrentUserRole } from '@repo/users'
 import classnames from 'classnames'
+import { useIsMobileResolution } from '@gorgias/toolkit-react'
 
 import { Box, Button, Text } from '@gorgias/axiom'
 

@@ -42,7 +42,7 @@
         "@gorgias/helpdesk-queries": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-types": "catalog:rest-api-sdk",
         "@repo/config": "workspace:*",
-        "@repo/hooks": "workspace:*",
+        "@gorgias/toolkit-react": "catalog:toolkit",
         "@repo/logging": "workspace:*",
         "@repo/testing": "workspace:*",
         "@tanstack/react-query": "catalog:rest-api-sdk",

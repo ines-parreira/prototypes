@@ -1,7 +1,7 @@
 import { useCallback, useRef } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useDebouncedCallback } from '@repo/hooks'
+import { useDebouncedCallback } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
 

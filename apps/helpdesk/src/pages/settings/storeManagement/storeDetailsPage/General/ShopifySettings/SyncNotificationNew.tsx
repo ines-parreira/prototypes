@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { useLocalStorage } from '@repo/hooks'
 import { Link } from 'react-router-dom'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import {
     LegacyBanner as Banner,

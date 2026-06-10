@@ -9,7 +9,7 @@ import type {
 } from '../../types'
 import { OrderDetailFieldRow } from './OrderDetailFieldRow'
 
-vi.mock('@repo/hooks', async (importOriginal) => ({
+vi.mock('@gorgias/toolkit-react', async (importOriginal) => ({
     ...((await importOriginal()) as Record<string, unknown>),
     useCopyToClipboard: () => [
         {},

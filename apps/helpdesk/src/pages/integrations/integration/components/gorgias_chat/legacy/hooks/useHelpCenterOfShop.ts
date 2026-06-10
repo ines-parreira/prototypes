@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { useAsyncFn } from '@repo/hooks'
+import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import type { HelpCenter } from 'models/helpCenter/types'
 import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'

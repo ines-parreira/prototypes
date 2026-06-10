@@ -1,9 +1,9 @@
 import { useMemo } from 'react'
 
 import { useCustomAgentUnavailableStatusesFlag } from '@repo/agent-status'
-import { useLocalStorage } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { UserRole } from '@repo/permissions'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import { ActiveContent, Navbar } from 'common/navigation'
 import type { AccordionValues } from 'components/Accordion/utils/types'

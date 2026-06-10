@@ -1,12 +1,12 @@
 import { useCallback, useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useDebouncedCallback } from '@repo/hooks'
 import {
     useIsMutating,
     useMutation,
     useQueryClient,
 } from '@tanstack/react-query'
+import { useDebouncedCallback } from '@gorgias/toolkit-react'
 
 import { helpCenterKeys, usePatchWizard } from 'models/helpCenter/queries'
 import { updateArticleTranslation } from 'models/helpCenter/resources'

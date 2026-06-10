@@ -1,6 +1,6 @@
-import { useAsyncFn } from '@repo/hooks'
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
+import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -21,8 +21,8 @@ jest.mock('models/chatApplicationAutomationSettings/resources')
 jest.mock('state/entities/chatsApplicationAutomationSettings/selectors')
 jest.mock('models/automation/queries')
 jest.mock('state/notifications/actions')
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useAsyncFn: jest
         .fn()
         .mockImplementation(

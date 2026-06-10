@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 
-import { useId } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { useId } from '@gorgias/toolkit-react'
 
 import { Button, Tooltip, TooltipContent } from '@gorgias/axiom'
 

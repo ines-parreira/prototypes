@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useEffectOnce } from '@repo/hooks'
 import type { List, Map } from 'immutable'
 import { useHistory } from 'react-router-dom'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import IconLink from 'core/ui/components/IconLink'

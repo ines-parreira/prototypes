@@ -1,5 +1,5 @@
-import { useEffectOnce } from '@repo/hooks'
 import { produce } from 'immer'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import type { BannerCategory } from '../../types'
 import { STORAGE_CLEAR_TIMEOUT } from '../constants'

@@ -1,4 +1,4 @@
-import { useCallbackRef } from '@repo/hooks'
+import { useCallbackRef } from '@gorgias/toolkit-react'
 
 import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
 

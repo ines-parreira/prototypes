@@ -46,6 +46,6 @@
         "vitest": "catalog:test"
     },
     "dependencies": {
-        "@repo/hooks": "workspace:*"
+        "@gorgias/toolkit-react": "catalog:toolkit"
     }
 }

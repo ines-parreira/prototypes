@@ -1,7 +1,6 @@
 import type { HTMLAttributes, ReactNode } from 'react'
 import React, { useCallback, useEffect, useMemo } from 'react'
 
-import { useAsyncFn } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import type { AxiosError, CancelToken } from 'axios'
 import { isCancel } from 'axios'
@@ -9,6 +8,7 @@ import classnames from 'classnames'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import { Button } from 'reactstrap'
+import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { toast, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 

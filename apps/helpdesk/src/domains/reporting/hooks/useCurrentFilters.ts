@@ -1,6 +1,6 @@
-import { useSessionStorage } from '@repo/hooks'
 import _isEmpty from 'lodash/isEmpty'
 import _isEqual from 'lodash/isEqual'
+import { useSessionStorage } from '@gorgias/toolkit-react'
 
 import {
     isAggregationWindowFilter,

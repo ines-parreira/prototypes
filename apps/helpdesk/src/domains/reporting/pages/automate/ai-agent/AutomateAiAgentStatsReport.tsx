@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 
-import { useEffectOnce, useGridSize } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { getPreviousUrl } from '@repo/routing'
+import { useEffectOnce, useGridSize } from '@gorgias/toolkit-react'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'

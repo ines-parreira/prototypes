@@ -1,6 +1,6 @@
-import { useEffectOnce } from '@repo/hooks'
 import { history } from '@repo/routing'
 import { useLocation } from 'react-router-dom'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
 

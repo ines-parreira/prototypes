@@ -10,8 +10,8 @@ import {
     useState,
 } from 'react'
 
-import { useEffectOnce, useEvent } from '@repo/hooks'
 import classnames from 'classnames'
+import { useEffectOnce, useEvent } from '@gorgias/toolkit-react'
 
 import IconButton from 'pages/common/components/button/IconButton'
 import Group, {

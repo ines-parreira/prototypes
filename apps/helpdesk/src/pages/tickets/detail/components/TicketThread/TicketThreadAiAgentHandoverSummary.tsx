@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useCopyToClipboard } from '@repo/hooks'
 import {
     BubbleActions,
     CopyButton,
@@ -12,6 +11,7 @@ import {
 } from '@repo/ticket-thread'
 import type { BubbleActionItem } from '@repo/ticket-thread'
 import type { TicketThreadAiAgentHandoverSummaryParams } from '@repo/ticket-thread/legacy-bridge'
+import { useCopyToClipboard } from '@gorgias/toolkit-react'
 
 import { useParams } from 'react-router-dom'
 import { AIThinking, Box, Button, Icon, Text } from '@gorgias/axiom'

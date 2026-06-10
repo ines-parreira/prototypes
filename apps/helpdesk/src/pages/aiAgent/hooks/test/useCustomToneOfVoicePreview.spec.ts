@@ -1,7 +1,7 @@
-import { useLocalStorage } from '@repo/hooks'
 import { reportError } from '@repo/logging'
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import useAppSelector from 'hooks/useAppSelector'
@@ -12,8 +12,8 @@ import { createCustomToneOfVoicePreviewBody } from '../../utils/custom-tone-of-v
 import useCustomToneOfVoicePreview from '../useCustomToneOfVoicePreview'
 
 jest.mock('hooks/useAppSelector')
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useLocalStorage: jest.fn(),
 }))
 jest.mock('models/aiAgent/queries')

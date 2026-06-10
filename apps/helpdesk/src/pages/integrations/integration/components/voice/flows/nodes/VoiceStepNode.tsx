@@ -1,5 +1,5 @@
-import { useKey } from '@repo/hooks'
 import classNames from 'classnames'
+import { useKey } from '@gorgias/toolkit-react'
 
 import type { NodeProps } from 'core/ui/flows'
 import {

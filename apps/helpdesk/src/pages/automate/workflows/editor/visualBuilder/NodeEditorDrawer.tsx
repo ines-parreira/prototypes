@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useKey, usePrevious } from '@repo/hooks'
 import classNames from 'classnames'
 import _camelCase from 'lodash/camelCase'
+import { useKey, usePrevious } from '@gorgias/toolkit-react'
 
 import { TranslationsPreviewProvider } from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
 import type { VisualBuilderNode } from 'pages/automate/workflows/models/visualBuilderGraph.types'

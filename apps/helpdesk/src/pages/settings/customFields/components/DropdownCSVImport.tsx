@@ -1,11 +1,11 @@
 // eslint-disable-line import/no-unresolved
 import { useState } from 'react'
 
-import { useAsyncFn, useId } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { CsvError, parse } from 'csv-parse/sync'
 import { Link } from 'react-router-dom'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
+import { useAsyncFn, useId } from '@gorgias/toolkit-react'
 
 import {
     LegacyButton as Button,

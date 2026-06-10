@@ -1,7 +1,6 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useTitle } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import {
     DisplayedContent,
@@ -18,6 +17,7 @@ import classnames from 'classnames'
 import type { Map } from 'immutable'
 import type { Moment } from 'moment-timezone'
 import moment from 'moment-timezone'
+import { useTitle } from '@gorgias/toolkit-react'
 
 import {
     LegacyIconButton,

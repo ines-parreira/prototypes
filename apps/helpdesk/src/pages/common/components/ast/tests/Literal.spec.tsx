@@ -12,6 +12,11 @@ import Literal from 'pages/common/components/ast/Literal'
 import type { RuleItemActions } from 'pages/settings/rules/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
+    useId: jest.fn(() => require('lodash/uniqueId')()),
+}))
+
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 const commonProps = {

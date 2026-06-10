@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
-import { useLocalStorage } from '@repo/hooks'
 import classNames from 'classnames'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import {
     LegacyButton as Button,

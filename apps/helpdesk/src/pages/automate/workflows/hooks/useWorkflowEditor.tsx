@@ -10,9 +10,9 @@ import {
 } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useDebouncedValue, useThrottledValue } from '@repo/hooks'
 import { useQueryClient } from '@tanstack/react-query'
 import { produce } from 'immer'
+import { useDebouncedValue, useThrottledValue } from '@gorgias/toolkit-react'
 
 import type { WorkflowStepMetricsMap } from 'domains/reporting/hooks/automate/utils'
 import { IntegrationType } from 'models/integration/constants'

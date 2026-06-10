@@ -1,4 +1,4 @@
-import { useAsyncFn } from '@repo/hooks'
+import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import { toast } from '@gorgias/axiom'
 

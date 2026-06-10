@@ -11,8 +11,8 @@ import type { RootState, StoreDispatch } from 'state/types'
 
 import ReturnOrderAction from '../ReturnOrderAction'
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useTextWidth: (text: string, options: { padding?: number } = {}) => {
         const baseWidth = text ? text.length * 8 : 0
         return baseWidth + (options.padding || 0)

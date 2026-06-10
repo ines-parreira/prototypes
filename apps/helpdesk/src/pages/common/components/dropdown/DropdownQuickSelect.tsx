@@ -8,8 +8,8 @@ import React, {
     useRef,
 } from 'react'
 
-import { useEffectOnce } from '@repo/hooks'
 import classnames from 'classnames'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import CheckBox from 'pages/common/forms/CheckBox'
 

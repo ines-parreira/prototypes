@@ -1,6 +1,6 @@
-import { useDebouncedEffect } from '@repo/hooks'
 import { renderHook } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
+import { useDebouncedEffect } from '@gorgias/toolkit-react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useUpdateArticleTranslation } from 'models/helpCenter/mutations'
@@ -14,7 +14,7 @@ import { useArticleContext } from '../context/ArticleContext'
 import type { ArticleContextValue, SettingsChanges } from '../context/types'
 import { useSettingsAutoSave } from './useSettingsAutoSave'
 
-jest.mock('@repo/hooks', () => ({
+jest.mock('@gorgias/toolkit-react', () => ({
     useDebouncedEffect: jest.fn(),
 }))
 

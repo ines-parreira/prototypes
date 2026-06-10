@@ -1,4 +1,4 @@
-import { useGridSize } from '@repo/hooks'
+import { useGridSize } from '@gorgias/toolkit-react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import type { Period } from 'domains/reporting/models/stat/types'

@@ -1,10 +1,10 @@
 import type { ReactNode } from 'react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { useUpdateEffect } from '@repo/hooks'
 import type { Moment } from 'moment-timezone'
 import moment from 'moment-timezone'
 import { Tooltip } from 'reactstrap'
+import { useUpdateEffect } from '@gorgias/toolkit-react'
 
 import { useTheme } from 'core/theme'
 import type {

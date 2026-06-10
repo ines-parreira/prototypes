@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useState } from 'react'
 
 import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
-import { usePrevious } from '@repo/hooks'
 import { NavigationSectionItem, useSidebar } from '@repo/navigation'
 import { IconWithDot } from '@repo/tickets'
 import classnames from 'classnames'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 import { Link, useLocation } from 'react-router-dom'
+import { usePrevious } from '@gorgias/toolkit-react'
 
 import { Box, Button, Menu, MenuItem, Text } from '@gorgias/axiom'
 

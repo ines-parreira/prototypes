@@ -4,8 +4,8 @@ import { TicketChannel, TicketStatus } from 'business/types/ticket'
 
 import TicketIcon, { NullTicketIcon } from '../TicketIcon'
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useId: jest.fn().mockImplementation(() => 'test'),
 }))
 

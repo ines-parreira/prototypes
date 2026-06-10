@@ -7,8 +7,8 @@ import { userEvent } from '@testing-library/user-event'
 import EditableTitle from './EditableTitle'
 
 // Mock useTextWidth to avoid Canvas API issues in tests
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useEffectOnce: (fn: () => void) => {
         fn()
     },

@@ -1,8 +1,8 @@
 import { useEffect, useMemo } from 'react'
 
-import { useGridSize } from '@repo/hooks'
 import moment from 'moment'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
+import { useGridSize } from '@gorgias/toolkit-react'
 
 import {
     LegacyBanner as Banner,

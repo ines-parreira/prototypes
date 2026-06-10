@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useDebouncedCallback } from '@repo/hooks'
+import { useDebouncedCallback } from '@gorgias/toolkit-react'
 
 import { LegacyLabel as Label, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import type { FeedbackExecutionsItem } from '@gorgias/knowledge-service-types'

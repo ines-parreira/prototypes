@@ -1,7 +1,7 @@
 import type { Dispatch, ReactNode, SetStateAction } from 'react'
 import { createContext, useMemo, useState } from 'react'
 
-import { useSafeContext } from '@repo/hooks'
+import { useSafeContext } from '@gorgias/toolkit-react'
 
 import type { Integration } from 'models/integration/types'
 

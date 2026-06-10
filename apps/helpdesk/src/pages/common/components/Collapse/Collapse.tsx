@@ -2,9 +2,9 @@ import type { ReactNode } from 'react'
 import React, { useMemo, useRef, useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { usePrevious } from '@repo/hooks'
 import classnames from 'classnames'
 import { Transition } from 'react-transition-group'
+import { usePrevious } from '@gorgias/toolkit-react'
 
 import css from './Collapse.less'
 

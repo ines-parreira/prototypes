@@ -1,4 +1,4 @@
-import { useIsMobileResolution } from '@repo/hooks'
+import { useIsMobileResolution } from '@gorgias/toolkit-react'
 
 import { Menu, MenuSection } from '@gorgias/axiom'
 import { useGetCurrentUser } from '@gorgias/helpdesk-queries'

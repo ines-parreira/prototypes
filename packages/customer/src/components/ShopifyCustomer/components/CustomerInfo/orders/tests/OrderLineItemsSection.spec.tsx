@@ -4,7 +4,7 @@ import { vi } from 'vitest'
 
 import { OrderLineItemsSection } from '../sections/OrderLineItemsSection'
 
-vi.mock('@repo/hooks', async (importOriginal) => ({
+vi.mock('@gorgias/toolkit-react', async (importOriginal) => ({
     ...((await importOriginal()) as Record<string, unknown>),
     useCopyToClipboard: () => [
         {},

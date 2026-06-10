@@ -7,9 +7,14 @@ import {
     useState,
 } from 'react'
 
-import { useEffectOnce, useEvent, useId, useTextWidth } from '@repo/hooks'
-import type { UseTextWidthOptions } from '@repo/hooks'
 import classnames from 'classnames'
+import {
+    useEffectOnce,
+    useEvent,
+    useId,
+    useTextWidth,
+} from '@gorgias/toolkit-react'
+import type { UseTextWidthOptions } from '@gorgias/toolkit-react'
 
 import {
     GroupContext,

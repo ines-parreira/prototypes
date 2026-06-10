@@ -2,7 +2,7 @@ import type { KeyboardEvent } from 'react'
 import { useCallback, useMemo, useRef, useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useDebouncedEffect } from '@repo/hooks'
+import { useDebouncedEffect } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 import { ListTeamsOrderBy } from '@gorgias/helpdesk-queries'

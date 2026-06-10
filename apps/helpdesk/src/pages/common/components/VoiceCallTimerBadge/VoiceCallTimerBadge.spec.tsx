@@ -1,14 +1,14 @@
-import { useInterval } from '@repo/hooks'
 import { assumeMock, render } from '@repo/testing'
 import { act } from '@testing-library/react'
+import { useInterval } from '@gorgias/toolkit-react'
 
 import { getFormattedDurationOngoingCall } from 'models/voiceCall/utils'
 
 import VoiceCallTimerBadge from './VoiceCallTimerBadge'
 
 jest.mock('models/voiceCall/utils')
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useInterval: jest.fn(),
 }))
 

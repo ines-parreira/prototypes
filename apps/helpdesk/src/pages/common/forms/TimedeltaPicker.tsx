@@ -1,7 +1,6 @@
 import type { ComponentProps } from 'react'
 import React, { useEffect, useMemo, useState } from 'react'
 
-import { useUpdateEffect } from '@repo/hooks'
 import { reportError } from '@repo/logging'
 import {
     DropdownItem,
@@ -9,6 +8,7 @@ import {
     DropdownToggle,
     UncontrolledDropdown,
 } from 'reactstrap'
+import { useUpdateEffect } from '@gorgias/toolkit-react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 

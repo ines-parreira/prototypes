@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from 'react'
 
-import { useLocalStorage } from '@repo/hooks'
 import { useRouteMatch } from 'react-router'
+import { useLocalStorage } from '@gorgias/toolkit-react'
 
 import type { AccordionValues } from 'components/Accordion/utils/types'
 import type { GorgiasChatIntegration } from 'models/integration/types'

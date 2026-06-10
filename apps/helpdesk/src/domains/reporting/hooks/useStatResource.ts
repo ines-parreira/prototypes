@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from 'react'
 
-import { useDebouncedEffect } from '@repo/hooks'
 import type { AxiosError, CancelToken } from 'axios'
 import { isCancel } from 'axios'
 import _isEqual from 'lodash/isEqual'
+import { useDebouncedEffect } from '@gorgias/toolkit-react'
 
 import { fetchStat } from 'domains/reporting/models/stat/resources'
 import type {

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { useInterval } from '@repo/hooks'
+import { useInterval } from '@gorgias/toolkit-react'
 
 import { LegacyBadge as Badge } from '@gorgias/axiom'
 import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-types'

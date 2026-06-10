@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 
-import { useElementSize } from '@repo/hooks'
 import type { Components, VirtuosoHandle } from 'react-virtuoso'
 import { Virtuoso } from 'react-virtuoso'
+import { useElementSize } from '@gorgias/toolkit-react'
 
 import { ExpandedMessagesProvider } from '../../contexts/ExpandedMessages'
 import { TicketThreadWidthContext } from '../../contexts/TicketThreadWidth'

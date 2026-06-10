@@ -1,12 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-import * as hooksUtils from '@repo/hooks'
 import { render, userEvent } from '@repo/testing'
 import { act, fireEvent, waitFor } from '@testing-library/react'
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+import * as hooksUtils from '@gorgias/toolkit-react'
 
 import { CampaignFooter } from '../CampaignFooter'
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useDismissFlag: jest.fn(),
     useLocalStorage: jest.fn().mockReturnValue([false, jest.fn()]),
 }))

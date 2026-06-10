@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo } from 'react'
 
 import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
-import { useBeforeUnload } from '@repo/hooks'
 import { FormProvider, useForm } from 'react-hook-form'
 import {
     Redirect,
@@ -9,6 +8,7 @@ import {
     useLocation,
     useRouteMatch,
 } from 'react-router-dom'
+import { useBeforeUnload } from '@gorgias/toolkit-react'
 
 import {
     Box,

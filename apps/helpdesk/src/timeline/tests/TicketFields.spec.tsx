@@ -1,6 +1,6 @@
-import { useCallbackRef, useElementSize, useId } from '@repo/hooks'
 import { assumeMock, render } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
+import { useCallbackRef, useElementSize, useId } from '@gorgias/toolkit-react'
 
 import type { TicketCustomFieldValue } from '@gorgias/helpdesk-queries'
 import { useListCustomFields } from '@gorgias/helpdesk-queries'
@@ -23,8 +23,8 @@ jest.mock('@gorgias/helpdesk-queries', () => ({
 jest.mock('common/utils/getWrappedElementCount')
 jest.mock('custom-fields/hooks/useCustomFieldsConditionsEvaluationResults')
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useCallbackRef: jest.fn(() => [null, jest.fn()]),
     useElementSize: jest.fn(),
     useId: jest.fn(),

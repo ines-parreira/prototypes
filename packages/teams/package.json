@@ -20,7 +20,7 @@
         "@gorgias/helpdesk-client": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-queries": "catalog:rest-api-sdk",
         "@gorgias/toolkit": "catalog:toolkit",
-        "@repo/hooks": "workspace:*",
+        "@gorgias/toolkit-react": "catalog:toolkit",
         "@repo/utils": "workspace:*",
         "react": "catalog:react"
     },
@@ -29,7 +29,7 @@
         "@gorgias/helpdesk-mocks": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-queries": "catalog:rest-api-sdk",
         "@repo/config": "workspace:*",
-        "@repo/hooks": "workspace:*",
+        "@gorgias/toolkit-react": "catalog:toolkit",
         "@repo/testing": "workspace:*",
         "@repo/utils": "workspace:*",
         "@tanstack/react-query": "catalog:rest-api-sdk",

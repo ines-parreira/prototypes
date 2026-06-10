@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { MutableRefObject, SetStateAction } from 'react'
-import { useTimeout } from '@repo/hooks'
+import { useTimeout } from '@gorgias/toolkit-react'
 
 import { calculateSizes } from '../helpers/calculateSizes'
 import { scaleSizes } from '../helpers/scaleSizes'

@@ -26,8 +26,8 @@ const useTicketPartialsMock = useTicketPartials as jest.Mock
 jest.mock('../useViewTickets')
 const mockUseViewTickets = useViewTickets as jest.Mock
 
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useElementSize: jest.fn().mockImplementation(() => [0, 160]),
 }))
 

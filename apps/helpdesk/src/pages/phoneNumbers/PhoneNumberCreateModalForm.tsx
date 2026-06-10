@@ -1,8 +1,8 @@
 import type React from 'react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { useAsyncFn } from '@repo/hooks'
 import { Col, Form, FormGroup, Row } from 'reactstrap'
+import { useAsyncFn } from '@gorgias/toolkit-react'
 
 import {
     LegacyBanner as Banner,

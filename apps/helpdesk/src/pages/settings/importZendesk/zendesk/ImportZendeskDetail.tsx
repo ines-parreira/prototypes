@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 
-import { useEffectOnce } from '@repo/hooks'
 import { DateAndTimeFormatting } from '@repo/utils'
 import classNames from 'classnames'
 import { fromJS } from 'immutable'
@@ -15,6 +14,7 @@ import {
     Table,
 } from 'reactstrap'
 import { bindActionCreators } from 'redux'
+import { useEffectOnce } from '@gorgias/toolkit-react'
 
 import {
     LegacyButton as Button,

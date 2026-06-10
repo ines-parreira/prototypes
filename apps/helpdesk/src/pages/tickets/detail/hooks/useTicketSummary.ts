@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Duration } from '@gorgias/toolkit'
 
-import { useTimeout } from '@repo/hooks'
+import { useTimeout } from '@gorgias/toolkit-react'
 
 import type { TicketSummary } from '@gorgias/helpdesk-queries'
 import { useGenerateTicketSummary } from '@gorgias/helpdesk-queries'

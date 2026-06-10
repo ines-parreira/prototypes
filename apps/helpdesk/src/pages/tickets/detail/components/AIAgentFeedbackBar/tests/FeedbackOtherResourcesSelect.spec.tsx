@@ -15,8 +15,8 @@ import FeedbackOtherResourcesSelect, {
 jest.mock('pages/tickets/detail/hooks/useAIAgentGetOtherResources')
 jest.mock('state/ticket/actions')
 jest.mock('hooks/useAppDispatch')
-jest.mock('@repo/hooks', () => ({
-    ...jest.requireActual('@repo/hooks'),
+jest.mock('@gorgias/toolkit-react', () => ({
+    ...jest.requireActual('@gorgias/toolkit-react'),
     useElementSize: jest
         .fn()
         .mockImplementation(() => ({ width: 100, height: 100 })),
