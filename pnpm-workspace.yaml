@@ -100,8 +100,9 @@ catalogs:
   events:
     '@gorgias/events': '^0.14.11'
   event-tracker:
-    '@gorgias/event-tracker-api': '1.2.0'
-    '@gorgias/event-tracker-browser': '2.0.4'
+    '@gorgias/event-tracker-api': '1.3.0'
+    '@gorgias/event-tracker-browser': '2.1.0'
+    '@gorgias/event-tracker-utils': '1.1.0'
   react:
     react: '18.2.0'
     react-dom: '18.2.0'

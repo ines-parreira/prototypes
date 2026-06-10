@@ -56,11 +56,11 @@ catalogs:
       version: 1.0.1
   event-tracker:
     '@gorgias/event-tracker-api':
-      specifier: 1.2.0
-      version: 1.2.0
+      specifier: 1.3.0
+      version: 1.3.0
     '@gorgias/event-tracker-browser':
-      specifier: 2.0.4
-      version: 2.0.4
+      specifier: 2.1.0
+      version: 2.1.0
   events:
     '@gorgias/events':
       specifier: ^0.14.11
@@ -689,10 +689,10 @@ importers:
         version: 0.2.12(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@gorgias/event-tracker-api':
         specifier: catalog:event-tracker
-        version: 1.2.0
+        version: 1.3.0
       '@gorgias/event-tracker-browser':
         specifier: catalog:event-tracker
-        version: 2.0.4
+        version: 2.1.0
       '@gorgias/events':
         specifier: catalog:events
         version: 0.14.11
@@ -1755,10 +1755,10 @@ importers:
     devDependencies:
       '@gorgias/event-tracker-api':
         specifier: catalog:event-tracker
-        version: 1.2.0
+        version: 1.3.0
       '@gorgias/event-tracker-browser':
         specifier: catalog:event-tracker
-        version: 2.0.4
+        version: 2.1.0
       '@gorgias/toolkit':
         specifier: catalog:toolkit
         version: 0.2.0
@@ -5974,14 +5974,17 @@ packages:
   '@gorgias/ecommerce-storage-types@0.2.6':
     resolution: {integrity: sha512-2FSDriqHy6QlYj9TmtdlA40DiRQxeMVNji3iNEZE1D/douKOTDilvehtdWalMj67jUsMN5rZx9OeprftNBo9Wg==, tarball: https://npm.pkg.github.com/download/@gorgias/ecommerce-storage-types/0.2.6/6a94eb243890c9c4cab5338237aa8e2f67bc5e59}
 
-  '@gorgias/event-tracker-api@1.2.0':
-    resolution: {integrity: sha512-Ugrqt2bKColPX7Y1/ZLx1BPRGSPbQv8tTl8MO5wX8gngLcG04WsdrFH2UYKOoIr8ieSMGgmAANlj+ed8qbAGjQ==, tarball: https://npm.pkg.github.com/download/@gorgias/event-tracker-api/1.2.0/44a3eb2d588633389959a46627b687f98c4346bf}
+  '@gorgias/event-tracker-api@1.3.0':
+    resolution: {integrity: sha512-shcEqUlO+1gpw2zrnrLDi5+JcAage1lOmFANOIUw4jJucoGBODM38CWNK7DDNx3G8dQmzD7Mo6xaU95eFUv33A==, tarball: https://npm.pkg.github.com/download/@gorgias/event-tracker-api/1.3.0/c37b30438f14b56ee0a56dd69cdb34dbb925a0ca}
+    engines: {node: '>=22.22.0'}
 
-  '@gorgias/event-tracker-browser@2.0.4':
-    resolution: {integrity: sha512-6ipp8bCpOLmNOFWjhiH709761iy8gOT/erLcjp8DZoTEnqKEXfk8I+O+2lK00HKsQKvysU6goM3LwNxWGNEJ2Q==, tarball: https://npm.pkg.github.com/download/@gorgias/event-tracker-browser/2.0.4/a44d74a59485e2757b2ed89dea58d864a875676b}
+  '@gorgias/event-tracker-browser@2.1.0':
+    resolution: {integrity: sha512-cMyleJB1qpSB4GgXIXTFT5dL/o8QVqokFVwvAgmeooOCcy0yKNtLiCqK0yRDerKO9y9VC7qHe9PmCge+7ygMjQ==, tarball: https://npm.pkg.github.com/download/@gorgias/event-tracker-browser/2.1.0/8addeec43df7f3ed842d3ae2911cd94405aaefe7}
+    engines: {node: '>=22.22.0'}
 
-  '@gorgias/event-tracker-utils@1.0.1':
-    resolution: {integrity: sha512-q3p9eb/ooIga/5tJCLryVIuRIaI+E2fjIJoJsUVTse8BwYW14pvcK/0G87fHAOEDezbTCFacm3KisxxgeTIarw==, tarball: https://npm.pkg.github.com/download/@gorgias/event-tracker-utils/1.0.1/25a551ebe4ce428f03e1157f60263b2ef049d5c7}
+  '@gorgias/event-tracker-utils@1.1.0':
+    resolution: {integrity: sha512-GSpA3AAzUlf+W7Gvq5wkPC/PzjbTq3obalONocoMl6iFOnM7jCN2o0YPhCysg+LommkrJZZwuM3fUZidNmV/6A==, tarball: https://npm.pkg.github.com/download/@gorgias/event-tracker-utils/1.1.0/549565bd512ea09c8fb462c186106016d93047bd}
+    engines: {node: '>=22.22.0'}
 
   '@gorgias/events@0.14.11':
     resolution: {integrity: sha512-1kpwAMD76J9mzQ+vKAmmmE6LL66Kw3LbRqrUM9Y4/n5Isej6LU7ipLl9o2L6hU7H6oraLvJUp/SPFw/0ykja7A==, tarball: https://npm.pkg.github.com/download/@gorgias/events/0.14.11/4ddbe3e4492a6784e106df5c169e8d0cb9a0f11b}
@@ -20372,9 +20375,9 @@ snapshots:
 
   '@gorgias/ecommerce-storage-types@0.2.6': {}
 
-  '@gorgias/event-tracker-api@1.2.0':
+  '@gorgias/event-tracker-api@1.3.0':
     dependencies:
-      '@gorgias/event-tracker-utils': 1.0.1
+      '@gorgias/event-tracker-utils': 1.1.0
       axios: 1.16.1(debug@4.4.3)
       cloudevents: 8.0.2
       uuid: 9.0.1
@@ -20382,16 +20385,18 @@ snapshots:
       - debug
       - supports-color
 
-  '@gorgias/event-tracker-browser@2.0.4':
+  '@gorgias/event-tracker-browser@2.1.0':
     dependencies:
-      '@gorgias/event-tracker-api': 1.2.0
+      '@gorgias/event-tracker-api': 1.3.0
+      cloudevents: 8.0.2
       localforage: 1.10.0
       localforage-getitems: 1.4.2
+      uuid: 9.0.1
     transitivePeerDependencies:
       - debug
       - supports-color
 
-  '@gorgias/event-tracker-utils@1.0.1': {}
+  '@gorgias/event-tracker-utils@1.1.0': {}
 
   '@gorgias/events@0.14.11': {}
 
@@ -25738,6 +25743,10 @@ snapshots:
     optionalDependencies:
       ajv: 8.17.1
 
+  ajv-formats@2.1.1(ajv@8.20.0):
+    optionalDependencies:
+      ajv: 8.20.0
+
   ajv-formats@3.0.1(ajv@8.17.1):
     optionalDependencies:
       ajv: 8.17.1
@@ -26594,8 +26603,8 @@ snapshots:
 
   cloudevents@8.0.2:
     dependencies:
-      ajv: 8.17.1
-      ajv-formats: 2.1.1(ajv@8.17.1)
+      ajv: 8.20.0
+      ajv-formats: 2.1.1(ajv@8.20.0)
       json-bigint: 1.0.0
       process: 0.11.10
       util: 0.12.5
