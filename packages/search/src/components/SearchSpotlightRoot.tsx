@@ -513,7 +513,7 @@ export function SearchSpotlightRoot({
                 flexDirection="column"
                 gap="md"
                 h={680}
-                minHeight={680}
+                minHeight={0}
             >
                 <Heading slot="title" style={{ display: 'none' }}>
                     Search
